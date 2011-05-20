@@ -12,4 +12,15 @@ class ProjectConfiguration extends sfProjectConfiguration
       'sfTaskExtraPlugin',
     ));
   }
+
+  public function configureDoctrine(Doctrine_Manager $manager)
+  {
+    $manager->setAttribute(Doctrine_Core::ATTR_QUOTE_IDENTIFIER, true);
+    $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CLASS, 'myDoctrineQuery');
+    $manager->setAttribute(Doctrine_Core::ATTR_COLLECTION_CLASS, 'myDoctrineCollection');
+    
+    sfConfig::set('doctrine_model_builder_options', array(
+      'baseTableClassName' => 'myDoctrineTable',
+    ));
+  }
 }
