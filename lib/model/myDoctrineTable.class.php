@@ -45,9 +45,9 @@ class myDoctrineTable extends Doctrine_Table
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q, $params);
     
-    $ids = $this->createListByIds($ids, $params);    
+    $ids = $this->getIdsByQuery($q);
 
-    return $q->execute();
+    return $this->createListByIds($ids, $params);
   }
 
   public function getById($id, array $params = array())
