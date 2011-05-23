@@ -22,13 +22,29 @@ class myDoctrineTable extends Doctrine_Table
 
   public function createListByIds($ids, $params)
   {
+    // TODO: использовать редиска мультигет
     $list = $this->createList();
     foreach ($ids as $id)
     {
-      $list[] = $this->getById($id, $params);
+      $record = $this->getById($id, $params);
+      if ($record)
+      {
+        $list[] = $record;
+      }
     }
 
     return $list;
+  }
+
+  public function getById($id, array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+    $this->setQueryParameters($q);
+    
+    $q->where($q->getRootAlias().'.id = ?', $id);
+    $q->useResultCache(true, null, $this->getQueryResultHash($id));
+    
+    return $q->fetchOne();
   }
   
   public function getIdsByQuery(Doctrine_Query $q)
@@ -48,16 +64,6 @@ class myDoctrineTable extends Doctrine_Table
     $ids = $this->getIdsByQuery($q);
 
     return $this->createListByIds($ids, $params);
-  }
-
-  public function getById($id, array $params = array())
-  {
-    $q = $this->createBaseQuery($params);
-    $this->setQueryParameters($q);
-    
-    $q->where($q->getRootAlias().'.id = ?', $id);
-    
-    return $q->fetchOne();
   }
 
   public function getChoices($key = 'id', $value = 'name', array $params = array())
@@ -138,5 +144,10 @@ class myDoctrineTable extends Doctrine_Table
       $q->setHydrationMode(Doctrine_Core::HYDRATE_.strtoupper($params['hydrate']));
     }
     */
+  }
+
+  public function getQueryResultHash($id, array $params = array())
+  {
+    return $this->getQueryRootAlias().'-'.$id.':'.implode(',', $params);
   }
 }
