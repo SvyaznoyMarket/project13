@@ -4,20 +4,60 @@ class myDoctrineTable extends Doctrine_Table
 {
   public function createBaseQuery(array $params = array())
   {
-    return $this->createQuery(lcfirst($this->getComponentName()));
+    return $this->createQuery($this->getQueryRootAlias());
+  }
+  
+  public function getQueryRootAlias()
+  {
+    return lcfirst($this->getComponentName());
   }
 
-  public function createList()
+  public function createList(array $data = array())
   {
-    return new Doctrine_Collection($this);
+    $return = new Doctrine_Collection($this);
+    $return->fromArray($data);
+    
+    return $return;
+  }
+
+  public function createListByIds($ids, $params)
+  {
+    $list = $this->createList();
+    foreach ($ids as $id)
+    {
+      $list[] = $this->getById($id, $params);
+    }
+
+    return $list;
+  }
+  
+  public function getIdsByQuery(Doctrine_Query $q)
+  {
+    $q = clone $q;
+    $q->select($this->getQueryRootAlias().'.id');
+    $q->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+    
+    return $q->execute();
   }
 
   public function getList(array $params = array())
   {
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q, $params);
+    
+    $ids = $this->createListByIds($ids, $params);    
 
     return $q->execute();
+  }
+
+  public function getById($id, array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+    $this->setQueryParameters($q);
+    
+    $q->where($q->getRootAlias().'.id = ?', $id);
+    
+    return $q->fetchOne();
   }
 
   public function getChoices($key = 'id', $value = 'name', array $params = array())
@@ -92,9 +132,11 @@ class myDoctrineTable extends Doctrine_Table
       $q->from("{$this->getClassnameToReturn()} {$q->getRootAlias()} INDEXBY {$q->getRootAlias()}.{$params['index']}");
     }
     // hydrate
+    /*
     if (isset($params['hydrate']))
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_.strtoupper($params['hydrate']));
     }
+    */
   }
 }
