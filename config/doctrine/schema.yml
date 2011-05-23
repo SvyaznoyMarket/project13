@@ -1,0 +1,28 @@
+ProductCategory:
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+
+Product:
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    category_id:       { type: integer(20), notnull: true }
+  relations:
+    Category:          { class: ProductCategory, foreignAlias: Product, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+
+ProductProperty:
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    product_id:        { type: integer(20), notnull: true }
+  relations:
+    Product:           { class: Product, foreignAlias: Property, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+ProductPhoto:
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    product_id:        { type: integer(20), notnull: true }
+  relations:
+    Product:           { class: Product, foreignAlias: Photo, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

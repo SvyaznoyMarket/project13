@@ -1,17 +1,40 @@
-# # Populate this file with data to be loaded by your ORM's *:data-load task.
-# # You can create multiple files in this directory (i.e. 010_users.yml,
-# # 020_articles.yml, etc) which will be loaded in alphabetical order.
-# # 
-# # See documentation for your ORM's *:data-load task for more information.
-# 
-# User:
-#   fabien:
-#     username: fabien
-#     password: changeme
-#     name:     Fabien Potencier
-#     email:    fabien.potencier@symfony-project.com
-#   kris:
-#     username: Kris.Wallsmith
-#     password: changeme
-#     name:     Kris Wallsmith
-#     email:    kris.wallsmith@symfony-project.com
+<?php
+
+$count = array(
+  'category' => 40,
+  'product'  => 1000,
+);
+
+?>
+
+ProductCategory:
+<?php for ($i = 1; $i <= $count['category']; $i++): ?>
+  ProductCategory-<?php echo $i ?>:
+    name: category-<?php echo $i."\n" ?>
+<?php endfor ?>
+
+Product:
+<?php for ($i = 1; $i <= $count['product']; $i++): ?>
+  Product-<?php echo $i ?>:
+    name: product-<?php echo $i."\n" ?>
+    Category: ProductCategory-<?php echo rand(1, $count['category'])."\n" ?>
+<?php endfor ?>
+
+ProductProperty:
+<?php for ($i = 1; $i <= $count['product']; $i++): $count['property'] = rand(3, 10); ?>
+<?php for ($j = 1; $j <= $count['property']; $j++): ?>
+  ProductProperty-<?php echo $i.'-'.$j ?>:
+    name: property-<?php echo $j."\n" ?>
+    Product: Product-<?php echo $i."\n" ?>
+<?php endfor ?>
+<?php endfor ?>
+
+ProductPhoto:
+<?php for ($i = 1; $i <= $count['product']; $i++): $count['photo'] = rand(1, 3); ?>
+<?php for ($j = 1; $j <= $count['photo']; $j++): ?>
+  ProductPhoto-<?php echo $i.'-'.$j ?>:
+    name: photo-<?php echo $j."\n" ?>
+    Product: Product-<?php echo $i."\n" ?>
+<?php endfor ?>
+<?php endfor ?>
+
