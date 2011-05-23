@@ -1,0 +1,16 @@
+all:
+
+  view_cache:
+    class: sfRedisCache
+    param:
+      connection: default
+      prefix: view:%SF_APP%:%SF_ENVIRONMENT%
+
+  i18n:
+    param:
+      cache:
+        class: sfRedisCache
+        param:
+          connection: default
+          prefix: i18n:%SF_APP%:%SF_ENVIRONMENT%
+

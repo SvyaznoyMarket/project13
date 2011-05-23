@@ -1,0 +1,278 @@
+sfRedisPlugin
+=============
+
+The sfRedis plugin provides redis support to symfony (through Predis).
+
+
+Installation
+------------
+
+You can install this plugin the usual way (RTFM), or if you want to work with the trunk:
+
+    $ cd plugins
+    $ svn co http://svn.symfony-project.com/plugins/sfRedisPlugin/trunk/ sfRedisPlugin
+
+Then activate the plugin in the `config/ProjectConfiguration.class.php` file.
+
+
+Configuration
+-------------
+
+Edit `config/redis.yml` to suit your redis installation :
+
+    [yml]
+    all:
+      connections:
+        local:
+          host: 127.0.0.1
+          port: 6379
+
+You can also use URL based notation :
+
+    [yml]
+    all:
+      connections:
+        local: redis://127.0.0.1:6379
+
+By default, there is a connection named "default" which targets a local redis server.
+
+All available parameters :
+
+    [yml]
+    all:
+      connections:
+        local:
+          host: 127.0.0.1
+          port: 6379
+          database: 0
+          password: secret
+          connection_timeout: 5
+          read_write_timeout: 30
+
+You can also use Predis cluster feature :
+
+    [yml]
+    all:
+      connections:
+        myshard:
+          - redis://192.168.0.1:6379
+          - redis://192.168.0.2:6379
+
+
+Get a predis client
+-------------------
+
+To create a connection, use `sfRedis::getClient()` with the connection name as parameter :
+
+    [php]
+    $redis = sfRedis::getClient('myshard');
+
+Or empty to use "default" connection:
+
+    [php]
+    $redis = sfRedis::getClient();
+
+Then follow Predis API to query the database
+
+    [php]
+    $redis->set('name', 'value');
+    $value = $redis->get('name');
+
+
+Symfony cache
+-------------
+
+The sfRedisPlugin provides a `sfRedisCache` class to use for view and/or i18n symfony cache.
+
+To enable it, edit `config/factories.yml` :
+
+    [yml]
+    all:
+      view_cache:
+        class: sfRedisCache
+        param:
+          connection: default
+          prefix: view:%SF_APP%:%SF_ENVIRONMENT%
+
+The parameter "connection" is the key defined in `config/redis.yml`.
+The parameter "prefix" is adjusted in this example.
+
+
+Doctrine cache
+--------------
+
+The sfRedisPlugin provides a Doctrine cache backend.
+
+To enable it, edit `ProjectConfiguration::configureDoctrine` with :
+
+    [php]
+    $cacheDriver = new Doctrine_Cache_Redis(array('server' => 'redis://127.0.0.1:6379', 'prefix' => 'dql:'));
+    $manager->setAttribute(Doctrine::ATTR_QUERY_CACHE, $cacheDriver);
+
+The option "prefix" is recommended to keep redis server keys clean.
+
+You can also pass a `Predis_Client` object as an option:
+
+    [php]
+    $redis = Predis_Client::create(...);
+    $cacheDriver = new Doctrine_Cache_Redis(array('redis' => $redis));
+    $manager->setAttribute(Doctrine::ATTR_QUERY_CACHE, $cacheDriver);
+
+Since `sfRedis::getClient` returns a `Predis_Client`, you can use configuration from your `config/redis.yml`:
+
+    [php]
+    $cacheDriver = new Doctrine_Cache_Redis(array('redis' => sfRedis::getClient('local'), 'prefix' => 'dql:'));
+    $manager->setAttribute(Doctrine::ATTR_QUERY_CACHE, $cacheDriver);
+
+Please note, you need to enable the `sfRedisPlugin` *before* the `sfDoctrinePlugin` to make the previous snippet work.
+
+
+Redis sfPager
+-------------
+
+The plugin provides two types of pager, one for redis lists and one for sorted sets.
+
+__Lists__: imagine you populate a redis list :
+
+    [php]
+    $client = sfRedis::getClient();
+    $key = 'mylist';
+    $client->rpush($key, 'a');
+    $client->rpush($key, 'b');
+    // ...
+    $client->rpush($key, 'z');
+
+To get a pager on this list, use the following code :
+
+    [php]
+    // signature : __construct($redisKey, $maxPerPage)
+    $pager = new sfRedisListPager('mylist', 10);
+    $pager->setPage($page);
+    $pager->init();
+    // use it as any sfPager
+    foreach ($pager as $element)
+    {
+      echo $element; // = 'a', 'b', ..., 'j'
+    }
+
+
+__Sorted sets__: let's setup a "movies-by-year" set with year as score :
+
+    [php]
+    $client = sfRedis::getClient();
+    $key = 'movies-by-year';
+    $client->zadd($key, 2007, 'Rocky Balboa');
+    $client->zadd($key, 1990, 'Rocky V');
+    $client->zadd($key, 1986, 'Rocky IV');
+    $client->zadd($key, 1982, 'Rocky III');
+    $client->zadd($key, 1979, 'Rocky II');
+    $client->zadd($key, 1976, 'Rocky');
+
+The corresponding pager is :
+
+    [php]
+    // signature : __construct($redisKey, $maxPerPage)
+    $pager = new sfRedisZsetPager('movies-by-year', 10);
+    $pager->setPage($page);
+    $pager->init();
+    // use it as any sfPager
+    foreach ($pager as $element)
+    {
+      echo $element; // = 'Rocky', 'Rocky II', 'Rocky III', ...
+      echo $client->zscore($key, $element); // = 1976, 1979, 1982, ...
+    }
+
+Note: the results are ordered by "score" ascending.
+As the ZREVRANGEBYSCORE command does not yet exists in redis, there is only one ordering possible.
+If you want reverse order, you have to store scores negative.
+
+If you want to filter results by year, set parameters "min" and/or "max" :
+
+    [php]
+    $pager = new sfRedisZsetPager('movies', 10);
+    $pager->setParameter('min', 1980);
+    $pager->setParameter('max', 2000);
+    // ...
+
+
+
+sfRedisZsetDoctrinePager = sfPager + Redis + Doctrine
+-----------------------------------------------------
+
+The `sfRedisZsetDoctrinePager` allows you to paginate on redis sorted sets with Doctrine record as pager objects.
+
+Take this schema.yml example :
+
+    [yml]
+    Movie:
+      columns:
+        year:   integer(2)
+        title:  string(200)
+
+And fixtures :
+
+    [yml]
+    Movie:
+      rocky:   { year: 1976, title: 'Rocky' }
+      rocky_2: { year: 1979, title: 'Rocky II' }
+      # ...
+
+
+Imagine you sync somehow in Redis key 'movie:year' a set sorted by year with record id as member :
+
+    [php]
+    sfRedis::getClient()->zadd('movie:year', $movie->year, $movie->id);
+
+
+You can then paginate on movies objects sorted by year with this code :
+
+    [php]
+    // signature : __construct($modelName, $redisKey, $maxPerPage)
+    $pager = new sfRedisZsetDoctrinePager('Movie', 'movie:year', 10);
+    $pager->setPage($page);
+    $pager->init();
+
+    foreach ($pager as $movie)
+    {
+      // each iteration calls Doctrine_core::getTable('Movie')->find($element)
+      // so $movie is an instance of Movie
+      echo link_to($movie->title, 'movie_show', $movie);
+    }
+
+Each iteration on the pager makes a "find" query, so this makes as many queries as items per page.
+But it's much more efficient to do many "WHERE id = const" queries than doing a WHERE IN + ORDER BY FIELD(), the order is already done by redis so you don't need to tell your DB to order the found records in a temporary buffer, and those queries are more cacheable.
+
+You can also go further by using a custom tableMethod :
+
+    [php]
+    // Custom find with cache enabled
+    class MovieTable
+    {
+      public function findUseCache($id)
+      {
+        return $this->createQuery()->where('id = ?', $id)->useResultCache(true, 3600, 'movie_'.$id)->fetchOne();
+      }
+    }
+
+    $pager = new sfRedisZsetDoctrinePager('Movie', 'movie:year', 10);
+    $pager->setParameter('tableMethod', 'findUseCache');
+    $pager->setPage($page);
+    $pager->init();
+
+
+Now you have a sortable pager on Doctrine records without (almost) querying the database, taking advantage of redis sort speed.
+
+
+TODO
+----
+
+* implement a pager for SORT commands
+* work with nginx HTTP redis module
+
+
+LINKS
+-----
+
+* Predis http://github.com/nrk/predis
+* redis http://code.google.com/p/redis/
+

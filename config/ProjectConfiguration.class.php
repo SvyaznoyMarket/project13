@@ -8,6 +8,7 @@ class ProjectConfiguration extends sfProjectConfiguration
   public function setup()
   {
     $this->enablePlugins(array(
+      'sfRedisPlugin',
       'sfDoctrinePlugin',
       'sfTaskExtraPlugin',
     ));
@@ -22,5 +23,20 @@ class ProjectConfiguration extends sfProjectConfiguration
     sfConfig::set('doctrine_model_builder_options', array(
       'baseTableClassName' => 'myDoctrineTable',
     ));
+    
+    // настройка кеширования
+    //$manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, new Doctrine_Cache_Apc());
+    //$manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE_LIFESPAN, 60);    
+    
+    $driver =
+      //new Doctrine_Cache_Apc()
+      //new Doctrine_Cache_Memcache(array('servers' => array(array('host' => 'localhost', 'port' => 11211, 'persistent' => true)), 'compression' => false))
+      //new Doctrine_Cache_Db(array('connection' => $manager->getConnection('cache'), 'tableName' => 'query_cache'))
+      //new Doctrine_Cache_Redis(array('server' => 'redis://127.0.0.1:6379', 'prefix' => 'result:'));
+      new Doctrine_Cache_Redis(array('redis' => sfRedis::getClient('localhost'), 'prefix' => 'result:'))
+    ;
+    
+    $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $driver);
+    $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, 60);
   }
 }
