@@ -7,23 +7,41 @@
  * 
  * @property integer $id
  * @property string $name
+ * @property integer $type_id
+ * @property integer $creator_id
  * @property integer $category_id
+ * @property boolean $view_show
+ * @property boolean $view_list
+ * @property ProductType $Type
+ * @property Creator $Creator
  * @property ProductCategory $Category
- * @property Doctrine_Collection $Property
+ * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Photo
  * 
- * @method integer             getId()          Returns the current record's "id" value
- * @method string              getName()        Returns the current record's "name" value
- * @method integer             getCategoryId()  Returns the current record's "category_id" value
- * @method ProductCategory     getCategory()    Returns the current record's "Category" value
- * @method Doctrine_Collection getProperty()    Returns the current record's "Property" collection
- * @method Doctrine_Collection getPhoto()       Returns the current record's "Photo" collection
- * @method Product             setId()          Sets the current record's "id" value
- * @method Product             setName()        Sets the current record's "name" value
- * @method Product             setCategoryId()  Sets the current record's "category_id" value
- * @method Product             setCategory()    Sets the current record's "Category" value
- * @method Product             setProperty()    Sets the current record's "Property" collection
- * @method Product             setPhoto()       Sets the current record's "Photo" collection
+ * @method integer             getId()               Returns the current record's "id" value
+ * @method string              getName()             Returns the current record's "name" value
+ * @method integer             getTypeId()           Returns the current record's "type_id" value
+ * @method integer             getCreatorId()        Returns the current record's "creator_id" value
+ * @method integer             getCategoryId()       Returns the current record's "category_id" value
+ * @method boolean             getViewShow()         Returns the current record's "view_show" value
+ * @method boolean             getViewList()         Returns the current record's "view_list" value
+ * @method ProductType         getType()             Returns the current record's "Type" value
+ * @method Creator             getCreator()          Returns the current record's "Creator" value
+ * @method ProductCategory     getCategory()         Returns the current record's "Category" value
+ * @method Doctrine_Collection getPropertyRelation() Returns the current record's "PropertyRelation" collection
+ * @method Doctrine_Collection getPhoto()            Returns the current record's "Photo" collection
+ * @method Product             setId()               Sets the current record's "id" value
+ * @method Product             setName()             Sets the current record's "name" value
+ * @method Product             setTypeId()           Sets the current record's "type_id" value
+ * @method Product             setCreatorId()        Sets the current record's "creator_id" value
+ * @method Product             setCategoryId()       Sets the current record's "category_id" value
+ * @method Product             setViewShow()         Sets the current record's "view_show" value
+ * @method Product             setViewList()         Sets the current record's "view_list" value
+ * @method Product             setType()             Sets the current record's "Type" value
+ * @method Product             setCreator()          Sets the current record's "Creator" value
+ * @method Product             setCategory()         Sets the current record's "Category" value
+ * @method Product             setPropertyRelation() Sets the current record's "PropertyRelation" collection
+ * @method Product             setPhoto()            Sets the current record's "Photo" collection
  * 
  * @package    enter
  * @subpackage model
@@ -47,27 +65,59 @@ abstract class BaseProduct extends sfDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
+        $this->hasColumn('type_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'length' => 20,
+             ));
+        $this->hasColumn('creator_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'length' => 20,
+             ));
         $this->hasColumn('category_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
              'length' => 20,
+             ));
+        $this->hasColumn('view_show', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             ));
+        $this->hasColumn('view_list', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
              ));
     }
 
     public function setUp()
     {
         parent::setUp();
+        $this->hasOne('ProductType as Type', array(
+             'local' => 'type_id',
+             'foreign' => 'id',
+             'onDelete' => 'RESTRICT'));
+
+        $this->hasOne('Creator', array(
+             'local' => 'creator_id',
+             'foreign' => 'id',
+             'onDelete' => 'RESTRICT'));
+
         $this->hasOne('ProductCategory as Category', array(
              'local' => 'category_id',
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
 
-        $this->hasMany('ProductProperty as Property', array(
+        $this->hasMany('ProductPropertyRelation as PropertyRelation', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 
         $this->hasMany('ProductPhoto as Photo', array(
              'local' => 'id',
              'foreign' => 'product_id'));
+
+    $this->addListener(new ProductListener(array()), 'ProductListener');
     }
 }

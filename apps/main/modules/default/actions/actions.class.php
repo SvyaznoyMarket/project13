@@ -17,5 +17,11 @@ class defaultActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    $this->productList = ProductTable::getInstance()->getList(array(
+      'order' => 'product.name',
+      'limit' => 200,
+    ));
+    
+    //print_r($this->productList->toArray());
   }
 }

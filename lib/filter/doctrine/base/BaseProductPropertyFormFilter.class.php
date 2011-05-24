@@ -13,13 +13,17 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'name'       => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => true)),
+      'name'              => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'type'              => new sfWidgetFormChoice(array('choices' => array('' => '', 'string' => 'string', 'select' => 'select', 'text' => 'text'))),
+      'is_multiple'       => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
+      'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
     ));
 
     $this->setValidators(array(
-      'name'       => new sfValidatorPass(array('required' => false)),
-      'product_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Product'), 'column' => 'id')),
+      'name'              => new sfValidatorPass(array('required' => false)),
+      'type'              => new sfValidatorChoice(array('required' => false, 'choices' => array('string' => 'string', 'select' => 'select', 'text' => 'text'))),
+      'is_multiple'       => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_property_filters[%s]');
@@ -31,6 +35,24 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
     parent::setup();
   }
 
+  public function addProductTypeListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.ProductTypePropertyRelation ProductTypePropertyRelation')
+      ->andWhereIn('ProductTypePropertyRelation.product_type_id', $values)
+    ;
+  }
+
   public function getModelName()
   {
     return 'ProductProperty';
@@ -39,9 +61,11 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'         => 'Number',
-      'name'       => 'Text',
-      'product_id' => 'ForeignKey',
+      'id'                => 'Number',
+      'name'              => 'Text',
+      'type'              => 'Enum',
+      'is_multiple'       => 'Boolean',
+      'product_type_list' => 'ManyKey',
     );
   }
 }

@@ -5,3 +5,5 @@ all:
       dsn:      mysql:host=localhost;dbname=enter
       username: root
       password: root
+      #profiler: false
+

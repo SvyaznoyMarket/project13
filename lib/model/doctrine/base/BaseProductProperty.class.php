@@ -7,17 +7,29 @@
  * 
  * @property integer $id
  * @property string $name
- * @property integer $product_id
- * @property Product $Product
+ * @property enum $type
+ * @property boolean $is_multiple
+ * @property Doctrine_Collection $ProductType
+ * @property Doctrine_Collection $ProductTypeRelation
+ * @property Doctrine_Collection $Option
+ * @property Doctrine_Collection $ProductRelation
  * 
- * @method integer         getId()         Returns the current record's "id" value
- * @method string          getName()       Returns the current record's "name" value
- * @method integer         getProductId()  Returns the current record's "product_id" value
- * @method Product         getProduct()    Returns the current record's "Product" value
- * @method ProductProperty setId()         Sets the current record's "id" value
- * @method ProductProperty setName()       Sets the current record's "name" value
- * @method ProductProperty setProductId()  Sets the current record's "product_id" value
- * @method ProductProperty setProduct()    Sets the current record's "Product" value
+ * @method integer             getId()                  Returns the current record's "id" value
+ * @method string              getName()                Returns the current record's "name" value
+ * @method enum                getType()                Returns the current record's "type" value
+ * @method boolean             getIsMultiple()          Returns the current record's "is_multiple" value
+ * @method Doctrine_Collection getProductType()         Returns the current record's "ProductType" collection
+ * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
+ * @method Doctrine_Collection getOption()              Returns the current record's "Option" collection
+ * @method Doctrine_Collection getProductRelation()     Returns the current record's "ProductRelation" collection
+ * @method ProductProperty     setId()                  Sets the current record's "id" value
+ * @method ProductProperty     setName()                Sets the current record's "name" value
+ * @method ProductProperty     setType()                Sets the current record's "type" value
+ * @method ProductProperty     setIsMultiple()          Sets the current record's "is_multiple" value
+ * @method ProductProperty     setProductType()         Sets the current record's "ProductType" collection
+ * @method ProductProperty     setProductTypeRelation() Sets the current record's "ProductTypeRelation" collection
+ * @method ProductProperty     setOption()              Sets the current record's "Option" collection
+ * @method ProductProperty     setProductRelation()     Sets the current record's "ProductRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -41,19 +53,44 @@ abstract class BaseProductProperty extends sfDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
-        $this->hasColumn('product_id', 'integer', 20, array(
-             'type' => 'integer',
-             'notnull' => true,
+        $this->hasColumn('type', 'enum', 20, array(
+             'type' => 'enum',
              'length' => 20,
+             'values' => 
+             array(
+              0 => 'string',
+              1 => 'select',
+              2 => 'text',
+             ),
+             'notnull' => true,
+             'notblank' => true,
+             'default' => 'string',
+             ));
+        $this->hasColumn('is_multiple', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
              ));
     }
 
     public function setUp()
     {
         parent::setUp();
-        $this->hasOne('Product', array(
-             'local' => 'product_id',
-             'foreign' => 'id',
-             'onDelete' => 'CASCADE'));
+        $this->hasMany('ProductType', array(
+             'refClass' => 'ProductTypePropertyRelation',
+             'local' => 'property_id',
+             'foreign' => 'product_type_id'));
+
+        $this->hasMany('ProductTypePropertyRelation as ProductTypeRelation', array(
+             'local' => 'id',
+             'foreign' => 'property_id'));
+
+        $this->hasMany('ProductPropertyOption as Option', array(
+             'local' => 'id',
+             'foreign' => 'property_id'));
+
+        $this->hasMany('ProductPropertyRelation as ProductRelation', array(
+             'local' => 'id',
+             'foreign' => 'property_id'));
     }
 }

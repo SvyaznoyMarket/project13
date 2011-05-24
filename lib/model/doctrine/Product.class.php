@@ -12,4 +12,8 @@
  */
 class Product extends BaseProduct
 {
+  public function construct()
+  {
+    $this->mapValue('Property', ProductPropertyTable::getInstance()->createList());
+  }
 }

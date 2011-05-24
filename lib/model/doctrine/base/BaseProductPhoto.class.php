@@ -8,15 +8,21 @@
  * @property integer $id
  * @property string $name
  * @property integer $product_id
+ * @property boolean $view_show
+ * @property boolean $view_list
  * @property Product $Product
  * 
  * @method integer      getId()         Returns the current record's "id" value
  * @method string       getName()       Returns the current record's "name" value
  * @method integer      getProductId()  Returns the current record's "product_id" value
+ * @method boolean      getViewShow()   Returns the current record's "view_show" value
+ * @method boolean      getViewList()   Returns the current record's "view_list" value
  * @method Product      getProduct()    Returns the current record's "Product" value
  * @method ProductPhoto setId()         Sets the current record's "id" value
  * @method ProductPhoto setName()       Sets the current record's "name" value
  * @method ProductPhoto setProductId()  Sets the current record's "product_id" value
+ * @method ProductPhoto setViewShow()   Sets the current record's "view_show" value
+ * @method ProductPhoto setViewList()   Sets the current record's "view_list" value
  * @method ProductPhoto setProduct()    Sets the current record's "Product" value
  * 
  * @package    enter
@@ -45,6 +51,16 @@ abstract class BaseProductPhoto extends sfDoctrineRecord
              'type' => 'integer',
              'notnull' => true,
              'length' => 20,
+             ));
+        $this->hasColumn('view_show', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             ));
+        $this->hasColumn('view_list', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
              ));
     }
 

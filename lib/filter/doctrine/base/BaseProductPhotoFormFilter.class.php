@@ -15,11 +15,15 @@ abstract class BaseProductPhotoFormFilter extends BaseFormFilterDoctrine
     $this->setWidgets(array(
       'name'       => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => true)),
+      'view_show'  => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
+      'view_list'  => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
     ));
 
     $this->setValidators(array(
       'name'       => new sfValidatorPass(array('required' => false)),
       'product_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Product'), 'column' => 'id')),
+      'view_show'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'view_list'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
     ));
 
     $this->widgetSchema->setNameFormat('product_photo_filters[%s]');
@@ -42,6 +46,8 @@ abstract class BaseProductPhotoFormFilter extends BaseFormFilterDoctrine
       'id'         => 'Number',
       'name'       => 'Text',
       'product_id' => 'ForeignKey',
+      'view_show'  => 'Boolean',
+      'view_list'  => 'Boolean',
     );
   }
 }

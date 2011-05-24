@@ -7,13 +7,75 @@
  */
 class ProductTable extends myDoctrineTable
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return object ProductTable
-     */
-    public static function getInstance()
+ /**
+  * Returns an instance of this class.
+  *
+  * @return object ProductTable
+  */
+  public static function getInstance()
+  {
+    return Doctrine_Core::getTable('Product');
+  }
+
+  public function createBaseQuery(array $params = array())
+  {
+    $this->applyDefaultParameters($params, array(
+      'view' => false, // list, show
+    ));
+    
+    $q = $this->createQuery('product');
+    
+    if ('list' == $params['view'])
     {
-        return Doctrine_Core::getTable('Product');
+      $q->addWhere('product.view_list = ?', true);
     }
+    if ('show' == $params['view'])
+    {
+      $q->addWhere('product.view_show = ?', true);
+    }
+    
+    return $q;
+  }
+
+  public function getById($id, array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+
+    $q->leftJoin('product.Type productType')
+      ->leftJoin('productType.PropertyRelation productTypePropertyRelation')
+      ->leftJoin('productTypePropertyRelation.Property productProperty')
+      ->leftJoin('product.Category productCategory')
+      ->leftJoin('product.Creator creator')
+      ->leftJoin('product.PropertyRelation productPropertyRelation')
+    ;
+    
+    $this->setQueryParameters($q);
+    
+    $q->where($q->getRootAlias().'.id = ?', $id)
+      //->useResultCache(true, null, $this->getRecordHash($id, $params))
+    ;
+    
+    $record = $q->fetchOne();
+    
+    // группировка параметров продукта по свойствам продукта
+    $productPropertyRelationArray = array();
+    foreach ($record['PropertyRelation'] as $propertyRelation)
+    {
+      if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
+      {
+        $productPropertyRelationArray[$propertyRelation['property_id']] = array();
+      }
+      $productPropertyRelationArray[$propertyRelation['property_id']][] = $propertyRelation;
+    }
+
+    foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
+    {
+      $property = $propertyRelation['Property'];
+      $property->mapValue('Value', new ProductPropertyValue($property, $productPropertyRelationArray[$propertyRelation['property_id']]));
+
+      $record['Property'][] = clone $property;
+    }
+    
+    return $record;
+  }
 }
