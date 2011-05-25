@@ -7,13 +7,26 @@
  */
 class ProductPropertyTable extends myDoctrineTable
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return object ProductPropertyTable
-     */
-    public static function getInstance()
-    {
-        return Doctrine_Core::getTable('ProductProperty');
-    }
+
+  /**
+   * Returns an instance of this class.
+   *
+   * @return object ProductPropertyTable
+   */
+  public static function getInstance()
+  {
+    return Doctrine_Core::getTable('ProductProperty');
+  }
+
+  public function getById($id, array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+
+    $this->setQueryParameters($q);
+    
+    $q->where('productProperty.id = ?', $id);    
+    $q->useResultCache(true, null, $this->getRecordHash($id, $params));
+    
+    return $q->fetchOne();
+  }
 }

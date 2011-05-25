@@ -7,13 +7,41 @@
  */
 class ProductTypeTable extends myDoctrineTable
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return object ProductTypeTable
-     */
-    public static function getInstance()
+
+  /**
+   * Returns an instance of this class.
+   *
+   * @return object ProductTypeTable
+   */
+  public static function getInstance()
+  {
+    return Doctrine_Core::getTable('ProductType');
+  }
+
+  public function getById($id, array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+
+    $q->leftJoin('productType.PropertyRelation productTypePropertyRelation')
+      ->addOrderBy('productTypePropertyRelation.position')
+    ;
+    
+    $this->setQueryParameters($q);
+    
+    $q->where('productType.id = ?', $id);    
+    $q->useResultCache(true, null, $this->getRecordHash($id, $params));
+    
+    $record = $q->fetchOne();    
+    if (!$record)
     {
-        return Doctrine_Core::getTable('ProductType');
+      return $record;
     }
+    
+    foreach ($record['PropertyRelation'] as $propertyRelation)
+    {
+      $propertyRelation['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id']);
+    }
+    
+    return $record;
+  }
 }

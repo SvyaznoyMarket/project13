@@ -21,7 +21,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: Builder.php 7490 2010-03-29 19:53:27Z jwage $
  */
-abstract class BaseProductCategory extends sfDoctrineRecord
+abstract class BaseProductCategory extends myDoctrineRecord
 {
     public function setTableDefinition()
     {

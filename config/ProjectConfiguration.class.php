@@ -23,6 +23,7 @@ class ProjectConfiguration extends sfProjectConfiguration
     
     sfConfig::set('doctrine_model_builder_options', array(
       'baseTableClassName' => 'myDoctrineTable',
+      'baseClassName'      => 'myDoctrineRecord',
     ));
     
     // настройка кеширования

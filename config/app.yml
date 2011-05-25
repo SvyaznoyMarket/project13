@@ -1,0 +1,3 @@
+all:
+  doctrine:
+    result_cache: true

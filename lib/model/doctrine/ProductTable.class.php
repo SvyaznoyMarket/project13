@@ -41,21 +41,24 @@ class ProductTable extends myDoctrineTable
   {
     $q = $this->createBaseQuery($params);
 
-    $q->leftJoin('product.Type productType')
-      ->leftJoin('productType.PropertyRelation productTypePropertyRelation')
-      ->leftJoin('productTypePropertyRelation.Property productProperty')
-      ->leftJoin('product.Category productCategory')
+    $q->leftJoin('product.Category productCategory')
       ->leftJoin('product.Creator creator')
       ->leftJoin('product.PropertyRelation productPropertyRelation')
     ;
     
     $this->setQueryParameters($q);
     
-    $q->where($q->getRootAlias().'.id = ?', $id)
-      //->useResultCache(true, null, $this->getRecordHash($id, $params))
-    ;
+    $q->where($q->getRootAlias().'.id = ?', $id);
+    
+    $q->useResultCache(true, null, $this->getRecordHash($id, $params));
     
     $record = $q->fetchOne();
+    if (!$record)
+    {
+      return $record;
+    }
+    
+    $record['Type'] = ProductTypeTable::getInstance()->getById($record->type_id);
     
     // группировка параметров продукта по свойствам продукта
     $productPropertyRelationArray = array();
@@ -70,10 +73,7 @@ class ProductTable extends myDoctrineTable
 
     foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
     {
-      $property = $propertyRelation['Property'];
-      $property->mapValue('Value', new ProductPropertyValue($property, $productPropertyRelationArray[$propertyRelation['property_id']]));
-
-      $record['Property'][] = clone $property;
+      $record['Parameter'][] = new ProductParameter($propertyRelation['Property'], $productPropertyRelationArray[$propertyRelation['property_id']]);
     }
     
     return $record;
