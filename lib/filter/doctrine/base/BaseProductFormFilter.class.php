@@ -19,6 +19,8 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'category_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Category'), 'add_empty' => true)),
       'view_show'   => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'view_list'   => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
+      'description' => new sfWidgetFormFilterInput(),
+      'rating'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
@@ -28,6 +30,8 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'category_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Category'), 'column' => 'id')),
       'view_show'   => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'view_list'   => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'description' => new sfValidatorPass(array('required' => false)),
+      'rating'      => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
     ));
 
     $this->widgetSchema->setNameFormat('product_filters[%s]');
@@ -54,6 +58,8 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'category_id' => 'ForeignKey',
       'view_show'   => 'Boolean',
       'view_list'   => 'Boolean',
+      'description' => 'Text',
+      'rating'      => 'Number',
     );
   }
 }

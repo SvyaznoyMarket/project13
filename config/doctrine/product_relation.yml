@@ -1,0 +1,45 @@
+SimilarProductGroup:
+  options:
+    comment: 'Группа аналогичного товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    product_type_id:   { type: integer(20), notnull: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+  relations:
+    ProductType:       { class: ProductType, foreignAlias: SimilarProductGroup, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+
+SimilarProductProperty:
+  options:
+    comment: 'Свойства аналогичного товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    group_id:          { type: integer(20), notnull: true }
+    property_id:       { type: integer(20), notnull: true }
+  relations:
+    Group:             { class: SimilarProductGroup, foreignAlias: Property, local: group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    ProductProperty:   { class: ProductProperty, foreignAlias: SimilarProductProperty, local: property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+SimilarProduct:
+  options:
+    comment: 'Аналогичный товар'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    master_id:         { type: integer(20), notnull: true }
+    slave_id:          { type: integer(20), notnull: true }
+    group_id:          { type: integer(20), notnull: true }
+    is_manual:         { type: boolean, notnull: true, default: false, comment: 'Аналогичный товар создан вручную?' }
+  relations:
+    MasterProduct:     { class: Product, foreignAlias: SlaveSimilarProduct, local: master_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    SlaveProduct:      { class: Product, foreignAlias: MasterSimilarProduct, local: slave_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Group:             { class: SimilarProductGroup, foreignAlias: SimilarProduct, local: group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+AccessoryProduct:
+  options:
+    comment: 'Аксессуар товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    master_id:         { type: integer(20), notnull: true }
+    slave_id:          { type: integer(20), notnull: true }
+  relations:
+    MasterProduct:     { class: Product, foreignAlias: SlaveAccessoryProduct, local: master_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    SlaveProduct:      { class: Product, foreignAlias: MasterAccessoryProduct, local: slave_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

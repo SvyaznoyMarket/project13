@@ -102,7 +102,8 @@ EOF;
           $relation->fromArray(array(
             'property_id'  => $property->id,
             'product_id'   => $record->id,
-            'value_string' => 'property-'.$productType->id.'-'.$i.'-'.($j + 1),
+            'value'        => 'value-'.$productType->id.'-'.$i.'-'.($j + 1),
+            'unit'         => 'unit',
           ));
           
           $record->PropertyRelation[] = $relation;

@@ -7,32 +7,47 @@
  * 
  * @property integer $id
  * @property string $name
- * @property integer $property_id
  * @property integer $product_id
+ * @property integer $property_id
  * @property integer $option_id
+ * @property integer $value_integer
+ * @property decimal $value_float
  * @property string $value_string
  * @property string $value_text
- * @property ProductProperty $Property
+ * @property string $value
+ * @property string $unit
  * @property Product $Product
+ * @property ProductProperty $Property
+ * @property ProductPropertyOption $Option
  * 
- * @method integer                 getId()           Returns the current record's "id" value
- * @method string                  getName()         Returns the current record's "name" value
- * @method integer                 getPropertyId()   Returns the current record's "property_id" value
- * @method integer                 getProductId()    Returns the current record's "product_id" value
- * @method integer                 getOptionId()     Returns the current record's "option_id" value
- * @method string                  getValueString()  Returns the current record's "value_string" value
- * @method string                  getValueText()    Returns the current record's "value_text" value
- * @method ProductProperty         getProperty()     Returns the current record's "Property" value
- * @method Product                 getProduct()      Returns the current record's "Product" value
- * @method ProductPropertyRelation setId()           Sets the current record's "id" value
- * @method ProductPropertyRelation setName()         Sets the current record's "name" value
- * @method ProductPropertyRelation setPropertyId()   Sets the current record's "property_id" value
- * @method ProductPropertyRelation setProductId()    Sets the current record's "product_id" value
- * @method ProductPropertyRelation setOptionId()     Sets the current record's "option_id" value
- * @method ProductPropertyRelation setValueString()  Sets the current record's "value_string" value
- * @method ProductPropertyRelation setValueText()    Sets the current record's "value_text" value
- * @method ProductPropertyRelation setProperty()     Sets the current record's "Property" value
- * @method ProductPropertyRelation setProduct()      Sets the current record's "Product" value
+ * @method integer                 getId()            Returns the current record's "id" value
+ * @method string                  getName()          Returns the current record's "name" value
+ * @method integer                 getProductId()     Returns the current record's "product_id" value
+ * @method integer                 getPropertyId()    Returns the current record's "property_id" value
+ * @method integer                 getOptionId()      Returns the current record's "option_id" value
+ * @method integer                 getValueInteger()  Returns the current record's "value_integer" value
+ * @method decimal                 getValueFloat()    Returns the current record's "value_float" value
+ * @method string                  getValueString()   Returns the current record's "value_string" value
+ * @method string                  getValueText()     Returns the current record's "value_text" value
+ * @method string                  getValue()         Returns the current record's "value" value
+ * @method string                  getUnit()          Returns the current record's "unit" value
+ * @method Product                 getProduct()       Returns the current record's "Product" value
+ * @method ProductProperty         getProperty()      Returns the current record's "Property" value
+ * @method ProductPropertyOption   getOption()        Returns the current record's "Option" value
+ * @method ProductPropertyRelation setId()            Sets the current record's "id" value
+ * @method ProductPropertyRelation setName()          Sets the current record's "name" value
+ * @method ProductPropertyRelation setProductId()     Sets the current record's "product_id" value
+ * @method ProductPropertyRelation setPropertyId()    Sets the current record's "property_id" value
+ * @method ProductPropertyRelation setOptionId()      Sets the current record's "option_id" value
+ * @method ProductPropertyRelation setValueInteger()  Sets the current record's "value_integer" value
+ * @method ProductPropertyRelation setValueFloat()    Sets the current record's "value_float" value
+ * @method ProductPropertyRelation setValueString()   Sets the current record's "value_string" value
+ * @method ProductPropertyRelation setValueText()     Sets the current record's "value_text" value
+ * @method ProductPropertyRelation setValue()         Sets the current record's "value" value
+ * @method ProductPropertyRelation setUnit()          Sets the current record's "unit" value
+ * @method ProductPropertyRelation setProduct()       Sets the current record's "Product" value
+ * @method ProductPropertyRelation setProperty()      Sets the current record's "Property" value
+ * @method ProductPropertyRelation setOption()        Sets the current record's "Option" value
  * 
  * @package    enter
  * @subpackage model
@@ -55,12 +70,12 @@ abstract class BaseProductPropertyRelation extends myDoctrineRecord
              'notnull' => false,
              'length' => 255,
              ));
-        $this->hasColumn('property_id', 'integer', 20, array(
+        $this->hasColumn('product_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
              'length' => 20,
              ));
-        $this->hasColumn('product_id', 'integer', 20, array(
+        $this->hasColumn('property_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
              'length' => 20,
@@ -69,6 +84,17 @@ abstract class BaseProductPropertyRelation extends myDoctrineRecord
              'type' => 'integer',
              'notnull' => false,
              'length' => 20,
+             ));
+        $this->hasColumn('value_integer', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'length' => 20,
+             ));
+        $this->hasColumn('value_float', 'decimal', 10, array(
+             'type' => 'decimal',
+             'notnull' => false,
+             'length' => 10,
+             'scale' => '4',
              ));
         $this->hasColumn('value_string', 'string', 255, array(
              'type' => 'string',
@@ -79,19 +105,38 @@ abstract class BaseProductPropertyRelation extends myDoctrineRecord
              'type' => 'string',
              'notnull' => false,
              ));
+        $this->hasColumn('value', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Значение свойства для отображения',
+             'length' => 255,
+             ));
+        $this->hasColumn('unit', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Единица измерения',
+             'length' => 255,
+             ));
+
+        $this->option('comment', 'Связь продукта и свойства продукта');
     }
 
     public function setUp()
     {
         parent::setUp();
+        $this->hasOne('Product', array(
+             'local' => 'product_id',
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
+
         $this->hasOne('ProductProperty as Property', array(
              'local' => 'property_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
 
-        $this->hasOne('Product', array(
-             'local' => 'product_id',
+        $this->hasOne('ProductPropertyOption as Option', array(
+             'local' => 'option_id',
              'foreign' => 'id',
-             'onDelete' => 'CASCADE'));
+             'onDelete' => 'SET NULL'));
     }
 }

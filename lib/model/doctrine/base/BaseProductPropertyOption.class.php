@@ -8,19 +8,25 @@
  * @property integer $id
  * @property integer $property_id
  * @property string $value
+ * @property string $unit
  * @property integer $position
  * @property ProductProperty $Property
+ * @property Doctrine_Collection $ProductPropertyRelation
  * 
- * @method integer               getId()          Returns the current record's "id" value
- * @method integer               getPropertyId()  Returns the current record's "property_id" value
- * @method string                getValue()       Returns the current record's "value" value
- * @method integer               getPosition()    Returns the current record's "position" value
- * @method ProductProperty       getProperty()    Returns the current record's "Property" value
- * @method ProductPropertyOption setId()          Sets the current record's "id" value
- * @method ProductPropertyOption setPropertyId()  Sets the current record's "property_id" value
- * @method ProductPropertyOption setValue()       Sets the current record's "value" value
- * @method ProductPropertyOption setPosition()    Sets the current record's "position" value
- * @method ProductPropertyOption setProperty()    Sets the current record's "Property" value
+ * @method integer               getId()                      Returns the current record's "id" value
+ * @method integer               getPropertyId()              Returns the current record's "property_id" value
+ * @method string                getValue()                   Returns the current record's "value" value
+ * @method string                getUnit()                    Returns the current record's "unit" value
+ * @method integer               getPosition()                Returns the current record's "position" value
+ * @method ProductProperty       getProperty()                Returns the current record's "Property" value
+ * @method Doctrine_Collection   getProductPropertyRelation() Returns the current record's "ProductPropertyRelation" collection
+ * @method ProductPropertyOption setId()                      Sets the current record's "id" value
+ * @method ProductPropertyOption setPropertyId()              Sets the current record's "property_id" value
+ * @method ProductPropertyOption setValue()                   Sets the current record's "value" value
+ * @method ProductPropertyOption setUnit()                    Sets the current record's "unit" value
+ * @method ProductPropertyOption setPosition()                Sets the current record's "position" value
+ * @method ProductPropertyOption setProperty()                Sets the current record's "Property" value
+ * @method ProductPropertyOption setProductPropertyRelation() Sets the current record's "ProductPropertyRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -47,14 +53,24 @@ abstract class BaseProductPropertyOption extends myDoctrineRecord
              'type' => 'string',
              'notnull' => true,
              'notblank' => true,
+             'comment' => 'Значение опции',
+             'length' => 255,
+             ));
+        $this->hasColumn('unit', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Единица измерения',
              'length' => 255,
              ));
         $this->hasColumn('position', 'integer', 4, array(
              'type' => 'integer',
              'notnull' => true,
              'default' => 1,
+             'comment' => 'Порядок сортировки',
              'length' => 4,
              ));
+
+        $this->option('comment', 'Опции свойства товара');
     }
 
     public function setUp()
@@ -64,5 +80,9 @@ abstract class BaseProductPropertyOption extends myDoctrineRecord
              'local' => 'property_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $this->hasMany('ProductPropertyRelation', array(
+             'local' => 'id',
+             'foreign' => 'option_id'));
     }
 }

@@ -17,6 +17,7 @@ abstract class BaseProductPhotoForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'         => new sfWidgetFormInputHidden(),
       'name'       => new sfWidgetFormInputText(),
+      'resource'   => new sfWidgetFormInputText(),
       'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => false)),
       'view_show'  => new sfWidgetFormInputCheckbox(),
       'view_list'  => new sfWidgetFormInputCheckbox(),
@@ -25,6 +26,7 @@ abstract class BaseProductPhotoForm extends BaseFormDoctrine
     $this->setValidators(array(
       'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'name'       => new sfValidatorString(array('max_length' => 255)),
+      'resource'   => new sfValidatorString(array('max_length' => 255)),
       'product_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Product'))),
       'view_show'  => new sfValidatorBoolean(array('required' => false)),
       'view_list'  => new sfValidatorBoolean(array('required' => false)),

@@ -22,6 +22,8 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'category_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Category'), 'add_empty' => false)),
       'view_show'   => new sfWidgetFormInputCheckbox(),
       'view_list'   => new sfWidgetFormInputCheckbox(),
+      'description' => new sfWidgetFormInputText(),
+      'rating'      => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
@@ -32,6 +34,8 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'category_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Category'))),
       'view_show'   => new sfValidatorBoolean(array('required' => false)),
       'view_list'   => new sfValidatorBoolean(array('required' => false)),
+      'description' => new sfValidatorPass(array('required' => false)),
+      'rating'      => new sfValidatorNumber(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product[%s]');

@@ -60,18 +60,23 @@ abstract class BaseProductTypePropertyRelation extends myDoctrineRecord
              'type' => 'integer',
              'notnull' => true,
              'default' => 1,
+             'comment' => 'Порядок сортировки',
              'length' => 4,
              ));
         $this->hasColumn('view_show', 'boolean', null, array(
              'type' => 'boolean',
              'notnull' => true,
              'default' => false,
+             'comment' => 'Показывать свойство в карточке товара?',
              ));
         $this->hasColumn('view_list', 'boolean', null, array(
              'type' => 'boolean',
              'notnull' => true,
              'default' => false,
+             'comment' => 'Показывать свойство в списке товаров?',
              ));
+
+        $this->option('comment', 'Связь типа товара и свойства товара');
     }
 
     public function setUp()

@@ -9,27 +9,33 @@
  * @property string $name
  * @property enum $type
  * @property boolean $is_multiple
+ * @property string $pattern
  * @property Doctrine_Collection $ProductType
  * @property Doctrine_Collection $ProductTypeRelation
  * @property Doctrine_Collection $Option
  * @property Doctrine_Collection $ProductRelation
+ * @property Doctrine_Collection $SimilarProductProperty
  * 
- * @method integer             getId()                  Returns the current record's "id" value
- * @method string              getName()                Returns the current record's "name" value
- * @method enum                getType()                Returns the current record's "type" value
- * @method boolean             getIsMultiple()          Returns the current record's "is_multiple" value
- * @method Doctrine_Collection getProductType()         Returns the current record's "ProductType" collection
- * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
- * @method Doctrine_Collection getOption()              Returns the current record's "Option" collection
- * @method Doctrine_Collection getProductRelation()     Returns the current record's "ProductRelation" collection
- * @method ProductProperty     setId()                  Sets the current record's "id" value
- * @method ProductProperty     setName()                Sets the current record's "name" value
- * @method ProductProperty     setType()                Sets the current record's "type" value
- * @method ProductProperty     setIsMultiple()          Sets the current record's "is_multiple" value
- * @method ProductProperty     setProductType()         Sets the current record's "ProductType" collection
- * @method ProductProperty     setProductTypeRelation() Sets the current record's "ProductTypeRelation" collection
- * @method ProductProperty     setOption()              Sets the current record's "Option" collection
- * @method ProductProperty     setProductRelation()     Sets the current record's "ProductRelation" collection
+ * @method integer             getId()                     Returns the current record's "id" value
+ * @method string              getName()                   Returns the current record's "name" value
+ * @method enum                getType()                   Returns the current record's "type" value
+ * @method boolean             getIsMultiple()             Returns the current record's "is_multiple" value
+ * @method string              getPattern()                Returns the current record's "pattern" value
+ * @method Doctrine_Collection getProductType()            Returns the current record's "ProductType" collection
+ * @method Doctrine_Collection getProductTypeRelation()    Returns the current record's "ProductTypeRelation" collection
+ * @method Doctrine_Collection getOption()                 Returns the current record's "Option" collection
+ * @method Doctrine_Collection getProductRelation()        Returns the current record's "ProductRelation" collection
+ * @method Doctrine_Collection getSimilarProductProperty() Returns the current record's "SimilarProductProperty" collection
+ * @method ProductProperty     setId()                     Sets the current record's "id" value
+ * @method ProductProperty     setName()                   Sets the current record's "name" value
+ * @method ProductProperty     setType()                   Sets the current record's "type" value
+ * @method ProductProperty     setIsMultiple()             Sets the current record's "is_multiple" value
+ * @method ProductProperty     setPattern()                Sets the current record's "pattern" value
+ * @method ProductProperty     setProductType()            Sets the current record's "ProductType" collection
+ * @method ProductProperty     setProductTypeRelation()    Sets the current record's "ProductTypeRelation" collection
+ * @method ProductProperty     setOption()                 Sets the current record's "Option" collection
+ * @method ProductProperty     setProductRelation()        Sets the current record's "ProductRelation" collection
+ * @method ProductProperty     setSimilarProductProperty() Sets the current record's "SimilarProductProperty" collection
  * 
  * @package    enter
  * @subpackage model
@@ -60,17 +66,30 @@ abstract class BaseProductProperty extends myDoctrineRecord
              array(
               0 => 'string',
               1 => 'select',
-              2 => 'text',
+              2 => 'integer',
+              3 => 'float',
+              4 => 'text',
              ),
              'notnull' => true,
              'notblank' => true,
              'default' => 'string',
+             'comment' => 'Тип свойства: строка, значение из справочника (опция свойства), текст',
              ));
         $this->hasColumn('is_multiple', 'boolean', null, array(
              'type' => 'boolean',
              'notnull' => true,
              'default' => false,
+             'comment' => 'Свойство имеет несколько значений?',
              ));
+        $this->hasColumn('pattern', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'default' => '%value% %unit%',
+             'comment' => 'Шаблон для создания значения свойства с единицей измерения для отображения',
+             'length' => 255,
+             ));
+
+        $this->option('comment', 'Свойство товара');
     }
 
     public function setUp()
@@ -90,6 +109,10 @@ abstract class BaseProductProperty extends myDoctrineRecord
              'foreign' => 'property_id'));
 
         $this->hasMany('ProductPropertyRelation as ProductRelation', array(
+             'local' => 'id',
+             'foreign' => 'property_id'));
+
+        $this->hasMany('SimilarProductProperty', array(
              'local' => 'id',
              'foreign' => 'property_id'));
     }

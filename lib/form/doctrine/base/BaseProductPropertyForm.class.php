@@ -17,16 +17,18 @@ abstract class BaseProductPropertyForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'                => new sfWidgetFormInputHidden(),
       'name'              => new sfWidgetFormInputText(),
-      'type'              => new sfWidgetFormChoice(array('choices' => array('string' => 'string', 'select' => 'select', 'text' => 'text'))),
+      'type'              => new sfWidgetFormChoice(array('choices' => array('string' => 'string', 'select' => 'select', 'integer' => 'integer', 'float' => 'float', 'text' => 'text'))),
       'is_multiple'       => new sfWidgetFormInputCheckbox(),
+      'pattern'           => new sfWidgetFormInputText(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
     ));
 
     $this->setValidators(array(
       'id'                => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'name'              => new sfValidatorString(array('max_length' => 255)),
-      'type'              => new sfValidatorChoice(array('choices' => array(0 => 'string', 1 => 'select', 2 => 'text'), 'required' => false)),
+      'type'              => new sfValidatorChoice(array('choices' => array(0 => 'string', 1 => 'select', 2 => 'integer', 3 => 'float', 4 => 'text'), 'required' => false)),
       'is_multiple'       => new sfValidatorBoolean(array('required' => false)),
+      'pattern'           => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
     ));
 

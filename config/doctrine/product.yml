@@ -1,0 +1,110 @@
+Creator:
+  options:
+    comment: 'Производитель'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+
+ProductCategory:
+  options:
+    comment: 'Категория товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+
+ProductType:
+  options:
+    comment: 'Тип товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+
+ProductProperty:
+  options:
+    comment: 'Свойство товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    type:              { type: enum, length: 20, values: [ string, select, integer, float, text ], notnull: true, notblank: true, default: string, comment: 'Тип свойства: строка, значение из справочника (опция свойства), текст' }
+    is_multiple:       { type: boolean, notnull: true, default: false, comment: 'Свойство имеет несколько значений?' }
+    pattern:           { type: string(255), notnull: false, default: '%value% %unit%', comment: 'Шаблон для создания значения свойства с единицей измерения для отображения' }
+  relations:
+    ProductType:       { class: ProductType, foreignAlias: Property, refClass: ProductTypePropertyRelation, local: property_id, foreign: product_type_id, type: many, foreignType: many }
+
+ProductTypePropertyRelation:
+  options:
+    comment: 'Связь типа товара и свойства товара'
+  columns:
+    name:              { type: string(255), notnull: false, default: null }
+    product_type_id:   { type: integer(20), notnull: true, primary: true }
+    property_id:       { type: integer(20), notnull: true, primary: true }
+    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
+    view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать свойство в карточке товара?' }
+    view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать свойство в списке товаров?' }
+  relations:
+    ProductType:       { class: ProductType, foreignAlias: PropertyRelation, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Property:          { class: ProductProperty, foreignAlias: ProductTypeRelation, local: property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+ProductPropertyOption:
+  options:
+    comment: 'Опции свойства товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    property_id:       { type: integer(20), notnull: true }
+    value:             { type: string(255), notnull: true, notblank: true, comment: 'Значение опции' }
+    unit:              { type: string(255), notnull: false, default: null, comment: 'Единица измерения' }
+    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
+  relations:
+    Property:          { class: ProductProperty, foreignAlias: Option, local: property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+Product:
+  options:
+    comment: 'Товар'
+  listeners: [ ProductListener ]
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    type_id:           { type: integer(20), notnull: true }
+    creator_id:        { type: integer(20), notnull: true }
+    category_id:       { type: integer(20), notnull: true }
+    view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар по прямой ссылке?' }
+    view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
+    description:       { type: text, notnull: false, default: null, comment: 'Описание товара' }
+    rating:            { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
+  relations:
+    Type:              { class: ProductType, foreignAlias: Product, local: type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Creator:           { class: Creator, foreignAlias: Product, local: creator_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Category:          { class: ProductCategory, foreignAlias: Product, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+
+ProductPropertyRelation:
+  options:
+    comment: 'Связь продукта и свойства продукта'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: false, default: null }
+    product_id:        { type: integer(20), notnull: true }
+    property_id:       { type: integer(20), notnull: true }
+    option_id:         { type: integer(20), notnull: false, default: null }
+    value_integer:     { type: integer(20), notnull: false, default: null }
+    value_float:       { type: 'decimal(10,4)', notnull: false, default: null }
+    value_string:      { type: string(255), notnull: false, default: null }
+    value_text:        { type: string, notnull: false, default: null }
+    value:             { type: string(255), notnull: false, default: null, comment: 'Значение свойства для отображения' }
+    unit:              { type: string(255), notnull: false, default: null, comment: 'Единица измерения' }
+  relations:
+    Product:           { class: Product, foreignAlias: PropertyRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Property:          { class: ProductProperty, foreignAlias: ProductRelation, local: property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Option:            { class: ProductPropertyOption, foreignAlias: ProductPropertyRelation, local: option_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+
+ProductPhoto:
+  options:
+    comment: 'Фото товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    resource:          { type: string(255), notnull: true, notblank: true }
+    product_id:        { type: integer(20), notnull: true }
+    view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать фото в карточке товара?' }
+    view_list:         { type: boolean, notnull: true, default: false, comment: 'показывать фото в списке товаров?' }
+  relations:
+    Product:           { class: Product, foreignAlias: Photo, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

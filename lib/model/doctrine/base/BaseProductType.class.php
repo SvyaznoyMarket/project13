@@ -10,17 +10,20 @@
  * @property Doctrine_Collection $Property
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Product
+ * @property Doctrine_Collection $SimilarProductGroup
  * 
- * @method integer             getId()               Returns the current record's "id" value
- * @method string              getName()             Returns the current record's "name" value
- * @method Doctrine_Collection getProperty()         Returns the current record's "Property" collection
- * @method Doctrine_Collection getPropertyRelation() Returns the current record's "PropertyRelation" collection
- * @method Doctrine_Collection getProduct()          Returns the current record's "Product" collection
- * @method ProductType         setId()               Sets the current record's "id" value
- * @method ProductType         setName()             Sets the current record's "name" value
- * @method ProductType         setProperty()         Sets the current record's "Property" collection
- * @method ProductType         setPropertyRelation() Sets the current record's "PropertyRelation" collection
- * @method ProductType         setProduct()          Sets the current record's "Product" collection
+ * @method integer             getId()                  Returns the current record's "id" value
+ * @method string              getName()                Returns the current record's "name" value
+ * @method Doctrine_Collection getProperty()            Returns the current record's "Property" collection
+ * @method Doctrine_Collection getPropertyRelation()    Returns the current record's "PropertyRelation" collection
+ * @method Doctrine_Collection getProduct()             Returns the current record's "Product" collection
+ * @method Doctrine_Collection getSimilarProductGroup() Returns the current record's "SimilarProductGroup" collection
+ * @method ProductType         setId()                  Sets the current record's "id" value
+ * @method ProductType         setName()                Sets the current record's "name" value
+ * @method ProductType         setProperty()            Sets the current record's "Property" collection
+ * @method ProductType         setPropertyRelation()    Sets the current record's "PropertyRelation" collection
+ * @method ProductType         setProduct()             Sets the current record's "Product" collection
+ * @method ProductType         setSimilarProductGroup() Sets the current record's "SimilarProductGroup" collection
  * 
  * @package    enter
  * @subpackage model
@@ -44,6 +47,8 @@ abstract class BaseProductType extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
+
+        $this->option('comment', 'Тип товара');
     }
 
     public function setUp()
@@ -61,5 +66,9 @@ abstract class BaseProductType extends myDoctrineRecord
         $this->hasMany('Product', array(
              'local' => 'id',
              'foreign' => 'type_id'));
+
+        $this->hasMany('SimilarProductGroup', array(
+             'local' => 'id',
+             'foreign' => 'product_type_id'));
     }
 }

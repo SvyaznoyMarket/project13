@@ -38,6 +38,8 @@ abstract class BaseCreator extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
+
+        $this->option('comment', 'Производитель');
     }
 
     public function setUp()

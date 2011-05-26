@@ -14,15 +14,17 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'name'              => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'type'              => new sfWidgetFormChoice(array('choices' => array('' => '', 'string' => 'string', 'select' => 'select', 'text' => 'text'))),
+      'type'              => new sfWidgetFormChoice(array('choices' => array('' => '', 'string' => 'string', 'select' => 'select', 'integer' => 'integer', 'float' => 'float', 'text' => 'text'))),
       'is_multiple'       => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
+      'pattern'           => new sfWidgetFormFilterInput(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
     ));
 
     $this->setValidators(array(
       'name'              => new sfValidatorPass(array('required' => false)),
-      'type'              => new sfValidatorChoice(array('required' => false, 'choices' => array('string' => 'string', 'select' => 'select', 'text' => 'text'))),
+      'type'              => new sfValidatorChoice(array('required' => false, 'choices' => array('string' => 'string', 'select' => 'select', 'integer' => 'integer', 'float' => 'float', 'text' => 'text'))),
       'is_multiple'       => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'pattern'           => new sfValidatorPass(array('required' => false)),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
     ));
 
@@ -65,6 +67,7 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
       'name'              => 'Text',
       'type'              => 'Enum',
       'is_multiple'       => 'Boolean',
+      'pattern'           => 'Text',
       'product_type_list' => 'ManyKey',
     );
   }

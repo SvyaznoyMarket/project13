@@ -39,6 +39,6 @@ class ProjectConfiguration extends sfProjectConfiguration
     ;
     
     $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $driver);
-    $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, 60);
+    $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, 3600);
   }
 }

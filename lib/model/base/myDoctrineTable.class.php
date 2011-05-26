@@ -44,7 +44,7 @@ class myDoctrineTable extends Doctrine_Table
     $this->setQueryParameters($q);
     
     $q->where($q->getRootAlias().'.id = ?', $id)
-      //->useResultCache(true, null, $this->getRecordHash($id, $params))
+      ->useResultCache(true, null, $this->getRecordHash($id, $params))
     ;
     
     return $q->fetchOne();
@@ -166,7 +166,7 @@ class myDoctrineTable extends Doctrine_Table
       }
     }
 
-    $paramHash = md5(serialize(ksort($params)));
+    $paramHash = count($params) > 0 ? md5(serialize(ksort($params))) : '~';
     
     return $this->getQueryRootAlias().'-'.$id.'/'.$paramHash;
   }

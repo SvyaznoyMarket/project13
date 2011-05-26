@@ -12,36 +12,54 @@
  * @property integer $category_id
  * @property boolean $view_show
  * @property boolean $view_list
+ * @property text $description
+ * @property decimal $rating
  * @property ProductType $Type
  * @property Creator $Creator
  * @property ProductCategory $Category
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Photo
+ * @property Doctrine_Collection $SlaveSimilarProduct
+ * @property Doctrine_Collection $MasterSimilarProduct
+ * @property Doctrine_Collection $SlaveAccessoryProduct
+ * @property Doctrine_Collection $MasterAccessoryProduct
  * 
- * @method integer             getId()               Returns the current record's "id" value
- * @method string              getName()             Returns the current record's "name" value
- * @method integer             getTypeId()           Returns the current record's "type_id" value
- * @method integer             getCreatorId()        Returns the current record's "creator_id" value
- * @method integer             getCategoryId()       Returns the current record's "category_id" value
- * @method boolean             getViewShow()         Returns the current record's "view_show" value
- * @method boolean             getViewList()         Returns the current record's "view_list" value
- * @method ProductType         getType()             Returns the current record's "Type" value
- * @method Creator             getCreator()          Returns the current record's "Creator" value
- * @method ProductCategory     getCategory()         Returns the current record's "Category" value
- * @method Doctrine_Collection getPropertyRelation() Returns the current record's "PropertyRelation" collection
- * @method Doctrine_Collection getPhoto()            Returns the current record's "Photo" collection
- * @method Product             setId()               Sets the current record's "id" value
- * @method Product             setName()             Sets the current record's "name" value
- * @method Product             setTypeId()           Sets the current record's "type_id" value
- * @method Product             setCreatorId()        Sets the current record's "creator_id" value
- * @method Product             setCategoryId()       Sets the current record's "category_id" value
- * @method Product             setViewShow()         Sets the current record's "view_show" value
- * @method Product             setViewList()         Sets the current record's "view_list" value
- * @method Product             setType()             Sets the current record's "Type" value
- * @method Product             setCreator()          Sets the current record's "Creator" value
- * @method Product             setCategory()         Sets the current record's "Category" value
- * @method Product             setPropertyRelation() Sets the current record's "PropertyRelation" collection
- * @method Product             setPhoto()            Sets the current record's "Photo" collection
+ * @method integer             getId()                     Returns the current record's "id" value
+ * @method string              getName()                   Returns the current record's "name" value
+ * @method integer             getTypeId()                 Returns the current record's "type_id" value
+ * @method integer             getCreatorId()              Returns the current record's "creator_id" value
+ * @method integer             getCategoryId()             Returns the current record's "category_id" value
+ * @method boolean             getViewShow()               Returns the current record's "view_show" value
+ * @method boolean             getViewList()               Returns the current record's "view_list" value
+ * @method text                getDescription()            Returns the current record's "description" value
+ * @method decimal             getRating()                 Returns the current record's "rating" value
+ * @method ProductType         getType()                   Returns the current record's "Type" value
+ * @method Creator             getCreator()                Returns the current record's "Creator" value
+ * @method ProductCategory     getCategory()               Returns the current record's "Category" value
+ * @method Doctrine_Collection getPropertyRelation()       Returns the current record's "PropertyRelation" collection
+ * @method Doctrine_Collection getPhoto()                  Returns the current record's "Photo" collection
+ * @method Doctrine_Collection getSlaveSimilarProduct()    Returns the current record's "SlaveSimilarProduct" collection
+ * @method Doctrine_Collection getMasterSimilarProduct()   Returns the current record's "MasterSimilarProduct" collection
+ * @method Doctrine_Collection getSlaveAccessoryProduct()  Returns the current record's "SlaveAccessoryProduct" collection
+ * @method Doctrine_Collection getMasterAccessoryProduct() Returns the current record's "MasterAccessoryProduct" collection
+ * @method Product             setId()                     Sets the current record's "id" value
+ * @method Product             setName()                   Sets the current record's "name" value
+ * @method Product             setTypeId()                 Sets the current record's "type_id" value
+ * @method Product             setCreatorId()              Sets the current record's "creator_id" value
+ * @method Product             setCategoryId()             Sets the current record's "category_id" value
+ * @method Product             setViewShow()               Sets the current record's "view_show" value
+ * @method Product             setViewList()               Sets the current record's "view_list" value
+ * @method Product             setDescription()            Sets the current record's "description" value
+ * @method Product             setRating()                 Sets the current record's "rating" value
+ * @method Product             setType()                   Sets the current record's "Type" value
+ * @method Product             setCreator()                Sets the current record's "Creator" value
+ * @method Product             setCategory()               Sets the current record's "Category" value
+ * @method Product             setPropertyRelation()       Sets the current record's "PropertyRelation" collection
+ * @method Product             setPhoto()                  Sets the current record's "Photo" collection
+ * @method Product             setSlaveSimilarProduct()    Sets the current record's "SlaveSimilarProduct" collection
+ * @method Product             setMasterSimilarProduct()   Sets the current record's "MasterSimilarProduct" collection
+ * @method Product             setSlaveAccessoryProduct()  Sets the current record's "SlaveAccessoryProduct" collection
+ * @method Product             setMasterAccessoryProduct() Sets the current record's "MasterAccessoryProduct" collection
  * 
  * @package    enter
  * @subpackage model
@@ -84,12 +102,29 @@ abstract class BaseProduct extends myDoctrineRecord
              'type' => 'boolean',
              'notnull' => true,
              'default' => false,
+             'comment' => 'Показывать товар по прямой ссылке?',
              ));
         $this->hasColumn('view_list', 'boolean', null, array(
              'type' => 'boolean',
              'notnull' => true,
              'default' => false,
+             'comment' => 'Показывать товар в списке категорий?',
              ));
+        $this->hasColumn('description', 'text', null, array(
+             'type' => 'text',
+             'notnull' => false,
+             'comment' => 'Описание товара',
+             ));
+        $this->hasColumn('rating', 'decimal', 18, array(
+             'type' => 'decimal',
+             'notnull' => true,
+             'default' => 0,
+             'comment' => 'Рейтинг товара',
+             'length' => 18,
+             'scale' => '14',
+             ));
+
+        $this->option('comment', 'Товар');
     }
 
     public function setUp()
@@ -117,6 +152,22 @@ abstract class BaseProduct extends myDoctrineRecord
         $this->hasMany('ProductPhoto as Photo', array(
              'local' => 'id',
              'foreign' => 'product_id'));
+
+        $this->hasMany('SimilarProduct as SlaveSimilarProduct', array(
+             'local' => 'id',
+             'foreign' => 'master_id'));
+
+        $this->hasMany('SimilarProduct as MasterSimilarProduct', array(
+             'local' => 'id',
+             'foreign' => 'slave_id'));
+
+        $this->hasMany('AccessoryProduct as SlaveAccessoryProduct', array(
+             'local' => 'id',
+             'foreign' => 'master_id'));
+
+        $this->hasMany('AccessoryProduct as MasterAccessoryProduct', array(
+             'local' => 'id',
+             'foreign' => 'slave_id'));
 
     $this->addListener(new ProductListener(array()), 'ProductListener');
     }

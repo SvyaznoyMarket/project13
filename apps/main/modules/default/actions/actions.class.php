@@ -19,7 +19,8 @@ class defaultActions extends sfActions
   {
     $this->productList = ProductTable::getInstance()->getList(array(
       'order' => 'product.name',
-      'limit' => 200,
+      //'order' => 'product.id',
+      'limit' => 100,
     ));
     
     //print_r($this->productList->toArray());

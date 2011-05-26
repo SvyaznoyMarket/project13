@@ -73,6 +73,8 @@ class ProductTable extends myDoctrineTable
 
     foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
     {
+      //if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]) && null !== $productPropertyRelationArray[$propertyRelation['property_id']]) continue;
+
       $record['Parameter'][] = new ProductParameter($propertyRelation['Property'], $productPropertyRelationArray[$propertyRelation['property_id']]);
     }
     

@@ -7,6 +7,7 @@
  * 
  * @property integer $id
  * @property string $name
+ * @property string $resource
  * @property integer $product_id
  * @property boolean $view_show
  * @property boolean $view_list
@@ -14,12 +15,14 @@
  * 
  * @method integer      getId()         Returns the current record's "id" value
  * @method string       getName()       Returns the current record's "name" value
+ * @method string       getResource()   Returns the current record's "resource" value
  * @method integer      getProductId()  Returns the current record's "product_id" value
  * @method boolean      getViewShow()   Returns the current record's "view_show" value
  * @method boolean      getViewList()   Returns the current record's "view_list" value
  * @method Product      getProduct()    Returns the current record's "Product" value
  * @method ProductPhoto setId()         Sets the current record's "id" value
  * @method ProductPhoto setName()       Sets the current record's "name" value
+ * @method ProductPhoto setResource()   Sets the current record's "resource" value
  * @method ProductPhoto setProductId()  Sets the current record's "product_id" value
  * @method ProductPhoto setViewShow()   Sets the current record's "view_show" value
  * @method ProductPhoto setViewList()   Sets the current record's "view_list" value
@@ -47,6 +50,12 @@ abstract class BaseProductPhoto extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
+        $this->hasColumn('resource', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => true,
+             'notblank' => true,
+             'length' => 255,
+             ));
         $this->hasColumn('product_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
@@ -56,12 +65,16 @@ abstract class BaseProductPhoto extends myDoctrineRecord
              'type' => 'boolean',
              'notnull' => true,
              'default' => false,
+             'comment' => 'Показывать фото в карточке товара?',
              ));
         $this->hasColumn('view_list', 'boolean', null, array(
              'type' => 'boolean',
              'notnull' => true,
              'default' => false,
+             'comment' => 'показывать фото в списке товаров?',
              ));
+
+        $this->option('comment', 'Фото товара');
     }
 
     public function setUp()

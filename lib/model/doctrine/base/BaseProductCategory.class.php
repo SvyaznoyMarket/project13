@@ -38,6 +38,8 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
+
+        $this->option('comment', 'Категория товара');
     }
 
     public function setUp()

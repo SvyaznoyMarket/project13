@@ -16,20 +16,25 @@ class ProductParameter
     {
       switch ($productProperty->type)
       {
-        case 'string':
-          $value[] = $propertyRelation->value_string;
+        case 'string': case 'integer': case 'float':
+          $value[] = $this->formatValue($productProperty->pattern, $propertyRelation->value, $propertyRelation->unit);
+          break;
+        case 'select':
+          $option = ProductPropertyOptionTable::getInstance()->getById($propertyRelation->option_id);
+          $value[] = $option ? $this->formatValue($productProperty->pattern, $option->value, $option->unit) : null;
           break;
         case 'text':
           $value[] = $propertyRelation->value_text;
           break;
-        case 'select':
-          $option = ProductPropertyOptionTable::getInstance()->getById($propertyRelation->option_id);
-          $value[] = $option ? $option->value : null;
-          break;      
       }
     }
     
     $this->value = $productProperty->is_multiple ? $value : $value[0];
+  }
+
+  public function getProperty()
+  {
+    return $this->property;
   }
 
   public function getName()
@@ -45,5 +50,11 @@ class ProductParameter
   public function getValue()
   {
     return $this->value;
+  }
+
+
+  protected function formatValue($pattern, $value, $unit = null)
+  {
+    return strtr($pattern, array('%value%' => $value, '%unit%' => $unit));
   }
 }

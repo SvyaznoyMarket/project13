@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<orm-designer version="1.4.3.457">
+
+  <module import-format="DoctrineYml" import-path="product_relation.yml" name="property-relation" visBkColor="16056057" visSizeX="0" visSizeX2="376" visSizeY="0" visSizeY2="274">
+    <table name="SimilarProductGroup" visPositionX="20" visPositionY="59" visSizeX="0" visSizeX2="148" visSizeY="0" visSizeY2="59">
+      <column auto-increment="true" name="id" primary="true" size="20" type="integer"/>
+      <column name="product_type_id" required="true" size="20" type="integer"/>
+      <column name="name" required="true" size="255" type="string">
+        <orm-properties>
+          <attribute name="notblank">true</attribute>
+        </orm-properties>
+      </column>
+      <orm-properties>
+        <attribute name="options">
+          <attribute name="comment">Группа аналогичного товара</attribute>
+        </attribute>
+      </orm-properties>
+    </table>
+    <table name="SimilarProductProperty" visPositionX="226" visPositionY="112" visSizeX="0" visSizeX2="128" visSizeY="0" visSizeY2="59">
+      <column auto-increment="true" name="id" primary="true" size="20" type="integer"/>
+      <column name="group_id" required="true" size="20" type="integer"/>
+      <column name="property_id" required="true" size="20" type="integer"/>
+      <orm-properties>
+        <attribute name="options">
+          <attribute name="comment">Свойства аналогичного товара</attribute>
+        </attribute>
+      </orm-properties>
+    </table>
+    <table name="SimilarProduct" visPositionX="33" visPositionY="166" visSizeX="0" visSizeX2="122" visSizeY="0" visSizeY2="87">
+      <column auto-increment="true" name="id" primary="true" size="20" type="integer"/>
+      <column name="master_id" required="true" size="20" type="integer"/>
+      <column name="slave_id" required="true" size="20" type="integer"/>
+      <column name="group_id" required="true" size="20" type="integer"/>
+      <column default="false" name="is_manual" required="true" type="boolean">
+        <orm-properties>
+          <attribute name="comment">Аналогичный товар создан вручную?</attribute>
+        </orm-properties>
+      </column>
+      <orm-properties>
+        <attribute name="options">
+          <attribute name="comment">Аналогичный товар</attribute>
+        </attribute>
+      </orm-properties>
+    </table>
+    <foreign-key from="SimilarProductGroup" inverse-alias="ProductType" name="FK_SimilarProductGroup_ProductType_id" owning-alias="SimilarProductGroup" to="ProductType">
+      <foreign-key-column from="product_type_id" to="id"/>
+      <orm-properties>
+        <attribute name="side-inverse">
+          <attribute name="type">one</attribute>
+        </attribute>
+        <attribute name="side-owning">
+          <attribute name="type">many</attribute>
+        </attribute>
+        <attribute name="onDelete">RESTRICT</attribute>
+      </orm-properties>
+    </foreign-key>
+    <foreign-key from="SimilarProductProperty" inverse-alias="Group" name="FK_SimilarProductProperty_SimilarProductGroup_id" owning-alias="Property" to="SimilarProductGroup" visCenterX="0" visCenterY="0">
+      <foreign-key-column from="group_id" to="id"/>
+      <orm-properties>
+        <attribute name="side-inverse">
+          <attribute name="type">one</attribute>
+        </attribute>
+        <attribute name="side-owning">
+          <attribute name="type">many</attribute>
+        </attribute>
+        <attribute name="onDelete">CASCADE</attribute>
+      </orm-properties>
+    </foreign-key>
+    <foreign-key from="SimilarProductProperty" inverse-alias="ProductProperty" name="FK_SimilarProductProperty_ProductProperty_id" owning-alias="SimilarProductProperty" to="ProductProperty">
+      <foreign-key-column from="property_id" to="id"/>
+      <orm-properties>
+        <attribute name="side-inverse">
+          <attribute name="type">one</attribute>
+        </attribute>
+        <attribute name="side-owning">
+          <attribute name="type">many</attribute>
+        </attribute>
+        <attribute name="onDelete">CASCADE</attribute>
+      </orm-properties>
+    </foreign-key>
+    <foreign-key from="SimilarProduct" inverse-alias="MasterProduct" name="FK_SimilarProduct_Product_id" owning-alias="SlaveSimilarProduct" to="Product">
+      <foreign-key-column from="master_id" to="id"/>
+      <orm-properties>
+        <attribute name="side-inverse">
+          <attribute name="type">one</attribute>
+        </attribute>
+        <attribute name="side-owning">
+          <attribute name="type">many</attribute>
+        </attribute>
+        <attribute name="onDelete">CASCADE</attribute>
+      </orm-properties>
+    </foreign-key>
+    <foreign-key from="SimilarProduct" inverse-alias="SlaveProduct" name="FK_SimilarProduct_Product_id2" owning-alias="MasterSimilarProduct" to="Product">
+      <foreign-key-column from="slave_id" to="id"/>
+      <orm-properties>
+        <attribute name="side-inverse">
+          <attribute name="type">one</attribute>
+        </attribute>
+        <attribute name="side-owning">
+          <attribute name="type">many</attribute>
+        </attribute>
+        <attribute name="onDelete">CASCADE</attribute>
+      </orm-properties>
+    </foreign-key>
+    <foreign-key from="SimilarProduct" inverse-alias="Group" name="FK_SimilarProduct_SimilarProductGroup_id" owning-alias="SimilarProduct" to="SimilarProductGroup">
+      <foreign-key-column from="group_id" to="id"/>
+      <orm-properties>
+        <attribute name="side-inverse">
+          <attribute name="type">one</attribute>
+        </attribute>
+        <attribute name="side-owning">
+          <attribute name="type">many</attribute>
+        </attribute>
+        <attribute name="onDelete">CASCADE</attribute>
+      </orm-properties>
+    </foreign-key>
+  </module>
+
+</orm-designer>
