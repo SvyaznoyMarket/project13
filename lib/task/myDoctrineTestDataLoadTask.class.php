@@ -67,6 +67,8 @@ EOF;
         $record->fromArray(array(
           'product_type_id' => $productType_id,
           'property_id'     => $i + $propertyOffset,
+          'view_show'   => rand(0, 10) > 0 ? true : false,
+          'view_list'   => rand(0, 50) > 0 ? true : false,
           'position'        => $i,
         ));
         $list[] = $record;
@@ -94,6 +96,8 @@ EOF;
           'creator_id'  => rand($creatorOffset, $creatorOffset + $creatorCount),
           'category_id' => $category_id,
           'name'        => 'product-'.$productType->id.'-'.$i,
+          'view_show'   => rand(0, 10) > 0 ? true : false,
+          'view_list'   => rand(0, 50) > 0 ? true : false,
         ));
         
         foreach ($productType->Property as $j => $property)

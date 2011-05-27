@@ -48,9 +48,10 @@ class ProductTable extends myDoctrineTable
     
     $this->setQueryParameters($q);
     
-    $q->where($q->getRootAlias().'.id = ?', $id);
+    $q->addWhere('product.id = ?', $id);
     
     $q->useResultCache(true, null, $this->getRecordHash($id, $params));
+    //$q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     
     $record = $q->fetchOne();
     if (!$record)
@@ -58,7 +59,9 @@ class ProductTable extends myDoctrineTable
       return $record;
     }
     
-    $record['Type'] = ProductTypeTable::getInstance()->getById($record->type_id);
+    $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
+      'view' => $params['view'],
+    ));
     
     // группировка параметров продукта по свойствам продукта
     $productPropertyRelationArray = array();

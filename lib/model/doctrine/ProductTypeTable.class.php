@@ -18,17 +18,29 @@ class ProductTypeTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductType');
   }
 
+  public function createBaseQuery(array $params = array())
+  {
+    $this->applyDefaultParameters($params, array(
+      'view' => false, // list, show
+    ));
+    
+    $q = $this->createQuery('productType');
+    
+    $with = (in_array($params['view'], array('show', 'list'))) ? (' WITH productTypePropertyRelation.view_'.$params['view'].' = true') : '';
+    $q->leftJoin('productType.PropertyRelation productTypePropertyRelation'.$with)
+      ->addOrderBy('productTypePropertyRelation.position')
+    ;
+    
+    return $q;
+  }
+
   public function getById($id, array $params = array())
   {
     $q = $this->createBaseQuery($params);
 
-    $q->leftJoin('productType.PropertyRelation productTypePropertyRelation')
-      ->addOrderBy('productTypePropertyRelation.position')
-    ;
-    
     $this->setQueryParameters($q);
     
-    $q->where('productType.id = ?', $id);    
+    $q->addWhere('productType.id = ?', $id);    
     $q->useResultCache(true, null, $this->getRecordHash($id, $params));
     
     $record = $q->fetchOne();    

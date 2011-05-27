@@ -1,0 +1,10 @@
+User:
+  options:
+    comment: 'Пользователь'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    login:             { type: string(255), unique: true, notnull: true, notblank: true }
+    first_name:        { type: string(255), notnull: true, notblank: true, comment: 'Имя' }
+    last_name:         { type: string(255), notnull: true, notblank: true, comment: 'Фамилия' }
+    middle_name:       { type: string(255), notnull: true, notblank: true, comment: 'Отчество' }
+    photo:             { type: string(255), notnull: false, default: null, comment: 'Фото пользователя' }

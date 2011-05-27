@@ -19,6 +19,7 @@
  * @property ProductCategory $Category
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Photo
+ * @property Doctrine_Collection $Comment
  * @property Doctrine_Collection $SlaveSimilarProduct
  * @property Doctrine_Collection $MasterSimilarProduct
  * @property Doctrine_Collection $SlaveAccessoryProduct
@@ -38,6 +39,7 @@
  * @method ProductCategory     getCategory()               Returns the current record's "Category" value
  * @method Doctrine_Collection getPropertyRelation()       Returns the current record's "PropertyRelation" collection
  * @method Doctrine_Collection getPhoto()                  Returns the current record's "Photo" collection
+ * @method Doctrine_Collection getComment()                Returns the current record's "Comment" collection
  * @method Doctrine_Collection getSlaveSimilarProduct()    Returns the current record's "SlaveSimilarProduct" collection
  * @method Doctrine_Collection getMasterSimilarProduct()   Returns the current record's "MasterSimilarProduct" collection
  * @method Doctrine_Collection getSlaveAccessoryProduct()  Returns the current record's "SlaveAccessoryProduct" collection
@@ -56,6 +58,7 @@
  * @method Product             setCategory()               Sets the current record's "Category" value
  * @method Product             setPropertyRelation()       Sets the current record's "PropertyRelation" collection
  * @method Product             setPhoto()                  Sets the current record's "Photo" collection
+ * @method Product             setComment()                Sets the current record's "Comment" collection
  * @method Product             setSlaveSimilarProduct()    Sets the current record's "SlaveSimilarProduct" collection
  * @method Product             setMasterSimilarProduct()   Sets the current record's "MasterSimilarProduct" collection
  * @method Product             setSlaveAccessoryProduct()  Sets the current record's "SlaveAccessoryProduct" collection
@@ -150,6 +153,10 @@ abstract class BaseProduct extends myDoctrineRecord
              'foreign' => 'product_id'));
 
         $this->hasMany('ProductPhoto as Photo', array(
+             'local' => 'id',
+             'foreign' => 'product_id'));
+
+        $this->hasMany('ProductComment as Comment', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 

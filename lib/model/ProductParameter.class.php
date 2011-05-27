@@ -17,10 +17,10 @@ class ProductParameter
       switch ($productProperty->type)
       {
         case 'string': case 'integer': case 'float':
-          $value[] = $this->formatValue($productProperty->pattern, $propertyRelation->value, $propertyRelation->unit);
+          $value[] = $this->formatValue($productProperty->pattern, $propertyRelation['value'], $propertyRelation['unit']);
           break;
         case 'select':
-          $option = ProductPropertyOptionTable::getInstance()->getById($propertyRelation->option_id);
+          $option = ProductPropertyOptionTable::getInstance()->getById($propertyRelation['option_id']);
           $value[] = $option ? $this->formatValue($productProperty->pattern, $option->value, $option->unit) : null;
           break;
         case 'text':
