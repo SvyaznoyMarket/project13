@@ -17,11 +17,17 @@ class ProductTable extends myDoctrineTable
     return Doctrine_Core::getTable('Product');
   }
 
+  public function getDefaultParameters()
+  {
+    return array(
+      'view'           => false, // list, show
+      'group_property' => false, // группировать свойства товара по группам
+    );
+  }
+
   public function createBaseQuery(array $params = array())
   {
-    $this->applyDefaultParameters($params, array(
-      'view' => false, // list, show
-    ));
+    $this->applyDefaultParameters($params);
     
     $q = $this->createQuery('product');
     
@@ -39,6 +45,8 @@ class ProductTable extends myDoctrineTable
 
   public function getById($id, array $params = array())
   {
+    $this->applyDefaultParameters($params);
+
     $q = $this->createBaseQuery($params);
 
     $q->leftJoin('product.Category productCategory')
@@ -60,7 +68,8 @@ class ProductTable extends myDoctrineTable
     }
     
     $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
-      'view' => $params['view'],
+      'view'           => $params['view'],
+      'group_property' => $params['group_property'],
     ));
     
     // группировка параметров продукта по свойствам продукта
@@ -74,13 +83,52 @@ class ProductTable extends myDoctrineTable
       $productPropertyRelationArray[$propertyRelation['property_id']][] = $propertyRelation;
     }
 
+    // тип товара
     foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
     {
       //if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]) && null !== $productPropertyRelationArray[$propertyRelation['property_id']]) continue;
 
-      $record['Parameter'][] = new ProductParameter($propertyRelation['Property'], $productPropertyRelationArray[$propertyRelation['property_id']]);
+      $record['Parameter'][] = new ProductParameter($propertyRelation, $productPropertyRelationArray[$propertyRelation['property_id']]);
+    }
+    
+    // группировка параметров товара по группам
+    if ($params['group_property'])
+    {
+      foreach ($record['Type']['PropertyGroup'] as $propertyGroup)
+      {
+        $productParameterArray = array();
+        foreach ($record['Parameter'] as $productParameter)
+        {
+          if ($productParameter->getGroupId() == $propertyGroup->id)
+          {
+            $productParameterArray[] = $productParameter;            
+          }
+        }
+        $record['ParameterGroup'][] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+      }
     }
     
     return $record;
+  }
+
+  public function getForRoute(array $params)
+  {
+    $id = $this->getIdBy('name', $params['product']);
+    
+    if (!$id)
+    {
+      return null;
+    }
+    
+    return $this->getById($id, array(
+      'group_property' => true,
+    ));
+  }
+
+  public function toParams()
+  {
+    return array(
+      'name' => $this->name,
+    );
   }
 }

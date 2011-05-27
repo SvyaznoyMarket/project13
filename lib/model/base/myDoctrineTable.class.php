@@ -49,6 +49,16 @@ class myDoctrineTable extends Doctrine_Table
     
     return $q->fetchOne();
   }
+
+  public function getIdBy($column, $value)
+  {
+    $q = $this->createQuery()
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->where($column.' = ?', $value)
+    ;
+    
+    return $q->fetchOne();
+  }
   
   public function getIdsByQuery(Doctrine_Query $q)
   {
@@ -75,6 +85,15 @@ class myDoctrineTable extends Doctrine_Table
 
     return $this->createListByIds($ids, $params);
   }
+  
+  public function getForRoute(array $params)
+  {
+    $q = $this->createBaseQuery()
+      ->addWhere($this->getQueryRootAlias().'.id = ?', $params[$this->getQueryRootAlias()])
+    ;
+    
+    return $q->fetchOne();
+  }
 
   public function getChoices($key = 'id', $value = 'name', array $params = array())
   {
@@ -91,7 +110,12 @@ class myDoctrineTable extends Doctrine_Table
 
   public function applyDefaultParameters(array &$params, array $defaults = array())
   {
-    $params = myToolkit::arrayDeepMerge($defaults, $params);
+    $params = myToolkit::arrayDeepMerge($this->getDefaultParameters(), $defaults, $params);
+  }
+  
+  public function getDefaultParameters()
+  {
+    return array();
   }
 
   public function setQueryParameters(Doctrine_Query $q, array $params = null)

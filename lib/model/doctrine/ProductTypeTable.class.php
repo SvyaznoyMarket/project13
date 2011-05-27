@@ -17,12 +17,18 @@ class ProductTypeTable extends myDoctrineTable
   {
     return Doctrine_Core::getTable('ProductType');
   }
+  
+  public function getDefaultParameters()
+  {
+    return array(
+      'view'           => false, // list, show
+      'group_property' => false, // группировать свойства товара по группам
+    );
+  }
 
   public function createBaseQuery(array $params = array())
   {
-    $this->applyDefaultParameters($params, array(
-      'view' => false, // list, show
-    ));
+    $this->applyDefaultParameters($params);
     
     $q = $this->createQuery('productType');
     
@@ -30,6 +36,13 @@ class ProductTypeTable extends myDoctrineTable
     $q->leftJoin('productType.PropertyRelation productTypePropertyRelation'.$with)
       ->addOrderBy('productTypePropertyRelation.position')
     ;
+    
+    if ($params['group_property'])
+    {
+      $q->leftJoin('productType.PropertyGroup productPropertyGroup')
+        ->addOrderBy('productPropertyGroup.position')
+      ;
+    }
     
     return $q;
   }

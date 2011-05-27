@@ -1,16 +1,16 @@
 <?php
 
 /**
- * ProductTypePropertyRelation form base class.
+ * ProductPropertyGroup form base class.
  *
- * @method ProductTypePropertyRelation getObject() Returns the current form's model object
+ * @method ProductPropertyGroup getObject() Returns the current form's model object
  *
  * @package    enter
  * @subpackage form
  * @author     Связной Маркет
  * @version    SVN: $Id: sfDoctrineFormGeneratedTemplate.php 29553 2010-05-20 14:33:00Z Kris.Wallsmith $
  */
-abstract class BaseProductTypePropertyRelationForm extends BaseFormDoctrine
+abstract class BaseProductPropertyGroupForm extends BaseFormDoctrine
 {
   public function setup()
   {
@@ -18,27 +18,17 @@ abstract class BaseProductTypePropertyRelationForm extends BaseFormDoctrine
       'id'              => new sfWidgetFormInputHidden(),
       'name'            => new sfWidgetFormInputText(),
       'product_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'add_empty' => false)),
-      'property_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => false)),
-      'group_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => true)),
       'position'        => new sfWidgetFormInputText(),
-      'group_position'  => new sfWidgetFormInputText(),
-      'view_show'       => new sfWidgetFormInputCheckbox(),
-      'view_list'       => new sfWidgetFormInputCheckbox(),
     ));
 
     $this->setValidators(array(
       'id'              => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'name'            => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'product_type_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'))),
-      'property_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Property'))),
-      'group_id'        => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'required' => false)),
       'position'        => new sfValidatorInteger(array('required' => false)),
-      'group_position'  => new sfValidatorInteger(array('required' => false)),
-      'view_show'       => new sfValidatorBoolean(array('required' => false)),
-      'view_list'       => new sfValidatorBoolean(array('required' => false)),
     ));
 
-    $this->widgetSchema->setNameFormat('product_type_property_relation[%s]');
+    $this->widgetSchema->setNameFormat('product_property_group[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
 
@@ -49,7 +39,7 @@ abstract class BaseProductTypePropertyRelationForm extends BaseFormDoctrine
 
   public function getModelName()
   {
-    return 'ProductTypePropertyRelation';
+    return 'ProductPropertyGroup';
   }
 
 }

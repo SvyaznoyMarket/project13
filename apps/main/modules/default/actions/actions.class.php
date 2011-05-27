@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class defaultActions extends sfActions
+class defaultActions extends myActions
 {
  /**
   * Executes index action
@@ -21,8 +21,7 @@ class defaultActions extends sfActions
       'order' => 'product.name',
       //'order' => 'product.id',
       'limit' => 100,
+      'view'  => 'list'
     ));
-    
-    //print_r($this->productList->toArray());
   }
 }

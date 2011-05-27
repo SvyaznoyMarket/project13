@@ -8,28 +8,37 @@
  * @property string $name
  * @property integer $product_type_id
  * @property integer $property_id
+ * @property integer $group_id
  * @property integer $position
+ * @property integer $group_position
  * @property boolean $view_show
  * @property boolean $view_list
  * @property ProductType $ProductType
  * @property ProductProperty $Property
+ * @property ProductPropertyGroup $Group
  * 
  * @method string                      getName()            Returns the current record's "name" value
  * @method integer                     getProductTypeId()   Returns the current record's "product_type_id" value
  * @method integer                     getPropertyId()      Returns the current record's "property_id" value
+ * @method integer                     getGroupId()         Returns the current record's "group_id" value
  * @method integer                     getPosition()        Returns the current record's "position" value
+ * @method integer                     getGroupPosition()   Returns the current record's "group_position" value
  * @method boolean                     getViewShow()        Returns the current record's "view_show" value
  * @method boolean                     getViewList()        Returns the current record's "view_list" value
  * @method ProductType                 getProductType()     Returns the current record's "ProductType" value
  * @method ProductProperty             getProperty()        Returns the current record's "Property" value
+ * @method ProductPropertyGroup        getGroup()           Returns the current record's "Group" value
  * @method ProductTypePropertyRelation setName()            Sets the current record's "name" value
  * @method ProductTypePropertyRelation setProductTypeId()   Sets the current record's "product_type_id" value
  * @method ProductTypePropertyRelation setPropertyId()      Sets the current record's "property_id" value
+ * @method ProductTypePropertyRelation setGroupId()         Sets the current record's "group_id" value
  * @method ProductTypePropertyRelation setPosition()        Sets the current record's "position" value
+ * @method ProductTypePropertyRelation setGroupPosition()   Sets the current record's "group_position" value
  * @method ProductTypePropertyRelation setViewShow()        Sets the current record's "view_show" value
  * @method ProductTypePropertyRelation setViewList()        Sets the current record's "view_list" value
  * @method ProductTypePropertyRelation setProductType()     Sets the current record's "ProductType" value
  * @method ProductTypePropertyRelation setProperty()        Sets the current record's "Property" value
+ * @method ProductTypePropertyRelation setGroup()           Sets the current record's "Group" value
  * 
  * @package    enter
  * @subpackage model
@@ -48,12 +57,17 @@ abstract class BaseProductTypePropertyRelation extends myDoctrineRecord
              ));
         $this->hasColumn('product_type_id', 'integer', 20, array(
              'type' => 'integer',
-             'primary' => true,
+             'notnull' => true,
              'length' => 20,
              ));
         $this->hasColumn('property_id', 'integer', 20, array(
              'type' => 'integer',
-             'primary' => true,
+             'notnull' => true,
+             'length' => 20,
+             ));
+        $this->hasColumn('group_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
              'length' => 20,
              ));
         $this->hasColumn('position', 'integer', 4, array(
@@ -61,6 +75,13 @@ abstract class BaseProductTypePropertyRelation extends myDoctrineRecord
              'notnull' => true,
              'default' => 1,
              'comment' => 'Порядок сортировки',
+             'length' => 4,
+             ));
+        $this->hasColumn('group_position', 'integer', 4, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'default' => 1,
+             'comment' => 'Порядок сортировки в группе свойств товара',
              'length' => 4,
              ));
         $this->hasColumn('view_show', 'boolean', null, array(
@@ -76,7 +97,7 @@ abstract class BaseProductTypePropertyRelation extends myDoctrineRecord
              'comment' => 'Показывать свойство в списке товаров?',
              ));
 
-        $this->option('comment', 'Связь типа товара и свойства товара');
+        $this->option('comment', 'Связь типов и свойств товара');
     }
 
     public function setUp()
@@ -91,5 +112,10 @@ abstract class BaseProductTypePropertyRelation extends myDoctrineRecord
              'local' => 'property_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $this->hasOne('ProductPropertyGroup as Group', array(
+             'local' => 'group_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
     }
 }

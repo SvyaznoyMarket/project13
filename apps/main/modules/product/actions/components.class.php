@@ -11,17 +11,64 @@
 class productComponents extends myComponents
 {
  /**
-  * Executes show action
-  *
+  * Executes show component
+  * 
+  * @param Product $product Товар
   */
   public function executeShow()
   {
+    
   }
  /**
-  * Executes list action
+  * Executes list component
   *
   */
   public function executeList()
   {
+  }
+ /**
+  * Executes property component
+  *
+  * @param Product $product Товар
+  */
+  public function executeProperty()
+  {
+    $list = array();
+    foreach ($this->product['Parameter'] as $parameter)
+    {
+      $list[] = array(
+        'name'  => $parameter->getName(),
+        'value' => $parameter->getValue(),
+      );
+    }
+    
+    $this->setVar('list', $list, true);
+  }
+ /**
+  * Executes property_grouped component
+  *
+  * @param Product $product Товар
+  */
+  public function executeProperty_grouped()
+  {
+    $list = array();
+    foreach ($this->product['ParameterGroup'] as $parameterGroup)
+    {
+      $parameters = array();
+      foreach ($parameterGroup->getParameter() as $parameter)
+      {
+        $parameters[] = array(
+          'name'  => $parameter->getName(),
+          'value' => $parameter->getValue(),
+        );        
+      }
+      
+      $list[] = array(
+        'name'       => $parameterGroup->getName(),
+        'parameters' => $parameters,
+      );
+    }
+    
+    $this->setVar('list', $list, true);
   }
 }

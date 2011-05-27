@@ -8,6 +8,7 @@
  * @property integer $id
  * @property string $name
  * @property Doctrine_Collection $Property
+ * @property Doctrine_Collection $PropertyGroup
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Product
  * @property Doctrine_Collection $SimilarProductGroup
@@ -15,12 +16,14 @@
  * @method integer             getId()                  Returns the current record's "id" value
  * @method string              getName()                Returns the current record's "name" value
  * @method Doctrine_Collection getProperty()            Returns the current record's "Property" collection
+ * @method Doctrine_Collection getPropertyGroup()       Returns the current record's "PropertyGroup" collection
  * @method Doctrine_Collection getPropertyRelation()    Returns the current record's "PropertyRelation" collection
  * @method Doctrine_Collection getProduct()             Returns the current record's "Product" collection
  * @method Doctrine_Collection getSimilarProductGroup() Returns the current record's "SimilarProductGroup" collection
  * @method ProductType         setId()                  Sets the current record's "id" value
  * @method ProductType         setName()                Sets the current record's "name" value
  * @method ProductType         setProperty()            Sets the current record's "Property" collection
+ * @method ProductType         setPropertyGroup()       Sets the current record's "PropertyGroup" collection
  * @method ProductType         setPropertyRelation()    Sets the current record's "PropertyRelation" collection
  * @method ProductType         setProduct()             Sets the current record's "Product" collection
  * @method ProductType         setSimilarProductGroup() Sets the current record's "SimilarProductGroup" collection
@@ -58,6 +61,10 @@ abstract class BaseProductType extends myDoctrineRecord
              'refClass' => 'ProductTypePropertyRelation',
              'local' => 'product_type_id',
              'foreign' => 'property_id'));
+
+        $this->hasMany('ProductPropertyGroup as PropertyGroup', array(
+             'local' => 'id',
+             'foreign' => 'product_type_id'));
 
         $this->hasMany('ProductTypePropertyRelation as PropertyRelation', array(
              'local' => 'id',

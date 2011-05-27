@@ -4,24 +4,26 @@ class ProductParameter
 {
   protected
     $property = null,
-    $value = null
+    $value = null,
+    $group_id
   ;
   
-  public function __construct(ProductProperty $productProperty, array $productPropertyRelationArray = array())
+  public function __construct(ProductTypePropertyRelation $productTypePropertyRelation, array $productPropertyRelationArray = array())
   {
-    $this->property = $productProperty;
+    $this->property = $productTypePropertyRelation['Property'];
+    $this->group_id = $productTypePropertyRelation['group_id'];
     
     $value = array();
     foreach ($productPropertyRelationArray as $propertyRelation)
     {
-      switch ($productProperty->type)
+      switch ($this->property->type)
       {
         case 'string': case 'integer': case 'float':
-          $value[] = $this->formatValue($productProperty->pattern, $propertyRelation['value'], $propertyRelation['unit']);
+          $value[] = $this->formatValue($this->property->pattern, $propertyRelation['value'], $propertyRelation['unit']);
           break;
         case 'select':
           $option = ProductPropertyOptionTable::getInstance()->getById($propertyRelation['option_id']);
-          $value[] = $option ? $this->formatValue($productProperty->pattern, $option->value, $option->unit) : null;
+          $value[] = $option ? $this->formatValue($this->property->pattern, $option->value, $option->unit) : null;
           break;
         case 'text':
           $value[] = $propertyRelation->value_text;
@@ -29,7 +31,7 @@ class ProductParameter
       }
     }
     
-    $this->value = $productProperty->is_multiple ? $value : $value[0];
+    $this->value = $this->property->is_multiple ? $value : $value[0];
   }
 
   public function getProperty()
@@ -45,6 +47,11 @@ class ProductParameter
   public function isMultiple()
   {
     return $this->property->is_multiple;
+  }
+
+  public function getGroupId()
+  {
+    return $this->group_id;
   }
 
   public function getValue()

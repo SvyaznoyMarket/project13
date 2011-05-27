@@ -58,17 +58,37 @@ EOF;
     $list = ProductTypePropertyRelationTable::getInstance()->createList();
     for ($productType_id = 1; $productType_id < $count['ProductType']; $productType_id++)
     {
-      $propertyCount = rand(4, 12);
+      $groupCount = rand(1, 3);
+
+      $groupList = ProductPropertyGroupTable::getInstance()->createList();
+      for ($i = 1; $i <= $groupCount; $i++)
+      {
+        $record = new ProductPropertyGroup();
+        $record->fromArray(array(
+          'name'            => 'group-'.$i,
+          'product_type_id' => $productType_id,
+          'position'        => $i,
+        ));
+        $groupList[] = $record;
+      }
+      $groupList->save();
+      $groupList->free(true);
+      unset($groupList);
+      
+      $propertyCount = rand(2, 6) * $groupCount;
       $propertyOffset = rand(1, $count['ProductProperty'] - $propertyCount);
       
       for ($i = 1; $i <= $propertyCount; $i++)
       {
+        $group_id = rand(0, $groupCount);
+        
         $record = new ProductTypePropertyRelation();
         $record->fromArray(array(
           'product_type_id' => $productType_id,
           'property_id'     => $i + $propertyOffset,
-          'view_show'   => rand(0, 10) > 0 ? true : false,
-          'view_list'   => rand(0, 50) > 0 ? true : false,
+          'group_id'        => $group_id > 0 ? $group_id : null,
+          'view_show'       => rand(0, 10) > 0 ? true : false,
+          'view_list'       => rand(0, 50) > 0 ? true : false,
           'position'        => $i,
         ));
         $list[] = $record;

@@ -15,5 +15,11 @@ class Product extends BaseProduct
   public function construct()
   {
     $this->mapValue('Parameter', new myDoctrineVirtualCollection());
+    $this->mapValue('ParameterGroup', new myDoctrineVirtualCollection());
+  }
+  
+  public function __toString()
+  {
+    return (string)$this->name;
   }
 }

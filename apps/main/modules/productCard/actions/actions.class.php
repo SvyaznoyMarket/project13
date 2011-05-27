@@ -17,6 +17,6 @@ class productCardActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->forward('default', 'module');
+    $this->product = $this->getRoute()->getObject();
   }
 }

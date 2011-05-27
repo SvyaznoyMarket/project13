@@ -31,19 +31,32 @@ ProductProperty:
   relations:
     ProductType:       { class: ProductType, foreignAlias: Property, refClass: ProductTypePropertyRelation, local: property_id, foreign: product_type_id, type: many, foreignType: many }
 
-ProductTypePropertyRelation:
+ProductPropertyGroup:
   options:
-    comment: 'Связь типа товара и свойства товара'
+    comment: 'Группа свойств товара'
   columns:
     name:              { type: string(255), notnull: false, default: null }
-    product_type_id:   { type: integer(20), notnull: true, primary: true }
-    property_id:       { type: integer(20), notnull: true, primary: true }
+    product_type_id:   { type: integer(20), notnull: true }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
+  relations:
+    ProductType:       { class: ProductType, foreignAlias: PropertyGroup, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+ProductTypePropertyRelation:
+  options:
+    comment: 'Связь типов и свойств товара'
+  columns:
+    name:              { type: string(255), notnull: false, default: null }
+    product_type_id:   { type: integer(20), notnull: true }
+    property_id:       { type: integer(20), notnull: true }
+    group_id:          { type: integer(20), notnull: false, default: null }
+    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
+    group_position:    { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки в группе свойств товара' }
     view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать свойство в карточке товара?' }
     view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать свойство в списке товаров?' }
   relations:
     ProductType:       { class: ProductType, foreignAlias: PropertyRelation, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Property:          { class: ProductProperty, foreignAlias: ProductTypeRelation, local: property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Group:             { class: ProductPropertyGroup, foreignAlias: PropertyRelation, local: group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 ProductPropertyOption:
   options:
