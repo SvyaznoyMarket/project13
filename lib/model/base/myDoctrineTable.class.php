@@ -53,8 +53,9 @@ class myDoctrineTable extends Doctrine_Table
   public function getIdBy($column, $value)
   {
     $q = $this->createQuery()
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->select('id')
       ->where($column.' = ?', $value)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
     
     return $q->fetchOne();
@@ -190,7 +191,8 @@ class myDoctrineTable extends Doctrine_Table
       }
     }
 
-    $paramHash = count($params) > 0 ? md5(serialize(ksort($params))) : '~';
+    ksort($params);
+    $paramHash = count($params) > 0 ? md5(serialize($params)) : '~';
     
     return $this->getQueryRootAlias().'-'.$id.'/'.$paramHash;
   }
