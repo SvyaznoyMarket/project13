@@ -22,7 +22,7 @@ class myDoctrineTable extends Doctrine_Table
     return $return;
   }
 
-  public function createListByIds($ids, $params)
+  public function createListByIds($ids, array $params = array())
   {
     // TODO: использовать редиска мультигет
     $list = $this->createList();

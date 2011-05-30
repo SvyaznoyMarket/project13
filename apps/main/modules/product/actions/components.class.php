@@ -22,12 +22,12 @@ class productComponents extends myComponents
  /**
   * Executes list component
   *
-  * @param Doctrine_Collection $productList Коллекция товаров
+  * @param myDoctrinePager $productPager Листалка товаров
   */
   public function executeList()
   {
     $list = array();
-    foreach ($this->productList as $product)
+    foreach ($this->productPager->getResults() as $product)
     {
       $list[] = array(
         'name'     => (string)$product,

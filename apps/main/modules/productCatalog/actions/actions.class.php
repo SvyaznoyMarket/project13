@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class productCatalogActions extends sfActions
+class productCatalogActions extends myActions
 {
  /**
   * Executes index action
@@ -28,10 +28,24 @@ class productCatalogActions extends sfActions
   {
     $this->productCategory = $this->getRoute()->getObject();
     
+    /*
     $this->productList = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
       'order' => 'product.name',
-      'limit' => sfConfig::get('app_productCatalog_product_limit', 20),
+      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
       'view'  => 'list',
+    ));
+    */
+    $filter = array(
+      'category' => $this->productCategory,
+    );
+    
+    $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+      'order' => 'product.name',
+      'view'  => 'list',
+    ));
+    
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
   }
  /**
@@ -44,11 +58,26 @@ class productCatalogActions extends sfActions
     $this->productCategory = $this->getRoute()->getObject();
     $this->creator = $this->getRoute()->getCreatorObject();
     
+    /*
     $this->productList = ProductTable::getInstance()->getListbyCategory($this->productCategory, array(
       'creator' => $this->creator,
       'order'   => 'product.name',
-      'limit'   => sfConfig::get('app_productCatalog_product_limit', 20),
+      'limit'   => sfConfig::get('app_product_max_items_on_category', 20),
       'view'    => 'list',
+    ));
+    */
+    $filter = array(
+      'category' => $this->productCategory,
+      'creator'  => $this->creator,
+    );
+    
+    $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+      'order' => 'product.name',
+      'view'  => 'list',
+    ));
+
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
   }
 }

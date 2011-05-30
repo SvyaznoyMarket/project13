@@ -145,14 +145,25 @@ class ProductTable extends myDoctrineTable
 
     return $this->createListByIds($ids, $params);
   }
+  
+  public function getQueryByFilter(array $filter, array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+    
+    $this->setQueryForFilter($q, $filter);
+    
+    $this->setQueryParameters($q, $params);
+    
+    return $q;
+  }
 
   public function setQueryForFilter(myDoctrineQuery $q, array $filter, array $params = array())
   {
-    $this->applyDefaultParameters($params, array(
+    $filter = myToolkit::arrayDeepMerge(array(
       'category'   => false,
       'creator'    => false,
       'parameters' => array(),
-    ));
+    ), $filter);
 
     if ($filter['category'] && ($filter['category'] instanceof ProductCategory))
     {

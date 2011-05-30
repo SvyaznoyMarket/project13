@@ -2,5 +2,5 @@ all:
   doctrine:
     result_cache: true # кешировать результаты запросов
 
-  productCatalog:
-    product_limit: 20
+  product:
+    max_items_on_category: 20

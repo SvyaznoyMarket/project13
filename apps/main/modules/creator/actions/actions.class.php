@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class creatorActions extends sfActions
+class creatorActions extends myActions
 {
  /**
   * Executes index action
