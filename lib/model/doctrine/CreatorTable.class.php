@@ -7,13 +7,43 @@
  */
 class CreatorTable extends myDoctrineTable
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return object CreatorTable
-     */
-    public static function getInstance()
+
+  /**
+   * Returns an instance of this class.
+   *
+   * @return object CreatorTable
+   */
+  public static function getInstance()
+  {
+    return Doctrine_Core::getTable('Creator');
+  }
+
+  public function getForRoute(array $params)
+  {
+    $id = isset($params['creator']) ? $this->getIdBy('token', $params['creator']) : null;
+    
+    if (!$id)
     {
-        return Doctrine_Core::getTable('Creator');
+      return null;
     }
+    
+    return $this->getById($id, array());
+  }
+
+  public function getListByProductCategory(ProductCategory $productCategory, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+    
+    $q->innerJoin('creator.Product product')
+      ->where('product.category_id = ?', $productCategory->id)
+    ;
+    
+    $this->setQueryParameters($q, $params);
+    
+    $ids = $this->getIdsByQuery($q);
+
+    return $this->createListByIds($ids, $params);
+  }
 }

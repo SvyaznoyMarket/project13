@@ -7,13 +7,26 @@
  */
 class ProductCategoryTable extends myDoctrineTable
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return object ProductCategoryTable
-     */
-    public static function getInstance()
+
+  /**
+   * Returns an instance of this class.
+   *
+   * @return object ProductCategoryTable
+   */
+  public static function getInstance()
+  {
+    return Doctrine_Core::getTable('ProductCategory');
+  }
+
+  public function getForRoute(array $params)
+  {
+    $id = isset($params['productCategory']) ? $this->getIdBy('token', $params['productCategory']) : null;
+    
+    if (!$id)
     {
-        return Doctrine_Core::getTable('ProductCategory');
+      return null;
     }
+    
+    return $this->getById($id, array());
+  }
 }

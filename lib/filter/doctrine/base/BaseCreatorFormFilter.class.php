@@ -13,11 +13,13 @@ abstract class BaseCreatorFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'name' => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'token' => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'name'  => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
-      'name' => new sfValidatorPass(array('required' => false)),
+      'token' => new sfValidatorPass(array('required' => false)),
+      'name'  => new sfValidatorPass(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('creator_filters[%s]');
@@ -37,8 +39,9 @@ abstract class BaseCreatorFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'   => 'Number',
-      'name' => 'Text',
+      'id'    => 'Number',
+      'token' => 'Text',
+      'name'  => 'Text',
     );
   }
 }

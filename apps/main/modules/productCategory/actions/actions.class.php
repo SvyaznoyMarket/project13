@@ -1,14 +1,14 @@
 <?php
 
 /**
- * default actions.
+ * productCategory actions.
  *
  * @package    enter
- * @subpackage default
+ * @subpackage productCategory
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class defaultActions extends myActions
+class productCategoryActions extends sfActions
 {
  /**
   * Executes index action
@@ -17,5 +17,6 @@ class defaultActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    $this->forward('default', 'module');
   }
 }

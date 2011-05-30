@@ -3,6 +3,7 @@ Creator:
     comment: 'Производитель'
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
 
 ProductCategory:
@@ -10,6 +11,7 @@ ProductCategory:
     comment: 'Категория товара'
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
 
 ProductType:
@@ -76,6 +78,7 @@ Product:
   listeners: [ ProductListener ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     type_id:           { type: integer(20), notnull: true }
     creator_id:        { type: integer(20), notnull: true }

@@ -22,4 +22,11 @@ class Product extends BaseProduct
   {
     return (string)$this->name;
   }
+
+  public function toParams()
+  {
+    return array(
+      'product' => $this->token,
+    );
+  }
 }

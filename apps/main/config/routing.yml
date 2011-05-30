@@ -5,26 +5,34 @@ homepage:
 
 # product
 #
-# product category
-product_catalog:
+# product catalog
+productCatalog:
   url:   /catalog
-  param: { module: productCategory, action: index }
-product_catalog_category:
+  param: { module: productCatalog, action: index }
+#
+# product catalog by category
+productCatalog_category:
   url:   /catalog/:productCategory
-  param: { module: productCategory, action: category }
-product_catalog_creator:
+  param: { module: productCatalog, action: category }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+#
+# product catalog by category and creator
+productCatalog_creator:
   url:   /catalog/:productCategory/:creator
-  param: { module: productCategory, action: creator }
+  param: { module: productCatalog, action: creator }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # product card
-product_card:
+productCard:
   url:   /products/:product
   param: { module: productCard, action: index }
-  class:   sfDoctrineRoute
-  options: { model: Product, column: id, type: object, method: getForRoute }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
 #
 # product comment
-product_comment:
+productComment:
   url:   /products/:product/comments
   param: { module: productComment, action: index }
 #

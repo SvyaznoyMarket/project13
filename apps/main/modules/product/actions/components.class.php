@@ -22,9 +22,21 @@ class productComponents extends myComponents
  /**
   * Executes list component
   *
+  * @param Doctrine_Collection $productList Коллекция товаров
   */
   public function executeList()
   {
+    $list = array();
+    foreach ($this->productList as $product)
+    {
+      $list[] = array(
+        'name'     => (string)$product,
+        'has_link' => $product['view_show'],
+        'product'  => $product,
+      );
+    }
+    
+    $this->setVar('list', $list, true);
   }
  /**
   * Executes property component

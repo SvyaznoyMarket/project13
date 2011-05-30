@@ -10,5 +10,24 @@
  */
 class productCatalogComponents extends myComponents
 {
-
+ /**
+  * Executes filter_creator component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  */
+  public function executeFilter_creator()
+  {
+    $creatorList = CreatorTable::getInstance()->getListByProductCategory($this->productCategory);
+    
+    $list = array();
+    foreach ($creatorList as $creator)
+    {
+      $list[] = array(
+        'name'     => (string)$creator,
+        'url'      => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $creator)),
+      );
+    }
+    
+    $this->setVar('list', $list, true);
+  }
 }

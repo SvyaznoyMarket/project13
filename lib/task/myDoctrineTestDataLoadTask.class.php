@@ -65,35 +65,36 @@ EOF;
       {
         $record = new ProductPropertyGroup();
         $record->fromArray(array(
-          'name'            => 'group-'.$i,
+          'name'            => $this->getRecordName('ProductPropertyGroup', $i),
           'product_type_id' => $productType_id,
           'position'        => $i,
         ));
         $groupList[] = $record;
       }
       $groupList->save();
-      $groupList->free(true);
-      unset($groupList);
       
       $propertyCount = rand(2, 6) * $groupCount;
       $propertyOffset = rand(1, $count['ProductProperty'] - $propertyCount);
       
       for ($i = 1; $i <= $propertyCount; $i++)
       {
-        $group_id = rand(0, $groupCount);
+        $group_index = rand(0, $groupCount - 1);
         
         $record = new ProductTypePropertyRelation();
         $record->fromArray(array(
           'product_type_id' => $productType_id,
           'property_id'     => $i + $propertyOffset,
-          'group_id'        => $group_id > 0 ? $group_id : null,
-          'view_show'       => rand(0, 10) > 0 ? true : false,
-          'view_list'       => rand(0, 50) > 0 ? true : false,
+          'group_id'        => $groupList[$group_index],
+          'view_show'       => rand(0, 20) > 0 ? true : false,
+          'view_list'       => rand(0, 8) > 0 ? true : false,
           'position'        => $i,
         ));
         $list[] = $record;
       }
     }
+    $groupList->free(true);
+    unset($groupList);
+    
     $list->save();
     $list->free(true);
     unset($list);
@@ -105,7 +106,7 @@ EOF;
       $creatorCount = rand(4, 10);
       $creatorOffset = rand(1, $count['Creator'] - $creatorCount);
 
-      $category_id = rand(1, count('ProductCategory'));
+      $category_id = $productType->id; //rand(1, $count['ProductCategory']);
       
       $productCount = rand(4, 100);
       for ($i = 1; $i <= $productCount; $i++)
@@ -115,7 +116,8 @@ EOF;
           'type_id'     => $productType->id,
           'creator_id'  => rand($creatorOffset, $creatorOffset + $creatorCount),
           'category_id' => $category_id,
-          'name'        => 'product-'.$productType->id.'-'.$i,
+          'token'       => 'product-'.$productType->id.'-'.$i,
+          'name'        => $this->getRecordName('Product', $productType->id.'-'.$i),
           'view_show'   => rand(0, 10) > 0 ? true : false,
           'view_list'   => rand(0, 50) > 0 ? true : false,
         ));
@@ -126,7 +128,7 @@ EOF;
           $relation->fromArray(array(
             'property_id'  => $property->id,
             'product_id'   => $record->id,
-            'value'        => 'value-'.$productType->id.'-'.$i.'-'.($j + 1),
+            'value'        => $this->getRecordName('ProductPropertyRelation', $productType->id.'-'.$i.'-'.($j + 1)),
             'unit'         => 'unit',
           ));
           
@@ -145,6 +147,8 @@ EOF;
   
   protected function createRecordList($model, $count, array $options = array())
   {
+    $hasToken = Doctrine_Core::getTable($model)->hasColumn('token');
+    
     $options = myToolkit::arrayDeepMerge(array(
       'nameField' => 'name',
       'free'      => true,
@@ -157,8 +161,12 @@ EOF;
       if ($options['nameField'])
       {
         $record->fromArray(array(
-          $options['nameField'] => lcfirst($model).'-'.$i,
-        ));        
+          $options['nameField'] => $this->getRecordName($model, $i),
+        ));
+        if ($hasToken)
+        {
+          $record->token = lcfirst($model).'-'.$i;
+        }
       }
       $list[] = $record;
     }
@@ -173,5 +181,20 @@ EOF;
     }
     
     return $list;
+  }
+  
+  protected function getRecordName($model, $index)
+  {
+    $names = array(
+      'Creator'         => 'производитель',
+      'ProductType'     => 'схема',
+      'Product'         => 'товар',
+      'ProductCategory' => 'категория',
+      'ProductProperty' => 'свойство',
+      'ProductPropertyRelation' => 'значение',
+      'ProductPropertyGroup'    => 'группа',
+    );
+    
+    return $names[$model].'-'.$index;
   }
 }

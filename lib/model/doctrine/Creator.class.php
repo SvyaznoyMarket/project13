@@ -12,4 +12,15 @@
  */
 class Creator extends BaseCreator
 {
+  public function __toString()
+  {
+    return (string)$this->name;
+  }
+
+  public function toParams()
+  {
+    return array(
+      'creator' => $this->token,
+    );
+  }
 }

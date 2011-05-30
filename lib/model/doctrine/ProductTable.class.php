@@ -113,7 +113,7 @@ class ProductTable extends myDoctrineTable
 
   public function getForRoute(array $params)
   {
-    $id = $this->getIdBy('name', $params['product']);
+    $id = isset($params['product']) ? $this->getIdBy('token', $params['product']) : null;
     
     if (!$id)
     {
@@ -122,13 +122,29 @@ class ProductTable extends myDoctrineTable
     
     return $this->getById($id, array(
       'group_property' => true,
+      'view'           => 'show',
     ));
   }
 
-  public function toParams()
+  public function getListByCategory(ProductCategory $category, array $params = array())
   {
-    return array(
-      'name' => $this->name,
-    );
+    $this->applyDefaultParameters($params, array(
+      'creator' => false,
+    ));
+
+    $q = $this->createBaseQuery($params);
+    
+    $q->addWhere('product.category_id = ?', $category->id);
+    
+    if ($params['creator'] && ($params['creator'] instanceof Creator))
+    {
+      $q->addWhere('product.creator_id = ?', $params['creator']->id);
+    }
+    
+    $this->setQueryParameters($q, $params);
+    
+    $ids = $this->getIdsByQuery($q);
+
+    return $this->createListByIds($ids, $params);
   }
 }

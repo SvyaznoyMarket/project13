@@ -1,3 +1,6 @@
 all:
   doctrine:
-    result_cache: true
+    result_cache: true # кешировать результаты запросов
+
+  productCatalog:
+    product_limit: 20

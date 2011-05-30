@@ -12,4 +12,15 @@
  */
 class ProductCategory extends BaseProductCategory
 {
+  public function __toString()
+  {
+    return (string)$this->name;
+  }
+
+  public function toParams()
+  {
+    return array(
+      'productCategory' => $this->token,
+    );
+  }
 }
