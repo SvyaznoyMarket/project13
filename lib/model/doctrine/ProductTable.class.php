@@ -134,17 +134,33 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
     
-    $q->addWhere('product.category_id = ?', $category->id);
-    
-    if ($params['creator'] && ($params['creator'] instanceof Creator))
-    {
-      $q->addWhere('product.creator_id = ?', $params['creator']->id);
-    }
+    $this->setQueryForFilter($q, array(
+      'category' => $category,
+      'creator'  => $params['creator'],
+    ));
     
     $this->setQueryParameters($q, $params);
     
     $ids = $this->getIdsByQuery($q);
 
     return $this->createListByIds($ids, $params);
+  }
+
+  public function setQueryForFilter(myDoctrineQuery $q, array $filter, array $params = array())
+  {
+    $this->applyDefaultParameters($params, array(
+      'category'   => false,
+      'creator'    => false,
+      'parameters' => array(),
+    ));
+
+    if ($filter['category'] && ($filter['category'] instanceof ProductCategory))
+    {
+      $q->addWhere('product.category_id = ?', $filter['category']->id);
+    }
+    if ($filter['creator'] && ($filter['creator'] instanceof Creator))
+    {
+      $q->addWhere('product.creator_id = ?', $filter['creator']->id);
+    }
   }
 }

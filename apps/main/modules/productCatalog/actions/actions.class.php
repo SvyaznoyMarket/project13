@@ -28,7 +28,7 @@ class productCatalogActions extends sfActions
   {
     $this->productCategory = $this->getRoute()->getObject();
     
-    $this->productList = ProductTable::getInstance()->getListbyCategory($this->productCategory, array(
+    $this->productList = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
       'order' => 'product.name',
       'limit' => sfConfig::get('app_productCatalog_product_limit', 20),
       'view'  => 'list',
