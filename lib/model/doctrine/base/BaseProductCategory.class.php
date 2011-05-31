@@ -8,16 +8,22 @@
  * @property integer $id
  * @property string $token
  * @property string $name
+ * @property integer $filter_id
+ * @property ProductFilter $Filter
  * @property Doctrine_Collection $Product
  * 
- * @method integer             getId()      Returns the current record's "id" value
- * @method string              getToken()   Returns the current record's "token" value
- * @method string              getName()    Returns the current record's "name" value
- * @method Doctrine_Collection getProduct() Returns the current record's "Product" collection
- * @method ProductCategory     setId()      Sets the current record's "id" value
- * @method ProductCategory     setToken()   Sets the current record's "token" value
- * @method ProductCategory     setName()    Sets the current record's "name" value
- * @method ProductCategory     setProduct() Sets the current record's "Product" collection
+ * @method integer             getId()        Returns the current record's "id" value
+ * @method string              getToken()     Returns the current record's "token" value
+ * @method string              getName()      Returns the current record's "name" value
+ * @method integer             getFilterId()  Returns the current record's "filter_id" value
+ * @method ProductFilter       getFilter()    Returns the current record's "Filter" value
+ * @method Doctrine_Collection getProduct()   Returns the current record's "Product" collection
+ * @method ProductCategory     setId()        Sets the current record's "id" value
+ * @method ProductCategory     setToken()     Sets the current record's "token" value
+ * @method ProductCategory     setName()      Sets the current record's "name" value
+ * @method ProductCategory     setFilterId()  Sets the current record's "filter_id" value
+ * @method ProductCategory     setFilter()    Sets the current record's "Filter" value
+ * @method ProductCategory     setProduct()   Sets the current record's "Product" collection
  * 
  * @package    enter
  * @subpackage model
@@ -48,6 +54,11 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
+        $this->hasColumn('filter_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'length' => 20,
+             ));
 
         $this->option('comment', 'Категория товара');
     }
@@ -55,6 +66,11 @@ abstract class BaseProductCategory extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasOne('ProductFilter as Filter', array(
+             'local' => 'filter_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
+
         $this->hasMany('Product', array(
              'local' => 'id',
              'foreign' => 'category_id'));

@@ -15,15 +15,17 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'    => new sfWidgetFormInputHidden(),
-      'token' => new sfWidgetFormInputText(),
-      'name'  => new sfWidgetFormInputText(),
+      'id'        => new sfWidgetFormInputHidden(),
+      'token'     => new sfWidgetFormInputText(),
+      'name'      => new sfWidgetFormInputText(),
+      'filter_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Filter'), 'add_empty' => true)),
     ));
 
     $this->setValidators(array(
-      'id'    => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'token' => new sfValidatorString(array('max_length' => 255)),
-      'name'  => new sfValidatorString(array('max_length' => 255)),
+      'id'        => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'token'     => new sfValidatorString(array('max_length' => 255)),
+      'name'      => new sfValidatorString(array('max_length' => 255)),
+      'filter_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Filter'), 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(

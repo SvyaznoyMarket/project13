@@ -39,6 +39,30 @@ class productComponents extends myComponents
     $this->setVar('list', $list, true);
   }
  /**
+  * Executes pagination component
+  *
+  * @param myDoctrinePager $productPager Листалка товаров
+  */
+  public function executePagination()
+  {
+    if (!$this->productPager->haveToPaginate())
+    {
+      return sfView::NONE;
+    }
+
+    $list = array();
+    foreach ($this->productPager->getLinks() as $page)
+    {
+      $list[] = $page;
+    }
+
+    $this->first = $this->productPager->getFirstPage();
+    $this->last = $this->productPager->getLastPage();
+    $this->page = $this->productPager->getPage();
+    
+    $this->setVar('list', $list, true);
+  }
+ /**
   * Executes property component
   *
   * @param Product $product Товар

@@ -13,13 +13,15 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'token' => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'name'  => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'token'     => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'name'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'filter_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Filter'), 'add_empty' => true)),
     ));
 
     $this->setValidators(array(
-      'token' => new sfValidatorPass(array('required' => false)),
-      'name'  => new sfValidatorPass(array('required' => false)),
+      'token'     => new sfValidatorPass(array('required' => false)),
+      'name'      => new sfValidatorPass(array('required' => false)),
+      'filter_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Filter'), 'column' => 'id')),
     ));
 
     $this->widgetSchema->setNameFormat('product_category_filters[%s]');
@@ -39,9 +41,10 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'    => 'Number',
-      'token' => 'Text',
-      'name'  => 'Text',
+      'id'        => 'Number',
+      'token'     => 'Text',
+      'name'      => 'Text',
+      'filter_id' => 'ForeignKey',
     );
   }
 }

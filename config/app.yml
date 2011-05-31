@@ -3,4 +3,4 @@ all:
     result_cache: true # кешировать результаты запросов
 
   product:
-    max_items_on_category: 20
+    max_items_on_category: 8

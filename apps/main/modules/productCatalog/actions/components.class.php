@@ -30,4 +30,13 @@ class productCatalogComponents extends myComponents
     
     $this->setVar('list', $list, true);
   }
+ /**
+  * Executes filter_product_parameter component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  */
+  public function executeFilter_product_parameter()
+  {
+    
+  }
 }

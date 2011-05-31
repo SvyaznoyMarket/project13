@@ -6,6 +6,26 @@ Creator:
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
 
+ProductFilterGroup:
+  options:
+    comment: 'Группа фильтров товаров'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+
+ProductFilter:
+  options:
+    comment: 'Фильтр товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    type:              { type: enum, values: [choice, range], notnull: true, notblank: true }
+    property_id:       { type: integer(20), notnull: true }
+    is_multiple:       { type: boolean, notnull: true, default: false, comment: 'Фильтр имеет несколько значений?' }
+    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
+  relations:
+    Property:          { class: ProductProperty, foreignAlias: ProductFilter, local: property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
 ProductCategory:
   options:
     comment: 'Категория товара'
@@ -13,6 +33,9 @@ ProductCategory:
     id:                { type: integer(20), autoincrement: true, primary: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
+    filter_id:         { type: integer(20), notnull: false, default: null }
+  relations:
+    Filter:            { class: ProductFilter, foreignAlias: Category, local: filter_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 ProductType:
   options:
