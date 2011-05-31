@@ -8,22 +8,25 @@
  * @property integer $id
  * @property string $token
  * @property string $name
- * @property integer $filter_id
- * @property ProductFilter $Filter
+ * @property integer $filter_group_id
+ * @property ProductFilterGroup $FilterGroup
  * @property Doctrine_Collection $Product
+ * @property Doctrine_Collection $TagRelation
  * 
- * @method integer             getId()        Returns the current record's "id" value
- * @method string              getToken()     Returns the current record's "token" value
- * @method string              getName()      Returns the current record's "name" value
- * @method integer             getFilterId()  Returns the current record's "filter_id" value
- * @method ProductFilter       getFilter()    Returns the current record's "Filter" value
- * @method Doctrine_Collection getProduct()   Returns the current record's "Product" collection
- * @method ProductCategory     setId()        Sets the current record's "id" value
- * @method ProductCategory     setToken()     Sets the current record's "token" value
- * @method ProductCategory     setName()      Sets the current record's "name" value
- * @method ProductCategory     setFilterId()  Sets the current record's "filter_id" value
- * @method ProductCategory     setFilter()    Sets the current record's "Filter" value
- * @method ProductCategory     setProduct()   Sets the current record's "Product" collection
+ * @method integer             getId()              Returns the current record's "id" value
+ * @method string              getToken()           Returns the current record's "token" value
+ * @method string              getName()            Returns the current record's "name" value
+ * @method integer             getFilterGroupId()   Returns the current record's "filter_group_id" value
+ * @method ProductFilterGroup  getFilterGroup()     Returns the current record's "FilterGroup" value
+ * @method Doctrine_Collection getProduct()         Returns the current record's "Product" collection
+ * @method Doctrine_Collection getTagRelation()     Returns the current record's "TagRelation" collection
+ * @method ProductCategory     setId()              Sets the current record's "id" value
+ * @method ProductCategory     setToken()           Sets the current record's "token" value
+ * @method ProductCategory     setName()            Sets the current record's "name" value
+ * @method ProductCategory     setFilterGroupId()   Sets the current record's "filter_group_id" value
+ * @method ProductCategory     setFilterGroup()     Sets the current record's "FilterGroup" value
+ * @method ProductCategory     setProduct()         Sets the current record's "Product" collection
+ * @method ProductCategory     setTagRelation()     Sets the current record's "TagRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -54,7 +57,7 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
-        $this->hasColumn('filter_id', 'integer', 20, array(
+        $this->hasColumn('filter_group_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => false,
              'length' => 20,
@@ -66,13 +69,17 @@ abstract class BaseProductCategory extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
-        $this->hasOne('ProductFilter as Filter', array(
-             'local' => 'filter_id',
+        $this->hasOne('ProductFilterGroup as FilterGroup', array(
+             'local' => 'filter_group_id',
              'foreign' => 'id',
              'onDelete' => 'SET NULL'));
 
         $this->hasMany('Product', array(
              'local' => 'id',
              'foreign' => 'category_id'));
+
+        $this->hasMany('TagProductCategoryRelation as TagRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_category_id'));
     }
 }

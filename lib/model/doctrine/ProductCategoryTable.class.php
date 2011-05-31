@@ -29,4 +29,27 @@ class ProductCategoryTable extends myDoctrineTable
     
     return $this->getById($id, array());
   }
+
+  public function getById($id, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->leftJoin('productCategory.FilterGroup productFilterGroup');
+    
+    $this->setQueryParameters($q);
+    
+    $q->addWhere('productCategory.id = ?', $id);
+    
+    $q->useResultCache(true, null, $this->getRecordHash($id, $params));
+    
+    $record = $q->fetchOne();
+    if (!$record)
+    {
+      return $record;
+    }
+    
+    return $record;
+  }
 }

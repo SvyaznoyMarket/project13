@@ -7,13 +7,14 @@
  */
 class ProductFilterTable extends myDoctrineTable
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return object ProductFilterTable
-     */
-    public static function getInstance()
-    {
-        return Doctrine_Core::getTable('ProductFilter');
-    }
+
+  /**
+   * Returns an instance of this class.
+   *
+   * @return object ProductFilterTable
+   */
+  public static function getInstance()
+  {
+    return Doctrine_Core::getTable('ProductFilter');
+  }
 }

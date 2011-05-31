@@ -33,9 +33,9 @@ ProductCategory:
     id:                { type: integer(20), autoincrement: true, primary: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
-    filter_id:         { type: integer(20), notnull: false, default: null }
+    filter_group_id:   { type: integer(20), notnull: false, default: null }
   relations:
-    Filter:            { class: ProductFilter, foreignAlias: Category, local: filter_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    FilterGroup:       { class: ProductFilterGroup, foreignAlias: Category, local: filter_group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 ProductType:
   options:
