@@ -36,10 +36,11 @@ EOF;
     // add your code here
     $this->logSection('doctrine', 'loading test data');
     $count = array(
-      'Creator'         => 100,
-      'ProductCategory' => 50,
-      'ProductType'     => 50,
-      'ProductProperty' => 200,
+      'Creator'            => 100,
+      'ProductCategory'    => 50,
+      'ProductType'        => 50,
+      'ProductFilterGroup' => 50,
+      'ProductProperty'    => 200,
     );
     
     $this->logSection('doctrine', 'loading test Creators');
@@ -53,8 +54,9 @@ EOF;
 
     $this->logSection('doctrine', 'loading test ProductProperties');
     $this->createRecordList('ProductProperty', $count['ProductProperty']);
-
-    $this->logSection('doctrine', 'loading test ProductTypePropertyRelations');
+    
+    $this->logSection('doctrine', 'loading test ProductTypePropertyRelations, ProductFilterGroups and ProductFilters');
+    $this->createRecordList('ProductFilterGroup', $count['ProductFilterGroup']);
     $list = ProductTypePropertyRelationTable::getInstance()->createList();
     for ($productType_id = 1; $productType_id < $count['ProductType']; $productType_id++)
     {
@@ -91,6 +93,24 @@ EOF;
         ));
         $list[] = $record;
       }
+
+      $productFilterList = ProductFilterTable::getInstance()->createList();
+      $filterCount = rand(1, $propertyCount);
+      for ($i = 1; $i <= $filterCount; $i++)
+      {
+        $record = new ProductFilter();
+        $record->fromArray(array(
+          'name'            => $this->getRecordName('ProductFilter', $i),
+          'type'            => rand(0, 5) > 0 ? 'choice' : 'range',
+          'property_id'     => $i,
+          'is_multiple'     => rand(0, 5) > 0 ? true : false,
+          'position'        => $i,
+        ));
+        $productFilterList[] = $record;
+      }
+      $productFilterList->save();
+      $productFilterList->free(true);
+      unset($productFilterList);
     }
     $groupList->free(true);
     unset($groupList);
@@ -186,13 +206,15 @@ EOF;
   protected function getRecordName($model, $index)
   {
     $names = array(
-      'Creator'         => 'производитель',
-      'ProductType'     => 'схема',
-      'Product'         => 'товар',
-      'ProductCategory' => 'категория',
-      'ProductProperty' => 'свойство',
-      'ProductPropertyRelation' => 'значение',
+      'Creator'                 => 'производитель',
+      'ProductType'             => 'схема',
+      'Product'                 => 'товар',
+      'ProductCategory'         => 'категория',
       'ProductPropertyGroup'    => 'группа',
+      'ProductProperty'         => 'свойство',
+      'ProductPropertyRelation' => 'значение',
+      'ProductFilterGroup'      => 'группа',
+      'ProductFilter'           => 'фильтр',
     );
     
     return $names[$model].'-'.$index;
