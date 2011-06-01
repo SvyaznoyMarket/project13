@@ -32,12 +32,12 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getById($id, array $params = array())
   {
-    $this->applyDefaultParameters($params);
+    $this->applyDefaultParameters($params, array(
+      'with_filters' => true,
+    ));
 
     $q = $this->createBaseQuery($params);
 
-    $q->leftJoin('productCategory.FilterGroup productFilterGroup');
-    
     $this->setQueryParameters($q);
     
     $q->addWhere('productCategory.id = ?', $id);
@@ -48,6 +48,11 @@ class ProductCategoryTable extends myDoctrineTable
     if (!$record)
     {
       return $record;
+    }
+    
+    if ($params['with_filters'])
+    {
+      $record['FilterGroup'] = ProductFilterGroupTable::getInstance()->getById($record['filter_group_id']);
     }
     
     return $record;

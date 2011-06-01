@@ -1,0 +1,24 @@
+Shop:
+  options:
+    comment: 'Магазин'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    region_id:         { type: integer(20), notnull: true }
+  relations:
+    Region:            { class: Region, foreignAlias: Stock, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+
+Stock:
+  options:
+    comment: 'Склад'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    type:              { type: enum, length: 10, values: [main, region, shop, provider], notnull: true }
+    region_id:         { type: integer(20), notnull: true }
+    shop_id:           { type: integer(20), notnull: false, default: null }
+  relations:
+    Region:            { class: Region, foreignAlias: Stock, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Shop:              { class: Shop, foreignAlias: Stock, local: shop_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }

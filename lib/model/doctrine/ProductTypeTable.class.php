@@ -53,7 +53,7 @@ class ProductTypeTable extends myDoctrineTable
 
     $this->setQueryParameters($q);
     
-    $q->addWhere('productType.id = ?', $id);    
+    $q->addWhere('productType.id = ?', $id);
     $q->useResultCache(true, null, $this->getRecordHash($id, $params));
     
     $record = $q->fetchOne();    

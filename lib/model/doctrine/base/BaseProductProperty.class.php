@@ -62,9 +62,9 @@ abstract class BaseProductProperty extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
-        $this->hasColumn('type', 'enum', 20, array(
+        $this->hasColumn('type', 'enum', 10, array(
              'type' => 'enum',
-             'length' => 20,
+             'length' => 10,
              'values' => 
              array(
               0 => 'string',
@@ -74,7 +74,6 @@ abstract class BaseProductProperty extends myDoctrineRecord
               4 => 'text',
              ),
              'notnull' => true,
-             'notblank' => true,
              'default' => 'string',
              'comment' => 'Тип свойства: строка, значение из справочника (опция свойства), текст',
              ));

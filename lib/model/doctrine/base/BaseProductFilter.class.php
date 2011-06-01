@@ -8,25 +8,31 @@
  * @property integer $id
  * @property string $name
  * @property enum $type
+ * @property integer $group_id
  * @property integer $property_id
  * @property boolean $is_multiple
  * @property integer $position
+ * @property ProductFilterGroup $Group
  * @property ProductProperty $Property
  * 
- * @method integer         getId()          Returns the current record's "id" value
- * @method string          getName()        Returns the current record's "name" value
- * @method enum            getType()        Returns the current record's "type" value
- * @method integer         getPropertyId()  Returns the current record's "property_id" value
- * @method boolean         getIsMultiple()  Returns the current record's "is_multiple" value
- * @method integer         getPosition()    Returns the current record's "position" value
- * @method ProductProperty getProperty()    Returns the current record's "Property" value
- * @method ProductFilter   setId()          Sets the current record's "id" value
- * @method ProductFilter   setName()        Sets the current record's "name" value
- * @method ProductFilter   setType()        Sets the current record's "type" value
- * @method ProductFilter   setPropertyId()  Sets the current record's "property_id" value
- * @method ProductFilter   setIsMultiple()  Sets the current record's "is_multiple" value
- * @method ProductFilter   setPosition()    Sets the current record's "position" value
- * @method ProductFilter   setProperty()    Sets the current record's "Property" value
+ * @method integer            getId()          Returns the current record's "id" value
+ * @method string             getName()        Returns the current record's "name" value
+ * @method enum               getType()        Returns the current record's "type" value
+ * @method integer            getGroupId()     Returns the current record's "group_id" value
+ * @method integer            getPropertyId()  Returns the current record's "property_id" value
+ * @method boolean            getIsMultiple()  Returns the current record's "is_multiple" value
+ * @method integer            getPosition()    Returns the current record's "position" value
+ * @method ProductFilterGroup getGroup()       Returns the current record's "Group" value
+ * @method ProductProperty    getProperty()    Returns the current record's "Property" value
+ * @method ProductFilter      setId()          Sets the current record's "id" value
+ * @method ProductFilter      setName()        Sets the current record's "name" value
+ * @method ProductFilter      setType()        Sets the current record's "type" value
+ * @method ProductFilter      setGroupId()     Sets the current record's "group_id" value
+ * @method ProductFilter      setPropertyId()  Sets the current record's "property_id" value
+ * @method ProductFilter      setIsMultiple()  Sets the current record's "is_multiple" value
+ * @method ProductFilter      setPosition()    Sets the current record's "position" value
+ * @method ProductFilter      setGroup()       Sets the current record's "Group" value
+ * @method ProductFilter      setProperty()    Sets the current record's "Property" value
  * 
  * @package    enter
  * @subpackage model
@@ -50,15 +56,20 @@ abstract class BaseProductFilter extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
-        $this->hasColumn('type', 'enum', null, array(
+        $this->hasColumn('type', 'enum', 10, array(
              'type' => 'enum',
+             'length' => 10,
              'values' => 
              array(
               0 => 'choice',
               1 => 'range',
              ),
              'notnull' => true,
-             'notblank' => true,
+             ));
+        $this->hasColumn('group_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'length' => 20,
              ));
         $this->hasColumn('property_id', 'integer', 20, array(
              'type' => 'integer',
@@ -85,6 +96,11 @@ abstract class BaseProductFilter extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasOne('ProductFilterGroup as Group', array(
+             'local' => 'group_id',
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
+
         $this->hasOne('ProductProperty as Property', array(
              'local' => 'property_id',
              'foreign' => 'id',

@@ -7,13 +7,43 @@
  */
 class ProductFilterGroupTable extends myDoctrineTable
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return object ProductFilterGroupTable
-     */
-    public static function getInstance()
+  /**
+   * Returns an instance of this class.
+   *
+   * @return object ProductFilterGroupTable
+   */
+  public static function getInstance()
+  {
+    return Doctrine_Core::getTable('ProductFilterGroup');
+  }
+
+  public function getById($id, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+    
+    $q->leftJoin('productFilterGroup.Filter productFilter')
+      ->addOrderBy('productFilter.position')
+    ;
+
+    $this->setQueryParameters($q);
+    
+    $q->addWhere('productFilterGroup.id = ?', $id);
+    
+    $q->useResultCache(true, null, $this->getRecordHash($id, $params));
+
+    $record = $q->fetchOne();
+    if (!$record)
     {
-        return Doctrine_Core::getTable('ProductFilterGroup');
+      return $record;
     }
+    
+    foreach ($record['Filter'] as $productFilter)
+    {
+      $productFilter['Property'] = ProductPropertyTable::getInstance()->getById($productFilter['property_id']);
+    }
+
+    return $record;
+  }
 }

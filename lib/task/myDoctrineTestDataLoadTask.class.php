@@ -102,6 +102,7 @@ EOF;
         $record->fromArray(array(
           'name'            => $this->getRecordName('ProductFilter', $i),
           'type'            => rand(0, 5) > 0 ? 'choice' : 'range',
+          'group_id'        => $productType_id,
           'property_id'     => $i,
           'is_multiple'     => rand(0, 5) > 0 ? true : false,
           'position'        => $i,
@@ -118,6 +119,8 @@ EOF;
     $list->save();
     $list->free(true);
     unset($list);
+    
+    ProductCategoryTable::getInstance()->createQuery('productCategory')->query('UPDATE productCategory SET productCategory.filter_group_id = productCategory.id');
     
     $this->logSection('doctrine', 'loading test Products and ProductPropertyRelations');
     foreach ($productTypeList as $productType)

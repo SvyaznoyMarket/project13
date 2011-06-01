@@ -24,9 +24,14 @@ class ProductPropertyTable extends myDoctrineTable
 
     $this->setQueryParameters($q);
     
-    $q->where('productProperty.id = ?', $id);    
+    $q->leftJoin('productProperty.Option productPropertyOption')
+      ->addWhere('productProperty.id = ?', $id)
+      ->addOrderBy('productPropertyOption.position')
+    ;
     $q->useResultCache(true, null, $this->getRecordHash($id, $params));
     
-    return $q->fetchOne();
+    $record = $q->fetchOne();
+    
+    return $record;
   }
 }

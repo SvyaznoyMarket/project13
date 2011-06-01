@@ -7,13 +7,16 @@
  * 
  * @property integer $id
  * @property string $name
+ * @property Doctrine_Collection $Filter
  * @property Doctrine_Collection $Category
  * 
  * @method integer             getId()       Returns the current record's "id" value
  * @method string              getName()     Returns the current record's "name" value
+ * @method Doctrine_Collection getFilter()   Returns the current record's "Filter" collection
  * @method Doctrine_Collection getCategory() Returns the current record's "Category" collection
  * @method ProductFilterGroup  setId()       Sets the current record's "id" value
  * @method ProductFilterGroup  setName()     Sets the current record's "name" value
+ * @method ProductFilterGroup  setFilter()   Sets the current record's "Filter" collection
  * @method ProductFilterGroup  setCategory() Sets the current record's "Category" collection
  * 
  * @package    enter
@@ -45,6 +48,10 @@ abstract class BaseProductFilterGroup extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasMany('ProductFilter as Filter', array(
+             'local' => 'id',
+             'foreign' => 'group_id'));
+
         $this->hasMany('ProductCategory as Category', array(
              'local' => 'id',
              'foreign' => 'filter_group_id'));

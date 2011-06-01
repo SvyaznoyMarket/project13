@@ -15,6 +15,7 @@ abstract class BaseProductFilterFormFilter extends BaseFormFilterDoctrine
     $this->setWidgets(array(
       'name'        => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'type'        => new sfWidgetFormChoice(array('choices' => array('' => '', 'choice' => 'choice', 'range' => 'range'))),
+      'group_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => true)),
       'property_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => true)),
       'is_multiple' => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'position'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
@@ -23,6 +24,7 @@ abstract class BaseProductFilterFormFilter extends BaseFormFilterDoctrine
     $this->setValidators(array(
       'name'        => new sfValidatorPass(array('required' => false)),
       'type'        => new sfValidatorChoice(array('required' => false, 'choices' => array('choice' => 'choice', 'range' => 'range'))),
+      'group_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Group'), 'column' => 'id')),
       'property_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Property'), 'column' => 'id')),
       'is_multiple' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'position'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -48,6 +50,7 @@ abstract class BaseProductFilterFormFilter extends BaseFormFilterDoctrine
       'id'          => 'Number',
       'name'        => 'Text',
       'type'        => 'Enum',
+      'group_id'    => 'ForeignKey',
       'property_id' => 'ForeignKey',
       'is_multiple' => 'Boolean',
       'position'    => 'Number',

@@ -10,6 +10,15 @@
  */
 class productCatalogComponents extends myComponents
 {
+/**
+  * Executes filter_price component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  */
+  public function executeFilter_price()
+  {
+    
+  }
  /**
   * Executes filter_creator component
   *
@@ -30,13 +39,30 @@ class productCatalogComponents extends myComponents
     
     $this->setVar('list', $list, true);
   }
- /**
-  * Executes filter_product_parameter component
+  /**
+  * Executes filter_parameter component
   *
   * @param ProductCategory $productCategory Категория товара
   */
-  public function executeFilter_product_parameter()
+  public function executeFilter_parameter()
   {
+    $list = array();
+    foreach ($this->productCategory->FilterGroup->Filter as $productFilter)
+    {
+      $options = array();
+      foreach ($productFilter->Property->Option as $productPropertyOption)
+      {
+        $options[$productPropertyOption->id] = $productPropertyOption->value;
+      }
+      
+      $list[] = array(
+        'name'        => $productFilter->name,
+        'type'        => $productFilter->type,
+        'is_multiple' => $productFilter->is_multiple,
+        'options'     => $options,
+      );
+    }
     
+    $this->setVar('list', $list, true);
   }
 }

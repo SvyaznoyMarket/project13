@@ -26,6 +26,7 @@
  * @property Doctrine_Collection $SlaveAccessoryProduct
  * @property Doctrine_Collection $MasterAccessoryProduct
  * @property Doctrine_Collection $TagRelation
+ * @property Doctrine_Collection $UserTag
  * 
  * @method integer             getId()                     Returns the current record's "id" value
  * @method string              getToken()                  Returns the current record's "token" value
@@ -48,6 +49,7 @@
  * @method Doctrine_Collection getSlaveAccessoryProduct()  Returns the current record's "SlaveAccessoryProduct" collection
  * @method Doctrine_Collection getMasterAccessoryProduct() Returns the current record's "MasterAccessoryProduct" collection
  * @method Doctrine_Collection getTagRelation()            Returns the current record's "TagRelation" collection
+ * @method Doctrine_Collection getUserTag()                Returns the current record's "UserTag" collection
  * @method Product             setId()                     Sets the current record's "id" value
  * @method Product             setToken()                  Sets the current record's "token" value
  * @method Product             setName()                   Sets the current record's "name" value
@@ -69,6 +71,7 @@
  * @method Product             setSlaveAccessoryProduct()  Sets the current record's "SlaveAccessoryProduct" collection
  * @method Product             setMasterAccessoryProduct() Sets the current record's "MasterAccessoryProduct" collection
  * @method Product             setTagRelation()            Sets the current record's "TagRelation" collection
+ * @method Product             setUserTag()                Sets the current record's "UserTag" collection
  * 
  * @package    enter
  * @subpackage model
@@ -190,6 +193,10 @@ abstract class BaseProduct extends myDoctrineRecord
              'foreign' => 'slave_id'));
 
         $this->hasMany('TagProductRelation as TagRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_id'));
+
+        $this->hasMany('UserProductTag as UserTag', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 

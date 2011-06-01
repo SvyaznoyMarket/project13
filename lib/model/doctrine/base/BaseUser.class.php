@@ -12,6 +12,7 @@
  * @property string $middle_name
  * @property string $photo
  * @property Doctrine_Collection $Comment
+ * @property Doctrine_Collection $ProductTag
  * 
  * @method integer             getId()          Returns the current record's "id" value
  * @method string              getLogin()       Returns the current record's "login" value
@@ -20,6 +21,7 @@
  * @method string              getMiddleName()  Returns the current record's "middle_name" value
  * @method string              getPhoto()       Returns the current record's "photo" value
  * @method Doctrine_Collection getComment()     Returns the current record's "Comment" collection
+ * @method Doctrine_Collection getProductTag()  Returns the current record's "ProductTag" collection
  * @method User                setId()          Sets the current record's "id" value
  * @method User                setLogin()       Sets the current record's "login" value
  * @method User                setFirstName()   Sets the current record's "first_name" value
@@ -27,6 +29,7 @@
  * @method User                setMiddleName()  Sets the current record's "middle_name" value
  * @method User                setPhoto()       Sets the current record's "photo" value
  * @method User                setComment()     Sets the current record's "Comment" collection
+ * @method User                setProductTag()  Sets the current record's "ProductTag" collection
  * 
  * @package    enter
  * @subpackage model
@@ -86,6 +89,10 @@ abstract class BaseUser extends myDoctrineRecord
     {
         parent::setUp();
         $this->hasMany('ProductComment as Comment', array(
+             'local' => 'id',
+             'foreign' => 'user_id'));
+
+        $this->hasMany('UserProductTag as ProductTag', array(
              'local' => 'id',
              'foreign' => 'user_id'));
     }
