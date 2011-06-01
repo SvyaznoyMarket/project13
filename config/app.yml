@@ -1,6 +1,13 @@
 all:
+  rediska:
+    default:
+      servers:
+        main:
+          host: 127.0.0.1
+          persistent: true 
+
   doctrine:
     result_cache: true # кешировать результаты запросов
 
   product:
-    max_items_on_category: 8
+    max_items_on_category: 200
