@@ -10,4 +10,8 @@
  */
 class BaseForm extends sfFormSymfony
 {
+  public function configure()
+  {
+    
+  }
 }

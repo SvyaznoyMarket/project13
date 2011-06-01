@@ -11,6 +11,15 @@
 class productCatalogComponents extends myComponents
 {
 /**
+  * Executes filter component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  */
+  public function executeFilter()
+  {
+    
+  }
+/**
   * Executes filter_price component
   *
   * @param ProductCategory $productCategory Категория товара
