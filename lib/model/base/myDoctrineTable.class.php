@@ -8,7 +8,7 @@ class myDoctrineTable extends Doctrine_Table
 
     return $q;
   }
-  
+
   public function getQueryRootAlias()
   {
     return lcfirst($this->getComponentName());
@@ -18,12 +18,14 @@ class myDoctrineTable extends Doctrine_Table
   {
     $return = new Doctrine_Collection($this);
     $return->fromArray($data);
-    
+
     return $return;
   }
 
   public function createListByIds($ids, array $params = array())
   {
+    $this->applyDefaultParameters($params, array('index' => false));
+
     // TODO: использовать редиска мультигет
     $list = $this->createList();
     foreach ($ids as $id)
@@ -31,7 +33,14 @@ class myDoctrineTable extends Doctrine_Table
       $record = $this->getById($id, $params);
       if ($record)
       {
-        $list[] = $record;
+        if (false === $params['index'])
+        {
+          $list[] = $record;
+        }
+        else
+        {
+          $list[$record[$params['index']]] = $record;
+        }
       }
     }
 
@@ -42,11 +51,11 @@ class myDoctrineTable extends Doctrine_Table
   {
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q);
-    
+
     $q->where($q->getRootAlias().'.id = ?', $id)
       ->useResultCache(true, null, $this->getRecordHash($id, $params))
     ;
-    
+
     return $q->fetchOne();
   }
 
@@ -57,23 +66,23 @@ class myDoctrineTable extends Doctrine_Table
       ->where($column.' = ?', $value)
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
-    
+
     return $q->fetchOne();
   }
-  
+
   public function getIdsByQuery(Doctrine_Query $q)
   {
     $q = clone $q;
     $q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
-    
+
     $ids = $q->execute();
     if (!is_array($ids))
     {
       $ids = array($ids);
     }
-    
+
     return $ids;
   }
 
@@ -81,18 +90,18 @@ class myDoctrineTable extends Doctrine_Table
   {
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q, $params);
-    
+
     $ids = $this->getIdsByQuery($q);
 
     return $this->createListByIds($ids, $params);
   }
-  
+
   public function getForRoute(array $params)
   {
     $q = $this->createBaseQuery()
       ->addWhere($this->getQueryRootAlias().'.id = ?', $params[$this->getQueryRootAlias()])
     ;
-    
+
     return $q->fetchOne();
   }
 
@@ -113,7 +122,7 @@ class myDoctrineTable extends Doctrine_Table
   {
     $params = myToolkit::arrayDeepMerge($this->getDefaultParameters(), $defaults, $params);
   }
-  
+
   public function getDefaultParameters()
   {
     return array();
@@ -133,7 +142,7 @@ class myDoctrineTable extends Doctrine_Table
         }
         $params['select'] = implode(',', $select);
       }
-      
+
       if (0 == count($q->getDqlPart('select')))
       {
         $q->select($params['select']);
@@ -193,7 +202,7 @@ class myDoctrineTable extends Doctrine_Table
 
     ksort($params);
     $paramHash = count($params) > 0 ? md5(serialize($params)) : '~';
-    
+
     return $this->getQueryRootAlias().'-'.$id.'/'.$paramHash;
   }
 }
