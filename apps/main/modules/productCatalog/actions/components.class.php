@@ -45,6 +45,44 @@ class productCatalogComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
+ /**
+  * Executes category_list component
+  *
+  * @param Doctrine_Collection $productCategoryList Коллекция категорий товаров
+  */
+  public function executeCategory_list()
+  {
+    $list = array();
+    foreach ($this->productCategoryList as $productCategory)
+    {
+      $list[] = array(
+        'name'            => (string)$productCategory,
+        'productCategory' => $productCategory,
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
+/**
+  * Executes creator_list component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  */
+  public function executeCreator_list()
+  {
+    $creatorList = CreatorTable::getInstance()->getListByProductCategory($this->productCategory);
+
+    $list = array();
+    foreach ($creatorList as $creator)
+    {
+      $list[] = array(
+        'name' => (string)$creator,
+        'url'  => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $creator)),
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
 /**
   * Executes filter component
   *

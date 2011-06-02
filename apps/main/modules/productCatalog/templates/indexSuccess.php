@@ -5,5 +5,5 @@
 </div>
 
 <div class="block">
-  <?php include_component('productCategory', 'list', array('productCategoryList' => $productCategoryList)) ?>
+  <?php include_component('productCatalog', 'category_list', array('productCategoryList' => $productCategoryList)) ?>
 </div>
