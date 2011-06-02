@@ -15,6 +15,7 @@
  * @property boolean $view_list
  * @property text $description
  * @property decimal $rating
+ * @property decimal $price
  * @property ProductType $Type
  * @property Creator $Creator
  * @property ProductCategory $Category
@@ -38,6 +39,7 @@
  * @method boolean             getViewList()               Returns the current record's "view_list" value
  * @method text                getDescription()            Returns the current record's "description" value
  * @method decimal             getRating()                 Returns the current record's "rating" value
+ * @method decimal             getPrice()                  Returns the current record's "price" value
  * @method ProductType         getType()                   Returns the current record's "Type" value
  * @method Creator             getCreator()                Returns the current record's "Creator" value
  * @method ProductCategory     getCategory()               Returns the current record's "Category" value
@@ -60,6 +62,7 @@
  * @method Product             setViewList()               Sets the current record's "view_list" value
  * @method Product             setDescription()            Sets the current record's "description" value
  * @method Product             setRating()                 Sets the current record's "rating" value
+ * @method Product             setPrice()                  Sets the current record's "price" value
  * @method Product             setType()                   Sets the current record's "Type" value
  * @method Product             setCreator()                Sets the current record's "Creator" value
  * @method Product             setCategory()               Sets the current record's "Category" value
@@ -141,6 +144,14 @@ abstract class BaseProduct extends myDoctrineRecord
              'comment' => 'Рейтинг товара',
              'length' => 18,
              'scale' => '14',
+             ));
+        $this->hasColumn('price', 'decimal', 12, array(
+             'type' => 'decimal',
+             'notnull' => true,
+             'default' => 0,
+             'comment' => 'Цена товара',
+             'length' => 12,
+             'scale' => '2',
              ));
 
         $this->option('comment', 'Товар');

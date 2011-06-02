@@ -28,11 +28,16 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-
     $this->productFilter = $this->getProductFilter();
     $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
 
-    return sfView::NONE;
+    $q = ProductTable::getInstance()->createBaseQuery();
+    $this->productFilter->buildQuery($q);
+
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+    ));
+    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
  /**
   * Executes category action

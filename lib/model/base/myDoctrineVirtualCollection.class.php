@@ -11,8 +11,6 @@ class myDoctrineVirtualCollection implements ArrayAccess, Iterator, Countable
     $this->position = 0;
   }
 
-
-
   public function offsetExists($offset)
   {
     return isset($this->records[$offset]);
