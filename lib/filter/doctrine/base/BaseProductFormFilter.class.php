@@ -22,6 +22,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'view_list'   => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'description' => new sfWidgetFormFilterInput(),
       'rating'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'price'       => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
@@ -34,6 +35,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'view_list'   => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'description' => new sfValidatorPass(array('required' => false)),
       'rating'      => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
+      'price'       => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
     ));
 
     $this->widgetSchema->setNameFormat('product_filters[%s]');
@@ -63,6 +65,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'view_list'   => 'Boolean',
       'description' => 'Text',
       'rating'      => 'Number',
+      'price'       => 'Number',
     );
   }
 }

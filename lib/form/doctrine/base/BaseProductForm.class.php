@@ -25,6 +25,7 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'view_list'   => new sfWidgetFormInputCheckbox(),
       'description' => new sfWidgetFormInputText(),
       'rating'      => new sfWidgetFormInputText(),
+      'price'       => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
@@ -38,6 +39,7 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'view_list'   => new sfValidatorBoolean(array('required' => false)),
       'description' => new sfValidatorPass(array('required' => false)),
       'rating'      => new sfValidatorNumber(array('required' => false)),
+      'price'       => new sfValidatorNumber(array('required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
