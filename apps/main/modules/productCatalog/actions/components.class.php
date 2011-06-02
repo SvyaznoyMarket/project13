@@ -70,7 +70,9 @@ class productCatalogComponents extends myComponents
   */
   public function executeCreator_list()
   {
-    $creatorList = CreatorTable::getInstance()->getListByProductCategory($this->productCategory);
+    $creatorList = CreatorTable::getInstance()->getListByProductCategory($this->productCategory, array(
+      'order' => 'creator.name',
+    ));
 
     $list = array();
     foreach ($creatorList as $creator)
