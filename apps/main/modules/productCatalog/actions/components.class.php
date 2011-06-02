@@ -11,15 +11,54 @@
 class productCatalogComponents extends myComponents
 {
 /**
+  * Executes navigation component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  * @param Creator $creator Производитель
+  */
+  public function executeNavigation()
+  {
+    $list = array();
+
+    $list[] = array(
+      'name' => 'Главная',
+      'url'  => url_for('@homepage'),
+    );
+    $list[] = array(
+      'name' => 'Каталог товаров',
+      'url'  => url_for('@productCatalog'),
+    );
+    if (isset($this->productCategory))
+    {
+      $list[] = array(
+        'name' => $this->productCategory->name,
+        'url'  => url_for('productCatalog_category', $this->productCategory),
+      );
+    }
+    if (isset($this->creator))
+    {
+      $list[] = array(
+        'name' => $this->creator->name,
+        'url'  => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
+/**
   * Executes filter component
   *
   * @param ProductCategory $productCategory Категория товара
+  * @param myProductFormFilter $productFilter Категория товара
   */
   public function executeFilter()
   {
-    $this->filter = new myProductFormFilter(array(), array(
-      'productCategory' => $this->productCategory,
-    ));
+    if (empty($this->productFilter))
+    {
+      $this->productFilter = new myProductFormFilter(array(), array(
+        'productCategory' => $this->productCategory,
+      ));
+    }
   }
 /**
   * Executes filter_price component
@@ -28,7 +67,7 @@ class productCatalogComponents extends myComponents
   */
   public function executeFilter_price()
   {
-    
+
   }
  /**
   * Executes filter_creator component
@@ -37,18 +76,6 @@ class productCatalogComponents extends myComponents
   */
   public function executeFilter_creator()
   {
-    $creatorList = CreatorTable::getInstance()->getListByProductCategory($this->productCategory);
-    
-    $list = array();
-    foreach ($creatorList as $creator)
-    {
-      $list[] = array(
-        'name'     => (string)$creator,
-        'url'      => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $creator)),
-      );
-    }
-    
-    $this->setVar('list', $list, true);
   }
   /**
   * Executes filter_parameter component
@@ -57,23 +84,5 @@ class productCatalogComponents extends myComponents
   */
   public function executeFilter_parameter()
   {
-    $list = array();
-    foreach ($this->productCategory->FilterGroup->Filter as $productFilter)
-    {
-      $options = array();
-      foreach ($productFilter->Property->Option as $productPropertyOption)
-      {
-        $options[$productPropertyOption->id] = $productPropertyOption->value;
-      }
-      
-      $list[] = array(
-        'name'        => $productFilter->name,
-        'type'        => $productFilter->type,
-        'is_multiple' => $productFilter->is_multiple,
-        'options'     => $options,
-      );
-    }
-    
-    $this->setVar('list', $list, true);
   }
 }

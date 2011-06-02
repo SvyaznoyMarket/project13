@@ -2,16 +2,16 @@
 
 /**
  * Base project form.
- * 
+ *
  * @package    enter
  * @subpackage form
- * @author     Your name here 
+ * @author     Your name here
  * @version    SVN: $Id: BaseForm.class.php 20147 2009-07-13 11:46:57Z FabianLange $
  */
 class BaseForm extends sfFormSymfony
 {
   public function configure()
   {
-    
+    $this->widgetSchema->setFormFormatterName('default');
   }
 }

@@ -3,12 +3,19 @@ homepage:
   url:   /
   param: { module: default, action: index }
 
-# product
+# Каталог товаров
 #
 # product catalog
 productCatalog:
   url:   /catalog
   param: { module: productCatalog, action: index }
+#
+# product catalog filter
+productCatalog_filter:
+  url:   /catalog/:productCategory/_filter
+  param: { module: productCatalog, action: filter }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # product catalog by category
 productCatalog_category:
@@ -23,6 +30,8 @@ productCatalog_creator:
   param: { module: productCatalog, action: creator }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
+
+# Карточка товара
 #
 # product card
 productCard:

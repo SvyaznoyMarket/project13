@@ -20,6 +20,21 @@ class productCatalogActions extends myActions
     $this->productCategoryList = ProductCategoryTable::getInstance()->getList();
   }
  /**
+  * Executes filter action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeFilter(sfWebRequest $request)
+  {
+    $this->productCategory = $this->getRoute()->getObject();
+
+
+    $this->productFilter = $this->getProductFilter();
+    $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
+
+    return sfView::NONE;
+  }
+ /**
   * Executes category action
   *
   * @param sfRequest $request A request object
@@ -27,23 +42,16 @@ class productCatalogActions extends myActions
   public function executeCategory(sfWebRequest $request)
   {
     $this->productCategory = $this->getRoute()->getObject();
-    
-    /*
-    $this->productList = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
-      'order' => 'product.name',
-      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
-      'view'  => 'list',
-    ));
-    */
+
     $filter = array(
       'category' => $this->productCategory,
     );
-    
+
     $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
       'order' => 'product.name',
       'view'  => 'list',
     ));
-    
+
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
@@ -58,20 +66,12 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
     $this->creator = $this->getRoute()->getCreatorObject();
-    
-    /*
-    $this->productList = ProductTable::getInstance()->getListbyCategory($this->productCategory, array(
-      'creator' => $this->creator,
-      'order'   => 'product.name',
-      'limit'   => sfConfig::get('app_product_max_items_on_category', 20),
-      'view'    => 'list',
-    ));
-    */
+
     $filter = array(
       'category' => $this->productCategory,
       'creator'  => $this->creator,
     );
-    
+
     $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
       'order' => 'product.name',
       'view'  => 'list',
@@ -79,6 +79,15 @@ class productCatalogActions extends myActions
 
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+    ));
+  }
+
+
+
+  protected function getProductFilter()
+  {
+    return new myProductFormFilter(array(), array(
+      'productCategory' => $this->productCategory,
     ));
   }
 }
