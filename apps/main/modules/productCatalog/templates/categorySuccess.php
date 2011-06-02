@@ -1,7 +1,15 @@
 <h1><?php echo $productCategory ?></h1>
 
-<?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory)) ?>
+<div class="block">
+  <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory)) ?>
+</div>
 
-<?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
+<div class="block">
+  <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
+</div>
+
 <?php include_component('product', 'list', array('productPager' => $productPager)) ?>
-<?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
+
+<div class="block">
+  <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
+</div>

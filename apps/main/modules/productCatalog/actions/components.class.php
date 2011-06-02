@@ -17,7 +17,9 @@ class productCatalogComponents extends myComponents
   */
   public function executeFilter()
   {
-    
+    $this->filter = new myProductFormFilter(array(), array(
+      'productCategory' => $this->productCategory,
+    ));
   }
 /**
   * Executes filter_price component
