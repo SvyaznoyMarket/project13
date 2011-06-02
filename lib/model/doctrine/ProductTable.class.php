@@ -226,4 +226,32 @@ class ProductTable extends myDoctrineTable
       }
     }
   }
+
+  public function getMinPriceByCategory(ProductCategory $category, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->select('MIN(product.price) as price_min')
+      ->addWhere('product.category_id = ?', $category->id)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+    ;
+
+    return $q->fetchOne();
+  }
+
+  public function getMaxPriceByCategory(ProductCategory $category, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->select('MAX(product.price) as price_max')
+      ->addWhere('product.category_id = ?', $category->id)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+    ;
+
+    return $q->fetchOne();
+  }
 }

@@ -13,13 +13,18 @@ class myProductFormFilter extends sfFormFilter
       throw new InvalidArgumentException('You must provide a productCategory object.');
     }
 
+    $productTable = ProductTable::getInstance();
+
     // виджет цены
     $this->widgetSchema['price'] = new myWidgetFormRange(array(
       'value_from' => 100,
       'value_to'   => 100000,
     ));
     $this->widgetSchema['price']->setLabel('Цена');
-    $this->setDefault('price', array('from' => 500, 'to' => 3000));
+    $this->setDefault('price', array(
+      'from' => (int)$productTable->getMinPriceByCategory($productCategory),
+      'to'   => (int)$productTable->getMaxPriceByCategory($productCategory)
+    ));
     $this->validatorSchema['price'] = new sfValidatorPass();
 
     // виджет производителя
