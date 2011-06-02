@@ -5,7 +5,7 @@ class myDoctrineVirtualCollection implements ArrayAccess, Iterator, Countable
   protected $position = 0;
 
   protected $records = array();
-  
+
   public function __construct()
   {
     $this->position = 0;
@@ -25,7 +25,7 @@ class myDoctrineVirtualCollection implements ArrayAccess, Iterator, Countable
   public function offsetSet($offset, $value) {
     if (null === $offset)
     {
-      $this->records[] = $value;      
+      $this->records[] = $value;
     }
     else {
       $this->records[$offset] = $value;
@@ -35,7 +35,7 @@ class myDoctrineVirtualCollection implements ArrayAccess, Iterator, Countable
   public function offsetUnset($offset)
   {
     unset($this->records[$offset]);
-  }  
+  }
 
 
 
@@ -70,4 +70,16 @@ class myDoctrineVirtualCollection implements ArrayAccess, Iterator, Countable
   {
     return count($this->records);
   }
+
+  public function toArray($deep = true, $prefixKey = false)
+  {
+    $data = array();
+    foreach ($this as $key => $record)
+    {
+      $data[$key] = is_object($record) && method_exists($record, 'toArray') ? $record->toArray($deep) : $record;
+    }
+
+    return $data;
+  }
+
 }

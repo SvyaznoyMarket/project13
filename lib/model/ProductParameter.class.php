@@ -1,18 +1,18 @@
 <?php
 
-class ProductParameter
+class ProductParameter extends myDoctrineVirtualRecord
 {
   protected
     $property = null,
     $value = null,
     $group_id
   ;
-  
+
   public function __construct(ProductTypePropertyRelation $productTypePropertyRelation, array $productPropertyRelationArray = array())
   {
     $this->property = $productTypePropertyRelation['Property'];
     $this->group_id = $productTypePropertyRelation['group_id'];
-    
+
     $value = array();
     foreach ($productPropertyRelationArray as $propertyRelation)
     {
@@ -30,7 +30,7 @@ class ProductParameter
           break;
       }
     }
-    
+
     $this->value = $this->property->is_multiple ? $value : $value[0];
   }
 

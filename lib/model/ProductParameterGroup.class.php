@@ -1,12 +1,12 @@
 <?php
 
-class ProductParameterGroup
+class ProductParameterGroup extends myDoctrineVirtualRecord
 {
   protected
     $name = null,
     $parameter = null
   ;
-  
+
   public function __construct(ProductPropertyGroup $productPropertyGroup, array $productParameterArray = null)
   {
     $this->name = $productPropertyGroup['name'];
