@@ -40,7 +40,7 @@ class myDoctrineTable extends Doctrine_Table
         }
         else
         {
-          $list[$column] = $record;
+          $list[$record[$column]] = $record;
         }
       }
     }
