@@ -11,11 +11,9 @@
 <div class="block">
   <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
 </div>
-
 <div class="block">
   <?php include_component('product', 'list', array('productPager' => $productPager)) ?>
 </div>
-
 <div class="block">
   <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
 </div>

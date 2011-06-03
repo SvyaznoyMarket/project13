@@ -20,6 +20,7 @@ class myProductFormFilter extends sfFormFilter
     ));
     $this->widgetSchema['price']->setLabel('Цена');
     $this->setDefault('price', array('from' => 500, 'to' => 3000));
+    $this->validatorSchema['price'] = new sfValidatorPass();
 
     // виджет производителя
     $choices = CreatorTable::getInstance()
@@ -32,6 +33,7 @@ class myProductFormFilter extends sfFormFilter
       'expanded' => true
     ));
     $this->widgetSchema['creator']->setLabel('Производитель');
+    $this->validatorSchema['creator'] = new sfValidatorPass();
 
     // виджеты параметров
     $form = new BaseForm();
@@ -41,18 +43,42 @@ class myProductFormFilter extends sfFormFilter
 
       $form->setWidget($productFilter->id, $widget);
       $form->getWidgetSchema()->setLabel($productFilter->id, $productFilter->name);
+      $form->setValidator($productFilter->id, new sfValidatorPass());
     }
-    $this->embedForm('parameter', $form);
-    $this->widgetSchema['parameter']->setLabel('Параметры');
+    $this->embedForm('param', $form);
+    $this->widgetSchema['param']->setLabel('Параметры');
 
-    $this->widgetSchema->setNameFormat('filter[%s]');
+    $this->widgetSchema->setNameFormat('f[%s]');
   }
 
-  public function getFilter()
+  public function buildQuery(myDoctrineQuery $q)
   {
-    $filter = array();
+    $productCategory = $this->getOption('productCategory');
 
-    
+    $filter = array(
+      'category'   => $productCategory,
+      'creator'    => $this->values['creator'],
+      'price'      => array(
+        'from' => $this->values['price']['from'],
+        'to'   => $this->values['price']['to'],
+      ),
+      'parameters' => array(),
+    );
+
+    $productFilterList = $productCategory->FilterGroup->Filter;
+    $productFilterList->indexBy('id');
+    foreach ($this->values['param'] as $id => $param)
+    {
+      $productFilter = $productFilterList->getByIndex('id', $id);
+      if (!$productFilter) continue;
+
+      $filter['parameters'][] = array(
+        'filter' => $productFilter,
+        'values' => $param,
+      );
+    }
+
+    ProductTable::getInstance()->setQueryForFilter($q, $filter);
   }
 
   protected function getWidgetChoice(ProductFilter $productFilter)

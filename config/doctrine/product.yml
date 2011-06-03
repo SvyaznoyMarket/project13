@@ -112,6 +112,7 @@ Product:
     view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
     description:       { type: text, notnull: false, default: null, comment: 'Описание товара' }
     rating:            { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
+    price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }
   relations:
     Type:              { class: ProductType, foreignAlias: Product, local: type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     Creator:           { class: Creator, foreignAlias: Product, local: creator_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }

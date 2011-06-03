@@ -5,7 +5,7 @@
 </div>
 
 <div class="block">
-  <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory)) ?>
+  <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory, 'productFilter' => $productFilter)) ?>
 </div>
 
 <div class="block">
