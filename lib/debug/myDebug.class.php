@@ -64,6 +64,14 @@ class myDebug
     {
       $return = $value->format('Y-m-d H:i:s');
     }
+    else if (is_object($value))
+    {
+      $return = array(
+        'class'   => get_class($value),
+        'methods' => get_class_methods($value),
+        'vars'    => get_class_vars(get_class($value)),
+      );
+    }
 
     if (is_array($return))
     {
