@@ -57,4 +57,16 @@ class ProductCategoryTable extends myDoctrineTable
 
     return $record;
   }
+
+  public function getList(array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+    $this->setQueryParameters($q, $params);
+
+    $q->useResultCache(true, null, $this->getQueryHash('productCategory-all', $params));
+
+    $ids = $this->getIdsByQuery($q);
+
+    return $this->createListByIds($ids, $params);
+  }
 }
