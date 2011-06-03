@@ -53,8 +53,11 @@ class ProductTable extends myDoctrineTable
 
     $q->leftJoin('product.Category productCategory')
       ->leftJoin('product.Creator creator')
-      ->leftJoin('product.PropertyRelation productPropertyRelation')
     ;
+    if ($params['with_properties'])
+    {
+      $q->leftJoin('product.PropertyRelation productPropertyRelation');
+    }
 
     $this->setQueryParameters($q);
 
@@ -69,13 +72,13 @@ class ProductTable extends myDoctrineTable
       return $record;
     }
 
+    $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
+      'view'           => $params['view'],
+      'group_property' => $params['group_property'],
+    ));
+
     if ($params['with_properties'])
     {
-      $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
-        'view'           => $params['view'],
-        'group_property' => $params['group_property'],
-      ));
-
       // группировка параметров продукта по свойствам продукта
       $productPropertyRelationArray = array();
       foreach ($record['PropertyRelation'] as $propertyRelation)
@@ -176,6 +179,7 @@ class ProductTable extends myDoctrineTable
     {
       $q->addWhere('product.category_id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
     }
+
     // производитель
     if ($filter['creator'])
     {
@@ -187,6 +191,7 @@ class ProductTable extends myDoctrineTable
         $q->addWhere('product.creator_id = ?', ($filter['creator'] instanceof Creator) ? $filter['creator']->id : $filter['creator']);
       }
     }
+
     // цена
     if ($filter['price']['from'])
     {
@@ -195,6 +200,30 @@ class ProductTable extends myDoctrineTable
     if ($filter['price']['to'])
     {
       $q->addWhere('product.price <= ?', $filter['price']['to']);
+    }
+
+    // параметры
+    if (count($filter['parameters']) > 0)
+    {
+      if (!$q->hasAliasDeclaration('productPropertyRelation'))
+      {
+        $q->leftJoin('product.PropertyRelation productPropertyRelation');
+      }
+
+      foreach ($filter['parameters'] as $parameter)
+      {
+        if (('choice' == $parameter['filter']->type) && (count($parameter['values']) > 0))
+        {
+          $q->addWhere(
+            'productPropertyRelation.property_id = ? AND productPropertyRelation.option_id IN ('.implode(',', array_fill(0, count($parameter['values']), '?')).')',
+            array_merge(array($parameter['filter']->property_id, ), $parameter['values'])
+          );
+        }
+        else if ('range' == $parameter['filter']->type)
+        {
+
+        }
+      }
     }
   }
 }

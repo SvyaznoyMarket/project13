@@ -99,6 +99,8 @@ class productCatalogComponents extends myComponents
         'productCategory' => $this->productCategory,
       ));
     }
+
+    $this->url = url_for('productCatalog_filter', $this->productCategory);
   }
 /**
   * Executes filter_price component

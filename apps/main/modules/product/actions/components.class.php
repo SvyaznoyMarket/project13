@@ -12,12 +12,12 @@ class productComponents extends myComponents
 {
  /**
   * Executes show component
-  * 
+  *
   * @param Product $product Товар
   */
   public function executeShow()
   {
-    
+
   }
  /**
   * Executes list component
@@ -31,11 +31,12 @@ class productComponents extends myComponents
     {
       $list[] = array(
         'name'     => (string)$product,
+        'creator'  => (string)$product->Creator,
         'has_link' => $product['view_show'],
         'product'  => $product,
       );
     }
-    
+
     $this->setVar('list', $list, true);
   }
  /**
@@ -59,7 +60,7 @@ class productComponents extends myComponents
     $this->first = $this->productPager->getFirstPage();
     $this->last = $this->productPager->getLastPage();
     $this->page = $this->productPager->getPage();
-    
+
     $this->setVar('list', $list, true);
   }
  /**
@@ -77,7 +78,7 @@ class productComponents extends myComponents
         'value' => $parameter->getValue(),
       );
     }
-    
+
     $this->setVar('list', $list, true);
   }
  /**
@@ -96,15 +97,15 @@ class productComponents extends myComponents
         $parameters[] = array(
           'name'  => $parameter->getName(),
           'value' => $parameter->getValue(),
-        );        
+        );
       }
-      
+
       $list[] = array(
         'name'       => $parameterGroup->getName(),
         'parameters' => $parameters,
       );
     }
-    
+
     $this->setVar('list', $list, true);
   }
 }
