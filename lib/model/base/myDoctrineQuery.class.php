@@ -8,7 +8,15 @@ class myDoctrineQuery extends Doctrine_Query
     {
       $driver = null;
     }
-    
+
     return parent::useResultCache($driver, $timeToLive, $resultCacheHash);
+  }
+
+  public function hasAliasDeclaration($componentAlias)
+  {
+    // for fix bug?
+    $this->getSqlQuery();
+
+    return parent::hasAliasDeclaration($componentAlias);
   }
 }
