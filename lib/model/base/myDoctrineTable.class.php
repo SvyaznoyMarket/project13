@@ -24,7 +24,7 @@ class myDoctrineTable extends Doctrine_Table
 
   public function createListByIds($ids, array $params = array())
   {
-    $this->applyDefaultParameters($params, array('index' => false));
+    $this->applyDefaultParameters($params, array('index' => array()));
 
     // TODO: использовать редиска мультигет
     $list = $this->createList();
@@ -33,13 +33,14 @@ class myDoctrineTable extends Doctrine_Table
       $record = $this->getById($id, $params);
       if ($record)
       {
-        if (false === $params['index'])
+        $column = (isset($params['index'][$this->getQueryRootAlias()]) && $this->hasColumn($params['index'][$this->getQueryRootAlias()])) ? $params['index'][$this->getQueryRootAlias()] : false;
+        if (false === $column)
         {
           $list[] = $record;
         }
         else
         {
-          $list[$record[$params['index']]] = $record;
+          $list[$column] = $record;
         }
       }
     }
@@ -177,10 +178,12 @@ class myDoctrineTable extends Doctrine_Table
       $q->limit($params['limit']);
     }
     // index by
+    /*
     if (isset($params['index']))
     {
       $q->from("{$this->getClassnameToReturn()} {$q->getRootAlias()} INDEXBY {$q->getRootAlias()}.{$params['index']}");
     }
+    */
     // hydrate
     /*
     if (isset($params['hydrate']))
