@@ -1,0 +1,1 @@
+<?php include_component('user', 'profile_'.$view, $sf_data) ?>

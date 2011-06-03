@@ -10,7 +10,11 @@
  */
 class UserForm extends BaseUserForm
 {
+  /**
+   * @see GuardUserForm
+   */
   public function configure()
   {
+    parent::configure();
   }
 }

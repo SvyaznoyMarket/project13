@@ -14,14 +14,14 @@ abstract class BaseUserProductTagFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'name'       => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'user_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
+      'user_id'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => true)),
       'position'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
       'name'       => new sfValidatorPass(array('required' => false)),
-      'user_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
+      'user_id'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'product_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Product'), 'column' => 'id')),
       'position'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
     ));
@@ -45,7 +45,7 @@ abstract class BaseUserProductTagFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'         => 'Number',
       'name'       => 'Text',
-      'user_id'    => 'ForeignKey',
+      'user_id'    => 'Number',
       'product_id' => 'ForeignKey',
       'position'   => 'Number',
     );

@@ -18,6 +18,17 @@ class ProductCategoryTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductCategory');
   }
 
+  public function createBaseQuery(array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createQuery('productCategory');
+
+    $q->orderBy('productCategory.root_id, productCategory.lft');
+
+    return $q;
+  }
+
   public function getForRoute(array $params)
   {
     $id = isset($params['productCategory']) ? $this->getIdBy('token', $params['productCategory']) : null;

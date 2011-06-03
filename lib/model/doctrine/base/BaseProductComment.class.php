@@ -12,7 +12,6 @@
  * @property integer $helpful
  * @property integer $unhelpful
  * @property Product $Product
- * @property User $User
  * 
  * @method integer        getId()         Returns the current record's "id" value
  * @method integer        getProductId()  Returns the current record's "product_id" value
@@ -21,7 +20,6 @@
  * @method integer        getHelpful()    Returns the current record's "helpful" value
  * @method integer        getUnhelpful()  Returns the current record's "unhelpful" value
  * @method Product        getProduct()    Returns the current record's "Product" value
- * @method User           getUser()       Returns the current record's "User" value
  * @method ProductComment setId()         Sets the current record's "id" value
  * @method ProductComment setProductId()  Sets the current record's "product_id" value
  * @method ProductComment setUserId()     Sets the current record's "user_id" value
@@ -29,7 +27,6 @@
  * @method ProductComment setHelpful()    Sets the current record's "helpful" value
  * @method ProductComment setUnhelpful()  Sets the current record's "unhelpful" value
  * @method ProductComment setProduct()    Sets the current record's "Product" value
- * @method ProductComment setUser()       Sets the current record's "User" value
  * 
  * @package    enter
  * @subpackage model
@@ -87,11 +84,6 @@ abstract class BaseProductComment extends myDoctrineRecord
         parent::setUp();
         $this->hasOne('Product', array(
              'local' => 'product_id',
-             'foreign' => 'id',
-             'onDelete' => 'CASCADE'));
-
-        $this->hasOne('User', array(
-             'local' => 'user_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
     }

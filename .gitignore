@@ -1,3 +1,5 @@
 cache
 log
 /plugins/.registry/
+/plugins/.channels/
+/web/uploads

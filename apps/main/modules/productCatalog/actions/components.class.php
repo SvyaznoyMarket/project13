@@ -58,6 +58,7 @@ class productCatalogComponents extends myComponents
       $list[] = array(
         'name'            => (string)$productCategory,
         'productCategory' => $productCategory,
+        'level'           => $productCategory->level,
       );
     }
 
