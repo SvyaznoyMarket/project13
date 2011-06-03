@@ -45,7 +45,9 @@ class ProductTable extends myDoctrineTable
 
   public function getById($id, array $params = array())
   {
-    $this->applyDefaultParameters($params);
+    $this->applyDefaultParameters($params, array(
+      'with_properties' => true,
+    ));
 
     $q = $this->createBaseQuery($params);
 
@@ -67,44 +69,47 @@ class ProductTable extends myDoctrineTable
       return $record;
     }
 
-    $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
-      'view'           => $params['view'],
-      'group_property' => $params['group_property'],
-    ));
-
-    // группировка параметров продукта по свойствам продукта
-    $productPropertyRelationArray = array();
-    foreach ($record['PropertyRelation'] as $propertyRelation)
+    if ($params['with_properties'])
     {
-      if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
+      $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
+        'view'           => $params['view'],
+        'group_property' => $params['group_property'],
+      ));
+
+      // группировка параметров продукта по свойствам продукта
+      $productPropertyRelationArray = array();
+      foreach ($record['PropertyRelation'] as $propertyRelation)
       {
-        $productPropertyRelationArray[$propertyRelation['property_id']] = array();
-      }
-      $productPropertyRelationArray[$propertyRelation['property_id']][] = $propertyRelation;
-    }
-
-    // тип товара
-    foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
-    {
-      //if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]) && null !== $productPropertyRelationArray[$propertyRelation['property_id']]) continue;
-
-      $record['Parameter'][] = new ProductParameter($propertyRelation, $productPropertyRelationArray[$propertyRelation['property_id']]);
-    }
-
-    // группировка параметров товара по группам
-    if ($params['group_property'])
-    {
-      foreach ($record['Type']['PropertyGroup'] as $propertyGroup)
-      {
-        $productParameterArray = array();
-        foreach ($record['Parameter'] as $productParameter)
+        if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
         {
-          if ($productParameter->getGroupId() == $propertyGroup->id)
-          {
-            $productParameterArray[] = $productParameter;
-          }
+          $productPropertyRelationArray[$propertyRelation['property_id']] = array();
         }
-        $record['ParameterGroup'][] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+        $productPropertyRelationArray[$propertyRelation['property_id']][] = $propertyRelation;
+      }
+
+      // тип товара
+      foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
+      {
+        //if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]) && null !== $productPropertyRelationArray[$propertyRelation['property_id']]) continue;
+
+        $record['Parameter'][] = new ProductParameter($propertyRelation, $productPropertyRelationArray[$propertyRelation['property_id']]);
+      }
+
+      // группировка параметров товара по группам
+      if ($params['group_property'])
+      {
+        foreach ($record['Type']['PropertyGroup'] as $propertyGroup)
+        {
+          $productParameterArray = array();
+          foreach ($record['Parameter'] as $productParameter)
+          {
+            if ($productParameter->getGroupId() == $propertyGroup->id)
+            {
+              $productParameterArray[] = $productParameter;
+            }
+          }
+          $record['ParameterGroup'][] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+        }
       }
     }
 
@@ -163,15 +168,33 @@ class ProductTable extends myDoctrineTable
       'category'   => false,
       'creator'    => false,
       'parameters' => array(),
+      'price'      => array('from' => null, 'to' => null),
     ), $filter);
 
-    if ($filter['category'] && ($filter['category'] instanceof ProductCategory))
+    // категория
+    if ($filter['category'])
     {
-      $q->addWhere('product.category_id = ?', $filter['category']->id);
+      $q->addWhere('product.category_id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
     }
-    if ($filter['creator'] && ($filter['creator'] instanceof Creator))
+    // производитель
+    if ($filter['creator'])
     {
-      $q->addWhere('product.creator_id = ?', $filter['creator']->id);
+      if (is_array($filter['creator']))
+      {
+        $q->whereIn('product.creator_id', $filter['creator']);
+      }
+      else {
+        $q->addWhere('product.creator_id = ?', ($filter['creator'] instanceof Creator) ? $filter['creator']->id : $filter['creator']);
+      }
+    }
+    // цена
+    if ($filter['price']['from'])
+    {
+      $q->addWhere('product.price >= ?', $filter['price']['from']);
+    }
+    if ($filter['price']['to'])
+    {
+      $q->addWhere('product.price <= ?', $filter['price']['to']);
     }
   }
 }
