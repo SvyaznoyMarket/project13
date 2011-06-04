@@ -33,11 +33,6 @@ class ProductCategoryTable extends myDoctrineTable
   {
     $id = isset($params['productCategory']) ? $this->getIdBy('token', $params['productCategory']) : null;
 
-    if (!$id)
-    {
-      return null;
-    }
-
     return $this->getById($id, array());
   }
 

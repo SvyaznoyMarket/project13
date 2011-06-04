@@ -17,7 +17,6 @@ class newsCategoryActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->forward('default', 'module');
   }
 
   public function executeYear(sfRequest $request)

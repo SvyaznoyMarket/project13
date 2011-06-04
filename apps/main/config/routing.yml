@@ -109,6 +109,7 @@ user_forgotPassword:
 user_changePassword:
   url:   /private/password
   param: { module: guardUser, action: changePassword }
+
 #
 # user product history
 userProductHistory:
@@ -119,6 +120,7 @@ userProductHistory:
 userProductHistory_clear:
   url:   /private/product-history/clear
   param: { module: userProductHistory, action: clear }
+
 #
 # user delayed product
 userDelayedProduct:
@@ -145,6 +147,7 @@ userDelayedProduct_clear:
   param: { module: userDelayedProduct, action: clear }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+
 #
 # user product notice
 userProductNotice:
@@ -172,6 +175,35 @@ userProductNotice_clear:
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
 
+#
+# user tag
+userTag:
+  url:   /private/tags
+  param: { module: userTag, action: index }
+#
+# user tag create
+userTag_create:
+  url:     /private/tags/create
+  param:   { module: userTag, action: create }
+  class:   myDoctrineRoute
+  options: { model: UserTag, type: object, method: getForRoute }
+#
+# user tag delete
+userTag_delete:
+  url:     /private/tags/delete/:userTag
+  param:   { module: userTag, action: delete }
+  class:   myDoctrineRoute
+  options: { model: UserTag, type: object, method: getForRoute }
+#
+# user tag update
+userTag_update:
+  url:     /private/tags/update/:userTag
+  param:   { module: userTag, action: update }
+  class:   myDoctrineRoute
+  options: { model: UserTag, type: object, method: getForRoute }
+
+
+
 # Корзина товаров
 #
 # cart
@@ -194,11 +226,11 @@ cart_clear:
   url:   /cart/clear
   param: { module: cart, action: clear }
 
-# generic rules
-# please, remove them by adding more specific rules
-default_index:
-  url:   /:module
-  param: { action: index }
+
+
+default_show:
+  url:   /:page
+  param: { module: default, action: show }
 
 default:
   url:   /:module/:action/*

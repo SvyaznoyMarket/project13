@@ -50,6 +50,11 @@ class myDoctrineTable extends Doctrine_Table
 
   public function getById($id, array $params = array())
   {
+    if (!$id)
+    {
+      return null;
+    }
+
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q);
 

@@ -27,24 +27,12 @@ class CreatorTable extends myDoctrineTable
     $q->addWhere('creator.id = ?', $id);
     $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
 
-    $record = $q->fetchOne();
-
-/*    if (!$record)
-    {
-      return $record;
-    }*/
-
-    return $record;
+    return $q->fetchOne();
   }
 
   public function getForRoute(array $params)
   {
     $id = isset($params['creator']) ? $this->getIdBy('token', $params['creator']) : null;
-
-    if (!$id)
-    {
-      return null;
-    }
 
     return $this->getById($id, array());
   }

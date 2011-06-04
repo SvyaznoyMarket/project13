@@ -123,11 +123,6 @@ class ProductTable extends myDoctrineTable
   {
     $id = isset($params['product']) ? $this->getIdBy('token', $params['product']) : null;
 
-    if (!$id)
-    {
-      return null;
-    }
-
     return $this->getById($id, array(
       'group_property' => true,
       'view'           => 'show',
