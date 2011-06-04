@@ -2,31 +2,36 @@
 
 class myUser extends myGuardSecurityUser
 {
-  protected $cart;
-
-  public function initialize(sfEventDispatcher $dispatcher, sfStorage $storage, $options = array())
-  {
-    parent::initialize($dispatcher, $storage, $options);
-
-    $this->cart = new Cart($this->getAttribute('cart', array()));
-    $this->productHistory = new UserProductHistory($this->getAttribute('productHistory', array()));
-  }
+  protected
+    $cart = null,
+    $productHistory = null
+  ;
 
   public function shutdown()
   {
-    $this->setAttribute('cart', $this->cart->dump());
-    $this->setAttribute('productHistory', $this->productHistory->dump());
+    $this->setAttribute('cart', $this->getCart()->dump());
+    $this->setAttribute('productHistory', $this->getProductHistory()->dump());
 
     parent::shutdown();
   }
 
   public function getCart()
   {
+    if (null == $this->cart)
+    {
+      $this->cart = new Cart($this->getAttribute('cart', array()));
+    }
+
     return $this->cart;
   }
 
   public function getProductHistory()
   {
+    if (null == $this->productHistory)
+    {
+      $this->productHistory = new UserProductHistory($this->getAttribute('productHistory', array()));
+    }
+
     return $this->productHistory;
   }
 

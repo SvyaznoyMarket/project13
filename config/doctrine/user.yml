@@ -22,3 +22,14 @@ UserProductTag:
   relations:
     User:              { class: User, foreignAlias: ProductTag, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: UserTag, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+UserDelayedProduct:
+  options:
+    comment: 'Отложенные товары пользователя'
+  columns:
+    user_id:           { type: integer(20), primary: true, notnull: true }
+    product_id:        { type: integer(20), primary: true, notnull: true }
+    is_wished:         { type: boolean, notnull: true, default: false }
+  relations:
+    User:              { class: User, foreignAlias: DelayedProduct, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Product:           { class: Product, foreignAlias: UserDelayedProduct, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

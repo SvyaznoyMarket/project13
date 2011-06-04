@@ -14,12 +14,17 @@ class cartComponents extends myComponents
   * Executes buy_button component
   *
   * @param Product $product Товар
-  * @param int $amount Количество товара
+  * @param int $quantity Количество товара
   * @param string $view Вид отображения кнопки
   */
   public function executeBuy_button()
   {
     $cart = $this->getUser()->getCart();
+
+    if (!$this->product->is_insale)
+    {
+      return sfView::NONE;
+    }
 
     if ($cart->hasProduct($this->product->id))
     {
@@ -29,9 +34,29 @@ class cartComponents extends myComponents
     {
       $this->button = 'buy';
     }
-    if (!isset($this->view) || is_null($this->view))
+    if (!in_array($this->view, array()))
     {
       $this->view = 'default';
     }
+  }
+ /**
+  * Executes list component
+  *
+  */
+  public function executeList()
+  {
+    $cart = $this->getUser()->getCart();
+
+    $list = array();
+    foreach ($cart->getProducts() as $product)
+    {
+      $list[] = array(
+        'token'    => $product->token,
+        'name'     => (string)$product,
+        'quantity' => $product['cart']['quantity'],
+      );
+    }
+
+    $this->setVar('list', $list, true);
   }
 }

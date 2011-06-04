@@ -160,6 +160,7 @@ EOF;
           'name'        => $this->getRecordName('Product', $productType->id.'-'.$i),
           'view_show'   => rand(0, 10) > 0 ? true : false,
           'view_list'   => rand(0, 50) > 0 ? true : false,
+          'is_instock'  => rand(0, 30) > 0 ? true : false,
         ));
 
         foreach ($productType->Property as $j => $property)

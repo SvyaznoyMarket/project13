@@ -12,15 +12,15 @@ productCatalog:
 #
 # product catalog by category
 productCatalog_category:
-  url:   /catalog/:productCategory
-  param: { module: productCatalog, action: category }
+  url:   /catalog/:productCategory/:page
+  param: { module: productCatalog, action: category, page: 1 }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # product catalog by category and creator
 productCatalog_creator:
-  url:   /catalog/:productCategory/:creator
-  param: { module: productCatalog, action: creator }
+  url:   /catalog/:productCategory/:creator/:page
+  param: { module: productCatalog, action: creator, page: 1 }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
@@ -56,6 +56,125 @@ news_show:
   param: { module: news, action: show }
   class:   myNewsRoute
   options: { model: News, type: object, method: getForRoute }
+productComment_create:
+  url:   /products/:product/comments/create/:parent
+  param: { module: productComment, action: create, parent: ~ }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
+
+
+# Пользователь
+#
+# user
+user:
+  url:   /private/
+  param: { module: user, action: index }
+#
+# user signin
+user_signin:
+  url:   /login
+  param: { module: guardUser, action: signin }
+#
+# user signout
+user_signout:
+  url:   /logout
+  param: { module: guardUser, action: signout }
+#
+# user forgot password
+user_forgotPassword:
+  url:   /request-password
+  param: { module: guardUser, action: forgotPassword }
+#
+# user change password
+user_changePassword:
+  url:   /private/password
+  param: { module: guardUser, action: changePassword }
+#
+# user product history
+userProductHistory:
+  url:   /private/product-history
+  param: { module: userProductHistory, action: index }
+#
+# user product history clear
+userProductHistory_clear:
+  url:   /private/product-history/clear
+  param: { module: userProductHistory, action: clear }
+#
+# user delayed product
+userDelayedProduct:
+  url:   /private/delayed-products
+  param: { module: userDelayedProduct, action: index }
+#
+# user delayed product create
+userDelayedProduct_create:
+  url:   /private/delayed-products/create/:product
+  param: { module: userDelayedProduct, action: create }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+# user delayed product delete
+userDelayedProduct_delete:
+  url:   /private/delayed-products/delete/:product
+  param: { module: userDelayedProduct, action: delete }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+# user delayed product clear
+userDelayedProduct_clear:
+  url:   /private/delayed-products/clear
+  param: { module: userDelayedProduct, action: clear }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+# user product notice
+userProductNotice:
+  url:   /private/product-notices
+  param: { module: userProductNotice, action: index }
+#
+# user product notice create
+userProductNotice_create:
+  url:   /private/product-notices/create/:product
+  param: { module: userProductNotice, action: create }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+# user product notice delete
+userProductNotice_delete:
+  url:   /private/product-notices/delete/:product
+  param: { module: userProductNotice, action: delete }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+# user product notice clear
+userProductNotice_clear:
+  url:   /private/product-notices/clear
+  param: { module: userProductNotice, action: clear }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+
+# Корзина товаров
+#
+# cart
+cart:
+  url:   /cart
+  param: { module: cart, action: index }
+#
+# cart add
+cart_add:
+  url:   /cart/add/:product/:quantity
+  param: { module: cart, action: add }
+#
+# cart delete
+cart_delete:
+  url:   /cart/delete/:product
+  param: { module: cart, action: delete }
+#
+# cart clear
+cart_clear:
+  url:   /cart/clear
+  param: { module: cart, action: clear }
 
 # generic rules
 # please, remove them by adding more specific rules

@@ -59,18 +59,6 @@ class productComponents extends myComponents
     {
       return sfView::NONE;
     }
-
-    $list = array();
-    foreach ($this->productPager->getLinks() as $page)
-    {
-      $list[] = $page;
-    }
-
-    $this->first = $this->productPager->getFirstPage();
-    $this->last = $this->productPager->getLastPage();
-    $this->page = $this->productPager->getPage();
-
-    $this->setVar('list', $list, true);
   }
  /**
   * Executes property component

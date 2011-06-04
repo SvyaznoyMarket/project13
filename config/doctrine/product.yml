@@ -68,6 +68,7 @@ ProductPropertyGroup:
   options:
     comment: 'Группа свойств товара'
   columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: false, default: null }
     product_type_id:   { type: integer(20), notnull: true }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
@@ -79,8 +80,8 @@ ProductTypePropertyRelation:
     comment: 'Связь типов и свойств товара'
   columns:
     name:              { type: string(255), notnull: false, default: null }
-    product_type_id:   { type: integer(20), notnull: true }
-    property_id:       { type: integer(20), notnull: true }
+    product_type_id:   { type: integer(20), primary: true, notnull: true }
+    property_id:       { type: integer(20), primary: true, notnull: true }
     group_id:          { type: integer(20), notnull: false, default: null }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
     group_position:    { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки в группе свойств товара' }
@@ -116,6 +117,7 @@ Product:
     category_id:       { type: integer(20), notnull: true }
     view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар по прямой ссылке?' }
     view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
+    is_instock:        { type: boolean, notnull: true, default: false }
     description:       { type: text, notnull: false, default: null, comment: 'Описание товара' }
     rating:            { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }

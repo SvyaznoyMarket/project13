@@ -17,23 +17,23 @@ abstract class BaseRegionForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'      => new sfWidgetFormInputHidden(),
       'root_id' => new sfWidgetFormInputText(),
-      'token'   => new sfWidgetFormInputText(),
-      'name'    => new sfWidgetFormInputText(),
-      'type'    => new sfWidgetFormInputText(),
       'lft'     => new sfWidgetFormInputText(),
       'rgt'     => new sfWidgetFormInputText(),
       'level'   => new sfWidgetFormInputText(),
+      'token'   => new sfWidgetFormInputText(),
+      'name'    => new sfWidgetFormInputText(),
+      'type'    => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
       'id'      => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'root_id' => new sfValidatorInteger(),
-      'token'   => new sfValidatorString(array('max_length' => 255)),
-      'name'    => new sfValidatorString(array('max_length' => 255)),
-      'type'    => new sfValidatorPass(),
       'lft'     => new sfValidatorInteger(array('required' => false)),
       'rgt'     => new sfValidatorInteger(array('required' => false)),
       'level'   => new sfValidatorInteger(array('required' => false)),
+      'token'   => new sfValidatorString(array('max_length' => 255)),
+      'name'    => new sfValidatorString(array('max_length' => 255)),
+      'type'    => new sfValidatorPass(),
     ));
 
     $this->validatorSchema->setPostValidator(

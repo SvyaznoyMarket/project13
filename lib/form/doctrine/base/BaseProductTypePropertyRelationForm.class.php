@@ -15,10 +15,9 @@ abstract class BaseProductTypePropertyRelationForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'              => new sfWidgetFormInputHidden(),
       'name'            => new sfWidgetFormInputText(),
-      'product_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'add_empty' => false)),
-      'property_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => false)),
+      'product_type_id' => new sfWidgetFormInputHidden(),
+      'property_id'     => new sfWidgetFormInputHidden(),
       'group_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => true)),
       'position'        => new sfWidgetFormInputText(),
       'group_position'  => new sfWidgetFormInputText(),
@@ -27,10 +26,9 @@ abstract class BaseProductTypePropertyRelationForm extends BaseFormDoctrine
     ));
 
     $this->setValidators(array(
-      'id'              => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'name'            => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'product_type_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'))),
-      'property_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Property'))),
+      'product_type_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_type_id')), 'empty_value' => $this->getObject()->get('product_type_id'), 'required' => false)),
+      'property_id'     => new sfValidatorChoice(array('choices' => array($this->getObject()->get('property_id')), 'empty_value' => $this->getObject()->get('property_id'), 'required' => false)),
       'group_id'        => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'required' => false)),
       'position'        => new sfValidatorInteger(array('required' => false)),
       'group_position'  => new sfValidatorInteger(array('required' => false)),

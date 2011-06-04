@@ -13,6 +13,7 @@
  * @property integer $category_id
  * @property boolean $view_show
  * @property boolean $view_list
+ * @property boolean $is_instock
  * @property text $description
  * @property decimal $rating
  * @property decimal $price
@@ -29,8 +30,10 @@
  * @property Doctrine_Collection $MasterSimilarProduct
  * @property Doctrine_Collection $SlaveAccessoryProduct
  * @property Doctrine_Collection $MasterAccessoryProduct
+ * @property Doctrine_Collection $StockRelation
  * @property Doctrine_Collection $TagRelation
  * @property Doctrine_Collection $UserTag
+ * @property Doctrine_Collection $UserDelayedProduct
  * 
  * @method integer             getId()                     Returns the current record's "id" value
  * @method string              getToken()                  Returns the current record's "token" value
@@ -40,6 +43,7 @@
  * @method integer             getCategoryId()             Returns the current record's "category_id" value
  * @method boolean             getViewShow()               Returns the current record's "view_show" value
  * @method boolean             getViewList()               Returns the current record's "view_list" value
+ * @method boolean             getIsInstock()              Returns the current record's "is_instock" value
  * @method text                getDescription()            Returns the current record's "description" value
  * @method decimal             getRating()                 Returns the current record's "rating" value
  * @method decimal             getPrice()                  Returns the current record's "price" value
@@ -56,8 +60,10 @@
  * @method Doctrine_Collection getMasterSimilarProduct()   Returns the current record's "MasterSimilarProduct" collection
  * @method Doctrine_Collection getSlaveAccessoryProduct()  Returns the current record's "SlaveAccessoryProduct" collection
  * @method Doctrine_Collection getMasterAccessoryProduct() Returns the current record's "MasterAccessoryProduct" collection
+ * @method Doctrine_Collection getStockRelation()          Returns the current record's "StockRelation" collection
  * @method Doctrine_Collection getTagRelation()            Returns the current record's "TagRelation" collection
  * @method Doctrine_Collection getUserTag()                Returns the current record's "UserTag" collection
+ * @method Doctrine_Collection getUserDelayedProduct()     Returns the current record's "UserDelayedProduct" collection
  * @method Product             setId()                     Sets the current record's "id" value
  * @method Product             setToken()                  Sets the current record's "token" value
  * @method Product             setName()                   Sets the current record's "name" value
@@ -66,6 +72,7 @@
  * @method Product             setCategoryId()             Sets the current record's "category_id" value
  * @method Product             setViewShow()               Sets the current record's "view_show" value
  * @method Product             setViewList()               Sets the current record's "view_list" value
+ * @method Product             setIsInstock()              Sets the current record's "is_instock" value
  * @method Product             setDescription()            Sets the current record's "description" value
  * @method Product             setRating()                 Sets the current record's "rating" value
  * @method Product             setPrice()                  Sets the current record's "price" value
@@ -82,8 +89,10 @@
  * @method Product             setMasterSimilarProduct()   Sets the current record's "MasterSimilarProduct" collection
  * @method Product             setSlaveAccessoryProduct()  Sets the current record's "SlaveAccessoryProduct" collection
  * @method Product             setMasterAccessoryProduct() Sets the current record's "MasterAccessoryProduct" collection
+ * @method Product             setStockRelation()          Sets the current record's "StockRelation" collection
  * @method Product             setTagRelation()            Sets the current record's "TagRelation" collection
  * @method Product             setUserTag()                Sets the current record's "UserTag" collection
+ * @method Product             setUserDelayedProduct()     Sets the current record's "UserDelayedProduct" collection
  * 
  * @package    enter
  * @subpackage model
@@ -140,6 +149,11 @@ abstract class BaseProduct extends myDoctrineRecord
              'notnull' => true,
              'default' => false,
              'comment' => 'Показывать товар в списке категорий?',
+             ));
+        $this->hasColumn('is_instock', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
              ));
         $this->hasColumn('description', 'text', null, array(
              'type' => 'text',
@@ -225,11 +239,19 @@ abstract class BaseProduct extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'slave_id'));
 
+        $this->hasMany('StockProductRelation as StockRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_id'));
+
         $this->hasMany('TagProductRelation as TagRelation', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 
         $this->hasMany('UserProductTag as UserTag', array(
+             'local' => 'id',
+             'foreign' => 'product_id'));
+
+        $this->hasMany('UserDelayedProduct', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 

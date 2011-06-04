@@ -14,22 +14,22 @@ abstract class BaseRegionFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'root_id' => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'token'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'name'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'type'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'lft'     => new sfWidgetFormFilterInput(),
       'rgt'     => new sfWidgetFormFilterInput(),
       'level'   => new sfWidgetFormFilterInput(),
+      'token'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'name'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'type'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
       'root_id' => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-      'token'   => new sfValidatorPass(array('required' => false)),
-      'name'    => new sfValidatorPass(array('required' => false)),
-      'type'    => new sfValidatorPass(array('required' => false)),
       'lft'     => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'rgt'     => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'level'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'token'   => new sfValidatorPass(array('required' => false)),
+      'name'    => new sfValidatorPass(array('required' => false)),
+      'type'    => new sfValidatorPass(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('region_filters[%s]');
@@ -51,12 +51,12 @@ abstract class BaseRegionFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'      => 'Number',
       'root_id' => 'Number',
-      'token'   => 'Text',
-      'name'    => 'Text',
-      'type'    => 'Text',
       'lft'     => 'Number',
       'rgt'     => 'Number',
       'level'   => 'Number',
+      'token'   => 'Text',
+      'name'    => 'Text',
+      'type'    => 'Text',
     );
   }
 }

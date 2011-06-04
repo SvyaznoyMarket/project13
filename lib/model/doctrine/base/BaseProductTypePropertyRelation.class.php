@@ -57,12 +57,12 @@ abstract class BaseProductTypePropertyRelation extends myDoctrineRecord
              ));
         $this->hasColumn('product_type_id', 'integer', 20, array(
              'type' => 'integer',
-             'notnull' => true,
+             'primary' => true,
              'length' => 20,
              ));
         $this->hasColumn('property_id', 'integer', 20, array(
              'type' => 'integer',
-             'notnull' => true,
+             'primary' => true,
              'length' => 20,
              ));
         $this->hasColumn('group_id', 'integer', 20, array(

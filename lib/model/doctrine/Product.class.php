@@ -34,4 +34,9 @@ class Product extends BaseProduct
   {
     return ProductCommentTable::getInstance()->getListByProduct($this, $params);
   }
+
+  public function getIsInsale()
+  {
+    return $this->is_instock;
+  }
 }

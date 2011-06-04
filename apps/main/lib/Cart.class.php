@@ -14,15 +14,15 @@ class Cart
     $this->parameterHolder->add($parameters);
   }
 
-  public function addProduct(Product $product, $amount = 1)
+  public function addProduct(Product $product, $quantity = 1)
   {
     $products = $this->parameterHolder->get('products');
 
     if (!isset($products[$product->id]) || empty($products[$product->id]))
     {
-      $products[$product->id] = array('amount' => 1, );
+      $products[$product->id] = array('quantity' => 1, );
     }
-    $products[$product->id]['amount'] = $amount;
+    $products[$product->id]['quantity'] = $quantity;
     $this->parameterHolder->set('products', $products);
     $this->calculateDiscount();
   }
@@ -142,7 +142,7 @@ class Cart
     }
     foreach ($this->products as $key => $product)
     {
-      $this->updateProductCart($product, 'amount', $products[$key]['amount']);
+      $this->updateProductCart($product, 'quantity', $products[$key]['quantity']);
     }
   }
 
@@ -174,7 +174,7 @@ class Cart
   protected function getDefaults()
   {
     return array(
-      'amount' => 1,
+      'quantity' => 1,
       'discount' => 0,
       'service' => array(),
       'warranty' => array(),
