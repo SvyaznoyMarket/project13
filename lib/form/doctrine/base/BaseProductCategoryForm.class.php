@@ -23,6 +23,7 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
       'token'           => new sfWidgetFormInputText(),
       'name'            => new sfWidgetFormInputText(),
       'filter_group_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('FilterGroup'), 'add_empty' => true)),
+      'news_list'       => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
 
     $this->setValidators(array(
@@ -34,6 +35,7 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
       'token'           => new sfValidatorString(array('max_length' => 255)),
       'name'            => new sfValidatorString(array('max_length' => 255)),
       'filter_group_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('FilterGroup'), 'required' => false)),
+      'news_list'       => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -52,6 +54,62 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
   public function getModelName()
   {
     return 'ProductCategory';
+  }
+
+  public function updateDefaultsFromObject()
+  {
+    parent::updateDefaultsFromObject();
+
+    if (isset($this->widgetSchema['news_list']))
+    {
+      $this->setDefault('news_list', $this->object->News->getPrimaryKeys());
+    }
+
+  }
+
+  protected function doSave($con = null)
+  {
+    $this->saveNewsList($con);
+
+    parent::doSave($con);
+  }
+
+  public function saveNewsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['news_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->News->getPrimaryKeys();
+    $values = $this->getValue('news_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('News', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('News', array_values($link));
+    }
   }
 
 }

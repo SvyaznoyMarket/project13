@@ -14,6 +14,8 @@
  * @property string $name
  * @property integer $filter_group_id
  * @property ProductFilterGroup $FilterGroup
+ * @property Doctrine_Collection $News
+ * @property Doctrine_Collection $NewsRelation
  * @property Doctrine_Collection $Product
  * @property Doctrine_Collection $TagRelation
  * 
@@ -26,6 +28,8 @@
  * @method string              getName()            Returns the current record's "name" value
  * @method integer             getFilterGroupId()   Returns the current record's "filter_group_id" value
  * @method ProductFilterGroup  getFilterGroup()     Returns the current record's "FilterGroup" value
+ * @method Doctrine_Collection getNews()            Returns the current record's "News" collection
+ * @method Doctrine_Collection getNewsRelation()    Returns the current record's "NewsRelation" collection
  * @method Doctrine_Collection getProduct()         Returns the current record's "Product" collection
  * @method Doctrine_Collection getTagRelation()     Returns the current record's "TagRelation" collection
  * @method ProductCategory     setId()              Sets the current record's "id" value
@@ -37,6 +41,8 @@
  * @method ProductCategory     setName()            Sets the current record's "name" value
  * @method ProductCategory     setFilterGroupId()   Sets the current record's "filter_group_id" value
  * @method ProductCategory     setFilterGroup()     Sets the current record's "FilterGroup" value
+ * @method ProductCategory     setNews()            Sets the current record's "News" collection
+ * @method ProductCategory     setNewsRelation()    Sets the current record's "NewsRelation" collection
  * @method ProductCategory     setProduct()         Sets the current record's "Product" collection
  * @method ProductCategory     setTagRelation()     Sets the current record's "TagRelation" collection
  * 
@@ -105,6 +111,15 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'local' => 'filter_group_id',
              'foreign' => 'id',
              'onDelete' => 'SET NULL'));
+
+        $this->hasMany('News', array(
+             'refClass' => 'NewsProductCategoryRelation',
+             'local' => 'product_category_id',
+             'foreign' => 'news_id'));
+
+        $this->hasMany('NewsProductCategoryRelation as NewsRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_category_id'));
 
         $this->hasMany('Product', array(
              'local' => 'id',

@@ -13,13 +13,15 @@ abstract class BaseCreatorFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'token' => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'name'  => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'token'     => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'name'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'news_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
 
     $this->setValidators(array(
-      'token' => new sfValidatorPass(array('required' => false)),
-      'name'  => new sfValidatorPass(array('required' => false)),
+      'token'     => new sfValidatorPass(array('required' => false)),
+      'name'      => new sfValidatorPass(array('required' => false)),
+      'news_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('creator_filters[%s]');
@@ -31,6 +33,24 @@ abstract class BaseCreatorFormFilter extends BaseFormFilterDoctrine
     parent::setup();
   }
 
+  public function addNewsListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.NewsCreatorRelation NewsCreatorRelation')
+      ->andWhereIn('NewsCreatorRelation.news_id', $values)
+    ;
+  }
+
   public function getModelName()
   {
     return 'Creator';
@@ -39,9 +59,10 @@ abstract class BaseCreatorFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'    => 'Number',
-      'token' => 'Text',
-      'name'  => 'Text',
+      'id'        => 'Number',
+      'token'     => 'Text',
+      'name'      => 'Text',
+      'news_list' => 'ManyKey',
     );
   }
 }

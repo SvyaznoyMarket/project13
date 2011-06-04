@@ -26,6 +26,7 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'description' => new sfWidgetFormInputText(),
       'rating'      => new sfWidgetFormInputText(),
       'price'       => new sfWidgetFormInputText(),
+      'news_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
 
     $this->setValidators(array(
@@ -40,6 +41,7 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'description' => new sfValidatorPass(array('required' => false)),
       'rating'      => new sfValidatorNumber(array('required' => false)),
       'price'       => new sfValidatorNumber(array('required' => false)),
+      'news_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -58,6 +60,62 @@ abstract class BaseProductForm extends BaseFormDoctrine
   public function getModelName()
   {
     return 'Product';
+  }
+
+  public function updateDefaultsFromObject()
+  {
+    parent::updateDefaultsFromObject();
+
+    if (isset($this->widgetSchema['news_list']))
+    {
+      $this->setDefault('news_list', $this->object->News->getPrimaryKeys());
+    }
+
+  }
+
+  protected function doSave($con = null)
+  {
+    $this->saveNewsList($con);
+
+    parent::doSave($con);
+  }
+
+  public function saveNewsList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['news_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->News->getPrimaryKeys();
+    $values = $this->getValue('news_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('News', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('News', array_values($link));
+    }
   }
 
 }

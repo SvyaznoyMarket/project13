@@ -1,0 +1,10 @@
+NewsCategory:
+  NewsCategory_new:
+    token:  new
+    name:   'Новиннки'
+  NewsCategory_company:
+    token:  about
+    name:   'Новости компании'
+  NewsCategory_market:
+    token:  market
+    name:   'Новость'

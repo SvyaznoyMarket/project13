@@ -28,10 +28,11 @@ class CreatorTable extends myDoctrineTable
     $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
 
     $record = $q->fetchOne();
-    if (!$record)
+
+/*    if (!$record)
     {
       return $record;
-    }
+    }*/
 
     return $record;
   }

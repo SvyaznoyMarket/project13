@@ -3,20 +3,12 @@ homepage:
   url:   /
   param: { module: default, action: index }
 
-
-# Каталог товаров
+# product
 #
 # product catalog
 productCatalog:
   url:   /catalog
   param: { module: productCatalog, action: index }
-#
-# product catalog filter
-productCatalog_filter:
-  url:   /catalog/:productCategory/_filter
-  param: { module: productCatalog, action: filter }
-  class:   myProductCatalogRoute
-  options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # product catalog by category
 productCatalog_category:
@@ -31,8 +23,6 @@ productCatalog_creator:
   param: { module: productCatalog, action: creator }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
-
-# Карточка товара
 #
 # product card
 productCard:
@@ -45,56 +35,27 @@ productCard:
 productComment:
   url:   /products/:product/comments
   param: { module: productComment, action: index }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
 #
-productComment_new:
-  url:   /products/:product/comments/new/:parent
-  param: { module: productComment, action: new, parent: ~ }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
+# news list by year
+newsCategory_year:
+  url:   /news/:newsCategory/:year
+  param: { module: newsCategory, action: year }
+  class:   myNewsRoute
+  options: { model: NewsCategory, type: object, method: getForRoute }
 #
-productComment_create:
-  url:   /products/:product/comments/create/:parent
-  param: { module: productComment, action: create, parent: ~ }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    sf_method: [ post ]
-
-
-# Пользователь
+# news list by month
+newsCategory_month:
+  url:   /news/:newsCategory/:year/:month
+  param: { module: newsCategory, action: month }
+  class:   myNewsRoute
+  options: { model: NewsCategory, type: object, method: getForRoute }
 #
-# user
-user:
-  url:   /private/
-  param: { module: user, action: index }
-#
-# user signin
-user_signin:
-  url:   /login
-  param: { module: user, action: signin }
-#
-# user signout
-user_signout:
-  url:   /logout
-  param: { module: user, action: signout }
-#
-# user password
-user_password:
-  url:   /request-password
-  param: { module: user, action: password }
-#
-# user product history
-userProductHistory:
-  url:   /private/product-history
-  param: { module: userProductHistory, action: index }
-#
-# user product history clear
-userProductHistory_clear:
-  url:   /private/product-history/clear
-  param: { module: userProductHistory, action: clear }
-
+# news
+news_show:
+  url:   /news/:newsCategory/:year/:month/:news
+  param: { module: news, action: show }
+  class:   myNewsRoute
+  options: { model: News, type: object, method: getForRoute }
 
 # generic rules
 # please, remove them by adding more specific rules
