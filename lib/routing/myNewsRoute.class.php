@@ -19,7 +19,6 @@ class myNewsRoute extends myDoctrineRoute
 
   public function generate($params, $context = array(), $absolute = false)
   {
-
     if (isset($params['newsCategory']) && ($params['newsCategory'] instanceof NewsCategory))
     {
       $params = array_merge($params, $params['newsCategory']->toParams());

@@ -51,7 +51,7 @@ class NewsTable extends myDoctrineTable
     // категория
     if ($filter['category'])
     {
-      $q->addWhere('news.category_id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
+      $q->addWhere('news.category_id = ?', ($filter['category'] instanceof NewsCategory) ? $filter['category']->id : $filter['category']);
     }
 
     // год
@@ -102,5 +102,16 @@ class NewsTable extends myDoctrineTable
     }
 
     return $record;
+  }
+
+  public function getMonthsByCategory(NewsCategory $category, array $params = array())
+  {
+    $q = $this->createBaseQuery();
+    $q->select('count(*) as c, YEAR(published_at) as y, MONTH(published_at) as m');
+    $q->addWhere('news.category_id = ?', array($category->id, ));
+    $q->groupBy('y, m');
+    $q->orderBy('y, m');
+    
+    return $q->execute();
   }
 }

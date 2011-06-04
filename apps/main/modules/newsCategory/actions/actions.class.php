@@ -28,7 +28,28 @@ class newsCategoryActions extends myActions
       'category' => $this->newsCategory,
       'year'     => $request['year'],
     );
-    //myDebug::dump($filter);
+
+    $q = NewsTable::getInstance()->getQueryByFilter($filter, array(
+      'order' => 'product.name',
+      'view'  => 'list',
+    ));
+
+    $this->newsPager = $this->getPager('News', $q, array(
+      'limit' => sfConfig::get('app_news_max_items_on_category', 20),
+    ));
+    $this->forward404If($request['page'] > $this->newsPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+  }
+
+  public function executeMonth(sfRequest $request)
+  {
+    $this->newsCategory = $this->getRoute()->getObject();
+
+    $filter = array(
+      'category' => $this->newsCategory,
+      'year'     => $request['year'],
+      'month'    => $request['month'],
+    );
+    
     $q = NewsTable::getInstance()->getQueryByFilter($filter, array(
       'order' => 'product.name',
       'view'  => 'list',

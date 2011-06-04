@@ -194,6 +194,7 @@ EOF;
         'name'          => $this->getRecordName('News', $i),
         'published_at'  => date('Y-m-d H:i:s', rand(strtotime('2009-01-01'), strtotime('now'))),
         'category_id'   => rand(1, 3),
+        'is_active'     => rand(0, 3) > 0 ? true : false,
       ));
       $record->save();
       $record->token = $record->id;
