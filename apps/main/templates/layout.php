@@ -12,7 +12,8 @@
 
     <div class="container">
       <?php include_partial('default/logo') ?>
-
+      <?php include_partial('default/region') ?>
+      <br class="clear" />
       <?php echo $sf_content ?>
     </div>
   </body>
