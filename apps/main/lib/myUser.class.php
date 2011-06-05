@@ -4,13 +4,17 @@ class myUser extends myGuardSecurityUser
 {
   protected
     $cart = null,
-    $productHistory = null
+    $productHistory = null,
+    $productCompare = null
   ;
 
   public function shutdown()
   {
-    $this->setAttribute('cart', $this->getCart()->dump());
-    $this->setAttribute('productHistory', $this->getProductHistory()->dump());
+    foreach (array('cart', 'productHistory', 'productCompare') as $name)
+    {
+      $object = call_user_func(array($this, 'get'.ucfirst($name)));
+      $this->setAttribute($name, $object->dump());
+    }
 
     parent::shutdown();
   }
@@ -33,6 +37,16 @@ class myUser extends myGuardSecurityUser
     }
 
     return $this->productHistory;
+  }
+
+  public function getProductCompare()
+  {
+    if (null == $this->productCompare)
+    {
+      $this->productCompare = new UserProductCompare($this->getAttribute('productCompare', array()));
+    }
+
+    return $this->productCompare;
   }
 
   public function getType()

@@ -1,6 +1,6 @@
 <?php
 
-class UserProductHistory
+class UserProductHistory extends myUserData
 {
   protected
     $parameterHolder = null,
@@ -44,11 +44,7 @@ class UserProductHistory
       $this->products->free();
       $this->products = null;
     }
-    $this->parameterHolder->set('products', array());
-  }
 
-  public function dump()
-  {
-    return $this->parameterHolder->getAll();
+    $this->parameterHolder->set('products', array());
   }
 }

@@ -241,6 +241,26 @@ productHelper_result:
 
 
 
+#
+# user product compare
+userProductCompare:
+  url:   /compare
+  param: { module: userProductCompare, action: index }
+userProductCompare_show:
+  url:   /compare/show/:productCategory
+  param: { module: userProductCompare, action: show }
+  class:   myDoctrineRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+#
+# user product compare add
+userProductCompare_add:
+  url:   /compare/add/:product
+  param: { module: userProductCompare, action: add }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+
+
+
 # Корзина товаров
 #
 # cart

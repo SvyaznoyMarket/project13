@@ -67,6 +67,11 @@ class userComponents extends myComponents
         'routes' => array('@userDelayedProduct'),
       ),
       array(
+        'name'   => 'Сравнение товаров',
+        'url'    => '@userProductCompare',
+        'routes' => array('@userProductCompare'),
+      ),
+      array(
         'name'   => 'Пароль',
         'url'    => '@user_changePassword',
         'routes' => array('@user_changePassword'),

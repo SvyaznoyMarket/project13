@@ -8,6 +8,10 @@ label {
 ul li {
   margin-bottom: 10px;
 }
+ul.inline li {
+  margin-right: 10px;
+  display: inline;
+}
 
 .container {
   padding: 10px;
@@ -20,6 +24,10 @@ ul li {
 	-moz-border-radius: 9px 9px 9px 9px;
 	-webkit-border-radius: 9px 9px 9px 9px;
   background: #ffffff;
+}
+
+.table td, .table th {
+  padding: 5px 15px;
 }
 
 .logo {
@@ -68,9 +76,12 @@ ul li {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
   }
-  .menu li.current{
-    border: solid 1px #777777;
+  .menu li.current {
+    background: #ccc;
   }
+    .menu li.current a {
+      text-decoration: none;
+    }
 
 
 .pagination span {
