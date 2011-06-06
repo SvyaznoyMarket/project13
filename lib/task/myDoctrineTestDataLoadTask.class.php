@@ -37,24 +37,40 @@ EOF;
     $this->logSection('doctrine', 'loading test data');
     $count = array(
       'Creator'            => 100,
-      'ProductCategory'    => 50,
+      'ProductCategory'    => 20,
       'ProductType'        => 50,
-      'ProductFilterGroup' => 50,
       'ProductProperty'    => 200,
     );
-    
+
     $this->logSection('doctrine', 'loading test Creators');
     $this->createRecordList('Creator', $count['Creator']);
 
     $this->logSection('doctrine', 'loading test ProductCategories');
     $this->createRecordList('ProductCategory', $count['ProductCategory']);
+    $productCategoryTree = Doctrine_Core::getTable('ProductCategory')->getTree();
+    foreach (ProductCategoryTable::getInstance()->findAll() as $productCategory)
+    {
+      $productCategoryTree->createRoot($productCategory);
+
+      $productCategoryCount = rand(2, 10);
+      for ($i = 1; $i <= $productCategoryCount; $i++)
+      {
+        $child = new ProductCategory();
+        $child->fromArray(array(
+          'name'  => $this->getRecordName('ProductCategory', $i),
+          'token' => 'category-'.$productCategory->id.'-'.$i,
+        ));
+        $child->getNode()->insertAsLastChildOf($productCategory);
+      }
+    }
+    $count['ProductFilterGroup'] = ProductCategoryTable::getInstance()->createQuery()->count();
 
     $this->logSection('doctrine', 'loading test ProductTypes');
     $productTypeList = $this->createRecordList('ProductType', $count['ProductType'], array('free' => false));
 
     $this->logSection('doctrine', 'loading test ProductProperties');
     $this->createRecordList('ProductProperty', $count['ProductProperty']);
-    
+
     $this->logSection('doctrine', 'loading test ProductTypePropertyRelations, ProductFilterGroups and ProductFilters');
     $this->createRecordList('ProductFilterGroup', $count['ProductFilterGroup']);
     $list = ProductTypePropertyRelationTable::getInstance()->createList();
@@ -74,14 +90,14 @@ EOF;
         $groupList[] = $record;
       }
       $groupList->save();
-      
+
       $propertyCount = rand(2, 6) * $groupCount;
       $propertyOffset = rand(1, $count['ProductProperty'] - $propertyCount);
-      
+
       for ($i = 1; $i <= $propertyCount; $i++)
       {
         $group_index = rand(0, $groupCount - 1);
-        
+
         $record = new ProductTypePropertyRelation();
         $record->fromArray(array(
           'product_type_id' => $productType_id,
@@ -115,13 +131,13 @@ EOF;
     }
     $groupList->free(true);
     unset($groupList);
-    
+
     $list->save();
     $list->free(true);
     unset($list);
-    
+
     ProductCategoryTable::getInstance()->createQuery('productCategory')->query('UPDATE productCategory SET productCategory.filter_group_id = productCategory.id');
-    
+
     $this->logSection('doctrine', 'loading test Products and ProductPropertyRelations');
     foreach ($productTypeList as $productType)
     {
@@ -130,7 +146,7 @@ EOF;
       $creatorOffset = rand(1, $count['Creator'] - $creatorCount);
 
       $category_id = $productType->id; //rand(1, $count['ProductCategory']);
-      
+
       $productCount = rand(4, 100);
       for ($i = 1; $i <= $productCount; $i++)
       {
@@ -144,7 +160,7 @@ EOF;
           'view_show'   => rand(0, 10) > 0 ? true : false,
           'view_list'   => rand(0, 50) > 0 ? true : false,
         ));
-        
+
         foreach ($productType->Property as $j => $property)
         {
           $relation = new ProductPropertyRelation();
@@ -154,10 +170,10 @@ EOF;
             'value'        => $this->getRecordName('ProductPropertyRelation', $productType->id.'-'.$i.'-'.($j + 1)),
             'unit'         => 'unit',
           ));
-          
+
           $record->PropertyRelation[] = $relation;
         }
-        
+
         $list[] = $record;
       }
       $list->save();
@@ -167,16 +183,16 @@ EOF;
       unset($list, $productType);
     }
   }
-  
+
   protected function createRecordList($model, $count, array $options = array())
   {
     $hasToken = Doctrine_Core::getTable($model)->hasColumn('token');
-    
+
     $options = myToolkit::arrayDeepMerge(array(
       'nameField' => 'name',
       'free'      => true,
     ), $options);
-    
+
     $list = Doctrine_Core::getTable($model)->createList();
     for ($i = 1; $i <= $count; $i++)
     {
@@ -194,7 +210,7 @@ EOF;
       $list[] = $record;
     }
     $list->save();
-    
+
     if ($options['free'])
     {
       $list->free(true);
@@ -202,10 +218,10 @@ EOF;
 
       return false;
     }
-    
+
     return $list;
   }
-  
+
   protected function getRecordName($model, $index)
   {
     $names = array(
@@ -219,7 +235,7 @@ EOF;
       'ProductFilterGroup'      => 'группа',
       'ProductFilter'           => 'фильтр',
     );
-    
+
     return $names[$model].'-'.$index;
   }
 }

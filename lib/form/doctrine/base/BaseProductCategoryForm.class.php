@@ -16,6 +16,10 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'              => new sfWidgetFormInputHidden(),
+      'root_id'         => new sfWidgetFormInputText(),
+      'lft'             => new sfWidgetFormInputText(),
+      'rgt'             => new sfWidgetFormInputText(),
+      'level'           => new sfWidgetFormInputText(),
       'token'           => new sfWidgetFormInputText(),
       'name'            => new sfWidgetFormInputText(),
       'filter_group_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('FilterGroup'), 'add_empty' => true)),
@@ -23,6 +27,10 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'              => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'root_id'         => new sfValidatorInteger(),
+      'lft'             => new sfValidatorInteger(array('required' => false)),
+      'rgt'             => new sfValidatorInteger(array('required' => false)),
+      'level'           => new sfValidatorInteger(array('required' => false)),
       'token'           => new sfValidatorString(array('max_length' => 255)),
       'name'            => new sfValidatorString(array('max_length' => 255)),
       'filter_group_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('FilterGroup'), 'required' => false)),
