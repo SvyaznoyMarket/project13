@@ -24,7 +24,7 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q = $this->createQuery('productCategory');
 
-    $q->addOrderBy('productCategory.root_id, productCategory.lft');
+    $q->orderBy('productCategory.root_id, productCategory.lft');
 
     return $q;
   }
