@@ -35,3 +35,9 @@ all:
       - Cache
       - Partial
       - myPagerUrl
+
+    login_module:           user
+    login_action:           signin
+
+    secure_module:          user
+    secure_action:          secure

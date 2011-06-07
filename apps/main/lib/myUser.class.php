@@ -1,8 +1,7 @@
 <?php
 
-class myUser extends sfBasicSecurityUser
+class myUser extends myGuardSecurityUser
 {
-
   protected $cart;
 
   public function initialize(sfEventDispatcher $dispatcher, sfStorage $storage, $options = array())
@@ -25,5 +24,9 @@ class myUser extends sfBasicSecurityUser
     return $this->cart;
   }
 
+  public function getType()
+  {
+    return $this->isAuthenticated() ? $this->getGuardUser()->type : null;
+  }
 
 }

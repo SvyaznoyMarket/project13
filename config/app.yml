@@ -4,10 +4,18 @@ all:
       servers:
         main:
           host: 127.0.0.1
-          persistent: true 
+          persistent: true
+
+  sf_guard_plugin:
+    routes_register: false
 
   doctrine:
     result_cache: true # кешировать результаты запросов
 
   product:
     max_items_on_category: 10
+
+  guard:
+    remember_cookie_name: remember
+    signout_url: '@homepage'
+    signin_url: '@homepage'

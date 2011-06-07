@@ -10,7 +10,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: sfDoctrineFormGeneratedInheritanceTemplate.php 29553 2010-05-20 14:33:00Z Kris.Wallsmith $
  */
-abstract class BaseUserForm extends sfGuardUserForm
+abstract class BaseUserForm extends GuardUserForm
 {
   protected function setupInheritance()
   {

@@ -1,6 +1,6 @@
 <?php
 
-abstract class myDoctrineRecord extends Doctrine_Record
+abstract class myDoctrineRecord extends sfDoctrineRecord
 {
 
   public function toParams()

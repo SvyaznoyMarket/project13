@@ -1,14 +1,14 @@
 User:
   options:
     comment: 'Пользователь'
-  inheritance: { type: simple, extends: sfGuardUser }
+  inheritance: { type: simple, extends: GuardUser }
   columns:
-    id:                { type: integer(20), autoincrement: true, primary: true }
-    login:             { type: string(255), unique: true, notnull: true, notblank: true }
+    type:              { type: enum, length: 10, values: [admin, client, partner], notnull: true, default: client }
     first_name:        { type: string(255), notnull: true, notblank: true, comment: 'Имя' }
     last_name:         { type: string(255), notnull: true, notblank: true, comment: 'Фамилия' }
     middle_name:       { type: string(255), notnull: true, notblank: true, comment: 'Отчество' }
-    photo:             { type: string(255), notnull: false, default: null, comment: 'Фото пользователя' }
+    photo:             { type: string(255), notnull: false, default: null, comment: 'Фото' }
+    settings:          { type: string, notnull: false, default: null, comment: 'Настройки личного кабинета' }
 
 UserProductTag:
   options:
@@ -20,5 +20,5 @@ UserProductTag:
     product_id:        { type: integer(20), notnull: true }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
-    User:              { class: User, foreignAlias: ProductTag, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    User:              { class: sfGuardUser, foreignAlias: ProductTag, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: UserTag, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

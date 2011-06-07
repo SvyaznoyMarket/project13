@@ -3,6 +3,7 @@ homepage:
   url:   /
   param: { module: default, action: index }
 
+
 # Каталог товаров
 #
 # product catalog
@@ -44,7 +45,30 @@ productCard:
 productComment:
   url:   /products/:product/comments
   param: { module: productComment, action: index }
+
+
+# Пользователь
 #
+# user
+user:
+  url:   /private/
+  param: { module: user, action: index }
+#
+# user signin
+user_signin:
+  url:   /login
+  param: { module: user, action: signin }
+#
+# user signout
+user_signout:
+  url:   /logout
+  param: { module: user, action: signout }
+#
+# user password
+user_password:
+  url:   /request-password
+  param: { module: user, action: password }
+
 
 # generic rules
 # please, remove them by adding more specific rules

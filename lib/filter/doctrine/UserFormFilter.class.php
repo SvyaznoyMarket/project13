@@ -10,7 +10,11 @@
  */
 class UserFormFilter extends BaseUserFormFilter
 {
+  /**
+   * @see GuardUserFormFilter
+   */
   public function configure()
   {
+    parent::configure();
   }
 }
