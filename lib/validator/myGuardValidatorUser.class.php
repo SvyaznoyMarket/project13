@@ -17,6 +17,7 @@
  */
 class myGuardValidatorUser extends sfValidatorBase
 {
+
   public function configure($options = array(), $messages = array())
   {
     $this->addOption('username_field', 'username');
@@ -37,21 +38,23 @@ class myGuardValidatorUser extends sfValidatorBase
     // don't allow to sign in with an empty username
     if ($username)
     {
-       if ($callable = sfConfig::get('app_guard_retrieve_by_username_callable'))
-       {
-           $user = call_user_func_array($callable, array($username));
-       } else {
-           $user = $this->getTable()->retrieveByUsername($username);
-       }
-        // user exists?
-       if($user)
-       {
-          // password is ok?
-          if ($user->getIsActive() && $user->checkPassword($password))
-          {
-            return array_merge($values, array('user' => $user));
-          }
-       }
+      if ($callable = sfConfig::get('app_guard_retrieve_by_username_callable'))
+      {
+        $user = call_user_func_array($callable, array($username));
+      }
+      else
+      {
+        $user = $this->getTable()->retrieveByUsername($username);
+      }
+      // user exists?
+      if ($user)
+      {
+        // password is ok?
+        if ($user->getIsActive() && $user->checkPassword($password))
+        {
+          return array_merge($values, array('user' => $user));
+        }
+      }
     }
 
     if ($this->getOption('throw_global_error'))
@@ -66,4 +69,5 @@ class myGuardValidatorUser extends sfValidatorBase
   {
     return GuardUserTable::getInstance();
   }
+
 }
