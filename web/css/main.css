@@ -1,7 +1,9 @@
 label {
   padding-right: 10px;
 }
-
+ul li {
+  margin-bottom: 10px;
+}
 
 
 .block {
@@ -17,7 +19,12 @@ label {
 .form-row {
   margin-bottom: 20px;
 }
+  .form-row .error_list {
+    font-size: 70%;
+    color: #ff0000;
+  }
 .form-row-label {
+  display: block;
   font-weight: bold;
 }
 
