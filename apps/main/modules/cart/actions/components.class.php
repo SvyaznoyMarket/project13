@@ -13,7 +13,7 @@ class cartComponents extends myComponents
  /**
   * Executes buy_button component
   *
-  * @param string $token Код товара
+  * @param Product $product Товар
   * @param int $amount Количество товара
   * @param string $view Вид отображения кнопки
   */
@@ -21,9 +21,7 @@ class cartComponents extends myComponents
   {
     $cart = $this->getUser()->getCart();
 
-    $product = ProductTable::getInstance()->findOneByToken($this->token);
-
-    if ($cart->hasProduct($product->id))
+    if ($cart->hasProduct($this->product->id))
     {
       $this->button = 'cart';
     }
