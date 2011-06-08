@@ -20,5 +20,5 @@ UserProductTag:
     product_id:        { type: integer(20), notnull: true }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
-    User:              { class: sfGuardUser, foreignAlias: ProductTag, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    User:              { class: User, foreignAlias: ProductTag, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: UserTag, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

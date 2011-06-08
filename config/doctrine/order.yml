@@ -1,0 +1,20 @@
+PaymentMethod:
+  options:
+    comment: 'Способ оплаты'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    is_active:         { type: boolean, notnull: true, default: false, comment: 'Способ оплаты активен?' }
+
+Order:
+  options:
+    comment: 'Заказ пользователя'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(64), unique: true, notnull: true, notblank: true, comment: 'Номер заказа' }
+    user_id:           { type: integer(20), notnull: false, default: null }
+    payment_method_id: { type: integer(20), notnull: true }
+  relations:
+    User:              { class: User, foreignAlias: Order, local: user_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    PaymentMethod:     { class: PaymentMethod, foreignAlias: Order, local: payment_method_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }

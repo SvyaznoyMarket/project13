@@ -1,0 +1,10 @@
+PaymentMethod:
+  PaymentMethod_card:
+    token: card
+    name: 'Карточка'
+  PaymentMethod_cash:
+    token: cash
+    name: 'Наличными'
+  PaymentMethod_non-cash:
+    token: non-cash
+    name: 'Безналичный расчет'

@@ -169,5 +169,5 @@ ProductComment:
     unhelpful:         { type: integer(4), notnull: true, default: 0, comment: 'Количество бесполезных оценок отзыва' }
   relations:
     Product:           { class: Product, foreignAlias: Comment, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    User:              { class: sfGuardUser, foreignAlias: Comment, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    User:              { class: User, foreignAlias: Comment, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 

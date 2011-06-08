@@ -17,7 +17,7 @@ abstract class BaseProductCommentForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'         => new sfWidgetFormInputHidden(),
       'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => false)),
-      'user_id'    => new sfWidgetFormInputText(),
+      'user_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => false)),
       'content'    => new sfWidgetFormInputText(),
       'helpful'    => new sfWidgetFormInputText(),
       'unhelpful'  => new sfWidgetFormInputText(),
@@ -26,7 +26,7 @@ abstract class BaseProductCommentForm extends BaseFormDoctrine
     $this->setValidators(array(
       'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'product_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Product'))),
-      'user_id'    => new sfValidatorInteger(),
+      'user_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'))),
       'content'    => new sfValidatorString(array('max_length' => 255)),
       'helpful'    => new sfValidatorInteger(array('required' => false)),
       'unhelpful'  => new sfValidatorInteger(array('required' => false)),

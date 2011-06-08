@@ -10,6 +10,7 @@
  * @property integer $user_id
  * @property integer $product_id
  * @property integer $position
+ * @property User $User
  * @property Product $Product
  * 
  * @method integer        getId()         Returns the current record's "id" value
@@ -17,12 +18,14 @@
  * @method integer        getUserId()     Returns the current record's "user_id" value
  * @method integer        getProductId()  Returns the current record's "product_id" value
  * @method integer        getPosition()   Returns the current record's "position" value
+ * @method User           getUser()       Returns the current record's "User" value
  * @method Product        getProduct()    Returns the current record's "Product" value
  * @method UserProductTag setId()         Sets the current record's "id" value
  * @method UserProductTag setName()       Sets the current record's "name" value
  * @method UserProductTag setUserId()     Sets the current record's "user_id" value
  * @method UserProductTag setProductId()  Sets the current record's "product_id" value
  * @method UserProductTag setPosition()   Sets the current record's "position" value
+ * @method UserProductTag setUser()       Sets the current record's "User" value
  * @method UserProductTag setProduct()    Sets the current record's "Product" value
  * 
  * @package    enter
@@ -71,6 +74,11 @@ abstract class BaseUserProductTag extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasOne('User', array(
+             'local' => 'user_id',
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
+
         $this->hasOne('Product', array(
              'local' => 'product_id',
              'foreign' => 'id',
