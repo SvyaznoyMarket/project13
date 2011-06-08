@@ -33,7 +33,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
     if (!$this->isAuthenticated())
     {
       // remove user if timeout
-      $this->getAttributeHolder()->removeNamespace('myGuardSecurityUser');
+      $this->getAttributeHolder()->removeNamespace('guard');
       $this->user = null;
     }
   }
@@ -122,7 +122,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   public function signIn($user, $remember = false, $con = null)
   {
     // signin
-    $this->setAttribute('user_id', $user->getId(), 'myGuardSecurityUser');
+    $this->setAttribute('user_id', $user->getId(), 'guard');
     $this->setAuthenticated(true);
     $this->clearCredentials();
     $this->addCredentials($user->getAllPermissionNames());
@@ -134,16 +134,16 @@ class myGuardSecurityUser extends sfBasicSecurityUser
     // remember?
     if ($remember)
     {
-      $expiration_age = sfConfig::get('app_sf_guard_plugin_remember_key_expiration_age', 15 * 24 * 3600);
+      $expiration_age = sfConfig::get('app_guard_remember_key_expiration_age', 15 * 24 * 3600);
 
       // remove old keys
-      Doctrine_Core::getTable('sfGuardRememberKey')->createQuery()
+      GuardRememberKeyTable::getInstance()->createQuery()
         ->delete()
         ->where('created_at < ?', date('Y-m-d H:i:s', time() - $expiration_age))
         ->execute();
 
       // remove other keys from this user
-      Doctrine_Core::getTable('sfGuardRememberKey')->createQuery()
+      GuardRememberKeyTable::getInstance()->createQuery()
         ->delete()
         ->where('user_id = ?', $user->getId())
         ->execute();
@@ -152,7 +152,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
       $key = $this->generateRandomKey();
 
       // save key
-      $rk = new sfGuardRememberKey();
+      $rk = new GuardRememberKey();
       $rk->setRememberKey($key);
       $rk->setUser($user);
       $rk->setIpAddress($_SERVER['REMOTE_ADDR']);
@@ -181,12 +181,12 @@ class myGuardSecurityUser extends sfBasicSecurityUser
    */
   public function signOut()
   {
-    $this->getAttributeHolder()->removeNamespace('myGuardSecurityUser');
+    $this->getAttributeHolder()->removeNamespace('guard');
     $this->user = null;
     $this->clearCredentials();
     $this->setAuthenticated(false);
-    $expiration_age = sfConfig::get('app_sf_guard_plugin_remember_key_expiration_age', 15 * 24 * 3600);
-    $remember_cookie = sfConfig::get('app_sf_guard_plugin_remember_cookie_name', 'sfRemember');
+    $expiration_age = sfConfig::get('app_guard_remember_key_expiration_age', 15 * 24 * 3600);
+    $remember_cookie = sfConfig::get('app_guard_remember_cookie_name', 'remember');
     $this->context->getResponse()->setCookie($remember_cookie, '', time() - $expiration_age);
   }
 
@@ -197,7 +197,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
    */
   public function getGuardUser()
   {
-    if (!$this->user && $id = $this->getAttribute('user_id', null, 'myGuardSecurityUser'))
+    if (!$this->user && $id = $this->getAttribute('user_id', null, 'guard'))
     {
       $this->user = GuardUserTable::getInstance()->getById($id);
 
@@ -324,7 +324,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
    */
   public function getPermissions()
   {
-    return $this->getGuardUser()->getPermissions();
+    return $this->getGuardUser()->getPermission();
   }
 
   /**

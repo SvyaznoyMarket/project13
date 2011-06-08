@@ -57,7 +57,7 @@ class GuardUser extends BaseGuardUser
     $modified = $this->getModified();
     if ((!$algorithm = $this->getAlgorithm()) || (isset($modified['algorithm']) && $modified['algorithm'] == $this->getTable()->getDefaultValueOf('algorithm')))
     {
-      $algorithm = sfConfig::get('app_sf_guard_plugin_algorithm_callable', 'sha1');
+      $algorithm = sfConfig::get('app_guard_algorithm_callable', 'sha1');
     }
     $algorithmAsStr = is_array($algorithm) ? $algorithm[0].'::'.$algorithm[1] : $algorithm;
     if (!is_callable($algorithm))
@@ -77,7 +77,7 @@ class GuardUser extends BaseGuardUser
    */
   public function checkPassword($password)
   {
-    if ($callable = sfConfig::get('app_sf_guard_plugin_check_password_callable'))
+    if ($callable = sfConfig::get('app_guard_check_password_callable'))
     {
       return call_user_func_array($callable, array($this->getUsername(), $password, $this));
     }
@@ -118,13 +118,13 @@ class GuardUser extends BaseGuardUser
    */
   public function addGroupByName($name, $con = null)
   {
-    $group = Doctrine_Core::getTable('sfGuardGroup')->findOneByName($name);
+    $group = GuardGroupTable::getInstance()->findOneByName($name);
     if (!$group)
     {
       throw new sfException(sprintf('The group "%s" does not exist.', $name));
     }
 
-    $ug = new sfGuardUserGroup();
+    $ug = new GuardUserGroup();
     $ug->setUser($this);
     $ug->setGroup($group);
 
@@ -140,13 +140,13 @@ class GuardUser extends BaseGuardUser
    */
   public function addPermissionByName($name, $con = null)
   {
-    $permission = Doctrine_Core::getTable('sfGuardPermission')->findOneByName($name);
+    $permission = GuardPermissionTable::getInstance()->findOneByName($name);
     if (!$permission)
     {
       throw new sfException(sprintf('The permission "%s" does not exist.', $name));
     }
 
-    $up = new sfGuardUserPermission();
+    $up = new GuardUserPermission();
     $up->setUser($this);
     $up->setPermission($permission);
 
@@ -209,15 +209,15 @@ class GuardUser extends BaseGuardUser
     if (!$this->_allPermissions)
     {
       $this->_allPermissions = array();
-      $permissions = $this->getPermissions();
+      $permissions = $this->getPermission();
       foreach ($permissions as $permission)
       {
         $this->_allPermissions[$permission->getName()] = $permission;
       }
 
-      foreach ($this->getGroups() as $group)
+      foreach ($this->getGroup() as $group)
       {
-        foreach ($group->getPermissions() as $permission)
+        foreach ($group->getPermission() as $permission)
         {
           $this->_allPermissions[$permission->getName()] = $permission;
         }
@@ -247,7 +247,7 @@ class GuardUser extends BaseGuardUser
 
     if (!$this->_permissions)
     {
-      $permissions = $this->getPermissions();
+      $permissions = $this->getPermission();
       foreach ($permissions as $permission)
       {
         $this->_permissions[$permission->getName()] = $permission;
@@ -256,7 +256,7 @@ class GuardUser extends BaseGuardUser
 
     if (!$this->_groups)
     {
-      $groups = $this->getGroups();
+      $groups = $this->getGroup();
       foreach ($groups as $group)
       {
         $this->_groups[$group->getName()] = $group;

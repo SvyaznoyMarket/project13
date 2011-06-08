@@ -31,13 +31,13 @@ class myGuardValidatorUser extends sfValidatorBase
     $username = isset($values[$this->getOption('username_field')]) ? $values[$this->getOption('username_field')] : '';
     $password = isset($values[$this->getOption('password_field')]) ? $values[$this->getOption('password_field')] : '';
 
-    $allowEmail = sfConfig::get('app_sf_guard_plugin_allow_login_with_email', true);
+    $allowEmail = sfConfig::get('app_guard_allow_login_with_email', true);
     $method = $allowEmail ? 'retrieveByUsernameOrEmailAddress' : 'retrieveByUsername';
 
     // don't allow to sign in with an empty username
     if ($username)
     {
-       if ($callable = sfConfig::get('app_sf_guard_plugin_retrieve_by_username_callable'))
+       if ($callable = sfConfig::get('app_guard_retrieve_by_username_callable'))
        {
            $user = call_user_func_array($callable, array($username));
        } else {
@@ -64,6 +64,6 @@ class myGuardValidatorUser extends sfValidatorBase
 
   protected function getTable()
   {
-    return Doctrine::getTable('sfGuardUser');
+    return GuardUserTable::getInstance();
   }
 }

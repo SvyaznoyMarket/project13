@@ -16,12 +16,12 @@ class userComponents extends myComponents
   */
   public function executeProfile()
   {
-    if ($userType = !$this->getUser()->getType())
+    if (!$this->getUser()->isAuthenticated())
     {
       return sfView::NONE;
     }
 
-    $this->view = $userType;
+    $this->view = $this->getUser()->getType();
   }
 /**
   * Executes profile_client component

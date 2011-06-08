@@ -28,9 +28,9 @@ class GuardUserTable extends myDoctrineTable
    */
   public function retrieveByUsername($username, $isActive = true)
   {
-    $query = Doctrine_Core::getTable('sfGuardUser')->createQuery('u')
-      ->where('u.username = ?', $username)
-      ->addWhere('u.is_active = ?', $isActive)
+    $query = $this->createQuery('user')
+      ->where('user.username = ?', $username)
+      ->addWhere('user.is_active = ?', $isActive)
     ;
 
     return $query->fetchOne();
@@ -46,9 +46,9 @@ class GuardUserTable extends myDoctrineTable
    */
   public function retrieveByUsernameOrEmailAddress($username, $isActive = true)
   {
-    $query = Doctrine_Core::getTable('sfGuardUser')->createQuery('u')
-      ->where('u.username = ? OR u.email_address = ?', array($username, $username))
-      ->addWhere('u.is_active = ?', $isActive)
+    $query = $this->createQuery('user')
+      ->where('user.username = ? OR user.email_address = ?', array($username, $username))
+      ->addWhere('user.is_active = ?', $isActive)
     ;
 
     return $query->fetchOne();

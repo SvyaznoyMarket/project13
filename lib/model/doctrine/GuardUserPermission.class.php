@@ -12,9 +12,11 @@
  */
 class GuardUserPermission extends BaseGuardUserPermission
 {
+
   public function postSave($event)
   {
     parent::postSave($event);
     $this->getUser()->reloadGroupsAndPermissions();
   }
+
 }
