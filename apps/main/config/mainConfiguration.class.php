@@ -4,6 +4,7 @@ class mainConfiguration extends sfApplicationConfiguration
 {
   public function configure()
   {
+    $this->initValidatorMessages();
   }
 
   public function configureDoctrine(Doctrine_Manager $manager)
@@ -33,5 +34,18 @@ class mainConfiguration extends sfApplicationConfiguration
 
     $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $driver);
     $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, 3600);
+  }
+
+  protected function initValidatorMessages()
+  {
+    foreach (array(
+      'required' => 'Не заполнено.',
+      'invalid'  => 'Неверное.',
+      'max'      => 'Не должно быть больше %max%.',
+      'min'      => 'Не должно быть меньше %min%.',
+    ) as $name => $value)
+    {
+      sfValidatorBase::setDefaultMessage($name, $value);
+    }
   }
 }

@@ -10,5 +10,32 @@
  */
 class productCommentComponents extends myComponents
 {
+ /**
+  * Executes list component
+  *
+  * @param Product $product Товар
+  */
+  public function executeList()
+  {
+    $list = array();
+    foreach ($this->product->getCommentList() as $productComment)
+    {
+      $list[] = array(
+        'date'    => $productComment->created_at,
+        'author'  => (string)$productComment->User,
+        'content' => $productComment->content,
+      );
+    }
 
+    $this->setVar('list', $list, true);
+  }
+ /**
+  * Executes form component
+  *
+  * @param Product $product Товар
+  */
+  public function executeForm()
+  {
+
+  }
 }

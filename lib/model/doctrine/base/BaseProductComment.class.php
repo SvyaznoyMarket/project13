@@ -94,5 +94,8 @@ abstract class BaseProductComment extends myDoctrineRecord
              'local' => 'user_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable();
+        $this->actAs($timestampable0);
     }
 }

@@ -19,6 +19,7 @@
  * @property ProductType $Type
  * @property Creator $Creator
  * @property ProductCategory $Category
+ * @property Doctrine_Collection $OrderRelation
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Photo
  * @property Doctrine_Collection $Comment
@@ -43,6 +44,7 @@
  * @method ProductType         getType()                   Returns the current record's "Type" value
  * @method Creator             getCreator()                Returns the current record's "Creator" value
  * @method ProductCategory     getCategory()               Returns the current record's "Category" value
+ * @method Doctrine_Collection getOrderRelation()          Returns the current record's "OrderRelation" collection
  * @method Doctrine_Collection getPropertyRelation()       Returns the current record's "PropertyRelation" collection
  * @method Doctrine_Collection getPhoto()                  Returns the current record's "Photo" collection
  * @method Doctrine_Collection getComment()                Returns the current record's "Comment" collection
@@ -66,6 +68,7 @@
  * @method Product             setType()                   Sets the current record's "Type" value
  * @method Product             setCreator()                Sets the current record's "Creator" value
  * @method Product             setCategory()               Sets the current record's "Category" value
+ * @method Product             setOrderRelation()          Sets the current record's "OrderRelation" collection
  * @method Product             setPropertyRelation()       Sets the current record's "PropertyRelation" collection
  * @method Product             setPhoto()                  Sets the current record's "Photo" collection
  * @method Product             setComment()                Sets the current record's "Comment" collection
@@ -174,6 +177,10 @@ abstract class BaseProduct extends myDoctrineRecord
              'local' => 'category_id',
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
+
+        $this->hasMany('OrderProductRelation as OrderRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_id'));
 
         $this->hasMany('ProductPropertyRelation as PropertyRelation', array(
              'local' => 'id',

@@ -21,6 +21,8 @@ abstract class BaseProductCommentForm extends BaseFormDoctrine
       'content'    => new sfWidgetFormInputText(),
       'helpful'    => new sfWidgetFormInputText(),
       'unhelpful'  => new sfWidgetFormInputText(),
+      'created_at' => new sfWidgetFormDateTime(),
+      'updated_at' => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -30,6 +32,8 @@ abstract class BaseProductCommentForm extends BaseFormDoctrine
       'content'    => new sfValidatorString(array('max_length' => 255)),
       'helpful'    => new sfValidatorInteger(array('required' => false)),
       'unhelpful'  => new sfValidatorInteger(array('required' => false)),
+      'created_at' => new sfValidatorDateTime(),
+      'updated_at' => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('product_comment[%s]');

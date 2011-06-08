@@ -160,6 +160,8 @@ ProductPhoto:
 ProductComment:
   options:
     comment: 'Комментарии товара'
+  actAs:
+    Timestampable: ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     product_id:        { type: integer(20), notnull: true }
@@ -170,4 +172,3 @@ ProductComment:
   relations:
     Product:           { class: Product, foreignAlias: Comment, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     User:              { class: User, foreignAlias: Comment, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-

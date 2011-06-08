@@ -45,6 +45,22 @@ productCard:
 productComment:
   url:   /products/:product/comments
   param: { module: productComment, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+productComment_new:
+  url:   /products/:product/comments/new
+  param: { module: productComment, action: new }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+productComment_create:
+  url:   /products/:product/comments/create
+  param: { module: productComment, action: create }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
 
 
 # Пользователь

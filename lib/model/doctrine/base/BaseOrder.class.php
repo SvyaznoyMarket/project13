@@ -11,19 +11,22 @@
  * @property integer $payment_method_id
  * @property User $User
  * @property PaymentMethod $PaymentMethod
+ * @property Doctrine_Collection $ProductRelation
  * 
- * @method integer       getId()                Returns the current record's "id" value
- * @method string        getToken()             Returns the current record's "token" value
- * @method integer       getUserId()            Returns the current record's "user_id" value
- * @method integer       getPaymentMethodId()   Returns the current record's "payment_method_id" value
- * @method User          getUser()              Returns the current record's "User" value
- * @method PaymentMethod getPaymentMethod()     Returns the current record's "PaymentMethod" value
- * @method Order         setId()                Sets the current record's "id" value
- * @method Order         setToken()             Sets the current record's "token" value
- * @method Order         setUserId()            Sets the current record's "user_id" value
- * @method Order         setPaymentMethodId()   Sets the current record's "payment_method_id" value
- * @method Order         setUser()              Sets the current record's "User" value
- * @method Order         setPaymentMethod()     Sets the current record's "PaymentMethod" value
+ * @method integer             getId()                Returns the current record's "id" value
+ * @method string              getToken()             Returns the current record's "token" value
+ * @method integer             getUserId()            Returns the current record's "user_id" value
+ * @method integer             getPaymentMethodId()   Returns the current record's "payment_method_id" value
+ * @method User                getUser()              Returns the current record's "User" value
+ * @method PaymentMethod       getPaymentMethod()     Returns the current record's "PaymentMethod" value
+ * @method Doctrine_Collection getProductRelation()   Returns the current record's "ProductRelation" collection
+ * @method Order               setId()                Sets the current record's "id" value
+ * @method Order               setToken()             Sets the current record's "token" value
+ * @method Order               setUserId()            Sets the current record's "user_id" value
+ * @method Order               setPaymentMethodId()   Sets the current record's "payment_method_id" value
+ * @method Order               setUser()              Sets the current record's "User" value
+ * @method Order               setPaymentMethod()     Sets the current record's "PaymentMethod" value
+ * @method Order               setProductRelation()   Sets the current record's "ProductRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -75,5 +78,9 @@ abstract class BaseOrder extends myDoctrineRecord
              'local' => 'payment_method_id',
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
+
+        $this->hasMany('OrderProductRelation as ProductRelation', array(
+             'local' => 'id',
+             'foreign' => 'order_id'));
     }
 }
