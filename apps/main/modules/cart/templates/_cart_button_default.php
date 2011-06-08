@@ -1,0 +1,2 @@
+<?php
+  echo link_to('в корзине', '@default?module=cart&action=show');

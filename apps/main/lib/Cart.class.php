@@ -1,27 +1,30 @@
 <?php
 
-class Cart {
+class Cart
+{
 
+  protected $position = 0;
   protected $parameterHolder = null;
   protected $products = null;
-  protected $defaultCart = array('count' => 1, 'discount' => 0, );
+  protected $defaultCart = array('amount' => 1, 'discount' => 0, 'Service' => array(), 'service' => array(), 'Warranty' => array(), 'warranty' => array(), );
 
   function __construct($parameters = array())
   {
     $parameters = myToolkit::arrayDeepMerge(array('products' => array(), ), $parameters);
     $this->parameterHolder = new sfParameterHolder();
     $this->parameterHolder->add($parameters);
+    $this->position = 0;
   }
 
-  public function addProduct(Product $product, $count = 1)
+  public function addProduct(Product $product, $amount = 1)
   {
     $products = $this->parameterHolder->get('products');
 
     if (!isset($products[$product->id]) || empty($products[$product->id]))
     {
-      $products[$product->id] = array('count' => 1, );
+      $products[$product->id] = array('amount' => 1, );
     }
-    $products[$product->id]['count'] = $count;
+    $products[$product->id]['amount'] = $amount;
     $this->parameterHolder->set('products', $products);
     $this->calculateDiscount();
   }
@@ -58,15 +61,15 @@ class Cart {
     {
       $this->products->free();
       $this->products = null;
-      $this->parameterHolder->set('products', array());
     }
+    $this->parameterHolder->set('products', array());
   }
 
-  public function hasProduct(Product $product)
+  public function hasProduct($id)
   {
     $products = $this->parameterHolder->get('products');
 
-    return isset($products[$product->id]) && !empty($products[$product->id]);
+    return isset($products[$id]) && !empty($products[$id]);
   }
 
   public function getWeight()
@@ -87,7 +90,8 @@ class Cart {
 
   public function count()
   {
-    return count($this->parameterHolder->get('products'));
+    $count = count($this->parameterHolder->get('products'));
+    return $count;
   }
 
   public function dump()
@@ -140,7 +144,7 @@ class Cart {
     }
     foreach ($this->products as $key => $product)
     {
-      $this->updateProductCart($product, 'count', $products[$key]['count']);
+      $this->updateProductCart($product, 'amount', $products[$key]['amount']);
     }
   }
 
@@ -157,6 +161,16 @@ class Cart {
     $cart[$property] = $value;
 
     $product->mapValue('cart', $cart);
+  }
+
+  protected function getServiceById($id)
+  {
+    return array();
+  }
+
+  protected function getWarrantyById($id)
+  {
+    return array();
   }
 
 }
