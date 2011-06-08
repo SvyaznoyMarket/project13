@@ -10,40 +10,6 @@
  */
 class cartActions extends sfActions
 {
- /**
-  * Executes index action
-  *
-  * @param sfRequest $request A request object
-  */
-  public function executeIndex(sfWebRequest $request)
-  {
-
-    //$productTable = ProductTable::getInstance();
-    //$product = Doctrine_Manager::connection()->queryOne("SELECT * FROM product WHERE id = ?", array(10, ));
-    //myDebug::dump($product);
-
-    $cart = $this->getUser()->getCart();
-    //$product = ProductTable::getInstance()->getById(1);
-    //myDebug::dump($product);
-    //$cart->addProduct($product);
-    //myDebug::dump($cart->dump());
-    //$cart->addProduct($product, 10);
-    //$product = ProductTable::getInstance()->getById(5);
-    //$cart->addProduct($product, 2);
-    //$product = $cart->getProduct(1);
-    //myDebug::dump($cart->hasProduct($product));
-    //$cart->clear();
-    //$cart->deleteProduct(1);
-    $products = $cart->getProducts()->toArray();
-    myDebug::dump($products);
-    //$cart->getProducts()->getData();
-    //echo "<pre>"; print_r($cart->getProducts()->toArray()); echo "</pre>";
-    //myDebug::dump($cart->getProducts()->toArray());
-    //$cart->deleteProduct(1);
-    //myDebug::dump($cart->dump());
-
-  }
-
   public function executeAdd(sfWebRequest $request)
   {
     $product = ProductTable::getInstance()->findOneByToken($request['product']);
@@ -53,7 +19,7 @@ class cartActions extends sfActions
       $this->getUser()->getCart()->addProduct($product, $request['amount']);
     }
 
-    $this->redirect($this->getRequest()->getReferer(), 302);
+    $this->redirect($this->getRequest()->getReferer());
   }
 
   public function executeDelete(sfWebRequest $request)
@@ -65,7 +31,7 @@ class cartActions extends sfActions
       $this->getUser()->getCart()->deleteProduct($product->id);
     }
 
-    $this->redirect($this->getRequest()->getReferer(), 302);
+    $this->redirect($this->getRequest()->getReferer());
   }
 
   public function executeShow()
@@ -77,6 +43,6 @@ class cartActions extends sfActions
   public function executeClear()
   {
     $this->getUser()->getCart()->clear();
-    $this->redirect($this->getRequest()->getReferer(), 302);
+    $this->redirect($this->getRequest()->getReferer());
   }
 }
