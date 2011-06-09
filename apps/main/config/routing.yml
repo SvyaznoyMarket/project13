@@ -80,10 +80,15 @@ user_signout:
   url:   /logout
   param: { module: user, action: signout }
 #
-# user password
-user_password:
+# user forgot password
+user_forgotPassword:
   url:   /request-password
-  param: { module: user, action: password }
+  param: { module: user, action: forgotPassword }
+#
+# user change password
+user_changePassword:
+  url:   /private/password
+  param: { module: user, action: changePassword }
 #
 # user product history
 userProductHistory:

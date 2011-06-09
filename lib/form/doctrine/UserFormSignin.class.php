@@ -24,13 +24,13 @@ class UserFormSignin extends BaseUserForm
       'remember' => new sfValidatorBoolean(),
     ));
 
+    $this->validatorSchema->setPostValidator(new myGuardValidatorUser());
+
     $this->widgetSchema->setLabels(array(
       'username' => 'Логин',
       'password' => 'Пароль',
       'remember' => 'Забыли пароль?',
     ));
-
-    $this->validatorSchema->setPostValidator(new myGuardValidatorUser());
 
     $this->widgetSchema->setNameFormat('signin[%s]');
     $this->widgetSchema->setFormFormatterName('default');

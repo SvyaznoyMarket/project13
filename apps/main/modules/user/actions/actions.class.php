@@ -95,13 +95,43 @@ class userActions extends sfActions
     $this->getResponse()->setStatusCode(403);
   }
  /**
-  * Executes password action
+  * Executes forgotPassword action
   *
   * @param sfRequest $request A request object
   */
-  public function executePassword($request)
+  public function executeForgotPassword($request)
   {
-    throw new sfException('This method is not yet implemented.');
+
+  }
+ /**
+  * Executes changePassword action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeChangePassword($request)
+  {
+    $this->user = $this->getUser()->getGuardUser();
+
+    $this->form = new UserFormChangePassword($this->user);
+
+    if ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getParameter($this->form->getName()));
+      if ($this->form->isValid())
+      {
+        $this->form->save();
+
+        //$this->_deleteOldUserForgotPasswordRecords();
+
+        $this->dispatcher->notify(new myEvent($this, 'user.change_password', array(
+          'user' => $this->user,
+        )));
+
+
+        $this->getUser()->setFlash('notice', 'Пароль успешно обновлен');
+        $this->redirect('@user_signin');
+      }
+    }
   }
  /**
   * Executes edit action

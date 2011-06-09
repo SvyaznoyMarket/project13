@@ -199,7 +199,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   {
     if (!$this->user && $id = $this->getAttribute('user_id', null, 'guard'))
     {
-      $this->user = GuardUserTable::getInstance()->getById($id);
+      $this->user = UserTable::getInstance()->getById($id);
 
       if (!$this->user)
       {
