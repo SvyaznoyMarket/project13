@@ -10,4 +10,16 @@
  */
 class defaultComponents extends myComponents
 {
+/**
+  * Executes navigation component
+  *
+  * @param array $list Список элементов навигации
+  */
+  public function executeNavigation()
+  {
+    if (empty($this->list))
+    {
+      return sfView::NONE;
+    }
+  }
 }
