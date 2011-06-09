@@ -187,7 +187,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
     $this->setAuthenticated(false);
     $expiration_age = sfConfig::get('app_guard_remember_key_expiration_age', 15 * 24 * 3600);
     $remember_cookie = sfConfig::get('app_guard_remember_cookie_name', 'remember');
-    $this->context->getResponse()->setCookie($remember_cookie, '', time() - $expiration_age);
+    sfContext::getInstance()->getResponse()->setCookie($remember_cookie, '', time() - $expiration_age);
   }
 
   /**
