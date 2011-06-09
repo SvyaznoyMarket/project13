@@ -18,6 +18,24 @@ class CreatorTable extends myDoctrineTable
     return Doctrine_Core::getTable('Creator');
   }
 
+  public function getById($id, array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+
+    $this->setQueryParameters($q);
+
+    $q->addWhere('creator.id = ?', $id);
+    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+
+    $record = $q->fetchOne();
+    if (!$record)
+    {
+      return $record;
+    }
+
+    return $record;
+  }
+
   public function getForRoute(array $params)
   {
     $id = isset($params['creator']) ? $this->getIdBy('token', $params['creator']) : null;
