@@ -17,7 +17,10 @@ abstract class BaseProductCommentForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'         => new sfWidgetFormInputHidden(),
       'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => false)),
-      'user_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => false)),
+      'lft'        => new sfWidgetFormInputText(),
+      'rgt'        => new sfWidgetFormInputText(),
+      'level'      => new sfWidgetFormInputText(),
+      'user_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
       'content'    => new sfWidgetFormInputText(),
       'helpful'    => new sfWidgetFormInputText(),
       'unhelpful'  => new sfWidgetFormInputText(),
@@ -28,7 +31,10 @@ abstract class BaseProductCommentForm extends BaseFormDoctrine
     $this->setValidators(array(
       'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'product_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Product'))),
-      'user_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'))),
+      'lft'        => new sfValidatorInteger(array('required' => false)),
+      'rgt'        => new sfValidatorInteger(array('required' => false)),
+      'level'      => new sfValidatorInteger(array('required' => false)),
+      'user_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'required' => false)),
       'content'    => new sfValidatorString(array('max_length' => 255)),
       'helpful'    => new sfValidatorInteger(array('required' => false)),
       'unhelpful'  => new sfValidatorInteger(array('required' => false)),

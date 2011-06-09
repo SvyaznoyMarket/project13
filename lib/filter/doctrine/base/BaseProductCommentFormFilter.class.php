@@ -14,6 +14,9 @@ abstract class BaseProductCommentFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => true)),
+      'lft'        => new sfWidgetFormFilterInput(),
+      'rgt'        => new sfWidgetFormFilterInput(),
+      'level'      => new sfWidgetFormFilterInput(),
       'user_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
       'content'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'helpful'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
@@ -24,6 +27,9 @@ abstract class BaseProductCommentFormFilter extends BaseFormFilterDoctrine
 
     $this->setValidators(array(
       'product_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Product'), 'column' => 'id')),
+      'lft'        => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'rgt'        => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'level'      => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'user_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
       'content'    => new sfValidatorPass(array('required' => false)),
       'helpful'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -51,6 +57,9 @@ abstract class BaseProductCommentFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'         => 'Number',
       'product_id' => 'ForeignKey',
+      'lft'        => 'Number',
+      'rgt'        => 'Number',
+      'level'      => 'Number',
       'user_id'    => 'ForeignKey',
       'content'    => 'Text',
       'helpful'    => 'Number',

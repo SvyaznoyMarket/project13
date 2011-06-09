@@ -14,17 +14,7 @@ class ProductCommentForm extends BaseProductCommentForm
   {
     parent::configure();
 
-    $product = $this->getOption('product');
-    if (!$product)
-    {
-      throw new InvalidArgumentException('You must provide a product object.');
-    }
-    $user = $this->getOption('user');
-
-    $this->object->Product = $product;
-    $this->object->User = $user;
-
-    $this->widgetSchema['content'] = new sfWidgetFormTextarea();
+    $parent = $this->getOption('parent');
 
     $fields = array(
       'content',
@@ -37,6 +27,8 @@ class ProductCommentForm extends BaseProductCommentForm
       ));
     }
 
+    $this->widgetSchema['content'] = new sfWidgetFormTextarea();
+
     $this->widgetSchema->setLabels(array(
       'content'   => 'Комментарий',
       'helpful'   => 'Полезный',
@@ -46,5 +38,30 @@ class ProductCommentForm extends BaseProductCommentForm
     $this->useFields($fields);
 
     $this->widgetSchema->setNameFormat('comment[%s]');
+  }
+
+  protected function doSave($con = null)
+  {
+    $product = $this->getOption('product');
+    if (!$product)
+    {
+      throw new InvalidArgumentException('You must provide a product object.');
+    }
+    $user = $this->getOption('user');
+    if (!$user)
+    {
+      throw new InvalidArgumentException('You must provide a user object.');
+    }
+
+    $this->object->product_id = $product->id;
+    $this->object->user_id = $user->id;
+
+    parent::doSave($con);
+
+    $parent = $this->getOption('parent') ? $this->getOption('parent') : ProductCommentTable::getInstance()->getRoot($this->getOption('product')->id);
+    if ($parent)
+    {
+      $this->object->getNode()->insertAsLastChildOf($parent);
+    }
   }
 }

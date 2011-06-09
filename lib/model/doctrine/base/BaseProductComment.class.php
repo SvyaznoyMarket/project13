@@ -7,6 +7,9 @@
  * 
  * @property integer $id
  * @property integer $product_id
+ * @property integer $lft
+ * @property integer $rgt
+ * @property integer $level
  * @property integer $user_id
  * @property string $content
  * @property integer $helpful
@@ -16,6 +19,9 @@
  * 
  * @method integer        getId()         Returns the current record's "id" value
  * @method integer        getProductId()  Returns the current record's "product_id" value
+ * @method integer        getLft()        Returns the current record's "lft" value
+ * @method integer        getRgt()        Returns the current record's "rgt" value
+ * @method integer        getLevel()      Returns the current record's "level" value
  * @method integer        getUserId()     Returns the current record's "user_id" value
  * @method string         getContent()    Returns the current record's "content" value
  * @method integer        getHelpful()    Returns the current record's "helpful" value
@@ -24,6 +30,9 @@
  * @method User           getUser()       Returns the current record's "User" value
  * @method ProductComment setId()         Sets the current record's "id" value
  * @method ProductComment setProductId()  Sets the current record's "product_id" value
+ * @method ProductComment setLft()        Sets the current record's "lft" value
+ * @method ProductComment setRgt()        Sets the current record's "rgt" value
+ * @method ProductComment setLevel()      Sets the current record's "level" value
  * @method ProductComment setUserId()     Sets the current record's "user_id" value
  * @method ProductComment setContent()    Sets the current record's "content" value
  * @method ProductComment setHelpful()    Sets the current record's "helpful" value
@@ -52,9 +61,24 @@ abstract class BaseProductComment extends myDoctrineRecord
              'notnull' => true,
              'length' => 20,
              ));
-        $this->hasColumn('user_id', 'integer', 20, array(
+        $this->hasColumn('lft', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
+             'length' => 20,
+             ));
+        $this->hasColumn('rgt', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'length' => 20,
+             ));
+        $this->hasColumn('level', 'integer', 4, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'length' => 4,
+             ));
+        $this->hasColumn('user_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
              'length' => 20,
              ));
         $this->hasColumn('content', 'string', 255, array(
@@ -96,6 +120,11 @@ abstract class BaseProductComment extends myDoctrineRecord
              'onDelete' => 'CASCADE'));
 
         $timestampable0 = new Doctrine_Template_Timestampable();
+        $nestedset0 = new Doctrine_Template_NestedSet(array(
+             'hasManyRoots' => true,
+             'rootColumnName' => 'product_id',
+             ));
         $this->actAs($timestampable0);
+        $this->actAs($nestedset0);
     }
 }

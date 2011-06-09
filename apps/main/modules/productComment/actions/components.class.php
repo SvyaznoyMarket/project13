@@ -21,9 +21,11 @@ class productCommentComponents extends myComponents
     foreach ($this->product->getCommentList() as $productComment)
     {
       $list[] = array(
-        'date'    => $productComment->created_at,
-        'author'  => (string)$productComment->User,
-        'content' => $productComment->content,
+        'level'      => $productComment->level,
+        'date'       => $productComment->created_at,
+        'author'     => (string)$productComment->User,
+        'content'    => $productComment->content,
+        'answer_url' => url_for(array('sf_route' => 'productComment_new', 'sf_subject' => $this->product, 'parent' => $productComment->id)),
       );
     }
 

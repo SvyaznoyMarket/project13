@@ -162,10 +162,14 @@ ProductComment:
     comment: 'Комментарии товара'
   actAs:
     Timestampable: ~
+    NestedSet:     { hasManyRoots: true, rootColumnName: product_id }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     product_id:        { type: integer(20), notnull: true }
-    user_id:           { type: integer(20), notnull: true }
+    lft:               { type: integer(20), notnull: true }
+    rgt:               { type: integer(20), notnull: true }
+    level:             { type: integer(4), notnull: true }
+    user_id:           { type: integer(20), notnull: false, default: null }
     content:           { type: string(255), notnull: true, notblank: true, comment: 'Текст комментария' }
     helpful:           { type: integer(4), notnull: true, default: 0, comment: 'Количество полезных оценок отзыва' }
     unhelpful:         { type: integer(4), notnull: true, default: 0, comment: 'Количество бесполезных оценок отзыва' }

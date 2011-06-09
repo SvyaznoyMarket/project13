@@ -18,6 +18,7 @@ class productCommentActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
+    $this->parent = null;
     $this->form = new ProductCommentForm(array(), array('product' => $this->product, 'user' => $this->getUser()->getGuardUser()));
   }
  /**
@@ -27,7 +28,15 @@ class productCommentActions extends myActions
   */
   public function executeNew(sfWebRequest $request)
   {
+    $this->redirectUnless($this->getUser()->isAuthenticated(), '@user_signin');
+
     $this->product = $this->getRoute()->getObject();
+    $this->parent =
+      !empty($request['parent'])
+      ? ProductCommentTable::getInstance()->getById($request['parent'])
+      : null
+    ;
+    $this->form = new ProductCommentForm(array(), array('product' => $this->product, 'user' => $this->getUser()->getGuardUser(), 'parent' => $this->parent));
   }
  /**
   * Executes create action
@@ -36,8 +45,15 @@ class productCommentActions extends myActions
   */
   public function executeCreate(sfWebRequest $request)
   {
+    $this->redirectUnless($this->getUser()->isAuthenticated(), '@user_signin');
+
     $this->product = $this->getRoute()->getObject();
-    $this->form = new ProductCommentForm(array(), array('product' => $this->product, 'user' => $this->getUser()->getGuardUser()));
+    $this->parent =
+      !empty($request['parent'])
+      ? ProductCommentTable::getInstance()->getById($request['parent'])
+      : null
+    ;
+    $this->form = new ProductCommentForm(array(), array('product' => $this->product, 'user' => $this->getUser()->getGuardUser(), 'parent' => $this->parent));
 
     $this->form->bind($request->getParameter($this->form->getName()));
     if ($this->form->isValid())

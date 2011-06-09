@@ -20,9 +20,7 @@ class ProductCommentTable extends myDoctrineTable
 
   public function getDefaultParameters()
   {
-    return array(
-      'order' => 'created_at DESC',
-    );
+    return array();
   }
 
   public function createBaseQuery(array $params = array())
@@ -30,6 +28,11 @@ class ProductCommentTable extends myDoctrineTable
     $this->applyDefaultParameters($params);
 
     $q = $this->createQuery('productComment');
+
+    $q
+      ->where('productComment.level > ?', 0)
+      ->orderBy('productComment.rgt DESC')
+    ;
 
     return $q;
   }
@@ -40,7 +43,8 @@ class ProductCommentTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->where('productComment.product_id = ?', $product->id)
+    $q->leftJoin('productComment.User user')
+      ->addWhere('productComment.product_id = ?', $product->id)
       //->useResultCache(true, null, $this->getQueryHash("product-{$product->id}/productComment-all", $params))
     ;
 
@@ -57,12 +61,32 @@ class ProductCommentTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->where('productComment.user_id = ?', $user->id);
+    $q->addWhere('productComment.user_id = ?', $user->id);
 
     $this->setQueryParameters($q, $params);
 
     $ids = $this->getIdsByQuery($q);
 
     return $this->createListByIds($ids, $params);
+  }
+
+  public function getRoot($product_id)
+  {
+    $q = $this->createQuery()
+      ->where('product_id = ? AND level = ?', array($product_id, 0))
+    ;
+
+    $record = $q->fetchOne();
+    if (!$record)
+    {
+      $record = new ProductComment();
+      $record->product_id = $product_id;
+      $record->save();
+
+      $tree = $this->getTree();
+      $tree->createRoot($record);
+    }
+
+    return $record;
   }
 }

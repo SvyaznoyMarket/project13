@@ -47,7 +47,7 @@ EOF;
 
     $this->logSection('doctrine', 'loading test ProductCategories');
     $this->createRecordList('ProductCategory', $count['ProductCategory']);
-    $productCategoryTree = Doctrine_Core::getTable('ProductCategory')->getTree();
+    $productCategoryTree = ProductCategoryTable::getInstance()->getTree();
     foreach (ProductCategoryTable::getInstance()->findAll() as $productCategory)
     {
       $productCategoryTree->createRoot($productCategory);

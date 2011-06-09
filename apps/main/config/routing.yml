@@ -49,14 +49,14 @@ productComment:
   options: { model: Product, type: object, method: getForRoute }
 #
 productComment_new:
-  url:   /products/:product/comments/new
-  param: { module: productComment, action: new }
+  url:   /products/:product/comments/new/:parent
+  param: { module: productComment, action: new, parent: ~ }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
 #
 productComment_create:
-  url:   /products/:product/comments/create
-  param: { module: productComment, action: create }
+  url:   /products/:product/comments/create/:parent
+  param: { module: productComment, action: create, parent: ~ }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
