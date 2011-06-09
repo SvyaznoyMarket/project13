@@ -1,9 +1,9 @@
 <h1>Главная</h1>
 
 <div class="block">
-  <?php echo link_to('Личный кабинет', 'user') ?>
+  <p><?php echo link_to('Личный кабинет', 'user') ?></p>
 </div>
 <div class="block">
-  <?php echo link_to('Каталог товаров', 'productCatalog') ?>
+  <p><?php echo link_to('Каталог товаров', 'productCatalog') ?></p>
 </div>
 

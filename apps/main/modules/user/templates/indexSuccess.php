@@ -1,3 +1,3 @@
 <div class="block">
-  <?php echo link_to('История просмотра товаров', 'userProductHistory') ?>
+  <p><?php echo link_to('История просмотра товаров', 'userProductHistory') ?></p>
 </div>
