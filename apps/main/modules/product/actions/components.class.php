@@ -20,14 +20,23 @@ class productComponents extends myComponents
 
   }
  /**
-  * Executes list component
+  * Executes pager component
   *
   * @param myDoctrinePager $productPager Листалка товаров
+  */
+  public function executePager()
+  {
+    $this->setVar('productList', $this->productPager->getResults(), true);
+  }
+ /**
+  * Executes list component
+  *
+  * @param myDoctrineCollection $productList Список товаров
   */
   public function executeList()
   {
     $list = array();
-    foreach ($this->productPager->getResults() as $product)
+    foreach ($this->productList as $product)
     {
       $list[] = array(
         'name'     => (string)$product,
