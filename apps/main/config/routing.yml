@@ -84,6 +84,16 @@ user_signout:
 user_password:
   url:   /request-password
   param: { module: user, action: password }
+#
+# user product history
+userProductHistory:
+  url:   /private/product-history
+  param: { module: userProductHistory, action: index }
+#
+# user product history clear
+userProductHistory_clear:
+  url:   /private/product-history/clear
+  param: { module: userProductHistory, action: clear }
 
 
 # generic rules

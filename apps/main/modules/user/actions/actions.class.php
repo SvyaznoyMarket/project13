@@ -18,7 +18,11 @@ class userActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
   }
-
+ /**
+  * Executes signin action
+  *
+  * @param sfRequest $request A request object
+  */
   public function executeSignin($request)
   {
     $user = $this->getUser();
@@ -68,7 +72,11 @@ class userActions extends sfActions
       $this->getResponse()->setStatusCode(401);
     }
   }
-
+ /**
+  * Executes signout action
+  *
+  * @param sfRequest $request A request object
+  */
   public function executeSignout($request)
   {
     $this->getUser()->signOut();
@@ -77,14 +85,30 @@ class userActions extends sfActions
 
     $this->redirect('' != $signoutUrl ? $signoutUrl : '@homepage');
   }
-
+ /**
+  * Executes secure action
+  *
+  * @param sfRequest $request A request object
+  */
   public function executeSecure($request)
   {
     $this->getResponse()->setStatusCode(403);
   }
-
+ /**
+  * Executes password action
+  *
+  * @param sfRequest $request A request object
+  */
   public function executePassword($request)
   {
     throw new sfException('This method is not yet implemented.');
+  }
+ /**
+  * Executes edit action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeEdit(sfWebRequest $request)
+  {
   }
 }

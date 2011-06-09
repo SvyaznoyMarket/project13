@@ -10,7 +10,7 @@
  */
 class userComponents extends myComponents
 {
-/**
+ /**
   * Executes profile component
   *
   */
@@ -23,14 +23,14 @@ class userComponents extends myComponents
 
     $this->view = $this->getUser()->getType();
   }
-/**
+ /**
   * Executes profile_client component
   *
   */
   public function executeProfile_client()
   {
   }
-/**
+ /**
   * Executes profile_partner component
   *
   */

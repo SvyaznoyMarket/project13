@@ -37,6 +37,16 @@ class UserProductHistory
     return $productList;
   }
 
+  public function clear()
+  {
+    if (null != $this->products)
+    {
+      $this->products->free();
+      $this->products = null;
+    }
+    $this->parameterHolder->set('products', array());
+  }
+
   public function dump()
   {
     return $this->parameterHolder->getAll();
