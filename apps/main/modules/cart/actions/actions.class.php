@@ -43,6 +43,7 @@ class cartActions extends sfActions
   public function executeClear()
   {
     $this->getUser()->getCart()->clear();
+
     $this->redirect($this->getRequest()->getReferer());
   }
 }

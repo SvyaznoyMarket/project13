@@ -55,7 +55,7 @@ class Cart
 
   public function clear()
   {
-    if (!is_null($this->products))
+    if (null != $this->products)
     {
       $this->products->free();
       $this->products = null;
