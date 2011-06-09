@@ -14,7 +14,9 @@ class UserFormChangePassword extends BaseUserForm
   {
     $this->useFields(array('password'));
 
-    $this->widgetSchema['password'] = new sfWidgetFormInputPassword();
+    $this->widgetSchema['password'] = new sfWidgetFormInputPassword(array(), array(
+      'autocomplete' => 'off',
+    ));
     $this->validatorSchema['password'] = new sfValidatorString(array('max_length' => 18, 'min_length' => 6,  'required' => true), array(
       'required'   => 'Укажите пароль.',
       'min_length' => 'Пароль должен содержать не менее 6 символов.',
