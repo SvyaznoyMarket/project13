@@ -2,18 +2,16 @@
 
 class Cart
 {
-
-  protected $position = 0;
-  protected $parameterHolder = null;
-  protected $products = null;
-  protected $defaultCart = array('amount' => 1, 'discount' => 0, 'Service' => array(), 'service' => array(), 'Warranty' => array(), 'warranty' => array(), );
+  protected
+    $parameterHolder = null,
+    $products = null
+  ;
 
   function __construct($parameters = array())
   {
     $parameters = myToolkit::arrayDeepMerge(array('products' => array(), ), $parameters);
     $this->parameterHolder = new sfParameterHolder();
     $this->parameterHolder->add($parameters);
-    $this->position = 0;
   }
 
   public function addProduct(Product $product, $amount = 1)
@@ -156,7 +154,7 @@ class Cart
     }
     else
     {
-      $cart = $this->defaultCart;
+      $cart = $this->getDefaults();
     }
     $cart[$property] = $value;
 
@@ -171,6 +169,16 @@ class Cart
   protected function getWarrantyById($id)
   {
     return array();
+  }
+
+  protected function getDefaults()
+  {
+    return array(
+      'amount' => 1,
+      'discount' => 0,
+      'service' => array(),
+      'warranty' => array(),
+    );
   }
 
 }
