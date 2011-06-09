@@ -18,5 +18,8 @@ class productCardActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
+
+    // история просмотра товаров
+    $this->getUser()->getProductHistory()->addProduct($this->product);
   }
 }

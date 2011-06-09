@@ -8,13 +8,14 @@ class myUser extends myGuardSecurityUser
   {
     parent::initialize($dispatcher, $storage, $options);
 
-    $cart = $this->getAttribute('cart', array());
-    $this->cart = new Cart($cart);
+    $this->cart = new Cart($this->getAttribute('cart', array()));
+    $this->productHistory = new UserProductHistory($this->getAttribute('productHistory', array()));
   }
 
   public function shutdown()
   {
     $this->setAttribute('cart', $this->cart->dump());
+    $this->setAttribute('productHistory', $this->productHistory->dump());
 
     parent::shutdown();
   }
@@ -24,9 +25,13 @@ class myUser extends myGuardSecurityUser
     return $this->cart;
   }
 
+  public function getProductHistory()
+  {
+    return $this->productHistory;
+  }
+
   public function getType()
   {
     return $this->isAuthenticated() ? $this->getGuardUser()->type : null;
   }
-
 }
