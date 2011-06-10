@@ -46,3 +46,22 @@ ul li {
 .navigation li {
   display: inline;
 }
+
+
+.pagination span {
+  display: inline-block;
+  width: 20px;
+  padding: 2px 5px;
+  text-align: center;
+
+  border: solid 1px #f0f0f0;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+.pagination span.current {
+  background: #777777;
+  color: #f0f0f0;
+}
+.pagination a {
+  text-decoration: none;
+}

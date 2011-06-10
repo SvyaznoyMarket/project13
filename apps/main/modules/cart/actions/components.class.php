@@ -21,6 +21,11 @@ class cartComponents extends myComponents
   {
     $cart = $this->getUser()->getCart();
 
+    if (!$this->product->is_insale)
+    {
+      return sfView::NONE;
+    }
+
     if ($cart->hasProduct($this->product->id))
     {
       $this->button = 'cart';
@@ -29,7 +34,7 @@ class cartComponents extends myComponents
     {
       $this->button = 'buy';
     }
-    if (!isset($this->view) || is_null($this->view))
+    if (!in_array($this->view, array()))
     {
       $this->view = 'default';
     }
