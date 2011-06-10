@@ -37,4 +37,52 @@ class userComponents extends myComponents
   public function executeProfile_partner()
   {
   }
+ /**
+  * Executes menu component
+  *
+  */
+  public function executeMenu()
+  {
+    $uri = $this->getContext()->getRouting()->getCurrentInternalUri(true);
+
+    $list = array(
+      array(
+        'name'   => 'Корзина товаров',
+        'url'    => '@cart',
+        'routes' => array('@cart'),
+      ),
+      array(
+        'name'   => 'История просмотра товаров',
+        'url'    => '@userProductHistory',
+        'routes' => array('@userProductHistory'),
+      ),
+      array(
+        'name'   => 'Отложенные товары',
+        'url'    => '@userDelayedProduct',
+        'routes' => array('@userDelayedProduct'),
+      ),
+      array(
+        'name'   => 'Пароль',
+        'url'    => '@user_changePassword',
+        'routes' => array('@user_changePassword'),
+      ),
+      array(
+        'name'   => 'Выход',
+        'url'    => '@user_signout',
+        'routes' => array(),
+      ),
+    );
+
+    foreach ($list as &$item)
+    {
+      $routeName =
+        false === strpos($item['url'], '?')
+        ? false !== strpos($uri, '?') ? strstr($uri, '?', true) : $uri
+        : $uri
+      ;
+      $item['current'] = in_array($routeName, $item['routes']);
+    } if (isset($item)) unset($item);
+
+    $this->setVar('list', $list, true);
+  }
 }

@@ -48,6 +48,26 @@ ul li {
 }
 
 
+
+.menu {
+  list-style: none;
+}
+  .menu li {
+    display: inline;
+    margin-right: 20px;
+    padding: 5px 10px;
+    text-align: center;
+
+    border: solid 1px #ffffff;
+
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+  }
+  .menu li.current{
+    border: solid 1px #777777;
+  }
+
+
 .pagination span {
   display: inline-block;
   width: 20px;

@@ -1,4 +1,8 @@
 <div class="block">
+  <?php include_component('user', 'menu') ?>
+</div>
+
+<div class="block">
   <ul>
     <li><?php echo link_to('Корзина товаров', 'cart') ?></li>
     <li><?php echo link_to('История просмотра товаров', 'userProductHistory') ?></li>

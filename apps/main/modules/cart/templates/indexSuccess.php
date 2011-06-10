@@ -1,3 +1,7 @@
+<div class="block">
+  <?php include_component('user', 'menu') ?>
+</div>
+
 <h1>Корзина товаров</h1>
 
 <div class="block">
