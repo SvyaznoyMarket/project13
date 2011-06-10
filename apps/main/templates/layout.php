@@ -11,6 +11,8 @@
   <body>
 
     <div class="container">
+      <?php include_partial('default/logo') ?>
+
       <?php echo $sf_content ?>
     </div>
   </body>

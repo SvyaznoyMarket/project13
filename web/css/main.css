@@ -22,6 +22,11 @@ ul li {
   background: #ffffff;
 }
 
+.logo {
+  width: 60px;
+  height: 60px;
+}
+
 .form {
   list-style: none;
   padding-left: 10px;
