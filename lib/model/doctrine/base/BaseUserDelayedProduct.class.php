@@ -7,15 +7,18 @@
  * 
  * @property integer $user_id
  * @property integer $product_id
+ * @property boolean $is_wished
  * @property User $User
  * @property Product $Product
  * 
  * @method integer            getUserId()     Returns the current record's "user_id" value
  * @method integer            getProductId()  Returns the current record's "product_id" value
+ * @method boolean            getIsWished()   Returns the current record's "is_wished" value
  * @method User               getUser()       Returns the current record's "User" value
  * @method Product            getProduct()    Returns the current record's "Product" value
  * @method UserDelayedProduct setUserId()     Sets the current record's "user_id" value
  * @method UserDelayedProduct setProductId()  Sets the current record's "product_id" value
+ * @method UserDelayedProduct setIsWished()   Sets the current record's "is_wished" value
  * @method UserDelayedProduct setUser()       Sets the current record's "User" value
  * @method UserDelayedProduct setProduct()    Sets the current record's "Product" value
  * 
@@ -38,6 +41,11 @@ abstract class BaseUserDelayedProduct extends myDoctrineRecord
              'type' => 'integer',
              'primary' => true,
              'length' => 20,
+             ));
+        $this->hasColumn('is_wished', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
              ));
 
         $this->option('comment', 'Отложенные товары пользователя');

@@ -34,7 +34,7 @@ CREATE TABLE `stock_product_relation` (`stock_id` BIGINT, `product_id` BIGINT, `
 CREATE TABLE `tag` (`id` BIGINT AUTO_INCREMENT, `token` VARCHAR(255) NOT NULL UNIQUE, `name` VARCHAR(255) NOT NULL, PRIMARY KEY(`id`)) COMMENT = 'Тег' ENGINE = INNODB;
 CREATE TABLE `tag_product_category_relation` (`tag_id` BIGINT, `product_category_id` BIGINT, PRIMARY KEY(`tag_id`, `product_category_id`)) COMMENT = 'Связь тега и категории товара' ENGINE = INNODB;
 CREATE TABLE `tag_product_relation` (`tag_id` BIGINT, `product_id` BIGINT, PRIMARY KEY(`tag_id`, `product_id`)) COMMENT = 'Связь тега и товара' ENGINE = INNODB;
-CREATE TABLE `user_delayed_product` (`user_id` BIGINT, `product_id` BIGINT, PRIMARY KEY(`user_id`, `product_id`)) COMMENT = 'Отложенные товары пользователя' ENGINE = INNODB;
+CREATE TABLE `user_delayed_product` (`user_id` BIGINT, `product_id` BIGINT, `is_wished` TINYINT(1) DEFAULT '0' NOT NULL, PRIMARY KEY(`user_id`, `product_id`)) COMMENT = 'Отложенные товары пользователя' ENGINE = INNODB;
 CREATE TABLE `user_product_tag` (`id` BIGINT AUTO_INCREMENT, `name` VARCHAR(255) NOT NULL, `user_id` BIGINT NOT NULL, `product_id` BIGINT NOT NULL, `position` INT DEFAULT 1 NOT NULL COMMENT 'Порядок сортировки', INDEX `user_id_idx` (`user_id`), INDEX `product_id_idx` (`product_id`), PRIMARY KEY(`id`)) COMMENT = 'Пользовательские теги к товару' ENGINE = INNODB;
 ALTER TABLE `accessory_product` ADD CONSTRAINT `accessory_product_slave_id_product_id` FOREIGN KEY (`slave_id`) REFERENCES `product`(`id`) ON DELETE CASCADE;
 ALTER TABLE `accessory_product` ADD CONSTRAINT `accessory_product_master_id_product_id` FOREIGN KEY (`master_id`) REFERENCES `product`(`id`) ON DELETE CASCADE;

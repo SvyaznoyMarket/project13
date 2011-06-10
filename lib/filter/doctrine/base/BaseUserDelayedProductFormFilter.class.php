@@ -13,9 +13,11 @@ abstract class BaseUserDelayedProductFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'is_wished'  => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
     ));
 
     $this->setValidators(array(
+      'is_wished'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
     ));
 
     $this->widgetSchema->setNameFormat('user_delayed_product_filters[%s]');
@@ -37,6 +39,7 @@ abstract class BaseUserDelayedProductFormFilter extends BaseFormFilterDoctrine
     return array(
       'user_id'    => 'Number',
       'product_id' => 'Number',
+      'is_wished'  => 'Boolean',
     );
   }
 }
