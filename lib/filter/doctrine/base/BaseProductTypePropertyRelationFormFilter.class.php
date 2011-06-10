@@ -14,8 +14,6 @@ abstract class BaseProductTypePropertyRelationFormFilter extends BaseFormFilterD
   {
     $this->setWidgets(array(
       'name'            => new sfWidgetFormFilterInput(),
-      'product_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'add_empty' => true)),
-      'property_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => true)),
       'group_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => true)),
       'position'        => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'group_position'  => new sfWidgetFormFilterInput(array('with_empty' => false)),
@@ -25,8 +23,6 @@ abstract class BaseProductTypePropertyRelationFormFilter extends BaseFormFilterD
 
     $this->setValidators(array(
       'name'            => new sfValidatorPass(array('required' => false)),
-      'product_type_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('ProductType'), 'column' => 'id')),
-      'property_id'     => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Property'), 'column' => 'id')),
       'group_id'        => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Group'), 'column' => 'id')),
       'position'        => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'group_position'  => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -51,10 +47,9 @@ abstract class BaseProductTypePropertyRelationFormFilter extends BaseFormFilterD
   public function getFields()
   {
     return array(
-      'id'              => 'Number',
       'name'            => 'Text',
-      'product_type_id' => 'ForeignKey',
-      'property_id'     => 'ForeignKey',
+      'product_type_id' => 'Number',
+      'property_id'     => 'Number',
       'group_id'        => 'ForeignKey',
       'position'        => 'Number',
       'group_position'  => 'Number',

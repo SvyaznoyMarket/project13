@@ -22,3 +22,14 @@ Stock:
   relations:
     Region:            { class: Region, foreignAlias: Stock, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     Shop:              { class: Shop, foreignAlias: Stock, local: shop_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+
+StockProductRelation:
+  options:
+    comment: 'Связь склада и товара'
+  columns:
+    stock_id:          { type: integer(20), primary: true, notnull: true }
+    product_id:        { type: integer(20), primary: true, notnull: true }
+    count:             { type: integer(4), notnull: true, default: 1 }
+  relations:
+    Stock:             { class: Stock, foreignAlias: ProductRelation, local: stock_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Product:           { class: Product, foreignAlias: StockRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

@@ -13,23 +13,26 @@
  * @property integer $shop_id
  * @property Region $Region
  * @property Shop $Shop
+ * @property Doctrine_Collection $ProductRelation
  * 
- * @method integer getId()        Returns the current record's "id" value
- * @method string  getToken()     Returns the current record's "token" value
- * @method string  getName()      Returns the current record's "name" value
- * @method enum    getType()      Returns the current record's "type" value
- * @method integer getRegionId()  Returns the current record's "region_id" value
- * @method integer getShopId()    Returns the current record's "shop_id" value
- * @method Region  getRegion()    Returns the current record's "Region" value
- * @method Shop    getShop()      Returns the current record's "Shop" value
- * @method Stock   setId()        Sets the current record's "id" value
- * @method Stock   setToken()     Sets the current record's "token" value
- * @method Stock   setName()      Sets the current record's "name" value
- * @method Stock   setType()      Sets the current record's "type" value
- * @method Stock   setRegionId()  Sets the current record's "region_id" value
- * @method Stock   setShopId()    Sets the current record's "shop_id" value
- * @method Stock   setRegion()    Sets the current record's "Region" value
- * @method Stock   setShop()      Sets the current record's "Shop" value
+ * @method integer             getId()              Returns the current record's "id" value
+ * @method string              getToken()           Returns the current record's "token" value
+ * @method string              getName()            Returns the current record's "name" value
+ * @method enum                getType()            Returns the current record's "type" value
+ * @method integer             getRegionId()        Returns the current record's "region_id" value
+ * @method integer             getShopId()          Returns the current record's "shop_id" value
+ * @method Region              getRegion()          Returns the current record's "Region" value
+ * @method Shop                getShop()            Returns the current record's "Shop" value
+ * @method Doctrine_Collection getProductRelation() Returns the current record's "ProductRelation" collection
+ * @method Stock               setId()              Sets the current record's "id" value
+ * @method Stock               setToken()           Sets the current record's "token" value
+ * @method Stock               setName()            Sets the current record's "name" value
+ * @method Stock               setType()            Sets the current record's "type" value
+ * @method Stock               setRegionId()        Sets the current record's "region_id" value
+ * @method Stock               setShopId()          Sets the current record's "shop_id" value
+ * @method Stock               setRegion()          Sets the current record's "Region" value
+ * @method Stock               setShop()            Sets the current record's "Shop" value
+ * @method Stock               setProductRelation() Sets the current record's "ProductRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -98,5 +101,9 @@ abstract class BaseStock extends myDoctrineRecord
              'local' => 'shop_id',
              'foreign' => 'id',
              'onDelete' => 'SET NULL'));
+
+        $this->hasMany('StockProductRelation as ProductRelation', array(
+             'local' => 'id',
+             'foreign' => 'stock_id'));
     }
 }

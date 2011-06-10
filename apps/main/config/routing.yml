@@ -101,6 +101,29 @@ userProductHistory_clear:
   param: { module: userProductHistory, action: clear }
 
 
+# Корзина товаров
+#
+# cart
+cart:
+  url:   /cart
+  param: { module: cart, action: index }
+#
+# cart add
+cart_add:
+  url:   /cart/add/:product/:amount
+  param: { module: cart, action: add }
+#
+# cart delete
+cart_delete:
+  url:   /cart/delete/:product
+  param: { module: cart, action: delete }
+#
+# cart clear
+cart_clear:
+  url:   /cart/clear
+  param: { module: cart, action: clear }
+
+
 # generic rules
 # please, remove them by adding more specific rules
 default_index:
