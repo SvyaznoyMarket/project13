@@ -14,7 +14,7 @@ class cartComponents extends myComponents
   * Executes buy_button component
   *
   * @param Product $product Товар
-  * @param int $amount Количество товара
+  * @param int $quantity Количество товара
   * @param string $view Вид отображения кнопки
   */
   public function executeBuy_button()

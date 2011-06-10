@@ -31,7 +31,7 @@ class cartActions extends sfActions
 
     if ($product)
     {
-      $this->getUser()->getCart()->addProduct($product, $request['amount']);
+      $this->getUser()->getCart()->addProduct($product, $request['quantity']);
     }
 
     $this->redirect($this->getRequest()->getReferer());

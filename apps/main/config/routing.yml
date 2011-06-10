@@ -99,6 +99,21 @@ userProductHistory:
 userProductHistory_clear:
   url:   /private/product-history/clear
   param: { module: userProductHistory, action: clear }
+#
+# user delayed product
+userDelayedProduct:
+  url:   /private/delayed-product
+  param: { module: userDelayedProduct, action: index }
+#
+# user delayed product clear
+userDelayedProduct_clear:
+  url:   /private/delayed-product/clear
+  param: { module: userDelayedProduct, action: clear }
+#
+# user delayed product add
+userDelayedProduct_add:
+  url:   /private/delayed-product/add/:product
+  param: { module: userDelayedProduct, action: add }
 
 
 # Корзина товаров
@@ -110,7 +125,7 @@ cart:
 #
 # cart add
 cart_add:
-  url:   /cart/add/:product/:amount
+  url:   /cart/add/:product/:quantity
   param: { module: cart, action: add }
 #
 # cart delete
