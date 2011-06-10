@@ -17,6 +17,7 @@ class userDelayedProductActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    $this->userDelayedProductList = $this->getUser()->getGuardUser()->getDelayedProduct();
   }
  /**
   * Executes create action

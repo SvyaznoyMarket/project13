@@ -13,11 +13,13 @@ class userDelayedProductComponents extends myComponents
  /**
   * Executes list component
   *
+  * @param myDoctrineCollection $userDelayedProductList Коллекция отложенных товаров
+  *
   */
   public function executeList()
   {
     $list = array();
-    foreach ($this->getUser()->getGuardUser()->getDelayedProduct() as $userDelayedProduct)
+    foreach ($this->userDelayedProductList as $userDelayedProduct)
     {
       $product = $userDelayedProduct->Product;
       $list[] = array(

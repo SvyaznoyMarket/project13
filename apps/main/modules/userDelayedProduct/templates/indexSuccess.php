@@ -5,5 +5,12 @@
 <h1>Отложенные товары</h1>
 
 <div class="block">
-  <?php include_component('userDelayedProduct', 'list') ?>
+  <?php if (count($userDelayedProductList) > 0): ?>
+    <?php include_component('userDelayedProduct', 'list', array('userDelayedProductList' => $userDelayedProductList)) ?>
+    <?php echo link_to('очистить', '@userDelayedProduct_clear') ?>
+
+  <?php else: ?>
+    <p>нет отложенных товаров</p>
+
+  <?php endif ?>
 </div>
