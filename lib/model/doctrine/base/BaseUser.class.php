@@ -8,13 +8,16 @@
  * @property Doctrine_Collection $Order
  * @property Doctrine_Collection $Comment
  * @property Doctrine_Collection $ProductTag
+ * @property Doctrine_Collection $DelayedProduct
  * 
- * @method Doctrine_Collection getOrder()      Returns the current record's "Order" collection
- * @method Doctrine_Collection getComment()    Returns the current record's "Comment" collection
- * @method Doctrine_Collection getProductTag() Returns the current record's "ProductTag" collection
- * @method User                setOrder()      Sets the current record's "Order" collection
- * @method User                setComment()    Sets the current record's "Comment" collection
- * @method User                setProductTag() Sets the current record's "ProductTag" collection
+ * @method Doctrine_Collection getOrder()          Returns the current record's "Order" collection
+ * @method Doctrine_Collection getComment()        Returns the current record's "Comment" collection
+ * @method Doctrine_Collection getProductTag()     Returns the current record's "ProductTag" collection
+ * @method Doctrine_Collection getDelayedProduct() Returns the current record's "DelayedProduct" collection
+ * @method User                setOrder()          Sets the current record's "Order" collection
+ * @method User                setComment()        Sets the current record's "Comment" collection
+ * @method User                setProductTag()     Sets the current record's "ProductTag" collection
+ * @method User                setDelayedProduct() Sets the current record's "DelayedProduct" collection
  * 
  * @package    enter
  * @subpackage model
@@ -35,6 +38,10 @@ abstract class BaseUser extends GuardUser
              'foreign' => 'user_id'));
 
         $this->hasMany('UserProductTag as ProductTag', array(
+             'local' => 'id',
+             'foreign' => 'user_id'));
+
+        $this->hasMany('UserDelayedProduct as DelayedProduct', array(
              'local' => 'id',
              'foreign' => 'user_id'));
     }

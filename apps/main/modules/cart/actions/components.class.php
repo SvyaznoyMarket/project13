@@ -39,4 +39,24 @@ class cartComponents extends myComponents
       $this->view = 'default';
     }
   }
+ /**
+  * Executes list component
+  *
+  */
+  public function executeList()
+  {
+    $cart = $this->getUser()->getCart();
+
+    $list = array();
+    foreach ($cart->getProducts() as $product)
+    {
+      $list[] = array(
+        'token'    => $product->token,
+        'name'     => (string)$product,
+        'quantity' => $product['cart']['quantity'],
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
 }
