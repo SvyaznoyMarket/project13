@@ -47,6 +47,11 @@ class userComponents extends myComponents
 
     $list = array(
       array(
+        'name'   => 'Личный кабинет',
+        'url'    => '@user',
+        'routes' => array('@user'),
+      ),
+      array(
         'name'   => 'Корзина товаров',
         'url'    => '@cart',
         'routes' => array('@cart'),
@@ -65,11 +70,6 @@ class userComponents extends myComponents
         'name'   => 'Пароль',
         'url'    => '@user_changePassword',
         'routes' => array('@user_changePassword'),
-      ),
-      array(
-        'name'   => 'Выход',
-        'url'    => '@user_signout',
-        'routes' => array(),
       ),
     );
 

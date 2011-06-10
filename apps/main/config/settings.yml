@@ -36,8 +36,8 @@ all:
       - Partial
       - myPagerUrl
 
-    login_module:           user
+    login_module:           guardUser
     login_action:           signin
 
-    secure_module:          user
+    secure_module:          guardUser
     secure_action:          secure

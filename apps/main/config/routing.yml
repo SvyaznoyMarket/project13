@@ -73,22 +73,22 @@ user:
 # user signin
 user_signin:
   url:   /login
-  param: { module: user, action: signin }
+  param: { module: guardUser, action: signin }
 #
 # user signout
 user_signout:
   url:   /logout
-  param: { module: user, action: signout }
+  param: { module: guardUser, action: signout }
 #
 # user forgot password
 user_forgotPassword:
   url:   /request-password
-  param: { module: user, action: forgotPassword }
+  param: { module: guardUser, action: forgotPassword }
 #
 # user change password
 user_changePassword:
   url:   /private/password
-  param: { module: user, action: changePassword }
+  param: { module: guardUser, action: changePassword }
 #
 # user product history
 userProductHistory:
