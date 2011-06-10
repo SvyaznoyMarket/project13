@@ -7,6 +7,9 @@
  * 
  * @property integer $id
  * @property integer $root_id
+ * @property integer $lft
+ * @property integer $rgt
+ * @property integer $level
  * @property string $token
  * @property string $name
  * @property set $type
@@ -14,12 +17,18 @@
  * 
  * @method integer             getId()      Returns the current record's "id" value
  * @method integer             getRootId()  Returns the current record's "root_id" value
+ * @method integer             getLft()     Returns the current record's "lft" value
+ * @method integer             getRgt()     Returns the current record's "rgt" value
+ * @method integer             getLevel()   Returns the current record's "level" value
  * @method string              getToken()   Returns the current record's "token" value
  * @method string              getName()    Returns the current record's "name" value
  * @method set                 getType()    Returns the current record's "type" value
  * @method Doctrine_Collection getStock()   Returns the current record's "Stock" collection
  * @method Region              setId()      Sets the current record's "id" value
  * @method Region              setRootId()  Sets the current record's "root_id" value
+ * @method Region              setLft()     Sets the current record's "lft" value
+ * @method Region              setRgt()     Sets the current record's "rgt" value
+ * @method Region              setLevel()   Sets the current record's "level" value
  * @method Region              setToken()   Sets the current record's "token" value
  * @method Region              setName()    Sets the current record's "name" value
  * @method Region              setType()    Sets the current record's "type" value
@@ -45,6 +54,21 @@ abstract class BaseRegion extends myDoctrineRecord
              'type' => 'integer',
              'notnull' => true,
              'length' => 20,
+             ));
+        $this->hasColumn('lft', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'length' => 20,
+             ));
+        $this->hasColumn('rgt', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'length' => 20,
+             ));
+        $this->hasColumn('level', 'integer', 4, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'length' => 4,
              ));
         $this->hasColumn('token', 'string', 255, array(
              'type' => 'string',
