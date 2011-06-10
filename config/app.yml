@@ -18,6 +18,6 @@ all:
   guard:
     remember_cookie_name: remember
     allow_login_with_email: true
-    signout_url: '@homepage'
-    signin_url: '@homepage'
+    signout_url: '@user'
+    signin_url: '@user'
     #remember_key_expiration_age: 1296000
