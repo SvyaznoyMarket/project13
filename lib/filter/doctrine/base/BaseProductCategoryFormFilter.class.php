@@ -20,6 +20,7 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
       'token'           => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'name'            => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'filter_group_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('FilterGroup'), 'add_empty' => true)),
+      'news_list'       => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
 
     $this->setValidators(array(
@@ -30,6 +31,7 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
       'token'           => new sfValidatorPass(array('required' => false)),
       'name'            => new sfValidatorPass(array('required' => false)),
       'filter_group_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('FilterGroup'), 'column' => 'id')),
+      'news_list'       => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_category_filters[%s]');
@@ -39,6 +41,24 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
     $this->setupInheritance();
 
     parent::setup();
+  }
+
+  public function addNewsListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.NewsProductCategoryRelation NewsProductCategoryRelation')
+      ->andWhereIn('NewsProductCategoryRelation.news_id', $values)
+    ;
   }
 
   public function getModelName()
@@ -57,6 +77,7 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
       'token'           => 'Text',
       'name'            => 'Text',
       'filter_group_id' => 'ForeignKey',
+      'news_list'       => 'ManyKey',
     );
   }
 }

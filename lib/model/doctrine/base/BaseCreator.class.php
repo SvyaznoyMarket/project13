@@ -8,16 +8,22 @@
  * @property integer $id
  * @property string $token
  * @property string $name
+ * @property Doctrine_Collection $News
+ * @property Doctrine_Collection $NewsRelation
  * @property Doctrine_Collection $Product
  * 
- * @method integer             getId()      Returns the current record's "id" value
- * @method string              getToken()   Returns the current record's "token" value
- * @method string              getName()    Returns the current record's "name" value
- * @method Doctrine_Collection getProduct() Returns the current record's "Product" collection
- * @method Creator             setId()      Sets the current record's "id" value
- * @method Creator             setToken()   Sets the current record's "token" value
- * @method Creator             setName()    Sets the current record's "name" value
- * @method Creator             setProduct() Sets the current record's "Product" collection
+ * @method integer             getId()           Returns the current record's "id" value
+ * @method string              getToken()        Returns the current record's "token" value
+ * @method string              getName()         Returns the current record's "name" value
+ * @method Doctrine_Collection getNews()         Returns the current record's "News" collection
+ * @method Doctrine_Collection getNewsRelation() Returns the current record's "NewsRelation" collection
+ * @method Doctrine_Collection getProduct()      Returns the current record's "Product" collection
+ * @method Creator             setId()           Sets the current record's "id" value
+ * @method Creator             setToken()        Sets the current record's "token" value
+ * @method Creator             setName()         Sets the current record's "name" value
+ * @method Creator             setNews()         Sets the current record's "News" collection
+ * @method Creator             setNewsRelation() Sets the current record's "NewsRelation" collection
+ * @method Creator             setProduct()      Sets the current record's "Product" collection
  * 
  * @package    enter
  * @subpackage model
@@ -55,6 +61,15 @@ abstract class BaseCreator extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasMany('News', array(
+             'refClass' => 'NewsCreatorRelation',
+             'local' => 'creator_id',
+             'foreign' => 'news_id'));
+
+        $this->hasMany('NewsCreatorRelation as NewsRelation', array(
+             'local' => 'id',
+             'foreign' => 'creator_id'));
+
         $this->hasMany('Product', array(
              'local' => 'id',
              'foreign' => 'creator_id'));

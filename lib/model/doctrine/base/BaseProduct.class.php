@@ -20,6 +20,8 @@
  * @property ProductType $Type
  * @property Creator $Creator
  * @property ProductCategory $Category
+ * @property Doctrine_Collection $News
+ * @property Doctrine_Collection $NewsRelation
  * @property Doctrine_Collection $OrderRelation
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Photo
@@ -49,6 +51,8 @@
  * @method ProductType         getType()                   Returns the current record's "Type" value
  * @method Creator             getCreator()                Returns the current record's "Creator" value
  * @method ProductCategory     getCategory()               Returns the current record's "Category" value
+ * @method Doctrine_Collection getNews()                   Returns the current record's "News" collection
+ * @method Doctrine_Collection getNewsRelation()           Returns the current record's "NewsRelation" collection
  * @method Doctrine_Collection getOrderRelation()          Returns the current record's "OrderRelation" collection
  * @method Doctrine_Collection getPropertyRelation()       Returns the current record's "PropertyRelation" collection
  * @method Doctrine_Collection getPhoto()                  Returns the current record's "Photo" collection
@@ -77,6 +81,8 @@
  * @method Product             setType()                   Sets the current record's "Type" value
  * @method Product             setCreator()                Sets the current record's "Creator" value
  * @method Product             setCategory()               Sets the current record's "Category" value
+ * @method Product             setNews()                   Sets the current record's "News" collection
+ * @method Product             setNewsRelation()           Sets the current record's "NewsRelation" collection
  * @method Product             setOrderRelation()          Sets the current record's "OrderRelation" collection
  * @method Product             setPropertyRelation()       Sets the current record's "PropertyRelation" collection
  * @method Product             setPhoto()                  Sets the current record's "Photo" collection
@@ -194,6 +200,15 @@ abstract class BaseProduct extends myDoctrineRecord
              'local' => 'category_id',
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
+
+        $this->hasMany('News', array(
+             'refClass' => 'NewsProductRelation',
+             'local' => 'product_id',
+             'foreign' => 'news_id'));
+
+        $this->hasMany('NewsProductRelation as NewsRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_id'));
 
         $this->hasMany('OrderProductRelation as OrderRelation', array(
              'local' => 'id',

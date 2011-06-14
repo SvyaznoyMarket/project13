@@ -24,6 +24,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'description' => new sfWidgetFormFilterInput(),
       'rating'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'price'       => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'news_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
 
     $this->setValidators(array(
@@ -38,6 +39,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'description' => new sfValidatorPass(array('required' => false)),
       'rating'      => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
       'price'       => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
+      'news_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_filters[%s]');
@@ -47,6 +49,24 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
     $this->setupInheritance();
 
     parent::setup();
+  }
+
+  public function addNewsListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.NewsProductRelation NewsProductRelation')
+      ->andWhereIn('NewsProductRelation.news_id', $values)
+    ;
   }
 
   public function getModelName()
@@ -69,6 +89,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'description' => 'Text',
       'rating'      => 'Number',
       'price'       => 'Number',
+      'news_list'   => 'ManyKey',
     );
   }
 }

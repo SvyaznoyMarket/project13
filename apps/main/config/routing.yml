@@ -3,20 +3,12 @@ homepage:
   url:   /
   param: { module: default, action: index }
 
-
-# Каталог товаров
+# product
 #
 # product catalog
 productCatalog:
   url:   /catalog
   param: { module: productCatalog, action: index }
-#
-# product catalog filter
-productCatalog_filter:
-  url:   /catalog/:productCategory/_filter
-  param: { module: productCatalog, action: filter }
-  class:   myProductCatalogRoute
-  options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # product catalog by category
 productCatalog_category:
@@ -31,8 +23,6 @@ productCatalog_creator:
   param: { module: productCatalog, action: creator, page: 1 }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
-
-# Карточка товара
 #
 # product card
 productCard:
@@ -45,15 +35,27 @@ productCard:
 productComment:
   url:   /products/:product/comments
   param: { module: productComment, action: index }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
 #
-productComment_new:
-  url:   /products/:product/comments/new/:parent
-  param: { module: productComment, action: new, parent: ~ }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
+# news list by year
+newsCategory_year:
+  url:   /news/:newsCategory/:year
+  param: { module: newsCategory, action: year }
+  class:   myNewsRoute
+  options: { model: NewsCategory, type: object, method: getForRoute }
 #
+# news list by month
+newsCategory_month:
+  url:   /news/:newsCategory/:year/:month
+  param: { module: newsCategory, action: month }
+  class:   myNewsRoute
+  options: { model: NewsCategory, type: object, method: getForRoute }
+#
+# news
+news_show:
+  url:   /news/:newsCategory/:year/:month/:news
+  param: { module: news, action: show }
+  class:   myNewsRoute
+  options: { model: News, type: object, method: getForRoute }
 productComment_create:
   url:   /products/:product/comments/create/:parent
   param: { module: productComment, action: create, parent: ~ }
@@ -152,7 +154,6 @@ userProductNotice_clear:
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
 
-
 # Корзина товаров
 #
 # cart
@@ -174,7 +175,6 @@ cart_delete:
 cart_clear:
   url:   /cart/clear
   param: { module: cart, action: clear }
-
 
 # generic rules
 # please, remove them by adding more specific rules

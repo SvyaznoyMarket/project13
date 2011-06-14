@@ -40,6 +40,7 @@ EOF;
       'ProductCategory'    => 20,
       'ProductType'        => 50,
       'ProductProperty'    => 200,
+      'News'               => 250,
     );
 
     $this->logSection('doctrine', 'loading test Creators');
@@ -183,6 +184,22 @@ EOF;
       $productType->free(true);
       unset($list, $productType);
     }
+
+/*---------- Creatung news --------------*/
+    $this->logSection('doctrine', 'loading test News');
+    for ($i = 1; $i <= $count['News']; $i++)
+    {
+      $record = new News();
+      $record->fromArray(array(
+        'name'          => $this->getRecordName('News', $i),
+        'published_at'  => date('Y-m-d H:i:s', rand(strtotime('2009-01-01'), strtotime('now'))),
+        'category_id'   => rand(1, 3),
+      ));
+      $record->save();
+      $record->token = $record->id;
+      $record->save();
+    }
+/*----------------------------------------*/
   }
 
   protected function createRecordList($model, $count, array $options = array())
@@ -235,6 +252,7 @@ EOF;
       'ProductPropertyRelation' => 'значение',
       'ProductFilterGroup'      => 'группа',
       'ProductFilter'           => 'фильтр',
+      'News'                    => 'новость',
     );
 
     return $names[$model].'-'.$index;
