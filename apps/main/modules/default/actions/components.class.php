@@ -22,4 +22,23 @@ class defaultComponents extends myComponents
       return sfView::NONE;
     }
   }
+ /**
+  * Executes pagination component
+  *
+  * @param myDoctrinePager $pager Листалка товаров
+  */
+  public function executePagination()
+  {
+    $list = array();
+    foreach ($this->pager->getLinks() as $page)
+    {
+      $list[] = $page;
+    }
+
+    $this->first = $this->pager->getFirstPage();
+    $this->last = $this->pager->getLastPage();
+    $this->page = $this->pager->getPage();
+
+    $this->setVar('list', $list, true);
+  }
 }

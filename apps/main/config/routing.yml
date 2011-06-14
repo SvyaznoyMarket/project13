@@ -125,6 +125,32 @@ userDelayedProduct_clear:
   param: { module: userDelayedProduct, action: clear }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+#
+# user product notice
+userProductNotice:
+  url:   /private/product-notices
+  param: { module: userProductNotice, action: index }
+#
+# user product notice create
+userProductNotice_create:
+  url:   /private/product-notices/create/:product
+  param: { module: userProductNotice, action: create }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+# user product notice delete
+userProductNotice_delete:
+  url:   /private/product-notices/delete/:product
+  param: { module: userProductNotice, action: delete }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+# user product notice clear
+userProductNotice_clear:
+  url:   /private/product-notices/clear
+  param: { module: userProductNotice, action: clear }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
 
 
 # Корзина товаров
