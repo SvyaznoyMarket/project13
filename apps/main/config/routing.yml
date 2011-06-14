@@ -197,8 +197,8 @@ cart_clear:
 # generic rules
 # please, remove them by adding more specific rules
 default_index:
-  url:   /:module
-  param: { action: index }
+  url:   /:page
+  param: { module: default, action: show }
 
 default:
   url:   /:module/:action/*

@@ -18,4 +18,22 @@ class defaultActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
   }
+ /**
+  * Executes error404 action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeError404(sfWebRequest $request)
+  {
+  }
+ /**
+  * Executes show action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeShow(sfWebRequest $request)
+  {
+    $this->page = PageTable::getInstance()->getByToken($request['page']);
+    $this->forward404Unless($this->page);
+  }
 }
