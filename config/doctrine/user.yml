@@ -33,3 +33,15 @@ UserDelayedProduct:
   relations:
     User:              { class: User, foreignAlias: DelayedProduct, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: UserDelayedProduct, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+UserProductNotice:
+  options:
+    comment: 'Пользовательские уведомления о товаре'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    user_id:           { type: integer(20), notnull: true }
+    product_id:        { type: integer(20), notnull: true }
+    type:              { type: enum, length: 10, values: [ insale, price, comment ], notnull: true, comment: 'Тип уведомления: товар появился в магазинах, изменилась цена, появились отзывы' }
+  relations:
+    User:              { class: User, foreignAlias: ProductNotice, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Product:           { class: Product, foreignAlias: UserNotice, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
