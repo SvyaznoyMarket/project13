@@ -21,11 +21,6 @@ class NewsCategoryTable extends myDoctrineTable
   {
     $id = isset($params['newsCategory']) ? $this->getIdBy('token', $params['newsCategory']) : null;
 
-    if (!$id)
-    {
-      return null;
-    }
-
     return $this->getById($id, array());
   }
 }

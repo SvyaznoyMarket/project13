@@ -41,6 +41,7 @@ EOF;
       'ProductType'        => 50,
       'ProductProperty'    => 200,
       'News'               => 250,
+      'Page'               => 20,
     );
 
     $this->logSection('doctrine', 'loading test Creators');
@@ -200,6 +201,10 @@ EOF;
       $record->save();
     }
 /*----------------------------------------*/
+
+
+    $this->logSection('doctrine', 'loading test Pages');
+    $this->createRecordList('Page', $count['Page']);
   }
 
   protected function createRecordList($model, $count, array $options = array())
@@ -253,6 +258,7 @@ EOF;
       'ProductFilterGroup'      => 'группа',
       'ProductFilter'           => 'фильтр',
       'News'                    => 'новость',
+      'Page'                    => 'страница',
     );
 
     return $names[$model].'-'.$index;

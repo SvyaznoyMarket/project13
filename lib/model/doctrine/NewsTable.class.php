@@ -87,11 +87,6 @@ class NewsTable extends myDoctrineTable
   {
     $id = isset($params['news']) ? $this->getIdBy('token', $params['news']) : null;
 
-    if (!$id)
-    {
-      return null;
-    }
-
     $record = $this->getById($id);
     if ($params['year'] != date_format(new DateTime($record->published_at), "Y")
       || $params['month'] != date_format(new DateTime($record->published_at), "m")
