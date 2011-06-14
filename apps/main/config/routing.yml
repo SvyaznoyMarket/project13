@@ -10,6 +10,13 @@ productCatalog:
   url:   /catalog
   param: { module: productCatalog, action: index }
 #
+# product catalog filter
+productCatalog_filter:
+  url:   /catalog/:productCategory/_filter
+  param: { module: productCatalog, action: filter }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+#
 # product catalog by category
 productCatalog_category:
   url:   /catalog/:productCategory/:page
@@ -35,6 +42,24 @@ productCard:
 productComment:
   url:   /products/:product/comments
   param: { module: productComment, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+productComment_new:
+  url:   /products/:product/comments/new
+  param: { module: productComment, action: new }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
+productComment_create:
+  url:   /products/:product/comments/create
+  param: { module: productComment, action: create }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
+
+
 #
 # news list by year
 newsCategory_year:
@@ -56,13 +81,6 @@ news_show:
   param: { module: news, action: show }
   class:   myNewsRoute
   options: { model: News, type: object, method: getForRoute }
-productComment_create:
-  url:   /products/:product/comments/create/:parent
-  param: { module: productComment, action: create, parent: ~ }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    sf_method: [ post ]
 
 
 # Пользователь

@@ -40,12 +40,17 @@ class userDelayedProductComponents extends myComponents
   {
     $this->button = 'add';
 
-    foreach ($this->getUser()->getGuardUser()->getDelayedProduct() as $userDelayedProduct)
-    {
-      if ($this->product->id != $userDelayedProduct->product_id) continue;
+    $user = $this->getUser()->getGuardUser();
 
-      $this->button = 'show';
-      break;
+    if ($user)
+    {
+      foreach ($user->getDelayedProduct() as $userDelayedProduct)
+      {
+        if ($this->product->id != $userDelayedProduct->product_id) continue;
+
+        $this->button = 'show';
+        break;
+      }
     }
 
     if (!in_array($this->view, array()))
