@@ -102,11 +102,13 @@ class NewsTable extends myDoctrineTable
   public function getMonthsByCategory(NewsCategory $category, array $params = array())
   {
     $q = $this->createBaseQuery();
-    $q->select('count(*) as c, YEAR(published_at) as y, MONTH(published_at) as m');
-    $q->addWhere('news.category_id = ?', array($category->id, ));
-    $q->groupBy('y, m');
-    $q->orderBy('y, m');
-    
+
+    $q->select('count(*) as c, YEAR(published_at) as y, MONTH(published_at) as m')
+      ->addWhere('news.category_id = ?', array($category->id, ))
+      ->groupBy('y, m')
+      ->orderBy('y, m')
+    ;
+
     return $q->execute();
   }
 }
