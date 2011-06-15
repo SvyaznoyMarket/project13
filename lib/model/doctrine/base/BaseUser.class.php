@@ -7,18 +7,18 @@
  * 
  * @property Doctrine_Collection $Order
  * @property Doctrine_Collection $Comment
- * @property Doctrine_Collection $ProductTag
+ * @property Doctrine_Collection $Tag
  * @property Doctrine_Collection $DelayedProduct
  * @property Doctrine_Collection $ProductNotice
  * 
  * @method Doctrine_Collection getOrder()          Returns the current record's "Order" collection
  * @method Doctrine_Collection getComment()        Returns the current record's "Comment" collection
- * @method Doctrine_Collection getProductTag()     Returns the current record's "ProductTag" collection
+ * @method Doctrine_Collection getTag()            Returns the current record's "Tag" collection
  * @method Doctrine_Collection getDelayedProduct() Returns the current record's "DelayedProduct" collection
  * @method Doctrine_Collection getProductNotice()  Returns the current record's "ProductNotice" collection
  * @method User                setOrder()          Sets the current record's "Order" collection
  * @method User                setComment()        Sets the current record's "Comment" collection
- * @method User                setProductTag()     Sets the current record's "ProductTag" collection
+ * @method User                setTag()            Sets the current record's "Tag" collection
  * @method User                setDelayedProduct() Sets the current record's "DelayedProduct" collection
  * @method User                setProductNotice()  Sets the current record's "ProductNotice" collection
  * 
@@ -40,7 +40,7 @@ abstract class BaseUser extends GuardUser
              'local' => 'id',
              'foreign' => 'user_id'));
 
-        $this->hasMany('UserProductTag as ProductTag', array(
+        $this->hasMany('UserTag as Tag', array(
              'local' => 'id',
              'foreign' => 'user_id'));
 

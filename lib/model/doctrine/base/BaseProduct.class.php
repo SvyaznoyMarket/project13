@@ -32,7 +32,7 @@
  * @property Doctrine_Collection $MasterAccessoryProduct
  * @property Doctrine_Collection $StockRelation
  * @property Doctrine_Collection $TagRelation
- * @property Doctrine_Collection $UserTag
+ * @property Doctrine_Collection $UserTagRelation
  * @property Doctrine_Collection $UserDelayedProduct
  * @property Doctrine_Collection $UserNotice
  * 
@@ -63,7 +63,7 @@
  * @method Doctrine_Collection getMasterAccessoryProduct() Returns the current record's "MasterAccessoryProduct" collection
  * @method Doctrine_Collection getStockRelation()          Returns the current record's "StockRelation" collection
  * @method Doctrine_Collection getTagRelation()            Returns the current record's "TagRelation" collection
- * @method Doctrine_Collection getUserTag()                Returns the current record's "UserTag" collection
+ * @method Doctrine_Collection getUserTagRelation()        Returns the current record's "UserTagRelation" collection
  * @method Doctrine_Collection getUserDelayedProduct()     Returns the current record's "UserDelayedProduct" collection
  * @method Doctrine_Collection getUserNotice()             Returns the current record's "UserNotice" collection
  * @method Product             setId()                     Sets the current record's "id" value
@@ -93,7 +93,7 @@
  * @method Product             setMasterAccessoryProduct() Sets the current record's "MasterAccessoryProduct" collection
  * @method Product             setStockRelation()          Sets the current record's "StockRelation" collection
  * @method Product             setTagRelation()            Sets the current record's "TagRelation" collection
- * @method Product             setUserTag()                Sets the current record's "UserTag" collection
+ * @method Product             setUserTagRelation()        Sets the current record's "UserTagRelation" collection
  * @method Product             setUserDelayedProduct()     Sets the current record's "UserDelayedProduct" collection
  * @method Product             setUserNotice()             Sets the current record's "UserNotice" collection
  * 
@@ -250,7 +250,7 @@ abstract class BaseProduct extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'product_id'));
 
-        $this->hasMany('UserProductTag as UserTag', array(
+        $this->hasMany('UserTagProductRelation as UserTagRelation', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 
