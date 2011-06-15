@@ -11,6 +11,7 @@
  * @property Doctrine_Collection $PropertyGroup
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Product
+ * @property Doctrine_Collection $ProductHelper
  * @property Doctrine_Collection $SimilarProductGroup
  * 
  * @method integer             getId()                  Returns the current record's "id" value
@@ -19,6 +20,7 @@
  * @method Doctrine_Collection getPropertyGroup()       Returns the current record's "PropertyGroup" collection
  * @method Doctrine_Collection getPropertyRelation()    Returns the current record's "PropertyRelation" collection
  * @method Doctrine_Collection getProduct()             Returns the current record's "Product" collection
+ * @method Doctrine_Collection getProductHelper()       Returns the current record's "ProductHelper" collection
  * @method Doctrine_Collection getSimilarProductGroup() Returns the current record's "SimilarProductGroup" collection
  * @method ProductType         setId()                  Sets the current record's "id" value
  * @method ProductType         setName()                Sets the current record's "name" value
@@ -26,6 +28,7 @@
  * @method ProductType         setPropertyGroup()       Sets the current record's "PropertyGroup" collection
  * @method ProductType         setPropertyRelation()    Sets the current record's "PropertyRelation" collection
  * @method ProductType         setProduct()             Sets the current record's "Product" collection
+ * @method ProductType         setProductHelper()       Sets the current record's "ProductHelper" collection
  * @method ProductType         setSimilarProductGroup() Sets the current record's "SimilarProductGroup" collection
  * 
  * @package    enter
@@ -73,6 +76,10 @@ abstract class BaseProductType extends myDoctrineRecord
         $this->hasMany('Product', array(
              'local' => 'id',
              'foreign' => 'type_id'));
+
+        $this->hasMany('ProductHelper', array(
+             'local' => 'id',
+             'foreign' => 'product_type_id'));
 
         $this->hasMany('SimilarProductGroup', array(
              'local' => 'id',
