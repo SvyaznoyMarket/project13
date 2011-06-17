@@ -13,7 +13,8 @@ all:
     result_cache: true # кешировать результаты запросов
 
   product:
-    max_items_on_category: 10
+    max_items:             10 # максимально количество записей для списка товаров (по умолчанию)
+    max_items_on_category: 10 # максимально количество записей для списка товаров в категории
 
   guard:
     remember_cookie_name: remember

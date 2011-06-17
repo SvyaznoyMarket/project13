@@ -17,6 +17,7 @@ abstract class BaseProductHelperForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'              => new sfWidgetFormInputHidden(),
       'product_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'add_empty' => false)),
+      'token'           => new sfWidgetFormInputText(),
       'name'            => new sfWidgetFormInputText(),
       'is_active'       => new sfWidgetFormInputCheckbox(),
       'image'           => new sfWidgetFormInputText(),
@@ -27,12 +28,17 @@ abstract class BaseProductHelperForm extends BaseFormDoctrine
     $this->setValidators(array(
       'id'              => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'product_type_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'))),
+      'token'           => new sfValidatorString(array('max_length' => 255)),
       'name'            => new sfValidatorString(array('max_length' => 255)),
       'is_active'       => new sfValidatorBoolean(array('required' => false)),
       'image'           => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'position'        => new sfValidatorInteger(array('required' => false)),
       'description'     => new sfValidatorString(array('required' => false)),
     ));
+
+    $this->validatorSchema->setPostValidator(
+      new sfValidatorDoctrineUnique(array('model' => 'ProductHelper', 'column' => array('token')))
+    );
 
     $this->widgetSchema->setNameFormat('product_helper[%s]');
 

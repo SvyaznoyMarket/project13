@@ -7,6 +7,7 @@
  * 
  * @property integer $id
  * @property integer $product_type_id
+ * @property string $token
  * @property string $name
  * @property boolean $is_active
  * @property string $image
@@ -17,6 +18,7 @@
  * 
  * @method integer             getId()              Returns the current record's "id" value
  * @method integer             getProductTypeId()   Returns the current record's "product_type_id" value
+ * @method string              getToken()           Returns the current record's "token" value
  * @method string              getName()            Returns the current record's "name" value
  * @method boolean             getIsActive()        Returns the current record's "is_active" value
  * @method string              getImage()           Returns the current record's "image" value
@@ -26,6 +28,7 @@
  * @method Doctrine_Collection getQuestion()        Returns the current record's "Question" collection
  * @method ProductHelper       setId()              Sets the current record's "id" value
  * @method ProductHelper       setProductTypeId()   Sets the current record's "product_type_id" value
+ * @method ProductHelper       setToken()           Sets the current record's "token" value
  * @method ProductHelper       setName()            Sets the current record's "name" value
  * @method ProductHelper       setIsActive()        Sets the current record's "is_active" value
  * @method ProductHelper       setImage()           Sets the current record's "image" value
@@ -54,6 +57,13 @@ abstract class BaseProductHelper extends myDoctrineRecord
              'type' => 'integer',
              'notnull' => true,
              'length' => 20,
+             ));
+        $this->hasColumn('token', 'string', 255, array(
+             'type' => 'string',
+             'unique' => true,
+             'notnull' => true,
+             'notblank' => true,
+             'length' => 255,
              ));
         $this->hasColumn('name', 'string', 255, array(
              'type' => 'string',

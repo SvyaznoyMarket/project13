@@ -13,11 +13,11 @@ abstract class BaseProductHelperFilterFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'value'               => new sfWidgetFormFilterInput(),
+      'value'             => new sfWidgetFormFilterInput(),
     ));
 
     $this->setValidators(array(
-      'value'               => new sfValidatorPass(array('required' => false)),
+      'value'             => new sfValidatorPass(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_helper_filter_filters[%s]');
@@ -37,9 +37,9 @@ abstract class BaseProductHelperFilterFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'answer_id'           => 'Number',
-      'product_property_id' => 'Number',
-      'value'               => 'Text',
+      'answer_id'         => 'Number',
+      'product_filter_id' => 'Number',
+      'value'             => 'Text',
     );
   }
 }

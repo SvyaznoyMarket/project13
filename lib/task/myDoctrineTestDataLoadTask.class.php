@@ -10,7 +10,7 @@ class myDoctrineTestDataLoadTask extends sfBaseTask
     // ));
 
     $this->addOptions(array(
-      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name'),
+      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'main'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       // add your own options here
@@ -42,6 +42,7 @@ EOF;
       'ProductProperty'    => 200,
       'News'               => 250,
       'Page'               => 20,
+      'ProductHelper'      => 4,
     );
 
     $this->logSection('doctrine', 'loading test Creators');
@@ -206,6 +207,47 @@ EOF;
 
     $this->logSection('doctrine', 'loading test Pages');
     $this->createRecordList('Page', $count['Page']);
+
+    $this->logSection('doctrine', 'loading test ProductHelpers');
+    $list = ProductHelperTable::getInstance()->createList();
+    for ($productHelper_id = 1; $productHelper_id <= $count['ProductHelper']; $productHelper_id++)
+    {
+      $record = new ProductHelper();
+      $record->fromArray(array(
+        'product_type_id' => rand(1, $count['ProductType']),
+        'token'           => 'product-helper-'.$productHelper_id,
+        'name'            => $this->getRecordName('ProductHelper', $productHelper_id),
+        'is_active'       => true,
+      ));
+
+      $productHelperQuestion_count = rand(3, 5);
+      for ($i = 1; $i <= $productHelperQuestion_count; $i ++)
+      {
+        $productHelperQuestion = new ProductHelperQuestion();
+        $productHelperQuestion->fromArray(array(
+          'name'      => 'вопрос '.$i,
+          'position'  => $i,
+          'is_active' => true,
+        ));
+
+        $productHelperAnswer_count = rand(2, 4);
+        for ($j = 1; $j <= $productHelperAnswer_count; $j++)
+        {
+          $productHelperAnswer = new ProductHelperAnswer();
+          $productHelperAnswer->fromArray(array(
+            'name'      => 'ответ '.$j,
+            'position'  => $j,
+            'is_active' => true,
+          ));
+          $productHelperQuestion->Answer[] = $productHelperAnswer;
+        }
+
+        $record->Question[] = $productHelperQuestion;
+      }
+
+      $list[] = $record;
+    }
+    $list->save();
   }
 
   protected function createRecordList($model, $count, array $options = array())
@@ -260,6 +302,7 @@ EOF;
       'ProductFilter'           => 'фильтр',
       'News'                    => 'новость',
       'Page'                    => 'страница',
+      'ProductHelper'           => 'помошник',
     );
 
     return $names[$model].'-'.$index;

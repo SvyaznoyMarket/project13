@@ -14,25 +14,28 @@
  * @property integer $position
  * @property ProductFilterGroup $Group
  * @property ProductProperty $Property
+ * @property Doctrine_Collection $ProductHelperFilter
  * 
- * @method integer            getId()          Returns the current record's "id" value
- * @method string             getName()        Returns the current record's "name" value
- * @method enum               getType()        Returns the current record's "type" value
- * @method integer            getGroupId()     Returns the current record's "group_id" value
- * @method integer            getPropertyId()  Returns the current record's "property_id" value
- * @method boolean            getIsMultiple()  Returns the current record's "is_multiple" value
- * @method integer            getPosition()    Returns the current record's "position" value
- * @method ProductFilterGroup getGroup()       Returns the current record's "Group" value
- * @method ProductProperty    getProperty()    Returns the current record's "Property" value
- * @method ProductFilter      setId()          Sets the current record's "id" value
- * @method ProductFilter      setName()        Sets the current record's "name" value
- * @method ProductFilter      setType()        Sets the current record's "type" value
- * @method ProductFilter      setGroupId()     Sets the current record's "group_id" value
- * @method ProductFilter      setPropertyId()  Sets the current record's "property_id" value
- * @method ProductFilter      setIsMultiple()  Sets the current record's "is_multiple" value
- * @method ProductFilter      setPosition()    Sets the current record's "position" value
- * @method ProductFilter      setGroup()       Sets the current record's "Group" value
- * @method ProductFilter      setProperty()    Sets the current record's "Property" value
+ * @method integer             getId()                  Returns the current record's "id" value
+ * @method string              getName()                Returns the current record's "name" value
+ * @method enum                getType()                Returns the current record's "type" value
+ * @method integer             getGroupId()             Returns the current record's "group_id" value
+ * @method integer             getPropertyId()          Returns the current record's "property_id" value
+ * @method boolean             getIsMultiple()          Returns the current record's "is_multiple" value
+ * @method integer             getPosition()            Returns the current record's "position" value
+ * @method ProductFilterGroup  getGroup()               Returns the current record's "Group" value
+ * @method ProductProperty     getProperty()            Returns the current record's "Property" value
+ * @method Doctrine_Collection getProductHelperFilter() Returns the current record's "ProductHelperFilter" collection
+ * @method ProductFilter       setId()                  Sets the current record's "id" value
+ * @method ProductFilter       setName()                Sets the current record's "name" value
+ * @method ProductFilter       setType()                Sets the current record's "type" value
+ * @method ProductFilter       setGroupId()             Sets the current record's "group_id" value
+ * @method ProductFilter       setPropertyId()          Sets the current record's "property_id" value
+ * @method ProductFilter       setIsMultiple()          Sets the current record's "is_multiple" value
+ * @method ProductFilter       setPosition()            Sets the current record's "position" value
+ * @method ProductFilter       setGroup()               Sets the current record's "Group" value
+ * @method ProductFilter       setProperty()            Sets the current record's "Property" value
+ * @method ProductFilter       setProductHelperFilter() Sets the current record's "ProductHelperFilter" collection
  * 
  * @package    enter
  * @subpackage model
@@ -105,5 +108,9 @@ abstract class BaseProductFilter extends myDoctrineRecord
              'local' => 'property_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $this->hasMany('ProductHelperFilter', array(
+             'local' => 'id',
+             'foreign' => 'product_filter_id'));
     }
 }

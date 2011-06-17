@@ -3,6 +3,8 @@ homepage:
   url:   /
   param: { module: default, action: index }
 
+
+
 # product
 #
 # product catalog
@@ -60,6 +62,7 @@ productComment_create:
     sf_method: [ post ]
 
 
+
 #
 # news list by year
 newsCategory_year:
@@ -81,6 +84,7 @@ news_show:
   param: { module: news, action: show }
   class:   myNewsRoute
   options: { model: News, type: object, method: getForRoute }
+
 
 
 # Пользователь
@@ -201,6 +205,39 @@ userTag_update:
   param:   { module: userTag, action: update }
   class:   myDoctrineRoute
   options: { model: UserTag, type: object, method: getForRoute }
+
+
+
+#
+# product helper
+productHelper:
+  url:   /helper
+  param: { module: productHelper, action: index }
+#
+# product helper show
+productHelper_show:
+  url:   /helper/:productHelper
+  param: { module: productHelper, action: show }
+  class:   myDoctrineRoute
+  options: { model: ProductHelper, type: object, method: getForRoute }
+#
+# product helper answer
+productHelper_answer:
+  url:     /helper/:productHelper/answer
+  param:   { module: productHelper, action: answer }
+  class:   myDoctrineRoute
+  options: { model: ProductHelper, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
+#
+# product helper result
+productHelper_result:
+  url:     /helper/:productHelper/result
+  param:   { module: productHelper, action: result }
+  class:   myDoctrineRoute
+  options: { model: ProductHelper, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
 
 
 

@@ -14,6 +14,7 @@ abstract class BaseProductHelperFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'product_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'add_empty' => true)),
+      'token'           => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'name'            => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'is_active'       => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'image'           => new sfWidgetFormFilterInput(),
@@ -23,6 +24,7 @@ abstract class BaseProductHelperFormFilter extends BaseFormFilterDoctrine
 
     $this->setValidators(array(
       'product_type_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('ProductType'), 'column' => 'id')),
+      'token'           => new sfValidatorPass(array('required' => false)),
       'name'            => new sfValidatorPass(array('required' => false)),
       'is_active'       => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'image'           => new sfValidatorPass(array('required' => false)),
@@ -49,6 +51,7 @@ abstract class BaseProductHelperFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'              => 'Number',
       'product_type_id' => 'ForeignKey',
+      'token'           => 'Text',
       'name'            => 'Text',
       'is_active'       => 'Boolean',
       'image'           => 'Text',

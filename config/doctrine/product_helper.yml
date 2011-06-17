@@ -4,6 +4,7 @@ ProductHelper:
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     product_type_id:   { type: integer(20), notnull: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     is_active:         { type: boolean, notnull: true, default: false }
     image:             { type: string(255), notnull: false, default: null }
@@ -42,8 +43,8 @@ ProductHelperFilter:
     comment: 'Связь ответа для помошника выбора товара и свойства товара'
   columns:
     answer_id:         { type: integer(20), primary: true, notnull: true }
-    product_property_id: { type: integer(20), primary: true, notnull: true }
-    value:             { type: string(255), notnull: false, default: null }
+    product_filter_id: { type: integer(20), primary: true, notnull: true }
+    value:             { type: string, notnull: false, default: null, comment: 'Значение фильтра товара в формате yaml' }
   relations:
     Answer:            { class: ProductHelperAnswer, foreignAlias: Filter, local: answer_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    ProductProperty:   { class: ProductProperty, foreignAlias: ProductHelperFilter, local: product_property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    ProductFilter:     { class: ProductFilter, foreignAlias: ProductHelperFilter, local: product_filter_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

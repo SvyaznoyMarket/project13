@@ -216,15 +216,17 @@ class ProductTable extends myDoctrineTable
         }
         else if ('range' == $parameter['filter']->type)
         {
+          /*
           if (!empty($parameter['values']['from']) && !empty($parameter['values']['to']))
           {
             $q->addWhere('productPropertyRelation.value_integer BETWEEN ? AND ?', array($parameter['values']['from'], $parameter['values']['to']));
           }
-          else if (!empty($parameter['values']['from']))
+          */
+          if (!empty($parameter['values']['from']))
           {
             $q->addWhere('productPropertyRelation.value_integer >= ?', array($parameter['values']['from']));
           }
-          else if (!empty($parameter['values']['to']))
+          if (!empty($parameter['values']['to']))
           {
             $q->addWhere('productPropertyRelation.value_integer <= ?', array($parameter['values']['to']));
           }
