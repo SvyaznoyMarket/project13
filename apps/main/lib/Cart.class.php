@@ -1,6 +1,6 @@
 <?php
 
-class Cart
+class Cart extends myUserData
 {
   protected
     $parameterHolder = null,
@@ -67,7 +67,7 @@ class Cart
   {
     $products = $this->parameterHolder->get('products');
 
-    return isset($products[$id]) && !empty($products[$id]);
+    return isset($products[$id]);
   }
 
   public function getWeight()
@@ -90,11 +90,6 @@ class Cart
   {
     $count = count($this->parameterHolder->get('products'));
     return $count;
-  }
-
-  public function dump()
-  {
-    return $this->getParameterHolder()->getAll();
   }
 
   public function getParameterHolder()
@@ -180,6 +175,5 @@ class Cart
       'warranty' => array(),
     );
   }
-
 }
 
