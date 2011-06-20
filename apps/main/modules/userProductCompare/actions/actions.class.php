@@ -44,4 +44,20 @@ class userProductCompareActions extends sfActions
 
     $this->redirect($this->getRequest()->getReferer());
   }
+ /**
+  * Executes delete action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeDelete(sfWebRequest $request)
+  {
+    $product = $this->getRoute()->getObject();
+
+    if ($product)
+    {
+      $this->getUser()->getProductCompare()->deleteProduct($product->category_id, $product->id);
+    }
+
+    $this->redirect($this->getRequest()->getReferer());
+  }
 }

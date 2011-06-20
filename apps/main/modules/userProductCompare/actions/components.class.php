@@ -26,6 +26,11 @@ class userProductCompareComponents extends myComponents
     }
     else
     {
+      if (!$productCompare->hasProductCategory($this->productCategory->id))
+      {
+        return sfView::NONE;
+      }
+
       $this->button = 'show';
     }
 
@@ -41,7 +46,7 @@ class userProductCompareComponents extends myComponents
   */
   public function executeShow()
   {
-    $this->productList = $this->getUser()->getProductCompare()->getProducts($this->productCategory->id);
+    $this->setVar('productList', $this->getUser()->getProductCompare()->getProducts($this->productCategory->id), true);
 
     $list = array();
     if (count($this->productList) > 0)

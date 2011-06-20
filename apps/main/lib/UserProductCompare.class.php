@@ -27,6 +27,22 @@ class UserProductCompare extends myUserData
     $this->parameterHolder->set('products', $products);
   }
 
+  public function deleteProduct($category_id, $product_id)
+  {
+    $products = $this->parameterHolder->get('products');
+
+    if (isset($products[$category_id][$product_id]))
+    {
+      unset($products[$category_id][$product_id]);
+      if (0 == count($products[$category_id]))
+      {
+        unset($products[$category_id]);
+      }
+    }
+
+    $this->parameterHolder->set('products', $products);
+  }
+
   public function hasProduct($category_id, $id)
   {
     $products = $this->parameterHolder->get('products');
@@ -80,6 +96,13 @@ class UserProductCompare extends myUserData
     }
 
     $this->parameterHolder->set('products', $products);
+  }
+
+  public function hasProductCategory($category_id)
+  {
+    $products = $this->parameterHolder->get('products');
+
+    return isset($products[$category_id]);
   }
 
   public function getProductCategories()

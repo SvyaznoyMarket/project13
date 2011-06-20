@@ -3,7 +3,7 @@
   <tr>
     <th>Характеристика</th>
   <?php foreach ($productList as $product): ?>
-    <th><?php echo $product ?></th>
+    <th><?php echo $product ?> <a href="<?php echo url_for('userProductCompare_delete', $product) ?>">удалить</a></th>
   <?php endforeach ?>
   </tr>
 
