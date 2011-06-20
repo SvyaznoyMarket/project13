@@ -17,6 +17,7 @@ class userProductHistoryActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    $this->setVar('productList', $this->getUser()->getProductHistory()->getProducts(), true);
   }
  /**
   * Executes clear action

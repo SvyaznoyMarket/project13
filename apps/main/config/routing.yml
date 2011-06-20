@@ -149,8 +149,7 @@ userDelayedProduct_delete:
 userDelayedProduct_clear:
   url:   /private/delayed-products/clear
   param: { module: userDelayedProduct, action: clear }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
+
 
 #
 # user product notice
