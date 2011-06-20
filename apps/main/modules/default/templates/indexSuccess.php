@@ -2,9 +2,9 @@
 
 <div class="block">
   <ul>
-    <li><?php echo link_to('Личный кабинет', 'user') ?></li>
+    <li><?php echo link_to('Личный кабинет', 'user', array(), array('class' => 'user')) ?></li>
     <li><?php echo link_to('Каталог товаров', 'productCatalog') ?></li>
     <li><?php echo link_to('О компании', 'default_show', array('page' => 'page-1')) ?></li>
-    <li><?php echo link_to('Помошник', 'productHelper') ?></li>
+    <li><?php echo link_to('Помошник', 'productHelper', array(), array('class' => 'help')) ?></li>
   </ul>
 </div>

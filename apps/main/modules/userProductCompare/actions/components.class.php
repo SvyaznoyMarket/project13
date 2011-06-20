@@ -46,7 +46,13 @@ class userProductCompareComponents extends myComponents
   */
   public function executeShow()
   {
-    $this->setVar('productList', $this->getUser()->getProductCompare()->getProducts($this->productCategory->id), true);
+    $productCompare = $this->getUser()->getProductCompare();
+    if (!$productCompare->hasProductCategory($this->productCategory->id))
+    {
+      return sfView::NONE;
+    }
+
+    $this->productList = $productCompare()->getProducts($this->productCategory->id);
 
     $list = array();
     if (count($this->productList) > 0)
@@ -81,7 +87,8 @@ class userProductCompareComponents extends myComponents
       }
     }
 
-    $this->setVar('list', $list, true);
     $this->setVar('productCount', count($this->productList), true);
+    $this->setVar('list', $list, true);
+    $this->setVar('productList', $this->productList, true);
   }
 }

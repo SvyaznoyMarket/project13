@@ -6,7 +6,7 @@
 
 <div class="block">
   <?php if (count($userDelayedProductList) > 0): ?>
-    <?php include_component('userDelayedProduct', 'list', array('userDelayedProductList' => $userDelayedProductList)) ?>
+    <?php include_component('userDelayedProduct', 'show', array('userDelayedProductList' => $userDelayedProductList)) ?>
     <?php echo link_to('очистить', '@userDelayedProduct_clear') ?>
 
   <?php else: ?>

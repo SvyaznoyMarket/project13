@@ -18,7 +18,7 @@ ul.inline li {
 }
 
 .block {
-  padding: 5px 10px;
+  padding: 10px 10px;
   margin: 10px;
 
 	-moz-border-radius: 9px 9px 9px 9px;
@@ -28,6 +28,11 @@ ul.inline li {
 
 .table td, .table th {
   padding: 5px 15px;
+  border: solid 1px #ededed;
+}
+.table th {
+  background: #aaa;
+  color: #fff;
 }
 
 .logo {
@@ -120,4 +125,34 @@ ul.inline li {
 
 .clear {
   clear: both;
+}
+
+
+.user {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/user_suit.png) no-repeat scroll 0 2px;
+}
+.history {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/time.png) no-repeat scroll 0 2px;
+}
+.help {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/help.png) no-repeat scroll 0 2px;
+}
+.cart {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/cart.png) no-repeat scroll 0 2px;
+}
+.cart.cart-add {
+  background: transparent url(/images/icons/cart_add.png) no-repeat scroll 0 2px;
+}
+.cart.cart-show {
+  background: transparent url(/images/icons/cart_go.png) no-repeat scroll 0 2px;
+}
+.cart.cart-delete {
+  background: transparent url(/images/icons/cart_delete.png) no-repeat scroll 0 2px;
+}
+.cart.cart-clear {
+  background: transparent url(/images/icons/cart_remove.png) no-repeat scroll 0 2px;
 }
