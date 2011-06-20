@@ -1,6 +1,6 @@
 <?php
 
-function pager_url_for($page, $route_name = null, $params = array())
+function replace_url_for($name, $value, $route_name = null, $params = array())
 {
   $context = sfContext::getInstance();
 
@@ -14,7 +14,12 @@ function pager_url_for($page, $route_name = null, $params = array())
   }
 
   $parameters = $controller->convertUrlStringToParameters($routing->getCurrentInternalUri());
-  $parameters[1]['page'] = $page;
+  $parameters[1][$name] = $value;
 
   return urldecode($routing->generate($route_name, array_merge($request->getGetParameters(), $parameters[1])));
+}
+
+function pager_url_for($page, $route_name = null, $params = array())
+{
+  return replace_url_for('page', $page, $route_name, $params);
 }

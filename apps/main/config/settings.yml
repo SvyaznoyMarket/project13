@@ -37,7 +37,7 @@ all:
     standard_helpers:
       - Cache
       - Partial
-      - myPagerUrl
+      - myUrl
 
     login_module:           guardUser
     login_action:           signin
