@@ -117,3 +117,7 @@ ul.inline li {
 .right {
   float: right;
 }
+
+.clear {
+  clear: both;
+}

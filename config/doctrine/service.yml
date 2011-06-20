@@ -1,0 +1,12 @@
+CerviceCenter:
+  options:
+    comment: 'Сервис центр'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    region_id:         { type: integer(20), notnull: true }
+    address:           { type: string(255) }
+    description:       { type: string }
+  relations:
+    Region:            { class: Region, foreignAlias: CerviceCenter, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
