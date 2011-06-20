@@ -41,7 +41,7 @@ class ProductParameter extends myDoctrineVirtualRecord
 
   public function getName()
   {
-    return $this->property->name;
+    return (string)$this->property;
   }
 
   public function isMultiple()

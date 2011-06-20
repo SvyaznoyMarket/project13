@@ -51,7 +51,7 @@ class ProductTypeTable extends myDoctrineTable
   {
     $q = $this->createBaseQuery($params);
 
-    $this->setQueryParameters($q);
+    $this->setQueryParameters($q, $params);
 
     $q->addWhere('productType.id = ?', $id);
     $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
@@ -62,9 +62,21 @@ class ProductTypeTable extends myDoctrineTable
       return $record;
     }
 
+    $groupedPropertyArray = array();
     foreach ($record['PropertyRelation'] as $propertyRelation)
     {
       $propertyRelation['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id']);
+
+      if (!isset($groupedPropertyArray[$propertyRelation->group_id]))
+      {
+        $groupedPropertyArray[$propertyRelation->group_id] = ProductPropertyTable::getInstance()->createList();
+      }
+      $groupedPropertyArray[$propertyRelation->group_id][] = $propertyRelation['Property'];
+    }
+
+    foreach ($record['PropertyGroup'] as $propertyGroup)
+    {
+      $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
     }
 
     return $record;

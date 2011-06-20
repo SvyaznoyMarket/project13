@@ -17,6 +17,7 @@ class userProductCompareActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    $this->setVar('productCategoryList', $this->getUser()->getProductCompare()->getProductCategories(), true);
   }
  /**
   * Executes show action

@@ -52,6 +52,14 @@ ul.inline li {
 }
 
 
+.gray {
+  background: #aaa;
+}
+.text-white {
+  color: #fff;
+}
+
+
 
 .navigation {
   list-style: none;
@@ -73,14 +81,15 @@ ul.inline li {
 
     border: solid 1px #ffffff;
 
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
   }
   .menu li.current {
-    background: #ccc;
+    background: #aaa;
   }
     .menu li.current a {
       text-decoration: none;
+      color: #fff;
     }
 
 

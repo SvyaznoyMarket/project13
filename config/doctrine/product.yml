@@ -44,6 +44,7 @@ ProductCategory:
     filter_group_id:   { type: integer(20), notnull: false, default: null }
   relations:
     FilterGroup:       { class: ProductFilterGroup, foreignAlias: Category, local: filter_group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    ProductType:       { class: ProductType, foreignAlias: ProductCategory, refClass: ProductCategoryTypeRelation, local: product_category_id, foreign: product_type_id, type: many, foreignType: many }
 
 ProductType:
   options:
@@ -51,6 +52,16 @@ ProductType:
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
+
+ProductCategoryTypeRelation:
+  options:
+    comment: 'Связь типов и категорий товара'
+  columns:
+    product_category_id: { type: integer(20), primary: true, notnull: true }
+    product_type_id:   { type: integer(20), primary: true, notnull: true }
+  relations:
+    ProductCategory:   { class: ProductCategory, foreignAlias: ProductTypeRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    ProductType:       { class: ProductType, foreignAlias: ProductCategoryRelation, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
 ProductProperty:
   options:
@@ -63,6 +74,7 @@ ProductProperty:
     pattern:           { type: string(255), notnull: false, default: '%value% %unit%', comment: 'Шаблон для создания значения свойства с единицей измерения для отображения' }
   relations:
     ProductType:       { class: ProductType, foreignAlias: Property, refClass: ProductTypePropertyRelation, local: property_id, foreign: product_type_id, type: many, foreignType: many }
+    Group:             { class: ProductPropertyGroup, foreignAlias: Property, refClass: ProductTypePropertyRelation, local: property_id, foreign: group_id, type: many, foreignType: many }
 
 ProductPropertyGroup:
   options:
@@ -79,10 +91,10 @@ ProductTypePropertyRelation:
   options:
     comment: 'Связь типов и свойств товара'
   columns:
-    name:              { type: string(255), notnull: false, default: null }
     product_type_id:   { type: integer(20), primary: true, notnull: true }
     property_id:       { type: integer(20), primary: true, notnull: true }
     group_id:          { type: integer(20), notnull: false, default: null }
+    name:              { type: string(255), notnull: false, default: null }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
     group_position:    { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки в группе свойств товара' }
     view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать свойство в карточке товара?' }

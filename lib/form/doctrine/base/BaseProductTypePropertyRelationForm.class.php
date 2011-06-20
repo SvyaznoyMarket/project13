@@ -15,10 +15,10 @@ abstract class BaseProductTypePropertyRelationForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'name'            => new sfWidgetFormInputText(),
       'product_type_id' => new sfWidgetFormInputHidden(),
       'property_id'     => new sfWidgetFormInputHidden(),
       'group_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => true)),
+      'name'            => new sfWidgetFormInputText(),
       'position'        => new sfWidgetFormInputText(),
       'group_position'  => new sfWidgetFormInputText(),
       'view_show'       => new sfWidgetFormInputCheckbox(),
@@ -26,10 +26,10 @@ abstract class BaseProductTypePropertyRelationForm extends BaseFormDoctrine
     ));
 
     $this->setValidators(array(
-      'name'            => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'product_type_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_type_id')), 'empty_value' => $this->getObject()->get('product_type_id'), 'required' => false)),
       'property_id'     => new sfValidatorChoice(array('choices' => array($this->getObject()->get('property_id')), 'empty_value' => $this->getObject()->get('property_id'), 'required' => false)),
       'group_id'        => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'required' => false)),
+      'name'            => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'position'        => new sfValidatorInteger(array('required' => false)),
       'group_position'  => new sfValidatorInteger(array('required' => false)),
       'view_show'       => new sfValidatorBoolean(array('required' => false)),

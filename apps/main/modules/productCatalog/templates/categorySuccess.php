@@ -9,11 +9,14 @@
 </div>
 
 <div class="block">
+  <?php include_component('userProductCompare', 'button', array('productCategory' => $productCategory)) ?>
   <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
 </div>
+
 <div class="block">
   <?php include_component('product', 'pager', array('productPager' => $productPager)) ?>
 </div>
+
 <div class="block">
   <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
 </div>
