@@ -8,22 +8,25 @@
  * @property integer $id
  * @property integer $product_type_id
  * @property string $name
+ * @property string $products
+ * @property integer $match
  * @property ProductType $ProductType
  * @property Doctrine_Collection $Property
- * @property Doctrine_Collection $SimilarProduct
  * 
  * @method integer             getId()              Returns the current record's "id" value
  * @method integer             getProductTypeId()   Returns the current record's "product_type_id" value
  * @method string              getName()            Returns the current record's "name" value
+ * @method string              getProducts()        Returns the current record's "products" value
+ * @method integer             getMatch()           Returns the current record's "match" value
  * @method ProductType         getProductType()     Returns the current record's "ProductType" value
  * @method Doctrine_Collection getProperty()        Returns the current record's "Property" collection
- * @method Doctrine_Collection getSimilarProduct()  Returns the current record's "SimilarProduct" collection
  * @method SimilarProductGroup setId()              Sets the current record's "id" value
  * @method SimilarProductGroup setProductTypeId()   Sets the current record's "product_type_id" value
  * @method SimilarProductGroup setName()            Sets the current record's "name" value
+ * @method SimilarProductGroup setProducts()        Sets the current record's "products" value
+ * @method SimilarProductGroup setMatch()           Sets the current record's "match" value
  * @method SimilarProductGroup setProductType()     Sets the current record's "ProductType" value
  * @method SimilarProductGroup setProperty()        Sets the current record's "Property" collection
- * @method SimilarProductGroup setSimilarProduct()  Sets the current record's "SimilarProduct" collection
  * 
  * @package    enter
  * @subpackage model
@@ -43,7 +46,7 @@ abstract class BaseSimilarProductGroup extends myDoctrineRecord
              ));
         $this->hasColumn('product_type_id', 'integer', 20, array(
              'type' => 'integer',
-             'notnull' => true,
+             'notnull' => false,
              'length' => 20,
              ));
         $this->hasColumn('name', 'string', 255, array(
@@ -51,6 +54,17 @@ abstract class BaseSimilarProductGroup extends myDoctrineRecord
              'notnull' => true,
              'notblank' => true,
              'length' => 255,
+             ));
+        $this->hasColumn('products', 'string', null, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Список id товаров через запятую, для формирования списка аналогичных товаров',
+             ));
+        $this->hasColumn('match', 'integer', 4, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'comment' => 'Количество совпадающих параметров у товаров для учета их как аналогичных',
+             'length' => 4,
              ));
 
         $this->option('comment', 'Группа аналогичного товара');
@@ -65,10 +79,6 @@ abstract class BaseSimilarProductGroup extends myDoctrineRecord
              'onDelete' => 'RESTRICT'));
 
         $this->hasMany('SimilarProductProperty as Property', array(
-             'local' => 'id',
-             'foreign' => 'group_id'));
-
-        $this->hasMany('SimilarProduct', array(
              'local' => 'id',
              'foreign' => 'group_id'));
     }

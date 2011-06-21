@@ -15,11 +15,15 @@ abstract class BaseSimilarProductGroupFormFilter extends BaseFormFilterDoctrine
     $this->setWidgets(array(
       'product_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'add_empty' => true)),
       'name'            => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'products'        => new sfWidgetFormFilterInput(),
+      'match'           => new sfWidgetFormFilterInput(),
     ));
 
     $this->setValidators(array(
       'product_type_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('ProductType'), 'column' => 'id')),
       'name'            => new sfValidatorPass(array('required' => false)),
+      'products'        => new sfValidatorPass(array('required' => false)),
+      'match'           => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
     ));
 
     $this->widgetSchema->setNameFormat('similar_product_group_filters[%s]');
@@ -42,6 +46,8 @@ abstract class BaseSimilarProductGroupFormFilter extends BaseFormFilterDoctrine
       'id'              => 'Number',
       'product_type_id' => 'ForeignKey',
       'name'            => 'Text',
+      'products'        => 'Text',
+      'match'           => 'Number',
     );
   }
 }

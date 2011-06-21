@@ -1,4 +1,4 @@
-CerviceCenter:
+ServiceCenter:
   options:
     comment: 'Сервис центр'
   columns:

@@ -16,14 +16,18 @@ abstract class BaseSimilarProductGroupForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'              => new sfWidgetFormInputHidden(),
-      'product_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'add_empty' => false)),
+      'product_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'add_empty' => true)),
       'name'            => new sfWidgetFormInputText(),
+      'products'        => new sfWidgetFormTextarea(),
+      'match'           => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
       'id'              => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'product_type_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'))),
+      'product_type_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'required' => false)),
       'name'            => new sfValidatorString(array('max_length' => 255)),
+      'products'        => new sfValidatorString(array('required' => false)),
+      'match'           => new sfValidatorInteger(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('similar_product_group[%s]');

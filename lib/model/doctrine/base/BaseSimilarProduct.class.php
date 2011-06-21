@@ -8,28 +8,19 @@
  * @property integer $id
  * @property integer $master_id
  * @property integer $slave_id
- * @property integer $group_id
- * @property boolean $is_manual
  * @property Product $MasterProduct
  * @property Product $SlaveProduct
- * @property SimilarProductGroup $Group
  * 
- * @method integer             getId()            Returns the current record's "id" value
- * @method integer             getMasterId()      Returns the current record's "master_id" value
- * @method integer             getSlaveId()       Returns the current record's "slave_id" value
- * @method integer             getGroupId()       Returns the current record's "group_id" value
- * @method boolean             getIsManual()      Returns the current record's "is_manual" value
- * @method Product             getMasterProduct() Returns the current record's "MasterProduct" value
- * @method Product             getSlaveProduct()  Returns the current record's "SlaveProduct" value
- * @method SimilarProductGroup getGroup()         Returns the current record's "Group" value
- * @method SimilarProduct      setId()            Sets the current record's "id" value
- * @method SimilarProduct      setMasterId()      Sets the current record's "master_id" value
- * @method SimilarProduct      setSlaveId()       Sets the current record's "slave_id" value
- * @method SimilarProduct      setGroupId()       Sets the current record's "group_id" value
- * @method SimilarProduct      setIsManual()      Sets the current record's "is_manual" value
- * @method SimilarProduct      setMasterProduct() Sets the current record's "MasterProduct" value
- * @method SimilarProduct      setSlaveProduct()  Sets the current record's "SlaveProduct" value
- * @method SimilarProduct      setGroup()         Sets the current record's "Group" value
+ * @method integer        getId()            Returns the current record's "id" value
+ * @method integer        getMasterId()      Returns the current record's "master_id" value
+ * @method integer        getSlaveId()       Returns the current record's "slave_id" value
+ * @method Product        getMasterProduct() Returns the current record's "MasterProduct" value
+ * @method Product        getSlaveProduct()  Returns the current record's "SlaveProduct" value
+ * @method SimilarProduct setId()            Sets the current record's "id" value
+ * @method SimilarProduct setMasterId()      Sets the current record's "master_id" value
+ * @method SimilarProduct setSlaveId()       Sets the current record's "slave_id" value
+ * @method SimilarProduct setMasterProduct() Sets the current record's "MasterProduct" value
+ * @method SimilarProduct setSlaveProduct()  Sets the current record's "SlaveProduct" value
  * 
  * @package    enter
  * @subpackage model
@@ -57,17 +48,6 @@ abstract class BaseSimilarProduct extends myDoctrineRecord
              'notnull' => true,
              'length' => 20,
              ));
-        $this->hasColumn('group_id', 'integer', 20, array(
-             'type' => 'integer',
-             'notnull' => true,
-             'length' => 20,
-             ));
-        $this->hasColumn('is_manual', 'boolean', null, array(
-             'type' => 'boolean',
-             'notnull' => true,
-             'default' => false,
-             'comment' => 'Аналогичный товар создан вручную?',
-             ));
 
         $this->option('comment', 'Аналогичный товар');
     }
@@ -82,11 +62,6 @@ abstract class BaseSimilarProduct extends myDoctrineRecord
 
         $this->hasOne('Product as SlaveProduct', array(
              'local' => 'slave_id',
-             'foreign' => 'id',
-             'onDelete' => 'CASCADE'));
-
-        $this->hasOne('SimilarProductGroup as Group', array(
-             'local' => 'group_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
     }

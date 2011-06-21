@@ -18,16 +18,12 @@ abstract class BaseSimilarProductForm extends BaseFormDoctrine
       'id'        => new sfWidgetFormInputHidden(),
       'master_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('MasterProduct'), 'add_empty' => false)),
       'slave_id'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('SlaveProduct'), 'add_empty' => false)),
-      'group_id'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => false)),
-      'is_manual' => new sfWidgetFormInputCheckbox(),
     ));
 
     $this->setValidators(array(
       'id'        => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'master_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('MasterProduct'))),
       'slave_id'  => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('SlaveProduct'))),
-      'group_id'  => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Group'))),
-      'is_manual' => new sfValidatorBoolean(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('similar_product[%s]');

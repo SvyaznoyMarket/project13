@@ -187,7 +187,7 @@ EOF;
       unset($list, $productType);
     }
 
-/*---------- Creatung news --------------*/
+/*---------- Creating news --------------*/
     $this->logSection('doctrine', 'loading test News');
     for ($i = 1; $i <= $count['News']; $i++)
     {
