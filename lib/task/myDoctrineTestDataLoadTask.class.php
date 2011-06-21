@@ -163,6 +163,8 @@ EOF;
           'view_show'   => rand(0, 10) > 0 ? true : false,
           'view_list'   => rand(0, 50) > 0 ? true : false,
           'is_instock'  => rand(0, 30) > 0 ? true : false,
+          'price'       => round(rand(500, 80000), -2),
+          'rating'      => rand(0, 1000),
         ));
 
         foreach ($productType->Property as $j => $property)

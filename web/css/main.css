@@ -74,6 +74,19 @@ ul.inline li {
 }
 
 
+.sorting a
+{
+  text-decoration: none;
+}
+  .sorting .active {
+    background: #777777;
+    color: #ffffff;
+    padding: 3px 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+  }
+
+
 
 .menu {
   list-style: none;
@@ -128,6 +141,17 @@ ul.inline li {
 }
 
 
+.price {
+  background: #999999;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 3px 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+  text-shadow: 0px -1px 0px #374683;
+}
+
+
 .user {
   padding: 0 0 0 20px;
   background: transparent url(/images/icons/user_suit.png) no-repeat scroll 0 2px;
@@ -139,6 +163,14 @@ ul.inline li {
 .help {
   padding: 0 0 0 20px;
   background: transparent url(/images/icons/help.png) no-repeat scroll 0 2px;
+}
+.catalog {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/book.png) no-repeat scroll 0 2px;
+}
+.page {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/page_white.png) no-repeat scroll 0 2px;
 }
 .cart {
   padding: 0 0 0 20px;

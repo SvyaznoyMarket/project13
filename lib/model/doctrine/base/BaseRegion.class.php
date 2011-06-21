@@ -13,26 +13,29 @@
  * @property string $token
  * @property string $name
  * @property set $type
+ * @property Doctrine_Collection $CerviceCenter
  * @property Doctrine_Collection $Stock
  * 
- * @method integer             getId()      Returns the current record's "id" value
- * @method integer             getRootId()  Returns the current record's "root_id" value
- * @method integer             getLft()     Returns the current record's "lft" value
- * @method integer             getRgt()     Returns the current record's "rgt" value
- * @method integer             getLevel()   Returns the current record's "level" value
- * @method string              getToken()   Returns the current record's "token" value
- * @method string              getName()    Returns the current record's "name" value
- * @method set                 getType()    Returns the current record's "type" value
- * @method Doctrine_Collection getStock()   Returns the current record's "Stock" collection
- * @method Region              setId()      Sets the current record's "id" value
- * @method Region              setRootId()  Sets the current record's "root_id" value
- * @method Region              setLft()     Sets the current record's "lft" value
- * @method Region              setRgt()     Sets the current record's "rgt" value
- * @method Region              setLevel()   Sets the current record's "level" value
- * @method Region              setToken()   Sets the current record's "token" value
- * @method Region              setName()    Sets the current record's "name" value
- * @method Region              setType()    Sets the current record's "type" value
- * @method Region              setStock()   Sets the current record's "Stock" collection
+ * @method integer             getId()            Returns the current record's "id" value
+ * @method integer             getRootId()        Returns the current record's "root_id" value
+ * @method integer             getLft()           Returns the current record's "lft" value
+ * @method integer             getRgt()           Returns the current record's "rgt" value
+ * @method integer             getLevel()         Returns the current record's "level" value
+ * @method string              getToken()         Returns the current record's "token" value
+ * @method string              getName()          Returns the current record's "name" value
+ * @method set                 getType()          Returns the current record's "type" value
+ * @method Doctrine_Collection getCerviceCenter() Returns the current record's "CerviceCenter" collection
+ * @method Doctrine_Collection getStock()         Returns the current record's "Stock" collection
+ * @method Region              setId()            Sets the current record's "id" value
+ * @method Region              setRootId()        Sets the current record's "root_id" value
+ * @method Region              setLft()           Sets the current record's "lft" value
+ * @method Region              setRgt()           Sets the current record's "rgt" value
+ * @method Region              setLevel()         Sets the current record's "level" value
+ * @method Region              setToken()         Sets the current record's "token" value
+ * @method Region              setName()          Sets the current record's "name" value
+ * @method Region              setType()          Sets the current record's "type" value
+ * @method Region              setCerviceCenter() Sets the current record's "CerviceCenter" collection
+ * @method Region              setStock()         Sets the current record's "Stock" collection
  * 
  * @package    enter
  * @subpackage model
@@ -102,6 +105,10 @@ abstract class BaseRegion extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasMany('CerviceCenter', array(
+             'local' => 'id',
+             'foreign' => 'region_id'));
+
         $this->hasMany('Shop as Stock', array(
              'local' => 'id',
              'foreign' => 'region_id'));

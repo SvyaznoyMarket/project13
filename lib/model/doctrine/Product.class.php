@@ -52,4 +52,9 @@ class Product extends BaseProduct
 
     return $return;
   }
+
+  public function getFormattedPrice()
+  {
+    return number_format($this->price, 0, ',', ' ').' руб';
+  }
 }

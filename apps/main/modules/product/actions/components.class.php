@@ -29,6 +29,30 @@ class productComponents extends myComponents
     $this->setVar('productList', $this->productPager->getResults(), true);
   }
  /**
+  * Executes sorting component
+  *
+  * @param array $productSorting Сортировка списка товаров
+  */
+  public function executeSorting()
+  {
+    $list = array();
+
+    $active = $this->productSorting->getActive();
+    foreach ($this->productSorting->getList() as $item)
+    {
+      if ($active['name'] == $item['name'])
+      {
+        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
+      }
+      $list[] = array_merge($item, array(
+        'url' => replace_url_for('sort', implode('-', array($item['name'], $item['direction'])))
+      ));
+    }
+
+    $this->setVar('list', $list, true);
+    $this->setVar('active', $active, true);
+  }
+ /**
   * Executes list component
   *
   * @param myDoctrineCollection $productList Список товаров
@@ -41,6 +65,7 @@ class productComponents extends myComponents
       $list[] = array(
         'name'     => (string)$product,
         'creator'  => (string)$product->Creator,
+        'price'    => $product->formatted_price,
         'has_link' => $product['view_show'],
         'product'  => $product,
       );

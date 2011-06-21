@@ -90,7 +90,7 @@ class productCatalogComponents extends myComponents
   * Executes filter component
   *
   * @param ProductCategory $productCategory Категория товара
-  * @param myProductFormFilter $productFilter Категория товара
+  * @param myProductFormFilter $productFilter Форма фильтра с параметрами товаров
   */
   public function executeFilter()
   {
