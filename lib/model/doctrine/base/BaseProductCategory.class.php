@@ -14,37 +14,43 @@
  * @property string $name
  * @property integer $filter_group_id
  * @property ProductFilterGroup $FilterGroup
+ * @property Doctrine_Collection $ProductType
  * @property Doctrine_Collection $News
  * @property Doctrine_Collection $NewsRelation
+ * @property Doctrine_Collection $ProductTypeRelation
  * @property Doctrine_Collection $Product
  * @property Doctrine_Collection $TagRelation
  * 
- * @method integer             getId()              Returns the current record's "id" value
- * @method integer             getRootId()          Returns the current record's "root_id" value
- * @method integer             getLft()             Returns the current record's "lft" value
- * @method integer             getRgt()             Returns the current record's "rgt" value
- * @method integer             getLevel()           Returns the current record's "level" value
- * @method string              getToken()           Returns the current record's "token" value
- * @method string              getName()            Returns the current record's "name" value
- * @method integer             getFilterGroupId()   Returns the current record's "filter_group_id" value
- * @method ProductFilterGroup  getFilterGroup()     Returns the current record's "FilterGroup" value
- * @method Doctrine_Collection getNews()            Returns the current record's "News" collection
- * @method Doctrine_Collection getNewsRelation()    Returns the current record's "NewsRelation" collection
- * @method Doctrine_Collection getProduct()         Returns the current record's "Product" collection
- * @method Doctrine_Collection getTagRelation()     Returns the current record's "TagRelation" collection
- * @method ProductCategory     setId()              Sets the current record's "id" value
- * @method ProductCategory     setRootId()          Sets the current record's "root_id" value
- * @method ProductCategory     setLft()             Sets the current record's "lft" value
- * @method ProductCategory     setRgt()             Sets the current record's "rgt" value
- * @method ProductCategory     setLevel()           Sets the current record's "level" value
- * @method ProductCategory     setToken()           Sets the current record's "token" value
- * @method ProductCategory     setName()            Sets the current record's "name" value
- * @method ProductCategory     setFilterGroupId()   Sets the current record's "filter_group_id" value
- * @method ProductCategory     setFilterGroup()     Sets the current record's "FilterGroup" value
- * @method ProductCategory     setNews()            Sets the current record's "News" collection
- * @method ProductCategory     setNewsRelation()    Sets the current record's "NewsRelation" collection
- * @method ProductCategory     setProduct()         Sets the current record's "Product" collection
- * @method ProductCategory     setTagRelation()     Sets the current record's "TagRelation" collection
+ * @method integer             getId()                  Returns the current record's "id" value
+ * @method integer             getRootId()              Returns the current record's "root_id" value
+ * @method integer             getLft()                 Returns the current record's "lft" value
+ * @method integer             getRgt()                 Returns the current record's "rgt" value
+ * @method integer             getLevel()               Returns the current record's "level" value
+ * @method string              getToken()               Returns the current record's "token" value
+ * @method string              getName()                Returns the current record's "name" value
+ * @method integer             getFilterGroupId()       Returns the current record's "filter_group_id" value
+ * @method ProductFilterGroup  getFilterGroup()         Returns the current record's "FilterGroup" value
+ * @method Doctrine_Collection getProductType()         Returns the current record's "ProductType" collection
+ * @method Doctrine_Collection getNews()                Returns the current record's "News" collection
+ * @method Doctrine_Collection getNewsRelation()        Returns the current record's "NewsRelation" collection
+ * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
+ * @method Doctrine_Collection getProduct()             Returns the current record's "Product" collection
+ * @method Doctrine_Collection getTagRelation()         Returns the current record's "TagRelation" collection
+ * @method ProductCategory     setId()                  Sets the current record's "id" value
+ * @method ProductCategory     setRootId()              Sets the current record's "root_id" value
+ * @method ProductCategory     setLft()                 Sets the current record's "lft" value
+ * @method ProductCategory     setRgt()                 Sets the current record's "rgt" value
+ * @method ProductCategory     setLevel()               Sets the current record's "level" value
+ * @method ProductCategory     setToken()               Sets the current record's "token" value
+ * @method ProductCategory     setName()                Sets the current record's "name" value
+ * @method ProductCategory     setFilterGroupId()       Sets the current record's "filter_group_id" value
+ * @method ProductCategory     setFilterGroup()         Sets the current record's "FilterGroup" value
+ * @method ProductCategory     setProductType()         Sets the current record's "ProductType" collection
+ * @method ProductCategory     setNews()                Sets the current record's "News" collection
+ * @method ProductCategory     setNewsRelation()        Sets the current record's "NewsRelation" collection
+ * @method ProductCategory     setProductTypeRelation() Sets the current record's "ProductTypeRelation" collection
+ * @method ProductCategory     setProduct()             Sets the current record's "Product" collection
+ * @method ProductCategory     setTagRelation()         Sets the current record's "TagRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -112,12 +118,21 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'foreign' => 'id',
              'onDelete' => 'SET NULL'));
 
+        $this->hasMany('ProductType', array(
+             'refClass' => 'ProductCategoryTypeRelation',
+             'local' => 'product_category_id',
+             'foreign' => 'product_type_id'));
+
         $this->hasMany('News', array(
              'refClass' => 'NewsProductCategoryRelation',
              'local' => 'product_category_id',
              'foreign' => 'news_id'));
 
         $this->hasMany('NewsProductCategoryRelation as NewsRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_category_id'));
+
+        $this->hasMany('ProductCategoryTypeRelation as ProductTypeRelation', array(
              'local' => 'id',
              'foreign' => 'product_category_id'));
 

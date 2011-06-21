@@ -21,6 +21,7 @@ abstract class BaseProductPropertyForm extends BaseFormDoctrine
       'is_multiple'       => new sfWidgetFormInputCheckbox(),
       'pattern'           => new sfWidgetFormInputText(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
+      'group_list'        => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductPropertyGroup')),
     ));
 
     $this->setValidators(array(
@@ -30,6 +31,7 @@ abstract class BaseProductPropertyForm extends BaseFormDoctrine
       'is_multiple'       => new sfValidatorBoolean(array('required' => false)),
       'pattern'           => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
+      'group_list'        => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductPropertyGroup', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_property[%s]');
@@ -55,11 +57,17 @@ abstract class BaseProductPropertyForm extends BaseFormDoctrine
       $this->setDefault('product_type_list', $this->object->ProductType->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['group_list']))
+    {
+      $this->setDefault('group_list', $this->object->Group->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
   {
     $this->saveProductTypeList($con);
+    $this->saveGroupList($con);
 
     parent::doSave($con);
   }
@@ -99,6 +107,44 @@ abstract class BaseProductPropertyForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('ProductType', array_values($link));
+    }
+  }
+
+  public function saveGroupList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['group_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Group->getPrimaryKeys();
+    $values = $this->getValue('group_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Group', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Group', array_values($link));
     }
   }
 

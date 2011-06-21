@@ -13,8 +13,8 @@ abstract class BaseProductTypePropertyRelationFormFilter extends BaseFormFilterD
   public function setup()
   {
     $this->setWidgets(array(
-      'name'            => new sfWidgetFormFilterInput(),
       'group_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => true)),
+      'name'            => new sfWidgetFormFilterInput(),
       'position'        => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'group_position'  => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'view_show'       => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
@@ -22,8 +22,8 @@ abstract class BaseProductTypePropertyRelationFormFilter extends BaseFormFilterD
     ));
 
     $this->setValidators(array(
-      'name'            => new sfValidatorPass(array('required' => false)),
       'group_id'        => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Group'), 'column' => 'id')),
+      'name'            => new sfValidatorPass(array('required' => false)),
       'position'        => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'group_position'  => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'view_show'       => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
@@ -47,10 +47,10 @@ abstract class BaseProductTypePropertyRelationFormFilter extends BaseFormFilterD
   public function getFields()
   {
     return array(
-      'name'            => 'Text',
       'product_type_id' => 'Number',
       'property_id'     => 'Number',
       'group_id'        => 'ForeignKey',
+      'name'            => 'Text',
       'position'        => 'Number',
       'group_position'  => 'Number',
       'view_show'       => 'Boolean',

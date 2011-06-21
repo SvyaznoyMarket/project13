@@ -4,8 +4,8 @@
 
 <div class="block">
   <ul>
-    <li><?php echo link_to('Корзина товаров', 'cart') ?></li>
-    <li><?php echo link_to('История просмотра товаров', 'userProductHistory') ?></li>
+    <li><?php echo link_to('Корзина товаров', 'cart', array(), array('class' => 'cart')) ?></li>
+    <li><?php echo link_to('История просмотра товаров', 'userProductHistory', array(), array('class' => 'history')) ?></li>
     <li><?php echo link_to('Отложенные товары', 'userDelayedProduct') ?></li>
     <li><?php echo link_to('Сравнение товаров', 'userProductCompare') ?></li>
     <li><?php echo link_to('Пароль', 'user_changePassword') ?></li>

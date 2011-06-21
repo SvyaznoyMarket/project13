@@ -19,13 +19,19 @@ class userProductCompareComponents extends myComponents
   {
     $productCompare = $this->getUser()->getProductCompare();
 
-    if ($productCompare->hasProduct($this->product->category_id, $this->product->id))
+    if (isset($this->product))
     {
-      $this->button = 'show';
+      $this->button = $productCompare->hasProduct($this->product->category_id, $this->product->id) ? 'show' : 'add';
+      $this->productCategory = $this->product->Category;
     }
     else
     {
-      $this->button = 'add';
+      if (!$productCompare->hasProductCategory($this->productCategory->id))
+      {
+        return sfView::NONE;
+      }
+
+      $this->button = 'show';
     }
 
     if (!in_array($this->view, array()))
@@ -41,16 +47,48 @@ class userProductCompareComponents extends myComponents
   public function executeShow()
   {
     $productCompare = $this->getUser()->getProductCompare();
-
-    $list = array();
-    foreach ($productCompare->getProducts($this->productCategory->id) as $product)
+    if (!$productCompare->hasProductCategory($this->productCategory->id))
     {
-      $list[] = array(
-        'name'    => (string)$product,
-        'product' => $product,
-      );
+      return sfView::NONE;
     }
 
+    $this->productList = $productCompare()->getProducts($this->productCategory->id);
+
+    $list = array();
+    if (count($this->productList) > 0)
+    {
+      // FIXME: использовать связь категории и типов товаров
+      $productType = ProductTypeTable::getInstance()->getById($this->productList[0]->Type->id, array('view' => 'show'));
+
+      foreach ($productType->PropertyGroup as $productPropertyGroup)
+      {
+        $list[] = array(
+          'type' => 'group',
+          'name' => (string)$productPropertyGroup,
+        );
+
+        foreach ($productPropertyGroup->Property as $productProperty)
+        {
+          $values = array();
+          foreach ($this->productList as $product)
+          {
+            if ($productParameter = $product->getParameterByProperty($productProperty->id))
+            {
+              $values[] = $productParameter->getValue();
+            }
+          }
+
+          $list[] = array(
+            'type'   => 'property',
+            'name'   => (string)$productProperty,
+            'values' => $values,
+          );
+        }
+      }
+    }
+
+    $this->setVar('productCount', count($this->productList), true);
     $this->setVar('list', $list, true);
+    $this->setVar('productList', $this->productList, true);
   }
 }

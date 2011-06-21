@@ -1,1 +1,1 @@
-<?php echo link_to('в корзине', '@cart') ?>
+<?php echo link_to('в корзине', '@cart', array('class' => 'cart cart-show')) ?>

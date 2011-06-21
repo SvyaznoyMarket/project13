@@ -1,0 +1,1 @@
+<span class="price"><?php echo $price ?></span>

@@ -18,7 +18,7 @@ ul.inline li {
 }
 
 .block {
-  padding: 5px 10px;
+  padding: 10px 10px;
   margin: 10px;
 
 	-moz-border-radius: 9px 9px 9px 9px;
@@ -28,6 +28,11 @@ ul.inline li {
 
 .table td, .table th {
   padding: 5px 15px;
+  border: solid 1px #ededed;
+}
+.table th {
+  background: #aaa;
+  color: #fff;
 }
 
 .logo {
@@ -52,6 +57,14 @@ ul.inline li {
 }
 
 
+.gray {
+  background: #aaa;
+}
+.text-white {
+  color: #fff;
+}
+
+
 
 .navigation {
   list-style: none;
@@ -59,6 +72,19 @@ ul.inline li {
 .navigation li {
   display: inline;
 }
+
+
+.sorting a
+{
+  text-decoration: none;
+}
+  .sorting .active {
+    background: #777777;
+    color: #ffffff;
+    padding: 3px 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+  }
 
 
 
@@ -73,14 +99,15 @@ ul.inline li {
 
     border: solid 1px #ffffff;
 
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
   }
   .menu li.current {
-    background: #ccc;
+    background: #aaa;
   }
     .menu li.current a {
       text-decoration: none;
+      color: #fff;
     }
 
 
@@ -111,4 +138,53 @@ ul.inline li {
 
 .clear {
   clear: both;
+}
+
+
+.price {
+  background: #999999;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 3px 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+  text-shadow: 0px -1px 0px #374683;
+}
+
+
+.user {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/user_suit.png) no-repeat scroll 0 2px;
+}
+.history {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/time.png) no-repeat scroll 0 2px;
+}
+.help {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/help.png) no-repeat scroll 0 2px;
+}
+.catalog {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/book.png) no-repeat scroll 0 2px;
+}
+.page {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/page_white.png) no-repeat scroll 0 2px;
+}
+.cart {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/cart.png) no-repeat scroll 0 2px;
+}
+.cart.cart-add {
+  background: transparent url(/images/icons/cart_add.png) no-repeat scroll 0 2px;
+}
+.cart.cart-show {
+  background: transparent url(/images/icons/cart_go.png) no-repeat scroll 0 2px;
+}
+.cart.cart-delete {
+  background: transparent url(/images/icons/cart_delete.png) no-repeat scroll 0 2px;
+}
+.cart.cart-clear {
+  background: transparent url(/images/icons/cart_remove.png) no-repeat scroll 0 2px;
 }

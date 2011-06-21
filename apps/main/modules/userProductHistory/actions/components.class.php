@@ -11,10 +11,10 @@
 class userProductHistoryComponents extends myComponents
 {
  /**
-  * Executes list component
+  * Executes show component
   *
   */
-  public function executeList()
+  public function executeShow()
   {
     $this->setVar('productList', $this->getUser()->getProductHistory()->getProducts(), true);
   }

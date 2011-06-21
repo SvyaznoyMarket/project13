@@ -11,6 +11,7 @@
  * @property boolean $is_multiple
  * @property string $pattern
  * @property Doctrine_Collection $ProductType
+ * @property Doctrine_Collection $Group
  * @property Doctrine_Collection $ProductFilter
  * @property Doctrine_Collection $ProductTypeRelation
  * @property Doctrine_Collection $Option
@@ -23,6 +24,7 @@
  * @method boolean             getIsMultiple()             Returns the current record's "is_multiple" value
  * @method string              getPattern()                Returns the current record's "pattern" value
  * @method Doctrine_Collection getProductType()            Returns the current record's "ProductType" collection
+ * @method Doctrine_Collection getGroup()                  Returns the current record's "Group" collection
  * @method Doctrine_Collection getProductFilter()          Returns the current record's "ProductFilter" collection
  * @method Doctrine_Collection getProductTypeRelation()    Returns the current record's "ProductTypeRelation" collection
  * @method Doctrine_Collection getOption()                 Returns the current record's "Option" collection
@@ -34,6 +36,7 @@
  * @method ProductProperty     setIsMultiple()             Sets the current record's "is_multiple" value
  * @method ProductProperty     setPattern()                Sets the current record's "pattern" value
  * @method ProductProperty     setProductType()            Sets the current record's "ProductType" collection
+ * @method ProductProperty     setGroup()                  Sets the current record's "Group" collection
  * @method ProductProperty     setProductFilter()          Sets the current record's "ProductFilter" collection
  * @method ProductProperty     setProductTypeRelation()    Sets the current record's "ProductTypeRelation" collection
  * @method ProductProperty     setOption()                 Sets the current record's "Option" collection
@@ -101,6 +104,11 @@ abstract class BaseProductProperty extends myDoctrineRecord
              'refClass' => 'ProductTypePropertyRelation',
              'local' => 'property_id',
              'foreign' => 'product_type_id'));
+
+        $this->hasMany('ProductPropertyGroup as Group', array(
+             'refClass' => 'ProductTypePropertyRelation',
+             'local' => 'property_id',
+             'foreign' => 'group_id'));
 
         $this->hasMany('ProductFilter', array(
              'local' => 'id',

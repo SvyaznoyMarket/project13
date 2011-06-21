@@ -34,6 +34,10 @@ class productCatalogActions extends myActions
     $q = ProductTable::getInstance()->createBaseQuery();
     $this->productFilter->buildQuery($q);
 
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
+
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
@@ -53,9 +57,13 @@ class productCatalogActions extends myActions
     );
 
     $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-      'order' => 'product.name',
       'view'  => 'list',
     ));
+
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
+
 
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
@@ -78,9 +86,12 @@ class productCatalogActions extends myActions
     );
 
     $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-      'order' => 'product.name',
       'view'  => 'list',
     ));
+
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
 
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
@@ -94,5 +105,15 @@ class productCatalogActions extends myActions
     return new myProductFormFilter(array(), array(
       'productCategory' => $this->productCategory,
     ));
+  }
+
+  protected function getProductSorting()
+  {
+    $sorting = new myProductSorting();
+
+    $active = array_pad(explode('-', $this->getRequest()->getParameter('sort')), 2, null);
+    $sorting->setActive($active[0], $active[1]);
+
+    return $sorting;
   }
 }

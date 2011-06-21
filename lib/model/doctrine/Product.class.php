@@ -39,4 +39,22 @@ class Product extends BaseProduct
   {
     return $this->is_instock;
   }
+
+  public function getParameterByProperty($property_id)
+  {
+    $return = null;
+    foreach ($this->Parameter as $parameter)
+    {
+      if ($parameter->getProperty()->id != $property_id) continue;
+
+      $return = $parameter;
+    }
+
+    return $return;
+  }
+
+  public function getFormattedPrice()
+  {
+    return number_format($this->price, 0, ',', ' ').' руб';
+  }
 }

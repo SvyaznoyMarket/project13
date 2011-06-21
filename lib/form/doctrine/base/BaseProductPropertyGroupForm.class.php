@@ -19,6 +19,7 @@ abstract class BaseProductPropertyGroupForm extends BaseFormDoctrine
       'name'            => new sfWidgetFormInputText(),
       'product_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'add_empty' => false)),
       'position'        => new sfWidgetFormInputText(),
+      'property_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty')),
     ));
 
     $this->setValidators(array(
@@ -26,6 +27,7 @@ abstract class BaseProductPropertyGroupForm extends BaseFormDoctrine
       'name'            => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'product_type_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'))),
       'position'        => new sfValidatorInteger(array('required' => false)),
+      'property_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_property_group[%s]');
@@ -40,6 +42,62 @@ abstract class BaseProductPropertyGroupForm extends BaseFormDoctrine
   public function getModelName()
   {
     return 'ProductPropertyGroup';
+  }
+
+  public function updateDefaultsFromObject()
+  {
+    parent::updateDefaultsFromObject();
+
+    if (isset($this->widgetSchema['property_list']))
+    {
+      $this->setDefault('property_list', $this->object->Property->getPrimaryKeys());
+    }
+
+  }
+
+  protected function doSave($con = null)
+  {
+    $this->savePropertyList($con);
+
+    parent::doSave($con);
+  }
+
+  public function savePropertyList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['property_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Property->getPrimaryKeys();
+    $values = $this->getValue('property_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Property', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Property', array_values($link));
+    }
   }
 
 }

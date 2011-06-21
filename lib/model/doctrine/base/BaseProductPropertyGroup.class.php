@@ -10,6 +10,7 @@
  * @property integer $product_type_id
  * @property integer $position
  * @property ProductType $ProductType
+ * @property Doctrine_Collection $Property
  * @property Doctrine_Collection $PropertyRelation
  * 
  * @method integer              getId()               Returns the current record's "id" value
@@ -17,12 +18,14 @@
  * @method integer              getProductTypeId()    Returns the current record's "product_type_id" value
  * @method integer              getPosition()         Returns the current record's "position" value
  * @method ProductType          getProductType()      Returns the current record's "ProductType" value
+ * @method Doctrine_Collection  getProperty()         Returns the current record's "Property" collection
  * @method Doctrine_Collection  getPropertyRelation() Returns the current record's "PropertyRelation" collection
  * @method ProductPropertyGroup setId()               Sets the current record's "id" value
  * @method ProductPropertyGroup setName()             Sets the current record's "name" value
  * @method ProductPropertyGroup setProductTypeId()    Sets the current record's "product_type_id" value
  * @method ProductPropertyGroup setPosition()         Sets the current record's "position" value
  * @method ProductPropertyGroup setProductType()      Sets the current record's "ProductType" value
+ * @method ProductPropertyGroup setProperty()         Sets the current record's "Property" collection
  * @method ProductPropertyGroup setPropertyRelation() Sets the current record's "PropertyRelation" collection
  * 
  * @package    enter
@@ -69,6 +72,11 @@ abstract class BaseProductPropertyGroup extends myDoctrineRecord
              'local' => 'product_type_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $this->hasMany('ProductProperty as Property', array(
+             'refClass' => 'ProductTypePropertyRelation',
+             'local' => 'group_id',
+             'foreign' => 'property_id'));
 
         $this->hasMany('ProductTypePropertyRelation as PropertyRelation', array(
              'local' => 'id',

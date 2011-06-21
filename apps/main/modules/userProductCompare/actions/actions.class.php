@@ -17,6 +17,7 @@ class userProductCompareActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    $this->setVar('productCategoryList', $this->getUser()->getProductCompare()->getProductCategories(), true);
   }
  /**
   * Executes show action
@@ -39,6 +40,22 @@ class userProductCompareActions extends sfActions
     if ($product)
     {
       $this->getUser()->getProductCompare()->addProduct($product);
+    }
+
+    $this->redirect($this->getRequest()->getReferer());
+  }
+ /**
+  * Executes delete action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeDelete(sfWebRequest $request)
+  {
+    $product = $this->getRoute()->getObject();
+
+    if ($product)
+    {
+      $this->getUser()->getProductCompare()->deleteProduct($product->category_id, $product->id);
     }
 
     $this->redirect($this->getRequest()->getReferer());

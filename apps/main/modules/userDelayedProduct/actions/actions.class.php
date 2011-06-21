@@ -61,7 +61,11 @@ class userDelayedProductActions extends myActions
   */
   public function executeClear(sfWebRequest $request)
   {
-    $this->getUser()->getDelayedProduct()->clear();
+    UserDelayedProductTable::getInstance()->createQuery()
+      ->delete()
+      ->where('user_id = ?', array($this->getUser()->getGuardUser()->id))
+      ->execute()
+    ;
 
     $this->redirect($this->getRequest()->getReferer());
   }

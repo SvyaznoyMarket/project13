@@ -2,9 +2,12 @@ PaymentMethod:
   PaymentMethod_card:
     token: card
     name: 'Карточка'
+    is_active: true
   PaymentMethod_cash:
     token: cash
     name: 'Наличными'
+    is_active: true
   PaymentMethod_non-cash:
     token: non-cash
     name: 'Безналичный расчет'
+    is_active: true

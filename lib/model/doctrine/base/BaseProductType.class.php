@@ -7,6 +7,8 @@
  * 
  * @property integer $id
  * @property string $name
+ * @property Doctrine_Collection $ProductCategory
+ * @property Doctrine_Collection $ProductCategoryRelation
  * @property Doctrine_Collection $Property
  * @property Doctrine_Collection $PropertyGroup
  * @property Doctrine_Collection $PropertyRelation
@@ -14,22 +16,26 @@
  * @property Doctrine_Collection $ProductHelper
  * @property Doctrine_Collection $SimilarProductGroup
  * 
- * @method integer             getId()                  Returns the current record's "id" value
- * @method string              getName()                Returns the current record's "name" value
- * @method Doctrine_Collection getProperty()            Returns the current record's "Property" collection
- * @method Doctrine_Collection getPropertyGroup()       Returns the current record's "PropertyGroup" collection
- * @method Doctrine_Collection getPropertyRelation()    Returns the current record's "PropertyRelation" collection
- * @method Doctrine_Collection getProduct()             Returns the current record's "Product" collection
- * @method Doctrine_Collection getProductHelper()       Returns the current record's "ProductHelper" collection
- * @method Doctrine_Collection getSimilarProductGroup() Returns the current record's "SimilarProductGroup" collection
- * @method ProductType         setId()                  Sets the current record's "id" value
- * @method ProductType         setName()                Sets the current record's "name" value
- * @method ProductType         setProperty()            Sets the current record's "Property" collection
- * @method ProductType         setPropertyGroup()       Sets the current record's "PropertyGroup" collection
- * @method ProductType         setPropertyRelation()    Sets the current record's "PropertyRelation" collection
- * @method ProductType         setProduct()             Sets the current record's "Product" collection
- * @method ProductType         setProductHelper()       Sets the current record's "ProductHelper" collection
- * @method ProductType         setSimilarProductGroup() Sets the current record's "SimilarProductGroup" collection
+ * @method integer             getId()                      Returns the current record's "id" value
+ * @method string              getName()                    Returns the current record's "name" value
+ * @method Doctrine_Collection getProductCategory()         Returns the current record's "ProductCategory" collection
+ * @method Doctrine_Collection getProductCategoryRelation() Returns the current record's "ProductCategoryRelation" collection
+ * @method Doctrine_Collection getProperty()                Returns the current record's "Property" collection
+ * @method Doctrine_Collection getPropertyGroup()           Returns the current record's "PropertyGroup" collection
+ * @method Doctrine_Collection getPropertyRelation()        Returns the current record's "PropertyRelation" collection
+ * @method Doctrine_Collection getProduct()                 Returns the current record's "Product" collection
+ * @method Doctrine_Collection getProductHelper()           Returns the current record's "ProductHelper" collection
+ * @method Doctrine_Collection getSimilarProductGroup()     Returns the current record's "SimilarProductGroup" collection
+ * @method ProductType         setId()                      Sets the current record's "id" value
+ * @method ProductType         setName()                    Sets the current record's "name" value
+ * @method ProductType         setProductCategory()         Sets the current record's "ProductCategory" collection
+ * @method ProductType         setProductCategoryRelation() Sets the current record's "ProductCategoryRelation" collection
+ * @method ProductType         setProperty()                Sets the current record's "Property" collection
+ * @method ProductType         setPropertyGroup()           Sets the current record's "PropertyGroup" collection
+ * @method ProductType         setPropertyRelation()        Sets the current record's "PropertyRelation" collection
+ * @method ProductType         setProduct()                 Sets the current record's "Product" collection
+ * @method ProductType         setProductHelper()           Sets the current record's "ProductHelper" collection
+ * @method ProductType         setSimilarProductGroup()     Sets the current record's "SimilarProductGroup" collection
  * 
  * @package    enter
  * @subpackage model
@@ -60,6 +66,15 @@ abstract class BaseProductType extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasMany('ProductCategory', array(
+             'refClass' => 'ProductCategoryTypeRelation',
+             'local' => 'product_type_id',
+             'foreign' => 'product_category_id'));
+
+        $this->hasMany('ProductCategoryTypeRelation as ProductCategoryRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_type_id'));
+
         $this->hasMany('ProductProperty as Property', array(
              'refClass' => 'ProductTypePropertyRelation',
              'local' => 'product_type_id',

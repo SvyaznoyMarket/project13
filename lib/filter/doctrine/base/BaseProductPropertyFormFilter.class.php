@@ -18,6 +18,7 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
       'is_multiple'       => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'pattern'           => new sfWidgetFormFilterInput(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
+      'group_list'        => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductPropertyGroup')),
     ));
 
     $this->setValidators(array(
@@ -26,6 +27,7 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
       'is_multiple'       => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'pattern'           => new sfValidatorPass(array('required' => false)),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
+      'group_list'        => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductPropertyGroup', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_property_filters[%s]');
@@ -55,6 +57,24 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
     ;
   }
 
+  public function addGroupListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.ProductTypePropertyRelation ProductTypePropertyRelation')
+      ->andWhereIn('ProductTypePropertyRelation.group_id', $values)
+    ;
+  }
+
   public function getModelName()
   {
     return 'ProductProperty';
@@ -69,6 +89,7 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
       'is_multiple'       => 'Boolean',
       'pattern'           => 'Text',
       'product_type_list' => 'ManyKey',
+      'group_list'        => 'ManyKey',
     );
   }
 }
