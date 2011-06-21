@@ -9,4 +9,4 @@ ServiceCenter:
     address:           { type: string(255) }
     description:       { type: string }
   relations:
-    Region:            { class: Region, foreignAlias: CerviceCenter, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Region:            { class: Region, foreignAlias: ServiceCenter, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
