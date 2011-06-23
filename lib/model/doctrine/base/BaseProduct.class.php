@@ -35,6 +35,7 @@
  * @property Doctrine_Collection $UserTagRelation
  * @property Doctrine_Collection $UserDelayedProduct
  * @property Doctrine_Collection $UserNotice
+ * @property Doctrine_Collection $UserRating
  * 
  * @method integer             getId()                     Returns the current record's "id" value
  * @method string              getToken()                  Returns the current record's "token" value
@@ -66,6 +67,7 @@
  * @method Doctrine_Collection getUserTagRelation()        Returns the current record's "UserTagRelation" collection
  * @method Doctrine_Collection getUserDelayedProduct()     Returns the current record's "UserDelayedProduct" collection
  * @method Doctrine_Collection getUserNotice()             Returns the current record's "UserNotice" collection
+ * @method Doctrine_Collection getUserRating()             Returns the current record's "UserRating" collection
  * @method Product             setId()                     Sets the current record's "id" value
  * @method Product             setToken()                  Sets the current record's "token" value
  * @method Product             setName()                   Sets the current record's "name" value
@@ -96,6 +98,7 @@
  * @method Product             setUserTagRelation()        Sets the current record's "UserTagRelation" collection
  * @method Product             setUserDelayedProduct()     Sets the current record's "UserDelayedProduct" collection
  * @method Product             setUserNotice()             Sets the current record's "UserNotice" collection
+ * @method Product             setUserRating()             Sets the current record's "UserRating" collection
  * 
  * @package    enter
  * @subpackage model
@@ -259,6 +262,10 @@ abstract class BaseProduct extends myDoctrineRecord
              'foreign' => 'product_id'));
 
         $this->hasMany('UserProductNotice as UserNotice', array(
+             'local' => 'id',
+             'foreign' => 'product_id'));
+
+        $this->hasMany('UserProductRating as UserRating', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 

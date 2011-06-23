@@ -269,6 +269,18 @@ userProductCompare_delete:
 
 
 
+#
+# user product rating create
+userProductRating_create:
+  url:   /product-rating/create/:product
+  param: { module: userProductRating, action: create }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
+
+
+
 # Корзина товаров
 #
 # cart

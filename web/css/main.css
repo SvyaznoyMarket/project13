@@ -26,6 +26,10 @@ ul.inline li {
   background: #ffffff;
 }
 
+.block-inline {
+  padding-right: 10px;
+}
+
 .table td, .table th {
   padding: 5px 15px;
   border: solid 1px #ededed;

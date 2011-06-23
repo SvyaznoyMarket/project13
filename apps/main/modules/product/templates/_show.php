@@ -6,3 +6,5 @@
   <li><?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?></li>
   <li><?php include_component('userProductCompare', 'button', array('product' => $product)) ?></li>
 </ul>
+
+<?php include_component('userProductRating', 'show', array('product' => $product)) ?>
