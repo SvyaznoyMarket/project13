@@ -52,7 +52,7 @@ class userProductCompareComponents extends myComponents
       return sfView::NONE;
     }
 
-    $this->productList = $productCompare()->getProducts($this->productCategory->id);
+    $this->productList = $productCompare->getProducts($this->productCategory->id);
 
     $list = array();
     if (count($this->productList) > 0)
