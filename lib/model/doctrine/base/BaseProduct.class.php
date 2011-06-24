@@ -269,6 +269,6 @@ abstract class BaseProduct extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'product_id'));
 
-    $this->addListener(new ProductListener(array()), 'ProductListener');
+    $this->addListener(new myDoctrineRecordListener(array()), 'myDoctrineRecordListener');
     }
 }

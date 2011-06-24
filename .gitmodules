@@ -1,3 +1,0 @@
-[submodule "plugins/sfRediskaPlugin"]
-	path = plugins/sfRediskaPlugin
-	url = http://github.com/mastermix/sfRediskaPlugin.git

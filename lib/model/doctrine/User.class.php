@@ -12,18 +12,6 @@
  */
 class User extends BaseUser
 {
-  public function hasProductRating($product_id)
-  {
-    $q = UserProductRatingTable::getInstance()->createBaseQuery();
-
-    $q->select('userProductRating.product_id')
-      ->addWhere('userProductRating.user_id = ? AND userProductRating.product_id = ?', array($this->id, $product_id))
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-    ;
-
-    return false != $q->fetchOne();
-  }
-
   public function getProductRatingByProduct($product_id)
   {
     $q = UserProductRatingTable::getInstance()->createBaseQuery();

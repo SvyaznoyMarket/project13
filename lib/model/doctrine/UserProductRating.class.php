@@ -21,11 +21,21 @@ class UserProductRating extends BaseUserProductRating
       ->fetchOne()
     ;
 
+    /*
     $q = ProductTable::getInstance()->createBaseQuery();
-    $q->update()
+    $q->update('Product product')
       ->set('product.rating', '?', $rating)
       ->addWhere('product.id = ?', $event->getInvoker()->product_id)
       ->execute()
     ;
+    */
+    $product = ProductTable::getInstance()->getById($event->getInvoker()->product_id, array('select' => 'product.id, product.rating'));
+    if ($product)
+    {
+      $product->rating = $rating;
+      $product->save();
+    }
+
+    parent::postSave($event);
   }
 }
