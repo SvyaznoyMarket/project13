@@ -35,14 +35,12 @@ EOF;
 
     // add your code here
 
-    //myDebug::dump($connection); die();
-
     $groups = $this->connection->query("SELECT * FROM `similar_product_group`")->fetchAll();
     foreach ($groups as $group)
     {
       if (!empty($group['products']))
       {
-        $this->makeManualGroup($group);
+        //$this->makeManualGroup($group);
       }
       else
       {
@@ -63,7 +61,7 @@ EOF;
       $product = (int)trim($product);
     }
     unset($product);
-    myDebug::dump($products);
+
     foreach ($products as $product)
     {
       $sql = "INSERT INTO `similar_product` (`master_id`, `slave_id`) VALUES (".$product.", ".implode("), (".$product.", ", array_diff($products, array($product, ))).");";
@@ -71,8 +69,26 @@ EOF;
     }
   }
 
-  protected function makeAutoGroup()
+  protected function makeAutoGroup($group)
   {
+    $sql = "SELECT `property_id` FROM `similar_product_property` WHERE `group_id` = ".$group['id'];
+    $properties = $this->connection->query($sql)->fetchAll();
+    foreach ($properties as &$property)
+    {
+      $property = $property['property_id'];
+    }
+    $products = $this->connection->query("SELECT `id` FROM `product` WHERE `type_id` = ".$group['product_type_id'])->fetchAll();
 
+    foreach ($products as $product)
+    {
+      $main_properties = $this->connection->query("SELECT * FROM `product_property_relation` WHERE `product_id` = ".$product['id']." AND `property_id` IN (".implode(",", $properties).")")->fetchAll();
+      myDebug::dump(array('id' => $product['id'], 'prop' => $main_properties));
+      $sql = "SELECT `product`.`id` FROM `product` INNER JOIN `product_property_relation` WHERE ``";
+    }
+
+    foreach ($properties as $property)
+    {
+
+    }
   }
 }
