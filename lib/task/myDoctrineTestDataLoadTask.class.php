@@ -189,7 +189,7 @@ EOF;
       unset($list, $productType);
     }
 
-/*---------- Creating news --------------*/
+// Creating news
     $this->logSection('doctrine', 'loading test News');
     for ($i = 1; $i <= $count['News']; $i++)
     {
@@ -204,8 +204,6 @@ EOF;
       $record->token = $record->id;
       $record->save();
     }
-/*----------------------------------------*/
-
 
     $this->logSection('doctrine', 'loading test Pages');
     $this->createRecordList('Page', $count['Page']);
@@ -250,6 +248,11 @@ EOF;
       $list[] = $record;
     }
     $list->save();
+
+    $this->logSection('doctrine', 'loading test SimilarProduct');
+    $connection->query("INSERT INTO `similar_product_group` (`id`, `product_type_id`, `name`, `products`, `match`) VALUES (1, NULL, 'Группа-1', '432,4,765,43, 756, 81, 47', NULL), (2, 16, 'Группа-2', NULL, 3)");
+    $connection->query("INSERT INTO `similar_product_property` (`id`, `group_id`, `property_id`) VALUES (2, 2, 32), VALUES (3, 2, 33), (4, 2, 34)");
+
   }
 
   protected function createRecordList($model, $count, array $options = array())
