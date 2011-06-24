@@ -12,6 +12,7 @@ class mainConfiguration extends sfApplicationConfiguration
     $manager->setAttribute(Doctrine_Core::ATTR_QUOTE_IDENTIFIER, true);
     $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CLASS, 'myDoctrineQuery');
     $manager->setAttribute(Doctrine_Core::ATTR_COLLECTION_CLASS, 'myDoctrineCollection');
+    $manager->setAttribute(Doctrine_Core::ATTR_USE_DQL_CALLBACKS, true);
     //$manager->setAttribute(Doctrine_Core::ATTR_AUTO_FREE_QUERY_OBJECTS, true );
 
     sfConfig::set('doctrine_model_builder_options', array(
@@ -29,7 +30,7 @@ class mainConfiguration extends sfApplicationConfiguration
       //new Doctrine_Cache_Db(array('connection' => $manager->getConnection('cache'), 'tableName' => 'query_cache'))
       //new Doctrine_Cache_Redis(array('server' => 'redis://127.0.0.1:6379', 'prefix' => 'result:'));
       //new Doctrine_Cache_Redis(array('redis' => sfRedis::getClient('localhost'), 'prefix' => 'result:'))
-      new Doctrine_Cache_Redis(array('instance' => 'default', 'prefix' => 'dql:'))
+      new myDoctrineCacheRedis(array('instance' => 'default', 'prefix' => sfConfig::get('app_doctrine_result_cache_prefix', ':dql')))
     ;
 
     $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $driver);

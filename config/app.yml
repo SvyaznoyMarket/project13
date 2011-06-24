@@ -10,7 +10,8 @@ all:
     routes_register: false
 
   doctrine:
-    result_cache: true # кешировать результаты запросов
+    result_cache:         true  # кешировать результаты запросов
+    result_cache_prefix: 'dql:' # префикс ключей в кеше
 
   product:
     max_items:             10          # максимально количество записей для списка товаров (по умолчанию)

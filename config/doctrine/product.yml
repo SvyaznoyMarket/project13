@@ -119,7 +119,7 @@ ProductPropertyOption:
 Product:
   options:
     comment: 'Товар'
-  listeners: [ ProductListener ]
+  listeners: [ myDoctrineRecordListener ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }

@@ -2,7 +2,6 @@
 
 abstract class myDoctrineRecord extends sfDoctrineRecord
 {
-
   public function toParams()
   {
     return array(
