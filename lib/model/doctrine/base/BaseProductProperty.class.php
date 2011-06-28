@@ -9,6 +9,7 @@
  * @property string $name
  * @property enum $type
  * @property boolean $is_multiple
+ * @property string $unit
  * @property string $pattern
  * @property Doctrine_Collection $ProductType
  * @property Doctrine_Collection $Group
@@ -22,6 +23,7 @@
  * @method string              getName()                   Returns the current record's "name" value
  * @method enum                getType()                   Returns the current record's "type" value
  * @method boolean             getIsMultiple()             Returns the current record's "is_multiple" value
+ * @method string              getUnit()                   Returns the current record's "unit" value
  * @method string              getPattern()                Returns the current record's "pattern" value
  * @method Doctrine_Collection getProductType()            Returns the current record's "ProductType" collection
  * @method Doctrine_Collection getGroup()                  Returns the current record's "Group" collection
@@ -34,6 +36,7 @@
  * @method ProductProperty     setName()                   Sets the current record's "name" value
  * @method ProductProperty     setType()                   Sets the current record's "type" value
  * @method ProductProperty     setIsMultiple()             Sets the current record's "is_multiple" value
+ * @method ProductProperty     setUnit()                   Sets the current record's "unit" value
  * @method ProductProperty     setPattern()                Sets the current record's "pattern" value
  * @method ProductProperty     setProductType()            Sets the current record's "ProductType" collection
  * @method ProductProperty     setGroup()                  Sets the current record's "Group" collection
@@ -85,6 +88,12 @@ abstract class BaseProductProperty extends myDoctrineRecord
              'notnull' => true,
              'default' => false,
              'comment' => 'Свойство имеет несколько значений?',
+             ));
+        $this->hasColumn('unit', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Единица измерения',
+             'length' => 255,
              ));
         $this->hasColumn('pattern', 'string', 255, array(
              'type' => 'string',

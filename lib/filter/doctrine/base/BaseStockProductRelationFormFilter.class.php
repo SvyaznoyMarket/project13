@@ -13,11 +13,11 @@ abstract class BaseStockProductRelationFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'count'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'quantity'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
-      'count'      => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'quantity'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
     ));
 
     $this->widgetSchema->setNameFormat('stock_product_relation_filters[%s]');
@@ -39,7 +39,7 @@ abstract class BaseStockProductRelationFormFilter extends BaseFormFilterDoctrine
     return array(
       'stock_id'   => 'Number',
       'product_id' => 'Number',
-      'count'      => 'Number',
+      'quantity'   => 'Number',
     );
   }
 }

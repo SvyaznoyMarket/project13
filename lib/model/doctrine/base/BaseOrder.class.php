@@ -9,6 +9,7 @@
  * @property string $token
  * @property integer $user_id
  * @property integer $payment_method_id
+ * @property decimal $sum
  * @property User $User
  * @property PaymentMethod $PaymentMethod
  * @property Doctrine_Collection $ProductRelation
@@ -17,6 +18,7 @@
  * @method string              getToken()             Returns the current record's "token" value
  * @method integer             getUserId()            Returns the current record's "user_id" value
  * @method integer             getPaymentMethodId()   Returns the current record's "payment_method_id" value
+ * @method decimal             getSum()               Returns the current record's "sum" value
  * @method User                getUser()              Returns the current record's "User" value
  * @method PaymentMethod       getPaymentMethod()     Returns the current record's "PaymentMethod" value
  * @method Doctrine_Collection getProductRelation()   Returns the current record's "ProductRelation" collection
@@ -24,6 +26,7 @@
  * @method Order               setToken()             Sets the current record's "token" value
  * @method Order               setUserId()            Sets the current record's "user_id" value
  * @method Order               setPaymentMethodId()   Sets the current record's "payment_method_id" value
+ * @method Order               setSum()               Sets the current record's "sum" value
  * @method Order               setUser()              Sets the current record's "User" value
  * @method Order               setPaymentMethod()     Sets the current record's "PaymentMethod" value
  * @method Order               setProductRelation()   Sets the current record's "ProductRelation" collection
@@ -61,6 +64,14 @@ abstract class BaseOrder extends myDoctrineRecord
              'type' => 'integer',
              'notnull' => true,
              'length' => 20,
+             ));
+        $this->hasColumn('sum', 'decimal', 12, array(
+             'type' => 'decimal',
+             'notnull' => true,
+             'default' => 0,
+             'comment' => 'Стоимость заказа',
+             'length' => 12,
+             'scale' => '2',
              ));
 
         $this->option('comment', 'Заказ пользователя');

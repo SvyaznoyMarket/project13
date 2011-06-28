@@ -15,6 +15,7 @@ Order:
     token:             { type: string(64), unique: true, notnull: true, notblank: true, comment: 'Номер заказа' }
     user_id:           { type: integer(20), notnull: false, default: null }
     payment_method_id: { type: integer(20), notnull: true }
+    sum:               { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Стоимость заказа' }
   relations:
     User:              { class: User, foreignAlias: Order, local: user_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     PaymentMethod:     { class: PaymentMethod, foreignAlias: Order, local: payment_method_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
@@ -26,7 +27,7 @@ OrderProductRelation:
     order_id:          { type: integer(20), notnull: true }
     product_id:        { type: integer(20), notnull: true }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара в корзине' }
-    count:             { type: integer(4), notnull: true, comment: 'Количество товара в корзине' }
+    quantity:          { type: integer(4), notnull: true, comment: 'Количество товара в корзине' }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
     Order:             { class: Order, foreignAlias: ProductRelation, local: order_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

@@ -19,7 +19,7 @@ abstract class BaseOrderProductRelationForm extends BaseFormDoctrine
       'order_id'   => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Order'), 'add_empty' => false)),
       'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => false)),
       'price'      => new sfWidgetFormInputText(),
-      'count'      => new sfWidgetFormInputText(),
+      'quantity'   => new sfWidgetFormInputText(),
       'position'   => new sfWidgetFormInputText(),
     ));
 
@@ -28,7 +28,7 @@ abstract class BaseOrderProductRelationForm extends BaseFormDoctrine
       'order_id'   => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Order'))),
       'product_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Product'))),
       'price'      => new sfValidatorNumber(array('required' => false)),
-      'count'      => new sfValidatorInteger(),
+      'quantity'   => new sfValidatorInteger(),
       'position'   => new sfValidatorInteger(array('required' => false)),
     ));
 

@@ -37,7 +37,7 @@ class GuardUserTable extends myDoctrineTable
   }
 
   /**
-   * Retrieves a sfGuardUser object by username or email_address and is_active flag.
+   * Retrieves a sfGuardUser object by username or email and is_active flag.
    *
    * @param  string  $username The username
    * @param  boolean $isActive The user's status
@@ -47,7 +47,7 @@ class GuardUserTable extends myDoctrineTable
   public function retrieveByUsernameOrEmailAddress($username, $isActive = true)
   {
     $query = $this->createQuery('user')
-      ->where('user.username = ? OR user.email_address = ?', array($username, $username))
+      ->where('user.username = ? OR user.email = ?', array($username, $username))
       ->addWhere('user.is_active = ?', $isActive)
     ;
 

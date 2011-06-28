@@ -55,7 +55,7 @@ GuardUser:
   columns:
     first_name: string(255)
     last_name: string(255)
-    email_address:
+    email:
       type: string(255)
       notnull: true
       unique: true

@@ -17,13 +17,13 @@ abstract class BaseStockProductRelationForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'stock_id'   => new sfWidgetFormInputHidden(),
       'product_id' => new sfWidgetFormInputHidden(),
-      'count'      => new sfWidgetFormInputText(),
+      'quantity'   => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
       'stock_id'   => new sfValidatorChoice(array('choices' => array($this->getObject()->get('stock_id')), 'empty_value' => $this->getObject()->get('stock_id'), 'required' => false)),
       'product_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_id')), 'empty_value' => $this->getObject()->get('product_id'), 'required' => false)),
-      'count'      => new sfValidatorInteger(array('required' => false)),
+      'quantity'   => new sfValidatorInteger(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('stock_product_relation[%s]');

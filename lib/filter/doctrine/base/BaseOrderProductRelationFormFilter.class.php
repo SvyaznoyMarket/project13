@@ -16,7 +16,7 @@ abstract class BaseOrderProductRelationFormFilter extends BaseFormFilterDoctrine
       'order_id'   => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Order'), 'add_empty' => true)),
       'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => true)),
       'price'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'count'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'quantity'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'position'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
@@ -24,7 +24,7 @@ abstract class BaseOrderProductRelationFormFilter extends BaseFormFilterDoctrine
       'order_id'   => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Order'), 'column' => 'id')),
       'product_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Product'), 'column' => 'id')),
       'price'      => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
-      'count'      => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'quantity'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'position'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
     ));
 
@@ -49,7 +49,7 @@ abstract class BaseOrderProductRelationFormFilter extends BaseFormFilterDoctrine
       'order_id'   => 'ForeignKey',
       'product_id' => 'ForeignKey',
       'price'      => 'Number',
-      'count'      => 'Number',
+      'quantity'   => 'Number',
       'position'   => 'Number',
     );
   }

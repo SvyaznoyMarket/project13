@@ -29,7 +29,7 @@ StockProductRelation:
   columns:
     stock_id:          { type: integer(20), primary: true, notnull: true }
     product_id:        { type: integer(20), primary: true, notnull: true }
-    count:             { type: integer(4), notnull: true, default: 1 }
+    quantity:          { type: integer(4), notnull: true, default: 1 }
   relations:
     Stock:             { class: Stock, foreignAlias: ProductRelation, local: stock_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: StockRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

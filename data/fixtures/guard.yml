@@ -2,7 +2,7 @@ GuardUser:
   GuardUser_admin:
     type:           admin
     first_name:     'Админ'
-    email_address:  'admin@maxus.ru'
+    email:          'admin@maxus.ru'
     username:       admin
     password:       admin
     is_super_admin: true
@@ -12,7 +12,7 @@ GuardUser:
     first_name:     'Клиент'
     last_name:      'Клиентов'
     middle_name:    'Клиентович'
-    email_address:  'cluent@maxus.ru'
+    email:          'cluent@maxus.ru'
     username:       client
     password:       client
     Group:          [ GuardGroup_client ]
@@ -21,7 +21,7 @@ GuardUser:
     first_name:     'Партнер'
     last_name:      'Партнеров'
     middle_name:    'Пертнерович'
-    email_address:  'partner@maxus.ru'
+    email:          'partner@maxus.ru'
     username:       partner
     password:       partner
     Group:          [ GuardGroup_partner ]

@@ -7,7 +7,7 @@
  * 
  * @property string $first_name
  * @property string $last_name
- * @property string $email_address
+ * @property string $email
  * @property string $username
  * @property string $algorithm
  * @property string $salt
@@ -16,6 +16,7 @@
  * @property boolean $is_super_admin
  * @property timestamp $last_login
  * @property enum $type
+ * @property string $phonenumber
  * @property string $middle_name
  * @property string $photo
  * @property string $settings
@@ -28,7 +29,7 @@
  * 
  * @method string              getFirstName()           Returns the current record's "first_name" value
  * @method string              getLastName()            Returns the current record's "last_name" value
- * @method string              getEmailAddress()        Returns the current record's "email_address" value
+ * @method string              getEmail()               Returns the current record's "email" value
  * @method string              getUsername()            Returns the current record's "username" value
  * @method string              getAlgorithm()           Returns the current record's "algorithm" value
  * @method string              getSalt()                Returns the current record's "salt" value
@@ -37,6 +38,7 @@
  * @method boolean             getIsSuperAdmin()        Returns the current record's "is_super_admin" value
  * @method timestamp           getLastLogin()           Returns the current record's "last_login" value
  * @method enum                getType()                Returns the current record's "type" value
+ * @method string              getPhonenumber()         Returns the current record's "phonenumber" value
  * @method string              getMiddleName()          Returns the current record's "middle_name" value
  * @method string              getPhoto()               Returns the current record's "photo" value
  * @method string              getSettings()            Returns the current record's "settings" value
@@ -48,7 +50,7 @@
  * @method GuardForgotPassword getForgotPassword()      Returns the current record's "ForgotPassword" value
  * @method GuardUser           setFirstName()           Sets the current record's "first_name" value
  * @method GuardUser           setLastName()            Sets the current record's "last_name" value
- * @method GuardUser           setEmailAddress()        Sets the current record's "email_address" value
+ * @method GuardUser           setEmail()               Sets the current record's "email" value
  * @method GuardUser           setUsername()            Sets the current record's "username" value
  * @method GuardUser           setAlgorithm()           Sets the current record's "algorithm" value
  * @method GuardUser           setSalt()                Sets the current record's "salt" value
@@ -57,6 +59,7 @@
  * @method GuardUser           setIsSuperAdmin()        Sets the current record's "is_super_admin" value
  * @method GuardUser           setLastLogin()           Sets the current record's "last_login" value
  * @method GuardUser           setType()                Sets the current record's "type" value
+ * @method GuardUser           setPhonenumber()         Sets the current record's "phonenumber" value
  * @method GuardUser           setMiddleName()          Sets the current record's "middle_name" value
  * @method GuardUser           setPhoto()               Sets the current record's "photo" value
  * @method GuardUser           setSettings()            Sets the current record's "settings" value
@@ -91,7 +94,7 @@ abstract class BaseGuardUser extends myDoctrineRecord
              'notblank' => true,
              'comment' => 'Фамилия',
              ));
-        $this->hasColumn('email_address', 'string', 255, array(
+        $this->hasColumn('email', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
              'unique' => true,
@@ -139,6 +142,12 @@ abstract class BaseGuardUser extends myDoctrineRecord
              ),
              'notnull' => true,
              'default' => 'client',
+             ));
+        $this->hasColumn('phonenumber', 'string', 20, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Телефонный номер',
+             'length' => 20,
              ));
         $this->hasColumn('middle_name', 'string', 255, array(
              'type' => 'string',

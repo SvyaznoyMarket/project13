@@ -19,6 +19,7 @@ abstract class BaseOrderForm extends BaseFormDoctrine
       'token'             => new sfWidgetFormInputText(),
       'user_id'           => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
       'payment_method_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('PaymentMethod'), 'add_empty' => false)),
+      'sum'               => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
@@ -26,6 +27,7 @@ abstract class BaseOrderForm extends BaseFormDoctrine
       'token'             => new sfValidatorString(array('max_length' => 64)),
       'user_id'           => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'required' => false)),
       'payment_method_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('PaymentMethod'))),
+      'sum'               => new sfValidatorNumber(array('required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(

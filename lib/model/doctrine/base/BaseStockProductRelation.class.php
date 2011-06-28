@@ -7,18 +7,18 @@
  * 
  * @property integer $stock_id
  * @property integer $product_id
- * @property integer $count
+ * @property integer $quantity
  * @property Stock $Stock
  * @property Product $Product
  * 
  * @method integer              getStockId()    Returns the current record's "stock_id" value
  * @method integer              getProductId()  Returns the current record's "product_id" value
- * @method integer              getCount()      Returns the current record's "count" value
+ * @method integer              getQuantity()   Returns the current record's "quantity" value
  * @method Stock                getStock()      Returns the current record's "Stock" value
  * @method Product              getProduct()    Returns the current record's "Product" value
  * @method StockProductRelation setStockId()    Sets the current record's "stock_id" value
  * @method StockProductRelation setProductId()  Sets the current record's "product_id" value
- * @method StockProductRelation setCount()      Sets the current record's "count" value
+ * @method StockProductRelation setQuantity()   Sets the current record's "quantity" value
  * @method StockProductRelation setStock()      Sets the current record's "Stock" value
  * @method StockProductRelation setProduct()    Sets the current record's "Product" value
  * 
@@ -42,7 +42,7 @@ abstract class BaseStockProductRelation extends myDoctrineRecord
              'primary' => true,
              'length' => 20,
              ));
-        $this->hasColumn('count', 'integer', 4, array(
+        $this->hasColumn('quantity', 'integer', 4, array(
              'type' => 'integer',
              'notnull' => true,
              'default' => 1,

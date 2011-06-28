@@ -8,7 +8,7 @@
  * @property integer $order_id
  * @property integer $product_id
  * @property decimal $price
- * @property integer $count
+ * @property integer $quantity
  * @property integer $position
  * @property Order $Order
  * @property Product $Product
@@ -16,14 +16,14 @@
  * @method integer              getOrderId()    Returns the current record's "order_id" value
  * @method integer              getProductId()  Returns the current record's "product_id" value
  * @method decimal              getPrice()      Returns the current record's "price" value
- * @method integer              getCount()      Returns the current record's "count" value
+ * @method integer              getQuantity()   Returns the current record's "quantity" value
  * @method integer              getPosition()   Returns the current record's "position" value
  * @method Order                getOrder()      Returns the current record's "Order" value
  * @method Product              getProduct()    Returns the current record's "Product" value
  * @method OrderProductRelation setOrderId()    Sets the current record's "order_id" value
  * @method OrderProductRelation setProductId()  Sets the current record's "product_id" value
  * @method OrderProductRelation setPrice()      Sets the current record's "price" value
- * @method OrderProductRelation setCount()      Sets the current record's "count" value
+ * @method OrderProductRelation setQuantity()   Sets the current record's "quantity" value
  * @method OrderProductRelation setPosition()   Sets the current record's "position" value
  * @method OrderProductRelation setOrder()      Sets the current record's "Order" value
  * @method OrderProductRelation setProduct()    Sets the current record's "Product" value
@@ -56,7 +56,7 @@ abstract class BaseOrderProductRelation extends myDoctrineRecord
              'length' => 12,
              'scale' => '2',
              ));
-        $this->hasColumn('count', 'integer', 4, array(
+        $this->hasColumn('quantity', 'integer', 4, array(
              'type' => 'integer',
              'notnull' => true,
              'comment' => 'Количество товара в корзине',

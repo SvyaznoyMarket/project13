@@ -16,12 +16,14 @@ abstract class BaseOrderFormFilter extends BaseFormFilterDoctrine
       'token'             => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'user_id'           => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
       'payment_method_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('PaymentMethod'), 'add_empty' => true)),
+      'sum'               => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
       'token'             => new sfValidatorPass(array('required' => false)),
       'user_id'           => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
       'payment_method_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('PaymentMethod'), 'column' => 'id')),
+      'sum'               => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
     ));
 
     $this->widgetSchema->setNameFormat('order_filters[%s]');
@@ -45,6 +47,7 @@ abstract class BaseOrderFormFilter extends BaseFormFilterDoctrine
       'token'             => 'Text',
       'user_id'           => 'ForeignKey',
       'payment_method_id' => 'ForeignKey',
+      'sum'               => 'Number',
     );
   }
 }

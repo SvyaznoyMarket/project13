@@ -4,6 +4,7 @@ User:
   inheritance: { type: simple, extends: GuardUser }
   columns:
     type:              { type: enum, length: 10, values: [admin, client, partner], notnull: true, default: client }
+    phonenumber:       { type: string(20), notnull: false, default: null, comment: 'Телефонный номер' }
     first_name:        { type: string(255), notnull: true, notblank: true, comment: 'Имя' }
     last_name:         { type: string(255), notnull: true, notblank: true, comment: 'Фамилия' }
     middle_name:       { type: string(255), notnull: true, notblank: true, comment: 'Отчество' }
