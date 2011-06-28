@@ -250,9 +250,14 @@ EOF;
     $list->save();
 
     $this->logSection('doctrine', 'loading test SimilarProduct');
-    $connection->query("INSERT INTO `similar_product_group` (`id`, `product_type_id`, `name`, `products`, `match`) VALUES (1, NULL, 'Группа-1', '432,4,765,43, 756, 81, 47', NULL), (2, 16, 'Группа-2', NULL, 3)");
-    $connection->query("INSERT INTO `similar_product_property` (`group_id`, `property_id`) VALUES (2, 32), (2, 33), (2, 34)");
-
+    $product_type = rand(1, $count['ProductType']);
+    $connection->query("INSERT INTO `similar_product_group` (`id`, `product_type_id`, `name`, `products`, `match`, `price`) VALUES (1, NULL, 'Группа-1', '432,4,765,43, 756, 81, 47', NULL, NULL), (2, ".$product_type.", 'Группа-2', NULL, 3, 0.1)");
+    $properties = $connection->query("SELECT `property_id` FROM `product_type_property_relation` WHERE `product_type_id` = ".$product_type." LIMIT 3")->fetchAll();
+    foreach ($properties as &$property)
+    {
+      $property = "(2, ".$property['property_id'].")";
+    }
+    $connection->query("INSERT INTO `similar_product_property` (`group_id`, `property_id`) VALUES ".implode(", ", $properties));
   }
 
   protected function createRecordList($model, $count, array $options = array())
