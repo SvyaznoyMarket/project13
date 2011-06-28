@@ -57,4 +57,9 @@ class Product extends BaseProduct
   {
     return number_format($this->price, 0, ',', ' ').' руб';
   }
+
+  public function getSimilarProduct(array $params = array())
+  {
+    return SimilarProductTable::getInstance()->getListByProduct($this, $params);
+  }
 }

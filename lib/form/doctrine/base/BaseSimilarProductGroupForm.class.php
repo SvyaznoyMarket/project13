@@ -20,6 +20,7 @@ abstract class BaseSimilarProductGroupForm extends BaseFormDoctrine
       'name'            => new sfWidgetFormInputText(),
       'products'        => new sfWidgetFormTextarea(),
       'match'           => new sfWidgetFormInputText(),
+      'price'           => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
@@ -28,6 +29,7 @@ abstract class BaseSimilarProductGroupForm extends BaseFormDoctrine
       'name'            => new sfValidatorString(array('max_length' => 255)),
       'products'        => new sfValidatorString(array('required' => false)),
       'match'           => new sfValidatorInteger(array('required' => false)),
+      'price'           => new sfValidatorNumber(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('similar_product_group[%s]');

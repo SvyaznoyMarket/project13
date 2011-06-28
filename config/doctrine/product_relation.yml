@@ -7,6 +7,7 @@ SimilarProductGroup:
     name:              { type: string(255), notnull: true, notblank: true }
     products:          { type: string, notnull: false, default: null, comment: 'Список id товаров через запятую, для формирования списка аналогичных товаров' }
     match:             { type: integer(4), notnull: false, default: null, comment: 'Количество совпадающих параметров у товаров для учета их как аналогичных' }
+    price:             { type: 'decimal(10,4)', notnull: false, default: null, comment: 'Допустимое изменение цены для аналогичности товаров' }
   relations:
     ProductType:       { class: ProductType, foreignAlias: SimilarProductGroup, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
 

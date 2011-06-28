@@ -17,6 +17,7 @@ abstract class BaseSimilarProductGroupFormFilter extends BaseFormFilterDoctrine
       'name'            => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'products'        => new sfWidgetFormFilterInput(),
       'match'           => new sfWidgetFormFilterInput(),
+      'price'           => new sfWidgetFormFilterInput(),
     ));
 
     $this->setValidators(array(
@@ -24,6 +25,7 @@ abstract class BaseSimilarProductGroupFormFilter extends BaseFormFilterDoctrine
       'name'            => new sfValidatorPass(array('required' => false)),
       'products'        => new sfValidatorPass(array('required' => false)),
       'match'           => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'price'           => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
     ));
 
     $this->widgetSchema->setNameFormat('similar_product_group_filters[%s]');
@@ -48,6 +50,7 @@ abstract class BaseSimilarProductGroupFormFilter extends BaseFormFilterDoctrine
       'name'            => 'Text',
       'products'        => 'Text',
       'match'           => 'Number',
+      'price'           => 'Number',
     );
   }
 }

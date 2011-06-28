@@ -10,6 +10,7 @@
  * @property string $name
  * @property string $products
  * @property integer $match
+ * @property decimal $price
  * @property ProductType $ProductType
  * @property Doctrine_Collection $Property
  * 
@@ -18,6 +19,7 @@
  * @method string              getName()            Returns the current record's "name" value
  * @method string              getProducts()        Returns the current record's "products" value
  * @method integer             getMatch()           Returns the current record's "match" value
+ * @method decimal             getPrice()           Returns the current record's "price" value
  * @method ProductType         getProductType()     Returns the current record's "ProductType" value
  * @method Doctrine_Collection getProperty()        Returns the current record's "Property" collection
  * @method SimilarProductGroup setId()              Sets the current record's "id" value
@@ -25,6 +27,7 @@
  * @method SimilarProductGroup setName()            Sets the current record's "name" value
  * @method SimilarProductGroup setProducts()        Sets the current record's "products" value
  * @method SimilarProductGroup setMatch()           Sets the current record's "match" value
+ * @method SimilarProductGroup setPrice()           Sets the current record's "price" value
  * @method SimilarProductGroup setProductType()     Sets the current record's "ProductType" value
  * @method SimilarProductGroup setProperty()        Sets the current record's "Property" collection
  * 
@@ -65,6 +68,13 @@ abstract class BaseSimilarProductGroup extends myDoctrineRecord
              'notnull' => false,
              'comment' => 'Количество совпадающих параметров у товаров для учета их как аналогичных',
              'length' => 4,
+             ));
+        $this->hasColumn('price', 'decimal', 10, array(
+             'type' => 'decimal',
+             'notnull' => false,
+             'comment' => 'Допустимое изменение цены для аналогичности товаров',
+             'length' => 10,
+             'scale' => '4',
              ));
 
         $this->option('comment', 'Группа аналогичного товара');
