@@ -251,7 +251,7 @@ EOF;
 
     $this->logSection('doctrine', 'loading test SimilarProduct');
     $connection->query("INSERT INTO `similar_product_group` (`id`, `product_type_id`, `name`, `products`, `match`) VALUES (1, NULL, 'Группа-1', '432,4,765,43, 756, 81, 47', NULL), (2, 16, 'Группа-2', NULL, 3)");
-    $connection->query("INSERT INTO `similar_product_property` (`id`, `group_id`, `property_id`) VALUES (2, 2, 32), VALUES (3, 2, 33), (4, 2, 34)");
+    $connection->query("INSERT INTO `similar_product_property` (`group_id`, `property_id`) VALUES (2, 32), (2, 33), (2, 34)");
 
   }
 
