@@ -10,3 +10,7 @@
 <div class="block">
   <?php echo link_to('Комментарии', 'productComment', $sf_data->getRaw('product')) ?>
 </div>
+
+<div class="block">
+  <?php echo link_to('Аналогичные товары', 'similarProduct', $sf_data->getRaw('product')) ?>
+</div>

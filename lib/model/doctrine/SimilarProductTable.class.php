@@ -7,34 +7,23 @@ class SimilarProductTable extends myDoctrineTable
       return Doctrine_Core::getTable('SimilarProduct');
   }
 
-  public function createBaseQuery(array $params = array())
-  {
-    $this->applyDefaultParameters($params);
-
-    $q = $this->createQuery('product');
-
-    $q
-      ->orderBy('product.rating DESC')
-    ;
-
-    return $q;
-  }
-
   public function getListByProduct(Product $product, array $params = array())
   {
     $this->applyDefaultParameters($params);
+    $productTable = ProductTable::getInstance();
 
-    $q = $this->createBaseQuery($params);
+    $q = $productTable->createBaseQuery($params);
 
-    $q->leftJoin('product.MasterSimilarProduct masterSimilarProduct')
-      ->addWhere('masterSimilarProduct.master_id = ?', $product->id)
+    $q->innerJoin('product.MasterSimilarProduct masterProduct')
+      ->addWhere('masterProduct.master_id = ?', $product->id)
+      ->orderBy('product.rating DESC')
       //->useResultCache(true, null, $this->getQueryHash("product-{$product->id}/productComment-all", $params))
     ;
 
     $this->setQueryParameters($q, $params);
 
-    $ids = $this->getIdsByQuery($q);
+    $ids = $productTable->getIdsByQuery($q);
 
-    return $this->createListByIds($ids, $params);
+    return $productTable->createListByIds($ids, $params);
   }
 }

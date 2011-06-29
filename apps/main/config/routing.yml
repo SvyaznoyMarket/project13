@@ -60,6 +60,13 @@ productComment_create:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ post ]
+#
+# product similar
+similarProduct:
+  url:   /products/:product/similar
+  param: { module: similarProduct, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
 
 
 

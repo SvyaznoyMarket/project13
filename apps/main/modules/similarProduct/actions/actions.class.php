@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class similarProductActions extends sfActions
+class similarProductActions extends myActions
 {
  /**
   * Executes index action
@@ -17,6 +17,7 @@ class similarProductActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->forward('default', 'module');
+    $this->product = $this->getRoute()->getObject();
+
   }
 }
