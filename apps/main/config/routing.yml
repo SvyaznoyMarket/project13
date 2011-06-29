@@ -70,6 +70,19 @@ similarProduct:
 
 
 
+# Новость
+#
+# news category
+newsCategory:
+  url:   /news/
+  param: { module: newsCategory, action: index }
+#
+# news category show
+newsCategory_show:
+  url:   /news/:newsCategory/
+  param: { module: newsCategory, action: show }
+  class:   myNewsRoute
+  options: { model: NewsCategory, type: object, method: getForRoute }
 #
 # news list by year
 newsCategory_year:

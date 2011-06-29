@@ -23,8 +23,10 @@ class NewsTable extends myDoctrineTable
 
     $q = $this->createQuery('news');
 
-    $q->addWhere('news.is_active = ?', true);
-    $q->addWhere('news.published_at < NOW()');
+    $q->addWhere('news.is_active = ?', true)
+      ->addWhere('news.published_at < NOW()')
+      ->orderBy('news.published_at DESC')
+    ;
 
     return $q;
   }
