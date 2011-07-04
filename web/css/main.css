@@ -42,6 +42,7 @@ ul.inline li {
 .logo {
   width: 80px;
   height: 60px;
+  margin: 10px;
 }
 
 .form {
