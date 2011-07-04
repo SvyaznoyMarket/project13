@@ -23,3 +23,5 @@
 <div class="block">
   <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
 </div>
+
+<?php include_partial('productCatalog/slot/default') ?>

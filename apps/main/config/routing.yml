@@ -21,15 +21,15 @@ productCatalog_filter:
 #
 # product catalog by category
 productCatalog_category:
-  url:   /catalog/:productCategory/:page
-  param: { module: productCatalog, action: category, page: 1 }
+  url:   /catalog/:productCategory/
+  param: { module: productCatalog, action: category}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # product catalog by category and creator
 productCatalog_creator:
-  url:   /catalog/:productCategory/:creator/:page
-  param: { module: productCatalog, action: creator, page: 1 }
+  url:   /catalog/:productCategory/:creator/
+  param: { module: productCatalog, action: creator }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
