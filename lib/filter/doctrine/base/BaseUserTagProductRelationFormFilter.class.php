@@ -13,14 +13,10 @@ abstract class BaseUserTagProductRelationFormFilter extends BaseFormFilterDoctri
   public function setup()
   {
     $this->setWidgets(array(
-      'tag_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Tag'), 'add_empty' => true)),
-      'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => true)),
       'position'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
-      'tag_id'     => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Tag'), 'column' => 'id')),
-      'product_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Product'), 'column' => 'id')),
       'position'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
     ));
 
@@ -41,9 +37,8 @@ abstract class BaseUserTagProductRelationFormFilter extends BaseFormFilterDoctri
   public function getFields()
   {
     return array(
-      'id'         => 'Number',
-      'tag_id'     => 'ForeignKey',
-      'product_id' => 'ForeignKey',
+      'tag_id'     => 'Number',
+      'product_id' => 'Number',
       'position'   => 'Number',
     );
   }

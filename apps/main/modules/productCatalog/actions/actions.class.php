@@ -97,6 +97,33 @@ class productCatalogActions extends myActions
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
   }
+ /**
+  * Executes special action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeSpecial(sfWebRequest $request)
+  {
+    $this->productCategory = $this->getRoute()->getObject();
+    $this->creator = $this->getRoute()->getCreatorObject();
+
+    $filter = array(
+      'category' => $this->productCategory,
+      'creator'  => $this->creator,
+    );
+
+    $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+      'view'  => 'list',
+    ));
+
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
+
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+    ));
+  }
 
 
 

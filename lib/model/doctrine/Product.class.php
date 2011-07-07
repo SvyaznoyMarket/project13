@@ -30,11 +30,6 @@ class Product extends BaseProduct
     );
   }
 
-  public function getCommentList(array $params = array())
-  {
-    return ProductCommentTable::getInstance()->getListByProduct($this, $params);
-  }
-
   public function getIsInsale()
   {
     return $this->is_instock;
@@ -61,5 +56,15 @@ class Product extends BaseProduct
   public function getSimilarProduct(array $params = array())
   {
     return SimilarProductTable::getInstance()->getListByProduct($this, $params);
+  }
+
+  public function getCommentList(array $params = array())
+  {
+    return ProductCommentTable::getInstance()->getListByProduct($this, $params);
+  }
+
+  public function getUserTagList(array $params = array())
+  {
+    return UserTagTable::getInstance()->getListByProduct($this->id, $params);
   }
 }

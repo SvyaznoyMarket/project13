@@ -119,6 +119,13 @@ class ProductTable extends myDoctrineTable
     return $record;
   }
 
+  public function getByToken($token, array $params = array())
+  {
+    $id = $this->getIdBy('token', $token);
+
+    return $this->getById($id);
+  }
+
   public function getForRoute(array $params)
   {
     $id = isset($params['product']) ? $this->getIdBy('token', $params['product']) : null;

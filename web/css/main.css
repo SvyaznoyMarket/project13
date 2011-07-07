@@ -157,6 +157,14 @@ ul.inline li {
 }
 
 
+.add {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/add.png) no-repeat scroll 0 2px;
+}
+.delete {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/delete.png) no-repeat scroll 0 2px;
+}
 .user {
   padding: 0 0 0 20px;
   background: transparent url(/images/icons/user_suit.png) no-repeat scroll 0 2px;

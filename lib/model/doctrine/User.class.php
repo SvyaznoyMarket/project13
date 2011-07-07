@@ -20,4 +20,9 @@ class User extends BaseUser
 
     return $q->fetchOne();
   }
+
+  public function getTagList(array $params = array())
+  {
+    return UserTagTable::getInstance()->getListByUser($this->id, $params);
+  }
 }

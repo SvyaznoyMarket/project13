@@ -5,54 +5,56 @@ homepage:
 
 
 
-# product
+# товар
 #
-# product catalog
+# каталог товаров
 productCatalog:
   url:   /catalog
   param: { module: productCatalog, action: index }
 #
-# product catalog filter
+# фильтр каталога товаров
 productCatalog_filter:
   url:   /catalog/:productCategory/_filter
   param: { module: productCatalog, action: filter }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
-# product catalog by category
+# категория каталога товаров
 productCatalog_category:
   url:   /catalog/:productCategory/
   param: { module: productCatalog, action: category}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
-# product catalog by category and creator
+# категория и производитель каталога товаров
 productCatalog_creator:
   url:   /catalog/:productCategory/:creator/
   param: { module: productCatalog, action: creator }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
-# product card
+# карточка товара
 productCard:
   url:   /products/:product
   param: { module: productCard, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
 #
-# product comment
+# комментарии товара
 productComment:
   url:   /products/:product/comments
   param: { module: productComment, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
 #
+# новый комментарий товара
 productComment_new:
   url:   /products/:product/comments/new
   param: { module: productComment, action: new }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
 #
+# создать комментарий товара
 productComment_create:
   url:   /products/:product/comments/create
   param: { module: productComment, action: create }
@@ -61,7 +63,7 @@ productComment_create:
   requirements:
     sf_method: [ post ]
 #
-# product similar
+# аналогичные товары
 similarProduct:
   url:   /products/:product/similar
   param: { module: similarProduct, action: index }
@@ -208,22 +210,34 @@ userTag:
 userTag_create:
   url:     /private/tags/create
   param:   { module: userTag, action: create }
+#
+# user tag update
+userTag_update:
+  url:     /private/tags/:userTag/update
+  param:   { module: userTag, action: update }
   class:   myDoctrineRoute
   options: { model: UserTag, type: object, method: getForRoute }
-#
 # user tag delete
 userTag_delete:
-  url:     /private/tags/delete/:userTag
+  url:     /private/tags/:userTag/delete
   param:   { module: userTag, action: delete }
   class:   myDoctrineRoute
   options: { model: UserTag, type: object, method: getForRoute }
 #
-# user tag update
-userTag_update:
-  url:     /private/tags/update/:userTag
-  param:   { module: userTag, action: update }
+# user tag link product
+userTag_linkProduct:
+  url:     /private/tags/:userTag/link/:product
+  param:   { module: userTag, action: linkProduct }
   class:   myDoctrineRoute
   options: { model: UserTag, type: object, method: getForRoute }
+#
+# user tag unlink product
+userTag_unlinkProduct:
+  url:     /private/tags/:userTag/unlink/:product
+  param:   { module: userTag, action: unlinkProduct }
+  class:   myDoctrineRoute
+  options: { model: UserTag, type: object, method: getForRoute }
+#
 
 
 

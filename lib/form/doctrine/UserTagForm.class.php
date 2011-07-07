@@ -12,5 +12,16 @@ class UserTagForm extends BaseUserTagForm
 {
   public function configure()
   {
+    //parent::configure();
+
+    $this->widgetSchema->setLabels(array(
+      'name' => 'Название',
+    ));
+
+    $this->useFields(array(
+      'name',
+    ));
+
+    $this->widgetSchema->setNameFormat('tag[%s]');
   }
 }
