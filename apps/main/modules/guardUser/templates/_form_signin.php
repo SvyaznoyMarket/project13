@@ -3,5 +3,7 @@
     <?php echo $form ?>
   </ul>
 
+  <p>Пользователь: <strong>client</strong><br />Пароль: <strong>client</strong></p>
+
   <input type="submit" value="Вход" />
 </form>

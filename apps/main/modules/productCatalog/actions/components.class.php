@@ -90,6 +90,7 @@ class productCatalogComponents extends myComponents
   * Executes filter component
   *
   * @param ProductCategory $productCategory Категория товара
+  * @param Creator $creator Производитель
   * @param myProductFormFilter $productFilter Форма фильтра с параметрами товаров
   */
   public function executeFilter()
@@ -98,6 +99,7 @@ class productCatalogComponents extends myComponents
     {
       $this->productFilter = new myProductFormFilter(array(), array(
         'productCategory' => $this->productCategory,
+        'creator'         => $this->creator,
       ));
     }
 

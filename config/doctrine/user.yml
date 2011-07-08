@@ -26,9 +26,8 @@ UserTagProductRelation:
   options:
     comment: 'Связь пользовательских тегов и товаров'
   columns:
-    id:                { type: integer(20), autoincrement: true, primary: true }
-    tag_id:            { type: integer(20), notnull: true }
-    product_id:        { type: integer(20), notnull: true }
+    tag_id:            { type: integer(20), primary: true, notnull: true }
+    product_id:        { type: integer(20), primary: true, notnull: true }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
     Tag:               { class: UserTag, foreignAlias: ProductRelation, local: tag_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

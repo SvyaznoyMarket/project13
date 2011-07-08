@@ -12,6 +12,7 @@ class myProductFormFilter extends sfFormFilter
     {
       throw new InvalidArgumentException('You must provide a productCategory object.');
     }
+    $creator = $this->getOption('creator', null);
 
     $productTable = ProductTable::getInstance();
 
@@ -38,6 +39,7 @@ class myProductFormFilter extends sfFormFilter
       'expanded' => true
     ));
     $this->widgetSchema['creator']->setLabel('Производитель');
+    $this->widgetSchema['creator']->setDefault($creator ? $creator->id : null);
     $this->validatorSchema['creator'] = new sfValidatorPass();
 
     // виджеты параметров

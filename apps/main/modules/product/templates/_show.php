@@ -7,4 +7,10 @@
   <li><?php include_component('userProductCompare', 'button', array('product' => $product)) ?></li>
 </ul>
 
-<?php include_component('userProductRating', 'show', array('product' => $product)) ?>
+<div class="inline">
+  <?php include_component('userProductRating', 'show', array('product' => $product)) ?>
+</div>
+
+<div class="inline">
+  <?php include_component('userTag', 'product_link', array('product' => $product)) ?>
+</div>

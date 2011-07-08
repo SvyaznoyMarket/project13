@@ -16,7 +16,7 @@ class myDoctrineTable extends Doctrine_Table
 
   public function createList(array $data = array())
   {
-    $return = new Doctrine_Collection($this);
+    $return = new myDoctrineCollection($this);
     $return->fromArray($data);
 
     return $return;
