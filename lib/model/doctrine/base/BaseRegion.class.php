@@ -15,6 +15,7 @@
  * @property set $type
  * @property Doctrine_Collection $ServiceCenter
  * @property Doctrine_Collection $Stock
+ * @property Doctrine_Collection $UserAddress
  * 
  * @method integer             getId()            Returns the current record's "id" value
  * @method integer             getRootId()        Returns the current record's "root_id" value
@@ -26,6 +27,7 @@
  * @method set                 getType()          Returns the current record's "type" value
  * @method Doctrine_Collection getServiceCenter() Returns the current record's "ServiceCenter" collection
  * @method Doctrine_Collection getStock()         Returns the current record's "Stock" collection
+ * @method Doctrine_Collection getUserAddress()   Returns the current record's "UserAddress" collection
  * @method Region              setId()            Sets the current record's "id" value
  * @method Region              setRootId()        Sets the current record's "root_id" value
  * @method Region              setLft()           Sets the current record's "lft" value
@@ -36,6 +38,7 @@
  * @method Region              setType()          Sets the current record's "type" value
  * @method Region              setServiceCenter() Sets the current record's "ServiceCenter" collection
  * @method Region              setStock()         Sets the current record's "Stock" collection
+ * @method Region              setUserAddress()   Sets the current record's "UserAddress" collection
  * 
  * @package    enter
  * @subpackage model
@@ -112,6 +115,10 @@ abstract class BaseRegion extends myDoctrineRecord
         $this->hasMany('Shop as Stock', array(
              'local' => 'id',
              'foreign' => 'region_id'));
+
+        $this->hasMany('UserAddress', array(
+             'local' => 'id',
+             'foreign' => 'city_id'));
 
         $nestedset0 = new Doctrine_Template_NestedSet(array(
              'hasManyRoots' => true,

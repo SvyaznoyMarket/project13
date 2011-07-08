@@ -67,3 +67,15 @@ UserProductRating:
   relations:
     User:              { class: User, foreignAlias: ProductRating, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: UserRating, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+UserAddress:
+  options:
+    comment: 'Адрес пользователя для доставки'
+  columns:
+    user_id:           { type: integer(20), primary: true, notnull: true }
+    city_id:           { type: integer(20), notnull: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    address:           { type: string, notnull: true }
+  relations:
+    User:              { class: User, foreignAlias: ProductRating, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    City:              { class: Region, foreignAlias: UserAddress, local: city_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
