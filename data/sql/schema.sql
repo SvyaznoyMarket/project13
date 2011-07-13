@@ -45,6 +45,7 @@ CREATE TABLE `stock_product_relation` (`stock_id` BIGINT, `product_id` BIGINT, `
 CREATE TABLE `tag` (`id` BIGINT AUTO_INCREMENT, `token` VARCHAR(255) NOT NULL UNIQUE, `name` VARCHAR(255) NOT NULL, PRIMARY KEY(`id`)) COMMENT = 'Тег' DEFAULT CHARACTER SET UTF8 ENGINE = INNODB;
 CREATE TABLE `tag_product_category_relation` (`tag_id` BIGINT, `product_category_id` BIGINT, PRIMARY KEY(`tag_id`, `product_category_id`)) COMMENT = 'Связь тега и категории товара' DEFAULT CHARACTER SET UTF8 ENGINE = INNODB;
 CREATE TABLE `tag_product_relation` (`tag_id` BIGINT, `product_id` BIGINT, PRIMARY KEY(`tag_id`, `product_id`)) COMMENT = 'Связь тега и товара' DEFAULT CHARACTER SET UTF8 ENGINE = INNODB;
+CREATE TABLE `user_address` (`id` BIGINT AUTO_INCREMENT, `user_id` BIGINT, `city_id` BIGINT NOT NULL, `name` VARCHAR(255) NOT NULL, `address` TEXT NOT NULL, INDEX `city_id_idx` (`city_id`), PRIMARY KEY(`id`, `user_id`)) COMMENT = 'Адрес пользователя для доставки' DEFAULT CHARACTER SET UTF8 ENGINE = INNODB;
 CREATE TABLE `user_delayed_product` (`user_id` BIGINT, `product_id` BIGINT, `is_wished` TINYINT(1) DEFAULT '0' NOT NULL, PRIMARY KEY(`user_id`, `product_id`)) COMMENT = 'Отложенные товары пользователя' DEFAULT CHARACTER SET UTF8 ENGINE = INNODB;
 CREATE TABLE `user_product_notice` (`id` BIGINT AUTO_INCREMENT, `user_id` BIGINT NOT NULL, `product_id` BIGINT NOT NULL, `type` VARCHAR(10) NOT NULL COMMENT 'Тип уведомления: товар появился в магазинах, изменилась цена, появились отзывы', INDEX `user_id_idx` (`user_id`), INDEX `product_id_idx` (`product_id`), PRIMARY KEY(`id`)) COMMENT = 'Пользовательские уведомления о товаре' DEFAULT CHARACTER SET UTF8 ENGINE = INNODB;
 CREATE TABLE `user_product_rating` (`user_id` BIGINT, `product_id` BIGINT, `value` DECIMAL(18, 14) DEFAULT 0 NOT NULL COMMENT 'Рейтинг товара', PRIMARY KEY(`user_id`, `product_id`)) COMMENT = 'Пользовательские оценки товара' DEFAULT CHARACTER SET UTF8 ENGINE = INNODB;
@@ -110,6 +111,8 @@ ALTER TABLE `tag_product_category_relation` ADD CONSTRAINT `tppi` FOREIGN KEY (`
 ALTER TABLE `tag_product_category_relation` ADD CONSTRAINT `tag_product_category_relation_tag_id_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag`(`id`) ON DELETE CASCADE;
 ALTER TABLE `tag_product_relation` ADD CONSTRAINT `tag_product_relation_tag_id_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag`(`id`) ON DELETE CASCADE;
 ALTER TABLE `tag_product_relation` ADD CONSTRAINT `tag_product_relation_product_id_product_id` FOREIGN KEY (`product_id`) REFERENCES `product`(`id`) ON DELETE CASCADE;
+ALTER TABLE `user_address` ADD CONSTRAINT `user_address_user_id_guard_user_id` FOREIGN KEY (`user_id`) REFERENCES `guard_user`(`id`) ON DELETE CASCADE;
+ALTER TABLE `user_address` ADD CONSTRAINT `user_address_city_id_region_id` FOREIGN KEY (`city_id`) REFERENCES `region`(`id`) ON DELETE RESTRICT;
 ALTER TABLE `user_delayed_product` ADD CONSTRAINT `user_delayed_product_user_id_guard_user_id` FOREIGN KEY (`user_id`) REFERENCES `guard_user`(`id`) ON DELETE CASCADE;
 ALTER TABLE `user_delayed_product` ADD CONSTRAINT `user_delayed_product_product_id_product_id` FOREIGN KEY (`product_id`) REFERENCES `product`(`id`) ON DELETE CASCADE;
 ALTER TABLE `user_product_notice` ADD CONSTRAINT `user_product_notice_user_id_guard_user_id` FOREIGN KEY (`user_id`) REFERENCES `guard_user`(`id`) ON DELETE CASCADE;

@@ -41,6 +41,7 @@ abstract class BaseUserAddressFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
+      'id'      => 'Number',
       'user_id' => 'Number',
       'city_id' => 'ForeignKey',
       'name'    => 'Text',

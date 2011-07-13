@@ -71,6 +71,7 @@ UserAddress:
   options:
     comment: 'Адрес пользователя для доставки'
   columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
     user_id:           { type: integer(20), primary: true, notnull: true }
     city_id:           { type: integer(20), notnull: true }
     name:              { type: string(255), notnull: true, notblank: true }

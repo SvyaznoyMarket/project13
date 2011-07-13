@@ -77,6 +77,11 @@ class userComponents extends myComponents
         'routes' => array('@userTag'),
       ),
       array(
+        'name'   => 'Адрес доставки',
+        'url'    => '@userAddress',
+        'routes' => array('@userAddress'),
+      ),
+      array(
         'name'   => 'Пароль',
         'url'    => '@user_changePassword',
         'routes' => array('@user_changePassword'),
