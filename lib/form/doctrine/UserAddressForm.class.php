@@ -12,5 +12,15 @@ class UserAddressForm extends BaseUserAddressForm
 {
   public function configure()
   {
+    $this->disableCSRFProtection();
+      
+    $this->useFields(array(
+      'city_id',
+      'name',
+      'address',
+    ));
+    
+    $this->widgetSchema->setNameFormat('address[%s]');
+    $this->widgetSchema->setFormFormatterName('default');
   }
 }

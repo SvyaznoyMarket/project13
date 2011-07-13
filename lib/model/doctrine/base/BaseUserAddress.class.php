@@ -46,7 +46,7 @@ abstract class BaseUserAddress extends myDoctrineRecord
              ));
         $this->hasColumn('user_id', 'integer', 20, array(
              'type' => 'integer',
-             'primary' => true,
+             'notnull' => true,
              'length' => 20,
              ));
         $this->hasColumn('city_id', 'integer', 20, array(

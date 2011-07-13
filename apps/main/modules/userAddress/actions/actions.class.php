@@ -25,32 +25,19 @@ class userAddressActions extends myActions
     $this->form = new UserAddressForm();
 
     $this->form->bind($request->getParameter($this->form->getName()));
-    //$this->form->bind(array('address' => 'xcdfksd kjsdjfklsdjf sjdkfjs ', 'name' => 'ИМЯ!!!!', ));
-
-
-    myDebug::dump($request->getParameter($this->form->getName()));
-    myDebug::dump($this->form->getObject());
     if ($this->form->isValid())
     {
       try
       {
-        //$this->form->bind(array('user_id' => $this->getUser()->getGuardUser()->id,));
         $this->form->getObject()->user_id = $this->getUser()->getGuardUser()->id;
         $this->form->save();
-        die('was seved');
       }
       catch (Exception $e)
       {
         $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
-        die('wasn\'t seved');
       }
-    }
-    else
-    {
-      $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$this->form->getErrorSchema());
     }
 
     $this->redirect('userAddress');
-
   }
 }

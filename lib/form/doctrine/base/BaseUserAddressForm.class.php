@@ -16,7 +16,7 @@ abstract class BaseUserAddressForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'      => new sfWidgetFormInputHidden(),
-      'user_id' => new sfWidgetFormInputHidden(),
+      'user_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => false)),
       'city_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('City'), 'add_empty' => false)),
       'name'    => new sfWidgetFormInputText(),
       'address' => new sfWidgetFormTextarea(),
@@ -24,7 +24,7 @@ abstract class BaseUserAddressForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'      => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'user_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('user_id')), 'empty_value' => $this->getObject()->get('user_id'), 'required' => false)),
+      'user_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'))),
       'city_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('City'))),
       'name'    => new sfValidatorString(array('max_length' => 255)),
       'address' => new sfValidatorString(),
