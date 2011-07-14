@@ -320,21 +320,30 @@ userAddress:
   url:   /private/address
   param: { module: userAddress, action: index }
 #
-# user address add
-userAddress_save:
-  url:   /private/address/save
-  param: { module: userAddress, action: save }
+# user address create
+userAddress_create:
+  url:   /private/address/create
+  param: { module: userAddress, action: create }
+#
+# user address update
+userAddress_update:
+  url:   /private/address/update/:userAddress
+  param: { module: userAddress, action: update }
+  class:   myDoctrineRoute
+  options: { model: UserAddress, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
 #
 # user address edit
 userAddress_edit:
-  url:   /private/address/edit/:address
+  url:   /private/address/edit/:userAddress
   param: { module: userAddress, action: edit }
   class:   myDoctrineRoute
   options: { model: UserAddress, type: object, method: getForRoute }
 #
 # user address delete
 userAddress_delete:
-  url:   /private/address/delete/:address
+  url:   /private/address/delete/:userAddress
   param: { module: userAddress, action: delete }
   class:   myDoctrineRoute
   options: { model: UserAddress, type: object, method: getForRoute }

@@ -2,6 +2,7 @@
   <tr>
     <th>Название</th>
     <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
   <?php foreach ($list as $item): ?>
   <tr>

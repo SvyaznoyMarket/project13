@@ -6,7 +6,7 @@
 
 <div class="block">
   <?php if (count($userAddressList) > 0): ?>
-    <?php include_component('userAddress', 'list', array('userAddressList' => $userTagList)) ?>
+    <?php include_component('userAddress', 'list', array('userAddressList' => $userAddressList)) ?>
 
   <?php else: ?>
     <p>нет адресов</p>

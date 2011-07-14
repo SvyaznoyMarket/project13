@@ -39,7 +39,14 @@ class userAddressComponents extends myComponents
   {
     if (!isset($this->form))
     {
-      $this->form = new UserAddressForm();
+      if (!isset($this->userAddress))
+      {
+        $this->form = new UserAddressForm();
+      }
+      else
+      {
+        $this->form = new UserAddressForm($this->userAddress);
+      }
     }
   }
  /**
