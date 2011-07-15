@@ -258,14 +258,6 @@ EOF;
       $property = "(2, ".$property['property_id'].")";
     }
     $connection->query("INSERT INTO `similar_product_property` (`group_id`, `property_id`) VALUES ".implode(", ", $properties));
-
-    $this->logSection('doctrine', 'loading test Region');
-    $connection->query("INSERT INTO `region` (`id`, `root_id`, `lft`, `rgt`, `level`, `token`, `name`, `type`) VALUES
-      (1, 1, 1, 10, 1, 'russia', 'Россия', 'country'),
-      (2, 1, 2, 3, 2, 'moscow', 'Москва', 'city'),
-      (3, 1, 4, 9, 2, 'spb_area', 'Ленинградская область', 'area'),
-      (4, 1, 5, 6, 3, 'spb', 'Санкт-Петербург', 'city'),
-      (5, 1, 7, 8, 3, 'viborg', 'Выборг', 'city')");
   }
 
   protected function createRecordList($model, $count, array $options = array())

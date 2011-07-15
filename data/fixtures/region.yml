@@ -1,0 +1,41 @@
+Region:
+  Russia:
+    root_id: 1
+    lft: 1
+    rgt: 10
+    level: 1
+    token: russia
+    name: 'Россия'
+    type: country
+  Moscow:
+    root_id: 1
+    lft: 2
+    rgt: 3
+    level: 1
+    token: moscow
+    name: 'Москва'
+    type: city
+  Spb_area:
+    root_id: 1
+    lft: 4
+    rgt: 9
+    level: 2
+    token: spb_area
+    name: 'Ленинградская область'
+    type: area
+  Spb:
+    root_id: 1
+    lft: 5
+    rgt: 6
+    level: 3
+    token: spb
+    name: 'Санкт-Петербург'
+    type: city
+  Viorg:
+    root_id: 1
+    lft: 7
+    rgt: 8
+    level: 3
+    token: viborg
+    name: 'Выборг'
+    type: city
