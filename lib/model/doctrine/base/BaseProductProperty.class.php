@@ -17,6 +17,8 @@
  * @property Doctrine_Collection $ProductTypeRelation
  * @property Doctrine_Collection $Option
  * @property Doctrine_Collection $ProductRelation
+ * @property Doctrine_Collection $ProductGroup
+ * @property Doctrine_Collection $ProductGroupRelation
  * @property Doctrine_Collection $SimilarProductProperty
  * 
  * @method integer             getId()                     Returns the current record's "id" value
@@ -31,6 +33,8 @@
  * @method Doctrine_Collection getProductTypeRelation()    Returns the current record's "ProductTypeRelation" collection
  * @method Doctrine_Collection getOption()                 Returns the current record's "Option" collection
  * @method Doctrine_Collection getProductRelation()        Returns the current record's "ProductRelation" collection
+ * @method Doctrine_Collection getProductGroup()           Returns the current record's "ProductGroup" collection
+ * @method Doctrine_Collection getProductGroupRelation()   Returns the current record's "ProductGroupRelation" collection
  * @method Doctrine_Collection getSimilarProductProperty() Returns the current record's "SimilarProductProperty" collection
  * @method ProductProperty     setId()                     Sets the current record's "id" value
  * @method ProductProperty     setName()                   Sets the current record's "name" value
@@ -44,6 +48,8 @@
  * @method ProductProperty     setProductTypeRelation()    Sets the current record's "ProductTypeRelation" collection
  * @method ProductProperty     setOption()                 Sets the current record's "Option" collection
  * @method ProductProperty     setProductRelation()        Sets the current record's "ProductRelation" collection
+ * @method ProductProperty     setProductGroup()           Sets the current record's "ProductGroup" collection
+ * @method ProductProperty     setProductGroupRelation()   Sets the current record's "ProductGroupRelation" collection
  * @method ProductProperty     setSimilarProductProperty() Sets the current record's "SimilarProductProperty" collection
  * 
  * @package    enter
@@ -134,6 +140,15 @@ abstract class BaseProductProperty extends myDoctrineRecord
         $this->hasMany('ProductPropertyRelation as ProductRelation', array(
              'local' => 'id',
              'foreign' => 'property_id'));
+
+        $this->hasMany('ProductGroup', array(
+             'refClass' => 'ProductGroupPropertyRelation',
+             'local' => 'product_property_id',
+             'foreign' => 'product_group_id'));
+
+        $this->hasMany('ProductGroupPropertyRelation as ProductGroupRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_property_id'));
 
         $this->hasMany('SimilarProductProperty', array(
              'local' => 'id',

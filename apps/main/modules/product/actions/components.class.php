@@ -130,4 +130,30 @@ class productComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
+ /**
+  * Executes product_group component
+  *
+  * @param Product $product Товар
+  */
+  public function executeProduct_group()
+  {
+    $properties = $this->product->getGroup()->getProperty();
+    $q = ProductTable::getInstance()->createBaseQuery()->addWhere('product.group_id = ?', array($this->product->group_id, ));
+    $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
+
+    $q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
+    //myDebug::dump($product_ids);
+    foreach ($properties as $property)
+    {
+      $query = clone $q;
+      $query->addWhere('productPropertyRelation.property_id = ?', array($property->id, ));
+      $query->andWhereIn('productPropertyRelation.product_id', $product_ids);
+      $query->distinct();
+      $value_ids = ProductPropertyRelationTable::getInstance()->getIdsByQuery($query);
+      //myDebug::dump();
+
+      $property->mapValue('values', ProductPropertyRelationTable::getInstance()->createListByIds($value_ids));
+    }
+    $this->properties = $properties;
+  }
 }

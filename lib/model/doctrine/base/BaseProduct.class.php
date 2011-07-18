@@ -11,6 +11,7 @@
  * @property integer $type_id
  * @property integer $creator_id
  * @property integer $category_id
+ * @property integer $group_id
  * @property boolean $view_show
  * @property boolean $view_list
  * @property boolean $is_instock
@@ -20,6 +21,7 @@
  * @property ProductType $Type
  * @property Creator $Creator
  * @property ProductCategory $Category
+ * @property ProductGroup $Group
  * @property Doctrine_Collection $News
  * @property Doctrine_Collection $NewsRelation
  * @property Doctrine_Collection $OrderRelation
@@ -43,6 +45,7 @@
  * @method integer             getTypeId()                 Returns the current record's "type_id" value
  * @method integer             getCreatorId()              Returns the current record's "creator_id" value
  * @method integer             getCategoryId()             Returns the current record's "category_id" value
+ * @method integer             getGroupId()                Returns the current record's "group_id" value
  * @method boolean             getViewShow()               Returns the current record's "view_show" value
  * @method boolean             getViewList()               Returns the current record's "view_list" value
  * @method boolean             getIsInstock()              Returns the current record's "is_instock" value
@@ -52,6 +55,7 @@
  * @method ProductType         getType()                   Returns the current record's "Type" value
  * @method Creator             getCreator()                Returns the current record's "Creator" value
  * @method ProductCategory     getCategory()               Returns the current record's "Category" value
+ * @method ProductGroup        getGroup()                  Returns the current record's "Group" value
  * @method Doctrine_Collection getNews()                   Returns the current record's "News" collection
  * @method Doctrine_Collection getNewsRelation()           Returns the current record's "NewsRelation" collection
  * @method Doctrine_Collection getOrderRelation()          Returns the current record's "OrderRelation" collection
@@ -74,6 +78,7 @@
  * @method Product             setTypeId()                 Sets the current record's "type_id" value
  * @method Product             setCreatorId()              Sets the current record's "creator_id" value
  * @method Product             setCategoryId()             Sets the current record's "category_id" value
+ * @method Product             setGroupId()                Sets the current record's "group_id" value
  * @method Product             setViewShow()               Sets the current record's "view_show" value
  * @method Product             setViewList()               Sets the current record's "view_list" value
  * @method Product             setIsInstock()              Sets the current record's "is_instock" value
@@ -83,6 +88,7 @@
  * @method Product             setType()                   Sets the current record's "Type" value
  * @method Product             setCreator()                Sets the current record's "Creator" value
  * @method Product             setCategory()               Sets the current record's "Category" value
+ * @method Product             setGroup()                  Sets the current record's "Group" value
  * @method Product             setNews()                   Sets the current record's "News" collection
  * @method Product             setNewsRelation()           Sets the current record's "NewsRelation" collection
  * @method Product             setOrderRelation()          Sets the current record's "OrderRelation" collection
@@ -144,6 +150,11 @@ abstract class BaseProduct extends myDoctrineRecord
              'notnull' => true,
              'length' => 20,
              ));
+        $this->hasColumn('group_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'length' => 20,
+             ));
         $this->hasColumn('view_show', 'boolean', null, array(
              'type' => 'boolean',
              'notnull' => true,
@@ -203,6 +214,11 @@ abstract class BaseProduct extends myDoctrineRecord
              'local' => 'category_id',
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
+
+        $this->hasOne('ProductGroup as Group', array(
+             'local' => 'group_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
 
         $this->hasMany('News', array(
              'refClass' => 'NewsProductRelation',

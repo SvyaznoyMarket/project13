@@ -128,6 +128,7 @@ Product:
     type_id:           { type: integer(20), notnull: true }
     creator_id:        { type: integer(20), notnull: true }
     category_id:       { type: integer(20), notnull: true }
+    group_id:          { type: integer(20), notnull: false, default: NULL }
     view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар по прямой ссылке?' }
     view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
     is_instock:        { type: boolean, notnull: true, default: false }
@@ -138,6 +139,7 @@ Product:
     Type:              { class: ProductType, foreignAlias: Product, local: type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     Creator:           { class: Creator, foreignAlias: Product, local: creator_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     Category:          { class: ProductCategory, foreignAlias: Product, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Group:             { class: ProductGroup, foreignAlias: Product, local: group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 ProductPropertyRelation:
   options:
@@ -191,3 +193,22 @@ ProductComment:
   relations:
     Product:           { class: Product, foreignAlias: Comment, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     User:              { class: User, foreignAlias: Comment, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+ProductGroup:
+  options:
+    comment: 'Группировка товаров'
+  columns:
+    id:               { type: integer(20), autoincrement: true, primary: true }
+    name:             { type: string(255) }
+  relations:
+    Property:         { foreignAlias: ProductGroup, class: ProductProperty, refClass: ProductGroupPropertyRelation }
+
+ProductGroupPropertyRelation:
+  options:
+    comment: 'Связь группы товаров и свойст, которые будут различны у этой группы'
+  columns:
+    product_property_id:  { type: integer(20), notnull: true }
+    product_group_id:     { type: integer(20), notnull: true }
+  relations:
+    Property:             { class: ProductProperty, foreignAlias: ProductGroupRelation, local: product_property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    ProductGroup:         { class: ProductGroup, foreignAlias: ProductGroupRelation, local: product_group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
