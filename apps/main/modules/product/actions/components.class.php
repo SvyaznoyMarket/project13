@@ -142,6 +142,8 @@ class productComponents extends myComponents
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
 
     $q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
+    $products_properties = $this->product->getPropertyRelation();
+    //myDebug::dump($product_properties);
     //myDebug::dump($product_ids);
     foreach ($properties as $property)
     {
@@ -150,10 +152,19 @@ class productComponents extends myComponents
       $query->andWhereIn('productPropertyRelation.product_id', $product_ids);
       $query->distinct();
       $value_ids = ProductPropertyRelationTable::getInstance()->getIdsByQuery($query);
+      $values = ProductPropertyRelationTable::getInstance()->createListByIds($value_ids, array('index' => array('productPropertyRelation' => 'id', )));
+      foreach ($products_properties as $products_property)
+      {
+        if ($property->id == $products_property->property_id)
+        {
+          $values[$products_property->id]->mapValue('is_selected', true);
+        }
+      }
       //myDebug::dump();
 
-      $property->mapValue('values', ProductPropertyRelationTable::getInstance()->createListByIds($value_ids));
+      $property->mapValue('values', $values);
     }
     $this->properties = $properties;
+    myDebug::dump($properties);
   }
 }

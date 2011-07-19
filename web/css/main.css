@@ -69,7 +69,9 @@ ul.inline li {
   color: #fff;
 }
 
-
+.strong {
+  font-weight: bold;
+}
 
 .navigation {
   list-style: none;
