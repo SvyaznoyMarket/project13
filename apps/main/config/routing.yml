@@ -69,7 +69,13 @@ similarProduct:
   param: { module: similarProduct, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
-
+#
+# обновление товара по измененной характеристики для группы товаров
+changeProduct:
+  url:   /products/:product/change/:property/:value
+  param: { module: product, action: changeProduct }
+  class: myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
 
 
 # Новость

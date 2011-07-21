@@ -10,4 +10,31 @@
  */
 class productActions extends myActions
 {
+  public function executeChangeProduct()
+  {
+    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url'));
+
+    //use_helper('url');
+    $this->product = $this->getRoute()->getObject();
+    $new_value = $this->getRequestParameter('value');
+    $property_id = $this->getRequestParameter('property');
+
+    $q = ProductTable::getInstance()->createBaseQuery()->addWhere('product.group_id = ?', array($this->product->group_id, ));
+    $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
+    myDebug::dump($product_ids);
+    //$q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
+    $products_properties = $this->product->getPropertyRelation();
+    myDebug::dump($products_properties);
+
+    $groups_properties = $this->product->getGroup()->getProperty();
+    myDebug::dump($groups_properties, true);
+
+    $product = $this->product;
+
+    //myDebug::dump($product);
+    throw new sfException('We don\'t need a redirection');
+    $this->redirect(url_for('productCard', $product));
+    //myDebug::dump($this->product);
+    //$this->forward('productCard', 'show');
+  }
 }
