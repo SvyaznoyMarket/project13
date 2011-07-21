@@ -15,15 +15,15 @@ abstract class BaseProductGroupPropertyRelationForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'               => new sfWidgetFormInputHidden(),
-      'property_id'      => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => false)),
-      'product_group_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductGroup'), 'add_empty' => false)),
+      'id'                  => new sfWidgetFormInputHidden(),
+      'product_property_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => false)),
+      'product_group_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductGroup'), 'add_empty' => false)),
     ));
 
     $this->setValidators(array(
-      'id'               => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'property_id'      => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Property'))),
-      'product_group_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductGroup'))),
+      'id'                  => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'product_property_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Property'))),
+      'product_group_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductGroup'))),
     ));
 
     $this->widgetSchema->setNameFormat('product_group_property_relation[%s]');
