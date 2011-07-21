@@ -13,15 +13,17 @@ abstract class BaseShopFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'region_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Region'), 'add_empty' => true)),
       'token'     => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'name'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'region_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Region'), 'add_empty' => true)),
+      'address'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
+      'region_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Region'), 'column' => 'id')),
       'token'     => new sfValidatorPass(array('required' => false)),
       'name'      => new sfValidatorPass(array('required' => false)),
-      'region_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Region'), 'column' => 'id')),
+      'address'   => new sfValidatorPass(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('shop_filters[%s]');
@@ -42,9 +44,10 @@ abstract class BaseShopFormFilter extends BaseFormFilterDoctrine
   {
     return array(
       'id'        => 'Number',
+      'region_id' => 'ForeignKey',
       'token'     => 'Text',
       'name'      => 'Text',
-      'region_id' => 'ForeignKey',
+      'address'   => 'Text',
     );
   }
 }

@@ -43,10 +43,45 @@ EOF;
       'News'               => 250,
       'Page'               => 20,
       'ProductHelper'      => 4,
+      'Stock'              => 40,
+      'Shop'               => 18,
     );
 
     $this->logSection('doctrine', 'loading test Creators');
     $this->createRecordList('Creator', $count['Creator']);
+
+    $this->logSection('doctrine', 'loading test Shops');
+    for ($i = 1; $i <= $count['Shop']; $i++)
+    {
+      $record = new Shop();
+      $record->fromArray(array(
+        'token'     => 'shop-'.$i,
+        'name'      => $this->getRecordName('Shop', $i),
+        'region_id' => (rand(1, 5) > 1 ? 6 : 5),
+        'address'   => 'Адресс '.$i,
+      ));
+      $record->save();
+    }
+
+    $this->logSection('doctrine', 'loading test Stocks');
+    for ($i = 1; $i <= $count['Stock']; $i++)
+    {
+      $shop = rand(1, 5) > 1 ? null : ShopTable::getInstance()->find(rand(1, $count['Shop']));
+      $region_id =
+        $shop
+        ? $shop->region_id
+        : (rand(1, 6) > 1 ? 6 : 5)
+      ;
+
+      $record = new Stock();
+      $record->fromArray(array(
+        'token'     => 'stock-'.$i,
+        'name'      => $this->getRecordName('Stock', $i),
+        'region_id' => $region_id,
+        'shop_id'   => $shop ? $shop->id : null,
+      ));
+      $record->save();
+    }
 
     $this->logSection('doctrine', 'loading test ProductCategories');
     $this->createRecordList('ProductCategory', $count['ProductCategory']);
@@ -189,19 +224,17 @@ EOF;
       unset($list, $productType);
     }
 
-// Creating news
     $this->logSection('doctrine', 'loading test News');
     for ($i = 1; $i <= $count['News']; $i++)
     {
       $record = new News();
       $record->fromArray(array(
+        'token'         => 'news-'.$i,
         'name'          => $this->getRecordName('News', $i),
         'published_at'  => date('Y-m-d H:i:s', rand(strtotime('2009-01-01'), strtotime('now'))),
         'category_id'   => rand(1, 3),
         'is_active'     => rand(0, 3) > 0 ? true : false,
       ));
-      $record->save();
-      $record->token = $record->id;
       $record->save();
     }
 
@@ -313,6 +346,8 @@ EOF;
       'News'                    => 'новость',
       'Page'                    => 'страница',
       'ProductHelper'           => 'помошник',
+      'Stock'                   => 'склад',
+      'Shop'                    => 'магазин',
     );
 
     return $names[$model].'-'.$index;

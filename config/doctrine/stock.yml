@@ -3,9 +3,10 @@ Shop:
     comment: 'Магазин'
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    region_id:         { type: integer(20), notnull: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
-    region_id:         { type: integer(20), notnull: true }
+    address:           { type: string(255), notnull: true, notblank: true }
   relations:
     Region:            { class: Region, foreignAlias: Stock, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
 

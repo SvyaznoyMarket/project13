@@ -16,16 +16,18 @@ abstract class BaseShopForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'        => new sfWidgetFormInputHidden(),
+      'region_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Region'), 'add_empty' => false)),
       'token'     => new sfWidgetFormInputText(),
       'name'      => new sfWidgetFormInputText(),
-      'region_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Region'), 'add_empty' => false)),
+      'address'   => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
       'id'        => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'region_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Region'))),
       'token'     => new sfValidatorString(array('max_length' => 255)),
       'name'      => new sfValidatorString(array('max_length' => 255)),
-      'region_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Region'))),
+      'address'   => new sfValidatorString(array('max_length' => 255)),
     ));
 
     $this->validatorSchema->setPostValidator(

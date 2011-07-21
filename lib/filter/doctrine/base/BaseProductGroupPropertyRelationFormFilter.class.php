@@ -13,13 +13,13 @@ abstract class BaseProductGroupPropertyRelationFormFilter extends BaseFormFilter
   public function setup()
   {
     $this->setWidgets(array(
-      'property_id'      => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => true)),
-      'product_group_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductGroup'), 'add_empty' => true)),
+      'product_property_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => true)),
+      'product_group_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductGroup'), 'add_empty' => true)),
     ));
 
     $this->setValidators(array(
-      'property_id'      => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Property'), 'column' => 'id')),
-      'product_group_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('ProductGroup'), 'column' => 'id')),
+      'product_property_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Property'), 'column' => 'id')),
+      'product_group_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('ProductGroup'), 'column' => 'id')),
     ));
 
     $this->widgetSchema->setNameFormat('product_group_property_relation_filters[%s]');
@@ -39,9 +39,9 @@ abstract class BaseProductGroupPropertyRelationFormFilter extends BaseFormFilter
   public function getFields()
   {
     return array(
-      'id'               => 'Number',
-      'property_id'      => 'ForeignKey',
-      'product_group_id' => 'ForeignKey',
+      'id'                  => 'Number',
+      'product_property_id' => 'ForeignKey',
+      'product_group_id'    => 'ForeignKey',
     );
   }
 }

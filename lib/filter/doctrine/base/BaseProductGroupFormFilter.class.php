@@ -13,11 +13,13 @@ abstract class BaseProductGroupFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'name' => new sfWidgetFormFilterInput(),
+      'name'          => new sfWidgetFormFilterInput(),
+      'property_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty')),
     ));
 
     $this->setValidators(array(
-      'name' => new sfValidatorPass(array('required' => false)),
+      'name'          => new sfValidatorPass(array('required' => false)),
+      'property_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_group_filters[%s]');
@@ -29,6 +31,24 @@ abstract class BaseProductGroupFormFilter extends BaseFormFilterDoctrine
     parent::setup();
   }
 
+  public function addPropertyListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.ProductGroupPropertyRelation ProductGroupPropertyRelation')
+      ->andWhereIn('ProductGroupPropertyRelation.product_property_id', $values)
+    ;
+  }
+
   public function getModelName()
   {
     return 'ProductGroup';
@@ -37,8 +57,9 @@ abstract class BaseProductGroupFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'   => 'Number',
-      'name' => 'Text',
+      'id'            => 'Number',
+      'name'          => 'Text',
+      'property_list' => 'ManyKey',
     );
   }
 }
