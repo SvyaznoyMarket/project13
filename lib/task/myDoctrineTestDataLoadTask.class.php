@@ -107,12 +107,49 @@ EOF;
     $productTypeList = $this->createRecordList('ProductType', $count['ProductType'], array('free' => false));
 
     $this->logSection('doctrine', 'loading test ProductProperties');
-    $this->createRecordList('ProductProperty', $count['ProductProperty']);
+    $productPropertyList = ProductPropertyTable::getInstance()->createList();
+    for ($i = 1; $i <= $count['ProductProperty']; $i++)
+    {
+      $record = new ProductProperty();
+      $record->fromArray(array(
+        'name'        => $this->getRecordName('ProductProperty', $i),
+        'type'        => rand(0, 6) > 0 ? 'select' : 'string',
+        'is_multiple' => rand(0, 3) > 0 ? false : true,
+        'unit'        => null,
+        'pattern'     => null,
+      ));
+      $productPropertyList[] = $record;
+    }
+    $productPropertyList->save();
 
-    $this->logSection('doctrine', 'loading test ProductTypePropertyRelations, ProductFilterGroups and ProductFilters');
-    $this->createRecordList('ProductFilterGroup', $count['ProductFilterGroup']);
+    foreach ($productPropertyList as $productProperty)
+    {
+      if ('select' == $productProperty->type)
+      {
+        $optionCount = rand(4, 8);
+
+        $list = ProductPropertyOptionTable::getInstance()->createList();
+        for ($i = 1; $i < $optionCount; $i++)
+        {
+          $record = new ProductPropertyOption();
+          $record->fromArray(array(
+            'property_id' => $productProperty->id,
+            'value'       => 'значение-'.$i,
+            'position'    => $i,
+          ));
+
+          $list[] = $record;
+        }
+
+        $list->save();
+        $list->free(true);
+        unset($list);
+      }
+    }
+
+    $this->logSection('doctrine', 'loading test ProductTypePropertyRelations');
     $list = ProductTypePropertyRelationTable::getInstance()->createList();
-    for ($productType_id = 1; $productType_id < $count['ProductType']; $productType_id++)
+    foreach ($productTypeList as $productType)
     {
       $groupCount = rand(1, 3);
 
@@ -122,7 +159,7 @@ EOF;
         $record = new ProductPropertyGroup();
         $record->fromArray(array(
           'name'            => $this->getRecordName('ProductPropertyGroup', $i),
-          'product_type_id' => $productType_id,
+          'product_type_id' => $productType->id,
           'position'        => $i,
         ));
         $groupList[] = $record;
@@ -138,7 +175,7 @@ EOF;
 
         $record = new ProductTypePropertyRelation();
         $record->fromArray(array(
-          'product_type_id' => $productType_id,
+          'product_type_id' => $productType->id,
           'property_id'     => $i + $propertyOffset,
           'group_id'        => $groupList[$group_index],
           'view_show'       => rand(0, 20) > 0 ? true : false,
@@ -147,25 +184,6 @@ EOF;
         ));
         $list[] = $record;
       }
-
-      $productFilterList = ProductFilterTable::getInstance()->createList();
-      $filterCount = rand(1, $propertyCount);
-      for ($i = 1; $i <= $filterCount; $i++)
-      {
-        $record = new ProductFilter();
-        $record->fromArray(array(
-          'name'            => $this->getRecordName('ProductFilter', $i),
-          'type'            => rand(0, 5) > 0 ? 'choice' : 'range',
-          'group_id'        => $productType_id,
-          'property_id'     => $i,
-          'is_multiple'     => rand(0, 5) > 0 ? true : false,
-          'position'        => $i,
-        ));
-        $productFilterList[] = $record;
-      }
-      $productFilterList->save();
-      $productFilterList->free(true);
-      unset($productFilterList);
     }
     $groupList->free(true);
     unset($groupList);
@@ -173,6 +191,33 @@ EOF;
     $list->save();
     $list->free(true);
     unset($list);
+
+
+    $this->logSection('doctrine', 'loading test ProductFilterGroups and ProductFilters');
+    $this->createRecordList('ProductFilterGroup', $count['ProductFilterGroup']);
+    foreach ($productTypeList as $productType)
+    {
+      $list = ProductFilterTable::getInstance()->createList();
+      foreach ($productType->Property as $productProperty)
+      {
+        if (0 == rand(0, 1)) continue;
+
+        $record = new ProductFilter();
+        $record->fromArray(array(
+          'name'            => $this->getRecordName('ProductFilter', $i),
+          'type'            => 'select' == $productProperty->type ? 'choice' : 'range',
+          'group_id'        => $productType->id,
+          'property_id'     => $productProperty->id,
+          'is_multiple'     => rand(0, 5) > 0 ? true : false,
+          'position'        => $i,
+        ));
+        $list[] = $record;
+      }
+      $list->save();
+      $list->free(true);
+      unset($list);
+    }
+
 
     ProductCategoryTable::getInstance()->createQuery('productCategory')->query('UPDATE productCategory SET productCategory.filter_group_id = productCategory.id');
 
@@ -185,7 +230,7 @@ EOF;
 
       $category_id = $productType->id; //rand(1, $count['ProductCategory']);
 
-      $productCount = rand(4, 100);
+      $productCount = rand(12, 150);
       for ($i = 1; $i <= $productCount; $i++)
       {
         $record = new Product();
@@ -202,13 +247,22 @@ EOF;
           'rating'      => rand(0, 50) / 10,
         ));
 
-        foreach ($productType->Property as $j => $property)
+        foreach ($productType->Property as $j => $productProperty)
         {
           $relation = new ProductPropertyRelation();
+
+          $offset = rand(0, $productProperty->Option->count() - 1);
+          $option_id = null;
+          if ('select' == $productProperty->type)
+          {
+            $offset = rand(0, $productProperty->Option->count() - 1);
+            $option_id = $productProperty->Option[$offset]->id;
+          }
+
           $relation->fromArray(array(
-            'property_id'  => $property->id,
-            'product_id'   => $record->id,
-            'value'        => $this->getRecordName('ProductPropertyRelation', $productType->id.'-'.$i.'-'.($j + 1)),
+            'property_id'  => $productProperty->id,
+            'option_id'    => $option_id,
+            'value'        => $option_id ? null : $this->getRecordName('ProductPropertyRelation', $productType->id.'-'.$i.'-'.($j + 1)),
             'unit'         => 'unit',
           ));
 
@@ -220,8 +274,7 @@ EOF;
       $list->save();
 
       $list->free(true);
-      $productType->free(true);
-      unset($list, $productType);
+      unset($list);
     }
 
     $this->logSection('doctrine', 'loading test News');
