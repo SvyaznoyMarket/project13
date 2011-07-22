@@ -23,10 +23,15 @@ class productActions extends myActions
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
     myDebug::dump($product_ids);
     //$q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
-    $products_properties = $this->product->getPropertyRelation();
-    myDebug::dump($products_properties);
+    $q = ProductPropertyRelationTable::getInstance()->createBaseQuery()->addWhere('productPropertyRelation.product_id = ?', array($this->product->id, ));
+    //$products_properties = $this->product->getPropertyRelation();
+    $product_property_ids = ProductPropertyRelationTable::getInstance()->getIdsByQuery($q);
+    myDebug::dump($product_property_ids);
 
-    $groups_properties = $this->product->getGroup()->getProperty();
+    $q = ProductGroupPropertyRelationTable::getInstance()->createBaseQuery()->addWhere('productGroupPropertyRelation.product_group_id = ?', array($this->product->group_id, ))->select('productGroupPropertyRelation.product_property_id');
+
+    //$group_property_ids = ProductGroupPropertyRelationTable::getInstance()->getIdsByQuery($q);
+    $groups_properties = $q->fetchArray();
     myDebug::dump($groups_properties, true);
 
     $product = $this->product;
