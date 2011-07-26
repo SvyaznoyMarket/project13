@@ -37,7 +37,7 @@ EOF;
     $this->logSection('doctrine', 'loading test data');
     $count = array(
       'Creator'            => 100,
-      'ProductCategory'    => 20,
+      'ProductCategory'    => 50,
       'ProductType'        => 50,
       'ProductProperty'    => 200,
       'News'               => 250,

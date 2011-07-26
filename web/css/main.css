@@ -147,6 +147,10 @@ ul.inline li {
   clear: both;
 }
 
+.current, .current a {
+  font-weight: bold;
+}
+
 
 .price {
   background: #999999;

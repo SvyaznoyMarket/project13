@@ -6,11 +6,17 @@
 
   <div class="left">всего: <?php echo $productPager->getNbResults() ?></div>
   <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
+  <?php include_component('product', 'list_view') ?>
+  <br class="clear" />
 </div>
+
 <div class="block">
   <?php include_component('product', 'pager', array('productPager' => $productPager)) ?>
 </div>
+
 <div class="block">
   <div class="left">всего: <?php echo $productPager->getNbResults() ?></div>
   <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
+  <?php include_component('product', 'list_view') ?>
+  <br class="clear" />
 </div>

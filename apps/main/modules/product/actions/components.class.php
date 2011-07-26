@@ -59,6 +59,12 @@ class productComponents extends myComponents
   */
   public function executeList()
   {
+    $this->view = $this->getRequestParameter('view');
+    if (!in_array($this->view, array('expanded', 'compact')))
+    {
+      $this->view = 'expanded';
+    }
+
     $list = array();
     foreach ($this->productList as $product)
     {
@@ -164,7 +170,34 @@ class productComponents extends myComponents
 
       $property->mapValue('values', $values);
     }
+
     $this->properties = $properties;
-    myDebug::dump($properties);
+  }
+ /**
+  * Executes list_view component
+  *
+  */
+  public function executeList_view()
+  {
+    $list = array(
+      array(
+        'name'  => 'compact',
+        'title' => 'компактный',
+      ),
+      array(
+        'name'  => 'expanded',
+        'title' => 'расширенный',
+      ),
+    );
+
+    foreach ($list as &$item)
+    {
+      $item = array_merge($item, array(
+        'url'     => replace_url_for('view', $item['name']),
+        'current' => $this->getRequestParameter('view') == $item['name'],
+      ));
+    } if (isset($item)) unset($item);
+
+    $this->setVar('list', $list, true);
   }
 }
