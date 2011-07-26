@@ -149,8 +149,7 @@ class productComponents extends myComponents
 
     $q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
     $products_properties = $this->product->getPropertyRelation();
-    //myDebug::dump($product_properties);
-    //myDebug::dump($product_ids);
+
     foreach ($properties as $property)
     {
       $query = clone $q;
@@ -201,3 +200,4 @@ class productComponents extends myComponents
     $this->setVar('list', $list, true);
   }
 }
+
