@@ -195,6 +195,10 @@ ul.inline li {
   padding: 0 0 0 20px;
   background: transparent url(/images/icons/newspaper.png) no-repeat scroll 0 2px;
 }
+.shop {
+  padding: 0 0 0 20px;
+  background: transparent url(/images/icons/map.png) no-repeat scroll 0 2px;
+}
 .cart {
   padding: 0 0 0 20px;
   background: transparent url(/images/icons/cart.png) no-repeat scroll 0 2px;
