@@ -14,14 +14,10 @@ abstract class BaseUserProductNoticeFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'user_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
-      'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => true)),
-      'type'       => new sfWidgetFormChoice(array('choices' => array('' => '', 'insale' => 'insale', 'price' => 'price', 'comment' => 'comment'))),
     ));
 
     $this->setValidators(array(
       'user_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
-      'product_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Product'), 'column' => 'id')),
-      'type'       => new sfValidatorChoice(array('required' => false, 'choices' => array('insale' => 'insale', 'price' => 'price', 'comment' => 'comment'))),
     ));
 
     $this->widgetSchema->setNameFormat('user_product_notice_filters[%s]');
@@ -41,10 +37,10 @@ abstract class BaseUserProductNoticeFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'         => 'Number',
-      'user_id'    => 'ForeignKey',
-      'product_id' => 'ForeignKey',
       'type'       => 'Enum',
+      'email'      => 'Text',
+      'product_id' => 'Number',
+      'user_id'    => 'ForeignKey',
     );
   }
 }

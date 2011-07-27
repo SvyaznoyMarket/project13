@@ -69,7 +69,13 @@ similarProduct:
   param: { module: similarProduct, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
-
+#
+# обновление товара по измененной характеристики для группы товаров
+changeProduct:
+  url:   /products/:product/change/:property/:value
+  param: { module: product, action: changeProduct }
+  class: myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
 
 
 # Новость
@@ -179,12 +185,21 @@ userProductNotice:
   url:   /private/product-notices
   param: { module: userProductNotice, action: index }
 #
+# user product notice show
+userProductNotice_show:
+  url:   /private/product-notices/show/:product
+  param: { module: userProductNotice, action: show }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
 # user product notice create
 userProductNotice_create:
   url:   /private/product-notices/create/:product
   param: { module: userProductNotice, action: create }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
 #
 # user product notice delete
 userProductNotice_delete:

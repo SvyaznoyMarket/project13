@@ -18,6 +18,18 @@ class RegionTable extends myDoctrineTable
     return Doctrine_Core::getTable('Region');
   }
 
+  public function createBaseQuery(array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createQuery('region');
+
+    $q->where('region.level > ?', 0);
+    $q->orderBy('region.root_id, region.lft');
+
+    return $q;
+  }
+
   public function getDefault()
   {
     return $this->createBaseQuery()
