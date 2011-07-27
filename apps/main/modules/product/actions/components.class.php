@@ -14,10 +14,14 @@ class productComponents extends myComponents
   * Executes show component
   *
   * @param Product $product Товар
+  * @param view $view Вид
   */
   public function executeShow()
   {
-
+    if (!in_array($this->view, array('default')))
+    {
+      $this->view = 'default';
+    }
   }
  /**
   * Executes pager component
