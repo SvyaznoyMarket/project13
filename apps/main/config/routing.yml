@@ -63,6 +63,13 @@ productComment_create:
   requirements:
     sf_method: [ post ]
 #
+# наличие на складах
+productStock:
+  url:   /products/:product/stock
+  param: { module: productStock, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
 # аналогичные товары
 similarProduct:
   url:   /products/:product/similar
@@ -76,6 +83,21 @@ changeProduct:
   param: { module: product, action: changeProduct }
   class: myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+
+
+# Магазин
+#
+# список магазинов
+shop:
+  url:   /shops/
+  param: { module: shop, action: index }
+#
+# карточка магазина
+shop_show:
+  url:   /shops/:shop/
+  param: { module: shop, action: show }
+  class:   myDoctrineRoute
+  options: { model: Shop, type: object, method: getForRoute }
 
 
 # Новость

@@ -37,14 +37,14 @@ EOF;
     $this->logSection('doctrine', 'loading test data');
     $count = array(
       'Creator'            => 100,
-      'ProductCategory'    => 50,
-      'ProductType'        => 50,
+      'ProductCategory'    => 30,
+      'ProductType'        => 30,
       'ProductProperty'    => 200,
       'News'               => 250,
-      'Page'               => 20,
+      'Page'               => 10,
       'ProductHelper'      => 4,
-      'Stock'              => 40,
-      'Shop'               => 18,
+      'Stock'              => 30,
+      'Shop'               => 20,
     );
 
     $this->logSection('doctrine', 'loading test Creators');
@@ -221,7 +221,7 @@ EOF;
 
     ProductCategoryTable::getInstance()->createQuery('productCategory')->query('UPDATE productCategory SET productCategory.filter_group_id = productCategory.id');
 
-    $this->logSection('doctrine', 'loading test Products and ProductPropertyRelations');
+    $this->logSection('doctrine', 'loading test Products, ProductPropertyRelations and StockProductRelations');
     foreach ($productTypeList as $productType)
     {
       $list = ProductPropertyRelationTable::getInstance()->createList();
@@ -230,7 +230,7 @@ EOF;
 
       $category_id = $productType->id; //rand(1, $count['ProductCategory']);
 
-      $productCount = rand(12, 150);
+      $productCount = rand(0, 20) > 0 ? rand(15, 25) : rand(25, 55);
       for ($i = 1; $i <= $productCount; $i++)
       {
         $record = new Product();
@@ -267,6 +267,18 @@ EOF;
           ));
 
           $record->PropertyRelation[] = $relation;
+        }
+
+        $stockRelationCount = rand(0, $count['Stock']);
+        for ($k = 1; $k < $stockRelationCount; $k++)
+        {
+          $relation = new StockProductRelation();
+          $relation->fromArray(array(
+            'stock_id' => $k,
+            'quantity' => rand(1, 25),
+          ));
+
+          $record->StockRelation[] = $relation;
         }
 
         $list[] = $record;
