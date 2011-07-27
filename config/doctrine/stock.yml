@@ -6,9 +6,25 @@ Shop:
     region_id:         { type: integer(20), notnull: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
+    latitude:          { type: 'decimal(8,6)', notnull: false, default: null, comment: 'Широта' }
+    longitude:         { type: 'decimal(8,6)', notnull: false, default: null, comment: 'Долгота' }
+    regime:            { type: string(255), notnull: false, default: null, comment: 'Режим работы' }
     address:           { type: string(255), notnull: true, notblank: true }
+    phonenumbers:      { type: string(255), notnull: false, default: null }
+    photo:             { type: string(255), notnull: false, default: null }
+    description:       { type: string, notnull: false, default: null, comment: 'Описание магазина' }
   relations:
     Region:            { class: Region, foreignAlias: Stock, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+
+ShopPhoto:
+  options:
+    comment: 'Фото магазина'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    shop_id:           { type: integer(20), notnull: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+  relations:
+    Shop:              { class: Shop, foreignAlias: Photo, local: shop_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
 Stock:
   options:

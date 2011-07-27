@@ -33,9 +33,11 @@ class shopComponents extends myComponents
     foreach (ShopTable::getInstance()->getList() as $shop)
     {
       $list[] = array(
-        'name'  => (string)$shop,
-        'token' => $shop->token,
-        'url'   => url_for('shop_show', $shop),
+        'name'         => (string)$shop,
+        'token'        => $shop->token,
+        'phonenumbers' => $shop->phonenumbers,
+        'description'  => $shop->description,
+        'url'          => url_for('shop_show', $shop),
       );
     }
 

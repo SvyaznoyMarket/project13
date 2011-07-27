@@ -13,17 +13,29 @@ abstract class BaseShopFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'region_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Region'), 'add_empty' => true)),
-      'token'     => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'name'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'address'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'region_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Region'), 'add_empty' => true)),
+      'token'        => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'name'         => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'latitude'     => new sfWidgetFormFilterInput(),
+      'longitude'    => new sfWidgetFormFilterInput(),
+      'regime'       => new sfWidgetFormFilterInput(),
+      'address'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'phonenumbers' => new sfWidgetFormFilterInput(),
+      'photo'        => new sfWidgetFormFilterInput(),
+      'description'  => new sfWidgetFormFilterInput(),
     ));
 
     $this->setValidators(array(
-      'region_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Region'), 'column' => 'id')),
-      'token'     => new sfValidatorPass(array('required' => false)),
-      'name'      => new sfValidatorPass(array('required' => false)),
-      'address'   => new sfValidatorPass(array('required' => false)),
+      'region_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Region'), 'column' => 'id')),
+      'token'        => new sfValidatorPass(array('required' => false)),
+      'name'         => new sfValidatorPass(array('required' => false)),
+      'latitude'     => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
+      'longitude'    => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
+      'regime'       => new sfValidatorPass(array('required' => false)),
+      'address'      => new sfValidatorPass(array('required' => false)),
+      'phonenumbers' => new sfValidatorPass(array('required' => false)),
+      'photo'        => new sfValidatorPass(array('required' => false)),
+      'description'  => new sfValidatorPass(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('shop_filters[%s]');
@@ -43,11 +55,17 @@ abstract class BaseShopFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'        => 'Number',
-      'region_id' => 'ForeignKey',
-      'token'     => 'Text',
-      'name'      => 'Text',
-      'address'   => 'Text',
+      'id'           => 'Number',
+      'region_id'    => 'ForeignKey',
+      'token'        => 'Text',
+      'name'         => 'Text',
+      'latitude'     => 'Number',
+      'longitude'    => 'Number',
+      'regime'       => 'Text',
+      'address'      => 'Text',
+      'phonenumbers' => 'Text',
+      'photo'        => 'Text',
+      'description'  => 'Text',
     );
   }
 }
