@@ -12,6 +12,7 @@
  */
 class User extends BaseUser
 {
+
   public function getProductRatingByProduct($product_id)
   {
     $q = UserProductRatingTable::getInstance()->createBaseQuery();
@@ -30,4 +31,10 @@ class User extends BaseUser
   {
     return UserAddressTable::getInstance()->getListByUser($this->id, $params);
   }
+
+  public function getOrderList(array $params = array())
+  {
+    return OrderTable::getInstance()->getListByUser($this->id, $params);
+  }
+
 }

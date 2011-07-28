@@ -57,6 +57,11 @@ class userComponents extends myComponents
         'routes' => array('@cart'),
       ),
       array(
+        'name'   => 'Заказы',
+        'url'    => '@order',
+        'routes' => array('@order', '@order_show'),
+      ),
+      array(
         'name'   => 'История просмотра товаров',
         'url'    => '@userProductHistory',
         'routes' => array('@userProductHistory'),

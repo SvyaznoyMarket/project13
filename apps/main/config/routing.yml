@@ -386,6 +386,21 @@ userAddress_delete:
   options: { model: UserAddress, type: object, method: getForRoute }
 
 
+# Заказы пользователя
+#
+# order
+order:
+  url:   /orders/
+  param: { module: order, action: index }
+#
+# order_show
+order_show:
+  url:   /orders/:order
+  param: { module: order, action: show }
+  class:   myDoctrineRoute
+  options: { model: Order, type: object, method: getForRoute }
+
+
 # Корзина товаров
 #
 # cart
