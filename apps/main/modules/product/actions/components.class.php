@@ -18,19 +18,37 @@ class productComponents extends myComponents
   */
   public function executeShow()
   {
-    if (!in_array($this->view, array('default')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact')))
     {
       $this->view = 'default';
     }
+
+    $item = array(
+      'name'     => (string)$this->product,
+      'creator'  => (string)$this->product->Creator,
+      'price'    => $this->product->formatted_price,
+      'has_link' => $this->product['view_show'],
+      'product'  => $this->product,
+    );
+
+    $this->setVar('item', $item, true);
+  }
+ /**
+  * Executes preview component
+  *
+  * @param Product $product Товар
+  */
+  public function executePreview()
+  {
   }
  /**
   * Executes pager component
   *
-  * @param myDoctrinePager $productPager Листалка товаров
+  * @param myDoctrinePager $pager Листалка товаров
   */
   public function executePager()
   {
-    $this->setVar('productList', $this->productPager->getResults(), true);
+    $this->setVar('list', $this->pager->getResults(), true);
   }
  /**
   * Executes sorting component
@@ -59,7 +77,7 @@ class productComponents extends myComponents
  /**
   * Executes list component
   *
-  * @param myDoctrineCollection $productList Список товаров
+  * @param myDoctrineCollection $list Список товаров
   */
   public function executeList()
   {
@@ -68,29 +86,15 @@ class productComponents extends myComponents
     {
       $this->view = 'expanded';
     }
-
-    $list = array();
-    foreach ($this->productList as $product)
-    {
-      $list[] = array(
-        'name'     => (string)$product,
-        'creator'  => (string)$product->Creator,
-        'price'    => $product->formatted_price,
-        'has_link' => $product['view_show'],
-        'product'  => $product,
-      );
-    }
-
-    $this->setVar('list', $list, true);
   }
  /**
   * Executes pagination component
   *
-  * @param myDoctrinePager $productPager Листалка товаров
+  * @param myDoctrinePager $pager Листалка товаров
   */
   public function executePagination()
   {
-    if (!$this->productPager->haveToPaginate())
+    if (!$this->pager->haveToPaginate())
     {
       return sfView::NONE;
     }

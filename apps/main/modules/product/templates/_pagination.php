@@ -1,1 +1,1 @@
-<?php include_component('default', 'pagination', array('pager' => $productPager)) ?>
+<?php include_component('default', 'pagination', array('pager' => $pager)) ?>
