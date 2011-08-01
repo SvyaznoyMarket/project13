@@ -16,5 +16,6 @@
       <br class="clear" />
       <?php echo $sf_content ?>
     </div>
+    <?php include_partial('default/admin') ?>
   </body>
 </html>

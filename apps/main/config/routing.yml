@@ -427,7 +427,7 @@ cart_clear:
 
 default_show:
   url:   /:page
-  param: { module: default, action: show }
+  param: { module: page, action: index }
 
 default:
   url:   /:module/:action/*
