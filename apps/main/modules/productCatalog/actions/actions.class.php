@@ -44,6 +44,27 @@ class productCatalogActions extends myActions
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
  /**
+  * Executes count action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeCount(sfWebRequest $request)
+  {
+    $this->productCategory = $this->getRoute()->getObject();
+
+    $this->productFilter = $this->getProductFilter();
+    $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
+
+    $q = ProductTable::getInstance()->createBaseQuery();
+    $this->productFilter->buildQuery($q);
+
+
+    return $this->renderJson(array(
+      'success' => true,
+      'data'    => $q->count(),
+    ));
+  }
+ /**
   * Executes category action
   *
   * @param sfRequest $request A request object

@@ -19,6 +19,13 @@ productCatalog_filter:
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
+# количество найденных товаров
+productCatalog_count:
+  url:   /catalog/:productCategory/_count
+  param: { module: productCatalog, action: count }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+#
 # категория каталога товаров
 productCatalog_category:
   url:   /catalog/:productCategory/
