@@ -17,6 +17,7 @@ default:
     - main.css
 
   javascripts:
+    - jquery.js
     - main.js
 
   has_layout:     true
