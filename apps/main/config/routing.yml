@@ -63,6 +63,13 @@ productComment_create:
   requirements:
     sf_method: [ post ]
 #
+# наличие на складах
+productStock:
+  url:   /products/:product/stock
+  param: { module: productStock, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
 # аналогичные товары
 similarProduct:
   url:   /products/:product/similar
@@ -73,9 +80,24 @@ similarProduct:
 # обновление товара по измененной характеристики для группы товаров
 changeProduct:
   url:   /products/:product/change/:property/:value
-  param: { module: product, action: changeProduct }
+  param: { module: product, action: change }
   class: myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+
+
+# Магазин
+#
+# список магазинов
+shop:
+  url:   /shops/
+  param: { module: shop, action: index }
+#
+# карточка магазина
+shop_show:
+  url:   /shops/:shop/
+  param: { module: shop, action: show }
+  class:   myDoctrineRoute
+  options: { model: Shop, type: object, method: getForRoute }
 
 
 # Новость
@@ -185,12 +207,21 @@ userProductNotice:
   url:   /private/product-notices
   param: { module: userProductNotice, action: index }
 #
+# user product notice show
+userProductNotice_show:
+  url:   /private/product-notices/show/:product
+  param: { module: userProductNotice, action: show }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+#
 # user product notice create
 userProductNotice_create:
   url:   /private/product-notices/create/:product
   param: { module: userProductNotice, action: create }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
 #
 # user product notice delete
 userProductNotice_delete:
@@ -353,6 +384,21 @@ userAddress_delete:
   param: { module: userAddress, action: delete }
   class:   myDoctrineRoute
   options: { model: UserAddress, type: object, method: getForRoute }
+
+
+# Заказы пользователя
+#
+# order
+order:
+  url:   /orders/
+  param: { module: order, action: index }
+#
+# order_show
+order_show:
+  url:   /orders/:order
+  param: { module: order, action: show }
+  class:   myDoctrineRoute
+  options: { model: Order, type: object, method: getForRoute }
 
 
 # Корзина товаров

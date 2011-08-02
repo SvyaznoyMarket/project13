@@ -5,12 +5,12 @@
  *
  * @package    enter
  * @subpackage product
- * @author     Связной Маркет
+ * @author     РЎРІСЏР·РЅРѕР№ РњР°СЂРєРµС‚
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
 class productActions extends myActions
 {
-  public function executeChangeProduct()
+  public function executeChange()
   {
     sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url'));
 
