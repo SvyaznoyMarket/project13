@@ -400,7 +400,32 @@ order:
   url:   /orders/
   param: { module: order, action: index }
 #
-# order_show
+# order new
+order_new:
+  url:   /orders/new
+  param: { module: order, action: new }
+#
+# order step
+order_step:
+  url:   /orders/step/:step
+  param: { module: order, action: step, step: 1 }
+#
+# order accept
+order_accept:
+  url:   /orders/accept
+  param: { module: order, action: accept }
+#
+# order create
+order_create:
+  url:   /orders/create
+  param: { module: order, action: create }
+#
+# order complete
+order_complete:
+  url:   /orders/complete
+  param: { module: order, action: complete }
+#
+# order show
 order_show:
   url:   /orders/:order
   param: { module: order, action: show }

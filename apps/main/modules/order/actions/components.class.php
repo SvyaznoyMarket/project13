@@ -64,5 +64,31 @@ class orderComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
+ /**
+  * Executes step1 component
+  *
+  * @param OrderStep1Form $form Форма заказа 1-го шага
+  */
+  public function executeStep1()
+  {
+  }
+ /**
+  * Executes step2 component
+  *
+  * @param OrderStep2Form $form Форма заказа 2-го шага
+  */
+  public function executeStep2()
+  {
+
+  }
+ /**
+  * Executes step3 component
+  *
+  * @param OrderStep3Form $form Форма заказа 3-го шага
+  */
+  public function executeStep3()
+  {
+
+  }
 }
 
