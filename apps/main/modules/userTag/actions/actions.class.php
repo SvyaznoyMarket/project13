@@ -52,6 +52,8 @@ class userTagActions extends myActions
       {
         $this->form->getObject()->user_id = $this->getUser()->getGuardUser()->id;
         $this->form->save();
+
+        $this->redirect('userTag');
       }
       catch (Exception $e)
       {
@@ -59,7 +61,8 @@ class userTagActions extends myActions
       }
     }
 
-    $this->redirect('userTag');
+    $this->userTagList = $this->getUser()->getGuardUser()->getTagList();
+    $this->setTemplate('index');
   }
  /**
   * Executes link product action

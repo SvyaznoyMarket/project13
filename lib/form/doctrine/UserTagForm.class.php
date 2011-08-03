@@ -12,7 +12,7 @@ class UserTagForm extends BaseUserTagForm
 {
   public function configure()
   {
-    //parent::configure();
+    parent::configure();
 
     $this->widgetSchema->setLabels(array(
       'name' => 'Название',

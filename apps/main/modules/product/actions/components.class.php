@@ -81,7 +81,7 @@ class productComponents extends myComponents
   */
   public function executeList()
   {
-    $this->view = $this->getRequestParameter('view');
+    $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
     if (!in_array($this->view, array('expanded', 'compact')))
     {
       $this->view = 'expanded';
