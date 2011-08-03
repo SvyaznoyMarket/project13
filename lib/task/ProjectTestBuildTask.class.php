@@ -1,6 +1,6 @@
 <?php
 
-class myProjectTestBuildTask extends sfBaseTask
+class ProjectTestBuildTask extends sfBaseTask
 {
   protected function configure()
   {
@@ -20,7 +20,7 @@ class myProjectTestBuildTask extends sfBaseTask
     $this->name             = 'test-build';
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
-The [myProjectTestBuild|INFO] task does things.
+The [ProjectTestBuild|INFO] task does things.
 Call it with:
 
   [php symfony myProjectTestBuild|INFO]
@@ -42,6 +42,7 @@ EOF;
       ),
       'doctrine:test-data-load' => array(),
       'cache:clear'             => array(),
+      'doctrine:test-model'     => array('application' => 'main'),
     ) as $name => $params)
     {
       $this->runTask($name, isset($params[0]) ? $params[0] : array(), isset($params[1]) ? $params[1] : array());

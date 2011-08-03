@@ -1,6 +1,6 @@
 <?php
 
-class myDoctrineTestDataLoadTask extends sfBaseTask
+class DoctrineTestDataLoadTask extends sfBaseTask
 {
   protected function configure()
   {
@@ -20,7 +20,7 @@ class myDoctrineTestDataLoadTask extends sfBaseTask
     $this->name             = 'test-data-load';
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
-The [myDoctrineTestDataLoad|INFO] task does things.
+The [DoctrineTestDataLoad|INFO] task does things.
 Call it with:
 
   [php symfony myDoctrineTestDataLoad|INFO]
