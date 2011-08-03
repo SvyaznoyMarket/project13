@@ -1,6 +1,6 @@
 <?php
 
-class UserProductCompare extends myUserData
+class UserProductCompare extends BaseUserData
 {
   protected
     $parameterHolder = null,

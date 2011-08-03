@@ -5,12 +5,13 @@ class myUser extends myGuardSecurityUser
   protected
     $cart = null,
     $productHistory = null,
-    $productCompare = null
+    $productCompare = null,
+    $order = null
   ;
 
   public function shutdown()
   {
-    foreach (array('cart', 'productHistory', 'productCompare') as $name)
+    foreach (array('cart', 'productHistory', 'productCompare', 'order') as $name)
     {
       $object = call_user_func(array($this, 'get'.ucfirst($name)));
       $this->setAttribute($name, $object->dump());
@@ -21,36 +22,39 @@ class myUser extends myGuardSecurityUser
 
   public function getCart()
   {
-    if (null == $this->cart)
-    {
-      $this->cart = new Cart($this->getAttribute('cart', array()));
-    }
-
-    return $this->cart;
+    return $this->getUserData('cart');
   }
 
   public function getProductHistory()
   {
-    if (null == $this->productHistory)
-    {
-      $this->productHistory = new UserProductHistory($this->getAttribute('productHistory', array()));
-    }
-
-    return $this->productHistory;
+    return $this->getUserData('productHistory');
   }
 
   public function getProductCompare()
   {
-    if (null == $this->productCompare)
-    {
-      $this->productCompare = new UserProductCompare($this->getAttribute('productCompare', array()));
-    }
+    return $this->getUserData('productCompare');
+  }
 
-    return $this->productCompare;
+  public function getOrder()
+  {
+    return $this->getUserData('order');
   }
 
   public function getType()
   {
     return $this->isAuthenticated() ? $this->getGuardUser()->type : null;
+  }
+
+
+
+  protected function getUserData($name)
+  {
+    if (null == $this->$name)
+    {
+      $class = sfInflector::camelize('user_'.$name);
+      $this->$name = new $class($this->getAttribute($name, array()));
+    }
+
+    return $this->$name;
   }
 }

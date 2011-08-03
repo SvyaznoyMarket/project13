@@ -1,6 +1,6 @@
 <?php
 
-class Cart extends myUserData
+class UserCart extends BaseUserData
 {
   protected
     $parameterHolder = null,
