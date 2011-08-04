@@ -84,13 +84,12 @@ EOF;
     }
 
     $this->logSection('doctrine', 'loading test ProductCategories');
-    $this->createRecordList('ProductCategory', $count['ProductCategory']);
     $productCategoryTree = ProductCategoryTable::getInstance()->getTree();
-    foreach (ProductCategoryTable::getInstance()->findAll() as $productCategory)
+    foreach ($productCategoryTree->fetchRoots() as $productCategory)
     {
-      $productCategoryTree->createRoot($productCategory);
+      //$productCategoryTree->createRoot($productCategory);
 
-      $productCategoryCount = rand(2, 10);
+      $productCategoryCount = rand(5, 6);
       for ($i = 1; $i <= $productCategoryCount; $i++)
       {
         $child = new ProductCategory();

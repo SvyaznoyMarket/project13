@@ -1,0 +1,1 @@
+<?php include_partial('productCategory/list_'.$view, $sf_data) ?>
