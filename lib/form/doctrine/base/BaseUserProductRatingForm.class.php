@@ -15,15 +15,17 @@ abstract class BaseUserProductRatingForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'user_id'    => new sfWidgetFormInputHidden(),
-      'product_id' => new sfWidgetFormInputHidden(),
-      'value'      => new sfWidgetFormInputText(),
+      'property_id' => new sfWidgetFormInputHidden(),
+      'user_id'     => new sfWidgetFormInputHidden(),
+      'product_id'  => new sfWidgetFormInputHidden(),
+      'value'       => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
-      'user_id'    => new sfValidatorChoice(array('choices' => array($this->getObject()->get('user_id')), 'empty_value' => $this->getObject()->get('user_id'), 'required' => false)),
-      'product_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_id')), 'empty_value' => $this->getObject()->get('product_id'), 'required' => false)),
-      'value'      => new sfValidatorNumber(array('required' => false)),
+      'property_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('property_id')), 'empty_value' => $this->getObject()->get('property_id'), 'required' => false)),
+      'user_id'     => new sfValidatorChoice(array('choices' => array($this->getObject()->get('user_id')), 'empty_value' => $this->getObject()->get('user_id'), 'required' => false)),
+      'product_id'  => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_id')), 'empty_value' => $this->getObject()->get('product_id'), 'required' => false)),
+      'value'       => new sfValidatorNumber(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('user_product_rating[%s]');

@@ -103,7 +103,18 @@ EOF;
     $count['ProductFilterGroup'] = ProductCategoryTable::getInstance()->createQuery()->count();
 
     $this->logSection('doctrine', 'loading test ProductTypes');
-    $productTypeList = $this->createRecordList('ProductType', $count['ProductType'], array('free' => false));
+    $productTypeList = ProductTypeTable::getInstance()->createList();
+    for ($i = 1; $i <= $count['ProductType']; $i++)
+    {
+      $record = new ProductType();
+      $record->fromArray(array(
+        'token'          => 'productType-'.$i,
+        'name'           => $this->getRecordName('ProductType', $i),
+        'rating_type_id' => 1,
+      ));
+      $productTypeList[] = $record;
+    }
+    $productTypeList->save();
 
     $this->logSection('doctrine', 'loading test ProductProperties');
     $productPropertyList = ProductPropertyTable::getInstance()->createList();

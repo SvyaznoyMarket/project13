@@ -13,11 +13,11 @@ abstract class BaseUserProductRatingFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'value'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'value'       => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
-      'value'      => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
+      'value'       => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
     ));
 
     $this->widgetSchema->setNameFormat('user_product_rating_filters[%s]');
@@ -37,9 +37,10 @@ abstract class BaseUserProductRatingFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'user_id'    => 'Number',
-      'product_id' => 'Number',
-      'value'      => 'Number',
+      'property_id' => 'Number',
+      'user_id'     => 'Number',
+      'product_id'  => 'Number',
+      'value'       => 'Number',
     );
   }
 }

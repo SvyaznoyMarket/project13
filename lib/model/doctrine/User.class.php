@@ -13,13 +13,34 @@
 class User extends BaseUser
 {
 
-  public function getProductRatingByProduct($product_id)
+  public function getProductRatingByProduct(Product $product)
   {
     $q = UserProductRatingTable::getInstance()->createBaseQuery();
 
-    $q->addWhere('userProductRating.user_id = ? AND userProductRating.product_id = ?', array($this->id, $product_id));
+    $q->addWhere('userProductRating.user_id = ? AND userProductRating.product_id = ?', array($this->id, $product->id));
 
-    return $q->fetchOne();
+    $userProductRatingList = $q->execute();
+    $userProductRatingList->indexBy('property_id');
+
+    $return = UserProductRatingTable::getInstance()->createList();
+
+    $productRatingType = ProductRatingTypeTable::getInstance()->getById($product->Type->rating_type_id);
+    foreach ($productRatingType->Property as $i => $productRatingTypeProperty)
+    {
+      if (!($userProductRating = $userProductRatingList->getByIndex('property_id', $productRatingTypeProperty->id)))
+      {
+        $userProductRating = new UserProductRating();
+        $userProductRating->fromArray(array(
+          'product_id' => $product->id,
+          'user_id'    => $this->id,
+          'position'   => $i,
+        ));
+      }
+
+      $return[] = $userProductRating;
+    }
+
+    return $return;
   }
 
   public function getTagList(array $params = array())

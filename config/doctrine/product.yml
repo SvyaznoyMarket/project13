@@ -52,6 +52,9 @@ ProductType:
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
+    rating_type_id:    { type: integer(20), notnull: false, default: null }
+  relations:
+    RatingType:        { class: ProductRatingType, foreignAlias: ProductType, local: rating_type_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 ProductCategoryTypeRelation:
   options:
@@ -198,10 +201,10 @@ ProductGroup:
   options:
     comment: 'Группировка товаров'
   columns:
-    id:               { type: integer(20), autoincrement: true, primary: true }
-    name:             { type: string(255) }
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255) }
   relations:
-    Property:         { foreignAlias: ProductGroup, class: ProductProperty, refClass: ProductGroupPropertyRelation }
+    Property:          { foreignAlias: ProductGroup, class: ProductProperty, refClass: ProductGroupPropertyRelation }
 
 ProductGroupPropertyRelation:
   options:
@@ -212,3 +215,23 @@ ProductGroupPropertyRelation:
   relations:
     Property:             { class: ProductProperty, foreignAlias: ProductGroupRelation, local: product_property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     ProductGroup:         { class: ProductGroup, foreignAlias: ProductGroupRelation, local: product_group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+ProductRatingType:
+  options:
+    comment: 'Тип рейтинга товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+
+ProductRatingTypeProperty:
+  options:
+    comment: 'Свойства типа рейтинга товара'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    type_id:           { type: integer(20), notnull: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
+  relations:
+    Type:              { class: ProductRatingType, foreignAlias: Property, local: type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
