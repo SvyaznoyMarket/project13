@@ -70,6 +70,13 @@ productComment_create:
   requirements:
     sf_method: [ post ]
 #
+# оценить комментарий товара
+productComment_helpful:
+  url:   /products/:product/comments/:productComment/helpful
+  param: { module: productComment, action: helpful }
+  class:   myDoctrineRoute
+  options: { model: ProductComment, type: object, method: getForRoute }
+#
 # наличие на складах
 productStock:
   url:   /products/:product/stock
