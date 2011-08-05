@@ -14,19 +14,41 @@ class productComponents extends myComponents
   * Executes show component
   *
   * @param Product $product Товар
+  * @param view $view Вид
   */
   public function executeShow()
   {
+    if (!in_array($this->view, array('default', 'expanded', 'compact')))
+    {
+      $this->view = 'default';
+    }
 
+    $item = array(
+      'name'     => (string)$this->product,
+      'creator'  => (string)$this->product->Creator,
+      'price'    => $this->product->formatted_price,
+      'has_link' => $this->product['view_show'],
+      'product'  => $this->product,
+    );
+
+    $this->setVar('item', $item, true);
+  }
+ /**
+  * Executes preview component
+  *
+  * @param Product $product Товар
+  */
+  public function executePreview()
+  {
   }
  /**
   * Executes pager component
   *
-  * @param myDoctrinePager $productPager Листалка товаров
+  * @param myDoctrinePager $pager Листалка товаров
   */
   public function executePager()
   {
-    $this->setVar('productList', $this->productPager->getResults(), true);
+    $this->setVar('list', $this->pager->getResults(), true);
   }
  /**
   * Executes sorting component
@@ -55,32 +77,24 @@ class productComponents extends myComponents
  /**
   * Executes list component
   *
-  * @param myDoctrineCollection $productList Список товаров
+  * @param myDoctrineCollection $list Список товаров
   */
   public function executeList()
   {
-    $list = array();
-    foreach ($this->productList as $product)
+    $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
+    if (!in_array($this->view, array('expanded', 'compact')))
     {
-      $list[] = array(
-        'name'     => (string)$product,
-        'creator'  => (string)$product->Creator,
-        'price'    => $product->formatted_price,
-        'has_link' => $product['view_show'],
-        'product'  => $product,
-      );
+      $this->view = 'expanded';
     }
-
-    $this->setVar('list', $list, true);
   }
  /**
   * Executes pagination component
   *
-  * @param myDoctrinePager $productPager Листалка товаров
+  * @param myDoctrinePager $pager Листалка товаров
   */
   public function executePagination()
   {
-    if (!$this->productPager->haveToPaginate())
+    if (!$this->pager->haveToPaginate())
     {
       return sfView::NONE;
     }
@@ -163,8 +177,35 @@ class productComponents extends myComponents
 
       $property->mapValue('values', $values);
     }
+
     $this->properties = $properties;
-    myDebug::dump($this->product->toParams());
+  }
+ /**
+  * Executes list_view component
+  *
+  */
+  public function executeList_view()
+  {
+    $list = array(
+      array(
+        'name'  => 'compact',
+        'title' => 'компактный',
+      ),
+      array(
+        'name'  => 'expanded',
+        'title' => 'расширенный',
+      ),
+    );
+
+    foreach ($list as &$item)
+    {
+      $item = array_merge($item, array(
+        'url'     => replace_url_for('view', $item['name']),
+        'current' => $this->getRequestParameter('view') == $item['name'],
+      ));
+    } if (isset($item)) unset($item);
+
+    $this->setVar('list', $list, true);
   }
 }
 

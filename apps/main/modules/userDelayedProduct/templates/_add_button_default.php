@@ -1,1 +1,1 @@
-<?php echo link_to('отложить', 'userDelayedProduct_create', $sf_data->getRaw('product')) ?>
+<?php echo link_to('отложить', 'userDelayedProduct_create', $sf_data->getRaw('product'), array('class' => 'event-click', 'event-data' => 'content.update')) ?>

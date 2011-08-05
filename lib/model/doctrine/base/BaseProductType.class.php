@@ -7,6 +7,8 @@
  * 
  * @property integer $id
  * @property string $name
+ * @property integer $rating_type_id
+ * @property ProductRatingType $RatingType
  * @property Doctrine_Collection $ProductCategory
  * @property Doctrine_Collection $ProductCategoryRelation
  * @property Doctrine_Collection $Property
@@ -18,6 +20,8 @@
  * 
  * @method integer             getId()                      Returns the current record's "id" value
  * @method string              getName()                    Returns the current record's "name" value
+ * @method integer             getRatingTypeId()            Returns the current record's "rating_type_id" value
+ * @method ProductRatingType   getRatingType()              Returns the current record's "RatingType" value
  * @method Doctrine_Collection getProductCategory()         Returns the current record's "ProductCategory" collection
  * @method Doctrine_Collection getProductCategoryRelation() Returns the current record's "ProductCategoryRelation" collection
  * @method Doctrine_Collection getProperty()                Returns the current record's "Property" collection
@@ -28,6 +32,8 @@
  * @method Doctrine_Collection getSimilarProductGroup()     Returns the current record's "SimilarProductGroup" collection
  * @method ProductType         setId()                      Sets the current record's "id" value
  * @method ProductType         setName()                    Sets the current record's "name" value
+ * @method ProductType         setRatingTypeId()            Sets the current record's "rating_type_id" value
+ * @method ProductType         setRatingType()              Sets the current record's "RatingType" value
  * @method ProductType         setProductCategory()         Sets the current record's "ProductCategory" collection
  * @method ProductType         setProductCategoryRelation() Sets the current record's "ProductCategoryRelation" collection
  * @method ProductType         setProperty()                Sets the current record's "Property" collection
@@ -59,6 +65,11 @@ abstract class BaseProductType extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
+        $this->hasColumn('rating_type_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'length' => 20,
+             ));
 
         $this->option('comment', 'Тип товара');
     }
@@ -66,6 +77,11 @@ abstract class BaseProductType extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasOne('ProductRatingType as RatingType', array(
+             'local' => 'rating_type_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
+
         $this->hasMany('ProductCategory', array(
              'refClass' => 'ProductCategoryTypeRelation',
              'local' => 'product_type_id',

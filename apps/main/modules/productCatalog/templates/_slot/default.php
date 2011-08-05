@@ -3,11 +3,20 @@
     <li><?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?></li>
     <li><?php include_component('userProductCompare', 'button', array('productCategory' => $productCategory)) ?></li>
   </ul>
-  <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
+
+  <div class="left">всего: <?php echo $productPager->getNbResults() ?></div>
+  <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
+  <?php include_component('product', 'list_view') ?>
+  <br class="clear" />
 </div>
+
 <div class="block">
-  <?php include_component('product', 'pager', array('productPager' => $productPager)) ?>
+  <?php include_component('product', 'pager', array('pager' => $productPager)) ?>
 </div>
+
 <div class="block">
-  <?php include_component('product', 'pagination', array('productPager' => $productPager)) ?>
+  <div class="left">всего: <?php echo $productPager->getNbResults() ?></div>
+  <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
+  <?php include_component('product', 'list_view') ?>
+  <br class="clear" />
 </div>

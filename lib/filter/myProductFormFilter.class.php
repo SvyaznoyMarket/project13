@@ -97,9 +97,9 @@ class myProductFormFilter extends sfFormFilter
     }
 
     return new myWidgetFormChoice(array(
-      'choices'  => $choices,
-      'multiple' => $productFilter->is_multiple,
-      'expanded' => true
+      'choices'   => $choices,
+      'multiple'  => $productFilter->is_multiple,
+      'expanded'  => true,
     ));
   }
 

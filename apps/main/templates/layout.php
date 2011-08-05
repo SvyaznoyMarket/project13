@@ -13,8 +13,18 @@
     <div class="container">
       <?php include_partial('default/logo') ?>
       <?php include_partial('default/region') ?>
+
       <br class="clear" />
+
+      <div>
+      <?php include_component('productCategory', 'list_root') ?>
+      </div>
+
+      <br class="clear" />
+
       <?php echo $sf_content ?>
+
     </div>
+    <?php include_partial('default/admin') ?>
   </body>
 </html>

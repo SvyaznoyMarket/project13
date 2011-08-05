@@ -20,15 +20,36 @@ class userProductRatingComponents extends myComponents
   {
     $user = $this->getUser();
 
-    $list = range(1, 5, 0.5);
+    $userProductRatingList =
+      $user->isAuthenticated()
+      ? $user->getGuardUser()->getProductRatingByProduct($this->product)
+      : UserProductRatingTable::getInstance()->createList()
+    ;
+    $userProductRatingList->indexBy('property_id');
 
-    if ($user->isAuthenticated())
+    $list = array();
+
+    $productRatingType = ProductRatingTypeTable::getInstance()->getById($this->product->Type->rating_type_id);
+    foreach ($productRatingType->Property as $productRatingTypeProperty)
     {
-      //$hasRating = $user->hasProductRating($this->product->id);
-      $userProductRating = $user->getGuardUser()->getProductRatingByProduct($this->product->id);
+      $item = array(
+        'name'   => (string)$productRatingTypeProperty,
+        'ratings' => array(),
+      );
+      foreach (range(1, 5, 0.5) as $i => $rating)
+      {
+        $userProductRating = $userProductRatingList->getByIndex('property_id', $productRatingTypeProperty->id);
+        $item['ratings'][] = array(
+          'property_id' => $productRatingTypeProperty->id,
+          'id'          => "rating-{$this->product->id}-{$productRatingTypeProperty->id}-{$i}",
+          'value'       => $rating,
+          'selected'    => $userProductRating && ($userProductRating->value == $rating),
+        );
+      }
 
-      $this->setVar('userValue', $userProductRating ? $userProductRating->value : null, true);
-      $this->setVar('list', $list, true);
+      $list[] = $item;
     }
+
+    $this->setVar('list', $list, true);
   }
 }

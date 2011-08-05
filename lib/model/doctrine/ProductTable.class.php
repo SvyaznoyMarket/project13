@@ -218,7 +218,7 @@ class ProductTable extends myDoctrineTable
         {
           $q->addWhere(
             'productPropertyRelation.property_id = ? AND productPropertyRelation.option_id IN ('.implode(',', array_fill(0, count($parameter['values']), '?')).')',
-            array_merge(array($parameter['filter']->property_id, ), $parameter['values'])
+            array_merge(array($parameter['filter']->property_id), !is_array($parameter['values']) ? array($parameter['values']) : $parameter['values'])
           );
         }
         else if ('range' == $parameter['filter']->type)

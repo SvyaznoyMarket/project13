@@ -1,1 +1,1 @@
-<?php include_component('product', 'list', array('productList' => $productList)) ?>
+<?php include_component('product', 'list', array('list' => $list, 'view' => 'compact')) ?>

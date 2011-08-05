@@ -9,24 +9,45 @@
  * @property integer $region_id
  * @property string $token
  * @property string $name
+ * @property decimal $latitude
+ * @property decimal $longitude
+ * @property string $regime
  * @property string $address
+ * @property string $phonenumbers
+ * @property string $photo
+ * @property string $description
  * @property Region $Region
+ * @property Doctrine_Collection $Photo
  * @property Doctrine_Collection $Stock
  * 
- * @method integer             getId()        Returns the current record's "id" value
- * @method integer             getRegionId()  Returns the current record's "region_id" value
- * @method string              getToken()     Returns the current record's "token" value
- * @method string              getName()      Returns the current record's "name" value
- * @method string              getAddress()   Returns the current record's "address" value
- * @method Region              getRegion()    Returns the current record's "Region" value
- * @method Doctrine_Collection getStock()     Returns the current record's "Stock" collection
- * @method Shop                setId()        Sets the current record's "id" value
- * @method Shop                setRegionId()  Sets the current record's "region_id" value
- * @method Shop                setToken()     Sets the current record's "token" value
- * @method Shop                setName()      Sets the current record's "name" value
- * @method Shop                setAddress()   Sets the current record's "address" value
- * @method Shop                setRegion()    Sets the current record's "Region" value
- * @method Shop                setStock()     Sets the current record's "Stock" collection
+ * @method integer             getId()           Returns the current record's "id" value
+ * @method integer             getRegionId()     Returns the current record's "region_id" value
+ * @method string              getToken()        Returns the current record's "token" value
+ * @method string              getName()         Returns the current record's "name" value
+ * @method decimal             getLatitude()     Returns the current record's "latitude" value
+ * @method decimal             getLongitude()    Returns the current record's "longitude" value
+ * @method string              getRegime()       Returns the current record's "regime" value
+ * @method string              getAddress()      Returns the current record's "address" value
+ * @method string              getPhonenumbers() Returns the current record's "phonenumbers" value
+ * @method string              getPhoto()        Returns the current record's "photo" value
+ * @method string              getDescription()  Returns the current record's "description" value
+ * @method Region              getRegion()       Returns the current record's "Region" value
+ * @method Doctrine_Collection getPhoto()        Returns the current record's "Photo" collection
+ * @method Doctrine_Collection getStock()        Returns the current record's "Stock" collection
+ * @method Shop                setId()           Sets the current record's "id" value
+ * @method Shop                setRegionId()     Sets the current record's "region_id" value
+ * @method Shop                setToken()        Sets the current record's "token" value
+ * @method Shop                setName()         Sets the current record's "name" value
+ * @method Shop                setLatitude()     Sets the current record's "latitude" value
+ * @method Shop                setLongitude()    Sets the current record's "longitude" value
+ * @method Shop                setRegime()       Sets the current record's "regime" value
+ * @method Shop                setAddress()      Sets the current record's "address" value
+ * @method Shop                setPhonenumbers() Sets the current record's "phonenumbers" value
+ * @method Shop                setPhoto()        Sets the current record's "photo" value
+ * @method Shop                setDescription()  Sets the current record's "description" value
+ * @method Shop                setRegion()       Sets the current record's "Region" value
+ * @method Shop                setPhoto()        Sets the current record's "Photo" collection
+ * @method Shop                setStock()        Sets the current record's "Stock" collection
  * 
  * @package    enter
  * @subpackage model
@@ -62,11 +83,46 @@ abstract class BaseShop extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
+        $this->hasColumn('latitude', 'decimal', 8, array(
+             'type' => 'decimal',
+             'notnull' => false,
+             'comment' => 'Широта',
+             'length' => 8,
+             'scale' => '6',
+             ));
+        $this->hasColumn('longitude', 'decimal', 8, array(
+             'type' => 'decimal',
+             'notnull' => false,
+             'comment' => 'Долгота',
+             'length' => 8,
+             'scale' => '6',
+             ));
+        $this->hasColumn('regime', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Режим работы',
+             'length' => 255,
+             ));
         $this->hasColumn('address', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
              'notblank' => true,
              'length' => 255,
+             ));
+        $this->hasColumn('phonenumbers', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'length' => 255,
+             ));
+        $this->hasColumn('photo', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'length' => 255,
+             ));
+        $this->hasColumn('description', 'string', null, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Описание магазина',
              ));
 
         $this->option('comment', 'Магазин');
@@ -79,6 +135,10 @@ abstract class BaseShop extends myDoctrineRecord
              'local' => 'region_id',
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
+
+        $this->hasMany('ShopPhoto as Photo', array(
+             'local' => 'id',
+             'foreign' => 'shop_id'));
 
         $this->hasMany('Stock', array(
              'local' => 'id',

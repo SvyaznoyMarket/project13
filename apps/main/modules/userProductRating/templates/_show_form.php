@@ -1,7 +1,18 @@
 <form action="<?php echo url_for('userProductRating_create', $sf_data->getRaw('product')) ?>" method="post">
-<?php foreach ($list as $value): ?>
-  <input id="product-<?php echo $product->token ?>-rating-<?php echo $value?>" type="radio" name="value" value="<?php echo $value ?>" <?php if ($userValue == $value) echo 'checked="checked"' ?> />
-  <label for="product-<?php echo $product->token ?>-rating-<?php echo $value?>"><?php echo $value ?></label>
-<?php endforeach ?>
+
+  <table class="table">
+  <?php foreach ($list as $item): ?>
+    <tr>
+      <td><?php echo $item['name'] ?></td>
+      <td>
+      <?php foreach ($item['ratings'] as $rating): ?>
+        <input id="<?php echo $rating['id'] ?>" type="radio" name="rating[<?php echo $rating['property_id'] ?>]" value="<?php echo $rating['value'] ?>" <?php if ($rating['selected']) echo 'checked="checked"' ?> />
+          <label for="<?php echo $rating['id'] ?>"><?php echo $rating['value'] ?></label>
+      <?php endforeach ?>
+      </td>
+    </tr>
+  <?php endforeach ?>
+  </table>
+
   <input type="submit" value="Оценить" />
 </form>

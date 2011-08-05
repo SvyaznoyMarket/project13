@@ -14,12 +14,14 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'name'                  => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'rating_type_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('RatingType'), 'add_empty' => true)),
       'product_category_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory')),
       'property_list'         => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty')),
     ));
 
     $this->setValidators(array(
       'name'                  => new sfValidatorPass(array('required' => false)),
+      'rating_type_id'        => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('RatingType'), 'column' => 'id')),
       'product_category_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory', 'required' => false)),
       'property_list'         => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty', 'required' => false)),
     ));
@@ -79,6 +81,7 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'                    => 'Number',
       'name'                  => 'Text',
+      'rating_type_id'        => 'ForeignKey',
       'product_category_list' => 'ManyKey',
       'property_list'         => 'ManyKey',
     );

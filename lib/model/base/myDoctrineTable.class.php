@@ -117,11 +117,7 @@ class myDoctrineTable extends Doctrine_Table
     $params['select'] = $key.','.$value;
     $this->setQueryParameters($q, $params);
 
-    $return = array();
-    foreach ($q->execute(array(), Doctrine_Core::HYDRATE_SCALAR) as $item)
-    {
-      $return[$item[0]] = $item[1];
-    }
+    return $q->execute()->toKeyValueArray($key, $value);
   }
 
   public function applyDefaultParameters(array &$params, array $defaults = array())

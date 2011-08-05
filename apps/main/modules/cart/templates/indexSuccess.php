@@ -1,16 +1,18 @@
-<div class="block">
+<div class="block wide">
+
   <?php include_component('user', 'menu') ?>
-</div>
 
-<h1>Корзина товаров</h1>
+  <h1>Корзина товаров</h1>
 
-<div class="block">
-  <?php if ($cart->count() > 0): ?>
-    <?php include_component('cart', 'list') ?>
-    <?php echo link_to('очистить', '@cart_clear', array('class' => 'cart cart-clear')) ?>
+  <div class="block">
+    <?php if ($cart->count() > 0): ?>
+      <?php include_component('cart', 'list') ?>
+      <?php echo link_to('очистить', '@cart_clear', array('class' => 'cart cart-clear')) ?>
 
-  <?php else: ?>
-    <p>в корзине нет товаров</p>
+    <?php else: ?>
+      <p>в корзине нет товаров</p>
 
-  <?php endif ?>
+    <?php endif ?>
+  </div>
+
 </div>

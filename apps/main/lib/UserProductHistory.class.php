@@ -1,6 +1,6 @@
 <?php
 
-class UserProductHistory extends myUserData
+class UserProductHistory extends BaseUserData
 {
   protected
     $parameterHolder = null,

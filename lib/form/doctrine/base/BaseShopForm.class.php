@@ -15,19 +15,31 @@ abstract class BaseShopForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'        => new sfWidgetFormInputHidden(),
-      'region_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Region'), 'add_empty' => false)),
-      'token'     => new sfWidgetFormInputText(),
-      'name'      => new sfWidgetFormInputText(),
-      'address'   => new sfWidgetFormInputText(),
+      'id'           => new sfWidgetFormInputHidden(),
+      'region_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Region'), 'add_empty' => false)),
+      'token'        => new sfWidgetFormInputText(),
+      'name'         => new sfWidgetFormInputText(),
+      'latitude'     => new sfWidgetFormInputText(),
+      'longitude'    => new sfWidgetFormInputText(),
+      'regime'       => new sfWidgetFormInputText(),
+      'address'      => new sfWidgetFormInputText(),
+      'phonenumbers' => new sfWidgetFormInputText(),
+      'photo'        => new sfWidgetFormInputText(),
+      'description'  => new sfWidgetFormTextarea(),
     ));
 
     $this->setValidators(array(
-      'id'        => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'region_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Region'))),
-      'token'     => new sfValidatorString(array('max_length' => 255)),
-      'name'      => new sfValidatorString(array('max_length' => 255)),
-      'address'   => new sfValidatorString(array('max_length' => 255)),
+      'id'           => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'region_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Region'))),
+      'token'        => new sfValidatorString(array('max_length' => 255)),
+      'name'         => new sfValidatorString(array('max_length' => 255)),
+      'latitude'     => new sfValidatorNumber(array('required' => false)),
+      'longitude'    => new sfValidatorNumber(array('required' => false)),
+      'regime'       => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'address'      => new sfValidatorString(array('max_length' => 255)),
+      'phonenumbers' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'photo'        => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'description'  => new sfValidatorString(array('required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(

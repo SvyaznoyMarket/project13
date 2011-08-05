@@ -22,4 +22,13 @@ class productCardActions extends myActions
     // история просмотра товаров
     $this->getUser()->getProductHistory()->addProduct($this->product);
   }
+ /**
+  * Executes preview action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executePreview(sfWebRequest $request)
+  {
+    $this->product = $this->getRoute()->getObject();
+  }
 }

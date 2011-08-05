@@ -14,8 +14,9 @@ all:
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
   product:
-    max_items:             10          # максимально количество записей для списка товаров (по умолчанию)
-    max_items_on_category: 10          # максимально количество записей для списка товаров в категории
+    max_items:              10                      # максимально количество записей для списка товаров (по умолчанию)
+    max_items_on_category:  10                      # максимально количество записей для списка товаров в категории
+    comment_helpful_cookie: product_comment_helpful
 
   guard:
     remember_cookie_name: remember

@@ -43,6 +43,11 @@ class userComponents extends myComponents
   */
   public function executeMenu()
   {
+    if ('frame' == $this->getLayout())
+    {
+      return sfView::NONE;
+    }
+
     $uri = $this->getContext()->getRouting()->getCurrentInternalUri(true);
 
     $list = array(
@@ -55,6 +60,11 @@ class userComponents extends myComponents
         'name'   => 'Корзина товаров',
         'url'    => '@cart',
         'routes' => array('@cart'),
+      ),
+      array(
+        'name'   => 'Заказы',
+        'url'    => '@order',
+        'routes' => array('@order', '@order_show'),
       ),
       array(
         'name'   => 'История просмотра товаров',

@@ -67,4 +67,14 @@ class Product extends BaseProduct
   {
     return UserTagTable::getInstance()->getListByProduct($this->id, $params);
   }
+
+  public function getStockList(array $params = array())
+  {
+    return StockTable::getInstance()->getListByProduct($this->id, $params);
+  }
+
+  public function getShopList(array $params = array())
+  {
+    return ShopTable::getInstance()->getListByProduct($this->id, $params);
+  }
 }

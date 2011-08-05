@@ -21,17 +21,25 @@ class userProductRatingActions extends sfActions
 
     $this->redirectUnless($user->isAuthenticated(), '@user_signin');
 
-    if ($request['value'])
+    if (is_array($request['rating']))
     {
       $product = $this->getRoute()->getObject();
-
-      $userProductRating = new UserProductRating();
-      $userProductRating->fromArray(array(
-        'user_id'    => $user->getGuardUser()->id,
-        'product_id' => $product->id,
-        'value'      => $request['value'],
-      ));
-      $userProductRating->replace();
+      $productRatingType = ProductRatingTypeTable::getInstance()->getById($product->Type->rating_type_id);
+      foreach ($productRatingType->Property as $productRatingTypeProperty)
+      {
+        $value = isset($request['rating'][$productRatingTypeProperty->id]) ? (float)$request['rating'][$productRatingTypeProperty->id] : false;
+        if (false !== $value)
+        {
+          $userProductRating = new UserProductRating();
+          $userProductRating->fromArray(array(
+            'user_id'     => $user->getGuardUser()->id,
+            'property_id' => $productRatingTypeProperty->id,
+            'product_id'  => $product->id,
+            'value'       => $value,
+          ));
+          $userProductRating->replace();
+        }
+      }
     }
 
     $this->redirect($request->getReferer());

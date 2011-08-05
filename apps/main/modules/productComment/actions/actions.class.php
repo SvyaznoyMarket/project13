@@ -72,4 +72,38 @@ class productCommentActions extends myActions
 
     $this->setTemplate('index');
   }
+ /**
+  * Executes helpful action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeHelpful(sfWebRequest $request)
+  {
+    $this->redirectUnless($this->getUser()->isAuthenticated(), '@user_signin');
+
+    $productComment = $this->getRoute()->getObject();
+
+    $cookieName = sfConfig::get('app_product_comment_helpful_cookie', 'product_comment_helpful');
+    $comments = explode('.', $this->getRequest()->getCookie($cookieName));
+
+    if (true
+      &&($productComment->user_id != $this->getUser()->getGuardUser()->id)
+      && !in_array($productComment->id, $comments)
+    ) {
+      if (in_array($request['helpful'], array('yes', 'true', 'on')))
+      {
+        $productComment->helpful++;
+      }
+      else {
+        $productComment->unhelpful++;
+      }
+      $productComment->save();
+
+      // сохранить ид комментария в куках
+      $comments[] = $productComment->id;
+      $this->getResponse()->setCookie($cookieName, implode('.', $comments), time() + 15 * 24 * 3600);
+    }
+
+    $this->redirect($request->getReferer());
+  }
 }

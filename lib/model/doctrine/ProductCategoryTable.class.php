@@ -75,4 +75,18 @@ class ProductCategoryTable extends myDoctrineTable
 
     return $this->createListByIds($ids, $params);
   }
+
+  public function getRootList(array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+    $this->setQueryParameters($q, $params);
+
+    $q->addWhere('productCategory.level = ?', 0);
+
+    $q->useResultCache(true, null, $this->getQueryHash('productCategory-root', $params));
+
+    $ids = $this->getIdsByQuery($q);
+
+    return $this->createListByIds($ids, $params);
+  }
 }

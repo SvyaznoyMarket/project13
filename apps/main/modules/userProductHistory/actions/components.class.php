@@ -16,6 +16,6 @@ class userProductHistoryComponents extends myComponents
   */
   public function executeShow()
   {
-    $this->setVar('productList', $this->getUser()->getProductHistory()->getProducts(), true);
+    $this->setVar('list', $this->getUser()->getProductHistory()->getProducts(), true);
   }
 }

@@ -12,7 +12,7 @@ GuardUser:
     first_name:     'Клиент'
     last_name:      'Клиентов'
     middle_name:    'Клиентович'
-    email:          'cluent@maxus.ru'
+    email:          'client@maxus.ru'
     username:       client
     password:       client
     Group:          [ GuardGroup_client ]

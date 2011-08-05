@@ -56,7 +56,7 @@ class ProductParameter extends myDoctrineVirtualRecord
 
   public function getValue()
   {
-    return $this->value;
+    return is_array($this->value) ? implode(', ', $this->value) : $this->value;
   }
 
 

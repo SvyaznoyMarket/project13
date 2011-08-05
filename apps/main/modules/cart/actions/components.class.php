@@ -19,6 +19,11 @@ class cartComponents extends myComponents
   */
   public function executeBuy_button()
   {
+    if (empty($this->quantity))
+    {
+      $this->quantity = 1;
+    }
+
     $cart = $this->getUser()->getCart();
 
     if (!$this->product->is_insale)
