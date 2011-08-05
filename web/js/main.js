@@ -1,4 +1,94 @@
+var debug = true
+
+
+window.isInFrame = function() {
+  return window.location != window.parent.location
+}
+
+
+jQuery.extend({
+  log: function(msg) {
+    this.counter = undefined == this.counter ? 1 : (this.counter + 1)
+
+    if (false == debug) return false
+
+    if (window.console) {
+      // Firefox & Google Chrome
+      console.log(msg);
+    }
+    else {
+    // Other browsers
+      $('body').append('<div style="position: absolute; top: ' + (this.counter * 18) + 'px; padding: 2px; color: #00ff00; font: normal 12px Courier New; background: #000; opacity: 0.8; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=80); -khtml-opacity: 0.8">#' + this.counter + ': ' + msg + '</div>');
+    }
+
+    return true;
+  }
+})
+
+
+EventHandler = {
+  'trigger': function(e) {
+    var el = $(e.target)
+    var name = el.data('event')
+
+    $.log('Event ' + name + ' fired')
+    if (typeof this[name] == 'function')
+    {
+      this[name](e, el, el.data())
+    }
+  },
+
+  'content.update': function(e, el, data) {
+    e.preventDefault()
+
+    var url = el.is('a') ? el.attr('href') : false
+    if (url) {
+      $.get(url, function(result, status, x) {
+        var target = null == data.target ? el : $('#' + data.target)
+        if (target) {
+          target.replaceWith(result.data)
+        }
+      }, 'json')
+    }
+  },
+
+  'window.open': function(e, el, data) {
+    e.preventDefault()
+
+    var href = el.attr('href') + (-1 != el.attr('href').indexOf('?') ? '&' : '?') + 'frame=true'
+
+    $.colorbox({
+      href: href,
+      iframe: true,
+      scrolling: false,
+      transition: 'elastic',
+      speed: 250,
+      initialWidth: 1,
+      initialHeight: 1
+    })
+  },
+
+  'form.submit': function(e, el, data) {
+    //e.preventDefault()
+
+    el.attr('action', el.attr('action') + (-1 != el.attr('action').indexOf('?') ? '&' : '?') + 'frame=true')
+  }
+}
+
+
 $(document).ready(function() {
+
+  if (window.isInFrame()) {
+    window.parent.$.fn.colorbox.resize({innerHeight: $(document).height(), innerWidth: $(document).width()})
+  }
+
+  $('.event-click').live('click', function(e) {
+    EventHandler.trigger(e)
+  })
+  $('.event-submit').live('submit', function(e) {
+    EventHandler.trigger(e)
+  })
+
 
   $('.product_filter-block')
     // change
@@ -61,9 +151,7 @@ $(document).ready(function() {
               .trigger('mouseout')
           }
         })
-        .fail(function(error) {
-          console.info(error);
-        })
+        .fail(function(error) {})
     })
 
 })

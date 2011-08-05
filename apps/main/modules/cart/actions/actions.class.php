@@ -34,6 +34,16 @@ class cartActions extends myActions
       $this->getUser()->getCart()->addProduct($product, $request['quantity']);
     }
 
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->renderJson(array(
+        'result' => true,
+        'data'   => $this->getComponent($this->getModuleName(), 'buy_button', array(
+          'product' => $product,
+        )),
+      ));
+    }
+
     $this->redirect($this->getRequest()->getReferer());
   }
  /**

@@ -14,12 +14,14 @@ default:
 
   stylesheets:
     - normalize.css
+    - colorbox/colorbox.css
     - main.css
 
   javascripts:
     - jquery.js
     - jquery.form.js
     - jquery.timers.js
+    - jquery.colorbox.js
     - main.js
 
   has_layout:     true

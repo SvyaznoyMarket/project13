@@ -43,6 +43,11 @@ class userComponents extends myComponents
   */
   public function executeMenu()
   {
+    if ('frame' == $this->getLayout())
+    {
+      return sfView::NONE;
+    }
+
     $uri = $this->getContext()->getRouting()->getCurrentInternalUri(true);
 
     $list = array(

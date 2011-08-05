@@ -16,5 +16,5 @@
 </div>
 
 <div class="block">
-  <?php echo link_to('Следить за этим товаром', 'userProductNotice_show', $sf_data->getRaw('product')) ?>
+  <?php echo link_to('Следить за этим товаром', 'userProductNotice_show', $sf_data->getRaw('product'), array('class' => 'event-click', 'data-event' => 'window.open')) ?>
 </div>

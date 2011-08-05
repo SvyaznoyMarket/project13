@@ -2,6 +2,16 @@
 
 class myActions extends sfActions
 {
+  public function preExecute()
+  {
+    parent::preExecute();
+
+    if (in_array($this->getRequestParameter('frame'), array('1', 'true', 'on')))
+    {
+      $this->setLayout('frame');
+    }
+  }
+
   public function renderJson($value, $header = true)
   {
     if ($header)

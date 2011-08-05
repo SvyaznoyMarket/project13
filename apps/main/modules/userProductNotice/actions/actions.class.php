@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class userProductNoticeActions extends sfActions
+class userProductNoticeActions extends myActions
 {
  /**
   * Executes index action
@@ -74,6 +74,10 @@ class userProductNoticeActions extends sfActions
           }
         }
 
+        if ('frame' == $this->getLayout())
+        {
+          return $this->renderPartial('default/close');
+        }
         $this->redirect(array('sf_route' => 'productCard', 'sf_subject' => $this->product));
       }
       catch (Exception $e)
