@@ -6,6 +6,7 @@ window.isInFrame = function() {
 }
 
 
+// jQuery.extend
 jQuery.extend({
   log: function(msg) {
     this.counter = undefined == this.counter ? 1 : (this.counter + 1)
@@ -30,6 +31,7 @@ jQuery.extend({
 })
 
 
+// Обработчик событий
 EventHandler = {
   'trigger': function(e) {
     var el = $(e.target)
@@ -42,6 +44,7 @@ EventHandler = {
     }
   },
 
+  // Обновление DOM-элемента
   'content.update': function(e, el, data) {
     e.preventDefault()
 
@@ -56,6 +59,7 @@ EventHandler = {
     }
   },
 
+  // Открытие модального окна
   'window.open': function(e, el, data) {
     e.preventDefault()
 
@@ -72,25 +76,36 @@ EventHandler = {
     })
   },
 
+  // Отправка формы
   'form.submit': function(e, el, data) {
-    //e.preventDefault()
-
     el.attr('action', el.attr('action') + (-1 != el.attr('action').indexOf('?') ? '&' : '?') + 'frame=true')
+  },
+
+  // Ajax-отправка формы
+  'form.ajax-submit': function(e, el, data) {
+    e.preventDefault()
+
+    el.ajaxSubmit()
   }
 }
 
 
+// Документ готов
 $(document).ready(function() {
 
+  // Если окно находится во фрейме, то изменить размер модального окна
   if (window.isInFrame()) {
     window.parent.$.fn.colorbox.resize({innerHeight: $(document).height(), innerWidth: $(document).width()})
   }
 
-  $('.event-click').live('click', function(e) {
-    EventHandler.trigger(e)
-  })
-  $('.event-submit').live('submit', function(e) {
-    EventHandler.trigger(e)
+  // Подключение обработчиков
+  $.each({
+    '.event-click': 'click',
+    '.event-submit': 'submit'
+  }, function(selector, eventName) {
+    $(selector).live(eventName, function(e) {
+      EventHandler.trigger(e)
+    })
   })
 
 
