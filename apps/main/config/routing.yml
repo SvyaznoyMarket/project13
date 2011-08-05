@@ -77,6 +77,8 @@ productComment_helpful:
   class:   myDoctrineRoute
   options: { model: ProductComment, type: object, method: getForRoute }
 #
+
+
 # наличие на складах
 productStock:
   url:   /products/:product/stock
@@ -94,7 +96,7 @@ similarProduct:
 # обновление товара по измененной характеристики для группы товаров
 changeProduct:
   url:   /products/:product/change/:property/:value
-  param: { module: product, action: changeProduct }
+  param: { module: product, action: change }
   class: myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
 
