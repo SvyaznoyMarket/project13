@@ -141,7 +141,7 @@ class productComponents extends myComponents
     $q = ProductTable::getInstance()->createBaseQuery()->addWhere('product.group_id = ?', array($this->product->group_id, ));
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
 
-    $q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
+    $q = ProductPropertyRelationTable::getInstance()->createBaseQuery()->innerJoin('productPropertyRelation.Property property');
     $products_properties = $this->product->getPropertyRelation();
 
     foreach ($properties as $property)

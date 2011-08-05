@@ -20,23 +20,56 @@ class productActions extends myActions
     $property_id = $this->getRequestParameter('property');
 
     $q = ProductTable::getInstance()->createBaseQuery()->addWhere('product.group_id = ?', array($this->product->group_id, ));
+    //Продукты в серии
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
     myDebug::dump($product_ids);
     //$q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
-    $q = ProductPropertyRelationTable::getInstance()->createBaseQuery()->addWhere('productPropertyRelation.product_id = ?', array($this->product->id, ));
+    //$q = ProductPropertyRelationTable::getInstance()->createBaseQuery()->addWhere('productPropertyRelation.product_id = ?', array($this->product->id, ));
     //$products_properties = $this->product->getPropertyRelation();
-    $product_property_ids = ProductPropertyRelationTable::getInstance()->getIdsByQuery($q);
-    myDebug::dump($product_property_ids);
+    //свойства текущего продукта
+    //$product_property_ids = ProductPropertyRelationTable::getInstance()->getIdsByQuery($q);
+    //myDebug::dump($product_property_ids);
 
+    //Свойства группы
     $q = ProductGroupPropertyRelationTable::getInstance()->createBaseQuery()->addWhere('productGroupPropertyRelation.product_group_id = ?', array($this->product->group_id, ))->select('productGroupPropertyRelation.product_property_id');
-
     //$group_property_ids = ProductGroupPropertyRelationTable::getInstance()->getIdsByQuery($q);
+    //свойства, которые различаются в группе
     $groups_properties = $q->fetchArray();
-    myDebug::dump($groups_properties, true);
+    myDebug::dump($groups_properties);
 
     $product = $this->product;
+    $group_property_ids = array();
+    foreach ($groups_properties as $groups_property)
+    {
+      $group_property_ids[] = $groups_property['product_property_id'];
+    }
 
-    //myDebug::dump($product);
+    $old_properties = array();
+    foreach ($product->getPropertyRelation() as $property)
+    {
+      if (in_array($property->property_id, $group_property_ids))
+      {
+        $old_properties[$property->property_id] = $property->value;
+      }
+    }
+    $old_properties[$property_id] = $new_value;
+    //myDebug::dump($old_properties);
+
+    $q = ProductTable::getInstance()->createBaseQuery();
+    $q->innerJoin('product.PropertyRelation propertyRelation');
+    //$q->addSelect('SUM(IF(id = ' . $product->id . ', 1, 0)) as sum_id');
+    $if_condition = "";
+    foreach ($old_properties as $id => $value)
+    {
+      $if_condition .= strlen($if_condition) ? " OR " : "";
+      $if_condition .= "(propertyRelation.property_id=".$id." AND propertyRelation.value='".$value."')";
+    }
+    $q->addSelect("SUM(IF(".$if_condition.", 1, 0)) as matches");
+    $q->addWhere('product.id IN ('.implode(', ', $product_ids).')');
+    $q->groupBy('product.id');
+    //myDebug::dump($q->getQuery());
+    myDebug::dump($q->execute(), true);
+
     throw new sfException('We don\'t need a redirection');
     $this->redirect(url_for('productCard', $product));
     //myDebug::dump($this->product);
