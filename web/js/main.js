@@ -100,7 +100,12 @@ EventHandler = {
       transition: 'elastic',
       speed: 250,
       initialWidth: 1,
-      initialHeight: 1
+      initialHeight: 1,
+      onClosed: function() {
+        if (el.data('reloadParent')) {
+          window.location.reload()
+        }
+      }
     })
   },
 
@@ -168,7 +173,7 @@ $(document).ready(function() {
     window.parent.$.fn.colorbox.resize({innerHeight: $(document).height(), innerWidth: $(document).width()})
   }
 
-  // Подключение обработчиков
+  // Подключение стандартных обработчиков
   $.each({
     '.event-click': 'click',
     '.event-submit': 'submit'
@@ -179,7 +184,7 @@ $(document).ready(function() {
   })
 
 
-
+  // Специализированные обработчики
   $('.product_rating-form').live({
     'form.ajax-submit.prepare': function(e, result) {
       $(this).find('input:submit').attr('disabled', true)
