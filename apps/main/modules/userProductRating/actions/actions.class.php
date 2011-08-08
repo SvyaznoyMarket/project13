@@ -18,12 +18,12 @@ class userProductRatingActions extends myActions
   public function executeCreate(sfWebRequest $request)
   {
     $user = $this->getUser();
-
     $this->redirectUnless($user->isAuthenticated(), '@user_signin');
+
+    $product = $this->getRoute()->getObject();
 
     if (is_array($request['rating']))
     {
-      $product = $this->getRoute()->getObject();
       $productRatingType = ProductRatingTypeTable::getInstance()->getById($product->Type->rating_type_id);
       foreach ($productRatingType->Property as $productRatingTypeProperty)
       {
