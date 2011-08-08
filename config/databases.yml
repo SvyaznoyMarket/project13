@@ -4,6 +4,6 @@ all:
     param:
       dsn:      mysql:host=localhost;dbname=enter
       username: root
-      password: root
-      #profiler: false
+      password: qazwsxedc
+      profiler: false
 
