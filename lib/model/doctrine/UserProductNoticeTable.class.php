@@ -20,10 +20,16 @@ class UserProductNoticeTable extends myDoctrineTable
 
   public function getListByUser($user_id, array $params = array())
   {
-    $this->applyDefaultParameters($params);
+    $this->applyDefaultParameters($params, array(
+      'product' => null,
+    ));
 
     $q = $this->createBaseQuery($params);
     $q->addWhere('userProductNotice.user_id = ?', $user_id);
+    if ($params['product'])
+    {
+      $q->addWhere('userProductNotice.product_id = ?', $params['product']->id);
+    }
 
     $this->setQueryParameters($q, $params);
 

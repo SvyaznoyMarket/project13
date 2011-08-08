@@ -31,7 +31,9 @@ class userProductNoticeActions extends myActions
     if ($this->getUser()->isAuthenticated())
     {
       $this->form->setDefaults(array(
-        'type'  => UserProductNoticeTable::getInstance()->getListByUser($this->getUser()->getGuarduser()->id)->toValueArray('type'),
+        'type'  => UserProductNoticeTable::getInstance()->getListByUser($this->getUser()->getGuarduser()->id, array(
+          'product' => $this->product,
+        ))->toValueArray('type'),
         'email' => $this->getUser()->getGuardUser()->email,
       ));
     }
