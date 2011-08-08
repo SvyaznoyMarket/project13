@@ -25,6 +25,11 @@
       <?php echo $sf_content ?>
 
     </div>
+
+    <div style="display: none;">
+      <div id="auth-form"><?php include_component('guardUser', 'form_signin') ?></div>
+    </div>
+
     <?php include_partial('default/admin') ?>
   </body>
 </html>

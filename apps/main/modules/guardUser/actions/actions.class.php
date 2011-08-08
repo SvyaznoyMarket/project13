@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class guardUserActions extends sfActions
+class guardUserActions extends myActions
 {
  /**
   * Executes signin action
@@ -38,6 +38,10 @@ class guardUserActions extends sfActions
         // or to the homepage
         $signinUrl = sfConfig::get('app_guard_signin_url', $user->getReferer($request->getReferer()));
 
+        if ('frame' == $this->getLayout())
+        {
+          return $this->renderPartial('default/close');
+        }
         return $this->redirect('' != $signinUrl ? $signinUrl : '@homepage');
       }
     }

@@ -18,6 +18,16 @@ class userProductRatingComponents extends myComponents
   */
   public function executeShow()
   {
+
+  }
+ /**
+  * Executes form component
+  *
+  * @param Product $product Товар
+  *
+  */
+  public function executeForm()
+  {
     $user = $this->getUser();
 
     $userProductRatingList =

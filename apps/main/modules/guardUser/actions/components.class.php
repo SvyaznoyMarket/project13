@@ -10,4 +10,16 @@
  */
 class guardUserComponents extends myComponents
 {
+/**
+  * Executes form_signin component
+  *
+  * @param UserFormSignin $form Форма авторизации
+  */
+  public function executeForm_signin()
+  {
+    if (!($this->form instanceof UserFormSignin))
+    {
+      $this->form = new UserFormSignin();
+    }
+  }
 }

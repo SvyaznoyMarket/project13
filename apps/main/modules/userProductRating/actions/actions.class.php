@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class userProductRatingActions extends sfActions
+class userProductRatingActions extends myActions
 {
  /**
   * Executes create action
@@ -42,6 +42,13 @@ class userProductRatingActions extends sfActions
       }
     }
 
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->renderJson(array(
+        'success' => true,
+        'data'    => $this->getComponent($this->getModuleName(), 'show', array('product' => $product))
+      ));
+    }
     $this->redirect($request->getReferer());
   }
 }

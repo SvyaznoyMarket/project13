@@ -20,8 +20,8 @@ jQuery.extend({
     else {
     // Other browsers
       var el = $('<div style="position: absolute; top: ' + (this.counter * 18) + 'px; padding: 2px; color: #00ff00; font: normal 12px Courier New; background: #000; opacity: 0.8; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=80); -khtml-opacity: 0.8">#' + this.counter + ': ' + msg + ' <a href="#" style="color: #ff0000; font: bold 14px Arial; text-decoration: none;">&times;</a></div>')
-      el.oneTime(10000, function() { $(this).remove() })
-      el.find('a').bind('click', function() { $(this).parent().remove() })
+      el.oneTime(10000, function() {$(this).remove()})
+      el.find('a').bind('click', function() {$(this).parent().remove()})
 
       $('body').append(el);
     }
@@ -33,25 +33,51 @@ jQuery.extend({
 
 // Обработчик событий
 EventHandler = {
-  'trigger': function(e) {
-    var el = $(e.target)
-    var name = el.data('event')
+  'trigger': function(e, param) {
+    if ('string' == typeof(param)) {
+      var name = param
+    }
+    else {
+      var el = $(e.target)
+      var name = el.data('event')
+
+      el.trigger(name+'.prepare', param)
+    }
+
+    if ('function' != typeof(callback)) {
+      callback = $.noop
+    }
 
     $.log('Event ' + name + ' fired')
     if (typeof this[name] == 'function')
     {
-      this[name](e, el, el.data())
+      this[name](e, param)
     }
   },
 
+  // Ошибка 401
+  'secure': function(e) {
+     e.preventDefault()
+
+      $.colorbox({
+        iframe: true,
+        href: $('#auth-form').find('form:first').attr('action') + '?frame=true',
+      scrolling: false,
+      initialWidth: 1,
+      initialHeight: 1
+      })
+  },
+
   // Обновление DOM-элемента
-  'content.update': function(e, el, data) {
+  'content.update': function(e, param) {
     e.preventDefault()
+
+    var el = $(e.target)
 
     var url = el.is('a') ? el.attr('href') : false
     if (url) {
       $.get(url, function(result, status, x) {
-        var target = null == data.target ? el : $('#' + data.target)
+        var target = null == el.data('target') ? el : $('#' + el.data('target'))
         if (target) {
           target.replaceWith(result.data)
         }
@@ -60,8 +86,10 @@ EventHandler = {
   },
 
   // Открытие модального окна
-  'window.open': function(e, el, data) {
+  'window.open': function(e, param) {
     e.preventDefault()
+
+    var el = $(e.target)
 
     var href = el.attr('href') + (-1 != el.attr('href').indexOf('?') ? '&' : '?') + 'frame=true'
 
@@ -77,21 +105,63 @@ EventHandler = {
   },
 
   // Отправка формы
-  'form.submit': function(e, el, data) {
-    el.attr('action', el.attr('action') + (-1 != el.attr('action').indexOf('?') ? '&' : '?') + 'frame=true')
+  'form.submit': function(e, param) {
+    var el = $(e.target)
+
+    el.attr('action', el.attr('action') + (-1 != el.attr('action').indexOf('?') ? '&' : '?') + 'frame=true&reload-parent='+el.data('reload-parent'))
   },
 
   // Ajax-отправка формы
-  'form.ajax-submit': function(e, el, data) {
+  'form.ajax-submit': function(e, param) {
     e.preventDefault()
 
-    el.ajaxSubmit()
+    var el = $(e.target)
+
+    el.ajaxSubmit({
+      success: function(result) {
+        var target = el.data('target') ? $(el.data('target')) : el
+
+        if (true == result.success) {
+          target.replaceWith(result.data);
+        }
+
+        el.trigger('form.ajax-submit.success', [result])
+      }
+    })
   }
 }
 
 
 // Документ готов
 $(document).ready(function() {
+
+  // Настройки colorbox
+  $.extend($.colorbox.settings, {
+    opacity: 0.7,
+    fixed: true,
+    close: 'закрыть <span style="font: bold 16px Verdana">&times;</span>'
+  })
+
+  // Обработчики ajax-ошибок
+  $(document).ajaxError(function(e, x, settings, exception) {
+    if (x.status == 0) {
+      $.colorbox({html: 'Ошибка<br />Не удается подключиться к серверу'})
+    } else if (x.status == 401) {
+      EventHandler.trigger(e, 'secure')
+    } else if (x.status == 404) {
+      $.colorbox({html: 'Ошибка 404<br />Запрашиваемая страница не найдена'})
+    } else if (x.status == 403) {
+      $.colorbox({html: 'Ошибка 403<br />Время сессии пользователя истекло. Авторизуйтесь заново, пожалуйста'})
+    } else if (x.status == 500) {
+      $.colorbox({html: 'Ошибка 500<br />Ошибка сервера'})
+    } else if (e == 'parsererror') {
+      $.colorbox({html: 'Ошибка<br />Не удалось обработать ответ сервера'})
+    } else if (e == 'timeout') {
+      $.colorbox({html: 'Ошибка<br />Время ожидания ответа истекло'})
+    } else {
+      $.colorbox({html: 'Ошибка<br />Неизвестная ошибка.' + "\n" + x.responseText})
+    }
+  })
 
   // Если окно находится во фрейме, то изменить размер модального окна
   if (window.isInFrame()) {
@@ -108,6 +178,18 @@ $(document).ready(function() {
     })
   })
 
+
+
+  $('.product_rating-form').live({
+    'form.ajax-submit.prepare': function(e, result) {
+      $(this).find('input:submit').attr('disabled', true)
+    },
+    'form.ajax-submit.success': function(e, result) {
+      if (true == result.success) {
+        $('.product_rating-form').effect('highlight', {}, 2000)
+      }
+    }
+  })
 
   $('.product_filter-block')
     // change

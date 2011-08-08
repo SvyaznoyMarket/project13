@@ -1,11 +1,15 @@
-<div class="left block-inline">
-  Рейтинг: <?php echo round($product->rating, 1) ?>
-</div>
+<div class="block product_rating_<?php echo $product->id ?>-block">
 
-<?php if ($sf_user->isAuthenticated()): ?>
-<div class="left">
-  <?php include_partial('userProductRating/show_form', $sf_data) ?>
-</div>
-<?php endif ?>
+  <div class="left block-inline">
+    Рейтинг: <?php echo round($product->rating, 1) ?>
+  </div>
 
-<br class="clear" />
+  <?php if ($sf_user->isAuthenticated()): ?>
+  <div class="left">
+    <?php include_component('userProductRating', 'form', array('product' => $product)) ?>
+  </div>
+  <?php endif ?>
+
+  <br class="clear" />
+
+</div>

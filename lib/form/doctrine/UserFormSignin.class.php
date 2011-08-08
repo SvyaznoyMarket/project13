@@ -12,6 +12,8 @@ class UserFormSignin extends BaseUserForm
 {
   public function configure()
   {
+    parent::configure();
+
     $this->setWidgets(array(
       'username' => new sfWidgetFormInputText(),
       'password' => new sfWidgetFormInputPassword(array('type' => 'password')),
