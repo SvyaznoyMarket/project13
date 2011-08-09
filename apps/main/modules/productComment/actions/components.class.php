@@ -21,6 +21,7 @@ class productCommentComponents extends myComponents
     foreach ($this->product->getCommentList() as $productComment)
     {
       $list[] = array(
+        'id'             => $productComment->id,
         'level'          => $productComment->level,
         'date'           => $productComment->created_at,
         'author'         => (string)$productComment->User,
