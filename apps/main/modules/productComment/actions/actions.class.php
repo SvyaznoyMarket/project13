@@ -62,6 +62,17 @@ class productCommentActions extends myActions
       {
         $this->form->save();
 
+        // response
+        if ($request->isXmlHttpRequest())
+        {
+          return $this->renderJson(array(
+            'success' => true,
+            'data'    => array(
+              'content' => $this->getComponent($this->getModuleName(), 'form', array('product' => $this->product, 'parent' => $this->parent)),
+              'list'    => $this->getComponent($this->getModuleName(), 'list', array('product' => $this->product)),
+            ),
+          ));
+        }
         $this->redirect(array('sf_route' => 'productComment', 'sf_subject' => $this->product));
       }
       catch (Exception $e)
@@ -70,6 +81,16 @@ class productCommentActions extends myActions
       }
     }
 
+    // response
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->renderJson(array(
+        'success' => false,
+        'data'    => array(
+          'content' => $this->getComponent($this->getModuleName(), 'form', array('product' => $this->product, 'parent' => $this->parent, 'form' => $this->form)),
+        ),
+      ));
+    }
     $this->setTemplate('index');
   }
  /**

@@ -38,9 +38,13 @@ class productCommentComponents extends myComponents
   * Executes form component
   *
   * @param Product $product Товар
+  * @param ProductCommentForm $form Форма комментария товара
   */
   public function executeForm()
   {
-
+    if (empty($this->form))
+    {
+      $this->form = new ProductCommentForm();
+    }
   }
 }

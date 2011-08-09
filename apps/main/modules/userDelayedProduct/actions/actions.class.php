@@ -39,9 +39,9 @@ class userDelayedProductActions extends myActions
     {
       return $this->renderJson(array(
         'result' => true,
-        'data'   => $this->getComponent($this->getModuleName(), 'add_button', array(
-          'product' => $product,
-        )),
+        'data'   => array(
+          'content' => $this->getComponent($this->getModuleName(), 'add_button', array('product' => $product))
+        ),
       ));
     }
     $this->redirect($this->getRequest()->getReferer());

@@ -73,14 +73,13 @@ EventHandler = {
     e.preventDefault()
 
     var el = $(e.target)
-    console.info(el);
 
     var url = el.is('a') ? el.attr('href') : false
     if (url) {
       $.get(url, function(result, status, x) {
         var target = null == el.data('target') ? el : $('#' + el.data('target'))
         if (target) {
-          target.replaceWith(result.data)
+          target.replaceWith(result.data.content)
         }
       }, 'json')
     }
@@ -127,9 +126,7 @@ EventHandler = {
       success: function(result) {
         var target = el.data('target') ? $(el.data('target')) : el
 
-        if (true == result.success) {
-          target.replaceWith(result.data);
-        }
+        target.replaceWith(result.data.content);
 
         el.trigger('form.ajax-submit.success', [result])
       }
@@ -150,22 +147,27 @@ $(document).ready(function() {
 
   // Обработчики ajax-ошибок
   $(document).ajaxError(function(e, x, settings, exception) {
+    $.extend($.colorbox.settings, {
+      width: 400,
+      height: 200
+    })
+
     if (x.status == 0) {
-      $.colorbox({html: 'Ошибка<br />Не удается подключиться к серверу'})
+      $.colorbox({html: '<h1>Ошибка</h1><br />Не удается подключиться к серверу'})
     } else if (x.status == 401) {
       EventHandler.trigger(e, 'secure')
     } else if (x.status == 404) {
-      $.colorbox({html: 'Ошибка 404<br />Запрашиваемая страница не найдена'})
+      $.colorbox({html: '<h1>Ошибка 404</h1><br />Запрашиваемая страница не найдена'})
     } else if (x.status == 403) {
-      $.colorbox({html: 'Ошибка 403<br />Время сессии пользователя истекло. Авторизуйтесь заново, пожалуйста'})
+      $.colorbox({html: '<h1>Ошибка 403</h1><br />Время сессии пользователя истекло. Авторизуйтесь заново, пожалуйста'})
     } else if (x.status == 500) {
-      $.colorbox({html: 'Ошибка 500<br />Ошибка сервера'})
+      $.colorbox({html: '<h1>Ошибка 500</h1><br />Ошибка сервера'})
     } else if (e == 'parsererror') {
-      $.colorbox({html: 'Ошибка<br />Не удалось обработать ответ сервера'})
+      $.colorbox({html: '<h1>Ошибка</h1><br />Не удалось обработать ответ сервера'})
     } else if (e == 'timeout') {
-      $.colorbox({html: 'Ошибка<br />Время ожидания ответа истекло'})
+      $.colorbox({html: '<h1>Ошибка</h1><br />Время ожидания ответа истекло'})
     } else {
-      $.colorbox({html: 'Ошибка<br />Неизвестная ошибка.' + "\n" + x.responseText})
+      $.colorbox({html: '<h1>Ошибка</h1><br />Неизвестная ошибка.' + "\n" + x.responseText})
     }
   })
 
@@ -193,6 +195,17 @@ $(document).ready(function() {
     'form.ajax-submit.success': function(e, result) {
       if (true == result.success) {
         $('.product_rating-form').effect('highlight', {}, 2000)
+      }
+    }
+  })
+
+  $('.product_comment-form').live({
+    'form.ajax-submit.prepare': function(e, result) {
+      $(this).find('input:submit').attr('disabled', true)
+    },
+    'form.ajax-submit.success': function(e, result) {
+      if (true == result.success) {
+        $($(this).data('listTarget')).replaceWith(result.data.list)
       }
     }
   })

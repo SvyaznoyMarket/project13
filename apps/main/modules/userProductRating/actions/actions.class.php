@@ -46,7 +46,9 @@ class userProductRatingActions extends myActions
     {
       return $this->renderJson(array(
         'success' => true,
-        'data'    => $this->getComponent($this->getModuleName(), 'show', array('product' => $product))
+        'data'    => array(
+          'content' => $this->getComponent($this->getModuleName(), 'show', array('product' => $product)),
+        ),
       ));
     }
     $this->redirect($request->getReferer());

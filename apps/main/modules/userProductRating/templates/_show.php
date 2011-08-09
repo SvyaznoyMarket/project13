@@ -1,4 +1,4 @@
-<div class="block product_rating_<?php echo $product->id ?>-block">
+<div class="block product_<?php echo $product->id ?>_rating-block">
 
   <div class="left block-inline">
     Рейтинг: <?php echo round($product->rating, 1) ?>

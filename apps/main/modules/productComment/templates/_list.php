@@ -1,4 +1,4 @@
-<ul>
+<ul class="product_<?php echo $product->id ?>_comment-block">
 <?php foreach ($list as $item): ?>
   <li style="margin-left: <?php echo ($item['level'] * 40) ?>px">
     <strong><?php echo $item['date'] ?></strong> от <?php echo $item['author'] ?>

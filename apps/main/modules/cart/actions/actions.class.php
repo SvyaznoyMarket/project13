@@ -38,9 +38,9 @@ class cartActions extends myActions
     {
       return $this->renderJson(array(
         'result' => true,
-        'data'   => $this->getComponent($this->getModuleName(), 'buy_button', array(
-          'product' => $product,
-        )),
+        'data'   => array(
+          'content' => $this->getComponent($this->getModuleName(), 'buy_button', array('product' => $product)),
+        ),
       ));
     }
     $this->redirect($this->getRequest()->getReferer());
