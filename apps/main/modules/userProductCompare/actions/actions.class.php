@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class userProductCompareActions extends sfActions
+class userProductCompareActions extends myActions
 {
  /**
   * Executes index action
@@ -42,6 +42,16 @@ class userProductCompareActions extends sfActions
       $this->getUser()->getProductCompare()->addProduct($product);
     }
 
+    // response
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->renderJson(array(
+        'success' => true,
+        'data'    => array(
+          'content' => $this->getComponent($this->getModuleName(), 'button', array('product' => $product)),
+        ),
+      ));
+    }
     $this->redirect($this->getRequest()->getReferer());
   }
  /**

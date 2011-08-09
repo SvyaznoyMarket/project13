@@ -4,7 +4,7 @@
 
 <h1>Сравнение товаров</h1>
 
-<div class="block">
+<div class="block medium">
 
   <?php if (count($productCategoryList) > 0): ?>
     <ul>

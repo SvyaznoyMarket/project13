@@ -4,7 +4,7 @@
 
 <h1>Отложенные товары</h1>
 
-<div class="block">
+<div class="block medium">
   <?php if (count($userDelayedProductList) > 0): ?>
     <?php include_component('userDelayedProduct', 'show', array('userDelayedProductList' => $userDelayedProductList)) ?>
     <?php echo link_to('очистить', '@userDelayedProduct_clear') ?>

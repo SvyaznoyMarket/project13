@@ -111,7 +111,7 @@ EventHandler = {
       initialWidth: 1,
       initialHeight: 1,
       onClosed: function() {
-        if (el.data('reloadParent')) {
+        if (el.data('reload')) {
           window.location.reload()
         }
       }
@@ -122,7 +122,7 @@ EventHandler = {
   'form.submit': function(e, param) {
     var el = $(e.target)
 
-    el.attr('action', el.attr('action') + (-1 != el.attr('action').indexOf('?') ? '&' : '?') + 'frame=true&reload-parent='+el.data('reload-parent'))
+    el.attr('action', el.attr('action') + (-1 != el.attr('action').indexOf('?') ? '&' : '?') + 'frame=true&reload-parent='+el.data('reload'))
   },
 
   // Ajax-отправка формы
