@@ -14,6 +14,11 @@
     </ul>
 
     <div class="product_comment_response-block product_<?php echo $product->id ?>_comment_<?php echo $item['id'] ?>_response-block"></div>
+<<<<<<< HEAD
+=======
+
+    <?php echo $item['content'] ?>
+>>>>>>> 14ffa6adba42e6cfeb0f4dac7bb0e6d596076855
   </li>
 <?php endforeach ?>
 </ul>
