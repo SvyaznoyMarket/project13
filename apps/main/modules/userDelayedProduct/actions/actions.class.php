@@ -35,6 +35,15 @@ class userDelayedProductActions extends myActions
     ));
     $userDelayedProduct->replace();
 
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->renderJson(array(
+        'result' => true,
+        'data'   => $this->getComponent($this->getModuleName(), 'add_button', array(
+          'product' => $product,
+        )),
+      ));
+    }
     $this->redirect($this->getRequest()->getReferer());
   }
  /**

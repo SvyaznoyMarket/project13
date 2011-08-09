@@ -73,6 +73,7 @@ EventHandler = {
     e.preventDefault()
 
     var el = $(e.target)
+    console.info(el);
 
     var url = el.is('a') ? el.attr('href') : false
     if (url) {

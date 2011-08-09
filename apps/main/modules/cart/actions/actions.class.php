@@ -43,7 +43,6 @@ class cartActions extends myActions
         )),
       ));
     }
-
     $this->redirect($this->getRequest()->getReferer());
   }
  /**
