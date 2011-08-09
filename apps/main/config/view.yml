@@ -23,6 +23,7 @@ default:
     - jquery-ui-custom.js
     - jquery.form.js
     - jquery.timers.js
+    - jquery.scrollto.js
     - jquery.colorbox.js
     - main.js
 

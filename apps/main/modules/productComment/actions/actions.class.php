@@ -37,6 +37,17 @@ class productCommentActions extends myActions
       : null
     ;
     $this->form = new ProductCommentForm(array(), array('product' => $this->product, 'user' => $this->getUser()->getGuardUser(), 'parent' => $this->parent));
+
+    // response
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->renderJson(array(
+        'success' => true,
+        'data'    => array(
+          'content' => $this->getComponent($this->getModuleName(), 'form', array('product' => $this->product, 'parent' => $this->parent, 'form' => $this->form)),
+        ),
+      ));
+    }
   }
  /**
   * Executes create action
@@ -73,6 +84,11 @@ class productCommentActions extends myActions
             ),
           ));
         }
+        // response
+        if ('frame' == $this->getLayout())
+        {
+          return $this->getPartial('default/close');
+        }
         $this->redirect(array('sf_route' => 'productComment', 'sf_subject' => $this->product));
       }
       catch (Exception $e)
@@ -102,6 +118,7 @@ class productCommentActions extends myActions
   {
     $this->redirectUnless($this->getUser()->isAuthenticated(), '@user_signin');
 
+    $product = ProductTable::getInstance()->getByToken($request['product']);
     $productComment = $this->getRoute()->getObject();
 
     $cookieName = sfConfig::get('app_product_comment_helpful_cookie', 'product_comment_helpful');
@@ -125,6 +142,18 @@ class productCommentActions extends myActions
       $this->getResponse()->setCookie($cookieName, implode('.', $comments), time() + 15 * 24 * 3600);
     }
 
+    // response
+    if ($request->isXmlHttpRequest())
+    {
+      $this->getContext()->getConfiguration()->loadHelpers('Url');
+
+      return $this->renderJson(array(
+        'success' => true,
+        'data'    => array(
+          'content' => $this->getComponent($this->getModuleName(), 'list', array('product' => $product)),
+        ),
+      ));
+    }
     $this->redirect($request->getReferer());
   }
 }

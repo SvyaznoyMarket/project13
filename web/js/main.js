@@ -74,12 +74,21 @@ EventHandler = {
 
     var el = $(e.target)
 
+    el.trigger('content.update.prepare')
+
     var url = el.is('a') ? el.attr('href') : false
     if (url) {
       $.get(url, function(result, status, x) {
-        var target = null == el.data('target') ? el : $('#' + el.data('target'))
+        var target = null == el.data('target') ? el : $(el.data('target'))
         if (target) {
-          target.replaceWith(result.data.content)
+          if ('append' == el.data('update')) {
+            target.append(result.data.content)
+          }
+          else {
+            target.replaceWith(result.data.content)
+          }
+
+          el.trigger('content.update.success', [result])
         }
       }, 'json')
     }
@@ -207,6 +216,13 @@ $(document).ready(function() {
       if (true == result.success) {
         $($(this).data('listTarget')).replaceWith(result.data.list)
       }
+    }
+  })
+
+  $('.product_comment_response-link').live({
+    'content.update.prepare': function(e) {
+      $('.product_comment_response-block').html('')
+
     }
   })
 
