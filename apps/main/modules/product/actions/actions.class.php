@@ -22,7 +22,7 @@ class productActions extends myActions
     $q = ProductTable::getInstance()->createBaseQuery()->addWhere('product.group_id = ?', array($this->product->group_id, ));
     //Продукты в серии
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
-    myDebug::dump($product_ids);
+    //myDebug::dump($product_ids);
     //$q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
     //$q = ProductPropertyRelationTable::getInstance()->createBaseQuery()->addWhere('productPropertyRelation.product_id = ?', array($this->product->id, ));
     //$products_properties = $this->product->getPropertyRelation();
@@ -31,28 +31,31 @@ class productActions extends myActions
     //myDebug::dump($product_property_ids);
 
     //Свойства группы
-    $q = ProductGroupPropertyRelationTable::getInstance()->createBaseQuery()->addWhere('productGroupPropertyRelation.product_group_id = ?', array($this->product->group_id, ))->select('productGroupPropertyRelation.product_property_id');
+    //$q = ProductGroupPropertyRelationTable::getInstance()->createBaseQuery()->innerJoin('productGroupPropertyRelation.Property property')->addWhere('productGroupPropertyRelation.product_group_id = ?', array($this->product->group_id, ))->select('productGroupPropertyRelation.product_property_id, property.*');
+    $q = ProductPropertyTable::getInstance()->createBaseQuery()->from('ProductProperty productProperty indexby productProperty.id')->innerJoin('productProperty.ProductGroupPropertyRelation productGroupPropertyRelation')->select('productProperty.*')->addWhere('productGroupPropertyRelation.product_group_id = ?', array($this->product->group_id, ));
     //$group_property_ids = ProductGroupPropertyRelationTable::getInstance()->getIdsByQuery($q);
     //свойства, которые различаются в группе
     $groups_properties = $q->fetchArray();
-    myDebug::dump($groups_properties);
+    //myDebug::dump($groups_properties);
 
     $product = $this->product;
-    $group_property_ids = array();
-    foreach ($groups_properties as $groups_property)
+    $group_property_ids = array_keys($groups_properties);
+    /*foreach ($groups_properties as $groups_property)
     {
-      $group_property_ids[] = $groups_property['product_property_id'];
-    }
+      $group_property_ids[] = $groups_property['id'];
+    }*/
 
     $old_properties = array();
     foreach ($product->getPropertyRelation() as $property)
     {
       if (in_array($property->property_id, $group_property_ids))
       {
-        $old_properties[$property->property_id] = $property->value;
+        $old_properties[$property->property_id]['value'] = $property->getRealValue();
+        $old_properties[$property->property_id]['type'] = $property->getProperty()->getType();
+        $old_properties[$property->property_id]['is_multiple'] = $property->getProperty()->is_multiple;
       }
     }
-    $old_properties[$property_id] = $new_value;
+    $old_properties[$property_id]['value'] = $new_value;
     //myDebug::dump($old_properties);
 
     $q = ProductTable::getInstance()->createBaseQuery();
@@ -62,16 +65,42 @@ class productActions extends myActions
     foreach ($old_properties as $id => $value)
     {
       $if_condition .= strlen($if_condition) ? " OR " : "";
-      $if_condition .= "(propertyRelation.property_id=".$id." AND propertyRelation.value='".$value."')";
+      $if_condition .= "(propertyRelation.property_id=".$id." AND propertyRelation.";
+      $field = "";
+      switch ($value['type']):
+        case 'string': case 'integer': case 'float': case 'text':
+          $field = 'value_'.$value['type'].'=';
+        break;
+        case 'select':
+          if (!$value['is_multiple'])
+          {
+            $field = 'option_id=';
+          }
+          else
+          {
+            $field = 'option_id=';
+          }
+        break;
+      endswitch;
+      $if_condition .= $field."'".$value['value']."')";
+      if ($id == $property_id)
+      {
+        $q->addWhere('propertyRelation.'.$field.'?', array($value['value']));
+      }
     }
-    $q->addSelect("SUM(IF(".$if_condition.", 1, 0)) as matches");
-    $q->addWhere('product.id IN ('.implode(', ', $product_ids).')');
+    $q->select("product.id, SUM(IF(".$if_condition.", 1, 0)) as matches");
+    $q->addWhere('product.id IN ('.implode(', ', array_diff($product_ids, array($product->id,))).')');
+    //$q->addWhere('');
     $q->groupBy('product.id');
-    //myDebug::dump($q->getQuery());
-    myDebug::dump($q->execute(), true);
+    $q->orderBy('matches desc, rating desc');
+    $matches = $q->fetchArray();
+    //myDebug::dump($matches[0]);
+    //myDebug::dump($q->fetchArray(), true);
 
-    throw new sfException('We don\'t need a redirection');
-    $this->redirect(url_for('productCard', $product));
+
+    //throw new sfException('We don\'t need a redirection');
+    $new_product = ProductTable::getInstance()->getById($matches[0]['id']);
+    $this->redirect(url_for('productCard', $new_product));
     //myDebug::dump($this->product);
     //$this->forward('productCard', 'show');
   }

@@ -155,7 +155,7 @@ class productComponents extends myComponents
     $q = ProductTable::getInstance()->createBaseQuery()->addWhere('product.group_id = ?', array($this->product->group_id, ));
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
 
-    $q = ProductPropertyRelationTable::getInstance()->createBaseQuery()->innerJoin('productPropertyRelation.Property property');
+    $q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
     $products_properties = $this->product->getPropertyRelation();
 
     foreach ($properties as $property)
@@ -173,9 +173,43 @@ class productComponents extends myComponents
           $values[$products_property->id]->mapValue('is_selected', true);
         }
       }
-      //myDebug::dump();
+      $value_to_map = array();
+      foreach ($values as $id => $value)
+      {
+        $realValue = $value->getRealValue();
+        $value_to_map[$realValue]['value'] = $realValue;
+        switch ($property['type']):
+          case 'select':
+            //$value_to_map[$id]['value'] = $value['option_id'];
+            foreach ($property['Option'] as $option)
+            {
+              if ($option['id'] == $value['option_id'])
+              {
+                $value_to_map[$realValue]['name'] = $option['value'];
+                break;
+              }
+            }
+          break;
+          case 'string': case 'integer': case 'float': case 'text':
+            $value_to_map[$realValue]['name'] = $value_to_map[$realValue]['value'];
+          break;
+          default:
+            $value_to_map[$id] = array('name' => '', 'value' => '', );
+          break;
+        endswitch;
+        if (isset($values[$id]['is_selected']))
+        {
+          $value_to_map[$realValue]['is_selected'] = $values[$id]['is_selected'];
+        }
+        elseif (!isset($value_to_map[$realValue]['is_selected']))
+        {
+          $value_to_map[$realValue]['is_selected'] = 0;
+        }
+      }
 
-      $property->mapValue('values', $values);
+      //$property->mapValue('old_values', sort($values));
+      sort($value_to_map);
+      $property->mapValue('values', $value_to_map);
     }
 
     $this->properties = $properties;
