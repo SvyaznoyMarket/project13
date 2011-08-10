@@ -213,6 +213,7 @@ $(document).ready(function() {
       $(this).find('input:submit').attr('disabled', true)
     },
     'form.ajax-submit.success': function(e, result) {
+      $(this).find('input:submit').attr('disabled', false)
       if (true == result.success) {
         $($(this).data('listTarget')).replaceWith(result.data.list)
         $.scrollTo('.' + result.data.element_id, 500, {
@@ -227,6 +228,9 @@ $(document).ready(function() {
   $('.product_comment_response-link').live({
     'content.update.prepare': function(e) {
       $('.product_comment_response-block').html('')
+    },
+    'content.update.success': function(e) {
+      $('.product_comment_response-block').find('textarea:first').focus()
     }
   })
 

@@ -1,6 +1,6 @@
 <ul class="product_comment-block product_<?php echo $product->id ?>_comment-block">
 <?php foreach ($list as $item): ?>
-  <li style="margin-left: <?php echo ($item['level'] * 40) ?>px" class="product_<?php echo $product->id ?>_comment_<?php echo $item['id'] ?>-block block-border">
+  <li style="margin-left: <?php echo ($item['level'] * 40) ?>px" class="product_<?php echo $product->id ?>_comment_<?php echo $item['id'] ?>-block block-shadow">
     <strong><?php echo $item['date'] ?></strong> от <?php echo $item['author'] ?>
 
     <div>

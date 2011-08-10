@@ -48,11 +48,14 @@ ul.inline li {
 .block-inline {
   padding-right: 10px;
 }
-.block-border {
+.block-shadow {
   padding: 5px;
 	-moz-border-radius: 9px 9px 9px 9px;
 	-webkit-border-radius: 9px 9px 9px 9px;
-  border: dashed 1px #ccc;
+  border: solid 1px #ddd;
+  -moz-box-shadow: 5px 5px 5px #ccc;
+  -webkit-box-shadow: 5px 5px 5px #ccc;
+  box-shadow: 5px 5px 5px #ccc;
 }
 
 .table td, .table th {
