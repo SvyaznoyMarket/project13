@@ -122,7 +122,9 @@ EventHandler = {
   'form.submit': function(e, param) {
     var el = $(e.target)
 
-    el.attr('action', el.attr('action') + (-1 != el.attr('action').indexOf('?') ? '&' : '?') + 'frame=true&reload-parent='+el.data('reload'))
+    if (window.isInFrame()) {
+      el.attr('action', el.attr('action') + (-1 != el.attr('action').indexOf('?') ? '&' : '?') + 'frame=true&reload-parent='+el.data('reload'))
+    }
   },
 
   // Ajax-отправка формы
