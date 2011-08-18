@@ -18,6 +18,7 @@ class userAddressActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->userAddressList = $this->getUser()->getGuardUser()->getAddressList();
+    $this->form = new UserAddressForm();
   }
 
   public function executeCreate(sfWebRequest $request)
@@ -31,6 +32,8 @@ class userAddressActions extends myActions
       {
         $this->form->getObject()->user_id = $this->getUser()->getGuardUser()->id;
         $this->form->save();
+
+        $this->redirect('userAddress');
       }
       catch (Exception $e)
       {
@@ -38,7 +41,9 @@ class userAddressActions extends myActions
       }
     }
 
-    $this->redirect('userAddress');
+    $this->userAddressList = $this->getUser()->getGuardUser()->getAddressList();
+
+    $this->setTemplate('index');
   }
 
   public function executeUpdate(sfRequest $request)
@@ -55,6 +60,8 @@ class userAddressActions extends myActions
       try
       {
         $this->form->save();
+
+        $this->redirect('userAddress');
       }
       catch (Exception $e)
       {
@@ -62,30 +69,26 @@ class userAddressActions extends myActions
       }
     }
 
-    $this->redirect('userAddress');
+    $this->userAddressList = $this->getUser()->getGuardUser()->getAddressList();
 
+    $this->setTemplate('index');
   }
 
   public function executeEdit(sfWebRequest $request)
   {
     $this->userAddress = $this->getRoute()->getObject();
-    $this->userAddressList = $this->getUser()->getGuardUser()->getAddressList();
-
     //если пользователь  пытается редактировать не свой адрес
-    $this->redirectIf($this->userAddress->user_id != $this->getUser()->getGuardUser()->id, 'userAddress');
+    $this->redirectUnless($this->userAddress->user_id == $this->getUser()->getGuardUser()->id, 'userAddress');
 
+    $this->userAddressList = $this->getUser()->getGuardUser()->getAddressList();
+    $this->form = new UserAddressForm($this->userAddress);
   }
 
   public function executeDelete(sfWebRequest $request)
   {
     $userAddress = $this->getRoute()->getObject();
+    $userAddress->delete();
 
-    UserAddressTable::getInstance()->createQuery()
-      ->delete()
-      ->where('id = ?', $userAddress->id)
-      ->execute()
-    ;
-
-    $this->redirect($this->getRequest()->getReferer());
+    $this->redirect('userAddress');
   }
 }

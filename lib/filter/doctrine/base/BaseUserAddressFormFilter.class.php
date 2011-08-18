@@ -15,7 +15,7 @@ abstract class BaseUserAddressFormFilter extends BaseFormFilterDoctrine
     $this->setWidgets(array(
       'user_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
       'city_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('City'), 'add_empty' => true)),
-      'name'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'name'    => new sfWidgetFormFilterInput(),
       'address' => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 

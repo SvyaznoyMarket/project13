@@ -13,7 +13,7 @@ class userAddressComponents extends myComponents
  /**
   * Executes list component
   *
-  * @param myDoctrineCollection $userTagList Коллекция пользовательских тегов
+  * @param myDoctrineCollection $userAddressList Коллекция адресов пользователя
   *
   */
   public function executeList()
@@ -32,21 +32,14 @@ class userAddressComponents extends myComponents
  /**
   * Executes form component
   *
-  * @param UserTagForm $form Форма пользовательских тегов
+  * @param UserAddressForm $form Форма адресов пользователя
   *
   */
   public function executeForm()
   {
     if (!isset($this->form))
     {
-      if (!isset($this->userAddress))
-      {
-        $this->form = new UserAddressForm();
-      }
-      else
-      {
-        $this->form = new UserAddressForm($this->userAddress);
-      }
+      $this->form = new UserAddressForm();
     }
   }
  /**

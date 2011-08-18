@@ -26,7 +26,7 @@ abstract class BaseUserAddressForm extends BaseFormDoctrine
       'id'      => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'user_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'))),
       'city_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('City'))),
-      'name'    => new sfValidatorString(array('max_length' => 255)),
+      'name'    => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'address' => new sfValidatorString(),
     ));
 

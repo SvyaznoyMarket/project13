@@ -14,6 +14,6 @@
   <?php endif ?>
 
   <div class="block-inline">
-    <?php include_component('userAddress', 'form') ?>
+    <?php include_component('userAddress', 'form', array('form' => $form)) ?>
   </div>
 </div>

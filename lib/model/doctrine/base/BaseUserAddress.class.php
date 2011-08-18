@@ -56,8 +56,7 @@ abstract class BaseUserAddress extends myDoctrineRecord
              ));
         $this->hasColumn('name', 'string', 255, array(
              'type' => 'string',
-             'notnull' => true,
-             'notblank' => true,
+             'notnull' => false,
              'length' => 255,
              ));
         $this->hasColumn('address', 'string', null, array(
