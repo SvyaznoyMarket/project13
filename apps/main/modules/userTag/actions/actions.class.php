@@ -17,6 +17,7 @@ class userTagActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    $this->form = new UserTagForm();
     $this->userTagList = $this->getUser()->getGuardUser()->getTagList();
   }
  /**

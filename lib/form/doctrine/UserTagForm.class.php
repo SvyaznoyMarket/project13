@@ -14,9 +14,9 @@ class UserTagForm extends BaseUserTagForm
   {
     parent::configure();
 
-    $this->widgetSchema->setLabels(array(
-      'name' => 'Название',
-    ));
+    $this->widgetSchema['name'] = new sfWidgetFormInputText();
+    $this->widgetSchema['name']->setLabel('Название');
+    $this->validatorSchema['name'] = new sfValidatorString(array('max_length' => 255, 'required' => true));
 
     $this->useFields(array(
       'name',
