@@ -411,13 +411,20 @@ order:
 #
 # order new
 order_new:
-  url:   /orders/new
-  param: { module: order, action: new }
+  url:   /orders/new/:step
+  param: { module: order, action: new, step: 1 }
 #
-# order step
-order_step:
-  url:   /orders/step/:step
-  param: { module: order, action: step, step: 1 }
+# order field
+order_updateField:
+  url:   /orders/update-field/:step
+  param: { module: order, action: updateField, step: 1 }
+  requirements:
+    sf_method: [ post ]
+#
+# order edit
+order_edit:
+  url:   /orders/edit/:step
+  param: { module: order, action: edit, step: 1 }
 #
 # order accept
 order_accept:

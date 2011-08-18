@@ -7,6 +7,15 @@ PaymentMethod:
     name:              { type: string(255), notnull: true, notblank: true }
     is_active:         { type: boolean, notnull: true, default: false, comment: 'Способ оплаты активен?' }
 
+DeliveryType:
+  options:
+    comment: 'Тип доставки'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    is_active:         { type: boolean, notnull: true, default: false, comment: 'Тип доставки активен?' }
+
 Order:
   options:
     comment: 'Заказ пользователя'
@@ -14,11 +23,19 @@ Order:
     id:                { type: integer(20), autoincrement: true, primary: true }
     token:             { type: string(64), unique: true, notnull: true, notblank: true, comment: 'Номер заказа' }
     user_id:           { type: integer(20), notnull: false, default: null }
-    payment_method_id: { type: integer(20), notnull: true }
+    payment_method_id: { type: integer(20), notnull: false, default: null }
     sum:               { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Стоимость заказа' }
+    person_type:       { type: enum, length: 10, values: [individual, legal], notnull: false, default: null }
+    region_id:         { type: integer(20), notnull: false, default: null }
+    receipt_type:      { type: enum, length: 10, values: [pickup, delivery], notnull: false, default: null, comment: 'Тип получения: доставка или самовывоз' }
+    delivery_type_id:  { type: integer(20), notnull: false, default: null } # стандартная, экспресс
+    delivered_at:      { type: timestamp, format: Y-m-d H:m:i, comment: 'Дата доставки' }
+    address:           { type: string, notnull: false, default: null, comment: 'Адрес доставки или получения' }
   relations:
-    User:              { class: User, foreignAlias: Order, local: user_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
-    PaymentMethod:     { class: PaymentMethod, foreignAlias: Order, local: payment_method_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    User:              { class: User, foreignAlias: Order, local: user_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    PaymentMethod:     { class: PaymentMethod, foreignAlias: Order, local: payment_method_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    DeliveryType:      { class: DeliveryType, foreignAlias: Order, local: delivery_type_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    Region:            { class: Region, autoComplete: false, local: region_id, foreign: id, type: one, onDelete: SET NULL }
 
 OrderProductRelation:
   options:

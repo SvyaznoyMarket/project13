@@ -1,5 +1,4 @@
 <table class="table">
-<<<<<<< HEAD
   <tr>
     <th>Товар</th>
     <th>Цена</th>

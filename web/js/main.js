@@ -300,4 +300,56 @@ $(document).ready(function() {
         .fail(function(error) {})
     })
 
+
+  $('.order-form').bind({
+    'change': function(e) {
+      $(this).trigger('update', [true])
+    },
+    'update': function(e, effect) {
+
+      var form = $(this)
+      var hidden = []
+
+      // если способ получения не доставка
+      var el = form.find('[name="order[receipt_type]"]:checked')
+      if (!el.length || ('delivery' != el.val())) {
+        hidden.push(
+          form.find('[name="order[delivery_type_id]"]').closest('.form-row', form).data('position'),
+          form.find('[name="order[delivered_at]"]').closest('.form-row', form).data('position'),
+          form.find('[name="order[address]"]').closest('.form-row', form).data('position')
+        )
+      }
+      console.info(hidden);
+
+      // если лицо юридическое
+      var el = form.find('[name="order[person_type]"]:checked')
+      if (el.length && ('legal' == el.val())) {
+        form.ajaxSubmit({
+          url: form.data('updateUrl'),
+          type: 'post',
+          data: {
+            field: 'delivery_type_id'
+          },
+          dataType: 'json',
+          success: function(result) {
+            console.info(result);
+          }
+        })
+      }
+
+      form.find('.form-row').each(function(i, el) {
+        var el = $(el)
+
+        if (-1 == $.inArray(el.data('position'), hidden)) {
+          if (true == effect) {el.show('fast')} else {el.show()}
+        }
+        else {
+          if (true == effect) {el.hide('fast')} else {el.hide()}
+        }
+      })
+    }
+  })
+
+  $('.order-form').trigger('update', [false])
+
 })

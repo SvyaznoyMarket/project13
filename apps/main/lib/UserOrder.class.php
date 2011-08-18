@@ -4,29 +4,21 @@ class UserOrder extends BaseUserData
 {
   function __construct($parameters = array())
   {
-    $parameters = myToolkit::arrayDeepMerge(array('forms' => array(), ), $parameters);
+    $parameters = myToolkit::arrayDeepMerge(array('order' => array(), ), $parameters);
     $this->parameterHolder = new sfParameterHolder();
     $this->parameterHolder->add($parameters);
   }
 
-  public function getForm(integer $step)
+  public function get()
   {
-    $forms = $this->parameterHolder->get('forms');
+    $order = new Order();
+    $order->fromArray($this->parameterHolder->get('order', array()));
 
-    if (!isset($forms[$step]) || !is_array($forms[$step]))
-    {
-      $forms[$step] = array();
-    }
-
-    return $forms[$step];
+    return $order;
   }
 
-  public function setForm(integer $step, BaseForm $form)
+  public function set(Order $order)
   {
-    $forms = $this->parameterHolder->get('forms');
-
-    $forms[$step] = $form->getValues();
-
-    $this->parameterHolder->set('forms', $forms);
+    $this->parameterHolder->set('order', $order->toArray());
   }
 }

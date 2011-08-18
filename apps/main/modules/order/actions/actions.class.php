@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class orderActions extends sfActions
+class orderActions extends myActions
 {
   const LAST_STEP = 3;
 
@@ -36,35 +36,67 @@ class orderActions extends sfActions
   */
   public function executeNew(sfWebRequest $request)
   {
+    $this->step = $request->getParameter('step', 1);
 
-  }
- /**
-  * Executes step action
-  *
-  * @param sfRequest $request A request object
-  */
-  public function executeStep(sfWebRequest $request)
-  {
-    $this->step = $request['step'];
-    $class = sfInflector::camelize("order_step_{$this->step}_form");
-    $this->forward404Unless(!empty($this->step) && class_exists($class), 'Invalid order step');
-
-    $form = new $class($this->getUser()->getOrder()->getForm($this->step));
+    $this->form = $this->getOrderForm($this->step);
     if ($request->isMethod('post'))
     {
-      if ($form->isValid())
+      $this->form->bind($request->getParameter($this->form->getName()));
+      if ($this->form->isValid())
       {
-        $this->getUser()->getOrder()->setForm($this->step, $form);
+        $order = $this->form->updateObject();
+        $this->getUser()->getOrder()->set($order);
 
         if (self::LAST_STEP == $this->step)
         {
           $this->redirect('order_create');
         }
         else {
-          $this->redirect('order_step', array('step' => $this->step + 1));
+          $this->redirect('order_new', array('step' => $this->getNextStep($order)));
         }
       }
     }
+  }
+ /**
+  * Executes updateField action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeUpdateField(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isXmlHttpRequest());
+
+    $this->step = $request->getParameter('step', 1);
+    $field = $request['field'];
+
+    $this->form = $this->getOrderForm($this->step);
+
+    $this->form->bind($request->getParameter($this->form->getName()));
+
+    if (isset($this->form[$field]))
+    {
+      $result = array(
+        'success' => true,
+        'data'    => array(
+          'content' => $this->form[$field]->renderRow(),
+        ),
+      );
+    }
+    else {
+      $result = array(
+        'success' => false,
+      );
+    }
+
+    return $this->renderJson($result);
+  }
+ /**
+  * Executes edit action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeEdit(sfWebRequest $request)
+  {
   }
  /**
   * Executes create action
@@ -74,5 +106,34 @@ class orderActions extends sfActions
   public function executeCreate(sfWebRequest $request)
   {
 
+  }
+
+
+
+  protected function getOrderForm($step)
+  {
+    $class = sfInflector::camelize("order_step_{$step}_form");
+    $this->forward404Unless(!empty($step) && class_exists($class), 'Invalid order step');
+
+    return new $class($this->getUser()->getOrder()->get());
+  }
+
+  protected function getNextStep(Order $order)
+  {
+    $step = 1;
+
+    if (true
+      && !empty($order->region_id)
+      && !empty($order->address)
+    ) {
+      $step = 2;
+    }
+    if (true
+      && !empty($order->payment_method_id)
+    ) {
+      $step = 3;
+    }
+
+    return $step;
   }
 }

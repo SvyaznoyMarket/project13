@@ -77,17 +77,22 @@ ul.inline li {
   list-style: none;
   padding-left: 10px;
 }
+  .form > ul {
+    padding-left: 0;
+  }
+  .form-row > label {
+    display: block;
+    font-weight: bold;
+  }
 .form-row {
   margin-bottom: 20px;
+  list-style: none;
 }
   .form-row .error_list {
+    padding-left: 14px;
     font-size: 70%;
     color: #ff0000;
   }
-.form-row-label {
-  display: block;
-  font-weight: bold;
-}
 
 
 .gray {

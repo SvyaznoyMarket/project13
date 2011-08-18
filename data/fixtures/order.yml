@@ -11,3 +11,13 @@ PaymentMethod:
     token: non-cash
     name: 'Безналичный расчет'
     is_active: true
+
+DeliveryType:
+  DeliveryType_standart:
+    token: standart
+    name: стандартная
+    is_active: true
+  DeliveryType_express:
+    token: express
+    name: экспресс
+    is_active: true

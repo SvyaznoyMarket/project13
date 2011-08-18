@@ -1,1 +1,1 @@
-<?php echo link_to('в корзине', '@cart', array('class' => 'event-click cart cart-show', 'data-event' => 'window.open', 'data-reload' => 'true')) ?>
+<?php echo link_to('в корзине', '@cart', array('class' => 'cart cart-show')) ?>

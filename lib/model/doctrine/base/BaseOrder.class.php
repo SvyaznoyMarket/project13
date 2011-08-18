@@ -10,8 +10,16 @@
  * @property integer $user_id
  * @property integer $payment_method_id
  * @property decimal $sum
+ * @property enum $person_type
+ * @property integer $region_id
+ * @property enum $receipt_type
+ * @property integer $delivery_type_id
+ * @property timestamp $delivered_at
+ * @property string $address
  * @property User $User
  * @property PaymentMethod $PaymentMethod
+ * @property DeliveryType $DeliveryType
+ * @property Region $Region
  * @property Doctrine_Collection $ProductRelation
  * 
  * @method integer             getId()                Returns the current record's "id" value
@@ -19,16 +27,32 @@
  * @method integer             getUserId()            Returns the current record's "user_id" value
  * @method integer             getPaymentMethodId()   Returns the current record's "payment_method_id" value
  * @method decimal             getSum()               Returns the current record's "sum" value
+ * @method enum                getPersonType()        Returns the current record's "person_type" value
+ * @method integer             getRegionId()          Returns the current record's "region_id" value
+ * @method enum                getReceiptType()       Returns the current record's "receipt_type" value
+ * @method integer             getDeliveryTypeId()    Returns the current record's "delivery_type_id" value
+ * @method timestamp           getDeliveredAt()       Returns the current record's "delivered_at" value
+ * @method string              getAddress()           Returns the current record's "address" value
  * @method User                getUser()              Returns the current record's "User" value
  * @method PaymentMethod       getPaymentMethod()     Returns the current record's "PaymentMethod" value
+ * @method DeliveryType        getDeliveryType()      Returns the current record's "DeliveryType" value
+ * @method Region              getRegion()            Returns the current record's "Region" value
  * @method Doctrine_Collection getProductRelation()   Returns the current record's "ProductRelation" collection
  * @method Order               setId()                Sets the current record's "id" value
  * @method Order               setToken()             Sets the current record's "token" value
  * @method Order               setUserId()            Sets the current record's "user_id" value
  * @method Order               setPaymentMethodId()   Sets the current record's "payment_method_id" value
  * @method Order               setSum()               Sets the current record's "sum" value
+ * @method Order               setPersonType()        Sets the current record's "person_type" value
+ * @method Order               setRegionId()          Sets the current record's "region_id" value
+ * @method Order               setReceiptType()       Sets the current record's "receipt_type" value
+ * @method Order               setDeliveryTypeId()    Sets the current record's "delivery_type_id" value
+ * @method Order               setDeliveredAt()       Sets the current record's "delivered_at" value
+ * @method Order               setAddress()           Sets the current record's "address" value
  * @method Order               setUser()              Sets the current record's "User" value
  * @method Order               setPaymentMethod()     Sets the current record's "PaymentMethod" value
+ * @method Order               setDeliveryType()      Sets the current record's "DeliveryType" value
+ * @method Order               setRegion()            Sets the current record's "Region" value
  * @method Order               setProductRelation()   Sets the current record's "ProductRelation" collection
  * 
  * @package    enter
@@ -62,7 +86,7 @@ abstract class BaseOrder extends myDoctrineRecord
              ));
         $this->hasColumn('payment_method_id', 'integer', 20, array(
              'type' => 'integer',
-             'notnull' => true,
+             'notnull' => false,
              'length' => 20,
              ));
         $this->hasColumn('sum', 'decimal', 12, array(
@@ -72,6 +96,47 @@ abstract class BaseOrder extends myDoctrineRecord
              'comment' => 'Стоимость заказа',
              'length' => 12,
              'scale' => '2',
+             ));
+        $this->hasColumn('person_type', 'enum', 10, array(
+             'type' => 'enum',
+             'length' => 10,
+             'values' => 
+             array(
+              0 => 'individual',
+              1 => 'legal',
+             ),
+             'notnull' => false,
+             ));
+        $this->hasColumn('region_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'length' => 20,
+             ));
+        $this->hasColumn('receipt_type', 'enum', 10, array(
+             'type' => 'enum',
+             'length' => 10,
+             'values' => 
+             array(
+              0 => 'pickup',
+              1 => 'delivery',
+             ),
+             'notnull' => false,
+             'comment' => 'Тип получения: доставка или самовывоз',
+             ));
+        $this->hasColumn('delivery_type_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'length' => 20,
+             ));
+        $this->hasColumn('delivered_at', 'timestamp', null, array(
+             'type' => 'timestamp',
+             'format' => 'Y-m-d H:m:i',
+             'comment' => 'Дата доставки',
+             ));
+        $this->hasColumn('address', 'string', null, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Адрес доставки или получения',
              ));
 
         $this->option('comment', 'Заказ пользователя');
@@ -83,12 +148,22 @@ abstract class BaseOrder extends myDoctrineRecord
         $this->hasOne('User', array(
              'local' => 'user_id',
              'foreign' => 'id',
-             'onDelete' => 'RESTRICT'));
+             'onDelete' => 'SET NULL'));
 
         $this->hasOne('PaymentMethod', array(
              'local' => 'payment_method_id',
              'foreign' => 'id',
-             'onDelete' => 'RESTRICT'));
+             'onDelete' => 'SET NULL'));
+
+        $this->hasOne('DeliveryType', array(
+             'local' => 'delivery_type_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
+
+        $this->hasOne('Region', array(
+             'local' => 'region_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
 
         $this->hasMany('OrderProductRelation as ProductRelation', array(
              'local' => 'id',
