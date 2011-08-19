@@ -1,25 +1,14 @@
 <?php
 
-class sfWidgetFormSchemaFormatterDefault extends sfWidgetFormSchemaFormatter
+class sfWidgetFormSchemaFormatterDefault extends myWidgetFormSchemaFormatter
 {
   protected
-    $rowFormat       = "<li %position% class=\"form-row\">\n %label%\n %error%\n  %field%%help%\n%hidden_fields%</li>\n",
+    $rowFormat       = "<li %data_field% class=\"form-row\">\n %label%\n %error%\n  %field%%help%\n%hidden_fields%</li>\n",
     $errorRowFormat  = "<li>\n%errors%</li>\n",
     $helpFormat      = "<br /><span class=\"help\">%help%</span>",
-    $decoratorFormat = "<ul class=\"form-content\">\n  %content%</ul>";
+    $decoratorFormat = "<ul class=\"form-content\">\n  %content%</ul>",
 
-  public function formatRow($label, $field, $errors = array(), $help = '', $hiddenFields = null)
-  {
-    static $position = 0;
-    $position++;
+    $requiredTemplate= '&nbsp;<pow class="required">*</pow>',
+    $validatorSchema = null;
 
-    return strtr($this->getRowFormat(), array(
-      '%position%'      => 'data-position="'.$position.'"',
-      '%label%'         => $label,
-      '%field%'         => $field,
-      '%error%'         => $this->formatErrorsForRow($errors),
-      '%help%'          => $this->formatHelp($help),
-      '%hidden_fields%' => null === $hiddenFields ? '%hidden_fields%' : $hiddenFields,
-    ));
-  }
 }
