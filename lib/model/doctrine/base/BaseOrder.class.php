@@ -16,44 +16,56 @@
  * @property integer $delivery_type_id
  * @property timestamp $delivered_at
  * @property string $address
+ * @property string $recipient_first_name
+ * @property string $recipient_last_name
+ * @property string $recipient_middle_name
+ * @property string $recipient_phonenumbers
  * @property User $User
  * @property PaymentMethod $PaymentMethod
  * @property DeliveryType $DeliveryType
  * @property Region $Region
  * @property Doctrine_Collection $ProductRelation
  * 
- * @method integer             getId()                Returns the current record's "id" value
- * @method string              getToken()             Returns the current record's "token" value
- * @method integer             getUserId()            Returns the current record's "user_id" value
- * @method integer             getPaymentMethodId()   Returns the current record's "payment_method_id" value
- * @method decimal             getSum()               Returns the current record's "sum" value
- * @method enum                getPersonType()        Returns the current record's "person_type" value
- * @method integer             getRegionId()          Returns the current record's "region_id" value
- * @method enum                getReceiptType()       Returns the current record's "receipt_type" value
- * @method integer             getDeliveryTypeId()    Returns the current record's "delivery_type_id" value
- * @method timestamp           getDeliveredAt()       Returns the current record's "delivered_at" value
- * @method string              getAddress()           Returns the current record's "address" value
- * @method User                getUser()              Returns the current record's "User" value
- * @method PaymentMethod       getPaymentMethod()     Returns the current record's "PaymentMethod" value
- * @method DeliveryType        getDeliveryType()      Returns the current record's "DeliveryType" value
- * @method Region              getRegion()            Returns the current record's "Region" value
- * @method Doctrine_Collection getProductRelation()   Returns the current record's "ProductRelation" collection
- * @method Order               setId()                Sets the current record's "id" value
- * @method Order               setToken()             Sets the current record's "token" value
- * @method Order               setUserId()            Sets the current record's "user_id" value
- * @method Order               setPaymentMethodId()   Sets the current record's "payment_method_id" value
- * @method Order               setSum()               Sets the current record's "sum" value
- * @method Order               setPersonType()        Sets the current record's "person_type" value
- * @method Order               setRegionId()          Sets the current record's "region_id" value
- * @method Order               setReceiptType()       Sets the current record's "receipt_type" value
- * @method Order               setDeliveryTypeId()    Sets the current record's "delivery_type_id" value
- * @method Order               setDeliveredAt()       Sets the current record's "delivered_at" value
- * @method Order               setAddress()           Sets the current record's "address" value
- * @method Order               setUser()              Sets the current record's "User" value
- * @method Order               setPaymentMethod()     Sets the current record's "PaymentMethod" value
- * @method Order               setDeliveryType()      Sets the current record's "DeliveryType" value
- * @method Order               setRegion()            Sets the current record's "Region" value
- * @method Order               setProductRelation()   Sets the current record's "ProductRelation" collection
+ * @method integer             getId()                     Returns the current record's "id" value
+ * @method string              getToken()                  Returns the current record's "token" value
+ * @method integer             getUserId()                 Returns the current record's "user_id" value
+ * @method integer             getPaymentMethodId()        Returns the current record's "payment_method_id" value
+ * @method decimal             getSum()                    Returns the current record's "sum" value
+ * @method enum                getPersonType()             Returns the current record's "person_type" value
+ * @method integer             getRegionId()               Returns the current record's "region_id" value
+ * @method enum                getReceiptType()            Returns the current record's "receipt_type" value
+ * @method integer             getDeliveryTypeId()         Returns the current record's "delivery_type_id" value
+ * @method timestamp           getDeliveredAt()            Returns the current record's "delivered_at" value
+ * @method string              getAddress()                Returns the current record's "address" value
+ * @method string              getRecipientFirstName()     Returns the current record's "recipient_first_name" value
+ * @method string              getRecipientLastName()      Returns the current record's "recipient_last_name" value
+ * @method string              getRecipientMiddleName()    Returns the current record's "recipient_middle_name" value
+ * @method string              getRecipientPhonenumbers()  Returns the current record's "recipient_phonenumbers" value
+ * @method User                getUser()                   Returns the current record's "User" value
+ * @method PaymentMethod       getPaymentMethod()          Returns the current record's "PaymentMethod" value
+ * @method DeliveryType        getDeliveryType()           Returns the current record's "DeliveryType" value
+ * @method Region              getRegion()                 Returns the current record's "Region" value
+ * @method Doctrine_Collection getProductRelation()        Returns the current record's "ProductRelation" collection
+ * @method Order               setId()                     Sets the current record's "id" value
+ * @method Order               setToken()                  Sets the current record's "token" value
+ * @method Order               setUserId()                 Sets the current record's "user_id" value
+ * @method Order               setPaymentMethodId()        Sets the current record's "payment_method_id" value
+ * @method Order               setSum()                    Sets the current record's "sum" value
+ * @method Order               setPersonType()             Sets the current record's "person_type" value
+ * @method Order               setRegionId()               Sets the current record's "region_id" value
+ * @method Order               setReceiptType()            Sets the current record's "receipt_type" value
+ * @method Order               setDeliveryTypeId()         Sets the current record's "delivery_type_id" value
+ * @method Order               setDeliveredAt()            Sets the current record's "delivered_at" value
+ * @method Order               setAddress()                Sets the current record's "address" value
+ * @method Order               setRecipientFirstName()     Sets the current record's "recipient_first_name" value
+ * @method Order               setRecipientLastName()      Sets the current record's "recipient_last_name" value
+ * @method Order               setRecipientMiddleName()    Sets the current record's "recipient_middle_name" value
+ * @method Order               setRecipientPhonenumbers()  Sets the current record's "recipient_phonenumbers" value
+ * @method Order               setUser()                   Sets the current record's "User" value
+ * @method Order               setPaymentMethod()          Sets the current record's "PaymentMethod" value
+ * @method Order               setDeliveryType()           Sets the current record's "DeliveryType" value
+ * @method Order               setRegion()                 Sets the current record's "Region" value
+ * @method Order               setProductRelation()        Sets the current record's "ProductRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -137,6 +149,30 @@ abstract class BaseOrder extends myDoctrineRecord
              'type' => 'string',
              'notnull' => false,
              'comment' => 'Адрес доставки или получения',
+             ));
+        $this->hasColumn('recipient_first_name', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Имя получателя',
+             'length' => 255,
+             ));
+        $this->hasColumn('recipient_last_name', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Фамилия получателя',
+             'length' => 255,
+             ));
+        $this->hasColumn('recipient_middle_name', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Отчество получателя',
+             'length' => 255,
+             ));
+        $this->hasColumn('recipient_phonenumbers', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Телефоны получателя',
+             'length' => 255,
              ));
 
         $this->option('comment', 'Заказ пользователя');

@@ -3,7 +3,7 @@
 class myWidgetFormSchemaFormatter extends sfWidgetFormSchemaFormatter
 {
   protected
-    $rowFormat                 = "<li %data_field% class=\"form-row\">\n %label%\n %error%\n  %field%%help%\n%hidden_fields%</li>\n",
+    $rowFormat                 = "<li %data_field% class=\"form-row\">\n %label%\n %error%\n  <div class=\"content\">%field%</div>%help%\n%hidden_fields%</li>\n",
     $helpFormat                = "<br /><span class=\"help\">%help%</span>",
     $errorListFormatInARow     = "  <ul class=\"error_list\">\n%errors%  </ul>\n",
     $errorRowFormat            = "<li>\n%errors%</li>\n",

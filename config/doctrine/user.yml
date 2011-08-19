@@ -76,8 +76,8 @@ UserAddress:
     id:                { type: integer(20), autoincrement: true, primary: true }
     user_id:           { type: integer(20), notnull: true }
     city_id:           { type: integer(20), notnull: true }
-    name:              { type: string(255), notnull: true, notblank: true }
+    name:              { type: string(255), notnull: false, default: null }
     address:           { type: string, notnull: true }
   relations:
-    User:              { class: User, foreignAlias: ProductRating, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    User:              { class: User, foreignAlias: Address, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     City:              { class: Region, foreignAlias: UserAddress, local: city_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }

@@ -90,5 +90,18 @@ class orderComponents extends myComponents
   {
 
   }
+ /**
+  * Executes field_address component
+  *
+  * @param OrderStep1Form $form Форма заказа 1-го шага
+  */
+  public function executeField_address()
+  {
+    $this->setVar('widget', new sfWidgetFormChoice(array(
+      'choices'  => $this->getUser()->isAuthenticated() ? array_merge(array('' => ''), UserAddressTable::getInstance()->getListByUser($this->getUser()->getGuardUser()->id)->toKeyValueArray('address', 'name')) : array(),
+      'multiple' => false,
+      'expanded' => false,
+    )), true);
+  }
 }
 

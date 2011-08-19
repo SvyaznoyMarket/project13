@@ -1,7 +1,7 @@
 PaymentMethod:
   PaymentMethod_card:
     token: card
-    name: 'Карточка'
+    name: 'Карта'
     is_active: true
   PaymentMethod_cash:
     token: cash

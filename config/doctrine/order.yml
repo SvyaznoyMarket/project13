@@ -31,6 +31,10 @@ Order:
     delivery_type_id:  { type: integer(20), notnull: false, default: null } # стандартная, экспресс
     delivered_at:      { type: timestamp, format: Y-m-d H:m:i, comment: 'Дата доставки' }
     address:           { type: string, notnull: false, default: null, comment: 'Адрес доставки или получения' }
+    recipient_first_name:   { type: string(255), notnull: false, default: null, comment: 'Имя получателя' }
+    recipient_last_name:    { type: string(255), notnull: false, default: null, comment: 'Фамилия получателя' }
+    recipient_middle_name:  { type: string(255), notnull: false, default: null, comment: 'Отчество получателя' }
+    recipient_phonenumbers: { type: string(255), notnull: false, default: null, comment: 'Телефоны получателя' }
   relations:
     User:              { class: User, foreignAlias: Order, local: user_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     PaymentMethod:     { class: PaymentMethod, foreignAlias: Order, local: payment_method_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }

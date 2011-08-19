@@ -11,6 +11,7 @@
  * @property Doctrine_Collection $DelayedProduct
  * @property Doctrine_Collection $ProductNotice
  * @property Doctrine_Collection $ProductRating
+ * @property Doctrine_Collection $Address
  * 
  * @method Doctrine_Collection getOrder()          Returns the current record's "Order" collection
  * @method Doctrine_Collection getComment()        Returns the current record's "Comment" collection
@@ -18,12 +19,14 @@
  * @method Doctrine_Collection getDelayedProduct() Returns the current record's "DelayedProduct" collection
  * @method Doctrine_Collection getProductNotice()  Returns the current record's "ProductNotice" collection
  * @method Doctrine_Collection getProductRating()  Returns the current record's "ProductRating" collection
+ * @method Doctrine_Collection getAddress()        Returns the current record's "Address" collection
  * @method User                setOrder()          Sets the current record's "Order" collection
  * @method User                setComment()        Sets the current record's "Comment" collection
  * @method User                setTag()            Sets the current record's "Tag" collection
  * @method User                setDelayedProduct() Sets the current record's "DelayedProduct" collection
  * @method User                setProductNotice()  Sets the current record's "ProductNotice" collection
  * @method User                setProductRating()  Sets the current record's "ProductRating" collection
+ * @method User                setAddress()        Sets the current record's "Address" collection
  * 
  * @package    enter
  * @subpackage model
@@ -56,6 +59,10 @@ abstract class BaseUser extends GuardUser
              'foreign' => 'user_id'));
 
         $this->hasMany('UserProductRating as ProductRating', array(
+             'local' => 'id',
+             'foreign' => 'user_id'));
+
+        $this->hasMany('UserAddress as Address', array(
              'local' => 'id',
              'foreign' => 'user_id'));
     }

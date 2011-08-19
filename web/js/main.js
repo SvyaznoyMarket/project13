@@ -302,54 +302,85 @@ $(document).ready(function() {
 
 
   $('.order-form').bind({
-    'change': function(e) {
-      $(this).trigger('update', [true])
-    },
-    'update': function(e, effect) {
+    'change': function(e, effect) {
 
       var form = $(this)
       var hidden = []
+
+      if (undefined == effect) {
+        effect = true
+      }
 
       // если способ получения не доставка
       var el = form.find('[name="order[receipt_type]"]:checked')
       if (!el.length || ('delivery' != el.val())) {
         hidden.push(
-          form.find('[name="order[delivery_type_id]"]').closest('.form-row', form).data('position'),
-          form.find('[name="order[delivered_at]"]').closest('.form-row', form).data('position'),
-          form.find('[name="order[address]"]').closest('.form-row', form).data('position')
+          'delivery_type_id',
+          'delivered_at',
+          'address'
         )
       }
-      console.info(hidden);
 
-      // если лицо юридическое
-      var el = form.find('[name="order[person_type]"]:checked')
-      if (el.length && ('legal' == el.val())) {
-        form.ajaxSubmit({
-          url: form.data('updateUrl'),
-          type: 'post',
-          data: {
-            field: 'delivery_type_id'
-          },
-          dataType: 'json',
-          success: function(result) {
-            console.info(result);
+      function checkPersonType() {
+        var d = $.Deferred();
+
+        // если изменился тип лица (юридическое, физическое)
+        if ('order[person_type]' == $(e.target).attr('name')) {
+          var el = form.find('[name="order[person_type]"]:checked')
+          if (el.length) {
+            effect = $('.form-row[data-field="delivery_type_id"]').is(':visible')
+
+            $.post(form.data('updateFieldUrl'), {
+              order: {
+                person_type: el.val()
+              },
+              field: 'delivery_type_id'
+            }, function(result) {
+              if (true === result.success) {
+                $('.form-row[data-field="delivery_type_id"] .content').hide('fast', function() {
+                  $('.form-row[data-field="delivery_type_id"]').replaceWith(result.data.content)
+                  d.resolve()
+                })
+              }
+              else {
+                d.reject()
+              }
+            }, 'json')
+            .error(function() {
+              d.reject()
+            })
           }
-        })
-      }
-
-      form.find('.form-row').each(function(i, el) {
-        var el = $(el)
-
-        if (-1 == $.inArray(el.data('position'), hidden)) {
-          if (true == effect) {el.show('fast')} else {el.show()}
         }
         else {
-          if (true == effect) {el.hide('fast')} else {el.hide()}
+          d.resolve()
         }
+
+        return d.promise();
+      }
+
+      $.when(checkPersonType())
+      .then(function() {
+        form.find('.form-row').each(function(i, el) {
+          var el = $(el)
+
+          if (-1 == $.inArray(el.data('field'), hidden)) {
+            if (true == effect) {el.show('fast')} else {el.show()}
+          }
+          else {
+            if (true == effect) {el.hide('fast')} else {el.hide()}
+          }
+        })
       })
+
     }
   })
 
-  $('.order-form').trigger('update', [false])
+  $('.order_user_address').bind('change', function(e) {
+    var el = $(this)
+
+    $('[name="order[address]"]').val(el.val())
+  })
+
+  $('.order-form').trigger('change', [false])
 
 })

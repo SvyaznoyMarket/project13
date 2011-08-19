@@ -66,15 +66,20 @@ class orderActions extends myActions
   {
     $this->forward404Unless($request->isXmlHttpRequest());
 
-    $this->step = $request->getParameter('step', 1);
     $field = $request['field'];
+    $this->step = $request->getParameter('step', 1);
 
-    $this->form = $this->getOrderForm($this->step);
-
-    $this->form->bind($request->getParameter($this->form->getName()));
-
-    if (isset($this->form[$field]))
+    $form = new OrderForm($this->getUser()->getOrder()->get());
+    if (isset($form[$field]))
     {
+      $form->useFields(array_keys($request->getParameter($form->getName())));
+      $form->bind($request->getParameter($form->getName()));
+
+      $order = $form->updateObject();
+      $this->getUser()->getOrder()->set($order);
+
+      $this->form = $this->getOrderForm($this->step);
+
       $result = array(
         'success' => true,
         'data'    => array(

@@ -36,6 +36,7 @@ class OrderStep1Form extends BaseOrderForm
     if ('legal' == $this->object->person_type)
     {
       array_pop($choices);
+      $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
     }
     $this->widgetSchema['delivery_type_id'] = new sfWidgetFormChoice(array(
       'choices'  => $choices,
@@ -112,6 +113,11 @@ class OrderStep1Form extends BaseOrderForm
         ) as $name) {
           $this->validatorSchema[$name]->setOption('required', true);
         }
+      }
+
+      if ('legal' == $this->object->person_type)
+      {
+        $this->validatorSchema['delivery_type_id']->setOption('required', false);
       }
     }
 
