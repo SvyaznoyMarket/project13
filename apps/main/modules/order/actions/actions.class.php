@@ -10,7 +10,7 @@
  */
 class orderActions extends myActions
 {
-  const LAST_STEP = 3;
+  const LAST_STEP = 2;
 
   /**
   * Executes index action
@@ -49,7 +49,7 @@ class orderActions extends myActions
 
         if (self::LAST_STEP == $this->step)
         {
-          $this->redirect('order_create');
+          $this->redirect('order_confirm');
         }
         else {
           $this->redirect('order_new', array('step' => $this->getNextStep($order)));
@@ -104,6 +104,15 @@ class orderActions extends myActions
   {
   }
  /**
+  * Executes confirm action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeConfirm(sfWebRequest $request)
+  {
+
+  }
+ /**
   * Executes create action
   *
   * @param sfRequest $request A request object
@@ -129,14 +138,9 @@ class orderActions extends myActions
 
     if (true
       && !empty($order->region_id)
-      && !empty($order->address)
+      && (!empty($order->address) || !empty($order->shop_id))
     ) {
       $step = 2;
-    }
-    if (true
-      && !empty($order->payment_method_id)
-    ) {
-      $step = 3;
     }
 
     return $step;

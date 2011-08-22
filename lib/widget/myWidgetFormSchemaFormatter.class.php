@@ -10,7 +10,7 @@ class myWidgetFormSchemaFormatter extends sfWidgetFormSchemaFormatter
     $namedErrorRowFormatInARow = "    <li>%name%: %error%</li>\n",
     $decoratorFormat           = "<ul class=\"form-content\">\n  %content%</ul>",
 
-    $requiredTemplate          = '&nbsp;<pow class="required">*</pow>',
+    $requiredFormat            = ' <pow class="required">*</pow>',
     $validatorSchema           = null
   ;
 
@@ -37,7 +37,29 @@ class myWidgetFormSchemaFormatter extends sfWidgetFormSchemaFormatter
 
 	public function generateLabelName($name)
 	{
-		$label = parent::generateLabelName($name);
+		return parent::generateLabelName($name).$this->getRequiredMark($name);
+	}
+
+  public function generateLabel($name, $attributes = array())
+  {
+    $labelName = $this->generateLabelName($name);
+
+    if (false === $labelName)
+    {
+      return '';
+    }
+
+    if (!isset($attributes['for']))
+    {
+      $attributes['for'] = $this->widgetSchema->generateId($this->widgetSchema->generateName($name));
+    }
+
+    return $this->widgetSchema->renderContentTag('label', $labelName, $attributes);
+  }
+
+  protected function getRequiredMark($name)
+  {
+    $mark = '';
 
     if ($this->validatorSchema instanceof sfValidatorSchema)
     {
@@ -47,11 +69,11 @@ class myWidgetFormSchemaFormatter extends sfWidgetFormSchemaFormatter
         $field = $fields[$name];
         if ($field->hasOption('required') && $field->getOption('required'))
         {
-          $label .= $this->requiredTemplate;
+          $mark = $this->requiredFormat;
         }
       }
     }
 
-		return $label;
-	}
+    return $mark;
+  }
 }

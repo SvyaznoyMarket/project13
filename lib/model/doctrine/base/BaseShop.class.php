@@ -17,6 +17,7 @@
  * @property string $photo
  * @property string $description
  * @property Region $Region
+ * @property Doctrine_Collection $Order
  * @property Doctrine_Collection $Photo
  * @property Doctrine_Collection $Stock
  * 
@@ -32,6 +33,7 @@
  * @method string              getPhoto()        Returns the current record's "photo" value
  * @method string              getDescription()  Returns the current record's "description" value
  * @method Region              getRegion()       Returns the current record's "Region" value
+ * @method Doctrine_Collection getOrder()        Returns the current record's "Order" collection
  * @method Doctrine_Collection getPhoto()        Returns the current record's "Photo" collection
  * @method Doctrine_Collection getStock()        Returns the current record's "Stock" collection
  * @method Shop                setId()           Sets the current record's "id" value
@@ -46,6 +48,7 @@
  * @method Shop                setPhoto()        Sets the current record's "photo" value
  * @method Shop                setDescription()  Sets the current record's "description" value
  * @method Shop                setRegion()       Sets the current record's "Region" value
+ * @method Shop                setOrder()        Sets the current record's "Order" collection
  * @method Shop                setPhoto()        Sets the current record's "Photo" collection
  * @method Shop                setStock()        Sets the current record's "Stock" collection
  * 
@@ -135,6 +138,10 @@ abstract class BaseShop extends myDoctrineRecord
              'local' => 'region_id',
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
+
+        $this->hasMany('Order', array(
+             'local' => 'id',
+             'foreign' => 'shop_id'));
 
         $this->hasMany('ShopPhoto as Photo', array(
              'local' => 'id',

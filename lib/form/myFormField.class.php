@@ -17,4 +17,27 @@ class myFormField extends sfFormField
 
     return strtr($this->parent->getWidget()->getFormFormatter()->formatRow($this->renderLabel($label), $field, $error, $help, null, array('name' => $this->name)), array('%hidden_fields%' => ''));
   }
+
+  public function renderLabel($label = null, $attributes = array())
+  {
+    if (null === $this->parent)
+    {
+      throw new LogicException(sprintf('Unable to render the label for "%s".', $this->name));
+    }
+
+    if (null !== $label)
+    {
+      $currentLabel = $this->parent->getWidget()->getLabel($this->name);
+      $this->parent->getWidget()->setLabel($this->name, $label);
+    }
+
+    $html = $this->parent->getWidget()->getFormFormatter()->generateLabel($this->name, $attributes);
+
+    if (null !== $label)
+    {
+      $this->parent->getWidget()->setLabel($this->name, $currentLabel);
+    }
+
+    return $html;
+  }
 }

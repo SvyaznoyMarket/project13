@@ -15,7 +15,7 @@ label {
 ul li {
   margin-bottom: 10px;
 }
-ul.inline li {
+ul.inline li, li.inline {
   margin-right: 10px;
   display: inline;
 }
@@ -83,6 +83,9 @@ ul.inline li {
   .form-row > label {
     display: block;
     font-weight: bold;
+  }
+  pow.required {
+    color: #ff0000;
   }
 .form-row {
   margin-bottom: 20px;

@@ -426,10 +426,10 @@ order_edit:
   url:   /orders/edit/:step
   param: { module: order, action: edit, step: 1 }
 #
-# order accept
-order_accept:
-  url:   /orders/accept
-  param: { module: order, action: accept }
+# order confirm
+order_confirm:
+  url:   /orders/confirm
+  param: { module: order, action: confirm }
 #
 # order create
 order_create:

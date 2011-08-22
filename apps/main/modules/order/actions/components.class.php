@@ -103,5 +103,13 @@ class orderComponents extends myComponents
       'expanded' => false,
     )), true);
   }
+ /**
+  * Executes field_shop_id component
+  *
+  * @param OrderStep1Form $form Форма заказа 1-го шага
+  */
+  public function executeField_shop_id()
+  {
+  }
 }
 

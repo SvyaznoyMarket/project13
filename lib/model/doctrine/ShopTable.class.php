@@ -44,4 +44,17 @@ class ShopTable extends myDoctrineTable
 
     return $q->execute();
   }
+
+  public function getListByRegion($region_id, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->addWhere('shop.region_id = ?', $region_id);
+
+    $this->setQueryParameters($q, $params);
+
+    return $q->execute();
+  }
 }

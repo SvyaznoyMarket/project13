@@ -320,6 +320,11 @@ $(document).ready(function() {
           'address'
         )
       }
+      if (!el.length || ('pickup' != el.val())) {
+        hidden.push(
+          'shop_id'
+        )
+      }
 
       function checkPersonType() {
         var d = $.Deferred();

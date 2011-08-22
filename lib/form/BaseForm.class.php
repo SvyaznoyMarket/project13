@@ -116,9 +116,7 @@ class BaseForm extends sfFormSymfony
 
   public function render($attributes = array())
 	{
-		$formatter = $this->widgetSchema->getFormFormatter();
-
-		if (null != $formatter)
+		if ((null != $formatter = $this->widgetSchema->getFormFormatter()) && $this->getOption('mark_required', true))
     {
 			$formatter->setValidatorSchema($this->getValidatorSchema());
 		}

@@ -20,7 +20,7 @@
       <?php if (in_array($name, array('address'))): ?>
         <?php include_component('order', 'field_'.$name, array('form' => $form)) ?>
       <?php else: ?>
-        <?php echo $field->renderRow() ?>
+        <?php echo $form[$name]->renderRow() ?>
       <?php endif ?>
 
     <?php endforeach ?>

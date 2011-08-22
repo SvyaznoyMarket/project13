@@ -20,26 +20,28 @@ Order:
   options:
     comment: 'Заказ пользователя'
   columns:
-    id:                { type: integer(20), autoincrement: true, primary: true }
-    token:             { type: string(64), unique: true, notnull: true, notblank: true, comment: 'Номер заказа' }
-    user_id:           { type: integer(20), notnull: false, default: null }
-    payment_method_id: { type: integer(20), notnull: false, default: null }
-    sum:               { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Стоимость заказа' }
-    person_type:       { type: enum, length: 10, values: [individual, legal], notnull: false, default: null }
-    region_id:         { type: integer(20), notnull: false, default: null }
-    receipt_type:      { type: enum, length: 10, values: [pickup, delivery], notnull: false, default: null, comment: 'Тип получения: доставка или самовывоз' }
-    delivery_type_id:  { type: integer(20), notnull: false, default: null } # стандартная, экспресс
-    delivered_at:      { type: timestamp, format: Y-m-d H:m:i, comment: 'Дата доставки' }
-    address:           { type: string, notnull: false, default: null, comment: 'Адрес доставки или получения' }
+    id:                     { type: integer(20), autoincrement: true, primary: true }
+    token:                  { type: string(64), unique: true, notnull: true, notblank: true, comment: 'Номер заказа' }
+    user_id:                { type: integer(20), notnull: false, default: null }
+    payment_method_id:      { type: integer(20), notnull: false, default: null }
+    sum:                    { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Стоимость заказа' }
+    person_type:            { type: enum, length: 10, values: [individual, legal], notnull: false, default: null }
+    region_id:              { type: integer(20), notnull: false, default: null }
+    receipt_type:           { type: enum, length: 10, values: [pickup, delivery], notnull: false, default: null, comment: 'Тип получения: доставка или самовывоз' }
+    shop_id:                { type: integer(20), notnull: false, default: null }
+    delivery_type_id:       { type: integer(20), notnull: false, default: null } # стандартная, экспресс
+    delivered_at:           { type: timestamp, format: Y-m-d H:m:i, comment: 'Дата доставки' }
+    address:                { type: string, notnull: false, default: null, comment: 'Адрес доставки или получения' }
     recipient_first_name:   { type: string(255), notnull: false, default: null, comment: 'Имя получателя' }
     recipient_last_name:    { type: string(255), notnull: false, default: null, comment: 'Фамилия получателя' }
     recipient_middle_name:  { type: string(255), notnull: false, default: null, comment: 'Отчество получателя' }
     recipient_phonenumbers: { type: string(255), notnull: false, default: null, comment: 'Телефоны получателя' }
   relations:
-    User:              { class: User, foreignAlias: Order, local: user_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
-    PaymentMethod:     { class: PaymentMethod, foreignAlias: Order, local: payment_method_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
-    DeliveryType:      { class: DeliveryType, foreignAlias: Order, local: delivery_type_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
-    Region:            { class: Region, autoComplete: false, local: region_id, foreign: id, type: one, onDelete: SET NULL }
+    User:                   { class: User, foreignAlias: Order, local: user_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    PaymentMethod:          { class: PaymentMethod, foreignAlias: Order, local: payment_method_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    Shop:                   { class: Shop, foreignAlias: Order, local: shop_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    DeliveryType:           { class: DeliveryType, foreignAlias: Order, local: delivery_type_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    Region:                 { class: Region, autoComplete: false, local: region_id, foreign: id, type: one, onDelete: SET NULL }
 
 OrderProductRelation:
   options:

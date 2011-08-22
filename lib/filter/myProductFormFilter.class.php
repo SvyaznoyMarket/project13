@@ -6,6 +6,8 @@ class myProductFormFilter extends sfFormFilter
   {
     parent::configure();
 
+    $this->setOption('mark_required', false);
+
     $this->disableCSRFProtection();
 
     if (!$productCategory = $this->getOption('productCategory'))

@@ -28,7 +28,7 @@ class OrderStep1Form extends BaseOrderForm
       'choices'  => array('pickup' => 'самовывоз', 'delivery' => 'доставка'),
       'multiple' => false,
       'expanded' => true,
-    ));
+    ), array('class' => 'inline'));
     $this->widgetSchema['receipt_type']->setLabel('Способ получения');
     $this->validatorSchema['receipt_type'] = new sfValidatorChoice(array('choices' => OrderTable::getInstance()->getEnumValues('receipt_type'), 'required' => false));
 
@@ -75,10 +75,19 @@ class OrderStep1Form extends BaseOrderForm
     $this->widgetSchema['address']->setLabel('Адрес');
     $this->validatorSchema['address'] = new sfValidatorString(array('required' => false));
 
+    $this->widgetSchema['shop_id'] = new sfWidgetFormChoice(array(
+      'choices'  => array_merge(array('' => ''), ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name')),
+      'multiple' => false,
+      'expanded' => false,
+    ));
+    $this->widgetSchema['shop_id']->setLabel('Магазин');
+    $this->validatorSchema['shop_id'] = new sfValidatorDoctrineChoice(array('model' => 'Shop', 'required' => false));
+
     $this->useFields(array(
       'region_id',
       'person_type',
       'receipt_type',
+      'shop_id',
       'delivery_type_id',
       'delivered_at',
       'address',
@@ -104,14 +113,21 @@ class OrderStep1Form extends BaseOrderForm
         $this->validatorSchema[$name]->setOption('required', true);
       }
 
-      if (!empty($taintedValues['receipt_type']) && ('delivery' == $taintedValues['receipt_type']))
+      if (!empty($taintedValues['receipt_type']))
       {
-        foreach (array(
-          'delivery_type_id',
-          'delivered_at',
-          'address',
-        ) as $name) {
-          $this->validatorSchema[$name]->setOption('required', true);
+        if ('delivery' == $taintedValues['receipt_type'])
+        {
+          foreach (array(
+            'delivery_type_id',
+            'delivered_at',
+            'address',
+          ) as $name) {
+            $this->validatorSchema[$name]->setOption('required', true);
+          }
+        }
+        else if ('pickup' == $taintedValues['receipt_type'])
+        {
+          $this->validatorSchema['shop_id']->setOption('required', true);
         }
       }
 

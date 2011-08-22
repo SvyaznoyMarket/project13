@@ -13,6 +13,7 @@
  * @property enum $person_type
  * @property integer $region_id
  * @property enum $receipt_type
+ * @property integer $shop_id
  * @property integer $delivery_type_id
  * @property timestamp $delivered_at
  * @property string $address
@@ -22,6 +23,7 @@
  * @property string $recipient_phonenumbers
  * @property User $User
  * @property PaymentMethod $PaymentMethod
+ * @property Shop $Shop
  * @property DeliveryType $DeliveryType
  * @property Region $Region
  * @property Doctrine_Collection $ProductRelation
@@ -34,6 +36,7 @@
  * @method enum                getPersonType()             Returns the current record's "person_type" value
  * @method integer             getRegionId()               Returns the current record's "region_id" value
  * @method enum                getReceiptType()            Returns the current record's "receipt_type" value
+ * @method integer             getShopId()                 Returns the current record's "shop_id" value
  * @method integer             getDeliveryTypeId()         Returns the current record's "delivery_type_id" value
  * @method timestamp           getDeliveredAt()            Returns the current record's "delivered_at" value
  * @method string              getAddress()                Returns the current record's "address" value
@@ -43,6 +46,7 @@
  * @method string              getRecipientPhonenumbers()  Returns the current record's "recipient_phonenumbers" value
  * @method User                getUser()                   Returns the current record's "User" value
  * @method PaymentMethod       getPaymentMethod()          Returns the current record's "PaymentMethod" value
+ * @method Shop                getShop()                   Returns the current record's "Shop" value
  * @method DeliveryType        getDeliveryType()           Returns the current record's "DeliveryType" value
  * @method Region              getRegion()                 Returns the current record's "Region" value
  * @method Doctrine_Collection getProductRelation()        Returns the current record's "ProductRelation" collection
@@ -54,6 +58,7 @@
  * @method Order               setPersonType()             Sets the current record's "person_type" value
  * @method Order               setRegionId()               Sets the current record's "region_id" value
  * @method Order               setReceiptType()            Sets the current record's "receipt_type" value
+ * @method Order               setShopId()                 Sets the current record's "shop_id" value
  * @method Order               setDeliveryTypeId()         Sets the current record's "delivery_type_id" value
  * @method Order               setDeliveredAt()            Sets the current record's "delivered_at" value
  * @method Order               setAddress()                Sets the current record's "address" value
@@ -63,6 +68,7 @@
  * @method Order               setRecipientPhonenumbers()  Sets the current record's "recipient_phonenumbers" value
  * @method Order               setUser()                   Sets the current record's "User" value
  * @method Order               setPaymentMethod()          Sets the current record's "PaymentMethod" value
+ * @method Order               setShop()                   Sets the current record's "Shop" value
  * @method Order               setDeliveryType()           Sets the current record's "DeliveryType" value
  * @method Order               setRegion()                 Sets the current record's "Region" value
  * @method Order               setProductRelation()        Sets the current record's "ProductRelation" collection
@@ -135,6 +141,11 @@ abstract class BaseOrder extends myDoctrineRecord
              'notnull' => false,
              'comment' => 'Тип получения: доставка или самовывоз',
              ));
+        $this->hasColumn('shop_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'length' => 20,
+             ));
         $this->hasColumn('delivery_type_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => false,
@@ -188,6 +199,11 @@ abstract class BaseOrder extends myDoctrineRecord
 
         $this->hasOne('PaymentMethod', array(
              'local' => 'payment_method_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
+
+        $this->hasOne('Shop', array(
+             'local' => 'shop_id',
              'foreign' => 'id',
              'onDelete' => 'SET NULL'));
 
