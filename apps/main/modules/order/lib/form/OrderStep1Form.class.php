@@ -76,7 +76,7 @@ class OrderStep1Form extends BaseOrderForm
     $this->validatorSchema['address'] = new sfValidatorString(array('required' => false));
 
     $this->widgetSchema['shop_id'] = new sfWidgetFormChoice(array(
-      'choices'  => array_merge(array('' => ''), ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name')),
+      'choices'  => myToolkit::arrayDeepMerge(array('' => ''), ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name')),
       'multiple' => false,
       'expanded' => false,
     ));

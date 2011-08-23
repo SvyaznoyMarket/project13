@@ -28,6 +28,7 @@ abstract class BaseOrderFormFilter extends BaseFormFilterDoctrine
       'recipient_last_name'    => new sfWidgetFormFilterInput(),
       'recipient_middle_name'  => new sfWidgetFormFilterInput(),
       'recipient_phonenumbers' => new sfWidgetFormFilterInput(),
+      'step'                   => new sfWidgetFormFilterInput(),
     ));
 
     $this->setValidators(array(
@@ -46,6 +47,7 @@ abstract class BaseOrderFormFilter extends BaseFormFilterDoctrine
       'recipient_last_name'    => new sfValidatorPass(array('required' => false)),
       'recipient_middle_name'  => new sfValidatorPass(array('required' => false)),
       'recipient_phonenumbers' => new sfValidatorPass(array('required' => false)),
+      'step'                   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
     ));
 
     $this->widgetSchema->setNameFormat('order_filters[%s]');
@@ -81,6 +83,7 @@ abstract class BaseOrderFormFilter extends BaseFormFilterDoctrine
       'recipient_last_name'    => 'Text',
       'recipient_middle_name'  => 'Text',
       'recipient_phonenumbers' => 'Text',
+      'step'                   => 'Number',
     );
   }
 }

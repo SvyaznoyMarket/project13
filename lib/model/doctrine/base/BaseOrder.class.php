@@ -21,6 +21,7 @@
  * @property string $recipient_last_name
  * @property string $recipient_middle_name
  * @property string $recipient_phonenumbers
+ * @property integer $step
  * @property User $User
  * @property PaymentMethod $PaymentMethod
  * @property Shop $Shop
@@ -44,6 +45,7 @@
  * @method string              getRecipientLastName()      Returns the current record's "recipient_last_name" value
  * @method string              getRecipientMiddleName()    Returns the current record's "recipient_middle_name" value
  * @method string              getRecipientPhonenumbers()  Returns the current record's "recipient_phonenumbers" value
+ * @method integer             getStep()                   Returns the current record's "step" value
  * @method User                getUser()                   Returns the current record's "User" value
  * @method PaymentMethod       getPaymentMethod()          Returns the current record's "PaymentMethod" value
  * @method Shop                getShop()                   Returns the current record's "Shop" value
@@ -66,6 +68,7 @@
  * @method Order               setRecipientLastName()      Sets the current record's "recipient_last_name" value
  * @method Order               setRecipientMiddleName()    Sets the current record's "recipient_middle_name" value
  * @method Order               setRecipientPhonenumbers()  Sets the current record's "recipient_phonenumbers" value
+ * @method Order               setStep()                   Sets the current record's "step" value
  * @method Order               setUser()                   Sets the current record's "User" value
  * @method Order               setPaymentMethod()          Sets the current record's "PaymentMethod" value
  * @method Order               setShop()                   Sets the current record's "Shop" value
@@ -184,6 +187,12 @@ abstract class BaseOrder extends myDoctrineRecord
              'notnull' => false,
              'comment' => 'Телефоны получателя',
              'length' => 255,
+             ));
+        $this->hasColumn('step', 'integer', 4, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'comment' => 'Шаг заказа',
+             'length' => 4,
              ));
 
         $this->option('comment', 'Заказ пользователя');
