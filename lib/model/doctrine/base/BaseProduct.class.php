@@ -25,6 +25,7 @@
  * @property Doctrine_Collection $News
  * @property Doctrine_Collection $NewsRelation
  * @property Doctrine_Collection $OrderRelation
+ * @property Doctrine_Collection $OrderServiceRelation
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Photo
  * @property Doctrine_Collection $Comment
@@ -59,6 +60,7 @@
  * @method Doctrine_Collection getNews()                   Returns the current record's "News" collection
  * @method Doctrine_Collection getNewsRelation()           Returns the current record's "NewsRelation" collection
  * @method Doctrine_Collection getOrderRelation()          Returns the current record's "OrderRelation" collection
+ * @method Doctrine_Collection getOrderServiceRelation()   Returns the current record's "OrderServiceRelation" collection
  * @method Doctrine_Collection getPropertyRelation()       Returns the current record's "PropertyRelation" collection
  * @method Doctrine_Collection getPhoto()                  Returns the current record's "Photo" collection
  * @method Doctrine_Collection getComment()                Returns the current record's "Comment" collection
@@ -92,6 +94,7 @@
  * @method Product             setNews()                   Sets the current record's "News" collection
  * @method Product             setNewsRelation()           Sets the current record's "NewsRelation" collection
  * @method Product             setOrderRelation()          Sets the current record's "OrderRelation" collection
+ * @method Product             setOrderServiceRelation()   Sets the current record's "OrderServiceRelation" collection
  * @method Product             setPropertyRelation()       Sets the current record's "PropertyRelation" collection
  * @method Product             setPhoto()                  Sets the current record's "Photo" collection
  * @method Product             setComment()                Sets the current record's "Comment" collection
@@ -230,6 +233,10 @@ abstract class BaseProduct extends myDoctrineRecord
              'foreign' => 'product_id'));
 
         $this->hasMany('OrderProductRelation as OrderRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_id'));
+
+        $this->hasMany('OrderServiceRelation', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 

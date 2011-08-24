@@ -13,6 +13,7 @@
  * @property string $token
  * @property string $name
  * @property set $type
+ * @property Doctrine_Collection $ServicePrice
  * @property Doctrine_Collection $ServiceCenter
  * @property Doctrine_Collection $Stock
  * @property Doctrine_Collection $UserAddress
@@ -25,6 +26,7 @@
  * @method string              getToken()         Returns the current record's "token" value
  * @method string              getName()          Returns the current record's "name" value
  * @method set                 getType()          Returns the current record's "type" value
+ * @method Doctrine_Collection getServicePrice()  Returns the current record's "ServicePrice" collection
  * @method Doctrine_Collection getServiceCenter() Returns the current record's "ServiceCenter" collection
  * @method Doctrine_Collection getStock()         Returns the current record's "Stock" collection
  * @method Doctrine_Collection getUserAddress()   Returns the current record's "UserAddress" collection
@@ -36,6 +38,7 @@
  * @method Region              setToken()         Sets the current record's "token" value
  * @method Region              setName()          Sets the current record's "name" value
  * @method Region              setType()          Sets the current record's "type" value
+ * @method Region              setServicePrice()  Sets the current record's "ServicePrice" collection
  * @method Region              setServiceCenter() Sets the current record's "ServiceCenter" collection
  * @method Region              setStock()         Sets the current record's "Stock" collection
  * @method Region              setUserAddress()   Sets the current record's "UserAddress" collection
@@ -108,6 +111,10 @@ abstract class BaseRegion extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasMany('ServicePrice', array(
+             'local' => 'id',
+             'foreign' => 'region_id'));
+
         $this->hasMany('ServiceCenter', array(
              'local' => 'id',
              'foreign' => 'region_id'));

@@ -47,11 +47,23 @@ OrderProductRelation:
   options:
     comment: 'Связь заказа и товара'
   columns:
-    order_id:          { type: integer(20), notnull: true }
-    product_id:        { type: integer(20), notnull: true }
+    order_id:          { type: integer(20), notnull: true, primary: true }
+    product_id:        { type: integer(20), notnull: true, primary: true }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара в корзине' }
     quantity:          { type: integer(4), notnull: true, comment: 'Количество товара в корзине' }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
     Order:             { class: Order, foreignAlias: ProductRelation, local: order_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: OrderRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+OrderServiceRelation:
+  options:
+    comment: 'Связь товара в заказе и услуги F1'
+  columns:
+    order_id:          { type: integer(20), notnull: true, primary: true }
+    product_id:        { type: integer(20), notnull: true, primary: true }
+    price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара в корзине' }
+    quantity:          { type: integer(4), notnull: true, comment: 'Количество товара в корзине' }
+  relations:
+    Order:             { class: Order, foreignAlias: ServiceRelation, local: order_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Product:           { class: Product, foreignAlias: OrderServiceRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
