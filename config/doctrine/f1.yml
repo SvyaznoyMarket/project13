@@ -33,3 +33,16 @@ ServicePrice:
     region_id:         { type: integer(20), notnull: true, primary: true }
     service_id:        { type: integer(20), notnull: true, primary: true }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена услуги' }
+  relations:
+    Service:           { class: Service, foreignAlias: Price, local: service_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Region:            { class: Region, foreignAlias: ServivePrice, loacal: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+
+ServiceCategoryProductTypeRelation:
+  options:
+    comment: 'Связь категории услуги с типом продукта'
+  columns:
+    category_id:       { type: integer(20), notnull: true, primary: true }
+    product_type_id:   { type: integer(20), notnull: true, primary: true }
+  relations:
+    Category:          { class: ServiceCategory, foreignAlias: ProductTypeRelation, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    ProductType:       { class: ProductType, foreignAlias: ServiceCategoryRelation, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }

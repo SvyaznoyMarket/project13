@@ -77,4 +77,9 @@ class Product extends BaseProduct
   {
     return ShopTable::getInstance()->getListByProduct($this->id, $params);
   }
+
+  public function getServiceList(array $params = array())
+  {
+    return ServiceTable::getInstance()->getListByProduct($this, $params);
+  }
 }

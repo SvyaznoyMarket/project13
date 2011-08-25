@@ -1,0 +1,9 @@
+<div class="block">
+  <h2>Описание</h2>
+  <?php echo $item['description'] ?>
+</div>
+
+<div class="block">
+  <h2>Цена</h2>
+  <?php echo $item['price'] ?>
+</div>
