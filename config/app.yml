@@ -6,9 +6,6 @@ all:
           host: 127.0.0.1
           persistent: true
 
-  sf_guard_plugin:
-    routes_register: false
-
   doctrine:
     result_cache:         true  # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
@@ -24,3 +21,12 @@ all:
     signout_url: '@user'
     signin_url: '@user'
     #remember_key_expiration_age: 1296000
+
+  open_auth:
+    callback_url: openAuth_callback
+    provider:
+      vkontakte:
+        title: 'ВКонтакте'
+        app_id: 2450355
+        secret_key: pOhjShAyp3e9HrL1X1QV
+        api_url: https://api.vkontakte.ru

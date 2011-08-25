@@ -37,6 +37,7 @@ class orderActions extends myActions
   public function executeNew(sfWebRequest $request)
   {
     $this->step = $request->getParameter('step', 1);
+    $this->order = $this->getUser()->getOrder()->get();
 
     $this->form = $this->getOrderForm($this->step);
     if ($request->isMethod('post'))
@@ -45,6 +46,7 @@ class orderActions extends myActions
       if ($this->form->isValid())
       {
         $order = $this->form->updateObject();
+        $order->step = self::LAST_STEP == $this->step ? (self::LAST_STEP + 1) : $this->step;
         $this->getUser()->getOrder()->set($order);
 
         if (self::LAST_STEP == $this->step)
@@ -110,7 +112,7 @@ class orderActions extends myActions
   */
   public function executeConfirm(sfWebRequest $request)
   {
-
+    $this->order = $this->getUser()->getOrder()->get();
   }
  /**
   * Executes create action

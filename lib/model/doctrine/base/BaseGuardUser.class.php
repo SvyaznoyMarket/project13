@@ -94,11 +94,11 @@ abstract class BaseGuardUser extends myDoctrineRecord
              'notblank' => true,
              'comment' => 'Фамилия',
              ));
-        $this->hasColumn('email', 'string', 255, array(
+        $this->hasColumn('email', 'string', 128, array(
              'type' => 'string',
              'notnull' => true,
              'unique' => true,
-             'length' => 255,
+             'length' => 128,
              ));
         $this->hasColumn('username', 'string', 128, array(
              'type' => 'string',

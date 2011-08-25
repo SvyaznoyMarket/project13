@@ -1,0 +1,4 @@
+signinSuccess:
+  javascripts:
+    - http://vkontakte.ru/js/api/openapi.js?3
+    - app.oauth.js

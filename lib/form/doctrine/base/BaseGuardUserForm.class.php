@@ -41,7 +41,7 @@ abstract class BaseGuardUserForm extends BaseFormDoctrine
       'id'              => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'first_name'      => new sfValidatorString(array('max_length' => 255)),
       'last_name'       => new sfValidatorString(array('max_length' => 255)),
-      'email'           => new sfValidatorString(array('max_length' => 255)),
+      'email'           => new sfValidatorString(array('max_length' => 128)),
       'username'        => new sfValidatorString(array('max_length' => 128)),
       'algorithm'       => new sfValidatorString(array('max_length' => 128, 'required' => false)),
       'salt'            => new sfValidatorString(array('max_length' => 128, 'required' => false)),

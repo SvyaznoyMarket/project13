@@ -82,13 +82,35 @@ class orderComponents extends myComponents
 
   }
  /**
-  * Executes step3 component
+  * Executes navigation component
   *
-  * @param OrderStep3Form $form Форма заказа 3-го шага
+  * @param Order $order заказ
+  * @param integer $step шаг заказа
   */
-  public function executeStep3()
+  public function executeNavigation()
   {
+    if (empty($this->step))
+    {
+      $this->step = 1;
+    }
 
+    $list = array();
+    foreach (range(1, 2) as $step)
+    {
+      $list[] = array(
+        'name'      => $step.'-й шаг',
+        'url'       => url_for('order_new', array('step' => $step)),
+        'is_active' => (null == $this->order->step ? 0 : $this->order->step) >= $step,
+      );
+    }
+      $list[] = array(
+        'name'      => '3-й шаг',
+        'url'       => url_for('order_confirm'),
+        'is_active' => 3 == $this->order->step,
+      );
+
+
+    $this->setVar('list', $list, true);
   }
  /**
   * Executes field_address component

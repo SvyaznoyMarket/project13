@@ -4,6 +4,7 @@
     <?php include_http_metas() ?>
     <?php include_metas() ?>
     <?php include_title() ?>
+    <base href="<?php echo $sf_request->getHost() ?>" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php include_stylesheets() ?>
     <?php include_javascripts() ?>
@@ -13,6 +14,7 @@
     <div class="container">
       <?php include_partial('default/logo') ?>
       <?php include_partial('default/region') ?>
+      <?php include_partial('default/user') ?>
 
       <br class="clear" />
 
@@ -26,9 +28,7 @@
 
     </div>
 
-    <div style="display: none;">
-      <div id="auth-form"><?php include_component('guardUser', 'form_signin') ?></div>
-    </div>
+    <?php if (!include_slot('form_signin')) include_partial('default/form_signin') ?>
 
     <?php include_partial('default/admin') ?>
   </body>

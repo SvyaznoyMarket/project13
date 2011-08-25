@@ -15,18 +15,16 @@ abstract class BaseOrderProductRelationForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'         => new sfWidgetFormInputHidden(),
-      'order_id'   => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Order'), 'add_empty' => false)),
-      'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => false)),
+      'order_id'   => new sfWidgetFormInputHidden(),
+      'product_id' => new sfWidgetFormInputHidden(),
       'price'      => new sfWidgetFormInputText(),
       'quantity'   => new sfWidgetFormInputText(),
       'position'   => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
-      'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'order_id'   => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Order'))),
-      'product_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Product'))),
+      'order_id'   => new sfValidatorChoice(array('choices' => array($this->getObject()->get('order_id')), 'empty_value' => $this->getObject()->get('order_id'), 'required' => false)),
+      'product_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_id')), 'empty_value' => $this->getObject()->get('product_id'), 'required' => false)),
       'price'      => new sfValidatorNumber(array('required' => false)),
       'quantity'   => new sfValidatorInteger(),
       'position'   => new sfValidatorInteger(array('required' => false)),

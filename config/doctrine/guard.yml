@@ -56,7 +56,7 @@ GuardUser:
     first_name: string(255)
     last_name: string(255)
     email:
-      type: string(255)
+      type: string(128)
       notnull: true
       unique: true
     username:
