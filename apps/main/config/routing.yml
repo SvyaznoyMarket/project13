@@ -179,6 +179,19 @@ user_forgotPassword:
 user_changePassword:
   url:   /private/password
   param: { module: guardUser, action: changePassword }
+#
+# user quick register
+user_quickRegister:
+  url:   /quick-register
+  param: { module: guardUser, action: quickRegister }
+#
+# open auth signin
+openAuth_signin:
+  url:   /oauth/:provider/signin
+  param: { module: openAuth, action: signin }
+  requirements:
+    sf_method: [ post ]
+
 
 #
 # user product history
@@ -476,6 +489,3 @@ cart_clear:
 default_show:
   url:   /:page
   param: { module: page, action: index }
-
-default:
-  url:   /:module/:action/*

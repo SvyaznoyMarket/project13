@@ -11,6 +11,18 @@ User:
     photo:             { type: string(255), notnull: false, default: null, comment: 'Фото' }
     settings:          { type: string, notnull: false, default: null, comment: 'Настройки личного кабинета' }
 
+UserProfile:
+  options:
+    comment: 'Профайл пользователя'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    source_id:         { type: string(255), notnull: true, comment: 'Идентификатор в социальной сети' }
+    type:              { type: enum, length: 14, values: [ vkontakte, facebook, twitter, gmail, mail, live_journal, yandex ], notnull: true, comment: 'Тип профайла' }
+    user_id:           { type: integer(20), notnull: true }
+    content:           { type: string, notnull: false, default: null, comment: 'Данные пользователя в формате yaml' }
+  relations:
+    User:              { class: User, foreignAlias: Profile, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
 UserTag:
   options:
     comment: 'Пользовательские теги'

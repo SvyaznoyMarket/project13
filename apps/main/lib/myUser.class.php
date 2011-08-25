@@ -45,6 +45,16 @@ class myUser extends myGuardSecurityUser
     return $this->isAuthenticated() ? $this->getGuardUser()->type : null;
   }
 
+  public function setProfile(UserProfile $userProfile)
+  {
+    $this->setAttribute('profile', $userProfile);
+  }
+
+  public function getProfile()
+  {
+    return $this->getAttribute('profile', false);
+  }
+
 
 
   protected function getUserData($name)
