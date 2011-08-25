@@ -472,6 +472,14 @@ cart_clear:
   param: { module: cart, action: clear }
 
 
+#
+# F1 servis show
+service_show:
+  url:      /f1/show/:service
+  param:    { module: service, action: show }
+  class:    myDoctrineRoute
+  options:  { model: Service, type: object, method: getForRoute }
+
 
 default_show:
   url:   /:page

@@ -14,25 +14,28 @@
  * @property string $name
  * @property boolean $is_active
  * @property Doctrine_Collection $Service
+ * @property Doctrine_Collection $ProductTypeRelation
  * 
- * @method integer             getId()        Returns the current record's "id" value
- * @method integer             getRootId()    Returns the current record's "root_id" value
- * @method integer             getLft()       Returns the current record's "lft" value
- * @method integer             getRgt()       Returns the current record's "rgt" value
- * @method integer             getLevel()     Returns the current record's "level" value
- * @method string              getToken()     Returns the current record's "token" value
- * @method string              getName()      Returns the current record's "name" value
- * @method boolean             getIsActive()  Returns the current record's "is_active" value
- * @method Doctrine_Collection getService()   Returns the current record's "Service" collection
- * @method ServiceCategory     setId()        Sets the current record's "id" value
- * @method ServiceCategory     setRootId()    Sets the current record's "root_id" value
- * @method ServiceCategory     setLft()       Sets the current record's "lft" value
- * @method ServiceCategory     setRgt()       Sets the current record's "rgt" value
- * @method ServiceCategory     setLevel()     Sets the current record's "level" value
- * @method ServiceCategory     setToken()     Sets the current record's "token" value
- * @method ServiceCategory     setName()      Sets the current record's "name" value
- * @method ServiceCategory     setIsActive()  Sets the current record's "is_active" value
- * @method ServiceCategory     setService()   Sets the current record's "Service" collection
+ * @method integer             getId()                  Returns the current record's "id" value
+ * @method integer             getRootId()              Returns the current record's "root_id" value
+ * @method integer             getLft()                 Returns the current record's "lft" value
+ * @method integer             getRgt()                 Returns the current record's "rgt" value
+ * @method integer             getLevel()               Returns the current record's "level" value
+ * @method string              getToken()               Returns the current record's "token" value
+ * @method string              getName()                Returns the current record's "name" value
+ * @method boolean             getIsActive()            Returns the current record's "is_active" value
+ * @method Doctrine_Collection getService()             Returns the current record's "Service" collection
+ * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
+ * @method ServiceCategory     setId()                  Sets the current record's "id" value
+ * @method ServiceCategory     setRootId()              Sets the current record's "root_id" value
+ * @method ServiceCategory     setLft()                 Sets the current record's "lft" value
+ * @method ServiceCategory     setRgt()                 Sets the current record's "rgt" value
+ * @method ServiceCategory     setLevel()               Sets the current record's "level" value
+ * @method ServiceCategory     setToken()               Sets the current record's "token" value
+ * @method ServiceCategory     setName()                Sets the current record's "name" value
+ * @method ServiceCategory     setIsActive()            Sets the current record's "is_active" value
+ * @method ServiceCategory     setService()             Sets the current record's "Service" collection
+ * @method ServiceCategory     setProductTypeRelation() Sets the current record's "ProductTypeRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -96,6 +99,10 @@ abstract class BaseServiceCategory extends myDoctrineRecord
     {
         parent::setUp();
         $this->hasMany('Service', array(
+             'local' => 'id',
+             'foreign' => 'category_id'));
+
+        $this->hasMany('ServiceCategoryProductTypeRelation as ProductTypeRelation', array(
              'local' => 'id',
              'foreign' => 'category_id'));
 
