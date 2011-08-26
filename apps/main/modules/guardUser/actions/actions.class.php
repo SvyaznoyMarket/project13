@@ -135,10 +135,13 @@ class guardUserActions extends myActions
   */
   public function executeQuickRegister($request)
   {
-    $this->user = $this->getUser()->getGuardUser();
+    $this->userProfile = $this->getUser()->getProfile();
+
+    $this->user = new User();
+    $this->user->email = $this->userProfile->getEmail();
+
     $this->form = new UserFormQuickRegister($this->user);
 
-    $this->userProfile = $this->getUser()->getProfile();
     if ($request->isMethod('post'))
     {
       if (!$this->userProfile)

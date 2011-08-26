@@ -1,0 +1,3 @@
+https://developers.facebook.com/docs/guides/web/#login
+http://kurapov.name/rus/technology/integration/facebook_graph_oauth/
+http://habrahabr.ru/blogs/facebook/102964/

@@ -54,7 +54,56 @@ class openAuthActions extends myActions
         $result = array(
           'success' => true,
           'data'    => array(
-            'action' => 'signin',
+            'action' => 'reload',
+            'param'  => array(
+              'url'    => $this->generateUrl('user'),
+            ),
+          ),
+        );
+      }
+      else {
+        $this->getUser()->setProfile($userProfile);
+        $result = array(
+          'success' => true,
+          'data'    => array(
+            'action' => 'quickRegister',
+            'param'  => array(
+              'url'    => $this->generateUrl('user_quickRegister'),
+            ),
+          ),
+        );
+      }
+    }
+    else {
+      $result = array(
+        'success' => false,
+      );
+    }
+
+    return $this->renderJson($result);
+  }
+ /**
+  * Executes signinFacebook action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeSigninFacebook(sfWebRequest $request)
+  {
+    $result = array();
+
+    $providerName = $request['provider'];
+    $provider = $this->getProvider($providerName);
+
+    if ($userProfile = $provider->getProfile($request))
+    {
+      if ($userProfile->exists())
+      {
+        $this->getUser()->signin($userProfile->User);
+
+        $result = array(
+          'success' => true,
+          'data'    => array(
+            'action' => 'reload',
             'param'  => array(
               'url'    => $this->generateUrl('user'),
             ),

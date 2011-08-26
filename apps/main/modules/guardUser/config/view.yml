@@ -1,4 +1,5 @@
 signinSuccess:
   javascripts:
-    - http://vkontakte.ru/js/api/openapi.js?3
+    #- http://vkontakte.ru/js/api/openapi.js?3
+    #- http://connect.facebook.net/ru_RU/all.js
     - app.oauth.js

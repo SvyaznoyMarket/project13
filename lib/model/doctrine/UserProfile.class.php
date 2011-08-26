@@ -22,9 +22,24 @@ class UserProfile extends BaseUserProfile
       case 'vkontakte':
         $return = $content['first_name'];
         break;
+      case 'facebook':
+        $return = $content['first_name'];
+        break;
     }
 
     return $return;
+  }
+
+  public function getEmail()
+  {
+    $content = sfYaml::load($this->content);
+
+    $value = array(
+      'vkontakte' => false,
+      'facebook'  => 'email',
+    );
+
+    return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
   }
 
   public function getLastName()
@@ -33,9 +48,10 @@ class UserProfile extends BaseUserProfile
 
     $value = array(
       'vkontakte' => 'last_name',
+      'facebook'  => 'last_name',
     );
 
-    return isset($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
+    return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
   }
 
   public function getFirstName()
@@ -44,9 +60,10 @@ class UserProfile extends BaseUserProfile
 
     $value = array(
       'vkontakte' => 'first_name',
+      'facebook'  => 'first_name',
     );
 
-    return isset($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
+    return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
   }
 
   public function getPhoto()
@@ -55,8 +72,9 @@ class UserProfile extends BaseUserProfile
 
     $value = array(
       'vkontakte' => 'photo',
+      'facebook'  => false,
     );
 
-    return isset($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
+    return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
   }
 }
