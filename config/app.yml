@@ -30,3 +30,8 @@ all:
         app_id: 2450355
         secret_key: pOhjShAyp3e9HrL1X1QV
         api_url: https://api.vkontakte.ru
+      facebook:
+        title: 'Facebook'
+        app_id: 226981847349938
+        secret_key: e9b8bd45490396ff8ee0da18c777323b
+        api_url: https://graph.facebook.com

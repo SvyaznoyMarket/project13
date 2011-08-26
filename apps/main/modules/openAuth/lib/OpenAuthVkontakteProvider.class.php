@@ -7,10 +7,8 @@ class OpenAuthVkontakteProvider extends BaseOpenAuthProvider
 
   public function getData()
   {
-    $config = $this->getConfig();
-
     return array(
-      'app-id' => $config['app_id'],
+      'app-id' => $this->getConfig('app_id'),
     );
   }
 
@@ -20,13 +18,11 @@ class OpenAuthVkontakteProvider extends BaseOpenAuthProvider
    */
   public function getProfile(sfWebRequest $request)
   {
-    $config = $this->getConfig();
-
     $userProfile = false;
     $session = array();
 
     $validKeys = array('expire', 'mid', 'secret', 'sid', 'sig');
-    $cookie = $request->getCookie('vk_app_'.$config['app_id']);
+    $cookie = $request->getCookie($this->getCookieName());
     if ($cookie)
     {
       $sessionData = explode('&', $cookie, 10);
@@ -57,7 +53,7 @@ class OpenAuthVkontakteProvider extends BaseOpenAuthProvider
           $sign .= ($key.'='.$value);
         }
       }
-      $sign .= $config['secret_key'];
+      $sign .= $this->getConfig('secret_key');
       $sign = md5($sign);
       if ($session['sig'] == $sign && $session['expire'] > time())
       {
@@ -72,7 +68,7 @@ class OpenAuthVkontakteProvider extends BaseOpenAuthProvider
             'source_id' => $sourceId,
           ));
 
-          $userProfile->content = sfYaml::dump($this->getContent($sourceId));
+          $userProfile->content = sfYaml::dump($this->getUserContent($sourceId));
         }
       }
     }
@@ -80,62 +76,31 @@ class OpenAuthVkontakteProvider extends BaseOpenAuthProvider
     return $userProfile;
   }
 
-  protected function getContent($sourceId)
+  public function getUserContent($sourceId)
   {
-    $config = $this->getConfig();
-
-    /*
-    $url = $config['api_url']
-      .'/method/getProfiles'
-      .'?uids='.$sourceId
-      .'&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo,photo_medium,photo_big,has_mobile,contacts,education'
+    $url = $this->getConfig('api_url')
+      .'/method/getProfiles?'.http_build_query(array(
+        'uids'   => $sourceId,
+        'fields' => 'uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo,photo_medium,photo_big,has_mobile,contacts,education',
+      ));
     ;
-    */
-
-    $response = $this->query('getProfiles', array(
-      'uids'   => $sourceId,
-      'fields' => 'uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo,photo_medium,photo_big,has_mobile,contacts,education',
-    ));
+    $response = json_decode(file_get_contents($url), true);
 
     return isset($response['response'][0]) ? $response['response'][0] : array();
   }
 
   public function query($method, array $params = array())
   {
-    $config = $this->getConfig();
-
-    function getQueryString($params)
-    {
-      $pice = array();
-      foreach($params as $k => $v)
-      {
-        $pice[] = $k.'='.urlencode($v);
-      }
-      return implode('&', $pice);
-    }
-
     $params = myToolkit::arrayDeepMerge($params, array(
-      //'api_id'    => $config['app_id'],
       'v'         => '3.0',
-      //'method'    => $method,
-      //'timestamp' => time(),
       'format'    => 'json',
-      //'random'    => rand(0, 10000),
     ));
 
-    /*
-		ksort($params);
-		$sig = '';
-		foreach($params as $k => $v)
-    {
-			$sig .= $k.'='.$v;
-		}
-		$sig .= $config['secret_key'];
-		$params['sig'] = md5($sig);
-    */
-		$query = $config['api_url'].'/method/'.$method.'?'.getQueryString($params);
 
-		return json_decode(file_get_contents($query), true);
   }
 
+  public function getCookieName()
+  {
+    return 'vk_app_'.$this->getConfig('app_id');
+  }
 }

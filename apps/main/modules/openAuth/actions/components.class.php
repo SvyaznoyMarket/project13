@@ -25,12 +25,13 @@ class openAuthComponents extends myComponents
   public function executeShow()
   {
     require_once(dirname(__FILE__).'/../lib/BaseOpenAuthProvider.class.php');
-    require_once(dirname(__FILE__).'/../lib/OpenAuthVkontakteProvider.class.php');
 
     $list = array();
 
     foreach (sfConfig::get('app_open_auth_provider') as $name => $config)
     {
+      require_once(dirname(__FILE__).'/../lib/OpenAuth'.sfInflector::camelize($name).'Provider.class.php');
+
       $class = sfInflector::camelize('open_auth_'.$name.'_provider');
       $provider = new $class($config);
 

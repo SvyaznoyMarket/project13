@@ -255,3 +255,20 @@ ul.inline li, li.inline {
 .cart.cart-clear {
   background: transparent url(/images/icons/cart_remove.png) no-repeat scroll 0 2px;
 }
+
+
+.open_auth-link {
+  padding: 0 0 42px 42px;
+}
+#open_auth_vkontakte-link {
+  background: transparent url(/images/oauth_vkontakte.png) no-repeat;
+}
+#open_auth_facebook-link {
+  background: transparent url(/images/oauth_facebook.png) no-repeat;
+}
+#open_auth_twitter-link {
+  background: transparent url(/images/oauth_twitter.png) no-repeat;
+}
+#open_auth_google-link {
+  background: transparent url(/images/oauth_google.png) no-repeat;
+}
