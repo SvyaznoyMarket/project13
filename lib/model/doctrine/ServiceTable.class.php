@@ -33,6 +33,19 @@ class ServiceTable extends myDoctrineTable
     return $q->execute();
   }
 
+  public function getListByCategory($category_id, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->andWhere('service.category_id=?', array($category_id,));
+
+    $this->setQueryParameters($q, $params);
+
+    return $q->execute();
+  }
+
   public function getForRoute(array $params)
   {
     $id = isset($params['service']) ? $this->getIdBy('token', $params['service']) : null;
