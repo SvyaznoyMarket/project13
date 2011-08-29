@@ -472,6 +472,18 @@ service_show:
   param:    { module: service, action: show }
   class:    myDoctrineRoute
   options:  { model: Service, type: object, method: getForRoute }
+#
+# F1 servis catalog
+service_category:
+  url:      /f1
+  param:    { module: service, action: category }
+#
+# F1 servis catalog
+service_list:
+  url:      /f1/list/:serviceCategory
+  param:    { module: service, action: list }
+  class:    myDoctrineRoute
+  options:  { model: ServiceCategory, type: object, method: getForRoute }
 
 
 default_show:
