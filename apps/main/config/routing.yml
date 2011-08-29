@@ -189,8 +189,6 @@ user_quickRegister:
 openAuth_signin:
   url:   /oauth/:provider/signin
   param: { module: openAuth, action: signin }
-  requirements:
-    sf_method: [ post ]
 
 
 #

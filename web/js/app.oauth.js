@@ -50,6 +50,9 @@ $(document).ready(function() {
     },
     reload: function(e, param) {
       window.location = param.url
+    },
+    window: function(e, param) {
+      window.location = param.url
     }
   })
 
@@ -104,6 +107,32 @@ $(document).ready(function() {
       login: login,
       url: el.attr('href')
     }])
+  })
+
+  $('#open_auth_twitter-link').bind('click', function(e) {
+    e.preventDefault()
+
+    var el = $(e.target)
+
+    function login() {
+      var d = $.Deferred()
+
+      $.post(el.attr('href'), function(result) {
+        if (true === result.success) {
+          window.location = result.data.url
+        }
+        else {
+          d.reject()
+        }
+      })
+      .error(function() {
+        d.reject()
+      })
+
+      return d.promise()
+    }
+
+    login()
   })
 
 })

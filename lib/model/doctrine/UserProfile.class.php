@@ -25,6 +25,9 @@ class UserProfile extends BaseUserProfile
       case 'facebook':
         $return = $content['first_name'];
         break;
+      case 'twitter':
+        $return = $content['name'];
+        break;
     }
 
     return $return;
@@ -37,6 +40,7 @@ class UserProfile extends BaseUserProfile
     $value = array(
       'vkontakte' => false,
       'facebook'  => 'email',
+      'twitter'   => false,
     );
 
     return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
@@ -49,9 +53,17 @@ class UserProfile extends BaseUserProfile
     $value = array(
       'vkontakte' => 'last_name',
       'facebook'  => 'last_name',
+      'twitter'   => 'name',
     );
 
-    return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
+    $return = !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
+    if ('twitter' == $this->type)
+    {
+      $pair = explode(' ', $return);
+      $return = !empty($pair[1]) ? $pair[1] : $return;
+    }
+
+    return $return;
   }
 
   public function getFirstName()
@@ -61,9 +73,17 @@ class UserProfile extends BaseUserProfile
     $value = array(
       'vkontakte' => 'first_name',
       'facebook'  => 'first_name',
+      'twitter'   => 'name',
     );
 
-    return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
+    $return = !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
+    if ('twitter' == $this->type)
+    {
+      $pair = explode(' ', $return);
+      $return = !empty($pair[0]) ? $pair[0] : $return;
+    }
+
+    return $return;
   }
 
   public function getPhoto()
@@ -73,6 +93,7 @@ class UserProfile extends BaseUserProfile
     $value = array(
       'vkontakte' => 'photo',
       'facebook'  => false,
+      'twitter'   => 'profile_image_url',
     );
 
     return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;

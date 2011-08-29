@@ -10,10 +10,6 @@ abstract class BaseOpenAuthProvider
     $this->configHolder->add($config);
   }
 
-  abstract public function getData();
-
-  abstract public function getProfile(sfWebRequest $request);
-
   public function getConfig($name = null)
   {
     return null == $name ? $this->configHolder->getAll() : $this->configHolder->get($name);

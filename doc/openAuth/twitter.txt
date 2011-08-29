@@ -1,0 +1,3 @@
+https://dev.twitter.com/docs/auth/oauth
+http://kurapov.name/article/5242
+http://habrahabr.ru/blogs/about_cms/114955/

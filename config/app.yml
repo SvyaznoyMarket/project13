@@ -35,3 +35,11 @@ all:
         app_id: 226981847349938
         secret_key: e9b8bd45490396ff8ee0da18c777323b
         api_url: https://graph.facebook.com
+      twitter:
+        title: 'Twitter'
+        consumer_key: WdGeIjFTAci0tHh3t7W7Yg
+        consumer_secret: UvQpJLwQo9Yp4ZWZBDBOudWxcJPurflOULLjI
+        request_token_url: https://api.twitter.com/oauth/request_token
+        authorize_url: https://api.twitter.com/oauth/authorize
+        access_token_url: https://api.twitter.com/oauth/access_token
+        callback_url: '@openAuth_signin?provider=twitter'
