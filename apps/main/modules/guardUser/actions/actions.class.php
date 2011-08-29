@@ -27,7 +27,7 @@ class guardUserActions extends myActions
 
     if ($request->isMethod('post'))
     {
-      $this->form->bind($request->getParameter('signin'));
+      $this->form->bind($request->getParameter($this->form->getName()));
       if ($this->form->isValid())
       {
         $values = $this->form->getValues();
@@ -107,7 +107,6 @@ class guardUserActions extends myActions
   public function executeChangePassword($request)
   {
     $this->user = $this->getUser()->getGuardUser();
-
     $this->form = new UserFormChangePassword($this->user);
 
     if ($request->isMethod('post'))
@@ -126,6 +125,54 @@ class guardUserActions extends myActions
 
         $this->getUser()->setFlash('notice', 'Пароль успешно обновлен');
         $this->redirect('@user_signin');
+      }
+    }
+  }
+ /**
+  * Executes quickRegister action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeQuickRegister($request)
+  {
+    $this->userProfile = $this->getUser()->getProfile();
+
+    $this->user = new User();
+    $this->user->email = $this->userProfile->getEmail();
+
+    $this->form = new UserFormQuickRegister($this->user);
+
+    if ($request->isMethod('post'))
+    {
+      if (!$this->userProfile)
+      {
+        if ('frame' == $this->getLayout())
+        {
+          return $this->renderText('<h1>Вход</h1><p>Время сессии истекло. Попробуйте авторизоваться заново.</p>');
+        }
+        return $this->redirect('user_signin');
+      }
+
+      $this->form->bind($request->getParameter($this->form->getName()));
+      if ($this->form->isValid())
+      {
+        $this->user = new User();
+        $this->user->fromArray(array(
+          'email'      => $this->form->getValue('email'),
+          'username'   => $this->form->getValue('email'),
+          'last_name'  => $this->userProfile->getLastName(),
+          'first_name' => $this->userProfile->getFirstName(),
+          'photo'      => $this->userProfile->getPhoto(),
+        ));
+        $this->user->Profile[] = $this->userProfile;
+        $this->user->save();
+        $this->getUser()->signin($this->user, false);
+
+        if ('frame' == $this->getLayout())
+        {
+          return $this->renderPartial('default/close');
+        }
+        return $this->redirect('@homepage');
       }
     }
   }

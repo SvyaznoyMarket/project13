@@ -1,2 +1,5 @@
 all:
   is_secure: true
+
+quickRegister:
+  is_secure: false

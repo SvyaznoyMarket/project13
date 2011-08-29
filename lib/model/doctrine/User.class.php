@@ -12,6 +12,27 @@
  */
 class User extends BaseUser
 {
+  public function preSave($event)
+  {
+    $record = $event->getInvoker();
+
+    if (!$record->exists())
+    {
+      $password = '';
+      for ($i = 0; ($i < 8); $i++)
+      {
+        $password .= sprintf("%x", mt_rand(0, 15));
+      }
+      $this->setPassword($password);
+
+      /*
+      $this->dispatcher->notify(new myEvent($this, 'user.create', array(
+        'record'   => $record,
+        'password' => $password,
+      )));
+      */
+    }
+  }
 
   public function getProductRatingByProduct(Product $product)
   {

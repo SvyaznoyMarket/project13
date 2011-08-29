@@ -62,9 +62,10 @@ EventHandler = {
       $.colorbox({
         iframe: true,
         href: $('#auth-form').find('form:first').attr('action') + '?frame=true',
-      scrolling: false,
-      initialWidth: 1,
-      initialHeight: 1
+        scrolling: false,
+        fixed: true,
+        initialWidth: 1,
+        initialHeight: 1
       })
   },
 
@@ -146,13 +147,13 @@ EventHandler = {
 }
 
 
-// Документ готов
+
 $(document).ready(function() {
 
   // Настройки colorbox
   $.extend($.colorbox.settings, {
     opacity: 0.7,
-    fixed: true,
+    fixed: false,
     close: 'закрыть <span style="font: bold 16px Verdana">&times;</span>'
   })
 
@@ -196,196 +197,5 @@ $(document).ready(function() {
       EventHandler.trigger(e)
     })
   })
-
-
-  // Специализированные обработчики
-  $('.product_rating-form').live({
-    'form.ajax-submit.prepare': function(e, result) {
-      $(this).find('input:submit').attr('disabled', true)
-    },
-    'form.ajax-submit.success': function(e, result) {
-      if (true == result.success) {
-        $('.product_rating-form').effect('highlight', {}, 2000)
-      }
-    }
-  })
-
-  $('.product_comment-form').live({
-    'form.ajax-submit.prepare': function(e, result) {
-      $(this).find('input:submit').attr('disabled', true)
-    },
-    'form.ajax-submit.success': function(e, result) {
-      $(this).find('input:submit').attr('disabled', false)
-      if (true == result.success) {
-        $($(this).data('listTarget')).replaceWith(result.data.list)
-        $.scrollTo('.' + result.data.element_id, 500, {
-          onAfter: function() {
-            $('.' + result.data.element_id).effect('highlight', {}, 2000);
-          }
-        })
-      }
-    }
-  })
-
-  $('.product_comment_response-link').live({
-    'content.update.prepare': function(e) {
-      $('.product_comment_response-block').html('')
-    },
-    'content.update.success': function(e) {
-      $('.product_comment_response-block').find('textarea:first').focus()
-    }
-  })
-
-  $('.product_filter-block')
-    // change
-    .bind('change', function(e) {
-      var el = $(e.target)
-
-      if (el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox']))) {
-        el.trigger('preview')
-        return false
-      }
-    })
-    // preview
-    .bind('preview', function(e) {
-      var el = $(e.target)
-      var form = $(this)
-
-      function disable() {
-        var d = $.Deferred();
-        //el.attr('disabled', true)
-        return d.resolve();
-      }
-
-      function enable() {
-        var d = $.Deferred();
-        //el.attr('disabled', false)
-        return d.promise();
-      }
-
-      function getData() {
-        var d = $.Deferred();
-
-        form.ajaxSubmit({
-          url: form.data('action-count'),
-          success: d.resolve,
-          error: d.reject
-        })
-
-        return d.promise();
-      }
-
-      $.when(getData())
-        .then(function(result) {
-          if (true === result.success) {
-            $('.product_count-block').remove();
-            el.parent().find('> label').first().after('<div class="product_count-block" style="position: absolute; background: #fff; padding: 4px; opacity: 0.9; border-radius: 5px; border: 1px solid #ccc; cursor: pointer;">Найдено '+result.data+'</div>')
-            $('.product_count-block')
-              .hover(
-                function() {
-                  $(this).stopTime('hide')
-                },
-                function() {
-                  $(this).oneTime(2000, 'hide', function() {
-                    $(this).remove()
-                  })
-                }
-              )
-              .click(function() {
-                form.submit()
-              })
-              .trigger('mouseout')
-          }
-        })
-        .fail(function(error) {})
-    })
-
-
-  $('.order-form').bind({
-    'change': function(e, effect) {
-
-      var form = $(this)
-      var hidden = []
-
-      if (undefined == effect) {
-        effect = true
-      }
-
-      // если способ получения не доставка
-      var el = form.find('[name="order[receipt_type]"]:checked')
-      if (!el.length || ('delivery' != el.val())) {
-        hidden.push(
-          'delivery_type_id',
-          'delivered_at',
-          'address'
-        )
-      }
-      if (!el.length || ('pickup' != el.val())) {
-        hidden.push(
-          'shop_id'
-        )
-      }
-
-      function checkPersonType() {
-        var d = $.Deferred();
-
-        // если изменился тип лица (юридическое, физическое)
-        if ('order[person_type]' == $(e.target).attr('name')) {
-          var el = form.find('[name="order[person_type]"]:checked')
-          if (el.length) {
-            effect = $('.form-row[data-field="delivery_type_id"]').is(':visible')
-
-            $.post(form.data('updateFieldUrl'), {
-              order: {
-                person_type: el.val()
-              },
-              field: 'delivery_type_id'
-            }, function(result) {
-              if (true === result.success) {
-                $('.form-row[data-field="delivery_type_id"] .content').hide('fast', function() {
-                  $('.form-row[data-field="delivery_type_id"]').replaceWith(result.data.content)
-                  d.resolve()
-                })
-              }
-              else {
-                d.reject()
-              }
-            }, 'json')
-            .error(function() {
-              d.reject()
-            })
-          }
-        }
-        else {
-          d.resolve()
-        }
-
-        return d.promise();
-      }
-
-      $.when(checkPersonType())
-      .then(function() {
-        form.find('.form-row').each(function(i, el) {
-          var el = $(el)
-
-          if (-1 == $.inArray(el.data('field'), hidden)) {
-            if (true == effect) {el.show('fast')} else {el.show()}
-          }
-          else {
-            if (true == effect) {el.hide('fast')} else {el.hide()}
-          }
-        })
-      })
-
-    }
-  })
-
-  $('.order_user_address').bind('change', function(e) {
-    var el = $(this)
-
-    $('[name="order[address]"]').val(el.val())
-  })
-
-  $('.order-form').trigger('change', [false])
 
 })

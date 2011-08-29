@@ -31,6 +31,7 @@ abstract class BaseOrderForm extends BaseFormDoctrine
       'recipient_last_name'    => new sfWidgetFormInputText(),
       'recipient_middle_name'  => new sfWidgetFormInputText(),
       'recipient_phonenumbers' => new sfWidgetFormInputText(),
+      'step'                   => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
@@ -50,6 +51,7 @@ abstract class BaseOrderForm extends BaseFormDoctrine
       'recipient_last_name'    => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'recipient_middle_name'  => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'recipient_phonenumbers' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'step'                   => new sfValidatorInteger(array('required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
