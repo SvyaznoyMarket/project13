@@ -14,14 +14,14 @@ abstract class BaseUserProfileFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'source_id' => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'type'      => new sfWidgetFormChoice(array('choices' => array('' => '', 'vkontakte' => 'vkontakte', 'facebook' => 'facebook', 'twitter' => 'twitter', 'gmail' => 'gmail', 'mail' => 'mail', 'live_journal' => 'live_journal', 'yandex' => 'yandex'))),
+      'type'      => new sfWidgetFormChoice(array('choices' => array('' => '', 'vkontakte' => 'vkontakte', 'facebook' => 'facebook', 'twitter' => 'twitter', 'odnoklassniki' => 'odnoklassniki', 'gmail' => 'gmail', 'mailru' => 'mailru', 'live_journal' => 'live_journal', 'yandex' => 'yandex'))),
       'user_id'   => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
       'content'   => new sfWidgetFormFilterInput(),
     ));
 
     $this->setValidators(array(
       'source_id' => new sfValidatorPass(array('required' => false)),
-      'type'      => new sfValidatorChoice(array('required' => false, 'choices' => array('vkontakte' => 'vkontakte', 'facebook' => 'facebook', 'twitter' => 'twitter', 'gmail' => 'gmail', 'mail' => 'mail', 'live_journal' => 'live_journal', 'yandex' => 'yandex'))),
+      'type'      => new sfValidatorChoice(array('required' => false, 'choices' => array('vkontakte' => 'vkontakte', 'facebook' => 'facebook', 'twitter' => 'twitter', 'odnoklassniki' => 'odnoklassniki', 'gmail' => 'gmail', 'mailru' => 'mailru', 'live_journal' => 'live_journal', 'yandex' => 'yandex'))),
       'user_id'   => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
       'content'   => new sfValidatorPass(array('required' => false)),
     ));

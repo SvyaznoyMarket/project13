@@ -28,6 +28,9 @@ class UserProfile extends BaseUserProfile
       case 'twitter':
         $return = $content['name'];
         break;
+      case 'mailru':
+        $return = $content['first_name'];
+        break;
     }
 
     return $return;
@@ -41,6 +44,7 @@ class UserProfile extends BaseUserProfile
       'vkontakte' => false,
       'facebook'  => 'email',
       'twitter'   => false,
+      'mailru'    => 'email',
     );
 
     return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
@@ -54,6 +58,7 @@ class UserProfile extends BaseUserProfile
       'vkontakte' => 'last_name',
       'facebook'  => 'last_name',
       'twitter'   => 'name',
+      'mailru'    => 'last_name',
     );
 
     $return = !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
@@ -74,6 +79,7 @@ class UserProfile extends BaseUserProfile
       'vkontakte' => 'first_name',
       'facebook'  => 'first_name',
       'twitter'   => 'name',
+      'mailru'    => 'first_name',
     );
 
     $return = !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
@@ -94,6 +100,7 @@ class UserProfile extends BaseUserProfile
       'vkontakte' => 'photo',
       'facebook'  => false,
       'twitter'   => 'profile_image_url',
+      'mailru'    => 'pic_small',
     );
 
     return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
