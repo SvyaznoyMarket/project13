@@ -53,6 +53,35 @@ class UserCart extends BaseUserData
     }
   }
 
+  public function addService(Product $product, Service $service, $quantity = 1)
+  {
+    $products = $this->parameterHolder->get('products');
+
+    if (!isset($products[$product->id]) || empty($products[$product->id]))
+    {
+      return false;
+    }
+    if (!isset($products[$product->id]['service'][$service->id]) || empty($products[$product->id]['service'][$service->id]))
+    {
+      $products[$product->id]['service'][$service->id] = array('quantity' => 0, );
+    }
+    $products[$product->id]['service'][$service->id]['quantity'] += $quantity;
+    $this->parameterHolder->set('products', $products);
+    $this->calculateDiscount();
+  }
+
+  public function deleteService(Product $product, Service $service)
+  {
+    $products = $this->parameterHolder->get('products');
+
+    if (isset($products[$product->id]['service'][$service->id]))
+    {
+      unset($products[$product->id]['service'][$service->id]);
+      $this->parameterHolder->set('products', $products);
+      $this->calculateDiscount();
+    }
+  }
+
   public function clear()
   {
     if (null != $this->products)
@@ -138,6 +167,7 @@ class UserCart extends BaseUserData
     foreach ($this->products as $key => $product)
     {
       $this->updateProductCart($product, 'quantity', $products[$key]['quantity']);
+      $this->updateProductCart($product, 'service', $products[$key]['service']);
     }
   }
 

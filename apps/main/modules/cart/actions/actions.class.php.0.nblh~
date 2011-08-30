@@ -38,11 +38,12 @@ class cartActions extends myActions
     {
       return $this->renderJson(array(
         'result' => true,
-        'data'   => array(
-          'content' => $this->getComponent($this->getModuleName(), 'buy_button', array('product' => $product)),
-        ),
+        'data'   => $this->getComponent($this->getModuleName(), 'buy_button', array(
+          'product' => $product,
+        )),
       ));
     }
+
     $this->redirect($this->getRequest()->getReferer());
   }
  /**
@@ -88,7 +89,7 @@ class cartActions extends myActions
     $product = ProductTable::getInstance()->findOneByToken($request['product']);
     $service = ServiceTable::getInstance()->findOneByToken($request['service']);
 
-    $this->getUser()->getCart()->deleteService($product, $service);
+    $this->getUser()->getCart()-deleteService($product, $service);
 
     $this->redirect($this->getRequest()->getReferer());
   }
