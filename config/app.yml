@@ -43,3 +43,11 @@ all:
         authorize_url: https://api.twitter.com/oauth/authorize
         access_token_url: https://api.twitter.com/oauth/access_token
         callback_url: '@openAuth_signin?provider=twitter'
+      #odnoklassniki:
+      mailru:
+        title: 'Mail.ru'
+        app_id: 641483
+        private_key: 'fe2314f2fee03350ee54d5f71cff37d9'
+        secret_key: 'a47cc49da1835cf1f010ced1ac7be318'
+        redirect_uri: '@openAuth_signin?provider=mailru'
+        api_url: 'http://www.appsmail.ru/platform/api'

@@ -197,6 +197,39 @@ class openAuthActions extends myActions
 
     $this->redirect('user_signin');
   }
+ /**
+  * Executes signinMailru action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeSigninMailru(sfWebRequest $request)
+  {
+    $result = array();
+    $provider = $this->getProvider();
+
+    if ($request->hasParameter('error'))
+    {
+      $this->setTemplate('signin');
+
+      return sfView::ERROR;
+    }
+    else if ($userProfile = $provider->getProfile($request))
+    {
+      if ($userProfile->exists())
+      {
+        $this->getUser()->signin($userProfile->User);
+
+        $this->redirect('user');
+      }
+      else {
+        $this->getUser()->setProfile($userProfile);
+
+        $this->redirect('user_quickRegister');
+      }
+    }
+
+    $this->redirect('user_signin');
+  }
 
 
 

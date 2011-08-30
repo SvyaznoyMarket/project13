@@ -55,12 +55,13 @@ abstract class BaseUserProfile extends myDoctrineRecord
               0 => 'vkontakte',
               1 => 'facebook',
               2 => 'twitter',
-              3 => 'gmail',
-              4 => 'mail',
-              5 => 'live_journal',
-              6 => 'yandex',
+              3 => 'odnoklassniki',
+              4 => 'gmail',
+              5 => 'mailru',
+              6 => 'live_journal',
+              7 => 'yandex',
              ),
-             'notnull' => true,
+             'notnull' => false,
              'comment' => 'Тип профайла',
              ));
         $this->hasColumn('user_id', 'integer', 20, array(

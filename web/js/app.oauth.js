@@ -56,6 +56,7 @@ $(document).ready(function() {
     }
   })
 
+  // vkontakte
   $('#open_auth_vkontakte-link').bind('click', function(e) {
     e.preventDefault()
 
@@ -81,7 +82,7 @@ $(document).ready(function() {
     }])
   })
 
-
+  // facebook
   $('#open_auth_facebook-link').bind('click', function(e) {
     e.preventDefault()
 
@@ -109,6 +110,7 @@ $(document).ready(function() {
     }])
   })
 
+  // twitter
   $('#open_auth_twitter-link').bind('click', function(e) {
     e.preventDefault()
 
@@ -133,6 +135,25 @@ $(document).ready(function() {
     }
 
     login()
+  })
+
+  // mailru
+  mailru.loader.require('api', function() {
+    mailru.connect.init($('#open_auth_mailru-link').data('appId'), $('#open_auth_mailru-link').data('privateKey'))
+
+    mailru.events.listen(mailru.connect.events.login, function(response) {
+      if (response.session_key) {
+        window.location = $('#open_auth_mailru-link').data('signinUrl')
+      }
+      else {
+        $('#open_auth-block').trigger('unauthorized')
+      }
+    })
+
+    $('#open_auth_mailru-link')
+      .data('signinUrl', $('#open_auth_mailru-link').attr('href'))
+      .addClass('mrc__connectButton')
+    mailru.connect.initButton()
   })
 
 })

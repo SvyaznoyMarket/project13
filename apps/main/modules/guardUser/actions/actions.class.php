@@ -136,6 +136,7 @@ class guardUserActions extends myActions
   public function executeQuickRegister($request)
   {
     $this->userProfile = $this->getUser()->getProfile();
+    myDebug::dump($this->userProfile);
 
     $this->user = new User();
     $this->user->email = $this->userProfile->getEmail();

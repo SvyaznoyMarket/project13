@@ -1,0 +1,7 @@
+http://habrahabr.ru/blogs/webdev_for_dummies/126872/
+http://api.mail.ru/docs/guides/sites/
+http://api.mail.ru/docs/guides/jsapi/
+
+account:
+  login: ent3@inbox.ru
+  password: xep624
