@@ -463,6 +463,16 @@ cart_delete:
 cart_clear:
   url:   /cart/clear
   param: { module: cart, action: clear }
+#
+# cart service add
+cart_service_add:
+  url:   /cart/add/:product/:service/:quantity
+  param: { module: cart, action: serviceAdd }
+#
+# cart servcie delete
+cart_service_delete:
+  url:   /cart/delete/:product/:service
+  param: { module: cart, action: serviceDelete }
 
 
 #
