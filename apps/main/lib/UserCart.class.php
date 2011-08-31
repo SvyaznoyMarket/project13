@@ -20,7 +20,7 @@ class UserCart extends BaseUserData
 
     if (!isset($products[$product->id]) || empty($products[$product->id]))
     {
-      $products[$product->id] = array('quantity' => 1, );
+      $products[$product->id] = $this->getDefaults();
     }
     $products[$product->id]['quantity'] = $quantity;
     $this->parameterHolder->set('products', $products);
