@@ -257,7 +257,13 @@ ul.inline li, li.inline {
 }
 
 
-.open_auth-link {
+#open_auth-block li {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+}
+#open_auth-block .open_auth-link {
+  display: none;
   padding: 0 0 42px 42px;
 }
 #open_auth_vkontakte-link {
@@ -268,6 +274,12 @@ ul.inline li, li.inline {
 }
 #open_auth_twitter-link {
   background: transparent url(/images/oauth_twitter.png) no-repeat;
+}
+#open_auth_odnoklassniki-link {
+  background: transparent url(/images/oauth_odnoklassniki.png) no-repeat;
+}
+#open_auth_mailru-link {
+  background: transparent url(/images/oauth_mailru.png) no-repeat;
 }
 #open_auth_google-link {
   background: transparent url(/images/oauth_google.png) no-repeat;
