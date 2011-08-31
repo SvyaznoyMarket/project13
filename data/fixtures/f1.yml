@@ -114,7 +114,7 @@ ServiceCategory:
         name: "Игровая консоль"
         is_active: 1
         children: ~
-
+Service:
   Service_install_washer_standart:
     token: install_washer_standart
     name: Установка стиральной машины (стандарт)
