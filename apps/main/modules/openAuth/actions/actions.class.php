@@ -76,7 +76,12 @@ class openAuthActions extends myActions
       );
     }
 
-    return $this->renderJson($result);
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->renderJson($result);
+    }
+
+    $this->redirect('user_signin');
   }
  /**
   * Executes signinFacebook action
@@ -123,7 +128,12 @@ class openAuthActions extends myActions
       );
     }
 
-    return $this->renderJson($result);
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->renderJson($result);
+    }
+
+    $this->redirect('user_signin');
   }
  /**
   * Executes signinTwitter action
@@ -215,6 +225,40 @@ class openAuthActions extends myActions
     }
     else if ($userProfile = $provider->getProfile($request))
     {
+      if ($userProfile->exists())
+      {
+        $this->getUser()->signin($userProfile->User);
+
+        $this->redirect('user');
+      }
+      else {
+        $this->getUser()->setProfile($userProfile);
+
+        $this->redirect('user_quickRegister');
+      }
+    }
+
+    $this->redirect('user_signin');
+  }
+ /**
+  * Executes signinOdnoklassniki action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeSigninOdnoklassniki(sfWebRequest $request)
+  {
+    $result = array();
+    $provider = $this->getProvider();
+
+    if ($request->hasParameter('error'))
+    {
+      $this->setTemplate('signin');
+
+      return sfView::ERROR;
+    }
+    else if ($userProfile = $provider->getProfile($request))
+    {
+      myDebug::dump($userProfile, 1);
       if ($userProfile->exists())
       {
         $this->getUser()->signin($userProfile->User);

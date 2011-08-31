@@ -41,6 +41,11 @@ class openAuthComponents extends myComponents
         'url'   => url_for('openAuth_signin', array('provider' => $name)),
         'data'  => $provider->getData(),
       );
+
+      if ('odnoklassniki' == $name)
+      {
+        $list[$name]['url'] = null;
+      }
     }
 
     $this->setVar('list', $list, true);

@@ -28,6 +28,9 @@ class UserProfile extends BaseUserProfile
       case 'twitter':
         $return = $content['name'];
         break;
+      case 'odnoklassniki':
+        $return = $content['first_name'];
+        break;
       case 'mailru':
         $return = $content['first_name'];
         break;
@@ -41,10 +44,11 @@ class UserProfile extends BaseUserProfile
     $content = sfYaml::load($this->content);
 
     $value = array(
-      'vkontakte' => false,
-      'facebook'  => 'email',
-      'twitter'   => false,
-      'mailru'    => 'email',
+      'vkontakte'     => false,
+      'facebook'      => 'email',
+      'twitter'       => false,
+      'odnoklassniki' => false,
+      'mailru'        => 'email',
     );
 
     return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
@@ -55,10 +59,11 @@ class UserProfile extends BaseUserProfile
     $content = sfYaml::load($this->content);
 
     $value = array(
-      'vkontakte' => 'last_name',
-      'facebook'  => 'last_name',
-      'twitter'   => 'name',
-      'mailru'    => 'last_name',
+      'vkontakte'     => 'last_name',
+      'facebook'      => 'last_name',
+      'twitter'       => 'name',
+      'odnoklassniki' => 'last_name',
+      'mailru'        => 'last_name',
     );
 
     $return = !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
@@ -76,10 +81,11 @@ class UserProfile extends BaseUserProfile
     $content = sfYaml::load($this->content);
 
     $value = array(
-      'vkontakte' => 'first_name',
-      'facebook'  => 'first_name',
-      'twitter'   => 'name',
-      'mailru'    => 'first_name',
+      'vkontakte'     => 'first_name',
+      'facebook'      => 'first_name',
+      'twitter'       => 'name',
+      'odnoklassniki' => 'first_name',
+      'mailru'        => 'first_name',
     );
 
     $return = !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
@@ -97,10 +103,11 @@ class UserProfile extends BaseUserProfile
     $content = sfYaml::load($this->content);
 
     $value = array(
-      'vkontakte' => 'photo',
-      'facebook'  => false,
-      'twitter'   => 'profile_image_url',
-      'mailru'    => 'pic_small',
+      'vkontakte'     => 'photo',
+      'facebook'      => false,
+      'twitter'       => 'profile_image_url',
+      'odnoklassniki' => 'pic_1',
+      'mailru'        => 'pic_small',
     );
 
     return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;

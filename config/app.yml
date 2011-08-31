@@ -43,7 +43,15 @@ all:
         authorize_url: https://api.twitter.com/oauth/authorize
         access_token_url: https://api.twitter.com/oauth/access_token
         callback_url: '@openAuth_signin?provider=twitter'
-      #odnoklassniki:
+      odnoklassniki:
+        title: 'Odnoklassniki.ru'
+        app_id: 3982080
+        public_key: 'CBAEMNDBABABABABA'
+        private_key: '10EABF50D830F7FE507D3376'
+        access_token_url: 'http://api.odnoklassniki.ru/oauth/token.do'
+        app_url: 'http://www.odnoklassniki.ru/games/ent3'
+        api_url: 'http://api.odnoklassniki.ru'
+        return_url: '@openAuth_signin?provider=odnoklassniki'
       mailru:
         title: 'Mail.ru'
         app_id: 641483
