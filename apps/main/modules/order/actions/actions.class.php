@@ -121,7 +121,7 @@ class orderActions extends myActions
   */
   public function executeCreate(sfWebRequest $request)
   {
-
+    $order = Core::getInstance()->createOrder();
   }
 
 
@@ -147,4 +147,5 @@ class orderActions extends myActions
 
     return $step;
   }
+
 }

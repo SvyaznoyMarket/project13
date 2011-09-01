@@ -165,21 +165,21 @@ $(document).ready(function() {
     })
 
     if (x.status == 0) {
-      $.colorbox({html: '<h1>Ошибка</h1><br />Не удается подключиться к серверу'})
+      $.colorbox({html: '<h1>Ошибка</h1><br />Не удается подключиться к серверу', fixed: true})
     } else if (x.status == 401) {
       EventHandler.trigger(e, 'secure')
     } else if (x.status == 404) {
-      $.colorbox({html: '<h1>Ошибка 404</h1><br />Запрашиваемая страница не найдена'})
+      $.colorbox({html: '<h1>Ошибка 404</h1><br />Запрашиваемая страница не найдена', fixed: true})
     } else if (x.status == 403) {
-      $.colorbox({html: '<h1>Ошибка 403</h1><br />Время сессии пользователя истекло. Авторизуйтесь заново, пожалуйста'})
+      $.colorbox({html: '<h1>Ошибка 403</h1><br />Время сессии пользователя истекло. Авторизуйтесь заново, пожалуйста', fixed: true})
     } else if (x.status == 500) {
-      $.colorbox({html: '<h1>Ошибка 500</h1><br />Ошибка сервера'})
+      $.colorbox({html: '<h1>Ошибка 500</h1><br />Ошибка сервера', fixed: true})
     } else if (e == 'parsererror') {
-      $.colorbox({html: '<h1>Ошибка</h1><br />Не удалось обработать ответ сервера'})
+      $.colorbox({html: '<h1>Ошибка</h1><br />Не удалось обработать ответ сервера', fixed: true})
     } else if (e == 'timeout') {
-      $.colorbox({html: '<h1>Ошибка</h1><br />Время ожидания ответа истекло'})
+      $.colorbox({html: '<h1>Ошибка</h1><br />Время ожидания ответа истекло', fixed: true})
     } else {
-      $.colorbox({html: '<h1>Ошибка</h1><br />Неизвестная ошибка.' + "\n" + x.responseText})
+      $.colorbox({html: '<h1>Ошибка</h1><br />Неизвестная ошибка.' + "\n" + x.responseText, fixed: true})
     }
   })
 

@@ -3,7 +3,7 @@
 
   <?php if (empty($form->getObject()->region_id)): ?>
   <ul>
-    <?php echo $form['region_id']->renderRow() ?>
+    <?php include_component('order', 'field_region_id', array('form' => $form)) ?>
   </ul>
   <input type="submit" value="Подтвердить" />
 

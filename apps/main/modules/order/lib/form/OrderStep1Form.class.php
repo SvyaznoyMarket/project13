@@ -6,13 +6,13 @@ class OrderStep1Form extends BaseOrderForm
   {
     parent::configure();
 
+    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
+
     $this->disableCSRFProtection();
 
-    $this->widgetSchema['region_id'] =
-      !empty($this->object->region_id)
-      ? new sfWidgetFormInputHidden()
-      : new sfWidgetFormDoctrineChoice(array('model' => 'Region', 'add_empty' => true))
-    ;
+    $this->widgetSchema['region_id'] = new sfWidgetFormInputHidden(array(), array(
+      'data-url' => url_for('region_autocomplete', array('type' => 'city')),
+    ));
     $this->widgetSchema['region_id']->setLabel('Город');
     $this->validatorSchema['region_id'] = new sfValidatorDoctrineChoice(array('model' => 'Region', 'required' => true));
 

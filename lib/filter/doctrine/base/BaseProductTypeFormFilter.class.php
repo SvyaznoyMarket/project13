@@ -15,6 +15,7 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
     $this->setWidgets(array(
       'name'                  => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'rating_type_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('RatingType'), 'add_empty' => true)),
+      'service_category_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ServiceCategory')),
       'product_category_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory')),
       'property_list'         => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty')),
     ));
@@ -22,6 +23,7 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
     $this->setValidators(array(
       'name'                  => new sfValidatorPass(array('required' => false)),
       'rating_type_id'        => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('RatingType'), 'column' => 'id')),
+      'service_category_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ServiceCategory', 'required' => false)),
       'product_category_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory', 'required' => false)),
       'property_list'         => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty', 'required' => false)),
     ));
@@ -33,6 +35,24 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
     $this->setupInheritance();
 
     parent::setup();
+  }
+
+  public function addServiceCategoryListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.ServiceCategoryProductTypeRelation ServiceCategoryProductTypeRelation')
+      ->andWhereIn('ServiceCategoryProductTypeRelation.category_id', $values)
+    ;
   }
 
   public function addProductCategoryListColumnQuery(Doctrine_Query $query, $field, $values)
@@ -82,6 +102,7 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
       'id'                    => 'Number',
       'name'                  => 'Text',
       'rating_type_id'        => 'ForeignKey',
+      'service_category_list' => 'ManyKey',
       'product_category_list' => 'ManyKey',
       'property_list'         => 'ManyKey',
     );

@@ -7,23 +7,29 @@
  * 
  * @property integer $order_id
  * @property integer $product_id
+ * @property integer $service_id
  * @property decimal $price
  * @property integer $quantity
  * @property Order $Order
  * @property Product $Product
+ * @property Service $Service
  * 
  * @method integer              getOrderId()    Returns the current record's "order_id" value
  * @method integer              getProductId()  Returns the current record's "product_id" value
+ * @method integer              getServiceId()  Returns the current record's "service_id" value
  * @method decimal              getPrice()      Returns the current record's "price" value
  * @method integer              getQuantity()   Returns the current record's "quantity" value
  * @method Order                getOrder()      Returns the current record's "Order" value
  * @method Product              getProduct()    Returns the current record's "Product" value
+ * @method Service              getService()    Returns the current record's "Service" value
  * @method OrderServiceRelation setOrderId()    Sets the current record's "order_id" value
  * @method OrderServiceRelation setProductId()  Sets the current record's "product_id" value
+ * @method OrderServiceRelation setServiceId()  Sets the current record's "service_id" value
  * @method OrderServiceRelation setPrice()      Sets the current record's "price" value
  * @method OrderServiceRelation setQuantity()   Sets the current record's "quantity" value
  * @method OrderServiceRelation setOrder()      Sets the current record's "Order" value
  * @method OrderServiceRelation setProduct()    Sets the current record's "Product" value
+ * @method OrderServiceRelation setService()    Sets the current record's "Service" value
  * 
  * @package    enter
  * @subpackage model
@@ -37,12 +43,17 @@ abstract class BaseOrderServiceRelation extends myDoctrineRecord
         $this->setTableName('order_service_relation');
         $this->hasColumn('order_id', 'integer', 20, array(
              'type' => 'integer',
-             'primary' => true,
+             'notnull' => true,
              'length' => 20,
              ));
         $this->hasColumn('product_id', 'integer', 20, array(
              'type' => 'integer',
-             'primary' => true,
+             'notnull' => true,
+             'length' => 20,
+             ));
+        $this->hasColumn('service_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => true,
              'length' => 20,
              ));
         $this->hasColumn('price', 'decimal', 12, array(
@@ -73,6 +84,11 @@ abstract class BaseOrderServiceRelation extends myDoctrineRecord
 
         $this->hasOne('Product', array(
              'local' => 'product_id',
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
+
+        $this->hasOne('Service', array(
+             'local' => 'service_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
     }

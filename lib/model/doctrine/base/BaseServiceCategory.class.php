@@ -13,6 +13,7 @@
  * @property string $token
  * @property string $name
  * @property boolean $is_active
+ * @property Doctrine_Collection $ProductType
  * @property Doctrine_Collection $Service
  * @property Doctrine_Collection $ProductTypeRelation
  * 
@@ -24,6 +25,7 @@
  * @method string              getToken()               Returns the current record's "token" value
  * @method string              getName()                Returns the current record's "name" value
  * @method boolean             getIsActive()            Returns the current record's "is_active" value
+ * @method Doctrine_Collection getProductType()         Returns the current record's "ProductType" collection
  * @method Doctrine_Collection getService()             Returns the current record's "Service" collection
  * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
  * @method ServiceCategory     setId()                  Sets the current record's "id" value
@@ -34,6 +36,7 @@
  * @method ServiceCategory     setToken()               Sets the current record's "token" value
  * @method ServiceCategory     setName()                Sets the current record's "name" value
  * @method ServiceCategory     setIsActive()            Sets the current record's "is_active" value
+ * @method ServiceCategory     setProductType()         Sets the current record's "ProductType" collection
  * @method ServiceCategory     setService()             Sets the current record's "Service" collection
  * @method ServiceCategory     setProductTypeRelation() Sets the current record's "ProductTypeRelation" collection
  * 
@@ -98,6 +101,11 @@ abstract class BaseServiceCategory extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasMany('ProductType', array(
+             'refClass' => 'ServiceCategoryProductTypeRelation',
+             'local' => 'category_id',
+             'foreign' => 'product_type_id'));
+
         $this->hasMany('Service', array(
              'local' => 'id',
              'foreign' => 'category_id'));

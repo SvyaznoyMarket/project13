@@ -13,23 +13,26 @@
  * @property boolean $is_active
  * @property ServiceCategory $Category
  * @property Doctrine_Collection $Price
+ * @property Doctrine_Collection $OrderRelation
  * 
- * @method integer             getId()          Returns the current record's "id" value
- * @method integer             getCategoryId()  Returns the current record's "category_id" value
- * @method string              getToken()       Returns the current record's "token" value
- * @method string              getName()        Returns the current record's "name" value
- * @method string              getDescription() Returns the current record's "description" value
- * @method boolean             getIsActive()    Returns the current record's "is_active" value
- * @method ServiceCategory     getCategory()    Returns the current record's "Category" value
- * @method Doctrine_Collection getPrice()       Returns the current record's "Price" collection
- * @method Service             setId()          Sets the current record's "id" value
- * @method Service             setCategoryId()  Sets the current record's "category_id" value
- * @method Service             setToken()       Sets the current record's "token" value
- * @method Service             setName()        Sets the current record's "name" value
- * @method Service             setDescription() Sets the current record's "description" value
- * @method Service             setIsActive()    Sets the current record's "is_active" value
- * @method Service             setCategory()    Sets the current record's "Category" value
- * @method Service             setPrice()       Sets the current record's "Price" collection
+ * @method integer             getId()            Returns the current record's "id" value
+ * @method integer             getCategoryId()    Returns the current record's "category_id" value
+ * @method string              getToken()         Returns the current record's "token" value
+ * @method string              getName()          Returns the current record's "name" value
+ * @method string              getDescription()   Returns the current record's "description" value
+ * @method boolean             getIsActive()      Returns the current record's "is_active" value
+ * @method ServiceCategory     getCategory()      Returns the current record's "Category" value
+ * @method Doctrine_Collection getPrice()         Returns the current record's "Price" collection
+ * @method Doctrine_Collection getOrderRelation() Returns the current record's "OrderRelation" collection
+ * @method Service             setId()            Sets the current record's "id" value
+ * @method Service             setCategoryId()    Sets the current record's "category_id" value
+ * @method Service             setToken()         Sets the current record's "token" value
+ * @method Service             setName()          Sets the current record's "name" value
+ * @method Service             setDescription()   Sets the current record's "description" value
+ * @method Service             setIsActive()      Sets the current record's "is_active" value
+ * @method Service             setCategory()      Sets the current record's "Category" value
+ * @method Service             setPrice()         Sets the current record's "Price" collection
+ * @method Service             setOrderRelation() Sets the current record's "OrderRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -86,6 +89,10 @@ abstract class BaseService extends myDoctrineRecord
              'onDelete' => 'RESTRICT'));
 
         $this->hasMany('ServicePrice as Price', array(
+             'local' => 'id',
+             'foreign' => 'service_id'));
+
+        $this->hasMany('OrderServiceRelation as OrderRelation', array(
              'local' => 'id',
              'foreign' => 'service_id'));
     }

@@ -514,6 +514,14 @@ service_list:
   options:  { model: ServiceCategory, type: object, method: getForRoute }
 
 
+#
+# region autocomplete
+region_autocomplete:
+  url:      /region/autocomplete/:type
+  param:    { module: region, action: autocomplete, type: null }
+
+
+
 default_show:
   url:   /:page
   param: { module: page, action: index }

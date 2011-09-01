@@ -23,4 +23,14 @@ class Order extends BaseOrder
       'order' => $this->token,
     );
   }
+
+  public function getPersonTypeName()
+  {
+    $names = array(
+      'individual' => 'физическое лицо',
+      'legal'      => 'юридическое лицо',
+    );
+
+    return isset($names[$this->person_type]) ? $names[$this->person_type] : null;
+  }
 }

@@ -6,8 +6,8 @@
   </div>
 
   <div class="form-row">
-    <label>Вы покупаете</label>
-    <div class="content"><?php echo $order ?></div>
+    <label>Вы покупаете как</label>
+    <div class="content"><?php echo $order->person_type_name ?></div>
   </div>
 
 </div>
