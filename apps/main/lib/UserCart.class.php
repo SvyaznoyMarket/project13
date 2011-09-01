@@ -166,7 +166,6 @@ class UserCart extends BaseUserData
     }
     foreach ($this->products as $key => $product)
     {
-	  myDebug::dump($products[$key]);
       $this->updateProductCart($product, 'quantity', $products[$key]['quantity']);
       $this->updateProductCart($product, 'service', $products[$key]['service']);
     }
