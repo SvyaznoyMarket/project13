@@ -10,7 +10,14 @@
  */
 class productActions extends myActions
 {
-  public function executeChange()
+  public function executeList(sfWebRequest $request)
+  {
+    $tokens = is_array($request['products']) ? $request['products'] : explode(',', $request['products']);
+
+    $this->productList = ProductTable::getInstance()->getListByTokens($tokens);
+  }
+
+  public function executeChange(sfWebRequest $request)
   {
     sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url'));
 

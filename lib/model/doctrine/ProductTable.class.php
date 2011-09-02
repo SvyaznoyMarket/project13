@@ -242,6 +242,18 @@ class ProductTable extends myDoctrineTable
     }
   }
 
+  public function getListByTokens(array $tokens, array $params = array())
+  {
+    $list = $this->createList();
+
+    foreach ($tokens as $token)
+    {
+      $list[] = $this->getByToken($token);
+    }
+
+    return $list;
+  }
+
   public function getMinPriceByCategory(ProductCategory $category, array $params = array())
   {
     $this->applyDefaultParameters($params);
