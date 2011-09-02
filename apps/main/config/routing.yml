@@ -5,7 +5,22 @@ homepage:
 
 
 
+# QR-code
+#
+# show
+qrcode:
+  url:   /qr/:code
+  param: { module: default, action: qrcode }
+
+
 # товар
+#
+# список товаров
+product_list:
+  url:   /products/list/:products
+  param: { module: productCatalog, action: filter }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # каталог товаров
 productCatalog:
