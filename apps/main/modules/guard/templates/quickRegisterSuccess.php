@@ -7,5 +7,5 @@
 <p>Для завершения регистрации, пожалуйста, укажите</p>
 
 <div class="block medium">
-  <?php echo get_partial('guardUser/form_quick_register', array('form' => $form)) ?>
+  <?php echo get_partial('guard/form_quick_register', array('form' => $form)) ?>
 </div>

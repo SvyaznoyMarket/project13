@@ -1,14 +1,14 @@
 <?php
 
 /**
- * guardUser components.
+ * guard components.
  *
  * @package    enter
- * @subpackage guardUser
+ * @subpackage guard
  * @author     Связной Маркет
  * @version    SVN: $Id: components.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class guardUserComponents extends myComponents
+class guardComponents extends myComponents
 {
 /**
   * Executes form_signin component

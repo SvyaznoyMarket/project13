@@ -176,27 +176,27 @@ user:
 # user signin
 user_signin:
   url:   /login
-  param: { module: guardUser, action: signin }
+  param: { module: guard, action: signin }
 #
 # user signout
 user_signout:
   url:   /logout
-  param: { module: guardUser, action: signout }
+  param: { module: guard, action: signout }
 #
 # user forgot password
 user_forgotPassword:
   url:   /request-password
-  param: { module: guardUser, action: forgotPassword }
+  param: { module: guard, action: forgotPassword }
 #
 # user change password
 user_changePassword:
   url:   /private/password
-  param: { module: guardUser, action: changePassword }
+  param: { module: guard, action: changePassword }
 #
 # user quick register
 user_quickRegister:
   url:   /quick-register
-  param: { module: guardUser, action: quickRegister }
+  param: { module: guard, action: quickRegister }
 #
 # open auth signin
 openAuth_signin:
