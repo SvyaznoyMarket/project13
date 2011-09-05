@@ -23,25 +23,13 @@ class OpenAuthOdnoklassnikiProvider extends BaseOpenAuthProvider
 
     $userProfile = null;
 
-    if (empty($request['code']))
+    $code = $request['code'];
+    if (empty($code))
     {
       return $userProfile;
     }
 
-    $data = http_build_query(array(
-      'code'          => $request['code'],
-      'redirect_uri'  => urlencode(url_for('user_oauth_callback', array('provider' => self::$name), true)),
-      'grant_type'    => 'authorization_code',
-      'client_id'     => $this->getConfig('app_id'),
-      'client_secret' => $this->getConfig('private_key'),
-    ));
-
-    $response = file_get_contents($this->getConfig('access_token_url').'?', false, stream_context_create(array('http' => array(
-      'method'  => 'POST',
-      'header'  => "Content-type: application/x-www-form-urlencoded\r\nContent-Length: ".strlen($data)."\r\n",
-      'content' => $data,
-    ))));
-    $response = json_decode($response, true);
+    $response = $this->getAccessTokenResponse($code);
     if (empty($response['error']) && !empty($response['access_token']))
     {
       $params = array(
@@ -77,6 +65,29 @@ class OpenAuthOdnoklassnikiProvider extends BaseOpenAuthProvider
 
     return $userProfile;
   }
+
+  public function getAccessTokenResponse($code)
+  {
+    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
+
+    $data = http_build_query(array(
+      'code'          => $code,
+      'redirect_uri'  => url_for('user_oauth_callback', array('provider' => self::$name), true),
+      'grant_type'    => 'authorization_code',
+      'client_id'     => $this->getConfig('app_id'),
+      'client_secret' => $this->getConfig('private_key'),
+    ));
+
+    $response = file_get_contents($this->getConfig('access_token_url').'?', false, stream_context_create(array('http' => array(
+      'method'  => 'POST',
+      'header'  => "Content-type: application/x-www-form-urlencoded\r\nContent-Length: ".strlen($data)."\r\n",
+      'content' => $data,
+    ))));
+
+    return json_decode($response, true);
+  }
+
+
 
   protected function getUserContent($response)
   {
