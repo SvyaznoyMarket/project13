@@ -5,17 +5,19 @@ class OpenAuthOdnoklassnikiProvider extends BaseOpenAuthProvider
 
   static public $name = 'odnoklassniki';
 
-  public function getData()
+  public function getSigninUrl()
   {
     sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
 
-    return array(
-      'app-id'     => $this->getConfig('app_id'),
-      'return-url' => url_for($this->getConfig('return_url'), true),
-    );
+    return strtr('http://www.odnoklassniki.ru/oauth/authorize?client_id={app_id}&scope={permissions}&response_type=code&redirect_uri={redirect_url}', array(
+      '{api_url}'      => $this->getConfig('api_url'),
+      '{app_id}'       => $this->getConfig('app_id'),
+      '{permissions}'  => $this->getConfig('permissions'),
+      '{redirect_url}' => urlencode(url_for('user_oauth_callback', array('provider' => self::$name), true)),
+    ));
   }
 
-  public function getProfile(sfWebRequest $request)
+  public function getUserProfile(sfWebRequest $request, myUser $user)
   {
     sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
 
@@ -28,7 +30,7 @@ class OpenAuthOdnoklassnikiProvider extends BaseOpenAuthProvider
 
     $data = http_build_query(array(
       'code'          => $request['code'],
-      'redirect_uri'  => url_for($this->getConfig('return_url'), true),
+      'redirect_uri'  => urlencode(url_for('user_oauth_callback', array('provider' => self::$name), true)),
       'grant_type'    => 'authorization_code',
       'client_id'     => $this->getConfig('app_id'),
       'client_secret' => $this->getConfig('private_key'),
@@ -57,21 +59,20 @@ class OpenAuthOdnoklassnikiProvider extends BaseOpenAuthProvider
         .'&'.join('&', $params)
       ;
       $response = json_decode(file_get_contents($url), true);
-      if (!empty($response['uid']))
-      {
-        $sourceId = $response['uid'];
-        $userProfile = UserProfileTable::getInstance()->findOneByTypeAndSourceId(self::$name, $sourceId);
-        if (!$userProfile)
-        {
-          $userProfile = new UserProfile();
-          $userProfile->fromArray(array(
-            'type'      => self::$name,
-            'source_id' => $sourceId,
-          ));
 
-          $userProfile->content = sfYaml::dump($this->getUserContent($response));
-        }
+      $id = !empty($response['uid']) ? $response['uid'] : false;
+      $userProfile = $id ? UserProfileTable::getInstance()->findOneByTypeAndSourceId(self::$name, $id) : false;
+      if (!$userProfile)
+      {
+        $userProfile = new UserProfile();
+        $userProfile->fromArray(array(
+          'type'      => self::$name,
+          'source_id' => $id,
+        ));
+
+        $userProfile->content = sfYaml::dump($this->getUserContent($response));
       }
+
     }
 
     return $userProfile;
@@ -100,9 +101,5 @@ class OpenAuthOdnoklassnikiProvider extends BaseOpenAuthProvider
     }
 
     return $content;
-  }
-
-  public function getCookieName()
-  {
   }
 }

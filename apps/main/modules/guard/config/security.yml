@@ -1,5 +1,14 @@
 all:
   is_secure: true
 
+signin:
+  is_secure: false
+
 quickRegister:
+  is_secure: false
+
+oauthSignin:
+  is_secure: false
+
+oauthCallback:
   is_secure: false

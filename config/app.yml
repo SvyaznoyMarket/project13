@@ -30,11 +30,13 @@ all:
         app_id: 2450355
         secret_key: pOhjShAyp3e9HrL1X1QV
         api_url: https://api.vkontakte.ru
+        permissions: ''
       facebook:
         title: 'Facebook'
         app_id: 226981847349938
         secret_key: e9b8bd45490396ff8ee0da18c777323b
         api_url: https://graph.facebook.com
+        permissions: 'user_birthday,user_location,email'
       twitter:
         title: 'Twitter'
         consumer_key: WdGeIjFTAci0tHh3t7W7Yg
@@ -42,7 +44,6 @@ all:
         request_token_url: https://api.twitter.com/oauth/request_token
         authorize_url: https://api.twitter.com/oauth/authorize
         access_token_url: https://api.twitter.com/oauth/access_token
-        callback_url: '@openAuth_signin?provider=twitter'
       odnoklassniki:
         title: 'Odnoklassniki.ru'
         app_id: 3982080
@@ -51,11 +52,10 @@ all:
         access_token_url: 'http://api.odnoklassniki.ru/oauth/token.do'
         app_url: 'http://www.odnoklassniki.ru/games/ent3'
         api_url: 'http://api.odnoklassniki.ru'
-        return_url: '@openAuth_signin?provider=odnoklassniki'
+        permissions: 'VALUABLE+ACCESS'
       mailru:
         title: 'Mail.ru'
         app_id: 641483
         private_key: 'fe2314f2fee03350ee54d5f71cff37d9'
         secret_key: 'a47cc49da1835cf1f010ced1ac7be318'
-        redirect_uri: '@openAuth_signin?provider=mailru'
         api_url: 'http://www.appsmail.ru/platform/api'

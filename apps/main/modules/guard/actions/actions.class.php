@@ -17,6 +17,14 @@ class guardActions extends myActions
   */
   public function executeSignin($request)
   {
+    if ($request['error'])
+    {
+      return sfView::ERROR;
+    }
+
+    $providerName = $request->getParameter('provider', false);
+    $this->forwardIf($providerName, $this->getModuleName(), 'oauthSignin');
+
     $user = $this->getUser();
     if ($user->isAuthenticated())
     {
@@ -175,5 +183,63 @@ class guardActions extends myActions
         return $this->redirect('@homepage');
       }
     }
+  }
+ /**
+  * Executes oauthSignin action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeOauthSignin(sfWebRequest $request)
+  {
+    $provider = $this->getProvider($request['provider']);
+
+    $url = $provider->getSigninUrl();
+    $this->redirect($url);
+  }
+ /**
+  * Executes oauthCallback action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeOauthCallback(sfWebRequest $request)
+  {
+    $this->setLayout(false);
+
+    $provider = $this->getProvider($request['provider']);
+
+    if ($userProfile = $provider->getUserProfile($request, $this->getUser()))
+    {
+      $this->setLayout(false);
+      if ($userProfile->exists())
+      {
+        $this->getUser()->signin($userProfile->User);
+
+        return $this->renderPartial('default/close', array('url' => $this->generateUrl('user', array(), true)));
+      }
+      else {
+        $this->getUser()->setProfile($userProfile);
+
+        return $this->renderPartial('default/close', array('url' => $this->generateUrl('user_quickRegister', array(), true)));
+      }
+    }
+
+    return $this->renderPartial('default/close', array(
+      'url' => $this->generateUrl('user_signin', array('error' => 'reject')),
+    ));
+  }
+
+  protected function getProvider($name = null)
+  {
+    if (null == $name)
+    {
+      $name = $this->getRequestParameter('provider');
+    }
+
+    $class = sfInflector::camelize('open_auth_'.$name.'_provider');
+    $this->forward404Unless(!empty($name) && class_exists($class));
+
+    $providers = sfConfig::get('app_open_auth_provider');
+
+    return new $class($providers[$name]);
   }
 }

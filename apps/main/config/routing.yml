@@ -175,8 +175,8 @@ user:
 #
 # user signin
 user_signin:
-  url:   /login
-  param: { module: guard, action: signin }
+  url:   /login/:provider
+  param: { module: guard, action: signin, provider: null }
 #
 # user signout
 user_signout:
@@ -198,10 +198,10 @@ user_quickRegister:
   url:   /quick-register
   param: { module: guard, action: quickRegister }
 #
-# open auth signin
-openAuth_signin:
-  url:   /oauth/:provider/signin
-  param: { module: openAuth, action: signin }
+# user oauth callback
+user_oauth_callback:
+  url:   /signin/:provider/callback
+  param: { module: guard, action: oauthCallback }
 
 
 #

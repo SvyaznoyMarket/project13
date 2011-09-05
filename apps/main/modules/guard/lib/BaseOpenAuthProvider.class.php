@@ -14,4 +14,7 @@ abstract class BaseOpenAuthProvider
   {
     return null == $name ? $this->configHolder->getAll() : $this->configHolder->get($name);
   }
+
+  //abstract public function getSigninUrl();
+  //abstract public function getProfile(sfWebRequest $request, myUser $user);
 }

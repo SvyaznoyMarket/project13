@@ -10,7 +10,7 @@
  */
 class guardComponents extends myComponents
 {
-/**
+ /**
   * Executes form_signin component
   *
   * @param UserFormSignin $form Форма авторизации
@@ -21,5 +21,32 @@ class guardComponents extends myComponents
     {
       $this->form = new UserFormSignin();
     }
+  }
+ /**
+  * Executes oauth_links component
+  *
+  * @param UserFormSignin $form Форма авторизации
+  */
+  public function executeOauth_links()
+  {
+    require_once(dirname(__FILE__).'/../lib/BaseOpenAuthProvider.class.php');
+
+    $list = array();
+
+    foreach (sfConfig::get('app_open_auth_provider') as $name => $config)
+    {
+      require_once(dirname(__FILE__).'/../lib/OpenAuth'.sfInflector::camelize($name).'Provider.class.php');
+
+      $class = sfInflector::camelize('open_auth_'.$name.'_provider');
+      $provider = new $class($config);
+
+      $list[$name] = array(
+        'token' => $name,
+        'name'  => $config['title'],
+        'url'   => url_for('user_signin', array('provider' => $name)),
+      );
+    }
+
+    $this->setVar('list', $list, true);
   }
 }

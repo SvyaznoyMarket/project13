@@ -1,5 +1,5 @@
 <h2>Войти как пользователь</h2>
-<?php include_component('openAuth', 'show') ?>
+<?php include_component('guard', 'oauth_links') ?>
 
 <br class="clear" />
 
