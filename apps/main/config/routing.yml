@@ -544,7 +544,12 @@ payment_callback:
   param:    { module: payment, action: callback }
 
 
-
+#
+# test core module
+core_test:
+  url:      /core/:action
+  param:    { module: core }
+  
 default_show:
   url:   /:page
   param: { module: page, action: index }
