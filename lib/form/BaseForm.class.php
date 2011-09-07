@@ -34,6 +34,8 @@ class BaseForm extends sfFormSymfony
 
   public function configure()
   {
+    $this->disableCSRFProtection();
+
     $this->widgetSchema->setFormFormatterName('default');
   }
 

@@ -41,8 +41,8 @@ all:
       - Partial
       - myUrl
 
-    login_module:           guardUser
+    login_module:           guard
     login_action:           signin
 
-    secure_module:          guardUser
+    secure_module:          guard
     secure_action:          secure

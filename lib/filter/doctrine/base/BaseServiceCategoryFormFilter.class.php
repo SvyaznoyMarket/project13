@@ -13,23 +13,25 @@ abstract class BaseServiceCategoryFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'root_id'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'lft'       => new sfWidgetFormFilterInput(),
-      'rgt'       => new sfWidgetFormFilterInput(),
-      'level'     => new sfWidgetFormFilterInput(),
-      'token'     => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'name'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'is_active' => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
+      'root_id'           => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'lft'               => new sfWidgetFormFilterInput(),
+      'rgt'               => new sfWidgetFormFilterInput(),
+      'level'             => new sfWidgetFormFilterInput(),
+      'token'             => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'name'              => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'is_active'         => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
+      'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
     ));
 
     $this->setValidators(array(
-      'root_id'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-      'lft'       => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-      'rgt'       => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-      'level'     => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-      'token'     => new sfValidatorPass(array('required' => false)),
-      'name'      => new sfValidatorPass(array('required' => false)),
-      'is_active' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'root_id'           => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'lft'               => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'rgt'               => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'level'             => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'token'             => new sfValidatorPass(array('required' => false)),
+      'name'              => new sfValidatorPass(array('required' => false)),
+      'is_active'         => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('service_category_filters[%s]');
@@ -41,6 +43,24 @@ abstract class BaseServiceCategoryFormFilter extends BaseFormFilterDoctrine
     parent::setup();
   }
 
+  public function addProductTypeListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.ServiceCategoryProductTypeRelation ServiceCategoryProductTypeRelation')
+      ->andWhereIn('ServiceCategoryProductTypeRelation.product_type_id', $values)
+    ;
+  }
+
   public function getModelName()
   {
     return 'ServiceCategory';
@@ -49,14 +69,15 @@ abstract class BaseServiceCategoryFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'        => 'Number',
-      'root_id'   => 'Number',
-      'lft'       => 'Number',
-      'rgt'       => 'Number',
-      'level'     => 'Number',
-      'token'     => 'Text',
-      'name'      => 'Text',
-      'is_active' => 'Boolean',
+      'id'                => 'Number',
+      'root_id'           => 'Number',
+      'lft'               => 'Number',
+      'rgt'               => 'Number',
+      'level'             => 'Number',
+      'token'             => 'Text',
+      'name'              => 'Text',
+      'is_active'         => 'Boolean',
+      'product_type_list' => 'ManyKey',
     );
   }
 }

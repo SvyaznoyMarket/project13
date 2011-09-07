@@ -17,10 +17,30 @@ class Order extends BaseOrder
     return (string)$this->token;
   }
 
+  public function preSave($event)
+  {
+    $record = $event->getInvoker();
+
+    if (empty($record->token))
+    {
+      $record->token = uniqid();
+    }
+  }
+
   public function toParams()
   {
     return array(
       'order' => $this->token,
     );
+  }
+
+  public function getPersonTypeName()
+  {
+    $names = array(
+      'individual' => 'физическое лицо',
+      'legal'      => 'юридическое лицо',
+    );
+
+    return isset($names[$this->person_type]) ? $names[$this->person_type] : null;
   }
 }

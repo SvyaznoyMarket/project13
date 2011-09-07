@@ -12,14 +12,18 @@ class myActions extends sfActions
     }
   }
 
-  public function renderJson($value, $header = true)
+  public function renderJson($value, $header = true, array $params = array())
   {
+    $params = myToolkit::arrayDeepMerge(array(
+      'debug' => true,
+    ), $params);
+
     if ($header)
     {
       $this->getResponse()->setHttpHeader('Content-type', 'application/json');
     }
 
-    if (is_array($value) && (true == sfConfig::get('sf_debug')))
+    if ($params['debug'] && is_array($value) && (true == sfConfig::get('sf_debug')))
     {
       $value['debug'] = array(
         'request' => $this->getRequest()->getParameterHolder()->getAll(),
@@ -58,5 +62,10 @@ class myActions extends sfActions
     $pager->init();
 
     return $pager;
+  }
+
+  public function getCoreService()
+  {
+    return CoreService::getInstance();
   }
 }

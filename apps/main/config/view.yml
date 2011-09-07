@@ -16,6 +16,7 @@ default:
     - normalize.css
     - jquery-ui-custom/jquery-ui-custom.css
     - colorbox/colorbox.css
+    - jquery.autocomplete.css
     - main.css
 
   javascripts:
@@ -25,6 +26,7 @@ default:
     - jquery.timers.js
     - jquery.scrollto.js
     - jquery.colorbox.js
+    - jquery.autocomplete<?php echo 'dev' == sfConfig::get('sf_environment') ? '-dev' : '' ?>.js
     - main.js
 
   has_layout:     true

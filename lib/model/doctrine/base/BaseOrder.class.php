@@ -28,7 +28,6 @@
  * @property DeliveryType $DeliveryType
  * @property Region $Region
  * @property Doctrine_Collection $ProductRelation
- * @property Doctrine_Collection $ServiceRelation
  * 
  * @method integer             getId()                     Returns the current record's "id" value
  * @method string              getToken()                  Returns the current record's "token" value
@@ -53,7 +52,6 @@
  * @method DeliveryType        getDeliveryType()           Returns the current record's "DeliveryType" value
  * @method Region              getRegion()                 Returns the current record's "Region" value
  * @method Doctrine_Collection getProductRelation()        Returns the current record's "ProductRelation" collection
- * @method Doctrine_Collection getServiceRelation()        Returns the current record's "ServiceRelation" collection
  * @method Order               setId()                     Sets the current record's "id" value
  * @method Order               setToken()                  Sets the current record's "token" value
  * @method Order               setUserId()                 Sets the current record's "user_id" value
@@ -77,7 +75,6 @@
  * @method Order               setDeliveryType()           Sets the current record's "DeliveryType" value
  * @method Order               setRegion()                 Sets the current record's "Region" value
  * @method Order               setProductRelation()        Sets the current record's "ProductRelation" collection
- * @method Order               setServiceRelation()        Sets the current record's "ServiceRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -230,10 +227,6 @@ abstract class BaseOrder extends myDoctrineRecord
              'onDelete' => 'SET NULL'));
 
         $this->hasMany('OrderProductRelation as ProductRelation', array(
-             'local' => 'id',
-             'foreign' => 'order_id'));
-
-        $this->hasMany('OrderServiceRelation as ServiceRelation', array(
              'local' => 'id',
              'foreign' => 'order_id'));
     }

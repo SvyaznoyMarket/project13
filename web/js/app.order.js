@@ -92,4 +92,33 @@ $(document).ready(function() {
 
   $('.order-form').trigger('change', [false])
 
+
+
+  $('.order_region_name').autocomplete($('#order_region_id').data('url'), {
+    queryArgument: 'q',
+    minChars: 2,
+    max: 20,
+    width: 300,
+    formatItem: function(item) {
+      return item.name
+    },
+    parse: function parse(data) {
+      var parsed = [];
+      var rows = data.data;
+      for (var i=0; i < rows.length; i++) {
+        var row = rows[i]
+        parsed[parsed.length] = {
+          data: row,
+          value: row.id,
+          result: row.name
+        }
+      }
+      return parsed;
+    }
+  })
+  .result(function(e, item) {
+    $('#order_region_id').val(item.id)
+    $('.order-form').submit()
+  })
+
 })

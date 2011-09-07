@@ -133,5 +133,20 @@ class orderComponents extends myComponents
   public function executeField_shop_id()
   {
   }
+ /**
+  * Executes field_region_id component
+  *
+  * @param OrderStep1Form $form Форма заказа 1-го шага
+  */
+  public function executeField_region_id()
+  {
+    $regionId = $this->form->getValue('region_id');
+
+    $this->region = !empty($regionId) ? RegionTable::getInstance()->find($regionId) : '';
+
+    $this->setVar('widget', new sfWidgetFormInputText(array(), array(
+      'class' => 'order_region_name'
+    )), true);
+  }
 }
 

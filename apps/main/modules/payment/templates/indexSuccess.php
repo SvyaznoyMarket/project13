@@ -1,0 +1,1 @@
+<?php include_partial('payment/form', array('form' => $form)) ?>

@@ -3,9 +3,20 @@ homepage:
   url:   /
   param: { module: default, action: index }
 
+# QR-code
+#
+# show
+qrcode:
+  url:   /qr/:code
+  param: { module: default, action: qrcode }
 
 
 # товар
+#
+# список товаров
+product_list:
+  url:   /products/list/:products
+  param: { module: product, action: list }
 #
 # каталог товаров
 productCatalog:
@@ -162,33 +173,33 @@ user:
 #
 # user signin
 user_signin:
-  url:   /login
-  param: { module: guardUser, action: signin }
+  url:   /login/:provider
+  param: { module: guard, action: signin, provider: null }
 #
 # user signout
 user_signout:
   url:   /logout
-  param: { module: guardUser, action: signout }
+  param: { module: guard, action: signout }
 #
 # user forgot password
 user_forgotPassword:
   url:   /request-password
-  param: { module: guardUser, action: forgotPassword }
+  param: { module: guard, action: forgotPassword }
 #
 # user change password
 user_changePassword:
   url:   /private/password
-  param: { module: guardUser, action: changePassword }
+  param: { module: guard, action: changePassword }
 #
 # user quick register
 user_quickRegister:
   url:   /quick-register
-  param: { module: guardUser, action: quickRegister }
+  param: { module: guard, action: quickRegister }
 #
-# open auth signin
-openAuth_signin:
-  url:   /oauth/:provider/signin
-  param: { module: openAuth, action: signin }
+# user oauth callback
+user_oauth_callback:
+  url:   /signin/:provider/callback
+  param: { module: guard, action: oauthCallback }
 
 
 #
@@ -512,6 +523,26 @@ service_list:
   param:    { module: service, action: list }
   class:    myDoctrineRoute
   options:  { model: ServiceCategory, type: object, method: getForRoute }
+
+
+#
+# region autocomplete
+region_autocomplete:
+  url:      /region/autocomplete/:type
+  param:    { module: region, action: autocomplete, type: null }
+
+
+#
+# payment
+payment:
+  url:      /payment
+  param:    { module: payment, action: index }
+#
+# payment callback
+payment_callback:
+  url:      /payment/callback
+  param:    { module: payment, action: callback }
+
 
 
 default_show:
