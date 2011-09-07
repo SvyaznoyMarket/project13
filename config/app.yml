@@ -22,8 +22,18 @@ all:
     signin_url: '@user'
     #remember_key_expiration_age: 1296000
 
+  payment:
+    default_provider: uniteller
+    provider:
+      uniteller:
+        login: 331
+        password: 'bHcpteTJUJVwTO46jb05eWM4sfrVSrMrUSXi06MmFVlZVOFwg4Hxv88Cn7wmi54g4OGN7feJujk2iAUl'
+        pay_url: 'https://test.wpay.uniteller.ru/pay/'
+        result_url: 'https://test.wpay.uniteller.ru/results/'
+        shop_id: '0380440538-657'
+        return_url: '@payment_callback'
+
   open_auth:
-    callback_url: openAuth_callback
     provider:
       vkontakte:
         title: 'ВКонтакте'

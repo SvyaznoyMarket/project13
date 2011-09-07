@@ -17,6 +17,16 @@ class Order extends BaseOrder
     return (string)$this->token;
   }
 
+  public function preSave($event)
+  {
+    $record = $event->getInvoker();
+
+    if (empty($record->token))
+    {
+      $record->token = uniqid();
+    }
+  }
+
   public function toParams()
   {
     return array(

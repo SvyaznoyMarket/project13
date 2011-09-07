@@ -3,8 +3,6 @@ homepage:
   url:   /
   param: { module: default, action: index }
 
-
-
 # QR-code
 #
 # show
@@ -532,6 +530,18 @@ service_list:
 region_autocomplete:
   url:      /region/autocomplete/:type
   param:    { module: region, action: autocomplete, type: null }
+
+
+#
+# payment
+payment:
+  url:      /payment
+  param:    { module: payment, action: index }
+#
+# payment callback
+payment_callback:
+  url:      /payment/callback
+  param:    { module: payment, action: callback }
 
 
 
