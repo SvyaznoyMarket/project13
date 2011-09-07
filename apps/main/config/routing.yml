@@ -513,7 +513,10 @@ service_list:
   class:    myDoctrineRoute
   options:  { model: ServiceCategory, type: object, method: getForRoute }
 
-
+core_test:
+  url:      /core/:action
+  param:    { module: core }
+  
 default_show:
   url:   /:page
   param: { module: page, action: index }
