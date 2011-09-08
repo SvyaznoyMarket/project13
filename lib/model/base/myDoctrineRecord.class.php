@@ -68,7 +68,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     return $a;
   }
 
-  public function toCoreData()
+  public function exportToCore()
   {
     throw new Exception('Method not implemented');
   }
