@@ -35,7 +35,7 @@ class Core
 
   public function getConfig($name = null)
   {
-    return null == $name ? $this->config : $this->config[$name];
+    return null == $name ? $this->config->getAll() : $this->config->get($name);
   }
 
   public function getModel($name)
