@@ -38,9 +38,9 @@ EOF;
     foreach (array(
       'doctrine:build'          => array(
         array(),
-        array('all' => true, 'no-confirmation' => true, 'and-load' => true),
+        array('all' => true, 'no-confirmation' => true, 'and-load' => true, 'application' => 'main'),
       ),
-      'doctrine:test-data-load' => array(),
+      'doctrine:test-data-load' => array('application' => 'main'),
       'cache:clear'             => array(),
       'doctrine:test-model'     => array('application' => 'main'),
     ) as $name => $params)
