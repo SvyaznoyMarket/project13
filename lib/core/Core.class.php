@@ -81,7 +81,7 @@ class Core
     return $record->exportToCore();
   }
 
-  public function query($name, $data)
+  public function query($name, $data = array())
   {
     $action = '/'.str_replace('.', '/', $name).'/';
 

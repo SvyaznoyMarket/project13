@@ -1,0 +1,1 @@
+<?php echo link_to('Перегрузить данные', 'default_init', array(), array('confirm' => 'Выполнить перезагрузку данных?')) ?>
