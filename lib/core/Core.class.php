@@ -38,6 +38,16 @@ class Core
     return null == $name ? $this->config : $this->config[$name];
   }
 
+  public function getModel($name)
+  {
+    $models = array(
+      'category' => 'ProductCategory',
+      'order'    => 'Order',
+      'product'  => 'Product',
+      'shop'     => 'Shop',
+    );
+  }
+
   public function createOrder(Order $order)
   {
     $result = false;
@@ -68,7 +78,7 @@ class Core
 
   public function getData($record)
   {
-    return $record->toCoreData();
+    return $record->exportToCore();
   }
 
   public function query($name, $data)
