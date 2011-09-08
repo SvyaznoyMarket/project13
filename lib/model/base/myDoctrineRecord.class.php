@@ -64,7 +64,12 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     }
 
     $this->_state = $stateBeforeLock;
+
     return $a;
   }
 
+  public function toCoreData()
+  {
+    throw new Exception('Method not implemented');
+  }
 }

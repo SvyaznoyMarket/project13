@@ -214,4 +214,9 @@ class myDoctrineTable extends Doctrine_Table
 
     return $path.'/'.$paramHash;
   }
+
+  public function createRecordFromCore($data)
+  {
+    throw new Exception('Method not implemented');
+  }
 }
