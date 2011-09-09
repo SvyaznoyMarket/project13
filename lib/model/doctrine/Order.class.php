@@ -43,4 +43,23 @@ class Order extends BaseOrder
 
     return isset($names[$this->person_type]) ? $names[$this->person_type] : null;
   }
+
+  public function exportToCore()
+  {
+    return array(
+      'first_name'  => $this->recipient_first_name,
+      'last_name'   => $this->recipient_last_name,
+      'middle_name' => $this->recipient_middle_name,
+      'user_id'     => $this->user_id,
+      'sum'         => $this->sum,
+      'payment_id'  => $this->payment_method_id ? $this->payment_method_id : 1,
+      'delivery_id' => $this->delivery_type_id ? $this->delivery_type_id : 1,
+      'geo_id'      => $this->region_id ? $this->region_id : 1,
+      'address'     => $this->address ? $this->address : 'The Earth',
+      'size_id'     => 0,
+      'products'    => array(
+
+      ),
+    );
+  }
 }
