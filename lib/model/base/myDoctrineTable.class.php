@@ -217,6 +217,9 @@ class myDoctrineTable extends Doctrine_Table
 
   public function createRecordFromCore($data)
   {
-    throw new Exception('Method not implemented');
+    $record = $this->create();
+    $record->importFromCore($data);
+
+    return $record;
   }
 }

@@ -72,4 +72,9 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
   {
     throw new Exception('Method not implemented');
   }
+
+  public function importFromCore()
+  {
+    throw new Exception('Method not implemented');
+  }
 }
