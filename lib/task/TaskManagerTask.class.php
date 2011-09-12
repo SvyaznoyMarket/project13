@@ -16,8 +16,8 @@ class TaskManagerTask extends sfBaseTask
       // add your own options here
     ));
 
-    $this->namespace        = '';
-    $this->name             = 'TaskManager';
+    $this->namespace        = 'task-manager';
+    $this->name             = 'run';
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
 The [TaskManager|INFO] task does things.
