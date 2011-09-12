@@ -17,7 +17,19 @@ class myDoctrineTable extends Doctrine_Table
   public function createList(array $data = array())
   {
     $return = new myDoctrineCollection($this);
-    $return->fromArray($data);
+    if (is_array($data) && isset($data[0]))
+    {
+      if (is_object($data[0]) && ($data[0] instanceof myDoctrineRecord))
+      {
+        foreach ($data as $item)
+        {
+          
+        }
+      }
+      else {
+        $return->fromArray($data);
+      }
+    }
 
     return $return;
   }
