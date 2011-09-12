@@ -17,23 +17,26 @@ class coreActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-	$core = Core::getInstance();
-	
-	$order = new Order();
-	$order->fromArray(array(
-	  'recipient_first_name' => 'Я',
-	  'recipient_last_name' => 'ТЫ',
-	  'recipient_middle_name' => 'ВЫ',
-	));
+    $core = Core::getInstance();
 
-	if (!$response = $core->createOrder($order))
-	{
-      myDebug::dump($core->getError());
-	}
-	else
-	{
-	  myDebug::dump($response);
-	};
-	
+    /*$order = new Order();
+    $order->fromArray(array(
+      'recipient_first_name' => 'Я',
+      'recipient_last_name' => 'ТЫ',
+      'recipient_middle_name' => 'ВЫ',
+    ));*/
+
+    $user = UserTable::getInstance()->findOneById(2);
+    myDebug::dump($user);
+    //if (!$response = $core->createOrder($order))
+    if (!$response = $core->createUser($user))
+    {
+        myDebug::dump($core->getError());
+    }
+    else
+    {
+      myDebug::dump($response);
+    };
+
   }
 }

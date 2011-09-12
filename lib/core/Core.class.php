@@ -76,6 +76,20 @@ class Core
     return $result;
   }
 
+  public function createUser(User $user)
+  {
+    $result = false;
+
+    $data = $this->getData($user);
+
+    if ($response = $this->query('user.create', $data))
+    {
+      $result = $response['id'];
+    }
+
+    return $result;
+  }
+
   public function getData($record)
   {
     return $record->exportToCore();
