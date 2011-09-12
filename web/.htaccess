@@ -1,3 +1,4 @@
+AddDefaultCharset utf-8
 Options +FollowSymLinks +ExecCGI
 
 <IfModule mod_rewrite.c>

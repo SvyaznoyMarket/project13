@@ -1,0 +1,10 @@
+Task:
+  Task_4e69fb29c86eb:
+    token: 4e69fb29c86eb
+    type: 'project.init'
+    status: run
+    content: |
+      packet_id: '1725'
+      sync_id: 9
+      status: run
+

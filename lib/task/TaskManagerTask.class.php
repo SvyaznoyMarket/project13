@@ -1,6 +1,6 @@
 <?php
 
-class ProjectTestBuildTask extends sfBaseTask
+class TaskManagerTask extends sfBaseTask
 {
   protected function configure()
   {
@@ -10,20 +10,20 @@ class ProjectTestBuildTask extends sfBaseTask
     // ));
 
     $this->addOptions(array(
-      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'main'),
+      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       // add your own options here
     ));
 
-    $this->namespace        = 'project';
-    $this->name             = 'test-build';
+    $this->namespace        = '';
+    $this->name             = 'TaskManager';
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
-The [ProjectTestBuild|INFO] task does things.
+The [TaskManager|INFO] task does things.
 Call it with:
 
-  [php symfony myProjectTestBuild|INFO]
+  [php symfony TaskManager|INFO]
 EOF;
   }
 
@@ -34,20 +34,16 @@ EOF;
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
     // add your code here
-
-    foreach (array(
-      'doctrine:build'          => array(
-        array(),
-        array('all' => true, 'no-confirmation' => true, 'and-load' => true, 'application' => 'main'),
-      ),
-      'doctrine:test-data-load' => array(array(), array('application' => 'main')),
-      'cache:clear'             => array(),
-      'doctrine:test-model'     => array(array(), array('application' => 'main')),
-    ) as $name => $params)
+    $list = TaskTable::getInstance()->getRunningList();
+    if (isset($list[0]) && (0 === $list[0]->priority))
     {
-      $this->runTask($name, isset($params[0]) ? $params[0] : array(), isset($params[1]) ? $params[1] : array());
+      $list = TaskTable::getInstance()->createList(array($list[0]));
     }
-
-    $this->logSection('redis', shell_exec('redis-cli FLUSHALL'));
+    foreach ($list as $task)
+    {
+      $this->logSection($task->type, 'starting...');
+      $this->runTask(str_replace('.', ':', $task->type), array(), $task->getContentData());
+      $this->logSection($task->type, 'done');
+    }
   }
 }

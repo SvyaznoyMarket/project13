@@ -17,6 +17,6 @@ class apiActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    myDebug::dump($request, 1);
+    
   }
 }

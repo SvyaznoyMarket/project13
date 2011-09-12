@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class defaultActions extends myActions
+class defaultActions extends sfActions
 {
  /**
   * Executes index action
@@ -26,20 +26,7 @@ class defaultActions extends myActions
   public function executeInit(sfWebRequest $request)
   {
     $response = $this->getCore()->query('load.start');
-    if ($response['ready'] && !empty($response['packet_id']))
-    {
-      $task = new Task();
-      $task->setContentData(array(
-        'type'      => 'init',
-        'packet_id' => $response['packet_id'],
-        'sync_id'   => $response['sync_id'],
-        'status'    => 'run',
-      ));
-
-      $task->save();
-    }
-
-    $this->redirect('homepage');
+    myDebug::dump($response, 1);
   }
 
   protected function getCore()

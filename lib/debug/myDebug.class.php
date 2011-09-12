@@ -92,7 +92,7 @@ class myDebug
     {
       $return = print_r($value, true);
     }
-    else if ('yaml' == $format)
+    else if (in_array($format, array('yml', 'yaml')))
     {
       $return = sfYaml::dump($value, 100);
     }

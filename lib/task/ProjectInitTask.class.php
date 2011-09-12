@@ -1,6 +1,6 @@
 <?php
 
-class ProjectTestBuildTask extends sfBaseTask
+class ProjectInitTask extends sfBaseTask
 {
   protected function configure()
   {
@@ -10,20 +10,23 @@ class ProjectTestBuildTask extends sfBaseTask
     // ));
 
     $this->addOptions(array(
-      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'main'),
+      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'main'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
+      new sfCommandOption('packet_id', null, sfCommandOption::PARAMETER_REQUIRED, 'Packet id'),
+      new sfCommandOption('sync_id', null, sfCommandOption::PARAMETER_REQUIRED, 'Sync id'),
+      new sfCommandOption('status', null, sfCommandOption::PARAMETER_REQUIRED, 'Status'),
       // add your own options here
     ));
 
     $this->namespace        = 'project';
-    $this->name             = 'test-build';
+    $this->name             = 'init';
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
-The [ProjectTestBuild|INFO] task does things.
+The [ProjectInit|INFO] task does things.
 Call it with:
 
-  [php symfony myProjectTestBuild|INFO]
+  [php symfony ProjectInit|INFO]
 EOF;
   }
 
@@ -34,20 +37,14 @@ EOF;
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
     // add your code here
+    $core = Core::getInstance();
 
-    foreach (array(
-      'doctrine:build'          => array(
-        array(),
-        array('all' => true, 'no-confirmation' => true, 'and-load' => true, 'application' => 'main'),
-      ),
-      'doctrine:test-data-load' => array(array(), array('application' => 'main')),
-      'cache:clear'             => array(),
-      'doctrine:test-model'     => array(array(), array('application' => 'main')),
-    ) as $name => $params)
-    {
-      $this->runTask($name, isset($params[0]) ? $params[0] : array(), isset($params[1]) ? $params[1] : array());
-    }
+    //myDebug::dump($options);
+    $response = $core->query('load.get', array(
+      'id' => $options['packet_id']
+    ));
 
-    $this->logSection('redis', shell_exec('redis-cli FLUSHALL'));
+
+    myDebug::dump($response, false, 'yaml');
   }
 }

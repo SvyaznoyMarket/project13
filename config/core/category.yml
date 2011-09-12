@@ -1,4 +1,0 @@
-class: ProductCategory
-fields:
-  name: name
-  parent_id: parent_id

@@ -5,5 +5,5 @@
 </div>
 
 <div class="block">
-  <?php include_component('product', 'pager', array('productPager' => $productPager)) ?>
+  <?php include_component('product', 'pager', array('pager' => $productPager)) ?>
 </div>
