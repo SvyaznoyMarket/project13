@@ -19,14 +19,17 @@ class coreActions extends myActions
   {
     $core = Core::getInstance();
 
-    $order = new Order();
+    /*$order = new Order();
     $order->fromArray(array(
       'recipient_first_name' => 'Я',
       'recipient_last_name' => 'ТЫ',
       'recipient_middle_name' => 'ВЫ',
-    ));
+    ));*/
 
-    if (!$response = $core->createOrder($order))
+    $user = UserTable::getInstance()->findOneById(2);
+    myDebug::dump($user);
+    //if (!$response = $core->createOrder($order))
+    if (!$response = $core->createUser($user))
     {
         myDebug::dump($core->getError());
     }
