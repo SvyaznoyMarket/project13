@@ -26,6 +26,7 @@ class defaultActions extends myActions
   public function executeInit(sfWebRequest $request)
   {
     $response = $this->getCore()->query('load.start');
+    myDebug::dump($response, 1);
     if ($response['ready'] && !empty($response['packet_id']))
     {
       $task = new Task();

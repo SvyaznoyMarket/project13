@@ -76,20 +76,6 @@ class Core
     return $result;
   }
 
-  public function createUser(User $user)
-  {
-    $result = false;
-
-    $data = $this->getData($user);
-
-    if ($response = $this->query('user.create', $data))
-    {
-      $result = $response['id'];
-    }
-
-    return $result;
-  }
-
   public function getData($record)
   {
     return $record->exportToCore();
@@ -102,6 +88,7 @@ class Core
     $data = json_encode(array('action' => $action, 'param' => array('client_id' => $this->getConfig('client_id'), 'token_id' => '', ), 'data' => $data, ), JSON_FORCE_OBJECT);
 
     $response = $this->send($data);
+    myDebug::dump($response);
     $response = json_decode($response, true);
 
     return $response;

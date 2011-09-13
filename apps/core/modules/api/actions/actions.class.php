@@ -17,6 +17,9 @@ class apiActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    myDebug::dump($request, 1);
+    $logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/core.log'));
+    $logger->log(sfYaml::dump($_REQUEST));
+
+    return sfView::NONE;
   }
 }
