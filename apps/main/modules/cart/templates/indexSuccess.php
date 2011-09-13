@@ -6,7 +6,7 @@
 
   <div class="block">
     <?php if ($cart->count() > 0): ?>
-      <?php include_component('cart', 'list') ?>
+      <?php include_component('cart', 'show') ?>
 
       <?php echo link_to('очистить', '@cart_clear', array('class' => 'cart cart-clear')) ?>
 

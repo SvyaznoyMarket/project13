@@ -113,6 +113,20 @@ class orderActions extends myActions
   public function executeConfirm(sfWebRequest $request)
   {
     $this->order = $this->getUser()->getOrder()->get();
+
+    if ($request->isMethod('post'))
+    {
+      $this->forward($this->getModuleName(), 'create');
+    }
+  }
+ /**
+  * Executes complete action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeComplete(sfWebRequest $request)
+  {
+    $this->order = $this->getUser()->getOrder()->get();
   }
  /**
   * Executes create action
@@ -121,7 +135,21 @@ class orderActions extends myActions
   */
   public function executeCreate(sfWebRequest $request)
   {
-    $order = Core::getInstance()->createOrder();
+    $this->order = $this->getUser()->getOrder()->get();
+
+    foreach ($this->getUser()->getCart()->getProducts() as $product)
+    {
+      $relation = new OrderProductRelation();
+      $relation->fromArray(array(
+        'product_id' => $product->id,
+        'price'      => $product->price,
+        'quantity'   => $product->cart['quantity'],
+      ));
+      $this->order->ProductRelation[] = $relation;
+    }
+    myDebug::dump($this->order, 1);
+
+    $this->redirect('order_complete');
   }
 
 

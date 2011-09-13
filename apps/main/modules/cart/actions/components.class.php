@@ -46,10 +46,10 @@ class cartComponents extends myComponents
     }
   }
  /**
-  * Executes list component
+  * Executes show component
   *
   */
-  public function executeList()
+  public function executeShow()
   {
     $cart = $this->getUser()->getCart();
 
@@ -74,7 +74,7 @@ class cartComponents extends myComponents
         'service'   => $service_for_list,
       );
     }
-    myDebug::dump($list);
+
     $this->setVar('list', $list, true);
   }
 }

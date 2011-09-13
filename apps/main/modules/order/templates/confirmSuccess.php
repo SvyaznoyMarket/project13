@@ -5,5 +5,9 @@
 </div>
 
 <div class="block">
-  <?php include_component('order', 'show', array('order' => $order)) ?>
+  <?php include_component('order', 'show', array('order' => $order, 'view' => 'base')) ?>
 </div>
+
+<form action="<?php echo url_for('order_confirm') ?>" method="post">
+  <input type="submit" value="Подтвердить" />
+</form>

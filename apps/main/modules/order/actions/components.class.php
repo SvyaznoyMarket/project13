@@ -17,7 +17,7 @@ class orderComponents extends myComponents
   */
   public function executeShow()
   {
-    if (!in_array($this->view, array('default', 'compact')))
+    if (!in_array($this->view, array('default', 'compact', 'base')))
     {
       $this->view = 'default';
     }
