@@ -81,7 +81,7 @@ class User extends BaseUser
 
   public function exportToCore()
   {
-    return array(
+    $data = array(
       'first_name'    => $this->first_name,
       'last_name'     => $this->last_name,
       'middle_name'   => $this->middle_name,
@@ -95,6 +95,14 @@ class User extends BaseUser
       'salt'          => $this->salt,
       'is_subscribe'  => '',
     );
+    foreach ($data as $key => $value)
+    {
+      if (empty($value))
+      {
+        unset($data[$key]);
+      }
+    }
+    return $data;
   }
 
 }

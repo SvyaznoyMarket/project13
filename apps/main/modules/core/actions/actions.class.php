@@ -27,9 +27,44 @@ class coreActions extends myActions
     ));*/
 
     $user = UserTable::getInstance()->findOneById(2);
-    myDebug::dump($user);
     //if (!$response = $core->createOrder($order))
     if (!$response = $core->createUser($user))
+    {
+        myDebug::dump($core->getError());
+    }
+    else
+    {
+      myDebug::dump($response);
+    };
+
+    $tags = $user->getTag();
+    foreach ($tags as $tag)
+    {
+      if (!$response = $core->createUserTag($tag))
+      {
+          myDebug::dump($core->getError());
+      }
+      else
+      {
+        myDebug::dump($response);
+      };
+    }
+
+    $addresses = $user->getAddress();
+    foreach ($addresses as $address)
+    {
+      if (!$response = $core->createUserAddress($address))
+      {
+          myDebug::dump($core->getError());
+      }
+      else
+      {
+        myDebug::dump($response);
+      };
+    }
+
+    $order = $user->getOrder()->getFirst();
+    if (!$response = $core->createOrder($order))
     {
         myDebug::dump($core->getError());
     }

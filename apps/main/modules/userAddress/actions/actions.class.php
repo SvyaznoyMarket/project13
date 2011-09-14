@@ -31,7 +31,12 @@ class userAddressActions extends myActions
       try
       {
         $this->form->getObject()->user_id = $this->getUser()->getGuardUser()->id;
-        $this->form->save();
+        $address = $this->form->getObject();
+        $response = Core::getInstance()->createUserAddress($address);
+        if ($response)
+        {
+          $this->form->save();
+        }
 
         $this->redirect('userAddress');
       }
