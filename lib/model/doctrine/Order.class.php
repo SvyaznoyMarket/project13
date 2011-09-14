@@ -46,7 +46,19 @@ class Order extends BaseOrder
 
   public function exportToCore()
   {
-    return array(
+    $products = $this->getProductRelation();
+
+    foreach ($products as &$product)
+    {
+      $product = array(
+        'product_id'        => $product->product_id,
+        'price'             => $product->price,
+        'quantity'          => $product->quantity,
+        'characteristic_id' => null,
+      );
+    }
+
+    $data = array(
       'first_name'  => $this->recipient_first_name,
       'last_name'   => $this->recipient_last_name,
       'middle_name' => $this->recipient_middle_name,
@@ -57,9 +69,8 @@ class Order extends BaseOrder
       'geo_id'      => $this->region_id ? $this->region_id : 1,
       'address'     => $this->address ? $this->address : 'The Earth',
       'size_id'     => 0,
-      'products'    => array(
-
-      ),
+      'product'     => $products,
     );
+    return $data;
   }
 }

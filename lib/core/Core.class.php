@@ -76,6 +76,62 @@ class Core
     return $result;
   }
 
+  public function createUser(User $user)
+  {
+    $result = false;
+
+    $data = $this->getData($user);
+
+    if ($response = $this->query('user.create', $data))
+    {
+      $result = $response['id'];
+    }
+
+    return $result;
+  }
+
+  public function createUserTag(UserTag $tag)
+  {
+    $result = false;
+
+    $data = $this->getData($tag);
+
+    if ($response = $this->query('userTag.create', $data))
+    {
+      $result = $response['id'];
+    }
+
+    return $result;
+  }
+
+  public function createUserAddress(UserAddress $address)
+  {
+    $result = false;
+
+    $data = $this->getData($address);
+
+    if ($response = $this->query('userAddress.create', $data))
+    {
+      $result = $response['id'];
+    }
+
+    return $result;
+  }
+
+  public function createUserProductNotice(UserProductNotice $notice)
+  {
+    $result = false;
+
+    $data = $this->getData($notice);
+
+    if ($response = $this->query('userProductNotice.create', $data))
+    {
+      $result = $response['id'];
+    }
+
+    return $result;
+  }
+
   public function getData($record)
   {
     return $record->exportToCore();
