@@ -79,7 +79,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
       throw new Exception('Method not implemented');
     }
 
-    foreach ($map as $k => $v)
+    foreach ($mapping as $k => $v)
     {
       $data[$k] = $this->get($v);
     }
@@ -96,7 +96,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
       throw new Exception('Method not implemented');
     }
 
-    foreach ($map as $k => $v)
+    foreach ($mapping as $k => $v)
     {
       $this->set($v, $data[$k]);
     }
