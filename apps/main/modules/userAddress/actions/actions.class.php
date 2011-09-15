@@ -37,6 +37,10 @@ class userAddressActions extends myActions
         {
           $this->form->save();
         }
+        else
+        {
+          myDebug::dump(Core::getInstance()->getError(), 1);
+        }
 
         $this->redirect('userAddress');
       }
