@@ -71,7 +71,7 @@ EOF;
           }
           $i++;
 
-          $this->logSection($table->getComponentName(), $entity['type'].' #'.$entity['id']);
+          $this->log($table->getComponentName().' -> '.$entity['type'].' #'.$entity['id']);
 
           $method = 'create'.$table->getComponentName().'Record';
           $record =
@@ -85,6 +85,7 @@ EOF;
           $this->logSection('Unknown entity', $entity['type'].' #'.$entity['id'], null, 'ERROR');
         }
       }
+
       $this->flushCollections();
     }
 
@@ -93,6 +94,11 @@ EOF;
     //myDebug::dump($response, false, 'yaml');
   }
 
+  /**
+   * Заносит запись в соответствующую коллекцию
+   *
+   * @param myDoctrineRecord $record
+   */
   protected function pushRecord(myDoctrineRecord $record)
   {
     $name = $record->getTable()->getComponentName();
@@ -105,24 +111,86 @@ EOF;
     $this->collections[$name][] = $record;
   }
 
+  /**
+   * Сохраняет коллекции в бд
+   */
   protected function flushCollections()
   {
     foreach ($this->collections as $name => $collection)
     {
+      $this->logSection($name, 'flush...');
+
       $method = 'flush'.$name.'Collection';
       if (method_exists($this, $method))
       {
         call_user_func_array(array($this, $method), array($collection));
       }
       else {
-        //$collection->save();
+        $collection->save();
       }
+
+      $this->log('.....'.$collection->count());
 
       $collection->free();
       $collection = null;
       unset($this->collections[$name]);
     }
   }
+
+  /**
+   * Формирует дерево
+   *
+   * @param myDoctrineTable $table
+   * @param integer $maxLevel
+   */
+  protected function makeTree(myDoctrineTable $table, myDoctrineCollection $collection, $maxLevel = 5)
+  {
+    //$hasManyRoots = $table->getTemplate('NestedSet')->getOption('hasManyRoots');
+
+    // создает двухуровневое дерево
+    $root = $table->getTree()->fetchRoot();
+    if ($root)
+    {
+      foreach ($collection as $record)
+      {
+        $record->getNode()->insertAsLastChildof($root);
+      }
+    }
+    else {
+      foreach ($collection as $record)
+      {
+        if (!$record->parent_core_id) continue;
+
+        $table->getTree()->createRoot($record);
+      }
+    }
+
+    // формирует уровни дерева
+    for ($level = 1; $level <= $maxLevel; $level++)
+    {
+      foreach ($collection as $record)
+      {
+        $record->refresh();
+        $node = $record->getNode();
+        if ($node->isRoot()) continue;
+
+        if ($level == $record->level)
+        {
+          $parent = $record->parent_core_id ? $table->findOneByCoreId($record->parent_core_id) : false;
+          if ($parent && $node->getParent())
+          {
+            if ($parent->id != $node->getParent()->id)
+            {
+              //myDebug::dump($parent->id.' -> '.$record->id);
+              $node->moveAsLastChildOf($parent);
+            }
+          }
+        }
+      }
+    }
+  }
+
+
 
   // Region
   protected function prepareRegionTable()
@@ -161,35 +229,7 @@ EOF;
 
     $collection->save();
 
-    // создает двухуровневое дерево
-    $root = $table->getTree()->fetchRoot();
-    foreach ($collection as $record)
-    {
-      $record->getNode()->insertAsLastChildof($root);
-    }
-
-    // формирует уровни дерева
-    for ($level = 1; $level < 5; $level++)
-    {
-      foreach ($collection as $record)
-      {
-        $node = $record->getNode();
-        if ($node->isRoot()) continue;
-
-        if ($level == $record->level)
-        {
-          $parent = $record->parent_core_id ? $table->findOneByCoreId($record->parent_core_id) : false;
-          if ($parent && $node->getParent())
-          {
-            if ($parent->id != $node->getParent()->id)
-            {
-              //myDebug::dump($parent->id.' -> '.$record->id);
-              $node->moveAsLastChildOf($parent);
-            }
-          }
-        }
-      }
-    }
+    $this->makeTree($table, $collection);
 
     // угадывает тип региона
     foreach ($table->getTree()->fetchTree() as $record)
@@ -205,4 +245,40 @@ EOF;
     }
   }
 
+  // TagGroup
+  protected function createTagGroupRecord(array $data)
+  {
+    $record = TagGroupTable::getInstance()->createRecordFromCore($data);
+    $record->token = uniqid().'-'.myToolkit::urlize($record->name);
+
+    return $record;
+  }
+
+  // Tag
+  protected function createTagRecord(array $data)
+  {
+    $record = TagTable::getInstance()->createRecordFromCore($data);
+    $record->token = uniqid().'-'.myToolkit::urlize($record->name);
+
+    return $record;
+  }
+
+  // ProductCategory
+  protected function createProductCategoryRecord(array $data)
+  {
+    $record = ProductCategoryTable::getInstance()->createRecordFromCore($data);
+    $record->mapValue('parent_core_id', $data['parent_id']);
+    $record->token = uniqid().'-'.myToolkit::urlize($record->name);
+
+    return $record;
+  }
+  // ProductCategory
+  protected function flushProductCategoryCollection(myDoctrineCollection $collection)
+  {
+    $table = ProductCategoryTable::getInstance();
+
+    $collection->save();
+
+    $this->makeTree($table, $collection);
+  }
 }

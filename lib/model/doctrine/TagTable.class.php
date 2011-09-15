@@ -18,4 +18,11 @@ class TagTable extends myDoctrineTable
     return Doctrine_Core::getTable('Tag');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'       => 'core_id',
+      'name'     => 'name',
+    );
+  }
 }

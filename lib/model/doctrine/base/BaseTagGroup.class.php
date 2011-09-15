@@ -9,18 +9,24 @@
  * @property integer $core_id
  * @property string $token
  * @property string $name
+ * @property set $type
+ * @property integer $position
  * @property Doctrine_Collection $Tag
  * 
- * @method integer             getId()      Returns the current record's "id" value
- * @method integer             getCoreId()  Returns the current record's "core_id" value
- * @method string              getToken()   Returns the current record's "token" value
- * @method string              getName()    Returns the current record's "name" value
- * @method Doctrine_Collection getTag()     Returns the current record's "Tag" collection
- * @method TagGroup            setId()      Sets the current record's "id" value
- * @method TagGroup            setCoreId()  Sets the current record's "core_id" value
- * @method TagGroup            setToken()   Sets the current record's "token" value
- * @method TagGroup            setName()    Sets the current record's "name" value
- * @method TagGroup            setTag()     Sets the current record's "Tag" collection
+ * @method integer             getId()       Returns the current record's "id" value
+ * @method integer             getCoreId()   Returns the current record's "core_id" value
+ * @method string              getToken()    Returns the current record's "token" value
+ * @method string              getName()     Returns the current record's "name" value
+ * @method set                 getType()     Returns the current record's "type" value
+ * @method integer             getPosition() Returns the current record's "position" value
+ * @method Doctrine_Collection getTag()      Returns the current record's "Tag" collection
+ * @method TagGroup            setId()       Sets the current record's "id" value
+ * @method TagGroup            setCoreId()   Sets the current record's "core_id" value
+ * @method TagGroup            setToken()    Sets the current record's "token" value
+ * @method TagGroup            setName()     Sets the current record's "name" value
+ * @method TagGroup            setType()     Sets the current record's "type" value
+ * @method TagGroup            setPosition() Sets the current record's "position" value
+ * @method TagGroup            setTag()      Sets the current record's "Tag" collection
  * 
  * @package    enter
  * @subpackage model
@@ -56,6 +62,23 @@ abstract class BaseTagGroup extends myDoctrineRecord
              'notnull' => true,
              'notblank' => true,
              'length' => 255,
+             ));
+        $this->hasColumn('type', 'set', 10, array(
+             'type' => 'set',
+             'length' => 10,
+             'values' => 
+             array(
+              0 => 'gift',
+             ),
+             'notnull' => false,
+             'comment' => 'Тип группы тега',
+             ));
+        $this->hasColumn('position', 'integer', 4, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'default' => 1,
+             'comment' => 'Порядок сортировки',
+             'length' => 4,
              ));
 
         $this->option('comment', 'Группа тега');

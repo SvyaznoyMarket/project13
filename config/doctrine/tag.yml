@@ -6,6 +6,8 @@ TagGroup:
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
+    type:              { type: set, length: 10, values: [gift], notnull: false, default: null, comment: 'Тип группы тега' }
+    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
 
 Tag:
   options:

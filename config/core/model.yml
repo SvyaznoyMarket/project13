@@ -16,5 +16,7 @@ Shop:
   - shop
 Shop:
   - Stores
+Tag:
+  - Tags
 TagGroup:
   - GroupsTags
