@@ -13,12 +13,14 @@ abstract class BaseCreatorFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'core_id'   => new sfWidgetFormFilterInput(),
       'token'     => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'name'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'news_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
 
     $this->setValidators(array(
+      'core_id'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'token'     => new sfValidatorPass(array('required' => false)),
       'name'      => new sfValidatorPass(array('required' => false)),
       'news_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
@@ -60,6 +62,7 @@ abstract class BaseCreatorFormFilter extends BaseFormFilterDoctrine
   {
     return array(
       'id'        => 'Number',
+      'core_id'   => 'Number',
       'token'     => 'Text',
       'name'      => 'Text',
       'news_list' => 'ManyKey',

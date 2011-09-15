@@ -23,7 +23,7 @@ class myDoctrineTable extends Doctrine_Table
       {
         foreach ($data as $item)
         {
-          
+
         }
       }
       else {
@@ -227,11 +227,16 @@ class myDoctrineTable extends Doctrine_Table
     return $path.'/'.$paramHash;
   }
 
-  public function createRecordFromCore($data)
+  public function createRecordFromCore(array $data)
   {
     $record = $this->create();
     $record->importFromCore($data);
 
     return $record;
+  }
+
+  public function getCoreMapping()
+  {
+    return null;
   }
 }

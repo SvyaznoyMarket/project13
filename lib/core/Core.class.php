@@ -5,7 +5,8 @@ class Core
   protected
     $config = null,
     $connection = null,
-    $error = false
+    $error = false,
+    $models = null
   ;
   protected static
     $instance = null;
@@ -26,6 +27,8 @@ class Core
     $this->config = new sfParameterHolder();
     $this->config->add($config);
 
+    $this->models = sfYaml::load(sfConfig::get('sf_config_dir').'/core/model.yml');
+
     $this->connection = curl_init();
     curl_setopt($this->connection, CURLOPT_URL, $this->getConfig('api_url'));
     curl_setopt ($this->connection, CURLOPT_HEADER, 0);
@@ -38,14 +41,25 @@ class Core
     return null == $name ? $this->config->getAll() : $this->config->get($name);
   }
 
-  public function getModel($name)
+  public function getModels()
   {
-    $models = array(
-      'category' => 'ProductCategory',
-      'order'    => 'Order',
-      'product'  => 'Product',
-      'shop'     => 'Shop',
-    );
+    return $this->models;
+  }
+
+  public function getTable($name)
+  {
+    $table = false;
+
+    foreach ($this->models as $k => $v)
+    {
+      if (in_array($name, $v))
+      {
+        $table = Doctrine_Core::getTable($k);
+        break;
+      }
+    }
+
+    return $table;
   }
 
   public function createOrder(Order $order)
@@ -88,7 +102,6 @@ class Core
     $data = json_encode(array('action' => $action, 'param' => array('client_id' => $this->getConfig('client_id'), 'token_id' => '', ), 'data' => $data, ), JSON_FORCE_OBJECT);
 
     $response = $this->send($data);
-    myDebug::dump($response);
     $response = json_decode($response, true);
 
     return $response;

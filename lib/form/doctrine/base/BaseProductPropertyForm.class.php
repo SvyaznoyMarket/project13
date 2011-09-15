@@ -16,6 +16,7 @@ abstract class BaseProductPropertyForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'                 => new sfWidgetFormInputHidden(),
+      'core_id'            => new sfWidgetFormInputText(),
       'name'               => new sfWidgetFormInputText(),
       'type'               => new sfWidgetFormChoice(array('choices' => array('string' => 'string', 'select' => 'select', 'integer' => 'integer', 'float' => 'float', 'text' => 'text'))),
       'is_multiple'        => new sfWidgetFormInputCheckbox(),
@@ -28,6 +29,7 @@ abstract class BaseProductPropertyForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'                 => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'            => new sfValidatorInteger(array('required' => false)),
       'name'               => new sfValidatorString(array('max_length' => 255)),
       'type'               => new sfValidatorChoice(array('choices' => array(0 => 'string', 1 => 'select', 2 => 'integer', 3 => 'float', 4 => 'text'), 'required' => false)),
       'is_multiple'        => new sfValidatorBoolean(array('required' => false)),

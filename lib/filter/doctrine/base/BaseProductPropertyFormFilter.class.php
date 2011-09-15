@@ -13,6 +13,7 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'core_id'            => new sfWidgetFormFilterInput(),
       'name'               => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'type'               => new sfWidgetFormChoice(array('choices' => array('' => '', 'string' => 'string', 'select' => 'select', 'integer' => 'integer', 'float' => 'float', 'text' => 'text'))),
       'is_multiple'        => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
@@ -24,6 +25,7 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
     ));
 
     $this->setValidators(array(
+      'core_id'            => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'name'               => new sfValidatorPass(array('required' => false)),
       'type'               => new sfValidatorChoice(array('required' => false, 'choices' => array('string' => 'string', 'select' => 'select', 'integer' => 'integer', 'float' => 'float', 'text' => 'text'))),
       'is_multiple'        => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
@@ -106,6 +108,7 @@ abstract class BaseProductPropertyFormFilter extends BaseFormFilterDoctrine
   {
     return array(
       'id'                 => 'Number',
+      'core_id'            => 'Number',
       'name'               => 'Text',
       'type'               => 'Enum',
       'is_multiple'        => 'Boolean',

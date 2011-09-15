@@ -21,6 +21,7 @@ Order:
     comment: 'Заказ пользователя'
   columns:
     id:                     { type: integer(20), autoincrement: true, primary: true }
+    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:                  { type: string(64), unique: true, notnull: true, notblank: true, comment: 'Номер заказа' }
     user_id:                { type: integer(20), notnull: false, default: null }
     payment_method_id:      { type: integer(20), notnull: false, default: null }

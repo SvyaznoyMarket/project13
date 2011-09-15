@@ -18,6 +18,14 @@ class RegionTable extends myDoctrineTable
     return Doctrine_Core::getTable('Region');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'   => 'core_id',
+      'name' => 'name',
+    );
+  }
+
   public function createBaseQuery(array $params = array())
   {
     $this->applyDefaultParameters($params);

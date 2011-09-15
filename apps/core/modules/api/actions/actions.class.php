@@ -17,9 +17,15 @@ class apiActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/core.log'));
-    $logger->log(sfYaml::dump($_REQUEST));
+    $response = trim(file_get_contents('php://input'));
 
-    return sfView::NONE;
+    $logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/api.log'));
+    $logger->log($response);
+
+    $data = json_encode($response);
+
+    return $this->renderJson(array(
+      'confirmed' => true,
+    ));
   }
 }

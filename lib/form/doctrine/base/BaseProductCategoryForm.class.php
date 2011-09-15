@@ -16,6 +16,7 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'                => new sfWidgetFormInputHidden(),
+      'core_id'           => new sfWidgetFormInputText(),
       'root_id'           => new sfWidgetFormInputText(),
       'lft'               => new sfWidgetFormInputText(),
       'rgt'               => new sfWidgetFormInputText(),
@@ -29,6 +30,7 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'                => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'           => new sfValidatorInteger(array('required' => false)),
       'root_id'           => new sfValidatorInteger(),
       'lft'               => new sfValidatorInteger(array('required' => false)),
       'rgt'               => new sfValidatorInteger(array('required' => false)),

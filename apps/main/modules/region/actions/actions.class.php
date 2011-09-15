@@ -43,7 +43,7 @@ class regionActions extends myActions
 
       $list[] = array(
         'id'   => $region['id'],
-        'name' => $region['name'].($parent->level > 0 ? ', '.$parent->name : ''),
+        'name' => $region['name'].(($parent && $parent->level > 0) ? ', '.$parent->name : ''),
       );
     }
 

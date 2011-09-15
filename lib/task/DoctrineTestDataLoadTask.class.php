@@ -57,7 +57,7 @@ EOF;
       $record->fromArray(array(
         'token'     => 'shop-'.$i,
         'name'      => $this->getRecordName('Shop', $i),
-        'region_id' => (rand(1, 5) > 1 ? 6 : 5),
+        'region_id' => 1, //(rand(1, 5) > 1 ? 6 : 5),
         'address'   => 'Адресс '.$i,
       ));
       $record->save();
@@ -70,7 +70,7 @@ EOF;
       $region_id =
         $shop
         ? $shop->region_id
-        : (rand(1, 6) > 1 ? 6 : 5)
+        : 1 //(rand(1, 6) > 1 ? 6 : 5)
       ;
 
       $record = new Stock();

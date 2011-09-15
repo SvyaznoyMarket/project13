@@ -13,6 +13,7 @@ abstract class BaseShopFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'core_id'      => new sfWidgetFormFilterInput(),
       'region_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Region'), 'add_empty' => true)),
       'token'        => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'name'         => new sfWidgetFormFilterInput(array('with_empty' => false)),
@@ -26,6 +27,7 @@ abstract class BaseShopFormFilter extends BaseFormFilterDoctrine
     ));
 
     $this->setValidators(array(
+      'core_id'      => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'region_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Region'), 'column' => 'id')),
       'token'        => new sfValidatorPass(array('required' => false)),
       'name'         => new sfValidatorPass(array('required' => false)),
@@ -56,6 +58,7 @@ abstract class BaseShopFormFilter extends BaseFormFilterDoctrine
   {
     return array(
       'id'           => 'Number',
+      'core_id'      => 'Number',
       'region_id'    => 'ForeignKey',
       'token'        => 'Text',
       'name'         => 'Text',

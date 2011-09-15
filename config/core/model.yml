@@ -1,0 +1,20 @@
+Creator:
+  - Brands
+Order:
+  - order
+Product:
+  - product
+ProductCategory:
+  - category
+  - ItemHierarchy
+ProductpropertyGroup:
+  - ProductPropertyGroups
+Region:
+  - geo
+  - GEOs
+Shop:
+  - shop
+Shop:
+  - Stores
+TagGroup:
+  - GroupsTags

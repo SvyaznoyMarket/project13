@@ -73,8 +73,18 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     throw new Exception('Method not implemented');
   }
 
-  public function importFromCore()
+  public function importFromCore(array $data)
   {
-    throw new Exception('Method not implemented');
+    $map = $this->getTable()->getCoreMapping();
+
+    if (!is_array($map))
+    {
+      throw new Exception('Method not implemented');
+    }
+
+    foreach ($map as $k => $v)
+    {
+      $this->set($v, $data[$k]);
+    }
   }
 }

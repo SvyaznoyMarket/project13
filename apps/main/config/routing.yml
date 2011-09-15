@@ -20,7 +20,7 @@ product_list:
 #
 # каталог товаров
 productCatalog:
-  url:   /catalog
+  url:   /catalog/
   param: { module: productCatalog, action: index }
 #
 # фильтр каталога товаров
@@ -549,7 +549,7 @@ payment_callback:
 core_test:
   url:      /core/:action
   param:    { module: core }
-  
+
 default_show:
   url:   /:page
   param: { module: page, action: index }
