@@ -13,13 +13,15 @@ abstract class BaseTagFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'token' => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'name'  => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'group_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => true)),
+      'token'    => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'name'     => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
-      'token' => new sfValidatorPass(array('required' => false)),
-      'name'  => new sfValidatorPass(array('required' => false)),
+      'group_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Group'), 'column' => 'id')),
+      'token'    => new sfValidatorPass(array('required' => false)),
+      'name'     => new sfValidatorPass(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('tag_filters[%s]');
@@ -39,9 +41,10 @@ abstract class BaseTagFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'    => 'Number',
-      'token' => 'Text',
-      'name'  => 'Text',
+      'id'       => 'Number',
+      'group_id' => 'ForeignKey',
+      'token'    => 'Text',
+      'name'     => 'Text',
     );
   }
 }

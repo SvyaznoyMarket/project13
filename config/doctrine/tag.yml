@@ -1,10 +1,21 @@
+TagGroup:
+  options:
+    comment: 'Группа тега'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+
 Tag:
   options:
     comment: 'Тег'
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    group_id:          { type: integer(20), notnull: false, default: null }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
+  relations:
+    Group:             { class: TagGroup, foreignAlias: Tag, local: group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 TagProductRelation:
   options:
