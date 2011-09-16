@@ -124,12 +124,41 @@ class Core
 
     $data = $this->getData($address);
 
-    if ($response = $this->query('userAddress.create', $data))
+    if ($response = $this->query('user.address.create', $data))
     {
       $result = $response['id'];
     }
 
     return $result;
+  }
+
+  public function updateUserAddress(UserAddress $address)
+  {
+    $result = false;
+
+    $data = $this->getData($address);
+
+    if ($response = $this->query('user.address.update', $data))
+    {
+      $result = $response['confirmed'];
+    }
+
+    return $result;
+  }
+
+  public function deleteUserAddress($id)
+  {
+    $result = false;
+
+    $data = array('id' => $id, );
+
+    if ($response = $this->query('user.address.delete', $data))
+    {
+      $result = $response['confirmed'];
+    }
+
+    return $result;
+
   }
 
   public function createUserProductNotice(UserProductNotice $notice)
@@ -155,10 +184,22 @@ class Core
   {
     $action = '/'.str_replace('.', '/', $name).'/';
 
-    $data = json_encode(array('action' => $action, 'param' => array('client_id' => $this->getConfig('client_id'), 'token_id' => '', ), 'data' => $data, ), JSON_FORCE_OBJECT);
-
+    $data_to_send = array('action' => $action, 'param' => array('client_id' => $this->getConfig('client_id'), 'token_id' => '', ), 'data' => $data, );
+    if (isset($data['id']))
+    {
+      $data_to_send['param']['id'] = $data['id'];
+      unset($data_to_send['data']['id']);
+    }
+    $data = json_encode($data_to_send, JSON_FORCE_OBJECT);
+    
     $response = $this->send($data);
     $response = json_decode($response, true);
+
+    if (isset($response['code']))
+    {
+      $this->error = array($response['code'] => $response['promt'], );
+      $response = false;
+    }
 
     return $response;
   }
@@ -172,10 +213,8 @@ class Core
   {
     $response = false;
 
-    //myDebug::dump($request ,1);
     curl_setopt($this->connection, CURLOPT_POSTFIELDS, $request);
     $response = curl_exec($this->connection);
-    //myDebug::dump($response);
 
     if (curl_errno($this->connection) > 0)
     {
