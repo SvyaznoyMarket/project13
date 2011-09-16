@@ -13,6 +13,7 @@ abstract class BaseUserAddressFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'core_id' => new sfWidgetFormFilterInput(),
       'user_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
       'city_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('City'), 'add_empty' => true)),
       'name'    => new sfWidgetFormFilterInput(),
@@ -20,6 +21,7 @@ abstract class BaseUserAddressFormFilter extends BaseFormFilterDoctrine
     ));
 
     $this->setValidators(array(
+      'core_id' => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'user_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
       'city_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('City'), 'column' => 'id')),
       'name'    => new sfValidatorPass(array('required' => false)),
@@ -44,6 +46,7 @@ abstract class BaseUserAddressFormFilter extends BaseFormFilterDoctrine
   {
     return array(
       'id'      => 'Number',
+      'core_id' => 'Number',
       'user_id' => 'ForeignKey',
       'city_id' => 'ForeignKey',
       'name'    => 'Text',

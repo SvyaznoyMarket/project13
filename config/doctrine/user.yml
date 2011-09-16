@@ -3,6 +3,7 @@ User:
     comment: 'Пользователь'
   inheritance: { type: simple, extends: GuardUser }
   columns:
+    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     type:              { type: enum, length: 10, values: [admin, client, partner], notnull: true, default: client }
     phonenumber:       { type: string(20), notnull: false, default: null, comment: 'Телефонный номер' }
     first_name:        { type: string(255), notnull: true, notblank: true, comment: 'Имя' }
@@ -28,6 +29,7 @@ UserTag:
     comment: 'Пользовательские теги'
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     name:              { type: string(255), notnull: true, notblank: true }
     user_id:           { type: integer(20), notnull: true }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
@@ -60,6 +62,7 @@ UserProductNotice:
   options:
     comment: 'Пользовательские уведомления о товаре'
   columns:
+    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     type:              { type: enum, length: 10, primary: true, values: [ insale, price, comment ], notnull: true, comment: 'Тип уведомления: товар появился в магазинах, изменилась цена, появились отзывы' }
     email:             { type: string(50), primary: true, notnull: true }
     product_id:        { type: integer(20), primary: true, notnull: true }
@@ -86,6 +89,7 @@ UserAddress:
     comment: 'Адрес пользователя для доставки'
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     user_id:           { type: integer(20), notnull: true }
     city_id:           { type: integer(20), notnull: true }
     name:              { type: string(255), notnull: false, default: null }

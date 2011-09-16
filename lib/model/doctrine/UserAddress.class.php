@@ -14,19 +14,8 @@ class UserAddress extends BaseUserAddress
 {
   public function exportToCore()
   {
-    $data = array(
-      'name'      => $this->name,
-      'address'   => $this->address,
-      'user_id'   => $this->user_id,
-      'geo_ip'    => $this->city_id,
-    );
-    foreach ($data as $key => $value)
-    {
-      if (empty($value))
-      {
-        unset($data[$key]);
-      }
-    }
+    $data = parent::exportToCore();
+
     return $data;
   }
 }

@@ -84,6 +84,11 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
       $data[$k] = $this->get($v);
     }
 
+    if (!$this->exists() && (isset($data['id']) || empty($data['id'])))
+    {
+      unset($data['id']);
+    }
+
     return $data;
   }
 
