@@ -9,18 +9,14 @@ class ProjectInitTask extends sfBaseTask
 
   protected function configure()
   {
-    // // add your own arguments here
-    // $this->addArguments(array(
-    //   new sfCommandArgument('my_arg', sfCommandArgument::REQUIRED, 'My argument'),
-    // ));
+    $this->addArguments(array(
+      new sfCommandArgument('task', sfCommandArgument::REQUIRED, 'Task id'),
+    ));
 
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'main'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
-      new sfCommandOption('packet_id', null, sfCommandOption::PARAMETER_REQUIRED, 'Packet id'),
-      new sfCommandOption('sync_id', null, sfCommandOption::PARAMETER_REQUIRED, 'Sync id'),
-      new sfCommandOption('status', null, sfCommandOption::PARAMETER_REQUIRED, 'Status'),
       // add your own options here
     ));
 
@@ -41,16 +37,22 @@ EOF;
     $databaseManager = new sfDatabaseManager($this->configuration);
     $this->connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
+    $task = TaskTable::getInstance()->find($arguments['task']);
+    $params = $task->getContentData();
+    if (!$params['packet_id'])
+    {
+      return;
+    }
+
     $this->connection->exec('SET foreign_key_checks = 0');
 
     // add your code here
     $core = Core::getInstance();
 
-    //myDebug::dump($options);
     $response = $core->query('load.get', array(
-      'id' => $options['packet_id'],
+      'id' => $params['packet_id'],
     ));
-  myDebug::dump($response, 1);
+    //myDebug::dump($response, true, 'yaml');
 
     foreach ($response as $item)
     {
@@ -78,12 +80,16 @@ EOF;
         }
       }
     }
+    $nextPacketId = $item['next_id'];
 
     $this->flushCollections();
 
     $this->connection->exec('SET foreign_key_checks = 1');
 
-    //myDebug::dump($response, false, 'yaml');
+    $task->setContentData(array(
+      'packet_id' => 4501,//$nextPacketId,
+    ));
+    $task->save();
   }
 
   /**
@@ -167,7 +173,7 @@ EOF;
   {
     $record = RegionTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
-    $record->mapValue('core_parent_id', $data['parent_id']);
+    $record->core_parent_id = $data['parent_id'];
 
     return $record;
   }
@@ -245,7 +251,7 @@ EOF;
   protected function createProductCategoryRecord(array $data)
   {
     $record = ProductCategoryTable::getInstance()->createRecordFromCore($data);
-    $record->mapValue('core_parent_id', $data['parent_id']);
+    $record->core_parent_id = $data['parent_id'];
     $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
     return $record;

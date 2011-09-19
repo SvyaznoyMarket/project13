@@ -285,6 +285,10 @@ abstract class BaseProduct extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'product_id'));
 
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
+
     $this->addListener(new myDoctrineRecordListener(array()), 'myDoctrineRecordListener');
     }
 }

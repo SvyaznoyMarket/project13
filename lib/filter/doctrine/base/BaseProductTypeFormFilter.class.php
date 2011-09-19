@@ -15,6 +15,8 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
     $this->setWidgets(array(
       'name'                  => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'rating_type_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('RatingType'), 'add_empty' => true)),
+      'created_at'            => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
+      'updated_at'            => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'service_category_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ServiceCategory')),
       'product_category_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory')),
       'property_list'         => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty')),
@@ -23,6 +25,8 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
     $this->setValidators(array(
       'name'                  => new sfValidatorPass(array('required' => false)),
       'rating_type_id'        => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('RatingType'), 'column' => 'id')),
+      'created_at'            => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
+      'updated_at'            => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'service_category_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ServiceCategory', 'required' => false)),
       'product_category_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory', 'required' => false)),
       'property_list'         => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty', 'required' => false)),
@@ -102,6 +106,8 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
       'id'                    => 'Number',
       'name'                  => 'Text',
       'rating_type_id'        => 'ForeignKey',
+      'created_at'            => 'Date',
+      'updated_at'            => 'Date',
       'service_category_list' => 'ManyKey',
       'product_category_list' => 'ManyKey',
       'property_list'         => 'ManyKey',

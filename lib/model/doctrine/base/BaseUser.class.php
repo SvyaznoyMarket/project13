@@ -72,5 +72,9 @@ abstract class BaseUser extends GuardUser
         $this->hasMany('UserAddress as Address', array(
              'local' => 'id',
              'foreign' => 'user_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

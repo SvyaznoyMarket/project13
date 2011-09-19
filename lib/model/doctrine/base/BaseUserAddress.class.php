@@ -79,5 +79,9 @@ abstract class BaseUserAddress extends myDoctrineRecord
              'local' => 'city_id',
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

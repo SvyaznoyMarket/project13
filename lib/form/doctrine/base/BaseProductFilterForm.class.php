@@ -22,6 +22,8 @@ abstract class BaseProductFilterForm extends BaseFormDoctrine
       'property_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => false)),
       'is_multiple' => new sfWidgetFormInputCheckbox(),
       'position'    => new sfWidgetFormInputText(),
+      'created_at'  => new sfWidgetFormDateTime(),
+      'updated_at'  => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -32,6 +34,8 @@ abstract class BaseProductFilterForm extends BaseFormDoctrine
       'property_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Property'))),
       'is_multiple' => new sfValidatorBoolean(array('required' => false)),
       'position'    => new sfValidatorInteger(array('required' => false)),
+      'created_at'  => new sfValidatorDateTime(),
+      'updated_at'  => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('product_filter[%s]');

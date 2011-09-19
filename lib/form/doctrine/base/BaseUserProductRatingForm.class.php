@@ -19,6 +19,8 @@ abstract class BaseUserProductRatingForm extends BaseFormDoctrine
       'user_id'     => new sfWidgetFormInputHidden(),
       'product_id'  => new sfWidgetFormInputHidden(),
       'value'       => new sfWidgetFormInputText(),
+      'created_at'  => new sfWidgetFormDateTime(),
+      'updated_at'  => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -26,6 +28,8 @@ abstract class BaseUserProductRatingForm extends BaseFormDoctrine
       'user_id'     => new sfValidatorChoice(array('choices' => array($this->getObject()->get('user_id')), 'empty_value' => $this->getObject()->get('user_id'), 'required' => false)),
       'product_id'  => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_id')), 'empty_value' => $this->getObject()->get('product_id'), 'required' => false)),
       'value'       => new sfValidatorNumber(array('required' => false)),
+      'created_at'  => new sfValidatorDateTime(),
+      'updated_at'  => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('user_product_rating[%s]');

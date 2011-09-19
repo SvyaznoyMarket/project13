@@ -15,15 +15,19 @@ abstract class BaseAccessoryProductForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'        => new sfWidgetFormInputHidden(),
-      'master_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('MasterProduct'), 'add_empty' => false)),
-      'slave_id'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('SlaveProduct'), 'add_empty' => false)),
+      'id'         => new sfWidgetFormInputHidden(),
+      'master_id'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('MasterProduct'), 'add_empty' => false)),
+      'slave_id'   => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('SlaveProduct'), 'add_empty' => false)),
+      'created_at' => new sfWidgetFormDateTime(),
+      'updated_at' => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
-      'id'        => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'master_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('MasterProduct'))),
-      'slave_id'  => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('SlaveProduct'))),
+      'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'master_id'  => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('MasterProduct'))),
+      'slave_id'   => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('SlaveProduct'))),
+      'created_at' => new sfValidatorDateTime(),
+      'updated_at' => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('accessory_product[%s]');

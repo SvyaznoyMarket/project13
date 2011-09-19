@@ -84,5 +84,9 @@ abstract class BaseProductPropertyOption extends myDoctrineRecord
         $this->hasMany('ProductPropertyRelation', array(
              'local' => 'id',
              'foreign' => 'option_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

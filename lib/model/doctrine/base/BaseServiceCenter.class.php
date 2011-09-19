@@ -80,5 +80,9 @@ abstract class BaseServiceCenter extends myDoctrineRecord
              'local' => 'region_id',
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

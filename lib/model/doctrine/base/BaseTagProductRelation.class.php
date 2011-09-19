@@ -55,5 +55,9 @@ abstract class BaseTagProductRelation extends myDoctrineRecord
              'local' => 'product_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

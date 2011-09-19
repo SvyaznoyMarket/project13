@@ -90,5 +90,9 @@ abstract class BaseTag extends myDoctrineRecord
         $this->hasMany('TagProductCategoryRelation as ProductCategoryRelation', array(
              'local' => 'id',
              'foreign' => 'tag_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

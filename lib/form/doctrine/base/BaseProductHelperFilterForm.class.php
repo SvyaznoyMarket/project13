@@ -18,12 +18,16 @@ abstract class BaseProductHelperFilterForm extends BaseFormDoctrine
       'answer_id'         => new sfWidgetFormInputHidden(),
       'product_filter_id' => new sfWidgetFormInputHidden(),
       'value'             => new sfWidgetFormTextarea(),
+      'created_at'        => new sfWidgetFormDateTime(),
+      'updated_at'        => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
       'answer_id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('answer_id')), 'empty_value' => $this->getObject()->get('answer_id'), 'required' => false)),
       'product_filter_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_filter_id')), 'empty_value' => $this->getObject()->get('product_filter_id'), 'required' => false)),
       'value'             => new sfValidatorString(array('required' => false)),
+      'created_at'        => new sfValidatorDateTime(),
+      'updated_at'        => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('product_helper_filter[%s]');

@@ -128,12 +128,12 @@ abstract class BaseProductComment extends myDoctrineRecord
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
 
-        $timestampable0 = new Doctrine_Template_Timestampable();
         $nestedset0 = new Doctrine_Template_NestedSet(array(
              'hasManyRoots' => true,
              'rootColumnName' => 'product_id',
              ));
-        $this->actAs($timestampable0);
+        $timestampable0 = new Doctrine_Template_Timestampable();
         $this->actAs($nestedset0);
+        $this->actAs($timestampable0);
     }
 }

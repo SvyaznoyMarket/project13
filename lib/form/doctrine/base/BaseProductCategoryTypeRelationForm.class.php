@@ -17,11 +17,15 @@ abstract class BaseProductCategoryTypeRelationForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'product_category_id' => new sfWidgetFormInputHidden(),
       'product_type_id'     => new sfWidgetFormInputHidden(),
+      'created_at'          => new sfWidgetFormDateTime(),
+      'updated_at'          => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
       'product_category_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_category_id')), 'empty_value' => $this->getObject()->get('product_category_id'), 'required' => false)),
       'product_type_id'     => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_type_id')), 'empty_value' => $this->getObject()->get('product_type_id'), 'required' => false)),
+      'created_at'          => new sfValidatorDateTime(),
+      'updated_at'          => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('product_category_type_relation[%s]');

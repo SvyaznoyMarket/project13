@@ -132,6 +132,8 @@ abstract class BasePage extends myDoctrineRecord
              'hasManyRoots' => true,
              'rootColumnName' => 'root_id',
              ));
+        $timestampable0 = new Doctrine_Template_Timestampable();
         $this->actAs($nestedset0);
+        $this->actAs($timestampable0);
     }
 }

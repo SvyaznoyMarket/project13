@@ -27,6 +27,8 @@ abstract class BaseShopForm extends BaseFormDoctrine
       'phonenumbers' => new sfWidgetFormInputText(),
       'photo'        => new sfWidgetFormInputText(),
       'description'  => new sfWidgetFormTextarea(),
+      'created_at'   => new sfWidgetFormDateTime(),
+      'updated_at'   => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -42,6 +44,8 @@ abstract class BaseShopForm extends BaseFormDoctrine
       'phonenumbers' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'photo'        => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'description'  => new sfValidatorString(array('required' => false)),
+      'created_at'   => new sfValidatorDateTime(),
+      'updated_at'   => new sfValidatorDateTime(),
     ));
 
     $this->validatorSchema->setPostValidator(

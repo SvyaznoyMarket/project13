@@ -64,5 +64,9 @@ abstract class BaseSimilarProduct extends myDoctrineRecord
              'local' => 'slave_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

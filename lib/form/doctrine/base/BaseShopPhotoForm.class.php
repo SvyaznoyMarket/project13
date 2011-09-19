@@ -15,15 +15,19 @@ abstract class BaseShopPhotoForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'      => new sfWidgetFormInputHidden(),
-      'shop_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Shop'), 'add_empty' => false)),
-      'name'    => new sfWidgetFormInputText(),
+      'id'         => new sfWidgetFormInputHidden(),
+      'shop_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Shop'), 'add_empty' => false)),
+      'name'       => new sfWidgetFormInputText(),
+      'created_at' => new sfWidgetFormDateTime(),
+      'updated_at' => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
-      'id'      => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'shop_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Shop'))),
-      'name'    => new sfValidatorString(array('max_length' => 255)),
+      'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'shop_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Shop'))),
+      'name'       => new sfValidatorString(array('max_length' => 255)),
+      'created_at' => new sfValidatorDateTime(),
+      'updated_at' => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('shop_photo[%s]');

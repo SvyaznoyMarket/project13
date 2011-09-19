@@ -57,5 +57,9 @@ abstract class BaseShopPhoto extends myDoctrineRecord
              'local' => 'shop_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

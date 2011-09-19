@@ -105,5 +105,9 @@ abstract class BaseStock extends myDoctrineRecord
         $this->hasMany('StockProductRelation as ProductRelation', array(
              'local' => 'id',
              'foreign' => 'stock_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

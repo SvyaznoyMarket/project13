@@ -42,7 +42,7 @@ EOF;
     foreach ($list as $task)
     {
       $this->logSection($task->type, 'starting...');
-      $this->runTask(str_replace('.', ':', $task->type), array(), $task->getContentData());
+      $this->runTask(str_replace('.', ':', $task->type), array('task' => $task->id), array());
       $this->logSection($task->type, 'done');
     }
   }

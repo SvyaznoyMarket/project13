@@ -25,6 +25,8 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
       'token'             => new sfWidgetFormInputText(),
       'name'              => new sfWidgetFormInputText(),
       'filter_group_id'   => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('FilterGroup'), 'add_empty' => true)),
+      'created_at'        => new sfWidgetFormDateTime(),
+      'updated_at'        => new sfWidgetFormDateTime(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
       'news_list'         => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
@@ -40,6 +42,8 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
       'token'             => new sfValidatorString(array('max_length' => 255)),
       'name'              => new sfValidatorString(array('max_length' => 255)),
       'filter_group_id'   => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('FilterGroup'), 'required' => false)),
+      'created_at'        => new sfValidatorDateTime(),
+      'updated_at'        => new sfValidatorDateTime(),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
       'news_list'         => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
     ));

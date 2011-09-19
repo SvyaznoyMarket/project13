@@ -21,6 +21,8 @@ abstract class BaseProductHelperAnswerForm extends BaseFormDoctrine
       'is_active'   => new sfWidgetFormInputCheckbox(),
       'position'    => new sfWidgetFormInputText(),
       'condition'   => new sfWidgetFormChoice(array('choices' => array('and' => 'and', 'or' => 'or'))),
+      'created_at'  => new sfWidgetFormDateTime(),
+      'updated_at'  => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -30,6 +32,8 @@ abstract class BaseProductHelperAnswerForm extends BaseFormDoctrine
       'is_active'   => new sfValidatorBoolean(array('required' => false)),
       'position'    => new sfValidatorInteger(array('required' => false)),
       'condition'   => new sfValidatorChoice(array('choices' => array(0 => 'and', 1 => 'or'), 'required' => false)),
+      'created_at'  => new sfValidatorDateTime(),
+      'updated_at'  => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('product_helper_answer[%s]');

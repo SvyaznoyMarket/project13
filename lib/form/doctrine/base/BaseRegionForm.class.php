@@ -25,6 +25,8 @@ abstract class BaseRegionForm extends BaseFormDoctrine
       'token'          => new sfWidgetFormInputText(),
       'name'           => new sfWidgetFormInputText(),
       'type'           => new sfWidgetFormInputText(),
+      'created_at'     => new sfWidgetFormDateTime(),
+      'updated_at'     => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -38,6 +40,8 @@ abstract class BaseRegionForm extends BaseFormDoctrine
       'token'          => new sfValidatorString(array('max_length' => 255)),
       'name'           => new sfValidatorString(array('max_length' => 255)),
       'type'           => new sfValidatorPass(array('required' => false)),
+      'created_at'     => new sfValidatorDateTime(),
+      'updated_at'     => new sfValidatorDateTime(),
     ));
 
     $this->validatorSchema->setPostValidator(

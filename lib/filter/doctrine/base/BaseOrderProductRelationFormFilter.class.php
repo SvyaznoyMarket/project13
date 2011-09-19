@@ -16,12 +16,16 @@ abstract class BaseOrderProductRelationFormFilter extends BaseFormFilterDoctrine
       'price'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'quantity'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'position'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'created_at' => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
+      'updated_at' => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
     ));
 
     $this->setValidators(array(
       'price'      => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
       'quantity'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'position'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'created_at' => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
+      'updated_at' => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
     ));
 
     $this->widgetSchema->setNameFormat('order_product_relation_filters[%s]');
@@ -46,6 +50,8 @@ abstract class BaseOrderProductRelationFormFilter extends BaseFormFilterDoctrine
       'price'      => 'Number',
       'quantity'   => 'Number',
       'position'   => 'Number',
+      'created_at' => 'Date',
+      'updated_at' => 'Date',
     );
   }
 }

@@ -159,5 +159,9 @@ abstract class BaseShop extends myDoctrineRecord
         $this->hasMany('Stock', array(
              'local' => 'id',
              'foreign' => 'shop_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

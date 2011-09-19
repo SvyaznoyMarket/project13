@@ -107,5 +107,9 @@ abstract class BaseProductHelper extends myDoctrineRecord
         $this->hasMany('ProductHelperQuestion as Question', array(
              'local' => 'id',
              'foreign' => 'helper_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

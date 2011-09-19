@@ -82,5 +82,9 @@ abstract class BaseCreator extends myDoctrineRecord
         $this->hasMany('Product', array(
              'local' => 'id',
              'foreign' => 'creator_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

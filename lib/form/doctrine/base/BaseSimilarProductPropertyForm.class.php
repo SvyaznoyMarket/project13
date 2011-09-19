@@ -18,12 +18,16 @@ abstract class BaseSimilarProductPropertyForm extends BaseFormDoctrine
       'id'          => new sfWidgetFormInputHidden(),
       'group_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => false)),
       'property_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductProperty'), 'add_empty' => false)),
+      'created_at'  => new sfWidgetFormDateTime(),
+      'updated_at'  => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
       'id'          => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'group_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Group'))),
       'property_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductProperty'))),
+      'created_at'  => new sfValidatorDateTime(),
+      'updated_at'  => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('similar_product_property[%s]');

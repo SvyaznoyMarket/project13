@@ -15,11 +15,15 @@ abstract class BaseSimilarProductPropertyFormFilter extends BaseFormFilterDoctri
     $this->setWidgets(array(
       'group_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => true)),
       'property_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductProperty'), 'add_empty' => true)),
+      'created_at'  => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
+      'updated_at'  => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
     ));
 
     $this->setValidators(array(
       'group_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Group'), 'column' => 'id')),
       'property_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('ProductProperty'), 'column' => 'id')),
+      'created_at'  => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
+      'updated_at'  => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
     ));
 
     $this->widgetSchema->setNameFormat('similar_product_property_filters[%s]');
@@ -42,6 +46,8 @@ abstract class BaseSimilarProductPropertyFormFilter extends BaseFormFilterDoctri
       'id'          => 'Number',
       'group_id'    => 'ForeignKey',
       'property_id' => 'ForeignKey',
+      'created_at'  => 'Date',
+      'updated_at'  => 'Date',
     );
   }
 }

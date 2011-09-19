@@ -1,6 +1,7 @@
 Creator:
   options:
     comment: 'Производитель'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -10,6 +11,7 @@ Creator:
 ProductFilterGroup:
   options:
     comment: 'Группа фильтров товаров'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
@@ -17,6 +19,7 @@ ProductFilterGroup:
 ProductFilter:
   options:
     comment: 'Фильтр товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
@@ -33,7 +36,8 @@ ProductCategory:
   options:
     comment: 'Категория товара'
   actAs:
-    NestedSet: { hasManyRoots: true, rootColumnName: root_id }
+    NestedSet:     { hasManyRoots: true, rootColumnName: root_id }
+    Timestampable: ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -52,6 +56,7 @@ ProductCategory:
 ProductType:
   options:
     comment: 'Тип товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
@@ -62,6 +67,7 @@ ProductType:
 ProductCategoryTypeRelation:
   options:
     comment: 'Связь типов и категорий товара'
+  actAs: [ Timestampable ]
   columns:
     product_category_id: { type: integer(20), primary: true, notnull: true }
     product_type_id:   { type: integer(20), primary: true, notnull: true }
@@ -72,6 +78,7 @@ ProductCategoryTypeRelation:
 ProductProperty:
   options:
     comment: 'Свойство товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -87,6 +94,7 @@ ProductProperty:
 ProductPropertyGroup:
   options:
     comment: 'Группа свойств товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: false, default: null }
@@ -98,6 +106,7 @@ ProductPropertyGroup:
 ProductTypePropertyRelation:
   options:
     comment: 'Связь типов и свойств товара'
+  actAs: [ Timestampable ]
   columns:
     product_type_id:   { type: integer(20), primary: true, notnull: true }
     property_id:       { type: integer(20), primary: true, notnull: true }
@@ -115,6 +124,7 @@ ProductTypePropertyRelation:
 ProductPropertyOption:
   options:
     comment: 'Опции свойства товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     property_id:       { type: integer(20), notnull: true }
@@ -127,6 +137,7 @@ ProductPropertyOption:
 Product:
   options:
     comment: 'Товар'
+  actAs: [ Timestampable ]
   listeners: [ myDoctrineRecordListener ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
@@ -151,6 +162,7 @@ Product:
 ProductPropertyRelation:
   options:
     comment: 'Связь продукта и свойства продукта'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: false, default: null }
@@ -171,6 +183,7 @@ ProductPropertyRelation:
 ProductPhoto:
   options:
     comment: 'Фото товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
@@ -185,8 +198,8 @@ ProductComment:
   options:
     comment: 'Комментарии товара'
   actAs:
-    Timestampable: ~
     NestedSet:     { hasManyRoots: true, rootColumnName: product_id }
+    Timestampable: ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -205,6 +218,7 @@ ProductComment:
 ProductGroup:
   options:
     comment: 'Группировка товаров'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255) }
@@ -214,6 +228,7 @@ ProductGroup:
 ProductGroupPropertyRelation:
   options:
     comment: 'Связь группы товаров и свойст, которые будут различны у этой группы'
+  actAs: [ Timestampable ]
   columns:
     product_property_id:  { type: integer(20), notnull: true }
     product_group_id:     { type: integer(20), notnull: true }
@@ -224,6 +239,7 @@ ProductGroupPropertyRelation:
 ProductRatingType:
   options:
     comment: 'Тип рейтинга товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
@@ -232,6 +248,7 @@ ProductRatingType:
 ProductRatingTypeProperty:
   options:
     comment: 'Свойства типа рейтинга товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     type_id:           { type: integer(20), notnull: true }
