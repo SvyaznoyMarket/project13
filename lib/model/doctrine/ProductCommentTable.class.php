@@ -89,4 +89,13 @@ class ProductCommentTable extends myDoctrineTable
 
     return $record;
   }
+
+  public function getCoreMapping()
+  {
+    return array(
+      'id'      => 'core_id',
+      'content' => 'content',
+    );
+  }
+
 }

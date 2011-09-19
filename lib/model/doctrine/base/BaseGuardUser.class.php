@@ -16,6 +16,7 @@
  * @property boolean $is_active
  * @property boolean $is_super_admin
  * @property timestamp $last_login
+ * @property integer $core_id
  * @property enum $type
  * @property string $middle_name
  * @property string $photo
@@ -38,6 +39,7 @@
  * @method boolean             getIsActive()            Returns the current record's "is_active" value
  * @method boolean             getIsSuperAdmin()        Returns the current record's "is_super_admin" value
  * @method timestamp           getLastLogin()           Returns the current record's "last_login" value
+ * @method integer             getCoreId()              Returns the current record's "core_id" value
  * @method enum                getType()                Returns the current record's "type" value
  * @method string              getMiddleName()          Returns the current record's "middle_name" value
  * @method string              getPhoto()               Returns the current record's "photo" value
@@ -59,6 +61,7 @@
  * @method GuardUser           setIsActive()            Sets the current record's "is_active" value
  * @method GuardUser           setIsSuperAdmin()        Sets the current record's "is_super_admin" value
  * @method GuardUser           setLastLogin()           Sets the current record's "last_login" value
+ * @method GuardUser           setCoreId()              Sets the current record's "core_id" value
  * @method GuardUser           setType()                Sets the current record's "type" value
  * @method GuardUser           setMiddleName()          Sets the current record's "middle_name" value
  * @method GuardUser           setPhoto()               Sets the current record's "photo" value
@@ -136,6 +139,12 @@ abstract class BaseGuardUser extends myDoctrineRecord
              ));
         $this->hasColumn('last_login', 'timestamp', null, array(
              'type' => 'timestamp',
+             ));
+        $this->hasColumn('core_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'comment' => 'ид записи в Core',
+             'length' => 20,
              ));
         $this->hasColumn('type', 'enum', 10, array(
              'type' => 'enum',

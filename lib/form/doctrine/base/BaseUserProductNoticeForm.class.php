@@ -15,6 +15,7 @@ abstract class BaseUserProductNoticeForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'core_id'    => new sfWidgetFormInputText(),
       'type'       => new sfWidgetFormInputHidden(),
       'email'      => new sfWidgetFormInputHidden(),
       'product_id' => new sfWidgetFormInputHidden(),
@@ -24,6 +25,7 @@ abstract class BaseUserProductNoticeForm extends BaseFormDoctrine
     ));
 
     $this->setValidators(array(
+      'core_id'    => new sfValidatorInteger(array('required' => false)),
       'type'       => new sfValidatorChoice(array('choices' => array($this->getObject()->get('type')), 'empty_value' => $this->getObject()->get('type'), 'required' => false)),
       'email'      => new sfValidatorChoice(array('choices' => array($this->getObject()->get('email')), 'empty_value' => $this->getObject()->get('email'), 'required' => false)),
       'product_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_id')), 'empty_value' => $this->getObject()->get('product_id'), 'required' => false)),

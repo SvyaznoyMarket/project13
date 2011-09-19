@@ -31,19 +31,9 @@ class userAddressActions extends myActions
       try
       {
         $this->form->getObject()->user_id = $this->getUser()->getGuardUser()->id;
-        $address = $this->form->updateObject();
 
-        $response = Core::getInstance()->createUserAddress($address);
-        if ($response)
-        {
-          $this->form->getObject()->core_id = $response;
-          $this->form->save();
-        }
-        else
-        {
-          myDebug::dump(Core::getInstance()->getError(), 1);
-        }
-
+        $this->form->save();
+        
         $this->redirect('userAddress');
       }
       catch (Exception $e)

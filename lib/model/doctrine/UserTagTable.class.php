@@ -56,4 +56,11 @@ class UserTagTable extends myDoctrineTable
 
     return $this->createListByIds($ids, $params);
   }
+
+  public function getCoreMapping()
+  {
+    return array(
+      'id'          => 'core_id',
+    );
+  }
 }
