@@ -4,4 +4,4 @@
 /plugins/.registry/
 /plugins/.channels/
 /web/uploads
-
+/data/sql/schema.sql
