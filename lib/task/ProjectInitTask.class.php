@@ -50,6 +50,7 @@ EOF;
     $response = $core->query('load.get', array(
       'id' => $options['packet_id'],
     ));
+  myDebug::dump($response, 1);
 
     foreach ($response as $item)
     {

@@ -66,8 +66,6 @@ class GuardUser extends BaseGuardUser
     }
     $this->setAlgorithm($algorithmAsStr);
 
-    sfContext::getInstance()->getLogger()->log('register: { algorithm: '.$algorithm.', salt: '.$this->getSalt().', password: '.$password.' }');
-
     $this->_set('password', call_user_func_array($algorithm, array($this->getSalt().$password)));
   }
 
@@ -100,7 +98,6 @@ class GuardUser extends BaseGuardUser
     {
       throw new sfException(sprintf('The algorithm callable "%s" is not callable.', $algorithm));
     }
-    sfContext::getInstance()->getLogger()->log('signin: { algorithm: '.$algorithm.', salt: '.$this->getSalt().', password: '.$password.' }');
 
     return $this->getPassword() == call_user_func_array($algorithm, array($this->getSalt().$password));
   }
