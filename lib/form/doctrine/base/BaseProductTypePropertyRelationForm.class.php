@@ -23,6 +23,8 @@ abstract class BaseProductTypePropertyRelationForm extends BaseFormDoctrine
       'group_position'  => new sfWidgetFormInputText(),
       'view_show'       => new sfWidgetFormInputCheckbox(),
       'view_list'       => new sfWidgetFormInputCheckbox(),
+      'created_at'      => new sfWidgetFormDateTime(),
+      'updated_at'      => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -34,6 +36,8 @@ abstract class BaseProductTypePropertyRelationForm extends BaseFormDoctrine
       'group_position'  => new sfValidatorInteger(array('required' => false)),
       'view_show'       => new sfValidatorBoolean(array('required' => false)),
       'view_list'       => new sfValidatorBoolean(array('required' => false)),
+      'created_at'      => new sfValidatorDateTime(),
+      'updated_at'      => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('product_type_property_relation[%s]');

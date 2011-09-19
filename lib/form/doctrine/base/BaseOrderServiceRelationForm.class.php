@@ -21,6 +21,8 @@ abstract class BaseOrderServiceRelationForm extends BaseFormDoctrine
       'service_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Service'), 'add_empty' => false)),
       'price'      => new sfWidgetFormInputText(),
       'quantity'   => new sfWidgetFormInputText(),
+      'created_at' => new sfWidgetFormDateTime(),
+      'updated_at' => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -30,6 +32,8 @@ abstract class BaseOrderServiceRelationForm extends BaseFormDoctrine
       'service_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Service'))),
       'price'      => new sfValidatorNumber(array('required' => false)),
       'quantity'   => new sfValidatorInteger(),
+      'created_at' => new sfValidatorDateTime(),
+      'updated_at' => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('order_service_relation[%s]');

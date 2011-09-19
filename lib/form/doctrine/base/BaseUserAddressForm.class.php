@@ -21,6 +21,8 @@ abstract class BaseUserAddressForm extends BaseFormDoctrine
       'city_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('City'), 'add_empty' => false)),
       'name'    => new sfWidgetFormInputText(),
       'address' => new sfWidgetFormTextarea(),
+      'created_at' => new sfWidgetFormDateTime(),
+      'updated_at' => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -30,6 +32,8 @@ abstract class BaseUserAddressForm extends BaseFormDoctrine
       'city_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('City'))),
       'name'    => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'address' => new sfValidatorString(),
+      'created_at' => new sfWidgetFormDateTime(),
+      'updated_at' => new sfWidgetFormDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('user_address[%s]');

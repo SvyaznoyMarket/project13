@@ -29,15 +29,18 @@ abstract class BaseGuardUserPermission extends myDoctrineRecord
     public function setTableDefinition()
     {
         $this->setTableName('guard_user_permission');
-        $this->hasColumn('user_id', 'integer', null, array(
+        $this->hasColumn('user_id', 'integer', 20, array(
              'type' => 'integer',
              'primary' => true,
+             'length' => 20,
              ));
-        $this->hasColumn('permission_id', 'integer', null, array(
+        $this->hasColumn('permission_id', 'integer', 20, array(
              'type' => 'integer',
              'primary' => true,
+             'length' => 20,
              ));
 
+        $this->option('comment', 'Связь пользователя и права');
         $this->option('symfony', array(
              'form' => false,
              'filter' => false,

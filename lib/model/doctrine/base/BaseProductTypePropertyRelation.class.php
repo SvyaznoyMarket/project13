@@ -117,5 +117,9 @@ abstract class BaseProductTypePropertyRelation extends myDoctrineRecord
              'local' => 'group_id',
              'foreign' => 'id',
              'onDelete' => 'SET NULL'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

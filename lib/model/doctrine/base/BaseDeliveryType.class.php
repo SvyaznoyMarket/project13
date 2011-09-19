@@ -67,5 +67,9 @@ abstract class BaseDeliveryType extends myDoctrineRecord
         $this->hasMany('Order', array(
              'local' => 'id',
              'foreign' => 'delivery_type_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

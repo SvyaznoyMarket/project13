@@ -1,6 +1,7 @@
 TagGroup:
   options:
     comment: 'Группа тега'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -12,6 +13,7 @@ TagGroup:
 Tag:
   options:
     comment: 'Тег'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -24,6 +26,7 @@ Tag:
 TagProductRelation:
   options:
     comment: 'Связь тега и товара'
+  actAs: [ Timestampable ]
   columns:
     tag_id:            { type: integer(20), primary: true, notnull: true }
     product_id:        { type: integer(20), primary: true, notnull: true }
@@ -34,6 +37,7 @@ TagProductRelation:
 TagProductCategoryRelation:
   options:
     comment: 'Связь тега и категории товара'
+  actAs: [ Timestampable ]
   columns:
     tag_id:              { type: integer(20), primary: true, notnull: true }
     product_category_id: { type: integer(20), primary: true, notnull: true }

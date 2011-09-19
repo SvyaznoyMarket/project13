@@ -61,5 +61,9 @@ abstract class BaseProductGroup extends myDoctrineRecord
         $this->hasMany('ProductGroupPropertyRelation as ProductGroupRelation', array(
              'local' => 'id',
              'foreign' => 'product_group_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

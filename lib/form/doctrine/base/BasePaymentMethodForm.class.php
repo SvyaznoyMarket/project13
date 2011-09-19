@@ -15,17 +15,21 @@ abstract class BasePaymentMethodForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'        => new sfWidgetFormInputHidden(),
-      'token'     => new sfWidgetFormInputText(),
-      'name'      => new sfWidgetFormInputText(),
-      'is_active' => new sfWidgetFormInputCheckbox(),
+      'id'         => new sfWidgetFormInputHidden(),
+      'token'      => new sfWidgetFormInputText(),
+      'name'       => new sfWidgetFormInputText(),
+      'is_active'  => new sfWidgetFormInputCheckbox(),
+      'created_at' => new sfWidgetFormDateTime(),
+      'updated_at' => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
-      'id'        => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'token'     => new sfValidatorString(array('max_length' => 255)),
-      'name'      => new sfValidatorString(array('max_length' => 255)),
-      'is_active' => new sfValidatorBoolean(array('required' => false)),
+      'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'token'      => new sfValidatorString(array('max_length' => 255)),
+      'name'       => new sfValidatorString(array('max_length' => 255)),
+      'is_active'  => new sfValidatorBoolean(array('required' => false)),
+      'created_at' => new sfValidatorDateTime(),
+      'updated_at' => new sfValidatorDateTime(),
     ));
 
     $this->validatorSchema->setPostValidator(

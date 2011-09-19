@@ -4,6 +4,9 @@ all:
 signin:
   is_secure: false
 
+register:
+  is_secure: false
+
 quickRegister:
   is_secure: false
 

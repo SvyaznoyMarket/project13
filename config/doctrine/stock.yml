@@ -1,6 +1,7 @@
 Shop:
   options:
     comment: 'Магазин'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -20,6 +21,7 @@ Shop:
 ShopPhoto:
   options:
     comment: 'Фото магазина'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     shop_id:           { type: integer(20), notnull: true }
@@ -30,6 +32,7 @@ ShopPhoto:
 Stock:
   options:
     comment: 'Склад'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
@@ -44,6 +47,7 @@ Stock:
 StockProductRelation:
   options:
     comment: 'Связь склада и товара'
+  actAs: [ Timestampable ]
   columns:
     stock_id:          { type: integer(20), primary: true, notnull: true }
     product_id:        { type: integer(20), primary: true, notnull: true }

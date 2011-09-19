@@ -9,7 +9,9 @@
     <?php echo $form ?>
   </ul>
 
-  <p>Пользователь: <strong>client</strong><br />Пароль: <strong>client</strong></p>
+  <p><?php echo link_to('Новый пользователь?', 'user_register') ?></p>
+
+  <p>Пользователь: <strong>79031234567 или client@maxus.ru</strong><br />Пароль: <strong>client</strong></p>
 
   <input type="submit" value="Вход" />
 </form>

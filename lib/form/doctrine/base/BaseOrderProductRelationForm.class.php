@@ -20,6 +20,8 @@ abstract class BaseOrderProductRelationForm extends BaseFormDoctrine
       'price'      => new sfWidgetFormInputText(),
       'quantity'   => new sfWidgetFormInputText(),
       'position'   => new sfWidgetFormInputText(),
+      'created_at' => new sfWidgetFormDateTime(),
+      'updated_at' => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -28,6 +30,8 @@ abstract class BaseOrderProductRelationForm extends BaseFormDoctrine
       'price'      => new sfValidatorNumber(array('required' => false)),
       'quantity'   => new sfValidatorInteger(),
       'position'   => new sfValidatorInteger(array('required' => false)),
+      'created_at' => new sfValidatorDateTime(),
+      'updated_at' => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('order_product_relation[%s]');

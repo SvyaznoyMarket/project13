@@ -2,7 +2,8 @@ Page:
   options:
     comment: 'Страница'
   actAs:
-    NestedSet: { hasManyRoots: true, rootColumnName: root_id }
+    NestedSet:     { hasManyRoots: true, rootColumnName: root_id }
+    Timestampable: ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     root_id:           { type: integer(20), notnull: true }

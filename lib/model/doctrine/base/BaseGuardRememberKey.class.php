@@ -29,8 +29,10 @@ abstract class BaseGuardRememberKey extends myDoctrineRecord
     public function setTableDefinition()
     {
         $this->setTableName('guard_remember_key');
-        $this->hasColumn('user_id', 'integer', null, array(
+        $this->hasColumn('user_id', 'integer', 20, array(
              'type' => 'integer',
+             'notnull' => true,
+             'length' => 20,
              ));
         $this->hasColumn('remember_key', 'string', 32, array(
              'type' => 'string',
@@ -41,6 +43,7 @@ abstract class BaseGuardRememberKey extends myDoctrineRecord
              'length' => 50,
              ));
 
+        $this->option('comment', 'Ключ пользователя');
         $this->option('symfony', array(
              'form' => false,
              'filter' => false,

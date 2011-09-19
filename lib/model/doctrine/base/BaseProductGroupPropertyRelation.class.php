@@ -55,5 +55,9 @@ abstract class BaseProductGroupPropertyRelation extends myDoctrineRecord
              'local' => 'product_group_id',
              'foreign' => 'id',
              'onDelete' => 'CASCADE'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

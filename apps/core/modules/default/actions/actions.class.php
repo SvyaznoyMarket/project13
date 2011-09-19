@@ -26,19 +26,26 @@ class defaultActions extends myActions
   public function executeInit(sfWebRequest $request)
   {
     $response = $this->getCore()->query('load.start');
-    myDebug::dump($response, 1);
-    if ($response['ready'] && !empty($response['packet_id']))
+    //myDebug::dump($response, 1);
+    if ($response['confirmed'])
     {
       $task = new Task();
       $task->setContentData(array(
         'type'      => 'init',
+        'id'        => $response['id'],
         'packet_id' => $response['packet_id'],
         'sync_id'   => $response['sync_id'],
         'status'    => 'run',
       ));
 
       $task->save();
+
+      $this->getUser()->setFlash('message', 'Задача успешно запущена');
     }
+    else {
+      $this->getUser()->setFlash('error', "Не удалось запустить задачу. Ответ от core:\n".sfYaml::dump($response));
+    }
+
 
     $this->redirect('homepage');
   }

@@ -19,39 +19,64 @@ class GuardUserTable extends myDoctrineTable
   }
 
   /**
-   * Retrieves a sfGuardUser object by username and is_active flag.
+   * Retrieves a GuardUser object by email and is_active flag.
    *
-   * @param  string  $username The username
+   * @param  string  $email The email
    * @param  boolean $isActive The user's status
    *
-   * @return sfGuardUser
+   * @return GuardUser
    */
-  public function retrieveByUsername($username, $isActive = true)
+  public function retrieveByEmail($email, $isActive = true)
   {
-    $query = $this->createQuery('user')
-      ->where('user.username = ?', $username)
+    $q = $this->createQuery('user')
+      ->where('user.email = ?', $email)
       ->addWhere('user.is_active = ?', $isActive)
     ;
 
-    return $query->fetchOne();
+    return $q->fetchOne();
   }
 
   /**
-   * Retrieves a sfGuardUser object by username or email and is_active flag.
+   * Retrieves a GuardUser object by phonenumber and is_active flag.
    *
-   * @param  string  $username The username
+   * @param  string  $phonenumber The email
    * @param  boolean $isActive The user's status
    *
-   * @return sfGuardUser
+   * @return GuardUser
    */
-  public function retrieveByUsernameOrEmailAddress($username, $isActive = true)
+  public function retrieveByPhonenumber($phonenumber, $isActive = true)
   {
-    $query = $this->createQuery('user')
-      ->where('user.username = ? OR user.email = ?', array($username, $username))
+    $q = $this->createQuery('user')
+      ->where('user.phonenumber = ?', $phonenumber)
       ->addWhere('user.is_active = ?', $isActive)
     ;
 
-    return $query->fetchOne();
+    return $q->fetchOne();
+  }
+
+  /**
+   * Retrieves a GuardUser object by email or phonenumber and is_active flag.
+   *
+   * @param  string  $email The email
+   * @param  string  $phonenumber The phonenumber
+   * @param  boolean $isActive The user's status
+   *
+   * @return GuardUser
+   */
+  public function retrieveByEmailOrPhonenumber($email, $phonenumber, $isActive = true)
+  {
+    $user = false;
+
+    if (!empty($email))
+    {
+      $user = $this->retrieveByEmail($email);
+    }
+    elseif (!empty($phonenumber))
+    {
+      $user = $this->retrieveByPhonenumber($phonenumber);
+    }
+
+    return $user;
   }
 
 }

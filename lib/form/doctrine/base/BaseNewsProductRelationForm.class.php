@@ -17,11 +17,15 @@ abstract class BaseNewsProductRelationForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'news_id'    => new sfWidgetFormInputHidden(),
       'product_id' => new sfWidgetFormInputHidden(),
+      'created_at' => new sfWidgetFormDateTime(),
+      'updated_at' => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
       'news_id'    => new sfValidatorChoice(array('choices' => array($this->getObject()->get('news_id')), 'empty_value' => $this->getObject()->get('news_id'), 'required' => false)),
       'product_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_id')), 'empty_value' => $this->getObject()->get('product_id'), 'required' => false)),
+      'created_at' => new sfValidatorDateTime(),
+      'updated_at' => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('news_product_relation[%s]');

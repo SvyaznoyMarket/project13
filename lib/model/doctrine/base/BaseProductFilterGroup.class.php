@@ -55,5 +55,9 @@ abstract class BaseProductFilterGroup extends myDoctrineRecord
         $this->hasMany('ProductCategory as Category', array(
              'local' => 'id',
              'foreign' => 'filter_group_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

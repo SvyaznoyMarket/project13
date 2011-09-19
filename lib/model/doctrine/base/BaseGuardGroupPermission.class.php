@@ -29,15 +29,18 @@ abstract class BaseGuardGroupPermission extends myDoctrineRecord
     public function setTableDefinition()
     {
         $this->setTableName('guard_group_permission');
-        $this->hasColumn('group_id', 'integer', null, array(
+        $this->hasColumn('group_id', 'integer', 20, array(
              'type' => 'integer',
              'primary' => true,
+             'length' => 20,
              ));
-        $this->hasColumn('permission_id', 'integer', null, array(
+        $this->hasColumn('permission_id', 'integer', 20, array(
              'type' => 'integer',
              'primary' => true,
+             'length' => 20,
              ));
 
+        $this->option('comment', 'Связь группы и права');
         $this->option('symfony', array(
              'form' => false,
              'filter' => false,

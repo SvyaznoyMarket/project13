@@ -91,5 +91,9 @@ abstract class BaseSimilarProductGroup extends myDoctrineRecord
         $this->hasMany('SimilarProductProperty as Property', array(
              'local' => 'id',
              'foreign' => 'group_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

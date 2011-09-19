@@ -19,6 +19,8 @@ abstract class BaseUserProductNoticeForm extends BaseFormDoctrine
       'email'      => new sfWidgetFormInputHidden(),
       'product_id' => new sfWidgetFormInputHidden(),
       'user_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
+      'created_at' => new sfWidgetFormDateTime(),
+      'updated_at' => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -26,6 +28,8 @@ abstract class BaseUserProductNoticeForm extends BaseFormDoctrine
       'email'      => new sfValidatorChoice(array('choices' => array($this->getObject()->get('email')), 'empty_value' => $this->getObject()->get('email'), 'required' => false)),
       'product_id' => new sfValidatorChoice(array('choices' => array($this->getObject()->get('product_id')), 'empty_value' => $this->getObject()->get('product_id'), 'required' => false)),
       'user_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'required' => false)),
+      'created_at' => new sfValidatorDateTime(),
+      'updated_at' => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('user_product_notice[%s]');

@@ -7,6 +7,7 @@
  * 
  * @property integer $id
  * @property integer $core_id
+ * @property integer $core_parent_id
  * @property integer $root_id
  * @property integer $lft
  * @property integer $rgt
@@ -19,32 +20,34 @@
  * @property Doctrine_Collection $Stock
  * @property Doctrine_Collection $UserAddress
  * 
- * @method integer             getId()            Returns the current record's "id" value
- * @method integer             getCoreId()        Returns the current record's "core_id" value
- * @method integer             getRootId()        Returns the current record's "root_id" value
- * @method integer             getLft()           Returns the current record's "lft" value
- * @method integer             getRgt()           Returns the current record's "rgt" value
- * @method integer             getLevel()         Returns the current record's "level" value
- * @method string              getToken()         Returns the current record's "token" value
- * @method string              getName()          Returns the current record's "name" value
- * @method set                 getType()          Returns the current record's "type" value
- * @method Doctrine_Collection getServicePrice()  Returns the current record's "ServicePrice" collection
- * @method Doctrine_Collection getServiceCenter() Returns the current record's "ServiceCenter" collection
- * @method Doctrine_Collection getStock()         Returns the current record's "Stock" collection
- * @method Doctrine_Collection getUserAddress()   Returns the current record's "UserAddress" collection
- * @method Region              setId()            Sets the current record's "id" value
- * @method Region              setCoreId()        Sets the current record's "core_id" value
- * @method Region              setRootId()        Sets the current record's "root_id" value
- * @method Region              setLft()           Sets the current record's "lft" value
- * @method Region              setRgt()           Sets the current record's "rgt" value
- * @method Region              setLevel()         Sets the current record's "level" value
- * @method Region              setToken()         Sets the current record's "token" value
- * @method Region              setName()          Sets the current record's "name" value
- * @method Region              setType()          Sets the current record's "type" value
- * @method Region              setServicePrice()  Sets the current record's "ServicePrice" collection
- * @method Region              setServiceCenter() Sets the current record's "ServiceCenter" collection
- * @method Region              setStock()         Sets the current record's "Stock" collection
- * @method Region              setUserAddress()   Sets the current record's "UserAddress" collection
+ * @method integer             getId()             Returns the current record's "id" value
+ * @method integer             getCoreId()         Returns the current record's "core_id" value
+ * @method integer             getCoreParentId()   Returns the current record's "core_parent_id" value
+ * @method integer             getRootId()         Returns the current record's "root_id" value
+ * @method integer             getLft()            Returns the current record's "lft" value
+ * @method integer             getRgt()            Returns the current record's "rgt" value
+ * @method integer             getLevel()          Returns the current record's "level" value
+ * @method string              getToken()          Returns the current record's "token" value
+ * @method string              getName()           Returns the current record's "name" value
+ * @method set                 getType()           Returns the current record's "type" value
+ * @method Doctrine_Collection getServicePrice()   Returns the current record's "ServicePrice" collection
+ * @method Doctrine_Collection getServiceCenter()  Returns the current record's "ServiceCenter" collection
+ * @method Doctrine_Collection getStock()          Returns the current record's "Stock" collection
+ * @method Doctrine_Collection getUserAddress()    Returns the current record's "UserAddress" collection
+ * @method Region              setId()             Sets the current record's "id" value
+ * @method Region              setCoreId()         Sets the current record's "core_id" value
+ * @method Region              setCoreParentId()   Sets the current record's "core_parent_id" value
+ * @method Region              setRootId()         Sets the current record's "root_id" value
+ * @method Region              setLft()            Sets the current record's "lft" value
+ * @method Region              setRgt()            Sets the current record's "rgt" value
+ * @method Region              setLevel()          Sets the current record's "level" value
+ * @method Region              setToken()          Sets the current record's "token" value
+ * @method Region              setName()           Sets the current record's "name" value
+ * @method Region              setType()           Sets the current record's "type" value
+ * @method Region              setServicePrice()   Sets the current record's "ServicePrice" collection
+ * @method Region              setServiceCenter()  Sets the current record's "ServiceCenter" collection
+ * @method Region              setStock()          Sets the current record's "Stock" collection
+ * @method Region              setUserAddress()    Sets the current record's "UserAddress" collection
  * 
  * @package    enter
  * @subpackage model
@@ -66,6 +69,12 @@ abstract class BaseRegion extends myDoctrineRecord
              'type' => 'integer',
              'notnull' => false,
              'comment' => 'ид записи в Core',
+             'length' => 20,
+             ));
+        $this->hasColumn('core_parent_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'comment' => 'ид родителя записи в Core',
              'length' => 20,
              ));
         $this->hasColumn('root_id', 'integer', 20, array(
@@ -141,6 +150,8 @@ abstract class BaseRegion extends myDoctrineRecord
              'hasManyRoots' => true,
              'rootColumnName' => 'root_id',
              ));
+        $timestampable0 = new Doctrine_Template_Timestampable();
         $this->actAs($nestedset0);
+        $this->actAs($timestampable0);
     }
 }

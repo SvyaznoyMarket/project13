@@ -2,10 +2,12 @@ Region:
   options:
     comment: 'Регион'
   actAs:
-    NestedSet: { hasManyRoots: true, rootColumnName: root_id }
+    NestedSet:     { hasManyRoots: true, rootColumnName: root_id }
+    Timestampable: ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
+    core_parent_id:    { type: integer(20), notnull: false, default: null, comment: 'ид родителя записи в Core' }
     root_id:           { type: integer(20), notnull: true }
     lft:               { type: integer(20), notnull: true }
     rgt:               { type: integer(20), notnull: true }

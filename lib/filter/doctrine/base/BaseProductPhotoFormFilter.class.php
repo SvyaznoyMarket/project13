@@ -18,6 +18,8 @@ abstract class BaseProductPhotoFormFilter extends BaseFormFilterDoctrine
       'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => true)),
       'view_show'  => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'view_list'  => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
+      'created_at' => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
+      'updated_at' => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
     ));
 
     $this->setValidators(array(
@@ -26,6 +28,8 @@ abstract class BaseProductPhotoFormFilter extends BaseFormFilterDoctrine
       'product_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Product'), 'column' => 'id')),
       'view_show'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'view_list'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'created_at' => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
+      'updated_at' => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
     ));
 
     $this->widgetSchema->setNameFormat('product_photo_filters[%s]');
@@ -51,6 +55,8 @@ abstract class BaseProductPhotoFormFilter extends BaseFormFilterDoctrine
       'product_id' => 'ForeignKey',
       'view_show'  => 'Boolean',
       'view_list'  => 'Boolean',
+      'created_at' => 'Date',
+      'updated_at' => 'Date',
     );
   }
 }

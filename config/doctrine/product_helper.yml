@@ -1,6 +1,7 @@
 ProductHelper:
   options:
     comment: 'Помошник выбора товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     product_type_id:   { type: integer(20), notnull: true }
@@ -16,6 +17,7 @@ ProductHelper:
 ProductHelperQuestion:
   options:
     comment: 'Вопрос для помошника выбора товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     helper_id:         { type: integer(20), notnull: true }
@@ -28,6 +30,7 @@ ProductHelperQuestion:
 ProductHelperAnswer:
   options:
     comment: 'Ответ для помошника выбора товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     question_id:       { type: integer(20), notnull: true }
@@ -41,6 +44,7 @@ ProductHelperAnswer:
 ProductHelperFilter:
   options:
     comment: 'Связь ответа для помошника выбора товара и свойства товара'
+  actAs: [ Timestampable ]
   columns:
     answer_id:         { type: integer(20), primary: true, notnull: true }
     product_filter_id: { type: integer(20), primary: true, notnull: true }

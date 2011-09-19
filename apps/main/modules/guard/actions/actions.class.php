@@ -137,6 +137,45 @@ class guardActions extends myActions
     }
   }
  /**
+  * Executes register action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeRegister($request)
+  {
+    if ($this->getUser()->isAuthenticated())
+    {
+      $this->getUser()->setFlash('notice', 'Вы уже зарегистрированы!');
+      $this->redirect('@homepage');
+    }
+
+    $this->form = new UserFormRegister();
+
+    if ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getParameter($this->form->getName()));
+      if ($this->form->isValid())
+      {
+        $user = $this->form->getObject();
+
+        $user->is_active = true;
+        $user->email = $this->form->getValue('email');
+        $user->phonenumber = $this->form->getValue('phonenumber');
+
+        $user->setPassword('123456');
+
+        $user = $this->form->save();
+        //$user->refresh();
+        $this->getUser()->signIn($user);
+
+
+        // event: { password: generate() }
+
+        $this->redirect('@homepage');
+      }
+    }
+  }
+ /**
   * Executes quickRegister action
   *
   * @param sfRequest $request A request object
@@ -167,10 +206,11 @@ class guardActions extends myActions
         $this->user = new User();
         $this->user->fromArray(array(
           'email'      => $this->form->getValue('email'),
-          'username'   => $this->form->getValue('email'),
+          'nickname'   => $this->userProfile->getNickname(),
           'last_name'  => $this->userProfile->getLastName(),
           'first_name' => $this->userProfile->getFirstName(),
           'photo'      => $this->userProfile->getPhoto(),
+          'is_active'  => true,
         ));
         $this->user->Profile[] = $this->userProfile;
         $this->user->save();

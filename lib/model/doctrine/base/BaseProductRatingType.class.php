@@ -65,5 +65,9 @@ abstract class BaseProductRatingType extends myDoctrineRecord
         $this->hasMany('ProductRatingTypeProperty as Property', array(
              'local' => 'id',
              'foreign' => 'type_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

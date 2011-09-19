@@ -180,18 +180,18 @@ class Core
     return $record->exportToCore();
   }
 
-  public function query($name, $data = array())
+  public function query($name, array $params = array(), array $data = array())
   {
     $action = '/'.str_replace('.', '/', $name).'/';
 
-    $data_to_send = array('action' => $action, 'param' => array('client_id' => $this->getConfig('client_id'), 'token_id' => '', ), 'data' => $data, );
-    if (isset($data['id']))
-    {
-      $data_to_send['param']['id'] = $data['id'];
-      unset($data_to_send['data']['id']);
-    }
-    $data = json_encode($data_to_send, JSON_FORCE_OBJECT);
-    
+    $data = json_encode(array(
+      'action' => $action,
+      'param'  => array_merge(array(
+        'client_id' => $this->getConfig('client_id'),
+        'token_id'  => '',
+      ), $params),
+      'data'   => $data), JSON_FORCE_OBJECT);
+
     $response = $this->send($data);
     $response = json_decode($response, true);
 

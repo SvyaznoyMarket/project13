@@ -19,7 +19,8 @@ abstract class BaseGuardUserForm extends BaseFormDoctrine
       'first_name'      => new sfWidgetFormInputText(),
       'last_name'       => new sfWidgetFormInputText(),
       'email'           => new sfWidgetFormInputText(),
-      'username'        => new sfWidgetFormInputText(),
+      'phonenumber'     => new sfWidgetFormInputText(),
+      'nickname'        => new sfWidgetFormInputText(),
       'algorithm'       => new sfWidgetFormInputText(),
       'salt'            => new sfWidgetFormInputText(),
       'password'        => new sfWidgetFormInputText(),
@@ -27,7 +28,6 @@ abstract class BaseGuardUserForm extends BaseFormDoctrine
       'is_super_admin'  => new sfWidgetFormInputCheckbox(),
       'last_login'      => new sfWidgetFormDateTime(),
       'type'            => new sfWidgetFormChoice(array('choices' => array('admin' => 'admin', 'client' => 'client', 'partner' => 'partner'))),
-      'phonenumber'     => new sfWidgetFormInputText(),
       'middle_name'     => new sfWidgetFormInputText(),
       'photo'           => new sfWidgetFormInputText(),
       'settings'        => new sfWidgetFormTextarea(),
@@ -41,8 +41,9 @@ abstract class BaseGuardUserForm extends BaseFormDoctrine
       'id'              => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'first_name'      => new sfValidatorString(array('max_length' => 255)),
       'last_name'       => new sfValidatorString(array('max_length' => 255)),
-      'email'           => new sfValidatorString(array('max_length' => 128)),
-      'username'        => new sfValidatorString(array('max_length' => 128)),
+      'email'           => new sfValidatorString(array('max_length' => 128, 'required' => false)),
+      'phonenumber'     => new sfValidatorString(array('max_length' => 20, 'required' => false)),
+      'nickname'        => new sfValidatorString(array('max_length' => 128, 'required' => false)),
       'algorithm'       => new sfValidatorString(array('max_length' => 128, 'required' => false)),
       'salt'            => new sfValidatorString(array('max_length' => 128, 'required' => false)),
       'password'        => new sfValidatorString(array('max_length' => 128, 'required' => false)),
@@ -50,7 +51,6 @@ abstract class BaseGuardUserForm extends BaseFormDoctrine
       'is_super_admin'  => new sfValidatorBoolean(array('required' => false)),
       'last_login'      => new sfValidatorDateTime(array('required' => false)),
       'type'            => new sfValidatorChoice(array('choices' => array(0 => 'admin', 1 => 'client', 2 => 'partner'), 'required' => false)),
-      'phonenumber'     => new sfValidatorString(array('max_length' => 20, 'required' => false)),
       'middle_name'     => new sfValidatorString(array('max_length' => 255)),
       'photo'           => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'settings'        => new sfValidatorString(array('required' => false)),
@@ -59,13 +59,6 @@ abstract class BaseGuardUserForm extends BaseFormDoctrine
       'group_list'      => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'GuardGroup', 'required' => false)),
       'permission_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'GuardPermission', 'required' => false)),
     ));
-
-    $this->validatorSchema->setPostValidator(
-      new sfValidatorAnd(array(
-        new sfValidatorDoctrineUnique(array('model' => 'GuardUser', 'column' => array('email'))),
-        new sfValidatorDoctrineUnique(array('model' => 'GuardUser', 'column' => array('username'))),
-      ))
-    );
 
     $this->widgetSchema->setNameFormat('guard_user[%s]');
 

@@ -19,6 +19,8 @@ abstract class BaseProductPropertyGroupForm extends BaseFormDoctrine
       'name'            => new sfWidgetFormInputText(),
       'product_type_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'), 'add_empty' => false)),
       'position'        => new sfWidgetFormInputText(),
+      'created_at'      => new sfWidgetFormDateTime(),
+      'updated_at'      => new sfWidgetFormDateTime(),
       'property_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty')),
     ));
 
@@ -27,6 +29,8 @@ abstract class BaseProductPropertyGroupForm extends BaseFormDoctrine
       'name'            => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'product_type_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('ProductType'))),
       'position'        => new sfValidatorInteger(array('required' => false)),
+      'created_at'      => new sfValidatorDateTime(),
+      'updated_at'      => new sfValidatorDateTime(),
       'property_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty', 'required' => false)),
     ));
 

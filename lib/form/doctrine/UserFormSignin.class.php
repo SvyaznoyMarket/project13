@@ -26,7 +26,7 @@ class UserFormSignin extends BaseUserForm
       'remember' => new sfValidatorBoolean(),
     ));
 
-    $this->validatorSchema->setPostValidator(new myGuardValidatorUser());
+    $this->validatorSchema->setPostValidator(new myValidatorGuardUserSignin());
 
     $this->widgetSchema->setLabels(array(
       'username' => 'Логин',

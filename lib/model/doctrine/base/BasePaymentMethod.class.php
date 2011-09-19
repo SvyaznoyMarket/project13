@@ -67,5 +67,9 @@ abstract class BasePaymentMethod extends myDoctrineRecord
         $this->hasMany('Order', array(
              'local' => 'id',
              'foreign' => 'payment_method_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

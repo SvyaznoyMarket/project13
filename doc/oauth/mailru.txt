@@ -1,6 +1,7 @@
 http://habrahabr.ru/blogs/webdev_for_dummies/126872/
 http://api.mail.ru/docs/guides/sites/
 http://api.mail.ru/docs/guides/jsapi/
+http://api.mail.ru/sites/my/
 
 account:
   login: ent3@inbox.ru

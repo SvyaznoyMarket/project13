@@ -1,6 +1,7 @@
 News:
   options:
     comment: 'Новости'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     category_id:       { type: integer(20), notnull: true }
@@ -24,6 +25,7 @@ News:
 NewsCategory:
   options:
     comment: 'Категория новости'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
@@ -32,6 +34,7 @@ NewsCategory:
 NewsProductRelation:
   options:
     comment: 'Связь новости с продуктом'
+  actAs: [ Timestampable ]
   columns:
     news_id:              { type: integer(20), primary: true }
     product_id:           { type: integer(20), primary: true }
@@ -42,6 +45,7 @@ NewsProductRelation:
 NewsProductCategoryRelation:
   options:
     comment: 'Связь новости с категорией товаров'
+  actAs: [ Timestampable ]
   columns:
     news_id:              { type: integer(20), primary: true }
     product_category_id:  { type: integer(20), primary: true }
@@ -52,6 +56,7 @@ NewsProductCategoryRelation:
 NewsCreatorRelation:
   options:
     comment: 'Связь новости с производителем'
+  actAs: [ Timestampable ]
   columns:
     news_id:              { type: integer(20), primary: true }
     creator_id:           { type: integer(20), primary: true }

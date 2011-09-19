@@ -23,6 +23,8 @@ abstract class BaseProductHelperForm extends BaseFormDoctrine
       'image'           => new sfWidgetFormInputText(),
       'position'        => new sfWidgetFormInputText(),
       'description'     => new sfWidgetFormTextarea(),
+      'created_at'      => new sfWidgetFormDateTime(),
+      'updated_at'      => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -34,6 +36,8 @@ abstract class BaseProductHelperForm extends BaseFormDoctrine
       'image'           => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'position'        => new sfValidatorInteger(array('required' => false)),
       'description'     => new sfValidatorString(array('required' => false)),
+      'created_at'      => new sfValidatorDateTime(),
+      'updated_at'      => new sfValidatorDateTime(),
     ));
 
     $this->validatorSchema->setPostValidator(

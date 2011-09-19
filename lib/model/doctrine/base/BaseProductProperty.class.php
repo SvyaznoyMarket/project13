@@ -162,5 +162,9 @@ abstract class BaseProductProperty extends myDoctrineRecord
         $this->hasMany('SimilarProductProperty', array(
              'local' => 'id',
              'foreign' => 'property_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

@@ -130,5 +130,9 @@ abstract class BaseProductType extends myDoctrineRecord
         $this->hasMany('SimilarProductGroup', array(
              'local' => 'id',
              'foreign' => 'product_type_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

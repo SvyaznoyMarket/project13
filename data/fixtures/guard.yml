@@ -3,9 +3,10 @@ GuardUser:
     type:           admin
     first_name:     'Админ'
     email:          'admin@maxus.ru'
-    username:       admin
+    phonenumber:    '79031001010'
     password:       admin
     is_super_admin: true
+    is_active:      true
     Group:          [ GuardGroup_admin ]
   GuardUser_client:
     type:           client
@@ -13,8 +14,9 @@ GuardUser:
     last_name:      'Клиентов'
     middle_name:    'Клиентович'
     email:          'client@maxus.ru'
-    username:       client
+    phonenumber:    '79031234567'
     password:       client
+    is_active:      true
     Group:          [ GuardGroup_client ]
   GuardUser_partner:
     type:           partner
@@ -22,8 +24,9 @@ GuardUser:
     last_name:      'Партнеров'
     middle_name:    'Пертнерович'
     email:          'partner@maxus.ru'
-    username:       partner
+    phonenumber:    '79031001020'
     password:       partner
+    is_active:      true
     Group:          [ GuardGroup_partner ]
 
 GuardGroup:

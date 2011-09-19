@@ -21,6 +21,8 @@ abstract class BaseSimilarProductGroupForm extends BaseFormDoctrine
       'products'        => new sfWidgetFormTextarea(),
       'match'           => new sfWidgetFormInputText(),
       'price'           => new sfWidgetFormInputText(),
+      'created_at'      => new sfWidgetFormDateTime(),
+      'updated_at'      => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -30,6 +32,8 @@ abstract class BaseSimilarProductGroupForm extends BaseFormDoctrine
       'products'        => new sfValidatorString(array('required' => false)),
       'match'           => new sfValidatorInteger(array('required' => false)),
       'price'           => new sfValidatorNumber(array('required' => false)),
+      'created_at'      => new sfValidatorDateTime(),
+      'updated_at'      => new sfValidatorDateTime(),
     ));
 
     $this->widgetSchema->setNameFormat('similar_product_group[%s]');

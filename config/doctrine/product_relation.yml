@@ -1,6 +1,7 @@
 SimilarProductGroup:
   options:
     comment: 'Группа аналогичного товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     product_type_id:   { type: integer(20), notnull: false, default: null }
@@ -14,6 +15,7 @@ SimilarProductGroup:
 SimilarProductProperty:
   options:
     comment: 'Свойства аналогичного товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     group_id:          { type: integer(20), notnull: true }
@@ -25,6 +27,7 @@ SimilarProductProperty:
 SimilarProduct:
   options:
     comment: 'Аналогичный товар'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     master_id:         { type: integer(20), notnull: true }
@@ -36,6 +39,7 @@ SimilarProduct:
 AccessoryProduct:
   options:
     comment: 'Аксессуар товара'
+  actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     master_id:         { type: integer(20), notnull: true }

@@ -238,5 +238,9 @@ abstract class BaseOrder extends myDoctrineRecord
         $this->hasMany('OrderProductRelation as ProductRelation', array(
              'local' => 'id',
              'foreign' => 'order_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

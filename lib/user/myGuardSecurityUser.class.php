@@ -224,13 +224,13 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   }
 
   /**
-   * Returns the sfGuardUser object's username.
+   * Returns the GuardUser object's email.
    *
    * @return string
    */
-  public function getUsername()
+  public function getEmail()
   {
-    return $this->getGuardUser()->getUsername();
+    return $this->getGuardUser()->getEmail();
   }
 
   /**
@@ -244,13 +244,13 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   }
 
   /**
-   * Returns the sfGuardUser object's email.
+   * Returns the GuardUser object's phonenumber.
    *
    * @return string
    */
-  public function getEmail()
+  public function getPhonenumber()
   {
-    return $this->getGuardUser()->getEmail();
+    return $this->getGuardUser()->getPhonenumber();
   }
 
   /**

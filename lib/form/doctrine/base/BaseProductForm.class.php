@@ -28,6 +28,8 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'description' => new sfWidgetFormInputText(),
       'rating'      => new sfWidgetFormInputText(),
       'price'       => new sfWidgetFormInputText(),
+      'created_at'  => new sfWidgetFormDateTime(),
+      'updated_at'  => new sfWidgetFormDateTime(),
       'news_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
 
@@ -45,6 +47,8 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'description' => new sfValidatorPass(array('required' => false)),
       'rating'      => new sfValidatorNumber(array('required' => false)),
       'price'       => new sfValidatorNumber(array('required' => false)),
+      'created_at'  => new sfValidatorDateTime(),
+      'updated_at'  => new sfValidatorDateTime(),
       'news_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
     ));
 

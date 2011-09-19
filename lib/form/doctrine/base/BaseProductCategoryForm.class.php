@@ -17,6 +17,7 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'                => new sfWidgetFormInputHidden(),
       'core_id'           => new sfWidgetFormInputText(),
+      'core_parent_id'    => new sfWidgetFormInputText(),
       'root_id'           => new sfWidgetFormInputText(),
       'lft'               => new sfWidgetFormInputText(),
       'rgt'               => new sfWidgetFormInputText(),
@@ -24,6 +25,8 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
       'token'             => new sfWidgetFormInputText(),
       'name'              => new sfWidgetFormInputText(),
       'filter_group_id'   => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('FilterGroup'), 'add_empty' => true)),
+      'created_at'        => new sfWidgetFormDateTime(),
+      'updated_at'        => new sfWidgetFormDateTime(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
       'news_list'         => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
@@ -31,13 +34,16 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
     $this->setValidators(array(
       'id'                => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'core_id'           => new sfValidatorInteger(array('required' => false)),
-      'root_id'           => new sfValidatorInteger(),
+      'core_parent_id'    => new sfValidatorInteger(array('required' => false)),
+      'root_id'           => new sfValidatorInteger(array('required' => false)),
       'lft'               => new sfValidatorInteger(array('required' => false)),
       'rgt'               => new sfValidatorInteger(array('required' => false)),
       'level'             => new sfValidatorInteger(array('required' => false)),
       'token'             => new sfValidatorString(array('max_length' => 255)),
       'name'              => new sfValidatorString(array('max_length' => 255)),
       'filter_group_id'   => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('FilterGroup'), 'required' => false)),
+      'created_at'        => new sfValidatorDateTime(),
+      'updated_at'        => new sfValidatorDateTime(),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
       'news_list'         => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
     ));

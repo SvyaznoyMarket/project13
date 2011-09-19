@@ -97,5 +97,9 @@ abstract class BaseProductHelperAnswer extends myDoctrineRecord
         $this->hasMany('ProductHelperFilter as Filter', array(
              'local' => 'id',
              'foreign' => 'answer_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

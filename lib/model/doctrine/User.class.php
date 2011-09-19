@@ -16,14 +16,14 @@ class User extends BaseUser
   {
     $record = $event->getInvoker();
 
-    if (!$record->exists())
+    if (empty($password) && !$record->exists())
     {
       $password = '';
       for ($i = 0; ($i < 8); $i++)
       {
         $password .= sprintf("%x", mt_rand(0, 15));
       }
-      $this->setPassword($password);
+      //$this->setPassword($password);
 
       /*
       $this->dispatcher->notify(new myEvent($this, 'user.create', array(
@@ -81,7 +81,7 @@ class User extends BaseUser
 
   public function exportToCore()
   {
-    $data = array(
+    return array(
       'first_name'    => $this->first_name,
       'last_name'     => $this->last_name,
       'middle_name'   => $this->middle_name,
@@ -95,14 +95,6 @@ class User extends BaseUser
       'salt'          => $this->salt,
       'is_subscribe'  => '',
     );
-    foreach ($data as $key => $value)
-    {
-      if (empty($value))
-      {
-        unset($data[$key]);
-      }
-    }
-    return $data;
   }
 
 }

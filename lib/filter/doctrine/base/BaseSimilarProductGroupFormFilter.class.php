@@ -18,6 +18,8 @@ abstract class BaseSimilarProductGroupFormFilter extends BaseFormFilterDoctrine
       'products'        => new sfWidgetFormFilterInput(),
       'match'           => new sfWidgetFormFilterInput(),
       'price'           => new sfWidgetFormFilterInput(),
+      'created_at'      => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
+      'updated_at'      => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
     ));
 
     $this->setValidators(array(
@@ -26,6 +28,8 @@ abstract class BaseSimilarProductGroupFormFilter extends BaseFormFilterDoctrine
       'products'        => new sfValidatorPass(array('required' => false)),
       'match'           => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'price'           => new sfValidatorSchemaFilter('text', new sfValidatorNumber(array('required' => false))),
+      'created_at'      => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
+      'updated_at'      => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
     ));
 
     $this->widgetSchema->setNameFormat('similar_product_group_filters[%s]');
@@ -51,6 +55,8 @@ abstract class BaseSimilarProductGroupFormFilter extends BaseFormFilterDoctrine
       'products'        => 'Text',
       'match'           => 'Number',
       'price'           => 'Number',
+      'created_at'      => 'Date',
+      'updated_at'      => 'Date',
     );
   }
 }

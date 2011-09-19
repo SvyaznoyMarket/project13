@@ -112,5 +112,9 @@ abstract class BaseProductFilter extends myDoctrineRecord
         $this->hasMany('ProductHelperFilter', array(
              'local' => 'id',
              'foreign' => 'product_filter_id'));
+
+        $timestampable0 = new Doctrine_Template_Timestampable(array(
+             ));
+        $this->actAs($timestampable0);
     }
 }

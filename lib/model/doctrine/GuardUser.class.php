@@ -18,13 +18,13 @@ class GuardUser extends BaseGuardUser
     $_allPermissions = null;
 
   /**
-   * Returns the string representation of the object: "Full Name (username)"
+   * Returns the string representation of the object
    *
    * @return string
    */
   public function __toString()
   {
-    return (string) $this->getName().' ('.$this->getUsername().')';
+    return (string)$this->getName();
   }
 
   /**
@@ -51,7 +51,7 @@ class GuardUser extends BaseGuardUser
 
     if (!$salt = $this->getSalt())
     {
-      $salt = md5(rand(100000, 999999).$this->getUsername());
+      $salt = md5(rand(100000, 999999).$this->getEmail().$this->getPhonenumber());
       $this->setSalt($salt);
     }
     $modified = $this->getModified();
@@ -66,7 +66,7 @@ class GuardUser extends BaseGuardUser
     }
     $this->setAlgorithm($algorithmAsStr);
 
-    $this->_set('password', call_user_func_array($algorithm, array($salt.$password)));
+    $this->_set('password', call_user_func_array($algorithm, array($this->getSalt().$password)));
   }
 
   /**
@@ -77,14 +77,7 @@ class GuardUser extends BaseGuardUser
    */
   public function checkPassword($password)
   {
-    if ($callable = sfConfig::get('app_guard_check_password_callable'))
-    {
-      return call_user_func_array($callable, array($this->getUsername(), $password, $this));
-    }
-    else
-    {
-      return $this->checkPasswordByGuard($password);
-    }
+    return $this->checkPasswordByGuard($password);
   }
 
   /**

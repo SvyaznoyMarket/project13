@@ -27,6 +27,8 @@ abstract class BasePageForm extends BaseFormDoctrine
       'keywords'    => new sfWidgetFormTextarea(),
       'description' => new sfWidgetFormTextarea(),
       'content'     => new sfWidgetFormTextarea(),
+      'created_at'  => new sfWidgetFormDateTime(),
+      'updated_at'  => new sfWidgetFormDateTime(),
     ));
 
     $this->setValidators(array(
@@ -42,6 +44,8 @@ abstract class BasePageForm extends BaseFormDoctrine
       'keywords'    => new sfValidatorString(array('max_length' => 500, 'required' => false)),
       'description' => new sfValidatorString(array('max_length' => 500, 'required' => false)),
       'content'     => new sfValidatorString(array('required' => false)),
+      'created_at'  => new sfValidatorDateTime(),
+      'updated_at'  => new sfValidatorDateTime(),
     ));
 
     $this->validatorSchema->setPostValidator(
