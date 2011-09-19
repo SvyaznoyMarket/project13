@@ -16,6 +16,7 @@ abstract class BaseUserTagForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'       => new sfWidgetFormInputHidden(),
+      'core_id'  => new sfWidgetFormInputText(),
       'name'     => new sfWidgetFormInputText(),
       'user_id'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => false)),
       'position' => new sfWidgetFormInputText(),
@@ -23,6 +24,7 @@ abstract class BaseUserTagForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'       => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'  => new sfValidatorInteger(array('required' => false)),
       'name'     => new sfValidatorString(array('max_length' => 255)),
       'user_id'  => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'))),
       'position' => new sfValidatorInteger(array('required' => false)),

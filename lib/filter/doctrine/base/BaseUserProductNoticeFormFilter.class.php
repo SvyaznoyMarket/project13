@@ -13,10 +13,12 @@ abstract class BaseUserProductNoticeFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'core_id'    => new sfWidgetFormFilterInput(),
       'user_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
     ));
 
     $this->setValidators(array(
+      'core_id'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'user_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
     ));
 
@@ -37,6 +39,7 @@ abstract class BaseUserProductNoticeFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
+      'core_id'    => 'Number',
       'type'       => 'Enum',
       'email'      => 'Text',
       'product_id' => 'Number',

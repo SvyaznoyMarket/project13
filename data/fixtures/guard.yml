@@ -8,6 +8,7 @@ GuardUser:
     is_super_admin: true
     Group:          [ GuardGroup_admin ]
   GuardUser_client:
+    core_id:        2
     type:           client
     first_name:     'Клиент'
     last_name:      'Клиентов'

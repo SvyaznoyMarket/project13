@@ -12,9 +12,31 @@
  */
 class UserAddress extends BaseUserAddress
 {
+
+  public function preSave($event)
+  {
+    if (!$this->exists())
+    {
+      if ($response = Core::getInstance()->createUserAddress($this))
+      {
+        $this->core_id = $response;
+      }
+    }
+    else
+    {
+      $response = Core::getInstance()->updateUserAddress($this);
+    }
+    if (!$response)
+    {
+      throw new Exception("Unable to save to Core: " . current(Core::getInstance()->getError()));
+    }
+  }
+
   public function exportToCore()
   {
     $data = parent::exportToCore();
+
+    $data['user_id'] = $this->User->core_id;
 
     return $data;
   }

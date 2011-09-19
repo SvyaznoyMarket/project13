@@ -175,6 +175,20 @@ class Core
     return $result;
   }
 
+  public function createProductComment(ProductComment $comment)
+  {
+    $result = false;
+
+    $data = $this->getData($comment);
+
+    if ($response = $this->query('product.opinion.create', $data))
+    {
+      $result = $response['id'];
+    }
+
+    return $result;
+  }
+
   public function getData($record)
   {
     return $record->exportToCore();
@@ -191,8 +205,9 @@ class Core
       unset($data_to_send['data']['id']);
     }
     $data = json_encode($data_to_send, JSON_FORCE_OBJECT);
-    
+
     $response = $this->send($data);
+//myDebug::dump($response);
     $response = json_decode($response, true);
 
     if (isset($response['code']))

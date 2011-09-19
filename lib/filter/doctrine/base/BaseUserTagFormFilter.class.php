@@ -13,12 +13,14 @@ abstract class BaseUserTagFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'core_id'  => new sfWidgetFormFilterInput(),
       'name'     => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'user_id'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
       'position' => new sfWidgetFormFilterInput(array('with_empty' => false)),
     ));
 
     $this->setValidators(array(
+      'core_id'  => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'name'     => new sfValidatorPass(array('required' => false)),
       'user_id'  => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
       'position' => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -42,6 +44,7 @@ abstract class BaseUserTagFormFilter extends BaseFormFilterDoctrine
   {
     return array(
       'id'       => 'Number',
+      'core_id'  => 'Number',
       'name'     => 'Text',
       'user_id'  => 'ForeignKey',
       'position' => 'Number',
