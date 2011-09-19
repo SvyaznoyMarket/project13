@@ -1,182 +1,103 @@
 GuardGroup:
-  actAs: [Timestampable]
+  options:
+    comment: 'Группа'
+  actAs: [ Timestampable ]
   columns:
-    name:
-      type: string(255)
-      unique: true
-    description: string(1000)
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), unique: true }
+    description:       { type: string(1000) }
   relations:
-    User:
-      class: GuardUser
-      refClass: GuardUserGroup
-      local: group_id
-      foreign: user_id
-      foreignAlias: Group
-    Permission:
-      class: GuardPermission
-      local: group_id
-      foreign: permission_id
-      refClass: GuardGroupPermission
-      foreignAlias: Group
+    User:              { class: GuardUser, foreignAlias: Group, refClass: GuardUserGroup, local: group_id, foreign: user_id }
+    Permission:        { class: GuardPermission, foreignAlias: Group, refClass: GuardGroupPermission, local: group_id, foreign: permission_id }
 
 GuardPermission:
-  actAs: [Timestampable]
+  options:
+    comment: 'Право'
+  actAs: [ Timestampable ]
   columns:
-    name:
-      type: string(255)
-      unique: true
-    description: string(1000)
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), unique: true }
+    description:       { type: string(1000) }
 
 GuardGroupPermission:
   options:
-    symfony:
-      form:   false
-      filter: false
-  actAs: [Timestampable]
+    comment: 'Связь группы и права'
+    symfony: { form: false, filter: false }
+  actAs: [ Timestampable ]
   columns:
-    group_id:
-      type: integer
-      primary: true
-    permission_id:
-      type: integer
-      primary: true
+    group_id:          { type: integer(20), primary: true }
+    permission_id:     { type: integer(20), primary: true }
   relations:
-    Group:
-      class: GuardGroup
-      local: group_id
-      onDelete: CASCADE
-    Permission:
-      class: GuardPermission
-      local: permission_id
-      onDelete: CASCADE
+    Group:             { class: GuardGroup, local: group_id, onDelete: CASCADE }
+    Permission:        { class: GuardPermission, local: permission_id, onDelete: CASCADE }
 
 GuardUser:
-  actAs: [Timestampable]
+  options:
+    comment: 'Пользователь'
+  actAs: [ Timestampable ]
   columns:
-    first_name: string(255)
-    last_name: string(255)
-    email:
-      type: string(128)
-      notnull: true
-      unique: true
-    username:
-      type: string(128)
-      notnull: true
-      unique: true
-    algorithm:
-      type: string(128)
-      default: sha1
-      notnull: true
-    salt: string(128)
-    password: string(128)
-    is_active:
-      type: boolean
-      default: 1
-    is_super_admin:
-      type: boolean
-      default: false
-    last_login:
-      type: timestamp
+    first_name:        { type: string(255) }
+    last_name:         { type: string(255) }
+    email:             { type: string(128), notnull: false, default: null }
+    phonenumber:       { type: string(128), notnull: false, default: null }
+    nickname:          { type: string(128), notnull: false, default: null }
+    algorithm:         { type: string(128), notnull: true, default: sha1 }
+    salt:              { type: string(128) }
+    password:          { type: string(128) }
+    is_active:         { type: boolean, notnull: true, default: false }
+    is_super_admin:    { type: boolean, notnull: true, default: false }
+    last_login:        { type: timestamp }
   indexes:
     is_active_idx:
-      fields: [is_active]
+      fields: [ is_active ]
   relations:
-    Group:
-      class: GuardGroup
-      local: user_id
-      foreign: group_id
-      refClass: GuardUserGroup
-      foreignAlias: User
-    Permission:
-      class: GuardPermission
-      local: user_id
-      foreign: permission_id
-      refClass: GuardUserPermission
-      foreignAlias: User
+    Group:             { class: GuardGroup, foreignAlias: User, refClass: GuardUserGroup, local: user_id, foreign: group_id }
+    Permission:        { class: GuardPermission, foreignAlias: User, refClass: GuardUserPermission, local: user_id, foreign: permission_id }
 
 GuardUserPermission:
   options:
-    symfony:
-      form:   false
-      filter: false
-  actAs: [Timestampable]
+    comment: 'Связь пользователя и права'
+    symfony: { form: false, filter: false }
+  actAs: [ Timestampable ]
   columns:
-    user_id:
-      type: integer
-      primary: true
-    permission_id:
-      type: integer
-      primary: true
+    user_id:           { type: integer(20), primary: true }
+    permission_id:     { type: integer(20), primary: true }
   relations:
-    User:
-      class: GuardUser
-      local: user_id
-      onDelete: CASCADE
-    Permission:
-      class: GuardPermission
-      local: permission_id
-      onDelete: CASCADE
+    User:              { class: GuardUser, local: user_id, onDelete: CASCADE }
+    Permission:        { class: GuardPermission, local: permission_id, onDelete: CASCADE }
 
 GuardUserGroup:
   options:
-    symfony:
-      form:   false
-      filter: false
-  actAs: [Timestampable]
+    comment: 'Связь пользователя и группы'
+    symfony: { form: false, filter: false }
+  actAs: [ Timestampable ]
   columns:
-    user_id:
-      type: integer
-      primary: true
-    group_id:
-      type: integer
-      primary: true
+    user_id:            { type: integer(20), primary: true }
+    group_id:           { type: integer(20), primary: true }
   relations:
-    User:
-      class: GuardUser
-      local: user_id
-      onDelete: CASCADE
-    Group:
-      class: GuardGroup
-      local: group_id
-      onDelete: CASCADE
+    User:               { class: GuardUser, local: user_id, onDelete: CASCADE }
+    Group:              { class: GuardGroup, local: group_id, onDelete: CASCADE }
 
 GuardRememberKey:
   options:
-    symfony:
-      form:   false
-      filter: false
-  actAs: [Timestampable]
+    comment: 'Ключ пользователя'
+    symfony: { form: false, filter: false }
+  actAs: [ Timestampable ]
   columns:
-    user_id: integer
-    remember_key: string(32)
-    ip_address: string(50)
+    user_id:            { type: integer(20), notnull: true }
+    remember_key:       { type: string(32) }
+    ip_address:         { type: string(50) }
   relations:
-    User:
-      class: GuardUser
-      local: user_id
-      foreignAlias: RememberKeys
-      foreignType: one
-      onDelete: CASCADE
+    User:               { class: GuardUser, foreignAlias: RememberKeys, local: user_id, foreignType: one, onDelete: CASCADE }
 
 GuardForgotPassword:
   options:
-    symfony:
-      form:   false
-      filter: false
-  actAs: [Timestampable]
+    comment: 'Ключ напоминания пароля'
+    symfony: { form: false, filter: false }
+  actAs: [ Timestampable ]
   columns:
-    user_id:
-      type: integer
-      notnull: true
-    unique_key: string(255)
-    expires_at:
-      type: timestamp
-      notnull: true
+    user_id:            { type: integer(20), notnull: true }
+    unique_key:         { type: string(255) }
+    expires_at:         { type: timestamp, notnull: true }
   relations:
-    User:
-      class: GuardUser
-      local: user_id
-      type: one
-      foreignType: one
-      foreignAlias: ForgotPassword
-      onDelete: CASCADE
+    User:               { class: GuardUser, foreignAlias: ForgotPassword, local: user_id, type: one, foreignType: one, onDelete: CASCADE }

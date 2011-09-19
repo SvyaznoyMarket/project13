@@ -64,7 +64,7 @@ class ProductCategoryTable extends myDoctrineTable
       return $record;
     }
 
-    if ($params['with_filters'])
+    if ($params['with_filters'] && $record['filter_group_id'])
     {
       $record['FilterGroup'] = ProductFilterGroupTable::getInstance()->getById($record['filter_group_id']);
     }

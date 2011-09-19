@@ -37,10 +37,11 @@ ProductCategory:
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
-    root_id:           { type: integer(20), notnull: true }
-    lft:               { type: integer(20), notnull: true }
-    rgt:               { type: integer(20), notnull: true }
-    level:             { type: integer(4), notnull: true }
+    core_parent_id:    { type: integer(20), notnull: false, default: null, comment: 'ид родителя записи в Core' }
+    root_id:           { type: integer(20), notnull: false, default: null }
+    lft:               { type: integer(20), notnull: false, default: null }
+    rgt:               { type: integer(20), notnull: false, default: null }
+    level:             { type: integer(4), notnull: false, default: null }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     filter_group_id:   { type: integer(20), notnull: false, default: null }

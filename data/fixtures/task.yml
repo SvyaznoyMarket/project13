@@ -4,7 +4,7 @@ Task:
     type: 'project.init'
     status: run
     content: |
-      packet_id: 6702
+      packet_id: 9764
       sync_id: 617
       status: run
 

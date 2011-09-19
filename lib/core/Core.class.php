@@ -90,72 +90,22 @@ class Core
     return $result;
   }
 
-  public function createUser(User $user)
-  {
-    $result = false;
-
-    $data = $this->getData($user);
-
-    if ($response = $this->query('user.create', $data))
-    {
-      $result = $response['id'];
-    }
-
-    return $result;
-  }
-
-  public function createUserTag(UserTag $tag)
-  {
-    $result = false;
-
-    $data = $this->getData($tag);
-
-    if ($response = $this->query('userTag.create', $data))
-    {
-      $result = $response['id'];
-    }
-
-    return $result;
-  }
-
-  public function createUserAddress(UserAddress $address)
-  {
-    $result = false;
-
-    $data = $this->getData($address);
-
-    if ($response = $this->query('userAddress.create', $data))
-    {
-      $result = $response['id'];
-    }
-
-    return $result;
-  }
-
-  public function createUserProductNotice(UserProductNotice $notice)
-  {
-    $result = false;
-
-    $data = $this->getData($notice);
-
-    if ($response = $this->query('userProductNotice.create', $data))
-    {
-      $result = $response['id'];
-    }
-
-    return $result;
-  }
-
   public function getData($record)
   {
     return $record->exportToCore();
   }
 
-  public function query($name, $data = array())
+  public function query($name, array $params = array(), array $data = array())
   {
     $action = '/'.str_replace('.', '/', $name).'/';
 
-    $data = json_encode(array('action' => $action, 'param' => array('client_id' => $this->getConfig('client_id'), 'token_id' => '', ), 'data' => $data, ), JSON_FORCE_OBJECT);
+    $data = json_encode(array(
+      'action' => $action,
+      'param'  => array_merge(array(
+        'client_id' => $this->getConfig('client_id'),
+        'token_id'  => '',
+      ), $params),
+      'data'   => $data), JSON_FORCE_OBJECT);
 
     $response = $this->send($data);
     $response = json_decode($response, true);

@@ -29,15 +29,18 @@ abstract class BaseGuardUserGroup extends myDoctrineRecord
     public function setTableDefinition()
     {
         $this->setTableName('guard_user_group');
-        $this->hasColumn('user_id', 'integer', null, array(
+        $this->hasColumn('user_id', 'integer', 20, array(
              'type' => 'integer',
              'primary' => true,
+             'length' => 20,
              ));
-        $this->hasColumn('group_id', 'integer', null, array(
+        $this->hasColumn('group_id', 'integer', 20, array(
              'type' => 'integer',
              'primary' => true,
+             'length' => 20,
              ));
 
+        $this->option('comment', 'Связь пользователя и группы');
         $this->option('symfony', array(
              'form' => false,
              'filter' => false,

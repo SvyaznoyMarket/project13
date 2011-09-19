@@ -14,7 +14,8 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'core_id'           => new sfWidgetFormFilterInput(),
-      'root_id'           => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'core_parent_id'    => new sfWidgetFormFilterInput(),
+      'root_id'           => new sfWidgetFormFilterInput(),
       'lft'               => new sfWidgetFormFilterInput(),
       'rgt'               => new sfWidgetFormFilterInput(),
       'level'             => new sfWidgetFormFilterInput(),
@@ -27,6 +28,7 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
 
     $this->setValidators(array(
       'core_id'           => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'core_parent_id'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'root_id'           => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'lft'               => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'rgt'               => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -93,6 +95,7 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'                => 'Number',
       'core_id'           => 'Number',
+      'core_parent_id'    => 'Number',
       'root_id'           => 'Number',
       'lft'               => 'Number',
       'rgt'               => 'Number',

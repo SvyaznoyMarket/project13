@@ -191,6 +191,11 @@ user_changePassword:
   url:   /private/password
   param: { module: guard, action: changePassword }
 #
+# user register
+user_register:
+  url:   /register
+  param: { module: guard, action: register }
+#
 # user quick register
 user_quickRegister:
   url:   /quick-register

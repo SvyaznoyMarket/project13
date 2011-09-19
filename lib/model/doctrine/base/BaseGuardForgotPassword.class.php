@@ -29,9 +29,10 @@ abstract class BaseGuardForgotPassword extends myDoctrineRecord
     public function setTableDefinition()
     {
         $this->setTableName('guard_forgot_password');
-        $this->hasColumn('user_id', 'integer', null, array(
+        $this->hasColumn('user_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
+             'length' => 20,
              ));
         $this->hasColumn('unique_key', 'string', 255, array(
              'type' => 'string',
@@ -42,6 +43,7 @@ abstract class BaseGuardForgotPassword extends myDoctrineRecord
              'notnull' => true,
              ));
 
+        $this->option('comment', 'Ключ напоминания пароля');
         $this->option('symfony', array(
              'form' => false,
              'filter' => false,

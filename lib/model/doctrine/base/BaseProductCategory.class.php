@@ -7,6 +7,7 @@
  * 
  * @property integer $id
  * @property integer $core_id
+ * @property integer $core_parent_id
  * @property integer $root_id
  * @property integer $lft
  * @property integer $rgt
@@ -24,6 +25,7 @@
  * 
  * @method integer             getId()                  Returns the current record's "id" value
  * @method integer             getCoreId()              Returns the current record's "core_id" value
+ * @method integer             getCoreParentId()        Returns the current record's "core_parent_id" value
  * @method integer             getRootId()              Returns the current record's "root_id" value
  * @method integer             getLft()                 Returns the current record's "lft" value
  * @method integer             getRgt()                 Returns the current record's "rgt" value
@@ -40,6 +42,7 @@
  * @method Doctrine_Collection getTagRelation()         Returns the current record's "TagRelation" collection
  * @method ProductCategory     setId()                  Sets the current record's "id" value
  * @method ProductCategory     setCoreId()              Sets the current record's "core_id" value
+ * @method ProductCategory     setCoreParentId()        Sets the current record's "core_parent_id" value
  * @method ProductCategory     setRootId()              Sets the current record's "root_id" value
  * @method ProductCategory     setLft()                 Sets the current record's "lft" value
  * @method ProductCategory     setRgt()                 Sets the current record's "rgt" value
@@ -77,24 +80,30 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'comment' => 'ид записи в Core',
              'length' => 20,
              ));
+        $this->hasColumn('core_parent_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'comment' => 'ид родителя записи в Core',
+             'length' => 20,
+             ));
         $this->hasColumn('root_id', 'integer', 20, array(
              'type' => 'integer',
-             'notnull' => true,
+             'notnull' => false,
              'length' => 20,
              ));
         $this->hasColumn('lft', 'integer', 20, array(
              'type' => 'integer',
-             'notnull' => true,
+             'notnull' => false,
              'length' => 20,
              ));
         $this->hasColumn('rgt', 'integer', 20, array(
              'type' => 'integer',
-             'notnull' => true,
+             'notnull' => false,
              'length' => 20,
              ));
         $this->hasColumn('level', 'integer', 4, array(
              'type' => 'integer',
-             'notnull' => true,
+             'notnull' => false,
              'length' => 4,
              ));
         $this->hasColumn('token', 'string', 255, array(

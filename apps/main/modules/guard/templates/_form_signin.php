@@ -9,6 +9,8 @@
     <?php echo $form ?>
   </ul>
 
+  <p><?php echo link_to('Новый пользователь?', 'user_register') ?></p>
+
   <p>Пользователь: <strong>client</strong><br />Пароль: <strong>client</strong></p>
 
   <input type="submit" value="Вход" />

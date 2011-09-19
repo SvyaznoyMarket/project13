@@ -112,4 +112,19 @@ class UserProfile extends BaseUserProfile
 
     return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
   }
+
+  public function getNickname()
+  {
+    $content = sfYaml::load($this->content);
+
+    $value = array(
+      'vkontakte'     => false,
+      'facebook'      => false,
+      'twitter'       => false,
+      'odnoklassniki' => false,
+      'mailru'        => false,
+    );
+
+    return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
+  }
 }

@@ -48,46 +48,37 @@ EOF;
 
     //myDebug::dump($options);
     $response = $core->query('load.get', array(
-      'id' => $options['packet_id']
+      'id' => $options['packet_id'],
     ));
 
     foreach ($response as $item)
     {
-      $i = 0;
       foreach ($item['data'] as $entity)
       {
         if ($table = $core->getTable($entity['type']))
         {
-          if (0 == $i)
-          {
-            $method = 'prepare'.$table->getComponentName().'Table';
-            if (method_exists($this, $method))
-            {
-              call_user_func_array(array($this, $method), array());
-            }
-            else {
-              $this->connection->exec('TRUNCATE TABLE '.$table->getTableName());
-            }
-          }
-          $i++;
-
           $this->log($table->getComponentName().' -> '.$entity['type'].' #'.$entity['id']);
 
-          $method = 'create'.$table->getComponentName().'Record';
-          $record =
-            method_exists($this, $method)
-            ? call_user_func_array(array($this, $method), array($entity['data']))
-            : $table->createRecordFromCore($entity['data'])
-          ;
-          $this->pushRecord($record);
+          try {
+            $method = 'create'.$table->getComponentName().'Record';
+            $record =
+              method_exists($this, $method)
+              ? call_user_func_array(array($this, $method), array($entity['data']))
+              : $table->createRecordFromCore($entity['data'])
+            ;
+            $this->pushRecord($record);
+          }
+          catch (Exception $e) {
+            $this->logSection('Import entity', $entity['type'].' #'.$entity['id'], null, 'ERROR');
+          }
         }
         else {
           $this->logSection('Unknown entity', $entity['type'].' #'.$entity['id'], null, 'ERROR');
         }
       }
-
-      $this->flushCollections();
     }
+
+    $this->flushCollections();
 
     $this->connection->exec('SET foreign_key_checks = 1');
 
@@ -116,13 +107,24 @@ EOF;
    */
   protected function flushCollections()
   {
+    $this->logSection('collection', 'flush...');
     foreach ($this->collections as $name => $collection)
     {
-      $this->logSection($name, 'flush...');
+      $this->logSection($name, 'prepare...');
+      $method = 'prepare'.$name.'Table';
+      if (method_exists($this, $method))
+      {
+        call_user_func_array(array($this, $method), array());
+      }
+      else {
+        $this->connection->exec('TRUNCATE TABLE '.Doctrine_Core::getTable($name)->getTableName());
+      }
 
+      $this->logSection($name, 'flush...');
       $method = 'flush'.$name.'Collection';
       if (method_exists($this, $method))
       {
+        //if ('ProductCategory' == $name)          myDebug::dump($collection, 1);
         call_user_func_array(array($this, $method), array($collection));
       }
       else {
@@ -136,60 +138,6 @@ EOF;
       unset($this->collections[$name]);
     }
   }
-
-  /**
-   * Формирует дерево
-   *
-   * @param myDoctrineTable $table
-   * @param integer $maxLevel
-   */
-  protected function makeTree(myDoctrineTable $table, myDoctrineCollection $collection, $maxLevel = 5)
-  {
-    //$hasManyRoots = $table->getTemplate('NestedSet')->getOption('hasManyRoots');
-
-    // создает двухуровневое дерево
-    $root = $table->getTree()->fetchRoot();
-    if ($root)
-    {
-      foreach ($collection as $record)
-      {
-        $record->getNode()->insertAsLastChildof($root);
-      }
-    }
-    else {
-      foreach ($collection as $record)
-      {
-        if (!$record->parent_core_id) continue;
-
-        $table->getTree()->createRoot($record);
-      }
-    }
-
-    // формирует уровни дерева
-    for ($level = 1; $level <= $maxLevel; $level++)
-    {
-      foreach ($collection as $record)
-      {
-        $record->refresh();
-        $node = $record->getNode();
-        if ($node->isRoot()) continue;
-
-        if ($level == $record->level)
-        {
-          $parent = $record->parent_core_id ? $table->findOneByCoreId($record->parent_core_id) : false;
-          if ($parent && $node->getParent())
-          {
-            if ($parent->id != $node->getParent()->id)
-            {
-              //myDebug::dump($parent->id.' -> '.$record->id);
-              $node->moveAsLastChildOf($parent);
-            }
-          }
-        }
-      }
-    }
-  }
-
 
 
   // Region
@@ -218,7 +166,7 @@ EOF;
   {
     $record = RegionTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
-    $record->mapValue('parent_core_id', $data['parent_id']);
+    $record->mapValue('core_parent_id', $data['parent_id']);
 
     return $record;
   }
@@ -229,7 +177,36 @@ EOF;
 
     $collection->save();
 
-    $this->makeTree($table, $collection);
+    // создает двухуровневое дерево
+    $root = $table->getTree()->fetchRoot();
+    foreach ($collection as $record)
+    {
+      $record->getNode()->insertAsLastChildOf($root);
+    }
+
+    // формирует уровни дерева
+    for ($level = 1; $level <= 5; $level++)
+    {
+      foreach ($collection as $record)
+      {
+        $record->refresh();
+        $node = $record->getNode();
+        if ($node->isRoot()) continue;
+
+        if ($level == $record->level)
+        {
+          $parent = $record->core_parent_id ? $table->findOneByCoreId($record->core_parent_id) : false;
+          if ($parent && $node->getParent())
+          {
+            if ($parent->id != $node->getParent()->id)
+            {
+              //myDebug::dump($parent->id.' -> '.$record->id);
+              $node->moveAsLastChildOf($parent);
+            }
+          }
+        }
+      }
+    }
 
     // угадывает тип региона
     foreach ($table->getTree()->fetchTree() as $record)
@@ -267,7 +244,7 @@ EOF;
   protected function createProductCategoryRecord(array $data)
   {
     $record = ProductCategoryTable::getInstance()->createRecordFromCore($data);
-    $record->mapValue('parent_core_id', $data['parent_id']);
+    $record->mapValue('core_parent_id', $data['parent_id']);
     $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
     return $record;
@@ -277,8 +254,53 @@ EOF;
   {
     $table = ProductCategoryTable::getInstance();
 
-    $collection->save();
+    $tree = $table->getTree();
 
-    $this->makeTree($table, $collection);
+    // создает двухуровневое дерево
+    foreach ($collection as $record)
+    {
+      if (empty($record->core_parent_id))
+      {
+        $record->save();
+        $tree->createRoot($record);
+      }
+    }
+
+    foreach ($collection as $record)
+    {
+      if ($record->getNode()->isRoot()) continue;
+      $record->refresh();
+      $record->save();
+
+      foreach ($tree->fetchRoots() as $root)
+      {
+        if ($record->core_parent_id == $root->core_id)
+        {
+          $record->save();
+          $record->getNode()->insertAsLastChildOf($root);
+        }
+      }
+    }
+
+    // формирует уровни дерева
+    for ($level = 0; $level <= 6; $level++)
+    {
+      foreach ($collection as $record)
+      {
+        $record->refresh();
+        if (!is_null($level) && ($level == intval($record->level)))
+        {
+          // ищет прямых потомков
+          foreach ($collection as $child)
+          {
+            if ($child->core_parent_id == $record->core_id)
+            {
+              $child->save();
+              $child->getNode()->moveAsLastChildOf($record);
+            }
+          }
+        }
+      }
+    }
   }
 }
