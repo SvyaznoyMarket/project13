@@ -31,13 +31,9 @@ class userAddressActions extends myActions
       try
       {
         $this->form->getObject()->user_id = $this->getUser()->getGuardUser()->id;
-        $address = $this->form->getObject();
-        $response = Core::getInstance()->createUserAddress($address);
-        if ($response)
-        {
-          $this->form->save();
-        }
 
+        $this->form->save();
+        
         $this->redirect('userAddress');
       }
       catch (Exception $e)
@@ -64,7 +60,17 @@ class userAddressActions extends myActions
     {
       try
       {
-        $this->form->save();
+        $address = $this->form->updateObject();
+
+        $response = Core::getInstance()->updateUserAddress($address);
+        if ($response)
+        {
+          $this->form->save();
+        }
+        else
+        {
+          myDebug::dump(Core::getInstance()->getError(), 1);
+        }
 
         $this->redirect('userAddress');
       }
@@ -92,7 +98,16 @@ class userAddressActions extends myActions
   public function executeDelete(sfWebRequest $request)
   {
     $userAddress = $this->getRoute()->getObject();
-    $userAddress->delete();
+
+    $response = Core::getInstance()->deleteUserAddress($userAddress->core_id);
+    if ($response)
+    {
+      $userAddress->delete();
+    }
+    else
+    {
+      myDebug::dump(Core::getInstance()->getError(), 1);
+    }
 
     $this->redirect('userAddress');
   }

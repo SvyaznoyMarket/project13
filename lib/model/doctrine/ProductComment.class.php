@@ -12,4 +12,30 @@
  */
 class ProductComment extends BaseProductComment
 {
+  public function preSave($event)
+  {
+    $response = Core::getInstance()->createProductComment($this);
+    if ($response)
+    {
+      $this->core_id = $response;
+    }
+    else
+    {
+      throw new Exception("Unable to save to Core: " . current(Core::getInstance()->getError()));
+    }
+
+  }
+
+  public function exportToCore()
+  {
+    $data = parent::exportToCore();
+
+    $data['user_id'] = $this->User->core_id;
+    $data['product_id'] = $this->Product->core_id;
+
+    $parent = $this->getNode()->getParent();
+    $data['parent_id'] = $parent ? $parent->core_id : 0;
+
+    return $data;
+  }
 }
