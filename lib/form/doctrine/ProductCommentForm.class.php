@@ -42,6 +42,13 @@ class ProductCommentForm extends BaseProductCommentForm
 
   protected function doSave($con = null)
   {
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $this->updateObject();
+
     $product = $this->getOption('product');
     if (!$product)
     {
@@ -53,15 +60,14 @@ class ProductCommentForm extends BaseProductCommentForm
       throw new InvalidArgumentException('You must provide a user object.');
     }
 
-    $this->object->product_id = $product->id;
-    $this->object->user_id = $user->id;
-
-    parent::doSave($con);
+    $this->getObject()->product_id = $product->id;
+    $this->getObject()->user_id = $user->id;
 
     $parent = $this->getOption('parent') ? $this->getOption('parent') : ProductCommentTable::getInstance()->getRoot($this->getOption('product')->id);
-    if ($parent)
-    {
-      $this->object->getNode()->insertAsLastChildOf($parent);
-    }
+    $this->getObject()->getNode()->insertAsLastChildOf($parent);
+
+    // embedded forms
+    $this->saveEmbeddedForms($con);
+
   }
 }

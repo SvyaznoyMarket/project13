@@ -67,6 +67,7 @@ class productCommentActions extends myActions
     $this->form = new ProductCommentForm(array(), array('product' => $this->product, 'user' => $this->getUser()->getGuardUser(), 'parent' => $this->parent));
 
     $this->form->bind($request->getParameter($this->form->getName()));
+    $this->form->updateObject();
     if ($this->form->isValid())
     {
       try
@@ -126,8 +127,8 @@ class productCommentActions extends myActions
     $comments = explode('.', $this->getRequest()->getCookie($cookieName));
 
     if (true
-      &&($productComment->user_id != $this->getUser()->getGuardUser()->id)
-      && !in_array($productComment->id, $comments)
+//      &&($productComment->user_id != $this->getUser()->getGuardUser()->id)
+//      && !in_array($productComment->id, $comments)
     ) {
       if (in_array($request['helpful'], array('yes', 'true', 'on')))
       {
