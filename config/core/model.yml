@@ -1,11 +1,12 @@
 Creator:
+  - brand
   - Brands
 Order:
   - order
 Product:
   - product
 ProductCategory:
-  - category
+  - product_category
   - ItemHierarchy
 ProductpropertyGroup:
   - ProductPropertyGroups
@@ -17,6 +18,8 @@ Shop:
 Shop:
   - Stores
 Tag:
+  - tag
   - Tags
 TagGroup:
+  - tag_group
   - GroupsTags

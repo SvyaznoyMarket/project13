@@ -9,6 +9,7 @@
  * @property integer $core_id
  * @property string $token
  * @property string $name
+ * @property string $description
  * @property Doctrine_Collection $News
  * @property Doctrine_Collection $NewsRelation
  * @property Doctrine_Collection $Product
@@ -17,6 +18,7 @@
  * @method integer             getCoreId()       Returns the current record's "core_id" value
  * @method string              getToken()        Returns the current record's "token" value
  * @method string              getName()         Returns the current record's "name" value
+ * @method string              getDescription()  Returns the current record's "description" value
  * @method Doctrine_Collection getNews()         Returns the current record's "News" collection
  * @method Doctrine_Collection getNewsRelation() Returns the current record's "NewsRelation" collection
  * @method Doctrine_Collection getProduct()      Returns the current record's "Product" collection
@@ -24,6 +26,7 @@
  * @method Creator             setCoreId()       Sets the current record's "core_id" value
  * @method Creator             setToken()        Sets the current record's "token" value
  * @method Creator             setName()         Sets the current record's "name" value
+ * @method Creator             setDescription()  Sets the current record's "description" value
  * @method Creator             setNews()         Sets the current record's "News" collection
  * @method Creator             setNewsRelation() Sets the current record's "NewsRelation" collection
  * @method Creator             setProduct()      Sets the current record's "Product" collection
@@ -62,6 +65,10 @@ abstract class BaseCreator extends myDoctrineRecord
              'notnull' => true,
              'notblank' => true,
              'length' => 255,
+             ));
+        $this->hasColumn('description', 'string', null, array(
+             'type' => 'string',
+             'notnull' => false,
              ));
 
         $this->option('comment', 'Производитель');

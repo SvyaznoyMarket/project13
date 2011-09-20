@@ -21,7 +21,18 @@ Tag:
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
   relations:
-    Group:             { class: TagGroup, foreignAlias: Tag, local: group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    Group:             { class: TagGroup, foreignAlias: Tag, refClass: TagGroupRelation, local: tag_id, foreign: group_id, type: many, foreignType: many }
+
+TagGroupRelation:
+  options:
+    comment: 'Связь тега и группы тегов'
+  actAs: [ Timestampable ]
+  columns:
+    tag_id:            { type: integer(20), primary: true, notnull: true }
+    group_id:          { type: integer(20), primary: true, notnull: true }
+  relations:
+    Tag:               { class: Tag, foreignAlias: GroupRelation, local: tag_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Group:             { class: TagGroup, foreignAlias: TagRelation, local: group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
 TagProductRelation:
   options:

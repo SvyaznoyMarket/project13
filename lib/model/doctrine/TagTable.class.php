@@ -23,6 +23,7 @@ class TagTable extends myDoctrineTable
     return array(
       'id'       => 'core_id',
       'name'     => 'name',
+      'added'    => 'created_at',
     );
   }
 }

@@ -10,7 +10,8 @@
  * @property integer $group_id
  * @property string $token
  * @property string $name
- * @property TagGroup $Group
+ * @property Doctrine_Collection $Group
+ * @property Doctrine_Collection $GroupRelation
  * @property Doctrine_Collection $ProductRelation
  * @property Doctrine_Collection $ProductCategoryRelation
  * 
@@ -19,7 +20,8 @@
  * @method integer             getGroupId()                 Returns the current record's "group_id" value
  * @method string              getToken()                   Returns the current record's "token" value
  * @method string              getName()                    Returns the current record's "name" value
- * @method TagGroup            getGroup()                   Returns the current record's "Group" value
+ * @method Doctrine_Collection getGroup()                   Returns the current record's "Group" collection
+ * @method Doctrine_Collection getGroupRelation()           Returns the current record's "GroupRelation" collection
  * @method Doctrine_Collection getProductRelation()         Returns the current record's "ProductRelation" collection
  * @method Doctrine_Collection getProductCategoryRelation() Returns the current record's "ProductCategoryRelation" collection
  * @method Tag                 setId()                      Sets the current record's "id" value
@@ -27,7 +29,8 @@
  * @method Tag                 setGroupId()                 Sets the current record's "group_id" value
  * @method Tag                 setToken()                   Sets the current record's "token" value
  * @method Tag                 setName()                    Sets the current record's "name" value
- * @method Tag                 setGroup()                   Sets the current record's "Group" value
+ * @method Tag                 setGroup()                   Sets the current record's "Group" collection
+ * @method Tag                 setGroupRelation()           Sets the current record's "GroupRelation" collection
  * @method Tag                 setProductRelation()         Sets the current record's "ProductRelation" collection
  * @method Tag                 setProductCategoryRelation() Sets the current record's "ProductCategoryRelation" collection
  * 
@@ -78,10 +81,14 @@ abstract class BaseTag extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
-        $this->hasOne('TagGroup as Group', array(
-             'local' => 'group_id',
-             'foreign' => 'id',
-             'onDelete' => 'SET NULL'));
+        $this->hasMany('TagGroup as Group', array(
+             'refClass' => 'TagGroupRelation',
+             'local' => 'tag_id',
+             'foreign' => 'group_id'));
+
+        $this->hasMany('TagGroupRelation as GroupRelation', array(
+             'local' => 'id',
+             'foreign' => 'tag_id'));
 
         $this->hasMany('TagProductRelation as ProductRelation', array(
              'local' => 'id',

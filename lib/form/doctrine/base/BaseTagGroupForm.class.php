@@ -23,6 +23,7 @@ abstract class BaseTagGroupForm extends BaseFormDoctrine
       'position'   => new sfWidgetFormInputText(),
       'created_at' => new sfWidgetFormDateTime(),
       'updated_at' => new sfWidgetFormDateTime(),
+      'tag_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'Tag')),
     ));
 
     $this->setValidators(array(
@@ -34,6 +35,7 @@ abstract class BaseTagGroupForm extends BaseFormDoctrine
       'position'   => new sfValidatorInteger(array('required' => false)),
       'created_at' => new sfValidatorDateTime(),
       'updated_at' => new sfValidatorDateTime(),
+      'tag_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'Tag', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -52,6 +54,62 @@ abstract class BaseTagGroupForm extends BaseFormDoctrine
   public function getModelName()
   {
     return 'TagGroup';
+  }
+
+  public function updateDefaultsFromObject()
+  {
+    parent::updateDefaultsFromObject();
+
+    if (isset($this->widgetSchema['tag_list']))
+    {
+      $this->setDefault('tag_list', $this->object->Tag->getPrimaryKeys());
+    }
+
+  }
+
+  protected function doSave($con = null)
+  {
+    $this->saveTagList($con);
+
+    parent::doSave($con);
+  }
+
+  public function saveTagList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['tag_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Tag->getPrimaryKeys();
+    $values = $this->getValue('tag_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Tag', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Tag', array_values($link));
+    }
   }
 
 }

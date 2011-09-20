@@ -12,21 +12,24 @@
  * @property set $type
  * @property integer $position
  * @property Doctrine_Collection $Tag
+ * @property Doctrine_Collection $TagRelation
  * 
- * @method integer             getId()       Returns the current record's "id" value
- * @method integer             getCoreId()   Returns the current record's "core_id" value
- * @method string              getToken()    Returns the current record's "token" value
- * @method string              getName()     Returns the current record's "name" value
- * @method set                 getType()     Returns the current record's "type" value
- * @method integer             getPosition() Returns the current record's "position" value
- * @method Doctrine_Collection getTag()      Returns the current record's "Tag" collection
- * @method TagGroup            setId()       Sets the current record's "id" value
- * @method TagGroup            setCoreId()   Sets the current record's "core_id" value
- * @method TagGroup            setToken()    Sets the current record's "token" value
- * @method TagGroup            setName()     Sets the current record's "name" value
- * @method TagGroup            setType()     Sets the current record's "type" value
- * @method TagGroup            setPosition() Sets the current record's "position" value
- * @method TagGroup            setTag()      Sets the current record's "Tag" collection
+ * @method integer             getId()          Returns the current record's "id" value
+ * @method integer             getCoreId()      Returns the current record's "core_id" value
+ * @method string              getToken()       Returns the current record's "token" value
+ * @method string              getName()        Returns the current record's "name" value
+ * @method set                 getType()        Returns the current record's "type" value
+ * @method integer             getPosition()    Returns the current record's "position" value
+ * @method Doctrine_Collection getTag()         Returns the current record's "Tag" collection
+ * @method Doctrine_Collection getTagRelation() Returns the current record's "TagRelation" collection
+ * @method TagGroup            setId()          Sets the current record's "id" value
+ * @method TagGroup            setCoreId()      Sets the current record's "core_id" value
+ * @method TagGroup            setToken()       Sets the current record's "token" value
+ * @method TagGroup            setName()        Sets the current record's "name" value
+ * @method TagGroup            setType()        Sets the current record's "type" value
+ * @method TagGroup            setPosition()    Sets the current record's "position" value
+ * @method TagGroup            setTag()         Sets the current record's "Tag" collection
+ * @method TagGroup            setTagRelation() Sets the current record's "TagRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -88,6 +91,11 @@ abstract class BaseTagGroup extends myDoctrineRecord
     {
         parent::setUp();
         $this->hasMany('Tag', array(
+             'refClass' => 'TagGroupRelation',
+             'local' => 'group_id',
+             'foreign' => 'tag_id'));
+
+        $this->hasMany('TagGroupRelation as TagRelation', array(
              'local' => 'id',
              'foreign' => 'group_id'));
 
