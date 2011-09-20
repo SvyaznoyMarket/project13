@@ -18,6 +18,16 @@ class CreatorTable extends myDoctrineTable
     return Doctrine_Core::getTable('Creator');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'          => 'core_id',
+      'name'        => 'name',
+      'description' => 'description',
+      'added'       => 'created_at',
+    );
+  }
+
   public function getById($id, array $params = array())
   {
     $q = $this->createBaseQuery($params);

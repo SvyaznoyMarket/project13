@@ -7,6 +7,7 @@ Creator:
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
+    description:       { type: string, notnull: false, default: null }
 
 ProductFilterGroup:
   options:

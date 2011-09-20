@@ -41,7 +41,7 @@ EOF;
     $params = $task->getContentData();
     if (!$params['packet_id'])
     {
-      return;
+      return false;
     }
 
     $this->connection->exec('SET foreign_key_checks = 0');
@@ -49,10 +49,18 @@ EOF;
     // add your code here
     $core = Core::getInstance();
 
+    $this->logSection('core', 'loading packet #'.$params['packet_id']);
     $response = $core->query('load.get', array(
       'id' => $params['packet_id'],
     ));
     //myDebug::dump($response, true, 'yaml');
+
+    if (!is_array($response))
+    {
+      $this->logSection('core', "error\n".sfYaml::dump($response));
+
+      return false;
+    }
 
     foreach ($response as $item)
     {
@@ -87,7 +95,7 @@ EOF;
     $this->connection->exec('SET foreign_key_checks = 1');
 
     $task->setContentData(array(
-      'packet_id' => 4501,//$nextPacketId,
+      'packet_id' => $nextPacketId, //4506
     ));
     $task->save();
   }
@@ -192,7 +200,7 @@ EOF;
     }
 
     // формирует уровни дерева
-    for ($level = 1; $level <= 5; $level++)
+    for ($level = 1; $level <= 6; $level++)
     {
       foreach ($collection as $record)
       {
@@ -273,29 +281,13 @@ EOF;
       }
     }
 
-    foreach ($collection as $record)
-    {
-      if ($record->getNode()->isRoot()) continue;
-      $record->refresh();
-      $record->save();
-
-      foreach ($tree->fetchRoots() as $root)
-      {
-        if ($record->core_parent_id == $root->core_id)
-        {
-          $record->save();
-          $record->getNode()->insertAsLastChildOf($root);
-        }
-      }
-    }
-
     // формирует уровни дерева
     for ($level = 0; $level <= 6; $level++)
     {
       foreach ($collection as $record)
       {
-        $record->refresh();
-        if (!is_null($level) && ($level == intval($record->level)))
+        //$record->refresh();
+        if ($level === $record->level)
         {
           // ищет прямых потомков
           foreach ($collection as $child)
@@ -303,11 +295,20 @@ EOF;
             if ($child->core_parent_id == $record->core_id)
             {
               $child->save();
-              $child->getNode()->moveAsLastChildOf($record);
+              $child->getNode()->insertAsLastChildOf($record);
             }
           }
         }
       }
     }
+  }
+
+  // Creator
+  protected function createCreatorRecord(array $data)
+  {
+    $record = CreatorTable::getInstance()->createRecordFromCore($data);
+    $record->token = myToolkit::urlize($record->name);
+
+    return $record;
   }
 }
