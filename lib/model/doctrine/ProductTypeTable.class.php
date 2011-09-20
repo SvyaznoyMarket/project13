@@ -18,6 +18,15 @@ class ProductTypeTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductType');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'    => 'core_id',
+      'name'  => 'name',
+      'added' => 'created_at',
+    );
+  }
+
   public function getDefaultParameters()
   {
     return array(

@@ -21,8 +21,8 @@ class ProductPropertyOptionTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'          => 'core_id',
-      'name'        => 'name',
+      'id'   => 'core_id',
+      'name' => 'value',
     );
   }
 }

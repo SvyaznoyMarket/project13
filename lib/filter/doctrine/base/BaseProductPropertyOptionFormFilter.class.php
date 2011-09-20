@@ -13,6 +13,7 @@ abstract class BaseProductPropertyOptionFormFilter extends BaseFormFilterDoctrin
   public function setup()
   {
     $this->setWidgets(array(
+      'core_id'     => new sfWidgetFormFilterInput(),
       'property_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => true)),
       'value'       => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'unit'        => new sfWidgetFormFilterInput(),
@@ -22,6 +23,7 @@ abstract class BaseProductPropertyOptionFormFilter extends BaseFormFilterDoctrin
     ));
 
     $this->setValidators(array(
+      'core_id'     => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'property_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Property'), 'column' => 'id')),
       'value'       => new sfValidatorPass(array('required' => false)),
       'unit'        => new sfValidatorPass(array('required' => false)),
@@ -48,6 +50,7 @@ abstract class BaseProductPropertyOptionFormFilter extends BaseFormFilterDoctrin
   {
     return array(
       'id'          => 'Number',
+      'core_id'     => 'Number',
       'property_id' => 'ForeignKey',
       'value'       => 'Text',
       'unit'        => 'Text',

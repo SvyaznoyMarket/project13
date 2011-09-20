@@ -64,6 +64,7 @@ ProductType:
     rating_type_id:    { type: integer(20), notnull: false, default: null }
   relations:
     RatingType:        { class: ProductRatingType, foreignAlias: ProductType, local: rating_type_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    TagGroup:          { class: TagGroup, foreignAlias: ProductType, refClass: TagGroupProductTypeRelation, local: product_type_id, foreign: tag_group_id, type: many, foreignType: many }
 
 ProductCategoryTypeRelation:
   options:
@@ -141,6 +142,7 @@ ProductPropertyOption:
   actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     property_id:       { type: integer(20), notnull: true }
     value:             { type: string(255), notnull: true, notblank: true, comment: 'Значение опции' }
     unit:              { type: string(255), notnull: false, default: null, comment: 'Единица измерения' }

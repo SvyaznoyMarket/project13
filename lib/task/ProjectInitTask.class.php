@@ -18,7 +18,7 @@ class ProjectInitTask extends sfBaseTask
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'main'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
-      new sfCommandOption('only-dump', null, sfCommandOption::PARAMETER_REQUIRED, 'Only dump response', false),
+      new sfCommandOption('dump', null, sfCommandOption::PARAMETER_REQUIRED, 'Only dump response', false),
       new sfCommandOption('freeze', null, sfCommandOption::PARAMETER_REQUIRED, 'Freeze executing next packet', false),
       // add your own options here
     ));
@@ -56,7 +56,7 @@ EOF;
     $response = $core->query('load.get', array(
       'id' => $params['packet_id'],
     ));
-    if ($options['only-dump'])
+    if ($options['dump'])
     {
       myDebug::dump($response, true, 'yaml');
 
@@ -111,6 +111,16 @@ EOF;
     }
   }
 
+  protected function getRecordByCoreId($model, $id)
+  {
+    if (!empty($id))
+    {
+      return false;
+    }
+
+    return Doctrine_Core::getTable($model)->findOneByCoreId($id);
+  }
+
   /**
    * Заносит запись в соответствующую коллекцию
    *
@@ -133,7 +143,7 @@ EOF;
    */
   protected function flushCollections()
   {
-    $this->logSection('collection', 'flush...');
+    //$this->logSection('collection', 'flush...');
     foreach ($this->collections as $name => $collection)
     {
       $prepared = $this->task->getContentData('prepared');
@@ -167,7 +177,7 @@ EOF;
         $collection->save();
       }
 
-      $this->log('.....'.$collection->count());
+      $this->log('.....'.Doctrine_Core::getTable($name)->createQuery()->count());
 
       $collection->free();
       $collection = null;
@@ -303,20 +313,18 @@ EOF;
     // формирует уровни дерева
     for ($level = 0; $level <= 6; $level++)
     {
-      foreach ($collection as $record)
+      foreach ($table->findByLevel($level) as $parent)
       {
-        //$record->refresh();
-        if ($level === $record->level)
+        foreach ($collection as $i => $record)
         {
-          // ищет прямых потомков
-          foreach ($collection as $child)
-          {
-            if ($child->core_parent_id == $record->core_id)
-            {
-              $child->save();
-              $child->getNode()->insertAsLastChildOf($record);
-            }
-          }
+          if ($record->core_parent_id != $parent->core_id) continue;
+
+          $record->getNode()->insertAsLastChildOf($parent);
+
+          // free memory
+          $collection[$i]->free(true);
+          $collection[$i] = null;
+          unset($collection[$i]);
         }
       }
     }
@@ -336,6 +344,59 @@ EOF;
   {
     $record = ShopTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
+
+    return $record;
+  }
+
+  // ProductType
+  protected function createProductTypeRecord(array $data)
+  {
+    $record = ProductType::getInstance()->createRecordFromCore($data);
+    $record->token = myToolkit::urlize($record->name);
+
+    foreach ($data['tag_group'] as $relationData)
+    {
+      $relation = new ProductTypePropertyGroupRelation();
+      $relation->fromArray(array(
+        'property_group_id' => $relationData,
+      ));
+      $record->PropertyGroupRelation[] = $relation;
+    }
+
+    // Группы тегов
+    foreach ($data['tag_group'] as $relationData)
+    {
+      $relation = new TagGroupProductTypeRelation();
+      $relation->fromArray(array(
+        'tag_group_id' => $this->getRecordByCoreId('TagGroup', $relationData['id']),
+      ));
+      $record->TagGroupRelation[] = $relation;
+    }
+
+    // Группы свойств товара
+    foreach ($data['property_group'] as $relationData)
+    {
+      $relation = new ProductTypePropertyGroupRelation();
+      $relation->fromArray(array(
+        'property_group_id' => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['id']),
+      ));
+      $record->PropertyGroupRelation[] = $relation;
+    }
+
+    // Свойства товара
+    foreach ($data['property'] as $relationData)
+    {
+      $relation = new ProductTypePropertyRelation();
+      $relation->fromArray(array(
+        'property_id'    => $this->getRecordByCoreId('ProductProperty', $relationData['id']),
+        'group_id'       => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['group_id']),
+        'position'       => $data['position'],
+        'group_position' => $data['group_position'],
+        'view_show'      => true,
+        'view_list'      => $data['is_view_list'],
+      ));
+      $record->PropertyRelation[] = $relation;
+    }
 
     return $record;
   }

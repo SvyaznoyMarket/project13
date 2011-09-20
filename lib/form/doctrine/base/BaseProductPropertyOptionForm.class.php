@@ -16,6 +16,7 @@ abstract class BaseProductPropertyOptionForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'          => new sfWidgetFormInputHidden(),
+      'core_id'     => new sfWidgetFormInputText(),
       'property_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Property'), 'add_empty' => false)),
       'value'       => new sfWidgetFormInputText(),
       'unit'        => new sfWidgetFormInputText(),
@@ -26,6 +27,7 @@ abstract class BaseProductPropertyOptionForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'          => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'     => new sfValidatorInteger(array('required' => false)),
       'property_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Property'))),
       'value'       => new sfValidatorString(array('max_length' => 255)),
       'unit'        => new sfValidatorString(array('max_length' => 255, 'required' => false)),

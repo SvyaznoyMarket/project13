@@ -10,6 +10,17 @@ TagGroup:
     type:              { type: set, length: 10, values: [gift], notnull: false, default: null, comment: 'Тип группы тега' }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
 
+TagGroupProductTypeRelation:
+  options:
+    comment: 'Связь группы тега и типа товара'
+  actAs: [ Timestampable ]
+  columns:
+    tag_group_id:        { type: integer(20), primary: true, notnull: true }
+    product_type_id:     { type: integer(20), primary: true, notnull: true }
+  relations:
+    TagGroup:            { class: TagGroup, foreignAlias: ProductTypeRelation, local: tag_group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    ProductType:         { class: ProductType, foreignAlias: TagGroupRelation, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
 Tag:
   options:
     comment: 'Тег'
