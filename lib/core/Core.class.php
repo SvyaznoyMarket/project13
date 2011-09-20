@@ -6,7 +6,8 @@ class Core
     $config = null,
     $connection = null,
     $error = false,
-    $models = null
+    $models = null,
+    $logger = null
   ;
   protected static
     $instance = null;
@@ -34,6 +35,8 @@ class Core
     curl_setopt ($this->connection, CURLOPT_HEADER, 0);
     curl_setopt($this->connection, CURLOPT_POST, true);
     curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
+
+    $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/core_lib.log'));
   }
 
   public function getConfig($name = null)
@@ -124,7 +127,7 @@ class Core
 
     $data = $this->getData($address);
 
-    if ($response = $this->query('user.address.create', $data))
+    if ($response = $this->query('user.address.create', array(), $data))
     {
       $result = $response['id'];
     }
@@ -137,8 +140,10 @@ class Core
     $result = false;
 
     $data = $this->getData($address);
+    $params = array('id' => $data['id']);
+    unset($data['id']);
 
-    if ($response = $this->query('user.address.update', $data))
+    if ($response = $this->query('user.address.update', $params, $data))
     {
       $result = $response['confirmed'];
     }
@@ -152,7 +157,7 @@ class Core
 
     $data = array('id' => $id, );
 
-    if ($response = $this->query('user.address.delete', $data))
+    if ($response = $this->query('user.address.delete', array(), $data))
     {
       $result = $response['confirmed'];
     }
@@ -181,9 +186,25 @@ class Core
 
     $data = $this->getData($comment);
 
-    if ($response = $this->query('product.opinion.create', $data))
+    if ($response = $this->query('product.opinion.create', array(), $data))
     {
       $result = $response['id'];
+    }
+
+    return $result;
+  }
+
+  public function updateProductComment(ProductComment $comment)
+  {
+    $result = false;
+
+    $data = $this->getData($comment);
+    $params = array('id' => $data['id']);
+    unset($data['id']);
+
+    if ($response = $this->query('product.opinion.update', $params, $data))
+    {
+      $result = $response['confirmed'];
     }
 
     return $result;
@@ -206,8 +227,9 @@ class Core
       ), $params),
       'data'   => $data), JSON_FORCE_OBJECT);
 
+    $this->logger->log("Request: ".$data);
     $response = $this->send($data);
-    //myDebug::dump($response);
+    $this->logger->log("Response: ".$response);
     $response = json_decode($response, true);
 
     if (isset($response['code']))
