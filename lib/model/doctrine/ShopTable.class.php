@@ -18,6 +18,14 @@ class ShopTable extends myDoctrineTable
     return Doctrine_Core::getTable('Shop');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'       => 'core_id',
+      'name'     => 'name',
+    );
+  }
+
   public function getForRoute(array $params)
   {
     $id = isset($params['shop']) ? $this->getIdBy('token', $params['shop']) : null;

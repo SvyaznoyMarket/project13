@@ -15,6 +15,7 @@
  * @property Doctrine_Collection $ProductCategoryRelation
  * @property Doctrine_Collection $Property
  * @property Doctrine_Collection $PropertyGroup
+ * @property Doctrine_Collection $PropertyGroupRelation
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Product
  * @property Doctrine_Collection $ProductHelper
@@ -30,6 +31,7 @@
  * @method Doctrine_Collection getProductCategoryRelation() Returns the current record's "ProductCategoryRelation" collection
  * @method Doctrine_Collection getProperty()                Returns the current record's "Property" collection
  * @method Doctrine_Collection getPropertyGroup()           Returns the current record's "PropertyGroup" collection
+ * @method Doctrine_Collection getPropertyGroupRelation()   Returns the current record's "PropertyGroupRelation" collection
  * @method Doctrine_Collection getPropertyRelation()        Returns the current record's "PropertyRelation" collection
  * @method Doctrine_Collection getProduct()                 Returns the current record's "Product" collection
  * @method Doctrine_Collection getProductHelper()           Returns the current record's "ProductHelper" collection
@@ -44,6 +46,7 @@
  * @method ProductType         setProductCategoryRelation() Sets the current record's "ProductCategoryRelation" collection
  * @method ProductType         setProperty()                Sets the current record's "Property" collection
  * @method ProductType         setPropertyGroup()           Sets the current record's "PropertyGroup" collection
+ * @method ProductType         setPropertyGroupRelation()   Sets the current record's "PropertyGroupRelation" collection
  * @method ProductType         setPropertyRelation()        Sets the current record's "PropertyRelation" collection
  * @method ProductType         setProduct()                 Sets the current record's "Product" collection
  * @method ProductType         setProductHelper()           Sets the current record's "ProductHelper" collection
@@ -112,6 +115,11 @@ abstract class BaseProductType extends myDoctrineRecord
              'foreign' => 'property_id'));
 
         $this->hasMany('ProductPropertyGroup as PropertyGroup', array(
+             'refClass' => 'ProductTypePropertyGroupRelation',
+             'local' => 'product_type_id',
+             'foreign' => 'property_group_id'));
+
+        $this->hasMany('ProductTypePropertyGroupRelation as PropertyGroupRelation', array(
              'local' => 'id',
              'foreign' => 'product_type_id'));
 

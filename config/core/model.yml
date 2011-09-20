@@ -8,14 +8,18 @@ Product:
 ProductCategory:
   - product_category
   - ItemHierarchy
-ProductpropertyGroup:
+ProductProperty:
+  - product_property
+ProductPropertyGroup:
+  - product_property_group
   - ProductPropertyGroups
+ProductPropertyOption:
+  - product_option
 Region:
   - geo
   - GEOs
 Shop:
   - shop
-Shop:
   - Stores
 Tag:
   - tag

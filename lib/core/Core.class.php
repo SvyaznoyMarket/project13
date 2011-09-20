@@ -198,7 +198,6 @@ class Core
   {
     $action = '/'.str_replace('.', '/', $name).'/';
 
-<<<<<<< HEAD
     $data = json_encode(array(
       'action' => $action,
       'param'  => array_merge(array(
@@ -206,18 +205,9 @@ class Core
         'token_id'  => '',
       ), $params),
       'data'   => $data), JSON_FORCE_OBJECT);
-=======
-    $data_to_send = array('action' => $action, 'param' => array('client_id' => $this->getConfig('client_id'), 'token_id' => '', ), 'data' => $data, );
-    if (isset($data['id']))
-    {
-      $data_to_send['param']['id'] = $data['id'];
-      unset($data_to_send['data']['id']);
-    }
-    $data = json_encode($data_to_send, JSON_FORCE_OBJECT);
->>>>>>> gray
 
     $response = $this->send($data);
-//myDebug::dump($response);
+    //myDebug::dump($response);
     $response = json_decode($response, true);
 
     if (isset($response['code']))

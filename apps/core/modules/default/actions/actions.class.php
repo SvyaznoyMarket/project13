@@ -36,6 +36,7 @@ class defaultActions extends myActions
         'packet_id' => $response['packet_id'],
         'sync_id'   => $response['sync_id'],
         'status'    => 'run',
+        'prepared'  => array(), // массив моделей, таблицы которых подготовлены к загрузке данных
       ));
 
       $task->save();

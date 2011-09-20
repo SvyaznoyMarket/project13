@@ -12,6 +12,7 @@
  * @property boolean $is_multiple
  * @property string $unit
  * @property string $pattern
+ * @property string $description
  * @property Doctrine_Collection $ProductType
  * @property Doctrine_Collection $Group
  * @property Doctrine_Collection $ProductFilter
@@ -29,6 +30,7 @@
  * @method boolean             getIsMultiple()             Returns the current record's "is_multiple" value
  * @method string              getUnit()                   Returns the current record's "unit" value
  * @method string              getPattern()                Returns the current record's "pattern" value
+ * @method string              getDescription()            Returns the current record's "description" value
  * @method Doctrine_Collection getProductType()            Returns the current record's "ProductType" collection
  * @method Doctrine_Collection getGroup()                  Returns the current record's "Group" collection
  * @method Doctrine_Collection getProductFilter()          Returns the current record's "ProductFilter" collection
@@ -45,6 +47,7 @@
  * @method ProductProperty     setIsMultiple()             Sets the current record's "is_multiple" value
  * @method ProductProperty     setUnit()                   Sets the current record's "unit" value
  * @method ProductProperty     setPattern()                Sets the current record's "pattern" value
+ * @method ProductProperty     setDescription()            Sets the current record's "description" value
  * @method ProductProperty     setProductType()            Sets the current record's "ProductType" collection
  * @method ProductProperty     setGroup()                  Sets the current record's "Group" collection
  * @method ProductProperty     setProductFilter()          Sets the current record's "ProductFilter" collection
@@ -116,6 +119,11 @@ abstract class BaseProductProperty extends myDoctrineRecord
              'default' => '%value% %unit%',
              'comment' => 'Шаблон для создания значения свойства с единицей измерения для отображения',
              'length' => 255,
+             ));
+        $this->hasColumn('description', 'string', null, array(
+             'type' => 'string',
+             'notnull' => false,
+             'default' => true,
              ));
 
         $this->option('comment', 'Свойство товара');

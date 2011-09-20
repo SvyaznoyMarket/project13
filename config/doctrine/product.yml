@@ -88,6 +88,7 @@ ProductProperty:
     is_multiple:       { type: boolean, notnull: true, default: false, comment: 'Свойство имеет несколько значений?' }
     unit:              { type: string(255), notnull: false, default: null, comment: 'Единица измерения' }
     pattern:           { type: string(255), notnull: false, default: '%value% %unit%', comment: 'Шаблон для создания значения свойства с единицей измерения для отображения' }
+    description:       { type: string, notnull: false, default: true }
   relations:
     ProductType:       { class: ProductType, foreignAlias: Property, refClass: ProductTypePropertyRelation, local: property_id, foreign: product_type_id, type: many, foreignType: many }
     Group:             { class: ProductPropertyGroup, foreignAlias: Property, refClass: ProductTypePropertyRelation, local: property_id, foreign: group_id, type: many, foreignType: many }
@@ -98,11 +99,23 @@ ProductPropertyGroup:
   actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     name:              { type: string(255), notnull: false, default: null }
     product_type_id:   { type: integer(20), notnull: true }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
-    ProductType:       { class: ProductType, foreignAlias: PropertyGroup, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    ProductType:       { class: ProductType, foreignAlias: PropertyGroup, refClass: ProductTypePropertyGroupRelation, local: property_group_id, foreign: product_type_id, type: many, foreignType: many }
+
+ProductTypePropertyGroupRelation:
+  options:
+    comment: 'Связь груупы свойств и типа товара'
+  actAs: [ Timestampable ]
+  columns:
+    product_type_id:   { type: integer(20), primary: true, notnull: true }
+    property_group_id: { type: integer(20), primary: true, notnull: true }
+  relations:
+    ProductType:       { class: ProductType, foreignAlias: PropertyGroupRelation, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    PropertyGroup:     { class: ProductPropertyGroup, foreignAlias: ProductTypeRelation, local: property_group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
 ProductTypePropertyRelation:
   options:
