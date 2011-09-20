@@ -24,6 +24,15 @@ class Task extends BaseTask
 
   public function setContentData($value)
   {
+    if (!is_array($value))
+    {
+      $arg2 = func_get_arg(1);
+
+      $value = array(
+        $value => $arg2,
+      );
+    }
+
     $content = sfYaml::load($this->content);
 
     if (!is_array($value))

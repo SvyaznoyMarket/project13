@@ -15,8 +15,8 @@ abstract class BaseUserTagForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-<<<<<<< HEAD
       'id'         => new sfWidgetFormInputHidden(),
+      'core_id'    => new sfWidgetFormInputText(),
       'name'       => new sfWidgetFormInputText(),
       'user_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => false)),
       'position'   => new sfWidgetFormInputText(),
@@ -26,26 +26,12 @@ abstract class BaseUserTagForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'    => new sfValidatorInteger(array('required' => false)),
       'name'       => new sfValidatorString(array('max_length' => 255)),
       'user_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'))),
       'position'   => new sfValidatorInteger(array('required' => false)),
       'created_at' => new sfValidatorDateTime(),
       'updated_at' => new sfValidatorDateTime(),
-=======
-      'id'       => new sfWidgetFormInputHidden(),
-      'core_id'  => new sfWidgetFormInputText(),
-      'name'     => new sfWidgetFormInputText(),
-      'user_id'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => false)),
-      'position' => new sfWidgetFormInputText(),
-    ));
-
-    $this->setValidators(array(
-      'id'       => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'core_id'  => new sfValidatorInteger(array('required' => false)),
-      'name'     => new sfValidatorString(array('max_length' => 255)),
-      'user_id'  => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'))),
-      'position' => new sfValidatorInteger(array('required' => false)),
->>>>>>> gray
     ));
 
     $this->widgetSchema->setNameFormat('user_tag[%s]');

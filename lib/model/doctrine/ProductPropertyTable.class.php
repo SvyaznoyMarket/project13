@@ -18,6 +18,16 @@ class ProductPropertyTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductProperty');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'          => 'core_id',
+      'name'        => 'name',
+      'unit'        => 'unit',
+      'is_multiple' => 'is_multiple',
+    );
+  }
+
   public function getById($id, array $params = array())
   {
     $q = $this->createBaseQuery($params);

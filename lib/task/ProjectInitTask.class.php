@@ -4,19 +4,22 @@ class ProjectInitTask extends sfBaseTask
 {
   protected
     $connection = null,
-    $collections = array()
+    $collections = array(),
+    $task = null
   ;
 
   protected function configure()
   {
     $this->addArguments(array(
-      new sfCommandArgument('task', sfCommandArgument::REQUIRED, 'Task id'),
+      new sfCommandArgument('task_id', sfCommandArgument::REQUIRED, 'Task id'),
     ));
 
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'main'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
+      new sfCommandOption('dump', null, sfCommandOption::PARAMETER_REQUIRED, 'Only dump response', false),
+      new sfCommandOption('freeze', null, sfCommandOption::PARAMETER_REQUIRED, 'Freeze executing next packet', false),
       // add your own options here
     ));
 
@@ -37,8 +40,8 @@ EOF;
     $databaseManager = new sfDatabaseManager($this->configuration);
     $this->connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
-    $task = TaskTable::getInstance()->find($arguments['task']);
-    $params = $task->getContentData();
+    $this->task = TaskTable::getInstance()->find($arguments['task_id']);
+    $params = $this->task->getContentData();
     if (!$params['packet_id'])
     {
       return false;
@@ -53,7 +56,12 @@ EOF;
     $response = $core->query('load.get', array(
       'id' => $params['packet_id'],
     ));
-    //myDebug::dump($response, true, 'yaml');
+    if ($options['dump'])
+    {
+      myDebug::dump($response, true, 'yaml');
+
+      return;
+    }
 
     if (!is_array($response))
     {
@@ -80,7 +88,7 @@ EOF;
             $this->pushRecord($record);
           }
           catch (Exception $e) {
-            $this->logSection('Import entity', $entity['type'].' #'.$entity['id'], null, 'ERROR');
+            $this->logSection('Import entity', $entity['type'].' #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
           }
         }
         else {
@@ -94,10 +102,23 @@ EOF;
 
     $this->connection->exec('SET foreign_key_checks = 1');
 
-    $task->setContentData(array(
-      'packet_id' => $nextPacketId, //4506
-    ));
-    $task->save();
+    if (!$options['freeze'])
+    {
+      $this->task->setContentData(array(
+        'packet_id' => $nextPacketId, //4508
+      ));
+      $this->task->save();
+    }
+  }
+
+  protected function getRecordByCoreId($model, $id)
+  {
+    if (!empty($id))
+    {
+      return false;
+    }
+
+    return Doctrine_Core::getTable($model)->findOneByCoreId($id);
   }
 
   /**
@@ -122,17 +143,27 @@ EOF;
    */
   protected function flushCollections()
   {
-    $this->logSection('collection', 'flush...');
+    //$this->logSection('collection', 'flush...');
     foreach ($this->collections as $name => $collection)
     {
-      $this->logSection($name, 'prepare...');
-      $method = 'prepare'.$name.'Table';
-      if (method_exists($this, $method))
+      $prepared = $this->task->getContentData('prepared');
+
+      // если таблица для модели не подготовлена
+      if (!in_array($name, $prepared))
       {
-        call_user_func_array(array($this, $method), array());
-      }
-      else {
-        $this->connection->exec('TRUNCATE TABLE '.Doctrine_Core::getTable($name)->getTableName());
+        $this->logSection($name, 'prepare...');
+        $method = 'prepare'.$name.'Table';
+        if (method_exists($this, $method))
+        {
+          call_user_func_array(array($this, $method), array());
+        }
+        else {
+          $this->connection->exec('TRUNCATE TABLE '.Doctrine_Core::getTable($name)->getTableName());
+        }
+
+        $prepared[] = $name;
+        $this->task->setContentData('prepared', $prepared);
+        $this->task->save();
       }
 
       $this->logSection($name, 'flush...');
@@ -146,7 +177,7 @@ EOF;
         $collection->save();
       }
 
-      $this->log('.....'.$collection->count());
+      $this->log('.....'.Doctrine_Core::getTable($name)->createQuery()->count());
 
       $collection->free();
       $collection = null;
@@ -181,7 +212,6 @@ EOF;
   {
     $record = RegionTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
-    $record->core_parent_id = $data['parent_id'];
 
     return $record;
   }
@@ -259,7 +289,6 @@ EOF;
   protected function createProductCategoryRecord(array $data)
   {
     $record = ProductCategoryTable::getInstance()->createRecordFromCore($data);
-    $record->core_parent_id = $data['parent_id'];
     $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
     return $record;
@@ -284,20 +313,18 @@ EOF;
     // формирует уровни дерева
     for ($level = 0; $level <= 6; $level++)
     {
-      foreach ($collection as $record)
+      foreach ($table->findByLevel($level) as $parent)
       {
-        //$record->refresh();
-        if ($level === $record->level)
+        foreach ($collection as $i => $record)
         {
-          // ищет прямых потомков
-          foreach ($collection as $child)
-          {
-            if ($child->core_parent_id == $record->core_id)
-            {
-              $child->save();
-              $child->getNode()->insertAsLastChildOf($record);
-            }
-          }
+          if ($record->core_parent_id != $parent->core_id) continue;
+
+          $record->getNode()->insertAsLastChildOf($parent);
+
+          // free memory
+          $collection[$i]->free(true);
+          $collection[$i] = null;
+          unset($collection[$i]);
         }
       }
     }
@@ -311,4 +338,67 @@ EOF;
 
     return $record;
   }
+
+  // Shop
+  protected function createShopRecord(array $data)
+  {
+    $record = ShopTable::getInstance()->createRecordFromCore($data);
+    $record->token = myToolkit::urlize($record->name);
+
+    return $record;
+  }
+
+  // ProductType
+  protected function createProductTypeRecord(array $data)
+  {
+    $record = ProductType::getInstance()->createRecordFromCore($data);
+    $record->token = myToolkit::urlize($record->name);
+
+    foreach ($data['tag_group'] as $relationData)
+    {
+      $relation = new ProductTypePropertyGroupRelation();
+      $relation->fromArray(array(
+        'property_group_id' => $relationData,
+      ));
+      $record->PropertyGroupRelation[] = $relation;
+    }
+
+    // Группы тегов
+    foreach ($data['tag_group'] as $relationData)
+    {
+      $relation = new TagGroupProductTypeRelation();
+      $relation->fromArray(array(
+        'tag_group_id' => $this->getRecordByCoreId('TagGroup', $relationData['id']),
+      ));
+      $record->TagGroupRelation[] = $relation;
+    }
+
+    // Группы свойств товара
+    foreach ($data['property_group'] as $relationData)
+    {
+      $relation = new ProductTypePropertyGroupRelation();
+      $relation->fromArray(array(
+        'property_group_id' => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['id']),
+      ));
+      $record->PropertyGroupRelation[] = $relation;
+    }
+
+    // Свойства товара
+    foreach ($data['property'] as $relationData)
+    {
+      $relation = new ProductTypePropertyRelation();
+      $relation->fromArray(array(
+        'property_id'    => $this->getRecordByCoreId('ProductProperty', $relationData['id']),
+        'group_id'       => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['group_id']),
+        'position'       => $data['position'],
+        'group_position' => $data['group_position'],
+        'view_show'      => true,
+        'view_list'      => $data['is_view_list'],
+      ));
+      $record->PropertyRelation[] = $relation;
+    }
+
+    return $record;
+  }
+
 }

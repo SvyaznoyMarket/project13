@@ -15,27 +15,29 @@ abstract class BaseTagGroupForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'         => new sfWidgetFormInputHidden(),
-      'core_id'    => new sfWidgetFormInputText(),
-      'token'      => new sfWidgetFormInputText(),
-      'name'       => new sfWidgetFormInputText(),
-      'type'       => new sfWidgetFormInputText(),
-      'position'   => new sfWidgetFormInputText(),
-      'created_at' => new sfWidgetFormDateTime(),
-      'updated_at' => new sfWidgetFormDateTime(),
-      'tag_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'Tag')),
+      'id'                => new sfWidgetFormInputHidden(),
+      'core_id'           => new sfWidgetFormInputText(),
+      'token'             => new sfWidgetFormInputText(),
+      'name'              => new sfWidgetFormInputText(),
+      'type'              => new sfWidgetFormInputText(),
+      'position'          => new sfWidgetFormInputText(),
+      'created_at'        => new sfWidgetFormDateTime(),
+      'updated_at'        => new sfWidgetFormDateTime(),
+      'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
+      'tag_list'          => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'Tag')),
     ));
 
     $this->setValidators(array(
-      'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'core_id'    => new sfValidatorInteger(array('required' => false)),
-      'token'      => new sfValidatorString(array('max_length' => 255)),
-      'name'       => new sfValidatorString(array('max_length' => 255)),
-      'type'       => new sfValidatorPass(array('required' => false)),
-      'position'   => new sfValidatorInteger(array('required' => false)),
-      'created_at' => new sfValidatorDateTime(),
-      'updated_at' => new sfValidatorDateTime(),
-      'tag_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'Tag', 'required' => false)),
+      'id'                => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'           => new sfValidatorInteger(array('required' => false)),
+      'token'             => new sfValidatorString(array('max_length' => 255)),
+      'name'              => new sfValidatorString(array('max_length' => 255)),
+      'type'              => new sfValidatorPass(array('required' => false)),
+      'position'          => new sfValidatorInteger(array('required' => false)),
+      'created_at'        => new sfValidatorDateTime(),
+      'updated_at'        => new sfValidatorDateTime(),
+      'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
+      'tag_list'          => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'Tag', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -60,6 +62,11 @@ abstract class BaseTagGroupForm extends BaseFormDoctrine
   {
     parent::updateDefaultsFromObject();
 
+    if (isset($this->widgetSchema['product_type_list']))
+    {
+      $this->setDefault('product_type_list', $this->object->ProductType->getPrimaryKeys());
+    }
+
     if (isset($this->widgetSchema['tag_list']))
     {
       $this->setDefault('tag_list', $this->object->Tag->getPrimaryKeys());
@@ -69,9 +76,48 @@ abstract class BaseTagGroupForm extends BaseFormDoctrine
 
   protected function doSave($con = null)
   {
+    $this->saveProductTypeList($con);
     $this->saveTagList($con);
 
     parent::doSave($con);
+  }
+
+  public function saveProductTypeList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['product_type_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->ProductType->getPrimaryKeys();
+    $values = $this->getValue('product_type_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('ProductType', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('ProductType', array_values($link));
+    }
   }
 
   public function saveTagList($con = null)

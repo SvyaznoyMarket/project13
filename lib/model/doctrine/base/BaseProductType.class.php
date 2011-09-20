@@ -9,45 +9,54 @@
  * @property string $name
  * @property integer $rating_type_id
  * @property ProductRatingType $RatingType
+ * @property Doctrine_Collection $TagGroup
  * @property Doctrine_Collection $ServiceCategory
  * @property Doctrine_Collection $ServiceCategoryRelation
  * @property Doctrine_Collection $ProductCategory
  * @property Doctrine_Collection $ProductCategoryRelation
  * @property Doctrine_Collection $Property
  * @property Doctrine_Collection $PropertyGroup
+ * @property Doctrine_Collection $PropertyGroupRelation
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Product
  * @property Doctrine_Collection $ProductHelper
  * @property Doctrine_Collection $SimilarProductGroup
+ * @property Doctrine_Collection $TagGroupRelation
  * 
  * @method integer             getId()                      Returns the current record's "id" value
  * @method string              getName()                    Returns the current record's "name" value
  * @method integer             getRatingTypeId()            Returns the current record's "rating_type_id" value
  * @method ProductRatingType   getRatingType()              Returns the current record's "RatingType" value
+ * @method Doctrine_Collection getTagGroup()                Returns the current record's "TagGroup" collection
  * @method Doctrine_Collection getServiceCategory()         Returns the current record's "ServiceCategory" collection
  * @method Doctrine_Collection getServiceCategoryRelation() Returns the current record's "ServiceCategoryRelation" collection
  * @method Doctrine_Collection getProductCategory()         Returns the current record's "ProductCategory" collection
  * @method Doctrine_Collection getProductCategoryRelation() Returns the current record's "ProductCategoryRelation" collection
  * @method Doctrine_Collection getProperty()                Returns the current record's "Property" collection
  * @method Doctrine_Collection getPropertyGroup()           Returns the current record's "PropertyGroup" collection
+ * @method Doctrine_Collection getPropertyGroupRelation()   Returns the current record's "PropertyGroupRelation" collection
  * @method Doctrine_Collection getPropertyRelation()        Returns the current record's "PropertyRelation" collection
  * @method Doctrine_Collection getProduct()                 Returns the current record's "Product" collection
  * @method Doctrine_Collection getProductHelper()           Returns the current record's "ProductHelper" collection
  * @method Doctrine_Collection getSimilarProductGroup()     Returns the current record's "SimilarProductGroup" collection
+ * @method Doctrine_Collection getTagGroupRelation()        Returns the current record's "TagGroupRelation" collection
  * @method ProductType         setId()                      Sets the current record's "id" value
  * @method ProductType         setName()                    Sets the current record's "name" value
  * @method ProductType         setRatingTypeId()            Sets the current record's "rating_type_id" value
  * @method ProductType         setRatingType()              Sets the current record's "RatingType" value
+ * @method ProductType         setTagGroup()                Sets the current record's "TagGroup" collection
  * @method ProductType         setServiceCategory()         Sets the current record's "ServiceCategory" collection
  * @method ProductType         setServiceCategoryRelation() Sets the current record's "ServiceCategoryRelation" collection
  * @method ProductType         setProductCategory()         Sets the current record's "ProductCategory" collection
  * @method ProductType         setProductCategoryRelation() Sets the current record's "ProductCategoryRelation" collection
  * @method ProductType         setProperty()                Sets the current record's "Property" collection
  * @method ProductType         setPropertyGroup()           Sets the current record's "PropertyGroup" collection
+ * @method ProductType         setPropertyGroupRelation()   Sets the current record's "PropertyGroupRelation" collection
  * @method ProductType         setPropertyRelation()        Sets the current record's "PropertyRelation" collection
  * @method ProductType         setProduct()                 Sets the current record's "Product" collection
  * @method ProductType         setProductHelper()           Sets the current record's "ProductHelper" collection
  * @method ProductType         setSimilarProductGroup()     Sets the current record's "SimilarProductGroup" collection
+ * @method ProductType         setTagGroupRelation()        Sets the current record's "TagGroupRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -88,6 +97,11 @@ abstract class BaseProductType extends myDoctrineRecord
              'foreign' => 'id',
              'onDelete' => 'SET NULL'));
 
+        $this->hasMany('TagGroup', array(
+             'refClass' => 'TagGroupProductTypeRelation',
+             'local' => 'product_type_id',
+             'foreign' => 'tag_group_id'));
+
         $this->hasMany('ServiceCategory', array(
              'refClass' => 'ServiceCategoryProductTypeRelation',
              'local' => 'product_type_id',
@@ -112,6 +126,11 @@ abstract class BaseProductType extends myDoctrineRecord
              'foreign' => 'property_id'));
 
         $this->hasMany('ProductPropertyGroup as PropertyGroup', array(
+             'refClass' => 'ProductTypePropertyGroupRelation',
+             'local' => 'product_type_id',
+             'foreign' => 'property_group_id'));
+
+        $this->hasMany('ProductTypePropertyGroupRelation as PropertyGroupRelation', array(
              'local' => 'id',
              'foreign' => 'product_type_id'));
 
@@ -128,6 +147,10 @@ abstract class BaseProductType extends myDoctrineRecord
              'foreign' => 'product_type_id'));
 
         $this->hasMany('SimilarProductGroup', array(
+             'local' => 'id',
+             'foreign' => 'product_type_id'));
+
+        $this->hasMany('TagGroupProductTypeRelation as TagGroupRelation', array(
              'local' => 'id',
              'foreign' => 'product_type_id'));
 

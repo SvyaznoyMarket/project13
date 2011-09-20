@@ -8,4 +8,5 @@ Task:
       packet_id: 4500
       sync_id: 476
       status: run
+      prepared: []
 

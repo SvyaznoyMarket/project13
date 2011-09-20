@@ -13,7 +13,7 @@ abstract class BaseUserTagFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-<<<<<<< HEAD
+      'core_id'    => new sfWidgetFormFilterInput(),
       'name'       => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'user_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
       'position'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
@@ -22,24 +22,12 @@ abstract class BaseUserTagFormFilter extends BaseFormFilterDoctrine
     ));
 
     $this->setValidators(array(
+      'core_id'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'name'       => new sfValidatorPass(array('required' => false)),
       'user_id'    => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
       'position'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'created_at' => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'updated_at' => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
-=======
-      'core_id'  => new sfWidgetFormFilterInput(),
-      'name'     => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'user_id'  => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
-      'position' => new sfWidgetFormFilterInput(array('with_empty' => false)),
-    ));
-
-    $this->setValidators(array(
-      'core_id'  => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
-      'name'     => new sfValidatorPass(array('required' => false)),
-      'user_id'  => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
-      'position' => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
->>>>>>> gray
     ));
 
     $this->widgetSchema->setNameFormat('user_tag_filters[%s]');
@@ -59,20 +47,13 @@ abstract class BaseUserTagFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-<<<<<<< HEAD
       'id'         => 'Number',
+      'core_id'    => 'Number',
       'name'       => 'Text',
       'user_id'    => 'ForeignKey',
       'position'   => 'Number',
       'created_at' => 'Date',
       'updated_at' => 'Date',
-=======
-      'id'       => 'Number',
-      'core_id'  => 'Number',
-      'name'     => 'Text',
-      'user_id'  => 'ForeignKey',
-      'position' => 'Number',
->>>>>>> gray
     );
   }
 }
