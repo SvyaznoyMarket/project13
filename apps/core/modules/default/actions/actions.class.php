@@ -17,6 +17,11 @@ class defaultActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    $this->taskList = TaskTable::getInstance()->createQuery()
+      ->addWhere('(DATEDIFF(NOW(), created_at) <= 10) OR (status = ?)', 'run')
+      ->orderBy('priority, updated_at')
+      ->execute()
+    ;
   }
  /**
   * Executes init action
@@ -31,7 +36,7 @@ class defaultActions extends myActions
     {
       $task = new Task();
       $task->setContentData(array(
-        'type'      => 'init',
+        'type'      => 'project.init',
         'id'        => $response['id'],
         'packet_id' => $response['packet_id'],
         'sync_id'   => $response['sync_id'],
