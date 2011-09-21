@@ -16,7 +16,6 @@ abstract class BaseProductCommentForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'         => new sfWidgetFormInputHidden(),
-      'core_id'    => new sfWidgetFormInputText(),
       'product_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Product'), 'add_empty' => false)),
       'lft'        => new sfWidgetFormInputText(),
       'rgt'        => new sfWidgetFormInputText(),
@@ -27,11 +26,11 @@ abstract class BaseProductCommentForm extends BaseFormDoctrine
       'unhelpful'  => new sfWidgetFormInputText(),
       'created_at' => new sfWidgetFormDateTime(),
       'updated_at' => new sfWidgetFormDateTime(),
+      'core_id'    => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
       'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'core_id'    => new sfValidatorInteger(array('required' => false)),
       'product_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Product'))),
       'lft'        => new sfValidatorInteger(array('required' => false)),
       'rgt'        => new sfValidatorInteger(array('required' => false)),
@@ -42,6 +41,7 @@ abstract class BaseProductCommentForm extends BaseFormDoctrine
       'unhelpful'  => new sfValidatorInteger(array('required' => false)),
       'created_at' => new sfValidatorDateTime(),
       'updated_at' => new sfValidatorDateTime(),
+      'core_id'    => new sfValidatorInteger(array('required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_comment[%s]');

@@ -17,6 +17,26 @@ class GuardUser extends BaseGuardUser
     $_permissions    = null,
     $_allPermissions = null;
 
+
+  public function preSave($event)
+  {
+    /*if (!$this->exists())
+    {
+      if ($response = Core::getInstance()->createUser($this))
+      {
+        $this->core_id = $response;
+      }
+    }
+    else
+    {
+      $response = Core::getInstance()->updateUser($this);
+    }
+    if (!$response)
+    {
+      throw new Exception("Unable to save to Core: " . current(Core::getInstance()->getError()));
+    }*/
+  }
+
   /**
    * Returns the string representation of the object
    *

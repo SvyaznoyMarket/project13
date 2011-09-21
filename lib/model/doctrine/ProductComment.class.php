@@ -12,28 +12,6 @@
  */
 class ProductComment extends BaseProductComment
 {
-  public function preSave($event)
-  {
-    if (!$this->isRoot())
-    {
-      if (!$this->exists())
-      {
-        if ($response = Core::getInstance()->createProductComment($this))
-        {
-          $this->core_id = $response;
-        }
-      }
-      else
-      {
-        $response = Core::getInstance()->updateProductComment($this);
-      }
-      if (!$response)
-      {
-        throw new Exception("Unable to save to Core: " . current(Core::getInstance()->getError()));
-      }
-    }
-  }
-
   public function isRoot()
   {
     return empty($this->content);

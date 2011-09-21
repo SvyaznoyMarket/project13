@@ -127,8 +127,8 @@ class productCommentActions extends myActions
     $comments = explode('.', $this->getRequest()->getCookie($cookieName));
 
     if (true
-//      &&($productComment->user_id != $this->getUser()->getGuardUser()->id)
-//      && !in_array($productComment->id, $comments)
+      &&($productComment->user_id != $this->getUser()->getGuardUser()->id)
+      && !in_array($productComment->id, $comments)
     ) {
       if (in_array($request['helpful'], array('yes', 'true', 'on')))
       {

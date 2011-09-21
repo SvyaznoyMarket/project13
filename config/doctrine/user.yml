@@ -94,10 +94,9 @@ UserProductRating:
 UserAddress:
   options:
     comment: 'Адрес пользователя для доставки'
-  actAs: [ Timestampable ]
+  actAs: [ Timestampable, Corable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     user_id:           { type: integer(20), notnull: true }
     city_id:           { type: integer(20), notnull: true }
     name:              { type: string(255), notnull: false, default: null }

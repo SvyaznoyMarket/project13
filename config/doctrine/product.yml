@@ -217,9 +217,9 @@ ProductComment:
   actAs:
     NestedSet:     { hasManyRoots: true, rootColumnName: product_id }
     Timestampable: ~
+    Corable:       { check: isRoot }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     product_id:        { type: integer(20), notnull: true }
     lft:               { type: integer(20), notnull: true }
     rgt:               { type: integer(20), notnull: true }
