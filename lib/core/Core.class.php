@@ -99,9 +99,23 @@ class Core
 
     $data = $this->getData($user);
 
-    if ($response = $this->query('user.create', $data))
+    if ($response = $this->query('user.create', array(), $data))
     {
       $result = $response['id'];
+    }
+
+    return $result;
+  }
+
+  public function updateUser(User $user)
+  {
+    $result = false;
+
+    $data = $this->getData($user);
+
+    if ($this->query('user.update', array(), $data))
+    {
+      $result = true;
     }
 
     return $result;
@@ -155,9 +169,9 @@ class Core
   {
     $result = false;
 
-    $data = array('id' => $id, );
+    $params['id'] = $id;
 
-    if ($response = $this->query('user.address.delete', array(), $data))
+    if ($response = $this->query('user.address.delete', $params))
     {
       $result = $response['confirmed'];
     }

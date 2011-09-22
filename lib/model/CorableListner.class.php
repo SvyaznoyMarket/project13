@@ -20,6 +20,11 @@ class Doctrine_Template_Listener_Corable extends Doctrine_Record_Listener
       }
     }
 
+    if (!$event->getInvoker()->getCorePush())
+    {
+      return true;
+    }
+
     $method = 'create'.ucfirst($event->getInvoker()->getTable()->getComponentName());
     if ($response = Core::getInstance()->$method($event->getInvoker()))
     {
@@ -42,6 +47,11 @@ class Doctrine_Template_Listener_Corable extends Doctrine_Record_Listener
       }
     }
 
+    if (!$event->getInvoker()->getCorePush())
+    {
+      return true;
+    }
+
     $method = 'update'.ucfirst($event->getInvoker()->getTable()->getComponentName());
     $response = Core::getInstance()->$method($event->getInvoker());
 
@@ -49,5 +59,30 @@ class Doctrine_Template_Listener_Corable extends Doctrine_Record_Listener
     {
       throw new Exception("Unable to save to Core: " . current(Core::getInstance()->getError()));
     }
+  }
+
+  public function preDelete(Doctrine_Event $event)
+  {
+    if (isset($this->_options['check']) && method_exists($event->getInvoker(), $this->_options['check']))
+    {
+      $method = $this->_options['check'];
+      if ($event->getInvoker()->$method())
+      {
+        return true;
+      }
+    }
+
+    if (!$event->getInvoker()->getCorePush())
+    {
+      return true;
+    }
+    $method = 'delete'.ucfirst($event->getInvoker()->getTable()->getComponentName());
+    $response = Core::getInstance()->$method($event->getInvoker()->core_id);
+
+    if (!$response)
+    {
+      throw new Exception("Unable to delete from Core: " . current(Core::getInstance()->getError()));
+    }
+
   }
 }

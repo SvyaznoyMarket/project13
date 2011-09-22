@@ -2,9 +2,8 @@ User:
   options:
     comment: 'Пользователь'
   inheritance: { type: simple, extends: GuardUser }
-  actAs: [ Timestampable ]
+  actAs: [ Timestampable, Corable ]
   columns:
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     type:              { type: enum, length: 10, values: [admin, client, partner], notnull: true, default: client }
     phonenumber:       { type: string(20), notnull: false, default: null, comment: 'Телефонный номер' }
     first_name:        { type: string(255), notnull: true, notblank: true, comment: 'Имя' }

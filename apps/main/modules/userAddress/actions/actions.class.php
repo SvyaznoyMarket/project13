@@ -33,7 +33,7 @@ class userAddressActions extends myActions
         $this->form->getObject()->user_id = $this->getUser()->getGuardUser()->id;
 
         $this->form->save();
-        
+
         $this->redirect('userAddress');
       }
       catch (Exception $e)
@@ -99,15 +99,7 @@ class userAddressActions extends myActions
   {
     $userAddress = $this->getRoute()->getObject();
 
-    $response = Core::getInstance()->deleteUserAddress($userAddress->core_id);
-    if ($response)
-    {
-      $userAddress->delete();
-    }
-    else
-    {
-      myDebug::dump(Core::getInstance()->getError(), 1);
-    }
+    $userAddress->delete();
 
     $this->redirect('userAddress');
   }
