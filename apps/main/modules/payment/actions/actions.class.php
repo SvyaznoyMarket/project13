@@ -21,7 +21,7 @@ class paymentActions extends sfActions
 
     $order = new Order();
     $order->fromArray(array(
-      'sum' => 1500,
+      'sum' => 900,
     ));
     $order->save();
     $this->form = $provider->getForm($order);

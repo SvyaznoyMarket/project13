@@ -17,6 +17,21 @@ class ProductTable extends myDoctrineTable
     return Doctrine_Core::getTable('Product');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'           => 'core_id',
+      'name'         => 'name',
+      'bar_code'     => 'barcode',
+      'article'      => 'article',
+      'announce'     => 'preview',
+      'tagline'      => 'tagline',
+      'description'  => 'description',
+      'rating'       => 'rating',
+      'rating_count' => 'rating_quantity',
+    );
+  }
+
   public function getDefaultParameters()
   {
     return array(

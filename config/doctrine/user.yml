@@ -5,13 +5,18 @@ User:
   actAs: [ Timestampable ]
   columns:
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
+    region_id:         { type: integer(20), notnull: false, default: null }
     type:              { type: enum, length: 10, values: [admin, client, partner], notnull: true, default: client }
-    phonenumber:       { type: string(20), notnull: false, default: null, comment: 'Телефонный номер' }
-    first_name:        { type: string(255), notnull: true, notblank: true, comment: 'Имя' }
-    last_name:         { type: string(255), notnull: true, notblank: true, comment: 'Фамилия' }
-    middle_name:       { type: string(255), notnull: true, notblank: true, comment: 'Отчество' }
+    gender:            { type: enum, length: 6, values: [ mail, femail ], notnull: false, default: null, comment: 'Пол' }
+    birthday:          { type: date, notnull: false, default: null, comment: 'Дата рождения' }
     photo:             { type: string(255), notnull: false, default: null, comment: 'Фото' }
+    phonenumber_city:  { type: string(20), notnull: false, default: null, comment: 'Городской номер телефона' }
+    skype:             { type: string(255), notnull: false, default: null, comment: 'Skype' }
+    address:           { type: string, notnull: false, default: null, comment: 'Домашний адрес' }
+    occupation:        { type: string(255), notnull: true, notblank: true, comment: 'Профессия' }
     settings:          { type: string, notnull: false, default: null, comment: 'Настройки личного кабинета' }
+  relations:
+    Region:            { class: Region, foreignAlias: User, local: region_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 UserProfile:
   options:

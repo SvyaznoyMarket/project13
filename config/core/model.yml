@@ -8,6 +8,8 @@ Product:
 ProductCategory:
   - product_category
   - ItemHierarchy
+ProductComment:
+  - product_opinion
 ProductProperty:
   - product_property
 ProductPropertyGroup:
@@ -29,3 +31,5 @@ Tag:
 TagGroup:
   - tag_group
   - GroupsTags
+User:
+  - user

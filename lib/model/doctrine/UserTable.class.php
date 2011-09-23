@@ -17,4 +17,25 @@ class UserTable extends GuardUserTable
   {
     return Doctrine_Core::getTable('User');
   }
+
+  public function getCoreMapping()
+  {
+    return array(
+      'id'               => 'core_id',
+      'email'            => 'email',
+      'mobile'           => 'phonenumber',
+      'is_active'        => 'is_active',
+      'first_name'       => 'first_name',
+      'last_name'        => 'last_name',
+      'middle_name'      => 'middle_name',
+      'birthday'         => 'birthday',
+      'address'          => 'address',
+      'occupation'       => 'occupation',
+      'phone'            => 'phonenumber_city',
+      'skype'            => 'skype',
+      'last_login'       => 'last_login',
+      'added'            => 'created_at',
+      'updated'          => 'updated_at',
+    );
+  }
 }

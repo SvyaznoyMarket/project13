@@ -60,6 +60,8 @@ ProductType:
   actAs: [ Timestampable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
+    #token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     rating_type_id:    { type: integer(20), notnull: false, default: null }
   relations:
@@ -159,16 +161,21 @@ Product:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    barcode:           { type: string(255), notnull: false, default: null }
+    article:           { type: string(255), notnull: false, default: null }
     name:              { type: string(255), notnull: true, notblank: true }
     type_id:           { type: integer(20), notnull: true }
     creator_id:        { type: integer(20), notnull: true }
     category_id:       { type: integer(20), notnull: true }
-    group_id:          { type: integer(20), notnull: false, default: NULL }
+    group_id:          { type: integer(20), notnull: false, default: null }
+    tagline:           { type: string(255), notnull: false, default: null }
+    preview:           { type: string, notnull: false, default: null, comment: 'Анонс' }
     view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар по прямой ссылке?' }
     view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
     is_instock:        { type: boolean, notnull: true, default: false }
     description:       { type: text, notnull: false, default: null, comment: 'Описание товара' }
     rating:            { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
+    rating_quantity:   { type: integer(4), notnull: true, default: 0, comment: 'Количество голосов пользователей' }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }
   relations:
     Type:              { class: ProductType, foreignAlias: Product, local: type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
@@ -220,6 +227,8 @@ ProductComment:
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
+    core_parent_id:    { type: integer(20), notnull: false, default: null, comment: 'ид родителя в Core' }
+    core_user_id:      { type: integer(20), notnull: false, default: null, comment: 'ид пользователя в Core' }
     product_id:        { type: integer(20), notnull: true }
     lft:               { type: integer(20), notnull: true }
     rgt:               { type: integer(20), notnull: true }
@@ -230,7 +239,7 @@ ProductComment:
     unhelpful:         { type: integer(4), notnull: true, default: 0, comment: 'Количество бесполезных оценок отзыва' }
   relations:
     Product:           { class: Product, foreignAlias: Comment, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    User:              { class: User, foreignAlias: Comment, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    User:              { class: User, foreignAlias: Comment, local: user_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 ProductGroup:
   options:

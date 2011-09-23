@@ -7,6 +7,8 @@
  * 
  * @property integer $id
  * @property integer $core_id
+ * @property integer $core_parent_id
+ * @property integer $core_user_id
  * @property integer $product_id
  * @property integer $lft
  * @property integer $rgt
@@ -18,30 +20,34 @@
  * @property Product $Product
  * @property User $User
  * 
- * @method integer        getId()         Returns the current record's "id" value
- * @method integer        getCoreId()     Returns the current record's "core_id" value
- * @method integer        getProductId()  Returns the current record's "product_id" value
- * @method integer        getLft()        Returns the current record's "lft" value
- * @method integer        getRgt()        Returns the current record's "rgt" value
- * @method integer        getLevel()      Returns the current record's "level" value
- * @method integer        getUserId()     Returns the current record's "user_id" value
- * @method string         getContent()    Returns the current record's "content" value
- * @method integer        getHelpful()    Returns the current record's "helpful" value
- * @method integer        getUnhelpful()  Returns the current record's "unhelpful" value
- * @method Product        getProduct()    Returns the current record's "Product" value
- * @method User           getUser()       Returns the current record's "User" value
- * @method ProductComment setId()         Sets the current record's "id" value
- * @method ProductComment setCoreId()     Sets the current record's "core_id" value
- * @method ProductComment setProductId()  Sets the current record's "product_id" value
- * @method ProductComment setLft()        Sets the current record's "lft" value
- * @method ProductComment setRgt()        Sets the current record's "rgt" value
- * @method ProductComment setLevel()      Sets the current record's "level" value
- * @method ProductComment setUserId()     Sets the current record's "user_id" value
- * @method ProductComment setContent()    Sets the current record's "content" value
- * @method ProductComment setHelpful()    Sets the current record's "helpful" value
- * @method ProductComment setUnhelpful()  Sets the current record's "unhelpful" value
- * @method ProductComment setProduct()    Sets the current record's "Product" value
- * @method ProductComment setUser()       Sets the current record's "User" value
+ * @method integer        getId()             Returns the current record's "id" value
+ * @method integer        getCoreId()         Returns the current record's "core_id" value
+ * @method integer        getCoreParentId()   Returns the current record's "core_parent_id" value
+ * @method integer        getCoreUserId()     Returns the current record's "core_user_id" value
+ * @method integer        getProductId()      Returns the current record's "product_id" value
+ * @method integer        getLft()            Returns the current record's "lft" value
+ * @method integer        getRgt()            Returns the current record's "rgt" value
+ * @method integer        getLevel()          Returns the current record's "level" value
+ * @method integer        getUserId()         Returns the current record's "user_id" value
+ * @method string         getContent()        Returns the current record's "content" value
+ * @method integer        getHelpful()        Returns the current record's "helpful" value
+ * @method integer        getUnhelpful()      Returns the current record's "unhelpful" value
+ * @method Product        getProduct()        Returns the current record's "Product" value
+ * @method User           getUser()           Returns the current record's "User" value
+ * @method ProductComment setId()             Sets the current record's "id" value
+ * @method ProductComment setCoreId()         Sets the current record's "core_id" value
+ * @method ProductComment setCoreParentId()   Sets the current record's "core_parent_id" value
+ * @method ProductComment setCoreUserId()     Sets the current record's "core_user_id" value
+ * @method ProductComment setProductId()      Sets the current record's "product_id" value
+ * @method ProductComment setLft()            Sets the current record's "lft" value
+ * @method ProductComment setRgt()            Sets the current record's "rgt" value
+ * @method ProductComment setLevel()          Sets the current record's "level" value
+ * @method ProductComment setUserId()         Sets the current record's "user_id" value
+ * @method ProductComment setContent()        Sets the current record's "content" value
+ * @method ProductComment setHelpful()        Sets the current record's "helpful" value
+ * @method ProductComment setUnhelpful()      Sets the current record's "unhelpful" value
+ * @method ProductComment setProduct()        Sets the current record's "Product" value
+ * @method ProductComment setUser()           Sets the current record's "User" value
  * 
  * @package    enter
  * @subpackage model
@@ -63,6 +69,18 @@ abstract class BaseProductComment extends myDoctrineRecord
              'type' => 'integer',
              'notnull' => false,
              'comment' => 'ид записи в Core',
+             'length' => 20,
+             ));
+        $this->hasColumn('core_parent_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'comment' => 'ид родителя в Core',
+             'length' => 20,
+             ));
+        $this->hasColumn('core_user_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'comment' => 'ид пользователя в Core',
              'length' => 20,
              ));
         $this->hasColumn('product_id', 'integer', 20, array(
@@ -126,7 +144,7 @@ abstract class BaseProductComment extends myDoctrineRecord
         $this->hasOne('User', array(
              'local' => 'user_id',
              'foreign' => 'id',
-             'onDelete' => 'CASCADE'));
+             'onDelete' => 'SET NULL'));
 
         $nestedset0 = new Doctrine_Template_NestedSet(array(
              'hasManyRoots' => true,

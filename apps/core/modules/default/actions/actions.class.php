@@ -19,7 +19,7 @@ class defaultActions extends myActions
   {
     $this->taskList = TaskTable::getInstance()->createQuery()
       ->addWhere('(DATEDIFF(NOW(), created_at) <= 10) OR (status = ?)', 'run')
-      ->orderBy('priority, updated_at')
+      ->orderBy('priority ASC, updated_at DESC')
       ->execute()
     ;
   }
@@ -36,12 +36,14 @@ class defaultActions extends myActions
     {
       $task = new Task();
       $task->setContentData(array(
-        'type'      => 'project.init',
         'id'        => $response['id'],
         'packet_id' => $response['packet_id'],
         'sync_id'   => $response['sync_id'],
         'status'    => 'run',
         'prepared'  => array(), // массив моделей, таблицы которых подготовлены к загрузке данных
+      ));
+      $task->fromArray(array(
+        'type' => 'project.init',
       ));
 
       $task->save();

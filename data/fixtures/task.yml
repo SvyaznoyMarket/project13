@@ -4,9 +4,8 @@ Task:
     type: 'project.init'
     status: run
     content: |
-      id: 4
-      packet_id: 4500
-      sync_id: 476
+      id: 9
+      packet_id: 3434
+      sync_id: 891
       status: run
       prepared: []
-

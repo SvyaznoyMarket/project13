@@ -18,6 +18,7 @@
  * @property Doctrine_Collection $ServicePrice
  * @property Doctrine_Collection $ServiceCenter
  * @property Doctrine_Collection $Stock
+ * @property Doctrine_Collection $User
  * @property Doctrine_Collection $UserAddress
  * 
  * @method integer             getId()             Returns the current record's "id" value
@@ -33,6 +34,7 @@
  * @method Doctrine_Collection getServicePrice()   Returns the current record's "ServicePrice" collection
  * @method Doctrine_Collection getServiceCenter()  Returns the current record's "ServiceCenter" collection
  * @method Doctrine_Collection getStock()          Returns the current record's "Stock" collection
+ * @method Doctrine_Collection getUser()           Returns the current record's "User" collection
  * @method Doctrine_Collection getUserAddress()    Returns the current record's "UserAddress" collection
  * @method Region              setId()             Sets the current record's "id" value
  * @method Region              setCoreId()         Sets the current record's "core_id" value
@@ -47,6 +49,7 @@
  * @method Region              setServicePrice()   Sets the current record's "ServicePrice" collection
  * @method Region              setServiceCenter()  Sets the current record's "ServiceCenter" collection
  * @method Region              setStock()          Sets the current record's "Stock" collection
+ * @method Region              setUser()           Sets the current record's "User" collection
  * @method Region              setUserAddress()    Sets the current record's "UserAddress" collection
  * 
  * @package    enter
@@ -139,6 +142,10 @@ abstract class BaseRegion extends myDoctrineRecord
              'foreign' => 'region_id'));
 
         $this->hasMany('Shop as Stock', array(
+             'local' => 'id',
+             'foreign' => 'region_id'));
+
+        $this->hasMany('User', array(
              'local' => 'id',
              'foreign' => 'region_id'));
 

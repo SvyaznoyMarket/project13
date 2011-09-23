@@ -25,7 +25,7 @@ all:
   core:
     config:
       api_url: 'http://core.ent3.ru/v1/json'
-      client_id: 1
+      client_id: 123
 
   payment:
     default_provider: uniteller

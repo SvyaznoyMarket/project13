@@ -16,6 +16,7 @@ abstract class BaseProductTypeForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'                    => new sfWidgetFormInputHidden(),
+      'core_id'               => new sfWidgetFormInputText(),
       'name'                  => new sfWidgetFormInputText(),
       'rating_type_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('RatingType'), 'add_empty' => true)),
       'created_at'            => new sfWidgetFormDateTime(),
@@ -29,6 +30,7 @@ abstract class BaseProductTypeForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'                    => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'               => new sfValidatorInteger(array('required' => false)),
       'name'                  => new sfValidatorString(array('max_length' => 255)),
       'rating_type_id'        => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('RatingType'), 'required' => false)),
       'created_at'            => new sfValidatorDateTime(),

@@ -18,6 +18,17 @@ class ProductCommentTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductComment');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'        => 'core_id',
+      'parent_id' => 'core_parent_id',
+      'user_id'   => 'core_user_id',
+      //'added'     => 'created_at',
+      'content'   => 'content',
+    );
+  }
+
   public function getDefaultParameters()
   {
     return array();
@@ -88,14 +99,6 @@ class ProductCommentTable extends myDoctrineTable
     }
 
     return $record;
-  }
-
-  public function getCoreMapping()
-  {
-    return array(
-      'id'      => 'core_id',
-      'content' => 'content',
-    );
   }
 
 }

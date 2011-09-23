@@ -18,8 +18,8 @@ class ProjectInitTask extends sfBaseTask
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'main'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
-      new sfCommandOption('dump', null, sfCommandOption::PARAMETER_REQUIRED, 'Only dump response', false),
-      new sfCommandOption('freeze', null, sfCommandOption::PARAMETER_REQUIRED, 'Freeze executing next packet', false),
+      new sfCommandOption('dump', null, sfCommandOption::PARAMETER_NONE, 'Only dump response'),
+      new sfCommandOption('freeze', null, sfCommandOption::PARAMETER_NONE, 'Freeze executing next packet'),
       // add your own options here
     ));
 
@@ -70,13 +70,20 @@ EOF;
       return false;
     }
 
+    if (!empty($response['result']) && ('empty' == $response['result']))
+    {
+      $this->logSection('core', 'empty result', null, 'ERROR');
+
+      return;
+    }
+
     foreach ($response as $item)
     {
       foreach ($item['data'] as $entity)
       {
         if ($table = $core->getTable($entity['type']))
         {
-          $this->log($table->getComponentName().' -> '.$entity['type'].' #'.$entity['id']);
+          $this->log($table->getComponentName().' <- '.$entity['type'].' #'.$entity['id']);
 
           try {
             $method = 'create'.$table->getComponentName().'Record';
@@ -111,14 +118,21 @@ EOF;
     }
   }
 
-  protected function getRecordByCoreId($model, $id)
+  protected function getRecordByCoreId($model, $coreId, $returnId = false)
   {
-    if (!empty($id))
+    if (empty($coreId))
     {
       return false;
     }
 
-    return Doctrine_Core::getTable($model)->findOneByCoreId($id);
+    return $returnId
+      ? Doctrine_Core::getTable($model)->createQuery()
+          ->select('id')
+          ->where('core_id = ?', $coreId)
+          ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+          ->fetchOne()
+      : Doctrine_Core::getTable($model)->findOneByCoreId($coreId)
+    ;
   }
 
   /**
@@ -177,7 +191,7 @@ EOF;
         $collection->save();
       }
 
-      $this->log('.....'.Doctrine_Core::getTable($name)->createQuery()->count());
+      $this->log('...'.Doctrine_Core::getTable($name)->createQuery()->count());
 
       $collection->free();
       $collection = null;
@@ -273,6 +287,19 @@ EOF;
     $record = TagGroupTable::getInstance()->createRecordFromCore($data);
     $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
+    // Теги
+    if (!empty($data['tag']))
+    {
+      foreach ($data['tag'] as $relationData)
+      {
+        $relation = new TagGroupRelation();
+        $relation->fromArray(array(
+          'tag_id' => $this->getRecordByCoreId('Tag', $relationData['id'], true),
+        ));
+        $record->TagRelation[] = $relation;
+      }
+    }
+
     return $record;
   }
 
@@ -348,57 +375,150 @@ EOF;
     return $record;
   }
 
+  // ProductPropertyOption
+  protected function createProductPropertyOptionRecord(array $data)
+  {
+    $record = ProductPropertyOptionTable::getInstance()->createRecordFromCore($data);
+    $record->property_id = !empty($data['property'][0]['id']) ? $this->getRecordByCoreId('ProductProperty', $data['property'][0]['id'], true) : null;
+
+    return $record;
+  }
+
   // ProductType
   protected function createProductTypeRecord(array $data)
   {
-    $record = ProductType::getInstance()->createRecordFromCore($data);
-    $record->token = myToolkit::urlize($record->name);
-
-    foreach ($data['tag_group'] as $relationData)
-    {
-      $relation = new ProductTypePropertyGroupRelation();
-      $relation->fromArray(array(
-        'property_group_id' => $relationData,
-      ));
-      $record->PropertyGroupRelation[] = $relation;
-    }
+    $record = ProductTypeTable::getInstance()->createRecordFromCore($data);
+    //$record->token = myToolkit::urlize($record->name);
 
     // Группы тегов
-    foreach ($data['tag_group'] as $relationData)
+    if (!empty($data['tag_group']))
     {
-      $relation = new TagGroupProductTypeRelation();
-      $relation->fromArray(array(
-        'tag_group_id' => $this->getRecordByCoreId('TagGroup', $relationData['id']),
-      ));
-      $record->TagGroupRelation[] = $relation;
+      foreach ($data['tag_group'] as $relationData)
+      {
+        $relation = new TagGroupProductTypeRelation();
+        $relation->fromArray(array(
+          'tag_group_id' => $this->getRecordByCoreId('TagGroup', $relationData['id'], true),
+        ));
+        $record->TagGroupRelation[] = $relation;
+      }
     }
 
     // Группы свойств товара
-    foreach ($data['property_group'] as $relationData)
+    if (!empty($data['property_group']))
     {
-      $relation = new ProductTypePropertyGroupRelation();
-      $relation->fromArray(array(
-        'property_group_id' => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['id']),
-      ));
-      $record->PropertyGroupRelation[] = $relation;
+      foreach ($data['property_group'] as $relationData)
+      {
+        $relation = new ProductTypePropertyGroupRelation();
+        $relation->fromArray(array(
+          'property_group_id' => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['id'], true),
+        ));
+        $record->PropertyGroupRelation[] = $relation;
+      }
     }
 
     // Свойства товара
-    foreach ($data['property'] as $relationData)
+    if (!empty($data['property']))
     {
-      $relation = new ProductTypePropertyRelation();
-      $relation->fromArray(array(
-        'property_id'    => $this->getRecordByCoreId('ProductProperty', $relationData['id']),
-        'group_id'       => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['group_id']),
-        'position'       => $data['position'],
-        'group_position' => $data['group_position'],
-        'view_show'      => true,
-        'view_list'      => $data['is_view_list'],
-      ));
-      $record->PropertyRelation[] = $relation;
+      foreach ($data['property'] as $relationData)
+      {
+        $relation = new ProductTypePropertyRelation();
+        $relation->fromArray(array(
+          'property_id'    => $this->getRecordByCoreId('ProductProperty', $relationData['id'], true),
+          'group_id'       => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['group_id'], true),
+          'position'       => $relationData['position'],
+          'group_position' => $relationData['group_position'],
+          'view_show'      => true,
+          'view_list'      => $relationData['is_view_list'],
+        ));
+        $record->PropertyRelation[] = $relation;
+      }
     }
 
     return $record;
+  }
+
+  // Product
+  protected function createProductRecord(array $data)
+  {
+    $record = ProductTable::getInstance()->createRecordFromCore($data);
+    $record->token = !empty($data['bar_code']) ? $data['bar_code'] : uniqid();
+    $record->creator_id = !empty($data['brand_id']) ? $this->getRecordByCoreId('Creator', $data['brand_id'], true) : null;
+    $record->type_id = !empty($data['type_id']) ? $this->getRecordByCoreId('ProductType', $data['type_id'], true) : null;
+
+    // Теги
+    if (!empty($data['tag']))
+    {
+      foreach ($data['tag'] as $relationData)
+      {
+        $relation = new TagProductRelation();
+        $relation->fromArray(array(
+          'tag_id' => $this->getRecordByCoreId('Tag', $relationData['id'], true),
+        ));
+        $record->TagRelation[] = $relation;
+      }
+    }
+
+    // Свойства товара
+    if (!empty($data['property']))
+    {
+      foreach ($data['property'] as $relationData)
+      {
+        $relation = new ProductPropertyRelation();
+        $relation->fromArray(array(
+          'property_id' => $this->getRecordByCoreId('ProductProperty', $relationData['property_id'], true),
+          'option_id'   => !empty($relationData['option_id']) ? $this->getRecordByCoreId('ProductPropertyOption', $relationData['option_id'], true) : null,
+          'value'       => $relationData['value'],
+        ));
+        $record->PropertyRelation[] = $relation;
+      }
+    }
+
+    return $record;
+  }
+
+  // ProductComment
+  protected function createProductCommentRecord(array $data)
+  {
+    $record = ProductCommentTable::getInstance()->createRecordFromCore($data);
+    $record->product_id = !empty($data['product_id']) ? $this->getRecordByCoreId('Product', $data['product_id'], true) : null;
+
+    return $record;
+  }
+  // ProductComment
+  protected function flushProductCommentCollection(myDoctrineCollection $collection)
+  {
+    $table = ProductCommentTable::getInstance();
+
+    $tree = $table->getTree();
+
+    // создает двухуровневое дерево
+    foreach ($collection as $record)
+    {
+      if (empty($record->core_parent_id))
+      {
+        $record->save();
+        $tree->createRoot($record);
+      }
+    }
+
+    // формирует уровни дерева
+    for ($level = 0; $level <= 10; $level++)
+    {
+      foreach ($table->findByLevel($level) as $parent)
+      {
+        foreach ($collection as $i => $record)
+        {
+          if ($record->core_parent_id != $parent->core_id) continue;
+
+          $record->getNode()->insertAsLastChildOf($parent);
+
+          // free memory
+          $collection[$i]->free(true);
+          $collection[$i] = null;
+          unset($collection[$i]);
+        }
+      }
+    }
   }
 
 }

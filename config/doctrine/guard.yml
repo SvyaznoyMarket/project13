@@ -36,10 +36,11 @@ GuardUser:
     comment: 'Пользователь'
   actAs: [ Timestampable ]
   columns:
-    first_name:        { type: string(255) }
-    last_name:         { type: string(255) }
     email:             { type: string(128), notnull: false, default: null }
-    phonenumber:       { type: string(128), notnull: false, default: null }
+    phonenumber:       { type: string(20), notnull: false, default: null, comment: 'Телефонный номер' }
+    first_name:        { type: string(255), notnull: true, notblank: true, comment: 'Имя' }
+    last_name:         { type: string(255), notnull: true, notblank: true, comment: 'Фамилия' }
+    middle_name:       { type: string(255), notnull: true, notblank: true, comment: 'Отчество' }
     nickname:          { type: string(128), notnull: false, default: null }
     algorithm:         { type: string(128), notnull: true, default: sha1 }
     salt:              { type: string(128) }

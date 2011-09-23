@@ -12,20 +12,6 @@
  */
 class ProductComment extends BaseProductComment
 {
-  public function preSave($event)
-  {
-    $response = Core::getInstance()->createProductComment($this);
-    if ($response)
-    {
-      $this->core_id = $response;
-    }
-    else
-    {
-      throw new Exception("Unable to save to Core: " . current(Core::getInstance()->getError()));
-    }
-
-  }
-
   public function exportToCore()
   {
     $data = parent::exportToCore();

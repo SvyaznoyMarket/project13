@@ -8,16 +8,21 @@
  * @property integer $id
  * @property integer $core_id
  * @property string $token
+ * @property string $barcode
+ * @property string $article
  * @property string $name
  * @property integer $type_id
  * @property integer $creator_id
  * @property integer $category_id
  * @property integer $group_id
+ * @property string $tagline
+ * @property string $preview
  * @property boolean $view_show
  * @property boolean $view_list
  * @property boolean $is_instock
  * @property text $description
  * @property decimal $rating
+ * @property integer $rating_quantity
  * @property decimal $price
  * @property ProductType $Type
  * @property Creator $Creator
@@ -43,16 +48,21 @@
  * @method integer             getId()                     Returns the current record's "id" value
  * @method integer             getCoreId()                 Returns the current record's "core_id" value
  * @method string              getToken()                  Returns the current record's "token" value
+ * @method string              getBarcode()                Returns the current record's "barcode" value
+ * @method string              getArticle()                Returns the current record's "article" value
  * @method string              getName()                   Returns the current record's "name" value
  * @method integer             getTypeId()                 Returns the current record's "type_id" value
  * @method integer             getCreatorId()              Returns the current record's "creator_id" value
  * @method integer             getCategoryId()             Returns the current record's "category_id" value
  * @method integer             getGroupId()                Returns the current record's "group_id" value
+ * @method string              getTagline()                Returns the current record's "tagline" value
+ * @method string              getPreview()                Returns the current record's "preview" value
  * @method boolean             getViewShow()               Returns the current record's "view_show" value
  * @method boolean             getViewList()               Returns the current record's "view_list" value
  * @method boolean             getIsInstock()              Returns the current record's "is_instock" value
  * @method text                getDescription()            Returns the current record's "description" value
  * @method decimal             getRating()                 Returns the current record's "rating" value
+ * @method integer             getRatingQuantity()         Returns the current record's "rating_quantity" value
  * @method decimal             getPrice()                  Returns the current record's "price" value
  * @method ProductType         getType()                   Returns the current record's "Type" value
  * @method Creator             getCreator()                Returns the current record's "Creator" value
@@ -77,16 +87,21 @@
  * @method Product             setId()                     Sets the current record's "id" value
  * @method Product             setCoreId()                 Sets the current record's "core_id" value
  * @method Product             setToken()                  Sets the current record's "token" value
+ * @method Product             setBarcode()                Sets the current record's "barcode" value
+ * @method Product             setArticle()                Sets the current record's "article" value
  * @method Product             setName()                   Sets the current record's "name" value
  * @method Product             setTypeId()                 Sets the current record's "type_id" value
  * @method Product             setCreatorId()              Sets the current record's "creator_id" value
  * @method Product             setCategoryId()             Sets the current record's "category_id" value
  * @method Product             setGroupId()                Sets the current record's "group_id" value
+ * @method Product             setTagline()                Sets the current record's "tagline" value
+ * @method Product             setPreview()                Sets the current record's "preview" value
  * @method Product             setViewShow()               Sets the current record's "view_show" value
  * @method Product             setViewList()               Sets the current record's "view_list" value
  * @method Product             setIsInstock()              Sets the current record's "is_instock" value
  * @method Product             setDescription()            Sets the current record's "description" value
  * @method Product             setRating()                 Sets the current record's "rating" value
+ * @method Product             setRatingQuantity()         Sets the current record's "rating_quantity" value
  * @method Product             setPrice()                  Sets the current record's "price" value
  * @method Product             setType()                   Sets the current record's "Type" value
  * @method Product             setCreator()                Sets the current record's "Creator" value
@@ -138,6 +153,16 @@ abstract class BaseProduct extends myDoctrineRecord
              'notblank' => true,
              'length' => 255,
              ));
+        $this->hasColumn('barcode', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'length' => 255,
+             ));
+        $this->hasColumn('article', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'length' => 255,
+             ));
         $this->hasColumn('name', 'string', 255, array(
              'type' => 'string',
              'notnull' => true,
@@ -163,6 +188,16 @@ abstract class BaseProduct extends myDoctrineRecord
              'type' => 'integer',
              'notnull' => false,
              'length' => 20,
+             ));
+        $this->hasColumn('tagline', 'string', 255, array(
+             'type' => 'string',
+             'notnull' => false,
+             'length' => 255,
+             ));
+        $this->hasColumn('preview', 'string', null, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Анонс',
              ));
         $this->hasColumn('view_show', 'boolean', null, array(
              'type' => 'boolean',
@@ -193,6 +228,13 @@ abstract class BaseProduct extends myDoctrineRecord
              'comment' => 'Рейтинг товара',
              'length' => 18,
              'scale' => '14',
+             ));
+        $this->hasColumn('rating_quantity', 'integer', 4, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'default' => 0,
+             'comment' => 'Количество голосов пользователей',
+             'length' => 4,
              ));
         $this->hasColumn('price', 'decimal', 12, array(
              'type' => 'decimal',
