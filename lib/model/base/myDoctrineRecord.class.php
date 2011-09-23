@@ -2,6 +2,9 @@
 
 abstract class myDoctrineRecord extends sfDoctrineRecord
 {
+  protected
+    $corePush = true;
+
   public function toParams()
   {
     return array(
@@ -105,5 +108,15 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     {
       $this->set($v, $data[$k]);
     }
+  }
+
+  public function setCorePush($value)
+  {
+    $this->corePush = (boolean)$value;
+  }
+
+  public function getCorePush()
+  {
+    return $this->corePush;
   }
 }

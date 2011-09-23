@@ -2,9 +2,8 @@ User:
   options:
     comment: 'Пользователь'
   inheritance: { type: simple, extends: GuardUser }
-  actAs: [ Timestampable ]
+  actAs: [ Timestampable, Corable ]
   columns:
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     region_id:         { type: integer(20), notnull: false, default: null }
     type:              { type: enum, length: 10, values: [admin, client, partner], notnull: true, default: client }
     gender:            { type: enum, length: 6, values: [ mail, femail ], notnull: false, default: null, comment: 'Пол' }
@@ -99,10 +98,9 @@ UserProductRating:
 UserAddress:
   options:
     comment: 'Адрес пользователя для доставки'
-  actAs: [ Timestampable ]
+  actAs: [ Timestampable, Corable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     user_id:           { type: integer(20), notnull: true }
     city_id:           { type: integer(20), notnull: true }
     name:              { type: string(255), notnull: false, default: null }

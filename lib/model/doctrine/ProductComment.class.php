@@ -12,6 +12,11 @@
  */
 class ProductComment extends BaseProductComment
 {
+  public function isRoot()
+  {
+    return empty($this->content);
+  }
+
   public function exportToCore()
   {
     $data = parent::exportToCore();

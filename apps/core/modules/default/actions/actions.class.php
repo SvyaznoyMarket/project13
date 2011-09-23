@@ -35,16 +35,14 @@ class defaultActions extends myActions
     if ($response['confirmed'])
     {
       $task = new Task();
-      $task->setContentData(array(
-        'id'        => $response['id'],
-        'packet_id' => $response['packet_id'],
-        'sync_id'   => $response['sync_id'],
+      $task->fromArray(array(
+        'type'    => 'project.init',
+        'core_id' => $response['id'],
+      ));
+      $task->setContentData(array_merge($response, array(
         'status'    => 'run',
         'prepared'  => array(), // массив моделей, таблицы которых подготовлены к загрузке данных
-      ));
-      $task->fromArray(array(
-        'type' => 'project.init',
-      ));
+      )));
 
       $task->save();
 

@@ -81,20 +81,9 @@ class User extends BaseUser
 
   public function exportToCore()
   {
-    return array(
-      'first_name'    => $this->first_name,
-      'last_name'     => $this->last_name,
-      'middle_name'   => $this->middle_name,
-      'sex'           => '',
-      'bithday'       => '',
-      'metier'        => '',
-      'email'         => $this->email,
-      'mobile'        => $this->phonenumber,
-      'geo_id'        => '',
-      'password'      => $this->password,
-      'salt'          => $this->salt,
-      'is_subscribe'  => '',
-    );
+    $data = parent::exportToCore();
+    $data['sex'] = 0;
+    
+    return $data;
   }
-
 }

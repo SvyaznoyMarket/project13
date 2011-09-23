@@ -24,8 +24,20 @@ class apiActions extends myActions
 
     $data = json_encode($response);
 
+    $coreId = !empty($data['id']) ? $data['id'] : false;
+    if ($coreId)
+    {
+      $task = TaskTable::getInstance()->createQuery()
+        ->where('core_id = ?', $coreId)
+        ->orderBy('updated_at')
+        ->fetchOne()
+      ;
+    }
+
     return $this->renderJson(array(
       'confirmed' => true,
     ));
+
+    return sfView::NONE;
   }
 }

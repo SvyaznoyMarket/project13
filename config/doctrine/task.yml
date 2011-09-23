@@ -5,6 +5,7 @@ Task:
     Timestampable: ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     type:              { type: enum, length: 20, values: ['project.init'], notnull: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     priority:          { type: integer(4), notnull: true, default: 1, comment: 'Приоритет' }

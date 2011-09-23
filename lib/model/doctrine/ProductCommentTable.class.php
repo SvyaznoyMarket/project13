@@ -26,6 +26,8 @@ class ProductCommentTable extends myDoctrineTable
       'user_id'   => 'core_user_id',
       //'added'     => 'created_at',
       'content'   => 'content',
+      'helpful'   => 'helpful',
+      'unhelpful' => 'unhelpful',
     );
   }
 
@@ -97,7 +99,6 @@ class ProductCommentTable extends myDoctrineTable
       $tree = $this->getTree();
       $tree->createRoot($record);
     }
-
     return $record;
   }
 

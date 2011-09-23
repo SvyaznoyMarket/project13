@@ -67,6 +67,7 @@ class productCommentActions extends myActions
     $this->form = new ProductCommentForm(array(), array('product' => $this->product, 'user' => $this->getUser()->getGuardUser(), 'parent' => $this->parent));
 
     $this->form->bind($request->getParameter($this->form->getName()));
+    $this->form->updateObject();
     if ($this->form->isValid())
     {
       try
