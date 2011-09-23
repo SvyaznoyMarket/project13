@@ -16,6 +16,7 @@ abstract class BaseTaskForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'         => new sfWidgetFormInputHidden(),
+      'core_id'    => new sfWidgetFormInputText(),
       'type'       => new sfWidgetFormChoice(array('choices' => array('project.init' => 'project.init'))),
       'token'      => new sfWidgetFormInputText(),
       'priority'   => new sfWidgetFormInputText(),
@@ -27,6 +28,7 @@ abstract class BaseTaskForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'    => new sfValidatorInteger(array('required' => false)),
       'type'       => new sfValidatorChoice(array('choices' => array(0 => 'project.init'))),
       'token'      => new sfValidatorString(array('max_length' => 255)),
       'priority'   => new sfValidatorInteger(array('required' => false)),

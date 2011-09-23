@@ -13,6 +13,7 @@ abstract class BaseTaskFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'core_id'    => new sfWidgetFormFilterInput(),
       'type'       => new sfWidgetFormChoice(array('choices' => array('' => '', 'project.init' => 'project.init'))),
       'token'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'priority'   => new sfWidgetFormFilterInput(array('with_empty' => false)),
@@ -23,6 +24,7 @@ abstract class BaseTaskFormFilter extends BaseFormFilterDoctrine
     ));
 
     $this->setValidators(array(
+      'core_id'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'type'       => new sfValidatorChoice(array('required' => false, 'choices' => array('project.init' => 'project.init'))),
       'token'      => new sfValidatorPass(array('required' => false)),
       'priority'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -50,6 +52,7 @@ abstract class BaseTaskFormFilter extends BaseFormFilterDoctrine
   {
     return array(
       'id'         => 'Number',
+      'core_id'    => 'Number',
       'type'       => 'Enum',
       'token'      => 'Text',
       'priority'   => 'Number',
