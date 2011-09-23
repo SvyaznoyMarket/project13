@@ -24,14 +24,22 @@ class apiActions extends myActions
 
     $data = json_encode($response);
 
-    $coreId = !empty($data['id']) ? $data['id'] : false;
-    if ($coreId)
+    if (!empty($data))
     {
-      $task = TaskTable::getInstance()->createQuery()
-        ->where('core_id = ?', $coreId)
-        ->orderBy('updated_at')
-        ->fetchOne()
-      ;
+      $coreId = !empty($data['id']) ? $data['id'] : false;
+      if ($coreId)
+      {
+        $task = TaskTable::getInstance()->createQuery()
+          ->where('core_id = ?', $coreId)
+          ->orderBy('updated_at DESC')
+          ->fetchOne()
+        ;
+        if ($task)
+        {
+          $task->setContentData($response);
+          $task->save();
+        }
+      }
     }
 
     return $this->renderJson(array(

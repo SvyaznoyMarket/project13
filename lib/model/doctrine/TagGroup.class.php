@@ -17,5 +17,18 @@ class TagGroup extends BaseTagGroup
     parent::importFromCore($data);
 
     $this->type = $data['is_gift'] ? 'gift' : null;
+
+    // Теги
+    if (!empty($data['tag']))
+    {
+      foreach ($data['tag'] as $relationData)
+      {
+        $relation = new TagGroupRelation();
+        $relation->fromArray(array(
+          'tag_id' => myDoctrineTable::getRecordByCoreId('Tag', $relationData['id'], true),
+        ));
+        $this->TagRelation[] = $relation;
+      }
+    }
   }
 }

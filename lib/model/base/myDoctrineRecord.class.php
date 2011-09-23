@@ -119,4 +119,9 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
   {
     return $this->corePush;
   }
+
+  protected function getRecordByCoreId($model, $coreId, $returnId = false)
+  {
+    return myDoctrineTable::getRecordByCoreId($model, $coreId, $returnId);
+  }
 }

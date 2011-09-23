@@ -26,8 +26,8 @@ class ProductCommentTable extends myDoctrineTable
       'user_id'   => 'core_user_id',
       //'added'     => 'created_at',
       'content'   => 'content',
-      'helpful'   => 'helpful',
-      'unhelpful' => 'unhelpful',
+      //'helpful'   => 'helpful',
+      //'unhelpful' => 'unhelpful',
     );
   }
 

@@ -120,19 +120,7 @@ EOF;
 
   protected function getRecordByCoreId($model, $coreId, $returnId = false)
   {
-    if (empty($coreId))
-    {
-      return false;
-    }
-
-    return $returnId
-      ? Doctrine_Core::getTable($model)->createQuery()
-          ->select('id')
-          ->where('core_id = ?', $coreId)
-          ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-          ->fetchOne()
-      : Doctrine_Core::getTable($model)->findOneByCoreId($coreId)
-    ;
+    return myDoctrineTable::getRecordByCoreId($model, $coreId, $returnId);
   }
 
   /**
@@ -287,19 +275,6 @@ EOF;
     $record = TagGroupTable::getInstance()->createRecordFromCore($data);
     $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
-    // Теги
-    if (!empty($data['tag']))
-    {
-      foreach ($data['tag'] as $relationData)
-      {
-        $relation = new TagGroupRelation();
-        $relation->fromArray(array(
-          'tag_id' => $this->getRecordByCoreId('Tag', $relationData['id'], true),
-        ));
-        $record->TagRelation[] = $relation;
-      }
-    }
-
     return $record;
   }
 
@@ -379,7 +354,6 @@ EOF;
   protected function createProductPropertyOptionRecord(array $data)
   {
     $record = ProductPropertyOptionTable::getInstance()->createRecordFromCore($data);
-    $record->property_id = !empty($data['property'][0]['id']) ? $this->getRecordByCoreId('ProductProperty', $data['property'][0]['id'], true) : null;
 
     return $record;
   }

@@ -239,4 +239,21 @@ class myDoctrineTable extends Doctrine_Table
   {
     return null;
   }
+
+  public static function getRecordByCoreId($model, $coreId, $returnId = false)
+  {
+    if (empty($coreId))
+    {
+      return false;
+    }
+
+    return $returnId
+      ? Doctrine_Core::getTable($model)->createQuery()
+          ->select('id')
+          ->where('core_id = ?', $coreId)
+          ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+          ->fetchOne()
+      : Doctrine_Core::getTable($model)->findOneByCoreId($coreId)
+    ;
+  }
 }
