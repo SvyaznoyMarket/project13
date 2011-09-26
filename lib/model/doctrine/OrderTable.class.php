@@ -92,4 +92,15 @@ class OrderTable extends myDoctrineTable
 
     return $this->createListByIds($ids, $params);
   }
+
+  public function getCoreMapping()
+  {
+    return array(
+      "first_name"      => "recipient_first_name",
+      "last_name"       => "recipient_last_name",
+      "middle_name"     => "recipient_middle_name",
+      "sum"             => "sum",
+      "address"         => "address",
+    );
+  }
 }
