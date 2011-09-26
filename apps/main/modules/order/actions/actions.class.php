@@ -147,7 +147,8 @@ class orderActions extends myActions
       ));
       $this->order->ProductRelation[] = $relation;
     }
-    myDebug::dump($this->order, 1);
+    //myDebug::dump($this->order, 1);
+    $this->order->save();
 
     $this->redirect('order_complete');
   }

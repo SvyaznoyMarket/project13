@@ -73,4 +73,23 @@ class Order extends BaseOrder
     );
     return $data;
   }
+
+  public function exportToCore()
+  {
+    $data = parent::exportToCore();
+
+    $data['user_id']      = $this->User->core_id;
+    $data['payment_id']   = $this->PaymentMethod->core_id;
+    $data['geo_id']       = $this->Region->core_id;
+    $data['delivery_id']  = $this->DeliveryType->core_id;
+
+    foreach ($this->ProductRelation as $product)
+    {
+      $data['product'][] = array(
+        'product_id'  => $product->Product->core_id,
+        'price'       => $product->price,
+        'quantity'    => $product->quantity,
+      );
+    }
+  }
 }
