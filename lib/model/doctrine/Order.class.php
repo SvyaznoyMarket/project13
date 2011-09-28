@@ -44,7 +44,7 @@ class Order extends BaseOrder
     return isset($names[$this->person_type]) ? $names[$this->person_type] : null;
   }
 
-  public function exportToCore()
+/*  public function exportToCore()
   {
     $products = $this->getProductRelation();
 
@@ -72,7 +72,7 @@ class Order extends BaseOrder
       'product'     => $products,
     );
     return $data;
-  }
+  }*/
 
   public function exportToCore()
   {
