@@ -121,13 +121,13 @@ class Core
     return $result;
   }
 
-  public function createUserTag(UserTag $tag)
+  public function createUserTag($params = array(), $data = array())
   {
     $result = false;
 
-    $data = $this->getData($tag);
+    //$data = $this->getData($tag);
 
-    if ($response = $this->query('userTag.create', $data))
+    if ($response = $this->query('user.mark.create', $params, $data))
     {
       $result = $response['id'];
     }

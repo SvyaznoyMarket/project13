@@ -76,13 +76,21 @@ class userTagActions extends myActions
 
     $this->forward404Unless($product = ProductTable::getInstance()->getByToken($request['product']));
 
-    $userTagProductRelation = new UserTagProductRelation();
-    $userTagProductRelation->fromArray(array(
-      'tag_id'     => $userTag->id,
-      'product_id' => $product->id,
-    ));
-    $userTagProductRelation->replace();
+    $core = Core::getInstance();
+    $id = $core->createUserTag(array('user_id' => $this->getUser()->getGuardUser()->core_id), array('product_id' => $product->core_id, 'mark' => $userTag->name, ));
 
+    if ($id)
+    {
+      $userTag->core_id = $id;
+      $userTag->save();
+
+      $userTagProductRelation = new UserTagProductRelation();
+      $userTagProductRelation->fromArray(array(
+        'tag_id'     => $userTag->id,
+        'product_id' => $product->id,
+      ));
+      $userTagProductRelation->replace();
+    }
     $this->redirect($request->getReferer());
   }
  /**
@@ -96,12 +104,16 @@ class userTagActions extends myActions
 
     $this->forward404Unless($product = ProductTable::getInstance()->getByToken($request['product']));
 
-    UserTagProductRelationTable::getInstance()->createQuery()
-      ->delete()
-      ->where('tag_id = ? AND product_id = ?', array($userTag->id, $product->id))
-      ->execute()
-    ;
+    $core = Core::getInstance();
 
+    if ($core->deleteUserTag(array('user_id' => $this->getUser()->getGuardUser()->core_id, 'product_id' => $product->core_id, 'mark_id' => $userTag->core_id, )))
+    {
+      UserTagProductRelationTable::getInstance()->createQuery()
+        ->delete()
+        ->where('tag_id = ? AND product_id = ?', array($userTag->id, $product->id))
+        ->execute()
+      ;
+    }
     $this->redirect($request->getReferer());
   }
 }
