@@ -362,10 +362,10 @@ userProductCompare:
 #
 # user product compare show
 userProductCompare_show:
-  url:   /compare/show/:productCategory
+  url:   /compare/show/:productType
   param: { module: userProductCompare, action: show }
   class:   myDoctrineRoute
-  options: { model: ProductCategory, type: object, method: getForRoute }
+  options: { model: ProductType, type: object, method: getForRoute }
 #
 # user product compare add
 userProductCompare_add:

@@ -18,52 +18,52 @@ class UserProductCompare extends BaseUserData
   {
     $products = $this->parameterHolder->get('products');
 
-    if (empty($products[$product->category_id]))
+    if (empty($products[$product->type_id]))
     {
-      $products[$product->category_id] = array();
+      $products[$product->type_id] = array();
     }
-    $products[$product->category_id][$product->id] = true;
+    $products[$product->type_id][$product->id] = true;
 
     $this->parameterHolder->set('products', $products);
   }
 
-  public function deleteProduct($category_id, $product_id)
+  public function deleteProduct($type_id, $product_id)
   {
     $products = $this->parameterHolder->get('products');
 
-    if (isset($products[$category_id][$product_id]))
+    if (isset($products[$type_id][$product_id]))
     {
-      unset($products[$category_id][$product_id]);
-      if (0 == count($products[$category_id]))
+      unset($products[$type_id][$product_id]);
+      if (0 == count($products[$type_id]))
       {
-        unset($products[$category_id]);
+        unset($products[$type_id]);
       }
     }
 
     $this->parameterHolder->set('products', $products);
   }
 
-  public function hasProduct($category_id, $id)
+  public function hasProduct($type_id, $id)
   {
     $products = $this->parameterHolder->get('products');
 
-    return isset($products[$category_id][$id]);
+    return isset($products[$type_id][$id]);
   }
 
-  public function getProducts($category_id)
+  public function getProducts($type_id)
   {
-    if (empty($category_id))
+    if (empty($type_id))
     {
-      throw new InvalidArgumentException('You must provide a category_id.');
+      throw new InvalidArgumentException('You must provide a type_id.');
     }
 
     $table = ProductTable::getInstance();
 
     $productList = $table->createList();
     $products = $this->parameterHolder->get('products');
-    if (!empty($products[$category_id]))
+    if (!empty($products[$type_id]))
     {
-      foreach ($products[$category_id] as $id => $data)
+      foreach ($products[$type_id] as $id => $data)
       {
         $product = $table->getById($id, array(
           'view'           => 'show',
@@ -76,12 +76,12 @@ class UserProductCompare extends BaseUserData
     return $productList;
   }
 
-  public function clear($category_id = null)
+  public function clear($type_id = null)
   {
     $products = $this->parameterHolder->get('products');
     if (null != $this->products)
     {
-      if (null == $category_id)
+      if (null == $type_id)
       {
         $this->products->free();
         $this->products = null;
@@ -89,33 +89,33 @@ class UserProductCompare extends BaseUserData
       }
       else
       {
-        $this->products[$category_id]->free();
-        $this->products[$category_id] = null;
-        unset($products[$category_id]);
+        $this->products[$type_id]->free();
+        $this->products[$type_id] = null;
+        unset($products[$type_id]);
       }
     }
 
     $this->parameterHolder->set('products', $products);
   }
 
-  public function hasProductCategory($category_id)
+  public function hasProductType($type_id)
   {
     $products = $this->parameterHolder->get('products');
 
-    return isset($products[$category_id]);
+    return isset($products[$type_id]);
   }
 
-  public function getProductCategories()
+  public function getProductTypes()
   {
-    $table = ProductCategoryTable::getInstance();
+    $table = ProductTypeTable::getInstance();
 
-    $productCategoryList = $table->createList();
-    foreach ($this->parameterHolder->get('products') as $category_id => $data)
+    $productTypeList = $table->createList();
+    foreach ($this->parameterHolder->get('products') as $type_id => $data)
     {
-      $productCategory = $table->getById($category_id);
-      $productCategoryList[] = $productCategory;
+      $productType = $table->getById($type_id);
+      $productTypeList[] = $productType;
     }
 
-    return $productCategoryList;
+    return $productTypeList;
   }
 }

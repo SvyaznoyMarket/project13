@@ -21,12 +21,12 @@ class userProductCompareComponents extends myComponents
 
     if (isset($this->product))
     {
-      $this->button = $productCompare->hasProduct($this->product->category_id, $this->product->id) ? 'show' : 'add';
-      $this->productCategory = $this->product->Category;
+      $this->button = $productCompare->hasProduct($this->product->type_id, $this->product->id) ? 'show' : 'add';
+      $this->productType = $this->product->Type;
     }
     else
     {
-      if (!$productCompare->hasProductCategory($this->productCategory->id))
+      if (!$productCompare->hasProductType($this->productType->id))
       {
         return sfView::NONE;
       }
@@ -47,12 +47,12 @@ class userProductCompareComponents extends myComponents
   public function executeShow()
   {
     $productCompare = $this->getUser()->getProductCompare();
-    if (!$productCompare->hasProductCategory($this->productCategory->id))
+    if (!$productCompare->hasProductType($this->productType->id))
     {
       return sfView::NONE;
     }
 
-    $this->productList = $productCompare->getProducts($this->productCategory->id);
+    $this->productList = $productCompare->getProducts($this->productType->id);
 
     $list = array();
     if (count($this->productList) > 0)

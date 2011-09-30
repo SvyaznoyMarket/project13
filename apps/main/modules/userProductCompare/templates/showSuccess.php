@@ -1,9 +1,11 @@
+<?php if (false): ?>
 <div class="block">
   <?php include_component('user', 'menu') ?>
 </div>
+<?php endif ?>
 
-<h1>Сравнение товаров: <?php echo $productCategory ?></h1>
+<?php slot('title', 'Сравнение товаров: '.$productType) ?>
 
-<div class="block">
-  <?php include_component('userProductCompare', 'show', array('productCategory' => $productCategory)) ?>
-</div>
+<!--div class="block"-->
+  <?php include_component('userProductCompare', 'show', array('productType' => $productType)) ?>
+<!--/div-->

@@ -1,45 +1,45 @@
-#ProductCategory:
-#  ProductCategory_electronics:
-#    token: electronics
-#    name: Электроника
-#    children:
-#      ProductCategory_notebooks:
-#        token: notebooks
-#        name: Ноутбуки
-#        children: ~
-#      ProductCategory_computers:
-#        token: computers
-#        name: Компьютеры
-#        children: ~
-#      ProductCategory_smartphones:
-#        token: smartphones
-#        name: Смартфоны
-#        children: ~
-#  ProductCategory_household-appliances:
-#    token: household-appliances
-#    name: Бытовая техника
-#    children: ~
-#  ProductCategory_furniture:
-#    token: furniture
-#    name: Мебель
-#    children: ~
-#  ProductCategory_homeware:
-#    token: homeware
-#    name: Товары для дома
-#    children: ~
-#  ProductCategory_children:
-#    token: children
-#    name: Товары для детей
-#    children: ~
-#  ProductCategory_jewelry:
-#    token: jewelry
-#    name: Ювелирные украшения и часы
-#    children: ~
-#  ProductCategory_sport:
-#    token: sport
-#    name: Спортивные товары
-#    children: ~
-#  ProductCategory_garden-and-repair:
-#    token: garden-and-repair
-#    name: Товары для сада и ремонта
-#    children: ~
+ProductCategory:
+  ProductCategory_furniture:
+    token: furniture
+    name: Мебель
+    children: ~
+  ProductCategory_household-appliances:
+    token: household-appliances
+    name: Бытовая техника
+    children: ~
+  ProductCategory_homeware:
+    token: homeware
+    name: Товары для дома
+    children: ~
+  ProductCategory_children:
+    token: children
+    name: Товары для детей
+    children: ~
+  ProductCategory_garden-and-repair:
+    token: garden-and-repair
+    name: Товары для сада и ремонта
+    children: ~
+  ProductCategory_electronics:
+    token: electronics
+    name: Электроника
+    children:
+      ProductCategory_notebooks:
+        token: notebooks
+        name: Ноутбуки
+        children: ~
+      ProductCategory_computers:
+        token: computers
+        name: Компьютеры
+        children: ~
+      ProductCategory_smartphones:
+        token: smartphones
+        name: Смартфоны
+        children: ~
+  ProductCategory_jewelry:
+    token: jewelry
+    name: Ювелирные украшения и часы
+    children: ~
+  ProductCategory_sport:
+    token: sport
+    name: Спортивные товары
+    children: ~

@@ -55,6 +55,8 @@ class ProductTable extends myDoctrineTable
       $q->addWhere('product.view_show = ?', true);
     }
 
+    $q->addWhere('is_instock = ?', array(1, ));
+
     return $q;
   }
 
@@ -108,7 +110,7 @@ class ProductTable extends myDoctrineTable
       // тип товара
       foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
       {
-        //if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]) && null !== $productPropertyRelationArray[$propertyRelation['property_id']]) continue;
+        if (!isset($productPropertyRelationArray[$propertyRelation['property_id']])/* && null !== $productPropertyRelationArray[$propertyRelation['property_id']]*/) continue;
 
         $record['Parameter'][] = new ProductParameter($propertyRelation, $productPropertyRelationArray[$propertyRelation['property_id']]);
       }
@@ -194,7 +196,9 @@ class ProductTable extends myDoctrineTable
     // категория
     if ($filter['category'])
     {
-      $q->addWhere('product.category_id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
+      $q->innerJoin('product.Category category');
+      $q->addWhere('category.id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
+      //$q->addWhere('product.category_id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
     }
 
     // производитель
@@ -276,7 +280,9 @@ class ProductTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
 
     $q->select('MIN(product.price) as price_min')
-      ->addWhere('product.category_id = ?', $category->id)
+      ->innerJoin('product.Category category')
+      ->addWhere('category.id = ?', $category->id)
+      //->addWhere('product.category_id = ?', $category->id)
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
@@ -290,7 +296,9 @@ class ProductTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
 
     $q->select('MAX(product.price) as price_max')
-      ->addWhere('product.category_id = ?', $category->id)
+      ->innerJoin('product.Category category')
+      ->addWhere('category.id = ?', $category->id)
+      //->addWhere('product.category_id = ?', $category->id)
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 

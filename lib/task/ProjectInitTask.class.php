@@ -175,7 +175,9 @@ EOF;
         //if ('ProductCategory' == $name)          myDebug::dump($collection, 1);
         call_user_func_array(array($this, $method), array($collection));
       }
-      else {
+      else
+      {
+        myDebug::dump($name);
         $collection->save();
       }
 
@@ -269,6 +271,16 @@ EOF;
     }
   }
 
+  //TagGroup
+  protected function prepareTagGroupTable()
+  {
+    $this->logSection('ProductCategory', 'prepare table...');
+
+    $this->connection->exec('TRUNCATE TABLE `tag_group`');
+    $this->connection->exec('TRUNCATE TABLE `tag_group_product_type_relation`');
+    $this->connection->exec('TRUNCATE TABLE `tag_group_relation`');
+  }
+
   // TagGroup
   protected function createTagGroupRecord(array $data)
   {
@@ -288,10 +300,25 @@ EOF;
   }
 
   // ProductCategory
+  protected function prepareProductCategoryTable()
+  {
+    $this->logSection('ProductCategory', 'prepare table...');
+
+    $this->connection->exec('TRUNCATE TABLE `product_category`');
+    $this->connection->exec('TRUNCATE TABLE `product_filter_group`');
+  }
+  // ProductCategory
   protected function createProductCategoryRecord(array $data)
   {
     $record = ProductCategoryTable::getInstance()->createRecordFromCore($data);
     $record->token = uniqid().'-'.myToolkit::urlize($record->name);
+
+    $filter = new ProductFilterGroup();
+    $filter->fromArray(array(
+      'name' => 'Фильтр для '.$record->name,
+    ));
+
+    $record->FilterGroup = $filter;
 
     return $record;
   }
@@ -359,6 +386,16 @@ EOF;
   }
 
   // ProductType
+  protected function prepareProductTypeTable()
+  {
+    $this->logSection('ProductType', 'prepare table...');
+
+    $this->connection->exec('TRUNCATE TABLE `product_type`');
+    $this->connection->exec('TRUNCATE TABLE `product_type_property_relation`');
+    $this->connection->exec('TRUNCATE TABLE `product_type_property_group_relation`');
+    //$this->connection->exec('TRUNCATE TABLE `tag_group_product_type_relation`');
+  }
+  // ProductType
   protected function createProductTypeRecord(array $data)
   {
     $record = ProductTypeTable::getInstance()->createRecordFromCore($data);
@@ -405,10 +442,39 @@ EOF;
           'view_list'      => $relationData['is_view_list'],
         ));
         $record->PropertyRelation[] = $relation;
+
+        if ($relationData['is_filter'] && !empty($data['category']))
+        {
+          foreach ($data['category'] as $category)
+          {
+            $filter = new ProductFilter();
+            $filter->fromArray(array(
+              'name'        => $relationData['name'],
+              'type'        => 'choice',
+              'property_id' => $this->getRecordByCoreId('ProductProperty', $relationData['id'], true),
+              'group_id'    => $this->getRecordByCoreId('ProductCategory', $category['id'])->FilterGroup->id,
+              'position'    => $relationData['filter_position'],
+              'is_multiple' => $relationData['is_multiple'],
+            ));
+
+            $this->pushRecord($filter);
+          }
+        }
       }
     }
 
     return $record;
+  }
+
+  // Product
+  protected function prepareProductTable()
+  {
+    $this->logSection('Product', 'prepare table...');
+
+    $this->connection->exec('TRUNCATE TABLE `product`');
+    $this->connection->exec('TRUNCATE TABLE `product_property_relation`');
+    $this->connection->exec('TRUNCATE TABLE `product_category_product_relation`');
+    $this->connection->exec('TRUNCATE TABLE `tag_product_relation`');
   }
 
   // Product
@@ -444,6 +510,19 @@ EOF;
           'value'       => $relationData['value'],
         ));
         $record->PropertyRelation[] = $relation;
+      }
+    }
+
+    // Категории
+    if (!empty($data['category']))
+    {
+      foreach ($data['category'] as $relationData)
+      {
+        $relation = new ProductCategoryProductRelation();
+        $relation->fromArray(array(
+          'product_category_id' => $this->getRecordByCoreId('ProductCategory', $relationData['id'], true),
+        ));
+        $record->CategoryRelation[] = $relation;
       }
     }
 

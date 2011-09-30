@@ -54,7 +54,9 @@ class CreatorTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
 
     $q->innerJoin('creator.Product product')
-      ->where('product.category_id = ?', $productCategory->id)
+      ->innerJoin('product.Category category')
+      ->addWhere('category.id = ?', $productCategory->id)
+      //->where('product.category_id = ?', $productCategory->id)
       ->useResultCache(true, null, $this->getQueryHash("productCategory-{$productCategory->id}/creator-all", $params))
     ;
 

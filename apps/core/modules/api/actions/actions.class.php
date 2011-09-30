@@ -20,9 +20,9 @@ class apiActions extends myActions
     $response = trim(file_get_contents('php://input'));
 
     $logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/api.log'));
-    $logger->log($response);
+    $logger->log('Recieved data: '.$response);
 
-    $data = json_encode($response);
+    $data = json_decode($response, true);
 
     if (!empty($data))
     {
@@ -36,7 +36,7 @@ class apiActions extends myActions
         ;
         if ($task)
         {
-          $task->setContentData($response);
+          $task->setContentData($data);
           $task->save();
         }
       }

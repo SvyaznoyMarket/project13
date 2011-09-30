@@ -53,6 +53,18 @@ ProductCategory:
   relations:
     FilterGroup:       { class: ProductFilterGroup, foreignAlias: Category, local: filter_group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ProductType:       { class: ProductType, foreignAlias: ProductCategory, refClass: ProductCategoryTypeRelation, local: product_category_id, foreign: product_type_id, type: many, foreignType: many }
+    Product:           { class: Product, foreignAlias: Category, refClass: ProductCategoryProductRelation, local: product_category_id, foreign: product_id, type: many, foreignType: many }
+
+ProductCategoryProductRelation:
+  options:
+    comment: 'Связь категорий товара и товара'
+  actAs: [ Timestampable ]
+  columns:
+    product_category_id: { type: integer(20), primary: true, notnull: true }
+    product_id:          { type: integer(20), primary: true, notnull: true }
+  relations:
+    Category:            { class: ProductCategory, foreignAlias: ProductRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Product:             { class: Product, foreignAlias: CategoryRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
 ProductType:
   options:
@@ -104,7 +116,7 @@ ProductPropertyGroup:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     name:              { type: string(255), notnull: false, default: null }
-    product_type_id:   { type: integer(20), notnull: true }
+#    product_type_id:   { type: integer(20), notnull: true }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
     ProductType:       { class: ProductType, foreignAlias: PropertyGroup, refClass: ProductTypePropertyGroupRelation, local: property_group_id, foreign: product_type_id, type: many, foreignType: many }
@@ -166,7 +178,7 @@ Product:
     name:              { type: string(255), notnull: true, notblank: true }
     type_id:           { type: integer(20), notnull: true }
     creator_id:        { type: integer(20), notnull: true }
-    category_id:       { type: integer(20), notnull: true }
+#    category_id:       { type: integer(20), notnull: true }
     group_id:          { type: integer(20), notnull: false, default: null }
     tagline:           { type: string(255), notnull: false, default: null }
     preview:           { type: string, notnull: false, default: null, comment: 'Анонс' }
@@ -180,7 +192,7 @@ Product:
   relations:
     Type:              { class: ProductType, foreignAlias: Product, local: type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     Creator:           { class: Creator, foreignAlias: Product, local: creator_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
-    Category:          { class: ProductCategory, foreignAlias: Product, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+#    Category:          { class: ProductCategory, foreignAlias: Product, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     Group:             { class: ProductGroup, foreignAlias: Product, local: group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 ProductPropertyRelation:

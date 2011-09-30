@@ -26,7 +26,7 @@ class userProductCompareActions extends myActions
   */
   public function executeShow(sfWebRequest $request)
   {
-    $this->productCategory = $this->getRoute()->getObject();
+    $this->productType = $this->getRoute()->getObject();
   }
  /**
   * Executes add action
@@ -65,7 +65,7 @@ class userProductCompareActions extends myActions
 
     if ($product)
     {
-      $this->getUser()->getProductCompare()->deleteProduct($product->category_id, $product->id);
+      $this->getUser()->getProductCompare()->deleteProduct($product->type_id, $product->id);
     }
 
     $this->redirect($this->getRequest()->getReferer());
