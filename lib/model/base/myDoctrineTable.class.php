@@ -71,7 +71,7 @@ class myDoctrineTable extends Doctrine_Table
     $this->setQueryParameters($q);
 
     $q->where($q->getRootAlias().'.id = ?', $id)
-      //->useResultCache(true, null, $this->getRecordQueryHash($id, $params))
+      ->useResultCache(true, null, $this->getRecordQueryHash($id, $params))
     ;
 
     return $q->fetchOne();

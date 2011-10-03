@@ -13,7 +13,6 @@ abstract class BaseOrderFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'core_id'                => new sfWidgetFormFilterInput(),
       'token'                  => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'user_id'                => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
       'payment_method_id'      => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('PaymentMethod'), 'add_empty' => true)),
@@ -35,7 +34,6 @@ abstract class BaseOrderFormFilter extends BaseFormFilterDoctrine
     ));
 
     $this->setValidators(array(
-      'core_id'                => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'token'                  => new sfValidatorPass(array('required' => false)),
       'user_id'                => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('User'), 'column' => 'id')),
       'payment_method_id'      => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('PaymentMethod'), 'column' => 'id')),
@@ -74,7 +72,6 @@ abstract class BaseOrderFormFilter extends BaseFormFilterDoctrine
   {
     return array(
       'id'                     => 'Number',
-      'core_id'                => 'Number',
       'token'                  => 'Text',
       'user_id'                => 'ForeignKey',
       'payment_method_id'      => 'ForeignKey',

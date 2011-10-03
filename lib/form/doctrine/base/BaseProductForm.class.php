@@ -23,7 +23,6 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'name'            => new sfWidgetFormInputText(),
       'type_id'         => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Type'), 'add_empty' => false)),
       'creator_id'      => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Creator'), 'add_empty' => false)),
-      'category_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Category'), 'add_empty' => false)),
       'group_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => true)),
       'tagline'         => new sfWidgetFormInputText(),
       'preview'         => new sfWidgetFormTextarea(),
@@ -37,6 +36,7 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'created_at'      => new sfWidgetFormDateTime(),
       'updated_at'      => new sfWidgetFormDateTime(),
       'news_list'       => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
+      'category_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory')),
     ));
 
     $this->setValidators(array(
@@ -48,7 +48,6 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'name'            => new sfValidatorString(array('max_length' => 255)),
       'type_id'         => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Type'))),
       'creator_id'      => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Creator'))),
-      'category_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Category'))),
       'group_id'        => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'required' => false)),
       'tagline'         => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'preview'         => new sfValidatorString(array('required' => false)),
@@ -62,6 +61,7 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'created_at'      => new sfValidatorDateTime(),
       'updated_at'      => new sfValidatorDateTime(),
       'news_list'       => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
+      'category_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -91,11 +91,17 @@ abstract class BaseProductForm extends BaseFormDoctrine
       $this->setDefault('news_list', $this->object->News->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['category_list']))
+    {
+      $this->setDefault('category_list', $this->object->Category->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
   {
     $this->saveNewsList($con);
+    $this->saveCategoryList($con);
 
     parent::doSave($con);
   }
@@ -135,6 +141,44 @@ abstract class BaseProductForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('News', array_values($link));
+    }
+  }
+
+  public function saveCategoryList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['category_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Category->getPrimaryKeys();
+    $values = $this->getValue('category_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Category', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Category', array_values($link));
     }
   }
 

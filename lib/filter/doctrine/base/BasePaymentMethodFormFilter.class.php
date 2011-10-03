@@ -13,6 +13,7 @@ abstract class BasePaymentMethodFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
+      'core_id'    => new sfWidgetFormFilterInput(),
       'token'      => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'name'       => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'is_active'  => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
@@ -21,6 +22,7 @@ abstract class BasePaymentMethodFormFilter extends BaseFormFilterDoctrine
     ));
 
     $this->setValidators(array(
+      'core_id'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'token'      => new sfValidatorPass(array('required' => false)),
       'name'       => new sfValidatorPass(array('required' => false)),
       'is_active'  => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
@@ -46,6 +48,7 @@ abstract class BasePaymentMethodFormFilter extends BaseFormFilterDoctrine
   {
     return array(
       'id'         => 'Number',
+      'core_id'    => 'Number',
       'token'      => 'Text',
       'name'       => 'Text',
       'is_active'  => 'Boolean',

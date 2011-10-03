@@ -189,6 +189,20 @@ EOF;
     }
   }
 
+  // FilterGroup
+  protected function flushProductFilterCollection(myDoctrineCollection $collection)
+  {
+    foreach ($collection as $record)
+    {
+      $q = Doctrine_Query::create()
+        ->from('ProductFilter productFilter')
+        ->where('productFilter.group_id = ? and productFilter.property_id = ?', array($record->group_id, $record->property_id,));
+      if (!$q->fetchOne())
+      {
+        $record->save();
+      }
+    }
+  }
 
   // Region
   protected function prepareRegionTable()

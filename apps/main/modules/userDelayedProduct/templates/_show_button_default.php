@@ -1,1 +1,1 @@
-<a class="event-click" data-event="window.open" data-reload="true" href="<?php echo url_for('userDelayedProduct')?>">отложен</a>
+<a class="link2 event-click" data-event="window.open" data-reload="true" href="<?php echo url_for('userDelayedProduct')?>"></a>

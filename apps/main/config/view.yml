@@ -13,14 +13,21 @@ default:
     #robots:       index, follow
 
   stylesheets:
-    - normalize.css
-    - jquery-ui-custom/jquery-ui-custom.css
-    - colorbox/colorbox.css
-    - jquery.autocomplete.css
-    - main.css
+#    - normalize.css
+#    - jquery-ui-custom/jquery-ui-custom.css
+#    - colorbox/colorbox.css
+#    - jquery.autocomplete.css
+#    - main.css
+    - skin/inner.css
 
   javascripts:
-    - jquery.js
+    #- jquery.js
+    - jslib/jquery-1.4.2.js
+    - jslib/prettyCheckboxes.js
+    - jslib/jquery.ui.widget.js
+    - jslib/jquery.ui.mouse.js
+    - jslib/jquery.ui.slider.js
+    - jslib/main.js
     - jquery-ui-custom.js
     - jquery.form.js
     - jquery.timers.js

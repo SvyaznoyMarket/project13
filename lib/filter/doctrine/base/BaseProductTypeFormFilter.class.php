@@ -22,7 +22,6 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
       'service_category_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ServiceCategory')),
       'product_category_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory')),
       'property_list'         => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty')),
-      'property_group_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductPropertyGroup')),
     ));
 
     $this->setValidators(array(
@@ -35,7 +34,6 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
       'service_category_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ServiceCategory', 'required' => false)),
       'product_category_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory', 'required' => false)),
       'property_list'         => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty', 'required' => false)),
-      'property_group_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductPropertyGroup', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_type_filters[%s]');
@@ -119,24 +117,6 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
     ;
   }
 
-  public function addPropertyGroupListColumnQuery(Doctrine_Query $query, $field, $values)
-  {
-    if (!is_array($values))
-    {
-      $values = array($values);
-    }
-
-    if (!count($values))
-    {
-      return;
-    }
-
-    $query
-      ->leftJoin($query->getRootAlias().'.ProductTypePropertyGroupRelation ProductTypePropertyGroupRelation')
-      ->andWhereIn('ProductTypePropertyGroupRelation.property_group_id', $values)
-    ;
-  }
-
   public function getModelName()
   {
     return 'ProductType';
@@ -155,7 +135,6 @@ abstract class BaseProductTypeFormFilter extends BaseFormFilterDoctrine
       'service_category_list' => 'ManyKey',
       'product_category_list' => 'ManyKey',
       'property_list'         => 'ManyKey',
-      'property_group_list'   => 'ManyKey',
     );
   }
 }

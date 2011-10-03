@@ -16,6 +16,7 @@ abstract class BaseDeliveryTypeForm extends BaseFormDoctrine
   {
     $this->setWidgets(array(
       'id'         => new sfWidgetFormInputHidden(),
+      'core_id'    => new sfWidgetFormInputText(),
       'token'      => new sfWidgetFormInputText(),
       'name'       => new sfWidgetFormInputText(),
       'is_active'  => new sfWidgetFormInputCheckbox(),
@@ -25,6 +26,7 @@ abstract class BaseDeliveryTypeForm extends BaseFormDoctrine
 
     $this->setValidators(array(
       'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'    => new sfValidatorInteger(array('required' => false)),
       'token'      => new sfValidatorString(array('max_length' => 255)),
       'name'       => new sfValidatorString(array('max_length' => 255)),
       'is_active'  => new sfValidatorBoolean(array('required' => false)),

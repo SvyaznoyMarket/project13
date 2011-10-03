@@ -13,7 +13,6 @@
  * @property string $name
  * @property integer $type_id
  * @property integer $creator_id
- * @property integer $category_id
  * @property integer $group_id
  * @property string $tagline
  * @property string $preview
@@ -26,11 +25,12 @@
  * @property decimal $price
  * @property ProductType $Type
  * @property Creator $Creator
- * @property ProductCategory $Category
  * @property ProductGroup $Group
  * @property Doctrine_Collection $News
  * @property Doctrine_Collection $NewsRelation
  * @property Doctrine_Collection $OrderRelation
+ * @property Doctrine_Collection $Category
+ * @property Doctrine_Collection $CategoryRelation
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Photo
  * @property Doctrine_Collection $Comment
@@ -53,7 +53,6 @@
  * @method string              getName()                   Returns the current record's "name" value
  * @method integer             getTypeId()                 Returns the current record's "type_id" value
  * @method integer             getCreatorId()              Returns the current record's "creator_id" value
- * @method integer             getCategoryId()             Returns the current record's "category_id" value
  * @method integer             getGroupId()                Returns the current record's "group_id" value
  * @method string              getTagline()                Returns the current record's "tagline" value
  * @method string              getPreview()                Returns the current record's "preview" value
@@ -66,11 +65,12 @@
  * @method decimal             getPrice()                  Returns the current record's "price" value
  * @method ProductType         getType()                   Returns the current record's "Type" value
  * @method Creator             getCreator()                Returns the current record's "Creator" value
- * @method ProductCategory     getCategory()               Returns the current record's "Category" value
  * @method ProductGroup        getGroup()                  Returns the current record's "Group" value
  * @method Doctrine_Collection getNews()                   Returns the current record's "News" collection
  * @method Doctrine_Collection getNewsRelation()           Returns the current record's "NewsRelation" collection
  * @method Doctrine_Collection getOrderRelation()          Returns the current record's "OrderRelation" collection
+ * @method Doctrine_Collection getCategory()               Returns the current record's "Category" collection
+ * @method Doctrine_Collection getCategoryRelation()       Returns the current record's "CategoryRelation" collection
  * @method Doctrine_Collection getPropertyRelation()       Returns the current record's "PropertyRelation" collection
  * @method Doctrine_Collection getPhoto()                  Returns the current record's "Photo" collection
  * @method Doctrine_Collection getComment()                Returns the current record's "Comment" collection
@@ -92,7 +92,6 @@
  * @method Product             setName()                   Sets the current record's "name" value
  * @method Product             setTypeId()                 Sets the current record's "type_id" value
  * @method Product             setCreatorId()              Sets the current record's "creator_id" value
- * @method Product             setCategoryId()             Sets the current record's "category_id" value
  * @method Product             setGroupId()                Sets the current record's "group_id" value
  * @method Product             setTagline()                Sets the current record's "tagline" value
  * @method Product             setPreview()                Sets the current record's "preview" value
@@ -105,11 +104,12 @@
  * @method Product             setPrice()                  Sets the current record's "price" value
  * @method Product             setType()                   Sets the current record's "Type" value
  * @method Product             setCreator()                Sets the current record's "Creator" value
- * @method Product             setCategory()               Sets the current record's "Category" value
  * @method Product             setGroup()                  Sets the current record's "Group" value
  * @method Product             setNews()                   Sets the current record's "News" collection
  * @method Product             setNewsRelation()           Sets the current record's "NewsRelation" collection
  * @method Product             setOrderRelation()          Sets the current record's "OrderRelation" collection
+ * @method Product             setCategory()               Sets the current record's "Category" collection
+ * @method Product             setCategoryRelation()       Sets the current record's "CategoryRelation" collection
  * @method Product             setPropertyRelation()       Sets the current record's "PropertyRelation" collection
  * @method Product             setPhoto()                  Sets the current record's "Photo" collection
  * @method Product             setComment()                Sets the current record's "Comment" collection
@@ -175,11 +175,6 @@ abstract class BaseProduct extends myDoctrineRecord
              'length' => 20,
              ));
         $this->hasColumn('creator_id', 'integer', 20, array(
-             'type' => 'integer',
-             'notnull' => true,
-             'length' => 20,
-             ));
-        $this->hasColumn('category_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
              'length' => 20,
@@ -261,11 +256,6 @@ abstract class BaseProduct extends myDoctrineRecord
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
 
-        $this->hasOne('ProductCategory as Category', array(
-             'local' => 'category_id',
-             'foreign' => 'id',
-             'onDelete' => 'RESTRICT'));
-
         $this->hasOne('ProductGroup as Group', array(
              'local' => 'group_id',
              'foreign' => 'id',
@@ -281,6 +271,15 @@ abstract class BaseProduct extends myDoctrineRecord
              'foreign' => 'product_id'));
 
         $this->hasMany('OrderProductRelation as OrderRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_id'));
+
+        $this->hasMany('ProductCategory as Category', array(
+             'refClass' => 'ProductCategoryProductRelation',
+             'local' => 'product_id',
+             'foreign' => 'product_category_id'));
+
+        $this->hasMany('ProductCategoryProductRelation as CategoryRelation', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 

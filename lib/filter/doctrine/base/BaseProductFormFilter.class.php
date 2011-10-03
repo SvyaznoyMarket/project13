@@ -20,7 +20,6 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'name'            => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'type_id'         => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Type'), 'add_empty' => true)),
       'creator_id'      => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Creator'), 'add_empty' => true)),
-      'category_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Category'), 'add_empty' => true)),
       'group_id'        => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Group'), 'add_empty' => true)),
       'tagline'         => new sfWidgetFormFilterInput(),
       'preview'         => new sfWidgetFormFilterInput(),
@@ -34,6 +33,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'created_at'      => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'updated_at'      => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'news_list'       => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
+      'category_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory')),
     ));
 
     $this->setValidators(array(
@@ -44,7 +44,6 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'name'            => new sfValidatorPass(array('required' => false)),
       'type_id'         => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Type'), 'column' => 'id')),
       'creator_id'      => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Creator'), 'column' => 'id')),
-      'category_id'     => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Category'), 'column' => 'id')),
       'group_id'        => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Group'), 'column' => 'id')),
       'tagline'         => new sfValidatorPass(array('required' => false)),
       'preview'         => new sfValidatorPass(array('required' => false)),
@@ -58,6 +57,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'created_at'      => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'updated_at'      => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'news_list'       => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
+      'category_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_filters[%s]');
@@ -87,6 +87,24 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
     ;
   }
 
+  public function addCategoryListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.ProductCategoryProductRelation ProductCategoryProductRelation')
+      ->andWhereIn('ProductCategoryProductRelation.product_category_id', $values)
+    ;
+  }
+
   public function getModelName()
   {
     return 'Product';
@@ -103,7 +121,6 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'name'            => 'Text',
       'type_id'         => 'ForeignKey',
       'creator_id'      => 'ForeignKey',
-      'category_id'     => 'ForeignKey',
       'group_id'        => 'ForeignKey',
       'tagline'         => 'Text',
       'preview'         => 'Text',
@@ -117,6 +134,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'created_at'      => 'Date',
       'updated_at'      => 'Date',
       'news_list'       => 'ManyKey',
+      'category_list'   => 'ManyKey',
     );
   }
 }

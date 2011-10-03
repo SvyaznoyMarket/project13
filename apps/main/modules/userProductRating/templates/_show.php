@@ -1,3 +1,4 @@
+<?php if (false): ?>
 <div class="block product_<?php echo $product->id ?>_rating-block">
 
   <div class="left block-inline">
@@ -13,3 +14,5 @@
   <br class="clear" />
 
 </div>
+<?php endif ?>
+Оценка пользователей: <a href="#anchor1" class="nodecor"><img src="/images/stars2.png" alt="" width="83" height="16" class="vm ml5" /> <strong class="ml5"><?php echo round($product->rating, 1) ?></strong></a>

@@ -43,3 +43,8 @@ all:
 
   request:
     class: myWebRequest
+
+  storage:
+    class: sfSessionStorage
+    param:
+      auto_start: false

@@ -8,7 +8,6 @@
  * @property integer $id
  * @property integer $core_id
  * @property string $name
- * @property integer $product_type_id
  * @property integer $position
  * @property Doctrine_Collection $ProductType
  * @property Doctrine_Collection $Property
@@ -18,7 +17,6 @@
  * @method integer              getId()                  Returns the current record's "id" value
  * @method integer              getCoreId()              Returns the current record's "core_id" value
  * @method string               getName()                Returns the current record's "name" value
- * @method integer              getProductTypeId()       Returns the current record's "product_type_id" value
  * @method integer              getPosition()            Returns the current record's "position" value
  * @method Doctrine_Collection  getProductType()         Returns the current record's "ProductType" collection
  * @method Doctrine_Collection  getProperty()            Returns the current record's "Property" collection
@@ -27,7 +25,6 @@
  * @method ProductPropertyGroup setId()                  Sets the current record's "id" value
  * @method ProductPropertyGroup setCoreId()              Sets the current record's "core_id" value
  * @method ProductPropertyGroup setName()                Sets the current record's "name" value
- * @method ProductPropertyGroup setProductTypeId()       Sets the current record's "product_type_id" value
  * @method ProductPropertyGroup setPosition()            Sets the current record's "position" value
  * @method ProductPropertyGroup setProductType()         Sets the current record's "ProductType" collection
  * @method ProductPropertyGroup setProperty()            Sets the current record's "Property" collection
@@ -60,11 +57,6 @@ abstract class BaseProductPropertyGroup extends myDoctrineRecord
              'type' => 'string',
              'notnull' => false,
              'length' => 255,
-             ));
-        $this->hasColumn('product_type_id', 'integer', 20, array(
-             'type' => 'integer',
-             'notnull' => true,
-             'length' => 20,
              ));
         $this->hasColumn('position', 'integer', 4, array(
              'type' => 'integer',

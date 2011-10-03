@@ -25,6 +25,7 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
       'created_at'        => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'updated_at'        => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
+      'product_list'      => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'Product')),
       'news_list'         => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
 
@@ -41,6 +42,7 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
       'created_at'        => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'updated_at'        => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
+      'product_list'      => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'Product', 'required' => false)),
       'news_list'         => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
     ));
 
@@ -68,6 +70,24 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
     $query
       ->leftJoin($query->getRootAlias().'.ProductCategoryTypeRelation ProductCategoryTypeRelation')
       ->andWhereIn('ProductCategoryTypeRelation.product_type_id', $values)
+    ;
+  }
+
+  public function addProductListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.ProductCategoryProductRelation ProductCategoryProductRelation')
+      ->andWhereIn('ProductCategoryProductRelation.product_id', $values)
     ;
   }
 
@@ -110,6 +130,7 @@ abstract class BaseProductCategoryFormFilter extends BaseFormFilterDoctrine
       'created_at'        => 'Date',
       'updated_at'        => 'Date',
       'product_type_list' => 'ManyKey',
+      'product_list'      => 'ManyKey',
       'news_list'         => 'ManyKey',
     );
   }

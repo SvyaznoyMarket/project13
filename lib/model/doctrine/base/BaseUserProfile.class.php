@@ -88,6 +88,9 @@ abstract class BaseUserProfile extends myDoctrineRecord
 
         $timestampable0 = new Doctrine_Template_Timestampable(array(
              ));
+        $corable0 = new Doctrine_Template_Corable(array(
+             ));
         $this->actAs($timestampable0);
+        $this->actAs($corable0);
     }
 }

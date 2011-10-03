@@ -37,7 +37,7 @@ class newsCategoryActions extends myActions
     ));
 
     $this->newsPager = $this->getPager('News', $q, array(
-      'limit' => sfConfig::get('app_news_max_items_on_category', 20),
+      'limit' => sfConfig::get('app_news_max_items_on_category', 5),
     ));
     $this->forward404If($request['page'] > $this->newsPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
@@ -56,7 +56,7 @@ class newsCategoryActions extends myActions
     ));
 
     $this->newsPager = $this->getPager('News', $q, array(
-      'limit' => sfConfig::get('app_news_max_items_on_category', 20),
+      'limit' => sfConfig::get('app_news_max_items_on_category', 5),
     ));
     $this->forward404If($request['page'] > $this->newsPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
@@ -76,7 +76,7 @@ class newsCategoryActions extends myActions
     ));
 
     $this->newsPager = $this->getPager('News', $q, array(
-      'limit' => sfConfig::get('app_news_max_items_on_category', 20),
+      'limit' => sfConfig::get('app_news_max_items_on_category', 5),
     ));
     $this->forward404If($request['page'] > $this->newsPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }

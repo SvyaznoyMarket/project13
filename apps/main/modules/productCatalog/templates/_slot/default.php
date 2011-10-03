@@ -1,3 +1,4 @@
+<?php if (false): ?>
 <div class="block">
   <ul class="inline">
     <li><?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?></li>
@@ -20,3 +21,9 @@
   <?php include_component('product', 'list_view') ?>
   <br class="clear" />
 </div>
+<?php endif ?>
+  <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
+  <div class="line"></div>
+  <?php include_component('product', 'pager', array('pager' => $productPager)) ?>
+  <div class="line pb10"></div>
+  <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>

@@ -28,6 +28,7 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
       'created_at'        => new sfWidgetFormDateTime(),
       'updated_at'        => new sfWidgetFormDateTime(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
+      'product_list'      => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'Product')),
       'news_list'         => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
     ));
 
@@ -45,6 +46,7 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
       'created_at'        => new sfValidatorDateTime(),
       'updated_at'        => new sfValidatorDateTime(),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
+      'product_list'      => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'Product', 'required' => false)),
       'news_list'         => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
     ));
 
@@ -75,6 +77,11 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
       $this->setDefault('product_type_list', $this->object->ProductType->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['product_list']))
+    {
+      $this->setDefault('product_list', $this->object->Product->getPrimaryKeys());
+    }
+
     if (isset($this->widgetSchema['news_list']))
     {
       $this->setDefault('news_list', $this->object->News->getPrimaryKeys());
@@ -85,6 +92,7 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
   protected function doSave($con = null)
   {
     $this->saveProductTypeList($con);
+    $this->saveProductList($con);
     $this->saveNewsList($con);
 
     parent::doSave($con);
@@ -125,6 +133,44 @@ abstract class BaseProductCategoryForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('ProductType', array_values($link));
+    }
+  }
+
+  public function saveProductList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['product_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Product->getPrimaryKeys();
+    $values = $this->getValue('product_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Product', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Product', array_values($link));
     }
   }
 

@@ -1,11 +1,11 @@
-<h1><?php echo $productCategory ?></h1>
+<?php slot('title', $productCategory) ?>
 
-<div class="block">
+<?php slot('navigation') ?>
   <?php include_component('productCatalog', 'navigation', array('productCategory' => $productCategory)) ?>
-</div>
+<?php end_slot() ?>
 
-<div class="block">
+<?php slot('left_column') ?>
   <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory, 'productFilter' => $productFilter)) ?>
-</div>
+<?php end_slot() ?>
 
 <?php echo include_partial('productCatalog/slot/default', $sf_data) ?>

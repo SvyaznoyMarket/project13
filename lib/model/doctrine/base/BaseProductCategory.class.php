@@ -17,10 +17,11 @@
  * @property integer $filter_group_id
  * @property ProductFilterGroup $FilterGroup
  * @property Doctrine_Collection $ProductType
+ * @property Doctrine_Collection $Product
  * @property Doctrine_Collection $News
  * @property Doctrine_Collection $NewsRelation
+ * @property Doctrine_Collection $ProductRelation
  * @property Doctrine_Collection $ProductTypeRelation
- * @property Doctrine_Collection $Product
  * @property Doctrine_Collection $TagRelation
  * 
  * @method integer             getId()                  Returns the current record's "id" value
@@ -35,10 +36,11 @@
  * @method integer             getFilterGroupId()       Returns the current record's "filter_group_id" value
  * @method ProductFilterGroup  getFilterGroup()         Returns the current record's "FilterGroup" value
  * @method Doctrine_Collection getProductType()         Returns the current record's "ProductType" collection
+ * @method Doctrine_Collection getProduct()             Returns the current record's "Product" collection
  * @method Doctrine_Collection getNews()                Returns the current record's "News" collection
  * @method Doctrine_Collection getNewsRelation()        Returns the current record's "NewsRelation" collection
+ * @method Doctrine_Collection getProductRelation()     Returns the current record's "ProductRelation" collection
  * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
- * @method Doctrine_Collection getProduct()             Returns the current record's "Product" collection
  * @method Doctrine_Collection getTagRelation()         Returns the current record's "TagRelation" collection
  * @method ProductCategory     setId()                  Sets the current record's "id" value
  * @method ProductCategory     setCoreId()              Sets the current record's "core_id" value
@@ -52,10 +54,11 @@
  * @method ProductCategory     setFilterGroupId()       Sets the current record's "filter_group_id" value
  * @method ProductCategory     setFilterGroup()         Sets the current record's "FilterGroup" value
  * @method ProductCategory     setProductType()         Sets the current record's "ProductType" collection
+ * @method ProductCategory     setProduct()             Sets the current record's "Product" collection
  * @method ProductCategory     setNews()                Sets the current record's "News" collection
  * @method ProductCategory     setNewsRelation()        Sets the current record's "NewsRelation" collection
+ * @method ProductCategory     setProductRelation()     Sets the current record's "ProductRelation" collection
  * @method ProductCategory     setProductTypeRelation() Sets the current record's "ProductTypeRelation" collection
- * @method ProductCategory     setProduct()             Sets the current record's "Product" collection
  * @method ProductCategory     setTagRelation()         Sets the current record's "TagRelation" collection
  * 
  * @package    enter
@@ -141,6 +144,11 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'local' => 'product_category_id',
              'foreign' => 'product_type_id'));
 
+        $this->hasMany('Product', array(
+             'refClass' => 'ProductCategoryProductRelation',
+             'local' => 'product_category_id',
+             'foreign' => 'product_id'));
+
         $this->hasMany('News', array(
              'refClass' => 'NewsProductCategoryRelation',
              'local' => 'product_category_id',
@@ -150,13 +158,13 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'product_category_id'));
 
-        $this->hasMany('ProductCategoryTypeRelation as ProductTypeRelation', array(
+        $this->hasMany('ProductCategoryProductRelation as ProductRelation', array(
              'local' => 'id',
              'foreign' => 'product_category_id'));
 
-        $this->hasMany('Product', array(
+        $this->hasMany('ProductCategoryTypeRelation as ProductTypeRelation', array(
              'local' => 'id',
-             'foreign' => 'category_id'));
+             'foreign' => 'product_category_id'));
 
         $this->hasMany('TagProductCategoryRelation as TagRelation', array(
              'local' => 'id',

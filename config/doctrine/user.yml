@@ -21,7 +21,7 @@ User:
 UserProfile:
   options:
     comment: 'Профайл пользователя'
-  actAs: [ Timestampable ]
+  actAs: [ Timestampable, Corable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     source_id:         { type: string(255), notnull: true, comment: 'Идентификатор в социальной сети' }
