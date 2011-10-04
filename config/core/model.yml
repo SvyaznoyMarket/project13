@@ -19,9 +19,9 @@ ProductPropertyOption:
   - product_option
 ProductType:
   - product_type
-Region:
-  - geo
-  - GEOs
+#Region:
+#  - geo
+#  - GEOs
 Shop:
   - shop
   - Stores
@@ -33,3 +33,7 @@ TagGroup:
   - GroupsTags
 #User:
 #  - user
+ProductPriceList:
+  - product_price_list
+ServiceCategory:
+  - service_category
