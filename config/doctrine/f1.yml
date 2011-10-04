@@ -15,10 +15,12 @@ ServiceCategory:
   options:
     comment: 'Категория услуг F1'
   actAs:
-    NestedSet: { hasManyRoots: true, rootColumnName: root_id }
+    NestedSet:  { hasManyRoots: true, rootColumnName: root_id }
+    Corable:    { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     root_id:           { type: integer(20), notnull: true }
+    core_parent_id:    { type: integer(20), notnull: false, default: null, comment: 'ид родителя записи в Core' }
     lft:               { type: integer(20), notnull: true }
     rgt:               { type: integer(20), notnull: true }
     level:             { type: integer(4), notnull: true }

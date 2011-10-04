@@ -25,6 +25,7 @@ abstract class BaseProductTypeForm extends BaseFormDoctrine
       'service_category_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ServiceCategory')),
       'product_category_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory')),
       'property_list'         => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty')),
+      'property_group_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductPropertyGroup')),
     ));
 
     $this->setValidators(array(
@@ -38,6 +39,7 @@ abstract class BaseProductTypeForm extends BaseFormDoctrine
       'service_category_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ServiceCategory', 'required' => false)),
       'product_category_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory', 'required' => false)),
       'property_list'         => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty', 'required' => false)),
+      'property_group_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductPropertyGroup', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_type[%s]');
@@ -78,6 +80,11 @@ abstract class BaseProductTypeForm extends BaseFormDoctrine
       $this->setDefault('property_list', $this->object->Property->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['property_group_list']))
+    {
+      $this->setDefault('property_group_list', $this->object->PropertyGroup->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
@@ -86,6 +93,7 @@ abstract class BaseProductTypeForm extends BaseFormDoctrine
     $this->saveServiceCategoryList($con);
     $this->saveProductCategoryList($con);
     $this->savePropertyList($con);
+    $this->savePropertyGroupList($con);
 
     parent::doSave($con);
   }
@@ -239,6 +247,44 @@ abstract class BaseProductTypeForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('Property', array_values($link));
+    }
+  }
+
+  public function savePropertyGroupList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['property_group_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->PropertyGroup->getPrimaryKeys();
+    $values = $this->getValue('property_group_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('PropertyGroup', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('PropertyGroup', array_values($link));
     }
   }
 
