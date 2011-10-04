@@ -20,7 +20,7 @@ class Doctrine_Template_Listener_Corable extends Doctrine_Record_Listener
       }
     }
 
-    if (!$event->getInvoker()->getCorePush())
+    if (!$this->isPush($event->getInvoker()))
     {
       return true;
     }
@@ -47,7 +47,7 @@ class Doctrine_Template_Listener_Corable extends Doctrine_Record_Listener
       }
     }
 
-    if (!$event->getInvoker()->getCorePush())
+    if (!$this->isPush($event->getInvoker()))
     {
       return true;
     }
@@ -72,7 +72,7 @@ class Doctrine_Template_Listener_Corable extends Doctrine_Record_Listener
       }
     }
 
-    if (!$event->getInvoker()->getCorePush())
+    if (!$this->isPush($event->getInvoker()))
     {
       return true;
     }
@@ -84,5 +84,10 @@ class Doctrine_Template_Listener_Corable extends Doctrine_Record_Listener
       throw new Exception("Unable to delete from Core: " . current(Core::getInstance()->getError()));
     }
 
+  }
+
+  protected function isPush(myDoctrineRecord $record)
+  {
+    return $record->getCorePush() && !(isset($this->_options['push']) && 'disable' == $this->_options['push']);
   }
 }

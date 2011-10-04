@@ -295,3 +295,29 @@ ProductRatingTypeProperty:
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
     Type:              { class: ProductRatingType, foreignAlias: Property, local: type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+ProductPriceList:
+  options:
+    comment: 'Прайс-листы'
+  actAs:
+    Corable:
+      push: disable
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    is_default:        { type: boolean, notnull: true, default: false, comment: 'Цена по-умолчанию для всех регионов?' }
+    is_active:         { type: boolean, notnull: true, default: false, comment: 'Цена по-умолчанию для всех регионов?' }
+
+ProductPrice:
+  options:
+    comment: 'Цены товаров по прайс-листам'
+  columns:
+    id:                     { type: integer(20), autoincrement: true, primary: true }
+    product_price_list_id:  { type: integer(20), notnull: true }
+    product_id:             { type: integer(20), notnull: true }
+    price:                  { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }
+    old_price:              { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }
+    avg_price:              { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }
+  relations:
+    Product:                { class: Product, foreignAlias: Price, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    PriceList:              { class: ProductPriceList, foreignAlias: Price, local: product_price_list_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
