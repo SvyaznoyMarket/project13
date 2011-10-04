@@ -45,17 +45,15 @@ class myProductFormFilter extends sfFormFilter
     $this->validatorSchema['creator'] = new sfValidatorPass();
 
     // виджеты параметров
-    $form = new BaseForm();
     foreach ($productCategory->FilterGroup->Filter as $productFilter)
     {
       if (!$widget = call_user_func(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), $productFilter)) continue;
 
-      $form->setWidget($productFilter->id, $widget);
-      $form->getWidgetSchema()->setLabel($productFilter->id, $productFilter->name);
-      $form->setValidator($productFilter->id, new sfValidatorPass());
+      $index = "param-{$productFilter->id}";
+      $this->setWidget($index, $widget);
+      $this->setValidator($index, new sfValidatorPass());
+      $this->widgetSchema[$index]->setLabel($productFilter->name);
     }
-    $this->embedForm('param', $form);
-    $this->widgetSchema['param']->setLabel('Параметры');
 
     $this->widgetSchema->setNameFormat('f[%s]');
   }
@@ -76,8 +74,10 @@ class myProductFormFilter extends sfFormFilter
 
     $productFilterList = $productCategory->FilterGroup->Filter;
     $productFilterList->indexBy('id');
-    foreach ($this->values['param'] as $id => $param)
+    foreach ($this->values as $id => $param)
     {
+      if (0 !== strpos($id, 'param-')) continue;
+      
       $productFilter = $productFilterList->getByIndex('id', $id);
       if (!$productFilter) continue;
 
@@ -99,9 +99,11 @@ class myProductFormFilter extends sfFormFilter
     }
 
     return new myWidgetFormChoice(array(
-      'choices'   => $choices,
-      'multiple'  => $productFilter->is_multiple,
-      'expanded'  => true,
+      'choices'          => $choices,
+      'multiple'         => $productFilter->is_multiple,
+      'expanded'         => true,
+      'renderer_class'   => 'myWidgetFormSelectCheckbox',
+      'renderer_options' => array(),
     ));
   }
 

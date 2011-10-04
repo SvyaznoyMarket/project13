@@ -91,18 +91,18 @@ class productCatalogComponents extends myComponents
   *
   * @param ProductCategory $productCategory Категория товара
   * @param Creator $creator Производитель
-  * @param myProductFormFilter $productFilter Форма фильтра с параметрами товаров
+  * @param myProductFormFilter $form Форма фильтра с параметрами товаров
   */
   public function executeFilter()
   {
-    if (empty($this->productFilter))
+    if (empty($this->form))
     {
-      $this->productFilter = new myProductFormFilter(array(), array(
+      $this->form = new myProductFormFilter(array(), array(
         'productCategory' => $this->productCategory,
         'creator'         => $this->creator,
       ));
     }
-
+    
     $this->url = url_for('productCatalog_filter', $this->productCategory);
   }
 /**
