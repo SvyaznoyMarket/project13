@@ -7,6 +7,7 @@
  * 
  * @property integer $id
  * @property integer $root_id
+ * @property integer $core_parent_id
  * @property integer $lft
  * @property integer $rgt
  * @property integer $level
@@ -19,6 +20,7 @@
  * 
  * @method integer             getId()                  Returns the current record's "id" value
  * @method integer             getRootId()              Returns the current record's "root_id" value
+ * @method integer             getCoreParentId()        Returns the current record's "core_parent_id" value
  * @method integer             getLft()                 Returns the current record's "lft" value
  * @method integer             getRgt()                 Returns the current record's "rgt" value
  * @method integer             getLevel()               Returns the current record's "level" value
@@ -30,6 +32,7 @@
  * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
  * @method ServiceCategory     setId()                  Sets the current record's "id" value
  * @method ServiceCategory     setRootId()              Sets the current record's "root_id" value
+ * @method ServiceCategory     setCoreParentId()        Sets the current record's "core_parent_id" value
  * @method ServiceCategory     setLft()                 Sets the current record's "lft" value
  * @method ServiceCategory     setRgt()                 Sets the current record's "rgt" value
  * @method ServiceCategory     setLevel()               Sets the current record's "level" value
@@ -59,6 +62,12 @@ abstract class BaseServiceCategory extends myDoctrineRecord
         $this->hasColumn('root_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
+             'length' => 20,
+             ));
+        $this->hasColumn('core_parent_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'comment' => 'ид родителя записи в Core',
              'length' => 20,
              ));
         $this->hasColumn('lft', 'integer', 20, array(
@@ -118,6 +127,10 @@ abstract class BaseServiceCategory extends myDoctrineRecord
              'hasManyRoots' => true,
              'rootColumnName' => 'root_id',
              ));
+        $corable0 = new Doctrine_Template_Corable(array(
+             'push' => 'disable',
+             ));
         $this->actAs($nestedset0);
+        $this->actAs($corable0);
     }
 }

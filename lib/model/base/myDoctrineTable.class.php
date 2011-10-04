@@ -39,6 +39,7 @@ class myDoctrineTable extends Doctrine_Table
     $this->applyDefaultParameters($params, array('index' => array()));
 
     // TODO: использовать редиска мультигет
+    //$list = array();
     $list = $this->createList();
     foreach ($ids as $id)
     {
@@ -57,6 +58,7 @@ class myDoctrineTable extends Doctrine_Table
       }
     }
 
+    //return $this->createList($list);
     return $list;
   }
 

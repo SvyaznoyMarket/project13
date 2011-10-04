@@ -14,23 +14,27 @@ abstract class BaseServiceCategoryFormFilter extends BaseFormFilterDoctrine
   {
     $this->setWidgets(array(
       'root_id'           => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'core_parent_id'    => new sfWidgetFormFilterInput(),
       'lft'               => new sfWidgetFormFilterInput(),
       'rgt'               => new sfWidgetFormFilterInput(),
       'level'             => new sfWidgetFormFilterInput(),
       'token'             => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'name'              => new sfWidgetFormFilterInput(array('with_empty' => false)),
       'is_active'         => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
+      'core_id'           => new sfWidgetFormFilterInput(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
     ));
 
     $this->setValidators(array(
       'root_id'           => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'core_parent_id'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'lft'               => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'rgt'               => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'level'             => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'token'             => new sfValidatorPass(array('required' => false)),
       'name'              => new sfValidatorPass(array('required' => false)),
       'is_active'         => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'core_id'           => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
     ));
 
@@ -71,12 +75,14 @@ abstract class BaseServiceCategoryFormFilter extends BaseFormFilterDoctrine
     return array(
       'id'                => 'Number',
       'root_id'           => 'Number',
+      'core_parent_id'    => 'Number',
       'lft'               => 'Number',
       'rgt'               => 'Number',
       'level'             => 'Number',
       'token'             => 'Text',
       'name'              => 'Text',
       'is_active'         => 'Boolean',
+      'core_id'           => 'Number',
       'product_type_list' => 'ManyKey',
     );
   }
