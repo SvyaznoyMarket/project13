@@ -68,10 +68,12 @@ class cartComponents extends myComponents
       }
 
       $list[] = array(
-        'token'     => $product->token,
-        'name'      => (string)$product,
+//        'token'     => $product->token,
+//        'name'      => (string)$product,
         'quantity'  => $product['cart']['quantity'],
         'service'   => $service_for_list,
+        'product'   => $product,
+        'price'     => $product->getFormattedPrice(),
       );
     }
 
