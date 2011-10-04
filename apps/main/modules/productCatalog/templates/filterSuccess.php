@@ -5,7 +5,7 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-  <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory, 'productFilter' => $productFilter)) ?>
+  <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory, 'form' => $productFilter)) ?>
 <?php end_slot() ?>
 
 <?php echo include_partial('productCatalog/slot/default', $sf_data) ?>
