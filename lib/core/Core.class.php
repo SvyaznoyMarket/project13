@@ -7,7 +7,9 @@ class Core
     $connection = null,
     $error = false,
     $models = null,
-    $logger = null
+    $logger = null,
+    $token = null,
+    $client_id = null
   ;
   protected static
     $instance = null;
@@ -233,11 +235,19 @@ class Core
   {
     $action = '/'.str_replace('.', '/', $name).'/';
 
+    if (empty($this->client_id) || empty($this->token))
+    {
+        if (!$this->auth())
+        {
+          return false;
+        }
+    }
+
     $data = json_encode(array(
       'action' => $action,
       'param'  => array_merge(array(
-        'client_id' => $this->getConfig('client_id'),
-        'token_id'  => '',
+        'client_id' => $this->client_id,
+        'token'     => $this->token,
       ), $params),
       'data'   => $data), JSON_FORCE_OBJECT);
 
@@ -246,9 +256,9 @@ class Core
     $this->logger->log("Response: ".$response);
     $response = json_decode($response, true);
 
-    if (isset($response['code']))
+    if (isset($response['error']))
     {
-      $this->error = array($response['code'] => $response['promt'], );
+      $this->error = array($response['error']['code'] => $response['error']['message'], );
       $response = false;
     }
 
@@ -258,6 +268,39 @@ class Core
   public function getError()
   {
     return $this->error;
+  }
+
+  protected function auth()
+  {
+    $data = json_encode(array(
+      'action' => '/auth/',
+      'param'  => array(
+        'consumer_key'  => $this->getConfig('consumer_key'),
+        'signature'     => $this->getConfig('signature'),
+      ),
+    ), JSON_FORCE_OBJECT);
+    $result = true;
+
+    $this->logger->log('Trying to pass authentification... ');
+    $response = $this->send($data);
+
+    $response = json_decode($response, true);
+
+    if (isset($response['error']))
+    {
+      $this->logger->log('Authentification failed: ');
+      $this->error = array($response['error']['code'] => $response['error']['message'], );
+      $this->logger->log('Authentification failed: '.$response['error']['message']);
+      $result = false;
+    }
+    else
+    {
+      $this->client_id = $response['id'];
+      $this->token = $response['token'];
+      $this->logger->log('Authentification passed');
+    }
+
+    return $result;
   }
 
   protected function send($request)
