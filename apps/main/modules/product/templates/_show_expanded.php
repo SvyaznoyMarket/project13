@@ -31,7 +31,7 @@
                 </div>
                 <div class="doodsbar">
                     <?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1)) ?>
-                    <a href="" class="link2"></a>
-                    <a href="" class="link3"></a>
+                    <?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?>
+                    <?php include_component('userProductCompare', 'button', array('product' => $product)) ?>
                 </div>
             </div>

@@ -224,10 +224,12 @@ class productComponents extends myComponents
       array(
         'name'  => 'compact',
         'title' => 'компактный',
+        'class' => 'tableview',
       ),
       array(
         'name'  => 'expanded',
         'title' => 'расширенный',
+        'class' => 'listview',
       ),
     );
 
@@ -235,7 +237,7 @@ class productComponents extends myComponents
     {
       $item = array_merge($item, array(
         'url'     => replace_url_for('view', $item['name']),
-        'current' => $this->getRequestParameter('view') == $item['name'],
+        'current' => $this->getRequestParameter('view', 'expanded') == $item['name'],
       ));
     } if (isset($item)) unset($item);
 
