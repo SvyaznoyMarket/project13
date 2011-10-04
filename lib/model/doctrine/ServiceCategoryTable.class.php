@@ -17,6 +17,15 @@ class ServiceCategoryTable extends myDoctrineTable
       return Doctrine_Core::getTable('ServiceCategory');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'        => 'core_id',
+      'parent_id' => 'core_parent_id',
+      'name'      => 'name',
+    );
+  }
+
   public function getForRoute(array $params)
   {
     $id = isset($params['serviceCategory']) ? $this->getIdBy('token', $params['serviceCategory']) : null;
