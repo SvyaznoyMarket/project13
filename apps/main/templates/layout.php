@@ -38,7 +38,6 @@
             <a href="">Отследить мой заказ</a>
           </div>
         </div>
-    </div>
     <!-- /Header -->
     <!-- Page head -->
     <div class="pagehead">
