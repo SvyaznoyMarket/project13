@@ -247,7 +247,7 @@ EOF;
         $record->fromArray(array(
           'type_id'     => $productType->id,
           'creator_id'  => rand($creatorOffset, $creatorOffset + $creatorCount),
-          'category_id' => $category_id,
+          //'category_id' => $category_id,
           'token'       => 'product-'.$productType->id.'-'.$i,
           'name'        => $this->getRecordName('Product', $productType->id.'-'.$i),
           'view_show'   => rand(0, 10) > 0 ? true : false,
@@ -256,6 +256,12 @@ EOF;
           'price'       => round(rand(500, 80000), -2),
           'rating'      => rand(0, 50) / 10,
         ));
+
+        $relation = new ProductCategoryProductRelation();
+        $relation->fromArray(array(
+          'product_category_id' => $category_id,
+        ));
+        $record->ProductCategoryProductRelation[] = $relation;
 
         foreach ($productType->Property as $j => $productProperty)
         {

@@ -22,9 +22,9 @@
     <br class="clear" />
   </div>
 <?php endif ?>
-
-<?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
-<div class="line"></div>
-<?php include_component('product', 'pager', array('pager' => $productPager)) ?>
-<div class="line pb10"></div>
-<?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
+  <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
+  <?php include_component('product', 'list_view') ?>
+  <div class="line"></div>
+  <?php include_component('product', 'pager', array('pager' => $productPager)) ?>
+  <div class="line pb10"></div>
+  <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>

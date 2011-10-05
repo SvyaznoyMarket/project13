@@ -588,4 +588,51 @@ EOF;
     }
   }
 
+  // ServiceCategory
+  protected function createServiceCategoryRecord(array $data)
+  {
+    $record = ServiceCategoryTable::getInstance()->createRecordFromCore($data);
+    $record->token = uniqid().'-'.myToolkit::urlize($record->name);
+    $record->is_active = 1;
+
+    return $record;
+  }
+
+  // ServiceCategory
+  protected function flushServiceCategoryCollection(myDoctrineCollection $collection)
+  {
+    $table = ServiceCategoryTable::getInstance();
+
+    $tree = $table->getTree();
+
+    // создает двухуровневое дерево
+    foreach ($collection as $record)
+    {
+      if (empty($record->core_parent_id))
+      {
+        $record->save();
+        $tree->createRoot($record);
+      }
+    }
+
+    // формирует уровни дерева
+    for ($level = 0; $level <= 6; $level++)
+    {
+      foreach ($table->findByLevel($level) as $parent)
+      {
+        foreach ($collection as $i => $record)
+        {
+          if ($record->core_parent_id != $parent->core_id) continue;
+
+          $record->getNode()->insertAsLastChildOf($parent);
+
+          // free memory
+          $collection[$i]->free(true);
+          $collection[$i] = null;
+          unset($collection[$i]);
+        }
+      }
+    }
+  }
+
 }

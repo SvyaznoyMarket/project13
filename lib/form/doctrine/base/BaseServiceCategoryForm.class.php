@@ -17,24 +17,28 @@ abstract class BaseServiceCategoryForm extends BaseFormDoctrine
     $this->setWidgets(array(
       'id'                => new sfWidgetFormInputHidden(),
       'root_id'           => new sfWidgetFormInputText(),
+      'core_parent_id'    => new sfWidgetFormInputText(),
       'lft'               => new sfWidgetFormInputText(),
       'rgt'               => new sfWidgetFormInputText(),
       'level'             => new sfWidgetFormInputText(),
       'token'             => new sfWidgetFormInputText(),
       'name'              => new sfWidgetFormInputText(),
       'is_active'         => new sfWidgetFormInputCheckbox(),
+      'core_id'           => new sfWidgetFormInputText(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
     ));
 
     $this->setValidators(array(
       'id'                => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'root_id'           => new sfValidatorInteger(),
+      'core_parent_id'    => new sfValidatorInteger(array('required' => false)),
       'lft'               => new sfValidatorInteger(array('required' => false)),
       'rgt'               => new sfValidatorInteger(array('required' => false)),
       'level'             => new sfValidatorInteger(array('required' => false)),
       'token'             => new sfValidatorString(array('max_length' => 255)),
       'name'              => new sfValidatorString(array('max_length' => 255)),
       'is_active'         => new sfValidatorBoolean(array('required' => false)),
+      'core_id'           => new sfValidatorInteger(array('required' => false)),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
     ));
 
