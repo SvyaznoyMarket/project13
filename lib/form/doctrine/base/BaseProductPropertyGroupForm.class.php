@@ -15,23 +15,25 @@ abstract class BaseProductPropertyGroupForm extends BaseFormDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'id'            => new sfWidgetFormInputHidden(),
-      'core_id'       => new sfWidgetFormInputText(),
-      'name'          => new sfWidgetFormInputText(),
-      'position'      => new sfWidgetFormInputText(),
-      'created_at'    => new sfWidgetFormDateTime(),
-      'updated_at'    => new sfWidgetFormDateTime(),
-      'property_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty')),
+      'id'                => new sfWidgetFormInputHidden(),
+      'core_id'           => new sfWidgetFormInputText(),
+      'name'              => new sfWidgetFormInputText(),
+      'position'          => new sfWidgetFormInputText(),
+      'created_at'        => new sfWidgetFormDateTime(),
+      'updated_at'        => new sfWidgetFormDateTime(),
+      'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
+      'property_list'     => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty')),
     ));
 
     $this->setValidators(array(
-      'id'            => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'core_id'       => new sfValidatorInteger(array('required' => false)),
-      'name'          => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'position'      => new sfValidatorInteger(array('required' => false)),
-      'created_at'    => new sfValidatorDateTime(),
-      'updated_at'    => new sfValidatorDateTime(),
-      'property_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty', 'required' => false)),
+      'id'                => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'           => new sfValidatorInteger(array('required' => false)),
+      'name'              => new sfValidatorString(array('max_length' => 255, 'required' => false)),
+      'position'          => new sfValidatorInteger(array('required' => false)),
+      'created_at'        => new sfValidatorDateTime(),
+      'updated_at'        => new sfValidatorDateTime(),
+      'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
+      'property_list'     => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductProperty', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('product_property_group[%s]');
@@ -52,6 +54,11 @@ abstract class BaseProductPropertyGroupForm extends BaseFormDoctrine
   {
     parent::updateDefaultsFromObject();
 
+    if (isset($this->widgetSchema['product_type_list']))
+    {
+      $this->setDefault('product_type_list', $this->object->ProductType->getPrimaryKeys());
+    }
+
     if (isset($this->widgetSchema['property_list']))
     {
       $this->setDefault('property_list', $this->object->Property->getPrimaryKeys());
@@ -61,9 +68,48 @@ abstract class BaseProductPropertyGroupForm extends BaseFormDoctrine
 
   protected function doSave($con = null)
   {
+    $this->saveProductTypeList($con);
     $this->savePropertyList($con);
 
     parent::doSave($con);
+  }
+
+  public function saveProductTypeList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['product_type_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->ProductType->getPrimaryKeys();
+    $values = $this->getValue('product_type_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('ProductType', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('ProductType', array_values($link));
+    }
   }
 
   public function savePropertyList($con = null)

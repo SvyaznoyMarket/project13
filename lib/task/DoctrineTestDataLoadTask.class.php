@@ -214,7 +214,7 @@ EOF;
 
         $record = new ProductFilter();
         $record->fromArray(array(
-          'name'            => $this->getRecordName('ProductFilter', $i),
+          'name'            => $this->getRecordName('ProductFilter', $i + 1),
           'type'            => 'select' == $productProperty->type ? 'choice' : 'range',
           'group_id'        => $productType->id,
           'property_id'     => $productProperty->id,
