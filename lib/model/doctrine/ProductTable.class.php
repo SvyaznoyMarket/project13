@@ -70,6 +70,7 @@ class ProductTable extends myDoctrineTable
 
     $q->leftJoin('product.Category productCategory')
       ->leftJoin('product.Creator creator')
+      ->leftJoin('product.Photo photo')
     ;
     if ($params['with_properties'])
     {

@@ -98,6 +98,18 @@ EOF;
             $this->logSection('Import entity', $entity['type'].' #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
           }
         }
+        elseif (method_exists($this, 'process'.ucfirst($entity['type'])))
+        {
+          try {
+            if ($record = call_user_func_array(array($this, 'process'.ucfirst($entity['type'])), array($entity['data'], )))
+            {
+              $this->pushRecord($record);
+            }
+          }
+          catch (Exception $e) {
+            $this->logSection('Import entity', $entity['type'].' #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
+          }
+        }
         else {
           $this->logSection('Unknown entity', $entity['type'].' #'.$entity['id'], null, 'ERROR');
         }
@@ -633,6 +645,33 @@ EOF;
         }
       }
     }
+  }
+
+  protected function processUpload(array $data)
+  {
+    $record = null;
+    switch ($data['item_type_id'])
+    {
+      case 1:
+        switch ($data['type_id'])
+        {
+          case 1:
+          case 2:
+            $record = ProductPhotoTable::getInstance()->createRecordFromCore($data);
+            $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
+            $record->view_show = 1;
+            break;
+        }
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      default:
+        break;
+    }
+
+    return $record;
   }
 
 }
