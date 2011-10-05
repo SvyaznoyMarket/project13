@@ -208,7 +208,7 @@ EOF;
     foreach ($productTypeList as $productType)
     {
       $list = ProductFilterTable::getInstance()->createList();
-      foreach ($productType->Property as $productProperty)
+      foreach ($productType->Property as $i => $productProperty)
       {
         if (0 == rand(0, 1)) continue;
 
