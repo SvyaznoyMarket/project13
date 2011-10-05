@@ -36,9 +36,13 @@ class myProductFormFilter extends sfFormFilter
       ->toKeyValueArray('id', 'name')
     ;
     $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
-      'choices'  => $choices,
-      'multiple' => true,
-      'expanded' => true
+      'choices'          => $choices,
+      'multiple'         => true,
+      'expanded'         => true,
+      'renderer_class'   => 'myWidgetFormSelectCheckbox',
+      'renderer_options' => array(
+        'label_separator' => '',
+      ),
     ));
     $this->widgetSchema['creator']->setLabel('Производитель');
     $this->widgetSchema['creator']->setDefault($creator ? $creator->id : null);
@@ -103,7 +107,9 @@ class myProductFormFilter extends sfFormFilter
       'multiple'         => $productFilter->is_multiple,
       'expanded'         => true,
       'renderer_class'   => 'myWidgetFormSelectCheckbox',
-      'renderer_options' => array(),
+      'renderer_options' => array(
+        'label_separator' => '',
+      ),
     ));
   }
 

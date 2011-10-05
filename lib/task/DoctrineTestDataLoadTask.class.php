@@ -208,13 +208,13 @@ EOF;
     foreach ($productTypeList as $productType)
     {
       $list = ProductFilterTable::getInstance()->createList();
-      foreach ($productType->Property as $productProperty)
+      foreach ($productType->Property as $i => $productProperty)
       {
         if (0 == rand(0, 1)) continue;
 
         $record = new ProductFilter();
         $record->fromArray(array(
-          'name'            => $this->getRecordName('ProductFilter', $i),
+          'name'            => $this->getRecordName('ProductFilter', $i + 1),
           'type'            => 'select' == $productProperty->type ? 'choice' : 'range',
           'group_id'        => $productType->id,
           'property_id'     => $productProperty->id,
