@@ -129,9 +129,9 @@
           </div>
         </div>
         <div class="counter">
-          <a href=""><img src="images/counter1.gif" alt="" width="80" height="30" /></a>
-          <a href=""><img src="images/counter2.gif" alt="" width="50" height="30" /></a>
-          <a href=""><img src="images/counter3.gif" alt="" width="50" height="30" /></a>
+          <a href=""><img src="/images/images/counter1.gif" alt="" width="80" height="30" /></a>
+          <a href=""><img src="/images/images/counter2.gif" alt="" width="50" height="30" /></a>
+          <a href=""><img src="/images/images/counter3.gif" alt="" width="50" height="30" /></a>
         </div>
       </div>
     </div>
