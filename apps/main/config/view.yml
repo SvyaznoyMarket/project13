@@ -21,8 +21,8 @@ default:
     - skin/inner.css
 
   javascripts:
-    #- jquery.js
-    - jslib/jquery-1.4.2.js
+    - jquery.js
+    #- jslib/jquery-1.4.2.js
     - jslib/prettyCheckboxes.js
     - jslib/jquery.ui.widget.js
     - jslib/jquery.ui.mouse.js

@@ -137,7 +137,7 @@ TABLE {border-collapse:collapse}
 .headerright A:hover {color:#ffa901}
 
 .extramenu {position:absolute; top:115px; left:0; width:914px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #ffa901;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 -moz-box-shadow:0 0 7px #616161;
@@ -197,8 +197,8 @@ H2.bold {font-weight:bold}
 .column685 {margin:0 0 0 235px}
 
 
-.button {overflow:visible; background-image:url(img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer; 
-border-radius:5px; 
+.button {overflow:visible; background-image:url(img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px
 }
@@ -268,7 +268,7 @@ LABEL.checked {color:#ffa901}
 .bigfilter LI LABEL {display:block; font-size:12px}
 
 .prompting {display:none; position:absolute; left:-39px; top:13px; //top:29px; z-index:10; width:350px; padding:10px 15px 15px 15px; font-weight:normal; cursor:auto; background-color:#fff; border:2px solid #308fcf;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -282,7 +282,7 @@ box-shadow:0 0 9px #616161;
 .prompting .close {top:0px; right:0px; //right:-2px; width:21px; height:21px; background:url(img/bg_inner.png) no-repeat -91px -186px; text-indent:-10000px; cursor:pointer}
 
 .filterresult {display:none; position:absolute; left:100%; z-index:10; padding:9px 12px; font-weight:normal; cursor:auto; white-space:nowrap; background-color:#fff; border:2px solid #ffa901;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -299,7 +299,7 @@ box-shadow:0 0 9px #616161;
 .sliderbox {float:left; width:194px; margin:0 0 10px 11px}
 .sliderbox SPAN {display:block; padding-top:4px; font-size:10px; color:#8a8a8a}
 .slider-range {height:16px; background:#ffe6b4 url(img/bg.png) repeat-x 0 -34px;  position: relative;
-border-radius:4px; 
+border-radius:4px;
 -moz-border-radius:4px;
 -webkit-border-radius:4px;
 }
@@ -307,7 +307,7 @@ border-radius:4px;
 .slider-range A {position:absolute; z-index:2; top:0; margin-left:-7px; width:15px; height:24px; background:url(img/bg.png) no-repeat -18px 0; cursor: default; outline:none}
 
 .advice {margin-bottom:20px; border:1px solid #dcdcdc;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px}
 .advice DIV {border-bottom:1px solid #dcdcdc; padding:12px 12px 1px 12px; font-size:16px}
@@ -324,7 +324,7 @@ border-radius:5px;
 .filterchoice {float:left; position:relative; z-index:2}
 .filterlink {display:inline-block; font-weight:bold; background:url(img/icons.png) no-repeat 100% -169px; padding-right:17px; margin-left:9px; text-decoration:underline; white-space:nowrap}
 .filterlist {display:none; position:absolute; z-index:2; top:-10px; left:-12px; padding:8px 10px 10px 10px; background-color:#fff; border:2px solid #eaeaea;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -354,7 +354,7 @@ box-shadow:0 0 7px #616161;
 .pageslist SPAN {float:left; display:block; padding:3px 5px 0 0; color:#a6a6a6}
 .pageslist A {float:left; display:block; height:18px; padding:3px 7px 0 7px; vertical-align:middle; text-decoration:none; color:#a6a6a6; font-size:12px}
 .pageslist .current A, .pageslist .current A:hover {background-color:#000; color:#fff; border:none; position:relative;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -378,7 +378,7 @@ border-radius:5px;
 
 .goodslist {float:left; width:705px; margin-left:-4px;  padding-bottom:5px}
 .goodsbox {float:left; width:195px; padding:10px; margin-bottom:14px; margin-right:16px; background-color:#fff; position:relative; border:2px solid #fff;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
@@ -403,7 +403,7 @@ border-radius:5px;
 
 .goodsline {float:left; width:661px; padding:10px 10px 11px 10px; margin-bottom:0; background-color:#fff; position:relative; border:2px solid #fff; border-bottom:1px solid #e6e6e6}
 .goodsline:hover {padding:10px; border:2px solid #dcdcdc; z-index:1;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
@@ -426,11 +426,11 @@ border-radius:5px;
 .scroll A.forvard {background-position:-789px -165px}
 .scroll A.forvard:hover {background-position:-789px -191px}
 .scroll A.forvard.disabled {background-position:-789px -139px; cursor:default}
-.carousel {float:left; width:705px; margin-left:-2px; margin-bottom:-10px} 
+.carousel {float:left; width:705px; margin-left:-2px; margin-bottom:-10px}
 
 .bigcarousel {float:left; width:935px; margin-right:-15px}
 .bigcarousel .goodsbox {width:147px; padding:10px 10px 10px 10px; margin-bottom:14px; margin-right:16px; background-color:#fff; position:relative; border:2px solid #fff;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
@@ -439,7 +439,7 @@ border-radius:5px;
 .bigcarousel .goodsrating {display:block; padding-bottom:5px; font-size:10px; color:#a6a6a6}
 .bigcarousel .ratingview {display:inline-block; width:63px; margin:0 5px 0 0; vertical-align:-1px; }
 .bigcarousel .goodsbox .buy {position:absolute; left:0; top:0; padding:3px 6px 4px 6px; background-color:#ffa901; color:#fff; font-size:11px;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
@@ -465,7 +465,7 @@ border-radius:5px;
 .ratingbox A.ra2:hover {width:60px}
 .ratingbox A.ra3 {left:60px}
 .ratingbox A.ra3:hover {width:90px}
-.ratingbox A.ra4 {left:90px}	
+.ratingbox A.ra4 {left:90px}
 .ratingbox A.ra4:hover {width:120px}
 .ratingbox A.ra5 {left:120px}
 .ratingbox A.ra5:hover {width:150px}
@@ -483,7 +483,7 @@ border-radius:5px;
 .ratingscalebox A.ra2:hover {width:60px}
 .ratingscalebox A.ra3 {left:60px}
 .ratingscalebox A.ra3:hover {width:90px}
-.ratingscalebox A.ra4 {left:90px}	
+.ratingscalebox A.ra4 {left:90px}
 .ratingscalebox A.ra4:hover {width:120px}
 .ratingscalebox A.ra5 {left:120px}
 .ratingscalebox A.ra5:hover {width:150px}
@@ -491,7 +491,7 @@ border-radius:5px;
 
 
 .extrabox {display:none; position:absolute; left:-2px; bottom:-26px; float:left; width:195px; padding:0 10px 10px 10px;  background-color:#fff; border: solid #fff; border-width:0 2px 2px 2px;
-border-radius:0 0 5px 5px; 
+border-radius:0 0 5px 5px;
 -moz-border-radius:0 0 5px 5px;
 -webkit-border-radius:0 0 5px 5px;
 }
@@ -582,7 +582,7 @@ border-radius:0 0 5px 5px;
 .colorlist {float:left; width:100%; padding-bottom:8px}
 .colorlist LI {float:left; width:29px; height:29px; margin:0 5px 5px 0}
 .colorlist A {display:block; width:15px; height:15px; padding:5px; background-color:#fff; border:2px solid #e7e7e7;
-border-radius: 7px; 
+border-radius: 7px;
 -moz-border-radius:7px;
 -webkit-border-radius:7px;
 }
@@ -592,7 +592,7 @@ border-radius: 7px;
 .variationlist {float:left; width:100%; padding-bottom:8px}
 .variationlist LI {float:left; height:29px; margin:0 10px 5px 0}
 .variationlist A {display:block; height:19px; padding:6px 8px 0 8px; font-weight:bold; font-size:11px; background-color:#fff; border:2px solid #e7e7e7;
-border-radius: 7px; 
+border-radius: 7px;
 -moz-border-radius:7px;
 -webkit-border-radius:7px;
 }
@@ -602,7 +602,7 @@ border-radius: 7px;
 .completemenu {float:left; width:295px; padding-bottom:20px}
 .completemenu LI {position:relative; padding:0 0 5px 55px; min-height:29px}
 .completemenu .number, .completepoint .number {position:absolute; top:0; left:0; display:block; width:25px; height:19px; padding-top:6px; background-color:#fff; border:2px solid #e7e7e7; text-align:center; font-weight:normal; font-size:10px;
-border-radius: 7px; 
+border-radius: 7px;
 -moz-border-radius:7px;
 -webkit-border-radius:7px;
 }
@@ -642,7 +642,7 @@ border-radius: 7px;
 .gradetable.fr TBODY TD {padding:0 0 8px 20px}
 .gradetable TBODY TD {font-size:10px; color:#a6a6a6}
 .grade {float:left; width:84px; height:6px; line-height:0; font-size:0; margin:3px 6px 0 0; border:1px solid #f4a201;
-border-radius: 5px; 
+border-radius: 5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
@@ -668,7 +668,7 @@ border-radius: 5px;
 .sharebox {float:right; position:relative; padding-right:10px}
 .sharelink, .sharelink:hover {position:relative; z-index:2; display:inline-block; padding:5px 0 1px 28px; background:url(img/icons.png) no-repeat 0 -236px; font-size:11px; color:#5da7d9}
 .sharelist {display:none; position:absolute; bottom:-12px; right:0; padding:10px 12px 37px 12px; background:#fff; border:2px solid #eaeaea;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -692,8 +692,8 @@ box-shadow:0 0 7px #616161;
 
 
 .addcomment {display:none; padding-top:15px}
-.textareabox {padding:5px 10px; border:1px solid #c9c9c9; 
-border-radius: 5px; 
+.textareabox {padding:5px 10px; border:1px solid #c9c9c9;
+border-radius: 5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
@@ -710,7 +710,7 @@ border-radius: 5px;
 .answerright {float:right; width:571px; overflow:hidden}
 
 .hideblock {display:none; position:absolute; z-index:10; padding:15px 20px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #eaeaea;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -724,7 +724,7 @@ box-shadow:0 0 7px #616161;
 .hideblock LABEL {font-size:12px}
 
 .text {height:22px; padding:0 5px; border:1px solid #c9c9c9;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
@@ -758,7 +758,7 @@ border-radius:5px;
 .tagslist A {font-weight:normal; text-decoration:underline; margin-right:10px; line-height:18px}
 
 .popup {position:relative; display:none; z-index:1000; overflow:hidden; background:#fff url(img/bg_mediablock.gif) repeat-y 0 0; color:#000; font-size:12px; text-align:left; border:2px solid #ffa901;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 -moz-box-shadow:0 0 7px #616161;
@@ -799,7 +799,7 @@ box-shadow:0 0 7px #616161;
 
 
 .articlemenu {float:right; width:215px;  margin-bottom:20px; border:2px solid #dcdcdc;
-border-radius:5px; 
+border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px}
 .articlemenu LI {padding:10px 0; border-bottom:1px solid #e6e6e6; text-align:center}
@@ -809,13 +809,13 @@ border-radius:5px;
 .goodsinfosmall {float:left; width:500px; padding-left:20px}
 .graylist LI {list-style-type:disc; color:#a6a6a6; margin-left:14px}
 
-.selectbox {height:22px; padding:0 10px; line-height:22px; position:relative; background:#e3e3e3 url(img/bg_buttons.png) repeat-x 0 -128px; border:1px solid #c9c9c9; 
-border-radius: 5px; 
+.selectbox {height:22px; padding:0 10px; line-height:22px; position:relative; background:#e3e3e3 url(img/bg_buttons.png) repeat-x 0 -128px; border:1px solid #c9c9c9;
+border-radius: 5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px
 }
 .selectbox:hover {background-color:#c5c5c5; background-position:0 -160px}
-.selectbox .select {height:22px; white-space:nowrap; position:absolute; overflow:hidden} 
+.selectbox .select {height:22px; white-space:nowrap; position:absolute; overflow:hidden}
 .selectbox .styled {position:relative; opacity:0; z-index:2; height:22px; margin-left:-10px; cursor:pointer}
 .selectbox I {position:absolute; top:50%; right:10px; margin-top:-3px; display:block; width:11px; height:7px; background:url(img/bg.png) no-repeat -62px -24px}
 
@@ -845,8 +845,8 @@ border-radius: 5px;
 .basketright {float:left; width:780px; padding-left:20px}
 .goodstitle {float:left; width:329px}
 .basketinfo {float:right; width:451px}
-.basketinfo .left {float:left; width:215px; margin-right:20px; text-align:right}
-.basketinfo .right {float:left; width:216px}
+.basketinfo .left {float:left; width:195px; margin-right:20px; text-align:right}
+.basketinfo .right {float:left; width:236px}
 .basketinfo .button {font-weight:normal}
 .numerbox {width:109px; height:25px; background:url(img/bg_inner.png) no-repeat -765px -321px}
 .numerbox B {float:left; display:block; width:27px; height:25px; cursor:pointer}
@@ -872,8 +872,8 @@ border-radius: 5px;
 
 
 
-.bottommenu {float:left; width:920px; padding:21px 0; margin-bottom:18px; background-color:#f5f5f5; 
-border-radius: 5px; 
+.bottommenu {float:left; width:920px; padding:21px 0; margin-bottom:18px; background-color:#f5f5f5;
+border-radius: 5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior:url(border-radius.htc);

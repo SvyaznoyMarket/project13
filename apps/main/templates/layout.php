@@ -41,12 +41,11 @@
     <!-- /Header -->
     <!-- Page head -->
     <div class="pagehead">
-        <div class="breadcrumbs"><!--a href="">Enter.ru</a> &gt; <a href="">Мебель</a> &gt; <strong>Стеллажи</strong-->
+        <div class="breadcrumbs">
 <?php if (has_slot('navigation')): ?>
   <?php include_slot('navigation') ?>
 <?php endif ?>
         </div>
-        <!--div class="searchnumber">Стеллажи  &mdash; предлагаем на выбор <strong class="orange">2140</strong> товаров</div-->
         <div class="clear"></div>
 <?php if (has_slot('title')): ?>
   <h1><?php include_slot('title') ?></h1>
