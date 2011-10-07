@@ -12,7 +12,7 @@ if (!in_array(@$_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1')))
 if (isset($_POST['enter_code']) && !strcmp($_POST['enter_code'], $enter_code))
 {
   $_SESSION['enter_code'] = $enter_code;
-  header('Location: '.$_SERVER['REFERER']);
+  header('Location: http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
   die();
 }
 

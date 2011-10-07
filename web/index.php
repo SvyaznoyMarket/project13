@@ -7,7 +7,7 @@ $enter_code = 'welcome';
 if (isset($_POST['enter_code']) && !strcmp($_POST['enter_code'], $enter_code))
 {
   $_SESSION['enter_code'] = $enter_code;
-  header('Location: '.$_SERVER['REFERER']);
+  header('Location: http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
   die();
 }
 
