@@ -90,6 +90,14 @@ class ProductTable extends myDoctrineTable
       return $record;
     }
 
+    $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record->id);
+
+    if ($prices)
+    {
+      $record->mapValue('Prices', $prices);
+      $record->price = $prices->price;
+    }
+
     $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
       'view'           => $params['view'],
       'group_property' => $params['group_property'],
