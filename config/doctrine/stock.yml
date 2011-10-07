@@ -15,6 +15,9 @@ Shop:
     phonenumbers:      { type: string(255), notnull: false, default: null }
     photo:             { type: string(255), notnull: false, default: null }
     description:       { type: string, notnull: false, default: null, comment: 'Описание магазина' }
+    way_walk:          { type: string }
+    way_auto:          { type: string }
+    is_active:         { type: boolean, notnull: true, default: false, comment: 'Магазин работает?' }
   relations:
     Region:            { class: Region, foreignAlias: Stock, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
 

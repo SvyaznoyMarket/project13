@@ -400,6 +400,11 @@ EOF;
     $record = ShopTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
 
+    if (isset($data['geo_id']))
+    {
+      $record->region_id = $this->getRecordByCoreId('Region', $data['gio_id'], true);
+    }
+
     return $record;
   }
 
