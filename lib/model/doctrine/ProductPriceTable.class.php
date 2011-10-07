@@ -34,4 +34,13 @@ class ProductPriceTable extends myDoctrineTable
 
     return $result;
   }
+
+  public function getCoreMapping()
+  {
+    return array(
+      'price'         => 'price',
+      'price_old'     => 'old_price',
+      'price_average' => 'avg_price',
+    );
+  }
 }

@@ -37,3 +37,7 @@ ProductPriceList:
   - product_price_list
 ServiceCategory:
   - service_category
+ProductPrice:
+  - product_price
+Service:
+  - service

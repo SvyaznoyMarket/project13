@@ -389,7 +389,7 @@ EOF;
   protected function createCreatorRecord(array $data)
   {
     $record = CreatorTable::getInstance()->createRecordFromCore($data);
-    $record->token = myToolkit::urlize($record->name);
+    $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
     return $record;
   }
@@ -647,6 +647,39 @@ EOF;
     }
   }
 
+  // ProductPrice
+  protected function createProductPriceRecord(array $data)
+  {
+    $record = ProductPriceTable::getInstance()->createRecordFromCore($data);
+    $record->product_id = $this->getRecordByCoreId('Product', $data['product_id'], true);
+    $record->product_price_list_id = $this->getRecordByCoreId('ProductPriceList', $data['price_list_id'], true);
+
+    return $record;
+  }
+
+  //Service
+  protected function createServiceRecord(array $data)
+  {
+    $record = ServiceTable::getInstance()->createRecordFromCore($data);
+    $record->token = uniqid().'-'.myToolkit::urlize($record->name);
+
+    // Теги
+    if (!empty($data['category']))
+    {
+      foreach ($data['category'] as $relationData)
+      {
+        $relation = new ServiceCategoryRelation();
+        $relation->fromArray(array(
+          'category_id' => $this->getRecordByCoreId('ServiceCategory', $relationData['id'], true),
+        ));
+        $record->CategoryRelation[] = $relation;
+      }
+    }
+
+    return $record;
+  }
+
+  //Photo for everything
   protected function processUpload(array $data)
   {
     $record = null;
