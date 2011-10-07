@@ -16,6 +16,19 @@ class ServiceTable extends myDoctrineTable
   {
       return Doctrine_Core::getTable('Service');
   }
+
+  public function getCoreMapping()
+  {
+    return array(
+      'id'          => 'core_id',
+      'name'        => 'name',
+      'description' => 'description',
+//      'work'        => 'work',
+//      'expendable'  => 'expendable',
+//      'is_active'   => 'is_active',
+    );
+  }
+
   /* TODO добавить условие выборки по региону */
   public function getListByProduct(Product $product, array $params = array())
   {
@@ -38,8 +51,9 @@ class ServiceTable extends myDoctrineTable
     $this->applyDefaultParameters($params);
 
     $q = $this->createBaseQuery($params);
+    $q->innerJoin('service.CategoryRelation categoryRelation');
 
-    $q->andWhere('service.category_id=?', array($category_id,));
+    $q->andWhere('categoryRelation.category_id=?', array($category_id,));
 
     $this->setQueryParameters($q, $params);
 
