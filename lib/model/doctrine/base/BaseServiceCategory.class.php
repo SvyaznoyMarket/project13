@@ -17,6 +17,7 @@
  * @property Doctrine_Collection $ProductType
  * @property Doctrine_Collection $Service
  * @property Doctrine_Collection $ProductTypeRelation
+ * @property Doctrine_Collection $ServiceRelation
  * 
  * @method integer             getId()                  Returns the current record's "id" value
  * @method integer             getRootId()              Returns the current record's "root_id" value
@@ -30,6 +31,7 @@
  * @method Doctrine_Collection getProductType()         Returns the current record's "ProductType" collection
  * @method Doctrine_Collection getService()             Returns the current record's "Service" collection
  * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
+ * @method Doctrine_Collection getServiceRelation()     Returns the current record's "ServiceRelation" collection
  * @method ServiceCategory     setId()                  Sets the current record's "id" value
  * @method ServiceCategory     setRootId()              Sets the current record's "root_id" value
  * @method ServiceCategory     setCoreParentId()        Sets the current record's "core_parent_id" value
@@ -42,6 +44,7 @@
  * @method ServiceCategory     setProductType()         Sets the current record's "ProductType" collection
  * @method ServiceCategory     setService()             Sets the current record's "Service" collection
  * @method ServiceCategory     setProductTypeRelation() Sets the current record's "ProductTypeRelation" collection
+ * @method ServiceCategory     setServiceRelation()     Sets the current record's "ServiceRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -116,10 +119,15 @@ abstract class BaseServiceCategory extends myDoctrineRecord
              'foreign' => 'product_type_id'));
 
         $this->hasMany('Service', array(
+             'refClass' => 'ServiceCategoryRelation',
+             'local' => 'category_id',
+             'foreign' => 'service_id'));
+
+        $this->hasMany('ServiceCategoryProductTypeRelation as ProductTypeRelation', array(
              'local' => 'id',
              'foreign' => 'category_id'));
 
-        $this->hasMany('ServiceCategoryProductTypeRelation as ProductTypeRelation', array(
+        $this->hasMany('ServiceCategoryRelation as ServiceRelation', array(
              'local' => 'id',
              'foreign' => 'category_id'));
 
