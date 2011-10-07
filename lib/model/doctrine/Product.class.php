@@ -82,4 +82,30 @@ class Product extends BaseProduct
   {
     return ServiceTable::getInstance()->getListByProduct($this, $params);
   }
+  
+  public function getUserRates()
+  {
+	  
+  }
+  
+  public function getRecomendStat()
+  {
+	  $q = ProductCommentTable::getInstance()->createBaseQuery();
+	  $q->andWhere('product_id = ?', $this->id);
+	  $q->andWhere('parent_id = 0');
+	  $data = $q->fetchArray();
+	  $result = array(
+		  'count' => 0,
+		  'recomends' => 0,
+		  'percent' => 0
+	  );
+	  foreach ($data as $row) {
+		  $result['count']++;
+		  if ($row['is_recomend'] == 1) {
+			  $result['recomends']++;
+		  }
+	  }
+	  $result['percent'] = round(($result['recomends']/$result['count'])*100);
+	  return $result;
+  }
 }

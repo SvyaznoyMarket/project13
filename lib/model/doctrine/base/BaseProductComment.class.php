@@ -9,6 +9,7 @@
  * @property integer $core_parent_id
  * @property integer $core_user_id
  * @property integer $product_id
+ * @property integer $parent_id
  * @property integer $lft
  * @property integer $rgt
  * @property integer $level
@@ -16,6 +17,7 @@
  * @property string $content
  * @property integer $helpful
  * @property integer $unhelpful
+ * @property boolean $is_recomend
  * @property Product $Product
  * @property User $User
  * 
@@ -23,6 +25,7 @@
  * @method integer        getCoreParentId()   Returns the current record's "core_parent_id" value
  * @method integer        getCoreUserId()     Returns the current record's "core_user_id" value
  * @method integer        getProductId()      Returns the current record's "product_id" value
+ * @method integer        getParentId()       Returns the current record's "parent_id" value
  * @method integer        getLft()            Returns the current record's "lft" value
  * @method integer        getRgt()            Returns the current record's "rgt" value
  * @method integer        getLevel()          Returns the current record's "level" value
@@ -30,12 +33,14 @@
  * @method string         getContent()        Returns the current record's "content" value
  * @method integer        getHelpful()        Returns the current record's "helpful" value
  * @method integer        getUnhelpful()      Returns the current record's "unhelpful" value
+ * @method boolean        getIsRecomend()     Returns the current record's "is_recomend" value
  * @method Product        getProduct()        Returns the current record's "Product" value
  * @method User           getUser()           Returns the current record's "User" value
  * @method ProductComment setId()             Sets the current record's "id" value
  * @method ProductComment setCoreParentId()   Sets the current record's "core_parent_id" value
  * @method ProductComment setCoreUserId()     Sets the current record's "core_user_id" value
  * @method ProductComment setProductId()      Sets the current record's "product_id" value
+ * @method ProductComment setParentId()       Sets the current record's "parent_id" value
  * @method ProductComment setLft()            Sets the current record's "lft" value
  * @method ProductComment setRgt()            Sets the current record's "rgt" value
  * @method ProductComment setLevel()          Sets the current record's "level" value
@@ -43,6 +48,7 @@
  * @method ProductComment setContent()        Sets the current record's "content" value
  * @method ProductComment setHelpful()        Sets the current record's "helpful" value
  * @method ProductComment setUnhelpful()      Sets the current record's "unhelpful" value
+ * @method ProductComment setIsRecomend()     Sets the current record's "is_recomend" value
  * @method ProductComment setProduct()        Sets the current record's "Product" value
  * @method ProductComment setUser()           Sets the current record's "User" value
  * 
@@ -77,6 +83,12 @@ abstract class BaseProductComment extends myDoctrineRecord
         $this->hasColumn('product_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
+             'length' => 20,
+             ));
+        $this->hasColumn('parent_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'default' => 0,
              'length' => 20,
              ));
         $this->hasColumn('lft', 'integer', 20, array(
@@ -119,6 +131,11 @@ abstract class BaseProductComment extends myDoctrineRecord
              'default' => 0,
              'comment' => 'Количество бесполезных оценок отзыва',
              'length' => 4,
+             ));
+        $this->hasColumn('is_recomend', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
              ));
 
         $this->option('comment', 'Комментарии товара');

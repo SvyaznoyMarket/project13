@@ -17,23 +17,25 @@ class productCommentComponents extends myComponents
   */
   public function executeList()
   {
-    $list = array();
-    foreach ($this->product->getCommentList() as $productComment)
-    {
-      $list[] = array(
-        'id'             => $productComment->id,
-        'level'          => $productComment->level,
-        'date'           => $productComment->created_at,
-        'author'         => (string)$productComment->User,
-        'content'        => $productComment->content,
-        'answer_url'     => url_for(array('sf_route' => 'productComment_new', 'sf_subject' => $this->product, 'parent' => $productComment->id)),
-        'productComment' => $productComment,
-        'helpful'        => $productComment->helpful,
-        'unhelpful'      => $productComment->unhelpful,
-      );
-    }
-
-    $this->setVar('list', $list, true);
+//    $list = array();
+//    foreach ($this->product->getCommentList() as $productComment)
+//    {
+//      $list[] = array(
+//        'id'             => $productComment->id,
+//        'level'          => $productComment->level,
+//        'date'           => $productComment->created_at,
+//        'author'         => (string)$productComment->User,
+//        'content'        => $productComment->content,
+//        'answer_url'     => url_for(array('sf_route' => 'productComment_new', 'sf_subject' => $this->product, 'parent' => $productComment->id)),
+//        'productComment' => $productComment,
+//        'helpful'        => $productComment->helpful,
+//        'unhelpful'      => $productComment->unhelpful,
+//		  'rating' => $productComment->getProductRating()
+//      );
+//    }
+//
+//    $this->setVar('list', $list, true);
+		$this->list = $this->product->getCommentList(array('parent_id' => 0));
   }
  /**
   * Executes form component

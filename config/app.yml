@@ -7,7 +7,7 @@ all:
           persistent: true
 
   doctrine:
-    result_cache:         true  # кешировать результаты запросов
+    result_cache:         false  # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
   product:

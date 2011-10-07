@@ -50,6 +50,12 @@ class ProductCommentTable extends myDoctrineTable
     return $q;
   }
 
+  /**
+   *
+   * @param Product $product
+   * @param array $params
+   * @return myDoctrinePager 
+   */
   public function getListByProduct(Product $product, array $params = array())
   {
     $this->applyDefaultParameters($params);
@@ -58,14 +64,20 @@ class ProductCommentTable extends myDoctrineTable
 
     $q->leftJoin('productComment.User user')
       ->addWhere('productComment.product_id = ?', $product->id)
+	  ->addWhere('parent_id = ?', $params['parent_id'])
       //->useResultCache(true, null, $this->getQueryHash("product-{$product->id}/productComment-all", $params))
     ;
 
     $this->setQueryParameters($q, $params);
 
-    $ids = $this->getIdsByQuery($q);
-
-    return $this->createListByIds($ids, $params);
+//    $ids = $this->getIdsByQuery($q);
+//
+//    return $this->createListByIds($ids, $params);
+	$pager = new myDoctrinePager('ProductComment', 20);
+    $pager->setQuery($q);
+    $pager->setPage($params['page']);
+    $pager->init();
+	return $pager;
   }
 
   public function getListByUser(User $user, array $params = array())
