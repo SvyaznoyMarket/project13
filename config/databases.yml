@@ -2,7 +2,7 @@ all:
   doctrine:
     class: sfDoctrineDatabase
     param:
-      dsn:      mysql:host=localhost;dbname=enter
+      dsn:      mysql:host=localhost;dbname=enter_2
       username: root
       password: qazwsxedc
       profiler: false

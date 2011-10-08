@@ -10,6 +10,19 @@
  */
 class defaultComponents extends myComponents
 {
+ /**
+  * Executes slot component
+  *
+  * @param string $token Токен слота
+  */
+  public function executeSlot()
+  {
+    $this->slot = $this->token ? SlotTable::getInstance()->getByToken($this->token) : false;
+    if (!$this->slot)
+    {
+      return sfView::NONE;
+    }
+  }
 /**
   * Executes navigation component
   *

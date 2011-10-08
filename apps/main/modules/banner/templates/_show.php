@@ -1,0 +1,1 @@
+<?php include_partial("banner/show_$view", $sf_data) ?>

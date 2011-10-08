@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <?php include_http_metas() ?>
+    <?php include_metas() ?>
+    <?php include_title() ?>
+    <base href="<?php echo $sf_request->getHost() ?>" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <?php include_stylesheets() ?>
+    <?php include_javascripts() ?>
+  </head>
+
+  <body>
+    <div class="allpage">
+
+      <div class="logo">Enter Связной</div>
+
+      <!-- Topmenu -->
+      <?php include_component('productCategory', 'list_root') ?>
+      <!-- /Topmenu -->
+
+      <?php include_component('default', 'slot', array('token' => 'banner_default')) ?>
+
+      <div class="content">
+        <div class="vcard"><span class="tel">+7 (495) 123-45-67, +7 (495) 156-50-80</span></div>
+        <div class="address">123456, Россия, Москва, ул. Первомайская, 17/2</div>
+
+        <div class="pb10">&copy; &laquo;Enter&raquo; 2002-2011. Все права защищены.<br />Указанная стоимость товаров и условия их приобретения действительны<br />по состоянию на текущую дату.</div>
+        <div class="pb5"><a href="">Политика конфидециальности</a></div>
+        <div class="pb5"><a href="">Условия продажи в интернет-магазине</a></div>
+      </div>
+
+      <div class="searchbox">
+
+        <form action="">
+          <input type="text" class="text" value="Поиск среди 30 000 товаров" /><input type="button" class="searchbutton" value="Найти" title="Найти" />
+        </form>
+      </div>
+
+      <div class="links">
+        <a href="" class="link1">Сервис F1</a>
+        <a href="" class="link2">Связной банк</a>    
+      </div>
+
+
+      <div class="clear"></div>
+    </div>
+
+  </body>
+</html>

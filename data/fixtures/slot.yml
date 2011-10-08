@@ -1,0 +1,5 @@
+Slot:
+  Slot_banner_default:
+    type: banner
+    token: 'banner_default'
+    name: 'Баннер на главной странице'

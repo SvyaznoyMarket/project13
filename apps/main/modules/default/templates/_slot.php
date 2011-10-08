@@ -1,0 +1,1 @@
+<?php include_component($slot->type, 'show', array('slot' => $slot)) ?>

@@ -1,0 +1,6 @@
+all:
+  stylesheets:
+    - -*
+    - skin/main.css
+
+  layout: default
