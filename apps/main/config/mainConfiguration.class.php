@@ -30,7 +30,7 @@ class mainConfiguration extends sfApplicationConfiguration
       //new Doctrine_Cache_Db(array('connection' => $manager->getConnection('cache'), 'tableName' => 'query_cache'))
       //new Doctrine_Cache_Redis(array('server' => 'redis://127.0.0.1:6379', 'prefix' => 'result:'));
       //new Doctrine_Cache_Redis(array('redis' => sfRedis::getClient('localhost'), 'prefix' => 'result:'))
-      new myDoctrineCacheRedis(array('instance' => 'default', 'prefix' => sfConfig::get('app_doctrine_result_cache_prefix', ':dql')))
+      new myDoctrineCacheRedis(array('instance' => 'default', 'prefix' => sfConfig::get('app_doctrine_result_cache_prefix', 'dql:')))
     ;
 
     $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $driver);

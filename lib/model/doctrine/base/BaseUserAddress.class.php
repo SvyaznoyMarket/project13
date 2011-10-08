@@ -12,21 +12,24 @@
  * @property string $address
  * @property User $User
  * @property Region $City
+ * @property Doctrine_Collection $Order
  * 
- * @method integer     getId()      Returns the current record's "id" value
- * @method integer     getUserId()  Returns the current record's "user_id" value
- * @method integer     getCityId()  Returns the current record's "city_id" value
- * @method string      getName()    Returns the current record's "name" value
- * @method string      getAddress() Returns the current record's "address" value
- * @method User        getUser()    Returns the current record's "User" value
- * @method Region      getCity()    Returns the current record's "City" value
- * @method UserAddress setId()      Sets the current record's "id" value
- * @method UserAddress setUserId()  Sets the current record's "user_id" value
- * @method UserAddress setCityId()  Sets the current record's "city_id" value
- * @method UserAddress setName()    Sets the current record's "name" value
- * @method UserAddress setAddress() Sets the current record's "address" value
- * @method UserAddress setUser()    Sets the current record's "User" value
- * @method UserAddress setCity()    Sets the current record's "City" value
+ * @method integer             getId()      Returns the current record's "id" value
+ * @method integer             getUserId()  Returns the current record's "user_id" value
+ * @method integer             getCityId()  Returns the current record's "city_id" value
+ * @method string              getName()    Returns the current record's "name" value
+ * @method string              getAddress() Returns the current record's "address" value
+ * @method User                getUser()    Returns the current record's "User" value
+ * @method Region              getCity()    Returns the current record's "City" value
+ * @method Doctrine_Collection getOrder()   Returns the current record's "Order" collection
+ * @method UserAddress         setId()      Sets the current record's "id" value
+ * @method UserAddress         setUserId()  Sets the current record's "user_id" value
+ * @method UserAddress         setCityId()  Sets the current record's "city_id" value
+ * @method UserAddress         setName()    Sets the current record's "name" value
+ * @method UserAddress         setAddress() Sets the current record's "address" value
+ * @method UserAddress         setUser()    Sets the current record's "User" value
+ * @method UserAddress         setCity()    Sets the current record's "City" value
+ * @method UserAddress         setOrder()   Sets the current record's "Order" collection
  * 
  * @package    enter
  * @subpackage model
@@ -79,6 +82,10 @@ abstract class BaseUserAddress extends myDoctrineRecord
              'local' => 'city_id',
              'foreign' => 'id',
              'onDelete' => 'RESTRICT'));
+
+        $this->hasMany('Order', array(
+             'local' => 'id',
+             'foreign' => 'user_address_id'));
 
         $timestampable0 = new Doctrine_Template_Timestampable(array(
              ));

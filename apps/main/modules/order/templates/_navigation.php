@@ -1,3 +1,4 @@
+<?php if (false): ?>
 <ul class="inline">
   <?php foreach ($list as $item): ?>
     <li>
@@ -9,3 +10,5 @@
     </li>
   <?php endforeach ?>
 </ul>
+<?php endif ?>
+<a href="<?php echo url_for('homepage') ?>">Enter.ru</a> &gt; <strong>Корзина</strong>

@@ -2,6 +2,6 @@
   <?php echo $form['region_id']->renderLabel() ?>
   <?php echo $form['region_id']->renderError() ?>
   <div class="content">
-    <?php echo $widget->render('region_name', (string)$region) ?>
+    <?php echo $widget->render('order_region', (string)$region) ?>
   </div>
 </li>
