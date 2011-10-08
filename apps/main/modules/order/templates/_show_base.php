@@ -7,7 +7,7 @@
 
   <div class="form-row">
     <label>Вы покупаете как</label>
-    <div class="content"><?php echo $order->person_type_name ?></div>
+    <div class="content"><?php echo ($order->is_legal ? 'юр. лицо' : 'частное лицо') ?></div>
   </div>
 
 </div>

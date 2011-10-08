@@ -39,6 +39,12 @@ class orderActions extends myActions
     $this->step = $request->getParameter('step', 1);
     $this->order = $this->getUser()->getOrder()->get();
 
+    if (empty($this->order->region_id))
+    {
+     $this->order->region_id = $this->getUser()->getRegion('id');
+     $this->getUser()->getOrder()->set($this->order);
+    }
+
     $this->form = $this->getOrderForm($this->step);
     if ($request->isMethod('post'))
     {
