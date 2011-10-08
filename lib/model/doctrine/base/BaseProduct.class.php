@@ -28,11 +28,13 @@
  * @property ProductGroup $Group
  * @property Doctrine_Collection $News
  * @property Doctrine_Collection $NewsRelation
+ * @property Doctrine_Collection $Order
  * @property Doctrine_Collection $OrderRelation
  * @property Doctrine_Collection $Category
  * @property Doctrine_Collection $CategoryRelation
  * @property Doctrine_Collection $PropertyRelation
  * @property Doctrine_Collection $Photo
+ * @property Doctrine_Collection $Photo3D
  * @property Doctrine_Collection $Comment
  * @property Doctrine_Collection $Price
  * @property Doctrine_Collection $SlaveSimilarProduct
@@ -69,11 +71,13 @@
  * @method ProductGroup        getGroup()                  Returns the current record's "Group" value
  * @method Doctrine_Collection getNews()                   Returns the current record's "News" collection
  * @method Doctrine_Collection getNewsRelation()           Returns the current record's "NewsRelation" collection
+ * @method Doctrine_Collection getOrder()                  Returns the current record's "Order" collection
  * @method Doctrine_Collection getOrderRelation()          Returns the current record's "OrderRelation" collection
  * @method Doctrine_Collection getCategory()               Returns the current record's "Category" collection
  * @method Doctrine_Collection getCategoryRelation()       Returns the current record's "CategoryRelation" collection
  * @method Doctrine_Collection getPropertyRelation()       Returns the current record's "PropertyRelation" collection
  * @method Doctrine_Collection getPhoto()                  Returns the current record's "Photo" collection
+ * @method Doctrine_Collection getPhoto3D()                Returns the current record's "Photo3D" collection
  * @method Doctrine_Collection getComment()                Returns the current record's "Comment" collection
  * @method Doctrine_Collection getPrice()                  Returns the current record's "Price" collection
  * @method Doctrine_Collection getSlaveSimilarProduct()    Returns the current record's "SlaveSimilarProduct" collection
@@ -109,11 +113,13 @@
  * @method Product             setGroup()                  Sets the current record's "Group" value
  * @method Product             setNews()                   Sets the current record's "News" collection
  * @method Product             setNewsRelation()           Sets the current record's "NewsRelation" collection
+ * @method Product             setOrder()                  Sets the current record's "Order" collection
  * @method Product             setOrderRelation()          Sets the current record's "OrderRelation" collection
  * @method Product             setCategory()               Sets the current record's "Category" collection
  * @method Product             setCategoryRelation()       Sets the current record's "CategoryRelation" collection
  * @method Product             setPropertyRelation()       Sets the current record's "PropertyRelation" collection
  * @method Product             setPhoto()                  Sets the current record's "Photo" collection
+ * @method Product             setPhoto3D()                Sets the current record's "Photo3D" collection
  * @method Product             setComment()                Sets the current record's "Comment" collection
  * @method Product             setPrice()                  Sets the current record's "Price" collection
  * @method Product             setSlaveSimilarProduct()    Sets the current record's "SlaveSimilarProduct" collection
@@ -273,6 +279,11 @@ abstract class BaseProduct extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'product_id'));
 
+        $this->hasMany('Order', array(
+             'refClass' => 'OrderProductRelation',
+             'local' => 'product_id',
+             'foreign' => 'order_id'));
+
         $this->hasMany('OrderProductRelation as OrderRelation', array(
              'local' => 'id',
              'foreign' => 'product_id'));
@@ -291,6 +302,10 @@ abstract class BaseProduct extends myDoctrineRecord
              'foreign' => 'product_id'));
 
         $this->hasMany('ProductPhoto as Photo', array(
+             'local' => 'id',
+             'foreign' => 'product_id'));
+
+        $this->hasMany('ProductPhoto3D as Photo3D', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 
