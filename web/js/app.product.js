@@ -121,33 +121,4 @@ $(document).ready(function() {
         .fail(function(error) {})
     })
 	
-	var filterlink = $('.filter .filterlink:first');
-	var filterlist = $('.filter .filterlist');
-	filterlink.mouseenter(function(){
-		filterlink.hide();
-		filterlist.show();
-	});
-	filterlist.mouseleave(function(){
-		filterlist.hide();
-		filterlink.show();
-	});
-	
-	
-	$('.sharebox .sharelink').mouseenter(function(){
-		$(this).next().show();
-	});
-	$('.sharebox .sharelist').mouseleave(function(){
-		$(this).hide();
-	});
-	
-	
-	$('.subcomments-trigger').click(function(){
-		$(this).toggleClass('commentlinkopen commentlink');
-		$(this).next().toggle();
-	});
-	
-	$('.subcomments-add-trigger').click(function(){
-		$(this).next().toggle();
-	});
-
-})
+});

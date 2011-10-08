@@ -28,4 +28,15 @@ class UserProductRatingTable extends myDoctrineTable
 
 		return $q->fetchArray();
 	}
+	
+	public function getByProduct(Product $product)
+	{
+		$q = $this->createBaseQuery();
+		$q->innerJoin('userProductRating.Property property');
+		$q->andWhere('product_id = ?', $product->id);
+		
+		//$this->setQueryParameters($q, $params);
+
+		return $q->fetchArray();
+	}
 }

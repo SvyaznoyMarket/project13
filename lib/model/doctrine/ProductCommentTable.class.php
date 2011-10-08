@@ -42,10 +42,10 @@ class ProductCommentTable extends myDoctrineTable
 
     $q = $this->createQuery('productComment');
 
-    $q
-      ->where('productComment.level > ?', 0)
-      ->orderBy('productComment.rgt DESC')
-    ;
+//    $q
+//      ->where('productComment.level > ?', 0)
+//      ->orderBy('productComment.rgt DESC')
+//    ;
 
     return $q;
   }
@@ -69,15 +69,27 @@ class ProductCommentTable extends myDoctrineTable
     ;
 
     $this->setQueryParameters($q, $params);
-
-//    $ids = $this->getIdsByQuery($q);
-//
-//    return $this->createListByIds($ids, $params);
-	$pager = new myDoctrinePager('ProductComment', 20);
-    $pager->setQuery($q);
-    $pager->setPage($params['page']);
-    $pager->init();
-	return $pager;
+	
+	if (isset($params['page'])) {
+		switch ($params['sort']) {
+			case 'created_desc':
+				$q->orderBy('productComment.created_at DESC');
+				break;
+			case 'created_asc':
+			default:
+				$q->orderBy('productComment.created_at');
+				break;
+		}
+		$pager = new myDoctrinePager('ProductComment', 2);
+		$pager->setQuery($q);
+		$pager->setPage($params['page']);
+		$pager->init();
+		return $pager;
+	} else {
+		$q->orderBy('productComment.created_at');
+		$ids = $this->getIdsByQuery($q);
+		return $this->createListByIds($ids, $params);
+	}
   }
 
   public function getListByUser(User $user, array $params = array())

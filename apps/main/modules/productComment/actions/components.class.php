@@ -17,25 +17,17 @@ class productCommentComponents extends myComponents
   */
   public function executeList()
   {
-//    $list = array();
-//    foreach ($this->product->getCommentList() as $productComment)
-//    {
-//      $list[] = array(
-//        'id'             => $productComment->id,
-//        'level'          => $productComment->level,
-//        'date'           => $productComment->created_at,
-//        'author'         => (string)$productComment->User,
-//        'content'        => $productComment->content,
-//        'answer_url'     => url_for(array('sf_route' => 'productComment_new', 'sf_subject' => $this->product, 'parent' => $productComment->id)),
-//        'productComment' => $productComment,
-//        'helpful'        => $productComment->helpful,
-//        'unhelpful'      => $productComment->unhelpful,
-//		  'rating' => $productComment->getProductRating()
-//      );
-//    }
-//
-//    $this->setVar('list', $list, true);
-		$this->list = $this->product->getCommentList(array('parent_id' => 0));
+	$this->sortParams = array(
+		'created_asc'  => 'Дате (возрастание)',
+		'created_desc' => 'Дате (убывание)',
+	);
+	$this->sort = $this->getRequestParameter('sort', 'created_desc');
+	$this->page = $this->getRequestParameter('page', 1);
+	$this->list = $this->product->getCommentList(array(
+		'parent_id' => 0, 
+		'page' => $this->page, 
+		'sort' => $this->sort
+	));
   }
  /**
   * Executes form component
@@ -45,6 +37,7 @@ class productCommentComponents extends myComponents
   */
   public function executeForm()
   {
+	  $this->ratingTypes = ProductRatingTypePropertyTable::getInstance()->findAll(Doctrine_Core::HYDRATE_ARRAY);
     if (empty($this->form))
     {
       $this->form = new ProductCommentForm();

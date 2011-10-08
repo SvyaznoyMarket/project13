@@ -4,4 +4,6 @@
 
 <?php slot('title', $product->name) ?>
 
-<?php include_component('productComment', 'list', array('product' => $product)) ?>
+<?php include_partial('product', array('product' => $product)) ?>
+
+<?php include_component('productComment', 'list', array('product' => $product, 'page' => $page)) ?>
