@@ -15,3 +15,4 @@ Region:
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     type:              { type: set, length: 10, values: [country, area, city], notnull: true, default: 'city', comment: 'Тип региона: страна, административная единица, город' }
+    is_default:        { type: boolean, notnull: true, default: false, comment: 'Регион по-умолчанию?' }
