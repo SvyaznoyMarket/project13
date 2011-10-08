@@ -38,20 +38,19 @@
             <a href="">Отследить мой заказ</a>
           </div>
         </div>
-        <!-- /Header -->
-        <!-- Page head -->
-        <div class="pagehead">
-            <div class="breadcrumbs"><!--a href="">Enter.ru</a> &gt; <a href="">Мебель</a> &gt; <strong>Стеллажи</strong-->
-            <?php if (has_slot('navigation')): ?>
-              <?php include_slot('navigation') ?>
-            <?php endif ?>
-          </div>
-          <!--div class="searchnumber">Стеллажи  &mdash; предлагаем на выбор <strong class="orange">2140</strong> товаров</div-->
-          <div class="clear"></div>
-          <?php if (has_slot('title')): ?>
-            <h1><?php include_slot('title') ?></h1>
-          <?php endif ?>
-          <div class="searchbox">
+    <!-- /Header -->
+    <!-- Page head -->
+    <div class="pagehead">
+        <div class="breadcrumbs">
+<?php if (has_slot('navigation')): ?>
+  <?php include_slot('navigation') ?>
+<?php endif ?>
+        </div>
+        <div class="clear"></div>
+<?php if (has_slot('title')): ?>
+  <h1><?php include_slot('title') ?></h1>
+<?php endif ?>
+        <div class="searchbox">
             <form action=""><input type="text" class="text" value="Поиск товаров" onfocus="if (this.value == 'Поиск товаров') this.value = '';" onblur="if (this.value == '') this.value = 'Поиск товаров';"  /><input type="button" class="searchbutton" value="Найти" title="Найти" /></form>
           </div>
         </div>
@@ -130,9 +129,9 @@
           </div>
         </div>
         <div class="counter">
-          <a href=""><img src="images/counter1.gif" alt="" width="80" height="30" /></a>
-          <a href=""><img src="images/counter2.gif" alt="" width="50" height="30" /></a>
-          <a href=""><img src="images/counter3.gif" alt="" width="50" height="30" /></a>
+          <a href=""><img src="/images/images/counter1.gif" alt="" width="80" height="30" /></a>
+          <a href=""><img src="/images/images/counter2.gif" alt="" width="50" height="30" /></a>
+          <a href=""><img src="/images/images/counter3.gif" alt="" width="50" height="30" /></a>
         </div>
       </div>
     </div>

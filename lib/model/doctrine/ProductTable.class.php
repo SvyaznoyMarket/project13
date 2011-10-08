@@ -70,6 +70,7 @@ class ProductTable extends myDoctrineTable
 
     $q->leftJoin('product.Category productCategory')
       ->leftJoin('product.Creator creator')
+      ->leftJoin('product.Photo photo')
     ;
     if ($params['with_properties'])
     {
@@ -87,6 +88,14 @@ class ProductTable extends myDoctrineTable
     if (!$record)
     {
       return $record;
+    }
+
+    $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record->id);
+
+    if ($prices)
+    {
+      $record->mapValue('Prices', $prices);
+      $record->price = $prices->price;
     }
 
     $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(

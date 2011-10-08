@@ -98,6 +98,18 @@ EOF;
             $this->logSection('Import entity', $entity['type'].' #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
           }
         }
+        elseif (method_exists($this, 'process'.ucfirst($entity['type'])))
+        {
+          try {
+            if ($record = call_user_func_array(array($this, 'process'.ucfirst($entity['type'])), array($entity['data'], )))
+            {
+              $this->pushRecord($record);
+            }
+          }
+          catch (Exception $e) {
+            $this->logSection('Import entity', $entity['type'].' #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
+          }
+        }
         else {
           $this->logSection('Unknown entity', $entity['type'].' #'.$entity['id'], null, 'ERROR');
         }
@@ -377,7 +389,7 @@ EOF;
   protected function createCreatorRecord(array $data)
   {
     $record = CreatorTable::getInstance()->createRecordFromCore($data);
-    $record->token = myToolkit::urlize($record->name);
+    $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
     return $record;
   }
@@ -387,6 +399,11 @@ EOF;
   {
     $record = ShopTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
+
+    if (isset($data['geo_id']))
+    {
+      $record->region_id = $this->getRecordByCoreId('Region', $data['gio_id'], true);
+    }
 
     return $record;
   }
@@ -633,6 +650,66 @@ EOF;
         }
       }
     }
+  }
+
+  // ProductPrice
+  protected function createProductPriceRecord(array $data)
+  {
+    $record = ProductPriceTable::getInstance()->createRecordFromCore($data);
+    $record->product_id = $this->getRecordByCoreId('Product', $data['product_id'], true);
+    $record->product_price_list_id = $this->getRecordByCoreId('ProductPriceList', $data['price_list_id'], true);
+
+    return $record;
+  }
+
+  //Service
+  protected function createServiceRecord(array $data)
+  {
+    $record = ServiceTable::getInstance()->createRecordFromCore($data);
+    $record->token = uniqid().'-'.myToolkit::urlize($record->name);
+
+    // Теги
+    if (!empty($data['category']))
+    {
+      foreach ($data['category'] as $relationData)
+      {
+        $relation = new ServiceCategoryRelation();
+        $relation->fromArray(array(
+          'category_id' => $this->getRecordByCoreId('ServiceCategory', $relationData['id'], true),
+        ));
+        $record->CategoryRelation[] = $relation;
+      }
+    }
+
+    return $record;
+  }
+
+  //Photo for everything
+  protected function processUpload(array $data)
+  {
+    $record = null;
+    switch ($data['item_type_id'])
+    {
+      case 1:
+        switch ($data['type_id'])
+        {
+          case 1:
+          case 2:
+            $record = ProductPhotoTable::getInstance()->createRecordFromCore($data);
+            $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
+            $record->view_show = 1;
+            break;
+        }
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      default:
+        break;
+    }
+
+    return $record;
   }
 
 }

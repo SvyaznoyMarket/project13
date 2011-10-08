@@ -21,8 +21,16 @@ class ShopTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'       => 'core_id',
-      'name'     => 'name',
+      'id'            => 'core_id',
+      'name'          => 'name',
+      'description'   => 'description',
+      'working_time'  => 'regime',
+      'phone'         => 'phonenumbers',
+      'address'       => 'address',
+      'coord_long'    => 'longitude',
+      'coord_lat'     => 'latitude',
+      'way_walk'      => 'way_walk',
+      'way_auto'      => 'way_auto',
     );
   }
 

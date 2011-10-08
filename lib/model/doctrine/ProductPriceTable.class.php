@@ -7,13 +7,40 @@
  */
 class ProductPriceTable extends myDoctrineTable
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return object ProductPriceTable
-     */
-    public static function getInstance()
-    {
-        return Doctrine_Core::getTable('ProductPrice');
-    }
+  /**
+   * Returns an instance of this class.
+   *
+   * @return object ProductPriceTable
+   */
+  public static function getInstance()
+  {
+      return Doctrine_Core::getTable('ProductPrice');
+  }
+
+  public function getDefaultByProductId($product_id, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->innerJoin('productPrice.PriceList priceList');
+
+    $q->addWhere('productPrice.product_id = ?', $product_id);
+    $q->addWhere('priceList.is_default = ?', 1);
+
+    //$q->useResultCache(true, null, $this->getRecordQueryHash($product_id, $params));
+
+    $result = $q->fetchOne();
+
+    return $result;
+  }
+
+  public function getCoreMapping()
+  {
+    return array(
+      'price'         => 'price',
+      'price_old'     => 'old_price',
+      'price_average' => 'avg_price',
+    );
+  }
 }

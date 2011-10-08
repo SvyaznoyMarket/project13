@@ -1,15 +1,18 @@
 Service:
   options:
     comment: 'Услуга F1'
+  actAs:
+    Corable:           { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    category_id:       { type: integer(20), notnull: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string }
+    work:              { type: string }
+    expendable:        { type: string }
     is_active:         { type: boolean, notnull: true, default: false }
   relations:
-    Category:          { class: ServiceCategory, foreignAlias: Service, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Category:          { class: ServiceCategory, foreignAlias: Service, refClass: ServiceCategoryRelation, local: service_id, foreign: category_id, type: many, foreignType: many }
 
 ServiceCategory:
   options:
@@ -50,3 +53,13 @@ ServiceCategoryProductTypeRelation:
   relations:
     Category:          { class: ServiceCategory, foreignAlias: ProductTypeRelation, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     ProductType:       { class: ProductType, foreignAlias: ServiceCategoryRelation, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+
+ServiceCategoryRelation:
+  options:
+    comment: 'Связь категории и услуги'
+  columns:
+    category_id:       { type: integer(20), notnull: true, primary: true }
+    service_id:        { type: integer(20), notnull: true, primary: true }
+  relations:
+    Category:          { class: ServiceCategory, foreignAlias: ServiceRelation, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Service:           { class: Service, foreignAlias: CategoryRelation, local: service_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }

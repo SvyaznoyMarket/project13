@@ -55,7 +55,34 @@ class myUser extends myGuardSecurityUser
     return $this->getAttribute('profile', false);
   }
 
+  public function getRegion($key = null)
+  {
+    $region_id = $this->getAttribute('region', null);
+    if (!$region_id)
+    {
+      $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
+      $region = !empty($geoip['city_name']) ? RegionTable::getInstance()->findOneByName($geoip['city_name']) : null;
+      if (!$region)
+      {
+        $region = RegionTable::getInstance()->getDefault();
+        $this->setAttribute('region', $region->id);
+      }
+    }
+    else
+    {
+      $region = RegionTable::getInstance()->findOneById($region_id);
+    }
+    $parent_region = $region->getNode()->getParent();
 
+    $result = array(
+      'id'        => $region->id,
+      'name'      => $region->name,
+      'full_name' => $region->name.', '.$parent_region->name,
+      'type'      => $region->type,
+    );
+
+    return !empty($key) ? $result[$key] : $result;
+  }
 
   protected function getUserData($name)
   {

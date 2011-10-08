@@ -13,7 +13,7 @@
             <div class="goodsbox goodsline">
                 <a href="" class="fastview">Быстрый просмотр</a>
                 <div class="goodsboxlink" onclick="window.location='<?php echo url_for('productCard', $item['product'], array('absolute' => true, )) ?>'">
-                    <div class="photo"><!--i title="Бестселлер" class="bestseller"></i--><img src="/images/images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
+                    <div class="photo"><!--i title="Бестселлер" class="bestseller"></i--><img src="http://core.ent3.ru/upload/pic/2/200/<?php echo $item['product']['Photo'][0]['resource'] ?>" alt="" title="" width="160" height="160" /></div>
                     <div class="info">
                         <span class="ratingview"></span>
                         <h3><?php echo $item['has_link'] ? link_to($item['name'], 'productCard', $item['product']) : $item['name'] ?></h3>

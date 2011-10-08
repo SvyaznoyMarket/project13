@@ -25,7 +25,9 @@
     <div class="basketline">
         <div class="basketleft">
             <a href=""><img src="/images/images/photo55.jpg" alt="" width="120" height="120" /></a>
+            <?php if (count($item['service'])): ?>
             <div class="ac font11"><a href="" class="f1link">Сервис F1</a> Сервис F1</div>
+            <?php endif ?>
         </div>
         <div class="basketright">
             <div class="goodstitle">

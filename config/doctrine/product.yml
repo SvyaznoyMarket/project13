@@ -219,7 +219,9 @@ ProductPropertyRelation:
 ProductPhoto:
   options:
     comment: 'Фото товара'
-  actAs: [ Timestampable ]
+  actAs:
+   Timestampable:      ~
+   Corable:            { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
@@ -229,6 +231,21 @@ ProductPhoto:
     view_list:         { type: boolean, notnull: true, default: false, comment: 'показывать фото в списке товаров?' }
   relations:
     Product:           { class: Product, foreignAlias: Photo, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+ProductPhoto3D:
+  options:
+    comment: '3D фото товара'
+  actAs:
+   Timestampable:      ~
+   Corable:            { push: disable }
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    resource:          { type: string(255), notnull: true, notblank: true }
+    product_id:        { type: integer(20), notnull: true }
+    position:          { type: integer(4), notnull: true, comment: 'Порядок отображения' }
+  relations:
+    Product:           { class: Product, foreignAlias: Photo3D, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
 ProductComment:
   options:
