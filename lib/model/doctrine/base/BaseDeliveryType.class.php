@@ -86,8 +86,11 @@ abstract class BaseDeliveryType extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'delivery_type_id'));
 
-        $timestampable0 = new Doctrine_Template_Timestampable(array(
+        $timestampable0 = new Doctrine_Template_Timestampable();
+        $corable0 = new Doctrine_Template_Corable(array(
+             'push' => 'disable',
              ));
         $this->actAs($timestampable0);
+        $this->actAs($corable0);
     }
 }

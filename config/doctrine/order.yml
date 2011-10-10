@@ -1,7 +1,9 @@
 PaymentMethod:
   options:
     comment: 'Способ оплаты'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable:  ~
+    Corable:        { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -9,11 +11,15 @@ PaymentMethod:
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string(500), notnull: true, notblank: true }
     is_active:         { type: boolean, notnull: true, default: false, comment: 'Способ оплаты активен?' }
+    is_legal:          { type: boolean, notnull: true, default: false, comment: 'Этот способ оплаты доступен для юр. лиц?' }
+    is_personal:       { type: boolean, notnull: true, default: false, comment: 'Этот способ оплаты доступен для физ. лиц?' }
 
 DeliveryType:
   options:
     comment: 'Тип доставки'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable:  ~
+    Corable:        { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
