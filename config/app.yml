@@ -1,4 +1,7 @@
 all:
+  default:
+    region: moskva
+  
   welcome:
     cookie_name: enter_code
     secret: welcome
