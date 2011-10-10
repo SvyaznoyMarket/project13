@@ -32,6 +32,7 @@ class myValidatorGuardUserSignin extends sfValidatorBase
       {
       }
     }
+    //myDebug::dump(array($email, $phonenumber), 1);
 
     // don't allow to sign in with an empty username
     if ($email || $phonenumber)

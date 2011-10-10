@@ -118,6 +118,7 @@ class GuardUser extends BaseGuardUser
     {
       throw new sfException(sprintf('The algorithm callable "%s" is not callable.', $algorithm));
     }
+    //myDebug::dump(array($this->getPassword(), call_user_func_array($algorithm, array($this->getSalt().$password))), 1);
 
     return $this->getPassword() == call_user_func_array($algorithm, array($this->getSalt().$password));
   }

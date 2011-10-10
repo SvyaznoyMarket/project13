@@ -4,6 +4,9 @@
 rendering: ~
 security:  ~
 
+welcome:
+  class: WelcomeFilter
+
 # insert your own filters here
 
 cache:     ~

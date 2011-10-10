@@ -115,7 +115,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   /**
    * Signs in the user on the application.
    *
-   * @param sfGuardUser $user The sfGuardUser id
+   * @param GuardUser $user The GuardUser id
    * @param boolean $remember Whether or not to remember the user
    * @param Doctrine_Connection $con A Doctrine_Connection object
    */

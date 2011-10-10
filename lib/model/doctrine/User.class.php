@@ -16,7 +16,7 @@ class User extends BaseUser
   {
     $record = $event->getInvoker();
 
-    if (empty($password) && !$record->exists())
+    if (empty($record->password) && !$record->exists())
     {
       $password = '';
       for ($i = 0; ($i < 8); $i++)

@@ -19,6 +19,24 @@ class defaultActions extends myActions
   {
   }
  /**
+  * Executes welcome action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeWelcome(sfWebRequest $request)
+  {
+    $cookieName = sfConfig::get('app_welcome_cookie_name');
+    $secret = sfConfig::get('app_welcome_secret');
+    if ($request->isMethod('post'))
+    {
+      if ($secret == $request->getParameter($cookieName))
+      {
+        $this->getResponse()->setCookie($cookieName, md5($secret));
+        $this->redirect('@homepage');
+      }
+    }
+  }
+ /**
   * Executes error404 action
   *
   * @param sfRequest $request A request object
