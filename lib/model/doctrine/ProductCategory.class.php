@@ -12,9 +12,10 @@
  */
 class ProductCategory extends BaseProductCategory
 {
+
   public function __toString()
   {
-    return (string)$this->name;
+    return (string) $this->name;
   }
 
   public function toParams()
@@ -22,5 +23,10 @@ class ProductCategory extends BaseProductCategory
     return array(
       'productCategory' => $this->token,
     );
+  }
+
+  public function getProductCount()
+  {
+    return ProductTable::getInstance()->getCountByCategory($this);
   }
 }

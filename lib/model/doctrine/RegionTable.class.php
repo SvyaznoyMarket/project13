@@ -42,7 +42,7 @@ class RegionTable extends myDoctrineTable
   public function getDefault()
   {
     return $this->createBaseQuery()
-      ->where('region.token = ?', 'moscow')
+      ->where('region.token = ?', sfConfig::get('app_default_region', 'moscow'))
       ->fetchOne()
     ;
   }

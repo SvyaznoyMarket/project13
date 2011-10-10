@@ -17,6 +17,5 @@ class productCategoryActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->forward('default', 'module');
   }
 }

@@ -80,9 +80,13 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q->useResultCache(true, null, $this->getQueryHash('productCategory-all', $params));
 
+    /*
     $ids = $this->getIdsByQuery($q);
 
     return $this->createListByIds($ids, $params);
+    */
+    
+    return $q->execute();
   }
 
   public function getRootList(array $params = array())

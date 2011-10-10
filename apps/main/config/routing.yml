@@ -1,7 +1,12 @@
-# default rules
+# homepage
 homepage:
   url:   /
   param: { module: default, action: index }
+
+# secured welcome
+welcome:
+  url:   /welcome
+  param: { module: default, action: welcome }
 
 # QR-code
 #
