@@ -148,5 +148,59 @@ class orderComponents extends myComponents
       'class' => 'order_region_name'
     )), true);
   }
+
+  public function executeField_person_type()
+  {
+  }
+
+  public function executeField_receipt_type()
+  {
+  }
+
+  public function executeField_delivered_at()
+  {
+  }
+
+  public function executeField_payment_method_id()
+  {
+  }
+
+  public function executeField_recipient_last_name()
+  {
+  }
+
+  public function executeField_recipient_first_name()
+  {
+  }
+
+  public function executeField_delivery_type_id()
+  {
+  }
+
+  public function executeField_delivery_period_id()
+  {
+  }
+
+  public function executeField_recipient_phonenumbers()
+  {
+  }
+
+  public function executeField_is_receive_sms()
+  {
+  }
+
+  public function executeField_zip_code()
+  {
+  }
+
+  public function executeField_extra()
+  {
+  }
+
+  public function executeReceipt()
+  {
+    $this->setVar('cart', $this->getUser()->getCart());
+  }
+
 }
 

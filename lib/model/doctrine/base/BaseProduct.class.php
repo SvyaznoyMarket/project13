@@ -28,6 +28,7 @@
  * @property ProductGroup $Group
  * @property Doctrine_Collection $News
  * @property Doctrine_Collection $NewsRelation
+ * @property Doctrine_Collection $Order
  * @property Doctrine_Collection $OrderRelation
  * @property Doctrine_Collection $Category
  * @property Doctrine_Collection $CategoryRelation
@@ -70,6 +71,7 @@
  * @method ProductGroup        getGroup()                  Returns the current record's "Group" value
  * @method Doctrine_Collection getNews()                   Returns the current record's "News" collection
  * @method Doctrine_Collection getNewsRelation()           Returns the current record's "NewsRelation" collection
+ * @method Doctrine_Collection getOrder()                  Returns the current record's "Order" collection
  * @method Doctrine_Collection getOrderRelation()          Returns the current record's "OrderRelation" collection
  * @method Doctrine_Collection getCategory()               Returns the current record's "Category" collection
  * @method Doctrine_Collection getCategoryRelation()       Returns the current record's "CategoryRelation" collection
@@ -111,6 +113,7 @@
  * @method Product             setGroup()                  Sets the current record's "Group" value
  * @method Product             setNews()                   Sets the current record's "News" collection
  * @method Product             setNewsRelation()           Sets the current record's "NewsRelation" collection
+ * @method Product             setOrder()                  Sets the current record's "Order" collection
  * @method Product             setOrderRelation()          Sets the current record's "OrderRelation" collection
  * @method Product             setCategory()               Sets the current record's "Category" collection
  * @method Product             setCategoryRelation()       Sets the current record's "CategoryRelation" collection
@@ -275,6 +278,11 @@ abstract class BaseProduct extends myDoctrineRecord
         $this->hasMany('NewsProductRelation as NewsRelation', array(
              'local' => 'id',
              'foreign' => 'product_id'));
+
+        $this->hasMany('Order', array(
+             'refClass' => 'OrderProductRelation',
+             'local' => 'product_id',
+             'foreign' => 'order_id'));
 
         $this->hasMany('OrderProductRelation as OrderRelation', array(
              'local' => 'id',

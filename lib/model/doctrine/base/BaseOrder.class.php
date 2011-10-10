@@ -7,73 +7,118 @@
  * 
  * @property integer $id
  * @property string $token
+ * @property integer $type_id
  * @property integer $user_id
  * @property integer $payment_method_id
+ * @property integer $payment_status_id
+ * @property string $payment_details
  * @property decimal $sum
- * @property enum $person_type
+ * @property boolean $is_legal
  * @property integer $region_id
- * @property enum $receipt_type
  * @property integer $shop_id
+ * @property integer $store_id
+ * @property boolean $is_delivery
+ * @property boolean $is_paid_delivery
  * @property integer $delivery_type_id
  * @property timestamp $delivered_at
+ * @property integer $delivery_period_id
  * @property string $address
+ * @property string $zip_code
+ * @property integer $user_address_id
  * @property string $recipient_first_name
  * @property string $recipient_last_name
  * @property string $recipient_middle_name
  * @property string $recipient_phonenumbers
+ * @property boolean $is_receive_sms
+ * @property boolean $is_gift
+ * @property string $extra
+ * @property string $ip
  * @property integer $step
  * @property User $User
  * @property PaymentMethod $PaymentMethod
  * @property Shop $Shop
  * @property DeliveryType $DeliveryType
+ * @property DeliveryPeriod $DeliveryPeriod
+ * @property UserAddress $UserAddress
  * @property Region $Region
+ * @property Doctrine_Collection $Product
  * @property Doctrine_Collection $ProductRelation
  * 
  * @method integer             getId()                     Returns the current record's "id" value
  * @method string              getToken()                  Returns the current record's "token" value
+ * @method integer             getTypeId()                 Returns the current record's "type_id" value
  * @method integer             getUserId()                 Returns the current record's "user_id" value
  * @method integer             getPaymentMethodId()        Returns the current record's "payment_method_id" value
+ * @method integer             getPaymentStatusId()        Returns the current record's "payment_status_id" value
+ * @method string              getPaymentDetails()         Returns the current record's "payment_details" value
  * @method decimal             getSum()                    Returns the current record's "sum" value
- * @method enum                getPersonType()             Returns the current record's "person_type" value
+ * @method boolean             getIsLegal()                Returns the current record's "is_legal" value
  * @method integer             getRegionId()               Returns the current record's "region_id" value
- * @method enum                getReceiptType()            Returns the current record's "receipt_type" value
  * @method integer             getShopId()                 Returns the current record's "shop_id" value
+ * @method integer             getStoreId()                Returns the current record's "store_id" value
+ * @method boolean             getIsDelivery()             Returns the current record's "is_delivery" value
+ * @method boolean             getIsPaidDelivery()         Returns the current record's "is_paid_delivery" value
  * @method integer             getDeliveryTypeId()         Returns the current record's "delivery_type_id" value
  * @method timestamp           getDeliveredAt()            Returns the current record's "delivered_at" value
+ * @method integer             getDeliveryPeriodId()       Returns the current record's "delivery_period_id" value
  * @method string              getAddress()                Returns the current record's "address" value
+ * @method string              getZipCode()                Returns the current record's "zip_code" value
+ * @method integer             getUserAddressId()          Returns the current record's "user_address_id" value
  * @method string              getRecipientFirstName()     Returns the current record's "recipient_first_name" value
  * @method string              getRecipientLastName()      Returns the current record's "recipient_last_name" value
  * @method string              getRecipientMiddleName()    Returns the current record's "recipient_middle_name" value
  * @method string              getRecipientPhonenumbers()  Returns the current record's "recipient_phonenumbers" value
+ * @method boolean             getIsReceiveSms()           Returns the current record's "is_receive_sms" value
+ * @method boolean             getIsGift()                 Returns the current record's "is_gift" value
+ * @method string              getExtra()                  Returns the current record's "extra" value
+ * @method string              getIp()                     Returns the current record's "ip" value
  * @method integer             getStep()                   Returns the current record's "step" value
  * @method User                getUser()                   Returns the current record's "User" value
  * @method PaymentMethod       getPaymentMethod()          Returns the current record's "PaymentMethod" value
  * @method Shop                getShop()                   Returns the current record's "Shop" value
  * @method DeliveryType        getDeliveryType()           Returns the current record's "DeliveryType" value
+ * @method DeliveryPeriod      getDeliveryPeriod()         Returns the current record's "DeliveryPeriod" value
+ * @method UserAddress         getUserAddress()            Returns the current record's "UserAddress" value
  * @method Region              getRegion()                 Returns the current record's "Region" value
+ * @method Doctrine_Collection getProduct()                Returns the current record's "Product" collection
  * @method Doctrine_Collection getProductRelation()        Returns the current record's "ProductRelation" collection
  * @method Order               setId()                     Sets the current record's "id" value
  * @method Order               setToken()                  Sets the current record's "token" value
+ * @method Order               setTypeId()                 Sets the current record's "type_id" value
  * @method Order               setUserId()                 Sets the current record's "user_id" value
  * @method Order               setPaymentMethodId()        Sets the current record's "payment_method_id" value
+ * @method Order               setPaymentStatusId()        Sets the current record's "payment_status_id" value
+ * @method Order               setPaymentDetails()         Sets the current record's "payment_details" value
  * @method Order               setSum()                    Sets the current record's "sum" value
- * @method Order               setPersonType()             Sets the current record's "person_type" value
+ * @method Order               setIsLegal()                Sets the current record's "is_legal" value
  * @method Order               setRegionId()               Sets the current record's "region_id" value
- * @method Order               setReceiptType()            Sets the current record's "receipt_type" value
  * @method Order               setShopId()                 Sets the current record's "shop_id" value
+ * @method Order               setStoreId()                Sets the current record's "store_id" value
+ * @method Order               setIsDelivery()             Sets the current record's "is_delivery" value
+ * @method Order               setIsPaidDelivery()         Sets the current record's "is_paid_delivery" value
  * @method Order               setDeliveryTypeId()         Sets the current record's "delivery_type_id" value
  * @method Order               setDeliveredAt()            Sets the current record's "delivered_at" value
+ * @method Order               setDeliveryPeriodId()       Sets the current record's "delivery_period_id" value
  * @method Order               setAddress()                Sets the current record's "address" value
+ * @method Order               setZipCode()                Sets the current record's "zip_code" value
+ * @method Order               setUserAddressId()          Sets the current record's "user_address_id" value
  * @method Order               setRecipientFirstName()     Sets the current record's "recipient_first_name" value
  * @method Order               setRecipientLastName()      Sets the current record's "recipient_last_name" value
  * @method Order               setRecipientMiddleName()    Sets the current record's "recipient_middle_name" value
  * @method Order               setRecipientPhonenumbers()  Sets the current record's "recipient_phonenumbers" value
+ * @method Order               setIsReceiveSms()           Sets the current record's "is_receive_sms" value
+ * @method Order               setIsGift()                 Sets the current record's "is_gift" value
+ * @method Order               setExtra()                  Sets the current record's "extra" value
+ * @method Order               setIp()                     Sets the current record's "ip" value
  * @method Order               setStep()                   Sets the current record's "step" value
  * @method Order               setUser()                   Sets the current record's "User" value
  * @method Order               setPaymentMethod()          Sets the current record's "PaymentMethod" value
  * @method Order               setShop()                   Sets the current record's "Shop" value
  * @method Order               setDeliveryType()           Sets the current record's "DeliveryType" value
+ * @method Order               setDeliveryPeriod()         Sets the current record's "DeliveryPeriod" value
+ * @method Order               setUserAddress()            Sets the current record's "UserAddress" value
  * @method Order               setRegion()                 Sets the current record's "Region" value
+ * @method Order               setProduct()                Sets the current record's "Product" collection
  * @method Order               setProductRelation()        Sets the current record's "ProductRelation" collection
  * 
  * @package    enter
@@ -100,6 +145,12 @@ abstract class BaseOrder extends myDoctrineRecord
              'comment' => 'Номер заказа',
              'length' => 64,
              ));
+        $this->hasColumn('type_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'default' => 0,
+             'length' => 20,
+             ));
         $this->hasColumn('user_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => false,
@@ -110,6 +161,17 @@ abstract class BaseOrder extends myDoctrineRecord
              'notnull' => false,
              'length' => 20,
              ));
+        $this->hasColumn('payment_status_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => true,
+             'default' => 0,
+             'length' => 20,
+             ));
+        $this->hasColumn('payment_details', 'string', 500, array(
+             'type' => 'string',
+             'notnull' => false,
+             'length' => 500,
+             ));
         $this->hasColumn('sum', 'decimal', 12, array(
              'type' => 'decimal',
              'notnull' => true,
@@ -118,36 +180,39 @@ abstract class BaseOrder extends myDoctrineRecord
              'length' => 12,
              'scale' => '2',
              ));
-        $this->hasColumn('person_type', 'enum', 10, array(
-             'type' => 'enum',
-             'length' => 10,
-             'values' => 
-             array(
-              0 => 'individual',
-              1 => 'legal',
-             ),
-             'notnull' => false,
+        $this->hasColumn('is_legal', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => true,
+             'comment' => 'Юр лицо?',
              ));
         $this->hasColumn('region_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => false,
              'length' => 20,
              ));
-        $this->hasColumn('receipt_type', 'enum', 10, array(
-             'type' => 'enum',
-             'length' => 10,
-             'values' => 
-             array(
-              0 => 'pickup',
-              1 => 'delivery',
-             ),
-             'notnull' => false,
-             'comment' => 'Тип получения: доставка или самовывоз',
-             ));
         $this->hasColumn('shop_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => false,
              'length' => 20,
+             ));
+        $this->hasColumn('store_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'comment' => 'Рассчитывается при доставке',
+             'length' => 20,
+             ));
+        $this->hasColumn('is_delivery', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => true,
+             'comment' => 'Нужна ли доставка? (нужна всегда)',
+             ));
+        $this->hasColumn('is_paid_delivery', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             'comment' => 'Какая-то срань для core',
              ));
         $this->hasColumn('delivery_type_id', 'integer', 20, array(
              'type' => 'integer',
@@ -159,10 +224,27 @@ abstract class BaseOrder extends myDoctrineRecord
              'format' => 'Y-m-d H:m:i',
              'comment' => 'Дата доставки',
              ));
+        $this->hasColumn('delivery_period_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'length' => 20,
+             ));
         $this->hasColumn('address', 'string', null, array(
              'type' => 'string',
              'notnull' => false,
              'comment' => 'Адрес доставки или получения',
+             ));
+        $this->hasColumn('zip_code', 'string', 10, array(
+             'type' => 'string',
+             'notnull' => false,
+             'comment' => 'Индекс',
+             'length' => 10,
+             ));
+        $this->hasColumn('user_address_id', 'integer', 20, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'comment' => 'Сохраненный адрес пользователя',
+             'length' => 20,
              ));
         $this->hasColumn('recipient_first_name', 'string', 255, array(
              'type' => 'string',
@@ -187,6 +269,26 @@ abstract class BaseOrder extends myDoctrineRecord
              'notnull' => false,
              'comment' => 'Телефоны получателя',
              'length' => 255,
+             ));
+        $this->hasColumn('is_receive_sms', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             'comment' => 'Получать смс об изменении статуса заказа?',
+             ));
+        $this->hasColumn('is_gift', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             'comment' => 'Это подарок?',
+             ));
+        $this->hasColumn('extra', 'string', null, array(
+             'type' => 'string',
+             ));
+        $this->hasColumn('ip', 'string', 50, array(
+             'type' => 'string',
+             'notnull' => false,
+             'length' => 50,
              ));
         $this->hasColumn('step', 'integer', 4, array(
              'type' => 'integer',
@@ -221,10 +323,25 @@ abstract class BaseOrder extends myDoctrineRecord
              'foreign' => 'id',
              'onDelete' => 'SET NULL'));
 
+        $this->hasOne('DeliveryPeriod', array(
+             'local' => 'delivery_period_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
+
+        $this->hasOne('UserAddress', array(
+             'local' => 'user_address_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
+
         $this->hasOne('Region', array(
              'local' => 'region_id',
              'foreign' => 'id',
              'onDelete' => 'SET NULL'));
+
+        $this->hasMany('Product', array(
+             'refClass' => 'OrderProductRelation',
+             'local' => 'order_id',
+             'foreign' => 'product_id'));
 
         $this->hasMany('OrderProductRelation as ProductRelation', array(
              'local' => 'id',

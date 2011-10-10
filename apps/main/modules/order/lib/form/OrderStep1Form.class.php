@@ -24,29 +24,44 @@ class OrderStep1Form extends BaseOrderForm
     $this->widgetSchema['person_type']->setLabel('Вы покупаете');
     $this->validatorSchema['person_type'] = new sfValidatorChoice(array('choices' => OrderTable::getInstance()->getEnumValues('person_type'), 'required' => false));
 
-    $this->widgetSchema['receipt_type'] = new sfWidgetFormChoice(array(
-      'choices'  => array('pickup' => 'самовывоз', 'delivery' => 'доставка'),
-      'multiple' => false,
-      'expanded' => true,
-    ), array('class' => 'inline'));
-    $this->widgetSchema['receipt_type']->setLabel('Способ получения');
-    $this->validatorSchema['receipt_type'] = new sfValidatorChoice(array('choices' => OrderTable::getInstance()->getEnumValues('receipt_type'), 'required' => false));
+    $this->widgetSchema['delivery_type_id'] = new sfWidgetFormChoice(array(
+      'choices'         => array(
+        'pickup'        => array(
+          'label'       => 'самовывоз',
+          'description' => 'Выбранный товар будет доставлен нашим курьером на следующий день после заказа - максимум через 24 часа. Служба доставки работает для вас с 9 до 24 часов, 7 дней в неделю. В Москве, Санкт-Петербурге, Нижнем Новгороде, Казани, Самаре, Ростове-на-Дону, Екатеринбурге, Новосибирске при заказе более чем на 3 000 рублей, доставка осуществляется бесплатно.'
+        ),
+        'delivery'      => array(
+          'label'       => 'доставка',
+          'description' =>  'Выбранный товар будет доставлен нашим курьером на следующий день после заказа - максимум через 24 часа. Служба доставки работает для вас с 9 до 24 часов, 7 дней в неделю. В Москве, Санкт-Петербурге, Нижнем Новгороде, Казани, Самаре, Ростове-на-Дону, Екатеринбурге, Новосибирске при заказе более чем на 3 000 рублей, доставка осуществляется бесплатно.',
+        ),
+      ),
+      'multiple'        => false,
+      'expanded'        => true,
+      'renderer_class'  => 'myWidgetFormOrderSelectRadio',
+    ) );
+    $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ доставки:');
+    $this->validatorSchema['delivery_type_id'] = new sfValidatorChoice(array('choices' => OrderTable::getInstance()->getEnumValues('receipt_type'), 'required' => false));
+    //$this->widgetSchema['receipt_type']->setOption('class', 'checkboxlist2');
 
     $choices = DeliveryTypeTable::getInstance()->getChoices();
-    if ('legal' == $this->object->person_type)
+    /*if ('legal' == $this->object->person_type)
     {
       array_pop($choices);
       $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
-    }
-    $this->widgetSchema['delivery_type_id'] = new sfWidgetFormChoice(array(
-      'choices'  => $choices,
+    }*/
+    $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
+      //'choices'  => $choices,
+      'model'    => 'DeliveryType',
+      'method'   => 'getChoiseForOrder',
       'multiple' => false,
       'expanded' => true,
+      'renderer_class'  => 'myWidgetFormOrderSelectRadio',
     ));
-    $this->widgetSchema['delivery_type_id']->setLabel('Тип доставки');
+    $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ доставки:');
     $this->validatorSchema['delivery_type_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryType', 'required' => false));
 
-    $choices = array('' => '');
+    //$choices = array('' => '');
+    $choices = array();
     for ($i = 1; $i <= 7; $i++)
     {
       $date = strtotime("+{$i} day");
@@ -68,32 +83,89 @@ class OrderStep1Form extends BaseOrderForm
       'multiple' => false,
       'expanded' => false,
     ));
-    $this->widgetSchema['delivered_at']->setLabel('Дата доставки');
+    $this->widgetSchema['delivered_at']->setLabel('Дата доставки:');
     $this->validatorSchema['delivered_at'] = new sfValidatorChoice(array('choices' => array_keys($choices), 'required' => false));
 
+    $this->widgetSchema['delivery_period_id'] = new sfWidgetFormDoctrineChoice(array(
+      'model'           => 'DeliveryPeriod',
+      'add_empty'       => false,
+      'expanded'        => false,
+      'renderer_class'  => 'myWidgetFormOrderSelect',
+    ));
+    $this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'PaymentMethod', 'required' => true));
+
     $this->widgetSchema['address'] = new sfWidgetFormInputText();
-    $this->widgetSchema['address']->setLabel('Адрес');
+    $this->widgetSchema['address']->setLabel('Адрес доставки:');
     $this->validatorSchema['address'] = new sfValidatorString(array('required' => false));
 
     $this->widgetSchema['shop_id'] = new sfWidgetFormChoice(array(
-      'choices'  => myToolkit::arrayDeepMerge(array('' => ''), ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name')),
+//      'choices'  => myToolkit::arrayDeepMerge(array('' => ''), ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name')),
+      'choices'  => ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name'),
       'multiple' => false,
       'expanded' => false,
+      'renderer_class'  => 'myWidgetFormOrderSelect',
     ));
-    $this->widgetSchema['shop_id']->setLabel('Магазин');
+    $this->widgetSchema['shop_id']->setLabel('Выберите магазин из списка:');
     $this->validatorSchema['shop_id'] = new sfValidatorDoctrineChoice(array('model' => 'Shop', 'required' => false));
+
+    //$this->validatorSchema->setOption('allow_extra_fields', true);
+    $this->widgetSchema['payment_method_id'] = new sfWidgetFormDoctrineChoice(array(
+      'model'           => 'PaymentMethod',
+      'method'          => 'getChoiseForOrder',
+      'add_empty'       => false,
+      'expanded'        => true,
+      'renderer_class'  => 'myWidgetFormOrderSelectRadio',
+    ));
+    $this->widgetSchema['payment_method_id']->setLabel('Выберите способ оплаты:');
+    $this->validatorSchema['payment_method_id'] = new sfValidatorDoctrineChoice(array('model' => 'PaymentMethod', 'required' => true));
+
+    $this->widgetSchema['recipient_last_name'] = new sfWidgetFormInputText();
+    $this->widgetSchema['recipient_last_name']->setLabel('Фамилия получателя:');
+    $this->validatorSchema['recipient_last_name'] = new sfValidatorString(array('max_length' => 255, 'required' => true));
+
+    $this->widgetSchema['recipient_first_name'] = new sfWidgetFormInputText();
+    $this->widgetSchema['recipient_first_name']->setLabel('Имя получателя:');
+    $this->validatorSchema['recipient_first_name'] = new sfValidatorString(array('max_length' => 255, 'required' => true));
+
+    $this->widgetSchema['recipient_phonenumbers'] = new sfWidgetFormInputText();
+    $this->widgetSchema['recipient_phonenumbers']->setLabel('Мобильный телефон для связи:');
+    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('max_length' => 255, ));
+
+    //$choices = array(1 => 'Я хочу получать СМС уведомления об изменении статуса заказа');
+    $this->widgetSchema['is_receive_sms'] = new sfWidgetFormInputCheckbox();
+    $this->widgetSchema['is_receive_sms']->setLabel('Я хочу получать СМС уведомления об изменении статуса заказа');
+    $this->validatorSchema['is_receive_sms'] = new sfValidatorBoolean();
+
+    $this->widgetSchema['zip_code'] = new sfWidgetFormInputText();
+    $this->widgetSchema['zip_code']->setLabel('Почтовый индекс:');
+    $this->validatorSchema['zip_code'] = new sfValidatorPass();
+
+    $this->widgetSchema['extra'] = new sfWidgetFormTextarea();
+    $this->widgetSchema['extra']->setLabel('Комментарии:');
+    $this->validatorSchema['extra'] = new sfValidatorPass();
+
+    /*$this->widgetSchema['recipient_middle_name'] = new sfWidgetFormInputText();
+    $this->widgetSchema['recipient_middle_name']->setLabel('Отчество');
+    $this->validatorSchema['recipient_middle_name'] = new sfValidatorString(array('max_length' => 255, 'required' => false));*/
 
     $this->useFields(array(
       'region_id',
       'person_type',
-      'receipt_type',
-      'shop_id',
+      //'receipt_type',
       'delivery_type_id',
+      'shop_id',
       'delivered_at',
+      'delivery_period_id',
+      'recipient_first_name',
+      'recipient_last_name',
+      'recipient_phonenumbers',
+      'is_receive_sms',
+      'zip_code',
       'address',
+      'extra',
+      //'recipient_middle_name',
+      'payment_method_id',
     ));
-
-    //$this->validatorSchema->setOption('allow_extra_fields', true);
 
     $this->widgetSchema->setNameFormat('order[%s]');
   }
@@ -104,7 +176,7 @@ class OrderStep1Form extends BaseOrderForm
       'region_id',
     );
     // если указан регион
-    if (!empty($this->object->region_id))
+    /*if (!empty($this->object->region_id))
     {
       foreach (array(
         'person_type',
@@ -135,7 +207,7 @@ class OrderStep1Form extends BaseOrderForm
       {
         $this->validatorSchema['delivery_type_id']->setOption('required', false);
       }
-    }
+    }*/
 
     parent::bind($taintedValues, $taintedFiles);
   }

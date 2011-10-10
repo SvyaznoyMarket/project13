@@ -14,12 +14,8 @@
 
     <!-- Header -->
     <div class="basketheader">
-        <div class="logo"><a href="">Enter Связной</a></div>
-        <ul class="steplist">
-            <li><a href=""><span>Шаг 1</span>Данные<br />покупателя</a></li>
-            <li><span>Шаг 2</span>Способ доставки<br />и оплаты</li>
-            <li><span>Шаг 3</span>Подтверждение<br />заказа</li>
-        </ul>
+      <?php include_partial('default/logo') ?>
+      <?php include_slot('step') ?>
         <div class="headerright">
             Заказ и консультации
             <div class="vcard"><div class="tel"><span>(495)</span>555-66-77</div></div>
@@ -69,9 +65,9 @@
             </div>
         </div>
         <div class="counter">
-            <a href=""><img src="images/counter1.gif" alt="" width="80" height="30" /></a>
-            <a href=""><img src="images/counter2.gif" alt="" width="50" height="30" /></a>
-            <a href=""><img src="images/counter3.gif" alt="" width="50" height="30" /></a>
+            <a href=""><img src="/images/images/counter1.gif" alt="" width="80" height="30" /></a>
+            <a href=""><img src="/images/images/counter2.gif" alt="" width="50" height="30" /></a>
+            <a href=""><img src="/images/images/counter3.gif" alt="" width="50" height="30" /></a>
         </div>
     </div>
 </div>
