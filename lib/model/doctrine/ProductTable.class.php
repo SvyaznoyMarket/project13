@@ -313,4 +313,21 @@ class ProductTable extends myDoctrineTable
 
     return $q->fetchOne();
   }
+
+  public function getCountByCategory(ProductCategory $category, array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+    
+    $descendants = $category->getNode()->getDescendants();
+    $ids = $descendants ? $descendants->toValueArray('id') : array();
+    $ids[] = $category->id;
+    
+    $q->innerJoin('product.Category category')
+        ->whereIn('category.id', $ids)
+    ;
+
+    $this->setQueryParameters($q, $params);
+
+    return $q->count();
+  }
 }

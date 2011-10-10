@@ -17,7 +17,9 @@ class productCatalogActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->productCategoryList = ProductCategoryTable::getInstance()->getList();
+    $this->productCategoryList = ProductCategoryTable::getInstance()->getList(array(
+      'select' => 'productCategory.id, productCategory.name, productCategory.token',
+    ));
   }
  /**
   * Executes filter action
@@ -72,7 +74,21 @@ class productCatalogActions extends myActions
   public function executeCategory(sfWebRequest $request)
   {
     $this->productCategory = $this->getRoute()->getObject();
-
+    
+    if (!$this->productCategory->getNode()->hasChildren())
+    {
+      $this->forward($this->getModuleName(), 'product');
+    }
+  }
+ /**
+  * Executes product action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeProduct(sfWebRequest $request)
+  {
+    $this->productCategory = $this->getRoute()->getObject();
+    
     $filter = array(
       'category' => $this->productCategory,
     );

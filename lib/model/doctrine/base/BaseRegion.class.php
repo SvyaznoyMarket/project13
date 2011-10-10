@@ -15,6 +15,7 @@
  * @property string $token
  * @property string $name
  * @property set $type
+ * @property boolean $is_default
  * @property Doctrine_Collection $ServicePrice
  * @property Doctrine_Collection $ServiceCenter
  * @property Doctrine_Collection $Stock
@@ -31,6 +32,7 @@
  * @method string              getToken()          Returns the current record's "token" value
  * @method string              getName()           Returns the current record's "name" value
  * @method set                 getType()           Returns the current record's "type" value
+ * @method boolean             getIsDefault()      Returns the current record's "is_default" value
  * @method Doctrine_Collection getServicePrice()   Returns the current record's "ServicePrice" collection
  * @method Doctrine_Collection getServiceCenter()  Returns the current record's "ServiceCenter" collection
  * @method Doctrine_Collection getStock()          Returns the current record's "Stock" collection
@@ -46,6 +48,7 @@
  * @method Region              setToken()          Sets the current record's "token" value
  * @method Region              setName()           Sets the current record's "name" value
  * @method Region              setType()           Sets the current record's "type" value
+ * @method Region              setIsDefault()      Sets the current record's "is_default" value
  * @method Region              setServicePrice()   Sets the current record's "ServicePrice" collection
  * @method Region              setServiceCenter()  Sets the current record's "ServiceCenter" collection
  * @method Region              setStock()          Sets the current record's "Stock" collection
@@ -125,6 +128,12 @@ abstract class BaseRegion extends myDoctrineRecord
              'notnull' => true,
              'default' => 'city',
              'comment' => 'Тип региона: страна, административная единица, город',
+             ));
+        $this->hasColumn('is_default', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             'comment' => 'Регион по-умолчанию?',
              ));
 
         $this->option('comment', 'Регион');

@@ -47,4 +47,4 @@ all:
   storage:
     class: sfSessionStorage
     param:
-      auto_start: true #false
+      auto_start: true

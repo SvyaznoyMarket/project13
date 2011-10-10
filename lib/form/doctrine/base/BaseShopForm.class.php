@@ -27,6 +27,9 @@ abstract class BaseShopForm extends BaseFormDoctrine
       'phonenumbers' => new sfWidgetFormInputText(),
       'photo'        => new sfWidgetFormInputText(),
       'description'  => new sfWidgetFormTextarea(),
+      'way_walk'     => new sfWidgetFormTextarea(),
+      'way_auto'     => new sfWidgetFormTextarea(),
+      'is_active'    => new sfWidgetFormInputCheckbox(),
       'created_at'   => new sfWidgetFormDateTime(),
       'updated_at'   => new sfWidgetFormDateTime(),
     ));
@@ -44,6 +47,9 @@ abstract class BaseShopForm extends BaseFormDoctrine
       'phonenumbers' => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'photo'        => new sfValidatorString(array('max_length' => 255, 'required' => false)),
       'description'  => new sfValidatorString(array('required' => false)),
+      'way_walk'     => new sfValidatorString(array('required' => false)),
+      'way_auto'     => new sfValidatorString(array('required' => false)),
+      'is_active'    => new sfValidatorBoolean(array('required' => false)),
       'created_at'   => new sfValidatorDateTime(),
       'updated_at'   => new sfValidatorDateTime(),
     ));

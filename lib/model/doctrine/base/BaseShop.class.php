@@ -17,6 +17,9 @@
  * @property string $phonenumbers
  * @property string $photo
  * @property string $description
+ * @property string $way_walk
+ * @property string $way_auto
+ * @property boolean $is_active
  * @property Region $Region
  * @property Doctrine_Collection $Order
  * @property Doctrine_Collection $Photo
@@ -34,6 +37,9 @@
  * @method string              getPhonenumbers() Returns the current record's "phonenumbers" value
  * @method string              getPhoto()        Returns the current record's "photo" value
  * @method string              getDescription()  Returns the current record's "description" value
+ * @method string              getWayWalk()      Returns the current record's "way_walk" value
+ * @method string              getWayAuto()      Returns the current record's "way_auto" value
+ * @method boolean             getIsActive()     Returns the current record's "is_active" value
  * @method Region              getRegion()       Returns the current record's "Region" value
  * @method Doctrine_Collection getOrder()        Returns the current record's "Order" collection
  * @method Doctrine_Collection getPhoto()        Returns the current record's "Photo" collection
@@ -50,6 +56,9 @@
  * @method Shop                setPhonenumbers() Sets the current record's "phonenumbers" value
  * @method Shop                setPhoto()        Sets the current record's "photo" value
  * @method Shop                setDescription()  Sets the current record's "description" value
+ * @method Shop                setWayWalk()      Sets the current record's "way_walk" value
+ * @method Shop                setWayAuto()      Sets the current record's "way_auto" value
+ * @method Shop                setIsActive()     Sets the current record's "is_active" value
  * @method Shop                setRegion()       Sets the current record's "Region" value
  * @method Shop                setOrder()        Sets the current record's "Order" collection
  * @method Shop                setPhoto()        Sets the current record's "Photo" collection
@@ -135,6 +144,18 @@ abstract class BaseShop extends myDoctrineRecord
              'type' => 'string',
              'notnull' => false,
              'comment' => 'Описание магазина',
+             ));
+        $this->hasColumn('way_walk', 'string', null, array(
+             'type' => 'string',
+             ));
+        $this->hasColumn('way_auto', 'string', null, array(
+             'type' => 'string',
+             ));
+        $this->hasColumn('is_active', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             'comment' => 'Магазин работает?',
              ));
 
         $this->option('comment', 'Магазин');

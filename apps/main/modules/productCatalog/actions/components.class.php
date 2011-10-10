@@ -64,6 +64,26 @@ class productCatalogComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
+ /**
+  * Executes categoryChild_list component
+  *
+  * @param ProductCategory $productCategory Категория товаров
+  */
+  public function executeCategoryChild_list()
+  {
+    $list = array();
+    foreach ($this->productCategory->getNode()->getChildren() as $productCategory)
+    {
+      $list[] = array(
+        'name'          => (string)$productCategory,
+        'url'           => url_for('productCatalog_category', $productCategory),
+        'level'         => $productCategory->level,
+        'product_count' => $productCategory->getProductCount(),
+      );
+    }
+
+    $this->setVar('columnList', myToolkit::groupByColumn($list, 4), true);
+  }
 /**
   * Executes creator_list component
   *

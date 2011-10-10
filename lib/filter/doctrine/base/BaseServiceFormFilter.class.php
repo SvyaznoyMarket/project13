@@ -13,19 +13,25 @@ abstract class BaseServiceFormFilter extends BaseFormFilterDoctrine
   public function setup()
   {
     $this->setWidgets(array(
-      'category_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Category'), 'add_empty' => true)),
-      'token'       => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'name'        => new sfWidgetFormFilterInput(array('with_empty' => false)),
-      'description' => new sfWidgetFormFilterInput(),
-      'is_active'   => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
+      'token'         => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'name'          => new sfWidgetFormFilterInput(array('with_empty' => false)),
+      'description'   => new sfWidgetFormFilterInput(),
+      'work'          => new sfWidgetFormFilterInput(),
+      'expendable'    => new sfWidgetFormFilterInput(),
+      'is_active'     => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
+      'core_id'       => new sfWidgetFormFilterInput(),
+      'category_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ServiceCategory')),
     ));
 
     $this->setValidators(array(
-      'category_id' => new sfValidatorDoctrineChoice(array('required' => false, 'model' => $this->getRelatedModelName('Category'), 'column' => 'id')),
-      'token'       => new sfValidatorPass(array('required' => false)),
-      'name'        => new sfValidatorPass(array('required' => false)),
-      'description' => new sfValidatorPass(array('required' => false)),
-      'is_active'   => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'token'         => new sfValidatorPass(array('required' => false)),
+      'name'          => new sfValidatorPass(array('required' => false)),
+      'description'   => new sfValidatorPass(array('required' => false)),
+      'work'          => new sfValidatorPass(array('required' => false)),
+      'expendable'    => new sfValidatorPass(array('required' => false)),
+      'is_active'     => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
+      'core_id'       => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
+      'category_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ServiceCategory', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('service_filters[%s]');
@@ -37,6 +43,24 @@ abstract class BaseServiceFormFilter extends BaseFormFilterDoctrine
     parent::setup();
   }
 
+  public function addCategoryListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.ServiceCategoryRelation ServiceCategoryRelation')
+      ->andWhereIn('ServiceCategoryRelation.category_id', $values)
+    ;
+  }
+
   public function getModelName()
   {
     return 'Service';
@@ -45,12 +69,15 @@ abstract class BaseServiceFormFilter extends BaseFormFilterDoctrine
   public function getFields()
   {
     return array(
-      'id'          => 'Number',
-      'category_id' => 'ForeignKey',
-      'token'       => 'Text',
-      'name'        => 'Text',
-      'description' => 'Text',
-      'is_active'   => 'Boolean',
+      'id'            => 'Number',
+      'token'         => 'Text',
+      'name'          => 'Text',
+      'description'   => 'Text',
+      'work'          => 'Text',
+      'expendable'    => 'Text',
+      'is_active'     => 'Boolean',
+      'core_id'       => 'Number',
+      'category_list' => 'ManyKey',
     );
   }
 }

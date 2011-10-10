@@ -24,6 +24,9 @@ abstract class BaseShopFormFilter extends BaseFormFilterDoctrine
       'phonenumbers' => new sfWidgetFormFilterInput(),
       'photo'        => new sfWidgetFormFilterInput(),
       'description'  => new sfWidgetFormFilterInput(),
+      'way_walk'     => new sfWidgetFormFilterInput(),
+      'way_auto'     => new sfWidgetFormFilterInput(),
+      'is_active'    => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'created_at'   => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'updated_at'   => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
     ));
@@ -40,6 +43,9 @@ abstract class BaseShopFormFilter extends BaseFormFilterDoctrine
       'phonenumbers' => new sfValidatorPass(array('required' => false)),
       'photo'        => new sfValidatorPass(array('required' => false)),
       'description'  => new sfValidatorPass(array('required' => false)),
+      'way_walk'     => new sfValidatorPass(array('required' => false)),
+      'way_auto'     => new sfValidatorPass(array('required' => false)),
+      'is_active'    => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'created_at'   => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'updated_at'   => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
     ));
@@ -73,6 +79,9 @@ abstract class BaseShopFormFilter extends BaseFormFilterDoctrine
       'phonenumbers' => 'Text',
       'photo'        => 'Text',
       'description'  => 'Text',
+      'way_walk'     => 'Text',
+      'way_auto'     => 'Text',
+      'is_active'    => 'Boolean',
       'created_at'   => 'Date',
       'updated_at'   => 'Date',
     );
