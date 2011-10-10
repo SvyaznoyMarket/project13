@@ -2,7 +2,7 @@
 <div class="line pb10"></div>
 
 
-<div class="pb5"><a href="" class="underline">Показать все товары</a> <span class="font10 gray">(<?php echo $productCategory->getProductCount() ?>)</span></div>
+<div class="pb5"><a href="" class="underline">Показать все товары</a> <span class="font10 gray">(<?php echo $productCategory->countProduct() ?>)</span></div>
 
 <!-- Filter -->
 <form class="product_filter-block" action="<?php echo $url ?>" method="get" data-action-count="<?php echo url_for('productCatalog_count', $sf_data->getRaw('productCategory')) ?>">

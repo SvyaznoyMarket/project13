@@ -24,14 +24,24 @@ class productCatalogComponents extends myComponents
       'name' => 'Главная',
       'url'  => url_for('@homepage'),
     );
+    /*
     $list[] = array(
       'name' => 'Каталог товаров',
       'url'  => url_for('@productCatalog'),
     );
+    */
     if (isset($this->productCategory))
     {
+      $ancestorList = $this->productCategory->getNode()->getAncestors();
+      if ($ancestorList) foreach ($ancestorList as $ancestor)
+      {
+        $list[] = array(
+          'name' => (string)$ancestor,
+          'url'  => url_for('productCatalog_category', $ancestor),
+        );
+      }
       $list[] = array(
-        'name' => $this->productCategory->name,
+        'name' => (string)$this->productCategory,
         'url'  => url_for('productCatalog_category', $this->productCategory),
       );
     }
@@ -56,9 +66,9 @@ class productCatalogComponents extends myComponents
     foreach ($this->productCategoryList as $productCategory)
     {
       $list[] = array(
-        'name'            => (string)$productCategory,
-        'productCategory' => $productCategory,
-        'level'           => $productCategory->level,
+        'name'  => (string)$productCategory,
+        'url'   => url_for('productCatalog_category', $productCategory),
+        'level' => $productCategory->level,
       );
     }
 
@@ -75,10 +85,10 @@ class productCatalogComponents extends myComponents
     foreach ($this->productCategory->getNode()->getChildren() as $productCategory)
     {
       $list[] = array(
-        'name'          => (string)$productCategory,
-        'url'           => url_for('productCatalog_category', $productCategory),
-        'level'         => $productCategory->level,
-        'product_count' => $productCategory->getProductCount(),
+        'name'             => (string)$productCategory,
+        'url'              => url_for('productCatalog_category', $productCategory),
+        'level'            => $productCategory->level,
+        'product_quantity' => $productCategory->countProduct(),
       );
     }
 

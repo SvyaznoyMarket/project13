@@ -6,7 +6,7 @@
 <ul class="sectionlist">
   <?php foreach ($column as $i => $item): ?>
   <li>
-    <a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a> (<?php echo $item['product_count'] ?>)
+    <a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a> (<?php echo $item['product_quantity'] ?>)
   </li>
   <?php endforeach ?>
 </ul>

@@ -25,8 +25,8 @@ class ProductCategory extends BaseProductCategory
     );
   }
 
-  public function getProductCount()
+  public function countProduct()
   {
-    return ProductTable::getInstance()->getCountByCategory($this);
+    return ProductTable::getInstance()->countByCategory($this);
   }
 }

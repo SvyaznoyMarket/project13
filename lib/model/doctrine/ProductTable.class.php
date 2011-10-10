@@ -205,9 +205,23 @@ class ProductTable extends myDoctrineTable
     // категория
     if ($filter['category'])
     {
-      $q->innerJoin('product.Category category');
-      $q->addWhere('category.id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
-      //$q->addWhere('product.category_id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
+      if ($filter['category'] instanceof ProductCategory)
+      {
+        $descendants = $filter['category']->getNode()->getDescendants();
+        $ids = $descendants ? $descendants->toValueArray('id') : array();
+        $ids[] = $filter['category']->id;        
+      }
+      else if (!is_array($filter['category']))
+      {
+        $ids = array($filter['category']);
+      }
+      
+      if (count($ids) > 0)
+      {
+        $q->innerJoin('product.Category category');
+        //$q->addWhere('category.id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
+        $q->whereIn('category.id', $ids);
+      }
     }
 
     // производитель
@@ -314,7 +328,7 @@ class ProductTable extends myDoctrineTable
     return $q->fetchOne();
   }
 
-  public function getCountByCategory(ProductCategory $category, array $params = array())
+  public function countByCategory(ProductCategory $category, array $params = array())
   {
     $q = $this->createBaseQuery($params);
     
