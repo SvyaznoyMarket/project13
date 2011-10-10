@@ -259,13 +259,16 @@ ProductComment:
     core_parent_id:    { type: integer(20), notnull: false, default: null, comment: 'ид родителя в Core' }
     core_user_id:      { type: integer(20), notnull: false, default: null, comment: 'ид пользователя в Core' }
     product_id:        { type: integer(20), notnull: true }
+    parent_id:         { type: integer(20), notnull: true, default: 0}
     lft:               { type: integer(20), notnull: true }
     rgt:               { type: integer(20), notnull: true }
     level:             { type: integer(4), notnull: true }
     user_id:           { type: integer(20), notnull: false, default: null }
-    content:           { type: string(255), notnull: true, notblank: true, comment: 'Текст комментария' }
+    content:           { type: text, notnull: true, notblank: true, comment: 'Текст комментария' }
     helpful:           { type: integer(4), notnull: true, default: 0, comment: 'Количество полезных оценок отзыва' }
     unhelpful:         { type: integer(4), notnull: true, default: 0, comment: 'Количество бесполезных оценок отзыва' }
+    is_recomend:       { type: boolean, notnull: true, default: false }
+    rating:            { type: integer(1), notnull: false, default: null, comment: 'рейтинг 1-5' }
   relations:
     Product:           { class: Product, foreignAlias: Comment, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     User:              { class: User, foreignAlias: Comment, local: user_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }

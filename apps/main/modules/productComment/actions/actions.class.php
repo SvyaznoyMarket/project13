@@ -18,8 +18,7 @@ class productCommentActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
-    $this->parent = null;
-    $this->form = new ProductCommentForm(array(), array('product' => $this->product, 'user' => $this->getUser()->getGuardUser()));
+    $this->page = (int)$request->getParameter('page', 1);
   }
  /**
   * Executes new action
@@ -28,26 +27,53 @@ class productCommentActions extends myActions
   */
   public function executeNew(sfWebRequest $request)
   {
-    $this->redirectUnless($this->getUser()->isAuthenticated(), '@user_signin');
+    //$this->redirectUnless($this->getUser()->isAuthenticated(), '@user_signin');
 
     $this->product = $this->getRoute()->getObject();
-    $this->parent =
-      !empty($request['parent'])
-      ? ProductCommentTable::getInstance()->getById($request['parent'])
-      : null
-    ;
-    $this->form = new ProductCommentForm(array(), array('product' => $this->product, 'user' => $this->getUser()->getGuardUser(), 'parent' => $this->parent));
+    
+	if ($request->isMethod(sfWebRequest::POST)) {
 
-    // response
-    if ($request->isXmlHttpRequest())
-    {
-      return $this->renderJson(array(
-        'success' => true,
-        'data'    => array(
-          'content' => $this->getComponent($this->getModuleName(), 'form', array('product' => $this->product, 'parent' => $this->parent, 'form' => $this->form)),
-        ),
-      ));
-    }
+		if ($request->getParameter('content_resume') && $request->getParameter('rating')) {
+		
+			$userId = 2;
+
+			$content = '';
+			if ($request->getParameter('content_plus') != '') {
+				$content .= 'Достоинства: <br/>' . $request->getParameter('content_plus') . '<br/><br/>';
+			}
+			if ($request->getParameter('content_plus') != '') {
+				$content .= 'Недостатки: <br/>' . $request->getParameter('content_minus') . '<br/><br/>';
+			}
+			$content .= 'Резюме: <br/>' . $request->getParameter('content_resume');
+
+			$comment = ProductCommentTable::getInstance()->create(array(
+				'content'     => $content,
+				'user_id'     => $userId,
+				'rating'      => $request->getParameter('rating'),
+				'is_recomend' => $request->getParameter('is_recomend'),
+			));
+			$comment->setProduct($this->product);
+			$comment->setCorePush(false);
+			$comment->save();
+
+			$ratings = $request->getParameter('rating_type');
+			foreach ($ratings as $propertyId => $value) {
+				$rateObj = UserProductRatingTable::getInstance()->create(array(
+					'property_id' => $propertyId,
+					'user_id' => $userId,
+					'product_id' => $this->product->id,
+					'value' => $value,
+				));
+				try {
+				$rateObj->save();
+				} catch (Exception $e) {}
+			}
+
+			$this->redirect(array('sf_route' => 'productComment', 'sf_subject' => $this->product));
+		} else {
+			
+		}
+	}
   }
  /**
   * Executes create action
@@ -56,6 +82,30 @@ class productCommentActions extends myActions
   */
   public function executeCreate(sfWebRequest $request)
   {
+	  if (1==1 || $this->getUser()->isAuthenticated()) {
+		  $product = $this->getRoute()->getObject();
+
+		  $comment = ProductCommentTable::getInstance()->create(array(
+			  'parent_id' => $request->getParameter('parent_id'),
+			  'content'   => $request->getParameter('content'),
+			  'user_id'   => 2
+		  ));
+		  $comment->setProduct($product);
+		  $comment->setCorePush(false);
+		  $comment->save();
+
+		  $data = $comment->toArray(false);
+		  $data['user_name'] = strval($comment->getUser());
+		  return $this->renderJson(array(
+			'success' => true,
+			'data'    => $data,
+		  ));
+	  } else {
+		  return $this->renderJson(array(
+			'success' => false,
+		  ));
+	  }
+	  
     $this->redirectUnless($this->getUser()->isAuthenticated(), '@user_signin');
 
     $this->product = $this->getRoute()->getObject();

@@ -10,10 +10,10 @@
   src: url('../fonts/rouble.eot?#iefix') format('embedded-opentype'),
        url('../fonts/rouble.ttf') format('truetype');
 }
-body {
+/*body {
   font-family: Enter;
   font-size: 30px;
- }
+ }*/
 .rouble {
   font-family: Rouble;
   font-size: 36px;
