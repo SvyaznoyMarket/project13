@@ -29,4 +29,9 @@ class ProductCategory extends BaseProductCategory
   {
     return ProductTable::getInstance()->countByCategory($this);
   }
+
+  public function getPreviewProduct()
+  {
+    return ProductTable::getInstance()->getByCategory($this);
+  }
 }

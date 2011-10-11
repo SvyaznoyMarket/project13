@@ -81,6 +81,12 @@ class productCatalogActions extends myActions
     ) {
       $this->forward($this->getModuleName(), 'product');
     }
+    
+    // если категория корневая
+    if ($this->productCategory->getNode()->isRoot())
+    {
+      $this->setTemplate('categoryRoot');
+    }
   }
  /**
   * Executes product action

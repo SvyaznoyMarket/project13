@@ -1,4 +1,4 @@
-<div class="goodsphoto"><i class="bestseller"></i><a href=""><img src="http://core.ent3.ru/upload/pic/2/300/<?php echo $item['product']['Photo'][0]['resource'] ?>" alt="" width="300" height="300" title="" /></a></div>
+<div class="goodsphoto"><i class="bestseller"></i><a href=""><img src="<?php echo $item['photo'] ?>" alt="" width="300" height="300" title="" /></a></div>
 <div class="goodsinfo"><!-- Goods info -->
   <div class="article">
     <div class="fr"><a href="">Следить за товаром</a> <a href="" rel="nofollow">Печать</a></div>

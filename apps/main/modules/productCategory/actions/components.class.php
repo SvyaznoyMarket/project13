@@ -18,7 +18,7 @@ class productCategoryComponents extends myComponents
   */
   public function executeList()
   {
-    if (!in_array($this->view, array('default', 'carousel')))
+    if (!in_array($this->view, array('default', 'carousel', 'preview')))
     {
       $this->view = 'default';
     }
@@ -75,7 +75,7 @@ class productCategoryComponents extends myComponents
   */
   public function executeShow()
   {
-    if (!in_array($this->view, array('default', 'carousel')))
+    if (!in_array($this->view, array('default', 'carousel', 'preview')))
     {
       $this->view = 'default';
     }
@@ -88,14 +88,23 @@ class productCategoryComponents extends myComponents
     
     if ('carousel' == $this->view)
     {
-      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
-        'limit' => 3,
-      ));
-      
       if (0 == $item['product_quantity'])
       {
         return sfView::NONE;
       }
+      
+      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
+        'limit' => 3,
+      ));
+    }    
+    if ('preview' == $this->view)
+    {
+      if (0 == $item['product_quantity'])
+      {
+        return sfView::NONE;
+      }
+      
+      $item['product'] = $this->productCategory->getPreviewProduct();
     }
 
     $this->setVar('item', $item, true);
