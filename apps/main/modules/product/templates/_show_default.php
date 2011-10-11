@@ -1,4 +1,4 @@
-<div class="goodsphoto"><i class="bestseller"></i><a href=""><img src="http://core.ent3.ru/upload/pic/2/300/<?php echo $item['product']['Photo'][0]['resource'] ?>" alt="" width="300" height="300" title="" /></a></div>
+<div class="goodsphoto"><i class="bestseller"></i><a href=""><img src="<?php echo $item['photo'] ?>" alt="" width="300" height="300" title="" /></a></div>
 <div class="goodsinfo"><!-- Goods info -->
         <div class="article">
 <!--            <div class="fr"><a href="javascript:void()" id="watch-trigger">Следить за товаром</a> <a href="" rel="nofollow">Печать</a></div>-->
@@ -100,29 +100,29 @@
   <li><?php include_component('userProductCompare', 'button', array('product' => $product)) ?></li>
 </ul>
 
-<!--div class="inline">
+  <!--div class="inline">
   <?php //include_component('userProductRating', 'show', array('product' => $product)) ?>
-</div->
-
-<div class="inline">
+  </div->
+  
+  <div class="inline">
   <?php //include_component('userTag', 'product_link', array('product' => $product)) ?>
-</div>
-
-<div class="block">
+  </div>
+  
+  <div class="block">
   <?php //echo link_to('Следить за этим товаром', 'userProductNotice_show', $sf_data->getRaw('product'), array('class' => 'event-click', 'data-event' => 'window.open')) ?>
-</div-->
+  </div-->
 
 </div><!-- Goods info -->
 
-    <div class="clear"></div>
+<div class="clear"></div>
 
-    <!-- Description -->
-    <h2 class="bold">Характеристики</h2>
-    <div class="line pb25"></div>
+<!-- Description -->
+<h2 class="bold">Характеристики</h2>
+<div class="line pb25"></div>
 
-    <div class="descriptionlist">
-    <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
-    </div>
+<div class="descriptionlist">
+  <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
+</div>
 
     <!--div class="pb25"><a href="" class="more">Все характеристики</a></div-->
     <!-- /Description -->

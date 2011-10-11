@@ -84,6 +84,20 @@ class myUser extends myGuardSecurityUser
     return !empty($key) ? $result[$key] : $result;
   }
 
+  public function getIp()
+  {
+    $ip = $this->getAttribute('ip', null);
+
+    if (!$ip)
+    {
+      $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
+      $ip = $geoip['ip_address'];
+      $this->setAttribute('ip', $ip);
+    }
+
+    return $ip;
+  }
+
   protected function getUserData($name)
   {
     if (null == $this->$name)

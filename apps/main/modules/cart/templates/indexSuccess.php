@@ -34,7 +34,7 @@
     <div class="basketinfo">
         <div class="left">
             <div class="font16">Сумма заказа:</div>
-            <div class="font34"><strong><?php echo $cart->getTotal() ?> <span class="rubl">&#8399;</span></strong></div>
+            <div class="font34"><strong><?php echo $cart->getTotal(true) ?> <span class="rubl">p</span></strong></div>
         </div>
         <div class="right pt20">
             <a href="<?php echo url_for('order_new') ?>" class="button bigbuttonlink width214 mb15">Оформить заказ</a>

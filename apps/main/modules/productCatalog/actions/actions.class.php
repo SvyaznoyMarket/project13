@@ -75,9 +75,17 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
     
-    if (!$this->productCategory->getNode()->hasChildren())
-    {
+    if (false
+      || !$this->productCategory->getNode()->hasChildren()                //нет дочерних категорий
+      //|| (1 == $this->productCategory->getNode()->getChildren()->count()) // одна дочерняя категория
+    ) {
       $this->forward($this->getModuleName(), 'product');
+    }
+    
+    // если категория корневая
+    if ($this->productCategory->getNode()->isRoot())
+    {
+      $this->setTemplate('categoryRoot');
     }
   }
  /**

@@ -67,14 +67,15 @@ class Core
     return $table;
   }
 
-  public function createOrder(Order $order)
+  public function createOrder(Order &$order)
   {
     $result = false;
 
     $data = $this->getData($order);
 
-    if ($response = $this->query('order.create', $data))
+    if ($response = $this->query('order.create', array(), $data))
     {
+      $order->token = $response['number'];
       $result = $response['id'];
     }
 

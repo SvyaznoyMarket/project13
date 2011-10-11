@@ -721,11 +721,11 @@ EOF;
         switch ($data['type_id'])
         {
           case 1:
-            break;
-          case 2:
             $record = ProductPhotoTable::getInstance()->createRecordFromCore($data);
             $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
             $record->view_show = 1;
+            break;
+          case 2:
             break;
         }
         break;

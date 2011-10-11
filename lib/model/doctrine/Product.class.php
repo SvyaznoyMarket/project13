@@ -12,6 +12,7 @@
  */
 class Product extends BaseProduct
 {
+
   public function construct()
   {
     $this->mapValue('Parameter', new myDoctrineVirtualCollection());
@@ -20,7 +21,7 @@ class Product extends BaseProduct
 
   public function __toString()
   {
-    return (string)$this->name;
+    return (string) $this->name;
   }
 
   public function toParams()
@@ -40,7 +41,8 @@ class Product extends BaseProduct
     $return = null;
     foreach ($this->Parameter as $parameter)
     {
-      if ($parameter->getProperty()->id != $property_id) continue;
+      if ($parameter->getProperty()->id != $property_id)
+        continue;
 
       $return = $parameter;
     }
@@ -87,35 +89,40 @@ class Product extends BaseProduct
   {
     return ServiceTable::getInstance()->getListByProduct($this, $params);
   }
-  
+
   public function getUsersRates()
   {
-	  $data = UserProductRatingTable::getInstance()->getByProduct($this);
-	  $result = array();
-	  $maxPropertyValue = null;
-	  $maxPropertyId = null;
-	  foreach ($data as $row) {
-		  if (!isset ($result[$row['property_id']])) {
-			  $result[$row['property_id']] = array(
-				  'value' => 0,
-				  'count' => 0,
-				  'name'  => $row['Property']['name']
-			  );
-		  }
-		  $result[$row['property_id']]['value'] += $row['value'];
-		  $result[$row['property_id']]['count']++;
-	  }
-	  foreach ($result as $propId => &$prop) {
-		  if ($prop['value'] > $maxPropertyValue) {
-			  $maxPropertyValue = $prop['value'];
-			  $maxPropertyId = $propId;
-		  }
-		  $prop['average'] = round($prop['value']/$prop['count']);
-	  }
-	  $result['max_property_id'] = $maxPropertyId;
-	  return $result;
+    $data = UserProductRatingTable::getInstance()->getByProduct($this);
+    $result = array();
+    $maxPropertyValue = null;
+    $maxPropertyId = null;
+    foreach ($data as $row)
+    {
+      if (!isset($result[$row['property_id']]))
+      {
+        $result[$row['property_id']] = array(
+          'value' => 0,
+          'count' => 0,
+          'name' => $row['Property']['name']
+        );
+      }
+      $result[$row['property_id']]['value'] += $row['value'];
+      $result[$row['property_id']]['count']++;
+    }
+    foreach ($result as $propId => &$prop)
+    {
+      if ($prop['value'] > $maxPropertyValue)
+      {
+        $maxPropertyValue = $prop['value'];
+        $maxPropertyId = $propId;
+      }
+      $prop['average'] = round($prop['value'] / $prop['count']);
+    }
+    $result['max_property_id'] = $maxPropertyId;
+
+    return $result;
   }
-  
+
   public function getRatingStat()
   {
 	  $q = ProductCommentTable::getInstance()->createBaseQuery();
@@ -150,5 +157,22 @@ class Product extends BaseProduct
 		  $result['percent'] = round(($result['recomends']/$result['count'])*100);
 	  }
 	  return $result;
+  }
+  
+  public function getMainPhoto()
+  {
+    return isset($this->Photo[0]) ? $this->Photo[0] : null;
+  }
+
+  public function getMainPhotoUrl($view = 0)
+  {
+    $urls = sfConfig::get('app_product_photo_url');
+    
+    return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto()->resource : null;
+  }
+
+  public function getMainCategory()
+  {
+    return isset($this->Category[0]) ? $this->Category[0] : null;
   }
 }
