@@ -10,7 +10,7 @@
  */
 class orderActions extends myActions
 {
-  const LAST_STEP = 2;
+  const LAST_STEP = 1;
 
   /**
   * Executes index action
@@ -119,6 +119,7 @@ class orderActions extends myActions
   public function executeConfirm(sfWebRequest $request)
   {
     $this->order = $this->getUser()->getOrder()->get();
+    $cart = $this->getUser()->getCart();
 
     if ($request->isMethod('post'))
     {
@@ -143,6 +144,11 @@ class orderActions extends myActions
   {
     $this->order = $this->getUser()->getOrder()->get();
 
+    $this->order->User = $this->getUser()->getGuardUser();
+    $this->order->sum = $this->getUser()->getCart()->getTotal();
+
+    //$this->order->User = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);//$this->getUser()->getGuardUser();
+
     foreach ($this->getUser()->getCart()->getProducts() as $product)
     {
       $relation = new OrderProductRelation();
@@ -153,8 +159,17 @@ class orderActions extends myActions
       ));
       $this->order->ProductRelation[] = $relation;
     }
-    //myDebug::dump($this->order, 1);
-    $this->order->save();
+
+    try
+    {
+      $this->order->save();
+      $this->getUser()->getCart()->clear();
+      $this->getUser()->getOrder()->clear();
+    }
+    catch (Exception $e)
+    {
+      $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save to core: '.$e->getMessage());
+    }
 
     $this->redirect('order_complete');
   }
