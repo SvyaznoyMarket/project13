@@ -26,23 +26,59 @@ class cartActions extends myActions
   * @param sfRequest $request A request object
   */
   public function executeAdd(sfWebRequest $request)
-  {
-    $product = ProductTable::getInstance()->findOneByToken($request['product']);
-
-    if ($product)
+  {      
+    $result['value'] = true;
+    $result['error'] = "";
+    //валидация количества товара
+    if ( !isset($request['quantity'])) $request['quantity'] = 1;
+    elseif ( (string)(int)$request['quantity']!==(string)$request['quantity'] || $request['quantity']<0 )
     {
-      $this->getUser()->getCart()->addProduct($product, $request['quantity']);
+        $result['value'] = false;
+        $result['error'] = "Некорректное количество товара.";
     }
+    
+    if ($result['value']){    
+        $product = ProductTable::getInstance()->findOneByToken($request['product']);
+
+        if ($product)
+        {
+            try{
+                $this->getUser()->getCart()->addProduct($product, $request['quantity']);
+            }
+            catch(Exception $e){
+                $result['value'] = false;
+                $result['error'] = "Не удалось добавить в корзину товар token='".$request['product']."'.";                        
+            }
+        }
+        else
+        {
+            $result['value'] = false;
+            $result['error'] = "Товар token='".$request['product']."' не найден.";        
+        }
+    }    
 
     if ($request->isXmlHttpRequest())
     {
-      return $this->renderJson(array(
-        'result' => true,
-        'data'   => array(
-          'content' => $this->getComponent($this->getModuleName(), 'buy_button', array('product' => $product)),
-        ),
-      ));
-    }
+          if ($result['value'])
+          {
+              $return = array(
+                'success' => $result['value'],
+                'data'   => array(
+                    'data' => $this->getComponent($this->getModuleName(),'buy_button',array('product' => $product))
+                )
+              );
+          }
+          else
+          {
+              $return = array(
+                'success' => $result['value'],
+                'data'   => array(
+                    'error' => $result['error']
+                )
+              );          
+          }
+          return $this->renderJson($return);
+    } 
     $this->redirect($this->getRequest()->getReferer());
   }
  /**

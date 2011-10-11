@@ -96,6 +96,19 @@ UserProductRating:
     User:              { class: User, foreignAlias: ProductRating, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: UserRating, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
+UserProductRatingTotal:
+  options:
+    comment: 'Общие пользовательские оценки товара'
+  actAs: [ Timestampable ]
+  columns:
+    user_id:           { type: integer(20), primary: true, notnull: true }
+    product_id:        { type: integer(20), primary: true, notnull: true }
+    value:             { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
+  relations:
+    User:              { class: User, foreignAlias: ProductRating, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Product:           { class: Product, foreignAlias: UserRating, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+
 UserAddress:
   options:
     comment: 'Адрес пользователя для доставки'
