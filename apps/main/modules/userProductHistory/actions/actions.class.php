@@ -30,4 +30,36 @@ class userProductHistoryActions extends myActions
 
     $this->redirect($this->getRequest()->getReferer());
   }
+  
+  
+  public function executeShortinfo(sfWebRequest $request)
+  {
+      //echo '<pre>';
+      $user = $this->getUser();
+      //подсчитываем общее количество и общую стоимость корзины
+      $cart = $user->getCart();
+      $qty = 0;
+      $sum = 0;
+      foreach($cart->getProducts()->toArray() as $id => $product){
+          $qty += $product['cart']['quantity'];
+          $sum += $product['price'] * $product['cart']['quantity'];
+      }
+                  
+      $userDelayedProduct = new UserDelayedProduct();
+      $delayProducts = $userDelayedProduct->getUserDelayProducts($user->id);
+      
+      return $this->renderJson(array(
+        'success' => true,
+        'data'    => array(
+              'name' => $user->getAttribute('name'),  
+              'vitems' => $qty,
+              'sum' => $sum,
+              'vwish' => count($delayProducts),
+              'vcomp' => 1,
+              'bingo' => array()  
+        ),
+      ));      
+      //echo '</pre>';
+     // exit();
+  }
 }

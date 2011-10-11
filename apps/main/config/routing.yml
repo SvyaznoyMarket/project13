@@ -171,6 +171,14 @@ user:
   url:   /private/
   param: { module: user, action: index }
 #
+
+# user. get short info about cart, wishlist, etc.
+userProductHistory_shortinfo:
+  url:   /user/shortinfo
+  param: { module: userProductHistory, action: shortinfo }
+  requirements:
+    sf_method: [ get,post ]  
+  
 # user signin
 user_signin:
   url:   /login/:provider
@@ -217,7 +225,7 @@ userProductHistory:
 userProductHistory_clear:
   url:   /private/product-history/clear
   param: { module: userProductHistory, action: clear }
-
+  
 #
 # user delayed product
 userDelayedProduct:
