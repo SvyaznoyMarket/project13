@@ -5,4 +5,4 @@
             <div data-field="shop_id" class="selectbox selectbox429 mb10"><i></i>
               <?php echo $form['shop_id']->render(array('class' => 'styled' )) ?>
             </div>
-            <div class="pb15"><a class="button whitelink" href=""><i class="map"></i>Выбрать на карте</a></div>
+            <!--div class="pb15"><a class="button whitelink" href=""><i class="map"></i>Выбрать на карте</a></div-->

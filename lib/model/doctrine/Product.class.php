@@ -50,7 +50,7 @@ class Product extends BaseProduct
 
   public function getFormattedPrice()
   {
-    return number_format($this->price, 0, ',', ' ').' руб';
+    return number_format($this->price, 0, ',', ' ');//.' руб';
   }
 
   public function getSimilarProduct(array $params = array())
@@ -82,7 +82,7 @@ class Product extends BaseProduct
   {
     return ServiceTable::getInstance()->getListByProduct($this, $params);
   }
-  
+
   public function getUsersRates()
   {
 	  $data = UserProductRatingTable::getInstance()->getByProduct($this);
@@ -110,7 +110,7 @@ class Product extends BaseProduct
 	  $result['max_property_id'] = $maxPropertyId;
 	  return $result;
   }
-  
+
   public function getRatingStat()
   {
 	  $q = ProductCommentTable::getInstance()->createBaseQuery();

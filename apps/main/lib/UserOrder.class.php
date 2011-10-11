@@ -21,4 +21,9 @@ class UserOrder extends BaseUserData
   {
     $this->parameterHolder->set('order', $order->toArray());
   }
+
+  public function clear()
+  {
+    $this->parameterHolder->set('order', array());
+  }
 }

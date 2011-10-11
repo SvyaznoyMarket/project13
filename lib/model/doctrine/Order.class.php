@@ -19,12 +19,12 @@ class Order extends BaseOrder
 
   public function preSave($event)
   {
-    $record = $event->getInvoker();
+    /*$record = $event->getInvoker();
 
     if (empty($record->token))
     {
       $record->token = uniqid();
-    }
+    }*/
   }
 
   public function toParams()
@@ -78,18 +78,24 @@ class Order extends BaseOrder
   {
     $data = parent::exportToCore();
 
-    $data['user_id']      = $this->User->core_id;
-    $data['payment_id']   = $this->PaymentMethod->core_id;
-    $data['geo_id']       = $this->Region->core_id;
-    $data['delivery_id']  = $this->DeliveryType->core_id;
+    $data['user_id']          = $this->User->core_id;
+    $data['payment_id']       = $this->PaymentMethod->core_id;
+    $data['geo_id']           = $this->Region->core_id;
+    $data['delivery_type_id'] = $this->DeliveryType->core_id;
+    $data['shop_id']          = $this->Shop->core_id;
+    $data['address_id']       = $this->UserAddress->core_id;
+    $data['store_id']         = null;
+    $data['ip']               = sfContext::getInstance()->getUser()->getIp();
 
     foreach ($this->ProductRelation as $product)
     {
       $data['product'][] = array(
-        'product_id'  => $product->Product->core_id,
+        'id'          => $product->Product->core_id,
         'price'       => $product->price,
         'quantity'    => $product->quantity,
       );
     }
+
+    return $data;
   }
 }
