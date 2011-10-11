@@ -8,5 +8,5 @@
   <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
-<?php echo include_component('productCatalog', 'categoryChild_list', $sf_data) ?>
+<?php echo include_component('productCategory', 'child_list', array('view' => 'carousel', 'productCategory' => $productCategory)) ?>
 <div class="clear"></div>

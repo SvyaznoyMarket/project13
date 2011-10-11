@@ -29,7 +29,7 @@
         <div class="header">
           <?php include_partial('default/logo') ?>
           <!-- Topmenu -->
-          <?php include_component('productCategory', 'list_root') ?>
+          <?php include_component('productCategory', 'root_list') ?>
           <!-- /Topmenu -->
           <div class="headerright">
             Заказ и консультации
