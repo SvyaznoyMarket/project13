@@ -29,10 +29,13 @@ class productCardComponents extends myComponents
     );
     if (isset($this->product->Category))
     {
-      $list[] = array(
-        'name' => $this->product->Category->name,
-        'url'  => url_for('productCatalog_category', $this->product->Category),
-      );
+		foreach ($this->product->Category as $c) {
+		  $list[] = array(
+			'name' => $c->name,
+			'url'  => url_for('productCatalog_category', $c),
+		  );
+		  break;
+		}
     }
     if (isset($this->product->Creator))
     {

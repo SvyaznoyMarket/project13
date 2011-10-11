@@ -124,25 +124,26 @@ class productComponents extends myComponents
   */
   public function executeProperty_grouped()
   {
-    $list = array();
-    foreach ($this->product['ParameterGroup'] as $parameterGroup)
-    {
-      $parameters = array();
-      foreach ($parameterGroup->getParameter() as $parameter)
-      {
-        $parameters[] = array(
-          'name'  => $parameter->getName(),
-          'value' => $parameter->getValue(),
-        );
-      }
-
-      $list[] = array(
-        'name'       => $parameterGroup->getName(),
-        'parameters' => $parameters,
-      );
-    }
-
-    $this->setVar('list', $list, true);
+	  $this->setVar('product', $this->product, true);
+//    $list = array();
+//    foreach ($this->product['ParameterGroup'] as $parameterGroup)
+//    {
+//      $parameters = array();
+//      foreach ($parameterGroup->getParameter() as $parameter)
+//      {
+//        $parameters[] = array(
+//          'name'  => $parameter->getName(),
+//          'value' => $parameter->getValue(),
+//        );
+//      }
+//
+//      $list[] = array(
+//        'name'       => $parameterGroup->getName(),
+//        'parameters' => $parameters,
+//      );
+//    }
+//
+//    $this->setVar('list', $list, true);
   }
  /**
   * Executes product_group component

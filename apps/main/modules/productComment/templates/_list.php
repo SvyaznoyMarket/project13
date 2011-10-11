@@ -73,6 +73,7 @@
 <div class="fl mr20">Есть мнение по данному товару?<br />Напиши свой отзыв</div><a href="<?php echo url_for('productComment_new', $sf_data->getRaw('product')) ?>" class="button bigbuttonlink">Написать отзыв</a>
 <div class="clear pb15"></div>
 
+		<?php if ($showSort !== false): ?>
 		<!-- Filter -->
 		<div class="filter">
 			<span class="fl">Сортировать по:</span>
@@ -90,8 +91,15 @@
 			</div>
 		</div> 
 		<!-- /Filter -->
-
+		<?php endif ?>
+		
+		<?php if ($showPage !== false): ?>
 		<?php include_partial('pagination', array('pager' => $list, 'pos' => 'top')) ?>
+		<?php else: ?>
+		<strong style="float:right;margin-top:-40px;">
+		<a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать все отзывы</a>
+		</strong>
+		<?php endif ?>
 
 		<div class="line pb15"></div>
 
@@ -179,7 +187,13 @@
 <?php endforeach ?>
 <!-- /Comments  -->
 
+<?php if ($showPage !== false): ?>
 <?php include_partial('pagination', array('pager' => $list, 'pos' => 'bottom')) ?>
+<?php else: ?>
+<strong class="fr">
+<a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать все отзывы</a>
+</strong>
+<?php endif ?>
 
 <div class="fl mr20">Есть мнение по данному товару?<br />Напиши свой отзыв</div><a href="<?php echo url_for('productComment_new', $sf_data->getRaw('product')) ?>" class="button bigbuttonlink">Написать отзыв</a>
 <div class="clear pb15"></div>

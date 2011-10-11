@@ -20,9 +20,11 @@ class productCommentComponents extends myComponents
 	$this->sortParams = array(
 		'created_asc'  => 'Дате (возрастание)',
 		'created_desc' => 'Дате (убывание)',
+		'rating_asc'   => 'Рейтингу (возрастание)',
+		'rating_desc'  => 'Рейтингу (убывание)',
 	);
-	$this->sort = $this->getRequestParameter('sort', 'created_desc');
-	$this->page = $this->getRequestParameter('page', 1);
+//	$this->sort = $this->getRequestParameter('sort', 'created_desc');
+//	$this->page = $this->getRequestParameter('page', 1);
 	$this->list = $this->product->getCommentList(array(
 		'parent_id' => 0, 
 		'page' => $this->page, 

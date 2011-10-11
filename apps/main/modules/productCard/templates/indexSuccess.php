@@ -2,21 +2,22 @@
   <?php include_component('productCard', 'navigation', array('product' => $product)) ?>
 <?php end_slot() ?>
 
-<div class="block">
+<?php slot('title', $product->Creator.'  '.$product->name) ?>
+
   <?php //include_partial('product/name', array('product' => $product)) ?>
-  <?php slot('title', $product->Creator.'  '.$product->name) ?>
   <?php include_component('product', 'show', array('product' => $product)) ?>
   <?php include_component('service', 'listByProduct', array('product' => $product)) ?>
-</div>
 
-<div class="block">
-  <?php echo link_to('Комментарии', 'productComment', $sf_data->getRaw('product')) ?>
-</div>
+  <?php include_component('productComment', 'list', array(
+	  'product' => $product, 
+	  'page' => 1, 
+	  'sort' => 'rating_desc', 
+	  'showSort' => false, 
+	  'showPage' => false
+  )) ?>
 
-<div class="block">
-  <?php echo link_to('Аналогичные товары', 'similarProduct', $sf_data->getRaw('product')) ?>
-</div>
+  <?php //echo link_to('Комментарии', 'productComment', $sf_data->getRaw('product')) ?>
 
-<div class="block">
-  <?php echo link_to('Наличие в сети', 'productStock', $sf_data->getRaw('product')) ?>
-</div>
+  <?php //echo link_to('Аналогичные товары', 'similarProduct', $sf_data->getRaw('product')) ?>
+
+  <?php //echo link_to('Наличие в сети', 'productStock', $sf_data->getRaw('product')) ?>

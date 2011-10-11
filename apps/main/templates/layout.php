@@ -33,7 +33,7 @@
           <!-- /Topmenu -->
           <div class="headerright">
             Заказ и консультации
-            <div class="phone"><span>(495)</span>555-66-77</div>
+            <div class="vcard"><div class="tel"><span>(495)</span>555-66-77</div></div>
             <a href="">Перезвоните мне</a><br />
             <a href="">Отследить мой заказ</a>
           </div>

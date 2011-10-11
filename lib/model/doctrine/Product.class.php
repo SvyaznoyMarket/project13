@@ -50,7 +50,7 @@ class Product extends BaseProduct
 
   public function getFormattedPrice()
   {
-    return number_format($this->price, 0, ',', ' ').' руб';
+    return number_format($this->price, 0, ',', ' ');
   }
 
   public function getSimilarProduct(array $params = array())
@@ -61,6 +61,11 @@ class Product extends BaseProduct
   public function getCommentList(array $params = array())
   {
     return ProductCommentTable::getInstance()->getListByProduct($this, $params);
+  }
+  
+  public function getCommentCount(array $params = array())
+  {
+	  return ProductCommentTable::getInstance()->getCountByProduct($this, $params);
   }
 
   public function getUserTagList(array $params = array())

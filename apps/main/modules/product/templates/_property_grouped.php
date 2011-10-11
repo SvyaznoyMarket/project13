@@ -1,35 +1,32 @@
-<?php if (false): ?>
-<ul>
-<?php foreach ($list as $item): ?>
-  <li>
-    <strong><?php echo $item['name'] ?></strong>:
-      <ul>
-        <?php foreach($item['parameters'] as $property): ?>
-        <li>
-          <strong><?php echo $property['name'] ?></strong>: <?php echo $property['value'] ?>
-        </li>
-        <?php endforeach ?>
-      </ul>
-  </li>
+<?php foreach ($product['ParameterGroup'] as $item): ?>
+	<div class="pb15"><strong><?php echo $item->getName() ?></strong></div>
+	<?php foreach ($item->getParameter() as $property): ?>
+		<div class="point">
+			<?php $desc = $property->getProperty()->getDescription() ?>
+			<?php if (empty($desc)): ?>
+			<div class="title"><h3><?php echo $property->getName() ?></h3></div>
+			<?php else: ?>
+			<div class="title"><h3><?php echo $property->getName() ?><b></b></h3>
+				<div class="pr">
+					<div class="prompting"><i class="corner"></i><i class="close" title="Закрыть">Закрыть</i>
+		                <div class="font16 pb5"><?php echo $property->getName() ?></div>
+						<?php echo $property->getProperty()->getDescription() ?>
+					</div>
+				</div>
+			</div>
+			<?php endif ?>
+			<div class="description">
+				<?php echo $property->getValue() ?>
+				<!--			<div></div>-->
+			</div>
+		</div>
+	<?php endforeach ?>
 <?php endforeach ?>
-</ul>
-<?php endif ?>
-
-<?php foreach ($list as $item): ?>
-        <div class="pb15"><strong><?php echo $item['name'] ?></strong></div>
-        <?php foreach($item['parameters'] as $property): ?>
-        <div class="point">
-          <div class="title"><h3><?php echo $property['name'] ?><!--b></b--></h3>
-            <!--div class="pr">
-              <div class="prompting"><i class="corner"></i><i class="close" title="Закрыть">Закрыть</i>
-                <div class="font16 pb5">Процессор</div>
-                Хочешь получать актуальную информацию по новинкам в этом
-                разделе? Хочешь получать актуальную информацию по
-                новинкам в этом разделе? Хочешь получать актуальную
-                информацию по новинкам в этом разделе?
-              </div-->
-          </div>
-          <div class="description"><?php echo $property['value'] ?></div>
-        </div>
-        <?php endforeach ?>
-<?php endforeach; ?>
+<script type="text/javascript">
+$('.point .title b').click(function(){
+	$(this).parent().parent().find('.prompting').show();
+});
+$('.point .title .pr .close').click(function(){
+	$(this).parent().hide();
+});
+</script>
