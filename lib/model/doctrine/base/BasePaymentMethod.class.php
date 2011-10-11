@@ -11,6 +11,8 @@
  * @property string $name
  * @property string $description
  * @property boolean $is_active
+ * @property boolean $is_legal
+ * @property boolean $is_personal
  * @property Doctrine_Collection $Order
  * 
  * @method integer             getId()          Returns the current record's "id" value
@@ -19,6 +21,8 @@
  * @method string              getName()        Returns the current record's "name" value
  * @method string              getDescription() Returns the current record's "description" value
  * @method boolean             getIsActive()    Returns the current record's "is_active" value
+ * @method boolean             getIsLegal()     Returns the current record's "is_legal" value
+ * @method boolean             getIsPersonal()  Returns the current record's "is_personal" value
  * @method Doctrine_Collection getOrder()       Returns the current record's "Order" collection
  * @method PaymentMethod       setId()          Sets the current record's "id" value
  * @method PaymentMethod       setCoreId()      Sets the current record's "core_id" value
@@ -26,6 +30,8 @@
  * @method PaymentMethod       setName()        Sets the current record's "name" value
  * @method PaymentMethod       setDescription() Sets the current record's "description" value
  * @method PaymentMethod       setIsActive()    Sets the current record's "is_active" value
+ * @method PaymentMethod       setIsLegal()     Sets the current record's "is_legal" value
+ * @method PaymentMethod       setIsPersonal()  Sets the current record's "is_personal" value
  * @method PaymentMethod       setOrder()       Sets the current record's "Order" collection
  * 
  * @package    enter
@@ -75,6 +81,18 @@ abstract class BasePaymentMethod extends myDoctrineRecord
              'default' => false,
              'comment' => 'Способ оплаты активен?',
              ));
+        $this->hasColumn('is_legal', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             'comment' => 'Этот способ оплаты доступен для юр. лиц?',
+             ));
+        $this->hasColumn('is_personal', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             'comment' => 'Этот способ оплаты доступен для физ. лиц?',
+             ));
 
         $this->option('comment', 'Способ оплаты');
     }
@@ -86,8 +104,11 @@ abstract class BasePaymentMethod extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'payment_method_id'));
 
-        $timestampable0 = new Doctrine_Template_Timestampable(array(
+        $timestampable0 = new Doctrine_Template_Timestampable();
+        $corable0 = new Doctrine_Template_Corable(array(
+             'push' => 'disable',
              ));
         $this->actAs($timestampable0);
+        $this->actAs($corable0);
     }
 }

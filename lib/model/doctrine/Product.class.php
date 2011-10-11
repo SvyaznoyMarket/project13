@@ -82,4 +82,66 @@ class Product extends BaseProduct
   {
     return ServiceTable::getInstance()->getListByProduct($this, $params);
   }
+  
+  public function getUsersRates()
+  {
+	  $data = UserProductRatingTable::getInstance()->getByProduct($this);
+	  $result = array();
+	  $maxPropertyValue = null;
+	  $maxPropertyId = null;
+	  foreach ($data as $row) {
+		  if (!isset ($result[$row['property_id']])) {
+			  $result[$row['property_id']] = array(
+				  'value' => 0,
+				  'count' => 0,
+				  'name'  => $row['Property']['name']
+			  );
+		  }
+		  $result[$row['property_id']]['value'] += $row['value'];
+		  $result[$row['property_id']]['count']++;
+	  }
+	  foreach ($result as $propId => &$prop) {
+		  if ($prop['value'] > $maxPropertyValue) {
+			  $maxPropertyValue = $prop['value'];
+			  $maxPropertyId = $propId;
+		  }
+		  $prop['average'] = round($prop['value']/$prop['count']);
+	  }
+	  $result['max_property_id'] = $maxPropertyId;
+	  return $result;
+  }
+  
+  public function getRatingStat()
+  {
+	  $q = ProductCommentTable::getInstance()->createBaseQuery();
+	  $q->andWhere('product_id = ?', $this->id);
+	  $q->andWhere('parent_id = 0');
+	  $data = $q->fetchArray();
+	  $result = array(
+		  'count' => 0,
+		  'recomends' => 0,
+		  'percent' => 0,
+		  'rating_average' => 0,
+		  'rating_1' => 0,
+		  'rating_2' => 0,
+		  'rating_3' => 0,
+		  'rating_4' => 0,
+		  'rating_5' => 0,
+	  );
+	  $ratingSum = 0;
+	  foreach ($data as $row) {
+		  $result['count']++;
+		  if ($row['is_recomend'] == 1) {
+			  $result['recomends']++;
+		  }
+		  $ratingSum += $row['rating'];
+		  if ($row['rating'] > 0) {
+			  $k = 'rating_'.$row['rating'];
+			  $result[$k]++;
+		  }
+	  }
+	  $result['rating_average'] = round($ratingSum/count($data), 2);
+	  $result['percent'] = round(($result['recomends']/$result['count'])*100);
+	  return $result;
+  }
 }

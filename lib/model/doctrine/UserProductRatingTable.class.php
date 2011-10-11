@@ -16,4 +16,27 @@ class UserProductRatingTable extends myDoctrineTable
     {
         return Doctrine_Core::getTable('UserProductRating');
     }
+	
+	public function getByProductAndUser(Product $product, GuardUser $user)
+	{
+		$q = $this->createBaseQuery();
+		$q->innerJoin('userProductRating.Property property');
+		$q->andWhere('user_id = ?', $user->id);
+		$q->andWhere('product_id = ?', $product->id);
+		
+		//$this->setQueryParameters($q, $params);
+
+		return $q->fetchArray();
+	}
+	
+	public function getByProduct(Product $product)
+	{
+		$q = $this->createBaseQuery();
+		$q->innerJoin('userProductRating.Property property');
+		$q->andWhere('product_id = ?', $product->id);
+		
+		//$this->setQueryParameters($q, $params);
+
+		return $q->fetchArray();
+	}
 }

@@ -29,4 +29,15 @@ class ProductComment extends BaseProductComment
 
     return $data;
   }
+  
+  public function getProductRating()
+  {
+	  $t = UserProductRatingTable::getInstance();
+	  return $t->getByProductAndUser($this->getProduct(), $this->getUser());
+  }
+  
+  public function getSubComments()
+  {
+	  return ProductCommentTable::getInstance()->getListByProduct($this->getProduct(), array('parent_id' => $this->id));
+  }
 }

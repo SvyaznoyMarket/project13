@@ -1,15 +1,9 @@
-<div class="block">
+<?php slot('navigation') ?>
   <?php include_component('productCard', 'navigation', array('product' => $product)) ?>
-</div>
+<?php end_slot() ?>
 
-<div class="block">
-  <?php include_partial('product/name', array('product' => $product)) ?>
-</div>
+<?php slot('title', $product->name) ?>
 
-<div class="block">
-  <?php include_component('productComment', 'form', array('product' => $product, 'parent' => $parent, 'form' => $form)) ?>
-</div>
+<?php include_partial('product', array('product' => $product)) ?>
 
-<div class="block">
-  <?php include_component('productComment', 'list', array('product' => $product)) ?>
-</div>
+<?php include_component('productComment', 'list', array('product' => $product, 'page' => $page)) ?>

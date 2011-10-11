@@ -19,6 +19,7 @@ default:
 #    - jquery.autocomplete.css
 #    - main.css
     - skin/inner.css
+    - font.css
 
   javascripts:
     - jquery.js
