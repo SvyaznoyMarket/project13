@@ -1,3 +1,11 @@
 all:
   javascripts:
     - app.product.js
+
+indexSuccess:
+  javascripts:
+    - app.product.comment.list.js
+    
+newSuccess:
+  javascripts:
+    - app.product.comment.new.js

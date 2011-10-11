@@ -205,9 +205,23 @@ class ProductTable extends myDoctrineTable
     // категория
     if ($filter['category'])
     {
-      $q->innerJoin('product.Category category');
-      $q->addWhere('category.id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
-      //$q->addWhere('product.category_id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
+      if ($filter['category'] instanceof ProductCategory)
+      {
+        $descendants = $filter['category']->getNode()->getDescendants();
+        $ids = $descendants ? $descendants->toValueArray('id') : array();
+        $ids[] = $filter['category']->id;        
+      }
+      else if (!is_array($filter['category']))
+      {
+        $ids = array($filter['category']);
+      }
+      
+      if (count($ids) > 0)
+      {
+        $q->innerJoin('product.Category category');
+        //$q->addWhere('category.id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
+        $q->whereIn('category.id', $ids);
+      }
     }
 
     // производитель
@@ -310,6 +324,40 @@ class ProductTable extends myDoctrineTable
       //->addWhere('product.category_id = ?', $category->id)
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
+
+    return $q->fetchOne();
+  }
+
+  public function countByCategory(ProductCategory $category, array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+    
+    $descendants = $category->getNode()->getDescendants();
+    $ids = $descendants ? $descendants->toValueArray('id') : array();
+    $ids[] = $category->id;
+    
+    $q->innerJoin('product.Category category')
+        ->whereIn('category.id', $ids)
+    ;
+
+    $this->setQueryParameters($q, $params);
+
+    return $q->count();
+  }
+  
+  public function getByCategory(ProductCategory $category, array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+    
+    $descendants = $category->getNode()->getDescendants();
+    $ids = $descendants ? $descendants->toValueArray('id') : array();
+    $ids[] = $category->id;
+    
+    $q->innerJoin('product.Category category')
+        ->whereIn('category.id', $ids)
+    ;
+
+    $this->setQueryParameters($q, $params);
 
     return $q->fetchOne();
   }

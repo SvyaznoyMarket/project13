@@ -1,7 +1,12 @@
-# default rules
+# homepage
 homepage:
   url:   /
   param: { module: default, action: index }
+
+# secured welcome
+welcome:
+  url:   /welcome
+  param: { module: default, action: welcome }
 
 # QR-code
 #
@@ -71,6 +76,8 @@ productComment_new:
   param: { module: productComment, action: new }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post, get ]
 #
 # создать комментарий товара
 productComment_create:

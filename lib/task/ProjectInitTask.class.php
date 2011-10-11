@@ -605,6 +605,15 @@ EOF;
     }
   }
 
+  // Product
+  protected function prepareServiceCategoryTable()
+  {
+    $this->logSection('Service category', 'prepare table...');
+
+    $this->connection->exec('TRUNCATE TABLE `service_category`');
+    $this->connection->exec('TRUNCATE TABLE `service_category_relation`');
+  }
+
   // ServiceCategory
   protected function createServiceCategoryRecord(array $data)
   {
@@ -684,6 +693,24 @@ EOF;
     return $record;
   }
 
+  //PaymentMethod
+  protected function createPaymentMethodRecord(array $data)
+  {
+    $record = PaymentMethodTable::getInstance()->createRecordFromCore($data);
+    $record->token = myToolkit::urlize($record->name);
+
+    return $record;
+  }
+
+  //DeliveryType
+  protected function createDeliveryTypeRecord(array $data)
+  {
+    $record = DeliveryTypeTable::getInstance()->createRecordFromCore($data);
+    $record->token = myToolkit::urlize($record->name);
+
+    return $record;
+  }
+
   //Photo for everything
   protected function processUpload(array $data)
   {
@@ -694,10 +721,11 @@ EOF;
         switch ($data['type_id'])
         {
           case 1:
-          case 2:
             $record = ProductPhotoTable::getInstance()->createRecordFromCore($data);
             $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
             $record->view_show = 1;
+            break;
+          case 2:
             break;
         }
         break;

@@ -1,30 +1,12 @@
-<?php if (false): ?>
-  <div class="block">
-    <ul class="inline">
-      <li><?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?></li>
-      <li><?php include_component('userProductCompare', 'button', array('productCategory' => $productCategory)) ?></li>
-    </ul>
+<?php slot('title', $productCategory) ?>
 
-    <div class="left">всего: <?php echo $productPager->getNbResults() ?></div>
-    <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
-    <?php include_component('product', 'list_view') ?>
-    <br class="clear" />
-  </div>
+<?php slot('navigation') ?>
+  <?php include_component('productCatalog', 'navigation', array('productCategory' => $productCategory)) ?>
+<?php end_slot() ?>
 
-  <div class="block">
-    <?php include_component('product', 'pager', array('pager' => $productPager)) ?>
-  </div>
+<?php slot('left_column') ?>
+  <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory)) ?>
+<?php end_slot() ?>
 
-  <div class="block">
-    <div class="left">всего: <?php echo $productPager->getNbResults() ?></div>
-    <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
-    <?php include_component('product', 'list_view') ?>
-    <br class="clear" />
-  </div>
-<?php endif ?>
-  <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
-  <?php include_component('product', 'list_view') ?>
-  <div class="line"></div>
-  <?php include_component('product', 'pager', array('pager' => $productPager)) ?>
-  <div class="line pb10"></div>
-  <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
+<?php echo include_component('productCategory', 'child_list', array('view' => 'carousel', 'productCategory' => $productCategory)) ?>
+<div class="clear"></div>

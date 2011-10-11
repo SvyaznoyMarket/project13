@@ -1,8 +1,8 @@
 Creator:
   - brand
   - Brands
-Order:
-  - order
+#Order:
+#  - order
 Product:
   - product
 ProductCategory:
@@ -19,9 +19,9 @@ ProductPropertyOption:
   - product_option
 ProductType:
   - product_type
-#Region:
-#  - geo
-#  - GEOs
+Region:
+  - geo
+  - GEOs
 Shop:
   - shop
   - Stores
@@ -41,3 +41,7 @@ ProductPrice:
   - product_price
 Service:
   - service
+DeliveryType:
+  - delivery_type
+PaymentMethod:
+  - payment_method

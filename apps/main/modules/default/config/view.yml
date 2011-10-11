@@ -4,3 +4,6 @@ all:
     - skin/main.css
 
   layout: default
+
+welcomeSuccess:
+  layout: welcome

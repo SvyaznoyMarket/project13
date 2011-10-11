@@ -148,7 +148,7 @@ abstract class BaseOrder extends myDoctrineRecord
         $this->hasColumn('type_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
-             'default' => 0,
+             'default' => 1,
              'length' => 20,
              ));
         $this->hasColumn('user_id', 'integer', 20, array(
@@ -164,7 +164,7 @@ abstract class BaseOrder extends myDoctrineRecord
         $this->hasColumn('payment_status_id', 'integer', 20, array(
              'type' => 'integer',
              'notnull' => true,
-             'default' => 0,
+             'default' => 1,
              'length' => 20,
              ));
         $this->hasColumn('payment_details', 'string', 500, array(
@@ -183,7 +183,7 @@ abstract class BaseOrder extends myDoctrineRecord
         $this->hasColumn('is_legal', 'boolean', null, array(
              'type' => 'boolean',
              'notnull' => true,
-             'default' => true,
+             'default' => false,
              'comment' => 'Юр лицо?',
              ));
         $this->hasColumn('region_id', 'integer', 20, array(
@@ -349,6 +349,9 @@ abstract class BaseOrder extends myDoctrineRecord
 
         $timestampable0 = new Doctrine_Template_Timestampable(array(
              ));
+        $corable0 = new Doctrine_Template_Corable(array(
+             ));
         $this->actAs($timestampable0);
+        $this->actAs($corable0);
     }
 }

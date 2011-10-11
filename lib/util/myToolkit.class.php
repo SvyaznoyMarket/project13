@@ -23,4 +23,25 @@ class myToolkit extends sfToolkit
   {
     return strtolower(preg_replace(array( '/[^-a-zA-Z0-9\s]/', '/[\s]/' ), array('', '-' ), self::translite($value)));
   }
+
+  static public function groupByColumn(array $list, $columnCount)
+  {
+    $return = array();
+
+    $count = count($list);
+    $itemCount_perColumn = intval($count / $columnCount);
+    for ($i = 0; $i < $columnCount; $i ++)
+    {
+      $start = (0 == $i ? 0 : $start + $offset);
+      $offset = ($itemCount_perColumn + (($count % $columnCount) >= ($i + 1) ? 1 : 0));
+
+      if ($start > ($count - 1))
+      {
+        break;
+      }
+      $return[$i] = array_slice($list, $start, $offset, false);
+    }
+
+    return $return;
+  }
 }

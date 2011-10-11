@@ -23,6 +23,7 @@ abstract class BaseServiceCategoryFormFilter extends BaseFormFilterDoctrine
       'is_active'         => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'core_id'           => new sfWidgetFormFilterInput(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
+      'service_list'      => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'Service')),
     ));
 
     $this->setValidators(array(
@@ -36,6 +37,7 @@ abstract class BaseServiceCategoryFormFilter extends BaseFormFilterDoctrine
       'is_active'         => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'core_id'           => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
+      'service_list'      => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'Service', 'required' => false)),
     ));
 
     $this->widgetSchema->setNameFormat('service_category_filters[%s]');
@@ -65,6 +67,24 @@ abstract class BaseServiceCategoryFormFilter extends BaseFormFilterDoctrine
     ;
   }
 
+  public function addServiceListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.ServiceCategoryRelation ServiceCategoryRelation')
+      ->andWhereIn('ServiceCategoryRelation.service_id', $values)
+    ;
+  }
+
   public function getModelName()
   {
     return 'ServiceCategory';
@@ -84,6 +104,7 @@ abstract class BaseServiceCategoryFormFilter extends BaseFormFilterDoctrine
       'is_active'         => 'Boolean',
       'core_id'           => 'Number',
       'product_type_list' => 'ManyKey',
+      'service_list'      => 'ManyKey',
     );
   }
 }

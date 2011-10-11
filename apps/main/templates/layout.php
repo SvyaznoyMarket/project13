@@ -29,7 +29,7 @@
         <div class="header">
           <?php include_partial('default/logo') ?>
           <!-- Topmenu -->
-          <?php include_component('productCategory', 'list_root') ?>
+          <?php include_component('productCategory', 'root_list') ?>
           <!-- /Topmenu -->
           <div class="headerright">
             Заказ и консультации
@@ -51,9 +51,9 @@
   <h1><?php include_slot('title') ?></h1>
 <?php endif ?>
         <div class="searchbox">
-            <form action=""><input type="text" class="text" value="Поиск товаров" onfocus="if (this.value == 'Поиск товаров') this.value = '';" onblur="if (this.value == '') this.value = 'Поиск товаров';"  /><input type="button" class="searchbutton" value="Найти" title="Найти" /></form>
-          </div>
+            <form action=""><input type="text" class="searchtext" value="Поиск товаров" onfocus="if (this.value == 'Поиск товаров') this.value = '';" onblur="if (this.value == '') this.value = 'Поиск товаров';"  /><input type="button" class="searchbutton" value="Найти" title="Найти"  id="try-1" /></form>
         </div>
+     </div>
         <!-- Page head -->
 
         <?php if (has_slot('left_column')): ?>

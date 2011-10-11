@@ -16,7 +16,7 @@
       <div class="logo">Enter Связной</div>
 
       <!-- Topmenu -->
-      <?php include_component('productCategory', 'list_root') ?>
+      <?php include_component('productCategory', 'root_list') ?>
       <!-- /Topmenu -->
 
       <?php include_component('default', 'slot', array('token' => 'banner_default')) ?>

@@ -104,9 +104,25 @@ class UserCart extends BaseUserData
 
   }
 
-  public function getTotal()
+  public function getTotal($is_formatted = false)
   {
+    $total = 0;
+    $products = $this->getProducts();
 
+    foreach ($products as $product)
+    {
+      $total += $product['price'] * $product['cart']['quantity'];
+    }
+
+    $result = $total;
+
+    if ($is_formatted)
+    {
+      $result = number_format($total, 0, ',', ' ');
+;
+    }
+
+    return $result;
   }
 
   public function getProducts()
@@ -167,6 +183,7 @@ class UserCart extends BaseUserData
     foreach ($this->products as $key => $product)
     {
       $this->updateProductCart($product, 'quantity', $products[$key]['quantity']);
+      $this->updateProductCart($product, 'formatted_total', number_format($products[$key]['quantity'] * $product->price, 0, ',', ' '));
       $this->updateProductCart($product, 'service', $products[$key]['service']);
     }
   }

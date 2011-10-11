@@ -26,6 +26,7 @@ abstract class BaseServiceCategoryForm extends BaseFormDoctrine
       'is_active'         => new sfWidgetFormInputCheckbox(),
       'core_id'           => new sfWidgetFormInputText(),
       'product_type_list' => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductType')),
+      'service_list'      => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'Service')),
     ));
 
     $this->setValidators(array(
@@ -40,6 +41,7 @@ abstract class BaseServiceCategoryForm extends BaseFormDoctrine
       'is_active'         => new sfValidatorBoolean(array('required' => false)),
       'core_id'           => new sfValidatorInteger(array('required' => false)),
       'product_type_list' => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductType', 'required' => false)),
+      'service_list'      => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'Service', 'required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
@@ -69,11 +71,17 @@ abstract class BaseServiceCategoryForm extends BaseFormDoctrine
       $this->setDefault('product_type_list', $this->object->ProductType->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['service_list']))
+    {
+      $this->setDefault('service_list', $this->object->Service->getPrimaryKeys());
+    }
+
   }
 
   protected function doSave($con = null)
   {
     $this->saveProductTypeList($con);
+    $this->saveServiceList($con);
 
     parent::doSave($con);
   }
@@ -113,6 +121,44 @@ abstract class BaseServiceCategoryForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('ProductType', array_values($link));
+    }
+  }
+
+  public function saveServiceList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['service_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Service->getPrimaryKeys();
+    $values = $this->getValue('service_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Service', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Service', array_values($link));
     }
   }
 

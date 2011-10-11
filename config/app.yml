@@ -1,4 +1,11 @@
 all:
+  default:
+    region: moskva
+  
+  welcome:
+    cookie_name: enter_code
+    secret: welcome
+
   rediska:
     default:
       servers:
@@ -7,13 +14,16 @@ all:
           persistent: true
 
   doctrine:
-    result_cache:         false  # кешировать результаты запросов
+    result_cache:        true  # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
   product:
     max_items:              10                      # максимально количество записей для списка товаров (по умолчанию)
     max_items_on_category:  10                      # максимально количество записей для списка товаров в категории
     comment_helpful_cookie: product_comment_helpful
+    photo_url:
+      - 'http://core.ent3.ru/upload/pic/2/200/'
+      - 'http://core.ent3.ru/upload/pic/2/300/'
 
   guard:
     remember_cookie_name: remember
