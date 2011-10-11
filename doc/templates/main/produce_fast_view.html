@@ -46,13 +46,13 @@ $(document).ready(function(){
             <div class="clear"></div>
             
             <div class="fl pb15">
-                <div class="font10">Старая цена<br /><span class="through">33 990 <span class="rubl">&#8399;</span></span></div>
-                <div class="pb10"><strong class="font34">32 190 <span class="rubl">&#8399;</span></strong></div>
+                <div class="font10">Старая цена<br /><span class="through">33 990 <span class="rubl">p</span></span></div>
+                <div class="pb10"><strong class="font34">32 190 <span class="rubl">p</span></strong></div>
                 <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
                 <div class="pb3"><strong>Доставка стандарт</strong></div>
             </div>
             <div class="fr ar pb15">
-                <div class="doodsbarbig">
+                <div class="goodsbarbig">
                     <a href="" class="link1"></a>
                     <a href="" class="link2"></a>
                     <a href="" class="link3"></a>
@@ -79,7 +79,7 @@ $(document).ready(function(){
                 </div>
             </div>
             
-            <div class="cb ar"><a class="whitelink whitelink180" href="">Перейти в карточку товара</a></div>
+            <div class="cb ar"><a class="button whitelink" href="">Перейти в карточку товара</a></div>
             
         </div> 
         <!-- /Goods info -->   
@@ -137,7 +137,7 @@ $(document).ready(function(){
         <div class="clear"></div>
         <h1>КОЛЬЦА</h1>
         <div class="searchbox">
-            <form action=""><input type="text" class="text" value="Поиск товаров" onfocus="if (this.value == 'Поиск товаров') this.value = '';" onblur="if (this.value == '') this.value = 'Поиск товаров';"  /><input type="button" class="searchbutton" value="Найти" title="Найти" /></form>
+            <form action=""><input type="text" class="searchtext" value="Поиск товаров" onfocus="if (this.value == 'Поиск товаров') this.value = '';" onblur="if (this.value == '') this.value = 'Поиск товаров';"  /><input type="button" class="searchbutton" value="Найти" title="Найти" /></form>
         </div>
     </div>
     <!-- Page head -->
@@ -193,161 +193,242 @@ $(document).ready(function(){
             <!-- Goods -->
             <div class="goodslist">
                     <div class="goodsbox">
-                        <a href="" class="fastview" id="try-1">Быстрый просмотр</a>
-                        <a href="" class="goodsboxlink">
-                            <span class="photo"><i title="Бестселлер" class="bestseller"></i><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></span>
-                            <span class="ratingview"></span>
-                            <span class="link">Серебряные серьги с аметистами и фианитами</span>
-                            <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
-                        </a>
-                        <div class="extrabox">
-                            <div class="doodsbar">
-                                <a href="" class="link1"></a>
-                                <a href="" class="link2"></a>
-                                <a href="" class="link3"></a>
+                        <div class="photo"><i class="bestseller" title="Бестселлер"></i><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
+                        <span class="ratingview"></span>
+                        <h3><a href="">Серебряные серьги с аметистами и фианитами Серебряные серьги с аметистами и фианитами</a></h3>
+                        <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                        <!-- Hover -->
+                        <div class="boxhover">
+                            <b class="rt"></b><b class="lb"></b>
+                            <div class="rb">
+                                <div class="lt" onclick="window.location.href=''">
+                                    <a href="" class="fastview" id="try-1">Быстрый просмотр</a>
+                                    <div class="photo"><i class="bestseller" title="Бестселлер"></i><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                                    <div class="goodsbar">
+                                        <a href="" class="link1"></a>
+                                        <a href="" class="link2"></a>
+                                        <a href="" class="link3"></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <!-- /Hover -->
                     </div>
                     
                     <div class="goodsbox">
-                        <a href="" class="fastview">Быстрый просмотр</a>
-                        <a href="" class="goodsboxlink">
-                            <span class="photo"><i title="Новинка" class="new"></i><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></span>
-                            <span class="ratingview"></span>
-                            <span class="link">Серебряные серьги с аметистами и фианитами</span>
-                            <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
-                        </a>
-                        <div class="extrabox">
-                            <div class="doodsbar">
-                                <a href="" class="link1"></a>
-                                <a href="" class="link2"></a>
-                                <a href="" class="link3"></a>
+                        <div class="photo"><i class="new" title="Новинка"></i><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></div>
+                        <span class="ratingview"></span>
+                        <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                        <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                        <!-- Hover -->
+                        <div class="boxhover">
+                            <b class="rt"></b><b class="lb"></b>
+                            <div class="rb">
+                                <div class="lt" onclick="window.location.href=''">
+                                    <a href="" class="fastview">Быстрый просмотр</a>
+                                    <div class="photo"><i class="new" title="Новинка"></i><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></div>
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                                    <div class="goodsbar">
+                                        <a href="" class="link1"></a>
+                                        <a href="" class="link2"></a>
+                                        <a href="" class="link3"></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <!-- /Hover -->
                     </div>
 
                     <div class="goodsbox">
-                        <a href="" class="fastview">Быстрый просмотр</a>
-                        <a href="" class="goodsboxlink">
-                            <span class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></span>
-                            <span class="ratingview"></span>
-                            <span class="link">Серебряные серьги с аметистами и фианитами</span>
-                            <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
-                        </a>
-                        <div class="extrabox">
-                            <div class="doodsbar">
-                                <a href="" class="link1"></a>
-                                <a href="" class="link2"></a>
-                                <a href="" class="link3"></a>
+                        <div class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></div>
+                        <span class="ratingview"></span>
+                        <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                        <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                        <!-- Hover -->
+                        <div class="boxhover">
+                            <b class="rt"></b><b class="lb"></b>
+                            <div class="rb">
+                                <div class="lt" onclick="window.location.href=''">
+                                    <a href="" class="fastview">Быстрый просмотр</a>
+                                    <div class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></div>
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                                    <div class="goodsbar">
+                                        <a href="" class="link1"></a>
+                                        <a href="" class="link2"></a>
+                                        <a href="" class="link3"></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <!-- /Hover -->
                     </div>
                     
                 <div class="line"></div>
                 
                     <div class="goodsbox">
-                        <a href="" class="fastview">Быстрый просмотр</a>
-                        <a href="" class="goodsboxlink">
-                            <span class="photo"><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></span>
-                            <span class="ratingview"></span>
-                            <span class="link">Серебряные серьги с аметистами и фианитами</span>
-                            <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
-                        </a>
-                        <div class="extrabox">
-                            <div class="doodsbar">
-                                <a href="" class="link1"></a>
-                                <a href="" class="link2"></a>
-                                <a href="" class="link3"></a>
+                        <div class="photo"><i class="bestseller" title="Бестселлер"></i><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
+                        <span class="ratingview"></span>
+                        <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                        <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                        <!-- Hover -->
+                        <div class="boxhover">
+                            <b class="rt"></b><b class="lb"></b>
+                            <div class="rb">
+                                <div class="lt" onclick="window.location.href=''">
+                                    <a href="" class="fastview">Быстрый просмотр</a>
+                                    <div class="photo"><i class="bestseller" title="Бестселлер"></i><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                                    <div class="goodsbar">
+                                        <a href="" class="link1"></a>
+                                        <a href="" class="link2"></a>
+                                        <a href="" class="link3"></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <!-- /Hover -->
                     </div>
                     
                     <div class="goodsbox">
-                        <a href="" class="fastview">Быстрый просмотр</a>
-                        <a href="" class="goodsboxlink">
-                            <span class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></span>
-                            <span class="ratingview"></span>
-                            <span class="link">Серебряные серьги с аметистами и фианитами</span>
-                            <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
-                        </a>
-                        <div class="extrabox">
-                            <div class="doodsbar">
-                                <a href="" class="link1"></a>
-                                <a href="" class="link2"></a>
-                                <a href="" class="link3"></a>
+                        <div class="photo"><i class="new" title="Новинка"></i><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></div>
+                        <span class="ratingview"></span>
+                        <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                        <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                        <!-- Hover -->
+                        <div class="boxhover">
+                            <b class="rt"></b><b class="lb"></b>
+                            <div class="rb">
+                                <div class="lt" onclick="window.location.href=''">
+                                    <a href="" class="fastview">Быстрый просмотр</a>
+                                    <div class="photo"><i class="new" title="Новинка"></i><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></div>
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                                    <div class="goodsbar">
+                                        <a href="" class="link1"></a>
+                                        <a href="" class="link2"></a>
+                                        <a href="" class="link3"></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <!-- /Hover -->
                     </div>
 
                     <div class="goodsbox">
-                        <a href="" class="fastview">Быстрый просмотр</a>
-                        <a href="" class="goodsboxlink">
-                            <span class="photo"><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></span>
-                            <span class="ratingview"></span>
-                            <span class="link">Серебряные серьги с аметистами и фианитами</span>
-                            <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
-                        </a>
-                        <div class="extrabox">
-                            <div class="doodsbar">
-                                <a href="" class="link1"></a>
-                                <a href="" class="link2"></a>
-                                <a href="" class="link3"></a>
+                        <div class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></div>
+                        <span class="ratingview"></span>
+                        <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                        <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                        <!-- Hover -->
+                        <div class="boxhover">
+                            <b class="rt"></b><b class="lb"></b>
+                            <div class="rb">
+                                <div class="lt" onclick="window.location.href=''">
+                                    <a href="" class="fastview">Быстрый просмотр</a>
+                                    <div class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></div>
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                                    <div class="goodsbar">
+                                        <a href="" class="link1"></a>
+                                        <a href="" class="link2"></a>
+                                        <a href="" class="link3"></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <!-- /Hover -->
                     </div>
                     
                 <div class="line"></div>
 
 
                     <div class="goodsbox">
-                        <a href="" class="fastview">Быстрый просмотр</a>
-                        <a href="" class="goodsboxlink">
-                            <span class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></span>
-                            <span class="ratingview"></span>
-                            <span class="link">Серебряные серьги с аметистами и фианитами</span>
-                            <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
-                        </a>
-                        <div class="extrabox">
-                            <div class="doodsbar">
-                                <a href="" class="link1"></a>
-                                <a href="" class="link2"></a>
-                                <a href="" class="link3"></a>
+                        <div class="photo"><i class="bestseller" title="Бестселлер"></i><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
+                        <span class="ratingview"></span>
+                        <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                        <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                        <!-- Hover -->
+                        <div class="boxhover">
+                            <b class="rt"></b><b class="lb"></b>
+                            <div class="rb">
+                                <div class="lt" onclick="window.location.href=''">
+                                    <a href="" class="fastview">Быстрый просмотр</a>
+                                    <div class="photo"><i class="bestseller" title="Бестселлер"></i><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                                    <div class="goodsbar">
+                                        <a href="" class="link1"></a>
+                                        <a href="" class="link2"></a>
+                                        <a href="" class="link3"></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <!-- /Hover -->
                     </div>
                     
                     <div class="goodsbox">
-                        <a href="" class="fastview">Быстрый просмотр</a>
-                        <a href="" class="goodsboxlink">
-                            <span class="photo"><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></span>
-                            <span class="ratingview"></span>
-                            <span class="link">Серебряные серьги с аметистами и фианитами</span>
-                            <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
-                        </a>
-                        <div class="extrabox">
-                            <div class="doodsbar">
-                                <a href="" class="link1"></a>
-                                <a href="" class="link2"></a>
-                                <a href="" class="link3"></a>
+                        <div class="photo"><i class="new" title="Новинка"></i><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></div>
+                        <span class="ratingview"></span>
+                        <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                        <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                        <!-- Hover -->
+                        <div class="boxhover">
+                            <b class="rt"></b><b class="lb"></b>
+                            <div class="rb">
+                                <div class="lt" onclick="window.location.href=''">
+                                    <a href="" class="fastview">Быстрый просмотр</a>
+                                    <div class="photo"><i class="new" title="Новинка"></i><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></div>
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                                    <div class="goodsbar">
+                                        <a href="" class="link1"></a>
+                                        <a href="" class="link2"></a>
+                                        <a href="" class="link3"></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <!-- /Hover -->
                     </div>
 
                     <div class="goodsbox">
-                        <a href="" class="fastview">Быстрый просмотр</a>
-                        <a href="" class="goodsboxlink">
-                            <span class="photo"><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></span>
-                            <span class="ratingview"></span>
-                            <span class="link">Серебряные серьги с аметистами и фианитами</span>
-                            <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
-                        </a>
-                        <div class="extrabox">
-                            <div class="doodsbar">
-                                <a href="" class="link1"></a>
-                                <a href="" class="link2"></a>
-                                <a href="" class="link3"></a>
+                        <div class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></div>
+                        <span class="ratingview"></span>
+                        <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                        <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                        <!-- Hover -->
+                        <div class="boxhover">
+                            <b class="rt"></b><b class="lb"></b>
+                            <div class="rb">
+                                <div class="lt" onclick="window.location.href=''">
+                                    <a href="" class="fastview">Быстрый просмотр</a>
+                                    <div class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></div>
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="font18 pb10">2 190 <span class="rubl">p</span></div>
+                                    <div class="goodsbar">
+                                        <a href="" class="link1"></a>
+                                        <a href="" class="link2"></a>
+                                        <a href="" class="link3"></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <!-- /Hover -->
                     </div>
                     
             </div>
@@ -468,8 +549,8 @@ $(document).ready(function(){
                 456    
             </dd>
         </dl>
-        <div class="pb10"><input type="button" class="yellowbutton" value="Подобрать" /></div>
-        <div class="pb15"><a href="" class="whitelink">Расширенный поиск</a></div>
+        <div class="pb10"><input type="button" class="button yellowbutton" value="Подобрать" /></div>
+        <div class="pb15"><a href="" class="button whitelink">Расширенный поиск</a></div>
         <!-- /Filter -->
         
         
@@ -490,7 +571,7 @@ $(document).ready(function(){
             <div><h2>Подписка на новинки</h2></div>
             <ul>
                 <li>Хочешь получать актуальную информацию по новинкам в этом разделе?</li>
-                <li class="ac"><input type="button" class="whitebutton whitebutton120" value="Подписаться" /></li>
+                <li class="ac"><a href="" class="button whitelink"><i class="leaf"></i>Подписаться</a></li>
             </ul>
         </div>
         <!-- /Subscribe -->

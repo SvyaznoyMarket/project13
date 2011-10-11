@@ -93,4 +93,22 @@ $(document).ready(function(){
 	}).mouseup(function()   {
 	jQuery(this).removeClass("whitelinkactive");
 	});
+	
+	$(".goodsbar .link1").mousedown(function()   {
+	jQuery(this).toggleClass("link1active"); 
+	}).mouseup(function()   {
+	jQuery(this).removeClass("link1active");
+	});
+	
+	$(".goodsbar .link2").mousedown(function()   {
+	jQuery(this).toggleClass("link2active"); 
+	}).mouseup(function()   {
+	jQuery(this).removeClass("link2active");
+	});
+	
+	$(".goodsbar .link3").mousedown(function()   {
+	jQuery(this).toggleClass("link3active"); 
+	}).mouseup(function()   {
+	jQuery(this).removeClass("link3active");
+	});
 });

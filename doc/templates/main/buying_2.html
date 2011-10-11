@@ -9,12 +9,58 @@
 <script type="text/javascript" src="jslib/jquery-1.4.2.js"></script>
 <script type="text/javascript" src="jslib/custom-form-elements.js"></script>
 <script type="text/javascript" src="jslib/prettyCheckboxes.js"></script>
+<script type="text/javascript" src="jslib/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="jslib/jquery.ui.mouse.js"></script>
+<script type="text/javascript" src="jslib/jquery.ui.slider.js"></script>
+<script type="text/javascript" src="jslib/jquery.lightbox_me.js"></script>
 <script type="text/javascript" src="jslib/main.js"></script>
+<script>
+/* Всплывающее окно ---------------------------------------------------------------------------------------------------*/
+$(document).ready(function(){
+	$('#try-1').click(function() {
+    $('#popup_1').lightbox_me({
+        centered: true, 
+        onLoad: function() { 
+            $('#popup_1').find('input:first').focus()
+            }
+        });
+    return false;
+});
+});
+/* Всплывающее окно ---------------------------------------------------------------------------------------------------*/
+</script>
 </head>
 
 <body>
 <div class="allpage">
 <div class="allpageinner buyingpage">
+
+
+    <!-- Map -->
+    <div class="popup popupbox width920" id="popup_1">
+        <i title="Закрыть" class="close">Закрыть</i>
+        <h2 class="pouptitle">Магазины Enter на карте</h2>
+        <div class="mapbox">
+            <b class="mark" style="top:50px; left:250px"></b>
+            <b class="mark" style="top:150px; left:550px"></b>
+            <b class="mark" style="top:200px; left:700px"></b>
+            <b class="mark" style="top:300px; left:100px"></b>
+            <div class="bigmark" style="left:500px; top:300px"><b class="corner"></b><div><span class="font16">Академическая, пр-т 60-летия Октября, д. 20</span><br />Работаем с 9:00 до 22:00<br />Телефон: (499) 444-33-22</div></div>
+            <img src="images/map4.jpg" alt="" width="920" height="489" />        
+        </div>
+        
+        
+        <div class="selectbox selectbox429 fr"><i></i>
+            <select class="styled" name="1">
+                <option value="1">Академическая, пр-т 60-летия Октября, д. 20</option>
+                <option value="2">Академическая, пр-т 60-летия Октября, д. 20</option>
+                <option value="3">Академическая, пр-т 60-летия Октября, д. 20</option>
+            </select>
+        </div>
+        <div class="fr pt5 mr10">Выберите магазин из списка:</div> 
+    </div>
+    <!-- /Map -->
+
 
     <!-- Header -->
     <div class="basketheader">
@@ -49,13 +95,13 @@
             <div class="chequebottom">
                 <div class="top font16">Ваш заказ:</div>
                 <ul>
-                    <li>Смартфон Samsung Galaxy S II (GT-I9100) 16 Гб (1 шт.)<br /><strong>33 990 <span class="rubl">&#8399;</span></strong></li>
-                    <li>Экторп тульста кресло, Идему красный (1 шт.)<br /><strong>9 500 <span class="rubl">&#8399;</span></strong></li>
-                    <li>Настройка смартфона<br /><strong>750 <span class="rubl">&#8399;</span></strong></li>
+                    <li>Смартфон Samsung Galaxy S II (GT-I9100) 16 Гб (1 шт.)<br /><strong>33 990 <span class="rubl">p</span></strong></li>
+                    <li>Экторп тульста кресло, Идему красный (1 шт.)<br /><strong>9 500 <span class="rubl">p</span></strong></li>
+                    <li>Настройка смартфона<br /><strong>750 <span class="rubl">p</span></strong></li>
                 </ul>
                 <div class="total">
                     Сумма заказа:<br />
-                    <strong class="font14">33 990 <span class="rubl">&#8399;</span></strong><br />
+                    <strong class="font14">33 990 <span class="rubl">p</span></strong><br />
                     Дата доставки: 5 октября 20011 г.
                 </div>
             </div>
@@ -86,7 +132,7 @@
                      <option value="3">Охотный ряд, ул. Тверская, д. 34</option>
                  </select>
             </div>
-            <div class="pb15"><a class="button whitelink" href=""><i class="map"></i>Выбрать на карте</a></div>
+            <div class="pb15"><a class="button whitelink" href="#" id="try-1"><i class="map"></i>Выбрать на карте</a></div>
             
             <div class="pb10">Дата доставки:</div>
             <div class="selectbox selectbox225 fl mr10"><i></i>
@@ -114,10 +160,10 @@
             <input type="text" value="Василий" class="text width418 mb15">
             
             <div class="pb10">Фамилия получателя:</div>
-            <input type="text" value="Иванов" class="text width418 mb15">
+            <input type="text" value="Иванов" class="text width418 mb15 active">
             
             <div class="pb10">Мобильный телефон для связи:</div>
-            <input type="text" value="456217894" class="text width418 mb10">
+            <input type="text" value="456217894" class="text width418 mb10 textdisabled">
             <div class="ml20 pb15"><label for="checkbox-8">Я хочу получать СМС уведомления об изменении статуса заказа</label><input id="checkbox-8" name="checkbox-3" type="checkbox" value="checkbox-1" /></div>
             
             <div class="pb10">Почтовый индекс:</div>
@@ -133,7 +179,7 @@
         <div class="fl width215 mr20"><strong class="font16">Хотите что-то добавить?</strong></div>
         <div class="fl width430">
             <div class="pb10">Комментарии:</div>
-            <div class="textareabox mb5"><textarea cols="125" rows="4">Очень хороший аппарат</textarea></div>
+            <div class="textareabox mb5 textdisabled"><textarea cols="125" rows="4">Очень хороший аппарат</textarea></div>
             <div class="font11">Укажите контактный телефон и удобное время для звонка, а также пожелания по заказу.</div>
         </div>
             

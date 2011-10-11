@@ -65,7 +65,7 @@
         <div class="clear"></div>
         <h1>КОЛЬЦА</h1>
         <div class="searchbox">
-            <form action=""><input type="text" class="text" value="Поиск товаров" onfocus="if (this.value == 'Поиск товаров') this.value = '';" onblur="if (this.value == '') this.value = 'Поиск товаров';"  /><input type="button" class="searchbutton" value="Найти" title="Найти" /></form>
+            <form action=""><input type="text" class="searchtext" value="Поиск товаров" onfocus="if (this.value == 'Поиск товаров') this.value = '';" onblur="if (this.value == '') this.value = 'Поиск товаров';"  /><input type="button" class="searchbutton" value="Найти" title="Найти"  id="try-1" /></form>
         </div>
     </div>
     <!-- Page head -->
@@ -120,8 +120,7 @@
             
             <!-- Goods -->
             <div class="goodsbox goodsline">
-                <a href="" class="fastview">Быстрый просмотр</a>
-                <div class="goodsboxlink" onclick="window.open('http://')">
+                <div class="goodsboxlink">
                     <div class="photo"><i title="Бестселлер" class="bestseller"></i><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
                     <div class="info">
                         <span class="ratingview"></span>
@@ -130,7 +129,7 @@
                         <span class="gray">Артикул #530542</span>
                     </div>
                     <div class="extrainfo">
-                        <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
+                        <span class="db font18 pb10">2 190 <span class="rubl">p</span></span>
                         <ul>
                             <li><strong class="orange">Есть в наличии</strong></li>
                             <li>Доставим в течение 24 часов</li>
@@ -138,16 +137,44 @@
                         </ul>    
                     </div>
                 </div>
-                <div class="doodsbar">
-                    <a href="" class="link1"></a>
-                    <a href="" class="link2"></a>
-                    <a href="" class="link3"></a>
-                </div>
+                <!-- Hover -->
+                <div class="boxhover">
+                    <a href="" class="fastview">Быстрый просмотр</a>
+                    <div class="goodsbar">
+                        <a href="" class="link1"></a>
+                        <a href="" class="link2"></a>
+                        <a href="" class="link3"></a>
+                    </div>
+                    <b class="rt"></b><b class="lb"></b>
+                    <div class="rb">
+                        <div class="lt"  onclick="window.location.href=''">
+                            <div class="goodsboxlink" onclick="window.open('http://')">
+                                <div class="photo"><i title="Бестселлер" class="bestseller"></i><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
+                                <div class="info">
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="pb5">Серьги на любой праздник! Эти серьги очень модные и практичные, серьги имеют бриллиантовые вставки, а также желтые рубины</div>
+                                    <span class="gray">Артикул #530542</span>
+                                </div>
+                                <div class="extrainfo">
+                                    <span class="db font18 pb10">2 190 <span class="rubl">p</span></span>
+                                    <ul>
+                                        <li><strong class="orange">Есть в наличии</strong></li>
+                                        <li>Доставим в течение 24 часов</li>
+                                        <li>Поможем настроить смартфон</li>
+                                    </ul>    
+                                </div>
+                            </div>
+                            
+                            <div class="clear"></div>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- /Hover -->
             </div>
             
             <div class="goodsbox goodsline">
-                <a href="" class="fastview">Быстрый просмотр</a>
-                <div class="goodsboxlink" onclick="window.open('http://')">
+                <div class="goodsboxlink">
                     <div class="photo"><i title="Новинка" class="new"></i><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></div>
                     <div class="info">
                         <span class="ratingview"></span>
@@ -156,7 +183,7 @@
                         <span class="gray">Артикул #530542</span>
                     </div>
                     <div class="extrainfo">
-                        <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
+                        <span class="db font18 pb10">2 190 <span class="rubl">p</span></span>
                         <ul>
                             <li><strong class="orange">Есть в наличии</strong></li>
                             <li>Доставим в течение 24 часов</li>
@@ -164,16 +191,43 @@
                         </ul>    
                     </div>
                 </div>
-                <div class="doodsbar">
-                    <a href="" class="link1"></a>
-                    <a href="" class="link2"></a>
-                    <a href="" class="link3"></a>
-                </div>
+                <!-- Hover -->
+                <div class="boxhover">
+                    <a href="" class="fastview">Быстрый просмотр</a>
+                    <div class="goodsbar">
+                        <a href="" class="link1"></a>
+                        <a href="" class="link2"></a>
+                        <a href="" class="link3"></a>
+                    </div>
+                    <b class="rt"></b><b class="lb"></b>
+                    <div class="rb">
+                        <div class="lt"  onclick="window.location.href=''">
+                            <div class="goodsboxlink" onclick="window.open('http://')">
+                                <div class="photo"><i title="Новинка" class="new"></i><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></div>
+                                <div class="info">
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="pb5">Серьги на любой праздник! Эти серьги очень модные и практичные, серьги имеют бриллиантовые вставки, а также желтые рубины</div>
+                                    <span class="gray">Артикул #530542</span>
+                                </div>
+                                <div class="extrainfo">
+                                    <span class="db font18 pb10">2 190 <span class="rubl">p</span></span>
+                                    <ul>
+                                        <li><strong class="orange">Есть в наличии</strong></li>
+                                        <li>Доставим в течение 24 часов</li>
+                                        <li>Поможем настроить смартфон</li>
+                                    </ul>    
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- /Hover -->
             </div>
             
             <div class="goodsbox goodsline">
-                <a href="" class="fastview">Быстрый просмотр</a>
-                <div class="goodsboxlink" onclick="window.open('http://')">
+                <div class="goodsboxlink">
                     <div class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></div>
                     <div class="info">
                         <span class="ratingview"></span>
@@ -182,7 +236,7 @@
                         <span class="gray">Артикул #530542</span>
                     </div>
                     <div class="extrainfo">
-                        <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
+                        <span class="db font18 pb10">2 190 <span class="rubl">p</span></span>
                         <ul>
                             <li><strong class="orange">Есть в наличии</strong></li>
                             <li>Доставим в течение 24 часов</li>
@@ -190,16 +244,43 @@
                         </ul>    
                     </div>
                 </div>
-                <div class="doodsbar">
-                    <a href="" class="link1"></a>
-                    <a href="" class="link2"></a>
-                    <a href="" class="link3"></a>
-                </div>
+                <!-- Hover -->
+                <div class="boxhover">
+                    <a href="" class="fastview">Быстрый просмотр</a>
+                    <div class="goodsbar">
+                        <a href="" class="link1"></a>
+                        <a href="" class="link2"></a>
+                        <a href="" class="link3"></a>
+                    </div>
+                    <b class="rt"></b><b class="lb"></b>
+                    <div class="rb">
+                        <div class="lt"  onclick="window.location.href=''">
+                            <div class="goodsboxlink" onclick="window.open('http://')">
+                                <div class="photo"><img src="images/photo40.jpg" alt="" title="" width="160" height="160" /></div>
+                                <div class="info">
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="pb5">Серьги на любой праздник! Эти серьги очень модные и практичные, серьги имеют бриллиантовые вставки, а также желтые рубины</div>
+                                    <span class="gray">Артикул #530542</span>
+                                </div>
+                                <div class="extrainfo">
+                                    <span class="db font18 pb10">2 190 <span class="rubl">p</span></span>
+                                    <ul>
+                                        <li><strong class="orange">Есть в наличии</strong></li>
+                                        <li>Доставим в течение 24 часов</li>
+                                        <li>Поможем настроить смартфон</li>
+                                    </ul>    
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- /Hover -->
             </div>
             
             <div class="goodsbox goodsline">
-                <a href="" class="fastview">Быстрый просмотр</a>
-                <div class="goodsboxlink" onclick="window.open('http://')">
+                <div class="goodsboxlink">
                     <div class="photo"><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
                     <div class="info">
                         <span class="ratingview"></span>
@@ -208,7 +289,7 @@
                         <span class="gray">Артикул #530542</span>
                     </div>
                     <div class="extrainfo">
-                        <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
+                        <span class="db font18 pb10">2 190 <span class="rubl">p</span></span>
                         <ul>
                             <li><strong class="orange">Есть в наличии</strong></li>
                             <li>Доставим в течение 24 часов</li>
@@ -216,16 +297,43 @@
                         </ul>    
                     </div>
                 </div>
-                <div class="doodsbar">
-                    <a href="" class="link1"></a>
-                    <a href="" class="link2"></a>
-                    <a href="" class="link3"></a>
-                </div>
+                <!-- Hover -->
+                <div class="boxhover">
+                    <a href="" class="fastview">Быстрый просмотр</a>
+                    <div class="goodsbar">
+                        <a href="" class="link1"></a>
+                        <a href="" class="link2"></a>
+                        <a href="" class="link3"></a>
+                    </div>
+                    <b class="rt"></b><b class="lb"></b>
+                    <div class="rb">
+                        <div class="lt"  onclick="window.location.href=''">
+                            <div class="goodsboxlink" onclick="window.open('http://')">
+                                <div class="photo"><img src="images/photo38.jpg" alt="" title="" width="160" height="160" /></div>
+                                <div class="info">
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="pb5">Серьги на любой праздник! Эти серьги очень модные и практичные, серьги имеют бриллиантовые вставки, а также желтые рубины</div>
+                                    <span class="gray">Артикул #530542</span>
+                                </div>
+                                <div class="extrainfo">
+                                    <span class="db font18 pb10">2 190 <span class="rubl">p</span></span>
+                                    <ul>
+                                        <li><strong class="orange">Есть в наличии</strong></li>
+                                        <li>Доставим в течение 24 часов</li>
+                                        <li>Поможем настроить смартфон</li>
+                                    </ul>    
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- /Hover -->
             </div>
             
             <div class="goodsbox goodsline">
-                <a href="" class="fastview">Быстрый просмотр</a>
-                <div class="goodsboxlink" onclick="window.open('http://')">
+                <div class="goodsboxlink">
                     <div class="photo"><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></div>
                     <div class="info">
                         <span class="ratingview"></span>
@@ -234,7 +342,7 @@
                         <span class="gray">Артикул #530542</span>
                     </div>
                     <div class="extrainfo">
-                        <span class="db font18 pb10">2 190 <span class="rubl">&#8399;</span></span>
+                        <span class="db font18 pb10">2 190 <span class="rubl">p</span></span>
                         <ul>
                             <li><strong class="orange">Есть в наличии</strong></li>
                             <li>Доставим в течение 24 часов</li>
@@ -242,11 +350,39 @@
                         </ul>    
                     </div>
                 </div>
-                <div class="doodsbar">
-                    <a href="" class="link1"></a>
-                    <a href="" class="link2"></a>
-                    <a href="" class="link3"></a>
-                </div>
+                <!-- Hover -->
+                <div class="boxhover">
+                    <a href="" class="fastview">Быстрый просмотр</a>
+                    <div class="goodsbar">
+                        <a href="" class="link1"></a>
+                        <a href="" class="link2"></a>
+                        <a href="" class="link3"></a>
+                    </div>
+                    <b class="rt"></b><b class="lb"></b>
+                    <div class="rb">
+                        <div class="lt"  onclick="window.location.href=''">
+                            <div class="goodsboxlink" onclick="window.open('http://')">
+                                <div class="photo"><img src="images/photo39.jpg" alt="" title="" width="160" height="160" /></div>
+                                <div class="info">
+                                    <span class="ratingview"></span>
+                                    <h3><a href="">Серебряные серьги с аметистами и фианитами</a></h3>
+                                    <div class="pb5">Серьги на любой праздник! Эти серьги очень модные и практичные, серьги имеют бриллиантовые вставки, а также желтые рубины</div>
+                                    <span class="gray">Артикул #530542</span>
+                                </div>
+                                <div class="extrainfo">
+                                    <span class="db font18 pb10">2 190 <span class="rubl">p</span></span>
+                                    <ul>
+                                        <li><strong class="orange">Есть в наличии</strong></li>
+                                        <li>Доставим в течение 24 часов</li>
+                                        <li>Поможем настроить смартфон</li>
+                                    </ul>    
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- /Hover -->
             </div>
             <!-- /Goods -->
            
@@ -365,8 +501,8 @@
                 456    
             </dd>
         </dl>
-        <div class="pb10"><input type="button" class="yellowbutton" value="Подобрать" /></div>
-        <div class="pb15"><a href="" class="whitelink">Расширенный поиск</a></div>
+        <div class="pb10"><input type="button" class="button yellowbutton" value="Подобрать" /></div>
+        <div class="pb15"><a href="" class="button whitelink">Расширенный поиск</a></div>
         <!-- /Filter -->
         
         
@@ -387,7 +523,7 @@
             <div><h2>Подписка на новинки</h2></div>
             <ul>
                 <li>Хочешь получать актуальную информацию по новинкам в этом разделе?</li>
-                <li class="ac"><input type="button" class="whitebutton whitebutton120" value="Подписаться" /></li>
+                <li class="ac"><a class="button whitelink" href=""><i class="leaf"></i>Подписаться</a></li>
             </ul>
         </div>
         <!-- /Subscribe -->
