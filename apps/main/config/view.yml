@@ -36,6 +36,8 @@ default:
     - jquery.colorbox.js
     - jquery.autocomplete<?php echo 'dev' == sfConfig::get('sf_environment') ? '-dev' : '' ?>.js
     - main.js
+    - mechanics.js
+    - dash.js    
 
   has_layout:     true
   layout:         layout
