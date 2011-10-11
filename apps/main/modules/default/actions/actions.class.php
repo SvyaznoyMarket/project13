@@ -43,6 +43,7 @@ class defaultActions extends myActions
   */
   public function executeError404(sfWebRequest $request)
   {
+	  $this->setLayout(false);
   }
  /**
   * Executes qrcode action
