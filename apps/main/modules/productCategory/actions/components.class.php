@@ -41,16 +41,16 @@ class productCategoryComponents extends myComponents
   */
   public function executeRoot_list()
   {
-    $list = array();
-    foreach (ProductCategoryTable::getInstance()->getRootList() as $productCategory)
-    {
-      $list[] = array(
-        'name' => (string)$productCategory,
-        'url'  => url_for('productCatalog_category', $productCategory),
-      );
-    }
+//    $list = array();
+//    foreach (ProductCategoryTable::getInstance()->getRootList() as $productCategory)
+//    {
+//      $list[] = array(
+//        'name' => (string)$productCategory,
+//        'url'  => url_for('productCatalog_category', $productCategory),
+//      );
+//    }
 
-    $this->setVar('list', $list, true);
+    $this->setVar('list', ProductCategoryTable::getInstance()->getRootList(), true);
   }
  /**
   * Executes child_list component
