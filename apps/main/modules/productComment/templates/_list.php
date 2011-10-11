@@ -35,6 +35,7 @@
 </tbody>
 </table>
 <?php $grades = $product->getUsersRates() ?>
+<?php if (count($grades) > 1): ?>
 <table class="gradetable fr mr20">
 <thead>
 	<tr>
@@ -59,6 +60,7 @@
 	<?php endforeach ?>
 </tbody>
 </table>
+<?php endif ?>
 
 <div class="recomendbox">
 	<div class="pb10">Рекомендации покупателей: <b class="percentbox"><?php echo $recomendStat['percent'] ?>%</b></div>

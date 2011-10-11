@@ -69,7 +69,7 @@ class UserProductCompare extends BaseUserData
           'view'           => 'show',
           'group_property' => true,
         ));
-        $productList[] = $product;
+        $productList[$id] = $product;
       }
     }
 
@@ -113,7 +113,7 @@ class UserProductCompare extends BaseUserData
     foreach ($this->parameterHolder->get('products') as $type_id => $data)
     {
       $productType = $table->getById($type_id);
-      $productTypeList[] = $productType;
+      $productTypeList[$type_id] = $productType;
     }
 
     return $productTypeList;

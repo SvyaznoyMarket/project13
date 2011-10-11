@@ -129,19 +129,21 @@ class Product extends BaseProduct
 		  'rating_5' => 0,
 	  );
 	  $ratingSum = 0;
-	  foreach ($data as $row) {
-		  $result['count']++;
-		  if ($row['is_recomend'] == 1) {
-			  $result['recomends']++;
+	  if (count($data) > 0) {
+		  foreach ($data as $row) {
+			  $result['count']++;
+			  if ($row['is_recomend'] == 1) {
+				  $result['recomends']++;
+			  }
+			  $ratingSum += $row['rating'];
+			  if ($row['rating'] > 0) {
+				  $k = 'rating_'.$row['rating'];
+				  $result[$k]++;
+			  }
 		  }
-		  $ratingSum += $row['rating'];
-		  if ($row['rating'] > 0) {
-			  $k = 'rating_'.$row['rating'];
-			  $result[$k]++;
-		  }
+		  $result['rating_average'] = round($ratingSum/count($data), 2);
+		  $result['percent'] = round(($result['recomends']/$result['count'])*100);
 	  }
-	  $result['rating_average'] = round($ratingSum/count($data), 2);
-	  $result['percent'] = round(($result['recomends']/$result['count'])*100);
 	  return $result;
   }
 }
