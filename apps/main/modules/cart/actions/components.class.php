@@ -25,7 +25,6 @@ class cartComponents extends myComponents
     }
 
     $cart = $this->getUser()->getCart();
-
     if (!$this->product->is_insale)
     {
       return sfView::NONE;
@@ -51,6 +50,11 @@ class cartComponents extends myComponents
   */
   public function executeShow()
   {
+    if (!in_array($this->view, array('default', 'order')))
+    {
+      $this->view = 'default';
+    }
+
     $cart = $this->getUser()->getCart();
 
     $list = array();
@@ -74,6 +78,7 @@ class cartComponents extends myComponents
         'service'   => $service_for_list,
         'product'   => $product,
         'price'     => $product->getFormattedPrice(),
+        'total'     => $product['cart']['formatted_total'],
       );
     }
 

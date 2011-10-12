@@ -40,6 +40,23 @@ class userProductCompareActions extends myActions
     if ($product)
     {
       $this->getUser()->getProductCompare()->addProduct($product);
+	  
+	  $this->productTypes = $this->getUser()->getProductCompare()->getProductTypes();
+	  $this->setVar('currType', $product->getType(), true);
+	  $this->setVar('productList', $this->getUser()->getProductCompare()->getProducts($product->type_id), true);
+	  $this->setLayout(false);
+	  
+	  if ($request->isXmlHttpRequest())
+	  {
+		  return $this->renderJson(array(
+			'success' => true,
+			'data'    => array(
+			  'content' => $this->getPartial('userProductCompare/add', $this->getVarHolder()->getAll()),
+			),
+		  ));
+	  } else {
+		  return $this->renderPartial('userProductCompare/add', $this->getVarHolder()->getAll());
+	  }
     }
 
     // response

@@ -14,10 +14,11 @@ class productCategoryComponents extends myComponents
   * Executes list component
   *
   * @param Doctrine_Collection $productCategoryList Коллекция категорий товаров
+  * @param view $view Вид
   */
   public function executeList()
   {
-    if (!in_array($this->view, array('default')))
+    if (!in_array($this->view, array('default', 'carousel', 'preview')))
     {
       $this->view = 'default';
     }
@@ -34,21 +35,78 @@ class productCategoryComponents extends myComponents
     $this->setVar('list', $list, true);
   }
  /**
-  * Executes list_root component
+  * Executes root_list component
   *
   * @param ProductCategory $productCategory Текущая категория товара
   */
-  public function executeList_root()
+  public function executeRoot_list()
   {
-    $list = array();
-    foreach (ProductCategoryTable::getInstance()->getRootList() as $productCategory)
+//    $list = array();
+//    foreach (ProductCategoryTable::getInstance()->getRootList() as $productCategory)
+//    {
+//      $list[] = array(
+//        'name' => (string)$productCategory,
+//        'url'  => url_for('productCatalog_category', $productCategory),
+//      );
+//    }
+
+    $this->setVar('list', ProductCategoryTable::getInstance()->getRootList(), true);
+  }
+ /**
+  * Executes child_list component
+  *
+  * @param ProductCategory $productCategory Родительская категория товара
+  * @param view $view Вид
+  */
+  public function executeChild_list()
+  {
+    if (!$this->view)
     {
-      $list[] = array(
-        'name'            => (string)$productCategory,
-        'productCategory' => $productCategory,
-      );
+      $this->view = 'default';
     }
 
-    $this->setVar('list', $list, true);
+    $this->setVar('productCategoryList', $this->productCategory->getNode()->getChildren());
+  }
+ /**
+  * Executes show component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  * @param view $view Вид
+  */
+  public function executeShow()
+  {
+    if (!in_array($this->view, array('default', 'carousel', 'preview')))
+    {
+      $this->view = 'default';
+    }
+
+    $item = array(
+      'name'             => (string)$this->productCategory,
+      'url'              => url_for('productCatalog_category', $this->productCategory),
+      'product_quantity' => $this->productCategory->countProduct(),
+    );
+    
+    if ('carousel' == $this->view)
+    {
+      if (0 == $item['product_quantity'])
+      {
+        return sfView::NONE;
+      }
+      
+      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
+        'limit' => 3,
+      ));
+    }    
+    if ('preview' == $this->view)
+    {
+      if (0 == $item['product_quantity'])
+      {
+        return sfView::NONE;
+      }
+      
+      $item['product'] = $this->productCategory->getPreviewProduct();
+    }
+
+    $this->setVar('item', $item, true);
   }
 }

@@ -18,18 +18,30 @@ class productComponents extends myComponents
   */
   public function executeShow()
   {
-    if (!in_array($this->view, array('default', 'expanded', 'compact')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'category')))
     {
       $this->view = 'default';
     }
 
     $item = array(
+      'article'  => $this->product->article,
       'name'     => (string)$this->product,
       'creator'  => (string)$this->product->Creator,
       'price'    => $this->product->formatted_price,
       'has_link' => $this->product['view_show'],
+      'url'      => url_for('productCard', $this->product, array('absolute' => true)),
+      'photo'    => $this->product->main_photo_url,
       'product'  => $this->product,
     );
+    
+    if ('default' == $this->view)
+    {
+      $item['photo'] = $this->product->getMainPhotoUrl(1);
+    }
+    if (in_array($this->view, array('expanded')))
+    {
+      $item['preview'] = $this->product->preview;
+    }
 
     $this->setVar('item', $item, true);
   }
@@ -124,25 +136,26 @@ class productComponents extends myComponents
   */
   public function executeProperty_grouped()
   {
-    $list = array();
-    foreach ($this->product['ParameterGroup'] as $parameterGroup)
-    {
-      $parameters = array();
-      foreach ($parameterGroup->getParameter() as $parameter)
-      {
-        $parameters[] = array(
-          'name'  => $parameter->getName(),
-          'value' => $parameter->getValue(),
-        );
-      }
-
-      $list[] = array(
-        'name'       => $parameterGroup->getName(),
-        'parameters' => $parameters,
-      );
-    }
-
-    $this->setVar('list', $list, true);
+	  $this->setVar('product', $this->product, true);
+//    $list = array();
+//    foreach ($this->product['ParameterGroup'] as $parameterGroup)
+//    {
+//      $parameters = array();
+//      foreach ($parameterGroup->getParameter() as $parameter)
+//      {
+//        $parameters[] = array(
+//          'name'  => $parameter->getName(),
+//          'value' => $parameter->getValue(),
+//        );
+//      }
+//
+//      $list[] = array(
+//        'name'       => $parameterGroup->getName(),
+//        'parameters' => $parameters,
+//      );
+//    }
+//
+//    $this->setVar('list', $list, true);
   }
  /**
   * Executes product_group component

@@ -29,11 +29,11 @@
         <div class="header">
           <?php include_partial('default/logo') ?>
           <!-- Topmenu -->
-          <?php include_component('productCategory', 'list_root') ?>
+          <?php include_component('productCategory', 'root_list') ?>
           <!-- /Topmenu -->
           <div class="headerright">
             Заказ и консультации
-            <div class="phone"><span>(495)</span>555-66-77</div>
+            <div class="vcard"><div class="tel"><span>(495)</span>555-66-77</div></div>
             <a href="">Перезвоните мне</a><br />
             <a href="">Отследить мой заказ</a>
           </div>

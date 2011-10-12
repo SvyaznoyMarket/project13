@@ -18,7 +18,8 @@ class productCommentActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
-    $this->page = (int)$request->getParameter('page', 1);
+    $this->sort = $this->getRequestParameter('sort', 'created_desc');
+	$this->page = $this->getRequestParameter('page', 1);
   }
  /**
   * Executes new action

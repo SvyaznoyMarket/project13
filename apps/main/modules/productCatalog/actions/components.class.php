@@ -24,22 +24,39 @@ class productCatalogComponents extends myComponents
       'name' => 'Главная',
       'url'  => url_for('@homepage'),
     );
+    /*
     $list[] = array(
       'name' => 'Каталог товаров',
       'url'  => url_for('@productCatalog'),
     );
+    */
     if (isset($this->productCategory))
     {
+      $ancestorList = $this->productCategory->getNode()->getAncestors();
+      if ($ancestorList) foreach ($ancestorList as $ancestor)
+      {
+        $list[] = array(
+          'name' => (string)$ancestor,
+          'url'  => url_for('productCatalog_category', $ancestor),
+        );
+      }
       $list[] = array(
-        'name' => $this->productCategory->name,
+        'name' => (string)$this->productCategory,
         'url'  => url_for('productCatalog_category', $this->productCategory),
       );
     }
     if (isset($this->creator))
     {
       $list[] = array(
-        'name' => $this->creator->name,
+        'name' => (string)$this->creator,
         'url'  => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+      );
+    }
+    if (isset($this->product))
+    {
+      $list[] = array(
+        'name' => (string)$this->product,
+        'url'  => url_for(array('sf_route' => 'productCard', 'sf_subject' => $this->product)),
       );
     }
 
@@ -56,33 +73,13 @@ class productCatalogComponents extends myComponents
     foreach ($this->productCategoryList as $productCategory)
     {
       $list[] = array(
-        'name'            => (string)$productCategory,
-        'productCategory' => $productCategory,
-        'level'           => $productCategory->level,
+        'name'  => (string)$productCategory,
+        'url'   => url_for('productCatalog_category', $productCategory),
+        'level' => $productCategory->level,
       );
     }
 
     $this->setVar('list', $list, true);
-  }
- /**
-  * Executes categoryChild_list component
-  *
-  * @param ProductCategory $productCategory Категория товаров
-  */
-  public function executeCategoryChild_list()
-  {
-    $list = array();
-    foreach ($this->productCategory->getNode()->getChildren() as $productCategory)
-    {
-      $list[] = array(
-        'name'          => (string)$productCategory,
-        'url'           => url_for('productCatalog_category', $productCategory),
-        'level'         => $productCategory->level,
-        'product_count' => $productCategory->getProductCount(),
-      );
-    }
-
-    $this->setVar('columnList', myToolkit::groupByColumn($list, 4), true);
   }
 /**
   * Executes creator_list component

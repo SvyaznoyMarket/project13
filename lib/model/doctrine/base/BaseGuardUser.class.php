@@ -17,7 +17,6 @@
  * @property boolean $is_active
  * @property boolean $is_super_admin
  * @property timestamp $last_login
- * @property integer $core_id
  * @property integer $region_id
  * @property enum $type
  * @property enum $gender
@@ -47,7 +46,6 @@
  * @method boolean             getIsActive()            Returns the current record's "is_active" value
  * @method boolean             getIsSuperAdmin()        Returns the current record's "is_super_admin" value
  * @method timestamp           getLastLogin()           Returns the current record's "last_login" value
- * @method integer             getCoreId()              Returns the current record's "core_id" value
  * @method integer             getRegionId()            Returns the current record's "region_id" value
  * @method enum                getType()                Returns the current record's "type" value
  * @method enum                getGender()              Returns the current record's "gender" value
@@ -76,7 +74,6 @@
  * @method GuardUser           setIsActive()            Sets the current record's "is_active" value
  * @method GuardUser           setIsSuperAdmin()        Sets the current record's "is_super_admin" value
  * @method GuardUser           setLastLogin()           Sets the current record's "last_login" value
- * @method GuardUser           setCoreId()              Sets the current record's "core_id" value
  * @method GuardUser           setRegionId()            Sets the current record's "region_id" value
  * @method GuardUser           setType()                Sets the current record's "type" value
  * @method GuardUser           setGender()              Sets the current record's "gender" value
@@ -167,12 +164,6 @@ abstract class BaseGuardUser extends myDoctrineRecord
              ));
         $this->hasColumn('last_login', 'timestamp', null, array(
              'type' => 'timestamp',
-             ));
-        $this->hasColumn('core_id', 'integer', 20, array(
-             'type' => 'integer',
-             'notnull' => false,
-             'comment' => 'ид записи в Core',
-             'length' => 20,
              ));
         $this->hasColumn('region_id', 'integer', 20, array(
              'type' => 'integer',

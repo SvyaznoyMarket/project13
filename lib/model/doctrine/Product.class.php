@@ -12,6 +12,7 @@
  */
 class Product extends BaseProduct
 {
+
   public function construct()
   {
     $this->mapValue('Parameter', new myDoctrineVirtualCollection());
@@ -20,7 +21,7 @@ class Product extends BaseProduct
 
   public function __toString()
   {
-    return (string)$this->name;
+    return (string) $this->name;
   }
 
   public function toParams()
@@ -40,7 +41,8 @@ class Product extends BaseProduct
     $return = null;
     foreach ($this->Parameter as $parameter)
     {
-      if ($parameter->getProperty()->id != $property_id) continue;
+      if ($parameter->getProperty()->id != $property_id)
+        continue;
 
       $return = $parameter;
     }
@@ -50,7 +52,7 @@ class Product extends BaseProduct
 
   public function getFormattedPrice()
   {
-    return number_format($this->price, 0, ',', ' ').' руб';
+    return number_format($this->price, 0, ',', ' ');
   }
 
   public function getSimilarProduct(array $params = array())
@@ -61,6 +63,11 @@ class Product extends BaseProduct
   public function getCommentList(array $params = array())
   {
     return ProductCommentTable::getInstance()->getListByProduct($this, $params);
+  }
+  
+  public function getCommentCount(array $params = array())
+  {
+	  return ProductCommentTable::getInstance()->getCountByProduct($this, $params);
   }
 
   public function getUserTagList(array $params = array())
@@ -82,35 +89,40 @@ class Product extends BaseProduct
   {
     return ServiceTable::getInstance()->getListByProduct($this, $params);
   }
-  
+
   public function getUsersRates()
   {
-	  $data = UserProductRatingTable::getInstance()->getByProduct($this);
-	  $result = array();
-	  $maxPropertyValue = null;
-	  $maxPropertyId = null;
-	  foreach ($data as $row) {
-		  if (!isset ($result[$row['property_id']])) {
-			  $result[$row['property_id']] = array(
-				  'value' => 0,
-				  'count' => 0,
-				  'name'  => $row['Property']['name']
-			  );
-		  }
-		  $result[$row['property_id']]['value'] += $row['value'];
-		  $result[$row['property_id']]['count']++;
-	  }
-	  foreach ($result as $propId => &$prop) {
-		  if ($prop['value'] > $maxPropertyValue) {
-			  $maxPropertyValue = $prop['value'];
-			  $maxPropertyId = $propId;
-		  }
-		  $prop['average'] = round($prop['value']/$prop['count']);
-	  }
-	  $result['max_property_id'] = $maxPropertyId;
-	  return $result;
+    $data = UserProductRatingTable::getInstance()->getByProduct($this);
+    $result = array();
+    $maxPropertyValue = null;
+    $maxPropertyId = null;
+    foreach ($data as $row)
+    {
+      if (!isset($result[$row['property_id']]))
+      {
+        $result[$row['property_id']] = array(
+          'value' => 0,
+          'count' => 0,
+          'name' => $row['Property']['name']
+        );
+      }
+      $result[$row['property_id']]['value'] += $row['value'];
+      $result[$row['property_id']]['count']++;
+    }
+    foreach ($result as $propId => &$prop)
+    {
+      if ($prop['value'] > $maxPropertyValue)
+      {
+        $maxPropertyValue = $prop['value'];
+        $maxPropertyId = $propId;
+      }
+      $prop['average'] = round($prop['value'] / $prop['count']);
+    }
+    $result['max_property_id'] = $maxPropertyId;
+
+    return $result;
   }
-  
+
   public function getRatingStat()
   {
 	  $q = ProductCommentTable::getInstance()->createBaseQuery();
@@ -129,19 +141,38 @@ class Product extends BaseProduct
 		  'rating_5' => 0,
 	  );
 	  $ratingSum = 0;
-	  foreach ($data as $row) {
-		  $result['count']++;
-		  if ($row['is_recomend'] == 1) {
-			  $result['recomends']++;
+	  if (count($data) > 0) {
+		  foreach ($data as $row) {
+			  $result['count']++;
+			  if ($row['is_recomend'] == 1) {
+				  $result['recomends']++;
+			  }
+			  $ratingSum += $row['rating'];
+			  if ($row['rating'] > 0) {
+				  $k = 'rating_'.$row['rating'];
+				  $result[$k]++;
+			  }
 		  }
-		  $ratingSum += $row['rating'];
-		  if ($row['rating'] > 0) {
-			  $k = 'rating_'.$row['rating'];
-			  $result[$k]++;
-		  }
+		  $result['rating_average'] = round($ratingSum/count($data), 2);
+		  $result['percent'] = round(($result['recomends']/$result['count'])*100);
 	  }
-	  $result['rating_average'] = round($ratingSum/count($data), 2);
-	  $result['percent'] = round(($result['recomends']/$result['count'])*100);
 	  return $result;
+  }
+  
+  public function getMainPhoto()
+  {
+    return isset($this->Photo[0]) ? $this->Photo[0] : null;
+  }
+
+  public function getMainPhotoUrl($view = 0)
+  {
+    $urls = sfConfig::get('app_product_photo_url');
+    
+    return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto()->resource : null;
+  }
+
+  public function getMainCategory()
+  {
+    return isset($this->Category[0]) ? $this->Category[0] : null;
   }
 }

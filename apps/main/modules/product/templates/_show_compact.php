@@ -1,8 +1,9 @@
-<?php if (false): ?>
-<strong><?php echo $item['has_link'] ? link_to($item['name'], 'productCard', $item['product']) : $item['name'] ?></strong>
-<?php echo $item['creator'] ?>
+<div class="goodsbox">
+  <div class="photo"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
+  <span class="ratingview"></span>
+  <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
 
-<?php include_partial('product/price', array('price' => $item['price'])) ?>
+  <div class="font18 pb10"><?php echo $item['price'] ?> <span class="rubl">p</span></div>
 
 <ul class="inline">
   <li><?php include_component('cart', 'buy_button', array('product' => $item['product'])) ?></li>
