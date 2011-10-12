@@ -43,6 +43,7 @@ class orderComponents extends myComponents
     }
 
     $this->setVar('item', $item, true);
+    $this->setVar('total', $this->getUser()->getCart()->getTotal());
   }
  /**
   * Executes list component
