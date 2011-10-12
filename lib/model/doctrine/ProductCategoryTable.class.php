@@ -102,4 +102,25 @@ class ProductCategoryTable extends myDoctrineTable
 
     return $this->createListByIds($ids, $params);
   }
+  
+  public function getSubList(array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+    $this->setQueryParameters($q, $params);
+
+	if (isset($params['root_id'])) {
+		$q->addWhere('productCategory.root_id = ?', (int)$params['root_id']);
+	}
+	$q->addWhere('productCategory.level >= 1');
+	$q->addWhere('productCategory.level <= 2');
+    $q->orderBy('productCategory.lft');
+
+    $q->useResultCache(true, null, $this->getQueryHash('productCategory-sub', $params));
+
+	return $q->execute();
+	
+    $ids = $this->getIdsByQuery($q);
+
+    return $this->createListByIds($ids, $params);
+  }
 }
