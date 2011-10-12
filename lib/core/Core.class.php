@@ -116,7 +116,7 @@ class Core
 
     $data = $this->getData($user);
 
-    if ($this->query('user.update', array(), $data))
+    if ($this->query('user.update', array('id'=>$data['id']), $data))
     {
       $result = true;
     }

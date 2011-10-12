@@ -38,7 +38,7 @@
         <!--<input type="password" class="text width315 mb10" value="Пароль" />-->
       </div>
 
-      <input type="submit" class="fr button bigbutton" value="Войти" />
+      <input type="submit" class="fr button bigbutton" value="Войти" tabindex="4" />
       <div class="ml20 pt10">
         <label for="checkbox-8" class="prettyCheckbox checkbox list"><span class="holderWrap" style="width: 13px; height: 13px;"><span class="holder" style="width: 13px;"></span></span>Запомнить меня на этом компьютере</label>
         <?php echo $formSignin['remember']->render(array('class' => 'hiddenCheckbox', 'id' => 'checkbox-8')) ?>
@@ -60,7 +60,7 @@
         <?php echo $formRegister['username']->render(array('class' => 'text width315 mb10')) ?>
         <!--<input type="password" class="text width315 mb10" value="Пароль" />-->
       </div>
-      <input type="submit" class="fr button bigbutton" value="Регистрация" />
+      <input type="submit" class="fr button bigbutton" value="Регистрация" tabindex="10" />
 
     </div>
   </form>
