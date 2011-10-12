@@ -5,4 +5,4 @@ all:
       dsn:      mysql:host=localhost;dbname=enter
       username: root
       password: qazwsxedc
-      profiler: false
+      profiler: true

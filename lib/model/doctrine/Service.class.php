@@ -19,4 +19,13 @@ class Service extends BaseService
       'service' => $this->token,
     );
   }
+  
+  public function getPriceByRegion(Region $region)
+  {
+	  $q = ServicePriceTable::getInstance()->createBaseQuery();
+	  $q->select('price')
+	    ->addWhere('service_id = ?', $this->id)
+	    ->addWhere('region_id = ?', $region->id);
+	  return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+  }
 }

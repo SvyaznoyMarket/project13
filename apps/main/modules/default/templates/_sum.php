@@ -1,1 +1,1 @@
-<?php echo number_format($sum, 0, ',', ' ').' руб' ?>
+<?php echo number_format($sum, 0, ',', ' ')/*.' руб'*/ ?>

@@ -49,6 +49,15 @@ class ProductCommentTable extends myDoctrineTable
 
     return $q;
   }
+  
+  public function getCountByProduct(Product $product, array $params = array())
+  {
+	  $q = $this->createBaseQuery($params);
+	  $q->select('COUNT(*)')
+	    ->addWhere('productComment.product_id = ?', $product->id)
+	    ->addWhere('parent_id = ?', 0);
+	  return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+  }
 
   /**
    *
@@ -72,6 +81,12 @@ class ProductCommentTable extends myDoctrineTable
 	
 	if (isset($params['page'])) {
 		switch ($params['sort']) {
+			case 'rating_asc':
+				$q->orderBy('productComment.rating');
+				break;
+			case 'rating_desc':
+				$q->orderBy('productComment.rating DESC');
+				break;
 			case 'created_desc':
 				$q->orderBy('productComment.created_at DESC');
 				break;
@@ -83,6 +98,7 @@ class ProductCommentTable extends myDoctrineTable
 		$pager = new myDoctrinePager('ProductComment', 2);
 		$pager->setQuery($q);
 		$pager->setPage($params['page']);
+		$pager->setMaxPerPage(isset($params['per_page']) ? $params['per_page'] : 5);
 		$pager->init();
 		return $pager;
 	} else {
