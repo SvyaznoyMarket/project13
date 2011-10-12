@@ -1,6 +1,6 @@
 all:
   default:
-    region: moskva
+    region: moscow
   
   welcome:
     cookie_name: enter_code
