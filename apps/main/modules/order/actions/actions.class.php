@@ -134,6 +134,9 @@ class orderActions extends myActions
   public function executeComplete(sfWebRequest $request)
   {
     $this->order = $this->getUser()->getOrder()->get();
+    $this->getUser()->getOrder()->clear();
+
+    $this->setVar('order', $this->order);
   }
  /**
   * Executes create action
@@ -163,8 +166,8 @@ class orderActions extends myActions
     try
     {
       $this->order->save();
+      $this->getUser()->getOrder()->set($this->order);
       $this->getUser()->getCart()->clear();
-      $this->getUser()->getOrder()->clear();
     }
     catch (Exception $e)
     {

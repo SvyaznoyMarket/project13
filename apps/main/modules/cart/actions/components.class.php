@@ -50,6 +50,11 @@ class cartComponents extends myComponents
   */
   public function executeShow()
   {
+    if (!in_array($this->view, array('default', 'order')))
+    {
+      $this->view = 'default';
+    }
+
     $cart = $this->getUser()->getCart();
 
     $list = array();
