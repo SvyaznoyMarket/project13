@@ -83,6 +83,7 @@ class User extends BaseUser
   {
     $data = parent::exportToCore();
     $data['sex'] = 0;
+	$data['geo_id'] = $this->getRegion()->core_id;
     
     return $data;
   }

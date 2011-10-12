@@ -123,6 +123,19 @@ class Core
 
     return $result;
   }
+  
+  public function createUserProfile(UserProfile $profile)
+  {
+	  $result = false;
+
+		$data = $this->getData($profile);
+
+		if ($response = $this->query('user.network.create', array(), $data)) {
+			$result = $response['id'];
+		}
+
+		return $result;
+  }
 
   public function createUserTag($params = array(), $data = array())
   {
@@ -285,6 +298,7 @@ class Core
     $this->logger->log('Trying to pass authentification... ');
     $response = $this->send($data);
 
+	//$this->logger->log($response);
     $response = json_decode($response, true);
 
     if (isset($response['error']))
