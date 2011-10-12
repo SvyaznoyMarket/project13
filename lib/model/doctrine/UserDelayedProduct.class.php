@@ -12,4 +12,15 @@
  */
 class UserDelayedProduct extends BaseUserDelayedProduct
 {
+    
+    /**
+     * Получает список отложенных товаров пользователя
+     * @param integer $user_id
+     * @return array 
+     */
+    public function getUserDelayProducts($user_id){
+        $table = $this->getTable()->getQueryObject();
+        $list = $table->where('user_id=?',$user_id)->fetchArray();
+        return $list;
+    }
 }

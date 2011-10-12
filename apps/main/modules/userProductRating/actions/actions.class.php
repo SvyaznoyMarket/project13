@@ -64,7 +64,19 @@ class userProductRatingActions extends myActions
   
   
  /**
-  * Executes create action
+  * Общее голосование за товар (не по категориям)
+  * Принимает:
+  *  - код товара
+  *  - значение голоса (от 1 до 5)
+  * Действует по следующему алгоритму:
+  * 1. Валидация полученных данных
+  * 2. Если пользователь авторизован:   
+  *     1. Проверяем в локальной базе, голосовал ли пользователь за этот товар
+  *     2. Если не голосовал, отпрвляем запрос "Проголосовать" в ядро
+  *     3. Если результат положительный, добавляем голос пользователя
+  * 3. Если пользователь не авторизован:
+  *     1. Отпрвляем запрос "Проголосовать" в ядро
+  * 4. Если пользователю, в итоге, разрешено голосовать, пересчитываем рейтинг товара
   *
   * @param sfRequest $request A request object
   */
@@ -91,21 +103,21 @@ class userProductRatingActions extends myActions
         $user = $this->getUser();             
 
         //если пользователь авторизован
-        //if (isset($user) && $user->isAuthenticated()){
+        if (isset($user) && $user->getGuardUser() && $user->isAuthenticated()){
 
             //посмотрим в локальной базе. Вероятно, пользователь уже голосовал за этот товар, и информация есть здесь
             $table = UserProductRatingTotalTable::getInstance();
-            $existItems = $table->getQueryObject()->andWhere('product_id="'.$this->_product->id.'"')->fetchArray();
+            $existItems = $table->getQueryObject()->andWhere('product_id=? AND user_id=? ',array($this->_product->id,$user->getGuardUser()->id))->fetchArray();
             //print_r($existItems);
             if (count($existItems)>0){
               $this->_validateResult['success'] = false;
               $this->_validateResult['error'] = "Вы уже голосовали за этот товар, и не можете проголосовать повторно.";            
-              //return $this->_refuse();
+              return $this->_refuse();
             }
             
             //отправляем запос на голосование в ядро
             $core = Core::getInstance();
-            $ratingInfo = $core->query('/user/product/rating/create/',array(),array('product_id'=>$this->_product->id,'user_id'=>1,'value'=>$this->_request['rating'],'criterion_id'=>1));
+            $ratingInfo = $core->query('/user/product/rating/create/',array(),array('product_id'=>$this->_product->id,'user_id'=>$user->getGuardUser()->id,'value'=>$this->_request['rating'],'criterion_id'=>1));
             //если от ядра был получен отказ на запись данных
             if (!$ratingInfo){
               $this->_validateResult['success'] = false;
@@ -116,13 +128,24 @@ class userProductRatingActions extends myActions
             //пользователь авторизован, но не голосовал
             //добавляем голос пользователя
             $userRate = new UserProductRatingTotal();
-            $userRate->fromArray(array('product_id'=>$this->_product->id,'user_id'=>$user->id,'value'=>$this->_request['rating']));
+            $userRate->fromArray(array('product_id'=>$this->_product->id,'user_id'=>$user->getGuardUser()->id,'value'=>$this->_request['rating']));
             $userRate->save();
-       // }
-        //если пользователь не авторизован, позволяем ему голосовать в любом случае 
-        //TODO: проверка неавторизованного пользователя
+        }
+        else
+        {
+            //если пользователь не авторизован - отправим запрос в ядро - вероятоно,
+            //пользователь с таким ip голосовал и ядро запретит голосование
+            $core = Core::getInstance();
+            $ratingInfo = $core->query('/user/product/rating/create/',array(),array('product_id'=>$this->_product->id,'ip'=>$user->getIp(),'value'=>$this->_request['rating'],'criterion_id'=>1));
+            //если от ядра был получен отказ на запись данных
+            if (!$ratingInfo){
+              $this->_validateResult['success'] = false;
+              $this->_validateResult['error'] = $core->getError();            
+              return $this->_refuse();            
+            }            
+        }
 
-        //пересчитываем рейтинг товара
+        //всё хорошо, пересчитываем рейтинг товара
         $this->_product->rating;
         $this->_product->rating_quantity;
         $currentRatingFull = $this->_product->rating * $this->_product->rating_quantity;
@@ -162,7 +185,7 @@ class userProductRatingActions extends myActions
 
         //ищем подукт
         //если передан token продукта
-        if (isset($request['product']))
+        if (isset($this->_request['product']))
         {
             $this->_product = ProductTable::getInstance()->findOneByToken($this->_request['product']);
         }
