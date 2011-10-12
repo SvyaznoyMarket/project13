@@ -14,6 +14,8 @@ class UserFormSignin extends BaseUserForm
   {
     parent::configure();
 
+    $this->disableCSRFProtection();
+
     $this->setWidgets(array(
       'username' => new sfWidgetFormInputText(),
       'password' => new sfWidgetFormInputPassword(array('type' => 'password')),
@@ -32,6 +34,12 @@ class UserFormSignin extends BaseUserForm
       'username' => 'Логин',
       'password' => 'Пароль',
       'remember' => 'Забыли пароль?',
+    ));
+    
+    $this->useFields(array(
+      'username',
+      'password',
+      'remember',
     ));
 
     $this->widgetSchema->setNameFormat('signin[%s]');

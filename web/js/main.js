@@ -59,14 +59,12 @@ EventHandler = {
   'secure': function(e) {
      e.preventDefault()
 
-      $.colorbox({
-        iframe: true,
-        href: $('#auth-form').find('form:first').attr('action') + '?frame=true',
-        scrolling: false,
-        fixed: true,
-        initialWidth: 1,
-        initialHeight: 1
-      })
+    $('#auth-block').lightbox_me({
+        centered: true, 
+        onLoad: function() { 
+            $('#auth-block').find('input:first').focus()
+        }
+    })
   },
 
   // Обновление DOM-элемента
@@ -103,6 +101,7 @@ EventHandler = {
 
     var href = el.attr('href') + (-1 != el.attr('href').indexOf('?') ? '&' : '?') + 'frame=true'
 
+    /*
     $.colorbox({
       href: href,
       iframe: true,
@@ -117,6 +116,7 @@ EventHandler = {
         }
       }
     })
+    */
   },
 
   // Отправка формы
@@ -151,18 +151,22 @@ EventHandler = {
 $(document).ready(function() {
 
   // Настройки colorbox
+  /*
   $.extend($.colorbox.settings, {
     opacity: 0.7,
     fixed: false,
     close: 'закрыть <span style="font: bold 16px Verdana">&times;</span>'
   })
+  */
 
   // Обработчики ajax-ошибок
   $(document).ajaxError(function(e, x, settings, exception) {
+    /*
     $.extend($.colorbox.settings, {
       width: 400,
       height: 200
     })
+    */
 
     if (x.status == 0) {
       $.colorbox({html: '<h1>Ошибка</h1><br />Не удается подключиться к серверу', fixed: true})
@@ -185,7 +189,9 @@ $(document).ready(function() {
 
   // Если окно находится во фрейме, то изменить размер модального окна
   if (window.isInFrame()) {
+    /*
     window.parent.$.fn.colorbox.resize({innerHeight: $(document).height(), innerWidth: $(document).width()})
+    */
   }
 
   // Подключение стандартных обработчиков
