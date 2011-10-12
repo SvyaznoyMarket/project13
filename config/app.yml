@@ -1,7 +1,7 @@
 all:
   default:
     region: moskva
-  
+
   welcome:
     cookie_name: enter_code
     secret: welcome
@@ -24,6 +24,9 @@ all:
     photo_url:
       - 'http://core.ent3.ru/upload/pic/2/200/'
       - 'http://core.ent3.ru/upload/pic/2/300/'
+      - 'http://core.ent3.ru/upload/1/120/'
+      - 'http://core.ent3.ru/upload/1/160/'
+      - 'http://core.ent3.ru/upload/1/500/'
 
   guard:
     remember_cookie_name: remember
