@@ -32,10 +32,23 @@ class userProductHistoryActions extends myActions
   }
   
   
+  /**
+   *
+   * Получает краткую информацию о пользователе:
+   * -имя
+   * -о корзине
+   * -о виш листе
+   * -о сравниваемых товарах
+   * -bingo TODO
+   * Вызывается посредствам ajax. Параметров не принимает.
+   * 
+   * @param sfWebRequest $request
+   * @return json 
+   */
   public function executeShortinfo(sfWebRequest $request)
   {
-      //echo '<pre>';
       $user = $this->getUser();
+
       //подсчитываем общее количество и общую стоимость корзины
       $cart = $user->getCart();
       $qty = 0;
@@ -44,22 +57,36 @@ class userProductHistoryActions extends myActions
           $qty += $product['cart']['quantity'];
           $sum += $product['price'] * $product['cart']['quantity'];
       }
-                  
-      $userDelayedProduct = new UserDelayedProduct();
-      $delayProducts = $userDelayedProduct->getUserDelayProducts($user->id);
       
+      //отложенные товары
+      $delayProducts = array();
+      if ($user->getGuardUser())
+      {
+        $userDelayedProduct = new UserDelayedProduct();
+        $delayProducts = $userDelayedProduct->getUserDelayProducts($user->getGuardUser()->id);
+      }
+      
+#     echo '<pre>';
+#     echo '</pre>';      
+   #   exit();
+      
+      //имя есть только у авторизованного пользователя
+      if ($user->isAuthenticated()) $name = $user->getName();
+      else $name = false;
       return $this->renderJson(array(
         'success' => true,
         'data'    => array(
-              'name' => $user->getAttribute('name'),  
+              'name' => $name,  
               'vitems' => $qty,
               'sum' => $sum,
               'vwish' => count($delayProducts),
-              'vcomp' => 1,
+              'vcomp' => $user->getProductCompare()->getProductsNum(),
               'bingo' => array()  
         ),
-      ));      
-      //echo '</pre>';
-     // exit();
+      ));  
+      
+      $this->redirect($this->getRequest()->getReferer());
+      
   }
+  
 }

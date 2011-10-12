@@ -190,6 +190,13 @@ userProductHistory_shortinfo:
 user_signin:
   url:   /login/:provider
   param: { module: guard, action: signin, provider: null }
+  
+# user signin ajax
+user_signinajax:
+  url:   /loginajax/:login/:password/:remember
+  param: { module: guard, action: signinAjax, provider: null, remember: 0 }
+  requirements:
+    sf_method: [ get,post ]    
 #
 # user signout
 user_signout:
