@@ -2,7 +2,7 @@ all:
   doctrine:
     class: sfDoctrineDatabase
     param:
-      dsn:      mysql:unix_socket=/tmp/mysql.sock;dbname=enter
+      dsn:      mysql:host=localhost;dbname=enter
       username: root
-      password: 
-      profiler: false
+      password: qazwsxedc
+      profiler: true
