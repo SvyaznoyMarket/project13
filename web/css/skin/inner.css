@@ -431,8 +431,10 @@ border-radius:5px;
 .goodslist {float:left; width:705px; margin-left:-4px;  padding-bottom:5px}
 .goodsbox {float:left; width:195px; padding:10px; margin-bottom:14px; margin-right:20px}
 .boxhover {display:none; position:absolute; z-index:3; width:215px; top:-4px; left:-4px;  padding:9px 0 0 9px; cursor:pointer}
+/*
 .goodsbox:hover {position:relative; z-index:2}
 .goodsbox:hover .boxhover {display:block}
+*/
 .boxhover .rt {position:absolute; right:0; top:0; display:block; width:9px; height:9px; background:url(img/bg_shadow.png) no-repeat 100% 0}
 .boxhover .lb {position:absolute; left:0; bottom:0; display:block; width:9px; height:9px; background:url(img/bg_shadow.png) no-repeat 0 100%}
 .boxhover .rb {lposition:relative; lmargin:9px 0 0 9px; background:url(img/bg_shadow.png) no-repeat 100% 100%}
@@ -457,7 +459,7 @@ border-radius:5px;
 .ratingview {display:block; height:11px; background:url(img/stars.png) no-repeat 0 0; margin-bottom:10px}
 
 .goodsline {float:left; width:661px; padding:10px; margin-bottom:0; background-color:#fff; border-bottom:1px solid #e6e6e6}
-.goodsline .boxhover {width:681px}
+.goodsline .boxhover {display:none; width:681px; }
 
 .goodsline .goodsboxlink {float:left; width:661px; font-size:11px; cursor:pointer}
 .goodsline .photo {float:left; width:160px; margin:0}
@@ -520,7 +522,7 @@ border-radius:5px;
 .ratingbox A.ra5:hover {width:150px}
 #ratingresult {float:left; font-size:18px; line-height:27px; color:#ffa901; margin-left:10px}
 
-.ratingscale {float:left; width:150px; height:8px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin:6px 0 3px 0; background:url(img/bg_inner.png) no-repeat 0 -338px}
+.ratingscale {float:left; width:150px; height:8px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin:6px 0 3px 0; background:url(img/bg_inner.png) no-repeat -633px -289px}
 .ratingscalebox {width:150px; height:8px;  position:relative}
 .ratingscalebox DIV.current {display:block; height:8px; background:url(img/bg_ratingscale.gif) repeat-x 0 0; position:absolute; text-indent:-9000px; z-index:1}
 .ratingscalebox DIV {float:left; text-indent:-90000px}
@@ -544,13 +546,15 @@ border-radius:5px;
 .goodsbar A {display:block; float:left; height:25px; background:url(img/bg_inner.png) no-repeat}
 .goodsbar A:hover {text-decoration:none}
 .goodsbar A.link1 {width:37px; background-position:-349px -216px}
+.goodsbar A.link1:hover {background-position:-60px -216px}
 .goodsbar A.link1active, .goodsbar A.link1active:hover {background-color:#c4c4c4; background-position:-182px -216px}
-.goodsbar A.link2 {width:37px; background-position:-386px -216px}
-.goodsbar A.link2:hover {background-position:-465px -216px; z-index:2}
+.goodsbar A.link2 {width:37px; background-position:-584px -216px}
+/* .goodsbar A.link2:hover {background-position:-465px -216px; z-index:2} */
 .goodsbar A.link2active, .goodsbar A.link2active:hover {background-color:#c4c4c4; background-position:-223px -216px}
-.goodsbar A.link3 {width:38px; background-position:-424px -216px; margin-left:-1px}
-.goodsbar A.link3:hover {background-position:-503px -216px}
+.goodsbar A.link3 {width:38px; background-position:-622px -216px; margin-left:-1px}
+/* .goodsbar A.link3:hover {background-position:-503px -216px} */
 .goodsbar A.link3active, .goodsbar A.link3active:hover {background-color:#c4c4c4; background-position:-263px -216px}
+.goodsbar A.link3.disabled {background-position:-622px -216px; margin-left:-1px}
 
 .sectionlist {float:left; width:171px; padding-bottom:20px}
 .sectionlist LI {width:161px; padding:0 0 5px 0; font-size:11px; color:#7e7e7e}
@@ -599,12 +603,24 @@ border-radius:5px;
 .goodsbarbig {width:185px; height:31px; margin:26px 0 17px 0}
 .goodsbarbig A {display:block; float:left; height:31px; background:url(img/bg_inner.png) no-repeat}
 .goodsbarbig A:hover {text-decoration:none}
-.goodsbarbig A.link1 {width:105px; background-position:-509px -250px}
-.goodsbarbig A.link1:hover {background-position:-315px -250px}
+.goodsbarbig A.link1 {width:105px; background-position:-315px -250px}
+.goodsbarbig A.link1:hover {background-position:-509px -250px}
+.goodsbarbig A.link1.active {background-position:0 -280px}
+.goodsbarbig A.link1.disabled {background-position:-311px -283px}
 .goodsbarbig A.link2 {width:40px; background-position:-423px -250px}
 .goodsbarbig A.link2:hover {width:41px; margin-left:-1px; background-position:-617px -250px; z-index:2}
+.goodsbarbig A.link2.active {background-position:-110px -280px}
+.goodsbarbig A.link2.disabled, .goodsbarbig A.link2.disabled:hover {width:41px; background-position:-786px -288px; margin-left:-1px;  z-index:0}
 .goodsbarbig A.link3 {width:41px; background-position:-465px -250px; margin-left:-1px}
 .goodsbarbig A.link3:hover {background-position:-661px -250px}
+.goodsbarbig A.link3.active {background-position:-156px -280px}
+.goodsbarbig A.link3.disabled {background-position:-830px -288px; margin-left:-1px}
+.goodsbarbig A.link4 {width:105px; background-position:-108px -316px}
+.goodsbarbig A.link4.active {background-position:0 -316px}
+.goodsbarbig A.link4.disabled {background-position:-324px -316px}
+.goodsbarbig A.link5 {width:105px; background-position:-201px -280px}
+.goodsbarbig A.link5.active {background-position:0 -316px}
+.goodsbarbig A.link5.disabled {background-position:-216px -316px}
 
 .share {display:inline-block; width:105px; height:25px; background:url(img/bg_inner.png) no-repeat -668px -218px; vertical-align:middle; text-indent:-10000px}
 .marklist {font-size:11px; position:relative}
@@ -832,7 +848,8 @@ box-shadow:0 0 7px #616161;
 .mediablock .topblock {height:530px; padding:19px 9px 0 9px}
 
 .scalepanel {float:right; width:54px; height:694px; padding:30px 0 0 26px; background-color:#fff}
-.zoom {width:26px; height:25px; background:url(img/bg_inner.png) no-repeat -117px -158px; cursor:pointer; margin-bottom:30px}
+.scalepanel .versioncontrol {display:none;  position:absolute; bottom:15px; right: 5px; text-align:center; width: 54px;}
+.zoom {visibility:hidden; width:26px; height:25px; background:url(img/bg_inner.png) no-repeat -117px -158px; cursor:pointer; margin-bottom:30px}
 .scale {width:26px; height:217px; background:url(img/bg_inner.png) no-repeat -925px 0}
 .scale B {display:block; cursor:pointer}
 .scale .plus, .scale .minus {width:26px; height:26px}
@@ -840,10 +857,11 @@ box-shadow:0 0 7px #616161;
 .scale DIV B {position:absolute; left:2px; width:22px; height:17px; background:url(img/bg.png) no-repeat -187px -79px}
 
 .photoview {margin:0 80px 0 200px; height:724px; position:relative}
-.photobox {float:left; width:100%; height:100%; overflow:hidden; text-align:center; position:relative}
-.scrollbox {position:absolute; z-index:10; bottom:0; left:50%; width:307px; height:73px; margin-left:-153px; background:url(img/podlogka.png) no-repeat 0 0}
+.photobox {float:left; width:100%; height:100%; overflow:hidden; position:relative}
+.photobox IMG {position:relative}
+.scrollbox {display:none; position:absolute; z-index:10; bottom:0; left:50%; width:354px; height:71px; margin-left:-183px; background:url(img/podlogka.png) no-repeat 0 0}
 .scrollbox DIV {width:176px; height:54px; margin:10px 0 0 94px; position:relative}
-.scrollbox DIV B {position:absolute; display:block; width:26px; height:26px; background:url(img/bg.png) no-repeat -168px -102px; cursor:pointer}
+.scrollbox DIV B {position:absolute; left:110px; top:28px; display:block; width:22px; height:22px; background:url(img/toroll.png) no-repeat; cursor:pointer}
 
 .videoview {margin:0 26px 0 220px; padding-top:30px; height:694px; position:relative}
 .videoview .zoom {margin:0}
@@ -962,12 +980,12 @@ border-radius: 5px;
 
 .graying {width:100%; height:100%; position:fixed; z-index:99; top:0; left:0; right:0; botom:0; background:#000; opacity:0.5}
 .lightbox {width:100%; height:41px; position: fixed; bottom:0; left:0; z-index:100}
-.lightboxinner {width:926px; height:40px; padding-top:1px; position:relative; margin:0 auto; background:url(img/bg_lightbox.png) no-repeat 0 0}
+.lightboxinner {display:none; width:926px; height:40px; padding-top:1px; position:relative; margin:0 auto; background:url(img/bg_lightbox.png) no-repeat 0 0}
 .lightboxmenu {float:left; width:923px}
 .lightboxmenu LI {float:right; background:url(img/lightboxmenu_icons.png) no-repeat 0 -400px; padding-left:1px}
 .lightboxmenu LI.fl {float:left; background:none; padding-left:0}
 .lightboxmenu LI A.point {float:left; display:block; height:29px; padding:11px 20px 0 20px; font-size:14px; color:#fff; text-decoration:none}
-.lightboxmenu LI A.point2 {font-weight:bold}
+/*.lightboxmenu LI A.point2 {font-weight:bold} TMP */
 .lightboxmenu LI A.point5 {padding:11px 0 0 20px}
 .lightboxmenu LI A.point:hover {color:#ffa901; background:url(img/bg_lightbox.png) no-repeat; background-position:-10px -46px}
 .lightboxmenu LI A.point1:hover, .lightboxmenu LI A.point6:hover {background-position:-3px -46px}
@@ -1123,3 +1141,4 @@ border-radius: 5px;
 .errorbox404 {width:430px; margin:0 auto; padding-top:420px}
 .logo503 {padding:61px 0 0 8px}
 .errorbox503 {width:560px; margin:0 auto; padding-top:250px}
+.ui-effects-transfer{ border:1px dashed black; z-index:102;}
