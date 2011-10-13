@@ -139,6 +139,60 @@
       </div>
     </div>
     <!-- /Footer -->
+    <!-- Lightbox -->
+	<div class="lightbox">
+		<div class="lightboxinner">
+			<div class="dropbox" style="left:365px; display:none;">
+				<p>Перетащите сюда</p>
+			</div>
+			<div class="dropbox" style="left:517px; display:none;">
+				<p>Перетащите сюда</p>
+			</div>
+			<div class="dropbox" style="left:703px; display:none;">
+				<p>Перетащите сюда</p>
+			</div>
+	<!-- Flybox -->
+			<ul class="lightboxmenu">
+				<li class="fl"><a href="" class="point point1"><b></b>Личный кабинет</a></li>
+				<li><a href="" class="point point2"><b>1</b>Моя корзина<span class="total"><span id="sum">64 543</span> &nbsp;<span class="rubl">p</span></span></a></li>
+				<li><a href="" class="point point3"><b>5</b>Список желаний</a></li>
+				<li><a href="" class="point point4"><b>10</b>Сравнение</a></li>
+			</ul> 
+		</div>
+	</div>
+	<div id="zaglu" style="display:none"><!-- AJAX emulation zaglushka-->	
+		<ul class="comparisonblock">
+			<li>
+				<div class="photo"><b class="delete" title="Удалить"></b><a href=""><img src="images/photo34.jpg" alt="" width="120" height="120" /></a></div>
+				<a href="">Смартфон Samsung Galaxy S II (GT-I9100 )16 Гб</a> <strong>64 543 <span class="rubl">p</span></strong>
+			</li>
+			<li>
+				<div class="photo"><b class="delete" title="Удалить"></b><a href=""><img src="images/photo63.jpg" alt="" width="120" height="120" /></a></div>
+				<a href="">Смартфон HTC Wildfire S White 16 Гб</a> <strong>64 543 <span class="rubl">p</span></strong>
+			</li>
+			<li>
+				<div class="photo"><b class="delete" title="Удалить"></b><a href=""><img src="images/photo64.jpg" alt="" width="120" height="120" /></a></div>
+				<a href="">Смартфон HTC Sensation</a> <strong>64 543 <span class="rubl">p</span></strong>
+			</li>
+			<li>
+				<div class="comparphoto"></div>
+				<div class="gray ac">Товар для сравнения</div>
+			</li>
+		</ul>
+		<div class="fl form width230">
+			<div class="pb5">Товары, которые вы сравнивали в других разделах:</div>
+			<div class="selectbox selectbox225 mb70"><i></i>
+			 <select class="styled" name="3">
+				 <option value="1">Электроника</option>
+				 <option value="2">Товары для дома</option>
+				 <option value="3">Сделай сам (инструменты)</option>
+			 </select>
+			 </div>
+			 <a href="" class="button bigbuttonlink" value="">Перейти в сравнение</a>
+		</div>
+	</div>   
+	
+	<!-- /Lightbox -->
 
     <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
