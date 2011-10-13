@@ -37,6 +37,9 @@
             <a href="">Перезвоните мне</a><br />
             <a href="">Отследить мой заказ</a>
           </div>
+		  <!-- Extramenu -->
+		  <?php include_component('productCategory', 'extra_menu') ?>
+		  <!-- /Extramenu -->
         </div>
     <!-- /Header -->
     <!-- Page head -->

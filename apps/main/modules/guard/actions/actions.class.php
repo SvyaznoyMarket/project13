@@ -211,6 +211,7 @@ class guardActions extends myActions
           'first_name' => $this->userProfile->getFirstName(),
           'photo'      => $this->userProfile->getPhoto(),
           'is_active'  => true,
+		  'region_id'  => $this->getUser()->getRegion('id'),
         ));
         $this->user->Profile[] = $this->userProfile;
         $this->user->save();
