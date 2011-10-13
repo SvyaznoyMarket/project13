@@ -31,7 +31,7 @@ class cartActions extends myActions
     $result['error'] = "";
     //валидация количества товара
     if ( !isset($request['quantity'])) $request['quantity'] = 1;
-    elseif ( (string)(int)$request['quantity']!==(string)$request['quantity'] || $request['quantity']<0 )
+    elseif ( (string)(int)$request['quantity']!==(string)$request['quantity'])
     {
         $result['value'] = false;
         $result['error'] = "Некорректное количество товара.";
@@ -47,6 +47,7 @@ class cartActions extends myActions
                 $currentNum = $this->getUser()->getCart()->getQuantityByToken($request['product']);
                 $request['quantity'] += $currentNum;
 
+                if ($request['quantity']<0) $request['quantity'] = 0;
                 $this->getUser()->getCart()->addProduct($product, $request['quantity']);
             }
             catch(Exception $e){
