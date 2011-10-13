@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	/* Lightbox */
 	var lbox = {}
-	$.getJSON('http://ivn.ent3.ru/main_dev.php/user/shortinfo', function(data) {
+	$.getJSON('/user/shortinfo', function(data) {
 			//console.info( data.data )
 			if( data.success )
 				lbox = data.data
@@ -93,15 +93,19 @@ $(document).ready(function(){
 	/* stuff goes into lightbox */
 	$('.goodsbar .link1').click( function() {
 		if (! currentItem ) return
+		var button = this
 		if( ltbx ){
 			var tmp = $(this).parent().parent().find('.photo img')
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500, function() {
 				//ltbx.getBasket( parseItemNode( currentItem ) )
 			})
 		}	
-		$.getJSON('http://ivn.ent3.ru/main_dev.php/cart/add/'+$( '.boxhover[ref='+ currentItem +']').attr('ref') +'/1', function(data) {
-			if ( data.success && ltbx )
+		$.getJSON('/cart/add/'+$( '.boxhover[ref='+ currentItem +']').attr('ref') +'/1', function(data) {
+			if ( data.success && ltbx ) {
 				ltbx.getBasket( parseItemNode( currentItem ) )
+				$(button).attr('href', $('.lightboxinner .point2', parent).attr('href') )
+				$(button).unbind('click')
+			}	
 		})
 		return false
 	})

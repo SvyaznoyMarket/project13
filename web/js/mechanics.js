@@ -249,7 +249,7 @@ function Flybox( parent ){
 		box.fadeIn(1000)
 		hidei = setTimeout( self.jinny, 7000 )
 	}
-
+	var hrefcart = $('.point2', parent).attr('href')
 	this.showBasket = function() {
 		basket = 
 			'<div class="font16 pb20">Только что был добавлен в корзину:</div>'+
@@ -273,7 +273,7 @@ function Flybox( parent ){
 			'Всего товаров: '+ thestuff.vitems +
 			'<div class="clear pb10"></div>'+
 			'<div class="ar">'+ 
-				'<a class="button bigbuttonlink" value="" href="">Оформить заказ</a>'+
+				'<a class="button bigbuttonlink" value="" href="'+ hrefcart +'">Оформить заказ</a>'+
 			'</div>'	
 	
 		box.css({'left':'588px','width':'290px'})	
