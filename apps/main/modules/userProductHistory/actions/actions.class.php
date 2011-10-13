@@ -47,6 +47,7 @@ class userProductHistoryActions extends myActions
    */
   public function executeShortinfo(sfWebRequest $request)
   {
+      sfProjectConfiguration::getActive()->loadHelpers('Url');        
       $user = $this->getUser();
 
       //подсчитываем общее количество и общую стоимость корзины
@@ -69,7 +70,6 @@ class userProductHistoryActions extends myActions
 #     echo '<pre>';
 #     echo '</pre>';      
    #   exit();
-      
       //имя есть только у авторизованного пользователя
       if ($user->isAuthenticated()) $name = $user->getName();
       else $name = false;
@@ -77,14 +77,16 @@ class userProductHistoryActions extends myActions
         'success' => true,
         'data'    => array(
               'name' => $name,  
+              'link' =>  url_for('user'),   //ссылка на личный кабинет
               'vitems' => $qty,
               'sum' => $sum,
               'vwish' => count($delayProducts),
               'vcomp' => $user->getProductCompare()->getProductsNum(),
-              'bingo' => array()  
-        ),
+              'bingo' => false,
+        )
       ));  
-      
+        exit();
+    
       $this->redirect($this->getRequest()->getReferer());
       
   }
