@@ -16,7 +16,7 @@
         <!-- Topbar -->
         <div class="topbar">
           <div class="region">
-            Регион: <?php include_partial('default/region') ?>
+            Регион: <?php //include_partial('default/region') ?>
           </div>
           <div class="usermenu">
             <div class="point"><a href="<?php echo url_for('service_category') ?>" class="f1">F1 сервис</a></div>
@@ -137,9 +137,8 @@
     </div>
     <!-- /Footer -->
 
-    <?php if (!include_slot('form_signin'))
-      include_partial('default/form_signin') ?>
+    <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
-<?php include_partial('default/admin') ?>
+    <?php include_partial('default/admin') ?>
   </body>
 </html>

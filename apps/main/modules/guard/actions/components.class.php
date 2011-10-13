@@ -11,15 +11,21 @@
 class guardComponents extends myComponents
 {
  /**
-  * Executes form_signin component
+  * Executes form_auth component
   *
-  * @param UserFormSignin $form Форма авторизации
+  * @param UserFormSignin $formSignin Форма авторизации
+  * @param UserFormRegister $formRegister Форма регистрации
   */
-  public function executeForm_signin()
+  public function executeForm_auth()
   {
-    if (!($this->form instanceof UserFormSignin))
+    if (!($this->formSignin instanceof UserFormSignin))
     {
-      $this->form = new UserFormSignin();
+      $this->formSignin = new UserFormSignin();
+    }
+
+    if (!($this->formRegister instanceof UserFormRegister))
+    {
+      $this->formRegister = new UserFormRegister();
     }
   }
  /**

@@ -13,6 +13,8 @@ class UserFormRegister extends BaseUserForm
   public function configure()
   {
     parent::configure();
+    
+    $this->disableCSRFProtection();
 
     $this->widgetSchema['first_name'] = new sfWidgetFormInputText();
     $this->validatorSchema['first_name'] = new sfValidatorString(array('max_length' => 255,  'required' => true));
@@ -41,7 +43,7 @@ class UserFormRegister extends BaseUserForm
 
     $this->useFields(array(
       'first_name',
-      'last_name',
+      //'last_name',
       'username',
       //'password',
       //'password_again',
