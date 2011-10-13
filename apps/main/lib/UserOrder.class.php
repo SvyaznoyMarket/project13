@@ -11,15 +11,26 @@ class UserOrder extends BaseUserData
 
   public function get()
   {
-    $order = new Order();
-    $order->fromArray($this->parameterHolder->get('order', array()));
+    $order = $this->parameterHolder->get('order', array());
+    //$order = new Order();
+    //$order->fromArray($this->parameterHolder->get('order', array()));
 
-    return $order;
+    if (isset($order['id']) && !empty($order['id']))
+    {
+      $result = OrderTable::getInstance()->getById($order['id']);
+    }
+    else
+    {
+      $result = new Order();
+      $result->fromArray($order);
+    }
+
+    return $result;
   }
 
   public function set(Order $order)
   {
-    $this->parameterHolder->set('order', $order->toArray());
+    $this->parameterHolder->set('order', $order->toArray(false));
   }
 
   public function clear()

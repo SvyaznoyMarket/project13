@@ -87,15 +87,26 @@ class Order extends BaseOrder
     $data['store_id']         = null;
     $data['ip']               = sfContext::getInstance()->getUser()->getIp();
 
-    foreach ($this->ProductRelation as $product)
-    {
-      $data['product'][] = array(
-        'id'          => $product->Product->core_id,
-        'price'       => $product->price,
-        'quantity'    => $product->quantity,
-      );
-    }
 
+    //myDebug::dump($this->ProductRelation, 1);
+    if (isset($this->ProductRelation))
+    {
+      foreach ($this->ProductRelation as $product)
+      {
+        $data['product'][] = array(
+          'id'          => $product->Product->core_id,
+          'price'       => $product->price,
+          'quantity'    => $product->quantity,
+        );
+        //myDebug::dump($product->toArray(false));
+      }
+    }
+    //myDebug::dump($data, 1);
     return $data;
+  }
+
+  public function isOnlinePayment()
+  {
+    return in_array($this->payment_method_id, array(3,));
   }
 }

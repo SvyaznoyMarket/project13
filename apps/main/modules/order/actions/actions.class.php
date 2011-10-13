@@ -118,13 +118,23 @@ class orderActions extends myActions
   */
   public function executeConfirm(sfWebRequest $request)
   {
-    $this->order = $this->getUser()->getOrder()->get();
-    $cart = $this->getUser()->getCart();
-
     if ($request->isMethod('post'))
     {
       $this->forward($this->getModuleName(), 'create');
     }
+
+    $order = $this->getUser()->getOrder()->get();
+    //$cart = $this->getUser()->getCart();
+    if ($order->isOnlinePayment())
+    {
+      if ($this->saveOrder($order))
+      {
+        $provider = $this->getPaymentProvider();
+        $this->paymentForm = $provider->getForm($order);
+      }
+    }
+
+    $this->setVar('order', $order);
   }
  /**
   * Executes complete action
@@ -133,10 +143,21 @@ class orderActions extends myActions
   */
   public function executeComplete(sfWebRequest $request)
   {
-    $this->order = $this->getUser()->getOrder()->get();
+    $provider = $this->getPaymentProvider();
+    if (!($this->order = $provider->getOrder($request)))
+    {
+      $this->order = $this->getUser()->getOrder()->get();
+      $this->getUser()->getOrder()->clear();
+    }
+    else
+    {
+      $this->result = $provider->getPaymentResult($this->order);
+    }
+    $this->getUser()->getCart()->clear();
     $this->getUser()->getOrder()->clear();
+    //myDebug::dump($this->order);
 
-    $this->setVar('order', $this->order);
+    //$this->setVar('order', $this->order, true);
   }
  /**
   * Executes create action
@@ -147,8 +168,25 @@ class orderActions extends myActions
   {
     $this->order = $this->getUser()->getOrder()->get();
 
-    $this->order->User = $this->getUser()->getGuardUser();
-    $this->order->sum = $this->getUser()->getCart()->getTotal();
+    $this->saveOrder($this->order);
+
+    $this->redirect('order_complete');
+  }
+
+  public function executeCallback(sfWebRequest $request)
+  {
+    $provider = $this->getPaymentProvider();
+
+    $order = $provider->getOrder($request);
+    $this->forward404Unless($order);
+
+    $this->result = $provider->getPaymentResult($order);
+  }
+
+  protected function saveOrder(Order &$order)
+  {
+    $order->User = $this->getUser()->getGuardUser();
+    $order->sum = $this->getUser()->getCart()->getTotal();
 
     //$this->order->User = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);//$this->getUser()->getGuardUser();
 
@@ -160,24 +198,25 @@ class orderActions extends myActions
         'price'      => $product->price,
         'quantity'   => $product->cart['quantity'],
       ));
-      $this->order->ProductRelation[] = $relation;
+      $order->ProductRelation[] = $relation;
     }
 
     try
     {
-      $this->order->save();
-      $this->getUser()->getOrder()->set($this->order);
-      $this->getUser()->getCart()->clear();
+      $order->save();
+
+      //$this->order->update
+      $this->getUser()->getOrder()->set($order);
+      //$this->getUser()->getCart()->clear();
+      return true;
     }
     catch (Exception $e)
     {
       $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save to core: '.$e->getMessage());
     }
 
-    $this->redirect('order_complete');
+    return false;
   }
-
-
 
   protected function getOrderForm($step)
   {
@@ -199,6 +238,19 @@ class orderActions extends myActions
     }
 
     return $step;
+  }
+
+  protected function getPaymentProvider($name = null)
+  {
+    if (null == $name)
+    {
+      $name = sfConfig::get('app_payment_default_provider');
+    }
+
+    $providers = sfConfig::get('app_payment_provider');
+    $class = sfInflector::camelize($name.'payment_provider');
+
+    return new $class($providers[$name]);
   }
 
 }

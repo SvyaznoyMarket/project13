@@ -16,7 +16,11 @@
 
 
         <div class="line pb20"></div>
+        <?php if (isset($paymentForm)): ?>
+        <div class="pl235"><div class="pb10">Ваш заказ <?php echo $order->token ?>. Нажмите "Оплатить заказ" и Вы перейдете на страницу оплаты пластиковой картой.</div><form action="<?php echo $paymentForm->getUrl()?>" method="post"><?php echo $paymentForm ?><input type="submit" class="button bigbutton" value="Оплатить заказ" /></form></div>
+        <?php else: ?>
         <div class="pl235"><div class="pb10">Нажмите "Подтвердить заказ" и Ваш заказ будет принят к исполнению.</div><form action="<?php echo url_for('order_confirm') ?>" method="post"><input type="submit" class="button bigbutton" value="Подтвердить заказ" /></form></div>
+        <?php endif ?>
     <!-- /Basket -->
 <!--form action="<?php echo url_for('order_confirm') ?>" method="post">
   <input type="submit" value="Подтвердить" />
