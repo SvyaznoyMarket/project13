@@ -108,7 +108,7 @@ class ProductCategoryTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q, $params);
 
-	if (isset($params['root_id'])) {
+	if (!empty($params['root_id'])) {
 		$q->addWhere('productCategory.root_id = ?', (int)$params['root_id']);
 	}
 	$q->addWhere('productCategory.level >= 1');
