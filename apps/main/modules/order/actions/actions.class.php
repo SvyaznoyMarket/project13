@@ -29,7 +29,16 @@ class orderActions extends myActions
   {
     $this->order = $this->getRoute()->getObject();
   }
- /**
+  
+  public function executeLogin(sfWebRequest $request)
+  {
+	  if (!$this->getUser()->isAuthenticated()) {
+		$this->formSignin = new UserFormSignin();
+	  }
+	  $this->order = $this->getUser()->getOrder()->get();
+  }
+
+  /**
   * Executes new action
   *
   * @param sfRequest $request A request object
@@ -183,7 +192,6 @@ class orderActions extends myActions
   {
     $class = sfInflector::camelize("order_step_{$step}_form");
     $this->forward404Unless(!empty($step) && class_exists($class), 'Invalid order step');
-
     return new $class($this->getUser()->getOrder()->get());
   }
 

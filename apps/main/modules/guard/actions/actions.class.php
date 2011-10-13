@@ -44,7 +44,11 @@ class guardActions extends myActions
         // always redirect to a URL set in app.yml
         // or to the referer
         // or to the homepage
-        $signinUrl = sfConfig::get('app_guard_signin_url', $user->getReferer($request->getReferer()));
+		if ($request->getParameter('redirect_to')) {
+			$signinUrl = $request->getParameter('redirect_to');
+		} else {
+			$signinUrl = sfConfig::get('app_guard_signin_url', $user->getReferer($request->getReferer()));
+		}
 
         if ('frame' == $this->getLayout())
         {
@@ -85,7 +89,11 @@ class guardActions extends myActions
   {
     $this->getUser()->signOut();
 
-    $signoutUrl = sfConfig::get('app_guard_signout_url', $request->getReferer());
+	if ($request->getParameter('redirect_to')) {
+		$signoutUrl = $request->getParameter('redirect_to');
+	} else {
+		$signoutUrl = sfConfig::get('app_guard_signout_url', $request->getReferer());
+	}
 
     $this->redirect('' != $signoutUrl ? $signoutUrl : '@homepage');
   }

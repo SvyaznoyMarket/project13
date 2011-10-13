@@ -18,7 +18,7 @@ class UserFormSignin extends BaseUserForm
 
     $this->setWidgets(array(
       'username' => new sfWidgetFormInputText(array(), array('tabindex' => 1)),
-      'password' => new sfWidgetFormInputPassword(array('type' => 'password'), array('tabindex' => 2)),
+      'password' => new sfWidgetFormInputPassword(array(), array('tabindex' => 2)),
       'remember' => new sfWidgetFormInputCheckbox(), // array(), array('tabindex' => 3)
     ));
 
