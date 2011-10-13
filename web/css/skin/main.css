@@ -24,14 +24,15 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .pr {position:relative}
 .db {display:block}
 
+.font11 {font-size:11px}
 .font18 {font-size:18px}
 
 
-.logo {float:left; margin:27px 0 0 23px; width:151px; height:102px; background:url(img/bg_main.png) no-repeat -674px 0; text-indent:-10000px}
+.logo {float:left; margin:27px 0 0 23px; width:151px; height:102px; background:url(/images/bg_main.png) no-repeat -674px 0; text-indent:-10000px}
 
-.topmenu {float:right; padding:45px 36px 34px 0}
+.topmenu {float:right; padding:45px 36px 23px 0}
 .topmenu LI {float:left}
-.topmenu A {display:block; height:85px; background:url(img/bg_main.png) no-repeat; text-indent:-10000px}
+.topmenu A {display:block; height:85px; background:url(/images/bg_main.png) no-repeat; text-indent:-10000px}
 .topmenu .point1 {width:50px; background-position:0 0; margin-right:20px}
 .topmenu .point1:hover {background-position:0 -90px}
 .topmenu .point2 {width:50px; background-position:-70px 0; margin-right:20px}
@@ -52,34 +53,38 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .topmenu .point9:hover {background-position:-629px -90px}
 
 .bigbanner {padding:0 0 70px 38px}
+
+.bannersbox {position:absolute; width:100%; overflow:hidden; height:100%}
+.bannersboxinner {position:relative; z-index:10; width:920px; margin:0 auto}
 .banner {position:absolute; //z-index:20}
-.banner2 {top:455px; left:687px}
-.banner3 {top:480px; left:504px}
-.banner4 {top:650px; left:386px}
+.banner2 {top:231px; left:-340px}
+.banner3 {top:243px; left:883px}
+.banner4 {top:256px; left:-160px}
+.banner5 {top:369px; left:1100px}
 
-.prompt {position:absolute; z-index:10; left:0; top:0; width:auto; padding:9px 14px; background-color:#fff; border:2px solid #ffa901; color:#000;
-border-radius:5px; 
--moz-border-radius:5px;
--webkit-border-radius:5px;
-behavior:url(border-radius.htc);
--moz-box-shadow:0 0 7px #616161;
--webkit-box-shadow:0 0 7px #616161;
-box-shadow:0 0 7px #616161;
-behavior: url(ie-css3.htc)
+@font-face {
+  font-family: 'Enter';
+  src: url('../fonts/enter_brash_01-webfont.eot');
+  src: url('../fonts/enter_brash_01-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/enter_brash_01-webfont.ttf') format('truetype');
 }
-.prompt I {position:absolute; top:100%; left:18px; display:block; width:20px; height:15px; background:url(img/bg_prompt.png) no-repeat 0 0}
 
-.content {float:left; width:390px; padding:7px 0 100px 29px; font-size:11px; z-index:1; position:relative}
-.vcard {font-size:24px; font-family:"Enter Brash"; padding-bottom:7px}
-.address {font-size:14px; padding-bottom:55px}
+.content {float:left; width:390px; padding:7px 0 30px 29px; font-size:13px; z-index:1; position:relative; font-family:"Enter"}
+.vcardtitle {font-size:18px; padding-bottom:4px}
+.vcard {font-size:36px; padding-bottom:2px}
 .pb10 {padding-bottom:10px}
 .pb5 {padding-bottom:5px}
 
-.searchbox {float:right; position:relative; width:347px; height:39px; padding-left:16px; margin-right:37px; background:url(img/bg_search.png) no-repeat 0 0}
-.searchbox .text {float:left; width:290px; height:38px; padding:0; border:0; background:none; font-size:14px; line-height:38px;  color:#9b9b9b}
-.searchbutton {float:right; width:49px; height:38px; border:0; background:none; text-indent:-10000px; cursor:pointer}
+.searchbox {float:right; position:relative; width:336px; height:66px; padding:15px 0 0 27px; background:url(/images/bg_main.png) no-repeat -677px -108px}
+.searchbox .text {float:left; width:236px; height:36px; line-height:36px; padding:0; border:0; background:none; font-size:14px; color:#fff; margin-right:12px}
+.searchbutton {float:left; width:45px; height:36px; border:0; background:none; text-indent:-10000px; cursor:pointer}
 
-.links {float:right; padding:30px 43px 0 0}
-.links A {display:block; float:left; height:83px; background:url(img/bg_main.png) no-repeat; text-indent:-10000px}
-.links .link1 {width:62px; background-position:-830px 1px}
-.links .link2 {width:80px; background-position:-830px -91px; margin-left:25px}
+.links {float:right; padding:0 40px 0 0}
+.links A {display:block; font-family:"Enter"; font-size:14px; text-decoration:none; text-transform:uppercase}
+.links .link1 {float:left; width:62px; padding-top:77px; background:url(/images/bg_main.png) no-repeat -830px 1px; text-align:center}
+.links .link2 {width:111px; height:16px; margin:23px 0 0 108px; background:url(/images/bg_main.png) no-repeat -897px 0; text-indent:-10000px}
+.links .link3 {margin:38px 0 0 108px}
+
+.copy {clear:both; padding-left:29px; color:#dcdcdc; font-size:11px}
+.copy A {color:#dcdcdc}
+
