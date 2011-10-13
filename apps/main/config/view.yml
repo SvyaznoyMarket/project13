@@ -22,15 +22,20 @@ default:
     - font.css
 
   javascripts:
-    - jquery.js
+    #- jquery.js
     #- jslib/jquery-1.4.2.js
-    - jslib/prettyCheckboxes.js
-    - jslib/jquery.ui.widget.js
-    - jslib/jquery.ui.mouse.js
-    - jslib/jquery.ui.slider.js
-    - jslib/jquery.lightbox_me.js
+    - jquery-1.6.4.min.js
+    - jquery-ui-1.8.16.custom.min.js
+    - jquery.effects.core.js
+    - jquery.effects.transfer.js
+    - jquery.lightbox_me.js
+    - prettyCheckboxes.js
+    #- jslib/jquery.ui.widget.js
+    #- jslib/jquery.ui.mouse.js
+    #- jslib/jquery.ui.slider.js
+    - custom-form-elements.js
     - jslib/main.js
-    - jquery-ui-custom.js
+    #- jquery-ui-custom.js
     - jquery.form.js
     - jquery.timers.js
     - jquery.scrollto.js
