@@ -29,10 +29,18 @@ class productComponents extends myComponents
       'creator'  => (string)$this->product->Creator,
       'price'    => $this->product->formatted_price,
       'has_link' => $this->product['view_show'],
-      'url'      => url_for('productCard', $this->product, array('absolute' => true)),
       'photo'    => $this->product->main_photo_url,
       'product'  => $this->product,
     );
+	
+	if ($this->view === 'category')
+	{
+		$item['url'] = url_for('productCatalog_category', $this->category, array('absolute' => true));
+	}
+	else
+	{
+		$item['url'] = url_for('productCard', $this->product, array('absolute' => true));
+	}
     
     if ('default' == $this->view)
     {

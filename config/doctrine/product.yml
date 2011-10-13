@@ -66,6 +66,18 @@ ProductCategoryProductRelation:
     Category:            { class: ProductCategory, foreignAlias: ProductRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:             { class: Product, foreignAlias: CategoryRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
+ProductCategoryLink:
+  options:
+    comment: 'Ссылки'
+  actAs: [ Timestampable ]
+  columns:
+    product_category_id: { type: integer(20), primary: true, notnull: true }
+    url:                 { type: string(255), notnull: true, notblank: true }
+    name:                { type: string(255), notnull: true, notblank: true }
+    position:            { type: integer(3), notnull: false, default: 0 }
+  relations:
+    Category:            { class: ProductCategory, foreignAlias: Link, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
 ProductType:
   options:
     comment: 'Тип товара'

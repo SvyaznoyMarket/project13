@@ -97,6 +97,7 @@ class productCategoryComponents extends myComponents
       'name'             => (string)$this->productCategory,
       'url'              => url_for('productCatalog_category', $this->productCategory),
       'product_quantity' => $this->productCategory->countProduct(),
+	  'links'            => $this->productCategory->getLink(),
     );
     
     if ('carousel' == $this->view)
