@@ -178,10 +178,25 @@ user:
   url:   /private/
   param: { module: user, action: index }
 #
+
+# user. get short info about cart, wishlist, etc.
+userProductHistory_shortinfo:
+  url:   /user/shortinfo
+  param: { module: userProductHistory, action: shortinfo }
+  requirements:
+    sf_method: [ get,post ]  
+  
 # user signin
 user_signin:
   url:   /login/:provider
   param: { module: guard, action: signin, provider: null }
+  
+# user signin ajax
+user_signinajax:
+  url:   /loginajax/:login/:password/:remember
+  param: { module: guard, action: signinAjax, provider: null, remember: 0 }
+  requirements:
+    sf_method: [ get,post ]    
 #
 # user signout
 user_signout:
@@ -224,7 +239,7 @@ userProductHistory:
 userProductHistory_clear:
   url:   /private/product-history/clear
   param: { module: userProductHistory, action: clear }
-
+  
 #
 # user delayed product
 userDelayedProduct:

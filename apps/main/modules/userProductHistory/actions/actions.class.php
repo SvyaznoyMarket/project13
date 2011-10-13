@@ -30,4 +30,65 @@ class userProductHistoryActions extends myActions
 
     $this->redirect($this->getRequest()->getReferer());
   }
+  
+  
+  /**
+   *
+   * Получает краткую информацию о пользователе:
+   * -имя
+   * -о корзине
+   * -о виш листе
+   * -о сравниваемых товарах
+   * -bingo TODO
+   * Вызывается посредствам ajax. Параметров не принимает.
+   * 
+   * @param sfWebRequest $request
+   * @return json 
+   */
+  public function executeShortinfo(sfWebRequest $request)
+  {
+      sfProjectConfiguration::getActive()->loadHelpers('Url');        
+      $user = $this->getUser();
+
+      //подсчитываем общее количество и общую стоимость корзины
+      $cart = $user->getCart();
+      $qty = 0;
+      $sum = 0;
+      foreach($cart->getProducts()->toArray() as $id => $product){
+          $qty += $product['cart']['quantity'];
+          $sum += $product['price'] * $product['cart']['quantity'];
+      }
+      
+      //отложенные товары
+      $delayProducts = array();
+      if ($user->getGuardUser())
+      {
+        $userDelayedProduct = new UserDelayedProduct();
+        $delayProducts = $userDelayedProduct->getUserDelayProducts($user->getGuardUser()->id);
+      }
+      
+#     echo '<pre>';
+#     echo '</pre>';      
+   #   exit();
+      //имя есть только у авторизованного пользователя
+      if ($user->isAuthenticated()) $name = $user->getName();
+      else $name = false;
+      return $this->renderJson(array(
+        'success' => true,
+        'data'    => array(
+              'name' => $name,  
+              'link' =>  url_for('user'),   //ссылка на личный кабинет
+              'vitems' => $qty,
+              'sum' => $sum,
+              'vwish' => count($delayProducts),
+              'vcomp' => $user->getProductCompare()->getProductsNum(),
+              'bingo' => false,
+        )
+      ));  
+        exit();
+    
+      $this->redirect($this->getRequest()->getReferer());
+      
+  }
+  
 }

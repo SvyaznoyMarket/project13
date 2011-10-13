@@ -3,6 +3,9 @@ all:
 
 signin:
   is_secure: false
+  
+signinajax:
+  is_secure: false  
 
 register:
   is_secure: false

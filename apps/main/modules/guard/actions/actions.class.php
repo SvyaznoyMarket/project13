@@ -10,6 +10,8 @@
  */
 class guardActions extends myActions
 {
+    
+    private $_validateResult = array();
  /**
   * Executes signin action
   *
@@ -76,6 +78,88 @@ class guardActions extends myActions
       $this->getResponse()->setStatusCode(401);
     }
   }
+  
+ /**
+  * Executes signin action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeSigninAjax(sfWebRequest $request)
+  {
+      
+        $this->_request = $request;
+        $this->_validateResult['success'] = true;
+                       
+        
+        try{
+          //производим валидацию входящих данных
+          $this->_validateSigninData();
+        }
+        catch(Exception $e){
+          $this->_validateResult['success'] = false;
+          $this->_validateResult['error'] = "Неверные данные";
+          return $this->_refuse();
+        }
+        
+
+        $user = $this->getUser();
+        if ($user->isAuthenticated())
+        {
+          $this->_validateResult['success'] = false;
+          $this->_validateResult['error'] = "Вы уже авторизованы.";            
+          return $this->_refuse();
+        }
+        
+        //создаём форму авторизации
+        $this->form = new UserFormSignin();
+        $info['username'] = $this->_request['login'];
+        $info['password'] = $this->_request['password'];
+        $info['remember'] = $this->_request['remember'];
+        $info['_csrf_token'] = $this->form->getCSRFToken(); 
+
+        $this->form->bind($info);
+
+        if (!$this->form->isValid()){
+          $this->_validateResult['success'] = false;
+          $this->_validateResult['error'] = "Авторизация не прошла.";            
+          return $this->_refuse();            
+        }
+        //сама авторизация
+        $values = $this->form->getValues();
+        $this->getUser()->signin($values['user'], $this->_request['remember']);
+        
+        
+        return $this->renderJson(array(
+        'success' => $this->_validateResult['success'],
+        'data'    => array(
+          'user_id' => $this->getUser()->getGuardUser()->id,
+          'user_name' => $this->getUser()->getName(),
+        ),
+        ));                          
+       
+  }
+  
+  private function _refuse(){
+      return $this->renderJson(array(
+        'success' => $this->_validateResult['success'],
+        'data'    => array(
+          'error' => $this->_validateResult['error'],
+        ),
+      ));        
+  }
+  
+  private function _validateSigninData()
+  {
+      if (!$this->_request['login']){
+          $this->_validateResult['error'] = 'Необходимо указать логин';
+      }
+      if (!$this->_request['password']){
+          $this->_validateResult['error'] = 'Необходимо указать пароль';
+      }
+      if (isset($this->_validateResult['error'])) $this->_validateResult['success'] = false;
+  
+  }  
+  
  /**
   * Executes signout action
   *
