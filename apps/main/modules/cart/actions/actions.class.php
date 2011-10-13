@@ -43,6 +43,10 @@ class cartActions extends myActions
         if ($product)
         {
             try{
+                
+                $currentNum = $this->getUser()->getCart()->getQuantityByToken($request['product']);
+                $request['quantity'] += $currentNum;
+
                 $this->getUser()->getCart()->addProduct($product, $request['quantity']);
             }
             catch(Exception $e){
@@ -64,7 +68,8 @@ class cartActions extends myActions
               $return = array(
                 'success' => $result['value'],
                 'data'   => array(
-                    'data' => $this->getComponent($this->getModuleName(),'buy_button',array('product' => $product))
+                    'quantity' => $request['quantity'],
+                    'html' => $this->getComponent($this->getModuleName(),'buy_button',array('product' => $product))
                 )
               );
           }

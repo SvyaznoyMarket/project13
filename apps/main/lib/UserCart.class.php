@@ -124,6 +124,18 @@ class UserCart extends BaseUserData
 
     return $result;
   }
+  
+  public function getQuantityByToken($token)
+  {
+    $products = $this->getProducts();
+
+    foreach ($products as $product)
+    {
+        if ($product['token']==$token) return $product['cart']['quantity'];
+    }
+    
+    return 0;
+  }
 
   public function getProducts()
   {
