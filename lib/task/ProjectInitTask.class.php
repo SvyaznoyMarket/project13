@@ -5,6 +5,7 @@ class ProjectInitTask extends sfBaseTask
   protected
     $connection = null,
     $collections = array(),
+    $logger = null,
     $task = null
   ;
 
@@ -32,6 +33,7 @@ Call it with:
 
   [php symfony ProjectInit|INFO]
 EOF;
+    $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/init.log'));
   }
 
   protected function execute($arguments = array(), $options = array())
@@ -112,6 +114,7 @@ EOF;
         }
         else {
           $this->logSection('Unknown entity', $entity['type'].' #'.$entity['id'], null, 'ERROR');
+          $this->logger->log('Unknown entity:'.$entity['type'].' #'.$entity['id']);
         }
       }
     }
