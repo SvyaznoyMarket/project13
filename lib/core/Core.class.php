@@ -73,11 +73,13 @@ class Core
 
     $data = $this->getData($order);
 
+
     if ($response = $this->query('order.create', array(), $data))
     {
       $order->token = $response['number'];
       $result = $response['id'];
     }
+    //myDebug::dump($order->toArray(false), 1);
 
     return $result;
   }
@@ -87,8 +89,10 @@ class Core
     $result = false;
 
     $data = $this->getData($order);
+    $params = array('id' => $data['id']);
+    unset($data['id']);
 
-    if ($this->query('order.update', $data))
+    if ($this->query('order.update', $params, $data))
     {
       $result = true;
     }

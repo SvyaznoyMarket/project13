@@ -209,13 +209,13 @@ class ProductTable extends myDoctrineTable
       {
         $descendants = $filter['category']->getNode()->getDescendants();
         $ids = $descendants ? $descendants->toValueArray('id') : array();
-        $ids[] = $filter['category']->id;        
+        $ids[] = $filter['category']->id;
       }
       else if (!is_array($filter['category']))
       {
         $ids = array($filter['category']);
       }
-      
+
       if (count($ids) > 0)
       {
         $q->innerJoin('product.Category category');
@@ -331,11 +331,11 @@ class ProductTable extends myDoctrineTable
   public function countByCategory(ProductCategory $category, array $params = array())
   {
     $q = $this->createBaseQuery($params);
-    
+
     $descendants = $category->getNode()->getDescendants();
     $ids = $descendants ? $descendants->toValueArray('id') : array();
     $ids[] = $category->id;
-    
+
     $q->innerJoin('product.Category category')
         ->whereIn('category.id', $ids)
     ;
@@ -344,15 +344,15 @@ class ProductTable extends myDoctrineTable
 
     return $q->count();
   }
-  
+
   public function getByCategory(ProductCategory $category, array $params = array())
   {
     $q = $this->createBaseQuery($params);
-    
+
     $descendants = $category->getNode()->getDescendants();
     $ids = $descendants ? $descendants->toValueArray('id') : array();
     $ids[] = $category->id;
-    
+
     $q->innerJoin('product.Category category')
         ->whereIn('category.id', $ids)
     ;

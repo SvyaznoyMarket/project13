@@ -393,13 +393,13 @@ userProductCompare_delete:
 #
 # user product rating create
 userProductRating_createtotal:
-  url:   /product-rating/createtotal/:rating/:product   
+  url:   /product-rating/createtotal/:rating/:product
   param: { module: userProductRating, action: createtotal, product : 0}
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ get,post ]
-    
+
 #
 # user product rating create
 userProductRating_create:
@@ -409,7 +409,7 @@ userProductRating_create:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ any ]
-    
+
 #
 # user address
 userAddress:
@@ -505,7 +505,7 @@ cart_add:
   param: { module: cart, action: add, quantity: 1 }
   requirements:
     sf_method: [ get,post ]
-    
+
 #
 # cart delete
 cart_delete:
@@ -564,8 +564,10 @@ payment:
 #
 # payment callback
 payment_callback:
-  url:      /payment/callback
-  param:    { module: payment, action: callback }
+  url:   /orders/complete
+  param: { module: order, action: complete }
+#  url:      /payment/callback
+#  param:    { module: payment, action: callback }
 
 
 #

@@ -109,18 +109,15 @@ class UserCart extends BaseUserData
     $total = 0;
     $products = $this->getProducts();
 
+    //$products = null;
     foreach ($products as $product)
     {
-      $total += $product['price'] * $product['cart']['quantity'];
+      $total += $product->price * $product->cart['quantity'];
     }
 
-    $result = $total;
+    $result = $is_formatted ? number_format($total, 0, ',', ' ') : $total;
 
-    if ($is_formatted)
-    {
-      $result = number_format($total, 0, ',', ' ');
-;
-    }
+    //myDebug::dump($result, 1);
 
     return $result;
   }
@@ -128,7 +125,7 @@ class UserCart extends BaseUserData
   public function getProducts()
   {
     $this->calculateDiscount();
-    return $this->products;
+    return !empty($this->products) ? $this->products : array();
   }
 
   public function count()
@@ -144,7 +141,7 @@ class UserCart extends BaseUserData
 
   protected function calculateDiscount()
   {
-    $this->loadProducts();
+    $this->loadProducts(true);
 
     foreach ($this->products as $product)
     {
@@ -188,7 +185,7 @@ class UserCart extends BaseUserData
     }
   }
 
-  protected function updateProductCart(Doctrine_Record $product, $property, $value)
+  protected function updateProductCart(Doctrine_Record &$product, $property, $value)
   {
     if (isset($product->cart))
     {
