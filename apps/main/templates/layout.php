@@ -31,11 +31,11 @@
           <!-- Topmenu -->
           <?php include_component('productCategory', 'root_list') ?>
           <!-- /Topmenu -->
-          <div class="headerright">
-            Заказ и консультации
-            <div class="vcard"><div class="tel"><span>(495)</span>555-66-77</div></div>
-            <a href="">Перезвоните мне</a><br />
-            <a href="">Отследить мой заказ</a>
+          <div class="headerright" style="font-size: 12px;">
+            Контакт cENTER
+            <div class="vcard"><div class="tel"><span>8 (800)</span><br />700-00-09<br /><span>Звонок бесплатный.<br />Радость в подарок :)</span></div></div>
+            <!--a href="">Перезвоните мне</a><br />
+            <a href="">Отследить мой заказ</a-->
           </div>
 		  <!-- Extramenu -->
 		  <?php include_component('productCategory', 'extra_menu') ?>
@@ -80,20 +80,20 @@
     <div class="footer">
       <div class="bottommenu">
         <dl>
-          <dt><a href="">Компания Enter</a></dt>
-          <dd><a href="">О Компании</a></dd>
-          <dd><a href="">Наши преимущества</a></dd>
-          <dd><a href="">Контакты</a></dd>
-          <dd><a href="">Обратная связь</a></dd>
-          <dd><a href="">Карта сайта</a></dd>
+          <dt><a href="#">Компания Enter</a></dt>
+          <dd><a href="#">О Компании</a></dd>
+          <dd><a href="#">Наши преимущества</a></dd>
+          <dd><a href="#">Контакты</a></dd>
+          <dd><a href="#">Обратная связь</a></dd>
+          <dd><a href="#">Карта сайта</a></dd>
         </dl>
         <dl>
-          <dt><a href="">Услуги и сервисы</a></dt>
-          <dd><a href="">Сервис F1</a></dd>
-          <dd><a href="">Доставка товара</a></dd>
-          <dd><a href="">Гарантия</a></dd>
-          <dd><a href="">Бесплатный возврат</a></dd>
-          <dd><a href="">Помощь покупателю</a></dd>
+          <dt><a href="#">Услуги и сервисы</a></dt>
+          <dd><a href="#">Сервис F1</a></dd>
+          <dd><a href="#">Доставка товара</a></dd>
+          <dd><a href="#">Гарантия</a></dd>
+          <dd><a href="#">Бесплатный возврат</a></dd>
+          <dd><a href="#">Помощь покупателю</a></dd>
         </dl>
         <dl>
           <dt><a href="">Хотите работать у нас?</a></dt>
@@ -102,19 +102,19 @@
         </dl>
         <dl class="next">
           <dt>Единая справочная</dt>
-          <dd><strong class="font16">8 (800) 555-66-77</strong></dd>
+          <dd><strong class="font16">8 (800) 700 00 09</strong></dd>
           <dd>Круглосуточно. Без выходных</dd>
         </dl>
       </div>
 
       <div class="social">
         Посетите нас
-        <a href="" class="twitter">twitter</a>
-        <a href="" class="facebook">facebook</a>
-        <a href="" class="vkontakte">vkontakte</a>
-        <a href="" class="livejournal">livejournal</a>
-        <a href="" class="youtube">youtube</a>
-        <a href="" class="mobile">mobile</a>
+        <a href="#" class="twitter">twitter</a>
+        <a href="#" class="facebook">facebook</a>
+        <a href="#" class="vkontakte">vkontakte</a>
+        <a href="#" class="livejournal">livejournal</a>
+        <a href="#" class="youtube">youtube</a>
+        <a href="#" class="mobile">mobile</a>
       </div>
 
       <div class="subscribeform">

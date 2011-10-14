@@ -50,9 +50,9 @@
 
 
     <div class="links">
-        <a href="" class="link1">Сервис</a>
-        <a href="" class="link2">Связной</a>
-        <a href="" class="link3">Финансовые услуги</a>
+        <a href="#" class="link1">Сервис</a>
+        <a href="http://www.svyaznoybank.ru/" class="link2">Связной</a>
+        <a href="http://www.svyaznoybank.ru/" class="link3">Финансовые услуги</a>
     </div>
 
     <div class="copy">
