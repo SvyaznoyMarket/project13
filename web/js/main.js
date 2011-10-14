@@ -318,7 +318,6 @@ $(document).ready(function(){
 /* top menu */
 $(document).ready(function(){
 	 
-/* IKEA-like hover */
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
 	
@@ -347,6 +346,6 @@ $(document).ready(function(){
 			}
 			currentMenu = 0
 		}		
-	}) 
-	/* ---- */	
+	}) 	
 });
+/* ---- */	
