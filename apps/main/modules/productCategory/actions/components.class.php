@@ -52,7 +52,7 @@ class productCategoryComponents extends myComponents
 
     $this->setVar('list', ProductCategoryTable::getInstance()->getRootList(), true);
   }
-  
+
   public function executeExtra_menu()
   {
 	  $data = ProductCategoryTable::getInstance()->getSubList();
@@ -99,25 +99,25 @@ class productCategoryComponents extends myComponents
       'product_quantity' => $this->productCategory->countProduct(),
 	  'links'            => $this->productCategory->getLink(),
     );
-    
+
     if ('carousel' == $this->view)
     {
       if (0 == $item['product_quantity'])
       {
         return sfView::NONE;
       }
-      
+
       $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
         'limit' => 3,
       ));
-    }    
+    }
     if ('preview' == $this->view)
     {
       if (0 == $item['product_quantity'])
       {
         return sfView::NONE;
       }
-      
+
       $item['product'] = $this->productCategory->getPreviewProduct();
     }
 
