@@ -74,14 +74,16 @@ class productCatalogActions extends myActions
   public function executeCategory(sfWebRequest $request)
   {
     $this->productCategory = $this->getRoute()->getObject();
-    
+
+    //myDebug::dump($this->productCategory, 1);
+
     if (false
       || !$this->productCategory->getNode()->hasChildren()                //нет дочерних категорий
       //|| (1 == $this->productCategory->getNode()->getChildren()->count()) // одна дочерняя категория
     ) {
       $this->forward($this->getModuleName(), 'product');
     }
-    
+
     // если категория корневая
     if ($this->productCategory->getNode()->isRoot())
     {
@@ -96,7 +98,7 @@ class productCatalogActions extends myActions
   public function executeProduct(sfWebRequest $request)
   {
     $this->productCategory = $this->getRoute()->getObject();
-    
+
     $filter = array(
       'category' => $this->productCategory,
     );

@@ -729,6 +729,8 @@ EOF;
             $record->view_show = 1;
             break;
           case 2:
+            $record = ProductPhoto3DTable::getInstance()->createRecordFromCore($data);
+            $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
             break;
         }
         break;

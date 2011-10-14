@@ -21,11 +21,11 @@ all:
     max_items_on_category:  10                      # максимально количество записей для списка товаров в категории
     comment_helpful_cookie: product_comment_helpful
     photo_url:
-      - 'http://core.ent3.ru/upload/pic/2/200/'
-      - 'http://core.ent3.ru/upload/pic/2/300/'
-      - 'http://core.ent3.ru/upload/1/120/'
-      - 'http://core.ent3.ru/upload/1/160/'
-      - 'http://core.ent3.ru/upload/1/500/'
+      - 'http://fs01.enter.ru/1/160/'
+      - 'http://fs01.enter.ru/1/160/'
+      - 'http://fs01.enter.ru/1/120/'
+      - 'http://fs01.enter.ru/1/163/'
+      - 'http://fs01.enter.ru/1/500/'
 
   guard:
     remember_cookie_name: remember
