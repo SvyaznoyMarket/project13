@@ -8,18 +8,47 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php include_stylesheets() ?>
     <?php include_javascripts() ?>
+    <script type="text/javascript" src="/js/jcookies.js"></script>
 </head>
 
 <body>
+<script>
+	$(document).ready(function(){
+		var jc =  $.jCookies({ get : 'face' })
+		if( !jc )
+			jc = 1
+console.info(jc)
+		$.jCookies({
+			name : 'face',
+			value : ( jc + 1 ) % 6
+		})	
+
+		var node    = $('.bannersboxinner')
+		var bignode = $('.bigbanner')
+		bignode.find('img').attr('src','/images/banners/big/banner'+ jc +'.jpg')
+		node.find('.banner2 img').attr('src','/images/banners/small/banner'+ (jc++) +'.png')
+		node.find('.banner3 img').attr('src','/images/banners/medium/banner'+ (jc++) +'.png')		
+		node.find('.banner4 img').attr('src','/images/banners/medium/banner'+ (jc++) +'.png')		
+		node.find('.banner5 img').attr('src','/images/banners/medium/banner'+ (jc++) +'.png')				
+		jc++
+		for(var i=2; i <= 5; i++){
+			var j = (jc++) % 5 
+			if( !j ) j=5
+			console.info(j)		
+			node.find('.banner'+ i +' img').attr('src','/images/banners/small/banner'+ j +'.png')
+		}
+		
+	})
+</script>
 <div class="bannersbox">
     <div class="bannersboxinner">
-      <!--
-        <div class="banner banner2"><a href=""><img src="images/banner2.png" alt="" width="148" height="132" /></a></div>
-        <div class="banner banner3"><a href=""><img src="images/banner3.png" alt="" width="159" height="186" /></a></div>
-        <div class="banner banner4"><a href=""><img src="images/banner4.png" alt="" width="182" height="236" /></a></div>
-        <div class="banner banner5"><a href=""><img src="images/banner5.png" alt="" width="142" height="128" /></a></div>
-      -->
-      <?php include_component('default', 'slot', array('token' => 'banner_default')) ?>
+	  <!-- /images/banners/small/banner3.png -->
+        <div class="banner banner2"><a href=""><img src="" alt="" width="148" height="132" /></a></div>
+        <div class="banner zone banner3"><a href=""><img src="" alt="" width="159" height="186" /></a></div>
+        <div class="banner zone banner4"><a href=""><img src="" alt="" width="182" height="236" /></a></div>
+        <div class="banner banner5"><a href=""><img src="" alt="" width="142" height="128" /></a></div>
+      <!-- -->
+      <?php // include_component('default', 'slot', array('token' => 'banner_default')) ?>
     </div>
 </div>
 
@@ -38,8 +67,8 @@
     </div>
 
 
-    <!--div class="bigbanner"><a href=""><img src="images/banner.jpg" alt="" width="768" height="302" /></a></div-->
-      <?php include_component('default', 'slot', array('token' => 'big_banner')) ?>
+    <div class="bigbanner"><a href=""><img src="" alt="" width="768" height="302" /></a></div>
+      <?php // include_component('default', 'slot', array('token' => 'big_banner')) ?>
 
 
     <div class="content">
