@@ -36,6 +36,7 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'created_at'      => new sfWidgetFormDateTime(),
       'updated_at'      => new sfWidgetFormDateTime(),
       'news_list'       => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
+      'order_list'      => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'Order')),
       'category_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory')),
     ));
 
@@ -61,6 +62,7 @@ abstract class BaseProductForm extends BaseFormDoctrine
       'created_at'      => new sfValidatorDateTime(),
       'updated_at'      => new sfValidatorDateTime(),
       'news_list'       => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
+      'order_list'      => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'Order', 'required' => false)),
       'category_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory', 'required' => false)),
     ));
 
@@ -91,6 +93,11 @@ abstract class BaseProductForm extends BaseFormDoctrine
       $this->setDefault('news_list', $this->object->News->getPrimaryKeys());
     }
 
+    if (isset($this->widgetSchema['order_list']))
+    {
+      $this->setDefault('order_list', $this->object->Order->getPrimaryKeys());
+    }
+
     if (isset($this->widgetSchema['category_list']))
     {
       $this->setDefault('category_list', $this->object->Category->getPrimaryKeys());
@@ -101,6 +108,7 @@ abstract class BaseProductForm extends BaseFormDoctrine
   protected function doSave($con = null)
   {
     $this->saveNewsList($con);
+    $this->saveOrderList($con);
     $this->saveCategoryList($con);
 
     parent::doSave($con);
@@ -141,6 +149,44 @@ abstract class BaseProductForm extends BaseFormDoctrine
     if (count($link))
     {
       $this->object->link('News', array_values($link));
+    }
+  }
+
+  public function saveOrderList($con = null)
+  {
+    if (!$this->isValid())
+    {
+      throw $this->getErrorSchema();
+    }
+
+    if (!isset($this->widgetSchema['order_list']))
+    {
+      // somebody has unset this widget
+      return;
+    }
+
+    if (null === $con)
+    {
+      $con = $this->getConnection();
+    }
+
+    $existing = $this->object->Order->getPrimaryKeys();
+    $values = $this->getValue('order_list');
+    if (!is_array($values))
+    {
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('Order', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('Order', array_values($link));
     }
   }
 

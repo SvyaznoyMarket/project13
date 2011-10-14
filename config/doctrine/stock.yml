@@ -35,7 +35,9 @@ ShopPhoto:
 Stock:
   options:
     comment: 'Склад'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
+    Corable: { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }

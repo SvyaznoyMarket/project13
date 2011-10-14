@@ -39,7 +39,7 @@ all:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
+      api_url: 'http://62.231.27.40/v1/json'
       consumer_key: v4Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 

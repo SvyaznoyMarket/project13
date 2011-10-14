@@ -5,5 +5,8 @@ index:
   is_secure: true
   layout: layout
 
+new:
+  is_secure: true
+
 show:
   is_secure: true

@@ -714,6 +714,25 @@ EOF;
     return $record;
   }
 
+  //Shop
+  protected function createShopRecord(array $data)
+  {
+    $record = ShopTable::getInstance()->createRecordFromCore($data);
+    $record->record_id = $this->getRecordByCoreId('Region', $data['geo_id'], true);
+
+    return $record;
+  }
+
+  //StockProductRelation
+  protected function createStockProductRelationRecord(array $data)
+  {
+    $record = StockProductRelationTable::getInstance()->createRecordFromCore($data);
+    $record->product_id = $this->getRecordByCoreId('Product', $data['product_id'], true);
+    $record->stock_id = $this->getRecordByCoreId('Stock', $data['store_id'], true);
+
+    return $record;
+  }
+
   //Photo for everything
   protected function processUpload(array $data)
   {

@@ -33,6 +33,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'created_at'      => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'updated_at'      => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate(), 'with_empty' => false)),
       'news_list'       => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'News')),
+      'order_list'      => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'Order')),
       'category_list'   => new sfWidgetFormDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory')),
     ));
 
@@ -57,6 +58,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'created_at'      => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'updated_at'      => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 00:00:00')), 'to_date' => new sfValidatorDateTime(array('required' => false, 'datetime_output' => 'Y-m-d 23:59:59')))),
       'news_list'       => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'News', 'required' => false)),
+      'order_list'      => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'Order', 'required' => false)),
       'category_list'   => new sfValidatorDoctrineChoice(array('multiple' => true, 'model' => 'ProductCategory', 'required' => false)),
     ));
 
@@ -84,6 +86,24 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
     $query
       ->leftJoin($query->getRootAlias().'.NewsProductRelation NewsProductRelation')
       ->andWhereIn('NewsProductRelation.news_id', $values)
+    ;
+  }
+
+  public function addOrderListColumnQuery(Doctrine_Query $query, $field, $values)
+  {
+    if (!is_array($values))
+    {
+      $values = array($values);
+    }
+
+    if (!count($values))
+    {
+      return;
+    }
+
+    $query
+      ->leftJoin($query->getRootAlias().'.OrderProductRelation OrderProductRelation')
+      ->andWhereIn('OrderProductRelation.order_id', $values)
     ;
   }
 
@@ -134,6 +154,7 @@ abstract class BaseProductFormFilter extends BaseFormFilterDoctrine
       'created_at'      => 'Date',
       'updated_at'      => 'Date',
       'news_list'       => 'ManyKey',
+      'order_list'      => 'ManyKey',
       'category_list'   => 'ManyKey',
     );
   }
