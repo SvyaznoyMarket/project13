@@ -9,7 +9,7 @@
       <span class="gray">Артикул #<?php echo $item['article'] ?></span>
     </div>
     <div class="extrainfo">
-      <span class="db font18 pb10"><?php echo $item['price'] ?> <span class="rubl">p</span></span>
+      <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
 
       <ul>
         <li><strong class="orange">Есть в наличии</strong></li>

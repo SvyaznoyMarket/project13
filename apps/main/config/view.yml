@@ -30,11 +30,12 @@ default:
     - jquery.effects.transfer.js
     - jquery.lightbox_me.js
     - prettyCheckboxes.js
+    - jcookies.js
     #- jslib/jquery.ui.widget.js
     #- jslib/jquery.ui.mouse.js
     #- jslib/jquery.ui.slider.js
     - custom-form-elements.js
-#    - jslib/main.js
+    #- jslib/main.js
     #- jquery-ui-custom.js
     - jquery.form.js
     - jquery.timers.js

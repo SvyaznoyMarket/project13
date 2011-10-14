@@ -15,12 +15,14 @@
  * @property string $token
  * @property string $name
  * @property integer $filter_group_id
+ * @property integer $position
  * @property ProductFilterGroup $FilterGroup
  * @property Doctrine_Collection $ProductType
  * @property Doctrine_Collection $Product
  * @property Doctrine_Collection $News
  * @property Doctrine_Collection $NewsRelation
  * @property Doctrine_Collection $ProductRelation
+ * @property Doctrine_Collection $Link
  * @property Doctrine_Collection $ProductTypeRelation
  * @property Doctrine_Collection $TagRelation
  * 
@@ -34,12 +36,14 @@
  * @method string              getToken()               Returns the current record's "token" value
  * @method string              getName()                Returns the current record's "name" value
  * @method integer             getFilterGroupId()       Returns the current record's "filter_group_id" value
+ * @method integer             getPosition()            Returns the current record's "position" value
  * @method ProductFilterGroup  getFilterGroup()         Returns the current record's "FilterGroup" value
  * @method Doctrine_Collection getProductType()         Returns the current record's "ProductType" collection
  * @method Doctrine_Collection getProduct()             Returns the current record's "Product" collection
  * @method Doctrine_Collection getNews()                Returns the current record's "News" collection
  * @method Doctrine_Collection getNewsRelation()        Returns the current record's "NewsRelation" collection
  * @method Doctrine_Collection getProductRelation()     Returns the current record's "ProductRelation" collection
+ * @method Doctrine_Collection getLink()                Returns the current record's "Link" collection
  * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
  * @method Doctrine_Collection getTagRelation()         Returns the current record's "TagRelation" collection
  * @method ProductCategory     setId()                  Sets the current record's "id" value
@@ -52,12 +56,14 @@
  * @method ProductCategory     setToken()               Sets the current record's "token" value
  * @method ProductCategory     setName()                Sets the current record's "name" value
  * @method ProductCategory     setFilterGroupId()       Sets the current record's "filter_group_id" value
+ * @method ProductCategory     setPosition()            Sets the current record's "position" value
  * @method ProductCategory     setFilterGroup()         Sets the current record's "FilterGroup" value
  * @method ProductCategory     setProductType()         Sets the current record's "ProductType" collection
  * @method ProductCategory     setProduct()             Sets the current record's "Product" collection
  * @method ProductCategory     setNews()                Sets the current record's "News" collection
  * @method ProductCategory     setNewsRelation()        Sets the current record's "NewsRelation" collection
  * @method ProductCategory     setProductRelation()     Sets the current record's "ProductRelation" collection
+ * @method ProductCategory     setLink()                Sets the current record's "Link" collection
  * @method ProductCategory     setProductTypeRelation() Sets the current record's "ProductTypeRelation" collection
  * @method ProductCategory     setTagRelation()         Sets the current record's "TagRelation" collection
  * 
@@ -127,6 +133,12 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'notnull' => false,
              'length' => 20,
              ));
+        $this->hasColumn('position', 'integer', 3, array(
+             'type' => 'integer',
+             'notnull' => false,
+             'default' => 0,
+             'length' => 3,
+             ));
 
         $this->option('comment', 'Категория товара');
     }
@@ -159,6 +171,10 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'foreign' => 'product_category_id'));
 
         $this->hasMany('ProductCategoryProductRelation as ProductRelation', array(
+             'local' => 'id',
+             'foreign' => 'product_category_id'));
+
+        $this->hasMany('ProductCategoryLink as Link', array(
              'local' => 'id',
              'foreign' => 'product_category_id'));
 
