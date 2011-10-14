@@ -29,11 +29,12 @@ class orderActions extends myActions
   {
     $this->order = $this->getRoute()->getObject();
   }
-  
+
   public function executeLogin(sfWebRequest $request)
   {
 	  if (!$this->getUser()->isAuthenticated()) {
 		$this->formSignin = new UserFormSignin();
+    $this->formRegister = new UserFormRegister();
 	  }
 	  $this->order = $this->getUser()->getOrder()->get();
   }
@@ -58,6 +59,7 @@ class orderActions extends myActions
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getParameter($this->form->getName()));
+
       if ($this->form->isValid())
       {
         $order = $this->form->updateObject();
@@ -71,6 +73,14 @@ class orderActions extends myActions
         else {
           $this->redirect('order_new', array('step' => $this->getNextStep($order)));
         }
+      }
+      else
+      {
+        //myDebug::dump($this->form['region_id']->getValue());
+        //myDebug::dump($this->form->getValues());
+        //myDebug::dump($this->form['region_id']->getValue(), 1);
+        //$order = $this->form->updateObject(array($this->form['region_id'], ));
+        //$this->getUser()->getOrder()->set($order);
       }
     }
   }

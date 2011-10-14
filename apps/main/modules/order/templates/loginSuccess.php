@@ -15,7 +15,7 @@
             <li><span>Шаг 3</span>Подтверждение<br />заказа</li>
         </ul>
 <?php end_slot() ?>
-    
+
 <?php if ($sf_user->isAuthenticated()): ?>
 <div class="fl width215 mr20">
 	<div class="pb40"><strong class="font16">Данные покупателя:</strong></div>
@@ -46,30 +46,32 @@
                 <li><a href="" class="twitter">Twitter</a></li>
             </ul>
         </div>
-        
+
         <div class="fl width430">
-        
+
             <ul class="checkboxlist pb10">
                 <li class="font16"><label for="radio-1">Уже покупали у нас?</label><input id="radio-1" name="radio-1" type="radio" value="radio-1" /></li>
                 <li class="font16"><label for="radio-2">Я покупаю впервые!</label><input id="radio-2" name="radio-1" type="radio" value="radio-2"/></li>
             </ul>
-			
+
 			<div id="old-user" style="display:none;">
 				<div class="pb10">E-mail или мобильный телефон:</div>
 				<?php echo $formSignin['username']->render(array('class' => 'text width418 mb15')) ?>
-				
+
 				<div class="pb5"><a href="<?php echo url_for('user_forgotPassword') ?>	" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
 				<?php echo $formSignin['password']->render(array('class' => 'text width418 mb15')) ?>
-				
+
 				<?php echo $formSignin['remember']->render(array('class' => 'hiddenCheckbox', 'id' => 'checkbox-8')) ?>
 			</div>
-			
+
 			<div id="new-user" style="display:none;">
 				<div class="pb10">E-mail или мобильный телефон:</div>
-				<input name="username" type="text" class="text width418 mb15"/>
+				<?php echo $formRegister['username']->render(array('class' => 'text width418 mb15')) ?>
+				<!--input name="username" type="text" class="text width418 mb15"/-->
 
 				<div class="pb10">Как к вам обращаться?</div>
-				<input name="first_name" type="text" class="text width418 mb5"/>
+				<?php echo $formRegister['first_name']->render(array('class' => 'text width418 mb15')) ?>
+				<!--input name="first_name" type="text" class="text width418 mb5"/-->
 				<div class="font11 pb20">Эти данные необходимы для регистрации в системе и оформления платежа. Вам будет выслан пароль на ваш e-mail или моб. телефон</div>
 
 
@@ -80,7 +82,7 @@
 				</ul>
 			</div>
         </div>
-            
+
         <div class="line pb20"></div>
         <div class="pl235"><input type="submit" class="button bigbutton" value="Продолжить оформление" /></div>
     </form>
