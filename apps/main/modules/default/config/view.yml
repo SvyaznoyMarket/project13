@@ -3,6 +3,10 @@ all:
     - -*
     - skin/main.css
 
+  javascripts:
+    - -*
+    - jquery-1.6.4.min.js
+    
   layout: default
 
 welcomeSuccess:

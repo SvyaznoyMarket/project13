@@ -8,45 +8,64 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php include_stylesheets() ?>
     <?php include_javascripts() ?>
-    <script type="text/javascript" src="/js/jcookies.js"></script>
 </head>
 
 <body>
 <script>
 	$(document).ready(function(){
-		var jc =  $.jCookies({ get : 'face' })
-		if( !jc )
-			jc = 1
-console.info(jc)
-		$.jCookies({
-			name : 'face',
-			value : ( jc + 1 ) % 6
-		})	
+		function getRandomInt(min, max)
+		{
+		  return Math.floor(Math.random() * (max - min + 1)) + min
+		}
 
 		var node    = $('.bannersboxinner')
 		var bignode = $('.bigbanner')
-		bignode.find('img').attr('src','/images/banners/big/banner'+ jc +'.jpg')
-		node.find('.banner2 img').attr('src','/images/banners/small/banner'+ (jc++) +'.png')
-		node.find('.banner3 img').attr('src','/images/banners/medium/banner'+ (jc++) +'.png')		
-		node.find('.banner4 img').attr('src','/images/banners/medium/banner'+ (jc++) +'.png')		
-		node.find('.banner5 img').attr('src','/images/banners/medium/banner'+ (jc++) +'.png')				
-		jc++
-		for(var i=2; i <= 5; i++){
-			var j = (jc++) % 5 
-			if( !j ) j=5
-			console.info(j)		
-			node.find('.banner'+ i +' img').attr('src','/images/banners/small/banner'+ j +'.png')
+		var bri = getRandomInt(1, 9)
+				
+		bignode.find('img').attr('src','/images/banners/big/banner'+ bri +'.jpg')
+		var ri = getRandomInt(1, 4)		
+		while( bri == ri + 4 ) {
+			ri = getRandomInt(1, 4)
 		}
 		
+		node.find('.banner2 img').attr('src','/images/banners/small/banner'+ (ri + 4) +'.jpg')
+		var ri_2 = getRandomInt(1, 4)
+		while( ri_2 == ri || bri == ri_2 + 4 ) {
+			ri_2 = getRandomInt(1, 4)
+		}
+				
+		node.find('.banner5 img').attr('src','/images/banners/small/banner'+ (ri_2 + 4) +'.jpg')
+		
+		ri = getRandomInt(1, 4)		
+		while( bri == ri ) {
+			ri = getRandomInt(1, 4)
+		}
+		
+		node.find('.banner3 img').attr('src','/images/banners/medium/banner'+ ri +'.jpg')
+		ri_2 = ri
+		while( ri_2 == ri || bri == ri_2 ) {
+			ri_2 = getRandomInt(1, 4)
+		}
+		
+		node.find('.banner4 img').attr('src','/images/banners/medium/banner'+ ri_2 +'.jpg')
+		
+		$('.startse').bind ({ 'blur': function(){
+				if (this.value == '')
+					this.value = 'Поиск среди 20 000 товаров'
+				},'focus': function() {
+					if (this.value == 'Поиск среди 20 000 товаров') 
+						this.value = ''
+					}	
+				})	
 	})
 </script>
 <div class="bannersbox">
     <div class="bannersboxinner">
 	  <!-- /images/banners/small/banner3.png -->
-        <div class="banner banner2"><a href=""><img src="" alt="" width="148" height="132" /></a></div>
-        <div class="banner zone banner3"><a href=""><img src="" alt="" width="159" height="186" /></a></div>
-        <div class="banner zone banner4"><a href=""><img src="" alt="" width="182" height="236" /></a></div>
-        <div class="banner banner5"><a href=""><img src="" alt="" width="142" height="128" /></a></div>
+        <div class="banner banner2"><a href=""><img src="" alt="" width="auto" height="auto" /></a></div>
+        <div class="banner banner3"><a href=""><img src="" alt="" width="auto" height="auto" /></a></div>
+        <div class="banner banner4"><a href=""><img src="" alt="" width="auto" height="auto" /></a></div>
+        <div class="banner banner5"><a href=""><img src="" alt="" width="auto" height="auto" /></a></div>
       <!-- -->
       <?php // include_component('default', 'slot', array('token' => 'banner_default')) ?>
     </div>
@@ -62,7 +81,7 @@ console.info(jc)
 
     <div class="searchbox">
     <form action="">
-        <input type="text" class="text" value="Поиск среди 30 000 товаров" /><input type="button" class="searchbutton" value="Найти" title="Найти" />
+        <input type="text" class="text startse" value="Поиск среди 20 000 товаров" /><input type="button" class="searchbutton" value="Найти" title="Найти" />
     </form>
     </div>
 
