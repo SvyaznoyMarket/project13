@@ -51,8 +51,8 @@
         <div class="fr ar pb15">
             <div class="goodsbarbig">
                 <a href="<?php echo url_for('cart_add', array('product' => $product->token, 'quantity' => 1)) ?>" class="link1"></a>
-                <a href="<?php echo url_for('userDelayedProduct_create', $sf_data->getRaw('product')) ?>" class="link2"></a>
-                <a href="<?php echo url_for('userProductCompare_add', $sf_data->getRaw('product')) ?>" class="link3"></a>
+                <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product')) ?>#" class="link2"></a>
+                <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product')) ?>#" class="link3"></a>
             </div>
 <!--            <div class="pb5"><strong><a href="" class="red underline">Купить быстро в 1 клик</a></strong></div>-->
 <!--            <a href="<?php echo url_for('productStock', $sf_data->getRaw('product')) ?>" class="underline">Где купить в магазинах?</a>-->
@@ -62,8 +62,8 @@
 
         <div class="pb5"><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать отзывы</a> (<?php echo $product->getCommentCount() ?>)</div>
         <div class="pb5">
-			Оценка пользователей: 
-			<?php 
+			Оценка пользователей:
+			<?php
 				echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
 				echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position-x:100%;"></span>', 5-round($product->rating));
 			?>
@@ -103,11 +103,11 @@
   <!--div class="inline">
   <?php //include_component('userProductRating', 'show', array('product' => $product)) ?>
   </div->
-  
+
   <div class="inline">
   <?php //include_component('userTag', 'product_link', array('product' => $product)) ?>
   </div>
-  
+
   <div class="block">
   <?php //echo link_to('Следить за этим товаром', 'userProductNotice_show', $sf_data->getRaw('product'), array('class' => 'event-click', 'data-event' => 'window.open')) ?>
   </div-->

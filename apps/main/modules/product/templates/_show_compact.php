@@ -1,5 +1,5 @@
-<div class="goodsbox">
-  <div class="photo"><!--<i class="new" title="Новинка"></i>--><img class="noneleminate" src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
+<div class="goodsbox"<?php echo (isset($ii) && $ii > 3) ? ' style="display:none;"' : '' ?>>
+  <div class="photo"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
   <span class="ratingview"></span>
   <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
 
