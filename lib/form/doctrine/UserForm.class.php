@@ -16,5 +16,67 @@ class UserForm extends BaseUserForm
   public function configure()
   {
     parent::configure();
+
+    $this->disableCSRFProtection();
+
+  //  $this->widgetSchema['id']->setLabel('ID');
+    $this->validatorSchema['id'] = new sfValidatorPass();  
+    
+    $this->widgetSchema['first_name']->setLabel('Имя');
+    
+    $this->widgetSchema['middle_name']->setLabel('Отчество');
+    
+    $this->widgetSchema['last_name']->setLabel('Фамилия');
+
+    $this->widgetSchema['gender']->setLabel('Ваш пол');
+
+    $this->widgetSchema['email']->setLabel('E-mail');
+
+    $this->widgetSchema['phonenumber']->setLabel('Мобильный телефон');
+
+    $this->widgetSchema['phonenumber_city']->setLabel('Домашний телефон');
+
+    $this->widgetSchema['skype']->setLabel('Sype');
+
+    $this->widgetSchema['birthday']->setLabel('Дата рождения');
+
+    $this->widgetSchema['occupation']->setLabel('Род деятельности');
+
+    #print_r(get_class_methods($this->widgetSchema['occupation']));
+    $useFields = array(
+//      'id',  
+      'first_name',
+      'middle_name',
+      'last_name',
+      'gender',
+      'email',
+      'phonenumber',
+      'phonenumber_city',
+      'skype',
+      'birthday',
+      'occupation',
+    );
+    //одинаковые стили для всех полей
+    foreach($useFields as $field){
+        $this->widgetSchema[$field]->setAttribute('class', 'text width418 mb15');         
+    }
+    //кроме
+    $this->widgetSchema['gender']->setAttribute('class', 'styled');  
+    $this->widgetSchema['birthday']->setAttribute('class', 'styled');         
+    
+    $this->useFields($useFields);
+
+    $this->widgetSchema->setNameFormat('user[%s]');
   }
+  
+  protected function updateNameColumn($value)
+  {
+    if (empty($value))
+    {
+      $value = $this->getValue('user');
+    }
+
+    return $value;
+  }  
+ 
 }

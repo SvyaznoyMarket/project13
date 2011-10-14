@@ -1,19 +1,24 @@
-<div class="block">
-  <?php include_component('user', 'menu') ?>
-</div>
+<?php 
+slot('title','Адреса доставки');
+?>   
+<div class="float100">
+		<div class="column685 ">
+            
+            <div class="block">
+              <?php if (count($userAddressList) > 0): ?>
+                <?php include_component('userAddress', 'list', array('userAddressList' => $userAddressList)) ?>
 
-<h1>Адреса доставки</h1>
+              <?php else: ?>
+                <p>нет адресов</p>
 
-<div class="block">
-  <?php if (count($userAddressList) > 0): ?>
-    <?php include_component('userAddress', 'list', array('userAddressList' => $userAddressList)) ?>
+              <?php endif ?>
 
-  <?php else: ?>
-    <p>нет адресов</p>
+              <div class="block-inline">
+                <?php include_component('userAddress', 'form', array('form' => $form)) ?>
+              </div>
+            </div>
 
-  <?php endif ?>
+        </div>
+    </div>
 
-  <div class="block-inline">
-    <?php include_component('userAddress', 'form', array('form' => $form)) ?>
-  </div>
-</div>
+    <?php include_component('user', 'menu') ?>

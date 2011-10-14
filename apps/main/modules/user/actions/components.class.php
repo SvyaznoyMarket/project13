@@ -50,52 +50,29 @@ class userComponents extends myComponents
 
     $uri = $this->getContext()->getRouting()->getCurrentInternalUri(true);
 
+    //пункты для левого меню, отображаемого на всех страницах ЛК
     $list = array(
-      array(
-        'name'   => 'Личный кабинет',
-        'url'    => '@user',
-        'routes' => array('@user'),
-      ),
-      array(
-        'name'   => 'Корзина товаров',
-        'url'    => '@cart',
-        'routes' => array('@cart'),
-      ),
-      array(
-        'name'   => 'Заказы',
-        'url'    => '@order',
-        'routes' => array('@order', '@order_show'),
-      ),
-      array(
-        'name'   => 'История просмотра товаров',
-        'url'    => '@userProductHistory',
-        'routes' => array('@userProductHistory'),
-      ),
-      array(
-        'name'   => 'Отложенные товары',
-        'url'    => '@userDelayedProduct',
-        'routes' => array('@userDelayedProduct'),
-      ),
-      array(
-        'name'   => 'Сравнение товаров',
-        'url'    => '@userProductCompare',
-        'routes' => array('@userProductCompare', '@userProductCompare_show'),
-      ),
-      array(
-        'name'   => 'Метки товаров',
-        'url'    => '@userTag',
-        'routes' => array('@userTag'),
-      ),
-      array(
-        'name'   => 'Адрес доставки',
-        'url'    => '@userAddress',
-        'routes' => array('@userAddress'),
-      ),
-      array(
-        'name'   => 'Пароль',
-        'url'    => '@user_changePassword',
-        'routes' => array('@user_changePassword'),
-      ),
+
+          array(
+            'name'   => 'Личный кабинет',
+            'url'    => '@user',
+            'routes' => array('@user'),
+          ),
+          array(
+            'name'   => 'Редактирование профиля',
+            'url'    => '@user_edit',
+            'routes' => array('@user_edit'),
+          ),            
+          array(
+            'name'   => 'Пароль',
+            'url'    => '@user_changePassword',
+            'routes' => array('@user_changePassword'),
+          ),            
+          array(
+            'name'   => 'Адрес доставки',
+            'url'    => '@userAddress',
+            'routes' => array('@userAddress'),
+          ),        
     );
 
     foreach ($list as &$item)
@@ -108,6 +85,17 @@ class userComponents extends myComponents
       $item['current'] = in_array($routeName, $item['routes']);
     } if (isset($item)) unset($item);
 
-    $this->setVar('list', $list, true);
+    $this->setVar('leftMenu', $list, true);
   }
+  
+  public function executeShortuserinfo()
+  {
+      $this->setVar('user', $this->getUser(), true);
+      $this->setVar('userData', $this->getUser()->getGuardUser(), true);      
+  }  
+  
+  public function executeNavigation()
+  {
+    //    $this->setVar('list', $list, true);
+  }  
 }

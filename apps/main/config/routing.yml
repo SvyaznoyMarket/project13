@@ -179,6 +179,22 @@ user:
   param: { module: user, action: index }
 #
 
+# user edit
+user_edit:
+  url:   /private/edit
+  param: { module: user, action: edit }
+  requirements:
+    sf_method: [ get,post ]    
+#
+
+# user edit
+user_update:
+  url:   /private/update
+  param: { module: user, action: update }
+  requirements:
+    sf_method: [ get,post ]    
+#
+
 # user. get short info about cart, wishlist, etc.
 userProductHistory_shortinfo:
   url:   /user/shortinfo

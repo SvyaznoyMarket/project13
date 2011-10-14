@@ -1,9 +1,10 @@
-<div class="block">
-  <?php include_component('user', 'menu') ?>
-</div>
+<?php
+slot('title','Мои заказы');
+?>
+    <div class="float100">
+		<div class="column685 ">
+            <?php include_component('order', 'list') ?>
+        </div>
+    </div>
 
-<h1>Мои заказы</h1>
-
-<div class="block">
-  <?php include_component('order', 'list') ?>
-</div>
+<?php include_component('user', 'menu') ?>
