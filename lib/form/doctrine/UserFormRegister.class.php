@@ -13,8 +13,10 @@ class UserFormRegister extends BaseUserForm
   public function configure()
   {
     parent::configure();
+    
+    $this->disableCSRFProtection();
 
-    $this->widgetSchema['first_name'] = new sfWidgetFormInputText();
+    $this->widgetSchema['first_name'] = new sfWidgetFormInputText(array(), array('tabindex' => 5));
     $this->validatorSchema['first_name'] = new sfValidatorString(array('max_length' => 255,  'required' => true));
     $this->widgetSchema['first_name']->setLabel('Имя');
 
@@ -22,7 +24,7 @@ class UserFormRegister extends BaseUserForm
     $this->validatorSchema['last_name'] = new sfValidatorString(array('max_length' => 255, 'required' => false));
     $this->widgetSchema['last_name']->setLabel('Фамилия');
 
-    $this->widgetSchema['username'] = new sfWidgetFormInputText();
+    $this->widgetSchema['username'] = new sfWidgetFormInputText(array(), array('tabindex' => 6));
     $this->validatorSchema['username'] = new sfValidatorString(array('max_length' => 128));
     $this->widgetSchema['username']->setLabel('Ваш email или мобильный телефон');
 
@@ -41,7 +43,7 @@ class UserFormRegister extends BaseUserForm
 
     $this->useFields(array(
       'first_name',
-      'last_name',
+      //'last_name',
       'username',
       //'password',
       //'password_again',

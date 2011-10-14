@@ -34,7 +34,9 @@ GuardGroupPermission:
 GuardUser:
   options:
     comment: 'Пользователь'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable:  ~
+    Corable:        { push: disable }
   columns:
     email:             { type: string(128), notnull: false, default: null }
     phonenumber:       { type: string(20), notnull: false, default: null, comment: 'Телефонный номер' }

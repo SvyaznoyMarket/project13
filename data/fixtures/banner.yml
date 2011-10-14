@@ -1,6 +1,6 @@
 Banner:
   Banner_1:
-    Slot: Slot_banner_default
+    Slot: Slot_big_banner
     name: 'Баннер 1'
     link: '/'
     image: banner.jpg
@@ -23,3 +23,9 @@ Banner:
     link: '/'
     image: ~
     image_preview: banner4.png
+  Banner_5:
+    Slot: Slot_banner_default
+    name: 'Баннер 5'
+    link: '/'
+    image: ~
+    image_preview: banner5.png

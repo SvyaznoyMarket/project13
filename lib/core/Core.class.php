@@ -73,11 +73,13 @@ class Core
 
     $data = $this->getData($order);
 
+
     if ($response = $this->query('order.create', array(), $data))
     {
       $order->token = $response['number'];
       $result = $response['id'];
     }
+    //myDebug::dump($order->toArray(false), 1);
 
     return $result;
   }
@@ -87,8 +89,10 @@ class Core
     $result = false;
 
     $data = $this->getData($order);
+    $params = array('id' => $data['id']);
+    unset($data['id']);
 
-    if ($this->query('order.update', $data))
+    if ($this->query('order.update', $params, $data))
     {
       $result = true;
     }
@@ -116,12 +120,25 @@ class Core
 
     $data = $this->getData($user);
 
-    if ($this->query('user.update', array(), $data))
+    if ($this->query('user.update', array('id'=>$data['id']), $data))
     {
       $result = true;
     }
 
     return $result;
+  }
+  
+  public function createUserProfile(UserProfile $profile)
+  {
+	  $result = false;
+
+		$data = $this->getData($profile);
+
+		if ($response = $this->query('user.network.create', array(), $data)) {
+			$result = $response['id'];
+		}
+
+		return $result;
   }
 
   public function createUserTag($params = array(), $data = array())
@@ -285,6 +302,7 @@ class Core
     $this->logger->log('Trying to pass authentification... ');
     $response = $this->send($data);
 
+	//$this->logger->log($response);
     $response = json_decode($response, true);
 
     if (isset($response['error']))

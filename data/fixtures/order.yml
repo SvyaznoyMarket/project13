@@ -21,3 +21,14 @@ DeliveryType:
     token: express
     name: экспресс
     is_active: true
+
+DeliveryPeriod:
+  DeliveryPeriod_morning:
+    name: с 9 до 12
+    core_id: 1
+  DeliveryPeriod_afternoon:
+    name: с 12 до 18
+    core_id: 2
+  DeliveryPeriod_evening:
+    name: с 18 до 22
+    core_id: 3

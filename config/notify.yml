@@ -1,6 +1,0 @@
-#all:
-#  driver:
-#    class:                  fpErrorNotifierDriverMailNative
-#    options:
-#      to:                   'green@mail.ru,ssapego@maxus.ru'
-#      from:                 'green@mail.ru'

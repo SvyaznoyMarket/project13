@@ -20,8 +20,8 @@
   </div>
 
   <!-- Hover -->
-  <div class="boxhover">
-    <a href="" class="fastview">Быстрый просмотр</a>
+  <div class="boxhover" ref="<?php echo $item['product']->token ?>">
+    <!--a href="" class="fastview">Быстрый просмотр</a-->
     <div class="goodsbar">
       <?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1)) ?>
       <?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?>
@@ -30,8 +30,8 @@
     <b class="rt"></b><b class="lb"></b>
 
     <div class="rb">
-      <div class="lt"  onclick="window.location.href=''">
-        <div class="goodsboxlink" onclick="window.open('http://')">
+      <div class="lt"><!--  onclick="window.location.href=''"-->
+        <div class="goodsboxlink"><!-- onclick="window.open('http://')"-->
           <div class="photo"><!--<i title="Новинка" class="new"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
           <div class="info">
             <span class="ratingview"></span>
@@ -41,7 +41,7 @@
             <span class="gray">Артикул #<?php echo $item['article'] ?></span>
           </div>
           <div class="extrainfo">
-            <span class="db font18 pb10"><?php echo $item['price'] ?> <span class="rubl">p</span></span>
+            <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
             <ul>
               <li><strong class="orange">Есть в наличии</strong></li>
               <li>Доставим в течение 24 часов</li>

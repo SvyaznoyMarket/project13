@@ -41,8 +41,7 @@ class Product extends BaseProduct
     $return = null;
     foreach ($this->Parameter as $parameter)
     {
-      if ($parameter->getProperty()->id != $property_id)
-        continue;
+      if ($parameter->getProperty()->id != $property_id) continue;
 
       $return = $parameter;
     }

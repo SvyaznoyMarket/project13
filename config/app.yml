@@ -1,10 +1,9 @@
 all:
   default:
     region: moskva
-
   welcome:
     cookie_name: enter_code
-    secret: welcome
+    secret: Выход!
 
   rediska:
     default:
@@ -14,7 +13,7 @@ all:
           persistent: true
 
   doctrine:
-    result_cache:        false  # кешировать результаты запросов
+    result_cache:        true  # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
   product:

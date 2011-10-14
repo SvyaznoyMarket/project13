@@ -34,4 +34,9 @@ class ProductCategory extends BaseProductCategory
   {
     return ProductTable::getInstance()->getByCategory($this);
   }
+  
+  public function getSubCategories()
+  {
+    return ProductCategoryTable::getInstance()->getSubList(array('root_id' => $this->root_id));
+  }
 }

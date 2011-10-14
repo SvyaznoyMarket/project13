@@ -14,10 +14,12 @@ class UserFormSignin extends BaseUserForm
   {
     parent::configure();
 
+    $this->disableCSRFProtection();
+
     $this->setWidgets(array(
-      'username' => new sfWidgetFormInputText(),
-      'password' => new sfWidgetFormInputPassword(array('type' => 'password')),
-      'remember' => new sfWidgetFormInputCheckbox(),
+      'username' => new sfWidgetFormInputText(array(), array('tabindex' => 1)),
+      'password' => new sfWidgetFormInputPassword(array(), array('tabindex' => 2)),
+      'remember' => new sfWidgetFormInputCheckbox(), // array(), array('tabindex' => 3)
     ));
 
     $this->setValidators(array(
@@ -32,6 +34,12 @@ class UserFormSignin extends BaseUserForm
       'username' => 'Логин',
       'password' => 'Пароль',
       'remember' => 'Забыли пароль?',
+    ));
+    
+    $this->useFields(array(
+      'username',
+      'password',
+      'remember',
     ));
 
     $this->widgetSchema->setNameFormat('signin[%s]');

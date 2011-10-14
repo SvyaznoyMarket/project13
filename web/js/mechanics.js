@@ -36,14 +36,16 @@ function Lightbox( jn, data ){
 	
 	this.getBasket = function( item ) {
 		flybox.clear()	
-		item.price = item.price.replace(/\s/,'')		
+		item.price = item.price.replace(/\s+/,'')		
 		init.basket = item
 		init.sum += item.price * 1
+		if ( parseInt(init.sum) == parseInt(item.price) )
+			$('.total').show()
 		item.sum = printPrice ( init.sum ) 		
 		item.price = printPrice ( item.price ) 
 		init.vitems++
 		item.vitems = init.vitems
-		flybox.updateItem( item )		
+		flybox.updateItem( item )				
 		$('#sum', plashka).html( item.sum )
 		$('.point2 b', plashka).html( item.vitems )
 		flybox.showBasket()
@@ -60,7 +62,7 @@ function Lightbox( jn, data ){
 		flybox.showWishes()
 	}
 	this.bingo = function( item ) {
-		if( flybox != null)
+		if( flybox )
 			flybox.clear()
 		item.price = printPrice ( item.price ) 
 		init.bingo = item
@@ -69,13 +71,13 @@ function Lightbox( jn, data ){
 	}
 	this.getComparing = function() {	
 		flybox.clear()
-		bingobox.clear()
+		if(bingobox) bingobox.clear()
 		flybox.showComparing()
 	}
 	
 	this.clear = function() {
 		flybox.clear()
-		bingobox.clear()
+		if(bingobox) bingobox.clear()
 	}
 	
 	this.getContainers = function() {
@@ -87,10 +89,11 @@ function Lightbox( jn, data ){
 	}
 	
 	this.toFire = function( i ) {
-		if( firedbox )
-			self.putOut( firedbox )
+		//if( firedbox )
+		//	self.putOut( firedbox )
 		firedbox = i
-		$($('.dropbox', plashka)[i - 1]).addClass('active').find('p').html('Отпустите мышь')
+		//$($('.dropbox', plashka)[i - 1]).addClass('active').find('p').html('Отпустите мышь')
+		$('.dropbox', plashka).addClass('active').find('p').html('Отпустите мышь')
 	}
 	
 	this.putOut = function( i ) {
@@ -116,6 +119,9 @@ function Lightbox( jn, data ){
 		if( init.name ) {
 			$('.fl .point', plashka).removeClass('point1').addClass('point6').html('<b></b>' + init.name)
 		}
+		if( init.link ) {
+			$('.point6', plashka).attr('href', init.link )
+		}
 		if( init.vcomp ) {
 			$('.point4 b', plashka).html(init.vcomp)
 		}
@@ -124,11 +130,12 @@ function Lightbox( jn, data ){
 		}		
 		if( init.sum ) {
 			$('#sum', plashka).html( printPrice(init.sum ) )
+			$('.total').show()
 		}		
 		if( init.vitems ) {
 			$('.point2 b', plashka).html(init.vitems)
 		}		
-		if ( init.bingo ){
+		if ( init.bingo && init.bingo.id ){
 			var li = $('<li>').addClass('fl').html(
 				'<a class="point point5" href="">'+
 				'<b></b></a>' )
@@ -242,7 +249,7 @@ function Flybox( parent ){
 		box.fadeIn(1000)
 		hidei = setTimeout( self.jinny, 7000 )
 	}
-
+	var hrefcart = $('.point2', parent).attr('href')
 	this.showBasket = function() {
 		basket = 
 			'<div class="font16 pb20">Только что был добавлен в корзину:</div>'+
@@ -266,7 +273,7 @@ function Flybox( parent ){
 			'Всего товаров: '+ thestuff.vitems +
 			'<div class="clear pb10"></div>'+
 			'<div class="ar">'+ 
-				'<a class="button bigbuttonlink" value="" href="">Оформить заказ</a>'+
+				'<a class="button bigbuttonlink" value="" href="'+ hrefcart +'">Оформить заказ</a>'+
 			'</div>'	
 	
 		box.css({'left':'588px','width':'290px'})	
@@ -332,14 +339,15 @@ function DDforLB( outer , ltbx ) {
 				ordinat = $(containers[0]).offset().top
 
 				if( e.pageY + wdiv2 > ordinat - margin &&
-					e.pageX + wdiv2 > abziss[0] - margin && e.pageX - 30 < abziss[2] + 70 + margin ) { // mouse in HOT area
-					var cindex = 3
+					e.pageX + wdiv2 > abziss[0] - margin && e.pageX - 30 < abziss[0] + 70 + margin ) { // mouse in HOT area
+//					e.pageX + wdiv2 > abziss[0] - margin && e.pageX - 30 < abziss[2] + 70 + margin ) { // mouse in HOT area
+					/*var cindex = 3
 					if( e.pageX  < abziss[0] + 70 + margin )
 						cindex = 1
 					else if( e.pageX < abziss[1]  + 70 + margin )
-						cindex = 2
+						cindex = 2*/
 					
-					lightbox.toFire( cindex ) // to burn the box !
+					lightbox.toFire( 3 ) // to burn the box !
 				} else
 					lightbox.putOutBoxes() // run checking is inside
 			}
@@ -355,7 +363,7 @@ function DDforLB( outer , ltbx ) {
 
 		divicon.show()
 		lightbox.getContainers()		
-		for(var i in [0,1,2]) {
+		for(var i=0; i < containers.length; i++) {
 			abziss[i] = $(containers[i]).offset().left
 		}	
 		$(document).bind('mouseup', function() {
@@ -363,7 +371,8 @@ function DDforLB( outer , ltbx ) {
 				$(document).unbind('mousemove')
 				$(document).unbind('mouseup')
 				icon.animate( {
-						left: abziss[ fbox - 1 ] + 5,
+//						left: abziss[ fbox - 1 ] + 5,
+						left: abziss[ 0 ] + 5,
 						top: ordinat - shtorkaoffset + 5
 					} , 400, 
 					function() { self.finalize( fbox ) } )
@@ -392,7 +401,11 @@ function DDforLB( outer , ltbx ) {
 					lightbox.getWishes( itemdata )
 					break
 				case 3: //basket
-					lightbox.getBasket( itemdata )
+					$.getJSON('http://ivn.ent3.ru/main_dev.php/cart/add/'+$( '.boxhover[ref='+ itemdata.id +']').attr('ref') +'/1', function(data) {
+						if ( data.success && ltbx )
+							ltbx.getBasket( itemdata )
+					})
+					//lightbox.getBasket( itemdata )
 					break
 			}
 		}, 400)
@@ -410,44 +423,70 @@ function mediaLib( jn ) {
 	var popup = jn
 	var gii = null
 	var running360 = false
+	var vis = false
 	
 	this.show = function( ntype, url ) {
-		var currentfunction = function(){}
-		switch ( ntype ) {
-			case 'image':
-				currentfunction = self.openEnormous
-				this.ivn = 'en'
-				break
-			case '360':
-				currentfunction = self.open360
-				this.ivn = '36'
-				break
+		if (! vis ) {
+			var currentfunction = function(){}
+			switch ( ntype ) {
+				case 'image':
+					currentfunction = self.openEnormous
+					break
+				case '360':
+					currentfunction = self.open360
+					break
+			}
+			
+			$(popup).lightbox_me({
+				centered: true, 
+				onLoad: function() { 					
+						currentfunction( url ) 
+					},
+				onClose: function() {
+						self.close() 
+						vis = false
+					}
+			})
+			vis = true
+		} else { // toggle
+			self.close()
+			switch ( ntype ) {
+				case 'image':
+					$('<img>').attr('src', url ).attr('id','gii').appendTo($('.photobox', popup))
+					gii = new gigaimage( $('#gii'), 2,  $('.scale', popup))
+					gii.addZoom()
+					break
+				case '360':
+					if( ! running360 ){					
+						lkmv.start() 
+						running360 = true
+					} else
+						lkmv.show()
+					break
+			}
 		}
-		$(popup).lightbox_me({
-			centered: true, 
-			onLoad: function() { currentfunction( url ) }
-		})		
+		
 		return false
 	}
 	
-	this.openEnormous = function( url ) {		
-		$('.close', popup).bind( 'click', function(){
+	this.close = function() {
+		if ( gii ) {
 			gii.destroy()
-			gii = null
-			$('.photobox', popup).empty()
-		})
-		$('<img>').attr('src', url ).appendTo('.photobox', popup)
-		gii = new gigaimage( $('.photobox img', popup), 2,  $('.scale', popup))
+			gii = null			
+			$('#gii').remove()
+		}
+		if ( running360 && lkmv ) {	
+			lkmv.hide()
+		}
+	}
+	
+	this.openEnormous = function( url ) {				
+		$('<img>').attr('src', url ).attr('id','gii').appendTo($('.photobox', popup))
+		gii = new gigaimage( $('#gii'), 2,  $('.scale', popup))
 		gii.addZoom()
 	}
 	
-	this.open360 = function() {
-		$('.close', popup).bind( 'click', function(){
-			if ( lkmv ) {	
-				lkmv.hide()
-			}
-		})
-					
+	this.open360 = function() {	
 		if( ! running360 ){					
 			lkmv.start() 
 			running360 = true

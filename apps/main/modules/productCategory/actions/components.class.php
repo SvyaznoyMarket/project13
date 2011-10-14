@@ -52,6 +52,19 @@ class productCategoryComponents extends myComponents
 
     $this->setVar('list', ProductCategoryTable::getInstance()->getRootList(), true);
   }
+  
+  public function executeExtra_menu()
+  {
+	  $data = ProductCategoryTable::getInstance()->getSubList();
+	  $result = array();
+	  foreach ($data as $row) {
+		  if (!isset($result[$row->root_id])) {
+			  $result[$row->root_id] = array();
+		  }
+		  $result[$row->root_id][] = $row;
+	  }
+	  $this->setVar('rootlist', $result, true);
+  }
  /**
   * Executes child_list component
   *
@@ -84,6 +97,7 @@ class productCategoryComponents extends myComponents
       'name'             => (string)$this->productCategory,
       'url'              => url_for('productCatalog_category', $this->productCategory),
       'product_quantity' => $this->productCategory->countProduct(),
+	  'links'            => $this->productCategory->getLink(),
     );
     
     if ('carousel' == $this->view)

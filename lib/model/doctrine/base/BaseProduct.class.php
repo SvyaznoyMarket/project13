@@ -36,7 +36,7 @@
  * @property Doctrine_Collection $Photo
  * @property Doctrine_Collection $Photo3D
  * @property Doctrine_Collection $Comment
- * @property Doctrine_Collection $Price
+ * @property Doctrine_Collection $Prices
  * @property Doctrine_Collection $SlaveSimilarProduct
  * @property Doctrine_Collection $MasterSimilarProduct
  * @property Doctrine_Collection $SlaveAccessoryProduct
@@ -79,7 +79,7 @@
  * @method Doctrine_Collection getPhoto()                  Returns the current record's "Photo" collection
  * @method Doctrine_Collection getPhoto3D()                Returns the current record's "Photo3D" collection
  * @method Doctrine_Collection getComment()                Returns the current record's "Comment" collection
- * @method Doctrine_Collection getPrice()                  Returns the current record's "Price" collection
+ * @method Doctrine_Collection getPrices()                 Returns the current record's "Prices" collection
  * @method Doctrine_Collection getSlaveSimilarProduct()    Returns the current record's "SlaveSimilarProduct" collection
  * @method Doctrine_Collection getMasterSimilarProduct()   Returns the current record's "MasterSimilarProduct" collection
  * @method Doctrine_Collection getSlaveAccessoryProduct()  Returns the current record's "SlaveAccessoryProduct" collection
@@ -121,7 +121,7 @@
  * @method Product             setPhoto()                  Sets the current record's "Photo" collection
  * @method Product             setPhoto3D()                Sets the current record's "Photo3D" collection
  * @method Product             setComment()                Sets the current record's "Comment" collection
- * @method Product             setPrice()                  Sets the current record's "Price" collection
+ * @method Product             setPrices()                 Sets the current record's "Prices" collection
  * @method Product             setSlaveSimilarProduct()    Sets the current record's "SlaveSimilarProduct" collection
  * @method Product             setMasterSimilarProduct()   Sets the current record's "MasterSimilarProduct" collection
  * @method Product             setSlaveAccessoryProduct()  Sets the current record's "SlaveAccessoryProduct" collection
@@ -313,7 +313,7 @@ abstract class BaseProduct extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'product_id'));
 
-        $this->hasMany('ProductPrice as Price', array(
+        $this->hasMany('ProductPrice as Prices', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 
