@@ -56,9 +56,11 @@
 
 			<div id="old-user" style="display:none;">
 				<div class="pb10">E-mail или мобильный телефон:</div>
+				<?php if ($formSignin['username']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['username']->renderError() ?></div><?php endif ?>
 				<?php echo $formSignin['username']->render(array('class' => 'text width418 mb15')) ?>
 
 				<div class="pb5"><a href="<?php echo url_for('user_forgotPassword') ?>	" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
+				<?php if ($formSignin['password']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['password']->renderError() ?></div><?php endif ?>
 				<?php echo $formSignin['password']->render(array('class' => 'text width418 mb15')) ?>
 
 				<?php echo $formSignin['remember']->render(array('class' => 'hiddenCheckbox', 'id' => 'checkbox-8')) ?>
@@ -90,9 +92,9 @@
 					<li><label for="radio-4">Для компании как юридическое лицо</label><input id="radio-4" name="radio-2" type="radio" value="radio-2" /></li>
 				</ul-->
         <?php echo $formRegister['is_legal']->render() ?>
+      <?php endif ?>
 			</div>
         </div>
-      <?php endif ?>
 
         <div class="line pb20"></div>
         <div class="pl235"><input type="submit" class="button bigbutton" value="Продолжить оформление" /></div>
