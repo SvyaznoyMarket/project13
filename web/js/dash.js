@@ -1,41 +1,25 @@
 $(document).ready(function(){
 	/* Lightbox */
 	var lbox = {}
+	console.info('inita ltbx')
+	ltbx = new Lightbox( $('.lightboxinner'), lbox )
+		/* draganddrop */
+	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
+	$('.boxhover[ref] .photo img').bind('mousedown', function(e){
+			e.stopPropagation();
+			draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
+	})	
+		/* ---- */
 	$.getJSON('/user/shortinfo', function(data) {
-			//console.info( data.data )
-			if( data.success )
+			console.info( data.data )
+			if( data.success ) {
 				lbox = data.data
-			else
-				lbox  = {
-					'name':'Ivanov',
-					'vcomp':0, // число сравниваемых
-					'vwish':0, // число товаров в вишлисте
-					'vitems': 0, // число покупок
-					'sum': 0, // текущая сумма покупок
-					'bingo': {}
-				}
-			ltbx = new Lightbox( $('.lightboxinner'), lbox )
-			/* draganddrop */
-			var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
-			$('.boxhover[ref] .photo img').bind('mousedown', function(e){
-					e.stopPropagation();
-					draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
-					//window.location.href=''
-			})	
-			/* ---- */
-		})
-	/*var lbox  = {
-		'name':'Ivanov',
-		'vcomp':2, // число сравниваемых
-		'vwish':3, // число товаров в вишлисте
-		'vitems': 1, // число покупок
-		'sum': 2333, // текущая сумма покупок
-		'bingo': { 'id': '22323', // id товара
-					'title': 'Карта памяти Sandisk 16GB MicroSDHC Memory Card',
-					'price': 2123456.33,
-					'img':'images/photo61.jpg'
-				 } 
-	}*/
+				ltbx.update( lbox )
+				ltbx.save()
+				console.info( ltbx.restore() )
+			}
+				
+	})	
 	
 	/* ---- */
 	

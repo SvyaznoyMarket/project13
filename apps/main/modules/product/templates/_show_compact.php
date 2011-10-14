@@ -1,5 +1,5 @@
 <div class="goodsbox">
-  <div class="photo"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
+  <div class="photo"><!--<i class="new" title="Новинка"></i>--><img class="noneleminate" src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
   <span class="ratingview"></span>
   <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
 
@@ -12,7 +12,7 @@
       <div class="lt"  onclick="window.location.href='<?php echo $item['url'] ?>'">
         <!--a href="" class="fastview">Быстрый просмотр</a-->
 
-        <div class="photo"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
+        <div class="photo"><!--<i class="new" title="Новинка"></i>--><img class="noneleminate" src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
         <span class="ratingview"></span>
         <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
         <div class="font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></div>

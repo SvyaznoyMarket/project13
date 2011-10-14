@@ -14,6 +14,7 @@ TD, TH, UL, OL, LI, DL, DT, DD, INPUT, TEXTAREA, SELECT, LABEL, BUTTON {font:nor
 UL, DL, DD, OL, LI {margin:0; padding:0; list-style-type:none}
 FORM {margin:0}
 IMG {border:0}
+IMG.noneleminate{display:block}
 A {color:#000;text-decoration:none; outline:none}
 A:hover {color:#404040; text-decoration:underline}
 A.underline {text-decoration:underline}
@@ -980,7 +981,7 @@ border-radius: 5px;
 
 .graying {width:100%; height:100%; position:fixed; z-index:99; top:0; left:0; right:0; botom:0; background:#000; opacity:0.5}
 .lightbox {width:100%; height:41px; position: fixed; bottom:0; left:0; z-index:100}
-.lightboxinner {display:none; width:926px; height:40px; padding-top:1px; position:relative; margin:0 auto; background:url(img/bg_lightbox.png) no-repeat 0 0}
+.lightboxinner {width:926px; height:40px; padding-top:1px; position:relative; margin:0 auto; background:url(img/bg_lightbox.png) no-repeat 0 0}
 .lightboxmenu {float:left; width:923px}
 .lightboxmenu LI {float:right; background:url(img/lightboxmenu_icons.png) no-repeat 0 -400px; padding-left:1px}
 .lightboxmenu LI.fl {float:left; background:none; padding-left:0}

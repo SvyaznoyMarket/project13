@@ -1,7 +1,7 @@
 /*
 	Mechanics @ enter.ru 
 	(c) Ivan Kotov, Enter.ru
-	v 0.2
+	v 0.5
 
 	jQuery is prohibited
 							*/
@@ -17,7 +17,33 @@ function Lightbox( jn, data ){
 	var bingobox = null
 	var flybox = null
 	var firedbox = 0
-
+	
+	this.save = function() {
+		$.jCookies({
+			name : 'Lightbox',
+			value : init,
+			minutes : 20
+		})	
+	}
+	
+	this.restore = function() {
+		return $.jCookies({ get : 'Lightbox' })
+	}
+	
+	if( init === null ) {
+	console.info( this.restore() )
+		init = this.restore()
+		if( !init )
+		init  = {
+					'name':'noname',
+					'vcomp':0, // число сравниваемых
+					'vwish':0, // число товаров в вишлисте
+					'vitems': 0, // число покупок
+					'sum': 0, // текущая сумма покупок
+					'bingo': {}
+				}
+	}
+	
 	function printPrice ( val ) {
 	
 		var float = (val+'').split('.')
@@ -49,6 +75,8 @@ function Lightbox( jn, data ){
 		$('#sum', plashka).html( item.sum )
 		$('.point2 b', plashka).html( item.vitems )
 		flybox.showBasket()
+		
+		self.save()
 	}
 	this.getWishes = function( item ) {	
 		flybox.clear()
@@ -114,41 +142,46 @@ function Lightbox( jn, data ){
 		} else return false
 	}
 	
-	// initia
-	if( init  ) {
-		if( init.name ) {
-			$('.fl .point', plashka).removeClass('point1').addClass('point6').html('<b></b>' + init.name)
-		}
-		if( init.link ) {
-			$('.point6', plashka).attr('href', init.link )
-		}
-		if( init.vcomp ) {
-			$('.point4 b', plashka).html(init.vcomp)
-		}
-		if( init.vwish ) {
-			$('.point3 b', plashka).html(init.vwish)
-		}		
-		if( init.sum ) {
-			$('#sum', plashka).html( printPrice(init.sum ) )
-			$('.total').show()
-		}		
-		if( init.vitems ) {
-			$('.point2 b', plashka).html(init.vitems)
-		}		
-		if ( init.bingo && init.bingo.id ){
-			var li = $('<li>').addClass('fl').html(
-				'<a class="point point5" href="">'+
-				'<b></b></a>' )
-			$('.lightboxmenu').prepend( li )
-			li.bind('click', function(){
+	
+	this.update = function( newinit ) {
+		if ( newinit )
+			init = newinit
+		if( init  ) {
+			if( init.name ) {
+				$('.fl .point', plashka).removeClass('point1').addClass('point6').html('<b></b>' + init.name)
+			}
+			if( init.link ) {
+				$('.point6', plashka).attr('href', init.link )
+			}
+			if( init.vcomp ) {
+				$('.point4 b', plashka).html(init.vcomp)
+			}
+			if( init.vwish ) {
+				$('.point3 b', plashka).html(init.vwish)
+			}		
+			if( init.sum ) {
+				$('#sum', plashka).html( printPrice(init.sum ) )
+				$('.total').show()
+			}		
+			if( init.vitems ) {
+				$('.point2 b', plashka).html(init.vitems)
+			}		
+			if ( init.bingo && init.bingo.id ){
+				var li = $('<li>').addClass('fl').html(
+					'<a class="point point5" href="">'+
+					'<b></b></a>' )
+				$('.lightboxmenu').prepend( li )
+				li.bind('click', function(){
+					self.bingo( init.bingo )
+					return false		
+				})
+				bingobox = new Flybox( jn )			
 				self.bingo( init.bingo )
-				return false		
-			})
-			bingobox = new Flybox( jn )			
-			self.bingo( init.bingo )
+			}
 		}
 	}
-	
+	// initia
+	this.update()
 	setTimeout( function () { plashka.fadeIn('slow') }, 2000)
 	flybox = new Flybox( jn )
 	
