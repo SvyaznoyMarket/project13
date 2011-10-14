@@ -264,7 +264,7 @@ class guardActions extends myActions
         $this->getUser()->signIn($user);
 
 
-        if (isset($redirect_to))
+        if ($redirect_to)
         {
           $this->redirect($redirect_to);
         }
