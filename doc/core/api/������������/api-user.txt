@@ -1,0 +1,52 @@
+Обновление и создание пользователя:
+  
+  запрос от web:
+  {
+    name: user.create,
+
+    data: {
+      email:       'test@maxus.ru',
+      password:    'qwerty',
+      phonenumber: '792688899900',
+      first_name:  Тест,
+      last_name:   Тестов,
+      middle_name: Тестович,      
+      type:        client,          # Возможные значения: client, partner
+      settings:    ''
+    },
+
+    created: 2011-07-22 10:01:06
+  }
+
+
+
+  запрос от core:
+  {
+    name: user.update,
+
+    data: {
+      id: 38,
+      last_name: 'Тестенко'
+    }
+  }
+
+
+
+  ответ в случае успеха:
+  {
+    success: true
+    data: {
+      user: { id: 38 } # успешно создан пользователь с ид = 38
+    }
+  }
+
+
+  
+  ответ в случае ошибки:
+  {
+    success: false
+    error: {
+      code: 42
+      name: 'Пользователь с такими данными уже существует'
+    }
+  }

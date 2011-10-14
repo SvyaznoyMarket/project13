@@ -120,10 +120,14 @@ class UserProductCompare extends BaseUserData
   }
   
   public function getProductsNum(){
-      $num = 0;
-      $params = $this->parameterHolder->getParameters();
-      foreach ($params['products'] as $prod){
-          $num += count($prod);
+      try{
+          $num = 0;
+          $params = $this->parameterHolder->getParameters();
+          foreach ($params['products'] as $prod){
+              $num += count($prod);
+          }
+      }catch(Exception $e){
+          return 0;
       }
       return $num;
   }

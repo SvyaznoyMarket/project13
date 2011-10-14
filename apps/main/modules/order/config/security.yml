@@ -3,6 +3,7 @@ all:
 
 index:
   is_secure: true
+  layout: layout
 
 show:
   is_secure: true

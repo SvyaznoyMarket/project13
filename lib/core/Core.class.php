@@ -118,7 +118,7 @@ class Core
     return $result;
   }
 
-  public function updateUser(User $user)
+  public function updateUser($user)
   {
     $result = false;
 

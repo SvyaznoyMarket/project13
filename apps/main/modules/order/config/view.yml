@@ -16,3 +16,7 @@ all:
     - jslib/custom-form-elements
     - main
   layout: order
+  
+index:
+  layout: layout  
+ 

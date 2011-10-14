@@ -87,4 +87,5 @@ class User extends BaseUser
     
     return $data;
   }
+  
 }

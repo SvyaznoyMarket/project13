@@ -21,22 +21,29 @@ class orderComponents extends myComponents
     {
       $this->view = 'default';
     }
-
+    
+    $payM = PaymentMethodTable::getInstance()->getById($this->order->payment_method_id);
+    $deliveryP = DeliveryPeriodTable::getInstance()->getById($this->order->delivery_period_id);
     $item = array(
       'name'  => (string)$this->order,
       'token' => $this->order->token,
-      'sum'   => $this->order->sum,
+      'sum'   => (int)$this->order->sum,
+      'created_at' => $this->order->created_at,  
+      'payment_method_name'   => $payM->name,
+      'delivered_at' => $this->order->delivered_at,  
+      'delivered_period'   => $deliveryP->name,
     );
 
-    if ('default' == $this->view)
+    if ('default' == $this->view || $this->view=='compact')
     {
       $item['products'] = array();
       foreach ($this->order->ProductRelation as $orderProductRelation)
       {
         $item['products'][] = array(
           'name'     => (string)$orderProductRelation->Product,
+          'article'     => (string)$orderProductRelation->Product->article,
           'url'      => url_for('productCard', $orderProductRelation->Product),
-          'price'    => $orderProductRelation['formatted_price'],
+          'price'    => (int)$orderProductRelation['price'],
           'quantity' => $orderProductRelation['quantity'],
         );
       }

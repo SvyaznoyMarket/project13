@@ -12,16 +12,6 @@
  */
 abstract class BaseUserForm extends GuardUserForm
 {
-  protected function setupInheritance()
-  {
-    parent::setupInheritance();
 
-    $this->widgetSchema->setNameFormat('user[%s]');
-  }
-
-  public function getModelName()
-  {
-    return 'User';
-  }
 
 }
