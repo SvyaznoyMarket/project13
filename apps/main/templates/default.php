@@ -17,24 +17,28 @@
 		{
 		  return Math.floor(Math.random() * (max - min + 1)) + min
 		}
-
+		var pref = '/products/'
+		var hrefs = [  '', '2010106001809', '2060101000062', '2010101001637', '2020201000751', 
+					'2050600002612', '2020401001060', '2070201000046', '2060201000627']
 		var node    = $('.bannersboxinner')
 		var bignode = $('.bigbanner')
 		var bri = getRandomInt(1, 9)
 				
-		bignode.find('img').attr('src','/images/banners/big/banner'+ bri +'.jpg')
+		bignode.find('img').attr('src','/images/banners/big/banner'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
 		var ri = getRandomInt(1, 4)		
 		while( bri == ri + 4 ) {
 			ri = getRandomInt(1, 4)
 		}
 		
 		node.find('.banner2 img').attr('src','/images/banners/small/banner'+ (ri + 4) +'.jpg')
+								 .parent().attr('href', pref + hrefs[ri + 3])
 		var ri_2 = getRandomInt(1, 4)
 		while( ri_2 == ri || bri == ri_2 + 4 ) {
 			ri_2 = getRandomInt(1, 4)
 		}
 				
 		node.find('.banner5 img').attr('src','/images/banners/small/banner'+ (ri_2 + 4) +'.jpg')
+								 .parent().attr('href', pref + hrefs[ri_2 + 3])
 		
 		ri = getRandomInt(1, 4)		
 		while( bri == ri ) {
@@ -42,12 +46,14 @@
 		}
 		
 		node.find('.banner3 img').attr('src','/images/banners/medium/banner'+ ri +'.jpg')
+								 .parent().attr('href', pref + hrefs[ri - 1])
 		ri_2 = ri
 		while( ri_2 == ri || bri == ri_2 ) {
 			ri_2 = getRandomInt(1, 4)
 		}
 		
 		node.find('.banner4 img').attr('src','/images/banners/medium/banner'+ ri_2 +'.jpg')
+								 .parent().attr('href', pref + hrefs[ri_2 - 1])
 		
 		$('.startse').bind ({ 'blur': function(){
 				if (this.value == '')
