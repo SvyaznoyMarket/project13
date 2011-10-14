@@ -18,7 +18,7 @@
       <?php include_slot('step') ?>
         <div class="headerright">
             Заказ и консультации
-            <div class="vcard"><div class="tel"><span>(495)</span>555-66-77</div></div>
+            <div class="vcard"><div class="tel"><span>(800)</span>700-00-09</div></div>
         </div>
     </div>
     <!-- /Header -->

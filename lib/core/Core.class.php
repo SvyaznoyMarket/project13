@@ -16,7 +16,7 @@ class Core
 
   /**
    *
-   * @return Core 
+   * @return Core
    */
   static public function getInstance()
   {
@@ -118,7 +118,7 @@ class Core
     return $result;
   }
 
-  public function updateUser($user)
+  public function updateUser(User $user)
   {
     $result = false;
 
@@ -131,7 +131,7 @@ class Core
 
     return $result;
   }
-  
+
   public function createUserProfile(UserProfile $profile)
   {
 	  $result = false;
