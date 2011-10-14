@@ -19,9 +19,11 @@ function Lightbox( jn, data ){
 	var firedbox = 0
 	
 	this.save = function() {
+		var cooka = init
+		cooka.basket={}
 		$.jCookies({
 			name : 'Lightbox',
-			value : init,
+			value : cooka,
 			minutes : 20
 		})	
 	}
@@ -30,8 +32,7 @@ function Lightbox( jn, data ){
 		return $.jCookies({ get : 'Lightbox' })
 	}
 	
-	if( init === null ) {
-	console.info( this.restore() )
+	if( ! init.name ) {
 		init = this.restore()
 		if( !init )
 		init  = {

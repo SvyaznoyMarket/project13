@@ -1,7 +1,6 @@
 $(document).ready(function(){
 	/* Lightbox */
 	var lbox = {}
-	console.info('inita ltbx')
 	ltbx = new Lightbox( $('.lightboxinner'), lbox )
 		/* draganddrop */
 	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
@@ -11,12 +10,10 @@ $(document).ready(function(){
 	})	
 		/* ---- */
 	$.getJSON('/user/shortinfo', function(data) {
-			console.info( data.data )
 			if( data.success ) {
 				lbox = data.data
 				ltbx.update( lbox )
 				ltbx.save()
-				console.info( ltbx.restore() )
 			}
 				
 	})	
@@ -58,13 +55,14 @@ $(document).ready(function(){
 				$('.boxhover', $(self)).hide()				
 
 			}
-			currentItem = 0
+			//currentItem = 0
 		}		
 	}) 
 	/* ---- */
 	
 	function parseItemNode( ref ){
 		var jn = $( '.boxhover[ref='+ ref +']')
+		//console.info( 'parseItemNode',ref, jn )
 		var item = { 
 			'id'   : $(jn).attr('ref'),
 			'title': $('h3 a', jn).html(),
