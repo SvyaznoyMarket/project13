@@ -1,4 +1,27 @@
-<div class="goodsphoto"><i class="bestseller"></i><a href=""><img src="<?php echo $item['photo'] ?>" alt="" width="300" height="300" title="" /></a></div>
+<?php 
+	$photos = $product->getAllPhotos();
+	$p3d = $product->getAll3dPhotos();
+	$urls = sfConfig::get('app_product_photo_url');
+	$urls3d = sfConfig::get('app_product_photo_3d_url');
+	$p3d_res_small = array();
+	$p3d_res_big   = array();
+	foreach ($p3d as $p3d_obj) {
+		$p3d_res_small[] = $urls3d[0].$p3d_obj->resource;
+		$p3d_res_big[]   = $urls3d[1].$p3d_obj->resource;
+	}
+?>
+<script type="text/javascript">
+	product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
+	product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
+</script>
+<div class="goodsphoto"><i class="bestseller"></i><a href=""><img src="<?php echo $product->getMainPhotoUrl(4) ?>" alt="" width="500" height="500" title="" /></a></div>
+<div style="display:none;" id="stock">
+<!-- list of images 500*500 for preview -->
+<?php foreach ($photos as $i => $photo): ?>
+<img src="<?php echo $urls[4].$photo->resource ?>" alt="" ref="photo<?php echo $i ?>" width="500" height="500" title="" />
+<?php endforeach ?>
+</div>
+
 <div class="goodsinfo"><!-- Goods info -->
         <div class="article">
 <!--            <div class="fr"><a href="javascript:void()" id="watch-trigger">Следить за товаром</a> <a href="" rel="nofollow">Печать</a></div>-->
@@ -115,6 +138,25 @@
 </div><!-- Goods info -->
 
 <div class="clear"></div>
+
+<!-- Photo video -->
+	<?php if (count($p3d) > 0 || count($photos) > 0): ?>
+    <div class="fl width500">
+        <h2>Фото и видео товара:</h2>
+        <div class="font11 gray pb10">Всего фотографий <?php echo count($photos) ?></div>
+        <ul class="previewlist">
+        <!-- IVN '.viewme' for opening in the popup; @ref='image'/'360' is a type   -->
+		<?php foreach ($photos as $i => $photo): ?>
+		<li class="viewstock" ref="photo<?php echo $i ?>"><b><a href="<?php echo $urls[4].$photo->resource ?>" class="viewme" ref="image" id="try-3"></a></b><img src="<?php echo $urls[2].$photo->resource ?>" alt="" width="48" height="48" /></li>
+		<?php endforeach ?>
+		<?php if (count($p3d) > 0): ?>
+            <li><a href="javascript:void(0)" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+		<?php endif ?>
+        </ul>
+    </div>
+	<?php endif ?>
+<!-- /Photo video -->
+
 
 <!-- Description -->
 <h2 class="bold">Характеристики</h2>

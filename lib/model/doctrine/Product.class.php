@@ -12,8 +12,9 @@
  */
 class Product extends BaseProduct
 {
+	protected $_mainPhoto = null;
 
-  public function construct()
+	public function construct()
   {
     $this->mapValue('Parameter', new myDoctrineVirtualCollection());
     $this->mapValue('ParameterGroup', new myDoctrineVirtualCollection());
@@ -160,7 +161,20 @@ class Product extends BaseProduct
   
   public function getMainPhoto()
   {
-    return isset($this->Photo[0]) ? $this->Photo[0] : null;
+	if ($this->_mainPhoto === null) {
+		$this->_mainPhoto = ProductPhotoTable::getInstance()->getOneByProduct($this);
+	}
+    return $this->_mainPhoto;
+  }
+  
+  public function getAllPhotos()
+  {
+	  return ProductPhotoTable::getInstance()->getByProduct($this);
+  }
+  
+  public function getAll3dPhotos()
+  {
+	  return ProductPhoto3DTable::getInstance()->getByProduct($this);
   }
 
   public function getMainPhotoUrl($view = 0)
