@@ -45,3 +45,7 @@ DeliveryType:
   - delivery_type
 PaymentMethod:
   - payment_method
+StockProductRelation:
+  - product_stock
+Stock:
+  - store

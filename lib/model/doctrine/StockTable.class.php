@@ -36,4 +36,14 @@ class StockTable extends myDoctrineTable
 
     return $q->execute();
   }
+
+  public function getCoreMapping()
+  {
+    return array(
+      'id'      => 'core_id',
+      'type_id' => 'type_id',
+      'name'    => 'name',
+      'added'   => 'created_at',
+    );
+  }
 }
