@@ -2,7 +2,9 @@
 <div class="extramenu" style="display: none;" id="extramenu-root-<?php echo $i ?>">
    <i class="corner" style="left:290px"></i>
    <dl>
-   <?php foreach ($list as $item): ?>
+   <?php foreach ($list as $ii => $item): ?>
+   <?php if ($ii == 0 && $item['level'] != 1) continue; ?>
+   <?php if ($item['level'] == 1 && ((isset($list[$ii+1]) && $list[$ii+1]['level'] == 1) || !isset($list[$ii+1]))) continue; ?>
    <?php $iInCol++; ?>
    <?php if ($item['level'] == 1 && $iInCol >= ceil($c/4)): $iInCol = $iInCol-ceil($c/4); ?></dl><dl><?php endif ?>
    <?php 

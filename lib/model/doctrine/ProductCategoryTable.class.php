@@ -118,6 +118,11 @@ class ProductCategoryTable extends myDoctrineTable
 //	}
 	$notEmptyCats = array();
 	$notEmptyCatsRaw = Doctrine_Manager::connection()->fetchAll('SELECT DISTINCT product_category_id FROM product_category_product_relation');
+//	$notEmptyCatsRaw = Doctrine_Manager::connection()->fetchAll('
+//		SELECT DISTINCT product_category_id FROM product_category_product_relation
+//		JOIN product_category ON product_category.id = product_category_product_relation.product_category_id
+//		WHERE product_category.level > 1
+//	');
 	foreach ($notEmptyCatsRaw as $raw) {
 		$notEmptyCats[] = $raw['product_category_id'];
 	}
@@ -129,9 +134,8 @@ class ProductCategoryTable extends myDoctrineTable
 	if (!empty($params['root_id'])) {
 		$q->andWhereIn('productCategory.root_id = ?', (int)$params['root_id']);
 	}
-	$q->andWhereIn('productCategory.id', $notEmptyCats);
-	$q->andWhereIn('productCategory.level >= 1');
-	$q->andWhereIn('productCategory.level <= 2');
+	$q->andWhere('productCategory.level = 1');
+	$q->orWhereIn('productCategory.id', $notEmptyCats);
     $q->orderBy('productCategory.lft');
 
     $q->useResultCache(true, null, $this->getQueryHash('productCategory-sub', $params));
