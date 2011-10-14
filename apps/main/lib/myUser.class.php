@@ -58,7 +58,12 @@ class myUser extends myGuardSecurityUser
   public function getRegion($key = null)
   {
     $region_id = $this->getAttribute('region', null);
-    if (!$region_id)
+    if ($region_id)
+    {
+      $region = RegionTable::getInstance()->findOneByIdAndType($region_id, 'city');
+    }
+
+    if (!isset($region) || !$region)
     {
       $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
       $region = !empty($geoip['city_name']) ? RegionTable::getInstance()->findOneByName($geoip['city_name']) : null;
@@ -67,10 +72,6 @@ class myUser extends myGuardSecurityUser
         $region = RegionTable::getInstance()->getDefault();
         $this->setAttribute('region', $region->id);
       }
-    }
-    else
-    {
-      $region = RegionTable::getInstance()->findOneById($region_id);
     }
     $parent_region = $region->getNode()->getParent();
 

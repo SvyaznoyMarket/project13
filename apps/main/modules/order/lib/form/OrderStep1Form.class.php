@@ -7,13 +7,13 @@ class OrderStep1Form extends BaseOrderForm
     parent::configure();
 
     sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
-	
+
 	$user = sfContext::getInstance()->getUser()->getGuardUser();
 
     $this->disableCSRFProtection();
 
     $this->widgetSchema['region_id'] = new sfWidgetFormChoice(array(
-	  'choices'  => RegionTable::getInstance()->findAll()->toKeyValueArray('id', 'name'),
+	  'choices'  => RegionTable::getInstance()->findByType('city')->toKeyValueArray('id', 'name'),
       'multiple' => false,
       'expanded' => false,
       'renderer_class'  => 'myWidgetFormOrderSelect',
@@ -185,9 +185,9 @@ class OrderStep1Form extends BaseOrderForm
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
-    $fields = array(
-      'region_id',
-    );
+//    $fields = array(
+//      'region_id',
+//    );
     // если указан регион
     /*if (!empty($this->object->region_id))
     {
@@ -223,5 +223,38 @@ class OrderStep1Form extends BaseOrderForm
     }*/
 
     parent::bind($taintedValues, $taintedFiles);
+  }
+  public function processValues($values)
+  {
+    $valuesToProcess = $values;
+    foreach ($valuesToProcess as $field => $value)
+    {
+      $method = sprintf('update%sColumn', $this->camelize($field));
+
+      if (method_exists($this, $method))
+      {
+        if (false === $ret = $this->$method($value))
+        {
+          unset($values[$field]);
+        }
+        else
+        {
+          $values[$field] = $ret;
+        }
+      }
+      else
+      {
+        myDebug::dump($method);
+        // save files
+        if ($this->validatorSchema[$field] instanceof sfValidatorFile)
+        {
+          $values[$field] = $this->processUploadedFile($field, null, $valuesToProcess);
+        }
+      }
+    }
+
+    myDebug::dump($values);
+
+    return $values;
   }
 }
