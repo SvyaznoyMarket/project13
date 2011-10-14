@@ -435,7 +435,7 @@ function DDforLB( outer , ltbx ) {
 					lightbox.getWishes( itemdata )
 					break
 				case 3: //basket
-					$.getJSON('http://ivn.ent3.ru/main_dev.php/cart/add/'+$( '.boxhover[ref='+ itemdata.id +']').attr('ref') +'/1', function(data) {
+					$.getJSON('/cart/add/'+$( '.boxhover[ref='+ itemdata.id +']').attr('ref') +'/1', function(data) {
 						if ( data.success && ltbx )
 							ltbx.getBasket( itemdata )
 					})

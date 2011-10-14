@@ -326,27 +326,44 @@ $(document).ready(function(){
 		'mouseenter': function() {
 			$('.extramenu').hide()
 			var self = this
-			var im = $('.boxhover .photo img', $(self))
+			
 			function showList() {
 				if(	$(self).data('run') ) {
 					var i = $(self).attr('class').replace(/\D+/,'')
-					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )					
-					punkt.show().find('.corner').css('left',corneroffsets[i-1])					
+					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )	
+					if( punkt.find('dl').html().trim() != '' )
+						punkt.show().find('.corner').css('left',corneroffsets[i-1])					
 				}	
 			}
 			$(self).data('run', true)
-			currentMenu = $( '.boxhover',self).attr('ref')
+			currentMenu = $(self).attr('id').replace(/\D+/,'')
 			idcm = setTimeout( showList, 300)
 		},
 		'mouseleave': function() {
 			var self = this
-			var im = $('.boxhover .photo img', $(self))
+			
 			if(	$(self).data('run') ) {
 				clearTimeout( idcm )
 				$(self).data('run',false)
 			}
-			currentMenu = 0
+			//currentMenu = 0
 		}		
 	}) 
+	
+	$(document).click( function(){
+		if (currentMenu)
+			$( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
+	})
 	/* ---- */	
+	/* cards carousel  */
+	
+	$('.forvard').click( function(){
+		//сделать запрос, получить новые данные
+		//найти блок карусели
+		//скрыть старые, показать новое
+		//обновить внутреннюю переменную
+		//обновить состояние кнопок
+		return false
+	})
+	/* ---- */
 });	

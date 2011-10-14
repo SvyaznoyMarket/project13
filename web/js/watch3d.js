@@ -680,13 +680,14 @@ function zoomer ( jn , zfunctions ) {
 	}
 	
 	$('.plus', jn).bind('click', function() {
-		zfunctions.zoomIn()
+		if( zfunctions.zoomIn )
+			zfunctions.zoomIn()
 		//self.plus() in zfunctions
 	})
 
 	$('.minus', jn).bind('click', function() {
-	console.info(zfunctions)
-		zfunctions.zoomOut()
+		if( zfunctions.zoomOut )
+			zfunctions.zoomOut()
 		//self.minus() in zfunctions
 	})
 	
