@@ -50,6 +50,7 @@ ProductCategory:
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     filter_group_id:   { type: integer(20), notnull: false, default: null }
+    position:          { type: integer(3), notnull: false, default: 0 }
   relations:
     FilterGroup:       { class: ProductFilterGroup, foreignAlias: Category, local: filter_group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ProductType:       { class: ProductType, foreignAlias: ProductCategory, refClass: ProductCategoryTypeRelation, local: product_category_id, foreign: product_type_id, type: many, foreignType: many }
@@ -65,6 +66,18 @@ ProductCategoryProductRelation:
   relations:
     Category:            { class: ProductCategory, foreignAlias: ProductRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:             { class: Product, foreignAlias: CategoryRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+ProductCategoryLink:
+  options:
+    comment: 'Ссылки'
+  actAs: [ Timestampable ]
+  columns:
+    product_category_id: { type: integer(20), notnull: true }
+    url:                 { type: string(255), notnull: true, notblank: true }
+    name:                { type: string(255), notnull: true, notblank: true }
+    position:            { type: integer(3), notnull: false, default: 0 }
+  relations:
+    Category:            { class: ProductCategory, foreignAlias: Link, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
 ProductType:
   options:

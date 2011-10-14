@@ -22,7 +22,7 @@ class bannerComponents extends myComponents
       return sfView::NONE;
     }
     $this->view = preg_replace('/^banner_/', '', $this->slot->token);
-    
+
     $list = array();
     foreach (BannerTable::getInstance()->getListBySlot($this->slot) as $banner)
     {

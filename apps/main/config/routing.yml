@@ -467,6 +467,11 @@ order:
   url:   /orders/
   param: { module: order, action: index }
 #
+# order login
+order_login:
+  url:   /orders/login
+  param: { module: order, action: login }
+#
 # order new
 order_new:
   url:   /orders/new/:step

@@ -1,24 +1,4 @@
 $(document).ready(function() {
-    $(".bigfilter dt").click(function(){
-        $(this).next(".bigfilter dd").slideToggle(200);
-        $(this).toggleClass("current");
-        return false;
-    });
-    
-    $(".f1list dt B").click(function(){
-        $(this).parent("dt").next(".f1list dd").slideToggle(200);
-        $(this).toggleClass("current");
-        return false;
-    });
-		
-    $(".tagslist dt").click(function(){
-        $(this).next(".tagslist dd").slideToggle(200);
-        $(this).toggleClass("current");
-        return false;
-    });
-})
-
-$(document).ready(function() {
 
     $('.product_rating-form').live({
         'form.ajax-submit.prepare': function(e, result) {
@@ -120,5 +100,5 @@ $(document).ready(function() {
         })
         .fail(function(error) {})
     })
-	
+
 });

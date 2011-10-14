@@ -4,7 +4,12 @@
    <dl>
    <?php foreach ($list as $item): ?>
    <?php $iInCol++; ?>
-   <?php if ($item['level'] == 1 && $iInCol > $c/4): $iInCol = 0; ?></dl><dl><?php endif ?>
+   <?php if ($item['level'] == 1 && $iInCol >= ceil($c/4)): $iInCol = $iInCol-ceil($c/4); ?></dl><dl><?php endif ?>
+   <?php 
+//		if ($iInCol > $c/4) {
+//			if ()
+//		} 
+   ?>
 	   <?php if ($item['level'] == 1): ?>
 	   <dt><a href="<?php echo url_for('productCatalog_category', $item) ?>"><?php echo $item ?></a></dt>
 	   <?php else: ?>
@@ -12,13 +17,13 @@
 	   <?php endif ?>
    <?php endforeach ?>
    </dl>
-   <div class="line pb5"></div>
+<!--   <div class="line pb5"></div>
    <ul>
 	   <li><div class="pb5"><strong class="font12">Нужна помощь в выборе?</strong></div><a href="#" class="underline">Смотрите больше советов для товаров для дома</a></li>
 	   <li><a href="#"><img src="/images/photo57.jpg" alt="" width="28" height="28" />Как правильно выбрать сковородку?</a></li>
 	   <li><a href="#"><img src="/images/photo58.jpg" alt="" width="28" height="28" />Украшаем ванну на ваш вкус</a></li>
 	   <li><a href="#"><img src="/images/photo59.jpg" alt="" width="28" height="28" />Какие средства для уборки вам подходят?</a></li>
-   </ul>
+   </ul>-->
    <div class="clear"></div>
 </div>
 <?php endforeach ?>

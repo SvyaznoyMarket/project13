@@ -117,9 +117,10 @@ class productCatalogComponents extends myComponents
       $this->form = new myProductFormFilter(array(), array(
         'productCategory' => $this->productCategory,
         'creator'         => $this->creator,
+        'is_root'         => isset($this->is_root) ? $this->is_root : false,
       ));
     }
-    
+
     $this->url = url_for('productCatalog_filter', $this->productCategory);
   }
 /**

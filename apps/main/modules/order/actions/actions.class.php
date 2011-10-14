@@ -29,7 +29,17 @@ class orderActions extends myActions
   {
     $this->order = $this->getRoute()->getObject();
   }
- /**
+
+  public function executeLogin(sfWebRequest $request)
+  {
+	  if (!$this->getUser()->isAuthenticated()) {
+		$this->formSignin = new UserFormSignin();
+    $this->formRegister = new UserFormRegister();
+	  }
+	  $this->order = $this->getUser()->getOrder()->get();
+  }
+
+  /**
   * Executes new action
   *
   * @param sfRequest $request A request object
@@ -49,6 +59,7 @@ class orderActions extends myActions
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getParameter($this->form->getName()));
+
       if ($this->form->isValid())
       {
         $order = $this->form->updateObject();
@@ -62,6 +73,14 @@ class orderActions extends myActions
         else {
           $this->redirect('order_new', array('step' => $this->getNextStep($order)));
         }
+      }
+      else
+      {
+        //myDebug::dump($this->form['region_id']->getValue());
+        //myDebug::dump($this->form->getValues());
+        //myDebug::dump($this->form['region_id']->getValue(), 1);
+        //$order = $this->form->updateObject(array($this->form['region_id'], ));
+        //$this->getUser()->getOrder()->set($order);
       }
     }
   }
@@ -222,7 +241,6 @@ class orderActions extends myActions
   {
     $class = sfInflector::camelize("order_step_{$step}_form");
     $this->forward404Unless(!empty($step) && class_exists($class), 'Invalid order step');
-
     return new $class($this->getUser()->getOrder()->get());
   }
 

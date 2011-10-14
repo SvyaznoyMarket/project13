@@ -5,7 +5,7 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-  <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory)) ?>
+  <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory, 'is_root' => true, )) ?>
 <?php end_slot() ?>
 
 
@@ -15,8 +15,8 @@
 
   <ul>
     <li class="current"><i></i><a href=""><span>Спланируй что-нибудь!</span>Попробуй спланировать комнату своей мечты!</a></li>
-    <li><i></i><a href=""><span>23 варианта кухни для дачи</span>Попробуй спланировать комнату своей мечты!</a></li>   
-  </ul>           
+    <li><i></i><a href=""><span>23 варианта кухни для дачи</span>Попробуй спланировать комнату своей мечты!</a></li>
+  </ul>
 </div>
 
 <div class="clear"></div>

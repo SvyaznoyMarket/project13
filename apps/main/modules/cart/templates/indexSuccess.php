@@ -37,8 +37,8 @@
             <div class="font34"><strong><?php echo $cart->getTotal(true) ?> <span class="rubl">p</span></strong></div>
         </div>
         <div class="right pt20">
-            <a href="<?php echo url_for('order_new') ?>" class="button bigbuttonlink width214 mb15">Оформить заказ</a>
-            <div class="pb5"><strong><a href="" class="red underline">Купить быстро в 1 клик</a></strong></div>
+            <a href="<?php echo url_for('order_login') ?>" class="button bigbuttonlink width214 mb15">Оформить заказ</a>
+            <!--div class="pb5"><strong><a href="" class="red underline">Купить быстро в 1 клик</a></strong></div-->
             <div class="font11 gray">От вас потребуется только имя и телефон для связи.</div>
         </div>
     </div>
