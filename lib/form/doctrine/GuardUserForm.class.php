@@ -10,7 +10,5 @@
  */
 class GuardUserForm extends BaseGuardUserForm
 {
-  public function configure()
-  {
-  }
+
 }

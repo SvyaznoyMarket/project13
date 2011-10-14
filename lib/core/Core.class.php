@@ -14,6 +14,10 @@ class Core
   protected static
     $instance = null;
 
+  /**
+   *
+   * @return Core 
+   */
   static public function getInstance()
   {
     if (null == self::$instance)
@@ -114,7 +118,7 @@ class Core
     return $result;
   }
 
-  public function updateUser(User $user)
+  public function updateUser($user)
   {
     $result = false;
 

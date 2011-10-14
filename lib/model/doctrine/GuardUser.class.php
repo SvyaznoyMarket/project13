@@ -97,7 +97,13 @@ class GuardUser extends BaseGuardUser
    */
   public function checkPassword($password)
   {
-    return $this->checkPasswordByGuard($password);
+	$result = Core::getInstance()->query('user.auth', array(
+		'email' => $this->email,
+		'phone' => $this->phonenumber,
+		'password' => $password,
+	));
+	return (isset($result['confirmed']) && $result['confirmed'] == true);
+    //return $this->checkPasswordByGuard($password);
   }
 
   /**

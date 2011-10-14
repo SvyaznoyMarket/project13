@@ -79,7 +79,7 @@ class cartComponents extends myComponents
         'product'   => $product,
         'price'     => $product->getFormattedPrice(),
         'total'     => $product['cart']['formatted_total'],
-        'photo'     => $product->getMainPhotoUrl(3),
+        'photo'     => $product->getMainPhotoUrl(1),
       );
     }
 

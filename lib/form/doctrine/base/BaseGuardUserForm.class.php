@@ -31,7 +31,7 @@ abstract class BaseGuardUserForm extends BaseFormDoctrine
       'core_id'          => new sfWidgetFormInputText(),
       'region_id'        => new sfWidgetFormInputText(),
       'type'             => new sfWidgetFormChoice(array('choices' => array('admin' => 'admin', 'client' => 'client', 'partner' => 'partner'))),
-      'gender'           => new sfWidgetFormChoice(array('choices' => array('mail' => 'mail', 'femail' => 'femail'))),
+      'gender'           => new sfWidgetFormChoice(array('choices' => array('mail' => 'Мужской', 'femail' => 'Женский'))),
       'birthday'         => new sfWidgetFormDate(),
       'photo'            => new sfWidgetFormInputText(),
       'phonenumber_city' => new sfWidgetFormInputText(),
@@ -46,7 +46,7 @@ abstract class BaseGuardUserForm extends BaseFormDoctrine
     ));
 
     $this->setValidators(array(
-      'id'               => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'id'               => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => true)),
       'email'            => new sfValidatorString(array('max_length' => 128, 'required' => false)),
       'phonenumber'      => new sfValidatorString(array('max_length' => 20, 'required' => false)),
       'first_name'       => new sfValidatorString(array('max_length' => 255)),

@@ -88,7 +88,6 @@ class Order extends BaseOrder
     $data['ip']               = sfContext::getInstance()->getUser()->getIp();
 
 
-    //myDebug::dump($this->ProductRelation, 1);
     if (isset($this->ProductRelation))
     {
       foreach ($this->ProductRelation as $product)
@@ -98,10 +97,9 @@ class Order extends BaseOrder
           'price'       => $product->price,
           'quantity'    => $product->quantity,
         );
-        //myDebug::dump($product->toArray(false));
       }
     }
-    //myDebug::dump($data, 1);
+    
     return $data;
   }
 

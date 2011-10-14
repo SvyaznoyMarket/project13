@@ -224,37 +224,4 @@ class OrderStep1Form extends BaseOrderForm
 
     parent::bind($taintedValues, $taintedFiles);
   }
-  public function processValues($values)
-  {
-    $valuesToProcess = $values;
-    foreach ($valuesToProcess as $field => $value)
-    {
-      $method = sprintf('update%sColumn', $this->camelize($field));
-
-      if (method_exists($this, $method))
-      {
-        if (false === $ret = $this->$method($value))
-        {
-          unset($values[$field]);
-        }
-        else
-        {
-          $values[$field] = $ret;
-        }
-      }
-      else
-      {
-        myDebug::dump($method);
-        // save files
-        if ($this->validatorSchema[$field] instanceof sfValidatorFile)
-        {
-          $values[$field] = $this->processUploadedFile($field, null, $valuesToProcess);
-        }
-      }
-    }
-
-    myDebug::dump($values);
-
-    return $values;
-  }
 }

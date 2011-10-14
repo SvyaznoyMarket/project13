@@ -6,6 +6,7 @@ User:
   columns:
 #    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     region_id:         { type: integer(20), notnull: false, default: null }
+    is_legal:          { type: boolean, notnull: true, default: false, comment: 'Юр лицо?' }
     type:              { type: enum, length: 10, values: [admin, client, partner], notnull: true, default: client }
     gender:            { type: enum, length: 6, values: [ mail, femail ], notnull: false, default: null, comment: 'Пол' }
     birthday:          { type: date, notnull: false, default: null, comment: 'Дата рождения' }

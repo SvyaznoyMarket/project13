@@ -33,6 +33,8 @@ class UserFormChangePassword extends BaseUserForm
       'password'       => 'Пароль',
       'password_again' => 'Еще раз пароль',
     ));
+    $this->widgetSchema['password']->setAttribute('class', 'text width418 mb15');
+    $this->widgetSchema['password_again']->setAttribute('class', 'text width418 mb15');
 
     $this->widgetSchema->setNameFormat('password[%s]');
     $this->widgetSchema->setFormFormatterName('default');

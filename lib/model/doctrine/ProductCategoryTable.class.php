@@ -106,14 +106,36 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getSubList(array $params = array())
   {
+//	$counts = array();
+//	$countsRaw = Doctrine_Manager::connection()->fetchAll('
+//		SELECT  `id` , COUNT( * ) as `c`
+//		FROM  `product_category` 
+//		JOIN product_category_product_relation ON product_category.id = product_category_product_relation.product_category_id
+//		GROUP BY id
+//	');
+//	foreach ($countsRaw as $raw) {
+//		$counts;
+//	}
+	$notEmptyCats = array();
+	$notEmptyCatsRaw = Doctrine_Manager::connection()->fetchAll('SELECT DISTINCT product_category_id FROM product_category_product_relation');
+//	$notEmptyCatsRaw = Doctrine_Manager::connection()->fetchAll('
+//		SELECT DISTINCT product_category_id FROM product_category_product_relation
+//		JOIN product_category ON product_category.id = product_category_product_relation.product_category_id
+//		WHERE product_category.level > 1
+//	');
+	foreach ($notEmptyCatsRaw as $raw) {
+		$notEmptyCats[] = $raw['product_category_id'];
+	}
+	  
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q, $params);
+	
 
 	if (!empty($params['root_id'])) {
-		$q->addWhere('productCategory.root_id = ?', (int)$params['root_id']);
+		$q->andWhereIn('productCategory.root_id = ?', (int)$params['root_id']);
 	}
-	$q->addWhere('productCategory.level >= 1');
-	$q->addWhere('productCategory.level <= 2');
+	$q->andWhere('productCategory.level = 1');
+	$q->orWhereIn('productCategory.id', $notEmptyCats);
     $q->orderBy('productCategory.lft');
 
     $q->useResultCache(true, null, $this->getQueryHash('productCategory-sub', $params));

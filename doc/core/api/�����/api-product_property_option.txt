@@ -1,0 +1,38 @@
+Обновление и создание опции свойства товара:
+  
+  запрос от core:
+  {
+    name: product_property_option.update,
+
+    data: {
+      id:    417,  # ид опции свойства товара
+      value: 1024,
+      unit:  Mb,
+      position: 2
+    },
+
+    created: 2011-07-21 12:35:59
+  }
+
+
+
+  запрос от core:
+  {
+    name: product_property_option.create,
+
+    data: {
+      property_id: 34,  # ид свойства товара
+      value: 1024,
+      unit:  Mb,
+      position: 2
+    },
+
+    created: 2011-07-21 12:35:59
+  }
+
+
+
+  ответ в случае успеха:
+  {
+    success: true        # порядок, web обновил опцию свойства товара
+  }

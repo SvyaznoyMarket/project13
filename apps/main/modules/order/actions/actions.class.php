@@ -19,6 +19,7 @@ class orderActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+
   }
  /**
   * Executes show action
@@ -32,11 +33,61 @@ class orderActions extends myActions
 
   public function executeLogin(sfWebRequest $request)
   {
-	  if (!$this->getUser()->isAuthenticated()) {
-		$this->formSignin = new UserFormSignin();
-    $this->formRegister = new UserFormRegister();
+	  if (!$this->getUser()->isAuthenticated())
+    {
+      $this->formSignin = new UserFormSignin();
+      $this->formRegister = new UserFormRegister();
+      $action = $request->hasParameter($this->formRegister->getName()) ? 'register' : 'login';
 	  }
-	  $this->order = $this->getUser()->getOrder()->get();
+
+    if ($request->isMethod('post') && isset($action))
+    {
+      switch ($action)
+      {
+        case 'login':
+          $this->formSignin->bind($request->getParameter($this->formSignin->getName()));
+          if ($this->formSignin->isValid())
+          {
+            $values = $this->formSignin->getValues();
+            $this->getUser()->signin($values['user'], array_key_exists('remember', $values) ? $values['remember'] : false);
+            $this->redirect('order_new');
+
+            // always redirect to a URL set in app.yml
+            // or to the referer
+            // or to the homepage
+          }
+          break;
+        case 'register':
+          $this->formRegister->bind($request->getParameter($this->formRegister->getName()));
+
+          if ($this->formRegister->isValid())
+          {
+            $user = $this->formRegister->getObject();
+
+            $user->is_active = true;
+            $user->email = $this->formRegister->getValue('email');
+            $user->phonenumber = $this->formRegister->getValue('phonenumber');
+            $user->region_id = $this->getUser()->getRegion('id');
+
+            //$user->setPassword('123456');
+
+            try
+            {
+              $user = $this->formRegister->save();
+              $this->getUser()->signIn($user);
+              $this->redirect('order_new');
+            }
+            catch (Exception $e)
+            {
+            }
+            //$user->refresh();
+          }
+          break;
+      }
+      //myDebug::dump($request->getParameter('action'));
+      $this->setVar('action', $action);
+    }
+	  //$this->order = $this->getUser()->getOrder()->get();
   }
 
   /**

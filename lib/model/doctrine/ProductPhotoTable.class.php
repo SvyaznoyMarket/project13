@@ -25,4 +25,16 @@ class ProductPhotoTable extends myDoctrineTable
       'source'       => 'resource',
     );
   }
+  
+  public function getByProduct(Product $product)
+  {
+	  $q = $this->createBaseQuery()->where('product_id = ?', $product->id);
+	  return $q->execute();
+  }
+  
+  public function getOneByProduct(Product $product)
+  {
+	  $q = $this->createBaseQuery()->where('product_id = ?', $product->id);
+	  return $q->fetchOne();
+  }
 }

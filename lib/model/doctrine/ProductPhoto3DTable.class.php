@@ -25,4 +25,10 @@ class ProductPhoto3DTable extends myDoctrineTable
       'source'       => 'resource',
     );
   }
+  
+  public function getByProduct(Product $product)
+  {
+	  $q = $this->createBaseQuery()->where('product_id = ?', $product->id);
+	  return $q->execute();
+  }
 }

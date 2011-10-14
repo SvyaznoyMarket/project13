@@ -1,0 +1,87 @@
+Обновление, создание и удаление свойства товара:
+
+  запрос от core:
+  {
+    name: product_property.update,
+
+    data: {
+      id:   4,                      # ид свойства товара
+      name: Процессор,
+      type: string                  # возможные варианты: select, string, integer, float, text
+      unit: null,
+      pattern: '%value%'            # шаблон для отображения значения свойства с единицей измерения
+    },
+
+    created: 2011-07-21 12:35:59
+  }
+
+
+
+  еще один запрос от core:
+  {
+    name: product_property.update,
+
+    data: {
+      id:   4,
+      name: Оперативная память,
+      type: select,
+      option: [
+        {
+          id: 116,
+          value: 1024,
+          unit: Mb
+        },
+        {
+          id: 117,
+          value: 2048,
+          unit: Mb
+        },
+        ...
+        {
+          id: 118,
+          value: 16,
+          unit: Gb
+        },
+      ],
+      unit: Mb
+      pattern: '%value% %unit%'
+    },
+
+    created: 2011-07-21 12:35:59
+  }
+
+
+
+  запрос от core:
+  {
+    name: product_property.create,
+
+    data: {
+      name: Процессор,
+      type: string,
+      unit: null,
+      pattern: '%value%'
+    },
+
+    created: 2011-07-21 12:35:59
+  }
+
+
+
+  запрос от core:
+  {
+    name: product_property.delete,
+
+    data: {
+      id:   4 # ид свойства товара
+    },
+
+    created: 2011-07-21 12:35:59
+  }
+
+
+
+  ответ в случае успеха:
+  {
+    success: true        # порядок, web обновил свойство товара
+  }

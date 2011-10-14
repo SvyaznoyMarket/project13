@@ -24,7 +24,7 @@
   <?php foreach ($list as $item): ?>
     <div class="basketline">
         <div class="basketleft">
-            <a href="<?php echo url_for('productCard', $item['product']) ?>"><?php echo $item['photo'] ?></a>
+            <a href="<?php echo url_for('productCard', $item['product']) ?>"><?php echo image_tag($item['photo']) ?></a>
             <?php if (count($item['service'])): ?>
             <div class="ac font11"><a href="" class="f1link">Сервис F1</a> Сервис F1</div>
             <?php endif ?>

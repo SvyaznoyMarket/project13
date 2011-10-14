@@ -8,18 +8,15 @@ all:
     - -*
     - jquery
     - jslib/prettyCheckboxes
-#    - jslib/jquery.ui.slider.js
-#    - jslib/jquery.ui.widget.js
-#    - jslib/jquery.ui.mouse.js
-#    - jquery.colorbox.js
     - jquery-ui-1.8.16.custom.min.js
     - jquery.form.js
-#    - jquery.timers.js
-#    - jquery.scrollto.js
     - jquery.colorbox.js
     - jquery.autocomplete-dev.js
     - app.order.js
     - jslib/custom-form-elements
-    - jslib/main
     - main
   layout: order
+  
+index:
+  layout: layout  
+ 
