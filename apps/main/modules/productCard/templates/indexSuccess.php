@@ -9,10 +9,10 @@
   <?php include_component('service', 'listByProduct', array('product' => $product)) ?>
 
   <?php include_component('productComment', 'list', array(
-	  'product' => $product, 
-	  'page' => 1, 
-	  'sort' => 'rating_desc', 
-	  'showSort' => false, 
+	  'product' => $product,
+	  'page' => 1,
+	  'sort' => 'rating_desc',
+	  'showSort' => false,
 	  'showPage' => false
   )) ?>
 

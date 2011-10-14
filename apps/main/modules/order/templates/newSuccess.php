@@ -34,7 +34,7 @@
       <?php if (sfContext::getInstance()->getController()->componentExists('order', 'field_'.$name)): ?>
         <?php include_component('order', 'field_'.$name, array('form' => $form)) ?>
       <?php else: ?>
-        <?php echo $form[$name]->renderRow(); myDebug::dump($name); ?>
+        <?php echo $form[$name]->renderRow(); ?>
       <?php endif ?>
 
     <?php endforeach ?>

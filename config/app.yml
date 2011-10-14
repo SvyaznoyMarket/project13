@@ -18,14 +18,17 @@ all:
 
   product:
     max_items:              10                      # максимально количество записей для списка товаров (по умолчанию)
-    max_items_on_category:  10                      # максимально количество записей для списка товаров в категории
+    max_items_on_category:  12                      # максимально количество записей для списка товаров в категории
     comment_helpful_cookie: product_comment_helpful
     photo_url:
-      - 'http://fs01.enter.ru/1/160/'
-      - 'http://fs01.enter.ru/1/160/'
+      - 'http://fs01.enter.ru/1/40/'
       - 'http://fs01.enter.ru/1/120/'
       - 'http://fs01.enter.ru/1/163/'
       - 'http://fs01.enter.ru/1/500/'
+      - 'http://fs01.enter.ru/1/2500/'
+    photo_3d_url:
+      - 'http://fs01.enter.ru/2/500/'
+      - 'http://fs01.enter.ru/2/2500/'
 
   guard:
     remember_cookie_name: remember
