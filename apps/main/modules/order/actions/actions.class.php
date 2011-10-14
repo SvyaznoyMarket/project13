@@ -36,7 +36,46 @@ class orderActions extends myActions
 		$this->formSignin = new UserFormSignin();
     $this->formRegister = new UserFormRegister();
 	  }
-	  $this->order = $this->getUser()->getOrder()->get();
+
+    $action = $request->hasParameter($this->formRegister->getName()) ? 'register' : 'login';
+    if ($request->isMethod('post') && isset($action))
+    {
+      switch ($action)
+      {
+        case 'login':
+          break;
+        case 'register':
+          $this->formRegister->bind($request->getParameter($this->formRegister->getName()));
+
+          if ($this->formRegister->isValid())
+          {
+            $user = $this->formRegister->getObject();
+
+            $user->is_active = true;
+            $user->email = $this->formRegister->getValue('email');
+            $user->phonenumber = $this->formRegister->getValue('phonenumber');
+            $user->region_id = $this->getUser()->getRegion('id');
+
+            //$user->setPassword('123456');
+
+            try
+            {
+              $user = $this->formRegister->save();
+              $this->getUser()->signIn($user);
+              $this->redirect('order_new');
+            }
+            catch (Exception $e)
+            {
+              myDebug::dump($e->getError(), 1);
+            }
+            //$user->refresh();
+          }
+          break;
+      }
+      //myDebug::dump($request->getParameter('action'));
+      $this->setVar('action', $action);
+    }
+	  //$this->order = $this->getUser()->getOrder()->get();
   }
 
   /**

@@ -90,7 +90,7 @@ class orderComponents extends myComponents
   */
   public function executeNavigation()
   {
-    if (empty($this->step))
+    /*if (empty($this->step))
     {
       $this->step = 1;
     }
@@ -111,7 +111,7 @@ class orderComponents extends myComponents
       );
 
 
-    $this->setVar('list', $list, true);
+    $this->setVar('list', $list, true);*/
   }
  /**
   * Executes field_address component

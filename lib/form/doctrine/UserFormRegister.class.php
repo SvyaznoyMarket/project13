@@ -13,7 +13,7 @@ class UserFormRegister extends BaseUserForm
   public function configure()
   {
     parent::configure();
-    
+
     $this->disableCSRFProtection();
 
     $this->widgetSchema['first_name'] = new sfWidgetFormInputText(array(), array('tabindex' => 5));
@@ -36,6 +36,11 @@ class UserFormRegister extends BaseUserForm
 
     $this->widgetSchema->moveField('password_again', 'after', 'password');
 
+    $this->widgetSchema['is_legal'] = new sfWidgetFormInputCheckbox();
+    $this->widgetSchema['is_legal']->setLabel('Я являюсь юридическим лицом');
+    $this->validatorSchema['is_legal'] = new sfValidatorBoolean();
+
+
     $this->mergePostValidator(
       //new sfValidatorSchemaCompare('password', sfValidatorSchemaCompare::EQUAL, 'password_again', array(), array('invalid' => 'Пароли не одинаковые.'))
       new myValidatorGuardUserRegister()
@@ -47,6 +52,7 @@ class UserFormRegister extends BaseUserForm
       'username',
       //'password',
       //'password_again',
+      //'is_legal',
     ));
 
     $this->widgetSchema->setNameFormat('register[%s]');
