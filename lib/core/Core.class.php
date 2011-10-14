@@ -14,6 +14,10 @@ class Core
   protected static
     $instance = null;
 
+  /**
+   *
+   * @return Core 
+   */
   static public function getInstance()
   {
     if (null == self::$instance)
