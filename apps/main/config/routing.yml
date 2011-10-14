@@ -48,6 +48,13 @@ productCatalog_category:
   param: { module: productCatalog, action: category}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
+  
+# карусель ajax
+productCatalog_carousel:
+  url:   /catalog-carousel/:productCategory/
+  param: { module: productCategory, action: carousel}
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # категория и производитель каталога товаров
 productCatalog_creator:

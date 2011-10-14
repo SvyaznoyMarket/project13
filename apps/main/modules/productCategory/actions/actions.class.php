@@ -18,4 +18,20 @@ class productCategoryActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
   }
+  
+  public function executeCarousel(sfWebRequest $request)
+  {
+	  sfConfig::set('sf_web_debug', false);
+	  $page = (int)$request->getParameter('page', 1);
+	  $products = ProductTable::getInstance()->getListByCategory($this->getRoute()->getObject(), array(
+		'offset' => ($page-1)*3,
+        'limit'  => ($page-1)*3 + 3,
+      ));
+	  $this->setLayout(false);
+	  $this->getContext()->getConfiguration()->loadHelpers('Url');
+	  foreach ($products as $product) {
+		  $this->renderComponent('product', 'show', array('view' => 'compact', 'product' => $product));
+	  }
+	  return sfView::NONE;
+  }
 }
