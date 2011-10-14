@@ -1,7 +1,7 @@
 <?php
 slot('title','Профиль пользователя');
 slot('navigation');
- // include_component('user', 'navigation');
+  include_component('user', 'navigation');
 end_slot();
 ?>
     <div class="float100">

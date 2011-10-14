@@ -31,7 +31,7 @@ abstract class BaseGuardUserForm extends BaseFormDoctrine
       'core_id'          => new sfWidgetFormInputText(),
       'region_id'        => new sfWidgetFormInputText(),
       'type'             => new sfWidgetFormChoice(array('choices' => array('admin' => 'admin', 'client' => 'client', 'partner' => 'partner'))),
-      'gender'           => new sfWidgetFormChoice(array('choices' => array('mail' => 'mail', 'femail' => 'femail'))),
+      'gender'           => new sfWidgetFormChoice(array('choices' => array('mail' => 'Мужской', 'femail' => 'Женский'))),
       'birthday'         => new sfWidgetFormDate(),
       'photo'            => new sfWidgetFormInputText(),
       'phonenumber_city' => new sfWidgetFormInputText(),

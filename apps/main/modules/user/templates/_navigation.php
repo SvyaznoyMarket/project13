@@ -1,0 +1,1 @@
+<a href="<?=url_for('user')?>">Личный кабинет</a> -> <strong><?php if (has_slot('title')) include_slot('title'); ?></strong>

@@ -177,6 +177,8 @@ news_show:
 user:
   url:   /private/
   param: { module: user, action: index }
+  requirements:
+    sf_method: [ get,post ]   
 #
 
 # user edit

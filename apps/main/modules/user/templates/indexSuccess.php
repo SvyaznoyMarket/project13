@@ -14,7 +14,7 @@
 <?php
 slot('title','Личный кабинет');
 slot('navigation');
- // include_component('user', 'navigation');
+  include_component('user', 'navigation');
 end_slot();
 ?>
 <div class="float100">

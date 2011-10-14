@@ -97,5 +97,11 @@ class userComponents extends myComponents
   public function executeNavigation()
   {
     //    $this->setVar('list', $list, true);
+  }
+  
+  public function executeFieldgender(){
+  }
+  
+  public function executeFieldbirthday(){
   }  
 }

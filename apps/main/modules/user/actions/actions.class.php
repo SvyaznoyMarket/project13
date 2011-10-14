@@ -16,8 +16,7 @@ class userActions extends myActions
   * @param sfRequest $request A request object
   */
   public function executeIndex(sfWebRequest $request)
-  {
-      
+  {      
     //пункты для главной страницы личного кабинета  
     $list = array(
       array(
@@ -138,14 +137,26 @@ class userActions extends myActions
       {
          // print_r( get_class_methods($this->form) );
         //echo get_class($this->form->getObject());
-        $this->form->getObject()->id = $this->getUser()->getGuardUser()->id;
+        //$this->form->getObject()->id = $this->getUser()->getGuardUser()->id;
         //print_r( $this->form->getValues() );
+        //exit(); 
 
-      // $b =  Core::getInstance()->query('user.update',array('id'=>$this->getUser()->getGuardUser()->id),$this->form->getValues());
-       //print_r($b);
+       $coreResult =  Core::getInstance()->query('user.update',array('id'=>$this->getUser()->getGuardUser()->id),$this->form->getValues());
+       exit();
+       if ($coreResult['confirmed']==1){
+            //$table = UserTable::getInstance();
+           $this->getUser()->getGuardUser()->fromArray( $this->form->getValues() );
+        //   $this->getUser()->getGuardUser()->save();
+           //print_r( get_class_methods($this->getUser()->getGuardUser()));
+            //$table = new User();
+            $user = UserTable::getInstance()->findOneById( 2 );
+            $user->fromArray( $this->form->getValues() );
+           // $user->save();
+           
+       }
+       print_r($coreResult);
        // $this->form->save();
-       // exit(); 
-        //$this->redirect('user');
+        $this->redirect('user');
       }
       catch (Exception $e)
       {
@@ -159,4 +170,6 @@ class userActions extends myActions
 
     $this->setTemplate('edit');      
   }  
+  
+  
 }

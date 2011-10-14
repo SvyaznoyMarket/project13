@@ -19,6 +19,9 @@ class orderActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+       // $table = UserProductRatingTotalTable::getInstance();
+      //  $existItems = $table->getQueryObject()->andWhere('product_id=? AND user_id=? ',array($this->_product->id,$user->getGuardUser()->id))->fetchArray();
+
   }
  /**
   * Executes show action
