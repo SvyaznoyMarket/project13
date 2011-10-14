@@ -314,3 +314,38 @@ $(document).ready(function(){
         //$(this).addClass("link3active");
     })
 });
+
+/* top menu */
+$(document).ready(function(){
+	 
+	var idcm          = null // setTimeout
+	var currentMenu = 0 // ref= product ID
+	
+	$('.topmenu a').bind( {
+		'mouseenter': function() {
+			$('.extramenu').hide()
+			var self = this
+			var im = $('.boxhover .photo img', $(self))
+			function showList() {
+				if(	$(self).data('run') ) {
+					var i = $(self).attr('class').replace(/\D+/,'')
+					var punkt = $( '#extramenu-root-'+ i )					
+					punkt.show().find('.corner').css('left',102 + i*65)					
+				}	
+			}
+			$(self).data('run', true)
+			currentMenu = $( '.boxhover',self).attr('ref')
+			idcm = setTimeout( showList, 300)
+		},
+		'mouseleave': function() {
+			var self = this
+			var im = $('.boxhover .photo img', $(self))
+			if(	$(self).data('run') ) {
+				clearTimeout( idcm )
+				$(self).data('run',false)
+			}
+			currentMenu = 0
+		}		
+	}) 	
+});
+/* ---- */	

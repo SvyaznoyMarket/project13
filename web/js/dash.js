@@ -122,6 +122,25 @@ $(document).ready(function(){
 		//TODO ajax					
 		return false
 	})
+	$('.goodsbarbig .link1').click( function() {
+		var button = this
+		$.getJSON( $( button ).attr('href') +'/1', function(data) {			
+			if ( data.success && ltbx ) {
+				var tmpitem = { 
+					'id'   : $( button ).attr('href'),
+					'title': $('h1').html(),
+					'price': $('.goodsinfo .price').html(),
+					'img'  : $('.goodsphoto img').attr('src')
+				}
+				ltbx.getBasket( tmpitem ) 
+				$(button).attr('href', $('.lightboxinner .point2', parent).attr('href') )
+				$(button).unbind('click').addClass('active')				
+			}	
+		})
+		return false
+	})
+	// hidden buttons wishlist+compare
+	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })
 	/* ---- */		
 	
 	
