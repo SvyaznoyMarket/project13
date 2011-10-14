@@ -23,4 +23,7 @@ all:
     - jslib/main
     - main
   layout: order
+  
+index:
+  layout: layout  
  

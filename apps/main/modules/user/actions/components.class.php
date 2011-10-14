@@ -96,12 +96,24 @@ class userComponents extends myComponents
   
   public function executeNavigation()
   {
-    //    $this->setVar('list', $list, true);
+        $list = array();
+
+        $list[] = array(
+          'name' => 'Главная',
+          'url'  => url_for('@homepage'),
+        );
+        $list[] = array(
+          'name' => 'Личный кабинет',
+          'url'  => url_for('user'),
+        );        
+ 
+
+        $this->setVar('list', $list, true);
   }
   
   public function executeFieldgender(){
   }
   
-  public function executeFieldbirthday(){
-  }  
+  //public function executeFieldbirthday(){
+  //}  
 }

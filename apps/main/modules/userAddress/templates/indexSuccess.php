@@ -1,5 +1,8 @@
 <?php 
 slot('title','Адреса доставки');
+slot('navigation');
+  include_component('user', 'navigation');
+end_slot();
 ?>   
 <div class="float100">
 		<div class="column685 ">

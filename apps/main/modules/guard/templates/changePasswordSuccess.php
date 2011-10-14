@@ -1,5 +1,8 @@
 <?php
 slot('title','Пароль');
+slot('navigation');
+  include_component('user', 'navigation');
+end_slot();
 ?>
 
 

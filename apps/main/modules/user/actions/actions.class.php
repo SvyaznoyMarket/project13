@@ -142,19 +142,20 @@ class userActions extends myActions
         //exit(); 
 
        $coreResult =  Core::getInstance()->query('user.update',array('id'=>$this->getUser()->getGuardUser()->id),$this->form->getValues());
-       exit();
        if ($coreResult['confirmed']==1){
             //$table = UserTable::getInstance();
-           $this->getUser()->getGuardUser()->fromArray( $this->form->getValues() );
+         //  $this->getUser()->getGuardUser()->fromArray( $this->form->getValues() );
         //   $this->getUser()->getGuardUser()->save();
            //print_r( get_class_methods($this->getUser()->getGuardUser()));
             //$table = new User();
             $user = UserTable::getInstance()->findOneById( 2 );
+            $user->setCorePush(false);
             $user->fromArray( $this->form->getValues() );
-           // $user->save();
+            $user->save();
            
        }
        print_r($coreResult);
+       exit();
        // $this->form->save();
         $this->redirect('user');
       }
