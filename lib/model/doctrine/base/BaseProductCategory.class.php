@@ -133,11 +133,11 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'notnull' => false,
              'length' => 20,
              ));
-        $this->hasColumn('position', 'integer', 3, array(
+        $this->hasColumn('position', 'integer', 4, array(
              'type' => 'integer',
              'notnull' => false,
              'default' => 0,
-             'length' => 3,
+             'length' => 4,
              ));
 
         $this->option('comment', 'Категория товара');

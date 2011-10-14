@@ -150,7 +150,7 @@
 		<li class="viewstock" ref="photo<?php echo $i ?>"><b><a href="<?php echo $urls[4].$photo->resource ?>" class="viewme" ref="image" id="try-3"></a></b><img src="<?php echo $urls[2].$photo->resource ?>" alt="" width="48" height="48" /></li>
 		<?php endforeach ?>
 		<?php if (count($p3d) > 0): ?>
-            <li><a href="javascript:void(0)" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+            <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
 		<?php endif ?>
         </ul>
     </div>
@@ -166,5 +166,80 @@
   <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
 </div>
 
-    <!--div class="pb25"><a href="" class="more">Все характеристики</a></div-->
-    <!-- /Description -->
+<!--div class="pb25"><a href="" class="more">Все характеристики</a></div-->
+<!-- /Description -->
+
+<!-- Media -->
+<div class="popup mediablock" id="bigpopup"><!-- IVN block #bigpopup is media gallery popup  -->
+	<i title="Закрыть" class="close">Закрыть</i>
+	
+	<div class="float100">
+		<div class="photoview">
+			<div class="photobox" id="photobox"></div> 
+			<div class="scrollbox"><div><b></b></div></div>      
+		</div>
+	</div>
+	
+	
+	<div class="leftpanel" style="margin-left:-100%">
+		<div class="topblock font16">
+			<div class="logobox">Enter связной</div>
+			<div class="pb5"><?php echo $item['product']->name ?></div>
+			<div class="pb5">
+			<?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?>
+			</div>
+			<!--div class="pb40"><input type="button" class="button yellowbutton" value="Купить" /></div-->
+		
+			<h2>Фото и видео:</h2>
+			<ul class="previewlist">
+				<?php foreach ($photos as $i => $photo): ?>
+					<li class="viewstock" ref="photo<?php echo $i ?>"><b><a href="<?php echo $urls[4].$photo->resource ?>" class="viewme" ref="image" id="try-3"></a></b><img src="<?php echo $urls[2].$photo->resource ?>" alt="" width="48" height="48" /></li>
+				<?php endforeach ?>
+				<?php if (count($p3d) > 0): ?>
+					<li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+				<?php endif ?>
+				<!--li><b><a href="images/photo25_2.jpg" class="viewme" ref="image"></a></b><img src="images/photo27.jpg" alt="" width="48" height="48" /></li>
+				<li><b><a href="images/photo25_3.jpg" class="viewme" ref="image"></a></b><img src="images/photo28.jpg" alt="" width="48" height="48" /></li>
+				<li><b><a href=""></a></b><img src="images/photo26.jpg" alt="" width="48" height="48" /></li>
+				<li><a href="" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+				<li><a href="" class="videolink" title="Видео">Видео</a></li-->
+			</ul>
+		</div>
+		
+		<!--div class="pb5"><a href="" class="share">Поделиться</a> <strong><a href="" class="nodecor">+87</a></strong></div>
+		<div class="font9 gray">
+			Дата съемок: Сентябрь 2010.<br />
+			Производитель на свое усмотрение и
+			без дополнительных уведомлений может
+			менять комплектацию, внешний вид и
+			технические характеристики модели.
+			Данные фото могут не соответствовать
+			новым изменениям и дополнениям.<br>
+			&copy; 2011–2012. Все права защищены и
+			принадлежат "Enter.ru".
+			Копирование и распространение
+			материалов в любой форме запрещены            
+		</div-->
+	</div>
+	
+	
+	<div class="scalepanel" style="float:left; margin-left:-80px">
+		<div class="zoom"></div>
+		
+		<div class="scale">
+			<b class="plus"></b>
+			<div class=""><b class="zoomind" style="top:45%"></b></div>
+			<b class="minus"></b>
+		</div>
+		
+		<div class="versioncontrol">
+			<div class="pb5 gray" id="percents" style="font-size:150%;">0%</div>
+			<div id="turnlite">
+				<div class="font9 gray">Нет времени ждать загрузки? <br/>Загрузи</div>
+				<div class="pb5 orange">легкую версию</div>
+			</div>
+			<div class="pb5 orange" id="turnfull" style="display:none;">полная версия</div>
+		</div>
+	</div>
+</div>
+<!-- /Media -->

@@ -6,7 +6,16 @@
 
 	jQuery is prohibited
 							*/
-
+/* 
+	api = {
+		'makeLite' : 'turnlite',
+		'makeFull' : 'turnfull',
+		'loadbar'  : 'percents',
+		'zoomer'   : 'bigpopup .scale',
+		'rollindex': '.scrollbox div b',
+		'propriate': ['versioncontrol','scrollbox']
+	}
+*/
 function likemovie( nodename , apinodes, s, b) {
 
 	var self = this
@@ -133,6 +142,7 @@ function likemovie( nodename , apinodes, s, b) {
 	var manualroll = false	
 
 	this.rollshift = function( rollindex ) {
+		rollindex = ( rollindex - 5 < 0 ) ? 34 + rollindex : rollindex - 5
 		jrollindex.css('left', cordinates[rollindex][0]).css('top', cordinates[rollindex][1])
 	}
 	
@@ -155,8 +165,8 @@ function likemovie( nodename , apinodes, s, b) {
 				if (Math.abs(curPos.left - mousex) > constoffset ) {
 					mouseIsLeft = ( curPos.left > mousex ) ? true : false
 					mouseIsTop  = ( curPos.top  > mousey ) ? true : false					
-					if ( flnm - 1 < self.howmany / 4 || flnm - 1 >= self.howmany / 4 * 3 ) { // bottom of ellipse-curve
-						if ( flnm - 1 == self.howmany / 4 * 3  ) {
+					if ( flnm - 1 - 5 < self.howmany / 4 || flnm - 1 - 5 >= self.howmany / 4 * 3 ) { // bottom of ellipse-curve
+						if ( flnm - 1 - 5 == self.howmany / 4 * 3  ) {
 							if( ! mouseIsLeft && ! mouseIsTop )
 								self.nextSrc( 1 )
 							if( ! mouseIsLeft && mouseIsTop )
@@ -164,7 +174,7 @@ function likemovie( nodename , apinodes, s, b) {
 						} else 
 							( mouseIsLeft ) ? self.nextSrc( -1 ) : self.nextSrc( 1 )
 					} else { // top of ellipse-curve
-						if ( flnm - 1 == self.howmany / 4  ) {
+						if ( flnm - 1 - 5 == self.howmany / 4  ) {
 							if( mouseIsLeft && mouseIsTop) 
 								self.nextSrc( 1 )
 							if( mouseIsLeft && ! mouseIsTop) 
@@ -427,7 +437,6 @@ function likemovie( nodename , apinodes, s, b) {
 	}
 	
 	this.hide = function() {
-console.info('hide 360')
 		$(frontier).hide()
 		this.breakPreload()
 		if ( liteversion || initInd.length == this.howmany ) {			
@@ -439,7 +448,6 @@ console.info('hide 360')
 	}
 	
 	this.show = function() {	
-console.info('show 360')
 		$(frontier).show()
 		
 		if( initInd.length != this.howmany ) {
@@ -677,6 +685,7 @@ function zoomer ( jn , zfunctions ) {
 	})
 
 	$('.minus', jn).bind('click', function() {
+	console.info(zfunctions)
 		zfunctions.zoomOut()
 		//self.minus() in zfunctions
 	})

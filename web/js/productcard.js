@@ -6,7 +6,6 @@ $(document).ready(function(){
 		if( trgtimg[0].complete ) 
 			$('#goodsphoto img').attr('src', isrc)
 	})
-	//$.proxy( $('.viewstock'), 'mouseover')
 	
 	//var lkmv = null
 	var api = {
@@ -30,7 +29,7 @@ $(document).ready(function(){
 	'360/images/2063_whi!_31.jpg', '360/images/2063_whi!_32.jpg', '360/images/2063_whi!_33.jpg', '360/images/2063_whi!_34.jpg', '360/images/2063_whi!_35.jpg', '360/images/2063_whi!_36.jpg', '360/images/2063_whi!_37.jpg', '360/images/2063_whi!_38.jpg', '360/images/2063_whi!_39.jpg', '360/images/2063_whi!_40.jpg'        	    	
 	]
 	
-	lkmv = new likemovie('photobox', api, smallimages, bigimages )
+	lkmv = new likemovie('photobox', api, product_3d_small, product_3d_big )
 	var mLib = new mediaLib( $('#bigpopup') )	
 
 	$('.viewme').click( function(){

@@ -18,6 +18,7 @@
  * @property boolean $is_super_admin
  * @property timestamp $last_login
  * @property integer $region_id
+ * @property boolean $is_legal
  * @property enum $type
  * @property enum $gender
  * @property date $birthday
@@ -47,6 +48,7 @@
  * @method boolean             getIsSuperAdmin()        Returns the current record's "is_super_admin" value
  * @method timestamp           getLastLogin()           Returns the current record's "last_login" value
  * @method integer             getRegionId()            Returns the current record's "region_id" value
+ * @method boolean             getIsLegal()             Returns the current record's "is_legal" value
  * @method enum                getType()                Returns the current record's "type" value
  * @method enum                getGender()              Returns the current record's "gender" value
  * @method date                getBirthday()            Returns the current record's "birthday" value
@@ -75,6 +77,7 @@
  * @method GuardUser           setIsSuperAdmin()        Sets the current record's "is_super_admin" value
  * @method GuardUser           setLastLogin()           Sets the current record's "last_login" value
  * @method GuardUser           setRegionId()            Sets the current record's "region_id" value
+ * @method GuardUser           setIsLegal()             Sets the current record's "is_legal" value
  * @method GuardUser           setType()                Sets the current record's "type" value
  * @method GuardUser           setGender()              Sets the current record's "gender" value
  * @method GuardUser           setBirthday()            Sets the current record's "birthday" value
@@ -169,6 +172,12 @@ abstract class BaseGuardUser extends myDoctrineRecord
              'type' => 'integer',
              'notnull' => false,
              'length' => 20,
+             ));
+        $this->hasColumn('is_legal', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
+             'comment' => 'Юр лицо?',
              ));
         $this->hasColumn('type', 'enum', 10, array(
              'type' => 'enum',
