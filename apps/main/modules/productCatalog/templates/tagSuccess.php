@@ -5,14 +5,9 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-  <?php include_component('productCatalog', 'tag', array('productCategory' => $productCategory)) ?>
+  <?php include_component('productCatalog', 'tag', array('productCategory' => $productCategory, 'form' => $productTagFilter, )) ?>
 <?php end_slot() ?>
 
-  <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
-  <?php include_component('product', 'list_view') ?>
-  <div class="line"></div>
-  <?php include_component('product', 'pager', array('pager' => $productPager)) ?>
-  <div class="line pb10"></div>
-  <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
-  
+<?php echo include_partial('productCatalog/product_list', $sf_data) ?>
+
 <div class="clear"></div>
