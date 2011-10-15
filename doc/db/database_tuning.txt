@@ -1,0 +1,15 @@
+1) Установить price_list is_default
+2) Установить region is_default
+3) В region установить для всех type=area, кроме Россия и Москва
+4) Для рут категорий в product_category установить position как для меню
+5) Обновить у product поля is_instock, view_list, view_show
+6) Вставить связки tag_group_product_category_relation в соответствии с product_type_product_category_relation
+7) Сделать update значений характеристик: поменять true и false на "да" и "нет"
+
+UPDATE `product_prict_list` SET `is_default` = 1 WHERE `id` = 1;
+UPDATE `region` SET `is_default` = 1 WHERE `token` = 'moskva';
+UPDATE `region` SET `type` = 'area' WHERE `token` NOT IN ('russia', 'moskva');
+UPDATE `product_category` SET `position` = FIELD(`name`, 'Мебель', 'Бытовая техника', 'Товары для дома', 'Товары для детей', 'Сделай сам', 'Электроника', 'Ювелирные украшения и часы', 'Товары для спорта и отдыха', 'Подарки') WHERE `level` = 0;
+UPDATE `product` `p` INNER JOIN `stock_product_relation` `sp` ON `sp`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1;
+INSERT INTO `tag_group_product_category_relation` (`product_category_id`, `tag_group_id`) SELECT DISTINCT `c`.`id`, `tgpt`.`tag_group_id` FROM `product_category` `c` INNER JOIN `product_category_type_relation` `pct` ON `pct`.`product_category_id` = `c`.`id` INNER JOIN `product_type` `pt` ON `pt`.`id` = `pct`.`product_type_id` INNER JOIN `tag_group_product_type_relation` `tgpt` ON `tgpt`.`product_type_id` = `pt`.`id` INNER JOIN `tag_group` `tg` ON `tg`.`id` = `tgpt`.`tag_group_id`;
+UPDATE `product_property_relation` SET `value` = ELT(FIELD(`value`, 'true', 'false'), 'есть', 'нет') WHERE `value` IN ('true', 'false');
