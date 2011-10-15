@@ -10,17 +10,20 @@
  * @property boolean $is_default
  * @property boolean $is_active
  * @property Doctrine_Collection $Price
+ * @property Doctrine_Collection $Region
  * 
  * @method integer             getId()         Returns the current record's "id" value
  * @method string              getName()       Returns the current record's "name" value
  * @method boolean             getIsDefault()  Returns the current record's "is_default" value
  * @method boolean             getIsActive()   Returns the current record's "is_active" value
  * @method Doctrine_Collection getPrice()      Returns the current record's "Price" collection
+ * @method Doctrine_Collection getRegion()     Returns the current record's "Region" collection
  * @method ProductPriceList    setId()         Sets the current record's "id" value
  * @method ProductPriceList    setName()       Sets the current record's "name" value
  * @method ProductPriceList    setIsDefault()  Sets the current record's "is_default" value
  * @method ProductPriceList    setIsActive()   Sets the current record's "is_active" value
  * @method ProductPriceList    setPrice()      Sets the current record's "Price" collection
+ * @method ProductPriceList    setRegion()     Sets the current record's "Region" collection
  * 
  * @package    enter
  * @subpackage model
@@ -64,6 +67,10 @@ abstract class BaseProductPriceList extends myDoctrineRecord
     {
         parent::setUp();
         $this->hasMany('ProductPrice as Price', array(
+             'local' => 'id',
+             'foreign' => 'product_price_list_id'));
+
+        $this->hasMany('Region', array(
              'local' => 'id',
              'foreign' => 'product_price_list_id'));
 

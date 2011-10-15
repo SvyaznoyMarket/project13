@@ -246,6 +246,16 @@ EOF;
     $record = RegionTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
 
+    if (isset($data['price_list_id']))
+    {
+      $record->product_price_list_id = $this->getRecordByCoreId('ProductPriceList', $data['price_list_id'], true);
+    }
+
+    if (isset($data['store_id']))
+    {
+      $record->stock_id = $this->getRecordByCoreId('Stock', $data['store_id'], true);
+    }
+
     return $record;
   }
   // Region
@@ -709,16 +719,7 @@ EOF;
   protected function createDeliveryTypeRecord(array $data)
   {
     $record = DeliveryTypeTable::getInstance()->createRecordFromCore($data);
-    $record->token = myToolkit::urlize($record->name);
-
-    return $record;
-  }
-
-  //Shop
-  protected function createShopRecord(array $data)
-  {
-    $record = ShopTable::getInstance()->createRecordFromCore($data);
-    $record->record_id = $this->getRecordByCoreId('Region', $data['geo_id'], true);
+    $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
     return $record;
   }
@@ -729,6 +730,15 @@ EOF;
     $record = StockProductRelationTable::getInstance()->createRecordFromCore($data);
     $record->product_id = $this->getRecordByCoreId('Product', $data['product_id'], true);
     $record->stock_id = $this->getRecordByCoreId('Stock', $data['store_id'], true);
+
+    return $record;
+  }
+
+  //StockRelation
+  protected function createStockRecord(array $data)
+  {
+    $record = StockTable::getInstance()->createRecordFromCore($data);
+    $record->token = uniqid();
 
     return $record;
   }
