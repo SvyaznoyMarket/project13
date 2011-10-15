@@ -14,7 +14,7 @@ class myProductTagFormFilter extends sfFormFilter
     {
       throw new InvalidArgumentException('You must provide a productCategory object.');
     }
-    $creator = $this->getOption('creator', null);
+    //$creator = $this->getOption('creator', null);
 
     $productTable = ProductTable::getInstance();
 
@@ -63,7 +63,7 @@ class myProductTagFormFilter extends sfFormFilter
       $this->widgetSchema[$index]->setLabel($tagGroup->name);
     }
 
-    $this->widgetSchema->setNameFormat('f[%s]');
+    $this->widgetSchema->setNameFormat('t[%s]');
   }
 
   public function buildQuery(myDoctrineQuery $q)

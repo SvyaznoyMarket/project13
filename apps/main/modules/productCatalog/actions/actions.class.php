@@ -60,8 +60,6 @@ class productCatalogActions extends myActions
     $q = ProductTable::getInstance()->createBaseQuery();
     $this->productTagFilter->buildQuery($q);
 
-    myDebug::dump($q->getSqlQuery());
-
     // sorting
     $this->productSorting = $this->getProductSorting();
     $this->productSorting->setQuery($q);
@@ -81,11 +79,22 @@ class productCatalogActions extends myActions
     $this->productCategory = $this->getRoute()->getObject();
 
     $this->productFilter = $this->getProductFilter();
-    $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
+    $this->productTagFilter = $this->getProductTagFilter();
 
-    $q = ProductTable::getInstance()->createBaseQuery();
-    $this->productFilter->buildQuery($q);
+    if ($request->hasParameter($this->productFilter->getName()))
+    {
+      $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
 
+      $q = ProductTable::getInstance()->createBaseQuery();
+      $this->productFilter->buildQuery($q);
+    }
+    elseif ($request->hasParameter($this->productTagFilter->getName()))
+    {
+      $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
+
+      $q = ProductTable::getInstance()->createBaseQuery();
+      $this->productTagFilter->buildQuery($q);
+    }
 
     return $this->renderJson(array(
       'success' => true,

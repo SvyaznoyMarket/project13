@@ -242,11 +242,18 @@ class ProductTable extends myDoctrineTable
     // цена
     if ($filter['price']['from'])
     {
-      $q->addWhere('product.price >= ?', $filter['price']['from']);
+      $q->innerJoin('product.Prices prices');
+      $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      $q->addWhere('prices.price >= ?', $filter['price']['from']);
     }
     if ($filter['price']['to'])
     {
-      $q->addWhere('product.price <= ?', $filter['price']['to']);
+      if (!$q->hasAliasDeclaration('prices'))
+      {
+        $q->innerJoin('product.Prices prices');
+        $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      }
+      $q->addWhere('prices.price <= ?', $filter['price']['to']);
     }
 
     // параметры
@@ -333,11 +340,18 @@ class ProductTable extends myDoctrineTable
     // цена
     if ($filter['price']['from'])
     {
-      $q->addWhere('product.price >= ?', $filter['price']['from']);
+      $q->innerJoin('product.Prices prices');
+      $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      $q->addWhere('prices.price >= ?', $filter['price']['from']);
     }
     if ($filter['price']['to'])
     {
-      $q->addWhere('product.price <= ?', $filter['price']['to']);
+      if (!$q->hasAliasDeclaration('prices'))
+      {
+        $q->innerJoin('product.Prices prices');
+        $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      }
+      $q->addWhere('prices.price <= ?', $filter['price']['to']);
     }
 
     // параметры
