@@ -2,7 +2,7 @@
   <?php include_component('productCatalog', 'navigation', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
 <?php end_slot() ?>
 
-<?php slot('title', $product->Creator.'  '.$product->name) ?>
+<?php slot('title', $product->name) ?>
 
   <?php //include_partial('product/name', array('product' => $product)) ?>
   <?php include_component('product', 'show', array('product' => $product)) ?>

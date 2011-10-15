@@ -50,11 +50,13 @@ ProductCategory:
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     filter_group_id:   { type: integer(20), notnull: false, default: null }
+    product_id:        { type: integer(20), notnull: false, default: null, comment: 'Товар, картинка которого используется для отображения в списке категорий' }
     position:          { type: integer(4), notnull: false, default: 0 }
   relations:
     FilterGroup:       { class: ProductFilterGroup, foreignAlias: Category, local: filter_group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ProductType:       { class: ProductType, foreignAlias: ProductCategory, refClass: ProductCategoryTypeRelation, local: product_category_id, foreign: product_type_id, type: many, foreignType: many }
     Product:           { class: Product, foreignAlias: Category, refClass: ProductCategoryProductRelation, local: product_category_id, foreign: product_id, type: many, foreignType: many }
+    MainProduct:       { class: Product, foreignAlias: MyCategory, local: product_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 ProductCategoryProductRelation:
   options:
@@ -202,6 +204,7 @@ Product:
     rating:            { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
     rating_quantity:   { type: integer(4), notnull: true, default: 0, comment: 'Количество голосов пользователей' }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }
+    score:             { type: 'decimal(10,5)', notnull: true, default: 0, comment: 'Внутренний рейтинг' }
   relations:
     Type:              { class: ProductType, foreignAlias: Product, local: type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     Creator:           { class: Creator, foreignAlias: Product, local: creator_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
