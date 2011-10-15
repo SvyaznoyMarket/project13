@@ -23,6 +23,7 @@ abstract class BaseStockForm extends BaseFormDoctrine
       'shop_id'    => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Shop'), 'add_empty' => true)),
       'created_at' => new sfWidgetFormDateTime(),
       'updated_at' => new sfWidgetFormDateTime(),
+      'core_id'    => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
@@ -34,6 +35,7 @@ abstract class BaseStockForm extends BaseFormDoctrine
       'shop_id'    => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Shop'), 'required' => false)),
       'created_at' => new sfValidatorDateTime(),
       'updated_at' => new sfValidatorDateTime(),
+      'core_id'    => new sfValidatorInteger(array('required' => false)),
     ));
 
     $this->validatorSchema->setPostValidator(
