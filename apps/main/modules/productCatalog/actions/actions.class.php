@@ -46,6 +46,32 @@ class productCatalogActions extends myActions
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
  /**
+  * Executes filter action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeTag(sfWebRequest $request)
+  {
+    $this->productCategory = $this->getRoute()->getObject();
+
+    $this->productTagFilter = $this->getProductTagFilter();
+    $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
+
+    $q = ProductTable::getInstance()->createBaseQuery();
+    $this->productTagFilter->buildQuery($q);
+
+    myDebug::dump($q->getSqlQuery());
+
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
+
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+    ));
+    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+  }
+ /**
   * Executes count action
   *
   * @param sfRequest $request A request object
@@ -177,6 +203,13 @@ class productCatalogActions extends myActions
   protected function getProductFilter()
   {
     return new myProductFormFilter(array(), array(
+      'productCategory' => $this->productCategory,
+    ));
+  }
+
+  protected function getProductTagFilter()
+  {
+    return new myProductTagFormFilter(array(), array(
       'productCategory' => $this->productCategory,
     ));
   }

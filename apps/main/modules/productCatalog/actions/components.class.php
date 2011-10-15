@@ -159,7 +159,7 @@ class productCatalogComponents extends myComponents
       ));
     }
 
-    $this->url = url_for('productCatalog_filter', $this->productCategory);
+    $this->url = url_for('productCatalog_tag', $this->productCategory);
 
   }
 }

@@ -72,7 +72,7 @@ class myProductTagFormFilter extends sfFormFilter
 
     $filter = array(
       'category'   => $productCategory,
-      'creator'    => $this->values['creator'],
+      //'creator'    => $this->values['creator'],
       'price'      => array(
         'from' => $this->values['price']['from'],
         'to'   => $this->values['price']['to'],
@@ -80,21 +80,20 @@ class myProductTagFormFilter extends sfFormFilter
       'parameters' => array(),
     );
 
-    $productFilterList = $productCategory->ProductType->TagGroup;
-    $productFilterList->indexBy('id');
+    $productTagFilterList = $productCategory->TagGroup;
+    $productTagFilterList->indexBy('id');
     foreach ($this->values as $id => $param)
     {
-      if (0 !== strpos($id, 'param-')) continue;
+      if (0 !== strpos($id, 'tag-')) continue;
 
-      $productFilter = $productFilterList->getByIndex('id', $id);
-      if (!$productFilter) continue;
+      $productTagFilter = $productTagFilterList->getByIndex('id', substr($id, 4));
+      if (!$productTagFilter) continue;
 
       $filter['parameters'][] = array(
-        'filter' => $productFilter,
-        'values' => $param,
+        'tag_group' => $productTagFilter->id,
+        'values'    => $param,
       );
     }
-
     ProductTable::getInstance()->setQueryForTagFilter($q, $filter);
   }
 

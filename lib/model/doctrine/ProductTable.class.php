@@ -340,17 +340,13 @@ class ProductTable extends myDoctrineTable
     // параметры
     if (count($filter['parameters']) > 0)
     {
-      if (!$q->hasAliasDeclaration('productPropertyRelation'))
-      {
-        $q->leftJoin('product.PropertyRelation productPropertyRelation');
-      }
-
       foreach ($filter['parameters'] as $parameter)
       {
         if (count($parameter['values']) > 0)
         {
-          $q->addWhere(
-            'tagProductRelation.tag_id = ?', $parameter['values']
+          $q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group'].' WITH id = ?', $parameter['tag_group']);
+          $q->andWhereIn(
+            'tagRelation'.$parameter['tag_group'].'.tag_id', $parameter['values']
           );
         }
       }
