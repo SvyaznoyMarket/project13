@@ -12,7 +12,7 @@
  */
 class DeliveryType extends BaseDeliveryType
 {
-  public function getChoiseForOrder()
+  public function getChoiceForOrder()
   {
     return array('label' => $this->name, 'description' => $this->description, );
   }

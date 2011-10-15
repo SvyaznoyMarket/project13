@@ -8,16 +8,16 @@ class OrderStep1Form extends BaseOrderForm
 
     sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
 
-	$user = sfContext::getInstance()->getUser()->getGuardUser();
+    $user = sfContext::getInstance()->getUser()->getGuardUser();
 
     $this->disableCSRFProtection();
 
     $this->widgetSchema['region_id'] = new sfWidgetFormChoice(array(
-	  'choices'  => RegionTable::getInstance()->findByType('city')->toKeyValueArray('id', 'name'),
+      'choices'  => RegionTable::getInstance()->findByType('city')->toKeyValueArray('id', 'name'),
       'multiple' => false,
       'expanded' => false,
       'renderer_class'  => 'myWidgetFormOrderSelect',
-	)/*, array(
+    )/*, array(
       'data-url' => url_for('region_autocomplete', array('type' => 'city')),
 	  'renderer_class'  => 'myWidgetFormOrderSelect',
     )*/);
@@ -59,16 +59,15 @@ class OrderStep1Form extends BaseOrderForm
     }*/
     $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
       //'choices'  => $choices,
-      'model'    => 'DeliveryType',
-      'method'   => 'getChoiseForOrder',
-      'multiple' => false,
-      'expanded' => true,
+      'model'           => 'DeliveryType',
+      'method'          => 'getChoiceForOrder',
+      'multiple'        => false,
+      'expanded'        => true,
       'renderer_class'  => 'myWidgetFormOrderSelectRadio',
     ));
     $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ доставки:');
     $this->validatorSchema['delivery_type_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryType', 'required' => true));
 
-    //$choices = array('' => '');
     $choices = array();
     for ($i = 1; $i <= 7; $i++)
     {
@@ -99,20 +98,21 @@ class OrderStep1Form extends BaseOrderForm
       'add_empty'       => false,
       'expanded'        => false,
       'renderer_class'  => 'myWidgetFormOrderSelect',
+      'query'           => $this->object->delivery_type_id ? DeliveryPeriodTable::getInstance()->createBaseQuery()->addWhere('deliveryPeriod.delivery_type_id = ?', $this->object->delivery_type_id) : null,
     ));
-    $this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'PaymentMethod', 'required' => true));
+    $this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryPeriod', 'required' => true));
 
     $this->widgetSchema['address'] = new sfWidgetFormInputText();
-	$this->widgetSchema['address']->setDefault($user->address);
+	  $this->widgetSchema['address']->setDefault($user->address);
     $this->widgetSchema['address']->setLabel('Адрес доставки:');
     $this->validatorSchema['address'] = new sfValidatorString(array('required' => true));
 
     $this->widgetSchema['shop_id'] = new sfWidgetFormChoice(array(
 //      'choices'  => myToolkit::arrayDeepMerge(array('' => ''), ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name')),
 //      'choices'  => ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name'),
-      'choices'  => ShopTable::getInstance()->findAll()->toKeyValueArray('id', 'name'),
-      'multiple' => false,
-      'expanded' => false,
+      'choices'         => ShopTable::getInstance()->getChoices(),
+      'multiple'        => false,
+      'expanded'        => false,
       'renderer_class'  => 'myWidgetFormOrderSelect',
     ));
     $this->widgetSchema['shop_id']->setLabel('Выберите магазин из списка:');

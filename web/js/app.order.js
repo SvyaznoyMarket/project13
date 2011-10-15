@@ -1,15 +1,12 @@
 $(document).ready(function() {
-
-  $('.order-form').bind({
-    'change': function(e, effect) {
+    
+$('.order-form').bind({
+    'change': function(e) {
 
       var form = $(this)
       var hidden = []
 
-      if (undefined == effect) {
-        effect = true
-      }
-
+      /*
       var el = form.find('[name="order[receipt_type]"]:checked')
       // если способ получения не доставка
       if (!el.length || ('delivery' != el.val())) {
@@ -25,27 +22,33 @@ $(document).ready(function() {
           'shop_id'
         )
       }
-
-      function checkPersonType() {
+      */
+     
+      function checkDeliveryType() {
         var d = $.Deferred();
 
-        // если изменился тип лица (юридическое, физическое)
-        if ('order[person_type]' == $(e.target).attr('name')) {
-          var el = form.find('[name="order[person_type]"]:checked')
+        // если изменился способ доставки
+        if ('order[delivery_type_id]' == $(e.target).attr('name')) {
+          var el = form.find('[name="order[delivery_type_id]"]:checked')
           if (el.length) {
-            effect = $('.form-row[data-field="delivery_type_id"]').is(':visible')
 
             $.post(form.data('updateFieldUrl'), {
               order: {
-                person_type: el.val()
+                delivery_type_id: el.val()
               },
-              field: 'delivery_type_id'
+              field: 'delivery_period_id'
             }, function(result) {
               if (true === result.success) {
-                $('.form-row[data-field="delivery_type_id"] .content').hide('fast', function() {
-                  $('.form-row[data-field="delivery_type_id"]').replaceWith(result.data.content)
-                  d.resolve()
+                var select = $('[name="order[delivery_period_id]"]')
+                
+                select.empty()
+                $.each(result.data.content, function(v, n) {
+                  select.append('<option value="'+v+'">'+n+'</option>')
                 })
+                select.find(':first').attr('selected', 'selected')
+                //select.change()
+                
+                d.resolve()
               }
               else {
                 d.reject()
@@ -54,6 +57,7 @@ $(document).ready(function() {
             .error(function() {
               d.reject()
             })
+
           }
         }
         else {
@@ -63,8 +67,9 @@ $(document).ready(function() {
         return d.promise();
       }
 
-      $.when(checkPersonType())
+      $.when(checkDeliveryType())
       .then(function() {
+        /*
         form.find('.form-row').each(function(i, el) {
           var el = $(el)
 
@@ -75,24 +80,17 @@ $(document).ready(function() {
             if (true == effect) {el.hide('fast')} else {el.hide()}
           }
         })
+        */
       })
 
     }
   })
-
-
 
   $('.order_user_address').bind('change', function(e) {
     var el = $(this)
 
     $('[name="order[address]"]').val(el.val())
   })
-
-
-
-  $('.order-form').trigger('change', [false])
-
-
 
   $('.order_region_name').autocomplete($('#order_region_id').data('url'), {
     queryArgument: 'q',
