@@ -5,7 +5,7 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-  <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory, 'is_root' => true, )) ?>
+  <?php include_component('productCatalog', 'tag', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
 <?php include_partial('productCatalog/plugs/plug'.$productCategory->position) ?>

@@ -15,27 +15,30 @@
  * @property Doctrine_Collection $ProductTypeRelation
  * @property Doctrine_Collection $Tag
  * @property Doctrine_Collection $TagRelation
+ * @property Doctrine_Collection $ProductCategoryRelation
  * 
- * @method integer             getId()                  Returns the current record's "id" value
- * @method integer             getCoreId()              Returns the current record's "core_id" value
- * @method string              getToken()               Returns the current record's "token" value
- * @method string              getName()                Returns the current record's "name" value
- * @method set                 getType()                Returns the current record's "type" value
- * @method integer             getPosition()            Returns the current record's "position" value
- * @method Doctrine_Collection getProductType()         Returns the current record's "ProductType" collection
- * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
- * @method Doctrine_Collection getTag()                 Returns the current record's "Tag" collection
- * @method Doctrine_Collection getTagRelation()         Returns the current record's "TagRelation" collection
- * @method TagGroup            setId()                  Sets the current record's "id" value
- * @method TagGroup            setCoreId()              Sets the current record's "core_id" value
- * @method TagGroup            setToken()               Sets the current record's "token" value
- * @method TagGroup            setName()                Sets the current record's "name" value
- * @method TagGroup            setType()                Sets the current record's "type" value
- * @method TagGroup            setPosition()            Sets the current record's "position" value
- * @method TagGroup            setProductType()         Sets the current record's "ProductType" collection
- * @method TagGroup            setProductTypeRelation() Sets the current record's "ProductTypeRelation" collection
- * @method TagGroup            setTag()                 Sets the current record's "Tag" collection
- * @method TagGroup            setTagRelation()         Sets the current record's "TagRelation" collection
+ * @method integer             getId()                      Returns the current record's "id" value
+ * @method integer             getCoreId()                  Returns the current record's "core_id" value
+ * @method string              getToken()                   Returns the current record's "token" value
+ * @method string              getName()                    Returns the current record's "name" value
+ * @method set                 getType()                    Returns the current record's "type" value
+ * @method integer             getPosition()                Returns the current record's "position" value
+ * @method Doctrine_Collection getProductType()             Returns the current record's "ProductType" collection
+ * @method Doctrine_Collection getProductTypeRelation()     Returns the current record's "ProductTypeRelation" collection
+ * @method Doctrine_Collection getTag()                     Returns the current record's "Tag" collection
+ * @method Doctrine_Collection getTagRelation()             Returns the current record's "TagRelation" collection
+ * @method Doctrine_Collection getProductCategoryRelation() Returns the current record's "ProductCategoryRelation" collection
+ * @method TagGroup            setId()                      Sets the current record's "id" value
+ * @method TagGroup            setCoreId()                  Sets the current record's "core_id" value
+ * @method TagGroup            setToken()                   Sets the current record's "token" value
+ * @method TagGroup            setName()                    Sets the current record's "name" value
+ * @method TagGroup            setType()                    Sets the current record's "type" value
+ * @method TagGroup            setPosition()                Sets the current record's "position" value
+ * @method TagGroup            setProductType()             Sets the current record's "ProductType" collection
+ * @method TagGroup            setProductTypeRelation()     Sets the current record's "ProductTypeRelation" collection
+ * @method TagGroup            setTag()                     Sets the current record's "Tag" collection
+ * @method TagGroup            setTagRelation()             Sets the current record's "TagRelation" collection
+ * @method TagGroup            setProductCategoryRelation() Sets the current record's "ProductCategoryRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -113,6 +116,10 @@ abstract class BaseTagGroup extends myDoctrineRecord
         $this->hasMany('TagGroupRelation as TagRelation', array(
              'local' => 'id',
              'foreign' => 'group_id'));
+
+        $this->hasMany('TagGroupProductCategoryRelation as ProductCategoryRelation', array(
+             'local' => 'id',
+             'foreign' => 'tag_group_id'));
 
         $timestampable0 = new Doctrine_Template_Timestampable(array(
              ));

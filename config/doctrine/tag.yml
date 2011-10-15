@@ -56,13 +56,13 @@ TagProductRelation:
     Tag:               { class: Tag, foreignAlias: ProductRelation, local: tag_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: TagRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
-TagProductCategoryRelation:
+TagGroupProductCategoryRelation:
   options:
     comment: 'Связь тега и категории товара'
   actAs: [ Timestampable ]
   columns:
-    tag_id:              { type: integer(20), primary: true, notnull: true }
+    tag_group_id:        { type: integer(20), primary: true, notnull: true }
     product_category_id: { type: integer(20), primary: true, notnull: true }
   relations:
-    Tag:                 { class: Tag, foreignAlias: ProductCategoryRelation, local: tag_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    ProductCategory:     { class: ProductCategory, foreignAlias: TagRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    TagGroup:            { class: TagGroup, foreignAlias: ProductCategoryRelation, local: tag_group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    ProductCategory:     { class: ProductCategory, foreignAlias: TagGroupRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

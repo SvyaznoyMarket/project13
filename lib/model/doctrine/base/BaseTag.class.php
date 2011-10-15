@@ -13,26 +13,23 @@
  * @property Doctrine_Collection $Group
  * @property Doctrine_Collection $GroupRelation
  * @property Doctrine_Collection $ProductRelation
- * @property Doctrine_Collection $ProductCategoryRelation
  * 
- * @method integer             getId()                      Returns the current record's "id" value
- * @method integer             getCoreId()                  Returns the current record's "core_id" value
- * @method integer             getGroupId()                 Returns the current record's "group_id" value
- * @method string              getToken()                   Returns the current record's "token" value
- * @method string              getName()                    Returns the current record's "name" value
- * @method Doctrine_Collection getGroup()                   Returns the current record's "Group" collection
- * @method Doctrine_Collection getGroupRelation()           Returns the current record's "GroupRelation" collection
- * @method Doctrine_Collection getProductRelation()         Returns the current record's "ProductRelation" collection
- * @method Doctrine_Collection getProductCategoryRelation() Returns the current record's "ProductCategoryRelation" collection
- * @method Tag                 setId()                      Sets the current record's "id" value
- * @method Tag                 setCoreId()                  Sets the current record's "core_id" value
- * @method Tag                 setGroupId()                 Sets the current record's "group_id" value
- * @method Tag                 setToken()                   Sets the current record's "token" value
- * @method Tag                 setName()                    Sets the current record's "name" value
- * @method Tag                 setGroup()                   Sets the current record's "Group" collection
- * @method Tag                 setGroupRelation()           Sets the current record's "GroupRelation" collection
- * @method Tag                 setProductRelation()         Sets the current record's "ProductRelation" collection
- * @method Tag                 setProductCategoryRelation() Sets the current record's "ProductCategoryRelation" collection
+ * @method integer             getId()              Returns the current record's "id" value
+ * @method integer             getCoreId()          Returns the current record's "core_id" value
+ * @method integer             getGroupId()         Returns the current record's "group_id" value
+ * @method string              getToken()           Returns the current record's "token" value
+ * @method string              getName()            Returns the current record's "name" value
+ * @method Doctrine_Collection getGroup()           Returns the current record's "Group" collection
+ * @method Doctrine_Collection getGroupRelation()   Returns the current record's "GroupRelation" collection
+ * @method Doctrine_Collection getProductRelation() Returns the current record's "ProductRelation" collection
+ * @method Tag                 setId()              Sets the current record's "id" value
+ * @method Tag                 setCoreId()          Sets the current record's "core_id" value
+ * @method Tag                 setGroupId()         Sets the current record's "group_id" value
+ * @method Tag                 setToken()           Sets the current record's "token" value
+ * @method Tag                 setName()            Sets the current record's "name" value
+ * @method Tag                 setGroup()           Sets the current record's "Group" collection
+ * @method Tag                 setGroupRelation()   Sets the current record's "GroupRelation" collection
+ * @method Tag                 setProductRelation() Sets the current record's "ProductRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -91,10 +88,6 @@ abstract class BaseTag extends myDoctrineRecord
              'foreign' => 'tag_id'));
 
         $this->hasMany('TagProductRelation as ProductRelation', array(
-             'local' => 'id',
-             'foreign' => 'tag_id'));
-
-        $this->hasMany('TagProductCategoryRelation as ProductCategoryRelation', array(
              'local' => 'id',
              'foreign' => 'tag_id'));
 

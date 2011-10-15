@@ -284,6 +284,79 @@ class ProductTable extends myDoctrineTable
     }
   }
 
+  public function setQueryForTagFilter(myDoctrineQuery $q, array $filter, array $params = array())
+  {
+    $filter = myToolkit::arrayDeepMerge(array(
+      'category'   => false,
+      'creator'    => false,
+      'parameters' => array(),
+      'price'      => array('from' => null, 'to' => null),
+    ), $filter);
+
+    // категория
+    if ($filter['category'])
+    {
+      if ($filter['category'] instanceof ProductCategory)
+      {
+        $descendants = $filter['category']->getNode()->getDescendants();
+        $ids = $descendants ? $descendants->toValueArray('id') : array();
+        $ids[] = $filter['category']->id;
+      }
+      else if (!is_array($filter['category']))
+      {
+        $ids = array($filter['category']);
+      }
+
+      if (count($ids) > 0)
+      {
+        $q->innerJoin('product.Category category');
+        //$q->addWhere('category.id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
+        $q->whereIn('category.id', $ids);
+      }
+    }
+
+    // производитель
+    if ($filter['creator'])
+    {
+      if (is_array($filter['creator']))
+      {
+        $q->whereIn('product.creator_id', $filter['creator']);
+      }
+      else {
+        $q->addWhere('product.creator_id = ?', ($filter['creator'] instanceof Creator) ? $filter['creator']->id : $filter['creator']);
+      }
+    }
+
+    // цена
+    if ($filter['price']['from'])
+    {
+      $q->addWhere('product.price >= ?', $filter['price']['from']);
+    }
+    if ($filter['price']['to'])
+    {
+      $q->addWhere('product.price <= ?', $filter['price']['to']);
+    }
+
+    // параметры
+    if (count($filter['parameters']) > 0)
+    {
+      if (!$q->hasAliasDeclaration('productPropertyRelation'))
+      {
+        $q->leftJoin('product.PropertyRelation productPropertyRelation');
+      }
+
+      foreach ($filter['parameters'] as $parameter)
+      {
+        if (count($parameter['values']) > 0)
+        {
+          $q->addWhere(
+            'tagProductRelation.tag_id = ?', $parameter['values']
+          );
+        }
+      }
+    }
+  }
+
   public function getListByTokens(array $tokens, array $params = array())
   {
     $list = $this->createList();

@@ -24,7 +24,7 @@
  * @property Doctrine_Collection $ProductRelation
  * @property Doctrine_Collection $Link
  * @property Doctrine_Collection $ProductTypeRelation
- * @property Doctrine_Collection $TagRelation
+ * @property Doctrine_Collection $TagGroupRelation
  * 
  * @method integer             getId()                  Returns the current record's "id" value
  * @method integer             getCoreId()              Returns the current record's "core_id" value
@@ -45,7 +45,7 @@
  * @method Doctrine_Collection getProductRelation()     Returns the current record's "ProductRelation" collection
  * @method Doctrine_Collection getLink()                Returns the current record's "Link" collection
  * @method Doctrine_Collection getProductTypeRelation() Returns the current record's "ProductTypeRelation" collection
- * @method Doctrine_Collection getTagRelation()         Returns the current record's "TagRelation" collection
+ * @method Doctrine_Collection getTagGroupRelation()    Returns the current record's "TagGroupRelation" collection
  * @method ProductCategory     setId()                  Sets the current record's "id" value
  * @method ProductCategory     setCoreId()              Sets the current record's "core_id" value
  * @method ProductCategory     setCoreParentId()        Sets the current record's "core_parent_id" value
@@ -65,7 +65,7 @@
  * @method ProductCategory     setProductRelation()     Sets the current record's "ProductRelation" collection
  * @method ProductCategory     setLink()                Sets the current record's "Link" collection
  * @method ProductCategory     setProductTypeRelation() Sets the current record's "ProductTypeRelation" collection
- * @method ProductCategory     setTagRelation()         Sets the current record's "TagRelation" collection
+ * @method ProductCategory     setTagGroupRelation()    Sets the current record's "TagGroupRelation" collection
  * 
  * @package    enter
  * @subpackage model
@@ -182,7 +182,7 @@ abstract class BaseProductCategory extends myDoctrineRecord
              'local' => 'id',
              'foreign' => 'product_category_id'));
 
-        $this->hasMany('TagProductCategoryRelation as TagRelation', array(
+        $this->hasMany('TagGroupProductCategoryRelation as TagGroupRelation', array(
              'local' => 'id',
              'foreign' => 'product_category_id'));
 
