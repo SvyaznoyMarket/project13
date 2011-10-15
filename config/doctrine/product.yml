@@ -204,6 +204,7 @@ Product:
     rating:            { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
     rating_quantity:   { type: integer(4), notnull: true, default: 0, comment: 'Количество голосов пользователей' }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }
+    score:             { type: 'decimal(10,5)', notnull: true, default: 0, comment: 'Внутренний рейтинг' }
   relations:
     Type:              { class: ProductType, foreignAlias: Product, local: type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     Creator:           { class: Creator, foreignAlias: Product, local: creator_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }

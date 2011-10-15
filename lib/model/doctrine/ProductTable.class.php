@@ -20,15 +20,16 @@ class ProductTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'           => 'core_id',
-      'name'         => 'name',
-      'bar_code'     => 'barcode',
-      'article'      => 'article',
-      'announce'     => 'preview',
-      'tagline'      => 'tagline',
-      'description'  => 'description',
-      'rating'       => 'rating',
-      'rating_count' => 'rating_quantity',
+      'id'            => 'core_id',
+      'name'          => 'name',
+      'bar_code'      => 'barcode',
+      'article'       => 'article',
+      'announce'      => 'preview',
+      'tagline'       => 'tagline',
+      'description'   => 'description',
+      'rating'        => 'rating',
+      'rating_count'  => 'rating_quantity',
+      'score'         => 'score',
     );
   }
 
@@ -55,7 +56,9 @@ class ProductTable extends myDoctrineTable
       $q->addWhere('product.view_show = ?', true);
     }
 
-    $q->addWhere('is_instock = ?', array(1, ));
+    $q->addWhere('product.is_instock = ?', array(1, ));
+
+    $q->orderBy('product.score DESC');
 
     return $q;
   }
@@ -344,7 +347,7 @@ class ProductTable extends myDoctrineTable
       {
         if (count($parameter['values']) > 0)
         {
-          $q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group'].' WITH id = ?', $parameter['tag_group']);
+          $q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group']);
           $q->andWhereIn(
             'tagRelation'.$parameter['tag_group'].'.tag_id', $parameter['values']
           );
@@ -418,13 +421,20 @@ class ProductTable extends myDoctrineTable
   {
     $q = $this->createBaseQuery($params);
 
-    $descendants = $category->getNode()->getDescendants();
-    $ids = $descendants ? $descendants->toValueArray('id') : array();
-    $ids[] = $category->id;
+    if (!empty($category->product_id))
+    {
+      $q->where('product.id = ?', $category->product_id);
+    }
+    else
+    {
+      $descendants = $category->getNode()->getDescendants();
+      $ids = $descendants ? $descendants->toValueArray('id') : array($category->id, );
+      $ids[] = $category->id;
 
-    $q->innerJoin('product.Category category')
-        ->whereIn('category.id', $ids)
-    ;
+      $q->innerJoin('product.Category category')
+          ->whereIn('category.id', $ids)
+      ;
+    }
 
     $this->setQueryParameters($q, $params);
 
