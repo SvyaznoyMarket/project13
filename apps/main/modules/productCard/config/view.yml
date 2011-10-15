@@ -1,0 +1,6 @@
+indexSuccess:
+
+  javascripts:
+    - jquery.mousewheel.min.js
+    - watch3d.js
+    - productcard.js
