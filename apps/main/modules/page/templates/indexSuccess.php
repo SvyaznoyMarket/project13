@@ -1,3 +1,5 @@
-<h1><?php echo $page['name'] ?></h1>
+<?php if (isset($page['name']) && !empty($page['name'])): ?>
+  <?php slot('title', $page['name']) ?>
+<?php endif ?>
 
-<?php echo $page['content'] ?>
+<?php echo sfOutputEscaper::unescape($page['content']) ?>
