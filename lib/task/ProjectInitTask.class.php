@@ -352,6 +352,11 @@ EOF;
     $record = ProductCategoryTable::getInstance()->createRecordFromCore($data);
     $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
+    if (isset($data['product_id']))
+    {
+      $record->product_id = $this->getRecordByCoreId('Product', $data['product_id'], true);
+    }
+
     $filter = new ProductFilterGroup();
     $filter->fromArray(array(
       'name' => 'Фильтр для '.$record->name,

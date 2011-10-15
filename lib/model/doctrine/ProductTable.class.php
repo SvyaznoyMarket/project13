@@ -20,15 +20,16 @@ class ProductTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'           => 'core_id',
-      'name'         => 'name',
-      'bar_code'     => 'barcode',
-      'article'      => 'article',
-      'announce'     => 'preview',
-      'tagline'      => 'tagline',
-      'description'  => 'description',
-      'rating'       => 'rating',
-      'rating_count' => 'rating_quantity',
+      'id'            => 'core_id',
+      'name'          => 'name',
+      'bar_code'      => 'barcode',
+      'article'       => 'article',
+      'announce'      => 'preview',
+      'tagline'       => 'tagline',
+      'description'   => 'description',
+      'rating'        => 'rating',
+      'rating_count'  => 'rating_quantity',
+      'score'         => 'score',
     );
   }
 
@@ -55,7 +56,9 @@ class ProductTable extends myDoctrineTable
       $q->addWhere('product.view_show = ?', true);
     }
 
-    $q->addWhere('is_instock = ?', array(1, ));
+    $q->addWhere('product.is_instock = ?', array(1, ));
+
+    $q->orderBy('product.score DESC');
 
     return $q;
   }
@@ -239,11 +242,18 @@ class ProductTable extends myDoctrineTable
     // цена
     if ($filter['price']['from'])
     {
-      $q->addWhere('product.price >= ?', $filter['price']['from']);
+      $q->innerJoin('product.Prices prices');
+      $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      $q->addWhere('prices.price >= ?', $filter['price']['from']);
     }
     if ($filter['price']['to'])
     {
-      $q->addWhere('product.price <= ?', $filter['price']['to']);
+      if (!$q->hasAliasDeclaration('prices'))
+      {
+        $q->innerJoin('product.Prices prices');
+        $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      }
+      $q->addWhere('prices.price <= ?', $filter['price']['to']);
     }
 
     // параметры
@@ -330,27 +340,30 @@ class ProductTable extends myDoctrineTable
     // цена
     if ($filter['price']['from'])
     {
-      $q->addWhere('product.price >= ?', $filter['price']['from']);
+      $q->innerJoin('product.Prices prices');
+      $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      $q->addWhere('prices.price >= ?', $filter['price']['from']);
     }
     if ($filter['price']['to'])
     {
-      $q->addWhere('product.price <= ?', $filter['price']['to']);
+      if (!$q->hasAliasDeclaration('prices'))
+      {
+        $q->innerJoin('product.Prices prices');
+        $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      }
+      $q->addWhere('prices.price <= ?', $filter['price']['to']);
     }
 
     // параметры
     if (count($filter['parameters']) > 0)
     {
-      if (!$q->hasAliasDeclaration('productPropertyRelation'))
-      {
-        $q->leftJoin('product.PropertyRelation productPropertyRelation');
-      }
-
       foreach ($filter['parameters'] as $parameter)
       {
         if (count($parameter['values']) > 0)
         {
-          $q->addWhere(
-            'tagProductRelation.tag_id = ?', $parameter['values']
+          $q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group']);
+          $q->andWhereIn(
+            'tagRelation'.$parameter['tag_group'].'.tag_id', $parameter['values']
           );
         }
       }
@@ -422,13 +435,20 @@ class ProductTable extends myDoctrineTable
   {
     $q = $this->createBaseQuery($params);
 
-    $descendants = $category->getNode()->getDescendants();
-    $ids = $descendants ? $descendants->toValueArray('id') : array();
-    $ids[] = $category->id;
+    if (!empty($category->product_id))
+    {
+      $q->where('product.id = ?', $category->product_id);
+    }
+    else
+    {
+      $descendants = $category->getNode()->getDescendants();
+      $ids = $descendants ? $descendants->toValueArray('id') : array($category->id, );
+      $ids[] = $category->id;
 
-    $q->innerJoin('product.Category category')
-        ->whereIn('category.id', $ids)
-    ;
+      $q->innerJoin('product.Category category')
+          ->whereIn('category.id', $ids)
+      ;
+    }
 
     $this->setQueryParameters($q, $params);
 

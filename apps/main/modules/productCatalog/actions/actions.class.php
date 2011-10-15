@@ -46,6 +46,30 @@ class productCatalogActions extends myActions
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
  /**
+  * Executes filter action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeTag(sfWebRequest $request)
+  {
+    $this->productCategory = $this->getRoute()->getObject();
+
+    $this->productTagFilter = $this->getProductTagFilter();
+    $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
+
+    $q = ProductTable::getInstance()->createBaseQuery();
+    $this->productTagFilter->buildQuery($q);
+
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
+
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+    ));
+    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+  }
+ /**
   * Executes count action
   *
   * @param sfRequest $request A request object
@@ -55,11 +79,22 @@ class productCatalogActions extends myActions
     $this->productCategory = $this->getRoute()->getObject();
 
     $this->productFilter = $this->getProductFilter();
-    $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
+    $this->productTagFilter = $this->getProductTagFilter();
 
-    $q = ProductTable::getInstance()->createBaseQuery();
-    $this->productFilter->buildQuery($q);
+    if ($request->hasParameter($this->productFilter->getName()))
+    {
+      $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
 
+      $q = ProductTable::getInstance()->createBaseQuery();
+      $this->productFilter->buildQuery($q);
+    }
+    elseif ($request->hasParameter($this->productTagFilter->getName()))
+    {
+      $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
+
+      $q = ProductTable::getInstance()->createBaseQuery();
+      $this->productTagFilter->buildQuery($q);
+    }
 
     return $this->renderJson(array(
       'success' => true,
@@ -177,6 +212,13 @@ class productCatalogActions extends myActions
   protected function getProductFilter()
   {
     return new myProductFormFilter(array(), array(
+      'productCategory' => $this->productCategory,
+    ));
+  }
+
+  protected function getProductTagFilter()
+  {
+    return new myProductTagFormFilter(array(), array(
       'productCategory' => $this->productCategory,
     ));
   }
