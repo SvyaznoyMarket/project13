@@ -757,6 +757,15 @@ EOF;
     return $record;
   }
 
+  //DeliveryPeriod
+  protected function createDeliveryPeriodRecord(array $data)
+  {
+    $record = DeliveryPeriodTable::getInstance()->createRecordFromCore($data);
+    $record->delivery_type_id = $this->getRecordByCoreId('DeliveryType', $data['delivery_type_id'], true);
+
+    return $record;
+  }
+
   //Photo for everything
   protected function processUpload(array $data)
   {

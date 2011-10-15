@@ -11,22 +11,25 @@
  * @property string $name
  * @property string $description
  * @property boolean $is_active
+ * @property Doctrine_Collection $DeliveryPeriod
  * @property Doctrine_Collection $Order
  * 
- * @method integer             getId()          Returns the current record's "id" value
- * @method integer             getCoreId()      Returns the current record's "core_id" value
- * @method string              getToken()       Returns the current record's "token" value
- * @method string              getName()        Returns the current record's "name" value
- * @method string              getDescription() Returns the current record's "description" value
- * @method boolean             getIsActive()    Returns the current record's "is_active" value
- * @method Doctrine_Collection getOrder()       Returns the current record's "Order" collection
- * @method DeliveryType        setId()          Sets the current record's "id" value
- * @method DeliveryType        setCoreId()      Sets the current record's "core_id" value
- * @method DeliveryType        setToken()       Sets the current record's "token" value
- * @method DeliveryType        setName()        Sets the current record's "name" value
- * @method DeliveryType        setDescription() Sets the current record's "description" value
- * @method DeliveryType        setIsActive()    Sets the current record's "is_active" value
- * @method DeliveryType        setOrder()       Sets the current record's "Order" collection
+ * @method integer             getId()             Returns the current record's "id" value
+ * @method integer             getCoreId()         Returns the current record's "core_id" value
+ * @method string              getToken()          Returns the current record's "token" value
+ * @method string              getName()           Returns the current record's "name" value
+ * @method string              getDescription()    Returns the current record's "description" value
+ * @method boolean             getIsActive()       Returns the current record's "is_active" value
+ * @method Doctrine_Collection getDeliveryPeriod() Returns the current record's "DeliveryPeriod" collection
+ * @method Doctrine_Collection getOrder()          Returns the current record's "Order" collection
+ * @method DeliveryType        setId()             Sets the current record's "id" value
+ * @method DeliveryType        setCoreId()         Sets the current record's "core_id" value
+ * @method DeliveryType        setToken()          Sets the current record's "token" value
+ * @method DeliveryType        setName()           Sets the current record's "name" value
+ * @method DeliveryType        setDescription()    Sets the current record's "description" value
+ * @method DeliveryType        setIsActive()       Sets the current record's "is_active" value
+ * @method DeliveryType        setDeliveryPeriod() Sets the current record's "DeliveryPeriod" collection
+ * @method DeliveryType        setOrder()          Sets the current record's "Order" collection
  * 
  * @package    enter
  * @subpackage model
@@ -82,6 +85,10 @@ abstract class BaseDeliveryType extends myDoctrineRecord
     public function setUp()
     {
         parent::setUp();
+        $this->hasMany('DeliveryPeriod', array(
+             'local' => 'id',
+             'foreign' => 'delivery_type_id'));
+
         $this->hasMany('Order', array(
              'local' => 'id',
              'foreign' => 'delivery_type_id'));
