@@ -41,7 +41,7 @@ class StockTable extends myDoctrineTable
   {
     return array(
       'id'      => 'core_id',
-      'type_id' => 'type_id',
+      'type_id' => 'type',
       'name'    => 'name',
       'added'   => 'created_at',
     );
