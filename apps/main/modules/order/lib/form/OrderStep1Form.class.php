@@ -109,7 +109,8 @@ class OrderStep1Form extends BaseOrderForm
 
     $this->widgetSchema['shop_id'] = new sfWidgetFormChoice(array(
 //      'choices'  => myToolkit::arrayDeepMerge(array('' => ''), ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name')),
-      'choices'  => ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name'),
+//      'choices'  => ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name'),
+      'choices'  => ShopTable::getInstance()->findAll()->toKeyValueArray('id', 'name'),
       'multiple' => false,
       'expanded' => false,
       'renderer_class'  => 'myWidgetFormOrderSelect',

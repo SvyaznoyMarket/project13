@@ -1,4 +1,5 @@
-<?php sfProjectConfiguration::getActive()->loadHelpers('Date'); ?>
+<?php use_helper('Date') ?>
+
 <?php slot('title', 'Ваш заказ принят, спасибо за покупку!') ?>
 <?php //myDebug::dump($order) ?>
     <!-- Basket -->
