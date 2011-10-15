@@ -1,4 +1,4 @@
-<?php 
+<?php
 	$photos = $product->getAllPhotos();
 	$p3d = $product->getAll3dPhotos();
 	$urls = sfConfig::get('app_product_photo_url');
@@ -59,7 +59,6 @@
 
         <div class="fl pb15">
 			<div class="font10"><br/><br/></div>
-<!--            <div class="font10">Старая цена<br /><span class="through">33 990 <span class="rubl">&#8399;</span></span></div>-->
             <div class="pb10"><?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?></div>
             <?php if ($product->is_instock): ?>
 			<div class="pb5"><strong class="orange">Есть в наличии</strong></div>
@@ -156,7 +155,7 @@
     </div>
 	<?php endif ?>
 <!-- /Photo video -->
-
+<div class="clear"></div>
 
 <!-- Description -->
 <h2 class="bold">Характеристики</h2>
@@ -172,15 +171,15 @@
 <!-- Media -->
 <div class="popup mediablock" id="bigpopup"><!-- IVN block #bigpopup is media gallery popup  -->
 	<i title="Закрыть" class="close">Закрыть</i>
-	
+
 	<div class="float100">
 		<div class="photoview">
-			<div class="photobox" id="photobox"></div> 
-			<div class="scrollbox"><div><b></b></div></div>      
+			<div class="photobox" id="photobox"></div>
+			<div class="scrollbox"><div><b></b></div></div>
 		</div>
 	</div>
-	
-	
+
+
 	<div class="leftpanel" style="margin-left:-100%">
 		<div class="topblock font16">
 			<div class="logobox">Enter связной</div>
@@ -189,7 +188,7 @@
 			<?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?>
 			</div>
 			<!--div class="pb40"><input type="button" class="button yellowbutton" value="Купить" /></div-->
-		
+
 			<h2>Фото и видео:</h2>
 			<ul class="previewlist">
 				<?php foreach ($photos as $i => $photo): ?>
@@ -205,7 +204,7 @@
 				<li><a href="" class="videolink" title="Видео">Видео</a></li-->
 			</ul>
 		</div>
-		
+
 		<!--div class="pb5"><a href="" class="share">Поделиться</a> <strong><a href="" class="nodecor">+87</a></strong></div>
 		<div class="font9 gray">
 			Дата съемок: Сентябрь 2010.<br />
@@ -218,20 +217,20 @@
 			&copy; 2011–2012. Все права защищены и
 			принадлежат "Enter.ru".
 			Копирование и распространение
-			материалов в любой форме запрещены            
+			материалов в любой форме запрещены
 		</div-->
 	</div>
-	
-	
+
+
 	<div class="scalepanel" style="float:left; margin-left:-80px">
 		<div class="zoom"></div>
-		
+
 		<div class="scale">
 			<b class="plus"></b>
 			<div class=""><b class="zoomind" style="top:45%"></b></div>
 			<b class="minus"></b>
 		</div>
-		
+
 		<div class="versioncontrol">
 			<div class="pb5 gray" id="percents" style="font-size:150%;">0%</div>
 			<div id="turnlite">
