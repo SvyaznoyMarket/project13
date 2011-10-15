@@ -359,6 +359,20 @@ EOF;
 
     $record->FilterGroup = $filter;
 
+    // Типы товаров
+    if (!empty($data['type']))
+    {
+      foreach ($data['type'] as $relationData)
+      {
+        $relation = new ProductCategoryTypeRelation();
+        $relation->fromArray(array(
+          'product_type_id' => $this->getRecordByCoreId('ProductType', $relationData['id'], true),
+        ));
+        $record->ProductTypeRelation[] = $relation;
+      }
+    }
+
+
     return $record;
   }
   // ProductCategory
