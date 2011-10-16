@@ -364,20 +364,6 @@ EOF;
 
     $record->FilterGroup = $filter;
 
-    // Типы товаров
-    if (!empty($data['type']))
-    {
-      foreach ($data['type'] as $relationData)
-      {
-        $relation = new ProductCategoryTypeRelation();
-        $relation->fromArray(array(
-          'product_type_id' => $this->getRecordByCoreId('ProductType', $relationData['id'], true),
-        ));
-        $record->ProductTypeRelation[] = $relation;
-      }
-    }
-
-
     return $record;
   }
   // ProductCategory
@@ -456,7 +442,7 @@ EOF;
     $this->connection->exec('TRUNCATE TABLE `product_type`');
     $this->connection->exec('TRUNCATE TABLE `product_type_property_relation`');
     $this->connection->exec('TRUNCATE TABLE `product_type_property_group_relation`');
-    //$this->connection->exec('TRUNCATE TABLE `tag_group_product_type_relation`');
+    $this->connection->exec('TRUNCATE TABLE `product_category_type_relation`');
   }
   // ProductType
   protected function createProductTypeRecord(array $data)
@@ -525,6 +511,20 @@ EOF;
         }
       }
     }
+
+    // Категория товара
+    if (!empty($data['category']))
+    {
+      foreach ($data['category'] as $relationData)
+      {
+        $relation = new ProductCategoryTypeRelation();
+        $relation->fromArray(array(
+          'product_category_id' => $this->getRecordByCoreId('ProductCategory', $relationData['id'], true),
+        ));
+        $record->ProductCategoryRelation[] = $relation;
+      }
+    }
+
 
     return $record;
   }
