@@ -32,9 +32,11 @@ class defaultActions extends myActions
       if ($secret == $request->getParameter($cookieName))
       {
         $this->getResponse()->setCookie($cookieName, md5($secret));
-        $this->redirect('@homepage');
+        $this->redirect($request['url'] ? $request['url'] : '@homepage');
       }
     }
+    
+    $this->url = $request['url'] ? $request['url'] : $request->getUri();
   }
  /**
   * Executes error404 action
