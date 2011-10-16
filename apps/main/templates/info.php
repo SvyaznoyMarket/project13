@@ -42,29 +42,25 @@
           <!-- /Extramenu -->
         </div>
         <!-- /Header -->
+
         <!-- Page head -->
         <div class="pagehead">
-          <div class="breadcrumbs">
-            <?php if (has_slot('navigation')): ?>
-              <?php include_slot('navigation') ?>
-            <?php endif ?>
-          </div>
-          <div class="clear"></div>
-          <?php if (has_slot('title')): ?>
-            <h1><?php include_slot('title') ?></h1>
-          <?php endif ?>
+          <div class="clear pb10"></div>
           <div class="searchbox">
             <form action=""><input type="text" class="searchtext" value="Поиск товаров" onfocus="if (this.value == 'Поиск товаров') this.value = '';" onblur="if (this.value == '') this.value = 'Поиск товаров';"  /><input type="button" class="searchbutton" value="Найти" title="Найти"  id="try-1" /></form>
           </div>
-          <div class="clear pb20"></div>
-          <div class="line"></div>      
-        </div>
 
+          <div class="clear"></div>
+        </div>
         <!-- Page head -->
 
         <?php if (has_slot('left_column')): ?>
           <div class="float100">
-            <div class="column685">
+            <div class="column685 pr">
+              <?php if (has_slot('title')): ?>
+                <h1><?php include_slot('title') ?></h1>
+                <div class="line pb10"></div>
+              <?php endif ?>
               <?php echo $sf_content ?>
             </div>
           </div>
@@ -77,6 +73,7 @@
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
+
     </div>
 
     <!-- Footer -->
@@ -200,6 +197,6 @@
     <?php if (!include_slot('auth'))
       include_partial('default/auth') ?>
 
-<?php include_partial('default/admin') ?>
+    <?php include_partial('default/admin') ?>
   </body>
 </html>

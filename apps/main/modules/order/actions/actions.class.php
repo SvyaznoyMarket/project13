@@ -79,6 +79,7 @@ class orderActions extends myActions
             }
             catch (Exception $e)
             {
+              $this->getLogger()->err('{'.__CLASS__.'} '.$e->getMessage());
             }
             //$user->refresh();
           }

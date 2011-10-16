@@ -13,9 +13,10 @@ class WelcomeFilter extends sfFilter
       
       if ($request->getCookie($cookieName, false) !== md5($secret))
       {
-        $context->getController()->redirect('@welcome', 0);
-
-        throw new sfStopException();
+        $context->getController()->forward('default', 'welcome');
+        
+        //$context->getController()->redirect('@welcome', 0);
+        //throw new sfStopException();
       }
     }
 
