@@ -9,6 +9,8 @@ TagGroup:
     name:              { type: string(255), notnull: true, notblank: true }
     type:              { type: set, length: 10, values: [gift], notnull: false, default: null, comment: 'Тип группы тега' }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
+  relations:
+    ProductCategory:   { class: ProductCategory, foreignAlias: TagGroup, refClass: TagGroupProductCategoryRelation, local: tag_group_id, foreign: product_category_id, type: many, foreignType: many }
 
 TagGroupProductTypeRelation:
   options:
@@ -33,6 +35,7 @@ Tag:
     name:              { type: string(255), notnull: true, notblank: true }
   relations:
     Group:             { class: TagGroup, foreignAlias: Tag, refClass: TagGroupRelation, local: tag_id, foreign: group_id, type: many, foreignType: many }
+    Product:           { class: Product, foreignAlias: Tag, refClass: TagProductRelation, local: tag_id, foreign: product_id, type: many, foreignType: many }
 
 TagGroupRelation:
   options:
@@ -56,13 +59,13 @@ TagProductRelation:
     Tag:               { class: Tag, foreignAlias: ProductRelation, local: tag_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: TagRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
-TagProductCategoryRelation:
+TagGroupProductCategoryRelation:
   options:
     comment: 'Связь тега и категории товара'
   actAs: [ Timestampable ]
   columns:
-    tag_id:              { type: integer(20), primary: true, notnull: true }
+    tag_group_id:        { type: integer(20), primary: true, notnull: true }
     product_category_id: { type: integer(20), primary: true, notnull: true }
   relations:
-    Tag:                 { class: Tag, foreignAlias: ProductCategoryRelation, local: tag_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    ProductCategory:     { class: ProductCategory, foreignAlias: TagRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    TagGroup:            { class: TagGroup, foreignAlias: ProductCategoryRelation, local: tag_group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    ProductCategory:     { class: ProductCategory, foreignAlias: TagGroupRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

@@ -79,6 +79,7 @@ class orderActions extends myActions
             }
             catch (Exception $e)
             {
+              $this->getLogger()->err('{'.__CLASS__.'} '.$e->getMessage());
             }
             //$user->refresh();
           }
@@ -143,6 +144,12 @@ class orderActions extends myActions
   public function executeUpdateField(sfWebRequest $request)
   {
     $this->forward404Unless($request->isXmlHttpRequest());
+    
+    $renderers = array(
+      'delivery_period_id'  => function($form) {
+        return myToolkit::arrayDeepMerge(array('' => ''), $form['delivery_period_id']->getWidget()->getChoices());
+      },
+    );
 
     $field = $request['field'];
     $this->step = $request->getParameter('step', 1);
@@ -161,7 +168,7 @@ class orderActions extends myActions
       $result = array(
         'success' => true,
         'data'    => array(
-          'content' => $this->form[$field]->renderRow(),
+          'content' => isset($renderers[$field]) ? $renderers[$field]($this->form) : $this->getPartial($this->getModuleName().'/field_'.$field, array('form' => $this->form)),
         ),
       );
     }

@@ -35,6 +35,13 @@ productCatalog_filter:
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
+# тэги каталога товаров
+productCatalog_tag:
+  url:   /catalog/:productCategory/_tag
+  param: { module: productCatalog, action: tag }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+#
 # количество найденных товаров
 productCatalog_count:
   url:   /catalog/:productCategory/_count
@@ -48,7 +55,7 @@ productCatalog_category:
   param: { module: productCatalog, action: category}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
-  
+
 # карусель ajax
 productCatalog_carousel:
   url:   /catalog-carousel/:productCategory/
@@ -185,7 +192,7 @@ user:
   url:   /private/
   param: { module: user, action: index }
   requirements:
-    sf_method: [ get,post ]   
+    sf_method: [ get,post ]
 #
 
 # user edit
@@ -193,7 +200,7 @@ user_edit:
   url:   /private/edit
   param: { module: user, action: edit }
   requirements:
-    sf_method: [ get,post ]    
+    sf_method: [ get,post ]
 #
 
 # user edit
@@ -201,7 +208,7 @@ user_update:
   url:   /private/update
   param: { module: user, action: update }
   requirements:
-    sf_method: [ get,post ]    
+    sf_method: [ get,post ]
 #
 
 # user. get short info about cart, wishlist, etc.
@@ -209,19 +216,19 @@ userProductHistory_shortinfo:
   url:   /user/shortinfo
   param: { module: userProductHistory, action: shortinfo }
   requirements:
-    sf_method: [ get,post ]  
-  
+    sf_method: [ get,post ]
+
 # user signin
 user_signin:
   url:   /login/:provider
   param: { module: guard, action: signin, provider: null }
-  
+
 # user signin ajax
 user_signinajax:
   url:   /loginajax/:login/:password/:remember
   param: { module: guard, action: signinAjax, provider: null, remember: 0 }
   requirements:
-    sf_method: [ get,post ]    
+    sf_method: [ get,post ]
 #
 # user signout
 user_signout:
@@ -264,7 +271,7 @@ userProductHistory:
 userProductHistory_clear:
   url:   /private/product-history/clear
   param: { module: userProductHistory, action: clear }
-  
+
 #
 # user delayed product
 userDelayedProduct:

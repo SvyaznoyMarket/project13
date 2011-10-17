@@ -1,6 +1,6 @@
 <?php foreach ($product['ParameterGroup'] as $item): ?>
 	<div class="pb15"><strong><?php echo $item->getName() ?></strong></div>
-	<?php foreach ($item->getParameter() as $property): ?>
+	<?php $i = 0; foreach ($item->getParameter() as $property): ?>
 		<div class="point">
 			<?php $desc = $property->getProperty()->getDescription() ?>
 			<?php if (empty($desc)): ?>

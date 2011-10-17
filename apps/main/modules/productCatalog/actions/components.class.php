@@ -148,4 +148,18 @@ class productCatalogComponents extends myComponents
   public function executeFilter_parameter()
   {
   }
+
+  public function executeTag()
+  {
+    if (empty($this->form))
+    {
+      $this->form = new myProductTagFormFilter(array(), array(
+        'productCategory' => $this->productCategory,
+        'creator'         => $this->creator,
+      ));
+    }
+
+    $this->url = url_for('productCatalog_tag', $this->productCategory);
+
+  }
 }

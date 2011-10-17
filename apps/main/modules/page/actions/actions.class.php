@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class pageActions extends sfActions
+class pageActions extends myActions
 {
  /**
   * Executes index action
@@ -19,6 +19,8 @@ class pageActions extends sfActions
   {
     $this->page = PageTable::getInstance()->getByToken($request['page']);
     $this->forward404Unless($this->page);
+    
+    $this->setVar('page', $this->page, true);
   }
  /**
   * Executes edit action

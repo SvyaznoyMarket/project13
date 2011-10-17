@@ -35,7 +35,10 @@ DeliveryPeriod:
     Corable:           { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
+    delivery_type_id:  { type: integer(20), notnull: true }
     name:              { type: string(255), notnull: true, notblank: true }
+  relations:
+    DeliveryType:      { class: DeliveryType, foreignAlias: DeliveryPeriod, local: delivery_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE}
 
 Order:
   options:

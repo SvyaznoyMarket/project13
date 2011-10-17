@@ -109,7 +109,7 @@ class ProductCategoryTable extends myDoctrineTable
 //	$counts = array();
 //	$countsRaw = Doctrine_Manager::connection()->fetchAll('
 //		SELECT  `id` , COUNT( * ) as `c`
-//		FROM  `product_category` 
+//		FROM  `product_category`
 //		JOIN product_category_product_relation ON product_category.id = product_category_product_relation.product_category_id
 //		GROUP BY id
 //	');
@@ -117,7 +117,7 @@ class ProductCategoryTable extends myDoctrineTable
 //		$counts;
 //	}
 	$notEmptyCats = array();
-	$notEmptyCatsRaw = Doctrine_Manager::connection()->fetchAll('SELECT DISTINCT product_category_id FROM product_category_product_relation');
+	$notEmptyCatsRaw = Doctrine_Manager::connection()->fetchAll('SELECT DISTINCT pc.product_category_id FROM product_category_product_relation pc INNER JOIN product p ON pc.product_id = p.id WHERE p.is_instock = ?', array(1, ));
 //	$notEmptyCatsRaw = Doctrine_Manager::connection()->fetchAll('
 //		SELECT DISTINCT product_category_id FROM product_category_product_relation
 //		JOIN product_category ON product_category.id = product_category_product_relation.product_category_id
@@ -126,10 +126,10 @@ class ProductCategoryTable extends myDoctrineTable
 	foreach ($notEmptyCatsRaw as $raw) {
 		$notEmptyCats[] = $raw['product_category_id'];
 	}
-	  
+
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q, $params);
-	
+
 
 	if (!empty($params['root_id'])) {
 		$q->andWhereIn('productCategory.root_id = ?', (int)$params['root_id']);

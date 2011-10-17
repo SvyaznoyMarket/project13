@@ -5,19 +5,10 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-  <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory, 'is_root' => true, )) ?>
+  <?php include_component('productCatalog', 'tag', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
 <?php include_partial('productCatalog/plugs/plug'.$productCategory->position) ?>
-<!--div class="advertbox">
-  <b class="tl"></b><b class="tr"></b><b class="bl"></b><b class="br"></b>
-  <div><img src="/images/images/photo1.jpg" alt="" width="469" height="342" /></div>
-
-  <ul>
-    <li class="current"><i></i><a href=""><span>Спланируй что-нибудь!</span>Попробуй спланировать комнату своей мечты!</a></li>
-    <li><i></i><a href=""><span>23 варианта кухни для дачи</span>Попробуй спланировать комнату своей мечты!</a></li>
-  </ul>
-</div-->
 
 <div class="clear"></div>
 

@@ -20,15 +20,16 @@ class ProductTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'           => 'core_id',
-      'name'         => 'name',
-      'bar_code'     => 'barcode',
-      'article'      => 'article',
-      'announce'     => 'preview',
-      'tagline'      => 'tagline',
-      'description'  => 'description',
-      'rating'       => 'rating',
-      'rating_count' => 'rating_quantity',
+      'id'            => 'core_id',
+      'name'          => 'name',
+      'bar_code'      => 'barcode',
+      'article'       => 'article',
+      'announce'      => 'preview',
+      'tagline'       => 'tagline',
+      'description'   => 'description',
+      'rating'        => 'rating',
+      'rating_count'  => 'rating_quantity',
+      'score'         => 'score',
     );
   }
 
@@ -55,7 +56,9 @@ class ProductTable extends myDoctrineTable
       $q->addWhere('product.view_show = ?', true);
     }
 
-    $q->addWhere('is_instock = ?', array(1, ));
+    $q->addWhere('product.is_instock = ?', array(1, ));
+
+    $q->orderBy('product.score DESC');
 
     return $q;
   }
@@ -239,11 +242,18 @@ class ProductTable extends myDoctrineTable
     // цена
     if ($filter['price']['from'])
     {
-      $q->addWhere('product.price >= ?', $filter['price']['from']);
+      $q->innerJoin('product.Prices prices');
+      $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      $q->addWhere('prices.price >= ?', $filter['price']['from']);
     }
     if ($filter['price']['to'])
     {
-      $q->addWhere('product.price <= ?', $filter['price']['to']);
+      if (!$q->hasAliasDeclaration('prices'))
+      {
+        $q->innerJoin('product.Prices prices');
+        $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      }
+      $q->addWhere('prices.price <= ?', $filter['price']['to']);
     }
 
     // параметры
@@ -279,6 +289,82 @@ class ProductTable extends myDoctrineTable
           {
             $q->addWhere('productPropertyRelation.value_integer <= ?', array($parameter['values']['to']));
           }
+        }
+      }
+    }
+  }
+
+  public function setQueryForTagFilter(myDoctrineQuery $q, array $filter, array $params = array())
+  {
+    $filter = myToolkit::arrayDeepMerge(array(
+      'category'   => false,
+      'creator'    => false,
+      'parameters' => array(),
+      'price'      => array('from' => null, 'to' => null),
+    ), $filter);
+
+    // категория
+    if ($filter['category'])
+    {
+      if ($filter['category'] instanceof ProductCategory)
+      {
+        $descendants = $filter['category']->getNode()->getDescendants();
+        $ids = $descendants ? $descendants->toValueArray('id') : array();
+        $ids[] = $filter['category']->id;
+      }
+      else if (!is_array($filter['category']))
+      {
+        $ids = array($filter['category']);
+      }
+
+      if (count($ids) > 0)
+      {
+        $q->innerJoin('product.Category category');
+        //$q->addWhere('category.id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
+        $q->whereIn('category.id', $ids);
+      }
+    }
+
+    // производитель
+    if ($filter['creator'])
+    {
+      if (is_array($filter['creator']))
+      {
+        $q->whereIn('product.creator_id', $filter['creator']);
+      }
+      else {
+        $q->addWhere('product.creator_id = ?', ($filter['creator'] instanceof Creator) ? $filter['creator']->id : $filter['creator']);
+      }
+    }
+
+    // цена
+    if ($filter['price']['from'])
+    {
+      $q->innerJoin('product.Prices prices');
+      $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      $q->addWhere('prices.price >= ?', $filter['price']['from']);
+    }
+    if ($filter['price']['to'])
+    {
+      if (!$q->hasAliasDeclaration('prices'))
+      {
+        $q->innerJoin('product.Prices prices');
+        $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+      }
+      $q->addWhere('prices.price <= ?', $filter['price']['to']);
+    }
+
+    // параметры
+    if (count($filter['parameters']) > 0)
+    {
+      foreach ($filter['parameters'] as $parameter)
+      {
+        if (count($parameter['values']) > 0)
+        {
+          $q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group']);
+          $q->andWhereIn(
+            'tagRelation'.$parameter['tag_group'].'.tag_id', $parameter['values']
+          );
         }
       }
     }
@@ -349,13 +435,20 @@ class ProductTable extends myDoctrineTable
   {
     $q = $this->createBaseQuery($params);
 
-    $descendants = $category->getNode()->getDescendants();
-    $ids = $descendants ? $descendants->toValueArray('id') : array();
-    $ids[] = $category->id;
+    if (!empty($category->product_id))
+    {
+      $q->where('product.id = ?', $category->product_id);
+    }
+    else
+    {
+      $descendants = $category->getNode()->getDescendants();
+      $ids = $descendants ? $descendants->toValueArray('id') : array($category->id, );
+      $ids[] = $category->id;
 
-    $q->innerJoin('product.Category category')
-        ->whereIn('category.id', $ids)
-    ;
+      $q->innerJoin('product.Category category')
+          ->whereIn('category.id', $ids)
+      ;
+    }
 
     $this->setQueryParameters($q, $params);
 

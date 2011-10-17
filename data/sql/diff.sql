@@ -1,0 +1,1 @@
+INSERT INTO `delivery_type` (`core_id`, `token`, `name`) VALUES (3, 'self', 'Самовывоз');

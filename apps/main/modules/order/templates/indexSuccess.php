@@ -1,6 +1,4 @@
-<?php
-slot('title','Мои заказы');
-?>
+<?php slot('title','Мои заказы') ?>
     <div class="float100">
 		<div class="column685 ">
             <?php include_component('order', 'list') ?>

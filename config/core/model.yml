@@ -49,3 +49,5 @@ StockProductRelation:
   - product_stock
 Stock:
   - store
+DeliveryPeriod:
+  - delivery_interval

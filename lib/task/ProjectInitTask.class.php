@@ -246,6 +246,16 @@ EOF;
     $record = RegionTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
 
+    if (isset($data['price_list_id']))
+    {
+      $record->product_price_list_id = $this->getRecordByCoreId('ProductPriceList', $data['price_list_id'], true);
+    }
+
+    if (isset($data['store_id']))
+    {
+      $record->stock_id = $this->getRecordByCoreId('Stock', $data['store_id'], true);
+    }
+
     return $record;
   }
   // Region
@@ -342,6 +352,11 @@ EOF;
     $record = ProductCategoryTable::getInstance()->createRecordFromCore($data);
     $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
+    if (isset($data['product_id']))
+    {
+      $record->product_id = $this->getRecordByCoreId('Product', $data['product_id'], true);
+    }
+
     $filter = new ProductFilterGroup();
     $filter->fromArray(array(
       'name' => 'Фильтр для '.$record->name,
@@ -427,7 +442,7 @@ EOF;
     $this->connection->exec('TRUNCATE TABLE `product_type`');
     $this->connection->exec('TRUNCATE TABLE `product_type_property_relation`');
     $this->connection->exec('TRUNCATE TABLE `product_type_property_group_relation`');
-    //$this->connection->exec('TRUNCATE TABLE `tag_group_product_type_relation`');
+    $this->connection->exec('TRUNCATE TABLE `product_category_type_relation`');
   }
   // ProductType
   protected function createProductTypeRecord(array $data)
@@ -494,6 +509,19 @@ EOF;
             $this->pushRecord($filter);
           }
         }
+      }
+    }
+
+    // Категория товара
+    if (!empty($data['category']))
+    {
+      foreach ($data['category'] as $relationData)
+      {
+        $relation = new ProductCategoryTypeRelation();
+        $relation->fromArray(array(
+          'product_category_id' => $this->getRecordByCoreId('ProductCategory', $relationData['id'], true),
+        ));
+        $record->ProductCategoryRelation[] = $relation;
       }
     }
 
@@ -709,16 +737,7 @@ EOF;
   protected function createDeliveryTypeRecord(array $data)
   {
     $record = DeliveryTypeTable::getInstance()->createRecordFromCore($data);
-    $record->token = myToolkit::urlize($record->name);
-
-    return $record;
-  }
-
-  //Shop
-  protected function createShopRecord(array $data)
-  {
-    $record = ShopTable::getInstance()->createRecordFromCore($data);
-    $record->record_id = $this->getRecordByCoreId('Region', $data['geo_id'], true);
+    $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
     return $record;
   }
@@ -729,6 +748,24 @@ EOF;
     $record = StockProductRelationTable::getInstance()->createRecordFromCore($data);
     $record->product_id = $this->getRecordByCoreId('Product', $data['product_id'], true);
     $record->stock_id = $this->getRecordByCoreId('Stock', $data['store_id'], true);
+
+    return $record;
+  }
+
+  //StockRelation
+  protected function createStockRecord(array $data)
+  {
+    $record = StockTable::getInstance()->createRecordFromCore($data);
+    $record->token = uniqid();
+
+    return $record;
+  }
+
+  //DeliveryPeriod
+  protected function createDeliveryPeriodRecord(array $data)
+  {
+    $record = DeliveryPeriodTable::getInstance()->createRecordFromCore($data);
+    $record->delivery_type_id = $this->getRecordByCoreId('DeliveryType', $data['delivery_type_id'], true);
 
     return $record;
   }

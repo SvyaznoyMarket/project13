@@ -68,14 +68,15 @@ class Order extends BaseOrder
   {
     $data = parent::exportToCore();
 
-    $data['user_id']          = $this->User->core_id;
-    $data['payment_id']       = $this->PaymentMethod->core_id;
-    $data['geo_id']           = $this->Region->core_id;
-    $data['delivery_type_id'] = $this->DeliveryType->core_id;
-    $data['shop_id']          = $this->Shop->core_id;
-    $data['address_id']       = $this->UserAddress->core_id;
-    $data['store_id']         = null;
-    $data['ip']               = sfContext::getInstance()->getUser()->getIp();
+    $data['user_id']              = $this->User->core_id;
+    $data['payment_id']           = $this->PaymentMethod->core_id;
+    $data['geo_id']               = $this->Region->core_id;
+    $data['delivery_type_id']     = $this->DeliveryType->core_id;
+    $data['delivery_interval_id'] = $this->DeliveryPeriod->core_id;
+    $data['shop_id']              = $this->Shop->core_id;
+    $data['address_id']           = $this->UserAddress->core_id;
+    $data['store_id']             = null;
+    $data['ip']                   = sfContext::getInstance()->getUser()->getIp();
 
 
     if (isset($this->ProductRelation))
