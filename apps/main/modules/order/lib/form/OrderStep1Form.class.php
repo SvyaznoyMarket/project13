@@ -100,12 +100,12 @@ class OrderStep1Form extends BaseOrderForm
       'renderer_class'  => 'myWidgetFormOrderSelect',
       'query'           => $this->object->delivery_type_id ? DeliveryPeriodTable::getInstance()->createBaseQuery()->addWhere('deliveryPeriod.delivery_type_id = ?', $this->object->delivery_type_id) : null,
     ));
-    $this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryPeriod', 'required' => true));
+    $this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryPeriod', 'required' => false));
 
     $this->widgetSchema['address'] = new sfWidgetFormInputText();
 	  $this->widgetSchema['address']->setDefault($user->address);
     $this->widgetSchema['address']->setLabel('Адрес доставки:');
-    $this->validatorSchema['address'] = new sfValidatorString(array('required' => true));
+    $this->validatorSchema['address'] = new sfValidatorString(array('required' => false));
 
     $this->widgetSchema['shop_id'] = new sfWidgetFormChoice(array(
 //      'choices'  => myToolkit::arrayDeepMerge(array('' => ''), ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name')),
@@ -186,9 +186,6 @@ class OrderStep1Form extends BaseOrderForm
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
-//    $fields = array(
-//      'region_id',
-//    );
     // если указан регион
     /*if (!empty($this->object->region_id))
     {
@@ -223,6 +220,33 @@ class OrderStep1Form extends BaseOrderForm
       }
     }*/
 
+    // проверяет типа доставки
+    if (!empty($taintedValues['delivery_type_id']))
+    {
+      $deliveryType = DeliveryTypeTable::getInstance()->find($taintedValues['delivery_type_id']);
+      // если НЕ самовывоз
+      if ($deliveryType && ('self' != $deliveryType->token))
+      {
+        $this->validatorSchema['delivery_type_id']->setOption('required', true);
+        $this->validatorSchema['delivery_period_id']->setOption('required', true);
+      }
+    }
+
     parent::bind($taintedValues, $taintedFiles);
+  }
+
+  protected function doUpdateObject($values)
+  {
+    parent::doUpdateObject($values);
+
+    if (!empty($values['delivery_type_id']))
+    {
+      $deliveryType = DeliveryTypeTable::getInstance()->find($values['delivery_type_id']);
+      // если самовывоз
+      if ($deliveryType && ('self' == $deliveryType->token))
+      {
+        $this->object->address = $this->object->Shop->address;
+      }
+    }
   }
 }

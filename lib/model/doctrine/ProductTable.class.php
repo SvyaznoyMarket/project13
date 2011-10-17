@@ -97,7 +97,7 @@ class ProductTable extends myDoctrineTable
 
     if ($prices)
     {
-      $record->mapValue('Prices', $prices);
+      $record->mapValue('ProductPrice', $prices);
       $record->price = $prices->price;
     }
 
@@ -210,8 +210,7 @@ class ProductTable extends myDoctrineTable
     {
       if ($filter['category'] instanceof ProductCategory)
       {
-        $descendants = $filter['category']->getNode()->getDescendants();
-        $ids = $descendants ? $descendants->toValueArray('id') : array();
+        $ids = $filter['category']->getDescendantIds();
         $ids[] = $filter['category']->id;
       }
       else if (!is_array($filter['category']))
@@ -242,18 +241,18 @@ class ProductTable extends myDoctrineTable
     // цена
     if ($filter['price']['from'])
     {
-      $q->innerJoin('product.Prices prices');
-      $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
-      $q->addWhere('prices.price >= ?', $filter['price']['from']);
+      $q->innerJoin('product.ProductPrice productPrice');
+      $q->innerJoin('productPrice.PriceList priceList with priceList.is_default = ?', 1);
+      $q->addWhere('productPrice.price >= ?', $filter['price']['from']);
     }
     if ($filter['price']['to'])
     {
-      if (!$q->hasAliasDeclaration('prices'))
+      if (!$q->hasAliasDeclaration('productPrice'))
       {
-        $q->innerJoin('product.Prices prices');
-        $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+        $q->innerJoin('product.ProductPrice productPrice');
+        $q->innerJoin('productPrice.PriceList priceList with priceList.is_default = ?', 1);
       }
-      $q->addWhere('prices.price <= ?', $filter['price']['to']);
+      $q->addWhere('productPrice.price <= ?', $filter['price']['to']);
     }
 
     // параметры
@@ -308,8 +307,7 @@ class ProductTable extends myDoctrineTable
     {
       if ($filter['category'] instanceof ProductCategory)
       {
-        $descendants = $filter['category']->getNode()->getDescendants();
-        $ids = $descendants ? $descendants->toValueArray('id') : array();
+        $ids = $filter['category']->getDescendantIds();
         $ids[] = $filter['category']->id;
       }
       else if (!is_array($filter['category']))
@@ -340,18 +338,18 @@ class ProductTable extends myDoctrineTable
     // цена
     if ($filter['price']['from'])
     {
-      $q->innerJoin('product.Prices prices');
-      $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
-      $q->addWhere('prices.price >= ?', $filter['price']['from']);
+      $q->innerJoin('product.ProductPrice productPrice');
+      $q->innerJoin('productPrice.PriceList priceList with priceList.is_default = ?', 1);
+      $q->addWhere('productPrice.price >= ?', $filter['price']['from']);
     }
     if ($filter['price']['to'])
     {
-      if (!$q->hasAliasDeclaration('prices'))
+      if (!$q->hasAliasDeclaration('productPrice'))
       {
-        $q->innerJoin('product.Prices prices');
-        $q->innerJoin('prices.PriceList priceList with priceList.is_default = ?', 1);
+        $q->innerJoin('product.ProductPrice productPrice');
+        $q->innerJoin('productPrice.PriceList priceList with priceList.is_default = ?', 1);
       }
-      $q->addWhere('prices.price <= ?', $filter['price']['to']);
+      $q->addWhere('productPrice.price <= ?', $filter['price']['to']);
     }
 
     // параметры
@@ -388,9 +386,12 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
+    $ids = $category->getDescendantIds();
+    $ids[] = $category->id;
+
     $q->select('MIN(product.price) as price_min')
       ->innerJoin('product.Category category')
-      ->addWhere('category.id = ?', $category->id)
+      ->whereIn('category.id', $ids)
       //->addWhere('product.category_id = ?', $category->id)
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
@@ -404,9 +405,13 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->select('MAX(product.price) as price_max')
-      ->innerJoin('product.Category category')
-      ->addWhere('category.id = ?', $category->id)
+    $ids = $category->getDescendantIds();
+    $ids[] = $category->id;
+
+    $q->select('MAX(productPrice.price) as price_max')
+      ->innerJoin('product.CategoryRelation categoryRelation')
+      ->innerJoin('product.ProductPrice productPrice')
+      ->whereIn('categoryRelation.product_category_id', $ids)
       //->addWhere('product.category_id = ?', $category->id)
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
@@ -418,12 +423,11 @@ class ProductTable extends myDoctrineTable
   {
     $q = $this->createBaseQuery($params);
 
-    $descendants = $category->getNode()->getDescendants();
-    $ids = $descendants ? $descendants->toValueArray('id') : array();
+    $ids = $category->getDescendantIds();
     $ids[] = $category->id;
 
     $q->innerJoin('product.Category category')
-        ->whereIn('category.id', $ids)
+      ->whereIn('category.id', $ids)
     ;
 
     $this->setQueryParameters($q, $params);
@@ -441,8 +445,7 @@ class ProductTable extends myDoctrineTable
     }
     else
     {
-      $descendants = $category->getNode()->getDescendants();
-      $ids = $descendants ? $descendants->toValueArray('id') : array($category->id, );
+      $ids = $category->getDescendantIds();
       $ids[] = $category->id;
 
       $q->innerJoin('product.Category category')
