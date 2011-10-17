@@ -68,11 +68,11 @@ class userComponents extends myComponents
             'url'    => '@user_changePassword',
             'routes' => array('@user_changePassword'),
           ),            
-          array(
-            'name'   => 'Адрес доставки',
-            'url'    => '@userAddress',
-            'routes' => array('@userAddress'),
-          ),        
+//          array(
+//            'name'   => 'Адрес доставки',
+//            'url'    => '@userAddress',
+//            'routes' => array('@userAddress'),
+//          ),        
     );
 
     foreach ($list as &$item)

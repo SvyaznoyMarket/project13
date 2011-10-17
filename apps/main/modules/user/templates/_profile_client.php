@@ -13,7 +13,7 @@
       <?php else: ?>
 		<div class="pb10">
 			  <?php echo $form[$name]->renderLabel() ?>:
-			  <?php echo $form[$name]->renderError() ?>     
+			  <?php echo $form[$name]->renderError() ?>
 		</div>
 		<?php echo $form[$name]->render() ?>
       <?php endif ?>

@@ -27,11 +27,11 @@ class userActions extends myActions
                 'url'    => '@user',
                 'routes' => array('@user'),
               ),
-              array(
-                'name'   => 'Адрес доставки',
-                'url'    => '@userAddress',
-                'routes' => array('@userAddress'),
-              ),
+//              array(
+//                'name'   => 'Адрес доставки',
+//                'url'    => '@userAddress',
+//                'routes' => array('@userAddress'),
+//              ),
               array(
                 'name'   => 'Редактирование профиля',
                 'url'    => '@user_edit',
