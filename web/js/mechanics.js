@@ -36,7 +36,7 @@ function Lightbox( jn, data ){
 		init = this.restore()
 		if( !init )
 		init  = {
-					'name':'noname',
+					'name':false,
 					'vcomp':0, // число сравниваемых
 					'vwish':0, // число товаров в вишлисте
 					'vitems': 0, // число покупок
