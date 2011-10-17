@@ -26,7 +26,7 @@ class cartActions extends myActions
   * @param sfRequest $request A request object
   */
   public function executeAdd(sfWebRequest $request)
-  {      
+  {
     $result['value'] = true;
     $result['error'] = "";
     //валидация количества товара
@@ -36,14 +36,14 @@ class cartActions extends myActions
         $result['value'] = false;
         $result['error'] = "Некорректное количество товара.";
     }
-    
-    if ($result['value']){    
+
+    if ($result['value']){
         $product = ProductTable::getInstance()->findOneByToken($request['product']);
 
         if ($product)
         {
             try{
-                
+
                 $currentNum = $this->getUser()->getCart()->getQuantityByToken($request['product']);
                 $request['quantity'] += $currentNum;
 
@@ -52,15 +52,15 @@ class cartActions extends myActions
             }
             catch(Exception $e){
                 $result['value'] = false;
-                $result['error'] = "Не удалось добавить в корзину товар token='".$request['product']."'.";                        
+                $result['error'] = "Не удалось добавить в корзину товар token='".$request['product']."'.";
             }
         }
         else
         {
             $result['value'] = false;
-            $result['error'] = "Товар token='".$request['product']."' не найден.";        
+            $result['error'] = "Товар token='".$request['product']."' не найден.";
         }
-    }    
+    }
 
     if ($request->isXmlHttpRequest())
     {
@@ -81,10 +81,10 @@ class cartActions extends myActions
                 'data'   => array(
                     'error' => $result['error']
                 )
-              );          
+              );
           }
           return $this->renderJson($return);
-    } 
+    }
     $this->redirect($this->getRequest()->getReferer());
   }
  /**
@@ -101,6 +101,12 @@ class cartActions extends myActions
       $this->getUser()->getCart()->deleteProduct($product->id);
     }
 
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->renderJson(array(
+        'success' => true,
+      ));
+    }
     $this->redirect($this->getRequest()->getReferer());
   }
  /**
