@@ -21,24 +21,27 @@ $(document).ready(function(){
 	})
 
 
-/* — Sliders ---------------------------------------------------------------------------------------*/
+/* — Sliders ---------------------------------------------------------------------------------------*/	
 
 	var mini = $('.sliderbox .fl').html() * 1
 	var maxi = $('.sliderbox .fr').html() * 1
 	var label = $( "#f_price_from" ).parent().find(':disabled')
+	if( $('#f_price_from').val() ) {
+		$('.bigfilter dd:first').slideToggle(200)
+	}
 	if ($( "#slider-range1" ).length) $( "#slider-range1" ).slider({
 		range: true,
 		step: 10,
 		min: mini,
 		max: maxi,
-		values: [ mini , maxi ],
+		values: [ $('#f_price_from').val() ? $('#f_price_from').val() : mini ,  $('#f_price_to').val() ? $('#f_price_to').val() : maxi ],
 		slide: function( event, ui ) {
 			label.val( ui.values[ 0 ] + " - " + ui.values[ 1 ] )
 			$('#f_price_from').val( ui.values[ 0 ] )
 			$('#f_price_to').val( ui.values[ 1 ] )
 		}
 	})
-	label.val( $( "#slider-range1" ).slider( "values", 0 ) +
+	if ( label.length ) label.val( $( "#slider-range1" ).slider( "values", 0 ) +
 		" - " + $( "#slider-range1" ).slider( "values", 1 ) )
 
 
