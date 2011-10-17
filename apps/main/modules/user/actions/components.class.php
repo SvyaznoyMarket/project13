@@ -111,6 +111,9 @@ class userComponents extends myComponents
         $this->setVar('list', $list, true);
   }
   
+  public function executeFieldemail(){
+  }
+  
   public function executeFieldgender(){
   }
   

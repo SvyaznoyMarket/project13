@@ -20,7 +20,7 @@ class UserForm extends BaseUserForm
     $this->disableCSRFProtection();
 
   //  $this->widgetSchema['id']->setLabel('ID');
-    $this->validatorSchema['id'] = new sfValidatorPass();  
+    //$this->validatorSchema['id'] = new sfValidatorPass();  
     
     $this->widgetSchema['first_name']->setLabel('Имя');
     
@@ -36,7 +36,7 @@ class UserForm extends BaseUserForm
 
     $this->widgetSchema['phonenumber_city']->setLabel('Домашний телефон');
 
-    $this->widgetSchema['skype']->setLabel('Sype');
+    $this->widgetSchema['skype']->setLabel('Skype');
 
     $this->widgetSchema['birthday']->setLabel('Дата рождения');
 
@@ -58,12 +58,14 @@ class UserForm extends BaseUserForm
     );
     //одинаковые стили для всех полей
     foreach($useFields as $field){
-        $this->widgetSchema[$field]->setAttribute('class', 'text width418 mb15');         
+        $this->widgetSchema[$field]->setAttribute('class', 'text width418 mb10');         
     }
     //кроме
 	$this->widgetSchema['gender']->setOption('choices', array('male' => 'Мужской', 'female' => 'Женский'));
     $this->widgetSchema['gender']->setAttribute('class', 'styled');  
-	//$this->widgetSchema['birthday']->setOption('can_be_empty', false);
+	
+	$years = range(date('Y') - 7, date('Y') - 80);
+    $this->widgetSchema['birthday']->setOption('years', array_combine($years, $years));
     $this->widgetSchema['birthday']->setAttribute('class', 'styled');         
     
     $this->useFields($useFields);

@@ -121,51 +121,39 @@ class userActions extends myActions
   
   public function executeUpdate(sfWebRequest $request)
   {
-    $this->form = new UserForm();
+    $this->form = new UserForm($this->getUser()->getGuardUser());
 
     $a = $request->getParameter($this->form->getName());
     //$a['id'] = 2;
     $this->form->bind( $a );
     
-    //var_dump($this->form->isValid());
-    //exit();    
     if ($this->form->isValid())
     {
-   // echo 'ok';
-  //  exit();    
       try
       {
-         // print_r( get_class_methods($this->form) );
-        //echo get_class($this->form->getObject());
-        //$this->form->getObject()->id = $this->getUser()->getGuardUser()->id;
-        //print_r( $this->form->getValues() );
-        //exit(); 
-
-       $coreResult =  Core::getInstance()->query('user.update',array('id'=>$this->getUser()->getGuardUser()->id),$this->form->getValues());
-       if ($coreResult['confirmed']==1){
-            //$table = UserTable::getInstance();
-         //  $this->getUser()->getGuardUser()->fromArray( $this->form->getValues() );
-        //   $this->getUser()->getGuardUser()->save();
-           //print_r( get_class_methods($this->getUser()->getGuardUser()));
-            //$table = new User();
-            $user = UserTable::getInstance()->findOneById( 2 );
-            $user->setCorePush(false);
-            $user->fromArray( $this->form->getValues() );
-            $user->save();
+	   $this->form->save();
+       //$coreResult =  Core::getInstance()->query('user.update',array('id'=>$this->getUser()->getGuardUser()->core_id),$this->form->getValues());
+       //if ($coreResult['confirmed']==1){
+//            $user = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);
+//            $user->setCorePush(false);
+//            $user->fromArray( $this->form->getValues() );
+//            $user->save();
            
-       }
-       print_r($coreResult);
-       exit();
-       // $this->form->save();
-        $this->redirect('user');
+			//$this->form->save();
+       //}
+        $this->redirect('user_edit');
       }
       catch (Exception $e)
       {
           echo $e->getMessage();
+//		  echo $e->getTraceAsString();
+//		  exit();
          // exit();
         $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
       }
-    }
+    } else {
+		//echo $this->form->renderGlobalErrors();
+	}
 
     $this->userProfile = $this->getUser()->getGuardUser()->getData();
 
