@@ -20,6 +20,7 @@ default:
 #    - main.css
     - skin/inner.css
     - font.css
+    - main.css
 
   javascripts:
     #- jquery.js

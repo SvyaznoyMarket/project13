@@ -81,23 +81,23 @@ $(document).ready(function(){
         //$(this).addClass("link3active");
     })
 
-	/* top menu */	 
+
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
 	var corneroffsets = [167,222,290,362,435,515,587,662,717]
-	
+
 	$('.topmenu a').bind( {
 		'mouseenter': function() {
 			$('.extramenu').hide()
 			var self = this
-			
+
 			function showList() {
 				if(	$(self).data('run') ) {
 					var i = $(self).attr('class').replace(/\D+/,'')
-					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )	
+					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
 					if( punkt.find('dl').html().trim() != '' )
-						punkt.show().find('.corner').css('left',corneroffsets[i-1])					
-				}	
+						punkt.show().find('.corner').css('left',corneroffsets[i-1])
+				}
 			}
 			$(self).data('run', true)
 			currentMenu = $(self).attr('id').replace(/\D+/,'')
@@ -105,15 +105,15 @@ $(document).ready(function(){
 		},
 		'mouseleave': function() {
 			var self = this
-			
+
 			if(	$(self).data('run') ) {
 				clearTimeout( idcm )
 				$(self).data('run',false)
 			}
 			//currentMenu = 0
-		}		
-	}) 
-	
+		}
+	})
+
 	$(document).click( function(){
 		if (currentMenu)
 			$( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
@@ -132,10 +132,18 @@ $(document).ready(function(){
 			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )			
 		}		
 		if( float.length == 2 ) 
-			out += '.' + float[1]
-console.info('printPrice',val, out)			
+			out += '.' + float[1]		
 		return out// + '&nbsp;'
 	}
+	
+	var total = $('.allpageinner > .basketinfo .price')
+	
+	function getTotal() {
+		for(var i=0, tmp=0; i < basket.length; i++ ) {
+			tmp += basket[i].sum * 1
+		}
+		total.html( printPrice( tmp ) )
+	}		
 	
 	function basketline ( nodes ) {
 		var self = this
@@ -155,6 +163,7 @@ console.info(  price, this.quantum, drop, deladd)
 			self.quantum = q
 			self.sum = price * q
 			$(nodes.sum).html( printPrice( self.sum ) )
+			getTotal() 
 		}
 		
 		this.clear = function() {
@@ -166,7 +175,6 @@ console.info(  price, this.quantum, drop, deladd)
 		}
 		
 		this.update = function( minimax, delta ) {
-console.info(deladd + '/'+ delta)
 			$.getJSON( deladd + '/'+ delta , function( data ) {
 				$(minimax).data('run',false)
 				if( data.success && data.data.quantity ) {
@@ -178,7 +186,7 @@ console.info(deladd + '/'+ delta)
 		
 		$(nodes.drop).click( function() {
 console.info('drop')
-			//self.clear()
+			self.clear()
 			return false
 		})
 		
@@ -187,7 +195,6 @@ console.info('drop')
 			
 			if( ! $(minus).data('run') ) {
 				$(minus).data('run',true)
-console.info('minus',self.quantum )
 				if( self.quantum > 1 ) 
 					self.update( minus, -1 )					
 				else
@@ -211,7 +218,6 @@ console.info('minus',self.quantum )
 	var basket = []
 	
 	$('.basketline').each( function(){
-	console.info($(this).find('.basketinfo .sum'))
 		var tmpline = new basketline({ 
 						'line': $(this),
 						'less': $(this).find('.ajaless'),
@@ -228,6 +234,7 @@ console.info('minus',self.quantum )
 	/* ---- */		
 	
 	/* cards carousel  */	
+
 	$('.forvard').click( function(){
 		//сделать запрос, получить новые данные
 		//найти блок карусели
@@ -238,4 +245,15 @@ console.info('minus',self.quantum )
 		return false
 	})
 	/* ---- */
-});	
+});
+
+
+$(function(){
+
+	$(".tearmlist dt").click(function(){
+		$(this).next(".tearmlist dd").slideToggle(200);
+		$(this).toggleClass("current");
+		return false;
+	});
+
+});
