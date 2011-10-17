@@ -75,4 +75,41 @@ class ProductCategory extends BaseProductCategory
 
     return $newTagGroup;
   }
+/**
+ *
+ * @return FilterGroup Collection
+ */
+  public function getFilterGroupForFilter()
+  {
+    //делаем список тэгов без учета тегов без товаров
+    $categoryTable = ProductCategoryTable::getInstance();
+
+    //берем property_id и option_id, которые существуют в этой категории
+    $properties = ProductPropertyTable::getInstance()->getForFilter($this);
+
+    //формируем новую коллекцию групп тегов только с рабочими тэгами
+    $newFilter = ProductFilterTable::getInstance()->createList();
+
+    foreach ($this->FilterGroup->Filter as $filter)
+    {
+      $options = ProductPropertyOptionTable::getInstance()->createList();
+      foreach ($filter->Property->Option as $option)
+      {
+        if (in_array($filter->property_id, array_keys($properties)) && in_array($option, $properties[$filter->property_id]))
+        {
+          $options[] = clone $option;
+        }
+      }
+      if (count($options))
+      {
+        $productProperty = new ProductProperty();
+        $productProperty->fromArray($filter->Property->toArray(true));
+        $productProperty['Option'] = $options;
+        $filter['Property'] = $productProperty;
+        $newFilter[] = $filter;
+      }
+    }
+
+    return $newFilter;
+  }
 }

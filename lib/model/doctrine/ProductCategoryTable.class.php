@@ -147,7 +147,7 @@ class ProductCategoryTable extends myDoctrineTable
     return $this->createListByIds($ids, $params);
   }
 
-  public function getTagIds(ProductCategory $category = null)
+  public function getDescendatIds(ProductCategory $category = null)
   {
     if (!$category)
     {
@@ -160,7 +160,19 @@ class ProductCategoryTable extends myDoctrineTable
     $q->useResultCache(true, null, $this->getQueryHash('productCategory-descendants', array($category->id, )));
 
     $categoryIds = $this->getIdsByQuery($q);
-    $catgoryIds[] = $category->id;
+    $categoryIds[] = $category->id;
+
+    return $categoryIds;
+  }
+
+  public function getTagIds(ProductCategory $category = null)
+  {
+    if (!$category)
+    {
+      return false;
+    }
+
+    $categoryIds = $this->getDescendatIds($this);
 
     $q = TagProductRelationTable::getInstance()->createBaseQuery();
     $q->select('DISTINCT tagProductRelation.tag_id')

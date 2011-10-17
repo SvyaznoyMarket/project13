@@ -78,7 +78,7 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-    $this->productFilter = $this->getProductFilter();
+    $this->productFilter = $this->getProductFilter(array('count' => true, ));
     $this->productTagFilter = $this->getProductTagFilter(array('count' => true, ));
 
     if ($request->hasParameter($this->productFilter->getName()))
