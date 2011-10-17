@@ -34,34 +34,40 @@ class pageComponents extends myComponents
       return sfView::NONE;
     }
 
-    $this->view = 'about';
+    if (!$this->view)
+    {
+      $this->view = 'default';
+    }
 
-    $views = array(
-      'about' => array('about', 'history', 'benefits', 'clients', 'details', 'contacts'),
+    $list = array(
+      'about'  => array(
+        'name'  => 'О нас',
+        'links' => array(
+          array('token' => 'about_company'),
+        ),
+      ),
+      'buying' => array(
+        'name'  => 'Покупки в Enter',
+        'links' => array(
+          array('token' => 'how_make_order'),
+          array('token' => 'how_get_order'),
+          array('token' => 'how_pay'),
+        ),
+      ),
     );
-    
-    foreach ($views as $view => $tokens)
+
+    foreach ($list as &$item)
     {
-      if (in_array($this->page->token, $tokens))
+      foreach ($item['links'] as &$link)
       {
-        $this->view = $view;
-        break;
-      }
-    }
-    
-    $list = array();
-    foreach ($views[$this->view] as $token)
-    {
-      $page = PageTable::getInstance()->findOneByToken($token);
-      if (!$page) continue;
-      
-      $list[] = array(
-        'token' => $page->token,
-        'name'  => $page->name,
-        'url'   => url_for('default_show', array('page' => $page->token)),
-      );
-    }
-    
+        $page = PageTable::getInstance()->findOneByToken($link['token']);
+        if (!$page) continue;
+
+        $link['name'] = $page->name;
+        $link['url'] = url_for('default_show', array('page' => $page->token));
+      } if (isset($link)) unset($link);
+    } if (isset($item)) unset($item);
+
     $this->setVar('list', $list, true);
   }
 }

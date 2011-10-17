@@ -1,28 +1,5 @@
-<?php if (false): ?>
-
-  <h2>Войти как пользователь</h2>
-  <?php include_component('guard', 'oauth_links') ?>
-
-  <br class="clear" />
-
-  <h2>Войти по логину сайта</h2>
-  <form class="event-submit" data-event="form.submit" data-reload="true" action="<?php echo url_for('@user_signin') ?>" method="post">
-    <ul class="form">
-      <?php echo $form ?>
-    </ul>
-
-    <p><?php echo link_to('Новый пользователь?', 'user_register') ?></p>
-
-    <p>Пользователь: <strong>79031234567 или client@maxus.ru</strong><br />Пароль: <strong>client</strong></p>
-
-    <input type="submit" value="Вход" />
-  </form>
-
-<?php endif ?>
-
-
 <div class="registerbox">
-  <form action="<?php echo url_for('@user_signin') ?>" class="form" method="post">
+  <form id="signin-form" action="<?php echo url_for('@user_signin') ?>" class="form" method="post">
     <div class="fl width327 mr20">
       <div class="font16 pb20">У меня есть логин и пароль</div>
 
@@ -47,7 +24,7 @@
     </div>
   </form>
 
-  <form action="<?php echo url_for('@user_register') ?>" class="form" method="post">
+  <form id="register-form" action="<?php echo url_for('@user_register') ?>" class="form" method="post">
     <div class="fr width327 ml20">
       <div class="font16 pb20">Я новый пользователь</div>
       <div class="pb5">Как к вам обращаться?</div>
