@@ -263,14 +263,21 @@ class ProductTable extends myDoctrineTable
       {
         $q->leftJoin('product.PropertyRelation productPropertyRelation');
       }
-
       foreach ($filter['parameters'] as $parameter)
       {
+        if (count($parameter['values']) > 0)
+        {
+          $q->leftJoin('product.PropertyRelation productPropertyRelation'.$parameter['filter']->id);
+        }
         if (('choice' == $parameter['filter']->type) && (count($parameter['values']) > 0))
         {
-          $q->addWhere(
+          /*$q->addWhere(
             'productPropertyRelation.property_id = ? AND productPropertyRelation.option_id IN ('.implode(',', array_fill(0, count($parameter['values']), '?')).')',
             array_merge(array($parameter['filter']->property_id), !is_array($parameter['values']) ? array($parameter['values']) : $parameter['values'])
+          );*/
+          //$q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group']);
+          $q->andWhereIn(
+            'productPropertyRelation'.$parameter['filter']->id.'.option_id', $parameter['values']
           );
         }
         else if ('range' == $parameter['filter']->type)
@@ -283,11 +290,11 @@ class ProductTable extends myDoctrineTable
           */
           if (!empty($parameter['values']['from']))
           {
-            $q->addWhere('productPropertyRelation.value_integer >= ?', array($parameter['values']['from']));
+            $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_integer >= ?', array($parameter['values']['from']));
           }
           if (!empty($parameter['values']['to']))
           {
-            $q->addWhere('productPropertyRelation.value_integer <= ?', array($parameter['values']['to']));
+            $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_integer <= ?', array($parameter['values']['to']));
           }
         }
       }

@@ -49,19 +49,18 @@ class myProductFormFilter extends sfFormFilter
     $this->validatorSchema['creator'] = new sfValidatorPass();
 
     // виджеты параметров
-    if (!$this->getOption('is_root', null))
+    $filters = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
+
+    foreach ($filters as $productFilter)
     {
-      foreach ($productCategory->FilterGroup->Filter as $productFilter)
-      {
-        if (!count($productFilter->Property->Option)) continue;
+      if (!count($productFilter->Property->Option)) continue;
 
-        if (!$widget = call_user_func(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), $productFilter)) continue;
+      if (!$widget = call_user_func(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), $productFilter)) continue;
 
-        $index = "param-{$productFilter->id}";
-        $this->setWidget($index, $widget);
-        $this->setValidator($index, new sfValidatorPass());
-        $this->widgetSchema[$index]->setLabel($productFilter->name);
-      }
+      $index = "param-{$productFilter->id}";
+      $this->setWidget($index, $widget);
+      $this->setValidator($index, new sfValidatorPass());
+      $this->widgetSchema[$index]->setLabel($productFilter->name);
     }
 
     $this->widgetSchema->setNameFormat('f[%s]');
@@ -87,7 +86,7 @@ class myProductFormFilter extends sfFormFilter
     {
       if (0 !== strpos($id, 'param-')) continue;
 
-      $productFilter = $productFilterList->getByIndex('id', $id);
+      $productFilter = $productFilterList->getByIndex('id', substr($id, 6));
       if (!$productFilter) continue;
 
       $filter['parameters'][] = array(

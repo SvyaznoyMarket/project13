@@ -65,6 +65,7 @@ ProductCategoryProductRelation:
   columns:
     product_category_id: { type: integer(20), primary: true, notnull: true }
     product_id:          { type: integer(20), primary: true, notnull: true }
+    id_default:          { type: boolean, notnull: true, default: false, comment: 'Это основная категория товара?' }
   relations:
     Category:            { class: ProductCategory, foreignAlias: ProductRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:             { class: Product, foreignAlias: CategoryRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

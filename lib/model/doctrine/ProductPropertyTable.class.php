@@ -44,4 +44,52 @@ class ProductPropertyTable extends myDoctrineTable
 
     return $record;
   }
+
+/**
+  * @return array Properties
+  */
+  public function getForFilter(ProductCategory $category = null)
+  {
+    if (!$category)
+    {
+      return false;
+    }
+
+    //т.к. фильтры пока используются только для категорый без подкатегорий, сэкономим один запрос :)
+    //$categoryIds = ProductCategoryTable::getInstance()->getDescendatIds($category);
+    $categoryIds = array($category->id, );
+
+    //трехэтажный запрос, конечно, ниочень, но лучше не получилось.
+    //можно попобовать оптимизтровать
+    $q = $this->createBaseQuery();
+    $q->select('productProperty.id, productRelation.option_id')->distinct()
+      ->innerJoin('productProperty.ProductRelation productRelation INDEXBY id')
+      ->innerJoin('productRelation.Product product WITH product.is_instock = ?', 1)
+      ->innerJoin('productRelation.Option option')
+      ->innerJoin('product.CategoryRelation categoryRelation')
+      ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
+      ->useResultCache(true, null, $this->getQueryHash('productProperty-Option', $categoryIds))
+      ->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
+    ;
+
+    //формирую массив property_id => array(option_id)
+    $propertiesForFilter = array();
+    foreach($q->execute() as $productProperty)
+    {
+      $options = array();
+      foreach ($productProperty['ProductRelation'] as $option)
+      {
+        if (!in_array($option['option_id'], $options))
+        {
+          $options[] = $option['option_id'];
+        }
+      }
+      if (count($options))
+      {
+        $propertiesForFilter[$productProperty['id']] = $options;
+      }
+    }
+
+    return $propertiesForFilter;
+  }
 }
