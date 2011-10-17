@@ -1,1 +1,6 @@
 .h1 {font-weight:normal; font-size:30px; font-family:"Enter"}
+
+.error_list {
+  font-size: 11px;
+  color: #cc0000;
+}
