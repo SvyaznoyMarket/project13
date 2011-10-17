@@ -79,7 +79,7 @@ class productCatalogActions extends myActions
     $this->productCategory = $this->getRoute()->getObject();
 
     $this->productFilter = $this->getProductFilter();
-    $this->productTagFilter = $this->getProductTagFilter();
+    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, ));
 
     if ($request->hasParameter($this->productFilter->getName()))
     {
@@ -216,11 +216,11 @@ class productCatalogActions extends myActions
     ));
   }
 
-  protected function getProductTagFilter()
+  protected function getProductTagFilter($params = array())
   {
-    return new myProductTagFormFilter(array(), array(
+    return new myProductTagFormFilter(array(),  myToolkit::arrayDeepMerge(array(
       'productCategory' => $this->productCategory,
-    ));
+    ), $params));
   }
 
   protected function getProductSorting()

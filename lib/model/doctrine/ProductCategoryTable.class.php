@@ -146,4 +146,31 @@ class ProductCategoryTable extends myDoctrineTable
 
     return $this->createListByIds($ids, $params);
   }
+
+  public function getTagIds(ProductCategory $category = null)
+  {
+    if (!$category)
+    {
+      return false;
+    }
+
+    //берем все дочение категории(мб велосипед не изобретать и можно использовать this->getNode() ?)
+    $q = $this->createBaseQuery();
+    $q->addWhere('productCategory.lft > ? and productCategory.rgt < ? and productCategory.root_id = ?', array($category->lft, $category->rgt, empty($category->root_id) ? $category->id : $category->root_id, ));
+    $q->useResultCache(true, null, $this->getQueryHash('productCategory-descendants', array($category->id, )));
+
+    $categoryIds = $this->getIdsByQuery($q);
+    $catgoryIds[] = $category->id;
+
+    $q = TagProductRelationTable::getInstance()->createBaseQuery();
+    $q->select('DISTINCT tagProductRelation.tag_id')
+      ->innerJoin('tagProductRelation.Product product WITH product.is_instock = ?', 1)
+      ->innerJoin('product.CategoryRelation categoryRelation')
+      ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->useResultCache(true, null, $this->getQueryHash('productCategory-Tag', $categoryIds));
+    ;
+
+    return $q->execute();
+  }
 }

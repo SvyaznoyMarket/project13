@@ -49,9 +49,10 @@ class myProductTagFormFilter extends sfFormFilter
     $this->validatorSchema['creator'] = new sfValidatorPass();
 */
     // виджеты параметров
-    foreach ($productCategory->getTagGroupRelation() as $productCategoryTagGroupRelation)
+    $tagGroups = $this->getOption('count', false) ? $productCategory->getTagGroup() : $productCategory->getTagGroupForFilter();
+    foreach ($tagGroups as $tagGroup/*$productCategoryTagGroupRelation*/)
     {
-      $tagGroup = $productCategoryTagGroupRelation->getTagGroup();
+      //$tagGroup = $productCategoryTagGroupRelation->getTagGroup();
       //myDebug::dump($tagGroup); continue;
       if (!count($tagGroup->Tag)) continue;
 
