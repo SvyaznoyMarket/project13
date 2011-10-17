@@ -120,6 +120,113 @@ $(document).ready(function(){
 	})
 	/* ---- */	
 	
+	/* CART */
+	function printPrice ( val ) {
+	
+		var float = (val+'').split('.')
+		var out = float[0]
+		var le = float[0].length
+		if( le > 6 ) { // billions
+			out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le ) 			
+		} else if ( le > 3 ) { // thousands
+			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )			
+		}		
+		if( float.length == 2 ) 
+			out += '.' + float[1]
+console.info('printPrice',val, out)			
+		return out// + '&nbsp;'
+	}
+	
+	function basketline ( nodes ) {
+		var self = this
+		
+		$(nodes.less).data('run',false)
+		$(nodes.more).data('run',false)
+			var main = $(nodes.line)	
+		var deladd   = $(nodes.more).parent().attr('href')
+		var drop     = $(nodes.drop).attr('href')
+		var  price   = $(nodes.price).html().replace(/\s/,'')
+		this.sum     = $(nodes.sum).html().replace(/\s/,'')		
+		this.quantum = $(nodes.quan).html().replace(/\D/g,'')
+		
+console.info(  price, this.quantum, drop, deladd)
+		
+		this.calculate = function( q ) {
+			self.quantum = q
+			self.sum = price * q
+			$(nodes.sum).html( printPrice( self.sum ) )
+		}
+		
+		this.clear = function() {
+			$.getJSON( drop , function( data ) {
+				if( data.success ) {
+					main.hide()
+				}
+			})
+		}
+		
+		this.update = function( minimax, delta ) {
+console.info(deladd + '/'+ delta)
+			$.getJSON( deladd + '/'+ delta , function( data ) {
+				$(minimax).data('run',false)
+				if( data.success && data.data.quantity ) {
+					$(nodes.quan).html( data.data.quantity + ' шт.' )
+					self.calculate( data.data.quantity )
+				}
+			})
+		}
+		
+		$(nodes.drop).click( function() {
+console.info('drop')
+			//self.clear()
+			return false
+		})
+		
+		$(nodes.less).click( function() {
+			var minus = this
+			
+			if( ! $(minus).data('run') ) {
+				$(minus).data('run',true)
+console.info('minus',self.quantum )
+				if( self.quantum > 1 ) 
+					self.update( minus, -1 )					
+				else
+					self.clear()				
+			}
+			return false
+		})
+		
+		$(nodes.more).click( function() {
+			var plus = this
+			
+			if( ! $(plus).data('run') ) {
+				$(plus).data('run',true)
+				self.update( plus, 1 )
+			}
+			return false
+		})
+		
+	} // object basketline
+	
+	var basket = []
+	
+	$('.basketline').each( function(){
+	console.info($(this).find('.basketinfo .sum'))
+		var tmpline = new basketline({ 
+						'line': $(this),
+						'less': $(this).find('.ajaless'),
+						'more': $(this).find('.ajamore'),
+						'quan': $(this).find('.ajaquant'),
+						'price': $(this).find('.basketinfo .price'),
+						'sum': $(this).find('.basketinfo .sum'),
+						'drop': $(this).find('.basketinfo .whitelink')
+						})
+		basket.push( tmpline )
+	})
+	
+	
+	/* ---- */		
+	
 	/* cards carousel  */	
 	$('.forvard').click( function(){
 		//сделать запрос, получить новые данные
