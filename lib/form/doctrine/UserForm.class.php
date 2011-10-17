@@ -61,7 +61,9 @@ class UserForm extends BaseUserForm
         $this->widgetSchema[$field]->setAttribute('class', 'text width418 mb15');         
     }
     //кроме
+	$this->widgetSchema['gender']->setOption('choices', array('male' => 'Мужской', 'female' => 'Женский'));
     $this->widgetSchema['gender']->setAttribute('class', 'styled');  
+	//$this->widgetSchema['birthday']->setOption('can_be_empty', false);
     $this->widgetSchema['birthday']->setAttribute('class', 'styled');         
     
     $this->useFields($useFields);

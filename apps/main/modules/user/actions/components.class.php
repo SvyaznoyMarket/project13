@@ -114,6 +114,6 @@ class userComponents extends myComponents
   public function executeFieldgender(){
   }
   
-  //public function executeFieldbirthday(){
-  //}  
+  public function executeFieldbirthday(){
+  }  
 }

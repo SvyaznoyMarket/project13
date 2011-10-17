@@ -64,11 +64,11 @@ var Custom = {
 		for(a = 0; a < inputs.length; a++) {
 			if(inputs[a].className == "styled") {
 				option = inputs[a].getElementsByTagName("option");
-				active = option[0].childNodes[0].nodeValue;
+				active = option[0].innerHTML;
 				textnode = document.createTextNode(active);
 				for(b = 0; b < option.length; b++) {
 					if(option[b].selected == true) {
-						textnode = document.createTextNode(option[b].childNodes[0].nodeValue);
+						textnode = document.createTextNode(option[b].innerHTML);
 					}
 				}
 				span[a] = document.createElement("span");
