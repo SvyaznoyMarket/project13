@@ -144,7 +144,7 @@ class orderActions extends myActions
   public function executeUpdateField(sfWebRequest $request)
   {
     $this->forward404Unless($request->isXmlHttpRequest());
-    
+
     $renderers = array(
       'delivery_period_id'  => function($form) {
         return myToolkit::arrayDeepMerge(array('' => ''), $form['delivery_period_id']->getWidget()->getChoices());
@@ -201,6 +201,7 @@ class orderActions extends myActions
     }
 
     $order = $this->getUser()->getOrder()->get();
+    $this->forwardUnless($order->step, $this->getModuleName(), 'new');
     //$cart = $this->getUser()->getCart();
     if ($order->isOnlinePayment())
     {
