@@ -60,6 +60,7 @@ Order:
 #    receipt_type:           { type: enum, length: 10, values: [pickup, delivery], notnull: false, default: null, comment: 'Тип получения: доставка или самовывоз' }
     shop_id:                { type: integer(20), notnull: false, default: null }
     store_id:               { type: integer(20), notnull: false, default: null, comment: 'Рассчитывается при доставке' }
+    status_id:              { type: integer(20), notnull: false, default: null, comment: 'Статус состояния заказа' }
     is_delivery:            { type: boolean, notnull: true, default: true, comment: 'Нужна ли доставка? (нужна всегда)' }
     is_paid_delivery:       { type: boolean, notnull: true, default: false, comment: 'Какая-то срань для core' }
     delivery_type_id:       { type: integer(20), notnull: false, default: null } # стандартная, экспресс
@@ -87,6 +88,7 @@ Order:
     UserAddress:            { class: UserAddress, foreignAlias: Order, local: user_address_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Region:                 { class: Region, autoComplete: false, local: region_id, foreign: id, type: one, onDelete: SET NULL }
     Product:                { class: Product, foreignAlias: Order, refClass: OrderProductRelation, local: order_id, foreign: product_id, type: many, foreignType: many }
+    Status:                 { class: OrderStatus, foreignAlias: Order, local: status_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 OrderProductRelation:
   options:
@@ -95,12 +97,14 @@ OrderProductRelation:
   columns:
     order_id:          { type: integer(20), notnull: true, primary: true }
     product_id:        { type: integer(20), notnull: true, primary: true }
+    status_id:         { type: integer(20), notnull: false, default: null, comment: 'Статус состояния товара в заказе' }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара в корзине' }
     quantity:          { type: integer(4), notnull: true, comment: 'Количество товара в корзине' }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
     Order:             { class: Order, foreignAlias: ProductRelation, local: order_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: OrderRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Status:            { class: OrderStatus, foreignAlias: OrderProductRelation, local: status_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 OrderServiceRelation:
   options:
@@ -124,3 +128,16 @@ OrderServiceRelation:
 #    id:                { type: integer(20), autoincrement: true, primary: true }
 #    token:             { type: string(255), unique: true, notnull: true, notblank: true }
 #    name:              { type: string(255), notnull: true, notblank: true }
+
+OrderStatus:
+  options:
+    comment: 'Статус заказа'
+  actAs:
+    Corable:           { push: disable }
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    name:              { type: string(255), notnull: true, notblank: true }
+    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
+    is_order:          { type: boolean, notnull: true, default: false, comment: 'Этот статус предназначен для заказа?' }
+    is_product:        { type: boolean, notnull: true, default: false, comment: 'Этот статус предназначен для продукта в заказе?' }
