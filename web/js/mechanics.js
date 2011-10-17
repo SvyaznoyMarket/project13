@@ -360,6 +360,10 @@ function DDforLB( outer , ltbx ) {
 	$(outer).append( shtorka )
 	var shtorkaoffset = 0
 	
+	this.cancel = function() {
+		$(document).unbind('mousemove')
+	}
+	
 	this.prepare = function( pageX, pageY, item ) {
 		itemdata = item
 		$(document).bind('mousemove', function(e) {
@@ -368,7 +372,7 @@ function DDforLB( outer , ltbx ) {
 					self.turnon(e.pageX, e.pageY)
 					isactive = true
 				}
-			} else {
+			} else {		
 				icon.css({'left':e.pageX - wdiv2, 'top':e.pageY - shtorkaoffset - wdiv2 })
 				ordinat = $(containers[0]).offset().top
 
