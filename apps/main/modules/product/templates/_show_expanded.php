@@ -30,7 +30,7 @@
     <b class="rt"></b><b class="lb"></b>
 
     <div class="rb">
-      <div class="lt"><!--  onclick="window.location.href=''"-->
+      <div class="lt" onclick="window.location.href='<?php echo $item['url'] ?>'">
         <div class="goodsboxlink"><!-- onclick="window.open('http://')"-->
           <div class="photo"><!--<i title="Новинка" class="new"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
           <div class="info">
