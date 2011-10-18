@@ -1,3 +1,4 @@
+  <div class="delivery_block">
   <div class="pb10">
     <?php echo $form['delivered_at']->renderLabel() ?>
     <?php echo $form['delivered_at']->renderError() ?>
@@ -7,4 +8,5 @@
     <i></i>
     <!--span id="selectorder_delivered_at" class="select">15.11.11 - понедельник</span-->
     <?php echo $form['delivered_at']->render(array('class' => 'styled', )) ?>
+  </div>
   </div>
