@@ -1,10 +1,10 @@
 <?php
 
-class myProductTagFormFilter extends sfFormFilter
+class myProductTagFormFilter extends myProductFormFilter
 {
   public function configure()
   {
-    parent::configure();
+    //parent::configure();
 
     $this->setOption('mark_required', false);
 
@@ -19,17 +19,14 @@ class myProductTagFormFilter extends sfFormFilter
     $productTable = ProductTable::getInstance();
 
     // виджет цены
-    $this->widgetSchema['price'] = new myWidgetFormRange(array(
-      'value_from' => 100,
-      'value_to'   => 100000,
+    $this->widgetSchema['price'] = $this->getWidgetRange(null, array(
+      'from' => (int)$productTable->getMinPriceByCategory($productCategory),
+      'to'   => (int)$productTable->getMaxPriceByCategory($productCategory),
     ));
     $this->widgetSchema['price']->setLabel('Цена');
-    $this->setDefault('price', array(
-      'from' => (int)$productTable->getMinPriceByCategory($productCategory),
-      'to'   => (int)$productTable->getMaxPriceByCategory($productCategory)
-    ));
     $this->validatorSchema['price'] = new sfValidatorPass();
-/*
+
+    /*
     // виджет производителя
     $choices = CreatorTable::getInstance()
       ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name'))
@@ -114,14 +111,6 @@ class myProductTagFormFilter extends sfFormFilter
       'renderer_options' => array(
         'label_separator' => '',
       ),
-    ));
-  }
-
-  protected function getWidgetRange(ProductFilter $productFilter)
-  {
-    return new myWidgetFormRange(array(
-      'value_from' => 0,
-      'value_to'   => 100,
     ));
   }
 }

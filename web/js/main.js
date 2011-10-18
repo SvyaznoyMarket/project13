@@ -317,23 +317,23 @@ $(document).ready(function(){
 
 
 $(document).ready(function(){
-/* top menu */	 
+/* top menu */
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
 	var corneroffsets = [167,222,290,362,435,515,587,662,717]
-	
+
 	$('.topmenu a').bind( {
 		'mouseenter': function() {
 			$('.extramenu').hide()
 			var self = this
-			
+
 			function showList() {
 				if(	$(self).data('run') ) {
 					var i = $(self).attr('class').replace(/\D+/,'')
-					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )	
+					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
 					if( punkt.find('dl').html().trim() != '' )
-						punkt.show().find('.corner').css('left',corneroffsets[i-1])					
-				}	
+						punkt.show().find('.corner').css('left',corneroffsets[i-1])
+				}
 			}
 			$(self).data('run', true)
 			currentMenu = $(self).attr('id').replace(/\D+/,'')
@@ -341,22 +341,22 @@ $(document).ready(function(){
 		},
 		'mouseleave': function() {
 			var self = this
-			
+
 			if(	$(self).data('run') ) {
 				clearTimeout( idcm )
 				$(self).data('run',false)
 			}
 			//currentMenu = 0
-		}		
-	}) 
-	
+		}
+	})
+
 	$(document).click( function(){
 		if (currentMenu)
 			$( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
 	})
-	/* ---- */	
+	/* ---- */
 	/* cards carousel  */
-	
+
 	$('.forvard').click( function(){
 		//сделать запрос, получить новые данные
 		//найти блок карусели
@@ -366,4 +366,15 @@ $(document).ready(function(){
 		return false
 	})
 	/* ---- */
-});	
+});
+
+
+$(function(){
+
+	$(".tearmlist dt").click(function(){
+		$(this).next(".tearmlist dd").slideToggle(200);
+		$(this).toggleClass("current");
+		return false;
+	});
+
+});

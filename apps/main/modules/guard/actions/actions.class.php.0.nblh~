@@ -52,8 +52,8 @@ class guardActions extends myActions
         if ($request->isXmlHttpRequest())
         {
           return $this->renderJson(array(
-            'success' => true,
-          ));
+              'success' => true,
+            ));
         }
         if ('frame' == $this->getLayout())
         {
@@ -65,11 +65,11 @@ class guardActions extends myActions
       if ($request->isXmlHttpRequest())
       {
         return $this->renderJson(array(
-          'success' => false,
-          'data' => array(
-            'content' => $this->getPartial($this->getModuleName().'/form_signin', array('form' => $this->form, 'redirect' => $signinUrl)),
-          ),
-        ));
+            'success' => false,
+            'data' => array(
+              'content' => $this->getPartial($this->getModuleName().'/form_signin', array('form' => $this->form, 'redirect' => $signinUrl)),
+            ),
+          ));
       }
     }
     else
@@ -174,15 +174,15 @@ class guardActions extends myActions
    */
   public function executeRegister($request)
   {
-    $signinUrl = $this->getSigninUrl();
-
     if ($this->getUser()->isAuthenticated())
     {
       $this->getUser()->setFlash('notice', 'Вы уже зарегистрированы!');
-      $this->redirect($signinUrl);
+      $this->redirect('@homepage');
     }
 
     $this->form = new UserFormRegister();
+
+    $redirect_to = $request->getParameter('redirect_to', false);
 
     if ($request->isMethod('post'))
     {
@@ -202,27 +202,13 @@ class guardActions extends myActions
         //$user->refresh();
         $this->getUser()->signIn($user);
 
-        if ($request->isXmlHttpRequest())
-        {
-          return $this->renderJson(array(
-            'success' => true,
-          ));
-        }
-        if ('frame' == $this->getLayout())
-        {
-          return $this->renderPartial('default/close');
-        }
-        return $this->redirect($signinUrl);
-      }
 
-      if ($request->isXmlHttpRequest())
-      {
-        return $this->renderJson(array(
-          'success' => false,
-          'data' => array(
-            'content' => $this->getPartial($this->getModuleName().'/form_register', array('form' => $this->form, 'redirect' => $signinUrl)),
-          ),
-        ));
+        if ($redirect_to)
+        {
+          $this->redirect($redirect_to);
+        }
+        // event: { password: generate() }
+        //$this->redirect('@homepage');
       }
     }
   }

@@ -45,28 +45,36 @@
 
         <!-- Page head -->
         <div class="pagehead">
-          <div class="clear pb10"></div>
+          <div class="breadcrumbs"><a href="">Enter.ru</a> &gt; <strong>Помощь пользователю</strong></div>
+
+          <div class="clear"></div>
+          <?php if (has_slot('title')): ?>
+            <h1><?php include_slot('title') ?></h1>
+          <?php endif ?>
+
           <div class="searchbox">
             <form action=""><input type="text" class="searchtext" value="Поиск товаров" onfocus="if (this.value == 'Поиск товаров') this.value = '';" onblur="if (this.value == '') this.value = 'Поиск товаров';"  /><input type="button" class="searchbutton" value="Найти" title="Найти"  id="try-1" /></form>
           </div>
-
-          <div class="clear"></div>
+          <div class="clear pb20"></div>
+          <div class="line"></div>
         </div>
         <!-- Page head -->
 
         <?php if (has_slot('left_column')): ?>
+          <!-- Column685 -->
           <div class="float100">
-            <div class="column685 pr">
-              <?php if (has_slot('title')): ?>
-                <h1><?php include_slot('title') ?></h1>
-                <div class="line pb10"></div>
-              <?php endif ?>
+            <div class="column685">
               <?php echo $sf_content ?>
             </div>
           </div>
+          <!-- /Column685-->
+
+          <!-- Column215 -->
           <div class="column215">
             <?php include_slot('left_column') ?>
           </div>
+          <!-- /Column215 -->
+
         <?php else: ?>
           <?php echo $sf_content ?>
         <?php endif ?>

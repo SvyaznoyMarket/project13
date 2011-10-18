@@ -21,17 +21,15 @@ class orderComponents extends myComponents
     {
       $this->view = 'default';
     }
-    
-    $payM = PaymentMethodTable::getInstance()->getById($this->order->payment_method_id);
-    $deliveryP = DeliveryPeriodTable::getInstance()->getById($this->order->delivery_period_id);
+
     $item = array(
-      'name'  => (string)$this->order,
-      'token' => $this->order->token,
-      'sum'   => (int)$this->order->sum,
-      'created_at' => $this->order->created_at,  
-      'payment_method_name'   => $payM->name,
-      'delivered_at' => $this->order->delivered_at,  
-      'delivered_period'   => $deliveryP->name,
+      'name'                => (string)$this->order,
+      'token'               => $this->order->token,
+      'sum'                 => (int)$this->order->sum,
+      'created_at'          => $this->order->created_at,
+      'payment_method_name' => $this->order->PaymentMethod ? $this->order->PaymentMethod->name : null,
+      'delivered_at'        => $this->order->delivered_at,
+      'delivered_period'    => $this->order->DeliveryPeriod ? $this->order->DeliveryPeriod->name : null,
     );
 
     if ('default' == $this->view || $this->view=='compact')
