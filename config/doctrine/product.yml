@@ -52,6 +52,7 @@ ProductCategory:
     filter_group_id:   { type: integer(20), notnull: false, default: null }
     product_id:        { type: integer(20), notnull: false, default: null, comment: 'Товар, картинка которого используется для отображения в списке категорий' }
     position:          { type: integer(4), notnull: false, default: 0 }
+    photo:             { type: string(255), notnull: false, default: null }
   relations:
     FilterGroup:       { class: ProductFilterGroup, foreignAlias: Category, local: filter_group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ProductType:       { class: ProductType, foreignAlias: ProductCategory, refClass: ProductCategoryTypeRelation, local: product_category_id, foreign: product_type_id, type: many, foreignType: many }
