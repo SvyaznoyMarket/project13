@@ -2,25 +2,20 @@
 <div class="footer">
   <div class="bottommenu">
     <dl>
-      <dt><a href="#">Компания Enter</a></dt>
-      <dd><a href="#">О Компании</a></dd>
-      <dd><a href="#">Наши преимущества</a></dd>
-      <dd><a href="#">Контакты</a></dd>
-      <dd><a href="#">Обратная связь</a></dd>
-      <dd><a href="#">Карта сайта</a></dd>
+      <dt><a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">Где выход? Enter - это выход.</a></dt>
+      <dd>Наша миссия: дарить время для</dd>
+      <dd>настоящего. Честно. С любовью.</dd>
+      <dd>Как для себя.</dd>
     </dl>
     <dl>
-      <dt><a href="#">Услуги и сервисы</a></dt>
-      <dd><a href="#">Сервис F1</a></dd>
-      <dd><a href="#">Доставка товара</a></dd>
-      <dd><a href="#">Гарантия</a></dd>
-      <dd><a href="#">Бесплатный возврат</a></dd>
-      <dd><a href="#">Помощь покупателю</a></dd>
+      <dt><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></dt>
+      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Как сделать заказ</a></dd>
+      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>">Как получить заказ</a></dd>
+      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_pay',)) ?>">Как оплатить заказ</a></dd>
     </dl>
     <dl>
-      <dt><a href="">Хотите работать у нас?</a></dt>
-      <dd><a href="">Работа в Enter &gt;&gt;&gt;</a></dd>
-      <dd>Краткий текст о сайте вакансий, призыв устроиться в Enter.ru</dd>
+      <dt><a href="#">F1 сервис</a></dt>
+      <dd><a herf="#"><img src="/images/banners/f1_footer.jpg" alt="F1 услуги" width="209" height="46"></img></a></dd>
     </dl>
     <dl class="next">
       <dt>Контакт cENTER</dt>
