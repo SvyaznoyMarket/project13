@@ -57,7 +57,7 @@
             <form action=""><input type="text" class="searchtext" value="Поиск товаров" onfocus="if (this.value == 'Поиск товаров') this.value = '';" onblur="if (this.value == '') this.value = 'Поиск товаров';"  /><input type="button" class="searchbutton" value="Найти" title="Найти"  id="try-1" /></form>
           </div>
           <div class="clear pb20"></div>
-          <div class="line"></div>
+          <!--<div class="line"></div>-->
         </div>
 
         <!-- Page head -->
