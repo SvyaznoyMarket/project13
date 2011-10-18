@@ -140,7 +140,8 @@ $(document).ready(function(){
 	
 	function getTotal() {
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
-			tmp += basket[i].sum * 1
+			if( ! basket[i].noview ) 
+				tmp += basket[i].sum * 1
 		}
 		total.html( printPrice( tmp ) )
 	}		
@@ -156,20 +157,21 @@ $(document).ready(function(){
 		var  price   = $(nodes.price).html().replace(/\s/,'')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')		
 		this.quantum = $(nodes.quan).html().replace(/\D/g,'')
-		
-console.info(  price, this.quantum, drop, deladd)
+		this.noview   - false
 		
 		this.calculate = function( q ) {
 			self.quantum = q
 			self.sum = price * q
 			$(nodes.sum).html( printPrice( self.sum ) )
-			getTotal() 
+			getTotal() 			
 		}
 		
 		this.clear = function() {
 			$.getJSON( drop , function( data ) {
 				if( data.success ) {
 					main.hide()
+					self.noview = true
+					getTotal() 
 				}
 			})
 		}
@@ -180,12 +182,17 @@ console.info(  price, this.quantum, drop, deladd)
 				if( data.success && data.data.quantity ) {
 					$(nodes.quan).html( data.data.quantity + ' шт.' )
 					self.calculate( data.data.quantity )
+					console.info ( ltbx.restore() )
+					var liteboxJSON = ltbx.restore() 
+					liteboxJSON.vitems += delta
+					liteboxJSON.sum    += delta * price
+					console.info (liteboxJSON)
+					ltbx.update( liteboxJSON )
 				}
 			})
 		}
 		
 		$(nodes.drop).click( function() {
-console.info('drop')
 			self.clear()
 			return false
 		})
