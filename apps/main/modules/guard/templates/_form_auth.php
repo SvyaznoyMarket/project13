@@ -22,7 +22,32 @@
 
 
 <div class="registerbox">
-  <form action="<?php echo url_for('@user_signin') ?>" class="form" method="post">
+	
+  <form id="reset-pwd-form" style="display: none;" action="<?php echo url_for('@user_forgotPassword') ?>" class="form" method="post">
+	<div class="fl width327 mr20">
+		<div class="font16 pb20">Восстановление пароля:</div>
+		<div class="pb5">Введите e-mail или мобильный телефон, который использовали при регистрации, и мы пришлем вам пароль.</div>
+		<div class="error_list"></div>
+		<div class="pb5"><input name="login" type="text" class="text width315 mb10" value="" /></div>
+		<input type="submit" class="fr button whitebutton" value="Отправить запрос" />
+		<div class="clear pb10"></div>
+		Если вы вспомнили пароль, то вам надо лишь<br /><strong><a id="remember-pwd-trigger" href="javascript:void(0)" class="orange underline">войти в систему</a></strong>.
+	</div>
+  </form>
+	
+  <form id="reset-pwd-key-form" style="display: none;" action="<?php echo url_for('@user_resetPassword') ?>" class="form" method="post">
+	<div class="fl width327 mr20">
+		<div class="font16 pb20">Восстановление пароля:</div>
+		<div class="pb5">Введите ключ, который был вам выслан по почте или смс.</div>
+		<div class="error_list"></div>
+		<div class="pb5"><input name="token" type="text" class="text width315 mb10" value="" /></div>
+		<input type="submit" class="fr button whitebutton" value="Отправить запрос" />
+		<div class="clear pb10"></div>
+		Если вы вспомнили пароль, то вам надо лишь<br /><strong><a id="remember-pwd-trigger2" href="javascript:void(0)" class="orange underline">войти в систему</a></strong>.
+	</div>
+  </form>
+
+  <form id="login-form" action="<?php echo url_for('@user_signin') ?>" class="form" method="post">
     <div class="fl width327 mr20">
       <div class="font16 pb20">У меня есть логин и пароль</div>
 
@@ -32,7 +57,7 @@
         <!--<input type="text" class="text width315 mb10" value="ivanov@domen.com" />-->
       </div>
 
-      <div class="pb5"><a href="<?php echo url_for('user_forgotPassword') ?>" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
+      <div class="pb5"><a href="javascript:void(0)" id="forgot-pwd-trigger" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
       <div class="pb5">
         <?php echo $formSignin['password']->render(array('class' => 'text width315 mb10')) ?>
         <!--<input type="password" class="text width315 mb10" value="Пароль" />-->
