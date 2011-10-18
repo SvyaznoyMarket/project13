@@ -62,34 +62,23 @@ class ProductPropertyTable extends myDoctrineTable
     //трехэтажный запрос, конечно, ниочень, но лучше не получилось.
     //можно попобовать оптимизтровать
     $q = $this->createBaseQuery();
-    $q->select('productProperty.id, productRelation.option_id')->distinct()
+    $q->select('productProperty.*, option.*')
       ->innerJoin('productProperty.ProductRelation productRelation INDEXBY id')
       ->innerJoin('productRelation.Product product WITH product.is_instock = ?', 1)
-      ->innerJoin('productRelation.Option option')
+      ->innerJoin('productRelation.Option relationOption')
       ->innerJoin('product.CategoryRelation categoryRelation')
+      ->innerJoin('productProperty.Option option WITH option.id = relationOption.id')
+      ->andWhere('productRelation.option_id IS NOT NULL')
       ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
+      ->groupBy('productRelation.option_id')
+      ->orderBy('count(productRelation.product_id) DESC')
       ->useResultCache(true, null, $this->getQueryHash('productProperty-Option', $categoryIds))
-      ->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
+      //->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
     ;
 
     //формирую массив property_id => array(option_id)
     $propertiesForFilter = array();
-    foreach($q->execute() as $productProperty)
-    {
-      $options = array();
-      foreach ($productProperty['ProductRelation'] as $option)
-      {
-        if (!in_array($option['option_id'], $options))
-        {
-          $options[] = $option['option_id'];
-        }
-      }
-      if (count($options))
-      {
-        $propertiesForFilter[$productProperty['id']] = $options;
-      }
-    }
 
-    return $propertiesForFilter;
+    return $q->execute();//$propertiesForFilter;
   }
 }

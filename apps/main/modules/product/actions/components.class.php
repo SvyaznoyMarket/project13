@@ -110,7 +110,7 @@ class productComponents extends myComponents
     $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
     if (!in_array($this->view, array('expanded', 'compact')))
     {
-      $this->view = 'expanded';
+      $this->view = 'compact';
     }
   }
 
@@ -284,7 +284,7 @@ class productComponents extends myComponents
     {
       $item = array_merge($item, array(
         'url' => replace_url_for('view', $item['name']),
-        'current' => $this->getRequestParameter('view', 'expanded') == $item['name'],
+        'current' => $this->getRequestParameter('view', 'compact') == $item['name'],
         ));
     } if (isset($item))
       unset($item);
