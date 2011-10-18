@@ -35,11 +35,11 @@
                 <div class="font11">Есть в наличии</div>
             </div>
             <div class="basketinfo pb15">
-                <div class="left font11">Цена:<br /><span class="font12"><?php echo $item['price'] ?> <span class="rubl">p</span></span></div>
-                <div class="right"><div class="numerbox"><?php echo ($item['quantity'] > 1) ? link_to('<b title="Уменьшить"></b>', 'cart_add', array('product' => $item['product']->token, 'quantity' => -1, )) : '<b title="Уменьшить"></b>' ?><span><?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b title="Увеличить"></b>', 'cart_add', array('product' => $item['product']->token, 'quantity' => 1, )) ?></div></div>
+                <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span></div>
+                <div class="right"><div class="numerbox"><?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_add', array('product' => $item['product']->token, 'quantity' => -1, )) : '<b class="ajaless" title="Уменьшить"></b>' ?><span class="ajaquant"><?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_add', array('product' => $item['product']->token, 'quantity' => 1, )) ?></div></div>
             </div>
             <div class="basketinfo">
-                <div class="left font24"><?php echo ($item['total']) ?> <span class="rubl">p</span></div>
+                <div class="left font24"><span class="sum"><?php echo ($item['total']) ?></span> <span class="rubl">p</span></div>
                 <div class="right"><a href="<?php echo url_for('cart_delete', array('product' => $item['product']->token, )) ?>" class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a--></div>
             </div>
 

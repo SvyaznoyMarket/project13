@@ -8,6 +8,9 @@ $(document).ready(function(){
 			e.stopPropagation();
 			draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
 	})	
+	$('.boxhover[ref] .photo img').bind('mouseup', function(e){
+		draganddrop.cancel()
+	})
 		/* ---- */
 	$.getJSON('/user/shortinfo', function(data) {
 			if( data.success ) {

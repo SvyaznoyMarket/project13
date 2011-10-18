@@ -29,6 +29,7 @@ $('.order-form').bind({
 
         // если изменился способ доставки
         if ('order[delivery_type_id]' == $(e.target).attr('name')) {
+        console.info('Egor')
           var el = form.find('[name="order[delivery_type_id]"]:checked')
           if (el.length) {
 
@@ -46,7 +47,7 @@ $('.order-form').bind({
                   select.append('<option value="'+v+'">'+n+'</option>')
                 })
                 select.find(':first').attr('selected', 'selected')
-                //select.change()
+                select.change()
                 
                 d.resolve()
               }
