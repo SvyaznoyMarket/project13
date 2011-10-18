@@ -1,4 +1,9 @@
+<ul>
 <?php foreach ($list as $item): ?>
-  <strong><?php echo $item['name'] ?></strong>: <?php echo $item['value'] ?><br />
+  <li>
+    <strong><?php echo $item['name'] ?></strong>: <?php echo $item['value'] ?>;
+  </li>
 <?php endforeach ?>
+</ul>
+
 <br />
