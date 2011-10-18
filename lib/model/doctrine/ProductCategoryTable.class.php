@@ -172,7 +172,7 @@ class ProductCategoryTable extends myDoctrineTable
       return false;
     }
 
-    $categoryIds = $this->getDescendatIds($this);
+    $categoryIds = $this->getDescendatIds($category);
 
     $q = TagProductRelationTable::getInstance()->createBaseQuery();
     $q->select('DISTINCT tagProductRelation.tag_id')
