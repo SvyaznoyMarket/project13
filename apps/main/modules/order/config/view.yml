@@ -7,13 +7,13 @@ all:
   javascripts:
     - -*
     - jquery
-    - jslib/prettyCheckboxes
+    - prettyCheckboxes.js
     - jquery-ui-1.8.16.custom.min.js
     - jquery.form.js
     - jquery.colorbox.js
     - jquery.autocomplete-dev.js
     - app.order.js
-    - jslib/custom-form-elements
+    - custom-form-elements.js
     - main
   layout: order
   
