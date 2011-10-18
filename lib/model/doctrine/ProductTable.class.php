@@ -56,7 +56,7 @@ class ProductTable extends myDoctrineTable
       $q->addWhere('product.view_show = ?', true);
     }
 
-    $q->addWhere('product.is_instock = ?', array(1, ));
+    $q->addWhere('product.is_instock = ?', true);
 
     $q->orderBy('product.score DESC');
 
