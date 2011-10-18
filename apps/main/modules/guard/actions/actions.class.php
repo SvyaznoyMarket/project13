@@ -134,36 +134,37 @@ class guardActions extends myActions
    */
   public function executeForgotPassword($request)
   {
-
+	  if ($request->isXmlHttpRequest()) {
+		  // пробуем достать токен для смены пароля
+		  $login = $request->getParameter('login');
+		  if (strpos($login, '@') !== false) {
+			  $user = UserTable::getInstance()->retrieveByEmail($login);
+		  } else {
+			  $user = UserTable::getInstance()->retrieveByPhonenumber($login);
+		  }
+		  if ($user) {
+			  $result = Core::getInstance()->query('user.get-password-token', array('id' => $user->core_id));
+			  if ($result['confirmed']) {
+				return $this->renderJson(array('success' => true, 'token' => $result['token']));
+			  }
+		  }
+		  return $this->renderJson(array('success' => false));
+	  }
   }
-
-  /**
-   * Executes changePassword action
-   *
-   * @param sfRequest $request A request object
-   */
-  public function executeChangePassword($request)
+ /**
+  * Executes changePassword action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeResetPassword($request)
   {
-    $this->user = $this->getUser()->getGuardUser();
-    $this->form = new UserFormChangePassword($this->user);
-
-    if ($request->isMethod('post'))
-    {
-      $this->form->bind($request->getParameter($this->form->getName()));
-      if ($this->form->isValid())
-      {
-        $this->form->save();
-
-        //$this->_deleteOldUserForgotPasswordRecords();
-
-        $this->dispatcher->notify(new myEvent($this, 'user.change_password', array(
-            'user' => $this->user,
-          )));
-
-
-        $this->getUser()->setFlash('notice', 'Пароль успешно обновлен');
-        $this->redirect('@user_signin');
-      }
+    if ($request->isXmlHttpRequest()) {
+		$token = $request->getParameter('token');
+		$result = Core::getInstance()->query('user.update-password', array('user_token' => $token));
+		if ($result['confirmed']) {
+			return $this->renderJson(array('success' => true));
+		}
+		return $this->renderJson(array('success' => false));
     }
   }
 
