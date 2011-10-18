@@ -166,15 +166,15 @@
     <div id="zaglu" style="display:none"><!-- AJAX emulation zaglushka-->
       <ul class="comparisonblock">
         <li>
-          <div class="photo"><b class="delete" title="Удалить"></b><a href=""><img src="images/photo34.jpg" alt="" width="120" height="120" /></a></div>
+          <div class="photo"><b class="delete" title="Удалить"></b><a href=""></a></div>
           <a href="">Смартфон Samsung Galaxy S II (GT-I9100 )16 Гб</a> <strong>64 543 <span class="rubl">p</span></strong>
         </li>
         <li>
-          <div class="photo"><b class="delete" title="Удалить"></b><a href=""><img src="images/photo63.jpg" alt="" width="120" height="120" /></a></div>
+          <div class="photo"><b class="delete" title="Удалить"></b><a href=""></a></div>
           <a href="">Смартфон HTC Wildfire S White 16 Гб</a> <strong>64 543 <span class="rubl">p</span></strong>
         </li>
         <li>
-          <div class="photo"><b class="delete" title="Удалить"></b><a href=""><img src="images/photo64.jpg" alt="" width="120" height="120" /></a></div>
+          <div class="photo"><b class="delete" title="Удалить"></b><a href=""></a></div>
           <a href="">Смартфон HTC Sensation</a> <strong>64 543 <span class="rubl">p</span></strong>
         </li>
         <li>
