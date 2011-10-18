@@ -1,5 +1,19 @@
 $(document).ready(function() {
-    
+
+function triggerDelivery( i ) {
+	if ( i == 3 ) {
+		$('.shop_block').show() 
+		$('.delivery_block').hide() 
+	} else {
+		$('.shop_block').hide() 
+		$('.delivery_block').show() 
+	}
+	
+}
+var checker = $('.order-form').find('[name="order[delivery_type_id]"]:checked')
+if (checker.length) 
+	triggerDelivery( checker.val() )
+
 $('.order-form').bind({
     'change': function(e) {
 
@@ -29,10 +43,9 @@ $('.order-form').bind({
 
         // если изменился способ доставки
         if ('order[delivery_type_id]' == $(e.target).attr('name')) {
-        console.info('Egor')
           var el = form.find('[name="order[delivery_type_id]"]:checked')
           if (el.length) {
-
+			triggerDelivery( el.val() )
             $.post(form.data('updateFieldUrl'), {
               order: {
                 delivery_type_id: el.val()
