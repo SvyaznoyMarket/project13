@@ -1,4 +1,4 @@
-<h2>Выбираем <?php echo $productCategory ?></h2>
+<h2>Выбираем <?php echo mb_lcfirst($productCategory) ?></h2>
 <div class="line pb10"></div>
 
 
