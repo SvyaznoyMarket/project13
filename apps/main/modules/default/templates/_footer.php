@@ -1,0 +1,1 @@
+<?php include_partial("default/footer_{$view}", $sf_data) ?>
