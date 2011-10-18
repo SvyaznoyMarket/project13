@@ -115,8 +115,6 @@ class ProductCategory extends BaseProductCategory
 
   public function getDescendantIds()
   {
-
     return $this->getTable()->getDescendatIds($this);
-
   }
 }

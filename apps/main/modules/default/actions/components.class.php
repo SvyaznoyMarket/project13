@@ -54,4 +54,16 @@ class defaultComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
+ /**
+  * Executes footer component
+  *
+  * @param string $view Вид
+  */
+  public function executeFooter()
+  {
+    if (!in_array($this->view, array('default', 'main', 'compact')))
+    {
+      $this->view = 'default';
+    }
+  }
 }

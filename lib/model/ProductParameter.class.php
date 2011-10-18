@@ -19,7 +19,7 @@ class ProductParameter extends myDoctrineVirtualRecord
       switch ($this->property->type)
       {
         case 'string': case 'integer': case 'float':
-          $value[] = $this->formatValue($this->property->pattern, $propertyRelation['value'], $propertyRelation['unit']);
+          $value[] = $this->formatValue($this->property->pattern, $propertyRelation['value'], $this->property->unit);
           break;
         case 'select':
           $option = ProductPropertyOptionTable::getInstance()->getById($propertyRelation['option_id']);
@@ -42,6 +42,11 @@ class ProductParameter extends myDoctrineVirtualRecord
   public function getName()
   {
     return (string)$this->property;
+  }
+
+  public function getDescription()
+  {
+    return $this->property->description;
   }
 
   public function isMultiple()
