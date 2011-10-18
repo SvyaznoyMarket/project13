@@ -64,7 +64,10 @@ var Custom = {
 		for(a = 0; a < inputs.length; a++) {
 			if(inputs[a].className == "styled") {
 				option = inputs[a].getElementsByTagName("option");
-				active = option[0].innerHTML;
+				if( option[0] )
+					active = option[0].innerHTML
+				else 
+					active = "-"
                 textnode = document.createTextNode(active);
                 for(b = 0; b < option.length; b++) {
                     if(option[b].selected == true) {
