@@ -21,24 +21,35 @@ $(document).ready(function(){
 	})
 
 
-/* — Sliders ---------------------------------------------------------------------------------------*/
+/* — Sliders ---------------------------------------------------------------------------------------*/	
 
 	var mini = $('.sliderbox .fl').html() * 1
 	var maxi = $('.sliderbox .fr').html() * 1
-	var label = $( "#f_price_from" ).parent().find(':disabled')
-	if( $('#f_price_from').val() ) {
+	var from = null
+	var to   = null
+	if( $('#t_price_from').length ) {
+		from = $('#t_price_from')
+		to   = $('#t_price_to')
+	}
+	if( $('#f_price_from').length ) {
+		from = $('#f_price_from')
+		to   = $('#f_price_to')
+	}	
+	var label = from.parent().find(':disabled')
+	if( from.val() ) {
 		$('.bigfilter dd:first').slideToggle(200)
 	}
+		
 	if ($( "#slider-range1" ).length) $( "#slider-range1" ).slider({
 		range: true,
 		step: 10,
 		min: mini,
 		max: maxi,
-		values: [ $('#f_price_from').val() ? $('#f_price_from').val() : mini ,  $('#f_price_to').val() ? $('#f_price_to').val() : maxi ],
+		values: [ from.val() ? from.val() : mini ,  to.val() ? to.val() : maxi ],
 		slide: function( event, ui ) {
 			label.val( ui.values[ 0 ] + " - " + ui.values[ 1 ] )
-			$('#f_price_from').val( ui.values[ 0 ] )
-			$('#f_price_to').val( ui.values[ 1 ] )
+			from.val( ui.values[ 0 ] )
+			to.val( ui.values[ 1 ] )
 		}
 	})
 	if ( label.length ) label.val( $( "#slider-range1" ).slider( "values", 0 ) +
@@ -81,7 +92,7 @@ $(document).ready(function(){
         //$(this).addClass("link3active");
     })
 
-	/* top menu */
+
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
 	var corneroffsets = [167,222,290,362,435,515,587,662,717]
@@ -118,114 +129,112 @@ $(document).ready(function(){
 		if (currentMenu)
 			$( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
 	})
-	/* ---- */
-
+	/* ---- */	
+	
 	/* CART */
 	function printPrice ( val ) {
-
+	
 		var float = (val+'').split('.')
 		var out = float[0]
 		var le = float[0].length
 		if( le > 6 ) { // billions
-			out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
+			out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le ) 			
 		} else if ( le > 3 ) { // thousands
-			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
-		}
-		if( float.length == 2 )
-			out += '.' + float[1]
+			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )			
+		}		
+		if( float.length == 2 ) 
+			out += '.' + float[1]		
 		return out// + '&nbsp;'
 	}
-
+	
 	var total = $('.allpageinner > .basketinfo .price')
-
+	
 	function getTotal() {
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
-			if( ! basket[i].noview )
+			if( ! basket[i].noview ) 
 				tmp += basket[i].sum * 1
 		}
 		total.html( printPrice( tmp ) )
-	}
-
+	}		
+	
 	function basketline ( nodes ) {
 		var self = this
-
+		
 		$(nodes.less).data('run',false)
 		$(nodes.more).data('run',false)
-			var main = $(nodes.line)
+			var main = $(nodes.line)	
 		var deladd   = $(nodes.more).parent().attr('href')
 		var drop     = $(nodes.drop).attr('href')
 		var  price   = $(nodes.price).html().replace(/\s/,'')
-		this.sum     = $(nodes.sum).html().replace(/\s/,'')
+		this.sum     = $(nodes.sum).html().replace(/\s/,'')		
 		this.quantum = $(nodes.quan).html().replace(/\D/g,'')
 		this.noview   - false
-
+		
 		this.calculate = function( q ) {
 			self.quantum = q
 			self.sum = price * q
 			$(nodes.sum).html( printPrice( self.sum ) )
-			getTotal()
+			getTotal() 			
 		}
-
+		
 		this.clear = function() {
 			$.getJSON( drop , function( data ) {
 				if( data.success ) {
 					main.hide()
 					self.noview = true
-					getTotal()
+					getTotal() 
 				}
 			})
 		}
-
+		
 		this.update = function( minimax, delta ) {
 			$.getJSON( deladd + '/'+ delta , function( data ) {
 				$(minimax).data('run',false)
 				if( data.success && data.data.quantity ) {
 					$(nodes.quan).html( data.data.quantity + ' шт.' )
 					self.calculate( data.data.quantity )
-					console.info ( ltbx.restore() )
-					var liteboxJSON = ltbx.restore()
+					var liteboxJSON = ltbx.restore() 
 					liteboxJSON.vitems += delta
 					liteboxJSON.sum    += delta * price
-					console.info (liteboxJSON)
 					ltbx.update( liteboxJSON )
 				}
 			})
 		}
-
+		
 		$(nodes.drop).click( function() {
 			self.clear()
 			return false
 		})
-
+		
 		$(nodes.less).click( function() {
 			var minus = this
-
+			
 			if( ! $(minus).data('run') ) {
 				$(minus).data('run',true)
-				if( self.quantum > 1 )
-					self.update( minus, -1 )
+				if( self.quantum > 1 ) 
+					self.update( minus, -1 )					
 				else
-					self.clear()
+					self.clear()				
 			}
 			return false
 		})
-
+		
 		$(nodes.more).click( function() {
 			var plus = this
-
+			
 			if( ! $(plus).data('run') ) {
 				$(plus).data('run',true)
 				self.update( plus, 1 )
 			}
 			return false
 		})
-
+		
 	} // object basketline
-
+	
 	var basket = []
-
+	
 	$('.basketline').each( function(){
-		var tmpline = new basketline({
+		var tmpline = new basketline({ 
 						'line': $(this),
 						'less': $(this).find('.ajaless'),
 						'more': $(this).find('.ajamore'),
@@ -236,11 +245,11 @@ $(document).ready(function(){
 						})
 		basket.push( tmpline )
 	})
-
-
-	/* ---- */
-
-	/* cards carousel  */
+	
+	
+	/* ---- */		
+	
+	/* cards carousel  */	
 
 	$('.forvard').click( function(){
 		//сделать запрос, получить новые данные
