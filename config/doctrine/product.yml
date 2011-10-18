@@ -356,5 +356,5 @@ ProductPrice:
     old_price:              { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }
     avg_price:              { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }
   relations:
-    Product:                { class: Product, foreignAlias: Prices, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Product:                { class: Product, foreignAlias: ProductPrice, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     PriceList:              { class: ProductPriceList, foreignAlias: Price, local: product_price_list_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

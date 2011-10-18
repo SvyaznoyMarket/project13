@@ -28,11 +28,11 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .font18 {font-size:18px}
 
 
-.logo {float:left; margin:27px 0 0 23px; width:151px; height:102px; background:url(/images/bg_main.png) no-repeat -674px 0; text-indent:-10000px}
+.logo {float:left; margin:27px 0 0 23px; width:151px; height:102px; background:url(img/bg_main.png) no-repeat -674px 0; text-indent:-10000px}
 
 .topmenu {float:right; padding:45px 36px 23px 0}
 .topmenu LI {float:left}
-.topmenu A {display:block; height:85px; background:url(/images/bg_main.png) no-repeat; text-indent:-10000px}
+.topmenu A {display:block; height:85px; background:url(img/bg_main.png) no-repeat; text-indent:-10000px}
 .topmenu .point1 {width:50px; background-position:0 0; margin-right:20px}
 .topmenu .point1:hover {background-position:0 -90px}
 .topmenu .point2 {width:50px; background-position:-70px 0; margin-right:20px}
@@ -52,7 +52,7 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .topmenu .point9 {width:45px; background-position:-629px 0}
 .topmenu .point9:hover {background-position:-629px -90px}
 
-.bigbanner {padding:0 0 70px 78px}
+.bigbanner {padding:0 0 70px 38px}
 
 .bannersbox {position:absolute; width:100%; overflow:hidden; height:100%}
 .bannersboxinner {position:relative; z-index:10; width:920px; margin:0 auto}
@@ -75,14 +75,14 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .pb10 {padding-bottom:10px}
 .pb5 {padding-bottom:5px}
 
-.searchbox {float:right; position:relative; width:336px; height:66px; padding:15px 0 0 27px; background:url(/images/bg_main.png) no-repeat -677px -108px}
+.searchbox {float:right; position:relative; width:336px; height:66px; padding:15px 0 0 27px; background:url(img/bg_main.png) no-repeat -677px -108px}
 .searchbox .text {float:left; width:236px; height:36px; line-height:36px; padding:0; border:0; background:none; font-size:14px; color:#fff; margin-right:12px}
 .searchbutton {float:left; width:45px; height:36px; border:0; background:none; text-indent:-10000px; cursor:pointer}
 
 .links {float:right; padding:0 40px 0 0}
 .links A {display:block; font-family:"Enter"; font-size:14px; text-decoration:none; text-transform:uppercase}
-.links .link1 {float:left; width:62px; padding-top:77px; background:url(/images/bg_main.png) no-repeat -830px 1px; text-align:center}
-.links .link2 {width:111px; height:16px; margin:23px 0 0 108px; background:url(/images/bg_main.png) no-repeat -897px 0; text-indent:-10000px}
+.links .link1 {float:left; width:62px; padding-top:77px; background:url(img/bg_main.png) no-repeat -830px 1px; text-align:center}
+.links .link2 {width:111px; height:16px; margin:23px 0 0 108px; background:url(img/bg_main.png) no-repeat -897px 0; text-indent:-10000px}
 .links .link3 {margin:38px 0 0 108px}
 
 .copy {clear:both; padding-left:29px; color:#dcdcdc; font-size:11px}

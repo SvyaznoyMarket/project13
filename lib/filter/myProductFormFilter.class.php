@@ -19,15 +19,11 @@ class myProductFormFilter extends sfFormFilter
     $productTable = ProductTable::getInstance();
 
     // виджет цены
-    $this->widgetSchema['price'] = new myWidgetFormRange(array(
-      'value_from' => 100,
-      'value_to'   => 100000,
+    $this->widgetSchema['price'] = $this->getWidgetRange(null, array(
+      'from' => (int)$productTable->getMinPriceByCategory($productCategory),
+      'to'   => (int)$productTable->getMaxPriceByCategory($productCategory),
     ));
     $this->widgetSchema['price']->setLabel('Цена');
-    $this->setDefault('price', array(
-      'from' => (int)$productTable->getMinPriceByCategory($productCategory),
-      'to'   => (int)$productTable->getMaxPriceByCategory($productCategory)
-    ));
     $this->validatorSchema['price'] = new sfValidatorPass();
 
     // виджет производителя
@@ -117,11 +113,19 @@ class myProductFormFilter extends sfFormFilter
     ));
   }
 
-  protected function getWidgetRange(ProductFilter $productFilter)
+  protected function getWidgetRange(ProductFilter $productFilter = null, array $value)
   {
     return new myWidgetFormRange(array(
-      'value_from' => 0,
-      'value_to'   => 100,
+      'value_from' => $value['from'],
+      'value_to'   => $value['to'],
+      'template'   => ''
+        .'<div class="pb5"><input type="text" style="height:10px; padding:0; line-height:10px; border:0; background:none; font-size:10px; color:#8a8a8a"  disabled="disabled" /> %value_from% %value_to%</div>'
+        .'<div class="sliderbox">'
+          .'<div id="slider-range1" class="slider-range"></div>'
+          .'<span class="fl">'.$value['from'].'</span>'
+          .'<span class="fr">'.$value['to'].'</span>'
+        .'</div>'
+        .'<div class="clear"></div>'
     ));
   }
 }

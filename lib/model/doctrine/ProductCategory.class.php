@@ -112,4 +112,11 @@ class ProductCategory extends BaseProductCategory
 
     return $newFilter;
   }
+
+  public function getDescendantIds()
+  {
+
+    return $this->getTable()->getDescendatIds($this);
+
+  }
 }
