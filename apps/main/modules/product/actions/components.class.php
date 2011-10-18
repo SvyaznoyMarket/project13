@@ -10,12 +10,13 @@
  */
 class productComponents extends myComponents
 {
- /**
-  * Executes show component
-  *
-  * @param Product $product Товар
-  * @param view $view Вид
-  */
+
+  /**
+   * Executes show component
+   *
+   * @param Product $product Товар
+   * @param view $view Вид
+   */
   public function executeShow()
   {
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'category')))
@@ -24,23 +25,23 @@ class productComponents extends myComponents
     }
 
     $item = array(
-      'article'  => $this->product->article,
-      'name'     => (string)$this->product,
-      'creator'  => (string)$this->product->Creator,
-      'price'    => $this->product->formatted_price,
+      'article' => $this->product->article,
+      'name' => (string) $this->product,
+      'creator' => (string) $this->product->Creator,
+      'price' => $this->product->formatted_price,
       'has_link' => $this->product['view_show'],
-      'photo'    => $this->product->getMainPhotoUrl(2),
-      'product'  => $this->product,
+      'photo' => $this->product->getMainPhotoUrl(2),
+      'product' => $this->product,
     );
 
-	if ($this->view === 'category')
-	{
-		$item['url'] = url_for('productCatalog_category', $this->category, array('absolute' => true));
-	}
-	else
-	{
-		$item['url'] = url_for('productCard', $this->product, array('absolute' => true));
-	}
+    if ($this->view === 'category')
+    {
+      $item['url'] = url_for('productCatalog_category', $this->category, array('absolute' => true));
+    }
+    else
+    {
+      $item['url'] = url_for('productCard', $this->product, array('absolute' => true));
+    }
 
     if ('default' == $this->view)
     {
@@ -53,28 +54,32 @@ class productComponents extends myComponents
 
     $this->setVar('item', $item, true);
   }
- /**
-  * Executes preview component
-  *
-  * @param Product $product Товар
-  */
+
+  /**
+   * Executes preview component
+   *
+   * @param Product $product Товар
+   */
   public function executePreview()
   {
+
   }
- /**
-  * Executes pager component
-  *
-  * @param myDoctrinePager $pager Листалка товаров
-  */
+
+  /**
+   * Executes pager component
+   *
+   * @param myDoctrinePager $pager Листалка товаров
+   */
   public function executePager()
   {
     $this->setVar('list', $this->pager->getResults(), true);
   }
- /**
-  * Executes sorting component
-  *
-  * @param array $productSorting Сортировка списка товаров
-  */
+
+  /**
+   * Executes sorting component
+   *
+   * @param array $productSorting Сортировка списка товаров
+   */
   public function executeSorting()
   {
     $list = array();
@@ -88,17 +93,18 @@ class productComponents extends myComponents
       }
       $list[] = array_merge($item, array(
         'url' => replace_url_for('sort', implode('-', array($item['name'], $item['direction'])))
-      ));
+        ));
     }
 
     $this->setVar('list', $list, true);
     $this->setVar('active', $active, true);
   }
- /**
-  * Executes list component
-  *
-  * @param myDoctrineCollection $list Список товаров
-  */
+
+  /**
+   * Executes list component
+   *
+   * @param myDoctrineCollection $list Список товаров
+   */
   public function executeList()
   {
     $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
@@ -107,11 +113,12 @@ class productComponents extends myComponents
       $this->view = 'expanded';
     }
   }
- /**
-  * Executes pagination component
-  *
-  * @param myDoctrinePager $pager Листалка товаров
-  */
+
+  /**
+   * Executes pagination component
+   *
+   * @param myDoctrinePager $pager Листалка товаров
+   */
   public function executePagination()
   {
     if (!$this->pager->haveToPaginate())
@@ -119,32 +126,34 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
   }
- /**
-  * Executes property component
-  *
-  * @param Product $product Товар
-  */
+
+  /**
+   * Executes property component
+   *
+   * @param Product $product Товар
+   */
   public function executeProperty()
   {
     $list = array();
     foreach ($this->product['Parameter'] as $parameter)
     {
       $list[] = array(
-        'name'  => $parameter->getName(),
+        'name' => $parameter->getName(),
         'value' => $parameter->getValue(),
       );
     }
 
     $this->setVar('list', $list, true);
   }
- /**
-  * Executes property_grouped component
-  *
-  * @param Product $product Товар
-  */
+
+  /**
+   * Executes property_grouped component
+   *
+   * @param Product $product Товар
+   */
   public function executeProperty_grouped()
   {
-	  $this->setVar('product', $this->product, true);
+    $this->setVar('product', $this->product, true);
 //    $list = array();
 //    foreach ($this->product['ParameterGroup'] as $parameterGroup)
 //    {
@@ -165,15 +174,16 @@ class productComponents extends myComponents
 //
 //    $this->setVar('list', $list, true);
   }
- /**
-  * Executes product_group component
-  *
-  * @param Product $product Товар
-  */
+
+  /**
+   * Executes product_group component
+   *
+   * @param Product $product Товар
+   */
   public function executeProduct_group()
   {
     $properties = $this->product->getGroup()->getProperty();
-    $q = ProductTable::getInstance()->createBaseQuery()->addWhere('product.group_id = ?', array($this->product->group_id, ));
+    $q = ProductTable::getInstance()->createBaseQuery()->addWhere('product.group_id = ?', array($this->product->group_id,));
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
 
     $q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
@@ -182,11 +192,11 @@ class productComponents extends myComponents
     foreach ($properties as $property)
     {
       $query = clone $q;
-      $query->addWhere('productPropertyRelation.property_id = ?', array($property->id, ));
+      $query->addWhere('productPropertyRelation.property_id = ?', array($property->id,));
       $query->andWhereIn('productPropertyRelation.product_id', $product_ids);
       $query->distinct();
       $value_ids = ProductPropertyRelationTable::getInstance()->getIdsByQuery($query);
-      $values = ProductPropertyRelationTable::getInstance()->createListByIds($value_ids, array('index' => array('productPropertyRelation' => 'id', )));
+      $values = ProductPropertyRelationTable::getInstance()->createListByIds($value_ids, array('index' => array('productPropertyRelation' => 'id',)));
       foreach ($products_properties as $products_property)
       {
         if ($property->id == $products_property->property_id)
@@ -210,13 +220,13 @@ class productComponents extends myComponents
                 break;
               }
             }
-          break;
+            break;
           case 'string': case 'integer': case 'float': case 'text':
             $value_to_map[$realValue]['name'] = $value_to_map[$realValue]['value'];
-          break;
+            break;
           default:
-            $value_to_map[$id] = array('name' => '', 'value' => '', );
-          break;
+            $value_to_map[$id] = array('name' => '', 'value' => '',);
+            break;
         endswitch;
         if (isset($values[$id]['is_selected']))
         {
@@ -235,20 +245,21 @@ class productComponents extends myComponents
 
     $this->properties = $properties;
   }
- /**
-  * Executes list_view component
-  *
-  */
+
+  /**
+   * Executes list_view component
+   *
+   */
   public function executeList_view()
   {
     $list = array(
       array(
-        'name'  => 'compact',
+        'name' => 'compact',
         'title' => 'компактный',
         'class' => 'tableview',
       ),
       array(
-        'name'  => 'expanded',
+        'name' => 'expanded',
         'title' => 'расширенный',
         'class' => 'listview',
       ),
@@ -257,12 +268,14 @@ class productComponents extends myComponents
     foreach ($list as &$item)
     {
       $item = array_merge($item, array(
-        'url'     => replace_url_for('view', $item['name']),
+        'url' => replace_url_for('view', $item['name']),
         'current' => $this->getRequestParameter('view', 'expanded') == $item['name'],
-      ));
-    } if (isset($item)) unset($item);
+        ));
+    } if (isset($item))
+      unset($item);
 
     $this->setVar('list', $list, true);
   }
+
 }
 
