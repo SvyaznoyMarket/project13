@@ -76,6 +76,9 @@ $(document).ready(function(){
 	}
 	
 	/* stuff goes into lightbox */
+	$('.boxhover .lt').live('click', function() {
+		window.location.href=$(this).attr('data-url')
+	})
 	$('.goodsbar .link1').live('click', function(e) {
 		if (! currentItem ) return false
 		var button = this
