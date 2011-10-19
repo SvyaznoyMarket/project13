@@ -20,7 +20,8 @@ class searchActions extends myActions
     $offset = abs(intval($request->getParameter('page')) - 1);
     $limit = sfConfig::get('app_product_max_items_on_category', 20);
 
-    $this->searchString = iconv('windows-1251', 'utf-8', $request['q']);
+    //$this->searchString = iconv('windows-1251', 'utf-8', $request['q']);
+    $this->searchString = $request['q'];
     if (empty($this->searchString))
     {
       return sfView::NONE;
@@ -30,19 +31,45 @@ class searchActions extends myActions
     $response = Core::getInstance()->query('search.get', array(
       'request' => $this->searchString,
       'start'   => $offset,
-      'end'     => $offset + $limit,
+      'limit'   => $limit,
     ));
     //myDebug::dump($response);
+    if (!$response)
+    {
+      return sfView::ERROR;
+    }
+    else if (isset($response['result']) && ('empty' == $response['result']))
+    {
+      $this->setTemplate('empty');
 
+      return sfView::SUCCESS;
+    }
+
+    $categories = array();
     $pagers = array();
     if (is_array($response)) foreach ($response as $core_id => $data)
     {
       $type = $this->getSearchTypeByCoreId($core_id);
       if (null == $type) continue;
 
+      $categories[$type] = array();
+
       $pagers[$type] = call_user_func_array(array($this, 'get'.ucfirst($type).'Pager'), array($data));
+
+      if (('product' == $type) && !empty($data['types']))
+      {
+        $coreIds = array_keys($data['types']);
+        foreach (ProductTypeTable::getInstance()->getListByCoreIds($coreIds) as $productType)
+        {
+          $categories[$type][] = array(
+            'record' => $productType,
+            'count'  => $data['types'][$productType->core_id],
+          );
+        }
+      }
     }
 
+    $this->categories = $categories;
     $this->pagers = $pagers;
   }
 

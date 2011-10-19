@@ -5,11 +5,11 @@
 <?php end_slot() ?>
 
 <?php slot('page_head') ?>
-  <?php include_partial('search/page_head', $sf_data) ?>
+  <?php include_partial('search/page_head', array('searchString' => $searchString, 'count' => $pagers['product']->getNbResults())) ?>
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-  <?php include_component('search', 'category', array()) ?>
+  <?php include_component('search', 'category', array('categories' => $categories)) ?>
 <?php end_slot() ?>
 
 <?php include_partial('productCatalog/product_list', array('productPager' => $pagers['product'])) ?>

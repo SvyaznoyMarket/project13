@@ -14,7 +14,7 @@
     <?php include_component('search', 'form', array('searchString', $searchString)) ?>
   </div>
   <div class="searchtitle">Вы искали <span class="orange">&quot;<?php echo $searchString ?>&quot;</span>
-    <?php include_partial('search/product_count', array('count' => $pagers['product']->getNbResults())) ?>
+    <?php include_partial('search/product_count', array('count' => $count)) ?>
   </div>
 
   <div class="line"></div>

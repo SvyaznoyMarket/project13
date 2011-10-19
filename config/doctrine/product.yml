@@ -86,7 +86,9 @@ ProductCategoryLink:
 ProductType:
   options:
     comment: 'Тип товара'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
+    Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -185,8 +187,8 @@ Product:
   options:
     comment: 'Товар'
   actAs:
-    Timestampable:      ~
-    Corable:            { push: disable }
+    Timestampable: ~
+    Corable:       { push: disable }
   #listeners: [ myDoctrineRecordListener ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
@@ -240,8 +242,8 @@ ProductPhoto:
   options:
     comment: 'Фото товара'
   actAs:
-   Timestampable:      ~
-   Corable:            { push: disable }
+   Timestampable: ~
+   Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
@@ -256,8 +258,8 @@ ProductPhoto3D:
   options:
     comment: '3D фото товара'
   actAs:
-   Timestampable:      ~
-   Corable:            { push: disable }
+   Timestampable: ~
+   Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
@@ -340,8 +342,7 @@ ProductPriceList:
   options:
     comment: 'Прайс-листы'
   actAs:
-    Corable:
-      push: disable
+    Corable: { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
