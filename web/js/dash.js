@@ -5,7 +5,8 @@ $(document).ready(function(){
 		/* draganddrop */
 	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
 	$('.boxhover[ref] .photo img').bind('mousedown', function(e){
-			e.stopPropagation();
+			e.stopPropagation()
+			e.preventDefault()
 			draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
 	})	
 	$('.boxhover[ref] .photo img').bind('mouseup', function(e){
