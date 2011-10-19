@@ -188,4 +188,12 @@ class Product extends BaseProduct
   {
     return isset($this->Category[0]) ? $this->Category[0] : null;
   }
+  public function getMainCategoryId()
+  {
+    return isset($this->Category[0]) ? $this->Category[0]['id'] : null;
+  }  
+  
+  public function getUrl(){
+      return '/product/' . $this->token;
+  }  
 }
