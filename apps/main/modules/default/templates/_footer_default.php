@@ -23,7 +23,7 @@
       <dd>Звонок бесплатный.<br />Радость в подарок :)</dd>
     </dl>
   </div>
-
+<?php if (false): ?>
   <div class="social">
     Посетите нас
     <a href="#" class="twitter">twitter</a>
@@ -37,7 +37,7 @@
   <div class="subscribeform">
     <form action=""><input type="text" class="text" value="Введите Ваш E-mail" onfocus="if (this.value == 'Введите Ваш E-mail') this.value = '';" onblur="if (this.value == '') this.value = 'Введите Ваш E-mail';"  /><input type="button" class="subscribebutton" value="Подписаться на рассылку" /></form>
   </div>
-
+<?php endif ?>
   <div class="footerbottom">
     <div class="copy">
       &copy; &laquo;Enter&raquo; 2002-2011. Все права защищены.<br />
@@ -48,11 +48,13 @@
         <b><i class="mistakeimg"></i><a href="" class="orange">сообщить!</a></b>
       </div>
     </div>
+    <?php if (false): ?>
     <div class="counter">
       <a href=""><img src="/images/images/counter1.gif" alt="" width="80" height="30" /></a>
       <a href=""><img src="/images/images/counter2.gif" alt="" width="50" height="30" /></a>
       <a href=""><img src="/images/images/counter3.gif" alt="" width="50" height="30" /></a>
     </div>
+    <?php endif ?>
   </div>
 </div>
 <!-- /Footer -->

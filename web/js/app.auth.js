@@ -42,18 +42,18 @@ $(document).ready(function() {
         }
       }
     })
-
+  })
 	$('#forgot-pwd-trigger').click(function(){
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();
-	});
+	})
 
 	$('#remember-pwd-trigger,#remember-pwd-trigger2').click(function(){
 		$('#reset-pwd-form').hide();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').show();
-	});
+	})
 
 	$('#reset-pwd-form').submit(function(){
 		var form = $(this);
@@ -70,7 +70,7 @@ $(document).ready(function() {
 		}, 'json');
 
 		return false;
-	});
+	})
 
 	$('#reset-pwd-key-form').submit(function(){
 		var form = $(this);
@@ -89,5 +89,5 @@ $(document).ready(function() {
 		}, 'json');
 
 		return false;
-	});
+	})
 })
