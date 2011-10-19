@@ -592,7 +592,7 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 		}
 	})	
 	
-	document.ondragstart = document.body.onselectstart = function() {return false} /* prevent default behaviour */
+	//document.ondragstart = document.body.onselectstart = function() {return false} /* prevent default behaviour */
 	
 	$(document).bind('mousemove.zoomer', function(e) {
 		if( active ){

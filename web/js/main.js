@@ -127,9 +127,15 @@ $(document).ready(function(){
 		}
 	})
 
-	$(document).click( function(){
-		if (currentMenu)
-			$( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
+	$(document).click( function(e){
+		if (currentMenu) {			
+			if( e.which == 1 )
+				$( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
+		}	
+	})
+	
+	$('.extramenu').click( function(e){
+		e.stopPropagation()
 	})
 	/* ---- */	
 	
@@ -170,7 +176,8 @@ $(document).ready(function(){
 		var  price   = $(nodes.price).html().replace(/\s/,'')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')		
 		this.quantum = $(nodes.quan).html().replace(/\D/g,'')
-		this.noview   - false
+		this.noview  = false
+		var dropflag = false
 		
 		this.calculate = function( q ) {
 			self.quantum = q
@@ -181,6 +188,7 @@ $(document).ready(function(){
 		
 		this.clear = function() {
 			$.getJSON( drop , function( data ) {
+				$(nodes.drop).data('run',false)
 				if( data.success ) {
 					main.hide()
 					self.noview = true
@@ -204,7 +212,10 @@ $(document).ready(function(){
 		}
 		
 		$(nodes.drop).click( function() {
-			self.clear()
+			if(! $(nodes.drop).data('run') ) {
+				$(nodes.drop).data('run', true)
+				dropflag = self.clear()
+			}	
 			return false
 		})
 		
@@ -249,25 +260,25 @@ $(document).ready(function(){
 	})
 	
 	/* ---- */	
-	/* */
+	/* tags */
 	$('.fm').toggle( function(){
-		$('.hf').show()
+		$(this).parent().find('.hf').show()
 		$(this).html('скрыть')
 	}, function(){
-		$('.hf').hide()		
+		$(this).parent().find('.hf').hide()		
 		$(this).html('еще...')	
-	})
-	
+	})	
 	/* ---- */	
-	/* cards carousel  
+	/* cards carousel  */
+	
 	function cardsCarousel ( nodes ) {
-console.info(nodes)
 		var self = this
 		var current = 1
 		var max = $(nodes.times).html() * 1
 		var wi  = $(nodes.width).html().replace(/\D/g,'')
 		var buffer = 2
-
+		var ajaxflag = false
+		
 		this.notify = function() {
 			$(nodes.crnt).html( current )
 			if ( current == 1 ) 
@@ -284,55 +295,52 @@ console.info(nodes)
 			var boxes = $(nodes.wrap).find('.goodsbox')
 			$(boxes).hide()
 			var le = boxes.length				
-			for(var j = 1; j <= 3; j++)
-				boxes.eq( le - j ).show()
+			for(var j = (current - 1) * 3 ; j < current  * 3 ; j++) {
+				boxes.eq( j ).show()
+			}
 		}
 	
-		$(nodes.next).bind('click', function() {
-			
-			if( current < max ) {
-				if ( current < max - 1 ) {
-					console.info(current, buffer)
-					if( current > buffer ) // only non-loaded
-						$.get( $(nodes.prev).attr('data-url') + '?page=' + (buffer++), function(data) {
-							var tr = $('<div>')
-							$(tr).html( data )
-							$(tr).find('.goodsbox').css('display','none')
-							if( current > 1 ){ // cur in [2...max-1]
-								shiftme()
-							}
-							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
-							tr = null
-						})
-					else 
-						shiftme()
-					if( current == 1 ){ // cur = 1
-						shiftme()
-					}
-				} else {	
-					//cur = max
+		$(nodes.next).bind('click', function() {			
+			if( current < max && !ajaxflag ) {
+				if( current + 1 == max ) { //the last pull is loaded , so special shift
 					var boxes = $(nodes.wrap).find('.goodsbox')
 					$(boxes).hide()
 					var le = boxes.length				
 					var rest = ( wi % 3 ) ?  wi % 3  : 3 		
 					for(var j = 1; j <= rest; j++)
 						boxes.eq( le - j ).show()
+					current++	
+				} else {
+					if( current + 1 >= buffer ) { // we have to get new pull from server
+						$(nodes.next).css('opacity','0.4') // addClass dont work ((
+						ajaxflag = true
+						$.get( $(nodes.prev).attr('data-url') + '?page=' + (buffer+1), function(data) {
+							buffer++
+							$(nodes.next).css('opacity','1')
+							ajaxflag = false
+							var tr = $('<div>')
+							$(tr).html( data )
+							$(tr).find('.goodsbox').css('display','none')							
+							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
+							tr = null
+						})
+						current++
+						shiftme()
+					} else { // we have new portion as already loaded one
+						current++
+						shiftme() // TODO repair
+					}
 				}
-				current++
-			
-				self.notify()	
+				
+							
+				self.notify()				
 			}
 		})
 		
 		$(nodes.prev).click( function() {
-			if( current > 1 ) {
+			if( current > 1 ) {				
 				current--
-				var boxes = $(nodes.wrap).find('.goodsbox')
-				$(boxes).hide()
-				var le = boxes.length
-				boxes.eq( le - 6 ).show()				
-				boxes.eq( le - 5 ).show()								
-				boxes.eq( le - 4 ).show()								
+				shiftme()								 
 				self.notify()					
 			}
 		})	
@@ -351,7 +359,7 @@ console.info(nodes)
 					})
 	})
 		
-	 ---- */
+	/* ---- */
 });
 
 
