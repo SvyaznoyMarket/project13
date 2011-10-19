@@ -239,6 +239,14 @@ user_signout:
 user_forgotPassword:
   url:   /request-password
   param: { module: guard, action: forgotPassword }
+  requirements:
+    sf_method: [ get,post ]
+
+user_resetPassword:
+  url:   /reset-password
+  param: { module: guard, action: resetPassword }
+  requirements:
+    sf_method: [ get,post ]
 #
 # user change password
 user_changePassword:

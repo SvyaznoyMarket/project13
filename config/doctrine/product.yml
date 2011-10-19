@@ -66,7 +66,7 @@ ProductCategoryProductRelation:
   columns:
     product_category_id: { type: integer(20), primary: true, notnull: true }
     product_id:          { type: integer(20), primary: true, notnull: true }
-    id_default:          { type: boolean, notnull: true, default: false, comment: 'Это основная категория товара?' }
+    is_default:          { type: boolean, notnull: true, default: false, comment: 'Это основная категория товара?' }
   relations:
     Category:            { class: ProductCategory, foreignAlias: ProductRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:             { class: Product, foreignAlias: CategoryRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
@@ -207,6 +207,7 @@ Product:
     view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
     is_instock:        { type: boolean, notnull: true, default: false }
     description:       { type: text, notnull: false, default: null, comment: 'Описание товара' }
+    main_photo:        { type: string(255), notnull: false, default: null }
     rating:            { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
     rating_quantity:   { type: integer(4), notnull: true, default: 0, comment: 'Количество голосов пользователей' }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }

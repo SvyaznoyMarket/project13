@@ -1,4 +1,4 @@
-<h2>Выбираем <?php echo $productCategory ?></h2>
+<h2>Выбираем <?php echo mb_lcfirst($productCategory) ?></h2>
 <div class="line pb10"></div>
 
 
@@ -8,14 +8,14 @@
 <form class="product_filter-block" action="<?php echo $url ?>" method="get" data-action-count="<?php echo url_for('productCatalog_count', $sf_data->getRaw('productCategory')) ?>">
 
   <dl class="bigfilter form">
-    <?php $i = 0; foreach ($form as $name => $field): $i++ ?>
+    <?php $i = 0; foreach ($form as $name => $field): if ($i++ > 7) break; ?>
       <?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?>
 
-      <dt<?php if (1 == $i) echo ' class="first"' ?>><?php echo $form[$name]->renderLabelName() ?>
+      <dt<?php if (4 > $i) echo ' class="current'.((1 == $i) ? ' first' : '').'"' ?>><?php echo $form[$name]->renderLabelName() ?>
         <?php //include_partial('productCatalog/filter_hint')  ?>
       </dt>
 
-      <dd>
+      <dd<?php if (4 > $i) echo ' style="display: block"' ?>>
         <?php echo $form[$name]->render() ?>
       </dd>
 <?php endforeach; ?>

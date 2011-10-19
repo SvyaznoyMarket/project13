@@ -75,6 +75,7 @@ class Order extends BaseOrder
     $data['delivery_interval_id'] = $this->DeliveryPeriod->core_id;
     $data['shop_id']              = $this->Shop->core_id;
     $data['address_id']           = $this->UserAddress->core_id;
+    $data['satus_id']             = $this->Status->core_id;
     $data['store_id']             = null;
     $data['ip']                   = sfContext::getInstance()->getUser()->getIp();
 

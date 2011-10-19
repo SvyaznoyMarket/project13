@@ -1,6 +1,12 @@
 all:
   is_secure: true
 
+forgotPassword:
+  is_secure: false
+  
+resetPassword:
+  is_secure: false
+
 signin:
   is_secure: false
   

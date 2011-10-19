@@ -80,7 +80,24 @@ $(document).ready(function() {
         .then(function(result) {
             if (true === result.success) {
                 $('.product_count-block').remove();
-                el.parent().find('> label').first().after('<div class="product_count-block" style="position: absolute; background: #fff; padding: 4px; opacity: 0.9; border-radius: 5px; border: 1px solid #ccc; cursor: pointer;">Найдено '+result.data+'</div>')
+                //el.parent().find('> label').first().after('<div class="product_count-block" style="position: absolute; background: #fff; padding: 4px; opacity: 0.9; border-radius: 5px; border: 1px solid #ccc; cursor: pointer;">Найдено '+result.data+'</div>')
+                switch (result.data % 10) {
+                  case 1:
+                    ending = 'ь';
+                    break
+                  case 2: case 3: case 4:
+                    ending = 'и';
+                    break
+                  default:
+                    ending = 'ей';
+                    break
+                }
+                switch (result.data % 100) {
+                  case 11: case 12: case 13: case 14:
+                    ending = 'ей';
+                    break
+                }
+                el.parent().find('> label').first().after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
                 $('.product_count-block')
                 .hover(
                     function() {
