@@ -356,7 +356,7 @@ border-radius:4px;
 -moz-border-radius:4px;
 -webkit-border-radius:4px;
 }
-.slider-range DIV {position:absolute; z-index:1; bottom:0; height:80%; background:#ffa901; opacity:0.5;}
+.slider-range DIV {position:absolute; z-index:1; bottom:0; height:80%; background: url(/css/skin/img/bg_range.png) repeat-x; }
 .slider-range A {position:absolute; z-index:2; top:0; margin-left:-7px; width:15px; height:24px; background:url(/css/skin/img/bg.png) no-repeat -18px 0; cursor: default; outline:none}
 
 .advice {margin-bottom:20px; border:1px solid #dcdcdc;
