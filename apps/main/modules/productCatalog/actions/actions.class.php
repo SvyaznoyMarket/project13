@@ -209,11 +209,11 @@ class productCatalogActions extends myActions
 
 
 
-  protected function getProductFilter()
+  protected function getProductFilter($params = array())
   {
-    return new myProductFormFilter(array(), array(
+    return new myProductFormFilter(array(), myToolkit::arrayDeepMerge(array(
       'productCategory' => $this->productCategory,
-    ));
+    ), $params));
   }
 
   protected function getProductTagFilter($params = array())

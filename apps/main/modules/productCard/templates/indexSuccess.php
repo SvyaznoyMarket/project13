@@ -8,13 +8,13 @@
   <?php include_component('product', 'show', array('product' => $product)) ?>
   <?php include_component('service', 'listByProduct', array('product' => $product)) ?>
 
-  <?php include_component('productComment', 'list', array(
+  <?php /*include_component('productComment', 'list', array(
 	  'product' => $product,
 	  'page' => 1,
 	  'sort' => 'rating_desc',
 	  'showSort' => false,
 	  'showPage' => false
-  )) ?>
+  )) */ ?>
 
   <?php //echo link_to('Комментарии', 'productComment', $sf_data->getRaw('product')) ?>
 

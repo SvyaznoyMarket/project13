@@ -265,6 +265,7 @@ class orderActions extends myActions
   {
     $order->User = $this->getUser()->getGuardUser();
     $order->sum = $this->getUser()->getCart()->getTotal();
+    $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
 
     //$this->order->User = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);//$this->getUser()->getGuardUser();
 

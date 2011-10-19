@@ -2,25 +2,20 @@
 <div class="footer">
   <div class="bottommenu">
     <dl>
-      <dt><a href="#">Компания Enter</a></dt>
-      <dd><a href="#">О Компании</a></dd>
-      <dd><a href="#">Наши преимущества</a></dd>
-      <dd><a href="#">Контакты</a></dd>
-      <dd><a href="#">Обратная связь</a></dd>
-      <dd><a href="#">Карта сайта</a></dd>
+      <dt><a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">Где выход? Enter - это выход.</a></dt>
+      <dd>Наша миссия: дарить время для</dd>
+      <dd>настоящего. Честно. С любовью.</dd>
+      <dd>Как для себя.</dd>
     </dl>
     <dl>
-      <dt><a href="#">Услуги и сервисы</a></dt>
-      <dd><a href="#">Сервис F1</a></dd>
-      <dd><a href="#">Доставка товара</a></dd>
-      <dd><a href="#">Гарантия</a></dd>
-      <dd><a href="#">Бесплатный возврат</a></dd>
-      <dd><a href="#">Помощь покупателю</a></dd>
+      <dt><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></dt>
+      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Как сделать заказ</a></dd>
+      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>">Как получить заказ</a></dd>
+      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_pay',)) ?>">Как оплатить заказ</a></dd>
     </dl>
     <dl>
-      <dt><a href="">Хотите работать у нас?</a></dt>
-      <dd><a href="">Работа в Enter &gt;&gt;&gt;</a></dd>
-      <dd>Краткий текст о сайте вакансий, призыв устроиться в Enter.ru</dd>
+      <dt><a href="#">F1 сервис</a></dt>
+      <dd><a herf="#"><img src="/images/banners/f1_footer.jpg" alt="F1 услуги" width="209" height="46"></img></a></dd>
     </dl>
     <dl class="next">
       <dt>Контакт cENTER</dt>
@@ -28,7 +23,7 @@
       <dd>Звонок бесплатный.<br />Радость в подарок :)</dd>
     </dl>
   </div>
-
+<?php if (false): ?>
   <div class="social">
     Посетите нас
     <a href="#" class="twitter">twitter</a>
@@ -42,7 +37,7 @@
   <div class="subscribeform">
     <form action=""><input type="text" class="text" value="Введите Ваш E-mail" onfocus="if (this.value == 'Введите Ваш E-mail') this.value = '';" onblur="if (this.value == '') this.value = 'Введите Ваш E-mail';"  /><input type="button" class="subscribebutton" value="Подписаться на рассылку" /></form>
   </div>
-
+<?php endif ?>
   <div class="footerbottom">
     <div class="copy">
       &copy; &laquo;Enter&raquo; 2002-2011. Все права защищены.<br />
@@ -53,11 +48,13 @@
         <b><i class="mistakeimg"></i><a href="" class="orange">сообщить!</a></b>
       </div>
     </div>
+    <?php if (false): ?>
     <div class="counter">
       <a href=""><img src="/images/images/counter1.gif" alt="" width="80" height="30" /></a>
       <a href=""><img src="/images/images/counter2.gif" alt="" width="50" height="30" /></a>
       <a href=""><img src="/images/images/counter3.gif" alt="" width="50" height="30" /></a>
     </div>
+    <?php endif ?>
   </div>
 </div>
 <!-- /Footer -->

@@ -110,7 +110,7 @@ class productComponents extends myComponents
     $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
     if (!in_array($this->view, array('expanded', 'compact')))
     {
-      $this->view = 'expanded';
+      $this->view = 'compact';
     }
   }
 
@@ -131,15 +131,25 @@ class productComponents extends myComponents
    * Executes property component
    *
    * @param Product $product Товар
+   * @param string $view Вид
    */
   public function executeProperty()
   {
+    if (!in_array($this->view, array('default', 'inlist')))
+    {
+      $this->view = 'default';
+    }
+
     $list = array();
     foreach ($this->product['Parameter'] as $parameter)
     {
+      $value = $parameter->getValue();
+
+      if (empty($value)) continue;
+
       $list[] = array(
         'name' => $parameter->getName(),
-        'value' => $parameter->getValue(),
+        'value' => $value,
       );
     }
 
@@ -159,7 +169,7 @@ class productComponents extends myComponents
       $parameters = array();
       foreach ($parameterGroup->getParameter() as $parameter)
       {
-        $value = trim($parameter->getValue());
+        $value = $parameter->getValue();
         if (empty($value)) continue;
 
         $parameters[] = array(
@@ -274,7 +284,7 @@ class productComponents extends myComponents
     {
       $item = array_merge($item, array(
         'url' => replace_url_for('view', $item['name']),
-        'current' => $this->getRequestParameter('view', 'expanded') == $item['name'],
+        'current' => $this->getRequestParameter('view', 'compact') == $item['name'],
         ));
     } if (isset($item))
       unset($item);

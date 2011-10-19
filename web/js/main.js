@@ -35,8 +35,9 @@ $(document).ready(function(){
 		from = $('#f_price_from')
 		to   = $('#f_price_to')
 	}	
-	var label = from.parent().find(':disabled')
-	if( from.val() ) {
+	if( from )
+		var label = from.parent().find(':disabled')
+	if( from && from.val() ) {
 		$('.bigfilter dd:first').slideToggle(200)
 	}
 		
@@ -52,7 +53,8 @@ $(document).ready(function(){
 			to.val( ui.values[ 1 ] )
 		}
 	})
-	if ( label.length ) label.val( $( "#slider-range1" ).slider( "values", 0 ) +
+	if ( label && label.length ) 
+		label.val( $( "#slider-range1" ).slider( "values", 0 ) +
 		" - " + $( "#slider-range1" ).slider( "values", 1 ) )
 
 
