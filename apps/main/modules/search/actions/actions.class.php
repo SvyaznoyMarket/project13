@@ -51,6 +51,30 @@ class searchActions extends myActions
       return sfView::SUCCESS;
     }
 
+    if ($request->isXmlHttpRequest())
+    {
+      $empty = true;
+
+      if (is_array($response)) foreach ($response as $core_id => $data)
+      {
+        if ($data['count'] > 0)
+        {
+          $empty = false;
+          break;
+        }
+      }
+
+      return $this->renderJson(array(
+        'success' => !$empty,
+        'data'    => array(
+          'content' => $empty ? $this->getPartial($this->getModuleName().'/popup', array(
+            'count'        => 0,
+            'searchString' => $this->searchString,
+          )) : null
+        ),
+      ));
+    }
+
     $categories = array();
     $pagers = array();
     if (is_array($response)) foreach ($response as $core_id => $data)

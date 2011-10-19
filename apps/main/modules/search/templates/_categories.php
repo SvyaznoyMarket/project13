@@ -1,4 +1,4 @@
-<?php if (!empty($list['product'])): ?>
+<?php if (count($list['product']) > 0): ?>
   <h2>Найдено в товарах:</h2>
   <?php include_partial('search/filter_product', array('list' => $list['product'], 'url' => url_for('search', array('q' => $searchString)))) ?>
 <?php endif ?>

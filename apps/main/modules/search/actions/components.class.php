@@ -41,7 +41,7 @@ class searchComponents extends myComponents
  /**
   * Executes categories component
   *
-  * @param array $categories Категории поиска
+  * @param array $list Категории поиска
   */
   public function executeCategories()
   {
