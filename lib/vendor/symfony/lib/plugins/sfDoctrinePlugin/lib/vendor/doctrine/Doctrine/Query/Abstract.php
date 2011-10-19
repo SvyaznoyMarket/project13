@@ -1174,7 +1174,9 @@ abstract class Doctrine_Query_Abstract
      */
     protected function _constructQueryFromCache($cached)
     {
-        $cached = unserialize($cached);
+		if (is_string($cached)) {
+			$cached = unserialize($cached);
+		}
         $this->_tableAliasMap = $cached[2];
         $customComponent = $cached[0];
 
