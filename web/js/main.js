@@ -137,8 +137,28 @@ $(document).ready(function(){
 	$('.extramenu').click( function(e){
 		e.stopPropagation()
 	})
-	/* ---- */	
-	
+	/* ---- 	
+	if( $('.chequebottom ul').length ) {
+		$('.chequebottom li div').hide()
+		$('.chequebottom li strong').hide()
+		$('.chequebottom .total strong').hide()
+		var rubl = $('<span class="rubl">p</span>')
+		function recF( i ) {
+			if( i == $('.chequebottom li').length ) {
+				var total = $('.chequebottom .total strong')
+				total.show().find('span').remove()
+				total.typewriter( 700, function(){ total.append( rubl ) })
+			}
+			if( i < $('.chequebottom li').length )
+				$('.chequebottom li').eq(i).find('div').show().typewriter( 1000, function(){ 
+					$('.chequebottom li').eq(i).find('strong').show()
+					recF(i+1) 
+				})
+		}		
+
+		recF(0)
+
+	}*/
 	/* CART */
 	function printPrice ( val ) {
 	
