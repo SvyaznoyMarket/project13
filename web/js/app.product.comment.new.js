@@ -1,4 +1,4 @@
-
+//TODO rewrite
 $(function(){
 	
 	$('.ratingscalebox a').click(function(){
