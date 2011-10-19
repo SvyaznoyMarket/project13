@@ -32,6 +32,7 @@ default:
     - jquery.lightbox_me.js
     - prettyCheckboxes.js
     - jcookies.js
+    - typewriter.js
     #- jslib/jquery.ui.widget.js
     #- jslib/jquery.ui.mouse.js
     #- jslib/jquery.ui.slider.js

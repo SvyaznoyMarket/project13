@@ -163,6 +163,7 @@ $(document).ready(function(){
 				tmp += basket[i].sum * 1
 		}
 		total.html( printPrice( tmp ) )
+		total.typewriter(800)
 	}		
 	
 	function basketline ( nodes ) {
@@ -183,7 +184,8 @@ $(document).ready(function(){
 			self.quantum = q
 			self.sum = price * q
 			$(nodes.sum).html( printPrice( self.sum ) )
-			getTotal() 			
+			$(nodes.sum).typewriter(800, getTotal)
+//			getTotal() 			
 		}
 		
 		this.clear = function() {
@@ -262,10 +264,10 @@ $(document).ready(function(){
 	/* ---- */	
 	/* tags */
 	$('.fm').toggle( function(){
-		$(this).parent().find('.hf').show()
+		$(this).parent().find('.hf').slideDown()
 		$(this).html('скрыть')
 	}, function(){
-		$(this).parent().find('.hf').hide()		
+		$(this).parent().find('.hf').slideUp()		
 		$(this).html('еще...')	
 	})	
 	/* ---- */	
