@@ -119,7 +119,8 @@ class productCategoryComponents extends myComponents
         return sfView::NONE;
       }
 
-      $item['photo'] = $this->productCategory->getPreviewProduct()->main_photo_url;
+      $product = $this->productCategory->getPreviewProduct();
+      $item['photo'] = $product ? $product->main_photo_url : null;
     }
 
     $this->setVar('item', $item, true);
