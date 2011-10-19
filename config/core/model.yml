@@ -43,8 +43,8 @@ Service:
   - service
 #DeliveryType:
 #  - delivery_type
-PaymentMethod:
-  - payment_method
+#PaymentMethod:
+#  - payment_method
 StockProductRelation:
   - product_stock
 Stock:
