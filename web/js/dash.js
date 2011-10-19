@@ -27,7 +27,7 @@ $(document).ready(function(){
 	var id          = null // setTimeout
 	var currentItem = 0 // ref= product ID
 	
-	$('.goodsbox').bind( {
+	$('.goodsbox').live( {
 		'mouseenter': function() {
 			var self = this
 			$(self).css('cursor','pointer')
@@ -76,8 +76,8 @@ $(document).ready(function(){
 	}
 	
 	/* stuff goes into lightbox */
-	$('.goodsbar .link1').click( function() {
-		if (! currentItem ) return
+	$('.goodsbar .link1').live('click', function(e) {
+		if (! currentItem ) return false
 		var button = this
 		if( ltbx ){
 			var tmp = $(this).parent().parent().find('.photo img')
@@ -92,6 +92,7 @@ $(document).ready(function(){
 				$(button).unbind('click')
 			}	
 		})
+		e.stopPropagation()
 		return false
 	})
 	$('.goodsbar .link2').click( function() {
