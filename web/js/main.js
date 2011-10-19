@@ -250,39 +250,72 @@ $(document).ready(function(){
 	
 	
 	/* ---- */	
-	/* cards carousel */ 
+	/* cards carousel  
 	function cardsCarousel ( nodes ) {
 console.info(nodes)
 		var self = this
 		var current = 1
+		var max = $(nodes.times).html() * 1
+		var wi  = $(nodes.width).html().replace(/\D/g,'')
+		var buffer = 2
+
+		this.notify = function() {
+			$(nodes.crnt).html( current )
+			if ( current == 1 ) 
+				$(nodes.prev).addClass('disabled')
+			else 
+				$(nodes.prev).removeClass('disabled')
+			if ( current == max ) 
+				$(nodes.next).addClass('disabled')
+			else 
+				$(nodes.next).removeClass('disabled')	
+		}
 		
+		var shiftme = function() {
+			var boxes = $(nodes.wrap).find('.goodsbox')
+			$(boxes).hide()
+			var le = boxes.length				
+			for(var j = 1; j <= 3; j++)
+				boxes.eq( le - j ).show()
+		}
+	
 		$(nodes.next).bind('click', function() {
-			if ( current < $(nodes.times).html() * 1 - 1 ) {	
-				$.get( $(nodes.prev).attr('data-url') + '?page=' + (current++), function(data) {
-					var tr = $('<div>')
-					$(tr).html( data )
-					$(tr).find('.goodsbox').css('display','none')
-					console.info($(tr).find('.goodsbox').length)
-					$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
-					tr = null
-				})			
+			
+			if( current < max ) {
+				if ( current < max - 1 ) {
+					console.info(current, buffer)
+					if( current > buffer ) // only non-loaded
+						$.get( $(nodes.prev).attr('data-url') + '?page=' + (buffer++), function(data) {
+							var tr = $('<div>')
+							$(tr).html( data )
+							$(tr).find('.goodsbox').css('display','none')
+							if( current > 1 ){ // cur in [2...max-1]
+								shiftme()
+							}
+							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
+							tr = null
+						})
+					else 
+						shiftme()
+					if( current == 1 ){ // cur = 1
+						shiftme()
+					}
+				} else {	
+					//cur = max
 					var boxes = $(nodes.wrap).find('.goodsbox')
 					$(boxes).hide()
-					var le = boxes.length
-					console.info(le, boxes.eq( 4 ))
-					boxes.eq( le - 3 ).show()
-					boxes.eq( le - 2 ).show()
-					boxes.eq( le - 1 ).show()			
-				
-				//current++
-				console.info(current)
-				if( $(nodes.times).html() * 1 == current ) 
-					$(nodes.next).unbind('click')
+					var le = boxes.length				
+					var rest = ( wi % 3 ) ?  wi % 3  : 3 		
+					for(var j = 1; j <= rest; j++)
+						boxes.eq( le - j ).show()
+				}
+				current++
+			
+				self.notify()	
 			}
 		})
 		
 		$(nodes.prev).click( function() {
-		console.info(current)
 			if( current > 1 ) {
 				current--
 				var boxes = $(nodes.wrap).find('.goodsbox')
@@ -291,22 +324,25 @@ console.info(nodes)
 				boxes.eq( le - 6 ).show()				
 				boxes.eq( le - 5 ).show()								
 				boxes.eq( le - 4 ).show()								
+				self.notify()					
 			}
 		})	
 		
 	} // cardsCarousel object
 	
 		
-	$('.carouseltitle:first').each( function(){
+	$('.carouseltitle').each( function(){
 		var tmpline = new cardsCarousel ({ 
 					'prev'  : $(this).find('.back'),
 					'next'  : $(this).find('.forvard'),
+					'crnt'  : $(this).find('span:first'),
 					'times' : $(this).find('span:eq(1)'),
+					'width' : $(this).find('.rubrictitle strong'),
 					'wrap'  : $(this).find('~ .carousel').first()
 					})
 	})
 		
-	/* ---- */
+	 ---- */
 });
 
 
