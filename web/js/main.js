@@ -251,10 +251,10 @@ $(document).ready(function(){
 	/* ---- */	
 	/* tags */
 	$('.fm').toggle( function(){
-		$('.hf').show()
+		$(this).parent().find('.hf').show()
 		$(this).html('скрыть')
 	}, function(){
-		$('.hf').hide()		
+		$(this).parent().find('.hf').hide()		
 		$(this).html('еще...')	
 	})	
 	/* ---- */	
