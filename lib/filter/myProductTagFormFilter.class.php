@@ -95,7 +95,7 @@ class myProductTagFormFilter extends myProductFormFilter
     ProductTable::getInstance()->setQueryForTagFilter($q, $filter);
   }
 
-  protected function getWidgetChoice(TagGroup $tagGroup)
+  protected function getWidgetChoice($tagGroup)
   {
     $choices = array();
     foreach ($tagGroup->Tag as $tag)

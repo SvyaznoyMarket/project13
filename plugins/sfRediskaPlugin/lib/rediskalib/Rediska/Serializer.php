@@ -75,7 +75,6 @@ class Rediska_Serializer
      */
     public function serialize($value)
     {
-		//return $this->_adapter->serialize($value);
         if (is_numeric($value) || is_string($value)) {
             return (string)$value;
         } else {
@@ -91,7 +90,6 @@ class Rediska_Serializer
      */
     public function unserialize($value)
     {
-		//return $this->_adapter->unserialize($value);
         if (is_null($value)) {
             return null;
         } else if (is_numeric($value)) {
@@ -109,7 +107,6 @@ class Rediska_Serializer
                 $unserializedValue = $this->_adapter->unserialize($value);
             } catch (Rediska_Serializer_Adapter_Exception $e) {
                 $unserializedValue = $value;
-				throw $e;
             }
         }
 
