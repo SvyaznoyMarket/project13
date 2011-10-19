@@ -248,6 +248,15 @@ $(document).ready(function(){
 		basket.push( tmpline )
 	})
 	
+	/* ---- */	
+	/* */
+	$('.fm').toggle( function(){
+		$('.hf').show()
+		$(this).html('скрыть')
+	}, function(){
+		$('.hf').hide()		
+		$(this).html('еще...')	
+	})
 	
 	/* ---- */	
 	/* cards carousel  
