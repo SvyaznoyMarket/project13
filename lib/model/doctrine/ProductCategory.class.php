@@ -51,6 +51,11 @@ class ProductCategory extends BaseProductCategory
     //берем только тэги, у которых есть продукты
     $tagIds = $categoryTable->getTagIds($this);
 
+    if (!is_array($tagIds))
+    {
+      $tagIds = array($tagIds);
+    }
+
     //возвращаем тэги, отсортированные в правильном порядке
     return $this->getTagGroupByIdWithOrder($tagIds);
   }
