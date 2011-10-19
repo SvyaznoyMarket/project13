@@ -37,11 +37,13 @@
 <div class="column215">
     <?php  include_component('user', 'shortuserinfo') ?>
     <div class="cabinethelp">Заполни о себе больше информации это позволит нам сделать тебе интересные предложения </div>
-    <div class="pb15"><input type="button" class="button whitebutton" id="whitebutton" value="Заполнить мои данные" /></div>
+    <div class="pb15"><form action="<?php echo url_for('user_edit') ?>" method="get"><input type="submit" class="button whitebutton" id="whitebutton" value="Заполнить мои данные" /></form></div>
+    <?php if (false): ?>
     <div class="line pb15"></div>
     <div class="cabinethelp">Заполни свой постоянный адрес доставки, чтобы при повторных заказах не пришлось терять время при заполнении полей</div>
     <div class="pb15"><input type="button" class="button whitebutton" id="whitebutton" value="Заполнить мой адрес доставки" /></div>
     <div class="line pb15"></div>
     <div class="cabinethelp">Вы зарегестрировали как юридическое лицо, рекомендуем вам заполнить форму реквизитов вашей компании</div>
     <div><input type="button" class="button whitebutton" id="whitebutton" value="Заполнить реквизиты компании" /></div>
+    <?php endif ?>
 </div>
