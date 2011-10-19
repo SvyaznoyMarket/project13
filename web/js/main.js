@@ -127,9 +127,15 @@ $(document).ready(function(){
 		}
 	})
 
-	$(document).click( function(){
-		if (currentMenu)
-			$( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
+	$(document).click( function(e){
+		if (currentMenu) {			
+			if( e.which == 1 )
+				$( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
+		}	
+	})
+	
+	$('.extramenu').click( function(e){
+		e.stopPropagation()
 	})
 	/* ---- */	
 	
