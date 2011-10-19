@@ -39,11 +39,11 @@ class searchComponents extends myComponents
     $this->setVar('list', $list, false);
   }
  /**
-  * Executes category component
+  * Executes categories component
   *
   * @param array $categories Категории поиска
   */
-  public function executeCategory()
+  public function executeCategories()
   {
   }
 }

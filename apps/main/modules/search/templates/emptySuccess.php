@@ -9,7 +9,7 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-  <?php include_component('search', 'category', array()) ?>
+  <?php include_component('search', 'categories') ?>
 <?php end_slot() ?>
 
 Поиск не дал результатов.

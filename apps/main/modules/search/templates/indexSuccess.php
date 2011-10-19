@@ -9,7 +9,7 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-  <?php include_component('search', 'category', array('categories' => $categories)) ?>
+  <?php include_component('search', 'categories', array('list' => $categories, 'searchString' => $searchString)) ?>
 <?php end_slot() ?>
 
 <?php include_partial('productCatalog/product_list', array('productPager' => $pagers['product'])) ?>
