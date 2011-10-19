@@ -1164,3 +1164,6 @@ border-radius: 5px;
 .plug7 {height:202px; padding-top:50px; background:url(/images/plug7.jpg) no-repeat 0 0; color:#5dbacb}
 .plug8 {height:183px; padding-top:70px; background:url(/images/plug8.jpg) no-repeat 0 0; color:#e37e84}
 .plug9 {height:188px; padding-top:65px; background:url(/images/plug1.jpg) no-repeat 0 0; color:#bea1cf}
+
+.fm{text-align:right;}
+.hf{display:none;}

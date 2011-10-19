@@ -248,21 +248,110 @@ $(document).ready(function(){
 		basket.push( tmpline )
 	})
 	
-	
-	/* ---- */		
-	
-	/* cards carousel  */	
-
-	$('.forvard').click( function(){
-		//сделать запрос, получить новые данные
-		//найти блок карусели
-		//скрыть старые, показать новое
-		//console.info( $(this) )
-		//обновить внутреннюю переменную
-		//обновить состояние кнопок
-		return false
+	/* ---- */	
+	/* */
+	$('.fm').toggle( function(){
+		$('.hf').show()
+		$(this).html('скрыть')
+	}, function(){
+		$('.hf').hide()		
+		$(this).html('еще...')	
 	})
-	/* ---- */
+	
+	/* ---- */	
+	/* cards carousel  
+	function cardsCarousel ( nodes ) {
+console.info(nodes)
+		var self = this
+		var current = 1
+		var max = $(nodes.times).html() * 1
+		var wi  = $(nodes.width).html().replace(/\D/g,'')
+		var buffer = 2
+
+		this.notify = function() {
+			$(nodes.crnt).html( current )
+			if ( current == 1 ) 
+				$(nodes.prev).addClass('disabled')
+			else 
+				$(nodes.prev).removeClass('disabled')
+			if ( current == max ) 
+				$(nodes.next).addClass('disabled')
+			else 
+				$(nodes.next).removeClass('disabled')	
+		}
+		
+		var shiftme = function() {
+			var boxes = $(nodes.wrap).find('.goodsbox')
+			$(boxes).hide()
+			var le = boxes.length				
+			for(var j = 1; j <= 3; j++)
+				boxes.eq( le - j ).show()
+		}
+	
+		$(nodes.next).bind('click', function() {
+			
+			if( current < max ) {
+				if ( current < max - 1 ) {
+					console.info(current, buffer)
+					if( current > buffer ) // only non-loaded
+						$.get( $(nodes.prev).attr('data-url') + '?page=' + (buffer++), function(data) {
+							var tr = $('<div>')
+							$(tr).html( data )
+							$(tr).find('.goodsbox').css('display','none')
+							if( current > 1 ){ // cur in [2...max-1]
+								shiftme()
+							}
+							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
+							tr = null
+						})
+					else 
+						shiftme()
+					if( current == 1 ){ // cur = 1
+						shiftme()
+					}
+				} else {	
+					//cur = max
+					var boxes = $(nodes.wrap).find('.goodsbox')
+					$(boxes).hide()
+					var le = boxes.length				
+					var rest = ( wi % 3 ) ?  wi % 3  : 3 		
+					for(var j = 1; j <= rest; j++)
+						boxes.eq( le - j ).show()
+				}
+				current++
+			
+				self.notify()	
+			}
+		})
+		
+		$(nodes.prev).click( function() {
+			if( current > 1 ) {
+				current--
+				var boxes = $(nodes.wrap).find('.goodsbox')
+				$(boxes).hide()
+				var le = boxes.length
+				boxes.eq( le - 6 ).show()				
+				boxes.eq( le - 5 ).show()								
+				boxes.eq( le - 4 ).show()								
+				self.notify()					
+			}
+		})	
+		
+	} // cardsCarousel object
+	
+		
+	$('.carouseltitle').each( function(){
+		var tmpline = new cardsCarousel ({ 
+					'prev'  : $(this).find('.back'),
+					'next'  : $(this).find('.forvard'),
+					'crnt'  : $(this).find('span:first'),
+					'times' : $(this).find('span:eq(1)'),
+					'width' : $(this).find('.rubrictitle strong'),
+					'wrap'  : $(this).find('~ .carousel').first()
+					})
+	})
+		
+	 ---- */
 });
 
 
