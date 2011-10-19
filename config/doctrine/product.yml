@@ -184,8 +184,10 @@ ProductPropertyOption:
 Product:
   options:
     comment: 'Товар'
-  actAs: [ Timestampable ]
-  listeners: [ myDoctrineRecordListener ]
+  actAs:
+    Timestampable:      ~
+    Corable:            { push: disable }
+  #listeners: [ myDoctrineRecordListener ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }

@@ -1,0 +1,1 @@
+<?php echo format_number_choice('{n: n == 0}товары не найдены|{n: n > 10 && n < 20}%count% товаров|{n: n % 10 == 1}%count% товар|{n: n % 10 > 1 && n % 10 < 5}%count% товара|(1,+Inf]%count% товаров', array('%count%' => $count), $count) ?> найдено:
