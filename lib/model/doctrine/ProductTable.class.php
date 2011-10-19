@@ -453,8 +453,8 @@ class ProductTable extends myDoctrineTable
     }
     else
     {
-      $ids = $category->getDescendantIds();
-      $ids[] = $category->id;
+      $ids = $category->getTable()->getDescendatIds($category, array('with_ancestor' => true, ));
+      //$ids[] = $category->id;
 
       $q->innerJoin('product.Category category')
           ->whereIn('category.id', $ids)

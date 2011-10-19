@@ -34,6 +34,14 @@ class defaultComponents extends myComponents
     {
       return sfView::NONE;
     }
+
+    $list = $this->list;
+    array_unshift($list, array(
+      'name' => 'Enter.ru',
+      'url'  => url_for('@homepage'),
+    ));
+
+    $this->setVar('list', $list, true);
   }
  /**
   * Executes pagination component

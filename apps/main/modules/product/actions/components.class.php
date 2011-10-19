@@ -19,6 +19,10 @@ class productComponents extends myComponents
    */
   public function executeShow()
   {
+    if (!$this->product)
+    {
+      return sfView::NONE;
+    }
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'category')))
     {
       $this->view = 'default';

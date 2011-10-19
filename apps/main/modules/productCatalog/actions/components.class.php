@@ -20,10 +20,6 @@ class productCatalogComponents extends myComponents
   {
     $list = array();
 
-    $list[] = array(
-      'name' => 'Главная',
-      'url'  => url_for('@homepage'),
-    );
     /*
     $list[] = array(
       'name' => 'Каталог товаров',
@@ -60,7 +56,7 @@ class productCatalogComponents extends myComponents
       );
     }
 
-    $this->setVar('list', $list, true);
+    $this->setVar('list', $list, false);
   }
  /**
   * Executes category_list component
