@@ -111,6 +111,10 @@ class userActions extends myActions
     $this->redirectUnless($this->userAddress->user_id == $this->getUser()->getGuardUser()->id, 'userAddress');
 */
     if (!$this->getUser()->isAuthenticated()) $this->redirect('user_signin');
+	/**
+	 * @todo: убрать рефреш и сделать очистку кэша для пользователя
+	 */
+	$this->getUser()->getGuardUser()->refresh();
     $this->userProfile = $this->getUser()->getGuardUser()->getData();
     $this->form = new UserForm( $this->getUser()->getGuardUser() );      
 
@@ -145,7 +149,7 @@ class userActions extends myActions
       }
       catch (Exception $e)
       {
-          echo $e->getMessage();
+		  echo $e->getMessage();
 //		  echo $e->getTraceAsString();
 //		  exit();
          // exit();
