@@ -203,6 +203,7 @@ Product:
     view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
     is_instock:        { type: boolean, notnull: true, default: false }
     description:       { type: text, notnull: false, default: null, comment: 'Описание товара' }
+    main_photo:        { type: string(255), notnull: false, default: null }
     rating:            { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
     rating_quantity:   { type: integer(4), notnull: true, default: 0, comment: 'Количество голосов пользователей' }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }

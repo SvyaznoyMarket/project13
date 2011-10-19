@@ -145,23 +145,6 @@ class OrderTable extends myDoctrineTable
       'extra'             => 'extra',
       'ip'                => 'ip',
       'is_paid_delivery'  => 'is_paid_delivery',
-/*      '' => '',
-      '' => '',
-      '' => '',
-      '' => '',
-      '' => '',
-      '' => '',
-      '' => '',
-      '' => '',
-      '' => '',
-      '' => '',
-      '' => '',
-      '' => '',
-      "first_name"      => "recipient_first_name",
-      "last_name"       => "recipient_last_name",
-      "middle_name"     => "recipient_middle_name",
-      "sum"             => "sum",
-      "address"         => "address",*/
     );
   }
 }
