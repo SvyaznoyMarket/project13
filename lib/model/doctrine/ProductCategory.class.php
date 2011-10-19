@@ -117,4 +117,8 @@ class ProductCategory extends BaseProductCategory
   {
     return $this->getTable()->getDescendatIds($this);
   }
+  
+  public function getUrl(){
+      return '/catalog/' . $this->token;
+  }
 }
