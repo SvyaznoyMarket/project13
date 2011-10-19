@@ -1,6 +1,8 @@
 <div class="goodsbox">
 
-  <?php include_component('product', 'show', array('view' => 'category', 'category' => $productCategory, 'product' => $item['product'])) ?>
+  <div class="photo">
+    <a href="<?php echo $item['url'] ?>"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></a>
+  </div>
 
   <h2><a href="<?php echo $item['url'] ?>" class="underline"><?php echo $item['name'] ?></a></h2>
   <ul>
@@ -16,8 +18,9 @@
     <div class="rb">
       <div class="lt">
 
-<!--        <a href="" class="fastview">Быстрый просмотр</a>-->
-        <?php include_component('product', 'show', array('view' => 'category', 'category' => $productCategory, 'product' => $item['product'])) ?>
+        <div class="photo">
+          <a href="<?php echo $item['url'] ?>"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></a>
+        </div>
 
         <h2><a href="<?php echo $item['url'] ?>" class="underline"><?php echo $item['name'] ?></a></h2>
         <ul>
@@ -26,7 +29,7 @@
 		  <?php endforeach ?>
         </ul>
         <div class="ar gray"><a href="<?php echo $item['url'] ?>" class="underline">Товаров</a> (<?php echo $item['product_quantity'] ?>)</div>
-  
+
       </div>
     </div>
   </div>

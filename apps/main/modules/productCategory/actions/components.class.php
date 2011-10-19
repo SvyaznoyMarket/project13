@@ -94,11 +94,11 @@ class productCategoryComponents extends myComponents
     }
 
     $item = array(
-      'name'             => (string)$this->productCategory,
-      'url'              => url_for('productCatalog_category', $this->productCategory),
-	  'carousel_data_url'=> url_for('productCatalog_carousel', $this->productCategory),
-      'product_quantity' => $this->productCategory->countProduct(),
-	  'links'            => $this->productCategory->getLink(),
+      'name'              => (string)$this->productCategory,
+      'url'               => url_for('productCatalog_category', $this->productCategory),
+	    'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
+      'product_quantity'  => $this->productCategory->countProduct(),
+	    'links'             => $this->productCategory->getLink(),
     );
 
     if ('carousel' == $this->view)
@@ -119,7 +119,7 @@ class productCategoryComponents extends myComponents
         return sfView::NONE;
       }
 
-      $item['product'] = $this->productCategory->getPreviewProduct();
+      $item['photo'] = $this->productCategory->getPreviewProduct()->main_photo_url;
     }
 
     $this->setVar('item', $item, true);

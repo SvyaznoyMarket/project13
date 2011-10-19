@@ -19,29 +19,21 @@ class productComponents extends myComponents
    */
   public function executeShow()
   {
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'category')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact')))
     {
       $this->view = 'default';
     }
 
     $item = array(
-      'article' => $this->product->article,
-      'name' => (string) $this->product,
-      'creator' => (string) $this->product->Creator,
-      'price' => $this->product->formatted_price,
+      'article'  => $this->product->article,
+      'name'     => (string) $this->product,
+      'creator'  => (string) $this->product->Creator,
+      'price'    => $this->product->formatted_price,
       'has_link' => $this->product['view_show'],
-      'photo' => $this->product->getMainPhotoUrl(2),
-      'product' => $this->product,
+      'photo'    => $this->product->getMainPhotoUrl(2),
+      'product'  => $this->product,
+      'url'      => url_for('productCard', $this->product, array('absolute' => true)),
     );
-
-    if ($this->view === 'category')
-    {
-      $item['url'] = url_for('productCatalog_category', $this->category, array('absolute' => true));
-    }
-    else
-    {
-      $item['url'] = url_for('productCard', $this->product, array('absolute' => true));
-    }
 
     if ('default' == $this->view)
     {
