@@ -129,7 +129,7 @@ class myProductFormFilter extends sfFormFilter
         .'<div class="clear"></div>'
     ));
   }
-  
+
   public function show_part($widget, $inputs)
   {
     $rows = array();
@@ -140,12 +140,12 @@ class myProductFormFilter extends sfFormFilter
     }
     if (count($inputs) > 5)
     {
-      $rows[] = $widget->renderContentTag('li', 'еще...', array('class' => 'fm', 'style' => 'text-align: right;'));
       $hidden = array_slice($inputs, 5);
       foreach ($hidden as $input)
       {
         $rows[] = $widget->renderContentTag('li', $input['input'].$widget->getOption('label_separator').$input['label'], array('class' => 'hf', 'style' => 'display: none', ));
       }
+      $rows[] = $widget->renderContentTag('li', 'еще...', array('class' => 'fm', 'style' => 'text-align: right;'));
     }
 
     return !$rows ? '' : $widget->renderContentTag('ul', implode($widget->getOption('separator'), $rows), array('class' => $widget->getOption('class')));
