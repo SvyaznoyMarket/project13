@@ -39,7 +39,7 @@ default:
     #- jslib/main.js
     #- jquery-ui-custom.js
     - jquery.form.js
-    #- jquery.timers.js
+    - jquery.timers.js
     #- jquery.scrollto.js
     #- jquery.colorbox.js
     #- jquery.autocomplete<?php echo 'dev' == sfConfig::get('sf_environment') ? '-dev' : '' ?>.js
