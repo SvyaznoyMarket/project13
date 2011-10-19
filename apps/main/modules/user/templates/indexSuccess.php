@@ -1,4 +1,4 @@
-<!--
+<?php if (false): ?>
 <div class="block">
   <ul>
     <li><?php echo link_to('Корзина товаров', 'cart', array(), array('class' => 'cart')) ?></li>
@@ -10,7 +10,7 @@
     <li><?php echo link_to('Выход', 'user_signout') ?></li>
   </ul>
 </div>
--->
+<?php endif ?>
 <?php slot('title','Личный кабинет') ?>
 
 <?php slot('navigation') ?>
@@ -22,7 +22,7 @@
         <div class="fl width315">
 
             <?php foreach ($pagesList as $part): ?>
-                <div class="font16 orange pb10"><?=$part['title']?></div>
+                <div class="font16 orange pb10"><?php echo $part['title']?></div>
                 <ul class="leftmenu pb20">
                 <?php foreach ($part['list'] as $item): ?>
                     <li<?php echo (isset($item['current']) && $item['current'])  ? ' class="current"' : '' ?>><a href="<?php echo url_for($item['url']) ?>"><?php echo $item['name'] ?></a></li>

@@ -95,7 +95,7 @@ class myProductTagFormFilter extends myProductFormFilter
     ProductTable::getInstance()->setQueryForTagFilter($q, $filter);
   }
 
-  protected function getWidgetChoice(TagGroup $tagGroup)
+  protected function getWidgetChoice($tagGroup)
   {
     $choices = array();
     foreach ($tagGroup->Tag as $tag)
@@ -125,12 +125,12 @@ class myProductTagFormFilter extends myProductFormFilter
     }
     if (count($inputs) > 5)
     {
-      $rows[] = $widget->renderContentTag('li', 'еще...', array('class' => 'fm', 'style' => 'text-align: right;'));
       $hidden = array_slice($inputs, 5);
       foreach ($hidden as $input)
       {
-        $rows[] = $widget->renderContentTag('li', $input['input'].$widget->getOption('label_separator').$input['label'], array('class' => 'hf', 'style' => 'display: none', ));
+        $rows[] = $widget->renderContentTag('li', $input['input'].$widget->getOption('label_separator').$input['label'], array('class' => 'hf', ));
       }
+      $rows[] = $widget->renderContentTag('li', 'еще...', array('class' => 'fm', ));
     }
 
     return !$rows ? '' : $widget->renderContentTag('ul', implode($widget->getOption('separator'), $rows), array('class' => $widget->getOption('class')));

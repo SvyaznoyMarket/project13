@@ -16,7 +16,9 @@ class sfRediska {
   {
   	if (!isset(self::$instances[$instance])) {
   		// Needed to make Rediska require paths resolve correctly:
-	  	set_include_path(get_include_path() . PATH_SEPARATOR . sfConfig::get('sf_plugins_dir').'/sfRediskaPlugin/lib/rediska/library');  
+	  	//set_include_path(get_include_path() . PATH_SEPARATOR . sfConfig::get('sf_plugins_dir').'/sfRediskaPlugin/lib/rediska/library');  
+		//set_include_path(get_include_path() . PATH_SEPARATOR . '/Users/lordsc/NetBeansProjects/Rediska/library');
+		//require_once '/Users/lordsc/NetBeansProjects/Rediska/library/Rediska.php';
 	  	self::$instances[$instance] = new Rediska(self::getConfig($instance));
   	}
 

@@ -9,7 +9,7 @@
   <div class="boxhover" ref="<?php echo $item['product']->token ?>">
     <b class="rt"></b><b class="lb"></b>
     <div class="rb">
-      <div class="lt"  onclick="window.location.href='<?php echo $item['url'] ?>'">
+      <div class="lt" data-url="<?php echo $item['url'] ?>">
         <!--a href="" class="fastview">Быстрый просмотр</a-->
 
         <div class="photo"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>

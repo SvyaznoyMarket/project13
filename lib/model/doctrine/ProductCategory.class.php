@@ -108,4 +108,8 @@ class ProductCategory extends BaseProductCategory
 
     return  $q->execute();
   }
+
+  public function getUrl(){
+      return '/catalog/' . $this->token;
+  }
 }

@@ -35,7 +35,7 @@ class defaultComponents extends myComponents
       return sfView::NONE;
     }
 
-    $list = $this->list;
+    $list = (array)$this->list;
     array_unshift($list, array(
       'name' => 'Enter.ru',
       'url'  => url_for('@homepage'),

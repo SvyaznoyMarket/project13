@@ -20,7 +20,7 @@ class apiActions extends myActions
     $response = trim(file_get_contents('php://input'));
 
     $logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/api.log'));
-    $logger->log('Recieved data: '.$response);
+    $logger->log('Response: '.$response);
 
     $data = json_decode($response, true);
 
@@ -48,4 +48,16 @@ class apiActions extends myActions
 
     return sfView::NONE;
   }
+
+ /**
+  * Executes log action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeLog(sfWebRequest $request)
+  {
+    $file = sfConfig::get('sf_log_dir').'/api.log';
+
+    $this->content = is_readable($file) ? file_get_contents($file) : false;
+   }
 }

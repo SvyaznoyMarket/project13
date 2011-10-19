@@ -95,7 +95,7 @@ class myProductFormFilter extends sfFormFilter
     ProductTable::getInstance()->setQueryForFilter($q, $filter);
   }
 
-  protected function getWidgetChoice(ProductFilter $productFilter)
+  protected function getWidgetChoice($productFilter)
   {
     $choices = array();
     foreach ($productFilter->Property->Option as $productPropertyOption)

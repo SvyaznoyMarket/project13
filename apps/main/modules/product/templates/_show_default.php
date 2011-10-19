@@ -147,7 +147,7 @@ foreach ($p3d as $p3d_obj)
     <ul class="previewlist">
       <!-- IVN '.viewme' for opening in the popup; @ref='image'/'360' is a type   -->
       <?php foreach ($photos as $i => $photo): ?>
-        <li class="viewstock" ref="photo<?php echo $i ?>"><b><a href="<?php echo $urls[4].$photo->resource ?>" class="viewme" ref="image" id="try-3"></a></b><img src="<?php echo $urls[2].$photo->resource ?>" alt="" width="48" height="48" /></li>
+        <li class="viewstock" ref="photo<?php echo $i ?>"><b><a href="<?php echo $urls[4].$photo->resource ?>" class="viewme" ref="image"></a></b><img src="<?php echo $urls[2].$photo->resource ?>" alt="" width="48" height="48" /></li>
       <?php endforeach ?>
       <?php if (count($p3d) > 0): ?>
         <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
@@ -163,11 +163,25 @@ foreach ($p3d as $p3d_obj)
 <div class="line pb25"></div>
 
 <div class="descriptionlist">
+  <?php include_component('product', 'property', array('product' => $product)) ?>
+</div>
+
+<div class="descriptionlist">
 <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
 </div>
 
-<!--div class="pb25"><a href="" class="more">Все характеристики</a></div-->
+<div class="pb25"><a href="" class="more">Все характеристики</a></div>
 <!-- /Description -->
+    <div class="clear"></div>
+
+    <!-- Information -->
+    <h2 class="bold">Информация о товаре</h2>
+    <div class="line pb15"></div>
+    <ul class="pb10">
+      <?php echo $item['product']->description?>
+    </ul>
+    <!--div class="pb25"><strong>Теги:</strong> <a href="" class="underline" rel="nofollow">комфорт</a>, <a href="" class="underline" rel="nofollow">IKEA</a>, <a href="" class="underline" rel="nofollow">индивидуальный стиль</a>, <a href="" class="underline" rel="nofollow">экологичность</a></div-->
+    <!-- /Information  -->
 
 <!-- Media -->
 <div class="popup mediablock" id="bigpopup"><!-- IVN block #bigpopup is media gallery popup  -->
