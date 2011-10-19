@@ -17,18 +17,10 @@ class myDoctrineTable extends Doctrine_Table
   public function createList(array $data = array())
   {
     $return = new myDoctrineCollection($this);
-    if (is_array($data) && isset($data[0]))
-    {
-      if (is_object($data[0]) && ($data[0] instanceof myDoctrineRecord))
-      {
-        foreach ($data as $item)
-        {
 
-        }
-      }
-      else {
-        $return->fromArray($data);
-      }
+    if (!empty($data))
+    {
+      $return->fromArray($data);
     }
 
     return $return;
@@ -93,7 +85,8 @@ class myDoctrineTable extends Doctrine_Table
   public function getIdsByQuery(Doctrine_Query $q)
   {
     $q = clone $q;
-    $q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
+    //$q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
+    $q->select($this->getQueryRootAlias().'.id')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
@@ -101,6 +94,9 @@ class myDoctrineTable extends Doctrine_Table
     if (!is_array($ids))
     {
       $ids = array($ids);
+    }
+    else {
+      $ids = array_unique($ids); // вместо DISTINCT
     }
 
     return $ids;

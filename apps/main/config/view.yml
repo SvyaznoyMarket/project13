@@ -47,6 +47,7 @@ default:
     - app.auth.js
     - mechanics.js
     - dash.js
+    - app.search.js
 
   has_layout:     true
   layout:         layout

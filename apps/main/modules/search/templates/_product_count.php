@@ -1,0 +1,5 @@
+<?php use_helper('I18N') ?>
+
+<div class="searchtitle">Вы искали <span class="orange">&quot;<?php echo $searchString ?>&quot;</span>
+  <?php echo format_number_choice('{n: n == 0}товары не найдены|{n: n > 10 && n < 20}%count% товаров найдено:|{n: n % 10 == 1}%count% товар найден:|{n: n % 10 > 1 && n % 10 < 5}%count% товара найдено:|(1,+Inf]%count% товаров найдено:', array('%count%' => $count), $count) ?>
+</div>

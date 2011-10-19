@@ -62,17 +62,17 @@ class userComponents extends myComponents
             'name'   => 'Редактирование профиля',
             'url'    => '@user_edit',
             'routes' => array('@user_edit'),
-          ),            
+          ),
           array(
             'name'   => 'Пароль',
             'url'    => '@user_changePassword',
             'routes' => array('@user_changePassword'),
-          ),            
+          ),
 //          array(
 //            'name'   => 'Адрес доставки',
 //            'url'    => '@userAddress',
 //            'routes' => array('@userAddress'),
-//          ),        
+//          ),
     );
 
     foreach ($list as &$item)
@@ -87,36 +87,32 @@ class userComponents extends myComponents
 
     $this->setVar('leftMenu', $list, true);
   }
-  
+
   public function executeShortuserinfo()
   {
       $this->setVar('user', $this->getUser(), true);
-      $this->setVar('userData', $this->getUser()->getGuardUser(), true);      
-  }  
-  
+      $this->setVar('userData', $this->getUser()->getGuardUser(), true);
+  }
+
   public function executeNavigation()
   {
-        $list = array();
+    $list = array();
 
-        $list[] = array(
-          'name' => 'Главная',
-          'url'  => url_for('@homepage'),
-        );
-        $list[] = array(
-          'name' => 'Личный кабинет',
-          'url'  => url_for('user'),
-        );        
- 
+    $list[] = array(
+      'name' => 'Личный кабинет',
+      'url'  => url_for('user'),
+    );
 
-        $this->setVar('list', $list, true);
+
+    $this->setVar('list', $list, true);
   }
-  
+
   public function executeFieldemail(){
   }
-  
+
   public function executeFieldgender(){
   }
-  
+
   public function executeFieldbirthday(){
-  }  
+  }
 }
