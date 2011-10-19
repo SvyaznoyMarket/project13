@@ -91,7 +91,7 @@ $(document).ready(function(){
 		$.getJSON('/cart/add/'+$( '.boxhover[ref='+ currentItem +']').attr('ref') +'/1', function(data) {
 			if ( data.success && ltbx ) {
 				ltbx.getBasket( parseItemNode( currentItem ) )
-				$(button).attr('href', $('.lightboxinner .point2', parent).attr('href') )
+				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).unbind('click')
 			}	
 		})
@@ -122,7 +122,7 @@ $(document).ready(function(){
 					'img'  : $('.goodsphoto img').attr('src')
 				}
 				ltbx.getBasket( tmpitem ) 
-				$(button).attr('href', $('.lightboxinner .point2', parent).attr('href') )
+				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).unbind('click').addClass('active')				
 			}	
 		})
