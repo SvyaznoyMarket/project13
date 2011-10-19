@@ -145,6 +145,8 @@ class productComponents extends myComponents
 
       if (empty($value)) continue;
 
+      if ('inlist' == $this->view && !$parameter->isViewList()) continue;
+
       $list[] = array(
         'name' => $parameter->getName(),
         'value' => $value,
@@ -161,6 +163,11 @@ class productComponents extends myComponents
    */
   public function executeProperty_grouped()
   {
+    if (!in_array($this->view, array('default', 'inlist')))
+    {
+      $this->view = 'default';
+    }
+
     $list = array();
     foreach ($this->product['ParameterGroup'] as $parameterGroup)
     {
@@ -169,6 +176,7 @@ class productComponents extends myComponents
       {
         $value = $parameter->getValue();
         if (empty($value)) continue;
+        if ('inlist' == $this->view && !$parameter->isViewList()) continue;
 
         $parameters[] = array(
           'name'        => $parameter->getName(),
@@ -288,6 +296,22 @@ class productComponents extends myComponents
       unset($item);
 
     $this->setVar('list', $list, true);
+  }
+
+  public function executeTags()
+  {
+    if (!isset($this->product))
+    {
+      return sfView::NONE;
+    }
+
+    $list = TagTable::getInstance()->getByProduct($this->product->id);
+    if (!count($list))
+    {
+      return sfView::NONE;
+    }
+
+    $this->setVar('list', $list);
   }
 
 }

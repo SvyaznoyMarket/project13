@@ -3,7 +3,7 @@
 	<?php $i = 0; foreach ($item['parameters'] as $parameter): ?>
 		<div class="point">
 
-			<?php if (empty($parameter['description'])): ?>
+			<?php if (empty($parameter['description']) || true): ?>
 			<div class="title"><h3><?php echo $parameter['name'] ?></h3></div>
 
 			<?php else: ?>

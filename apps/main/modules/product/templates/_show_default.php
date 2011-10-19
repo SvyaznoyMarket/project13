@@ -163,14 +163,14 @@ foreach ($p3d as $p3d_obj)
 <div class="line pb25"></div>
 
 <div class="descriptionlist">
-  <?php include_component('product', 'property', array('product' => $product)) ?>
+  <?php include_component('product', 'property_grouped', array('product' => $product, 'view' => 'inlist', )) ?>
 </div>
+<div class="pb25"><a href="" class="more">Все характеристики</a></div>
 
-<div class="descriptionlist">
+<div class="descriptionlist" style="display: none;">
 <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
 </div>
 
-<div class="pb25"><a href="" class="more">Все характеристики</a></div>
 <!-- /Description -->
     <div class="clear"></div>
 
@@ -180,7 +180,7 @@ foreach ($p3d as $p3d_obj)
     <ul class="pb10">
       <?php echo $item['product']->description?>
     </ul>
-    <!--div class="pb25"><strong>Теги:</strong> <a href="" class="underline" rel="nofollow">комфорт</a>, <a href="" class="underline" rel="nofollow">IKEA</a>, <a href="" class="underline" rel="nofollow">индивидуальный стиль</a>, <a href="" class="underline" rel="nofollow">экологичность</a></div-->
+    <?php include_component('product', 'tags', array('product' => $product, )) ?>
     <!-- /Information  -->
 
 <!-- Media -->
@@ -212,28 +212,9 @@ foreach ($p3d as $p3d_obj)
         <?php if (count($p3d) > 0): ?>
           <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
 <?php endif ?>
-      <!--li><b><a href="images/photo25_2.jpg" class="viewme" ref="image"></a></b><img src="images/photo27.jpg" alt="" width="48" height="48" /></li>
-      <li><b><a href="images/photo25_3.jpg" class="viewme" ref="image"></a></b><img src="images/photo28.jpg" alt="" width="48" height="48" /></li>
-      <li><b><a href=""></a></b><img src="images/photo26.jpg" alt="" width="48" height="48" /></li>
-      <li><a href="" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
-      <li><a href="" class="videolink" title="Видео">Видео</a></li-->
       </ul>
     </div>
 
-    <!--div class="pb5"><a href="" class="share">Поделиться</a> <strong><a href="" class="nodecor">+87</a></strong></div>
-    <div class="font9 gray">
-      Дата съемок: Сентябрь 2010.<br />
-      Производитель на свое усмотрение и
-      без дополнительных уведомлений может
-      менять комплектацию, внешний вид и
-      технические характеристики модели.
-      Данные фото могут не соответствовать
-      новым изменениям и дополнениям.<br>
-      &copy; 2011–2012. Все права защищены и
-      принадлежат "Enter.ru".
-      Копирование и распространение
-      материалов в любой форме запрещены
-    </div-->
   </div>
 
 

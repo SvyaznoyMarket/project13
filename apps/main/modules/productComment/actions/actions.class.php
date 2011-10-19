@@ -31,12 +31,12 @@ class productCommentActions extends myActions
     //$this->redirectUnless($this->getUser()->isAuthenticated(), '@user_signin');
 
     $this->product = $this->getRoute()->getObject();
-    
+
 	if ($request->isMethod(sfWebRequest::POST)) {
 
 		if ($request->getParameter('content_resume') && $request->getParameter('rating')) {
-		
-			$userId = 2;
+
+			//$userId = 2;
 
 			$content = '';
 			if ($request->getParameter('content_plus') != '') {
@@ -49,12 +49,12 @@ class productCommentActions extends myActions
 
 			$comment = ProductCommentTable::getInstance()->create(array(
 				'content'     => $content,
-				'user_id'     => $userId,
+				'user_id'     => $this->getUser()->getGuardUser()->id,
 				'rating'      => $request->getParameter('rating'),
 				'is_recomend' => $request->getParameter('is_recomend'),
 			));
 			$comment->setProduct($this->product);
-			$comment->setCorePush(false);
+			//$comment->setCorePush(false);
 			$comment->save();
 
 			$ratings = $request->getParameter('rating_type');
@@ -72,7 +72,7 @@ class productCommentActions extends myActions
 
 			$this->redirect(array('sf_route' => 'productComment', 'sf_subject' => $this->product));
 		} else {
-			
+
 		}
 	}
   }
@@ -83,16 +83,16 @@ class productCommentActions extends myActions
   */
   public function executeCreate(sfWebRequest $request)
   {
-	  if (1==1 || $this->getUser()->isAuthenticated()) {
+	  if ($this->getUser()->isAuthenticated()) {
 		  $product = $this->getRoute()->getObject();
 
 		  $comment = ProductCommentTable::getInstance()->create(array(
 			  'parent_id' => $request->getParameter('parent_id'),
 			  'content'   => $request->getParameter('content'),
-			  'user_id'   => 2
+			  'user_id'   => $this->getUser()->getGuardUser()->id,
 		  ));
 		  $comment->setProduct($product);
-		  $comment->setCorePush(false);
+		  //$comment->setCorePush(false);
 		  $comment->save();
 
 		  $data = $comment->toArray(false);
@@ -106,7 +106,7 @@ class productCommentActions extends myActions
 			'success' => false,
 		  ));
 	  }
-	  
+
     $this->redirectUnless($this->getUser()->isAuthenticated(), '@user_signin');
 
     $this->product = $this->getRoute()->getObject();

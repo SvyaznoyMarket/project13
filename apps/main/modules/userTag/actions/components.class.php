@@ -59,6 +59,11 @@ class userTagComponents extends myComponents
     $userTagList = $this->product->getUserTagList(array('user_id' => $user_id));
     $userTagList->indexBy('id');
 
+    if (!count($userTagList))
+    {
+      return sfView::NONE;
+    }
+
     $list = array();
     foreach (UserTagTable::getInstance()->getListByUser($user_id) as $userTag)
     {
