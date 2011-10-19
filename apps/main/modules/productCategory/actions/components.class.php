@@ -59,10 +59,94 @@ class productCategoryComponents extends myComponents
 	  $result = array();
 	  foreach ($data as $row) {
 		  if (!isset($result[$row->root_id])) {
+              echo $row->root_id .'==';
 			  $result[$row->root_id] = array();
 		  }
 		  $result[$row->root_id][] = $row;
 	  }
+      
+      //генерируем массив количеств разделов
+      $current = 0;
+      foreach($result as $i => $cat){
+          foreach($cat as $c){
+              if ($c['level']==1) $current = $c['id'];
+              else{
+                  if (!isset($countResult[$i][ $current ])) $countResult[$i][ $current ] = 1;
+                  else $countResult[$i][ $current ]++;
+              }
+          }
+      }
+      
+      $colomnsArr = array();
+      //распределяем эти разделы на равные столбцы
+      foreach($countResult as $mainCatId => $mainCatList){
+          $catIdList = array_keys($mainCatList);
+          switch(count($mainCatList)){
+              case 1:
+                  if ($mainCatList[ $catIdList[0] ]<=15)
+                  {
+                    $colomnsArr[$mainCatId][] = array('id' => $catIdList[0],
+                                                      'num' => $mainCatList[ $catIdList[0] ]);
+                  }
+                  elseif($mainCatList[ $catIdList[0] ]<=30)
+                  {
+                    $first = round($mainCatList[ $catIdList[0] ]/2);
+                    $second = $mainCatList[ $catIdList[0] ] - $first;
+                    $colomnsArr[$mainCatId][] = array('id' => $catIdList[0],
+                                                      'num' => $first
+                                                );
+                    $colomnsArr[$mainCatId][] = array('id' => $catIdList[0],
+                                                      'num' => $second
+                                                );                      
+                  }
+                  break;
+              case 2:
+                  if ($mainCatList[ $catIdList[0] ]<=15)
+                  {
+                    $colomnsArr[$mainCatId][] = array('id' => $catIdList[0],
+                                                        'num' => $mainCatList[ $catIdList[0] ]);
+                  }
+                  else
+                  {
+                    $first = round($mainCatList[ $catIdList[0] ]/2);
+                    $second = $mainCatList[ $catIdList[0] ] - $first;
+                    $colomnsArr[$mainCatId][] = array('id' => $catIdList[0],
+                                                      'num' => $first
+                                                );
+                    $colomnsArr[$mainCatId][] = array('id' => $catIdList[0],
+                                                      'num' => $second
+                                                );                      
+                  }
+                  if ($mainCatList[ $catIdList[1] ]<=15)
+                  {
+                    $colomnsArr[$mainCatId][] = array('id' => $catIdList[1],
+                                                        'num' => $mainCatList[ $catIdList[1] ]);
+                  }
+                  else
+                  {
+                    $first = round($mainCatList[ $catIdList[1] ]/2);
+                    $second = $mainCatList[ $catIdList[1] ] - $first;
+                    $colomnsArr[$mainCatId][] = array('id' => $catIdList[1],
+                                                      'num' => $first
+                                                );
+                    $colomnsArr[$mainCatId][] = array('id' => $catIdList[1],
+                                                      'num' => $second
+                                                );                      
+                  }                                         
+                  break;
+             default:
+                   
+                  break; 
+          }
+      }
+      /*
+      echo '<pre>';
+      print_r($countResult);
+      print_r($colomnsArr);
+      echo '</pre>';
+      exit();
+       * */
+      
 	  $this->setVar('rootlist', $result, true);
   }
  /**
