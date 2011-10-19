@@ -41,8 +41,8 @@ ProductPrice:
   - product_price
 Service:
   - service
-DeliveryType:
-  - delivery_type
+#DeliveryType:
+#  - delivery_type
 PaymentMethod:
   - payment_method
 StockProductRelation:
