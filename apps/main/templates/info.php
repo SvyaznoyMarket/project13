@@ -53,7 +53,7 @@
           <?php endif ?>
 
           <div class="searchbox">
-            <?php include_component('search', 'form', array('searchString', $searchString)) ?>
+            <?php include_component('search', 'form') ?>
           </div>
           <div class="clear pb20"></div>
           <div class="line"></div>
