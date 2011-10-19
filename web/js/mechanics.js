@@ -45,7 +45,7 @@ function Lightbox( jn, data ){
 				}
 	}
 	
-	function printPrice ( val ) {
+	function printPrice ( val ) { // TODO SHARE THIS
 	
 		var float = (val+'').split('.')
 		var out = float[0]
@@ -533,7 +533,3 @@ function mediaLib( jn ) {
 	}
 	
 } // mediaLib object
-
-$(document).ready(function(){
-	document.ondragstart = document.body.onselectstart = function() {return false}
-})

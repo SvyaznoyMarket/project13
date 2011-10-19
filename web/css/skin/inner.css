@@ -356,7 +356,7 @@ border-radius:4px;
 -moz-border-radius:4px;
 -webkit-border-radius:4px;
 }
-.slider-range DIV {position:absolute; z-index:1; top:0; height:100%; background:#ffa901}
+.slider-range DIV {position:absolute; z-index:1; bottom:0; height:80%; background:#ffa901; opacity:0.5;}
 .slider-range A {position:absolute; z-index:2; top:0; margin-left:-7px; width:15px; height:24px; background:url(/css/skin/img/bg.png) no-repeat -18px 0; cursor: default; outline:none}
 
 .advice {margin-bottom:20px; border:1px solid #dcdcdc;
@@ -1164,3 +1164,6 @@ border-radius: 5px;
 .plug7 {height:202px; padding-top:50px; background:url(/images/plug7.jpg) no-repeat 0 0; color:#5dbacb}
 .plug8 {height:183px; padding-top:70px; background:url(/images/plug8.jpg) no-repeat 0 0; color:#e37e84}
 .plug9 {height:188px; padding-top:65px; background:url(/images/plug1.jpg) no-repeat 0 0; color:#bea1cf}
+
+.fm{text-align:right;}
+.hf{display:none;}

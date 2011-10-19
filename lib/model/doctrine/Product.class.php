@@ -64,7 +64,7 @@ class Product extends BaseProduct
   {
     return ProductCommentTable::getInstance()->getListByProduct($this, $params);
   }
-  
+
   public function getCommentCount(array $params = array())
   {
 	  return ProductCommentTable::getInstance()->getCountByProduct($this, $params);
@@ -158,20 +158,20 @@ class Product extends BaseProduct
 	  }
 	  return $result;
   }
-  
-  public function getMainPhoto()
+
+/*  public function getMainPhoto()
   {
-	if ($this->_mainPhoto === null) {
-		$this->_mainPhoto = ProductPhotoTable::getInstance()->getOneByProduct($this);
-	}
-    return $this->_mainPhoto;
-  }
-  
+//	if ($this->_mainPhoto === null) {
+//		$this->_mainPhoto = ProductPhotoTable::getInstance()->getOneByProduct($this);
+//	}
+    return isset($this->main_photo) && null !== $this->main_photo ? $this->main_photo : ProductPhotoTable::getInstance()->getOneByProduct($this);
+  }*/
+
   public function getAllPhotos()
   {
 	  return ProductPhotoTable::getInstance()->getByProduct($this);
   }
-  
+
   public function getAll3dPhotos()
   {
 	  return ProductPhoto3DTable::getInstance()->getByProduct($this);
@@ -180,12 +180,20 @@ class Product extends BaseProduct
   public function getMainPhotoUrl($view = 0)
   {
     $urls = sfConfig::get('app_product_photo_url');
-    
-    return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto()->resource : null;
+
+    return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto() : null;
   }
 
   public function getMainCategory()
   {
     return isset($this->Category[0]) ? $this->Category[0] : null;
   }
+  public function getMainCategoryId()
+  {
+    return isset($this->Category[0]) ? $this->Category[0]['id'] : null;
+  }  
+  
+  public function getUrl(){
+      return '/product/' . $this->token;
+  }  
 }

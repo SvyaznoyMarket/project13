@@ -499,7 +499,7 @@ EOF;
             $filter = new ProductFilter();
             $filter->fromArray(array(
               'name'        => $relationData['name'],
-              'type'        => 'choice',
+              'type'        =>  (6 == $relationData['filter_type_id']) ? 'range' : 'choice',
               'property_id' => $this->getRecordByCoreId('ProductProperty', $relationData['id'], true),
               'group_id'    => $this->getRecordByCoreId('ProductCategory', $category['id'])->FilterGroup->id,
               'position'    => $relationData['filter_position'],
