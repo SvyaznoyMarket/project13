@@ -170,7 +170,8 @@ $(document).ready(function(){
 		var  price   = $(nodes.price).html().replace(/\s/,'')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')		
 		this.quantum = $(nodes.quan).html().replace(/\D/g,'')
-		this.noview   - false
+		this.noview  = false
+		var dropflag = false
 		
 		this.calculate = function( q ) {
 			self.quantum = q
@@ -181,6 +182,7 @@ $(document).ready(function(){
 		
 		this.clear = function() {
 			$.getJSON( drop , function( data ) {
+				$(nodes.drop).data('run',false)
 				if( data.success ) {
 					main.hide()
 					self.noview = true
@@ -204,7 +206,10 @@ $(document).ready(function(){
 		}
 		
 		$(nodes.drop).click( function() {
-			self.clear()
+			if(! $(nodes.drop).data('run') ) {
+				$(nodes.drop).data('run', true)
+				dropflag = self.clear()
+			}	
 			return false
 		})
 		
