@@ -249,19 +249,63 @@ $(document).ready(function(){
 	})
 	
 	
-	/* ---- */		
+	/* ---- */	
+	/* cards carousel */ 
+	function cardsCarousel ( nodes ) {
+console.info(nodes)
+		var self = this
+		var current = 1
+		
+		$(nodes.next).bind('click', function() {
+			if ( current < $(nodes.times).html() * 1 - 1 ) {	
+				$.get( $(nodes.prev).attr('data-url') + '?page=' + (current++), function(data) {
+					var tr = $('<div>')
+					$(tr).html( data )
+					$(tr).find('.goodsbox').css('display','none')
+					console.info($(tr).find('.goodsbox').length)
+					$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
+					tr = null
+				})			
+					var boxes = $(nodes.wrap).find('.goodsbox')
+					$(boxes).hide()
+					var le = boxes.length
+					console.info(le, boxes.eq( 4 ))
+					boxes.eq( le - 3 ).show()
+					boxes.eq( le - 2 ).show()
+					boxes.eq( le - 1 ).show()			
+				
+				//current++
+				console.info(current)
+				if( $(nodes.times).html() * 1 == current ) 
+					$(nodes.next).unbind('click')
+			}
+		})
+		
+		$(nodes.prev).click( function() {
+		console.info(current)
+			if( current > 1 ) {
+				current--
+				var boxes = $(nodes.wrap).find('.goodsbox')
+				$(boxes).hide()
+				var le = boxes.length
+				boxes.eq( le - 6 ).show()				
+				boxes.eq( le - 5 ).show()								
+				boxes.eq( le - 4 ).show()								
+			}
+		})	
+		
+	} // cardsCarousel object
 	
-	/* cards carousel  */	
-
-	$('.forvard').click( function(){
-		//сделать запрос, получить новые данные
-		//найти блок карусели
-		//скрыть старые, показать новое
-		//console.info( $(this) )
-		//обновить внутреннюю переменную
-		//обновить состояние кнопок
-		return false
+		
+	$('.carouseltitle:first').each( function(){
+		var tmpline = new cardsCarousel ({ 
+					'prev'  : $(this).find('.back'),
+					'next'  : $(this).find('.forvard'),
+					'times' : $(this).find('span:eq(1)'),
+					'wrap'  : $(this).find('~ .carousel').first()
+					})
 	})
+		
 	/* ---- */
 });
 
