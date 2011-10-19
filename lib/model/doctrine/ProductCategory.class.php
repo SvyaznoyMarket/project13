@@ -51,29 +51,8 @@ class ProductCategory extends BaseProductCategory
     //берем только тэги, у которых есть продукты
     $tagIds = $categoryTable->getTagIds($this);
 
-    //формируем новую коллекцию групп тегов только с рабочими тэгами
-    $newTagGroup = TagGroupTable::getInstance()->createList();
-
-    foreach ($this->getTagGroup() as $tagGroup)
-    {
-      $tags = TagTable::getInstance()->createList();
-      foreach ($tagGroup->getTag() as $tag)
-      {
-        if (in_array($tag->id, $tagIds))
-        {
-          $tags[] = clone $tag;
-        }
-      }
-      if (count($tags))
-      {
-        $tag_group = new TagGroup();
-        $tag_group->fromArray($tagGroup->toArray(true));
-        $tag_group['Tag'] = $tags;
-        $newTagGroup[] = $tag_group;
-      }
-    }
-
-    return $newTagGroup;
+    //возвращаем тэги, отсортированные в правильном порядке
+    return $this->getTagGroupByIdWithOrder($tagIds);
   }
 /**
  *
@@ -90,22 +69,17 @@ class ProductCategory extends BaseProductCategory
     //формируем новую коллекцию групп тегов только с рабочими тэгами
     $newFilter = ProductFilterTable::getInstance()->createList();
 
+    $propertyIds = array();
+    foreach ($properties as $key => $property)
+    {
+      $propertyIds[$property['id']] = $key;
+    }
+
     foreach ($this->FilterGroup->Filter as $filter)
     {
-      $options = ProductPropertyOptionTable::getInstance()->createList();
-      foreach ($filter->Property->Option as $option)
+      if (isset($propertyIds[$filter->property_id]))
       {
-        if (in_array($filter->property_id, array_keys($properties)) && in_array($option, $properties[$filter->property_id]))
-        {
-          $options[] = clone $option;
-        }
-      }
-      if (count($options))
-      {
-        $productProperty = new ProductProperty();
-        $productProperty->fromArray($filter->Property->toArray(true));
-        $productProperty['Option'] = $options;
-        $filter['Property'] = $productProperty;
+        $filter['Property'] = $properties[$propertyIds[$filter->property_id]];
         $newFilter[] = $filter;
       }
     }
@@ -115,8 +89,23 @@ class ProductCategory extends BaseProductCategory
 
   public function getDescendantIds()
   {
-
     return $this->getTable()->getDescendatIds($this);
+  }
 
+  public function getTagGroupByIdWithOrder(array $ids = array())
+  {
+    if (!count($ids))
+    {
+      return array();
+    }
+
+    $q = TagGroupTable::getInstance()->createBaseQuery();
+    $q->innerJoin('tagGroup.ProductCategory productCategory WITH productCategory.id = ?', $this->id)
+      ->innerJoin('tagGroup.Tag tag')
+      ->andWhereIn('tag.id', $ids)
+      ->orderBy('tagGroup.position, FIELD(tag.id, '.implode(',', $ids).')')
+    ;
+
+    return  $q->execute();
   }
 }

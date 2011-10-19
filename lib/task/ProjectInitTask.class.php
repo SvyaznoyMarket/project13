@@ -794,6 +794,13 @@ EOF;
         break;
       case 3:
         break;
+      case 6:
+        $record = $this->getRecordByCoreId('ProductCategory', $data['item_id'], false);
+        if ($record)
+        {
+          $record->photo = $data['source'];
+        }
+        break;
       default:
         break;
     }

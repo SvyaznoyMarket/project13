@@ -1,7 +1,7 @@
 <form action="<?php echo url_for('@user_changePassword') ?>" method="post">
     <div class="fl width430">
 		
-        <div class="pb20"><strong>Чтобы изменить пароль, укажите свой текущий пароль</strong></div>
+<!--        <div class="pb20"><strong>Чтобы изменить пароль, укажите свой текущий пароль</strong></div>-->
 		
 		<?php echo $form->renderHiddenFields() ?>
 		

@@ -178,14 +178,16 @@ class ProductCategoryTable extends myDoctrineTable
     $categoryIds = $this->getDescendatIds($category, array('with_ancestor' => true, ));
 
     $q = TagProductRelationTable::getInstance()->createBaseQuery();
-    $q->select('DISTINCT tagProductRelation.tag_id')
+    $q->select('tagProductRelation.tag_id')
       ->innerJoin('tagProductRelation.Product product WITH product.is_instock = ?', 1)
       ->innerJoin('product.CategoryRelation categoryRelation')
       ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
+      ->groupBy('tagProductRelation.tag_id')
+      ->orderBy('count(tagProductRelation.product_id) DESC')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
       ->useResultCache(true, null, $this->getQueryHash('productCategory-Tag', $categoryIds));
     ;
-
+    
     return $q->execute();
   }
 }

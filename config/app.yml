@@ -18,7 +18,7 @@ all:
 
   product:
     max_items:              10                      # максимально количество записей для списка товаров (по умолчанию)
-    max_items_on_category:  12                      # максимально количество записей для списка товаров в категории
+    max_items_on_category:  18                      # максимально количество записей для списка товаров в категории
     comment_helpful_cookie: product_comment_helpful
     photo_url:
       - 'http://fs01.enter.ru/1/40/'

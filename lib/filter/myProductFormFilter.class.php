@@ -37,6 +37,7 @@ class myProductFormFilter extends sfFormFilter
       'expanded'         => true,
       'renderer_class'   => 'myWidgetFormSelectCheckbox',
       'renderer_options' => array(
+        'formatter'       => array($this, 'show_part'),
         'label_separator' => '',
       ),
     ));
@@ -127,5 +128,26 @@ class myProductFormFilter extends sfFormFilter
         .'</div>'
         .'<div class="clear"></div>'
     ));
+  }
+  
+  public function show_part($widget, $inputs)
+  {
+    $rows = array();
+    $shown = array_slice($inputs, 0, 5);
+    foreach ($shown as $input)
+    {
+      $rows[] = $widget->renderContentTag('li', $input['input'].$widget->getOption('label_separator').$input['label']);
+    }
+    if (count($inputs) > 5)
+    {
+      $rows[] = $widget->renderContentTag('li', 'еще...', array('class' => 'fm', 'style' => 'text-align: right;'));
+      $hidden = array_slice($inputs, 5);
+      foreach ($hidden as $input)
+      {
+        $rows[] = $widget->renderContentTag('li', $input['input'].$widget->getOption('label_separator').$input['label'], array('class' => 'hf', 'style' => 'display: none', ));
+      }
+    }
+
+    return !$rows ? '' : $widget->renderContentTag('ul', implode($widget->getOption('separator'), $rows), array('class' => $widget->getOption('class')));
   }
 }
