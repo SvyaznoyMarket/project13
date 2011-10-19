@@ -104,7 +104,7 @@ class userComponents extends myComponents
     );
 
 
-    $this->setVar('list', $list, true);
+    $this->setVar('list', $list);
   }
 
   public function executeFieldemail(){

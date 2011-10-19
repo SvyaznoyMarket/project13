@@ -44,7 +44,9 @@
         <!-- /Header -->
 
         <!-- Page head -->
-        <?php if (!include_slot('page_head')) include_partial('default/page_head') ?>
+        <?php if (!include_slot('page_head')): ?>
+          <?php include_partial('default/page_head') ?>
+        <?php endif ?>
         <!-- Page head -->
 
         <?php if (has_slot('left_column')): ?>
