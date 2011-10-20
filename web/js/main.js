@@ -138,8 +138,7 @@ $(document).ready(function(){
 		e.stopPropagation()
 	})
 	/* ---- */ 
-	if( $('.error_list').length ) {
-	console.info('dd')
+	if( $('.error_list').length && $('.basketheader').length ) {
 		$.scrollTo( $('.error_list:first'), 300 )
 	}
 	/* bill typewriter */
