@@ -110,6 +110,7 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getSubList(array $params = array())
   {
+    /*
 //	$counts = array();
 //	$countsRaw = Doctrine_Manager::connection()->fetchAll('
 //		SELECT  `id` , COUNT( * ) as `c`
@@ -148,7 +149,10 @@ class ProductCategoryTable extends myDoctrineTable
 
     $ids = $this->getIdsByQuery($q);
 
-    return $this->createListByIds($ids, $params);
+    return $this->createListByIds($ids, $params);*/
+    $q = ProductCategoryTable::getInstance()->createBaseQuery();
+
+    return $q->execute();
   }
 
   public function getDescendatIds(ProductCategory $category = null, $params = array())
