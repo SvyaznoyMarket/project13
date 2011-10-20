@@ -582,6 +582,7 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 	
 	jnode.bind({
 		'mousedown': function (e) {
+			e.preventDefault()
 			init = {
 				pageX: e.pageX ,
 				pageY: e.pageY
