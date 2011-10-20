@@ -149,13 +149,6 @@ class ProductTable extends myDoctrineTable
     return $record;
   }
 
-  public function getByToken($token, array $params = array())
-  {
-    $id = $this->getIdBy('token', $token);
-
-    return $this->getById($id);
-  }
-
   public function getForRoute(array $params)
   {
     $id = isset($params['product']) ? $this->getIdBy('token', $params['product']) : null;
@@ -204,6 +197,7 @@ class ProductTable extends myDoctrineTable
       'creator'    => false,
       'parameters' => array(),
       'price'      => array('from' => null, 'to' => null),
+      'tag'        => false,
     ), $filter);
 
     // категория
@@ -299,8 +293,26 @@ class ProductTable extends myDoctrineTable
         }
       }
     }
+
+    // теги
+    if ($filter['tag'])
+    {
+      if (!$q->hasAliasDeclaration('tagRelation'))
+      {
+        $q->innerJoin('product.TagRelation tagRelation');
+      }
+
+      if (is_array($filter['tag']))
+      {
+        $q->andWhereIn('tagRelation.tag_id', $filter['tag']);
+      }
+      else {
+        $q->addWhere('tagRelation.tag_id = ?', ($filter['tag'] instanceof Tag) ? $filter['tag']->id : $filter['tag']);
+      }
+    }
   }
 
+  // TODO: удалить
   public function setQueryForTagFilter(myDoctrineQuery $q, array $filter, array $params = array())
   {
     $filter = myToolkit::arrayDeepMerge(array(

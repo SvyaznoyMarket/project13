@@ -10,4 +10,48 @@
  */
 class tagComponents extends myComponents
 {
+ /**
+  * Executes list component
+  *
+  * @param myDoctrineCollection $tagList Список тегов
+  */
+  public function executeList()
+  {
+    $list = array();
+
+    foreach ($this->tagList as $tag)
+    {
+      $list[] = array(
+        'name'  => (string)$tag,
+        'token' => $tag->token,
+        'url'   => url_for('tag_show', array('tag' => $tag->token)),
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
+ /**
+  * Executes navigation component
+  *
+  * @param Tag $tag Тег
+  */
+  public function executeNavigation()
+  {
+    $list = array();
+
+    $list[] = array(
+      'name' => 'Теги',
+      'url'  => url_for('tag'),
+    );
+
+    if ($this->tag)
+    {
+      $list[] = array(
+        'name' => (string)$this->tag,
+        'url'  => url_for('tag_show', array('tag' => $this->tag->token)),
+      );
+    }
+
+    $this->setVar('list', $list, false);
+  }
 }
