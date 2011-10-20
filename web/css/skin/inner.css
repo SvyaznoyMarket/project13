@@ -639,6 +639,7 @@ border-radius:5px;
 .previewlist LI {float:left; width:48px; height:48px; margin:0 6px 6px 0; position:relative}
 .previewlist B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(/css/skin/img/cover.png) no-repeat 0 -53px}
 .previewlist B:hover, .previewlist B.current {background-position:0 0; cursor:pointer}
+.previewlist .viewstock B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(/css/skin/img/cover_media.png) no-repeat 0 -53px}
 .previewlist A {display:block; width:48px; height:48px; cursor:pointer; text-indent:-10000px}
 .previewlist .axonometric {background:url(/css/skin/img/bg_inner.png) no-repeat -830px -238px}
 .previewlist .videolink {background:url(/css/skin/img/bg_inner.png) no-repeat -778px -238px}
