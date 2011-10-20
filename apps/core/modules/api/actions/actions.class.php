@@ -56,8 +56,9 @@ class apiActions extends myActions
   */
   public function executeLog(sfWebRequest $request)
   {
+    $count = $request->getParameter('count', 40);
     $file = sfConfig::get('sf_log_dir').'/api.log';
 
-    $this->content = is_readable($file) ? file_get_contents($file) : false;
+    $this->content = is_readable($file) ? shell_exec("tail -n {$count} {$file}") : false;
    }
 }
