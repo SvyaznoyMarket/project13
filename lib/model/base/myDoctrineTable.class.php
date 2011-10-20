@@ -82,6 +82,13 @@ class myDoctrineTable extends Doctrine_Table
     return $q->fetchOne();
   }
 
+  public function getByToken($token, array $params = array())
+  {
+    $id = $this->getIdBy('token', $token);
+
+    return $this->getById($id);
+  }
+
   public function getIdsByQuery(Doctrine_Query $q)
   {
     $q = clone $q;

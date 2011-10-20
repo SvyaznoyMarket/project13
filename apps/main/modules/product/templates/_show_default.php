@@ -180,7 +180,7 @@ foreach ($p3d as $p3d_obj)
     <ul class="pb10">
       <?php echo $item['product']->description?>
     </ul>
-    <?php include_component('product', 'tags', array('product' => $product, )) ?>
+    <?php include_component('product', 'tags', array('product' => $product)) ?>
     <!-- /Information  -->
 
 <!-- Media -->
@@ -200,7 +200,7 @@ foreach ($p3d as $p3d_obj)
       <div class="logobox">Enter связной</div>
       <div class="pb5"><?php echo $item['product']->name ?></div>
       <div class="pb5">
-<?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?>
+      <?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?>
       </div>
       <!--div class="pb40"><input type="button" class="button yellowbutton" value="Купить" /></div-->
 
@@ -211,7 +211,7 @@ foreach ($p3d as $p3d_obj)
         <?php endforeach ?>
         <?php if (count($p3d) > 0): ?>
           <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
-<?php endif ?>
+        <?php endif ?>
       </ul>
     </div>
 

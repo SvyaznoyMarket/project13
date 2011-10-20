@@ -1,4 +1,4 @@
-<form id="signin-form" action="<?php echo url_for('@user_signin') ?>" class="form" method="post">
+<form id="login-form" action="<?php echo url_for('@user_signin') ?>" class="form" method="post">
   <input type="hidden" name="redirect_to" value="<?php echo !empty($redirect) ? $redirect : $sf_request->getUri() ?>" />
   <div class="fl width327 mr20">
     <div class="font16 pb20">У меня есть логин и пароль</div>
@@ -10,7 +10,7 @@
       <!--<input type="text" class="text width315 mb10" value="ivanov@domen.com" />-->
     </div>
 
-    <div class="pb5"><a href="<?php echo url_for('user_forgotPassword') ?>" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
+    <div class="pb5"><a id="forgot-pwd-trigger" href="<?php echo url_for('user_forgotPassword') ?>" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
     <div class="pb5">
       <?php echo $form['password']->renderError() ?>
       <?php echo $form['password']->render(array('class' => 'text width315 mb10')) ?>

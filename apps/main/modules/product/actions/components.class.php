@@ -300,18 +300,29 @@ class productComponents extends myComponents
 
   public function executeTags()
   {
-    if (!isset($this->product))
+    if (!$this->product instanceof Product)
     {
       return sfView::NONE;
     }
 
-    $list = TagTable::getInstance()->getByProduct($this->product->id);
-    if (!count($list))
+    $list = array();
+    foreach (TagTable::getInstance()->getByProduct($this->product->id) as $tag)
+    {
+      $list[] = array(
+        'token' => $tag->token,
+        'url'   => url_for('tag_show', array('tag' => $tag->token)),
+        'name'  => $tag->name,
+      );
+    }
+
+    $this->count = count($list);
+    if (0 == $this->count)
     {
       return sfView::NONE;
     }
 
     $this->setVar('list', $list);
+    $this->limit = 6;
   }
 
 }

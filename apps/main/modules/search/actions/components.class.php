@@ -17,6 +17,12 @@ class searchComponents extends myComponents
   */
   public function executeForm()
   {
+    if (!in_array($this->view, array('default', 'main')))
+
+    {
+      $this->view = 'default';
+    }
+
     if (empty($this->searchString))
     {
       $this->searchString = '';
