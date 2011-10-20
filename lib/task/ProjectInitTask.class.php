@@ -369,37 +369,52 @@ EOF;
   // ProductCategory
   protected function flushProductCategoryCollection(myDoctrineCollection $collection)
   {
-    $table = ProductCategoryTable::getInstance();
+    $made = $this->task->getContentData('made');
+    $name = 'ProductCategory';
 
-    $tree = $table->getTree();
-
-    // создает двухуровневое дерево
-    foreach ($collection as $record)
+    if (!in_array($name, $made))
     {
-      if (empty($record->core_parent_id))
-      {
-        $record->save();
-        $tree->createRoot($record);
-      }
-    }
 
-    // формирует уровни дерева
-    for ($level = 0; $level <= 6; $level++)
-    {
-      foreach ($table->findByLevel($level) as $parent)
+      $table = ProductCategoryTable::getInstance();
+
+      $tree = $table->getTree();
+
+      // создает двухуровневое дерево
+      foreach ($collection as $record)
       {
-        foreach ($collection as $i => $record)
+        if (empty($record->core_parent_id))
         {
-          if ($record->core_parent_id != $parent->core_id) continue;
-
-          $record->getNode()->insertAsLastChildOf($parent);
-
-          // free memory
-          $collection[$i]->free(true);
-          $collection[$i] = null;
-          unset($collection[$i]);
+          $record->save();
+          $tree->createRoot($record);
         }
       }
+
+      // формирует уровни дерева
+      for ($level = 0; $level <= 6; $level++)
+      {
+        foreach ($table->findByLevel($level) as $parent)
+        {
+          foreach ($collection as $i => $record)
+          {
+            if ($record->core_parent_id != $parent->core_id) continue;
+
+            $record->getNode()->insertAsLastChildOf($parent);
+
+            // free memory
+            $collection[$i]->free(true);
+            $collection[$i] = null;
+            unset($collection[$i]);
+          }
+        }
+      }
+
+      $made[] = $name;
+      $this->task->setContentData('made', $made);
+      $this->task->save();
+    }
+    else
+    {
+      $collection->save();
     }
   }
 
