@@ -382,6 +382,16 @@ $(document).ready(function(){
 	})
 		
 	/* ---- */
+	/* charachteristics */
+	if ( $('#toggler').length ) {
+		$('#toggler').toggle( function(){
+			$('.descriptionlist.second').slideDown()
+			$(this).html('Скрыть')
+		},  function(){
+			$('.descriptionlist.second').slideUp()
+			$(this).html('Все характеристики')			
+		})
+	}
 });
 
 

@@ -165,9 +165,9 @@ foreach ($p3d as $p3d_obj)
 <div class="descriptionlist">
   <?php include_component('product', 'property_grouped', array('product' => $product, 'view' => 'inlist', )) ?>
 </div>
-<div class="pb25"><a href="" class="more">Все характеристики</a></div>
+<div class="pb25"><a href="#"  id="toggler" class="more">Все характеристики</a></div>
 
-<div class="descriptionlist" style="display: none;">
+<div class="descriptionlist second" style="display: none;">
 <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
 </div>
 

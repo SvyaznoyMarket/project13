@@ -3,10 +3,12 @@ $(document).ready(function() {
 function triggerDelivery( i ) {
 	if ( i == 3 ) {
 		$('.shop_block').show() 
-		$('.delivery_block').hide() 
+		$('.delivery_block').hide()
+		$('.deliverytext').html('Представьтесь:')
 	} else {
 		$('.shop_block').hide() 
 		$('.delivery_block').show() 
+		$('.deliverytext').html('Кому и куда доставить:')
 	}
 	
 }
