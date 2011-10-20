@@ -97,6 +97,11 @@ class ProductCategory extends BaseProductCategory
     return $this->getTable()->getDescendatIds($this);
   }
 
+
+  public function getUrl(){
+      return '/catalog/' . $this->token;
+  }
+
   public function getTagGroupByIdWithOrder(array $ids = array())
   {
     if (!count($ids))
@@ -112,10 +117,6 @@ class ProductCategory extends BaseProductCategory
     ;
 
     return  $q->execute();
-  }
-
-  public function getUrl(){
-      return '/catalog/' . $this->token;
   }
 
   public function getPhotoUrl($view = 0)
