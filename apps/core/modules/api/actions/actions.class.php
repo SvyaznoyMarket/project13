@@ -43,6 +43,7 @@ class apiActions extends myActions
           'status' => 'run',
         ));
         $task->setContentData($data);
+        $task->save();
       }
     }
 

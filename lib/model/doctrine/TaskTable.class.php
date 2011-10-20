@@ -43,7 +43,7 @@ class TaskTable extends myDoctrineTable
     return $q->execute();
   }
 
-  public function getById($coreId)
+  public function getByCoreId($coreId, array $params = array())
   {
     return $this->createQuery()
       ->where('core_id = ?', $coreId)
