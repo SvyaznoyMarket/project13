@@ -4,3 +4,7 @@
   font-size: 11px;
   color: #cc0000;
 }
+
+.goodsbox {
+  height: 300px; /* float fix */
+}
