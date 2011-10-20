@@ -30,6 +30,12 @@ all:
       - 'http://fs01.enter.ru/1/2/500/'
       - 'http://fs01.enter.ru/1/2/2500/'
 
+  category:
+    photo_url:
+      - 'http://fs01.enter.ru/6/1/163/'
+    empty_photo_url:
+      - ''
+
   guard:
     remember_cookie_name: remember
     allow_login_with_email: true

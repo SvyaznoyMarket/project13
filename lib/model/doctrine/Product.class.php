@@ -191,9 +191,9 @@ class Product extends BaseProduct
   public function getMainCategoryId()
   {
     return isset($this->Category[0]) ? $this->Category[0]['id'] : null;
-  }  
-  
+  }
+
   public function getUrl(){
       return '/product/' . $this->token;
-  }  
+  }
 }
