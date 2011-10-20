@@ -18,8 +18,10 @@ class tagActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->tagList = TagTable::getInstance()->getList(array(
+      'select'       => 'tag.id, tag.name, tag.token',
       'order'        => 'tag.name',
-      'has_products' => true,
+      'limit'        => 200,
+      //'has_products' => true,
     ));
   }
  /**
