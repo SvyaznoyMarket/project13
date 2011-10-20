@@ -92,11 +92,10 @@ class searchActions extends myActions
         $coreIds = array_keys($data['types']);
         foreach (ProductTypeTable::getInstance()->getListByCoreIds($coreIds) as $productType)
         {
-          $categories[$type][] = array(
-            'record'   => $productType,
-            'count'    => $data['types'][$productType->core_id],
-            'selected' => in_array($productType->id, $selected),
-          );
+          $productType->mapValue('_product_count', $data['types'][$productType->core_id]);
+          $productType->mapValue('_selected', in_array($productType->id, $selected));
+
+          $categories[$type][] = $productType;
         }
       }
     }

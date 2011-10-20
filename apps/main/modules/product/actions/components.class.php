@@ -297,7 +297,10 @@ class productComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
-
+  /**
+   * Executes tags component
+   *
+   */
   public function executeTags()
   {
     if (!$this->product instanceof Product)
@@ -324,6 +327,27 @@ class productComponents extends myComponents
     $this->setVar('list', $list);
     $this->limit = 6;
   }
+  /**
+   * Executes filter_productType component
+   *
+   * @param myDoctrineCollection $productTypeList Коллекция типов товаров
+   */
+  public function executeFilter_productType()
+  {
+    $list = array();
 
+    foreach ($this->productTypeList as $productType)
+    {
+      $list[] = array(
+        'name'     => (string)$productType,
+        'token'    => $productType->id,
+        'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
+        'value'    => $productType->id,
+        'selected' => isset($productType->_selected) ? $productType->_selected : false,
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
 }
 

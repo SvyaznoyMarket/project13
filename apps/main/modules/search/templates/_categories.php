@@ -1,6 +1,9 @@
 <?php if (count($list['product']) > 0): ?>
   <h2>Найдено в товарах:</h2>
-  <?php include_partial('search/filter_product', array('list' => $list['product'], 'url' => url_for('search', array('q' => $searchString)))) ?>
+
+  <form id="filter_product_type-form" action="<?php echo url_for('search', array('q' => $searchString)) ?>" method="post">
+    <?php include_component('product', 'filter_productType', array('productTypeList' => $list['product'])) ?>
+  </form>
 <?php endif ?>
 
 <!--

@@ -196,4 +196,22 @@ class Product extends BaseProduct
   public function getUrl(){
       return '/product/' . $this->token;
   }
+
+  public function countParameter($view = null)
+  {
+    $count = 0;
+
+    foreach ($this->Parameter as $productParameter)
+    {
+      // подсчитывает только свойства с определенным видом
+      if ((null != $view) && !call_user_func(array($productParameter, 'isView'.ucfirst($view))))
+      {
+        continue;
+      }
+
+      $count++;
+    }
+
+    return $count;
+  }
 }
