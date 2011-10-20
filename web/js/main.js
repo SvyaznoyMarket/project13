@@ -108,7 +108,7 @@ $(document).ready(function(){
 				if(	$(self).data('run') ) {
 					var i = $(self).attr('class').replace(/\D+/,'')
 					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
-					if( punkt.find('dl').html().trim() != '' )
+					if( punkt.find('dl').html().replace(/\s/g,'') != '' )
 						punkt.show().find('.corner').css('left',corneroffsets[i-1])
 				}
 			}
