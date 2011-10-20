@@ -195,6 +195,11 @@ class myDoctrineTable extends Doctrine_Table
     {
       $q->limit($params['limit']);
     }
+    // group by
+    if (isset($params['group']))
+    {
+      $q->groupBy($params['group']);
+    }
     // index by
     /*
     if (isset($params['index']))
