@@ -198,6 +198,7 @@ class ProductTable extends myDoctrineTable
       'parameters' => array(),
       'price'      => array('from' => null, 'to' => null),
       'tag'        => false,
+      'type'       => false,
     ), $filter);
 
     // категория
@@ -308,6 +309,18 @@ class ProductTable extends myDoctrineTable
       }
       else {
         $q->addWhere('tagRelation.tag_id = ?', ($filter['tag'] instanceof Tag) ? $filter['tag']->id : $filter['tag']);
+      }
+    }
+
+    // типы
+    if ($filter['type'])
+    {
+      if (is_array($filter['type']))
+      {
+        $q->andWhereIn('product.type_id', $filter['type']);
+      }
+      else {
+        $q->addWhere('product.type_id = ?', ($filter['type'] instanceof ProductType) ? $filter['type']->id : $filter['type']);
       }
     }
   }
