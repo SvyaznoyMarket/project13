@@ -137,8 +137,9 @@ $(document).ready(function(){
 	$('.extramenu').click( function(e){
 		e.stopPropagation()
 	})
-	/* ---- 	
-	if( $('.chequebottom ul').length ) {
+	/* ---- */ 
+	/* bill typewriter */
+	if( $('.chequebottom ul').length && ! $('.error_list').length ) {
 		$('.chequebottom li div').hide()
 		$('.chequebottom li strong').hide()
 		$('.chequebottom .total strong').hide()
@@ -158,7 +159,7 @@ $(document).ready(function(){
 
 		recF(0)
 
-	}*/
+	}
 	/* CART */
 	function printPrice ( val ) {
 	
