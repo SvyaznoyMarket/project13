@@ -175,8 +175,8 @@ class productComponents extends myComponents
       foreach ($parameterGroup->getParameter() as $parameter)
       {
         $value = $parameter->getValue();
-        if (empty($value)) continue;
-        if ('inlist' == $this->view && !$parameter->isViewList()) continue;
+        if (empty($value)) continue; // TODO: remove
+        if (('inlist' == $this->view) && !$parameter->isViewList()) continue;
 
         $parameters[] = array(
           'name'        => $parameter->getName(),

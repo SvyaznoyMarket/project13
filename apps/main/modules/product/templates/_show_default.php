@@ -164,7 +164,7 @@ foreach ($p3d as $p3d_obj)
 
 <?php if (($product->countParameter('show') > 5) && ($product->countParameter('list') > 0)): ?>
   <div class="descriptionlist">
-    <?php include_component('product', 'property_grouped', array('product' => $product, 'view' => 'inlist', )) ?>
+    <?php include_component('product', 'property_grouped', array('product' => $product, 'view' => 'inlist')) ?>
   </div>
 
   <div class="pb25"><a href="#" id="toggler" class="more">Все характеристики</a></div>
