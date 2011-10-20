@@ -394,9 +394,14 @@ $(document).ready(function(){
 	}
 	/* search tags */
 	if( $('#plus10').length ) {
+		if( $('#filter_product_type-form li').length < 10 )
+			$('#plus10').hide()
+		else
+			$('#plus10').html( 'еще '+ ($('#filter_product_type-form .hf').length % 10 + 1) +' из ' + $('#filter_product_type-form li').length )
 		$('#plus10').click( function(){
-			$(this).parent().parent().find('.hf').removeClass('hf')
-			$(this).parent().hide()
+			$('#filter_product_type-form .hf').slice(0,10).removeClass('hf')
+			if ( !$('#filter_product_type-form .hf').length ) 
+				$(this).parent().hide()
 			return false
 		})
 	}
