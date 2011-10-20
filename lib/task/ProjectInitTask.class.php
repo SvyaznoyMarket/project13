@@ -473,6 +473,7 @@ EOF;
         $relation = new TagGroupProductTypeRelation();
         $relation->fromArray(array(
           'tag_group_id' => $this->getRecordByCoreId('TagGroup', $relationData['id'], true),
+          'position'     => $relationData['position'],
         ));
         $record->TagGroupRelation[] = $relation;
       }

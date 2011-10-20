@@ -107,5 +107,10 @@ EOF;
     $this->logSection('INFO', 'Установить для самовывоза token=self');
     $count = $connection->exec("UPDATE `delivery_type` SET `token` = 'self' WHERE `name` = 'Заберу на месте'");
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+
+    //8) устанавливаю position для группы тэгов
+    $this->logSection('INFO', 'Устанавливаю position для группы тэгов');
+    $count = $connection->exec("UPDATE `tag_group` `tg` SET `tg`.`position` = (SELECT sum(`tgpt`.`position`) FROM `tag_group_product_type_relation` `tgpt` WHERE `tag_group_id` = `tg`.`id` GROUP BY `tgpt`.`tag_group_id`)");
+    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
   }
 }
