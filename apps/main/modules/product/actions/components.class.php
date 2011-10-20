@@ -19,29 +19,27 @@ class productComponents extends myComponents
    */
   public function executeShow()
   {
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'category')))
+    if (!$this->product)
+    {
+      return sfView::NONE;
+    }
+
+    if (!in_array($this->view, array('default', 'expanded', 'compact')))
+
     {
       $this->view = 'default';
     }
 
     $item = array(
-      'article' => $this->product->article,
-      'name' => (string) $this->product,
-      'creator' => (string) $this->product->Creator,
-      'price' => $this->product->formatted_price,
+      'article'  => $this->product->article,
+      'name'     => (string) $this->product,
+      'creator'  => (string) $this->product->Creator,
+      'price'    => $this->product->formatted_price,
       'has_link' => $this->product['view_show'],
-      'photo' => $this->product->getMainPhotoUrl(2),
-      'product' => $this->product,
+      'photo'    => $this->product->getMainPhotoUrl(2),
+      'product'  => $this->product,
+      'url'      => url_for('productCard', $this->product, array('absolute' => true)),
     );
-
-    if ($this->view === 'category')
-    {
-      $item['url'] = url_for('productCatalog_category', $this->category, array('absolute' => true));
-    }
-    else
-    {
-      $item['url'] = url_for('productCard', $this->product, array('absolute' => true));
-    }
 
     if ('default' == $this->view)
     {
@@ -147,6 +145,8 @@ class productComponents extends myComponents
 
       if (empty($value)) continue;
 
+      if ('inlist' == $this->view && !$parameter->isViewList()) continue;
+
       $list[] = array(
         'name' => $parameter->getName(),
         'value' => $value,
@@ -163,6 +163,11 @@ class productComponents extends myComponents
    */
   public function executeProperty_grouped()
   {
+    if (!in_array($this->view, array('default', 'inlist')))
+    {
+      $this->view = 'default';
+    }
+
     $list = array();
     foreach ($this->product['ParameterGroup'] as $parameterGroup)
     {
@@ -171,6 +176,7 @@ class productComponents extends myComponents
       {
         $value = $parameter->getValue();
         if (empty($value)) continue;
+        if ('inlist' == $this->view && !$parameter->isViewList()) continue;
 
         $parameters[] = array(
           'name'        => $parameter->getName(),
@@ -291,6 +297,57 @@ class productComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
+  /**
+   * Executes tags component
+   *
+   */
+  public function executeTags()
+  {
+    if (!$this->product instanceof Product)
+    {
+      return sfView::NONE;
+    }
 
+    $list = array();
+    foreach (TagTable::getInstance()->getByProduct($this->product->id) as $tag)
+    {
+      $list[] = array(
+        'token' => $tag->token,
+        'url'   => url_for('tag_show', array('tag' => $tag->token)),
+        'name'  => $tag->name,
+      );
+    }
+
+    $this->count = count($list);
+    if (0 == $this->count)
+    {
+      return sfView::NONE;
+    }
+
+    $this->setVar('list', $list);
+    $this->limit = 6;
+  }
+  /**
+   * Executes filter_productType component
+   *
+   * @param myDoctrineCollection $productTypeList Коллекция типов товаров
+   */
+  public function executeFilter_productType()
+  {
+    $list = array();
+
+    foreach ($this->productTypeList as $productType)
+    {
+      $list[] = array(
+        'name'     => (string)$productType,
+        'token'    => $productType->id,
+        'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
+        'value'    => $productType->id,
+        'selected' => isset($productType->_selected) ? $productType->_selected : false,
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
 }
 

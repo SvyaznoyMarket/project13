@@ -41,16 +41,19 @@ class ProductTypeTable extends myDoctrineTable
 
     $q = $this->createQuery('productType');
 
-    $with = (in_array($params['view'], array('show', 'list'))) ? (' WITH productTypePropertyRelation.view_'.$params['view'].' = true') : '';
-    $q->leftJoin('productType.PropertyRelation productTypePropertyRelation'.$with)
-      ->addOrderBy('productTypePropertyRelation.position')
-    ;
-
-    if ($params['group_property'])
+    if ($params['view'])
     {
-      $q->leftJoin('productType.PropertyGroup productPropertyGroup')
-        ->addOrderBy('productPropertyGroup.position')
+      $with = (in_array($params['view'], array('show', 'list'))) ? (' WITH productTypePropertyRelation.view_'.$params['view'].' = true') : '';
+      $q->leftJoin('productType.PropertyRelation productTypePropertyRelation'.$with)
+        ->addOrderBy('productTypePropertyRelation.position')
       ;
+
+      if ($params['group_property'])
+      {
+        $q->leftJoin('productType.PropertyGroup productPropertyGroup')
+          ->addOrderBy('productPropertyGroup.position')
+        ;
+      }
     }
 
     return $q;
@@ -71,30 +74,56 @@ class ProductTypeTable extends myDoctrineTable
       return $record;
     }
 
-    $groupedPropertyArray = array();
-    foreach ($record['PropertyRelation'] as $propertyRelation)
+    if ($params['view'])
     {
-      $propertyRelation['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id']);
-
-      if (!isset($groupedPropertyArray[$propertyRelation->group_id]))
+      $groupedPropertyArray = array();
+      foreach ($record['PropertyRelation'] as $propertyRelation)
       {
-        $groupedPropertyArray[$propertyRelation->group_id] = ProductPropertyTable::getInstance()->createList();
-      }
-      $groupedPropertyArray[$propertyRelation->group_id][] = $propertyRelation['Property'];
-    }
+        $propertyRelation['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id']);
 
-    foreach ($record['PropertyGroup'] as $propertyGroup)
-    {
-      // TODO: Сделать поприличнее
-      if (isset($groupedPropertyArray[$propertyGroup->id])) {
-        $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
+        if (!isset($groupedPropertyArray[$propertyRelation->group_id]))
+        {
+          $groupedPropertyArray[$propertyRelation->group_id] = ProductPropertyTable::getInstance()->createList();
+        }
+        $groupedPropertyArray[$propertyRelation->group_id][] = $propertyRelation['Property'];
       }
-      else
+
+      foreach ($record['PropertyGroup'] as $propertyGroup)
       {
-        sfContext::getInstance()->getLogger()->err('{'.get_class($this).'} Can\'t add ProductProperty to ProductPropertyGroup');
+        // TODO: Сделать поприличнее
+        if (isset($groupedPropertyArray[$propertyGroup->id])) {
+          $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
+        }
+        else
+        {
+          sfContext::getInstance()->getLogger()->err('{'.get_class($this).'} Can\'t add ProductProperty to ProductPropertyGroup');
+        }
       }
     }
 
     return $record;
+  }
+
+  public function getListByTag(Tag $tag, array $params = array())
+  {
+    $this->applyDefaultParameters($params, array(
+      'with_productCount' => false,
+    ));
+
+    $q = $this->createBaseQuery($params);
+
+    $this->setQueryParameters($q, $params);
+
+    $q->leftJoin('productType.Product product WITH product.is_instock = 1')
+      ->leftJoin('product.TagRelation tagProductRelation')
+      ->addWhere('tagProductRelation.tag_id = ?', $tag->id)
+    ;
+
+    if ($params['with_productCount'])
+    {
+      $q->addSelect('COUNT(product.id) AS _product_count');
+    }
+
+    return $q->execute();
   }
 }

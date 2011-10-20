@@ -5,7 +5,8 @@ $(document).ready(function(){
 		/* draganddrop */
 	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
 	$('.boxhover[ref] .photo img').bind('mousedown', function(e){
-			e.stopPropagation();
+			e.stopPropagation()
+			e.preventDefault()
 			draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
 	})	
 	$('.boxhover[ref] .photo img').bind('mouseup', function(e){
@@ -27,7 +28,7 @@ $(document).ready(function(){
 	var id          = null // setTimeout
 	var currentItem = 0 // ref= product ID
 	
-	$('.goodsbox').bind( {
+	$('.goodsbox').live( {
 		'mouseenter': function() {
 			var self = this
 			$(self).css('cursor','pointer')
@@ -76,8 +77,11 @@ $(document).ready(function(){
 	}
 	
 	/* stuff goes into lightbox */
-	$('.goodsbar .link1').click( function() {
-		if (! currentItem ) return
+	$('.boxhover .lt').live('click', function() {
+		window.location.href=$(this).attr('data-url')
+	})
+	$('.goodsbar .link1').live('click', function(e) {
+		if (! currentItem ) return false
 		var button = this
 		if( ltbx ){
 			var tmp = $(this).parent().parent().find('.photo img')
@@ -88,10 +92,11 @@ $(document).ready(function(){
 		$.getJSON('/cart/add/'+$( '.boxhover[ref='+ currentItem +']').attr('ref') +'/1', function(data) {
 			if ( data.success && ltbx ) {
 				ltbx.getBasket( parseItemNode( currentItem ) )
-				$(button).attr('href', $('.lightboxinner .point2', parent).attr('href') )
+				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).unbind('click')
 			}	
 		})
+		e.stopPropagation()
 		return false
 	})
 	$('.goodsbar .link2').click( function() {
@@ -118,7 +123,7 @@ $(document).ready(function(){
 					'img'  : $('.goodsphoto img').attr('src')
 				}
 				ltbx.getBasket( tmpitem ) 
-				$(button).attr('href', $('.lightboxinner .point2', parent).attr('href') )
+				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).unbind('click').addClass('active')				
 			}	
 		})

@@ -24,6 +24,7 @@ class ProductCategoryTable extends myDoctrineTable
       'id'        => 'core_id',
       'parent_id' => 'core_parent_id',
       'name'      => 'name',
+      'is_active' => 'is_active',
     );
   }
 
@@ -32,6 +33,8 @@ class ProductCategoryTable extends myDoctrineTable
     $this->applyDefaultParameters($params);
 
     $q = $this->createQuery('productCategory');
+
+    $q->addWhere('productCategory.is_active = ?', 1);
 
     $q->orderBy('productCategory.root_id, productCategory.lft');
 
@@ -187,7 +190,7 @@ class ProductCategoryTable extends myDoctrineTable
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
       ->useResultCache(true, null, $this->getQueryHash('productCategory-Tag', $categoryIds));
     ;
-    
+
     return $q->execute();
   }
 }

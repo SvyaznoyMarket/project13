@@ -5,7 +5,7 @@
                 <div class="top font16">Ваш заказ:</div>
                 <ul>
                   <?php foreach ($cart->getProducts() as $product): ?>
-                    <li><?php echo $product->name ?> (<?php echo $product->cart['quantity'] ?> шт)<br /><strong><?php echo ($product->cart['formatted_total']) ?> <span class="rubl">p</span></strong></li>
+                    <li><div><?php echo $product->name ?> (<?php echo $product->cart['quantity'] ?> шт)</div><strong><?php echo ($product->cart['formatted_total']) ?> <span class="rubl">p</span></strong></li>
                   <?php endforeach ?>
                 </ul>
                 <div class="total">

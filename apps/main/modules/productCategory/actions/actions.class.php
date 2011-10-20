@@ -23,9 +23,16 @@ class productCategoryActions extends myActions
   {
 	  sfConfig::set('sf_web_debug', false);
 	  $page = (int)$request->getParameter('page', 1);
+	  $limit = (int)$request->getParameter('limit', 3);
+	  if ($limit < 3) {
+		  $limit = 3;
+	  }
+	  if ($limit > 27) {
+		  $limit = 27;
+	  }
 	  $products = ProductTable::getInstance()->getListByCategory($this->getRoute()->getObject(), array(
 		'offset' => ($page-1)*3,
-        'limit'  => ($page-1)*3 + 3,
+        'limit'  => $limit,
       ));
 	  $this->setLayout(false);
 	  $this->getContext()->getConfiguration()->loadHelpers('Url');

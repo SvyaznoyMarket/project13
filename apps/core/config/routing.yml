@@ -13,3 +13,7 @@ default_init:
 api:
   url:   /api
   param: { module: api, action: index }
+
+api_log:
+  url:   /api/log
+  param: { module: api, action: log }

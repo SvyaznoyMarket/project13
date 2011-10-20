@@ -5,7 +5,6 @@
 
       <span class="ratingview"></span>
       <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
-      <div class="pb5"><?php echo $item['preview'] ?></div>
 
       <?php include_component('product', 'property', array('product' => $product)) ?>
 
@@ -17,7 +16,6 @@
       <ul>
         <li><strong class="orange">Есть в наличии</strong></li>
         <li>Доставим в течение 24 часов</li>
-        <li>Поможем настроить смартфон</li>
       </ul>
 
     </div>
@@ -34,13 +32,12 @@
     <b class="rt"></b><b class="lb"></b>
 
     <div class="rb">
-      <div class="lt" onclick="window.location.href='<?php echo $item['url'] ?>'">
+      <div class="lt" data-url="<?php echo $item['url'] ?>">
         <div class="goodsboxlink"><!-- onclick="window.open('http://')"-->
           <div class="photo"><!--<i title="Новинка" class="new"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
           <div class="info">
             <span class="ratingview"></span>
             <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
-            <div class="pb5"><?php echo $item['preview'] ?></div>
 
             <?php include_component('product', 'property', array('product' => $product)) ?>
 
@@ -51,8 +48,6 @@
             <ul>
               <li><strong class="orange">Есть в наличии</strong></li>
               <li>Доставим в течение 24 часов</li>
-
-              <li>Поможем настроить смартфон</li>
             </ul>
           </div>
         </div>

@@ -95,7 +95,7 @@ class myProductFormFilter extends sfFormFilter
     ProductTable::getInstance()->setQueryForFilter($q, $filter);
   }
 
-  protected function getWidgetChoice(ProductFilter $productFilter)
+  protected function getWidgetChoice($productFilter)
   {
     $choices = array();
     foreach ($productFilter->Property->Option as $productPropertyOption)
@@ -120,16 +120,19 @@ class myProductFormFilter extends sfFormFilter
       'value_from' => $value['from'],
       'value_to'   => $value['to'],
       'template'   => ''
-        .'<div class="pb5"><input type="text" style="height:10px; padding:0; line-height:10px; border:0; background:none; font-size:10px; color:#8a8a8a"  disabled="disabled" /> %value_from% %value_to%</div>'
+        .'<div class="pb5">%value_from% - %value_to%</div>'
         .'<div class="sliderbox">'
           .'<div id="slider-range1" class="slider-range"></div>'
           .'<span class="fl">'.$value['from'].'</span>'
           .'<span class="fr">'.$value['to'].'</span>'
         .'</div>'
         .'<div class="clear"></div>'
+    ), array(
+      'class' => 'text',
+      'style' => 'display: inline; width: 60px;',
     ));
   }
-  
+
   public function show_part($widget, $inputs)
   {
     $rows = array();
@@ -140,12 +143,12 @@ class myProductFormFilter extends sfFormFilter
     }
     if (count($inputs) > 5)
     {
-      $rows[] = $widget->renderContentTag('li', 'еще...', array('class' => 'fm', 'style' => 'text-align: right;'));
       $hidden = array_slice($inputs, 5);
       foreach ($hidden as $input)
       {
         $rows[] = $widget->renderContentTag('li', $input['input'].$widget->getOption('label_separator').$input['label'], array('class' => 'hf', 'style' => 'display: none', ));
       }
+      $rows[] = $widget->renderContentTag('li', 'еще...', array('class' => 'fm', 'style' => 'text-align: right;'));
     }
 
     return !$rows ? '' : $widget->renderContentTag('ul', implode($widget->getOption('separator'), $rows), array('class' => $widget->getOption('class')));

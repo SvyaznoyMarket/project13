@@ -17,18 +17,10 @@ class myDoctrineTable extends Doctrine_Table
   public function createList(array $data = array())
   {
     $return = new myDoctrineCollection($this);
-    if (is_array($data) && isset($data[0]))
-    {
-      if (is_object($data[0]) && ($data[0] instanceof myDoctrineRecord))
-      {
-        foreach ($data as $item)
-        {
 
-        }
-      }
-      else {
-        $return->fromArray($data);
-      }
+    if (!empty($data))
+    {
+      $return->fromArray($data);
     }
 
     return $return;
@@ -46,14 +38,14 @@ class myDoctrineTable extends Doctrine_Table
       $record = $this->getById($id, $params);
       if ($record)
       {
-        $column = (isset($params['index'][$this->getQueryRootAlias()]) && $this->hasColumn($params['index'][$this->getQueryRootAlias()])) ? $params['index'][$this->getQueryRootAlias()] : false;
-        if (false === $column)
+        $index = (isset($params['index'][$this->getQueryRootAlias()]) && $this->hasColumn($params['index'][$this->getQueryRootAlias()])) ? $params['index'][$this->getQueryRootAlias()] : false;
+        if (false === $index)
         {
           $list[] = $record;
         }
         else
         {
-          $list[$record[$column]] = $record;
+          $list[$record[$index]] = $record;
         }
       }
     }
@@ -90,10 +82,18 @@ class myDoctrineTable extends Doctrine_Table
     return $q->fetchOne();
   }
 
+  public function getByToken($token, array $params = array())
+  {
+    $id = $this->getIdBy('token', $token);
+
+    return $this->getById($id);
+  }
+
   public function getIdsByQuery(Doctrine_Query $q)
   {
     $q = clone $q;
-    $q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
+    //$q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
+    $q->select($this->getQueryRootAlias().'.id')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
@@ -101,6 +101,9 @@ class myDoctrineTable extends Doctrine_Table
     if (!is_array($ids))
     {
       $ids = array($ids);
+    }
+    else {
+      $ids = array_unique($ids); // вместо DISTINCT
     }
 
     return $ids;
@@ -191,6 +194,11 @@ class myDoctrineTable extends Doctrine_Table
     if (isset($params['limit']))
     {
       $q->limit($params['limit']);
+    }
+    // group by
+    if (isset($params['group']))
+    {
+      $q->groupBy($params['group']);
     }
     // index by
     /*

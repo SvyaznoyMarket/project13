@@ -1,0 +1,1 @@
+<?php include_partial("search/form_{$view}", $sf_data) ?>

@@ -32,6 +32,7 @@ default:
     - jquery.lightbox_me.js
     - prettyCheckboxes.js
     - jcookies.js
+    - typewriter.js
     #- jslib/jquery.ui.widget.js
     #- jslib/jquery.ui.mouse.js
     #- jslib/jquery.ui.slider.js
@@ -40,13 +41,14 @@ default:
     #- jquery-ui-custom.js
     - jquery.form.js
     - jquery.timers.js
-    - jquery.scrollto.js
+    #- jquery.scrollto.js
     #- jquery.colorbox.js
-    - jquery.autocomplete<?php echo 'dev' == sfConfig::get('sf_environment') ? '-dev' : '' ?>.js
+    #- jquery.autocomplete<?php echo 'dev' == sfConfig::get('sf_environment') ? '-dev' : '' ?>.js
     - main.js
     - app.auth.js
     - mechanics.js
     - dash.js
+    - app.search.js
 
   has_layout:     true
   layout:         layout

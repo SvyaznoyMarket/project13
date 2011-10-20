@@ -86,9 +86,7 @@
       <!-- /Topmenu -->
 
     <div class="searchbox">
-    <form action="">
-        <input type="text" class="text startse" value="Поиск среди 20 000 товаров" /><input type="button" class="searchbutton" value="Найти" title="Найти" />
-    </form>
+      <?php include_component('search', 'form', array('view' => 'main')) ?>
     </div>
 
 

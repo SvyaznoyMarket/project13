@@ -26,4 +26,41 @@ class TagTable extends myDoctrineTable
       'added'    => 'created_at',
     );
   }
+
+  public function getDefaultParameters()
+  {
+    return array(
+      'has_products' => false,
+    );
+  }
+
+  public function createBaseQuery(array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createQuery('tag');
+
+    if ($params['has_products'])
+    {
+      $q->innerJoin('tag.ProductRelation tagProductRelation')
+        ->innerJoin('tagProductRelation.Product product WITH product.is_instock = 1')
+      ;
+    }
+
+    return $q;
+  }
+
+  public function getByProduct($product_id, array $params = array())
+  {
+    $q = TagTable::getInstance()->createBaseQuery();
+    $q->select('tag.*, count(productRelation.product_id) count')
+      ->innerJoin('tag.ProductRelation productRelation')
+      ->groupBy('productRelation.tag_id')
+      ->having('tag.id IN (SELECT tagProductRelation.tag_id FROM TagProductRelation tagProductRelation WHERE tagProductRelation.product_id = ?)', $product_id)
+      ->orderBy('count DESC')
+      ->useResultCache(true, null, 'product-'.$product_id.'/tag-all');
+
+    return $q->execute();
+  }
+
 }

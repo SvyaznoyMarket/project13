@@ -28,8 +28,8 @@
       <?php include_component('cart', 'show') ?>
 
     <!-- Total -->
-    <div class="fl font11 gray">
-        <strong>Условия доставки</strong><br />Доставляем по России, Казахстану, Белоруссии<br />Срочная доставка*<br />При покупке свыше 3 000 рублей доставка - бесплатно*<br />При заказе товара в кредит скидки интернет-магазина не предоставляются<br />Купили, не понравился товар, вернем деньги или обменяем<br />Все региональные доставки застрахованы за наш счет
+    <div class="fl font14 gray">
+        Для оформления заказа от вас потребуется<br />только имя и телефон для связи.
     </div>
     <div class="basketinfo">
         <div class="left">
@@ -38,8 +38,6 @@
         </div>
         <div class="right pt20">
             <a href="<?php echo url_for('order_login') ?>" class="button bigbuttonlink width214 mb15">Оформить заказ</a>
-            <!--div class="pb5"><strong><a href="" class="red underline">Купить быстро в 1 клик</a></strong></div-->
-            <div class="font11 gray">От вас потребуется только имя и телефон для связи.</div>
         </div>
     </div>
     <!-- /Total -->

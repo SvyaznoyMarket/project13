@@ -51,6 +51,11 @@ class ProductCategory extends BaseProductCategory
     //берем только тэги, у которых есть продукты
     $tagIds = $categoryTable->getTagIds($this);
 
+    if (!is_array($tagIds))
+    {
+      $tagIds = array($tagIds);
+    }
+
     //возвращаем тэги, отсортированные в правильном порядке
     return $this->getTagGroupByIdWithOrder($tagIds);
   }
@@ -112,5 +117,19 @@ class ProductCategory extends BaseProductCategory
     ;
 
     return  $q->execute();
+
   }
+
+  public function getUrl(){
+      return '/catalog/' . $this->token;
+  }
+
+  public function getPhotoUrl($view = 0)
+  {
+    $urls = sfConfig::get('app_category_photo_url');
+
+    return $this->getPhoto() ? $urls[$view].$this->getPhoto() : null;
+  }
+
+
 }

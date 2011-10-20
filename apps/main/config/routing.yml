@@ -564,7 +564,7 @@ cart_add:
   url:   /cart/add/:product/:quantity
   param: { module: cart, action: add, quantity: 1 }
   requirements:
-    sf_method: [ get,post ]
+    sf_method: [ get, post ]
 
 #
 # cart delete
@@ -628,6 +628,26 @@ payment_callback:
   param: { module: order, action: complete }
 #  url:      /payment/callback
 #  param:    { module: payment, action: callback }
+
+
+#
+# search
+search:
+  url:      /search
+  param:    { module: search, action: index }
+
+
+
+#
+# tag
+tag:
+  url:      /tags/
+  param:    { module: tag, action: index }
+#
+# tag show
+tag_show:
+  url:      /tags/:tag
+  param:    { module: tag, action: show }
 
 
 #

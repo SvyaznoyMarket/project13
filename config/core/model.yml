@@ -41,10 +41,10 @@ ProductPrice:
   - product_price
 Service:
   - service
-DeliveryType:
-  - delivery_type
-PaymentMethod:
-  - payment_method
+#DeliveryType:
+#  - delivery_type
+#PaymentMethod:
+#  - payment_method
 StockProductRelation:
   - product_stock
 Stock:

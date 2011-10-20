@@ -18,14 +18,16 @@ $(document).ready(function() {
     return false
   })
 
-  $('#signin-form, #register-form').bind('submit', function(e) {
+  $('#login-form, #register-form').bind('submit', function(e) {
+    console.info(this);
     e.preventDefault()
 
     var form = $(e.target)
 
     form.find('[type="submit"]:first')
       .attr('disabled', true)
-      .val('signin-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...')
+      .val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...')
+
     form.ajaxSubmit({
       async: false,
       data: {
@@ -43,16 +45,19 @@ $(document).ready(function() {
       }
     })
   })
+
 	$('#forgot-pwd-trigger').click(function(){
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();
+		return false;
 	})
 
 	$('#remember-pwd-trigger,#remember-pwd-trigger2').click(function(){
 		$('#reset-pwd-form').hide();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').show();
+		return false;
 	})
 
 	$('#reset-pwd-form').submit(function(){

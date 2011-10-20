@@ -11,11 +11,11 @@
     <?php $i = 0; foreach ($form as $name => $field):  if ($i++ > 7) break;  ?>
       <?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?>
 
-      <dt<?php if (5 > $i && 2 != $i) echo ' class="current'.((1 == $i) ? ' first' : '').'"' ?>><?php echo $form[$name]->renderLabelName() ?>
+      <dt<?php if (5 > $i) echo ' class="current'.((1 == $i) ? ' first' : '').'"' ?>><?php echo $form[$name]->renderLabelName() ?>
         <?php //include_partial('productCatalog/filter_hint')  ?>
       </dt>
 
-      <dd<?php if (5 > $i && 2 != $i) echo ' style="display: block"' ?>>
+      <dd<?php if (5 > $i) echo ' style="display: block"' ?>>
         <?php echo $form[$name]->render() ?>
       </dd>
 <?php endforeach; ?>

@@ -5,13 +5,18 @@ class ProductParameter extends myDoctrineVirtualRecord
   protected
     $property = null,
     $value = null,
-    $group_id
+    $group_id,
+    $view_list = false,
+    $view_show = false
   ;
 
   public function __construct(ProductTypePropertyRelation $productTypePropertyRelation, array $productPropertyRelationArray = array())
   {
     $this->property = $productTypePropertyRelation['Property'];
     $this->group_id = $productTypePropertyRelation['group_id'];
+
+    $this->view_list = $productTypePropertyRelation['view_list'];
+    $this->view_show = $productTypePropertyRelation['view_show'];
 
     $value = array();
     foreach ($productPropertyRelationArray as $propertyRelation)
@@ -62,6 +67,16 @@ class ProductParameter extends myDoctrineVirtualRecord
   public function getValue()
   {
     return trim(is_array($this->value) ? implode(', ', $this->value) : $this->value);
+  }
+
+  public function isViewList()
+  {
+    return $this->view_list;
+  }
+
+  public function isViewShow()
+  {
+    return $this->view_show;
   }
 
 

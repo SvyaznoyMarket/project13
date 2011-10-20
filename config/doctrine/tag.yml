@@ -19,6 +19,7 @@ TagGroupProductTypeRelation:
   columns:
     tag_group_id:        { type: integer(20), primary: true, notnull: true }
     product_type_id:     { type: integer(20), primary: true, notnull: true }
+    position:            { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
     TagGroup:            { class: TagGroup, foreignAlias: ProductTypeRelation, local: tag_group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     ProductType:         { class: ProductType, foreignAlias: TagGroupRelation, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

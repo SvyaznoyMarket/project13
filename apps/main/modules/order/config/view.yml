@@ -6,15 +6,17 @@ all:
 
   javascripts:
     - -*
-    - jquery
+    - jquery-1.6.4.min.js
     - prettyCheckboxes.js
-    - jquery-ui-1.8.16.custom.min.js
+    #- jquery-ui-1.8.16.custom.min.js
     - jquery.form.js
-    - jquery.colorbox.js
-    - jquery.autocomplete-dev.js
+    - typewriter.js
+    #- jquery.colorbox.js
+    - shelf/jquery.autocomplete-dev.js
+    - jquery.scrollto.js
     - app.order.js
     - custom-form-elements.js
-    - main
+    - main.js
   layout: order
   
 index:

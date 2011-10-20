@@ -12,6 +12,11 @@
  */
 class Tag extends BaseTag
 {
+  public function __toString()
+  {
+    return (string)$this->name;
+  }
+
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);

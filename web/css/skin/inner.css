@@ -356,7 +356,7 @@ border-radius:4px;
 -moz-border-radius:4px;
 -webkit-border-radius:4px;
 }
-.slider-range DIV {position:absolute; z-index:1; top:0; height:100%; background:#ffa901}
+.slider-range DIV {position:absolute; z-index:1; bottom:0; height:80%; background: url(/css/skin/img/bg_range.png) repeat-x; }
 .slider-range A {position:absolute; z-index:2; top:0; margin-left:-7px; width:15px; height:24px; background:url(/css/skin/img/bg.png) no-repeat -18px 0; cursor: default; outline:none}
 
 .advice {margin-bottom:20px; border:1px solid #dcdcdc;
@@ -639,6 +639,7 @@ border-radius:5px;
 .previewlist LI {float:left; width:48px; height:48px; margin:0 6px 6px 0; position:relative}
 .previewlist B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(/css/skin/img/cover.png) no-repeat 0 -53px}
 .previewlist B:hover, .previewlist B.current {background-position:0 0; cursor:pointer}
+#bigpopup .previewlist .viewstock B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(/css/skin/img/cover_media.png) no-repeat 0 -53px}
 .previewlist A {display:block; width:48px; height:48px; cursor:pointer; text-indent:-10000px}
 .previewlist .axonometric {background:url(/css/skin/img/bg_inner.png) no-repeat -830px -238px}
 .previewlist .videolink {background:url(/css/skin/img/bg_inner.png) no-repeat -778px -238px}
@@ -861,9 +862,9 @@ box-shadow:0 0 7px #616161;
 .photoview {margin:0 80px 0 200px; height:724px; position:relative}
 .photobox {float:left; width:100%; height:100%; overflow:hidden; position:relative}
 .photobox IMG {position:relative}
-.scrollbox {display:none; position:absolute; z-index:10; bottom:0; left:50%; width:354px; height:71px; margin-left:-183px; background:url(/css/skin/podlogka.png) no-repeat 0 0}
+.scrollbox {display:none; position:absolute; z-index:10; bottom:0; left:50%; width:354px; height:71px; margin-left:-183px; background:url(/css/skin/img/podlogka.png) no-repeat 0 0}
 .scrollbox DIV {width:176px; height:54px; margin:10px 0 0 94px; position:relative}
-.scrollbox DIV B {position:absolute; left:110px; top:28px; display:block; width:22px; height:22px; background:url(/css/skin/toroll.png) no-repeat; cursor:pointer}
+.scrollbox DIV B {position:absolute; left:110px; top:28px; display:block; width:22px; height:22px; background:url(/css/skin/img/toroll.png) no-repeat; cursor:pointer}
 
 .videoview {margin:0 26px 0 220px; padding-top:30px; height:694px; position:relative}
 .videoview .zoom {margin:0}
@@ -907,8 +908,8 @@ border-radius: 5px;
 .selectbox75 .select {width:40px}
 .selectbox75 .styled {width:75px}
 
-.selectbox98 {width:75px}
-.selectbox98 .select {width:63px}
+.selectbox98 {width:135px}
+.selectbox98 .select {width:120px}
 .selectbox98 .styled {width:98px}
 
 .selectbox170 {width:148px}
@@ -1164,3 +1165,7 @@ border-radius: 5px;
 .plug7 {height:202px; padding-top:50px; background:url(/images/plug7.jpg) no-repeat 0 0; color:#5dbacb}
 .plug8 {height:183px; padding-top:70px; background:url(/images/plug8.jpg) no-repeat 0 0; color:#e37e84}
 .plug9 {height:188px; padding-top:65px; background:url(/images/plug1.jpg) no-repeat 0 0; color:#bea1cf}
+
+.fm{text-align:left;}
+.hf{display:none;}
+#plus10{cursor:pointer;}
