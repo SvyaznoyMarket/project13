@@ -392,6 +392,14 @@ $(document).ready(function(){
 			$(this).html('Все характеристики')			
 		})
 	}
+	/* search tags */
+	if( $('#plus10').length ) {
+		$('#plus10').click( function(){
+			$(this).parent().parent().find('.hf').removeClass('hf')
+			$(this).parent().hide()
+			return false
+		})
+	}
 });
 
 
