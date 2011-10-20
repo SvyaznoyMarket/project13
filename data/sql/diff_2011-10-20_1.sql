@@ -1,0 +1,1 @@
+ALTER TABLE `product`    ADD COLUMN `prefix` VARCHAR(255) NULL DEFAULT NULL AFTER `name`

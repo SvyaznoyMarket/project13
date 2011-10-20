@@ -31,6 +31,7 @@ class ProductTable extends myDoctrineTable
       'rating_count'  => 'rating_quantity',
       'score'         => 'score',
       'media_image'   => 'main_photo',
+      'prefix'        => 'prefix',
     );
   }
 

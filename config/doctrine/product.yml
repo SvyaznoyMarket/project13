@@ -197,6 +197,7 @@ Product:
     barcode:           { type: string(255), notnull: false, default: null }
     article:           { type: string(255), notnull: false, default: null }
     name:              { type: string(255), notnull: true, notblank: true }
+    prefix:            { type: string(255), notnull: false, default: null }
     type_id:           { type: integer(20), notnull: true }
     creator_id:        { type: integer(20), notnull: true }
 #    category_id:       { type: integer(20), notnull: true }

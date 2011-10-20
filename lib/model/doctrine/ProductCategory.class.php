@@ -117,4 +117,13 @@ class ProductCategory extends BaseProductCategory
   public function getUrl(){
       return '/catalog/' . $this->token;
   }
+
+  public function getPhotoUrl($view = 0)
+  {
+    $urls = sfConfig::get('app_category_photo_url');
+
+    return $this->getPhoto() ? $urls[$view].$this->getPhoto() : null;
+  }
+
+
 }
