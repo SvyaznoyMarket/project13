@@ -1,5 +1,5 @@
 <!-- Goods info -->
-<div class="goodsphotosmall"><i class="bestseller">Бестселлер</i><a href=""><img src="http://mobiguru.ru/f/image/2/4/6/2/6/24626186_samsung_i9000_galaxy_s_1.jpg" alt="" width="160" height="160" title="" /></a></div>
+<div class="goodsphotosmall"><div class="photo"><img src="<?php echo $product->getMainPhotoUrl(2) ?>" alt="" width="163" height="163" title="" /></div></div>
 <div class="fr width219">
 	<div class="font11 gray pb10">Перейти в:</div>
 	<div class="articlemenu">
@@ -16,11 +16,11 @@
 	<div class="font14 pb15"><?php echo $product->description ?></div>
 	<div class="font18 pb10"><?php echo $product->getFormattedPrice() ?> <span class="rubl">p</span></div>
 	<div class="goodsbar">
-		<a href="<?php echo url_for('cart_add', array('product' => $product->token, 'quantity' => 1)) ?>" class="link1" title="добавить в корзину"></a>
-		<a href="<?php echo url_for('userDelayedProduct_create', $sf_data->getRaw('product')) ?>" class="link2" title="добавить в избранное"></a>
-		<a href="<?php echo url_for('userProductCompare_add', $sf_data->getRaw('product')) ?>" class="link3" title="сравнить"></a>
+    <?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
+    <?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?>
+    <?php include_component('userProductCompare', 'button', array('product' => $product)) ?>
 	</div>
-</div> 
-<!-- /Goods info -->   
+</div>
+<!-- /Goods info -->
 
 <div class="clear pb20"></div>

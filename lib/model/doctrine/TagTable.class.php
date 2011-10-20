@@ -26,4 +26,18 @@ class TagTable extends myDoctrineTable
       'added'    => 'created_at',
     );
   }
+
+  public function getByProduct($product_id)
+  {
+    $q = TagTable::getInstance()->createBaseQuery();
+    $q->select('tag.*, count(productRelation.product_id) count')
+      ->innerJoin('tag.ProductRelation productRelation')
+      ->groupBy('productRelation.tag_id')
+      ->having('tag.id IN (SELECT tagProductRelation.tag_id FROM TagProductRelation tagProductRelation WHERE tagProductRelation.product_id = ?)', $product_id)
+      ->orderBy('count DESC')
+      ->useResultCache(true, null, 'allTags-product-'.$product_id);
+
+    return $q->execute();
+  }
+
 }

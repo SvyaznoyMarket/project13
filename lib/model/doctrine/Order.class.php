@@ -99,4 +99,10 @@ class Order extends BaseOrder
   {
     return in_array($this->payment_method_id, array(3,));
   }
+
+  public function isSelfDelivery()
+  {
+    return 'self' == $this->DeliveryType->token;
+  }
+
 }

@@ -2,7 +2,7 @@
   <?php include_component('productCard', 'navigation', array('product' => $product)) ?>
 <?php end_slot() ?>
 
-<?php slot('title', $product->Creator.'  '.$product->name) ?>
+<?php slot('title', $product->name) ?>
 
 <?php include_partial('product', array('product' => $product)) ?>
 

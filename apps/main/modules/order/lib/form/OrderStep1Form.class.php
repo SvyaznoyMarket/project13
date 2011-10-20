@@ -65,7 +65,7 @@ class OrderStep1Form extends BaseOrderForm
       'expanded'        => true,
       'renderer_class'  => 'myWidgetFormOrderSelectRadio',
     ));
-    $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ доставки:');
+    $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ получения заказа:');
     $this->validatorSchema['delivery_type_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryType', 'required' => true));
 
     $choices = array();
@@ -90,7 +90,7 @@ class OrderStep1Form extends BaseOrderForm
       'multiple' => false,
       'expanded' => false,
     ));
-    $this->widgetSchema['delivered_at']->setLabel('Дата доставки:');
+    $this->widgetSchema['delivered_at']->setLabel('Выберите дату доставки:');
     $this->validatorSchema['delivered_at'] = new sfValidatorChoice(array('choices' => array_keys($choices), 'required' => false));
 
     $this->widgetSchema['delivery_period_id'] = new sfWidgetFormDoctrineChoice(array(
@@ -115,7 +115,7 @@ class OrderStep1Form extends BaseOrderForm
       'expanded'        => false,
       'renderer_class'  => 'myWidgetFormOrderSelect',
     ));
-    $this->widgetSchema['shop_id']->setLabel('Выберите магазин из списка:');
+    $this->widgetSchema['shop_id']->setLabel('Выберите магазин, в котором хотите получить заказ:');
     $this->validatorSchema['shop_id'] = new sfValidatorDoctrineChoice(array('model' => 'Shop', 'required' => false));
 
     //$this->validatorSchema->setOption('allow_extra_fields', true);

@@ -16,8 +16,8 @@ class userActions extends myActions
   * @param sfRequest $request A request object
   */
   public function executeIndex(sfWebRequest $request)
-  {      
-    //пункты для главной страницы личного кабинета  
+  {
+    //пункты для главной страницы личного кабинета
     $list = array(
       array(
           'title' => 'Персональные данные',
@@ -25,7 +25,7 @@ class userActions extends myActions
               array(
                 'name'   => 'Личный кабинет',
                 'url'    => '@user',
-                'routes' => array('@user'),
+                'routes' => array('user'),
               ),
 //              array(
 //                'name'   => 'Адрес доставки',
@@ -35,16 +35,16 @@ class userActions extends myActions
               array(
                 'name'   => 'Редактирование профиля',
                 'url'    => '@user_edit',
-                'routes' => array('@user_edit'),
-              ),                 
-              array(
-                'name'   => 'Пароль',
-                'url'    => '@user_changePassword',
-                'routes' => array('@user_changePassword'),
-              ),                 
+                'routes' => array('user_edit'),
+              ),
+//              array(
+//                'name'   => 'Пароль',
+//                'url'    => '@user_changePassword',
+//                'routes' => array('user_changePassword'),
+//              ),
           )
       ),
-      array(
+      /*array(
           'title' => 'Мои товары',
           'list' => array(
               array(
@@ -61,7 +61,7 @@ class userActions extends myActions
                 'name'   => 'История просмотра товаров',
                 'url'    => '@userProductHistory',
                 'routes' => array('@userProductHistory'),
-              ),              
+              ),
               array(
                 'name'   => 'Отложенные товары',
                 'url'    => '@userDelayedProduct',
@@ -76,9 +76,9 @@ class userActions extends myActions
                 'name'   => 'Метки товаров',
                 'url'    => '@userTag',
                 'routes' => array('@userTag'),
-              ),           
+              ),
           )
-      )
+      )*/
 
     );
 
@@ -95,8 +95,8 @@ class userActions extends myActions
      * */
 
     $this->setVar('pagesList', $list, true);
-    
-    
+
+
   }
  /**
   * Executes edit action
@@ -116,13 +116,13 @@ class userActions extends myActions
 	 */
 	$this->getUser()->getGuardUser()->refresh();
     $this->userProfile = $this->getUser()->getGuardUser()->getData();
-    $this->form = new UserForm( $this->getUser()->getGuardUser() );      
+    $this->form = new UserForm( $this->getUser()->getGuardUser() );
 
       //echo 'ok';
     //  exit();
   }
-  
-  
+
+
   public function executeUpdate(sfWebRequest $request)
   {
     $this->form = new UserForm($this->getUser()->getGuardUser());
@@ -130,7 +130,7 @@ class userActions extends myActions
     $a = $request->getParameter($this->form->getName());
     //$a['id'] = 2;
     $this->form->bind( $a );
-    
+
     if ($this->form->isValid())
     {
       try
@@ -142,7 +142,7 @@ class userActions extends myActions
 //            $user->setCorePush(false);
 //            $user->fromArray( $this->form->getValues() );
 //            $user->save();
-           
+
 			//$this->form->save();
        //}
         $this->redirect('user_edit');
@@ -161,8 +161,8 @@ class userActions extends myActions
 
     $this->userProfile = $this->getUser()->getGuardUser()->getData();
 
-    $this->setTemplate('edit');      
-  }  
-  
-  
+    $this->setTemplate('edit');
+  }
+
+
 }

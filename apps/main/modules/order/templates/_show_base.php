@@ -1,5 +1,5 @@
     <!-- Basket -->
-        <div class="fl width215 mr20"><strong class="font16">Давайте проверим ваш заказ:</strong></div>
+        <div class="fl width215 mr20"><strong class="font16">Давайте проверим Ваш заказ:</strong></div>
 
         <?php include_component('cart', 'show', array('view' => 'order', )) ?>
 
@@ -18,13 +18,26 @@
 
             <div class="clear width500 pb15"></div>
 
-            <div class="fl width215 font16 mr20">Кому и куда доставить:</div>
+            <div class="fl width215 font16 mr20">Получатель:</div>
             <div class="fl width430 pb20">
                 <div class="pb5"><strong><?php echo $order->recipient_first_name.' '.$order->recipient_last_name ?></strong></div>
-                <div class="pb5"><?php echo !empty($order->User->email) ? $order->User->email : $order->recipient_phonenumbers ?></div>
+                <div class="pb5"><span class="gray">Телефон:</span> <?php echo $order->recipient_phonenumbers ?></div>
+            </div>
+
+            <div class="clear"></div>
+
+            <div class="fl width215 font16 mr20"><?php echo $order->isSelfDelivery() ? 'Где будете получить' : 'Кому и куда доставить' ?>:</div>
+            <div class="fl width430 pb20">
                 <div class="pb5"><span class="gray">Город:</span> <?php echo $order->Region->name ?></div>
-                <div class="pb5"><span class="gray">Адрес доставки:</span> <?php echo $order->address ?></div>
-                <div><?php echo $order->extra ?></div>
+                <?php if (!empty($order->address)): ?><div class="pb5"><span class="gray">Адрес доставки:</span> <?php echo $order->address ?></div><?php endif ?>
+                <?php if (!empty($order->shop_id)): ?><div class="pb5"><span class="gray">Забрать из магазина:</span> <?php echo $order->getShop()->name ?></div><?php endif ?>
+            </div>
+
+            <div class="clear"></div>
+
+            <div class="fl width215 font16 mr20">Дополнительная информация:</div>
+            <div class="fl width430 pb20">
+                <div class="pb5"><?php echo $order->extra ?></div>
             </div>
         </div>
 

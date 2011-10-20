@@ -5,7 +5,6 @@
 
       <span class="ratingview"></span>
       <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
-      <div class="pb5"><?php echo $item['preview'] ?></div>
 
       <?php include_component('product', 'property', array('product' => $product)) ?>
 
@@ -17,7 +16,6 @@
       <ul>
         <li><strong class="orange">Есть в наличии</strong></li>
         <li>Доставим в течение 24 часов</li>
-        <li>Поможем настроить смартфон</li>
       </ul>
 
     </div>
@@ -40,7 +38,6 @@
           <div class="info">
             <span class="ratingview"></span>
             <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
-            <div class="pb5"><?php echo $item['preview'] ?></div>
 
             <?php include_component('product', 'property', array('product' => $product)) ?>
 
@@ -51,8 +48,6 @@
             <ul>
               <li><strong class="orange">Есть в наличии</strong></li>
               <li>Доставим в течение 24 часов</li>
-
-              <li>Поможем настроить смартфон</li>
             </ul>
           </div>
         </div>
