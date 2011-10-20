@@ -13,6 +13,7 @@ all:
     - typewriter.js
     #- jquery.colorbox.js
     - shelf/jquery.autocomplete-dev.js
+    - jquery.scrollto.js
     - app.order.js
     - custom-form-elements.js
     - main.js
