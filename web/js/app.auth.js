@@ -50,12 +50,14 @@ $(document).ready(function() {
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();
+		return false;
 	})
 
 	$('#remember-pwd-trigger,#remember-pwd-trigger2').click(function(){
 		$('#reset-pwd-form').hide();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').show();
+		return false;
 	})
 
 	$('#reset-pwd-form').submit(function(){

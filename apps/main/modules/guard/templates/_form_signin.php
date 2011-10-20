@@ -10,7 +10,7 @@
       <!--<input type="text" class="text width315 mb10" value="ivanov@domen.com" />-->
     </div>
 
-    <div class="pb5"><a href="<?php echo url_for('user_forgotPassword') ?>" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
+    <div class="pb5"><a id="forgot-pwd-trigger" href="<?php echo url_for('user_forgotPassword') ?>" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
     <div class="pb5">
       <?php echo $form['password']->renderError() ?>
       <?php echo $form['password']->render(array('class' => 'text width315 mb10')) ?>
