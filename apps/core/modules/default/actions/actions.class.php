@@ -42,6 +42,7 @@ class defaultActions extends myActions
       $task->setContentData(array_merge($response, array(
         'status'    => 'run',
         'prepared'  => array(), // массив моделей, таблицы которых подготовлены к загрузке данных
+        'made'      => array(), // массив моделей, которые уже сформированы полностью и в них нужно делать только update записей (для ProductCategory)
       )));
 
       $task->save();
