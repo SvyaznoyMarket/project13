@@ -138,7 +138,12 @@ $(document).ready(function(){
 		e.stopPropagation()
 	})
 	/* ---- */ 
+	if( $('.error_list').length ) {
+	console.info('dd')
+		$.scrollTo( $('.error_list:first'), 300 )
+	}
 	/* bill typewriter */
+	
 	if( $('.chequebottom ul').length && ! $('.error_list').length ) {
 		$('.chequebottom li div').hide()
 		$('.chequebottom li strong').hide()
