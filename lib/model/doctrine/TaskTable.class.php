@@ -42,4 +42,13 @@ class TaskTable extends myDoctrineTable
 
     return $q->execute();
   }
+
+  public function getById($coreId)
+  {
+    return $this->createQuery()
+      ->where('core_id = ?', $coreId)
+      ->orderBy('updated_at DESC')
+      ->fetchOne()
+    ;
+  }
 }

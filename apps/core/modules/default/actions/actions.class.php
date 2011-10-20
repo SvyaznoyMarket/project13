@@ -17,11 +17,7 @@ class defaultActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->taskList = TaskTable::getInstance()->createQuery()
-      ->addWhere('(DATEDIFF(NOW(), created_at) <= ?) OR (status = ?)', array(10, 'run'))
-      ->orderBy('priority ASC, updated_at DESC')
-      ->execute()
-    ;
+    $this->forward('task', 'index');
   }
  /**
   * Executes init action
