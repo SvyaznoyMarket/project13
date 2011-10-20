@@ -4,7 +4,6 @@ $(document).ready(function(){
 		var trgtimg = $('#stock img[ref="'+$(this).attr('ref')+'"]')
 		var isrc    = trgtimg.attr('src')
 		var idu    = trgtimg.attr('data-url')	
-		console.info(isrc, idu)
 		if( trgtimg[0].complete ) {
 			$('#goodsphoto img').attr('src', isrc)
 			$('#goodsphoto img').attr('href', idu)
