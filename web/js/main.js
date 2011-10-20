@@ -385,10 +385,12 @@ $(document).ready(function(){
 	/* charachteristics */
 	if ( $('#toggler').length ) {
 		$('#toggler').toggle( function(){
+			$('.descriptionlist:first').slideUp()
 			$('.descriptionlist.second').slideDown()
-			$(this).html('Скрыть')
+			$(this).html('Общие характеристики')
 		},  function(){
 			$('.descriptionlist.second').slideUp()
+			$('.descriptionlist:first').slideDown()			
 			$(this).html('Все характеристики')			
 		})
 	}
