@@ -112,5 +112,11 @@ EOF;
     $this->logSection('INFO', 'Устанавливаю position для группы тэгов');
     $count = $connection->exec("UPDATE `tag_group` `tg` SET `tg`.`position` = (SELECT sum(`tgpt`.`position`) FROM `tag_group_product_type_relation` `tgpt` WHERE `tag_group_id` = `tg`.`id` GROUP BY `tgpt`.`tag_group_id`)");
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+
+    //9) устанавливаю картинку-заглушку для категорий без картинок
+    $this->logSection('INFO', 'Устанавливаю картинку-заглушку для категорий без картинок');
+    $count = $connection->exec("UPDATE `product_category` `pc` SET `pc`.`photo` = 'default.jpg' WHERE `pc`.`photo` IS NULL");
+    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+
   }
 }
