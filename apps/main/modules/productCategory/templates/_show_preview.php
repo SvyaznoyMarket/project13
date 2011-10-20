@@ -10,7 +10,7 @@
     <li><a href="<?php echo $link['url'] ?>"><?php echo $link['name'] ?></a></li>
 	<?php endforeach ?>
   </ul>
-  <div class="ar gray"><a href="<?php echo $item['url'] ?>" class="underline">Товаров</a> (<?php echo $item['product_quantity'] ?>)</div>
+  <div class="ar gray"><a href="<?php echo $item['url'] ?>" class="underline"><?php echo $item['product_quantity'] ?> товаров</a></div>
 
   <!-- Hover -->
   <div class="boxhover">
@@ -28,7 +28,7 @@
 		  <li><a href="<?php echo $link['url'] ?>"><?php echo $link['name'] ?></a></li>
 		  <?php endforeach ?>
         </ul>
-        <div class="ar gray"><a href="<?php echo $item['url'] ?>" class="underline">Товаров</a> (<?php echo $item['product_quantity'] ?>)</div>
+        <div class="ar gray"><a href="<?php echo $item['url'] ?>" class="underline"><?php echo $item['product_quantity'] ?> товаров</a></div>
 
       </div>
     </div>

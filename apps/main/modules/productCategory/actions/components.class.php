@@ -120,7 +120,7 @@ class productCategoryComponents extends myComponents
       }
 
       $product = $this->productCategory->getPreviewProduct();
-      $item['photo'] = $product ? $product->main_photo_url : null;
+      $item['photo'] = $this->productCategory->getPhotoUrl();//$product ? $product->main_photo_url : null;
     }
 
     $this->setVar('item', $item, true);
