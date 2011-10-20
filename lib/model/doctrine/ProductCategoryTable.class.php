@@ -21,10 +21,11 @@ class ProductCategoryTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'        => 'core_id',
-      'parent_id' => 'core_parent_id',
-      'name'      => 'name',
-      'is_active' => 'is_active',
+      'id'          => 'core_id',
+      'parent_id'   => 'core_parent_id',
+      'name'        => 'name',
+      'is_active'   => 'is_active',
+      'media_image' => 'photo',
     );
   }
 
