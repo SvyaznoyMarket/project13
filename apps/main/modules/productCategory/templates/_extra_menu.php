@@ -4,14 +4,43 @@
     ?>
     <div class="extramenu" style="display: none;" id="extramenu-root-<?php echo $i ?>">
         <i class="corner" style="left:290px"></i>
-        <dl>
-            <?php 
-            $countList = array();
-            foreach ($list as $i => $item){
-                $countList[] = $item;    
+
+            <?php
+            $existList = array();
+            //проходим по колонкам
+            foreach ($colomnsArr[$i] as $column)
+            {
+                echo '<dl>';
+                //проходим по крупным (жирным) категориям
+                foreach ($column as $bigCat)
+                {
+                    //print_r($list);
+                    if (isset($existList[ $bigCat['id'] ])){
+                        $from = $existList[ $bigCat['id'] ] + 1;
+                        $to = $existList[ $bigCat['id'] ] + $bigCat['num'] - 1;
+                    }
+                    else
+                    {
+                        $from = 0;
+                        $to = $bigCat['num'] - 1;                        
+                    }
+                    if (!$from) echo '<dt><a href="'.url_for('productCatalog_category', $rootCat[ $bigCat['id'] ]).'">'.$rootCat[ $bigCat['id'] ].'</a></dt>';
+                    //проходим по вложенным категориям
+                    if ($from>0) echo '<dd>&nbsp;</dd>';
+                    for($i=$from; $i<=$to; $i++)
+                    {
+                        if (!isset($catTree[ $bigCat['id'] ][$i])) break;
+                        echo '<dd><a href="'.url_for('productCatalog_category', $catTree[ $bigCat['id'] ][$i]).'">'.$catTree[ $bigCat['id'] ][$i].'</a></dd>'; 
+                    }
+                    $existList[ $bigCat['id'] ] = $to;
+                }                
+                echo '</dl>';
             }
-           // print_r($countList);
-            ?>                    
+                
+            ?>
+            
+            
+            <!--
             <?php foreach ($list as $ii => $item): ?>
             <?            // echo get_class($item);  ?>
                 <?php if ($ii == 0 && $item['level'] != 1) continue; ?>
@@ -25,7 +54,7 @@
                     <dd><a href="<?php echo url_for('productCatalog_category', $item) ?>"><?php echo $item ?></a></dd>
                 <?php endif ?>
             <?php endforeach ?>
-        </dl>
+            -->
 
        <div class="clear"></div>
     </div>
