@@ -35,9 +35,6 @@ $(document).ready(function(){
 		from = $('#f_price_from')
 		to   = $('#f_price_to')
 	}	
-	if( from && from.val() ) {
-		//$('.bigfilter dd:first').slideToggle(200)
-	}
 		
 	if ($( "#slider-range1" ).length) $( "#slider-range1" ).slider({
 		range: true,
@@ -88,11 +85,10 @@ $(document).ready(function(){
 		  starOn: 'star_a.png',
 		  starOff: 'star_p.png',
 		  click: function( score ) {
-		  		console.info('score ',score)
 		  		$.getJSON( $('#rating').attr('data-url').replace('score', score ) , function(data){ 
-		  			console.info(data)
 		  			if( data.success === true && data.data.rating ) {
 		  				$.fn.raty.start( data.data.rating ,'#rating' )
+		  				$('#rating').next().html( data.data.rating )
 		  			}
 		  		})		  		
 		  		$.fn.raty.readOnly(true, '#rating')
