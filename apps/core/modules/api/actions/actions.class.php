@@ -19,7 +19,7 @@ class apiActions extends myActions
   {
     $response = trim(file_get_contents('php://input'));
 
-    $logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/api.log'));
+    $logger = new sfFileLogger(new sfEventDispatcher(), array('file' => $this->getLogFilename()));
     $logger->log('Response: '.$response);
 
     $data = json_decode($response, true);
@@ -29,16 +29,21 @@ class apiActions extends myActions
       $coreId = !empty($data['id']) ? $data['id'] : false;
       if ($coreId)
       {
-        $task = TaskTable::getInstance()->createQuery()
-          ->where('core_id = ?', $coreId)
-          ->orderBy('updated_at DESC')
-          ->fetchOne()
-        ;
-        if ($task)
+        if ($task = TaskTable::getInstance()->getByCoreId($coreId))
         {
           $task->setContentData($data);
           $task->save();
         }
+      }
+      else if (!empty($data['action']))
+      {
+        $task = new Task();
+        $task->fromArray(array(
+          'type'   => $data['action'],
+          'status' => 'run',
+        ));
+        $task->setContentData($data);
+        $task->save();
       }
     }
 
@@ -56,8 +61,16 @@ class apiActions extends myActions
   */
   public function executeLog(sfWebRequest $request)
   {
-    $file = sfConfig::get('sf_log_dir').'/api.log';
+    $count = $request->getParameter('count', 40);
+    $file = $this->getLogFilename();
 
-    $this->content = is_readable($file) ? file_get_contents($file) : false;
+    $this->content = is_readable($file) ? shell_exec("tail -n {$count} {$file}") : false;
+   }
+
+
+
+   protected function getLogFilename()
+   {
+     return sfConfig::get('sf_log_dir').'/api.log';
    }
 }

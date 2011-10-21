@@ -17,3 +17,12 @@ api:
 api_log:
   url:   /api/log
   param: { module: api, action: log }
+
+task:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Task
+    module:               task
+    prefix_path:          /task
+    column:               id
+    with_wildcard_routes: true

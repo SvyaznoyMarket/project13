@@ -35,8 +35,6 @@ $(document).ready(function(){
 		from = $('#f_price_from')
 		to   = $('#f_price_to')
 	}	
-	if( from )
-		var label = from.parent().find(':disabled')
 	if( from && from.val() ) {
 		$('.bigfilter dd:first').slideToggle(200)
 	}
@@ -48,15 +46,35 @@ $(document).ready(function(){
 		max: maxi,
 		values: [ from.val() ? from.val() : mini ,  to.val() ? to.val() : maxi ],
 		slide: function( event, ui ) {
-			label.val( ui.values[ 0 ] + " - " + ui.values[ 1 ] )
 			from.val( ui.values[ 0 ] )
 			to.val( ui.values[ 1 ] )
+		},
+		change: function() {
+			$('.product_filter-block').trigger('preview')
 		}
 	})
-	if ( label && label.length ) 
-		label.val( $( "#slider-range1" ).slider( "values", 0 ) +
-		" - " + $( "#slider-range1" ).slider( "values", 1 ) )
+	if ( from && to ) {
+		from.val( $( "#slider-range1" ).slider( "values", 0 ) )
+		to.val( $( "#slider-range1" ).slider( "values", 1 ) )
+		from.change( function(){
+			from.val( from.val().replace(/\D/g,'') )
+			if( from.val() > $( "#slider-range1" ).slider( "values", 1 ) ) {
+				$( "#slider-range1" ).slider( "values", 1 , from.val()*1 + 10 )
+				to.val( from.val()*1 + 10 )
+			}
+			$( "#slider-range1" ).slider( "values", 0 , from.val() )
+			
+		})
+		to.change( function(){
+			to.val( to.val().replace(/\D/g,'') )
+			if( parseInt(to.val()) < $( "#slider-range1" ).slider( "values", 0 ) ) {
+				$( "#slider-range1" ).slider( "values", 0 , to.val()*1- 10 )
+				from.val( to.val()*1 - 10 )
+			}			
+			$( "#slider-range1" ).slider( "values", 1 , to.val() )
+		})
 
+	}
 
 // TODO Rating
     jQuery(this).find('.ratingbox A').hover(function(){
