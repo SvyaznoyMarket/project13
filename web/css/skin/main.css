@@ -76,7 +76,7 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .pb5 {padding-bottom:5px}
 
 .searchbox {float:right; position:relative; width:336px; height:66px; padding:15px 0 0 27px; background:url(img/bg_main.png) no-repeat -677px -108px}
-.searchbox .text {float:left; width:236px; height:36px; line-height:36px; padding:0; border:0; background:none; font-size:14px; color:#fff; margin-right:12px}
+.searchbox .text {float:left; width:236px; height:36px; line-height:36px; padding:0; border:0; background:none; font-size:14px; color:#fff; margin-right:12px; outline:none}
 .searchbutton {float:left; width:45px; height:36px; border:0; background:none; text-indent:-10000px; cursor:pointer}
 
 .links {float:right; padding:0 40px 0 0}

@@ -165,7 +165,9 @@ class guardActions extends myActions
 			return $this->renderJson(array('success' => true));
 		}
 		return $this->renderJson(array('success' => false));
-    }
+    } else {
+		
+	}
   }
 
   /**

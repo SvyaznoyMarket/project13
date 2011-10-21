@@ -2,23 +2,23 @@
 <div class="footer">
   <div class="bottommenu">
     <dl>
-      <dt><a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">Где выход? Enter - это выход.</a></dt>
+      <dt><a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>"><strong>О проекте</strong></a></dt>
       <dd>Наша миссия: дарить время для</dd>
       <dd>настоящего. Честно. С любовью.</dd>
       <dd>Как для себя.</dd>
     </dl>
     <dl>
-      <dt><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></dt>
+      <dt><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>"><strong>Помощь покупателю</strong></a></dt>
       <dd><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Как сделать заказ</a></dd>
       <dd><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>">Как получить заказ</a></dd>
       <dd><a href="<?php echo url_for('default_show', array('page' => 'how_pay',)) ?>">Как оплатить заказ</a></dd>
     </dl>
     <dl>
-      <dt><a href="#">F1 сервис</a></dt>
+      <dt><a href="#<?php //echo url_for('service_category') ?>"><strong>F1 сервис</strong></a></dt>
       <dd><a herf="#"><img src="/images/banners/f1_footer.jpg" alt="F1 услуги" width="209" height="46"></img></a></dd>
     </dl>
     <dl class="next">
-      <dt>Контакт cENTER</dt>
+      <dt><strong>Контакт cENTER</strong></dt>
       <dd><strong class="font16">8 (800) 700 00 09</strong></dd>
       <dd>Звонок бесплатный.<br />Радость в подарок :)</dd>
     </dl>
@@ -40,6 +40,8 @@
 <?php endif ?>
   <div class="footerbottom">
     <div class="copy">
+      &copy; &laquo;Enter&raquo; 2011. Все права защищены. Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br /><a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a>
+      <?php if (false): ?>
       &copy; &laquo;Enter&raquo; 2002-2011. Все права защищены.<br />
       Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.
       <div>
@@ -47,6 +49,7 @@
         <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи в интернет-магазине</a>
         <b><i class="mistakeimg"></i><a href="" class="orange">сообщить!</a></b>
       </div>
+      <?php endif ?>
     </div>
     <?php if (false): ?>
     <div class="counter">

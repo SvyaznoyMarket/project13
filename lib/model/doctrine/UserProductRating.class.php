@@ -12,30 +12,36 @@
  */
 class UserProductRating extends BaseUserProductRating
 {
-  public function postSave($event)
-  {
-    $rating = $this->getTable()->createBaseQuery()
-      ->select('AVG(userProductRating.value) AS rating')
-      ->addWhere('userProductRating.product_id = ?', $event->getInvoker()->product_id)
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-      ->fetchOne()
-    ;
+	public function exportToCore()
+	{
+		$data = parent::exportToCore();
 
-    /*
-    $q = ProductTable::getInstance()->createBaseQuery();
-    $q->update('Product product')
-      ->set('product.rating', '?', $rating)
-      ->addWhere('product.id = ?', $event->getInvoker()->product_id)
-      ->execute()
-    ;
-    */
-    $product = ProductTable::getInstance()->getById($event->getInvoker()->product_id, array('select' => 'product.id, product.rating'));
-    if ($product)
-    {
-      $product->rating = $rating;
-      $product->save();
-    }
+		$data['user_id'] = $this->User->core_id;
+		$data['product_id'] = $this->Product->core_id;
+		//$data['property_id'] = $this->Property->core_id;
+		$data['criterion_id'] = $this->Property->core_id;
+		$data['ip'] = $_SERVER['REMOTE_ADDR'];
+		//$data['ip'] = sfContext::getInstance()->getUser()->getIp();
 
-    parent::postSave($event);
-  }
+		return $data;
+	}
+	
+//  public function postSave($event)
+//  {
+//    $rating = $this->getTable()->createBaseQuery()
+//      ->select('AVG(userProductRating.value) AS rating')
+//      ->addWhere('userProductRating.product_id = ?', $event->getInvoker()->product_id)
+//      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+//      ->fetchOne()
+//    ;
+//
+//    $product = ProductTable::getInstance()->getById($event->getInvoker()->product_id, array('select' => 'product.id, product.rating'));
+//    if ($product)
+//    {
+//      $product->rating = $rating;
+//      $product->save();
+//    }
+//
+//    parent::postSave($event);
+//  }
 }
