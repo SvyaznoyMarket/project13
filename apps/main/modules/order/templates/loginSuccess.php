@@ -12,7 +12,7 @@
         <ul class="steplist steplist2">
             <li><a href="<?php echo url_for('order_login') ?>"><span>Шаг 1</span>Данные<br />покупателя</a></li>
             <li><span>Шаг 2</span>Способ доставки<br />и оплаты</li>
-            <li><span>Шаг 3</span>Подтверждение<br />заказа</li>
+            <li class="last"><span>Шаг 3</span>Подтверждение<br />заказа</li>
         </ul>
 <?php end_slot() ?>
 
