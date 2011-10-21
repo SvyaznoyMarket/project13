@@ -80,8 +80,10 @@ class productCategoryComponents extends myComponents
       //генерируем массив количеств разделов
       foreach($result as $i => $cat){
           foreach($cat as $c){
-              if (!isset($coreIdToId[ $c['core_parent_id'] ]) || !isset($c['core_parent_id'])) continue;
-              if (!isset($countResult[$i][ $coreIdToId[ $c['core_parent_id'] ] ])) $countResult[$i][ $coreIdToId[ $c['core_parent_id'] ] ] = 1;
+              #echo $c['name'].'====';
+              if (isset($c['id']) && !isset($countResult[$i][ $c['id'] ]) && $c['level']==1) $countResult[$i][ $c['id'] ] = 0;
+           //   if (!isset($coreIdToId[ $c['core_parent_id'] ]) || !isset($c['core_parent_id'])) continue;
+              if (!isset($countResult[$i][ $coreIdToId[ $c['core_parent_id'] ] ]) && isset($c['core_parent_id']) && isset($coreIdToId[ $c['core_parent_id'] ]) ) $countResult[$i][ $coreIdToId[ $c['core_parent_id'] ] ] = 1;
               else $countResult[$i][ $coreIdToId[ $c['core_parent_id'] ] ]++;
           }
       }
@@ -152,7 +154,8 @@ class productCategoryComponents extends myComponents
                  $fullColumnNum = 4;        //количество колонок
                  $avrHeight = 0;
                  foreach($mainCatList as $num) $avrHeight += $num;
-                 $avrHeight = round($avrHeight/4);   //средняя (идеальная) высота колонки
+                 //чуть увеличим среднее, чтоб в последней колонке не собиралось много элементов
+                 $avrHeight = round($avrHeight/4); // + $avrHeight/4/100*10);   //средняя (идеальная) высота колонки
                  #echo $avrHeight .'   = '.$mainCatId.'--$avrHeight<br>';
                  
                  $minHeight = $avrHeight - $avrHeight/100*30;   //максимальная -критичная высота. Отклонение 30%
@@ -165,6 +168,7 @@ class productCategoryComponents extends myComponents
                  //
                  //print_r($mainCatList);
                  //проходим по колонкам
+                 unset($mainCatList['']);
                  for ($columnNum=0; $columnNum<$fullColumnNum; $columnNum++){
                      if (count($mainCatList)==0) break;
                      
@@ -172,6 +176,7 @@ class productCategoryComponents extends myComponents
                      if ($useFierst){
                          $currentMaxId = $useFierst;
                          $useFierst = 0;
+                         $writtenNum = $mainCatList[ $currentMaxId ] - 1;
                      }
                      else{                         
                          //выбираем самую длинную на данный момент категорию
@@ -183,29 +188,30 @@ class productCategoryComponents extends myComponents
                                  $currentMaxId = $id;
                              }
                          }
+                         $writtenNum = $mainCatList[ $currentMaxId ];
                      }
-                     $writtenNum = $mainCatList[ $currentMaxId ];
                      //если нельзя делать такую длинную колонку - разрежем
-                     if ($writtenNum>$maxHeight){ // && ($writtenNum-$maxHeight)>1){   
+                     if ($writtenNum>$maxHeight){ // && ($writtenNum-$maxHeight)>1){ 
                          $writtenNum = $avrHeight;
                          $mainCatList[ $currentMaxId ] = $writtenNum;
                          $useFierst = $currentMaxId;
                          //записываем самую длинную, как самую первую в колонке
                          $colomnsArr[$mainCatId][$columnNum][] = array('id' => $currentMaxId,
-                                                                       'num' => $writtenNum);  
+                                                                       'num' => $writtenNum);
+                        // $writtenNum = $mainCatList[ $currentMaxId ] - $writtenNum;
                          continue;  //уходим к след. колонке
                      }
                      else{
                          unset($mainCatList[ $currentMaxId ]);    //удаляем элемент из общего списка - у него уже есть место
                          //записываем самую длинную, как самую первую в колонке
                          $colomnsArr[$mainCatId][$columnNum][] = array('id' => $currentMaxId,
-                                                                       'num' => $writtenNum);                                                    
+                                                                       'num' => $writtenNum);                                                                             
                      }
  
                      
                      //слудующий шаг. оцениваем, на сколько заполнилась колонка
                      //длинна больше среднего - точно закончили с этой колонкой
-                     if ($writtenNum>$avrHeight) continue;
+                     if ($writtenNum>=$avrHeight) continue;
                      //длинна меньше среднего - поищем что-либо
                      else{
                          //сколько максимум в эту колонку можно дописать строк
@@ -216,6 +222,7 @@ class productCategoryComponents extends myComponents
                          $goodId = 0;
                          $ratherGoodId = 0;
                          foreach($mainCatList as $id => $num){
+                             if ($num==0) continue;
                              //идеально!
                              if ($num<=$freePlace){
                                  $goodId = $id;
@@ -226,7 +233,8 @@ class productCategoryComponents extends myComponents
                                  $ratherGoodId = $id;
                              }
                          }   
-                         if (!$goodId) $goodId = $ratherGoodId;
+                         if (!$goodId)
+                             $goodId = $ratherGoodId;
                          //больше нечего добавить в эту колонку. 
                          if (!$goodId) continue;                         
                          //добавляем найденый элемент в колонку
@@ -236,6 +244,11 @@ class productCategoryComponents extends myComponents
                          
                      }
                  }
+                 #print_r($mainCatList);
+                 if (count($mainCatList))
+                 foreach($mainCatList as $catId => $catNum)    
+                     $colomnsArr[$mainCatId][3][] = array('id' => $catId,
+                                                                   'num' => $catNum);   
                     
               //   break; 
                    
@@ -246,12 +259,13 @@ class productCategoryComponents extends myComponents
       
       /*
       echo '<pre>';
-      print_r($catTreeTmp);
-      print_r($catTree);
-      print_r($countResult);
-      #print_r($colomnsArr);
+      #print_r($catTreeTmp);
+      #print_r($catTree);
+      #print_r($countResult);
+      print_r($colomnsArr);
       echo '</pre>';
-      exit();   */
+      #exit();   */
+      
        
 
       
@@ -289,11 +303,11 @@ class productCategoryComponents extends myComponents
     }
 
     $item = array(
-      'name'              => (string)$this->productCategory,
-      'url'               => url_for('productCatalog_category', $this->productCategory),
-	    'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
-      'product_quantity'  => $this->productCategory->countProduct(),
-	    'links'             => $this->productCategory->getLink(),
+      'name'             => (string)$this->productCategory,
+      'url'              => url_for('productCatalog_category', $this->productCategory),
+	  'carousel_data_url'=> url_for('productCatalog_carousel', $this->productCategory),
+      'product_quantity' => $this->productCategory->countProduct(),
+	  'links'            => $this->productCategory->getLink(),
     );
 
     if ('carousel' == $this->view)
@@ -314,8 +328,7 @@ class productCategoryComponents extends myComponents
         return sfView::NONE;
       }
 
-      $product = $this->productCategory->getPreviewProduct();
-      $item['photo'] = $this->productCategory->getPhotoUrl();//$product ? $product->main_photo_url : null;
+      $item['product'] = $this->productCategory->getPreviewProduct();
     }
 
     $this->setVar('item', $item, true);
