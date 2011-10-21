@@ -292,6 +292,7 @@ class Core
     if (isset($response['error']))
     {
       $this->error = array($response['error']['code'] => $response['error']['message'], );
+      $this->error['detail'] = $response['error']['detail'];
       $response = false;
     }
 
