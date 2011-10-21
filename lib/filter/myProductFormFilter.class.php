@@ -19,12 +19,20 @@ class myProductFormFilter extends sfFormFilter
     $productTable = ProductTable::getInstance();
 
     // виджет цены
+    $value = array(
+      'min' => (int)$productTable->getMinPriceByCategory($productCategory),
+      'max' => (int)$productTable->getMaxPriceByCategory($productCategory),
+    );
     $this->widgetSchema['price'] = $this->getWidgetRange(null, array(
-      'from' => (int)$productTable->getMinPriceByCategory($productCategory),
-      'to'   => (int)$productTable->getMaxPriceByCategory($productCategory),
+      'from' => $value['min'],
+      'to'   => $value['max'],
     ));
     $this->widgetSchema['price']->setLabel('Цена');
     $this->validatorSchema['price'] = new sfValidatorPass();
+    $this->setDefault('price', array(
+      'from' => $value['min'],
+      'to'   => $value['max'],
+    ));
 
     // виджет производителя
     $choices = CreatorTable::getInstance()
@@ -120,13 +128,16 @@ class myProductFormFilter extends sfFormFilter
       'value_from' => $value['from'],
       'value_to'   => $value['to'],
       'template'   => ''
-        .'<div class="pb5"><input type="text" style="height:10px; padding:0; line-height:10px; border:0; background:none; font-size:10px; color:#8a8a8a"  disabled="disabled" /> %value_from% %value_to%</div>'
+        .'<div class="pb5" style="margin-left:15px;">%value_from% - %value_to%</div>'
         .'<div class="sliderbox">'
           .'<div id="slider-range1" class="slider-range"></div>'
           .'<span class="fl">'.$value['from'].'</span>'
           .'<span class="fr">'.$value['to'].'</span>'
         .'</div>'
         .'<div class="clear"></div>'
+    ), array(
+      'class' => 'text',
+      'style' => 'display: inline; width: 60px;',
     ));
   }
 

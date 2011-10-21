@@ -1,2 +1,5 @@
 all:
   layout: false
+
+logSuccess:
+  layout: layout

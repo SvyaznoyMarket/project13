@@ -10,13 +10,13 @@
     <li><a href="<?php echo $link['url'] ?>"><?php echo $link['name'] ?></a></li>
 	<?php endforeach ?>
   </ul>
-  <div class="ar gray"><a href="<?php echo $item['url'] ?>" class="underline">Товаров</a> (<?php echo $item['product_quantity'] ?>)</div>
+  <div class="font11"><a href="<?php echo $item['url'] ?>" class="underline gray"><?php echo $item['product_quantity'] ?> товаров</a></div>
 
   <!-- Hover -->
   <div class="boxhover">
     <b class="rt"></b><b class="lb"></b>
     <div class="rb">
-      <div class="lt">
+      <div class="lt" data-url="<?php echo $item['url'] ?>">
 
         <div class="photo">
           <a href="<?php echo $item['url'] ?>"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></a>
@@ -28,7 +28,7 @@
 		  <li><a href="<?php echo $link['url'] ?>"><?php echo $link['name'] ?></a></li>
 		  <?php endforeach ?>
         </ul>
-        <div class="ar gray"><a href="<?php echo $item['url'] ?>" class="underline">Товаров</a> (<?php echo $item['product_quantity'] ?>)</div>
+        <div class="font11"><a href="<?php echo $item['url'] ?>" class="underline gray"><?php echo $item['product_quantity'] ?> товаров</a></div>
 
       </div>
     </div>

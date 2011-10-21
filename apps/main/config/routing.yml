@@ -637,6 +637,19 @@ search:
   param:    { module: search, action: index }
 
 
+
+#
+# tag
+tag:
+  url:      /tags/
+  param:    { module: tag, action: index }
+#
+# tag show
+tag_show:
+  url:      /tags/:tag
+  param:    { module: tag, action: show }
+
+
 #
 # test core module
 core_test:

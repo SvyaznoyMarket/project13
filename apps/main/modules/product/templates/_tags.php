@@ -1,6 +1,8 @@
-    <div class="pb25"><strong>Теги:</strong>
-<?php $i = 0; foreach ($list as $tag): $i++; if ($i > 6) break; ?>
-      <a href="<?php echo url_for('search', array('q' => $tag->name, )) ?>" class="underline" rel="nofollow"><?php echo $tag->name ?></a><?php echo $i == count($list) ? ', ' : '' ?>
-<?php endforeach ?>
+<div class="pb25">
+
+  <strong>Теги:</strong>
+  <?php $i = 0; foreach ($list as $item): $i++; if ($i > $limit) break; ?>
+    <a href="<?php echo $item['url'] ?>" class="underline" rel="nofollow"><?php echo $item['name'] ?></a><?php echo $i < $limit ? ', ' : '' ?>
+  <?php endforeach ?>
 
 </div>

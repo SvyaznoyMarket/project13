@@ -6,7 +6,7 @@ BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,hel
 .allpageinner {padding-bottom:331px; position:relative}
 .buyingpage {padding-bottom:96px}
 *+ html .allpageinner {float:left; width:100%} /* for IE7 */
-.footer {width:920px; height:311px; margin:-311px auto 0 auto; position:relative}
+.footer {width:920px; height:261px; margin:-261px auto 0 auto; position:relative}
 .lowfooter {height:66px; margin:-66px auto 0 auto}
 
 
@@ -639,6 +639,7 @@ border-radius:5px;
 .previewlist LI {float:left; width:48px; height:48px; margin:0 6px 6px 0; position:relative}
 .previewlist B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(/css/skin/img/cover.png) no-repeat 0 -53px}
 .previewlist B:hover, .previewlist B.current {background-position:0 0; cursor:pointer}
+#bigpopup .previewlist .viewstock B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(/css/skin/img/cover_media.png) no-repeat 0 -53px}
 .previewlist A {display:block; width:48px; height:48px; cursor:pointer; text-indent:-10000px}
 .previewlist .axonometric {background:url(/css/skin/img/bg_inner.png) no-repeat -830px -238px}
 .previewlist .videolink {background:url(/css/skin/img/bg_inner.png) no-repeat -778px -238px}
@@ -861,9 +862,9 @@ box-shadow:0 0 7px #616161;
 .photoview {margin:0 80px 0 200px; height:724px; position:relative}
 .photobox {float:left; width:100%; height:100%; overflow:hidden; position:relative}
 .photobox IMG {position:relative}
-.scrollbox {display:none; position:absolute; z-index:10; bottom:0; left:50%; width:354px; height:71px; margin-left:-183px; background:url(/css/skin/podlogka.png) no-repeat 0 0}
+.scrollbox {display:none; position:absolute; z-index:10; bottom:0; left:50%; width:354px; height:71px; margin-left:-183px; background:url(/css/skin/img/podlogka.png) no-repeat 0 0}
 .scrollbox DIV {width:176px; height:54px; margin:10px 0 0 94px; position:relative}
-.scrollbox DIV B {position:absolute; left:110px; top:28px; display:block; width:22px; height:22px; background:url(/css/skin/toroll.png) no-repeat; cursor:pointer}
+.scrollbox DIV B {position:absolute; left:110px; top:28px; display:block; width:22px; height:22px; background:url(/css/skin/img/toroll.png) no-repeat; cursor:pointer}
 
 .videoview {margin:0 26px 0 220px; padding-top:30px; height:694px; position:relative}
 .videoview .zoom {margin:0}
@@ -1153,17 +1154,18 @@ border-radius: 5px;
 .tearmlist DD DIV {float:right; width:870px}
 
 
-.plug {width:243px; padding-left:404px; padding-right:50px; margin:0 -6px 40px -6px; font-size:14px}
+.plug {width:303px; padding-left:344px; padding-right:50px; margin:0 -6px 20px -6px; font-size:14px}
 .plug H2 {font-size:24px; font-weight:bold}
-.plug1 {height:188px; padding-top:65px; background:url(/images/plug1.jpg) no-repeat 0 0; color:#bea1cf}
-.plug2 {height:188px; padding-top:65px; background:url(/images/plug2.jpg) no-repeat 0 0; color:#ffdd61}
-.plug3 {height:196px; padding-top:57px; background:url(/images/plug3.jpg) no-repeat 0 0; color:#e28bab}
-.plug4 {height:188px; padding-top:65px; background:url(/images/plug4.jpg) no-repeat 0 0; color:#ddbc93}
-.plug5 {height:203px; padding-top:50px; background:url(/images/plug5.jpg) no-repeat 0 0; color:#ffce7f}
-.plug6 {height:190px; padding-top:63px; background:url(/images/plug6.jpg) no-repeat 0 0; color:#d7e38f}
-.plug7 {height:202px; padding-top:50px; background:url(/images/plug7.jpg) no-repeat 0 0; color:#5dbacb}
-.plug8 {height:183px; padding-top:70px; background:url(/images/plug8.jpg) no-repeat 0 0; color:#e37e84}
-.plug9 {height:188px; padding-top:65px; background:url(/images/plug1.jpg) no-repeat 0 0; color:#bea1cf}
+.plug1 {height:175px; padding-top:35px; background:url(/images/plug1.jpg) no-repeat 0 0;}
+.plug2 {height:175px; padding-top:35px; background:url(/images/plug2.jpg) no-repeat 0 0;}
+.plug3 {height:183px; padding-top:27px; background:url(/images/plug3.jpg) no-repeat 0 0;}
+.plug4 {height:175px; padding-top:35px; background:url(/images/plug4.jpg) no-repeat 0 0;}
+.plug5 {height:190px; padding-top:20px; background:url(/images/plug5.jpg) no-repeat 0 0;}
+.plug6 {height:177px; padding-top:33px; background:url(/images/plug6.jpg) no-repeat 0 0;}
+.plug7 {height:170px; padding-top:40px; background:url(/images/plug7.jpg) no-repeat 0 0;}
+.plug8 {height:170px; padding-top:40px; background:url(/images/plug8.jpg) no-repeat 0 0;}
+.plug9 {height:175px; padding-top:35px; background:url(/images/plug9.jpg) no-repeat 0 0;}
 
 .fm{text-align:left;}
 .hf{display:none;}
+#plus10{cursor:pointer;}

@@ -15,11 +15,11 @@ foreach ($p3d as $p3d_obj)
   product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
   product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
 </script>
-<div class="goodsphoto"><!--i class="bestseller"></i--><a href="#" onclick="return false"><img src="<?php echo $product->getMainPhotoUrl(3) ?>" alt="" width="500" height="500" title="" /></a></div>
+<div class="goodsphoto"><!--i class="bestseller"></i--><a href="<?php echo $product->getMainPhotoUrl(4)  ?>" class="viewme" ref="image" onclick="return false"><img src="<?php echo $product->getMainPhotoUrl(3) ?>" alt="" width="500" height="500" title="" /></a></div>
 <div style="display:none;" id="stock">
   <!-- list of images 500*500 for preview -->
   <?php foreach ($photos as $i => $photo): ?>
-    <img src="<?php echo $urls[4].$photo->resource ?>" alt="" ref="photo<?php echo $i ?>" width="500" height="500" title="" />
+    <img src="<?php echo $urls[3].$photo->resource ?>" alt="" data-url="<?php echo $urls[4].$photo->resource ?>" ref="photo<?php echo $i ?>" width="500" height="500" title="" />
 <?php endforeach ?>
 </div>
 
@@ -55,7 +55,7 @@ foreach ($p3d as $p3d_obj)
       $('#watch-cnt').hide();
     });
   </script>
-  <div class="font14 pb15"><?php echo $item['product']->tagline ?></div>
+  <div class="font14 pb15"><?php echo $item['product']->preview ?></div>
   <div class="clear"></div>
 
   <div class="fl pb15">
@@ -154,34 +154,47 @@ foreach ($p3d as $p3d_obj)
   <?php endif ?>
     </ul>
   </div>
+<div class="clear"></div>
+<div class="mb15"></div>
 <?php endif ?>
 <!-- /Photo video -->
-<div class="clear"></div>
+
+<?php if (!empty($item['product']->description)): ?>
+    <!-- Information -->
+    <h2 class="bold">Информация о товаре</h2>
+    <div class="line pb15"></div>
+    <ul class="pb10">
+      <?php echo $item['product']->description ?>
+    </ul>
+    <!-- /Information  -->
+    <div class="clear"></div>
+<?php endif ?>
 
 <!-- Description -->
 <h2 class="bold">Характеристики</h2>
 <div class="line pb25"></div>
 
-<div class="descriptionlist">
-  <?php include_component('product', 'property_grouped', array('product' => $product, 'view' => 'inlist', )) ?>
-</div>
-<div class="pb25"><a href="" class="more">Все характеристики</a></div>
+<?php if (false && ($product->countParameter('show') > 5) && ($product->countParameter('list') > 0)): ?>
+  <div class="descriptionlist">
+    <?php include_component('product', 'property_grouped', array('product' => $product, 'view' => 'inlist')) ?>
+  </div>
+<?php if (false): ?>
+  <div class="pb25"><a href="#" id="toggler" class="more">Все характеристики</a></div>
+<?php endif ?>
+  <div class="descriptionlist second" style="display: none;">
+  <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
+  </div>
 
-<div class="descriptionlist" style="display: none;">
-<?php include_component('product', 'property_grouped', array('product' => $product)) ?>
-</div>
+<?php else: ?>
+  <div class="descriptionlist">
+  <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
+  </div>
 
+<?php endif ?>
 <!-- /Description -->
-    <div class="clear"></div>
 
-    <!-- Information -->
-    <h2 class="bold">Информация о товаре</h2>
-    <div class="line pb15"></div>
-    <ul class="pb10">
-      <?php echo $item['product']->description?>
-    </ul>
-    <?php include_component('product', 'tags', array('product' => $product, )) ?>
-    <!-- /Information  -->
+    <?php include_component('product', 'tags', array('product' => $product)) ?>
+
 
 <!-- Media -->
 <div class="popup mediablock" id="bigpopup"><!-- IVN block #bigpopup is media gallery popup  -->
@@ -200,7 +213,7 @@ foreach ($p3d as $p3d_obj)
       <div class="logobox">Enter связной</div>
       <div class="pb5"><?php echo $item['product']->name ?></div>
       <div class="pb5">
-<?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?>
+      <?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?>
       </div>
       <!--div class="pb40"><input type="button" class="button yellowbutton" value="Купить" /></div-->
 
@@ -211,7 +224,7 @@ foreach ($p3d as $p3d_obj)
         <?php endforeach ?>
         <?php if (count($p3d) > 0): ?>
           <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
-<?php endif ?>
+        <?php endif ?>
       </ul>
     </div>
 

@@ -103,4 +103,27 @@ class ProductTypeTable extends myDoctrineTable
 
     return $record;
   }
+
+  public function getListByTag(Tag $tag, array $params = array())
+  {
+    $this->applyDefaultParameters($params, array(
+      'with_productCount' => false,
+    ));
+
+    $q = $this->createBaseQuery($params);
+
+    $this->setQueryParameters($q, $params);
+
+    $q->leftJoin('productType.Product product WITH product.is_instock = 1')
+      ->leftJoin('product.TagRelation tagProductRelation')
+      ->addWhere('tagProductRelation.tag_id = ?', $tag->id)
+    ;
+
+    if ($params['with_productCount'])
+    {
+      $q->addSelect('COUNT(product.id) AS _product_count');
+    }
+
+    return $q->execute();
+  }
 }

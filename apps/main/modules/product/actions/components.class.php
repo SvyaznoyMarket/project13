@@ -175,8 +175,8 @@ class productComponents extends myComponents
       foreach ($parameterGroup->getParameter() as $parameter)
       {
         $value = $parameter->getValue();
-        if (empty($value)) continue;
-        if ('inlist' == $this->view && !$parameter->isViewList()) continue;
+        if (empty($value)) continue; // TODO: remove
+        if (('inlist' == $this->view) && !$parameter->isViewList()) continue;
 
         $parameters[] = array(
           'name'        => $parameter->getName(),
@@ -297,22 +297,57 @@ class productComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
-
+  /**
+   * Executes tags component
+   *
+   */
   public function executeTags()
   {
-    if (!isset($this->product))
+    if (!$this->product instanceof Product)
     {
       return sfView::NONE;
     }
 
-    $list = TagTable::getInstance()->getByProduct($this->product->id);
-    if (!count($list))
+    $list = array();
+    foreach (TagTable::getInstance()->getByProduct($this->product->id) as $tag)
+    {
+      $list[] = array(
+        'token' => $tag->token,
+        'url'   => url_for('tag_show', array('tag' => $tag->token)),
+        'name'  => $tag->name,
+      );
+    }
+
+    $this->count = count($list);
+    if (0 == $this->count)
     {
       return sfView::NONE;
     }
 
     $this->setVar('list', $list);
+    $this->limit = 6;
   }
+  /**
+   * Executes filter_productType component
+   *
+   * @param myDoctrineCollection $productTypeList Коллекция типов товаров
+   */
+  public function executeFilter_productType()
+  {
+    $list = array();
 
+    foreach ($this->productTypeList as $productType)
+    {
+      $list[] = array(
+        'name'     => (string)$productType,
+        'token'    => $productType->id,
+        'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
+        'value'    => $productType->id,
+        'selected' => isset($productType->_selected) ? $productType->_selected : false,
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
 }
 

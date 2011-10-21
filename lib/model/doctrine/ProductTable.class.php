@@ -31,6 +31,7 @@ class ProductTable extends myDoctrineTable
       'rating_count'  => 'rating_quantity',
       'score'         => 'score',
       'media_image'   => 'main_photo',
+      'prefix'        => 'prefix',
     );
   }
 
@@ -149,13 +150,6 @@ class ProductTable extends myDoctrineTable
     return $record;
   }
 
-  public function getByToken($token, array $params = array())
-  {
-    $id = $this->getIdBy('token', $token);
-
-    return $this->getById($id);
-  }
-
   public function getForRoute(array $params)
   {
     $id = isset($params['product']) ? $this->getIdBy('token', $params['product']) : null;
@@ -204,6 +198,8 @@ class ProductTable extends myDoctrineTable
       'creator'    => false,
       'parameters' => array(),
       'price'      => array('from' => null, 'to' => null),
+      'tag'        => false,
+      'type'       => false,
     ), $filter);
 
     // категория
@@ -299,8 +295,38 @@ class ProductTable extends myDoctrineTable
         }
       }
     }
+
+    // теги
+    if ($filter['tag'])
+    {
+      if (!$q->hasAliasDeclaration('tagRelation'))
+      {
+        $q->innerJoin('product.TagRelation tagRelation');
+      }
+
+      if (is_array($filter['tag']))
+      {
+        $q->andWhereIn('tagRelation.tag_id', $filter['tag']);
+      }
+      else {
+        $q->addWhere('tagRelation.tag_id = ?', ($filter['tag'] instanceof Tag) ? $filter['tag']->id : $filter['tag']);
+      }
+    }
+
+    // типы
+    if ($filter['type'])
+    {
+      if (is_array($filter['type']))
+      {
+        $q->andWhereIn('product.type_id', $filter['type']);
+      }
+      else {
+        $q->addWhere('product.type_id = ?', ($filter['type'] instanceof ProductType) ? $filter['type']->id : $filter['type']);
+      }
+    }
   }
 
+  // TODO: удалить
   public function setQueryForTagFilter(myDoctrineQuery $q, array $filter, array $params = array())
   {
     $filter = myToolkit::arrayDeepMerge(array(
@@ -394,13 +420,12 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $ids = $category->getDescendantIds();
-    $ids[] = $category->id;
-
-    $q->select('MIN(product.price) as price_min')
-      ->innerJoin('product.Category category')
-      ->whereIn('category.id', $ids)
-      //->addWhere('product.category_id = ?', $category->id)
+    $q->select('MIN(productPrice.price) as price_min')
+      ->innerJoin('product.CategoryRelation productCategoryProductRelation')
+      ->innerJoin('product.ProductPrice productPrice')
+      ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
+      ->addWhere('productPrice.price > ?', 0)
+      ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
@@ -413,14 +438,12 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $ids = $category->getDescendantIds();
-    $ids[] = $category->id;
-
-    $q->select('MAX(productPrice.price) as price_max')
-      ->innerJoin('product.CategoryRelation categoryRelation')
+    $q->select('MAX(productPrice.price) as price_min')
+      ->innerJoin('product.CategoryRelation productCategoryProductRelation')
       ->innerJoin('product.ProductPrice productPrice')
-      ->whereIn('categoryRelation.product_category_id', $ids)
-      //->addWhere('product.category_id = ?', $category->id)
+      ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
+      ->addWhere('productPrice.price > ?', 0)
+      ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
@@ -453,11 +476,9 @@ class ProductTable extends myDoctrineTable
     }
     else
     {
-      $ids = $category->getTable()->getDescendatIds($category, array('with_ancestor' => true, ));
-      //$ids[] = $category->id;
-
+      $ids = $category->getTable()->getDescendatIds($category, array('with_parent' => true));
       $q->innerJoin('product.Category category')
-          ->whereIn('category.id', $ids)
+         ->whereIn('category.id', $ids)
       ;
     }
 

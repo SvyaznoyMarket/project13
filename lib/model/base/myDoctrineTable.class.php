@@ -38,14 +38,14 @@ class myDoctrineTable extends Doctrine_Table
       $record = $this->getById($id, $params);
       if ($record)
       {
-        $column = (isset($params['index'][$this->getQueryRootAlias()]) && $this->hasColumn($params['index'][$this->getQueryRootAlias()])) ? $params['index'][$this->getQueryRootAlias()] : false;
-        if (false === $column)
+        $index = (isset($params['index'][$this->getQueryRootAlias()]) && $this->hasColumn($params['index'][$this->getQueryRootAlias()])) ? $params['index'][$this->getQueryRootAlias()] : false;
+        if (false === $index)
         {
           $list[] = $record;
         }
         else
         {
-          $list[$record[$column]] = $record;
+          $list[$record[$index]] = $record;
         }
       }
     }
@@ -80,6 +80,13 @@ class myDoctrineTable extends Doctrine_Table
     ;
 
     return $q->fetchOne();
+  }
+
+  public function getByToken($token, array $params = array())
+  {
+    $id = $this->getIdBy('token', $token);
+
+    return $this->getById($id);
   }
 
   public function getIdsByQuery(Doctrine_Query $q)
@@ -187,6 +194,11 @@ class myDoctrineTable extends Doctrine_Table
     if (isset($params['limit']))
     {
       $q->limit($params['limit']);
+    }
+    // group by
+    if (isset($params['group']))
+    {
+      $q->groupBy($params['group']);
     }
     // index by
     /*

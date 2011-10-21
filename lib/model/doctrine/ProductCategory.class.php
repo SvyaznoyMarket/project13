@@ -92,9 +92,14 @@ class ProductCategory extends BaseProductCategory
     return $newFilter;
   }
 
-  public function getDescendantIds()
+  public function getDescendantIds(array $params = array())
   {
-    return $this->getTable()->getDescendatIds($this);
+    return $this->getTable()->getDescendatIds($this, $params);
+  }
+
+
+  public function getUrl(){
+      return '/catalog/' . $this->token;
   }
 
   public function getTagGroupByIdWithOrder(array $ids = array())
@@ -114,7 +119,12 @@ class ProductCategory extends BaseProductCategory
     return  $q->execute();
   }
 
-  public function getUrl(){
-      return '/catalog/' . $this->token;
+  public function getPhotoUrl($view = 0)
+  {
+    $urls = sfConfig::get('app_category_photo_url');
+
+    return $this->getPhoto() ? $urls[$view].$this->getPhoto() : null;
   }
+
+
 }

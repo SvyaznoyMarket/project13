@@ -17,11 +17,7 @@ class defaultActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->taskList = TaskTable::getInstance()->createQuery()
-      ->addWhere('(DATEDIFF(NOW(), created_at) <= 10) OR (status = ?)', 'run')
-      ->orderBy('priority ASC, updated_at DESC')
-      ->execute()
-    ;
+    $this->forward('task', 'index');
   }
  /**
   * Executes init action
@@ -42,6 +38,7 @@ class defaultActions extends myActions
       $task->setContentData(array_merge($response, array(
         'status'    => 'run',
         'prepared'  => array(), // массив моделей, таблицы которых подготовлены к загрузке данных
+        'made'      => array(), // массив моделей, которые уже сформированы полностью и в них нужно делать только update записей (для ProductCategory)
       )));
 
       $task->save();

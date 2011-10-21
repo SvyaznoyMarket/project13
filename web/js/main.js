@@ -35,8 +35,6 @@ $(document).ready(function(){
 		from = $('#f_price_from')
 		to   = $('#f_price_to')
 	}	
-	if( from )
-		var label = from.parent().find(':disabled')
 	if( from && from.val() ) {
 		$('.bigfilter dd:first').slideToggle(200)
 	}
@@ -48,15 +46,35 @@ $(document).ready(function(){
 		max: maxi,
 		values: [ from.val() ? from.val() : mini ,  to.val() ? to.val() : maxi ],
 		slide: function( event, ui ) {
-			label.val( ui.values[ 0 ] + " - " + ui.values[ 1 ] )
 			from.val( ui.values[ 0 ] )
 			to.val( ui.values[ 1 ] )
+		},
+		change: function() {
+			$('.product_filter-block').trigger('preview')
 		}
 	})
-	if ( label && label.length ) 
-		label.val( $( "#slider-range1" ).slider( "values", 0 ) +
-		" - " + $( "#slider-range1" ).slider( "values", 1 ) )
+	if ( from && to ) {
+		from.val( $( "#slider-range1" ).slider( "values", 0 ) )
+		to.val( $( "#slider-range1" ).slider( "values", 1 ) )
+		from.change( function(){
+			from.val( from.val().replace(/\D/g,'') )
+			if( from.val() > $( "#slider-range1" ).slider( "values", 1 ) ) {
+				$( "#slider-range1" ).slider( "values", 1 , from.val()*1 + 10 )
+				to.val( from.val()*1 + 10 )
+			}
+			$( "#slider-range1" ).slider( "values", 0 , from.val() )
+			
+		})
+		to.change( function(){
+			to.val( to.val().replace(/\D/g,'') )
+			if( parseInt(to.val()) < $( "#slider-range1" ).slider( "values", 0 ) ) {
+				$( "#slider-range1" ).slider( "values", 0 , to.val()*1- 10 )
+				from.val( to.val()*1 - 10 )
+			}			
+			$( "#slider-range1" ).slider( "values", 1 , to.val() )
+		})
 
+	}
 
 // TODO Rating
     jQuery(this).find('.ratingbox A').hover(function(){
@@ -108,7 +126,7 @@ $(document).ready(function(){
 				if(	$(self).data('run') ) {
 					var i = $(self).attr('class').replace(/\D+/,'')
 					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
-					if( punkt.find('dl').html().trim() != '' )
+					if( punkt.find('dl').html().replace(/\s/g,'') != '' )
 						punkt.show().find('.corner').css('left',corneroffsets[i-1])
 				}
 			}
@@ -137,8 +155,13 @@ $(document).ready(function(){
 	$('.extramenu').click( function(e){
 		e.stopPropagation()
 	})
-	/* ---- 	
-	if( $('.chequebottom ul').length ) {
+	/* ---- */ 
+	if( $('.error_list').length && $('.basketheader').length ) {
+		$.scrollTo( $('.error_list:first'), 300 )
+	}
+	/* bill typewriter */
+	
+	if( $('.chequebottom ul').length && ! $('.error_list').length ) {
 		$('.chequebottom li div').hide()
 		$('.chequebottom li strong').hide()
 		$('.chequebottom .total strong').hide()
@@ -158,7 +181,7 @@ $(document).ready(function(){
 
 		recF(0)
 
-	}*/
+	}
 	/* CART */
 	function printPrice ( val ) {
 	
@@ -382,6 +405,31 @@ $(document).ready(function(){
 	})
 		
 	/* ---- */
+	/* charachteristics */
+	if ( $('#toggler').length ) {
+		$('#toggler').toggle( function(){
+			$('.descriptionlist:first').slideUp()
+			$('.descriptionlist.second').slideDown()
+			$(this).html('Общие характеристики')
+		},  function(){
+			$('.descriptionlist.second').slideUp()
+			$('.descriptionlist:first').slideDown()			
+			$(this).html('Все характеристики')			
+		})
+	}
+	/* search tags */
+	if( $('#plus10').length ) {
+		if( $('#filter_product_type-form li').length < 10 )
+			$('#plus10').hide()
+		else
+			$('#plus10').html( 'еще '+ ($('#filter_product_type-form .hf').length % 10 + 1) +' из ' + $('#filter_product_type-form li').length )
+		$('#plus10').click( function(){
+			$('#filter_product_type-form .hf').slice(0,10).removeClass('hf')
+			if ( !$('#filter_product_type-form .hf').length ) 
+				$(this).parent().hide()
+			return false
+		})
+	}
 });
 
 
