@@ -151,6 +151,7 @@ class ProductCategoryTable extends myDoctrineTable
 
     return $this->createListByIds($ids, $params);*/
     $q = ProductCategoryTable::getInstance()->createBaseQuery();
+    $q->addWhere('productCategory.level < 3 and productCategory.level > 0');
 
     return $q->execute();
   }
