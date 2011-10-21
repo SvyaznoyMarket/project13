@@ -90,7 +90,6 @@ class ProductTable extends myDoctrineTable
 
     $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
     //$q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
-
     $record = $q->fetchOne();
     if (!$record)
     {
@@ -109,6 +108,7 @@ class ProductTable extends myDoctrineTable
       'view'           => $params['view'],
       'group_property' => $params['group_property'],
     ));
+myDebug::dump($record);
 
     if ($params['with_properties'])
     {
@@ -122,6 +122,7 @@ class ProductTable extends myDoctrineTable
         }
         $productPropertyRelationArray[$propertyRelation['property_id']][] = $propertyRelation;
       }
+myDebug::dump($productPropertyRelationArray);
 
       // тип товара
       foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
@@ -130,7 +131,7 @@ class ProductTable extends myDoctrineTable
 
         $record['Parameter'][] = new ProductParameter($propertyRelation, $productPropertyRelationArray[$propertyRelation['property_id']]);
       }
-
+myDebug::dump($record['Parameter']->toArray(false));
       // группировка параметров товара по группам
       if ($params['group_property'])
       {
