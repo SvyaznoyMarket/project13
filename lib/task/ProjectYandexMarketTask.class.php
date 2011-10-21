@@ -403,7 +403,7 @@ EOF;
                 $value = $offerInfo['Creator']['name'];
                 break;
             case 'model':
-                $value = $offerInfo['name'];
+                $value = trim( str_replace(array($offerInfo['prefix'],$offerInfo['Creator']['name']),'',$offerInfo['name']) );
                 break;
             case 'name':
                 $value = '';//$prodObject->getName();
