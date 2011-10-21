@@ -23,17 +23,17 @@ class cartComponents extends myComponents
     {
       $this->quantity = 1;
     }
-	
+
 	$this->disable = false;
 	if (!$this->product->is_instock) {
 		$this->disable = true;
 	}
 
     $cart = $this->getUser()->getCart();
-    if (!$this->product->is_insale)
+    /*if (!$this->product->is_insale)
     {
       return sfView::NONE;
-    }
+    }*/
 
     if ($cart->hasProduct($this->product->id))
     {
