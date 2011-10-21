@@ -506,7 +506,7 @@ border-radius:5px;
 
 
 
-.rating {width:150px; height:27px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin-bottom:10px}
+.ratingbig {width:150px; height:27px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin-bottom:10px}
 .ratingbox {width:150px; height:27px; background:url(/css/skin/img/stars.gif) repeat-x 0 0; position:relative}
 .ratingbox DIV.current {display:block; height:27px; background:url(/css/skin/img/stars.gif) repeat-x 0 -64px; position:absolute; text-indent:-9000px; z-index:1}
 .ratingbox DIV {float:left; text-indent:-90000px}

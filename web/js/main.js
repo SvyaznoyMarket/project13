@@ -76,8 +76,31 @@ $(document).ready(function(){
 
 	}
 
-// TODO Rating
-    jQuery(this).find('.ratingbox A').hover(function(){
+	/* Rating */
+	if( $('#rating').length ) {
+		var iscore = $('#rating').next().html().replace(/\D/g,'')
+		$('#rating span').remove()
+		$('#rating').raty({
+		  start: iscore,
+		  showHalf: true,
+		  path: '/css/skin/img/',
+		  starHalf: 'star_h.png',
+		  starOn: 'star_a.png',
+		  starOff: 'star_p.png',
+		  click: function( score ) {
+		  		console.info('score ',score)
+		  		$.getJSON( $('#rating').attr('data-url').replace('score', score ) , function(data){ 
+		  			console.info(data)
+		  			if( data.success === true && data.data.rating ) {
+		  				$.fn.raty.start( data.data.rating ,'#rating' )
+		  			}
+		  		})		  		
+		  		$.fn.raty.readOnly(true, '#rating')
+		  	}
+		})
+	}
+	/* --- */
+    $(this).find('.ratingbox A').hover(function(){
         $("#ratingresult").html(this.innerHTML)
         return false;
     });
