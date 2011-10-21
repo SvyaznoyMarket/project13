@@ -6,7 +6,7 @@ BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,hel
 .allpageinner {padding-bottom:331px; position:relative}
 .buyingpage {padding-bottom:96px}
 *+ html .allpageinner {float:left; width:100%} /* for IE7 */
-.footer {width:920px; height:311px; margin:-311px auto 0 auto; position:relative}
+.footer {width:920px; height:261px; margin:-261px auto 0 auto; position:relative}
 .lowfooter {height:66px; margin:-66px auto 0 auto}
 
 
@@ -1164,7 +1164,7 @@ border-radius: 5px;
 .plug6 {height:177px; padding-top:33px; background:url(/images/plug6.jpg) no-repeat 0 0;}
 .plug7 {height:170px; padding-top:40px; background:url(/images/plug7.jpg) no-repeat 0 0;}
 .plug8 {height:170px; padding-top:40px; background:url(/images/plug8.jpg) no-repeat 0 0;}
-.plug9 {height:175px; padding-top:35px; background:url(/images/plug1.jpg) no-repeat 0 0;}
+.plug9 {height:175px; padding-top:35px; background:url(/images/plug9.jpg) no-repeat 0 0;}
 
 .fm{text-align:left;}
 .hf{display:none;}
