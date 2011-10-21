@@ -85,14 +85,14 @@ foreach ($p3d as $p3d_obj)
   <div class="line pb15"></div>
 
   <div class="pb5"><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать отзывы</a> (<?php echo $product->getCommentCount() ?>)</div>
-  <div class="pb5">
+  <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['product']->token )) ?>">
     Оценка пользователей:
     <?php
+    echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
     echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
-    echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position-x:100%;"></span>', 5 - round($product->rating));
-    ?>
+    ?></span>
     <strong class="ml5"><?php echo round($product->rating, 1) ?></strong>
-<?php //include_component('userProductRating', 'show', array('product' => $product))  ?>
+    <?php //include_component('userProductRating', 'show', array('product' => $product))  ?>
   </div>
 <!--        <div class="pb5">Понравилось? <a href="" class="share">Поделиться</a> <strong><a href="" class="nodecor">+87</a></strong></div>-->
   <div class="pb3"><?php include_component('userTag', 'product_link', array('product' => $product)) ?></div>
@@ -160,6 +160,7 @@ foreach ($p3d as $p3d_obj)
 <?php endif ?>
 <!-- /Photo video -->
 
+
 <?php if (!empty($item['product']->description)): ?>
     <!-- Information -->
     <h2 class="bold">Информация о товаре</h2>
@@ -170,6 +171,7 @@ foreach ($p3d as $p3d_obj)
     <!-- /Information  -->
     <div class="clear"></div>
 <?php endif ?>
+
 
 <!-- Description -->
 <h2 class="bold">Характеристики</h2>
@@ -195,7 +197,6 @@ foreach ($p3d as $p3d_obj)
 <!-- /Description -->
 
     <?php include_component('product', 'tags', array('product' => $product)) ?>
-
 
 <!-- Media -->
 <div class="popup mediablock" id="bigpopup"><!-- IVN block #bigpopup is media gallery popup  -->

@@ -6,10 +6,6 @@ homepage:
   url:   /
   param: { module: default, action: index }
 
-default_init:
-  url:   /initialize
-  param: { module: default, action: init }
-
 api:
   url:   /api
   param: { module: api, action: index }
@@ -26,3 +22,5 @@ task:
     prefix_path:          /task
     column:               id
     with_wildcard_routes: true
+    #actions:              [ list, new, create, edit, update, delete ]
+    collection_actions:   { init: get }

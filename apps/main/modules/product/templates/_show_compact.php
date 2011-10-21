@@ -1,6 +1,9 @@
 <div class="goodsbox"<?php echo (isset($ii) && $ii > 3) ? ' style="display:none;"' : '' ?>>
   <div class="photo"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
-  <span class="ratingview"></span>
+	<?php
+		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
+		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
+	?>
   <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
 
   <div class="font18 pb10"><?php echo $item['price'] ?> <span class="rubl">p</span></div>
@@ -13,7 +16,10 @@
         <!--a href="" class="fastview">Быстрый просмотр</a-->
 
         <div class="photo"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
-        <span class="ratingview"></span>
+        <?php
+		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
+		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
+		?>
         <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
         <div class="font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></div>
         <div class="goodsbar">

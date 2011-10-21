@@ -6,7 +6,7 @@
 
 <div class="fl width450">
 	<div class="font16 pb15">Моя общая оценка<span class="gray">*</span>:</div>
-	<div class="rating fl">
+	<div class="ratingbig fl">
 		<div class="ratingbox">
 			<div class="current" style="width: 0px;"></div>
 			<div><a class="ra1" title="Плохо" href="javascript:void(0)">Плохо</a></div>
