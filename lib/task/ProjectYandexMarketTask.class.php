@@ -119,6 +119,20 @@ class ProjectYandexMarketTask extends sfBaseTask
    */
   private $_portionToLoadProduct = 100;
     
+  /**
+   * Рутовые категории, из которых выгружаем в разные файлы
+   * @var type 
+   */
+  private $_globalCatList = array(
+      array(
+          'name' => 'export_realweb.xml',
+          'list' => array(6,5,8,9)
+          ),   
+      array(
+          'name' => 'export_mgcom.xml',
+          'list' => array(3,2,1,4,7)
+          ),           
+  );
   
   protected function configure()
   {      
@@ -147,19 +161,57 @@ EOF;
 
   protected function execute($arguments = array(), $options = array())
   {
+      
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
-
-    $this->_xmlFilePath = '/mnt/hgfs/httpdFiles/'.$this->_xmlFileName;
-    //корневой каталог
-    $this->_xmlResult = new SimpleXMLElement("<yml_catalog date='".date("Y-m-d H:n")."'></yml_catalog>");
-    file_put_contents($this->_xmlFilePath,'<?xml version="1.0" encoding="utf-8"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">');
-    file_put_contents($this->_xmlFilePath,"<yml_catalog  date='".date("Y-m-d H:n")."'>",FILE_APPEND);
-    //базовое
-    $this->_setShop();
-    file_put_contents($this->_xmlFilePath,'</yml_catalog>',FILE_APPEND);
     
+    //генерируем файл со всеми товарами
+    $this->_xmlFilePath = $this->_xmlFileName;  //'/mnt/hgfs/httpdFiles/'.
+    $this->_xmlGenerateItself();
+    
+    $this->_generateCatList();    
+    $this->_imageUrlsConfig = sfConfig::get('app_product_photo_url');
+    //генерируем файлы с определёнными категориями
+    foreach($this->_globalCatList as $partInfo){
+        //заполняем массив категорий
+        $this->_categoryList = array();
+        foreach($partInfo['inner'] as $catId){
+            $this->_categoryList[$catId] = array();
+        }
+        $this->_xmlFilePath = $partInfo['name'];
+        //выполняем саму генарацию
+        $this->_xmlGenerateItself();
+    }
+    #print_r($this->_categoryList);
+    #exit();
+    
+  }
+  
+    private function _xmlGenerateItself(){
+        //корневой каталог
+        $this->_xmlResult = new SimpleXMLElement("<yml_catalog date='".date("Y-m-d H:n")."'></yml_catalog>");
+        file_put_contents($this->_xmlFilePath,'<?xml version="1.0" encoding="utf-8"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">');
+        file_put_contents($this->_xmlFilePath,"<yml_catalog  date='".date("Y-m-d H:n")."'>",FILE_APPEND);
+        //базовое
+        $this->_setShop();
+        file_put_contents($this->_xmlFilePath,'</yml_catalog>',FILE_APPEND);      
+    }
+  
+  public function _generateCatList(){
+      //глобальные списки глобальных категорий
+      foreach($this->_globalCatList as $k => $catList){
+            $idList = array();
+            $catList = Doctrine_Core::getTable('ProductCategory')
+                    ->createQuery('pc')
+                    ->where('pc.root_id IN ('.implode(',',$catList['list']) .')'  )
+                    ->fetchArray();
+                    ;
+            foreach($catList as $cat) $idList[] = $cat['id'];
+            $this->_globalCatList[$k]['inner'] = $idList;
+          
+      }
+    #  exit();
   }
   
   
@@ -217,6 +269,7 @@ EOF;
     $categoryList = Doctrine_Core::getTable('ProductCategory')
             ->createQuery('pc')
             ->select('pc.*') 
+            ->whereIn('id',  array_keys($this->_categoryList))          
             ->orderBy('pc.id')
           //  ->limit(10)
             ->fetchArray();
@@ -225,7 +278,6 @@ EOF;
     file_put_contents($this->_xmlFilePath,'<categories>',FILE_APPEND);
     $numInRound = 0;
     $currentXml = "";
-    
     foreach($categoryList as $categoryInfo){
         $cat = $cats->addChild('category',$categoryInfo['name']);
         $cat->addAttribute('id',$categoryInfo['id']);
@@ -274,6 +326,7 @@ EOF;
     //делаем выборку товаров
     $offersList = Doctrine_Core::getTable('Product')
             ->createQuery('p')
+            ->distinct()
             ->select('p.*,pcr.product_category_id,cr.name,price.price,type.name,photo.resource') 
             ->leftJoin('p.ProductCategoryProductRelation pcr on p.id=pcr.product_id ')      //категория     
             ->leftJoin('p.Photo photo on p.id=photo.product_id ')           //фото
@@ -385,7 +438,7 @@ EOF;
                 $value = $this->_companyData['url'].'/product/'.$offerInfo['token'];
                 break;
             case 'price':
-                $value = $offerInfo['ProductPrice'][0]['price'];
+                if (isset($offerInfo['ProductPrice'][0])) $value = $offerInfo['ProductPrice'][0]['price'];
                 break;
             case 'categoryId':
                 if (isset($offerInfo['ProductCategoryProductRelation'][0]['product_category_id'])) 
@@ -393,7 +446,7 @@ EOF;
                 break;
             case 'picture':
                 if (isset($offerInfo['Photo']) && isset($offerInfo['Photo'][0]) && isset($offerInfo['Photo'][0]['resource'])) 
-                    $value = $this->_imageUrlsConfig[0] . $offerInfo['Photo'][0]['resource'];
+                    $value =  $this->_imageUrlsConfig[4] . $offerInfo['Photo'][0]['resource'];
                 break;
             case 'typePrefix':
                 #$value = $offerInfo['Type']['name'];

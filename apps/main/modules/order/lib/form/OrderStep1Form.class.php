@@ -51,7 +51,7 @@ class OrderStep1Form extends BaseOrderForm
 //    $this->validatorSchema['delivery_type_id'] = new sfValidatorChoice(array('choices' => OrderTable::getInstance()->getEnumValues('receipt_type'), 'required' => false));
 //    //$this->widgetSchema['receipt_type']->setOption('class', 'checkboxlist2');
 
-    $choices = DeliveryTypeTable::getInstance()->getChoices();
+    //$choices = DeliveryTypeTable::getInstance()->getChoices();
     /*if ('legal' == $this->object->person_type)
     {
       array_pop($choices);
@@ -61,6 +61,7 @@ class OrderStep1Form extends BaseOrderForm
       //'choices'  => $choices,
       'model'           => 'DeliveryType',
       'method'          => 'getChoiceForOrder',
+      'table_method'    => 'createBaseQuery',
       'multiple'        => false,
       'expanded'        => true,
       'renderer_class'  => 'myWidgetFormOrderSelectRadio',

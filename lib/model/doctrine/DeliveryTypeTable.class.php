@@ -25,4 +25,11 @@ class DeliveryTypeTable extends myDoctrineTable
     );
   }
 
+  public function createBaseQuery(array $params = array())
+  {
+    $q = parent::createBaseQuery($params);
+    $q->addWhere('deliveryType.is_active = ?', 1);
+
+    return $q;
+  }
 }
