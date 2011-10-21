@@ -24,7 +24,8 @@ class ProductComment extends BaseProductComment
     $data['user_id'] = $this->User->core_id;
     $data['product_id'] = $this->Product->core_id;
 
-    $parent = $this->getNode()->getParent();
+    //$parent = $this->getNode()->getParent();
+	$parent = $this->parent_id > 0 ? ProductCommentTable::getInstance()->getById($this->parent_id) : null;
     $data['parent_id'] = $parent ? $parent->core_id : 0;
 
     return $data;

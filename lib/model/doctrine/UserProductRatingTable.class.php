@@ -7,6 +7,16 @@
  */
 class UserProductRatingTable extends myDoctrineTable
 {
+	public function getCoreMapping()
+	{
+		return array(
+//		  'property_id' => 'core_property_id',
+//		  'product_id'  => 'core_product_id',
+//		  'user_id'     => 'core_user_id',
+		  'value'       => 'value',
+		);
+	}
+  
     /**
      * Returns an instance of this class.
      *
