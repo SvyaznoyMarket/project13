@@ -16,6 +16,9 @@ generator:
       fields:  ~
       list:
         display: [ core_id, type, token, priority, status, _content, created_at, updated_at ]
+        sort: [ updated_at, desc ]
+        actions:
+          init: { label: Перегрузить данные, action: init, params: { confirm: 'Выполнить перезагрузку?' } }
       filter:  ~
       form:    ~
       edit:    ~
