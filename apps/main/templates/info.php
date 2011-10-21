@@ -31,9 +31,9 @@
           <!-- Topmenu -->
           <?php include_component('productCategory', 'root_list') ?>
           <!-- /Topmenu -->
-          <div class="headerright" style="font-size: 12px;">
+          <div class="headerright" style="font-size: 14px; font-family: Enter; padding-top: 36px;">
             Контакт cENTER
-            <div class="vcard"><div class="tel"><span>8 (800)</span><br />700-00-09<br /><span>Звонок бесплатный.<br />Радость в подарок :)</span></div></div>
+            <div class="vcard"><div class="tel" style="font-size: 24px; line-height: 24px;"><span style="font-size: 14px;">8 (800)</span><br />700-00-09<br /></div></div>
             <!--a href="">Перезвоните мне</a><br />
             <a href="">Отследить мой заказ</a-->
           </div>
