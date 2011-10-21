@@ -420,13 +420,12 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $ids = $category->getDescendantIds();
-    $ids[] = $category->id;
-
-    $q->select('MIN(product.price) as price_min')
-      ->innerJoin('product.Category category')
-      ->whereIn('category.id', $ids)
-      //->addWhere('product.category_id = ?', $category->id)
+    $q->select('MIN(productPrice.price) as price_min')
+      ->innerJoin('product.CategoryRelation productCategoryProductRelation')
+      ->innerJoin('product.ProductPrice productPrice')
+      ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
+      ->addWhere('productPrice.price > ?', 0)
+      ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
@@ -439,14 +438,12 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $ids = $category->getDescendantIds();
-    $ids[] = $category->id;
-
-    $q->select('MAX(productPrice.price) as price_max')
-      ->innerJoin('product.CategoryRelation categoryRelation')
+    $q->select('MAX(productPrice.price) as price_min')
+      ->innerJoin('product.CategoryRelation productCategoryProductRelation')
       ->innerJoin('product.ProductPrice productPrice')
-      ->whereIn('categoryRelation.product_category_id', $ids)
-      //->addWhere('product.category_id = ?', $category->id)
+      ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
+      ->addWhere('productPrice.price > ?', 0)
+      ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
@@ -479,11 +476,9 @@ class ProductTable extends myDoctrineTable
     }
     else
     {
-      $ids = $category->getTable()->getDescendatIds($category, array('with_ancestor' => true, ));
-      //$ids[] = $category->id;
-
+      $ids = $category->getTable()->getDescendatIds($category, array('with_parent' => true));
       $q->innerJoin('product.Category category')
-          ->whereIn('category.id', $ids)
+         ->whereIn('category.id', $ids)
       ;
     }
 

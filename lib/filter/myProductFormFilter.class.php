@@ -19,12 +19,20 @@ class myProductFormFilter extends sfFormFilter
     $productTable = ProductTable::getInstance();
 
     // виджет цены
+    $value = array(
+      'min' => (int)$productTable->getMinPriceByCategory($productCategory),
+      'max' => (int)$productTable->getMaxPriceByCategory($productCategory),
+    );
     $this->widgetSchema['price'] = $this->getWidgetRange(null, array(
-      'from' => (int)$productTable->getMinPriceByCategory($productCategory),
-      'to'   => (int)$productTable->getMaxPriceByCategory($productCategory),
+      'from' => $value['min'],
+      'to'   => $value['max'],
     ));
     $this->widgetSchema['price']->setLabel('Цена');
     $this->validatorSchema['price'] = new sfValidatorPass();
+    $this->setDefault('price', array(
+      'from' => $value['min'],
+      'to'   => $value['max'],
+    ));
 
     // виджет производителя
     $choices = CreatorTable::getInstance()

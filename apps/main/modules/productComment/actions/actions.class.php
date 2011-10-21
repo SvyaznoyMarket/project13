@@ -36,7 +36,7 @@ class productCommentActions extends myActions
 
 		if ($request->getParameter('content_resume') && $request->getParameter('rating')) {
 
-			//$userId = 2;
+			$userId = $this->getUser()->getGuardUser()->id;
 
 			$content = '';
 			if ($request->getParameter('content_plus') != '') {
@@ -49,13 +49,28 @@ class productCommentActions extends myActions
 
 			$comment = ProductCommentTable::getInstance()->create(array(
 				'content'     => $content,
-				'user_id'     => $this->getUser()->getGuardUser()->id,
+				'user_id'     => $userId,
 				'rating'      => $request->getParameter('rating'),
 				'is_recomend' => $request->getParameter('is_recomend'),
 			));
 			$comment->setProduct($this->product);
 			//$comment->setCorePush(false);
 			$comment->save();
+			$comment->setCorePush(false);
+			ProductCommentTable::getInstance()->getTree()->createRoot($comment);
+			
+			try {
+				$userRate = new UserProductRatingTotal();
+				$userRate->fromArray(array('product_id'=>$this->product->id,'user_id'=>$userId,'value'=>$request->getParameter('rating')));
+				$userRate->save();
+			} catch (Exception $e) {}
+			
+			// обновление общего рейтинга у продукта
+			$currentRatingFull = $this->product->rating * $this->product->rating_quantity;
+			$currentRatingFull += $request->getParameter('rating');
+			$this->product->rating_quantity++;
+			$this->product->rating = $currentRatingFull / $this->product->rating_quantity;
+			$this->product->save();
 
 			$ratings = $request->getParameter('rating_type');
 			foreach ($ratings as $propertyId => $value) {
@@ -67,7 +82,7 @@ class productCommentActions extends myActions
 				));
 				try {
 				$rateObj->save();
-				} catch (Exception $e) {}
+				} catch (Exception $e) { throw $e; }
 			}
 
 			$this->redirect(array('sf_route' => 'productComment', 'sf_subject' => $this->product));
@@ -92,8 +107,9 @@ class productCommentActions extends myActions
 			  'user_id'   => $this->getUser()->getGuardUser()->id,
 		  ));
 		  $comment->setProduct($product);
-		  //$comment->setCorePush(false);
 		  $comment->save();
+		  $comment->setCorePush(false);
+		  $comment->getNode()->insertAsLastChildOf(ProductCommentTable::getInstance()->getById($request->getParameter('parent_id')));
 
 		  $data = $comment->toArray(false);
 		  $data['user_name'] = strval($comment->getUser());
@@ -106,61 +122,6 @@ class productCommentActions extends myActions
 			'success' => false,
 		  ));
 	  }
-
-    $this->redirectUnless($this->getUser()->isAuthenticated(), '@user_signin');
-
-    $this->product = $this->getRoute()->getObject();
-    $this->parent =
-      !empty($request['parent'])
-      ? ProductCommentTable::getInstance()->getById($request['parent'])
-      : null
-    ;
-    $this->form = new ProductCommentForm(array(), array('product' => $this->product, 'user' => $this->getUser()->getGuardUser(), 'parent' => $this->parent));
-
-    $this->form->bind($request->getParameter($this->form->getName()));
-    $this->form->updateObject();
-    if ($this->form->isValid())
-    {
-      try
-      {
-        $this->form->save();
-
-        // response
-        if ($request->isXmlHttpRequest())
-        {
-          return $this->renderJson(array(
-            'success' => true,
-            'data'    => array(
-              'element_id' => "product_{$this->product->id}_comment_{$this->form->getObject()->id}-block",
-              'content'    => $this->getComponent($this->getModuleName(), 'form', array('product' => $this->product, 'parent' => $this->parent)),
-              'list'       => $this->getComponent($this->getModuleName(), 'list', array('product' => $this->product)),
-            ),
-          ));
-        }
-        // response
-        if ('frame' == $this->getLayout())
-        {
-          return $this->getPartial('default/close');
-        }
-        $this->redirect(array('sf_route' => 'productComment', 'sf_subject' => $this->product));
-      }
-      catch (Exception $e)
-      {
-        $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
-      }
-    }
-
-    // response
-    if ($request->isXmlHttpRequest())
-    {
-      return $this->renderJson(array(
-        'success' => false,
-        'data'    => array(
-          'content' => $this->getComponent($this->getModuleName(), 'form', array('product' => $this->product, 'parent' => $this->parent, 'form' => $this->form)),
-        ),
-      ));
-    }
-    $this->setTemplate('index');
   }
  /**
   * Executes helpful action

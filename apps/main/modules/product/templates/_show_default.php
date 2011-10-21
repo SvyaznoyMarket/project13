@@ -55,7 +55,7 @@ foreach ($p3d as $p3d_obj)
       $('#watch-cnt').hide();
     });
   </script>
-  <div class="font14 pb15"><?php echo $item['product']->tagline ?></div>
+  <div class="font14 pb15"><?php echo $item['product']->preview ?></div>
   <div class="clear"></div>
 
   <div class="fl pb15">
@@ -73,9 +73,10 @@ foreach ($p3d as $p3d_obj)
   </div>
   <div class="fr ar pb15">
     <div class="goodsbarbig">
-      <a href="<?php echo url_for('cart_add', array('product' => $product->token, 'quantity' => 1)) ?>" class="link1"></a>
-      <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>#" class="link2"></a>
-      <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>#" class="link3"></a>
+		<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
+<!--      <a href="<?php echo url_for('cart_add', array('product' => $product->token, 'quantity' => 1)) ?>" class="link1"></a>-->
+      <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
+      <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
     </div>
 <!--            <div class="pb5"><strong><a href="" class="red underline">Купить быстро в 1 клик</a></strong></div>-->
 <!--            <a href="<?php echo url_for('productStock', $sf_data->getRaw('product')) ?>" class="underline">Где купить в магазинах?</a>-->
@@ -154,31 +155,33 @@ foreach ($p3d as $p3d_obj)
   <?php endif ?>
     </ul>
   </div>
+<div class="clear"></div>
+<div class="mb15"></div>
 <?php endif ?>
 <!-- /Photo video -->
-<div class="clear"></div>
 
+<?php if (!empty($item['product']->description)): ?>
     <!-- Information -->
     <h2 class="bold">Информация о товаре</h2>
     <div class="line pb15"></div>
     <ul class="pb10">
-      <?php echo $item['product']->description?>
+      <?php echo $item['product']->description ?>
     </ul>
-    <?php include_component('product', 'tags', array('product' => $product)) ?>
     <!-- /Information  -->
     <div class="clear"></div>
+<?php endif ?>
 
 <!-- Description -->
 <h2 class="bold">Характеристики</h2>
 <div class="line pb25"></div>
 
-<?php if (($product->countParameter('show') > 5) && ($product->countParameter('list') > 0)): ?>
+<?php if (false && ($product->countParameter('show') > 5) && ($product->countParameter('list') > 0)): ?>
   <div class="descriptionlist">
     <?php include_component('product', 'property_grouped', array('product' => $product, 'view' => 'inlist')) ?>
   </div>
-
+<?php if (false): ?>
   <div class="pb25"><a href="#" id="toggler" class="more">Все характеристики</a></div>
-
+<?php endif ?>
   <div class="descriptionlist second" style="display: none;">
   <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
   </div>
@@ -190,6 +193,8 @@ foreach ($p3d as $p3d_obj)
 
 <?php endif ?>
 <!-- /Description -->
+
+    <?php include_component('product', 'tags', array('product' => $product)) ?>
 
 
 <!-- Media -->

@@ -86,7 +86,7 @@ UserProductNotice:
 UserProductRating:
   options:
     comment: 'Пользовательские оценки товара'
-  actAs: [ Timestampable ]
+  actAs: [ Timestampable, Corable ]
   columns:
     property_id:       { type: integer(20), primary: true, notnull: true }
     user_id:           { type: integer(20), primary: true, notnull: true }

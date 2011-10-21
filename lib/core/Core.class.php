@@ -158,6 +158,17 @@ class Core
 
     return $result;
   }
+  
+  public function createUserProductRating(UserProductRating $rec)
+  {
+	$result = false;
+    $data = $this->getData($rec);
+    if (($response = $this->query('user.product.rating.create', array(), $data)))
+    {
+      $result = $response['confirmed'];
+    }
+    return $result;
+  }
 
   public function createUserAddress(UserAddress $address)
   {
