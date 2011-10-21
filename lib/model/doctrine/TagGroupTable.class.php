@@ -23,7 +23,6 @@ class TagGroupTable extends myDoctrineTable
     return array(
       'id'       => 'core_id',
       'name'     => 'name',
-      'position' => 'position',
     );
   }
 }
