@@ -36,7 +36,7 @@ $(document).ready(function(){
 		to   = $('#f_price_to')
 	}	
 	if( from && from.val() ) {
-		$('.bigfilter dd:first').slideToggle(200)
+		//$('.bigfilter dd:first').slideToggle(200)
 	}
 		
 	if ($( "#slider-range1" ).length) $( "#slider-range1" ).slider({
