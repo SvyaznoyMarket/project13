@@ -47,6 +47,7 @@ class Order extends BaseOrder
     $data['address_id']           = $this->UserAddress->core_id;
     $data['satus_id']             = $this->Status->core_id;
     $data['store_id']             = null;
+    $data['type_id']              = 1;
     $data['ip']                   = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null; //sfContext::getInstance()->getUser()->getIp();
 
 

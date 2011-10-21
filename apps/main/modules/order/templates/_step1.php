@@ -9,7 +9,7 @@
             <li><span>Шаг 3</span>Подтверждение<br />заказа</li>
         </ul>
 <?php end_slot() ?>
-    
+
 <?php if ($sf_user->isAuthenticated()): ?>
 <h3>Вы уже вошли на сайт</h3>
 <a href="<?php echo url_for('order_new', array('step'=>2)) ?>">Продолжить</a>
@@ -28,24 +28,24 @@
                 <li><a href="" class="twitter">Twitter</a></li>
             </ul>
         </div>
-        
+
         <div class="fl width430">
-        
+
             <ul class="checkboxlist pb10">
                 <li class="font16"><label for="radio-1">Уже покупали у нас?</label><input id="radio-1" name="radio-1" type="radio" value="radio-1" /></li>
                 <li class="font16"><label for="radio-2">Я покупаю впервые!</label><input id="radio-2" name="radio-1" type="radio" value="radio-2"/></li>
             </ul>
-			
+
 			<div id="old-user" style="display:none;">
 				<div class="pb10">E-mail или мобильный телефон:</div>
 				<?php echo $formSignin['username']->render(array('class' => 'text width418 mb15')) ?>
-				
+
 				<div class="pb5"><a href="<?php echo url_for('user_forgotPassword') ?>	" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
 				<?php echo $formSignin['password']->render(array('class' => 'text width418 mb15')) ?>
-				
+
 				<?php echo $formSignin['remember']->render(array('class' => 'hiddenCheckbox', 'id' => 'checkbox-8')) ?>
 			</div>
-			
+
 			<div id="new-user" style="display:none;">
 				<div class="pb10">E-mail или мобильный телефон:</div>
 				<input name="username" type="text" class="text width418 mb15"/>
@@ -62,7 +62,7 @@
 				</ul>
 			</div>
         </div>
-            
+
         <div class="line pb20"></div>
         <div class="pl235"><input type="submit" class="button bigbutton" value="Продолжить оформление" /></div>
     </form>
