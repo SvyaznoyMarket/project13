@@ -23,6 +23,11 @@ class cartComponents extends myComponents
     {
       $this->quantity = 1;
     }
+	
+	$this->disable = false;
+	if (!$this->product->is_instock) {
+		$this->disable = true;
+	}
 
     $cart = $this->getUser()->getCart();
     if (!$this->product->is_insale)
