@@ -55,6 +55,17 @@ class Core
     return $this->models;
   }
 
+  public function getActions($name = null)
+  {
+    $actions = array(
+      1 => 'create',
+      2 => 'update',
+      3 => 'delete',
+    );
+
+    return null == $name ? $actions : $actions[$name];
+  }
+
   public function getTable($name)
   {
     $table = false;
@@ -80,7 +91,7 @@ class Core
 
     if ($response = $this->query('order.create', array(), $data))
     {
-      $order->token = $response['number'];
+      $order->token = $response['number']; // TODO: check
       $result = $response['id'];
     }
     //myDebug::dump($order->toArray(false), 1);
@@ -99,6 +110,18 @@ class Core
     if ($this->query('order.update', $params, $data))
     {
       $result = true;
+    }
+
+    return $result;
+  }
+
+  public function getUser($id)
+  {
+    $result = false;
+
+    if ($response = $this->query('user.get', array('id' => $id, 'count' => false, 'expand' => array('geo', 'address_list', 'network_list'))))
+    {
+      $result = $response[0];
     }
 
     return $result;
@@ -158,7 +181,7 @@ class Core
 
     return $result;
   }
-  
+
   public function createUserProductRating(UserProductRating $rec)
   {
 	$result = false;

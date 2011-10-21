@@ -18,6 +18,31 @@ class OrderTable extends myDoctrineTable
     return Doctrine_Core::getTable('Order');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'                => 'core_id',
+      'number'            => 'token',
+      'is_legal'          => 'is_legal',
+      'last_name'         => 'recipient_last_name',
+      'first_name'        => 'recipient_first_name',
+      'middle_name'       => 'recipient_middle_name',
+      'mobile'            => 'recipient_phonenumbers',
+      'is_receive_sms'    => 'is_receive_sms',
+      'payment_status_id' => 'payment_status_id',
+      'payment_detail'    => 'payment_details',
+      'sum'               => 'sum',
+      'is_delivery'       => 'is_delivery',
+      'delivery_date'     => 'delivered_at',
+      'address'           => 'address',
+      'zip_code'          => 'zip_code',
+      'is_gift'           => 'is_gift',
+      'extra'             => 'extra',
+      'ip'                => 'ip',
+      'is_paid_delivery'  => 'is_paid_delivery',
+    );
+  }
+
   public function getDefaultParameters()
   {
     return array(
@@ -121,30 +146,5 @@ class OrderTable extends myDoctrineTable
     $ids = $this->getIdsByQuery($q);
 
     return $this->createListByIds($ids, $params);
-  }
-
-  public function getCoreMapping()
-  {
-    return array(
-      'id'                => 'core_id',
-      'type_id'           => 'type_id',
-      'is_legal'          => 'is_legal',
-      'last_name'         => 'recipient_last_name',
-      'first_name'        => 'recipient_first_name',
-      'middle_name'       => 'recipient_middle_name',
-      'mobile'            => 'recipient_phonenumbers',
-      'is_receive_sms'    => 'is_receive_sms',
-      'payment_status_id' => 'payment_status_id',
-      'payment_detail'    => 'payment_details',
-      'sum'               => 'sum',
-      'is_delivery'       => 'is_delivery',
-      'delivery_date'     => 'delivered_at',
-      'address'           => 'address',
-      'zip_code'          => 'zip_code',
-      'is_gift'           => 'is_gift',
-      'extra'             => 'extra',
-      'ip'                => 'ip',
-      'is_paid_delivery'  => 'is_paid_delivery',
-    );
   }
 }

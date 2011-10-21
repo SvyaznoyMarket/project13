@@ -9,8 +9,8 @@
   </head>
 
   <body>
-    <div class="allpage">
 
+    <div class="allpage">
 
       <div class="entry">
         <div class="entrybox">

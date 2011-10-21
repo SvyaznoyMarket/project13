@@ -25,6 +25,8 @@ class defaultActions extends myActions
   */
   public function executeWelcome(sfWebRequest $request)
   {
+    $this->setLayout('welcome');
+
     $cookieName = sfConfig::get('app_welcome_cookie_name');
     $secret = sfConfig::get('app_welcome_secret');
     if ($request->isMethod('post'))
@@ -35,7 +37,7 @@ class defaultActions extends myActions
         $this->redirect($request['url'] ? $request['url'] : '@homepage');
       }
     }
-    
+
     $this->url = $request['url'] ? $request['url'] : $request->getUri();
   }
  /**
