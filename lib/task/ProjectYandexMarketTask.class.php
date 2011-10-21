@@ -5,7 +5,7 @@ class ProjectYandexMarketTask extends sfBaseTask
   
   private $_companyData = array(
       'name' => 'Enter.ru',
-      'company' => 'СВЯЗНОЙ МАРКЕТ',
+      'company' => 'Enter.ru',
       'url' => 'http://enter.ru',
       'email' => ''
   );
@@ -277,7 +277,7 @@ EOF;
             ->select('p.*,pcr.product_category_id,cr.name,price.price,type.name,photo.resource') 
             ->leftJoin('p.ProductCategoryProductRelation pcr on p.id=pcr.product_id ')      //категория     
             ->leftJoin('p.Photo photo on p.id=photo.product_id ')           //фото
-            ->leftJoin('p.Type type on p.type_id=type.id ')                 //тип
+           # ->leftJoin('p.Type type on p.type_id=type.id ')                 //тип
             ->leftJoin('p.Creator cr on cr.id=p.creator_id ')               //производитель
             ->leftJoin('p.ProductPrice price on price.product_id=p.id ')    //цена    
             ;
@@ -343,7 +343,7 @@ EOF;
 
             //основные параметры
             foreach($this->_uploadParamsList as $param){
-                $value = $this->_getPropValueByCode2($offerInfo,$param);
+                $value = $this->_getPropValueByCode($offerInfo,$param);
                 if ($value) $offer->$param = $value;
             }            
             //дополнительные параметры
@@ -354,9 +354,8 @@ EOF;
 
         }
         
-        catch(Exception $e){
-            
-            echo 'eeroor--'.$e->getMessage().$e->getFile().'=='.$e->getLine().'        ';
+        catch(Exception $e){            
+            #echo 'eeroor--'.$e->getMessage().$e->getFile().'=='.$e->getLine().'        ';
             continue;
         }
         
@@ -379,7 +378,7 @@ EOF;
   }
   
   
-  private function _getPropValueByCode2($offerInfo,$code){
+  private function _getPropValueByCode($offerInfo,$code){
         $value = "";
         switch ($code){
             case 'url':
@@ -397,7 +396,8 @@ EOF;
                     $value = $this->_imageUrlsConfig[0] . $offerInfo['Photo'][0]['resource'];
                 break;
             case 'typePrefix':
-                $value = $offerInfo['Type']['name'];
+                #$value = $offerInfo['Type']['name'];
+                $value = $offerInfo['prefix'];
                 break;
             case 'vendor':
                 $value = $offerInfo['Creator']['name'];
@@ -424,6 +424,7 @@ EOF;
         return $value;     
   }
   
+  /** DEPRECATED
   private function _getPropValueByCode($prodObject,$code){
         $value = "";
         switch ($code){
@@ -466,6 +467,7 @@ EOF;
         }
         return $value;     
   }
+   */
   
   private function _getAdditionalPropValueByCode($productInfo,$param){
         $value = '';
