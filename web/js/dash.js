@@ -115,6 +115,8 @@ $(document).ready(function(){
 	})
 	$('.goodsbarbig .link1').click( function() {
 		var button = this
+		if( $(button).hasClass('disabled') )
+			return false
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {			
 			if ( data.success && ltbx ) {
 				var tmpitem = { 
