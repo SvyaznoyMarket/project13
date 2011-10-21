@@ -1154,17 +1154,17 @@ border-radius: 5px;
 .tearmlist DD DIV {float:right; width:870px}
 
 
-.plug {width:243px; padding-left:364px; padding-right:90px; margin:0 -6px 40px -6px; font-size:14px}
+.plug {width:303px; padding-left:344px; padding-right:50px; margin:0 -6px 20px -6px; font-size:14px}
 .plug H2 {font-size:24px; font-weight:bold}
-.plug1 {height:188px; padding-top:35px; background:url(/images/plug1.jpg) no-repeat 0 0; color:#bea1cf}
-.plug2 {height:188px; padding-top:35px; background:url(/images/plug2.jpg) no-repeat 0 0; color:#ffdd61}
-.plug3 {height:196px; padding-top:27px; background:url(/images/plug3.jpg) no-repeat 0 0; color:#e28bab}
-.plug4 {height:188px; padding-top:35px; background:url(/images/plug4.jpg) no-repeat 0 0; color:#ddbc93}
-.plug5 {height:203px; padding-top:20px; background:url(/images/plug5.jpg) no-repeat 0 0; color:#ffce7f}
-.plug6 {height:190px; padding-top:33px; background:url(/images/plug6.jpg) no-repeat 0 0; color:#d7e38f}
-.plug7 {height:202px; padding-top:20px; background:url(/images/plug7.jpg) no-repeat 0 0; color:#5dbacb}
-.plug8 {height:183px; padding-top:40px; background:url(/images/plug8.jpg) no-repeat 0 0; color:#e37e84}
-.plug9 {height:188px; padding-top:35px; background:url(/images/plug1.jpg) no-repeat 0 0; color:#bea1cf}
+.plug1 {height:175px; padding-top:35px; background:url(/images/plug1.jpg) no-repeat 0 0;}
+.plug2 {height:175px; padding-top:35px; background:url(/images/plug2.jpg) no-repeat 0 0;}
+.plug3 {height:183px; padding-top:27px; background:url(/images/plug3.jpg) no-repeat 0 0;}
+.plug4 {height:175px; padding-top:35px; background:url(/images/plug4.jpg) no-repeat 0 0;}
+.plug5 {height:190px; padding-top:20px; background:url(/images/plug5.jpg) no-repeat 0 0;}
+.plug6 {height:177px; padding-top:33px; background:url(/images/plug6.jpg) no-repeat 0 0;}
+.plug7 {height:170px; padding-top:40px; background:url(/images/plug7.jpg) no-repeat 0 0;}
+.plug8 {height:170px; padding-top:40px; background:url(/images/plug8.jpg) no-repeat 0 0;}
+.plug9 {height:175px; padding-top:35px; background:url(/images/plug1.jpg) no-repeat 0 0;}
 
 .fm{text-align:left;}
 .hf{display:none;}
