@@ -1,8 +1,8 @@
 Creator:
   - brand
   - Brands
-#Order:
-#  - order
+Order:
+  - order
 Product:
   - product
 ProductCategory:

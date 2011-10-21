@@ -43,7 +43,7 @@
     <div class="basketheader">
       <?php include_partial('default/logo') ?>
       <?php include_slot('step') ?>
-        <div class="headerright">
+        <div class="headerright" style="font-size: 14px; font-family: Enter;">
             Заказ и консультации
             <div class="vcard"><div class="tel"><span>(800)</span>700-00-09</div></div>
         </div>

@@ -4,6 +4,7 @@ Region:
   actAs:
     NestedSet:     { hasManyRoots: true, rootColumnName: root_id }
     Timestampable: ~
+    Corable:       { push: disable }
   columns:
     id:                     { type: integer(20), autoincrement: true, primary: true }
     core_id:                { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }

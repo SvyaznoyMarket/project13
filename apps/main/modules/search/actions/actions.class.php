@@ -90,8 +90,9 @@ class searchActions extends myActions
       {
         $selected = $productTypeList->toValueArray('id');
         $coreIds = array_keys($data['types']);
-        foreach (ProductTypeTable::getInstance()->getListByCoreIds($coreIds) as $productType)
-        {
+        foreach (ProductTypeTable::getInstance()->getListByCoreIds($coreIds, array(
+          'order'  => '_index',
+        )) as $productType) {
           $productType->mapValue('_product_count', $data['types'][$productType->core_id]);
           $productType->mapValue('_selected', in_array($productType->id, $selected));
 
@@ -148,7 +149,10 @@ class searchActions extends myActions
   protected function getProductPager(array $data)
   {
     $list = !empty($data['data'])
-      ? ProductTable::getInstance()->getListByCoreIds($data['data'], array('view' => 'list'))
+      ? ProductTable::getInstance()->getListByCoreIds($data['data'], array(
+        'view'  => 'list',
+        'order' => '_index',
+      ))
       : array()
     ;
 

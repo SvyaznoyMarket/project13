@@ -21,9 +21,47 @@ class Doctrine_Template_Corable extends Doctrine_Template
     $q = $table->createBaseQuery($params);
 
     $q->whereIn($q->getRootAlias().'.core_id', $coreIds);
+    // TODO: вынести в myDoctrineTable
+    if (isset($params['order']) && ('_index' == $params['order']))
+    {
+      $q->orderBy('FIELD(core_id, '.implode(',', $coreIds).')');
+    }
 
     $ids = $table->getIdsByQuery($q, $params);
 
     return $table->createListByIds($ids, $params);
+  }
+
+  public function getByCoreIdTableProxy($coreId, array $params = array())
+  {
+    if (!$coreId)
+    {
+      return false;
+    }
+
+    $table = $this->getInvoker()->getTable();
+    $q = $table->createQuery();
+
+    $q->where('core_id = ?', $coreId);
+
+    return $q->fetchOne();
+  }
+
+  public function getIdByCoreIdTableProxy($coreId, array $params = array())
+  {
+    if (!$coreId)
+    {
+      return false;
+    }
+
+    $table = $this->getInvoker()->getTable();
+    $q = $table->createQuery();
+
+    $q
+      ->where('core_id = ?', $coreId)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+    ;
+
+    return $q->fetchOne();
   }
 }
