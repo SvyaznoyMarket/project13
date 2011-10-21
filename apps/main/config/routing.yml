@@ -544,6 +544,11 @@ order_complete:
   url:   /orders/complete
   param: { module: order, action: complete }
 #
+# order complete
+order_error:
+  url:   /orders/error
+  param: { module: order, action: error }
+#
 # order show
 order_show:
   url:   /orders/:order

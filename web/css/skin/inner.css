@@ -201,6 +201,7 @@ box-shadow:0 0 7px #616161;
 .steplist A {float:left; color:#ffa901}
 .steplist A:hover {text-decoration:none}
 .steplist SPAN {display:block; font-size:24px; font-family:"Enter"; text-transform:uppercase}
+.steplist .last { width: 90px; }
 .basketheader .headerright {float:right; color:#000; font-size:14px; text-align:right}
 .paysystem {float:left; padding-top:40px}
 .paysystem A {float:left; display:block; height:24px; margin-right:20px; background:url(/css/skin/img/pay_system.png) no-repeat}

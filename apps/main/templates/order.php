@@ -43,9 +43,9 @@
     <div class="basketheader">
       <?php include_partial('default/logo') ?>
       <?php include_slot('step') ?>
-        <div class="headerright">
-            Заказ и консультации
-            <div class="vcard"><div class="tel"><span>(800)</span>700-00-09</div></div>
+        <div class="headerright" style="font-size: 14px; font-family: Enter; padding-top: 31px;">
+            Контакт cENTER
+            <div class="vcard"><div class="tel font24" style="font-size: 24px; line-height: 24px;">8 (800) 700-00-09<br /><span style="font-size: 10px;" class="gray">Звонок бесплатный. Радость в подарок :)</span></div></div>
         </div>
     </div>
     <!-- /Header -->
