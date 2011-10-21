@@ -602,9 +602,9 @@ service_show:
   options:  { model: Service, type: object, method: getForRoute }
 #
 # F1 servis catalog
-service_category:
-  url:      /f1
-  param:    { module: service, action: category }
+#service_category:
+#  url:      /f1
+#  param:    { module: service, action: category }
 #
 # F1 servis catalog
 service_list:

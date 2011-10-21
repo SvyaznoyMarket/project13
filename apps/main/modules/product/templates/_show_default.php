@@ -82,8 +82,10 @@ foreach ($p3d as $p3d_obj)
 <!--            <a href="<?php echo url_for('productStock', $sf_data->getRaw('product')) ?>" class="underline">Где купить в магазинах?</a>-->
   </div>
 
-  <div class="line pb15"></div>
-
+  <div class="clear pb15"></div>
+  <div class="mb15 font12 orange infoblock">
+    Любой из представленных в товаров, вы можете заказать с доставкой по удобному адресу или заказать и самостоятельно забрать в нашем магазине.<br /><span class="black" style="line-height: 2;">Подробности по телефону 8 (800) 700 00 09</span>
+  </div>
   <div class="pb5"><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать отзывы</a> (<?php echo $product->getCommentCount() ?>)</div>
   <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['product']->token )) ?>">
     Оценка пользователей:
@@ -116,7 +118,7 @@ foreach ($p3d as $p3d_obj)
 
   <div class="line pb15"></div>
 
-  <?php echo $product->Creator ?>
+  <?php //echo $product->Creator ?>
 <?php include_component('product', 'product_group', array('product' => $product,)) ?>
   <ul class="inline">
     <li><?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?></li>

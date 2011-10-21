@@ -59,7 +59,7 @@
 				<?php if ($formSignin['username']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['username']->renderError() ?></div><?php endif ?>
 				<?php echo $formSignin['username']->render(array('class' => 'text width418 mb15')) ?>
 
-				<div class="pb5"><a href="<?php echo url_for('user_forgotPassword') ?>	" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
+				<div class="pb5"><?php if (false): ?><a id="forgot-pwd-trigger" href="<?php echo url_for('user_forgotPassword') ?>" class="fr orange underline">Забыли пароль?</a><?php endif ?>Пароль:</div>
 				<?php if ($formSignin['password']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['password']->renderError() ?></div><?php endif ?>
 				<?php echo $formSignin['password']->render(array('class' => 'text width418 mb15')) ?>
 

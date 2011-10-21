@@ -49,9 +49,9 @@ class pageComponents extends myComponents
       'buying' => array(
         'name'  => 'Покупки в Enter',
         'links' => array(
-          array('token' => 'how_make_order'),
-          array('token' => 'how_get_order'),
-          array('token' => 'how_pay'),
+          array('token' => 'how_make_order', 'add_to_name' => '?'),
+          array('token' => 'how_get_order', 'add_to_name' => '?'),
+          array('token' => 'how_pay', 'add_to_name' => '?'),
         ),
       ),
     );
@@ -63,11 +63,33 @@ class pageComponents extends myComponents
         $page = PageTable::getInstance()->findOneByToken($link['token']);
         if (!$page) continue;
 
-        $link['name'] = $page->name;
+        $link['name'] = $page->name.(isset($link['add_to_name']) ? $link['add_to_name'] : '');
         $link['url'] = url_for('default_show', array('page' => $page->token));
       } if (isset($link)) unset($link);
     } if (isset($item)) unset($item);
 
     $this->setVar('list', $list, true);
   }
+
+  public function executeNavigation()
+  {
+    if (!isset($this->page) || !$this->page instanceof Page)
+    {
+      return sfView::NONE;
+    }
+
+    $list = array(
+/*      array(
+        'name' => 'Enter',
+        'url'  => url_for('homepage'),
+      ),*/
+      array(
+        'name' => $this->page->name,
+        'url'  => url_for('default_show', array('page' => $this->page->token)),
+      ),
+    );
+
+    $this->setVar('list', $list, false);
+  }
+
 }
