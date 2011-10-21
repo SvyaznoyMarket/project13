@@ -55,7 +55,7 @@ foreach ($p3d as $p3d_obj)
       $('#watch-cnt').hide();
     });
   </script>
-  <div class="font14 pb15"><?php echo $item['product']->tagline ?></div>
+  <div class="font14 pb15"><?php echo $item['product']->preview ?></div>
   <div class="clear"></div>
 
   <div class="fl pb15">
@@ -154,31 +154,33 @@ foreach ($p3d as $p3d_obj)
   <?php endif ?>
     </ul>
   </div>
+<div class="clear"></div>
+<div class="mb15"></div>
 <?php endif ?>
 <!-- /Photo video -->
-<div class="clear"></div>
 
+<?php if (!empty($item['product']->description)): ?>
     <!-- Information -->
     <h2 class="bold">Информация о товаре</h2>
     <div class="line pb15"></div>
     <ul class="pb10">
-      <?php echo $item['product']->description?>
+      <?php echo $item['product']->description ?>
     </ul>
-    <?php include_component('product', 'tags', array('product' => $product)) ?>
     <!-- /Information  -->
     <div class="clear"></div>
+<?php endif ?>
 
 <!-- Description -->
 <h2 class="bold">Характеристики</h2>
 <div class="line pb25"></div>
 
-<?php if (($product->countParameter('show') > 5) && ($product->countParameter('list') > 0)): ?>
+<?php if (false && ($product->countParameter('show') > 5) && ($product->countParameter('list') > 0)): ?>
   <div class="descriptionlist">
     <?php include_component('product', 'property_grouped', array('product' => $product, 'view' => 'inlist')) ?>
   </div>
-
+<?php if (false): ?>
   <div class="pb25"><a href="#" id="toggler" class="more">Все характеристики</a></div>
-
+<?php endif ?>
   <div class="descriptionlist second" style="display: none;">
   <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
   </div>
@@ -190,6 +192,8 @@ foreach ($p3d as $p3d_obj)
 
 <?php endif ?>
 <!-- /Description -->
+
+    <?php include_component('product', 'tags', array('product' => $product)) ?>
 
 
 <!-- Media -->
