@@ -126,24 +126,24 @@ class ProductCategoryTable extends myDoctrineTable
 //		JOIN product_category ON product_category.id = product_category_product_relation.product_category_id
 //		WHERE product_category.level > 1
 //	');
-	foreach ($notEmptyCatsRaw as $raw) {
-		$notEmptyCats[] = $raw['product_category_id'];
-	}
+    foreach ($notEmptyCatsRaw as $raw) {
+      $notEmptyCats[] = $raw['product_category_id'];
+    }
 
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q, $params);
 
 
-	if (!empty($params['root_id'])) {
-		$q->andWhereIn('productCategory.root_id = ?', (int)$params['root_id']);
-	}
-	$q->andWhere('productCategory.level = 1');
-	$q->orWhereIn('productCategory.id', $notEmptyCats);
+    if (!empty($params['root_id'])) {
+      $q->andWhereIn('productCategory.root_id = ?', (int)$params['root_id']);
+    }
+    $q->andWhere('productCategory.level = 1');
+    $q->orWhereIn('productCategory.id', $notEmptyCats);
     $q->orderBy('productCategory.lft');
 
     $q->useResultCache(true, null, $this->getQueryHash('productCategory-sub', $params));
 
-	return $q->execute();
+    return $q->execute();
 
     $ids = $this->getIdsByQuery($q);
 
@@ -152,18 +152,14 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getDescendatIds(ProductCategory $category = null, $params = array())
   {
-    if (!$category)
-    {
-      return false;
-    }
+    $this->applyDefaultParameters($params, array('with_parent' => false));
 
-    //берем все дочение категории(мб велосипед не изобретать и можно использовать this->getNode() ?)
     $q = $this->createBaseQuery();
     $q->addWhere('productCategory.lft > ? and productCategory.rgt < ? and productCategory.root_id = ?', array($category->lft, $category->rgt, empty($category->root_id) ? $category->id : $category->root_id, ));
     $q->useResultCache(true, null, $this->getQueryHash('productCategory-descendants-'.$category->id));
 
     $categoryIds = $this->getIdsByQuery($q);
-    if (isset($params['with_ancestor']) && $params['with_ancestor'])
+    if ($params['with_parent'])
     {
       $categoryIds[] = $category->id;
     }
@@ -178,7 +174,7 @@ class ProductCategoryTable extends myDoctrineTable
       return false;
     }
 
-    $categoryIds = $this->getDescendatIds($category, array('with_ancestor' => true, ));
+    $categoryIds = $this->getDescendatIds($category, array('with_parent' => true, ));
 
     $q = TagProductRelationTable::getInstance()->createBaseQuery();
     $q->select('tagProductRelation.tag_id')

@@ -92,9 +92,9 @@ class ProductCategory extends BaseProductCategory
     return $newFilter;
   }
 
-  public function getDescendantIds()
+  public function getDescendantIds(array $params = array())
   {
-    return $this->getTable()->getDescendatIds($this);
+    return $this->getTable()->getDescendatIds($this, $params);
   }
 
   public function getTagGroupByIdWithOrder(array $ids = array())
