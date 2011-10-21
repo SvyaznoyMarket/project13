@@ -331,7 +331,7 @@ ProductRatingType:
 ProductRatingTypeProperty:
   options:
     comment: 'Свойства типа рейтинга товара'
-  actAs: [ Timestampable ]
+  actAs: [ Timestampable, Corable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     type_id:           { type: integer(20), notnull: true }
