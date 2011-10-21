@@ -19,8 +19,6 @@ class productCardActions extends myActions
   {
     $this->product = $this->getRoute()->getObject();
 
-    myDebug::dump($this->product->toArray(false));
-
     // история просмотра товаров
     $this->getUser()->getProductHistory()->addProduct($this->product);
   }
