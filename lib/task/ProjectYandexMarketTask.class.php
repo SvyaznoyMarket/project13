@@ -7,7 +7,7 @@ class ProjectYandexMarketTask extends sfBaseTask
       'name' => 'Enter.ru',
       'company' => 'Enter.ru',
       'url' => 'http://enter.ru',
-      'email' => ''
+      'email' => 'enter@enter.ru'
   );
   
   /**
@@ -227,12 +227,6 @@ EOF;
     $next = $this->_xmlResultShop->addChild('company',$this->_companyData['company']);
     file_put_contents($this->_xmlFilePath,$next->asXML(),FILE_APPEND);
     $next = $this->_xmlResultShop->addChild('url',$this->_companyData['url']);
-    file_put_contents($this->_xmlFilePath,$next->asXML(),FILE_APPEND);
-    $next = $this->_xmlResultShop->addChild('platform','');
-    file_put_contents($this->_xmlFilePath,$next->asXML(),FILE_APPEND);
-    $next = $this->_xmlResultShop->addChild('version','');
-    file_put_contents($this->_xmlFilePath,$next->asXML(),FILE_APPEND);
-    $next = $this->_xmlResultShop->addChild('agency','');
     file_put_contents($this->_xmlFilePath,$next->asXML(),FILE_APPEND);
     $next = $this->_xmlResultShop->addChild('email',$this->_companyData['email']);
     file_put_contents($this->_xmlFilePath,$next->asXML(),FILE_APPEND);
