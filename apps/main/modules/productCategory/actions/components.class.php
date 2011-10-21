@@ -88,172 +88,117 @@ class productCategoryComponents extends myComponents
           }
       }
 
+      //к каждому элементу добавляем 2 - это условная высота заголовка большой категории
+      $sizeofWideElement = 2;
+      foreach($countResult as $n => $big){
+          foreach($big as $m => $small){
+              $countResult[$n][$m] = $countResult[$n][$m] + $sizeofWideElement;
+          }
+      }
+
       $colomnsArr = array();
       //распределяем эти разделы на равные столбцы
       foreach($countResult as $mainCatId => $mainCatList){
           $catIdList = array_keys($mainCatList);
-          /*
-          switch(count($mainCatList)){
 
-              case 1:
-                  if ($mainCatList[ $catIdList[0] ]<=15)
-                  {
-                    $colomnsArr[$mainCatId][] = array(array('id' => $catIdList[0],
-                                                      'num' => $mainCatList[ $catIdList[0] ]));
-                  }
-                  elseif($mainCatList[ $catIdList[0] ]<=30)
-                  {
-                    $first = round($mainCatList[ $catIdList[0] ]/2);
-                    $second = $mainCatList[ $catIdList[0] ] - $first;
-                    $colomnsArr[$mainCatId][] = array(array('id' => $catIdList[0],
-                                                      'num' => $first
-                                                ));
-                    $colomnsArr[$mainCatId][] = array(array('id' => $catIdList[0],
-                                                      'num' => $second
-                                                ));
-                  }
-                  break;
-              case 2:
-                  if ($mainCatList[ $catIdList[0] ]<=15)
-                  {
-                    $colomnsArr[$mainCatId][] = array(array('id' => $catIdList[0],
-                                                        'num' => $mainCatList[ $catIdList[0] ]));
-                  }
-                  else
-                  {
-                    $first = round($mainCatList[ $catIdList[0] ]/2);
-                    $second = $mainCatList[ $catIdList[0] ] - $first;
-                    $colomnsArr[$mainCatId][] = array(array('id' => $catIdList[0],
-                                                      'num' => $first
-                                                ));
-                    $colomnsArr[$mainCatId][] = array(array('id' => $catIdList[0],
-                                                      'num' => $second
-                                                ));
-                  }
-                  if ($mainCatList[ $catIdList[1] ]<=15)
-                  {
-                    $colomnsArr[$mainCatId][] = array(array('id' => $catIdList[1],
-                                                        'num' => $mainCatList[ $catIdList[1] ]));
-                  }
-                  else
-                  {
-                    $first = round($mainCatList[ $catIdList[1] ]/2);
-                    $second = $mainCatList[ $catIdList[1] ] - $first;
-                    $colomnsArr[$mainCatId][] = array(array('id' => $catIdList[1],
-                                                      'num' => $first
-                                                ));
-                    $colomnsArr[$mainCatId][] = array(array('id' => $catIdList[1],
-                                                      'num' => $second
-                                                ));
-                  }
-                  break;
+         $fullColumnNum = 4;        //количество колонок
+         $avrHeight = 0;
+         foreach($mainCatList as $num) $avrHeight += $num;
+         //чуть увеличим среднее, чтоб в последней колонке не собиралось много элементов
+         $avrHeight = round($avrHeight/4); // + $avrHeight/4/100*10);   //средняя (идеальная) высота колонки
+         #echo $avrHeight .'   = '.$mainCatId.'--$avrHeight<br>';
 
-             default:
-           * */
+         $minHeight = round( $avrHeight - $avrHeight/100*30);   //максимальная -критичная высота. Отклонение 30%
+         $maxHeight = round($avrHeight + $avrHeight/100*30);   //минимальная -критичная высота. Отклонение 30%
 
-                 $fullColumnNum = 4;        //количество колонок
-                 $avrHeight = 0;
-                 foreach($mainCatList as $num) $avrHeight += $num;
-                 //чуть увеличим среднее, чтоб в последней колонке не собиралось много элементов
-                 $avrHeight = round($avrHeight/4); // + $avrHeight/4/100*10);   //средняя (идеальная) высота колонки
-                 #echo $avrHeight .'   = '.$mainCatId.'--$avrHeight<br>';
+         $useFierst = 0;
 
-                 $minHeight = $avrHeight - $avrHeight/100*30;   //максимальная -критичная высота. Отклонение 30%
-                 $maxHeight = $avrHeight + $avrHeight/100*30;   //минимальная -критичная высота. Отклонение 30%
 
+         //print_r($mainCatList);
+         //проходим по колонкам
+         unset($mainCatList['']);
+         for ($columnNum=0; $columnNum<$fullColumnNum; $columnNum++){
+
+             if (count($mainCatList)==0) break;
+
+             //если есть не законченная, используем её
+             if ($useFierst){
+                 $currentMaxId = $useFierst;
                  $useFierst = 0;
-                 //
-                 //
-                 //
-                 //
-                 //print_r($mainCatList);
-                 //проходим по колонкам
-                 unset($mainCatList['']);
-                 for ($columnNum=0; $columnNum<$fullColumnNum; $columnNum++){
-                     if (count($mainCatList)==0) break;
-
-                     //если есть не законченная, используем её
-                     if ($useFierst){
-                         $currentMaxId = $useFierst;
-                         $useFierst = 0;
-                         $writtenNum = $mainCatList[ $currentMaxId ] - 1;
-                     }
-                     else{
-                         //выбираем самую длинную на данный момент категорию
-                         $currentMaxId = 0;
-                         $currentMaxNum = 0;
-                         foreach($mainCatList as $id => $num){
-                             if ($num>$currentMaxNum){
-                                 $currentMaxNum = $num;
-                                 $currentMaxId = $id;
-                             }
-                         }
-                         $writtenNum = $mainCatList[ $currentMaxId ];
-                     }
-                     //если нельзя делать такую длинную колонку - разрежем
-                     if ($writtenNum>$maxHeight){ // && ($writtenNum-$maxHeight)>1){
-                         $writtenNum = $avrHeight;
-                         $mainCatList[ $currentMaxId ] = $writtenNum;
-                         $useFierst = $currentMaxId;
-                         //записываем самую длинную, как самую первую в колонке
-                         $colomnsArr[$mainCatId][$columnNum][] = array('id' => $currentMaxId,
-                                                                       'num' => $writtenNum);
-                        // $writtenNum = $mainCatList[ $currentMaxId ] - $writtenNum;
-                         continue;  //уходим к след. колонке
-                     }
-                     else{
-                         unset($mainCatList[ $currentMaxId ]);    //удаляем элемент из общего списка - у него уже есть место
-                         //записываем самую длинную, как самую первую в колонке
-                         $colomnsArr[$mainCatId][$columnNum][] = array('id' => $currentMaxId,
-                                                                       'num' => $writtenNum);
-                     }
-
-
-                     //слудующий шаг. оцениваем, на сколько заполнилась колонка
-                     //длинна больше среднего - точно закончили с этой колонкой
-                     if ($writtenNum>=$avrHeight) continue;
-                     //длинна меньше среднего - поищем что-либо
-                     else{
-                         //сколько максимум в эту колонку можно дописать строк
-                         $maxFreePlace = $maxHeight - $writtenNum;
-                         $freePlace = $avrHeight - $writtenNum;
-                         #echo $freePlace .'--$freePlace<br>';
-                         //ищем категорию с такой длинной
-                         $goodId = 0;
-                         $ratherGoodId = 0;
-                         foreach($mainCatList as $id => $num){
-                             if ($num==0) continue;
-                             //идеально!
-                             if ($num<=$freePlace){
-                                 $goodId = $id;
-                                 break;
-                             }
-                             //не идеально, но сойдёт
-                             elseif ($num<=$maxFreePlace){
-                                 $ratherGoodId = $id;
-                             }
-                         }
-                         if (!$goodId)
-                             $goodId = $ratherGoodId;
-                         //больше нечего добавить в эту колонку.
-                         if (!$goodId) continue;
-                         //добавляем найденый элемент в колонку
-                         $colomnsArr[$mainCatId][$columnNum][] = array('id' => $goodId,
-                                                                       'num' => $mainCatList[ $goodId ]);
-                         unset($mainCatList[ $goodId ]);    //удаляем элемент из общего списка - у него уже есть место
-
+                 $writtenNum = $mainCatList[ $currentMaxId ] - 1;
+             }
+             else{
+                 //выбираем самую длинную на данный момент категорию
+                 $currentMaxId = 0;
+                 $currentMaxNum = 0;
+                 foreach($mainCatList as $id => $num){
+                     if ($num>$currentMaxNum){
+                         $currentMaxNum = $num;
+                         $currentMaxId = $id;
                      }
                  }
-                 #print_r($mainCatList);
-                 if (count($mainCatList))
-                 foreach($mainCatList as $catId => $catNum)
-                     $colomnsArr[$mainCatId][3][] = array('id' => $catId,
-                                                                   'num' => $catNum);
+                 $writtenNum = $mainCatList[ $currentMaxId ];
+             }
+             //если нельзя делать такую длинную колонку - разрежем
+             if ($writtenNum>$maxHeight){ // && ($writtenNum-$maxHeight)>1){
+                 $writtenNum = $avrHeight;
+                 $mainCatList[ $currentMaxId ] = $writtenNum;
+                 $useFierst = $currentMaxId;
+                 //записываем самую длинную, как самую первую в колонке
+                 $colomnsArr[$mainCatId][$columnNum][] = array('id' => $currentMaxId,
+                                                               'num' => $writtenNum);
+                // $writtenNum = $mainCatList[ $currentMaxId ] - $writtenNum;
+                 continue;  //уходим к след. колонке
+             }
+             else{
+                 unset($mainCatList[ $currentMaxId ]);    //удаляем элемент из общего списка - у него уже есть место
+                 //записываем самую длинную, как самую первую в колонке
+                 $colomnsArr[$mainCatId][$columnNum][] = array('id' => $currentMaxId,
+                                                               'num' => $writtenNum);
+             }
 
-              //   break;
 
+             //слудующий шаг. оцениваем, на сколько заполнилась колонка
+             //длинна больше среднего - точно закончили с этой колонкой
+             if ($writtenNum>=$avrHeight) continue;
+             //длинна меньше среднего - поищем что-либо
+             else{
+                 //сколько максимум в эту колонку можно дописать строк
+                 $maxFreePlace = $maxHeight - $writtenNum;
+                 $freePlace = $avrHeight - $writtenNum;
+                 #echo $freePlace .'--$freePlace<br>';
+                 //ищем категорию с такой длинной
+                 $goodId = 0;
+                 $ratherGoodId = 0;
+                 foreach($mainCatList as $id => $num){
+                     if ($num<=$sizeofWideElement) continue;
+                     //идеально!
+                     if ($num<=$freePlace){
+                         $goodId = $id;
+                         break;
+                     }
+                     //не идеально, но сойдёт
+                     elseif ($num<=$maxFreePlace){
+                         $ratherGoodId = $id;
+                     }
+                 }
+                 if (!$goodId)
+                     $goodId = $ratherGoodId;
+                 //больше нечего добавить в эту колонку.
+                 if (!$goodId) continue;
+                 //добавляем найденый элемент в колонку
+                 $colomnsArr[$mainCatId][$columnNum][] = array('id' => $goodId,
+                                                               'num' => $mainCatList[ $goodId ]);
+                 unset($mainCatList[ $goodId ]);    //удаляем элемент из общего списка - у него уже есть место
 
-          //}
+             }
+         }
+         #print_r($mainCatList);
+         if (count($mainCatList))
+         foreach($mainCatList as $catId => $catNum)
+             $colomnsArr[$mainCatId][ $fullColumnNum-1 ][] = array('id' => $catId,
+                                                           'num' => $catNum);
+
       }
 
 
