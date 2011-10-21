@@ -59,7 +59,7 @@ EOF;
     //5) Обновить у product поля is_instock, view_list, view_show
     $this->logSection('INFO', 'Обновляю у product поля is_instock, view_list, view_show');
     $count = $connection->exec("UPDATE `product` `p` INNER JOIN `stock_product_relation` `sp` ON `sp`.`product_id` = `p`.`id` INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> ''");
-    $count += $connection->exec("UPDATE `product` `p` INNER JOIN `product_category_product_relation` `pcp` ON `pcp`.`product_id` = `p`.`id` INNER JOIN `product_category` `pc` ON `pc`.`id` = `pcp`.`product_category_id` AND `pc`.`name` = 'Мебель' INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> ''");
+    $count += $connection->exec("UPDATE `product` `p` INNER JOIN `product_category_product_relation` `pcp` ON `pcp`.`product_id` = `p`.`id` INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> '' AND `pcp`.`product_category_id` IN (SELECT `pc`.`id` FROM `product_category` `pc` INNER JOIN `product_category` `mebel` ON `mebel`.`id` = 2 WHERE `pc`.`lft` > `mebel`.`lft` AND `pc`.`rgt` < `mebel`.`rgt` AND `pc`.`root_id` = `mebel`.`root_id`)");
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //6) Сделать update значений характеристик: поменять true и false на "да" и "нет"
@@ -112,5 +112,11 @@ EOF;
     $this->logSection('INFO', 'Устанавливаю position для группы тэгов');
     $count = $connection->exec("UPDATE `tag_group` `tg` SET `tg`.`position` = (SELECT sum(`tgpt`.`position`) FROM `tag_group_product_type_relation` `tgpt` WHERE `tag_group_id` = `tg`.`id` GROUP BY `tgpt`.`tag_group_id`)");
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+
+    //9) устанавливаю картинку-заглушку для категорий без картинок
+    $this->logSection('INFO', 'Устанавливаю картинку-заглушку для категорий без картинок');
+    $count = $connection->exec("UPDATE `product_category` `pc` SET `pc`.`photo` = 'default.jpg' WHERE `pc`.`photo` IS NULL");
+    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+
   }
 }
