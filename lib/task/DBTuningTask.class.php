@@ -58,7 +58,7 @@ EOF;
 
     //5) Обновить у product поля is_instock, view_list, view_show
     $this->logSection('INFO', 'Обновляю у product поля is_instock, view_list, view_show');
-    $count = $connection->exec("UPDATE `product` `p` INNER JOIN `stock_product_relation` `sp` ON `sp`.`product_id` = `p`.`id` INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> ''");
+    $count = $connection->exec("UPDATE `product` `p` INNER JOIN `stock_product_relation` `sp` ON `sp`.`product_id` = `p`.`id` AND `sp`.`quantity` > 0 INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> ''");
     $count += $connection->exec("UPDATE `product` `p` INNER JOIN `product_category_product_relation` `pcp` ON `pcp`.`product_id` = `p`.`id` INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> '' AND `pcp`.`product_category_id` IN (SELECT `pc`.`id` FROM `product_category` `pc` INNER JOIN `product_category` `mebel` ON `mebel`.`id` = 2 WHERE `pc`.`lft` > `mebel`.`lft` AND `pc`.`rgt` < `mebel`.`rgt` AND `pc`.`root_id` = `mebel`.`root_id`)");
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
