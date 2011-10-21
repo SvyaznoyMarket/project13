@@ -108,7 +108,6 @@ class ProductTable extends myDoctrineTable
       'view'           => $params['view'],
       'group_property' => $params['group_property'],
     ));
-myDebug::dump($record);
 
     if ($params['with_properties'])
     {
@@ -122,7 +121,6 @@ myDebug::dump($record);
         }
         $productPropertyRelationArray[$propertyRelation['property_id']][] = $propertyRelation;
       }
-myDebug::dump($productPropertyRelationArray);
 
       // тип товара
       foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
@@ -131,22 +129,31 @@ myDebug::dump($productPropertyRelationArray);
 
         $record['Parameter'][] = new ProductParameter($propertyRelation, $productPropertyRelationArray[$propertyRelation['property_id']]);
       }
-myDebug::dump($record['Parameter']->toArray(false));
+
+      $parameterGroup = array();
       // группировка параметров товара по группам
       if ($params['group_property'])
       {
-        foreach ($record['Type']['PropertyGroup'] as $propertyGroup)
+        foreach ($record['Type']['PropertyGroupRelation'] as $propertyGroupRelation)
         {
+          $propertyGroup = $propertyGroupRelation['PropertyGroup'];
           $productParameterArray = array();
           foreach ($record['Parameter'] as $productParameter)
           {
-            if ($productParameter->getGroupId() == $propertyGroup->id)
+            if ($productParameter->getGroupId() == $propertyGroup['id'])
             {
               $productParameterArray[] = $productParameter;
             }
           }
-          $record['ParameterGroup'][] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+          //myDebug::dump($propertyGroup);
+          $parameterGroup[$propertyGroupRelation['position']] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+          //$record['ParameterGroup'][$propertyGroup['ProductTypePropertyGroupRelation'][0]->position] = new ProductParameterGroup($propertyGroup, $productParameterArray);
         }
+      }
+      ksort($parameterGroup);
+      foreach ($parameterGroup as $productParameterGroup)
+      {
+        $record['ParameterGroup'][] = $productParameterGroup;
       }
     }
 
