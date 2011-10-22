@@ -33,6 +33,10 @@ class orderActions extends myActions
 
   public function executeLogin(sfWebRequest $request)
   {
+    if (!$this->getUser()->getCart()->count())
+    {
+      $this->redirect($this->getUser()->getReferer());
+    }
 	  if (!$this->getUser()->isAuthenticated())
     {
       $this->formSignin = new UserFormSignin();
