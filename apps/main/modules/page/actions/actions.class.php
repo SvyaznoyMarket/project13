@@ -19,7 +19,13 @@ class pageActions extends myActions
   {
     $this->page = PageTable::getInstance()->getByToken($request['page']);
     $this->forward404Unless($this->page);
-    
+
+    //TODO: ЭТО НАДО УБИТЬ, КОГДА ПОЯВИТСЯ НОРМАЛЬНЫЙ РАЗДЕЛ Service F1
+    if ('f1' == $this->page->token)
+    {
+      $this->setLayout('layout');
+    }
+
     $this->setVar('page', $this->page, true);
   }
  /**

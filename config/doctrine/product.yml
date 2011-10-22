@@ -148,6 +148,7 @@ ProductTypePropertyGroupRelation:
   columns:
     product_type_id:   { type: integer(20), primary: true, notnull: true }
     property_group_id: { type: integer(20), primary: true, notnull: true }
+    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
     ProductType:       { class: ProductType, foreignAlias: PropertyGroupRelation, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     PropertyGroup:     { class: ProductPropertyGroup, foreignAlias: ProductTypeRelation, local: property_group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

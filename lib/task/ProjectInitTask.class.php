@@ -487,6 +487,7 @@ EOF;
         $relation = new ProductTypePropertyGroupRelation();
         $relation->fromArray(array(
           'property_group_id' => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['id'], true),
+          'position'     => $relationData['position'],
         ));
         $record->PropertyGroupRelation[] = $relation;
       }

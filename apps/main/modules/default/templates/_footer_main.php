@@ -6,9 +6,10 @@
 
 
 <div class="links">
-    <a href="#" class="link1">Сервис</a>
-    <a href="http://www.svyaznoybank.ru/" class="link2">Связной</a>
-    <a href="#" class="link3">Финансовые услуги</a>
+    <a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>" class="link4">О проекте</a>
+    <a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="link1">Сервис</a>
+    <a class="link2">Связной</a>
+    <a class="link3">Финансовые услуги</a>
 </div>
 
 <div class="copy">

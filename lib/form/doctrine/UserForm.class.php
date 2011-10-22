@@ -20,13 +20,15 @@ class UserForm extends BaseUserForm
     $this->disableCSRFProtection();
 
   //  $this->widgetSchema['id']->setLabel('ID');
-    //$this->validatorSchema['id'] = new sfValidatorPass();  
-    
+    //$this->validatorSchema['id'] = new sfValidatorPass();
+
     $this->widgetSchema['first_name']->setLabel('Имя');
-    
+
     $this->widgetSchema['middle_name']->setLabel('Отчество');
-    
+    $this->validatorSchema['middle_name'] = new sfValidatorPass();
+
     $this->widgetSchema['last_name']->setLabel('Фамилия');
+    $this->validatorSchema['last_name'] = new sfValidatorPass();
 
     $this->widgetSchema['gender']->setLabel('Ваш пол');
 
@@ -41,10 +43,11 @@ class UserForm extends BaseUserForm
     $this->widgetSchema['birthday']->setLabel('Дата рождения');
 
     $this->widgetSchema['occupation']->setLabel('Род деятельности');
+    $this->validatorSchema['occupation'] = new sfValidatorPass();
 
     #print_r(get_class_methods($this->widgetSchema['occupation']));
     $useFields = array(
-//      'id',  
+//      'id',
       'first_name',
       'middle_name',
       'last_name',
@@ -58,21 +61,21 @@ class UserForm extends BaseUserForm
     );
     //одинаковые стили для всех полей
     foreach($useFields as $field){
-        $this->widgetSchema[$field]->setAttribute('class', 'text width418 mb10');         
+        $this->widgetSchema[$field]->setAttribute('class', 'text width418 mb10');
     }
     //кроме
 	$this->widgetSchema['gender']->setOption('choices', array('male' => 'Мужской', 'female' => 'Женский'));
-    $this->widgetSchema['gender']->setAttribute('class', 'styled');  
-	
+    $this->widgetSchema['gender']->setAttribute('class', 'styled');
+
 	$years = range(date('Y') - 7, date('Y') - 80);
     $this->widgetSchema['birthday']->setOption('years', array_combine($years, $years));
-    $this->widgetSchema['birthday']->setAttribute('class', 'styled');         
-    
+    $this->widgetSchema['birthday']->setAttribute('class', 'styled');
+
     $this->useFields($useFields);
 
     $this->widgetSchema->setNameFormat('user[%s]');
   }
-  
+
   protected function updateNameColumn($value)
   {
     if (empty($value))
@@ -81,6 +84,6 @@ class UserForm extends BaseUserForm
     }
 
     return $value;
-  }  
- 
+  }
+
 }

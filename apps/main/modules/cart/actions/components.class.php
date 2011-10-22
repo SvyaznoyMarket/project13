@@ -30,10 +30,6 @@ class cartComponents extends myComponents
 	}
 
     $cart = $this->getUser()->getCart();
-    /*if (!$this->product->is_insale)
-    {
-      return sfView::NONE;
-    }*/
 
     if ($cart->hasProduct($this->product->id))
     {

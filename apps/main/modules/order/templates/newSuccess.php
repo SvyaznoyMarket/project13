@@ -14,11 +14,11 @@
         <ul class="steplist steplist2">
             <li><a href="<?php echo url_for('order_login') ?>"><span>Шаг 1</span>Данные<br />покупателя</a></li>
             <li><a href="<?php echo url_for('order_new') ?>"><span>Шаг 2</span>Способ доставки<br />и оплаты</a></li>
-            <li><span>Шаг 3</span>Подтверждение<br />заказа</li>
+            <li class="last"><span>Шаг 3</span>Подтверждение<br />заказа</li>
         </ul>
 <?php end_slot() ?>
 
-<form class="form order-form" data-update-field-url="<?php echo url_for('order_updateField', array('step' => 1)) ?>" action="<?php echo url_for('order_new', array('step' => 1)) ?>" method="post">
+<form class="form order-form" data-update-field-url="<?php echo url_for('order_updateField', array('step' => 1)) ?>" action="<?php echo url_for('order_new', array('step' => 1)) ?>" method="post" style="width: 665px;">
   <?php echo $form->renderHiddenFields() ?>
 
   <div class="fl width215 mr20"><strong class="font16">Способ получения заказа:</strong></div>

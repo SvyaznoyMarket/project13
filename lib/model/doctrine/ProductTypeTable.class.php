@@ -45,13 +45,16 @@ class ProductTypeTable extends myDoctrineTable
     {
       $with = (in_array($params['view'], array('show', 'list'))) ? (' WITH productTypePropertyRelation.view_'.$params['view'].' = true') : '';
       $q->leftJoin('productType.PropertyRelation productTypePropertyRelation'.$with)
-        ->addOrderBy('productTypePropertyRelation.position')
+        ->addOrderBy('productTypePropertyRelation.group_id, productTypePropertyRelation.group_position')
       ;
 
       if ($params['group_property'])
       {
-        $q->leftJoin('productType.PropertyGroup productPropertyGroup')
-          ->addOrderBy('productPropertyGroup.position')
+        $q->leftJoin('productType.PropertyGroupRelation propertyGroupRelation')
+          ->leftJoin('propertyGroupRelation.PropertyGroup propertyGroup')
+          ->addOrderBy('propertyGroupRelation.position')
+//        $q->leftJoin('productType.PropertyGroup productPropertyGroup')
+//          ->addOrderBy('productPropertyGroup.position')
         ;
       }
     }

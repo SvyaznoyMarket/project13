@@ -544,6 +544,11 @@ order_complete:
   url:   /orders/complete
   param: { module: order, action: complete }
 #
+# order complete
+order_error:
+  url:   /orders/error
+  param: { module: order, action: error }
+#
 # order show
 order_show:
   url:   /orders/:order
@@ -597,9 +602,9 @@ service_show:
   options:  { model: Service, type: object, method: getForRoute }
 #
 # F1 servis catalog
-service_category:
-  url:      /f1
-  param:    { module: service, action: category }
+#service_category:
+#  url:      /f1
+#  param:    { module: service, action: category }
 #
 # F1 servis catalog
 service_list:

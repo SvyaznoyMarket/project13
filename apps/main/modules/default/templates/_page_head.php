@@ -11,6 +11,5 @@
   <div class="searchbox">
     <?php include_component('search', 'form') ?>
   </div>
-  <div class="clear pb20"></div>
-  <!--<div class="line"></div>-->
+  <div class="clear"></div>
 </div>
