@@ -1,0 +1,1 @@
+<?php include_partial('form_password_token') ?>

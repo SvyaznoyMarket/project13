@@ -98,6 +98,23 @@ class myUser extends myGuardSecurityUser
 
     return $ip;
   }
+  
+public function getRealIpAddr()
+{
+  if (!empty($_SERVER['HTTP_CLIENT_IP'])) // Определение IP-адреса
+  {
+    $ip=$_SERVER['HTTP_CLIENT_IP'];
+  }
+  elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) // Проверка того, что IP идёт через прокси
+  {
+    $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+  }
+  else
+  {
+    $ip=$_SERVER['REMOTE_ADDR'];
+  }
+  return $ip;
+}  
 
   protected function getUserData($name)
   {

@@ -73,9 +73,10 @@ foreach ($p3d as $p3d_obj)
   </div>
   <div class="fr ar pb15">
     <div class="goodsbarbig">
-      <a href="<?php echo url_for('cart_add', array('product' => $product->token, 'quantity' => 1)) ?>" class="link1"></a>
-      <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>#" class="link2"></a>
-      <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>#" class="link3"></a>
+		<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
+<!--      <a href="<?php echo url_for('cart_add', array('product' => $product->token, 'quantity' => 1)) ?>" class="link1"></a>-->
+      <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
+      <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
     </div>
 <!--            <div class="pb5"><strong><a href="" class="red underline">Купить быстро в 1 клик</a></strong></div>-->
 <!--            <a href="<?php echo url_for('productStock', $sf_data->getRaw('product')) ?>" class="underline">Где купить в магазинах?</a>-->
