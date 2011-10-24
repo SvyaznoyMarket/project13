@@ -1,5 +1,7 @@
 <div class="goodsbox height250"<?php echo (isset($ii) && $ii > 3) ? ' style="display:none;"' : '' ?>>
-  <div class="photo"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
+  <div class="photo"><!--<i class="new" title="Новинка"></i>-->
+  	<a href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></a>
+  	</div>
 	<?php
 		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
 		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
@@ -15,7 +17,9 @@
       <div class="lt" data-url="<?php echo $item['url'] ?>">
         <!--a href="" class="fastview">Быстрый просмотр</a-->
 
-        <div class="photo"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
+        <div class="photo"><!--<i class="new" title="Новинка"></i>-->
+        <a href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></a>
+        </div>
         <?php
 		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
 		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
