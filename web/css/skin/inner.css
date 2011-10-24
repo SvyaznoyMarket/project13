@@ -1158,9 +1158,9 @@ border-radius: 5px;
 .ui-effects-transfer{ border:1px dashed black; z-index:102;}
 
 .tearmlist {float:left; width:100%}
-.tearmlist DT {float:left; width:905px; padding:0 0 15px 15px; font-size:16px; cursor:pointer; background:url(/css/skin/img/icons.png) no-repeat -6px -49px}
-.tearmlist DT.current {color:#ffa901; font-weight:bold; background-position:-6px 9px}
-.tearmlist DD {display:none; float:left; width:905px; padding:0 0 10px 15px}
+.tearmlist DT {float:left; width:905px; padding:0 0 15px 15px; font-size:16px; /*cursor:pointer;*/ background:url(/css/skin/img/icons.png) no-repeat -6px -49px}
+/*.tearmlist DT.current {color:#ffa901; font-weight:bold; background-position:-6px 9px}*/
+.tearmlist DD {/*display:none;*/ float:left; width:905px; padding:0 0 10px 15px}
 .tearmlist DD LI {float:left; width:905px; padding-bottom:10px}
 .tearmlist DD DIV {float:right; width:870px}
 
