@@ -1,2 +1,14 @@
 User-agent: *
-Disallow:
+Disallow: /orders/*
+Disallow: /private/*
+Disallow: /terms
+Disallow: /how_get_order
+Disallow: /how_pay
+Disallow: /cart
+Disallow: /login
+Disallow: /about_company
+Disallow: /search
+Disallow: /how_make_order
+Allow: /
+
+
