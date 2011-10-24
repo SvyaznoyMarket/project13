@@ -77,7 +77,8 @@ $(document).ready(function(){
 	}
 	
 	/* stuff goes into lightbox */
-	$('.boxhover .lt').live('click', function() {
+	$('.boxhover .lt').live('click', function(e) {
+		console.info(e.which)
 		if( $(this).attr('data-url') ) 
 			window.location.href = $(this).attr('data-url')
 	})
@@ -114,7 +115,7 @@ $(document).ready(function(){
 		return false
 	})
 	$('.goodsbarbig .link1').click( function() {
-		var button = this
+		var button = thisq
 		if( $(button).hasClass('disabled') )
 			return false
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {			

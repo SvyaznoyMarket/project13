@@ -516,6 +516,16 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 		zooObj = new zoomer( zoo , self)
 	}
 	
+	this.cursorHand = function(){
+		jnode.css('cursor','url(/css/skin/cursor/cursor_1.png), url(/css/skin/cursor/cursor_1.gif), url(/css/skin/cursor/cursor_ie_1.cur), crosshair')
+	}
+
+	this.cursorDrag = function(){
+		jnode.css('cursor','url(/css/skin/cursor/cursor_2.png), url(/css/skin/cursor/cursor_2.gif), url(/css/skin/cursor/cursor_ie_2.cur), move')
+	}
+	
+	self.cursorHand()
+	
 	this.setDimensionProps = function( px ) {
 		var resol = px ? px : vzooms[this.zoom - 1]
 		jnode.attr('width', resol)
@@ -589,7 +599,7 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 			}
 			evstamp = e.timeStamp
 			active = true
-			jnode.css('cursor', 'move')
+			self.cursorDrag()
 		}
 	})	
 	
@@ -609,7 +619,7 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 	
 	$(document).bind('mouseup.zoomer', function (e) {	
 			active = false
-			jnode.css('cursor', 'default')
+			self.cursorHand()
 	})
 	
 	this.dropping = function( e, mdelta ) {
