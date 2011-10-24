@@ -1,7 +1,10 @@
-<form class="event-submit" data-event="form.submit" data-reload="true" action="<?php echo url_for('@user_quickRegister') ?>" method="post">
-  <ul class="form">
-    <?php echo $form ?>
-  </ul>
+<form class="form" action="<?php echo url_for('@user_quickRegister') ?>" method="post">
 
-  <input type="submit" value="Готово!" />
+  <div class="pb5">Email:</div>
+  <div class="pb5">
+    <?php echo $form['email']->renderError() ?>
+    <?php echo $form['email']->render(array('class' => 'text width315 mb10')) ?>
+  </div>
+
+  <input type="submit" value="Готово!" class="button bigbutton" />
 </form>
