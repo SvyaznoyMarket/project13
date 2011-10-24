@@ -91,6 +91,11 @@ class User extends BaseUser
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
+
+    if ('0000-00-00' == $data['birthday'])
+    {
+      $this->birthday = null;
+    }
   }
 
 }

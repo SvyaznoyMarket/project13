@@ -6,6 +6,7 @@ User:
     Timestampable: ~
     Corable:       ~
   columns:
+    last_ip:           { type: string(128), notnull: false, default: null, comment: 'Последний ip-адрес' }
     region_id:         { type: integer(20), notnull: false, default: null }
     is_legal:          { type: boolean, notnull: true, default: false, comment: 'Юр лицо?' }
     type:              { type: enum, length: 10, values: [admin, client, partner], notnull: true, default: client }
