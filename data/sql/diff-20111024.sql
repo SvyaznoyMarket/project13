@@ -1,0 +1,1 @@
+ALTER TABLE `task`  ADD COLUMN `attempt` INT(4) NOT NULL DEFAULT '0' COMMENT 'Номер неудачной попытки' AFTER `content`;

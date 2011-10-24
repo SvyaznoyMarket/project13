@@ -120,6 +120,8 @@ EOF;
           }
           catch (Exception $e) {
             $this->logSection($packet['type'], ucfirst($action).' entity #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
+            $this->task->attempt++;
+            $this->task->save();
           }
         }
         // model doesn't exists
