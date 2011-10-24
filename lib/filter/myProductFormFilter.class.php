@@ -15,6 +15,7 @@ class myProductFormFilter extends sfFormFilter
       throw new InvalidArgumentException('You must provide a productCategory object.');
     }
     $creator = $this->getOption('creator', null);
+    $productType = $this->getOption('productType', null);
 
     $productTable = ProductTable::getInstance();
 
@@ -67,6 +68,13 @@ class myProductFormFilter extends sfFormFilter
       $this->setValidator($index, new sfValidatorPass());
       $this->widgetSchema[$index]->setLabel($productFilter->name);
     }
+    
+    if ($productType)
+    {
+      $this->widgetSchema['type'] = new sfWidgetFormInputHidden();
+      $this->validatorSchema['type'] = new sfValidatorPass();
+      $this->setDefault('type', $productType->id);
+    }
 
     $this->widgetSchema->setNameFormat('f[%s]');
   }
@@ -74,6 +82,7 @@ class myProductFormFilter extends sfFormFilter
   public function buildQuery(myDoctrineQuery $q)
   {
     $productCategory = $this->getOption('productCategory');
+    $productType = $this->getOption('productType', null);
 
     $filter = array(
       'category'   => $productCategory,
@@ -83,6 +92,7 @@ class myProductFormFilter extends sfFormFilter
         'to'   => $this->values['price']['to'],
       ),
       'parameters' => array(),
+      'type'       => $productType,
     );
 
     $productFilterList = $productCategory->FilterGroup->Filter;

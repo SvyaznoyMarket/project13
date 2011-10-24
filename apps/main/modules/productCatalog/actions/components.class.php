@@ -144,7 +144,11 @@ class productCatalogComponents extends myComponents
   public function executeFilter_parameter()
   {
   }
-
+  /**
+  * Executes tag component
+  *
+  * @param myProductTagFormFilter $form Форма фильтров
+  */
   public function executeTag()
   {
     if (empty($this->form))
@@ -156,6 +160,5 @@ class productCatalogComponents extends myComponents
     }
 
     $this->url = url_for('productCatalog_tag', $this->productCategory);
-
   }
 }
