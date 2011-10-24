@@ -20,3 +20,42 @@
           <input type="submit" class="button bigbutton fr" value="Продолжить покупки" />
         </form>
     <!-- /Basket -->
+<?php if ($order['token']): ?>
+<script type="text/javascript">
+	$(function(){
+		 _gaq.push(['_addTrans',
+		    '<?php echo $order['token'] ?>',           // Номер заказа
+		    '<?php echo $order->Shop ?>',  // Название магазина (Необязательно)
+		    '<?php echo str_replace(',', '.', $order['sum']) ?>',          // Полная сумма заказа (дроби через точку)
+		    '0',              // Стоимость доставки (дроби через точку)
+		    '<?php echo $order->getCityName() ?>',       // Город доставки (Необязательно)
+		    '<?php echo $order->getAreaName() ?>',     // Область (необязательно)
+		    '<?php echo $order->getCountryName() ?>'             // Страна (нобязательно)
+		  ]);
+		 var yaParams = {
+			 'order_id': '<?php echo $order['token'] ?>',
+			 'order_price': '<?php echo str_replace(',', '.', $order['sum']) ?>',
+			 'currency': 'RUR',
+			 'exchange_rate': 1,
+			 'goods': []
+		 };
+		 <?php foreach ($order->ProductRelation as $product): ?>
+		 _gaq.push(['_addItem',
+		    '<?php echo $order['token'] ?>',           // Номер заказа
+		    '<?php echo $product->Product['article'] ?>',           // Артикул
+		    '<?php echo $product->Product['name'] ?>',        // Название товара
+		    '<?php echo $product->Product->getMainCategory() ?>',   // Категория товара 
+		    '<?php echo str_replace(',', '.', $product['price']) ?>',          // Стоимость 1 единицы товара
+		    '<?php echo str_replace(',', '.', $product['quantity']) ?>'               // Количество товара
+		  ]);
+		 yaParams.goods.push({
+			 'id': '<?php echo $product->Product['article'] ?>',
+			 'name': '<?php echo $product->Product['name'] ?>',
+			 'price': '<?php echo str_replace(',', '.', $product['price']) ?>'
+		 });
+		 <?php endforeach ?>
+		 _gaq.push(['_trackTrans']);
+		 window.yaCounter10067653.params(yaParams);
+	});
+</script>
+<?php endif ?>
