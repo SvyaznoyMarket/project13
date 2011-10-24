@@ -8,7 +8,6 @@ $(document).ready(function() {
     form.ajaxSubmit({
       async: false,
       success: function(response) {
-        console.info(response);
         if (true === response.success) {
           form.unbind('submit')
           form.submit()
