@@ -38,6 +38,7 @@ class Order extends BaseOrder
   {
     $data = parent::exportToCore();
 
+    /*
     $data['user_id']              = $this->User->core_id;
     $data['payment_id']           = $this->PaymentMethod->core_id;
     $data['geo_id']               = $this->Region->core_id;
@@ -46,6 +47,7 @@ class Order extends BaseOrder
     $data['shop_id']              = $this->Shop->core_id;
     $data['address_id']           = $this->UserAddress->core_id;
     $data['satus_id']             = $this->Status->core_id;
+    */
     $data['store_id']             = null;
     $data['type_id']              = 1;
     $data['ip']                   = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null; //sfContext::getInstance()->getUser()->getIp();
@@ -71,23 +73,6 @@ class Order extends BaseOrder
     parent::importFromCore($data);
 
     //$this->type = 1 == $data['type_id'] ? 'order' : 'preorder';
-
-    // User
-    $this->user_id = UserTable::getInstance()->getByCoreId($data['user_id']);
-    if (!empty($data['user_id']) && empty($this->user_id))
-    {
-      if (!$data = Core::getInstance()->getUser($data['user_id']))
-      {
-        throw new Exception('Can\'t create User ##'.$data['user_id']);
-      }
-
-      $user = new User();
-      $user->importFromCore($data);
-      $user->setCorePush(false);
-      $user->save();
-    }
-
-    $this->status_id = OrderStatusTable::getInstance()->getIdByCoreId($data['status_id']);
   }
 
   public function isOnlinePayment()

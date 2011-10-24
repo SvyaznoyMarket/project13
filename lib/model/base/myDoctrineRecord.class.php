@@ -84,7 +84,19 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
 
     foreach ($mapping as $k => $v)
     {
-      $data[$k] = $this->get($v);
+      if (is_array($v))
+      {
+        // checks relation
+        if (!empty($v['name']) && !empty($v['rel']))
+        {
+          $model = $this->getTable()->getRelation($v['rel'])->getTable()->getComponentName();
+          $data[$k] = Doctrine_Core::getTable($model)->getCoreIdById($this->get($v['name']));
+        }
+      }
+      else {
+        $data[$k] = $this->get($v);
+      }
+
     }
 
     if (!$this->exists() && (isset($data['id']) || empty($data['id'])))
@@ -106,7 +118,18 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
 
     foreach ($mapping as $k => $v)
     {
-      $this->set($v, $data[$k]);
+      if (is_array($v))
+      {
+        // checks relation
+        if (!empty($v['name']) && !empty($v['rel']))
+        {
+          $model = $this->getTable()->getRelation($v['rel'])->getTable()->getComponentName();
+          $this->set($v['name'], Doctrine_Core::getTable($model)->getIdByCoreId($data[$k]));
+        }
+      }
+      else {
+        $this->set($v, $data[$k]);
+      }
     }
   }
 

@@ -2,9 +2,10 @@ User:
   options:
     comment: 'Пользователь'
   inheritance: { type: simple, extends: GuardUser }
-  actAs: [ Timestampable, Corable ]
+  actAs:
+    Timestampable: ~
+    Corable:       ~
   columns:
-#    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     region_id:         { type: integer(20), notnull: false, default: null }
     is_legal:          { type: boolean, notnull: true, default: false, comment: 'Юр лицо?' }
     type:              { type: enum, length: 10, values: [admin, client, partner], notnull: true, default: client }
@@ -22,7 +23,9 @@ User:
 UserProfile:
   options:
     comment: 'Профайл пользователя'
-  actAs: [ Timestampable, Corable ]
+  actAs:
+    Timestampable: ~
+    Corable:       ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     source_id:         { type: string(255), notnull: true, comment: 'Идентификатор в социальной сети' }
@@ -35,7 +38,8 @@ UserProfile:
 UserTag:
   options:
     comment: 'Пользовательские теги'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -48,7 +52,8 @@ UserTag:
 UserTagProductRelation:
   options:
     comment: 'Связь пользовательских тегов и товаров'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
   columns:
     tag_id:            { type: integer(20), primary: true, notnull: true }
     product_id:        { type: integer(20), primary: true, notnull: true }
@@ -60,7 +65,8 @@ UserTagProductRelation:
 UserDelayedProduct:
   options:
     comment: 'Отложенные товары пользователя'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
   columns:
     user_id:           { type: integer(20), primary: true, notnull: true }
     product_id:        { type: integer(20), primary: true, notnull: true }
@@ -72,7 +78,8 @@ UserDelayedProduct:
 UserProductNotice:
   options:
     comment: 'Пользовательские уведомления о товаре'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
   columns:
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     type:              { type: enum, length: 10, primary: true, values: [ insale, price, comment ], notnull: true, comment: 'Тип уведомления: товар появился в магазинах, изменилась цена, появились отзывы' }
@@ -86,7 +93,9 @@ UserProductNotice:
 UserProductRating:
   options:
     comment: 'Пользовательские оценки товара'
-  actAs: [ Timestampable, Corable ]
+  actAs:
+    Timestampable: ~
+    Corable:       ~
   columns:
     property_id:       { type: integer(20), primary: true, notnull: true }
     user_id:           { type: integer(20), primary: true, notnull: true }
@@ -100,7 +109,8 @@ UserProductRating:
 UserProductRatingTotal:
   options:
     comment: 'Общие пользовательские оценки товара'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
   columns:
     user_id:           { type: integer(20), primary: true, notnull: true }
     product_id:        { type: integer(20), primary: true, notnull: true }
@@ -113,7 +123,9 @@ UserProductRatingTotal:
 UserAddress:
   options:
     comment: 'Адрес пользователя для доставки'
-  actAs: [ Timestampable, Corable ]
+  actAs:
+    Timestampable: ~
+    Corable:       ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     user_id:           { type: integer(20), notnull: true }

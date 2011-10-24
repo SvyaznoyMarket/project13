@@ -10,7 +10,7 @@ class ProjectSyncTask extends sfBaseTask
     ));
 
     $this->addOptions(array(
-      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'main'),
+      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'core'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev_green'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('dump', null, sfCommandOption::PARAMETER_NONE, 'Only dump response'),
@@ -96,7 +96,7 @@ EOF;
             // если действие "обновить", но запись с таким core_id не существует
             if (!$record && ('update' == $action))
             {
-              $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: {$table->getComponentName()} doesn't exists. Skip...", null, 'ERROR');
+              $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: {$table->getComponentName()} doesn't exists. Force create...", null, 'ERROR');
             }
             // если действие "удалить", но запись с таким core_id не существует
             if (!$record && ('delete' == $action))
@@ -113,11 +113,18 @@ EOF;
             $record->setCorePush(false);
             $record->save();
 
+            $this->task->status = 'success';
+            $this->task->save();
+
             //myDebug::dump($record);
           }
           catch (Exception $e) {
             $this->logSection($packet['type'], ucfirst($action).' entity #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
           }
+        }
+        // model doesn't exists
+        else {
+          $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: model doesn't exists. Skip...", null, 'ERROR');
         }
       }
     }

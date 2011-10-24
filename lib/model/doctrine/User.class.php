@@ -82,8 +82,8 @@ class User extends BaseUser
   public function exportToCore()
   {
     $data = parent::exportToCore();
+
     $data['sex'] = 0;
-	  $data['geo_id'] = $this->getRegion()->core_id;
 
     return $data;
   }
@@ -91,8 +91,6 @@ class User extends BaseUser
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
-
-    $this->region_id = RegionTable::getInstance()->getIdByCoreId($data['geo_id']);
   }
 
 }

@@ -1,6 +1,8 @@
 Creator:
   - brand
   - Brands
+DeliveryPeriod:
+  - delivery_interval
 Order:
   - order
 Product:
@@ -10,6 +12,10 @@ ProductCategory:
   - ItemHierarchy
 ProductComment:
   - product_opinion
+ProductPrice:
+  - product_price
+ProductPriceList:
+  - product_price_list
 ProductProperty:
   - product_property
 ProductPropertyGroup:
@@ -31,14 +37,8 @@ Tag:
 TagGroup:
   - tag_group
   - GroupsTags
-#User:
-#  - user
-ProductPriceList:
-  - product_price_list
 ServiceCategory:
   - service_category
-ProductPrice:
-  - product_price
 Service:
   - service
 #DeliveryType:
@@ -49,5 +49,5 @@ StockProductRelation:
   - product_stock
 Stock:
   - store
-DeliveryPeriod:
-  - delivery_interval
+User:
+  - user
