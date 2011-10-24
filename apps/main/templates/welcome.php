@@ -8,7 +8,7 @@
     <link href="/css/skin/entry.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
     var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-25485956-2']);
+    _gaq.push(['_setAccount', 'UA-25485956-1']);
     _gaq.push(['_addOrganic', 'nova.rambler.ru', 'query']);
     _gaq.push(['_addOrganic', 'go.mail.ru', 'q']);
     _gaq.push(['_addOrganic', 'nigma.ru', 's']);
