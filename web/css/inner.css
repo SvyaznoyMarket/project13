@@ -3,10 +3,10 @@ HTML {width:100%; height:100%;  font-size:100.01%}
 BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,helvetica,sans-serif; color:#000; background:#f6f1e9}
 .allpage {width:920px; padding:0 20px; height:auto; min-height:100%; margin:0 auto; background-color:#fff}
 * html .allpage {height:100%}
-.allpageinner {padding-bottom:270px; position:relative}
+.allpageinner {padding-bottom:331px; position:relative}
 .buyingpage {padding-bottom:96px}
 *+ html .allpageinner {float:left; width:100%} /* for IE7 */
-.footer {width:920px; height:261px; margin:-261px auto 0 auto; position:relative}
+.footer {width:920px; height:311px; margin:-311px auto 0 auto; position:relative}
 .lowfooter {height:66px; margin:-66px auto 0 auto}
 
 
@@ -24,7 +24,7 @@ A.nodecor {text-decoration:none}
 .orange, .orange:hover, .orange.underline:hover {color:#ffa901}
 .green {color:#6ea428}
 .white {color:#fff}
-.black {color:#000}
+.motton {color:#4fcbf4}
 .fl {float:left}
 .fr {float:right}
 .cb {clear:both}
@@ -132,12 +132,8 @@ TABLE {border-collapse:collapse}
 .width920 {width:920px}
 .width33ps {width:33%}
 
-.height170 {height:170px}
-.height250 {height:250px}
-
-
 .rubl {font-family:"Rouble"; font-size: 90%; margin: 0 0px 0 -5px}
-
+ 
 .topbar {height:25px; padding-top:7px; font-size:11px}
 .region {float:left}
 .region A {font-weight:bold; text-transform:uppercase}
@@ -145,17 +141,17 @@ TABLE {border-collapse:collapse}
 .usermenu {float:right}
 .usermenu .point {float:left; height:21px; padding:0 14px; line-height:21px; border-right:1px solid #e9e9e9}
 .usermenu .point.next {border:0; padding-right:0}
-.f1 {background:url(/css/skin/img/icons.png) no-repeat 0 -111px; padding:3px 0 3px 29px}
-.entry {background:url(/css/skin/img/icons.png) no-repeat 0 -139px; padding:3px 0 3px 29px}
+.f1 {background:url(img/icons.png) no-repeat 0 -111px; padding:3px 0 3px 29px}
+.entry {background:url(img/icons.png) no-repeat 0 -139px; padding:3px 0 3px 29px}
 
-.header {width:920px; height:132px; background:url(/css/skin/img/bg_inner.png) no-repeat 0 0; margin-bottom:18px; position:relative; z-index:11}
+.header {width:920px; height:132px; background:url(img/bg_inner.png) no-repeat 0 0; margin-bottom:18px; position:relative; z-index:11}
 .logo {float:left; width:130px; padding:28px 0 0 24px}
 .logo A {display:block; width:99px; height:68px; text-indent:-10000px}
 
 .topmenu {float:left; width:631px; padding:30px 0 0 0}
 .topmenu LI {float:left}
 .topmenu A {display:block; height:74px; text-indent:-10000px}
-.topmenu A:hover {background:url(/css/skin/img/bg_inner.png) no-repeat}
+.topmenu A:hover {background:url(img/bg_inner.png) no-repeat}
 .topmenu .point1 {width:45px; margin-right:17px}
 .topmenu .point1:hover {background-position:-154px -137px}
 .topmenu .point2 {width:42px; margin-right:20px}
@@ -182,14 +178,14 @@ TABLE {border-collapse:collapse}
 .headerright A:hover {color:#ffa901}
 
 .extramenu {position:absolute; top:115px; left:0; width:914px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #ffa901;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 -moz-box-shadow:0 0 7px #616161;
 -webkit-box-shadow:0 0 7px #616161;
 box-shadow:0 0 7px #616161;
 }
-.extramenu .corner {position:absolute; display:block; font-size:0; line-height:0; top:-15px; //top:-14px; width:20px; height:15px; background:url(/css/skin/img/bg.png) no-repeat 0 -218px}
+.extramenu .corner {position:absolute; display:block; font-size:0; line-height:0; top:-15px; //top:-14px; width:20px; height:15px; background:url(img/bg.png) no-repeat 0 -218px}
 .extramenu DL {float:left; width:210px; margin:8px 6px 12px 12px; overflow:hidden}
 .extramenu DT {padding:10px 0 5px 0; font-size:16px}
 .extramenu DD {margin-bottom:1px}
@@ -200,18 +196,17 @@ box-shadow:0 0 7px #616161;
 
 
 .basketheader {width:920px; height:100px;  margin-bottom:7px}
-.basketheader .logo {width:77px; height:71px; padding:0; margin:15px 160px 0 0; background:url(/css/skin/img/bg.png) no-repeat -127px -133px; text-indent:-10000px}
-.steplist {float:left; padding-left:50px; margin-top:28px; background:url(/css/skin/img/bg_steps.png) no-repeat 0 6px}
+.basketheader .logo {width:77px; height:71px; padding:0; margin:15px 160px 0 0; background:url(img/bg.png) no-repeat -127px -133px; text-indent:-10000px}
+.steplist {float:left; padding-left:50px; margin-top:28px; background:url(img/bg_steps.png) no-repeat 0 6px}
 .steplist2 {background-position:0 -94px}
 .steplist3 {background-position:0 -194px}
 .steplist LI {float:left; width:158px; font-size:11px; color:#a6a6a6}
 .steplist A {float:left; color:#ffa901}
 .steplist A:hover {text-decoration:none}
 .steplist SPAN {display:block; font-size:24px; font-family:"Enter"; text-transform:uppercase}
-.steplist .last { width: 90px; }
 .basketheader .headerright {float:right; color:#000; font-size:14px; text-align:right}
 .paysystem {float:left; padding-top:40px}
-.paysystem A {float:left; display:block; height:24px; margin-right:20px; background:url(/css/skin/img/pay_system.png) no-repeat}
+.paysystem A {float:left; display:block; height:24px; margin-right:20px; background:url(img/pay_system.png) no-repeat}
 .paysystem .visa {width:44px; background-position:0 0}
 .paysystem .mastercard{width:40px; background-position:0 -27px}
 .paysystem .f {width:36px; background-position:0 -54px}
@@ -227,7 +222,7 @@ box-shadow:0 0 7px #616161;
 H1 {float:left; width:560px; margin:0; font-weight:normal; font-size:30px; font-family:"Enter"}
 H2 {padding:0 0 11px 0; margin:0; font-size:16px; font-weight:normal}
 H2.bold {font-weight:bold}
-.heart {display:inline-block; width:55px; height:27px; background:url(/css/skin/img/bg_inner.png) no-repeat 0 -212px; margin-left:15px}
+.heart {display:inline-block; width:55px; height:27px; background:url(img/bg_inner.png) no-repeat 0 -212px; margin-left:15px}
 .entertitle {font-size:30px; font-family:"Enter"}
 
 .rubrictitle {float:left}
@@ -238,15 +233,15 @@ H2.bold {font-weight:bold}
 .line {clear:both; font-size:0; line-height:0; border-top:1px solid #e6e6e6}
 
 .avatar {display:inline-block; width:54px; height:54px; position:relative}
-.avatar B {position:absolute; left:0; top:0; display:block; width:54px; height:54px; background:url(/css/skin/img/avatar_cover.png) no-repeat 0 0}
+.avatar B {position:absolute; left:0; top:0; display:block; width:54px; height:54px; background:url(img/avatar_cover.png) no-repeat 0 0}
 .avatar B.current {background-position:0 -59px}
 
 .searchtext {float:left; height:26px; line-height:26px; padding:0 5px; background:#fff; border:1px solid #c9c9c9;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
-.searchbutton {float:left; width:39px; height:28px; border:0; margin-left:-5px; background:url(/css/skin/img/bg_inner.png) no-repeat 0 -179px; text-indent:-10000px; cursor:pointer}
+.searchbutton {float:left; width:39px; height:28px; border:0; margin-left:-5px; background:url(img/bg_inner.png) no-repeat 0 -179px; text-indent:-10000px; cursor:pointer}
 
 .searchbox {float:right; width:343px; height:28px; margin-top:2px}
 .searchbox .searchtext {width:297px}
@@ -255,8 +250,8 @@ border-radius:5px;
 .column685 {margin:0 0 0 235px}
 
 
-.button {overflow:visible; background-image:url(/css/skin/img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
-border-radius:5px;
+.button {overflow:visible; background-image:url(img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer; 
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px
 }
@@ -275,8 +270,8 @@ border-radius:5px;
 .whitelink:hover {background-color:#c5c5c5; background-position:0 -160px; text-decoration:none}
 .whitelinkactive, .whitelinkactive:hover {background-color:#c4c4c4; background-position:0 -192px}
 .whitelinkdisabled {background-color:#ececec; background-position:0 -224px; border-color:#e4e4e4; color:#e1e1e1}
-.whitelink .leaf {display:inline-block; width:16px; height:14px; background:url(/css/skin/img/bg.png) no-repeat -197px -101px; vertical-align:-3px; margin-right:8px}
-.whitelink .map {display:inline-block; width:16px; height:16px; background:url(/css/skin/img/bg_inner.png) no-repeat -104px -133px; vertical-align:-5px; margin-right:8px}
+.whitelink .leaf {display:inline-block; width:16px; height:14px; background:url(img/bg.png) no-repeat -197px -101px; vertical-align:-3px; margin-right:8px}
+.whitelink .map {display:inline-block; width:16px; height:16px; background:url(img/bg_inner.png) no-repeat -104px -133px; vertical-align:-5px; margin-right:8px}
 
 .bigbutton {height:33px; padding:0 7px 3px 7px; background-color:#ffa901; background-position:0 -256px; font-size:14px; color:#fff; border-color:#f28900}
 .bigbutton:hover {background-color:#f79200; background-position:0 -297px}
@@ -286,24 +281,9 @@ border-radius:5px;
 .bigbuttonlink:hover {background-color:#f79200; background-position:0 -297px; color:#fff; text-decoration:none}
 .bigbuttonlinkactive, .bigbuttonlinkactive:hover {background-color:#f79200; background-position:0 -338px}
 .bigbuttonlink.width214 {width:214px; padding:7px 0 0 0; text-align:center}
-/*
-.yellowbutton {width:85px; height:25px; padding-bottom:4px; background:#ffb401 url(/css/skin/img/bg_inner.png) no-repeat 0 -186px; border:none; font-size:11px; font-weight:bold; color:#fff; cursor:pointer}
-.yellowbutton72 {width:72px; background-position:-110px -308px}
-.yellowbutton106 {width:106px; background-position:0 -308px}
-.yellowbutton122 {width:122px; background-position:0 -280px}
-.yellowbutton141, .yellowbutton141:hover {display:inline-block; width:141px; height:27px; padding:7px 0 0 0; background:#ffb401 url(/css/skin/img/bg_inner.png) no-repeat -286px -284px; text-align:center; font-weight:bold; font-size:14px; text-decoration:none; color:#fff}
-.yellowbutton216, .yellowbutton216:hover {display:inline-block; width:216px; height:26px; padding:7px 0 0 0; background:#ffb401 url(/css/skin/img/bg_inner.png) no-repeat 0 -351px; text-align:center; font-weight:bold; font-size:14px; text-decoration:none; color:#fff}
-.whitelink, .whitelink:hover {display:inline-block; width:141px; height:20px; padding-top:5px; background:url(/css/skin/img/bg_inner.png) no-repeat -757px -137px; text-align:center; text-decoration:none; font-size:11px; font-weight:bold; color:#000}
-.whitelink58, .whitelink58:hover {width:58px; background-position:-220px -337px; font-weight:normal}
-.whitelink113, .whitelink113:hover {width:113px; background-position:-281px -322px; font-weight:normal}
-.whitelink157, .whitelink157:hover {width:157px; background-position:-126px -280px}
-.whitelink180, .whitelink180:hover {width:180px; background-position:-633px -291px}
-.whitebutton {height:24px; padding-bottom:4px; border:0; background:url(/css/skin/img/bg_inner.png) no-repeat; font-size:11px; font-weight:bold; cursor:pointer}
-.whitebutton120 {width:120px; padding-left:30px; background-position:-545px -216px}
-.whitebutton90 {width:90px; background-position:-186px -308px}
-*/
-LABEL.checkbox SPAN.holder {height:32px; background:url(/css/skin/img/bg.png) 0 0 no-repeat}
-LABEL.radio SPAN.holder {height:32px; background:url(/css/skin/img/bg.png) 0 0 no-repeat}
+
+LABEL.checkbox SPAN.holder {height:32px; background:url(img/bg.png) 0 0 no-repeat}
+LABEL.radio SPAN.holder {height:32px; background:url(img/bg.png) 0 0 no-repeat}
 LABEL.checkbox:hover SPAN.holder, LABEL.radio:hover SPAN.holder {top:0 !important}
 LABEL.checked SPAN.holder {top:-16px !important}
 LABEL.checked:hover SPAN.holder {top:-16px !important}
@@ -314,10 +294,10 @@ LABEL.prettyCheckbox SPAN.holder {display:block; position:absolute; top:0; left:
 LABEL.checked {color:#ffa901}
 
 .bigfilter {margin-bottom:15px}
-.bigfilter DT {padding:7px 0 8px 0; border-top:1px solid #e6e6e6; font-weight:bold; background:url(/css/skin/img/icons.png) no-repeat 100% -46px; cursor:pointer}
+.bigfilter DT {padding:7px 0 8px 0; border-top:1px solid #e6e6e6; font-weight:bold; background:url(img/icons.png) no-repeat 100% -46px; cursor:pointer}
 .bigfilter DT.first {border:0}
 .bigfilter DT.current {background-position:100% 13px}
-.bigfilter DT B {display:inline-block; width:14px; height:11px; background:url(/css/skin/img/bg.png) no-repeat -38px 0; vertical-align:middle; margin-left:5px}
+.bigfilter DT B {display:inline-block; width:14px; height:11px; background:url(img/bg.png) no-repeat -38px 0; vertical-align:middle; margin-left:5px}
 .bigfilter DT DIV.pr {display:inline}
 .bigfilter DD {display:none}
 .bigfilter DD UL {padding-bottom:10px}
@@ -330,7 +310,7 @@ LABEL.checked {color:#ffa901}
 .bigfilter.width450 UL {float:left; width:50%}
 
 .prompting {display:none; position:absolute; left:-39px; top:13px; //top:29px; z-index:10; width:350px; padding:10px 15px 15px 15px; font-weight:normal; cursor:auto; background-color:#fff; border:2px solid #308fcf;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -340,11 +320,11 @@ box-shadow:0 0 9px #616161;
 //behavior: url(ie-css3.htc)
 }
 .prompting I {position:absolute; display:block; font-size:0; line-height:0}
-.prompting .corner {top:-15px; //top:-14px; left:20px; width:20px; height:15px; background:url(/css/skin/img/bg.png) no-repeat -35px -14px}
-.prompting .close {top:0px; right:0px; //right:-2px; width:21px; height:21px; background:url(/css/skin/img/bg_inner.png) no-repeat -91px -186px; text-indent:-10000px; cursor:pointer}
+.prompting .corner {top:-15px; //top:-14px; left:20px; width:20px; height:15px; background:url(img/bg.png) no-repeat -35px -14px}
+.prompting .close {top:0px; right:0px; //right:-2px; width:21px; height:21px; background:url(img/bg_inner.png) no-repeat -91px -186px; text-indent:-10000px; cursor:pointer}
 
 .filterresult {display:none; position:absolute; left:100%; z-index:10; padding:9px 12px; font-weight:normal; cursor:auto; white-space:nowrap; background-color:#fff; border:2px solid #ffa901;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -353,23 +333,23 @@ border-radius:5px;
 box-shadow:0 0 9px #616161;
 //behavior: url(ie-css3.htc)
 }
-.filterresult .corner {position:absolute; top:50%; left:-15px; ..left:-14px; margin-top:-10px; display:block; width:15px; height:20px; background:url(/css/skin/img/bg.png) no-repeat -179px -54px; font-size:0; line-height:0}
+.filterresult .corner {position:absolute; top:50%; left:-15px; ..left:-14px; margin-top:-10px; display:block; width:15px; height:20px; background:url(img/bg.png) no-repeat -179px -54px; font-size:0; line-height:0}
 .filterresult A {font-weight:bold; color:#ffa901; text-decoration:underline}
 
 
 
 .sliderbox {float:left; width:194px; margin:0 0 10px 11px}
-.sliderbox SPAN {display:block; padding-top:4px; font-size:10px; color:#fff}
-.slider-range {height:16px; background:#ffe6b4 url(/css/skin/img/bg.png) repeat-x 0 -34px;  position: relative;
-border-radius:4px;
+.sliderbox SPAN {display:block; padding-top:4px; font-size:10px; color:#8a8a8a}
+.slider-range {height:16px; background:#ffe6b4 url(img/bg.png) repeat-x 0 -34px;  position: relative;
+border-radius:4px; 
 -moz-border-radius:4px;
 -webkit-border-radius:4px;
 }
-.slider-range DIV {position:absolute; z-index:1; bottom:0; height:80%; background: url(/css/skin/img/bg_range.png) repeat-x; }
-.slider-range A {position:absolute; z-index:2; top:0; margin-left:-7px; width:15px; height:24px; background:url(/css/skin/img/bg.png) no-repeat -18px 0; cursor: default; outline:none}
+.slider-range DIV {position:absolute; z-index:1; top:0; height:100%; background:#ffa901}
+.slider-range A {position:absolute; z-index:2; top:0; margin-left:-7px; width:15px; height:24px; background:url(img/bg.png) no-repeat -18px 0; cursor: default; outline:none}
 
 .advice {margin-bottom:20px; border:1px solid #dcdcdc;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px}
 .advice DIV {border-bottom:1px solid #dcdcdc; padding:12px 12px 1px 12px; font-size:16px}
@@ -385,9 +365,9 @@ border-radius:5px;
 .filter {float:left; font-size:11px; color:#a6a6a6; padding:3px 0 9px 0}
 .filter.fr {float:right}
 .filterchoice {float:left; position:relative; z-index:4}
-.filterlink {display:inline-block; font-weight:bold; background:url(/css/skin/img/icons.png) no-repeat 100% -169px; padding-right:17px; margin-left:9px; text-decoration:underline; white-space:nowrap}
+.filterlink {display:inline-block; font-weight:bold; background:url(img/icons.png) no-repeat 100% -169px; padding-right:17px; margin-left:9px; text-decoration:underline; white-space:nowrap}
 .filterlist {display:none; position:absolute; z-index:2; top:-10px; left:-12px; padding:8px 10px 10px 10px; background-color:#fff; border:2px solid #eaeaea;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -403,7 +383,7 @@ box-shadow:0 0 7px #616161;
 
 .view {float:right; margin-right:25px; padding-bottom:9px}
 .view SPAN {float:left; display:block; padding:3px 3px 0 0; color:#a6a6a6}
-.view A {float:left; display:block; width:21px; height:21px; background:url(/css/skin/img/bg_inner.png) no-repeat; margin-left:4px; text-indent:-10000px}
+.view A {float:left; display:block; width:21px; height:21px; background:url(img/bg_inner.png) no-repeat; margin-left:4px; text-indent:-10000px}
 .view .tableview {background-position:-52px -132px}
 .view .tableview.active {background-position:0 -132px}
 .view .listview {background-position:-26px -132px}
@@ -417,14 +397,14 @@ box-shadow:0 0 7px #616161;
 .pageslist SPAN {float:left; display:block; padding:3px 5px 0 0; color:#a6a6a6}
 .pageslist A {float:left; display:block; height:18px; padding:3px 7px 0 7px; vertical-align:middle; text-decoration:none; color:#a6a6a6; font-size:12px}
 .pageslist .current A, .pageslist .current A:hover {background-color:#000; color:#fff; border:none; position:relative;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
 }
 
 .advertbox {float:left; width:100%; height:342px; margin-bottom:2px; position:relative}
-.advertbox .tl, .advertbox .tr, .advertbox .bl, .advertbox .br {position:absolute; display:block; width:5px; height:5px; font-size:0; background:url(/css/skin/img/bg.png) no-repeat}
+.advertbox .tl, .advertbox .tr, .advertbox .bl, .advertbox .br {position:absolute; display:block; width:5px; height:5px; font-size:0; background:url(img/bg.png) no-repeat}
 .advertbox .tl {top:0; left:0; background-position:-161px -54px}
 .advertbox .tr {top:0; left:100%; margin-left:-5px;  background-position:-171px -54px}
 .advertbox .bl {bottom:0; left:0; background-position:-161px -64px}
@@ -434,7 +414,7 @@ border-radius:5px;
 .advertbox DIV {float:left; width:469px}
 .advertbox UL {float:right; width:181px; height:342px; padding:0 17px; background:#ddbc93; border-left:1px solid #ada69e}
 .advertbox LI {padding:17px 0; border-bottom:1px solid #fff; position:relative}
-.advertbox .current I {position:absolute; left:0; top:50%; margin:-15px 0 0 -32px; display:block; width:15px; height:29px;  background:url(/css/skin/img/bg.png) no-repeat -195px -33px}
+.advertbox .current I {position:absolute; left:0; top:50%; margin:-15px 0 0 -32px; display:block; width:15px; height:29px;  background:url(img/bg.png) no-repeat -195px -33px}
 .advertbox A {color:#fff}
 .advertbox SPAN {display:block; font-size:18px; padding-bottom:10px}
 
@@ -442,21 +422,19 @@ border-radius:5px;
 .goodslist {float:left; width:705px; margin-left:-4px;  padding-bottom:5px}
 .goodsbox {float:left; width:195px; padding:10px; margin-bottom:14px; margin-right:20px}
 .boxhover {display:none; position:absolute; z-index:3; width:215px; top:-4px; left:-4px;  padding:9px 0 0 9px; cursor:pointer}
-/*
 .goodsbox:hover {position:relative; z-index:2}
 .goodsbox:hover .boxhover {display:block}
-*/
-.boxhover .rt {position:absolute; right:0; top:0; display:block; width:9px; height:9px; background:url(/css/skin/img/bg_shadow.png) no-repeat 100% 0}
-.boxhover .lb {position:absolute; left:0; bottom:0; display:block; width:9px; height:9px; background:url(/css/skin/img/bg_shadow.png) no-repeat 0 100%}
-.boxhover .rb {lposition:relative; lmargin:9px 0 0 9px; background:url(/css/skin/img/bg_shadow.png) no-repeat 100% 100%}
-.boxhover .lt {position:relative; top:-9px; left:-9px; zoom:1; background:url(/css/skin/img/bg_shadow.png) no-repeat 0 0; padding:14px 6px 6px 14px}
+.boxhover .rt {position:absolute; right:0; top:0; display:block; width:9px; height:9px; background:url(img/bg_shadow.png) no-repeat 100% 0}
+.boxhover .lb {position:absolute; left:0; bottom:0; display:block; width:9px; height:9px; background:url(img/bg_shadow.png) no-repeat 0 100%}
+.boxhover .rb {lposition:relative; lmargin:9px 0 0 9px; background:url(img/bg_shadow.png) no-repeat 100% 100%}
+.boxhover .lt {position:relative; top:-9px; left:-9px; zoom:1; background:url(img/bg_shadow.png) no-repeat 0 0; padding:14px 6px 6px 14px}
 
-.fastview {display:none; position:absolute; top:145px; left:10px; z-index:20; width:117px; height:21px; padding-top:4px; background:url(/css/skin/img/bg.png) no-repeat 0 -109px; font-size:11px; color:#7e7e7e; text-align:center; text-decoration:none}
+.fastview {display:none; position:absolute; top:145px; left:10px; z-index:20; width:117px; height:21px; padding-top:4px; background:url(img/bg.png) no-repeat 0 -109px; font-size:11px; color:#7e7e7e; text-align:center; text-decoration:none}
 .goodsbox:hover .fastview {display:block}
 .fastview:hover {text-decoration:none; background-position:0 -80px; color:#000}
 .goodsbox .photo {margin-bottom:9px; text-align:center; position:relative}
 .goodsbox .photo A {display:block; width:191px; text-align:center}
-.goodsbox .photo I {position:absolute; left:0; top:0; display:block; height:23px; background:url(/css/skin/img/bg.png) no-repeat}
+.goodsbox .photo I {position:absolute; left:0; top:0; display:block; height:23px; background:url(img/bg.png) no-repeat}
 .goodsbox .photo .new {width:70px; background-position:0 -54px}
 .goodsbox .photo .bestseller {width:81px; background-position:-75px -54px}
 .goodsbox H2 {margin:0; padding-bottom:10px; font-weight:bold}
@@ -467,10 +445,10 @@ border-radius:5px;
 .goodsboxlink:hover {text-decoration:none}
 .goodsboxlink .link {display:block; padding-bottom:5px}
 .goodsboxlink:hover .link {text-decoration:underline}
-.ratingview {display:block; height:11px; background:url(/css/skin/img/stars.png) no-repeat 0 0; margin-bottom:10px}
+.ratingview {display:block; height:11px; background:url(img/stars.png) no-repeat 0 0; margin-bottom:10px}
 
 .goodsline {float:left; width:661px; padding:10px; margin-bottom:0; background-color:#fff; border-bottom:1px solid #e6e6e6}
-.goodsline .boxhover {display:none; width:681px; }
+.goodsline .boxhover {width:681px}
 
 .goodsline .goodsboxlink {float:left; width:661px; font-size:11px; cursor:pointer}
 .goodsline .photo {float:left; width:160px; margin:0}
@@ -484,14 +462,14 @@ border-radius:5px;
 
 .carouseltitle {float:left; width:100%; position:relative}
 .scroll {float:right; color:#a6a6a6}
-.scroll A {display:inline-block; width:28px; height:23px; background:url(/css/skin/img/bg_inner.png) no-repeat; vertical-align:middle}
+.scroll A {display:inline-block; width:28px; height:23px; background:url(img/bg_inner.png) no-repeat; vertical-align:middle}
 .scroll A.back {background-position:-757px -165px}
 .scroll A.back:hover {background-position:-757px -191px}
 .scroll A.back.disabled {background-position:-757px -139px; cursor:default}
 .scroll A.forvard {background-position:-789px -165px}
 .scroll A.forvard:hover {background-position:-789px -191px}
 .scroll A.forvard.disabled {background-position:-789px -139px; cursor:default}
-.carousel {float:left; width:705px; margin-left:-2px; margin-bottom:-10px}
+.carousel {float:left; width:705px; margin-left:-2px; margin-bottom:-10px} 
 
 .bigcarousel {float:left; width:935px; margin-right:-15px}
 .bigcarousel .goodsbox {width:147px; padding:10px; margin-bottom:14px; margin-right:20px; background-color:#fff; position:relative}
@@ -500,7 +478,7 @@ border-radius:5px;
 .bigcarousel .goodsrating {display:block; padding-bottom:5px; font-size:10px; color:#a6a6a6}
 .bigcarousel .ratingview {display:inline-block; width:63px; margin:0 5px 0 0; vertical-align:-1px; }
 .bigcarousel .goodsbox .buy {position:absolute; left:0; top:0; padding:3px 6px 4px 6px; background-color:#ffa901; color:#fff; font-size:11px;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
@@ -510,42 +488,42 @@ border-radius:5px;
 .carouselmenu {float:left; width:180px}
 .carouselmenu A {display:block; padding:3px 10px}
 .carouselmenu A:hover {background-color:#e6e6e6; text-decoration:none; color:#000}
-.carouselmenu .current, .carouselmenu .current:hover {font-weight:bold; color:#ffa901; background:url(/css/skin/img/icons.png) no-repeat 100% -415px; cursor:auto}
+.carouselmenu .current, .carouselmenu .current:hover {font-weight:bold; color:#ffa901; background:url(img/icons.png) no-repeat 100% -415px; cursor:auto}
 .bigcarousel774 {float:right; width:748px}
 
 
 
-.ratingbig {width:150px; height:27px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin-bottom:10px}
-.ratingbox {width:150px; height:27px; background:url(/css/skin/img/stars.gif) repeat-x 0 0; position:relative}
-.ratingbox DIV.current {display:block; height:27px; background:url(/css/skin/img/stars.gif) repeat-x 0 -64px; position:absolute; text-indent:-9000px; z-index:1}
+.rating {width:150px; height:27px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin-bottom:10px}
+.ratingbox {width:150px; height:27px; background:url(img/stars.gif) repeat-x 0 0; position:relative}
+.ratingbox DIV.current {display:block; height:27px; background:url(img/stars.gif) repeat-x 0 -64px; position:absolute; text-indent:-9000px; z-index:1}
 .ratingbox DIV {float:left; text-indent:-90000px}
 .ratingbox DIV A {display:block; width:30px; height:27px; padding:0; position:absolute; text-decoration:none; text-indent:-9000px; z-index:22}
-.ratingbox DIV A:hover {background:url(/css/skin/img/stars.gif) repeat-x 0 -32px; z-index: 2; left: 0px}
+.ratingbox DIV A:hover {background:url(img/stars.gif) repeat-x 0 -32px; z-index: 2; left: 0px}
 .ratingbox A.ra1 {left: 0px}
 .ratingbox A.ra1:hover {width:30px}
 .ratingbox A.ra2 {left:30px}
 .ratingbox A.ra2:hover {width:60px}
 .ratingbox A.ra3 {left:60px}
 .ratingbox A.ra3:hover {width:90px}
-.ratingbox A.ra4 {left:90px}
+.ratingbox A.ra4 {left:90px}	
 .ratingbox A.ra4:hover {width:120px}
 .ratingbox A.ra5 {left:120px}
 .ratingbox A.ra5:hover {width:150px}
 #ratingresult {float:left; font-size:18px; line-height:27px; color:#ffa901; margin-left:10px}
 
-.ratingscale {float:left; width:150px; height:8px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin:6px 0 3px 0; background:url(/css/skin/img/bg_inner.png) no-repeat -633px -289px}
+.ratingscale {float:left; width:150px; height:8px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin:6px 0 3px 0; background:url(img/bg_inner.png) no-repeat -633px -289px}
 .ratingscalebox {width:150px; height:8px;  position:relative}
-.ratingscalebox DIV.current {display:block; height:8px; background:url(/css/skin/img/bg_ratingscale.gif) repeat-x 0 0; position:absolute; text-indent:-9000px; z-index:1}
+.ratingscalebox DIV.current {display:block; height:8px; background:url(img/bg_ratingscale.gif) repeat-x 0 0; position:absolute; text-indent:-9000px; z-index:1}
 .ratingscalebox DIV {float:left; text-indent:-90000px}
 .ratingscalebox DIV A {display:block; width:30px; height:8px; padding:0; position:absolute; text-decoration:none; text-indent:-9000px; z-index:22}
-.ratingscalebox DIV A:hover {background:url(/css/skin/img/bg_ratingscale.gif) repeat-x 0 -12px; z-index: 2; left: 0px}
+.ratingscalebox DIV A:hover {background:url(img/bg_ratingscale.gif) repeat-x 0 -12px; z-index: 2; left: 0px}
 .ratingscalebox A.ra1 {left: 0px}
 .ratingscalebox A.ra1:hover {width:30px}
 .ratingscalebox A.ra2 {left:30px}
 .ratingscalebox A.ra2:hover {width:60px}
 .ratingscalebox A.ra3 {left:60px}
 .ratingscalebox A.ra3:hover {width:90px}
-.ratingscalebox A.ra4 {left:90px}
+.ratingscalebox A.ra4 {left:90px}	
 .ratingscalebox A.ra4:hover {width:120px}
 .ratingscalebox A.ra5 {left:120px}
 .ratingscalebox A.ra5:hover {width:150px}
@@ -554,18 +532,20 @@ border-radius:5px;
 
 
 .goodsbar {width:111px; height:25px}
-.goodsbar A {display:block; float:left; height:25px; background:url(/css/skin/img/bg_inner.png) no-repeat}
+.goodsbar A {display:block; float:left; height:25px; background:url(img/bg_inner.png) no-repeat}
 .goodsbar A:hover {text-decoration:none}
 .goodsbar A.link1 {width:37px; background-position:-349px -216px}
 .goodsbar A.link1:hover {background-position:-60px -216px}
-.goodsbar A.link1active, .goodsbar A.link1active:hover {/*background-color:#c4c4c4; */ background-position:-182px -216px}
-.goodsbar A.link2 {width:37px; background-position:-584px -216px}
-/* .goodsbar A.link2:hover {background-position:-465px -216px; z-index:2} */
-.goodsbar A.link2active, .goodsbar A.link2active:hover {background-color:#c4c4c4; background-position:-223px -216px}
-.goodsbar A.link3 {width:38px; background-position:-622px -216px; margin-left:-1px}
-/* .goodsbar A.link3:hover {background-position:-503px -216px} */
-.goodsbar A.link3active, .goodsbar A.link3active:hover {background-color:#c4c4c4; background-position:-263px -216px}
-.goodsbar A.link3.disabled {background-position:-622px -216px; margin-left:-1px}
+.goodsbar A.link1active, .goodsbar A.link1active:hover {background-position:-182px -216px}
+.goodsbar A.link1.disabled {background-position:-543px -216px}
+.goodsbar A.link2 {width:37px; background-position:-386px -216px}
+.goodsbar A.link2:hover {background-position:-101px -216px; z-index:2}
+.goodsbar A.link2active, .goodsbar A.link2active:hover {background-position:-223px -216px}
+.goodsbar A.link2.disabled {background-position:-583px -216px}
+.goodsbar A.link3 {width:38px; background-position:-424px -216px; margin-left:-1px}
+.goodsbar A.link3:hover {background-position:-141px -216px}
+.goodsbar A.link3active, .goodsbar A.link3active:hover {background-position:-263px -216px}
+.goodsbar A.link3.disabled, .goodsbar A.link3.disabled:hover {background-position:-622px -216px; margin-left:-1px}
 
 .sectionlist {float:left; width:171px; padding-bottom:20px}
 .sectionlist LI {width:161px; padding:0 0 5px 0; font-size:11px; color:#7e7e7e}
@@ -580,12 +560,12 @@ border-radius:5px;
 .videoline {width:735px; margin-right:-20px}
 .videoline LI {float:left; width:195px; margin:0 30px 0 10px}
 .videoline .video {position:relative; margin-bottom:15px}
-.videoline .video I {position:absolute; top:37px; left:50%; margin-left:-21px; display:block; width:43px; height:44px; background:url(/css/skin/img/bg.png) no-repeat -120px -81px}
+.videoline .video I {position:absolute; top:37px; left:50%; margin-left:-21px; display:block; width:43px; height:44px; background:url(img/bg.png) no-repeat -120px -81px}
 
 .toplistbox {float:left; width:705; margin-right:-20px}
 .toplist {float:left; width:215px; margin:0 20px 0 0}
 .toplist DIV {font-weight:bold; color:#ffa901; border-bottom:1px solid #e6e6e6; padding-bottom:6px; margin-bottom:10px}
-.toplist DIV I {display:inline-block; width:24px; height:21px; background:url(/css/skin/img/bg_inner.png) no-repeat; vertical-align:-4px; margin-right:5px}
+.toplist DIV I {display:inline-block; width:24px; height:21px; background:url(img/bg_inner.png) no-repeat; vertical-align:-4px; margin-right:5px}
 .toplist DIV .point1 {background-position:-821px -165px}
 .toplist DIV .point2 {background-position:-849px -165px}
 .toplist DIV .point3 {background-position:-876px -165px}
@@ -597,13 +577,13 @@ border-radius:5px;
 
 
 
-.goodsphoto {float:left; width:500px; padding-bottom:10px; position:relative}
-.goodsphoto I {position:absolute; left:0; top:0; display:block; height:34px; background:url(/css/skin/img/bg.png) no-repeat; text-indent:-10000px}
+.goodsphoto {float:left; width:500px; padding-bottom:40px; position:relative}
+.goodsphoto I {position:absolute; left:0; top:0; display:block; height:34px; background:url(img/bg.png) no-repeat; text-indent:-10000px}
 .goodsphoto .new {width:104px; background-position:0 -180px}
 .goodsphoto .bestseller {width:120px; background-position:0 -141px}
 
 .goodsphotosmall {float:left; width:160px; position:relative}
-.goodsphotosmall I {position:absolute; left:0; top:0; display:block; height:23px; background:url(/css/skin/img/bg.png) no-repeat; text-indent:-10000px}
+.goodsphotosmall I {position:absolute; left:0; top:0; display:block; height:23px; background:url(img/bg.png) no-repeat; text-indent:-10000px}
 .goodsphotosmall .new {width:70px; background-position:0 -54px}
 .goodsphotosmall .bestseller {width:81px; background-position:-75px -54px}
 
@@ -612,7 +592,7 @@ border-radius:5px;
 .article A {color:#a6a6a6; margin-left:25px}
 
 .goodsbarbig {width:185px; height:31px; margin:26px 0 17px 0}
-.goodsbarbig A {display:block; float:left; height:31px; background:url(/css/skin/img/bg_inner.png) no-repeat}
+.goodsbarbig A {display:block; float:left; height:31px; background:url(img/bg_inner.png) no-repeat}
 .goodsbarbig A:hover {text-decoration:none}
 .goodsbarbig A.link1 {width:105px; background-position:-315px -250px}
 .goodsbarbig A.link1:hover {background-position:-509px -250px}
@@ -633,41 +613,39 @@ border-radius:5px;
 .goodsbarbig A.link5.active {background-position:0 -316px}
 .goodsbarbig A.link5.disabled {background-position:-216px -316px}
 
-.share {display:inline-block; width:105px; height:25px; background:url(/css/skin/img/bg_inner.png) no-repeat -668px -218px; vertical-align:middle; text-indent:-10000px}
+.share {display:inline-block; width:105px; height:25px; background:url(img/bg_inner.png) no-repeat -668px -218px; vertical-align:middle; text-indent:-10000px}
 .marklist {font-size:11px; position:relative}
 .marklist SPAN {margin:0 3px}
 .marklist A {font-weight:bold}
-.mark {display:inline-block; width:23px; height:16px; background:url(/css/skin/img/bg_inner.png) no-repeat -776px -218px; vertical-align:middle; text-indent:-10000px}
+.mark {display:inline-block; width:23px; height:16px; background:url(img/bg_inner.png) no-repeat -776px -218px; vertical-align:middle; text-indent:-10000px}
 
 .f1links {font-size:11px}
 .f1links .f1linkbox {float:left; width:70px; text-align:center; padding-bottom:20px; position:relative}
-.f1link {display:block; width:33px; height:31px; margin:10px auto 5px auto; background:url(/css/skin/img/bg_inner.png) no-repeat -821px -190px; text-indent:-10000px}
+.f1link {display:block; width:33px; height:31px; margin:10px auto 5px auto; background:url(img/bg_inner.png) no-repeat -821px -190px; text-indent:-10000px}
 .f1links .f1linkslist {float:right; width:301px; padding:0 0 20px 29px}
 .f1links LI {padding-bottom:7px}
 
 .previewlist LI {float:left; width:48px; height:48px; margin:0 6px 6px 0; position:relative}
-.previewlist B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(/css/skin/img/cover.png) no-repeat 0 -53px}
+.previewlist B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(img/cover.png) no-repeat 0 -53px}
 .previewlist B:hover, .previewlist B.current {background-position:0 0; cursor:pointer}
-#bigpopup .previewlist .viewstock B {position:absolute; z-index:1; left:0; top:0; display:block; width:48px; height:48px; background:url(/css/skin/img/cover_media.png) no-repeat 0 -53px}
-#bigpopup .previewlist B:hover, .previewlist B.current {background-position:0 0; cursor:pointer}
 .previewlist A {display:block; width:48px; height:48px; cursor:pointer; text-indent:-10000px}
-.previewlist .axonometric {background:url(/css/skin/img/bg_inner.png) no-repeat -830px -238px}
-.previewlist .videolink {background:url(/css/skin/img/bg_inner.png) no-repeat -778px -238px}
+.previewlist .axonometric {background:url(img/bg_inner.png) no-repeat -830px -238px}
+.previewlist .videolink {background:url(img/bg_inner.png) no-repeat -778px -238px}
 
 .colorlist {float:left; width:100%; padding-bottom:8px}
 .colorlist LI {float:left; width:29px; height:29px; margin:0 5px 5px 0}
 .colorlist A {display:block; width:15px; height:15px; padding:5px; background-color:#fff; border:2px solid #e7e7e7;
-border-radius: 7px;
+border-radius: 7px; 
 -moz-border-radius:7px;
 -webkit-border-radius:7px;
 }
 .colorlist A.current, .colorlist A:hover {border-color:#ffa901}
-.colorlist SPAN {display:block; width:15px; height:15px; background-image:url(/css/skin/img/bg.png); background-repeat:no-repeat; background-position: -168px -82px}
+.colorlist SPAN {display:block; width:15px; height:15px; background-image:url(img/bg.png); background-repeat:no-repeat; background-position: -168px -82px}
 
 .variationlist {float:left; width:100%; padding-bottom:8px}
 .variationlist LI {float:left; height:29px; margin:0 10px 5px 0}
 .variationlist A {display:block; height:19px; padding:6px 8px 0 8px; font-weight:bold; font-size:11px; background-color:#fff; border:2px solid #e7e7e7;
-border-radius: 7px;
+border-radius: 7px; 
 -moz-border-radius:7px;
 -webkit-border-radius:7px;
 }
@@ -677,7 +655,7 @@ border-radius: 7px;
 .completemenu {float:left; width:295px; padding-bottom:20px}
 .completemenu LI {position:relative; padding:0 0 5px 55px; min-height:29px}
 .completemenu .number, .completepoint .number {position:absolute; top:0; left:0; display:block; width:25px; height:19px; padding-top:6px; background-color:#fff; border:2px solid #e7e7e7; text-align:center; font-weight:normal; font-size:10px;
-border-radius: 7px;
+border-radius: 7px; 
 -moz-border-radius:7px;
 -webkit-border-radius:7px;
 }
@@ -691,16 +669,16 @@ border-radius: 7px;
 .descriptionlist .point {float:left; width:100%; padding-bottom:15px}
 .descriptionlist .title {float:left; width:320px; border-bottom:1px solid #e6e6e6}
 .descriptionlist .title  H3 {float:left; display:inline-block; font-size:12px; font-weight:normal; margin:0 0 -5px 0; padding-right:10px; background-color:#fff}
-.descriptionlist .title B {display:inline-block; width:14px; height:11px; background:url(/css/skin/img/bg.png) no-repeat -38px 0; vertical-align:bottom; margin-left:5px}
+.descriptionlist .title B {display:inline-block; width:14px; height:11px; background:url(img/bg.png) no-repeat -38px 0; vertical-align:bottom; margin-left:5px}
 .descriptionlist .point .pr {display:inline}
 .descriptionlist .point .prompting {top:25px; left:-50px}
 .descriptionlist .description {float:left; width:580px; padding-left:20px}
 .descriptionlist .description DIV {font-weight:bold; color:#308fcf; padding-top:5px}
-.more {display:inline-block; background:url(/css/skin/img/icons.png) no-repeat 100% -52px; padding-right:20px; text-decoration:underline}
+.more {display:inline-block; background:url(img/icons.png) no-repeat 100% -52px; padding-right:20px; text-decoration:underline}
 
 .shoplist .title {width:690px}
 .shoplist .description {width:210px}
-.shoplist .description B {display:inline-block; width:28px; height:14px; background:url(/css/skin/img/bg_inner.png) no-repeat; vertical-align:bottom; margin-right:5px}
+.shoplist .description B {display:inline-block; width:28px; height:14px; background:url(img/bg_inner.png) no-repeat; vertical-align:bottom; margin-right:5px}
 .shoplist .description .supply1 {background-position:-633px -321px}
 .shoplist .description .supply2 {background-position:-666px -321px}
 .shoplist .description .supply3 {background-position:-699px -321px}
@@ -717,18 +695,18 @@ border-radius: 7px;
 .gradetable.fr TBODY TD {padding:0 0 8px 20px}
 .gradetable TBODY TD {font-size:10px; color:#a6a6a6}
 .grade {float:left; width:84px; height:6px; line-height:0; font-size:0; margin:3px 6px 0 0; border:1px solid #f4a201;
-border-radius: 5px;
+border-radius: 5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
 .grade DIV {float:left; height:6px; background:#ffb721; line-height:0; font-size:0}
-.percentbox {display:inline-block; width:64px; height:32px; padding-top:2px; text-align:center; font-size:18px; background:url(/css/skin/img/bg_inner.png) no-repeat -707px -250px; vertical-align:middle}
+.percentbox {display:inline-block; width:64px; height:32px; padding-top:2px; text-align:center; font-size:18px; background:url(img/bg_inner.png) no-repeat -707px -250px; vertical-align:middle}
 .recomendbox {margin:-5px 330px 0 330px}
 
 
 .comment {float:left; width:100%; padding-bottom:19px; border-bottom:1px solid #e6e6e6; margin-bottom:15px}
 .commentleft {float:left; width:195px; padding-right:20px; text-align:right; line-height:18px}
-.real {float:right; width:131px; height:54px;  background:#f4f4f4 url(/css/skin/img/bg_inner.png) no-repeat -432px -284px; margin-bottom:5px}
+.real {float:right; width:131px; height:54px;  background:#f4f4f4 url(img/bg_inner.png) no-repeat -432px -284px; margin-bottom:5px}
 .realtext {float:left; padding:15px 0 0 13px; font-size:10px; line-height:12px; text-align:left}
 .comment .avatar {padding-bottom:5px}
 .real .avatar {padding:0}
@@ -741,9 +719,9 @@ border-radius: 5px;
 .gradelist DIV {padding-bottom:3px; font-size:12px; color:#000}
 
 .sharebox {float:right; position:relative; padding-right:10px}
-.sharelink, .sharelink:hover {position:relative; z-index:2; display:inline-block; padding:5px 0 1px 28px; background:url(/css/skin/img/icons.png) no-repeat 0 -236px; font-size:11px; color:#5da7d9}
+.sharelink, .sharelink:hover {position:relative; z-index:2; display:inline-block; padding:5px 0 1px 28px; background:url(img/icons.png) no-repeat 0 -236px; font-size:11px; color:#5da7d9}
 .sharelist {display:none; position:absolute; bottom:-12px; right:0; padding:10px 12px 37px 12px; background:#fff; border:2px solid #eaeaea;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -753,7 +731,7 @@ box-shadow:0 0 7px #616161;
 //behavior: url(ie-css3.htc)
 }
 .sharelist LI, .backetsharelist LI {padding-bottom:8px}
-.sharelist A, .backetsharelist A {color:#a6a6a6; text-decoration:underline; background:url(/css/skin/img/icons.png) no-repeat; padding:0 0 3px 26px}
+.sharelist A, .backetsharelist A {color:#a6a6a6; text-decoration:underline; background:url(img/icons.png) no-repeat; padding:0 0 3px 26px}
 .sharelist .facebook, .backetsharelist .facebook  {background-position:0 -264px}
 .sharelist .vkontakte, .backetsharelist .vkontakte {background-position:0 -290px}
 .sharelist .mailru, .backetsharelist .mailru {background-position:0 -316px}
@@ -767,8 +745,8 @@ box-shadow:0 0 7px #616161;
 
 
 .addcomment {display:none; padding-top:15px}
-.textareabox {padding:5px 10px; border:1px solid #c9c9c9;
-border-radius: 5px;
+.textareabox {padding:5px 10px; border:1px solid #c9c9c9; 
+border-radius: 5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
@@ -779,8 +757,8 @@ border-radius: 5px;
 .textareabox.textdisabled TEXTAREA {color:#a6a6a6}
 .addcomment .textareabox {margin-bottom:10px}
 
-.commentlink {display:inline-block; font-weight:bold; background:url(/css/skin/img/icons.png) no-repeat 100% -54px; padding-right:20px; margin-bottom:15px}
-.commentlinkopen {display:inline-block; font-weight:bold; background:url(/css/skin/img/icons.png) no-repeat 100% 5px; padding-right:20px; margin-bottom:15px}
+.commentlink {display:inline-block; font-weight:bold; background:url(img/icons.png) no-repeat 100% -54px; padding-right:20px; margin-bottom:15px}
+.commentlinkopen {display:inline-block; font-weight:bold; background:url(img/icons.png) no-repeat 100% 5px; padding-right:20px; margin-bottom:15px}
 .commentanswer {display:none; float:left; width:100%}
 .answer {float:left; width:100%; padding-bottom:20px}
 .answerleft {float:left; width:103px; padding-right:10px; text-align:right; line-height:18px}
@@ -789,7 +767,7 @@ border-radius: 5px;
 .answerright {float:right; width:571px; overflow:hidden}
 
 .hideblock {display:none; position:absolute; z-index:10; padding:15px 20px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #eaeaea;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -798,12 +776,12 @@ border-radius:5px;
 box-shadow:0 0 7px #616161;
 //behavior: url(ie-css3.htc)
 }
-.hideblock .close {position:absolute ;top:0px; right:0px; //right:-2px; display:block;  width:21px; height:21px; background:url(/css/skin/img/bg_inner.png) no-repeat -117px -186px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
+.hideblock .close {position:absolute ;top:0px; right:0px; //right:-2px; display:block;  width:21px; height:21px; background:url(img/bg_inner.png) no-repeat -117px -186px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
 .hideblock .title {font-size:16px; padding-bottom:15px}
 .hideblock LABEL {font-size:12px}
 
 .text {height:22px; padding:0 5px; border:1px solid #c9c9c9;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
@@ -828,7 +806,7 @@ border-radius:5px;
 .f1list DT {border-top:1px solid #e6e6e6; padding:10px 35px 10px 40px; position:relative}
 .f1list LABEL {font-size:16px}
 .f1list LABEL.prettyCheckbox span.holderWrap {margin-top:3px}
-.f1list DT B {position:absolute; top:15px; right:16px; display:inline-block; width:11px; height:11px; background:url(/css/skin/img/bg_inner.png) no-repeat -857px -210px; vertical-align:middle; margin-left:5px; cursor:pointer}
+.f1list DT B {position:absolute; top:15px; right:16px; display:inline-block; width:11px; height:11px; background:url(img/bg_inner.png) no-repeat -857px -210px; vertical-align:middle; margin-left:5px; cursor:pointer}
 .f1list DT B.current  {background-position:-857px -191px}
 .f1list DD {display:none; padding:0 10px 10px 40px}
 
@@ -837,13 +815,13 @@ border-radius:5px;
 .tagslist.pt0 {padding-top:0}
 .tagslist DT {clear:both; border-top:1px solid #e6e6e6; padding:10px 35px 10px 20px; position:relative; font-size:16px; cursor:pointer}
 .tagslist DT.first {border:0}
-.tagslist DT B {position:absolute; top:15px; right:16px; display:inline-block; width:11px; height:11px; background:url(/css/skin/img/bg_inner.png) no-repeat -857px -210px; vertical-align:middle; margin-left:5px; cursor:pointer}
+.tagslist DT B {position:absolute; top:15px; right:16px; display:inline-block; width:11px; height:11px; background:url(img/bg_inner.png) no-repeat -857px -210px; vertical-align:middle; margin-left:5px; cursor:pointer}
 .tagslist DT.current  B {background-position:-857px -191px}
 .tagslist DD {display:none; padding:0 10px 10px 20px}
 .tagslist A {font-weight:normal; text-decoration:underline; margin-right:10px; line-height:18px}
 
 .popup {position:relative; display:none; z-index:1000; overflow:hidden; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #ffa901;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 -moz-box-shadow:0 0 7px #616161;
@@ -851,30 +829,28 @@ border-radius:5px;
 box-shadow:0 0 7px #616161;
 }
 .popupbox {padding:20px 20px 30px 20px}
-.popup  .close {position:absolute; top:0px; right:0px; //right:-2px; display:block;  width:19px; height:19px; background:url(/css/skin/img/bg_inner.png) no-repeat -95px -158px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
+.popup  .close {position:absolute; top:0px; right:0px; //right:-2px; display:block;  width:19px; height:19px; background:url(img/bg_inner.png) no-repeat -95px -158px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
 .pouptitle {float:left; width:560px; margin:0; font-size:30px; font-family:"Enter"; text-transform:uppercase}
 
 
-.mediablock {width:90%; height:724px; background:#fff url(/css/skin/img/bg_mediablock.gif) repeat-y 0 0}
+.mediablock {width:90%; height:724px; background:#fff url(img/bg_mediablock.gif) repeat-y 0 0}
 .mediablock .leftpanel {float:left; width:180px; height:714px; padding:0 10px 10px 10px}
-.logobox {width:60px; height:55px; background:url(/css/skin/img/bg_inner.png) no-repeat -568px -284px; text-indent:-10000px; margin-bottom:20px}
+.logobox {width:60px; height:55px; background:url(img/bg_inner.png) no-repeat -568px -284px; text-indent:-10000px; margin-bottom:20px}
 .mediablock .topblock {height:530px; padding:19px 9px 0 9px}
 
 .scalepanel {float:right; width:54px; height:694px; padding:30px 0 0 26px; background-color:#fff}
-.scalepanel .versioncontrol {display:none;  position:absolute; bottom:15px; right: 5px; text-align:center; width: 54px;}
-.zoom {visibility:hidden; width:26px; height:25px; background:url(/css/skin/img/bg_inner.png) no-repeat -117px -158px; cursor:pointer; margin-bottom:30px}
-.scale {width:26px; height:217px; background:url(/css/skin/img/bg_inner.png) no-repeat -925px 0}
+.zoom {width:26px; height:25px; background:url(img/bg_inner.png) no-repeat -117px -158px; cursor:pointer; margin-bottom:30px}
+.scale {width:26px; height:217px; background:url(img/bg_inner.png) no-repeat -925px 0}
 .scale B {display:block; cursor:pointer}
 .scale .plus, .scale .minus {width:26px; height:26px}
 .scale DIV {position:relative; width:26px; height:165px}
-.scale DIV B {position:absolute; left:2px; width:22px; height:17px; background:url(/css/skin/img/bg.png) no-repeat -187px -79px}
+.scale DIV B {position:absolute; left:2px; width:22px; height:17px; background:url(img/bg.png) no-repeat -187px -79px}
 
 .photoview {margin:0 80px 0 200px; height:724px; position:relative}
-.photobox {float:left; width:100%; height:100%; overflow:hidden; position:relative}
-.photobox IMG {position:relative}
-.scrollbox {display:none; position:absolute; z-index:10; bottom:0; left:50%; width:354px; height:71px; margin-left:-183px; background:url(/css/skin/img/podlogka.png) no-repeat 0 0}
+.photobox {float:left; width:100%; height:100%; overflow:hidden; text-align:center; position:relative}
+.scrollbox {position:absolute; z-index:10; bottom:0; left:50%; width:307px; height:73px; margin-left:-153px; background:url(img/podlogka.png) no-repeat 0 0}
 .scrollbox DIV {width:176px; height:54px; margin:10px 0 0 94px; position:relative}
-.scrollbox DIV B {position:absolute; display:block; width:26px; height:26px; background:url(/css/skin/img/bg.png) no-repeat -168px -102px; cursor:pointer}
+.scrollbox DIV B {position:absolute; display:block; width:26px; height:26px; background:url(img/bg.png) no-repeat -168px -102px; cursor:pointer}
 
 .videoview {margin:0 26px 0 220px; padding-top:30px; height:694px; position:relative}
 .videoview .zoom {margin:0}
@@ -889,7 +865,7 @@ box-shadow:0 0 7px #616161;
 
 
 .articlemenu {float:right; width:215px;  margin-bottom:20px; border:2px solid #dcdcdc;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px}
 .articlemenu LI {padding:10px 0; border-bottom:1px solid #e6e6e6; text-align:center}
@@ -900,15 +876,15 @@ border-radius:5px;
 .graylist LI {list-style-type:disc; color:#a6a6a6; margin-left:14px}
 .blacklist LI {list-style-type:disc; color:#010101; margin-left:14px}
 
-.selectbox {height:22px; padding:0 10px; line-height:22px; position:relative; background:#e3e3e3 url(/css/skin/img/bg_buttons.png) repeat-x 0 -128px; border:1px solid #c9c9c9;
-border-radius: 5px;
+.selectbox {height:22px; padding:0 10px; line-height:22px; position:relative; background:#e3e3e3 url(img/bg_buttons.png) repeat-x 0 -128px; border:1px solid #c9c9c9; 
+border-radius: 5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px
 }
 .selectbox:hover {background-color:#c5c5c5; background-position:0 -160px}
-.selectbox .select {height:22px; white-space:nowrap; position:absolute; overflow:hidden}
+.selectbox .select {height:22px; white-space:nowrap; position:absolute; overflow:hidden} 
 .selectbox .styled {position:relative; opacity:0; z-index:2; height:22px; margin-left:-10px; cursor:pointer}
-.selectbox I {position:absolute; top:50%; right:10px; margin-top:-3px; display:block; width:11px; height:7px; background:url(/css/skin/img/bg.png) no-repeat -62px -24px}
+.selectbox I {position:absolute; top:50%; right:10px; margin-top:-3px; display:block; width:11px; height:7px; background:url(img/bg.png) no-repeat -62px -24px}
 
 
 .selectbox62 {width:36px}
@@ -942,8 +918,8 @@ border-radius: 5px;
 .basketinfo {float:right; width:451px}
 .basketinfo .left {float:left; width:215px; margin-right:20px; text-align:right}
 .basketinfo .right {float:left; width:216px}
-.basketinfo .button {font-weight:bold}
-.numerbox {width:109px; height:25px; background:url(/css/skin/img/bg_inner.png) no-repeat -765px -321px}
+.basketinfo .button {font-weight:normal}
+.numerbox {width:109px; height:25px; background:url(img/bg_inner.png) no-repeat -765px -321px}
 .numerbox B {float:left; display:block; width:27px; height:25px; cursor:pointer}
 .numerbox SPAN {float:left; display:block; width:55px; padding-top:4px; text-align:center}
 .service LI {float:left; width:760px; padding:0 0 5px 20px; font-size:11px}
@@ -953,9 +929,9 @@ border-radius: 5px;
 
 
 
-.cheque {float:right; width:239px; background:url(/css/skin/img/bg_cheque.png) repeat-y -488px 0; margin-bottom:20px}
-.chequetop {background:url(/css/skin/img/bg_cheque.png) no-repeat 0 0}
-.chequebottom {padding:0 19px; background:url(/css/skin/img/bg_cheque.png) no-repeat -244px 100%}
+.cheque {float:right; width:239px; background:url(img/bg_cheque.png) repeat-y -488px 0; margin-bottom:20px}
+.chequetop {background:url(img/bg_cheque.png) no-repeat 0 0}
+.chequebottom {padding:0 19px; background:url(img/bg_cheque.png) no-repeat -244px 100%}
 .cheque .top {height:37px; padding-top:16px}
 .cheque .total {height:78px; padding-top:25px; line-height:18px}
 .cheque UL {min-height:70px}
@@ -964,11 +940,11 @@ border-radius: 5px;
 
 .wishlinks LI {padding-bottom:3px}
 .wishlinks A, .wishlinks A:hover {font-size:11px; color:#a6a6a6; text-decoration:underline}
-.questionicon {display:inline-block; width:14px; height:11px; background:url(/css/skin/img/bg.png) no-repeat -38px 0; vertical-align:middle; margin-left:5px; cursor:pointer}
+.questionicon {display:inline-block; width:14px; height:11px; background:url(img/bg.png) no-repeat -38px 0; vertical-align:middle; margin-left:5px; cursor:pointer}
 
 .wishlistmenu A {display:block; padding:3px}
 .wishlistmenu A:hover {background-color:#e6e6e6; text-decoration:none; color:#000}
-.wishlistmenu .current, .wishlistmenu .current:hover {font-weight:bold; color:#ffa901; background:url(/css/skin/img/icons.png) no-repeat 100% -415px; cursor:auto}
+.wishlistmenu .current, .wishlistmenu .current:hover {font-weight:bold; color:#ffa901; background:url(img/icons.png) no-repeat 100% -415px; cursor:auto}
 
 .wishline {float:left; width:100%; padding-bottom:20px}
 .wishline .photo {float:left; width:120px}
@@ -984,7 +960,7 @@ border-radius: 5px;
 .citylist LI {font-size:14px; padding-bottom:3px}
 
 
-.registerbox {clear:both; background:url(/css/skin/img/gray_point.gif) repeat-y 50% 0}
+.registerbox {clear:both; background:url(img/gray_point.gif) repeat-y 50% 0}
 .shareline {background-color:#f0f0f0; padding:20px 20px 10px 20px}
 .shareline .backetsharelist LI {float:left; margin-left:15px}
 .shareline A {color:#000}
@@ -994,18 +970,18 @@ border-radius: 5px;
 
 .graying {width:100%; height:100%; position:fixed; z-index:99; top:0; left:0; right:0; botom:0; background:#000; opacity:0.5}
 .lightbox {width:100%; height:41px; position: fixed; bottom:0; left:0; z-index:100}
-.lightboxinner {width:926px; height:40px; padding-top:1px; position:relative; margin:0 auto; background:url(/css/skin/img/bg_lightbox.png) no-repeat 0 0}
+.lightboxinner {width:926px; height:40px; padding-top:1px; position:relative; margin:0 auto; background:url(img/bg_lightbox.png) no-repeat 0 0}
 .lightboxmenu {float:left; width:923px}
-.lightboxmenu LI {float:right; background:url(/css/skin/img/lightboxmenu_icons.png) no-repeat 0 -400px; padding-left:1px}
+.lightboxmenu LI {float:right; background:url(img/lightboxmenu_icons.png) no-repeat 0 -400px; padding-left:1px}
 .lightboxmenu LI.fl {float:left; background:none; padding-left:0}
 .lightboxmenu LI A.point {float:left; display:block; height:29px; padding:11px 20px 0 20px; font-size:14px; color:#fff; text-decoration:none}
-/*.lightboxmenu LI A.point2 {font-weight:bold} TMP */
+.lightboxmenu LI A.point2 {font-weight:bold}
 .lightboxmenu LI A.point5 {padding:11px 0 0 20px}
-.lightboxmenu LI A.point:hover {color:#ffa901; background:url(/css/skin/img/bg_lightbox.png) no-repeat; background-position:-10px -46px}
+.lightboxmenu LI A.point:hover {color:#ffa901; background:url(img/bg_lightbox.png) no-repeat; background-position:-10px -46px}
 .lightboxmenu LI A.point1:hover, .lightboxmenu LI A.point6:hover {background-position:-3px -46px}
 .lightboxmenu LI A.point2:hover {background-position:100% -46px}
 .lightboxmenu LI A.point5:hover {background:none}
-.lightboxmenu LI A.point B {float:left; display:block; height:19px; padding-left:23px; margin-right:10px; background:url(/css/skin/img/lightboxmenu_icons.png) no-repeat; font-size:9px; line-height:9px}
+.lightboxmenu LI A.point B {float:left; display:block; height:19px; padding-left:23px; margin-right:10px; background:url(img/lightboxmenu_icons.png) no-repeat; font-size:9px; line-height:9px}
 .lightboxmenu LI A.point1 B {background-position:0 -150px}
 .lightboxmenu LI A.point1:hover B {background-position:0 -350px}
 .lightboxmenu LI A.point2 B {background-position:0 -100px}
@@ -1020,7 +996,7 @@ border-radius: 5px;
 .lightboxmenu LI A.point .total {font-weight:normal; font-size:12px; margin-left:10px; color:#ffa901}
 
 .flybox {display:none; position:absolute; bottom:41px; z-index:101;  padding:15px 20px 20px 20px; font-weight:normal; cursor:auto; background-color:#fff; border:2px solid #ffa901;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc);
@@ -1029,20 +1005,20 @@ border-radius:5px;
 box-shadow:0 0 9px #616161;
 //behavior: url(ie-css3.htc)
 }
-.flybox .corner {position:absolute; display:block; font-size:0; line-height:0; bottom:-15px; //bottom:-14px; left:50%; margin-left:-10px; width:20px; height:15px; background:url(/css/skin/img/bg.png) no-repeat -25px -218px}
-.flybox .close {position:absolute; top:0px; right:0px; //right:-2px; display:block;  width:19px; height:19px; background:url(/css/skin/img/bg_inner.png) no-repeat -95px -158px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
+.flybox .corner {position:absolute; display:block; font-size:0; line-height:0; bottom:-15px; //bottom:-14px; left:50%; margin-left:-10px; width:20px; height:15px; background:url(img/bg.png) no-repeat -25px -218px}
+.flybox .close {position:absolute; top:0px; right:0px; //right:-2px; display:block;  width:19px; height:19px; background:url(img/bg_inner.png) no-repeat -95px -158px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
 
 .dragbox {width:100%; lheight:100%; position:fixed; z-index:101; top:0; left:0; right:0; bottom:41px}
 .dragbox DIV {position:absolute; z-index:102; width:60px; height:60px; background-color:#fff; cursor:pointer}
-.dropbox {position:absolute; bottom:44px; z-index:101; width:70px; height:73px; padding-top:5px; background:url(/css/skin/img/bg.png) no-repeat 0 -241px; color:#fff; font-size:10px; text-align:center}
+.dropbox {position:absolute; bottom:44px; z-index:101; width:70px; height:73px; padding-top:5px; background:url(img/bg.png) no-repeat 0 -241px; color:#fff; font-size:10px; text-align:center}
 .dropbox.active {background-position:-75px -241px; color:#ffa901}
 .dropbox P {margin:0; padding-top:18px}
 
-.comparisonblock {float:left; width: 644px;  overflow:hidden; background:url(/css/skin/img/bg_comparisonblock.gif) repeat-y 140px 0}
+.comparisonblock {float:left; width: 644px;  overflow:hidden; background:url(img/bg_comparisonblock.gif) repeat-y 140px 0}
 .comparisonblock LI {float:left; width:120px; margin-right:41px; overflow:hidden}
 .comparisonblock .photo {width:120px; height:120px; margin-bottom:5px; position:relative}
-.comparisonblock .comparphoto {width:120px; height:120px; margin-bottom:5px; background:url(/css/skin/img/comparphoto.png) no-repeat 0 0}
-.comparisonblock .delete {position:absolute; top:0; right:0; display:block; width:20px; height:20px; background:url(/css/skin/img/bg.png) no-repeat -51px -218px; cursor:pointer}
+.comparisonblock .comparphoto {width:120px; height:120px; margin-bottom:5px; background:url(img/comparphoto.png) no-repeat 0 0}
+.comparisonblock .delete {position:absolute; top:0; right:0; display:block; width:20px; height:20px; background:url(img/bg.png) no-repeat -51px -218px; cursor:pointer}
 
 .comparisontable {table-layout:fixed}
 .comparisontable .col1 {width:225px}
@@ -1054,7 +1030,7 @@ box-shadow:0 0 9px #616161;
 .comparisontable .goodsrating {display:block; padding-bottom:5px; font-size:10px; color:#a6a6a6}
 .comparisontable .ratingview {display:inline-block; width:63px; margin:0 5px 0 0; vertical-align:-1px; }
 .comparisontable .photo {width:120px; margin:0 auto 9px auto}
-.comparisontable .delete {position:absolute; top:0; right:0; display:block; width:20px; height:20px; background:url(/css/skin/img/bg.png) no-repeat -51px -218px; cursor:pointer}
+.comparisontable .delete {position:absolute; top:0; right:0; display:block; width:20px; height:20px; background:url(img/bg.png) no-repeat -51px -218px; cursor:pointer}
 .comparisontable .goodsbox .photo A {width:120px; margin:0 auto}
 
 .printpage .comparisontable .col1 {width:150px}
@@ -1068,32 +1044,32 @@ box-shadow:0 0 9px #616161;
 
 
 .mapbox {float:left; width:100%; position:relative; margin-bottom:20px}
-.mapbox .mark {position:absolute; display:block; width:39px; height:59px; background:url(/css/skin/img/bg.png) no-repeat -148px -241px}
+.mapbox .mark {position:absolute; display:block; width:39px; height:59px; background:url(img/bg.png) no-repeat -148px -241px}
 .mapbox .bigmark {position:absolute; }
 .mapbox .bigmark DIV {position:relative; padding:10px; background-color:#fba819; border:2px solid #e67b24; color:#fff; line-height:1.4em;
-border-radius:5px;
+border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc)
 }
-.mapbox .bigmark .corner {position:absolute; z-index:2; left:0; //left:3px; bottom:-19px; //bottom:-21px; display:block; width:24px; height:23px; background:url(/css/skin/img/bg.png) no-repeat -154px -214px}
+.mapbox .bigmark .corner {position:absolute; z-index:2; left:0; //left:3px; bottom:-19px; //bottom:-21px; display:block; width:24px; height:23px; background:url(img/bg.png) no-repeat -154px -214px}
 
 
 .printpage {background-color:#fff}
-.printpage .allpage {width:760px; margin:0}
+.printpage .allpage {width:760px; margin:0} 
 .printpage .allpageinner {padding-bottom:96px}
 .printfooter {width:760px; height:80px; padding-top:20px; margin:-80px 0 0 20px; position:relative; border-top:1px solid #e6e6e6}
 .printfooter .headerright {float:right; color:#000; font-size:14px; text-align:right; padding-top:0}
 
 .printpage .goodsphoto {margin:0 auto; float:none; padding-bottom:10px}
-.printpage .doublebox {float:left; width:100%; background:url(/css/skin/img/gray_point.gif) repeat-y 50% 0}
+.printpage .doublebox {float:left; width:100%; background:url(img/gray_point.gif) repeat-y 50% 0}
 
 
 
 
 
-.bottommenu {float:left; width:920px; padding:21px 0; margin-bottom:18px; background-color:#f5f5f5;
-border-radius: 5px;
+.bottommenu {float:left; width:920px; padding:21px 0; margin-bottom:18px; background-color:#f5f5f5; 
+border-radius: 5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior:url(border-radius.htc);
@@ -1105,7 +1081,7 @@ border-radius: 5px;
 .bottommenu .tel {font-size:16px}
 
 .social {float:left; font-size:11px; padding-bottom:30px; color:#8b8b8b}
-.social A {display:inline-block; width:20px; height:20px; background:url(/css/skin/img/bg.png) no-repeat; vertical-align:middle; text-indent:-10000px; margin-left:5px}
+.social A {display:inline-block; width:20px; height:20px; background:url(img/bg.png) no-repeat; vertical-align:middle; text-indent:-10000px; margin-left:5px}
 .social .twitter {background-position:-57px 0}
 .social .facebook {background-position:-82px 0}
 .social .vkontakte {background-position:-108px 0}
@@ -1113,7 +1089,7 @@ border-radius: 5px;
 .social .youtube {background-position:-159px 0}
 .social .mobile {background-position:-185px 0}
 
-.subscribeform {float:right; width:293px; height:25px; padding-left:17px; background:url(/css/skin/img/bg_inner.png) no-repeat 0 -250px}
+.subscribeform {float:right; width:293px; height:25px; padding-left:17px; background:url(img/bg_inner.png) no-repeat 0 -250px}
 .subscribeform .text {float:left; width:120px; height:23px; padding:0; border:0; background:none; line-height:23px; color:#8b8b8b}
 .subscribebutton {float:right; width:167px; height:25px; padding-bottom:3px; border:0; background:none; cursor:pointer; font-family:Arial, Helvetica, sans-serif}
 
@@ -1123,12 +1099,12 @@ border-radius: 5px;
 .copy {float:left; padding-top:4px; font-size:11px}
 .copy DIV {padding-top:5px}
 .copy A {margin-right:25px; text-decoration:underline}
-.mistakeimg {display:inline-block; width:92px; height:17px; background:url(/css/skin/img/bg_inner.png) no-repeat 0 -158px; vertical-align:middle; margin:-8px 5px 0 0; //margin-top:-4px}
+.mistakeimg {display:inline-block; width:92px; height:17px; background:url(img/bg_inner.png) no-repeat 0 -158px; vertical-align:middle; margin:-8px 5px 0 0; //margin-top:-4px}
 
-.leftmenu LI {background:url(/css/skin/img/icons.png) no-repeat -6px -53px; padding:0 0 5px 16px}
+.leftmenu LI {background:url(img/icons.png) no-repeat -6px -53px; padding:0 0 5px 16px}
 
 .status {width:100%; border-collapse:separate; margin-bottom:20px}
-.status TD {height:23px; padding:0; text-align:center;  font-size:11px; background:#fff1d6 url(/css/skin/img/bg_status.png) no-repeat -4px 0; border-right:1px solid #ffd870; border-left:1px solid #f4a201}
+.status TD {height:23px; padding:0; text-align:center;  font-size:11px; background:#fff1d6 url(img/bg_status.png) no-repeat -4px 0; border-right:1px solid #ffd870; border-left:1px solid #f4a201}
 .status TD.first {border-left:0; background-position:0 0}
 .status TD.next {border-right:0; background-position:100% 0}
 .status TD.active {background-color:#ffac08; background-position:-4px -28px; color:#fff}
@@ -1143,45 +1119,38 @@ border-radius: 5px;
 
 .avatarlist LI {float:left; margin:0 10px 10px 0; cursor:pointer}
 
-.attention {background:url(/css/skin/img/attention.gif) no-repeat 0 0; padding:2px 0 2px 26px}
+.attention {background:url(img/attention.gif) no-repeat 0 0; padding:2px 0 2px 26px}
 .help {position:absolute; left:20px; width:240px; font-size:11px; color:#434343}
-.doublehelp {height:46px; padding:15px 0 0 40px; background:url(/css/skin/img/help.png) no-repeat 0 0; margin-top:10px}
+.doublehelp {height:46px; padding:15px 0 0 40px; background:url(img/help.png) no-repeat 0 0; margin-top:10px}
 
-.cabinethelp {background:url(/css/skin/img/attention.gif) no-repeat 0 0; padding:20px 0 10px 0; font-size:11px}
+.cabinethelp {background:url(img/attention.gif) no-repeat 0 0; padding:20px 0 10px 0; font-size:11px}
 
-.errorpage404 {background:#fff url(/css/skin/img/error_404.png) no-repeat 50% 110px}
-.errorpage503 {background:#fff url(/css/skin/img/error_503.png) no-repeat 50% 0}
+.errorpage404 {background:#fff url(img/error_404.png) no-repeat 50% 110px}
+.errorpage503 {background:#fff url(img/error_503.png) no-repeat 50% 0}
+.errorpage404 .allpageinner, .errorpage503 .allpageinner {padding-bottom:10px}
 .errorpage404 .allpage, .errorpage503 .allpage {background:none}
 .errorbox404 {width:430px; margin:0 auto; padding-top:420px}
 .logo503 {padding:61px 0 0 8px}
 .errorbox503 {width:560px; margin:0 auto; padding-top:250px}
-.ui-effects-transfer{ border:1px dashed black; z-index:102;}
 
 .tearmlist {float:left; width:100%}
-.tearmlist DT {float:left; width:905px; padding:0 0 15px 15px; font-size:16px; cursor:pointer; background:url(/css/skin/img/icons.png) no-repeat -6px -49px}
+.tearmlist DT {float:left; width:905px; padding:0 0 15px 15px; font-size:16px; cursor:pointer; background:url(img/icons.png) no-repeat -6px -49px}
 .tearmlist DT.current {color:#ffa901; font-weight:bold; background-position:-6px 9px}
 .tearmlist DD {display:none; float:left; width:905px; padding:0 0 10px 15px}
 .tearmlist DD LI {float:left; width:905px; padding-bottom:10px}
 .tearmlist DD DIV {float:right; width:870px}
 
 
-.plug {width:303px; padding-left:344px; padding-right:50px; margin:0 -6px 20px -6px; font-size:14px}
+.plug {width:243px; padding-left:404px; padding-right:50px; margin:0 -6px 40px -6px; font-size:14px}
 .plug H2 {font-size:24px; font-weight:bold}
-.plug1 {height:175px; padding-top:35px; background:url(/images/plug1.jpg) no-repeat 0 0;}
-.plug2 {height:175px; padding-top:35px; background:url(/images/plug2.jpg) no-repeat 0 0;}
-.plug3 {height:183px; padding-top:27px; background:url(/images/plug3.jpg) no-repeat 0 0;}
-.plug4 {height:175px; padding-top:35px; background:url(/images/plug4.jpg) no-repeat 0 0;}
-.plug5 {height:190px; padding-top:20px; background:url(/images/plug5.jpg) no-repeat 0 0;}
-.plug6 {height:177px; padding-top:33px; background:url(/images/plug6.jpg) no-repeat 0 0;}
-.plug7 {height:170px; padding-top:40px; background:url(/images/plug7.jpg) no-repeat 0 0;}
-.plug8 {height:170px; padding-top:40px; background:url(/images/plug8.jpg) no-repeat 0 0;}
-.plug9 {height:175px; padding-top:35px; background:url(/images/plug9.jpg) no-repeat 0 0;}
-
-.fm{text-align:left;}
-.hf{display:none;}
-#plus10{cursor:pointer;}
-
-.infoblock { background: url('/css/skin/img/bg_info_article.gif') no-repeat; width: 350px; height: 73px; padding: 15px 15px 10px 35px; }
+.plug1 {height:188px; padding-top:65px; background:url(img/plug1.jpg) no-repeat 0 0; color:#bea1cf}
+.plug2 {height:188px; padding-top:65px; background:url(img/plug2.jpg) no-repeat 0 0; color:#ffdd61}
+.plug3 {height:196px; padding-top:57px; background:url(img/plug3.jpg) no-repeat 0 0; color:#e28bab}
+.plug4 {height:188px; padding-top:65px; background:url(img/plug4.jpg) no-repeat 0 0; color:#ddbc93}
+.plug5 {height:203px; padding-top:50px; background:url(img/plug5.jpg) no-repeat 0 0; color:#ffce7f}
+.plug6 {height:190px; padding-top:63px; background:url(img/plug6.jpg) no-repeat 0 0; color:#d7e38f}
+.plug7 {height:202px; padding-top:50px; background:url(img/plug7.jpg) no-repeat 0 0; color:#5dbacb}
+.plug8 {height:183px; padding-top:70px; background:url(img/plug8.jpg) no-repeat 0 0; color:#e37e84}
 
 .servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(img/bg_service.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
 .servicebanner DIV {font-size:24px; line-height:24px; padding-bottom:5px}

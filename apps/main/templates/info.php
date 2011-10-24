@@ -19,9 +19,9 @@
             Регион: <?php include_partial('default/region') ?>
           </div>
           <div class="usermenu">
-            <div class="point"><a href="<?php echo url_for('service_category') ?>" class="f1">F1 сервис</a></div>
+            <div class="point"><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="f1">F1 сервис</a></div>
             <div class="point"><?php include_partial('default/user') ?></div>
-            <div class="point next"><a href="<?php echo url_for('productHelper') ?>">Помощь покупателю</a></div>
+            <div class="point next"><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></div>
           </div>
         </div>
         <!-- /Topbar -->
@@ -31,9 +31,9 @@
           <!-- Topmenu -->
           <?php include_component('productCategory', 'root_list') ?>
           <!-- /Topmenu -->
-          <div class="headerright" style="font-size: 12px;">
+          <div class="headerright" style="font-size: 14px; font-family: Enter; padding-top: 36px;">
             Контакт cENTER
-            <div class="vcard"><div class="tel"><span>8 (800)</span><br />700-00-09<br /><span>Звонок бесплатный.<br />Радость в подарок :)</span></div></div>
+            <div class="vcard"><div class="tel" style="font-size: 24px; line-height: 24px;"><span style="font-size: 14px;">8 (800)</span><br />700-00-09<br /></div></div>
             <!--a href="">Перезвоните мне</a><br />
             <a href="">Отследить мой заказ</a-->
           </div>
@@ -45,7 +45,7 @@
 
         <!-- Page head -->
         <div class="pagehead">
-          <div class="breadcrumbs"><a href="">Enter.ru</a> &gt; <strong>Помощь пользователю</strong></div>
+          <div class="breadcrumbs"><a href="<?php echo url_for('homepage') ?>">Enter.ru</a> &gt; <strong>Помощь пользователю</strong></div>
 
           <div class="clear"></div>
           <?php if (has_slot('title')): ?>

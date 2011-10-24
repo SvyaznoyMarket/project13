@@ -33,12 +33,20 @@ class orderActions extends myActions
 
   public function executeLogin(sfWebRequest $request)
   {
+    if (!$this->getUser()->getCart()->count())
+    {
+      $this->redirect($this->getUser()->getReferer());
+    }
 	  if (!$this->getUser()->isAuthenticated())
     {
       $this->formSignin = new UserFormSignin();
       $this->formRegister = new UserFormRegister();
       $action = $request->hasParameter($this->formRegister->getName()) ? 'register' : 'login';
 	  }
+    else
+    {
+      $this->redirect('order_new');
+    }
 
     if ($request->isMethod('post') && isset($action))
     {
@@ -238,6 +246,14 @@ class orderActions extends myActions
     //$this->setVar('order', $this->order, true);
   }
  /**
+  * Executes error action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeError(sfWebRequest $request)
+  {
+  }
+ /**
   * Executes create action
   *
   * @param sfRequest $request A request object
@@ -246,9 +262,15 @@ class orderActions extends myActions
   {
     $this->order = $this->getUser()->getOrder()->get();
 
-    $this->saveOrder($this->order);
+    if ($this->saveOrder($this->order))
+    {
+      $this->redirect('order_complete');
+    }
+    else
+    {
+      $this->redirect('order_error');
+    }
 
-    $this->redirect('order_complete');
   }
 
   public function executeCallback(sfWebRequest $request)

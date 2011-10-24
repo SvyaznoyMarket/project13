@@ -13,8 +13,8 @@
 <?php endif ?>
         </div>
         <div class="counter">
-            <a href=""><img src="/images/images/counter2.gif" alt="" width="50" height="30" /></a>
-            <a href=""><img src="/images/images/counter3.gif" alt="" width="50" height="30" /></a>
+            <img src="/images/images/counter2.gif" alt="" width="50" height="30" />
+            <img src="/images/images/counter3.gif" alt="" width="50" height="30" />
         </div>
     </div>
 </div>

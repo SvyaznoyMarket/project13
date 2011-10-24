@@ -22,6 +22,6 @@ class myValidatorMobilePhonenumber extends sfValidatorBase
       throw new sfValidatorError($this, 'invalid', array('value' => $value));
     }
 
-    return $value;
+    return '8'.$value;
   }
 }

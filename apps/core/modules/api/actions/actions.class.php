@@ -39,7 +39,7 @@ class apiActions extends myActions
       {
         $task = new Task();
         $task->fromArray(array(
-          'type'   => $data['action'],
+          'type'   => 'project.'.$data['action'],
           'status' => 'run',
         ));
         $task->setContentData($data);

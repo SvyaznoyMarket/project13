@@ -34,36 +34,6 @@ class Order extends BaseOrder
     return isset($names[$this->person_type]) ? $names[$this->person_type] : null;
   }
 
-/*  public function exportToCore()
-  {
-    $products = $this->getProductRelation();
-
-    foreach ($products as &$product)
-    {
-      $product = array(
-        'product_id'        => $product->product_id,
-        'price'             => $product->price,
-        'quantity'          => $product->quantity,
-        'characteristic_id' => null,
-      );
-    }
-
-    $data = array(
-      'first_name'  => $this->recipient_first_name,
-      'last_name'   => $this->recipient_last_name,
-      'middle_name' => $this->recipient_middle_name,
-      'user_id'     => $this->user_id,
-      'sum'         => $this->sum,
-      'payment_id'  => $this->payment_method_id ? $this->payment_method_id : 1,
-      'delivery_id' => $this->delivery_type_id ? $this->delivery_type_id : 1,
-      'geo_id'      => $this->region_id ? $this->region_id : 1,
-      'address'     => $this->address ? $this->address : 'The Earth',
-      'size_id'     => 0,
-      'product'     => $products,
-    );
-    return $data;
-  }*/
-
   public function exportToCore()
   {
     $data = parent::exportToCore();
@@ -77,7 +47,8 @@ class Order extends BaseOrder
     $data['address_id']           = $this->UserAddress->core_id;
     $data['satus_id']             = $this->Status->core_id;
     $data['store_id']             = null;
-    $data['ip']                   = sfContext::getInstance()->getUser()->getIp();
+    $data['type_id']              = 1;
+    $data['ip']                   = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null; //sfContext::getInstance()->getUser()->getIp();
 
 
     if (isset($this->ProductRelation))
@@ -93,6 +64,30 @@ class Order extends BaseOrder
     }
 
     return $data;
+  }
+
+  public function importFromCore(array $data)
+  {
+    parent::importFromCore($data);
+
+    //$this->type = 1 == $data['type_id'] ? 'order' : 'preorder';
+
+    // User
+    $this->user_id = UserTable::getInstance()->getByCoreId($data['user_id']);
+    if (!empty($data['user_id']) && empty($this->user_id))
+    {
+      if (!$data = Core::getInstance()->getUser($data['user_id']))
+      {
+        throw new Exception('Can\'t create User ##'.$data['user_id']);
+      }
+
+      $user = new User();
+      $user->importFromCore($data);
+      $user->setCorePush(false);
+      $user->save();
+    }
+
+    $this->status_id = OrderStatusTable::getInstance()->getIdByCoreId($data['status_id']);
   }
 
   public function isOnlinePayment()

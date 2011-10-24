@@ -64,7 +64,7 @@ EOF;
 
     //6) Сделать update значений характеристик: поменять true и false на "да" и "нет"
     $this->logSection('INFO', 'Делаю update значений характеристик: поменять true и false на "да" и "нет"');
-    $count = $connection->exec("UPDATE `product_property_relation` SET `value` = ELT(FIELD(`value`, 'true', 'false'), 'есть', 'нет') WHERE `value` IN ('true', 'false')");
+    $count = $connection->exec("UPDATE `product_property_relation` SET `value` = ELT(FIELD(`value`, 'true', 'false'), 'да', 'нет') WHERE `value` IN ('true', 'false')");
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     $this->logSection('INFO', 'Добавляем во все категории группы тэгов');
@@ -122,5 +122,11 @@ EOF;
     $this->logSection('INFO', 'Устанавливаю картинку-заглушку для категорий без картинок');
     $count = $connection->exec("UPDATE `product` `p` SET `p`.`main_photo` = 'default.jpg' WHERE `p`.`main_photo` IS NULL");
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+
+    //11) Устанавливаю всем полям типа select тип select
+    $this->logSection('INFO', 'Устанавливаю всем полям типа select тип select');
+    $count = $connection->exec("UPDATE `product_property` `pp` INNER JOIN `product_property_option` `ppo` ON `pp`.`id` = `ppo`.`property_id` SET `pp`.`type` = 'select'");
+    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+
   }
 }

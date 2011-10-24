@@ -8,4 +8,4 @@
   <?php echo 'Город:      ' . $geoip['city_name'] ?>
 </div>
 <?php endif ?>
-<a href=""><?php echo $region['name'] ?></a>
+<strong><?php echo $region['name'] ?></strong>

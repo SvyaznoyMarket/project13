@@ -63,11 +63,11 @@ class userComponents extends myComponents
             'url'    => '@user_edit',
             'routes' => array('@user_edit'),
           ),
-          array(
-            'name'   => 'Пароль',
-            'url'    => '@user_changePassword',
-            'routes' => array('@user_changePassword'),
-          ),
+//          array(
+//            'name'   => 'Пароль',
+//            'url'    => '@user_changePassword',
+//            'routes' => array('@user_changePassword'),
+//          ),
 //          array(
 //            'name'   => 'Адрес доставки',
 //            'url'    => '@userAddress',

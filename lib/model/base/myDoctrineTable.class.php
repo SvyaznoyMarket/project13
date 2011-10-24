@@ -89,7 +89,7 @@ class myDoctrineTable extends Doctrine_Table
     return $this->getById($id);
   }
 
-  public function getIdsByQuery(Doctrine_Query $q)
+  public function getIdsByQuery(Doctrine_Query $q, array $params = array())
   {
     $q = clone $q;
     //$q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
@@ -171,7 +171,7 @@ class myDoctrineTable extends Doctrine_Table
       }
     }
     // order by
-    if (isset($params['order']))
+    if (isset($params['order']) && ('_index' != $params['order']))
     {
       if (is_array($params['order']))
       {

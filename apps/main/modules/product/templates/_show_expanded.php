@@ -1,4 +1,4 @@
-<div class="goodsbox goodsline">
+<div class="goodsbox goodsline height170">
   <div class="goodsboxlink">
     <div class="photo"><!--<i title="Новинка" class="new"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
     <div class="info">

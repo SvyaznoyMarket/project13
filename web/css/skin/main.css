@@ -28,11 +28,11 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .font18 {font-size:18px}
 
 
-.logo {float:left; margin:27px 0 0 23px; width:151px; height:102px; background:url(img/bg_main.png) no-repeat -674px 0; text-indent:-10000px}
+.logo {float:left; margin:27px 0 0 23px; width:151px; height:102px; background:url(/css/skin/img/bg_main.png) no-repeat -674px 0; text-indent:-10000px}
 
 .topmenu {float:right; padding:45px 36px 23px 0}
 .topmenu LI {float:left}
-.topmenu A {display:block; height:85px; background:url(img/bg_main.png) no-repeat; text-indent:-10000px}
+.topmenu A {display:block; height:85px; background:url(/css/skin/img/bg_main.png) no-repeat; text-indent:-10000px}
 .topmenu .point1 {width:50px; background-position:0 0; margin-right:20px}
 .topmenu .point1:hover {background-position:0 -90px}
 .topmenu .point2 {width:50px; background-position:-70px 0; margin-right:20px}
@@ -81,9 +81,10 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 
 .links {float:right; padding:0 40px 0 0}
 .links A {display:block; font-family:"Enter"; font-size:14px; text-decoration:none; text-transform:uppercase}
-.links .link1 {float:left; width:62px; padding-top:77px; background:url(img/bg_main.png) no-repeat -830px 1px; text-align:center}
-.links .link2 {width:111px; height:16px; margin:23px 0 0 108px; background:url(img/bg_main.png) no-repeat -897px 0; text-indent:-10000px}
-.links .link3 {margin:38px 0 0 108px}
+.links .link4 {float:left; width:66px; background:url(/css/skin/img/about.gif) no-repeat; margin-top: 7px; padding-top: 70px; }
+.links .link1 {float:left; width:62px; padding-top:77px; margin-left: 38px; background:url(/css/skin/img/bg_main.png) no-repeat -830px 1px; text-align:center}
+.links .link2 {width:111px; height:16px; margin:23px 0 0 208px; background:url(/css/skin/img/bg_main.png) no-repeat -897px 0; text-indent:-10000px}
+.links .link3 {margin:38px 0 0 208px}
 
 .copy {clear:both; padding-left:29px; color:#dcdcdc; font-size:11px}
 .copy A {color:#dcdcdc}

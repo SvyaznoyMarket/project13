@@ -9,13 +9,13 @@
     </dl>
     <dl>
       <dt><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>"><strong>Помощь покупателю</strong></a></dt>
-      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Как сделать заказ</a></dd>
-      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>">Как получить заказ</a></dd>
-      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_pay',)) ?>">Как оплатить заказ</a></dd>
+      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Как сделать заказ?</a></dd>
+      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>">Как получить заказ?</a></dd>
+      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_pay',)) ?>">Как оплатить заказ?</a></dd>
     </dl>
     <dl>
-      <dt><a href="#<?php //echo url_for('service_category') ?>"><strong>F1 сервис</strong></a></dt>
-      <dd><a herf="#"><img src="/images/banners/f1_footer.jpg" alt="F1 услуги" width="209" height="46"></img></a></dd>
+      <dt><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><strong>F1 сервис</strong></a></dt>
+      <dd><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><img src="/images/banners/f1_footer.jpg" alt="F1 услуги" width="209" height="46"></img></a></dd>
     </dl>
     <dl class="next">
       <dt><strong>Контакт cENTER</strong></dt>
