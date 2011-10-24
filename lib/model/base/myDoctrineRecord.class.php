@@ -121,10 +121,44 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
       if (is_array($v))
       {
         // checks relation
-        if (!empty($v['name']) && !empty($v['rel']))
+        if (!empty($v['rel']))
         {
-          $model = $this->getTable()->getRelation($v['rel'])->getTable()->getComponentName();
-          $this->set($v['name'], Doctrine_Core::getTable($model)->getIdByCoreId($data[$k]));
+          $table = $this->getTable();
+          $relation = $table->getRelation($v['rel']);
+          $model = $relation->getTable()->getComponentName();
+
+          // is relation one to one
+          if ($relation->isOneToOne())
+          {
+            $this->set($relation->getLocalFieldName(), Doctrine_Core::getTable($model)->getIdByCoreId($data[$k]));
+          }
+          // is relation many to many
+          else {
+            $existing = $this->get($v['rel'])->getPrimaryKeys();
+            $new = array();
+
+            foreach ($data[$k] as $d)
+            {
+              if (!$id = Doctrine_Core::getTable($model)->getIdByCoreId($d['id']))
+              {
+                throw new Exception('Can\'t find '.$model.' ##'.$d['id']);
+              }
+
+              $new[] = $id;
+            }
+
+            $unlink = array_diff($existing, $new);
+            if (count($unlink))
+            {
+              $this->unlink($v['rel'], $unlink);
+            }
+
+            $link = array_diff($new, $existing);
+            if (count($link))
+            {
+              $this->link($v['rel'], $link);
+            }
+          }
         }
       }
       else {

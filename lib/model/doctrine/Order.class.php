@@ -77,13 +77,13 @@ class Order extends BaseOrder
     // check if user doesn't exists
     if (!empty($data['user_id']) && empty($this->user_id))
     {
-      if (!$data = Core::getInstance()->getUser($data['user_id']))
+      if (!$response = Core::getInstance()->getUser($data['user_id']))
       {
         throw new Exception('Can\'t create User ##'.$data['user_id']);
       }
 
       $user = new User();
-      $user->importFromCore($data);
+      $user->importFromCore($response);
       $user->setCorePush(false);
       $user->save();
     }

@@ -52,6 +52,8 @@ EOF;
     $response = $core->query('sync.get', array(
       'id' => $params['packet_id'],
     ));
+    $response = json_decode(file_get_contents(sfConfig::get('sf_data_dir').'/core/product.json'), true);
+
     if ($options['dump'])
     {
       myDebug::dump($response, true, 'yaml');
@@ -82,7 +84,7 @@ EOF;
           $action = $core->getActions($packet['operation']);
 
           $entity = $packet['data'];
-          $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' #'.$entity['id']);
+          $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
           //myDebug::dump($entity);
 
           try {
@@ -91,17 +93,17 @@ EOF;
             // если действие "создать", но запись с таким core_id уже существует
             if ($record && ('create' == $action))
             {
-              $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: {$table->getComponentName()} #{$record->id} already exists. Force update...", null, 'ERROR');
+              $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} #{$record->id} already exists. Force update...", null, 'INFO');
             }
             // если действие "обновить", но запись с таким core_id не существует
             if (!$record && ('update' == $action))
             {
-              $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: {$table->getComponentName()} doesn't exists. Force create...", null, 'ERROR');
+              $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Force create...", null, 'INFO');
             }
             // если действие "удалить", но запись с таким core_id не существует
             if (!$record && ('delete' == $action))
             {
-              $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: {$table->getComponentName()} doesn't exists. Skip...", null, 'ERROR');
+              $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Skip...", null, 'INFO');
             }
 
             if (!$record)
@@ -114,7 +116,7 @@ EOF;
             $record->save();
 
             $this->task->status = 'success';
-            $this->task->save();
+            //$this->task->save();
 
             //myDebug::dump($record);
           }

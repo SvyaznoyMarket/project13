@@ -1,10 +1,11 @@
 Creator:
   options:
     comment: 'Производитель'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
+    Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string, notnull: false, default: null }
@@ -39,6 +40,7 @@ ProductCategory:
   actAs:
     NestedSet:     { hasManyRoots: true, rootColumnName: root_id }
     Timestampable: ~
+    Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -194,14 +196,13 @@ Product:
   #listeners: [ myDoctrineRecordListener ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     barcode:           { type: string(255), notnull: false, default: null }
     article:           { type: string(255), notnull: false, default: null }
     name:              { type: string(255), notnull: true, notblank: true }
     prefix:            { type: string(255), notnull: false, default: null }
     type_id:           { type: integer(20), notnull: true }
-    creator_id:        { type: integer(20), notnull: true }
+    creator_id:        { type: integer(20), notnull: false, default: null }
 #    category_id:       { type: integer(20), notnull: true }
     group_id:          { type: integer(20), notnull: false, default: null }
     tagline:           { type: string(255), notnull: false, default: null }

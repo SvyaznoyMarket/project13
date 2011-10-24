@@ -20,6 +20,16 @@ class Product extends BaseProduct
     $this->mapValue('ParameterGroup', new myDoctrineVirtualCollection());
   }
 
+  public function preSave($event)
+  {
+    $record = $event->getInvoker();
+
+    if (empty($record->token))
+    {
+      $record->token = !empty($record->barcode) ? trim($record->barcode) : uniqid();
+    }
+  }
+
   public function __toString()
   {
     return (string) $this->name;
@@ -30,6 +40,56 @@ class Product extends BaseProduct
     return array(
       'product' => $this->token,
     );
+  }
+
+  public function importFromCore(array $data)
+  {
+    parent::importFromCore($data);
+
+    // check if creator doesn't exists
+    if (!empty($data['brand_id']) && empty($this->creator_id))
+    {
+      if (!$response = Core::getInstance()->getCreator($data['brand_id']))
+      {
+        throw new Exception('Can\'t create Creator ##'.$data['brand_id']);
+      }
+
+      $creator = new Creator();
+      $creator->importFromCore($response);
+      $creator->setCorePush(false);
+      $creator->save();
+    }
+
+    // category relation
+    /*
+    if (!empty($data['category']))
+    {
+      $existing = $this->Category->getPrimaryKeys();
+      $new = array();
+
+      foreach ($data['category'] as $d)
+      {
+        if (!$id = ProductCategoryTable::getInstance()->getIdByCoreId($d['id']))
+        {
+          throw new Exception('Can\'t find ProductCategory ##'.$d['id']);
+        }
+
+        $new[] = $id;
+      }
+
+      $unlink = array_diff($existing, $new);
+      if (count($unlink))
+      {
+        $this->unlink('Category', $unlink);
+      }
+
+      $link = array_diff($new, $existing);
+      if (count($link))
+      {
+        $this->link('Category', $link);
+      }
+    }
+    */
   }
 
   public function getIsInsale()
