@@ -1030,7 +1030,7 @@ box-shadow:0 0 9px #616161;
 //behavior: url(ie-css3.htc)
 }
 .flybox .corner {position:absolute; display:block; font-size:0; line-height:0; bottom:-15px; //bottom:-14px; left:50%; margin-left:-10px; width:20px; height:15px; background:url(/css/skin/img/bg.png) no-repeat -25px -218px}
-.flybox .close {position:absolute; top:0px; right:0px; //right:-2px; display:block;  width:19px; height:19px; background:url(/css/skin/img/bg_inner.png) no-repeat -95px -158px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
+.flybox .close {position:absolute; top:0px; right:0px; //right:-2px; display:block;  width:26px; height:26px; background:url(/css/skin/img/bg_inner.png) no-repeat -46px -179px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
 
 .dragbox {width:100%; lheight:100%; position:fixed; z-index:101; top:0; left:0; right:0; bottom:41px}
 .dragbox DIV {position:absolute; z-index:102; width:60px; height:60px; background-color:#fff; cursor:pointer}
