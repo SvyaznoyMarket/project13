@@ -84,7 +84,19 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
 
     foreach ($mapping as $k => $v)
     {
-      $data[$k] = $this->get($v);
+      if (is_array($v))
+      {
+        // checks relation
+        if (!empty($v['name']) && !empty($v['rel']))
+        {
+          $model = $this->getTable()->getRelation($v['rel'])->getTable()->getComponentName();
+          $data[$k] = Doctrine_Core::getTable($model)->getCoreIdById($this->get($v['name']));
+        }
+      }
+      else {
+        $data[$k] = $this->get($v);
+      }
+
     }
 
     if (!$this->exists() && (isset($data['id']) || empty($data['id'])))
@@ -106,7 +118,52 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
 
     foreach ($mapping as $k => $v)
     {
-      $this->set($v, $data[$k]);
+      if (is_array($v))
+      {
+        // checks relation
+        if (!empty($v['rel']))
+        {
+          $table = $this->getTable();
+          $relation = $table->getRelation($v['rel']);
+          $model = $relation->getTable()->getComponentName();
+
+          // is relation one to one
+          if ($relation->isOneToOne())
+          {
+            $this->set($relation->getLocalFieldName(), Doctrine_Core::getTable($model)->getIdByCoreId($data[$k]));
+          }
+          // is relation many to many
+          else {
+            $existing = $this->get($v['rel'])->getPrimaryKeys();
+            $new = array();
+
+            foreach ($data[$k] as $d)
+            {
+              if (!$id = Doctrine_Core::getTable($model)->getIdByCoreId($d['id']))
+              {
+                throw new Exception('Can\'t find '.$model.' ##'.$d['id']);
+              }
+
+              $new[] = $id;
+            }
+
+            $unlink = array_diff($existing, $new);
+            if (count($unlink))
+            {
+              $this->unlink($v['rel'], $unlink);
+            }
+
+            $link = array_diff($new, $existing);
+            if (count($link))
+            {
+              $this->link($v['rel'], $link);
+            }
+          }
+        }
+      }
+      else {
+        $this->set($v, $data[$k]);
+      }
     }
   }
 

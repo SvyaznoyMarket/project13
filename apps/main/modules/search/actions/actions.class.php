@@ -21,12 +21,10 @@ class searchActions extends myActions
     $offset = intval($request->getParameter('page', 1) - 1) * $limit;
     $this->forward404If($offset < 0, 'Неверный номер страницы');
 
+    //myDebug::dump($request, 1);
     //$this->searchString = iconv('windows-1251', 'utf-8', $request['q']);
     $this->searchString = $request['q'];
-    if (empty($this->searchString))
-    {
-      return sfView::NONE;
-    }
+    $this->forward404Unless($this->searchString);
 
     $productTypeList = $this->getProductTypes($request);
 

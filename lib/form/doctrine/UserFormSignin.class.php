@@ -17,9 +17,9 @@ class UserFormSignin extends BaseUserForm
     $this->disableCSRFProtection();
 
     $this->setWidgets(array(
-      'username' => new sfWidgetFormInputText(array(), array('tabindex' => 1)),
-      'password' => new sfWidgetFormInputPassword(array(), array('tabindex' => 2)),
-      'remember' => new sfWidgetFormInputCheckbox(), // array(), array('tabindex' => 3)
+      'username' => new sfWidgetFormInputText(),
+      'password' => new sfWidgetFormInputPassword(),
+      'remember' => new sfWidgetFormInputCheckbox(),
     ));
 
     $this->setValidators(array(
@@ -35,7 +35,7 @@ class UserFormSignin extends BaseUserForm
       'password' => 'Пароль',
       'remember' => 'Забыли пароль?',
     ));
-    
+
     $this->useFields(array(
       'username',
       'password',

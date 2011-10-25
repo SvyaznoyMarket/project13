@@ -32,6 +32,10 @@ class ProductTable extends myDoctrineTable
       'score'         => 'score',
       'media_image'   => 'main_photo',
       'prefix'        => 'prefix',
+
+      'type_id'       => array('name' => 'type_id',    'rel' => 'Type'),
+      'brand_id'      => array('name' => 'creator_id', 'rel' => 'Creator'),
+      'category'      => array('rel' => 'Category'),
     );
   }
 

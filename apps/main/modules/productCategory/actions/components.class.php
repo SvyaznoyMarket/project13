@@ -290,4 +290,29 @@ class productCategoryComponents extends myComponents
 
     $this->setVar('item', $item, true);
   }
+  /**
+  * Executes productType_list component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  */
+  public function executeProductType_list()
+  {
+    $list = array();
+    foreach (ProductTypeTable::getInstance()->getListByProductCategory($this->productCategory, array(
+      'select'            => 'productType.id, productType.name',
+      'group'             => 'productType.id, productType.name',
+      'order'             => 'productType.name',
+      'with_productCount' => true,
+    )) as $productType) {
+      if (0 == $productType->product_count) continue;
+      
+      $list[] = array(
+        'name'             => $productType->name,
+        'url'              => url_for(array('sf_route' => 'productCatalog_productType', 'sf_subject' => $this->productCategory, 'productType' => $productType->id)),
+        'product_quantity' => $productType->product_count,
+      );
+    }
+    
+    $this->setVar('table', myToolkit::groupByColumn($list, 4), true);
+  }
 }

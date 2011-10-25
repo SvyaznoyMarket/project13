@@ -82,6 +82,18 @@ class Core
     return $table;
   }
 
+  public function getCreator($id)
+  {
+    $result = false;
+
+    if ($response = $this->query('brand.get', array('id' => $id, 'expand' => array('media'))))
+    {
+      $result = $response[0];
+    }
+
+    return $result;
+  }
+
   public function createOrder(Order &$order)
   {
     $result = false;
@@ -119,7 +131,7 @@ class Core
   {
     $result = false;
 
-    if ($response = $this->query('user.get', array('id' => $id, 'count' => false, 'expand' => array('geo', 'address_list', 'network_list'))))
+    if ($response = $this->query('user.get', array('id' => $id, 'expand' => array('geo', 'address_list', 'network_list'))))
     {
       $result = $response[0];
     }

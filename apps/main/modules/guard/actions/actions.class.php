@@ -166,7 +166,7 @@ class guardActions extends myActions
 		}
 		return $this->renderJson(array('success' => false));
     } else {
-		
+
 	}
   }
 
@@ -276,7 +276,7 @@ class guardActions extends myActions
         {
           return $this->renderPartial('default/close');
         }
-        return $this->redirect('@homepage');
+        return $this->redirect($this->getSigninUrl());
       }
     }
   }
