@@ -566,6 +566,7 @@ border-radius:5px;
 /* .goodsbar A.link3:hover {background-position:-503px -216px} */
 .goodsbar A.link3active, .goodsbar A.link3active:hover {background-color:#c4c4c4; background-position:-263px -216px}
 .goodsbar A.link3.disabled {background-position:-622px -216px; margin-left:-1px}
+.goodsbar A.link1.disabled {background-position:-543px -216px; margin-left:-1px}
 
 .sectionlist {float:left; width:171px; padding-bottom:20px}
 .sectionlist LI {width:161px; padding:0 0 5px 0; font-size:11px; color:#7e7e7e}
