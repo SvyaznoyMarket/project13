@@ -712,27 +712,33 @@ function zoomer ( jn , zfunctions ) {
 			dragging = false
 		}
 	})
+		
+	var topoffsets = [54, 28, -2]
+	nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] ) // initia
 	
 	var getZone = function( Y ){
-		if( Y < 4 ) return 1
-		if( Y < 25 ) return 2
-		if( Y < 32 ) return 3		
-		if( Y < 50 ) return 4
+		if( Y < topoffsets[ 2 ] + 6 ) return 1
+		if( Y < topoffsets[ 1 ] - 4 ) return 2
+		if( Y < topoffsets[ 1 ] + 4 ) return 3		
+		if( Y < topoffsets[ 0 ] - 6 ) return 4
 		return 5		
 	}
-	
 	var op = nodeindex.parent().offset().top
+		
 	var prev = 3
 	var prevZ = 3
+	var Zones = [5,3,1]
+	
+	
 	$('b.zoomind', jn).parent().bind({
-		'mousemove': function(e){
+		'mousemove': function(e){			
 			if ( ! dragging ) return
+			e.preventDefault()
 			var ntop = e.pageY - op - 3
 			if( ntop < 55 && ntop > -3) {
 
 				nodeindex.css('top', ntop )
-				var delta = getZone( prev ) - getZone( ntop )
-				console.info( getZone( prev ) , getZone( ntop ) )
+				var delta = prev - getZone( ntop )
 				if( Math.abs( delta ) && getZone( ntop ) != prevZ && getZone( ntop ) % 2 ) { // small shifting
 					( getZone( ntop ) - prevZ < 0) ? zfunctions.zoomIn() : zfunctions.zoomOut()
 					prevZ = getZone( ntop )
@@ -750,25 +756,25 @@ function zoomer ( jn , zfunctions ) {
 					}
 					prevZ = getZone( ntop )
 				}
-				prev = ntop					
+				prev = getZone( ntop )					
 			}
 		}, 
 		'mouseleave': function(){
-			dragging = false
+			//dragging = false
 		}
-	})
+	})			
 	
-	var topoffsets = ['54px', '28px', '-2px'] 
-	nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] ) // initia
-	
-	this.minus = function () {
-		if ( ! dragging )
-			nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] )     			
+	this.minus = function () {	
+		if ( dragging ) return
+		nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] )     			
+		prevZ = Zones[ zfunctions.zoom - 1 ]
+		prev = Zones[ zfunctions.zoom - 1 ]	
 	}
 	
 	this.plus = function () {
-		if ( ! dragging )
-			nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] )
+		if ( dragging ) return
+		nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] )
+		prevZ = Zones[ zfunctions.zoom - 1 ]
+		prev = Zones[ zfunctions.zoom - 1 ]		
 	}
 } // zoomer Object
-
