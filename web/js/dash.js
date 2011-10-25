@@ -18,10 +18,29 @@ $(document).ready(function(){
 				lbox = data.data
 				ltbx.update( lbox )
 				ltbx.save()
+				changeButtons( lbox )
 			}
 				
 	})	
 	
+	var changeButtons = function( lbox ){
+		if(!lbox || !lbox.productsInCart ) return false
+		for( var token in lbox.productsInCart) {
+			console.info(token)
+			var bx = $('div.boxhover[ref='+ token +']')
+			if( bx.length ) {
+				var button = $('a.link1', bx)
+				button.attr('href', $('.lightboxinner .point2').attr('href') )
+				button.unbind('click').addClass('active')
+			}
+			bx = $('div.goodsbarbig[ref='+ token +']')
+			if( bx.length ) {
+				var button = $('a.link1', bx)
+				button.attr('href', $('.lightboxinner .point2').attr('href') )
+				button.unbind('click').addClass('active')
+			}
+		}
+	}
 	/* ---- */
 	
 	/* IKEA-like hover */
