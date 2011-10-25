@@ -20,6 +20,16 @@ class Product extends BaseProduct
     $this->mapValue('ParameterGroup', new myDoctrineVirtualCollection());
   }
 
+  public function preSave($event)
+  {
+    $record = $event->getInvoker();
+
+    if (empty($record->token))
+    {
+      $record->token = !empty($record->barcode) ? trim($record->barcode) : uniqid();
+    }
+  }
+
   public function __toString()
   {
     return (string) $this->name;
@@ -30,6 +40,47 @@ class Product extends BaseProduct
     return array(
       'product' => $this->token,
     );
+  }
+
+  public function importFromCore(array $data)
+  {
+    parent::importFromCore($data);
+
+    // check if creator doesn't exists
+    if (!empty($data['brand_id']) && empty($this->creator_id))
+    {
+      if (!$response = Core::getInstance()->getCreator($data['brand_id']))
+      {
+        throw new Exception('Can\'t create Creator ##'.$data['brand_id']);
+      }
+
+      $creator = new Creator();
+      $creator->importFromCore($response);
+      $creator->setCorePush(false);
+      //$creator->save();
+    }
+
+    // tag
+    if (!empty($data['tag'])) foreach ($data['tag'] as $relationData)
+    {
+      $relation = new TagProductRelation();
+      $relation->fromArray(array(
+        'tag_id' => TagTable::getInstance()->getIdByCoreId($relationData['id']),
+      ));
+      $this->TagRelation[] = $relation;
+    }
+
+    // property relation
+    if (!empty($data['property'])) foreach ($data['property'] as $relationData)
+    {
+      $relation = new ProductPropertyRelation();
+      $relation->fromArray(array(
+        'property_id' => ProductPropertyTable::getInstance()->getIdByCoreId($relationData['property_id']),
+        'option_id'   => !empty($relationData['option_id']) ? ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id']) : null,
+        'value'       => $relationData['value'],
+      ));
+      $this->PropertyRelation[] = $relation;
+    }
   }
 
   public function getIsInsale()

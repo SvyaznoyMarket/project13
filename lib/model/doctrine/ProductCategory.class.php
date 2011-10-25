@@ -25,6 +25,13 @@ class ProductCategory extends BaseProductCategory
     );
   }
 
+  public function importFromCore(array $data)
+  {
+    parent::importFromCore($data);
+
+    $this->product_id = ProductTable::getInstance()->getIdByCoreId($data['product_id']);
+  }
+
   public function countProduct()
   {
     return ProductTable::getInstance()->countByCategory($this);

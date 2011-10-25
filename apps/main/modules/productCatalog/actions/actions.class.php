@@ -47,7 +47,37 @@ class productCatalogActions extends myActions
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
  /**
-  * Executes filter action
+  * Executes productType action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeProductType(sfWebRequest $request)
+  {
+    $this->productCategory = $this->getRoute()->getObject();
+    $this->productType = !empty($request['productType']) ? ProductTypeTable::getInstance()->getById($request['productType']) : false;
+    $this->forward404Unless($this->productType);
+
+    $this->productFilter = $this->getProductFilter(array(
+      'productType' => $this->productType,
+    ));
+    $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
+
+    $q = ProductTable::getInstance()->createBaseQuery();
+    $q->addWhere('product.type_id = ?', $this->productType->id);
+    $this->productFilter->buildQuery($q);
+
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
+
+    // pager
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+    ));
+    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+  }
+ /**
+  * Executes tag action
   *
   * @param sfRequest $request A request object
   */

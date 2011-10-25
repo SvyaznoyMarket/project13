@@ -57,8 +57,26 @@ class Doctrine_Template_Corable extends Doctrine_Template
     $table = $this->getInvoker()->getTable();
     $q = $table->createQuery();
 
-    $q
+    $q->select('id')
       ->where('core_id = ?', $coreId)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+    ;
+
+    return $q->fetchOne();
+  }
+
+  public function getCoreIdByIdTableProxy($id, array $params = array())
+  {
+    if (!$id)
+    {
+      return false;
+    }
+
+    $table = $this->getInvoker()->getTable();
+    $q = $table->createQuery();
+
+    $q->select('core_id')
+      ->where('id = ?', $id)
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 

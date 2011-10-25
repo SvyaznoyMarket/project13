@@ -12,4 +12,57 @@
  */
 class ProductType extends BaseProductType
 {
+  public function importFromCore(array $data)
+  {
+    parent::importFromCore($data);
+
+    // группы тегов
+    if (!empty($data['tag_group'])) foreach ($data['tag_group'] as $relationData)
+    {
+      $relation = new TagGroupProductTypeRelation();
+      $relation->fromArray(array(
+        'tag_group_id' => TagGroupTable::getInstance()->getIdByCoreId($relationData['id']),
+        'position'     => $relationData['position'],
+      ));
+      $this->TagGroupRelation[] = $relation;
+    }
+
+    // группы свойств товара
+    if (!empty($data['property_group'])) foreach ($data['property_group'] as $relationData)
+    {
+      $relation = new ProductTypePropertyGroupRelation();
+      $relation->fromArray(array(
+        'property_group_id' => ProductPropertyGroupTable::getInstance()->getIdByCoreId($relationData['id']),
+        'position'          => $relationData['position'],
+      ));
+      $this->PropertyGroupRelation[] = $relation;
+    }
+
+    // свойства товара
+    if (!empty($data['property'])) foreach ($data['property'] as $relationData)
+    {
+      $relation = new ProductTypePropertyRelation();
+      $relation->fromArray(array(
+        'property_id'    => ProductPropertyTable::getInstance()->getIdByCoreId($relationData['id']),
+        'group_id'       => ProductPropertyGroupTable::getInstance()->getIdByCoreId($relationData['group_id']),
+        'position'       => $relationData['position'],
+        'group_position' => $relationData['group_position'],
+        'view_show'      => true,
+        'view_list'      => $relationData['is_view_list'],
+      ));
+      $this->PropertyRelation[] = $relation;
+    }
+
+    // категория товара
+    if (!empty($data['category'])) foreach ($data['category'] as $relationData)
+    {
+      $relation = new ProductCategoryTypeRelation();
+      $relation->fromArray(array(
+        'product_category_id' => ProductCategoryTable::getInstance()->getIdByCoreId($relationData['id']),
+      ));
+      $this->ProductCategoryRelation[] = $relation;
+    }
+
+    // TODO: фильтры категорий
+  }
 }

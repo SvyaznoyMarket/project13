@@ -57,6 +57,7 @@ class userProductHistoryActions extends myActions
       foreach($cart->getProducts()->toArray() as $id => $product){
           $qty += $product['cart']['quantity'];
           $sum += $product['price'] * $product['cart']['quantity'];
+          $productsInCart[ $product['token'] ] = $product['cart']['quantity'];          
       }
       
       //отложенные товары
@@ -70,6 +71,7 @@ class userProductHistoryActions extends myActions
 #     echo '<pre>';
 #     echo '</pre>';      
    #   exit();
+      if (!isset($productsInCart)) $productsInCart = false; 
       //имя есть только у авторизованного пользователя
       if ($user->isAuthenticated()) $name = $user->getName();
       else $name = false;
@@ -82,6 +84,7 @@ class userProductHistoryActions extends myActions
               'sum' => $sum,
               'vwish' => count($delayProducts),
               'vcomp' => $user->getProductCompare()->getProductsNum(),
+              'productsInCart' => $productsInCart,
               'bingo' => false,
         )
       ));  

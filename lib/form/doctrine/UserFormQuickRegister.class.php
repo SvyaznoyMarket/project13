@@ -14,13 +14,18 @@ class UserFormQuickRegister extends BaseUserForm
   {
     parent::configure();
 
-    $this->widgetSchema['email'] = new sfWidgetFormInputText();
-    $this->widgetSchema['email']->setLabel('Email');
-    $this->validatorSchema['email'] = new sfValidatorEmail(array('max_length' => 100));
+    $this->widgetSchema['username'] = new sfWidgetFormInputText();
+    $this->widgetSchema['username']->setLabel('Логин');
+    $this->validatorSchema['username'] = new sfValidatorEmail(array('max_length' => 100));
 
     $this->useFields(array(
-      'email',
+      'username',
     ));
+
+    $this->mergePostValidator(
+      //new sfValidatorSchemaCompare('password', sfValidatorSchemaCompare::EQUAL, 'password_again', array(), array('invalid' => 'Пароли не одинаковые.'))
+      new myValidatorGuardUserRegister()
+    );
 
     $this->widgetSchema->setNameFormat('register[%s]');
     $this->widgetSchema->setFormFormatterName('default');

@@ -1,10 +1,11 @@
 Creator:
   options:
     comment: 'Производитель'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
+    Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string, notnull: false, default: null }
@@ -39,6 +40,7 @@ ProductCategory:
   actAs:
     NestedSet:     { hasManyRoots: true, rootColumnName: root_id }
     Timestampable: ~
+    Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
@@ -92,8 +94,7 @@ ProductType:
     Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
-    #token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     rating_type_id:    { type: integer(20), notnull: false, default: null }
   relations:
@@ -114,10 +115,11 @@ ProductCategoryTypeRelation:
 ProductProperty:
   options:
     comment: 'Свойство товара'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
+    Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     name:              { type: string(255), notnull: true, notblank: true }
     type:              { type: enum, length: 10, values: [ string, select, integer, float, text ], notnull: true, default: string, comment: 'Тип свойства: строка, значение из справочника (опция свойства), текст' }
     is_multiple:       { type: boolean, notnull: true, default: false, comment: 'Свойство имеет несколько значений?' }
@@ -131,10 +133,11 @@ ProductProperty:
 ProductPropertyGroup:
   options:
     comment: 'Группа свойств товара'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
+    Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     name:              { type: string(255), notnull: false, default: null }
 #    product_type_id:   { type: integer(20), notnull: true }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
@@ -174,10 +177,11 @@ ProductTypePropertyRelation:
 ProductPropertyOption:
   options:
     comment: 'Опции свойства товара'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
+    Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     property_id:       { type: integer(20), notnull: true }
     value:             { type: string(255), notnull: true, notblank: true, comment: 'Значение опции' }
     unit:              { type: string(255), notnull: false, default: null, comment: 'Единица измерения' }
@@ -194,14 +198,13 @@ Product:
   #listeners: [ myDoctrineRecordListener ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     barcode:           { type: string(255), notnull: false, default: null }
     article:           { type: string(255), notnull: false, default: null }
     name:              { type: string(255), notnull: true, notblank: true }
     prefix:            { type: string(255), notnull: false, default: null }
     type_id:           { type: integer(20), notnull: true }
-    creator_id:        { type: integer(20), notnull: true }
+    creator_id:        { type: integer(20), notnull: false, default: null }
 #    category_id:       { type: integer(20), notnull: true }
     group_id:          { type: integer(20), notnull: false, default: null }
     tagline:           { type: string(255), notnull: false, default: null }

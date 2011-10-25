@@ -36,6 +36,8 @@ class UserTable extends GuardUserTable
       'last_login'       => 'last_login',
       'added'            => 'created_at',
       'updated'          => 'updated_at',
+
+      'geo_id'           => array('name' => 'region_id', 'rel' => 'Region'),
     );
   }
 }
