@@ -8,7 +8,7 @@
   <?php include_javascripts() ?>
   <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-25485956-2']);
+  _gaq.push(['_setAccount', 'UA-25485956-1']);
   _gaq.push(['_addOrganic', 'nova.rambler.ru', 'query']);
   _gaq.push(['_addOrganic', 'go.mail.ru', 'q']);
   _gaq.push(['_addOrganic', 'nigma.ru', 's']);
@@ -86,14 +86,14 @@
 (function(w, c) {
     (w[c] = w[c] || []).push(function() {
         try {
-            w.yaCounter10067653 = new Ya.Metrika({id:10067653, enableAll: true});
+            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true});
         }
         catch(e) { }
     });
 })(window, "yandex_metrika_callbacks");
 </script></div>
-<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
-<noscript><div><img src="//mc.yandex.ru/watch/10067653" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
+<noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 </body>
 </html>
