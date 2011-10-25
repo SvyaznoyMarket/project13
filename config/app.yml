@@ -1,6 +1,4 @@
 all:
-  default:
-    region: moskva
   welcome:
     cookie_name: enter_code
     secret: Выход!
@@ -60,6 +58,7 @@ all:
         shop_id: '0380440538-657'
         return_url: '@payment_callback'
 
+  # TODO: перенести в модель, чтобы не захламлять память
   open_auth:
     provider:
       vkontakte:
