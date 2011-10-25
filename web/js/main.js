@@ -20,9 +20,7 @@ $(document).ready(function(){
 		return false
 	})
 
-
-/* — Sliders ---------------------------------------------------------------------------------------*/
-
+	/* Sliders */
 	var mini = $('.sliderbox .fl').html() * 1
 	var maxi = $('.sliderbox .fr').html() * 1
 	var from = null
@@ -42,12 +40,13 @@ $(document).ready(function(){
 		min: mini,
 		max: maxi,
 		values: [ from.val() ? from.val() : mini ,  to.val() ? to.val() : maxi ],
-		slide: function( event, ui ) {
+		slide: function( e, ui ) {
 			from.val( ui.values[ 0 ] )
 			to.val( ui.values[ 1 ] )
 		},
-		change: function() {
-			$('.product_filter-block').trigger('preview')
+		change: function(e, ui) {
+			if ( parseFloat(to.val()) > 0 )
+				$('.product_filter-block').trigger('preview')
 		}
 	})
 	if ( from && to ) {
@@ -55,7 +54,7 @@ $(document).ready(function(){
 		to.val( $( "#slider-range1" ).slider( "values", 1 ) )
 		from.change( function(){
 			from.val( from.val().replace(/\D/g,'') )
-			if( from.val() > $( "#slider-range1" ).slider( "values", 1 ) ) {
+			if( parseFloat(from.val()) > parseFloat(to.val()) ) {
 				$( "#slider-range1" ).slider( "values", 1 , from.val()*1 + 10 )
 				to.val( from.val()*1 + 10 )
 			}
@@ -64,10 +63,12 @@ $(document).ready(function(){
 		})
 		to.change( function(){
 			to.val( to.val().replace(/\D/g,'') )
-			if( parseInt(to.val()) < $( "#slider-range1" ).slider( "values", 0 ) ) {
+			if( parseFloat(to.val()) < parseFloat(from.val()) ) {				
 				$( "#slider-range1" ).slider( "values", 0 , to.val()*1- 10 )
 				from.val( to.val()*1 - 10 )
-			}
+			} 
+			if( ! parseFloat(to.val()) )
+				to.val(10)
 			$( "#slider-range1" ).slider( "values", 1 , to.val() )
 		})
 

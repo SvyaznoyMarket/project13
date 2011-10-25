@@ -359,7 +359,7 @@ box-shadow:0 0 9px #616161;
 
 
 .sliderbox {float:left; width:194px; margin:0 0 10px 11px}
-.sliderbox SPAN {display:block; padding-top:4px; font-size:10px; color:#fff}
+.sliderbox SPAN {display:block; padding-top:4px; font-size:10px;}
 .slider-range {height:16px; background:#ffe6b4 url(/css/skin/img/bg.png) repeat-x 0 -34px;  position: relative;
 border-radius:4px;
 -moz-border-radius:4px;
