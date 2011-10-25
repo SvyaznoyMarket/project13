@@ -23,6 +23,37 @@ class Order extends BaseOrder
       'order' => $this->token,
     );
   }
+  
+  public function getCityName()
+  {
+	  return isset($this->Region) ? $this->Region->name : null;
+  }
+  
+  public function getAreaName()
+  {
+	  if (isset($this->Region)) {
+		  $parent = $this->Region->getNode()->getParent();
+		  if ($parent && $parent->type == 'area') {
+			  return $parent->name;
+		  }
+	  }
+	  return null;
+  }
+  
+  public function getCountryName()
+  {
+	  if (isset($this->Region)) {
+		  $parent = $this->Region->getNode()->getParent();
+		  if ($parent && $parent->type == 'country') {
+			  return $parent->name;
+		  }
+		  $parent = $parent->getNode()->getParent();
+		  if ($parent && $parent->type == 'country') {
+			  return $parent->name;
+		  }
+	  }
+	  return null;
+  }
 
   public function getPersonTypeName()
   {
