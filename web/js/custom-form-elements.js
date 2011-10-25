@@ -31,7 +31,7 @@ var selectWidth = "190";
 /* No need to change anything after this */
 
 
-document.write('<style type="text/css">input.styled { display: none; } select.styled { position: relative; width: ' + selectWidth + 'px; opacity: 0; filter: alpha(opacity=0); z-index: 5; } .disabled { opacity: 0.5; filter: alpha(opacity=50); }</style>');
+document.write('<style type="text/css">input.styled { display: none; } select.styled { position: relative; width: ' + selectWidth + 'px; opacity: 0; filter: alpha(opacity=0); z-index: 5; } .styled.disabled { opacity: 0.5; filter: alpha(opacity=50); }</style>');
 
 var Custom = {
 	init: function() {
@@ -66,14 +66,14 @@ var Custom = {
 				option = inputs[a].getElementsByTagName("option");
 				if( option[0] )
 					active = option[0].innerHTML
-				else 
+				else
 					active = "-"
                 textnode = document.createTextNode(active);
                 for(b = 0; b < option.length; b++) {
                     if(option[b].selected == true) {
                         textnode = document.createTextNode(option[b].innerHTML);
                     }
-                }				
+                }
 				span[a] = document.createElement("span");
 				span[a].className = "select";
 				span[a].id = "select" + inputs[a].name;
@@ -135,7 +135,7 @@ var Custom = {
 			}
 		}
 	},
-	choose: function() {	
+	choose: function() {
 		option = this.getElementsByTagName("option");
 		for(d = 0; d < option.length; d++) {
 			if(option[d].selected == true) {
