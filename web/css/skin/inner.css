@@ -558,7 +558,7 @@ border-radius:5px;
 .goodsbar A:hover {text-decoration:none}
 .goodsbar A.link1 {width:37px; background-position:-349px -216px}
 .goodsbar A.link1:hover {background-position:-60px -216px}
-.goodsbar A.link1active, .goodsbar A.link1active:hover {/*background-color:#c4c4c4; */ background-position:-182px -216px}
+.goodsbar A.link1.active, .goodsbar A.link1.active:hover {/*background-color:#c4c4c4; */ background-position:-182px -216px}
 .goodsbar A.link2 {width:37px; background-position:-584px -216px}
 /* .goodsbar A.link2:hover {background-position:-465px -216px; z-index:2} */
 .goodsbar A.link2active, .goodsbar A.link2active:hover {background-color:#c4c4c4; background-position:-223px -216px}
