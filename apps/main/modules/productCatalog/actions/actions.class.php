@@ -28,7 +28,6 @@ class productCatalogActions extends myActions
   */
   public function executeFilter(sfWebRequest $request)
   {
-    myDebug::dump($request, 1);
     $this->productCategory = $this->getRoute()->getObject();
 
     $this->productFilter = $this->getProductFilter();
