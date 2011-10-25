@@ -57,39 +57,30 @@ class Product extends BaseProduct
       $creator = new Creator();
       $creator->importFromCore($response);
       $creator->setCorePush(false);
-      $creator->save();
+      //$creator->save();
     }
 
-    // category relation
-    /*
-    if (!empty($data['category']))
+    // tag
+    if (!empty($data['tag'])) foreach ($data['tag'] as $relationData)
     {
-      $existing = $this->Category->getPrimaryKeys();
-      $new = array();
-
-      foreach ($data['category'] as $d)
-      {
-        if (!$id = ProductCategoryTable::getInstance()->getIdByCoreId($d['id']))
-        {
-          throw new Exception('Can\'t find ProductCategory ##'.$d['id']);
-        }
-
-        $new[] = $id;
-      }
-
-      $unlink = array_diff($existing, $new);
-      if (count($unlink))
-      {
-        $this->unlink('Category', $unlink);
-      }
-
-      $link = array_diff($new, $existing);
-      if (count($link))
-      {
-        $this->link('Category', $link);
-      }
+      $relation = new TagProductRelation();
+      $relation->fromArray(array(
+        'tag_id' => TagTable::getInstance()->getIdByCoreId($relationData['id']),
+      ));
+      $this->TagRelation[] = $relation;
     }
-    */
+
+    // property relation
+    if (!empty($data['property'])) foreach ($data['property'] as $relationData)
+    {
+      $relation = new ProductPropertyRelation();
+      $relation->fromArray(array(
+        'property_id' => ProductPropertyTable::getInstance()->getIdByCoreId($relationData['property_id']),
+        'option_id'   => !empty($relationData['option_id']) ? ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id']) : null,
+        'value'       => $relationData['value'],
+      ));
+      $this->PropertyRelation[] = $relation;
+    }
   }
 
   public function getIsInsale()

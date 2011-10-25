@@ -25,18 +25,26 @@ class ProductComment extends BaseProductComment
     $data['product_id'] = $this->Product->core_id;
 
     //$parent = $this->getNode()->getParent();
-	$parent = $this->parent_id > 0 ? ProductCommentTable::getInstance()->getById($this->parent_id) : null;
+	  $parent = $this->parent_id > 0 ? ProductCommentTable::getInstance()->getById($this->parent_id) : null;
     $data['parent_id'] = $parent ? $parent->core_id : 0;
 
     return $data;
   }
-  
+
+  public function importFromCore(array $data)
+  {
+    parent::importFromCore($data);
+
+    $this->product_id = ProductTable::getInstance()->getIdByCoreId($data['product_id']);
+    $this->user_id = UserTable::getInstance()->getIdByCoreId($data['user_id']);
+  }
+
   public function getProductRating()
   {
 	  $t = UserProductRatingTable::getInstance();
 	  return $t->getByProductAndUser($this->getProduct(), $this->getUser());
   }
-  
+
   public function getSubComments()
   {
 	  return ProductCommentTable::getInstance()->getListByProduct($this->getProduct(), array('parent_id' => $this->id));

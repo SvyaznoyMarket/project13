@@ -15,5 +15,8 @@ class Region extends BaseRegion
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
+
+    $this->product_price_list_id = ProductPriceListTable::getInstance()->getIdByCoreId($data['price_list_id']);
+    $this->stock_id = StockTable::getInstance()->getIdByCoreId($data['store_id']);
   }
 }

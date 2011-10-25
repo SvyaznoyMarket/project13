@@ -21,6 +21,9 @@ class StockProductRelationTable extends myDoctrineTable
   {
     return array(
       'quantity'   => 'quantity',
+
+      'product_id' => array('rel' => 'Product'),
+      'store_id'   => array('rel' => 'Stock'),
     );
   }
 

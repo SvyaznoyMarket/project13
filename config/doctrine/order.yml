@@ -6,7 +6,6 @@ PaymentMethod:
     Corable:        { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string(500), notnull: true, notblank: true }
@@ -22,7 +21,6 @@ DeliveryType:
     Corable:        { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string(500), notnull: true, notblank: true }
@@ -43,10 +41,11 @@ DeliveryPeriod:
 Order:
   options:
     comment: 'Заказ пользователя'
-  actAs: [ Timestampable, Corable ]
+  actAs:
+    Timestampable: ~
+    Corable:       ~
   columns:
     id:                     { type: integer(20), autoincrement: true, primary: true }
-#    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     token:                  { type: string(64), unique: true, notnull: true, notblank: true, comment: 'Номер заказа' }
     type_id:                { type: integer(20), notnull: true, default: 1 } # TODO: remove
     #type:                   { type: enum, length: 10, values: [order, preorder], notnull: false, default: null, comment: 'Тип заказа' }

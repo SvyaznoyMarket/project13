@@ -41,9 +41,9 @@ UserTag:
     comment: 'Пользовательские теги'
   actAs:
     Timestampable: ~
+    Corable:       ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     name:              { type: string(255), notnull: true, notblank: true }
     user_id:           { type: integer(20), notnull: true }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
@@ -81,8 +81,8 @@ UserProductNotice:
     comment: 'Пользовательские уведомления о товаре'
   actAs:
     Timestampable: ~
+    Corable:       ~
   columns:
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     type:              { type: enum, length: 10, primary: true, values: [ insale, price, comment ], notnull: true, comment: 'Тип уведомления: товар появился в магазинах, изменилась цена, появились отзывы' }
     email:             { type: string(50), primary: true, notnull: true }
     product_id:        { type: integer(20), primary: true, notnull: true }

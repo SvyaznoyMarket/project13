@@ -33,8 +33,8 @@ class ProductTable extends myDoctrineTable
       'media_image'   => 'main_photo',
       'prefix'        => 'prefix',
 
-      'type_id'       => array('name' => 'type_id',    'rel' => 'Type'),
-      'brand_id'      => array('name' => 'creator_id', 'rel' => 'Creator'),
+      'type_id'       => array('rel' => 'Type'),
+      'brand_id'      => array('rel' => 'Creator'),
       'category'      => array('rel' => 'Category'),
     );
   }
