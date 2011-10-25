@@ -26,7 +26,6 @@ $(document).ready(function(){
 	var changeButtons = function( lbox ){
 		if(!lbox || !lbox.productsInCart ) return false
 		for( var token in lbox.productsInCart) {
-			console.info(token)
 			var bx = $('div.boxhover[ref='+ token +']')
 			if( bx.length ) {
 				var button = $('a.link1', bx)
@@ -102,10 +101,11 @@ $(document).ready(function(){
 	})
 	
 	$('.goodsbar .link1').live('click', function(e) {
+		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
 		if (! currentItem ) return false	
-		var button = this
+		
 		if( ltbx ){
 			var tmp = $(this).parent().parent().find('.photo img')
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500, function() {
@@ -136,7 +136,7 @@ $(document).ready(function(){
 		return false
 	})
 	$('.goodsbarbig .link1').click( function() {
-		var button = thisq
+		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {			
