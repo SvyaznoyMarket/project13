@@ -4,12 +4,12 @@ $(document).ready(function(){
 	ltbx = new Lightbox( $('.lightboxinner'), lbox )
 		/* draganddrop */
 	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
-	$('.boxhover[ref] .photo img').bind('mousedown', function(e){
+	$('.boxhover[ref] .photo img').live('mousedown', function(e){
 			e.stopPropagation()
 			e.preventDefault()
 			draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
 	})	
-	$('.boxhover[ref] .photo img').bind('mouseup', function(e){
+	$('.boxhover[ref] .photo img').live('mouseup', function(e){
 		draganddrop.cancel()
 	})
 		/* ---- */
@@ -77,12 +77,15 @@ $(document).ready(function(){
 	}
 	
 	/* stuff goes into lightbox */
-	$('.boxhover .lt').live('click', function() {
+	$('.boxhover .lt').live('click', function(e) {
 		if( $(this).attr('data-url') ) 
 			window.location.href = $(this).attr('data-url')
 	})
+	
 	$('.goodsbar .link1').live('click', function(e) {
-		if (! currentItem ) return false
+		if( $(button).hasClass('disabled') )
+			return false
+		if (! currentItem ) return false	
 		var button = this
 		if( ltbx ){
 			var tmp = $(this).parent().parent().find('.photo img')
@@ -94,7 +97,7 @@ $(document).ready(function(){
 			if ( data.success && ltbx ) {
 				ltbx.getBasket( parseItemNode( currentItem ) )
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
-				$(button).unbind('click')
+				$(button).unbind('click').addClass('active')
 			}	
 		})
 		e.stopPropagation()
@@ -114,7 +117,7 @@ $(document).ready(function(){
 		return false
 	})
 	$('.goodsbarbig .link1').click( function() {
-		var button = this
+		var button = thisq
 		if( $(button).hasClass('disabled') )
 			return false
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {			

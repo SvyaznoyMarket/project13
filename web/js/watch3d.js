@@ -516,6 +516,16 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 		zooObj = new zoomer( zoo , self)
 	}
 	
+	this.cursorHand = function(){
+		jnode.css('cursor','url(/css/skin/cursor/cursor_1.png), url(/css/skin/cursor/cursor_1.gif), url(/css/skin/cursor/cursor_ie_1.cur), crosshair')
+	}
+
+	this.cursorDrag = function(){
+		jnode.css('cursor','url(/css/skin/cursor/cursor_2.png), url(/css/skin/cursor/cursor_2.gif), url(/css/skin/cursor/cursor_ie_2.cur), move')
+	}
+	
+	self.cursorHand()
+	
 	this.setDimensionProps = function( px ) {
 		var resol = px ? px : vzooms[this.zoom - 1]
 		jnode.attr('width', resol)
@@ -589,7 +599,7 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 			}
 			evstamp = e.timeStamp
 			active = true
-			jnode.css('cursor', 'move')
+			self.cursorDrag()
 		}
 	})	
 	
@@ -609,7 +619,7 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 	
 	$(document).bind('mouseup.zoomer', function (e) {	
 			active = false
-			jnode.css('cursor', 'default')
+			self.cursorHand()
 	})
 	
 	this.dropping = function( e, mdelta ) {
@@ -666,11 +676,12 @@ function loadbar () {
 } // loadbar Object
 
 function zoomer ( jn , zfunctions ) {
-	var self = this
+	//var self = this
 	if (!jn) 
 		return false
 	var jnode = jn
 	var nodeindex = $('.zoomind', jn)
+	var dragging = false
 	
 	this.hide = function() {
 		jn.hide()
@@ -680,27 +691,90 @@ function zoomer ( jn , zfunctions ) {
 		jn.show()
 	}
 	
-	$('.plus', jn).bind('click', function() {
+	$('b.plus', jn).bind('click', function() {
 		if( zfunctions.zoomIn )
 			zfunctions.zoomIn()
 		//self.plus() in zfunctions
 	})
 
-	$('.minus', jn).bind('click', function() {
+	$('b.minus', jn).bind('click', function() {
 		if( zfunctions.zoomOut )
 			zfunctions.zoomOut()
 		//self.minus() in zfunctions
 	})
 	
-	var topoffsets = ['90%', '45%', '0%'] 
+	nodeindex.bind({
+		'mousedown': function(e){
+			dragging = true
+			e.preventDefault()
+		}, 
+		'mouseup': function(){
+			dragging = false
+		}
+	})
+		
+	var topoffsets = [54, 28, -2]
 	nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] ) // initia
 	
-	this.minus = function () {
+	var getZone = function( Y ){
+		if( Y < topoffsets[ 2 ] + 6 ) return 1
+		if( Y < topoffsets[ 1 ] - 4 ) return 2
+		if( Y < topoffsets[ 1 ] + 4 ) return 3		
+		if( Y < topoffsets[ 0 ] - 6 ) return 4
+		return 5		
+	}
+	var op = nodeindex.parent().offset().top
+		
+	var prev = 3
+	var prevZ = 3
+	var Zones = [5,3,1]
+	
+	
+	$('b.zoomind', jn).parent().bind({
+		'mousemove': function(e){			
+			if ( ! dragging ) return
+			e.preventDefault()
+			var ntop = e.pageY - op - 3
+			if( ntop < 55 && ntop > -3) {
+
+				nodeindex.css('top', ntop )
+				var delta = prev - getZone( ntop )
+				if( Math.abs( delta ) && getZone( ntop ) != prevZ && getZone( ntop ) % 2 ) { // small shifting
+					( getZone( ntop ) - prevZ < 0) ? zfunctions.zoomIn() : zfunctions.zoomOut()
+					prevZ = getZone( ntop )
+				}
+				if ( Math.abs( delta ) == 2 ) {
+					( delta < 0 ) ? zfunctions.zoomIn() : zfunctions.zoomOut()
+					prevZ = getZone( ntop )
+				} else if ( Math.abs( delta ) >= 3 ) {
+					if ( delta < 0 ) {
+						zfunctions.zoomIn()
+						zfunctions.zoomIn()						
+					} else {
+						zfunctions.zoomOut()
+						zfunctions.zoomOut()
+					}
+					prevZ = getZone( ntop )
+				}
+				prev = getZone( ntop )					
+			}
+		}, 
+		'mouseleave': function(){
+			//dragging = false
+		}
+	})			
+	
+	this.minus = function () {	
+		if ( dragging ) return
 		nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] )     			
+		prevZ = Zones[ zfunctions.zoom - 1 ]
+		prev = Zones[ zfunctions.zoom - 1 ]	
 	}
 	
 	this.plus = function () {
+		if ( dragging ) return
 		nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] )
+		prevZ = Zones[ zfunctions.zoom - 1 ]
+		prev = Zones[ zfunctions.zoom - 1 ]		
 	}
 } // zoomer Object
-

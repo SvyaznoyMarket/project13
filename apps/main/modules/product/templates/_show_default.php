@@ -240,7 +240,7 @@ foreach ($p3d as $p3d_obj)
 
     <div class="scale">
       <b class="plus"></b>
-      <div class=""><b class="zoomind" style="top:45%"></b></div>
+      <div class=""><b class="zoomind"></b></div>
       <b class="minus"></b>
     </div>
 
