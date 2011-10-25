@@ -57,26 +57,26 @@ class productCategoryComponents extends myComponents
   {
 	  $data = ProductCategoryTable::getInstance()->getSubList();
 	  $result = array();
-      
+
 	  foreach ($data as $row) {
           #echo $row['id'] .'  '.$row['name'].'----'.$row['level'] .'---<br>';
           $coreIdToId[ $row['core_id'] ] = $row['id'];
           $rootCat[ $row['id'] ] = $row;
           $catTreeTmp[ $row->core_id ]['id'] = $row->id;
           $catTreeTmp[ $row->core_parent_id ]['list'][] = $row;
-          
+
 		  if (!isset($result[$row->root_id])) {
 			  $result[$row->root_id] = array();
 		  }
 		  $result[$row->root_id][] = $row;
 	  }
      # exit();
-      
+
       foreach($catTreeTmp as $item){
           if (isset($item['id']) && isset($item['list'])) $catTree[ $item['id'] ] = $item['list'];
       }
 
-      
+
       //генерируем массив количеств разделов
       foreach($result as $i => $cat){
           foreach($cat as $c){
@@ -87,7 +87,7 @@ class productCategoryComponents extends myComponents
               else $countResult[$i][ $coreIdToId[ $c['core_parent_id'] ] ]++;
           }
       }
-      
+
       //к каждому элементу добавляем 2 - это условная высота заголовка большой категории
       $sizeofWideElement = 2;
       foreach($countResult as $n => $big){
@@ -95,13 +95,13 @@ class productCategoryComponents extends myComponents
               $countResult[$n][$m] = $countResult[$n][$m] + $sizeofWideElement;
           }
       }
-      
+
       $colomnsArr = array();
       //распределяем эти разделы на равные столбцы
       foreach($countResult as $mainCatId => $mainCatList){
           $catIdList = array_keys($mainCatList);
 
-                 
+
          $fullColumnNum = 4;        //количество колонок
          $avrHeight = 0;
          foreach($mainCatList as $num) $avrHeight += $num;
@@ -114,13 +114,13 @@ class productCategoryComponents extends myComponents
 
          $useFierst = 0;
 
-         
+
 
          //print_r($mainCatList);
          //проходим по колонкам
          unset($mainCatList['']);
          for ($columnNum=0; $columnNum<$fullColumnNum; $columnNum++){
-             
+
              if (count($mainCatList)==0) break;
 
              //если есть не законченная, используем её
@@ -129,7 +129,7 @@ class productCategoryComponents extends myComponents
                  $useFierst = 0;
                  $writtenNum = $mainCatList[ $currentMaxId ] - 1;
              }
-             else{                         
+             else{
                  //выбираем самую длинную на данный момент категорию
                  $currentMaxId = 0;
                  $currentMaxNum = 0;
@@ -142,7 +142,7 @@ class productCategoryComponents extends myComponents
                  $writtenNum = $mainCatList[ $currentMaxId ];
              }
              //если нельзя делать такую длинную колонку - разрежем
-             if ($writtenNum>$maxHeight){ // && ($writtenNum-$maxHeight)>1){ 
+             if ($writtenNum>$maxHeight){ // && ($writtenNum-$maxHeight)>1){
                  $writtenNum = $avrHeight;
                  $mainCatList[ $currentMaxId ] = $writtenNum;
                  $useFierst = $currentMaxId;
@@ -156,7 +156,7 @@ class productCategoryComponents extends myComponents
                  unset($mainCatList[ $currentMaxId ]);    //удаляем элемент из общего списка - у него уже есть место
                  //записываем самую длинную, как самую первую в колонке
                  $colomnsArr[$mainCatId][$columnNum][] = array('id' => $currentMaxId,
-                                                               'num' => $writtenNum);                                                                             
+                                                               'num' => $writtenNum);
              }
 
 
@@ -183,18 +183,18 @@ class productCategoryComponents extends myComponents
                      elseif ($num<=$maxFreePlace){
                          $ratherGoodId = $id;
                      }
-                 }   
+                 }
                  if (!$goodId)
                      $goodId = $ratherGoodId;
-                 //больше нечего добавить в эту колонку. 
+                 //больше нечего добавить в эту колонку.
                  if (!$goodId){
                      //в эту колонку больше нечего добавить. не пытаемся.
                      $tryToFind = false;
-                     continue;                         
+                     continue;
                  }
                  //добавляем найденый элемент в колонку
                  $colomnsArr[$mainCatId][$columnNum][] = array('id' => $goodId,
-                                                               'num' => $mainCatList[ $goodId ]);   
+                                                               'num' => $mainCatList[ $goodId ]);
                  $fullColumnWrittenNum += $mainCatList[ $goodId ];
                  unset($mainCatList[ $goodId ]);    //удаляем элемент из общего списка - у него уже есть место
              }
@@ -203,14 +203,14 @@ class productCategoryComponents extends myComponents
          //всё, что осталось дописываем в последнюю колонку.
          //все категории без подкатегорий остались здесь
          if (count($mainCatList))
-         foreach($mainCatList as $catId => $catNum)    
+         foreach($mainCatList as $catId => $catNum)
              $colomnsArr[$mainCatId][ $fullColumnNum-1 ][] = array('id' => $catId,
-                                                           'num' => $catNum);   
-                    
+                                                           'num' => $catNum);
+
 
       }
 
-      
+
       /*
       echo '<pre>';
       #print_r($catTreeTmp);
@@ -219,18 +219,18 @@ class productCategoryComponents extends myComponents
       print_r($colomnsArr);
       echo '</pre>';
       #exit();   */
-      
-       
 
-      
+
+
+
 	  $this->setVar('catTree', $catTree, true);
 	  $this->setVar('rootlist', $result, true);
 	  $this->setVar('rootCat', $rootCat, true);
 	  $this->setVar('colomnsArr', $colomnsArr, true);
   }
-    
-   
-  
+
+
+
  /**
   * Executes child_list component
   *
@@ -285,7 +285,7 @@ class productCategoryComponents extends myComponents
         return sfView::NONE;
       }
 
-      $item['product'] = $this->productCategory->getPreviewProduct();
+      $item['photo'] = $this->productCategory->getPhotoUrl();
     }
 
     $this->setVar('item', $item, true);
