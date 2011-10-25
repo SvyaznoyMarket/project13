@@ -676,11 +676,12 @@ function loadbar () {
 } // loadbar Object
 
 function zoomer ( jn , zfunctions ) {
-	var self = this
+	//var self = this
 	if (!jn) 
 		return false
 	var jnode = jn
 	var nodeindex = $('.zoomind', jn)
+	var dragging = false
 	
 	this.hide = function() {
 		jn.hide()
@@ -690,27 +691,84 @@ function zoomer ( jn , zfunctions ) {
 		jn.show()
 	}
 	
-	$('.plus', jn).bind('click', function() {
+	$('b.plus', jn).bind('click', function() {
 		if( zfunctions.zoomIn )
 			zfunctions.zoomIn()
 		//self.plus() in zfunctions
 	})
 
-	$('.minus', jn).bind('click', function() {
+	$('b.minus', jn).bind('click', function() {
 		if( zfunctions.zoomOut )
 			zfunctions.zoomOut()
 		//self.minus() in zfunctions
 	})
 	
-	var topoffsets = ['90%', '45%', '0%'] 
+	nodeindex.bind({
+		'mousedown': function(e){
+			dragging = true
+			e.preventDefault()
+		}, 
+		'mouseup': function(){
+			dragging = false
+		}
+	})
+	
+	var getZone = function( Y ){
+		if( Y < 4 ) return 1
+		if( Y < 25 ) return 2
+		if( Y < 32 ) return 3		
+		if( Y < 50 ) return 4
+		return 5		
+	}
+	
+	var op = nodeindex.parent().offset().top
+	var prev = 3
+	var prevZ = 3
+	$('b.zoomind', jn).parent().bind({
+		'mousemove': function(e){
+			if ( ! dragging ) return
+			var ntop = e.pageY - op - 3
+			if( ntop < 55 && ntop > -3) {
+
+				nodeindex.css('top', ntop )
+				var delta = getZone( prev ) - getZone( ntop )
+				console.info( getZone( prev ) , getZone( ntop ) )
+				if( Math.abs( delta ) && getZone( ntop ) != prevZ && getZone( ntop ) % 2 ) { // small shifting
+					( getZone( ntop ) - prevZ < 0) ? zfunctions.zoomIn() : zfunctions.zoomOut()
+					prevZ = getZone( ntop )
+				}
+				if ( Math.abs( delta ) == 2 ) {
+					( delta < 0 ) ? zfunctions.zoomIn() : zfunctions.zoomOut()
+					prevZ = getZone( ntop )
+				} else if ( Math.abs( delta ) >= 3 ) {
+					if ( delta < 0 ) {
+						zfunctions.zoomIn()
+						zfunctions.zoomIn()						
+					} else {
+						zfunctions.zoomOut()
+						zfunctions.zoomOut()
+					}
+					prevZ = getZone( ntop )
+				}
+				prev = ntop					
+			}
+		}, 
+		'mouseleave': function(){
+			dragging = false
+		}
+	})
+	
+	var topoffsets = ['54px', '28px', '-2px'] 
 	nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] ) // initia
 	
 	this.minus = function () {
-		nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] )     			
+		if ( ! dragging )
+			nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] )     			
 	}
 	
 	this.plus = function () {
-		nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] )
+		if ( ! dragging )
+			nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] )
 	}
 } // zoomer Object
 
