@@ -48,8 +48,13 @@ class cartActions extends myActions
                 $currentNum = $this->getUser()->getCart()->getQuantityByToken($request['product']);
                 $request['quantity'] += $currentNum;
 
-                if ($request['quantity']<0) $request['quantity'] = 0;
-                $this->getUser()->getCart()->addProduct($product, $request['quantity']);
+                if ($request['quantity']<=0){
+                    $request['quantity'] = 0;
+                    $this->getUser()->getCart()->deleteProduct($product['id']);
+                }
+                else{
+                    $this->getUser()->getCart()->addProduct($product, $request['quantity']);
+                }
             }
             catch(Exception $e){
                 $result['value'] = false;
