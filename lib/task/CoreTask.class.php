@@ -15,6 +15,7 @@ class CoreTask extends sfBaseTask
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('param', null, sfCommandOption::PARAMETER_REQUIRED, 'Query parameters', '[]'),
       new sfCommandOption('data', null, sfCommandOption::PARAMETER_REQUIRED, 'Query data', '[]'),
+      new sfCommandOption('view', null, sfCommandOption::PARAMETER_REQUIRED, 'View', 'yaml'),
       // add your own options here
     ));
 
@@ -48,7 +49,18 @@ EOF;
     }
     else {
       $this->logSection('core', 'response', null, 'INFO');
-      myDebug::dump(iconv('utf-8', $encode, sfYaml::dump($response)));
+
+      switch ($options['view'])
+      {
+        case 'yaml': case 'yml':
+          $response = sfYaml::dump($response);
+          break;
+        case 'json':
+          $response = json_encode($response);
+          break;
+      }
+
+      myDebug::dump(iconv('utf-8', $encode, $response));
     }
   }
 }

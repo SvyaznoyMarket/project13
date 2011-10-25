@@ -46,6 +46,11 @@ EOF;
     $this->connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
     $this->task = TaskTable::getInstance()->find($arguments['task_id']);
+    if ('success' == $this->task->status)
+    {
+      return true;
+    }
+
     $params = $this->task->getContentData();
     if (!$params['packet_id'])
     {
