@@ -43,8 +43,10 @@ class callbackActions extends myActions
         {
             try
             {
+                $this->form->getObject()->setCorePush(false);
+                $result = $this->form->save();
                 
-                //if ($result){
+                if ($result){
                     //отправляем письмо администратору
                     
                     $letterBody = "
@@ -53,20 +55,26 @@ class callbackActions extends myActions
                     E-mail: ".$data['email']."
                     Тема вопроса: ".$data['theme']."
                     Текст вопроса:  ".$data['text']."
-                        ";
+                    ";
                     $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
+                    $message = Swift_Message::newInstance( $data['theme'] )
+                             ->setFrom(array($data['email'] => $data['name']))
+                             ->setTo(array('esbelousova@maxus.ru' => 'site admin'))
+                             ->setBody($letterBody, 'text/html');
+                    $res = $mailer->send($message);   
+                    #var_dump($res);
                     $message = Swift_Message::newInstance( $data['theme'] )
                              ->setFrom(array($data['email'] => $data['name']))
                              ->setTo(array('olga--tru@yandex.ru' => 'site admin'))
                              ->setBody($letterBody, 'text/html');
-                    $res = $mailer->send($message);                    
+                    $res = $mailer->send($message);   
+                    #var_dump($res);
 
 //}
-                ///else{
-                  //  $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
-               // }
-                    $result = $this->form->save();
-                    $this->setTemplate('sendOk');
+                }else{
+                    $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
+                }
+                $this->setTemplate('sendOk');
             }
             catch (Exception $e)
             {
