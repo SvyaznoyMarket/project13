@@ -21,9 +21,11 @@ class ProductTypeTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'    => 'core_id',
-      'name'  => 'name',
-      'added' => 'created_at',
+      'id'        => 'core_id',
+      'name'      => 'name',
+      'added'     => 'created_at',
+
+      'category'  => array('rel' => 'ProductCategory'),
     );
   }
 

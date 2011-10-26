@@ -21,8 +21,9 @@ class ProductType extends BaseProductType
     {
       $relation = new TagGroupProductTypeRelation();
       $relation->fromArray(array(
-        'tag_group_id' => TagGroupTable::getInstance()->getIdByCoreId($relationData['id']),
-        'position'     => $relationData['position'],
+        'product_type_id' => $this->id,
+        'tag_group_id'    => TagGroupTable::getInstance()->getIdByCoreId($relationData['id']),
+        'position'        => $relationData['position'],
       ));
       $this->TagGroupRelation[] = $relation;
     }
@@ -32,6 +33,7 @@ class ProductType extends BaseProductType
     {
       $relation = new ProductTypePropertyGroupRelation();
       $relation->fromArray(array(
+        'product_type_id'   => $this->id,
         'property_group_id' => ProductPropertyGroupTable::getInstance()->getIdByCoreId($relationData['id']),
         'position'          => $relationData['position'],
       ));
@@ -54,6 +56,7 @@ class ProductType extends BaseProductType
     }
 
     // категория товара
+    /*
     if (!empty($data['category'])) foreach ($data['category'] as $relationData)
     {
       $relation = new ProductCategoryTypeRelation();
@@ -62,6 +65,7 @@ class ProductType extends BaseProductType
       ));
       $this->ProductCategoryRelation[] = $relation;
     }
+    */
 
     // TODO: фильтры категорий
   }

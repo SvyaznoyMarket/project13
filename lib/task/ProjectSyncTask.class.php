@@ -120,7 +120,7 @@ EOF;
             $record->setCorePush(false);
             myDebug::dump($entity);
             myDebug::dump($record);
-            $record->save();
+            $record->replace(); //$record->save();
 
             $this->task->status = 'success';
             $this->task->save();
