@@ -34,7 +34,6 @@ function Lightbox( jn, data ){
 	
 	if( ! init.name ) {
 		init = this.restore()
-		console.info(init)
 		if( !init )
 		init  = {
 					'name':false,
