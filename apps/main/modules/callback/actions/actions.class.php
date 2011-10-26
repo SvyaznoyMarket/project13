@@ -70,7 +70,7 @@ class callbackActions extends myActions
             }
             catch (Exception $e)
             {
-                echo $e->getMessage();
+                //echo $e->getMessage();
                 $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
                 $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
                 $this->setTemplate('index');

@@ -29,7 +29,7 @@ abstract class BaseCallbackForm extends BaseFormDoctrine
     $this->setValidators(array(        
       'id'         => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'name'       => new sfValidatorString(array('max_length' => 255, 'required' => true)),
-      'email'       => new sfValidatorString(array('max_length' => 255, 'required' => true)),
+      'email'       => new sfValidatorEmail(array('max_length' => 255, 'required' => true)),
       'theme'       => new sfValidatorString(array('max_length' => 255, 'required' => true)),
       'text'       => new sfValidatorString(array('required' => true)),
       'created_at' => new sfValidatorDateTime(),
