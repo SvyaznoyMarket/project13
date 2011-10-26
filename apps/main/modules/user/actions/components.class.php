@@ -82,7 +82,11 @@ class userComponents extends myComponents
         ? false !== strpos($uri, '?') ? strstr($uri, '?', true) : $uri
         : $uri
       ;
-      $item['current'] = in_array($routeName, $item['routes']);
+	  if (in_array($routeName, $item['routes'])) {
+		  $item['current'] = true;
+		  $this->getResponse()->setTitle($item['name'].' – Личный кабинет – Enter.ru');
+	  }
+      //$item['current'] = in_array($routeName, $item['routes']);
     } if (isset($item)) unset($item);
 
     $this->setVar('leftMenu', $list, true);

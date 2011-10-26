@@ -25,6 +25,9 @@ class pageActions extends myActions
     {
       $this->setLayout('layout');
     }
+	
+	$pageTitle = !empty($this->page->title) ? $this->page->title : $this->page->name;
+	$this->getResponse()->setTitle($pageTitle.' – Enter.ru');
 
     $this->setVar('page', $this->page, true);
   }
