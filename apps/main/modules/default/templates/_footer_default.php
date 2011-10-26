@@ -2,7 +2,7 @@
 <div class="footer">
   <div class="bottommenu">
     <dl>
-      <dt><a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>"><strong>О проекте</strong></a></dt>
+      <dt><a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>"><strong>О компании</strong></a></dt>
       <dd>Наша миссия: дарить время для</dd>
       <dd>настоящего. Честно. С любовью.</dd>
       <dd>Как для себя.</dd>

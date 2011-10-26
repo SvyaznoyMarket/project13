@@ -34,6 +34,7 @@ function Lightbox( jn, data ){
 	
 	if( ! init.name ) {
 		init = this.restore()
+		console.info(init)
 		if( !init )
 		init  = {
 					'name':false,
@@ -183,7 +184,7 @@ function Lightbox( jn, data ){
 	}
 	// initia
 	this.update()
-	setTimeout( function () { plashka.fadeIn('slow') }, 2000)
+	//setTimeout( function () { plashka.fadeIn('slow') }, 2000)
 	flybox = new Flybox( jn )
 	
 } // Lightbox object

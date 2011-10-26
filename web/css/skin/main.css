@@ -81,7 +81,7 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 
 .links {float:right; padding:0 40px 0 0}
 .links A {display:block; font-family:"Enter"; font-size:14px; text-decoration:none; text-transform:uppercase}
-.links .link4 {float:left; width:66px; background:url(/css/skin/img/about.gif) no-repeat; margin-top: 7px; padding-top: 70px; }
+.links .link4 {float:left; width:70px; background:url(/css/skin/img/about.gif) no-repeat; margin-top: 7px; padding-top: 70px; }
 .links .link1 {float:left; width:62px; padding-top:77px; margin-left: 38px; background:url(/css/skin/img/bg_main.png) no-repeat -830px 1px; text-align:center}
 .links .link2 {width:111px; height:16px; margin:23px 0 0 208px; background:url(/css/skin/img/bg_main.png) no-repeat -897px 0; text-indent:-10000px}
 .links .link3 {margin:38px 0 0 208px}

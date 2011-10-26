@@ -64,10 +64,10 @@ class ProductTable extends myDoctrineTable
     }
     elseif (!isset($param['old_goods']) || false == $param['old_goods'])
     {
-      $q->addWhere('product.is_instock = ?', true);
+      //$q->addWhere('product.is_instock = ?', true);
     }
 
-    $q->orderBy('product.score DESC');
+    $q->orderBy('product.is_instock DESC, product.score DESC');
 
     return $q;
   }

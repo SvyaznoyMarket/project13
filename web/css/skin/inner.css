@@ -358,8 +358,8 @@ box-shadow:0 0 9px #616161;
 
 
 
-.sliderbox {float:left; width:194px; margin:0 0 10px 11px}
-.sliderbox SPAN {display:block; padding-top:4px; font-size:10px; color:#fff}
+.sliderbox {float:left; width:194px; margin:5px 0 10px 11px}
+.sliderbox SPAN {display:block; padding-top:8px; font-size:10px; color:#A6A6A6}
 .slider-range {height:16px; background:#ffe6b4 url(/css/skin/img/bg.png) repeat-x 0 -34px;  position: relative;
 border-radius:4px;
 -moz-border-radius:4px;
@@ -558,7 +558,7 @@ border-radius:5px;
 .goodsbar A:hover {text-decoration:none}
 .goodsbar A.link1 {width:37px; background-position:-349px -216px}
 .goodsbar A.link1:hover {background-position:-60px -216px}
-.goodsbar A.link1active, .goodsbar A.link1active:hover {/*background-color:#c4c4c4; */ background-position:-182px -216px}
+.goodsbar A.link1.active, .goodsbar A.link1.active:hover {/*background-color:#c4c4c4; */ background-position:-182px -216px}
 .goodsbar A.link2 {width:37px; background-position:-584px -216px}
 /* .goodsbar A.link2:hover {background-position:-465px -216px; z-index:2} */
 .goodsbar A.link2active, .goodsbar A.link2active:hover {background-color:#c4c4c4; background-position:-223px -216px}
@@ -566,6 +566,7 @@ border-radius:5px;
 /* .goodsbar A.link3:hover {background-position:-503px -216px} */
 .goodsbar A.link3active, .goodsbar A.link3active:hover {background-color:#c4c4c4; background-position:-263px -216px}
 .goodsbar A.link3.disabled {background-position:-622px -216px; margin-left:-1px}
+.goodsbar A.link1.disabled {background-position:-543px -216px; margin-left:-1px}
 
 .sectionlist {float:left; width:171px; padding-bottom:20px}
 .sectionlist LI {width:161px; padding:0 0 5px 0; font-size:11px; color:#7e7e7e}
@@ -1030,7 +1031,7 @@ box-shadow:0 0 9px #616161;
 //behavior: url(ie-css3.htc)
 }
 .flybox .corner {position:absolute; display:block; font-size:0; line-height:0; bottom:-15px; //bottom:-14px; left:50%; margin-left:-10px; width:20px; height:15px; background:url(/css/skin/img/bg.png) no-repeat -25px -218px}
-.flybox .close {position:absolute; top:0px; right:0px; //right:-2px; display:block;  width:19px; height:19px; background:url(/css/skin/img/bg_inner.png) no-repeat -95px -158px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
+.flybox .close {position:absolute; top:0px; right:0px; //right:-2px; display:block;  width:26px; height:26px; background:url(/css/skin/img/bg_inner.png) no-repeat -46px -179px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
 
 .dragbox {width:100%; lheight:100%; position:fixed; z-index:101; top:0; left:0; right:0; bottom:41px}
 .dragbox DIV {position:absolute; z-index:102; width:60px; height:60px; background-color:#fff; cursor:pointer}
