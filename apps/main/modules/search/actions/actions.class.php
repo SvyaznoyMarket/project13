@@ -18,13 +18,20 @@ class searchActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $limit = sfConfig::get('app_product_max_items_on_category', 20);
-    $offset = intval($request->getParameter('page', 1) - 1) * $limit;
+	$page = $request->getParameter('page', 1);
+    $offset = intval($page - 1) * $limit;
     $this->forward404If($offset < 0, 'Неверный номер страницы');
 
     //myDebug::dump($request, 1);
     //$this->searchString = iconv('windows-1251', 'utf-8', $request['q']);
     $this->searchString = $request['q'];
     $this->forward404Unless($this->searchString);
+	
+	$title = 'Вы искали “'.  htmlspecialchars($this->searchString).'”';
+	if ($page) {
+		$title .= ' – '.$page;
+	}
+	$this->getResponse()->setTitle($title.' – Enter.ru');
 
     $productTypeList = $this->getProductTypes($request);
 

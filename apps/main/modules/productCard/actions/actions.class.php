@@ -18,6 +18,17 @@ class productCardActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
+	
+	$title = $this->product['name'];
+	$mainCat = $this->product->getMainCategory();
+	if ($mainCat) {
+		$title .= ' – '.$mainCat;
+		$rootCat = $mainCat->getRootRow();
+		if ($rootCat->id !== $mainCat->id) {
+			$title .= ' – '.$rootCat;
+		}
+	}
+	$this->getResponse()->setTitle($title.' – Enter.ru');
 
     // история просмотра товаров
     $this->getUser()->getProductHistory()->addProduct($this->product);
