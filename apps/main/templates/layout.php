@@ -104,7 +104,7 @@
         <div class="dropbox" style="left:517px; display:none;">
           <p>Перетащите сюда</p>
         </div-->
-        <div class="dropbox" style="left:703px; display:none;">
+        <div class="dropbox" style="left:733px; display:none;">
           <p>Перетащите сюда</p>
         </div>
         <!-- Flybox -->
@@ -116,38 +116,6 @@
         </ul>
       </div>
     </div>
-    <div id="zaglu" style="display:none"><!-- AJAX emulation zaglushka-->
-      <ul class="comparisonblock">
-        <li>
-          <div class="photo"><b class="delete" title="Удалить"></b><a href=""></a></div>
-          <a href="">Смартфон Samsung Galaxy S II (GT-I9100 )16 Гб</a> <strong>64 543 <span class="rubl">p</span></strong>
-        </li>
-        <li>
-          <div class="photo"><b class="delete" title="Удалить"></b><a href=""></a></div>
-          <a href="">Смартфон HTC Wildfire S White 16 Гб</a> <strong>64 543 <span class="rubl">p</span></strong>
-        </li>
-        <li>
-          <div class="photo"><b class="delete" title="Удалить"></b><a href=""></a></div>
-          <a href="">Смартфон HTC Sensation</a> <strong>64 543 <span class="rubl">p</span></strong>
-        </li>
-        <li>
-          <div class="comparphoto"></div>
-          <div class="gray ac">Товар для сравнения</div>
-        </li>
-      </ul>
-      <div class="fl form width230">
-        <div class="pb5">Товары, которые вы сравнивали в других разделах:</div>
-        <div class="selectbox selectbox225 mb70"><i></i>
-          <select class="styled" name="3">
-            <option value="1">Электроника</option>
-            <option value="2">Товары для дома</option>
-            <option value="3">Сделай сам (инструменты)</option>
-          </select>
-        </div>
-        <a href="" class="button bigbuttonlink" value="">Перейти в сравнение</a>
-      </div>
-    </div>
-
     <!-- /Lightbox -->
 
     <?php if (!include_slot('auth'))
