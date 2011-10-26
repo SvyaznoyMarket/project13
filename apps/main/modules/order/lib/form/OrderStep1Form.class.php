@@ -248,6 +248,10 @@ class OrderStep1Form extends BaseOrderForm
       {
         $this->object->address = $this->object->Shop->address;
       }
+      else
+      {
+        $this->object->shop_id = null;
+      }
     }
   }
 }
