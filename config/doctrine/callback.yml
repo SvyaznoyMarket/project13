@@ -8,4 +8,4 @@ Callback:
     name:              { type: string(255), notnull: false, default: null, comment: '' }
     email:              { type: string(255), notnull: false, default: null, comment: '' }
     theme:              { type: string(255), notnull: false, default: null, comment: '' }
-    text:              { type: string(255), notnull: false, default: null, comment: '' }
+    text:              { type: string, notnull: false, default: null, comment: '' }
