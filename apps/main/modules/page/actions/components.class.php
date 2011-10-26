@@ -31,7 +31,7 @@ class pageComponents extends myComponents
   {
     if (!$this->page instanceof Page)
     {
-      return sfView::NONE;
+     // return sfView::NONE;
     }
 
     if (!$this->view)
@@ -44,6 +44,7 @@ class pageComponents extends myComponents
         'name'  => 'О нас',
         'links' => array(
           array('token' => 'about_company'),
+          array('token'=>'callback','url' => 'callback', 'name' => 'Обратная связь'),
         ),
       ),
       'buying' => array(
@@ -60,11 +61,13 @@ class pageComponents extends myComponents
     {
       foreach ($item['links'] as &$link)
       {
-        $page = PageTable::getInstance()->findOneByToken($link['token']);
-        if (!$page) continue;
-
-        $link['name'] = $page->name.(isset($link['add_to_name']) ? $link['add_to_name'] : '');
-        $link['url'] = url_for('default_show', array('page' => $page->token));
+        if (isset($link['token'])) $page = PageTable::getInstance()->findOneByToken($link['token']);
+        if (!$page || !isset($page)){
+        }
+        else{
+            $link['name'] = $page->name.(isset($link['add_to_name']) ? $link['add_to_name'] : '');
+            $link['url'] = url_for('default_show', array('page' => $page->token));
+        } 
       } if (isset($link)) unset($link);
     } if (isset($item)) unset($item);
 
