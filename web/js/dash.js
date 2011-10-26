@@ -19,6 +19,11 @@ $(document).ready(function(){
 				ltbx.update( lbox )
 				ltbx.save()
 				changeButtons( lbox )
+				/* ltbx */
+				var dropbx = $('div.lightboxinner > .dropbox')
+				if( dropbx.length ) {
+					dropbx.css('left', $('ul.lightboxmenu > li').eq(1).offset().left - $('div.lightboxinner').offset().left )
+				}
 			}
 				
 	})	
