@@ -47,11 +47,18 @@ class callbackActions extends myActions
                 //if ($result){
                     //отправляем письмо администратору
                     
+                    $letterBody = "
+                    Новый вопрос на сайте. Его содержание:
+                    Имя: ".$data['name']."
+                    E-mail: ".$data['email']."
+                    Тема вопроса: ".$data['theme']."
+                    Текст вопроса:  ".$data['text']."
+                        ";
                     $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
                     $message = Swift_Message::newInstance( $data['theme'] )
                              ->setFrom(array($data['email'] => $data['name']))
                              ->setTo(array('olga--tru@yandex.ru' => 'site admin'))
-                             ->setBody('Вопрос на сайте!', 'text/html');
+                             ->setBody($letterBody, 'text/html');
                     $res = $mailer->send($message);                    
 
 //}
