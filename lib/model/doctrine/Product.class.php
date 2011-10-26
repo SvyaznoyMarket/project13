@@ -57,61 +57,74 @@ class Product extends BaseProduct
       $creator = new Creator();
       $creator->importFromCore($response);
       $creator->setCorePush(false);
-      //$creator->save();
+      $creator->save();
     }
 
     // property relation
     if (!empty($data['property']))
     {
-      foreach ($this->PropertyRelation as $relation)
-      {
-        $delete = true;
-        foreach ($data['property'] as $relationData)
-        {
-          $propertyId = ProductPropertyTable::getInstance()->getIdByCoreId($relationData['property_id']);
-          $optionId = ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id']);
-
-          if (($relation->property_id == $propertyId) && ($relation->option_id == $optionId))
-          {
-            $delete = false;
-            break;
-          }
-        }
-
-        if ($delete)
-        {
-          $relation->delete();
-        }
-      }
-
+      $collectionData = array();
       foreach ($data['property'] as $relationData)
       {
         $propertyId = ProductPropertyTable::getInstance()->getIdByCoreId($relationData['property_id']);
-        $optionId = ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id']);
-
-        $exists = false; // связь не найдена
-        foreach ($this->PropertyRelation as $relation)
+        
+        // checks multiple property
+        if ($relationData['is_multiple'] && !empty($relationData['option']))
         {
-          // update existing relation
-          if (($relation->property_id == $propertyId) && ($relation->option_id == $optionId))
+          foreach ($relationData['option'] as $optionData)
           {
-            $exists = true;
-            $relation->value = $relationData['value'];
-            break;
+            $optionId = ProductPropertyOptionTable::getInstance()->getIdByCoreId($optionData['option_id']);
+            
+            if (!empty($optionData['option_id']) && !$optionId)
+            {
+              // force get option
+            }
+            
+            $collectionData[$propertyId.'-'.$optionId] = array(
+              'property_id' => $propertyId,
+              'option_id'   => $optionId,
+              'value'       => null,
+            );
           }
         }
+        else {
+          $optionId = ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id']);
+          if (!empty($relationData['option_id']) && !$optionId)
+          {
+            // force get option
+          }
 
-        // create new relation if not exists
-        if (!$exists)
-        {
-          $relation = new ProductPropertyRelation();
-          $relation->fromArray(array(
+          $collectionData[$propertyId.'-'.$optionId] = array(
             'property_id' => $propertyId,
             'option_id'   => $optionId,
-            'value'       => $relationData['value'],
-          ));
-          $this->PropertyRelation[] = $relation;
+            'value'       => trim($relationData['value']),
+          );
         }
+      }
+      
+      $existing = array();
+      foreach ($this->PropertyRelation as $i => $propertyRelation)
+      {
+        $index = $propertyRelation->property_id.'-'.$propertyRelation->option_id;
+        if (!array_key_exists($index, $collectionData))
+        {
+          $propertyRelation->delete();
+          unset($this->PropertyRelation[$i]);
+        }
+        else {
+          $propertyRelation->value = $collectionData[$index]['value'];          
+          $existing[] = $index; //!important
+        }
+      }
+
+      // new relation
+      $new = array_diff(array_keys($collectionData), $existing);
+      myDebug::dump(array('new' => count($new)));
+      foreach ($new as $index)
+      {
+        $relation = new ProductPropertyRelation();
+        $relation->fromArray($collectionData[$index]);
+        $this->PropertyRelation[] = $relation;
       }
     }
   }

@@ -41,7 +41,7 @@ EOF;
     $this->task = TaskTable::getInstance()->find($arguments['task_id']);
     if ('success' == $this->task->status)
     {
-      return true;
+      //return true;
     }
 
     $params = $this->task->getContentData();
@@ -118,6 +118,7 @@ EOF;
 
             $record->importFromCore($entity);
             $record->setCorePush(false);
+            myDebug::dump($entity);
             myDebug::dump($record);
             $record->save();
 
