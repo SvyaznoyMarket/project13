@@ -53,7 +53,7 @@ EOF;
       switch ($options['view'])
       {
         case 'yaml': case 'yml':
-          $response = sfYaml::dump($response);
+          $response = sfYaml::dump($response, 6);
           break;
         case 'json':
           $response = json_encode($response);
