@@ -31,6 +31,13 @@ class Task extends BaseTask
     }
   }
 
+  public function toParams()
+  {
+    return array(
+      'id' => $this->id,
+    );
+  }
+
   public function setContentData($value)
   {
     if (!is_array($value))
