@@ -20,16 +20,19 @@ class TaskTable extends myDoctrineTable
 
   public function getDefaultParameters()
   {
-    return array();
+    return array(
+      'with_minPriority'   => true,
+      'check_zeroPriority' => true,
+    );
   }
 
   public function createBaseQuery(array $params = array())
   {
     $this->applyDefaultParameters($params);
 
-    $q = $this->createQuery('product');
+    $q = $this->createQuery('task');
 
-    $q->orderBy('priority ASC');
+    $q->orderBy('priority ASC, created_at ASC');
 
     return $q;
   }
@@ -37,10 +40,40 @@ class TaskTable extends myDoctrineTable
   public function getRunningList(array $params = array())
   {
     $q = $this->createBaseQuery($params);
+    $q->addWhere('task.status = ?', 'run');
 
     $this->setQueryParameters($q, $params);
 
     return $q->execute();
+  }
+
+  public function getRunning(array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+    $q->addWhere('task.status = ?', 'run');
+
+    // проверить наличие задачи с приоритетом реального времени
+    if ($params['check_zeroPriority'])
+    {
+      if ($this->getZeroPriority())
+      {
+        return false;
+      }
+    }
+
+    if ($params['with_minPriority'])
+    {
+      if ($priority = $this->getMinPriority())
+      {
+        $q->addWhere('task.priority = ?', $priority);
+      }
+    }
+
+    $this->setQueryParameters($q, $params);
+
+    return $q->fetchOne();
   }
 
   public function getByCoreId($coreId, array $params = array())
@@ -48,6 +81,37 @@ class TaskTable extends myDoctrineTable
     return $this->createQuery()
       ->where('core_id = ?', $coreId)
       ->orderBy('updated_at DESC')
+      ->fetchOne()
+    ;
+  }
+
+  public function getMinPriority()
+  {
+    return $this->createQuery()
+      ->select('MIN(task.priority) AS priority_min')
+      ->where('task.status = ?', 'run')
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->fetchOne()
+    ;
+  }
+
+  public function getPriorityByType($type)
+  {
+    $priorities = array(
+      'project.init' => 1,
+      'project.sync' => 2,
+      'default'      => 3,
+    );
+
+    return isset($priorities[$type]) ? $priorities[$type] : $priorities['default'];
+  }
+
+  public function getZeroPriority()
+  {
+    return $this->createQuery()
+      ->select('id')
+      ->where('priority = ?', 0)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
       ->fetchOne()
     ;
   }

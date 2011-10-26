@@ -60,26 +60,59 @@ class Product extends BaseProduct
       //$creator->save();
     }
 
-    // tag
-    if (!empty($data['tag'])) foreach ($data['tag'] as $relationData)
-    {
-      $relation = new TagProductRelation();
-      $relation->fromArray(array(
-        'tag_id' => TagTable::getInstance()->getIdByCoreId($relationData['id']),
-      ));
-      $this->TagRelation[] = $relation;
-    }
-
     // property relation
-    if (!empty($data['property'])) foreach ($data['property'] as $relationData)
+    if (!empty($data['property']))
     {
-      $relation = new ProductPropertyRelation();
-      $relation->fromArray(array(
-        'property_id' => ProductPropertyTable::getInstance()->getIdByCoreId($relationData['property_id']),
-        'option_id'   => !empty($relationData['option_id']) ? ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id']) : null,
-        'value'       => $relationData['value'],
-      ));
-      $this->PropertyRelation[] = $relation;
+      foreach ($this->PropertyRelation as $relation)
+      {
+        $delete = true;
+        foreach ($data['property'] as $relationData)
+        {
+          $propertyId = ProductPropertyTable::getInstance()->getIdByCoreId($relationData['property_id']);
+          $optionId = ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id']);
+
+          if (($relation->property_id == $propertyId) && ($relation->option_id == $optionId))
+          {
+            $delete = false;
+            break;
+          }
+        }
+
+        if ($delete)
+        {
+          $relation->delete();
+        }
+      }
+
+      foreach ($data['property'] as $relationData)
+      {
+        $propertyId = ProductPropertyTable::getInstance()->getIdByCoreId($relationData['property_id']);
+        $optionId = ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id']);
+
+        $exists = false; // связь не найдена
+        foreach ($this->PropertyRelation as $relation)
+        {
+          // update existing relation
+          if (($relation->property_id == $propertyId) && ($relation->option_id == $optionId))
+          {
+            $exists = true;
+            $relation->value = $relationData['value'];
+            break;
+          }
+        }
+
+        // create new relation if not exists
+        if (!$exists)
+        {
+          $relation = new ProductPropertyRelation();
+          $relation->fromArray(array(
+            'property_id' => $propertyId,
+            'option_id'   => $optionId,
+            'value'       => $relationData['value'],
+          ));
+          $this->PropertyRelation[] = $relation;
+        }
+      }
     }
   }
 

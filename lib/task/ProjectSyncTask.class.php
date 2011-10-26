@@ -118,12 +118,11 @@ EOF;
 
             $record->importFromCore($entity);
             $record->setCorePush(false);
+            myDebug::dump($record);
             $record->save();
 
             $this->task->status = 'success';
-            //$this->task->save();
-
-            //myDebug::dump($record);
+            $this->task->save();
           }
           catch (Exception $e) {
             $this->logSection($packet['type'], ucfirst($action).' entity #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');

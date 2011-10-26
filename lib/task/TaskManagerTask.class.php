@@ -2,6 +2,10 @@
 
 class TaskManagerTask extends sfBaseTask
 {
+  protected
+    $logger = null
+  ;
+
   protected function configure()
   {
     // // add your own arguments here
@@ -25,6 +29,8 @@ Call it with:
 
   [php symfony TaskManager|INFO]
 EOF;
+
+    $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/task_manager.log'));
   }
 
   protected function execute($arguments = array(), $options = array())
@@ -34,16 +40,24 @@ EOF;
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
     // add your code here
-    $list = TaskTable::getInstance()->getRunningList();
-    if (isset($list[0]) && (0 === $list[0]->priority))
+    $table = TaskTable::getInstance();
+
+    $task = $table->getRunning(array('with_minPriority' => true, 'check_zeroPriority' => true));
+    if (false == $task)
     {
-      $list = TaskTable::getInstance()->createList(array($list[0]));
+      $zeroPriorityTask = $table->getZeroPriority();
+      $this->logger->log("#{$zeroPriorityTask->id} running now. Stop");
+
+      return true;
     }
-    foreach ($list as $task)
-    {
-      $this->logSection($task->type, 'starting...');
-      $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array());
-      $this->logSection($task->type, 'done');
-    }
+
+    $this->logger->log("{$task->type} #{$task->id} starting...");
+    $this->logSection($task->type, "#{$task->id} starting...");
+
+    // приоритет реального времени
+    $task->priority = 0;
+
+    $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array());
+    $this->logSection($task->type, "#{$task->id} done");
   }
 }
