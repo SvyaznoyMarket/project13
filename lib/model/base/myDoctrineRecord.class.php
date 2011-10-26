@@ -6,7 +6,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     $corePush = true
   ;
 
-  public function postSave(Doctrine_Event $event)
+  public function postSave($event)
   {
     $invoker = $event->getInvoker();
     
