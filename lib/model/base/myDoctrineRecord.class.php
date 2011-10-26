@@ -3,7 +3,26 @@
 abstract class myDoctrineRecord extends sfDoctrineRecord
 {
   protected
-    $corePush = true;
+    $corePush = true
+  ;
+
+  public function postSave(Doctrine_Event $event)
+  {
+    $invoker = $event->getInvoker();
+    
+    $prefix = sfConfig::get('app_doctrine_result_cache_prefix', 'dql:');
+
+    $driver = $invoker->getTable()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
+
+    foreach (array(
+      '*/'.$invoker->getTable()->getQueryRootAlias().'-'.$invoker->id.'/*',
+      '*/'.$invoker->getTable()->getQueryRootAlias().'-all/*',
+    ) as $key) {
+      $driver->deleteByPattern(
+        $prefix.$key
+      );      
+    }
+  }
 
   public function toParams()
   {
