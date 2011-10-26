@@ -43,34 +43,43 @@ class callbackActions extends myActions
         {
             try
             {
+                $this->form->getObject()->setCorePush(false);
+                $result = $this->form->save();
                 
-                //if ($result){
+                if ($result){
                     //отправляем письмо администратору
                     
                     $letterBody = "
-                    Новый вопрос на сайте. Его содержание:
-                    Имя: ".$data['name']."
-                    E-mail: ".$data['email']."
-                    Тема вопроса: ".$data['theme']."
-                    Текст вопроса:  ".$data['text']."
-                        ";
+                    Обратная связь на сайте Enter.ru. <br><br>
+                    Содержание сообщение:<br>
+                    Имя: ".$data['name']."<br>
+                    E-mail: ".$data['email']."<br>
+                    Тема вопроса: ".$data['theme']."<br>
+                    Текст вопроса:  ".$data['text']."<br>
+                    ";
                     $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
+                    $message = Swift_Message::newInstance( $data['theme'] )
+                             ->setFrom(array($data['email'] => $data['name']))
+                             ->setTo(array('esbelousova@maxus.ru' => 'site admin'))
+                             ->setBody($letterBody, 'text/html');
+                    $res = $mailer->send($message);   
+                    #var_dump($res);
                     $message = Swift_Message::newInstance( $data['theme'] )
                              ->setFrom(array($data['email'] => $data['name']))
                              ->setTo(array('olga--tru@yandex.ru' => 'site admin'))
                              ->setBody($letterBody, 'text/html');
-                    $res = $mailer->send($message);                    
+                    $res = $mailer->send($message);   
+                    #var_dump($res);
 
 //}
-                ///else{
-                  //  $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
-               // }
-                    $result = $this->form->save();
-                    $this->setTemplate('sendOk');
+                }          else{
+                    $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
+                }
+                $this->setTemplate('sendOk');
             }
             catch (Exception $e)
             {
-                echo $e->getMessage();
+                //echo $e->getMessage();
                 $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
                 $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
                 $this->setTemplate('index');
