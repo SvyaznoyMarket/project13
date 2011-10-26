@@ -50,7 +50,7 @@ class callbackActions extends myActions
                     $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
                     $message = Swift_Message::newInstance( $data['theme'] )
                              ->setFrom(array($data['email'] => $data['name']))
-                             ->setTo(array('testtesttest@yandex.ru' => 'site admin'))
+                             ->setTo(array('olga--tru@yandex.ru' => 'site admin'))
                              ->setBody('Вопрос на сайте!', 'text/html');
                     $res = $mailer->send($message);                    
 
