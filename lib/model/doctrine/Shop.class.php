@@ -18,4 +18,11 @@ class Shop extends BaseShop
       'shop' => $this->token,
     );
   }
+
+  public function importFromCore(array $data)
+  {
+    parent::importFromCore($data);
+
+    $this->region_id = RegionTable::getInstance()->getIdByCoreId($data['geo_id']);
+  }
 }

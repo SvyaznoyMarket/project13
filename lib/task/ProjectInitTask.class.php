@@ -21,6 +21,7 @@ class ProjectInitTask extends sfBaseTask
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('dump', null, sfCommandOption::PARAMETER_NONE, 'Only dump response'),
       new sfCommandOption('freeze', null, sfCommandOption::PARAMETER_NONE, 'Freeze executing next packet'),
+      new sfCommandOption('log', null, sfCommandOption::PARAMETER_NONE, 'Enable logging'),
       // add your own options here
     ));
 
@@ -38,11 +39,18 @@ EOF;
 
   protected function execute($arguments = array(), $options = array())
   {
+    sfConfig::set('sf_logging_enabled', $options['log']);
+
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $this->connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
     $this->task = TaskTable::getInstance()->find($arguments['task_id']);
+    if ('success' == $this->task->status)
+    {
+      return true;
+    }
+
     $params = $this->task->getContentData();
     if (!$params['packet_id'])
     {
@@ -94,7 +102,11 @@ EOF;
               ? call_user_func_array(array($this, $method), array($entity['data']))
               : $table->createRecordFromCore($entity['data'])
             ;
-            $this->pushRecord($record);
+
+            if ($record)
+            {
+              $this->pushRecord($record);
+            }
           }
           catch (Exception $e) {
             $this->logSection('Import entity', $entity['type'].' #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
@@ -114,7 +126,7 @@ EOF;
         }
         else {
           $this->logSection('Unknown entity', $entity['type'].' #'.$entity['id'], null, 'ERROR');
-          $this->logger->log('Unknown entity:'.$entity['type'].' #'.$entity['id']);
+          $this->logger->log('Unknown entity: '.$entity['type'].' #'.$entity['id']);
         }
       }
     }
@@ -129,6 +141,12 @@ EOF;
       $this->task->setContentData(array(
         'packet_id' => $nextPacketId, //4508
       ));
+      $this->task->save();
+    }
+
+    if (null === $nextPacketId)
+    {
+      $this->task->status = 'success';
       $this->task->save();
     }
   }
@@ -175,7 +193,7 @@ EOF;
           call_user_func_array(array($this, $method), array());
         }
         else {
-          $this->connection->exec('TRUNCATE TABLE '.Doctrine_Core::getTable($name)->getTableName());
+          $this->connection->exec('TRUNCATE TABLE `'.Doctrine_Core::getTable($name)->getTableName().'`');
         }
 
         $prepared[] = $name;
@@ -185,6 +203,13 @@ EOF;
 
       $this->logSection($name, 'flush...');
       $method = 'flush'.$name.'Collection';
+
+      // disable core pushing
+      foreach ($collection as $record)
+      {
+        $record->setCorePush(false);
+      }
+
       if (method_exists($this, $method))
       {
         //if ('ProductCategory' == $name)          myDebug::dump($collection, 1);
@@ -192,7 +217,7 @@ EOF;
       }
       else
       {
-        myDebug::dump($name);
+        //myDebug::dump($name);
         $collection->save();
       }
 
@@ -211,7 +236,7 @@ EOF;
     {
       $q = Doctrine_Query::create()
         ->from('ProductFilter productFilter')
-        ->where('productFilter.group_id = ? and productFilter.property_id = ?', array($record->group_id, $record->property_id,));
+        ->where('productFilter.group_id = ? AND productFilter.property_id = ?', array($record->group_id, $record->property_id,));
       if (!$q->fetchOne())
       {
         $record->save();
@@ -245,16 +270,6 @@ EOF;
   {
     $record = RegionTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
-
-    if (isset($data['price_list_id']))
-    {
-      $record->product_price_list_id = $this->getRecordByCoreId('ProductPriceList', $data['price_list_id'], true);
-    }
-
-    if (isset($data['store_id']))
-    {
-      $record->stock_id = $this->getRecordByCoreId('Stock', $data['store_id'], true);
-    }
 
     return $record;
   }
@@ -352,11 +367,6 @@ EOF;
     $record = ProductCategoryTable::getInstance()->createRecordFromCore($data);
     $record->token = uniqid().'-'.myToolkit::urlize($record->name);
 
-    if (isset($data['product_id']))
-    {
-      $record->product_id = $this->getRecordByCoreId('Product', $data['product_id'], true);
-    }
-
     $filter = new ProductFilterGroup();
     $filter->fromArray(array(
       'name' => 'Фильтр для '.$record->name,
@@ -433,11 +443,6 @@ EOF;
     $record = ShopTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
 
-    if (isset($data['geo_id']))
-    {
-      $record->region_id = $this->getRecordByCoreId('Region', $data['gio_id'], true);
-    }
-
     return $record;
   }
 
@@ -463,83 +468,21 @@ EOF;
   protected function createProductTypeRecord(array $data)
   {
     $record = ProductTypeTable::getInstance()->createRecordFromCore($data);
-    //$record->token = myToolkit::urlize($record->name);
+    $record->token = myToolkit::urlize($record->name);
 
-    // Группы тегов
-    if (!empty($data['tag_group']))
+    if ($relationData['is_filter'] && !empty($data['category'])) foreach ($data['category'] as $category)
     {
-      foreach ($data['tag_group'] as $relationData)
-      {
-        $relation = new TagGroupProductTypeRelation();
-        $relation->fromArray(array(
-          'tag_group_id' => $this->getRecordByCoreId('TagGroup', $relationData['id'], true),
-          'position'     => $relationData['position'],
-        ));
-        $record->TagGroupRelation[] = $relation;
-      }
-    }
+      $filter = new ProductFilter();
+      $filter->fromArray(array(
+        'name'        => $relationData['name'],
+        'type'        =>  (6 == $relationData['filter_type_id']) ? 'range' : 'choice',
+        'property_id' => $this->getRecordByCoreId('ProductProperty', $relationData['id'], true),
+        'group_id'    => $this->getRecordByCoreId('ProductCategory', $category['id'])->FilterGroup->id,
+        'position'    => $relationData['filter_position'],
+        'is_multiple' => $relationData['is_multiple'],
+      ));
 
-    // Группы свойств товара
-    if (!empty($data['property_group']))
-    {
-      foreach ($data['property_group'] as $relationData)
-      {
-        $relation = new ProductTypePropertyGroupRelation();
-        $relation->fromArray(array(
-          'property_group_id' => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['id'], true),
-          'position'     => $relationData['position'],
-        ));
-        $record->PropertyGroupRelation[] = $relation;
-      }
-    }
-
-    // Свойства товара
-    if (!empty($data['property']))
-    {
-      foreach ($data['property'] as $relationData)
-      {
-        $relation = new ProductTypePropertyRelation();
-        $relation->fromArray(array(
-          'property_id'    => $this->getRecordByCoreId('ProductProperty', $relationData['id'], true),
-          'group_id'       => $this->getRecordByCoreId('ProductPropertyGroup', $relationData['group_id'], true),
-          'position'       => $relationData['position'],
-          'group_position' => $relationData['group_position'],
-          'view_show'      => true,
-          'view_list'      => $relationData['is_view_list'],
-        ));
-        $record->PropertyRelation[] = $relation;
-
-        if ($relationData['is_filter'] && !empty($data['category']))
-        {
-          foreach ($data['category'] as $category)
-          {
-            $filter = new ProductFilter();
-            $filter->fromArray(array(
-              'name'        => $relationData['name'],
-              'type'        =>  (6 == $relationData['filter_type_id']) ? 'range' : 'choice',
-              'property_id' => $this->getRecordByCoreId('ProductProperty', $relationData['id'], true),
-              'group_id'    => $this->getRecordByCoreId('ProductCategory', $category['id'])->FilterGroup->id,
-              'position'    => $relationData['filter_position'],
-              'is_multiple' => $relationData['is_multiple'],
-            ));
-
-            $this->pushRecord($filter);
-          }
-        }
-      }
-    }
-
-    // Категория товара
-    if (!empty($data['category']))
-    {
-      foreach ($data['category'] as $relationData)
-      {
-        $relation = new ProductCategoryTypeRelation();
-        $relation->fromArray(array(
-          'product_category_id' => $this->getRecordByCoreId('ProductCategory', $relationData['id'], true),
-        ));
-        $record->ProductCategoryRelation[] = $relation;
-      }
+      $this->pushRecord($filter);
     }
 
     return $record;
@@ -561,49 +504,6 @@ EOF;
   {
     $record = ProductTable::getInstance()->createRecordFromCore($data);
     $record->token = !empty($data['bar_code']) ? $data['bar_code'] : uniqid();
-    $record->creator_id = !empty($data['brand_id']) ? $this->getRecordByCoreId('Creator', $data['brand_id'], true) : null;
-    $record->type_id = !empty($data['type_id']) ? $this->getRecordByCoreId('ProductType', $data['type_id'], true) : null;
-
-    // Теги
-    if (!empty($data['tag']))
-    {
-      foreach ($data['tag'] as $relationData)
-      {
-        $relation = new TagProductRelation();
-        $relation->fromArray(array(
-          'tag_id' => $this->getRecordByCoreId('Tag', $relationData['id'], true),
-        ));
-        $record->TagRelation[] = $relation;
-      }
-    }
-
-    // Свойства товара
-    if (!empty($data['property']))
-    {
-      foreach ($data['property'] as $relationData)
-      {
-        $relation = new ProductPropertyRelation();
-        $relation->fromArray(array(
-          'property_id' => $this->getRecordByCoreId('ProductProperty', $relationData['property_id'], true),
-          'option_id'   => !empty($relationData['option_id']) ? $this->getRecordByCoreId('ProductPropertyOption', $relationData['option_id'], true) : null,
-          'value'       => $relationData['value'],
-        ));
-        $record->PropertyRelation[] = $relation;
-      }
-    }
-
-    // Категории
-    if (!empty($data['category']))
-    {
-      foreach ($data['category'] as $relationData)
-      {
-        $relation = new ProductCategoryProductRelation();
-        $relation->fromArray(array(
-          'product_category_id' => $this->getRecordByCoreId('ProductCategory', $relationData['id'], true),
-        ));
-        $record->CategoryRelation[] = $relation;
-      }
-    }
 
     return $record;
   }
@@ -612,7 +512,6 @@ EOF;
   protected function createProductCommentRecord(array $data)
   {
     $record = ProductCommentTable::getInstance()->createRecordFromCore($data);
-    $record->product_id = !empty($data['product_id']) ? $this->getRecordByCoreId('Product', $data['product_id'], true) : null;
 
     return $record;
   }
@@ -659,7 +558,6 @@ EOF;
     $this->logSection('Service category', 'prepare table...');
 
     $this->connection->exec('TRUNCATE TABLE `service_category`');
-    $this->connection->exec('TRUNCATE TABLE `service_category_relation`');
   }
 
   // ServiceCategory
@@ -713,10 +611,17 @@ EOF;
   protected function createProductPriceRecord(array $data)
   {
     $record = ProductPriceTable::getInstance()->createRecordFromCore($data);
-    $record->product_id = $this->getRecordByCoreId('Product', $data['product_id'], true);
-    $record->product_price_list_id = $this->getRecordByCoreId('ProductPriceList', $data['price_list_id'], true);
 
     return $record;
+  }
+
+  // Region
+  protected function prepareServiceTable()
+  {
+    $this->logSection('Service', 'prepare table...');
+
+    $this->connection->exec('TRUNCATE TABLE `service`');
+    $this->connection->exec('TRUNCATE TABLE `service_category_relation`');
   }
 
   //Service
@@ -724,19 +629,6 @@ EOF;
   {
     $record = ServiceTable::getInstance()->createRecordFromCore($data);
     $record->token = uniqid().'-'.myToolkit::urlize($record->name);
-
-    // Теги
-    if (!empty($data['category']))
-    {
-      foreach ($data['category'] as $relationData)
-      {
-        $relation = new ServiceCategoryRelation();
-        $relation->fromArray(array(
-          'category_id' => $this->getRecordByCoreId('ServiceCategory', $relationData['id'], true),
-        ));
-        $record->CategoryRelation[] = $relation;
-      }
-    }
 
     return $record;
   }
@@ -763,8 +655,11 @@ EOF;
   protected function createStockProductRelationRecord(array $data)
   {
     $record = StockProductRelationTable::getInstance()->createRecordFromCore($data);
-    $record->product_id = $this->getRecordByCoreId('Product', $data['product_id'], true);
-    $record->stock_id = $this->getRecordByCoreId('Stock', $data['store_id'], true);
+
+    if (empty($data['store_id']))
+    {
+      return false;
+    }
 
     return $record;
   }
@@ -782,7 +677,16 @@ EOF;
   protected function createDeliveryPeriodRecord(array $data)
   {
     $record = DeliveryPeriodTable::getInstance()->createRecordFromCore($data);
-    $record->delivery_type_id = $this->getRecordByCoreId('DeliveryType', $data['delivery_type_id'], true);
+    //$record->delivery_type_id = $this->getRecordByCoreId('', $data['delivery_type_id'], true);
+
+    return $record;
+  }
+
+  // Order
+  protected function createOrderRecord(array $data)
+  {
+    $record = OrderTable::getInstance()->createRecordFromCore($data);
+    $record->token = uniqid().'-'.$record->token;
 
     return $record;
   }
@@ -812,11 +716,6 @@ EOF;
       case 3:
         break;
       case 6:
-        /*$record = $this->getRecordByCoreId('ProductCategory', $data['item_id'], false);
-        if ($record)
-        {
-          $record->photo = $data['source'];
-        }*/
         break;
       default:
         break;

@@ -64,6 +64,8 @@ class ProductTypeTable extends myDoctrineTable
 
   public function getById($id, array $params = array())
   {
+    $this->applyDefaultParameters($params);
+    
     $q = $this->createBaseQuery($params);
 
     $this->setQueryParameters($q, $params);
@@ -125,6 +127,31 @@ class ProductTypeTable extends myDoctrineTable
     if ($params['with_productCount'])
     {
       $q->addSelect('COUNT(product.id) AS _product_count');
+    }
+
+    return $q->execute();
+  }
+
+  public function getListByProductCategory(ProductCategory $productCategory, array $params = array())
+  {
+    $this->applyDefaultParameters($params, array(
+      'with_productCount' => false,
+    ));
+
+    $q = $this->createBaseQuery($params);
+
+    $this->setQueryParameters($q, $params);
+
+    $q->leftJoin('productType.ProductCategoryRelation productCategoryTypeRelation')
+      ->andWhereIn('productCategoryTypeRelation.product_category_id', $productCategory->getDescendantIds(array('with_parent' => true)))
+    ;
+    
+    if ($params['with_productCount'])
+    {
+      $q->addSelect('COUNT(product.id) product_count')
+        ->leftJoin('productType.Product product WITH product.is_instock = 1')
+        //->groupBy('productType.id')
+      ;      
     }
 
     return $q->execute();

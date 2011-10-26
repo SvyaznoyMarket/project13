@@ -4,12 +4,12 @@ $(document).ready(function(){
 	ltbx = new Lightbox( $('.lightboxinner'), lbox )
 		/* draganddrop */
 	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
-	$('.boxhover[ref] .photo img').bind('mousedown', function(e){
+	$('.boxhover[ref] .photo img').live('mousedown', function(e){
 			e.stopPropagation()
 			e.preventDefault()
 			draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
 	})	
-	$('.boxhover[ref] .photo img').bind('mouseup', function(e){
+	$('.boxhover[ref] .photo img').live('mouseup', function(e){
 		draganddrop.cancel()
 	})
 		/* ---- */
@@ -18,10 +18,28 @@ $(document).ready(function(){
 				lbox = data.data
 				ltbx.update( lbox )
 				ltbx.save()
+				changeButtons( lbox )
 			}
 				
 	})	
 	
+	var changeButtons = function( lbox ){
+		if(!lbox || !lbox.productsInCart ) return false
+		for( var token in lbox.productsInCart) {
+			var bx = $('div.boxhover[ref='+ token +']')
+			if( bx.length ) {
+				var button = $('a.link1', bx)
+				button.attr('href', $('.lightboxinner .point2').attr('href') )
+				button.unbind('click').addClass('active')
+			}
+			bx = $('div.goodsbarbig[ref='+ token +']')
+			if( bx.length ) {
+				var button = $('a.link1', bx)
+				button.attr('href', $('.lightboxinner .point2').attr('href') )
+				button.unbind('click').addClass('active')
+			}
+		}
+	}
 	/* ---- */
 	
 	/* IKEA-like hover */
@@ -77,13 +95,17 @@ $(document).ready(function(){
 	}
 	
 	/* stuff goes into lightbox */
-	$('.boxhover .lt').live('click', function() {
+	$('.boxhover .lt').live('click', function(e) {
 		if( $(this).attr('data-url') ) 
 			window.location.href = $(this).attr('data-url')
 	})
+	
 	$('.goodsbar .link1').live('click', function(e) {
-		if (! currentItem ) return false
 		var button = this
+		if( $(button).hasClass('disabled') )
+			return false
+		if (! currentItem ) return false	
+		
 		if( ltbx ){
 			var tmp = $(this).parent().parent().find('.photo img')
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500, function() {
@@ -94,7 +116,7 @@ $(document).ready(function(){
 			if ( data.success && ltbx ) {
 				ltbx.getBasket( parseItemNode( currentItem ) )
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
-				$(button).unbind('click')
+				$(button).unbind('click').addClass('active')
 			}	
 		})
 		e.stopPropagation()

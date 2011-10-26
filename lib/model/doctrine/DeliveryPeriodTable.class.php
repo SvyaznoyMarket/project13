@@ -20,8 +20,10 @@ class DeliveryPeriodTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'          => 'core_id',
-      'name'        => 'name',
+      'id'               => 'core_id',
+      'name'             => 'name',
+
+      'delivery_type_id' => array('rel' => 'DeliveryType'),
     );
   }
 }

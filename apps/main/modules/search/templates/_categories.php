@@ -1,7 +1,8 @@
 <?php if (count($list['product']) > 0): ?>
   <h2>Найдено в товарах:</h2>
 
-  <form id="filter_product_type-form" action="<?php echo url_for('search', array('q' => $searchString)) ?>" method="post">
+  <form id="filter_product_type-form" action="<?php echo url_for('search') ?>" method="get">
+    <input type="hidden" name="q" value="<?php echo $searchString ?>" />
     <?php include_component('product', 'filter_productType', array('productTypeList' => $list['product'])) ?>
   </form>
 <?php endif ?>

@@ -35,6 +35,13 @@ productCatalog_filter:
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
+# тип товара
+productCatalog_productType:
+  url:   /catalog/:productCategory/type/:productType
+  param: { module: productCatalog, action: productType }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+#
 # тэги каталога товаров
 productCatalog_tag:
   url:   /catalog/:productCategory/_tag

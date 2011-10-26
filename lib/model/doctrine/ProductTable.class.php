@@ -32,6 +32,10 @@ class ProductTable extends myDoctrineTable
       'score'         => 'score',
       'media_image'   => 'main_photo',
       'prefix'        => 'prefix',
+
+      'type_id'       => array('rel' => 'Type'),
+      'brand_id'      => array('rel' => 'Creator'),
+      'category'      => array('rel' => 'Category'),
     );
   }
 
@@ -59,10 +63,10 @@ class ProductTable extends myDoctrineTable
     }
     elseif (!isset($param['old_goods']) || false == $param['old_goods'])
     {
-      $q->addWhere('product.is_instock = ?', true);
+      //$q->addWhere('product.is_instock = ?', true);
     }
 
-    $q->orderBy('product.score DESC');
+    $q->orderBy('product.is_instock DESC, product.score DESC');
 
     return $q;
   }
