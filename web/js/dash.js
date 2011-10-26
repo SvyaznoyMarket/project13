@@ -50,37 +50,41 @@ $(document).ready(function(){
 	/* IKEA-like hover */
 	var id          = null // setTimeout
 	var currentItem = 0 // ref= product ID
+	var bkgr = $('b.rt:first').css('background-image')
 	
 	$('.goodsbox').live( {
 		'mouseenter': function() {
 			var self = this
 			$(self).css('cursor','pointer')
 			var im = $('.boxhover .photo img', $(self))
+			
 			function showBorders() {
-				if(	$(self).data('run') ) {
+				if(	$(self).data('run') ) {					
 					var w = im.attr('width')*1
 					var h = im.attr('height')*1					
 					$('.boxhover .photo img', $(self)).css({'width': w + 3, 'height': h + 3 , 'top':'-1px'})					
-					$(self).css( {'position':'relative', 'z-index':2 } )
-					$('.boxhover', $(self)).fadeIn(200)
+					$(self).css( {'position':'relative', 'z-index':2 })
+					$(self).children().fadeOut()					
+					$('.boxhover', self).fadeIn(200)					
 				}	
 			}
 			$(self).data('run', true)
 			currentItem = $( '.boxhover',self).attr('ref')
 			id = setTimeout( showBorders, 200)
 		},
-		'mouseleave': function() {
+		'mouseleave': function() {			
 			var self = this
-			var im = $('.boxhover .photo img', $(self))
+			var im = $('.boxhover .photo img', self)
 			if(	$(self).data('run') ) {
 				clearTimeout( id )
 				$(self).data('run',false)
 				var w = im.attr('width')*1
 				var h = im.attr('height')*1									
-				$('.boxhover .photo img', $(self)).css({'width': w + 3, 'height': h + 3})				
+				$('.boxhover .photo img', self).css({'width': w + 3, 'height': h + 3})				
 				$(self).css( 'z-index',1 )
-				$('.boxhover', $(self)).hide()				
-
+		
+				$(self).children().not('.boxhover').fadeIn()
+				$('.boxhover', self).fadeOut('slow')
 			}
 			//currentItem = 0
 		}		
