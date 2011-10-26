@@ -43,11 +43,8 @@ EOF;
     $table = TaskTable::getInstance();
 
     $task = $table->getRunning(array('with_minPriority' => true, 'check_zeroPriority' => true));
-    if (false == $task)
+    if (!$task)
     {
-      $zeroPriorityTask = $table->getZeroPriority();
-      $this->logger->log("#{$zeroPriorityTask->id} running now. Stop");
-
       return true;
     }
 
