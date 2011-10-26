@@ -21,13 +21,16 @@ class ProductCommentTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'        => 'core_id',
-      'parent_id' => 'core_parent_id',
-      'user_id'   => 'core_user_id',
+      'id'         => 'core_id',
+      'parent_id'  => 'core_parent_id',
+      'user_id'    => 'core_user_id',
       //'added'     => 'created_at',
-      'content'   => 'content',
+      'content'    => 'content',
       //'helpful'   => 'helpful',
       //'unhelpful' => 'unhelpful',
+      
+      'product_id' => array('rel' => 'Product'),
+      'user_id'    => array('rel' => 'User'),
     );
   }
 

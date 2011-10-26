@@ -42,14 +42,14 @@ class OrderTable extends myDoctrineTable
       'is_paid_delivery'  => 'is_paid_delivery',
       'store_id'          => 'store_id',
 
-      'user_id'              => array('name' => 'user_id',            'rel' => 'User'),
-      'status_id'            => array('name' => 'status_id',          'rel' => 'Status'),
-      'payment_id'           => array('name' => 'payment_method_id',  'rel' => 'PaymentMethod'),
-      'geo_id'               => array('name' => 'region_id',          'rel' => 'Region'),
-      'delivery_interval_id' => array('name' => 'delivery_period_id', 'rel' => 'DeliveryPeriod'),
-      'delivery_type_id'     => array('name' => 'delivery_type_id',   'rel' => 'DeliveryType'),
-      'address_id'           => array('name' => 'user_address_id',    'rel' => 'UserAddress'),
-      'shop_id'              => array('name' => 'shop_id',            'rel' => 'Shop'),
+      'user_id'              => array('rel' => 'User'),
+      'status_id'            => array('rel' => 'Status'),
+      'payment_id'           => array('rel' => 'PaymentMethod'),
+      'geo_id'               => array('rel' => 'Region'),
+      'delivery_interval_id' => array('rel' => 'DeliveryPeriod'),
+      'delivery_type_id'     => array('rel' => 'DeliveryType'),
+      'address_id'           => array('rel' => 'UserAddress'),
+      'shop_id'              => array('rel' => 'Shop'),
     );
   }
 
