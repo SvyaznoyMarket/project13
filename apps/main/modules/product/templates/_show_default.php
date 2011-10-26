@@ -120,6 +120,7 @@ foreach ($p3d as $p3d_obj)
 
   <?php //echo $product->Creator ?>
 <?php include_component('product', 'product_group', array('product' => $product,)) ?>
+<?php if (false): ?>
   <ul class="inline">
     <li><?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?></li>
     <li><?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?></li>
@@ -137,7 +138,7 @@ foreach ($p3d as $p3d_obj)
   <div class="block">
 <?php //echo link_to('Следить за этим товаром', 'userProductNotice_show', $sf_data->getRaw('product'), array('class' => 'event-click', 'data-event' => 'window.open'))  ?>
   </div-->
-
+<?php endif ?>
 </div><!-- Goods info -->
 
 <div class="clear"></div>
