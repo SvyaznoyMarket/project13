@@ -24,6 +24,21 @@ class ProductCategory extends BaseProductCategory
       'productCategory' => $this->token,
     );
   }
+  
+  /**
+   *
+   * @return ProductCategory 
+   */
+  public function getRootRow()
+  {
+	  if ($this->level == 0) {
+		  return $this;
+	  }
+	  $q = $this->getTable()->createBaseQuery();
+	  $q->andWhere('productCategory.root_id = ?', $this->root_id);
+	  $q->andWhere('productCategory.level = ?', 0);
+	  return $q->fetchOne();
+  }
 
   public function importFromCore(array $data)
   {
