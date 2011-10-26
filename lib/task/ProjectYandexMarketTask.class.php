@@ -9,6 +9,9 @@ class ProjectYandexMarketTask extends sfBaseTask
       'url' => 'http://enter.ru',
       'email' => 'enter@enter.ru'
   );
+
+  
+  private $_xmlFolder ='xml_import';  
   
   /**
    * Название файла дли экспорта
@@ -165,9 +168,10 @@ EOF;
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
+    if (!file_exists($this->_xmlFolder)) mkdir($this->_xmlFolder);
     
     //генерируем файл со всеми товарами
-    $this->_xmlFilePath = $this->_xmlFileName;  //'/mnt/hgfs/httpdFiles/'.
+    $this->_xmlFilePath = $this->_xmlFolder . '/' . $this->_xmlFileName;  //'/mnt/hgfs/httpdFiles/'.
     $this->_xmlGenerateItself();
     
     $this->_generateCatList();    
@@ -179,7 +183,7 @@ EOF;
         foreach($partInfo['inner'] as $catId){
             $this->_categoryList[$catId] = array();
         }
-        $this->_xmlFilePath = $partInfo['name'];
+        $this->_xmlFilePath = $this->_xmlFolder . '/' . $partInfo['name'];
         //выполняем саму генарацию
         $this->_xmlGenerateItself();
     }
@@ -267,6 +271,9 @@ EOF;
             ->orderBy('pc.id')
           //  ->limit(10)
             ->fetchArray();
+    foreach($categoryList as $cat){
+        $catIdToCoreId[ $cat['core_id'] ] = $cat['id'];
+    }
     $cats = $this->_xmlResultShop->addChild('categories');
     
     file_put_contents($this->_xmlFilePath,'<categories>',FILE_APPEND);
@@ -275,11 +282,10 @@ EOF;
     foreach($categoryList as $categoryInfo){
         $cat = $cats->addChild('category',$categoryInfo['name']);
         $cat->addAttribute('id',$categoryInfo['id']);
-        if ($categoryInfo['core_parent_id']) $cat->addAttribute('parentId',$categoryInfo['core_parent_id']);
+        if ($categoryInfo['core_parent_id'] && isset($catIdToCoreId[ $categoryInfo['core_parent_id'] ])) $cat->addAttribute('parentId', $catIdToCoreId[ $categoryInfo['core_parent_id'] ]);
         //если нужно добавить url
         if ($this->_uploadCategotyUrl){
-            $catObject = ProductCategoryTable::getInstance()->getById($categoryInfo['id']);            
-            $cat->addAttribute('url',$this->_companyData['url'].$catObject->getUrl());            
+            $cat->addAttribute('url',$this->_companyData['url'].'/catalog/'.$categoryInfo['token']);            
         }
         
         $numInRound++;

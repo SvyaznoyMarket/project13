@@ -35,13 +35,6 @@ productCatalog_filter:
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
-# тип товара
-productCatalog_productType:
-  url:   /catalog/:productCategory/type/:productType
-  param: { module: productCatalog, action: productType }
-  class:   myProductCatalogRoute
-  options: { model: ProductCategory, type: object, method: getForRoute }
-#
 # тэги каталога товаров
 productCatalog_tag:
   url:   /catalog/:productCategory/_tag
@@ -649,6 +642,19 @@ search:
   param:    { module: search, action: index }
 
 
+#callback
+callback:
+  url:   /callback
+  param: { module: callback, action: index }
+#  url:      /payment/callback
+#  param:    { module: payment, action: callback }
+
+#callback send
+callback_send:
+  url:   /callback/send
+  param: { module: callback, action: send }
+#  url:      /payment/callback
+#  param:    { module: payment, action: callback }
 
 #
 # tag
