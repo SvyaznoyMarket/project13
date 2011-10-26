@@ -85,6 +85,7 @@ $(document).ready(function(){
 		  starHalf: 'star_h.png',
 		  starOn: 'star_a.png',
 		  starOff: 'star_p.png',
+		  hintList: ['1', '2', '3', '4', '5'],
 		  click: function( score ) {
 		  		$.getJSON( $('#rating').attr('data-url').replace('score', score ) , function(data){
 		  			if( data.success === true && data.data.rating ) {

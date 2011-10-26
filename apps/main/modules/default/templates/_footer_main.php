@@ -6,10 +6,11 @@
 
 
 <div class="links">
+    <a href="enter.jpg" class="link5">Входной билет</a>
     <a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>" class="link4">О компании</a>
     <a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="link1">Сервис</a>
-    <a class="link2">Связной</a>
-    <a class="link3">Финансовые услуги</a>
+    <!--a class="link2">Связной</a>
+    <a class="link3">Финансовые услуги</a-->
 </div>
 
 <div class="copy">
