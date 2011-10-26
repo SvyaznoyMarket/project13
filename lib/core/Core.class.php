@@ -82,18 +82,6 @@ class Core
     return $table;
   }
 
-  public function getCreator($id)
-  {
-    $result = false;
-
-    if ($response = $this->query('brand.get', array('id' => $id, 'expand' => array('media'))))
-    {
-      $result = $response[0];
-    }
-
-    return $result;
-  }
-
   public function createOrder(Order &$order)
   {
     $result = false;
@@ -131,7 +119,7 @@ class Core
   {
     $result = false;
 
-    if ($response = $this->query('user.get', array('id' => $id, 'expand' => array('geo', 'address_list', 'network_list'))))
+    if ($response = $this->query('user.get', array('id' => $id, 'count' => false, 'expand' => array('geo', 'address_list', 'network_list'))))
     {
       $result = $response[0];
     }
@@ -293,6 +281,23 @@ class Core
 
     return $result;
   }
+  
+  public function createCallback($callback)
+  {
+        $result = false;
+		//$data = $this->getData($callback);
+        $data = $callback->getData();
+        $data['category_id'] = 21;
+        //print_r($data);
+        //exit();
+		if ($response = $this->query('user.callback.create', array(), $data)) {
+			$result = $response['id'];
+		}
+       // var_dump($this->error);
+        //var_dump($response);
+		return $result;
+  }
+  
 
   public function getData($record)
   {
@@ -388,5 +393,6 @@ class Core
 
     return $response;
   }
+  
 
 }
