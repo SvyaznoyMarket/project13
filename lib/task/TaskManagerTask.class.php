@@ -47,14 +47,23 @@ EOF;
     {
       return true;
     }
+    
+    $count = 1;
+    if ('project.init' == $task->type)
+    {
+      $count = 500;
+    }
 
-    $this->logger->log("{$task->type} #{$task->id} starting...");
-    $this->logSection($task->type, "#{$task->id} starting...");
+    for ($i = 0; $i < $count; $i++)
+    {
+      $this->logger->log("{$task->type} #{$task->id} starting...");
+      $this->logSection($task->type, "#{$task->id} starting...");
 
-    // приоритет реального времени
-    $task->priority = 0;
+      // приоритет реального времени
+      $task->priority = 0;
 
-    $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array());
-    $this->logSection($task->type, "#{$task->id} done");
+      $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array());
+      $this->logSection($task->type, "#{$task->id} done");
+    }
   }
 }

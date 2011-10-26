@@ -119,7 +119,7 @@ class Product extends BaseProduct
 
       // new relation
       $new = array_diff(array_keys($collectionData), $existing);
-      myDebug::dump(array('new' => count($new)));
+      //myDebug::dump(array('new' => count($new)));
       foreach ($new as $index)
       {
         $relation = new ProductPropertyRelation();

@@ -52,7 +52,7 @@ EOF;
     }
 
     $params = $this->task->getContentData();
-    if (!$params['packet_id'])
+    if (!isset($params['packet_id']))
     {
       return false;
     }
@@ -463,6 +463,7 @@ EOF;
     $this->connection->exec('TRUNCATE TABLE `product_type_property_relation`');
     $this->connection->exec('TRUNCATE TABLE `product_type_property_group_relation`');
     $this->connection->exec('TRUNCATE TABLE `product_category_type_relation`');
+    $this->connection->exec('TRUNCATE TABLE `tag_group_product_type_relation`');
   }
   // ProductType
   protected function createProductTypeRecord(array $data)
@@ -470,19 +471,25 @@ EOF;
     $record = ProductTypeTable::getInstance()->createRecordFromCore($data);
     $record->token = myToolkit::urlize($record->name);
 
-    if ($relationData['is_filter'] && !empty($data['category'])) foreach ($data['category'] as $category)
+    if (!empty($data['property'])) foreach ($data['property'] as $relationData)
     {
-      $filter = new ProductFilter();
-      $filter->fromArray(array(
-        'name'        => $relationData['name'],
-        'type'        =>  (6 == $relationData['filter_type_id']) ? 'range' : 'choice',
-        'property_id' => $this->getRecordByCoreId('ProductProperty', $relationData['id'], true),
-        'group_id'    => $this->getRecordByCoreId('ProductCategory', $category['id'])->FilterGroup->id,
-        'position'    => $relationData['filter_position'],
-        'is_multiple' => $relationData['is_multiple'],
-      ));
+      if ($relationData['is_filter'] && !empty($data['category']))
+      {
+        foreach ($data['category'] as $category)
+        {
+          $filter = new ProductFilter();
+          $filter->fromArray(array(
+            'name'        => $relationData['name'],
+            'type'        =>  (6 == $relationData['filter_type_id']) ? 'range' : 'choice',
+            'property_id' => $this->getRecordByCoreId('ProductProperty', $relationData['id'], true),
+            'group_id'    => $this->getRecordByCoreId('ProductCategory', $category['id'])->FilterGroup->id,
+            'position'    => $relationData['filter_position'],
+            'is_multiple' => $relationData['is_multiple'],
+          ));
 
-      $this->pushRecord($filter);
+          $this->pushRecord($filter);
+        }
+      }
     }
 
     return $record;
@@ -655,9 +662,12 @@ EOF;
   protected function createStockProductRelationRecord(array $data)
   {
     $record = StockProductRelationTable::getInstance()->createRecordFromCore($data);
-
-    if (empty($data['store_id']))
-    {
+    
+    if (
+      empty($data['store_id'])
+      || !$record->product_id
+      || !$record->stock_id
+    ) {
       return false;
     }
 
