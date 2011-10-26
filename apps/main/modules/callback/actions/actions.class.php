@@ -50,11 +50,12 @@ class callbackActions extends myActions
                     //отправляем письмо администратору
                     
                     $letterBody = "
-                    Новый вопрос на сайте. Его содержание:
-                    Имя: ".$data['name']."
-                    E-mail: ".$data['email']."
-                    Тема вопроса: ".$data['theme']."
-                    Текст вопроса:  ".$data['text']."
+                    Обратная связь на сайте Enter.ru. <br><br>
+                    Содержание сообщение:<br>
+                    Имя: ".$data['name']."<br>
+                    E-mail: ".$data['email']."<br>
+                    Тема вопроса: ".$data['theme']."<br>
+                    Текст вопроса:  ".$data['text']."<br>
                     ";
                     $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
                     $message = Swift_Message::newInstance( $data['theme'] )
@@ -71,7 +72,7 @@ class callbackActions extends myActions
                     #var_dump($res);
 
 //}
-                }else{
+                }          else{
                     $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
                 }
                 $this->setTemplate('sendOk');
