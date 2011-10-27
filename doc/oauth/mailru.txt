@@ -1,8 +1,16 @@
-http://habrahabr.ru/blogs/webdev_for_dummies/126872/
-http://api.mail.ru/docs/guides/sites/
-http://api.mail.ru/docs/guides/jsapi/
-http://api.mail.ru/sites/my/
+подключение сайта: http://api.mail.ru/sites/my/
+
+документация:
+  http://api.mail.ru/docs/guides/oauth/sites/
+  http://habrahabr.ru/blogs/webdev_for_dummies/126872/
+  http://api.mail.ru/docs/guides/sites/
+  http://api.mail.ru/docs/guides/jsapi/
+  http://api.mail.ru/sites/my/
 
 account:
-  login: ent3@inbox.ru
-  password: xep624
+  -
+    login:    Enter.peter
+    password: Exit!Enter
+  -
+    login: ent3@inbox.ru
+    password: xep624

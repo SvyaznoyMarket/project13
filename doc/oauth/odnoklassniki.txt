@@ -1,6 +1,15 @@
-http://dev.odnoklassniki.ru/wiki/display/ok/The+OAuth+2.0+Protocol
-http://dev.odnoklassniki.ru/wiki/display/ok/Approval+Process+%28in+Russian%29
-http://www.odnoklassniki.ru/#st.cmd=appAdd&st._aid=Apps_Info_MyDev_AddApp
-http://dev.odnoklassniki.ru/wiki/display/ok/REST+API+-+users.getInfo
-http://flapps.ru/forum/topic3347.html
-http://cashsite.ru/phpcurl-avtorizatsiya-vkontakte.php
+подключение сайта: http://www.odnoklassniki.ru/#st.cmd=appAdd&st._aid=Apps_Info_MyDev_AddApp
+
+документация:
+  http://dev.odnoklassniki.ru/wiki/display/ok/The+OAuth+2.0+Protocol
+  http://dev.odnoklassniki.ru/wiki/display/ok/The+OAuth+2.0+Protocol
+  http://dev.odnoklassniki.ru/wiki/display/ok/Approval+Process+%28in+Russian%29
+  http://www.odnoklassniki.ru/#st.cmd=appAdd&st._aid=Apps_Info_MyDev_AddApp
+  http://dev.odnoklassniki.ru/wiki/display/ok/REST+API+-+users.getInfo
+  http://flapps.ru/forum/topic3347.html
+  http://cashsite.ru/phpcurl-avtorizatsiya-vkontakte.php
+
+account:
+  -
+    login:    Enter.peter@gmail.com
+    password: Exit!Enter

@@ -1,3 +1,12 @@
-https://developers.facebook.com/docs/guides/web/#login
-http://kurapov.name/rus/technology/integration/facebook_graph_oauth/
-http://habrahabr.ru/blogs/facebook/102964/
+подключение приложения: https://www.facebook.com/developers/
+
+документация:
+  https://developers.facebook.com/docs/authentication/
+  https://developers.facebook.com/docs/guides/web/#login
+  http://kurapov.name/rus/technology/integration/facebook_graph_oauth/
+  http://habrahabr.ru/blogs/facebook/102964/
+
+account:
+  -
+    login:    Enter.peter@gmail.com
+    password: Enter!Exit
