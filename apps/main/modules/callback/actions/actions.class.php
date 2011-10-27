@@ -35,17 +35,25 @@ class callbackActions extends myActions
 
         $this->form = new CallbackForm();
         $data = $request->getParameter($this->form->getName());
+        $data['name'] = trim($data['name']);
+        $data['email'] = trim($data['email']);
+        $data['theme'] = trim($data['theme']);
+        $data['text'] = trim($data['text']);
         //$data['categoty_id'] = 21;
         $this->form->bind($data);
         $this->setTemplate('index');
+        $this->setVar('error', '', true);                          
+        
 
         if ($this->form->isValid())
         {
             try
             {
-                $this->form->getObject()->setCorePush(false);
+               // $this->form->getObject()->setCorePush(false);
                 $result = $this->form->save();
-                
+                if (!$result) $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
+
+                /*
                 if ($result){
                     //отправляем письмо администратору
                     
@@ -75,6 +83,8 @@ class callbackActions extends myActions
                 }          else{
                     $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
                 }
+                 * 
+                 */
                 $this->setTemplate('sendOk');
             }
             catch (Exception $e)

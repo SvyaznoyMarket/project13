@@ -286,15 +286,17 @@ class Core
   {
         $result = false;
 		//$data = $this->getData($callback);
+        //$this->getUser();
         $data = $callback->getData();
         $data['category_id'] = 21;
-        //print_r($data);
-        //exit();
+        $data['first_name'] = $data['name'];
+        unset($data['name']);
+       // print_r($data);
 		if ($response = $this->query('user.callback.create', array(), $data)) {
 			$result = $response['id'];
 		}
-       // var_dump($this->error);
-        //var_dump($response);
+        #var_dump($response);
+        #exit();
 		return $result;
   }
   
@@ -332,7 +334,7 @@ class Core
     if (isset($response['error']))
     {
       $this->error = array($response['error']['code'] => $response['error']['message'], );
-      $this->error['detail'] = $response['error']['detail'];
+      if (isset($response['error']['detail'])) $this->error['detail'] = $response['error']['detail'];
       $response = false;
     }
 
