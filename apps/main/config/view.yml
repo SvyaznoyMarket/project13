@@ -4,9 +4,9 @@
 default:
   http_metas:
     content-type: text/html
-    yandex-verification: 623bb356993d4993
 
   metas:
+    yandex-verification: 623bb356993d4993
     #title:        symfony project
     #description:  symfony project
     #keywords:     symfony, project
