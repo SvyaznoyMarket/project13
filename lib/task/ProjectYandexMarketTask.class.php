@@ -11,7 +11,7 @@ class ProjectYandexMarketTask extends sfBaseTask
   );
 
   
-  private $_xmlFolder ='catalog';  
+  private $_xmlFolder ='xml';  
   
   /**
    * Название файла дли экспорта
