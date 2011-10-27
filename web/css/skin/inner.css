@@ -634,6 +634,26 @@ border-radius:5px;
 .goodsbarbig A.link5.active {background-position:0 -316px}
 .goodsbarbig A.link5.disabled {background-position:-216px -316px}
 
+/*.button {overflow:visible; background-image:url(/css/skin/img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
+border-radius:5px;
+-moz-border-radius:5px;
+-webkit-border-radius:5px
+}
+
+.yellowbutton {height:24px; padding:0 7px 3px 7px; background-color:#ffaa01;  background-position:0 0; font-size:11px; color:#fff; border-color:#f28900}
+.yellowbutton:hover {background-color:#f79200; background-position:0 -32px}
+.yellowbuttonactive, .yellowbuttonactive:hover {background-color:#f79200; background-position:0 -64px}
+.yellowbuttondisabled {background-color:#ececec; background-position:0 -96px; border-color:#e4e4e4; color:#e1e1e1}*/
+
+.popup_leftpanel A.link1 { overflow:visible; display:block; background:url(/css/skin/img/bg_buttons.png) repeat-x; border:1px solid; height:16px; padding:3px 7px 3px 7px; font-weight:bold; background-color:#ffaa01; border-color:#f28900; width: 70px; text-align: center; font-size: 11px; color: #fff;
+border-radius:5px;
+-moz-border-radius:5px;
+-webkit-border-radius:5px
+}
+.popup_leftpanel A.link1:hover {background-color:#f79200; background-position:0 -32px; text-decoration:none;}
+.popup_leftpanel A.link1.active {background-color:#f79200; background-position:0 -64px}
+.popup_leftpanel A.link1.disabled {background-color:#ececec; background-position:0 -96px; border-color:#e4e4e4; color:#e1e1e1}
+
 .share {display:inline-block; width:105px; height:25px; background:url(/css/skin/img/bg_inner.png) no-repeat -668px -218px; vertical-align:middle; text-indent:-10000px}
 .marklist {font-size:11px; position:relative}
 .marklist SPAN {margin:0 3px}
