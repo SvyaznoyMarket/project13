@@ -1,5 +1,35 @@
 $(document).ready(function(){
-
+	/* AJAX */
+	$.ajaxSetup({
+	 // cache: false
+		timeout: 5000,
+		statusCode: {
+			404: function() {
+			  alert('page not found')
+			},
+			401: function() {
+			  alert('need authorization')
+			},
+			500: function() {
+			  alert('server is down')
+			},
+			503: function() {
+			  alert('server is down')
+			},
+			504: function() {
+			  alert('connection is broken')
+			}
+			
+		  },
+		error: function (jqXHR, textStatus, errorThrown) {
+			if( jqXHR.statusText == 'error' )
+				alert('some error ocurred')
+			else if ( textStatus=='timeout' )
+				alert('connection is broken')				
+		}		
+	})
+	
+	/* --- */
     $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes();
 
 	$(".bigfilter dt").click(function(){
@@ -102,7 +132,7 @@ $(document).ready(function(){
         $("#ratingresult").html(this.innerHTML)
         return false;
     });
-
+	//TODO buy bottons remake
     $(".yellowbutton").mousedown(function()   {
     	$(this).toggleClass("yellowbuttonactive")
     }).mouseup(function()   {
@@ -133,7 +163,7 @@ $(document).ready(function(){
         //$(this).addClass("link3active");
     })
 
-
+	/* top menu */
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
 	var corneroffsets = [167,222,290,362,435,515,587,662,717]
