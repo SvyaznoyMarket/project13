@@ -90,8 +90,8 @@ foreach ($p3d as $p3d_obj)
   <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['product']->token )) ?>">
     Оценка пользователей:
     <?php
-    echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
     echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
+    echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
     ?></span>
     <strong class="ml5"><?php echo round($product->rating, 1) ?></strong>
     <?php //include_component('userProductRating', 'show', array('product' => $product))  ?>
