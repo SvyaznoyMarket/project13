@@ -24,9 +24,10 @@ class searchActions extends myActions
 
     //myDebug::dump($request, 1);
     //$this->searchString = iconv('windows-1251', 'utf-8', $request['q']);
-    $this->searchString = $request['q'];
+    //$this->searchString = $request['q'];
+    $this->searchString = $request->getParameter('q');
     $this->forward404Unless($this->searchString);
-	
+
 	$title = 'Вы искали “'.  htmlspecialchars($this->searchString).'”';
 	if ($page) {
 		$title .= ' – '.$page;
@@ -106,6 +107,7 @@ class searchActions extends myActions
       }
     }
 
+    $this->setVar('searchString', $this->searchString, false);
     $this->categories = $categories;
     $this->pagers = $pagers;
   }
