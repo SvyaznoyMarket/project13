@@ -22,7 +22,7 @@
   </div>
 
   <!-- Hover -->
-  <div class="boxhover" ref="<?php echo $item['product']->token ?>">
+  <div class="boxhover"<?php if($item['product']->getIsInsale()):?> ref="<?php echo $item['product']->token ?>"<?php endif ?>>
     <!--a href="" class="fastview">Быстрый просмотр</a-->
     <div class="goodsbar">
       <?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1)) ?>

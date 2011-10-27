@@ -9,6 +9,7 @@ Creator:
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string, notnull: false, default: null }
+    is_filter:         { type: boolean, notnull: true, default: false, comment: 'Нужно ли выводить в фильтрах?' }
 
 ProductFilterGroup:
   options:

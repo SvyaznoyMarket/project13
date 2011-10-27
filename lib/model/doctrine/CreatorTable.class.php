@@ -28,8 +28,29 @@ class CreatorTable extends myDoctrineTable
     );
   }
 
+  public function getDefaultParameters()
+  {
+    return array(
+      'for_filter'  => false, // для фильтров
+    );
+  }
+
+  public function createBaseQuery(array $params = array())
+  {
+    $q = parent::createBaseQuery($params);
+
+    if ($params['for_filter'])
+    {
+      $q->addWhere('creator.is_filter = ?', 1);
+    }
+
+    return $q;
+  }
+
   public function getById($id, array $params = array())
   {
+    $this->applyDefaultParameters($params);
+
     $q = $this->createBaseQuery($params);
 
     $this->setQueryParameters($q);
@@ -53,7 +74,8 @@ class CreatorTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->innerJoin('creator.Product product WITH product.is_instock = ?', 1)
+    $q->innerJoin('creator.Product product')
+//    $q->innerJoin('creator.Product product WITH product.is_instock = ?', 1)
       ->innerJoin('product.Category category WITH category.id = ?', $productCategory->id)
       //->addWhere('category.id = ?', $productCategory->id)
       //->where('product.category_id = ?', $productCategory->id)
