@@ -17,7 +17,7 @@ class Task extends BaseTask
     if (!empty($this['id']))
     {
       $this->setDefaultPriority();
-      $this->save();
+      //$this->save();
     }
   }
 

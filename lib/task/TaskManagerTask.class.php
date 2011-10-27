@@ -17,6 +17,7 @@ class TaskManagerTask extends sfBaseTask
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
+      new sfCommandOption('speed', null, sfCommandOption::PARAMETER_REQUIRED, 'Speed [packets per minutes]', 3),
       // add your own options here
     ));
 
@@ -40,30 +41,41 @@ EOF;
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
     // add your code here
-    $table = TaskTable::getInstance();
 
-    $task = $table->getRunning(array('with_minPriority' => true, 'check_zeroPriority' => true));
-    if (!$task)
+    $speed = $options['speed']; // скорость [пакеты/мин]
+    for ($i = 0; $i < $speed; $i++)
     {
-      return true;
-    }
-    
-    $count = 1;
-    if ('project.init' == $task->type)
-    {
-      $count = 500;
-    }
+      $task = $this->getRunningTask();
+      if (!$task)
+      {
+        continue;
+      }
 
-    for ($i = 0; $i < $count; $i++)
-    {
-      $this->logger->log("{$task->type} #{$task->id} starting...");
-      $this->logSection($task->type, "#{$task->id} starting...");
+      $count = 1;
+      if ('project.init' == $task->type)
+      {
+        $count = 500;
+      }
 
-      // приоритет реального времени
-      $task->priority = 0;
+      for ($attempt = 0; $attempt < $count; $attempt++)
+      {
+        $this->logger->log("{$task->type} #{$task->id} starting...");
+        $this->logSection($task->type, "#{$task->id} starting...");
 
-      $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array());
-      $this->logSection($task->type, "#{$task->id} done");
+        // приоритет реального времени
+        $task->priority = 0;
+
+        $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array());
+        $this->logSection($task->type, "#{$task->id} done");
+
+        $task->setDefaultPriority();
+        $task->save();
+      }
     }
+  }
+
+  protected function getRunningTask()
+  {
+    return TaskTable::getInstance()->getRunning(array('with_minPriority' => true, 'check_zeroPriority' => true));
   }
 }
