@@ -133,7 +133,7 @@ $(document).ready(function(){
         return false;
     });
 	//TODO buy bottons remake
-    $(".yellowbutton").mousedown(function()   {
+    /*$(".yellowbutton").mousedown(function()   {
     	$(this).toggleClass("yellowbuttonactive")
     }).mouseup(function()   {
     	$(this).removeClass("yellowbuttonactive")
@@ -149,7 +149,7 @@ $(document).ready(function(){
     	$(this).toggleClass("whitelinkactive")
     }).mouseup(function()   {
     	$(this).removeClass("whitelinkactive")
-    })
+    })*/
 
     $(".goodsbar .link1").bind( 'click.css', function()   {
         $(this).addClass("link1active")

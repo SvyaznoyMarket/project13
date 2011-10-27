@@ -144,6 +144,13 @@ $(document).ready(function(){
 		//TODO ajax					
 		return false
 	})
+	
+	var markPageButtons = function(){
+		var carturl = $('.lightboxinner .point2').attr('href')
+		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active').unbind('click')
+		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине').unbind('click')
+	}
+	
 	$('.goodsbarbig .link1').click( function() {
 		var button = this
 		if( $(button).hasClass('disabled') )
@@ -157,8 +164,26 @@ $(document).ready(function(){
 					'img'  : $('.goodsphoto img').attr('src')
 				}
 				ltbx.getBasket( tmpitem ) 
-				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
-				$(button).unbind('click').addClass('active')				
+				markPageButtons()
+				//$(button).unbind('click')		
+			}	
+		})
+		return false
+	})	
+	
+	$('#bigpopup a.link1').click( function() {
+		var button = this
+		$.getJSON( $( button ).attr('href') +'/1', function(data) {			
+			if ( data.success && ltbx ) {
+				var tmpitem = { 
+					'id'   : $( button ).attr('href'),
+					'title': $('h1').html(),
+					'price': $('.goodsinfo .price').html(),
+					'img'  : $('.goodsphoto img').attr('src')
+				}
+				ltbx.getBasket( tmpitem ) 
+				markPageButtons()
+				//$(button).unbind('click')			
 			}	
 		})
 		return false
