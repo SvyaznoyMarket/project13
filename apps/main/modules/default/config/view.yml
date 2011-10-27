@@ -1,4 +1,7 @@
 all:
+  metas:
+    title: Enter - это выход!
+
   stylesheets:
     - -*
     - skin/main.css
@@ -10,4 +13,14 @@ all:
   layout: main
 
 welcomeSuccess:
+  metas:
+    title: You can Enter
+
+  javascripts:
+    - -*
+
+  stylesheets:
+    - -*
+    - skin/entry.css
+
   layout: welcome
