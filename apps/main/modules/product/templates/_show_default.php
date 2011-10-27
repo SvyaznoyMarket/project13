@@ -220,7 +220,9 @@ foreach ($p3d as $p3d_obj)
       <div class="pb5">
       <?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?>
       </div>
-      <!--div class="pb40"><input type="button" class="button yellowbutton" value="Купить" /></div-->
+      <div class="popup_leftpanel pb40" ref="<?php echo $item['product']->token ?>">
+      	<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'value' => array('купить', 'в корзине',), )) ?>
+      </div>
 
       <h2>Фото и видео:</h2>
       <ul class="previewlist">
