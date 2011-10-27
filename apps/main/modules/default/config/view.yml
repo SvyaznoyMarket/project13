@@ -1,4 +1,7 @@
 all:
+  metas:
+    title: Enter - это выход!
+
   stylesheets:
     - -*
     - skin/main.css
