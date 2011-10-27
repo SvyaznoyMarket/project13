@@ -25,6 +25,7 @@ class ProductPropertyTable extends myDoctrineTable
       'name'        => 'name',
       'unit'        => 'unit',
       'is_multiple' => 'is_multiple',
+      'hint'        => 'hint',
     );
   }
 

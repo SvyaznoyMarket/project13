@@ -12,14 +12,30 @@
  */
 class Task extends BaseTask
 {
+  public function __destruct()
+  {
+    if (!empty($this['id']))
+    {
+      $this->setDefaultPriority();
+      //$this->save();
+    }
+  }
+
   public function preSave($event)
   {
     $record = $event->getInvoker();
 
-    if (empty($record->token))
+    if (!$record->exists())
     {
-      $record->token = uniqid();
+      $record->setDefaultPriority();
     }
+  }
+
+  public function toParams()
+  {
+    return array(
+      'id' => $this->id,
+    );
   }
 
   public function setContentData($value)
@@ -53,5 +69,10 @@ class Task extends BaseTask
     $content = sfYaml::load($this->content);
 
     return null == $name ? $content : $content[$name];
+  }
+
+  public function setDefaultPriority()
+  {
+    $this->priority = $this->getTable()->getPriorityByType($this->type);
   }
 }

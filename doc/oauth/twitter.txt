@@ -1,3 +1,11 @@
-https://dev.twitter.com/docs/auth/oauth
-http://kurapov.name/article/5242
-http://habrahabr.ru/blogs/about_cms/114955/
+подключение приложения: https://dev.twitter.com/apps
+
+документация:
+  https://dev.twitter.com/docs/auth/oauth
+  http://kurapov.name/article/5242
+  http://habrahabr.ru/blogs/about_cms/114955/
+
+account:
+  -
+    login:    Enter.peter@gmail.com
+    password: Exit!Enter

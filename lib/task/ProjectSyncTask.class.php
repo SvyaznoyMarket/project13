@@ -2,6 +2,10 @@
 
 class ProjectSyncTask extends sfBaseTask
 {
+  protected
+    $logger = null
+  ;
+
   protected function configure()
   {
     // add your own arguments here
@@ -27,11 +31,13 @@ Call it with:
 
   [php symfony ProjectSync|INFO]
 EOF;
+
+    $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/sync.log'));
   }
 
   protected function execute($arguments = array(), $options = array())
   {
-    sfConfig::set('sf_logging_enabled', $options['log']);
+    sfConfig::set('sf_logging_enabled', true/*$options['log']*/);
 
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
@@ -41,7 +47,7 @@ EOF;
     $this->task = TaskTable::getInstance()->find($arguments['task_id']);
     if ('success' == $this->task->status)
     {
-      return true;
+      //return true;
     }
 
     $params = $this->task->getContentData();
@@ -57,7 +63,7 @@ EOF;
     $response = $core->query('sync.get', array(
       'id' => $params['packet_id'],
     ));
-    $response = json_decode(file_get_contents(sfConfig::get('sf_data_dir').'/core/product.json'), true);
+    ////$response = json_decode(file_get_contents(sfConfig::get('sf_data_dir').'/core/product.json'), true);
 
     if ($options['dump'])
     {
@@ -84,15 +90,20 @@ EOF;
     {
       foreach ($item['data'] as $packet)
       {
-        if ($table = $core->getTable($packet['type']))
+        $action = $core->getActions($packet['operation']);
+
+        try
         {
-          $action = $core->getActions($packet['operation']);
+          $method = 'process'.ucfirst($packet['type']).'Entity';
+          if (method_exists($this, $method)) {
+            call_user_func_array(array($this, $method), array($action, $packet));
+          }
+          else if ($table = $core->getTable($packet['type']))
+          {
+            $entity = $packet['data'];
+            $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
+            //myDebug::dump($entity);
 
-          $entity = $packet['data'];
-          $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
-          //myDebug::dump($entity);
-
-          try {
             $record = $table->getByCoreId($entity['id']);
 
             // если действие "создать", но запись с таким core_id уже существует
@@ -118,24 +129,90 @@ EOF;
 
             $record->importFromCore($entity);
             $record->setCorePush(false);
-            $record->save();
+            //myDebug::dump($entity);
+            //myDebug::dump($record);
+
+            $this->processRecord($action, $record);
 
             $this->task->status = 'success';
-            //$this->task->save();
-
-            //myDebug::dump($record);
+            $this->task->save();
           }
-          catch (Exception $e) {
-            $this->logSection($packet['type'], ucfirst($action).' entity #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
-            $this->task->attempt++;
+          // model doesn't exists
+          else {
+            $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: model doesn't exist. Skip...", null, 'ERROR');
+            $this->logger->log('Unknown entity: '.$packet['type']."\n".sfYaml::dump($packet, 6));
+
+            $this->task->status = 'fail';
             $this->task->save();
           }
         }
-        // model doesn't exists
-        else {
-          $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: model doesn't exists. Skip...", null, 'ERROR');
+        catch (Exception $e)
+        {
+          $this->logSection($packet['type'], ucfirst($action).' entity #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
+          $this->logger->log('Error: '.$e->getMessage());
+
+          $this->task->attempt++;
+          $this->task->save();
         }
+
       }
     }
+  }
+
+
+
+  protected function processRecord($action, $record)
+  {
+    if (!$record instanceof myDoctrineRecord)
+    {
+      $return;
+    }
+
+    if (('create' == $action) || ('update' == $action))
+    {
+      $record->replace(); //$record->save();
+    }
+    else if ('delete' == $action)
+    {
+      if ($record->getTable()->hasTemplate('NestedSet'))
+      {
+        $record->getNode()->delete();
+      }
+      else {
+        $record->delete();
+      }
+    }
+  }
+
+  protected function processUploadEntity($action, $data)
+  {
+    $record = false;
+    switch ($data['item_type_id'])
+    {
+      case 1:
+        switch ($data['type_id'])
+        {
+          case 1:
+            $record = ProductPhotoTable::getInstance()->createRecordFromCore($data);
+            $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
+            $record->view_show = 1;
+            break;
+          case 2:
+            $record = ProductPhoto3DTable::getInstance()->createRecordFromCore($data);
+            $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
+            break;
+        }
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 6:
+        break;
+      default:
+        break;
+    }
+
+    $this->processRecord($action, $record);
   }
 }

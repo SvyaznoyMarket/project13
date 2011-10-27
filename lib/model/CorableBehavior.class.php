@@ -62,7 +62,9 @@ class Doctrine_Template_Corable extends Doctrine_Template
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
-    return $q->fetchOne();
+    $id = $q->fetchOne();
+
+    return $id ? $id : null;
   }
 
   public function getCoreIdByIdTableProxy($id, array $params = array())
@@ -80,6 +82,8 @@ class Doctrine_Template_Corable extends Doctrine_Template
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
-    return $q->fetchOne();
+    $coreId = $q->fetchOne();
+
+    return $coreId ? $coreId : null;
   }
 }

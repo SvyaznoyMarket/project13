@@ -19,16 +19,19 @@ class TagGroup extends BaseTagGroup
     $this->type = $data['is_gift'] ? 'gift' : null;
 
     // Теги
+    /*
     if (!empty($data['tag']))
     {
       foreach ($data['tag'] as $relationData)
       {
         $relation = new TagGroupRelation();
         $relation->fromArray(array(
-          'tag_id' => myDoctrineTable::getRecordByCoreId('Tag', $relationData['id'], true),
+          'group_id' => $this->id,
+          'tag_id'   => TagTable::getInstance()->getIdByCoreId($relationData['id']),
         ));
         $this->TagRelation[] = $relation;
       }
     }
+    */
   }
 }

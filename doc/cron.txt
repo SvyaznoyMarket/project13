@@ -1,0 +1,1 @@
+*/1 * * * *    cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run >> log/cron.log

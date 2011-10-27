@@ -12,5 +12,12 @@ class TaskForm extends BaseTaskForm
 {
   public function configure()
   {
+    $this->useFields(array(
+      'core_id',
+      'type',
+      'priority',
+      'status',
+      'content',
+    ));
   }
 }

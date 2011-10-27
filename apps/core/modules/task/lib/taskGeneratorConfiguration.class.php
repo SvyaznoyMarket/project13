@@ -10,4 +10,10 @@
  */
 class taskGeneratorConfiguration extends BaseTaskGeneratorConfiguration
 {
+  public function getFilterDefaults()
+  {
+    return array(
+      'status' => 'run',
+    );
+  }
 }

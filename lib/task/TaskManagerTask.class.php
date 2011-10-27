@@ -2,6 +2,10 @@
 
 class TaskManagerTask extends sfBaseTask
 {
+  protected
+    $logger = null
+  ;
+
   protected function configure()
   {
     // // add your own arguments here
@@ -10,9 +14,10 @@ class TaskManagerTask extends sfBaseTask
     // ));
 
     $this->addOptions(array(
-      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name'),
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'core'),
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev_green'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
+      new sfCommandOption('speed', null, sfCommandOption::PARAMETER_REQUIRED, 'Speed [packets per minutes]', 10),
       // add your own options here
     ));
 
@@ -25,6 +30,8 @@ Call it with:
 
   [php symfony TaskManager|INFO]
 EOF;
+
+    $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/task_manager.log'));
   }
 
   protected function execute($arguments = array(), $options = array())
@@ -34,16 +41,41 @@ EOF;
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
     // add your code here
-    $list = TaskTable::getInstance()->getRunningList();
-    if (isset($list[0]) && (0 === $list[0]->priority))
+
+    $speed = $options['speed']; // скорость [пакеты/мин]
+    for ($i = 0; $i < $speed; $i++)
     {
-      $list = TaskTable::getInstance()->createList(array($list[0]));
+      $task = $this->getRunningTask();
+      if (!$task)
+      {
+        continue;
+      }
+
+      $count = 1;
+      if ('project.init' == $task->type)
+      {
+        $count = 500;
+      }
+
+      for ($attempt = 0; $attempt < $count; $attempt++)
+      {
+        $this->logger->log("{$task->type} #{$task->id} starting...");
+        $this->logSection($task->type, "#{$task->id} starting...");
+
+        // приоритет реального времени
+        $task->priority = 0;
+
+        $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array());
+        $this->logSection($task->type, "#{$task->id} done");
+
+        $task->setDefaultPriority();
+        $task->save();
+      }
     }
-    foreach ($list as $task)
-    {
-      $this->logSection($task->type, 'starting...');
-      $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array());
-      $this->logSection($task->type, 'done');
-    }
+  }
+
+  protected function getRunningTask()
+  {
+    return TaskTable::getInstance()->getRunning(array('with_minPriority' => true, 'check_zeroPriority' => true));
   }
 }

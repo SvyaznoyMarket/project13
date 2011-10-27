@@ -35,8 +35,10 @@ class ProductComment extends BaseProductComment
   {
     parent::importFromCore($data);
 
+    /*
     $this->product_id = ProductTable::getInstance()->getIdByCoreId($data['product_id']);
     $this->user_id = UserTable::getInstance()->getIdByCoreId($data['user_id']);
+    */
   }
 
   public function getProductRating()

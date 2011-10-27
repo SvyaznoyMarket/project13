@@ -49,7 +49,7 @@ class productComponents extends myComponents
     {
       $item['preview'] = $this->product->preview;
     }
-
+    
     $this->setVar('item', $item, true);
   }
 
