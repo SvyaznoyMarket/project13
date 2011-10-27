@@ -1,31 +1,58 @@
 $(document).ready(function(){
 	/* AJAX */
+	$('body').append('<div style="display:none"><img src="/images/error_ajax.gif" alt=""/></div>')
+	var errorpopup = function( txt ) {
+	var block =	'<div id="ajaxerror" class="popup">' +
+					'<i class="close" title="Закрыть">Закрыть</i>' +
+					'<div class="popupbox width650 height170">' +
+						'<h2 class="pouptitle">Непредвиденная ошибка</h2><div class="clear"></div>' +
+						'<div class="fl"><div class="font16 pb20 width345"> Что-то произошло, но мы постараемся это починить :) Попробуйте повторить ваше последнее действие еще раз.<br/>' +
+						'Причина ошибки: ' + txt + ' </div></div>' +
+						'<div class="clear"></div><div style="position:absolute; right:30px; top: 20px; margin-bottom:20px;"><img src="/images/error_ajax.gif" width="" height="" alt=""/></div>' +
+					'</div>' +
+				'</div>	'
+		$('body').append( $(block) )
+		$('#ajaxerror').lightbox_me({
+		  centered: true,
+		  onClose: function(){
+		  		$('#ajaxerror').remove()
+		  	}
+		})
+	}
+	
 	$.ajaxSetup({
-	 // cache: false
 		timeout: 5000,
 		statusCode: {
 			404: function() {
-			  alert('page not found')
+				errorpopup(' 404 ошибка, страница не найдена')
 			},
-			401: function() {
-			  alert('need authorization')
+			401: function() { 
+				if( $('#auth-block').length ) {
+					$('#auth-block').lightbox_me({
+						centered: true,
+						onLoad: function() {
+							$('#auth-block').find('input:first').focus()
+						}
+					}) 
+				} else 
+					errorpopup(' 401 ошибка, авторизуйтесь заново')
 			},
-			500: function() {
-			  alert('server is down')
+			500: function() { 
+				errorpopup(' сервер перегружен')
 			},
 			503: function() {
-			  alert('server is down')
+				errorpopup(' 503 ошибка, сервер перегружен')
 			},
 			504: function() {
-			  alert('connection is broken')
+				errorpopup(' 504 ошибка, проверьте соединение с интернетом')
 			}
 			
 		  },
 		error: function (jqXHR, textStatus, errorThrown) {
 			if( jqXHR.statusText == 'error' )
-				alert('some error ocurred')
+				errorpopup(' неизвестная ошибка')
 			else if ( textStatus=='timeout' )
-				alert('connection is broken')				
+				errorpopup(' проверьте соединение с интернетом')				
 		}		
 	})
 	
