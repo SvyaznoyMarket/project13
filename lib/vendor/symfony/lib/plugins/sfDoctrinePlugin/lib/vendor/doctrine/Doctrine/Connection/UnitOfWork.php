@@ -70,7 +70,7 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
             $isValid = true;
 
             if ( ! $event->skipOperation) {
-                $this->saveRelatedLocalKeys($record);
+                $this->saveRelatedLocalKeys($record, $replace);
 
                 switch ($state) {
                     case Doctrine_Record::STATE_TDIRTY:
@@ -133,7 +133,12 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
                             // check that the related object is not an instance of Doctrine_Null
                             if ($obj && ! ($obj instanceof Doctrine_Null)) {
                                 $processDiff = !in_array($alias, $aliasesUnlinkInDb);
-                                $obj->save($conn, $processDiff);
+                                if ($replace) {
+                                  $obj->replace($conn, $processDiff);
+                                }
+                                else {
+                                  $obj->save($conn, $processDiff);
+                                }
                             }
                         }
                     }
@@ -384,7 +389,7 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
      * @throws PDOException         if something went wrong at database level
      * @param Doctrine_Record $record
      */
-    public function saveRelatedLocalKeys(Doctrine_Record $record)
+    public function saveRelatedLocalKeys(Doctrine_Record $record, $replace = false)
     {
         $state = $record->state();
         $record->state($record->exists() ? Doctrine_Record::STATE_LOCKED : Doctrine_Record::STATE_TLOCKED);
@@ -401,7 +406,11 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
 
                 // Protection against infinite function recursion before attempting to save
                 if ($obj instanceof Doctrine_Record && $obj->isModified()) {
-                    $obj->save($this->conn);
+                    if ($replace) {
+                      $obj->replace($this->conn);
+                    } else {
+                      $obj->save($this->conn);
+                    }
 
                     $id = array_values($obj->identifier());
 
