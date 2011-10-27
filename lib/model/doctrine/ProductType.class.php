@@ -21,7 +21,7 @@ class ProductType extends BaseProductType
     {
       $relation = new TagGroupProductTypeRelation();
       $relation->fromArray(array(
-        'product_type_id' => $this->id,
+        //'product_type_id' => $this->id,
         'tag_group_id'    => TagGroupTable::getInstance()->getIdByCoreId($relationData['id']),
         'position'        => $relationData['position'],
       ));
@@ -45,6 +45,7 @@ class ProductType extends BaseProductType
     {
       $relation = new ProductTypePropertyRelation();
       $relation->fromArray(array(
+        'product_type_id' => $this->id,
         'property_id'    => ProductPropertyTable::getInstance()->getIdByCoreId($relationData['id']),
         'group_id'       => ProductPropertyGroupTable::getInstance()->getIdByCoreId($relationData['group_id']),
         'position'       => $relationData['position'],

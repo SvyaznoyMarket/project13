@@ -662,11 +662,11 @@ EOF;
   protected function createStockProductRelationRecord(array $data)
   {
     $record = StockProductRelationTable::getInstance()->createRecordFromCore($data);
-    
-    if (
-      empty($data['store_id'])
+
+    if (false
+      || (empty($data['store_id']) && empty($data['shop_id']))
+      || (!$record->stock_id && !$record->shop_id)
       || !$record->product_id
-      || !$record->stock_id
     ) {
       return false;
     }
