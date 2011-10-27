@@ -138,7 +138,7 @@ class myProductFormFilter extends sfFormFilter
       'value_from' => $value['from'],
       'value_to'   => $value['to'],
       'template'   => ''
-        .'<div class="pb5" style="margin-left:15px;">%value_from% - %value_to%</div>'
+        .'<div class="pb5" style="margin-left:11px;">%value_from% - %value_to%</div>'
         .'<div class="sliderbox">'
           .'<div id="slider-range1" class="slider-range"></div>'
           .'<span class="fl">'.$value['from'].'</span>'
