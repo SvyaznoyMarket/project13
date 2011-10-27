@@ -37,29 +37,32 @@ class myProductFormFilter extends sfFormFilter
 
     // виджет производителя
     $choices = CreatorTable::getInstance()
-      ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name'))
+      ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name', 'for_filter' => true, ))
       ->toKeyValueArray('id', 'name')
     ;
-    $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
-      'choices'          => $choices,
-      'multiple'         => true,
-      'expanded'         => true,
-      'renderer_class'   => 'myWidgetFormSelectCheckbox',
-      'renderer_options' => array(
-        'formatter'       => array($this, 'show_part'),
-        'label_separator' => '',
-      ),
-    ));
-    $this->widgetSchema['creator']->setLabel('Производитель');
-    $this->widgetSchema['creator']->setDefault($creator ? $creator->id : null);
-    $this->validatorSchema['creator'] = new sfValidatorPass();
 
+    if (count($choices))
+    {
+      $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
+        'choices'          => $choices,
+        'multiple'         => true,
+        'expanded'         => true,
+        'renderer_class'   => 'myWidgetFormSelectCheckbox',
+        'renderer_options' => array(
+          'formatter'       => array($this, 'show_part'),
+          'label_separator' => '',
+        ),
+      ));
+      $this->widgetSchema['creator']->setLabel('Производитель');
+      $this->widgetSchema['creator']->setDefault($creator ? $creator->id : null);
+      $this->validatorSchema['creator'] = new sfValidatorPass();
+    }
     // виджеты параметров
     $filters = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
 
     foreach ($filters as $productFilter)
     {
-      if (!count($productFilter->Property->Option)) continue;
+      if (count($productFilter->Property->Option) < 2) continue;
 
       if (!$widget = call_user_func(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), $productFilter)) continue;
 
@@ -68,7 +71,7 @@ class myProductFormFilter extends sfFormFilter
       $this->setValidator($index, new sfValidatorPass());
       $this->widgetSchema[$index]->setLabel($productFilter->name);
     }
-    
+
     if ($productType)
     {
       $this->widgetSchema['type'] = new sfWidgetFormInputHidden();
