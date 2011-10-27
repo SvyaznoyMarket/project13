@@ -163,9 +163,9 @@ EOF;
 
   protected function processRecord($action, $record)
   {
-    if (!$record)
+    if (!$record instanceof myDoctrineRecord)
     {
-      $return;
+      return;
     }
 
     if (('create' == $action) || ('update' == $action))
