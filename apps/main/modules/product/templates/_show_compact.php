@@ -11,7 +11,7 @@
   <div class="font18 pb10"><?php echo $item['price'] ?> <span class="rubl">p</span></div>
 
   <!-- Hover -->
-  <div class="boxhover" ref="<?php echo $item['product']->token ?>">
+  <div class="boxhover"<?php if($item['product']->getIsInsale()):?> ref="<?php echo $item['product']->token ?>"<?php endif ?>>
     <b class="rt"></b><b class="lb"></b>
     <div class="rb">
       <div class="lt" data-url="<?php echo $item['url'] ?>">
