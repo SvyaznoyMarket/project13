@@ -638,8 +638,7 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 		jnode.unbind('mousedown')
 		jnode.unbind('mousewheel')
 		jnode.remove()
-		//$(document).unbind('mousemove.zoomer')
-		//$(document).unbind('mouseup.zoomer')
+		$(document).unbind('.zoomer')
 		for(var x in this)
 			delete this[x]
 	}
