@@ -10,13 +10,13 @@ class WelcomeFilter extends sfFilter
       $request = $context->getRequest();
       $cookieName = sfConfig::get('app_welcome_cookie_name');
       $secret = sfConfig::get('app_welcome_secret');
-      
+
       if ($request->getCookie($cookieName, false) !== md5($secret))
       {
         $context->getController()->forward('default', 'welcome');
-        
+
         //$context->getController()->redirect('@welcome', 0);
-        //throw new sfStopException();
+        throw new sfStopException();
       }
     }
 
