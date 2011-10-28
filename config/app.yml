@@ -105,8 +105,8 @@ live:
   open_auth:
     provider:
       vkontakte:
-        app_id: 2450355 #
-        secret_key: pOhjShAyp3e9HrL1X1QV #
+        app_id: 2659726
+        secret_key: v4uMoJ3Fhne9R5SmHTiq
       facebook:
         app_id: 226981847349938 #
         secret_key: e9b8bd45490396ff8ee0da18c777323b #
