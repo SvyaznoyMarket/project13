@@ -177,17 +177,17 @@ EOF;
     $record = $table->getByCoreId($entity['id']);
 
     // если действие "создать", но запись с таким core_id уже существует
-    if ($record && ('create' == $action))
+    if (('create' == $action) && $record)
     {
       $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} #{$record->id} already exists. Force update...", null, 'INFO');
     }
     // если действие "обновить", но запись с таким core_id не существует
-    if (!$record && ('update' == $action))
+    if (('update' == $action) && !$record)
     {
       $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Force create...", null, 'INFO');
     }
     // если действие "удалить", но запись с таким core_id не существует
-    if (!$record && ('delete' == $action))
+    if (('delete' == $action) && !$record)
     {
       $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Skip...", null, 'INFO');
     }
@@ -224,12 +224,24 @@ EOF;
         switch ($entity['type_id'])
         {
           case 1:
-            $record = ProductPhotoTable::getInstance()->createRecordFromCore($entity);
+            $table = ProductPhotoTable::getInstance();
+            $record = $table->getByCoreId($entity['id']);
+            if (!$record)
+            {
+              $record = $table->createRecordFromCore($entity);
+            }
+
             $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             $record->view_show = 1;
             break;
           case 2:
-            $record = ProductPhoto3DTable::getInstance()->createRecordFromCore($entity);
+            $table = ProductPhoto3DTable::getInstance();
+            $record = $table->getByCoreId($entity['id']);
+            if (!$record)
+            {
+              $record = $table->createRecordFromCore($entity);
+            }
+
             $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             break;
         }
