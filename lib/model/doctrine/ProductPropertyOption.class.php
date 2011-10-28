@@ -16,6 +16,15 @@ class ProductPropertyOption extends BaseProductPropertyOption
   {
     parent::importFromCore($data);
 
-    $this->property_id = !empty($data['property'][0]['id']) ? $this->getRecordByCoreId('ProductProperty', $data['property'][0]['id'], true) : null;
+    $this->property_id = !empty($data['property'][0]['id']) ? ProductPropertyTable::getInstance()->getIdByCoreId($data['property'][0]['id']) : null;
+    
+    if (true === $this->value)
+    {
+      $this->value = 'да';
+    }
+    else if (false === $this->value)
+    {
+      $this->value = 'нет';
+    }
   }
 }

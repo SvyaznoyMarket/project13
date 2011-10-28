@@ -16,7 +16,7 @@ class ProjectSyncTask extends sfBaseTask
 
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'core'),
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev_green'),
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('dump', null, sfCommandOption::PARAMETER_NONE, 'Only dump response'),
       new sfCommandOption('log', null, sfCommandOption::PARAMETER_NONE, 'Enable logging'),

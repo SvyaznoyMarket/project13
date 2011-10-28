@@ -114,10 +114,10 @@ live:
         consumer_key: IyHijpaPPEtzcXNB1a5lTw
         consumer_secret: xAn2bD2Q90GrlU2DMS5upjteR2dgKhEQCFhijGopWw
       odnoklassniki:
-        app_id: 3982080 #
-        public_key: 'CBAEMNDBABABABABA' #
-        private_key: '10EABF50D830F7FE507D3376' #
-        app_url: 'http://www.odnoklassniki.ru/games/enter' #
+        app_id: 5061376
+        public_key: 'CBAMDOEBABABABABA'
+        private_key: '37B3909065A020F45A9D073C'
+        app_url: 'http://www.odnoklassniki.ru/games/enter'
       mailru:
         app_id: 648413
         private_key: '1d32486472b6d1ed5efe36070ac4f23c'
