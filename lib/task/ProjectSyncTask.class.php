@@ -91,16 +91,16 @@ EOF;
       foreach ($item['data'] as $packet)
       {
         $action = $core->getActions($packet['operation']);
+        $entity = $packet['data'];
 
         try
         {
           $method = 'process'.ucfirst($packet['type']).'Entity';
           if (method_exists($this, $method)) {
-            call_user_func_array(array($this, $method), array($action, $packet));
+            call_user_func_array(array($this, $method), array($action, $entity));
           }
           else if ($table = $core->getTable($packet['type']))
           {
-            $entity = $packet['data'];
             $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
             //myDebug::dump($entity);
 
@@ -184,22 +184,22 @@ EOF;
     }
   }
 
-  protected function processUploadEntity($action, $data)
+  protected function processUploadEntity($action, $entity)
   {
     $record = false;
-    switch ($data['item_type_id'])
+    switch ($entity['item_type_id'])
     {
       case 1:
-        switch ($data['type_id'])
+        switch ($entity['type_id'])
         {
           case 1:
-            $record = ProductPhotoTable::getInstance()->createRecordFromCore($data);
-            $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
+            $record = ProductPhotoTable::getInstance()->createRecordFromCore($entity);
+            $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             $record->view_show = 1;
             break;
           case 2:
-            $record = ProductPhoto3DTable::getInstance()->createRecordFromCore($data);
-            $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
+            $record = ProductPhoto3DTable::getInstance()->createRecordFromCore($entity);
+            $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             break;
         }
         break;
