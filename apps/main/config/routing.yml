@@ -210,6 +210,12 @@ user_update:
   requirements:
     sf_method: [ get,post ]
 #
+# user orders
+user_orders:
+  url:   /private/orders/
+  param: { module: user, action: orders }
+#
+
 
 # user. get short info about cart, wishlist, etc.
 userProductHistory_shortinfo:
@@ -252,6 +258,11 @@ user_resetPassword:
 user_changePassword:
   url:   /private/password
   param: { module: guard, action: changePassword }
+#
+# user change password
+user_changePasswordSave:
+  url:   /private/password/save
+  param: { module: guard, action: changePasswordSave }
 #
 # user register
 user_register:
@@ -502,11 +513,6 @@ userAddress_delete:
 
 # Заказы пользователя
 #
-# order
-order:
-  url:   /orders/
-  param: { module: order, action: index }
-#
 # order login
 order_login:
   url:   /orders/login
@@ -543,6 +549,11 @@ order_create:
 order_complete:
   url:   /orders/complete
   param: { module: order, action: complete }
+#
+# order cancel
+order_cancel:
+  url:   /orders/cancel/:token
+  param: { module: order, action: cancel, token: 0 }
 #
 # order complete
 order_error:

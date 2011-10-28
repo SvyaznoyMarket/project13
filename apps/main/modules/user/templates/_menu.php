@@ -4,7 +4,7 @@
         <ul class="leftmenu pb10">
             <?php foreach ($leftMenu as $item): ?>
                <li>
-                    <?php if ($item['current']): ?>
+                    <?php if (isset($item['current'])): ?>
                         <strong class="orange">
                     <?php else: ?>
                         <a href="<?php echo url_for($item['url']) ?>">
@@ -12,7 +12,7 @@
 
                    <?php echo $item['name'] ?>
 
-                    <?php if ($item['current']): ?>
+                    <?php if (isset($item['current'])): ?>
                         </strong>
                     <?php else: ?>
                         </a>
