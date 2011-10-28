@@ -3,6 +3,7 @@
 class ProjectSyncTask extends sfBaseTask
 {
   protected
+    $core = null,
     $logger = null
   ;
 
@@ -32,6 +33,7 @@ Call it with:
   [php symfony ProjectSync|INFO]
 EOF;
 
+    $this->core = Core::getInstance();
     $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/sync.log'));
   }
 
@@ -57,10 +59,9 @@ EOF;
     }
 
     // add your code here
-    $core = Core::getInstance();
 
     $this->logSection('core', 'loading packet #'.$params['packet_id']);
-    $response = $core->query('sync.get', array(
+    $response = $this->core->query('sync.get', array(
       'id' => $params['packet_id'],
     ));
     ////$response = json_decode(file_get_contents(sfConfig::get('sf_data_dir').'/core/product.json'), true);
@@ -90,7 +91,7 @@ EOF;
     {
       foreach ($item['data'] as $packet)
       {
-        $action = $core->getActions($packet['operation']);
+        $action = $this->core->getActions($packet['operation']);
 
         try
         {
@@ -160,7 +161,7 @@ EOF;
   {
     $entity = $packet['data'];
 
-    $table = $core->getTable($packet['type']);
+    $table = $this->core->getTable($packet['type']);
     if (!$table)
     {
       $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: model doesn't exist. Skip...", null, 'ERROR');
