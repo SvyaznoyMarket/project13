@@ -9,7 +9,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
   public function postSave($event)
   {
     $invoker = $event->getInvoker();
-    
+
     $prefix = sfConfig::get('app_doctrine_result_cache_prefix', 'dql:');
 
     $driver = $invoker->getTable()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
@@ -19,7 +19,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
         '*/'.$invoker->getTable()->getQueryRootAlias().'-'.$invoker->id.'/*',
         '*/'.$invoker->getTable()->getQueryRootAlias().'-all/*',
       ) as $key) {
-        $driver->deleteByPattern($prefix.$key);      
+        $driver->deleteByPattern($prefix.$key);
       }
     }
   }
@@ -106,10 +106,13 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
       if (is_array($v))
       {
         // checks relation
-        if (!empty($v['name']) && !empty($v['rel']))
+        if (!empty($v['rel']))
         {
-          $model = $this->getTable()->getRelation($v['rel'])->getTable()->getComponentName();
-          $data[$k] = Doctrine_Core::getTable($model)->getCoreIdById($this->get($v['name']));
+          $table = $this->getTable();
+          $relation = $table->getRelation($v['rel']);
+          $model = $relation->getTable()->getComponentName();
+
+          $data[$k] = Doctrine_Core::getTable($model)->getCoreIdById($this->get($relation->getLocalFieldName()));
         }
       }
       else {
