@@ -1,5 +1,62 @@
 $(document).ready(function(){
-
+	/* AJAX */
+	$('body').append('<div style="display:none"><img src="/images/error_ajax.gif" alt=""/></div>')
+	var errorpopup = function( txt ) {
+	var block =	'<div id="ajaxerror" class="popup">' +
+					'<i class="close" title="Закрыть">Закрыть</i>' +
+					'<div class="popupbox width650 height170">' +
+						'<h2 class="pouptitle">Непредвиденная ошибка</h2><div class="clear"></div>' +
+						'<div class="fl"><div class="font16 pb20 width345"> Что-то произошло, но мы постараемся это починить :) Попробуйте повторить ваше последнее действие еще раз.<br/>' +
+						'Причина ошибки: ' + txt + ' </div></div>' +
+						'<div class="clear"></div><div style="position:absolute; right:30px; top: 20px; margin-bottom:20px;"><img src="/images/error_ajax.gif" width="" height="" alt=""/></div>' +
+					'</div>' +
+				'</div>	'
+		$('body').append( $(block) )
+		$('#ajaxerror').lightbox_me({
+		  centered: true,
+		  onClose: function(){
+		  		$('#ajaxerror').remove()
+		  	}
+		})
+	}
+	
+	$.ajaxSetup({
+		timeout: 5000,
+		statusCode: {
+			404: function() {
+				errorpopup(' 404 ошибка, страница не найдена')
+			},
+			401: function() { 
+				if( $('#auth-block').length ) {
+					$('#auth-block').lightbox_me({
+						centered: true,
+						onLoad: function() {
+							$('#auth-block').find('input:first').focus()
+						}
+					}) 
+				} else 
+					errorpopup(' 401 ошибка, авторизуйтесь заново')
+			},
+			500: function() { 
+				errorpopup(' сервер перегружен')
+			},
+			503: function() {
+				errorpopup(' 503 ошибка, сервер перегружен')
+			},
+			504: function() {
+				errorpopup(' 504 ошибка, проверьте соединение с интернетом')
+			}
+			
+		  },
+		error: function (jqXHR, textStatus, errorThrown) {
+			if( jqXHR.statusText == 'error' )
+				errorpopup(' неизвестная ошибка')
+			else if ( textStatus=='timeout' )
+				errorpopup(' проверьте соединение с интернетом')				
+		}		
+	})
+	
+	/* --- */
     $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes();
 
 	$(".bigfilter dt").click(function(){
@@ -102,8 +159,8 @@ $(document).ready(function(){
         $("#ratingresult").html(this.innerHTML)
         return false;
     });
-
-    $(".yellowbutton").mousedown(function()   {
+	//TODO buy bottons remake
+    /*$(".yellowbutton").mousedown(function()   {
     	$(this).toggleClass("yellowbuttonactive")
     }).mouseup(function()   {
     	$(this).removeClass("yellowbuttonactive")
@@ -119,7 +176,7 @@ $(document).ready(function(){
     	$(this).toggleClass("whitelinkactive")
     }).mouseup(function()   {
     	$(this).removeClass("whitelinkactive")
-    })
+    })*/
 
     $(".goodsbar .link1").bind( 'click.css', function()   {
         $(this).addClass("link1active")
@@ -133,7 +190,7 @@ $(document).ready(function(){
         //$(this).addClass("link3active");
     })
 
-
+	/* top menu */
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
 	var corneroffsets = [167,222,290,362,435,515,587,662,717]

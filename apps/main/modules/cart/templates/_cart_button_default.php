@@ -1,1 +1,1 @@
-<?php echo link_to('&nbsp;', '@cart', array('class' => 'link1 cart cart-show')) ?>
+<?php echo link_to(isset($value[1]) ? $value[1] : '&nbsp;', '@cart', array('class' => 'link1 cart cart-show')) ?>

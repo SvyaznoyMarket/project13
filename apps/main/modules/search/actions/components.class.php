@@ -38,7 +38,7 @@ class searchComponents extends myComponents
     $list = array();
 
     $list[] = array(
-      'name' => "Поиск ($this->searchString)",
+      'name' => "Поиск (".htmlentities($this->searchString).")",
       'url'  => url_for('search', array('searchString' => $this->searchString)),
     );
 

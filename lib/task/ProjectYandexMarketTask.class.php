@@ -11,7 +11,7 @@ class ProjectYandexMarketTask extends sfBaseTask
   );
 
   
-  private $_xmlFolder ='xml_import';  
+  private $_xmlFolder ='xml';  
   
   /**
    * Название файла дли экспорта
@@ -177,6 +177,8 @@ EOF;
     $this->_generateCatList();    
     $this->_imageUrlsConfig = sfConfig::get('app_product_photo_url');
     //генерируем файлы с определёнными категориями
+    
+    if (count($this->_globalCatList)>0)
     foreach($this->_globalCatList as $partInfo){
         //заполняем массив категорий
         $this->_categoryList = array();
