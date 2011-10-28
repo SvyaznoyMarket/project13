@@ -122,3 +122,9 @@ live:
         app_id: 648413
         private_key: '1d32486472b6d1ed5efe36070ac4f23c'
         secret_key: '60ca8f63a5fa1c90d72f0be0f80e4037'
+
+  core:
+    config:
+      api_url: 'http://62.231.27.40/v1/json'
+      consumer_key: v6Q4UiTaQ6jWPHtJ
+      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
