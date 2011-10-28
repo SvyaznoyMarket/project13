@@ -119,6 +119,6 @@ live:
         private_key: '10EABF50D830F7FE507D3376' #
         app_url: 'http://www.odnoklassniki.ru/games/enter' #
       mailru:
-        app_id: 641483 #
-        private_key: 'fe2314f2fee03350ee54d5f71cff37d9' #
-        secret_key: 'a47cc49da1835cf1f010ced1ac7be318' #
+        app_id: 648413
+        private_key: '1d32486472b6d1ed5efe36070ac4f23c'
+        secret_key: '60ca8f63a5fa1c90d72f0be0f80e4037'
