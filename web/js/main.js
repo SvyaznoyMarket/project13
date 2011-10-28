@@ -226,6 +226,10 @@ $(document).ready(function(){
 			if( ! basket[i].noview )
 				tmp += basket[i].sum * 1
 		}
+		console.info(tmp)
+		if( !tmp ) {
+			location.reload(true)
+		}
 		total.html( printPrice( tmp ) )
 		total.typewriter(800)
 	}
