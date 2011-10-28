@@ -50,7 +50,7 @@ class callbackActions extends myActions
         $this->setTemplate('index');
         $this->setVar('error', '', true);                          
         
-
+           
         if ($this->form->isValid())
         {
             try

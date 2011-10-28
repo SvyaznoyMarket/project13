@@ -12,6 +12,11 @@
  */
 class Order extends BaseOrder
 {
+    
+    const STATUS_READY     = 6;
+    const STATUS_CANCELLED     = 5;
+
+    
   public function __toString()
   {
     return (string)$this->token;

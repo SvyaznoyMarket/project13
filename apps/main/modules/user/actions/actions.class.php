@@ -37,25 +37,25 @@ class userActions extends myActions
                 'url'    => '@user_edit',
                 'routes' => array('user_edit'),
               ),
-//              array(
-//                'name'   => 'Пароль',
-//                'url'    => '@user_changePassword',
-//                'routes' => array('user_changePassword'),
-//              ),
+              array(
+                'name'   => 'Пароль',
+                'url'    => '@user_changePassword',
+                'routes' => array('user_changePassword'),
+              ),
           )
       ),
-      /*array(
-          'title' => 'Мои товары',
+      array(
+          'title' => 'Мои заказы',
           'list' => array(
               array(
+                'name'   => 'Заказы',
+                'url'    => '@user_orders',
+                'routes' => array('@user_orders', '@user_orders'),
+              ),              
+            /*  array(
                 'name'   => 'Корзина товаров',
                 'url'    => '@cart',
                 'routes' => array('@cart'),
-              ),
-              array(
-                'name'   => 'Заказы',
-                'url'    => '@order',
-                'routes' => array('@order', '@order_show'),
               ),
               array(
                 'name'   => 'История просмотра товаров',
@@ -76,9 +76,9 @@ class userActions extends myActions
                 'name'   => 'Метки товаров',
                 'url'    => '@userTag',
                 'routes' => array('@userTag'),
-              ),
-          )
-      )*/
+              ),*/
+          ) 
+      )
 
     );
 
@@ -164,5 +164,7 @@ class userActions extends myActions
     $this->setTemplate('edit');
   }
 
-
+  public function executeOrders(sfWebRequest $request)
+  {
+  }
 }

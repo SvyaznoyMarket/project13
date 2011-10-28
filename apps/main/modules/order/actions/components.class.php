@@ -58,17 +58,16 @@ class orderComponents extends myComponents
   {
     $list = array();
     foreach ($this->getUser()->getGuardUser()->getOrderList() as $order)
-    {
-      $list[] = array(
-        'order' => $order,
-        'name'  => (string)$order,
-        'token' => $order->token,
-        'sum'   => $order->sum,
-        'url'   => url_for('order_show', $order),
-      );
+    {    
+      if ($order->status_id==Order::STATUS_READY)  $listReady[] = $order;
+      elseif ($order->status_id==Order::STATUS_CANCELLED)  $listCancelled[] = $order;
+      else $listProcess[] = $order;
     }
-
+    $list = array_merge($listProcess,$listReady,$listCancelled);
+    
+    $statusList = OrderStatusTable::getInstance()->findAll()->getData();
     $this->setVar('list', $list, true);
+    $this->setVar('statusList', $statusList, true);
   }
  /**
   * Executes step1 component

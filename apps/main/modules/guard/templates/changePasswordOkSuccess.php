@@ -9,8 +9,7 @@ end_slot();
 
 <div class="float100">
     <div class="column685 ">
-        <ul class="error_list"><li><?php if (isset($error)) echo $error ?></li></ul>        
-        <?php include_partial('guard/form_change_password', array('form' => $form)) ?>
+        Спасибо, Ваш пароль был изменён.
     </div>
 </div>
 

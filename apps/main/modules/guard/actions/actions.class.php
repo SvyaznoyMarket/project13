@@ -151,6 +151,62 @@ class guardActions extends myActions
 		  return $this->renderJson(array('success' => false));
 	  }
   }
+  
+  
+  public function executeChangePassword($request)
+  {
+        if (!$this->getUser()->isAuthenticated()) $this->redirect('user_signin');
+
+        $this->getUser()->getGuardUser()->refresh();
+        $this->userProfile = $this->getUser()->getGuardUser()->getData();
+        $this->form = new UserFormChangePassword( $this->getUser()->getGuardUser() );
+
+  }  
+  
+  public function executeChangePasswordSave($request)
+  {
+        if (!$this->getUser()->isAuthenticated()) $this->redirect('user_signin');
+
+        $this->getUser()->getGuardUser()->refresh();
+        $this->userProfile = $this->getUser()->getGuardUser()->getData();
+        $this->form = new UserFormChangePassword( $this->getUser()->getGuardUser() );
+        $data = $request->getParameter($this->form->getName());
+        $this->form->bind($data);
+              
+       $this->setTemplate('changePassword');  
+       
+        if ($this->form->isValid())
+        {
+            try
+            {
+                //$this->form->getObject()->setCorePush(false);
+                $user = $this->getUser()->getGuardUser();
+                $coreId = $user->core_id;
+                $data['email'] = $user->email;
+                $data['mobile'] = $user->phonenumber;
+                #print_r($data);
+                //$result = $this->form->save();
+                #var_dump($result);
+                Core::getInstance()->changePassword($coreId,$data);
+                #if (!$result) $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
+             
+  
+                $this->setTemplate('changePasswordOk');
+                
+            }
+            catch (Exception $e)
+            {
+                //echo $e->getMessage();
+                $this->setVar('error', 'К сожалению, сохранить пароль не удалось.', true);                          
+                $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
+                $this->setTemplate('changePassword');
+            }
+        } else {
+            $this->setTemplate('changePassword');
+        }       
+  }  
+  
+  
  /**
   * Executes changePassword action
   *
