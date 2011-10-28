@@ -33,7 +33,6 @@ Call it with:
   [php symfony ProjectSync|INFO]
 EOF;
 
-    $this->core = Core::getInstance();
     $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/sync.log'));
   }
 
@@ -44,6 +43,8 @@ EOF;
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
+
+    $this->core = Core::getInstance();
 
     // add your code here
     $this->task = TaskTable::getInstance()->find($arguments['task_id']);
