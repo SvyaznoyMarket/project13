@@ -19,7 +19,6 @@ $(document).ready(function() {
   })
 
   $('#login-form, #register-form').bind('submit', function(e) {
-    console.info(this);
     e.preventDefault()
 
     var form = $(e.target)
