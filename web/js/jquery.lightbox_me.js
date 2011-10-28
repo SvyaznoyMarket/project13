@@ -178,8 +178,10 @@
             function setWrapPosition( $node ) {//IVN
             	var s = $node[0].style;
             	//var topOffset = $(document).scrollTop() + 40;
-            	var topOffset = document.documentElement.scrollTop + 40;
-				$node.css({position: 'absolute', top: topOffset + 'px', marginTop: 0})
+            	var topOffset = window.pageYOffset;
+            	if (! topOffset ) 
+            		topOffset = document.documentElement.scrollTop ;
+				$node.css({position: 'absolute', top: (topOffset + 40)*1 + 'px', marginTop: 0})
 				if (ie6) {
 					s.removeExpression('top');
 				}
