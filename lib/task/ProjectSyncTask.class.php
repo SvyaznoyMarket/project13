@@ -38,7 +38,7 @@ EOF;
 
   protected function execute($arguments = array(), $options = array())
   {
-    sfConfig::set('sf_logging_enabled', true/*$options['log']*/);
+    sfConfig::set('sf_logging_enabled', $options['log']);
 
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
@@ -115,7 +115,7 @@ EOF;
         catch (Exception $e)
         {
           $this->logSection($packet['type'], ucfirst($action).' entity #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
-          $this->logger->log('Error: '.$e->getMessage());
+          $this->logger->log('Error: packet #'.$packet['id']."\n".$e->getMessage());
 
           $this->task->attempt++;
           $this->task->save();
