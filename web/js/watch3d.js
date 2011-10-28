@@ -607,6 +607,7 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 	
 	$(document).bind('mousemove.zoomer', function(e) {
 		if( active ){
+			e.preventDefault()
 			var mdelta = {
 				x: e.pageX - init.pageX ,
 				y: e.pageY - init.pageY
