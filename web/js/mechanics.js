@@ -483,7 +483,8 @@ function mediaLib( jn ) {
 				onClose: function() {
 						self.close() 
 						vis = false
-					}
+					},
+				reallyBig: true	
 			})
 			vis = true
 		} else { // toggle
