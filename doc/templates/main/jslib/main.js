@@ -20,6 +20,12 @@ $(function(){
 		$(this).toggleClass("current");
 		return false;
 	});
+		
+		$(".tearmlist dt").click(function(){
+		$(this).next(".tearmlist dd").slideToggle(200);
+		$(this).toggleClass("current");
+		return false;
+	});
 
 });
 
@@ -111,4 +117,11 @@ $(document).ready(function(){
 	}).mouseup(function()   {
 	jQuery(this).removeClass("link3active");
 	});
+	
+	jQuery(this).find('.goodsbarbig A').mousedown(function(){
+	jQuery(this).addClass("active");  
+    }).mouseup(function()   {
+	jQuery(this).removeClass("active");
+	});
+
 });
