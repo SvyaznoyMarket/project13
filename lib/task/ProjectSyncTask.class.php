@@ -91,56 +91,20 @@ EOF;
       foreach ($item['data'] as $packet)
       {
         $action = $core->getActions($packet['operation']);
-        $entity = $packet['data'];
 
         try
         {
           $method = 'process'.ucfirst($packet['type']).'Entity';
-          if (method_exists($this, $method)) {
-            call_user_func_array(array($this, $method), array($action, $entity));
-          }
-          else if ($table = $core->getTable($packet['type']))
-          {
-            $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
-            //myDebug::dump($entity);
+          $method = method_exists($this, $method) ? $method : 'processDefaultEntity';
 
-            $record = $table->getByCoreId($entity['id']);
-
-            // если действие "создать", но запись с таким core_id уже существует
-            if ($record && ('create' == $action))
-            {
-              $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} #{$record->id} already exists. Force update...", null, 'INFO');
-            }
-            // если действие "обновить", но запись с таким core_id не существует
-            if (!$record && ('update' == $action))
-            {
-              $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Force create...", null, 'INFO');
-            }
-            // если действие "удалить", но запись с таким core_id не существует
-            if (!$record && ('delete' == $action))
-            {
-              $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Skip...", null, 'INFO');
-            }
-
-            if (!$record)
-            {
-              $record = $table->create();
-            }
-
-            $record->importFromCore($entity);
-            $record->setCorePush(false);
-            //myDebug::dump($entity);
-            //myDebug::dump($record);
-
-            $this->processRecord($action, $record);
+          if (call_user_func_array(array($this, $method), array($action, $packet))) {
 
             $this->task->status = 'success';
             $this->task->save();
           }
-          // model doesn't exists
+          // model doesn't exists or other error
           else {
-            $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: model doesn't exist. Skip...", null, 'ERROR');
-            $this->logger->log('Unknown entity: '.$packet['type']."\n".sfYaml::dump($packet, 6));
+            $this->logger->log('Error: '."\n".sfYaml::dump($packet, 6));
 
             $this->task->status = 'fail';
             $this->task->save();
@@ -184,8 +148,71 @@ EOF;
     }
   }
 
-  protected function processUploadEntity($action, $entity)
+
+
+  /**
+   *
+   * @param string $action
+   * @param array $packet
+   * @return boolean Success result
+   */
+  protected function processDefaultEntity($action, $packet)
   {
+    $entity = $packet['data'];
+
+    $table = $core->getTable($packet['type']);
+    if (!$table)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: model doesn't exist. Skip...", null, 'ERROR');
+      $this->logger->log('Unknown entity: '.$packet['type']."\n".sfYaml::dump($packet, 6));
+
+      return false;
+    }
+
+    $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
+    //myDebug::dump($entity);
+
+    $record = $table->getByCoreId($entity['id']);
+
+    // если действие "создать", но запись с таким core_id уже существует
+    if ($record && ('create' == $action))
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} #{$record->id} already exists. Force update...", null, 'INFO');
+    }
+    // если действие "обновить", но запись с таким core_id не существует
+    if (!$record && ('update' == $action))
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Force create...", null, 'INFO');
+    }
+    // если действие "удалить", но запись с таким core_id не существует
+    if (!$record && ('delete' == $action))
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Skip...", null, 'INFO');
+    }
+
+    if (!$record)
+    {
+      $record = $table->create();
+    }
+
+    $record->importFromCore($entity);
+    $record->setCorePush(false);
+    //myDebug::dump($entity);
+    //myDebug::dump($record);
+
+    $this->processRecord($action, $record);
+  }
+
+  /**
+   *
+   * @param string $action
+   * @param array $packet
+   * @return boolean Success result
+   */
+  protected function processUploadEntity($action, $packet)
+  {
+    $entity = $packet['data'];
+
     $record = false;
     switch ($entity['item_type_id'])
     {
@@ -214,5 +241,7 @@ EOF;
     }
 
     $this->processRecord($action, $record);
+
+    return true;
   }
 }
