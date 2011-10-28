@@ -106,7 +106,7 @@ EOF;
           }
           // model doesn't exists or other error
           else {
-            $this->logger->log('Error: '."\n".sfYaml::dump($packet, 6));
+            $this->logger->log('Unknown model: '."\n".sfYaml::dump($packet, 6));
 
             $this->task->status = 'fail';
             $this->task->save();
@@ -203,6 +203,8 @@ EOF;
     //myDebug::dump($record);
 
     $this->processRecord($action, $record);
+
+    return true;
   }
 
   /**
