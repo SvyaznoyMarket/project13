@@ -114,7 +114,7 @@ EOF;
         }
         catch (Exception $e)
         {
-          $this->logSection($packet['type'], ucfirst($action).' entity #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
+          $this->logSection($packet['type'], ucfirst($action).' entity #'.$packet['data']['id'].' error: '.$e->getMessage(), null, 'ERROR');
           $this->logger->log('Error: packet #'.$params['packet_id']."\n".$e->getMessage());
 
           $this->task->attempt++;
