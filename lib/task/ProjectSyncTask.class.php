@@ -38,7 +38,7 @@ EOF;
 
   protected function execute($arguments = array(), $options = array())
   {
-    sfConfig::set('sf_logging_enabled', true/*$options['log']*/);
+    sfConfig::set('sf_logging_enabled', $options['log']);
 
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
@@ -106,7 +106,7 @@ EOF;
           }
           // model doesn't exists or other error
           else {
-            $this->logger->log('Error: '."\n".sfYaml::dump($packet, 6));
+            $this->logger->log('Unknown model: '."\n".sfYaml::dump($packet, 6));
 
             $this->task->status = 'fail';
             $this->task->save();
@@ -115,7 +115,7 @@ EOF;
         catch (Exception $e)
         {
           $this->logSection($packet['type'], ucfirst($action).' entity #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
-          $this->logger->log('Error: '.$e->getMessage());
+          $this->logger->log('Error: packet #'.$params['packet_id']."\n".$e->getMessage());
 
           $this->task->attempt++;
           $this->task->save();
@@ -177,17 +177,17 @@ EOF;
     $record = $table->getByCoreId($entity['id']);
 
     // если действие "создать", но запись с таким core_id уже существует
-    if ($record && ('create' == $action))
+    if (('create' == $action) && $record)
     {
       $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} #{$record->id} already exists. Force update...", null, 'INFO');
     }
     // если действие "обновить", но запись с таким core_id не существует
-    if (!$record && ('update' == $action))
+    if (('update' == $action) && !$record)
     {
       $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Force create...", null, 'INFO');
     }
     // если действие "удалить", но запись с таким core_id не существует
-    if (!$record && ('delete' == $action))
+    if (('delete' == $action) && !$record)
     {
       $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Skip...", null, 'INFO');
     }
@@ -203,6 +203,8 @@ EOF;
     //myDebug::dump($record);
 
     $this->processRecord($action, $record);
+
+    return true;
   }
 
   /**
@@ -222,12 +224,24 @@ EOF;
         switch ($entity['type_id'])
         {
           case 1:
-            $record = ProductPhotoTable::getInstance()->createRecordFromCore($entity);
+            $table = ProductPhotoTable::getInstance();
+            $record = $table->getByCoreId($entity['id']);
+            if (!$record)
+            {
+              $record = $table->createRecordFromCore($entity);
+            }
+
             $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             $record->view_show = 1;
             break;
           case 2:
-            $record = ProductPhoto3DTable::getInstance()->createRecordFromCore($entity);
+            $table = ProductPhoto3DTable::getInstance();
+            $record = $table->getByCoreId($entity['id']);
+            if (!$record)
+            {
+              $record = $table->createRecordFromCore($entity);
+            }
+
             $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             break;
         }

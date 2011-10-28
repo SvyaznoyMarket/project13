@@ -4,6 +4,6 @@
 
 while true; do
 #echo 1
-cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run >> log/cron.log
+cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run --speed=1 >> log/cron.log
 sleep 20
 done
