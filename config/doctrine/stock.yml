@@ -25,7 +25,8 @@ Shop:
 ShopPhoto:
   options:
     comment: 'Фото магазина'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     shop_id:           { type: integer(20), notnull: true }
@@ -38,7 +39,7 @@ Stock:
     comment: 'Склад'
   actAs:
     Timestampable: ~
-    Corable: { push: disable }
+    Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
@@ -53,11 +54,14 @@ Stock:
 StockProductRelation:
   options:
     comment: 'Связь склада и товара'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
+    Corable:       { push: disable }
   columns:
-    product_id:        { type: integer(20), primary: true, notnull: true }
-    stock_id:          { type: integer(20), primary: true, notnull: false, default: null }
-    shop_id:           { type: integer(20), primary: true, notnull: false, default: null }
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    product_id:        { type: integer(20), notnull: true }
+    stock_id:          { type: integer(20), notnull: false, default: null }
+    shop_id:           { type: integer(20), notnull: false, default: null }
     quantity:          { type: integer(4), notnull: true, default: 1 }
   relations:
     Product:           { class: Product, foreignAlias: StockRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
