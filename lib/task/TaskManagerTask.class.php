@@ -15,7 +15,7 @@ class TaskManagerTask extends sfBaseTask
 
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'core'),
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev_green'),
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('speed', null, sfCommandOption::PARAMETER_REQUIRED, 'Speed [packets per minutes]', 10),
       // add your own options here
@@ -65,7 +65,11 @@ EOF;
         // приоритет реального времени
         $task->priority = 0;
 
-        $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array());
+        $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array(
+          'application' => $options['application'],
+          'env'         => $options['env'],
+          'connection'  => $options['connection'],
+        ));
         $this->logSection($task->type, "#{$task->id} done");
 
         $task->setDefaultPriority();
