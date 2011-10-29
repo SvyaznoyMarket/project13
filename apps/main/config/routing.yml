@@ -77,6 +77,13 @@ productCard:
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
 #
+# карточка товара по ид товара
+productCard_show:
+  url:   /product-:product
+  param: { module: productCard, action: show }
+  options:
+    segment_separators: [ '/', '-' ]
+#
 # комментарии товара
 productComment:
   url:   /products/:product/comments
