@@ -1,4 +1,4 @@
-<form action="<?php echo url_for('@user_changePassword') ?>" method="post">
+<form action="<?php echo url_for('@user_changePasswordSave') ?>" method="post">
     <div class="fl width430">
 		
 <!--        <div class="pb20"><strong>Чтобы изменить пароль, укажите свой текущий пароль</strong></div>-->

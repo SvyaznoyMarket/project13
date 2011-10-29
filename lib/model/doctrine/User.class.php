@@ -14,6 +14,8 @@ class User extends BaseUser
 {
   public function preSave($event)
   {
+   #   echo 'tyt!';
+   #   exit();
     $record = $event->getInvoker();
 
     if (empty($record->password) && !$record->exists())
@@ -23,7 +25,8 @@ class User extends BaseUser
       {
         $password .= sprintf("%x", mt_rand(0, 15));
       }
-      //$this->setPassword($password);
+      $this->setPassword($password);
+      $this->save();
 
       /*
       $this->dispatcher->notify(new myEvent($this, 'user.create', array(

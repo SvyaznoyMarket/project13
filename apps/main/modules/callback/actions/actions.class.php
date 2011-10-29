@@ -48,8 +48,8 @@ class callbackActions extends myActions
         //$data['categoty_id'] = 21;
         $this->form->bind($data);
         $this->setTemplate('index');
-        $this->setVar('error', '', true);
-
+        
+        $this->setVar('error', '', true);                          
 
         if ($this->form->isValid())
         {

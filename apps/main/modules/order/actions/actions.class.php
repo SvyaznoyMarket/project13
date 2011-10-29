@@ -19,7 +19,6 @@ class orderActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-
   }
  /**
   * Executes show action
@@ -196,6 +195,32 @@ class orderActions extends myActions
   public function executeEdit(sfWebRequest $request)
   {
   }
+  
+  /**
+   *
+   * @param sfWebRequest $request 
+   */
+  public function executeCancel(sfWebRequest $request)
+  {
+      $token = $request['token'];
+      if (!$token)     $this->redirect($this->getRequest()->getReferer());
+
+      $orderL = OrderTable::getInstance()->findBy('token', $token);
+      foreach($orderL as $order) $coreId = $order->core_id;
+      //print_r($order->getData());
+      $res = Core::getInstance()->query('order.cancel',array('id'=>$coreId));
+      //если отменилось на ядре, отменим здесь тоже
+      if ($res){
+          //$order->setData( array('status_id'=>Order::STATUS_CANCELLED));
+          //->set('status_id', Order::STATUS_CANCELLED);
+          $order->setCorePush(false);
+          $order->setArray(array('status_id'=>Order::STATUS_CANCELLED));
+          $a = $order->save();
+      }
+      $this->redirect($this->getRequest()->getReferer());
+  }  
+  
+  
  /**
   * Executes confirm action
   *

@@ -300,6 +300,17 @@ class Core
 		return $result;
   }
   
+  public function changePassword($coreId,$data){
+      
+        unset($data['id']);
+		if ($response = $this->query('user.update', array('id'=>$coreId), $data)) {
+			$result = $response['id'];
+		}
+        #var_dump($response);
+        #exit();
+		return $result;      
+  }
+  
 
   public function getData($record)
   {
@@ -331,13 +342,14 @@ class Core
     $this->logger->log("Response: ".$response);
     $response = json_decode($response, true);
 
+    var_dump($response);
     if (isset($response['error']))
     {
       $this->error = array($response['error']['code'] => $response['error']['message'], );
       if (isset($response['error']['detail'])) $this->error['detail'] = $response['error']['detail'];
+      if (isset($response['error']['message'])) $this->error['message'] = $response['error']['message'];
       $response = false;
     }
-
     return $response;
   }
 
