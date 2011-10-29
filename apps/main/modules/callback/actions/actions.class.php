@@ -10,7 +10,7 @@
  */
 class callbackActions extends myActions
 {
-     
+
  /**
   * Executes index action
   *
@@ -19,19 +19,19 @@ class callbackActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
 
-    $this->setVar('currentPage', 'callback', true);      
-      
+    $this->setVar('currentPage', 'callback', true);
+
     $this->form = new CallbackForm();
-    
-      
+
+
     #$cart = $this->getUser()->getCart();
     #$this->setVar('cart', $cart, true);
   }
-  
+
     public function executeSend(sfWebRequest $request)
     {
-        
-        $this->setVar('currentPage', 'callback', true);      
+
+        $this->setVar('currentPage', 'callback', true);
 
         $this->form = new CallbackForm();
         $data = $request->getParameter($this->form->getName());
@@ -39,17 +39,17 @@ class callbackActions extends myActions
         $data['email'] = trim($data['email']);
         $data['theme'] = trim($data['theme']);
         $data['text'] = trim($data['text']);
-        
-        #$user = $this->getUser();             
+
+        #$user = $this->getUser();
         #if (isset($user) && $user->getGuardUser() && $user->isAuthenticated()) $userId = $user->getGuardUser()->id;
         #else $userId = 0;
-        
+
 
         //$data['categoty_id'] = 21;
         $this->form->bind($data);
         $this->setTemplate('index');
-        $this->setVar('error', '', true);                          
-        
+        $this->setVar('error', '', true);
+
 
         if ($this->form->isValid())
         {
@@ -57,12 +57,12 @@ class callbackActions extends myActions
             {
                 $this->form->getObject()->setCorePush(false);
                 $result = $this->form->save();
-                #if (!$result) $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
+                #if (!$result) $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
 
-                
+
                 if ($result){
                     //отправляем письмо администратору
-                    
+
                     $letterBody = "
                     Обратная связь на сайте Enter.ru. <br><br>
                     Содержание сообщение:<br>
@@ -74,29 +74,29 @@ class callbackActions extends myActions
                     $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
                     $message = Swift_Message::newInstance( $data['theme'] )
                              ->setFrom(array($data['email'] => $data['name']))
-                             ->setTo(array('esbelousova@maxus.ru' => 'site admin'))
+                             ->setTo(array('feedback@enter.ru' => 'site admin'))
                              ->setBody($letterBody, 'text/html');
-                    $res = $mailer->send($message);   
+                    $res = $mailer->send($message);
                     #var_dump($res);
                     $message = Swift_Message::newInstance( $data['theme'] )
                              ->setFrom(array($data['email'] => $data['name']))
                              ->setTo(array('olga--tru@yandex.ru' => 'site admin'))
                              ->setBody($letterBody, 'text/html');
-                    $res = $mailer->send($message);   
+                    $res = $mailer->send($message);
                     #var_dump($res);
 
                 }
                 else
                 {
-                    $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
+                    $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
                 }
-  
+
                 $this->setTemplate('sendOk');
             }
             catch (Exception $e)
             {
                 //echo $e->getMessage();
-                $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);                          
+                $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
                 $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
                 $this->setTemplate('index');
             }
@@ -106,6 +106,6 @@ class callbackActions extends myActions
             $this->setTemplate('index');
         }
 
-    }  
- 
+    }
+
 }

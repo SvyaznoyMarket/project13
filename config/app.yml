@@ -128,3 +128,10 @@ live:
       api_url: 'http://62.231.27.40/v1/json'
       consumer_key: v6Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
+
+  rediska:
+    default:
+      servers:
+        main:
+          host: site-db
+          persistent: true
