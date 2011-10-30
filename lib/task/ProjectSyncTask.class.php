@@ -109,6 +109,7 @@ EOF;
             $this->logger->log('Unknown model: '."\n".sfYaml::dump($packet, 6));
 
             $this->task->status = 'fail';
+            $this->task->error('Unknown model '.$packet['type']);
             $this->task->save();
           }
         }
@@ -118,6 +119,7 @@ EOF;
           $this->logger->log('Error: packet #'.$params['packet_id']."\n".$e->getMessage());
 
           $this->task->attempt++;
+          $this->task->error($e->getMessage());
           $this->task->save();
         }
 
