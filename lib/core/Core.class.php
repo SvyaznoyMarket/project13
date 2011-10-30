@@ -342,7 +342,7 @@ class Core
     $this->logger->log("Response: ".$response);
     $response = json_decode($response, true);
 
-    var_dump($response);
+    //var_dump($response);
     if (isset($response['error']))
     {
       $this->error = array($response['error']['code'] => $response['error']['message'], );

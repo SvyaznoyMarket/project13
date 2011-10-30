@@ -24,3 +24,4 @@ task:
     with_wildcard_routes: true
     #actions:              [ list, new, create, edit, update, delete ]
     collection_actions:   { init: get }
+    object_actions:       { core: get }
