@@ -18,13 +18,26 @@ class productStockComponents extends myComponents
   public function executeShow()
   {
     $list = array();
-    foreach ($this->product->getShopList() as $shop)
+
+    $values = $this->product->getShopList()->toKeyValueArray('id', 'quantity');
+
+    foreach (ShopTable::getInstance()->getList() as $shop)
     {
-      $list[] = array(
+      $index = $shop->region_id;
+
+      if (!isset($list[$index]))
+      {
+        $list[$index] = array(
+          'name'  => $shop->Region->name,
+          'shops' => array(),
+        );
+      }
+
+      $list[$index]['shops'][] = array(
         'name'     => $shop->name,
         'token'    => $shop->token,
         'url'      => url_for('shop_show', $shop),
-        'quantity' => $shop->quantity,
+        'quantity' => isset($values[$shop->id]) ? $values[$shop->id] : 0,
       );
     }
 
