@@ -290,6 +290,7 @@ class Core
     $data = $callback->getData();
     $data['category_id'] = 21;
     $data['first_name'] = $data['name'];
+    unset($data['user_id']);
     unset($data['name']);
 		if ($response = $this->query('user.callback.create', array(), $data)) {
 			$result = $response['id'];
