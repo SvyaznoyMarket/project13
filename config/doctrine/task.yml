@@ -6,6 +6,7 @@ Task:
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
+    core_packet_id:    { type: integer(20), notnull: false, default: null, comment: 'ид пакета в Core' }
     type:              { type: enum, length: 20, values: ['project.init', 'project.sync', 'project.load'], notnull: false, default: null }
     priority:          { type: integer(4), notnull: true, default: 1, comment: 'Приоритет' }
     status:            { type: enum, length: 10, values: [run, pause, fail, success], notnull: true, default: run }
