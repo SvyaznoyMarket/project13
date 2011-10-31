@@ -19,7 +19,6 @@ $(document).ready(function() {
   })
 
   $('#login-form, #register-form').bind('submit', function(e) {
-    console.info(this);
     e.preventDefault()
 
     var form = $(e.target)
@@ -67,7 +66,8 @@ $(document).ready(function() {
 			if (resp.success == true) {
 
 				$('#reset-pwd-form').hide();
-				$('#reset-pwd-key-form').show();
+				$('#login-form').show();
+				alert('Новый пароль был вам выслан по почте или смс');
 
 			} else {
 				form.find('.error_list').html('Вы ввели неправильные данные');
@@ -77,22 +77,22 @@ $(document).ready(function() {
 		return false;
 	})
 
-	$('#reset-pwd-key-form').submit(function(){
-		var form = $(this);
-		form.find('.error_list').html('');
-		$.post(form.prop('action'), form.serializeArray(), function(resp){
-			if (resp.success == true) {
-
-				$('#reset-pwd-form').hide();
-				$('#reset-pwd-key-form').hide();
-				$('#login-form').show();
-				alert('Новый пароль был вам выслан по почте или смс');
-
-			} else {
-				form.find('.error_list').html('Вы ввели неправильный ключ');
-			}
-		}, 'json');
-
-		return false;
-	})
+//	$('#reset-pwd-key-form').submit(function(){
+//		var form = $(this);
+//		form.find('.error_list').html('');
+//		$.post(form.prop('action'), form.serializeArray(), function(resp){
+//			if (resp.success == true) {
+//
+//				$('#reset-pwd-form').hide();
+//				$('#reset-pwd-key-form').hide();
+//				$('#login-form').show();
+//				alert('Новый пароль был вам выслан по почте или смс');
+//
+//			} else {
+//				form.find('.error_list').html('Вы ввели неправильный ключ');
+//			}
+//		}, 'json');
+//
+//		return false;
+//	})
 })

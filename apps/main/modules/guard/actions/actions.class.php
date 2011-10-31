@@ -143,9 +143,10 @@ class guardActions extends myActions
 			  $user = UserTable::getInstance()->retrieveByPhonenumber($login);
 		  }
 		  if ($user) {
-			  $result = Core::getInstance()->query('user.get-password-token', array('id' => $user->core_id));
+			  //$result = Core::getInstance()->query('user.get-password-token', array('id' => $user->core_id));
+			  $result = Core::getInstance()->query('user.reset-password', array('id' => $user->core_id));
 			  if ($result['confirmed']) {
-				return $this->renderJson(array('success' => true, 'token' => $result['token']));
+				return $this->renderJson(array('success' => true));
 			  }
 		  }
 		  return $this->renderJson(array('success' => false));
@@ -210,10 +211,12 @@ class guardActions extends myActions
  /**
   * Executes changePassword action
   *
+  * @deprecated 27.10.2011
   * @param sfRequest $request A request object
   */
   public function executeResetPassword($request)
   {
+	  throw new Exception('Deprecated');
     if ($request->isXmlHttpRequest()) {
 		$token = $request->getParameter('token');
 		$result = Core::getInstance()->query('user.update-password', array('user_token' => $token));

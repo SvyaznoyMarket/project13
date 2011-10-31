@@ -3,6 +3,7 @@
 class ProjectSyncTask extends sfBaseTask
 {
   protected
+    $core = null,
     $logger = null
   ;
 
@@ -15,7 +16,7 @@ class ProjectSyncTask extends sfBaseTask
 
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'core'),
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev_green'),
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('dump', null, sfCommandOption::PARAMETER_NONE, 'Only dump response'),
       new sfCommandOption('log', null, sfCommandOption::PARAMETER_NONE, 'Enable logging'),
@@ -37,11 +38,13 @@ EOF;
 
   protected function execute($arguments = array(), $options = array())
   {
-    sfConfig::set('sf_logging_enabled', true/*$options['log']*/);
+    sfConfig::set('sf_logging_enabled', $options['log']);
 
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
+
+    $this->core = Core::getInstance();
 
     // add your code here
     $this->task = TaskTable::getInstance()->find($arguments['task_id']);
@@ -57,10 +60,9 @@ EOF;
     }
 
     // add your code here
-    $core = Core::getInstance();
 
     $this->logSection('core', 'loading packet #'.$params['packet_id']);
-    $response = $core->query('sync.get', array(
+    $response = $this->core->query('sync.get', array(
       'id' => $params['packet_id'],
     ));
     ////$response = json_decode(file_get_contents(sfConfig::get('sf_data_dir').'/core/product.json'), true);
@@ -90,57 +92,21 @@ EOF;
     {
       foreach ($item['data'] as $packet)
       {
-        $action = $core->getActions($packet['operation']);
+        $action = $this->core->getActions($packet['operation']);
 
         try
         {
           $method = 'process'.ucfirst($packet['type']).'Entity';
-          if (method_exists($this, $method)) {
-            call_user_func_array(array($this, $method), array($action, $packet));
-          }
-          else if ($table = $core->getTable($packet['type']))
-          {
-            $entity = $packet['data'];
-            $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
-            //myDebug::dump($entity);
+          $method = method_exists($this, $method) ? $method : 'processDefaultEntity';
 
-            $record = $table->getByCoreId($entity['id']);
-
-            // если действие "создать", но запись с таким core_id уже существует
-            if ($record && ('create' == $action))
-            {
-              $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} #{$record->id} already exists. Force update...", null, 'INFO');
-            }
-            // если действие "обновить", но запись с таким core_id не существует
-            if (!$record && ('update' == $action))
-            {
-              $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Force create...", null, 'INFO');
-            }
-            // если действие "удалить", но запись с таким core_id не существует
-            if (!$record && ('delete' == $action))
-            {
-              $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Skip...", null, 'INFO');
-            }
-
-            if (!$record)
-            {
-              $record = $table->create();
-            }
-
-            $record->importFromCore($entity);
-            $record->setCorePush(false);
-            //myDebug::dump($entity);
-            //myDebug::dump($record);
-
-            $this->processRecord($action, $record);
+          if (call_user_func_array(array($this, $method), array($action, $packet))) {
 
             $this->task->status = 'success';
             $this->task->save();
           }
-          // model doesn't exists
+          // model doesn't exists or other error
           else {
-            $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: model doesn't exist. Skip...", null, 'ERROR');
-            $this->logger->log('Unknown entity: '.$packet['type']."\n".sfYaml::dump($packet, 6));
+            $this->logger->log('Unknown model: '."\n".sfYaml::dump($packet, 6));
 
             $this->task->status = 'fail';
             $this->task->save();
@@ -149,7 +115,7 @@ EOF;
         catch (Exception $e)
         {
           $this->logSection($packet['type'], ucfirst($action).' entity #'.$entity['id'].' error: '.$e->getMessage(), null, 'ERROR');
-          $this->logger->log('Error: '.$e->getMessage());
+          $this->logger->log('Error: packet #'.$params['packet_id']."\n".$e->getMessage());
 
           $this->task->attempt++;
           $this->task->save();
@@ -165,7 +131,7 @@ EOF;
   {
     if (!$record instanceof myDoctrineRecord)
     {
-      $return;
+      return;
     }
 
     if (('create' == $action) || ('update' == $action))
@@ -184,22 +150,99 @@ EOF;
     }
   }
 
-  protected function processUploadEntity($action, $data)
+
+
+  /**
+   *
+   * @param string $action
+   * @param array $packet
+   * @return boolean Success result
+   */
+  protected function processDefaultEntity($action, $packet)
   {
+    $entity = $packet['data'];
+
+    $table = $this->core->getTable($packet['type']);
+    if (!$table)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} #{$entity['id']}: model doesn't exist. Skip...", null, 'ERROR');
+      $this->logger->log('Unknown entity: '.$packet['type']."\n".sfYaml::dump($packet, 6));
+
+      return false;
+    }
+
+    $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
+    //myDebug::dump($entity);
+
+    $record = $table->getByCoreId($entity['id']);
+
+    // если действие "создать", но запись с таким core_id уже существует
+    if (('create' == $action) && $record)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} #{$record->id} already exists. Force update...", null, 'INFO');
+    }
+    // если действие "обновить", но запись с таким core_id не существует
+    if (('update' == $action) && !$record)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Force create...", null, 'INFO');
+    }
+    // если действие "удалить", но запись с таким core_id не существует
+    if (('delete' == $action) && !$record)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Skip...", null, 'INFO');
+    }
+
+    if (!$record)
+    {
+      $record = $table->create();
+    }
+
+    $record->importFromCore($entity);
+    $record->setCorePush(false);
+    //myDebug::dump($entity);
+    //myDebug::dump($record);
+
+    $this->processRecord($action, $record);
+
+    return true;
+  }
+
+  /**
+   *
+   * @param string $action
+   * @param array $packet
+   * @return boolean Success result
+   */
+  protected function processUploadEntity($action, $packet)
+  {
+    $entity = $packet['data'];
+
     $record = false;
-    switch ($data['item_type_id'])
+    switch ($entity['item_type_id'])
     {
       case 1:
-        switch ($data['type_id'])
+        switch ($entity['type_id'])
         {
           case 1:
-            $record = ProductPhotoTable::getInstance()->createRecordFromCore($data);
-            $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
+            $table = ProductPhotoTable::getInstance();
+            $record = $table->getByCoreId($entity['id']);
+            if (!$record)
+            {
+              $record = $table->createRecordFromCore($entity);
+            }
+
+            $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             $record->view_show = 1;
             break;
           case 2:
-            $record = ProductPhoto3DTable::getInstance()->createRecordFromCore($data);
-            $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
+            $table = ProductPhoto3DTable::getInstance();
+            $record = $table->getByCoreId($entity['id']);
+            if (!$record)
+            {
+              $record = $table->createRecordFromCore($entity);
+            }
+
+            $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             break;
         }
         break;
@@ -214,5 +257,7 @@ EOF;
     }
 
     $this->processRecord($action, $record);
+
+    return true;
   }
 }

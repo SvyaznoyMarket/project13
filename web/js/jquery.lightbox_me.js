@@ -7,7 +7,7 @@
 /*
 * $ lightbox_me
 * By: Buck Wilson
-* Version : 2.2
+* Version : 2.2 + fix by ivn
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -35,11 +35,11 @@
                 $self = $(this),
                 $iframe = $('iframe#lb_iframe'),
                 ie6 = ($.browser.msie && $.browser.version < 7);
-            
+
             if ($overlay.length > 0) {
                 $overlay[0].removeModal(); // if the overlay exists, then a modal probably exists. Ditch it!
             } else {
-                $overlay =  $('<div class="' + opts.classPrefix + '_overlay" style="display:none;"/>'); // otherwise just create an all new overlay. 
+                $overlay =  $('<div class="' + opts.classPrefix + '_overlay" style="display:none;"/>'); // otherwise just create an all new overlay.
             }
 
             $iframe = ($iframe.length > 0) ? $iframe : $iframe = $('<iframe id="lb_iframe" style="z-index: ' + (opts.zIndex + 1) + '; display: none; border: none; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0;"/>');
@@ -52,21 +52,29 @@
                 $iframe.attr('src', src);
                 $('body').append($iframe);
             } // iframe shim for ie6, to hide select elements
-            $('body').append($self).append($overlay);
+            if( opts.reallyBig ) {
+            	$('body').append( $('<div>').addClass('bPopupWrap').append($self) ).append($overlay)
+            } else {
+            	$('body').append($self).append($overlay)
+            }
 
             /*----------------------------------------------------
                CSS stuffs
             ---------------------------------------------------- */
 
             // set css of the modal'd window
-
-            setSelfPosition();
-            $self.css({left: '50%', marginLeft: ($self.outerWidth() / 2) * -1,  zIndex: (opts.zIndex + 3) });
-
+			if( opts.reallyBig ) { // fix for mediaLibrary by IVN
+				$self.css({marginLeft: '50px', marginRight:  '50px' });
+				setWrapPosition( $self.parent() );
+			} else {
+            	setSelfPosition();
+            	$self.css({left: '50%', marginLeft: ($self.outerWidth() / 2) * -1,  zIndex: (opts.zIndex + 3) });
+			}
             // set css of the overlay
 
             setOverlayHeight(); // pulled this into a function because it is called on window resize.
-            $overlay.css({ position: 'absolute', width: '100%', top: 0, left: 0, right: 0, bottom: 0, zIndex: (opts.zIndex + 2) })
+            //IVN $overlay.css({ position: 'absolute', width: '100%', top: 0, left: 0, right: 0, bottom: 0, zIndex: (opts.zIndex + 2) })
+            $overlay.css({ position: 'fixed', width: '100%', height:'100%', top: 0, left: 0, zIndex: (opts.zIndex + 2) })
                     .css(opts.overlayCSS);
 
             /*----------------------------------------------------
@@ -86,17 +94,16 @@
             ---------------------------------------------------- */
 
             $(window).resize(setOverlayHeight)
-                     .resize(setSelfPosition)
-                     .resize(function(){ $self.css({left: '50%', marginLeft: ($self.outerWidth() / 2) * -1,  zIndex: (opts.zIndex + 3) }); })
-                     .scroll(setSelfPosition)
+                     .resize( function(){ ( opts.reallyBig ) ? setWrapPosition( $self.parent() ) : setSelfPosition() })//IVN
+                     .scroll( function(){ if ( !opts.reallyBig ) setSelfPosition() })//IVN
                      .keydown(observeEscapePress);
-                     
+
             $self.find(opts.closeSelector).click(function() { removeModal(true); return false; });
             $overlay.click(function() { if(opts.closeClick){ removeModal(true); return false;} });
 
-            
-            $self.bind('close', function() { removeModal(true) });
-            $self.bind('resize', setSelfPosition);
+
+            $self.bind('close.lme', function() { removeModal(true) });
+            $self.bind('resize.lme', function(){ ( opts.reallyBig ) ? setWrapPosition( $self.parent() ) : setSelfPosition() });//IVN
             $overlay[0].removeModal = removeModal;
 
             /*----------------------------------------------------------------------------------------------------------------------------------------
@@ -110,25 +117,26 @@
             function removeModal(removeO) {
                 // fades & removes modal, then unbinds events
                 $self[opts.disappearEffect](opts.lightboxDisappearSpeed, function() {
-                    
+
                     if (removeO) {
-                      removeOverlay();  
-                    } 
-                    
+                      removeOverlay();
+                    }
+
                     opts.destroyOnClose ? $self.remove() : $self.hide()
-                    
-                    
+                    if( opts.reallyBig ) { $('.bPopupWrap').remove() }
+
                     $self.find(opts.closeSelector).unbind('click');
-                    $self.unbind('close');
-                    $self.unbind('resize');
+                    $self.unbind('.lme');//IVN
+                    //$self.unbind('close');
+                    //$self.unbind('resize');
                     $(window).unbind('scroll', setSelfPosition);
                     $(window).unbind('resize', setSelfPosition);
-                    
-                    
+
+
                 });
             }
-            
-            
+
+
             function removeOverlay() {
                 // fades & removes overlay, then unbinds events
                 $overlay.fadeOut(opts.overlayDisappearSpeed, function() {
@@ -136,13 +144,13 @@
 
                     $overlay.remove();
                     $overlay.unbind('click');
-                    
-                    
+
+
                     opts.onClose();
 
                 })
             }
-            
+
 
 
             /* Function to bind to the window to observe the escape key press */
@@ -167,6 +175,16 @@
                     : if $self is taller than the window, then make it absolutely positioned
                     : otherwise fixed
             */
+            function setWrapPosition( $node ) {//IVN
+            	var s = $node[0].style;
+            	//var topOffset = $(document).scrollTop() + 40;
+            	var topOffset = document.documentElement.scrollTop + 40;
+				$node.css({position: 'absolute', top: topOffset + 'px', marginTop: 0})
+				if (ie6) {
+					s.removeExpression('top');
+				}
+            }
+
             function setSelfPosition() {
                 var s = $self[0].style;
 
@@ -205,7 +223,7 @@
         appearEffect: "fadeIn",
         overlaySpeed: 300,
         lightboxSpeed: "fast",
-        
+
         // animation when dissapears
         disappearEffect: "fadeOut",
         overlayDisappearSpeed: 300,

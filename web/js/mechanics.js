@@ -356,7 +356,8 @@ function DDforLB( outer , ltbx ) {
 	var icon = $('<div>')
 	divicon.append( icon )
 	$(outer).append( divicon )
-	var shtorka = $('<div>').addClass('graying').css('display','none')							
+	var shtorka = $('<div>').addClass('graying')
+			.css( {'display':'none', 'opacity': '0.5'} ) //ie special							
 	$(outer).append( shtorka )
 	var shtorkaoffset = 0
 	
@@ -367,6 +368,7 @@ function DDforLB( outer , ltbx ) {
 	this.prepare = function( pageX, pageY, item ) {
 		itemdata = item
 		$(document).bind('mousemove', function(e) {
+			e.preventDefault()
 			if(! isactive) {
 				if( Math.abs(pageX - e.pageX) > margin || Math.abs(pageY - e.pageY) > margin ) {
 					self.turnon(e.pageX, e.pageY)
@@ -396,7 +398,7 @@ function DDforLB( outer , ltbx ) {
 		lightbox.clear()
 		shtorka.show()
 		shtorkaoffset = shtorka.offset().top
-		icon.html( $('<img>').attr({'width':60, 'height':60, 'alt':'', 'src': itemdata.img }) )
+		icon.html( $('<img>').css({'width':60, 'height':60}).attr({'width':60, 'height':60, 'alt':'', 'src': itemdata.img }) )
 		icon.css({'left':pageX - wdiv2, 'top':pageY - shtorkaoffset - wdiv2 })
 
 		divicon.show()
@@ -483,7 +485,8 @@ function mediaLib( jn ) {
 				onClose: function() {
 						self.close() 
 						vis = false
-					}
+					},
+				reallyBig: true	
 			})
 			vis = true
 		} else { // toggle
