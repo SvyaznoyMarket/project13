@@ -337,7 +337,9 @@ ProductRatingType:
 ProductRatingTypeProperty:
   options:
     comment: 'Свойства типа рейтинга товара'
-  actAs: [ Timestampable, Corable ]
+  actAs:
+    Timestampable: ~
+    Corable:       ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     type_id:           { type: integer(20), notnull: true }
@@ -351,6 +353,7 @@ ProductPriceList:
   options:
     comment: 'Прайс-листы'
   actAs:
+    #Timestampable: ~
     Corable: { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
@@ -361,6 +364,9 @@ ProductPriceList:
 ProductPrice:
   options:
     comment: 'Цены товаров по прайс-листам'
+  actAs:
+    #Timestampable: ~
+    Corable: { push: disable }
   columns:
     id:                     { type: integer(20), autoincrement: true, primary: true }
     product_price_list_id:  { type: integer(20), notnull: true }
