@@ -65,5 +65,6 @@ function isDaemonActive($pid_file)
 
 function execute()
 {
-  shell_exec('cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run --speed=1 >> log/cron.log');
+  //shell_exec('cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run --speed=1 >> log/cron.log');
+  shell_exec('cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run --speed=1');
 }
