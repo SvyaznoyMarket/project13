@@ -21,7 +21,7 @@ $(document).ready(function(){
 	}
 	
 	$.ajaxSetup({
-		timeout: 5000,
+		timeout: 7000,
 		statusCode: {
 			404: function() {
 				errorpopup(' 404 ошибка, страница не найдена')
@@ -120,12 +120,12 @@ $(document).ready(function(){
 		})
 		to.change( function(){
 			to.val( to.val().replace(/\D/g,'') )
+			if( ! parseFloat(to.val()) )
+				to.val(10)
 			if( parseFloat(to.val()) < parseFloat(from.val()) ) {				
 				$( "#slider-range1" ).slider( "values", 0 , to.val()*1- 10 )
 				from.val( to.val()*1 - 10 )
-			} 
-			if( ! parseFloat(to.val()) )
-				to.val(10)
+			} 			
 			$( "#slider-range1" ).slider( "values", 1 , to.val() )
 		})
 
