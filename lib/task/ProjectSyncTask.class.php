@@ -136,7 +136,6 @@ EOF;
       return;
     }
 
-    myDebug::dump($record, 1);
     if (('create' == $action) || ('update' == $action))
     {
       $record->replace(); //$record->save();
