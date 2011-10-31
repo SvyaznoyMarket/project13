@@ -43,6 +43,7 @@ class callbackActions extends myActions
         else $data['theme'] = '';
         if (isset($data['text'])) $data['text'] = trim($data['text']);
         else $data['text'] = '';
+        
 
         #$user = $this->getUser();
         #if (isset($user) && $user->getGuardUser() && $user->isAuthenticated()) $userId = $user->getGuardUser()->id;
@@ -59,11 +60,11 @@ class callbackActions extends myActions
         {
             try
             {
-                $this->form->getObject()->setCorePush(false);
+                #$this->form->getObject()->setCorePush(false);
                 $result = $this->form->save();
-                #if (!$result) $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
+                if (!$result) $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
 
-
+                /*
                 if ($result){
                     //отправляем письмо администратору
 
@@ -94,6 +95,8 @@ class callbackActions extends myActions
                 {
                     $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
                 }
+                 * 
+                 */
 
                 $this->setTemplate('sendOk');
             }
