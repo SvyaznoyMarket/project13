@@ -35,7 +35,7 @@ class callbackActions extends myActions
 
         $this->form = new CallbackForm();
         $data = $request->getParameter($this->form->getName());
-        /*
+        
         if (isset($data['name'])) $data['name'] = trim($data['name']);
         else $data['name'] = '';
         if (isset($data['email'])) $data['email'] = trim($data['email']);
@@ -43,7 +43,7 @@ class callbackActions extends myActions
         if (isset($data['theme'])) $data['theme'] = trim($data['theme']);
         else $data['theme'] = '';
         if (isset($data['text'])) $data['text'] = trim($data['text']);
-        else $data['text'] = '';*/
+        else $data['text'] = '';
         
 
         #$user = $this->getUser();
@@ -51,7 +51,6 @@ class callbackActions extends myActions
         #else $userId = 0;
 
 
-        //$data['categoty_id'] = 21;
         $this->form->bind($data);
         $this->setTemplate('index');
         $this->setVar('error', '', true);                          
