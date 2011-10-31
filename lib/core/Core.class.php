@@ -299,13 +299,14 @@ class Core
 
   public function changePassword($coreId,$data){
 
-        unset($data['id']);
+    unset($data['id']);
 		if ($response = $this->query('user.update', array('id'=>$coreId), $data)) {
 			$result = $response['id'];
-		}
-        #var_dump($response);
-        #exit();
-		return $result;
+      return $result;
+    }
+    else{
+      return false;
+    }
   }
 
 

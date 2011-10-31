@@ -12,6 +12,8 @@ class UserFormChangePassword extends BaseUserForm
 {
   public function configure()
   {
+    $this->disableCSRFProtection();
+      
     $this->useFields(array('password'));
 
     $this->widgetSchema['password'] = new sfWidgetFormInputPassword(array(), array(

@@ -56,7 +56,7 @@ class orderComponents extends myComponents
   */
   public function executeList()
   {
-    $list = array();
+    $list = $listProcess = $listReady = $listCancelled = array();
     foreach ($this->getUser()->getGuardUser()->getOrderList() as $order)
     {    
       if ($order->status_id==Order::STATUS_READY)  $listReady[] = $order;
