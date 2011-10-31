@@ -28,7 +28,7 @@ class userActions extends myActions
                 'routes' => array('user'),
               ),
 //              array(
-//                'name'   => 'Адрес доставки',
+//                'name'   => 'Мои адреса доставки',
 //                'url'    => '@userAddress',
 //                'routes' => array('@userAddress'),
 //              ),
@@ -38,7 +38,7 @@ class userActions extends myActions
                 'routes' => array('user_edit'),
               ),
               array(
-                'name'   => 'Пароль',
+                'name'   => 'Изменить пароль',
                 'url'    => '@user_changePassword',
                 'routes' => array('user_changePassword'),
               ),
@@ -48,7 +48,7 @@ class userActions extends myActions
           'title' => 'Мои заказы',
           'list' => array(
               array(
-                'name'   => 'Заказы',
+                'name'   => 'Мои заказы',
                 'url'    => '@user_orders',
                 'routes' => array('@user_orders', '@user_orders'),
               ),              

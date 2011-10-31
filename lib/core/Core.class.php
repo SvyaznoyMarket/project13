@@ -305,10 +305,13 @@ class Core
         unset($data['id']);
 		if ($response = $this->query('user.update', array('id'=>$coreId), $data)) {
 			$result = $response['id'];
+    		return $result;      
 		}
+        else{
+            return false;
+        }
         #var_dump($response);
         #exit();
-		return $result;      
   }
   
 
@@ -342,7 +345,6 @@ class Core
     $this->logger->log("Response: ".$response);
     $response = json_decode($response, true);
 
-    var_dump($response);
     if (isset($response['error']))
     {
       $this->error = array($response['error']['code'] => $response['error']['message'], );
