@@ -32,7 +32,7 @@ class TaskTable extends myDoctrineTable
 
     $q = $this->createQuery('task');
 
-    $q->orderBy('priority ASC, created_at ASC');
+    $q->orderBy('priority ASC, core_packet_id ASC, created_at ASC');
 
     return $q;
   }
@@ -114,5 +114,14 @@ class TaskTable extends myDoctrineTable
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
       ->fetchOne()
     ;
+  }
+
+  public function retrieveAdminList(Doctrine_Query $q)
+  {
+    $alias = $q->getRootAlias();
+
+    $q->orderBy("{$alias}.priority ASC");
+
+    return $q;
   }
 }
