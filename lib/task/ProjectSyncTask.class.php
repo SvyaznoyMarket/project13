@@ -109,6 +109,7 @@ EOF;
             $this->logger->log('Unknown model: '."\n".sfYaml::dump($packet, 6));
 
             $this->task->status = 'fail';
+            $this->task->error('Unknown model '.$packet['type']);
             $this->task->save();
           }
         }
@@ -118,6 +119,7 @@ EOF;
           $this->logger->log('Error: packet #'.$params['packet_id']."\n".$e->getMessage());
 
           $this->task->attempt++;
+          $this->task->error = $e->getMessage();
           $this->task->save();
         }
 
@@ -134,9 +136,30 @@ EOF;
       return;
     }
 
+    myDebug::dump($record, 1);
     if (('create' == $action) || ('update' == $action))
     {
       $record->replace(); //$record->save();
+
+      // проверка родителя
+      if (!empty ($record->core_parent_id) && $record->getTable()->hasTemplate('NestedSet'))
+      {
+        $modified = $record->getLastModified();
+        if (isset($modified['core_lft']) || isset($modified['core_rgt']))
+        {
+          $parent = $record->getTable()->getIdByCoreId($record->core_parent_id);
+          if ($parent->id != $record->getNode()->getParent()->id)
+          {
+            $record->getNode()->moveAsFirstChildOf($parent);
+          }
+
+          $prevSibling = $record->getTable()->getIdByCoreId($record->core_lft);
+          if ($prevSibling && ($prevSibling->id != $parent->id))
+          {
+            $record->getNode()->moveAsPrevSiblingOf($prevSibling);
+          }
+        }
+      }
     }
     else if ('delete' == $action)
     {

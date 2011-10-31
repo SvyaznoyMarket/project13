@@ -44,6 +44,7 @@ class productComponents extends myComponents
     if ('default' == $this->view)
     {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
+      $item['stock_url'] = url_for('productStock', $this->product);
     }
     if (in_array($this->view, array('expanded')))
     {

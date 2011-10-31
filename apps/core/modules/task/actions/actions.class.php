@@ -46,6 +46,37 @@ class taskActions extends autoTaskActions
 
     $this->redirect('homepage');
   }
+ /**
+  * Executes core action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeCore(sfWebRequest $request)
+  {
+    $this->task = $this->getRoute()->getObject();
+    
+    $response = false;
+    $query = false;
+    if ('project.sync' == $this->task->type)
+    {
+      $query = array(
+        'name'  => 'sync.get',
+        'param' => array(
+          'id' => $this->task->getContentData('packet_id'),
+        ),
+      );
+    }
+    
+    if ($query)
+    {
+      $response = $this->getCore()->query($query['name'], $query['param']);
+    }
+    
+    $this->setVar('response', is_array($response) ? sfYaml::dump($response, 6) : $response, true);
+    $this->setVar('query', is_array($query) ? sfYaml::dump($query) : $query, true);
+  }
+
+
 
   protected function getCore()
   {

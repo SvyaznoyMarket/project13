@@ -16,7 +16,7 @@ class UserFormQuickRegister extends BaseUserForm
 
     $this->widgetSchema['username'] = new sfWidgetFormInputText();
     $this->widgetSchema['username']->setLabel('Логин');
-    $this->validatorSchema['username'] = new sfValidatorEmail(array('max_length' => 100));
+    $this->validatorSchema['username'] = new sfValidatorString(array('max_length' => 128));
 
     $this->useFields(array(
       'username',
