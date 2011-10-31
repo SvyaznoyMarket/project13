@@ -24,11 +24,8 @@ class ProductCategory extends BaseProductCategory
       'productCategory' => $this->token,
     );
   }
-  
-  /**
-   *
-   * @return ProductCategory 
-   */
+
+  // TODO: переименовать в getRootRecord
   public function getRootRow()
   {
 	  if ($this->level == 0) {
@@ -45,6 +42,8 @@ class ProductCategory extends BaseProductCategory
     parent::importFromCore($data);
 
     $this->product_id = ProductTable::getInstance()->getIdByCoreId($data['product_id']);
+
+
   }
 
   public function countProduct()
@@ -120,6 +119,7 @@ class ProductCategory extends BaseProductCategory
   }
 
 
+  // TODO: удалить, роутинг для чего нужен?
   public function getUrl(){
       return '/catalog/' . $this->token;
   }

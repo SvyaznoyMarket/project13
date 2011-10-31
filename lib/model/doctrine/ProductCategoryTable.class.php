@@ -23,6 +23,8 @@ class ProductCategoryTable extends myDoctrineTable
     return array(
       'id'          => 'core_id',
       'parent_id'   => 'core_parent_id',
+      'lft'         => 'core_lft',
+      'rgt'         => 'core_rgt',
       'name'        => 'name',
       'is_active'   => 'is_active',
       'media_image' => 'photo',

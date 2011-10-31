@@ -46,6 +46,8 @@ ProductCategory:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     core_parent_id:    { type: integer(20), notnull: false, default: null, comment: 'ид родителя записи в Core' }
+    core_lft:          { type: integer(20), notnull: false, default: null, comment: 'lft записи в Core' }
+    core_rgt:          { type: integer(20), notnull: false, default: null, comment: 'rgt записи в Core' }
     root_id:           { type: integer(20), notnull: false, default: null }
     lft:               { type: integer(20), notnull: false, default: null }
     rgt:               { type: integer(20), notnull: false, default: null }
