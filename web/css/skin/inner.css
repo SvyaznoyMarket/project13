@@ -895,7 +895,7 @@ box-shadow:0 0 7px #616161;
 .photobox IMG {position:relative}
 .scrollbox {display:none; position:absolute; z-index:10; bottom:0; left:50%; width:354px; height:71px; margin-left:-183px; background:url(/css/skin/img/podlogka.png) no-repeat 0 0}
 .scrollbox DIV {width:176px; height:54px; margin:10px 0 0 94px; position:relative}
-.scrollbox DIV B {position:absolute; display:block; width:26px; height:26px; background:url(/css/skin/img/bg.png) no-repeat -168px -102px; cursor:pointer}
+.scrollbox DIV B {position:absolute; top:28px; left:110px;display:block; width:26px; height:26px; background:url(/css/skin/img/bg.png) no-repeat -168px -102px; cursor:pointer}
 
 .videoview {margin:0 26px 0 220px; padding-top:30px; height:694px; position:relative}
 .videoview .zoom {margin:0}
