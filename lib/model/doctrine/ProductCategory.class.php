@@ -25,15 +25,18 @@ class ProductCategory extends BaseProductCategory
     );
   }
 
-  // TODO: переименовать в getRootRecord
-  public function getRootRow()
+  public function getRootCategory()
   {
 	  if ($this->level == 0) {
 		  return $this;
 	  }
+
 	  $q = $this->getTable()->createBaseQuery();
-	  $q->andWhere('productCategory.root_id = ?', $this->root_id);
-	  $q->andWhere('productCategory.level = ?', 0);
+
+	  $q->andWhere('productCategory.root_id = ?', $this->root_id)
+	    ->andWhere('productCategory.level = ?', 0)
+    ;
+
 	  return $q->fetchOne();
   }
 

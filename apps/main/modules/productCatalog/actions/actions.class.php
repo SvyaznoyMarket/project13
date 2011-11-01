@@ -140,21 +140,19 @@ class productCatalogActions extends myActions
   public function executeCategory(sfWebRequest $request)
   {
     $this->productCategory = $this->getRoute()->getObject();
-	
-	$title = $this->productCategory['name'];
-	if ($request->getParameter('page')) {
-		$title .= ' – '.$request->getParameter('page');
-	}
-	$rootCat = $this->productCategory->getRootRow();
-	if ($rootCat->id !== $this->productCategory->id) {
-		$title .= ' – '.$rootCat;
-	}
-	$this->getResponse()->setTitle($title.' – Enter.ru');
 
-    //myDebug::dump($this->productCategory, 1); Текущая_категория – Номер_страницы(если есть) – Бизнес_юнит – Enter.ru
+    $title = $this->productCategory['name'];
+    if ($request->getParameter('page')) {
+      $title .= ' – '.$request->getParameter('page');
+    }
+    $rootCategory = $this->productCategory->getRootCategory();
+    if ($rootCategory->id !== $this->productCategory->id) {
+      $title .= ' – '.$rootCategory;
+    }
+    $this->getResponse()->setTitle($title.' – Enter.ru');
 
     if (false
-      || !$this->productCategory->getNode()->hasChildren()                //нет дочерних категорий
+      || !$this->productCategory->getNode()->hasChildren()                  //нет дочерних категорий
       //|| (1 == $this->productCategory->getNode()->getChildren()->count()) // одна дочерняя категория
     ) {
       $this->forward($this->getModuleName(), 'product');
@@ -174,14 +172,14 @@ class productCatalogActions extends myActions
   public function executeProduct(sfWebRequest $request)
   {
     $this->productCategory = $this->getRoute()->getObject();
-	
+
 	$title = $this->productCategory['name'];
 	if ($request->getParameter('page')) {
 		$title .= ' – '.$request->getParameter('page');
 	}
-	$rootCat = $this->productCategory->getRootRow();
-	if ($rootCat->id !== $this->productCategory->id) {
-		$title .= ' – '.$rootCat;
+	$rootCategory = $this->productCategory->getRootCategory();
+	if ($rootCategory->id !== $this->productCategory->id) {
+		$title .= ' – '.$rootCategory;
 	}
 	$this->getResponse()->setTitle($title.' – Enter.ru');
 
