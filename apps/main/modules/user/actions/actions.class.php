@@ -17,23 +17,26 @@ class userActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+          
     //пункты для главной страницы личного кабинета
     $list = array(
       array(
-          'title' => 'Персональные данные',
+          'title' => 'Моя пресональная информация',
           'list' => array(
+              /*
               array(
                 'name'   => 'Личный кабинет',
                 'url'    => '@user',
                 'routes' => array('user'),
               ),
+               */
 //              array(
 //                'name'   => 'Мои адреса доставки',
 //                'url'    => '@userAddress',
 //                'routes' => array('@userAddress'),
 //              ),
               array(
-                'name'   => 'Редактирование профиля',
+                'name'   => 'Изменить мои данные',
                 'url'    => '@user_edit',
                 'routes' => array('user_edit'),
               ),
@@ -44,11 +47,13 @@ class userActions extends myActions
               ),
           )
       ),
+
       array(
-          'title' => 'Мои заказы',
+          'title' => 'Мои товары',
           'list' => array(
               array(
                 'name'   => 'Мои заказы',
+                'num' => count($this->getUser()->getGuardUser()->getOrderList()),
                 'url'    => '@user_orders',
                 'routes' => array('@user_orders', '@user_orders'),
               ),              
