@@ -25,6 +25,8 @@ ProductPropertyOption:
   - product_option
 ProductType:
   - product_type
+ProductLine:
+  - product_line
 Region:
   - geo
   - GEOs
