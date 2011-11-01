@@ -257,7 +257,8 @@ EOF;
               $record = $table->createRecordFromCore($entity);
             }
 
-            $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
+            $record->importFromCore($entity);
+            //$record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             $record->view_show = 1;
             break;
           case 2:
@@ -268,7 +269,8 @@ EOF;
               $record = $table->createRecordFromCore($entity);
             }
 
-            $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
+            $record->importFromCore($entity);
+            //$record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             break;
         }
         break;

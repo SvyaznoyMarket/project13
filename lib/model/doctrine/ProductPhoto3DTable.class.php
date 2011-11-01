@@ -20,12 +20,13 @@ class ProductPhoto3DTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'           => 'core_id',
-      'name'         => 'name',
-      'source'       => 'resource',
+      'id'      => 'core_id',
+      'name'    => 'name',
+      'source'  => 'resource',
+      'item_id' => array('rel' => 'Product', ),
     );
   }
-  
+
   public function getByProduct(Product $product)
   {
 	  $q = $this->createBaseQuery()->where('product_id = ?', $product->id);
