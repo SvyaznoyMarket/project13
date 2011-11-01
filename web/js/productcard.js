@@ -12,15 +12,15 @@ $(document).ready(function(){
 	
 	//var lkmv = null
 	var api = {
-		'makeLite' : 'turnlite',
-		'makeFull' : 'turnfull',
-		'loadbar'  : 'percents',
-		'zoomer'   : 'bigpopup .scale',
+		'makeLite' : '#turnlite',
+		'makeFull' : '#turnfull',
+		'loadbar'  : '#percents',
+		'zoomer'   : '#bigpopup .scale',
 		'rollindex': '.scrollbox div b',
-		'propriate': ['versioncontrol','scrollbox']
+		'propriate': ['.versioncontrol','.scrollbox']
 	}
 	
-	lkmv = new likemovie('photobox', api, product_3d_small, product_3d_big )
+	lkmv = new likemovie('#photobox', api, product_3d_small, product_3d_big )
 	var mLib = new mediaLib( $('#bigpopup') )	
 
 	$('.viewme').click( function(){

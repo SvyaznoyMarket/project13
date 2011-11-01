@@ -42,7 +42,7 @@ function likemovie( nodename , apinodes, s, b) {
 	
 	this.mode    = 'slow'		
 	this.initres = vzooms[0]
-	this.mvblock = $('#' + nodename)	
+	this.mvblock = $(nodename)	
 
 
 	var frontier    = null
@@ -65,7 +65,7 @@ function likemovie( nodename , apinodes, s, b) {
 
 	this.api = function() {
 		if( apinodes.zoomer ) 
-			zoo   = $('#' + apinodes.zoomer)
+			zoo   = $(apinodes.zoomer)
 		loader = new loadbar
 		loader.create(  apinodes.loadbar ? apinodes.loadbar : 0)
 		this.makeLite() // includes this.makeFull()		
@@ -81,27 +81,27 @@ function likemovie( nodename , apinodes, s, b) {
 			return false
 		for(var i in apinodes.propriate ) 
 			if ( tmptgl )
-				$( '.'+apinodes.propriate[i] ).show()
+				$( apinodes.propriate[i] ).show()
 			else 
-				$( '.'+apinodes.propriate[i] ).hide()
+				$( apinodes.propriate[i] ).hide()
 		tmptgl = ! tmptgl		
 	}
 	
 	this.hideVersions = function() {
 		if( apinodes && apinodes.makeLite )
-			$('#'+apinodes.makeLite).hide()
+			$(apinodes.makeLite).hide()
 		if( apinodes && apinodes.makeFull )
-			$('#'+apinodes.makeFull).hide()	
+			$(apinodes.makeFull).hide()	
 	}
 	
 	
 	this.makeLite = function() {
 		var mlnode = null
 		if( apinodes && apinodes.makeLite )
-			mlnode = $('#'+apinodes.makeLite)
+			mlnode = $(apinodes.makeLite)
 		else {
 			mlnode = $('<div>').attr('id','ml').html('make lite').appendTo('body')
-			apinodes.makeLite = 'ml'
+			apinodes.makeLite = '#ml'
 		}	
 		mlnode.css('cursor','pointer')
 			  .bind({
@@ -117,10 +117,10 @@ function likemovie( nodename , apinodes, s, b) {
 	this.makeFull = function() {
 		var mfnode = null
 		if( apinodes && apinodes.makeFull )
-			mfnode = $('#'+apinodes.makeFull)
+			mfnode = $(apinodes.makeFull)
 		else {
 			mfnode = $('<div>').attr('id','mf').html('make full').appendTo('body')
-			apinodes.makeFull = 'mf'
+			apinodes.makeFull = '#mf'
 		}	
 		mfnode.css('cursor','pointer')
 			  .show()
@@ -653,7 +653,7 @@ function loadbar () {
 	
 	this.create = function( nodename ) {
 		if( nodename ) {
-			ref = $('#'+nodename)
+			ref = $(nodename)
 		} else {
 			ref = $('<div>').attr('id', title).html('0%')
 			ref.appendTo('body')
@@ -676,6 +676,7 @@ function loadbar () {
 } // loadbar Object
 
 function zoomer ( jn , zfunctions ) {
+console.info(jn)
 	//var self = this
 	if (!jn) 
 		return false

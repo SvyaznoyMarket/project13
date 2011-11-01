@@ -50,7 +50,7 @@ $(document).ready(function(){
 		  },
 		error: function (jqXHR, textStatus, errorThrown) {
 			if( jqXHR.statusText == 'error' )
-				errorpopup(' неизвестная ошибка')
+				console.error(' неизвестная ajax ошибка')
 			else if ( textStatus=='timeout' )
 				errorpopup(' проверьте соединение с интернетом')				
 		}		
