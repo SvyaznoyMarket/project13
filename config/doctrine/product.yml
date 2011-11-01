@@ -123,7 +123,7 @@ ProductProperty:
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
-    type:              { type: enum, length: 10, values: [ string, select, integer, float, text, boolean ], notnull: true, default: string, comment: 'Тип свойства: строка, значение из справочника (опция свойства), текст' }
+    type:              { type: enum, length: 10, values: [ string, select, integer, float, text, boolean, date ], notnull: true, default: string, comment: 'Тип свойства: строка, значение из справочника (опция свойства), текст' }
     is_multiple:       { type: boolean, notnull: true, default: false, comment: 'Свойство имеет несколько значений?' }
     unit:              { type: string(255), notnull: false, default: null, comment: 'Единица измерения' }
     pattern:           { type: string(255), notnull: false, default: '%value% %unit%', comment: 'Шаблон для создания значения свойства с единицей измерения для отображения' }

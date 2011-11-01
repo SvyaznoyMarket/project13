@@ -170,6 +170,10 @@ EOF;
         $record->delete();
       }
     }
+
+    $record->free(true);
+    $record = null;
+    unset($record);
   }
 
 

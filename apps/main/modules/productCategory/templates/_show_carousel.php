@@ -16,10 +16,8 @@
 <div class="clear"></div>
 
 <div class="carousel">
-  <?php $i = 0;
-  foreach ($item['product_list'] as $product): $i++; ?>
+  <?php $i = 0; foreach ($item['product_list'] as $product): $i++; ?>
     <?php include_component('product', 'show', array('view' => 'compact', 'ii' => $i, 'product' => $product)) ?>
-<?php endforeach ?>
-
+  <?php endforeach ?>
 </div>
 <!-- Carousel -->
