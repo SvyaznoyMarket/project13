@@ -21,11 +21,13 @@ class productCardActions extends myActions
 
     $title = $this->product['name'];
     $mainCategory = $this->product->getMainCategory();
-    if ($mainCategory) {
+    if ($mainCategory)
+    {
       $title .= ' – '.$mainCategory;
-      $rootCat = $mainCategory->getRootCategory();
-      if ($rootCat->id !== $mainCategory->id) {
-        $title .= ' – '.$rootCat;
+      $rootCategory = $mainCategory->getRootCategory();
+      if ($rootCategory->id !== $mainCategory->id)
+      {
+        $title .= ' – '.$rootCategory;
       }
     }
     $this->getResponse()->setTitle($title.' – Enter.ru');
