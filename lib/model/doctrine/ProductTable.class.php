@@ -43,6 +43,7 @@ class ProductTable extends myDoctrineTable
       'category'      => array('rel' => 'Category'),
       'tag'           => array('rel' => 'Tag'),
       'line_id'       => array('rel' => 'Line'),
+      'model_id'      => array('rel' => 'Model'),
     );
   }
 
