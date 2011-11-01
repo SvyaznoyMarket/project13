@@ -146,7 +146,8 @@ class productCatalogActions extends myActions
       $title .= ' – '.$request->getParameter('page');
     }
     $rootCategory = $this->productCategory->getRootCategory();
-    if ($rootCategory->id !== $this->productCategory->id) {
+    if ($rootCategory->id !== $this->productCategory->id)
+    {
       $title .= ' – '.$rootCategory;
     }
     $this->getResponse()->setTitle($title.' – Enter.ru');

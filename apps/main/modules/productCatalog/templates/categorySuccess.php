@@ -8,4 +8,4 @@
   <?php include_component('productCatalog', 'tag', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
-<?php echo include_partial('productCatalog/slot/default', $sf_data) ?>
+<?php include_partial('productCatalog/slot/default', $sf_data) ?>

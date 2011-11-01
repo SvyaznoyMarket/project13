@@ -18,6 +18,11 @@ class ProductCategoryTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductCategory');
   }
 
+  public function getQueryRootAlias()
+  {
+    return 'productCategory';
+  }
+
   public function getCoreMapping()
   {
     return array(
@@ -84,15 +89,9 @@ class ProductCategoryTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q, $params);
 
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-all', $params));
-
-    /*
-    $ids = $this->getIdsByQuery($q);
+    $ids = $this->getIdsByQuery($q, $params, 'productCategory-ids');
 
     return $this->createListByIds($ids, $params);
-    */
-
-    return $q->execute();
   }
 
   public function getRootList(array $params = array())
@@ -103,13 +102,12 @@ class ProductCategoryTable extends myDoctrineTable
     $q->addWhere('productCategory.level = ?', 0)
       ->orderBy('productCategory.position');
 
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-root-all', $params));
-
-    $ids = $this->getIdsByQuery($q);
+    $ids = $this->getIdsByQuery($q, $params, 'productCategory-root-ids');
 
     return $this->createListByIds($ids, $params);
   }
 
+  // TODO: удалить
   public function getSubList(array $params = array())
   {
     /*
@@ -158,15 +156,60 @@ class ProductCategoryTable extends myDoctrineTable
     return $q->execute();
   }
 
+  public function getChildList(ProductCategory $category, $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+
+    $ids = $this->getDescendatIds($category, array('depth' => 1));
+
+    return $this->createListByIds($ids, $params);
+  }
+
+  public function getDescendatList(ProductCategory $category = null, $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+
+    $ids = $this->getDescendatIds($category, $params);
+
+    return $this->createListByIds($ids, $params);
+  }
+
   public function getDescendatIds(ProductCategory $category = null, $params = array())
   {
-    $this->applyDefaultParameters($params, array('with_parent' => false));
+    $this->applyDefaultParameters($params, array(
+      'with_parent' => false,
+      'depth'       => null,
+      'min_level'   => null,
+      'max_level'   => null,
+    ));
 
     $q = $this->createBaseQuery();
-    $q->addWhere('productCategory.lft > ? and productCategory.rgt < ? and productCategory.root_id = ?', array($category->lft, $category->rgt, empty($category->root_id) ? $category->id : $category->root_id, ));
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-descendants-'.$category->id));
 
-    $categoryIds = $this->getIdsByQuery($q);
+    if ($category)
+    {
+      $q->addWhere('productCategory.lft > ? and productCategory.rgt < ? and productCategory.root_id = ?', array($category->lft, $category->rgt, empty($category->root_id) ? $category->id : $category->root_id, ));
+    }
+
+    if ($category && (null != $params['depth']))
+    {
+      $q->addWhere('productCategory.level <= ?', $category->level + $params['depth']);
+    }
+
+    if (null != $params['min_level'])
+    {
+      $q->addWhere('productCategory.level > ?', $params['min_level'] - 1);
+    }
+
+    if (null != $params['max_level'])
+    {
+      $q->addWhere('productCategory.level < ?', $params['max_level'] + 1);
+    }
+
+    $categoryIds = $this->getIdsByQuery($q, $params,
+      $category
+      ? 'productCategory-'.$category->id.'/productCategory-descendant-ids'
+      : 'productCategory-descendant-ids'
+    );
     if ($params['with_parent'])
     {
       $categoryIds[] = $category->id;
@@ -175,7 +218,7 @@ class ProductCategoryTable extends myDoctrineTable
     return $categoryIds;
   }
 
-  public function getTagIds(ProductCategory $category = null)
+  public function getTagIds(ProductCategory $category = null, array $params = array())
   {
     if (!$category)
     {
@@ -192,7 +235,7 @@ class ProductCategoryTable extends myDoctrineTable
       ->groupBy('tagProductRelation.tag_id')
       ->orderBy('count(tagProductRelation.product_id) DESC')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-      ->useResultCache(true, null, $this->getQueryHash('productCategory-Tag', $categoryIds));
+      ->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/tag-ids', array_merge($params, array('categoryIds' => $categoryIds))));
     ;
 
     return $q->execute();
@@ -202,7 +245,10 @@ class ProductCategoryTable extends myDoctrineTable
   {
     $keys = myToolkit::arrayDeepMerge(parent::getCacheKeys($record), array(
       '*'.$this->getQueryRootAlias().'-root-all/*',
+      '*'.$this->getQueryRootAlias().'-root-ids/*',
       '*'.$this->getQueryRootAlias().'-root-'.$record->root_id.'/*',
+      '*'.$this->getQueryRootAlias().'-descendant-ids/*',
+      '*'.$this->getQueryRootAlias().'-child-ids/*',
     ));
 
     return $keys;

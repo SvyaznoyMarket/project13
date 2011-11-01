@@ -17,6 +17,11 @@ class ProductTable extends myDoctrineTable
     return Doctrine_Core::getTable('Product');
   }
 
+  public function getQueryRootAlias()
+  {
+    return 'product';
+  }
+
   public function getCoreMapping()
   {
     return array(
@@ -190,7 +195,7 @@ class ProductTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    $ids = $this->getIdsByQuery($q);
+    $ids = $this->getIdsByQuery($q, $params, 'productCategory-'.$category->id.'/product-ids');
 
     return $this->createListByIds($ids, $params);
   }
@@ -477,6 +482,8 @@ class ProductTable extends myDoctrineTable
     ;
 
     $this->setQueryParameters($q, $params);
+
+    $q->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params));
 
     return $q->count();
   }

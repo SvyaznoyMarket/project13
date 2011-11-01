@@ -55,6 +55,14 @@ class productCategoryComponents extends myComponents
 
   public function executeExtra_menu()
   {
+    /*
+	  $data = ProductCategoryTable::getInstance()->getDescendatList(null, array(
+      'select'    => 'productCategory.id, productCategory.core_id, productCategory.token, productCategory.name',
+      'min_level' => 1,
+      'max_level' => 2,
+      'with_filters' => false
+    ));
+    */
 	  $data = ProductCategoryTable::getInstance()->getSubList();
 	  $result = array();
 
@@ -244,7 +252,7 @@ class productCategoryComponents extends myComponents
       $this->view = 'default';
     }
 
-    $this->setVar('productCategoryList', $this->productCategory->getNode()->getChildren());
+    $this->setVar('productCategoryList', $this->productCategory->getChildList(array('with_filters' => false)));
   }
  /**
   * Executes show component
@@ -260,11 +268,11 @@ class productCategoryComponents extends myComponents
     }
 
     $item = array(
-      'name'             => (string)$this->productCategory,
-      'url'              => url_for('productCatalog_category', $this->productCategory),
-	  'carousel_data_url'=> url_for('productCatalog_carousel', $this->productCategory),
-      'product_quantity' => $this->productCategory->countProduct(),
-	  'links'            => $this->productCategory->getLink(),
+      'name'              => (string)$this->productCategory,
+      'url'               => url_for('productCatalog_category', $this->productCategory),
+	    'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
+      'product_quantity'  => $this->productCategory->countProduct(),
+	    'links'             => $this->productCategory->getLinkList(),
     );
 
     if ('carousel' == $this->view)
@@ -274,9 +282,7 @@ class productCategoryComponents extends myComponents
         return sfView::NONE;
       }
 
-      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
-        'limit' => 6,
-      ));
+      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array('with_properties' => false, 'limit' => 6));
     }
     if ('preview' == $this->view)
     {
@@ -305,14 +311,14 @@ class productCategoryComponents extends myComponents
       'with_productCount' => true,
     )) as $productType) {
       if (0 == $productType->product_count) continue;
-      
+
       $list[] = array(
         'name'             => $productType->name,
         'url'              => url_for(array('sf_route' => 'productCatalog_productType', 'sf_subject' => $this->productCategory, 'productType' => $productType->id)),
         'product_quantity' => $productType->product_count,
       );
     }
-    
+
     $this->setVar('table', myToolkit::groupByColumn($list, 4), true);
   }
 }

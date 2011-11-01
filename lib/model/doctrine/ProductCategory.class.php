@@ -66,6 +66,16 @@ class ProductCategory extends BaseProductCategory
   {
     return ProductCategoryTable::getInstance()->getSubList(array('root_id' => $this->root_id));
   }
+
+  public function getChildList(array $params = array())
+  {
+    return ProductCategoryTable::getInstance()->getChildList($this, $params);
+  }
+
+  public function getLinkList(array $params = array())
+  {
+    return ProductCategoryLinkTable::getInstance()->getListByCategory($this, $params);
+  }
 /**
  *
  * @return TagGroup Collection
