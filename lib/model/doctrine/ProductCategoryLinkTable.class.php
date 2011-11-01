@@ -18,6 +18,11 @@ class ProductCategoryLinkTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductCategoryLink');
   }
 
+  public function getQueryRootAlias()
+  {
+    return 'productCategoryLink';
+  }
+
   public function getListByCategory(ProductCategory $category, array $params = array())
   {
     $q = $this->createBaseQuery($params);

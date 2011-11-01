@@ -37,6 +37,7 @@ class myDoctrineTable extends Doctrine_Table
     foreach ($ids as $id)
     {
       $record = $this->getById($id, $params);
+
       if ($record)
       {
         $index = ($params['index'] && isset($params['index'][$alias]) && $this->hasColumn($params['index'][$alias]))
@@ -96,8 +97,8 @@ class myDoctrineTable extends Doctrine_Table
   public function getIdsByQuery(Doctrine_Query $q, array $params = array(), $hash = false)
   {
     $q = clone $q;
-    //$q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
-    $q->select($this->getQueryRootAlias().'.id')
+    $q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
+    //$q->select($this->getQueryRootAlias().'.id')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
@@ -112,7 +113,7 @@ class myDoctrineTable extends Doctrine_Table
       $ids = array($ids);
     }
     else {
-      $ids = array_unique($ids); // вместо DISTINCT
+      //$ids = array_unique($ids); // вместо DISTINCT
     }
 
     return $ids;

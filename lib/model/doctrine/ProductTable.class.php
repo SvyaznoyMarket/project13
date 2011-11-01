@@ -292,9 +292,7 @@ class ProductTable extends myDoctrineTable
             array_merge(array($parameter['filter']->property_id), !is_array($parameter['values']) ? array($parameter['values']) : $parameter['values'])
           );*/
           //$q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group']);
-          $q->andWhereIn(
-            'productPropertyRelation'.$parameter['filter']->id.'.option_id', $parameter['values']
-          );
+          $q->andWhereIn('productPropertyRelation'.$parameter['filter']->id.'.option_id', $parameter['values']);
         }
         else if ('range' == $parameter['filter']->type)
         {
