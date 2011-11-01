@@ -48,3 +48,4 @@ all:
     class: sfSessionStorage
     param:
       auto_start: true
+      session_name: enter

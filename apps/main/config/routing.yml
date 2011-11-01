@@ -586,9 +586,6 @@ cart:
 cart_add:
   url:   /cart/add/:product/:quantity
   param: { module: cart, action: add, quantity: 1 }
-  requirements:
-    sf_method: [ get, post ]
-
 #
 # cart delete
 cart_delete:
