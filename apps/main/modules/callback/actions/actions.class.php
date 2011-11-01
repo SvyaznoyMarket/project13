@@ -36,16 +36,7 @@ class callbackActions extends myActions
         $this->form = new CallbackForm();
         $data = $request->getParameter($this->form->getName());
         
-        if (isset($data['name'])) $data['name'] = trim($data['name']);
-        else $data['name'] = '';
-        if (isset($data['email'])) $data['email'] = trim($data['email']);
-        else $data['email'] = '';
-        if (isset($data['theme'])) $data['theme'] = trim($data['theme']);
-        else $data['theme'] = '';
-        if (isset($data['text'])) $data['text'] = trim($data['text']);
-        else $data['text'] = '';
-        
-
+       
         #$user = $this->getUser();
         #if (isset($user) && $user->getGuardUser() && $user->isAuthenticated()) $userId = $user->getGuardUser()->id;
         #else $userId = 0;
@@ -53,7 +44,8 @@ class callbackActions extends myActions
 
         $this->form->bind($data);
         $this->setTemplate('index');
-        $this->setVar('error', '', true);
+        $this->setVar('error', '', true);                          
+        
 
         if ($this->form->isValid())
         {

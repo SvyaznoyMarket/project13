@@ -105,6 +105,8 @@ class userActions extends myActions
   */
   public function executeEdit(sfWebRequest $request)
   {
+    $this->setVar('error', '', true);
+      
       /*
     $this->userAddress = $this->getRoute()->getObject();
     //если пользователь  пытается редактировать не свой адрес
@@ -130,6 +132,7 @@ class userActions extends myActions
     $a = $request->getParameter($this->form->getName());
     //$a['id'] = 2;
     $this->form->bind( $a );
+    $this->setVar('error', '', true);
 
     if ($this->form->isValid())
     {
@@ -149,7 +152,9 @@ class userActions extends myActions
       }
       catch (Exception $e)
       {
-		  echo $e->getMessage();
+		  #echo $e->getMessage();
+          $this->setVar('error', 'К сожалению, данные сохранить не удалось.', true);
+          
 //		  echo $e->getTraceAsString();
 //		  exit();
          // exit();
