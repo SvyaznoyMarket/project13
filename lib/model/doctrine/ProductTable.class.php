@@ -37,6 +37,7 @@ class ProductTable extends myDoctrineTable
       'brand_id'      => array('rel' => 'Creator'),
       'category'      => array('rel' => 'Category'),
       'tag'           => array('rel' => 'Tag'),
+      'line_id'       => array('rel' => 'Line'),
     );
   }
 
