@@ -103,7 +103,7 @@ class ProductCategoryTable extends myDoctrineTable
     $q->addWhere('productCategory.level = ?', 0)
       ->orderBy('productCategory.position');
 
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-root', $params));
+    $q->useResultCache(true, null, $this->getQueryHash('productCategory-root-all', $params));
 
     $ids = $this->getIdsByQuery($q);
 
@@ -196,5 +196,15 @@ class ProductCategoryTable extends myDoctrineTable
     ;
 
     return $q->execute();
+  }
+
+  public function getCacheKeys(myDoctrineRecord $record)
+  {
+    $keys = myToolkit::arrayDeepMerge(parent::getCacheKeys($record), array(
+      '*'.$this->getQueryRootAlias().'-root-all/*',
+      '*'.$this->getQueryRootAlias().'-root-'.$record->root_id.'/*',
+    ));
+
+    return $keys;
   }
 }

@@ -237,6 +237,20 @@ class myDoctrineTable extends Doctrine_Table
     return $path.'/'.$paramHash;
   }
 
+  public function getCacheKeys(myDoctrineRecord $record)
+  {
+    $keys = array(
+      '*'.$this->getQueryRootAlias().'-all/*',
+    );
+
+    if ($this->hasField('id'))
+    {
+      $keys[] = '*'.$this->getQueryRootAlias().'-'.$record->id.'/*';
+    }
+
+    return $keys;
+  }
+
   public function createRecordFromCore(array $data)
   {
     $record = $this->create();

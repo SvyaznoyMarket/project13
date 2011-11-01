@@ -25,9 +25,10 @@ class ProductCategory extends BaseProductCategory
     );
   }
 
-  public function getRootCategory()
+  public function getRootCategory(array $params = array())
   {
-	  if ($this->level == 0) {
+	  if ($this->level == 0)
+    {
 		  return $this;
 	  }
 
@@ -36,6 +37,8 @@ class ProductCategory extends BaseProductCategory
 	  $q->andWhere('productCategory.root_id = ?', $this->root_id)
 	    ->andWhere('productCategory.level = ?', 0)
     ;
+
+    $q->useResultCache(true, null, $this->getTable()->getQueryHash('productCategory-root-'.$this->root_id, $params));
 
 	  return $q->fetchOne();
   }
