@@ -26,7 +26,7 @@
 
             <div class="clear"></div>
 
-            <div class="fl width215 font16 mr20"><?php echo $order->isSelfDelivery() ? 'Где будете получить' : 'Куда доставить' ?>:</div>
+            <div class="fl width215 font16 mr20"><?php echo $order->isSelfDelivery() ? 'Где будете получать' : 'Куда доставить' ?>:</div>
             <div class="fl width430 pb20">
                 <div class="pb5"><span class="gray">Город:</span> <?php echo $order->Region->name ?></div>
                 <?php if (!empty($order->address)): ?><div class="pb5"><span class="gray">Адрес доставки:</span> <?php echo $order->address ?></div><?php endif ?>
