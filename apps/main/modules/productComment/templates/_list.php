@@ -89,10 +89,10 @@
 					</ul>
 				</div>
 			</div>
-		</div> 
+		</div>
 		<!-- /Filter -->
 		<?php endif ?>
-		
+
 		<?php if ($showPage !== false): ?>
 		<?php include_partial('pagination', array('pager' => $list, 'pos' => 'top')) ?>
 		<?php else: ?>
@@ -112,13 +112,13 @@
 		<?php echo $item->getUser() ?><br /><span class="gray"><?php echo $item->created_at ?></span><br /><br />Полезный отзыв?
 		<div class="vote">
 			<a href="javascript:void(0)" class="green">Да</a>
-				<?php echo $item->helpful ?> / 
-			<a href="javascript:void(0)">Нет</a> 
+				<?php echo $item->helpful ?> /
+			<a href="javascript:void(0)">Нет</a>
 				<?php echo $item->unhelpful ?></div>
 	</div>
 	<div class="commentright">
 		<div class="commenttext">
-			<?php 
+			<?php
 				echo str_repeat('<span class="ratingview" style="width:13px;display:inline-block;"></span>', $item->rating);
 				echo str_repeat('<span class="ratingview" style="width:13px;display:inline-block;background-position-x:100%;"></span>', 5-$item->rating);
 			?>
@@ -142,7 +142,7 @@
 		</ul>
 
 		<div class="clear"></div>
-		
+
 		<?php $comments = $item->getSubComments() ?>
 		<a href="javascript:void(0)" class="subcomments-trigger commentlink">Комментарии (<?php echo count($comments)?>)</a>
 		<div class="commentanswer">
@@ -172,7 +172,7 @@
 				</ul>
 			</div>
 		</div>
-		
+
 		<a href="javascript:void(0)" class="button whitelink subcomments-add-trigger">Написать комментарий</a>
 		<div class="addcomment">
 			<form method="post" action="<?php echo url_for('productComment_create', $sf_data->getRaw('product')) ?>">
@@ -181,22 +181,11 @@
 				<input type="hidden" name="parent_id" value="<?php echo $item->id ?>"/>
 				<input type="submit" class="button yellowbutton" value="Отправить" />
 			</form>
-		</div>    
+		</div>
 	</div>
 </div>
 <?php endforeach ?>
 <!-- /Comments  -->
-
-<?php if ($showPage !== false): ?>
-<?php include_partial('pagination', array('pager' => $list, 'pos' => 'bottom')) ?>
-<?php else: ?>
-<strong class="fr">
-<a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать все отзывы</a>
-</strong>
-<?php endif ?>
-
-<div class="fl mr20">Есть мнение по данному товару?<br />Напиши свой отзыв</div><a href="<?php echo url_for('productComment_new', $sf_data->getRaw('product')) ?>" class="button bigbuttonlink">Написать отзыв</a>
-<div class="clear pb15"></div>
 
 
 <div class="clear"></div>

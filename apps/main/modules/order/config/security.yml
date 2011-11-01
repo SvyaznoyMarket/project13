@@ -8,5 +8,20 @@ index:
 new:
   is_secure: true
 
+confirm:
+  is_secure: true
+
+updateField:
+  is_secure: true
+
+edit:
+  is_secure: true
+
+cancel:
+  is_secure: true
+
+create:
+  is_secure: true
+
 show:
   is_secure: true

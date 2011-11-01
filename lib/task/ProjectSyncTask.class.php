@@ -96,7 +96,7 @@ EOF;
 
         try
         {
-          $method = 'process'.ucfirst($packet['type']).'Entity';
+          $method = 'process'.sfInflector::underscore($packet['type']).'Entity';
           $method = method_exists($this, $method) ? $method : 'processDefaultEntity';
 
           if (call_user_func_array(array($this, $method), array($action, $packet))) {
@@ -240,7 +240,7 @@ EOF;
     $entity = $packet['data'];
 
     $record = false;
-    switch ($entity['item_type_id'])
+    if (isset($entity['item_type_id'])) switch ($entity['item_type_id'])
     {
       case 1:
         switch ($entity['type_id'])

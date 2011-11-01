@@ -66,24 +66,26 @@ class Product extends BaseProduct
       $collectionData = array();
       foreach ($data['property'] as $relationData)
       {
-        $propertyId = ProductPropertyTable::getInstance()->getIdByCoreId($relationData['property_id']);
-        
+        $property = ProductPropertyTable::getInstance()->getByCoreId($relationData['property_id']);
+        if (!$property) continue;
+
         // checks multiple property
         if ($relationData['is_multiple'] && !empty($relationData['option']))
         {
           foreach ($relationData['option'] as $optionData)
           {
             $optionId = ProductPropertyOptionTable::getInstance()->getIdByCoreId($optionData['option_id']);
-            
+
             if (!empty($optionData['option_id']) && !$optionId)
             {
               // force get option
             }
-            
-            $collectionData[$propertyId.'-'.$optionId] = array(
-              'property_id' => $propertyId,
+
+            $collectionData[$property->id.'-'.$optionId] = array(
+              'property_id' => $property->id,
               'option_id'   => $optionId,
-              'value'       => null,
+              'real_value'  => null,
+              'type'        => $property->type,
             );
           }
         }
@@ -94,14 +96,15 @@ class Product extends BaseProduct
             // force get option
           }
 
-          $collectionData[$propertyId.'-'.$optionId] = array(
-            'property_id' => $propertyId,
+          $collectionData[$property->id.'-'.$optionId] = array(
+            'property_id' => $property->id,
             'option_id'   => $optionId,
-            'value'       => trim($relationData['value']),
+            'real_value'  => trim($relationData['value']),
+            'type'        => $property->type,
           );
         }
       }
-      
+
       $existing = array();
       foreach ($this->PropertyRelation as $i => $propertyRelation)
       {
@@ -112,7 +115,7 @@ class Product extends BaseProduct
           unset($this->PropertyRelation[$i]);
         }
         else {
-          $propertyRelation->value = $collectionData[$index]['value'];          
+          $propertyRelation->real_value = $collectionData[$index]['real_value'];
           $existing[] = $index; //!important
         }
       }
