@@ -209,6 +209,7 @@ Product:
     type_id:           { type: integer(20), notnull: true }
     creator_id:        { type: integer(20), notnull: false, default: null }
     line_id:           { type: integer(20), notnull: false, default: null }
+    model_id:          { type: integer(20), notnull: false, default: null }
 #    category_id:       { type: integer(20), notnull: true }
     group_id:          { type: integer(20), notnull: false, default: null }
     tagline:           { type: string(255), notnull: false, default: null }
@@ -229,6 +230,7 @@ Product:
     Property:          { class: ProductProperty, foreignAlias: Product, refClass: ProductPropertyRelation, local: product_id, foreign: property_id, type: many, foreignType: many }
     Group:             { class: ProductGroup, foreignAlias: Product, local: group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Line:              { class: ProductLine, foreignAlias: Product, local: line_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    Model:             { class: Product, foreignAlias: SubProduct, local: model_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL  }
 
 ProductPropertyRelation:
   options:
