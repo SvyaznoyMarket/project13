@@ -59,7 +59,7 @@ class userComponents extends myComponents
             'routes' => array('@user'),
           ),
           array(
-            'name'   => 'Редактирование профиля',
+            'name'   => 'Изменить мои данные',
             'url'    => '@user_edit',
             'routes' => array('@user_edit'),
           ),
