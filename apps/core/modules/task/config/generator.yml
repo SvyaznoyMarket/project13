@@ -15,12 +15,17 @@ generator:
       actions: ~
       fields:  ~
       list:
-        display: [ id, type, status, _content, priority, attempt, core_id, created_at, updated_at ]
-        sort: [ created_at, asc ]
+        display: [ id, type, status, _content, priority, attempt, error, core_id, created_at, updated_at ]
+        table_method: retrieveAdminList
+        sort: [ core_packet_id, asc ]
         actions:
           init: { label: Перегрузить данные, action: init, params: { confirm: 'Выполнить перезагрузку?' } }
+        object_actions:
+          _edit: { label ' ' }
+          _delete: { label ' ' }
+          core: { label 'Запрос', action: core }
       filter:
-        display: [ id, type, core_id, priority, status, content, attempt, created_at, updated_at ]
+        display: [ id, type, core_id, priority, status, content, attempt, error, created_at, updated_at ]
       form:    ~
       edit:    ~
       new:     ~

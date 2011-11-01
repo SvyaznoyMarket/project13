@@ -37,10 +37,6 @@ class ProductParameter extends myDoctrineVirtualRecord
     }
 
     $this->value = $this->property->is_multiple ? $value : $value[0];
-    if (is_bool($this->value))
-    {
-      $this->value = true === $this->value ? 'да' : 'нет';
-    }
   }
 
   public function getProperty()

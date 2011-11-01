@@ -75,6 +75,12 @@ EOF;
         $task->setDefaultPriority();
         $task->save();
       }
+
+      if ($task->attempt > 100)
+      {
+        $task->status = 'fail';
+        $task->save();
+      }
     }
   }
 

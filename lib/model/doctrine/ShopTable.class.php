@@ -47,9 +47,8 @@ class ShopTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->leftJoin('shop.Stock stock')
-      ->leftJoin('stock.ProductRelation stockProductRelation')
-      ->addWhere('stockProductRelation.product_id = ?', $product_id)
+    $q->leftJoin('shop.ProductRelation stockProductRelation')
+      ->addWhere('stockProductRelation.product_id = ? AND stockProductRelation.stock_id IS NULL', $product_id)
     ;
 
     $q->select('shop.token, shop.name, shop.region_id, shop.address, SUM(stockProductRelation.quantity) AS quantity')

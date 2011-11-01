@@ -24,7 +24,7 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description')))
 
     {
       $this->view = 'default';
@@ -44,12 +44,17 @@ class productComponents extends myComponents
     if ('default' == $this->view)
     {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
+      $item['stock_url'] = url_for('productStock', $this->product);
     }
     if (in_array($this->view, array('expanded')))
     {
       $item['preview'] = $this->product->preview;
     }
-    
+    if (in_array($this->view, array('description')))
+    {
+      $item['description'] = $this->product->description;
+    }
+
     $this->setVar('item', $item, true);
   }
 

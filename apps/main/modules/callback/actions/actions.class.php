@@ -53,8 +53,7 @@ class callbackActions extends myActions
 
         $this->form->bind($data);
         $this->setTemplate('index');
-        $this->setVar('error', '', true);                          
-        
+        $this->setVar('error', '', true);
 
         if ($this->form->isValid())
         {

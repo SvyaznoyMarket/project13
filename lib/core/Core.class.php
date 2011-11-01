@@ -281,40 +281,35 @@ class Core
 
     return $result;
   }
-  
+
   public function createCallback($callback)
   {
-        $result = false;
-		//$data = $this->getData($callback);
-        //$this->getUser();
-        $data = $callback->getData();
-        $data['category_id'] = 21;
-        $data['first_name'] = $data['name'];
-        unset($data['user_id']);
-        unset($data['name']);
-       // print_r($data);
+    $result = false;
+    //$data = $this->getData($callback);
+    //$this->getUser();
+    $data = $callback->getData();
+    $data['category_id'] = 21;
+    $data['first_name'] = $data['name'];
+    unset($data['user_id']);
+    unset($data['name']);
 		if ($response = $this->query('user.callback.create', array(), $data)) {
 			$result = $response['id'];
 		}
-        #var_dump($response);
-        #exit();
 		return $result;
   }
-  
+
   public function changePassword($coreId,$data){
-      
-        unset($data['id']);
+
+    unset($data['id']);
 		if ($response = $this->query('user.update', array('id'=>$coreId), $data)) {
 			$result = $response['id'];
-    		return $result;      
-		}
-        else{
-            return false;
-        }
-        #var_dump($response);
-        #exit();
+      return $result;
+    }
+    else{
+      return false;
+    }
   }
-  
+
 
   public function getData($record)
   {
@@ -410,6 +405,6 @@ class Core
 
     return $response;
   }
-  
+
 
 }

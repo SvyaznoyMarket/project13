@@ -46,6 +46,8 @@ ProductCategory:
     id:                { type: integer(20), autoincrement: true, primary: true }
     core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     core_parent_id:    { type: integer(20), notnull: false, default: null, comment: 'ид родителя записи в Core' }
+    core_lft:          { type: integer(20), notnull: false, default: null, comment: 'lft записи в Core' }
+    core_rgt:          { type: integer(20), notnull: false, default: null, comment: 'rgt записи в Core' }
     root_id:           { type: integer(20), notnull: false, default: null }
     lft:               { type: integer(20), notnull: false, default: null }
     rgt:               { type: integer(20), notnull: false, default: null }
@@ -337,7 +339,9 @@ ProductRatingType:
 ProductRatingTypeProperty:
   options:
     comment: 'Свойства типа рейтинга товара'
-  actAs: [ Timestampable, Corable ]
+  actAs:
+    Timestampable: ~
+    Corable:       ~
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     type_id:           { type: integer(20), notnull: true }
@@ -351,6 +355,7 @@ ProductPriceList:
   options:
     comment: 'Прайс-листы'
   actAs:
+    #Timestampable: ~
     Corable: { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
@@ -361,6 +366,9 @@ ProductPriceList:
 ProductPrice:
   options:
     comment: 'Цены товаров по прайс-листам'
+  actAs:
+    #Timestampable: ~
+    Corable: { push: disable }
   columns:
     id:                     { type: integer(20), autoincrement: true, primary: true }
     product_price_list_id:  { type: integer(20), notnull: true }

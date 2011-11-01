@@ -32,6 +32,7 @@ class apiActions extends myActions
         if ($task = TaskTable::getInstance()->getByCoreId($coreId))
         {
           $task->setContentData($data);
+          $task->core_packet_id = isset($data['packet_id']) ? $data['packet_id'] : null;
           $task->save();
         }
       }
@@ -39,7 +40,8 @@ class apiActions extends myActions
       {
         $task = new Task();
         $task->fromArray(array(
-          'type'   => 'project.'.$data['action'],
+          'type'           => 'project.'.$data['action'],
+          'core_packet_id' => isset($data['packet_id']) ? $data['packet_id'] : null,
         ));
         $task->setContentData($data);
         $task->save();
