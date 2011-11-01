@@ -676,7 +676,6 @@ function loadbar () {
 } // loadbar Object
 
 function zoomer ( jn , zfunctions ) {
-console.info(jn)
 	//var self = this
 	if (!jn) 
 		return false
