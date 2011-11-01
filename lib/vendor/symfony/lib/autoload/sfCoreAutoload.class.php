@@ -457,6 +457,7 @@ class sfCoreAutoload
     'sfvalidatordatetime' => 'validator/sfValidatorDateTime.class.php',
     'sfvalidatordecorator' => 'validator/sfValidatorDecorator.class.php',
     'sfvalidatoremail' => 'validator/sfValidatorEmail.class.php',
+    'sfvalidatorphone' => 'validator/sfValidatorPhone.class.php',
     'sfvalidatorerror' => 'validator/sfValidatorError.class.php',
     'sfvalidatorerrorschema' => 'validator/sfValidatorErrorSchema.class.php',
     'sfvalidatorfile' => 'validator/sfValidatorFile.class.php',

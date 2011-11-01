@@ -9,16 +9,16 @@
  */
 
 /**
- * sfValidatorEmail validates emails.
+ * sfValidatorPhone validates phone.
  *
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorEmail.class.php 22149 2009-09-18 14:09:53Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfValidatorPhone.class.php 22149 2009-09-18 14:09:53Z Kris.Wallsmith $
  */
-class sfValidatorEmail extends sfValidatorRegex
+class sfValidatorPhone extends sfValidatorRegex
 {
-  const REGEX_EMAIL = '/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,3})$/i';
+  const REGEX_PHONE = '/^[0-9\-\(\)\s]{5,25}$/';
 
   /**
    * @see sfValidatorRegex
@@ -27,6 +27,8 @@ class sfValidatorEmail extends sfValidatorRegex
   {
     parent::configure($options, $messages);
 
-    $this->setOption('pattern', self::REGEX_EMAIL);
+    $this->setOption('pattern', self::REGEX_PHONE);
   }
+
+  
 }
