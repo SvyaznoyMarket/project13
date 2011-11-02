@@ -20,6 +20,7 @@ class ProjectSyncTask extends sfBaseTask
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('dump', null, sfCommandOption::PARAMETER_NONE, 'Only dump response'),
       new sfCommandOption('log', null, sfCommandOption::PARAMETER_NONE, 'Enable logging'),
+      new sfCommandOption('packet', null, sfCommandOption::PARAMETER_REQUIRED, 'The packet_id', null),
       // add your own options here
     ));
 
@@ -44,13 +45,26 @@ EOF;
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
+    // add your code here
     $this->core = Core::getInstance();
 
-    // add your code here
-    $this->task = TaskTable::getInstance()->find($arguments['task_id']);
-    if ('success' == $this->task->status)
+    if ($options['packet'])
     {
-      //return true;
+      $this->task = new Task();
+      $this->task->type = 'project.sync';
+      $this->task->setDefaultPriority();
+      $this->task->setContentData(array(
+        'action'    => 'sync',
+        'packet_id' => $options['packet'],
+      ));
+    }
+    else {
+      $this->task = TaskTable::getInstance()->find($arguments['task_id']);
+    }
+
+    if (!$this->task)
+    {
+      return false;
     }
 
     $params = $this->task->getContentData();

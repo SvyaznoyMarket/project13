@@ -2,7 +2,7 @@
 <?php
 
 $pidFile = '/tmp/enter-task_manager.pid';
-$delay = 10; //sec
+$delay = 12; //sec
 
 $pid = pcntl_fork();
 

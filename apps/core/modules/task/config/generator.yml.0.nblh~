@@ -15,7 +15,7 @@ generator:
       actions: ~
       fields:  ~
       list:
-        display: [ id, _type, _priority, _content, _attempt, error, core_id, created_at, updated_at ]
+        display: [ id, type, status, _priority, _content, _attempt, error, core_id, created_at, updated_at ]
         table_method: retrieveAdminList
         sort: [ core_packet_id, asc ]
         actions:
