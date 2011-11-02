@@ -59,7 +59,7 @@ EOF;
 
     for ($step = 0; $step < $stepCount; $step++)
     {
-      $this->logSection($task->type, "#{$task->id} ...");
+      $this->logSection($task->type, "#{$task->id} packet={$task->core_packet_id} ...");
 
       // приоритет реального времени
       $task->priority = 0;
@@ -71,7 +71,14 @@ EOF;
         'connection'  => $options['connection'],
       ));
 
-      $this->logSection($task->type, "#{$task->id} ... ok");
+      if ('success' == $task->status)
+      {
+        $this->logSection($task->type, "#{$task->id} ... ok");
+      }
+      else if ('fail' == $task->status)
+      {
+        $this->logSection($task->type, "#{$task->id} ... fail", null, 'ERROR');
+      }
 
       $task->setDefaultPriority();
       $task->save();

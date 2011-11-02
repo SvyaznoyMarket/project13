@@ -70,8 +70,9 @@ class TaskTable extends myDoctrineTable
         $q->addWhere('task.priority = ?', $priority);
       }
     }
+    $q->orderBy('priority ASC, core_packet_id ASC');
 
-    $this->setQueryParameters($q, $params);
+    //$this->setQueryParameters($q, $params);
 
     return $q->fetchOne();
   }
