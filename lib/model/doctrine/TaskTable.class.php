@@ -88,8 +88,8 @@ class TaskTable extends myDoctrineTable
   public function getMinPriority()
   {
     return $this->createQuery()
-      ->select('MIN(task.priority) AS priority_min')
-      ->where('task.status = ?', 'run')
+      ->select('MIN(priority) AS priority_min')
+      ->where('status = ?', 'run')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
       ->fetchOne()
     ;
@@ -123,5 +123,15 @@ class TaskTable extends myDoctrineTable
     $q->orderBy("{$alias}.priority ASC");
 
     return $q;
+  }
+
+  public function getMaxCorePacketId($type)
+  {
+     return $this->createQuery()
+      ->select('MAX(core_packet_id) AS core_packet_id_max')
+      ->where('type = ?', $type)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->fetchOne()
+    ;
   }
 }
