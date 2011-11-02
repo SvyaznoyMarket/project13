@@ -23,5 +23,5 @@ task:
     column:               id
     with_wildcard_routes: true
     #actions:              [ list, new, create, edit, update, delete ]
-    collection_actions:   { init: get }
+    collection_actions:   { init: get, clear: get }
     object_actions:       { core: get }

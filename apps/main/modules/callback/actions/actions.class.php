@@ -35,6 +35,7 @@ class callbackActions extends myActions
 
         $this->form = new CallbackForm();
         $data = $request->getParameter($this->form->getName());
+        
         if (isset($data['name'])) $data['name'] = trim($data['name']);
         else $data['name'] = '';
         if (isset($data['email'])) $data['email'] = trim($data['email']);
@@ -50,7 +51,6 @@ class callbackActions extends myActions
         #else $userId = 0;
 
 
-        //$data['categoty_id'] = 21;
         $this->form->bind($data);
         $this->setTemplate('index');
         $this->setVar('error', '', true);
@@ -60,47 +60,11 @@ class callbackActions extends myActions
             try
             {
                 #$this->form->getObject()->setCorePush(false);
-                $result = $this->form->save();
-                if (!$result) $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
-
-                /*
-                if ($result){
-                    //отправляем письмо администратору
-
-                    $letterBody = "
-                    Обратная связь на сайте Enter.ru. <br><br>
-                    Содержание сообщение:<br>
-                    Имя: ".$data['name']."<br>
-                    E-mail: ".$data['email']."<br>
-                    Тема вопроса: ".$data['theme']."<br>
-                    Текст вопроса:  ".$data['text']."<br>
-                    ";
-                    $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
-                    $message = Swift_Message::newInstance( $data['theme'] )
-                             ->setFrom(array($data['email'] => $data['name']))
-                             ->setTo(array('feedback@enter.ru' => 'site admin'))
-                             ->setBody($letterBody, 'text/html');
-                    $res = $mailer->send($message);
-                    #var_dump($res);
-                    $message = Swift_Message::newInstance( $data['theme'] )
-                             ->setFrom(array($data['email'] => $data['name']))
-                             ->setTo(array('olga--tru@yandex.ru' => 'site admin'))
-                             ->setBody($letterBody, 'text/html');
-                    $res = $mailer->send($message);
-                    #var_dump($res);
-
-                }
-                else
-                {
-                    $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
-                }
-                 * 
-                 */
-
+                $this->form->save();
                 $this->setTemplate('sendOk');
             }
             catch (Exception $e)
-            {
+            {                
                 //echo $e->getMessage();
                 $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
                 $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());

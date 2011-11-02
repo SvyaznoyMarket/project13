@@ -20,6 +20,7 @@ class ProjectSyncTask extends sfBaseTask
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('dump', null, sfCommandOption::PARAMETER_NONE, 'Only dump response'),
       new sfCommandOption('log', null, sfCommandOption::PARAMETER_NONE, 'Enable logging'),
+      new sfCommandOption('packet', null, sfCommandOption::PARAMETER_REQUIRED, 'The packet_id', null),
       // add your own options here
     ));
 
@@ -44,13 +45,26 @@ EOF;
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
+    // add your code here
     $this->core = Core::getInstance();
 
-    // add your code here
-    $this->task = TaskTable::getInstance()->find($arguments['task_id']);
-    if ('success' == $this->task->status)
+    if ($options['packet'])
     {
-      //return true;
+      $this->task = new Task();
+      $this->task->type = 'project.sync';
+      $this->task->setDefaultPriority();
+      $this->task->setContentData(array(
+        'action'    => 'sync',
+        'packet_id' => $options['packet'],
+      ));
+    }
+    else {
+      $this->task = TaskTable::getInstance()->find($arguments['task_id']);
+    }
+
+    if (!$this->task)
+    {
+      return false;
     }
 
     $params = $this->task->getContentData();
@@ -99,32 +113,32 @@ EOF;
           $method = 'process'.sfInflector::underscore($packet['type']).'Entity';
           $method = method_exists($this, $method) ? $method : 'processDefaultEntity';
 
-          if (call_user_func_array(array($this, $method), array($action, $packet))) {
+          if (!call_user_func_array(array($this, $method), array($action, $packet)))
+          {
+            $this->logger->err(sfYaml::dump($packet, 6));
 
-            $this->task->status = 'success';
-            $this->task->save();
-          }
-          // model doesn't exists or other error
-          else {
-            $this->logger->log('Unknown model: '."\n".sfYaml::dump($packet, 6));
-
+            $this->task->attempt++;
             $this->task->status = 'fail';
-            $this->task->error = 'Unknown model '.$packet['type'];
-            $this->task->save();
+            $this->task->setErrorData('Unknown model '.$packet['type']);
           }
         }
         catch (Exception $e)
         {
           $this->logSection($packet['type'], ucfirst($action).' entity #'.$packet['data']['id'].' error: '.$e->getMessage(), null, 'ERROR');
-          $this->logger->log('Error: packet #'.$params['packet_id']."\n".$e->getMessage());
+          $this->logger->err("{$e->getMessage()}\n".sfYaml::dump($packet, 6));
 
           $this->task->attempt++;
-          $this->task->error = $e->getMessage();
-          $this->task->save();
+          $this->task->status = 'fail';
+          $this->task->setErrorData($e->getMessage());
         }
-
       }
     }
+
+    if ('run' == $this->task->status)
+    {
+      $this->task->status = 'success';
+    }
+    $this->task->save();
   }
 
 
@@ -170,6 +184,10 @@ EOF;
         $record->delete();
       }
     }
+
+    $record->free(true);
+    $record = null;
+    unset($record);
   }
 
 

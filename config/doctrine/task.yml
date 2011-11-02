@@ -13,3 +13,7 @@ Task:
     content:           { type: string, notnull: false, default: null }
     attempt:           { type: integer(4), notnull: true, default: 0, comment: 'Номер неудачной попытки' }
     error:             { type: string, notnull: false, default: null }
+  indexes:
+    core:
+      fields: [ type, core_id, core_packet_id ]
+      type: unique

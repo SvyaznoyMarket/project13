@@ -18,6 +18,11 @@ class ProductTypeTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductType');
   }
 
+  public function getQueryRootAlias()
+  {
+    return 'productType';
+  }
+
   public function getCoreMapping()
   {
     return array(
@@ -67,7 +72,7 @@ class ProductTypeTable extends myDoctrineTable
   public function getById($id, array $params = array())
   {
     $this->applyDefaultParameters($params);
-    
+
     $q = $this->createBaseQuery($params);
 
     $this->setQueryParameters($q, $params);
@@ -95,15 +100,18 @@ class ProductTypeTable extends myDoctrineTable
         $groupedPropertyArray[$propertyRelation->group_id][] = $propertyRelation['Property'];
       }
 
-      foreach ($record['PropertyGroup'] as $propertyGroup)
+      if ($params['group_property'])
       {
-        // TODO: Сделать поприличнее
-        if (isset($groupedPropertyArray[$propertyGroup->id])) {
-          $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
-        }
-        else
+        foreach ($record['PropertyGroup'] as $propertyGroup)
         {
-          sfContext::getInstance()->getLogger()->err('{'.get_class($this).'} Can\'t add ProductProperty to ProductPropertyGroup');
+          // TODO: Сделать поприличнее
+          if (isset($groupedPropertyArray[$propertyGroup->id])) {
+            $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
+          }
+          else
+          {
+            sfContext::getInstance()->getLogger()->err('{'.get_class($this).'} Can\'t add ProductProperty to ProductPropertyGroup');
+          }
         }
       }
     }
@@ -147,14 +155,16 @@ class ProductTypeTable extends myDoctrineTable
     $q->leftJoin('productType.ProductCategoryRelation productCategoryTypeRelation')
       ->andWhereIn('productCategoryTypeRelation.product_category_id', $productCategory->getDescendantIds(array('with_parent' => true)))
     ;
-    
+
     if ($params['with_productCount'])
     {
       $q->addSelect('COUNT(product.id) product_count')
         ->leftJoin('productType.Product product WITH product.is_instock = 1')
         //->groupBy('productType.id')
-      ;      
+      ;
     }
+
+    $q->useResultCache(true, null, $this->getQueryHash('productCategory-'.$productCategory->id.'/productType-all', $params));
 
     return $q->execute();
   }

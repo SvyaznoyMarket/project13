@@ -20,9 +20,7 @@ class taskActions extends autoTaskActions
   */
   public function executeClear(sfWebRequest $request)
   {
-    $days = 7;
-
-    $taskList = TaskTable::getInstance()->getOldList($days);
+    $taskList = TaskTable::getInstance()->getOldList(7);
 
     if ($taskList->delete())
     {

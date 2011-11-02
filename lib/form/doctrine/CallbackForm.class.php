@@ -38,6 +38,44 @@ class CallbackForm extends BaseCallbackForm
     $this->widgetSchema->setNameFormat('callback[%s]');
   }
 
+  public function setup()
+  {
+    parent::setup();
+      
+    $this->setWidgets(array(
+      'id'          => new sfWidgetFormInputHidden(),
+      'core_id'     => new sfWidgetFormInputText(),
+      'category_id' => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('Category'), 'add_empty' => true)),
+      'user_id'     => new sfWidgetFormDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'add_empty' => true)),
+      'name'        => new sfWidgetFormInputText(),
+      'email'       => new sfWidgetFormInputText(),
+      'theme'       => new sfWidgetFormInputText(),
+      'text'        => new sfWidgetFormTextarea(),
+      'created_at'  => new sfWidgetFormDateTime(),
+      'updated_at'  => new sfWidgetFormDateTime(),
+    ));
+
+    
+    $this->setValidators(array(
+      'id'          => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
+      'core_id'     => new sfValidatorInteger(array('required' => false)),
+      'category_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Category'), 'required' => false)),
+      'user_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'required' => true)),
+      'name'        => new sfValidatorString(array('max_length' => 255, 'required' => true)),
+      'email'       => new sfValidatorString(array('max_length' => 255, 'required' => true)),
+      'theme'       => new sfValidatorString(array('max_length' => 255, 'required' => true)),
+      'text'        => new sfValidatorString(array('required' => true)),
+      'created_at'  => new sfValidatorDateTime(),
+      'updated_at'  => new sfValidatorDateTime(),
+    ));
+
+    $this->widgetSchema->setNameFormat('callback[%s]');
+
+    $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
+
+    $this->setupInheritance();
+
+  }  
   
   public function getModelName()
   {

@@ -17,6 +17,11 @@ class ProductTable extends myDoctrineTable
     return Doctrine_Core::getTable('Product');
   }
 
+  public function getQueryRootAlias()
+  {
+    return 'product';
+  }
+
   public function getCoreMapping()
   {
     return array(
@@ -192,7 +197,7 @@ class ProductTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    $ids = $this->getIdsByQuery($q);
+    $ids = $this->getIdsByQuery($q, $params, 'productCategory-'.$category->id.'/product-ids');
 
     return $this->createListByIds($ids, $params);
   }
@@ -289,9 +294,7 @@ class ProductTable extends myDoctrineTable
             array_merge(array($parameter['filter']->property_id), !is_array($parameter['values']) ? array($parameter['values']) : $parameter['values'])
           );*/
           //$q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group']);
-          $q->andWhereIn(
-            'productPropertyRelation'.$parameter['filter']->id.'.option_id', $parameter['values']
-          );
+          $q->andWhereIn('productPropertyRelation'.$parameter['filter']->id.'.option_id', $parameter['values']);
         }
         else if ('range' == $parameter['filter']->type)
         {
@@ -479,6 +482,8 @@ class ProductTable extends myDoctrineTable
     ;
 
     $this->setQueryParameters($q, $params);
+
+    $q->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params));
 
     return $q->count();
   }

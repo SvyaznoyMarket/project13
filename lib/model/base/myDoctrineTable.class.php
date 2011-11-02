@@ -28,29 +28,34 @@ class myDoctrineTable extends Doctrine_Table
 
   public function createListByIds($ids, array $params = array())
   {
-    $this->applyDefaultParameters($params, array('index' => array()));
+    $this->applyDefaultParameters($params, array('index' => false));
+
+    $alias = $this->getQueryRootAlias();
 
     // TODO: использовать редиска мультигет
-    //$list = array();
     $list = $this->createList();
     foreach ($ids as $id)
     {
       $record = $this->getById($id, $params);
+
       if ($record)
       {
-        $index = (isset($params['index'][$this->getQueryRootAlias()]) && $this->hasColumn($params['index'][$this->getQueryRootAlias()])) ? $params['index'][$this->getQueryRootAlias()] : false;
-        if (false === $index)
+        $index = ($params['index'] && isset($params['index'][$alias]) && $this->hasColumn($params['index'][$alias]))
+          ? $params['index'][$alias]
+          : false
+        ;
+
+        if ($index)
         {
-          $list[] = $record;
+          $list[$record[$index]] = $record;
         }
         else
         {
-          $list[$record[$index]] = $record;
+          $list[] = $record;
         }
       }
     }
 
-    //return $this->createList($list);
     return $list;
   }
 
@@ -89,13 +94,18 @@ class myDoctrineTable extends Doctrine_Table
     return $this->getById($id);
   }
 
-  public function getIdsByQuery(Doctrine_Query $q, array $params = array())
+  public function getIdsByQuery(Doctrine_Query $q, array $params = array(), $hash = false)
   {
     $q = clone $q;
-    //$q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
-    $q->select($this->getQueryRootAlias().'.id')
+    $q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
+    //$q->select($this->getQueryRootAlias().'.id')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
+
+    if (!empty($hash))
+    {
+      $q->useResultCache(true, null, $this->getQueryHash($hash, $params));
+    }
 
     $ids = $q->execute();
     if (!is_array($ids))
@@ -103,7 +113,7 @@ class myDoctrineTable extends Doctrine_Table
       $ids = array($ids);
     }
     else {
-      $ids = array_unique($ids); // вместо DISTINCT
+      //$ids = array_unique($ids); // вместо DISTINCT
     }
 
     return $ids;
@@ -235,6 +245,22 @@ class myDoctrineTable extends Doctrine_Table
     $paramHash = count($params) > 0 ? md5(serialize($params)) : '~';
 
     return $path.'/'.$paramHash;
+  }
+
+  public function getCacheKeys(myDoctrineRecord $record)
+  {
+    $keys = array(
+      '*'.$this->getQueryRootAlias().'-all/*',
+      '*'.$this->getQueryRootAlias().'-count/*',
+    );
+
+    if ($this->hasField('id'))
+    {
+      $keys[] = '*'.$this->getQueryRootAlias().'-'.$record->id.'/*';
+      $keys[] = '*'.$this->getQueryRootAlias().'-ids/*';
+    }
+
+    return $keys;
   }
 
   public function createRecordFromCore(array $data)

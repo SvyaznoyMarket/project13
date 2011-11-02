@@ -1,6 +1,6 @@
 <form class="form" action="<?php echo url_for('@user_quickRegister') ?>" method="post">
 
-  <div class="pb5">Email:</div>
+  <div class="pb5">E-mail или мобильный телефон:</div>
   <div class="pb5">
     <?php echo $form['username']->renderError() ?>
     <?php echo $form['username']->render(array('class' => 'text width315 mb10')) ?>
