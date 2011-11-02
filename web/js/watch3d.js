@@ -2,20 +2,27 @@
 	360-degree Slideshow 
 	'Watch 3d'
 	Ivan Kotov
-	v 0.95
+	v 2.02
 
 	jQuery is prohibited
 							*/
+/*							
+	new in the v.2:
+	animation using canvas,
+	not img src
+							*/							
 /* 
 	api = {
-		'makeLite' : 'turnlite',
-		'makeFull' : 'turnfull',
-		'loadbar'  : 'percents',
-		'zoomer'   : 'bigpopup .scale',
+		'makeLite' : '#turnlite',
+		'makeFull' : '#turnfull',
+		'loadbar'  : '#percents',
+		'zoomer'   : '#bigpopup .scale',
 		'rollindex': '.scrollbox div b',
-		'propriate': ['versioncontrol','scrollbox']
+		'propriate': ['.versioncontrol','.scrollbox']
 	}
 */
+var cnvCompatible = document.createElement('canvas').getContext
+
 function likemovie( nodename , apinodes, s, b) {
 
 	var self = this
@@ -60,6 +67,14 @@ function likemovie( nodename , apinodes, s, b) {
 	var evstamp     = 0
 	var actor       = 'roll'
 
+	var mvblockW      = 0
+	var mvblockH      = 0
+	var cnvimg = { // init in start()
+		x: 0,
+		y: 0
+	}
+	var frontierctx   = null
+	
 /* ---------------------------------------------------------------------------- */ /* API */
 /* API */
 
@@ -149,6 +164,7 @@ function likemovie( nodename , apinodes, s, b) {
 	this.manualRollEnable = function() {
 		jrollindex.bind({
 			'mousedown': function(e){ // manual roll
+				e.preventDefault()			
 				self.stopRolling()
 				manualroll = true
 				var mousex = e.pageX
@@ -252,7 +268,7 @@ function likemovie( nodename , apinodes, s, b) {
 				break
 			case 8:				
 				indexes = [3,9,13,19,23,29,33,39]
-				this.speedupRolling( 200 )		
+				//this.speedupRolling( 200 )		
 				break
 			case 16:
 				indexes = [4,8,14,18,24,28,34,38]
@@ -348,16 +364,25 @@ function likemovie( nodename , apinodes, s, b) {
 					break
 				}	
 		}
-		var tmpURLs = smURLs
-		for(var i=0; i < bimindexes.length; i++) {
-			if (bimindexes[i] == flnm) {
-				tmpURLs = bURLs
-				break
-			} 
+		
+		if( cnvCompatible ) {
+			frontier.attr('ref',flnm)
+			frontierctx.clearRect(0, 0, 2500, 2500)	
+			frontierctx.drawImage( document.getElementById( 'ivn'+flnm ) , 
+					cnvimg.x, cnvimg.y,  vzooms[gi.zoom-1],  vzooms[gi.zoom-1])
+		} else {
+			var tmpURLs = smURLs
+			for(var i=0; i < bimindexes.length; i++) { // TODO
+				if (bimindexes[i] == flnm) {
+					tmpURLs = bURLs
+					break
+				} 
+			}
+			self.mvblock.hide()
+			frontier.attr('src', tmpURLs[ flnm - 1])		
+			self.mvblock.show()
 		}
-		self.mvblock.hide()
-		frontier.attr('src', tmpURLs[ flnm - 1])		
-		self.mvblock.show()
+		
 		self.rollshift( flnm - 1 )
 	}
 	
@@ -389,6 +414,8 @@ function likemovie( nodename , apinodes, s, b) {
 /* main() */
 
 	this.start = function() {
+		mvblockW = self.mvblock.innerWidth()
+		mvblockH = self.mvblock.innerHeight()
 		/* preload first four images */
 		$('<div>').hide()
 				  .attr('id','nvis')
@@ -398,13 +425,50 @@ function likemovie( nodename , apinodes, s, b) {
 		
 		self.api()
 		
-		/* create main img */
+		
 		this.initres = this.getInitSize()
+/* create main object */
+//cnvCompatible=false
+		if( ! cnvCompatible ) {
+			self.createImgFrontier()
+			return
+		}	
+		frontier    = $('<canvas>').attr({'id':'ivn','width':mvblockW,'height':mvblockH})
+		frontier.appendTo(this.mvblock)
+		frontierctx = document.getElementById('ivn').getContext('2d')
+		frontierctx.drawImage( document.getElementById( 'ivn1' ) , 
+			Math.round( ( mvblockW - self.initres ) / 2 ), Math.round( ( mvblockH - self.initres ) / 2 ), self.initres, self.initres)		
+		
+		cnvimg = { 
+			x: Math.round( ( mvblockW - self.initres ) / 2 ),
+			y: Math.round( ( mvblockH - self.initres ) / 2 )
+		}
+		
+		this.mvblock.bind ( {
+			'mousedown': function (e) {
+				initx = e.pageX // prohibited for rollanddrop()
+			},
+	    	'click': function() {
+	    		self.stopRolling()
+			},
+			'dblclick': function() {
+				self.startRolling()
+			}
+			
+		})
+		gi = new gigaimage( frontier, self.zoom, zoo, self.rollanddrop )
+		gi.addZoom( cnvimg )
+		$(window).resize( function() {		
+			document.getElementById('ivn').width  = self.mvblock.innerWidth()
+			document.getElementById('ivn').height = self.mvblock.innerHeight()	
+			//TODO centrify img in canvas
+		})	
+	}
+	
+	this.createImgFrontier = function() {
 		frontier = $('<img>').attr('src', bURLs[0])
-							 .attr('id','ivn')
-							 .css('position','relative')
-		
-		
+								 .attr('id','ivn') // TODO
+								 .css('position','relative')
 		frontier.bind ( {
 			'mousedown': function (e) {
 				initx = e.pageX // prohibited for rollanddrop()
@@ -424,16 +488,13 @@ function likemovie( nodename , apinodes, s, b) {
 		
 		gi = new gigaimage( frontier, self.zoom, zoo, self.rollanddrop )
 		gi.addZoom()		
-		
-		
+					
 		$(window).resize( function() {
 			if(self.zoom == 1) {
 				frontier.css('left', Math.round( (self.mvblock.innerWidth() - self.initres ) / 2 ) )
 					    .css('top', Math.round( (self.mvblock.innerHeight() - self.initres ) / 2 ) )							 
 			}
 		})
-		
-
 	}
 	
 	this.hide = function() {
@@ -464,8 +525,8 @@ function likemovie( nodename , apinodes, s, b) {
 	
 /* ---------------------------------------------------------------------------- */ /* Mechanics */	
 /* Mechanics */	
-
-	this.rollanddrop = function(e, delta, evs) {	
+	
+	this.rollanddrop = function(e, delta, evs ) {
 		if ( evstamp != evs ) {
 			evstamp = evs
 			if ( Math.abs(delta.x) > Math.abs(delta.y) )
@@ -474,15 +535,22 @@ function likemovie( nodename , apinodes, s, b) {
 				actor = 'drop'
 		}
 		var tmpdir // its a direction
-		if( actor == 'roll' && Math.abs (e.pageX - initx) > 20 * self.zoom ) {
+		if( actor == 'roll' && Math.abs (e.pageX - initx) > 20 * gi.zoom ) {
 			tmpdir = (e.pageX - initx) > 0 ? 1 : -1
 			initx = e.pageX
 			self.nextSrc(tmpdir)
 		} else if ( actor == 'drop' ) {
-			var img = {
-				y: parseInt( frontier.css('top'), 10 )			
-			}		
-			frontier.css('top',  delta.y + img.y)	
+			if( ! cnvCompatible ) {
+				var img = {
+					y: parseInt( frontier.css('top'), 10 )			
+				}		
+				frontier.css('top',  delta.y + img.y)	
+			} else {
+				cnvimg.y += delta.y
+				frontierctx.clearRect(0, 0, 2500, 2500)			
+				frontierctx.drawImage( document.getElementById( 'ivn'+flnm ) , 
+					cnvimg.x, cnvimg.y, vzooms[gi.zoom-1],  vzooms[gi.zoom-1])
+			}
 		}			
 	}
 	
@@ -499,13 +567,14 @@ function likemovie( nodename , apinodes, s, b) {
 		return this.imgzoom
 	}
 	
-/* ---------------------------------------------------------------------------- */ /* END */
+/* ---------------------------------------------------------------------------- */ /* the END */
 } // likemovie Object
 
-function gigaimage( worknode , zoom, zoo, overwritefn) {
+function gigaimage( worknode , zoom, /* zoomer node*/ zoo, overwritefn) {
 
 	var self = this
-	var jnode = worknode 
+	var jnode = worknode // img or canvas 
+	var tagIsCanvas = ( jnode[0].tagName == 'CANVAS' )
 	var active = false // d&d
 	var initx = {} 
 	var vzooms  = [500, 1200, 2500]		
@@ -515,6 +584,8 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 	if( zoo ) {
 		zooObj = new zoomer( zoo , self)
 	}
+	if ( cnvCompatible && tagIsCanvas ) 
+		var frontierctx = document.getElementById( jnode.attr('id') ).getContext('2d')
 	
 	this.cursorHand = function(){
 		jnode.css('cursor','url(/css/skin/cursor/cursor_1.png), url(/css/skin/cursor/cursor_1.gif), url(/css/skin/cursor/cursor_ie_1.cur), crosshair')
@@ -527,14 +598,15 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 	self.cursorHand()
 	
 	this.setDimensionProps = function( px ) {
-		var resol = px ? px : vzooms[this.zoom - 1]
+		var resol = px ? px : vzooms[self.zoom - 1]
 		jnode.attr('width', resol)
 		 	  .attr('height', resol)
 			  .css('left', Math.round( (jnode.parent().innerWidth() - resol ) / 2 ) )
 			  .css('top', Math.round( (jnode.parent().innerHeight() - resol ) / 2 ) )							 
 	
 	}
-	this.setDimensionProps()
+	if ( ! (cnvCompatible && tagIsCanvas ) )
+		this.setDimensionProps()
 	//var imageObject = new Image()
 	//imageObject.src = worknode.attr('src')
 	//console.info(imageObject.width)
@@ -542,7 +614,7 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 	this.zoomIn = function(){
 		var outer = jnode.parent()
 		var offs = outer.offset()
-		this.fixzoom(1, Math.round( outer.width() / 2 ) + offs.left, Math.round( outer.height() / 2 ) + offs.top )
+		this.fixzoom(1, Math.round( outer.width() / 2 ) + offs.left, Math.round( outer.height() / 2 ) + offs.top ) //center click imitation
 	}
 
 	this.zoomOut = function(){
@@ -550,32 +622,52 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 		var offs = outer.offset()
 		this.fixzoom(-1, Math.round( outer.width() / 2 ) + offs.left, Math.round( outer.height() / 2 ) + offs.top )
 	}
+	var outer = jnode.parent()
+
 	
 	this.fixzoom = function(de, mX, mY) {
 		var oldzoom = this.zoom
-		if(this.zoom == 1 && de < 0 || this.zoom == 3 && de > 0)
+		if(self.zoom == 1 && de < 0 || self.zoom == 3 && de > 0)
 			return
-		de > 0 ? this.zoom++ : this.zoom--
+		de > 0 ? self.zoom++ : self.zoom--
 		de = de / Math.abs(de)
-		var scale = vzooms[ this.zoom - 1] / vzooms[ oldzoom - 1] 
-		var outoffsets = jnode.parent().offset()
-		var img = {
-			x: parseInt( jnode.css('left'), 10 ),
-			y: parseInt( jnode.css('top'), 10 )			
+		var scale = vzooms[ self.zoom - 1] / vzooms[ oldzoom - 1]
+		
+		if( ! ( cnvCompatible && tagIsCanvas ) ) {
+			 
+			var outoffsets = jnode.parent().offset()
+			var img = {
+				x: parseInt( jnode.css('left'), 10 ),
+				y: parseInt( jnode.css('top'), 10 )			
+			}
+			mX -= outoffsets.left + img.x
+			mY -= outoffsets.top  + img.y
+			img.x -= de * Math.abs( Math.round ( mX * (1 - scale) ) )
+			img.y -= de * Math.abs( Math.round ( mY * (1 - scale) ) )		
+			jnode.attr('width', vzooms[self.zoom - 1])
+					.attr('height', vzooms[self.zoom - 1])
+					.css({'left': img.x , 'top': img.y})
+			
+		} else {
+		// if cnvCompatible
+			var outoffsets = jnode.parent().offset()
+			mX -= outoffsets.left + cnvimg.x
+			mY -= outoffsets.top  + cnvimg.y
+			cnvimg.x -= de * Math.abs( Math.round ( mX * (1 - scale) ) )
+			cnvimg.y -= de * Math.abs( Math.round ( mY * (1 - scale) ) )
+			var flnm = jnode.attr('ref')
+			frontierctx.clearRect(0, 0, 2500, 2500)			
+			frontierctx.drawImage( document.getElementById( 'ivn'+flnm ) , 
+					cnvimg.x, cnvimg.y, vzooms[self.zoom-1],  vzooms[self.zoom-1])
 		}
-		mX -= outoffsets.left + img.x
-		mY -= outoffsets.top  + img.y
-		img.x -= de * Math.abs( Math.round ( mX * (1 - scale) ) )
-		img.y -= de * Math.abs( Math.round ( mY * (1 - scale) ) )		
-		jnode.attr('width', vzooms[this.zoom - 1])
-			    .attr('height', vzooms[this.zoom - 1])
-			    .css({'left': img.x , 'top': img.y})
+		
 		if( zooObj ) {
 			de > 0 ? zooObj.plus() : zooObj.minus()
 		}
 	}
 	
-	this.addZoom = function() {
+	this.addZoom = function( lkmvimg ) {
+		cnvimg = lkmvimg
 		jnode.bind({
 			'mousewheel': function (e, delta) {
 				e.preventDefault()
@@ -612,7 +704,7 @@ function gigaimage( worknode , zoom, zoo, overwritefn) {
 				x: e.pageX - init.pageX ,
 				y: e.pageY - init.pageY
 			}
-			self.action( e, mdelta, evstamp )
+			self.action( e, mdelta, evstamp, self.zoom )
 			init.pageX = e.pageX				
 			init.pageY = e.pageY					
 		}
@@ -707,6 +799,7 @@ function zoomer ( jn , zfunctions ) {
 		'mousedown': function(e){
 			dragging = true
 			e.preventDefault()
+			e.stopPropagation()
 		}, 
 		'mouseup': function(){
 			dragging = false
@@ -734,6 +827,7 @@ function zoomer ( jn , zfunctions ) {
 		'mousemove': function(e){			
 			if ( ! dragging ) return
 			e.preventDefault()
+			e.stopPropagation()
 			var ntop = e.pageY - op - 3
 			if( ntop < 55 && ntop > -3) {
 
