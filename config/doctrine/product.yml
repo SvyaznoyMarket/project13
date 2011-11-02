@@ -208,6 +208,8 @@ Product:
     prefix:            { type: string(255), notnull: false, default: null }
     type_id:           { type: integer(20), notnull: true }
     creator_id:        { type: integer(20), notnull: false, default: null }
+    line_id:           { type: integer(20), notnull: false, default: null }
+    model_id:          { type: integer(20), notnull: false, default: null }
 #    category_id:       { type: integer(20), notnull: true }
     group_id:          { type: integer(20), notnull: false, default: null }
     tagline:           { type: string(255), notnull: false, default: null }
@@ -227,6 +229,8 @@ Product:
     Category:          { class: ProductCategory, foreignAlias: Product, refClass: ProductCategoryProductRelation, local: product_id, foreign: product_category_id, type: many, foreignType: many }
     Property:          { class: ProductProperty, foreignAlias: Product, refClass: ProductPropertyRelation, local: product_id, foreign: property_id, type: many, foreignType: many }
     Group:             { class: ProductGroup, foreignAlias: Product, local: group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    Line:              { class: ProductLine, foreignAlias: Product, local: line_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    Model:             { class: Product, foreignAlias: SubProduct, local: model_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL  }
 
 ProductPropertyRelation:
   options:
@@ -380,3 +384,14 @@ ProductPrice:
   relations:
     Product:                { class: Product, foreignAlias: ProductPrice, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     PriceList:              { class: ProductPriceList, foreignAlias: Price, local: product_price_list_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+ProductLine:
+  options:
+    comment:  'Серии мебели'
+  actAs:
+    Timestampable: ~
+    Corable: { push: disable }
+  columns:
+    id:      { type: integer(20), autoincrement: true, primary: true }
+    name:    { type: string(255), notnull: true, notblank: true }
+    photo:   { type: string(255), notnull: false, default: null }
