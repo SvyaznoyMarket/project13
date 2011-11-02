@@ -157,6 +157,18 @@ class Product extends BaseProduct
           break;
       }
     }
+    elseif (!empty($data['is_active']) && $data['is_active'])
+    {
+      $this->view_list = 1;
+      $this->view_show = 1;
+      $this->is_instock = 1;
+    }
+    else
+    {
+      $this->view_list = 0;
+      $this->view_show = 0;
+      $this->is_instock = 0;
+    }
 
   }
 
