@@ -99,32 +99,32 @@ EOF;
           $method = 'process'.sfInflector::underscore($packet['type']).'Entity';
           $method = method_exists($this, $method) ? $method : 'processDefaultEntity';
 
-          if (call_user_func_array(array($this, $method), array($action, $packet))) {
+          if (!call_user_func_array(array($this, $method), array($action, $packet)))
+          {
+            $this->logger->err(sfYaml::dump($packet, 6));
 
-            $this->task->status = 'success';
-            $this->task->save();
-          }
-          // model doesn't exists or other error
-          else {
-            $this->logger->log('Unknown model: '."\n".sfYaml::dump($packet, 6));
-
+            $this->task->attempt++;
             $this->task->status = 'fail';
-            $this->task->error = 'Unknown model '.$packet['type'];
-            $this->task->save();
+            $this->task->setErrorData('Unknown model '.$packet['type']);
           }
         }
         catch (Exception $e)
         {
           $this->logSection($packet['type'], ucfirst($action).' entity #'.$packet['data']['id'].' error: '.$e->getMessage(), null, 'ERROR');
-          $this->logger->log('Error: packet #'.$params['packet_id']."\n".$e->getMessage());
+          $this->logger->err("{$e->getMessage()}\n".sfYaml::dump($packet, 6));
 
           $this->task->attempt++;
-          $this->task->error = $e->getMessage();
-          $this->task->save();
+          $this->task->status = 'fail';
+          $this->task->setErrorData($e->getMessage());
         }
-
       }
     }
+
+    if ('run' == $this->task->status)
+    {
+      $this->task->status = 'success';
+    }
+    $this->task->save();
   }
 
 
