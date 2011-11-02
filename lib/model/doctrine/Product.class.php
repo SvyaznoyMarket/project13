@@ -122,7 +122,6 @@ class Product extends BaseProduct
 
       // new relation
       $new = array_diff(array_keys($collectionData), $existing);
-      //myDebug::dump(array('new' => count($new)));
       foreach ($new as $index)
       {
         $relation = new ProductPropertyRelation();
@@ -130,6 +129,35 @@ class Product extends BaseProduct
         $this->PropertyRelation[] = $relation;
       }
     }
+
+    if (empty($data['media_image']))
+    {
+      $this->main_photo = 'default.jpg';
+    }
+
+    if (!empty($data['status_id']))
+    {
+      switch ($data['status_id'])
+      {
+        case 1:
+          $this->view_list = 1;
+          $this->view_show = 1;
+          $this->is_instock = 1;
+          $this->Status = ProductStatusTable::getInstance()->findOneByToken('available');
+        case 2:
+          $this->view_list = 1;
+          $this->view_show = 1;
+          $this->is_instock = 0;
+          $this->Status = ProductStatusTable::getInstance()->findOneByToken('available');
+          break;
+        default:
+          $this->view_list = 0;
+          $this->view_show = 0;
+          $this->is_instock = 0;
+          break;
+      }
+    }
+
   }
 
   public function getIsInsale()

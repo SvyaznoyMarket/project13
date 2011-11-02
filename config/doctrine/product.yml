@@ -63,6 +63,7 @@ ProductCategory:
     FilterGroup:       { class: ProductFilterGroup, foreignAlias: Category, local: filter_group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ProductType:       { class: ProductType, foreignAlias: ProductCategory, refClass: ProductCategoryTypeRelation, local: product_category_id, foreign: product_type_id, type: many, foreignType: many }
     MainProduct:       { class: Product, foreignAlias: MyCategory, local: product_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    ProductLine:       { class: ProductLine, foreignAlias: ProductCategory, refClass: ProductCategoryProductLineRelation, local: category_id, foreign: line_id, type: many, foreignType: many }
 
 ProductCategoryProductRelation:
   options:
@@ -212,6 +213,7 @@ Product:
     model_id:          { type: integer(20), notnull: false, default: null }
 #    category_id:       { type: integer(20), notnull: true }
     group_id:          { type: integer(20), notnull: false, default: null }
+    status_id:         { type: integer(20), notnull: false, default: null }
     tagline:           { type: string(255), notnull: false, default: null }
     preview:           { type: string, notnull: false, default: null, comment: 'Анонс' }
     view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар по прямой ссылке?' }
@@ -230,7 +232,8 @@ Product:
     Property:          { class: ProductProperty, foreignAlias: Product, refClass: ProductPropertyRelation, local: product_id, foreign: property_id, type: many, foreignType: many }
     Group:             { class: ProductGroup, foreignAlias: Product, local: group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Line:              { class: ProductLine, foreignAlias: Product, local: line_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
-    Model:             { class: Product, foreignAlias: SubProduct, local: model_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL  }
+    Model:             { class: Product, foreignAlias: SubProduct, local: model_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
+    Status:            { class: ProductStatus, foreignAlias: Product, local: status_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 ProductPropertyRelation:
   options:
@@ -395,3 +398,25 @@ ProductLine:
     id:      { type: integer(20), autoincrement: true, primary: true }
     name:    { type: string(255), notnull: true, notblank: true }
     photo:   { type: string(255), notnull: false, default: null }
+
+ProductStatus:
+  options:
+    comment:  'Тип продажи товара'
+  columns:
+    id:      { type: integer(20), autoincrement: true, primary: true }
+    name:    { type: string(255), notnull: true, notblank: true }
+    token:   { type: string(255), notnull: true, notblank: true }
+
+ProductCategoryProductLineRelation:
+  options:
+    comment:          'Связь категории товара с товарной линией'
+  actAs:
+    Corable:          { push: disable }
+  columns:
+    id:               { type: integer(20), autoincrement: true, primary: true }
+    category_id:      { type: integer(20), notnull: true }
+    line_id:          { type: integer(20), notnull: true }
+    position:         { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
+  relations:
+    ProductLine:      { class: ProductLine, foreignAlias: ProductCategoryRelation, local: line_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    ProductCategory:  { class: ProductCategory, foreignAlias: ProductLineRelation, local: category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
