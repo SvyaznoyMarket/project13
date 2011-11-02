@@ -100,15 +100,18 @@ class ProductTypeTable extends myDoctrineTable
         $groupedPropertyArray[$propertyRelation->group_id][] = $propertyRelation['Property'];
       }
 
-      foreach ($record['PropertyGroup'] as $propertyGroup)
+      if ($params['group_property'])
       {
-        // TODO: Сделать поприличнее
-        if (isset($groupedPropertyArray[$propertyGroup->id])) {
-          $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
-        }
-        else
+        foreach ($record['PropertyGroup'] as $propertyGroup)
         {
-          sfContext::getInstance()->getLogger()->err('{'.get_class($this).'} Can\'t add ProductProperty to ProductPropertyGroup');
+          // TODO: Сделать поприличнее
+          if (isset($groupedPropertyArray[$propertyGroup->id])) {
+            $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
+          }
+          else
+          {
+            sfContext::getInstance()->getLogger()->err('{'.get_class($this).'} Can\'t add ProductProperty to ProductPropertyGroup');
+          }
         }
       }
     }
