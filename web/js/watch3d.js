@@ -2,7 +2,7 @@
 	360-degree Slideshow 
 	'Watch 3d'
 	Ivan Kotov
-	v 2.02
+	v 2.03
 
 	jQuery is prohibited
 							*/
@@ -18,54 +18,61 @@
 		'loadbar'  : '#percents',
 		'zoomer'   : '#bigpopup .scale',
 		'rollindex': '.scrollbox div b',
-		'propriate': ['.versioncontrol','.scrollbox']
+		'propriate': ['.versioncontrol','.scrollbox'] // for toggle()
 	}
 */
 var cnvCompatible = document.createElement('canvas').getContext
 
 function likemovie( nodename , apinodes, s, b) {
-
+	this.mvblock = $(nodename)
+	if( ! this.mvblock.length )
+		return false
+	if( !s || !b || s.length != 40 || b.length != 40)
+		return false
+	var apinodes = apinodes ? apinodes : {}
+	var smURLs = s
+	var bURLs  = b
+	var URLs   = null
+	
 	var self = this
 	
 	var iid  = null //setInterval
 	var ccid = null //setInterval
 	var ssid = null //setTimeout
-	var apinodes = apinodes ? apinodes : {}
-	var smURLs = s
-	var bURLs  = b
-	var URLs   = null
-
 	this.completenessIntrvl = 2000
-	this.rollingIntrvl = 400	
+	this.rollingIntrvl      = 400	
 
-	var vzooms  = [500, 1200, 2500]			
-	var initInd = [1,11,21,31]
-	var indexes = initInd
+	var vzooms     = [500, 1200, 2500]	
+	this.initres   = vzooms[0]
+	var initInd    = [1,11,21,31]
+	var indexes    = initInd
 	var bimindexes = []	
 
 	this.howmany = 40	
-	this.zoom    = 1 /* {1,2,3} */
-	this.imgzoom = 0
+	this.zoom    = 1 /* \in {1,2,3} */ //TODO reduce
+	this.imgzoom = 0 //TODO reduce
 	
 	this.mode    = 'slow'		
-	this.initres = vzooms[0]
-	this.mvblock = $(nodename)	
-
-
-	var frontier    = null
-	var loader      = null
-	var zoo         = null	
-	var gi          = null
-	var jrollindex  = null
-
+			
+	var frontier    = null // 'img' or 'canvas' is our hero
+	var loader      = null // loader bar
+	var zoo         = null // zoomer is plus&minus buttons
+	var gi          = null // gigaimage object for hero
+	var jrollindex  = null // rolling stone
+	var cordinates  = [    // for the rolling stone
+		[110, 28], [121, 28], [132, 27], [143, 26], [154, 25], [165, 24], [176, 23], [187, 21], [198, 19], [209, 16],
+		[220, 13], [209, 10], [198, 7], [187, 6], [176, 5], [165, 4], [154, 3], [143, 2], [132, 1], [121, 0], 
+		[110, 0], [99, 0], [88, 1], [77, 2], [66, 3], [55, 4], [44, 5], [33, 6], [22, 7], [11, 10],
+		[0, 13], [11, 16], [22, 19], [33, 21], [44, 23], [55, 24], [66, 25], [77, 26], [88, 27], [99, 28]
+	]
 	var initx       = 0
 	var flnm        = 1
 	var pointer     = 1	
-	var play        = false 
-	var liteversion = false
-	var abletolite  = true
-	var evstamp     = 0
-	var actor       = 'roll'
+	var play        = false // rolling in action
+	var liteversion = false // lite version is active
+	var abletolite  = true  // able to turn with lite version
+	var evstamp     = 0     // event stamp
+	var actor       = 'roll'// or 'drop'
 
 	var mvblockW      = 0
 	var mvblockH      = 0
@@ -73,7 +80,10 @@ function likemovie( nodename , apinodes, s, b) {
 		x: 0,
 		y: 0
 	}
-	var frontierctx   = null
+	var frontierctx = null // 2d context for canvas hero		
+	var tmptgl      = true // for this.toggle()
+
+	var manualroll = false	
 	
 /* ---------------------------------------------------------------------------- */ /* API */
 /* API */
@@ -88,8 +98,6 @@ function likemovie( nodename , apinodes, s, b) {
 			jrollindex = $( apinodes.rollindex )
 		this.toggle()	
 	}
-	
-	var tmptgl = true
 	
 	this.toggle = function() {
 		if( ! apinodes.propriate ) 
@@ -107,8 +115,7 @@ function likemovie( nodename , apinodes, s, b) {
 			$(apinodes.makeLite).hide()
 		if( apinodes && apinodes.makeFull )
 			$(apinodes.makeFull).hide()	
-	}
-	
+	}	
 	
 	this.makeLite = function() {
 		var mlnode = null
@@ -147,14 +154,6 @@ function likemovie( nodename , apinodes, s, b) {
 				  }
 			  })  
 	}	
-
-	var cordinates = [
-			[110, 28], [121, 28], [132, 27], [143, 26], [154, 25], [165, 24], [176, 23], [187, 21], [198, 19], [209, 16],
-			[220, 13], [209, 10], [198, 7], [187, 6], [176, 5], [165, 4], [154, 3], [143, 2], [132, 1], [121, 0], 
-			[110, 0], [99, 0], [88, 1], [77, 2], [66, 3], [55, 4], [44, 5], [33, 6], [22, 7], [11, 10],
-			[0, 13], [11, 16], [22, 19], [33, 21], [44, 23], [55, 24], [66, 25], [77, 26], [88, 27], [99, 28]
-		]
-	var manualroll = false	
 
 	this.rollshift = function( rollindex ) {
 		rollindex = ( rollindex - 5 < 0 ) ? 34 + rollindex : rollindex - 5
@@ -572,31 +571,30 @@ function likemovie( nodename , apinodes, s, b) {
 
 function gigaimage( worknode , zoom, /* zoomer node*/ zoo, overwritefn) {
 
-	var self = this
-	var jnode = worknode // img or canvas 
+	var self        = this
+	var jnode       = worknode // img or canvas 
 	var tagIsCanvas = ( jnode[0].tagName == 'CANVAS' )
-	var active = false // d&d
-	var initx = {} 
-	var vzooms  = [500, 1200, 2500]		
-	var evstamp = 0
-	var zooObj = null
-	this.zoom = zoom
+	var active      = false // d&d
+	var initx       = {} 
+	var vzooms      = [500, 1200, 2500]		
+	var evstamp     = 0
+	var zooObj      = null
+	this.zoom       = zoom
 	if( zoo ) {
-		zooObj = new zoomer( zoo , self)
+		zooObj      = new zoomer( zoo , self)
 	}
 	if ( cnvCompatible && tagIsCanvas ) 
-		var frontierctx = document.getElementById( jnode.attr('id') ).getContext('2d')
+	var frontierctx = document.getElementById( jnode.attr('id') ).getContext('2d')
 	
 	this.cursorHand = function(){
 		jnode.css('cursor','url(/css/skin/cursor/cursor_1.png), url(/css/skin/cursor/cursor_1.gif), url(/css/skin/cursor/cursor_ie_1.cur), crosshair')
 	}
+	self.cursorHand()
 
 	this.cursorDrag = function(){
 		jnode.css('cursor','url(/css/skin/cursor/cursor_2.png), url(/css/skin/cursor/cursor_2.gif), url(/css/skin/cursor/cursor_ie_2.cur), move')
 	}
-	
-	self.cursorHand()
-	
+			
 	this.setDimensionProps = function( px ) {
 		var resol = px ? px : vzooms[self.zoom - 1]
 		jnode.attr('width', resol)
@@ -606,7 +604,7 @@ function gigaimage( worknode , zoom, /* zoomer node*/ zoo, overwritefn) {
 	
 	}
 	if ( ! (cnvCompatible && tagIsCanvas ) )
-		this.setDimensionProps()
+		this.setDimensionProps() //TODO for canvas
 	//var imageObject = new Image()
 	//imageObject.src = worknode.attr('src')
 	//console.info(imageObject.width)
@@ -722,10 +720,9 @@ function gigaimage( worknode , zoom, /* zoomer node*/ zoo, overwritefn) {
 		}		
 		jnode.css('top',  mdelta.y + img.y)
 			 .css('left', mdelta.x + img.x)
-
 	}
 	
-	this.action = overwritefn ? overwritefn : this.dropping
+	this.action = overwritefn ? overwritefn : this.dropping // FUNCTION
 	
 	this.destroy = function() {
 		jnode.unbind('mousedown')
@@ -734,14 +731,15 @@ function gigaimage( worknode , zoom, /* zoomer node*/ zoo, overwritefn) {
 		$(document).unbind('.zoomer')
 		for(var x in this)
 			delete this[x]
+		//TODO this = null	
 	}
 	
 } // gigaimage Object
 
-function loadbar () {
+function loadbar () { // creates node if doesnt exist
 	this.percentage = 0
-	var title      = 'loadbar'
-	var ref       = null
+	var title       = 'loadbar'
+	var ref         = null
 	
 	this.create = function( nodename ) {
 		if( nodename ) {
@@ -763,17 +761,43 @@ function loadbar () {
 	
 	this.destroy = function () { //just decorative
 		setTimeout( function () { ref.fadeOut('slow') } , 2000)
+		//TODO this = null
 	}
 	
 } // loadbar Object
 
-function zoomer ( jn , zfunctions ) {
-	//var self = this
+function zoomer ( jn , /* gigaimage object */ zfunctions ) { // CAUTION, object is specific!
 	if (!jn) 
 		return false
-	var jnode = jn
+	var jnode     = jn
 	var nodeindex = $('.zoomind', jn)
-	var dragging = false
+	var dragging  = false
+	var topoffsets = [54, 28, -2] // three states of zoomer
+	/*
+	(+ ) zone 1
+	 ||	 zone 1
+	 ||  zone 2
+	 ||  zone 3
+	(||) zone 3
+	 ||  zone 3
+	 ||  zone 4
+	 ||  zone 5
+	(- ) zone 5
+	*/	
+	var getZone = function( Y ){
+		if( Y < topoffsets[ 2 ] + 6 ) return 1
+		if( Y < topoffsets[ 1 ] - 4 ) return 2
+		if( Y < topoffsets[ 1 ] + 4 ) return 3		
+		if( Y < topoffsets[ 0 ] - 6 ) return 4
+		return 5		
+	}
+	var op = nodeindex.parent().offset().top
+		
+	var prev = 3
+	var prevZ = 3
+	var Zones = [5,3,1]
+	
+	nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] ) // initia
 	
 	this.hide = function() {
 		jn.hide()
@@ -804,24 +828,7 @@ function zoomer ( jn , zfunctions ) {
 		'mouseup': function(){
 			dragging = false
 		}
-	})
-		
-	var topoffsets = [54, 28, -2]
-	nodeindex.css('top', topoffsets[ zfunctions.zoom - 1] ) // initia
-	
-	var getZone = function( Y ){
-		if( Y < topoffsets[ 2 ] + 6 ) return 1
-		if( Y < topoffsets[ 1 ] - 4 ) return 2
-		if( Y < topoffsets[ 1 ] + 4 ) return 3		
-		if( Y < topoffsets[ 0 ] - 6 ) return 4
-		return 5		
-	}
-	var op = nodeindex.parent().offset().top
-		
-	var prev = 3
-	var prevZ = 3
-	var Zones = [5,3,1]
-	
+	})			
 	
 	$('b.zoomind', jn).parent().bind({
 		'mousemove': function(e){			
