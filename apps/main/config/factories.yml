@@ -36,7 +36,7 @@ all:
       extra_parameters_as_query_string: true
 
   view_cache_manager:
-    class: sfViewCacheManager
+    class: myViewCacheManager
     param:
       cache_key_use_vary_headers: true
       cache_key_use_host_name:    true
@@ -49,3 +49,9 @@ all:
     param:
       auto_start: true
       session_name: enter
+
+  view_cache:
+    class: sfRediskaCache
+    param:
+      lifetime: 604800
+      prefix: view
