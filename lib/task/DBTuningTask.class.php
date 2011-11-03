@@ -57,15 +57,15 @@ EOF;
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //5) Обновить у product поля is_instock, view_list, view_show
-    $this->logSection('INFO', 'Обновляю у product поля is_instock, view_list, view_show');
-    $count = $connection->exec("UPDATE `product` `p` INNER JOIN `stock_product_relation` `sp` ON `sp`.`product_id` = `p`.`id` AND `sp`.`quantity` > 0 AND `sp`.`stock_id` = 1 INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> ''");
-    $count += $connection->exec("UPDATE `product` `p` INNER JOIN `product_category_product_relation` `pcp` ON `pcp`.`product_id` = `p`.`id` INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> '' AND `pcp`.`product_category_id` IN (SELECT `pc`.`id` FROM `product_category` `pc` INNER JOIN `product_category` `mebel` ON `mebel`.`id` = 2 WHERE `pc`.`lft` > `mebel`.`lft` AND `pc`.`rgt` < `mebel`.`rgt` AND `pc`.`root_id` = `mebel`.`root_id`)");
-    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+//    $this->logSection('INFO', 'Обновляю у product поля is_instock, view_list, view_show');
+//    $count = $connection->exec("UPDATE `product` `p` INNER JOIN `stock_product_relation` `sp` ON `sp`.`product_id` = `p`.`id` AND `sp`.`quantity` > 0 AND `sp`.`stock_id` = 1 INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> ''");
+//    $count += $connection->exec("UPDATE `product` `p` INNER JOIN `product_category_product_relation` `pcp` ON `pcp`.`product_id` = `p`.`id` INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> '' AND `pcp`.`product_category_id` IN (SELECT `pc`.`id` FROM `product_category` `pc` INNER JOIN `product_category` `mebel` ON `mebel`.`id` = 2 WHERE `pc`.`lft` > `mebel`.`lft` AND `pc`.`rgt` < `mebel`.`rgt` AND `pc`.`root_id` = `mebel`.`root_id`)");
+//    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //6) Сделать update значений характеристик: поменять true и false на "да" и "нет"
-    $this->logSection('INFO', 'Делаю update значений характеристик: поменять true и false на "да" и "нет"');
-    $count = $connection->exec("UPDATE `product_property_relation` SET `value` = ELT(FIELD(`value`, 'true', 'false'), 'да', 'нет') WHERE `value` IN ('true', 'false')");
-    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+//    $this->logSection('INFO', 'Делаю update значений характеристик: поменять true и false на "да" и "нет"');
+//    $count = $connection->exec("UPDATE `product_property_relation` SET `value` = ELT(FIELD(`value`, 'true', 'false'), 'да', 'нет') WHERE `value` IN ('true', 'false')");
+//    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     $this->logSection('INFO', 'Добавляем во все категории группы тэгов');
 
@@ -124,9 +124,9 @@ EOF;
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //11) Устанавливаю всем полям типа select тип select
-    $this->logSection('INFO', 'Устанавливаю всем полям типа select тип select');
-    $count = $connection->exec("UPDATE `product_property` `pp` INNER JOIN `product_property_option` `ppo` ON `pp`.`id` = `ppo`.`property_id` SET `pp`.`type` = 'select'");
-    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+//    $this->logSection('INFO', 'Устанавливаю всем полям типа select тип select');
+//    $count = $connection->exec("UPDATE `product_property` `pp` INNER JOIN `product_property_option` `ppo` ON `pp`.`id` = `ppo`.`property_id` SET `pp`.`type` = 'select'");
+//    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
   }
 }
