@@ -1,9 +1,7 @@
 <?php if ($task->error): ?>
-<ul>
-<?php foreach($task->getErrorData() as $error): ?>
-  <li><?php echo $error ?></li>
-<?php endforeach ?>
-</ul>
+<pre style="width: 400px; height: 100px; overflow: scroll">
+  <?php echo $task->error ?>
+</pre>
 
 <?php else: ?>
   <?php echo $task->error ?>

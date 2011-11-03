@@ -71,16 +71,14 @@ class Task extends BaseTask
   public function setErrorData($value)
   {
     $error = $this->getErrorData();
-    $error[] = $value;
+    $error .= "\n".$value;
 
-    $this->error = sfYaml::dump($error);
+    $this->error = $error;
   }
 
-  public function getErrorData($name = null)
+  public function getErrorData()
   {
-    $value = sfYaml::load($this->error);
-
-    return null == $name ? $value : $value[$name];
+    return $this->error;
   }
 
   public function setDefaultPriority()
