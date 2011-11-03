@@ -1366,5 +1366,10 @@ border-radius: 5px;
 	color: #fff;	
 	background: #ffa901;
 	}	
+.catProductNum{
+    padding:4px 0px 10px 0px;
+    font-size: 14px;
+}
+
 
 /* ----------- /categories ------------- */
