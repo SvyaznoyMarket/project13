@@ -39,6 +39,9 @@ class ProductPropertyRelationTable extends myDoctrineTable
       case 'text':
         $field = 'value_text';
         break;
+      case 'boolean':
+        $field = 'value_boolean';
+        break;
       default:
         $field = 'value';
         break;

@@ -28,9 +28,17 @@ class ProductPropertyRelation extends BaseProductPropertyRelation
 
   public function setRealValue($value)
   {
-    $field = $this->getTable()->getValueFieldByType($this->type ? $this->type : $this->Property->type);
+    $type = $this->type ? $this->type : $this->Property->type;
+    $field = $this->getTable()->getValueFieldByType($type);
 
-    $this->set($field, $value);
+    if ('boolean' == $type)
+    {
+      $this->set($field, 'да' == $value ? true : false);
+      $this->value = $value;
+    }
+    else {
+      $this->set($field, $value);
+    }
   }
 
   public function getFormattedValue()
