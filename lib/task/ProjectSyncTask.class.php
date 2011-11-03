@@ -158,18 +158,12 @@ EOF;
       if (!empty ($record->core_parent_id) && $record->getTable()->hasTemplate('NestedSet'))
       {
         $modified = $record->getLastModified();
-        if (isset($modified['core_lft']) || isset($modified['core_rgt']))
+        if (isset($modified['core_parent_id']))
         {
           $parent = $record->getTable()->getByCoreId($record->core_parent_id);
           if ($parent && ($parent->id != $record->getNode()->getParent()->id))
           {
-            $record->getNode()->moveAsFirstChildOf($parent);
-          }
-
-          $prevSibling = $record->getTable()->getByCoreId($record->core_lft);
-          if ($prevSibling && ($prevSibling->id != $record->getNode()->getParent()->id))
-          {
-            $record->getNode()->moveAsPrevSiblingOf($prevSibling);
+            $record->getNode()->moveAsLastChildOf($parent);
           }
         }
       }
