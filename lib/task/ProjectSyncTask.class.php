@@ -129,7 +129,7 @@ EOF;
 
           $this->task->attempt++;
           $this->task->status = 'fail';
-          $this->task->setErrorData($e->getMessage());
+          $this->task->setErrorData("{$e->getMessage()}\n".sfYaml::dump($packet, 6));
         }
       }
     }

@@ -71,8 +71,6 @@ class Task extends BaseTask
     $error = $this->getErrorData();
     $error[] = $value;
 
-    $error = array_unique($error);
-
     $this->error = sfYaml::dump($error);
   }
 
