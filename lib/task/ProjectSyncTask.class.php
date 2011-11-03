@@ -166,7 +166,7 @@ EOF;
             $record->getNode()->moveAsFirstChildOf($parent);
           }
 
-          $prevSibling = $record->getTable()->getIdByCoreId($record->core_lft);
+          $prevSibling = $record->getTable()->getByCoreId($record->core_lft);
           if ($prevSibling && ($prevSibling->id != $parent->id))
           {
             $record->getNode()->moveAsPrevSiblingOf($prevSibling);
