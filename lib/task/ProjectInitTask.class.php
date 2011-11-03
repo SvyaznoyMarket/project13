@@ -57,6 +57,18 @@ EOF;
       return false;
     }
 
+    if (0 == $this->task->step)
+    {
+      TaskTable::getInstance()->createQuery()
+        ->update('Task')
+        ->set('status = ?', 'success')
+        ->where('type = ? AND core_packet_id < ?', array('project.sync', $params['packet_id']))
+        ->execute()
+      ;
+    }
+    $this->task->step++;
+    $this->task->save();
+
     $this->connection->exec('SET foreign_key_checks = 0');
 
     // add your code here
@@ -139,7 +151,7 @@ EOF;
     if (!$options['freeze'])
     {
       $this->task->setContentData(array(
-        'packet_id' => $nextPacketId, //4508
+        'packet_id' => $nextPacketId,
       ));
       $this->task->save();
     }
