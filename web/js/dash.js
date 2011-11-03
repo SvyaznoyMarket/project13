@@ -1,7 +1,12 @@
 $(document).ready(function(){
 	/* Lightbox */
 	var lbox = {}
+	if (window.Lightbox === undefined) {
+		$('.lightboxinner').hide()
+		return false
+	}
 	ltbx = new Lightbox( $('.lightboxinner'), lbox )
+
 		/* draganddrop */
 	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
 	$('.boxhover[ref] .photo img').live('mousedown', function(e){

@@ -2,5 +2,5 @@ indexSuccess:
 
   javascripts:
     - jquery.mousewheel.min.js
-    - watch3d.js
+    - watch3d.min.js
     - productcard.js
