@@ -23,15 +23,12 @@ class ProductParameter extends myDoctrineVirtualRecord
     {
       switch ($this->property->type)
       {
-        case 'string': case 'integer': case 'float':
-          $value[] = $this->formatValue($this->property->pattern, $propertyRelation['value'], $this->property->unit);
-          break;
         case 'select':
           $option = ProductPropertyOptionTable::getInstance()->getById($propertyRelation['option_id']);
           $value[] = $option ? $this->formatValue($this->property->pattern, $option->value, $option->unit) : null;
           break;
-        case 'text':
-          $value[] = $propertyRelation->value_text;
+        default:
+          $value[] = $this->formatValue($this->property->pattern, $propertyRelation['real_value'], $this->property->unit);
           break;
       }
     }
