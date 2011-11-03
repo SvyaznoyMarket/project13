@@ -2,7 +2,7 @@
 	360-degree Slideshow 
 	'Watch 3d'
 	Ivan Kotov
-	v 2.03
+	v 2.1
 
 	jQuery is prohibited
 							*/
