@@ -12,16 +12,16 @@
  */
 class Task extends BaseTask
 {
+  /*
   public function __destruct()
   {
-    /*
     if (!empty($this['id']))
     {
       $this->setDefaultPriority();
       $this->save();
     }
-    */
   }
+  */
 
   public function preSave($event)
   {

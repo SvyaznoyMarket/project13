@@ -160,8 +160,8 @@ EOF;
         $modified = $record->getLastModified();
         if (isset($modified['core_lft']) || isset($modified['core_rgt']))
         {
-          $parent = $record->getTable()->getIdByCoreId($record->core_parent_id);
-          if ($parent->id != $record->getNode()->getParent()->id)
+          $parent = $record->getTable()->getByCoreId($record->core_parent_id);
+          if ($parent && ($parent->id != $record->getNode()->getParent()->id))
           {
             $record->getNode()->moveAsFirstChildOf($parent);
           }
@@ -237,7 +237,10 @@ EOF;
       $record = $table->create();
     }
 
-    $record->importFromCore($entity);
+    if (('create' == $action) || ('update' == $action))
+    {
+      $record->importFromCore($entity);
+    }
     $record->setCorePush(false);
     //myDebug::dump($entity);
     //myDebug::dump($record);

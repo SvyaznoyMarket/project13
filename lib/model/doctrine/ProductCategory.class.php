@@ -48,8 +48,6 @@ class ProductCategory extends BaseProductCategory
     parent::importFromCore($data);
 
     $this->product_id = ProductTable::getInstance()->getIdByCoreId($data['product_id']);
-
-
   }
 
   public function countProduct()
