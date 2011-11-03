@@ -12,5 +12,7 @@ class TaskFormFilter extends BaseTaskFormFilter
 {
   public function configure()
   {
+    $this->widgetSchema['id'] = new sfWidgetFormFilterInput();
+    $this->validatorSchema['id'] = new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false)));
   }
 }
