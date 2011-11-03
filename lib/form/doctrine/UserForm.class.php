@@ -41,7 +41,7 @@ class UserForm extends BaseUserForm
     $this->widgetSchema['skype']->setLabel('Skype');
 
     $this->widgetSchema['birthday']->setLabel('Дата рождения');
-    
+
 
     $this->widgetSchema['occupation']->setLabel('Род деятельности');
     $this->validatorSchema['occupation'] = new sfValidatorPass();
@@ -86,12 +86,12 @@ class UserForm extends BaseUserForm
 
     return $value;
   }
-  
+
   public function setup()
   {
-      
+
     parent::setup();
-      
+
     $this->setWidgets(array(
       'id'               => new sfWidgetFormInputHidden(),
       'email'            => new sfWidgetFormInputText(),
@@ -127,8 +127,8 @@ class UserForm extends BaseUserForm
 
     $this->setValidators(array(
       'id'               => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
-      'email'            => new sfValidatorEmail(array('max_length' => 128, 'required' => false, 'trim'=>true),array('invalid'=>'Вы указали неверный email.')),
-      'phonenumber'      => new sfValidatorPhone(array('required' => false, 'trim'=>true),array('invalid'=>"Вы неверно указали номер телефона.")),
+      'email'            => new myValidatorEmail(array('max_length' => 128, 'required' => false, 'trim'=>true),array('invalid'=>'Вы указали неверный email.')),
+      'phonenumber'      => new myValidatorMobilePhonenumber(array('required' => false, 'trim'=>true),array('invalid'=>"Вы неверно указали номер телефона.")),
       'first_name'       => new sfValidatorString(array('max_length' => 255, 'trim'=>true)),
       'last_name'        => new sfValidatorString(array('max_length' => 255, 'trim'=>true)),
       'middle_name'      => new sfValidatorString(array('max_length' => 255, 'trim'=>true,'required'=>true)),
@@ -146,7 +146,7 @@ class UserForm extends BaseUserForm
       'gender'           => new sfValidatorChoice(array('choices' => array(0 => 'male', 1 => 'female'), 'required' => false)),
       'birthday'         => new sfValidatorDate(array('required' => false),array('invalid'=>'Пожалуйста, укажите и день, и месяц, и год.')),
       'photo'            => new sfValidatorString(array('max_length' => 255, 'required' => false)),
-      'phonenumber_city' => new sfValidatorPhone(array('max_length' => 20, 'required' => false),array('invalid'=>"Вы неверно указали номер телефона.")),
+      'phonenumber_city' => new sfValidatorString(array('max_length' => 20, 'required' => false),array('invalid'=>"Вы неверно указали номер телефона.")),
       'skype'            => new sfValidatorString(array('max_length' => 255, 'required' => false, 'trim'=>true)),
       'address'          => new sfValidatorString(array('required' => false)),
       'occupation'       => new sfValidatorString(array('max_length' => 255, 'trim'=>true)),
@@ -164,6 +164,6 @@ class UserForm extends BaseUserForm
 
     $this->setupInheritance();
 
-  }  
+  }
 
 }

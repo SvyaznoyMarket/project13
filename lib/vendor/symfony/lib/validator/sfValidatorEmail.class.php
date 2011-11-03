@@ -18,7 +18,7 @@
  */
 class sfValidatorEmail extends sfValidatorRegex
 {
-  const REGEX_EMAIL = '/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i';
+  const REGEX_EMAIL = '/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,3})$/i';
 
   /**
    * @see sfValidatorRegex
