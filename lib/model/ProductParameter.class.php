@@ -21,6 +21,8 @@ class ProductParameter extends myDoctrineVirtualRecord
     $value = array();
     foreach ($productPropertyRelationArray as $propertyRelation)
     {
+      $propertyRelation->mapValue('type', $this->property->type);
+
       switch ($this->property->type)
       {
         case 'select':
