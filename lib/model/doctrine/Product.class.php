@@ -83,8 +83,7 @@ class Product extends BaseProduct
 
             $collectionData[$property->id.'-'.$optionId] = array(
               'property_id' => $property->id,
-              'option_id'   => $optionId,
-              'real_value'  => null,
+              'real_value'  => $optionId,
               'type'        => $property->type,
             );
           }
@@ -98,8 +97,7 @@ class Product extends BaseProduct
 
           $collectionData[$property->id.'-'.$optionId] = array(
             'property_id' => $property->id,
-            'option_id'   => $optionId,
-            'real_value'  => trim($relationData['value']),
+            'real_value'  => $optionId ? $optionId : trim($relationData['value']),
             'type'        => $property->type,
           );
         }
