@@ -227,7 +227,7 @@ function likemovie( nodename , apinodes, s, b) {
 					  .attr('id','ivn'+ind[i])
 					  .appendTo(buffer)		
 		}
-		$('#nvis').append(buffer)
+		(liteversion) ? $('#nvis500').append(buffer) : $('#nvis').append(buffer)
 	}
 	
 	this.checkComplete = function() {
@@ -250,7 +250,8 @@ function likemovie( nodename , apinodes, s, b) {
 			this.hideVersions()
 			this.manualRollEnable()
 			if( ! liteversion ) {
-				this.stop4slides()		
+				this.stop4slides()	
+				this.createFrontier()
 				this.mode = 'medium'				
 				this.startRolling( 70 )
 			} else	
@@ -293,6 +294,7 @@ function likemovie( nodename , apinodes, s, b) {
 			this.stop4slides()			
 			this.breakPreload()
 			this.preloadImages(indexes) // again, but another folder
+			this.createFrontier()
 			gi.setDimensionProps( vzooms[0] )
 			this.zoom = 1
 			gi.zoom = 1
@@ -303,16 +305,19 @@ function likemovie( nodename , apinodes, s, b) {
 			}				
 		} else {
 			this.stopRolling()
+			frontier.hide()
 			//this.show4slides()			
 			this.breakPreload()
+			$('#nvis500').empty() // no more double ids
 			initInd = [1,11,21,31]
+			indexes = [1,11,21,31]
+			// TODO NB rewrite preloader
 			this.preloadImages(initInd) // again, but another folder
+			ccid = setInterval(self.checkComplete, self.completenessIntrvl)	
 			this.getInitSize()
-			frontier.hide()
 			gi.setDimensionProps( vzooms[this.zoom - 1] )
 			gi.zoom = this.zoom
-			gi.addZoom()
-			ccid = setInterval(self.checkComplete, self.completenessIntrvl)			
+			gi.addZoom()					
 		}
 	}
 	
@@ -364,19 +369,21 @@ function likemovie( nodename , apinodes, s, b) {
 				}	
 		}
 		
-		if( cnvCompatible ) {
+		if( cnvCompatible && ! liteversion) {
 			frontier.attr('ref',flnm)
 			frontierctx.clearRect(0, 0, 2500, 2500)	
 			frontierctx.drawImage( document.getElementById( 'ivn'+flnm ) , 
 					cnvimg.x, cnvimg.y,  vzooms[gi.zoom-1],  vzooms[gi.zoom-1])
 		} else {
-			var tmpURLs = smURLs
+			var tmpURLs = (liteversion) ? smURLs : bURLs
+			/* отображает большие, которые успели подгрузиться
 			for(var i=0; i < bimindexes.length; i++) { // TODO
 				if (bimindexes[i] == flnm) {
 					tmpURLs = bURLs
 					break
 				} 
 			}
+			*/
 			self.mvblock.hide()
 			frontier.attr('src', tmpURLs[ flnm - 1])		
 			self.mvblock.show()
@@ -417,6 +424,9 @@ function likemovie( nodename , apinodes, s, b) {
 		mvblockH = self.mvblock.innerHeight()
 		/* preload first four images */
 		$('<div>').hide()
+				  .attr('id','nvis500')
+				  .appendTo('body')
+		$('<div>').hide()
 				  .attr('id','nvis')
 				  .appendTo('body')
 		this.preloadImages(initInd)
@@ -426,74 +436,81 @@ function likemovie( nodename , apinodes, s, b) {
 		
 		
 		this.initres = this.getInitSize()
-/* create main object */
-//cnvCompatible=false
-		if( ! cnvCompatible ) {
-			self.createImgFrontier()
-			return
-		}	
-		frontier    = $('<canvas>').attr({'id':'ivn','width':mvblockW,'height':mvblockH})
-		frontier.appendTo(this.mvblock)
-		frontierctx = document.getElementById('ivn').getContext('2d')
-		frontierctx.drawImage( document.getElementById( 'ivn1' ) , 
-			Math.round( ( mvblockW - self.initres ) / 2 ), Math.round( ( mvblockH - self.initres ) / 2 ), self.initres, self.initres)		
+
+		frontier = $('<img>').attr({'src': bURLs[0],
+									'width': self.initres,
+									'height': self.initres })
+							 .attr('id','ivn') // TODO
+							 .css({ 'position':'relative',
+									'left': Math.round( (self.mvblock.innerWidth() - self.initres ) / 2 ) ,
+									'top': Math.round( (self.mvblock.innerHeight() - self.initres ) / 2 ) })
+		frontier.appendTo(self.mvblock)
 		
-		cnvimg = { 
-			x: Math.round( ( mvblockW - self.initres ) / 2 ),
-			y: Math.round( ( mvblockH - self.initres ) / 2 )
-		}
-		
-		this.mvblock.bind ( {
-			'mousedown': function (e) {
-				initx = e.pageX // prohibited for rollanddrop()
-			},
-	    	'click': function() {
-	    		self.stopRolling()
-			},
-			'dblclick': function() {
-				self.startRolling()
-			}
-			
-		})
-		gi = new gigaimage( frontier, self.zoom, zoo, self.rollanddrop )
-		gi.addZoom( cnvimg )
-		$(window).resize( function() {		
-			document.getElementById('ivn').width  = self.mvblock.innerWidth()
-			document.getElementById('ivn').height = self.mvblock.innerHeight()	
-			//TODO centrify img in canvas
-		})	
 	}
 	
-	this.createImgFrontier = function() {
-		frontier = $('<img>').attr('src', bURLs[0])
-								 .attr('id','ivn') // TODO
-								 .css('position','relative')
-		frontier.bind ( {
-			'mousedown': function (e) {
-				initx = e.pageX // prohibited for rollanddrop()
-			},
-	    	'click': function() {
-	    		self.stopRolling()
-			},
-			'dblclick': function() {
-				self.startRolling()
+	this.createFrontier = function() {
+	//cnvCompatible=false
+		if( ! cnvCompatible || liteversion ) {
+			frontier.bind ({
+				'mousedown': function (e) {
+					initx = e.pageX // prohibited for rollanddrop()
+				},
+				'click': function() {
+					self.stopRolling()
+				},
+				'dblclick': function() {
+					self.startRolling()
+				}
+				
+			})
+			//gi.setDimensionProps( ) // frontier modifying
+			
+			//frontier.appendTo(this.mvblock)
+			this.mvblock.css('text-align','left')
+			gi = new gigaimage( frontier, self.zoom, zoo, self.rollanddrop )
+			gi.addZoom()		
+						
+			$(window).resize( function() {
+				if(self.zoom == 1) { //TODO other zooms
+					frontier.css('left', Math.round( (self.mvblock.innerWidth() - self.initres ) / 2 ) )
+							.css('top', Math.round( (self.mvblock.innerHeight() - self.initres ) / 2 ) )							 
+				}
+			})
+		} else {
+			$('#ivn').remove()
+			if(gi) gi.destroy()
+			frontier    = $('<canvas>').attr({'id':'ivn','width':mvblockW,'height':mvblockH})
+			frontier.appendTo(this.mvblock)
+			frontierctx = document.getElementById('ivn').getContext('2d')
+			frontierctx.drawImage( document.getElementById( 'ivn1' ) , 
+				Math.round( ( mvblockW - self.initres ) / 2 ), Math.round( ( mvblockH - self.initres ) / 2 ), self.initres, self.initres)		
+			
+			cnvimg = { 
+				x: Math.round( ( mvblockW - self.initres ) / 2 ),
+				y: Math.round( ( mvblockH - self.initres ) / 2 )
 			}
 			
-		})
-		//gi.setDimensionProps( ) // frontier modifying
-		
-		frontier.appendTo(this.mvblock)
-		this.mvblock.css('text-align','left')
-		
-		gi = new gigaimage( frontier, self.zoom, zoo, self.rollanddrop )
-		gi.addZoom()		
-					
-		$(window).resize( function() {
-			if(self.zoom == 1) {
-				frontier.css('left', Math.round( (self.mvblock.innerWidth() - self.initres ) / 2 ) )
-					    .css('top', Math.round( (self.mvblock.innerHeight() - self.initres ) / 2 ) )							 
-			}
-		})
+			this.mvblock.bind ( {
+				'mousedown': function (e) {
+					initx = e.pageX // prohibited for rollanddrop()
+				},
+				'click': function() {
+					self.stopRolling()
+				},
+				'dblclick': function() {
+					self.startRolling()
+				}
+				
+			})
+			gi = new gigaimage( frontier, self.zoom, zoo, self.rollanddrop )
+			gi.addZoom( cnvimg )
+			
+			$(window).resize( function() {		
+				document.getElementById('ivn').width  = self.mvblock.innerWidth()
+				document.getElementById('ivn').height = self.mvblock.innerHeight()	
+				//TODO centrify img in canvas
+			})	
+		}
 	}
 	
 	this.hide = function() {
@@ -539,7 +556,7 @@ function likemovie( nodename , apinodes, s, b) {
 			initx = e.pageX
 			self.nextSrc(tmpdir)
 		} else if ( actor == 'drop' ) {
-			if( ! cnvCompatible ) {
+			if( ! cnvCompatible || liteversion ) {
 				var img = {
 					y: parseInt( frontier.css('top'), 10 )			
 				}		
