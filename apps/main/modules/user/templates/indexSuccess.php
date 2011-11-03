@@ -25,7 +25,12 @@
                 <div class="font16 orange pb10"><?php echo $part['title']?></div>
                 <ul class="leftmenu pb20">
                 <?php foreach ($part['list'] as $item): ?>
-                    <li<?php echo (isset($item['current']) && $item['current'])  ? ' class="current"' : '' ?>><a href="<?php echo url_for($item['url']) ?>"><?php echo $item['name'] ?></a></li>
+                    <li<?php echo (isset($item['current']) && $item['current'])  ? ' class="current"' : '' ?>>
+                        <a href="<?php echo url_for($item['url']) ?>">
+                            <?php echo $item['name'] ?>
+                            <?php if (isset($item['num'])) echo '('.$item['num'].')'?>
+                        </a>
+                    </li>
                 <?php endforeach ?>
                 </ul>
             <?php endforeach ?>

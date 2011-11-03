@@ -17,23 +17,26 @@ class userActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+          
     //пункты для главной страницы личного кабинета
     $list = array(
       array(
-          'title' => 'Персональные данные',
+          'title' => 'Моя пресональная информация',
           'list' => array(
+              /*
               array(
                 'name'   => 'Личный кабинет',
                 'url'    => '@user',
                 'routes' => array('user'),
               ),
+               */
 //              array(
 //                'name'   => 'Мои адреса доставки',
 //                'url'    => '@userAddress',
 //                'routes' => array('@userAddress'),
 //              ),
               array(
-                'name'   => 'Редактирование профиля',
+                'name'   => 'Изменить мои данные',
                 'url'    => '@user_edit',
                 'routes' => array('user_edit'),
               ),
@@ -44,11 +47,13 @@ class userActions extends myActions
               ),
           )
       ),
+
       array(
-          'title' => 'Мои заказы',
+          'title' => 'Мои товары',
           'list' => array(
               array(
                 'name'   => 'Мои заказы',
+                'num' => count($this->getUser()->getGuardUser()->getOrderList()),
                 'url'    => '@user_orders',
                 'routes' => array('@user_orders', '@user_orders'),
               ),              
@@ -105,6 +110,8 @@ class userActions extends myActions
   */
   public function executeEdit(sfWebRequest $request)
   {
+    $this->setVar('error', '', true);
+      
       /*
     $this->userAddress = $this->getRoute()->getObject();
     //если пользователь  пытается редактировать не свой адрес
@@ -127,33 +134,28 @@ class userActions extends myActions
   {
     $this->form = new UserForm($this->getUser()->getGuardUser());
 
-    $a = $request->getParameter($this->form->getName());
-    //$a['id'] = 2;
-    $this->form->bind( $a );
+    $data = $request->getParameter($this->form->getName());
+
+    $data['middle_name'] = trim($data['middle_name']);
+    $data['last_name'] = trim($data['last_name']);
+    $data['occupation'] = trim($data['occupation']);
+    $data['skype'] = trim($data['skype']);
+    
+    $this->form->bind( $data );
+    $this->setVar('error', '', true);
 
     if ($this->form->isValid())
     {
       try
       {
-	   $this->form->save();
-       //$coreResult =  Core::getInstance()->query('user.update',array('id'=>$this->getUser()->getGuardUser()->core_id),$this->form->getValues());
-       //if ($coreResult['confirmed']==1){
-//            $user = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);
-//            $user->setCorePush(false);
-//            $user->fromArray( $this->form->getValues() );
-//            $user->save();
-
-			//$this->form->save();
-       //}
-        $this->redirect('user_edit');
+            $this->form->save();
+            $this->redirect('user_edit');
       }
       catch (Exception $e)
       {
-		  echo $e->getMessage();
-//		  echo $e->getTraceAsString();
-//		  exit();
-         // exit();
-        $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
+            #echo $e->getMessage();
+            $this->setVar('error', 'К сожалению, данные сохранить не удалось.', true);          
+            $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
       }
     } else {
 		//echo $this->form->renderGlobalErrors();
