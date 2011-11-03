@@ -161,4 +161,16 @@ class productCatalogComponents extends myComponents
 
     $this->url = url_for('productCatalog_tag', $this->productCategory);
   }
+  
+  public function executeLeftCategoryList(){
+                
+    $this->setVar('currentCat', $this->productCategory, true);
+    $ancestorList = $this->productCategory->getNode()->getAncestors();
+    $this->setVar('treeList', $ancestorList, true);
+
+    $this->setVar('list', $this->productCategory->getNode()->getChildren(), true);
+    $this->setVar('quantity', $this->productCategory->countProduct(), true);
+
+
+  }
 }
