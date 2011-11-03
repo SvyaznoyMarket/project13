@@ -22,9 +22,9 @@ class taskActions extends autoTaskActions
   {
     $days = 7;
 
-    $taskList = TaskTable::getInstance()->getOldList($days);
+    $taskList = TaskTable::getInstance()->clearOld($days);
 
-    if ($taskList->delete())
+    if (true)
     {
       $this->getUser()->setFlash('notice', 'Старые задачи успешно очищены');
     }
