@@ -277,6 +277,7 @@ class orderActions extends myActions
   */
   public function executeError(sfWebRequest $request)
   {
+    $this->getUser()->getOrder()->clear();
   }
  /**
   * Executes create action
