@@ -39,7 +39,7 @@
                 
             ?>
             
-            
+            <?php if (false): ?>
             <!--
             <?php foreach ($list as $ii => $item): ?>
             <?            // echo get_class($item);  ?>
@@ -55,6 +55,7 @@
                 <?php endif ?>
             <?php endforeach ?>
             -->
+            <?php endif ?>
 
        <div class="clear"></div>
     </div>
