@@ -47,8 +47,7 @@ class ProductCategory extends BaseProductCategory
   {
     parent::importFromCore($data);
 
-    $this->product_id = ProductTable::getInstance()->getIdByCoreId($data['product_id']);
-
+    $this->photo = !empty($data['media_image']) ? $data : 'default.jpg';
 
   }
 
