@@ -283,7 +283,6 @@ $(document).ready(function(){
 			if( ! basket[i].noview )
 				tmp += basket[i].sum * 1
 		}
-		console.info(tmp)
 		if( !tmp ) {
 			location.reload(true)
 		}
@@ -514,14 +513,3 @@ $(document).ready(function(){
 	}
 	
 });
-
-
-//$(function(){
-//
-//	$(".tearmlist dt").click(function(){
-//		$(this).next(".tearmlist dd").slideToggle(200);
-//		$(this).toggleClass("current");
-//		return false;
-//	});
-//
-//});
