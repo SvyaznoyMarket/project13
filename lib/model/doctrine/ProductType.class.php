@@ -61,9 +61,10 @@ class ProductType extends BaseProductType
     {
       if ($relationData['is_filter'] && !empty($data['category']))
       {
+        $propertyId = ProductPropertyTable::getInstance()->getIdByCoreId($relationData['id']);
+
         foreach ($data['category'] as $categoryData)
         {
-          $propertyId = ProductPropertyTable::getInstance()->getIdByCoreId($relationData['id']);
           $category = ProductCategoryTable::getInstance()->getByCoreId($categoryData['id']);
           if (!$category) continue;
 
