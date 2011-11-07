@@ -246,7 +246,6 @@ EOF;
 
     return true;
   }
-
   /**
    *
    * @param string $action
