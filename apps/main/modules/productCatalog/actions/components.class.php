@@ -26,7 +26,7 @@ class productCatalogComponents extends myComponents
       'url'  => url_for('@productCatalog'),
     );
     */
-    if (isset($this->productCategory))
+    if (isset($this->productCategory) && !empty($this->productCategory))
     {
       $ancestorList = $this->productCategory->getNode()->getAncestors();
       if ($ancestorList) foreach ($ancestorList as $ancestor)
@@ -161,9 +161,9 @@ class productCatalogComponents extends myComponents
 
     $this->url = url_for('productCatalog_tag', $this->productCategory);
   }
-  
+
   public function executeLeftCategoryList(){
-                
+
     $this->setVar('currentCat', $this->productCategory, true);
     $ancestorList = $this->productCategory->getNode()->getAncestors();
     $this->setVar('treeList', $ancestorList, true);

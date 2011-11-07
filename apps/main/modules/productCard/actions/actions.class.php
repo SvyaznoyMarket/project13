@@ -18,14 +18,16 @@ class productCardActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
-	
+
     $title = $this->product['name'];
-    $mainCat = $this->product->getMainCategory();
-    if ($mainCat) {
-      $title .= ' – '.$mainCat;
-      $rootCat = $mainCat->getRootRow();
-      if ($rootCat->id !== $mainCat->id) {
-        $title .= ' – '.$rootCat;
+    $mainCategory = $this->product->getMainCategory();
+    if ($mainCategory)
+    {
+      $title .= ' – '.$mainCategory;
+      $rootCategory = $mainCategory->getRootCategory();
+      if ($rootCategory->id !== $mainCategory->id)
+      {
+        $title .= ' – '.$rootCategory;
       }
     }
     $this->getResponse()->setTitle($title.' – Enter.ru');
@@ -50,7 +52,7 @@ class productCardActions extends myActions
   public function executeShow(sfWebRequest $request)
   {
     $this->product = ProductTable::getInstance()->find($request['product']);
-    
+
     $this->redirect(array('sf_route' => 'productCard', 'sf_subject' => $this->product), 301);
   }
 }

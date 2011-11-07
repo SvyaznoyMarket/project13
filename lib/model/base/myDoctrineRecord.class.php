@@ -13,12 +13,9 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     $prefix = sfConfig::get('app_doctrine_result_cache_prefix', 'dql:');
 
     $driver = $invoker->getTable()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
-    if ($driver && $invoker->getTable()->hasField('id'))
+    if ($driver)
     {
-      foreach (array(
-        '*/'.$invoker->getTable()->getQueryRootAlias().'-'.$invoker->id.'/*',
-        '*/'.$invoker->getTable()->getQueryRootAlias().'-all/*',
-      ) as $key) {
+      foreach ($this->getTable()->getCacheKeys($invoker) as $key) {
         $driver->deleteByPattern($prefix.$key);
       }
     }

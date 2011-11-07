@@ -15,9 +15,11 @@ class TaskForm extends BaseTaskForm
     $this->useFields(array(
       'core_id',
       'type',
+      'attempt',
       'priority',
       'status',
       'content',
+      'error',
     ));
   }
 }

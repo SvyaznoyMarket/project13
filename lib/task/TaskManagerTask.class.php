@@ -17,7 +17,7 @@ class TaskManagerTask extends sfBaseTask
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'core'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
-      new sfCommandOption('speed', null, sfCommandOption::PARAMETER_REQUIRED, 'Speed [packets per minutes]', 10),
+      new sfCommandOption('log', null, sfCommandOption::PARAMETER_NONE, 'Enable logging'),
       // add your own options here
     ));
 
@@ -36,56 +36,74 @@ EOF;
 
   protected function execute($arguments = array(), $options = array())
   {
+    sfConfig::set('sf_logging_enabled', $options['log']);
+
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
     // add your code here
 
-    $speed = $options['speed']; // скорость [пакеты/мин]
-    for ($i = 0; $i < $speed; $i++)
+
+    $task = $this->getRunningTask();
+    if (!$task)
     {
-      $task = $this->getRunningTask();
-      if (!$task)
-      {
-        continue;
-      }
-
-      $count = 1;
-      if ('project.init' == $task->type)
-      {
-        $count = 500;
-      }
-
-      for ($attempt = 0; $attempt < $count; $attempt++)
-      {
-        $this->logger->log("{$task->type} #{$task->id} starting...");
-        $this->logSection($task->type, "#{$task->id} starting...");
-
-        // приоритет реального времени
-        $task->priority = 0;
-
-        $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array(
-          'application' => $options['application'],
-          'env'         => $options['env'],
-          'connection'  => $options['connection'],
-        ));
-        $this->logSection($task->type, "#{$task->id} done");
-
-        $task->setDefaultPriority();
-        $task->save();
-      }
-
-      if ($task->attempt > 100)
-      {
-        $task->status = 'fail';
-        $task->save();
-      }
+      return true;
     }
+
+    $stepCount = 1;
+    if ('project.init' == $task->type)
+    {
+      $stepCount = 500;
+    }
+
+    for ($step = 0; $step < $stepCount; $step++)
+    {
+      $this->logSection($task->type, "#{$task->id} packet={$task->core_packet_id} ...");
+
+      // приоритет реального времени
+      $task->priority = 0;
+      $task->save();
+
+      $this->runTask(str_replace('.', ':', $task->type), array('task_id' => $task->id), array(
+        'application' => $options['application'],
+        'env'         => $options['env'],
+        'connection'  => $options['connection'],
+      ));
+
+      if ('success' == $task->status)
+      {
+        $this->logSection($task->type, "#{$task->id} ... ok");
+      }
+      else if ('fail' == $task->status)
+      {
+        $this->logSection($task->type, "#{$task->id} ... fail", null, 'ERROR');
+      }
+
+      $task->setDefaultPriority();
+      $task->save();
+    }
+
+    if ($task->attempt > 100)
+    {
+      $task->status = 'fail';
+      $task->save();
+    }
+
+    $task->free(true);
+    unset($task);
   }
+
 
   protected function getRunningTask()
   {
     return TaskTable::getInstance()->getRunning(array('with_minPriority' => true, 'check_zeroPriority' => true));
+  }
+
+  public function logSection($section, $message, $size = null, $style = 'INFO')
+  {
+    parent::logSection($section, $message, $size, $style);
+
+    call_user_func_array(array($this->logger, 'ERROR' == $style ? 'err' : 'log'), array($section.' - '.$message));
   }
 }

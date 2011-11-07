@@ -41,7 +41,7 @@ class UserForm extends BaseUserForm
     $this->widgetSchema['skype']->setLabel('Skype');
 
     $this->widgetSchema['birthday']->setLabel('Дата рождения');
-    
+
 
     $this->widgetSchema['occupation']->setLabel('Род деятельности');
     $this->validatorSchema['occupation'] = new sfValidatorPass();
@@ -86,12 +86,12 @@ class UserForm extends BaseUserForm
 
     return $value;
   }
-  
+
   public function setup()
   {
-      
+
     parent::setup();
-      
+
     $this->setWidgets(array(
       'id'               => new sfWidgetFormInputHidden(),
       'email'            => new sfWidgetFormInputText(),
@@ -164,6 +164,6 @@ class UserForm extends BaseUserForm
 
     $this->setupInheritance();
 
-  }  
+  }
 
 }

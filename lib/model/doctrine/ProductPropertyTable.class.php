@@ -18,6 +18,11 @@ class ProductPropertyTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductProperty');
   }
 
+  public function getQueryRootAlias()
+  {
+    return 'productProperty';
+  }
+
   public function getCoreMapping()
   {
     return array(
@@ -74,7 +79,7 @@ class ProductPropertyTable extends myDoctrineTable
       ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
       ->groupBy('productRelation.option_id')
       ->orderBy('count(productRelation.product_id) DESC')
-      ->useResultCache(true, null, $this->getQueryHash('productProperty-Option', $categoryIds))
+      ->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/productProperty-all', $categoryIds))
       //->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
     ;
 

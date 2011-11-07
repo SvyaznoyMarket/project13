@@ -17,40 +17,73 @@ class apiActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $response = trim(file_get_contents('php://input'));
+    try {
+      $response = trim(file_get_contents('php://input'));
 
-    $logger = new sfFileLogger(new sfEventDispatcher(), array('file' => $this->getLogFilename()));
-    $logger->log('Response: '.$response);
+      $logger = new sfFileLogger(new sfEventDispatcher(), array('file' => $this->getLogFilename()));
+      $logger->log('Response: '.$response);
 
-    $data = json_decode($response, true);
+      $data = json_decode($response, true);
 
-    if (!empty($data))
-    {
-      $coreId = !empty($data['id']) ? $data['id'] : false;
-      if ($coreId)
+      $table = TaskTable::getInstance();
+
+      if (!empty($data))
       {
-        if ($task = TaskTable::getInstance()->getByCoreId($coreId))
+        $taskType = 'project.'.$data['action'];
+
+        $coreId = !empty($data['id']) ? $data['id'] : false;
+        if ($coreId)
         {
-          $task->setContentData($data);
-          $task->core_packet_id = isset($data['packet_id']) ? $data['packet_id'] : null;
-          $task->save();
+          if ($task = $table->getByCoreId($coreId))
+          {
+            $task->setContentData($data);
+            $task->core_packet_id = isset($data['packet_id']) ? $data['packet_id'] : null;
+            $task->trySave();
+          }
+        }
+        else if (!empty($data['action']))
+        {
+          $packetId = !empty($data['packet_id']) ? $data['packet_id']: false;
+          if ($packetId)
+          {
+            $range = array($packetId);
+
+            $maxPacketId = $table->getMaxCorePacketId($taskType);
+            if ($packetId > $maxPacketId)
+            {
+              $range = range($maxPacketId + 1, $packetId);
+            }
+
+            foreach ($range as $i)
+            {
+              $task = new Task();
+              $task->fromArray(array(
+                'type'           => $taskType,
+                'core_packet_id' => $i,
+              ));
+              $task->setContentData($data);
+              $task->trySave();
+            }
+          }
+          else {
+            $task = new Task();
+            $task->fromArray(array(
+              'type'           => $taskType,
+            ));
+            $task->setContentData($data);
+            $task->trySave();
+          }
         }
       }
-      else if (!empty($data['action']))
-      {
-        $task = new Task();
-        $task->fromArray(array(
-          'type'           => 'project.'.$data['action'],
-          'core_packet_id' => isset($data['packet_id']) ? $data['packet_id'] : null,
-        ));
-        $task->setContentData($data);
-        $task->save();
-      }
+
+      return $this->renderJson(array(
+        'confirmed' => true,
+      ));
+    }
+    catch (Exception $e) {
+      $logger->err($e->getCode().' - '.$e->getMessage());
     }
 
-    return $this->renderJson(array(
-      'confirmed' => true,
-    ));
 
     return sfView::NONE;
   }

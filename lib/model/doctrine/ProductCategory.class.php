@@ -25,15 +25,21 @@ class ProductCategory extends BaseProductCategory
     );
   }
 
-  // TODO: переименовать в getRootRecord
-  public function getRootRow()
+  public function getRootCategory(array $params = array())
   {
-	  if ($this->level == 0) {
+	  if ($this->level == 0)
+    {
 		  return $this;
 	  }
+
 	  $q = $this->getTable()->createBaseQuery();
-	  $q->andWhere('productCategory.root_id = ?', $this->root_id);
-	  $q->andWhere('productCategory.level = ?', 0);
+
+	  $q->andWhere('productCategory.root_id = ?', $this->root_id)
+	    ->andWhere('productCategory.level = ?', 0)
+    ;
+
+    $q->useResultCache(true, null, $this->getTable()->getQueryHash('productCategory-root-'.$this->root_id, $params));
+
 	  return $q->fetchOne();
   }
 
@@ -41,8 +47,7 @@ class ProductCategory extends BaseProductCategory
   {
     parent::importFromCore($data);
 
-    $this->product_id = ProductTable::getInstance()->getIdByCoreId($data['product_id']);
-
+    $this->photo = !empty($data['media_image']) ? $data : 'default.jpg';
 
   }
 
@@ -59,6 +64,16 @@ class ProductCategory extends BaseProductCategory
   public function getSubCategories()
   {
     return ProductCategoryTable::getInstance()->getSubList(array('root_id' => $this->root_id));
+  }
+
+  public function getChildList(array $params = array())
+  {
+    return ProductCategoryTable::getInstance()->getChildList($this, $params);
+  }
+
+  public function getLinkList(array $params = array())
+  {
+    return ProductCategoryLinkTable::getInstance()->getListByCategory($this, $params);
   }
 /**
  *

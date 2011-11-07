@@ -12,42 +12,35 @@
  */
 class ProductPropertyRelation extends BaseProductPropertyRelation
 {
+  public function construct()
+  {
+    parent::construct();
+
+    $this->mapValue('type', null);
+  }
+
   public function getRealValue()
   {
-    switch ($this->Property->type):
-      case 'select':
-        /*if ($this->Property->is_multiple)
-        {
-          $value = array();
-          foreach ($this->getOption() as $option)
-          {
-            $value[] = $option;
-          }
-        }
-        else
-        {*/
-          $value = $this->option_id;
-        //}
-      break;
-      case 'string':
-        $value = is_null($this->value_string) ? $this->value : $this->value_string;
-      break;
-      case 'integer':
-        $value = is_null($this->value_integer) ? $this->value : $this->value_integer;
-      break;
-      case 'float':
-        $value = is_null($this->value_float) ? $this->value : $this->value_float;
-      break;
-      case 'text':
-        $value = is_null($this->value_text) ? $this->value : $this->value_text;
-      break;
-      default:
-        $value = $this->value;
-      break;
-    endswitch;
+    $field = $this->getTable()->getValueFieldByType($this->type ? $this->type : $this->Property->type);
 
-    return $value;
+    return $this->get($field);
   }
+
+  public function setRealValue($value)
+  {
+    $type = $this->type ? $this->type : $this->Property->type;
+    $field = $this->getTable()->getValueFieldByType($type);
+
+    if ('boolean' == $type)
+    {
+      $this->set($field, in_array($value, array('true', true, 'да')) ? true : false);
+      $this->value = in_array($value, array('true', true, 'да')) ? 'да' : 'нет';
+    }
+    else {
+      $this->set($field, $value);
+    }
+  }
+
   public function getFormattedValue()
   {
 

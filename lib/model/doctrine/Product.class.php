@@ -66,42 +66,50 @@ class Product extends BaseProduct
       $collectionData = array();
       foreach ($data['property'] as $relationData)
       {
-        $propertyId = ProductPropertyTable::getInstance()->getIdByCoreId($relationData['property_id']);
-        
+        $property = ProductPropertyTable::getInstance()->getByCoreId($relationData['property_id']);
+        if (!$property) continue;
+
         // checks multiple property
         if ($relationData['is_multiple'] && !empty($relationData['option']))
         {
           foreach ($relationData['option'] as $optionData)
           {
             $optionId = ProductPropertyOptionTable::getInstance()->getIdByCoreId($optionData['option_id']);
-            
+
             if (!empty($optionData['option_id']) && !$optionId)
             {
               // force get option
             }
-            
-            $collectionData[$propertyId.'-'.$optionId] = array(
-              'property_id' => $propertyId,
-              'option_id'   => $optionId,
-              'value'       => null,
+
+            $collectionData[$property->id.'-'.$optionId] = array(
+              'property_id' => $property->id,
+              'real_value'  => $optionId,
+              'type'        => $property->type,
             );
           }
         }
         else {
-          $optionId = ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id']);
+          $optionId =
+            'select' == $property->type
+            ? ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id'])
+            : null
+          ;
           if (!empty($relationData['option_id']) && !$optionId)
           {
-            // force get option
+            throw new Exception('Can\'t find ProductPropertyOption with core_id = '.$relationData['option_id']);
           }
 
-          $collectionData[$propertyId.'-'.$optionId] = array(
-            'property_id' => $propertyId,
-            'option_id'   => $optionId,
-            'value'       => trim($relationData['value']),
+          $value = trim($relationData['value']);
+          $value = $optionId ? $optionId : (!empty($value) ? $value : null);
+
+          $collectionData[$property->id.'-'.$optionId] = array(
+            'property_id' => $property->id,
+            'real_value'  => $value,
+            'type'        => $property->type,
           );
         }
       }
-      
+
       $existing = array();
       foreach ($this->PropertyRelation as $i => $propertyRelation)
       {
@@ -112,14 +120,13 @@ class Product extends BaseProduct
           unset($this->PropertyRelation[$i]);
         }
         else {
-          $propertyRelation->value = $collectionData[$index]['value'];          
+          $propertyRelation->real_value = $collectionData[$index]['real_value'];
           $existing[] = $index; //!important
         }
       }
 
       // new relation
       $new = array_diff(array_keys($collectionData), $existing);
-      //myDebug::dump(array('new' => count($new)));
       foreach ($new as $index)
       {
         $relation = new ProductPropertyRelation();
@@ -127,6 +134,47 @@ class Product extends BaseProduct
         $this->PropertyRelation[] = $relation;
       }
     }
+
+    if (empty($data['media_image']))
+    {
+      $this->main_photo = 'default.jpg';
+    }
+
+    if (!empty($data['status_id']))
+    {
+      switch ($data['status_id'])
+      {
+        case 1:
+          $this->view_list = 1;
+          $this->view_show = 1;
+          $this->is_instock = 1;
+          $this->Status = ProductStatusTable::getInstance()->findOneByToken('available');
+        case 2:
+          $this->view_list = 1;
+          $this->view_show = 1;
+          $this->is_instock = 0;
+          $this->Status = ProductStatusTable::getInstance()->findOneByToken('available');
+          break;
+        default:
+          $this->view_list = 0;
+          $this->view_show = 0;
+          $this->is_instock = 0;
+          break;
+      }
+    }
+    elseif (!empty($data['is_active']) && $data['is_active'])
+    {
+      $this->view_list = 1;
+      $this->view_show = 1;
+      $this->is_instock = 1;
+    }
+    else
+    {
+      $this->view_list = 0;
+      $this->view_show = 0;
+      $this->is_instock = 0;
+    }
+
   }
 
   public function getIsInsale()

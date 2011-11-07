@@ -1,32 +1,36 @@
 #!/usr/bin/php -q
 <?php
 
+$pidFile = '/tmp/enter-task_manager.pid';
+$delay = 12; //sec
+
 $pid = pcntl_fork();
+
+if (isDaemonActive($pidFile))
+{
+  echo "Daemon already active\n";
+  exit();
+}
+
+file_put_contents($pidFile, getmypid());
 
 if ($pid == -1)
 {
-  //ошибка
+  echo "Critical error: get no pid\n";
+  exit();
 }
 elseif ($pid)
 {
   //сюда попадет родительский процесс
-  if (isDaemonActive('/tmp/'.basename(__FILE__).'.pid'))
-  {
-    echo 'Daemon already active';
-  }
-
   exit();
 }
 else
 {
   //а сюда - дочерний процесс
-  file_put_contents('/tmp/my_pid_file.pid', getmypid());
-
   while (true)
   {
-    execute();
-
-    //sleep(3);
+    shell_exec('cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run >> /dev/null');
+    sleep($delay);
   }
 }
 
@@ -35,14 +39,14 @@ posix_setsid();
 
 /**
  *
- * @param string $pid_file
+ * @param string $pidFile
  * @return boolean
  */
-function isDaemonActive($pid_file)
+function isDaemonActive($pidFile)
 {
-  if (is_file($pid_file))
+  if (is_file($pidFile))
   {
-    $pid = file_get_contents($pid_file);
+    $pid = file_get_contents($pidFile);
     //проверяем на наличие процесса
     if (posix_kill($pid, 0))
     {
@@ -52,7 +56,7 @@ function isDaemonActive($pid_file)
     else
     {
       //pid-файл есть, но процесса нет
-      if (!unlink($pid_file))
+      if (!unlink($pidFile))
       {
         //не могу уничтожить pid-файл. ошибка
         exit(-1);
@@ -60,11 +64,4 @@ function isDaemonActive($pid_file)
     }
   }
   return false;
-}
-
-
-function execute()
-{
-  //shell_exec('cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run --speed=1 >> log/cron.log');
-  shell_exec('cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run --speed=1 >> /dev/null');
 }

@@ -12,14 +12,16 @@
  */
 class Task extends BaseTask
 {
+  /*
   public function __destruct()
   {
     if (!empty($this['id']))
     {
       $this->setDefaultPriority();
-      //$this->save();
+      $this->save();
     }
   }
+  */
 
   public function preSave($event)
   {
@@ -49,13 +51,7 @@ class Task extends BaseTask
       );
     }
 
-    $content = sfYaml::load($this->content);
-
-    if (!is_array($value))
-    {
-      //$value = array($value => func_get_arg(1));
-    }
-
+    $content = $this->getContentData();
     foreach ($value as $k => $v)
     {
       $content[$k] = $v;
@@ -66,9 +62,23 @@ class Task extends BaseTask
 
   public function getContentData($name = null)
   {
-    $content = sfYaml::load($this->content);
+    $value = sfYaml::load($this->content);
 
-    return null == $name ? $content : $content[$name];
+    return null == $name ? $value : $value[$name];
+  }
+
+
+  public function setErrorData($value)
+  {
+    $error = $this->getErrorData();
+    $error .= "\n".$value;
+
+    $this->error = $error;
+  }
+
+  public function getErrorData()
+  {
+    return $this->error;
   }
 
   public function setDefaultPriority()

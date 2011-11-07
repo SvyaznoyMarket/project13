@@ -20,6 +20,7 @@ class ProjectSyncTask extends sfBaseTask
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('dump', null, sfCommandOption::PARAMETER_NONE, 'Only dump response'),
       new sfCommandOption('log', null, sfCommandOption::PARAMETER_NONE, 'Enable logging'),
+      new sfCommandOption('packet', null, sfCommandOption::PARAMETER_REQUIRED, 'The packet_id', null),
       // add your own options here
     ));
 
@@ -44,13 +45,26 @@ EOF;
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
+    // add your code here
     $this->core = Core::getInstance();
 
-    // add your code here
-    $this->task = TaskTable::getInstance()->find($arguments['task_id']);
-    if ('success' == $this->task->status)
+    if ($options['packet'])
     {
-      //return true;
+      $this->task = new Task();
+      $this->task->type = 'project.sync';
+      $this->task->setDefaultPriority();
+      $this->task->setContentData(array(
+        'action'    => 'sync',
+        'packet_id' => $options['packet'],
+      ));
+    }
+    else {
+      $this->task = TaskTable::getInstance()->find($arguments['task_id']);
+    }
+
+    if (!$this->task)
+    {
+      return false;
     }
 
     $params = $this->task->getContentData();
@@ -93,43 +107,46 @@ EOF;
       foreach ($item['data'] as $packet)
       {
         $action = $this->core->getActions($packet['operation']);
+        $this->task->setContentData('type', $packet['type']);
+        $this->task->setContentData('action', $action);
 
         try
         {
-          $method = 'process'.ucfirst($packet['type']).'Entity';
+          $method = 'process'.sfInflector::underscore($packet['type']).'Entity';
           $method = method_exists($this, $method) ? $method : 'processDefaultEntity';
 
-          if (call_user_func_array(array($this, $method), array($action, $packet))) {
+          if (!call_user_func_array(array($this, $method), array($action, $packet)))
+          {
+            $this->logger->err(sfYaml::dump($packet, 6));
 
-            $this->task->status = 'success';
-            $this->task->save();
-          }
-          // model doesn't exists or other error
-          else {
-            $this->logger->log('Unknown model: '."\n".sfYaml::dump($packet, 6));
-
+            $this->task->attempt++;
             $this->task->status = 'fail';
-            $this->task->error = 'Unknown model '.$packet['type'];
-            $this->task->save();
+            $this->task->setErrorData('Unknown model '.$packet['type']);
           }
         }
         catch (Exception $e)
         {
           $this->logSection($packet['type'], ucfirst($action).' entity #'.$packet['data']['id'].' error: '.$e->getMessage(), null, 'ERROR');
-          $this->logger->log('Error: packet #'.$params['packet_id']."\n".$e->getMessage());
+          $this->logger->err("{$e->getMessage()}\n".sfYaml::dump($packet, 6));
 
           $this->task->attempt++;
-          $this->task->error = $e->getMessage();
-          $this->task->save();
+          $this->task->status = 'fail';
+          $this->task->setErrorData("{$e->getMessage()}\n".sfYaml::dump($packet, 6));
         }
-
       }
     }
+
+    if ('run' == $this->task->status)
+    {
+      $this->task->status = 'success';
+    }
+
+    $this->task->save();
   }
 
 
 
-  protected function processRecord($action, $record)
+  protected function processRecord($action, $record, $entity = array())
   {
     if (!$record instanceof myDoctrineRecord)
     {
@@ -144,20 +161,21 @@ EOF;
       if (!empty ($record->core_parent_id) && $record->getTable()->hasTemplate('NestedSet'))
       {
         $modified = $record->getLastModified();
-        if (isset($modified['core_lft']) || isset($modified['core_rgt']))
+        if (isset($modified['core_parent_id']))
         {
-          $parent = $record->getTable()->getIdByCoreId($record->core_parent_id);
-          if ($parent->id != $record->getNode()->getParent()->id)
+          $parent = $record->getTable()->getByCoreId($record->core_parent_id);
+          if ($parent && ($parent->id != $record->getNode()->getParent()->id))
           {
-            $record->getNode()->moveAsFirstChildOf($parent);
-          }
-
-          $prevSibling = $record->getTable()->getIdByCoreId($record->core_lft);
-          if ($prevSibling && ($prevSibling->id != $parent->id))
-          {
-            $record->getNode()->moveAsPrevSiblingOf($prevSibling);
+            $record->getNode()->moveAsLastChildOf($parent);
           }
         }
+      }
+
+      $method = 'postSave'.$record->getTable()->getComponentName().'Record';
+      $method = method_exists($this, $method) ? $method : false;
+      if ($method)
+      {
+        call_user_func_array(array($this, $method), array($record, $entity));
       }
     }
     else if ('delete' == $action)
@@ -170,6 +188,10 @@ EOF;
         $record->delete();
       }
     }
+
+    $record->free(true);
+    $record = null;
+    unset($record);
   }
 
 
@@ -219,16 +241,18 @@ EOF;
       $record = $table->create();
     }
 
-    $record->importFromCore($entity);
+    if (('create' == $action) || ('update' == $action))
+    {
+      $record->importFromCore($entity);
+    }
     $record->setCorePush(false);
     //myDebug::dump($entity);
     //myDebug::dump($record);
 
-    $this->processRecord($action, $record);
+    $this->processRecord($action, $record, $entity);
 
     return true;
   }
-
   /**
    *
    * @param string $action
@@ -240,7 +264,7 @@ EOF;
     $entity = $packet['data'];
 
     $record = false;
-    switch ($entity['item_type_id'])
+    if (isset($entity['item_type_id'])) switch ($entity['item_type_id'])
     {
       case 1:
         switch ($entity['type_id'])
@@ -253,7 +277,8 @@ EOF;
               $record = $table->createRecordFromCore($entity);
             }
 
-            $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
+            $record->importFromCore($entity);
+            //$record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             $record->view_show = 1;
             break;
           case 2:
@@ -264,7 +289,8 @@ EOF;
               $record = $table->createRecordFromCore($entity);
             }
 
-            $record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
+            $record->importFromCore($entity);
+            //$record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
             break;
         }
         break;
@@ -278,8 +304,14 @@ EOF;
         break;
     }
 
-    $this->processRecord($action, $record);
+    $this->processRecord($action, $record, $entity);
 
     return true;
+  }
+
+
+
+  protected function postSaveProductTypeRecord(ProductType $record, array $entity)
+  {
   }
 }

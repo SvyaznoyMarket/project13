@@ -19,7 +19,7 @@
       <dd<?php if (4 > $i) echo ' style="display: block"' ?>>
         <?php echo $form[$name]->render() ?>
       </dd>
-<?php endforeach; ?>
+    <?php endforeach ?>
   </dl>
 
   <div class="pb10"><input type="submit" class="button yellowbutton" value="Подобрать" /></div>

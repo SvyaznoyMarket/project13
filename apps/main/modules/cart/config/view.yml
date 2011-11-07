@@ -1,6 +1,6 @@
 all:
   javascripts:
-    - dash.js
-    
+    -mechanics.js    
   metas:
     title: Корзина - Enter.ru
+

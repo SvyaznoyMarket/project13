@@ -15,15 +15,16 @@ generator:
       actions: ~
       fields:  ~
       list:
-        display: [ id, type, status, _content, priority, attempt, error, core_id, created_at, updated_at ]
+        display: [ id, _type, _priority, _content, _attempt, step, _error, core_packet_id, created_at, updated_at ]
         table_method: retrieveAdminList
         sort: [ core_packet_id, asc ]
         actions:
-          init: { label: Перегрузить данные, action: init, params: { confirm: 'Выполнить перезагрузку?' } }
+          init:  { label: Перегрузить данные, action: init, params: { confirm: 'Выполнить перезагрузку?' } }
+          clear: { label: Очистить старые, action: clear, params: { confirm: 'Очистить старые задачи?' } }
         object_actions:
-          _edit: { label ' ' }
-          _delete: { label ' ' }
-          core: { label 'Запрос', action: core }
+          _edit:   { label: ' ' }
+          _delete: { label: ' ' }
+          core:    { label: 'Запрос', action: core }
       filter:
         display: [ id, type, core_id, priority, status, content, attempt, error, created_at, updated_at ]
       form:    ~

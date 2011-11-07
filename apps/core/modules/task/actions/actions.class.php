@@ -14,6 +14,28 @@ require_once dirname(__FILE__).'/../lib/taskGeneratorHelper.class.php';
 class taskActions extends autoTaskActions
 {
  /**
+  * Executes clear action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeClear(sfWebRequest $request)
+  {
+    $days = 7;
+
+    $taskList = TaskTable::getInstance()->clearOld($days);
+
+    if (true)
+    {
+      $this->getUser()->setFlash('notice', 'Старые задачи успешно очищены');
+    }
+    else {
+      $this->getUser()->setFlash('error', 'Не удалось очистить старые задачи');
+    }
+
+
+    $this->redirect('task');
+  }
+ /**
   * Executes init action
   *
   * @param sfRequest $request A request object
@@ -37,14 +59,14 @@ class taskActions extends autoTaskActions
 
       $task->save();
 
-      $this->getUser()->setFlash('message', 'Задача успешно запущена');
+      $this->getUser()->setFlash('notice', 'Задача успешно запущена');
     }
     else {
       $this->getUser()->setFlash('error', "Не удалось запустить задачу. Ответ от core:\n".sfYaml::dump($response));
     }
 
 
-    $this->redirect('homepage');
+    $this->redirect('task');
   }
  /**
   * Executes core action
@@ -54,7 +76,7 @@ class taskActions extends autoTaskActions
   public function executeCore(sfWebRequest $request)
   {
     $this->task = $this->getRoute()->getObject();
-    
+
     $response = false;
     $query = false;
     if ('project.sync' == $this->task->type)
@@ -66,12 +88,12 @@ class taskActions extends autoTaskActions
         ),
       );
     }
-    
+
     if ($query)
     {
       $response = $this->getCore()->query($query['name'], $query['param']);
     }
-    
+
     $this->setVar('response', is_array($response) ? sfYaml::dump($response, 6) : $response, true);
     $this->setVar('query', is_array($query) ? sfYaml::dump($query) : $query, true);
   }
