@@ -11,14 +11,27 @@
     <?php $i = 0; foreach ($form as $name => $field):  if ($i++ > 7) break;  ?>
       <?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?>
 
-      <dt<?php if (5 > $i) echo ' class="current'.((1 == $i) ? ' first' : '').'"' ?>><?php echo $form[$name]->renderLabelName() ?>
+      <dt<?php if (5 > $i) echo ' class="current'.((1 == $i) ? ' first' : '').'"' ?>>
+        <?php echo $form[$name]->renderLabelName() ?>
         <?php //include_partial('productCatalog/filter_hint')  ?>
       </dt>
 
       <dd<?php if (5 > $i) echo ' style="display: block"' ?>>
-        <?php echo $form[$name]->render() ?>
+
+        <?php if ($form[$name]->getWidget() instanceof myWidgetFormInputCheckbox): ?>
+        <ul>
+          <li>
+          <?php echo $form[$name]->render() ?>
+          <label for="<?php echo $form[$name]->renderId() ?>">да</label>
+          </li>
+        </ul>
+
+        <?php else: ?>
+          <?php echo $form[$name]->render() ?>
+        <?php endif ?>
+
       </dd>
-<?php endforeach; ?>
+    <?php endforeach; ?>
   </dl>
 
   <div class="pb10"><input type="submit" class="button yellowbutton" value="Подобрать" /></div>
