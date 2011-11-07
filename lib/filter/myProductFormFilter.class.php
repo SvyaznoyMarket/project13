@@ -93,11 +93,11 @@ class myProductFormFilter extends sfFormFilter
 
     $filter = array(
       'category'   => $productCategory,
-      'creator'    => $this->values['creator'],
-      'price'      => array(
+      'creator'    => isset($this->values['creator']) ? $this->values['creator'] : false,
+      'price'      => (isset($this->values['price']['from']) && isset($this->values['price']['to'])) ? array(
         'from' => $this->values['price']['from'],
         'to'   => $this->values['price']['to'],
-      ),
+      ) : false,
       'parameters' => array(),
       'type'       => $productType,
     );
