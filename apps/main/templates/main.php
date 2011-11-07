@@ -110,9 +110,11 @@ _gaq.push(['_trackPageLoadTime']);
       <?php include_component('productCategory', 'root_list') ?>
       <!-- /Topmenu -->
 
-    <div class="searchbox">
-      <?php include_component('search', 'form', array('view' => 'main')) ?>
-    </div>
+    <noindex>  
+        <div class="searchbox">
+          <?php include_component('search', 'form', array('view' => 'main')) ?>
+        </div>
+    </noindex>    
 
 
     <div class="bigbanner"><a href=""><img src="" alt="" width="768" height="302" /></a></div>

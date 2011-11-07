@@ -43,11 +43,13 @@
           <div class="region">
             Регион: <?php include_partial('default/region') ?>
           </div>
-          <div class="usermenu">
-            <div class="point"><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="f1">F1 сервис</a></div>
-            <div class="point"><?php include_partial('default/user') ?></div>
-            <div class="point next"><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></div>
-          </div>
+          <noindex>  
+              <div class="usermenu">
+                <div class="point"><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="f1">F1 сервис</a></div>
+                <div class="point"><?php include_partial('default/user') ?></div>
+                <div class="point next"><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></div>
+              </div>
+          </noindex>    
         </div>
         <!-- /Topbar -->
         <!-- Header -->
