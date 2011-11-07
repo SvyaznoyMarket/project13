@@ -17,6 +17,24 @@ $(document).ready(function() {
 
     return false
   })
+  
+  $('#signin_password').keypress(function(e) { 
+		var s = String.fromCharCode( e.which )		
+		var cln = $('<strong id="capslock" style="border: 1px solid red; color: red; border-radius: 3px 3px 3px 3px; background: none repeat scroll 0% 0% white; position: absolute; height: 16px; padding: 1px 3px; margin-top: 2px; margin-left: -78px;">CAPS LOCK</strong>')		
+		if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey ) {
+			if( !$('#capslock').length ) $(this).after(cln)
+		} else {
+			if( $('#capslock').length ) $('#capslock').remove()
+		}			
+  })
+  $('#signin_password').keyup(function(e) { 
+  		var rwn = $('<strong id="ruschars" style="border: 1px solid red; color: red; border-radius: 3px 3px 3px 3px; background: none repeat scroll 0% 0% white; position: absolute; height: 16px; padding: 1px 3px; margin-top: 2px; margin-left: -36px;">RUS</strong>')
+  		if( /[а-яА-ЯёЁ]/.test( $(this).val() ) ) {
+			if( !$('#ruschars').length ) $(this).after(rwn)
+		} else { 
+			if( $('#ruschars').length ) $('#ruschars').remove()
+		}
+  })
 
   $('#login-form, #register-form').bind('submit', function(e) {
     e.preventDefault()
