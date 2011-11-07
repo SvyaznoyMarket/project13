@@ -56,18 +56,44 @@ class ProductType extends BaseProductType
       $this->PropertyRelation[] = $relation;
     }
 
-    // категория товара
-    /*
-    if (!empty($data['category'])) foreach ($data['category'] as $relationData)
+    // фильтры категорий
+    if (!empty($data['property'])) foreach ($data['property'] as $relationData)
     {
-      $relation = new ProductCategoryTypeRelation();
-      $relation->fromArray(array(
-        'product_category_id' => ProductCategoryTable::getInstance()->getIdByCoreId($relationData['id']),
-      ));
-      $this->ProductCategoryRelation[] = $relation;
-    }
-    */
+      if ($relationData['is_filter'] && !empty($data['category']))
+      {
+        $propertyId = ProductPropertyTable::getInstance()->getIdByCoreId($relationData['id']);
 
-    // TODO: фильтры категорий
+        foreach ($data['category'] as $categoryData)
+        {
+          $category = ProductCategoryTable::getInstance()->getByCoreId($categoryData['id']);
+          if (!$category) continue;
+
+          $groupId = isset($category->FilterGroup->id) ? $category->FilterGroup->id : null;
+          if (!$groupId) continue;
+
+          $filter = ProductFilterTable::getInstance()->createQuery()
+            ->where('property_id = ? AND group_id = ?', array($propertyId, $groupId))
+            ->fetchOne()
+          ;
+          if (!$filter)
+          {
+            $filter = new ProductFilter();
+          }
+
+          $filter->fromArray(array(
+            'name'        => $relationData['name'],
+            'type'        => (6 == $relationData['filter_type_id']) ? 'range' : 'choice',
+            'property_id' => $propertyId,
+            'group_id'    => $groupId,
+            'position'    => $relationData['filter_position'],
+            'is_multiple' => $relationData['is_multiple'],
+            'value_min'   => $relationData['filter_min'],
+            'value_max'   => $relationData['filter_max'],
+          ));
+
+          $filter->save();
+        }
+      }
+    }
   }
 }

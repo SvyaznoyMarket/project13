@@ -33,8 +33,8 @@ class ProductPropertyRelation extends BaseProductPropertyRelation
 
     if ('boolean' == $type)
     {
-      $this->set($field, 'да' == $value ? true : false);
-      $this->value = $value;
+      $this->set($field, in_array($value, array('true', true, 'да')) ? true : false);
+      $this->value = in_array($value, array('true', true, 'да')) ? 'да' : 'нет';
     }
     else {
       $this->set($field, $value);

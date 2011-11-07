@@ -58,13 +58,17 @@ class myProductFormFilter extends sfFormFilter
       $this->validatorSchema['creator'] = new sfValidatorPass();
     }
     // виджеты параметров
-    $filters = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
+    $productFilterList = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
+    //$productFilterList = $productCategory->FilterGroup->Filter;
 
-    foreach ($filters as $productFilter)
+    foreach ($productFilterList as $productFilter)
     {
-      if (count($productFilter->Property->Option) < 2) continue;
+      if (('choice' == $productFilter->type) && count($productFilter->Property->Option) < 2) continue;
 
-      if (!$widget = call_user_func(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), $productFilter)) continue;
+      if (!$widget = call_user_func_array(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), array(
+        $productFilter,
+        'range' == $productFilter->type ? array('from' => $productFilter->value_min, 'to' => $productFilter->value_max) : array(),
+      ))) continue;
 
       $index = "param-{$productFilter->id}";
       $this->setWidget($index, $widget);
@@ -89,11 +93,11 @@ class myProductFormFilter extends sfFormFilter
 
     $filter = array(
       'category'   => $productCategory,
-      'creator'    => $this->values['creator'],
-      'price'      => array(
+      'creator'    => isset($this->values['creator']) ? $this->values['creator'] : false,
+      'price'      => (isset($this->values['price']['from']) && isset($this->values['price']['to'])) ? array(
         'from' => $this->values['price']['from'],
         'to'   => $this->values['price']['to'],
-      ),
+      ) : false,
       'parameters' => array(),
       'type'       => $productType,
     );
@@ -143,7 +147,7 @@ class myProductFormFilter extends sfFormFilter
       'template'   => ''
         .'<div class="pb5" style="margin-left:11px;">%value_from% - %value_to%</div>'
         .'<div class="sliderbox">'
-          .'<div id="slider-range1" class="slider-range"></div>'
+          .'<div id="slider-'.uniqid().'" class="filter-range"></div>'
           .'<span class="fl">'.$value['from'].'</span>'
           .'<span class="fr">'.$value['to'].'</span>'
         .'</div>'
@@ -152,6 +156,11 @@ class myProductFormFilter extends sfFormFilter
       'class' => 'text',
       'style' => 'display: inline; width: 60px;',
     ));
+  }
+
+  protected function getWidgetCheckbox(ProductFilter $productFilter = null)
+  {
+    return new myWidgetFormInputCheckbox();
   }
 
   public function show_part($widget, $inputs)

@@ -146,7 +146,7 @@ EOF;
 
 
 
-  protected function processRecord($action, $record)
+  protected function processRecord($action, $record, $entity = array())
   {
     if (!$record instanceof myDoctrineRecord)
     {
@@ -169,6 +169,13 @@ EOF;
             $record->getNode()->moveAsLastChildOf($parent);
           }
         }
+      }
+
+      $method = 'postSave'.$record->getTable()->getComponentName().'Record';
+      $method = method_exists($this, $method) ? $method : false;
+      if ($method)
+      {
+        call_user_func_array(array($this, $method), array($record, $entity));
       }
     }
     else if ('delete' == $action)
@@ -242,11 +249,10 @@ EOF;
     //myDebug::dump($entity);
     //myDebug::dump($record);
 
-    $this->processRecord($action, $record);
+    $this->processRecord($action, $record, $entity);
 
     return true;
   }
-
   /**
    *
    * @param string $action
@@ -298,8 +304,14 @@ EOF;
         break;
     }
 
-    $this->processRecord($action, $record);
+    $this->processRecord($action, $record, $entity);
 
     return true;
+  }
+
+
+
+  protected function postSaveProductTypeRecord(ProductType $record, array $entity)
+  {
   }
 }
