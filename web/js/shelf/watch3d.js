@@ -32,7 +32,6 @@ function likemovie( nodename , apinodes, s, b) {
 	var apinodes = apinodes ? apinodes : {}
 	var smURLs = s
 	var bURLs  = b
-	var URLs   = null
 	
 	var self = this
 	
@@ -220,14 +219,49 @@ function likemovie( nodename , apinodes, s, b) {
 	}
 	
 	this.preloadImages = function(ind) {
-		URLs = liteversion ? smURLs : bURLs
+		var URLs = liteversion ? smURLs : bURLs
 		var buffer = $("<div>")
 		for(var i = 0; i < ind.length; i++) {
 			$("<img>").attr("src", URLs[ ind[i] - 1 ] )
 					  .attr('id','ivn'+ind[i])
-					  .appendTo(buffer)		
+					  .appendTo(buffer)
+					  .bind('load',function(){ 
+					  	console.info('loaded ',$(this).attr('id'))
+					  	self.preloadOnebyone( $(this).attr('id').replace(/\D/g,'') )
+					  })
 		}
 		(liteversion) ? $('#nvis500').append(buffer) : $('#nvis').append(buffer)
+	}
+	
+	var flags = []
+	var toload = 0
+	for(var i=0; i < self.howmany; i++)
+		flags[i] = 0	
+		
+	this.preloadOnebyone = function( cur ) {
+		flags[cur-1] = 2
+		toload = 99
+		console.group('cur',cur)
+		for(var i=cur; i < self.howmany + cur ; i++) {
+			console.log(i)
+			if( !flags[i % self.howmany] ) { 
+				toload = i % self.howmany				
+				break
+			}
+			
+		}	
+	console.groupEnd()
+		if( toload < 99 ) { // :)	
+			flags[cur-1] = 1
+			console.info('toload ',toload)
+			$("<img>").attr("src", bURLs[ toload ] )
+					  .attr('id','ivn'+ (toload*1 + 1))
+					  .appendTo( $('#nvis') )
+					  .bind('load',function(){ 
+					  	console.info('loaded ',$(this).attr('id')) 
+					  	self.preloadOnebyone( $(this).attr('id').replace(/\D/g,'') )
+					  })
+		}			  				  
 	}
 	
 	this.checkComplete = function() {
@@ -241,7 +275,8 @@ function likemovie( nodename , apinodes, s, b) {
 		loader.update( (initInd.length - indexes.length + loaded ) / self.howmany * 100 ) 
 		if (loaded != indexes.length)
 			return
-		self.nextLoad()	
+		if ( liteversion ) 
+			self.nextLoad() 
 	}	
 	
 	this.nextLoad = function() {
@@ -440,7 +475,7 @@ function likemovie( nodename , apinodes, s, b) {
 		frontier = $('<img>').attr({'src': bURLs[0],
 									'width': self.initres,
 									'height': self.initres })
-							 .attr('id','ivn') // TODO
+							 .attr('id','ivn') 
 							 .css({ 'position':'relative',
 									'left': Math.round( (self.mvblock.innerWidth() - self.initres ) / 2 ) ,
 									'top': Math.round( (self.mvblock.innerHeight() - self.initres ) / 2 ) })
@@ -531,7 +566,7 @@ function likemovie( nodename , apinodes, s, b) {
 			this.preloadImages(indexes)
 			ccid = setInterval(self.checkComplete, self.completenessIntrvl) 			
 		}
-		if (liteversion || initInd.length == this.howmany ) {	
+		if ( liteversion || initInd.length == this.howmany ) {	
 			this.startRolling()
 		} else 	{
 			this.show4slides()
@@ -745,10 +780,10 @@ function gigaimage( worknode , zoom, /* zoomer node*/ zoo, overwritefn) {
 		jnode.unbind('mousedown')
 		jnode.unbind('mousewheel')
 		jnode.remove()
-		$(document).unbind('.zoomer')
+		$(document).unbind('.zoomer')			
 		for(var x in this)
 			delete this[x]
-		//TODO this = null	
+		self = null					
 	}
 	
 } // gigaimage Object
