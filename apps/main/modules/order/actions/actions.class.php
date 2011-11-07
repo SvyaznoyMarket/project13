@@ -32,6 +32,8 @@ class orderActions extends myActions
 
   public function executeLogin(sfWebRequest $request)
   {
+    $this->getResponse()->setTitle('Данные покупателя – Enter.ru');     
+      
     if (!$this->getUser()->getCart()->count())
     {
       $this->redirect($this->getUser()->getReferer());
@@ -105,9 +107,13 @@ class orderActions extends myActions
   */
   public function executeNew(sfWebRequest $request)
   {
+    $this->setVar('aaa', '===========test');
+      
+    $this->getResponse()->setTitle('Способ доставки и оплаты  – Enter.ru');     
+      
     $this->step = $request->getParameter('step', 1);
     $this->order = $this->getUser()->getOrder()->get();
-
+    
     if (empty($this->order->region_id))
     {
      $this->order->region_id = $this->getUser()->getRegion('id');
@@ -228,6 +234,8 @@ class orderActions extends myActions
   */
   public function executeConfirm(sfWebRequest $request)
   {
+    $this->getResponse()->setTitle('Подтверждение заказа – Enter.ru');     
+      
     if ($request->isMethod('post'))
     {
       $this->forward($this->getModuleName(), 'create');
