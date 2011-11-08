@@ -226,7 +226,6 @@ function likemovie( nodename , apinodes, s, b) {
 					  .attr('id','ivn'+ind[i])
 					  .appendTo(buffer)
 					  .bind('load',function(){ 
-					  	console.info('loaded ',$(this).attr('id'))
 					  	self.preloadOnebyone( $(this).attr('id').replace(/\D/g,'') )
 					  })
 		}
@@ -241,24 +240,18 @@ function likemovie( nodename , apinodes, s, b) {
 	this.preloadOnebyone = function( cur ) {
 		flags[cur-1] = 2
 		toload = 99
-		console.group('cur',cur)
 		for(var i=cur; i < self.howmany + cur ; i++) {
-			console.log(i)
 			if( !flags[i % self.howmany] ) { 
-				toload = i % self.howmany				
+				toload = i % self.howmany	
 				break
-			}
-			
+			}			
 		}	
-	console.groupEnd()
 		if( toload < 99 ) { // :)	
-			flags[cur-1] = 1
-			console.info('toload ',toload)
+			flags[toload] = 1
 			$("<img>").attr("src", bURLs[ toload ] )
 					  .attr('id','ivn'+ (toload*1 + 1))
 					  .appendTo( $('#nvis') )
 					  .bind('load',function(){ 
-					  	console.info('loaded ',$(this).attr('id')) 
 					  	self.preloadOnebyone( $(this).attr('id').replace(/\D/g,'') )
 					  })
 		}			  				  
