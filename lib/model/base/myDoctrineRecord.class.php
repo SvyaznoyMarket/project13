@@ -160,7 +160,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
             {
               if (!$id = Doctrine_Core::getTable($model)->getIdByCoreId($d['id']))
               {
-                throw new Exception('Can\'t find '.$model.' ##'.$d['id']);
+                throw new Exception('Can\'t find '.$model.' with core_id='.$d['id']);
               }
 
               $new[] = $id;
