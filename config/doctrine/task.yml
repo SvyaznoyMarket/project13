@@ -12,6 +12,7 @@ Task:
     status:            { type: enum, length: 10, values: [run, pause, fail, success], notnull: true, default: run }
     content:           { type: string, notnull: false, default: null }
     attempt:           { type: integer(4), notnull: true, default: 0, comment: 'Номер неудачной попытки' }
+    step:              { type: integer(4), notnull: true, default: 0, comment: 'Количество запусков' }
     error:             { type: string, notnull: false, default: null }
   indexes:
     core:

@@ -1,0 +1,14 @@
+changePasswordSuccess: 
+  layout: info 
+  metas:
+    title:        Смена пароля - Личный кабинет
+  
+changePasswordOkSuccess: 
+  layout: info   
+  metas:
+    title:        Смена пароля завершена - Личный кабинет
+ 
+  
+signinSuccess:
+  javascripts:
+    - app.oauth.js   

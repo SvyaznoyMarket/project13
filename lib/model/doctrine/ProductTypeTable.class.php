@@ -60,8 +60,6 @@ class ProductTypeTable extends myDoctrineTable
         $q->leftJoin('productType.PropertyGroupRelation propertyGroupRelation')
           ->leftJoin('propertyGroupRelation.PropertyGroup propertyGroup')
           ->addOrderBy('propertyGroupRelation.position')
-//        $q->leftJoin('productType.PropertyGroup productPropertyGroup')
-//          ->addOrderBy('productPropertyGroup.position')
         ;
       }
     }

@@ -136,11 +136,12 @@ class TaskTable extends myDoctrineTable
     ;
   }
 
-  public function getOldList($days)
+  public function clearOld($days)
   {
     return $this->createQuery()
-      ->addWhere('(DATEDIFF(NOW(), created_at) >= ?) OR (status = ?)', array($days, 'success'))
-      ->orderBy('created_at ASC')
+      ->delete()
+      ->from('Task')
+      ->where('(DATEDIFF(NOW(), created_at) >= ?) OR (status = ?)', array($days, 'success'))
     ;
   }
 }

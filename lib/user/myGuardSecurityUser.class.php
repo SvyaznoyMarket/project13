@@ -129,6 +129,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
 
     // save last login
     $user->setLastLogin(date('Y-m-d H:i:s'));
+    //$user->setCorePush(false);
     $user->save($con);
 
     // remember?

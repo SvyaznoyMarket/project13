@@ -14,7 +14,7 @@ class taskGeneratorConfiguration extends BaseTaskGeneratorConfiguration
   {
     return array(
       'status'     => 'run',
-      'created_at' => array('from' => date('Y-m-d 00:00:00'), 'to' => date('Y-m-d 23:59:59')),
+      //'created_at' => array('from' => date('Y-m-d 00:00:00'), 'to' => date('Y-m-d 23:59:59')),
     );
   }
 }

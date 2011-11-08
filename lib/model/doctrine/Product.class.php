@@ -83,23 +83,28 @@ class Product extends BaseProduct
 
             $collectionData[$property->id.'-'.$optionId] = array(
               'property_id' => $property->id,
-              'option_id'   => $optionId,
-              'real_value'  => null,
+              'real_value'  => $optionId,
               'type'        => $property->type,
             );
           }
         }
         else {
-          $optionId = ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id']);
+          $optionId =
+            'select' == $property->type
+            ? ProductPropertyOptionTable::getInstance()->getIdByCoreId($relationData['option_id'])
+            : null
+          ;
           if (!empty($relationData['option_id']) && !$optionId)
           {
-            // force get option
+            throw new Exception('Can\'t find ProductPropertyOption with core_id = '.$relationData['option_id']);
           }
+
+          $value = trim($relationData['value']);
+          $value = $optionId ? $optionId : (!empty($value) ? $value : null);
 
           $collectionData[$property->id.'-'.$optionId] = array(
             'property_id' => $property->id,
-            'option_id'   => $optionId,
-            'real_value'  => trim($relationData['value']),
+            'real_value'  => $value,
             'type'        => $property->type,
           );
         }

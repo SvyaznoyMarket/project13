@@ -107,6 +107,8 @@ EOF;
       foreach ($item['data'] as $packet)
       {
         $action = $this->core->getActions($packet['operation']);
+        $this->task->setContentData('type', $packet['type']);
+        $this->task->setContentData('action', $action);
 
         try
         {
@@ -129,7 +131,7 @@ EOF;
 
           $this->task->attempt++;
           $this->task->status = 'fail';
-          $this->task->setErrorData($e->getMessage());
+          $this->task->setErrorData("{$e->getMessage()}\n".sfYaml::dump($packet, 6));
         }
       }
     }
@@ -138,12 +140,13 @@ EOF;
     {
       $this->task->status = 'success';
     }
+
     $this->task->save();
   }
 
 
 
-  protected function processRecord($action, $record)
+  protected function processRecord($action, $record, $entity = array())
   {
     if (!$record instanceof myDoctrineRecord)
     {
@@ -158,20 +161,21 @@ EOF;
       if (!empty ($record->core_parent_id) && $record->getTable()->hasTemplate('NestedSet'))
       {
         $modified = $record->getLastModified();
-        if (isset($modified['core_lft']) || isset($modified['core_rgt']))
+        if (isset($modified['core_parent_id']))
         {
-          $parent = $record->getTable()->getIdByCoreId($record->core_parent_id);
-          if ($parent->id != $record->getNode()->getParent()->id)
+          $parent = $record->getTable()->getByCoreId($record->core_parent_id);
+          if ($parent && ($parent->id != $record->getNode()->getParent()->id))
           {
-            $record->getNode()->moveAsFirstChildOf($parent);
-          }
-
-          $prevSibling = $record->getTable()->getIdByCoreId($record->core_lft);
-          if ($prevSibling && ($prevSibling->id != $parent->id))
-          {
-            $record->getNode()->moveAsPrevSiblingOf($prevSibling);
+            $record->getNode()->moveAsLastChildOf($parent);
           }
         }
+      }
+
+      $method = 'postSave'.$record->getTable()->getComponentName().'Record';
+      $method = method_exists($this, $method) ? $method : false;
+      if ($method)
+      {
+        call_user_func_array(array($this, $method), array($record, $entity));
       }
     }
     else if ('delete' == $action)
@@ -237,16 +241,18 @@ EOF;
       $record = $table->create();
     }
 
-    $record->importFromCore($entity);
+    if (('create' == $action) || ('update' == $action))
+    {
+      $record->importFromCore($entity);
+    }
     $record->setCorePush(false);
     //myDebug::dump($entity);
     //myDebug::dump($record);
 
-    $this->processRecord($action, $record);
+    $this->processRecord($action, $record, $entity);
 
     return true;
   }
-
   /**
    *
    * @param string $action
@@ -298,8 +304,14 @@ EOF;
         break;
     }
 
-    $this->processRecord($action, $record);
+    $this->processRecord($action, $record, $entity);
 
     return true;
+  }
+
+
+
+  protected function postSaveProductTypeRecord(ProductType $record, array $entity)
+  {
   }
 }

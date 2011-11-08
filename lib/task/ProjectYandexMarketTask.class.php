@@ -6,7 +6,7 @@ class ProjectYandexMarketTask extends sfBaseTask
   private $_companyData = array(
       'name' => 'Enter.ru',
       'company' => 'Enter.ru',
-      'url' => 'http://enter.ru',
+      'url' => 'http://www.enter.ru',
       'email' => 'enter@enter.ru'
   );
 
@@ -170,12 +170,17 @@ EOF;
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
     if (!file_exists($this->_xmlFolder)) mkdir($this->_xmlFolder);
     
+    $config = sfConfig::getAll();
+    $this->_imageUrlsConfig = $config['app_product_photo_url'];
+    #var_dump($this->_imageUrlsConfig);
+    #exit();
+    
     //генерируем файл со всеми товарами
     $this->_xmlFilePath = $this->_xmlFolder . '/' . $this->_xmlFileName;  //'/mnt/hgfs/httpdFiles/'.
     $this->_xmlGenerateItself();
     
     $this->_generateCatList();    
-    $this->_imageUrlsConfig = sfConfig::get('app_product_photo_url');
+    
     //генерируем файлы с определёнными категориями
     
     if (count($this->_globalCatList)>0)
@@ -311,9 +316,7 @@ EOF;
   private function _setOffersList(){
       
     //узел продуктов  
-    $offers = $this->_xmlResultShop->addChild('offers');
-    $this->_imageUrlsConfig = sfConfig::get('app_product_photo_url');
-    
+    $offers = $this->_xmlResultShop->addChild('offers');    
 
     $categoryLimitExist = false;
     if (count($this->_categoryList)>0) $categoryLimitExist = true;
@@ -437,7 +440,7 @@ EOF;
         $value = "";
         switch ($code){
             case 'url':
-                $value = $this->_companyData['url'].'/product/'.$offerInfo['token'];
+                $value = $this->_companyData['url'].'/products/'.$offerInfo['token'];
                 break;
             case 'price':
                 if (isset($offerInfo['ProductPrice'][0])) $value = $offerInfo['ProductPrice'][0]['price'];
@@ -448,7 +451,7 @@ EOF;
                 break;
             case 'picture':
                 if (isset($offerInfo['Photo']) && isset($offerInfo['Photo'][0]) && isset($offerInfo['Photo'][0]['resource'])) 
-                    $value =  $this->_imageUrlsConfig[4] . $offerInfo['Photo'][0]['resource'];
+                    $value =  $this->_imageUrlsConfig[3] . $offerInfo['Photo'][0]['resource'];
                 break;
             case 'typePrefix':
                 #$value = $offerInfo['Type']['name'];
