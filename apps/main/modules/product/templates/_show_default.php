@@ -166,7 +166,7 @@ foreach ($p3d as $p3d_obj)
 
 <?php if (!empty($item['product']->description)): ?>
     <!-- Information -->
-    <h2 class="bold">Информация о товаре</h2>
+    <h2 class="bold"><?php echo $item['product']->name ?> - Информация о товаре</h2>
     <div class="line pb15"></div>
     <ul class="pb10">
       <?php echo $item['product']->description ?>
@@ -177,7 +177,7 @@ foreach ($p3d as $p3d_obj)
 
 
 <!-- Description -->
-<h2 class="bold">Характеристики</h2>
+<h2 class="bold"><?php echo $item['product']->name ?> - Характеристики</h2>
 <div class="line pb25"></div>
 
 <?php if (false && ($product->countParameter('show') > 5) && ($product->countParameter('list') > 0)): ?>

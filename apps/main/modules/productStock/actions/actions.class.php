@@ -18,5 +18,22 @@ class productStockActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
+    
+    // SEO ::
+    $this->product->description = '<noindex>' . $this->product->description . '</noindex>';
+    $title = 'Где купить %s в магазинах Enter - интернет-магазин Enter.ru';
+    $this->getResponse()->setTitle(sprintf(
+        $title, 
+        $this->product['name'], 
+        $this->product['name']
+    ));
+    $descr = 'Интернет магазин Enter.ru предлагает ознакомиться с отзывами владельцев товара %s. На этой странице Вы можете прочитать отзывы покупателей о товаре %s, а так же оставить свое мнение.';
+    $this->getResponse()->addMeta('description', sprintf(
+        $descr,
+        $this->product['name'], 
+        $this->product['name']
+    ));
+    $this->getResponse()->addMeta('keywords', sprintf('%s отзывы мнения покупателей владельцев пользователей', $this->product['name']));
+    // :: SEO
   }
 }
