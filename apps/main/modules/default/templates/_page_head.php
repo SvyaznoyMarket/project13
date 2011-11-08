@@ -8,8 +8,10 @@
   <?php if (has_slot('title')): ?>
     <h1><?php include_slot('title') ?></h1>
   <?php endif ?>
-  <div class="searchbox">
-    <?php include_component('search', 'form') ?>
-  </div>
+  <noindex>  
+      <div class="searchbox">
+        <?php include_component('search', 'form') ?>
+      </div>
+  </noindex>    
   <div class="clear"></div>
 </div>

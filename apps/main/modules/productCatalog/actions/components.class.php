@@ -166,6 +166,17 @@ class productCatalogComponents extends myComponents
 
     $this->setVar('currentCat', $this->productCategory, true);
     $ancestorList = $this->productCategory->getNode()->getAncestors();
+    #var_dump( $ancestorList );
+    #print_r(get_class_methods($this->productCategory));
+    #exit();
+    //если у этой категории нет дочерних, нужно выводить её братьев
+    if (count($this->productCategory->getChildList())<1){
+        foreach($ancestorList as $parent);    
+        $parent = ProductCategoryTable::getInstance()->getById($parent['id']);
+        $brothersList = $parent->getNode()->getChildren();
+        $this->setVar('brothersList', $brothersList, true);
+    }    
+
     $this->setVar('treeList', $ancestorList, true);
 
     $this->setVar('list', $this->productCategory->getNode()->getChildren(), true);
