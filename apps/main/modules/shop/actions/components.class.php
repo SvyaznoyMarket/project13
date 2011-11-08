@@ -17,13 +17,24 @@ class shopComponents extends myComponents
   */
   public function executeShow()
   {
-    $this->item = array(
+    if (!in_array($this->view, array('default', 'inlist')))
+    {
+      $this->view = 'default';
+    }
+
+    $item = array(
       'name'         => (string)$this->shop,
       'address'      => $this->shop->address,
       'phonenumbers' => $this->shop->phonenumbers,
       'regime'       => $this->shop->regime,
       'description'  => $this->shop->description,
+      'way_walk'     => $this->shop->way_walk,
+      'way_auto'     => $this->shop->way_auto,
+      'latitude'     => $this->shop->latitude,
+      'longitude'    => $this->shop->longitude,
     );
+
+    $this->setVar('item', $item, true);
   }
  /**
   * Executes list component
