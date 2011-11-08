@@ -56,6 +56,13 @@ productCatalog_category:
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 
+# категория каталога товаров ajax
+productCatalog_categoryAjax:
+  url:   /catalogajax/:productCategory/:page/:view/:num/
+  param: { module: productCatalog, action: categoryAjax, num: 18, view: compact, page: 1}
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  
 # карусель ajax
 productCatalog_carousel:
   url:   /catalog-carousel/:productCategory/
