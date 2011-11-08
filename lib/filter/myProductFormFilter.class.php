@@ -72,6 +72,14 @@ class myProductFormFilter extends sfFormFilter
 
       $index = "param-{$productFilter->id}";
       $this->setWidget($index, $widget);
+      if ('range' == $productFilter->type)
+      {
+        $this->setDefault($index, array(
+          'from' => $productFilter->value_min,
+          'to'   => $productFilter->value_max,
+        ));
+      }
+
       $this->setValidator($index, new sfValidatorPass());
       $this->widgetSchema[$index]->setLabel($productFilter->name);
     }
