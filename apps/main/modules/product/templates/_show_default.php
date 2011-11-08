@@ -84,7 +84,12 @@ foreach ($p3d as $p3d_obj)
 
   <div class="clear pb15"></div>
   <div class="mb15 font12 orange infoblock">
-    Любой из представленных в товаров, вы можете заказать с доставкой по удобному адресу или заказать и самостоятельно забрать в нашем магазине.<br /><span class="black" style="line-height: 2;">Подробности по телефону 8 (800) 700 00 09</span>
+    <?php if ('furniture' == $item['product']->Category->getFirst()->getRootCategory()->token): ?>
+    Любой из представленных товаров, вы можете заказать с доставкой по удобному адресу.
+    <?php else: ?>
+    Любой из представленных в нашем каталоге товаров, вы можете заказать с доставкой по удобному адресу или заказать и самостоятельно забрать в нашем магазине.
+    <?php endif; ?>
+    <br /><span class="black" style="line-height: 2;">Подробности по телефону 8 (800) 700 00 09</span>
   </div>
   <div class="pb5"><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать отзывы</a> (<?php echo $product->getCommentCount() ?>)</div>
   <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['product']->token )) ?>">
