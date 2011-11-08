@@ -54,6 +54,7 @@ _gaq.push(['_trackPageLoadTime']);
         <!-- /Topbar -->
         <!-- Header -->
         <div class="header">
+         <?php LastModifiedHandler::setLastModified();  ?>   
           <?php include_partial('default/logo') ?>
           <!-- Topmenu -->
           <?php include_component('productCategory', 'root_list') ?>
