@@ -1,7 +1,6 @@
 <div class="catProductNum"><b>Всего <?php echo $quantity; ?> товаров</b></div>
 <div class="line pb10"></div>
 <dl class="bCtg">
-    <dt>Категории</dt>
     <dd>
         <ul>
         <?php
@@ -10,16 +9,32 @@
         foreach($treeList as $cat){
                 echo '<li>
                         <a href="/catalog/'.$cat['token'].'/">
-                            <span  class="bCtg__eL'.$level.'">'.$cat['name'].'</span>
+                            <span  class="bCtg__eL'.$level.' mBold">'.$cat['name'].'</span>
                         </a>
                       </li>';
                 $level++;
             }
-            echo '<li>
-                    <a href="/catalog/'.$currentCat->token.'/">
-                        <span  class="bCtg__eL'.$level.' mSelected">'.$currentCat->name.'</span>
-                    </a>
-                  </li>';  
+
+            if (isset($brothersList)){
+                foreach($brothersList as $brother){
+                    if ($brother->countProduct() < 1) continue;
+                    echo '<li>
+                            <a href="/catalog/'.$brother['token'].'/">
+                                <span  class="bCtg__eL'.$level;
+                    if ($brother['id'] == $currentCat->id) echo ' mSelected';
+                    echo '">- '
+                                   .$brother['name'].
+                                '</span>
+                            </a>
+                          </li>';                    
+                }
+            } else {
+                echo '<li>
+                        <a href="/catalog/'.$currentCat->token.'/">
+                            <span  class="bCtg__eL'.$level.' mSelected">'.$currentCat->name.'</span>
+                        </a>
+                      </li>';                  
+            }
             $level++;
         }    
         ?>            
@@ -30,7 +45,10 @@
             if ($cat->countProduct() < 1) continue;
             echo '<li>
                     <a href="/catalog/'.$cat['token'].'/">
-                        <span  class="bCtg__eL'.$level.'">'.$cat['name'].'</span>
+                        <span  class="bCtg__eL'.$level.'">';
+            if ($cat['level']>1) echo '- ';
+            echo            $cat['name'].
+                        '</span>
                     </a>
                   </li>';
         }

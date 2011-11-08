@@ -18,5 +18,16 @@ class productStockActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
+    
+    $title = '«Где купить»: ' . $this->product['name'] . ' в магазинах "Enter"';
+    $mainCat = $this->product->getMainCategory();
+    $title .= ' – '.$mainCat;
+    if ($mainCat) {
+      $rootCat = $mainCat->getRootRow();
+      if ($rootCat->id !== $mainCat->id) {
+        $title .= ' – '.$rootCat;
+      }
+    }           
+    $this->getResponse()->setTitle($title.' – Enter.ru');    
   }
 }

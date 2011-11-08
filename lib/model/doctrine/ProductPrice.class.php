@@ -15,8 +15,5 @@ class ProductPrice extends BaseProductPrice
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
-
-    $this->product_id = ProductTable::getInstance()->getIdByCoreId($data['product_id']);
-    $this->product_price_list_id = ProductPriceListTable::getInstance()->getIdByCoreId($data['price_list_id']);
   }
 }

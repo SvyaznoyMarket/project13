@@ -1,5 +1,14 @@
 <?php use_helper('Date') ?>
 
+<?php
+slot('complete_order_id');
+  echo $order['token'];
+end_slot();
+slot('complete_order_sum');
+  echo $order['sum'];
+end_slot();
+?>
+
 <?php slot('title', 'Ваш заказ принят, спасибо за покупку!') ?>
 <?php //myDebug::dump($order) ?>
     <!-- Basket -->

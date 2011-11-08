@@ -62,7 +62,7 @@ foreach ($p3d as $p3d_obj)
     <div class="font10"><br/><br/></div>
     <div class="pb10"><?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?></div>
     <?php if ($product->is_instock): ?>
-      <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+      <noindex><div class="pb5"><strong class="orange">Есть в наличии</strong></div></noindex>
 <?php endif ?>
 <!--            <div class="pb3"><strong>Доставка стандарт</strong></div>
           <div class="font11 gray">

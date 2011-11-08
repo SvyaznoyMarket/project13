@@ -20,6 +20,19 @@ class productCommentActions extends myActions
     $this->product = $this->getRoute()->getObject();
     $this->sort = $this->getRequestParameter('sort', 'created_desc');
 	$this->page = $this->getRequestParameter('page', 1);
+    
+    
+	$title = "«Отзывы»: ".$this->product['name'] . ' в магазинах "Enter" ';
+    $mainCat = $this->product->getMainCategory();
+    $title .= ' – '.$mainCat;    
+    if ($mainCat) {
+      $rootCat = $mainCat->getRootRow();
+      if ($rootCat->id !== $mainCat->id) {
+        $title .= ' – '.$rootCat;
+      }
+    }       
+    $this->getResponse()->setTitle($title.' – Enter.ru');
+    
   }
  /**
   * Executes new action
@@ -90,6 +103,9 @@ class productCommentActions extends myActions
 
 		}
 	}
+    $title = 'Новый отзыв о товаре "' . $this->product['name'] . '"';
+    $this->getResponse()->setTitle($title.' – Enter.ru');
+    
   }
  /**
   * Executes create action
