@@ -87,7 +87,6 @@ $(document).ready(function(){
 		var from = papa.find('input:first')
 		var to   = papa.find('input:eq(1)')
 		var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
-	
 		sliderRange.slider({
 			range: true,
 			step: stepf,
@@ -99,8 +98,8 @@ $(document).ready(function(){
 				to.val( ui.values[ 1 ] )
 			},
 			change: function(e, ui) {
-				if ( parseFloat(to.val()) > 0 )
-					$('.product_filter-block').trigger('preview')
+				if ( parseFloat(to.val()) > 0 );
+					from.parent().trigger('preview')
 			}
 		})
 		if ( from && to ) {
@@ -109,8 +108,8 @@ $(document).ready(function(){
 			from.change( function(){
 				from.val( from.val().replace(/\D/g,'') )
 				if( parseFloat(from.val()) > parseFloat(to.val()) ) {
-					sliderRange.slider( "values", 1 , from.val()*1 + 10 )
-					to.val( from.val()*1 + 10 )
+					sliderRange.slider( "values", 1 , from.val()*1 + stepf )
+					to.val( from.val()*1 + stepf )
 				}
 				sliderRange.slider( "values", 0 , from.val() )
 	
@@ -120,8 +119,8 @@ $(document).ready(function(){
 				if( ! parseFloat(to.val()) )
 					to.val(10)
 				if( parseFloat(to.val()) < parseFloat(from.val()) ) {				
-					sliderRange.slider( "values", 0 , to.val()*1- 10 )
-					from.val( to.val()*1 - 10 )
+					sliderRange.slider( "values", 0 , to.val()*1- stepf )
+					from.val( to.val()*1 - stepf )
 				} 			
 				sliderRange.slider( "values", 1 , to.val() )
 			})

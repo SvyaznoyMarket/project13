@@ -98,8 +98,8 @@ $(document).ready(function() {
                     break
                 }
                 var firstli = null
-                if ( el.is("form") ) //triggered from price slider !
-                	firstli = $('.bigfilter dd div:first')
+                if ( el.is("div") ) //triggered from filter slider !
+                	firstli = el
                 else
 	                firstli = el.parent().find('> label').first()
                 firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
