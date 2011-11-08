@@ -78,59 +78,56 @@ $(document).ready(function(){
 	})
 
 	/* Sliders */
-	var mini = $('.sliderbox .fl').html() * 1
-	var maxi = $('.sliderbox .fr').html() * 1
-	var from = null
-	var to   = null
-	if( $('#t_price_from').length ) {
-		from = $('#t_price_from')
-		to   = $('#t_price_to')
-	}
-	if( $('#f_price_from').length ) {
-		from = $('#f_price_from')
-		to   = $('#f_price_to')
-	}
-
-	if ($( "#slider-range1" ).length) $( "#slider-range1" ).slider({
-		range: true,
-		step: 10,
-		min: mini,
-		max: maxi,
-		values: [ from.val() ? from.val() : mini ,  to.val() ? to.val() : maxi ],
-		slide: function( e, ui ) {
-			from.val( ui.values[ 0 ] )
-			to.val( ui.values[ 1 ] )
-		},
-		change: function(e, ui) {
-			if ( parseFloat(to.val()) > 0 )
-				$('.product_filter-block').trigger('preview')
+	$('.sliderbox').each( function(){
+		var sliderRange = $('.filter-range', this)	
+		var filterrange = $(this)
+		var papa = filterrange.parent()
+		var mini = $('.fl', filterrange ).html() * 1
+		var maxi = $('.fr', filterrange ).html() * 1
+		var from = papa.find('input:first')
+		var to   = papa.find('input:eq(1)')
+	
+		sliderRange.slider({
+			range: true,
+			step: 10,
+			min: mini,
+			max: maxi,
+			values: [ from.val() ? from.val() : mini ,  to.val() ? to.val() : maxi ],
+			slide: function( e, ui ) {
+				from.val( ui.values[ 0 ] )
+				to.val( ui.values[ 1 ] )
+			},
+			change: function(e, ui) {
+				if ( parseFloat(to.val()) > 0 )
+					$('.product_filter-block').trigger('preview')
+			}
+		})
+		if ( from && to ) {
+			from.val( sliderRange.slider( "values", 0 ) )
+			to.val( sliderRange.slider( "values", 1 ) )
+			from.change( function(){
+				from.val( from.val().replace(/\D/g,'') )
+				if( parseFloat(from.val()) > parseFloat(to.val()) ) {
+					sliderRange.slider( "values", 1 , from.val()*1 + 10 )
+					to.val( from.val()*1 + 10 )
+				}
+				sliderRange.slider( "values", 0 , from.val() )
+	
+			})
+			to.change( function(){
+				to.val( to.val().replace(/\D/g,'') )
+				if( ! parseFloat(to.val()) )
+					to.val(10)
+				if( parseFloat(to.val()) < parseFloat(from.val()) ) {				
+					sliderRange.slider( "values", 0 , to.val()*1- 10 )
+					from.val( to.val()*1 - 10 )
+				} 			
+				sliderRange.slider( "values", 1 , to.val() )
+			})
+	
 		}
 	})
-	if ( from && to ) {
-		from.val( $( "#slider-range1" ).slider( "values", 0 ) )
-		to.val( $( "#slider-range1" ).slider( "values", 1 ) )
-		from.change( function(){
-			from.val( from.val().replace(/\D/g,'') )
-			if( parseFloat(from.val()) > parseFloat(to.val()) ) {
-				$( "#slider-range1" ).slider( "values", 1 , from.val()*1 + 10 )
-				to.val( from.val()*1 + 10 )
-			}
-			$( "#slider-range1" ).slider( "values", 0 , from.val() )
-
-		})
-		to.change( function(){
-			to.val( to.val().replace(/\D/g,'') )
-			if( ! parseFloat(to.val()) )
-				to.val(10)
-			if( parseFloat(to.val()) < parseFloat(from.val()) ) {				
-				$( "#slider-range1" ).slider( "values", 0 , to.val()*1- 10 )
-				from.val( to.val()*1 - 10 )
-			} 			
-			$( "#slider-range1" ).slider( "values", 1 , to.val() )
-		})
-
-	}
-
+	
 	/* Rating */
 	if( $('#rating').length ) {
 		var iscore = $('#rating').next().html().replace(/\D/g,'')
