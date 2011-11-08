@@ -1,0 +1,2 @@
+
+<?php if ($allOk) include_partial('productCatalog/product_list_ajax', $sf_data); ?> 
