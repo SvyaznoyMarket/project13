@@ -86,10 +86,11 @@ $(document).ready(function(){
 		var maxi = $('.fr', filterrange ).html() * 1
 		var from = papa.find('input:first')
 		var to   = papa.find('input:eq(1)')
+		var stepf = (/price/.test( from ) ) ?  10 : 1
 	
 		sliderRange.slider({
 			range: true,
-			step: 10,
+			step: stepf,
 			min: mini,
 			max: maxi,
 			values: [ from.val() ? from.val() : mini ,  to.val() ? to.val() : maxi ],
