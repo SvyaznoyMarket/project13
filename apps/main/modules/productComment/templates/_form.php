@@ -54,14 +54,14 @@
 
 <!-- Add comment -->
 <div class="fl width450 form">
-		 <label for="" class="db font16 pb10">Достоинства:</label>  
+		 <label for="" class="db font16 pb10">Достоинства:</label>
 		 <div class="textareabox mb15"><textarea name="content_plus" rows="4" style="width:440px;"><?php echo $sf_request->getParameter('content_plus') ?></textarea></div>
-		 <label for="" class="db font16 pb10">Недостатки:</label>  
-		 <div class="textareabox mb15"><textarea name="content_minus" rows="4" style="width:440px;"><?php echo $sf_request->getParameter('content_minus') ?></textarea></div> 
-		 <label for="" class="db font16 pb10">Резюме<span class="gray">*</span>:</label>  
+		 <label for="" class="db font16 pb10">Недостатки:</label>
+		 <div class="textareabox mb15"><textarea name="content_minus" rows="4" style="width:440px;"><?php echo $sf_request->getParameter('content_minus') ?></textarea></div>
+		 <label for="" class="db font16 pb10">Резюме<span class="gray">*</span>:</label>
 		 <div class="textareabox mb15"><textarea name="content_resume" rows="4" style="width:440px;"><?php echo $sf_request->getParameter('content_resume') ?></textarea></div>
 
-		 <div class="font16 pb10">Вы бы хотели рекомендовать друзьям покупать этот товар?</div>  
+		 <div class="font16 pb10">Вы бы хотели рекомендовать друзьям покупать этот товар?</div>
 		 <ul class="pl20">
 			 <li class="fl"><label for="radio-1">Да, конечно</label><input id="radio-1" name="is_recomend" type="radio" value="1" /></li>
 			 <li class="fl ml30"><label for="radio-2">Нет, не буду!</label><input id="radio-2" name="is_recomend" type="radio" value="0" /></li>
@@ -72,7 +72,7 @@
 		 <div class="font16 pb10">Уведомить меня по e-mail или sms</div>
 		 <ul class="checkboxlist pb10">
 			 <li><label for="checkbox-1">Прислать сообщение о публикации моего отзыва</label><input id="checkbox-1" name="subscribe_publication" type="checkbox" value="1" /></li>
-			 <li><label for="checkbox-2">Присылать сообщения когда кто нибудь прокомментирует мой отзыв</label><input id="checkbox-2" name="subscribe_comments" type="checkbox" value="1" /></li>
+			 <li><label for="checkbox-2">Присылать сообщения, когда кто-нибудь прокомментирует мой отзыв</label><input id="checkbox-2" name="subscribe_comments" type="checkbox" value="1" /></li>
 		 </ul>
 
 		 <div class="selectbox selectbox225 mb15"><i></i>
