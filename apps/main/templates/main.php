@@ -94,10 +94,10 @@
 <div class="bannersbox">
     <div class="bannersboxinner">
 	  <!-- /images/banners/small/banner3.png -->
-        <div class="banner banner2"><a href=""><img src="" alt="" width="auto" height="auto" /></a></div>
-        <div class="banner banner3"><a href=""><img src="" alt="" width="auto" height="auto" /></a></div>
-        <div class="banner banner4"><a href=""><img src="" alt="" width="auto" height="auto" /></a></div>
-        <div class="banner banner5"><a href=""><img src="" alt="" width="auto" height="auto" /></a></div>
+        <div class="banner banner2"><a href=""><img src="" alt="" /></a></div>
+        <div class="banner banner3"><a href=""><img src="" alt="" /></a></div>
+        <div class="banner banner4"><a href=""><img src="" alt="" /></a></div>
+        <div class="banner banner5"><a href=""><img src="" alt="" /></a></div>
       <!-- -->
       <?php // include_component('default', 'slot', array('token' => 'banner_default')) ?>
     </div>
