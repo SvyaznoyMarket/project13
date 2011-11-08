@@ -366,7 +366,7 @@ ProductPriceList:
     comment: 'Прайс-листы'
   actAs:
     #Timestampable: ~
-    Corable: { push: disable }
+    Corable:        { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
@@ -378,7 +378,7 @@ ProductPrice:
     comment: 'Цены товаров по прайс-листам'
   actAs:
     #Timestampable: ~
-    Corable: { push: disable }
+    Corable:        { push: disable }
   columns:
     id:                     { type: integer(20), autoincrement: true, primary: true }
     product_price_list_id:  { type: integer(20), notnull: true }
