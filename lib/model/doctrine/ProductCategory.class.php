@@ -118,9 +118,15 @@ class ProductCategory extends BaseProductCategory
 
     foreach ($this->FilterGroup->Filter as $filter)
     {
-      if (isset($propertyIds[$filter->property_id]))
-      {
-        $filter['Property'] = $properties[$propertyIds[$filter->property_id]];
+      if (false
+        || (('choice' == $filter->type) && isset($propertyIds[$filter->property_id]))
+        || ('choice' != $filter->type)
+      ) {
+        if (isset($propertyIds[$filter->property_id]))
+        {
+          $filter['Property'] = $properties[$propertyIds[$filter->property_id]];
+        }
+
         $newFilter[] = $filter;
       }
     }
