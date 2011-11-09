@@ -1,3 +1,5 @@
+CallbackCategory:
+  - user_callback_category
 Creator:
   - brand
   - Brands
@@ -5,6 +7,8 @@ DeliveryPeriod:
   - delivery_interval
 Order:
   - order
+OrderProductRelation:
+  - order_product_relation
 Product:
   - product
 ProductCategory:
@@ -12,6 +16,8 @@ ProductCategory:
   - ItemHierarchy
 ProductComment:
   - product_opinion
+ProductLine:
+  - product_line
 ProductPrice:
   - product_price
 ProductPriceList:
@@ -25,8 +31,6 @@ ProductPropertyOption:
   - product_option
 ProductType:
   - product_type
-ProductLine:
-  - product_line
 Region:
   - geo
   - GEOs
