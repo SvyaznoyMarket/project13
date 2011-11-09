@@ -17,6 +17,21 @@ class UnitellerPaymentProvider
 
   public function getForm(Order $order)
   {
+    $orderInfo = array(
+        'id' => $order->id,
+        'sum' => $order->sum,
+    ); 
+    foreach($order->getProductRelation() as $product){
+        $orderInfo['products'][$product->product_id]['id'] = $product->product_id;
+        $orderInfo['products'][$product->product_id]['quantity'] = $product->quantity;
+    }
+    foreach($order->getProduct() as $product){
+        $orderInfo['products'][$product->id]['name'] = $product->name;
+        $orderInfo['products'][$product->id]['price'] = $product->price;
+    }
+    #print_r($orderInfo);
+    
+    $jsonOrderInfo = json_encode($orderInfo);
     sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
 
     $params = array(
@@ -39,7 +54,8 @@ class UnitellerPaymentProvider
       'Signature'   => $sig,
       'URL_RETURN'  => url_for($this->getConfig('return_url'), true),
     ), array(
-      'url' => $this->getConfig('pay_url')
+      'url' => $this->getConfig('pay_url'),
+      'comment' => $jsonOrderInfo,      
     ));
 
     return $form;
