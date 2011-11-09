@@ -22,8 +22,9 @@
                     if ($brother['id'] == $currentCat->id) echo ' mSelected';
                     echo '">
                             <a href="/catalog/'.$brother['token'].'/">
-                                <span>'
-                                   .$brother['name'].
+                                <span>';
+                    if ($brother['id'] != $currentCat->id) echo '<div>-</div>';                    
+                    echo               $brother['name'].
                                 '</span>
                             </a>
                           </li>';                    
@@ -42,11 +43,11 @@
         <?php
         if (isset($list) && $list && count($list) > 0 )
         foreach($list as $cat){
-            if ($cat->countProduct() < 1) continue;
+            if ($cat->countProduct() < 1 || !$cat['is_active']) continue;
             echo '<li class="bCtg__eL'.$level.'">
                     <a href="/catalog/'.$cat['token'].'/">
                         <span>';
-            #if ($cat['level']>1) echo '- ';
+            if ($cat['level']>1) echo '<div>-</div>';
             echo            $cat['name'].
                         '</span>
                     </a>
