@@ -516,4 +516,24 @@ class ProductTable extends myDoctrineTable
 
     return $q->fetchOne();
   }
+
+  public function getQueryByCategoryWithLine(ProductCategory $category, array $params = array())
+  {
+    $params = myToolkit::arrayDeepMerge(array(
+      'select'   => 'product.*',
+    ), $params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->innerJoin('product.Line line')
+      ->innerJoin('line.Product line_product')
+      ->innerJoin('line_product.Category category WITH category.id = ?', $category->id)
+      ->where('product.is_lines_main = ?', 1)
+      ;
+
+    $this->setQueryParameters($q, $params);
+
+    return $q;
+
+  }
 }

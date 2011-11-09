@@ -734,12 +734,12 @@ EOF;
         break;
       case 8:
         $table = ShopPhotoTable::getInstance();
-        $record = $table->getByCoreId($entity['id']);
+        $record = $table->getByCoreId($data['id']);
         if (!$record)
         {
-          $record = $table->createRecordFromCore($entity);
+          $record = $table->createRecordFromCore($data);
         }
-        $record->importFromCore($entity);
+        $record->importFromCore($data);
 
         break;
       default:
