@@ -63,7 +63,11 @@ class myProductFormFilter extends sfFormFilter
 
     foreach ($productFilterList as $productFilter)
     {
-      if (('choice' == $productFilter->type) && count($productFilter->Property->Option) < 2) continue;
+      // если фильтр типа "выбор" и всего одна опция, то игнор
+      if (('choice' == $productFilter->type) && (count($productFilter->Property->Option) < 2)) continue;
+
+      // если фильтр типа "диапазон" и макс. и мин. значения равны нулю, то игнор
+      if (('range' == $productFilter->type) && !$productFilter->value_min && !$productFilter->value_max) continue;
 
       if (!$widget = call_user_func_array(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), array(
         $productFilter,
