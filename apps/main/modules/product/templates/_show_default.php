@@ -64,12 +64,14 @@ foreach ($p3d as $p3d_obj)
     <?php if ($product->is_instock): ?>
       <noindex><div class="pb5"><strong class="orange">Есть в наличии</strong></div></noindex>
 <?php endif ?>
+      <?php if (false): ?>
   <div class="pb3"><strong>Доставка: <?php echo $delivery['name'] ?></strong></div>
   <div class="font11 gray">
       Стоимость: <strong><?php echo $delivery['price'] ?> руб.</strong><br />
 <!--      Москва. Доставим в течение 1-2 дней<br />
       <a href="" class="underline">Хотите быстрее?</a>-->
   </div>
+  <?php endif ?>
   </div>
   <div class="fr ar pb15">
     <div class="goodsbarbig" ref="<?php echo $item['product']->token ?>">
