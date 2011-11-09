@@ -704,15 +704,6 @@ EOF;
     return $record;
   }
 
-  // Order
-  protected function createOrderRecord(array $data)
-  {
-    $record = OrderTable::getInstance()->createRecordFromCore($data);
-    $record->token = uniqid().'-'.$record->token;
-
-    return $record;
-  }
-
   //Photo for everything
   protected function processUpload(array $data)
   {

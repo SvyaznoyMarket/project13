@@ -65,6 +65,7 @@ Order:
     delivery_type_id:       { type: integer(20), notnull: false, default: null } # стандартная, экспресс
     delivered_at:           { type: timestamp, format: Y-m-d H:m:i, comment: 'Дата доставки' }
     delivery_period_id:     { type: integer(20), notnull: false, default: null }
+    number:                 { type: string(32), notnull: false, dafault: null, comment: 'Номер заказа из 1С' }
     address:                { type: string, notnull: false, default: null, comment: 'Адрес доставки или получения' }
     zip_code:               { type: string(10), notnull: false, default: null, comment: 'Индекс' }
     user_address_id:        { type: integer(20), notnull: false, default: null, comment: 'Сохраненный адрес пользователя'}

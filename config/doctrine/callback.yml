@@ -4,7 +4,7 @@ Callback:
   actAs: [ Timestampable, Corable ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }    
+    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }
     category_id:       { type: integer(20), notnull: false }
     user_id:           { type: integer(20), notnull: false, default: null }
     name:              { type: string(255), notnull: false, default: null, comment: '' }
@@ -14,13 +14,13 @@ Callback:
   relations:
     Category:      { class: CallbackCategory, foreignAlias: CallbackCategory, local: category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     User:          { class: User, foreignAlias: CallbackUser, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    
-    
+
 CallbackCategory:
   options:
     comment: 'Категории обратной связи'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable:  ~
+    Corable:        { push: Disable }
   columns:
-    id:                { type: integer(20), autoincrement: true, primary: true }
-    core_id:           { type: integer(20), notnull: false, default: null, comment: 'ид записи в Core' }    
-    name:              { type: string(255), notnull: false, default: null, comment: 'Название категории' }  
+    id:             { type: integer(20), autoincrement: true, primary: true }
+    name:           { type: string(255), notnull: false, default: null, comment: 'Название категории' }

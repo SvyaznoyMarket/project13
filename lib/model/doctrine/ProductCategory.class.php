@@ -47,7 +47,7 @@ class ProductCategory extends BaseProductCategory
   {
     parent::importFromCore($data);
 
-    $this->photo = !empty($data['media_image']) ? $data : 'default.jpg';
+    $this->photo = !empty($data['media_image']) ? $data['media_image'] : 'default.jpg';
 
   }
 
