@@ -1,4 +1,40 @@
 $(document).ready(function(){
+	if($('#rotator').length) {
+		$('#rotator').jshowoff({ controls:false })
+	}
+	/* paging: all pages, infinity scroll */
+	var ableToLoad = true
+	function liveScroll( lsURL ) {
+		console.info(lsURL)
+		//$('div#lastPostsLoader').html('<img src="images/bigLoader.gif">')
+		$.get( lsURL, function(data){
+			if (data != "") {
+				ableToLoad = true
+				$(".goodsbox:last").after(data)
+			}
+			//$('div#lastPostsLoader').empty()
+		})
+	}
+	
+	if( $('.allpager').length ) 
+		$('.allpager').each(function(){
+			$(this).bind('click', function(){
+				var lsURL = $(this).data('url')	
+				$('.pageslist').css('visibility','hidden')				
+				var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
+console.info(lsURL, vnext)				
+				$(window).scroll(function(){
+					if ( ableToLoad && $(window).scrollTop() + 600 > $(document).height() - $(window).height() ){
+						ableToLoad = false
+						$(".goodslist:last").after
+						liveScroll( lsURL + vnext + '/')
+						vnext += 1
+					}
+				})
+			})		
+		})
+	
+	
 	/* AJAX */
 	$('body').append('<div style="display:none"><img src="/images/error_ajax.gif" alt=""/></div>')
 	var errorpopup = function( txt ) {
