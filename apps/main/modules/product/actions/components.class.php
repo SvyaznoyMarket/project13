@@ -329,7 +329,7 @@ class productComponents extends myComponents
     }
 
     $this->setVar('list', $list);
-    $this->limit = 6;
+    $this->limit = 6 < count($list) ? 6 : count($list);
   }
   /**
    * Executes filter_productType component
