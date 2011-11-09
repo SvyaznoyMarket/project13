@@ -129,7 +129,11 @@ class ProductTable extends myDoctrineTable
       {
         // temporary fix
         $realValue = $propertyRelation->real_value;
-        if (empty($realValue)) continue;
+        if (false
+          || ('' === $realValue)
+          || (null === $realValue)
+          || (0 == $realValue)
+        ) continue;
 
         if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
         {
@@ -210,7 +214,7 @@ class ProductTable extends myDoctrineTable
   {
     $q = $this->createBaseQuery($params);
 
-    $this->setQueryForFilter($q, $filter);
+    $this->setQueryForFilter($q, $filter, $params);
 
     $this->setQueryParameters($q, $params);
 

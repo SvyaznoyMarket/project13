@@ -98,12 +98,12 @@ class productCatalogActions extends myActions
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
-    
+
     //формируем title
 	$title = $this->productCategory->name;
     foreach($this->productTagFilter as $field){
         $val = $field->getValue();
-        if (!$val) continue; 
+        if (!$val) continue;
         if ($field->getName() == 'price'){
             $propStr = $field->renderLabelName();
             if (isset($val['from'])){
@@ -114,7 +114,7 @@ class productCatalogActions extends myActions
             }
             if (isset($val['from']) || isset($val['to'])){
                 $propStr .= ' рублей';
-            }            
+            }
         } else {
             $propStr = $field->renderLabelName();
             $valNames = array();
@@ -133,10 +133,10 @@ class productCatalogActions extends myActions
       if ($rootCat->id !== $mainCat->id) {
         $title .= ' – '.$rootCat;
       }
-    }    
+    }
     $this->getResponse()->setTitle($title.' – Enter.ru');
-    
-    
+
+
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
  /**
@@ -171,10 +171,10 @@ class productCatalogActions extends myActions
       'data'    => $q->count(),
     ));
   }
-  
+
   private function _seoRedirectOnPageDublicate($request){
     //если передано page=1 или view=compact, отрезаем этот параметр и делаем редирект.
-    //необходимо для seo  
+    //необходимо для seo
     $redirectAr = array(
         'page' => 1,
         'view' => 'compact'
@@ -187,14 +187,14 @@ class productCatalogActions extends myActions
             if (strpos($uri, '&') === false){
                 $replaceStr = "?$key=$val";
             } else {
-                $replaceStr = array("$key=$val&", "&$key=$val");            
+                $replaceStr = array("$key=$val&", "&$key=$val");
             }
             $uri = str_replace($replaceStr, '', $this->getRequest()->getUri());
-            $this->redirect( $uri );                 
+            $this->redirect( $uri );
         }
-    }      
+    }
   }
-  
+
  /**
   * Executes category action
   *
@@ -203,8 +203,8 @@ class productCatalogActions extends myActions
   public function executeCategory(sfWebRequest $request)
   {
 
-    $this->_seoRedirectOnPageDublicate($request);  
-      
+    $this->_seoRedirectOnPageDublicate($request);
+
     $this->productCategory = $this->getRoute()->getObject();
 
     $title = $this->productCategory['name'];
@@ -258,7 +258,7 @@ class productCatalogActions extends myActions
 
     $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
       'view'            => 'list',
-      'with_properties' => 'expanded' == $request['view'],
+      'with_properties' => 'expanded' == $request['view'] ? true : false,
     ));
 
     // sorting
