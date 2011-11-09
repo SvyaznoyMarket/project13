@@ -27,10 +27,12 @@ ShopPhoto:
     comment: 'Фото магазина'
   actAs:
     Timestampable: ~
+    Corable:       { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     shop_id:           { type: integer(20), notnull: true }
-    name:              { type: string(255), notnull: true, notblank: true }
+    name:              { type: string(255), notnull: false, default: null }
+    resource:          { type: string(255), notnull: true, notblank: true }
   relations:
     Shop:              { class: Shop, foreignAlias: Photo, local: shop_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 

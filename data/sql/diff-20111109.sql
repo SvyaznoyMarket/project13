@@ -1,0 +1,2 @@
+ALTER TABLE `shop_photo`  CHANGE COLUMN `name` `name` VARCHAR(255) NULL DEFAULT NULL AFTER `shop_id`,  ADD COLUMN `resource` VARCHAR(255) NOT NULL AFTER `name`;
+

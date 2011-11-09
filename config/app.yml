@@ -34,6 +34,14 @@ all:
     empty_photo_url:
       - ''
 
+  shop:
+    photo_url:
+      - 'http://fs01.enter.ru/8/1/40/'
+      - 'http://fs01.enter.ru/8/1/120/'
+      - 'http://fs01.enter.ru/8/1/163/'
+      - 'http://fs01.enter.ru/8/1/500/'
+      - 'http://fs01.enter.ru/8/1/2500/'
+
   guard:
     remember_cookie_name: remember
     allow_login_with_email: true
