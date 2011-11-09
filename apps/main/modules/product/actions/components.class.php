@@ -40,6 +40,11 @@ class productComponents extends myComponents
       'product'  => $this->product,
       'url'      => url_for('productCard', $this->product, array('absolute' => true)),
     );
+    
+    if ('compact' == $this->view)
+    {
+        $item['root_name'] = (string) $this->product->Category[0]->getRootCategory();
+    }
 
     if ('default' == $this->view)
     {
