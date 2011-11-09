@@ -41,6 +41,7 @@ class OrderTable extends myDoctrineTable
       'ip'                => 'ip',
       'is_paid_delivery'  => 'is_paid_delivery',
       'store_id'          => 'store_id',
+      'added'             => 'core_created_at',
 
       'user_id'              => array('rel' => 'User'),
       'status_id'            => array('rel' => 'Status'),
