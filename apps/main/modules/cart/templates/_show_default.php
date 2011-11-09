@@ -32,7 +32,7 @@
         <div class="basketright">
             <div class="goodstitle">
                 <div class="font24 pb5"><?php echo link_to((string)$item['product'], 'productCard', $item['product']) ?></div>
-                <div class="font11">Есть в наличии</div>
+                <noindex><div class="font11">Есть в наличии</div></noindex>
             </div>
             <div class="basketinfo pb15">
                 <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span></div>

@@ -38,9 +38,13 @@ class ProductPriceTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
+      'id'            => 'core_id',
       'price'         => 'price',
       'price_old'     => 'old_price',
       'price_average' => 'avg_price',
+
+      'product_id'    => array('rel' => 'Product'),
+      'price_list_id' => array('rel' => 'PriceList'),
     );
   }
 }

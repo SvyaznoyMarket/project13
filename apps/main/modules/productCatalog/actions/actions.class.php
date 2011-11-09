@@ -98,6 +98,45 @@ class productCatalogActions extends myActions
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
+    
+    //формируем title
+	$title = $this->productCategory->name;
+    foreach($this->productTagFilter as $field){
+        $val = $field->getValue();
+        if (!$val) continue; 
+        if ($field->getName() == 'price'){
+            $propStr = $field->renderLabelName();
+            if (isset($val['from'])){
+                $propStr .= ' от ' . $val['from'];
+            }
+            if (isset($val['to'])){
+                $propStr .= ' до ' . $val['to'];
+            }
+            if (isset($val['from']) || isset($val['to'])){
+                $propStr .= ' рублей';
+            }            
+        } else {
+            $propStr = $field->renderLabelName();
+            $valNames = array();
+            foreach($val as $valId){
+                $info = TagTable::getInstance()->getById($valId);
+                $valNames[] = $info['name'];
+            }
+            $propStr .= ': ' . implode(', ', $valNames);
+        }
+        $filterList[] = $propStr;
+    }
+    if (count($filterList)>0) $title .= ' - ' . implode(', ', $filterList);
+    $mainCat = $this->productCategory;
+    if ($mainCat) {
+      $rootCat = $mainCat->getRootRow();
+      if ($rootCat->id !== $mainCat->id) {
+        $title .= ' – '.$rootCat;
+      }
+    }    
+    $this->getResponse()->setTitle($title.' – Enter.ru');
+    
+    
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
  /**
@@ -132,6 +171,30 @@ class productCatalogActions extends myActions
       'data'    => $q->count(),
     ));
   }
+  
+  private function _seoRedirectOnPageDublicate($request){
+    //если передано page=1 или view=compact, отрезаем этот параметр и делаем редирект.
+    //необходимо для seo  
+    $redirectAr = array(
+        'page' => 1,
+        'view' => 'compact'
+    );
+    foreach($redirectAr as $key => $val){
+        $currentVal = $request->getParameter($key);
+        //если требуется редирект с этой страницы
+        if (isset($currentVal) && $currentVal == $val){
+            $uri = $this->getRequest()->getUri();
+            if (strpos($uri, '&') === false){
+                $replaceStr = "?$key=$val";
+            } else {
+                $replaceStr = array("$key=$val&", "&$key=$val");            
+            }
+            $uri = str_replace($replaceStr, '', $this->getRequest()->getUri());
+            $this->redirect( $uri );                 
+        }
+    }      
+  }
+  
  /**
   * Executes category action
   *
@@ -139,6 +202,9 @@ class productCatalogActions extends myActions
   */
   public function executeCategory(sfWebRequest $request)
   {
+
+    $this->_seoRedirectOnPageDublicate($request);  
+      
     $this->productCategory = $this->getRoute()->getObject();
 
 //    $title = $this->productCategory['name'];

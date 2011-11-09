@@ -127,6 +127,10 @@ class ProductTable extends myDoctrineTable
       $productPropertyRelationArray = array();
       foreach ($record['PropertyRelation'] as $propertyRelation)
       {
+        // temporary fix
+        $realValue = $propertyRelation->real_value;
+        if (empty($realValue)) continue;
+
         if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
         {
           $productPropertyRelationArray[$propertyRelation['property_id']] = array();

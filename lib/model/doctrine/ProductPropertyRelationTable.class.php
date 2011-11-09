@@ -31,7 +31,8 @@ class ProductPropertyRelationTable extends myDoctrineTable
         $field = 'value_string';
         break;
       case 'integer':
-        $field = 'value_integer';
+        //$field = 'value_integer';
+        $field = 'value_float';
         break;
       case 'float':
         $field = 'value_float';

@@ -35,5 +35,18 @@ class productStockActions extends sfActions
     ));
     $this->getResponse()->addMeta('keywords', sprintf('%s отзывы мнения покупателей владельцев пользователей', $this->product['name']));
     // :: SEO
+
+//    $title = '«Где купить»: ' . $this->product['name'] . ' в магазинах "Enter"';
+//    $mainCategory = $this->product->getMainCategory();
+//    $title .= ' – '.$mainCategory;
+//    if ($mainCategory)
+//    {
+//      $rootCategory = $mainCategory->getRootCategory();
+//      if ($rootCategory->id !== $mainCategory->id)
+//      {
+//        $title .= ' – '.$rootCategory;
+//      }
+//    }
+//    $this->getResponse()->setTitle($title.' – Enter.ru');
   }
 }

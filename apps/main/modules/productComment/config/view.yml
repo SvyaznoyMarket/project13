@@ -5,6 +5,8 @@ all:
 indexSuccess:
   javascripts:
     - app.product.comment.list.js
+  metas:
+    title: Отзывы
     
 newSuccess:
   javascripts:

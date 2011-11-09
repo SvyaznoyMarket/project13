@@ -87,6 +87,8 @@ class ProductType extends BaseProductType
             'group_id'    => $groupId,
             'position'    => $relationData['filter_position'],
             'is_multiple' => $relationData['is_multiple'],
+            'value_min'   => $relationData['filter_min'],
+            'value_max'   => $relationData['filter_max'],
           ));
 
           $filter->save();

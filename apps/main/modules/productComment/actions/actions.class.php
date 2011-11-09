@@ -37,6 +37,18 @@ class productCommentActions extends myActions
     ));
     $this->getResponse()->addMeta('keywords', sprintf('%s отзывы мнения покупателей владельцев пользователей', $this->product['name']));
     // :: SEO
+    
+//	$title = "«Отзывы»: ".$this->product['name'] . ' в магазинах "Enter" ';
+//    $mainCat = $this->product->getMainCategory();
+//    $title .= ' – '.$mainCat;    
+//    if ($mainCat) {
+//      $rootCat = $mainCat->getRootRow();
+//      if ($rootCat->id !== $mainCat->id) {
+//        $title .= ' – '.$rootCat;
+//      }
+//    }       
+//    $this->getResponse()->setTitle($title.' – Enter.ru');
+    
   }
  /**
   * Executes new action
@@ -107,6 +119,9 @@ class productCommentActions extends myActions
 
 		}
 	}
+    $title = 'Новый отзыв о товаре "' . $this->product['name'] . '"';
+    $this->getResponse()->setTitle($title.' – Enter.ru');
+    
   }
  /**
   * Executes create action
