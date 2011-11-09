@@ -84,7 +84,7 @@ foreach ($p3d as $p3d_obj)
 
   <div class="clear pb15"></div>
   <div class="mb15 font12 orange infoblock">
-    <?php if (!empty($item['product']->Category->getFirst()) && 'furniture' == $item['product']->Category->getFirst()->getRootCategory()->token): ?>
+    <?php if (count($item['product']->Category) && 'furniture' == $item['product']->Category->getFirst()->getRootCategory()->token): ?>
     Любой из представленных товаров, вы можете заказать с доставкой по удобному адресу.
     <?php else: ?>
     Любой из представленных в нашем каталоге товаров, вы можете заказать с доставкой по удобному адресу или заказать и самостоятельно забрать в нашем магазине.
