@@ -72,4 +72,14 @@ class ShopTable extends myDoctrineTable
 
     return $q->execute();
   }
+  
+  /**
+   *
+   * @return Shop
+   */
+  public function getMainShop()
+  {
+      $q = $this->createBaseQuery();
+      return $q->fetchOne();
+  }
 }

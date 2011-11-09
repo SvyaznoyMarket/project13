@@ -1,7 +1,7 @@
 <div class="goodsbox height250">
 
   <div class="photo">
-    <a href="<?php echo $item['url'] ?>"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></a>
+    <a href="<?php echo $item['url'] ?>"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" title="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" width="160" height="160" /></a>
   </div>
 
   <h2><a href="<?php echo $item['url'] ?>" class="underline"><?php echo $item['name'] ?></a></h2>
@@ -19,7 +19,7 @@
       <div class="lt" data-url="<?php echo $item['url'] ?>">
 
         <div class="photo">
-          <a href="<?php echo $item['url'] ?>"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></a>
+          <a href="<?php echo $item['url'] ?>"><!--<i class="new" title="Новинка"></i>--><img src="<?php echo $item['photo'] ?>" alt="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" title="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" width="160" height="160" /></a>
         </div>
 
         <h2><a href="<?php echo $item['url'] ?>" class="underline"><?php echo $item['name'] ?></a></h2>

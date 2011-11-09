@@ -21,17 +21,33 @@ class productCommentActions extends myActions
     $this->sort = $this->getRequestParameter('sort', 'created_desc');
 	$this->page = $this->getRequestParameter('page', 1);
     
+    // SEO ::
+    $this->product->description = '<noindex>' . $this->product->description . '</noindex>';
+    $title = '%s - отзывы покупателей о товаре %s - интернет-магазин Enter.ru';
+    $this->getResponse()->setTitle(sprintf(
+        $title, 
+        $this->product['name'], 
+        $this->product['name']
+    ));
+    $descr = 'Интернет магазин Enter.ru предлагает ознакомиться с отзывами владельцев товара %s. На этой странице Вы можете прочитать отзывы покупателей о товаре %s, а так же оставить свое мнение.';
+    $this->getResponse()->addMeta('description', sprintf(
+        $descr,
+        $this->product['name'], 
+        $this->product['name']
+    ));
+    $this->getResponse()->addMeta('keywords', sprintf('%s отзывы мнения покупателей владельцев пользователей', $this->product['name']));
+    // :: SEO
     
-	$title = "«Отзывы»: ".$this->product['name'] . ' в магазинах "Enter" ';
-    $mainCat = $this->product->getMainCategory();
-    $title .= ' – '.$mainCat;    
-    if ($mainCat) {
-      $rootCat = $mainCat->getRootRow();
-      if ($rootCat->id !== $mainCat->id) {
-        $title .= ' – '.$rootCat;
-      }
-    }       
-    $this->getResponse()->setTitle($title.' – Enter.ru');
+//	$title = "«Отзывы»: ".$this->product['name'] . ' в магазинах "Enter" ';
+//    $mainCat = $this->product->getMainCategory();
+//    $title .= ' – '.$mainCat;    
+//    if ($mainCat) {
+//      $rootCat = $mainCat->getRootRow();
+//      if ($rootCat->id !== $mainCat->id) {
+//        $title .= ' – '.$rootCat;
+//      }
+//    }       
+//    $this->getResponse()->setTitle($title.' – Enter.ru');
     
   }
  /**

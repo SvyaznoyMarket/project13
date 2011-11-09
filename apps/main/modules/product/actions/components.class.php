@@ -28,7 +28,7 @@ class productComponents extends myComponents
     {
       $this->view = 'default';
     }
-
+    
     $item = array(
       'article'  => $this->product->article,
       'name'     => (string) $this->product,
@@ -39,11 +39,26 @@ class productComponents extends myComponents
       'product'  => $this->product,
       'url'      => url_for('productCard', $this->product, array('absolute' => true)),
     );
+    
+    if ('compact' == $this->view)
+    {
+        $item['root_name'] = (string) $this->product->Category[0]->getRootCategory();
+    }
 
     if ('default' == $this->view)
     {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
       $item['stock_url'] = url_for('productStock', $this->product);
+      $item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
+      
+        $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
+            'date' => date('Y-m-d'),
+            'geo_id' => $this->getUser()->getRegion('core_id'),
+            'product' => array(
+                array('id' => $this->product->core_id, 'quantity' => 1),
+            )
+        ));
+        $this->delivery = current($this->delivery);
     }
     if (in_array($this->view, array('expanded')))
     {

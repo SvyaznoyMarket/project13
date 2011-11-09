@@ -64,12 +64,12 @@ foreach ($p3d as $p3d_obj)
     <?php if ($product->is_instock): ?>
       <noindex><div class="pb5"><strong class="orange">Есть в наличии</strong></div></noindex>
 <?php endif ?>
-<!--            <div class="pb3"><strong>Доставка стандарт</strong></div>
-          <div class="font11 gray">
-              Стоимость: <strong>350 руб.</strong><br />
-              Москва. Доставим в течение 1-2 дней<br />
-              <a href="" class="underline">Хотите быстрее?</a>
-          </div>-->
+  <div class="pb3"><strong>Доставка: <?php echo $delivery['name'] ?></strong></div>
+  <div class="font11 gray">
+      Стоимость: <strong><?php echo $delivery['price'] ?> руб.</strong><br />
+<!--      Москва. Доставим в течение 1-2 дней<br />
+      <a href="" class="underline">Хотите быстрее?</a>-->
+  </div>
   </div>
   <div class="fr ar pb15">
     <div class="goodsbarbig" ref="<?php echo $item['product']->token ?>">
@@ -79,7 +79,7 @@ foreach ($p3d as $p3d_obj)
       <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
     </div>
 <!--            <div class="pb5"><strong><a href="" class="red underline">Купить быстро в 1 клик</a></strong></div>-->
-    <a href="<?php echo $item['stock_url'] ?>" class="underline">Где купить в магазинах?</a>
+    <a href="<?php echo $item['shop_url'] ?>" class="underline">Где купить в магазинах?</a>
   </div>
 
   <div class="clear pb15"></div>
@@ -171,7 +171,7 @@ foreach ($p3d as $p3d_obj)
 
 <?php if (!empty($item['product']->description)): ?>
     <!-- Information -->
-    <h2 class="bold">Информация о товаре</h2>
+    <h2 class="bold"><?php echo $item['product']->name ?> - Информация о товаре</h2>
     <div class="line pb15"></div>
     <ul class="pb10">
       <?php echo $item['product']->description ?>
@@ -182,7 +182,7 @@ foreach ($p3d as $p3d_obj)
 
 
 <!-- Description -->
-<h2 class="bold">Характеристики</h2>
+<h2 class="bold"><?php echo $item['product']->name ?> - Характеристики</h2>
 <div class="line pb25"></div>
 
 <?php if (false && ($product->countParameter('show') > 5) && ($product->countParameter('list') > 0)): ?>
