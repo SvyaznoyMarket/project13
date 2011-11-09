@@ -25,7 +25,6 @@ class productComponents extends myComponents
     }
 
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description')))
-
     {
       $this->view = 'default';
     }
@@ -339,49 +338,19 @@ class productComponents extends myComponents
    */
   public function executeFilter_productType()
   {
-    $list = array(
-      'first' => array(),
-      'other' => array(),
-    );
+    $list = array();
 
-    $firstProductCategory = isset($this->productTypeList[0]->ProductCategory[0]) ? $this->productTypeList[0]->ProductCategory[0]->getRootCategory() : false;
     foreach ($this->productTypeList as $productType)
     {
-      $inFirst = false;
-      if ($firstProductCategory)
-      {
-        foreach ($productType->ProductCategory as $productCategory)
-        {
-          if ($productCategory->getRootCategory()->id == $firstProductCategory->id)
-          {
-            $list['first'][] = array(
-              'name'     => (string)$productType,
-              'token'    => $productType->id,
-              'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
-              'value'    => $productType->id,
-              'selected' => isset($productType->_selected) ? $productType->_selected : false,
-            );
-            $inFirst = true;
-
-            break;
-          }
-        }
-      }
-
-      if (!$inFirst)
-      {
-        $list['other'][] = array(
-          'name'     => (string)$productType,
-          'token'    => $productType->id,
-          'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
-          'value'    => $productType->id,
-          'selected' => isset($productType->_selected) ? $productType->_selected : false,
-        );
-      }
+      $list[] = array(
+        'name'     => (string)$productType,
+        'token'    => $productType->id,
+        'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
+        'value'    => $productType->id,
+        'selected' => isset($productType->_selected) ? $productType->_selected : false,
+      );
     }
-    myDebug::dump($list, 1);
 
     $this->setVar('list', $list, true);
   }
 }
-

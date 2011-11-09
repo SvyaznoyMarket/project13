@@ -38,18 +38,90 @@ class searchComponents extends myComponents
     $list = array();
 
     $list[] = array(
-      'name' => "Поиск (".htmlentities($this->searchString).")",
+      'name' => "Поиск (".$this->searchString.")",
       'url'  => url_for('search', array('searchString' => $this->searchString)),
     );
 
     $this->setVar('list', $list, false);
   }
- /**
-  * Executes categories component
-  *
-  * @param array $list Категории поиска
-  */
-  public function executeCategories()
+  /**
+   * Executes filter_productType component
+   *
+   * @param ProductType          $productType     Тип товара
+   * @param myDoctrineCollection $productTypeList Коллекция типов товаров
+   * @param string               $searchString    Строка поиска
+   */
+  public function executeFilter_productType()
   {
+    $list = array(
+      'first' => array(),
+      'other' => array(),
+    );
+
+    $firstProductCategory = isset($this->productTypeList[0]->ProductCategory[0]) ? $this->productTypeList[0]->ProductCategory[0]->getRootCategory() : false;
+    foreach ($this->productTypeList as $i => $productType)
+    {
+      $index = 'other';
+      if ($firstProductCategory)
+      {
+        foreach ($productType->ProductCategory as $productCategory)
+        {
+          if ($productCategory->getRootCategory()->id == $firstProductCategory->id)
+          {
+            $index = 'first';
+            break;
+          }
+        }
+      }
+
+      $list[$index][] = array(
+        'url'      => url_for('search', array('q' => $this->searchString, 'product_type' => $productType->id)),
+        'name'     => (string)$productType,
+        'token'    => $productType->id,
+        'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
+        'value'    => $productType->id,
+        'selected' => false
+          || ((0 == $i) && !$this->productType)
+          || (isset($productType->_selected) ? $productType->_selected : false)
+        ,
+      );
+    }
+    //myDebug::dump($list, 1);
+
+    $variation = mb_strtolower($firstProductCategory->name, 'utf-8');
+    switch ($variation)
+    {
+      case 'мебель':
+        $variation = 'мебели';
+        break;
+      case 'бытовая техника':
+        $variation = 'бытовой технике';
+        break;
+      case 'товары для дома':
+        $variation = 'товарах для дома';
+        break;
+      case 'товары для детей':
+        $variation = 'товарах для детей';
+        break;
+      case 'сделай сам (инструменты)':
+        $variation = 'сделай сам (инструменты)';
+        break;
+      case 'электроника':
+        $variation = 'электронике';
+        break;
+      case 'украшения и часы':
+        $variation = 'украшениях и часах';
+        break;
+      case 'спорт':
+        $variation = 'спорте';
+        break;
+      case 'подарки':
+        $variation = 'подарках';
+        break;
+    }
+    $firstProductCategory->mapValue('_variation', $variation);
+
+    $this->setVar('list', $list, true);
+    $this->setVar('firstProductCategory', $firstProductCategory, true);
   }
 }

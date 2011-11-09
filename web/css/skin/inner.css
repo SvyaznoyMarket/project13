@@ -1293,58 +1293,58 @@ border-radius: 5px;
 
 /* ----------- categories ------------- */
 .bCtg{
-	margin-bottom: 12px;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
 	border-bottom: 1px solid #e6e6e6;
 	}
 .bCtg b{
 	color: #a6a6a6;
-	font: 13px Tahoma, sans-serif;
+	font: 14px Tahoma, sans-serif;
 	}
 
 .bCtg li a{
 	text-decoration: none;
 	}
-.bCtg DT{
+.bCtg,
+.bCtg__eL2{
 	font: 14px Tahoma, sans-serif;
-	padding: 0;
+	}
+.bCtg DT{
+	padding:7px 0 8px 0;
 	cursor:pointer;
 	color: #a6a6a6;
 	}
-.bCtg DD{
-	margin: 0;
-	padding: 4px 0 12px 0;
-	}
 .bCtg LI{
+	padding:3px 5px;
 	cursor: pointer;
 	}
 .bCtg__eL1,
 .bCtg__eL2,
 .bCtg__eL3,
 .bCtg__eL4{
-	font: 13px Tahoma, sans-serif;
 	display: inline-block;
 	*display: inline;
 	zoom: 1;
 }
 .bCtg__eL1{
 	cursor:pointer;
-	padding:8px 0 4px 0;
+	padding:3px 5px;
 	margin-left: 0px;
 	}
 .bCtg__eL2{
 	cursor:pointer;
-	padding:1px 5px 2px 5px;
-	margin-left: 0px;
+	padding:3px 5px;
+	margin-left: 18px;
 	}
 .bCtg__eL3{
 	cursor:pointer;
-	padding:1px 5px 2px 5px;
-	margin-left: 6px;
+	padding:3px 5px;
+	margin-left: 36px;
 	}
 .bCtg__eL4{
 	cursor:pointer;
-	padding:1px 5px 2px 5px;
-	margin-left: 6px;
+	padding:3px 5px;
+	margin-left: 54px;
 	}
 .bCtg LI:hover .bCtg__eL1,
 .bCtg LI:hover .bCtg__eL2,
@@ -1395,13 +1395,6 @@ DT.bCtg__eOrange{
 	background: #cbcbcb;
 	text-decoration: none;
 	}
-.mBold{
-	font-weight: bold;
-	}
-.catProductNum{
-    font-size:14px;
-    padding:11px 0px 3px 0px;
-}
 
 /* ----------- /categories ------------- */
 
