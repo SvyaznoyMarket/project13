@@ -23,6 +23,7 @@ A.nodecor {text-decoration:none}
 .gray {color:#a6a6a6}
 .orange, .orange:hover, .orange.underline:hover {color:#ffa901}
 .green {color:#6ea428}
+.motton {color: #4FCBF4;}
 .white {color:#fff}
 .black {color:#000}
 .fl {float:left}
@@ -1313,31 +1314,38 @@ border-radius: 5px;
 	
 	.bCtg__eL1{}
 	
-	.bCtg__eL2{ padding-left: 5px; }
-	.bCtg__eL2.mSelected{ padding-left: 0; }
+	.bCtg__eL2{ padding-left: 11px; }
+	.bCtg__eL2.mSelected{ padding-left: 6px; }
 	
-	.bCtg__eL3{ padding-left: 7px; }
-	.bCtg__eL4{ padding-left: 17px;}
+	.bCtg__eL3{ padding-left: 23px; }
+	.bCtg__eL3.mSelected{ padding-left: 18px; }
 	
-	.bCtg__eL3 span{
+	.bCtg__eL4{ padding-left: 34px;}
+	.bCtg__eL4.mSelected{ padding-left: 29px; }
+	
+	.bCtg__eL2 span,
+	.bCtg__eL3 span,
+	.bCtg__eL4 span{
+		position: relative;
 		display: inline-block;
 		*display: inline;
 		zoom: 1;
 		}
+	.bCtg__eL2 span div,
+	.bCtg__eL3 span div,
+	.bCtg__eL4 span div{
+		top: 0;
+		left: -10px;
+		position: absolute;
+		}
 	
-	.bCtg__eL3 span::before,
-	.bCtg__eL4 span::before{ content: "- "; }
+	.bCtg__eL2.mBold span div,
+	.bCtg__eL2.mSelected span div,
+	.bCtg__eL3.mBold span div,
+	.bCtg__eL3.mSelected span div,
+	.bCtg__eL4.mBold span div,
+	.bCtg__eL4.mSelected span div{ visibility: hidden }
 	
-	.bCtg__eL3.mBold span::before,
-	.bCtg__eL4.mBold span::before,
-	.bCtg__eL3.mSelected span::before,
-	.bCtg__eL4.mSelected span::before{ content: "";}
-	
-	.bCtg__eL3.mBold span,
-	.bCtg__eL3.mSelected span{ margin-left: 5px; }
-	.bCtg__eL4.mBold span,
-	.bCtg__eL4.mSelected span{ margin-left: 4px; }
-
     .catProductNum{
         font-size:14px;
         padding:11px 0px 3px 0px;
