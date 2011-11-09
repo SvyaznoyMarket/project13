@@ -29,6 +29,15 @@ class ProductParameter extends myDoctrineVirtualRecord
           $option = ProductPropertyOptionTable::getInstance()->getById($propertyRelation['option_id']);
           $value[] = $option ? $this->formatValue($this->property->pattern, $option->value, $option->unit) : null;
           break;
+        case 'integer': case 'float':
+          $realValue = $propertyRelation['real_value'];
+          $frac = $realValue - floor($realValue);
+          if (0 == $frac)
+          {
+            $realValue = intval($realValue);
+          }
+
+          $value[] = $this->formatValue($this->property->pattern, $realValue, $this->property->unit);
         case 'boolean':
           $value[] = $this->formatValue($this->property->pattern, $propertyRelation['value'], $this->property->unit);
         default:

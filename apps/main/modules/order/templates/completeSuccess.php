@@ -2,7 +2,7 @@
 
 <?php
 slot('complete_order_id');
-  echo $order['token'];
+  echo $order['number'];
 end_slot();
 slot('complete_order_sum');
   echo $order['sum'];
@@ -13,7 +13,7 @@ end_slot();
 <?php //myDebug::dump($order) ?>
     <!-- Basket -->
         <div class="fl width650 font16 pb20">
-            <strong>Номер вашего заказа: <?php echo $order->token ?></strong><br /><br />
+            <strong>Номер вашего заказа: <?php echo $order->number ?></strong><br /><br />
             Дата заказа: <?php echo format_date($order->created_at, 'D') ?><br />
             Сумма заказа: <?php include_partial('default/sum', array('sum' => $order->sum, )) ?> <span class="rubl">p</span><br /><br />
             <!--С вами свяжется оператор для получения и уточнения параметров заказа.-->
@@ -29,11 +29,11 @@ end_slot();
           <input type="submit" class="button bigbutton fr" value="Продолжить покупки" />
         </form>
     <!-- /Basket -->
-<?php if ($order['token']): ?>
+<?php if ($order['number']): ?>
 <script type="text/javascript">
 	$(function(){
 		 _gaq.push(['_addTrans',
-		    '<?php echo $order['token'] ?>',           // Номер заказа
+		    '<?php echo $order['number'] ?>',           // Номер заказа
 		    '<?php echo $order->Shop ?>',  // Название магазина (Необязательно)
 		    '<?php echo str_replace(',', '.', $order['sum']) ?>',          // Полная сумма заказа (дроби через точку)
 		    '0',              // Стоимость доставки (дроби через точку)
@@ -42,7 +42,7 @@ end_slot();
 		    '<?php echo $order->getCountryName() ?>'             // Страна (нобязательно)
 		  ]);
 		 var yaParams = {
-			 'order_id': '<?php echo $order['token'] ?>',
+			 'order_id': '<?php echo $order['number'] ?>',
 			 'order_price': '<?php echo str_replace(',', '.', $order['sum']) ?>',
 			 'currency': 'RUR',
 			 'exchange_rate': 1,
@@ -50,10 +50,10 @@ end_slot();
 		 };
 		 <?php foreach ($order->ProductRelation as $product): ?>
 		 _gaq.push(['_addItem',
-		    '<?php echo $order['token'] ?>',           // Номер заказа
+		    '<?php echo $order['number'] ?>',           // Номер заказа
 		    '<?php echo $product->Product['article'] ?>',           // Артикул
 		    '<?php echo $product->Product['name'] ?>',        // Название товара
-		    '<?php echo $product->Product->getMainCategory() ?>',   // Категория товара 
+		    '<?php echo $product->Product->getMainCategory() ?>',   // Категория товара
 		    '<?php echo str_replace(',', '.', $product['price']) ?>',          // Стоимость 1 единицы товара
 		    '<?php echo str_replace(',', '.', $product['quantity']) ?>'               // Количество товара
 		  ]);
