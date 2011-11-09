@@ -32,7 +32,16 @@ class shopComponents extends myComponents
       'way_auto'     => $this->shop->way_auto,
       'latitude'     => $this->shop->latitude,
       'longitude'    => $this->shop->longitude,
+      'photos'       => array(),
     );
+
+    foreach ($this->shop->Photo as $shopPhoto)
+    {
+      $item['photo'][] = array(
+        'url_small' => $shopPhoto->getPhotoUrl(0),
+        'url_big'   => $shopPhoto->getPhotoUrl(3),
+      );
+    }
 
     $this->setVar('item', $item, true);
   }

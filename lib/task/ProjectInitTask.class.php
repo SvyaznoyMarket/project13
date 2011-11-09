@@ -726,10 +726,12 @@ EOF;
             $record = ProductPhotoTable::getInstance()->createRecordFromCore($data);
             $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
             $record->view_show = 1;
+
             break;
           case 2:
             $record = ProductPhoto3DTable::getInstance()->createRecordFromCore($data);
             $record->product_id = $this->getRecordByCoreId('Product', $data['item_id'], true);
+
             break;
         }
         break;
@@ -738,6 +740,16 @@ EOF;
       case 3:
         break;
       case 6:
+        break;
+      case 8:
+        $table = ShopPhotoTable::getInstance();
+        $record = $table->getByCoreId($entity['id']);
+        if (!$record)
+        {
+          $record = $table->createRecordFromCore($entity);
+        }
+        $record->importFromCore($entity);
+
         break;
       default:
         break;

@@ -300,6 +300,16 @@ EOF;
         break;
       case 6:
         break;
+      case 8:
+        $table = ShopPhotoTable::getInstance();
+        $record = $table->getByCoreId($entity['id']);
+        if (!$record)
+        {
+          $record = $table->createRecordFromCore($entity);
+        }
+
+        $record->importFromCore($entity);
+        break;
       default:
         break;
     }
