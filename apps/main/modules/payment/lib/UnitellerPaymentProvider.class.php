@@ -16,19 +16,20 @@ class UnitellerPaymentProvider
   }
 
   public function getForm(Order $order)
-  {
-    $orderInfo = array(
-        'id' => $order->id,
-        'sum' => $order->sum,
-    ); 
+  { 
     foreach($order->getProductRelation() as $product){
-        $orderInfo['products'][$product->product_id]['id'] = $product->product_id;
-        $orderInfo['products'][$product->product_id]['quantity'] = $product->quantity;
+        $productInfo[$product->product_id]['quantity'] = $product->quantity;
     }
     foreach($order->getProduct() as $product){
-        $orderInfo['products'][$product->id]['name'] = $product->name;
-        $orderInfo['products'][$product->id]['price'] = $product->price;
+        $productInfo[$product->id]['name'] = $product->name;
+        $productInfo[$product->id]['price'] = $product->price;
     }
+    foreach($productInfo as $product){
+        $str = $product['name'] . ' (' . $product['quantity'] . 'шт.)';
+        $orderInfo[$str] = $product['price'];
+    }
+    #$orderInfo["'" . $order->getDeliveryType() . "'"] = ''; //цена доставки. пока её нету
+    if ($order->getDeliveredAt()) $orderInfo["Дата доставки"] = $order->getDeliveredAt();
     #print_r($orderInfo);
     
     $jsonOrderInfo = json_encode($orderInfo);
@@ -55,7 +56,7 @@ class UnitellerPaymentProvider
       'URL_RETURN'  => url_for($this->getConfig('return_url'), true),
     ), array(
       'url' => $this->getConfig('pay_url'),
-      'comment' => $jsonOrderInfo,      
+      'Comment' => $jsonOrderInfo,      
     ));
 
     return $form;
