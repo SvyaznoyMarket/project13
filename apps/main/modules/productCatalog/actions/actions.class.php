@@ -263,7 +263,7 @@ class productCatalogActions extends myActions
 
     $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
       'view'            => 'list',
-      'with_properties' => 'expanded' == $request['view'],
+      'with_properties' => 'expanded' == $request['view'] ? true : false,
     ));
 
     // sorting

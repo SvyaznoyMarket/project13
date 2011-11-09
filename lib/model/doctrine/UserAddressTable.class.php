@@ -36,9 +36,10 @@ class UserAddressTable extends myDoctrineTable
   {
     return array(
       'id'      => 'core_id',
-      'name'    => 'name',
-      'geo_id'  => 'city_id',
+      //'name'    => 'name',
       'address' => 'address',
+
+      'geo_id'  => array('rel' => 'City'),
     );
   }
 }

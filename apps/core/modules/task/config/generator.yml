@@ -13,7 +13,9 @@ generator:
 
     config:
       actions: ~
-      fields:  ~
+      fields:
+        created_at: { date_format: 'I' }
+        updated_at: { date_format: 'I' }
       list:
         display: [ id, _type, _priority, _content, _attempt, step, _error, core_packet_id, created_at, updated_at ]
         table_method: retrieveAdminList

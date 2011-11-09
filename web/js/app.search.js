@@ -27,13 +27,15 @@ $(document).ready(function() {
     })
   })
 
-  $('#filter_product_type-form').bind('click', function(e) {
-    var form = $(this)
-    var el = $(e.target)
+  $('.bCtg__eMore').bind('click', function(e) {
+    e.preventDefault()
 
-    if ('product_types[]' == el.prop('name')) {
-      form.submit()
-    }
+    var el = $(this)
+
+    el.parent().find('li.hf').slideToggle()
+
+    var link = el.find('a')
+    link.text('еще...' == link.text() ? 'скрыть' : 'еще...')
   })
 
 })

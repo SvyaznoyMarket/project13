@@ -147,6 +147,7 @@ class myProductFormFilter extends sfFormFilter
       'renderer_class'   => 'myWidgetFormSelectCheckbox',
       'renderer_options' => array(
         'label_separator' => '',
+        'formatter'       => array($this, 'show_part'),
       ),
     ));
   }
