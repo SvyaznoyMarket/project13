@@ -1,16 +1,16 @@
 <?php //include_partial('default/sum', array('sum' => $item['sum'])) ?>
 <?php
 $info = $order->getData();
-use_helper('Date'); 
+use_helper('Date');
 //print_r($statusList);
 ?>
    <?php if ($info['status_id']==Order::STATUS_READY){ ?>
-      <div class="fr font16 orange pb10">Заказ выполнен</div>  
+      <div class="fr font16 orange pb10">Заказ выполнен</div>
    <?php }elseif ($info['status_id']==Order::STATUS_CANCELLED){ ?>
       <div class="fr font16 orange pb10">Заказ отменен</div>
-  <?php } ?>    
-  <div class="font16 orange pb10"><strong>Заказ № <?php echo $item['token']?> от <?php echo format_date($item['created_at'],'MM.dd.yyyy')?></strong> на сумму&nbsp;<?php echo $item['sum']?> <span class="rubl">p</span></div>
-  
+  <?php } ?>
+  <div class="font16 orange pb10"><strong>Заказ № <?php echo $item['number']?> от <?php echo format_date($item['created_at'],'MM.dd.yyyy')?></strong> на сумму&nbsp;<?php echo $item['sum']?> <span class="rubl">p</span></div>
+
    <?php if ($info['status_id']!=Order::STATUS_READY && $info['status_id']!=Order::STATUS_CANCELLED){ ?>
     <table cellspacing="0" class="status">
                <tr>
@@ -51,10 +51,10 @@ use_helper('Date');
            <?php if ($info['status_id']==Order::STATUS_READY || $info['status_id']==Order::STATUS_CANCELLED){ ?>
                <!--<th><input type="button" value="Повторить заказ" class="button whitebutton"></th>-->
            <?php }else{ ?>
-               <form method="post" action="<?php echo url_for('order_cancel')?>/<?php echo $item['token'] ?>" >                   
+               <form method="post" action="<?php echo url_for('order_cancel')?>/<?php echo $item['token'] ?>" >
                    <th><input type="submit" value="Отменить заказ" name="cancel" class="button whitebutton"></th>
-               </form>     
-          <?php } ?>             
+               </form>
+          <?php } ?>
            <td></td>
        </tr>
     </table>
