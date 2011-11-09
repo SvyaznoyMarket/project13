@@ -78,6 +78,7 @@ Order:
     extra:                  { type: string }
     ip:                     { type: string(50), notnull: false, default: null }
     step:                   { type: integer(4), notnull: false, default: null, comment: 'Шаг заказа' }
+    core_created_at:        { type: timestamp, format: Y-m-d H:m:i, comment: 'Дата создания заказа (по ядру)' }
   relations:
     User:                   { class: User, foreignAlias: Order, local: user_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     PaymentMethod:          { class: PaymentMethod, foreignAlias: Order, local: payment_method_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }

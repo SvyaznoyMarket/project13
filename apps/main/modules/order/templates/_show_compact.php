@@ -9,7 +9,7 @@ use_helper('Date');
    <?php }elseif ($info['status_id']==Order::STATUS_CANCELLED){ ?>
       <div class="fr font16 orange pb10">Заказ отменен</div>
   <?php } ?>
-  <div class="font16 orange pb10"><strong>Заказ № <?php echo $item['number']?> от <?php echo format_date($item['created_at'],'MM.dd.yyyy')?></strong> на сумму&nbsp;<?php echo $item['sum']?> <span class="rubl">p</span></div>
+  <div class="font16 orange pb10"><strong>Заказ № <?php echo $item['number']?> от <?php echo format_date($item['created_at'],'dd.MM.yyyy')?></strong> на сумму&nbsp;<?php echo $item['sum']?> <span class="rubl">p</span></div>
 
    <?php if ($info['status_id']!=Order::STATUS_READY && $info['status_id']!=Order::STATUS_CANCELLED){ ?>
     <table cellspacing="0" class="status">
