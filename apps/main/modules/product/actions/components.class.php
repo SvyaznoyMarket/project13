@@ -50,6 +50,7 @@ class productComponents extends myComponents
     {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
       $item['stock_url'] = url_for('productStock', $this->product);
+      $item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
       
         $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
             'date' => date('Y-m-d'),
