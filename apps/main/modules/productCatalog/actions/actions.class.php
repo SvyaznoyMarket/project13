@@ -260,17 +260,17 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-//	$title = $this->productCategory['name'];
-//	if ($request->getParameter('page'))
-//    {
-//		$title .= ' – '.$request->getParameter('page');
-//	}
-//	$rootCategory = $this->productCategory->getRootCategory();
-//	if ($rootCategory->id !== $this->productCategory->id)
-//    {
-//		$title .= ' – '.$rootCategory;
-//	}
-//	$this->getResponse()->setTitle($title.' – Enter.ru');
+	$title = $this->productCategory['name'];
+	if ($request->getParameter('page'))
+    {
+		$title .= ' – '.$request->getParameter('page');
+	}
+	$rootCategory = $this->productCategory->getRootCategory();
+	if ($rootCategory->id !== $this->productCategory->id)
+    {
+		$title .= ' – '.$rootCategory;
+	}
+	$this->getResponse()->setTitle($title.' – Enter.ru');
 
     $filter = array(
       'category' => $this->productCategory,

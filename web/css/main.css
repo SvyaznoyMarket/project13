@@ -4,3 +4,29 @@
   font-size: 11px;
   color: #cc0000;
 }
+
+.component-container.debug {
+  display: inline-block;
+}
+.component-container.debug:hover {
+  border: solid 1px #33aa33;
+  /* box-shadow: 10px 10px 5px #888; */
+  /* margin: 5px; */
+}
+
+.component-container.debug > span.title {
+  display: none;
+  position: absolute;
+  padding: 2px;
+  background: #33aa33;
+  color: #000;
+  font: normal 11px Courier New;
+
+  -webkit-border-bottom-right-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  border-bottom-right-radius: 4px;
+}
+.component-container.debug:hover > span.title {
+  display: block;
+  z-index: 900;
+}

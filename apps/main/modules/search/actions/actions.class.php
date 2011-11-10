@@ -58,6 +58,11 @@ class searchActions extends myActions
       return sfView::SUCCESS;
     }
 
+    if (!$this->productType)
+    {
+      $this->productType = !empty($response[1]['type_list'][0]['type_id']) ? ProductTypeTable::getInstance()->getByCoreId($response[1]['type_list'][0]['type_id']) : false;
+    }
+
     if ($request->isXmlHttpRequest())
     {
       $empty = true;
@@ -88,8 +93,6 @@ class searchActions extends myActions
       $type = $this->getSearchTypes($core_id);
       if (null == $type) continue;
 
-      $pagers[$type] = call_user_func_array(array($this, 'get'.ucfirst($type).'Pager'), array($data));
-
       if (('product' == $type) && !empty($data['type_list']))
       {
         $coreIds = array();
@@ -102,9 +105,18 @@ class searchActions extends myActions
         foreach ($productTypeList as $productType)
         {
           $productType->mapValue('_product_count', $coreIds[$productType->core_id]);
-          $productType->mapValue('_selected', $productType->id == ($this->productType ? $this->productType->id : null));
+          if ($productType->id == ($this->productType ? $this->productType->id : null))
+          {
+            $productType->mapValue('_selected', true);
+            $this->productType->mapValue('_product_count', $coreIds[$productType->core_id]);
+          }
+          else {
+            $productType->mapValue('_selected', false);
+          }
         }
       }
+
+      $pagers[$type] = call_user_func_array(array($this, 'get'.ucfirst($type).'Pager'), array($data));
     }
 
     $this->setVar('searchString', $this->searchString, false);
@@ -151,7 +163,7 @@ class searchActions extends myActions
       : array()
     ;
 
-    $pager = $this->getPager($list, $data['count'], array(
+    $pager = $this->getPager($list, $this->productType->_product_count, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
 

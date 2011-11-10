@@ -15,7 +15,7 @@ class CoreTask extends sfBaseTask
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('param', null, sfCommandOption::PARAMETER_REQUIRED, 'Query parameters', '[]'),
       new sfCommandOption('data', null, sfCommandOption::PARAMETER_REQUIRED, 'Query data', '[]'),
-      new sfCommandOption('view', null, sfCommandOption::PARAMETER_REQUIRED, 'View', 'yaml'),
+      new sfCommandOption('format', null, sfCommandOption::PARAMETER_REQUIRED, 'Format: array, yaml, json', 'array'),
       // add your own options here
     ));
 
@@ -32,8 +32,6 @@ EOF;
 
   protected function execute($arguments = array(), $options = array())
   {
-    $encode = 'koi8-r';
-
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
@@ -50,7 +48,7 @@ EOF;
     else {
       $this->logSection('core', 'response', null, 'INFO');
 
-      switch ($options['view'])
+      switch ($options['format'])
       {
         case 'yaml': case 'yml':
           $response = sfYaml::dump($response, 6);
@@ -58,9 +56,11 @@ EOF;
         case 'json':
           $response = json_encode($response);
           break;
+        case 'array': default:
+          break;
       }
 
-      myDebug::dump(iconv('utf-8', $encode, $response));
+      myDebug::dump($response);
     }
   }
 }

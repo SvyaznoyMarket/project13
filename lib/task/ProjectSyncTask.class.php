@@ -21,6 +21,7 @@ class ProjectSyncTask extends sfBaseTask
       new sfCommandOption('dump', null, sfCommandOption::PARAMETER_NONE, 'Only dump response'),
       new sfCommandOption('log', null, sfCommandOption::PARAMETER_NONE, 'Enable logging'),
       new sfCommandOption('packet', null, sfCommandOption::PARAMETER_REQUIRED, 'The packet_id', null),
+      new sfCommandOption('entity', null, sfCommandOption::PARAMETER_REQUIRED, 'The entity', null),
       // add your own options here
     ));
 
@@ -58,17 +59,50 @@ EOF;
         'packet_id' => $options['packet'],
       ));
     }
+    else if ($options['entity']) {
+      $file = sfConfig::get('sf_data_dir').'/core/'.$options['entity'].'.json';
+      if (!is_readable($file))
+      {
+        $this->logBlock("Can't read file {$file}", 'ERROR');
+
+        return false;
+      }
+
+      $response = json_decode(file_get_contents($file), true);
+      if (!isset($response[0]['data']))
+      {
+        $response = array(
+          array(
+            'data' => array_map(function($item) use ($options) { // классная клосюра :)
+              return array(
+                'type'      => $options['entity'],
+                'operation' => 1,
+                'data'      => $item,
+              );
+            }, $response)
+          ),
+        );
+      }
+
+      $this->task = new Task();
+      $this->task->type = 'project.sync';
+      $this->task->setDefaultPriority();
+      $this->task->setContentData(array(
+        'action'    => 'sync',
+        'packet_id' => null,
+      ));
+    }
     else {
       $this->task = TaskTable::getInstance()->find($arguments['task_id']);
     }
 
-    if (!$this->task)
+    if (!$this->task && !$options['entity'])
     {
       return false;
     }
 
     $params = $this->task->getContentData();
-    if (!$params['packet_id'])
+    if (!$params['packet_id'] && !$options['entity'])
     {
       return false;
     }
@@ -76,10 +110,11 @@ EOF;
     // add your code here
 
     $this->logSection('core', 'loading packet #'.$params['packet_id']);
-    $response = $this->core->query('sync.get', array(
-      'id' => $params['packet_id'],
-    ));
-    ////$response = json_decode(file_get_contents(sfConfig::get('sf_data_dir').'/core/product.json'), true);
+
+    if (!$options['entity'])
+    {
+      $response = $this->core->query('sync.get', array('id' => $params['packet_id']));
+    }
 
     if ($options['dump'])
     {

@@ -19,7 +19,7 @@
 
 <?php if (count($list['other'])): ?>
 <dl class="bCtg">
-  <dt class="bCtg__eOrange">Найдено в других категориях</dt>
+  <dt class="bCtg__eOrange">Найдено в <?php echo count($list['first']) ? 'других' : '' ?> категориях</dt>
   <dd>
     <ul>
     <?php foreach ($list['other'] as $i => $item): ?>

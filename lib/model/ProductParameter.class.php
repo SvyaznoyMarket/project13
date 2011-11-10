@@ -36,6 +36,9 @@ class ProductParameter extends myDoctrineVirtualRecord
           {
             $realValue = intval($realValue);
           }
+          else {
+            $realValue = rtrim($realValue, '0');
+          }
 
           $value[] = $this->formatValue($this->property->pattern, $realValue, $this->property->unit);
         case 'boolean':
