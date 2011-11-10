@@ -58,7 +58,7 @@ class searchComponents extends myComponents
       'other' => array(),
     );
 
-    $firstProductCategory = isset($this->productTypeList[0]->ProductCategory[0]) ? $this->productTypeList[0]->ProductCategory[0]->getRootCategory() : false;
+    $firstProductCategory = isset($this->productTypeList[0]->ProductCategory[0]) ? $this->productTypeList[0]->ProductCategory[0]->getRootCategory() : new ProductCategory();
     foreach ($this->productTypeList as $i => $productType)
     {
       $index = 'other';
@@ -86,7 +86,6 @@ class searchComponents extends myComponents
         ,
       );
     }
-    //myDebug::dump($list, 1);
 
     $variation = mb_strtolower($firstProductCategory->name, 'utf-8');
     switch ($variation)
