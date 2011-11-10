@@ -10,6 +10,8 @@
  */
 class productCatalogActions extends myActions
 {
+    
+    private $_validateResult;
  /**
   * Executes index action
   *
@@ -194,7 +196,70 @@ class productCatalogActions extends myActions
         }
     }
   }
+  
+  public function executeCategoryAjax(sfWebRequest $request){
+    
+    $this->setVar('allOk', false);    
+      
+    if (!isset($request['productCategory'])){
+        $this->_validateResult['success'] = false;
+        $this->_validateResult['error'] = 'Не указан token категории';
+        return $this->_refuse();
+    }
+    if (!isset($request['page'])){
+        $request['page'] = 1;
+    }
+    if (!isset($request['view'])){
+        $request['page'] = 'compact';
+    }
 
+    try{
+        $this->productCategory = $this->getRoute()->getObject();
+    } catch(Exception $e){
+        $this->_validateResult['success'] = false;
+        $this->_validateResult['error'] = 'Категория не найдена';
+        return $this->_refuse(); 
+    }  
+    
+
+    $filter = array(
+      'category' => $this->productCategory,
+    );
+
+    $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+      'view'            => 'list',
+      'with_properties' => 'expanded' == $request['view'],
+    ));
+
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
+
+
+    if (isset($request['num'])) $limit = $request['num'];
+    else $limit = sfConfig::get('app_product_max_items_on_category', 20); 
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => $limit,
+    ));
+    
+    if($request['page'] > $this->productPager->getLastPage()){
+        $this->_validateResult['success'] = false;
+        $this->_validateResult['error'] = 'Номер страницы превышает максимальный для списка';
+        return $this->_refuse();           
+    }
+   
+    $this->setVar('allOk', true);    
+      
+  }
+  
+  private function _refuse(){
+      return $this->renderJson(array(
+        'success' => $this->_validateResult['success'],
+        'data'    => array(
+          'error' => $this->_validateResult['error'],
+        ),
+      ));        
+  }  
  /**
   * Executes category action
   *
@@ -204,6 +269,7 @@ class productCatalogActions extends myActions
   {
 
     $this->_seoRedirectOnPageDublicate($request);
+
 
     $this->productCategory = $this->getRoute()->getObject();
 
