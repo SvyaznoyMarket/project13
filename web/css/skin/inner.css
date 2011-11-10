@@ -1485,10 +1485,10 @@ DT.bCtg__eOrange{
 		height: 50px;
 		}
 		.bMapInfo__eIco.mCar{
-			background: url('img/car.png') 50% 0 no-repeat;
+			background: url('/images/car.png') 50% 0 no-repeat;
 			}
 		.bMapInfo__eIco.mShop{
-			background: url('img/shop.png') 50% 0 no-repeat;
+			background: url('/images/shop.png') 50% 0 no-repeat;
 			}
 	.bMapInfo__eText{
 		width: 845px;
