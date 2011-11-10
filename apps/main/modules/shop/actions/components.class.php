@@ -35,11 +35,12 @@ class shopComponents extends myComponents
       'photos'       => array(),
     );
 
+
     foreach ($this->shop->Photo as $shopPhoto)
     {
-      $item['photo'][] = array(
-        'url_small' => $shopPhoto->getPhotoUrl(0),
-        'url_big'   => $shopPhoto->getPhotoUrl(3),
+      $item['photos'][] = array(
+        'url_small' => $shopPhoto->getPhotoUrl(5), // 1
+        'url_big'   => $shopPhoto->getPhotoUrl(5), // 4
       );
     }
 
