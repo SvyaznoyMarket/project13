@@ -312,16 +312,16 @@ class ProductTable extends myDoctrineTable
           /*
           if (!empty($parameter['values']['from']) && !empty($parameter['values']['to']))
           {
-            $q->addWhere('productPropertyRelation.value_integer BETWEEN ? AND ?', array($parameter['values']['from'], $parameter['values']['to']));
+            $q->addWhere('productPropertyRelation.value_float BETWEEN ? AND ?', array($parameter['values']['from'], $parameter['values']['to']));
           }
           */
           if (!empty($parameter['values']['from']))
           {
-            $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_integer >= ?', array($parameter['values']['from']));
+            $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_float >= ?', array($parameter['values']['from']));
           }
           if (!empty($parameter['values']['to']))
           {
-            $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_integer <= ?', array($parameter['values']['to']));
+            $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_float <= ?', array($parameter['values']['to']));
           }
         }
       }
