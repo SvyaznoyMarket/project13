@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	if($('#rotator').length) {
 		$('#rotator').jshowoff({ controls:false })
+		$('.jshowoff-slidelinks a').wrapInner('<span/>')
 	}
 	/* paging: all pages, infinity scroll */
 	var ableToLoad = true
