@@ -3,11 +3,11 @@
 <?php slot('title', trim(get_partial('search/product_count', array('count' => $resultCount, 'searchString' => $searchString)))) ?>
 
 <?php slot('navigation') ?>
-<?php include_component('search', 'navigation', array('searchString' => $searchString)) ?>
+  <?php include_component('search', 'navigation', array('searchString' => $searchString)) ?>
 <?php end_slot() ?>
 
 <?php slot('page_head') ?>
-<?php include_partial('search/page_head') ?>
+  <?php include_partial('search/page_head') ?>
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>

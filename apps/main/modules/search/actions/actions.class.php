@@ -87,6 +87,7 @@ class searchActions extends myActions
       ));
     }
 
+    $productTypeList = array();
     $pagers = array();
     if (is_array($response)) foreach ($response as $core_id => $data)
     {
@@ -163,7 +164,7 @@ class searchActions extends myActions
       : array()
     ;
 
-    $pager = $this->getPager($list, $this->productType->_product_count, array(
+    $pager = $this->getPager($list, isset($this->productType->_product_count) ? $this->productType->_product_count : 0, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
 
