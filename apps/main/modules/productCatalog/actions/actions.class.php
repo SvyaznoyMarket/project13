@@ -217,6 +217,21 @@ class productCatalogActions extends myActions
 //      $title .= ' – '.$rootCategory;
 //    }
 //    $this->getResponse()->setTitle($title.' – Enter.ru');
+    
+    // SEO ::
+    $list = array();
+    $ancestorList = $this->productCategory->getNode()->getAncestors();
+    if ($ancestorList) foreach ($ancestorList as $ancestor)
+    {
+        $list[] = (string)$ancestor;
+    }
+    $list[] = (string)$this->productCategory;
+    $title = '%s - интернет-магазин Enter.ru - Москва';
+    $this->getResponse()->setTitle(sprintf(
+        $title,
+        implode(' - ', $list)
+    ));
+    // :: SEO
 
     if ($this->productCategory->had_line) //если в категории должны отображться линии
     {
@@ -284,7 +299,7 @@ class productCatalogActions extends myActions
         $list[] = (string)$ancestor;
     }
     $list[] = (string)$this->productCategory;
-    $title = '%s - страница %d из %d - интернет-магазин  Enter.ru - Москва';
+    $title = '%s - страница %d из %d - интернет-магазин Enter.ru - Москва';
     $this->getResponse()->setTitle(sprintf(
         $title,
         implode(' - ', $list),
