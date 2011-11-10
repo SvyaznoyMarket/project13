@@ -110,6 +110,7 @@ class ProductTable extends myDoctrineTable
 
     $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record->id);
 
+    myDebug::dump($record->id);
     if ($prices)
     {
       $record->mapValue('ProductPrice', $prices);
@@ -133,6 +134,8 @@ class ProductTable extends myDoctrineTable
           || ('' === $realValue)
           || (null === $realValue)
           || (0 === $realValue)
+          || (0.0000 === $realValue)
+          || ('0.0000' === $realValue)
           || ('0' === $realValue)
         ) continue;
 
