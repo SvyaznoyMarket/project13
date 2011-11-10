@@ -1,6 +1,9 @@
 all:
   javascripts:
-    -mechanics.js    
+    - -mechanics.js
+    - -dash.js
+    - -jquery.lightbox_me.js
   metas:
     title: Корзина - Enter.ru
-
+  layout:
+    cart
