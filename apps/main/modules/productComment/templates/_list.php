@@ -2,7 +2,7 @@
 <?php $recomendStat = $product->getRatingStat() ?>
 
 <!-- Response -->
-<h2 class="bold">Отзывы пользователей (<?php echo count($list)?>)</h2>
+<h2 class="bold"><?php echo $product->name ?> - Отзывы покупателей (<?php echo count($list)?>)</h2>
 <div class="line pb15"></div>
 <table class="gradetable fl ml20">
 <thead>

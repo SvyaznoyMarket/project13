@@ -6,6 +6,13 @@ homepage:
   url:   /
   param: { module: default, action: index }
 
+login:
+  url:   /login
+  param: { module: default, action: login }
+logout:
+  url:   /logout
+  param: { module: default, action: logout }
+
 api:
   url:   /api
   param: { module: api, action: index }

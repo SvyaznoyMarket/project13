@@ -120,7 +120,6 @@ UserProductRatingTotal:
     User:              { class: User, foreignAlias: ProductRating, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: UserRating, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
-
 UserAddress:
   options:
     comment: 'Адрес пользователя для доставки'

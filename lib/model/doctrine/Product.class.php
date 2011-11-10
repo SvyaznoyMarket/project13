@@ -140,7 +140,7 @@ class Product extends BaseProduct
       $this->main_photo = 'default.jpg';
     }
 
-    if (!empty($data['status_id']))
+    /*if (!empty($data['status_id']))
     {
       switch ($data['status_id'])
       {
@@ -173,7 +173,7 @@ class Product extends BaseProduct
       $this->view_list = 0;
       $this->view_show = 0;
       $this->is_instock = 0;
-    }
+    }*/
 
   }
 

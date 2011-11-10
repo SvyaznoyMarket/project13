@@ -18,23 +18,23 @@ class searchActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $limit = sfConfig::get('app_product_max_items_on_category', 20);
-	$page = $request->getParameter('page', 1);
+	  $page = $request->getParameter('page', 1);
     $offset = intval($page - 1) * $limit;
     $this->forward404If($offset < 0, 'Неверный номер страницы');
 
     //myDebug::dump($request, 1);
     //$this->searchString = iconv('windows-1251', 'utf-8', $request['q']);
-    //$this->searchString = $request['q'];
     $this->searchString = $request->getParameter('q');
     $this->forward404Unless($this->searchString);
 
-	$title = 'Вы искали “'.  htmlspecialchars($this->searchString).'”';
-	if ($page) {
-		$title .= ' – '.$page;
-	}
-	$this->getResponse()->setTitle($title.' – Enter.ru');
+    $title = 'Вы искали “'.  htmlspecialchars($this->searchString).'”';
+    if ($page)
+    {
+      $title .= ' – '.$page;
+    }
+    $this->getResponse()->setTitle($title.' – Enter.ru');
 
-    $productTypeList = $this->getProductTypes($request);
+    $this->productType = !empty($request['product_type']) ? ProductTypeTable::getInstance()->find($request['product_type']) : false;
 
     // запрос к core
     $params = array(
@@ -42,7 +42,8 @@ class searchActions extends myActions
       'start'           => $offset,
       'limit'           => $limit,
       'type_id'         => $this->getCoreIdBySearchType('product'), // ищет только товары
-      'product_type_id' => $productTypeList->toValueArray('core_id'),
+      'product_type_id' => $this->productType ? array($this->productType->core_id) : array(),
+      'is_product_type_first_only' => $this->productType ? 'false' : 'true',
     );
     $response = Core::getInstance()->query('search.get', $params);
     //myDebug::dump($response);
@@ -81,51 +82,38 @@ class searchActions extends myActions
       ));
     }
 
-    $categories = array();
     $pagers = array();
     if (is_array($response)) foreach ($response as $core_id => $data)
     {
       $type = $this->getSearchTypes($core_id);
       if (null == $type) continue;
 
-      $categories[$type] = array();
-
       $pagers[$type] = call_user_func_array(array($this, 'get'.ucfirst($type).'Pager'), array($data));
 
-      if (('product' == $type) && !empty($data['types']))
+      if (('product' == $type) && !empty($data['type_list']))
       {
-        $selected = $productTypeList->toValueArray('id');
-        $coreIds = array_keys($data['types']);
-        foreach (ProductTypeTable::getInstance()->getListByCoreIds($coreIds, array(
-          'order'  => '_index',
-        )) as $productType) {
-          $productType->mapValue('_product_count', $data['types'][$productType->core_id]);
-          $productType->mapValue('_selected', in_array($productType->id, $selected));
+        $coreIds = array();
+        foreach ($data['type_list'] as $productTypeData)
+        {
+          $coreIds[$productTypeData['type_id']] = $productTypeData['count'];
+        }
 
-          $categories[$type][] = $productType;
+        $productTypeList = ProductTypeTable::getInstance()->getListByCoreIds(array_keys($coreIds), array('order' => '_index'));
+        foreach ($productTypeList as $productType)
+        {
+          $productType->mapValue('_product_count', $coreIds[$productType->core_id]);
+          $productType->mapValue('_selected', $productType->id == ($this->productType ? $this->productType->id : null));
         }
       }
     }
 
     $this->setVar('searchString', $this->searchString, false);
-    $this->categories = $categories;
-    $this->pagers = $pagers;
+    $this->setVar('pagers', $pagers, true);
+    $this->setVar('productTypeList', $productTypeList, true);
+    $this->setVar('resultCount', $response[1]['count'], true);
   }
 
 
-
-  protected function getProductTypes($request)
-  {
-    $list = ProductTypeTable::getInstance()->createList();
-
-    $ids = is_array($request['product_types']) ? $request['product_types'] : array();
-    if (count($ids) > 0)
-    {
-      $list = ProductTypeTable::getInstance()->createListByIds($ids);
-    }
-
-    return $list;
-  }
 
   protected function getSearchTypes($core_id = null)
   {

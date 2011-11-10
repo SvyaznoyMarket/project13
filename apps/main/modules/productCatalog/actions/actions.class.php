@@ -100,12 +100,12 @@ class productCatalogActions extends myActions
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
-    
+
     //формируем title
 	$title = $this->productCategory->name;
     foreach($this->productTagFilter as $field){
         $val = $field->getValue();
-        if (!$val) continue; 
+        if (!$val) continue;
         if ($field->getName() == 'price'){
             $propStr = $field->renderLabelName();
             if (isset($val['from'])){
@@ -116,7 +116,7 @@ class productCatalogActions extends myActions
             }
             if (isset($val['from']) || isset($val['to'])){
                 $propStr .= ' рублей';
-            }            
+            }
         } else {
             $propStr = $field->renderLabelName();
             $valNames = array();
@@ -131,14 +131,14 @@ class productCatalogActions extends myActions
     if (count($filterList)>0) $title .= ' - ' . implode(', ', $filterList);
     $mainCat = $this->productCategory;
     if ($mainCat) {
-      $rootCat = $mainCat->getRootRow();
+      $rootCat = $mainCat->getRootCategory();
       if ($rootCat->id !== $mainCat->id) {
         $title .= ' – '.$rootCat;
       }
-    }    
+    }
     $this->getResponse()->setTitle($title.' – Enter.ru');
-    
-    
+
+
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
  /**
@@ -173,10 +173,10 @@ class productCatalogActions extends myActions
       'data'    => $q->count(),
     ));
   }
-  
+
   private function _seoRedirectOnPageDublicate($request){
     //если передано page=1 или view=compact, отрезаем этот параметр и делаем редирект.
-    //необходимо для seo  
+    //необходимо для seo
     $redirectAr = array(
         'page' => 1,
         'view' => 'compact'
@@ -189,12 +189,12 @@ class productCatalogActions extends myActions
             if (strpos($uri, '&') === false){
                 $replaceStr = "?$key=$val";
             } else {
-                $replaceStr = array("$key=$val&", "&$key=$val");            
+                $replaceStr = array("$key=$val&", "&$key=$val");
             }
             $uri = str_replace($replaceStr, '', $this->getRequest()->getUri());
-            $this->redirect( $uri );                 
+            $this->redirect( $uri );
         }
-    }      
+    }
   }
   
   public function executeCategoryAjax(sfWebRequest $request){
@@ -260,7 +260,6 @@ class productCatalogActions extends myActions
         ),
       ));        
   }  
-
  /**
   * Executes category action
   *
@@ -268,21 +267,27 @@ class productCatalogActions extends myActions
   */
   public function executeCategory(sfWebRequest $request)
   {
-    #LastModifiedHandler::setLastModified(time());  
-    $this->_seoRedirectOnPageDublicate($request);  
-      
+
+    $this->_seoRedirectOnPageDublicate($request);
+
+
     $this->productCategory = $this->getRoute()->getObject();
 
-    $title = $this->productCategory['name'];
-    if ($request->getParameter('page')) {
-      $title .= ' – '.$request->getParameter('page');
-    }
-    $rootCategory = $this->productCategory->getRootCategory();
-    if ($rootCategory->id !== $this->productCategory->id)
+//    $title = $this->productCategory['name'];
+//    if ($request->getParameter('page')) {
+//      $title .= ' – '.$request->getParameter('page');
+//    }
+//    $rootCategory = $this->productCategory->getRootCategory();
+//    if ($rootCategory->id !== $this->productCategory->id)
+//    {
+//      $title .= ' – '.$rootCategory;
+//    }
+//    $this->getResponse()->setTitle($title.' – Enter.ru');
+
+    if ($this->productCategory->had_line) //если в категории должны отображться линии
     {
-      $title .= ' – '.$rootCategory;
+      $this->forward($this->getModuleName(), 'line');
     }
-    $this->getResponse()->setTitle($title.' – Enter.ru');
 
     if (false
       || !$this->productCategory->getNode()->hasChildren()                  //нет дочерних категорий
@@ -306,17 +311,17 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-	$title = $this->productCategory['name'];
-	if ($request->getParameter('page'))
-  {
-		$title .= ' – '.$request->getParameter('page');
-	}
-	$rootCategory = $this->productCategory->getRootCategory();
-	if ($rootCategory->id !== $this->productCategory->id)
-  {
-		$title .= ' – '.$rootCategory;
-	}
-	$this->getResponse()->setTitle($title.' – Enter.ru');
+//	$title = $this->productCategory['name'];
+//	if ($request->getParameter('page'))
+//    {
+//		$title .= ' – '.$request->getParameter('page');
+//	}
+//	$rootCategory = $this->productCategory->getRootCategory();
+//	if ($rootCategory->id !== $this->productCategory->id)
+//    {
+//		$title .= ' – '.$rootCategory;
+//	}
+//	$this->getResponse()->setTitle($title.' – Enter.ru');
 
     $filter = array(
       'category' => $this->productCategory,
@@ -324,7 +329,7 @@ class productCatalogActions extends myActions
 
     $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
       'view'            => 'list',
-      'with_properties' => 'expanded' == $request['view'],
+      'with_properties' => 'expanded' == $request['view'] ? true : false,
     ));
 
     // sorting
@@ -336,6 +341,23 @@ class productCatalogActions extends myActions
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+
+    // SEO ::
+    $list = array();
+    $ancestorList = $this->productCategory->getNode()->getAncestors();
+    if ($ancestorList) foreach ($ancestorList as $ancestor)
+    {
+        $list[] = (string)$ancestor;
+    }
+    $list[] = (string)$this->productCategory;
+    $title = '%s - страница %d из %d - интернет-магазин  Enter.ru - Москва';
+    $this->getResponse()->setTitle(sprintf(
+        $title,
+        implode(' - ', $list),
+        $request->getParameter('page', 1),
+        $this->productPager->getLastPage()
+    ));
+    // :: SEO
   }
  /**
   * Executes creator action
@@ -390,6 +412,47 @@ class productCatalogActions extends myActions
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
+  }
+ /**
+  * Executes product action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeLine(sfWebRequest $request)
+  {
+    $this->productCategory = $this->getRoute()->getObject();
+
+    $title = $this->productCategory['name'];
+    if ($request->getParameter('page'))
+    {
+      $title .= ' – '.$request->getParameter('page');
+    }
+    $rootCategory = $this->productCategory->getRootCategory();
+    if ($rootCategory->id !== $this->productCategory->id)
+    {
+      $title .= ' – '.$rootCategory;
+    }
+    $this->getResponse()->setTitle($title.' – Enter.ru');
+
+    $filter = array(
+      'category' => $this->productCategory,
+    );
+
+    /*$q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+      'view'            => 'list',
+      'with_properties' => 'expanded' == $request['view'],
+    ));*/
+    $q = ProductTable::getInstance()->getQueryByCategoryWithLine($this->productCategory);
+
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
+
+
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+    ));
+    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
 
 

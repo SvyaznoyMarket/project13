@@ -1,6 +1,6 @@
 <div class="goodsbox height250"<?php echo (isset($ii) && $ii > 3) ? ' style="display:none;"' : '' ?>>
   <div class="photo"><!--<i class="new" title="Новинка"></i>-->
-  	<a href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></a>
+  	<a href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" alt="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" title="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" width="160" height="160" /></a>
   	</div>
 	<?php
 		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
@@ -18,7 +18,7 @@
         <!--a href="" class="fastview">Быстрый просмотр</a-->
 
         <div class="photo"><!--<i class="new" title="Новинка"></i>-->
-        <a href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></a>
+        <a href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" alt="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" title="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" width="160" height="160" /></a>
         </div>
         <?php
           echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));

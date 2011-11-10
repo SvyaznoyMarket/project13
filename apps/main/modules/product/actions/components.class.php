@@ -25,11 +25,10 @@ class productComponents extends myComponents
     }
 
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description')))
-
     {
       $this->view = 'default';
     }
-
+    
     $item = array(
       'article'  => $this->product->article,
       'name'     => (string) $this->product,
@@ -40,11 +39,26 @@ class productComponents extends myComponents
       'product'  => $this->product,
       'url'      => url_for('productCard', $this->product, array('absolute' => true)),
     );
+    
+    if ('compact' == $this->view)
+    {
+        $item['root_name'] = (string) $this->product->Category[0]->getRootCategory();
+    }
 
     if ('default' == $this->view)
     {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
       $item['stock_url'] = url_for('productStock', $this->product);
+      $item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
+      
+        $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
+            'date' => date('Y-m-d'),
+            'geo_id' => $this->getUser()->getRegion('core_id'),
+            'product' => array(
+                array('id' => $this->product->core_id, 'quantity' => 1),
+            )
+        ));
+        $this->delivery = current($this->delivery);
     }
     if (in_array($this->view, array('expanded')))
     {
@@ -339,7 +353,7 @@ class productComponents extends myComponents
     }
 
     $this->setVar('list', $list);
-    $this->limit = 6;
+    $this->limit = 6 < count($list) ? 6 : count($list);
   }
   /**
    * Executes filter_productType component
@@ -348,49 +362,19 @@ class productComponents extends myComponents
    */
   public function executeFilter_productType()
   {
-    $list = array(
-      'first' => array(),
-      'other' => array(),
-    );
+    $list = array();
 
-    $firstProductCategory = isset($this->productTypeList[0]->ProductCategory[0]) ? $this->productTypeList[0]->ProductCategory[0]->getRootCategory() : false;
     foreach ($this->productTypeList as $productType)
     {
-      $inFirst = false;
-      if ($firstProductCategory)
-      {
-        foreach ($productType->ProductCategory as $productCategory)
-        {
-          if ($productCategory->getRootCategory()->id == $firstProductCategory->id)
-          {
-            $list['first'][] = array(
-              'name'     => (string)$productType,
-              'token'    => $productType->id,
-              'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
-              'value'    => $productType->id,
-              'selected' => isset($productType->_selected) ? $productType->_selected : false,
-            );
-            $inFirst = true;
-
-            break;
-          }
-        }
-      }
-
-      if (!$inFirst)
-      {
-        $list['other'][] = array(
-          'name'     => (string)$productType,
-          'token'    => $productType->id,
-          'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
-          'value'    => $productType->id,
-          'selected' => isset($productType->_selected) ? $productType->_selected : false,
-        );
-      }
+      $list[] = array(
+        'name'     => (string)$productType,
+        'token'    => $productType->id,
+        'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
+        'value'    => $productType->id,
+        'selected' => isset($productType->_selected) ? $productType->_selected : false,
+      );
     }
-    myDebug::dump($list, 1);
 
     $this->setVar('list', $list, true);
   }
 }
-

@@ -51,7 +51,7 @@ all:
 
     standard_helpers:
       - Cache
-      - Partial
+      - myPartial
       - myUrl
 
     login_module:           guard
