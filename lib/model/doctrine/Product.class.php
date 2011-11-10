@@ -153,7 +153,7 @@ class Product extends BaseProduct
     }
     else
     {
-      $this->view_list = 0;
+      $this->view_list = 1;
       $this->view_show = 1;
     }
 
