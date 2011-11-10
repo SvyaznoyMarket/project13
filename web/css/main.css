@@ -4,3 +4,23 @@
   font-size: 11px;
   color: #cc0000;
 }
+
+.component-container.debug {
+  display: inline-block;
+  border: solid 1px #cc0000;
+}
+.component-container.debug:hover {
+  /* box-shadow: 10px 10px 5px #888; */
+  /* margin: 5px; */
+}
+
+.component-container.debug > span.title {
+  display: none;
+  position: absolute;
+  background: #cc0000;
+  color: #000;
+}
+.component-container.debug:hover > span.title {
+  display: block;
+  z-index: 900;
+}
