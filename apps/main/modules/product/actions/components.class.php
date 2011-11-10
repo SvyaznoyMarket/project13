@@ -299,6 +299,15 @@ class productComponents extends myComponents
    * Executes list_view component
    *
    */
+  public function executeList_ajax_view()
+  {
+      $this->executeList_view();
+  }
+  
+  /**
+   * Executes list_view component
+   *
+   */
   public function executeList_view()
   {
     $list = array(

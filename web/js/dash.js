@@ -3,11 +3,21 @@ $(document).ready(function(){
 	var lbox = {}
 	if (window.Lightbox === undefined) {
 		$('.lightboxinner').hide()
+		$.getJSON('/user/shortinfo', function(data) {
+			if( data.success ) {
+				if( data.data.name ) {
+					var dtmpl={}
+					dtmpl.user = data.data.name
+					var show_user = tmpl('auth_tmpl', dtmpl)
+					$('#auth-link').after(show_user)
+				} else $('#auth-link').show()
+			}				
+		})			
 		return false
 	}
 	ltbx = new Lightbox( $('.lightboxinner'), lbox )
 
-		/* draganddrop */
+	/* draganddrop */
 	var draganddrop = new DDforLB( $('.allpageinner'), ltbx )
 	$('.boxhover[ref] .photo img').live('mousedown', function(e){
 			e.stopPropagation()
@@ -18,7 +28,7 @@ $(document).ready(function(){
 	$('.boxhover[ref] .photo img').live('mouseup', function(e){
 		draganddrop.cancel()	
 	})
-		/* ---- */
+	/* ---- */
 	$.getJSON('/user/shortinfo', function(data) {
 			if( data.success ) {
 				lbox = data.data
@@ -30,6 +40,12 @@ $(document).ready(function(){
 				if( dropbx.length ) {
 					dropbx.css('left', $('ul.lightboxmenu > li').eq(1).offset().left - $('div.lightboxinner').offset().left )
 				}
+				if( data.data.name ) {
+					var dtmpl={}
+					dtmpl.user = data.data.name
+					var show_user = tmpl('auth_tmpl', dtmpl)
+					$('#auth-link').after(show_user)
+				} else $('#auth-link').show()
 			}
 				
 	})	

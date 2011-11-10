@@ -21,6 +21,7 @@ default:
 #    - main.css
     - skin/inner.css
     - font.css
+#    - jshowoff.css
     - main.css
 
   javascripts:
@@ -33,6 +34,7 @@ default:
     - jquery.lightbox_me.js
     - prettyCheckboxes.js
     - jcookies.js
+    - jquery.jshowoff.min.js
     - typewriter.js
     #- jslib/jquery.ui.widget.js
     #- jslib/jquery.ui.mouse.js
