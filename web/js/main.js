@@ -6,14 +6,13 @@ $(document).ready(function(){
 	/* paging: all pages, infinity scroll */
 	var ableToLoad = true
 	function liveScroll( lsURL ) {
-		console.info(lsURL)
-		//$('div#lastPostsLoader').html('<img src="images/bigLoader.gif">')
+		$(".goodslist:last").after('<div id="ajaxgoods"><span>Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
 		$.get( lsURL, function(data){
 			if (data != "") {
 				ableToLoad = true
 				$(".goodsbox:last").after(data)
 			}
-			//$('div#lastPostsLoader').empty()
+			$('#ajaxgoods').remove()
 		})
 	}
 	
@@ -25,9 +24,8 @@ $(document).ready(function(){
 				var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
 console.info(lsURL, vnext)				
 				$(window).scroll(function(){
-					if ( ableToLoad && $(window).scrollTop() + 600 > $(document).height() - $(window).height() ){
+					if ( ableToLoad && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
 						ableToLoad = false
-						$(".goodslist:last").after
 						liveScroll( lsURL + vnext + '/')
 						vnext += 1
 					}
