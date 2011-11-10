@@ -1577,7 +1577,7 @@ DT.bCtg__eOrange{
 		zoom:1;
 		
 		}
-	.bInfoBlock__eBottomControls a:hover, .jshowoff-slidelinks a:hover{
+	.bInfoBlock__eBottomControls a:hover, .jshowoff-slidelinks a:hover, a.jshowoff-active{
 		color: #ffa901;
 		border: 1px solid #ffa901;
 		
