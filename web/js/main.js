@@ -1,35 +1,48 @@
 $(document).ready(function(){
+	/* Rotator */
 	if($('#rotator').length) {
 		$('#rotator').jshowoff({ controls:false })
 		$('.jshowoff-slidelinks a').wrapInner('<span/>')
 	}
-	/* paging: all pages, infinity scroll */
+	/* Infinity scroll */
 	var ableToLoad = true
-	function liveScroll( lsURL ) {
-		$(".goodslist:last").after('<div id="ajaxgoods"><span>Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
+	var compact = $("div.goodslist").length
+	function liveScroll( lsURL, pageid ) {
+		lsURL += pageid + '/' + (( compact ) ? 'compact/' : 'expanded/')
+		console.info(lsURL, pageid)
+		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
+		tmpnode.after('<div id="ajaxgoods" style="width:100%; text-align:right;"><span style="margin-bottom: 6px;">Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
 		$.get( lsURL, function(data){
-			if (data != "") {
+			if ( data != "" && !data.data ) { // JSON === error
 				ableToLoad = true
-				$(".goodsbox:last").after(data)
+				if( compact )
+					tmpnode.append(data)
+				else
+					tmpnode.after(data)
 			}
 			$('#ajaxgoods').remove()
 		})
 	}
 	
-	if( $('.allpager').length ) 
-		$('.allpager').each(function(){
-			$(this).bind('click', function(){
-				var lsURL = $(this).data('url')	
-				$('.pageslist').css('visibility','hidden')				
-				var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
-console.info(lsURL, vnext)				
-				$(window).scroll(function(){
-					if ( ableToLoad && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
-						ableToLoad = false
-						liveScroll( lsURL + vnext + '/')
-						vnext += 1
-					}
-				})
+	if( $('div.allpager').length ) 
+		$('div.allpager').each(function(){
+			var lsURL = $(this).data('url')	
+			var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
+			var vinit = vnext - 1
+			var vlast = parseInt('0' + $(this).data('lastpage') , 10)
+			function checkScroll(){
+				if ( ableToLoad && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
+					ableToLoad = false
+					if( vlast + vinit > vnext )
+						liveScroll( lsURL, ((vnext % vlast) ? (vnext % vlast) : vnext ))
+					vnext += 1
+				}
+			}
+			$(this).bind('click', function(){				
+				$('div.pageslist').css('visibility','hidden')
+				$('div.allpager').css('visibility','hidden')				
+				checkScroll()
+				$(window).scroll( checkScroll )
 			})		
 		})
 	
