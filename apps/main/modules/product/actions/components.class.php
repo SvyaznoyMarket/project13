@@ -28,7 +28,7 @@ class productComponents extends myComponents
     {
       $this->view = 'default';
     }
-    
+
     $item = array(
       'article'  => $this->product->article,
       'name'     => (string) $this->product,
@@ -39,7 +39,7 @@ class productComponents extends myComponents
       'product'  => $this->product,
       'url'      => url_for('productCard', $this->product, array('absolute' => true)),
     );
-    
+
     if ('compact' == $this->view)
     {
         $item['root_name'] = (string) $this->product->Category[0]->getRootCategory();
@@ -50,7 +50,7 @@ class productComponents extends myComponents
       $item['photo'] = $this->product->getMainPhotoUrl(1);
       $item['stock_url'] = url_for('productStock', $this->product);
       $item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
-      
+
         $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
             'date' => date('Y-m-d'),
             'geo_id' => $this->getUser()->getRegion('core_id'),
@@ -89,7 +89,16 @@ class productComponents extends myComponents
    */
   public function executePager()
   {
-    $this->setVar('list', $this->pager->getResults(), true);
+    $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
+    if (!in_array($this->view, array('expanded', 'compact')))
+    {
+      $this->view = 'compact';
+    }
+
+    $this->setVar('list', $this->pager->getResults(null, array(
+      'with_properties' => 'expanded' == $this->view ? true : false,
+      'view'            => 'list',
+    )), true);
   }
 
   /**

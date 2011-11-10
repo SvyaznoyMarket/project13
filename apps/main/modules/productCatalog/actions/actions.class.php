@@ -245,17 +245,17 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-	$title = $this->productCategory['name'];
-	if ($request->getParameter('page'))
+    $title = $this->productCategory['name'];
+    if ($request->getParameter('page'))
     {
-		$title .= ' – '.$request->getParameter('page');
-	}
-	$rootCategory = $this->productCategory->getRootCategory();
-	if ($rootCategory->id !== $this->productCategory->id)
+      $title .= ' – '.$request->getParameter('page');
+    }
+    $rootCategory = $this->productCategory->getRootCategory();
+    if ($rootCategory->id !== $this->productCategory->id)
     {
-		$title .= ' – '.$rootCategory;
-	}
-	$this->getResponse()->setTitle($title.' – Enter.ru');
+      $title .= ' – '.$rootCategory;
+    }
+    $this->getResponse()->setTitle($title.' – Enter.ru');
 
     $filter = array(
       'category' => $this->productCategory,
@@ -286,10 +286,10 @@ class productCatalogActions extends myActions
     $list[] = (string)$this->productCategory;
     $title = '%s - страница %d из %d - интернет-магазин  Enter.ru - Москва';
     $this->getResponse()->setTitle(sprintf(
-        $title,
-        implode(' - ', $list),
-        $request->getParameter('page', 1),
-        $this->productPager->getLastPage()
+      $title,
+      implode(' - ', $list),
+      $request->getParameter('page', 1),
+      $this->productPager->getLastPage()
     ));
     // :: SEO
   }
