@@ -127,6 +127,14 @@ class ProductTable extends myDoctrineTable
       $productPropertyRelationArray = array();
       foreach ($record['PropertyRelation'] as $propertyRelation)
       {
+        // temporary fix
+        $realValue = $propertyRelation->real_value;
+        if (false
+          || ('' === $realValue)
+          || (null === $realValue)
+          || (0 == $realValue)
+        ) continue;
+
         if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
         {
           $productPropertyRelationArray[$propertyRelation['property_id']] = array();
@@ -206,7 +214,7 @@ class ProductTable extends myDoctrineTable
   {
     $q = $this->createBaseQuery($params);
 
-    $this->setQueryForFilter($q, $filter);
+    $this->setQueryForFilter($q, $filter, $params);
 
     $this->setQueryParameters($q, $params);
 
@@ -507,5 +515,25 @@ class ProductTable extends myDoctrineTable
     $this->setQueryParameters($q, $params);
 
     return $q->fetchOne();
+  }
+
+  public function getQueryByCategoryWithLine(ProductCategory $category, array $params = array())
+  {
+    $params = myToolkit::arrayDeepMerge(array(
+      'select'   => 'product.*',
+    ), $params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->innerJoin('product.Line line')
+      ->innerJoin('line.Product line_product')
+      ->innerJoin('line_product.Category category WITH category.id = ?', $category->id)
+      ->where('product.is_lines_main = ?', 1)
+      ;
+
+    $this->setQueryParameters($q, $params);
+
+    return $q;
+
   }
 }

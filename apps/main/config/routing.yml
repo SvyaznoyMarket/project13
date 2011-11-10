@@ -156,7 +156,7 @@ shop:
 #
 # карточка магазина
 shop_show:
-  url:   /shops/:shop/
+  url:   /shops/:shop
   param: { module: shop, action: show }
   class:   myDoctrineRoute
   options: { model: Shop, type: object, method: getForRoute }

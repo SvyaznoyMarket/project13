@@ -18,7 +18,7 @@
       <dd><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><img src="/images/banners/f1_footer.jpg" alt="F1 услуги" width="209" height="46"></img></a></dd>
     </dl>
     <dl class="next">
-      <dt><strong>Контакт cENTER</strong></dt>
+      <dt><strong>Круглосуточный контакт cENTER</strong></dt>
       <dd><strong class="font16">8 (800) 700 00 09</strong></dd>
       <dd>Звонок бесплатный.<br />Радость в подарок :)</dd>
     </dl>

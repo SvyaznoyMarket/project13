@@ -12,10 +12,11 @@ $(document).ready(function(){
 	$('.boxhover[ref] .photo img').live('mousedown', function(e){
 			e.stopPropagation()
 			e.preventDefault()
-			draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
+			if(e.which == 1)
+				draganddrop.prepare( e.pageX, e.pageY, parseItemNode(currentItem) ) // if delta then d&d
 	})	
 	$('.boxhover[ref] .photo img').live('mouseup', function(e){
-		draganddrop.cancel()
+		draganddrop.cancel()	
 	})
 		/* ---- */
 	$.getJSON('/user/shortinfo', function(data) {

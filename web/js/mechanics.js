@@ -57,11 +57,14 @@ function Lightbox( jn, data ){
 		}		
 		if( float.length == 2 ) 
 			out += '.' + float[1]
-		return out// + '&nbsp;'
+		return out
 	}
 	
 	
 	this.getBasket = function( item ) {
+		var _gafrom = ( $('.goodsbarbig').length ) ? 'product' : 'catalog'
+		_gaq.push(['_trackEvent', 'Add2Basket', _gafrom, item.title ])
+		
 		flybox.clear()	
 		item.price = item.price.replace(/\s+/,'')		
 		init.basket = item
@@ -362,12 +365,17 @@ function DDforLB( outer , ltbx ) {
 	var shtorkaoffset = 0
 	
 	this.cancel = function() {
-		$(document).unbind('mousemove')
+		$(document).unbind('mousemove.dragitem')
 	}
+	
+	$(document).bind('mouseup', function(e) {
+	if(e.target.id == 'dragimg')
+		self.cancel()
+	})
 	
 	this.prepare = function( pageX, pageY, item ) {
 		itemdata = item
-		$(document).bind('mousemove', function(e) {
+		$(document).bind('mousemove.dragitem', function(e) {
 			e.preventDefault()
 			if(! isactive) {
 				if( Math.abs(pageX - e.pageX) > margin || Math.abs(pageY - e.pageY) > margin ) {
@@ -398,7 +406,7 @@ function DDforLB( outer , ltbx ) {
 		lightbox.clear()
 		shtorka.show()
 		shtorkaoffset = shtorka.offset().top
-		icon.html( $('<img>').css({'width':60, 'height':60}).attr({'width':60, 'height':60, 'alt':'', 'src': itemdata.img }) )
+		icon.html( $('<img>').css({'width':60, 'height':60}).attr({'id':'dragimg','width':60, 'height':60, 'alt':'', 'src': itemdata.img }) )
 		icon.css({'left':pageX - wdiv2, 'top':pageY - shtorkaoffset - wdiv2 })
 
 		divicon.show()
@@ -406,10 +414,10 @@ function DDforLB( outer , ltbx ) {
 		for(var i=0; i < containers.length; i++) {
 			abziss[i] = $(containers[i]).offset().left
 		}	
-		$(document).bind('mouseup', function() {
+		$(document).bind('mouseup.dragitem', function() {
 			if( fbox = lightbox.gravitation( ) ) {
-				$(document).unbind('mousemove')
-				$(document).unbind('mouseup')
+				//$(document).unbind('mousemove')
+				$(document).unbind('.dragitem')
 				icon.animate( {
 //						left: abziss[ fbox - 1 ] + 5,
 						left: abziss[ 0 ] + 5,
@@ -426,8 +434,8 @@ function DDforLB( outer , ltbx ) {
 		shtorka.fadeOut()
 		divicon.hide()
 		lightbox.hideContainers()
-		$(document).unbind('mousemove')
-		$(document).unbind('mouseup')
+		//$(document).unbind('mousemove')
+		$(document).unbind('.dragitem')
 	}
 	
 	this.finalize = function( actioncode ) {

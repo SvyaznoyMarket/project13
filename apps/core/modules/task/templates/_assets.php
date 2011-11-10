@@ -3,16 +3,24 @@
 <?php use_stylesheet('/sfDoctrinePlugin/css/default.css', 'first') ?>
 
 <style type="text/css">
-.green {
+.mark {
+  display: inline-block;
+  padding: 4px 5px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  min-width: 12px;
+}
+.mark.green {
   background: #99ff99;
-  padding: 2px 5px;
 }
-.red {
+.mark.red {
   background: #ff9999;
-  padding: 2px 5px;
 }
-.yellow {
+.mark.yellow {
   background: #ffdd61;
-  padding: 2px 5px;
+}
+.mark.gray {
+  background: #ccc;
 }
 </style>

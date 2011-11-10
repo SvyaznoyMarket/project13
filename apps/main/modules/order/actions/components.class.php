@@ -25,6 +25,7 @@ class orderComponents extends myComponents
     $item = array(
       'name'                => (string)$this->order,
       'token'               => $this->order->token,
+      'number'              => $this->order->number,
       'sum'                 => (int)$this->order->sum,
       'created_at'          => $this->order->created_at,
       'payment_method_name' => $this->order->PaymentMethod ? $this->order->PaymentMethod->name : null,
@@ -58,13 +59,13 @@ class orderComponents extends myComponents
   {
     $list = $listProcess = $listReady = $listCancelled = array();
     foreach ($this->getUser()->getGuardUser()->getOrderList() as $order)
-    {    
+    {
       if ($order->status_id==Order::STATUS_READY)  $listReady[] = $order;
       elseif ($order->status_id==Order::STATUS_CANCELLED)  $listCancelled[] = $order;
       else $listProcess[] = $order;
     }
     $list = array_merge($listProcess,$listReady,$listCancelled);
-    
+
     $statusList = OrderStatusTable::getInstance()->findAll()->getData();
     $this->setVar('list', $list, true);
     $this->setVar('statusList', $statusList, true);

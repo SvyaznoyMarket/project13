@@ -26,11 +26,13 @@ ProductFilter:
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
-    type:              { type: enum, length: 10, values: [choice, range], notnull: true }
+    type:              { type: enum, length: 10, values: [ choice, range, checkbox ], notnull: true }
     group_id:          { type: integer(20), notnull: true }
     property_id:       { type: integer(20), notnull: true }
     is_multiple:       { type: boolean, notnull: true, default: false, comment: 'Фильтр имеет несколько значений?' }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
+    value_min:         { type: integer(20), notnull: false, default: null }
+    value_max:         { type: integer(20), notnull: false, default: null }
   relations:
     Group:             { class: ProductFilterGroup, foreignAlias: Filter, local: group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Property:          { class: ProductProperty, foreignAlias: ProductFilter, local: property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
@@ -55,10 +57,10 @@ ProductCategory:
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     filter_group_id:   { type: integer(20), notnull: false, default: null }
-    product_id:        { type: integer(20), notnull: false, default: null, comment: 'Товар, картинка которого используется для отображения в списке категорий' }
     position:          { type: integer(4), notnull: false, default: 0 }
     photo:             { type: string(255), notnull: false, default: null }
     is_active:         { type: boolean, notnull: true, default: false, comment: 'Действующая категория?' }
+    had_line:          { type: boolean, notnull: true, default: false, comment: 'Есть серии для отображения' }
   relations:
     FilterGroup:       { class: ProductFilterGroup, foreignAlias: Category, local: filter_group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ProductType:       { class: ProductType, foreignAlias: ProductCategory, refClass: ProductCategoryTypeRelation, local: product_category_id, foreign: product_type_id, type: many, foreignType: many }
@@ -219,6 +221,7 @@ Product:
     view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар по прямой ссылке?' }
     view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
     is_instock:        { type: boolean, notnull: true, default: false }
+    is_lines_main:     { type: boolean, notnull: true, default: false, comment: 'Главный товар в линии?' }
     description:       { type: text, notnull: false, default: null, comment: 'Описание товара' }
     main_photo:        { type: string(255), notnull: false, default: null }
     rating:            { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
@@ -364,7 +367,7 @@ ProductPriceList:
     comment: 'Прайс-листы'
   actAs:
     #Timestampable: ~
-    Corable: { push: disable }
+    Corable:        { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
@@ -376,7 +379,7 @@ ProductPrice:
     comment: 'Цены товаров по прайс-листам'
   actAs:
     #Timestampable: ~
-    Corable: { push: disable }
+    Corable:        { push: disable }
   columns:
     id:                     { type: integer(20), autoincrement: true, primary: true }
     product_price_list_id:  { type: integer(20), notnull: true }

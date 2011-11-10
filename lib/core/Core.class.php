@@ -91,7 +91,8 @@ class Core
 
     if ($response = $this->query('order.create', array(), $data))
     {
-      $order->token = $response['number']; // TODO: check
+      $order->number = $response['number']; // TODO: check
+      $order->token = uniqid().'-'.$response['number'];
       $result = $response['id'];
     }
     //myDebug::dump($order->toArray(false), 1);

@@ -25,11 +25,10 @@ class productComponents extends myComponents
     }
 
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description')))
-
     {
       $this->view = 'default';
     }
-
+    
     $item = array(
       'article'  => $this->product->article,
       'name'     => (string) $this->product,
@@ -40,11 +39,26 @@ class productComponents extends myComponents
       'product'  => $this->product,
       'url'      => url_for('productCard', $this->product, array('absolute' => true)),
     );
+    
+    if ('compact' == $this->view)
+    {
+        $item['root_name'] = (string) $this->product->Category[0]->getRootCategory();
+    }
 
     if ('default' == $this->view)
     {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
       $item['stock_url'] = url_for('productStock', $this->product);
+      $item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
+      
+        $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
+            'date' => date('Y-m-d'),
+            'geo_id' => $this->getUser()->getRegion('core_id'),
+            'product' => array(
+                array('id' => $this->product->core_id, 'quantity' => 1),
+            )
+        ));
+        $this->delivery = current($this->delivery);
     }
     if (in_array($this->view, array('expanded')))
     {
@@ -180,7 +194,7 @@ class productComponents extends myComponents
       foreach ($parameterGroup->getParameter() as $parameter)
       {
         $value = $parameter->getValue();
-        if (empty($value)) continue; // TODO: remove
+
         if (('inlist' == $this->view) && !$parameter->isViewList()) continue;
 
         $parameters[] = array(
@@ -289,12 +303,12 @@ class productComponents extends myComponents
   {
     $list = array(
       array(
-        'name' => 'compact',
+        'name'  => 'compact',
         'title' => 'компактный',
         'class' => 'tableview',
       ),
       array(
-        'name' => 'expanded',
+        'name'  => 'expanded',
         'title' => 'расширенный',
         'class' => 'listview',
       ),
@@ -339,7 +353,7 @@ class productComponents extends myComponents
     }
 
     $this->setVar('list', $list);
-    $this->limit = 6;
+    $this->limit = 6 < count($list) ? 6 : count($list);
   }
   /**
    * Executes filter_productType component
@@ -364,4 +378,3 @@ class productComponents extends myComponents
     $this->setVar('list', $list, true);
   }
 }
-

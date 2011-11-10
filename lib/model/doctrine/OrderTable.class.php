@@ -22,7 +22,7 @@ class OrderTable extends myDoctrineTable
   {
     return array(
       'id'                => 'core_id',
-      'number'            => 'token',
+      'number'            => 'number',
       'is_legal'          => 'is_legal',
       'last_name'         => 'recipient_last_name',
       'first_name'        => 'recipient_first_name',
@@ -41,6 +41,7 @@ class OrderTable extends myDoctrineTable
       'ip'                => 'ip',
       'is_paid_delivery'  => 'is_paid_delivery',
       'store_id'          => 'store_id',
+      'added'             => 'core_created_at',
 
       'user_id'              => array('rel' => 'User'),
       'status_id'            => array('rel' => 'Status'),

@@ -272,6 +272,7 @@ class productCategoryComponents extends myComponents
 
     $item = array(
       'name'              => (string)$this->productCategory,
+      'root_name'         => (string)$this->productCategory->getRootCategory(),
       'url'               => url_for('productCatalog_category', $this->productCategory),
 	    'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
       'product_quantity'  => $this->productCategory->countProduct(),

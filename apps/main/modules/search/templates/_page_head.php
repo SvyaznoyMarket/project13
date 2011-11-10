@@ -12,13 +12,11 @@
     <h1><?php include_slot('title') ?></h1>
   <?php endif ?>
 
-  <noindex>  
+  <noindex>
       <div class="searchbox">
-        <?php include_component('search', 'form', array('searchString', $searchString)) ?>
+        <?php include_component('search', 'form') ?>
       </div>
   </noindex>
-
-  <?php include_partial('search/product_count', $sf_data) ?>
 
   <div class="line"></div>
 
