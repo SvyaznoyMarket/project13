@@ -132,7 +132,8 @@ class ProductTable extends myDoctrineTable
         if (false
           || ('' === $realValue)
           || (null === $realValue)
-          || (0 == $realValue)
+          || (0 === $realValue)
+          || ('0' === $realValue)
         ) continue;
 
         if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
