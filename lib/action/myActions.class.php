@@ -2,6 +2,15 @@
 
 class myActions extends sfActions
 {
+  public function getPartial($templateName, $vars = null)
+  {
+    $this->getContext()->getConfiguration()->loadHelpers('myPartial');
+
+    $vars = null !== $vars ? $vars : $this->varHolder->getAll();
+
+    return get_partial($templateName, $vars);
+  }
+
   public function preExecute()
   {
     parent::preExecute();

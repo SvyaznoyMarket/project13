@@ -102,6 +102,11 @@ class Product extends BaseProduct
           $value = trim($relationData['value']);
           $value = $optionId ? $optionId : (!empty($value) ? $value : null);
 
+          if (('integer' == $property->type) || 'float' == $property->type)
+          {
+            $value = str_replace(',', '.', $value);
+          }
+
           $collectionData[$property->id.'-'.$optionId] = array(
             'property_id' => $property->id,
             'real_value'  => $value,

@@ -34,21 +34,21 @@ class productCardActions extends myActions
     // SEO ::
     $title = '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru';
     $this->getResponse()->setTitle(sprintf(
-        $title, 
-        $this->product['name'], 
+        $title,
+        $this->product['name'],
         $this->product->getFormattedPrice(),
         $this->product['name']
     ));
     $descr = 'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону 8 (800) 700-00-09.';
     $this->getResponse()->addMeta('description', sprintf(
         $descr,
-        $this->product['name'], 
+        $this->product['name'],
         $this->product->getFormattedPrice(),
         $this->product['name']
     ));
     $this->getResponse()->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $this->product['name']));
     // :: SEO
-    // 
+    //
     // история просмотра товаров
     $this->getUser()->getProductHistory()->addProduct($this->product);
   }
@@ -68,7 +68,22 @@ class productCardActions extends myActions
   */
   public function executeShow(sfWebRequest $request)
   {
-    $this->product = ProductTable::getInstance()->find($request['product']);
+    $table = ProductTable::getInstance();
+
+    $field = 'id';
+    $id = $request['product'];
+    foreach (array('id', 'token', 'core_id', 'barcode', 'article') as $v)
+    {
+      if (0 === strpos($request['product'], $v))
+      {
+        $field = $v;
+        $id = preg_replace('/^'.$v.'/', '', $id);
+
+        break;
+      }
+    }
+
+    $this->product = ProductTable::getInstance()->findOneBy($field, $id);
 
     $this->redirect(array('sf_route' => 'productCard', 'sf_subject' => $this->product), 301);
   }
