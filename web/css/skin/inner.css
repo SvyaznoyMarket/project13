@@ -313,9 +313,40 @@ LABEL.prettyCheckbox {lline-height:19px}
 LABEL.prettyCheckbox SPAN.holderWrap {display:block; float:left; position:relative; margin:1px 5px 0 -18px; overflow:hidden}
 LABEL.prettyCheckbox SPAN.holder {display:block; position:absolute; top:0; left:0}
 LABEL.checked {color:#ffa901}
+.bSpec{
+	margin: 15px 0;
+	border: 1px solid #eaeaea;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	
+	-moz-box-shadow:0 0 9px #eaeaea;
+	-webkit-box-shadow:0 0 9px #eaeaea;
+	box-shadow:0 0 9px #eaeaea;
+	//behavior: url(ie-css3.htc)
+	
+	}
+.bSpec h2 {
+    color: #FFA901;
+    font: bold 14px Tahoma,sans-serif;
+    margin: 10px 0 10px 10px;
+    padding: 0;
+}
 
+
+.bSpec .pb10{ margin: 10px 0 5px 10px; }
 .bigfilter {margin-bottom:15px}
-.bigfilter DT {padding:7px 0 8px 0; border-top:1px solid #e6e6e6; font-weight:bold; background:url(/css/skin/img/icons.png) no-repeat 100% -46px; cursor:pointer}
+.bigfilter DT {
+    background: url("img/icons.png") no-repeat scroll 100% -46px transparent;
+    border-top: 1px solid #E6E6E6;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 7px 0 8px;
+}
+.bSpec DT {
+    font-weight: normal;
+    padding-left: 10px;
+}
 .bigfilter DT.first {border:0}
 .bigfilter DT.current {background-position:100% 13px}
 .bigfilter DT B {display:inline-block; width:14px; height:11px; background:url(/css/skin/img/bg.png) no-repeat -38px 0; vertical-align:middle; margin-left:5px}
@@ -329,7 +360,9 @@ LABEL.checked {color:#ffa901}
 .bigfilter.width450 DT {float:left; width:100%}
 .bigfilter.width450 DD {float:left; width:100%}
 .bigfilter.width450 UL {float:left; width:50%}
-
+.bSpec LI {
+    padding: 5px 5px 5px 35px;
+}
 .prompting {display:none; position:absolute; left:-39px; top:13px; //top:29px; z-index:10; width:350px; padding:10px 15px 15px 15px; font-weight:normal; cursor:auto; background-color:#fff; border:2px solid #308fcf;
 border-radius:5px;
 -moz-border-radius:5px;
