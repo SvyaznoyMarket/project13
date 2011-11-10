@@ -1,5 +1,5 @@
 <!-- Footer -->
-<div class="footer">
+<div class="footer<?php if (isset($class)) echo " ".$class ?>">
   <div class="bottommenu">
     <dl>
       <dt><a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>"><strong>О компании</strong></a></dt>
