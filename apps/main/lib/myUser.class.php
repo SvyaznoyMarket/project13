@@ -80,6 +80,7 @@ class myUser extends myGuardSecurityUser
       'name'      => $region->name,
       'full_name' => $region->name.', '.$parent_region->name,
       'type'      => $region->type,
+      'core_id'   => $region->core_id,
     );
 
     return !empty($key) ? $result[$key] : $result;

@@ -57,10 +57,10 @@ EOF;
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //5) Обновить у product поля is_instock, view_list, view_show
-//    $this->logSection('INFO', 'Обновляю у product поля is_instock, view_list, view_show');
-//    $count = $connection->exec("UPDATE `product` `p` INNER JOIN `stock_product_relation` `sp` ON `sp`.`product_id` = `p`.`id` AND `sp`.`quantity` > 0 AND `sp`.`stock_id` = 1 INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> ''");
-//    $count += $connection->exec("UPDATE `product` `p` INNER JOIN `product_category_product_relation` `pcp` ON `pcp`.`product_id` = `p`.`id` INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` INNER JOIN `product_photo` `ph` ON `ph`.`product_id` = `p`.`id` SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> '' AND `pcp`.`product_category_id` IN (SELECT `pc`.`id` FROM `product_category` `pc` INNER JOIN `product_category` `mebel` ON `mebel`.`id` = 2 WHERE `pc`.`lft` > `mebel`.`lft` AND `pc`.`rgt` < `mebel`.`rgt` AND `pc`.`root_id` = `mebel`.`root_id`)");
-//    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+    $this->logSection('INFO', 'Обновляю у product поля is_instock, view_list, view_show');
+    $count = $connection->exec("UPDATE `product` `p` INNER JOIN `stock_product_relation` `sp` ON `sp`.`product_id` = `p`.`id` AND `sp`.`quantity` > 0 AND `sp`.`stock_id` = 1 INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` AND `pp`.`price` > 0 SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> ''");
+    $count += $connection->exec("UPDATE `product` `p` INNER JOIN `product_category_product_relation` `pcp` ON `pcp`.`product_id` = `p`.`id` INNER JOIN `product_price` `pp` ON `pp`.`product_id` = `p`.`id` AND `pp`.`price` > 0 SET `p`.`is_instock` = 1, `p`.`view_list` = 1, `p`.`view_show` = 1 WHERE `p`.`name` <> '' AND `pcp`.`product_category_id` IN (SELECT `pc`.`id` FROM `product_category` `pc` INNER JOIN `product_category` `mebel` ON `mebel`.`id` = 2 WHERE `pc`.`lft` > `mebel`.`lft` AND `pc`.`rgt` < `mebel`.`rgt` AND `pc`.`root_id` = `mebel`.`root_id`)");
+    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //6) Сделать update значений характеристик: поменять true и false на "да" и "нет"
 //    $this->logSection('INFO', 'Делаю update значений характеристик: поменять true и false на "да" и "нет"');
@@ -104,9 +104,9 @@ EOF;
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //7) Установить для самовывоза token=self
-    $this->logSection('INFO', 'Установить для самовывоза token=self');
-    $count = $connection->exec("UPDATE `delivery_type` SET `token` = 'self' WHERE `name` = 'Заберу на месте'");
-    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+    //$this->logSection('INFO', 'Установить для самовывоза token=self');
+    //$count = $connection->exec("UPDATE `delivery_type` SET `token` = 'self' WHERE `name` = 'Самостоятельно заберу в магазине'");
+    //$this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //8) устанавливаю position для группы тэгов
     $this->logSection('INFO', 'Устанавливаю position для группы тэгов');
@@ -114,14 +114,14 @@ EOF;
     $this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //9) устанавливаю картинку-заглушку для категорий без картинок
-    $this->logSection('INFO', 'Устанавливаю картинку-заглушку для категорий без картинок');
-    $count = $connection->exec("UPDATE `product_category` `pc` SET `pc`.`photo` = 'default.jpg' WHERE `pc`.`photo` IS NULL");
-    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+    //$this->logSection('INFO', 'Устанавливаю картинку-заглушку для категорий без картинок');
+    //$count = $connection->exec("UPDATE `product_category` `pc` SET `pc`.`photo` = 'default.jpg' WHERE `pc`.`photo` IS NULL");
+    //$this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //10) устанавливаю картинку-заглушку для товаров без картинок
-    $this->logSection('INFO', 'Устанавливаю картинку-заглушку для категорий без картинок');
-    $count = $connection->exec("UPDATE `product` `p` SET `p`.`main_photo` = 'default.jpg' WHERE `p`.`main_photo` IS NULL");
-    $this->logSection('INFO', 'Обновлено: '.$count.' записей');
+    //$this->logSection('INFO', 'Устанавливаю картинку-заглушку для категорий без картинок');
+    //$count = $connection->exec("UPDATE `product` `p` SET `p`.`main_photo` = 'default.jpg' WHERE `p`.`main_photo` IS NULL");
+    //$this->logSection('INFO', 'Обновлено: '.$count.' записей');
 
     //11) Устанавливаю всем полям типа select тип select
 //    $this->logSection('INFO', 'Устанавливаю всем полям типа select тип select');

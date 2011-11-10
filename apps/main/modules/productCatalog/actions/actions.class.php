@@ -207,16 +207,21 @@ class productCatalogActions extends myActions
 
     $this->productCategory = $this->getRoute()->getObject();
 
-    $title = $this->productCategory['name'];
-    if ($request->getParameter('page')) {
-      $title .= ' – '.$request->getParameter('page');
-    }
-    $rootCategory = $this->productCategory->getRootCategory();
-    if ($rootCategory->id !== $this->productCategory->id)
+//    $title = $this->productCategory['name'];
+//    if ($request->getParameter('page')) {
+//      $title .= ' – '.$request->getParameter('page');
+//    }
+//    $rootCategory = $this->productCategory->getRootCategory();
+//    if ($rootCategory->id !== $this->productCategory->id)
+//    {
+//      $title .= ' – '.$rootCategory;
+//    }
+//    $this->getResponse()->setTitle($title.' – Enter.ru');
+
+    if ($this->productCategory->had_line) //если в категории должны отображться линии
     {
-      $title .= ' – '.$rootCategory;
+      $this->forward($this->getModuleName(), 'line');
     }
-    $this->getResponse()->setTitle($title.' – Enter.ru');
 
     if (false
       || !$this->productCategory->getNode()->hasChildren()                  //нет дочерних категорий
@@ -240,18 +245,18 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-	$title = $this->productCategory['name'];
-	if ($request->getParameter('page'))
-  {
-		$title .= ' – '.$request->getParameter('page');
-	}
-	$rootCategory = $this->productCategory->getRootCategory();
-	if ($rootCategory->id !== $this->productCategory->id)
-  {
-		$title .= ' – '.$rootCategory;
-	}
-	$this->getResponse()->setTitle($title.' – Enter.ru');
-
+//	$title = $this->productCategory['name'];
+//	if ($request->getParameter('page'))
+//    {
+//		$title .= ' – '.$request->getParameter('page');
+//	}
+//	$rootCategory = $this->productCategory->getRootCategory();
+//	if ($rootCategory->id !== $this->productCategory->id)
+//    {
+//		$title .= ' – '.$rootCategory;
+//	}
+//	$this->getResponse()->setTitle($title.' – Enter.ru');
+    
     $filter = array(
       'category' => $this->productCategory,
     );
@@ -270,6 +275,23 @@ class productCatalogActions extends myActions
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+    
+    // SEO ::
+    $list = array();
+    $ancestorList = $this->productCategory->getNode()->getAncestors();
+    if ($ancestorList) foreach ($ancestorList as $ancestor)
+    {
+        $list[] = (string)$ancestor;
+    }
+    $list[] = (string)$this->productCategory;
+    $title = '%s - страница %d из %d - интернет-магазин  Enter.ru - Москва';
+    $this->getResponse()->setTitle(sprintf(
+        $title, 
+        implode(' - ', $list),
+        $request->getParameter('page', 1),
+        $this->productPager->getLastPage()
+    ));
+    // :: SEO
   }
  /**
   * Executes creator action
@@ -324,6 +346,47 @@ class productCatalogActions extends myActions
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
+  }
+ /**
+  * Executes product action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeLine(sfWebRequest $request)
+  {
+    $this->productCategory = $this->getRoute()->getObject();
+
+    $title = $this->productCategory['name'];
+    if ($request->getParameter('page'))
+    {
+      $title .= ' – '.$request->getParameter('page');
+    }
+    $rootCategory = $this->productCategory->getRootCategory();
+    if ($rootCategory->id !== $this->productCategory->id)
+    {
+      $title .= ' – '.$rootCategory;
+    }
+    $this->getResponse()->setTitle($title.' – Enter.ru');
+
+    $filter = array(
+      'category' => $this->productCategory,
+    );
+
+    /*$q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+      'view'            => 'list',
+      'with_properties' => 'expanded' == $request['view'],
+    ));*/
+    $q = ProductTable::getInstance()->getQueryByCategoryWithLine($this->productCategory);
+
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
+
+
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+    ));
+    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
 
 
