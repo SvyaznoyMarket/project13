@@ -129,7 +129,7 @@ class productCatalogActions extends myActions
     if (count($filterList)>0) $title .= ' - ' . implode(', ', $filterList);
     $mainCat = $this->productCategory;
     if ($mainCat) {
-      $rootCat = $mainCat->getRootRow();
+      $rootCat = $mainCat->getRootCategory();
       if ($rootCat->id !== $mainCat->id) {
         $title .= ' – '.$rootCat;
       }
@@ -256,7 +256,7 @@ class productCatalogActions extends myActions
 //		$title .= ' – '.$rootCategory;
 //	}
 //	$this->getResponse()->setTitle($title.' – Enter.ru');
-    
+
     $filter = array(
       'category' => $this->productCategory,
     );
@@ -275,7 +275,7 @@ class productCatalogActions extends myActions
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
-    
+
     // SEO ::
     $list = array();
     $ancestorList = $this->productCategory->getNode()->getAncestors();
@@ -286,7 +286,7 @@ class productCatalogActions extends myActions
     $list[] = (string)$this->productCategory;
     $title = '%s - страница %d из %d - интернет-магазин  Enter.ru - Москва';
     $this->getResponse()->setTitle(sprintf(
-        $title, 
+        $title,
         implode(' - ', $list),
         $request->getParameter('page', 1),
         $this->productPager->getLastPage()
