@@ -35,5 +35,30 @@ class serviceComponents extends myComponents
       'price'        => $this->service->Price->getFirst()->price,
     ), true);
   }
+  
+  public function executeRoot_page()
+  {        
+  }
+  public function executeLeft_menu()
+  {        
+  }  
+  
+  public function executeCurrent_category_tree()
+  {  
+  }   
+  
+  
+  public function executeNavigation()
+  {  
+    $list = array();
+    #echo get_class($this->serviceCategory);
+    $list[] = array(
+      'name' => 'F1 Сервис',
+      'url'  => url_for('service_list'),
+    );  
+
+
+    $this->setVar('list', $list);      
+  }
 }
 

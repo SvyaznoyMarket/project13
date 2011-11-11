@@ -118,7 +118,7 @@ OrderServiceRelation:
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара в корзине' }
     quantity:          { type: integer(4), notnull: true, comment: 'Количество товара в корзине' }
   relations:
-    Order:             { class: Order, foreignAlias: ProductRelation, local: order_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Order:             { class: Order, foreignAlias: ServiceRelation, local: order_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: OrderRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Service:           { class: Service, foreignAlias: OrderRelation, local: service_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 

@@ -16,7 +16,23 @@ class UnitellerPaymentProvider
   }
 
   public function getForm(Order $order)
-  {
+  { 
+    foreach($order->getProductRelation() as $product){
+        $productInfo[$product->product_id]['quantity'] = $product->quantity;
+    }
+    foreach($order->getProduct() as $product){
+        $productInfo[$product->id]['name'] = $product->name;
+        $productInfo[$product->id]['price'] = $product->price;
+    }
+    foreach($productInfo as $product){
+        $str = $product['name'] . ' (' . $product['quantity'] . 'шт.)';
+        $orderInfo[$str] = $product['price'];
+    }
+    #$orderInfo["'" . $order->getDeliveryType() . "'"] = ''; //цена доставки. пока её нету
+    if ($order->getDeliveredAt()) $orderInfo["Дата доставки"] = $order->getDeliveredAt();
+    #print_r($orderInfo);
+    
+    $jsonOrderInfo = json_encode($orderInfo);
     sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
 
     $params = array(
@@ -39,7 +55,8 @@ class UnitellerPaymentProvider
       'Signature'   => $sig,
       'URL_RETURN'  => url_for($this->getConfig('return_url'), true),
     ), array(
-      'url' => $this->getConfig('pay_url')
+      'url' => $this->getConfig('pay_url'),
+      'Comment' => $jsonOrderInfo,      
     ));
 
     return $form;

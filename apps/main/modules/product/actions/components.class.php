@@ -24,7 +24,7 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line')))
     {
       $this->view = 'default';
     }
@@ -70,6 +70,9 @@ class productComponents extends myComponents
     }
 
     $this->setVar('item', $item, true);
+
+    $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product->id);
+    $this->setVar('selectedServices', $selectedServices, true);
   }
 
   /**
@@ -133,8 +136,8 @@ class productComponents extends myComponents
    */
   public function executeList()
   {
-    $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
-    if (!in_array($this->view, array('expanded', 'compact')))
+    $this->view = (isset($this->view) && !empty($this->view)) ? $this->view : $this->getRequestParameter('view');
+    if (!in_array($this->view, array('expanded', 'compact', 'line', )))
     {
       $this->view = 'compact';
     }
@@ -303,7 +306,7 @@ class productComponents extends myComponents
   {
       $this->executeList_view();
   }
-  
+
   /**
    * Executes list_view component
    *
@@ -385,5 +388,9 @@ class productComponents extends myComponents
     }
 
     $this->setVar('list', $list, true);
+  }
+
+  public function executeF1_lightbox(){
+
   }
 }

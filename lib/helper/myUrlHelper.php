@@ -1,7 +1,12 @@
 <?php
 
 function replace_url_for($name, $value, $route_name = null, $params = array())
-{
+{    
+  $bannedParamsList = array(
+      'view' => 'compact',
+      'page' => '1',     
+  );
+  
   $context = sfContext::getInstance();
 
   $controller = $context->getController();
@@ -14,9 +19,17 @@ function replace_url_for($name, $value, $route_name = null, $params = array())
   }
 
   $parameters = $controller->convertUrlStringToParameters($routing->getCurrentInternalUri());
-  $parameters[1][$name] = $value;
 
-  return urldecode($routing->generate($route_name, array_merge($request->getGetParameters(), $parameters[1])));
+  $currentParams = $request->getGetParameters();
+  $parameters[1][$name] = $value;
+  foreach($bannedParamsList as $k => $val){
+     if ($name==$k && $value==$val ){
+         unset($currentParams[$name]);
+         unset($parameters[1][$name]);
+     }    
+  }
+  $currentParams = array_merge($currentParams, $parameters[1]);
+  return urldecode($routing->generate($route_name, $currentParams));
 }
 
 function pager_url_for($page, $route_name = null, $params = array())

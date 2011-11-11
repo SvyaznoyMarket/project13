@@ -106,17 +106,36 @@ foreach ($p3d as $p3d_obj)
 <!--        <div class="pb5">Понравилось? <a href="" class="share">Поделиться</a> <strong><a href="" class="nodecor">+87</a></strong></div>-->
   <div class="pb3"><?php include_component('userTag', 'product_link', array('product' => $product)) ?></div>
 
-  <?php $f1 = $product->getServiceList() ?>
-<?php if (count($f1)): ?>
+  <?php $f1 = $product->getServiceList(); ?>
+<?php
+#print_r($f1->toArray());
+if (count($f1)): 
+    $num = 0;
+    ?>
+   <?php
+    include_component('product', 'f1_lightbox', array('f1' => $f1,))  
+   ?>
     <div class="f1links form">
       <div class="f1linkbox">
         <a href="" class="f1link">Сервис F1</a> Сервис F1
       </div>
       <div class="f1linkslist">
         <ul>
-          <?php foreach ($f1 as $service): ?>
-            <li><label for="checkbox-<?php echo $service->id ?>"><?php echo $service->name ?> (<?php echo $service->getPriceByRegion($sf_user->getRegion()) ?> Р)</label><input id="checkbox-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="1" /></li>
-  <?php endforeach ?>
+          <?php foreach ($f1 as $service):
+                  if (!$service->getPriceByRegion()) continue;
+              ?>
+            <li>
+                <label for="checkbox-small-<?php echo $service->id ?>">
+                        <?php echo $service->name ?> (<?php echo (int)$service->getPriceByRegion() ?> Р)
+                </label>
+                <input 
+                    <?php if (key_exists($service->id, $selectedServices)) echo 'checked="checked"'; ?>
+                    id="checkbox-small-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="1" />
+            </li>
+        <?php
+         $num++;
+         if ($num==3) break;
+         endforeach ?>
         </ul>
         <a href="#" class="underline">подробнее</a>
       </div>

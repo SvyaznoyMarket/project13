@@ -171,11 +171,11 @@ class productCatalogComponents extends myComponents
     #exit();
     //если у этой категории нет дочерних, нужно выводить её братьев
     if (count($this->productCategory->getChildList())<1){
-        foreach($ancestorList as $parent);    
+        foreach($ancestorList as $parent);
         $parent = ProductCategoryTable::getInstance()->getById($parent['id']);
         $brothersList = $parent->getNode()->getChildren();
         $this->setVar('brothersList', $brothersList, true);
-    }    
+    }
 
     $this->setVar('treeList', $ancestorList, true);
 
