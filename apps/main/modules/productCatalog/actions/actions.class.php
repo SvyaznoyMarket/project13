@@ -220,32 +220,6 @@ class productCatalogActions extends myActions
         $this->_validateResult['error'] = 'Категория не найдена';
         return $this->_refuse();
     }
-  }
-
-
-  public function executeCategoryAjax(sfWebRequest $request){
-
-    $this->setVar('allOk', false);
-
-    if (!isset($request['productCategory'])){
-        $this->_validateResult['success'] = false;
-        $this->_validateResult['error'] = 'Не указан token категории';
-        return $this->_refuse();
-    }
-    if (!isset($request['page'])){
-        $request['page'] = 1;
-    }
-    if (!isset($request['view'])){
-        $request['page'] = 'compact';
-    }
-
-    try{
-        $this->productCategory = $this->getRoute()->getObject();
-    } catch(Exception $e){
-        $this->_validateResult['success'] = false;
-        $this->_validateResult['error'] = 'Категория не найдена';
-        return $this->_refuse();
-    }
 
 
     $filter = array(
