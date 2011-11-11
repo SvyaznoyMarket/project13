@@ -83,6 +83,7 @@ class ProductTable extends myDoctrineTable
   {
     $this->applyDefaultParameters($params, array(
       'with_properties' => true,
+      'property_view'   => null,
     ));
 
     $q = $this->createBaseQuery($params);
@@ -117,7 +118,7 @@ class ProductTable extends myDoctrineTable
     }
 
     $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
-      'view'           => $params['view'],
+      'view'           => null !== $params['property_view'] ? $params['property_view'] :  $params['view'],
       'group_property' => $params['group_property'],
     ));
 

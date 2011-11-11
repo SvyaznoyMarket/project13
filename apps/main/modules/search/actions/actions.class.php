@@ -158,8 +158,10 @@ class searchActions extends myActions
   {
     $list = !empty($data['data'])
       ? ProductTable::getInstance()->getListByCoreIds($data['data'], array(
-        'view'  => 'list',
-        'order' => '_index',
+        'view'            => 'list',
+        'property_view'   => 'list',
+        'with_properties' => 'expanded' == $this->getRequestParameter('view') ? true : false,
+        'order'           => '_index',
       ))
       : array()
     ;
