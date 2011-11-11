@@ -21,10 +21,11 @@ class CreatorTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'          => 'core_id',
-      'name'        => 'name',
-      'description' => 'description',
-      'added'       => 'created_at',
+      'id'              => 'core_id',
+      'name'            => 'name',
+      'description'     => 'description',
+      'is_view_filter'  => 'is_filter',
+      'added'           => 'created_at',
     );
   }
 
