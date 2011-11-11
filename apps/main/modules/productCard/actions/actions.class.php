@@ -17,7 +17,8 @@ class productCardActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->product = $this->getRoute()->getObject();
+    //$this->product = $this->getRoute()->getObject();
+    $this->product = ProductTable::getInstance()->getByToken($request['product']);
 
 //    $title = $this->product['name'];
 //    $mainCategory = $this->product->getMainCategory();

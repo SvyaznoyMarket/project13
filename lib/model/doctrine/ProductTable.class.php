@@ -108,7 +108,7 @@ class ProductTable extends myDoctrineTable
       return $record;
     }
 
-    $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record->id);
+    $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
 
     if ($prices)
     {
