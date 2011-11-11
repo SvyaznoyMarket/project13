@@ -7,7 +7,7 @@
 		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
 		echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
 		?>
-      <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
+      <h3 class="bolder"><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
 
       <?php include_component('product', 'property', array('product' => $product)) ?>
 
@@ -39,13 +39,14 @@
     <div class="rb">
       <div class="lt" data-url="<?php echo $item['url'] ?>">
         <div class="goodsboxlink"><!-- onclick="window.open('http://')"-->
-          <div class="photo"><!--<i title="Новинка" class="new"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
+          <div class="photo"><!--<i title="Новинка" class="new"></i>-->
+           <a style="display:inline;" href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div></a>
           <div class="info">
             <?php
 			echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
 			echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
 			?>
-            <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
+            <h3 class="bolder"><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
 
             <?php include_component('product', 'property', array('product' => $product)) ?>
 
