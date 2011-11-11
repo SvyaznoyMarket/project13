@@ -67,6 +67,20 @@ class cartActions extends myActions
             $result['error'] = "Товар token='".$request['product']."' не найден.";
         }
     }
+    
+    //если помимо товаров надо добавить в карзину сервисы
+    $services = $request['services'];
+    if ($services){  
+        $servicesAr = json_decode($services);
+        #var_dump($servicesAr);
+        #echo get_class( $this->getUser()->getCart() );
+        foreach($servicesAr as $servToken => $qty){
+            $service = ServiceTable::getInstance()->findOneByToken($servToken);
+            if (!$service) continue;
+            $this->getUser()->getCart()->addService($product, $service, $qty);
+        }
+        
+    }
 
     if ($request->isXmlHttpRequest())
     {

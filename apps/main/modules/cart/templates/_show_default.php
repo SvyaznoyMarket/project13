@@ -12,7 +12,7 @@
     <td><?php echo $item['quantity'] ?></td>
     <td>
       <?php foreach ($item['service'] as $service): ?>
-      <?php echo "[".$service['quantity']."] ".$service['name']." [".link_to('добавить', 'cart_service_add', array('product' => $item['token'], 'service' => $service['token'], 'quantity' => 1, ))."]"." [".link_to('удалить', 'cart_service_delete', array('product' => $item['token'], 'service' => $service['token'], ))."]" ?><br />
+      <?php echo "[".$service['quantity']."] ".$service['name']." [".link_to('добавить', 'cart_service_add', array('product' => $item['token'], 'service' => $service['token'], 'quantity' => 1, ))."]"." [".link_to('удалить', 'cart_service_delete', array('product' => $item['token'], 'service' => $service['token'], ))."]" ?>
       <?php endforeach; ?>
     </td>
     <td><?php echo link_to('удалить', 'cart_delete', array('product' => $item['token']), array('class' => 'cart cart-delete')) ?></td>
@@ -35,7 +35,7 @@
                 <noindex><div class="font11">Есть в наличии</div></noindex>
             </div>
             <div class="basketinfo pb15">
-                <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span></div>
+                <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo $item['priceFormatted'] ?></span> <span class="rubl">p</span></span></div>
                 <div class="right"><div class="numerbox"><?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_add', array('product' => $item['product']->token, 'quantity' => -1, )) : '<b class="ajaless" title="Уменьшить"></b>' ?><span class="ajaquant"><?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_add', array('product' => $item['product']->token, 'quantity' => 1, )) ?></div></div>
             </div>
             <div class="basketinfo">
@@ -46,23 +46,41 @@
             <div class="clear pb15"></div>
 
             <?php if (count($item['service'])): ?>
-            <div class="service form">
-                <div class="font11 pb10">Выберите услуги:</div>
-                <ul>
+                <?php
+                 include_component('product', 'f1_lightbox', array('f1' => $item['service'],))  
+                ?>            
+                <div class="service form">
+                    <div class="font11 pb10">Выберите услуги:</div>
+                    <ul>
 
-            <?php foreach ($item['service'] as $service): ?>
-            <?php //echo "[".$service['quantity']."] ".$service['name']." [".link_to('добавить', 'cart_service_add', array('product' => $item['token'], 'service' => $service['token'], 'quantity' => 1, ))."]"." [".link_to('удалить', 'cart_service_delete', array('product' => $item['token'], 'service' => $service['token'], ))."]" ?><br />
-                    <li>
-                        <div class="pricedata" style="display:block">
-                            <div class="left"><?php echo $service['price'] ?> <span class="rubl">&#8399;</span></div>
-                            <div class="right"><a href="" class="underline">Убрать</a></div>
-                        </div>
-                        <label for="checkbox-2"><?php echo $service['name'].' ('.$service['price'].' Р)' ?></label><input id="checkbox-2" name="checkbox-1" type="checkbox" value="checkbox-2" checked="checked" />
-                    </li>
-            <?php endforeach; ?>
-
-                </ul>
-            </div>
+                <?php $num = 0; ?>        
+                <?php foreach ($item['service'] as $service): ?>
+                <?php
+                    if ($num==3) break;
+                    if (!$service['price']) continue;
+                ?>       
+                        <li>
+                            <div class="pricedata" style="display:block">
+                                <?php if ($service['quantity']>0) { ?>
+                                    <div class="left">
+                                        <?php echo $service['quantity'] .' шт. '. $service['priceFormatted'] ?>
+                                        <span class="rubl">p</span>
+                                    </div>
+                                    <div class="right">
+                                        <a href="<?php echo url_for('cart_service_delete', array('product' => $item['product']->token, 'service' => $service['token'])) ?>" class="underline">Убрать</a>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                            <label class="prettyCheckbox checkbox list" for="checkbox-<?php echo $service['id'] ?>">
+                                    <?php echo $service['name'].' ('.$service['priceFormatted'].' Р)' ?>
+                            </label>
+                            <input <?php if ($service['quantity']>0) echo 'checked="checked"'; ?> id="checkbox-<?php echo $service['id'] ?>" name="service[<?php echo $service['id'] ?>]" type="checkbox" value="1" />
+                        </li>
+                <?php $num++; ?>        
+                <?php endforeach; ?>
+                        <li><a class="underline" href="">подробнее</a></li>
+                    </ul>
+                </div>
             <?php endif ?>
         </div>
     </div>

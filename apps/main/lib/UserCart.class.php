@@ -65,11 +65,89 @@ class UserCart extends BaseUserData
     {
       $products[$product->id]['service'][$service->id] = array('quantity' => 0, );
     }
-    $products[$product->id]['service'][$service->id]['quantity'] += $quantity;
+    $newQty = $products[$product->id]['service'][$service->id]['quantity'] + $quantity;
+    if ($newQty < 0) $newQty = 0;
+    if ($newQty > $products[$product->id]['quantity']) $newQty = $products[$product->id]['quantity'];
+    
+    if ($newQty == 0){
+        unset($products[$product->id]['service'][$service->id]);
+    } else {
+        $products[$product->id]['service'][$service->id]['quantity'] = $newQty;
+    }
+    
     $this->parameterHolder->set('products', $products);
     $this->calculateDiscount();
   }
+  
+  public function getServicesByProductId($productId)
+  {
+    $list = array();
+    foreach ($this->getProducts() as $product)
+    {
+         if ($product->id != $productId){
+            continue;
+         }
+          $services = $product->getServiceList();
+          $service_for_list = array();
+          foreach ($services as $service)
+          {
+            $serviceAr = $service->toArray(); 
+            $qty = isset($product['cart']['service'][$service->id]['quantity']) ? $product['cart']['service'][$service->id]['quantity'] : 0;
+            if ($qty > 0 ){
+                $list[$service->id] = array(
+                  'name'      => $service->name,
+                  'id'        => $service->id,
+                  'token'     => $service->token,
+                  'price'     => (isset($serviceAr['Price'][0])) ? $serviceAr['Price'][0]['price'] : 0,
+                  'priceFormatted'   => (isset($serviceAr['Price'][0])) ? number_format($serviceAr['Price'][0]['price'], 0, ',', ' ') : 0,
+                  'quantity'  => $qty,
+                );
+            }
+          }      
+    }    
+    return $list;
 
+  }  
+
+  public function getProductServiceList($getAllServices = false){
+
+    $list = array();
+    foreach ($this->getProducts() as $product)
+    {
+      $services = $product->getServiceList();
+      $service_for_list = array();
+      foreach ($services as $service)
+      {
+        $serviceAr = $service->toArray(); 
+        $qty = isset($product['cart']['service'][$service->id]['quantity']) ? $product['cart']['service'][$service->id]['quantity'] : 0;
+        if ($qty > 0 || $getAllServices === true){
+            $service_for_list[$service->token] = array(
+              'name'      => $service->name,
+              'id'        => $service->id,
+              'token'     => $service->token,
+              'price'     => (isset($serviceAr['Price'][0])) ? $serviceAr['Price'][0]['price'] : 0,
+              'priceFormatted'   => (isset($serviceAr['Price'][0])) ? number_format($serviceAr['Price'][0]['price'], 0, ',', ' ') : 0,
+              'quantity'  => $qty,
+            );
+        }
+      }
+      
+      $list[] = array(
+        'id'      => $product->id,
+        'token'      => $product->token,
+        'name'      => $product->name,
+        'quantity'  => $product['cart']['quantity'],
+        'service'   => $service_for_list,
+        'product'   => $product,
+        'price'     => $product->price,
+        'priceFormatted'     => $product->getFormattedPrice(),
+        'total'     => $product['cart']['formatted_total'],
+        'photo'     => $product->getMainPhotoUrl(1),
+      );
+    }    
+    return $list;
+  }
+  
   public function deleteService(Product $product, Service $service)
   {
     $products = $this->parameterHolder->get('products');
@@ -107,12 +185,15 @@ class UserCart extends BaseUserData
   public function getTotal($is_formatted = false)
   {
     $total = 0;
-    $products = $this->getProducts();
+    $products = $this->getProductServiceList();
 
     //$products = null;
     foreach ($products as $product)
     {
-      $total += $product->price * $product->cart['quantity'];
+        $total += $product['price'] * $product['quantity'];
+        foreach($product['service'] as $service){
+            $total += $service['price'] * $service['quantity'];            
+        }
     }
 
     $result = $is_formatted ? number_format($total, 0, ',', ' ') : $total;
