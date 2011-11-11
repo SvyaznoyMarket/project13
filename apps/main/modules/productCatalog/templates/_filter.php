@@ -1,5 +1,5 @@
-<h2>Выбираем <?php echo mb_lcfirst($productCategory) ?></h2>
-<div class="line pb10"></div>
+<!--<h2>Выбираем <?php echo mb_lcfirst($productCategory) ?></h2>
+<div class="line pb10"></div>-->
 
 
 <!--div class="pb5"><a href="" class="underline">Показать все товары</a> <span class="font10 gray">(<?php echo $productCategory->countProduct() ?>)</span></div-->
@@ -17,7 +17,24 @@
         <?php //include_partial('productCatalog/filter_hint')  ?>
       </dt>
 
-      <dd style="display: none;">
+      <?php
+            if (get_class( $field->getWidget() ) == 'myWidgetFormRange'){
+                $info = $field->getWidget()->getOptions();
+                $currentVal = $form[$name]->getValue();
+                if ($info['value_from'] != $currentVal['from'] || $info['value_to'] != $currentVal['to']){
+                    $open = 'block';
+                } else {
+                    $open = 'none';
+                }
+            } else {
+                if (count($form[$name]->getValue())>0){
+                    $open = 'block';
+                } else {
+                    $open = 'none';                
+                }
+            }
+      ?>      
+      <dd style="display: <?php echo $open ?>;">
 
         <?php if ($form[$name]->getWidget() instanceof myWidgetFormInputCheckbox): ?>
         <ul>
