@@ -37,7 +37,7 @@
 $(document).ready(function(){	
 	/* Rotator */
 	if($('#rotator').length) {
-		$('#rotator').jshowoff({ speed:3000, controls:false })
+		$('#rotator').jshowoff({ speed:8000, controls:false })
 		$('.jshowoff-slidelinks a').wrapInner('<span/>')
 	}
 	/* Infinity scroll */
