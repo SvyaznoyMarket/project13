@@ -36,6 +36,8 @@ _gaq.push(['_trackPageLoadTime']);
 </head>
 
 <body>
+<?php LastModifiedHandler::setLastModified();  ?>   
+
 <script>
 	$(document).ready(function(){
 		function getRandomInt(min, max)

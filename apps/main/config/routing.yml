@@ -146,6 +146,14 @@ changeProduct:
   class: myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
 
+# Линии
+#
+# карточка линии
+lineCard:
+  url:   /line/:line
+  param: { module: lineCard, action: index }
+  class:   myDoctrineRoute
+  options: { model: ProductLine, type: object, method: getForRoute }
 
 # Магазин
 #
@@ -156,7 +164,7 @@ shop:
 #
 # карточка магазина
 shop_show:
-  url:   /shops/:shop
+  url:   /shops/:shop/
   param: { module: shop, action: show }
   class:   myDoctrineRoute
   options: { model: Shop, type: object, method: getForRoute }
@@ -591,8 +599,10 @@ cart:
 #
 # cart add
 cart_add:
-  url:   /cart/add/:product/:quantity
-  param: { module: cart, action: add, quantity: 1 }
+  url:   /cart/add/:product/:quantity/:services
+  param: { module: cart, action: add, quantity: 1, services: '{"4ebae7d1071a3-ustanovka-vityagki-ploskoy":1,"4eb3089eb2255-ustanovka-vityagki-vstraivaemoy-v-shkaf":3}' }
+  requirements:
+    sf_method: [ post ]  
 #
 # cart delete
 cart_delete:
@@ -630,11 +640,10 @@ service_show:
 #
 # F1 servis catalog
 service_list:
-  url:      /f1/list/:serviceCategory
-  param:    { module: service, action: list }
+  url:      /f1_tmp/:serviceCategory
+  param:    { module: service, action: index, serviceCategory: 0 }
   class:    myDoctrineRoute
   options:  { model: ServiceCategory, type: object, method: getForRoute }
-
 
 #
 # region autocomplete

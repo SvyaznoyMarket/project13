@@ -20,6 +20,20 @@ class myUser extends myGuardSecurityUser
     parent::shutdown();
   }
 
+  public function signIn($user, $remember = false, $con = null)
+  {
+    parent::signIn($user, $remember, $con);
+
+    $this->setCacheCookie();
+  }
+
+  public function signOut()
+  {
+    $this->setCacheCookie();
+
+    parent::signOut();
+  }
+
   public function getCart()
   {
     return $this->getUserData('cart');
@@ -99,7 +113,7 @@ class myUser extends myGuardSecurityUser
 
     return $ip;
   }
-  
+
 public function getRealIpAddr()
 {
   if (!empty($_SERVER['HTTP_CLIENT_IP'])) // Определение IP-адреса
@@ -115,7 +129,7 @@ public function getRealIpAddr()
     $ip=$_SERVER['REMOTE_ADDR'];
   }
   return $ip;
-}  
+}
 
   protected function getUserData($name)
   {
@@ -126,5 +140,18 @@ public function getRealIpAddr()
     }
 
     return $this->$name;
+  }
+
+  protected function setCacheCookie()
+  {
+    if (false
+      || !$this->isAuthenticated()
+      || !$this->getGuardUser()
+    ) {
+      return;
+    }
+
+    $key = md5(time() + $this->getGuardUser()->id);
+    sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_cache_cookie_name', 'enter_cache'), $key, null);
   }
 }

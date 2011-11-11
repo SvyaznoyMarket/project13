@@ -40,6 +40,8 @@ class ProductParameter extends myDoctrineVirtualRecord
             $realValue = rtrim($realValue, '0');
           }
 
+          $realValue = str_replace('.', ',', $realValue);
+
           $value[] = $this->formatValue($this->property->pattern, $realValue, $this->property->unit);
         case 'boolean':
           $value[] = $this->formatValue($this->property->pattern, $propertyRelation['value'], $this->property->unit);

@@ -5,7 +5,7 @@
 <?php end_slot() ?>
 
 <?php slot('page_head') ?>
-  <?php include_partial('search/page_head', array('searchString' => $searchString, 'count' => 0)) ?>
+  <?php include_partial('search/page_head') ?>
 <?php end_slot() ?>
 
 <?php //slot('left_column') ?>

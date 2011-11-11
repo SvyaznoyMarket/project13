@@ -35,12 +35,19 @@ class Service extends BaseService
     }
   }
 
-  public function getPriceByRegion(Region $region)
+  public function getPriceByRegion(Region $region = NULL)
   {
+      if (!$region){
+          $region = RegionTable::getInstance()->getDefault();
+      }
 	  $q = ServicePriceTable::getInstance()->createBaseQuery();
 	  $q->select('price')
 	    ->addWhere('service_id = ?', $this->id)
-	    ->addWhere('region_id = ?', $region->id);
+        ->addWhere('region_id = ?', $region->id);
 	  return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
   }
+  public function getFormattedPrice()
+  {
+    return number_format($this->price, 0, ',', ' ');
+  }  
 }
