@@ -63,7 +63,7 @@ class ProductTable extends myDoctrineTable
 
     if ('list' == $params['view'])
     {
-      //$q->addWhere('product.view_list = ?', true);
+      $q->addWhere('product.view_list = ?', true);
     }
     if ('show' == $params['view'])
     {

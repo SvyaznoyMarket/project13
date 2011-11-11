@@ -145,6 +145,19 @@ class Product extends BaseProduct
       $this->main_photo = 'default.jpg';
     }
 
+    //Временные правила для отображения товара!!!
+    if (empty($data['media_image']))
+    {
+      $this->view_list = 0;
+      $this->view_show = 1;
+    }
+    else
+    {
+      $this->view_list = 1;
+      $this->view_show = 1;
+    }
+
+    //Постоянные правила для отображения товара!!!
     /*if (!empty($data['status_id']))
     {
       switch ($data['status_id'])
@@ -184,7 +197,9 @@ class Product extends BaseProduct
 
   public function getIsInsale()
   {
-    return $this->is_instock;
+    $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->id);
+
+    return $this->is_instock && (!empty($price) && $price->price > 0);
   }
 
   public function getParameterByProperty($property_id)

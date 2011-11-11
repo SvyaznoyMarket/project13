@@ -33,6 +33,7 @@ class productCategoryActions extends myActions
 	  $products = ProductTable::getInstance()->getListByCategory($this->getRoute()->getObject(), array(
 		'offset' => ($page-1)*3,
         'limit'  => $limit,
+        'view' => 'list',
       ));
 	  $this->setLayout(false);
 	  $this->getContext()->getConfiguration()->loadHelpers('Url');
