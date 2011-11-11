@@ -58,9 +58,7 @@ function Lightbox( jn, data ){
 		if( float.length == 2 ) 
 			out += '.' + float[1]
 		return out
-	}
-	
-	
+	}		
 	
 	this.getBasket = function( item ) {
 		var _gafrom = ( $('.goodsbarbig').length ) ? 'product' : 'catalog'
