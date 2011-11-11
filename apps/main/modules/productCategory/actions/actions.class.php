@@ -36,7 +36,7 @@ class productCategoryActions extends myActions
         'view' => 'list',
       ));
 	  $this->setLayout(false);
-//	  $this->getContext()->getConfiguration()->loadHelpers('Url');
+	  $this->getContext()->getConfiguration()->loadHelpers('Url');
     $response = '';
 	  foreach ($products as $product) {
 		  $response .= $this->getComponent('product', 'show', array('view' => 'compact', 'product' => $product));
