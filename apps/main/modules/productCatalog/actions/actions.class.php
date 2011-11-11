@@ -453,6 +453,9 @@ class productCatalogActions extends myActions
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+
+    $this->view = 'line';
+    $this->list_view = false;
   }
 
 

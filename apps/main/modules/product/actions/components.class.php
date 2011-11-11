@@ -24,7 +24,7 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line')))
     {
       $this->view = 'default';
     }
@@ -37,7 +37,7 @@ class productComponents extends myComponents
       'has_link' => $this->product['view_show'],
       'photo'    => $this->product->getMainPhotoUrl(2),
       'product'  => $this->product,
-      'url'      => url_for('productCard', $this->product, array('absolute' => true)),
+      'url'      => '',//url_for('productCard', $this->product, array('absolute' => true)),
     );
 
     if ('compact' == $this->view)
@@ -133,8 +133,8 @@ class productComponents extends myComponents
    */
   public function executeList()
   {
-    $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
-    if (!in_array($this->view, array('expanded', 'compact')))
+    $this->view = (isset($this->view) && !empty($this->view)) ? $this->view : $this->getRequestParameter('view');
+    if (!in_array($this->view, array('expanded', 'compact', 'line', )))
     {
       $this->view = 'compact';
     }
