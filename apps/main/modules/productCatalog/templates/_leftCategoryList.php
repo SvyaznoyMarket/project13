@@ -7,9 +7,9 @@
         $level = 1;  
         if ($currentCat->core_parent_id && isset($treeList)){
         foreach($treeList as $cat){
-                echo '<li>
+                echo '<li class="bCtg__eL'.$level.' mBold">
                         <a href="/catalog/'.$cat['token'].'/">
-                            <span  class="bCtg__eL'.$level.' mBold">'.$cat['name'].'</span>
+                            <span>'.$cat['name'].'</span>
                         </a>
                       </li>';
                 $level++;
@@ -18,20 +18,21 @@
             if (isset($brothersList)){
                 foreach($brothersList as $brother){
                     if ($brother->countProduct() < 1) continue;
-                    echo '<li>
-                            <a href="/catalog/'.$brother['token'].'/">
-                                <span  class="bCtg__eL'.$level;
+                    echo '<li class="bCtg__eL'.$level;
                     if ($brother['id'] == $currentCat->id) echo ' mSelected';
-                    echo '">- '
-                                   .$brother['name'].
+                    echo '">
+                            <a href="/catalog/'.$brother['token'].'/">
+                                <span>';
+                    if ($brother['id'] != $currentCat->id) echo '<div>-</div>';                    
+                    echo               $brother['name'].
                                 '</span>
                             </a>
                           </li>';                    
                 }
             } else {
-                echo '<li>
+                echo '<li  class="bCtg__eL'.$level.' mSelected">
                         <a href="/catalog/'.$currentCat->token.'/">
-                            <span  class="bCtg__eL'.$level.' mSelected">'.$currentCat->name.'</span>
+                            <span>'.$currentCat->name.'</span>
                         </a>
                       </li>';                  
             }
@@ -42,11 +43,11 @@
         <?php
         if (isset($list) && $list && count($list) > 0 )
         foreach($list as $cat){
-            if ($cat->countProduct() < 1) continue;
-            echo '<li>
+            if ($cat->countProduct() < 1 || !$cat['is_active']) continue;
+            echo '<li class="bCtg__eL'.$level.'">
                     <a href="/catalog/'.$cat['token'].'/">
-                        <span  class="bCtg__eL'.$level.'">';
-            if ($cat['level']>1) echo '- ';
+                        <span>';
+            if ($cat['level']>1) echo '<div>-</div>';
             echo            $cat['name'].
                         '</span>
                     </a>
