@@ -37,7 +37,7 @@ class productComponents extends myComponents
       'has_link' => $this->product['view_show'],
       'photo'    => $this->product->getMainPhotoUrl(2),
       'product'  => $this->product,
-      'url'      => '',//url_for('productCard', $this->product, array('absolute' => true)),
+      'url'      => url_for('productCard', $this->product, array('absolute' => true)),
     );
 
     if ('compact' == $this->view)
@@ -70,7 +70,7 @@ class productComponents extends myComponents
     }
 
     $this->setVar('item', $item, true);
-    
+
     $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product->id);
     $this->setVar('selectedServices', $selectedServices, true);
   }
@@ -306,7 +306,7 @@ class productComponents extends myComponents
   {
       $this->executeList_view();
   }
-  
+
   /**
    * Executes list_view component
    *
@@ -389,8 +389,8 @@ class productComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
-  
+
   public function executeF1_lightbox(){
-      
+
   }
 }
