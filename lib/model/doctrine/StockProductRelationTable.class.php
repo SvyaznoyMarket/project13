@@ -20,8 +20,9 @@ class StockProductRelationTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'         => 'core_id',
-      'quantity'   => 'quantity',
+      'id'          => 'core_id',
+      'quantity'    => 'quantity',
+      'is_supplier' => 'is_supplied',
 
       'product_id' => array('rel' => 'Product'),
       'store_id'   => array('rel' => 'Stock'),

@@ -25,7 +25,7 @@ class cartComponents extends myComponents
     }
 
 	$this->disable = false;
-	if (!$this->product->is_instock) {
+	if (!$this->product->is_in_sale) {
 		$this->disable = true;
 	}
 

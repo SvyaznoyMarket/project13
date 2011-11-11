@@ -102,6 +102,11 @@ class Product extends BaseProduct
           $value = trim($relationData['value']);
           $value = $optionId ? $optionId : (!empty($value) ? $value : null);
 
+          if (('integer' == $property->type) || 'float' == $property->type)
+          {
+            $value = str_replace(',', '.', $value);
+          }
+
           $collectionData[$property->id.'-'.$optionId] = array(
             'property_id' => $property->id,
             'real_value'  => $value,
@@ -140,7 +145,20 @@ class Product extends BaseProduct
       $this->main_photo = 'default.jpg';
     }
 
-    if (!empty($data['status_id']))
+    //Временные правила для отображения товара!!!
+    if (empty($data['media_image']))
+    {
+      $this->view_list = 0;
+      $this->view_show = 1;
+    }
+    else
+    {
+      $this->view_list = 1;
+      $this->view_show = 1;
+    }
+
+    //Постоянные правила для отображения товара!!!
+    /*if (!empty($data['status_id']))
     {
       switch ($data['status_id'])
       {
@@ -173,13 +191,15 @@ class Product extends BaseProduct
       $this->view_list = 0;
       $this->view_show = 0;
       $this->is_instock = 0;
-    }
+    }*/
 
   }
 
   public function getIsInsale()
   {
-    return $this->is_instock;
+    $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->id);
+
+    return $this->is_instock && (!empty($price) && $price->price > 0);
   }
 
   public function getParameterByProperty($property_id)

@@ -275,7 +275,7 @@ class productCategoryComponents extends myComponents
       'root_name'         => (string)$this->productCategory->getRootCategory(),
       'url'               => url_for('productCatalog_category', $this->productCategory),
 	    'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
-      'product_quantity'  => $this->productCategory->countProduct(),
+      'product_quantity'  => $this->productCategory->countProduct(array('view' => 'list', )),
 	    'links'             => $this->productCategory->getLinkList(),
     );
 
@@ -286,7 +286,7 @@ class productCategoryComponents extends myComponents
         return sfView::NONE;
       }
 
-      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array('with_properties' => false, 'limit' => 6));
+      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array('with_properties' => false, 'limit' => 6, 'view' => 'list', ));
     }
     if ('preview' == $this->view)
     {
