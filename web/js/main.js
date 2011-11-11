@@ -37,7 +37,7 @@
 $(document).ready(function(){	
 	/* Rotator */
 	if($('#rotator').length) {
-		$('#rotator').jshowoff({ controls:false })
+		$('#rotator').jshowoff({ speed:3000, controls:false })
 		$('.jshowoff-slidelinks a').wrapInner('<span/>')
 	}
 	/* Infinity scroll */
@@ -141,7 +141,7 @@ $(document).ready(function(){
 	
 	/* --- */
     $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes();
-
+	//$(".bigfilter dt").trigger('click')
 	$(".bigfilter dt").click(function(){
 		$(this).next(".bigfilter dd").slideToggle(200)
 		$(this).toggleClass("current")

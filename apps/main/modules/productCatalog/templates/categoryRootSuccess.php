@@ -9,7 +9,7 @@
   <?php include_component('productCatalog', 'tag', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
-<?php include_partial('productCatalog/plugs/plug'.$productCategory->position) ?>
+<?php include_partial('productCatalog/plugs/plug') ?>
 
 <div class="clear"></div>
 
