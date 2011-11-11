@@ -58,31 +58,7 @@ class cartComponents extends myComponents
 
     $cart = $this->getUser()->getCart();
 
-    $list = array();
-    foreach ($cart->getProducts() as $product)
-    {
-      $services = $product->getServiceList();
-      $service_for_list = array();
-      foreach ($services as $service)
-      {
-        $service_for_list[$service->token] = array(
-          'name'      => $service->name,
-          'token'     => $service->token,
-          'quantity'  => isset($product['cart']['service'][$service->id]['quantity']) ? $product['cart']['service'][$service->id]['quantity'] : 0,
-        );
-      }
-
-      $list[] = array(
-//        'token'     => $product->token,
-//        'name'      => (string)$product,
-        'quantity'  => $product['cart']['quantity'],
-        'service'   => $service_for_list,
-        'product'   => $product,
-        'price'     => $product->getFormattedPrice(),
-        'total'     => $product['cart']['formatted_total'],
-        'photo'     => $product->getMainPhotoUrl(1),
-      );
-    }
+    $list = $cart->getProductServiceList(true);
 
     $this->setVar('list', $list, true);
   }

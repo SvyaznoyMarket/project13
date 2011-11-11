@@ -70,6 +70,9 @@ class productComponents extends myComponents
     }
 
     $this->setVar('item', $item, true);
+    
+    $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product->id);
+    $this->setVar('selectedServices', $selectedServices, true);
   }
 
   /**
@@ -385,5 +388,9 @@ class productComponents extends myComponents
     }
 
     $this->setVar('list', $list, true);
+  }
+  
+  public function executeF1_lightbox(){
+      
   }
 }
