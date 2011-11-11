@@ -71,10 +71,10 @@
                                     </div>
                                 <?php } ?>
                             </div>
-                            <label class="prettyCheckbox checkbox list" for="checkbox-<?php echo $service['id'] ?>">
+                            <label class="prettyCheckbox checkbox list" for="checkbox-small-<?php echo $service['id'] ?>">
                                     <?php echo $service['name'].' ('.$service['priceFormatted'].' Р)' ?>
                             </label>
-                            <input <?php if ($service['quantity']>0) echo 'checked="checked"'; ?> id="checkbox-<?php echo $service['id'] ?>" name="service[<?php echo $service['id'] ?>]" type="checkbox" value="1" />
+                            <input <?php if ($service['quantity']>0) echo 'checked="checked"'; ?> id="checkbox-small-<?php echo $service['id'] ?>" name="service[<?php echo $service['id'] ?>]" type="checkbox" value="1" />
                         </li>
                 <?php $num++; ?>        
                 <?php endforeach; ?>
