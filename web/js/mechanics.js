@@ -58,12 +58,11 @@ function Lightbox( jn, data ){
 		if( float.length == 2 ) 
 			out += '.' + float[1]
 		return out
-	}
-	
+	}		
 	
 	this.getBasket = function( item ) {
 		var _gafrom = ( $('.goodsbarbig').length ) ? 'product' : 'catalog'
-		_gaq.push(['_trackEvent', 'Add2Basket', _gafrom, item.title ])
+		_gaq.push(['_trackEvent', 'Add2Basket', _gafrom, item.title + ' ' + item.id, Math.round( item.price.replace(/\D/g,'') ) ])
 		
 		flybox.clear()	
 		item.price = item.price.replace(/\s+/,'')		

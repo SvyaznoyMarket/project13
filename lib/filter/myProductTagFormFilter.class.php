@@ -4,7 +4,7 @@ class myProductTagFormFilter extends myProductFormFilter
 {
   public function configure()
   {
-    parent::configure();
+    //parent::configure();
 
     $this->setOption('mark_required', false);
 
