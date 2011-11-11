@@ -17,7 +17,7 @@
         <?php //include_partial('productCatalog/filter_hint')  ?>
       </dt>
 
-      <dd<?php if (4 > $i) echo ' style="display: block"' ?>>
+      <dd style="display: none">
         <?php echo $form[$name]->render() ?>
       </dd>
     <?php endforeach ?>
