@@ -155,7 +155,8 @@ class productCatalogComponents extends myComponents
     {
       $this->form = new myProductTagFormFilter(array(), array(
         'productCategory' => $this->productCategory,
-//        'creator'         => $this->creator,
+        'creator'         => $this->creator,
+        'with_creator'    => 'jewel' != $this->productCategory->getRootCategory()->token,
       ));
     }
 
