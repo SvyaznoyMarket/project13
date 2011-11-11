@@ -39,7 +39,8 @@
     <div class="rb">
       <div class="lt" data-url="<?php echo $item['url'] ?>">
         <div class="goodsboxlink"><!-- onclick="window.open('http://')"-->
-          <div class="photo"><!--<i title="Новинка" class="new"></i>--><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div>
+          <div class="photo"><!--<i title="Новинка" class="new"></i>-->
+           <a style="display:inline;" href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" alt="" title="" width="160" height="160" /></div></a>
           <div class="info">
             <?php
 			echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
