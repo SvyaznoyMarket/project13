@@ -28,7 +28,6 @@ class productComponents extends myComponents
     {
       $this->view = 'default';
     }
-
     $item = array(
       'article'  => $this->product->article,
       'name'     => (string) $this->product,
@@ -68,6 +67,10 @@ class productComponents extends myComponents
     {
       $item['description'] = $this->product->description;
     }
+    if ('line' == $this->view)
+    {
+      $item['url'] = url_for('lineCard', $this->product->Line, array('absolute' => true, ));
+    }
 
     $this->setVar('item', $item, true);
 
@@ -93,13 +96,14 @@ class productComponents extends myComponents
   public function executePager()
   {
     $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
-    if (!in_array($this->view, array('expanded', 'compact')))
+    if (!in_array($this->view, array('expanded', 'compact', 'line')))
     {
       $this->view = 'compact';
     }
 
     $this->setVar('list', $this->pager->getResults(null, array(
       'with_properties' => 'expanded' == $this->view ? true : false,
+      'with_line'       => 'line' == $this->view ? true : false,
       'view'            => 'list',
     )), true);
   }

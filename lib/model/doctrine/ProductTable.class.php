@@ -84,6 +84,7 @@ class ProductTable extends myDoctrineTable
     $this->applyDefaultParameters($params, array(
       'with_properties' => true,
       'property_view'   => false,
+      'with_line'       => false,
     ));
 
     $q = $this->createBaseQuery($params);
@@ -95,6 +96,11 @@ class ProductTable extends myDoctrineTable
     if ($params['with_properties'])
     {
       $q->leftJoin('product.PropertyRelation productPropertyRelation');
+    }
+    
+    if ($params['with_line'])
+    {
+      $q->innerJoin('product.Line line');
     }
 
     $this->setQueryParameters($q);
@@ -121,7 +127,7 @@ class ProductTable extends myDoctrineTable
       'view'           => $params['property_view'] ? $params['property_view'] : $params['view'],
       'group_property' => $params['group_property'],
     ));
-
+    
     if ($params['with_properties'])
     {
       // группировка параметров продукта по свойствам продукта
@@ -241,15 +247,26 @@ class ProductTable extends myDoctrineTable
     {
       if ($filter['category'] instanceof ProductCategory)
       {
-        $ids = $filter['category']->getDescendantIds();
-        $ids[] = $filter['category']->id;
+        if ($filter['category']->has_line)
+        {
+          $q->innerJoin('product.Line line')
+            ->innerJoin('line.Product line_product')
+            ->innerJoin('line_product.Category category WITH category.id = ?', $filter['category']->id)
+            ->where('product.is_lines_main = ?', 1)
+          ;
+        }
+        else
+        {
+          $ids = $filter['category']->getDescendantIds();
+          $ids[] = $filter['category']->id;
+        }
       }
       else if (!is_array($filter['category']))
       {
         $ids = array($filter['category']);
       }
 
-      if (count($ids) > 0)
+      if (isset($ids) && count($ids) > 0)
       {
         $q->innerJoin('product.Category category');
         //$q->addWhere('category.id = ?', ($filter['category'] instanceof ProductCategory) ? $filter['category']->id : $filter['category']);
@@ -485,14 +502,19 @@ class ProductTable extends myDoctrineTable
   public function countByCategory(ProductCategory $category, array $params = array())
   {
     $q = $this->createBaseQuery($params);
-
+    
+    if ($category->has_line)
+    {
+      $q->addWhere('product.line_id IS NOT NULL')
+        ->groupBy('product.line_id');
+    }
+    
     $ids = $category->getDescendantIds();
     $ids[] = $category->id;
 
     $q->innerJoin('product.Category category')
       ->whereIn('category.id', $ids)
     ;
-
     $this->setQueryParameters($q, $params);
 
     $q->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params));
@@ -520,24 +542,40 @@ class ProductTable extends myDoctrineTable
 
     return $q->fetchOne();
   }
-
-  public function getQueryByCategoryWithLine(ProductCategory $category, array $params = array())
+  
+  public function getByLine(ProductLine $line, array $params = array())
   {
+    $this->applyDefaultParameters($params);
+    
     $params = myToolkit::arrayDeepMerge(array(
-      'select'   => 'product.*',
+      'select'   => 'product.id',
     ), $params);
-
+    
     $q = $this->createBaseQuery($params);
 
-    $q->innerJoin('product.Line line')
-      ->innerJoin('line.Product line_product')
-      ->innerJoin('line_product.Category category WITH category.id = ?', $category->id)
-      ->where('product.is_lines_main = ?', 1)
-      ;
+    $q->addWhere('product.line_id = ?', $line->id)
+      ->addWhere('product.is_lines_main = ?', 1);
+
+    $this->setQueryParameters($q, $params);
+
+    return $this->getById($q->fetchOne()->id);
+  }
+  
+  public function getQueryByLine(ProductLine $line, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+    
+    $q = $this->createBaseQuery($params);
+
+    $q->addWhere('product.line_id = ?', $line->id);
+    
+    if (!isset($params['with_main']) || !$params['with_main'])
+    {
+      $q->addWhere('product.is_lines_main = ?', 0);
+    }
 
     $this->setQueryParameters($q, $params);
 
     return $q;
-
   }
 }

@@ -12,4 +12,20 @@
  */
 class ProductLine extends BaseProductLine
 {
+  public function toParams()
+  {
+    return array(
+      'line' => $this->token,
+    );
+  }
+  
+  public function getCount()
+  {
+    $q = ProductTable::getInstance()->createBaseQuery(array('view' => 'list', ));
+    $q->addWhere('product.line_id = ?', $this->id);
+    
+    $q->useResultCache(true, null, $this->getTable()->getRecordQueryHash('productLine-count'.$this->id));
+    
+    return $q->count();
+  }
 }

@@ -151,7 +151,7 @@ changeProduct:
 # карточка линии
 lineCard:
   url:   /line/:line
-  param: { module: lineCard, action: index }
+  param: { module: line, action: card }
   class:   myDoctrineRoute
   options: { model: ProductLine, type: object, method: getForRoute }
 
