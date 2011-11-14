@@ -87,9 +87,9 @@ class cartActions extends myActions
       foreach ($servicesAr as $servToken => $qty)
       {
         $service = ServiceTable::getInstance()->findOneByToken($servToken);
-        if (!$service)
-          continue;
+        if (!$service) continue;
         $this->getUser()->getCart()->addService($product, $service, $qty);
+        $this->getUser()->setCacheCookie();
       }
     }
 
@@ -152,6 +152,7 @@ class cartActions extends myActions
   public function executeClear(sfWebRequest $request)
   {
     $this->getUser()->getCart()->clear();
+    $this->getUser()->setCacheCookie();
 
     $this->redirect($this->getRequest()->getReferer());
   }
@@ -162,6 +163,7 @@ class cartActions extends myActions
     $service = ServiceTable::getInstance()->findOneByToken($request['service']);
 
     $this->getUser()->getCart()->addService($product, $service, $request['quantity']);
+    $this->getUser()->setCacheCookie();
 
     $this->redirect($this->getRequest()->getReferer());
   }
@@ -172,6 +174,7 @@ class cartActions extends myActions
     $service = ServiceTable::getInstance()->findOneByToken($request['service']);
 
     $this->getUser()->getCart()->deleteService($product, $service);
+    $this->getUser()->setCacheCookie();
 
     $this->redirect($this->getRequest()->getReferer());
   }
