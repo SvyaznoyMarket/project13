@@ -1,5 +1,4 @@
-<div class="f1links form" style="display:none;" >
-    <div class="f1linkbox">
+    <div class="f1linkbox"  style="display:none;" >
         <a href="" class="f1link">Сервис F1</a> Сервис F1
 
         <!-- F1 -->
@@ -31,12 +30,3 @@
         <!-- /F1 -->
 
     </div>
-    <div class="f1linkslist">
-        <ul>
-            <li><label for="checkbox-1">Установка кресел и диванов (1990 Р)</label><input id="checkbox-1" name="checkbox-1" type="checkbox" value="checkbox-1" /></li>
-            <li><label for="checkbox-2">Чистка кресел и диванов  (690 Р)</label><input id="checkbox-2" name="checkbox-1" type="checkbox" value="checkbox-2" /></li>
-            <li><label for="checkbox-3">Ремонт и восстановление кресел и диванов  (2990 Р)</label><input id="checkbox-3" name="checkbox-1" type="checkbox" value="checkbox-3" /></li>
-        </ul>
-        <a href="" class="underline">подробнее</a>
-    </div>
-</div>
