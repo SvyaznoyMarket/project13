@@ -14,7 +14,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 <?php endif ?>
 <?php endif ?>
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
-
+<h2 class="bold fl">Все модели серии <?php echo $line->name ?></h2>
 <?php if (!$empty && !(isset($list_view) && false === $list_view)): ?>
   <?php include_component('product', 'list_view') ?>
 <?php endif ?>
@@ -22,7 +22,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 <?php if (!$empty): ?>
   <div class="line"></div>
 <?php endif ?>
-  
+
 <?php include_component('line', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view, )) ?>
 
 <?php if (false): ?>
