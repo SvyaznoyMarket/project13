@@ -137,7 +137,7 @@ TABLE {border-collapse:collapse}
 .height170 {height:170px}
 .height250 {height:250px}
 
-
+#auth-link{display:none}
 .rubl {font-family:"Rouble"; font-size: 90%; margin: 0 0px 0 -5px}
 
 .topbar {height:25px; padding-top:7px; font-size:11px}
@@ -320,20 +320,18 @@ LABEL.checked {color:#ffa901}
 	border-radius: 10px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
-	
 	-moz-box-shadow:0 0 9px #eaeaea;
 	-webkit-box-shadow:0 0 9px #eaeaea;
 	box-shadow:0 0 9px #eaeaea;
 	//behavior: url(ie-css3.htc)
-	
 	}
+
 .bSpec h2 {
     color: #FFA901;
     font: bold 14px Tahoma,sans-serif;
     margin: 10px 0 10px 10px;
     padding: 0;
 }
-
 
 .bSpec .pb10{ margin: 10px 0 5px 10px; }
 .bigfilter {margin-bottom:15px}
@@ -511,6 +509,7 @@ border-radius:5px;
 .goodsline .photo {float:left; width:160px; margin:0}
 .goodsline .info {float:left; width:278px; padding:0 0 0 12px; margin-right:10px}
 .goodsline H3 {font-size:14px; font-weight:normal; margin:0; padding-bottom:5px}
+.goodsline H3.bolder {font-weight:bolder}
 .goodsline .extrainfo {float:left; width:190px; min-height:160px; padding-left:10px; border-left:1px solid #e6e6e6}
 .goodsline LI {list-style-type:disc; padding:0 0 1px 0; margin-left:14px}
 .goodsline .goodsbar {display:none; position:absolute; z-index:2; bottom:10px; right:88px}
@@ -1332,31 +1331,31 @@ border-radius: 5px;
 	font: 13px Tahoma, sans-serif;
 	border-bottom: 1px solid #e6e6e6;
 	}
-	
+
 	.mBold{ font-weight: bold; }
 	.bCtg a{ text-decoration: none; }
 	.bCtg li:hover a{ color: #ffa901; }
 	.mSelected{ font-weight: bold; }
-	.mSelected span{ 
-		color: #fff; 
-		background: #ffa901; 
-		padding: 1px 5px 2px 5px; 
+	.mSelected span{
+		color: #fff;
+		background: #ffa901;
+		padding: 1px 5px 2px 5px;
 		}
-	
+
 	.bCtg li{ margin: 2px 0; cursor: pointer; }
 	.bCtg.mHeight18 li{ margin: 4px 0; }
-	
+
 	.bCtg__eL1{}
-	
+
 	.bCtg__eL2{ padding-left: 11px; }
 	.bCtg__eL2.mSelected{ padding-left: 6px; }
-	
+
 	.bCtg__eL3{ padding-left: 23px; }
 	.bCtg__eL3.mSelected{ padding-left: 18px; }
-	
+
 	.bCtg__eL4{ padding-left: 34px;}
 	.bCtg__eL4.mSelected{ padding-left: 29px; }
-	
+
 	.bCtg__eL2 span,
 	.bCtg__eL3 span,
 	.bCtg__eL4 span{
@@ -1372,18 +1371,44 @@ border-radius: 5px;
 		left: -10px;
 		position: absolute;
 		}
-	
+
 	.bCtg__eL2.mBold span div,
 	.bCtg__eL2.mSelected span div,
 	.bCtg__eL3.mBold span div,
 	.bCtg__eL3.mSelected span div,
 	.bCtg__eL4.mBold span div,
 	.bCtg__eL4.mSelected span div{ visibility: hidden }
-	
+
     .catProductNum{
         font-size:14px;
         padding:11px 0px 3px 0px;
-    }    
+    }
+    
+    
+.bCtg b{
+	color: #a6a6a6;
+	font: 14px Tahoma, sans-serif;
+	}
+.mSelected,
+.mSelected b{
+	color: #fff;	
+	background: #ffa901;
+	}	
+	
+DT.bCtg__eOrange{
+	color: #ffa901;
+	font: bold 18px Tahoma, sans-serif;
+	}
+
+.bCtg__eMore{
+	margin-top: 6px;
+	}		
+.bCtg__eMore a{
+	color: #fff;
+	padding: 2px 8px;
+	background: #cbcbcb;
+	text-decoration: none;
+	}
 
 /* ----------- /categories ------------- */
 
@@ -1500,3 +1525,88 @@ border-radius: 5px;
 		line-height: 1.6;
 		}
 /* ----------- /map info ------------- */
+
+/* ----------- bInfoBlock ------------- */
+
+.bInfoBlock{
+	background: #fdfdfd;
+	margin: 13px 0;
+	border: 1px solid #e6e6e6;
+
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	}
+	.bInfoBlock img.banner{
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+	}
+	.bInfoBlock__eLeftImage,
+	.bInfoBlock__eRightContent{
+		vertical-align: top;
+		display: inline-block;
+		*display: inline;
+		zoom:1;
+		}
+	.bInfoBlock__eLeftImage img{
+		margin: 0 20px;
+		}
+	.bInfoBlock__eRightContent{
+		padding: 30px 0 0 0;
+		max-width: 480px;
+		}
+	.bInfoBlock__eSpan{
+		font: bold 14px Tahoma, sans-serif;
+		}
+	.bInfoBlock__eP{
+		margin: 0;
+		font: 13px/17px Tahoma, sans-serif;
+		}
+	.bInfoBlock__eBottomControls, .jshowoff-slidelinks{
+		margin: 0 25px;
+		padding: 12px 0;
+		text-align: right;
+		position:absolute;
+		top:135px;
+		right:0;
+		}
+	.bInfoBlock__eBottomControls a, .jshowoff-slidelinks a{
+		width: 25px;
+		height: 25px;
+		margin: 0 5px;
+		color: #a6a6a6;
+		text-align: center;
+		border: 1px solid #a6a6a6;
+
+		box-shadow:0 0 4px #a6a6a6;
+		-moz-box-shadow:0 0 4px #a6a6a6;
+		-webkit-box-shadow:0 0 4px #a6a6a6;
+
+		border-radius: 15px;
+		-moz-border-radius: 15px;
+		-webkit-border-radius: 15px;
+
+		display: inline-block;
+		*display: inline;
+		zoom:1;
+
+		}
+	.bInfoBlock__eBottomControls a:hover, .jshowoff-slidelinks a:hover, a.jshowoff-active{
+		color: #ffa901;
+		border: 1px solid #ffa901;
+
+		box-shadow:0 0 4px #ffa901;
+		-moz-box-shadow:0 0 4px #ffa901;
+		-webkit-box-shadow:0 0 4px #ffa901;
+
+		}
+	.bInfoBlock__eBottomControls span, .jshowoff-slidelinks span{
+		display: inline-block;
+		*display: inline;
+		zoom:1;
+
+		margin-top: 5px;
+		}
+
+/* ----------- /bInfoBlock ------------- */

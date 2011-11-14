@@ -4,8 +4,8 @@
   <dd>
     <ul>
     <?php $i = 0; $count = count($list['first']); foreach ($list['first'] as $item): $i++ ?>
-      <li<?php echo (!$item['selected'] && ($i > 8)) ? ' class="hf"' : '' ?>>
-        <a href="<?php echo $item['url'] ?>"><span class="bCtg__eL1<?php if ($item['selected']) echo ' mSelected' ?>"><?php echo $item['name'] ?> <b><?php echo $item['count'] ?></b></span></a>
+      <li class="bCtg__eL2<?php if ($item['selected']) echo ' mSelected' ?><?php if (!$item['selected'] && ($i > 8)) echo ' hf' ?>">
+        <a href="<?php echo $item['url'] ?>"><span><?php echo $item['name'] ?> <b><?php echo $item['count'] ?></b></span></a>
       </li>
     <?php endforeach ?>
     </ul>
@@ -23,8 +23,8 @@
   <dd>
     <ul>
     <?php foreach ($list['other'] as $i => $item): ?>
-      <li<?php echo (!$item['selected'] && ($i > 8)) ? ' class="hf"' : '' ?>>
-        <a href="<?php echo $item['url'] ?>"><span class="bCtg__eL1<?php if ($item['selected']) echo ' mSelected' ?>"><?php echo $item['name'] ?> <b><?php echo $item['count'] ?></b></span></a>
+      <li class="bCtg__eL2<?php if ($item['selected']) echo ' mSelected' ?><?php if (!$item['selected'] && ($i > 8)) echo ' hf' ?>">
+        <a href="<?php echo $item['url'] ?>"><span><?php echo $item['name'] ?> <b><?php echo $item['count'] ?></b></span></a>
       </li>
     <?php endforeach ?>
     </ul>

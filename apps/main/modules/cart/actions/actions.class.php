@@ -10,7 +10,7 @@
  */
 class cartActions extends myActions
 {
-     
+
  /**
   * Executes index action
   *

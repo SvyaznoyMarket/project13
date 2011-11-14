@@ -146,6 +146,14 @@ changeProduct:
   class: myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
 
+# Линии
+#
+# карточка линии
+lineCard:
+  url:   /line/:line
+  param: { module: lineCard, action: index }
+  class:   myDoctrineRoute
+  options: { model: ProductLine, type: object, method: getForRoute }
 
 # Магазин
 #

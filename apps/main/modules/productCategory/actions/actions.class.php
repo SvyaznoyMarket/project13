@@ -18,7 +18,7 @@ class productCategoryActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
   }
-  
+
   public function executeCarousel(sfWebRequest $request)
   {
 	  sfConfig::set('sf_web_debug', false);
@@ -37,9 +37,11 @@ class productCategoryActions extends myActions
       ));
 	  $this->setLayout(false);
 	  $this->getContext()->getConfiguration()->loadHelpers('Url');
+    $response = '';
 	  foreach ($products as $product) {
-		  $this->renderComponent('product', 'show', array('view' => 'compact', 'product' => $product));
+		  $response .= $this->getComponent('product', 'show', array('view' => 'compact', 'product' => $product));
 	  }
+    $this->renderText($response);
 	  return sfView::NONE;
   }
 }
