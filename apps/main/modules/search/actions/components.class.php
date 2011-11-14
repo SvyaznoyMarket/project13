@@ -47,7 +47,6 @@ class searchComponents extends myComponents
   /**
    * Executes filter_productType component
    *
-   * @param ProductType          $productType     Тип товара
    * @param myDoctrineCollection $productTypeList Коллекция типов товаров
    * @param string               $searchString    Строка поиска
    */

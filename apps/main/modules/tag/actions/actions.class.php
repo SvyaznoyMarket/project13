@@ -34,12 +34,14 @@ class tagActions extends myActions
     $this->tag = !empty($request['tag']) ? TagTable::getInstance()->getByToken($request['tag']) : false;
     $this->forward404Unless($this->tag);
 
+    $this->productType = !empty($request['productType']) ? ProductTypeTable::getInstance()->find($request['product_type']) : false;
+
     $table = ProductTable::getInstance();
 
     $q = $table->createBaseQuery();
     $table->setQueryForFilter($q, array(
       'tag'  => $this->tag,
-      'type' => !empty($request['product_types']) ? $request['product_types'] : false,
+      'type' => $this->productType ? array($this->productType->id) : array(),
     ));
 
     $this->productPager = $this->getPager('Product', $q, array(
