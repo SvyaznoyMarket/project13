@@ -106,14 +106,11 @@ class searchActions extends myActions
         foreach ($productTypeList as $productType)
         {
           $productType->mapValue('_product_count', $coreIds[$productType->core_id]);
-          if ($productType->id == ($this->productType ? $this->productType->id : null))
-          {
-            $productType->mapValue('_selected', true);
-            $this->productType->mapValue('_product_count', $coreIds[$productType->core_id]);
-          }
-          else {
-            $productType->mapValue('_selected', false);
-          }
+          $this->productType->mapValue('_product_count',
+            ($productType->id == ($this->productType ? $this->productType->id : null))
+            ? $coreIds[$productType->core_id]
+            : 0
+          );
         }
       }
 

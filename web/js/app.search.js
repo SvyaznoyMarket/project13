@@ -5,6 +5,10 @@ $(document).ready(function() {
 
     var form = $(this)
 
+    if (form.find('input:[name="q"]').val().length < 2) {
+      return
+    }
+
     form.ajaxSubmit({
       async: false,
       success: function(response) {

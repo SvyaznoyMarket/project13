@@ -578,4 +578,20 @@ class ProductTable extends myDoctrineTable
 
     return $q;
   }
+
+  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  {
+    $return = array_merge(parent::getCacheEraserKeys($record, $action), array());
+
+    $modified = $record->getLastModified();
+    if (true || ('delete' == $action) || isset($modified['score']))
+    {
+      foreach ($record->Category as $productCategory)
+      {
+        $return[] = "productCategory-{$productCategory->core_id}";
+      }
+    }
+
+    return $return;
+  }
 }

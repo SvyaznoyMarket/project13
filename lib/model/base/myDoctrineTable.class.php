@@ -263,6 +263,33 @@ class myDoctrineTable extends Doctrine_Table
     return $keys;
   }
 
+  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  {
+    if (in_array($this->getComponentName(), array(
+      'Task',
+    ))) {
+      return array();
+    }
+
+    $field = false;
+    foreach (array('core_id', 'id') as $v)
+    {
+      if ($this->hasColumn($v))
+      {
+        $field = $v;
+        break;
+      }
+    }
+    if (!$field)
+    {
+      return array();
+    }
+
+    return array(
+      lcfirst($this->getComponentName()).'-'.$record->get($field),
+    );
+  }
+
   public function createRecordFromCore(array $data)
   {
     $record = $this->create();
