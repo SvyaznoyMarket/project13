@@ -1,5 +1,13 @@
 <?php
 
+class UserDefaultsMock
+{
+    public function __get($name)
+    {
+        return '';
+    }
+}
+
 class OrderStep1Form extends BaseOrderForm
 {
   public function configure()
@@ -9,6 +17,9 @@ class OrderStep1Form extends BaseOrderForm
     sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
 
     $user = sfContext::getInstance()->getUser()->getGuardUser();
+    if (!$user) {
+        $user = new UserDefaultsMock;
+    }
 
     $this->disableCSRFProtection();
 

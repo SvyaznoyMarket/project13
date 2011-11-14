@@ -1,7 +1,8 @@
 indexSuccess:
-
+    
   javascripts:
     - jquery.mousewheel.min.js
     #- shelf/watch3d.js
     - watch3dv2.min.js
     - productcard.js
+    - prettyCheckboxes.js

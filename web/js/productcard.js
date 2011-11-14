@@ -28,5 +28,36 @@ $(document).ready(function(){
 			mLib.show( $(this).attr('ref') , $(this).attr('href'))
 		return false
 	})
-	
+    
+    $('#1click-trigger').click(function(e){
+        
+        $.get($(this).prop('href'), {}, function(response){
+            var cnt = $('<div class="popup"><i class="close" title="Закрыть">Закрыть</i>'+response+'</div>').appendTo(document.body),
+                form = cnt.find('form');
+            Custom.init();
+            cnt.lightbox_me({
+                onLoad: function(){
+                    cnt.find('input[type=checkbox], input[type=radio]').prettyCheckboxes();
+                    form.submit(function(){
+                        $.post(form.prop('action'), form.serializeArray(), function(resp){
+                            cnt.html('<i class="close" title="Закрыть">Закрыть</i>'+resp);
+                            Custom.init();
+                        });
+                        return false;
+                    });
+                },
+                onClose: function(){
+                    cnt.remove()
+                }
+			});
+        });
+        
+        return false;
+    });
+    
+	if (location.toString().search('1click-payment-ok') !== -1) {
+        alert('Заказ успешно оплачен');
+    } else if (location.toString().search('1click-payment-fail') !== -1) {
+        alert('При оплате заказа произошла ошибка');
+    }
 })	
