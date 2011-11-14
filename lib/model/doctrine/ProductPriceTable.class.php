@@ -47,4 +47,29 @@ class ProductPriceTable extends myDoctrineTable
       'price_list_id' => array('rel' => 'PriceList'),
     );
   }
+
+  public function getCacheEraserKeys(myDoctrineRecord $record, $action)
+  {
+    $return = array();
+
+    $q = ProductTable::getInstance()->createQuery('product')
+      ->select('product.core_id')
+      ->innerJoin('product.ProductPrice productPrice')
+      ->where('productPrice.id = ?', $record->id)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+    ;
+
+    $ids = $q->execute();
+    if (!is_array($ids))
+    {
+      $ids = array($ids);
+    }
+
+    foreach ($ids as $id)
+    {
+      $return[] = "product-{$id}";
+    }
+
+    return $return;
+  }
 }
