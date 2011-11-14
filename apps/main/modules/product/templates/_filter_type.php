@@ -1,6 +1,6 @@
 <?php if (count($list['first'])): ?>
 <dl class="bCtg">
-  <dt class="bCtg__eOrange">Найдено в<br /><?php echo $firstProductCategory->_variation ?></dt>
+  <dt class="bCtg__eOrange">Найдено в<br /><?php echo $firstProductCategory->variation ?></dt>
   <dd>
     <ul>
     <?php $i = 0; $count = count($list['first']); foreach ($list['first'] as $item): $i++ ?>

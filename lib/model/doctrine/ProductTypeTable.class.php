@@ -134,7 +134,10 @@ class ProductTypeTable extends myDoctrineTable
 
     if ($params['with_productCount'])
     {
-      $q->addSelect('COUNT(product.id) AS _product_count');
+      $q
+        ->addSelect('COUNT(product.id) AS _product_count')
+        ->orderBy('COUNT(product.id) DESC')
+      ;
     }
 
     return $q->execute();

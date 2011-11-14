@@ -48,6 +48,7 @@ class searchComponents extends myComponents
    * Executes filter_productType component
    *
    * @param myDoctrineCollection $productTypeList Коллекция типов товаров
+   * @param ProductType          $productType     Выбранный тип товара
    * @param string               $searchString    Строка поиска
    */
   public function executeFilter_productType()
@@ -81,43 +82,10 @@ class searchComponents extends myComponents
         'value'    => $productType->id,
         'selected' => false
           || ((0 == $i) && !$this->productType)
-          || (isset($productType->_selected) ? $productType->_selected : false)
+          || ($this->productType && ($this->productType->id == $productType->id))
         ,
       );
     }
-
-    $variation = mb_strtolower($firstProductCategory->name, 'utf-8');
-    switch ($variation)
-    {
-      case 'мебель':
-        $variation = 'мебели';
-        break;
-      case 'бытовая техника':
-        $variation = 'бытовой технике';
-        break;
-      case 'товары для дома':
-        $variation = 'товарах для дома';
-        break;
-      case 'товары для детей':
-        $variation = 'товарах для детей';
-        break;
-      case 'сделай сам (инструменты)':
-        $variation = 'сделай сам (инструменты)';
-        break;
-      case 'электроника':
-        $variation = 'электронике';
-        break;
-      case 'украшения и часы':
-        $variation = 'украшениях и часах';
-        break;
-      case 'спорт':
-        $variation = 'спорте';
-        break;
-      case 'подарки':
-        $variation = 'подарках';
-        break;
-    }
-    $firstProductCategory->mapValue('_variation', $variation);
 
     $this->setVar('list', $list, true);
     $this->setVar('firstProductCategory', $firstProductCategory, true);
