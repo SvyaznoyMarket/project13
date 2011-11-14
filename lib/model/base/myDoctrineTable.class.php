@@ -263,7 +263,7 @@ class myDoctrineTable extends Doctrine_Table
     return $keys;
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action)
+  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
   {
     if (in_array($this->getComponentName(), array(
       'Task',

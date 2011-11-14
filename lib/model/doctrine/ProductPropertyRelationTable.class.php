@@ -51,7 +51,7 @@ class ProductPropertyRelationTable extends myDoctrineTable
     return $field;
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action)
+  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
   {
     $return = array();
 

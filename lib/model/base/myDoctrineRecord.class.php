@@ -213,6 +213,12 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     return $this->corePush;
   }
 
+  public function getCacheEraserKeys($action = null)
+  {
+    return $this->getTable()->getCacheEraserKeys($this, $action);
+  }
+
+  // TODO: удалить
   protected function getRecordByCoreId($model, $coreId, $returnId = false)
   {
     return myDoctrineTable::getRecordByCoreId($model, $coreId, $returnId);

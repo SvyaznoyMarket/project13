@@ -30,7 +30,7 @@ class StockProductRelationTable extends myDoctrineTable
     );
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action)
+  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
   {
     $return = array();
 

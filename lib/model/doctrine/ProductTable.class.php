@@ -541,7 +541,7 @@ class ProductTable extends myDoctrineTable
 
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action)
+  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
   {
     $return = array_merge(parent::getCacheEraserKeys($record, $action), array());
 
