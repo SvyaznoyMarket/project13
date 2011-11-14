@@ -25,18 +25,19 @@ class ProductTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'            => 'core_id',
-      'name'          => 'name',
-      'bar_code'      => 'barcode',
-      'article'       => 'article',
-      'announce'      => 'preview',
-      'tagline'       => 'tagline',
-      'description'   => 'description',
-      'rating'        => 'rating',
-      'rating_count'  => 'rating_quantity',
-      'score'         => 'score',
-      'media_image'   => 'main_photo',
-      'prefix'        => 'prefix',
+      'id'              => 'core_id',
+      'name'            => 'name',
+      'bar_code'        => 'barcode',
+      'article'         => 'article',
+      'announce'        => 'preview',
+      'tagline'         => 'tagline',
+      'description'     => 'description',
+      'rating'          => 'rating',
+      'rating_count'    => 'rating_quantity',
+      'score'           => 'score',
+      'media_image'     => 'main_photo',
+      'prefix'          => 'prefix',
+      'is_primary_line' => 'is_lines_main',
 
       'type_id'       => array('rel' => 'Type'),
       'brand_id'      => array('rel' => 'Creator'),
@@ -97,7 +98,7 @@ class ProductTable extends myDoctrineTable
     {
       $q->leftJoin('product.PropertyRelation productPropertyRelation');
     }
-    
+
     if ($params['with_line'])
     {
       $q->innerJoin('product.Line line');
@@ -127,7 +128,7 @@ class ProductTable extends myDoctrineTable
       'view'           => $params['property_view'] ? $params['property_view'] : $params['view'],
       'group_property' => $params['group_property'],
     ));
-    
+
     if ($params['with_properties'])
     {
       // группировка параметров продукта по свойствам продукта
@@ -502,13 +503,13 @@ class ProductTable extends myDoctrineTable
   public function countByCategory(ProductCategory $category, array $params = array())
   {
     $q = $this->createBaseQuery($params);
-    
+
     if ($category->has_line)
     {
       $q->addWhere('product.line_id IS NOT NULL')
         ->groupBy('product.line_id');
     }
-    
+
     $ids = $category->getDescendantIds();
     $ids[] = $category->id;
 
@@ -542,15 +543,15 @@ class ProductTable extends myDoctrineTable
 
     return $q->fetchOne();
   }
-  
+
   public function getByLine(ProductLine $line, array $params = array())
   {
     $this->applyDefaultParameters($params);
-    
+
     $params = myToolkit::arrayDeepMerge(array(
       'select'   => 'product.id',
     ), $params);
-    
+
     $q = $this->createBaseQuery($params);
 
     $q->addWhere('product.line_id = ?', $line->id)
@@ -560,15 +561,15 @@ class ProductTable extends myDoctrineTable
 
     return $this->getById($q->fetchOne()->id);
   }
-  
+
   public function getQueryByLine(ProductLine $line, array $params = array())
   {
     $this->applyDefaultParameters($params);
-    
+
     $q = $this->createBaseQuery($params);
 
     $q->addWhere('product.line_id = ?', $line->id);
-    
+
     if (!isset($params['with_main']) || !$params['with_main'])
     {
       $q->addWhere('product.is_lines_main = ?', 0);
