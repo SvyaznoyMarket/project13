@@ -21,10 +21,11 @@ class CreatorTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'          => 'core_id',
-      'name'        => 'name',
-      'description' => 'description',
-      'added'       => 'created_at',
+      'id'              => 'core_id',
+      'name'            => 'name',
+      'description'     => 'description',
+      'is_view_filter'  => 'is_filter',
+      'added'           => 'created_at',
     );
   }
 
@@ -74,13 +75,21 @@ class CreatorTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->innerJoin('creator.Product product')
+    $q->innerJoin('creator.Product product');
 //    $q->innerJoin('creator.Product product WITH product.is_instock = ?', 1)
-      ->innerJoin('product.Category category WITH category.id = ?', $productCategory->id)
+      if (isset($params['with_descendat']) && $params['with_descendat'])
+      {
+        $dIds = ProductCategoryTable::getInstance()->getDescendatIds($productCategory, array('with_parent' => true, ));
+        $q->innerJoin('product.Category category')
+          ->andWhereIn('category.id', $dIds);
+      }
+      else
+      {
+        $q->innerJoin('product.Category category WITH category.id = ?', $productCategory->id);
+      }
       //->addWhere('category.id = ?', $productCategory->id)
       //->where('product.category_id = ?', $productCategory->id)
-      ->useResultCache(true, null, $this->getQueryHash("productCategory-{$productCategory->id}/creator-all", $params))
-    ;
+      $q->useResultCache(true, null, $this->getQueryHash("productCategory-{$productCategory->id}/creator-all", $params));
 
     $this->setQueryParameters($q, $params);
 

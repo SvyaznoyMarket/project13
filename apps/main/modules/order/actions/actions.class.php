@@ -401,6 +401,7 @@ class orderActions extends myActions
 
     //$this->order->User = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);//$this->getUser()->getGuardUser();
 
+    /*
     foreach ($this->getUser()->getCart()->getProducts() as $product)
     {
       $relation = new OrderProductRelation();
@@ -411,6 +412,30 @@ class orderActions extends myActions
       ));
       $order->ProductRelation[] = $relation;
     }
+     * 
+     */
+    foreach ($this->getUser()->getCart()->getProductServiceList() as $product)
+    {
+        $relation = new OrderProductRelation();
+        $relation->fromArray(array(
+            'product_id' => $product['id'],
+            'price'      => $product['price'],
+            'quantity'   => $product['quantity'],
+        ));
+        $order->ProductRelation[] = $relation;
+        
+        foreach ($product['service'] as $service)
+        {      
+            $relation = new OrderServiceRelation();
+            $relation->fromArray(array(
+                'product_id' => $product['id'],
+                'service_id' => $service['id'],
+                'price'      => $service['price'],
+                'quantity'   => $service['quantity'],
+            ));
+            $order->ServiceRelation[] = $relation;            
+        }
+    }    
 
     try
     {

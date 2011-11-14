@@ -45,6 +45,7 @@ all:
 
   guard:
     remember_cookie_name: remember
+    cache_cookie_name: enter_auth
     allow_login_with_email: true
     signout_url: '@user'
     signin_url: '@user'

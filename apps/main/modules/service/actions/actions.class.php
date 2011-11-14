@@ -17,7 +17,62 @@ class serviceActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->forward('list');
+    if (!isset($request['serviceCategory']) || !$request['serviceCategory']){
+        $serviceCategory = ServiceCategoryTable::getInstance()->getQueryObject()->where('core_parent_id IS NULL')->fetchOne();
+        $list = ServiceCategoryTable::getInstance()
+                        ->getQueryObject()
+                        ->where('core_parent_id=?',$serviceCategory['core_id'])->fetchArray();
+    } else {
+        $serviceCategory = $this->getRoute()->getObject();
+        #echo get_class($serviceCategory);
+        $list = ServiceCategoryTable::getInstance()
+                        ->getQueryObject()
+                        ->orderBy('lft')->fetchArray();
+        //если первый уровень - выбираем перую подкатегорию и переходим на неё
+        if ($serviceCategory['level'] == 1){
+            $getNext = false;
+            foreach($list as $item){
+                if ($getNext){
+                    $newCatId = $item['id'];
+                    break;
+                }
+                if ($item['id'] == $serviceCategory['id']) $getNext = true;
+            }
+            $serviceCategory = ServiceCategoryTable::getInstance()->getById($newCatId);
+        }
+        
+        $showFlag = false;
+        foreach($list as $item){
+            if ($item['id'] == $serviceCategory['id']){
+                $showFlag = true;
+            }
+            if ($showFlag){
+                if ($serviceCategory['id'] != $item['id'] && $serviceCategory['level'] == $item['level']){
+                    $showFlag = false;
+                    break;
+                }   
+                $listInner[] = $item;
+                $listInnerCatId[] = $item['id'];
+            }
+        }
+        //получаем списки сервисов
+        $serviceList = ServiceTable::getInstance()
+                        ->createQuery('s')
+                        ->distinct()
+                        ->leftJoin('s.ServiceCategoryRelation sc on s.id=sc.service_id ')
+                        ->leftJoin('s.Price p on s.id=p.service_id ')
+                        ->where('sc.category_id IN ('.implode(',', $listInnerCatId). ')' )->fetchArray();
+        #print_r($serviceList);
+        #$list = $serviceCategory->getServiceList( array('level') );
+    }
+    $this->getResponse()->setTitle('F1 - '.$serviceCategory['name'].' – Enter.ru');
+
+    
+    $this->serviceCategory = $serviceCategory;
+    $this->setVar('serviceCategory', $serviceCategory, true);
+    $this->setVar('list', $list, true);
+    if (isset($listInner)) $this->setVar('listInner', $listInner, true);
+    if (isset($serviceList)) $this->setVar('serviceList', $serviceList, true);
   }
 
  /**
@@ -42,16 +97,5 @@ class serviceActions extends myActions
     $this->setVar('list', $list, true);
   }
 
- /**
-  * Executes list action
-  *
-  * @param sfRequest $request A request object
-  */
-  public function executeList(sfWebRequest $request)
-  {
-    $serviceCategory = $this->getRoute()->getObject();
-    $list = $serviceCategory->getServiceList();
-
-    $this->setVar('list', $list, true);
-  }
+ 
 }

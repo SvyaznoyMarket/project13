@@ -11,6 +11,11 @@ class myDebug
 
   static public function dump($value, $terminate = false, $format = null)
   {
+    if ('live' == sfConfig::get('sf_environment'))
+    {
+      return false;
+    }
+
     self::$count ++;
 
     $type = gettype($value);

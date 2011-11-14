@@ -10,6 +10,8 @@
  */
 class productCatalogActions extends myActions
 {
+
+    private $_validateResult;
  /**
   * Executes index action
   *
@@ -85,7 +87,7 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-    $this->productTagFilter = $this->getProductTagFilter();
+    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
     $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
 
     $q = ProductTable::getInstance()->createBaseQuery();
@@ -149,7 +151,7 @@ class productCatalogActions extends myActions
     $this->productCategory = $this->getRoute()->getObject();
 
     $this->productFilter = $this->getProductFilter(array('count' => true, ));
-    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, ));
+    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, 'with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
 
     if ($request->hasParameter($this->productFilter->getName()))
     {
@@ -195,6 +197,71 @@ class productCatalogActions extends myActions
     }
   }
 
+  public function executeCategoryAjax(sfWebRequest $request){
+
+    $this->setVar('allOk', false);
+
+    if (!isset($request['productCategory'])){
+        $this->_validateResult['success'] = false;
+        $this->_validateResult['error'] = 'Не указан token категории';
+        return $this->_refuse();
+    }
+    if (!isset($request['page'])){
+        $request['page'] = 1;
+    }
+    if (!isset($request['view'])){
+        $request['page'] = 'compact';
+    }
+
+    try{
+        $this->productCategory = $this->getRoute()->getObject();
+    } catch(Exception $e){
+        $this->_validateResult['success'] = false;
+        $this->_validateResult['error'] = 'Категория не найдена';
+        return $this->_refuse();
+    }
+
+
+    $filter = array(
+      'category' => $this->productCategory,
+    );
+
+    $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+      'view'            => 'list',
+      'with_properties' => 'expanded' == $request['view'],
+    ));
+
+    // sorting
+    $this->productSorting = $this->getProductSorting();
+    $this->productSorting->setQuery($q);
+
+
+    if (isset($request['num'])) $limit = $request['num'];
+    else $limit = sfConfig::get('app_product_max_items_on_category', 20);
+    $this->productPager = $this->getPager('Product', $q, array(
+      'limit' => $limit,
+    ));
+
+    if($request['page'] > $this->productPager->getLastPage()){
+        $this->_validateResult['success'] = false;
+        $this->_validateResult['error'] = 'Номер страницы превышает максимальный для списка';
+        return $this->_refuse();
+    }
+
+    $this->setVar('allOk', true);
+
+  }
+
+  private function _refuse(){
+      return $this->renderJson(array(
+        'success' => $this->_validateResult['success'],
+        'data'    => array(
+          'error' => $this->_validateResult['error'],
+        ),
+      ));
+  }
+
+
  /**
   * Executes category action
   *
@@ -204,7 +271,6 @@ class productCatalogActions extends myActions
   {
 
     $this->_seoRedirectOnPageDublicate($request);
-
     $this->productCategory = $this->getRoute()->getObject();
 
 //    $title = $this->productCategory['name'];
@@ -260,17 +326,17 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-	$title = $this->productCategory['name'];
-	if ($request->getParameter('page'))
+    $title = $this->productCategory['name'];
+    if ($request->getParameter('page'))
     {
-		$title .= ' – '.$request->getParameter('page');
-	}
-	$rootCategory = $this->productCategory->getRootCategory();
-	if ($rootCategory->id !== $this->productCategory->id)
+      $title .= ' – '.$request->getParameter('page');
+    }
+    $rootCategory = $this->productCategory->getRootCategory();
+    if ($rootCategory->id !== $this->productCategory->id)
     {
-		$title .= ' – '.$rootCategory;
-	}
-	$this->getResponse()->setTitle($title.' – Enter.ru');
+      $title .= ' – '.$rootCategory;
+    }
+    $this->getResponse()->setTitle($title.' – Enter.ru');
 
     $filter = array(
       'category' => $this->productCategory,
@@ -301,10 +367,10 @@ class productCatalogActions extends myActions
     $list[] = (string)$this->productCategory;
     $title = '%s - страница %d из %d - интернет-магазин Enter.ru - Москва';
     $this->getResponse()->setTitle(sprintf(
-        $title,
-        implode(' - ', $list),
-        $request->getParameter('page', 1),
-        $this->productPager->getLastPage()
+      $title,
+      implode(' - ', $list),
+      $request->getParameter('page', 1),
+      $this->productPager->getLastPage()
     ));
     // :: SEO
   }
@@ -402,6 +468,9 @@ class productCatalogActions extends myActions
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+
+    $this->view = 'line';
+    $this->list_view = false;
   }
 
 

@@ -250,7 +250,7 @@ ProductPropertyRelation:
     option_id:         { type: integer(20), notnull: false, default: null }
     value_integer:     { type: integer(20), notnull: false, default: null }
     value_float:       { type: 'decimal(10,4)', notnull: false, default: null }
-    value_string:      { type: string(255), notnull: false, default: null }
+    value_string:      { type: string(500), notnull: false, default: null }
     value_text:        { type: string, notnull: false, default: null }
     value_boolean:     { type: boolean, notnull: false, default: null }
     value:             { type: string(255), notnull: false, default: null, comment: 'Значение свойства для отображения' }
@@ -400,6 +400,7 @@ ProductLine:
   columns:
     id:      { type: integer(20), autoincrement: true, primary: true }
     name:    { type: string(255), notnull: true, notblank: true }
+    token:   { type: string(255), unique: true, notnull: true, notblank: true }
     photo:   { type: string(255), notnull: false, default: null }
 
 ProductStatus:

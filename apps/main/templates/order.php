@@ -35,6 +35,7 @@ _gaq.push(['_trackPageLoadTime']);
 </head>
 
 <body>
+<?php LastModifiedHandler::setLastModified();  ?>       
 <div class="allpage">
 <div class="allpageinner buyingpage">
 

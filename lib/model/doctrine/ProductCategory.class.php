@@ -51,9 +51,9 @@ class ProductCategory extends BaseProductCategory
 
   }
 
-  public function countProduct()
+  public function countProduct(array $params = array())
   {
-    return ProductTable::getInstance()->countByCategory($this);
+    return ProductTable::getInstance()->countByCategory($this, $params);
   }
 
   public function getPreviewProduct()

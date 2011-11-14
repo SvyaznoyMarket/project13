@@ -1,4 +1,87 @@
-$(document).ready(function(){
+// Simple JavaScript Templating
+// John Resig - http://ejohn.org/ - MIT Licensed
+(function(){
+  var cache = {};
+  
+  this.tmpl = function tmpl(str, data){
+    // Figure out if we're getting a template, or if we need to
+    // load the template - and be sure to cache the result.
+    var fn = !/\W/.test(str) ?
+      cache[str] = cache[str] ||
+        tmpl(document.getElementById(str).innerHTML) :
+      
+      // Generate a reusable function that will serve as a template
+      // generator (and which will be cached).
+      new Function("obj",
+        "var p=[],print=function(){p.push.apply(p,arguments);};" +
+        
+        // Introduce the data as local variables using with(){}
+        "with(obj){p.push('" +
+        
+        // Convert the template into pure JavaScript
+        str
+          .replace(/[\r\t\n]/g, " ")
+          .split("<%").join("\t")
+          .replace(/((^|%>)[^\t]*)'/g, "$1\r")
+          .replace(/\t=(.*?)%>/g, "',$1,'")
+          .split("\t").join("');")
+          .split("%>").join("p.push('")
+          .split("\r").join("\\'")
+      + "');}return p.join('');");
+    
+    // Provide some basic currying to the user
+    return data ? fn( data ) : fn;
+  };
+})();
+
+$(document).ready(function(){	
+	/* Rotator */
+	if($('#rotator').length) {
+		$('#rotator').jshowoff({ speed:8000, controls:false })
+		$('.jshowoff-slidelinks a').wrapInner('<span/>')
+	}
+	/* Infinity scroll */
+	var ableToLoad = true
+	var compact = $("div.goodslist").length
+	function liveScroll( lsURL, pageid ) {
+		lsURL += pageid + '/' + (( compact ) ? 'compact/' : 'expanded/')
+		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
+		tmpnode.after('<div id="ajaxgoods" style="width:100%; text-align:right;"><span style="margin-bottom: 6px;">Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
+		$.get( lsURL, function(data){
+			if ( data != "" && !data.data ) { // JSON === error
+				ableToLoad = true
+				if( compact )
+					tmpnode.append(data)
+				else
+					tmpnode.after(data)
+			}
+			$('#ajaxgoods').remove()
+		})
+	}
+	
+	if( $('div.allpager').length ) 
+		$('div.allpager').each(function(){
+			var lsURL = $(this).data('url')	
+			var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
+			var vinit = vnext - 1
+			var vlast = parseInt('0' + $(this).data('lastpage') , 10)
+			function checkScroll(){
+				if ( ableToLoad && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
+					ableToLoad = false
+					if( vlast + vinit > vnext )
+						liveScroll( lsURL, ((vnext % vlast) ? (vnext % vlast) : vnext ))
+					vnext += 1
+				}
+			}
+			$(this).bind('click', function(){				
+				$('div.pageslist').css('visibility','hidden')
+				$('div.allpager').css('visibility','hidden')				
+				checkScroll()
+				$(window).scroll( checkScroll )
+			})		
+		})
+	
+	
 	/* AJAX */
 	$('body').append('<div style="display:none"><img src="/images/error_ajax.gif" alt=""/></div>')
 	var errorpopup = function( txt ) {
@@ -58,7 +141,7 @@ $(document).ready(function(){
 	
 	/* --- */
     $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes();
-
+	//$(".bigfilter dt").trigger('click')
 	$(".bigfilter dt").click(function(){
 		$(this).next(".bigfilter dd").slideToggle(200)
 		$(this).toggleClass("current")
@@ -326,10 +409,10 @@ $(document).ready(function(){
 				if( data.success && data.data.quantity ) {
 					$(nodes.quan).html( data.data.quantity + ' шт.' )
 					self.calculate( data.data.quantity )
-					var liteboxJSON = ltbx.restore()
-					liteboxJSON.vitems += delta
-					liteboxJSON.sum    += delta * price
-					ltbx.update( liteboxJSON )
+					//var liteboxJSON = ltbx.restore()
+					//liteboxJSON.vitems += delta
+					//liteboxJSON.sum    += delta * price
+					//ltbx.update( liteboxJSON )
 				}
 			})
 		}
