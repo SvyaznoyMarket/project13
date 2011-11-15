@@ -9,7 +9,10 @@
 <form class="product_filter-block" action="<?php echo $url ?>" method="get" data-action-count="<?php echo url_for('productCatalog_count', $sf_data->getRaw('productCategory')) ?>">
 
   <dl class="bigfilter form bSpec">
-    <h2>Enterесный выбор</h2>  
+    <h2>Enterесный выбор</h2>
+
+    <?php include_component('productCatalog', 'tag_selected', array('form' => $form, 'productCategory' => $productCategory)) ?>
+
     <?php $i = 0; foreach ($form as $name => $field): if ($i > 7) break; ?>
       <?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?>
       <?php $i++ ?>
