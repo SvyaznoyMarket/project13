@@ -1315,6 +1315,18 @@ border-radius: 5px;
 	margin: 11px 0;
 	 font-weight: normal;
 	}
+.yellowbutton.mDisabled{
+	opacity: 0.5;
+	-webkit-opacity: 0.5;
+	-moz-opacity: 0.5;
+	-ms-opacity: 0.5;
+	-o-opacity: 0.5;
+	
+	color: #a6a6a6;
+	cursor: default;
+	background: #f3f3f3;
+	border: 1px solid #a6a6a6;
+	}	
 .bPopupWrap {
     left: 0;
     margin-top: 200px;

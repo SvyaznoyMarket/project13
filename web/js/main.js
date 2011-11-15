@@ -48,7 +48,7 @@ $(document).ready(function(){
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
 		var loader = 
 			"<div id='ajaxgoods' class='bNavLoader'>" +
-				"<div class='bNavLoader__eIco'><img src='/images/arrow.png'></div>" +
+				"<div class='bNavLoader__eIco'><img src='/images/arrow.gif'></div>" +
 				"<div class='bNavLoader__eM'>" +
 					"<p class='bNavLoader__eText'>Подождите немного</p>"+
 					"<p class='bNavLoader__eText'>Идет загрузка</p>"+
@@ -186,7 +186,17 @@ $(document).ready(function(){
 		$(this).toggleClass("current")
 		return false
 	})
-
+	$('.product_filter-block input:submit').addClass('mDisabled')
+	var launch = false
+	$('.product_filter-block').change(function(){ 
+		activateForm()
+	})
+	function activateForm() {
+		if ( !launch ) {
+			$('.product_filter-block input:submit').removeClass('mDisabled')
+			launch = true
+		}	
+	}
 	/* Sliders */
 	$('.sliderbox').each( function(){
 		var sliderRange = $('.filter-range', this)	
@@ -211,8 +221,10 @@ $(document).ready(function(){
 				to.val( ui.values[ 1 ] )
 			},
 			change: function(e, ui) {
-				if ( parseFloat(to.val()) > 0 );
+				if ( parseFloat(to.val()) > 0 ){
 					from.parent().trigger('preview')
+					activateForm()
+				}
 			}
 		})
 /*
