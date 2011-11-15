@@ -25,4 +25,11 @@ class ProductLineTable extends myDoctrineTable
       'media_image' => 'photo',
     );
   }
+  
+  public function getForRoute(array $params)
+  {
+    $id = isset($params['line']) ? $this->getIdBy('token', $params['line']) : null;
+
+    return $this->getById($id, array());
+  }
 }

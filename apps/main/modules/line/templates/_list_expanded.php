@@ -1,0 +1,1 @@
+<?php include_partial('product/list_expanded', $sf_data) ?>
