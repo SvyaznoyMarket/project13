@@ -9,7 +9,8 @@
 <form class="product_filter-block" action="<?php echo $url ?>" method="get" data-action-count="<?php echo url_for('productCatalog_count', $sf_data->getRaw('productCategory')) ?>">
   <?php echo $form->renderHiddenFields() ?>
   <dl class="bigfilter form bSpec">
-    <h2>Enterесный выбор</h2>        
+    <h2>Выбираем:</h2>    
+    <?php $openNum = 0; ?>
     <?php $i = 0; foreach ($form as $name => $field):  if ($i++ > 7) break;  ?>
       <?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?>
 
@@ -19,6 +20,15 @@
       </dt>
 
       <?php
+        if ($name == 'price' || $name == 'creator'){
+            $open = 'block';
+        } elseif ($openNum < 5) {
+            $openNum++;
+            $open = 'block';
+        } else {
+            $open = 'none';            
+        }
+      /* DEPRICATED
             if (get_class( $field->getWidget() ) == 'myWidgetFormRange'){
                 $info = $field->getWidget()->getOptions();
                 $currentVal = $form[$name]->getValue();
@@ -34,6 +44,8 @@
                     $open = 'none';                
                 }
             }
+       * *
+       */
       ?>      
       <dd style="display: <?php echo $open ?>;">
 
