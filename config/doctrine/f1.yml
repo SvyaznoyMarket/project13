@@ -45,15 +45,15 @@ ServicePrice:
     Service:           { class: Service, foreignAlias: Price, local: service_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Region:            { class: Region, foreignAlias: ServicePrice, local: region_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
-ServiceCategoryProductTypeRelation:
+ServiceProductRelation:
   options:
-    comment: 'Связь категории услуги с типом продукта'
+    comment: 'Связь услуги с продуктом'
   columns:
-    category_id:       { type: integer(20), notnull: true, primary: true }
-    product_type_id:   { type: integer(20), notnull: true, primary: true }
+    service_id:       { type: integer(20), notnull: true, primary: true }
+    product_id:       { type: integer(20), notnull: true, primary: true }
   relations:
-    Category:          { class: ServiceCategory, foreignAlias: ProductTypeRelation, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
-    ProductType:       { class: ProductType, foreignAlias: ServiceCategoryRelation, local: product_type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Service:          { class: Service, foreignAlias: ProductRelation, local: service_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Product:       { class: Product, foreignAlias: ServiceRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
 
 ServiceCategoryRelation:
   options:

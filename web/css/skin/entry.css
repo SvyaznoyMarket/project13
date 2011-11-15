@@ -12,3 +12,5 @@ FORM {margin:0}
 .entrybutton {float:left; width:68px; height:35px; border:0; background:none; font-size:18px; color:#fff; cursor:pointer}
 .entrybox:hover {background-position:0 0}
 .entrybox:hover .text {color:#fff}
+H1 { margin:0; font-weight:normal; font-size:46px; font-family:"Enter"; color:#F89B1C}
+.openblock { text-align:center; font-family:"Enter"; color: #F89B1C; }

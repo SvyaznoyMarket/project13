@@ -6,7 +6,12 @@
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php include_stylesheets() ?>
+    <link rel="stylesheet" type="text/css" href="/css/jquery.countdown.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/font.css"/>
     <?php include_javascripts() ?>
+    <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.countdown.min.js"></script>    
+    <script type="text/javascript" src="/js/jquery.countdown-ru.js"></script>
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25485956-1']);
@@ -33,6 +38,13 @@ _gaq.push(['_trackPageview']);
 _gaq.push(['_trackPageLoadTime']);
 (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();
 </script>
+<script>
+$(document).ready(function(){	
+	var austDay = new Date();
+	austDay = new Date(austDay.getFullYear() , 11 - 1, 16);
+	$('#cd').countdown({ until: austDay , format: 'HMS'});
+	})
+</script>
   </head>
 
   <body>
@@ -41,7 +53,14 @@ _gaq.push(['_trackPageLoadTime']);
 
       <div class="entry">
         <div class="entrybox">
-          <?php echo $sf_content ?>
+          <?php echo $sf_content ?>          
+        </div>
+        <div class="openblock">
+        <h1>
+        Скоро открытие!
+        </h1>
+        <div id="cd">
+        </div>        
         </div>
       </div>
 
