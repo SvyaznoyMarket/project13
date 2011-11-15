@@ -61,11 +61,11 @@ all:
     default_provider: uniteller
     provider:
       uniteller:
-        login: 331
-        password: 'bHcpteTJUJVwTO46jb05eWM4sfrVSrMrUSXi06MmFVlZVOFwg4Hxv88Cn7wmi54g4OGN7feJujk2iAUl'
-        pay_url: 'https://test.wpay.uniteller.ru/pay/'
-        result_url: 'https://test.wpay.uniteller.ru/results/'
-        shop_id: '0380440538-657'
+        login: 125
+        password: 'DErlW8GnwZTCDYLD9kj7zKHxpEXpHrSNCRWQXuOOonMYQEdKoKXk8OkDgx7CcRBAoCrM1LAwESnHugUW'
+        pay_url: 'https://wpay.uniteller.ru/pay/'
+        result_url: 'https://wpay.uniteller.ru/results/'
+        shop_id: '35974-134'
         return_url: '@payment_callback'
 
   # TODO: перенести в модель, чтобы не захламлять память
