@@ -1,0 +1,1 @@
+ALTER TABLE `product_filter`  ADD COLUMN `core_id` INT NULL DEFAULT NULL AFTER `id`;
