@@ -51,7 +51,7 @@ class OrderTable extends myDoctrineTable
       'delivery_type_id'      => array('rel' => 'DeliveryType'),
       'address_id'            => array('rel' => 'UserAddress'),
       'shop_id'               => array('rel' => 'Shop'),
-      'product'               => array('rel' => 'Product'),
+//      'product'               => array('rel' => 'Product'),
     );
   }
 

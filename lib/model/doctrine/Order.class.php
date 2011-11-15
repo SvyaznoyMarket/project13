@@ -125,6 +125,20 @@ class Order extends BaseOrder
       $user->setCorePush(false);
       $user->save();
     }
+
+    if (isset($data['product']))
+    {
+      foreach ($data['product'] as $relationData)
+      {
+        $productOrder = ProductFilterTable::getInstance()->getByCoreId($relationData['id']);
+        if (!$productOrder)
+        {
+          $productOrder = new OrderProductRelation();
+        }
+        $productOrder->importFromCore($relationData);
+      }
+    }
+
   }
 
   public function isOnlinePayment()
