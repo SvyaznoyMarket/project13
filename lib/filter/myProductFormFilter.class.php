@@ -170,7 +170,7 @@ class myProductFormFilter extends sfFormFilter
           .'<div class="pb5">'
             .'<input class="slider-from" type="hidden" disabled="disabled" value="'.$productFilter['value_min'].'" />'
             .'<input class="slider-to" type="hidden" disabled="disabled" value="'.$productFilter['value_max'].'" />'
-            .'<span class="slider-interval"></span> '.(($productFilter instanceof ProductFilter) ? '' : '<span class="rubl">p</span>')
+            .'<span class="slider-interval"></span> '.(($productFilter instanceof ProductFilter) ? (!empty($productFilter->Property->unit) ? $productFilter->Property->unit : '') : '<span class="rubl">p</span>')
           .'</div>'
         .'</div>'
 
