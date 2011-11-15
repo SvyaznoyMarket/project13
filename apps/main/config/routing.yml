@@ -600,9 +600,9 @@ cart:
 # cart add
 cart_add:
   url:   /cart/add/:product/:quantity/:services
-  param: { module: cart, action: add, quantity: 1, services: '{"4ebae7d1071a3-ustanovka-vityagki-ploskoy":1,"4eb3089eb2255-ustanovka-vityagki-vstraivaemoy-v-shkaf":3}' }
+  param: { module: cart, action: add, quantity: 1, services: 0 }
   requirements:
-    sf_method: [ post ]  
+    sf_method: [ get,post ]  
 #
 # cart delete
 cart_delete:

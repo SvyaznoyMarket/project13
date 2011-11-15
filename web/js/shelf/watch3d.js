@@ -2,11 +2,14 @@
 	360-degree Slideshow 
 	'Watch 3d'
 	Ivan Kotov
-	v 2.5
+	v 2.6
 
 	jQuery is prohibited
 							*/
 /*							
+	2.6
+	http://jira.ent3.ru/browse/SE-196
+	
 	new in the v.2:
 	animation using canvas,	not img src
 	fast preloading
@@ -28,11 +31,11 @@ function likemovie( nodename , apinodes, s, b) {
 	this.mvblock = $(nodename)
 	if( ! this.mvblock.length )
 		return false
-	if( !s || !b || s.length != 40 || b.length != 40)
-		return false
+	if( !s || s.length != 40 || ( b && b.length != 40) )
+		return false	
 	var apinodes = apinodes ? apinodes : {}
 	var smURLs = s
-	var bURLs  = b
+	var bURLs  = b 
 	
 	var self = this
 	
@@ -69,6 +72,8 @@ function likemovie( nodename , apinodes, s, b) {
 	var pointer     = 1	
 	var play        = false // rolling in action
 	var liteversion = false // lite version is active
+	if ( !b ) 
+		liteversion = true
 	var abletolite  = true  // able to turn with lite version
 	var evstamp     = 0     // event stamp
 	var actor       = 'roll'// or 'drop'
@@ -482,8 +487,8 @@ function likemovie( nodename , apinodes, s, b) {
 		
 		
 		this.initres = this.getInitSize()
-
-		frontier = $('<img>').attr({'src': bURLs[0],
+		var tsrc = ( liteversion ) ? smURLs[0] : bURLs[0]
+		frontier = $('<img>').attr({'src': tsrc,
 									'width': self.initres,
 									'height': self.initres })
 							 .attr('id','ivn') 
@@ -491,7 +496,21 @@ function likemovie( nodename , apinodes, s, b) {
 									'left': Math.round( (self.mvblock.innerWidth() - self.initres ) / 2 ) ,
 									'top': Math.round( (self.mvblock.innerHeight() - self.initres ) / 2 ) })
 		frontier.appendTo(self.mvblock)
-		
+		if( liteversion ) { // on init
+			$(apinodes.makeLite).hide()
+			frontier.bind ({
+				'mousedown': function (e) {
+					initx = e.pageX // prohibited for rollanddrop()
+				},
+				'click': function() {
+					self.stopRolling()
+				},
+				'dblclick': function() {
+					self.startRolling()
+				}				
+			})	
+			gi = new gigaimage( frontier, self.zoom, zoo, self.rollanddrop )
+		}		
 	}
 	
 	this.createFrontier = function() {
@@ -621,13 +640,17 @@ function likemovie( nodename , apinodes, s, b) {
 	}
 	
 	this.getInitSize = function () {
-		var w = $(window).width()
-		if (w < 1030 ) { //1024
+		if( liteversion )
 			this.zoom = 1
-		} else if ( w < 1590 ) { //1280
-			this.zoom = 2		
-		} else { // bigsize
-			this.zoom = 3		
+		else {	
+			var w = $(window).width()
+			if (w < 1030 ) { //1024
+				this.zoom = 1
+			} else if ( w < 1590 ) { //1280
+				this.zoom = 2		
+			} else { // bigsize
+				this.zoom = 3		
+			}
 		}
 		this.imgzoom = vzooms[ this.zoom - 1 ]
 		return this.imgzoom

@@ -391,7 +391,7 @@ box-shadow:0 0 9px #616161;
 
 
 
-.sliderbox {float:left; width:194px; margin:5px 0 10px 11px}
+.sliderbox {width:181px; margin: 0 auto 10px;}
 .sliderbox SPAN {display:block; padding-top:8px; font-size:10px; color:#A6A6A6}
 .filter-range {height:16px; background:#ffe6b4 url(/css/skin/img/bg.png) repeat-x 0 -34px;  position: relative;
 border-radius:4px;
@@ -1315,6 +1315,18 @@ border-radius: 5px;
 	margin: 11px 0;
 	 font-weight: normal;
 	}
+.yellowbutton.mDisabled{
+	opacity: 0.5;
+	-webkit-opacity: 0.5;
+	-moz-opacity: 0.5;
+	-ms-opacity: 0.5;
+	-o-opacity: 0.5;
+	
+	color: #a6a6a6;
+	cursor: default;
+	background: #f3f3f3;
+	border: 1px solid #a6a6a6;
+	}	
 .bPopupWrap {
     left: 0;
     margin-top: 200px;
@@ -1584,3 +1596,19 @@ border-radius: 5px;
 		}
 
 /* ----------- /bInfoBlock ------------- */
+
+
+.bSlide .pb5, .bSlide .pb5 span {
+    text-align: center;
+}
+.pb5 {
+    padding-bottom: 5px;
+}
+.bSlide .pb5 span {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+/*    color: #A6A6A6; */
+    font-size: 11px;
+    height: 13px;
+    padding: 0;
+}
