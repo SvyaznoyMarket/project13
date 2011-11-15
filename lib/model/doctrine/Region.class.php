@@ -18,5 +18,7 @@ class Region extends BaseRegion
 
     $this->product_price_list_id = ProductPriceListTable::getInstance()->getIdByCoreId($data['price_list_id']);
     $this->stock_id = StockTable::getInstance()->getIdByCoreId($data['store_id']);
+
+    $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
   }
 }

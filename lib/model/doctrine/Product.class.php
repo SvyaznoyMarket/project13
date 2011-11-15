@@ -46,6 +46,8 @@ class Product extends BaseProduct
   {
     parent::importFromCore($data);
 
+    $this->token = $this->barcode;
+    
     // check if creator doesn't exists
     if (!empty($data['brand_id']) && empty($this->creator_id))
     {

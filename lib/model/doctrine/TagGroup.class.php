@@ -18,6 +18,8 @@ class TagGroup extends BaseTagGroup
 
     $this->type = $data['is_gift'] ? 'gift' : null;
 
+
+    $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
     // Теги
     /*
     if (!empty($data['tag']))
