@@ -120,6 +120,144 @@ class productCatalogComponents extends myComponents
     $this->url = url_for('productCatalog_filter', $this->productCategory);
   }
 /**
+  * Executes filter_selected component
+  *
+  * @param myProductFormFilter $form            Форма фильтра с параметрами товаров
+  * @param ProductCategory     $productCategory Категория товара
+  */
+  public function executeFilter_selected()
+  {
+    $form = $this->form;
+    $productCategory = $this->productCategory;
+
+    $list = array();
+
+    if (!isset($this->form))
+    {
+      return sfView::NONE;
+    }
+
+    $filter = $this->getRequestParameter($this->form->getName());
+    $getUrl = function ($filter, $name, $value = null) use ($productCategory, $form) {
+      if (array_key_exists($name, $filter))
+      {
+        if (null == $value)
+        {
+          unset($filter[$name]);
+        }
+        else foreach ($filter[$name] as $k => $v)
+        {
+          if ($v == $value)
+          {
+            unset($filter[$name][$k]);
+          }
+        }
+      }
+
+      $formName = $form->getName();
+
+      return url_for('productCatalog_filter', array('productCategory' => $productCategory->token, $formName => $filter));
+    };
+
+    foreach ($this->form->getValues() as $name => $value)
+    {
+      if (is_array($value) ? !count($value) : empty($value)) continue;
+
+      // цена
+      if ('price' == $name)
+      {
+        $valueMin = ProductTable::getInstance()->getMinPriceByCategory($productCategory);
+        $valueMax = ProductTable::getInstance()->getMaxPriceByCategory($productCategory);
+
+        if (($value['from'] != $valueMin) || ($value['to'] != $valueMax))
+        {
+          $list[] = array(
+            'name' => ''
+              .(($value['from'] != $valueMin) ? ('от '.$value['from'].' ') : '')
+              .(($value['to'] != $valueMax) ? ('до '.$value['to'].' ') : '')
+              .'&nbsp;<span class="rubl">p</span>'
+            ,
+            'url'   => $getUrl($filter, $name),
+            'title' => 'Цена',
+          );
+        }
+      }
+      // производитель
+      if ('creator' == $name)
+      {
+        foreach ($value as $v)
+        {
+          $creator = CreatorTable::getInstance()->getById($v);
+          if (!$creator) continue;
+
+          $list[] = array(
+            'name' => $creator->name,
+            'url'  => $getUrl($filter, $name, $v),
+            'title' => 'Производитель',
+          );
+        }
+      }
+      // свойства товара
+      else if (0 === strpos($name, 'param-'))
+      {
+        $filterId = preg_replace('/^param-/', '', $name);
+        $productFilter = !empty($filterId) ? ProductFilterTable::getInstance()->getById($filterId) : false;
+        if (!$productFilter) continue;
+
+        switch ($productFilter->type)
+        {
+          case 'range':
+            if (($value['from'] != $productFilter->value_min) || ($value['to'] != $productFilter->value_max))
+            {
+              $list[] = array(
+                'name' => ''
+                  .(($value['from'] != $productFilter->value_min) ? ('от '.$value['from'].' ') : '')
+                  .(($value['to'] != $productFilter->value_max) ? ('до '.$value['to'].' ') : '')
+                  .($productFilter->Property->unit ? $productFilter->Property->unit : '')
+                ,
+                'url'  => $getUrl($filter, $name),
+                'title' => $productFilter->name,
+              );
+            }
+            break;
+          case 'choice':
+            foreach ($value as $v)
+            {
+              $productPropertyOption = ProductPropertyOptionTable::getInstance()->getById($v);
+              if (!$productPropertyOption) continue;
+
+              $list[] = array(
+                'name' =>
+                  in_array($productPropertyOption->value, array('да', 'нет'))
+                  ? $productFilter->name.': '.$productPropertyOption->value
+                  : $productPropertyOption->value
+                ,
+                'url'  => $getUrl($filter, $name, $productPropertyOption->id),
+                'title' => $productFilter->name,
+              );
+            }
+            break;
+          case 'checkbox':
+            $list[] = array(
+              'name' => $productFilter->name,
+              'url'  => $getUrl($filter, $name),
+              'title' => '',
+              'title' => $productFilter->name,
+            );
+            break;
+        }
+      }
+    }
+    //myDebug::dump($list);
+
+    if (0 == count($list))
+    {
+      return sfView::NONE;
+    }
+
+    $this->setVar('list', $list, true);
+  }
+/**
   * Executes filter_price component
   *
   * @param ProductCategory $productCategory Категория товара
