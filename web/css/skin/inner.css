@@ -1395,6 +1395,32 @@ border-radius: 5px;
         font-size:14px;
         padding:11px 0px 3px 0px;
     }
+    
+    
+.bCtg b{
+	color: #a6a6a6;
+	font: 14px Tahoma, sans-serif;
+	}
+.mSelected,
+.mSelected b{
+	color: #fff;	
+	background: #ffa901;
+	}	
+	
+DT.bCtg__eOrange{
+	color: #ffa901;
+	font: bold 18px Tahoma, sans-serif;
+	}
+
+.bCtg__eMore{
+	margin-top: 6px;
+	}		
+.bCtg__eMore a{
+	color: #fff;
+	padding: 2px 8px;
+	background: #cbcbcb;
+	text-decoration: none;
+	}
 
 /* ----------- /categories ------------- */
 
@@ -1414,7 +1440,7 @@ border-radius: 5px;
 	}
 	.bMap__eBody,
 	.bMap__eImages{
-		height: 334px;
+		height: 473px;
 		overflow: hidden;
 		vertical-align: top;
 		display: inline-block;
@@ -1454,7 +1480,7 @@ border-radius: 5px;
 				left: 10px;
 				z-index: 10;
 				width: 787px;
-				height: 334px;
+				height: 473px;
 				display: none;
 				position: absolute;
 				}

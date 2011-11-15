@@ -1,6 +1,7 @@
+<?php if (false): ?>
 <h2>Выбираем <?php echo mb_lcfirst($productCategory) ?></h2>
 <div class="line pb10"></div>
-
+<?php endif ?>
 
 <!--div class="pb5"><a href="" class="underline">Показать все товары</a> <span class="font10 gray">(<?php echo $productCategory->countProduct() ?>)</span></div-->
 

@@ -62,7 +62,7 @@ productCatalog_categoryAjax:
   param: { module: productCatalog, action: categoryAjax, num: 18, view: compact, page: 1}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
-  
+
 # карусель ajax
 productCatalog_carousel:
   url:   /catalog-carousel/:productCategory/
@@ -151,7 +151,7 @@ changeProduct:
 # карточка линии
 lineCard:
   url:   /line/:line
-  param: { module: lineCard, action: index }
+  param: { module: line, action: card }
   class:   myDoctrineRoute
   options: { model: ProductLine, type: object, method: getForRoute }
 
@@ -602,7 +602,7 @@ cart_add:
   url:   /cart/add/:product/:quantity/:services
   param: { module: cart, action: add, quantity: 1, services: 0 }
   requirements:
-    sf_method: [ get,post ]  
+    sf_method: [ get,post ]
 #
 # cart delete
 cart_delete:
@@ -695,8 +695,8 @@ tag:
 #
 # tag show
 tag_show:
-  url:      /tags/:tag
-  param:    { module: tag, action: show }
+  url:      /tags/:tag/:productType
+  param:    { module: tag, action: show, productType: ~ }
 
 
 #

@@ -28,7 +28,6 @@ class productComponents extends myComponents
     {
       $this->view = 'default';
     }
-
     $item = array(
       'article'  => $this->product->article,
       'name'     => (string) $this->product,
@@ -68,6 +67,10 @@ class productComponents extends myComponents
     {
       $item['description'] = $this->product->description;
     }
+    if ('line' == $this->view)
+    {
+      $item['url'] = url_for('lineCard', $this->product->Line, array('absolute' => true, ));
+    }
 
     $this->setVar('item', $item, true);
 
@@ -93,13 +96,14 @@ class productComponents extends myComponents
   public function executePager()
   {
     $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
-    if (!in_array($this->view, array('expanded', 'compact')))
+    if (!in_array($this->view, array('expanded', 'compact', 'line')))
     {
       $this->view = 'compact';
     }
 
     $this->setVar('list', $this->pager->getResults(null, array(
       'with_properties' => 'expanded' == $this->view ? true : false,
+      'with_line'       => 'line' == $this->view ? true : false,
       'view'            => 'list',
     )), true);
   }
@@ -352,6 +356,7 @@ class productComponents extends myComponents
     foreach (TagTable::getInstance()->getByProduct($this->product->id) as $tag)
     {
       $list[] = array(
+        'tag'   => $tag,
         'token' => $tag->token,
         'url'   => url_for('tag_show', array('tag' => $tag->token)),
         'name'  => $tag->name,
@@ -368,28 +373,9 @@ class productComponents extends myComponents
     $this->limit = 6 < count($list) ? 6 : count($list);
   }
   /**
-   * Executes filter_productType component
+   * Executes f1_lightbox component
    *
-   * @param myDoctrineCollection $productTypeList Коллекция типов товаров
    */
-  public function executeFilter_productType()
-  {
-    $list = array();
-
-    foreach ($this->productTypeList as $productType)
-    {
-      $list[] = array(
-        'name'     => (string)$productType,
-        'token'    => $productType->id,
-        'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
-        'value'    => $productType->id,
-        'selected' => isset($productType->_selected) ? $productType->_selected : false,
-      );
-    }
-
-    $this->setVar('list', $list, true);
-  }
-
   public function executeF1_lightbox(){
 
   }

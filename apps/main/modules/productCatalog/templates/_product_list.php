@@ -1,7 +1,7 @@
 <?php
 $request = sfContext::getInstance()->getRequest();
-$page =$request->getParameter('page');
-$view =$request->getParameter('view');
+$page = $request->getParameter('page');
+$view = $request->getParameter('view', isset($view) ? $view : null);
 ?>
 <?php $empty = 0 == $productPager->getNbResults() ?>
 
@@ -22,8 +22,8 @@ $view =$request->getParameter('view');
 <?php if (!$empty): ?>
   <div class="line"></div>
 <?php endif ?>
-
-<?php include_component('product', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => isset($view) ? $view : null, )) ?>
+  
+<?php include_component('product', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view, )) ?>
 
 <?php if (false): ?>
   <div class="line pb10"></div>

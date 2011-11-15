@@ -274,9 +274,10 @@ class productCategoryComponents extends myComponents
       'name'              => (string)$this->productCategory,
       'root_name'         => (string)$this->productCategory->getRootCategory(),
       'url'               => url_for('productCatalog_category', $this->productCategory),
-	    'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
+      'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
       'product_quantity'  => $this->productCategory->countProduct(array('view' => 'list', )),
-	    'links'             => $this->productCategory->getLinkList(),
+      'links'             => $this->productCategory->getLinkList(),
+      'has_line'          => $this->productCategory->has_line,
     );
 
     if ('carousel' == $this->view)
@@ -286,7 +287,7 @@ class productCategoryComponents extends myComponents
         return sfView::NONE;
       }
 
-      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array('with_properties' => false, 'limit' => 6, 'view' => 'list', ));
+      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array('with_properties' => false, 'limit' => 6, 'view' => 'list', 'property_view' => false));
     }
     if ('preview' == $this->view)
     {

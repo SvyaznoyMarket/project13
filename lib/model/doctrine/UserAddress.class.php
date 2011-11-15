@@ -13,12 +13,12 @@
 class UserAddress extends BaseUserAddress
 {
 
-  public function exportToCore()
+  /*public function exportToCore()
   {
     $data = parent::exportToCore();
 
     $data['user_id'] = $this->User->core_id;
 
     return $data;
-  }
+  }*/
 }

@@ -87,7 +87,7 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-    $this->productTagFilter = $this->getProductTagFilter();
+    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
     $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
 
     $q = ProductTable::getInstance()->createBaseQuery();
@@ -151,7 +151,7 @@ class productCatalogActions extends myActions
     $this->productCategory = $this->getRoute()->getObject();
 
     $this->productFilter = $this->getProductFilter(array('count' => true, ));
-    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, ));
+    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, 'with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
 
     if ($request->hasParameter($this->productFilter->getName()))
     {
@@ -284,7 +284,7 @@ class productCatalogActions extends myActions
     }
     $this->getResponse()->setTitle($title.' – Enter.ru');
 
-    if ($this->productCategory->had_line) //если в категории должны отображться линии
+    if ($this->productCategory->has_line) //если в категории должны отображться линии
     {
       $this->forward($this->getModuleName(), 'line');
     }
@@ -350,7 +350,7 @@ class productCatalogActions extends myActions
         $list[] = (string)$ancestor;
     }
     $list[] = (string)$this->productCategory;
-    $title = '%s - страница %d из %d - интернет-магазин  Enter.ru - Москва';
+    $title = '%s - страница %d из %d - интернет-магазин  Enter.ru - '.$this->getUser()->getRegion('name');
     $this->getResponse()->setTitle(sprintf(
       $title,
       implode(' - ', $list),
@@ -438,11 +438,9 @@ class productCatalogActions extends myActions
       'category' => $this->productCategory,
     );
 
-    /*$q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-      'view'            => 'list',
-      'with_properties' => 'expanded' == $request['view'],
-    ));*/
-    $q = ProductTable::getInstance()->getQueryByCategoryWithLine($this->productCategory);
+    $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+      'view' => 'list',
+    ));
 
     // sorting
     $this->productSorting = $this->getProductSorting();

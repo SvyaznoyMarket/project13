@@ -48,6 +48,7 @@ class ProductCategory extends BaseProductCategory
     parent::importFromCore($data);
 
     $this->photo = !empty($data['media_image']) ? $data['media_image'] : 'default.jpg';
+    $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
 
   }
 
@@ -169,5 +170,41 @@ class ProductCategory extends BaseProductCategory
     return $this->getPhoto() ? $urls[$view].$this->getPhoto() : null;
   }
 
+  public function getVariation()
+  {
+    $variation = mb_strtolower($this->name, 'utf-8');
+    switch ($variation)
+    {
+      case 'мебель':
+        $variation = 'мебели';
+        break;
+      case 'бытовая техника':
+        $variation = 'бытовой технике';
+        break;
+      case 'товары для дома':
+        $variation = 'товарах для дома';
+        break;
+      case 'товары для детей':
+        $variation = 'товарах для детей';
+        break;
+      case 'сделай сам (инструменты)':
+        $variation = 'сделай сам (инструменты)';
+        break;
+      case 'электроника':
+        $variation = 'электронике';
+        break;
+      case 'украшения и часы':
+        $variation = 'украшениях и часах';
+        break;
+      case 'спорт':
+        $variation = 'спорте';
+        break;
+      case 'подарки':
+        $variation = 'подарках';
+        break;
+    }
+
+    return $variation;
+  }
 
 }

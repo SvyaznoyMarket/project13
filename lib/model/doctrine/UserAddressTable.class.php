@@ -40,6 +40,7 @@ class UserAddressTable extends myDoctrineTable
       'address' => 'address',
 
       'geo_id'  => array('rel' => 'City'),
+      'user_id' => array('rel' => 'User'),
     );
   }
 }
