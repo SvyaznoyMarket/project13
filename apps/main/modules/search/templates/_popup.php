@@ -3,9 +3,11 @@
   <i title="Закрыть" class="close">Закрыть</i>
   <h2 class="pouptitle">Результаты поиска</h2>
 
-  <?php include_partial('search/product_count', $sf_data) ?>
+  <div class="searchtitle">
+    Вы искали <span class="orange">"<?php echo $searchString ?>"</span> товары не найдены.
+  </div>
 
-  <h2>Попробуйте найти заново:</h2>
+  <p>Попробуйте найти заново:</p>
 
   <?php include_component('search', 'form', array('searchString' => $searchString, 'wide' => true)) ?>
 

@@ -12,6 +12,7 @@ class myDoctrinePager extends sfDoctrinePager
     $table = Doctrine_Core::getTable($this->getClass());
 
     $ids = $table->getIdsByQuery($this->getQuery());
+
     return $table->createListByIds($ids, $params);
   }
 }

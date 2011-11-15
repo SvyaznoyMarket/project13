@@ -41,14 +41,16 @@ class ServiceTable extends myDoctrineTable
       ->innerJoin('category.ProductTypeRelation productTypeRelation')
       ->andWhere('productTypeRelation.product_type_id=?', array($product->type_id))
       ->innerJoin('service.Price price') ;
-     * 
+     *
      */
+    
     $q #->leftJoin('service.CategoryRelation cr')    //к категориям сервисов
       #->innerJoin('cr.Category c')
       ->innerJoin('service.ProductRelation pr')
       ->andWhere('pr.product_id=?', array($product->id))
       ->leftJoin('service.Price price') 
             ;
+
 
     $this->setQueryParameters($q, $params);
     #$a = $q->execute();
