@@ -39,10 +39,12 @@ class tagComponents extends myComponents
   {
     $list = array();
 
+    /*
     $list[] = array(
       'name' => 'Теги',
       'url'  => url_for('tag'),
     );
+    */
 
     if ($this->tag)
     {
