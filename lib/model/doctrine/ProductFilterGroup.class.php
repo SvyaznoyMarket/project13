@@ -16,4 +16,26 @@ class ProductFilterGroup extends BaseProductFilterGroup
   {
     return ProductFilterTable::getInstance()->getListByGroup($this, $params);
   }
+
+  public function importFromCore(array $data)
+  {
+    //parent::importFromCore($data);
+
+    if (!empty($data['filter_property']))
+    {
+      //$this->Filter = new Doctrine_Collection(ProductFilterTable::getInstance());
+      foreach ($data['filter_property'] as $relationData)
+      {
+        $productFilter = ProductFilterTable::getInstance()->getByCoreId($relationData['id']);
+        if (!$productFilter)
+        {
+          $productFilter = new ProductFilter();
+        }
+        $productFilter->importFromCore($relationData);
+
+        $this->Filter[] = $productFilter;
+      }
+    }
+  }
+
 }
