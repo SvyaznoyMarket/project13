@@ -154,6 +154,8 @@ class myProductFormFilter extends sfFormFilter
 
   protected function getWidgetRange(ProductFilter $productFilter = null, array $value)
   {
+    $id = uniqid();
+
     return new myWidgetFormRange(array(
       'value_from' => $value['from'],
       'value_to'   => $value['to'],
@@ -161,10 +163,10 @@ class myProductFormFilter extends sfFormFilter
         .'<div class="bSlide">'
           .'%value_from% %value_to%'
           .'<div class="sliderbox">'
-            .'<div id="slider-'.uniqid().'" class="filter-range"></div>'
+            .'<div id="slider-'.$id.'" class="filter-range"></div>'
           .'</div>'
           .'<div class="pb5">'
-            .'<input type="text" disabled="disabled" value="">'
+            .'<span class="slider-interval">2 - 100</span>'
           .'</div>'
         .'</div>'
 
@@ -195,7 +197,7 @@ class myProductFormFilter extends sfFormFilter
       {
         $rows[] = $widget->renderContentTag('li', $input['input'].$widget->getOption('label_separator').$input['label'], array('class' => 'hf', 'style' => 'display: none', ));
       }
-      $rows[] = $widget->renderContentTag('li', '<a href="#">еще...</a>', array('class' => 'fm bCtg__eMore', 'style' => 'text-align: right;'));
+      $rows[] = $widget->renderContentTag('li', '<a href="#">еще...</a>', array('class' => 'bCtg__eMore', 'style' => 'padding-left: 10px;'));
     }
 
     return !$rows ? '' : $widget->renderContentTag('ul', implode($widget->getOption('separator'), $rows), array('class' => $widget->getOption('class')));
