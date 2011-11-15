@@ -333,7 +333,11 @@ LABEL.checked {color:#ffa901}
     padding: 0;
 }
 
-.bSpec .pb10{ margin: 10px 0 5px 10px; }
+.bSpec .pb10 {
+    border-top: 1px solid #E6E6E6;
+    margin-bottom: 10px;
+    padding: 15px 0 5px 10px;
+}
 .bigfilter {margin-bottom:15px}
 .bigfilter DT {
     background: url("img/icons.png") no-repeat scroll 100% -46px transparent;
@@ -346,7 +350,7 @@ LABEL.checked {color:#ffa901}
     font-weight: normal;
     padding-left: 10px;
 }
-.bigfilter DT.first {border:0}
+/*.bigfilter DT.first {border:0} */
 .bigfilter DT.current {background-position:100% 13px}
 .bigfilter DT B {display:inline-block; width:14px; height:11px; background:url(/css/skin/img/bg.png) no-repeat -38px 0; vertical-align:middle; margin-left:5px}
 .bigfilter DT DIV.pr {display:inline}
