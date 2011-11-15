@@ -68,7 +68,7 @@ $(document).ready(function(){
 		})
 	}
 	
-	if( $('div.allpager').length ) 		
+	if( $('div.allpager').length ) { 		
 		$('div.allpager').each(function(){
 			var lsURL = $(this).data('url')	
 			var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
@@ -106,9 +106,9 @@ $(document).ready(function(){
 			})		
 		})
 	
-	if( $.jCookies({ get : 'infScroll' }) )
-		$('div.allpager:first').trigger('click')
-	
+		if( $.jCookies({ get : 'infScroll' }) )
+			$('div.allpager:first').trigger('click')
+	}
 	/* AJAX */
 	$('body').append('<div style="display:none"><img src="/images/error_ajax.gif" alt=""/></div>')
 	var errorpopup = function( txt ) {
