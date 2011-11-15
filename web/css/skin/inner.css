@@ -1586,17 +1586,17 @@ border-radius: 5px;
 /* ----------- /bInfoBlock ------------- */
 
 
-.bSlide .pb5, .bSlide .pb5 input {
+.bSlide .pb5, .bSlide .pb5 span {
     text-align: center;
 }
 .pb5 {
     padding-bottom: 5px;
 }
-.bSlide .pb5 input {
+.bSlide .pb5 span {
     background: none repeat scroll 0 0 transparent;
     border: 0 none;
-    color: #A6A6A6;
-    font: 11px Tahoma,sans-serif;
+/*    color: #A6A6A6; */
+    font-size: 11px;
     height: 13px;
     padding: 0;
 }

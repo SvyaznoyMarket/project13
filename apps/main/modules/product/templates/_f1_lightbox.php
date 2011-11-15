@@ -1,8 +1,8 @@
-    <div class="f1linkbox"  style="display:none;" >
+    <div class="f1linkbox" style="display:block;" >
         <a href="" class="f1link">Сервис F1</a> Сервис F1
 
         <!-- F1 -->
-        <div class="hideblock width358" style="display:block; top:0; left:0">
+        <div class="hideblock width358" id="f1pp" style="display:none; top:0; left:0">
             <i title="Закрыть" class="close">Закрыть</i> 
             <div class="title">Добавление услуг F1</div>
             <form action="" class="form">
@@ -12,7 +12,7 @@
                       ?>
                     <dt>
                         <label for="checkbox-<?php echo $service->id ?>"><?php echo $service->name ?></label>
-                        <input id="checkbox-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="checkbox-<?php echo $service->id ?>" />
+                        <input ref="<?php echo $service->id ?>" id="checkbox-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="checkbox-<?php echo $service->id ?>" />
                         <b></b>
                     </dt>
                     <dd>
