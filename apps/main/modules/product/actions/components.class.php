@@ -103,6 +103,7 @@ class productComponents extends myComponents
 
     $this->setVar('list', $this->pager->getResults(null, array(
       'with_properties' => 'expanded' == $this->view ? true : false,
+      'property_view'   => 'expanded' == $this->view ? 'list' : false,
       'with_line'       => 'line' == $this->view ? true : false,
       'view'            => 'list',
     )), true);

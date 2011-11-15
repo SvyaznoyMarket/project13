@@ -195,7 +195,7 @@ class myProductFormFilter extends sfFormFilter
       {
         $rows[] = $widget->renderContentTag('li', $input['input'].$widget->getOption('label_separator').$input['label'], array('class' => 'hf', 'style' => 'display: none', ));
       }
-      $rows[] = $widget->renderContentTag('li', 'еще...', array('class' => 'fm', 'style' => 'text-align: right;'));
+      $rows[] = $widget->renderContentTag('li', '<a href="#">еще...</a>', array('class' => 'fm bCtg__eMore', 'style' => 'text-align: right;'));
     }
 
     return !$rows ? '' : $widget->renderContentTag('ul', implode($widget->getOption('separator'), $rows), array('class' => $widget->getOption('class')));

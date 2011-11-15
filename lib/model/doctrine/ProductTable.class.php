@@ -83,7 +83,7 @@ class ProductTable extends myDoctrineTable
   public function getById($id, array $params = array())
   {
     $this->applyDefaultParameters($params, array(
-      'with_properties' => true,
+      'with_properties' => false,
       'property_view'   => false,
       'with_line'       => false,
     ));
@@ -200,8 +200,10 @@ class ProductTable extends myDoctrineTable
     $id = isset($params['product']) ? $this->getIdBy('token', $params['product']) : null;
 
     return $this->getById($id, array(
-      'group_property' => true,
-      'view'           => 'show',
+      'group_property'  => true,
+      'view'            => 'show',
+      'property_view'   => 'show',
+      'with_properties' => true,
     ));
   }
 
