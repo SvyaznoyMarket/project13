@@ -333,7 +333,11 @@ LABEL.checked {color:#ffa901}
     padding: 0;
 }
 
-.bSpec .pb10{ margin: 10px 0 5px 10px; }
+.bSpec .pb10 {
+    border-top: 1px solid #E6E6E6;
+    margin-bottom: 10px;
+    padding: 15px 0 5px 10px;
+}
 .bigfilter {margin-bottom:15px}
 .bigfilter DT {
     background: url("img/icons.png") no-repeat scroll 100% -46px transparent;
@@ -346,7 +350,7 @@ LABEL.checked {color:#ffa901}
     font-weight: normal;
     padding-left: 10px;
 }
-.bigfilter DT.first {border:0}
+/*.bigfilter DT.first {border:0} */
 .bigfilter DT.current {background-position:100% 13px}
 .bigfilter DT B {display:inline-block; width:14px; height:11px; background:url(/css/skin/img/bg.png) no-repeat -38px 0; vertical-align:middle; margin-left:5px}
 .bigfilter DT DIV.pr {display:inline}
@@ -408,7 +412,7 @@ box-shadow:0 0 9px #616161;
 
 
 
-.sliderbox {float:left; width:194px; margin:5px 0 10px 11px}
+.sliderbox {width:181px; margin: 0 auto 10px;}
 .sliderbox SPAN {display:block; padding-top:8px; font-size:10px; color:#A6A6A6}
 .filter-range {height:16px; background:#ffe6b4 url(/css/skin/img/bg.png) repeat-x 0 -34px;  position: relative;
 border-radius:4px;
@@ -1627,3 +1631,19 @@ DT.bCtg__eOrange{
 		}
 
 /* ----------- /bInfoBlock ------------- */
+
+
+.bSlide .pb5, .bSlide .pb5 input {
+    text-align: center;
+}
+.pb5 {
+    padding-bottom: 5px;
+}
+.bSlide .pb5 input {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    color: #A6A6A6;
+    font: 11px Tahoma,sans-serif;
+    height: 13px;
+    padding: 0;
+}

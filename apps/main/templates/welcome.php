@@ -41,10 +41,13 @@ _gaq.push(['_trackPageLoadTime']);
 </script>
 <script>
 $(document).ready(function(){	
-	var austDay = new Date();
-	austDay = new Date(austDay.getFullYear() , 11 - 1, 16);
-	$('#cd').countdown({ until: austDay , format: 'HMS'});
-	})
+	function relme () {
+		location.reload(true)
+	}
+	var austDay = new Date()
+	austDay = new Date(austDay.getFullYear() , 11 - 1, 16)
+	$('#cd').countdown({ until: austDay , format: 'HMS', onExpiry: relme, expiryText: 'Перезагрузка страницы' })
+})
 </script>
   </head>
 

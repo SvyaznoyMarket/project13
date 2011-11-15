@@ -20,11 +20,13 @@ class myProductFormFilter extends sfFormFilter
     $productTable = ProductTable::getInstance();
 
     // виджет цены
+    $valueMin = (int)$productTable->getMinPriceByCategory($productCategory);
+    $valueMax = (int)$productTable->getMaxPriceByCategory($productCategory);
     $value = array(
-      'min' => (int)$productTable->getMinPriceByCategory($productCategory),
-      'max' => (int)$productTable->getMaxPriceByCategory($productCategory),
+      'min' => $valueMin,
+      'max' => $valueMax,
     );
-    $this->widgetSchema['price'] = $this->getWidgetRange(null, array(
+    $this->widgetSchema['price'] = $this->getWidgetRange(array('value_min' => $valueMin, 'value_max' => $valueMax), array(
       'from' => $value['min'],
       'to'   => $value['max'],
     ));
@@ -152,18 +154,26 @@ class myProductFormFilter extends sfFormFilter
     ));
   }
 
-  protected function getWidgetRange(ProductFilter $productFilter = null, array $value)
+  protected function getWidgetRange($productFilter, array $value)
   {
+    $id = uniqid();
+
     return new myWidgetFormRange(array(
       'value_from' => $value['from'],
       'value_to'   => $value['to'],
       'template'   => ''
-        .'<div class="pb5" style="margin-left:11px;">%value_from% - %value_to%</div>'
-        .'<div class="sliderbox">'
-          .'<div id="slider-'.uniqid().'" class="filter-range"></div>'
-          .'<span class="fl">'.$value['from'].'</span>'
-          .'<span class="fr">'.$value['to'].'</span>'
+        .'<div class="bSlide">'
+          .'%value_from% %value_to%'
+          .'<div class="sliderbox">'
+            .'<div id="slider-'.$id.'" class="filter-range"></div>'
+          .'</div>'
+          .'<div class="pb5">'
+            .'<input class="slider-from" type="hidden" disabled="disabled" value="'.$productFilter['value_min'].'" />'
+            .'<input class="slider-to" type="hidden" disabled="disabled" value="'.$productFilter['value_max'].'" />'
+            .'<span class="slider-interval"></span> '.(($productFilter instanceof ProductFilter) ? '' : '<span class="rubl">p</span>')
+          .'</div>'
         .'</div>'
+
         .'<div class="clear"></div>'
     ), array(
       'class' => 'text',
@@ -191,7 +201,7 @@ class myProductFormFilter extends sfFormFilter
       {
         $rows[] = $widget->renderContentTag('li', $input['input'].$widget->getOption('label_separator').$input['label'], array('class' => 'hf', 'style' => 'display: none', ));
       }
-      $rows[] = $widget->renderContentTag('li', 'еще...', array('class' => 'fm', 'style' => 'text-align: right;'));
+      $rows[] = $widget->renderContentTag('li', '<a href="#">еще...</a>', array('class' => 'bCtg__eMore', 'style' => 'padding-left: 10px;'));
     }
 
     return !$rows ? '' : $widget->renderContentTag('ul', implode($widget->getOption('separator'), $rows), array('class' => $widget->getOption('class')));
