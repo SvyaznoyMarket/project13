@@ -38,7 +38,7 @@ class myProductTagFormFilter extends myProductFormFilter
     if ($this->getOption('with_creator', false))
     {
       $choices = CreatorTable::getInstance()
-        ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name', 'with_descendat' => true, 'for_filter' => true, ))
+        ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name', 'with_descendat' => true, 'for_filter' => true, 'order' => 'creator.name'))
         ->toKeyValueArray('id', 'name')
       ;
       if (count($choices))
