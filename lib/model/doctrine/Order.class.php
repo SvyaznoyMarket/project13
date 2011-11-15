@@ -128,14 +128,16 @@ class Order extends BaseOrder
 
     if (isset($data['product']))
     {
+      $this->ProductRelation = new Doctrine_Collection(OrderProductRelationTable::getInstance());
       foreach ($data['product'] as $relationData)
       {
-        $productOrder = ProductFilterTable::getInstance()->getByCoreId($relationData['id']);
-        if (!$productOrder)
-        {
-          $productOrder = new OrderProductRelation();
-        }
+        //$productOrder = OrderProductRelationTable::getInstance()->getByCoreId($relationData['id']);
+        //if (!$productOrder)
+        //{
+        $productOrder = new OrderProductRelation();
+        //}
         $productOrder->importFromCore($relationData);
+        $this->ProductRelation[] = $productOrder;
       }
     }
 
