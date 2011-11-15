@@ -20,5 +20,7 @@ class Tag extends BaseTag
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
+
+    $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
   }
 }

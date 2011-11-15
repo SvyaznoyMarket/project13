@@ -287,7 +287,7 @@ class productCategoryComponents extends myComponents
         return sfView::NONE;
       }
 
-      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array('with_properties' => false, 'limit' => 6, 'view' => 'list', ));
+      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array('with_properties' => false, 'limit' => 6, 'view' => 'list', 'property_view' => false));
     }
     if ('preview' == $this->view)
     {

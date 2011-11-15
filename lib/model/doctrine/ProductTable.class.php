@@ -125,7 +125,11 @@ class ProductTable extends myDoctrineTable
     }
 
     $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
-      'view'           => $params['property_view'] ? $params['property_view'] : $params['view'],
+      'view'           =>
+        $params['with_properties']
+        ? ($params['property_view'] ? $params['property_view'] : $params['view'])
+        : false
+      ,
       'group_property' => $params['group_property'],
     ));
 
