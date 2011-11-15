@@ -46,7 +46,16 @@ $(document).ready(function(){
 	function liveScroll( lsURL, pageid ) {
 		lsURL += pageid + '/' + (( compact ) ? 'compact/' : 'expanded/')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
-		tmpnode.after('<div id="ajaxgoods" style="width:100%; text-align:right;"><span style="margin-bottom: 6px;">Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
+		var loader = 
+			"<div id='ajaxgoods' class='bNavLoader'>" +
+				"<div class='bNavLoader__eIco'><img src='/images/arrow.gif'></div>" +
+				"<div class='bNavLoader__eM'>" +
+					"<p class='bNavLoader__eText'>Подождите немного</p>"+
+					"<p class='bNavLoader__eText'>Идет загрузка</p>"+
+				"</div>" +
+			"</div>"
+		tmpnode.after( loader )	
+		//tmpnode.after('<div id="ajaxgoods" style="width:100%; text-align:right;"><span style="margin-bottom: 6px;">Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
 		$.get( lsURL, function(data){
 			if ( data != "" && !data.data ) { // JSON === error
 				ableToLoad = true
@@ -59,7 +68,7 @@ $(document).ready(function(){
 		})
 	}
 	
-	if( $('div.allpager').length ) 
+	if( $('div.allpager').length ) { 		
 		$('div.allpager').each(function(){
 			var lsURL = $(this).data('url')	
 			var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
@@ -73,15 +82,33 @@ $(document).ready(function(){
 					vnext += 1
 				}
 			}
-			$(this).bind('click', function(){				
-				$('div.pageslist').css('visibility','hidden')
-				$('div.allpager').css('visibility','hidden')				
+			$(this).bind('click', function(){	
+				$.jCookies({
+					name : 'infScroll',
+					value : 1
+				})
+				var next = $('div.pageslist:first li:first')
+				if( next.hasClass('current') )
+					next = next.next()	
+				var next_a = next.find('a')
+								.html('<span>123</span>')
+								.addClass('borderedR')								
+				next_a.attr('href', next_a.attr('href').replace(/\d/,'1') )
+				$('div.pageslist li').remove()
+				$('div.pageslist ul').append( next )
+									 .find('a')
+									 .bind('click', function(){	
+										$.jCookies({ erase : 'infScroll' })
+									  })				
+				$('div.allpager').addClass('mChecked')
 				checkScroll()
 				$(window).scroll( checkScroll )
 			})		
 		})
 	
-	
+		if( $.jCookies({ get : 'infScroll' }) )
+			$('div.allpager:first').trigger('click')
+	}
 	/* AJAX */
 	$('body').append('<div style="display:none"><img src="/images/error_ajax.gif" alt=""/></div>')
 	var errorpopup = function( txt ) {
@@ -141,13 +168,13 @@ $(document).ready(function(){
 	
 	/* --- */
     $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes();
-	//$(".bigfilter dt").trigger('click')
+	
 	$(".bigfilter dt").click(function(){
 		$(this).next(".bigfilter dd").slideToggle(200)
 		$(this).toggleClass("current")
 		return false
 	})
-
+	//$(".bigfilter dt:first").trigger('click')
 	$(".f1list dt B").click(function(){
 		$(this).parent("dt").next(".f1list dd").slideToggle(200)
 		$(this).toggleClass("current")
@@ -159,17 +186,48 @@ $(document).ready(function(){
 		$(this).toggleClass("current")
 		return false
 	})
-
+	$('.product_filter-block input:submit').addClass('mDisabled')
+	var launch = false
+	$('.product_filter-block').change(function(){ 
+		activateForm()
+	})
+	function activateForm() {
+		if ( !launch ) {
+			$('.product_filter-block input:submit').removeClass('mDisabled')
+			launch = true
+		}	
+	}
 	/* Sliders */
 	$('.sliderbox').each( function(){
 		var sliderRange = $('.filter-range', this)	
 		var filterrange = $(this)
 		var papa = filterrange.parent()
-		var mini = $('.fl', filterrange ).html() * 1
-		var maxi = $('.fr', filterrange ).html() * 1
+		var mini = $('.slider-from',  $(this).next() ).val() * 1
+		var maxi = $('.slider-to',  $(this).next() ).val() * 1
+		var informator = $('.slider-interval', $(this).next())
 		var from = papa.find('input:first')
 		var to   = papa.find('input:eq(1)')
+		informator.html( from.val() + ' - ' + to.val() )
 		var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
+		sliderRange.slider({
+			range: true,
+			step: stepf,
+			min: mini,
+			max: maxi,
+			values: [ from.val()  ,  to.val() ],
+			slide: function( e, ui ) {
+				informator.html( ui.values[ 0 ] + ' - ' + ui.values[ 1 ] )
+				from.val( ui.values[ 0 ] )
+				to.val( ui.values[ 1 ] )
+			},
+			change: function(e, ui) {
+				if ( parseFloat(to.val()) > 0 ){
+					from.parent().trigger('preview')
+					activateForm()
+				}
+			}
+		})
+/*
 		sliderRange.slider({
 			range: true,
 			step: stepf,
@@ -185,7 +243,9 @@ $(document).ready(function(){
 					from.parent().trigger('preview')
 			}
 		})
-		if ( from && to ) {
+*/		
+		
+/*		if ( from && to ) {
 			from.val( sliderRange.slider( "values", 0 ) )
 			to.val( sliderRange.slider( "values", 1 ) )
 			from.change( function(){
@@ -208,7 +268,8 @@ $(document).ready(function(){
 				sliderRange.slider( "values", 1 , to.val() )
 			})
 	
-		}
+		}*/
+		
 	})
 	
 	/* Rating */
@@ -319,7 +380,7 @@ $(document).ready(function(){
 	}
 	/* bill typewriter */
 
-	if( $('.chequebottom ul').length && ! $('.error_list').length ) {
+	/*if( $('.chequebottom ul').length && ! $('.error_list').length ) {
 		$('.chequebottom li div').hide()
 		$('.chequebottom li strong').hide()
 		$('.chequebottom .total strong').hide()
@@ -339,7 +400,7 @@ $(document).ready(function(){
 
 		recF(0)
 
-	}
+	}*/
 	/* CART */
 	function printPrice ( val ) {
 

@@ -17,6 +17,13 @@ class ProductFilterGroupTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductFilterGroup');
   }
 
+//  public function getCoreMapping()
+//  {
+//    return array(
+//      'filter_property' => array('rel' => 'Filter'),
+//    );
+//  }
+
   public function getById($id, array $params = array())
   {
     $this->applyDefaultParameters($params);

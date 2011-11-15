@@ -1336,6 +1336,18 @@ border-radius: 5px;
 	margin: 11px 0;
 	 font-weight: normal;
 	}
+.yellowbutton.mDisabled{
+	opacity: 0.5;
+	-webkit-opacity: 0.5;
+	-moz-opacity: 0.5;
+	-ms-opacity: 0.5;
+	-o-opacity: 0.5;
+	
+	color: #a6a6a6;
+	cursor: default;
+	background: #f3f3f3;
+	border: 1px solid #a6a6a6;
+	}	
 .bPopupWrap {
     left: 0;
     margin-top: 200px;
@@ -1633,17 +1645,17 @@ DT.bCtg__eOrange{
 /* ----------- /bInfoBlock ------------- */
 
 
-.bSlide .pb5, .bSlide .pb5 input {
+.bSlide .pb5, .bSlide .pb5 span {
     text-align: center;
 }
 .pb5 {
     padding-bottom: 5px;
 }
-.bSlide .pb5 input {
+.bSlide .pb5 span {
     background: none repeat scroll 0 0 transparent;
     border: 0 none;
-    color: #A6A6A6;
-    font: 11px Tahoma,sans-serif;
+/*    color: #A6A6A6; */
+    font-size: 11px;
     height: 13px;
     padding: 0;
 }

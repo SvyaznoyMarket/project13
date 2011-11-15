@@ -31,5 +31,19 @@ class ProductFilterTable extends myDoctrineTable
     $ids = $this->getIdsByQuery($q, $params, 'productFilterGroup-'.$group->id.'/productFilter-ids');
 
     return $this->createListByIds($ids, $params);
+}
+  public function getCoreMapping()
+  {
+    return array(
+
+      'id'          => 'core_id',
+      'name'        => 'name',
+      'is_multiple' => 'is_multiple',
+      'position'    => 'position',
+      'min'         => 'value_min',
+      'max'         => 'value_max',
+
+      'property_id' => array('rel' => 'Property'),
+    );
   }
 }
