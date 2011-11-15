@@ -174,7 +174,7 @@ $(document).ready(function(){
 		$(this).toggleClass("current")
 		return false
 	})
-	$(".bigfilter dt:first").trigger('click')
+	//$(".bigfilter dt:first").trigger('click')
 	$(".f1list dt B").click(function(){
 		$(this).parent("dt").next(".f1list dd").slideToggle(200)
 		$(this).toggleClass("current")
