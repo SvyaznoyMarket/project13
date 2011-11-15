@@ -20,11 +20,13 @@ class myProductFormFilter extends sfFormFilter
     $productTable = ProductTable::getInstance();
 
     // виджет цены
+    $valueMin = (int)$productTable->getMinPriceByCategory($productCategory);
+    $valueMax = (int)$productTable->getMaxPriceByCategory($productCategory);
     $value = array(
-      'min' => (int)$productTable->getMinPriceByCategory($productCategory),
-      'max' => (int)$productTable->getMaxPriceByCategory($productCategory),
+      'min' => $valueMin,
+      'max' => $valueMax,
     );
-    $this->widgetSchema['price'] = $this->getWidgetRange(null, array(
+    $this->widgetSchema['price'] = $this->getWidgetRange(array('value_min' => $valueMin, 'value_max' => $valueMax), array(
       'from' => $value['min'],
       'to'   => $value['max'],
     ));
@@ -152,7 +154,7 @@ class myProductFormFilter extends sfFormFilter
     ));
   }
 
-  protected function getWidgetRange(ProductFilter $productFilter = null, array $value)
+  protected function getWidgetRange($productFilter, array $value)
   {
     $id = uniqid();
 
@@ -166,7 +168,9 @@ class myProductFormFilter extends sfFormFilter
             .'<div id="slider-'.$id.'" class="filter-range"></div>'
           .'</div>'
           .'<div class="pb5">'
-            .'<span class="slider-interval"></span> '.(null == $productFilter ? '<span class="rubl">p</span>' : '')
+            .'<input class="slider-from" type="hidden" disabled="disabled" value="'.$productFilter['value_min'].'" />'
+            .'<input class="slider-to" type="hidden" disabled="disabled" value="'.$productFilter['value_max'].'" />'
+            .'<span class="slider-interval"></span> '.(($productFilter instanceof ProductFilter) ? '' : '<span class="rubl">p</span>')
           .'</div>'
         .'</div>'
 
