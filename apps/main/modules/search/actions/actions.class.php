@@ -107,7 +107,7 @@ class searchActions extends myActions
         {
           $productType->mapValue('_product_count', $coreIds[$productType->core_id]);
 
-          if ($productType->id == ($this->productType ? $this->productType->id : null))
+          if ($productType->id == $this->productType->id)
           {
             $this->productType->mapValue('_product_count', $productType->_product_count);
           }
