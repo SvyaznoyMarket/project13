@@ -158,11 +158,14 @@ class myProductFormFilter extends sfFormFilter
       'value_from' => $value['from'],
       'value_to'   => $value['to'],
       'template'   => ''
-        .'<div class="pb5" style="margin-left:11px;">%value_from% - %value_to%</div>'
-        .'<div class="sliderbox">'
-          .'<div id="slider-'.uniqid().'" class="filter-range"></div>'
-          .'<span class="fl">'.$value['from'].'</span>'
-          .'<span class="fr">'.$value['to'].'</span>'
+        .'<div class="bSlide">'
+          .'%value_from% %value_to%'
+          .'<div class="sliderbox">'
+            .'<div id="slider-'.uniqid().'" class="filter-range"></div>'
+          .'</div>'
+          .'<div class="pb5">'
+            .'<span class="slider-interval"></span> '.(null == $productFilter ? '<span class="rubl">p</span>' : '')
+          .'</div>'
         .'</div>'
         .'<div class="clear"></div>'
     ), array(
