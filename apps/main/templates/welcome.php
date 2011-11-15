@@ -12,6 +12,7 @@
     <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
     <script type="text/javascript" src="/js/jquery.countdown.min.js"></script>    
     <script type="text/javascript" src="/js/jquery.countdown-ru.js"></script>
+    <?php include_component('page', 'link_rel_canonical') ?>        
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25485956-1']);
