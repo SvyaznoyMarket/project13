@@ -60,6 +60,7 @@ all:
   cache_eraser:
     config:
       file: %SF_ROOT_DIR%/erase.cmd
+      prefix: 'CACHETAG::'
 
   payment:
     default_provider: uniteller

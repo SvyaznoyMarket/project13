@@ -30,6 +30,33 @@ class ProductPhoto3DTable extends myDoctrineTable
   public function getByProduct(Product $product)
   {
 	  $q = $this->createBaseQuery()->where('product_id = ?', $product->id);
+
 	  return $q->execute();
+  }
+
+  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  {
+    $return = array();
+
+    $q = ProductTable::getInstance()->createQuery('product')
+      ->select('product.core_id')
+      ->innerJoin('product.Photo3D photo3d')
+      ->where('photo3d.product_id = ?', $record->id)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+    ;
+
+    $ids = $q->execute();
+    if (!is_array($ids))
+    {
+      $ids = array($ids);
+    }
+
+    foreach ($ids as $id)
+    {
+      $return[] = "product-{$id}";
+    }
+
+
+    return $return;
   }
 }

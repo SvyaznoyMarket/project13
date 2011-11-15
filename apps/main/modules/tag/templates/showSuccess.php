@@ -1,4 +1,5 @@
 <?php slot('title', mb_ucfirst($tag)) ?>
+<?php include_partial('default/cache', array('record' => $tag)) ?>
 
 <?php slot('navigation') ?>
   <?php include_component('tag', 'navigation', array('tag' => $tag)) ?>

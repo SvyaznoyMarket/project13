@@ -37,6 +37,11 @@ class CacheEraser
     return null == $name ? $this->config->getAll() : $this->config->get($name);
   }
 
+  public function getPrefix()
+  {
+    return $this->getConfig('prefix');
+  }
+
   public function erase($keys)
   {
     if (empty($keys))
