@@ -356,6 +356,7 @@ class productComponents extends myComponents
     foreach (TagTable::getInstance()->getByProduct($this->product->id) as $tag)
     {
       $list[] = array(
+        'tag'   => $tag,
         'token' => $tag->token,
         'url'   => url_for('tag_show', array('tag' => $tag->token)),
         'name'  => $tag->name,

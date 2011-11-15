@@ -584,8 +584,8 @@ class ProductTable extends myDoctrineTable
   {
     $return = array_merge(parent::getCacheEraserKeys($record, $action), array());
 
-    $modified = $record->getLastModified();
-    if (true || ('delete' == $action) || isset($modified['score']))
+    //$modified = $record->getLastModified();
+    if (in_array($action, array('save', 'delete')) /* || isset($modified['score']) */)
     {
       foreach ($record->Category as $productCategory)
       {
