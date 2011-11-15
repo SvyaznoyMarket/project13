@@ -166,7 +166,7 @@ class myProductFormFilter extends sfFormFilter
             .'<div id="slider-'.$id.'" class="filter-range"></div>'
           .'</div>'
           .'<div class="pb5">'
-            .'<span class="slider-interval">2 - 100</span>'
+            .'<span class="slider-interval"></span> '.(null == $productFilter ? '<span class="rubl">p</span>' : '')
           .'</div>'
         .'</div>'
 
