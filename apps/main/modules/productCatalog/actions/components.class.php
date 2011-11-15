@@ -338,7 +338,7 @@ class productCatalogComponents extends myComponents
 
       $formName = $form->getName();
 
-      return url_for('productCatalog_filter', array('productCategory' => $productCategory->token, $formName => $filter));
+      return url_for('productCatalog_tag', array('productCategory' => $productCategory->token, $formName => $filter));
     };
 
     foreach ($this->form->getValues() as $name => $value)
