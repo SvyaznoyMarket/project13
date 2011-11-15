@@ -1,7 +1,7 @@
 /* jQuery Countdown styles 1.5.11. */
 .hasCountdown {
-width: 300px;
-margin-left:20px;
+width: 280px;
+margin-left:30px;
 }
 .countdown_rtl {
 	direction: rtl;
