@@ -1445,7 +1445,7 @@ DT.bCtg__eOrange{
 	}
 	.bMap__eBody,
 	.bMap__eImages{
-		height: 334px;
+		height: 473px;
 		overflow: hidden;
 		vertical-align: top;
 		display: inline-block;
@@ -1485,7 +1485,7 @@ DT.bCtg__eOrange{
 				left: 10px;
 				z-index: 10;
 				width: 787px;
-				height: 334px;
+				height: 473px;
 				display: none;
 				position: absolute;
 				}
