@@ -251,7 +251,7 @@ class UserCart extends BaseUserData
 
     if (is_null($this->products) || true === $force)
     {
-      $this->products = $productTable->createListByIds($productIds, array('index' => array('product' => 'id', ), ));
+      $this->products = $productTable->createListByIds($productIds, array('index' => array('product' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
     }
     else
     {
@@ -260,7 +260,7 @@ class UserCart extends BaseUserData
       $toAddIds = array_diff($productIds, $currentIds);
       $toDelIds = array_diff($currentIds, $productIds);
 
-      $toAdd = $productTable->createListByIds($toAddIds, array('index' => array('product' => 'id', ), ));
+      $toAdd = $productTable->createListByIds($toAddIds, array('index' => array('product' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
       foreach ($toAdd as $key => $product)
       {
         $this->products[$key] = $product;

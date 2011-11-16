@@ -6,7 +6,7 @@
 <!-- bMap -->
 
 <div class="bMap">
-  <div id="map-container" class="bMap__eBody" style="width: <?php echo count($item['photos']) ? '787' : '897' ?>px; height: 334px; background: transparent url('/images/loader.gif') no-repeat 50% 50%;"></div>
+  <div id="map-container" class="bMap__eBody" style="width: <?php echo count($item['photos']) ? '787' : '897' ?>px; height: 473px; background: transparent url('/images/loader.gif') no-repeat 50% 50%;"></div>
 
   <?php if (count($item['photos'])): ?>
   <div class="bMap__eImages">

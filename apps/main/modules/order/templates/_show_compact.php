@@ -34,12 +34,34 @@ use_helper('Date');
     </table>
   <?php } ?>
   <table class="order mb15">
+      
         <?php foreach($item['products'] as $product): ?>
-        <tr>
-           <th><a href="<?php echo $product['url'] ?>"><?php echo $product['name'] ?> (<?php echo $product['quantity'] ?> шт.)</a><div class="font11 pt5">Артикул #<?php echo $product['article'] ?> (сформирован на складе)</div></th>
-           <td><strong class="font14"><?php echo $product['price'] ?>&nbsp;<span class="rubl">p</span></strong></td>
-       </tr>
+            <?php if ($product['type'] == 'service') { ?>
+                <tr>
+                   <th>
+                       <a href="<?php echo $product['url'] ?>">
+                        <?php echo $product['name'] ?> (<?php echo $product['quantity'] ?> шт.)
+                       </a>
+                   </th>
+                   <td>
+                       <strong class="font14"><?php echo $product['price'] ?>&nbsp;<span class="rubl">p</span></strong>
+                   </td>
+               </tr>
+           <?php } else { ?>
+                <tr>
+                   <th>
+                       <a href="<?php echo $product['url'] ?>">
+                        <?php echo $product['name'] ?> (<?php echo $product['quantity'] ?> шт.)
+                       </a>
+                       <div class="font11 pt5">Артикул #<?php echo $product['article'] ?> (сформирован на складе)</div>
+                   </th>
+                   <td>
+                       <strong class="font14"><?php echo $product['price'] ?>&nbsp;<span class="rubl">p</span></strong>
+                   </td>
+               </tr>               
+           <?php } ?>
        <?php endforeach; ?>
+           
        <tr>
            <th>
                <?php if (isset($item['delivered_at'])){ ?><div class="font12 pb5"> Дата доставки: <?php $date = explode(" ",$item['delivered_at']);  echo format_date($date[0],'dd MMMM yyyy','ru')?>г. <?php if (isset($item['delivered_period'])) echo '('.$item['delivered_period'].')'; ?></div><?php } ?>

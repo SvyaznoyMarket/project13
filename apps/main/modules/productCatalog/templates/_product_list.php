@@ -22,7 +22,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 <?php if (!$empty): ?>
   <div class="line"></div>
 <?php endif ?>
-  
+
 <?php include_component('product', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view, )) ?>
 
 <?php if (false): ?>
