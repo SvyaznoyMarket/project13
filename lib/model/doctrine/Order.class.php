@@ -12,11 +12,11 @@
  */
 class Order extends BaseOrder
 {
-
+    
     const STATUS_READY     = 6;
     const STATUS_CANCELLED     = 5;
 
-
+    
   public function __toString()
   {
     return (string)$this->token;
@@ -28,12 +28,12 @@ class Order extends BaseOrder
       'order' => $this->token,
     );
   }
-
+  
   public function getCityName()
   {
 	  return isset($this->Region) ? $this->Region->name : null;
   }
-
+  
   public function getAreaName()
   {
 	  if (isset($this->Region)) {
@@ -44,7 +44,7 @@ class Order extends BaseOrder
 	  }
 	  return null;
   }
-
+  
   public function getCountryName()
   {
 	  if (isset($this->Region)) {
@@ -93,12 +93,27 @@ class Order extends BaseOrder
     {
       foreach ($this->ProductRelation as $product)
       {
-        $data['product'][] = array(
-          'id'          => $product->Product->core_id,
-          'price'       => $product->price,
-          'quantity'    => $product->quantity,
-        );
+            $data['product'][] = array(
+              'id'          => $product->Product->core_id,
+              'quantity'    => $product->quantity,
+            );
+            $productCoreIdList[ $product->Product->id ] = $product->Product->core_id;
       }
+      foreach ($this->ServiceRelation as $service)
+      {
+            $productId = $productCoreIdList[ $service->product_id ];
+            if ($productId<0) {
+                continue;
+            }
+            $data['service'][] = array(
+              'id'          => $service->Service->core_id,
+              'product_id'  => $productId,
+              'quantity'    => $service->quantity,
+            );
+      }      
+   #   print_r($data);
+   #   exit();
+      
     }
 
     return $data;
@@ -107,8 +122,6 @@ class Order extends BaseOrder
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
-
-    $this->token = uniqid().'-'.$data['number'];
 
     //$this->type = 1 == $data['type_id'] ? 'order' : 'preorder';
 
