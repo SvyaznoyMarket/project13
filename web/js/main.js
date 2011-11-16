@@ -93,7 +93,7 @@ $(document).ready(function(){
 				var next_a = next.find('a')
 								.html('<span>123</span>')
 								.addClass('borderedR')								
-				next_a.attr('href', next_a.attr('href').replace(/?page=\d/,'') )
+				next_a.attr('href', next_a.attr('href').replace(/\?page=\d/,'') )
 				$('div.pageslist li').remove()
 				$('div.pageslist ul').append( next )
 									 .find('a')
