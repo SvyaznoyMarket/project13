@@ -353,11 +353,12 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
+    $this->tagList = TagTable::getInstance()->getByProduct($this->product->id);
+
     $list = array();
-    foreach (TagTable::getInstance()->getByProduct($this->product->id) as $tag)
+    foreach ($this->tagList as $tag)
     {
       $list[] = array(
-        'tag'   => $tag,
         'token' => $tag->token,
         'url'   => url_for('tag_show', array('tag' => $tag->token)),
         'name'  => $tag->name,
