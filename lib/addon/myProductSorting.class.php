@@ -34,16 +34,39 @@ class myProductSorting extends myBaseSorting
       $q->leftJoin('product.Creator creator');
     }
 
+    $orders = $q->getDqlPart('orderby');
+    $orderByInstock = array_shift($orders);
+    $q->orderBy($orderByInstock);
     $q->addOrderBy('creator.name '.$this->getDirection());
+    foreach ($orders as $ob) {
+        $q->addOrderBy($ob);
+    }
   }
 
   protected function setQueryForPrice(myDoctrineQuery $q)
   {
-    $q->addOrderBy('product.price '.$this->getDirection());
+    if (!$q->hasAliasDeclaration('price'))
+    {
+      $q->innerJoin('product.ProductPrice productPrice')
+        ->innerJoin('productPrice.PriceList priceList with priceList.is_default=1');
+    }
+    $orders = $q->getDqlPart('orderby');
+    $orderByInstock = array_shift($orders);
+    $q->orderBy($orderByInstock);
+    $q->addOrderBy('productPrice.price '.$this->getDirection());
+    foreach ($orders as $ob) {
+        $q->addOrderBy($ob);
+    }
   }
 
   protected function setQueryForRating(myDoctrineQuery $q)
   {
+    $orders = $q->getDqlPart('orderby');
+    $orderByInstock = array_shift($orders);
+    $q->orderBy($orderByInstock);
     $q->addOrderBy('product.rating '.$this->getDirection());
+    foreach ($orders as $ob) {
+        $q->addOrderBy($ob);
+    }
   }
 }
