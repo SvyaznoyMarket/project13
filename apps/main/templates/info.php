@@ -68,7 +68,7 @@ _gaq.push(['_trackPageLoadTime']);
             <a href="">Отследить мой заказ</a-->
           </div>
           <!-- Extramenu -->
-          <?php include_component('productCategory', 'extra_menu') ?>
+          <?php #include_component('productCategory', 'extra_menu') ?>
           <!-- /Extramenu -->
         </div>
         <!-- /Header -->
