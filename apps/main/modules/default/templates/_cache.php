@@ -1,1 +1,5 @@
-<!-- <?php echo CacheEraser::getInstance()->getPrefix() ?> <?php foreach ($record->getCacheEraserKeys('show') as $key) echo $key.' ' ?> -->
+<?php $keys = $record->getCacheEraserKeys('show') ?>
+
+<?php if (count($keys)): ?>
+<!-- <?php echo CacheEraser::getInstance()->getPrefix() ?> <?php foreach ($keys as $key) echo $key.' ' ?> -->
+<?php endif ?>
