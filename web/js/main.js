@@ -48,7 +48,7 @@ $(document).ready(function(){
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
 		var loader = 
 			"<div id='ajaxgoods' class='bNavLoader'>" +
-				"<div class='bNavLoader__eIco'><img src='/images/arrow.gif'></div>" +
+				"<div class='bNavLoader__eIco'><img src='/images/ajar.gif'></div>" +
 				"<div class='bNavLoader__eM'>" +
 					"<p class='bNavLoader__eText'>Подождите немного</p>"+
 					"<p class='bNavLoader__eText'>Идет загрузка</p>"+
@@ -207,7 +207,7 @@ $(document).ready(function(){
 		var informator = $('.slider-interval', $(this).next())
 		var from = papa.find('input:first')
 		var to   = papa.find('input:eq(1)')
-		informator.html( from.val() + ' - ' + to.val() )
+		informator.html( printPrice( from.val() ) + ' - ' + printPrice( to.val() ) )
 		var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
 		sliderRange.slider({
 			range: true,
@@ -216,7 +216,7 @@ $(document).ready(function(){
 			max: maxi,
 			values: [ from.val()  ,  to.val() ],
 			slide: function( e, ui ) {
-				informator.html( ui.values[ 0 ] + ' - ' + ui.values[ 1 ] )
+				informator.html( printPrice( ui.values[ 0 ] ) + ' - ' + printPrice( ui.values[ 1 ] ) )
 				from.val( ui.values[ 0 ] )
 				to.val( ui.values[ 1 ] )
 			},
@@ -330,7 +330,22 @@ $(document).ready(function(){
     $(".goodsbar .link3").bind( 'click.css', function()   {
         //$(this).addClass("link3active");
     })
-
+	/* left menu */
+	$('.bCtg__eL2').toggle( 
+		function(){
+			$('.bCtg__eL3').hide()
+			$('.bCtg__eL2').show()
+		}, function(){
+			function recShow( jnode ) {
+				if( jnode.next() && jnode.next().hasClass('bCtg__eL3') ) {
+					jnode.next().show()				
+					recShow( jnode.next() )
+				}	
+			}
+			recShow( $(this) )
+		}
+	)
+	
 	/* top menu */
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
