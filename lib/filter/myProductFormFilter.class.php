@@ -26,10 +26,7 @@ class myProductFormFilter extends sfFormFilter
       'min' => $valueMin,
       'max' => $valueMax,
     );
-    $this->widgetSchema['price'] = $this->getWidgetRange(array('value_min' => $valueMin, 'value_max' => $valueMax), array(
-      'from' => $value['min'],
-      'to'   => $value['max'],
-    ));
+    $this->widgetSchema['price'] = $this->getWidgetRange(array('value_min' => $valueMin, 'value_max' => $valueMax));
     $this->widgetSchema['price']->setLabel('Цена');
     $this->validatorSchema['price'] = new sfValidatorPass();
     $this->setDefault('price', array(
@@ -73,10 +70,7 @@ class myProductFormFilter extends sfFormFilter
 
       if (('range' == $productFilter->type) && ($productFilter->value_min == $productFilter->value_max)) continue;
 
-      if (!$widget = call_user_func_array(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), array(
-        $productFilter,
-        'range' == $productFilter->type ? array('from' => $productFilter->value_min, 'to' => $productFilter->value_max) : array(),
-      ))) continue;
+      if (!$widget = call_user_func_array(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), array($productFilter))) continue;
 
       $index = "param-{$productFilter->id}";
       $this->setWidget($index, $widget);
@@ -136,6 +130,20 @@ class myProductFormFilter extends sfFormFilter
     ProductTable::getInstance()->setQueryForFilter($q, $filter);
   }
 
+  public function bind(array $taintedValues = null, array $taintedFiles = null)
+  {
+    // fix for range widgets than has been unseted
+    foreach ($this as $index => $field)
+    {
+      if (($field->getWidget() instanceof myWidgetFormRange) && !isset($taintedValues[$index]))
+      {
+        $taintedValues[$index] = $this->getDefault($index);
+      }
+    }
+
+    parent::bind($taintedValues, $taintedFiles);
+  }
+
   protected function getWidgetChoice($productFilter)
   {
     $choices = array();
@@ -156,14 +164,14 @@ class myProductFormFilter extends sfFormFilter
     ));
   }
 
-  protected function getWidgetRange($productFilter, array $value)
+  protected function getWidgetRange($productFilter)
   {
     $id = uniqid();
     //myDebug::dump($productFilter);
 
     return new myWidgetFormRange(array(
-      'value_from' => $value['from'],
-      'value_to'   => $value['to'],
+      'value_from' => $productFilter['value_min'],
+      'value_to'   => $productFilter['value_max'],
       'template'   => ''
         .'<div class="bSlide">'
           .'%value_from% %value_to%'
@@ -184,7 +192,7 @@ class myProductFormFilter extends sfFormFilter
     ));
   }
 
-  protected function getWidgetCheckbox(ProductFilter $productFilter = null)
+  protected function getWidgetCheckbox()
   {
     return new myWidgetFormInputCheckbox();
   }
