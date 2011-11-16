@@ -59,7 +59,7 @@ all:
 
   cache_eraser:
     config:
-      file: %SF_ROOT_DIR%/erase.cmd
+      file: %SF_ROOT_DIR%/erase_barcode.cmd
       prefix: 'CACHETAG::'
 
   payment:
@@ -140,7 +140,7 @@ live:
 
   core:
     config:
-      api_url: 'http://62.231.27.40/v1/json'
+      api_url: 'http://api.enter.ru/v1/json'
       consumer_key: v6Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
@@ -150,3 +150,15 @@ live:
         main:
           host: site-db
           persistent: true
+
+
+alpha:
+  doctrine:
+    result_cache:        false  # кешировать результаты запросов
+    result_cache_prefix: 'dql:' # префикс ключей в кеше
+
+  core:
+    config:
+      api_url: 'http://core.ent3.ru/v1/json'
+      consumer_key: test
+      signature: test
