@@ -20,6 +20,7 @@ class GuardUser extends BaseGuardUser
 
   public function preSave($event)
   {
+    parent::preSave($event); // important!
     /*if (!$this->exists())
     {
       if ($response = Core::getInstance()->createUser($this))

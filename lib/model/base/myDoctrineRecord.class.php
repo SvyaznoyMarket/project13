@@ -6,14 +6,22 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     $corePush = true
   ;
 
+  public function preSave($event)
+  {
+    $invoker = $event->getInvoker();
+
+    // If record has been modified adds keys to nginx file
+    if ($invoker->isModified(true))
+    {
+      CacheEraser::getInstance()->erase($this->getTable()->getCacheEraserKeys($invoker, 'save'));
+    }
+  }
+
   public function postSave($event)
   {
     $invoker = $event->getInvoker();
 
     $this->deleteResultCache($invoker);
-
-    // Adds keys to nginx file
-    CacheEraser::getInstance()->erase($this->getTable()->getCacheEraserKeys($invoker, 'save'));
   }
 
   public function preDelete($event)

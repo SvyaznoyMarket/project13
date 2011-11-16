@@ -14,8 +14,8 @@ class User extends BaseUser
 {
   public function preSave($event)
   {
-   #   echo 'tyt!';
-   #   exit();
+    parent::preSave($event); // important!
+
     $record = $event->getInvoker();
 
     if (empty($record->password) && !$record->exists())

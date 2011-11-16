@@ -71,6 +71,8 @@ class myProductFormFilter extends sfFormFilter
       // если фильтр типа "диапазон" и макс. и мин. значения равны нулю, то игнор
       if (('range' == $productFilter->type) && !$productFilter->value_min && !$productFilter->value_max) continue;
 
+      if (('range' == $productFilter->type) && ($productFilter->value_min == $productFilter->value_max)) continue;
+
       if (!$widget = call_user_func_array(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), array(
         $productFilter,
         'range' == $productFilter->type ? array('from' => $productFilter->value_min, 'to' => $productFilter->value_max) : array(),
@@ -157,6 +159,7 @@ class myProductFormFilter extends sfFormFilter
   protected function getWidgetRange($productFilter, array $value)
   {
     $id = uniqid();
+    //myDebug::dump($productFilter);
 
     return new myWidgetFormRange(array(
       'value_from' => $value['from'],
@@ -170,7 +173,7 @@ class myProductFormFilter extends sfFormFilter
           .'<div class="pb5">'
             .'<input class="slider-from" type="hidden" disabled="disabled" value="'.$productFilter['value_min'].'" />'
             .'<input class="slider-to" type="hidden" disabled="disabled" value="'.$productFilter['value_max'].'" />'
-            .'<span class="slider-interval"></span> '.(($productFilter instanceof ProductFilter) ? '' : '<span class="rubl">p</span>')
+            .'<span class="slider-interval"></span> '.(($productFilter instanceof ProductFilter) ? (!empty($productFilter->Property->unit) ? $productFilter->Property->unit : '') : '<span class="rubl">p</span>')
           .'</div>'
         .'</div>'
 
