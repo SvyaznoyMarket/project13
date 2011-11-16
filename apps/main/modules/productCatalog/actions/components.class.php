@@ -58,6 +58,59 @@ class productCatalogComponents extends myComponents
 
     $this->setVar('list', $list, false);
   }
+  
+/**
+  * Executes navigation component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  * @param Creator $creator Производитель
+  */
+  public function executeNavigation_seo()
+  {
+    $list = array();
+
+    /*
+    $list[] = array(
+      'name' => 'Каталог товаров',
+      'url'  => url_for('@productCatalog'),
+    );
+    */
+    if (isset($this->productCategory) && !empty($this->productCategory))
+    {
+      $ancestorList = $this->productCategory->getNode()->getAncestors();
+      if ($ancestorList) 
+      {
+          foreach ($ancestorList as $ancestor)
+          {
+            $list[] = array(
+              'name' => (string) ($ancestor['seo_header']) ? $ancestor['seo_header'] : $ancestor['name'],
+              'url'  => url_for('productCatalog_category', $ancestor),
+            );
+          }
+      }
+      $list[] = array(
+        'name' => (string) ($this->productCategory->seo_header) ? $this->productCategory->seo_header : $this->productCategory->name,
+        'url'  => url_for('productCatalog_category', $this->productCategory),
+      );
+    }
+    if (isset($this->creator))
+    {
+      $list[] = array(
+        'name' => (string)$this->creator,
+        'url'  => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+      );
+    }
+    if (isset($this->product))
+    {
+      $list[] = array(
+        'name' => (string)$this->product,
+        'url'  => url_for(array('sf_route' => 'productCard', 'sf_subject' => $this->product)),
+      );
+    }
+
+    $this->setVar('list', $list, false);
+  }
+  
  /**
   * Executes category_list component
   *

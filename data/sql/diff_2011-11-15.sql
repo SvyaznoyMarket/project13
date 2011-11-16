@@ -1,0 +1,1 @@
+ALTER TABLE product_category add `seo_header` VARCHAR(255) COMMENT 'SEO заголовок. Используется для генерации нижних breadcrumbs';

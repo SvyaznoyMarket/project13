@@ -41,8 +41,30 @@ class defaultComponents extends myComponents
       'url'  => url_for('@homepage'),
     ));
 
-    $this->setVar('list', $list, true);
+    $this->setVar('list', $list, true);    
   }
+  
+/**
+  * Executes navigation component
+  *
+  * @param array $list Список элементов навигации
+  */
+  public function executeNavigation_seo()
+  {
+    if (empty($this->list))
+    {
+      return sfView::NONE;
+    }
+
+    $list = (array)$this->list;
+    array_unshift($list, array(
+      'name' => 'Enter.ru',
+      'url'  => url_for('@homepage'),
+    ));
+
+    $this->setVar('list', $list, true);    
+  }  
+   
  /**
   * Executes pagination component
   *
