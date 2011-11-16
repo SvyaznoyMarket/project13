@@ -10,6 +10,7 @@
 
   <dl class="bigfilter form bSpec">
     <h2>Выбираем:</h2>  
+    <?php include_component('productCatalog', 'tag_selected', array('form' => $form, 'productCategory' => $productCategory)) ?>
     <?php $i = 0; foreach ($form as $name => $field): if ($i > 7) break; ?>
     <?php //echo $name; ?>
       <?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?>

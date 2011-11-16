@@ -191,6 +191,11 @@ EOF;
     if (('create' == $action) || ('update' == $action))
     {
       $record->replace(); //$record->save();
+      if ($record instanceof ProductCategory)
+      {
+        if (!empty($record->FilterGroup))
+          $record->FilterGroup->replace();
+      }
 
       // проверка родителя
       if (!empty ($record->core_parent_id) && $record->getTable()->hasTemplate('NestedSet'))
@@ -199,7 +204,7 @@ EOF;
         if (isset($modified['core_parent_id']))
         {
           $parent = $record->getTable()->getByCoreId($record->core_parent_id);
-          if ($parent && ($parent->id != $record->getNode()->getParent()->id))
+          if ($parent && !$record->getNode()->isRoot() && ($parent->id != $record->getNode()->getParent()->id))
           {
             $record->getNode()->moveAsLastChildOf($parent);
           }

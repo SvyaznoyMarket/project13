@@ -103,6 +103,7 @@ class ProductTypeTable extends myDoctrineTable
         foreach ($record['PropertyGroup'] as $propertyGroup)
         {
           // TODO: Сделать поприличнее
+          // if (array_key_exists($propertyGroup->id, $groupedPropertyArray)) {
           if (isset($groupedPropertyArray[$propertyGroup->id])) {
             $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
           }

@@ -45,10 +45,30 @@ class ProductCategory extends BaseProductCategory
 
   public function importFromCore(array $data)
   {
+
     parent::importFromCore($data);
 
     $this->photo = !empty($data['media_image']) ? $data['media_image'] : 'default.jpg';
     $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
+
+    if (isset($data['filter_property']))
+    {
+      $filterGroup = $this->getFilterGroup();
+      if (empty($filterGroup))
+      {
+        $filterGroup = new ProductFilterGroup();
+        $filterGroup->fromArray(array(
+          'name' => 'Фильтр для '.$data['name'],
+        ));
+        //$this->FilterGroup = $filterGroup;
+      }
+
+      $filterGroup->importFromCore($data);
+      $this->FilterGroup = $filterGroup;
+
+//      myDebug::dump($this->FilterGroup, 1);
+
+    }
 
   }
 
@@ -117,7 +137,7 @@ class ProductCategory extends BaseProductCategory
       $propertyIds[$property['id']] = $key;
     }
 
-    foreach ($this->FilterGroup->Filter as $filter)
+    foreach ($this->FilterGroup->getFilterList(array('order' => 'productFilter.name')) as $filter)
     {
       if (false
         || (('choice' == $filter->type) && isset($propertyIds[$filter->property_id]))

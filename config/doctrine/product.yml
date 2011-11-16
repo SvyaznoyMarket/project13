@@ -22,7 +22,9 @@ ProductFilterGroup:
 ProductFilter:
   options:
     comment: 'Фильтр товара'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
+    Corable: { push: disable }
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     name:              { type: string(255), notnull: true, notblank: true }
