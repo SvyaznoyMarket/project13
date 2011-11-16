@@ -142,16 +142,18 @@ public function getRealIpAddr()
     return $this->$name;
   }
 
-  protected function setCacheCookie()
+  public function setCacheCookie()
   {
+    /*
     if (false
       || !$this->isAuthenticated()
       || !$this->getGuardUser()
     ) {
       return;
     }
+    */
 
-    $key = md5(time() + $this->getGuardUser()->id);
+    $key = md5(time() + ($this->getGuardUser() ? $this->getGuardUser()->id : ''));
     sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_cache_cookie_name', 'enter_cache'), $key, null);
   }
 }

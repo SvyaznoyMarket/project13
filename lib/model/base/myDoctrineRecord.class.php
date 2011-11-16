@@ -10,12 +10,29 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
   {
     $invoker = $event->getInvoker();
 
-    $prefix = sfConfig::get('app_doctrine_result_cache_prefix', 'dql:');
+    $this->deleteResultCache($invoker);
 
-    $driver = $invoker->getTable()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
+    // Adds keys to nginx file
+    CacheEraser::getInstance()->erase($this->getTable()->getCacheEraserKeys($invoker, 'save'));
+  }
+
+  public function preDelete($event)
+  {
+    $invoker = $event->getInvoker();
+
+    $this->deleteResultCache($invoker);
+
+    CacheEraser::getInstance()->erase($this->getTable()->getCacheEraserKeys($invoker, 'delete'));
+  }
+
+  public function deleteResultCache($record)
+  {
+    $prefix = sfConfig::get('app_doctrine_result_cache_prefix', 'dql:');
+    $driver = $record->getTable()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
     if ($driver)
     {
-      foreach ($this->getTable()->getCacheKeys($invoker) as $key) {
+      foreach ($this->getTable()->getCacheKeys($record) as $key)
+      {
         $driver->deleteByPattern($prefix.$key);
       }
     }
@@ -196,6 +213,12 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     return $this->corePush;
   }
 
+  public function getCacheEraserKeys($action = null)
+  {
+    return $this->getTable()->getCacheEraserKeys($this, $action);
+  }
+
+  // TODO: удалить
   protected function getRecordByCoreId($model, $coreId, $returnId = false)
   {
     return myDoctrineTable::getRecordByCoreId($model, $coreId, $returnId);

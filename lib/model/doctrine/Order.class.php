@@ -125,6 +125,22 @@ class Order extends BaseOrder
       $user->setCorePush(false);
       $user->save();
     }
+
+    if (isset($data['product']))
+    {
+      $this->ProductRelation = new Doctrine_Collection(OrderProductRelationTable::getInstance());
+      foreach ($data['product'] as $relationData)
+      {
+        //$productOrder = OrderProductRelationTable::getInstance()->getByCoreId($relationData['id']);
+        //if (!$productOrder)
+        //{
+        $productOrder = new OrderProductRelation();
+        //}
+        $productOrder->importFromCore($relationData);
+        $this->ProductRelation[] = $productOrder;
+      }
+    }
+
   }
 
   public function isOnlinePayment()

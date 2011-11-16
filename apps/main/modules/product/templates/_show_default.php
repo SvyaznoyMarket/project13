@@ -112,13 +112,10 @@ foreach ($p3d as $p3d_obj)
 if (count($f1)): 
     $num = 0;
     ?>
-   <?php
-    include_component('product', 'f1_lightbox', array('f1' => $f1,))  
-   ?>
     <div class="f1links form">
-      <div class="f1linkbox">
-        <a href="" class="f1link">Сервис F1</a> Сервис F1
-      </div>
+       <?php
+        include_component('product', 'f1_lightbox', array('f1' => $f1,))  
+       ?>
       <div class="f1linkslist">
         <ul>
           <?php foreach ($f1 as $service):
@@ -130,7 +127,7 @@ if (count($f1)):
                 </label>
                 <input 
                     <?php if (key_exists($service->id, $selectedServices)) echo 'checked="checked"'; ?>
-                    id="checkbox-small-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="1" />
+                    ref="<?php echo $service->id ?>" id="checkbox-small-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="1" />
             </li>
         <?php
          $num++;
