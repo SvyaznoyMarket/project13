@@ -93,7 +93,7 @@ $(document).ready(function(){
 				var next_a = next.find('a')
 								.html('<span>123</span>')
 								.addClass('borderedR')								
-				next_a.attr('href', next_a.attr('href').replace(/\d/,'1') )
+				next_a.attr('href', next_a.attr('href').replace(/?page=\d/,'') )
 				$('div.pageslist li').remove()
 				$('div.pageslist ul').append( next )
 									 .find('a')
@@ -347,6 +347,12 @@ $(document).ready(function(){
 	)
 	
 	/* top menu */
+	if( $('.topmenu').length ) {
+		$.get('/category/main_menu', function(data){
+			$('.header').append( data )
+		})
+	}
+	
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
 	var corneroffsets = [167,222,290,362,435,515,587,662,717]
@@ -360,7 +366,7 @@ $(document).ready(function(){
 				if(	$(self).data('run') ) {
 					var i = $(self).attr('class').replace(/\D+/,'')
 					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
-					if( punkt.find('dl').html().replace(/\s/g,'') != '' )
+					if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
 						punkt.show().find('.corner').css('left',corneroffsets[i-1])
 				}
 			}
