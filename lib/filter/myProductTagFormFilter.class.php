@@ -19,11 +19,13 @@ class myProductTagFormFilter extends myProductFormFilter
     $productTable = ProductTable::getInstance();
 
     // виджет цены
+    $valueMin = (int)$productTable->getMinPriceByCategory($productCategory);
+    $valueMax = (int)$productTable->getMaxPriceByCategory($productCategory);
     $value = array(
-      'min' => (int)$productTable->getMinPriceByCategory($productCategory),
-      'max' => (int)$productTable->getMaxPriceByCategory($productCategory),
+      'min' => $valueMin,
+      'max' => $valueMax,
     );
-    $this->widgetSchema['price'] = $this->getWidgetRange(null, array(
+    $this->widgetSchema['price'] = $this->getWidgetRange(array('value_min' => $valueMin, 'value_max' => $valueMax), array(
       'from' => $value['min'],
       'to'   => $value['max'],
     ));
@@ -38,7 +40,7 @@ class myProductTagFormFilter extends myProductFormFilter
     if ($this->getOption('with_creator', false))
     {
       $choices = CreatorTable::getInstance()
-        ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name', 'with_descendat' => true, 'for_filter' => true, ))
+        ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name', 'with_descendat' => true, 'for_filter' => true, 'order' => 'creator.name'))
         ->toKeyValueArray('id', 'name')
       ;
       if (count($choices))

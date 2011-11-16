@@ -57,6 +57,11 @@ all:
       consumer_key: v4Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
+  cache_eraser:
+    config:
+      file: %SF_ROOT_DIR%/erase.cmd
+      prefix: 'CACHETAG::'
+
   payment:
     default_provider: uniteller
     provider:

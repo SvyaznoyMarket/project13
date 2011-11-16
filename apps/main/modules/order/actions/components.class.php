@@ -39,6 +39,7 @@ class orderComponents extends myComponents
       foreach ($this->order->ProductRelation as $orderProductRelation)
       {
         $item['products'][] = array(
+          'type'     => 'product',  
           'name'     => (string)$orderProductRelation->Product,
           'article'     => (string)$orderProductRelation->Product->article,
           'url'      => url_for('productCard', $orderProductRelation->Product),
@@ -46,6 +47,17 @@ class orderComponents extends myComponents
           'quantity' => $orderProductRelation['quantity'],
         );
       }
+      $item['services'] = array();
+      foreach ($this->order->ServiceRelation as $orderServiceRelation)
+      {
+        $item['products'][] = array(
+          'type'     => 'service',  
+          'name'     => (string)$orderServiceRelation->Service,
+          'url'      => url_for('service_show', $orderServiceRelation->Service),
+          'price'    => (int)$orderServiceRelation['price'],
+          'quantity' => $orderServiceRelation['quantity'],
+        );
+      }      
     }
 
     $this->setVar('item', $item, true);

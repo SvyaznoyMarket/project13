@@ -94,5 +94,21 @@ class pageComponents extends myComponents
 
     $this->setVar('list', $list, false);
   }
+  
+  public function executeLink_rel_canonical(){
+    $request = sfContext::getInstance()->getRequest(); 
+    $page = $request['page'];
+    #var_dump( $page );
+    #echo intVal($page) .'=='. $page;
+    if ($page && strval(intVal($page)) == $page){
+        $this->setVar('show_link', false);              
+    } else {
+        $this->setVar('show_link', true);   
+        $info = $request->getPathInfoArray();
+        #print_r($info);
+        $ar = explode('?',$info['REQUEST_URI']);
+        $this->setVar('href', $info['SERVER_NAME'] . '/' . $ar[0]);           
+    }
+  }
 
 }

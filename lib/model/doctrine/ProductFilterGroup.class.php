@@ -12,6 +12,10 @@
  */
 class ProductFilterGroup extends BaseProductFilterGroup
 {
+  public function getFilterList(array $params = array())
+  {
+    return ProductFilterTable::getInstance()->getListByGroup($this, $params);
+  }
 
   public function importFromCore(array $data)
   {

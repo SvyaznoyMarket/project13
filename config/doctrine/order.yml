@@ -89,6 +89,7 @@ Order:
     UserAddress:            { class: UserAddress, foreignAlias: Order, local: user_address_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Region:                 { class: Region, autoComplete: false, local: region_id, foreign: id, type: one, onDelete: SET NULL }
     Product:                { class: Product, foreignAlias: Order, refClass: OrderProductRelation, local: order_id, foreign: product_id, type: many, foreignType: many }
+    Service:                { class: Product, foreignAlias: Order, refClass: OrderServiceRelation, local: order_id, foreign: service_id, type: many, foreignType: many }
     Status:                 { class: OrderStatus, foreignAlias: Order, local: status_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 OrderProductRelation:

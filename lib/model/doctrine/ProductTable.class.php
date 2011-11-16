@@ -83,7 +83,7 @@ class ProductTable extends myDoctrineTable
   public function getById($id, array $params = array())
   {
     $this->applyDefaultParameters($params, array(
-      'with_properties' => true,
+      'with_properties' => false,
       'property_view'   => false,
       'with_line'       => false,
     ));
@@ -125,7 +125,11 @@ class ProductTable extends myDoctrineTable
     }
 
     $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
-      'view'           => $params['property_view'] ? $params['property_view'] : $params['view'],
+      'view'           =>
+        $params['with_properties']
+        ? ($params['property_view'] ? $params['property_view'] : $params['view'])
+        : false
+      ,
       'group_property' => $params['group_property'],
     ));
 
@@ -196,8 +200,10 @@ class ProductTable extends myDoctrineTable
     $id = isset($params['product']) ? $this->getIdBy('token', $params['product']) : null;
 
     return $this->getById($id, array(
-      'group_property' => true,
-      'view'           => 'show',
+      'group_property'  => true,
+      'view'            => 'show',
+      'property_view'   => 'show',
+      'with_properties' => true,
     ));
   }
 
@@ -578,5 +584,21 @@ class ProductTable extends myDoctrineTable
     $this->setQueryParameters($q, $params);
 
     return $q;
+  }
+
+  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  {
+    $return = array_merge(parent::getCacheEraserKeys($record, $action), array());
+
+    //$modified = $record->getLastModified();
+    if (in_array($action, array('save', 'delete')) /* || isset($modified['score']) */)
+    {
+      foreach ($record->Category as $productCategory)
+      {
+        $return[] = "productCategory-{$productCategory->core_id}";
+      }
+    }
+
+    return $return;
   }
 }

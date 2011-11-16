@@ -103,6 +103,7 @@ class ProductTypeTable extends myDoctrineTable
         foreach ($record['PropertyGroup'] as $propertyGroup)
         {
           // TODO: Сделать поприличнее
+          // if (array_key_exists($propertyGroup->id, $groupedPropertyArray)) {
           if (isset($groupedPropertyArray[$propertyGroup->id])) {
             $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
           }
@@ -134,7 +135,10 @@ class ProductTypeTable extends myDoctrineTable
 
     if ($params['with_productCount'])
     {
-      $q->addSelect('COUNT(product.id) AS _product_count');
+      $q
+        ->addSelect('COUNT(product.id) AS _product_count')
+        ->orderBy('COUNT(product.id) DESC')
+      ;
     }
 
     return $q->execute();

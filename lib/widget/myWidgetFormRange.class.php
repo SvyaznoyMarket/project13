@@ -21,8 +21,8 @@ EOF
     $values = array_merge(array('from' => '', 'to' => ''), is_array($value) ? $value : array());
 
     return strtr($this->getOption('template'), array(
-      '%value_from%' => $this->renderTag('input', array('type' => 'text', 'name' => $name.'[from]', 'value' => $values['from'])),
-      '%value_to%'   => $this->renderTag('input', array('type' => 'text', 'name' => $name.'[to]', 'value' => $values['to'])),
+      '%value_from%' => $this->renderTag('input', array('type' => 'hidden', 'name' => $name.'[from]', 'value' => $values['from'])),
+      '%value_to%'   => $this->renderTag('input', array('type' => 'hidden', 'name' => $name.'[to]', 'value' => $values['to'])),
       '%label_from%' => $this->getOption('label_from') ? $this->renderContentTag('label', $this->getOption('label_from'), array('for' => $this->generateId($name.'[from]'))) : '',
       '%label_to%'   => $this->getOption('label_to') ? $this->renderContentTag('label', $this->getOption('label_to'), array('for' => $this->generateId($name.'[to]'))) : '',
     ));
