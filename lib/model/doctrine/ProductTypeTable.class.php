@@ -122,16 +122,22 @@ class ProductTypeTable extends myDoctrineTable
   {
     $this->applyDefaultParameters($params, array(
       'with_productCount' => false,
+      'product_view'      => 'list',
     ));
 
     $q = $this->createBaseQuery($params);
 
     $this->setQueryParameters($q, $params);
 
-    $q->leftJoin('productType.Product product WITH product.is_instock = 1')
+    $q->leftJoin('productType.Product product')
       ->leftJoin('product.TagRelation tagProductRelation')
       ->addWhere('tagProductRelation.tag_id = ?', $tag->id)
     ;
+
+    if ($params['product_view'])
+    {
+      $q->addWhere("product.view_{$params['product_view']} = 1");
+    }
 
     if ($params['with_productCount'])
     {
