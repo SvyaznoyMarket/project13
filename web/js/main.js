@@ -244,11 +244,8 @@ $(document).ready(function(){
 					from.parent().trigger('preview')
 			}
 		})
-<<<<<<< HEAD
+
 */
-=======
-*/
->>>>>>> github/master
 
 /*		if ( from && to ) {
 			from.val( sliderRange.slider( "values", 0 ) )
