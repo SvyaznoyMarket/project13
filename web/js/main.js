@@ -331,6 +331,7 @@ $(document).ready(function(){
         //$(this).addClass("link3active");
     })
 	/* left menu */
+	/*
 	$('.bCtg__eL2').toggle( 
 		function(){
 			$('.bCtg__eL3').hide()
@@ -345,7 +346,7 @@ $(document).ready(function(){
 			recShow( $(this) )
 		}
 	)
-
+	*/
 	/* top menu */
 	if( $('.topmenu').length ) {
 		$.get('/category/main_menu', function(data){
