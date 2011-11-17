@@ -46,4 +46,8 @@ class productCategoryActions extends myActions
     $this->renderText($response);
     return sfView::NONE;
   }
+  
+  public function executeMenu(sfWebRequest $request){
+      
+  }
 }
