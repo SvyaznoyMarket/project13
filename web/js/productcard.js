@@ -39,10 +39,12 @@ $(document).ready(function(){
             cnt.lightbox_me({
                 onLoad: function(){
                     cnt.find('input[type=checkbox], input[type=radio]').prettyCheckboxes();
+                    initOrder(true);
                     form.submit(function(){
                         $.post(form.prop('action'), form.serializeArray(), function(resp){
                             cnt.html('<i class="close" title="Закрыть">Закрыть</i>'+resp);
                             Custom.init();
+                            initOrder(true);
                         });
                         return false;
                     });

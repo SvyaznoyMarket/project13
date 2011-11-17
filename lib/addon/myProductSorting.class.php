@@ -45,7 +45,7 @@ class myProductSorting extends myBaseSorting
 
   protected function setQueryForPrice(myDoctrineQuery $q)
   {
-    if (!$q->hasAliasDeclaration('price'))
+    if (!$q->hasAliasDeclaration('productPrice'))
     {
       $q->innerJoin('product.ProductPrice productPrice')
         ->innerJoin('productPrice.PriceList priceList with priceList.is_default=1');
