@@ -7,7 +7,7 @@
 
 <div class="links">
     <a href="<?php echo url_for('callback') ?>" class="link6">Обратная связь</a>
-    <a href="enter.jpg" class="link5">Входной билет</a>
+    <a href="<?php echo url_for('shop_show', ShopTable::getInstance()->getMainShop()) ?>" class="link5">Входной билет</a>
     <a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>" class="link4">О компании</a>
     <a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="link1">Сервис</a>
     <!--a class="link2">Связной</a>

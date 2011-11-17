@@ -53,13 +53,13 @@ all:
 
   core:
     config:
-      api_url: 'http://api.enter.ru/v1/json'
+      api_url: 'http://core/v1/json'
       consumer_key: v4Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
   cache_eraser:
     config:
-      file: %SF_ROOT_DIR%/erase_barcode.cmd
+      file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
       prefix: 'CACHETAG::'
 
   payment:

@@ -2,6 +2,30 @@
 
 class OrderStep1Form extends BaseOrderForm
 {
+  protected function isOrderContainBigProduct()
+  {
+      $bigThings = array(1096, 1095, 1094, 76, 18, 2);
+      $furnitureCat = ProductCategoryTable::getInstance()->findOneByCoreId(80);
+      foreach (sfContext::getInstance()->getUser()->getCart()->getProductServiceList() as $product)
+      {
+          foreach ($product['product']->Category as $category) {
+              if ($category->root_id == $furnitureCat->root_id) {
+                  return true;
+              }
+              if (in_array($category->core_id, $bigThings)) {
+                  return true;
+              }
+              $ancs = $category->getNode()->getAncestors();
+              foreach ($ancs as $anc) {
+                  if (in_array($anc->core_id, $bigThings)) {
+                      return true;
+                  }
+              }
+          }
+      }
+      return false;
+  }
+    
   public function configure()
   {
     parent::configure();
@@ -70,34 +94,61 @@ class OrderStep1Form extends BaseOrderForm
       array_pop($choices);
       $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
     }*/
-    $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
-      //'choices'  => $choices,
-      'model'           => 'DeliveryType',
-      'method'          => 'getChoiceForOrder',
-      'table_method'    => 'createBaseQuery',
-      'multiple'        => false,
-      'expanded'        => true,
-      'renderer_class'  => 'myWidgetFormOrderSelectRadio',
-    ));
+    $defaultDelivery = DeliveryTypeTable::getInstance()->findOneByCoreId(1);
+    
+    if ($this->isOrderContainBigProduct()) {
+        $q = DeliveryTypeTable::getInstance()->createBaseQuery();
+        $q->addWhere('token != ?', 'self');
+        $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
+          //'choices'  => $choices,
+          'model'           => 'DeliveryType',
+          'method'          => 'getChoiceForOrder',
+          //'table_method'    => 'createBaseQuery',
+          'query'           => $q,
+          'default'         => $defaultDelivery->id,
+          'multiple'        => false,
+          'expanded'        => true,
+          'renderer_class'  => 'myWidgetFormOrderSelectRadio',
+        ));
+    } else {
+        $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
+          //'choices'  => $choices,
+          'model'           => 'DeliveryType',
+          'method'          => 'getChoiceForOrder',
+          'table_method'    => 'createBaseQuery',
+          'default'         => $defaultDelivery->id,
+          'multiple'        => false,
+          'expanded'        => true,
+          'renderer_class'  => 'myWidgetFormOrderSelectRadio',
+        ));
+    }
     $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ получения заказа:');
     $this->validatorSchema['delivery_type_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryType', 'required' => true));
 
     $choices = array();
-    for ($i = 1; $i <= 7; $i++)
+    for ($i = 0; $i <= 7; $i++)
     {
       $date = strtotime("+{$i} day");
 
       $prefix = '';
+      $val = $prefix.date('d.m.Y', $date);
+      if (0 == $i)
+      {
+        $prefix = 'сегодня ';
+        $val = $prefix.'('.date('d.m.Y', $date).')';
+      }
       if (1 == $i)
       {
         $prefix = 'завтра ';
+        $val = $prefix.'('.date('d.m.Y', $date).')';
       }
       if (2 == $i)
       {
         $prefix = 'послезавтра ';
+        $val = $prefix.'('.date('d.m.Y', $date).')';
       }
 
-      $choices[date('Y-m-d', $date)] = $prefix.date('d.m.Y', $date);
+      $choices[date('Y-m-d', $date)] = $val;
     }
     $this->widgetSchema['delivered_at'] = new sfWidgetFormChoice(array(
       'choices'  => $choices,
@@ -105,14 +156,14 @@ class OrderStep1Form extends BaseOrderForm
       'expanded' => false,
     ));
     $this->widgetSchema['delivered_at']->setLabel('Выберите дату доставки:');
-    $this->validatorSchema['delivered_at'] = new sfValidatorChoice(array('choices' => array_keys($choices), 'required' => false));
+    $this->validatorSchema['delivered_at'] = new sfValidatorChoice(array('choices' => array_keys($choices), 'required' => true));
 
     $this->widgetSchema['delivery_period_id'] = new sfWidgetFormDoctrineChoice(array(
       'model'           => 'DeliveryPeriod',
-      'add_empty'       => false,
+      'add_empty'       => true,
       'expanded'        => false,
       'renderer_class'  => 'myWidgetFormOrderSelect',
-      'query'           => $this->object->delivery_type_id ? DeliveryPeriodTable::getInstance()->createBaseQuery()->addWhere('deliveryPeriod.delivery_type_id = ?', $this->object->delivery_type_id) : null,
+      'query'           => DeliveryPeriodTable::getInstance()->createBaseQuery()->addWhere('deliveryPeriod.delivery_type_id = ?', $this->object->delivery_type_id ? $this->object->delivery_type_id : $defaultDelivery->id),
     ));
     $this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryPeriod', 'required' => false));
 
