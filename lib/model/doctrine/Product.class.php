@@ -157,7 +157,15 @@ class Product extends BaseProduct
     }
     else
     {
-      $this->view_list = 1;
+      if (!empty($this->id))
+      {
+        $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->id);
+        $this->view_list = !empty($price) && $price->price > 0;
+      }
+      else
+      {
+        $this->view_list = 0;
+      }
       $this->view_show = 1;
     }
 
