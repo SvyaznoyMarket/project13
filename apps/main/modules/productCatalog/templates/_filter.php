@@ -15,7 +15,7 @@
     <h2>Выбираем:</h2>
     <?php include_component('productCatalog', 'filter_selected', array('form' => $form, 'productCategory' => $productCategory)) ?>
     <?php $openNum = 0; ?>
-    <?php $i = 0; foreach ($form as $name => $field):  if ($i++ > 7) break;  ?>
+    <?php $i = 0; foreach ($form as $name => $field): /* if ($i++ > 7) break; */  ?>
       <?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?>
 
       <dt<?php if (5 > $i) echo ' class="'.((1 == $i) ? ' first' : '').'"' ?>>
