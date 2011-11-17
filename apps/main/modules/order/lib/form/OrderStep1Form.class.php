@@ -105,6 +105,8 @@ class OrderStep1Form extends BaseOrderForm
       array_pop($choices);
       $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
     }*/
+    $defaultDelivery = DeliveryTypeTable::getInstance()->findOneByCoreId(1);
+    
     if ($this->isOrderContainBigProduct()) {
         $q = DeliveryTypeTable::getInstance()->createBaseQuery();
         $q->addWhere('token != ?', 'self');
@@ -114,6 +116,7 @@ class OrderStep1Form extends BaseOrderForm
           'method'          => 'getChoiceForOrder',
           //'table_method'    => 'createBaseQuery',
           'query'           => $q,
+          'default'         => $defaultDelivery->id,
           'multiple'        => false,
           'expanded'        => true,
           'renderer_class'  => 'myWidgetFormOrderSelectRadio',
@@ -124,6 +127,7 @@ class OrderStep1Form extends BaseOrderForm
           'model'           => 'DeliveryType',
           'method'          => 'getChoiceForOrder',
           'table_method'    => 'createBaseQuery',
+          'default'         => $defaultDelivery->id,
           'multiple'        => false,
           'expanded'        => true,
           'renderer_class'  => 'myWidgetFormOrderSelectRadio',
@@ -166,7 +170,7 @@ class OrderStep1Form extends BaseOrderForm
       'add_empty'       => false,
       'expanded'        => false,
       'renderer_class'  => 'myWidgetFormOrderSelect',
-      'query'           => $this->object->delivery_type_id ? DeliveryPeriodTable::getInstance()->createBaseQuery()->addWhere('deliveryPeriod.delivery_type_id = ?', $this->object->delivery_type_id) : null,
+      'query'           => DeliveryPeriodTable::getInstance()->createBaseQuery()->addWhere('deliveryPeriod.delivery_type_id = ?', $this->object->delivery_type_id ? $this->object->delivery_type_id : $defaultDelivery->id),
     ));
     $this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryPeriod', 'required' => false));
 
