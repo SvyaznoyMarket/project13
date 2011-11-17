@@ -1660,3 +1660,7 @@ DT.bCtg__eOrange{
     height: 13px;
     padding: 0;
 }
+
+.hidden{
+    display:none;
+}
