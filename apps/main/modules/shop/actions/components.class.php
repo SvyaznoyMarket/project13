@@ -33,16 +33,25 @@ class shopComponents extends myComponents
       'latitude'     => $this->shop->latitude,
       'longitude'    => $this->shop->longitude,
       'photos'       => array(),
+      'panorama'     => 
+        !empty($this->shop->panorama)
+        ? array('swf' => "/panoramas/shops/{$this->shop->core_id}/tour.swf", 'xml' => "/panoramas/shops/{$this->shop->core_id}/tour.xml")
+        : false
+      ,
     );
 
 
-    foreach ($this->shop->Photo as $shopPhoto)
+    foreach ($this->shop->Photo as $i => $shopPhoto)
     {
+      $isPanorama = (0 == $i) && !empty($this->shop->panorama);
+
       $item['photos'][] = array(
-        'url_small' => $shopPhoto->getPhotoUrl(5), // 1
-        'url_big'   => $shopPhoto->getPhotoUrl(5), // 4
+        'url_small'   => $shopPhoto->getPhotoUrl(5), // 1
+        'url_big'     => $shopPhoto->getPhotoUrl(5), // 4
+        'is_panorama' => $isPanorama,
       );
     }
+    //myDebug::dump($item);
 
     $this->setVar('item', $item, true);
   }
