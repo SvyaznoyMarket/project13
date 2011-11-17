@@ -497,5 +497,4 @@ class orderActions extends myActions
 
     return new $class($providers[$name]);
   }
-
 }
