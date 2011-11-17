@@ -1,4 +1,4 @@
-  <div class="delivery_block">
+  <div id="delivered_at_block">
   <div class="pb10">
     <?php echo $form['delivered_at']->renderLabel() ?>
     <?php echo $form['delivered_at']->renderError() ?>
