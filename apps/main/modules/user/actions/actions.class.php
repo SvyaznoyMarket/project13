@@ -17,11 +17,11 @@ class userActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-          
+
     //пункты для главной страницы личного кабинета
     $list = array(
       array(
-          'title' => 'Моя пресональная информация',
+          'title' => 'Моя персональная информация',
           'list' => array(
               /*
               array(
@@ -56,7 +56,7 @@ class userActions extends myActions
                 'num' => count($this->getUser()->getGuardUser()->getOrderList()),
                 'url'    => '@user_orders',
                 'routes' => array('@user_orders', '@user_orders'),
-              ),              
+              ),
             /*  array(
                 'name'   => 'Корзина товаров',
                 'url'    => '@cart',
@@ -82,7 +82,7 @@ class userActions extends myActions
                 'url'    => '@userTag',
                 'routes' => array('@userTag'),
               ),*/
-          ) 
+          )
       )
 
     );
@@ -111,7 +111,7 @@ class userActions extends myActions
   public function executeEdit(sfWebRequest $request)
   {
     $this->setVar('error', '', true);
-      
+
       /*
     $this->userAddress = $this->getRoute()->getObject();
     //если пользователь  пытается редактировать не свой адрес
@@ -140,7 +140,7 @@ class userActions extends myActions
     $data['last_name'] = trim($data['last_name']);
     $data['occupation'] = trim($data['occupation']);
     $data['skype'] = trim($data['skype']);
-    
+
     $this->form->bind( $data );
     $this->setVar('error', '', true);
 
@@ -154,7 +154,7 @@ class userActions extends myActions
       catch (Exception $e)
       {
             #echo $e->getMessage();
-            $this->setVar('error', 'К сожалению, данные сохранить не удалось.', true);          
+            $this->setVar('error', 'К сожалению, данные сохранить не удалось.', true);
             $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
       }
     } else {
