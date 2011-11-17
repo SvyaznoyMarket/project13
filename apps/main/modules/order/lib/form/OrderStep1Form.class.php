@@ -167,7 +167,7 @@ class OrderStep1Form extends BaseOrderForm
 
     $this->widgetSchema['delivery_period_id'] = new sfWidgetFormDoctrineChoice(array(
       'model'           => 'DeliveryPeriod',
-      'add_empty'       => false,
+      'add_empty'       => true,
       'expanded'        => false,
       'renderer_class'  => 'myWidgetFormOrderSelect',
       'query'           => DeliveryPeriodTable::getInstance()->createBaseQuery()->addWhere('deliveryPeriod.delivery_type_id = ?', $this->object->delivery_type_id ? $this->object->delivery_type_id : $defaultDelivery->id),
