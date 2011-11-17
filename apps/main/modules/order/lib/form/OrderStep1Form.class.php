@@ -83,11 +83,15 @@ class OrderStep1Form extends BaseOrderForm
     $this->validatorSchema['delivery_type_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryType', 'required' => true));
 
     $choices = array();
-    for ($i = 1; $i <= 7; $i++)
+    for ($i = 0; $i <= 7; $i++)
     {
       $date = strtotime("+{$i} day");
 
       $prefix = '';
+      if (0 == $i)
+      {
+        $prefix = 'сегодня ';
+      }
       if (1 == $i)
       {
         $prefix = 'завтра ';
