@@ -67,7 +67,7 @@ $(document).ready(function(){
 			$('#ajaxgoods').remove()
 		})
 	}
-	
+
 	if( $('div.allpager').length ) { 		
 		$('div.allpager').each(function(){
 			var lsURL = $(this).data('url')	
@@ -105,7 +105,7 @@ $(document).ready(function(){
 				$(window).scroll( checkScroll )
 			})		
 		})
-	
+
 		if( $.jCookies({ get : 'infScroll' }) )
 			$('div.allpager:first').trigger('click')
 	}
@@ -129,7 +129,7 @@ $(document).ready(function(){
 		  	}
 		})
 	}
-	
+
 	$.ajaxSetup({
 		timeout: 7000,
 		statusCode: {
@@ -156,7 +156,7 @@ $(document).ready(function(){
 			504: function() {
 				errorpopup(' 504 ошибка, проверьте соединение с интернетом')
 			}
-			
+
 		  },
 		error: function (jqXHR, textStatus, errorThrown) {
 			if( jqXHR.statusText == 'error' )
@@ -165,10 +165,10 @@ $(document).ready(function(){
 				errorpopup(' проверьте соединение с интернетом')				
 		}		
 	})
-	
+
 	/* --- */
     $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes();
-	
+
 	$(".bigfilter dt").click(function(){
 		$(this).next(".bigfilter dd").slideToggle(200)
 		$(this).toggleClass("current")
@@ -244,7 +244,7 @@ $(document).ready(function(){
 			}
 		})
 */		
-		
+
 /*		if ( from && to ) {
 			from.val( sliderRange.slider( "values", 0 ) )
 			to.val( sliderRange.slider( "values", 1 ) )
@@ -269,9 +269,9 @@ $(document).ready(function(){
 			})
 	
 		}*/
-		
+
 	})
-	
+
 	/* Rating */
 	if( $('#rating').length ) {
 		var iscore = $('#rating').next().html().replace(/\D/g,'')
@@ -345,14 +345,14 @@ $(document).ready(function(){
 			recShow( $(this) )
 		}
 	)
-	
+
 	/* top menu */
 	if( $('.topmenu').length ) {
 		$.get('/category/main_menu', function(data){
 			$('.header').append( data )
 		})
 	}
-	
+
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
 	var corneroffsets = [167,222,290,362,435,515,587,662,717]
@@ -673,5 +673,5 @@ $(document).ready(function(){
 			return false
 		})
 	}
-	
+
 });
