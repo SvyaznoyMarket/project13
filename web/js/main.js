@@ -48,7 +48,7 @@ $(document).ready(function(){
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
 		var loader =
 			"<div id='ajaxgoods' class='bNavLoader'>" +
-				"<div class='bNavLoader__eIco'><img src='/images/arrow.gif'></div>" +
+				"<div class='bNavLoader__eIco'><img src='/images/ajar.gif'></div>" +
 				"<div class='bNavLoader__eM'>" +
 					"<p class='bNavLoader__eText'>Подождите немного</p>"+
 					"<p class='bNavLoader__eText'>Идет загрузка</p>"+
@@ -92,8 +92,9 @@ $(document).ready(function(){
 					next = next.next()
 				var next_a = next.find('a')
 								.html('<span>123</span>')
+
 								.addClass('borderedR')
-				next_a.attr('href', next_a.attr('href').replace(/\d/,'1') )
+				next_a.attr('href', next_a.attr('href').replace(/\?page=\d/,'') )
 				$('div.pageslist li').remove()
 				$('div.pageslist ul').append( next )
 									 .find('a')
@@ -207,7 +208,7 @@ $(document).ready(function(){
 		var informator = $('.slider-interval', $(this).next())
 		var from = papa.find('input:first')
 		var to   = papa.find('input:eq(1)')
-		informator.html( from.val() + ' - ' + to.val() )
+		informator.html( printPrice( from.val() ) + ' - ' + printPrice( to.val() ) )
 		var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
 		sliderRange.slider({
 			range: true,
@@ -216,7 +217,7 @@ $(document).ready(function(){
 			max: maxi,
 			values: [ from.val()  ,  to.val() ],
 			slide: function( e, ui ) {
-				informator.html( ui.values[ 0 ] + ' - ' + ui.values[ 1 ] )
+				informator.html( printPrice( ui.values[ 0 ] ) + ' - ' + printPrice( ui.values[ 1 ] ) )
 				from.val( ui.values[ 0 ] )
 				to.val( ui.values[ 1 ] )
 			},
@@ -243,7 +244,11 @@ $(document).ready(function(){
 					from.parent().trigger('preview')
 			}
 		})
+<<<<<<< HEAD
 */
+=======
+*/
+>>>>>>> github/master
 
 /*		if ( from && to ) {
 			from.val( sliderRange.slider( "values", 0 ) )
@@ -330,8 +335,30 @@ $(document).ready(function(){
     $(".goodsbar .link3").bind( 'click.css', function()   {
         //$(this).addClass("link3active");
     })
-
+	/* left menu */
+	/*
+	$('.bCtg__eL2').toggle(
+		function(){
+			$('.bCtg__eL3').hide()
+			$('.bCtg__eL2').show()
+		}, function(){
+			function recShow( jnode ) {
+				if( jnode.next() && jnode.next().hasClass('bCtg__eL3') ) {
+					jnode.next().show()
+					recShow( jnode.next() )
+				}
+			}
+			recShow( $(this) )
+		}
+	)
+	*/
 	/* top menu */
+	if( $('.topmenu').length ) {
+		$.get('/category/main_menu', function(data){
+			$('.header').append( data )
+		})
+	}
+
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
 	var corneroffsets = [167,222,290,362,435,515,587,662,717]
@@ -345,7 +372,7 @@ $(document).ready(function(){
 				if(	$(self).data('run') ) {
 					var i = $(self).attr('class').replace(/\D+/,'')
 					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
-					if( punkt.find('dl').html().replace(/\s/g,'') != '' )
+					if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
 						punkt.show().find('.corner').css('left',corneroffsets[i-1])
 				}
 			}

@@ -23,7 +23,7 @@ class OrderProductRelationTable extends myDoctrineTable
       'price'       => 'price',
       'quantity'    => 'quantity',
 
-      'order_id'    => array('rel' => 'Order'),
+      //'order_id'    => array('rel' => 'Order'),
       'product_id'  => array('rel' => 'Product'),
     );
   }
