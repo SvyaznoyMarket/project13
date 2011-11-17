@@ -53,24 +53,24 @@ all:
 
   core:
     config:
-      api_url: 'http://62.231.27.40/v1/json'
+      api_url: 'http://api.enter.ru/v1/json'
       consumer_key: v4Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
   cache_eraser:
     config:
-      file: %SF_ROOT_DIR%/erase.cmd
+      file: %SF_ROOT_DIR%/erase_barcode.cmd
       prefix: 'CACHETAG::'
 
   payment:
     default_provider: uniteller
     provider:
       uniteller:
-        login: 331
-        password: 'bHcpteTJUJVwTO46jb05eWM4sfrVSrMrUSXi06MmFVlZVOFwg4Hxv88Cn7wmi54g4OGN7feJujk2iAUl'
-        pay_url: 'https://test.wpay.uniteller.ru/pay/'
-        result_url: 'https://test.wpay.uniteller.ru/results/'
-        shop_id: '0380440538-657'
+        login: 125
+        password: 'DErlW8GnwZTCDYLD9kj7zKHxpEXpHrSNCRWQXuOOonMYQEdKoKXk8OkDgx7CcRBAoCrM1LAwESnHugUW'
+        pay_url: 'https://wpay.uniteller.ru/pay/'
+        result_url: 'https://wpay.uniteller.ru/results/'
+        shop_id: '35974-134'
         return_url: '@payment_callback'
 
   # TODO: перенести в модель, чтобы не захламлять память
@@ -140,7 +140,7 @@ live:
 
   core:
     config:
-      api_url: 'http://62.231.27.40/v1/json'
+      api_url: 'http://api.enter.ru/v1/json'
       consumer_key: v6Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
@@ -150,3 +150,26 @@ live:
         main:
           host: site-db
           persistent: true
+
+
+alpha:
+  doctrine:
+    result_cache:        true  # кешировать результаты запросов
+    result_cache_prefix: 'dql:' # префикс ключей в кеше
+
+  core:
+    config:
+      api_url: 'http://core.ent3.ru/v1/json'
+      consumer_key: test
+      signature: test
+
+alpha_dev:
+  doctrine:
+    result_cache:        false  # кешировать результаты запросов
+    result_cache_prefix: 'dql:' # префикс ключей в кеше
+
+  core:
+    config:
+      api_url: 'http://core.ent3.ru/v1/json'
+      consumer_key: test
+      signature: test

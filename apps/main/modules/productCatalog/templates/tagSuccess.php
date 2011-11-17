@@ -5,6 +5,7 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
+  <?php include_component('productCatalog', 'leftCategoryList', array('productCategory' => $productCategory)) ?>
   <?php include_component('productCatalog', 'tag', array('productCategory' => $productCategory, 'form' => $productTagFilter, )) ?>
 <?php end_slot() ?>
 

@@ -16,14 +16,29 @@ class StockProductRelation extends BaseStockProductRelation
   {
     parent::importFromCore($data);
 
-    if (!empty($data['store_id']))
+    $product = ProductTable::getInstance()->getByCoreId($data['product_id']);
+    if (!$product)
     {
-      $product = ProductTable::getInstance()->getByCoreId($data['product_id']);
-      if ($product)
-      {
-        $product->is_instock = !empty($data['is_supplier']) || ($data['quantity'] > 0);
-        $product->save();
-      }
+      return false;
+    }
+
+    $is_instock = $product->is_instock;
+
+    if (!empty($data['store_id']) && 1 == $data['store_id'])
+    {
+      $is_instock = !empty($data['is_supplier']) || ($data['quantity'] > 0);
+    }
+
+    if (!empty($data['shop_id']))
+    {
+      $this->quantity = $data['quantity'] + $data['quantity_showroom'];
+      $is_instock = $this->quantity > 0;
+    }
+
+    if ($product->is_instock != $is_instock)
+    {
+      $product->is_instock = $is_instock;
+      $product->save();
     }
   }
 }
