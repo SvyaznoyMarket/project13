@@ -15,5 +15,35 @@ class ProductPrice extends BaseProductPrice
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
+
+    $product = ProductTable::getInstance()->getByCoreId($data['product_id']);
+    if (!$product)
+    {
+      return false;
+    }
+
+    $view_list = $product->view_list;
+
+    if (0 == $data['price'] && 1 == $data['price_list_id'])
+    {
+      $view_list = 0;
+    }
+    elseif ($data['price'] > 0 && 1 == $data['price_list_id'])
+    {
+      if ('default.jpg' == $product->main_photo)
+      {
+        $view_list = 0;
+      }
+      else
+      {
+        $view_list = 1;
+      }
+    }
+
+    if ($product->view_list != $view_list)
+    {
+      $product->view_list = $view_list;
+      $product->save();
+    }
   }
 }

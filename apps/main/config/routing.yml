@@ -124,6 +124,11 @@ productComment_helpful:
   options: { model: ProductComment, type: object, method: getForRoute }
 #
 
+# список товаров
+productCategory_menu:
+  url:   /category/main_menu
+  param: { module: productCategory, action: menu }
+#
 
 # наличие на складах
 productStock:
@@ -713,3 +718,5 @@ core_test:
 default_show:
   url:   /:page
   param: { module: page, action: index }
+
+

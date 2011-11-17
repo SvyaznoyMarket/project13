@@ -35,7 +35,7 @@ class productCatalogActions extends myActions
     $this->productFilter = $this->getProductFilter();
     $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
 
-    $q = ProductTable::getInstance()->createBaseQuery();
+    $q = $this->getQueryForList();
     $this->productFilter->buildQuery($q);
 
     // sorting
@@ -64,7 +64,7 @@ class productCatalogActions extends myActions
     ));
     $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
 
-    $q = ProductTable::getInstance()->createBaseQuery();
+    $q = $this->getQueryForList();
     $q->addWhere('product.type_id = ?', $this->productType->id);
     $this->productFilter->buildQuery($q);
 
@@ -90,7 +90,7 @@ class productCatalogActions extends myActions
     $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
     $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
 
-    $q = ProductTable::getInstance()->createBaseQuery();
+    $q = $this->getQueryForList();
     $this->productTagFilter->buildQuery($q);
 
     // sorting
@@ -102,27 +102,35 @@ class productCatalogActions extends myActions
     ));
 
     //формируем title
-	$title = $this->productCategory->name;
-    foreach($this->productTagFilter as $field){
+    $title = $this->productCategory->name;
+    foreach($this->productTagFilter as $field)
+    {
         $val = $field->getValue();
         if (!$val) continue;
-        if ($field->getName() == 'price'){
+        if ($field->getName() == 'price')
+        {
             $propStr = $field->renderLabelName();
-            if (isset($val['from'])){
+            if (isset($val['from']))
+            {
                 $propStr .= ' от ' . $val['from'];
             }
-            if (isset($val['to'])){
+            if (isset($val['to']))
+            {
                 $propStr .= ' до ' . $val['to'];
             }
-            if (isset($val['from']) || isset($val['to'])){
+            if (isset($val['from']) || isset($val['to']))
+            {
                 $propStr .= ' рублей';
             }
-        } else {
+        }
+        else
+        {
             $propStr = $field->renderLabelName();
             $valNames = array();
-            foreach($val as $valId){
-                $info = TagTable::getInstance()->getById($valId);
-                $valNames[] = $info['name'];
+            foreach($val as $valId)
+            {
+              $info = TagTable::getInstance()->getById($valId);
+              $valNames[] = $info['name'];
             }
             $propStr .= ': ' . implode(', ', $valNames);
         }
@@ -130,9 +138,11 @@ class productCatalogActions extends myActions
     }
     if (count($filterList)>0) $title .= ' - ' . implode(', ', $filterList);
     $mainCat = $this->productCategory;
-    if ($mainCat) {
+    if ($mainCat)
+    {
       $rootCat = $mainCat->getRootCategory();
-      if ($rootCat->id !== $mainCat->id) {
+      if ($rootCat->id !== $mainCat->id)
+      {
         $title .= ' – '.$rootCat;
       }
     }
@@ -153,18 +163,20 @@ class productCatalogActions extends myActions
     $this->productFilter = $this->getProductFilter(array('count' => true, ));
     $this->productTagFilter = $this->getProductTagFilter(array('count' => true, 'with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
 
+    $q = $this->getQueryForList(array(
+      'with_properties' => false,
+      'property_view'   => false,
+      'view'            => 'list',
+    ));
+
     if ($request->hasParameter($this->productFilter->getName()))
     {
       $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
-
-      $q = ProductTable::getInstance()->createBaseQuery();
       $this->productFilter->buildQuery($q);
     }
     elseif ($request->hasParameter($this->productTagFilter->getName()))
     {
       $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
-
-      $q = ProductTable::getInstance()->createBaseQuery();
       $this->productTagFilter->buildQuery($q);
     }
 
@@ -178,17 +190,22 @@ class productCatalogActions extends myActions
     //если передано page=1 или view=compact, отрезаем этот параметр и делаем редирект.
     //необходимо для seo
     $redirectAr = array(
-        'page' => 1,
-        'view' => 'compact'
+      'page' => 1,
+      'view' => 'compact'
     );
-    foreach($redirectAr as $key => $val){
+    foreach($redirectAr as $key => $val)
+    {
         $currentVal = $request->getParameter($key);
         //если требуется редирект с этой страницы
-        if (isset($currentVal) && $currentVal == $val){
+        if (isset($currentVal) && $currentVal == $val)
+        {
             $uri = $this->getRequest()->getUri();
-            if (strpos($uri, '&') === false){
+            if (strpos($uri, '&') === false)
+            {
                 $replaceStr = "?$key=$val";
-            } else {
+            }
+            else
+            {
                 $replaceStr = array("$key=$val&", "&$key=$val");
             }
             $uri = str_replace($replaceStr, '', $this->getRequest()->getUri());
@@ -201,24 +218,29 @@ class productCatalogActions extends myActions
 
     $this->setVar('allOk', false);
 
-    if (!isset($request['productCategory'])){
-        $this->_validateResult['success'] = false;
-        $this->_validateResult['error'] = 'Не указан token категории';
-        return $this->_refuse();
+    if (!isset($request['productCategory']))
+    {
+      $this->_validateResult['success'] = false;
+      $this->_validateResult['error'] = 'Не указан token категории';
+      return $this->_refuse();
     }
-    if (!isset($request['page'])){
-        $request['page'] = 1;
+    if (!isset($request['page']))
+    {
+      $request['page'] = 1;
     }
-    if (!isset($request['view'])){
-        $request['page'] = 'compact';
+    if (!isset($request['view']))
+    {
+      $request['page'] = 'compact';
     }
 
-    try{
-        $this->productCategory = $this->getRoute()->getObject();
-    } catch(Exception $e){
-        $this->_validateResult['success'] = false;
-        $this->_validateResult['error'] = 'Категория не найдена';
-        return $this->_refuse();
+    try
+    {
+      $this->productCategory = $this->getRoute()->getObject();
+    }
+    catch(Exception $e) {
+      $this->_validateResult['success'] = false;
+      $this->_validateResult['error'] = 'Категория не найдена';
+      return $this->_refuse();
     }
 
 
@@ -495,5 +517,23 @@ class productCatalogActions extends myActions
     $sorting->setActive($active[0], $active[1]);
 
     return $sorting;
+  }
+
+  protected function getQueryForList(array $params = null)
+  {
+    $view = $this->getRequestParameter('view');
+
+    $params =
+      is_array($params)
+      ? $params
+      : array(
+        'with_properties' => 'expanded' == $view ? true : false,
+        'property_view'   => 'expanded' == $view ? 'list' : false,
+        'with_line'       => 'line' == $view ? true : false,
+        'view'            => 'list',
+      )
+    ;
+
+    return $q = ProductTable::getInstance()->createBaseQuery($params);
   }
 }

@@ -34,6 +34,7 @@ class StockProductRelationTable extends myDoctrineTable
   {
     $return = array();
 
+    /*
     $q = ProductTable::getInstance()->createQuery('product')
       ->select('product.core_id')
       ->innerJoin('product.StockRelation stockProductRelation')
@@ -50,6 +51,7 @@ class StockProductRelationTable extends myDoctrineTable
     {
       $return[] = "product-{$id}";
     }
+    */
 
     return $return;
   }

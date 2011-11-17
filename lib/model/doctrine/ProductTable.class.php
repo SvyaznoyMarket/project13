@@ -313,15 +313,17 @@ class ProductTable extends myDoctrineTable
     // параметры
     if (count($filter['parameters']) > 0)
     {
+      /*
       if (!$q->hasAliasDeclaration('productPropertyRelation'))
       {
         $q->leftJoin('product.PropertyRelation productPropertyRelation');
       }
+      */
       foreach ($filter['parameters'] as $parameter)
       {
         if (count($parameter['values']) > 0)
         {
-          $q->leftJoin('product.PropertyRelation productPropertyRelation'.$parameter['filter']->id);
+          $q->leftJoin('product.PropertyRelation productPropertyRelation'.$parameter['filter']->id.' WITH productPropertyRelation'.$parameter['filter']->id.'.property_id = '.$parameter['filter']->property_id);
         }
         if (('choice' == $parameter['filter']->type) && (count($parameter['values']) > 0))
         {

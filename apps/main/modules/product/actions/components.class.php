@@ -101,12 +101,7 @@ class productComponents extends myComponents
       $this->view = 'compact';
     }
 
-    $this->setVar('list', $this->pager->getResults(null, array(
-      'with_properties' => 'expanded' == $this->view ? true : false,
-      'property_view'   => 'expanded' == $this->view ? 'list' : false,
-      'with_line'       => 'line' == $this->view ? true : false,
-      'view'            => 'list',
-    )), true);
+    $this->setVar('list', $this->pager->getResults(null, array()), true);
   }
 
   /**
@@ -354,11 +349,12 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
+    $this->tagList = TagTable::getInstance()->getByProduct($this->product->id);
+
     $list = array();
-    foreach (TagTable::getInstance()->getByProduct($this->product->id) as $tag)
+    foreach ($this->tagList as $tag)
     {
       $list[] = array(
-        'tag'   => $tag,
         'token' => $tag->token,
         'url'   => url_for('tag_show', array('tag' => $tag->token)),
         'name'  => $tag->name,

@@ -25,10 +25,7 @@ class myProductTagFormFilter extends myProductFormFilter
       'min' => $valueMin,
       'max' => $valueMax,
     );
-    $this->widgetSchema['price'] = $this->getWidgetRange(array('value_min' => $valueMin, 'value_max' => $valueMax), array(
-      'from' => $value['min'],
-      'to'   => $value['max'],
-    ));
+    $this->widgetSchema['price'] = $this->getWidgetRange(array('value_min' => $valueMin, 'value_max' => $valueMax));
     $this->widgetSchema['price']->setLabel('Цена');
     $this->validatorSchema['price'] = new sfValidatorPass();
     $this->setDefault('price', array(
