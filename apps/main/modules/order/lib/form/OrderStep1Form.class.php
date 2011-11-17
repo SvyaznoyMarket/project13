@@ -131,20 +131,24 @@ class OrderStep1Form extends BaseOrderForm
       $date = strtotime("+{$i} day");
 
       $prefix = '';
+      $val = $prefix.date('d.m.Y', $date);
       if (0 == $i)
       {
         $prefix = 'сегодня ';
+        $val = $prefix.'('.date('d.m.Y', $date).')';
       }
       if (1 == $i)
       {
         $prefix = 'завтра ';
+        $val = $prefix.'('.date('d.m.Y', $date).')';
       }
       if (2 == $i)
       {
         $prefix = 'послезавтра ';
+        $val = $prefix.'('.date('d.m.Y', $date).')';
       }
 
-      $choices[date('Y-m-d', $date)] = $prefix.date('d.m.Y', $date);
+      $choices[date('Y-m-d', $date)] = $val;
     }
     $this->widgetSchema['delivered_at'] = new sfWidgetFormChoice(array(
       'choices'  => $choices,
