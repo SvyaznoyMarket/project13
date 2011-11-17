@@ -6,13 +6,13 @@ function triggerDelivery( i ) {
 		$('.delivery_block').hide()
 		$('.deliverytext').html('Представьтесь:')
         $('#delivered_at_block label').html('Выберите дату:')
-        $('#delivered_at_block select').html(deliveryAtOptions.slice(0,4))
+        $('#delivered_at_block select').html(deliveryAtOptions.slice(0,4)).change();
 	} else {
 		$('.shop_block').hide() 
 		$('.delivery_block').show() 
 		$('.deliverytext').html('Кому и куда доставить:')
         $('#delivered_at_block label').html('Выберите дату доставки:')
-        $('#delivered_at_block select').html(deliveryAtOptions)
+        $('#delivered_at_block select').html(deliveryAtOptions.slice(1)).change();
 	}
 	
 }
