@@ -33,7 +33,7 @@ class shopComponents extends myComponents
       'latitude'     => $this->shop->latitude,
       'longitude'    => $this->shop->longitude,
       'photos'       => array(),
-      'panorama'     =>
+      'panorama'     => 
         !empty($this->shop->panorama)
         ? array('swf' => "/panoramas/shops/{$this->shop->core_id}/tour.swf", 'xml' => "/panoramas/shops/{$this->shop->core_id}/tour.xml")
         : false
@@ -47,7 +47,7 @@ class shopComponents extends myComponents
 
       $item['photos'][] = array(
         'url_small'   => $shopPhoto->getPhotoUrl(5), // 1
-        'url_big'     => $shopPhoto->getPhotoUrl(4), // 4
+        'url_big'     => $shopPhoto->getPhotoUrl(5), // 4
         'is_panorama' => $isPanorama,
       );
     }
