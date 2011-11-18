@@ -78,7 +78,7 @@ class productComponents extends myComponents
     $u = $this->getUser();
     $c = $u->getCart();
     $selectedServices = $c->getServicesByProductId($this->product->id);
-    //$this->setVar('selectedServices', $selectedServices, true);
+    $this->setVar('selectedServices', $selectedServices, true);
     //myDebug::dump($this->product);
   }
 

@@ -46,15 +46,28 @@ $(document).ready(function(){
 		var token = node.attr('ref') 
 		var bavatar = node
 		var savatar = $('div.f1linkslist input[ref='+ token +']')
+
 		
 		this.click = function() {
 			graypp.show()
-			savatar.parent().find('label').trigger('click')
+			savatar.parent().find('label').removeClass('checked')
 			bavatar.parent().find('label').trigger('click')
 		}
 		
 		this.bclick = function() {
 			bavatar.parent().find('label').trigger('click')
+		}
+		this.sclick = function() {
+			var gret = bavatar.attr('id', bavatar.attr('id').replace('-','-small-2') )
+			var vine = bavatar.parent().find('label').attr('for', bavatar.parent().find('label').attr('for').replace('-','-small-2') )
+			vine.find('span').remove()
+			$('div.f1linkslist ul').append( $('<li>').append( vine ).append( gret ) )
+			$('div.f1linkslist li:last input').prettyCheckboxes()
+			if( savatar.length )
+				savatar.parent().find('label').addClass('checked')
+			else { //create element
+				
+			}
 		}
 		
 		this.getTkn = function() {
@@ -98,19 +111,27 @@ $(document).ready(function(){
 		}
 		
 		this.memorize = function() {
-			outer:for(var i=0; i < memory.length; i++) 
+			console.info(chosen, memory)
+			/*outer:for(var i=0; i < memory.length; i++) 
 				if( memory[i] ) {
 					for(var j=0; j < chosen.length; j++) 
 						if( chosen[j] === memory[i] )
 							continue outer			
 					chosen.push( memory[i] )
-				}
-			console.info(chosen)	
-			self.close()
+				}*/
+			$('.f1linkslist label.checked').removeClass('checked')	
+			chosen = []	
+			for(var i=0; i < memory.length; i++) 
+				if( memory[i] ) {
+					chosen.push( memory[i] )
+					self.findbyTkn( memory[i] ).sclick()
+				}				
+			
+			graypp.hide()
+			popupActive = false
 		}
 		
 		this.rst = function() {
-			//chosen = []
 			for(var i=0; i < memory.length; i++) 
 				if( memory[i] ) {
 					self.findbyTkn( memory[i] ).bclick()				
@@ -118,8 +139,7 @@ $(document).ready(function(){
 			memory = []	
 		}
 		
-		this.close = function() {
-			//console.info(chosen, memory)
+		this.close = function() {			
 			collect:for(var i=0; i < collect.length; i++) {
 				for(var j=0; j < chosen.length; j++) {
 					if( collect[i].getTkn() === chosen[j] ) 
@@ -135,8 +155,5 @@ $(document).ready(function(){
 			popupActive = false
 		}
 	} // object F1boxes
-	
-	//var tt = $('<li><label for="checkbox-small-11">Установка вытяжки плоской (2340 Р)</label><input id="checkbox-small-11" name="service[3]" type="checkbox" value="1" /></li>')
-	//$('div.f1linkslist ul').append(tt)
-	//$('#checkbox-small-11').prettyCheckboxes()
+
 })	
