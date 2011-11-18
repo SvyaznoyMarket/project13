@@ -59,7 +59,7 @@ all:
 
   cache_eraser:
     config:
-      file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
+      file: %SF_ROOT_DIR%/erase.cmd
       prefix: 'CACHETAG::'
 
   payment:
@@ -150,6 +150,11 @@ live:
         main:
           host: site-db
           persistent: true
+
+  cache_eraser:
+    config:
+      file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
+      prefix: 'CACHETAG::'
 
 
 alpha:
