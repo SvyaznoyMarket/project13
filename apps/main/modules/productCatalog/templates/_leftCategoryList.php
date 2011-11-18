@@ -12,7 +12,11 @@
                     </a>
                 </li>            
             <?php } ?>     
-            <?php foreach($root_list['children'] as $level1) { ?>
+            <?php foreach($root_list['children'] as $level1) { 
+                if ($level1->countProduct() < 1) {
+                    continue;
+                }
+                ?>
                 <?php 
                 if ($level1->core_parent_id == $currentDirectory->core_id) {
                     $classCur = "";
@@ -39,6 +43,10 @@
                 </li>   
                     <?php foreach($tree[$level1['id']]['children'] as $level2) { ?>
                     <?php 
+                    if ($level2->countProduct() < 1) {
+                        continue;
+                    }
+                    
                     #echo count($tree[$level2->id]['children']) .'==<br>';                    
                     #echo $level2->id .'=='. $currentDirectory->id.'<br>';
                     if (isset($currentLevel1) && $level2->core_parent_id == $currentLevel1->core_id) {
@@ -67,6 +75,10 @@
                     <?php $classParent = $classCur; ?>
                     <?php foreach($tree[$level2['id']]['children'] as $level3) { ?>
                         <?php 
+                        if ($level3->countProduct() < 1) {
+                            continue;
+                        }
+                        
                         #echo $level2->core_id .'=='. $currentDirectory->core_parent_id.'<br>';
                         
                         if (isset($currentLevel2) && $level3->core_parent_id == $currentLevel2->core_id) {
