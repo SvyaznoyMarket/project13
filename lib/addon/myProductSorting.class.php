@@ -2,29 +2,47 @@
 
 class myProductSorting extends myBaseSorting
 {
-  protected
-    $active = 'creator'
-  ;
+  protected $active = 'score'; // - это ключ массива getDefaults()
 
   public function getDefaults()
   {
     return array(
-      'creator' => array(
-        'name'      => 'creator',
-        'title'     => 'по бренду',
+      'price_asc'   => array(
+        'name'      => 'price',
+        'title'     => 'по цене (сначала самые дешевые)',
         'direction' => 'asc',
       ),
-      'price'   => array(
+      'price_desc'   => array(
         'name'      => 'price',
-        'title'     => 'по цене',
+        'title'     => 'по цене (сначала самые дорогие)',
+        'direction' => 'desc',
+      ),
+      'creator_asc' => array(
+        'name'      => 'creator',
+        'title'     => 'по производителю (А-Я)',
         'direction' => 'asc',
+      ),
+      'creator_desc' => array(
+        'name'      => 'creator',
+        'title'     => 'по производителю (Я-А)',
+        'direction' => 'desc',
       ),
       'rating'  => array(
         'name'      => 'rating',
         'title'     => 'по рейтингу',
-        'direction' => 'asc',
+        'direction' => 'desc',
+      ),
+      'score'  => array(
+        'name'      => 'score',
+        'title'     => 'как для своих',
+        'direction' => 'desc',
       ),
     );
+  }
+  
+  protected function setQueryForScore(myDoctrineQuery $q)
+  {
+      
   }
 
   protected function setQueryForCreator(myDoctrineQuery $q)
