@@ -10,7 +10,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 	 data-page="<?php  echo $page; ?>"
 	 data-mode="<?php  echo $view; ?>"
 	 data-lastpage="<?php echo $productPager->getLastPage(); ?>"
-	 class="fr allpager mBtn"></div>				
+	 class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"></div>				
 <?php endif ?>
 
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>

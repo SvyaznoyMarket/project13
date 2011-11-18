@@ -315,7 +315,7 @@ function Flybox( parent ){
 		box.css({'left':'588px','width':'290px'})	
 		crnr.css('left','132px')	
 		this.fillup (basket)
-		box.fadeIn(1000)
+		box.fadeIn(500)
 		hidei = setTimeout( self.jinny, 5000 )
 	}
 	

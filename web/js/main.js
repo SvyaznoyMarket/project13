@@ -2,22 +2,22 @@
 // John Resig - http://ejohn.org/ - MIT Licensed
 (function(){
   var cache = {};
-  
+
   this.tmpl = function tmpl(str, data){
     // Figure out if we're getting a template, or if we need to
     // load the template - and be sure to cache the result.
     var fn = !/\W/.test(str) ?
       cache[str] = cache[str] ||
         tmpl(document.getElementById(str).innerHTML) :
-      
+
       // Generate a reusable function that will serve as a template
       // generator (and which will be cached).
       new Function("obj",
         "var p=[],print=function(){p.push.apply(p,arguments);};" +
-        
+
         // Introduce the data as local variables using with(){}
         "with(obj){p.push('" +
-        
+
         // Convert the template into pure JavaScript
         str
           .replace(/[\r\t\n]/g, " ")
@@ -28,13 +28,28 @@
           .split("%>").join("p.push('")
           .split("\r").join("\\'")
       + "');}return p.join('');");
-    
+
     // Provide some basic currying to the user
     return data ? fn( data ) : fn;
   };
 })();
 
-$(document).ready(function(){	
+$(document).ready(function(){
+/*
+	var userag    = navigator.userAgent.toLowerCase()
+	var isAndroid = userag.indexOf("android") > -1 
+	var isPad     = userag.indexOf('ipad') > -1
+	if( isAndroid ) {
+		alert('isAndroid')
+		//$('head').append('<meta name="viewport" content="width=device-width"/>')
+	}
+	if( isAndroid || isPad ) {
+		window.onscroll = function() {		
+			$('.lightbox').css('position','absolute')
+			$('.lightbox').css('top', window.pageYOffset + $(window).height() -41)
+		}
+	}*/
+
 	/* Rotator */
 	if($('#rotator').length) {
 		$('#rotator').jshowoff({ speed:8000, controls:false })
@@ -46,7 +61,7 @@ $(document).ready(function(){
 	function liveScroll( lsURL, pageid ) {
 		lsURL += pageid + '/' + (( compact ) ? 'compact/' : 'expanded/')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
-		var loader = 
+		var loader =
 			"<div id='ajaxgoods' class='bNavLoader'>" +
 				"<div class='bNavLoader__eIco'><img src='/images/ajar.gif'></div>" +
 				"<div class='bNavLoader__eM'>" +
@@ -54,7 +69,7 @@ $(document).ready(function(){
 					"<p class='bNavLoader__eText'>Идет загрузка</p>"+
 				"</div>" +
 			"</div>"
-		tmpnode.after( loader )	
+		tmpnode.after( loader )
 		//tmpnode.after('<div id="ajaxgoods" style="width:100%; text-align:right;"><span style="margin-bottom: 6px;">Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
 		$.get( lsURL, function(data){
 			if ( data != "" && !data.data ) { // JSON === error
@@ -68,9 +83,11 @@ $(document).ready(function(){
 		})
 	}
 
-	if( $('div.allpager').length ) { 		
-		$('div.allpager').each(function(){
-			var lsURL = $(this).data('url')	
+
+
+	if( $('div.allpager').length ) {
+			$('div.allpager').each(function(){
+			var lsURL = $(this).data('url')
 			var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
 			var vinit = vnext - 1
 			var vlast = parseInt('0' + $(this).data('lastpage') , 10)
@@ -82,28 +99,30 @@ $(document).ready(function(){
 					vnext += 1
 				}
 			}
-			$(this).bind('click', function(){	
+			$(this).bind('click', function(){
 				$.jCookies({
 					name : 'infScroll',
 					value : 1
 				})
 				var next = $('div.pageslist:first li:first')
 				if( next.hasClass('current') )
-					next = next.next()	
+					next = next.next()
 				var next_a = next.find('a')
 								.html('<span>123</span>')
+
 								.addClass('borderedR')								
 				next_a.attr('href', next_a.attr('href').replace(/\?page=\d/,'') )
+
 				$('div.pageslist li').remove()
 				$('div.pageslist ul').append( next )
 									 .find('a')
-									 .bind('click', function(){	
+									 .bind('click', function(){
 										$.jCookies({ erase : 'infScroll' })
-									  })				
+									  })
 				$('div.allpager').addClass('mChecked')
 				checkScroll()
 				$(window).scroll( checkScroll )
-			})		
+			})
 		})
 
 		if( $.jCookies({ get : 'infScroll' }) )
@@ -136,18 +155,18 @@ $(document).ready(function(){
 			404: function() {
 				errorpopup(' 404 ошибка, страница не найдена')
 			},
-			401: function() { 
+			401: function() {
 				if( $('#auth-block').length ) {
 					$('#auth-block').lightbox_me({
 						centered: true,
 						onLoad: function() {
 							$('#auth-block').find('input:first').focus()
 						}
-					}) 
-				} else 
+					})
+				} else
 					errorpopup(' 401 ошибка, авторизуйтесь заново')
 			},
-			500: function() { 
+			500: function() {
 				errorpopup(' сервер перегружен')
 			},
 			503: function() {
@@ -162,8 +181,8 @@ $(document).ready(function(){
 			if( jqXHR.statusText == 'error' )
 				console.error(' неизвестная ajax ошибка')
 			else if ( textStatus=='timeout' )
-				errorpopup(' проверьте соединение с интернетом')				
-		}		
+				errorpopup(' проверьте соединение с интернетом')
+		}
 	})
 
 	/* --- */
@@ -188,18 +207,18 @@ $(document).ready(function(){
 	})
 	$('.product_filter-block input:submit').addClass('mDisabled')
 	var launch = false
-	$('.product_filter-block').change(function(){ 
+	$('.product_filter-block').change(function(){
 		activateForm()
 	})
 	function activateForm() {
 		if ( !launch ) {
 			$('.product_filter-block input:submit').removeClass('mDisabled')
 			launch = true
-		}	
+		}
 	}
 	/* Sliders */
 	$('.sliderbox').each( function(){
-		var sliderRange = $('.filter-range', this)	
+		var sliderRange = $('.filter-range', this)
 		var filterrange = $(this)
 		var papa = filterrange.parent()
 		var mini = $('.slider-from',  $(this).next() ).val() * 1
@@ -243,6 +262,7 @@ $(document).ready(function(){
 					from.parent().trigger('preview')
 			}
 		})
+
 */		
 
 /*		if ( from && to ) {
@@ -255,19 +275,19 @@ $(document).ready(function(){
 					to.val( from.val()*1 + stepf )
 				}
 				sliderRange.slider( "values", 0 , from.val() )
-	
+
 			})
 			to.change( function(){
 				to.val( to.val().replace(/\D/g,'') )
 				if( ! parseFloat(to.val()) )
 					to.val(10)
-				if( parseFloat(to.val()) < parseFloat(from.val()) ) {				
+				if( parseFloat(to.val()) < parseFloat(from.val()) ) {
 					sliderRange.slider( "values", 0 , to.val()*1- stepf )
 					from.val( to.val()*1 - stepf )
-				} 			
+				}
 				sliderRange.slider( "values", 1 , to.val() )
 			})
-	
+
 		}*/
 
 	})

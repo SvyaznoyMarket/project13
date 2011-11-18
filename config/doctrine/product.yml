@@ -253,7 +253,7 @@ ProductPropertyRelation:
     option_id:         { type: integer(20), notnull: false, default: null }
     value_integer:     { type: integer(20), notnull: false, default: null }
     value_float:       { type: 'decimal(10,4)', notnull: false, default: null }
-    value_string:      { type: string(255), notnull: false, default: null }
+    value_string:      { type: string(2000), notnull: false, default: null }
     value_text:        { type: string, notnull: false, default: null }
     value_boolean:     { type: boolean, notnull: false, default: null }
     value:             { type: string(255), notnull: false, default: null, comment: 'Значение свойства для отображения' }
