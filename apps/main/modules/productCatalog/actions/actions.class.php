@@ -22,6 +22,8 @@ class productCatalogActions extends myActions
     $this->productCategoryList = ProductCategoryTable::getInstance()->getList(array(
       'select' => 'productCategory.id, productCategory.name, productCategory.token',
     ));
+    $this->setVar('infinity', true);    
+    
   }
  /**
   * Executes filter action
@@ -46,6 +48,8 @@ class productCatalogActions extends myActions
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
+    $this->setVar('noInfinity', true);    
+    
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
  /**
@@ -137,7 +141,8 @@ class productCatalogActions extends myActions
       }
     }
     $this->getResponse()->setTitle($title.' – Enter.ru');
-
+    
+    $this->setVar('noInfinity', true);    
 
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
@@ -295,7 +300,7 @@ class productCatalogActions extends myActions
     ) {
       $this->forward($this->getModuleName(), 'product');
     }
-
+    
     // если категория корневая
     if ($this->productCategory->getNode()->isRoot())
     {

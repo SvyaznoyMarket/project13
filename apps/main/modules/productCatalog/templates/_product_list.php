@@ -5,7 +5,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 ?>
 <?php $empty = 0 == $productPager->getNbResults() ?>
 
-<?php if( count($productPager->getLinks()) - 1 ): ?>
+<?php if( count($productPager->getLinks()) - 1 && !isset($noInfinity) ): ?>
 <div data-url="<?php echo url_for('productCatalog_categoryAjax',array('productCategory' => $productCategory->token )); ?>"
 	 data-page="<?php  echo $page; ?>"
 	 data-mode="<?php  echo $view; ?>"
@@ -29,7 +29,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
   <div class="line pb10"></div>
 <?php endif ?>
 
-<?php if( count($productPager->getLinks()) - 1 ): ?>
+<?php if( count($productPager->getLinks()) - 1 && !isset($noInfinity) ): ?>
 <div data-url="<?php echo url_for('productCatalog_categoryAjax',array('productCategory' => $productCategory->token )); ?>"
 	 data-page="<?php  echo $page; ?>"
 	 data-mode="<?php  echo $view; ?>"
