@@ -35,6 +35,21 @@
 })();
 
 $(document).ready(function(){
+
+	var userag    = navigator.userAgent.toLowerCase()
+	var isAndroid = userag.indexOf("android") > -1 
+	var isPad     = userag.indexOf('ipad') > -1
+	if( isAndroid ) {
+		alert('isAndroid')
+		$('head').append('<meta name="viewport" content="width=device-width"/>')
+	}
+	if( isAndroid || isPad ) {
+		window.onscroll = function() {		
+			$('.lightbox').css('position','absolute')
+			$('.lightbox').css('top', window.pageYOffset + $(window).height() -41)
+		}
+	}
+
 	/* Rotator */
 	if($('#rotator').length) {
 		$('#rotator').jshowoff({ speed:8000, controls:false })
