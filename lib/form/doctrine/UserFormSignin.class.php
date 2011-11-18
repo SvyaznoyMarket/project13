@@ -39,7 +39,7 @@ class UserFormSignin extends BaseUserForm
     $this->useFields(array(
       'username',
       'password',
-      'remember',
+      //'remember',
     ));
 
     $this->widgetSchema->setNameFormat('signin[%s]');

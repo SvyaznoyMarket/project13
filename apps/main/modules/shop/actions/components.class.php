@@ -33,7 +33,7 @@ class shopComponents extends myComponents
       'latitude'     => $this->shop->latitude,
       'longitude'    => $this->shop->longitude,
       'photos'       => array(),
-      'panorama'     => 
+      'panorama'     =>
         !empty($this->shop->panorama)
         ? array('swf' => "/panoramas/shops/{$this->shop->core_id}/tour.swf", 'xml' => "/panoramas/shops/{$this->shop->core_id}/tour.xml")
         : false
@@ -43,15 +43,17 @@ class shopComponents extends myComponents
 
     foreach ($this->shop->Photo as $i => $shopPhoto)
     {
-      $isPanorama = (0 == $i) && !empty($this->shop->panorama);
-
       $item['photos'][] = array(
         'url_small'   => $shopPhoto->getPhotoUrl(5), // 1
         'url_big'     => $shopPhoto->getPhotoUrl(5), // 4
-        'is_panorama' => $isPanorama,
       );
     }
-    //myDebug::dump($item);
+
+    // Clones first photo if shop has panorama
+    if (count($item['photos']) && !empty($this->shop->panorama))
+    {
+      array_unshift($item['photos'], $item['photos'][0]);
+    }
 
     $this->setVar('item', $item, true);
   }

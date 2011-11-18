@@ -4,7 +4,7 @@
   <?php include_component('order', 'navigation', array('order' => $order)) ?>
 <?php end_slot() ?>
 
-  <?php //include_component('order', 'step'.$step, array('form' => $form)) ?>
+<?php //include_component('order', 'step'.$step, array('form' => $form)) ?>
 
 <?php slot('receipt') ?>
   <?php include_component('order', 'receipt') ?>

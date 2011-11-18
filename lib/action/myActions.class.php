@@ -74,7 +74,7 @@ class myActions extends sfActions
       'page'  => (int)$this->getRequest()->getParameter('page', 1),
     ), $params);
 
-    $pager = new myDoctrinePager($model, $params['limit']);
+    $pager = new myDoctrinePager($model, $params['limit'], $params);
     $pager->setQuery($q);
     $pager->setPage($params['page']);
     $pager->init();

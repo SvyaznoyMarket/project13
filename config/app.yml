@@ -2,6 +2,7 @@ all:
   welcome:
     cookie_name: enter_code
     secret: Выход!
+    enabled: false
 
   rediska:
     default:
@@ -53,13 +54,13 @@ all:
 
   core:
     config:
-      api_url: 'http://core/v1/json'
-      consumer_key: v4Q4UiTaQ6jWPHtJ
-      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
+      api_url: 'http://core.ent3.ru/v1/json'
+      consumer_key: test
+      signature: test
 
   cache_eraser:
     config:
-      file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
+      file: %SF_ROOT_DIR%/erase.cmd
       prefix: 'CACHETAG::'
 
   payment:
@@ -150,6 +151,11 @@ live:
         main:
           host: site-db
           persistent: true
+
+  cache_eraser:
+    config:
+      file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
+      prefix: 'CACHETAG::'
 
 
 alpha:
