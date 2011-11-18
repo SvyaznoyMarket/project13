@@ -59,7 +59,7 @@ all:
 
   cache_eraser:
     config:
-      file: %SF_ROOT_DIR%/erase_barcode.cmd
+      file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
       prefix: 'CACHETAG::'
 
   payment:

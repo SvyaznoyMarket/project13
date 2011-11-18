@@ -63,6 +63,7 @@ ProductCategory:
     photo:             { type: string(255), notnull: false, default: null }
     is_active:         { type: boolean, notnull: true, default: false, comment: 'Действующая категория?' }
     has_line:          { type: boolean, notnull: true, default: false, comment: 'Есть серии для отображения' }
+    seo_header:        { type: string(255), notnull: false, comment: 'SEO заголовок. Используется для генерации нижних breadcrumbs' }
   relations:
     FilterGroup:       { class: ProductFilterGroup, foreignAlias: Category, local: filter_group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ProductType:       { class: ProductType, foreignAlias: ProductCategory, refClass: ProductCategoryTypeRelation, local: product_category_id, foreign: product_type_id, type: many, foreignType: many }
@@ -252,7 +253,7 @@ ProductPropertyRelation:
     option_id:         { type: integer(20), notnull: false, default: null }
     value_integer:     { type: integer(20), notnull: false, default: null }
     value_float:       { type: 'decimal(10,4)', notnull: false, default: null }
-    value_string:      { type: string(500), notnull: false, default: null }
+    value_string:      { type: string(2000), notnull: false, default: null }
     value_text:        { type: string, notnull: false, default: null }
     value_boolean:     { type: boolean, notnull: false, default: null }
     value:             { type: string(255), notnull: false, default: null, comment: 'Значение свойства для отображения' }

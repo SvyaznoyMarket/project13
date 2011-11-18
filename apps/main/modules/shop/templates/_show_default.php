@@ -4,27 +4,36 @@
 
 
 <!-- bMap -->
-
 <div class="bMap">
-  <div id="map-container" class="bMap__eBody" style="width: <?php echo count($item['photos']) ? '787' : '897' ?>px; height: 473px; background: transparent url('/images/loader.gif') no-repeat 50% 50%;"></div>
+  <div id="map-container" class='bMap__eBody'></div>
 
-  <?php if (count($item['photos'])): ?>
-  <div class="bMap__eImages">
-    <h3 class="bMap__eImagesTitle">Фотогалерея:</h3>
+  <div class='bMap__eImages'>
+    <h3 class='bMap__eImagesTitle'>Смотри как внутри</h3>
 
-    <?php foreach ($item['photos'] as $photo): ?>
-    <div class="bMap__eContainer">
-      <img class="bMap__eImgSmall" src="<?php echo $photo['url_small'] ?>">
-      <img class="bMap__eImgBig" src="<?php echo $photo['url_big'] ?>">
+    <div class='bMap__eScrollWrap'>
+
+      <?php $i = 0; $count = count($item['photos']); foreach ($item['photos'] as $photo): $i++ ?>
+      <div class="bMap__eContainer<?php if (1 == $i) echo ' first' ?> map-image-link">
+        <img class="bMap__eImgSmall" src="<?php echo $photo['url_small'] ?>" />
+        <div class='bMap__eImgBig'><img src="<?php echo $photo['url_big'] ?>"></div>
+
+        <?php if ($photo['is_panorama']): ?>
+        <div class="bMap__e360 map-360-link"></div>
+        <?php endif ?>
+      </div>
+      <?php endforeach ?>
+
+      <div class="bMap__eContainer map-google-link">
+        <img class='bMap__eImgSmall' src='/images/map_ico.png'>
+        <div class='bMap__eImgBig'></div>
+      </div>
+
     </div>
-    <?php endforeach ?>
-
   </div>
-  <?php endif ?>
 
+  <input id="map-panorama" type="hidden" data-swf="<?php echo $item['panorama']['swf'] ?>" data-xml="<?php echo $item['panorama']['xml'] ?>" />
 </div>
 <!-- /bMap -->
-
 
 <!-- bMapInfo -->
 <div class='bMapInfo'>
