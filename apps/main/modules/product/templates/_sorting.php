@@ -1,5 +1,5 @@
 <!-- Filter -->
-<div class="filter">
+<div id="sorting" class="filter" data-sort="<?php echo $active['name'].'-'.$active['direction'] ?>">
     <span class="fl">Сортировать:</span>
     <div class="filterchoice">
         <a href="<?php echo $active['url']?>" class="filterlink"><?php echo $active['title']?></a>
