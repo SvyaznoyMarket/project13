@@ -96,4 +96,29 @@ class defaultComponents extends myComponents
       $this->view = 'default';
     }
   }
+/**
+  * Executes cache component
+  *
+  * @param myDoctrineCollection $collection Коллекция
+  * @param myDoctrineRecord     $record     Запись
+  */
+  public function executeCache()
+  {
+    $keys = array();
+
+    if (isset($this->record) && ($this->record instanceof myDoctrineRecord))
+    {
+      $keys = $this->record->getCacheEraserKeys('show');
+    }
+
+    if (isset($this->collection) && ($this->collection instanceof myDoctrineCollection))
+    {
+      foreach ($this->collection as $record)
+      {
+        $keys = array_merge($keys, $record->getCacheEraserKeys('show'));
+      }
+    }
+
+    $this->setVar('keys', $keys, true);
+  }
 }

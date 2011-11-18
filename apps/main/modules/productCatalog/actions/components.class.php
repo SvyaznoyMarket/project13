@@ -170,6 +170,7 @@ class productCatalogComponents extends myComponents
       ));
     }
 
+    $this->setVar('productFilterList', $this->productCategory->FilterGroup->Filter, true);
     $this->url = url_for('productCatalog_filter', $this->productCategory);
   }
 /**

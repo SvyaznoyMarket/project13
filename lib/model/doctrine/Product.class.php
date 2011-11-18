@@ -22,6 +22,8 @@ class Product extends BaseProduct
 
   public function preSave($event)
   {
+    parent::preSave($event); // important!
+
     $record = $event->getInvoker();
 
     if (empty($record->token))
@@ -47,7 +49,7 @@ class Product extends BaseProduct
     parent::importFromCore($data);
 
     $this->token = $this->barcode;
-    
+
     // check if creator doesn't exists
     if (!empty($data['brand_id']) && empty($this->creator_id))
     {
@@ -155,7 +157,15 @@ class Product extends BaseProduct
     }
     else
     {
-      $this->view_list = 1;
+      if (!empty($this->id))
+      {
+        $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->id);
+        $this->view_list = !empty($price) && $price->price > 0;
+      }
+      else
+      {
+        $this->view_list = 0;
+      }
       $this->view_show = 1;
     }
 
