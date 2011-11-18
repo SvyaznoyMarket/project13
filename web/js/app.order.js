@@ -1,20 +1,35 @@
 $(document).ready(function() {
 
-function triggerDelivery( i ) {
+function triggerDelivery( i, init ) {
+    init = init || false;
 	if ( i == 3 ) {
 		$('.shop_block').show() 
 		$('.delivery_block').hide()
 		$('.deliverytext').html('Представьтесь:')
+        $('#delivered_at_block label').html('Выберите дату:')
+        var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(0,4)).prepend('<option value=""></option>');
+        if (init) {
+            ds.change();
+        } else {
+            ds.val('').change();
+        }
 	} else {
 		$('.shop_block').hide() 
 		$('.delivery_block').show() 
 		$('.deliverytext').html('Кому и куда доставить:')
+        $('#delivered_at_block label').html('Выберите дату доставки:')
+        var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(1)).prepend('<option value=""></option>');
+        if (init) {
+            ds.change();
+        } else {
+            ds.val('').change();
+        }
 	}
 	
 }
 var checker = $('.order-form').find('[name="order[delivery_type_id]"]:checked')
-if (checker.length) 
-	triggerDelivery( checker.val() )
+var deliveryAtOptions = $('#delivered_at_block select option').clone();
+triggerDelivery( checker.val(), true )
 
 $('.order-form').bind({
     'change': function(e) {

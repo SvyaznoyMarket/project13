@@ -68,8 +68,10 @@ $(document).ready(function(){
 		})
 	}
 
+
+
 	if( $('div.allpager').length ) {
-		$('div.allpager').each(function(){
+			$('div.allpager').each(function(){
 			var lsURL = $(this).data('url')
 			var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
 			var vinit = vnext - 1
@@ -95,6 +97,7 @@ $(document).ready(function(){
 
 								.addClass('borderedR')
 				next_a.attr('href', next_a.attr('href').replace(/\?page=\d/,'') )
+
 				$('div.pageslist li').remove()
 				$('div.pageslist ul').append( next )
 									 .find('a')

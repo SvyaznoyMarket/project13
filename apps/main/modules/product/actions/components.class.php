@@ -35,7 +35,7 @@ class productComponents extends myComponents
       'price'    => $this->product->formatted_price,
       'has_link' => $this->product['view_show'],
       'photo'    => $this->product->getMainPhotoUrl(2),
-      'product'  => $this->product,
+      'product'  => clone($this->product),
       'url'      => url_for('productCard', $this->product, array('absolute' => true)),
     );
 
@@ -74,8 +74,12 @@ class productComponents extends myComponents
 
     $this->setVar('item', $item, true);
 
-    $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product->id);
-    $this->setVar('selectedServices', $selectedServices, true);
+    //$selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product->id);
+    $u = $this->getUser();
+    $c = $u->getCart();
+    $selectedServices = $c->getServicesByProductId($this->product->id);
+    //$this->setVar('selectedServices', $selectedServices, true);
+    //myDebug::dump($this->product);
   }
 
   /**

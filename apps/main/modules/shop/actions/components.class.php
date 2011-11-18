@@ -47,7 +47,7 @@ class shopComponents extends myComponents
 
       $item['photos'][] = array(
         'url_small'   => $shopPhoto->getPhotoUrl(5), // 1
-        'url_big'     => $shopPhoto->getPhotoUrl(4), // 4
+        'url_big'     => $shopPhoto->getPhotoUrl(5), // 4
         'is_panorama' => $isPanorama,
       );
     }
