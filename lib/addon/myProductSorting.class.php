@@ -9,12 +9,12 @@ class myProductSorting extends myBaseSorting
     return array(
       'price_asc'   => array(
         'name'      => 'price',
-        'title'     => 'по цене (сначала самые дешевые)',
+        'title'     => 'по цене (сначала дешевые)',
         'direction' => 'asc',
       ),
       'price_desc'   => array(
         'name'      => 'price',
-        'title'     => 'по цене (сначала самые дорогие)',
+        'title'     => 'по цене (сначала дорогие)',
         'direction' => 'desc',
       ),
       'creator_asc' => array(

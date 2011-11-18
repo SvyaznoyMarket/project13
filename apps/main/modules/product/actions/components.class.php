@@ -121,10 +121,11 @@ class productComponents extends myComponents
     $active['url'] = replace_url_for('sort', implode('-', array($active['name'], $active['direction'])));
     foreach ($this->productSorting->getList() as $item)
     {
-//      if ($active['name'] == $item['name'])
-//      {
+      if ($active['name'] == $item['name'] && $active['direction'] == $item['direction'])
+      {
 //        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
-//      }
+        continue;
+      }
       $list[] = array_merge($item, array(
         'url' => replace_url_for('sort', implode('-', array($item['name'], $item['direction'])))
         ));

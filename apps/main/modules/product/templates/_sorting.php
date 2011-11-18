@@ -1,6 +1,6 @@
 <!-- Filter -->
 <div class="filter">
-    <span class="fl">Сортировать по:</span>
+    <span class="fl">Сортировать:</span>
     <div class="filterchoice">
         <a href="<?php echo $active['url']?>" class="filterlink"><?php echo $active['title']?></a>
         <div class="filterlist">
