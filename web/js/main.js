@@ -71,7 +71,12 @@ $(document).ready(function(){
 			"</div>"
 		tmpnode.after( loader )
 		//tmpnode.after('<div id="ajaxgoods" style="width:100%; text-align:right;"><span style="margin-bottom: 6px;">Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
-		$.get( lsURL, function(data){
+		var sort = $("div#sorting")
+		var data = {}
+		if (sort.length) {
+			data = { 'sort' : sort.data('sort') }
+		}
+		$.get( lsURL, data, function(data){
 			if ( data != "" && !data.data ) { // JSON === error
 				ableToLoad = true
 				if( compact )

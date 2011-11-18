@@ -300,16 +300,31 @@ class productCatalogActions extends myActions
     $this->_seoRedirectOnPageDublicate($request);
     $this->productCategory = $this->getRoute()->getObject();
 
-    $title = $this->productCategory['name'];
-    if ($request->getParameter('page')) {
-      $title .= ' – '.$request->getParameter('page');
-    }
-    $rootCategory = $this->productCategory->getRootCategory();
-    if ($rootCategory->id !== $this->productCategory->id)
+//    $title = $this->productCategory['name'];
+//    if ($request->getParameter('page')) {
+//      $title .= ' – '.$request->getParameter('page');
+//    }
+//    $rootCategory = $this->productCategory->getRootCategory();
+//    if ($rootCategory->id !== $this->productCategory->id)
+//    {
+//      $title .= ' – '.$rootCategory;
+//    }
+//    $this->getResponse()->setTitle($title.' – Enter.ru');
+    
+    // SEO ::
+    $list = array();
+    $ancestorList = $this->productCategory->getNode()->getAncestors();
+    if ($ancestorList) foreach ($ancestorList as $ancestor)
     {
-      $title .= ' – '.$rootCategory;
+        $list[] = (string)$ancestor;
     }
-    $this->getResponse()->setTitle($title.' – Enter.ru');
+    $list[] = (string)$this->productCategory;
+    $title = '%s - интернет-магазин Enter.ru - Москва';
+    $this->getResponse()->setTitle(sprintf(
+        $title,
+        implode(' - ', $list)
+    ));
+    // :: SEO
 
     if ($this->productCategory->has_line) //если в категории должны отображться линии
     {
@@ -368,7 +383,7 @@ class productCatalogActions extends myActions
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
-
+//echo $q; exit;
     // SEO ::
     $list = array();
     $ancestorList = $this->productCategory->getNode()->getAncestors();
