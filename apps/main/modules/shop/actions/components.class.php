@@ -22,8 +22,6 @@ class shopComponents extends myComponents
       $this->view = 'default';
     }
 
-    myDebug::dump($this->shop);
-
     $item = array(
       'name'         => (string)$this->shop,
       'address'      => $this->shop->address,
@@ -53,7 +51,6 @@ class shopComponents extends myComponents
         'is_panorama' => $isPanorama,
       );
     }
-    myDebug::dump($item);
 
     $this->setVar('item', $item, true);
   }
