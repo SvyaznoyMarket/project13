@@ -6,7 +6,11 @@
         <ul>
             <?php $currentLevel1 = null; ?>
             <?php if ($currentDirectory->level > 0 ) { ?>
-                <li class="bCtg__eL1 mBold"><a href=""><span><?php echo $root_info['name'] ?></span></a></li>            
+                <li class="bCtg__eL1 mBold">
+                    <a href="<?php echo url_for('productCatalog_category', array("productCategory" => $root_info['token'])); ?>">
+                        <span><?php echo $root_info['name'] ?></span>
+                    </a>
+                </li>            
             <?php } ?>     
             <?php foreach($root_list['children'] as $level1) { ?>
                 <?php 
