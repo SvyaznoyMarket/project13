@@ -74,12 +74,8 @@ class productComponents extends myComponents
 
     $this->setVar('item', $item, true);
 
-    //$selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product->id);
-    $u = $this->getUser();
-    $c = $u->getCart();
-    $selectedServices = $c->getServicesByProductId($this->product->id);
-    //$this->setVar('selectedServices', $selectedServices, true);
-    //myDebug::dump($this->product);
+    $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product->id);
+    $this->setVar('selectedServices', $selectedServices, true);
   }
 
   /**
