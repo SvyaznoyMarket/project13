@@ -63,7 +63,7 @@
 				<?php if ($formSignin['password']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['password']->renderError() ?></div><?php endif ?>
 				<?php echo $formSignin['password']->render(array('class' => 'text width418 mb15')) ?>
 
-				<?php echo $formSignin['remember']->render(array('class' => 'hiddenCheckbox', 'id' => 'checkbox-8')) ?>
+				<?php //echo $formSignin['remember']->render(array('class' => 'hiddenCheckbox', 'id' => 'checkbox-8')) ?>
 			</div>
 
 			<div id="new-user" style="display:none;">
