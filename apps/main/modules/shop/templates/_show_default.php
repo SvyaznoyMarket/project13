@@ -17,7 +17,7 @@
         <img class="bMap__eImgSmall" src="<?php echo $photo['url_small'] ?>" />
         <div class='bMap__eImgBig'><img src="<?php echo $photo['url_big'] ?>"></div>
 
-        <?php if ($photo['is_panorama']): ?>
+        <?php if ((1 == $i) && !empty($shop->panorama)): ?>
         <div class="bMap__e360 map-360-link"></div>
         <?php endif ?>
       </div>
