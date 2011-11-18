@@ -20,7 +20,7 @@ end_slot();
             <?php if (isset($result)): ?>
             <strong><?php echo $result['stage']['name'] ?>:</strong> <?php echo $result['message'] ?><br />
             <?php endif ?>
-            С вами свяжется оператор для получения и уточнения параметров заказа.
+            Чтобы подтвердить заказ, в течение 15 минут с вами свяжется специалист нашего Контакт cENTER.
         </div>
         <!--div class="fr width250 pb20 form"><label for="radio-1">Я хочу получать СМС уведомления об изменении статуса заказа</label><input id="radio-1" name="radio-1" type="radio" value="radio-1" /></div-->
         <div class="line pb20"></div>
