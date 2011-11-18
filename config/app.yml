@@ -2,6 +2,7 @@ all:
   welcome:
     cookie_name: enter_code
     secret: Выход!
+    enabled: false
 
   rediska:
     default:
