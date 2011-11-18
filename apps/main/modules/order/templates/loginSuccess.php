@@ -100,7 +100,7 @@
         <?php endif ?>
       </div>
 
-      <div class="attention font11 gray">Поменять пароль на удобный именно вам можно<br />в <a id="auth-link" href="<?php echo url_for('user') ?>" style="display: inline"><strong>личном кабинете</strong></a></div>
+      <div class="attention font11 gray" style="margin-bottom: 15px;">Поменять пароль на удобный именно вам можно в <a id="auth-link" class="gray" href="<?php echo url_for('user') ?>" style="display: inline"><strong>личном кабинете</strong></a></div>
     </div>
 
     <div class="line pb20"></div>
