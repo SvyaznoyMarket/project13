@@ -55,35 +55,32 @@
       </ul>
 
       <div id="old-user" style="display:none;">
+        <div class="pb10"></div>
         <div class="pb10">E-mail или мобильный телефон:</div>
         <?php if ($formSignin['username']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['username']->renderError() ?></div><?php endif ?>
-        <?php echo $formSignin['username']->render(array('class' => 'text width418 mb15')) ?>
-        <div class="attention font11 gray">Логином может являться номер мобильного телефона или адрес электронной почты. Например: 8 (123) 123 45 67 или primer@email.ru</div>
+        <?php echo $formSignin['username']->render(array('class' => 'text width418 mb10')) ?>
+        <div class="attention font11 gray mb15">Логином может являться номер мобильного телефона или адрес электронной почты. Например: 8 (123) 123 45 67 или primer@email.ru</div>
 
-        <br />
-
-        <div class="pb5"><?php if (false): ?><a id="forgot-pwd-trigger" href="<?php echo url_for('user_forgotPassword') ?>" class="fr orange underline">Забыли пароль?</a><?php endif ?>Пароль:</div>
+        <div class="pb5"><a id="auth_forgot-link" href="<?php echo url_for('user_forgotPassword') ?>" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
         <?php if ($formSignin['password']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['password']->renderError() ?></div><?php endif ?>
-        <?php echo $formSignin['password']->render(array('class' => 'text width418 mb15')) ?>
+        <?php echo $formSignin['password']->render(array('class' => 'text width418 mb10')) ?>
+        <div class="attention font11 gray mb15">Поменять пароль на удобный именно вам можно в <a id="auth-link" class="gray" href="<?php echo url_for('user') ?>" style="display: inline"><strong>личном кабинете</strong></a></div>
 
         <?php //echo $formSignin['remember']->render(array('class' => 'hiddenCheckbox', 'id' => 'checkbox-8')) ?>
       </div>
 
       <div id="new-user" style="display:none;">
-        <div class="pb10">
-        </div>
+        <div class="pb10"></div>
+
         <div class="pb10">E-mail или мобильный телефон:</div>
         <?php if ($formRegister['username']->hasError()): ?><div class="pb10 red"><?php echo $formRegister['username']->renderError() ?></div><?php endif ?>
-        <?php echo $formRegister['username']->render(array('class' => 'text width418 mb15')) ?>
-        <div class="attention font11 gray">Логином может являться номер мобильного телефона или адрес электронной почты. Например: 8 (123) 123 45 67 или primer@email.ru</div>
-
-        <br />
+        <?php echo $formRegister['username']->render(array('class' => 'text width418 mb10')) ?>
+        <div class="attention font11 gray mb15">Логином может являться номер мобильного телефона или адрес электронной почты. Например: 8 (123) 123 45 67 или primer@email.ru</div>
 
         <div class="pb10">Как к вам обращаться?</div>
         <?php if ($formRegister['first_name']->hasError()): ?><div class="pb10 red"><?php echo $formRegister['first_name']->renderError() ?></div><?php endif ?>
-        <?php echo $formRegister['first_name']->render(array('class' => 'text width418 mb15')) ?>
-        <!--input name="first_name" type="text" class="text width418 mb5"/-->
-        <div class="font11 pb20">Эти данные необходимы для регистрации в системе и оформления платежа. Вам будет выслан пароль на ваш e-mail или моб. телефон</div>
+        <?php echo $formRegister['first_name']->render(array('class' => 'text width418 mb10')) ?>
+        <div class="attention font11 gray mb15">Эти данные необходимы для регистрации в системе и оформления платежа. Вам будет выслан пароль на ваш e-mail или моб. телефон</div>
 
         <!--div class=" pb15">
         <?php //echo $form['is_receive_sms']->render(array('row_class' => 'checkboxlist2', )) ?><?php //echo $form['is_receive_sms']->renderLabel() ?>
@@ -99,8 +96,6 @@
           <?php echo $formRegister['is_legal']->render() ?>
         <?php endif ?>
       </div>
-
-      <div class="attention font11 gray" style="margin-bottom: 15px;">Поменять пароль на удобный именно вам можно в <a id="auth-link" class="gray" href="<?php echo url_for('user') ?>" style="display: inline"><strong>личном кабинете</strong></a></div>
     </div>
 
     <div class="line pb20"></div>
@@ -108,7 +103,31 @@
     <div class="pl235"><input type="submit" class="button bigbutton" value="Продолжить оформление" /></div>
   </form>
 
+
+  <div class="popup" id="auth_forgot-block">
+    <i title="Закрыть" class="close">Закрыть</i>
+    <div class="popupbox width345">
+      <h2 class="pouptitle">Восстановление пароля</h2>
+      <?php include_partial('guard/form_forgot', array('id' => 'auth_forgot-form', 'show_login_link' => false, 'title' => false)) ?>
+    </div>
+  </div>
+
+
+
   <script type="text/javascript">
+
+  $('#auth_forgot-link').click(function() {
+    $('#auth_forgot-block').lightbox_me({
+      centered: true,
+      onLoad: function() {
+        $('#auth_forgot-form').show()
+        $('#auth_forgot-block').find('input:first').focus()
+      }
+    })
+
+    return false
+  })
+
     var url_signin = '<?php echo url_for('@order_login') ?>',
     url_register = '<?php echo url_for('@order_login') ?>';
     $('#radio-1').click(function(){
