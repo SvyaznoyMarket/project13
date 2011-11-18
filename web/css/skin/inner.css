@@ -1503,7 +1503,7 @@ DT.bCtg__eOrange{
 	.bMap__eContainer.first,
 	.bMap__eContainer.first .bMap__eImgSmall{
 		width: 162px;
-		height: 163px;
+		height: 96px;
 		}
 	.bMap__eContainer.first{
 		padding: 2px;
@@ -1595,7 +1595,7 @@ DT.bCtg__eOrange{
 		width: 96px;
 		height: 64px;
 		position: relative;
-		top: -112px;
+		top: -80px;
 		left: 31px;
 		background: url('img/360g.png') no-repeat;
 		}
