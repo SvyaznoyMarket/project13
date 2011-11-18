@@ -19,6 +19,8 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
   <?php include_component('product', 'list_view') ?>
 <?php endif ?>
 
+<?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?>
+
 <?php if (!$empty): ?>
   <div class="line"></div>
 <?php endif ?>

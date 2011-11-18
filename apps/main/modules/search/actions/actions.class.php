@@ -162,7 +162,7 @@ class searchActions extends myActions
       : array()
     ;
 
-    $pager = $this->getPager($list, isset($this->productType->_product_count) ? $this->productType->_product_count : 0, array(
+    $pager = $this->_getPager($list, isset($this->productType->_product_count) ? $this->productType->_product_count : 0, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
 
@@ -174,7 +174,7 @@ class searchActions extends myActions
     return array();
   }
 
-  public function getPager($list, $count, array $params = array())
+  public function _getPager($list, $count, array $params = array())
   {
     $params = myToolkit::arrayDeepMerge(array(
       'limit' => 20,

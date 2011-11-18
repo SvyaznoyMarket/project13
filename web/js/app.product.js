@@ -1,4 +1,15 @@
 $(document).ready(function() {
+    
+    var filterlink = $('.filter .filterlink:first');
+	var filterlist = $('.filter .filterlist');
+	filterlink.mouseenter(function(){
+		filterlink.hide();
+		filterlist.show();
+	});
+	filterlist.mouseleave(function(){
+		filterlist.hide();
+		filterlink.show();
+	});
 
     $('.product_rating-form').live({
         'form.ajax-submit.prepare': function(e, result) {

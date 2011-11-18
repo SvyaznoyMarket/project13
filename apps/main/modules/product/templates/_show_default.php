@@ -80,7 +80,7 @@ foreach ($p3d as $p3d_obj)
       <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
       <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
     </div>
-<!--            <div class="pb5"><strong><a href="" class="red underline">Купить быстро в 1 клик</a></strong></div>-->
+    <div class="pb5"><strong><a id="1click-trigger" href="<?php echo url_for('order_1click', array('product_id' => $product->id)) ?>" class="red underline">Купить быстро в 1 клик</a></strong></div>
     <a href="<?php echo $item['shop_url'] ?>" class="underline">Где купить в магазинах?</a>
   </div>
 

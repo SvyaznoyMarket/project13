@@ -118,12 +118,13 @@ class productComponents extends myComponents
     $list = array();
 
     $active = $this->productSorting->getActive();
+    $active['url'] = replace_url_for('sort', implode('-', array($active['name'], $active['direction'])));
     foreach ($this->productSorting->getList() as $item)
     {
-      if ($active['name'] == $item['name'])
-      {
-        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
-      }
+//      if ($active['name'] == $item['name'])
+//      {
+//        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
+//      }
       $list[] = array_merge($item, array(
         'url' => replace_url_for('sort', implode('-', array($item['name'], $item['direction'])))
         ));
@@ -310,7 +311,7 @@ class productComponents extends myComponents
   {
       $this->executeList_view();
   }
-
+  
   /**
    * Executes list_view component
    *

@@ -29,6 +29,50 @@ class orderActions extends myActions
   {
     $this->order = $this->getRoute()->getObject();
   }
+  
+  /**
+  * Executes 1click action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function execute1click(sfWebRequest $request)
+  {
+    $this->setLayout(false);
+    sfConfig::set('sf_web_debug', false);
+    
+    $this->product = ProductTable::getInstance()->getById($request->getParameter('product_id'));
+    $this->order = new Order();
+    
+    if (empty($this->order->region_id))
+    {
+     $this->order->region_id = $this->getUser()->getRegion('id');
+    }
+
+    $this->form = new OrderStep1Form($this->order);
+    if ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getParameter($this->form->getName()));
+
+      if ($this->form->isValid())
+      {
+        $order = $this->form->updateObject();
+
+        if ($order->isOnlinePayment())
+        {
+          if ($this->save1clickOrder($order, $this->product))
+          {
+            $provider = $this->getPaymentProvider();
+            $this->paymentForm = $provider->getForm($order);
+            $this->paymentForm->setDefault('URL_RETURN', url_for('productCard', $this->product).'#1click-payment-ok');   //   
+          }
+        } else {
+            if ($this->save1clickOrder($order, $this->product)) {
+                $this->message = 'Заказ успешно создан';
+            }
+        }
+      }
+    }
+  }
 
   public function executeLogin(sfWebRequest $request)
   {
@@ -107,8 +151,6 @@ class orderActions extends myActions
   */
   public function executeNew(sfWebRequest $request)
   {
-    $this->setVar('aaa', '===========test');
-      
     $this->getResponse()->setTitle('Способ доставки и оплаты  – Enter.ru');     
       
     $this->step = $request->getParameter('step', 1);
@@ -316,7 +358,41 @@ class orderActions extends myActions
 
     $this->result = $provider->getPaymentResult($order);
   }
+  
+  /**
+   *
+   * @param Order $order
+   * @param Product $product
+   * @return bool 
+   */
+  protected function save1clickOrder(Order $order, Product $product)
+  {
+      $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
+      $order->sum = $product->price;
+      $relation = new OrderProductRelation();
+      $relation->fromArray(array(
+        'product_id' => $product->id,
+        'price'      => $product->price,
+        'quantity'   => 1,
+      ));
+      $order->ProductRelation[] = $relation;
+      
+        try {
+            $order->save();
+            $this->getUser()->getOrder()->set($order);
+            return true;
+        } catch (Exception $e) {
+            $this->getLogger()->err('{' . __CLASS__ . '} create: can\'t save to core: ' . $e->getMessage());
+        }
 
+        return false;
+  }
+
+  /**
+   *
+   * @param Order $order
+   * @return bool 
+   */
   protected function saveOrder(Order &$order)
   {
     $order->User = $this->getUser()->getGuardUser();
@@ -378,6 +454,11 @@ class orderActions extends myActions
     return false;
   }
 
+  /**
+   *
+   * @param int $step
+   * @return BaseOrderForm 
+   */
   protected function getOrderForm($step)
   {
     $class = sfInflector::camelize("order_step_{$step}_form");
@@ -399,6 +480,11 @@ class orderActions extends myActions
     return $step;
   }
 
+  /**
+   *
+   * @param type $name
+   * @return UnitellerPaymentProvider
+   */
   protected function getPaymentProvider($name = null)
   {
     if (null == $name)
