@@ -7,7 +7,6 @@ BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,hel
 .buyingpage {padding-bottom:96px}
 *+ html .allpageinner {float:left; width:100%} /* for IE7 */
 .footer {width:920px; height:261px; margin:-261px auto 0 auto; position:relative}
-.footer_cart {height:221px; margin:-221px auto 0 auto;}
 .lowfooter {height:66px; margin:-66px auto 0 auto}
 
 
@@ -137,7 +136,7 @@ TABLE {border-collapse:collapse}
 .height170 {height:170px}
 .height250 {height:250px}
 
-#auth-link{display:none}
+
 .rubl {font-family:"Rouble"; font-size: 90%; margin: 0 0px 0 -5px}
 
 .topbar {height:25px; padding-top:7px; font-size:11px}
@@ -320,18 +319,20 @@ LABEL.checked {color:#ffa901}
 	border-radius: 10px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
+	
 	-moz-box-shadow:0 0 9px #eaeaea;
 	-webkit-box-shadow:0 0 9px #eaeaea;
 	box-shadow:0 0 9px #eaeaea;
 	//behavior: url(ie-css3.htc)
+	
 	}
-
 .bSpec h2 {
     color: #FFA901;
     font: bold 14px Tahoma,sans-serif;
     margin: 10px 0 10px 10px;
     padding: 0;
 }
+
 
 .bSpec .pb10 {
     border-top: 1px solid #E6E6E6;
@@ -530,7 +531,6 @@ border-radius:5px;
 .goodsline .photo {float:left; width:160px; margin:0}
 .goodsline .info {float:left; width:278px; padding:0 0 0 12px; margin-right:10px}
 .goodsline H3 {font-size:14px; font-weight:normal; margin:0; padding-bottom:5px}
-.goodsline H3.bolder {font-weight:bolder}
 .goodsline .extrainfo {float:left; width:190px; min-height:160px; padding-left:10px; border-left:1px solid #e6e6e6}
 .goodsline LI {list-style-type:disc; padding:0 0 1px 0; margin-left:14px}
 .goodsline .goodsbar {display:none; position:absolute; z-index:2; bottom:10px; right:88px}
@@ -1364,31 +1364,31 @@ border-radius: 5px;
 	font: 13px Tahoma, sans-serif;
 	border-bottom: 1px solid #e6e6e6;
 	}
-
+	
 	.mBold{ font-weight: bold; }
 	.bCtg a{ text-decoration: none; }
 	.bCtg li:hover a{ color: #ffa901; }
 	.mSelected{ font-weight: bold; }
-	.mSelected span{
-		color: #fff;
-		background: #ffa901;
-		padding: 1px 5px 2px 5px;
+	.mSelected span{ 
+		color: #fff; 
+		background: #ffa901; 
+		padding: 1px 5px 2px 5px; 
 		}
-
+	
 	.bCtg li{ margin: 2px 0; cursor: pointer; }
-	.bCtg.mHeight18 li{ margin: 4px 0; }
-
+	.bCtg.mHeight18 li{ margin: 7px 0; }
+	
 	.bCtg__eL1{}
-
+	
 	.bCtg__eL2{ padding-left: 11px; }
 	.bCtg__eL2.mSelected{ padding-left: 6px; }
-
+	
 	.bCtg__eL3{ padding-left: 23px; }
 	.bCtg__eL3.mSelected{ padding-left: 18px; }
-
+	
 	.bCtg__eL4{ padding-left: 34px;}
 	.bCtg__eL4.mSelected{ padding-left: 29px; }
-
+	
 	.bCtg__eL2 span,
 	.bCtg__eL3 span,
 	.bCtg__eL4 span{
@@ -1404,14 +1404,14 @@ border-radius: 5px;
 		left: -10px;
 		position: absolute;
 		}
-
+	
 	.bCtg__eL2.mBold span div,
 	.bCtg__eL2.mSelected span div,
 	.bCtg__eL3.mBold span div,
 	.bCtg__eL3.mSelected span div,
 	.bCtg__eL4.mBold span div,
 	.bCtg__eL4.mSelected span div{ visibility: hidden }
-
+	
     .catProductNum{
         font-size:14px;
         padding:11px 0px 3px 0px;
@@ -1601,6 +1601,7 @@ DT.bCtg__eOrange{
 		}
 /* ----------- /map info ------------- */
 
+
 /* ----------- bInfoBlock ------------- */
 
 .bInfoBlock{
@@ -1700,4 +1701,8 @@ DT.bCtg__eOrange{
     font-size: 11px;
     height: 13px;
     padding: 0;
+}
+
+.hidden{
+    display:none;
 }

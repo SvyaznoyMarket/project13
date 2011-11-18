@@ -21,3 +21,6 @@
   <?php //echo link_to('Аналогичные товары', 'similarProduct', $sf_data->getRaw('product')) ?>
 
   <?php //echo link_to('Наличие в сети', 'productStock', $sf_data->getRaw('product')) ?>
+
+
+  <?php include_component('productCatalog', 'navigation_seo', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>

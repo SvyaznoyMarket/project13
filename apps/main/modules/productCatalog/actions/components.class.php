@@ -58,6 +58,59 @@ class productCatalogComponents extends myComponents
 
     $this->setVar('list', $list, false);
   }
+  
+/**
+  * Executes navigation component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  * @param Creator $creator Производитель
+  */
+  public function executeNavigation_seo()
+  {
+    $list = array();
+
+    /*
+    $list[] = array(
+      'name' => 'Каталог товаров',
+      'url'  => url_for('@productCatalog'),
+    );
+    */
+    if (isset($this->productCategory) && !empty($this->productCategory))
+    {
+      $ancestorList = $this->productCategory->getNode()->getAncestors();
+      if ($ancestorList) 
+      {
+          foreach ($ancestorList as $ancestor)
+          {
+            $list[] = array(
+              'name' => (string) ($ancestor['seo_header']) ? $ancestor['seo_header'] : $ancestor['name'],
+              'url'  => url_for('productCatalog_category', $ancestor),
+            );
+          }
+      }
+      $list[] = array(
+        'name' => (string) ($this->productCategory->seo_header) ? $this->productCategory->seo_header : $this->productCategory->name,
+        'url'  => url_for('productCatalog_category', $this->productCategory),
+      );
+    }
+    if (isset($this->creator))
+    {
+      $list[] = array(
+        'name' => (string)$this->creator,
+        'url'  => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+      );
+    }
+    if (isset($this->product))
+    {
+      $list[] = array(
+        'name' => (string)$this->product,
+        'url'  => url_for(array('sf_route' => 'productCard', 'sf_subject' => $this->product)),
+      );
+    }
+
+    $this->setVar('list', $list, false);
+  }
+  
  /**
   * Executes category_list component
   *
@@ -414,20 +467,34 @@ class productCatalogComponents extends myComponents
 
     $this->setVar('currentCat', $this->productCategory, true);
     $ancestorList = $this->productCategory->getNode()->getAncestors();
-    #var_dump( $ancestorList );
-    #print_r(get_class_methods($this->productCategory));
-    #exit();
-    //если у этой категории нет дочерних, нужно выводить её братьев
-    if (count($this->productCategory->getChildList())<1){
-        foreach($ancestorList as $parent);
-        $parent = ProductCategoryTable::getInstance()->getById($parent['id']);
-        $brothersList = $parent->getNode()->getChildren();
-        $this->setVar('brothersList', $brothersList, true);
+
+    if (isset($ancestorList[0])) { 
+        $rootCat = $ancestorList[0];
+    } else {
+        $rootCat = $this->productCategory;        
     }
-
-    $this->setVar('treeList', $ancestorList, true);
-
-    $this->setVar('list', $this->productCategory->getNode()->getChildren(), true);
+    $tree = $this->getSiteCatTree($rootCat, array());
+    $this->setVar('ancestorList', $ancestorList, true);
+    $this->setVar('root_info', $rootCat, true);
+    $this->setVar('root_list', $tree[ $rootCat['id'] ], true);
+    $this->setVar('currentDirectory', $this->productCategory, true);
+    $this->setVar('tree', $tree, true);
+                
     $this->setVar('quantity', $this->productCategory->countProduct(), true);
+  }
+  
+  public function getSiteCatTree($category, $result){
+        if (is_object($category)) {
+            $result[$category['id']]['category'] = $category;
+            $result[$category['id']]['children'] = $category->getChildList(array(
+                //'select'       => 'productCategory.id,productCategory.core_id, productCategory.name, productCategory.token',
+                'with_filters' => false,
+                )
+            );      
+            foreach($result[$category['id']]['children'] as $cat){
+                $result = $this->getSiteCatTree($cat, $result);
+            }
+        }
+        return $result;
   }
 }

@@ -607,7 +607,8 @@ cart_add:
   url:   /cart/add/:product/:quantity/:services
   param: { module: cart, action: add, quantity: 1, services: 0 }
   requirements:
-    sf_method: [ get,post ]
+    sf_method: [ get,post ]  
+
 #
 # cart delete
 cart_delete:
