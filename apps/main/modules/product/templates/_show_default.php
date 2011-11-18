@@ -60,7 +60,7 @@ foreach ($p3d as $p3d_obj)
 
   <div class="fl pb15">
     <div class="font10"><br/><br/></div>
-    <div class="pb10"><?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?></div>
+    <div class="pb10"><?php include_partial('product/price', array('price' => $item['product']->getFormattedPrice())) ?></div>
     <?php if ($product->is_instock): ?>
       <noindex><div class="pb5"><strong class="orange">Есть в наличии</strong></div></noindex>
 <?php endif ?>
@@ -109,12 +109,12 @@ foreach ($p3d as $p3d_obj)
   <?php $f1 = $product->getServiceList(); ?>
 <?php
 #print_r($f1->toArray());
-if (count($f1)): 
+if (count($f1)):
     $num = 0;
     ?>
     <div class="f1links form">
        <?php
-        include_component('product', 'f1_lightbox', array('f1' => $f1,))  
+        include_component('product', 'f1_lightbox', array('f1' => $f1,))
        ?>
       <div class="f1linkslist">
         <ul>
@@ -125,7 +125,7 @@ if (count($f1)):
                 <label for="checkbox-small-<?php echo $service->id ?>">
                         <?php echo $service->name ?> (<?php echo (int)$service->getPriceByRegion() ?> Р)
                 </label>
-                <input 
+                <input
                     <?php if (key_exists($service->id, $selectedServices)) echo 'checked="checked"'; ?>
                     ref="<?php echo $service->id ?>" id="checkbox-small-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="1" />
             </li>
