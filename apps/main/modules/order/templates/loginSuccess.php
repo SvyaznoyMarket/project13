@@ -59,7 +59,7 @@
         <div class="pb10">E-mail или мобильный телефон:</div>
         <?php if ($formSignin['username']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['username']->renderError() ?></div><?php endif ?>
         <?php echo $formSignin['username']->render(array('class' => 'text width418 mb10')) ?>
-        <div class="attention font11 gray mb15">Логином может являться номер мобильного телефона или адрес электронной почты. Например: 8 (123) 123 45 67 или primer@email.ru</div>
+        <div class="attention font11 gray mb15">Логином может являться номер мобильного телефона или адрес электронной почты. Например: 89101234567 или primer@email.ru</div>
 
         <div class="pb5"><a id="auth_forgot-link" href="<?php echo url_for('user_forgotPassword') ?>" class="fr orange underline">Забыли пароль?</a>Пароль:</div>
         <?php if ($formSignin['password']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['password']->renderError() ?></div><?php endif ?>
@@ -75,7 +75,7 @@
         <div class="pb10">E-mail или мобильный телефон:</div>
         <?php if ($formRegister['username']->hasError()): ?><div class="pb10 red"><?php echo $formRegister['username']->renderError() ?></div><?php endif ?>
         <?php echo $formRegister['username']->render(array('class' => 'text width418 mb10')) ?>
-        <div class="attention font11 gray mb15">Логином может являться номер мобильного телефона или адрес электронной почты. Например: 8 (123) 123 45 67 или primer@email.ru</div>
+        <div class="attention font11 gray mb15">Логином может являться номер мобильного телефона или адрес электронной почты. Например: 89101234567 или primer@email.ru</div>
 
         <div class="pb10">Как к вам обращаться?</div>
         <?php if ($formRegister['first_name']->hasError()): ?><div class="pb10 red"><?php echo $formRegister['first_name']->renderError() ?></div><?php endif ?>
