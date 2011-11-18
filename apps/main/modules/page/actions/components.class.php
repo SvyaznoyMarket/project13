@@ -107,7 +107,12 @@ class pageComponents extends myComponents
         $info = $request->getPathInfoArray();
         #print_r($info);
         $ar = explode('?',$info['REQUEST_URI']);
-        $this->setVar('href', $info['SERVER_NAME'] . '/' . $ar[0]);           
+        $path = str_replace(array('_filter', '_tag'), '', $ar[0]);
+        if ($path == "/") {
+            $path = '';
+        } 
+        
+        $this->setVar('href', 'http://' . $info['SERVER_NAME'] . $path);           
     }
   }
 
