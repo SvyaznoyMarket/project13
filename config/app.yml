@@ -53,9 +53,9 @@ all:
 
   core:
     config:
-      api_url: 'http://core/v1/json'
-      consumer_key: v4Q4UiTaQ6jWPHtJ
-      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
+      api_url: 'http://core.ent3.ru/v1/json'
+      consumer_key: test
+      signature: test
 
   cache_eraser:
     config:
