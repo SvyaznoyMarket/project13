@@ -58,6 +58,9 @@
         <div class="pb10">E-mail или мобильный телефон:</div>
         <?php if ($formSignin['username']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['username']->renderError() ?></div><?php endif ?>
         <?php echo $formSignin['username']->render(array('class' => 'text width418 mb15')) ?>
+        <div class="attention font11 gray">Логином может являться номер мобильного телефона или адрес электронной почты. Например: 8 (123) 123 45 67 или primer@email.ru</div>
+
+        <br />
 
         <div class="pb5"><?php if (false): ?><a id="forgot-pwd-trigger" href="<?php echo url_for('user_forgotPassword') ?>" class="fr orange underline">Забыли пароль?</a><?php endif ?>Пароль:</div>
         <?php if ($formSignin['password']->hasError()): ?><div class="pb10 red"><?php echo $formSignin['password']->renderError() ?></div><?php endif ?>
@@ -72,7 +75,9 @@
         <div class="pb10">E-mail или мобильный телефон:</div>
         <?php if ($formRegister['username']->hasError()): ?><div class="pb10 red"><?php echo $formRegister['username']->renderError() ?></div><?php endif ?>
         <?php echo $formRegister['username']->render(array('class' => 'text width418 mb15')) ?>
-        <!--input name="username" type="text" class="text width418 mb15"/-->
+        <div class="attention font11 gray">Логином может являться номер мобильного телефона или адрес электронной почты. Например: 8 (123) 123 45 67 или primer@email.ru</div>
+
+        <br />
 
         <div class="pb10">Как к вам обращаться?</div>
         <?php if ($formRegister['first_name']->hasError()): ?><div class="pb10 red"><?php echo $formRegister['first_name']->renderError() ?></div><?php endif ?>
@@ -94,6 +99,8 @@
           <?php echo $formRegister['is_legal']->render() ?>
         <?php endif ?>
       </div>
+
+      <div class="attention font11 gray">Поменять пароль на удобный именно вам можно<br />в <a id="auth-link" href="<?php echo url_for('user') ?>" style="display: inline"><strong>личном кабинете</strong></a></div>
     </div>
 
     <div class="line pb20"></div>
