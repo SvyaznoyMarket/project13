@@ -1,4 +1,6 @@
-$(document).ready(function() {
+var initOrder = function(quickform) {
+
+quickform = quickform || false;
 
 function triggerDelivery( i, init ) {
     init = init || false;
@@ -31,6 +33,11 @@ var checker = $('.order-form').find('[name="order[delivery_type_id]"]:checked')
 var deliveryAtOptions = $('#delivered_at_block select option').clone();
 triggerDelivery( checker.val(), true )
 
+if (quickform) {
+    $('.order-form').find('[name="order[delivery_type_id]"]').change(function(){
+        triggerDelivery( $(this).val() );
+    });
+} else {
 $('.order-form').bind({
     'change': function(e) {
 
@@ -116,6 +123,7 @@ $('.order-form').bind({
 
     }
   })
+}
 
   $('.order_user_address').bind('change', function(e) {
     var el = $(this)
@@ -150,4 +158,5 @@ $('.order-form').bind({
     $('.order-form').submit()
   })
 
-})
+}
+$(document).ready(initOrder);

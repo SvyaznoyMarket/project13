@@ -1,6 +1,16 @@
-<span class="left">сортировать &nbsp; </span>
-<ul class="inline sorting">
-<?php foreach ($list as $item): ?>
-  <li><?php echo link_to($item['title'].' '.('asc' == $item['direction'] ? '&darr;' : '&uarr;'), $item['url'], array('class' => $active['name'] == $item['name'] ? 'active' : '')) ?></li>
-<?php endforeach ?>
-</ul>
+<!-- Filter -->
+<div class="filter">
+    <span class="fl">Сортировать:</span>
+    <div class="filterchoice">
+        <a href="<?php echo $active['url']?>" class="filterlink"><?php echo $active['title']?></a>
+        <div class="filterlist">
+            <a href="<?php echo $active['url']?>" class="filterlink"><?php echo $active['title']?></a>
+            <ul>
+                <?php foreach ($list as $item): ?>
+                <li><a href="<?php echo $item['url'] ?>"><?php echo $item['title'] ?></a></li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Filter -->

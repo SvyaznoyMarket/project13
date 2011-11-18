@@ -82,7 +82,7 @@ class Core
     return $table;
   }
 
-  public function createOrder(Order &$order)
+  public function createOrder(Order $order)
   {
     $result = false;
 
