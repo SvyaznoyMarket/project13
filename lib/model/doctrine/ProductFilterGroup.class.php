@@ -26,7 +26,7 @@ class ProductFilterGroup extends BaseProductFilterGroup
     $filter_ids = array();
     foreach ($this->Filter as $filter)
     {
-      if (!empty($filter['coreid']))
+      if (!empty($filter['core_id']))
       {
         $filter_ids['core_id-'.$filter['core_id']] = $filter['id'];
       }
