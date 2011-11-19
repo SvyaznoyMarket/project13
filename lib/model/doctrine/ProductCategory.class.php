@@ -206,10 +206,10 @@ class ProductCategory extends BaseProductCategory
     }
 
     $q = TagGroupTable::getInstance()->createBaseQuery();
-    $q->innerJoin('tagGroup.ProductCategory productCategory WITH productCategory.id = ?', $this->id)
+    $q->innerJoin('tagGroup.ProductCategoryRelation productCategoryRelation WITH productCategoryRelation.product_category_id = ?', $this->id)
       ->innerJoin('tagGroup.Tag tag')
       ->andWhereIn('tag.id', $ids)
-      ->orderBy('tagGroup.position, FIELD(tag.id, '.implode(',', $ids).')')
+      ->orderBy('productCategoryRelation.position, FIELD(tag.id, '.implode(',', $ids).')')
     ;
 
     return  $q->execute();
