@@ -34,6 +34,7 @@ class ProductCategoryTable extends myDoctrineTable
       'is_active'   => 'is_active',
       'media_image' => 'photo',
       'has_line'    => 'has_line',
+      'position'    => 'position',
     );
   }
 
