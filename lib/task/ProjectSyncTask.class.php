@@ -203,10 +203,14 @@ EOF;
         $modified = $record->getLastModified();
         if (isset($modified['core_parent_id']))
         {
-          $parent = $record->getTable()->getByCoreId($record->core_parent_id);
-          if ($parent && !$record->getNode()->isRoot() && ($parent->id != $record->getNode()->getParent()->id))
-          {
-            $record->getNode()->moveAsLastChildOf($parent);
+          $newParent = $record->getTable()->getByCoreId($record->core_parent_id);
+          $oldParent = $record->getNode()->getParent();
+          
+          if (true
+            && $newParent
+            && (!$oldParent || ($oldParent->id != $newParent->id))
+          ) {
+            $record->getNode()->moveAsLastChildOf($newParent);
           }
         }
       }
