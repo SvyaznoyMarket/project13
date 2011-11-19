@@ -122,6 +122,8 @@ class Order extends BaseOrder
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
+    
+    $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->number)) : $this->token;
 
     //$this->type = 1 == $data['type_id'] ? 'order' : 'preorder';
 
@@ -139,6 +141,13 @@ class Order extends BaseOrder
       $user->save();
     }
 
+    //Импорт продуктов
+    $product_ids = array();
+    foreach ($this->ProductRelation as $productRelation)
+    {
+      $product_ids[$productRelation['product_id']] = $productRelation['product_id'];
+    }
+    
     if (isset($data['product']))
     {
       foreach ($data['product'] as $relationData)
@@ -146,7 +155,19 @@ class Order extends BaseOrder
         $productOrder = new OrderProductRelation();
         $productOrder->importFromCore($relationData);
         $this->ProductRelation[] = $productOrder;
+        unset($product_ids[$productOrder['product_id']]);
       }
+    }
+    //Удаляю все, что лишнее
+    if ($this->id && count($product_ids))
+    {
+      $q = Doctrine_Query::create()
+        ->delete('OrderProductRelation')
+        ->where('order_id = ?', $this->id)
+        ->andWhereIn('product_id', array_values($product_ids))
+      ;
+
+      $deleted = $q->execute();
     }
 
   }
