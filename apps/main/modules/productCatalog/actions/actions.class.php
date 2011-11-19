@@ -19,9 +19,17 @@ class productCatalogActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    /*
     $this->productCategoryList = ProductCategoryTable::getInstance()->getList(array(
       'select' => 'productCategory.id, productCategory.name, productCategory.token',
     ));
+    */
+    $this->productCategoryList = ProductCategoryTable::getInstance()->createQuery()
+      ->select('id, name, level')
+      ->orderBy('root_id, lft')
+      ->fetchArray()
+    ;
+
     $this->setVar('infinity', true);    
     
   }
@@ -46,7 +54,10 @@ class productCatalogActions extends myActions
 
     // pager
     $this->productPager = $this->getPager('Product', $q, array(
-      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+      'limit'           => sfConfig::get('app_product_max_items_on_category', 20),
+      'view'            => 'list',
+      'with_properties' => 'expanded' == $request['view'] ? true : false,
+      'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
     $this->setVar('noInfinity', true);    
     
@@ -369,10 +380,7 @@ class productCatalogActions extends myActions
       'category' => $this->productCategory,
     );
 
-    $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-      'view'            => 'list',
-      'with_properties' => 'expanded' == $request['view'] ? true : false,
-    ));
+    $q = ProductTable::getInstance()->getQueryByFilter($filter);
 
     // sorting
     $this->productSorting = $this->getProductSorting();
@@ -380,6 +388,9 @@ class productCatalogActions extends myActions
 
 
     $this->productPager = $this->getPager('Product', $q, array(
+      'view'            => 'list',
+      'with_properties' => 'expanded' == $request['view'] ? true : false,
+      'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
     ));
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
@@ -426,6 +437,9 @@ class productCatalogActions extends myActions
 
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+      'view'            => 'list',
+      'with_properties' => 'expanded' == $request['view'] ? true : false,
+      'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
   }
  /**
@@ -443,9 +457,7 @@ class productCatalogActions extends myActions
       'creator'  => $this->creator,
     );
 
-    $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-      'view'  => 'list',
-    ));
+    $q = ProductTable::getInstance()->getQueryByFilter($filter);
 
     // sorting
     $this->productSorting = $this->getProductSorting();
@@ -453,6 +465,9 @@ class productCatalogActions extends myActions
 
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+      'view'            => 'list',
+      'with_properties' => 'expanded' == $request['view'] ? true : false,
+      'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
   }
  /**
@@ -480,9 +495,7 @@ class productCatalogActions extends myActions
       'category' => $this->productCategory,
     );
 
-    $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-      'view' => 'list',
-    ));
+    $q = ProductTable::getInstance()->getQueryByFilter($filter);
 
     // sorting
     $this->productSorting = $this->getProductSorting();
@@ -491,6 +504,9 @@ class productCatalogActions extends myActions
 
     $this->productPager = $this->getPager('Product', $q, array(
       'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+      'view'            => 'list',
+      'with_properties' => 'expanded' == $request['view'] ? true : false,
+      'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
 

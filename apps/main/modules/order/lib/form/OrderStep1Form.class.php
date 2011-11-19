@@ -206,17 +206,17 @@ class OrderStep1Form extends BaseOrderForm
     $this->validatorSchema['payment_method_id'] = new sfValidatorDoctrineChoice(array('model' => 'PaymentMethod', 'required' => true));
 
     $this->widgetSchema['recipient_last_name'] = new sfWidgetFormInputText();
-	$this->widgetSchema['recipient_last_name']->setDefault($user->last_name);
+    $this->widgetSchema['recipient_last_name']->setDefault($user->last_name);
     $this->widgetSchema['recipient_last_name']->setLabel('Фамилия получателя:');
-    $this->validatorSchema['recipient_last_name'] = new sfValidatorString(array('max_length' => 255, 'required' => true));
+    $this->validatorSchema['recipient_last_name'] = new sfValidatorString(array('max_length' => 255, 'required' => false));
 
     $this->widgetSchema['recipient_first_name'] = new sfWidgetFormInputText();
-	$this->widgetSchema['recipient_first_name']->setDefault($user->first_name);
+    $this->widgetSchema['recipient_first_name']->setDefault($user->first_name);
     $this->widgetSchema['recipient_first_name']->setLabel('Имя получателя:');
     $this->validatorSchema['recipient_first_name'] = new sfValidatorString(array('max_length' => 255, 'required' => true));
 
     $this->widgetSchema['recipient_phonenumbers'] = new sfWidgetFormInputText();
-	$this->widgetSchema['recipient_phonenumbers']->setDefault($user->phonenumber);
+    $this->widgetSchema['recipient_phonenumbers']->setDefault($user->phonenumber);
     $this->widgetSchema['recipient_phonenumbers']->setLabel('Мобильный телефон для связи:');
     $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('max_length' => 255, ));
 
@@ -230,7 +230,7 @@ class OrderStep1Form extends BaseOrderForm
 //    $this->validatorSchema['zip_code'] = new sfValidatorPass();
 
     $this->widgetSchema['extra'] = new sfWidgetFormTextarea();
-	$this->widgetSchema['extra']->setAttribute('cols', null)->setAttribute('style', 'width:100%;');
+    $this->widgetSchema['extra']->setAttribute('cols', null)->setAttribute('style', 'width:100%;');
     $this->widgetSchema['extra']->setLabel('Комментарии:');
     $this->validatorSchema['extra'] = new sfValidatorPass();
 

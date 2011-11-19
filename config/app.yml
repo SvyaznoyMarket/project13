@@ -2,6 +2,7 @@ all:
   welcome:
     cookie_name: enter_code
     secret: Выход!
+    enabled: false
 
   rediska:
     default:
@@ -11,7 +12,7 @@ all:
           persistent: true
 
   doctrine:
-    result_cache:        true  # кешировать результаты запросов
+    result_cache:        false  # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
   product:
@@ -53,26 +54,25 @@ all:
 
   core:
     config:
-      api_url: 'http://core/v1/json'
-      consumer_key: v4Q4UiTaQ6jWPHtJ
-      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
+      api_url: 'http://core.ent3.ru/v1/json'
+      consumer_key: test
+      signature: test
 
   cache_eraser:
     config:
-      file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
+      file: %SF_ROOT_DIR%/erase_barcode.cmd
       prefix: 'CACHETAG::'
-
+  
   payment:
-    default_provider: uniteller
-    provider:
-      uniteller:
-        login: 125
-        password: 'DErlW8GnwZTCDYLD9kj7zKHxpEXpHrSNCRWQXuOOonMYQEdKoKXk8OkDgx7CcRBAoCrM1LAwESnHugUW'
-        pay_url: 'https://wpay.uniteller.ru/pay/'
-        result_url: 'https://wpay.uniteller.ru/results/'
-        shop_id: '35974-134'
-        return_url: '@payment_callback'
-
+   default_provider: uniteller
+   provider:
+     uniteller:
+       login: 125
+       password: 'DErlW8GnwZTCDYLD9kj7zKHxpEXpHrSNCRWQXuOOonMYQEdKoKXk8OkDgx7CcRBAoCrM1LAwESnHugUW'
+       pay_url: 'https://wpay.uniteller.ru/pay/'
+       result_url: 'https://wpay.uniteller.ru/results/'
+       shop_id: '35974-134'
+       return_url: '@payment_callback'
   # TODO: перенести в модель, чтобы не захламлять память
   open_auth:
     provider:
@@ -140,7 +140,7 @@ live:
 
   core:
     config:
-      api_url: 'http://api.enter.ru/v1/json'
+      api_url: 'http://62.231.27.40/v1/json'
       consumer_key: v6Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
@@ -150,6 +150,11 @@ live:
         main:
           host: site-db
           persistent: true
+
+  cache_eraser:
+    config:
+      file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
+      prefix: 'CACHETAG::'
 
 
 alpha:
