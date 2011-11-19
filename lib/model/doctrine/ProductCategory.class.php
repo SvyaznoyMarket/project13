@@ -51,25 +51,15 @@ class ProductCategory extends BaseProductCategory
     $this->photo = !empty($data['media_image']) ? $data['media_image'] : 'default.jpg';
     $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
 
-    if (isset($data['filter_property']))
+    $filterGroup = $this->getFilterGroup();
+    if (empty($filterGroup))
     {
-      $filterGroup = $this->getFilterGroup();
-      if (empty($filterGroup))
-      {
-        $filterGroup = new ProductFilterGroup();
-        $filterGroup->fromArray(array(
-          'name' => 'Фильтр для '.$data['name'],
-        ));
-        //$this->FilterGroup = $filterGroup;
-      }
-
-      $filterGroup->importFromCore($data);
-      $this->FilterGroup = $filterGroup;
-
-//      myDebug::dump($this->FilterGroup, 1);
-
+      $filterGroup = new ProductFilterGroup();
     }
 
+    $filterGroup->importFromCore($data);
+
+    $this->FilterGroup = $filterGroup;
   }
 
   public function countProduct(array $params = array())

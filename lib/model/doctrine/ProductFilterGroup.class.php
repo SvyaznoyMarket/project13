@@ -20,21 +20,40 @@ class ProductFilterGroup extends BaseProductFilterGroup
   public function importFromCore(array $data)
   {
     //parent::importFromCore($data);
-
+      
+    $this->name = 'Фильтр для '.$data['name'];
+      
+    $filter_ids = array();
+    foreach ($this->Filter as $filter)
+    {
+      $filter_ids[$filter['core_id']] = $filter['id'];
+    }
+      
     if (!empty($data['filter_property']))
     {
       //$this->Filter = new Doctrine_Collection(ProductFilterTable::getInstance());
       foreach ($data['filter_property'] as $relationData)
       {
+        unset($filter_ids[$relationData['id']]);
         $productFilter = ProductFilterTable::getInstance()->getByCoreId($relationData['id']);
         if (!$productFilter)
         {
           $productFilter = new ProductFilter();
         }
+        
         $productFilter->importFromCore($relationData);
-
         $this->Filter[] = $productFilter;
       }
+    }
+    
+    //Удаляю все, что лишнее
+    if ($this->id && count($filter_ids))
+    {
+      $q = Doctrine_Query::create()
+        ->delete('ProductFilter')
+        ->whereIn('id', $filter_ids);
+
+      $deleted = $q->execute();
     }
   }
 
