@@ -136,6 +136,7 @@ TABLE {border-collapse:collapse}
 .height170 {height:170px}
 .height250 {height:250px}
 
+#auth-link{display:none}
 
 .rubl {font-family:"Rouble"; font-size: 90%; margin: 0 0px 0 -5px}
 
@@ -1739,4 +1740,4 @@ DT.bCtg__eOrange{
 		zoom: 1;
 		}
 
-/* ----------- /bAbout ------------- */
+/* ----------- /bAbout ------------- */

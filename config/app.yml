@@ -177,4 +177,4 @@ alpha_dev:
     config:
       api_url: 'http://core.ent3.ru/v1/json'
       consumer_key: test
-      signature: test
+      signature: test
