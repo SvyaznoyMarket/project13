@@ -26,7 +26,14 @@ class ProductFilterGroup extends BaseProductFilterGroup
     $filter_ids = array();
     foreach ($this->Filter as $filter)
     {
-      $filter_ids[$filter['core_id']] = $filter['id'];
+      if (!empty($filter['coreid']))
+      {
+        $filter_ids['core_id-'.$filter['core_id']] = $filter['id'];
+      }
+      else
+      {
+        $filter_ids[] = $filter['id'];
+      }
     }
       
     if (!empty($data['filter_property']))
@@ -34,7 +41,7 @@ class ProductFilterGroup extends BaseProductFilterGroup
       //$this->Filter = new Doctrine_Collection(ProductFilterTable::getInstance());
       foreach ($data['filter_property'] as $relationData)
       {
-        unset($filter_ids[$relationData['id']]);
+        unset($filter_ids['core_id-'.$relationData['id']]);
         $productFilter = ProductFilterTable::getInstance()->getByCoreId($relationData['id']);
         if (!$productFilter)
         {
@@ -51,7 +58,7 @@ class ProductFilterGroup extends BaseProductFilterGroup
     {
       $q = Doctrine_Query::create()
         ->delete('ProductFilter')
-        ->whereIn('id', $filter_ids);
+        ->whereIn('id', array_values($filter_ids));
 
       $deleted = $q->execute();
     }
