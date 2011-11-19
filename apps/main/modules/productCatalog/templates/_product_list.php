@@ -19,15 +19,15 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
   <?php include_component('product', 'list_view') ?>
 <?php endif ?>
 
-<?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?>
+<?php if (!isset($noSorting) || !$noSorting): ?>
+  <?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?>
+<?php endif ?>
 
 <?php if (!$empty): ?>
   <div class="line"></div>
 <?php endif ?>
 
-<?php if(!isset($noSorting) || !$noSorting): ?>
   <?php include_component('product', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view, )) ?>
-<?php endif ?>
 
 <?php if (false): ?>
   <div class="line pb10"></div>

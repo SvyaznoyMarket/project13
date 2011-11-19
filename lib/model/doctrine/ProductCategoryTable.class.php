@@ -230,7 +230,7 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q = TagProductRelationTable::getInstance()->createBaseQuery();
     $q->select('tagProductRelation.tag_id')
-      ->innerJoin('tagProductRelation.Product product WITH product.is_instock = ?', 1)
+      ->innerJoin('tagProductRelation.Product product WITH product.view_list = ?', 1)
       ->innerJoin('product.CategoryRelation categoryRelation')
       ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
       ->groupBy('tagProductRelation.tag_id')
