@@ -22,8 +22,12 @@ class DoctrineRepairTreeTask extends sfBaseTask
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
 The [DoctrineRepairTree|INFO] task does things.
-Call it with:
-
+Usage:
+  php symfony doctrine:repair-tree ProductCategory
+  ls -alh product_category.yml
+  проверить размер product_category.yml - должен быть не менее 380K
+  mysql -uroot -p -e "USE enter; SET foreign_key_checks = 0; TRUNCATE product_category; SET foreign_key_checks = 1;"
+  php symfony doctrine:data-load product_category.yml
   [php symfony DoctrineRepairTree|INFO]
 EOF;
   }
