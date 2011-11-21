@@ -10,38 +10,6 @@ class myDoctrinePager extends sfDoctrinePager
     $this->setParameter('query_params', is_array($queryParams) ? $queryParams : array());
   }
 
-  public function init()
-  {
-    $this->resetIterator();
-
-    $countQuery = $this->getCountQuery();
-    $count = $countQuery->count();
-
-    $this->setNbResults($count);
-
-    $query = $this->getQuery();
-    $query
-      ->offset(0)
-      ->limit(0)
-    ;
-
-    if (0 == $this->getPage() || 0 == $this->getMaxPerPage() || 0 == $this->getNbResults())
-    {
-      $this->setLastPage(0);
-    }
-    else
-    {
-      $offset = ($this->getPage() - 1) * $this->getMaxPerPage();
-
-      $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
-
-      $query
-        ->offset($offset)
-        ->limit($this->getMaxPerPage())
-      ;
-    }
-  }
-
   public function getResults($hydrationMode = null)
   {
     //return $this->getQuery()->execute(array(), $hydrationMode);

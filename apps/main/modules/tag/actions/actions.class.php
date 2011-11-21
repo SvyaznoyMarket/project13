@@ -48,15 +48,15 @@ class tagActions extends myActions
 
     $table = ProductTable::getInstance();
 
-    $view = $this->getRequestParameter('view');
-    $q = $table->createBaseQuery();
+    $q = $table->createBaseQuery(array(
+      'view' => 'list',
+    ));
     $table->setQueryForFilter($q, array(
       'tag'  => $this->tag,
       'type' => $this->productType ? array($this->productType->id) : array(),
     ));
 
     $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
-      'view'            => 'list',
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
