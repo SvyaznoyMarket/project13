@@ -1,1 +1,1 @@
-<input id="agree-field" type="checkbox" name="agree" value="yes" /><label for="agree-field">Я ознакомлен и согласен с <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">«Условиями продажи»</a></label>
+<input id="agree-field" type="checkbox" name="agree" value="yes" /><label for="agree-field" style="font-weight: bold; cursor: pointer;">Я ознакомлен и согласен с <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>" target="_blank">«Условиями продажи»</a></label>

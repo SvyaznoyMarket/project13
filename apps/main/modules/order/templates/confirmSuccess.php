@@ -29,7 +29,7 @@
   <div class="pl235">
     <form class="form" action="<?php echo url_for('order_confirm') ?>" method="post">
       <div class="pb10 pl20"><?php include_partial('order/field_agree') ?></div>
-      <div class="pb10">Нажмите "Подтвердить заказ" и Ваш заказ будет принят к исполнению.</div>
+      <!--<div class="pb10">Нажмите "Подтвердить заказ" и Ваш заказ будет принят к исполнению.</div>-->
       <input id="confirm-button" type="submit" class="button bigbutton mDisabled" value="Подтвердить заказ" />
     </form>
   </div>
