@@ -148,6 +148,7 @@ class UserProfile extends BaseUserProfile
 
     $providers = sfConfig::get('app_open_auth_provider');
 
+    // TODO: remove and test
     $data['network_id'] = $providers[$this->type]['core_id'];
     $data['user_id'] = $this->User->core_id;
 

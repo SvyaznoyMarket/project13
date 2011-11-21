@@ -59,5 +59,7 @@ User:
   - user
 UserAddress:
   - user_address
+UserProductRatingTotal:
+  - user_product_rating
 UserProfile:
   - user_network
