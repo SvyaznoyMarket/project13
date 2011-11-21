@@ -22,7 +22,7 @@
       <div class="pb10 pl20"><?php include_partial('order/field_agree') ?></div>
       <div class="pb10">Ваш заказ <?php echo $order->number ?>. Нажмите "Оплатить заказ" и Вы перейдете на страницу оплаты пластиковой картой.</div>
       <?php echo $paymentForm ?>
-      <input type="submit" class="button bigbutton" value="Оплатить заказ" />
+      <input id="pay-button" type="submit" class="button bigbutton mDisabled" value="Оплатить заказ" />
     </form>
   </div>
 <?php else: ?>
@@ -30,7 +30,7 @@
     <form class="form" action="<?php echo url_for('order_confirm') ?>" method="post">
       <div class="pb10 pl20"><?php include_partial('order/field_agree') ?></div>
       <div class="pb10">Нажмите "Подтвердить заказ" и Ваш заказ будет принят к исполнению.</div>
-      <input type="submit" class="button bigbutton" value="Подтвердить заказ" />
+      <input id="confirm-button" type="submit" class="button bigbutton mDisabled" value="Подтвердить заказ" />
     </form>
   </div>
 <?php endif ?>
