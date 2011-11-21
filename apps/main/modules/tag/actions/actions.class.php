@@ -60,6 +60,10 @@ class tagActions extends myActions
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
+
+    $this->setVar('noSorting', true);
+    $this->setVar('noInfinity', true);
+
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
 }
