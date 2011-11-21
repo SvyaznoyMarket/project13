@@ -19,9 +19,17 @@ class productCatalogActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    /*
     $this->productCategoryList = ProductCategoryTable::getInstance()->getList(array(
       'select' => 'productCategory.id, productCategory.name, productCategory.token',
     ));
+    */
+    $this->productCategoryList = ProductCategoryTable::getInstance()->createQuery()
+      ->select('id, name, level')
+      ->orderBy('root_id, lft')
+      ->fetchArray()
+    ;
+
     $this->setVar('infinity', true);    
     
   }

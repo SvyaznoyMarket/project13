@@ -122,9 +122,9 @@ class productCatalogComponents extends myComponents
     foreach ($this->productCategoryList as $productCategory)
     {
       $list[] = array(
-        'name'  => (string)$productCategory,
-        'url'   => url_for('productCatalog_category', $productCategory),
-        'level' => $productCategory->level,
+        'name'  => $productCategory['name'],
+        //'url'   => url_for('productCatalog_category', $productCategory),
+        'level' => $productCategory['level'],
       );
     }
 
