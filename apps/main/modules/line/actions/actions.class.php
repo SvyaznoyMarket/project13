@@ -31,9 +31,7 @@ class lineActions extends myActions
 
     $q = ProductTable::getInstance()->getQueryByLine($this->line, array('with_main' => false, ));
 
-    $this->productPager = $this->getPager('Product', $q, 12, array(
-      
-    ));
+    $this->productPager = $this->getPager('Product', $q, 12, array());
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
 
     $this->view = 'compact';
