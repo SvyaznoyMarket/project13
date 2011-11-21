@@ -45,12 +45,12 @@ class ProductCategory extends BaseProductCategory
 
   public function importFromCore(array $data)
   {
-
     parent::importFromCore($data);
 
     $this->photo = !empty($data['media_image']) ? $data['media_image'] : 'default.jpg';
     $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
 
+    //Импорт фильтров для категории
     $filterGroup = $this->getFilterGroup();
     if (empty($filterGroup))
     {
@@ -60,6 +60,48 @@ class ProductCategory extends BaseProductCategory
     $filterGroup->importFromCore($data);
 
     $this->FilterGroup = $filterGroup;
+    
+    //Импорт тэгов для категории
+    $tag_group_ids = array();
+    foreach ($this->TagGroupRelation as $tagGroupRelation)
+    {
+      if (!empty($tagGroupRelation['core_id']))
+      {
+        $tag_group_ids['core_id-'.$tagGroupRelation['core_id']] = $tagGroupRelation['tag_group_id'];
+      }
+      else
+      {
+        $tag_group_ids[] = $tagGroupRelation['tag_group_id'];
+      }
+    }
+    if (!empty($data['filter_tag_group']))
+    {
+      foreach ($data['filter_tag_group'] as $relationData)
+      {
+        unset($tag_group_ids['core_id-'.$relationData['id']]);
+        $tagGroupProductCategoryRelation = TagGroupProductCategoryRelationTable::getInstance()->getByCoreId($relationData['id']);
+        if (!$tagGroupProductCategoryRelation)
+        {
+          $tagGroupProductCategoryRelation = new TagGroupProductCategoryRelation();
+        }
+        
+        $tagGroupProductCategoryRelation->importFromCore($relationData);
+        $this->TagGroupRelation[] = $tagGroupProductCategoryRelation;
+      }
+    }
+    
+    //Удаляю все, что лишнее
+    if ($this->id && count($tag_group_ids))
+    {
+      $q = Doctrine_Query::create()
+        ->delete('TagGroupProductCategoryRelation ')
+        ->where('product_category_id = ?', $this->id)
+        ->andWhereIn('tag_group_id', array_values($tag_group_ids))
+        ;
+
+        $deleted = $q->execute();
+    }
+    
   }
 
   public function countProduct(array $params = array())
@@ -164,10 +206,10 @@ class ProductCategory extends BaseProductCategory
     }
 
     $q = TagGroupTable::getInstance()->createBaseQuery();
-    $q->innerJoin('tagGroup.ProductCategory productCategory WITH productCategory.id = ?', $this->id)
+    $q->innerJoin('tagGroup.ProductCategoryRelation productCategoryRelation WITH productCategoryRelation.product_category_id = ?', $this->id)
       ->innerJoin('tagGroup.Tag tag')
       ->andWhereIn('tag.id', $ids)
-      ->orderBy('tagGroup.position, FIELD(tag.id, '.implode(',', $ids).')')
+      ->orderBy('productCategoryRelation.position, FIELD(tag.id, '.implode(',', $ids).')')
     ;
 
     return  $q->execute();
