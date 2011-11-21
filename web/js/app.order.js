@@ -158,16 +158,5 @@ $('.order-form').bind({
     $('.order-form').submit()
   })
 
-  $('#agree-field').bind('change', function() {
-    var el = $(this)
-
-    if (el.prop('checked')) {
-      $('#confirm-button, #pay-button').removeClass('mDisabled')
-    }
-    else {
-      $('#confirm-button, #pay-button').addClass('mDisabled')
-    }
-  })
-
 }
 $(document).ready(initOrder);
