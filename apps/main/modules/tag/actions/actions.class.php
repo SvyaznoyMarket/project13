@@ -55,8 +55,7 @@ class tagActions extends myActions
       'type' => $this->productType ? array($this->productType->id) : array(),
     ));
 
-    $this->productPager = $this->getPager('Product', $q, array(
-      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
+    $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
       'view'            => 'list',
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
