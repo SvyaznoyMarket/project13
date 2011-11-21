@@ -53,6 +53,7 @@
                         $classCur1 = "";
                     } elseif ($level1->core_id == $currentDirectory->core_parent_id 
                                && $currentDirectory->level == 2
+                               && isset($tree[$currentDirectory->id]) 
                                && count($tree[$currentDirectory->id]['children']) < 1 
                         ) {
                         $classCur1 = "";                        
@@ -85,6 +86,7 @@
                             $classCur2 = "";
                         } elseif ($level2->core_id == $currentDirectory->core_parent_id
                                     && $currentDirectory->level == 3 
+                                    && isset($tree[$currentDirectory->id]) 
                                     && count($tree[$currentDirectory->id]['children']) < 1                                 
                            ) {
                             $classCur2 = "";
