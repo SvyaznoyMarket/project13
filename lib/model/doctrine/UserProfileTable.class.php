@@ -20,7 +20,11 @@ class UserProfileTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'profile' => 'source_id',
+      'id'         => 'core_id',
+      'profile'    => 'source_id',
+      'network_id' => 'core_network_id',
+
+      'user_id'    => array('rel' => 'User'),
     );
   }
 }

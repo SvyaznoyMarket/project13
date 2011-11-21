@@ -1,0 +1,1 @@
+ALTER TABLE `user_profile`  CHANGE COLUMN `core_id` `core_id` BIGINT(20) NULL DEFAULT NULL COMMENT 'ид записи в Core' AFTER `content`,  ADD COLUMN `core_network_id` BIGINT NULL DEFAULT NULL COMMENT 'ид социальной сети в Core' AFTER `core_id`;

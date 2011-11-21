@@ -33,6 +33,7 @@ UserProfile:
     type:              { type: enum, length: 14, values: [ vkontakte, facebook, twitter, odnoklassniki, gmail, mailru, live_journal, yandex ], notnull: false, default: null, comment: 'Тип профайла' }
     user_id:           { type: integer(20), notnull: true }
     content:           { type: string, notnull: false, default: null, comment: 'Данные пользователя в формате yaml' }
+    core_network_id:   { type: integer(20), notnull: false, default: null, comment: 'ид социальной сети в Core' }
   relations:
     User:              { class: User, foreignAlias: Profile, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 

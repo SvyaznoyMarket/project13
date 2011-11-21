@@ -206,7 +206,7 @@ EOF;
         {
           $newParent = $record->getTable()->getByCoreId($record->core_parent_id);
           $oldParent = $record->getNode()->getParent();
-          
+
           if (true
             && $newParent
             && (!$oldParent || ($oldParent->id != $newParent->id))
