@@ -66,5 +66,11 @@ $(document).ready(function() {
         $('#confirm-button, #pay-button').addClass('mDisabled')
       }
     })
+
+  $('.form').bind('submit', function(e) {
+    if ($(this).find('input.mDisabled').length) {
+      e.preventDefault()
+    }
+  })
 })
 </script>
