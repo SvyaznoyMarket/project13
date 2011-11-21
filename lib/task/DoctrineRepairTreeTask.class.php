@@ -5,37 +5,36 @@ class DoctrineRepairTreeTask extends sfBaseTask
   protected function configure()
   {
     // // add your own arguments here
-    $this->addArguments(array(
+     $this->addArguments(array(
       new sfCommandArgument('model', sfCommandArgument::REQUIRED, 'The model name'),
-    ));
+     ));
 
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'main'),
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'main_dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
-      new sfCommandOption('log', null, sfCommandOption::PARAMETER_NONE, 'Enable logging'),
       // add your own options here
+      new sfCommandOption('check', null, sfCommandOption::PARAMETER_NONE, 'Only check the tree'),
     ));
 
     $this->namespace        = 'doctrine';
     $this->name             = 'repair-tree';
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
-The [DoctrineRepairTree|INFO] task does things.
-Usage:
-  php symfony doctrine:repair-tree ProductCategory
-  ls -alh product_category.yml
-  проверить размер product_category.yml - должен быть не менее 380K
-  mysql -uroot -p -e "USE enter; SET foreign_key_checks = 0; TRUNCATE product_category; SET foreign_key_checks = 1;"
-  php symfony doctrine:data-load product_category.yml
-  [php symfony DoctrineRepairTree|INFO]
+The [doctrine:repair-tree|INFO] task repairs nested set tree.
+Call it with:
+  php symfony doctrine:dump-tree ProductCategory [options]
+
+  options:
+    check - Checks is a tree vaild
+
+  [php symfony doctrine:repair-tree|INFO]
 EOF;
+    $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/repair-tree.log'));
   }
 
   protected function execute($arguments = array(), $options = array())
   {
-    sfConfig::set('sf_logging_enabled', $options['log']);
-    
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
@@ -43,91 +42,59 @@ EOF;
     // add your code here
     $modelName = $arguments['model'];
     $table = Doctrine_Core::getTable($modelName);
-    
-    $getRecordData = function (myDoctrineRecord $record)
-    {
-      $return = array();
 
-      $except = array(
-        'root_id',
-        'lft',
-        'rgt',
-        'level',
-      );
+    $this->logSection('INFO', 'Start '.($options['check'] ? 'checking' : 'repairing').' '.$modelName.'\'s tree');
 
-      foreach ($record->getTable()->getColumns() as $field => $v)
-      {
-        if (in_array($field, $except)) continue;
+    $this->updateChildren($table);
 
-        $return[$field] = $record->get($field);
-      }
+    $this->logSection('INFO', 'Done '.($options['check'] ? 'checking' : 'repairing').' '.$modelName.'\'s tree');
 
-      $return['children'] = array();
-
-      return $return;
-    };
-    
-    function getChildren($parent, $table, $getRecordData)
-    {
-      $data = array();
-      
-      $childList = $table->createQuery()
-        ->where('core_parent_id = ?', $parent['core_id'])
-        ->orderBy('position ASC')
-        ->execute()
-      ;
-      foreach ($childList as $child)
-      {
-        $data["r_$child->id"] = $getRecordData($child);
-        $data["r_$child->id"]['children'] = getChildren($child, $table, $getRecordData);
-      }
-      
-      return count($data) ? $data : null;
-    };
-    
-    // check for necessary columns
-    foreach (array('id', 'core_id', 'core_parent_id', 'position') as $field)
-    {
-      if (!$table->hasColumn($field))
-      {
-        $this->logSection($modelName, "hasn't column {$field}", null, 'ERROR');
-        
-        return false;
-      }
-    }
-    
-    // clear nested set data
-    $table->createQuery()
-      ->update($modelName)
-      ->set(array(
-        'root_id' => null,
-        'level'   => null,
-        'lft'     => null,
-        'rgt'     => null,
-      ))
-      ->execute()
-    ;
- 
-    // get roots by core_parent_id
-    $rootList = $table->createQuery()
-      ->where('core_parent_id IS NULL')
-      ->orderBy('position ASC')
-      ->execute()
-    ;
-
-    $data = array();
-    
-    foreach ($rootList as $root)
-    {
-      //$tree->createRoot($root);
-      $data["r_$root->id"] = $getRecordData($root);
-      $data["r_$root->id"]['children'] = getChildren($root, $table, $getRecordData);
-    }
-    
-    $data = array($modelName => $data);
-    
-    $content = sfYaml::dump($data, 100);
-    file_put_contents(sfInflector::underscore($modelName).'.yml', $content);
   }
 
+  protected function updateChildren($table, $parent = null, $level = 0, $i = 0)
+  {
+    $q = $table->createQuery();
+    if (!empty($parent))
+    {
+      $q->where('core_parent_id = ?', $parent->core_id);
+    }
+    else
+    {
+      $q->where('core_parent_id is NULL');
+    }
+    $q->orderBy('position ASC');
+
+    $list = $q->execute();
+
+    $tree = array(
+      'lft' => 0,
+      'rgt' => 0,
+      'level' => 0,
+    );
+
+    foreach ($list as $item)
+    {
+      if (0 == $level) $i = 0;
+
+      $tree['level'] = $level;
+      $i++;
+      $tree['lft'] = $i;
+      $i = $this->updateChildren($table, $item, $level + 1, $i) + 1;
+      $tree['rgt'] = $i;
+
+      if ($item['level'] != $tree['level'] || $item['lft'] != $tree['lft'] || $item['rgt'] != $tree['rgt'])
+      {
+        $this->logSection('ERROR', 'broken entity #'.$item['id'].' '.$item['name']);
+        if (!$options['check'])
+        {
+          $item->level = $tree['level'];
+          $item->lft = $tree['lft'];
+          $item->rgt = $tree['rgt'];
+          $item->save();
+        }
+      }
+    }
+
+    return $i;
+  }
 }
