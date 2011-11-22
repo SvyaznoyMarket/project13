@@ -36,7 +36,7 @@ if (quickform) {
     $('.order-form').find('[name="order[delivery_type_id]"]').change(function(){
         triggerDelivery( $(this).val() );
     });
-} else {
+} else { // TODO REWRITE !!! 
 $('.order-form').bind({
     'change': function(e) {
       var form = $(this)
@@ -69,16 +69,22 @@ $('.order-form').bind({
           		return
           	$.post(form.data('updateFieldUrl'), {
 				  order: {
+				  	delivery_type_id: form.find('[name="order[delivery_type_id]"]:checked').val(),
 					shop_id: el.val()
-				  },
+				  	},
 				  field: 'delivered_at'
-				}, function(data) {
-					if (false === data.success) {
+				  }, function(result) {
+					if (false === result.success) {
 						d.reject()
 					}
-					//console.info(data)
 					var toupdate = form.find('[name="order[delivered_at]"]')
-					toupdate.find('option').remove()
+					toupdate.empty()
+					$.each(result.data.content, function(v, n) {
+					  toupdate.append('<option value="'+v+'">'+n+'</option>')
+					})
+					toupdate.find(':first').attr('selected', 'selected')
+					toupdate.change()
+					
 					d.resolve()
 				}).error(function() {
               		d.reject()
@@ -140,6 +146,8 @@ $('.order-form').bind({
 
     }
   })
+
+	$('#order_shop_id').trigger('change')
 }
 
   $('.order_user_address').bind('change', function(e) {
