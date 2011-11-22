@@ -111,7 +111,8 @@ class guardActions extends myActions
       $signoutUrl = sfConfig::get('app_guard_signout_url', $request->getReferer());
     }
 
-    $this->redirect('' != $signoutUrl ? $signoutUrl : '@homepage');
+    //$this->redirect('' != $signoutUrl ? $signoutUrl : '@homepage');
+    $this->redirect('@homepage');
   }
 
   /**
@@ -338,7 +339,8 @@ class guardActions extends myActions
         {
           return $this->renderPartial('default/close');
         }
-        return $this->redirect($this->getSigninUrl());
+        //return $this->redirect($this->getSigninUrl());
+        return $this->redirect('user');
       }
     }
   }
