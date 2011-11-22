@@ -33,7 +33,7 @@ class OrderStep1Form extends BaseOrderForm
       }
       return false;
   }
-  
+
   protected function isOrderHaveEnougthInStock($shop_id)
   {
       $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
@@ -46,9 +46,13 @@ class OrderStep1Form extends BaseOrderForm
       }
       return true;
   }
-  
-  protected function getDeliveryDateChoises($start = 0, $stop = 7)
+
+  protected function getDeliveryDateChoises($start = 0, $length = 7)
   {
+    if ($start == 0 && date('H') >= 20) {
+        $start = 1;
+    }
+    $stop = $start + $length;
     $choices = array();
     for ($i = $start; $i <= $stop; $i++)
     {
@@ -76,7 +80,7 @@ class OrderStep1Form extends BaseOrderForm
     }
     return $choices;
   }
-    
+
   public function configure()
   {
     parent::configure();
@@ -149,7 +153,7 @@ class OrderStep1Form extends BaseOrderForm
       $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
     }*/
     $defaultDelivery = DeliveryTypeTable::getInstance()->findOneByCoreId(1);
-    
+
     if ($this->isOrderContainBigProduct()) {
         $q = DeliveryTypeTable::getInstance()->createBaseQuery();
         $q->addWhere('token != ?', 'self');
@@ -314,7 +318,7 @@ class OrderStep1Form extends BaseOrderForm
         $this->validatorSchema['delivery_type_id']->setOption('required', false);
       }
     }*/
-      
+
     // проверяет типа доставки
     if (!empty($taintedValues['delivery_type_id']))
     {
@@ -331,7 +335,7 @@ class OrderStep1Form extends BaseOrderForm
         if (!empty($taintedValues['shop_id'])) {
             if (!$this->isOrderHaveEnougthInStock($taintedValues['shop_id'])) {
                 $this->validatorSchema['delivered_at']->setOption('required', true);
-                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1,4));
+                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1,3));
             } else {
                 $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(0,3));
             }
