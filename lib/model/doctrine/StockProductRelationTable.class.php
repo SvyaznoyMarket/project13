@@ -30,7 +30,16 @@ class StockProductRelationTable extends myDoctrineTable
     );
   }
   
-  public function isInStock($product_id, $shop_id = null, $store_id = null, array $params = array())
+  /**
+   *
+   * @param int $product_id
+   * @param int|null $shop_id
+   * @param int|null $store_id
+   * @param int $quantity кол-во
+   * @param array $params
+   * @return bool 
+   */
+  public function isInStock($product_id, $shop_id = null, $store_id = null, $quantity = 1, array $params = array())
   {
     $this->applyDefaultParameters($params);
 
@@ -44,7 +53,7 @@ class StockProductRelationTable extends myDoctrineTable
     }
     $data = $q->fetchArray();
     foreach ($data as $row) {
-        if ($row['quantity'] > 0) {
+        if ($row['quantity'] >= $quantity) {
             return true;
         }
     }

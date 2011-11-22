@@ -36,12 +36,11 @@ class OrderStep1Form extends BaseOrderForm
   
   protected function isOrderHaveEnougthInStock($shop_id)
   {
-      //$cart = sfContext::getInstance()->getUser()->getCart()->getProductServiceList();
       $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
       $stockRel = StockProductRelationTable::getInstance();
       foreach ($cart as $product_id => $product)
       {
-          if (!$stockRel->isInStock($product_id, $shop_id)) {
+          if (!$stockRel->isInStock($product_id, $shop_id, null, $product['cart']['quantity'])) {
               return false;
           }
       }
