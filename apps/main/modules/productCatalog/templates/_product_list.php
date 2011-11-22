@@ -10,7 +10,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 	 data-page="<?php  echo $page; ?>"
 	 data-mode="<?php  echo $view; ?>"
 	 data-lastpage="<?php echo $productPager->getLastPage(); ?>"
-	 class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"></div>				
+	 class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"></div>
 <?php endif ?>
 
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
@@ -19,11 +19,15 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
   <?php include_component('product', 'list_view') ?>
 <?php endif ?>
 
+<?php if (!isset($noSorting) || !$noSorting): ?>
+  <?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?>
+<?php endif ?>
+
 <?php if (!$empty): ?>
   <div class="line"></div>
 <?php endif ?>
 
-<?php include_component('product', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view, )) ?>
+  <?php include_component('product', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view, )) ?>
 
 <?php if (false): ?>
   <div class="line pb10"></div>

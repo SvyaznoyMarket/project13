@@ -1,9 +1,7 @@
-<h1>Каталог товаров</h1>
+<?php slot('title', 'Каталог товаров') ?>
 
-<div class="block">
+<?php slot('navigation') ?>
   <?php include_component('productCatalog', 'navigation') ?>
-</div>
+<?php end_slot() ?>
 
-<div class="block">
-  <?php include_component('productCatalog', 'category_list', array('productCategoryList' => $productCategoryList)) ?>
-</div>
+<?php include_component('productCatalog', 'category_list', array('productCategoryList' => $productCategoryList)) ?>

@@ -11,4 +11,5 @@
   <?php endforeach ?>
 </ul>
 <?php endif ?>
+
 <a href="<?php echo url_for('homepage') ?>">Enter.ru</a> &gt; <strong>Корзина</strong>

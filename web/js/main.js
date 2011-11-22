@@ -71,7 +71,12 @@ $(document).ready(function(){
 			"</div>"
 		tmpnode.after( loader )
 		//tmpnode.after('<div id="ajaxgoods" style="width:100%; text-align:right;"><span style="margin-bottom: 6px;">Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
-		$.get( lsURL, function(data){
+		var sort = $("div#sorting")
+		var data = {}
+		if (sort.length) {
+			data = { 'sort' : sort.data('sort') }
+		}
+		$.get( lsURL, data, function(data){
 			if ( data != "" && !data.data ) { // JSON === error
 				ableToLoad = true
 				if( compact )
@@ -110,7 +115,7 @@ $(document).ready(function(){
 				var next_a = next.find('a')
 								.html('<span>123</span>')
 
-								.addClass('borderedR')								
+								.addClass('borderedR')
 				next_a.attr('href', next_a.attr('href').replace(/\?page=\d/,'') )
 
 				$('div.pageslist li').remove()
@@ -263,7 +268,7 @@ $(document).ready(function(){
 			}
 		})
 
-*/		
+*/
 
 /*		if ( from && to ) {
 			from.val( sliderRange.slider( "values", 0 ) )
@@ -352,16 +357,16 @@ $(document).ready(function(){
     })
 	/* left menu */
 	/*
-	$('.bCtg__eL2').toggle( 
+	$('.bCtg__eL2').toggle(
 		function(){
 			$('.bCtg__eL3').hide()
 			$('.bCtg__eL2').show()
 		}, function(){
 			function recShow( jnode ) {
 				if( jnode.next() && jnode.next().hasClass('bCtg__eL3') ) {
-					jnode.next().show()				
+					jnode.next().show()
 					recShow( jnode.next() )
-				}	
+				}
 			}
 			recShow( $(this) )
 		}

@@ -5,6 +5,10 @@
   color: #cc0000;
 }
 
+LABEL.checked a {
+  color: #FFA901;
+}
+
 .component-container.debug {
   display: inline-block;
 }

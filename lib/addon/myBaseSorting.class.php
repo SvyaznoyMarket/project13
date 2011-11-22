@@ -31,17 +31,17 @@ class myBaseSorting
 
   public function setQuery(myDoctrineQuery $q)
   {
-    call_user_func(array($this, 'setQueryFor'.ucfirst($this->active)), $q);
+    call_user_func(array($this, 'setQueryFor'.ucfirst($this->list[$this->active]['name'])), $q);
   }
 
   public function setActive($name, $direction = 'asc')
   {
-    foreach ($this->list as $item)
+    foreach ($this->list as $i => $item)
     {
-      if ($name == $item['name'])
+      if ($name == $item['name'] && $direction == $item['direction'])
       {
-        $this->active = $name;
-        $this->list[$name]['direction'] = 'asc' == $direction ? 'asc' : 'desc';
+        $this->active = $i;
+        //$this->list[$name]['direction'] = 'asc' == $direction ? 'asc' : 'desc';
         break;
       }
     }

@@ -53,6 +53,7 @@ class ProductTable extends myDoctrineTable
     return array(
       'view'           => false, // list, show
       'group_property' => false, // группировать свойства товара по группам
+      'with_line'      => false,
     );
   }
 
@@ -75,6 +76,11 @@ class ProductTable extends myDoctrineTable
       //$q->addWhere('product.is_instock = ?', true);
     }
 
+    if ($params['with_line'])
+    {
+      $q->innerJoin('product.Line line');
+    }
+
     $q->orderBy('product.is_instock DESC, product.score DESC');
 
     return $q;
@@ -85,7 +91,6 @@ class ProductTable extends myDoctrineTable
     $this->applyDefaultParameters($params, array(
       'with_properties' => false,
       'property_view'   => false,
-      'with_line'       => false,
     ));
 
     $q = $this->createBaseQuery($params);
@@ -97,11 +102,6 @@ class ProductTable extends myDoctrineTable
     if ($params['with_properties'])
     {
       $q->leftJoin('product.PropertyRelation productPropertyRelation');
-    }
-
-    if ($params['with_line'])
-    {
-      $q->innerJoin('product.Line line');
     }
 
     $this->setQueryParameters($q);
@@ -510,6 +510,10 @@ class ProductTable extends myDoctrineTable
 
   public function countByCategory(ProductCategory $category, array $params = array())
   {
+    $this->applyDefaultParameters($params, array(
+      'view' => 'list',
+    ));
+
     $q = $this->createBaseQuery($params);
 
     if ($category->has_line)

@@ -18,7 +18,7 @@ class OrderStep2Form extends BaseOrderForm
 
     $this->widgetSchema['recipient_last_name'] = new sfWidgetFormInputText();
     $this->widgetSchema['recipient_last_name']->setLabel('Фамилия');
-    $this->validatorSchema['recipient_last_name'] = new sfValidatorString(array('max_length' => 255, 'required' => true));
+    $this->validatorSchema['recipient_last_name'] = new sfValidatorString(array('max_length' => 255, 'required' => false));
 
     $this->widgetSchema['recipient_first_name'] = new sfWidgetFormInputText();
     $this->widgetSchema['recipient_first_name']->setLabel('Имя');

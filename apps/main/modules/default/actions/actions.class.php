@@ -25,6 +25,11 @@ class defaultActions extends myActions
   */
   public function executeWelcome(sfWebRequest $request)
   {
+    if (!sfConfig::get('app_welcome_enabled', false))
+    {
+      $this->redirect('@homepage', 301);
+    }
+
     $this->setLayout('welcome');
 
     $cookieName = sfConfig::get('app_welcome_cookie_name');

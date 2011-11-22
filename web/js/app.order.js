@@ -1,9 +1,11 @@
-$(document).ready(function() {
+var initOrder = function(quickform) {
+
+quickform = quickform || false;
 
 function triggerDelivery( i, init ) {
     init = init || false;
 	if ( i == 3 ) {
-		$('.shop_block').show() 
+		$('.shop_block').show()
 		$('.delivery_block').hide()
 		$('.deliverytext').html('Представьтесь:')
         $('#delivered_at_block label').html('Выберите дату:')
@@ -14,8 +16,8 @@ function triggerDelivery( i, init ) {
             ds.val('').change();
         }
 	} else {
-		$('.shop_block').hide() 
-		$('.delivery_block').show() 
+		$('.shop_block').hide()
+		$('.delivery_block').show()
 		$('.deliverytext').html('Кому и куда доставить:')
         $('#delivered_at_block label').html('Выберите дату доставки:')
         var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(1)).prepend('<option value=""></option>');
@@ -25,12 +27,17 @@ function triggerDelivery( i, init ) {
             ds.val('').change();
         }
 	}
-	
+
 }
 var checker = $('.order-form').find('[name="order[delivery_type_id]"]:checked')
 var deliveryAtOptions = $('#delivered_at_block select option').clone();
 triggerDelivery( checker.val(), true )
 
+if (quickform) {
+    $('.order-form').find('[name="order[delivery_type_id]"]').change(function(){
+        triggerDelivery( $(this).val() );
+    });
+} else {
 $('.order-form').bind({
     'change': function(e) {
 
@@ -54,7 +61,7 @@ $('.order-form').bind({
         )
       }
       */
-     
+
       function checkDeliveryType() {
         var d = $.Deferred();
 
@@ -71,14 +78,14 @@ $('.order-form').bind({
             }, function(result) {
               if (true === result.success) {
                 var select = $('[name="order[delivery_period_id]"]')
-                
+
                 select.empty()
                 $.each(result.data.content, function(v, n) {
                   select.append('<option value="'+v+'">'+n+'</option>')
                 })
                 select.find(':first').attr('selected', 'selected')
                 select.change()
-                
+
                 d.resolve()
               }
               else {
@@ -116,6 +123,7 @@ $('.order-form').bind({
 
     }
   })
+}
 
   $('.order_user_address').bind('change', function(e) {
     var el = $(this)
@@ -150,4 +158,5 @@ $('.order-form').bind({
     $('.order-form').submit()
   })
 
-})
+}
+$(document).ready(initOrder);

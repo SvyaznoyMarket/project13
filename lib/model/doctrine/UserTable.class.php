@@ -40,4 +40,9 @@ class UserTable extends GuardUserTable
       'geo_id'           => array('name' => 'region_id', 'rel' => 'Region'),
     );
   }
+
+  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  {
+    return array();
+  }
 }

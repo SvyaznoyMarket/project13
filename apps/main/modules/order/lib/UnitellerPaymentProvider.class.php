@@ -15,6 +15,11 @@ class UnitellerPaymentProvider
     return null == $name ? $this->configHolder->getAll() : $this->configHolder->get($name);
   }
 
+  /**
+   *
+   * @param Order $order
+   * @return UnitellerPaymentForm 
+   */
   public function getForm(Order $order)
   {
     sfContext::getInstance()->getConfiguration()->loadHelpers('Url');

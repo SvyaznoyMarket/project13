@@ -33,6 +33,7 @@ UserProfile:
     type:              { type: enum, length: 14, values: [ vkontakte, facebook, twitter, odnoklassniki, gmail, mailru, live_journal, yandex ], notnull: false, default: null, comment: 'Тип профайла' }
     user_id:           { type: integer(20), notnull: true }
     content:           { type: string, notnull: false, default: null, comment: 'Данные пользователя в формате yaml' }
+    core_network_id:   { type: integer(20), notnull: false, default: null, comment: 'ид социальной сети в Core' }
   relations:
     User:              { class: User, foreignAlias: Profile, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
@@ -112,12 +113,14 @@ UserProductRatingTotal:
     comment: 'Общие пользовательские оценки товара'
   actAs:
     Timestampable: ~
+    Corable:       ~
   columns:
-    user_id:           { type: integer(20), primary: true, notnull: true }
-    product_id:        { type: integer(20), primary: true, notnull: true }
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    user_id:           { type: integer(20), notnull: false, default: null }
+    product_id:        { type: integer(20), notnull: true }
     value:             { type: 'decimal(18,14)', notnull: true, default: 0, comment: 'Рейтинг товара' }
   relations:
-    User:              { class: User, foreignAlias: ProductRating, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    User:              { class: User, foreignAlias: ProductRating, local: user_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Product:           { class: Product, foreignAlias: UserRating, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
 UserAddress:

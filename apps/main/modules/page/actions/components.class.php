@@ -44,7 +44,11 @@ class pageComponents extends myComponents
         'name'  => 'О нас',
         'links' => array(
           array('token' => 'about_company'),
-          array('token'=>'callback','url' => 'callback', 'name' => 'Обратная связь'),
+          array('token' => 'as_it_was'),
+          array('token' => 'we'),
+          array('token' => 'mission'),
+          array('token' => 'press'),
+          array('token' => 'callback', 'url' => 'callback', 'name' => 'Обратная связь'),
         ),
       ),
       'buying' => array(
@@ -67,7 +71,7 @@ class pageComponents extends myComponents
         else{
             $link['name'] = $page->name.(isset($link['add_to_name']) ? $link['add_to_name'] : '');
             $link['url'] = url_for('default_show', array('page' => $page->token));
-        } 
+        }
       } if (isset($link)) unset($link);
     } if (isset($item)) unset($item);
 
@@ -94,25 +98,25 @@ class pageComponents extends myComponents
 
     $this->setVar('list', $list, false);
   }
-  
+
   public function executeLink_rel_canonical(){
-    $request = sfContext::getInstance()->getRequest(); 
+    $request = sfContext::getInstance()->getRequest();
     $page = $request['page'];
     #var_dump( $page );
     #echo intVal($page) .'=='. $page;
     if ($page && strval(intVal($page)) == $page){
-        $this->setVar('show_link', false);              
+        $this->setVar('show_link', false);
     } else {
-        $this->setVar('show_link', true);   
+        $this->setVar('show_link', true);
         $info = $request->getPathInfoArray();
         #print_r($info);
         $ar = explode('?',$info['REQUEST_URI']);
         $path = str_replace(array('_filter', '_tag'), '', $ar[0]);
         if ($path == "/") {
             $path = '';
-        } 
-        
-        $this->setVar('href', 'http://' . $info['SERVER_NAME'] . $path);           
+        }
+
+        $this->setVar('href', 'http://' . $info['SERVER_NAME'] . $path);
     }
   }
 

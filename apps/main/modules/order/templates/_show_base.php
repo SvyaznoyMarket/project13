@@ -1,5 +1,5 @@
     <!-- Basket -->
-        <div class="fl width215 mr20"><strong class="font16">Давайте проверим Ваш заказ:</strong></div>
+        <div class="fl width215 mr20"><strong class="font16">Давайте проверим ваш заказ:</strong></div>
 
         <?php include_component('cart', 'show', array('view' => 'order', )) ?>
 
