@@ -18,16 +18,19 @@ class serviceActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     if (!isset($request['serviceCategory']) || !$request['serviceCategory']){
+        //главная страница f1
         $serviceCategory = ServiceCategoryTable::getInstance()->getQueryObject()->where('core_parent_id IS NULL')->fetchOne();
         $list = ServiceCategoryTable::getInstance()
                         ->getQueryObject()
                         ->where('core_parent_id=?',$serviceCategory['core_id'])->fetchArray();
     } else {
+        //страница категории
         $serviceCategory = $this->getRoute()->getObject();
         #echo get_class($serviceCategory);
         $list = ServiceCategoryTable::getInstance()
-                        ->getQueryObject()
-                        ->orderBy('lft')->fetchArray();
+                        ->createQuery('sc')
+                        ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
+                        ->orderBy('sc.lft')->fetchArray();
         //если первый уровень - выбираем перую подкатегорию и переходим на неё
         if ($serviceCategory['level'] == 1){
             $getNext = false;
@@ -68,7 +71,6 @@ class serviceActions extends myActions
     $this->getResponse()->setTitle('F1 - '.$serviceCategory['name'].' – Enter.ru');
 
     
-    $this->serviceCategory = $serviceCategory;
     $this->setVar('serviceCategory', $serviceCategory, true);
     $this->setVar('list', $list, true);
     if (isset($listInner)) $this->setVar('listInner', $listInner, true);
@@ -83,6 +85,8 @@ class serviceActions extends myActions
   public function executeShow(sfWebRequest $request)
   {
     $this->service = $this->getRoute()->getObject();
+    $this->getResponse()->setTitle('F1 - '.$this->service->name.' – Enter.ru');
+    
   }
 
  /**

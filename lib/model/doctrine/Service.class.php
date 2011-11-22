@@ -50,4 +50,19 @@ class Service extends BaseService
   {
     return number_format($this->price, 0, ',', ' ');
   }  
+  
+  public function getCatalogParent(){
+    $result = ServiceCategoryTable::getInstance()
+            ->createQuery('sc')
+            ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
+            ->where('rel.service_id = ? AND sc.level = ?', array($this->id, 2) );
+    $result =  $result->fetchArray();
+
+    #print_r( $result );
+    if (isset($result[0])) {
+        return $result[0];
+    } else {
+        return false;            
+    }      
+  }
 }

@@ -21,7 +21,11 @@
                     <?php 
                     #print_r($currentServiceList);
                     foreach($currentServiceList as $service){ ?>
-                        <div class="font16 pb8"><?php echo $service['name'] ?></div>  
+                        <div class="font16 pb8">
+                            <a href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>" >
+                                <?php echo $service['name'] ?>
+                            </a>    
+                        </div>  
                         <?php if (isset($service['description'])){ ?><div class="pb5"><?php echo $service['description'] ?> </div><?php } ?>
                         <?php if (isset($service['Price']) && isset($service['Price'][0]) && isset($service['Price'][0]['price'])){ ?>
                             <div class="font16 pb10">

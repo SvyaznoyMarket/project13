@@ -1,7 +1,7 @@
 <?php
 slot('title','Сервис F1');
 slot('navigation');
-  include_component('service', 'navigation');
+  include_component('service', 'navigation', array('serviceCategory' => $serviceCategory));
 end_slot();
 ?>
 
