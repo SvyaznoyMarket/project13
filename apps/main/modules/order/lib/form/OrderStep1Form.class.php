@@ -140,7 +140,7 @@ class OrderStep1Form extends BaseOrderForm
                 //'description' => $deliveryObj['description'],
                 'description' => 'Доставка в течение '.format_number_choice('[0] дней|[1] 1 дня|{n: n % 10 > 1 && n % 10 < 5 && ( n < 11 || n > 14 ) && ( n % 100 < 11 || n % 100 > 14 ) } %1% дней|[5,+Inf] %1% дней ', array('%1%' => $deliveryPeriod), $deliveryPeriod). ', стоимостью '.$deliveryType['price'].' руб',
                 'date_diff' => $deliveryPeriod,
-                'periods' => $deliveryType['interval'],
+                'periods' => empty($deliveryType['interval']) ? array() : $deliveryType['interval'],
             );
         }
         $this->_deliveryTypes = $deliveryTypes;
