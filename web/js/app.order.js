@@ -3,31 +3,31 @@ var initOrder = function(quickform) {
 quickform = quickform || false;
 
 function triggerDelivery( i, init ) {
-    init = init || false;
+    //init = init || false;
 	if ( i == 3 ) {
 		$('.shop_block').show()
 		$('.delivery_block').hide()
 		$('.deliverytext').html('Представьтесь:')
         $('#delivered_at_block label').html('Выберите дату:')
-        var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(0,4)).prepend('<option value=""></option>');
+        /*var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(0,4)).prepend('<option value=""></option>');
         if (init) {
             ds.change();
         } else {
             ds.val('').change();
-        }
+        }*/
 	} else {
 		$('.shop_block').hide()
 		$('.delivery_block').show()
 		$('.deliverytext').html('Кому и куда доставить:')
         $('#delivered_at_block label').html('Выберите дату доставки:')
-        var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(1)).prepend('<option value=""></option>');
+        /*var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(1)).prepend('<option value=""></option>');
         if (init) {
             ds.change();
         } else {
             ds.val('').change();
-        }
+        }*/
 	}
-
+	$('#order_shop_id').trigger('change')
 }
 var checker = $('.order-form').find('[name="order[delivery_type_id]"]:checked')
 var deliveryAtOptions = $('#delivered_at_block select option').clone();
