@@ -19,7 +19,7 @@ class lineActions extends myActions
   {
     $this->forward('default', 'module');
   }
-  
+
  /**
   * Executes Card action
   *
@@ -28,14 +28,12 @@ class lineActions extends myActions
   public function executeCard(sfWebRequest $request)
   {
     $this->line = $this->getRoute()->getObject();
-    
+
     $q = ProductTable::getInstance()->getQueryByLine($this->line, array('with_main' => false, ));
-    
-    $this->productPager = $this->getPager('Product', $q, array(
-      'limit' => 12,
-    ));
+
+    $this->productPager = $this->getPager('Product', $q, 12, array());
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
-    
+
     $this->view = 'compact';
   }
 }

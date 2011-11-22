@@ -12,6 +12,20 @@
  */
 class UserProfile extends BaseUserProfile
 {
+  public function importFromCore(array $data)
+  {
+    parent::importFromCore($data);
+
+    foreach (sfConfig::get('app_open_auth_provider') as $k => $v)
+    {
+      if ($v['core_id'] == $this->core_network_id)
+      {
+        $this->type = $k;
+        break;
+      }
+    }
+  }
+
   public function __toString()
   {
     $content = sfYaml::load($this->content);
@@ -134,6 +148,7 @@ class UserProfile extends BaseUserProfile
 
     $providers = sfConfig::get('app_open_auth_provider');
 
+    // TODO: remove and test
     $data['network_id'] = $providers[$this->type]['core_id'];
     $data['user_id'] = $this->User->core_id;
 

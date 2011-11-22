@@ -48,19 +48,22 @@ class tagActions extends myActions
 
     $table = ProductTable::getInstance();
 
-    $view = $this->getRequestParameter('view');
-    $q = $table->createBaseQuery();
+    $q = $table->createBaseQuery(array(
+      'view' => 'list',
+    ));
     $table->setQueryForFilter($q, array(
       'tag'  => $this->tag,
       'type' => $this->productType ? array($this->productType->id) : array(),
     ));
 
-    $this->productPager = $this->getPager('Product', $q, array(
-      'limit' => sfConfig::get('app_product_max_items_on_category', 20),
-      'view'            => 'list',
+    $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
+
+    $this->setVar('noSorting', true);
+    $this->setVar('noInfinity', true);
+
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
 }

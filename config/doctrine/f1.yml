@@ -31,8 +31,6 @@ ServiceCategory:
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string }
     is_active:         { type: boolean, notnull: true, default: false }
-  relations:
-    ProductType:       { class: ProductType, foreignAlias: ServiceCategory, refClass: ServiceCategoryProductTypeRelation, local: category_id, foreign: product_type_id, type: many, foreignType: many }
 
 ServicePrice:
   options:

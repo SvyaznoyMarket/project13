@@ -7,13 +7,26 @@
  */
 class UserProductRatingTotalTable extends myDoctrineTable
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return object UserProductRatingTotalTable
-     */
-    public static function getInstance()
-    {
-        return Doctrine_Core::getTable('UserProductRatingTotal');
-    }
+
+  /**
+   * Returns an instance of this class.
+   *
+   * @return object UserProductRatingTotalTable
+   */
+  public static function getInstance()
+  {
+    return Doctrine_Core::getTable('UserProductRatingTotal');
+  }
+
+  public function getCoreMapping()
+  {
+    return array(
+      'id'         => 'core_id',
+      'value'      => 'value',
+
+      'user_id'    => array('rel' => 'User'),
+      'product_id' => array('rel' => 'Product'),
+    );
+  }
+
 }

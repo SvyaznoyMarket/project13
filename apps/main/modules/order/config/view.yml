@@ -24,3 +24,7 @@ all:
 index:
   layout: layout
 
+
+confirmSuccess:
+  javascripts:
+    - jquery.timers.js

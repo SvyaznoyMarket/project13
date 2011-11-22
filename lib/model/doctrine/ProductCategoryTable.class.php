@@ -34,6 +34,7 @@ class ProductCategoryTable extends myDoctrineTable
       'is_active'   => 'is_active',
       'media_image' => 'photo',
       'has_line'    => 'has_line',
+      'position'    => 'position',
     );
   }
 
@@ -45,7 +46,8 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q->addWhere('productCategory.is_active = ?', 1);
 
-    $q->orderBy('productCategory.root_id, productCategory.has_line DESC, productCategory.core_lft');
+    //$q->orderBy('productCategory.root_id, productCategory.has_line DESC, productCategory.core_lft');
+    $q->orderBy('productCategory.root_id, productCategory.lft');
 
     return $q;
   }
