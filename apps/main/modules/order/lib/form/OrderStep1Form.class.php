@@ -36,7 +36,7 @@ class OrderStep1Form extends BaseOrderForm
       }
       return false;
   }
-  
+
   protected function isOrderHaveEnougthInStock($shop_id)
   {
       $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
@@ -49,7 +49,7 @@ class OrderStep1Form extends BaseOrderForm
       }
       return true;
   }
-  
+
   protected function getDeliveryDateChoises($start = 0, $length = 7)
   {
     if ($start == 0 && date('H') >= 20) {
@@ -363,7 +363,7 @@ class OrderStep1Form extends BaseOrderForm
         $this->validatorSchema['delivery_type_id']->setOption('required', false);
       }
     }*/
-      
+
     // проверяет типа доставки
     if (!empty($taintedValues['delivery_type_id']))
     {

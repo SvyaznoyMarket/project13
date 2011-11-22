@@ -35,20 +35,43 @@
 })();
 
 $(document).ready(function(){
-/*
+	/* mobile fix for Lbox position='fixed' */
 	var userag    = navigator.userAgent.toLowerCase()
 	var isAndroid = userag.indexOf("android") > -1 
-	var isPad     = userag.indexOf('ipad') > -1
-	if( isAndroid ) {
-		alert('isAndroid')
-		//$('head').append('<meta name="viewport" content="width=device-width"/>')
-	}
-	if( isAndroid || isPad ) {
-		window.onscroll = function() {		
-			$('.lightbox').css('position','absolute')
-			$('.lightbox').css('top', window.pageYOffset + $(window).height() -41)
+	var isOSX4    = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 ) && userag.indexOf('os 5') === -1
+	
+	if( isAndroid || isOSX4 ) {
+		var isOpera = userag.indexOf("opera") > -1
+		if( isOpera ) {
+			$('.lightbox').hide()
 		}
-	}*/
+		$('.lightbox').css('position','absolute')
+		var innerHeightM = (isOSX4) ? window.innerHeight : document.documentElement.clientHeight
+		var innerWidthM  = (isOSX4) ? window.innerWidth  : document.documentElement.clientWidth
+		if( isOSX4 )
+		$('.lightbox').css('top', window.pageYOffset + innerHeightM -41)
+		if ( Math.abs(window.orientation) === 90 ) {
+			var inittopv = innerHeightM - 41 
+			var inittoph = innerWidthM  - 41 
+		} else {
+			var inittoph = innerHeightM - 41 
+			var inittopv = innerWidthM  - 41 
+		}
+
+		window.addEventListener("orientationchange", setPosLbox, false)
+		window.addEventListener("scroll", setPosLbox, false)
+		window.onscroll = setPosLbox
+
+		function setPosLbox() {
+			if( !window.pageYOffset ){
+				$('.lightbox').css('top', ( Math.abs(window.orientation) === 90 ) ? inittopv : inittoph )
+			} else {
+				innerHeightM = (isOSX4) ? window.innerHeight : document.documentElement.clientHeight
+				$('.lightbox').css('top', window.pageYOffset + innerHeightM -41)
+			}
+		}
+
+	} // isAndroid || isOSX4
 
 	/* Rotator */
 	if($('#rotator').length) {
