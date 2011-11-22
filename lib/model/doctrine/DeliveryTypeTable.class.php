@@ -22,14 +22,16 @@ class DeliveryTypeTable extends myDoctrineTable
     return array(
       'id'          => 'core_id',
       'name'        => 'name',
+      'description' => 'description',
+      'token'       => 'token',
     );
   }
 
-  public function createBaseQuery(array $params = array())
-  {
-    $q = parent::createBaseQuery($params);
-    $q->addWhere('deliveryType.is_active = ?', 1);
-
-    return $q;
-  }
+//  public function createBaseQuery(array $params = array())
+//  {
+//    $q = parent::createBaseQuery($params);
+//    $q->addWhere('deliveryType.is_active = ?', 1);
+//
+//    return $q;
+//  }
 }
