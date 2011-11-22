@@ -204,6 +204,9 @@ class orderActions extends myActions
       'delivery_period_id'  => function($form) {
         return myToolkit::arrayDeepMerge(array('' => ''), $form['delivery_period_id']->getWidget()->getChoices());
       },
+      'delivered_at'  => function($form) {
+        return myToolkit::arrayDeepMerge(array('' => ''), $form['delivered_at']->getWidget()->getChoices());
+      },
     );
 
     $field = $request['field'];
