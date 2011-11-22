@@ -78,7 +78,7 @@ class cartActions extends myActions
     }
 
     //если помимо товаров надо добавить в карзину сервисы
-    $services = $request['services'];
+    $services = $request->getPostParameter('services');
     if ($services)
     {
       $servicesAr = json_decode($services);
