@@ -29,6 +29,27 @@ class StockProductRelationTable extends myDoctrineTable
       'shop_id'    => array('rel' => 'Shop'),
     );
   }
+  
+  public function isInStock($product_id, $shop_id = null, $store_id = null, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+    $q->andWhere('stockProductRelation.product_id = ?', (int)$product_id);
+    if ($shop_id !== null) {
+        $q->andWhere('stockProductRelation.shop_id = ?', (int)$shop_id);
+    }
+    if ($store_id !== null) {
+        $q->andWhere('stockProductRelation.store_id = ?', (int)$store_id);
+    }
+    $data = $q->fetchArray();
+    foreach ($data as $row) {
+        if ($row['quantity'] > 0) {
+            return true;
+        }
+    }
+    return false;
+  }
 
   public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
   {
