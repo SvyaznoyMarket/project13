@@ -316,12 +316,6 @@ class OrderStep1Form extends BaseOrderForm
       }
     }*/
       
-    if (!empty($taintedValues['shop_id'])) {
-        if (!$this->isOrderHaveEnougthInStock($taintedValues['shop_id'])) {
-            $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1));
-        }
-    }
-
     // проверяет типа доставки
     if (!empty($taintedValues['delivery_type_id']))
     {
@@ -331,6 +325,18 @@ class OrderStep1Form extends BaseOrderForm
       {
         $this->validatorSchema['delivery_type_id']->setOption('required', true);
         $this->validatorSchema['delivery_period_id']->setOption('required', true);
+      }
+      if ($deliveryType && ('self' == $deliveryType->token))
+      {
+      // если самовывоз
+        if (!empty($taintedValues['shop_id'])) {
+            if (!$this->isOrderHaveEnougthInStock($taintedValues['shop_id'])) {
+                $this->validatorSchema['delivered_at']->setOption('required', true);
+                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1,4));
+            } else {
+                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(0,3));
+            }
+        }
       }
     }
 
