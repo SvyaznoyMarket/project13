@@ -252,10 +252,12 @@ class productCategoryComponents extends myComponents
       $this->view = 'default';
     }
 
-    $this->setVar('productCategoryList', $this->productCategory->getChildList(array(
-      'select'       => 'productCategory.id, productCategory.name, productCategory.token',
-      'with_filters' => false,
-    )));
+    $this->setVar('productCategoryList',
+      $this->productCategory->getChildList(array(
+        //'select'       => 'productCategory.id, productCategory.name, productCategory.token',
+        'with_filters' => false,
+      ))
+    );
   }
  /**
   * Executes show component

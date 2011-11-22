@@ -50,6 +50,11 @@ all:
       auto_start: true
       session_name: enter
 
+  user:
+    class: myUser
+    param:
+      timeout: 15552000 # 180 дней
+
   view_cache:
     class: sfRediskaCache
     param:

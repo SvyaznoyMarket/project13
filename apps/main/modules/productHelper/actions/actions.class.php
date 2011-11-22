@@ -52,9 +52,7 @@ class productHelperActions extends myActions
     $q = ProductTable::getInstance()->createBaseQuery();
     $this->productHelperFilter->buildQuery($q);
 
-    $this->productPager = $this->getPager('Product', $q, array(
-      'limit' => sfConfig::get('app_product_max_items', 20),
-    ));
+    $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items', 20), array());
 
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }

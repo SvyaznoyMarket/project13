@@ -24,6 +24,9 @@ foreach ($p3d as $p3d_obj)
 </div>
 
 <div class="goodsinfo"><!-- Goods info -->
+  <h2 style="padding: 0;">Артикул #<?php echo $item['product']->article ?></h2>
+  <div class="line mb10"></div>
+  <?php if (false): ?>
   <div class="article">
     <!--            <div class="fr"><a href="javascript:void()" id="watch-trigger">Следить за товаром</a> <a href="" rel="nofollow">Печать</a></div>-->
     Артикул #<?php echo $item['product']->article ?>
@@ -47,6 +50,7 @@ foreach ($p3d as $p3d_obj)
     <!-- /Watch -->
 
   </div>
+  <?php endif ?>
   <script type="text/javascript">
     $('#watch-trigger').click(function(){
       $('#watch-cnt').toggle();
@@ -80,18 +84,20 @@ foreach ($p3d as $p3d_obj)
       <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
       <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
     </div>
-<!--            <div class="pb5"><strong><a href="" class="red underline">Купить быстро в 1 клик</a></strong></div>-->
-    <a href="<?php echo $item['shop_url'] ?>" class="underline">Где купить в магазинах?</a>
+<?php if (false): ?>
+    <div class="pb5"><strong><a id="1click-trigger" href="<?php echo url_for('order_1click', array('product_id' => $product->id)) ?>" class="red underline">Купить быстро в 1 клик</a></strong></div>
+<?php endif; ?>
+    <a href="<?php echo $item['shop_url'] ?>" class="underline">В каких магазинах ENTER можно купить?</a>
   </div>
 
   <div class="clear pb15"></div>
   <div class="mb15 font12 orange infoblock">
     <?php if (count($item['product']->Category) && 'furniture' == $item['product']->Category->getFirst()->getRootCategory()->token): ?>
-    Любой из представленных товаров, вы можете заказать с доставкой по удобному адресу.
+    Этот товар вы можете заказать с доставкой по удобному адресу.
     <?php else: ?>
-    Любой из представленных в нашем каталоге товаров, вы можете заказать с доставкой по удобному адресу или заказать и самостоятельно забрать в нашем магазине.
+    Этот товар вы можете заказать с доставкой по удобному адресу или заказать и самостоятельно забрать в магазине.
     <?php endif; ?>
-    <br /><span class="black" style="line-height: 2;">Подробности по телефону 8 (800) 700 00 09</span>
+    <br /><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>" class="underline">Стоимость и условия доставки</a><br/><span class="black" style="line-height: 2;">Подробности по телефону 8 (800) 700 00 09</span>
   </div>
   <div class="pb5"><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать отзывы</a> (<?php echo $product->getCommentCount() ?>)</div>
   <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['product']->token )) ?>">

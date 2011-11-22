@@ -18,10 +18,13 @@
     </div>
 
     <input type="submit" class="fr button bigbutton" value="Войти" tabindex="4" />
+
+    <!--
     <div class="ml20 pt10">
       <label for="checkbox-8" class="prettyCheckbox checkbox list"><span class="holderWrap" style="width: 13px; height: 13px;"><span class="holder" style="width: 13px;"></span></span>Запомнить меня на этом компьютере</label>
-      <?php echo $form['remember']->render(array('class' => 'hiddenCheckbox', 'id' => 'checkbox-8')) ?>
-      <!--<input type="checkbox" value="checkbox-1" name="checkbox-3" id="checkbox-8" class="hiddenCheckbox">-->
+      <?php //echo $form['remember']->render(array('class' => 'hiddenCheckbox', 'id' => 'checkbox-8')) ?>
     </div>
+    -->
+
   </div>
 </form>

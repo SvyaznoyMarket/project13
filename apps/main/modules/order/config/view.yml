@@ -10,6 +10,7 @@ all:
     - prettyCheckboxes.js
     #- jquery-ui-1.8.16.custom.min.js
     - jquery.form.js
+    - jquery.lightbox_me.js
     - typewriter.js
     #- jquery.colorbox.js
     - shelf/jquery.autocomplete-dev.js
@@ -17,8 +18,13 @@ all:
     - app.order.js
     - custom-form-elements.js
     - main.js
+    - app.auth.js
   layout: order
-  
+
 index:
-  layout: layout  
- 
+  layout: layout
+
+
+confirmSuccess:
+  javascripts:
+    - jquery.timers.js

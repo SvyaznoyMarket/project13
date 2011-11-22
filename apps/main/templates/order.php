@@ -6,7 +6,7 @@
   <?php include_title() ?>
   <?php include_stylesheets() ?>
   <?php include_javascripts() ?>
-  <?php include_component('page', 'link_rel_canonical') ?>        
+  <?php include_component('page', 'link_rel_canonical') ?>
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25485956-1']);
@@ -36,7 +36,7 @@ _gaq.push(['_trackPageLoadTime']);
 </head>
 
 <body>
-<?php LastModifiedHandler::setLastModified();  ?>       
+<?php LastModifiedHandler::setLastModified();  ?>
 <div class="allpage">
 <div class="allpageinner buyingpage">
 
@@ -81,6 +81,8 @@ _gaq.push(['_trackPageLoadTime']);
 
 <?php include_component('default', 'footer', array('view' => 'compact')) ?>
 
+<?php if (!include_slot('auth')) include_partial('default/auth') ?>
+
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">
 (function(w, c) {
@@ -98,7 +100,7 @@ _gaq.push(['_trackPageLoadTime']);
 
 <!-- AdHands -->
 <?php
-  //если получена сумма и id заказа, добавим доплонительный код в adHands  
+  //если получена сумма и id заказа, добавим доплонительный код в adHands
   ob_start();
   include_slot('complete_order_sum');
   $orderSum = ob_get_contents();
@@ -106,18 +108,18 @@ _gaq.push(['_trackPageLoadTime']);
   ob_start();
   include_slot('complete_order_id');
   $orderId = ob_get_contents();
-  ob_end_clean();  
-?>    
+  ob_end_clean();
+?>
 <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
 <script type="text/javascript">
     var report = new adhandsReport ('http://sedu.adhands.ru/site/');
     report.id('1053');
     <?php
         if (isset($orderSum) && $orderSum>0 && isset($orderId) && $orderId>0){
-            echo 
-    "report.data('am','".$orderSum."'); 
+            echo
+    "report.data('am','".$orderSum."');
     report.data('ordid','".$orderId."');
-"                
+"
                 ;
         }
     ?>

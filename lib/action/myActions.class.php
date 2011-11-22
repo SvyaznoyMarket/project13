@@ -67,16 +67,13 @@ class myActions extends sfActions
     }
   }
 
-  public function getPager($model, myDoctrineQuery $q, array $params = array())
+  public function getPager($model, myDoctrineQuery $q, $limit = 20, array $params = array())
   {
-    $params = myToolkit::arrayDeepMerge(array(
-      'limit' => 20,
-      'page'  => (int)$this->getRequest()->getParameter('page', 1),
-    ), $params);
+    $page = (int)$this->getRequest()->getParameter('page', 1);
 
-    $pager = new myDoctrinePager($model, $params['limit']);
+    $pager = new myDoctrinePager($model, $limit, $params);
     $pager->setQuery($q);
-    $pager->setPage($params['page']);
+    $pager->setPage($page);
     $pager->init();
 
     return $pager;

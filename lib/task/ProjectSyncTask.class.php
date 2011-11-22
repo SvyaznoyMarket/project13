@@ -201,12 +201,38 @@ EOF;
       if (!empty ($record->core_parent_id) && $record->getTable()->hasTemplate('NestedSet'))
       {
         $modified = $record->getLastModified();
+        // Проверяет, сменился ли родитель
         if (isset($modified['core_parent_id']))
         {
+          $newParent = $record->getTable()->getByCoreId($record->core_parent_id);
+          $oldParent = $record->getNode()->getParent();
+
+          if (true
+            && $newParent
+            && (!$oldParent || ($oldParent->id != $newParent->id))
+          ) {
+            $record->getNode()->moveAsLastChildOf($newParent);
+          }
+        }
+        // Проверяет, изменилась ли позиция относительно соседей
+        if (isset($modified['position']))
+        {
           $parent = $record->getTable()->getByCoreId($record->core_parent_id);
-          if ($parent && !$record->getNode()->isRoot() && ($parent->id != $record->getNode()->getParent()->id))
+          if ($parent)
           {
-            $record->getNode()->moveAsLastChildOf($parent);
+            $childList = $record->getTable()->createQuery()
+              ->where('core_parent_id = ?', $parent->core_id)
+              ->orderBy('position ASC')
+              ->execute()
+            ;
+            //myDebug::dump($record->getNode()->getParent());
+            //myDebug::dump($parent, 1);
+            foreach ($childList->toValueArray('id') as $id)
+            {
+              $parent->refresh();
+              $child = $record->getTable()->find($id);
+              $child->getNode()->moveAsLastChildOf($parent);
+            }
           }
         }
       }

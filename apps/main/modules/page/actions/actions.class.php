@@ -25,19 +25,10 @@ class pageActions extends myActions
     {
       $this->setLayout('layout');
     }
-	
+
 	$pageTitle = !empty($this->page->title) ? $this->page->title : $this->page->name;
 	$this->getResponse()->setTitle($pageTitle.' – Enter.ru');
 
     $this->setVar('page', $this->page, true);
-  }
- /**
-  * Executes edit action
-  *
-  * @param sfRequest $request A request object
-  */
-  public function executeEdit(sfWebRequest $request)
-  {
-    $this->page = $this->getRoute()->getObject();
   }
 }

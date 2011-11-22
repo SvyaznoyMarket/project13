@@ -117,16 +117,17 @@ class myProductFormFilter extends sfFormFilter
     foreach ($this->values as $id => $param)
     {
       if (0 !== strpos($id, 'param-')) continue;
-
       $productFilter = $productFilterList->getByIndex('id', substr($id, 6));
       if (!$productFilter) continue;
-
+      
+      //если выбранные минимальные и максимальные значения равны минимальному и максимальному значению фильтра, то не учитывать
+      if ($productFilter->isRange() && $productFilter->value_min == $param['from'] && $productFilter->value_max == $param['to']) continue;
+      
       $filter['parameters'][] = array(
         'filter' => $productFilter,
         'values' => $param,
       );
     }
-
     ProductTable::getInstance()->setQueryForFilter($q, $filter);
   }
 

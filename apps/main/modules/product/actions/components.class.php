@@ -74,12 +74,8 @@ class productComponents extends myComponents
 
     $this->setVar('item', $item, true);
 
-    //$selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product->id);
-    $u = $this->getUser();
-    $c = $u->getCart();
-    $selectedServices = $c->getServicesByProductId($this->product->id);
+    $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product->id);
     $this->setVar('selectedServices', $selectedServices, true);
-    //myDebug::dump($this->product);
   }
 
   /**
@@ -105,7 +101,7 @@ class productComponents extends myComponents
       $this->view = 'compact';
     }
 
-    $this->setVar('list', $this->pager->getResults(null, array()), true);
+    $this->setVar('list', $this->pager->getResults(), true);
   }
 
   /**
@@ -118,11 +114,13 @@ class productComponents extends myComponents
     $list = array();
 
     $active = $this->productSorting->getActive();
+    $active['url'] = replace_url_for('sort', implode('-', array($active['name'], $active['direction'])));
     foreach ($this->productSorting->getList() as $item)
     {
-      if ($active['name'] == $item['name'])
+      if ($active['name'] == $item['name'] && $active['direction'] == $item['direction'])
       {
-        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
+//        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
+        continue;
       }
       $list[] = array_merge($item, array(
         'url' => replace_url_for('sort', implode('-', array($item['name'], $item['direction'])))
@@ -310,7 +308,7 @@ class productComponents extends myComponents
   {
       $this->executeList_view();
   }
-
+  
   /**
    * Executes list_view component
    *

@@ -10,3 +10,6 @@
 <?php end_slot() ?>
 
 <?php include_partial('productCatalog/slot/default', $sf_data) ?>
+
+
+<?php include_component('productCatalog', 'navigation_seo', array('productCategory' => $productCategory)) ?>

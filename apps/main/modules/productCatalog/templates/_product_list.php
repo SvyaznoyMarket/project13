@@ -5,12 +5,12 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 ?>
 <?php $empty = 0 == $productPager->getNbResults() ?>
 
-<?php if( count($productPager->getLinks()) - 1 ): ?>
+<?php if( count($productPager->getLinks()) - 1 && !isset($noInfinity) ): ?>
 <div data-url="<?php echo url_for('productCatalog_categoryAjax',array('productCategory' => $productCategory->token )); ?>"
 	 data-page="<?php  echo $page; ?>"
 	 data-mode="<?php  echo $view; ?>"
 	 data-lastpage="<?php echo $productPager->getLastPage(); ?>"
-	 class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"></div>				
+	 class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"></div>
 <?php endif ?>
 
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
@@ -19,17 +19,21 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
   <?php include_component('product', 'list_view') ?>
 <?php endif ?>
 
+<?php if (!isset($noSorting) || !$noSorting): ?>
+  <?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?>
+<?php endif ?>
+
 <?php if (!$empty): ?>
   <div class="line"></div>
 <?php endif ?>
 
-<?php include_component('product', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view, )) ?>
+  <?php include_component('product', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view, )) ?>
 
 <?php if (false): ?>
   <div class="line pb10"></div>
 <?php endif ?>
 
-<?php if( count($productPager->getLinks()) - 1 ): ?>
+<?php if( count($productPager->getLinks()) - 1 && !isset($noInfinity) ): ?>
 <div data-url="<?php echo url_for('productCatalog_categoryAjax',array('productCategory' => $productCategory->token )); ?>"
 	 data-page="<?php  echo $page; ?>"
 	 data-mode="<?php  echo $view; ?>"
