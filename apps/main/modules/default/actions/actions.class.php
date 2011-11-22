@@ -27,7 +27,7 @@ class defaultActions extends myActions
   {
     if (!sfConfig::get('app_welcome_enabled', false))
     {
-      $this->redirect('@homepage', 301);
+      //$this->redirect('@homepage', 301);
     }
 
     $this->setLayout('welcome');
