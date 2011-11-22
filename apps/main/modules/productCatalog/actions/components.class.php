@@ -339,7 +339,7 @@ class productCatalogComponents extends myComponents
   
   public function executeArticle_seo()
   {
-   # $this->getResponse()->addMeta('title',$this->productCategory->seo_title);      
+    $this->getResponse()->addMeta('title',$this->productCategory->seo_title);      
     $this->getResponse()->addMeta('description',$this->productCategory->seo_description);      
     $this->getResponse()->addMeta('keywords',$this->productCategory->seo_keywords);      
      
