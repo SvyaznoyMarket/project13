@@ -12,8 +12,8 @@ welcome:
 #
 # show
 qrcode:
-  url:   /qr/:code
-  param: { module: default, action: qrcode }
+  url:   /qr/:qrcode
+  param: { module: qrcode, action: index }
 
 
 # товар
@@ -85,9 +85,9 @@ productCard:
   options: { model: Product, type: object, method: getForRoute }
 #
 # карточка товара по ид товара
-productCard_show:
+product_show:
   url:   /product-:product
-  param: { module: productCard, action: show }
+  param: { module: product, action: show }
   options:
     segment_separators: [ '/', '-' ]
 #
@@ -612,7 +612,7 @@ cart_add:
   url:   /cart/add/:product/:quantity/:services
   param: { module: cart, action: add, quantity: 1, services: 0 }
   requirements:
-    sf_method: [ get,post ]  
+    sf_method: [ get,post ]
 
 #
 # cart delete

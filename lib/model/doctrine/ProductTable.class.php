@@ -607,4 +607,36 @@ class ProductTable extends myDoctrineTable
 
     return $return;
   }
+
+  public function getTokensByIds(array $ids, array $params = array())
+  {
+    if (!count($ids))
+    {
+      return false;
+    }
+
+    //return $this->createBaseQuery($params)
+    return $this->createQuery()
+      ->select('token')
+      ->whereIn('id', $ids)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->execute()
+    ;
+  }
+
+  public function getTokenById($id, array $params = array())
+  {
+    if (empty($id))
+    {
+      return false;
+    }
+
+    //return $this->createBaseQuery($params)
+    return $this->createQuery()
+      ->select('token')
+      ->where('id = ?', $id)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->fetchOne()
+    ;
+  }
 }

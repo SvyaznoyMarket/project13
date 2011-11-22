@@ -54,23 +54,4 @@ class defaultActions extends myActions
   {
 	  $this->setLayout(false);
   }
- /**
-  * Executes qrcode action
-  *
-  * @param sfRequest $request A request object
-  */
-  public function executeQrcode(sfWebRequest $request)
-  {
-    $type = 'product';
-    $ids = array(1, 2, 3, 4, 5, 6, 7);
-
-    switch ($type)
-    {
-      case 'product';
-        $tokens = array('product-1-1', 'product-1-2', 'product-1-3', 'product-1-4', 'product-1-5', 'product-1-6', 'product-1-7'); // преобразовать core_id в token
-        $request->setParameter('products', $tokens);
-        $this->forward('product', 'list');
-        break;
-    }
-  }
 }
