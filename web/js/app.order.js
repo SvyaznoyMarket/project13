@@ -3,44 +3,42 @@ var initOrder = function(quickform) {
 quickform = quickform || false;
 
 function triggerDelivery( i, init ) {
-    init = init || false;
+    //init = init || false;
 	if ( i == 3 ) {
 		$('.shop_block').show()
 		$('.delivery_block').hide()
 		$('.deliverytext').html('Представьтесь:')
         $('#delivered_at_block label').html('Выберите дату:')
-        var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(0,4)).prepend('<option value=""></option>');
+        /*var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(0,4)).prepend('<option value=""></option>');
         if (init) {
             ds.change();
         } else {
             ds.val('').change();
-        }
+        }*/
 	} else {
 		$('.shop_block').hide()
 		$('.delivery_block').show()
 		$('.deliverytext').html('Кому и куда доставить:')
         $('#delivered_at_block label').html('Выберите дату доставки:')
-        var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(1)).prepend('<option value=""></option>');
+        /*var ds = $('#delivered_at_block select').html(deliveryAtOptions.slice(1)).prepend('<option value=""></option>');
         if (init) {
             ds.change();
         } else {
             ds.val('').change();
-        }
+        }*/
 	}
-
+	$('#order_shop_id').trigger('change')
 }
 var checker = $('.order-form').find('[name="order[delivery_type_id]"]:checked')
 var deliveryAtOptions = $('#delivered_at_block select option').clone();
 triggerDelivery( checker.val(), true )
-
 if (quickform) {
     $('.order-form').find('[name="order[delivery_type_id]"]').change(function(){
         triggerDelivery( $(this).val() );
     });
-} else {
+} else { // TODO REWRITE !!! 
 $('.order-form').bind({
     'change': function(e) {
-
       var form = $(this)
       var hidden = []
 
@@ -61,11 +59,37 @@ $('.order-form').bind({
         )
       }
       */
-
       function checkDeliveryType() {
         var d = $.Deferred();
 
         // если изменился способ доставки
+        if ('order[shop_id]' == $(e.target).attr('name')) { 
+        	var el = $(e.target).find('option:selected')
+        	if (!el.length) 
+          		return
+          	$.post(form.data('updateFieldUrl'), {
+				  order: {
+				  	delivery_type_id: form.find('[name="order[delivery_type_id]"]:checked').val(),
+					shop_id: el.val()
+				  	},
+				  field: 'delivered_at'
+				  }, function(result) {
+					if (false === result.success) {
+						d.reject()
+					}
+					var toupdate = form.find('[name="order[delivered_at]"]')
+					toupdate.empty()
+					$.each(result.data.content, function(v, n) {
+					  toupdate.append('<option value="'+v+'">'+n+'</option>')
+					})
+					toupdate.find(':first').attr('selected', 'selected')
+					toupdate.change()
+					
+					d.resolve()
+				}).error(function() {
+              		d.reject()
+            	})
+        }
         if ('order[delivery_type_id]' == $(e.target).attr('name')) {
           var el = form.find('[name="order[delivery_type_id]"]:checked')
           if (el.length) {
@@ -78,7 +102,6 @@ $('.order-form').bind({
             }, function(result) {
               if (true === result.success) {
                 var select = $('[name="order[delivery_period_id]"]')
-
                 select.empty()
                 $.each(result.data.content, function(v, n) {
                   select.append('<option value="'+v+'">'+n+'</option>')
@@ -123,6 +146,8 @@ $('.order-form').bind({
 
     }
   })
+
+	$('#order_shop_id').trigger('change')
 }
 
   $('.order_user_address').bind('change', function(e) {
@@ -159,4 +184,4 @@ $('.order-form').bind({
   })
 
 }
-$(document).ready(initOrder);
+$(document).ready( function(){ initOrder() });

@@ -33,6 +33,49 @@ class OrderStep1Form extends BaseOrderForm
       }
       return false;
   }
+  
+  protected function isOrderHaveEnougthInStock($shop_id)
+  {
+      $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
+      $stockRel = StockProductRelationTable::getInstance();
+      foreach ($cart as $product_id => $product)
+      {
+          if (!$stockRel->isInStock($product_id, $shop_id, null, $product['cart']['quantity'])) {
+              return false;
+          }
+      }
+      return true;
+  }
+  
+  protected function getDeliveryDateChoises($start = 0, $stop = 7)
+  {
+    $choices = array();
+    for ($i = $start; $i <= $stop; $i++)
+    {
+      $date = strtotime("+{$i} day");
+
+      $prefix = '';
+      $val = $prefix.date('d.m.Y', $date);
+      if (0 == $i)
+      {
+        $prefix = 'сегодня ';
+        $val = $prefix.'('.date('d.m.Y', $date).')';
+      }
+      if (1 == $i)
+      {
+        $prefix = 'завтра ';
+        $val = $prefix.'('.date('d.m.Y', $date).')';
+      }
+      if (2 == $i)
+      {
+        $prefix = 'послезавтра ';
+        $val = $prefix.'('.date('d.m.Y', $date).')';
+      }
+
+      $choices[date('Y-m-d', $date)] = $val;
+    }
+    return $choices;
+  }
     
   public function configure()
   {
@@ -136,31 +179,7 @@ class OrderStep1Form extends BaseOrderForm
     $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ получения заказа:');
     $this->validatorSchema['delivery_type_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryType', 'required' => true));
 
-    $choices = array();
-    for ($i = 0; $i <= 7; $i++)
-    {
-      $date = strtotime("+{$i} day");
-
-      $prefix = '';
-      $val = $prefix.date('d.m.Y', $date);
-      if (0 == $i)
-      {
-        $prefix = 'сегодня ';
-        $val = $prefix.'('.date('d.m.Y', $date).')';
-      }
-      if (1 == $i)
-      {
-        $prefix = 'завтра ';
-        $val = $prefix.'('.date('d.m.Y', $date).')';
-      }
-      if (2 == $i)
-      {
-        $prefix = 'послезавтра ';
-        $val = $prefix.'('.date('d.m.Y', $date).')';
-      }
-
-      $choices[date('Y-m-d', $date)] = $val;
-    }
+    $choices = $this->getDeliveryDateChoises();
     $this->widgetSchema['delivered_at'] = new sfWidgetFormChoice(array(
       'choices'  => $choices,
       'multiple' => false,
@@ -295,7 +314,7 @@ class OrderStep1Form extends BaseOrderForm
         $this->validatorSchema['delivery_type_id']->setOption('required', false);
       }
     }*/
-
+      
     // проверяет типа доставки
     if (!empty($taintedValues['delivery_type_id']))
     {
@@ -305,6 +324,18 @@ class OrderStep1Form extends BaseOrderForm
       {
         $this->validatorSchema['delivery_type_id']->setOption('required', true);
         $this->validatorSchema['delivery_period_id']->setOption('required', true);
+      }
+      if ($deliveryType && ('self' == $deliveryType->token))
+      {
+      // если самовывоз
+        if (!empty($taintedValues['shop_id'])) {
+            if (!$this->isOrderHaveEnougthInStock($taintedValues['shop_id'])) {
+                $this->validatorSchema['delivered_at']->setOption('required', true);
+                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1,4));
+            } else {
+                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(0,3));
+            }
+        }
       }
     }
 

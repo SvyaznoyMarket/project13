@@ -3,6 +3,10 @@ $(document).ready(function() {
 	var marketfolio = $('.bMap__eScrollWrap')
 
 	marketfolio.delegate('div.map-image-link', 'click',function(e) {
+		if( $(this).hasClass('first') && $('div.map-360-link', marketfolio ).length ) {
+			$('div.map-360-link', marketfolio ).trigger('click')
+			return 
+		}
 		if( $(this).hasClass('mChecked') ){}
 		else{
 			$( 'div.mChecked' ,$(this).parent() ).removeClass('mChecked')
