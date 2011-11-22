@@ -336,6 +336,19 @@ class productCatalogComponents extends myComponents
   public function executeFilter_parameter()
   {
   }
+  
+  public function executeArticle_seo()
+  {
+   # $this->getResponse()->addMeta('title',$this->productCategory->seo_title);      
+    $this->getResponse()->addMeta('description',$this->productCategory->seo_description);      
+    $this->getResponse()->addMeta('keywords',$this->productCategory->seo_keywords);      
+     
+    if (isset($this->productCategory) && isset($this->productCategory->seo_text)) {
+        $this->setVar('article', $this->productCategory->seo_text, true);
+    }
+    
+  }  
+  
   /**
   * Executes tag component
   *

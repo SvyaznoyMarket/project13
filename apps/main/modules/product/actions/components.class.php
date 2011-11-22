@@ -57,7 +57,7 @@ class productComponents extends myComponents
                 array('id' => $this->product->core_id, 'quantity' => 1),
             )
         ));
-        $this->delivery = current($this->delivery);
+        if (is_array($this->delivery))$this->delivery = current($this->delivery);
     }
     if (in_array($this->view, array('expanded')))
     {

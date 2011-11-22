@@ -310,7 +310,7 @@ class productCatalogActions extends myActions
       $title .= ' – '.$rootCategory;
     }
     $this->getResponse()->setTitle($title.' – Enter.ru');
-
+        
     if ($this->productCategory->has_line) //если в категории должны отображться линии
     {
       $this->forward($this->getModuleName(), 'line');
