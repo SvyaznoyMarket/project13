@@ -40,7 +40,7 @@ class myProductTagFormFilter extends myProductFormFilter
         ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name', 'with_descendat' => true, 'for_filter' => true, 'order' => 'creator.name'))
         ->toKeyValueArray('id', 'name')
       ;
-      if (count($choices))
+      if (count($choices) > 1)
       {
         $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
           'choices'          => $choices,

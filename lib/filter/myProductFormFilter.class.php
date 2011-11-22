@@ -40,7 +40,7 @@ class myProductFormFilter extends sfFormFilter
       ->toKeyValueArray('id', 'name')
     ;
 
-    if (count($choices))
+    if (count($choices) > 1)
     {
       $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
         'choices'          => $choices,
