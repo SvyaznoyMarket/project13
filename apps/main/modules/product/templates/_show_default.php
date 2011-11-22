@@ -68,10 +68,11 @@ foreach ($p3d as $p3d_obj)
     <?php if ($product->is_instock): ?>
       <noindex><div class="pb5"><strong class="orange">Есть в наличии</strong></div></noindex>
 <?php endif ?>
-      <?php if (false): ?>
+  <?php if ($delivery): ?>
   <div class="pb3"><strong>Доставка: <?php echo $delivery['name'] ?></strong></div>
   <div class="font11 gray">
-      Стоимость: <strong><?php echo $delivery['price'] ?> руб.</strong><br />
+      Стоимость: <strong><?php echo $deliveryData['price'] ?> руб.</strong><br />
+      <?php echo 'Доставим в течение '.format_number_choice('[0] дней|[1] 1 дня|{n: n % 10 > 1 && n % 10 < 5 && ( n < 11 || n > 14 ) && ( n % 100 < 11 || n % 100 > 14 ) } %1% дней|[5,+Inf] %1% дней ', array('%1%' => $deliveryPeriod), $deliveryPeriod) ?>
 <!--      Москва. Доставим в течение 1-2 дней<br />
       <a href="" class="underline">Хотите быстрее?</a>-->
   </div>

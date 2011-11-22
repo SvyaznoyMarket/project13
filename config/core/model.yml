@@ -47,8 +47,8 @@ ServiceCategory:
   - service_category
 Service:
   - service
-#DeliveryType:
-#  - delivery_type
+DeliveryMode:
+  - delivery_type
 #PaymentMethod:
 #  - payment_method
 StockProductRelation:
