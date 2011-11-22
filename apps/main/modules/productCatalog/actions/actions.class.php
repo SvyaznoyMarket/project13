@@ -61,7 +61,7 @@ class productCatalogActions extends myActions
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
-    $this->setVar('noInfinity', true);
+    #$this->setVar('noInfinity', true);
 
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
@@ -241,6 +241,7 @@ class productCatalogActions extends myActions
 
   public function executeCategoryAjax(sfWebRequest $request){
 
+      #var_dump( $request->getParameter('f') );
     $this->setVar('allOk', false);
 
     if (!isset($request['productCategory']))
@@ -255,7 +256,7 @@ class productCatalogActions extends myActions
     }
     if (!isset($request['view']))
     {
-      $request['page'] = 'compact';
+      $request['view'] = 'compact';
     }
 
     try
@@ -268,15 +269,27 @@ class productCatalogActions extends myActions
       return $this->_refuse();
     }
 
-
-    $filter = array(
-      'category' => $this->productCategory,
-    );
-
-    $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-      'view'      => 'list',
-      'with_line' => 'line' == $request['view'] ? true : false,
-    ));
+    $this->productFilter = $this->getProductFilter();
+    $getFilterData = $request->getParameter($this->productFilter->getName()) ;
+    #var_dump($getFilterData);
+    //если фильтры установлены
+    if ( isset($getFilterData) ) {
+        $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
+        $q = ProductTable::getInstance()->createBaseQuery(array(
+          'view'      => 'list',
+          'with_line' => 'line' == $request['view'] ? true : false,
+        ));
+        $this->productFilter->buildQuery($q);
+    //если фильтры не установлены
+    } else {    
+        $filter = array(
+          'category' => $this->productCategory,
+        );   
+        $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+          'view'      => 'list',
+          'with_line' => 'line' == $request['view'] ? true : false,
+        )); 
+    }
 
     // sorting
     $this->productSorting = $this->getProductSorting();

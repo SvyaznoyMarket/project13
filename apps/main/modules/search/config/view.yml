@@ -1,3 +1,6 @@
 #all:
 #  javascripts:
 #    - app.search.js
+
+ajaxSuccess:
+  layout: free
