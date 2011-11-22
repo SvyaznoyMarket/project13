@@ -60,7 +60,7 @@ class ProductCategory extends BaseProductCategory
     $filterGroup->importFromCore($data);
 
     $this->FilterGroup = $filterGroup;
-    
+
     //Импорт тэгов для категории
     $tag_group_ids = array();
     foreach ($this->TagGroupRelation as $tagGroupRelation)
@@ -84,12 +84,12 @@ class ProductCategory extends BaseProductCategory
         {
           $tagGroupProductCategoryRelation = new TagGroupProductCategoryRelation();
         }
-        
+
         $tagGroupProductCategoryRelation->importFromCore($relationData);
         $this->TagGroupRelation[] = $tagGroupProductCategoryRelation;
       }
     }
-    
+
     //Удаляю все, что лишнее
     if ($this->id && count($tag_group_ids))
     {
@@ -101,7 +101,7 @@ class ProductCategory extends BaseProductCategory
 
         $deleted = $q->execute();
     }
-    
+
   }
 
   public function countProduct(array $params = array())
@@ -169,7 +169,7 @@ class ProductCategory extends BaseProductCategory
       $propertyIds[$property['id']] = $key;
     }
 
-    foreach ($this->FilterGroup->getFilterList(array('order' => 'productFilter.name')) as $filter)
+    foreach ($this->FilterGroup->getFilterList(array('order' => 'productFilter.position')) as $filter)
     {
       if (false
         || (('choice' == $filter->type) && isset($propertyIds[$filter->property_id]))
