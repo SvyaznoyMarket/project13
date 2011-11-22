@@ -321,10 +321,7 @@ class ProductTable extends myDoctrineTable
       */
       foreach ($filter['parameters'] as $parameter)
       {
-        if (count($parameter['values']) > 0)
-        {
-          $q->leftJoin('product.PropertyRelation productPropertyRelation'.$parameter['filter']->id.' WITH productPropertyRelation'.$parameter['filter']->id.'.property_id = '.$parameter['filter']->property_id);
-        }
+        $q->leftJoin('product.PropertyRelation productPropertyRelation'.$parameter['filter']->id.' WITH productPropertyRelation'.$parameter['filter']->id.'.property_id = '.$parameter['filter']->property_id);
         if (('choice' == $parameter['filter']->type) && (count($parameter['values']) > 0))
         {
           /*$q->addWhere(
@@ -334,7 +331,7 @@ class ProductTable extends myDoctrineTable
           //$q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group']);
           $q->andWhereIn('productPropertyRelation'.$parameter['filter']->id.'.option_id', $parameter['values']);
         }
-        else if ('range' == $parameter['filter']->type)
+        else if (('range' == $parameter['filter']->type) && (count($parameter['values']) > 0))
         {
           /*
           if (!empty($parameter['values']['from']) && !empty($parameter['values']['to']))
@@ -350,6 +347,10 @@ class ProductTable extends myDoctrineTable
           {
             $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_float <= ?', array($parameter['values']['to']));
           }
+        }
+        else if (('checkbox' == $parameter['filter']->type) && (null !== $parameter['values']) && (1 == count($parameter['values'])))
+        {
+          $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_boolean = ?', array($parameter['values'][0]));
         }
       }
     }

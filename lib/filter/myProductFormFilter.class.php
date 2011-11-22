@@ -119,15 +119,16 @@ class myProductFormFilter extends sfFormFilter
       if (0 !== strpos($id, 'param-')) continue;
       $productFilter = $productFilterList->getByIndex('id', substr($id, 6));
       if (!$productFilter) continue;
-      
+
       //если выбранные минимальные и максимальные значения равны минимальному и максимальному значению фильтра, то не учитывать
       if ($productFilter->isRange() && $productFilter->value_min == $param['from'] && $productFilter->value_max == $param['to']) continue;
-      
+
       $filter['parameters'][] = array(
         'filter' => $productFilter,
         'values' => $param,
       );
     }
+    //myDebug::dump($filter);
     ProductTable::getInstance()->setQueryForFilter($q, $filter);
   }
 
@@ -195,7 +196,16 @@ class myProductFormFilter extends sfFormFilter
 
   protected function getWidgetCheckbox()
   {
-    return new myWidgetFormInputCheckbox();
+    //return new myWidgetFormInputCheckbox();
+    return new myWidgetFormChoice(array(
+      'choices'          => array(1 => 'да', 0 => 'нет'),
+      'multiple'         => true,
+      'expanded'         => true,
+      //'renderer_class'   => 'myWidgetFormSelectCheckbox',
+      'renderer_options' => array(
+        'label_separator' => '',
+      ),
+    ));
   }
 
   public function show_part($widget, $inputs)
