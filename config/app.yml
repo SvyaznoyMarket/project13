@@ -12,7 +12,7 @@ all:
           persistent: true
 
   doctrine:
-    result_cache:        false  # кешировать результаты запросов
+    result_cache:        true  # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
   product:
@@ -62,7 +62,7 @@ all:
     config:
       file: %SF_ROOT_DIR%/erase_barcode.cmd
       prefix: 'CACHETAG::'
-  
+
   payment:
    default_provider: uniteller
    provider:

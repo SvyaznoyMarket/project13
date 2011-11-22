@@ -283,6 +283,18 @@ class Core
     return $result;
   }
 
+  public function getCreator($id)
+  {
+    $result = false;
+
+    if ($response = $this->query('creator.get', array('id' => $id, 'count' => false)))
+    {
+      $result = $response[0];
+    }
+
+    return $result;
+  }
+
   public function createCallback($callback)
   {
     $result = false;

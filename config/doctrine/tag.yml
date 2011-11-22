@@ -65,10 +65,13 @@ TagProductRelation:
 TagGroupProductCategoryRelation:
   options:
     comment: 'Связь тега и категории товара'
-  actAs: [ Timestampable ]
+  actAs:
+    Timestampable: ~
+    Corable: { push: disable }
   columns:
     tag_group_id:        { type: integer(20), primary: true, notnull: true }
     product_category_id: { type: integer(20), primary: true, notnull: true }
+    position:            { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
     TagGroup:            { class: TagGroup, foreignAlias: ProductCategoryRelation, local: tag_group_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     ProductCategory:     { class: ProductCategory, foreignAlias: TagGroupRelation, local: product_category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

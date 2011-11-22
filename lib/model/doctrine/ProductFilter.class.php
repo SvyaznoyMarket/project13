@@ -18,4 +18,9 @@ class ProductFilter extends BaseProductFilter
     
     $this->type = (3 == $data['type_id']) ? 'range' : 'choice';
   }
+  
+  public function isRange()
+  {
+    return 'range' == $this->type;
+  }
 }

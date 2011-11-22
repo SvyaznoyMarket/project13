@@ -7,13 +7,23 @@
  */
 class TagGroupProductCategoryRelationTable extends myDoctrineTable
 {
-    /**
-     * Returns an instance of this class.
-     *
-     * @return object TagGroupProductCategoryRelationTable
-     */
-    public static function getInstance()
-    {
-        return Doctrine_Core::getTable('TagGroupProductCategoryRelation');
-    }
+  /**
+   * Returns an instance of this class.
+   *
+   * @return object TagGroupProductCategoryRelationTable
+   */
+  public static function getInstance()
+  {
+      return Doctrine_Core::getTable('TagGroupProductCategoryRelation');
+  }
+    
+  public function getCoreMapping()
+  {
+    return array(
+      'id'        => 'core_id',
+      'position'  => 'position',
+
+      'group_id'  => array('rel' => 'TagGroup'),
+    );
+  }
 }
