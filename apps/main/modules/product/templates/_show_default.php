@@ -116,7 +116,7 @@ foreach ($p3d as $p3d_obj)
   <?php $f1 = $product->getServiceList(); ?>
 <?php
 #print_r($f1->toArray());
-if (count($f1)):
+if (0 && count($f1)):
     $num = 0;
     ?>
     <div class="f1links form">

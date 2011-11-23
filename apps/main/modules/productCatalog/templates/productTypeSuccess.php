@@ -6,6 +6,7 @@
 
 <?php slot('left_column') ?>
   <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory, 'form' => $productFilter)) ?>
+  <?php include_component('productCatalog', 'article_seo', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
 <?php echo include_partial('productCatalog/product_list', $sf_data) ?>

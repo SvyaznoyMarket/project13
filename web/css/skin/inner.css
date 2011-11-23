@@ -223,6 +223,9 @@ box-shadow:0 0 7px #616161;
 .pagehead {float:left; width:100%; padding-bottom:20px}
 .breadcrumbs {float:left; padding-bottom:9px; font-size:11px; color:#a6a6a6}
 .breadcrumbs A {color:#a6a6a6}
+.breadcrumbs-footer {padding:0px 0px 14px 10px; font-size:11px; color:#a6a6a6}
+.breadcrumbs-footer A {color:#a6a6a6}
+
 .searchnumber {float:right; padding-bottom:9px; font-size:11px; color:#a6a6a6; white-space:nowrap}
 .searchtitle {clear:both; font-size:16px; font-weight:bold;  padding:7px 0}
 

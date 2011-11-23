@@ -77,6 +77,7 @@ class productComponents extends myComponents
         } else {
             $this->delivery = false;
         }
+        if (is_array($this->delivery))$this->delivery = current($this->delivery);
     }
     if (in_array($this->view, array('expanded')))
     {

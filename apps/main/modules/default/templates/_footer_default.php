@@ -1,6 +1,10 @@
 <!-- Footer -->
 <div class="footer<?php if (isset($class)) echo " ".$class ?>">
   <div class="bottommenu">
+    <?php if (has_slot('navigation_seo')) {
+        include_slot('navigation_seo');
+    }
+    ?>          
     <dl>
       <dt><a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>"><strong>О компании</strong></a></dt>
       <dd>Наша миссия: дарить время для</dd>

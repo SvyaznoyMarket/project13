@@ -16,4 +16,15 @@ class ServicePriceTable extends myDoctrineTable
     {
         return Doctrine_Core::getTable('ServicePrice');
     }
+    
+    public function getCoreMapping()
+    {
+        return array(
+          'id' => 'core_id',
+          'price_list_id' => 'service_price_list_id',
+          'service_id'  => 'service_id',
+          'price' => 'price',
+        );
+    }
+  
 }

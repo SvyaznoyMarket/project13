@@ -1,9 +1,11 @@
-<div class="block">
-  <h2>Описание</h2>
-  <?php echo $item['description'] ?>
+<div class="pb5">
+  <?php echo $service['description'] ?>
+</div>    
+<div class="pb5">
+  <?php echo $service['work']; ?>
 </div>
 
-<div class="block">
-  <h2>Цена</h2>
-  <?php echo $item['price'] ?>
+<div class="font16 pb10">
+    <strong><?php echo intval($service['Price'][0]['price']); ?> Р</strong>
 </div>
+

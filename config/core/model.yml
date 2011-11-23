@@ -49,6 +49,12 @@ Service:
   - service
 DeliveryMode:
   - delivery_type
+ServicePrice:
+  - service_price  
+ServiceProductRelation:
+  - service_product_relation    
+#DeliveryType:
+#  - delivery_type
 #PaymentMethod:
 #  - payment_method
 StockProductRelation:

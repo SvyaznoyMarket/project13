@@ -10,6 +10,8 @@
  */
 class searchActions extends myActions
 {
+  private $_validateResult; 
+  
  /**
   * Executes index action
   *
@@ -17,6 +19,8 @@ class searchActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+      
+    $this->setVar('noInfinity', true);  
     $limit = sfConfig::get('app_product_max_items_on_category', 20);
 	  $page = $request->getParameter('page', 1);
     $offset = intval($page - 1) * $limit;
@@ -46,7 +50,7 @@ class searchActions extends myActions
       'is_product_type_first_only' => $this->productType ? 'false' : 'true',
     );
     $response = Core::getInstance()->query('search.get', $params);
-    //myDebug::dump($response);
+    myDebug::dump($response);
     if (!$response)
     {
       return sfView::ERROR;
@@ -122,6 +126,64 @@ class searchActions extends myActions
     $this->setVar('productTypeList', $productTypeList, true);
     $this->setVar('resultCount', $response[1]['count'], true);
   }
+  
+  public function executeAjax(sfWebRequest $request)
+  {
+    //проверим сам запрос
+    $this->searchString = $request['q'];
+    if (!$this->searchString) {
+      $this->_validateResult['success'] = false;
+      $this->_validateResult['error'] = 'Не получен поисковый запрос.';
+      return $this->_refuse();                 
+    }
+    
+    //проверим страницы и количество на них
+    if (isset($request['num'])) $limit = $request['num'];  
+    else $limit = sfConfig::get('app_product_max_items_on_category', 20);
+	$page = $request->getParameter('page', 1);
+    $offset = intval($page - 1) * $limit;
+    if ($offset < 0) {
+      $this->_validateResult['success'] = false;
+      $this->_validateResult['error'] = 'Неверный номер страницы.';
+      return $this->_refuse();         
+    }
+
+    //тип товаров, если есть
+    $this->productType = !empty($request['product_type']) ? ProductTypeTable::getInstance()->find($request['product_type']) : false;
+
+    // запрос к core
+    $params = array(
+      'request'         => $this->searchString,
+      'start'           => $offset,
+      'limit'           => $limit,
+      'type_id'         => $this->getCoreIdBySearchType('product'), // ищет только товары
+      'product_type_id' => $this->productType ? array($this->productType->core_id) : array(),
+      'is_product_type_first_only' => $this->productType ? 'false' : 'true',
+    );
+    $response = Core::getInstance()->query('search.get', $params);
+    //myDebug::dump($response);
+    if (!$response) {
+      $this->_validateResult['success'] = false;
+      $this->_validateResult['error'] = sfView::ERROR;
+      return $this->_refuse();          
+    } else if (isset($response['result']) && ('empty' == $response['result'])) {
+      $this->setTemplate('emptyAjax');
+
+      #return sfView::SUCCESS;
+    }
+
+    if (!$this->productType)
+    {
+      $this->productType = !empty($response[1]['type_list'][0]['type_id']) ? ProductTypeTable::getInstance()->getByCoreId($response[1]['type_list'][0]['type_id']) : false;
+    }
+
+
+    $this->setVar('searchString', $this->searchString, false);
+    if (isset($response[1]) && isset($response[1]['count'])) {
+        $this->setVar('resultCount', $response[1]['count'], true);
+    }
+  }
+  
 
 
 
@@ -182,4 +244,13 @@ class searchActions extends myActions
 
     return $pager;
   }
+  
+  private function _refuse(){
+    return $this->renderJson(array(
+      'success' => $this->_validateResult['success'],
+      'data'    => array(
+        'error' => $this->_validateResult['error'],
+      ),
+    ));
+  }    
 }

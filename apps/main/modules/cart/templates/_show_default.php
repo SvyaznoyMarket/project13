@@ -25,7 +25,7 @@
     <div class="basketline">
         <div class="basketleft">
             <a href="<?php echo url_for('productCard', $item['product']) ?>"><?php echo image_tag($item['photo']) ?></a>
-            <?php if (count($item['service'])): ?>
+            <?php if (0 && count($item['service'])): ?>
             <div class="ac font11"><a href="" class="f1link">Сервис F1</a> Сервис F1</div>
             <?php endif ?>
         </div>
@@ -45,7 +45,7 @@
 
             <div class="clear pb15"></div>
 
-            <?php if (count($item['service'])): ?>
+            <?php if ( 0 && count($item['service'])): ?>
                 <?php
                  include_component('product', 'f1_lightbox', array('f1' => $item['service'],))  
                 ?>            
