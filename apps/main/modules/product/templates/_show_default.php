@@ -204,7 +204,9 @@ if (count($f1)):
     <div class="clear"></div>
 <?php endif ?>
 
-
+<?php if ($item['product']->isKit()): ?>
+    <?php //include_component('product', 'kit', array('product' => $item['product'])) ?>
+<?php else: ?>
 <!-- Description -->
 <h2 class="bold"><?php echo $item['product']->name ?> - Характеристики</h2>
 <div class="line pb25"></div>
@@ -227,6 +229,7 @@ if (count($f1)):
 
 <?php endif ?>
 <!-- /Description -->
+<?php endif ?>
 
     <?php include_component('product', 'tags', array('product' => $product)) ?>
 

@@ -177,7 +177,7 @@ class Product extends BaseProduct
       }
       
       //Удаляю все, что лишнее
-      if ($this->id && count($property_ids))
+      if (count($property_ids))
       {
         $q = Doctrine_Query::create()
           ->delete('ProductModelPropertyRelation')
@@ -186,7 +186,50 @@ class Product extends BaseProduct
 
         $deleted = $q->execute();
       }
+    }
+    
+    if ($this->isKit())
+    {
+      $part_ids = array();
+      foreach ($this->PartRelation as $partRelation)
+      {
+        $part_ids[$partRelation['part_id']] = $partRelation['id'];
+      }
+      
+      if (isset($data['kit']) && count($data['kit']))
+      {
+        foreach($data['kit'] as $relationData)
+        {
+          $part = ProductTable::getInstance()->getByCoreId($relationData['id']);
+          if (!$part) continue;
+          if ($this->id)
+          {
+            $partRelation = ProductKitRelationTable::getInstance()->findOneByKitIdAndPartId($this->id, $part->id);
+          }
+          if (!isset($partRelation) || empty($partRelation))
+          {
+            $partRelation = new ProductKitRelation();
+          }
+          $partRelation->fromArray(
+            array(
+              'part_id' => $part->id,
+            )
+          );
+          $this->PartRelation[] = $partRelation;
+          unset($part_ids[$partRelation['part_id']]);
+        }
+      }
+      
+      //Удаляю все, что лишнее
+      if (count($part_ids))
+      {
+        $q = Doctrine_Query::create()
+          ->delete('ProductKitRelation')
+          ->andWhereIn('id', array_values($part_ids))
+        ;
 
+        $deleted = $q->execute();
+      }
     }
 
     //Временные правила для отображения товара!!!
@@ -442,5 +485,10 @@ class Product extends BaseProduct
     
     
     return $q->execute();
+  }
+  
+  public function isKit()
+  {
+    return 2 == $this->set_id;
   }
 }

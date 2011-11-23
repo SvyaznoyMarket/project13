@@ -218,6 +218,7 @@ Product:
 #    category_id:       { type: integer(20), notnull: true }
 #    group_id:          { type: integer(20), notnull: false, default: null }
     status_id:         { type: integer(20), notnull: false, default: null }
+    set_id:            { type: integer(20), notnull: false, default: null }
     tagline:           { type: string(255), notnull: false, default: null }
     preview:           { type: string, notnull: false, default: null, comment: 'Анонс' }
     view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар по прямой ссылке?' }
@@ -241,6 +242,7 @@ Product:
     Model:             { class: Product, foreignAlias: SubProduct, local: model_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Status:            { class: ProductStatus, foreignAlias: Product, local: status_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ModelProperty:     { class: ProductProperty, foreignAlias: MainModelProduct, refClass: ProductModelPropertyRelation, local: product_id, foreign: product_property_id, type: many, foreignType: many }
+    Part:              { class: Product, foreignAlias: Kit, refClass: ProductKitRelation, local: kit_id, foreign: part_id, type: many, foreignType: many }
 
 ProductPropertyRelation:
   options:
@@ -431,3 +433,13 @@ ProductCategoryProductLineRelation:
   relations:
     ProductLine:      { class: ProductLine, foreignAlias: ProductCategoryRelation, local: line_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     ProductCategory:  { class: ProductCategory, foreignAlias: ProductLineRelation, local: category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    
+ProductKitRelation:
+  options:
+    comment:      'Комплекты'
+  columns:
+    kit_id:      { type: integer(20), notnull: true }
+    part_id:     { type: integer(20), notnull: true }
+  relations:
+    Kit:         { class: Product, foreignAlias: PartRelation, local: kit_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Part:        { class: Product, foreignAlias: KitRelation, local: part_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

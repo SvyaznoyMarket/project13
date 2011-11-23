@@ -39,6 +39,7 @@ class ProductTable extends myDoctrineTable
       'prefix'          => 'prefix',
       'is_primary_line' => 'is_lines_main',
       'is_model'        => 'is_model',
+      'set_id'          => 'set_id',
 
       'type_id'         => array('rel' => 'Type'),
       'brand_id'        => array('rel' => 'Creator'),
@@ -596,6 +597,19 @@ class ProductTable extends myDoctrineTable
     {
       $q->addWhere('product.is_lines_main = ?', 0);
     }
+
+    $this->setQueryParameters($q, $params);
+
+    return $q;
+  }
+
+  public function getQueryByKit(Product $product, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+    
+    $q->innerJoin('product.KitRelation kitRelation WITH kitRelation.kit_id = ?', $product->id);
 
     $this->setQueryParameters($q, $params);
 
