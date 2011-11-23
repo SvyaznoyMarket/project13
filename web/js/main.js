@@ -101,7 +101,6 @@ $(document).ready(function(){
 )
 		}
 
-		console.info(params)
 		$.get( lsURL, params, function(data){
 			
 			if ( data != "" && !data.data ) { // JSON === error
@@ -114,7 +113,6 @@ $(document).ready(function(){
 			$('#ajaxgoods').remove()
 		})
 	}
-
 
 
 	if( $('div.allpager').length ) {
@@ -131,18 +129,28 @@ $(document).ready(function(){
 					vnext += 1
 				}
 			}
+			if( location.href.match(/sort=/) &&  location.href.match(/page=/) ) { // Redirect on first in sort case
+				$(this).bind('click', function(){
+					$.jCookies({
+					name : 'infScroll',
+					value : 1
+					})
+					location.href = location.href.replace(/page=\d+/,'')
+				})
+			} else
 			$(this).bind('click', function(){
 				$.jCookies({
 					name : 'infScroll',
 					value : 1
 				})
+				
 				var next = $('div.pageslist:first li:first')
 				if( next.hasClass('current') )
 					next = next.next()
 				var next_a = next.find('a')
 								.html('<span>123</span>')
 								.addClass('borderedR')
-				next_a.attr('href', next_a.attr('href').replace(/\?page=\d/,'') )
+				next_a.attr('href', next_a.attr('href').replace(/page=\d+/,'') )
 
 				$('div.pageslist li').remove()
 				$('div.pageslist ul').append( next )
@@ -181,7 +189,8 @@ $(document).ready(function(){
 	}
 	
 	$.ajaxPrefilter(function( options ) {
-		options.url += '?ts=' + new Date().getTime()
+		if( !options.url.match('search') )
+			options.url += '?ts=' + new Date().getTime()
 	})
 	
 	$('body').ajaxError(function(e, jqxhr, settings, exception) {
