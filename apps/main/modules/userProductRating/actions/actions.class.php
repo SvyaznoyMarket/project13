@@ -10,13 +10,13 @@
  */
 class userProductRatingActions extends myActions
 {
-    
+
    private $_request;
-   
+
    private $_product;
-   
+
    private $_validateResult;
-    
+
  /**
   * Executes create action
   *
@@ -60,9 +60,9 @@ class userProductRatingActions extends myActions
     }
     $this->redirect($request->getReferer());
   }
-  
-  
-  
+
+
+
  /**
   * Общее голосование за товар (не по категориям)
   * Принимает:
@@ -70,7 +70,7 @@ class userProductRatingActions extends myActions
   *  - значение голоса (от 1 до 5)
   * Действует по следующему алгоритму:
   * 1. Валидация полученных данных
-  * 2. Если пользователь авторизован:   
+  * 2. Если пользователь авторизован:
   *     1. Проверяем в локальной базе, голосовал ли пользователь за этот товар
   *     2. Если не голосовал, отпрвляем запрос "Проголосовать" в ядро
   *     3. Если результат положительный, добавляем голос пользователя
@@ -81,7 +81,18 @@ class userProductRatingActions extends myActions
   * @param sfRequest $request A request object
   */
   public function executeCreatetotal(sfWebRequest $request)
-  {             
+  {
+    //$this->getResponse();
+    $product = $this->getRoute()->getObject();
+    $rated = explode('-', $request->getCookie('product_rating'));
+
+    if (in_array($product->id, $rated))
+    {
+      return $this->renderJson(array(
+        'success' => false,
+      ));
+    }
+
         $this->_request = $request;
 
         try{
@@ -95,12 +106,12 @@ class userProductRatingActions extends myActions
 
         //оповещаем об ошибке
         if (!$this->_validateResult['success']){
-          return $this->_refuse();      
+          return $this->_refuse();
         }
 
 
-        $user = $this->getUser();             
-        
+        $user = $this->getUser();
+
         //если пользователь авторизован
         if (isset($user) && $user->getGuardUser() && $user->isAuthenticated()){
             //посмотрим в локальной базе. Вероятно, пользователь уже голосовал за этот товар, и информация есть здесь
@@ -109,10 +120,10 @@ class userProductRatingActions extends myActions
             //print_r($existItems);
             if (count($existItems)>0){
               $this->_validateResult['success'] = false;
-              $this->_validateResult['error'] = "Вы уже голосовали за этот товар, и не можете проголосовать повторно.";            
+              $this->_validateResult['error'] = "Вы уже голосовали за этот товар, и не можете проголосовать повторно.";
               return $this->_refuse();
             }
-            
+
             //отправляем запос на голосование в ядро
             $core = Core::getInstance();
             $ratingInfo = $core->query('/user/product/rating/create/',array(),array(
@@ -124,8 +135,8 @@ class userProductRatingActions extends myActions
             //если от ядра был получен отказ на запись данных
             if (!$ratingInfo){
               $this->_validateResult['success'] = false;
-              $this->_validateResult['error'] = $core->getError();            
-              return $this->_refuse();            
+              $this->_validateResult['error'] = $core->getError();
+              return $this->_refuse();
             }
 
             //пользователь авторизован, но не голосовал
@@ -138,23 +149,22 @@ class userProductRatingActions extends myActions
         }
         else
         {
-            
             //если пользователь не авторизован - отправим запрос в ядро - вероятоно,
             //пользователь с таким ip голосовал и ядро запретит голосование
             $core = Core::getInstance();
             $ratingInfo = $core->query('/user/product/rating/create/',array(),array('product_id'=>$this->_product->id,'ip'=>$user->getRealIpAddr(),'value'=>$this->_request['rating']));
-            //если от ядра был получен отказ на запись данных            
+            //если от ядра был получен отказ на запись данных
             if (!$ratingInfo){
               //обрабатываем ответ ядра
-              $error = $core->getError(); 
+              $error = $core->getError();
               if (isset($error['detail']['ip']['rateImpossible'])) $errText = "Вы уже голосовали за этот товар, и не можете проголосовать повторно.";
               elseif (isset($error['detail']['ip']['isEmpty'])) $errText = "IP адрес не доступен. Голосование не возможно.";
               $this->_validateResult['success'] = false;
-              $this->_validateResult['error'] = $errText;               
-              return $this->_refuse();            
-            }            
+              $this->_validateResult['error'] = $errText;
+              return $this->_refuse();
+            }
         }
-           
+
 
         //всё хорошо, пересчитываем рейтинг товара
         $this->_product->rating;
@@ -165,6 +175,9 @@ class userProductRatingActions extends myActions
         $this->_product->rating = $currentRatingFull / $this->_product->rating_quantity;
         $this->_product->save();
 
+        $rated[] = $product->id;
+        $rated = array_unique($rated);
+        $this->getResponse()->setCookie('product_rating', implode('-', $rated), time() + 86400);
 
         //отправляем ответ - голосование прошло успешно
         if ($request->isXmlHttpRequest())
@@ -179,20 +192,20 @@ class userProductRatingActions extends myActions
         }
         $this->redirect($request->getReferer());
   }
-  
-  
+
+
   private function _refuse(){
       return $this->renderJson(array(
         'success' => $this->_validateResult['success'],
         'data'    => array(
           'error' => $this->_validateResult['error'],
         ),
-      ));        
+      ));
   }
-  
+
   private function _validateCreateTotalData()
   {
-        $result['success'] = true;  
+        $result['success'] = true;
 
         //ищем подукт
         //если передан token продукта
@@ -203,22 +216,22 @@ class userProductRatingActions extends myActions
         //иначе создаём для того продукта, на странице которого находимся
         if (!isset($this->_product))
         {
-            $this->_product = $this->getRoute()->getObject();        
+            $this->_product = $this->getRoute()->getObject();
         }
         if (!$this->_product)
         {
-            $result['success'] = false;  
-            $result['error'][] = "Товар не найден";  
+            $result['success'] = false;
+            $result['error'][] = "Товар не найден";
         }
         //значение рейтинга
         if (!in_array($this->_request['rating'],array(1,2,3,4,5)))
         {
-             $result['success'] = false;  
-             $result['error'][] = 'Значение рейтинга должно быть от 1 до 5';  
-        }      
+             $result['success'] = false;
+             $result['error'][] = 'Значение рейтинга должно быть от 1 до 5';
+        }
         $this->_validateResult = $result;
   }
-  
- 
+
+
 }
 
