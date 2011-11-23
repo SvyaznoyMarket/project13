@@ -32,7 +32,7 @@ class ProductPropertyRelation extends BaseProductPropertyRelation
     $property = ProductPropertyTable::getInstance()->getById($this->property_id, array('with_options' => false));
     $field = $this->getTable()->getValueFieldByType($property->type);
 
-    if ('boolean' == $type)
+    if ('boolean' == $property->type)
     {
       $realValue = null;
       $showValue = null;
