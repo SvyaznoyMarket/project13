@@ -18,7 +18,8 @@ class qrcodeActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $qrcode = !empty($request['qrcode']) ? QrcodeTable::getInstance()->findOneByToken($request['qrcode']) : false;
-    $this->forward404Unless($qrcode, "Не найден qrcode #{$request['qrcode']}");
+    //$this->forward404Unless($qrcode, "Не найден qrcode #{$request['qrcode']}");
+    $this->redirectUnless($qrcode, '@homepage');
 
     $ids = array();
     foreach ($qrcode->getContentData() as $item)
