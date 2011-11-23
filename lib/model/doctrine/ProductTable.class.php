@@ -607,8 +607,8 @@ class ProductTable extends myDoctrineTable
       //'barcode',
     ));
     if (true
-      && in_array($action, array('save', 'delete'))
-      && count($intersection)
+      && (('save' == $action) && count($intersection))
+      || ('delete' == $action)
     ) {
       $return[] = "product-{$record->core_id}";
 
