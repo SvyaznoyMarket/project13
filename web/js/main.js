@@ -82,7 +82,7 @@ $(document).ready(function(){
 	var ableToLoad = true
 	var compact = $("div.goodslist").length
 	function liveScroll( lsURL, pageid ) {
-		lsURL += pageid + '/' + (( compact ) ? 'compact/' : 'expanded/')
+		lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
 		var loader =
 			"<div id='ajaxgoods' class='bNavLoader'>" +
@@ -93,18 +93,16 @@ $(document).ready(function(){
 				"</div>" +
 			"</div>"
 		tmpnode.after( loader )
-		//tmpnode.after('<div id="ajaxgoods" style="width:100%; text-align:right;"><span style="margin-bottom: 6px;">Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
-		var sort = $("div#sorting")
-		
-		var data = {}
-		
-		if (sort.length) {
+				
+		var params = $('.bigfilter.form').parent().serializeArray() 
+		if( $("#sorting").length ) {
 			
-			data = { 'sort' : sort.data('sort') }
-		
+			params.push( { name:'sort', value : $("#sorting").data('sort') }
+)
 		}
-		
-			$.get( lsURL, data, function(data){
+
+		console.info(params)
+		$.get( lsURL, params, function(data){
 			
 			if ( data != "" && !data.data ) { // JSON === error
 				ableToLoad = true
