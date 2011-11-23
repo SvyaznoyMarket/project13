@@ -12,10 +12,9 @@ $dataAr = array();
 $module = sfContext::getInstance()->getModuleName();
 if ($module == 'tag') {
     $tag = $request->getParameter('tag');
-    $productType = $request->getParameter('productType');
     $dataAr['tag'] = $tag;
     if (isset($productType)) {
-        $dataAr['productType'] = $productType;
+        $dataAr['productType'] = $productType['token'];
     }
     $infinityUrl = url_for('tag_showAjax', $dataAr);
     
