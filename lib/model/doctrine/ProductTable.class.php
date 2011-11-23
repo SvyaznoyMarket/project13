@@ -184,11 +184,12 @@ class ProductTable extends myDoctrineTable
           $parameterGroup[$propertyGroupRelation['position']] = new ProductParameterGroup($propertyGroup, $productParameterArray);
           //$record['ParameterGroup'][$propertyGroup['ProductTypePropertyGroupRelation'][0]->position] = new ProductParameterGroup($propertyGroup, $productParameterArray);
         }
-      }
-      ksort($parameterGroup);
-      foreach ($parameterGroup as $productParameterGroup)
-      {
-        $record['ParameterGroup'][] = $productParameterGroup;
+
+        ksort($parameterGroup);
+        foreach ($parameterGroup as $productParameterGroup)
+        {
+          $record['ParameterGroup'][] = $productParameterGroup;
+        }
       }
     }
 

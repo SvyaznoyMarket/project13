@@ -21,15 +21,16 @@ class ProductPropertyRelation extends BaseProductPropertyRelation
 
   public function getRealValue()
   {
-    $field = $this->getTable()->getValueFieldByType($this->type ? $this->type : $this->Property->type);
+    $property = ProductPropertyTable::getInstance()->getById($this->property_id, array('with_options' => false));
+    $field = $this->getTable()->getValueFieldByType($property->type);
 
     return $this->get($field);
   }
 
   public function setRealValue($value)
   {
-    $type = $this->type ? $this->type : $this->Property->type;
-    $field = $this->getTable()->getValueFieldByType($type);
+    $property = ProductPropertyTable::getInstance()->getById($this->property_id, array('with_options' => false));
+    $field = $this->getTable()->getValueFieldByType($property->type);
 
     if ('boolean' == $type)
     {

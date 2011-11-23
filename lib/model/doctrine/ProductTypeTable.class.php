@@ -52,14 +52,14 @@ class ProductTypeTable extends myDoctrineTable
     {
       $with = (in_array($params['view'], array('show', 'list'))) ? (' WITH productTypePropertyRelation.view_'.$params['view'].' = true') : '';
       $q->leftJoin('productType.PropertyRelation productTypePropertyRelation'.$with)
-        ->addOrderBy('productTypePropertyRelation.group_id, productTypePropertyRelation.group_position')
+        ->addOrderBy('productTypePropertyRelation.group_id, productTypePropertyRelation.group_position') // TODO: check
       ;
 
       if ($params['group_property'])
       {
         $q->leftJoin('productType.PropertyGroupRelation propertyGroupRelation')
           ->leftJoin('propertyGroupRelation.PropertyGroup propertyGroup')
-          ->addOrderBy('propertyGroupRelation.position')
+          ->addOrderBy('propertyGroupRelation.position') // TODO: check
         ;
       }
     }
@@ -91,11 +91,14 @@ class ProductTypeTable extends myDoctrineTable
       {
         $propertyRelation['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id']);
 
-        if (!isset($groupedPropertyArray[$propertyRelation->group_id]))
+        if ($params['group_property'])
         {
-          $groupedPropertyArray[$propertyRelation->group_id] = ProductPropertyTable::getInstance()->createList();
+          if (!isset($groupedPropertyArray[$propertyRelation->group_id]))
+          {
+            $groupedPropertyArray[$propertyRelation->group_id] = ProductPropertyTable::getInstance()->createList();
+          }
+          $groupedPropertyArray[$propertyRelation->group_id][] = $propertyRelation['Property'];
         }
-        $groupedPropertyArray[$propertyRelation->group_id][] = $propertyRelation['Property'];
       }
 
       if ($params['group_property'])
@@ -103,8 +106,8 @@ class ProductTypeTable extends myDoctrineTable
         foreach ($record['PropertyGroup'] as $propertyGroup)
         {
           // TODO: Сделать поприличнее
-          // if (array_key_exists($propertyGroup->id, $groupedPropertyArray)) {
-          if (isset($groupedPropertyArray[$propertyGroup->id])) {
+          //if (isset($groupedPropertyArray[$propertyGroup->id])) {
+          if (array_key_exists($propertyGroup->id, $groupedPropertyArray)) {
             $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
           }
           else
