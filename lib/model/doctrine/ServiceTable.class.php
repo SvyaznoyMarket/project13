@@ -23,9 +23,9 @@ class ServiceTable extends myDoctrineTable
       'id'          => 'core_id',
       'name'        => 'name',
       'description' => 'description',
-//      'work'        => 'work',
+      'work'        => 'work',
 //      'expendable'  => 'expendable',
-//      'is_active'   => 'is_active',
+      'is_active'   => 'is_active',
     );
   }
 

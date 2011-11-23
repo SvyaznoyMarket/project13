@@ -30,18 +30,23 @@ ServiceCategory:
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string }
+    main_photo:        { type: string(255), notnull: false, default: null }    
     is_active:         { type: boolean, notnull: true, default: false }
 
 ServicePrice:
   options:
     comment: 'Стоимость услуг F1 по регионам'
+  actAs:
+    Corable:        { push: disable }    
   columns:
-    region_id:         { type: integer(20), notnull: true, primary: true }
+    id:                     { type: integer(20), autoincrement: true, primary: true }    
+    service_price_list_id:  { type: integer(20), notnull: true }    
     service_id:        { type: integer(20), notnull: true, primary: true }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена услуги' }
   relations:
     Service:           { class: Service, foreignAlias: Price, local: service_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Region:            { class: Region, foreignAlias: ServicePrice, local: region_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    PriceList:         { class: ProductPriceList, foreignAlias: Price, local: service_price_list_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
 
 ServiceProductRelation:
   options:
