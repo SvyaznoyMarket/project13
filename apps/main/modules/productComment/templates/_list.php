@@ -14,23 +14,23 @@
 <tbody>
 	<tr>
 		<th><a href="javascript:void(0)">5 звезд</a></th>
-		<td><div class="grade"><div style="width:<?php echo round($recomendStat['rating_5']/$recomendStat['count']*100) ?>%"></div></div><?php echo $recomendStat['rating_5'] ?></td>
+		<td><div class="grade"><div style="width:<?php echo $recomendStat['count'] > 0 ? round($recomendStat['rating_5']/$recomendStat['count']*100) : 0 ?>%"></div></div><?php echo $recomendStat['rating_5'] ?></td>
 	</tr>
 	<tr>
 		<th><a href="javascript:void(0)">4 звезды</a></th>
-		<td><div class="grade"><div style="width:<?php echo round($recomendStat['rating_4']/$recomendStat['count']*100) ?>%"></div></div><?php echo $recomendStat['rating_4'] ?></td>
+		<td><div class="grade"><div style="width:<?php echo $recomendStat['count'] > 0 ? round($recomendStat['rating_4']/$recomendStat['count']*100) : 0 ?>%"></div></div><?php echo $recomendStat['rating_4'] ?></td>
 	</tr>
 	<tr>
 		<th><a href="javascript:void(0)">3 звезды</a></th>
-		<td><div class="grade"><div style="width:<?php echo round($recomendStat['rating_3']/$recomendStat['count']*100) ?>%"></div></div><?php echo $recomendStat['rating_3'] ?></td>
+		<td><div class="grade"><div style="width:<?php echo $recomendStat['count'] > 0 ? round($recomendStat['rating_3']/$recomendStat['count']*100) : 0 ?>%"></div></div><?php echo $recomendStat['rating_3'] ?></td>
 	</tr>
 	<tr>
 		<th><a href="javascript:void(0)">2 звезды</a></th>
-		<td><div class="grade"><div style="width:<?php echo round($recomendStat['rating_2']/$recomendStat['count']*100) ?>%"></div></div><?php echo $recomendStat['rating_2'] ?></td>
+		<td><div class="grade"><div style="width:<?php echo $recomendStat['count'] > 0 ? round($recomendStat['rating_2']/$recomendStat['count']*100) : 0 ?>%"></div></div><?php echo $recomendStat['rating_2'] ?></td>
 	</tr>
 	<tr>
 		<th><a href="javascript:void(0)">1 звезда</a></th>
-		<td><div class="grade"><div style="width:<?php echo round($recomendStat['rating_1']/$recomendStat['count']*100) ?>%"></div></div><?php echo $recomendStat['rating_1'] ?></td>
+		<td><div class="grade"><div style="width:<?php echo $recomendStat['count'] > 0 ? round($recomendStat['rating_1']/$recomendStat['count']*100) : 0 ?>%"></div></div><?php echo $recomendStat['rating_1'] ?></td>
 	</tr>
 </tbody>
 </table>
