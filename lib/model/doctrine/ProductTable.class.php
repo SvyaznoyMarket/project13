@@ -38,13 +38,15 @@ class ProductTable extends myDoctrineTable
       'media_image'     => 'main_photo',
       'prefix'          => 'prefix',
       'is_primary_line' => 'is_lines_main',
+      'is_model'        => 'is_model',
 
-      'type_id'       => array('rel' => 'Type'),
-      'brand_id'      => array('rel' => 'Creator'),
-      'category'      => array('rel' => 'Category'),
-      'tag'           => array('rel' => 'Tag'),
-      'line_id'       => array('rel' => 'Line'),
-      'model_id'      => array('rel' => 'Model'),
+      'type_id'         => array('rel' => 'Type'),
+      'brand_id'        => array('rel' => 'Creator'),
+      'category'        => array('rel' => 'Category'),
+      'tag'             => array('rel' => 'Tag'),
+      'line_id'         => array('rel' => 'Line'),
+      'model_id'        => array('rel' => 'Model'),
+      //'property_model'  => array('rel' => 'ModelProperty'),
     );
   }
 
@@ -54,6 +56,7 @@ class ProductTable extends myDoctrineTable
       'view'           => false, // list, show
       'group_property' => false, // группировать свойства товара по группам
       'with_line'      => false,
+      'with_model'     => false, // список только товаров, без моделей
     );
   }
 
@@ -81,6 +84,11 @@ class ProductTable extends myDoctrineTable
       $q->innerJoin('product.Line line');
     }
 
+    if (false == $params['with_model'] && 'show' != $params['view'])
+    {
+      $q->addWhere('product.model_id IS NULL OR product.is_model = ?', 1);
+    }
+
     $q->orderBy('product.is_instock DESC, product.score DESC');
 
     return $q;
@@ -91,6 +99,8 @@ class ProductTable extends myDoctrineTable
     $this->applyDefaultParameters($params, array(
       'with_properties' => false,
       'property_view'   => false,
+      'with_line'       => false,
+      'with_model'      => false,
     ));
 
     $q = $this->createBaseQuery($params);

@@ -148,6 +148,46 @@ class Product extends BaseProduct
     {
       $this->main_photo = 'default.jpg';
     }
+    
+    if (isset($data['is_model']) && 1 == $data['is_model'])
+    {
+      $property_ids = array();
+      foreach ($this->ProductPropertyModelRelation as $productPropertyModelRelation)
+      {
+        $property_ids[$productPropertyModelRelation['product_property_id']] = $productPropertyModelRelation['id'];
+      }
+      
+      if (isset($data['property_model']) && count($data['property_model']))
+      {
+        foreach($data['property_model'] as $relationData)
+        {
+          if ($this->id)
+          {
+            $productProperty = ProductPropertyTable::getInstance()->getByCoreId($relationData['property_id']);
+            $productModelPropertyRelation = ProductModelPropertyRelationTable::getInstance()->findOneByProductIdAndProductPropertyId($this->id, $productProperty->id);
+          }
+          if (!isset($productModelPropertyRelation) || empty($productModelPropertyRelation))
+          {
+            $productModelPropertyRelation = new ProductModelPropertyRelation();
+          }
+          $productModelPropertyRelation->importFromCore($relationData);
+          $this->ProductPropertyModelRelation[] = $productModelPropertyRelation;
+          unset($property_ids[$productModelPropertyRelation['product_property_id']]);
+        }
+      }
+      
+      //Удаляю все, что лишнее
+      if ($this->id && count($property_ids))
+      {
+        $q = Doctrine_Query::create()
+          ->delete('ProductModelPropertyRelation')
+          ->andWhereIn('id', array_values($property_ids))
+        ;
+
+        $deleted = $q->execute();
+      }
+
+    }
 
     //Временные правила для отображения товара!!!
     if (empty($data['media_image']))
@@ -390,5 +430,17 @@ class Product extends BaseProduct
     }
 
     return $count;
+  }
+  
+  public function getModelProperty()
+  {
+    $q = ProductPropertyTable::getInstance()->createBaseQuery();
+    
+    $q->innerJoin('productProperty.ProductModelRelation productModelRelation WITH productModelRelation.product_id = ?', array($this->is_model ? $this->id : $this->model_id))
+      ->innerJoin('productProperty.ProductTypeRelation productTypeRelation WITH productTypeRelation.product_type_id = ?', $this->type_id)
+      ->orderBy('productModelRelation.position ASC');
+    
+    
+    return $q->execute();
   }
 }

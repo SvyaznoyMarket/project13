@@ -234,11 +234,28 @@ class productComponents extends myComponents
    *
    * @param Product $product Товар
    */
-  public function executeProduct_group()
+  public function executeProduct_model()
   {
-    $properties = $this->product->getGroup()->getProperty();
-    $q = ProductTable::getInstance()->createBaseQuery()->addWhere('product.group_id = ?', array($this->product->group_id,));
+    if (!$this->product->is_model && !$this->product->model_id)
+    {
+      return sfView::NONE;
+    }
+    
+    $properties = $this->product->getModelProperty();
+    if (!count($properties))
+    {
+      return sfView::NONE;
+    }
+        
+    //myDebug::dump($properties);
+    $model_id = !empty($this->product->model_id) ? $this->product->model_id : $this->product->id;
+    $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
+
+    if (empty($product_ids))
+    {
+      return sfView::NONE;
+    }
 
     $q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
     $products_properties = $this->product->getPropertyRelation();
@@ -262,26 +279,11 @@ class productComponents extends myComponents
       foreach ($values as $id => $value)
       {
         $realValue = $value->getRealValue();
-        $value_to_map[$realValue]['value'] = $realValue;
-        switch ($property['type']):
-          case 'select':
-            //$value_to_map[$id]['value'] = $value['option_id'];
-            foreach ($property['Option'] as $option)
-            {
-              if ($option['id'] == $value['option_id'])
-              {
-                $value_to_map[$realValue]['name'] = $option['value'];
-                break;
-              }
-            }
-            break;
-          case 'string': case 'integer': case 'float': case 'text':
-            $value_to_map[$realValue]['name'] = $value_to_map[$realValue]['value'];
-            break;
-          default:
-            $value_to_map[$id] = array('name' => '', 'value' => '',);
-            break;
-        endswitch;
+        $value_to_map[$realValue] = array(
+          'id'    => $id,
+          'url'   => url_for('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id']))),
+          'parameter' => new ProductParameter($property['ProductTypeRelation'][0], array($value, )),
+        );
         if (isset($values[$id]['is_selected']))
         {
           $value_to_map[$realValue]['is_selected'] = $values[$id]['is_selected'];
@@ -290,14 +292,22 @@ class productComponents extends myComponents
         {
           $value_to_map[$realValue]['is_selected'] = 0;
         }
+        if ($value_to_map[$realValue]['is_selected'])
+        {
+          $property->mapValue('current', $realValue);
+        }
+        if ($property->ProductModelRelation[0]->is_image)
+        {
+          $value_to_map[$realValue]['photo'] = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ))->getMainPhotoUrl(1);
+        }
+        
       }
 
-      //$property->mapValue('old_values', sort($values));
-      sort($value_to_map);
+      ksort($value_to_map);
       $property->mapValue('values', $value_to_map);
     }
 
-    $this->properties = $properties;
+    $this->setVar('properties', $properties, true);
   }
 
   /**
@@ -308,7 +318,7 @@ class productComponents extends myComponents
   {
       $this->executeList_view();
   }
-  
+
   /**
    * Executes list_view component
    *
