@@ -276,7 +276,7 @@ EOF;
             ->select('pc.*') 
             ->whereIn('id',  array_keys($this->_categoryList))          
             ->orderBy('pc.id')
-          //  ->limit(10)
+            #->limit(50)
             ->fetchArray();
     foreach($categoryList as $cat){
         $catIdToCoreId[ $cat['core_id'] ] = $cat['id'];
@@ -291,7 +291,8 @@ EOF;
         $cat->addAttribute('id',$categoryInfo['id']);
         if ($categoryInfo['core_parent_id'] && isset($catIdToCoreId[ $categoryInfo['core_parent_id'] ])) $cat->addAttribute('parentId', $catIdToCoreId[ $categoryInfo['core_parent_id'] ]);
         //если нужно добавить url
-        if ($this->_uploadCategotyUrl){
+        //хак!! для файла ya_market.xml не выгразуем пути
+        if ($this->_uploadCategotyUrl && strpos($this->_xmlFilePath, 'ya_market.xml') === false  ){
             $cat->addAttribute('url',$this->_companyData['url'].'/catalog/'.$categoryInfo['token'].'/');            
         }
         
@@ -350,7 +351,7 @@ EOF;
     }
     $offersList = $offersList
             ->orderBy('p.rating DESC')
-            #->limit(10)
+           # ->limit(50)
             ->fetchArray();
     #echo $offersList;
     #print_r($offersList);
