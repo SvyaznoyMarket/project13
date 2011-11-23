@@ -95,11 +95,17 @@ $(document).ready(function(){
 		tmpnode.after( loader )
 		//tmpnode.after('<div id="ajaxgoods" style="width:100%; text-align:right;"><span style="margin-bottom: 6px;">Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
 		var sort = $("div#sorting")
+		
 		var data = {}
+		
 		if (sort.length) {
+			
 			data = { 'sort' : sort.data('sort') }
+		
 		}
-		$.get( lsURL, data, function(data){
+		
+			$.get( lsURL, data, function(data){
+			
 			if ( data != "" && !data.data ) { // JSON === error
 				ableToLoad = true
 				if( compact )
@@ -137,7 +143,6 @@ $(document).ready(function(){
 					next = next.next()
 				var next_a = next.find('a')
 								.html('<span>123</span>')
-
 								.addClass('borderedR')
 				next_a.attr('href', next_a.attr('href').replace(/\?page=\d/,'') )
 
@@ -176,7 +181,15 @@ $(document).ready(function(){
 		  	}
 		})
 	}
-
+	
+	$.ajaxPrefilter(function( options ) {
+		options.url += '?ts=' + new Date().getTime()
+	})
+	
+	$('body').ajaxError(function(e, jqxhr, settings, exception) {
+		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
+	})
+	
 	$.ajaxSetup({
 		timeout: 7000,
 		statusCode: {
