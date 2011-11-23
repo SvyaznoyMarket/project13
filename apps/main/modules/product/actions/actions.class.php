@@ -46,6 +46,11 @@ class productActions extends myActions
     $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
     //Продукты в серии
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
+    
+    if (1 == count($product_ids))
+    {
+      $this->redirect(url_for('productCard', $this->product));
+    }
     //myDebug::dump($product_ids);
     //$q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
     //$q = ProductPropertyRelationTable::getInstance()->createBaseQuery()->addWhere('productPropertyRelation.product_id = ?', array($this->product->id, ));
