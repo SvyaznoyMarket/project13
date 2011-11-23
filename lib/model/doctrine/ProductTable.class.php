@@ -596,11 +596,21 @@ class ProductTable extends myDoctrineTable
 
   public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
   {
-    $return = array_merge(parent::getCacheEraserKeys($record, $action), array());
+    $return = array();
 
-    //$modified = $record->getLastModified();
-    if (in_array($action, array('save', 'delete')) /* || isset($modified['score']) */)
-    {
+    // for preSave
+    $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
+    // Массив полей, изменения в которых ведут к генерации кеш-ключей
+    $intersection = array_intersect($modified, array(
+      //'name',
+      //'barcode',
+    ));
+    if (true
+      && in_array($action, array('save', 'delete'))
+      && count($intersection)
+    ) {
+      $return[] = "product-{$record->core_id}";
+
       foreach ($record->Category as $productCategory)
       {
         $return[] = "productCategory-{$productCategory->core_id}";
