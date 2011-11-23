@@ -4,3 +4,5 @@
         <li><b<?php echo ($value['is_selected']) ? ' class="current"' : '' ?>><a href="<?php echo $value['url'] ?>"></a></b><img src="<?php echo $value['photo'] ?>" alt="<?php echo $value['parameter']->getValue() ?>" width="48" height="48" /></li>
     <?php endforeach ?>
     </ul>
+    <div class="clear"></div>
+        
