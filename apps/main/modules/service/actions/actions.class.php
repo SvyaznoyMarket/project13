@@ -21,8 +21,9 @@ class serviceActions extends myActions
         //главная страница f1
         $serviceCategory = ServiceCategoryTable::getInstance()->getQueryObject()->where('core_parent_id IS NULL')->fetchOne();
         $list = ServiceCategoryTable::getInstance()
-                        ->getQueryObject()
-                        ->where('core_parent_id=?',$serviceCategory['core_id'])->fetchArray();
+                        ->createQuery('sc')
+                        ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
+                        ->where('sc.core_parent_id=?',$serviceCategory['core_id'])->fetchArray();
     } else {
         //страница категории
         $serviceCategory = $this->getRoute()->getObject();

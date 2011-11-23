@@ -15,7 +15,9 @@
                if (count($currentServiceList)<1) continue;
             ?>   
             <div class="serviceblock">
-                <div class="photo"><a href=""><img width="160" height="120" alt="" src="<?php echo $item['image']; ?>"></a></div>
+                <?php if (isset($item['image'])) { ?>
+                    <div class="photo"><a href=""><img width="160" height="120" alt="" src="<?php echo $item['image']; ?>"></a></div>
+                <?php } ?>
                 <div class="info">
                     <h3><?php echo $item['name'] ?></h3>
                     <?php 

@@ -29,11 +29,6 @@ class serviceComponents extends myComponents
   */
   public function executeShow()
   {
-    $this->setVar('item', array(
-      'name'         => (string)$this->service,
-      'description'  => $this->service->description,
-      'price'        => (isset($this->service->Price)) ? $this->service->Price->getFirst()->price : "",
-    ), true);
   }
   
   public function executeRoot_page()
@@ -56,7 +51,7 @@ class serviceComponents extends myComponents
       'url'  => url_for('service_list'),
     );  
     
-    if (isset($this->serviceCategory)) {
+    if (isset($this->serviceCategory) && $this->serviceCategory) {        
         $parentCategory = $this->serviceCategory->getParentCategory();
         if (isset($parentCategory) && isset($parentCategory['name'])) {
             $list[] = array(
