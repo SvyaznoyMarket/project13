@@ -177,7 +177,9 @@ $(document).ready(function(){
 		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
-		$.getJSON( $( button ).attr('href') +'/1', function(data) {			
+//console.info( 'services =', F1.printChosen()  )
+		var services = ( F1 ) ? F1.printChosen() : ''
+		$.post( $( button ).attr('href') +'/1', 'services='+ services , function(data) {			
 			if ( data.success && ltbx ) {
 				var tmpitem = { 
 					'id'   : $( button ).attr('href'),

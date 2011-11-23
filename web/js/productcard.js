@@ -29,49 +29,16 @@ $(document).ready(function(){
 			mLib.show( $(this).attr('ref') , $(this).attr('href'))
 		return false
 	})
-    
-    $('#1click-trigger').click(function(e){
-        
-        $.get($(this).prop('href'), {}, function(response){
-            var cnt = $('<div class="popup"><i class="close" title="Закрыть">Закрыть</i>'+response+'</div>').appendTo(document.body),
-                form = cnt.find('form');
-            Custom.init();
-            cnt.lightbox_me({
-                onLoad: function(){
-                    cnt.find('input[type=checkbox], input[type=radio]').prettyCheckboxes();
-                    initOrder(true);
-                    form.submit(function(){
-                        $.post(form.prop('action'), form.serializeArray(), function(resp){
-                            cnt.html('<i class="close" title="Закрыть">Закрыть</i>'+resp);
-                            Custom.init();
-                            initOrder(true);
-                        });
-                        return false;
-                    });
-                },
-                onClose: function(){
-                    cnt.remove()
-                }
-			});
-        });
-        
-        return false;
-    });
-    
-	if (location.toString().search('1click-payment-ok') !== -1) {
-        alert('Заказ успешно оплачен');
-    } else if (location.toString().search('1click-payment-fail') !== -1) {
-        alert('При оплате заказа произошла ошибка');
-    }
 	
 	/* F1 */
 	var graypp = $('#f1pp')
-	var F1 = new F1boxes()
+	var ajaxaddURL = '/cart/add/2050407000545'
+	var ajaxdelURL = '/cart/delete/2050407000545'
+	F1 = new F1boxes()
 	$('.close', graypp).click( F1.close )
 	$(':reset', graypp).click( F1.rst )
 	$(':button', graypp).click( F1.memorize )
-	$('div.f1links input:checkbox').live('change',function() { 	
-//	console.info('cbox clicked', $(this).attr('ref') ) 
+	$('div.f1links input:checkbox').live('change',function() { 	 
 		F1.fire( $(this).attr('ref') )
 	})
 	
@@ -80,28 +47,48 @@ $(document).ready(function(){
 		var token = node.attr('ref') 
 		var bavatar = node
 		var savatar = $('div.f1linkslist input[ref='+ token +']')
-
+		
+		this.rmSavatar = function() {
+			if( savatar.length && ! savatar.parent().find('label').hasClass('checked') ) {
+				savatar.parent().remove()
+				savatar = $('#noobj')
+				return true
+			}	
+			return false
+		}
 		
 		this.click = function() {
 			graypp.show()
 			savatar.parent().find('label').removeClass('checked')
-			bavatar.parent().find('label').trigger('click')
+			var blab = bavatar.parent().find('label')
+			if( blab.hasClass('checked') )
+				blab.removeClass('checked')
+			else	
+				blab.addClass('checked')
 		}
 		
 		this.bclick = function() {
 			bavatar.parent().find('label').trigger('click')
 		}
-		this.sclick = function() {
-			var gret = bavatar.attr('id', bavatar.attr('id').replace('-','-small-2') )
-			var vine = bavatar.parent().find('label').attr('for', bavatar.parent().find('label').attr('for').replace('-','-small-2') )
-			vine.find('span').remove()
-			$('div.f1linkslist ul').append( $('<li>').append( vine ).append( gret ) )
-			$('div.f1linkslist li:last input').prettyCheckboxes()
+		
+		this.sclick = function() {			
 			if( savatar.length )
 				savatar.parent().find('label').addClass('checked')
 			else { //create element
-				
+				savatar = bavatar.clone().attr('id', bavatar.attr('id').replace('-','-small-2') )
+				var label = bavatar.parent().find('label').clone().attr('for', bavatar.parent().find('label').attr('for').replace('-','-small-2') )
+				label.text( label.text() + ' ('+ bavatar.parent().next().find('strong').text().replace(/\s/,'') +')') 
+					 .find('span').remove()
+				$('div.f1linkslist ul').append( $('<li>').append( label ).append( savatar ) )
+				$('div.f1linkslist li:last input').prettyCheckboxes()
+				self.addServer()
 			}
+		}
+		
+		this.addServer = function() {
+			$.post( ajaxaddURL + '/' + token + '/1', function(data){
+				console.info(data)
+			})
 		}
 		
 		this.getTkn = function() {
@@ -118,6 +105,26 @@ $(document).ready(function(){
 		$('input:checkbox', graypp ).each( function() {
 			collect.push( new Cbox($(this)) )
 		})
+		
+		
+		
+		this.Sparta = function() { // Its Sparta, man!
+			if( chosen.length < 3 ) 
+				return
+			for(var i=0; i < collect.length; i++)
+				collect[i].rmSavatar() 
+		}
+		
+		this.printChosen = function() {
+			if( !chosen.length )	
+				return ''
+			var out = '{"' + chosen[0] + '": 1'
+			for(var i=1; i < chosen.length; i++) {
+				out += ', "' + chosen[i] + '": 1'
+			}	
+			out += '}'
+			return out
+		}
 		
 		this.findbyTkn = function( tkn ) {
 			for(var i=0; i < collect.length; i++) 
@@ -145,22 +152,14 @@ $(document).ready(function(){
 		}
 		
 		this.memorize = function() {
-			console.info(chosen, memory)
-			/*outer:for(var i=0; i < memory.length; i++) 
-				if( memory[i] ) {
-					for(var j=0; j < chosen.length; j++) 
-						if( chosen[j] === memory[i] )
-							continue outer			
-					chosen.push( memory[i] )
-				}*/
 			$('.f1linkslist label.checked').removeClass('checked')	
 			chosen = []	
 			for(var i=0; i < memory.length; i++) 
 				if( memory[i] ) {
 					chosen.push( memory[i] )
 					self.findbyTkn( memory[i] ).sclick()
-				}				
-			
+				}		
+			self.Sparta()	
 			graypp.hide()
 			popupActive = false
 		}
