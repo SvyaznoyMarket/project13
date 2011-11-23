@@ -275,15 +275,14 @@ class productComponents extends myComponents
           $values[$products_property->id]->mapValue('is_selected', true);
         }
       }
+      //myDebug::dump($values);
       $value_to_map = array();
       foreach ($values as $id => $value)
       {
         $realValue = $value->getRealValue();
-        $value_to_map[$realValue] = array(
-          'id'    => $id,
-          'url'   => url_for('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id']))),
-          'parameter' => new ProductParameter($property['ProductTypeRelation'][0], array($value, )),
-        );
+        $value_to_map[$realValue]['id'] = $id;
+        $value_to_map[$realValue]['url'] = url_for('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
+        $value_to_map[$realValue]['parameter'] = new ProductParameter($property['ProductTypeRelation'][0], array($value, ));
         if (isset($values[$id]['is_selected']))
         {
           $value_to_map[$realValue]['is_selected'] = $values[$id]['is_selected'];
@@ -387,5 +386,14 @@ class productComponents extends myComponents
    */
   public function executeF1_lightbox(){
 
+  }
+  
+  public function executeKit()
+  {
+    /*$q = ProductTable::getInstance()->getQueryByKit($this->product);
+    $this->productPager = $this->getPager('Product', $q, 12, array());
+    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+
+    $this->view = 'compact';*/
   }
 }
