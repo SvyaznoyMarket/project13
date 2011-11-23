@@ -49,7 +49,6 @@ class searchActions extends myActions
       'product_type_id' => $this->productType ? array($this->productType->core_id) : array(),
       'is_product_type_first_only' => $this->productType ? 'false' : 'true',
     );
-    print_r( $params );
     $response = Core::getInstance()->query('search.get', $params);
     myDebug::dump($response);
     if (!$response)
