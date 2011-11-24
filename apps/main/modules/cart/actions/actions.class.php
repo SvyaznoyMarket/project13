@@ -43,32 +43,56 @@ class cartActions extends myActions
     if ($result['value'])
     {
       $product = ProductTable::getInstance()->findOneByToken($request['product']);
-
+      
       if ($product)
       {
+        if ($product->isKit())
+        {
+          $products = ProductTable::getInstance()->getQueryByKit($product)->execute();
+        }
+        else
+        {
+          $products = array($product);
+        }
+        
         try
         {
-
-          $currentNum = $this->getUser()->getCart()->getQuantityByToken($request['product']);
-          $request['quantity'] += $currentNum;
-
-          if ($request['quantity'] <= 0)
+            $added = array();
+          foreach ($products as $product)
           {
-            $request['quantity'] = 0;
-            $this->getUser()->getCart()->deleteProduct($product['id']);
-            $this->getUser()->setCacheCookie();
-          }
-          else
-          {
-            $this->getUser()->getCart()->addProduct($product, $request['quantity']);
-            $this->getUser()->setCacheCookie();
+            $currentNum = $this->getUser()->getCart()->getQuantityByToken($request['product']);
+            $request['quantity'] += $currentNum;
+
+            if ($request['quantity'] <= 0)
+            {
+              $request['quantity'] = 0;
+              $this->getUser()->getCart()->deleteProduct($product['id']);
+            }
+            else
+            {
+              $this->getUser()->getCart()->addProduct($product, $request['quantity']);
+            }
+            
+            $added[] = array('product' => $product, 'quantity' => $currentNum);
           }
         }
         catch (Exception $e)
         {
           $result['value'] = false;
           $result['error'] = "Не удалось добавить в корзину товар token='".$request['product']."'.";
+          foreach ($added as $item)
+          {
+            if ($item['quantity'] <= 0)
+            {
+              $this->getUser()->getCart()->deleteProduct($item['product']['id']);
+            }
+            else
+            {
+              $this->getUser()->getCart()->addProduct($item['product'], $item['quantity']);
+            }
+          }
         }
+        $this->getUser()->setCacheCookie();
       }
       else
       {
@@ -77,7 +101,7 @@ class cartActions extends myActions
       }
     }
 
-    //если помимо товаров надо добавить в карзину сервисы
+    //если помимо товаров надо добавить в корзину сервисы
     $services = $request['services'];
     if ($services)
     {

@@ -149,8 +149,7 @@ if (count($f1)):
   <div class="line pb15"></div>
 
   <?php //echo $product->Creator ?>
-<?php include_component('product', 'product_group', array('product' => $product,)) ?>
-<?php if (false): ?>
+<?php if (false): ?>1
   <ul class="inline">
     <li><?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?></li>
     <li><?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?></li>
@@ -188,10 +187,11 @@ if (count($f1)):
   <?php endif ?>
     </ul>
   </div>
-<div class="clear"></div>
-<div class="mb15"></div>
 <?php endif ?>
 <!-- /Photo video -->
+<?php include_component('product', 'product_model', array('product' => $product,)) ?>
+<div class="clear"></div>
+<div class="mb15"></div>
 
 
 <?php if (!empty($item['product']->description)): ?>
@@ -205,7 +205,9 @@ if (count($f1)):
     <div class="clear"></div>
 <?php endif ?>
 
-
+<?php if ($item['product']->isKit()): ?>
+    <?php //include_component('product', 'kit', array('product' => $item['product'])) ?>
+<?php else: ?>
 <!-- Description -->
 <h2 class="bold"><?php echo $item['product']->name ?> - Характеристики</h2>
 <div class="line pb25"></div>
@@ -228,6 +230,7 @@ if (count($f1)):
 
 <?php endif ?>
 <!-- /Description -->
+<?php endif ?>
 
     <?php include_component('product', 'tags', array('product' => $product)) ?>
 
