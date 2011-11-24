@@ -91,3 +91,13 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .copy {clear:both; padding-left:29px; color:#dcdcdc; font-size:11px}
 .copy A {color:#dcdcdc}
 
+.social_network {
+  float: right;
+  width: 180px;
+}
+.social_network span {
+  padding-right: 6px;
+}
+.social_network img {
+  vertical-align: middle;
+}

@@ -4,8 +4,10 @@
 rendering: ~
 security:  ~
 
-#welcome:
-#  class: WelcomeFilter
+welcome:
+  class: WelcomeFilter
+  param:
+    excluded_env: [ alpha ] # live and prod are hardcoded
 
 # insert your own filters here
 

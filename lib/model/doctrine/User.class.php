@@ -26,7 +26,6 @@ class User extends BaseUser
         $password .= sprintf("%x", mt_rand(0, 15));
       }
       $this->setPassword($password);
-      $this->save();
 
       /*
       $this->dispatcher->notify(new myEvent($this, 'user.create', array(

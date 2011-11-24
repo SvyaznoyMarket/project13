@@ -36,14 +36,23 @@ class ProductPropertyTable extends myDoctrineTable
 
   public function getById($id, array $params = array())
   {
+    $this->applyDefaultParameters($params, array(
+      'with_options' => false,
+    ));
+
     $q = $this->createBaseQuery($params);
 
     $this->setQueryParameters($q);
 
-    $q->leftJoin('productProperty.Option productPropertyOption')
-      ->addWhere('productProperty.id = ?', $id)
+    $q->addWhere('productProperty.id = ?', $id);
+
+    if ($params['with_options'])
+    {
+      $q->leftJoin('productProperty.Option productPropertyOption')
       ->addOrderBy('productPropertyOption.position')
     ;
+    }
+
     $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
 
     $record = $q->fetchOne();

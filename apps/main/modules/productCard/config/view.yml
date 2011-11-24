@@ -16,3 +16,4 @@ indexSuccess:
     - shelf/jquery.autocomplete-dev.js
     - jquery.scrollto.js
     - main.js
+    - app.product.js
