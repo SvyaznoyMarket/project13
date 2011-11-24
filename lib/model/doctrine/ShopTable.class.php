@@ -34,6 +34,17 @@ class ShopTable extends myDoctrineTable
     );
   }
 
+  public function createBaseQuery(array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createQuery('shop');
+
+    $q->addWhere('shop.is_active = ?', 1);
+
+    return $q;
+  }
+
   public function getForRoute(array $params)
   {
     $id = isset($params['shop']) ? $this->getIdBy('token', $params['shop']) : null;
