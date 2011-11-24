@@ -38,6 +38,7 @@ class ProductPhoto3DTable extends myDoctrineTable
   {
     $return = array();
 
+    /*
     $q = ProductTable::getInstance()->createQuery('product')
       ->select('product.core_id')
       ->innerJoin('product.Photo3D photo3d')
@@ -55,7 +56,7 @@ class ProductPhoto3DTable extends myDoctrineTable
     {
       $return[] = "product-{$id}";
     }
-
+    */
 
     return $return;
   }

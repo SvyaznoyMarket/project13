@@ -610,7 +610,7 @@ class ProductTable extends myDoctrineTable
     $this->applyDefaultParameters($params);
 
     $q = $this->createBaseQuery($params);
-    
+
     $q->innerJoin('product.KitRelation kitRelation WITH kitRelation.kit_id = ?', $product->id);
 
     $this->setQueryParameters($q, $params);
@@ -636,10 +636,12 @@ class ProductTable extends myDoctrineTable
     ) {
       $return[] = "product-{$record->core_id}";
 
+      /*
       foreach ($record->Category as $productCategory)
       {
         $return[] = "productCategory-{$productCategory->core_id}";
       }
+      */
     }
 
     return $return;
