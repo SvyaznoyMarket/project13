@@ -184,11 +184,12 @@ class ProductTable extends myDoctrineTable
           $parameterGroup[$propertyGroupRelation['position']] = new ProductParameterGroup($propertyGroup, $productParameterArray);
           //$record['ParameterGroup'][$propertyGroup['ProductTypePropertyGroupRelation'][0]->position] = new ProductParameterGroup($propertyGroup, $productParameterArray);
         }
-      }
-      ksort($parameterGroup);
-      foreach ($parameterGroup as $productParameterGroup)
-      {
-        $record['ParameterGroup'][] = $productParameterGroup;
+
+        ksort($parameterGroup);
+        foreach ($parameterGroup as $productParameterGroup)
+        {
+          $record['ParameterGroup'][] = $productParameterGroup;
+        }
       }
     }
 
@@ -321,10 +322,7 @@ class ProductTable extends myDoctrineTable
       */
       foreach ($filter['parameters'] as $parameter)
       {
-        if (count($parameter['values']) > 0)
-        {
-          $q->leftJoin('product.PropertyRelation productPropertyRelation'.$parameter['filter']->id.' WITH productPropertyRelation'.$parameter['filter']->id.'.property_id = '.$parameter['filter']->property_id);
-        }
+        $q->leftJoin('product.PropertyRelation productPropertyRelation'.$parameter['filter']->id.' WITH productPropertyRelation'.$parameter['filter']->id.'.property_id = '.$parameter['filter']->property_id);
         if (('choice' == $parameter['filter']->type) && (count($parameter['values']) > 0))
         {
           /*$q->addWhere(
@@ -334,7 +332,7 @@ class ProductTable extends myDoctrineTable
           //$q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group']);
           $q->andWhereIn('productPropertyRelation'.$parameter['filter']->id.'.option_id', $parameter['values']);
         }
-        else if ('range' == $parameter['filter']->type)
+        else if (('range' == $parameter['filter']->type) && (count($parameter['values']) > 0))
         {
           /*
           if (!empty($parameter['values']['from']) && !empty($parameter['values']['to']))
@@ -350,6 +348,10 @@ class ProductTable extends myDoctrineTable
           {
             $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_float <= ?', array($parameter['values']['to']));
           }
+        }
+        else if (('checkbox' == $parameter['filter']->type) && (null !== $parameter['values']) && (1 == count($parameter['values'])))
+        {
+          $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_boolean = ?', array($parameter['values'][0]));
         }
       }
     }
@@ -594,11 +596,22 @@ class ProductTable extends myDoctrineTable
 
   public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
   {
-    $return = array_merge(parent::getCacheEraserKeys($record, $action), array());
+    $return = array();
 
-    //$modified = $record->getLastModified();
-    if (in_array($action, array('save', 'delete')) /* || isset($modified['score']) */)
-    {
+    // for preSave
+    $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
+    // Массив полей, изменения в которых ведут к генерации кеш-ключей
+    $intersection = array_intersect($modified, array(
+      'is_instock',
+      //'name',
+      //'barcode',
+    ));
+    if (true
+      && (('save' == $action) && count($intersection))
+      || ('delete' == $action)
+    ) {
+      $return[] = "product-{$record->core_id}";
+
       foreach ($record->Category as $productCategory)
       {
         $return[] = "productCategory-{$productCategory->core_id}";
@@ -606,5 +619,37 @@ class ProductTable extends myDoctrineTable
     }
 
     return $return;
+  }
+
+  public function getTokensByIds(array $ids, array $params = array())
+  {
+    if (!count($ids))
+    {
+      return false;
+    }
+
+    //return $this->createBaseQuery($params)
+    return $this->createQuery()
+      ->select('token')
+      ->whereIn('id', $ids)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->execute()
+    ;
+  }
+
+  public function getTokenById($id, array $params = array())
+  {
+    if (empty($id))
+    {
+      return false;
+    }
+
+    //return $this->createBaseQuery($params)
+    return $this->createQuery()
+      ->select('token')
+      ->where('id = ?', $id)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->fetchOne()
+    ;
   }
 }

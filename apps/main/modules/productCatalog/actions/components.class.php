@@ -58,7 +58,7 @@ class productCatalogComponents extends myComponents
 
     $this->setVar('list', $list, false);
   }
-  
+
 /**
   * Executes navigation component
   *
@@ -78,7 +78,7 @@ class productCatalogComponents extends myComponents
     if (isset($this->productCategory) && !empty($this->productCategory))
     {
       $ancestorList = $this->productCategory->getNode()->getAncestors();
-      if ($ancestorList) 
+      if ($ancestorList)
       {
           foreach ($ancestorList as $ancestor)
           {
@@ -110,7 +110,7 @@ class productCatalogComponents extends myComponents
 
     $this->setVar('list', $list, false);
   }
-  
+
  /**
   * Executes category_list component
   *
@@ -292,12 +292,16 @@ class productCatalogComponents extends myComponents
             }
             break;
           case 'checkbox':
-            $list[] = array(
-              'name' => $productFilter->name,
-              'url'  => $getUrl($filter, $name),
-              'title' => '',
-              'title' => $productFilter->name,
-            );
+            if ((null !== $value) && (1 == count($value)))
+            {
+              $list[] = array(
+                'name' => $productFilter->name.': '.($value[0] ? 'да' : 'нет'),
+                'url'  => $getUrl($filter, $name),
+                'title' => '',
+                'title' => $productFilter->name,
+              );
+            }
+
             break;
         }
       }
@@ -468,10 +472,10 @@ class productCatalogComponents extends myComponents
     $this->setVar('currentCat', $this->productCategory, true);
     $ancestorList = $this->productCategory->getNode()->getAncestors();
 
-    if (isset($ancestorList[0])) { 
+    if (isset($ancestorList[0])) {
         $rootCat = $ancestorList[0];
     } else {
-        $rootCat = $this->productCategory;        
+        $rootCat = $this->productCategory;
     }
     $tree = $this->getSiteCatTree($rootCat, array());
     $this->setVar('ancestorList', $ancestorList, true);
@@ -479,10 +483,10 @@ class productCatalogComponents extends myComponents
     $this->setVar('root_list', $tree[ $rootCat['id'] ], true);
     $this->setVar('currentDirectory', $this->productCategory, true);
     $this->setVar('tree', $tree, true);
-                
+
     $this->setVar('quantity', $this->productCategory->countProduct(), true);
   }
-  
+
   public function getSiteCatTree($category, $result){
         if (is_object($category)) {
             $result[$category['id']]['category'] = $category;
@@ -490,7 +494,7 @@ class productCatalogComponents extends myComponents
                 //'select'       => 'productCategory.id,productCategory.core_id, productCategory.name, productCategory.token',
                 'with_filters' => false,
                 )
-            );      
+            );
             foreach($result[$category['id']]['children'] as $cat){
                 $result = $this->getSiteCatTree($cat, $result);
             }

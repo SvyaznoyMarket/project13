@@ -77,6 +77,13 @@ class productComponents extends myComponents
         } else {
             $this->delivery = false;
         }
+
+      $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
+      $item['rated'] =
+        true || !$this->getUser()->isAuthenticated()
+        ? in_array($this->product->id, $rated)
+        : false
+      ;
     }
     if (in_array($this->view, array('expanded')))
     {
@@ -327,7 +334,7 @@ class productComponents extends myComponents
   {
       $this->executeList_view();
   }
-  
+
   /**
    * Executes list_view component
    *

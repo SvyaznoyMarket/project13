@@ -109,6 +109,7 @@ class Product extends BaseProduct
           if (('integer' == $property->type) || 'float' == $property->type)
           {
             $value = str_replace(',', '.', $value);
+            $value = preg_replace('/[^\d\.]/', '', $value); // fix for value "1 000"
           }
 
           $collectionData[$property->id.'-'.$optionId] = array(
