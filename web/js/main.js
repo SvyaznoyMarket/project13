@@ -423,12 +423,29 @@ $(document).ready(function(){
 			e.preventDefault()
 		}
 	})
+	$('dl.bCtg ul:first li').each( function(){
+		if( $(this).hasClass('bCtg__eL2') && $(this).next().hasClass('bCtg__eL2') || 
+			$(this).hasClass('bCtg__eL3') && ! $(this).next().hasClass('bCtg__eL4') || 
+			$(this).hasClass('bCtg__eL4') ) {
+			//$(this).find('span').css('text-decoration','underline')
+			$(this).find('div').text('')
+		}
+	})
+	
+	$('.bCtg__eL1').click( function(e) {		
+		e.stopPropagation()
+		e.preventDefault()	
+		$('.bCtg__eL4').hide()
+		ft1()
+	})
 	
 	$('.bCtg__eL2').click( function(e) {
-		if( $(this).hasClass('mBold') ) {
+		if( !$(this).next().hasClass('bCtg__eL3') )
+			return
+		$('.bCtg__eL4').hide()	
+		if( $(this).hasClass('mBold') || $(this).hasClass('mSelected') ) {
 			ft1()
-		} else {
-			$('.bCtg__eL4').hide()
+		} else {			
 			ft2($(this), 'bCtg__eL3')
 		}	
 		e.stopPropagation()
