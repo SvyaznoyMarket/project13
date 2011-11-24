@@ -17,7 +17,7 @@ class shopActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-
+    $this->shopList = ShopTable::getInstance()->getList();
   }
  /**
   * Executes show action

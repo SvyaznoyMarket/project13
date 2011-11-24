@@ -1,3 +1,3 @@
-<h1>Магазины</h1>
+<?php slot('title', 'Магазины Enter') ?>
 
-<?php include_component('shop', 'list') ?>
+<?php include_component('shop', 'map') ?>

@@ -78,5 +78,48 @@ class shopComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
+
+ /**
+  * Executes map component
+  *
+  * @param myDoctrineCollection $shopList Коллекция магазинов
+  */
+  public function executeMap()
+  {
+    $shopTable = ShopTable::getInstance();
+
+    $regionList = RegionTable::getInstance()->getListHavingShops();
+
+    $markers = array();
+    $regions = array();
+    foreach ($regionList as $region)
+    {
+      $regions[] = array(
+        'id'        => $region->id,
+        'token'     => $region->token,
+        'latitude'  => $region->latitude,
+        'longitude' => $region->longitude,
+      );
+
+      $region->Shop = $shopTable->getListByRegion($region);
+      foreach ($region->Shop as $shop)
+      {
+        $markers[$shop->id] = array(
+          'id'        => $shop->id,
+          'region_id' => $shop->region_id,
+          'link'      => link_to('Подробнее о магазине', array('sf_route' => 'shop_show', 'sf_subject' => $shop)),
+          'name'      => $shop->name,
+          'address'   => $shop->address,
+          'regime'    => $shop->regime,
+          'latitude'  => $shop->latitude,
+          'longitude' => $shop->longitude,
+        );
+      }
+    }
+
+    $this->setVar('regionList', $regionList, true);
+    $this->setVar('markers', $markers, true);
+    $this->setVar('regions', $regions, true);
+  }
 }
 
