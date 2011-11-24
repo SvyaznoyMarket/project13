@@ -5,7 +5,9 @@
   <?php echo $service['work']; ?>
 </div>
 
-<div class="font16 pb10">
-    <strong><?php echo intval($service['Price'][0]['price']); ?> Р</strong>
-</div>
+<?php if (isset($service['currentPrice']) && $service['currentPrice']>0) { ?>
+    <div class="font16 pb10">
+        <strong><?php echo $service['currentPrice']; ?> Р</strong>
+    </div>
+<?php } ?>
 

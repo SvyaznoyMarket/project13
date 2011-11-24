@@ -29,7 +29,32 @@ class serviceComponents extends myComponents
   */
   public function executeShow()
   {
-  }
+      //ищем цену для текущего региона
+      /*
+      $priceListId = ProductPriceListTable::getInstance()->getCurrent();      
+      foreach($this->service->Price as $price) {
+          if ($priceListId->id == $price['service_price_list_id']) {
+              $service['currentPrice'] = $price['price'];
+              break;
+          }
+      }
+    */
+      //если для текущего региона цены нет, ищем цену для региона по умолчанию
+      if (!isset($service['currentPrice'])) {
+          $priceListIdDefault = ProductPriceListTable::getInstance()->getDefault();      
+          foreach($this->service->Price as $price) {
+              if ($priceListIdDefault->id == $price['service_price_list_id']) {
+                  $service['currentPrice'] = $price['price'];
+                  break;
+              }
+          }          
+      }
+      $service['currentPrice'] = number_format($service['currentPrice'], 0, ',', ' ');
+      $service['name'] = $this->service->name;
+      $service['description'] = $this->service->description;
+      $service['work'] = $this->service->work;
+      $this->setVar('service', $service);
+  }#
   
   public function executeRoot_page()
   {        

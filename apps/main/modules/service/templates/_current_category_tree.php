@@ -31,7 +31,7 @@
                         <?php if (isset($service['description'])){ ?><div class="pb5"><?php echo $service['description'] ?> </div><?php } ?>
                         <?php if (isset($service['Price']) && isset($service['Price'][0]) && isset($service['Price'][0]['price'])){ ?>
                             <div class="font16 pb10">
-                                <strong><?php echo intval($service['Price'][0]['price']); ?> Р</strong>
+                                <strong><?php echo number_format($service['Price'][0]['price'], 0, ',', ' '); ?> Р</strong>
                             </div>
                         <?php }                         
                     }
