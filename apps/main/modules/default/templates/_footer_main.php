@@ -15,5 +15,6 @@
 </div>
 
 <div class="copy">
+  <div class="social_network"><span class="gray font11">Посетите нас</span> <?php include_component('default', 'social_networks', array('view' => 'main')) ?></div>
   <div class="pb5">&copy; &laquo;Enter&raquo; 2011. Все права защищены. <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a></div>
 </div>
