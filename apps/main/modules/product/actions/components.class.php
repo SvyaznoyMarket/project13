@@ -73,7 +73,7 @@ class productComponents extends myComponents
             $this->delivery = $deliveryObj;
             $this->deliveryData = $deliveryData;
             $this->deliveryPeriod = round((strtotime($deliveryData['date']) - time()) / 3600 / 24);
-            if ($this->deliveryPeriod <= 0) $this->deliveryPeriod = 1;
+            if ($this->deliveryPeriod < 0) $this->deliveryPeriod = 0;
         } else {
             $this->delivery = false;
         }

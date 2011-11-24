@@ -114,7 +114,7 @@ class OrderStep1Form extends BaseOrderForm
         $dProducts_raw = sfContext::getInstance()->getUser()->getCart()->getProducts();
         $dProducts = array();
         foreach ($dProducts_raw as $dProduct) {
-            $dProducts[] = array('id' => $dProduct->id, 'quantity' => $dProduct->cart['quantity']);
+            $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
         }
         $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
             'date' => date('Y-m-d'),
@@ -124,7 +124,7 @@ class OrderStep1Form extends BaseOrderForm
         if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
             $deliveries = array(array(
                 'mode_id' => 1,
-                'date' => date('Y-m-d', time()+(3600*24)),
+                'date' => date('Y-m-d', time()+(3600*48)),
                 'price' => 0,
             ));
         }
@@ -133,8 +133,8 @@ class OrderStep1Form extends BaseOrderForm
         sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
         foreach ($deliveries as $deliveryType) {
             $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
-            $deliveryPeriod = round((strtotime($deliveryType['date']) - time()) / 3600 / 24);
-            if ($deliveryPeriod <= 0) $deliveryPeriod = 1;
+            $deliveryPeriod = round((strtotime($deliveryType['date']) - time()) / (3600 * 24));
+            if ($deliveryPeriod < 0) $deliveryPeriod = 0;
             $deliveryTypes[$deliveryObj['id']] = array(
                 'label' => $deliveryObj['name'],
                 //'description' => $deliveryObj['description'],
@@ -380,12 +380,13 @@ class OrderStep1Form extends BaseOrderForm
       {
       // если самовывоз
         if (!empty($taintedValues['shop_id'])) {
-            if (!$this->isOrderHaveEnougthInStock($taintedValues['shop_id'])) {
-                $this->validatorSchema['delivered_at']->setOption('required', true);
-                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1,3));
-            } else {
-                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3));
-            }
+          $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3));
+//            if (!$this->isOrderHaveEnougthInStock($taintedValues['shop_id'])) {
+//                $this->validatorSchema['delivered_at']->setOption('required', true);
+//                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1,3));
+//            } else {
+//                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3));
+//            }
         }
       }
     }
