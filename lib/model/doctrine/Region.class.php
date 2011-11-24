@@ -21,4 +21,11 @@ class Region extends BaseRegion
 
     $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
   }
+
+  public function toParams()
+  {
+    return array(
+      'region' => $this->token,
+    );
+  }
 }

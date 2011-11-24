@@ -49,6 +49,14 @@ class shopComponents extends myComponents
       );
     }
 
+    if ('inlist' == $this->view)
+    {
+      $item['url'] = url_for('shop_show', $this->shop);
+      $item['main_photo'] = isset($this->shop->Photo[0]) ? array(
+        'url_small' => $this->shop->Photo[0]->getPhotoUrl(5),
+      ) : false;
+    }
+
     // Clones first photo if shop has panorama
     if (count($item['photos']) && !empty($this->shop->panorama))
     {
@@ -64,19 +72,7 @@ class shopComponents extends myComponents
   */
   public function executeList()
   {
-    $list = array();
-    foreach (ShopTable::getInstance()->getList() as $shop)
-    {
-      $list[] = array(
-        'name'         => (string)$shop,
-        'token'        => $shop->token,
-        'phonenumbers' => $shop->phonenumbers,
-        'description'  => $shop->description,
-        'url'          => url_for('shop_show', $shop),
-      );
-    }
-
-    $this->setVar('list', $list, true);
+    $this->setVar('shopList', ShopTable::getInstance()->getListByRegion($this->region->id), true);
   }
 
  /**
@@ -86,8 +82,6 @@ class shopComponents extends myComponents
   */
   public function executeMap()
   {
-    $shopTable = ShopTable::getInstance();
-
     $regionList = RegionTable::getInstance()->getListHavingShops();
 
     $markers = array();
@@ -101,7 +95,7 @@ class shopComponents extends myComponents
         'longitude' => $region->longitude,
       );
 
-      $region->Shop = $shopTable->getListByRegion($region);
+      $region->Shop = ShopTable::getInstance()->getListByRegion($region);
       foreach ($region->Shop as $shop)
       {
         $markers[$shop->id] = array(

@@ -39,6 +39,13 @@ class RegionTable extends myDoctrineTable
     return $q;
   }
 
+  public function getForRoute(array $params)
+  {
+    $id = isset($params['region']) ? $this->getIdBy('token', $params['region']) : null;
+
+    return $this->getById($id);
+  }
+
   public function getDefault()
   {
     return $this->createBaseQuery()

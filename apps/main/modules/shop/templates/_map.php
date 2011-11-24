@@ -1,6 +1,4 @@
 <!-- bMapShops -->
-
-
 <div class="bMapShops">
   <div class='bMapShops__eHead'>
     <div class='bMapShops__eRegion'>
@@ -25,5 +23,5 @@
 
 <input id="map-centers" type="hidden" data-content='<?php echo json_encode($regions) ?>' />
 <input id="map-markers" type="hidden" data-content='<?php echo json_encode($markers) ?>' />
-
 <!-- /bMapShops -->
+

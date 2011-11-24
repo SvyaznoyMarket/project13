@@ -17,7 +17,8 @@ class shopActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->shopList = ShopTable::getInstance()->getList();
+    $this->region = !empty($request['region']) ? RegionTable::getInstance()->getByToken($request['region']) : RegionTable::getInstance()->getDefault();
+    $this->forward404Unless($this->region, 'Region not found');
   }
  /**
   * Executes show action
