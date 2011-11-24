@@ -21,8 +21,6 @@ class ProductParameter extends myDoctrineVirtualRecord
     $value = array();
     foreach ($productPropertyRelationArray as $propertyRelation)
     {
-      $propertyRelation->mapValue('type', $this->property->type);
-
       switch ($this->property->type)
       {
         case 'select':
@@ -31,16 +29,20 @@ class ProductParameter extends myDoctrineVirtualRecord
           break;
         case 'integer': case 'float':
           $realValue = $propertyRelation['real_value'];
-          $frac = $realValue - floor($realValue);
-          if (0 == $frac)
-          {
-            $realValue = intval($realValue);
-          }
-          else {
-            $realValue = rtrim($realValue, '0');
-          }
 
-          $realValue = str_replace('.', ',', $realValue);
+          if (false !== strpos($realValue, '.'))
+          {
+            $frac = $realValue - floor($realValue);
+            if (0 == $frac)
+            {
+              $realValue = intval($realValue);
+            }
+            else {
+              $realValue = rtrim($realValue, '0');
+            }
+
+            $realValue = str_replace('.', ',', $realValue);
+          }
 
           $value[] = $this->formatValue($this->property->pattern, $realValue, $this->property->unit);
         case 'boolean':

@@ -44,6 +44,7 @@
       <?php if (false): ?>
       &copy; &laquo;Enter&raquo; 2002-2011. Все права защищены.<br />
       Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.
+
       <div>
         <a href="">Политика конфидециальности</a>
         <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи в интернет-магазине</a>
@@ -51,6 +52,9 @@
       </div>
       <?php endif ?>
     </div>
+
+    <div class="social_network"><span class="gray font11">Посетите нас</span><?php include_component('default', 'social_networks') ?></div>
+
     <?php if (false): ?>
     <div class="counter">
       <a href=""><img src="/images/images/counter1.gif" alt="" width="80" height="30" /></a>

@@ -30,6 +30,7 @@ class ProductPropertyOptionTable extends myDoctrineTable
   {
     $return = array();
 
+    /*
     $q = ProductTable::getInstance()->createQuery('product')
       ->select('product.core_id')
       ->innerJoin('product.PropertyRelation productPropertyRelation')
@@ -47,6 +48,7 @@ class ProductPropertyOptionTable extends myDoctrineTable
     {
       $return[] = "product-{$id}";
     }
+    */
 
 
     return $return;
