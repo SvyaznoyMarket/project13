@@ -1,0 +1,1 @@
+ALTER TABLE `region`  ADD COLUMN `latitude` DECIMAL(8,6) NULL DEFAULT NULL COMMENT 'Широта' AFTER `is_default`,  ADD COLUMN `longitude` DECIMAL(8,6) NULL DEFAULT NULL COMMENT 'Долгота' AFTER `latitude`;
