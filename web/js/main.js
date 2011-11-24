@@ -189,7 +189,8 @@ $(document).ready(function(){
 	}
 	
 	$.ajaxPrefilter(function( options ) {
-		options.url += '?ts=' + new Date().getTime()
+		if( !options.url.match('search') )
+			options.url += '?ts=' + new Date().getTime()
 	})
 	
 	$('body').ajaxError(function(e, jqxhr, settings, exception) {
@@ -347,6 +348,7 @@ $(document).ready(function(){
 		  start: iscore,
 		  showHalf: true,
 		  path: '/css/skin/img/',
+		  readOnly: $('#rating').data('readonly'),
 		  starHalf: 'star_h.png',
 		  starOn: 'star_a.png',
 		  starOff: 'star_p.png',
@@ -399,20 +401,56 @@ $(document).ready(function(){
     })
 	/* left menu */
 	/*
-	$('.bCtg__eL2').toggle(
-		function(){
+	function ft1() {
 			$('.bCtg__eL3').hide()
-			$('.bCtg__eL2').show()
-		}, function(){
+			$('.bCtg__eL2').show()	
+	}
+	function ft2( init, slctr ) {
+			$('.'+slctr).hide()
 			function recShow( jnode ) {
-				if( jnode.next() && jnode.next().hasClass('bCtg__eL3') ) {
+				if( jnode.next() && jnode.next().hasClass(slctr) ) {
 					jnode.next().show()
 					recShow( jnode.next() )
 				}
 			}
-			recShow( $(this) )
+			recShow( $(init) )	
+	}
+	
+	$('.bCtg__eL3').click( function(e) {
+		if( $(this).next().hasClass('bCtg__eL4') ) {
+			ft2($(this), 'bCtg__eL4')
+			e.stopPropagation()
+			e.preventDefault()
 		}
-	)
+	})
+	$('dl.bCtg ul:first li').each( function(){
+		if( $(this).hasClass('bCtg__eL2') && $(this).next().hasClass('bCtg__eL2') || 
+			$(this).hasClass('bCtg__eL3') && ! $(this).next().hasClass('bCtg__eL4') || 
+			$(this).hasClass('bCtg__eL4') ) {
+			//$(this).find('span').css('text-decoration','underline')
+			$(this).find('div').text('')
+		}
+	})
+	
+	$('.bCtg__eL1').click( function(e) {		
+		e.stopPropagation()
+		e.preventDefault()	
+		$('.bCtg__eL4').hide()
+		ft1()
+	})
+	
+	$('.bCtg__eL2').click( function(e) {
+		if( !$(this).next().hasClass('bCtg__eL3') )
+			return
+		$('.bCtg__eL4').hide()	
+		if( $(this).hasClass('mBold') || $(this).hasClass('mSelected') ) {
+			ft1()
+		} else {			
+			ft2($(this), 'bCtg__eL3')
+		}	
+		e.stopPropagation()
+		e.preventDefault()
+	})
 	*/
 	/* top menu */
 	if( $('.topmenu').length ) {

@@ -56,7 +56,7 @@ class CacheEraser
 
     $file = $this->getConfig('file');
 
-    $result = file_put_contents($file, implode("\n", $keys)."\n", FILE_APPEND | LOCK_EX);
+    $result = file_put_contents($file, implode(";\n", $keys).";\n", FILE_APPEND | LOCK_EX);
     if (false === $result)
     {
       $this->logger->err('Can\'t write to file');

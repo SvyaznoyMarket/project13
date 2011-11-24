@@ -50,14 +50,21 @@ class productComponents extends myComponents
       $item['stock_url'] = url_for('productStock', $this->product);
       $item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
 
-        $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
-            'date' => date('Y-m-d'),
-            'geo_id' => $this->getUser()->getRegion('core_id'),
-            'product' => array(
-                array('id' => $this->product->core_id, 'quantity' => 1),
-            )
-        ));
-        $this->delivery = current($this->delivery);
+      $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
+          'date' => date('Y-m-d'),
+          'geo_id' => $this->getUser()->getRegion('core_id'),
+          'product' => array(
+              array('id' => $this->product->core_id, 'quantity' => 1),
+          )
+      ));
+      $this->delivery = current($this->delivery);
+
+      $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
+      $item['rated'] =
+        true || !$this->getUser()->isAuthenticated()
+        ? in_array($this->product->id, $rated)
+        : false
+      ;
     }
     if (in_array($this->view, array('expanded')))
     {
@@ -308,7 +315,7 @@ class productComponents extends myComponents
   {
       $this->executeList_view();
   }
-  
+
   /**
    * Executes list_view component
    *
