@@ -109,6 +109,7 @@ $(document).ready(function() {
       var showWindow = function() {
         var item = markers[this.id]
 
+        el.trigger('showMarkers')
         el.trigger('infoWindow', [ this, item ])
       }
 
@@ -133,11 +134,7 @@ $(document).ready(function() {
         //el.data('infoWindow').close()
       })
       google.maps.event.addListener(infoWindow, 'closeclick', function () {
-        $.each(el.data('markers'), function(i, marker) {
-          if (null == marker.map) {
-            marker.setMap(el.data('map'))
-          }
-        })
+        el.trigger('showMarkers')
       })
 
       el.data('map', map)
@@ -162,6 +159,14 @@ $(document).ready(function() {
 
       infoWindow.setContent(infoWindowTemplate.prop('innerHTML'));
       infoWindow.open(map, marker);
+    },
+    showMarkers: function() {
+      var el = $(this)
+      $.each(el.data('markers'), function(i, marker) {
+        if (null == marker.map) {
+          marker.setMap(el.data('map'))
+        }
+      })
     }
   })
 
