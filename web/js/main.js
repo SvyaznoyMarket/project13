@@ -82,6 +82,17 @@ $(document).ready(function(){
 	var ableToLoad = true
 	var compact = $("div.goodslist").length
 	function liveScroll( lsURL, pageid ) {
+		var params = []
+		if( $('.bigfilter.form').length ) 
+			params = $('.bigfilter.form').parent().serializeArray()
+/*		if( lsURL.match(/\?/ ) ) {	
+			var tmpar = lsURL.match(/\?(.)+$/)[0].replace(/\?/,'').split('=')
+
+			lsURL = lsURL.replace(/\?(.)+$/,'')
+			params.push( { name: tmpar[0], value : tmpar[1] }
+)
+						console.info(tmpar, params)
+		}*/
 		lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
 		var loader =
@@ -93,8 +104,7 @@ $(document).ready(function(){
 				"</div>" +
 			"</div>"
 		tmpnode.after( loader )
-				
-		var params = $('.bigfilter.form').parent().serializeArray() 
+					
 		if( $("#sorting").length ) {
 			
 			params.push( { name:'sort', value : $("#sorting").data('sort') }
@@ -294,49 +304,6 @@ $(document).ready(function(){
 				}
 			}
 		})
-/*
-		sliderRange.slider({
-			range: true,
-			step: stepf,
-			min: mini,
-			max: maxi,
-			values: [ from.val() ? from.val() : mini ,  to.val() ? to.val() : maxi ],
-			slide: function( e, ui ) {
-				from.val( ui.values[ 0 ] )
-				to.val( ui.values[ 1 ] )
-			},
-			change: function(e, ui) {
-				if ( parseFloat(to.val()) > 0 );
-					from.parent().trigger('preview')
-			}
-		})
-
-*/
-
-/*		if ( from && to ) {
-			from.val( sliderRange.slider( "values", 0 ) )
-			to.val( sliderRange.slider( "values", 1 ) )
-			from.change( function(){
-				from.val( from.val().replace(/\D/g,'') )
-				if( parseFloat(from.val()) > parseFloat(to.val()) ) {
-					sliderRange.slider( "values", 1 , from.val()*1 + stepf )
-					to.val( from.val()*1 + stepf )
-				}
-				sliderRange.slider( "values", 0 , from.val() )
-
-			})
-			to.change( function(){
-				to.val( to.val().replace(/\D/g,'') )
-				if( ! parseFloat(to.val()) )
-					to.val(10)
-				if( parseFloat(to.val()) < parseFloat(from.val()) ) {
-					sliderRange.slider( "values", 0 , to.val()*1- stepf )
-					from.val( to.val()*1 - stepf )
-				}
-				sliderRange.slider( "values", 1 , to.val() )
-			})
-
-		}*/
 
 	})
 
@@ -367,26 +334,8 @@ $(document).ready(function(){
 	/* --- */
     $(this).find('.ratingbox A').hover(function(){
         $("#ratingresult").html(this.innerHTML)
-        return false;
-    });
-	//TODO buy bottons remake
-    /*$(".yellowbutton").mousedown(function()   {
-    	$(this).toggleClass("yellowbuttonactive")
-    }).mouseup(function()   {
-    	$(this).removeClass("yellowbuttonactive")
+        return false
     })
-
-    $(".whitebutton").mousedown(function()   {
-    	$(this).toggleClass("whitebuttonactive")
-    }).mouseup(function()   {
-    	$(this).removeClass("whitebuttonactive")
-    })
-
-    $(".whitelink").mousedown(function()   {
-    	$(this).toggleClass("whitelinkactive")
-    }).mouseup(function()   {
-    	$(this).removeClass("whitelinkactive")
-    })*/
 
     $(".goodsbar .link1").bind( 'click.css', function()   {
         $(this).addClass("link1active")
@@ -399,59 +348,7 @@ $(document).ready(function(){
     $(".goodsbar .link3").bind( 'click.css', function()   {
         //$(this).addClass("link3active");
     })
-	/* left menu */
-	/*
-	function ft1() {
-			$('.bCtg__eL3').hide()
-			$('.bCtg__eL2').show()	
-	}
-	function ft2( init, slctr ) {
-			$('.'+slctr).hide()
-			function recShow( jnode ) {
-				if( jnode.next() && jnode.next().hasClass(slctr) ) {
-					jnode.next().show()
-					recShow( jnode.next() )
-				}
-			}
-			recShow( $(init) )	
-	}
 	
-	$('.bCtg__eL3').click( function(e) {
-		if( $(this).next().hasClass('bCtg__eL4') ) {
-			ft2($(this), 'bCtg__eL4')
-			e.stopPropagation()
-			e.preventDefault()
-		}
-	})
-	$('dl.bCtg ul:first li').each( function(){
-		if( $(this).hasClass('bCtg__eL2') && $(this).next().hasClass('bCtg__eL2') || 
-			$(this).hasClass('bCtg__eL3') && ! $(this).next().hasClass('bCtg__eL4') || 
-			$(this).hasClass('bCtg__eL4') ) {
-			//$(this).find('span').css('text-decoration','underline')
-			$(this).find('div').text('')
-		}
-	})
-	
-	$('.bCtg__eL1').click( function(e) {		
-		e.stopPropagation()
-		e.preventDefault()	
-		$('.bCtg__eL4').hide()
-		ft1()
-	})
-	
-	$('.bCtg__eL2').click( function(e) {
-		if( !$(this).next().hasClass('bCtg__eL3') )
-			return
-		$('.bCtg__eL4').hide()	
-		if( $(this).hasClass('mBold') || $(this).hasClass('mSelected') ) {
-			ft1()
-		} else {			
-			ft2($(this), 'bCtg__eL3')
-		}	
-		e.stopPropagation()
-		e.preventDefault()
-	})
-	*/
 	/* top menu */
 	if( $('.topmenu').length ) {
 		$.get('/category/main_menu', function(data){
@@ -505,29 +402,7 @@ $(document).ready(function(){
 	if( $('.error_list').length && $('.basketheader').length ) {
 		$.scrollTo( $('.error_list:first'), 300 )
 	}
-	/* bill typewriter */
-
-	/*if( $('.chequebottom ul').length && ! $('.error_list').length ) {
-		$('.chequebottom li div').hide()
-		$('.chequebottom li strong').hide()
-		$('.chequebottom .total strong').hide()
-		var rubl = $('<span class="rubl">p</span>')
-		function recF( i ) {
-			if( i == $('.chequebottom li').length ) {
-				var total = $('.chequebottom .total strong')
-				total.show().find('span').remove()
-				total.typewriter( 700, function(){ total.append( rubl ) })
-			}
-			if( i < $('.chequebottom li').length )
-				$('.chequebottom li').eq(i).find('div').show().typewriter( 1000, function(){
-					$('.chequebottom li').eq(i).find('strong').show()
-					recF(i+1)
-				})
-		}
-
-		recF(0)
-
-	}*/
+	
 	/* CART */
 	function printPrice ( val ) {
 
