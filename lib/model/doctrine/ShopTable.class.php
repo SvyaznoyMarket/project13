@@ -49,6 +49,7 @@ class ShopTable extends myDoctrineTable
 
     $q->leftJoin('shop.ProductRelation stockProductRelation')
       ->addWhere('stockProductRelation.product_id = ? AND stockProductRelation.stock_id IS NULL', $product_id)
+      ->addWhere('shop.is_active = ?', 1);
     ;
 
     $q->select('shop.token, shop.name, shop.region_id, shop.address, SUM(stockProductRelation.quantity) AS quantity')
@@ -66,13 +67,14 @@ class ShopTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->addWhere('shop.region_id = ?', $region_id);
+    $q->addWhere('shop.region_id = ?', $region_id)
+      ->addWhere('shop.is_active = ?', 1);
 
     $this->setQueryParameters($q, $params);
 
     return $q->execute();
   }
-  
+
   /**
    *
    * @return Shop
