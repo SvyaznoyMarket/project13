@@ -72,7 +72,7 @@ class productComponents extends myComponents
           $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryData['mode_id']);
           $this->delivery = $deliveryObj;
           $this->deliveryData = $deliveryData;
-          $this->deliveryPeriod = round((strtotime($deliveryData['date']) - time()) / 3600 / 24);
+          $this->deliveryPeriod = round((strtotime($deliveryData['date']) - time()) / (3600 * 24));
           if ($this->deliveryPeriod < 0) $this->deliveryPeriod = 0;
       } else {
           $this->delivery = false;

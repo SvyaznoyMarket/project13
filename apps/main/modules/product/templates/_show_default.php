@@ -72,7 +72,7 @@ foreach ($p3d as $p3d_obj)
   <div class="pb3"><strong>Доставка: <?php echo $delivery['name'] ?></strong></div>
   <div class="font11 gray">
       Стоимость: <strong><?php echo $deliveryData['price'] ?> руб.</strong><br />
-      <?php echo 'Доставим в течение '.format_number_choice('[0] дней|[1] 1 дня|{n: n % 10 > 1 && n % 10 < 5 && ( n < 11 || n > 14 ) && ( n % 100 < 11 || n % 100 > 14 ) } %1% дней|[5,+Inf] %1% дней ', array('%1%' => $deliveryPeriod), $deliveryPeriod) ?>
+      <?php echo 'Доставим в течение '.format_number_choice('[0] дней|[1] 1 дня|{n: n % 10 > 1 && n % 10 < 5 && ( n < 11 || n > 14 ) && ( n % 100 < 11 || n % 100 > 14 ) } %1% дней|[5,+Inf] %1% дней ', array('%1%' => $deliveryPeriod+1), $deliveryPeriod+1) ?>
 <!--      Москва. Доставим в течение 1-2 дней<br />
       <a href="" class="underline">Хотите быстрее?</a>-->
   </div>
@@ -92,6 +92,7 @@ foreach ($p3d as $p3d_obj)
   </div>
 
   <div class="clear pb15"></div>
+  <?php if (!$delivery): ?>
   <div class="mb15 font12 orange infoblock">
     <?php if (count($item['product']->Category) && 'furniture' == $item['product']->Category->getFirst()->getRootCategory()->token): ?>
     Этот товар вы можете заказать с доставкой по удобному адресу.
@@ -100,6 +101,7 @@ foreach ($p3d as $p3d_obj)
     <?php endif; ?>
     <br /><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>" class="underline">Стоимость и условия доставки</a><br/><span class="black" style="line-height: 2;">Подробности по телефону 8 (800) 700 00 09</span>
   </div>
+  <?php endif ?>
   <div class="pb5"><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать отзывы</a> (<?php echo $product->getCommentCount() ?>)</div>
   <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['product']->token )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
     Оценка пользователей:
