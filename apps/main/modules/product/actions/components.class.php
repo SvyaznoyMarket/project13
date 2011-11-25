@@ -51,32 +51,32 @@ class productComponents extends myComponents
       $item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
 
       sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
-        $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
-            'date' => date('Y-m-d'),
-            'geo_id' => $this->getUser()->getRegion('core_id'),
-            'product' => array(
-                array('id' => $this->product->core_id, 'quantity' => 1),
-            )
-        ));
-        if ($deliveries && count($deliveries) && !isset($deliveries['result'])) {
-            $deliveryData = null;
-            foreach ($deliveries as $delivery) {
-                if ($delivery['mode_id'] == 1) {
-                    $deliveryData = $delivery;
-                    break;
-                }
-            }
-            if ($deliveryData === null) {
-                $deliveryData = current($deliveries);
-            }
-            $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryData['mode_id']);
-            $this->delivery = $deliveryObj;
-            $this->deliveryData = $deliveryData;
-            $this->deliveryPeriod = round((strtotime($deliveryData['date']) - time()) / 3600 / 24);
-            if ($this->deliveryPeriod < 0) $this->deliveryPeriod = 0;
-        } else {
-            $this->delivery = false;
-        }
+      $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
+          'date' => date('Y-m-d'),
+          'geo_id' => $this->getUser()->getRegion('core_id'),
+          'product' => array(
+              array('id' => $this->product->core_id, 'quantity' => 1),
+          )
+      ));
+      if ($deliveries && count($deliveries) && !isset($deliveries['result'])) {
+          $deliveryData = null;
+          foreach ($deliveries as $delivery) {
+              if ($delivery['mode_id'] == 1) {
+                  $deliveryData = $delivery;
+                  break;
+              }
+          }
+          if ($deliveryData === null) {
+              $deliveryData = reset($deliveries);
+          }
+          $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryData['mode_id']);
+          $this->delivery = $deliveryObj;
+          $this->deliveryData = $deliveryData;
+          $this->deliveryPeriod = round((strtotime($deliveryData['date']) - time()) / 3600 / 24);
+          if ($this->deliveryPeriod < 0) $this->deliveryPeriod = 0;
+      } else {
+          $this->delivery = false;
+      }
       
       $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
       $item['rated'] =

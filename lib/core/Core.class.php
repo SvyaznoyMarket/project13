@@ -9,7 +9,8 @@ class Core
     $models = null,
     $logger = null,
     $token = null,
-    $client_id = null
+    $client_id = null,
+    $cache = null
   ;
   protected static
     $instance = null;
@@ -43,6 +44,13 @@ class Core
     curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
 
     $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/core_lib.log'));
+    
+    $redis = new sfRediskaCache();
+    if ($redis->has('core_api_client_id') && $redis->has('core_api_token')) {
+      $this->client_id = $redis->get('core_api_client_id');
+      $this->token = $redis->get('core_api_token');
+    }
+    $this->cache = $redis;
   }
 
   public function getConfig($name = null)
@@ -397,6 +405,8 @@ class Core
     {
       $this->client_id = $response['id'];
       $this->token = $response['token'];
+      $this->cache->set('core_api_client_id', $this->client_id);
+      $this->cache->set('core_api_token', $this->token);
       $this->logger->log('Authentification passed');
     }
 
