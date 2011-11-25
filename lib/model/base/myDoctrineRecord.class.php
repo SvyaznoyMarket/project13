@@ -226,6 +226,29 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     return $this->getTable()->getCacheEraserKeys($this, $action);
   }
 
+  /**
+   *
+   * @param string $case - Падеж: и, р, д, в, т, п
+   * @return string
+   *
+   * http://ru.wikipedia.org/wiki/%D0%9F%D0%B0%D0%B4%D0%B5%D0%B6
+   */
+  public function getLinguisticCase($case = 'и', $field = 'name')
+  {
+    $cases = array(
+      'и' => array(), // именительный
+      'р' => array(), // родительный
+      'д' => array(), // дательный
+      'в' => array(), // винительный
+      'т' => array(), // творительный
+      'п' => array(), // предложный
+    );
+
+    $value = $this->get($field);
+
+    return isset($cases[$case][$value]) ? $cases[$case][$value] : false;
+  }
+
   // TODO: удалить
   protected function getRecordByCoreId($model, $coreId, $returnId = false)
   {
