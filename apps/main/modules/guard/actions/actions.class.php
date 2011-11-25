@@ -111,7 +111,8 @@ class guardActions extends myActions
       $signoutUrl = sfConfig::get('app_guard_signout_url', $request->getReferer());
     }
 
-    $this->redirect('' != $signoutUrl ? $signoutUrl : '@homepage');
+    //$this->redirect('' != $signoutUrl ? $signoutUrl : '@homepage');
+    $this->redirect('@homepage');
   }
 
   /**
@@ -135,13 +136,40 @@ class guardActions extends myActions
     {
 		  // пробуем достать токен для смены пароля
 		  $login = $request->getParameter('login');
-		  if (strpos($login, '@') !== false)
+
+      $loginType = (false !== strpos($login, '@')) ? 'email' : 'phonenumber';
+
+      $validator = new sfValidatorOr(array(
+        new myValidatorEmail(array('required' => true)),
+        new myValidatorMobilePhonenumber(array('required' => true)),
+      ));
+
+      // validates login as email or phonenumber
+      $user = false;
+      $error = false;
+      try {
+        $validator->clean($login);
+
+        if ('email' == $loginType)
+        {
+          $user = UserTable::getInstance()->retrieveByEmail($login);
+        }
+        else
+        {
+          $user = UserTable::getInstance()->retrieveByPhonenumber($login);
+        }
+
+        if (!$user)
+        {
+          $error = 'Пользователь с таким '.('email' == $loginType ? 'email' : 'телефонным номером').' не найден';
+        }
+      }
+      catch (Exception $e)
       {
-			  $user = UserTable::getInstance()->retrieveByEmail($login);
-		  }
-      else {
-			  $user = UserTable::getInstance()->retrieveByPhonenumber($login);
-		  }
+        $user = false;
+        $error = 'Неправильный '.('email' == $loginType ? 'email' : 'телефонный номер');
+      }
+
 		  if ($user)
       {
 			  //$result = Core::getInstance()->query('user.get-password-token', array('id' => $user->core_id));
@@ -151,7 +179,8 @@ class guardActions extends myActions
 				  return $this->renderJson(array('success' => true));
 			  }
 		  }
-		  return $this->renderJson(array('success' => false));
+
+		  return $this->renderJson(array('success' => false, 'error' => $error));
 	  }
   }
 
@@ -338,7 +367,8 @@ class guardActions extends myActions
         {
           return $this->renderPartial('default/close');
         }
-        return $this->redirect($this->getSigninUrl());
+        //return $this->redirect($this->getSigninUrl());
+        return $this->redirect('user');
       }
     }
   }

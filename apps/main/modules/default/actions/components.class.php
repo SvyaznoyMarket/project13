@@ -41,9 +41,9 @@ class defaultComponents extends myComponents
       'url'  => url_for('@homepage'),
     ));
 
-    $this->setVar('list', $list, true);    
+    $this->setVar('list', $list, true);
   }
-  
+
 /**
   * Executes navigation component
   *
@@ -62,9 +62,9 @@ class defaultComponents extends myComponents
       'url'  => url_for('@homepage'),
     ));
 
-    $this->setVar('list', $list, true);    
-  }  
-   
+    $this->setVar('list', $list, true);
+  }
+
  /**
   * Executes pagination component
   *
@@ -120,5 +120,44 @@ class defaultComponents extends myComponents
     }
 
     $this->setVar('keys', $keys, true);
+  }
+/**
+  * Executes social_networks component
+  *
+  * @param string $view Вид
+  */
+  public function executeSocial_networks()
+  {
+    if (!in_array($this->view, array('default', 'main')))
+    {
+      $this->view = 'default';
+    }
+
+    $suffix = '';
+    if ('main' == $this->view)
+    {
+      $suffix = '-gray';
+    }
+
+    $list = array(
+      array(
+        'token' => 'twitter',
+        'url'   => 'http://twitter.com/#!/enter_ru',
+      ),
+      array(
+        'token' => 'facebook',
+        'url'   => 'http://www.facebook.com/groups/250713421639363/',
+      ),
+      array(
+        'token' => 'vkontakte',
+        'url'   => 'http://vkontakte.ru/public31456119',
+      ),
+    );
+    foreach ($list as &$item)
+    {
+      $item['image'] = image_tag('icon-'.$item['token'].$suffix.'.png');
+    } if (isset($item)) unset($item);
+
+    $this->setVar('list', $list, true);
   }
 }

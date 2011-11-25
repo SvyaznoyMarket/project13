@@ -1,5 +1,13 @@
-<ul>
-<?php foreach ($list as $item): ?>
-  <li><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></li>
-<?php endforeach ?>
-</ul>
+<!-- bMapInfo -->
+<div class='bMapShops__eInfo'>
+  <h2 class='bMapShops__eTitle'>Все магазины Enter в <?php echo $region->prefix.$region ?></h2>
+
+  <?php foreach ($shopList as $shop): ?>
+    <!-- __eCard -->
+    <?php include_component('shop', 'show', array('view' => 'inlist', 'shop' => $shop)) ?>
+    <!-- /__eCard -->
+  <?php endforeach ?>
+
+</div>
+<!-- /bMapInfo -->
+

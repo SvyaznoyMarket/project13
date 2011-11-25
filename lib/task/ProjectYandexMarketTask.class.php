@@ -54,6 +54,16 @@ class ProjectYandexMarketTask extends sfBaseTask
    * @var boolean 
    */
   private $_uploadCategotyUrl = true;
+  /**
+   * Используется только, если $_uploadCategotyUrl = true;
+   * Список файлов, для которых выгружать URL
+   * Если не задано - выгружать для всех
+   * @var type 
+   */
+  private $_uploadCategotyUrlFileList = array(
+      'export_mgcom.xml',
+      'export_realweb.xml'
+  );
   
   /**
    * Список товаров, выгружаемых для товара
@@ -82,19 +92,29 @@ class ProjectYandexMarketTask extends sfBaseTask
    *   - type = core/fix - из ядра, либо фиксированное значение
    *   - field - название_параметра_в_core (только для type==core)
    *   - value - значение (только для type==fix)
+   *   - file - выгружать ТОЛЬКО для этого файла (не обязательное)
    *  Пример:
       array(
           'name' => 'test',
           'type' => 'fix',
           'value' => 88
+          'file' => 'export_mgcom.xml'
       ),
       array(
           'name' => 'article-value',
           'type' => 'core',
           'field' => 'article'
+          'file' => 'export_mgcom.xml'
       ) 
     * */
-  private $_additionalParams = array();
+  private $_additionalParams = array(
+      array(
+          'name' => 'currencyId',
+          'type' => 'fix',
+          'value' => 'RUR',      
+          'file' => 'export_mgcom.xml'
+      )
+  );
   
   /**
    * Результат целиком
@@ -271,6 +291,22 @@ EOF;
    * Добавляет в xml список категорий товаров
    */
   private function _setCategoryList(){
+    //ваясним, выгружать ли URL категорий в текущий файл
+    if ($this->_uploadCategotyUrl) {
+        if (isset($this->_uploadCategotyUrlFileList)) {
+            $addCategoryUrl = false;
+            foreach($this->_uploadCategotyUrlFileList as $trueFile) {
+                if (strpos($this->_xmlFilePath, $trueFile) !== false ) {
+                    $addCategoryUrl = true;
+                    break;
+                }            
+            }
+        } else {
+           $addCategoryUrl = true; 
+        }
+    } else {
+        $addCategoryUrl = true;
+    }
     $categoryList = Doctrine_Core::getTable('ProductCategory')
             ->createQuery('pc')
             ->select('pc.*') 
@@ -351,7 +387,7 @@ EOF;
     }
     $offersList = $offersList
             ->orderBy('p.rating DESC')
-           # ->limit(50)
+            #->limit(50)
             ->fetchArray();
     #echo $offersList;
     #print_r($offersList);
@@ -410,7 +446,7 @@ EOF;
                 $value = $this->_getAdditionalPropValueByCode($offerInfo,$addParam);
                 if ($value) $offer->$addParam['name'] = $value;
             }
-
+            
         }
         
         catch(Exception $e){            
@@ -530,6 +566,13 @@ EOF;
   
   private function _getAdditionalPropValueByCode($productInfo,$param){
         $value = '';
+        //если надо задавать только для определённого файла
+        if (isset($param['file'])) {
+            //если сейчас не этот файл, ничего не делаем
+            if (strpos($this->_xmlFilePath, $param['file']) == false) {
+                return false;
+            }
+        }
         switch ($param['type']){
             case 'fix':
                 $value = $param['value'];

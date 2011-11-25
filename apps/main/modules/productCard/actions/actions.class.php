@@ -17,7 +17,7 @@ class productCardActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->product = $this->getRoute()->getObject();
+    $this->product = ($request['product'] instanceof Product) ? $request['product'] : $this->getRoute()->getObject();
     //$this->product = ProductTable::getInstance()->getByToken($request['product']);
 
 //    $title = $this->product['name'];
@@ -52,6 +52,14 @@ class productCardActions extends myActions
     //
     // история просмотра товаров
     $this->getUser()->getProductHistory()->addProduct($this->product);
+ 
+    $q = ProductTable::getInstance()->getQueryByKit($this->product);
+    
+    $this->productPager = $this->getPager('Product', $q, 8, array());
+    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+
+    $this->view = 'compact';
+    
   }
  /**
   * Executes preview action
@@ -61,31 +69,5 @@ class productCardActions extends myActions
   public function executePreview(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
-  }
- /**
-  * Executes show action
-  *
-  * @param sfRequest $request A request object
-  */
-  public function executeShow(sfWebRequest $request)
-  {
-    $table = ProductTable::getInstance();
-
-    $field = 'id';
-    $id = $request['product'];
-    foreach (array('id', 'token', 'core_id', 'barcode', 'article') as $v)
-    {
-      if (0 === strpos($request['product'], $v))
-      {
-        $field = $v;
-        $id = preg_replace('/^'.$v.'/', '', $id);
-
-        break;
-      }
-    }
-
-    $this->product = ProductTable::getInstance()->findOneBy($field, $id);
-
-    $this->redirect(array('sf_route' => 'productCard', 'sf_subject' => $this->product), 301);
   }
 }
