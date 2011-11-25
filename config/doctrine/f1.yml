@@ -9,6 +9,7 @@ Service:
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string }
     work:              { type: string }
+    main_photo:        { type: string(255), notnull: false, default: null }        
     expendable:        { type: string }
     is_active:         { type: boolean, notnull: true, default: false }
   relations:

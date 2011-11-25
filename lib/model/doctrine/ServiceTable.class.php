@@ -25,6 +25,7 @@ class ServiceTable extends myDoctrineTable
       'description' => 'description',
       'work'        => 'work',
 //      'expendable'  => 'expendable',
+      'media_image'  => 'main_photo',                 
       'is_active'   => 'is_active',
     );
   }
