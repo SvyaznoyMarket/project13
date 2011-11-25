@@ -1,3 +1,4 @@
+-----------------
 <?php
 $request = sfContext::getInstance()->getRequest();
 $page = $request->getParameter('page');
@@ -5,8 +6,33 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 ?>
 <?php $empty = 0 == $productPager->getNbResults() ?>
 
-<?php if( count($productPager->getLinks()) - 1 && !isset($noInfinity) ): ?>
-<div data-url="<?php echo url_for('productCatalog_categoryAjax',array('productCategory' => $productCategory->token )); ?>"
+<?php if( count($productPager->getLinks()) - 1 ): ?>
+<?php 
+$dataAr = array();
+$module = sfContext::getInstance()->getModuleName();
+if ($module == 'tag') {
+    //страница тега
+    $tag = $request->getParameter('tag');
+    $productType = $request->getParameter('productType');
+    $dataAr['tag'] = $tag;
+    if (isset($productType)) {
+        $dataAr['productType'] = $productType;
+    }
+    $infinityUrl = url_for('tag_showAjax', $dataAr);
+    
+} elseif ($module == 'search') {
+    //страница поиска
+    $q = $request->getParameter('q');
+    $dataAr['q'] = $q;
+    $infinityUrl = url_for('search_ajax', $dataAr);    
+} else {
+    //страница каталога (любая. возможно, с фильтрами и тегами)
+    $dataAr['productCategory'] = $productCategory->token;
+    $infinityUrl = url_for('productCatalog_categoryAjax', $dataAr);        
+}
+#echo $infinityUrl .'====$infinityUrl';
+?>
+<div data-url="<?php echo $infinityUrl; ?>"
 	 data-page="<?php  echo $page; ?>"
 	 data-mode="<?php  echo $view; ?>"
 	 data-lastpage="<?php echo $productPager->getLastPage(); ?>"
@@ -33,7 +59,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
   <div class="line pb10"></div>
 <?php endif ?>
 
-<?php if( count($productPager->getLinks()) - 1 && !isset($noInfinity) ): ?>
+<?php if( count($productPager->getLinks()) - 1  ): ?>
 <div data-url="<?php echo url_for('productCatalog_categoryAjax',array('productCategory' => $productCategory->token )); ?>"
 	 data-page="<?php  echo $page; ?>"
 	 data-mode="<?php  echo $view; ?>"

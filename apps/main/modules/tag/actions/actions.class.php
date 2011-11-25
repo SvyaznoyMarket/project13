@@ -63,7 +63,6 @@ class tagActions extends myActions
     ));
 
     $this->setVar('noSorting', true);
-    $this->setVar('noInfinity', true);
 
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
@@ -118,7 +117,6 @@ class tagActions extends myActions
     ));
 
     $this->setVar('noSorting', true);
-    #$this->setVar('noInfinity', true);
 
     if ($request['page'] > $this->productPager->getLastPage() ) {
       $this->_validateResult['success'] = false;
