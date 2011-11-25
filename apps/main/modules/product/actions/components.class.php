@@ -48,7 +48,8 @@ class productComponents extends myComponents
     {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
       $item['stock_url'] = url_for('productStock', $this->product);
-      $item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
+      //$item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
+      $item['shop_url'] = url_for('shop');
 
         $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
             'date' => date('Y-m-d'),
@@ -240,13 +241,13 @@ class productComponents extends myComponents
     {
       return sfView::NONE;
     }
-    
+
     $properties = $this->product->getModelProperty();
     if (!count($properties))
     {
       return sfView::NONE;
     }
-        
+
     //myDebug::dump($properties);
     $model_id = !empty($this->product->model_id) ? $this->product->model_id : $this->product->id;
     $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
@@ -299,7 +300,7 @@ class productComponents extends myComponents
         {
           $value_to_map[$realValue]['photo'] = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ))->getMainPhotoUrl(1);
         }
-        
+
       }
 
       ksort($value_to_map);
@@ -387,7 +388,7 @@ class productComponents extends myComponents
   public function executeF1_lightbox(){
 
   }
-  
+
   public function executeKit()
   {
     /*$q = ProductTable::getInstance()->getQueryByKit($this->product);
