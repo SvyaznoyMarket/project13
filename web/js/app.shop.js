@@ -121,7 +121,7 @@ $(document).ready(function() {
           icon: '/images/marker.png',
           id: item.id
         })
-        google.maps.event.addListener(marker, 'mouseover', showWindow);
+        google.maps.event.addListener(marker, 'click', showWindow);
       })
 
       google.maps.event.addListener(map, 'bounds_changed', function () {
