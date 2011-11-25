@@ -25,3 +25,16 @@
 <input id="map-markers" type="hidden" data-content='<?php echo json_encode($markers) ?>' />
 <!-- /bMapShops -->
 
+<div id="map-info_window-container" class="hf">
+  <div class="bigmark">
+    <b class="corner"></b>
+    <div>
+      <h2 class="title" data-name="name"></h2>
+      <span data-name="link"></span>
+      <!--
+      <span data-name="regime" data-title="Работаем"></span>
+      <span data-name="phonenumbers" data-title="Телефон:"></span>
+      -->
+    </div>
+  </div>
+</div>
