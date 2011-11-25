@@ -1,6 +1,6 @@
 <!-- bMapInfo -->
 <div class='bMapShops__eInfo'>
-  <h2 class='bMapShops__eTitle'>Все магазины Enter в г.<?php echo $region ?></h2>
+  <h2 class='bMapShops__eTitle'>Все магазины Enter в <?php echo $region->prefix.$region ?></h2>
 
   <?php foreach ($shopList as $shop): ?>
     <!-- __eCard -->

@@ -28,4 +28,28 @@ class Region extends BaseRegion
       'region' => $this->token,
     );
   }
+
+  public function getLinguisticCase($case = 'и', $field = 'name')
+  {
+    $cases = array(
+      'и' => array(), // именительный
+      'р' => array(), // родительный
+      'д' => array(), // дательный
+      'в' => array(), // винительный
+      'т' => array(), // творительный
+      'п' => array(   // предложный
+        'Москва'          => 'Москве',
+        'Санкт-Петербург' => 'Санкт-Петербурге',
+      ),
+    );
+
+    $value = $this->get($field);
+
+    return isset($cases[$case][$value]) ? $cases[$case][$value] : false;
+  }
+
+  public function getPrefix()
+  {
+    return in_array('city', $this->type) ? 'г.' : '';
+  }
 }

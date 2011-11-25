@@ -2,7 +2,7 @@
 <div class="bMapShops">
   <div class='bMapShops__eHead'>
     <div class='bMapShops__eRegion'>
-      <h2 class='bMapShops__eRegionTitle'>Enter в Москве!</h2>
+      <h2 class='bMapShops__eRegionTitle'>Enter в <?php echo $region->getLinguisticCase('п') ? $region->getLinguisticCase('п') : ($region->prefix.$region) ?>!</h2>
       <div class='bMapShops__eRegionText'>Enter в регионах:</div>
       <div class="selectbox selectbox170 fl"><i></i>
         <select id="region-select" class="styled" name="region">

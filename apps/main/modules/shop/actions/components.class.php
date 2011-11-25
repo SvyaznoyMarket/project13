@@ -10,6 +10,30 @@
  */
 class shopComponents extends myComponents
 {
+/**
+  * Executes navigation component
+  *
+  * @param Region $region Регион
+  * @param Shop   $shop   Магазин
+  */
+  public function executeNavigation()
+  {
+    $list = array();
+
+    $list[] = array(
+      'name' => 'Магазины Enter в '.($this->region->getLinguisticCase('п') ? mb_ucfirst($this->region->getLinguisticCase('п')) : ($this->region->prefix.$this->region)),
+      'url'  => url_for('shop', array('region' => $this->region->token)),
+    );
+    if (isset($this->shop))
+    {
+      $list[] = array(
+        'name' => (string)$this->shop,
+        'url'  => url_for('shop_show', $this->shop),
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
  /**
   * Executes show component
   *
