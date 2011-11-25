@@ -97,10 +97,13 @@ class cartActions extends myActions
     {
       if ($result['value'])
       {
+        $cartInfo = $this->getUser()->getCartBaseInfo();  
         $return = array(
           'success' => $result['value'],
           'data' => array(
             'quantity' => $request['quantity'],
+            'full_quantity' => $cartInfo['qty'],
+            'full_price' => $cartInfo['sum'],              
             'html' => $this->getComponent($this->getModuleName(), 'buy_button', array('product' => $product))
           )
         );
