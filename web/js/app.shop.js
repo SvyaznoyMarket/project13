@@ -87,7 +87,7 @@ $(document).ready(function() {
 
       var map = new google.maps.Map(document.getElementById(el.attr('id')), options)
       //var infoWindow = new google.maps.InfoWindow()
-      var infoWindow = new InfoBox({
+      var infoWindow = new InfoBox({ // http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/docs/examples.html
         disableAutoPan: false,
         maxWidth: 0,
         pixelOffset: new google.maps.Size(-11, -108),
@@ -153,6 +153,7 @@ $(document).ready(function() {
       var map = el.data('map')
       var infoWindow = el.data('infoWindow')
       var infoWindowTemplate = el.data('infoWindowTemplate')
+      // hides marker
       marker.setMap(null)
 
       $.each(infoWindowTemplate.find('[data-name]'), function(i, el) {
@@ -171,5 +172,10 @@ $(document).ready(function() {
       $('#map-info_window-container')
     ])
   }
+
+
+  $('#region-select').bind('change', function() {
+    window.location = $(this).find('option:selected').data('url')
+  })
 
 })

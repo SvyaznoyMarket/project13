@@ -7,7 +7,7 @@
       <div class="selectbox selectbox170 fl"><i></i>
         <select id="region-select" class="styled" name="region">
         <?php foreach ($regionList as $region): ?>
-          <option value="<?php echo $region['id']?>"><?php echo $region['name'] ?></option>
+          <option data-url="<?php echo url_for('shop', array('region' => $region->token)) ?>" value="<?php echo $region['id']?>"><?php echo $region['name'] ?></option>
         <?php endforeach ?>
         </select>
       </div>
