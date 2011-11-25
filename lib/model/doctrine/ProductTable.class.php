@@ -38,13 +38,16 @@ class ProductTable extends myDoctrineTable
       'media_image'     => 'main_photo',
       'prefix'          => 'prefix',
       'is_primary_line' => 'is_lines_main',
+      'is_model'        => 'is_model',
+      'set_id'          => 'set_id',
 
-      'type_id'       => array('rel' => 'Type'),
-      'brand_id'      => array('rel' => 'Creator'),
-      'category'      => array('rel' => 'Category'),
-      'tag'           => array('rel' => 'Tag'),
-      'line_id'       => array('rel' => 'Line'),
-      'model_id'      => array('rel' => 'Model'),
+      'type_id'         => array('rel' => 'Type'),
+      'brand_id'        => array('rel' => 'Creator'),
+      'category'        => array('rel' => 'Category'),
+      'tag'             => array('rel' => 'Tag'),
+      'line_id'         => array('rel' => 'Line'),
+      'model_id'        => array('rel' => 'Model'),
+      //'property_model'  => array('rel' => 'ModelProperty'),
     );
   }
 
@@ -54,6 +57,7 @@ class ProductTable extends myDoctrineTable
       'view'           => false, // list, show
       'group_property' => false, // группировать свойства товара по группам
       'with_line'      => false,
+      'with_model'     => false, // список только товаров, без моделей
     );
   }
 
@@ -81,6 +85,11 @@ class ProductTable extends myDoctrineTable
       $q->innerJoin('product.Line line');
     }
 
+    if (false == $params['with_model'] && 'show' != $params['view'])
+    {
+      $q->addWhere('product.model_id IS NULL OR product.is_model = ?', 1);
+    }
+
     $q->orderBy('product.is_instock DESC, product.score DESC');
 
     return $q;
@@ -91,6 +100,8 @@ class ProductTable extends myDoctrineTable
     $this->applyDefaultParameters($params, array(
       'with_properties' => false,
       'property_view'   => false,
+      'with_line'       => false,
+      'with_model'      => false,
     ));
 
     $q = $this->createBaseQuery($params);
@@ -184,11 +195,12 @@ class ProductTable extends myDoctrineTable
           $parameterGroup[$propertyGroupRelation['position']] = new ProductParameterGroup($propertyGroup, $productParameterArray);
           //$record['ParameterGroup'][$propertyGroup['ProductTypePropertyGroupRelation'][0]->position] = new ProductParameterGroup($propertyGroup, $productParameterArray);
         }
-      }
-      ksort($parameterGroup);
-      foreach ($parameterGroup as $productParameterGroup)
-      {
-        $record['ParameterGroup'][] = $productParameterGroup;
+
+        ksort($parameterGroup);
+        foreach ($parameterGroup as $productParameterGroup)
+        {
+          $record['ParameterGroup'][] = $productParameterGroup;
+        }
       }
     }
 
@@ -321,10 +333,7 @@ class ProductTable extends myDoctrineTable
       */
       foreach ($filter['parameters'] as $parameter)
       {
-        if (count($parameter['values']) > 0)
-        {
-          $q->leftJoin('product.PropertyRelation productPropertyRelation'.$parameter['filter']->id.' WITH productPropertyRelation'.$parameter['filter']->id.'.property_id = '.$parameter['filter']->property_id);
-        }
+        $q->leftJoin('product.PropertyRelation productPropertyRelation'.$parameter['filter']->id.' WITH productPropertyRelation'.$parameter['filter']->id.'.property_id = '.$parameter['filter']->property_id);
         if (('choice' == $parameter['filter']->type) && (count($parameter['values']) > 0))
         {
           /*$q->addWhere(
@@ -334,7 +343,7 @@ class ProductTable extends myDoctrineTable
           //$q->innerJoin('product.TagRelation tagRelation'.$parameter['tag_group']);
           $q->andWhereIn('productPropertyRelation'.$parameter['filter']->id.'.option_id', $parameter['values']);
         }
-        else if ('range' == $parameter['filter']->type)
+        else if (('range' == $parameter['filter']->type) && (count($parameter['values']) > 0))
         {
           /*
           if (!empty($parameter['values']['from']) && !empty($parameter['values']['to']))
@@ -350,6 +359,10 @@ class ProductTable extends myDoctrineTable
           {
             $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_float <= ?', array($parameter['values']['to']));
           }
+        }
+        else if (('checkbox' == $parameter['filter']->type) && (null !== $parameter['values']) && (1 == count($parameter['values'])))
+        {
+          $q->addWhere('productPropertyRelation'.$parameter['filter']->id.'.value_boolean = ?', array($parameter['values'][0]));
         }
       }
     }
@@ -592,19 +605,77 @@ class ProductTable extends myDoctrineTable
     return $q;
   }
 
+  public function getQueryByKit(Product $product, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->innerJoin('product.KitRelation kitRelation WITH kitRelation.kit_id = ?', $product->id);
+
+    $this->setQueryParameters($q, $params);
+
+    return $q;
+  }
+
   public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
   {
-    $return = array_merge(parent::getCacheEraserKeys($record, $action), array());
+    $return = array();
 
-    //$modified = $record->getLastModified();
-    if (in_array($action, array('save', 'delete')) /* || isset($modified['score']) */)
-    {
+    // for preSave
+    $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
+    // Массив полей, изменения в которых ведут к генерации кеш-ключей
+    $intersection = array_intersect($modified, array(
+      'is_instock',
+      //'name',
+      //'barcode',
+    ));
+    if (true
+      && (('save' == $action) && count($intersection))
+      || ('delete' == $action)
+    ) {
+      $return[] = "product-{$record->core_id}";
+
+      /*
       foreach ($record->Category as $productCategory)
       {
         $return[] = "productCategory-{$productCategory->core_id}";
       }
+      */
     }
 
     return $return;
+  }
+
+  public function getTokensByIds(array $ids, array $params = array())
+  {
+    if (!count($ids))
+    {
+      return false;
+    }
+
+    //return $this->createBaseQuery($params)
+    return $this->createQuery()
+      ->select('token')
+      ->whereIn('id', $ids)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->execute()
+    ;
+  }
+
+  public function getTokenById($id, array $params = array())
+  {
+    if (empty($id))
+    {
+      return false;
+    }
+
+    //return $this->createBaseQuery($params)
+    return $this->createQuery()
+      ->select('token')
+      ->where('id = ?', $id)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->fetchOne()
+    ;
   }
 }

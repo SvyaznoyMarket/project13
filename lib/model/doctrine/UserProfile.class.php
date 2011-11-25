@@ -26,6 +26,16 @@ class UserProfile extends BaseUserProfile
     }
   }
 
+  public function exportToCore()
+  {
+    $data = parent::exportToCore();
+
+    $providers = sfConfig::get('app_open_auth_provider');
+    $data['network_id'] = $providers[$this->type]['core_id'];
+
+    return $data;
+  }
+
   public function __toString()
   {
     $content = sfYaml::load($this->content);
@@ -140,19 +150,6 @@ class UserProfile extends BaseUserProfile
     );
 
     return !empty($content[$value[$this->type]]) ? $content[$value[$this->type]] : null;
-  }
-
-  public function exportToCore()
-  {
-    $data = parent::exportToCore();
-
-    $providers = sfConfig::get('app_open_auth_provider');
-
-    // TODO: remove and test
-    $data['network_id'] = $providers[$this->type]['core_id'];
-    $data['user_id'] = $this->User->core_id;
-
-    return $data;
   }
 
 }

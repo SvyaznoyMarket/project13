@@ -13,7 +13,7 @@ class productCardComponents extends myComponents
 /**
   * Executes navigation component
   *
-  * @param product $product Товар
+  * @param Product $product Товар
   */
   public function executeNavigation()
   {
@@ -29,13 +29,13 @@ class productCardComponents extends myComponents
     );
     if (isset($this->product->Category))
     {
-		foreach ($this->product->Category as $c) {
-		  $list[] = array(
-			'name' => $c->name,
-			'url'  => url_for('productCatalog_category', $c),
-		  );
-		  break;
-		}
+      foreach ($this->product->Category as $c) {
+        $list[] = array(
+          'name' => $c->name,
+          'url'  => url_for('productCatalog_category', $c),
+        );
+        break;
+      }
     }
     if (isset($this->product->Creator))
     {

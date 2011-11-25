@@ -100,7 +100,7 @@ foreach ($p3d as $p3d_obj)
     <br /><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>" class="underline">Стоимость и условия доставки</a><br/><span class="black" style="line-height: 2;">Подробности по телефону 8 (800) 700 00 09</span>
   </div>
   <div class="pb5"><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать отзывы</a> (<?php echo $product->getCommentCount() ?>)</div>
-  <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['product']->token )) ?>">
+  <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['product']->token )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
     Оценка пользователей:
     <?php
     echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
@@ -148,8 +148,7 @@ if (0 && count($f1)):
   <div class="line pb15"></div>
 
   <?php //echo $product->Creator ?>
-<?php include_component('product', 'product_group', array('product' => $product,)) ?>
-<?php if (false): ?>
+<?php if (false): ?>1
   <ul class="inline">
     <li><?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?></li>
     <li><?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?></li>
@@ -187,10 +186,11 @@ if (0 && count($f1)):
   <?php endif ?>
     </ul>
   </div>
-<div class="clear"></div>
-<div class="mb15"></div>
 <?php endif ?>
 <!-- /Photo video -->
+<?php include_component('product', 'product_model', array('product' => $product,)) ?>
+<div class="clear"></div>
+<div class="mb15"></div>
 
 
 <?php if (!empty($item['product']->description)): ?>
@@ -204,7 +204,9 @@ if (0 && count($f1)):
     <div class="clear"></div>
 <?php endif ?>
 
-
+<?php if ($item['product']->isKit()): ?>
+    <?php //include_component('product', 'kit', array('product' => $item['product'])) ?>
+<?php else: ?>
 <!-- Description -->
 <h2 class="bold"><?php echo $item['product']->name ?> - Характеристики</h2>
 <div class="line pb25"></div>
@@ -227,6 +229,7 @@ if (0 && count($f1)):
 
 <?php endif ?>
 <!-- /Description -->
+<?php endif ?>
 
     <?php include_component('product', 'tags', array('product' => $product)) ?>
 

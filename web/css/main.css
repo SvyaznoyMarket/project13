@@ -34,3 +34,17 @@ LABEL.checked a {
   display: block;
   z-index: 900;
 }
+
+.social_network {
+  float: right;
+}
+.social_network span {
+  padding-right: 6px;
+}
+.social_network img {
+  vertical-align: middle;
+}
+
+.bold {
+  font-weight: bold;
+}

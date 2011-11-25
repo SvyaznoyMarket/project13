@@ -10,6 +10,30 @@
  */
 class shopComponents extends myComponents
 {
+/**
+  * Executes navigation component
+  *
+  * @param Region $region Регион
+  * @param Shop   $shop   Магазин
+  */
+  public function executeNavigation()
+  {
+    $list = array();
+
+    $list[] = array(
+      'name' => 'Магазины Enter в '.($this->region->getLinguisticCase('п') ? mb_ucfirst($this->region->getLinguisticCase('п')) : ($this->region->prefix.$this->region)),
+      'url'  => url_for('shop', array('region' => $this->region->token)),
+    );
+    if (isset($this->shop))
+    {
+      $list[] = array(
+        'name' => (string)$this->shop,
+        'url'  => url_for('shop_show', $this->shop),
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
  /**
   * Executes show component
   *
@@ -49,6 +73,14 @@ class shopComponents extends myComponents
       );
     }
 
+    if ('inlist' == $this->view)
+    {
+      $item['url'] = url_for('shop_show', $this->shop);
+      $item['main_photo'] = isset($this->shop->Photo[0]) ? array(
+        'url_small' => $this->shop->Photo[0]->getPhotoUrl(5),
+      ) : false;
+    }
+
     // Clones first photo if shop has panorama
     if (count($item['photos']) && !empty($this->shop->panorama))
     {
@@ -64,19 +96,48 @@ class shopComponents extends myComponents
   */
   public function executeList()
   {
-    $list = array();
-    foreach (ShopTable::getInstance()->getList() as $shop)
+    $this->setVar('shopList', ShopTable::getInstance()->getListByRegion($this->region->id), true);
+  }
+
+ /**
+  * Executes map component
+  *
+  * @param myDoctrineCollection $shopList Коллекция магазинов
+  */
+  public function executeMap()
+  {
+    $regionList = RegionTable::getInstance()->getListHavingShops();
+
+    $markers = array();
+    $regions = array();
+    foreach ($regionList as $region)
     {
-      $list[] = array(
-        'name'         => (string)$shop,
-        'token'        => $shop->token,
-        'phonenumbers' => $shop->phonenumbers,
-        'description'  => $shop->description,
-        'url'          => url_for('shop_show', $shop),
+      $regions[] = array(
+        'id'        => $region->id,
+        'token'     => $region->token,
+        'latitude'  => $region->latitude,
+        'longitude' => $region->longitude,
       );
+
+      $region->Shop = ShopTable::getInstance()->getListByRegion($region);
+      foreach ($region->Shop as $shop)
+      {
+        $markers[$shop->id] = array(
+          'id'        => $shop->id,
+          'region_id' => $shop->region_id,
+          'link'      => link_to('Подробнее о магазине', array('sf_route' => 'shop_show', 'sf_subject' => $shop), array('class' => 'white bold')),
+          'name'      => $shop->name,
+          'address'   => $shop->address,
+          'regime'    => $shop->regime,
+          'latitude'  => $shop->latitude,
+          'longitude' => $shop->longitude,
+        );
+      }
     }
 
-    $this->setVar('list', $list, true);
+    $this->setVar('regionList', $regionList, true);
+    $this->setVar('markers', $markers, true);
+    $this->setVar('regions', $regions, true);
   }
 }
 

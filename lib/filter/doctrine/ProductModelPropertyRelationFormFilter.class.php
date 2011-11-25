@@ -1,14 +1,14 @@
 <?php
 
 /**
- * ProductGroupPropertyRelation filter form.
+ * ProductModelPropertyRelation filter form.
  *
  * @package    enter
  * @subpackage filter
  * @author     Связной Маркет
  * @version    SVN: $Id: sfDoctrineFormFilterTemplate.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class ProductGroupPropertyRelationFormFilter extends BaseProductGroupPropertyRelationFormFilter
+class ProductModelPropertyRelationFormFilter extends BaseProductModelPropertyRelationFormFilter
 {
   public function configure()
   {

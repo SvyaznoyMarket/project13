@@ -1,15 +1,7 @@
-<div class="block">
-  <div class="left">всего: <?php echo count($productList) ?></div>
-  <?php include_component('product', 'list_view') ?>
-  <br class="clear" />
-</div>
+<?php //slot('title', 'Список товаров') ?>
 
-<div class="block">
-  <?php include_component('product', 'list', array('list' => $productList)) ?>
-</div>
+<?php //slot('navigation') ?>
 
-<div class="block">
-  <div class="left">всего: <?php echo count($productList) ?></div>
-  <?php include_component('product', 'list_view') ?>
-  <br class="clear" />
-</div>
+<?php //slot('left_column') ?>
+
+<?php include_component('product', 'list', array('list' => $productList)) ?>

@@ -34,6 +34,17 @@ class ShopTable extends myDoctrineTable
     );
   }
 
+  public function createBaseQuery(array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createQuery('shop');
+
+    $q->addWhere('shop.is_active = ?', 1);
+
+    return $q;
+  }
+
   public function getForRoute(array $params)
   {
     $id = isset($params['shop']) ? $this->getIdBy('token', $params['shop']) : null;
@@ -60,19 +71,19 @@ class ShopTable extends myDoctrineTable
     return $q->execute();
   }
 
-  public function getListByRegion($region_id, array $params = array())
+  public function getListByRegion($region, array $params = array())
   {
     $this->applyDefaultParameters($params);
 
     $q = $this->createBaseQuery($params);
 
-    $q->addWhere('shop.region_id = ?', $region_id);
+    $q->addWhere('shop.region_id = ?', $region instanceof Region ? $region->id : $region);
 
     $this->setQueryParameters($q, $params);
 
     return $q->execute();
   }
-  
+
   /**
    *
    * @return Shop

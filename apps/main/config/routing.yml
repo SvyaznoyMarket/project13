@@ -12,8 +12,8 @@ welcome:
 #
 # show
 qrcode:
-  url:   /qr/:code
-  param: { module: default, action: qrcode }
+  url:   /qr/:qrcode
+  param: { module: qrcode, action: index }
 
 
 # товар
@@ -85,9 +85,9 @@ productCard:
   options: { model: Product, type: object, method: getForRoute }
 #
 # карточка товара по ид товара
-productCard_show:
+product_show:
   url:   /product-:product
-  param: { module: productCard, action: show }
+  param: { module: product, action: show }
   options:
     segment_separators: [ '/', '-' ]
 #
@@ -146,7 +146,7 @@ similarProduct:
 #
 # обновление товара по измененной характеристики для группы товаров
 changeProduct:
-  url:   /products/:product/change/:property/:value
+  url:   /products/:product/change/:value
   param: { module: product, action: change }
   class: myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
@@ -164,14 +164,14 @@ lineCard:
 #
 # список магазинов
 shop:
-  url:   /shops/
-  param: { module: shop, action: index }
+  url:   /shops/:region
+  param: { module: shop, action: index, region: ~ }
 #
 # карточка магазина
 shop_show:
-  url:   /shops/:shop/
-  param: { module: shop, action: show }
-  class:   myDoctrineRoute
+  url:   /shops/:region/:shop
+  param: { module: shop, action: show, region: ~ }
+  class:   myShopRoute
   options: { model: Shop, type: object, method: getForRoute }
 
 
@@ -612,7 +612,7 @@ cart_add:
   url:   /cart/add/:product/:quantity/:services
   param: { module: cart, action: add, quantity: 1, services: 0 }
   requirements:
-    sf_method: [ get,post ]  
+    sf_method: [ get,post ]
 
 #
 # cart delete

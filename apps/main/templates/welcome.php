@@ -10,9 +10,9 @@
     <link rel="stylesheet" type="text/css" href="/css/font.css"/>
     <?php include_javascripts() ?>
     <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.countdown.min.js"></script>    
+    <script type="text/javascript" src="/js/jquery.countdown.min.js"></script>
     <script type="text/javascript" src="/js/jquery.countdown-ru.js"></script>
-    <?php include_component('page', 'link_rel_canonical') ?>        
+    <?php include_component('page', 'link_rel_canonical') ?>
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25485956-1']);
@@ -40,7 +40,7 @@ _gaq.push(['_trackPageLoadTime']);
 (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();
 </script>
 <script>
-$(document).ready(function(){	
+$(document).ready(function(){
 	function relme () {
 		location.reload(true)
 	}
@@ -52,20 +52,24 @@ $(document).ready(function(){
   </head>
 
   <body>
-    <?php LastModifiedHandler::setLastModified();  ?>   
+    <?php LastModifiedHandler::setLastModified();  ?>
     <div class="allpage">
 
       <div class="entry">
         <div class="entrybox">
-          <?php echo $sf_content ?>          
+          <?php echo $sf_content ?>
         </div>
+
+        <!--
         <div class="openblock">
-        <h1>
-        Скоро открытие!
-        </h1>
-        <div id="cd">
-        </div>        
+
+          <h1>
+          Скоро открытие!
+          </h1>
+          <div id="cd"></div>
         </div>
+        -->
+
       </div>
 
     </div>
@@ -92,7 +96,7 @@ $(document).ready(function(){
     report.send();
 </script>
 <noscript>
-<img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
+<img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;" />
 </noscript>
 <!-- /AdHands -->
   </body>

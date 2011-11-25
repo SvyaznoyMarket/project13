@@ -143,7 +143,7 @@ class orderActions extends myActions
     }
 	  //$this->order = $this->getUser()->getOrder()->get();
   }
-
+  
   /**
   * Executes new action
   *
@@ -204,26 +204,27 @@ class orderActions extends myActions
       'delivery_period_id'  => function($form) {
         return myToolkit::arrayDeepMerge(array('' => ''), $form['delivery_period_id']->getWidget()->getChoices());
       },
+      'delivered_at'  => function($form) {
+        return myToolkit::arrayDeepMerge(array('' => ''), $form['delivered_at']->getWidget()->getChoices());
+      },
     );
 
     $field = $request['field'];
     $this->step = $request->getParameter('step', 1);
 
-    $form = new OrderForm($this->getUser()->getOrder()->get());
+    $form = new OrderStep1Form($this->getUser()->getOrder()->get());
     if (isset($form[$field]))
     {
-      $form->useFields(array_keys($request->getParameter($form->getName())));
+      //$form->useFields(array($field) + array_keys($request->getParameter($form->getName())));
       $form->bind($request->getParameter($form->getName()));
 
       $order = $form->updateObject();
       $this->getUser()->getOrder()->set($order);
 
-      $this->form = $this->getOrderForm($this->step);
-
       $result = array(
         'success' => true,
         'data'    => array(
-          'content' => isset($renderers[$field]) ? $renderers[$field]($this->form) : $this->getPartial($this->getModuleName().'/field_'.$field, array('form' => $this->form)),
+          'content' => isset($renderers[$field]) ? $renderers[$field]($form) : $this->getPartial($this->getModuleName().'/field_'.$field, array('form' => $form)),
         ),
       );
     }
