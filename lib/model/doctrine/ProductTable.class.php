@@ -58,6 +58,7 @@ class ProductTable extends myDoctrineTable
       'group_property' => false, // группировать свойства товара по группам
       'with_line'      => false,
       'with_model'     => false, // список только товаров, без моделей
+      'hydrate_array'  => false,
     );
   }
 
@@ -115,12 +116,15 @@ class ProductTable extends myDoctrineTable
       $q->leftJoin('product.PropertyRelation productPropertyRelation');
     }
 
-    $this->setQueryParameters($q);
+    $this->setQueryParameters($q, $params);
 
     $q->addWhere('product.id = ?', $id);
 
     $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
-    //$q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    if ($params['hydrate_array'])
+    {
+      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    }
     $record = $q->fetchOne();
     if (!$record)
     {
@@ -131,8 +135,14 @@ class ProductTable extends myDoctrineTable
 
     if ($prices)
     {
-      $record->mapValue('ProductPrice', $prices);
-      $record->price = $prices->price;
+      if ($record instanceof Product)
+      {
+        $record->mapValue('ProductPrice', $prices);
+      }
+      else {
+        $record['ProductPrice'] = $prices;
+      }
+      $record['price'] = $prices->price;
     }
 
     $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
@@ -146,12 +156,15 @@ class ProductTable extends myDoctrineTable
 
     if ($params['with_properties'])
     {
+      $productPropertyRelationTable = ProductPropertyRelationTable::getInstance();
+
       // группировка параметров продукта по свойствам продукта
       $productPropertyRelationArray = array();
       foreach ($record['PropertyRelation'] as $propertyRelation)
       {
         // temporary fix
-        $realValue = $propertyRelation->real_value;
+        //$realValue = $propertyRelation['real_value'];
+        $realValue = $productPropertyRelationTable->getRealValue($propertyRelation);
         if (false
           || ('' === $realValue)
           || (null === $realValue)
@@ -234,7 +247,8 @@ class ProductTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    $ids = $this->getIdsByQuery($q, $params, 'productCategory-'.$category->id.'/product-ids');
+    //$ids = $this->getIdsByQuery($q, $params, 'productCategory-'.$category->id.'/product-ids');
+    $ids = $this->getIdsByQuery($q, $params);
 
     return $this->createListByIds($ids, $params);
   }
@@ -677,5 +691,24 @@ class ProductTable extends myDoctrineTable
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
       ->fetchOne()
     ;
+  }
+
+  public function isInsale($product)
+  {
+    $price = ProductPriceTable::getInstance()->getDefaultByProductId($product['id']);
+
+    return $product['is_instock'] && (!empty($price) && $price->price > 0);
+  }
+
+  public function getFormattedPrice($product)
+  {
+    return number_format($product['price'], 0, ',', ' ');
+  }
+
+  public function getMainPhotoUrl($product, $view = 0)
+  {
+    $urls = sfConfig::get('app_product_photo_url');
+
+    return $product['main_photo'] ? $urls[$view].$product['main_photo'] : null;
   }
 }

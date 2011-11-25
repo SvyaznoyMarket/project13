@@ -51,6 +51,14 @@ class ProductPropertyRelationTable extends myDoctrineTable
     return $field;
   }
 
+  public function getRealValue($productPropertyRelation)
+  {
+    $property = ProductPropertyTable::getInstance()->getById($productPropertyRelation['property_id'], array('with_options' => false, 'hydrate_array' => true));
+    $field = $this->getValueFieldByType($property['type']);
+
+    return $productPropertyRelation[$field];
+  }
+
   public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
   {
     $return = array();

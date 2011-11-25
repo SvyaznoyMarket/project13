@@ -21,33 +21,42 @@ class productCategoryActions extends myActions
 
   public function executeCarousel(sfWebRequest $request)
   {
+    //sfConfig::set('sf_web_debug', false);
+
+    $this->setLayout(false);
+    $this->getContext()->getConfiguration()->loadHelpers('Url');
+
     $productCategory = $this->getRoute()->getObject();
-    sfConfig::set('sf_web_debug', false);
     $page = (int)$request->getParameter('page', 1);
     $limit = (int)$request->getParameter('limit', 3);
-    if ($limit < 3) {
+    if ($limit < 3)
+    {
       $limit = 3;
     }
-    if ($limit > 27) {
+    if ($limit > 27)
+    {
       $limit = 27;
     }
     $products = ProductTable::getInstance()->getListByCategory($productCategory, array(
-      'offset' => ($page-1)*3,
-      'limit'  => $limit,
-      'view' => 'list',
+      'offset'          => ($page-1) * 3,
+      'limit'           => $limit,
+      'view'            => 'list',
+      'with_properties' => false,
+      'property_view'   => false,
     ));
-    $this->setLayout(false);
-    $this->getContext()->getConfiguration()->loadHelpers('Url');
+
     $response = '';
     foreach ($products as $product)
     {
       $response .= $this->getComponent('product', 'show', array('view' => $productCategory->has_line ? 'line' : 'compact', 'product' => $product));
     }
     $this->renderText($response);
+
     return sfView::NONE;
   }
-  
-  public function executeMenu(sfWebRequest $request){
-      
+
+  public function executeMenu(sfWebRequest $request)
+  {
+
   }
 }
