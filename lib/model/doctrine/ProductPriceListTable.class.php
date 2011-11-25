@@ -26,4 +26,28 @@ class ProductPriceListTable extends myDoctrineTable
       'is_active'    => 'is_active',
     );
   }
+  
+  public function getDefault()
+  {
+    return $this->createQuery('list')
+      ->leftJoin('list.Region as r on list.id=r.product_price_list_id')
+      ->where('r.is_default = ?', 1)
+      ->addWhere('region.type = ?', 'city')
+      ->fetchOne()
+    ;
+  }  
+  public function getCurrent()
+  {
+      $region = sfContext::getInstance()->getUser()->getRegion();
+      if (isset($region->id)) {
+          return $this->createQuery('list')
+              ->leftJoin('list.Region as r on list.id=r.product_price_list_id')
+              ->where('r.id = ?', $region->id)
+              ->fetchOne()
+          ;          
+      } else {
+          return $this->getDefault();
+      }
+  }  
+  
 }

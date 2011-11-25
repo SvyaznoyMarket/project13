@@ -61,7 +61,6 @@ class productCatalogActions extends myActions
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
-    $this->setVar('noInfinity', true);
 
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
@@ -106,7 +105,6 @@ class productCatalogActions extends myActions
   */
   public function executeTag(sfWebRequest $request)
   {
-    $this->setVar('noInfinity', true);
       
     $this->productCategory = $this->getRoute()->getObject();
 
@@ -174,8 +172,6 @@ class productCatalogActions extends myActions
       }
     }
     $this->getResponse()->setTitle($title.' – Enter.ru');
-
-    $this->setVar('noInfinity', true);
 
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }

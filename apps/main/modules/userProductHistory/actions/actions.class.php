@@ -51,14 +51,7 @@ class userProductHistoryActions extends myActions
       $user = $this->getUser();
 
       //подсчитываем общее количество и общую стоимость корзины
-      $cart = $user->getCart();
-      $qty = 0;
-      $sum = 0;
-      foreach($cart->getProducts()->toArray() as $id => $product){
-          $qty += $product['cart']['quantity'];
-          $sum += $product['price'] * $product['cart']['quantity'];
-          $productsInCart[ $product['token'] ] = $product['cart']['quantity'];          
-      }
+      $cartInfo = $user->getCartBaseInfo();
       
       //отложенные товары
       $delayProducts = array();
@@ -80,8 +73,8 @@ class userProductHistoryActions extends myActions
         'data'    => array(
               'name' => $name,  
               'link' =>  url_for('user'),   //ссылка на личный кабинет
-              'vitems' => $qty,
-              'sum' => $sum,
+              'vitems' => $cartInfo['qty'],
+              'sum' => $cartInfo['sum'],
               'vwish' => count($delayProducts),
               'vcomp' => $user->getProductCompare()->getProductsNum(),
               'productsInCart' => $productsInCart,

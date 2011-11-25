@@ -327,8 +327,7 @@ EOF;
         $cat->addAttribute('id',$categoryInfo['id']);
         if ($categoryInfo['core_parent_id'] && isset($catIdToCoreId[ $categoryInfo['core_parent_id'] ])) $cat->addAttribute('parentId', $catIdToCoreId[ $categoryInfo['core_parent_id'] ]);
         //если нужно добавить url
-        //хак!! для файла ya_market.xml не выгразуем пути
-        if ($this->_uploadCategotyUrl && strpos($this->_xmlFilePath, 'ya_market.xml') === false  ){
+        if ($addCategoryUrl){
             $cat->addAttribute('url',$this->_companyData['url'].'/catalog/'.$categoryInfo['token'].'/');            
         }
         
