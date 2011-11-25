@@ -267,12 +267,12 @@ class guardActions extends myActions
    */
   public function executeRegister($request)
   {
-    $signinUrl = $this->getSigninUrl();
+    $signinUrl = $this->generateUrl('user', array(), true); // $this->getSigninUrl();
 
     if ($this->getUser()->isAuthenticated())
     {
-      $this->getUser()->setFlash('notice', 'Вы уже зарегистрированы!');
-      $this->redirect($signinUrl);
+      //$this->getUser()->setFlash('notice', 'Вы уже зарегистрированы!');
+      $this->redirect('user');
     }
 
     $this->form = new UserFormRegister();
@@ -299,12 +299,10 @@ class guardActions extends myActions
         {
           return $this->renderJson(array(
             'success' => true,
+            'url'     => $signinUrl,
           ));
         }
-        if ('frame' == $this->getLayout())
-        {
-          return $this->renderPartial('default/close');
-        }
+
         return $this->redirect($signinUrl);
       }
 

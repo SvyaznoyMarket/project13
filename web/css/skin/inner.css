@@ -24,7 +24,7 @@ A.nodecor {text-decoration:none}
 .orange, .orange:hover, .orange.underline:hover {color:#ffa901}
 .green {color:#6ea428}
 .motton {color: #4FCBF4;}
-.white {color:#fff}
+.white, .white:hover {color:#fff}
 .black {color:#000}
 .fl {float:left}
 .fr {float:right}
@@ -1151,14 +1151,14 @@ box-shadow:0 0 9px #616161;
 
 .mapbox {float:left; width:100%; position:relative; margin-bottom:20px}
 .mapbox .mark {position:absolute; display:block; width:39px; height:59px; background:url(/css/skin/img/bg.png) no-repeat -148px -241px}
-.mapbox .bigmark {position:absolute; }
-.mapbox .bigmark DIV {position:relative; padding:10px; background-color:#fba819; border:2px solid #e67b24; color:#fff; line-height:1.4em;
+/*.mapbox .bigmark {position:absolute; } */
+/*.mapbox*/ .bigmark DIV {/*position:relative;*/ padding:10px; background-color:#fba819; border:2px solid #e67b24; color:#fff; line-height:1.4em;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc)
 }
-.mapbox .bigmark .corner {position:absolute; z-index:2; left:0; //left:3px; bottom:-19px; //bottom:-21px; display:block; width:24px; height:23px; background:url(/css/skin/img/bg.png) no-repeat -154px -214px}
+/*.mapbox*/ .bigmark .corner {position:absolute; z-index:2; left:0; //left:3px; bottom:-19px; //bottom:-21px; display:block; width:24px; height:23px; background:url(/css/skin/img/bg.png) no-repeat -154px -214px}
 
 
 .printpage {background-color:#fff}

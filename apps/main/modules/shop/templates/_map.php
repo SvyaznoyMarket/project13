@@ -7,7 +7,7 @@
       <div class="selectbox selectbox170 fl"><i></i>
         <select id="region-select" class="styled" name="region">
         <?php foreach ($regionList as $region): ?>
-          <option value="<?php echo $region['id']?>"><?php echo $region['name'] ?></option>
+          <option data-url="<?php echo url_for('shop', array('region' => $region->token)) ?>" value="<?php echo $region['id']?>"><?php echo $region['name'] ?></option>
         <?php endforeach ?>
         </select>
       </div>
@@ -25,3 +25,16 @@
 <input id="map-markers" type="hidden" data-content='<?php echo json_encode($markers) ?>' />
 <!-- /bMapShops -->
 
+<div id="map-info_window-container" class="hf">
+  <div class="bigmark">
+    <b class="corner"></b>
+    <div>
+      <h2 class="title" data-name="name"></h2>
+      <span data-name="link"></span>
+      <!--
+      <span data-name="regime" data-title="Работаем"></span>
+      <span data-name="phonenumbers" data-title="Телефон:"></span>
+      -->
+    </div>
+  </div>
+</div>

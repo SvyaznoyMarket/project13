@@ -76,8 +76,14 @@ $(document).ready(function() {
       success: function(response) {
         if (true == response.success)
         {
-          form.unbind('submit')
-          form.submit()
+          if (response.url) {
+            window.location = response.url
+          }
+          else {
+            form.unbind('submit')
+            form.submit()
+          }
+          //console.info(response);
         }
         else {
           form.html($(response.data.content).html())
