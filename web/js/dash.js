@@ -143,9 +143,12 @@ $(document).ready(function(){
 				//ltbx.getBasket( parseItemNode( currentItem ) )
 			})
 		}	
-		$.getJSON('/cart/add/'+$( '.boxhover[ref='+ currentItem +']').attr('ref') +'/1', function(data) {
+		$.getJSON( $( button ).attr('href') +'/1', function(data) {
 			if ( data.success && ltbx ) {
-				ltbx.getBasket( parseItemNode( currentItem ) )
+				var tmpitem = parseItemNode( currentItem )
+				tmpitem.vitems = data.data.full_quantity
+				tmpitem.sum = data.data.full_price
+				ltbx.getBasket( tmpitem )
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).unbind('click').addClass('active')
 			}	
@@ -167,6 +170,15 @@ $(document).ready(function(){
 		return false
 	})
 	
+	/* F1 */
+	if( $('#selector').length ) {
+		$('#selector').click( function(){
+			// change button title
+			// post buy F1 item
+				// if product not in cart - post buy product
+		})
+	}
+	/* buy bottons */
 	var markPageButtons = function(){
 		var carturl = $('.lightboxinner .point2').attr('href')
 		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active').unbind('click')
@@ -177,13 +189,16 @@ $(document).ready(function(){
 		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
-		$.post( $( button ).attr('href') +'/1', function(data) {			
+		$.getJSON( $( button ).attr('href') +'/1', function(data) {			
 			if ( data.success && ltbx ) {
+			console.info(data.data.full_quantity)
 				var tmpitem = { 
-					'id'   : $( button ).attr('href'),
-					'title': $('h1').html(),
-					'price': $('.goodsinfo .price').html(),
-					'img'  : $('.goodsphoto img').attr('src')
+					'id'    : $( button ).attr('href'),
+					'title' : $('h1').html(),
+					'vitems': data.data.full_quantity,
+					'sum'   : data.data.full_price,
+					'price' : $('.goodsinfo .price').html(),
+					'img'   : $('.goodsphoto img').attr('src')
 				}
 				ltbx.getBasket( tmpitem ) 
 				markPageButtons()
@@ -198,10 +213,12 @@ $(document).ready(function(){
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {			
 			if ( data.success && ltbx ) {
 				var tmpitem = { 
-					'id'   : $( button ).attr('href'),
-					'title': $('h1').html(),
-					'price': $('.goodsinfo .price').html(),
-					'img'  : $('.goodsphoto img').attr('src')
+					'id'    : $( button ).attr('href'),
+					'title' : $('h1').html(),
+					'vitems': data.data.full_quantity,
+					'sum'   : data.data.full_price,
+					'price' : $('.goodsinfo .price').html(),
+					'img'   : $('.goodsphoto img').attr('src')
 				}
 				ltbx.getBasket( tmpitem ) 
 				markPageButtons()
