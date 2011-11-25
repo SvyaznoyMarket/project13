@@ -1,4 +1,3 @@
------------------
 <?php
 $request = sfContext::getInstance()->getRequest();
 $page = $request->getParameter('page');
