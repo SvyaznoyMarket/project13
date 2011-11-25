@@ -686,7 +686,7 @@ search:
 #
 # search
 search_ajax:
-  url:      search_ajax
+  url:      search_ajax/:q/:product_type/:page/:view/:num
   param:    { module: search, action: ajax, product_type: 0, page: 1, view: compact, num: 18 }  
 
 

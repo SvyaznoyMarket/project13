@@ -4,3 +4,6 @@
 
 ajaxSuccess:
   layout: free
+  
+emptyAjaxSuccess:
+  layout: free  

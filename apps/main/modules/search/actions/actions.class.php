@@ -20,7 +20,6 @@ class searchActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
       
-    $this->setVar('noInfinity', true);  
     $limit = sfConfig::get('app_product_max_items_on_category', 20);
 	  $page = $request->getParameter('page', 1);
     $offset = intval($page - 1) * $limit;
@@ -151,6 +150,7 @@ class searchActions extends myActions
     //тип товаров, если есть
     $this->productType = !empty($request['product_type']) ? ProductTypeTable::getInstance()->find($request['product_type']) : false;
 
+
     // запрос к core
     $params = array(
       'request'         => $this->searchString,
@@ -164,7 +164,7 @@ class searchActions extends myActions
     //myDebug::dump($response);
     if (!$response) {
       $this->_validateResult['success'] = false;
-      $this->_validateResult['error'] = sfView::ERROR;
+      $this->_validateResult['error'] = 'Ошбика. От ядра не получен ответ.';
       return $this->_refuse();          
     } else if (isset($response['result']) && ('empty' == $response['result'])) {
       $this->setTemplate('emptyAjax');
@@ -182,6 +182,39 @@ class searchActions extends myActions
     if (isset($response[1]) && isset($response[1]['count'])) {
         $this->setVar('resultCount', $response[1]['count'], true);
     }
+    
+    $productTypeList = array();
+    $pagers = array();
+    if (is_array($response)) foreach ($response as $core_id => $data)
+    {
+      $type = $this->getSearchTypes($core_id);
+      if (null == $type) continue;
+
+      if (('product' == $type) && !empty($data['type_list']))
+      {
+        $coreIds = array();
+        foreach ($data['type_list'] as $productTypeData)
+        {
+          $coreIds[$productTypeData['type_id']] = $productTypeData['count'];
+        }
+
+        $productTypeList = ProductTypeTable::getInstance()->getListByCoreIds(array_keys($coreIds), array('order' => '_index'));
+        foreach ($productTypeList as $productType)
+        {
+          $productType->mapValue('_product_count', $coreIds[$productType->core_id]);
+
+          if ($productType->id == $this->productType->id)
+          {
+            $this->productType->mapValue('_product_count', $productType->_product_count);
+          }
+        }
+      }
+
+      $pagers[$type] = call_user_func_array(array($this, 'get'.ucfirst($type).'Pager'), array($data));
+    }
+
+    $this->setVar('searchString', $this->searchString, false);
+    $this->setVar('pagers', $pagers, true);    
   }
   
 
