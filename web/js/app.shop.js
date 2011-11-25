@@ -113,6 +113,7 @@ $(document).ready(function() {
       }
 
       // set markers
+      el.data('markers', [])
       $.each(markers, function(i, item) {
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(item.latitude, item.longitude),
@@ -122,6 +123,7 @@ $(document).ready(function() {
           id: item.id
         })
         google.maps.event.addListener(marker, 'click', showWindow);
+        el.data('markers').push(marker)
       })
 
       google.maps.event.addListener(map, 'bounds_changed', function () {
@@ -130,11 +132,17 @@ $(document).ready(function() {
       google.maps.event.addListener(map, 'click', function () {
         el.data('infoWindow').close()
       })
+      google.maps.event.addListener(infoWindow, 'closeclick', function () {
+        $.each(el.data('markers'), function(i, marker) {
+          if (null == marker.map) {
+            marker.setMap(el.data('map'))
+          }
+        })
+      })
 
       el.data('map', map)
       el.data('infoWindow', infoWindow)
       el.data('infoWindowTemplate', infoWindowTemplate)
-
     },
     move: function(e, center) {
       var el = $(this)
@@ -145,6 +153,7 @@ $(document).ready(function() {
       var map = el.data('map')
       var infoWindow = el.data('infoWindow')
       var infoWindowTemplate = el.data('infoWindowTemplate')
+      marker.setMap(null)
 
       $.each(infoWindowTemplate.find('[data-name]'), function(i, el) {
         el.innerHTML = item[$(el).data('name')]

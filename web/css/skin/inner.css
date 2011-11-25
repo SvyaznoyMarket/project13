@@ -24,7 +24,7 @@ A.nodecor {text-decoration:none}
 .orange, .orange:hover, .orange.underline:hover {color:#ffa901}
 .green {color:#6ea428}
 .motton {color: #4FCBF4;}
-.white {color:#fff}
+.white, .white:hover {color:#fff}
 .black {color:#000}
 .fl {float:left}
 .fr {float:right}
