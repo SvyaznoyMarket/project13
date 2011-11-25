@@ -164,14 +164,14 @@ lineCard:
 #
 # список магазинов
 shop:
-  url:   /shops/
-  param: { module: shop, action: index }
+  url:   /shops/:region
+  param: { module: shop, action: index, region: ~ }
 #
 # карточка магазина
 shop_show:
-  url:   /shops/:shop/
-  param: { module: shop, action: show }
-  class:   myDoctrineRoute
+  url:   /shops/:region/:shop
+  param: { module: shop, action: show, region: ~ }
+  class:   myShopRoute
   options: { model: Shop, type: object, method: getForRoute }
 
 

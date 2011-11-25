@@ -19,6 +19,7 @@ class ProjectSyncTask extends sfBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       new sfCommandOption('dump', null, sfCommandOption::PARAMETER_NONE, 'Only dump response'),
+      new sfCommandOption('format', null, sfCommandOption::PARAMETER_REQUIRED, 'Dumping format', 'yaml'),
       new sfCommandOption('log', null, sfCommandOption::PARAMETER_NONE, 'Enable logging'),
       new sfCommandOption('packet', null, sfCommandOption::PARAMETER_REQUIRED, 'The packet_id', null),
       new sfCommandOption('entity', null, sfCommandOption::PARAMETER_REQUIRED, 'The entity', null),
@@ -118,7 +119,7 @@ EOF;
 
     if ($options['dump'])
     {
-      myDebug::dump($response, true, 'yaml');
+      myDebug::dump($response, true, $options['format']);
 
       return;
     }

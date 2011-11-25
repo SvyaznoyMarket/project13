@@ -39,6 +39,13 @@ class RegionTable extends myDoctrineTable
     return $q;
   }
 
+  public function getForRoute(array $params)
+  {
+    $id = isset($params['region']) ? $this->getIdBy('token', $params['region']) : null;
+
+    return $this->getById($id);
+  }
+
   public function getDefault()
   {
     return $this->createBaseQuery()
@@ -46,5 +53,24 @@ class RegionTable extends myDoctrineTable
       ->addWhere('region.type = ?', 'city')
       ->fetchOne()
     ;
+  }
+
+  public function getListHavingShops(array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->select('region.product_price_list_id, region.stock_id, region.token, region.name, region.type, COUNT(shop.id) AS shop_count')
+      ->innerJoin('region.Shop shop')
+      ->groupBy('region.product_price_list_id, region.stock_id, region.token, region.name, region.type')
+      ->having('COUNT(shop.id) > 0')
+    ;
+
+    $this->setQueryParameters($q, $params);
+
+    $ids = $this->getIdsByQuery($q, $params);
+
+    return $this->createListByIds($ids, $params);
   }
 }

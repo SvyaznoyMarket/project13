@@ -101,6 +101,10 @@ class myDebug
     {
       $return = sfYaml::dump($value, 100);
     }
+    else if (in_array($format, array('json')))
+    {
+      $return = json_encode($value, true);
+    }
 
     return $return;
   }
