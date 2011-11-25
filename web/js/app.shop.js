@@ -81,7 +81,7 @@ $(document).ready(function() {
 			  },
 			  */
 			  mapTypeControlOptions: {
-				style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+          style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
 			  }
 			}
 
@@ -127,10 +127,10 @@ $(document).ready(function() {
       })
 
       google.maps.event.addListener(map, 'bounds_changed', function () {
-        el.data('infoWindow').close()
+        //el.data('infoWindow').close()
       })
       google.maps.event.addListener(map, 'click', function () {
-        el.data('infoWindow').close()
+        //el.data('infoWindow').close()
       })
       google.maps.event.addListener(infoWindow, 'closeclick', function () {
         $.each(el.data('markers'), function(i, marker) {
