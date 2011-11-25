@@ -21,6 +21,9 @@ if ($module == 'tag') {
 } elseif ($module == 'search') {
     $q = $request->getParameter('q');
     $dataAr['q'] = $q;
+    if (isset($productType)) {
+        $dataAr['product_type'] = $productType['token'];
+    }
     $infinityUrl = url_for('search_ajax', $dataAr);    
 } else {
     $dataAr['productCategory'] = $productCategory->token;
