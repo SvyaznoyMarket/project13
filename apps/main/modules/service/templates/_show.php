@@ -5,7 +5,7 @@
   <?php echo $service['work']; ?>
 </div>
 
-<?php if (isset($service['currentPrice']) && $service['currentPrice']>0) { ?>
+<?php if (isset($service['currentPrice']) && $service['currentPrice']) { ?>
     <div class="font16 pb10">
         <strong><?php echo $service['currentPrice']; ?> Р</strong>
     </div>
