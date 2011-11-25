@@ -90,7 +90,7 @@ $(document).ready(function() {
       var infoWindow = new InfoBox({ // http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/docs/examples.html
         disableAutoPan: false,
         maxWidth: 0,
-        pixelOffset: new google.maps.Size(-11, -108),
+        pixelOffset: new google.maps.Size(-12, -108),
         zIndex: null,
         boxStyle: {
           opacity: 0.85,
