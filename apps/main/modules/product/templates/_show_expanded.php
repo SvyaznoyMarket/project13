@@ -19,7 +19,9 @@
       <ul>
         <?php  if ($item['product']->getIsInsale()){  ?> 
             <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
-            <li>Доставим в течение 24 часов</li>
+            <?php if ($delivery): ?>
+            <li><?php echo 'Доставка возможна '.myToolkit::formatDeliveryDate($deliveryPeriod) ?></li>
+            <?php endif ?>
         <?php } ?>
       </ul>
 
@@ -56,7 +58,9 @@
             <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
             <ul>
               <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
-              <li>Доставим в течение 24 часов</li>
+              <?php if ($delivery): ?>
+              <li><?php echo 'Доставка возможна '.myToolkit::formatDeliveryDate($deliveryPeriod) ?></li>
+              <?php endif ?>
             </ul>
           </div>
         </div>

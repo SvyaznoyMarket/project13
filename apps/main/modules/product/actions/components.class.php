@@ -50,14 +50,26 @@ class productComponents extends myComponents
       $item['stock_url'] = url_for('productStock', $this->product);
       $item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
 
-      sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
-      $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
+      $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
+      $item['rated'] =
+        true || !$this->getUser()->isAuthenticated()
+        ? in_array($this->product->id, $rated)
+        : false
+      ;
+    }
+    if (in_array($this->view, array('expanded', 'default')))
+    {
+      if (isset($this->product->deliveries)) {
+        $deliveries = $this->product->deliveries;
+      } else {
+        $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
           'date' => date('Y-m-d'),
           'geo_id' => $this->getUser()->getRegion('core_id'),
           'product' => array(
               array('id' => $this->product->core_id, 'quantity' => 1),
           )
-      ));
+        ));
+      }
       if ($deliveries && count($deliveries) && !isset($deliveries['result'])) {
           $deliveryData = null;
           foreach ($deliveries as $delivery) {
@@ -72,18 +84,13 @@ class productComponents extends myComponents
           $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryData['mode_id']);
           $this->delivery = $deliveryObj;
           $this->deliveryData = $deliveryData;
-          $this->deliveryPeriod = round((strtotime($deliveryData['date']) - time()) / (3600 * 24));
+          $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryData['date']);
+          $now = new DateTime();
+          $this->deliveryPeriod = $minDeliveryDate->diff($now)->days;
           if ($this->deliveryPeriod < 0) $this->deliveryPeriod = 0;
       } else {
           $this->delivery = false;
       }
-      
-      $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
-      $item['rated'] =
-        true || !$this->getUser()->isAuthenticated()
-        ? in_array($this->product->id, $rated)
-        : false
-      ;
     }
     if (in_array($this->view, array('expanded')))
     {

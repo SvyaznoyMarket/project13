@@ -2,6 +2,41 @@
 
 class myToolkit extends sfToolkit
 {
+  static public function declension($int, $expressions)
+  {
+    if (is_string($expressions)) $expressions = explode(' ', $expressions);
+    if (count($expressions) < 3) $expressions[2] = $expressions[1];
+    settype($int, "integer");
+    $count = $int % 100;
+    if ($count >= 5 && $count <= 20) {
+        $result = $expressions[2];
+    } else {
+        $count = $count % 10;
+        if ($count == 1) {
+            $result = $expressions[0];
+        } elseif ($count >= 2 && $count <= 4) {
+            $result = $expressions[1];
+        } else {
+            $result = $expressions[2];
+        }
+    }
+    return $result;
+  }
+
+  static public function formatDeliveryDate($period)
+  {
+    $d = date('d-m-Y', time() + (3600*24*$period));
+    if ($period == 0) {
+      return 'на сегодня (' . $d . ')';
+    } elseif ($period == 1) {
+      return 'на завтра (' . $d . ')';
+    } elseif ($period == 2) {
+      return 'на послезавтра (' . $d . ')';
+    } else {
+      return 'через ' . $period . ' ' . self::declension($period, 'день дня дней');
+    }
+  }
+  
   static public function translite($value)
   {
     $tbl = array(

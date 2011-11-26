@@ -117,7 +117,6 @@ class OrderStep1Form extends BaseOrderForm
             $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
         }
         $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
-            'date' => date('Y-m-d'),
             'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
             'product' => $dProducts
         ));
@@ -133,12 +132,14 @@ class OrderStep1Form extends BaseOrderForm
         sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
         foreach ($deliveries as $deliveryType) {
             $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
-            $deliveryPeriod = round((strtotime($deliveryType['date']) - time()) / (3600 * 24));
+            $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
+            $now = new DateTime();
+            $deliveryPeriod = $minDeliveryDate->diff($now)->days;
             if ($deliveryPeriod < 0) $deliveryPeriod = 0;
             $deliveryTypes[$deliveryObj['id']] = array(
-                'label' => $deliveryObj['name'],
-                //'description' => $deliveryObj['description'],
-                'description' => 'Доставка в течение '.format_number_choice('[0] дней|[1] 1 дня|{n: n % 10 > 1 && n % 10 < 5 && ( n < 11 || n > 14 ) && ( n % 100 < 11 || n % 100 > 14 ) } %1% дней|[5,+Inf] %1% дней ', array('%1%' => $deliveryPeriod+1), $deliveryPeriod+1). ', стоимостью '.$deliveryType['price'].' руб',
+                'label' => $deliveryObj['name'].', '.$deliveryType['price'].' руб',
+                'description' => $deliveryObj['description'],
+                //'description' => 'Доставка '.myToolkit::formatDeliveryDate($deliveryPeriod). ', стоимостью '.$deliveryType['price'].' руб',
                 'date_diff' => $deliveryPeriod,
                 'periods' => empty($deliveryType['interval']) ? array() : $deliveryType['interval'],
             );
@@ -372,9 +373,15 @@ class OrderStep1Form extends BaseOrderForm
       // если НЕ самовывоз
       if ($deliveryType && ('self' != $deliveryType->token))
       {
+        $periods = $this->filterDeliveryPeriods($deliveryTypes[$taintedValues['delivery_type_id']]['periods']);
         $this->validatorSchema['delivery_type_id']->setOption('required', true);
-        $this->validatorSchema['delivery_period_id']->setOption('required', true);
-        $this->widgetSchema['delivery_period_id']->setOption('choices', $this->filterDeliveryPeriods($deliveryTypes[$taintedValues['delivery_type_id']]['periods']));
+        if (count($periods) > 0) {
+          $this->validatorSchema['delivery_period_id']->setOption('required', true);
+        } else {
+          $this->validatorSchema['delivery_period_id']->setOption('required', false);
+          $this->widgetSchema['delivery_period_id']->setOption('is_hidden', true);
+        }
+        $this->widgetSchema['delivery_period_id']->setOption('choices', $periods);
       }
       if ($deliveryType && ('self' == $deliveryType->token))
       {

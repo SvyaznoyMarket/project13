@@ -16,6 +16,46 @@ class productActions extends myActions
 
     $this->productList = ProductTable::getInstance()->getListByTokens($tokens);
   }
+  
+  /**
+   * NOT READY
+   * @param sfWebRequest $request 
+   */
+  public function executeDeliveryInfo(sfWebRequest $request)
+  {
+    $productIds = $request->getParameter('ids');
+    
+    foreach ($productIds as $productId) {
+      $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
+        'geo_id' => $this->getUser()->getRegion('core_id'),
+        'product' => array(
+            array('id' => $productId, 'quantity' => 1),
+        )
+      ));
+      $result = array('success' => true);
+      if ($deliveries && count($deliveries) && !isset($deliveries['result'])) {
+          $deliveryData = null;
+          foreach ($deliveries as $delivery) {
+              if ($delivery['mode_id'] == 1) {
+                  $deliveryData = $delivery;
+                  break;
+              }
+          }
+          if ($deliveryData === null) {
+              $deliveryData = reset($deliveries);
+          }
+          $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryData['mode_id']);
+          $this->delivery = $deliveryObj;
+          $this->deliveryData = $deliveryData;
+          $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryData['date']);
+          $now = new DateTime();
+          $this->deliveryPeriod = $minDeliveryDate->diff($now)->days;
+          if ($this->deliveryPeriod < 0) $this->deliveryPeriod = 0;
+      } else {
+          $result['success'] = false;
+      }
+    }
+  }
 
  /**
   * Executes show action
