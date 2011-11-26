@@ -79,7 +79,21 @@ class lineComponents extends myComponents
       'stock_url'   => url_for('productStock', $product),
       'shop_url'    => url_for('shop_show', ShopTable::getInstance()->getMainShop()),
       'description' => $product->description,
+      'part'        => array(),
     );
+    
+    if ($product->isKit())
+    {
+      $parts = $product->getPart();
+      foreach ($parts as $part)
+      {
+        $item['part'][] = array(
+          'name'  => $part->name,
+          'photo' => $part->getMainPhotoUrl(1),
+          'url'   => url_for('productCard', $part, array('absolute' => true)),
+        );
+      }
+    }
     
     $this->setVar('item', $item, true);
   }
