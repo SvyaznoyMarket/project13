@@ -611,7 +611,7 @@ class ProductTable extends myDoctrineTable
     {
       $q->addWhere('product.is_lines_main = ?', 0);
     }
-    $q->orderBy('product.set_id DESC, product.score DESC');
+    $q->orderBy('product.set_id DESC, (type.core_id = 790) DESC, product.score DESC');
 
     $this->setQueryParameters($q, $params);
 
