@@ -593,7 +593,9 @@ class ProductTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    return $this->getById($q->fetchOne()->id);
+    $product = $q->fetchOne();
+    
+    return !empty($product) ? $this->getById($product->id) : false;
   }
 
   public function getQueryByLine(ProductLine $line, array $params = array())
@@ -602,13 +604,14 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->addWhere('product.line_id = ?', $line->id);
+    $q->innerJoin('product.Type type')
+      ->addWhere('product.line_id = ?', $line->id);
 
     if (!isset($params['with_main']) || !$params['with_main'])
     {
       $q->addWhere('product.is_lines_main = ?', 0);
     }
-    $q->orderBy('product.set_id, product.score');
+    $q->orderBy('product.set_id DESC, product.score DESC');
 
     $this->setQueryParameters($q, $params);
 
