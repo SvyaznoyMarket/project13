@@ -15,10 +15,21 @@ class ProductFilter extends BaseProductFilter
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
-    
-    $this->type = (3 == $data['type_id']) ? 'range' : 'choice';
+
+    switch ($data['type_id'])
+    {
+      case 1:
+        $this->type = 'checkbox';
+        break;
+      case 3:
+        $this->type = 'range';
+        break;
+      default:
+        $this->type = 'choice';
+        break;
+    }
   }
-  
+
   public function isRange()
   {
     return 'range' == $this->type;
