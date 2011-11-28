@@ -482,6 +482,56 @@ class productCatalogComponents extends myComponents
 
   public function executeLeftCategoryList(){
 
+      
+    $this->setVar('currentCat', $this->productCategory, true);
+    $ancestorList = $this->productCategory->getNode()->getAncestors();
+
+    $pathAr = array();
+    if ($ancestorList)
+    foreach($ancestorList as $next) {
+        $pathAr[] = $next['id'];
+    }
+    if (isset($ancestorList[0])) {
+        $rootCat = $ancestorList[0];
+    } else {
+        $rootCat = $this->productCategory;
+    }
+    
+    
+    $list = ProductCategoryTable::getInstance()
+            ->createQuery()
+            ->addWhere('root_id = ?', $rootCat->id)
+            ->addWhere('is_active = ?', 1)
+            ->orderBy('core_lft')
+            ->fetchArray()
+            ;
+    
+    
+    $isCurrent = false;
+    foreach($list as $cat) {
+        $fullIdList[] = $cat['id'];
+        if ($cat['id'] == $this->productCategory->id) {
+            $isCurrent = true;
+        } elseif ($isCurrent) {
+          if ($cat['level'] > $this->productCategory->level) {
+              $hasChildren = true;
+          } else {
+              $hasChildren = false;              
+          }
+          $isCurrent = false;
+        }
+    }
+    
+    $notFreeCatList = ProductCategoryTable::getInstance()->getNotEmptyCategoryList($fullIdList);
+    #myDebug::dump($productCountlist);        
+    $this->setVar('notFreeCatList', $notFreeCatList, true);
+    $this->setVar('pathAr', $pathAr, true);
+    $this->setVar('list', $list, true);
+    $this->setVar('hasChildren', $hasChildren, true);
+    $this->setVar('quantity', $this->productCategory->countProduct(), true);
+    
+    
+    /*
     $this->setVar('currentCat', $this->productCategory, true);
     $ancestorList = $this->productCategory->getNode()->getAncestors();
 
@@ -498,7 +548,9 @@ class productCatalogComponents extends myComponents
     $this->setVar('tree', $tree, true);
 
     $this->setVar('quantity', $this->productCategory->countProduct(), true);
+*/
   }
+  
 
   public function getSiteCatTree($category, $result){
         if (is_object($category)) {

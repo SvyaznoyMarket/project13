@@ -29,8 +29,8 @@
                     if ($from>0) echo '<dd>&nbsp;</dd>';
                     for($i=$from; $i<=$to; $i++)
                     {
-                        if (!isset($catTree[ $bigCat['id'] ][$i]) || 
-                            !$catTree[ $bigCat['id'] ][$i]->countProduct()   ){
+                        if (!isset($catTree[ $bigCat['id'] ][$i])  /*|| 
+                            !$catTree[ $bigCat['id'] ][$i]->countProduct() */   ){
                             continue;
                         }
                         echo '<dd><a href="'.url_for('productCatalog_category', $catTree[ $bigCat['id'] ][$i]).'">'.$catTree[ $bigCat['id'] ][$i] . '</a></dd>'; 
