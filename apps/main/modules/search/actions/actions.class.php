@@ -49,7 +49,7 @@ class searchActions extends myActions
       'is_product_type_first_only' => $this->productType ? 'false' : 'true',
     );
     $response = Core::getInstance()->query('search.get', $params);
-    myDebug::dump($response);
+    #myDebug::dump($response);
     if (!$response)
     {
       return sfView::ERROR;
