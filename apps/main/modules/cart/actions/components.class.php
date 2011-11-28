@@ -24,14 +24,15 @@ class cartComponents extends myComponents
       $this->quantity = 1;
     }
 
-	$this->disable = false;
-	if (!$this->product->is_in_sale) {
-		$this->disable = true;
-	}
+    $this->disable = false;
+    if (!$this->product['is_insale'])
+    {
+      $this->disable = true;
+    }
 
     $cart = $this->getUser()->getCart();
 
-    if ($cart->hasProduct($this->product->id))
+    if ($cart->hasProduct($this->product['id']))
     {
       $this->button = 'cart';
     }

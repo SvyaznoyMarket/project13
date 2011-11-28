@@ -18,9 +18,12 @@ class ProductParameter extends myDoctrineVirtualRecord
     $this->view_list = $productTypePropertyRelation['view_list'];
     $this->view_show = $productTypePropertyRelation['view_show'];
 
+    $productPropertyRelationTable = ProductPropertyRelationTable::getInstance();
+
     $value = array();
     foreach ($productPropertyRelationArray as $propertyRelation)
     {
+      $realValue = $productPropertyRelationTable->getRealValue($propertyRelation);
       switch ($this->property->type)
       {
         case 'select':
@@ -28,8 +31,6 @@ class ProductParameter extends myDoctrineVirtualRecord
           $value[] = $option ? $this->formatValue($this->property->pattern, $option->value, $option->unit) : null;
           break;
         case 'integer': case 'float':
-          $realValue = $propertyRelation['real_value'];
-
           if (false !== strpos($realValue, '.'))
           {
             $frac = $realValue - floor($realValue);
@@ -48,7 +49,7 @@ class ProductParameter extends myDoctrineVirtualRecord
         case 'boolean':
           $value[] = $this->formatValue($this->property->pattern, $propertyRelation['value'], $this->property->unit);
         default:
-          $value[] = $this->formatValue($this->property->pattern, $propertyRelation['real_value'], $this->property->unit);
+          $value[] = $this->formatValue($this->property->pattern, $realValue, $this->property->unit);
           break;
       }
     }

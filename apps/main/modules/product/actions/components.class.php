@@ -24,24 +24,68 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
+    $table = ProductTable::getInstance();
+
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line')))
     {
       $this->view = 'default';
     }
+
+    if (!$this->product instanceof Product)
+    {
+      $params = array(
+        'hydrate_array' => true,
+      );
+
+      if ('default' == $this->view)
+      {
+        $params = myToolkit::arrayDeepMerge($params, array(
+          'group_property'  => true,
+          'view'            => 'show',
+          'property_view'   => 'show',
+          'with_properties' => true,
+        ));
+      }
+      else if ('expanded' == $this->view)
+      {
+        $params = myToolkit::arrayDeepMerge($params, array(
+          'group_property'  => false,
+          'view'            => 'list',
+          'property_view'   => 'list',
+          'with_properties' => true,
+        ));
+      }
+      else {
+        $params = myToolkit::arrayDeepMerge($params, array(
+          'view'      => 'list',
+          'with_line' => 'line' == $this->view ? true : false,
+        ));
+      }
+
+      $this->product = $table->getById($this->product, $params);
+      $this->product['is_insale'] = $table->isInsale($this->product);
+    }
+
     $item = array(
-      'article'  => $this->product->article,
-      'name'     => (string) $this->product,
-      'creator'  => (string) $this->product->Creator,
-      'price'    => $this->product->formatted_price,
-      'has_link' => $this->product['view_show'],
-      'photo'    => $this->product->getMainPhotoUrl(2),
-      'product'  => clone($this->product),
-      'url'      => url_for('productCard', $this->product, array('absolute' => true)),
+      'id'         => $this->product['id'],
+      'token'      => $this->product['token'],
+      'article'    => $this->product['article'],
+      'name'       => $this->product['name'],
+      //'creator'    => $this->product['Creator']['name'],
+      'creator'    => (is_array($this->product['Creator']) || ($this->product['Creator'] instanceof Creator)) ? $this->product['Creator']['name'] : '',
+      'rating'     => $this->product['rating'],
+      'price'      => $table->getFormattedPrice($this->product), //$this->product->formatted_price,
+      'has_link'   => $this->product['view_show'],
+      'photo'      => $table->getMainPhotoUrl($this->product, 2),
+      'is_insale'  => $this->product['is_insale'],
+      //'product'  => clone $this->product,
+      'url'        => url_for('productCard', array('product' => $this->product['token']), array('absolute' => true)),
+      'product'    => $this->product,
     );
 
     if ('compact' == $this->view)
     {
-        $item['root_name'] = (string) $this->product->Category[0]->getRootCategory();
+        $item['root_name'] = ProductCategoryTable::getInstance()->getRootRecord($this->product['Category'][0]);//(string)$this->product['Category'][0]->getRootCategory();
     }
 
     if ('default' == $this->view)
@@ -52,38 +96,40 @@ class productComponents extends myComponents
       $item['shop_url'] = url_for('shop');
 
       $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
-          'date' => date('Y-m-d'),
-          'geo_id' => $this->getUser()->getRegion('core_id'),
-          'product' => array(
-              array('id' => $this->product->core_id, 'quantity' => 1),
-          )
+        'date' => date('Y-m-d'),
+        'geo_id' => $this->getUser()->getRegion('core_id'),
+        'product' => array(
+            array('id' => $this->product['core_id'], 'quantity' => 1),
+        )
       ));
       $this->delivery = $this->delivery ? current($this->delivery) : null;
 
       $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
       $item['rated'] =
         true || !$this->getUser()->isAuthenticated()
-        ? in_array($this->product->id, $rated)
+        ? in_array($this->product['id'], $rated)
         : false
       ;
     }
     if (in_array($this->view, array('expanded')))
     {
-      $item['preview'] = $this->product->preview;
+      $item['preview'] = $this->product['preview'];
     }
     if (in_array($this->view, array('description')))
     {
-      $item['description'] = $this->product->description;
+      $item['description'] = $this->product['description'];
     }
     if ('line' == $this->view)
     {
-      $item['url'] = url_for('lineCard', $this->product->Line, array('absolute' => true, ));
+      $item['url'] = url_for('lineCard', $this->product['Line'], array('absolute' => true));
     }
 
     $this->setVar('item', $item, true);
 
-    $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product->id);
+    $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product['id']);
     $this->setVar('selectedServices', $selectedServices, true);
+
+    //myDebug::dump($item, 1);
   }
 
   /**
@@ -142,7 +188,7 @@ class productComponents extends myComponents
   /**
    * Executes list component
    *
-   * @param myDoctrineCollection $list Список товаров
+   * @param myDoctrineCollection | array $list Коллекция товаров | массив ид товаров
    */
   public function executeList()
   {
