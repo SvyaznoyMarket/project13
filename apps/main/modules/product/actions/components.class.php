@@ -58,41 +58,41 @@ class productComponents extends myComponents
         : false
       ;
     }
-    if (in_array($this->view, array('expanded', 'default')))
-    {
-      if (isset($this->product->deliveries)) {
-        $deliveries = $this->product->deliveries;
-      } else {
-        $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
-          'date' => date('Y-m-d'),
-          'geo_id' => $this->getUser()->getRegion('core_id'),
-          'product' => array(
-              array('id' => $this->product->core_id, 'quantity' => 1),
-          )
-        ));
-      }
-      if ($deliveries && count($deliveries) && !isset($deliveries['result'])) {
-          $deliveryData = null;
-          foreach ($deliveries as $delivery) {
-              if ($delivery['mode_id'] == 1) {
-                  $deliveryData = $delivery;
-                  break;
-              }
-          }
-          if ($deliveryData === null) {
-              $deliveryData = reset($deliveries);
-          }
-          $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryData['mode_id']);
-          $this->delivery = $deliveryObj;
-          $this->deliveryData = $deliveryData;
-          $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryData['date']);
-          $now = new DateTime();
-          $this->deliveryPeriod = $minDeliveryDate->diff($now)->days;
-          if ($this->deliveryPeriod < 0) $this->deliveryPeriod = 0;
-      } else {
-          $this->delivery = false;
-      }
-    }
+//    if (in_array($this->view, array('expanded', 'default')))
+//    {
+//      if (isset($this->product->deliveries)) {
+//        $deliveries = $this->product->deliveries;
+//      } else {
+//        $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
+//          'date' => date('Y-m-d'),
+//          'geo_id' => $this->getUser()->getRegion('core_id'),
+//          'product' => array(
+//              array('id' => $this->product->core_id, 'quantity' => 1),
+//          )
+//        ));
+//      }
+//      if ($deliveries && count($deliveries) && !isset($deliveries['result'])) {
+//          $deliveryData = null;
+//          foreach ($deliveries as $delivery) {
+//              if ($delivery['mode_id'] == 1) {
+//                  $deliveryData = $delivery;
+//                  break;
+//              }
+//          }
+//          if ($deliveryData === null) {
+//              $deliveryData = reset($deliveries);
+//          }
+//          $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryData['mode_id']);
+//          $this->delivery = $deliveryObj;
+//          $this->deliveryData = $deliveryData;
+//          $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryData['date']);
+//          $now = new DateTime();
+//          $this->deliveryPeriod = $minDeliveryDate->diff($now)->days;
+//          if ($this->deliveryPeriod < 0) $this->deliveryPeriod = 0;
+//      } else {
+//          $this->delivery = false;
+//      }
+//    }
     if (in_array($this->view, array('expanded')))
     {
       $item['preview'] = $this->product->preview;

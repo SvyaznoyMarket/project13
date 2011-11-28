@@ -337,8 +337,15 @@ class Core
     return $record->exportToCore();
   }
 
-  public function query($name, array $params = array(), array $data = array())
+  public function query($name, array $params = array(), array $data = array(), $cache = false)
   {
+    $cacheKey = 'core_'.md5(serialize($params).serialize($data));
+    if ($cache === true) {
+      $cacheData = $this->cache->get($cacheKey);
+      if ($cacheData !== null) {
+        return $cacheData;
+      }
+    }
     $action = '/'.str_replace('.', '/', $name).'/';
 
     if (empty($this->client_id) || empty($this->token))
@@ -368,6 +375,10 @@ class Core
       if (isset($response['error']['detail'])) $this->error['detail'] = $response['error']['detail'];
       if (isset($response['error']['message'])) $this->error['message'] = $response['error']['message'];
       $response = false;
+    }
+    
+    if ($cache === true) {
+      $this->cache->set($cacheKey, $response, 3600*24);
     }
     return $response;
   }

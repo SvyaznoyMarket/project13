@@ -18,43 +18,48 @@ class productActions extends myActions
   }
   
   /**
-   * NOT READY
    * @param sfWebRequest $request 
    */
   public function executeDeliveryInfo(sfWebRequest $request)
   {
     $productIds = $request->getParameter('ids');
-    
+    $data = array();
     foreach ($productIds as $productId) {
       $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
         'geo_id' => $this->getUser()->getRegion('core_id'),
         'product' => array(
             array('id' => $productId, 'quantity' => 1),
         )
-      ));
+      ), true);
       $result = array('success' => true);
+      $now = new DateTime();
       if ($deliveries && count($deliveries) && !isset($deliveries['result'])) {
-          $deliveryData = null;
-          foreach ($deliveries as $delivery) {
-              if ($delivery['mode_id'] == 1) {
-                  $deliveryData = $delivery;
-                  break;
-              }
+        $deliveryData = null;
+        foreach ($deliveries as $i => $delivery) {
+          $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($delivery['mode_id']);
+          $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $delivery['date']);
+          $deliveryPeriod = $minDeliveryDate->diff($now)->days;
+          if ($deliveryPeriod < 0) $deliveryPeriod = 0;
+          $delivery['period'] = $deliveryPeriod;
+          $delivery['object'] = $deliveryObj->toArray(false);
+          $delivery['text'] = myToolkit::formatDeliveryDate($deliveryPeriod);
+          $deliveries[$i] = $delivery;
+          if ($delivery['mode_id'] == 1) {
+            $deliveryData = $delivery;
+            break;
           }
-          if ($deliveryData === null) {
-              $deliveryData = reset($deliveries);
-          }
-          $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryData['mode_id']);
-          $this->delivery = $deliveryObj;
-          $this->deliveryData = $deliveryData;
-          $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryData['date']);
-          $now = new DateTime();
-          $this->deliveryPeriod = $minDeliveryDate->diff($now)->days;
-          if ($this->deliveryPeriod < 0) $this->deliveryPeriod = 0;
+        }
+        if ($deliveryData === null) {
+          $deliveryData = reset($deliveries);
+        }
+        $result['deliveries'] = $deliveries;
+        $result['delivery'] = $delivery;
       } else {
           $result['success'] = false;
       }
+      $data[$productId] = $result;
     }
+    return $this->renderJson($data);
   }
 
  /**

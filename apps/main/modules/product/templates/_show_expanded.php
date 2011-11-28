@@ -17,11 +17,9 @@
       <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
 
       <ul>
-        <?php  if ($item['product']->getIsInsale()){  ?> 
-            <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
-            <?php if ($delivery): ?>
-            <li><?php echo 'Доставка возможна '.myToolkit::formatDeliveryDate($deliveryPeriod) ?></li>
-            <?php endif ?>
+        <?php if ($item['product']->getIsInsale()){  ?> 
+          <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
+          <li class="delivery-info" id="product-id-<?php echo $item['product']->core_id ?>">Доставка: уточните в контакт центре</li>
         <?php } ?>
       </ul>
 
@@ -57,10 +55,10 @@
           <div class="extrainfo">
             <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
             <ul>
-              <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
-              <?php if ($delivery): ?>
-              <li><?php echo 'Доставка возможна '.myToolkit::formatDeliveryDate($deliveryPeriod) ?></li>
-              <?php endif ?>
+              <?php if ($item['product']->getIsInsale()){  ?> 
+                <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
+                <li class="delivery-info product-id-<?php echo $item['product']->core_id ?>">Доставка: уточните в контакт центре</li>
+              <?php } ?>
             </ul>
           </div>
         </div>

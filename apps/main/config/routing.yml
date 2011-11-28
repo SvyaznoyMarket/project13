@@ -18,6 +18,10 @@ qrcode:
 
 # товар
 #
+# инфа по доставке
+product_delivery:
+  url:   /product/delivery-info
+  param: { module: product, action: deliveryInfo }
 # список товаров
 product_list:
   url:   /products/list/:products

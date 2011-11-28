@@ -27,11 +27,11 @@ class myToolkit extends sfToolkit
   {
     $d = date('d-m-Y', time() + (3600*24*$period));
     if ($period == 0) {
-      return 'на сегодня (' . $d . ')';
+      return 'сегодня (' . $d . ')';
     } elseif ($period == 1) {
-      return 'на завтра (' . $d . ')';
+      return 'завтра (' . $d . ')';
     } elseif ($period == 2) {
-      return 'на послезавтра (' . $d . ')';
+      return 'послезавтра (' . $d . ')';
     } else {
       return 'через ' . $period . ' ' . self::declension($period, 'день дня дней');
     }
