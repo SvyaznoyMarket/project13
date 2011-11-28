@@ -715,10 +715,14 @@ tag_show:
 
 
 #
-# test core module
-core_test:
-  url:      /core/:action
-  param:    { module: core }
+# redirect
+#
+# карточка магазина
+redirect_for_shop:
+  url:   /shops/:region/
+  param: { module: default, action: redirect, route: shop }
+
+
 
 default_show:
   url:   /:page

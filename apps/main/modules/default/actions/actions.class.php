@@ -54,4 +54,23 @@ class defaultActions extends myActions
   {
 	  $this->setLayout(false);
   }
+ /**
+  * Executes redirect action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeRedirect(sfWebRequest $request)
+  {
+    $route = $request['route'];
+    $this->forward404Unless($route);
+
+    $params = array();
+    foreach ($request->getRequestParameters() as $k => $v)
+    {
+      if (in_array($k, array('action', 'module', 'route')) || (0 === strpos($k, '_sf_'))) continue;
+      $params[$k] = $v;
+    }
+
+    $this->redirect('@'.$route.'?'.http_build_query($params), 301);
+  }
 }

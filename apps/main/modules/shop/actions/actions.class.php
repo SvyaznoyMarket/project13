@@ -17,6 +17,13 @@ class shopActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    // temporary route fix
+    $shop = !empty($request['region']) ? ShopTable::getInstance()->getByToken($request['region']) : false;
+    if ($shop)
+    {
+      $this->redirect(array('sf_route' => 'shop_show', 'sf_subject' => $shop), 301);
+    }
+
     $this->region = !empty($request['region']) ? RegionTable::getInstance()->getByToken($request['region']) : RegionTable::getInstance()->getDefault();
     $this->forward404Unless($this->region, 'Region not found');
   }
