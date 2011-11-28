@@ -312,7 +312,7 @@ EOF;
             ->select('pc.*') 
             ->whereIn('id',  array_keys($this->_categoryList))          
             ->orderBy('pc.id')
-            #->limit(50)
+            ->limit(50)
             ->fetchArray();
     foreach($categoryList as $cat){
         $catIdToCoreId[ $cat['core_id'] ] = $cat['id'];
@@ -369,8 +369,10 @@ EOF;
             ->createQuery('p')
             ->distinct()
             ->select('p.*,pcr.product_category_id,cr.name,price.price,type.name,photo.resource') 
+            ->addWhere('view_show = ?', 1)
+            ->addWhere('view_list = ?', 1)
             ->leftJoin('p.ProductCategoryProductRelation pcr on p.id=pcr.product_id ')      //категория     
-            ->leftJoin('p.Photo photo on p.id=photo.product_id ')           //фото
+           # ->leftJoin('p.Photo photo on p.id=photo.product_id ')           //фото
            # ->leftJoin('p.Type type on p.type_id=type.id ')                 //тип
             ->leftJoin('p.Creator cr on cr.id=p.creator_id ')               //производитель
             ->leftJoin('p.ProductPrice price on price.product_id=p.id ')    //цена    
@@ -386,7 +388,7 @@ EOF;
     }
     $offersList = $offersList
             ->orderBy('p.rating DESC')
-            #->limit(50)
+            ->limit(50)
             ->fetchArray();
     #echo $offersList;
     #print_r($offersList);
@@ -486,8 +488,8 @@ EOF;
                     $value = $offerInfo['ProductCategoryProductRelation'][0]['product_category_id'];
                 break;
             case 'picture':
-                if (isset($offerInfo['Photo']) && isset($offerInfo['Photo'][0]) && isset($offerInfo['Photo'][0]['resource'])) 
-                    $value =  $this->_imageUrlsConfig[3] . $offerInfo['Photo'][0]['resource'];
+                if (isset($offerInfo['main_photo'])) 
+                    $value =  $this->_imageUrlsConfig[3] . $offerInfo['main_photo'];
                 break;
             case 'typePrefix':
                 #$value = $offerInfo['Type']['name'];
