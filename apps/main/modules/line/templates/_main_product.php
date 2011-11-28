@@ -1,3 +1,33 @@
+    <h2 class="mbSet"><strong><?php echo $item['name'] ?></strong></h2>
+    <div class="line pb15"></div>
+	
+	<div class='bSet'>
+		<div class='bSet__eImage'>
+			<a href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" alt="" width="350" height="350" title="" /></a>
+		</div>
+		<div class='bSet__eInfo'>
+			<div class='bSet__eArticul'>Артикул #<?php echo $item['product']->article ?></div>
+			<p class='bSet__eDescription'><?php echo $item['description'] ?></p>
+			<div class='bSet__ePrice'>
+				<span class="fl mr5"><?php include_partial('product/price', array('price' => $item['product']->getFormattedPrice(), 'noClasses' => true, )) ?></span>
+                                <span class="fl"><?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1, 'value' => array('Купить набор'),)) ?></span>
+                                <div class="clear"></div>
+			</div>
+			<div class='bSet__eIconsWrap'>
+				<h3 class='bSet__eG'>Состав набора:</h3>
+				<div class='bSet__eIcons'>
+					<ul class="previewlist">
+                                            <?php foreach ($item['part'] as $part): ?>
+        			            <li><b><a href="<?php echo $part['url'] ?>" title="<?php echo $item['name'] ?>"></a></b><img src="<?php echo $part['photo'] ?>" alt="<?php echo $item['name'] ?>" width="48" height="48"></li>
+                                            <?php endforeach ?>
+			        </ul>
+				</div>
+				<div class='bSet__eTWrap'><a class='bSet__eMoreInfo' href="<?php echo $item['url'] ?>">Подробнее о наборе</a></div>
+			</div>
+		</div>
+	</div>
+ 
+<?php if (false): ?>
 <div class="goodsphoto"><!--i class="bestseller"></i--><a href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" alt="" width="500" height="500" title="" /></a></div>
 
 <div class="goodsinfo"><!-- Goods info -->
@@ -111,3 +141,4 @@ if (count($f1)):
 </div><!-- Goods info -->
 
 <div class="clear"></div>
+<?php endif ?>

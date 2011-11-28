@@ -212,6 +212,26 @@ $(document).ready(function(){
 	})
 	// hidden buttons wishlist+compare
 	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })
+        
+	$('.bSet__ePrice .link1').click( function() {
+		var button = this
+		if( $(button).hasClass('disabled') )
+			return false
+		$.getJSON( $( button ).attr('href') +'/1', function(data) {			
+			if ( data.success && ltbx ) {
+				var tmpitem = { 
+					'id'   : $( button ).attr('href'),
+					'title': $('h2').html(),
+					'price': $('.bSet__ePrice .price').html(),
+					'img'  : $('.bSet__eImage img').attr('src')
+				}
+				ltbx.getBasket( tmpitem ) 
+				markPageButtons()
+				//$(button).unbind('click')		
+			}	
+		})
+		return false
+	})	
 	/* ---- */		
 	
 	

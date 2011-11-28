@@ -60,26 +60,40 @@ class lineComponents extends myComponents
   */
   public function executeMain_product()
   {
-    if (empty($this->line))
+    if (empty($this->line) || empty($this->product_id))
     {
       return sfView::NONE;
     }
     
-    $product = ProductTable::getInstance()->getByLine($this->line);
+    $this->product = ProductTable::getInstance()->getById($this->product_id);
     
     $item = array(
-      'article'     => $product->article,
-      'name'        => (string) $product,
-      'creator'     => (string) $product->Creator,
-      'price'       => $product->formatted_price,
-      'has_link'    => $product['view_show'],
-      'photo'       => $product->getMainPhotoUrl(3),
-      'product'     => $product,
-      'url'         => url_for('productCard', $product, array('absolute' => true)),
-      'stock_url'   => url_for('productStock', $product),
+      'article'     => $this->product->article,
+      'name'        => (string) $this->product,
+      'creator'     => (string) $this->product->Creator,
+      'price'       => $this->product->formatted_price,
+      'has_link'    => $this->product['view_show'],
+      'photo'       => $this->product->getMainPhotoUrl(3),
+      'product'     => $this->product,
+      'url'         => url_for('productCard', $this->product, array('absolute' => true)),
+      'stock_url'   => url_for('productStock', $this->product),
       'shop_url'    => url_for('shop_show', ShopTable::getInstance()->getMainShop()),
-      'description' => $product->description,
+      'description' => $this->product->description,
+      'part'        => array(),
     );
+    
+    if ($this->product->isKit())
+    {
+      $parts = $this->product->getPart();
+      foreach ($parts as $part)
+      {
+        $item['part'][] = array(
+          'name'  => $part->name,
+          'photo' => $part->getMainPhotoUrl(1),
+          'url'   => url_for('productCard', $part),
+        );
+      }
+    }
     
     $this->setVar('item', $item, true);
   }

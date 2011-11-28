@@ -28,12 +28,16 @@ class lineActions extends myActions
   public function executeCard(sfWebRequest $request)
   {
     $this->line = $this->getRoute()->getObject();
-
+    
+    $main_product = ProductTable::getInstance()->getByLine($this->line);
+    $this->forward404If(!$main_product);
+    
     $q = ProductTable::getInstance()->getQueryByLine($this->line, array('with_main' => false, ));
 
-    $this->productPager = $this->getPager('Product', $q, 12, array());
+    $this->productPager = $this->getPager('Product', $q, $q->count());
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
 
     $this->view = 'compact';
+    $this->setVar('product_id', $main_product->id);
   }
 }

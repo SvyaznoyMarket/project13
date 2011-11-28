@@ -62,7 +62,7 @@ class RegionTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
 
     $q->select('region.product_price_list_id, region.stock_id, region.token, region.name, region.type, COUNT(shop.id) AS shop_count')
-      ->innerJoin('region.Shop shop')
+      ->innerJoin('region.Shop shop WITH shop.is_active = ?', 1)
       ->groupBy('region.product_price_list_id, region.stock_id, region.token, region.name, region.type')
       ->having('COUNT(shop.id) > 0')
     ;
