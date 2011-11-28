@@ -164,7 +164,7 @@ class searchActions extends myActions
     //myDebug::dump($response);
     if (!$response) {
       $this->_validateResult['success'] = false;
-      $this->_validateResult['error'] = 'Ошбика. От ядра не получен ответ.';
+      $this->_validateResult['error'] = 'Ошбика. Не удалось получить результаты поиска.';
       return $this->_refuse();          
     } else if (isset($response['result']) && ('empty' == $response['result'])) {
       $this->setTemplate('emptyAjax');
