@@ -24,15 +24,10 @@ class productActions extends myActions
   {
     $productIds = $request->getParameter('ids');
     $data = array();
+    $now = new DateTime();
     foreach ($productIds as $productId) {
-      $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
-        'geo_id' => $this->getUser()->getRegion('core_id'),
-        'product' => array(
-            array('id' => $productId, 'quantity' => 1),
-        )
-      ), true);
+      $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
       $result = array('success' => true);
-      $now = new DateTime();
       if ($deliveries && count($deliveries) && !isset($deliveries['result'])) {
         $deliveryData = null;
         foreach ($deliveries as $i => $delivery) {
