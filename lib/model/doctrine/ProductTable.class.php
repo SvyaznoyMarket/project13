@@ -117,7 +117,6 @@ class ProductTable extends myDoctrineTable
     }
 
     $this->setQueryParameters($q, $params);
-
     $q->addWhere('product.id = ?', $id);
 
     $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
@@ -285,7 +284,7 @@ class ProductTable extends myDoctrineTable
           $q->innerJoin('product.Line line')
             ->innerJoin('line.Product line_product')
             ->innerJoin('line_product.Category category WITH category.id = ?', $filter['category']->id)
-            ->where('product.is_lines_main = ?', 1)
+            ->addWhere('product.is_lines_main = ?', 1)
           ;
         }
         else
@@ -545,16 +544,25 @@ class ProductTable extends myDoctrineTable
 
     if ($category->has_line)
     {
-      $q->addWhere('product.line_id IS NOT NULL')
-        ->groupBy('product.line_id');
+        $q->innerJoin('product.Line line')
+          ->innerJoin('line.Product line_product')
+          ->innerJoin('line_product.Category category WITH category.id = ?', $category->id)
+          ->addWhere('product.is_lines_main = ?', 1)
+        ;
+      //$q->addWhere('product.line_id IS NOT NULL')
+      //  ->addWhere('product.is_lines_main = ?', 1);
+        //->groupBy('product.line_id');
+    }
+    else
+    {
+      $ids = $category->getDescendantIds();
+      $ids[] = $category->id;
+
+      $q->innerJoin('product.Category category')
+        ->whereIn('category.id', $ids)
+      ;
     }
 
-    $ids = $category->getDescendantIds();
-    $ids[] = $category->id;
-
-    $q->innerJoin('product.Category category')
-      ->whereIn('category.id', $ids)
-    ;
     $this->setQueryParameters($q, $params);
 
     $q->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params));
@@ -598,7 +606,9 @@ class ProductTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    return $this->getById($q->fetchOne()->id);
+    $product = $q->fetchOne();
+
+    return !empty($product) ? $this->getById($product->id) : false;
   }
 
   public function getQueryByLine(ProductLine $line, array $params = array())
@@ -607,12 +617,14 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->addWhere('product.line_id = ?', $line->id);
+    $q->innerJoin('product.Type type')
+      ->addWhere('product.line_id = ?', $line->id);
 
     if (!isset($params['with_main']) || !$params['with_main'])
     {
       $q->addWhere('product.is_lines_main = ?', 0);
     }
+    $q->orderBy('product.set_id DESC, (type.core_id = 790) DESC, product.score DESC');
 
     $this->setQueryParameters($q, $params);
 

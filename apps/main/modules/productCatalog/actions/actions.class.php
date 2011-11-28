@@ -518,6 +518,7 @@ class productCatalogActions extends myActions
     $this->productSorting = $this->getProductSorting();
     $this->productSorting->setQuery($q);
 
+
     /*
     $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
