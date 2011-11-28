@@ -1,24 +1,26 @@
-//TODO rewrite
 $(function(){
 	
-	$('.ratingscalebox a').click(function(){
-		var n = parseInt($(this).prop('class').replace('ra', ''));
-		$(this).parent().parent().find('.current').width(n*30).html(n);
-		$(this).parent().parent().parent().next().html($(this).html());
-		$(this).parent().parent().parent().next().next().val(n);
-		$(this).parent().parent().parent().next().next().next().val(n);
-	});
+	$('div.ratingscale').each( function(){
+		var self = $(this)
+		self.delegate('a', 'click', function() {
+			setRating( $(this), self.parent() )
+		})
+	})
 	
-	$('.ratingbox a').click(function(){
-		var n = parseInt($(this).prop('class').replace('ra', ''));
-		$(this).parent().parent().find('.current').width(n*30).html(n);
-		$(this).parent().parent().parent().next().html($(this).html());
-		$(this).parent().parent().parent().next().next().val(n);
-	});
+	$('div.ratingbox').delegate('a', 'click', function() {
+		var rpapa = $('div.ratingbig').parent()
+		setRating( $(this), rpapa )
+	})
 	
-	
-	$('.ratingvalue').each(function(i, item){
-		$(this).prev().prev().find('.ra'+$(this).val()).click();
-	});
-	
-});
+	function setRating( target, rpapa ) {
+		var n = parseInt( target.prop('class').replace(/\D/g, '') )
+		rpapa.find('div.current').width( n*30 ).html(n)
+		rpapa.find('div:last').text( target.attr('title') )
+		rpapa.find('input').val( n )		
+	}
+
+// no init cause it is new user's comment	
+//	$('.ratingvalue').each( function() {
+//		$(this).prev().prev().find('.ra'+$(this).val()).click()
+//	})
+})

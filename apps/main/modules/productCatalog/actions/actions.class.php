@@ -105,7 +105,6 @@ class productCatalogActions extends myActions
   */
   public function executeTag(sfWebRequest $request)
   {
-      
     $this->productCategory = $this->getRoute()->getObject();
 
     $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
