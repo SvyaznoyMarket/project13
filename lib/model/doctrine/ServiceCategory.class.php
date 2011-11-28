@@ -19,6 +19,20 @@ class ServiceCategory extends BaseServiceCategory
 
     return $result;
   }
+  
+  public function getParentCategory(array $params = array())
+  {
+    $result = ServiceCategoryTable::getInstance()
+            ->getQueryObject()
+            ->where('core_id=?', $this->core_parent_id)
+            ->fetchArray();
+
+    if (isset($result[0])) {
+        return $result[0];
+    } else {
+        return false;            
+    }
+  }  
 
   public function toParams()
   {

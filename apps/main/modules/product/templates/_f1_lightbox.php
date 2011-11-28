@@ -12,7 +12,7 @@
                       ?>
                     <dt>
                         <label for="checkbox-<?php echo $service->id ?>"><?php echo $service->name ?></label>
-                        <input ref="<?php echo $service->id ?>" id="checkbox-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="checkbox-<?php echo $service->id ?>" />
+                        <input ref="<?php echo $service->token ?>" id="checkbox-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="checkbox-<?php echo $service->id ?>" />
                         <b></b>
                     </dt>
                     <dd>

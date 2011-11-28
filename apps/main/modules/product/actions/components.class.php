@@ -57,6 +57,7 @@ class productComponents extends myComponents
         ? in_array($this->product->id, $rated)
         : false
       ;
+
     }
 //    if (in_array($this->view, array('expanded', 'default')))
 //    {
