@@ -24,6 +24,19 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
+    if (isset($this->product['ProductPrice']))
+    {
+      $this->product->mapValue('price', $this->product['ProductPrice']['price']);
+    }
+    else
+    {
+      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product->id);
+      if (!empty($price))
+      {
+        $this->product->mapValue('price', $price['price']);
+      }
+    }
+
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line')))
     {
       $this->view = 'default';
