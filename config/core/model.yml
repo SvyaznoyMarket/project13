@@ -49,6 +49,10 @@ ServiceCategory:
   - service_category
 Service:
   - service
+ServicePrice:
+  - service_price  
+ServiceProductRelation:
+  - service_product_relation    
 #DeliveryType:
 #  - delivery_type
 #PaymentMethod:

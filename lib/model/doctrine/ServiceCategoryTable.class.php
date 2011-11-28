@@ -23,6 +23,10 @@ class ServiceCategoryTable extends myDoctrineTable
       'id'        => 'core_id',
       'parent_id' => 'core_parent_id',
       'name'      => 'name',
+      'level'      => 'level',
+      'is_active'  => 'is_active', 
+      'description'  => 'description', 
+      'media_image'  => 'main_photo'         
     );
   }
 

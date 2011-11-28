@@ -51,6 +51,7 @@ class productComponents extends myComponents
       //$item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
       $item['shop_url'] = url_for('shop');
 
+
       $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
           'date' => date('Y-m-d'),
           'geo_id' => $this->getUser()->getRegion('core_id'),
@@ -66,6 +67,7 @@ class productComponents extends myComponents
         ? in_array($this->product->id, $rated)
         : false
       ;
+
     }
     if (in_array($this->view, array('expanded')))
     {
