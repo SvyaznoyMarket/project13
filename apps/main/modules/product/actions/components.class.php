@@ -25,18 +25,6 @@ class productComponents extends myComponents
     }
 
     $table = ProductTable::getInstance();
-    if (isset($this->product['ProductPrice']))
-    {
-      $this->product->mapValue('price', $this->product['ProductPrice']['price']);
-    }
-    else
-    {
-      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product->id);
-      if (!empty($price))
-      {
-        $this->product->mapValue('price', $price['price']);
-      }
-    }
 
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line')))
     {
@@ -76,6 +64,32 @@ class productComponents extends myComponents
 
       $this->product = $table->getById($this->product, $params);
       $this->product['is_insale'] = $table->isInsale($this->product);
+    }
+
+    // price
+    if (isset($this->product['ProductPrice']))
+    {
+      if ($this->product instanceof Product)
+      {
+        $this->product->mapValue('price', $this->product['ProductPrice']['price']);
+      }
+      else {
+        $this->product['price'] = $this->product['ProductPrice']['price'];
+      }
+    }
+    else
+    {
+      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product->id);
+      if (!empty($price))
+      {
+        if ($this->product instanceof Product)
+        {
+          $this->product->mapValue('price', $price['price']);
+        }
+        else {
+          $this->product['price'] = $price['price'];
+        }
+      }
     }
 
     $item = array(
