@@ -312,7 +312,7 @@ EOF;
             ->select('pc.*') 
             ->whereIn('id',  array_keys($this->_categoryList))          
             ->orderBy('pc.id')
-            ->limit(50)
+            #->limit(50)
             ->fetchArray();
     foreach($categoryList as $cat){
         $catIdToCoreId[ $cat['core_id'] ] = $cat['id'];
@@ -388,7 +388,7 @@ EOF;
     }
     $offersList = $offersList
             ->orderBy('p.rating DESC')
-            ->limit(50)
+            #->limit(50)
             ->fetchArray();
     #echo $offersList;
     #print_r($offersList);
