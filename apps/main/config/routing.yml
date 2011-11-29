@@ -58,7 +58,7 @@ productCatalog_category:
 
 # категория каталога товаров ajax
 productCatalog_categoryAjax:
-  url:   /catalogajax/:productCategory/:page/:view/:num/
+  url:   /catalogajax/:productCategory/:page/:view/:num
   param: { module: productCatalog, action: categoryAjax, num: 18, view: compact, page: 1}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
@@ -682,6 +682,12 @@ payment_callback:
 search:
   url:      /search
   param:    { module: search, action: index }
+  
+#
+# search
+search_ajax:
+  url:      search_ajax/:q/:product_type/:page/:view/:num
+  param:    { module: search, action: ajax, product_type: 0, page: 1, view: compact, num: 18 }  
 
 
 #callback
@@ -708,7 +714,11 @@ tag:
 tag_show:
   url:      /tags/:tag/:productType
   param:    { module: tag, action: show, productType: ~ }
-
+  
+# tag show
+tag_showAjax:
+  url:      /tags_ajax/:tag/:productType/:page/:view/:num
+  param:    { module: tag, action: showAjax, productType: ~, num: 18, view: compact, page: 1 }  
 
 #
 # redirect

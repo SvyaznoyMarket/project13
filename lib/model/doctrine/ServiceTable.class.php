@@ -23,9 +23,10 @@ class ServiceTable extends myDoctrineTable
       'id'          => 'core_id',
       'name'        => 'name',
       'description' => 'description',
-//      'work'        => 'work',
+      'work'        => 'work',
 //      'expendable'  => 'expendable',
-//      'is_active'   => 'is_active',
+      'media_image'  => 'main_photo',                 
+      'is_active'   => 'is_active',
     );
   }
 
@@ -48,7 +49,7 @@ class ServiceTable extends myDoctrineTable
       #->innerJoin('cr.Category c')
       ->innerJoin('service.ProductRelation pr')
       ->andWhere('pr.product_id=?', array($product->id))
-      ->leftJoin('service.Price price') 
+      ->innerJoin('service.Price price') 
             ;
 
 

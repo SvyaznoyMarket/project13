@@ -16,4 +16,12 @@ class ServiceProductRelationTable extends myDoctrineTable
     {
         return Doctrine_Core::getTable('ServiceProductRelation');
     }
+    
+    public function getCoreMapping()
+    {
+        return array(
+          'service_id'  => 'service_id',
+          'product_id'  => 'product_id',
+        );
+    }      
 }
