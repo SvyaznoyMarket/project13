@@ -17,10 +17,12 @@
       <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
 
       <ul>
-        <?php  if ($item['product']->getIsInsale()){  ?> 
+        <?php  if ($item['product']->getIsInsale()):  ?>
             <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
+            <?php if (false): ?>
             <li>Доставим в течение 24 часов</li>
-        <?php } ?>
+            <?php endif ?>
+        <?php endif ?>
       </ul>
 
     </div>
@@ -55,8 +57,12 @@
           <div class="extrainfo">
             <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
             <ul>
-              <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
-              <li>Доставим в течение 24 часов</li>
+            <?php  if ($item['product']->getIsInsale()):  ?>
+                <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
+                <?php if (false): ?>
+                <li>Доставим в течение 24 часов</li>
+                <?php endif ?>
+            <?php endif ?>
             </ul>
           </div>
         </div>
