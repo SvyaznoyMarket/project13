@@ -331,6 +331,7 @@ $(document).ready(function(){
 		  	}
 		})
 	}
+	
 	/* --- */
     $(this).find('.ratingbox A').hover(function(){
         $("#ratingresult").html(this.innerHTML)
