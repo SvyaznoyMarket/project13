@@ -40,22 +40,26 @@ class myProductFormFilter extends sfFormFilter
       ->toKeyValueArray('id', 'name')
     ;
 
-    if (count($choices) > 1)
+    if ($this->getOption('with_creator', false))
     {
-      $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
-        'choices'          => $choices,
-        'multiple'         => true,
-        'expanded'         => true,
-        'renderer_class'   => 'myWidgetFormSelectCheckbox',
-        'renderer_options' => array(
-          'formatter'       => array($this, 'show_part'),
-          'label_separator' => '',
-        ),
-      ));
-      $this->widgetSchema['creator']->setLabel('Производитель');
-      $this->widgetSchema['creator']->setDefault($creator ? $creator->id : null);
-      $this->validatorSchema['creator'] = new sfValidatorPass();
+      if (count($choices) > 1)
+      {
+        $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
+          'choices'          => $choices,
+          'multiple'         => true,
+          'expanded'         => true,
+          'renderer_class'   => 'myWidgetFormSelectCheckbox',
+          'renderer_options' => array(
+            'formatter'       => array($this, 'show_part'),
+            'label_separator' => '',
+          ),
+        ));
+        $this->widgetSchema['creator']->setLabel('Производитель');
+        $this->widgetSchema['creator']->setDefault($creator ? $creator->id : null);
+        $this->validatorSchema['creator'] = new sfValidatorPass();
+      }
     }
+
     // виджеты параметров
     $productFilterList = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
     //$productFilterList = $productCategory->FilterGroup->Filter;
