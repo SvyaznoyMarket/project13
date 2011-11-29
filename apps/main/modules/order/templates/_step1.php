@@ -90,3 +90,6 @@
 	</script>
     <!-- /Form -->
 <?php endif ?>
+
+<input type="hidden" disabled="disabled" id="user_signin-url" value="<?php echo url_for('@user_signin') ?>" />
+<input type="hidden" disabled="disabled" id="user_register-url" value="<?php echo url_for('@user_register') ?>" />
