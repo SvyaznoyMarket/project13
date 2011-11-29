@@ -76,8 +76,14 @@ $(document).ready(function() {
       success: function(response) {
         if (true == response.success)
         {
-          form.unbind('submit')
-          form.submit()
+          if (response.url) {
+            window.location = response.url
+          }
+          else {
+            form.unbind('submit')
+            form.submit()
+          }
+          //console.info(response);
         }
         else {
           form.html($(response.data.content).html())
@@ -104,14 +110,15 @@ $(document).ready(function() {
 		var form = $(this);
 		form.find('.error_list').html('');
 		$.post(form.prop('action'), form.serializeArray(), function(resp){
-			if (resp.success == true) {
+			if (resp.success === true) {
 
 				$('#reset-pwd-form').hide();
 				$('#login-form').show();
 				alert('Новый пароль был вам выслан по почте или смс');
 
 			} else {
-				form.find('.error_list').html('Вы ввели неправильные данные');
+				var txterr = ( resp.error !== '' ) ? resp.error : 'Вы ввели неправильные данные'
+				form.find('.error_list').text( txterr );
 			}
 		}, 'json');
 

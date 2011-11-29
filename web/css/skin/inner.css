@@ -223,6 +223,9 @@ box-shadow:0 0 7px #616161;
 .pagehead {float:left; width:100%; padding-bottom:20px}
 .breadcrumbs {float:left; padding-bottom:9px; font-size:11px; color:#a6a6a6}
 .breadcrumbs A {color:#a6a6a6}
+.breadcrumbs-footer {padding:0px 0px 14px 10px; font-size:11px; color:#a6a6a6}
+.breadcrumbs-footer A {color:#a6a6a6}
+
 .searchnumber {float:right; padding-bottom:9px; font-size:11px; color:#a6a6a6; white-space:nowrap}
 .searchtitle {clear:both; font-size:16px; font-weight:bold;  padding:7px 0}
 
@@ -1868,3 +1871,103 @@ DT.bCtg__eOrange{
 		}
 
 /* --------------- /bMapShops ------------------ */
+
+
+/*----------------- bSet -------------------*/
+
+.bSet{
+	}
+	.mbSet{
+		font: 24px Tahoma, sans-serif;
+		}
+	.bSet__eImage{
+		width: 350px;
+		height: 350px;
+		overflow: hidden;
+		vertical-align: top;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+	}
+	.bSet__eInfo{
+		width: 555px;
+		vertical-align: top;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+	}
+	.bSet .bSet__eArticul{
+		padding: 0;
+		margin: 0 0 15px 15px;
+		font: 16px Tahoma, sans-serif;
+		}
+	.bSet__eDescription{
+		padding: 0;
+		margin: 0 0 15px 15px;
+		font: 14px Tahoma, sans-serif;
+		}
+	.bSet__ePrice{
+		padding: 0;
+		margin: 0 0 15px 15px;
+		font: 16px Tahoma, sans-serif;
+		}
+	.bSet__ePrice strong,
+	.bSet__ePrice input{
+		vertical-align: middle;
+		}
+        .bSet__ePrice A.link1{
+                display: block;
+                width: 80px;
+                padding: 3px 10px 5px 10px;
+                background-color: #ffaa01;
+                background-position: 0 0;
+                font-size: 11px;
+                color: #fff;
+                overflow: visible;
+                background-image: url(/css/skin/img/bg_buttons.png);
+                background-repeat: repeat-x;
+                border: 1px solid #f28900;
+                font-weight: bold;
+                cursor: pointer;
+                border-radius: 5px;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+        }
+        .bSet__ePrice A.link1:hover{
+                background-color: #f79200;
+                background-position: 0 -32px;
+                text-decoration: none;
+        }
+        .bSet__ePrice A.link1.disabled{
+                background-color: #ececec;
+                background-position: 0 -96px;
+                border-color: #e4e4e4;
+                color: #e1e1e1
+        }
+
+	.bSet__eIconsWrap{
+		padding: 0;
+		margin: 0 0 10px 15px;
+		}
+	.bSet__eG{
+		padding: 0;
+		color: #a6a6a6;
+		margin: 0 0 7px 0;
+		font: 14px Tahoma, sans-serif;
+		}
+	.bSet__eTWrap{
+		clear: both;
+		padding-top: 7px;
+		}
+	.bSet__eMoreInfo{
+		color: #ffa901;
+		text-decoration: none;
+		border-bottom: 2px solid #ffa901;
+		font: bold 16px Tahoma, sans-serif;
+		}
+	.bSet__eMoreInfo:hover{
+		color: #ffa901;
+		text-decoration: none;
+		}
+
+/*----------------- /bSet -------------------*/

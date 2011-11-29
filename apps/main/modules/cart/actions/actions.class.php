@@ -43,7 +43,7 @@ class cartActions extends myActions
     if ($result['value'])
     {
       $product = ProductTable::getInstance()->findOneByToken($request['product']);
-      
+
       if ($product)
       {
         if ($product->isKit())
@@ -54,7 +54,7 @@ class cartActions extends myActions
         {
           $products = array($product);
         }
-        
+
         try
         {
             $added = array();
@@ -72,7 +72,7 @@ class cartActions extends myActions
             {
               $this->getUser()->getCart()->addProduct($product, $request['quantity']);
             }
-            
+
             $added[] = array('product' => $product, 'quantity' => $currentNum);
           }
         }
@@ -101,8 +101,8 @@ class cartActions extends myActions
       }
     }
 
-    //если помимо товаров надо добавить в корзину сервисы
-    $services = $request['services'];
+    //если помимо товаров надо добавить в карзину сервисы
+    $services = $request->getPostParameter('services');
     if ($services)
     {
       $servicesAr = json_decode($services);
@@ -121,10 +121,13 @@ class cartActions extends myActions
     {
       if ($result['value'])
       {
+        $cartInfo = $this->getUser()->getCartBaseInfo();  
         $return = array(
           'success' => $result['value'],
           'data' => array(
             'quantity' => $request['quantity'],
+            'full_quantity' => $cartInfo['qty'],
+            'full_price' => $cartInfo['sum'],              
             'html' => $this->getComponent($this->getModuleName(), 'buy_button', array('product' => $product))
           )
         );

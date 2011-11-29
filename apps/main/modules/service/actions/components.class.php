@@ -29,12 +29,33 @@ class serviceComponents extends myComponents
   */
   public function executeShow()
   {
-    $this->setVar('item', array(
-      'name'         => (string)$this->service,
-      'description'  => $this->service->description,
-      'price'        => $this->service->Price->getFirst()->price,
-    ), true);
-  }
+      //ищем цену для текущего региона
+      
+      $priceList = ProductPriceListTable::getInstance()->getCurrent();      
+      foreach($this->service->Price as $price) {
+          if ($priceList->id == $price['service_price_list_id']) {
+              $service['currentPrice'] = $price['price'];
+              break;
+          }
+      }    
+      //если для текущего региона цены нет, ищем цену для региона по умолчанию
+      if (!isset($service['currentPrice'])) {
+          $priceListDefault = ProductPriceListTable::getInstance()->getDefault();      
+          if ($priceList->id != $priceListDefault->id) {
+              foreach($this->service->Price as $price) {
+                  if ($priceListDefault->id == $price['service_price_list_id']) {
+                      $service['currentPrice'] = $price['price'];
+                      break;
+                  }
+              } 
+          }
+      }
+      $service['currentPrice'] = number_format($service['currentPrice'], 2, ',', ' ');
+      $service['name'] = $this->service->name;
+      $service['description'] = $this->service->description;
+      $service['work'] = $this->service->work;
+      $this->setVar('service', $service);
+  }#
   
   public function executeRoot_page()
   {        
@@ -51,11 +72,35 @@ class serviceComponents extends myComponents
   public function executeNavigation()
   {  
     $list = array();
-    #echo get_class($this->serviceCategory);
     $list[] = array(
       'name' => 'F1 Сервис',
       'url'  => url_for('service_list'),
     );  
+    
+    if (isset($this->serviceCategory) && $this->serviceCategory) {        
+        $parentCategory = $this->serviceCategory->getParentCategory();
+        if (isset($parentCategory) && isset($parentCategory['name'])) {
+            $list[] = array(
+              'name' => $parentCategory['name'],
+              'url'  => url_for('service_list', array('serviceCategory' => $parentCategory['token'])),
+            );     
+        }
+        $list[] = array(
+          'name' => $this->serviceCategory['name'],
+          'url'  => url_for('service_list'),
+        );  
+    } elseif (isset($this->service)) {
+        $parentCategory = $this->service->getCatalogParent();      
+        if (isset($parentCategory) && isset($parentCategory['name'])) {
+            $list[] = array(
+              'name' => $parentCategory['name'],
+              'url'  => url_for('service_list', array('serviceCategory' => $parentCategory['token'])),
+            );     
+        } 
+        $list[] = array(
+          'name' => $this->service['name'],
+        );  
+    }
 
 
     $this->setVar('list', $list);      

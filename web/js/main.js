@@ -82,7 +82,18 @@ $(document).ready(function(){
 	var ableToLoad = true
 	var compact = $("div.goodslist").length
 	function liveScroll( lsURL, pageid ) {
-		lsURL += pageid + '/' + (( compact ) ? 'compact/' : 'expanded/')
+		var params = []
+		if( $('.bigfilter.form').length ) 
+			params = $('.bigfilter.form').parent().serializeArray()
+/*		if( lsURL.match(/\?/ ) ) {	
+			var tmpar = lsURL.match(/\?(.)+$/)[0].replace(/\?/,'').split('=')
+
+			lsURL = lsURL.replace(/\?(.)+$/,'')
+			params.push( { name: tmpar[0], value : tmpar[1] }
+)
+						console.info(tmpar, params)
+		}*/
+		lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
 		var loader =
 			"<div id='ajaxgoods' class='bNavLoader'>" +
@@ -93,13 +104,15 @@ $(document).ready(function(){
 				"</div>" +
 			"</div>"
 		tmpnode.after( loader )
-		//tmpnode.after('<div id="ajaxgoods" style="width:100%; text-align:right;"><span style="margin-bottom: 6px;">Список товаров подгружается...</span><img src="/images/ajax-loader.gif" alt=""/></div>')
-		var sort = $("div#sorting")
-		var data = {}
-		if (sort.length) {
-			data = { 'sort' : sort.data('sort') }
+					
+		if( $("#sorting").length ) {
+			
+			params.push( { name:'sort', value : $("#sorting").data('sort') }
+)
 		}
-		$.get( lsURL, data, function(data){
+
+		$.get( lsURL, params, function(data){
+			
 			if ( data != "" && !data.data ) { // JSON === error
 				ableToLoad = true
 				if( compact )
@@ -110,7 +123,6 @@ $(document).ready(function(){
 			$('#ajaxgoods').remove()
 		})
 	}
-
 
 
 	if( $('div.allpager').length ) {
@@ -127,19 +139,28 @@ $(document).ready(function(){
 					vnext += 1
 				}
 			}
+			if( location.href.match(/sort=/) &&  location.href.match(/page=/) ) { // Redirect on first in sort case
+				$(this).bind('click', function(){
+					$.jCookies({
+					name : 'infScroll',
+					value : 1
+					})
+					location.href = location.href.replace(/page=\d+/,'')
+				})
+			} else
 			$(this).bind('click', function(){
 				$.jCookies({
 					name : 'infScroll',
 					value : 1
 				})
+				
 				var next = $('div.pageslist:first li:first')
 				if( next.hasClass('current') )
 					next = next.next()
 				var next_a = next.find('a')
 								.html('<span>123</span>')
-
 								.addClass('borderedR')
-				next_a.attr('href', next_a.attr('href').replace(/\?page=\d/,'') )
+				next_a.attr('href', next_a.attr('href').replace(/page=\d+/,'') )
 
 				$('div.pageslist li').remove()
 				$('div.pageslist ul').append( next )
@@ -176,7 +197,16 @@ $(document).ready(function(){
 		  	}
 		})
 	}
-
+	
+	$.ajaxPrefilter(function( options ) {
+		if( !options.url.match('search') )
+			options.url += '?ts=' + new Date().getTime()
+	})
+	
+	$('body').ajaxError(function(e, jqxhr, settings, exception) {
+		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
+	})
+	
 	$.ajaxSetup({
 		timeout: 7000,
 		statusCode: {
@@ -274,49 +304,6 @@ $(document).ready(function(){
 				}
 			}
 		})
-/*
-		sliderRange.slider({
-			range: true,
-			step: stepf,
-			min: mini,
-			max: maxi,
-			values: [ from.val() ? from.val() : mini ,  to.val() ? to.val() : maxi ],
-			slide: function( e, ui ) {
-				from.val( ui.values[ 0 ] )
-				to.val( ui.values[ 1 ] )
-			},
-			change: function(e, ui) {
-				if ( parseFloat(to.val()) > 0 );
-					from.parent().trigger('preview')
-			}
-		})
-
-*/
-
-/*		if ( from && to ) {
-			from.val( sliderRange.slider( "values", 0 ) )
-			to.val( sliderRange.slider( "values", 1 ) )
-			from.change( function(){
-				from.val( from.val().replace(/\D/g,'') )
-				if( parseFloat(from.val()) > parseFloat(to.val()) ) {
-					sliderRange.slider( "values", 1 , from.val()*1 + stepf )
-					to.val( from.val()*1 + stepf )
-				}
-				sliderRange.slider( "values", 0 , from.val() )
-
-			})
-			to.change( function(){
-				to.val( to.val().replace(/\D/g,'') )
-				if( ! parseFloat(to.val()) )
-					to.val(10)
-				if( parseFloat(to.val()) < parseFloat(from.val()) ) {
-					sliderRange.slider( "values", 0 , to.val()*1- stepf )
-					from.val( to.val()*1 - stepf )
-				}
-				sliderRange.slider( "values", 1 , to.val() )
-			})
-
-		}*/
 
 	})
 
@@ -328,6 +315,7 @@ $(document).ready(function(){
 		  start: iscore,
 		  showHalf: true,
 		  path: '/css/skin/img/',
+		  readOnly: $('#rating').data('readonly'),
 		  starHalf: 'star_h.png',
 		  starOn: 'star_a.png',
 		  starOff: 'star_p.png',
@@ -346,26 +334,8 @@ $(document).ready(function(){
 	/* --- */
     $(this).find('.ratingbox A').hover(function(){
         $("#ratingresult").html(this.innerHTML)
-        return false;
-    });
-	//TODO buy bottons remake
-    /*$(".yellowbutton").mousedown(function()   {
-    	$(this).toggleClass("yellowbuttonactive")
-    }).mouseup(function()   {
-    	$(this).removeClass("yellowbuttonactive")
+        return false
     })
-
-    $(".whitebutton").mousedown(function()   {
-    	$(this).toggleClass("whitebuttonactive")
-    }).mouseup(function()   {
-    	$(this).removeClass("whitebuttonactive")
-    })
-
-    $(".whitelink").mousedown(function()   {
-    	$(this).toggleClass("whitelinkactive")
-    }).mouseup(function()   {
-    	$(this).removeClass("whitelinkactive")
-    })*/
 
     $(".goodsbar .link1").bind( 'click.css', function()   {
         $(this).addClass("link1active")
@@ -378,23 +348,7 @@ $(document).ready(function(){
     $(".goodsbar .link3").bind( 'click.css', function()   {
         //$(this).addClass("link3active");
     })
-	/* left menu */
-	/*
-	$('.bCtg__eL2').toggle(
-		function(){
-			$('.bCtg__eL3').hide()
-			$('.bCtg__eL2').show()
-		}, function(){
-			function recShow( jnode ) {
-				if( jnode.next() && jnode.next().hasClass('bCtg__eL3') ) {
-					jnode.next().show()
-					recShow( jnode.next() )
-				}
-			}
-			recShow( $(this) )
-		}
-	)
-	*/
+	
 	/* top menu */
 	if( $('.topmenu').length ) {
 		$.get('/category/main_menu', function(data){
@@ -448,29 +402,7 @@ $(document).ready(function(){
 	if( $('.error_list').length && $('.basketheader').length ) {
 		$.scrollTo( $('.error_list:first'), 300 )
 	}
-	/* bill typewriter */
-
-	/*if( $('.chequebottom ul').length && ! $('.error_list').length ) {
-		$('.chequebottom li div').hide()
-		$('.chequebottom li strong').hide()
-		$('.chequebottom .total strong').hide()
-		var rubl = $('<span class="rubl">p</span>')
-		function recF( i ) {
-			if( i == $('.chequebottom li').length ) {
-				var total = $('.chequebottom .total strong')
-				total.show().find('span').remove()
-				total.typewriter( 700, function(){ total.append( rubl ) })
-			}
-			if( i < $('.chequebottom li').length )
-				$('.chequebottom li').eq(i).find('div').show().typewriter( 1000, function(){
-					$('.chequebottom li').eq(i).find('strong').show()
-					recF(i+1)
-				})
-		}
-
-		recF(0)
-
-	}*/
+	
 	/* CART */
 	function printPrice ( val ) {
 

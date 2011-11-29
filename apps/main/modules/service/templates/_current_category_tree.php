@@ -15,17 +15,23 @@
                if (count($currentServiceList)<1) continue;
             ?>   
             <div class="serviceblock">
-                <div class="photo"><a href=""><img width="160" height="120" alt="" src="<?php echo $item['image']; ?>"></a></div>
+                <?php if (isset($item['image'])) { ?>
+                    <div class="photo"><a href=""><img width="160" height="120" alt="" src="<?php echo $item['image']; ?>"></a></div>
+                <?php } ?>
                 <div class="info">
                     <h3><?php echo $item['name'] ?></h3>
                     <?php 
                     #print_r($currentServiceList);
                     foreach($currentServiceList as $service){ ?>
-                        <div class="font16 pb8"><?php echo $service['name'] ?></div>  
+                        <div class="font16 pb8">
+                            <a href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>" >
+                                <?php echo $service['name'] ?>
+                            </a>    
+                        </div>  
                         <?php if (isset($service['description'])){ ?><div class="pb5"><?php echo $service['description'] ?> </div><?php } ?>
-                        <?php if (isset($service['Price']) && isset($service['Price'][0]) && isset($service['Price'][0]['price'])){ ?>
+                        <?php if (isset($service['currentPrice'])){ ?>
                             <div class="font16 pb10">
-                                <strong><?php echo intval($service['Price'][0]['price']); ?> Р</strong>
+                                <strong><?php echo number_format($service['currentPrice'], 2, ',', ' '); ?> Р</strong>
                             </div>
                         <?php }                         
                     }
