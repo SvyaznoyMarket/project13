@@ -75,26 +75,6 @@ class serviceActions extends myActions
                         #->fetchArray();
         #myDebug::dump($serviceList);
         
-        foreach($serviceList as & $service) {
-            #echo get_class($service) .'<br>';
-            #echo $service->getCurrentPrice();
-            /*
-            foreach($service['Price'] as $price) {
-                if ($priceList->id == $price['service_price_list_id']) {
-                  $service['currentPrice'] = $price['price'];
-                  break;
-                }
-            }
-            //если для текущего региона цены нет, ищем цену для региона по умолчанию
-            if (!isset($service['currentPrice']) && $priceList->id != $priceListDefault->id ) {
-              foreach($service['Price'] as $price) {
-                  if ($priceListDefault->id == $price['service_price_list_id']) {
-                      $service['currentPrice'] = $price['price'];
-                      break;
-                  }
-              }          
-            }  */          
-        } 
         #print_r($serviceList);
         #$list = $serviceCategory->getServiceList( array('level') );
     }
