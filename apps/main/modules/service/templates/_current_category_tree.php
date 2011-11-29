@@ -8,30 +8,36 @@
                foreach($serviceList as $service){
                     foreach($service['ServiceCategoryRelation'] as $cat){
                         if ($cat['category_id'] == $item['id']){
-                            $currentServiceList[] = $service;
+                            $currentServiceList['list'][] = $service;
+                            if (!isset($currentServiceList['photo']) && $service->getPhotoUrl(0)) {
+                                $currentServiceList['photo'] = $service->getPhotoUrl(0);
+                            }
                         }
                     }
                }
-               if (count($currentServiceList)<1) continue;
+               if (count($currentServiceList['list'])<1) continue;
             ?>   
             <div class="serviceblock">
-                <?php if (isset($item['image'])) { ?>
-                    <div class="photo"><a href=""><img width="160" height="120" alt="" src="<?php echo $item['image']; ?>"></a></div>
+                <?php if (isset($currentServiceList['photo'])) { ?>
+                    <div class="photo">
+                        <img width="160" height="120" alt="" src="<?php echo $currentServiceList['photo']; ?>">
+                    </div>
                 <?php } ?>
                 <div class="info">
                     <h3><?php echo $item['name'] ?></h3>
                     <?php 
                     #print_r($currentServiceList);
-                    foreach($currentServiceList as $service){ ?>
+                    foreach($currentServiceList['list'] as $service){ ?>
                         <div class="font16 pb8">
                             <a href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>" >
                                 <?php echo $service['name'] ?>
                             </a>    
                         </div>  
                         <?php if (isset($service['description'])){ ?><div class="pb5"><?php echo $service['description'] ?> </div><?php } ?>
-                        <?php if (isset($service['currentPrice'])){ ?>
+                        <?php if (isset($service['work'])){ ?><div class="pb5"><?php echo $service['work'] ?> </div><?php } ?>
+                        <?php if ($service->getCurrentPrice()){ ?>
                             <div class="font16 pb10">
-                                <strong><?php echo number_format($service['currentPrice'], 2, ',', ' '); ?> Р</strong>
+                                <strong><?php echo number_format($service->getCurrentPrice(), 2, ',', ' '); ?> Р</strong>
                             </div>
                         <?php }                         
                     }
