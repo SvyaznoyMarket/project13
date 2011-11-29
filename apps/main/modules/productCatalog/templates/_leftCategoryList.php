@@ -1,6 +1,14 @@
+<?php
+if ( !$currentCat || !$list ) {
+    return;
+}
+if (!isset($currentDirectory)) $currentDirectory = array();
+?>
 <div class="catProductNum"><b>Всего <?php echo $quantity.($currentCat->has_line ? ' серий' : ' товаров') ?></b></div>
 <div class="line pb10"></div>
 <dl class="bCtg">
+
+    
     
     <dd>
         <ul>
