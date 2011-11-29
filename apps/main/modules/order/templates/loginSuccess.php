@@ -155,3 +155,5 @@ $(document).ready(function() {
 </script>
   <!-- /Form -->
 <?php endif ?>
+
+<input type="hidden" disabled="disabled" id="order_login-url" value="<?php echo url_for('@order_login') ?>" />
