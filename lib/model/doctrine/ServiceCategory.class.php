@@ -40,4 +40,5 @@ class ServiceCategory extends BaseServiceCategory
       'serviceCategory' => $this->token,
     );
   }
+    
 }

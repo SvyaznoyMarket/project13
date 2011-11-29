@@ -13,6 +13,8 @@
 class Service extends BaseService
 {
 
+  public $price;   
+    
   public function toParams()
   {
     return array(
@@ -52,6 +54,32 @@ class Service extends BaseService
     return number_format($this->price, 0, ',', ' ');
   }  
   
+  public function getCurrentPrice() {
+      
+        $priceList = ProductPriceListTable::getInstance()->getCurrent();
+        $priceListDefault = ProductPriceListTable::getInstance()->getDefault();
+      
+        $currentPrice = 0;
+        foreach($this->Price as $price) {
+            if ($priceList->id == $price['service_price_list_id']) {
+              $currentPrice = $price['price'];
+              break;
+            }
+        }
+        //если для текущего региона цены нет, ищем цену для региона по умолчанию
+        if (!isset($currentPrice) && $priceList->id != $priceListDefault->id ) {
+          foreach($service->Price as $price) {
+              if ($priceListDefault->id == $price['service_price_list_id']) {
+                  $currentPrice = $price['price'];
+                  break;
+              }
+          }          
+        }       
+       # $this->id = $currentPrice;
+        return $currentPrice;
+        
+  }
+  
   public function getCatalogParent(){
     $result = ServiceCategoryTable::getInstance()
             ->createQuery('sc')
@@ -66,5 +94,12 @@ class Service extends BaseService
         return false;            
     }      
   }
+  
+  public function getPhotoUrl($view = 1)
+  {
+    $urls = sfConfig::get('app_service_photo_url');
+
+    return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto() : null;
+  }  
 
 }
