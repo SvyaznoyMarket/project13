@@ -17,6 +17,7 @@ class ProjectConfiguration extends sfProjectConfiguration
     $this->enablePlugins(array(
       'sfDoctrinePlugin',
       //'fpErrorNotifierPlugin',
+      'sfCombinePlugin',
     ));
 
     $this->dispatcher->connect('doctrine.configure', array($this, 'listenToConfigureDoctrineEvent'));
