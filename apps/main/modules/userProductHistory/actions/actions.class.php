@@ -77,7 +77,7 @@ class userProductHistoryActions extends myActions
               'sum' => $cartInfo['sum'],
               'vwish' => count($delayProducts),
               'vcomp' => $user->getProductCompare()->getProductsNum(),
-              'productsInCart' => $productsInCart,
+              'productsInCart' => $cartInfo['productsInCart'],
               'bingo' => false,
         )
       ));  
