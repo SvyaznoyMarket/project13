@@ -47,6 +47,7 @@ class shopComponents extends myComponents
     }
 
     $item = array(
+      'id'           => $this->shop->id,
       'name'         => (string)$this->shop,
       'address'      => $this->shop->address,
       'phonenumbers' => $this->shop->phonenumbers,

@@ -5,10 +5,10 @@
     <?php include_metas() ?>
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <?php include_stylesheets() ?>
-    <?php include_javascripts() ?>
-    <?php include_component('page', 'link_rel_canonical') ?>    
-    
+    <?php include_combined_stylesheets() //include_stylesheets() ?>
+    <?php //include_javascripts() ?>
+    <?php include_component('page', 'link_rel_canonical') ?>
+
 <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25485956-1']);
@@ -56,7 +56,7 @@
         <!-- /Topbar -->
         <!-- Header -->
         <div class="header">
-         <?php LastModifiedHandler::setLastModified();  ?>               
+         <?php LastModifiedHandler::setLastModified();  ?>
           <?php include_partial('default/logo') ?>
           <!-- Topmenu -->
           <?php include_component('productCategory', 'root_list') ?>
@@ -126,7 +126,8 @@
     <?php if (!include_slot('auth'))
       include_partial('default/auth') ?>
 
-<?php include_partial('default/admin') ?>
+<?php include_combined_javascripts() ?>
+
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">
 (function(w, c) {
@@ -152,5 +153,6 @@ report.send();
 <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
+
   </body>
 </html>

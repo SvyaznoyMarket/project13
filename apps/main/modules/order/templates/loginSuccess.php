@@ -114,7 +114,9 @@
 
 
 
-  <script type="text/javascript">
+<script type="text/javascript">
+
+$(document).ready(function() {
 
   $('#auth_forgot-link').click(function() {
     $('#auth_forgot-block').lightbox_me({
@@ -148,6 +150,10 @@
     $('#form-step-1').submit(function(){
       if (this.action == '') return false;
     });
-  </script>
+
+})
+</script>
   <!-- /Form -->
 <?php endif ?>
+
+<input type="hidden" disabled="disabled" id="order_login-url" value="<?php echo url_for('@order_login') ?>" />
