@@ -25,6 +25,18 @@ class productComponents extends myComponents
     }
 
     $table = ProductTable::getInstance();
+    if (isset($this->product['ProductPrice']))
+    {
+      $this->product->mapValue('price', $this->product['ProductPrice']['price']);
+    }
+    else
+    {
+      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product->id);
+      if (!empty($price))
+      {
+        $this->product->mapValue('price', $price['price']);
+      }
+    }
 
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line')))
     {
@@ -95,6 +107,7 @@ class productComponents extends myComponents
       //$item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
       $item['shop_url'] = url_for('shop');
 
+
       $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
         'date' => date('Y-m-d'),
         'geo_id' => $this->getUser()->getRegion('core_id'),
@@ -110,6 +123,7 @@ class productComponents extends myComponents
         ? in_array($this->product['id'], $rated)
         : false
       ;
+
     }
     if (in_array($this->view, array('expanded')))
     {

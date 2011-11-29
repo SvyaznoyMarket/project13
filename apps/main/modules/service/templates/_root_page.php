@@ -11,11 +11,14 @@
 <?php
 $num = 0;
 foreach($list as $item): ?>
+    <?php 
+        $catClass = getCatClass($item['token']);
+    ?>
     <div class="servicebox fl">
         <div class="serviceboxtop"></div>
             <a href="<?php echo url_for('service_list') . '/' . $item['token']; ?>">
                 <div class="serviceboxmiddle">
-                    <i class="icon1"></i>
+                    <i class="<?php echo $catClass ?>"></i>
                     <strong class="font16"><?php echo $item['name'] ?></strong>
                     <?php if (isset($item['description'])) echo $item['description']; ?>
                 </div>
@@ -31,4 +34,13 @@ if ($num%2 == 0){
     echo '<div class="clear pb30"></div>';
 }
 endforeach;
+?>
+
+<?php
+function getCatClass($token) {
+    if (strpos($token, 'bitovaya-tehnika') !== false) return 'icon2';
+    if (strpos($token, 'elektronika') !== false) return 'icon3';
+    if (strpos($token, 'sport') !== false) return 'icon4';
+    if (strpos($token, 'mebel') !== false) return 'icon1';
+}
 ?>

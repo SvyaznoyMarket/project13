@@ -34,7 +34,6 @@ class ProductCategoryTable extends myDoctrineTable
       'is_active'   => 'is_active',
       'media_image' => 'photo',
       'has_line'    => 'has_line',
-      'position'    => 'position',
     );
   }
 
@@ -46,8 +45,7 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q->addWhere('productCategory.is_active = ?', 1);
 
-    //$q->orderBy('productCategory.root_id, productCategory.has_line DESC, productCategory.core_lft');
-    $q->orderBy('productCategory.root_id, productCategory.lft');
+    $q->orderBy('productCategory.root_id, productCategory.has_line DESC, productCategory.core_lft');
 
     return $q;
   }
@@ -172,9 +170,20 @@ class ProductCategoryTable extends myDoctrineTable
 
     return $this->createListByIds($ids, $params);*/
     $q = ProductCategoryTable::getInstance()->createBaseQuery();
-    $q->addWhere('productCategory.level < 3 and productCategory.level > 0');
-
-    return $q->execute();
+    $q->addWhere('productCategory.level < 3 and productCategory.level > 0')
+            ;
+    $data = $q->execute();
+    foreach($data as $cat) {
+        $idList[] = $cat['id'];
+    }
+    
+    $res = $this->getNotEmptyCategoryList($idList);
+    foreach($data as $k => $cat) {
+        if (!in_array($cat['id'], $res)) {
+            unset($data[$k]);
+        }
+    }
+    return $data;
   }
 
   public function getChildList(ProductCategory $category, $params = array())
@@ -182,7 +191,6 @@ class ProductCategoryTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
 
     $ids = $this->getDescendatIds($category, array('depth' => 1));
-
     return $this->createListByIds($ids, $params);
   }
 
@@ -225,7 +233,6 @@ class ProductCategoryTable extends myDoctrineTable
     {
       $q->addWhere('productCategory.level < ?', $params['max_level'] + 1);
     }
-
     $categoryIds = $this->getIdsByQuery($q, $params,
       $category
       ? 'productCategory-'.$category->id.'/productCategory-descendant-ids'
@@ -250,7 +257,7 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q = TagProductRelationTable::getInstance()->createBaseQuery();
     $q->select('tagProductRelation.tag_id')
-      ->innerJoin('tagProductRelation.Product product WITH product.view_list = ?', 1)
+      ->innerJoin('tagProductRelation.Product product WITH product.is_instock = ?', 1)
       ->innerJoin('product.CategoryRelation categoryRelation')
       ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
       ->groupBy('tagProductRelation.tag_id')
@@ -273,5 +280,70 @@ class ProductCategoryTable extends myDoctrineTable
     ));
 
     return $keys;
+  }
+  
+  /**
+   * Из полученного списка категорий отбирает не пустые.
+   * Тоесть те, которые содержат либо вложенные категории, либо активные продукты
+   * @param type $idList
+   * @return type 
+   */
+  public function getNotEmptyCategoryList($idList = array()) {
+      
+    //ищем тех, у которых есть продукты
+    $productCountlist = ProductCategoryProductRelationTable::getInstance()
+            ->createQuery('r')
+            ->select('product_category_id, COUNT(product_id)' )
+            ->leftJoin('r.Product as p on r.product_id=p.id')
+            ->addWhere('p.view_list = ?', 1);
+    
+    if (count($idList)>0) {
+        $productCountlist = $productCountlist
+                            ->addWhere('product_category_id IN ('.implode(',', $idList).')');
+    }
+    $productCountlist = $productCountlist
+                    ->groupBy('product_category_id')
+                    ->fetchArray()                        
+            ;   
+    
+    foreach($productCountlist as $a) {
+        $notFreeCatList[] = $a['product_category_id'];
+    }      
+    
+    #print_r($idList);
+    //ищем тех, у которых есть вложенные категории
+    $catCoreId = ProductCategoryTable::getInstance()
+            ->createQuery('p')
+            ->select('p.core_id, p.id' )
+            ->where('is_active = ?', 1);
+    if (isset($idList)) {
+        $catCoreId = $catCoreId->addWhere('p.id IN ('.implode(',', $idList).')');
+    }
+    $catCoreId = $catCoreId->fetchArray();
+    foreach($catCoreId as $cat) {
+        $coreIdList[] = $cat['core_id'];
+        $coreIdToId[$cat['core_id']] = $cat['id'];
+    }
+
+    #print_r($coreIdToId);
+    $productCatlist = ProductCategoryTable::getInstance()
+            ->createQuery('c')
+            ->select('core_parent_id, COUNT(id)' )
+            ->where('is_active = ?', 1)
+            ;    
+    if (count($coreIdList)>0) {
+        $productCatlist = $productCatlist
+                            ->addWhere('core_parent_id IN ('.implode(',', $coreIdList).')');
+    }
+    $productCatlist = $productCatlist
+                    ->groupBy('core_parent_id')
+                    ->fetchArray();
+    foreach($productCatlist as $cat) {
+        #print_r($cat);
+        $notFreeCatList[] = $coreIdToId[$cat['core_parent_id']];
+        
+    }
+        
+    return $notFreeCatList;
   }
 }
