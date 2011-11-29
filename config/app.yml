@@ -136,13 +136,13 @@ all:
       combine_skip: ~             # these files will not be combined (necessary when js code is based on js file name)
       include: true               # whether to allow the including of files
       include_suffixes:           # suffixes of files that can be included
-          - .php
+        - .php
       include_skip: ~             # files that should be skipped on includes
       minify:       true          # process js files to shrink them
       minify_method: [sfCombineMinifierJsMin, minify]
       minify_method_options: []
       minify_skip_suffixes:       # files with this suffix will not be minified
-          - .min.js
+        - .min.js
       minify_skip: ~              # these files will not be minified (useful when code is already minified)
       filename_comments: true     # include filenames of combined files in comments
       group_files: true           # minify all available files together in one minify action
@@ -155,13 +155,13 @@ all:
       combine_skip: ~             # these files will not be combined
       include: true               # whether to allow the including of files
       include_suffixes:           # suffixes of files that can be included
-          - .php
+        - .php
       include_skip: ~             # files that should be skipped on includes
       minify:       true          # process js files to shrink them
       minify_method: [sfCombineMinifierCssMin, minify]
       minify_method_options: []
       minify_skip_suffixes:       # files with this suffix should not be minified
-          - .min.css
+        - .min.css
       minify_skip: ~              # these files will not be minified (useful when code is already minified)
       filename_comments: true     # include filenames of combined files in comments
       group_files: true           # minify all available files together in one minify action
