@@ -11,7 +11,9 @@
 			<div class='bSet__ePrice'>
 				<?php include_partial('product/price', array('price' => $item['product']->getFormattedPrice(), )) ?>
         <?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1, 'value' => array('Купить набор'),)) ?>
+        <?php if ($item['product']->is_insale): ?>
 				<div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+        <?php endif ?>
 			</div>
 			<div class='bSet__eIconsWrap'>
         <?php if (count($item['part'])): ?>

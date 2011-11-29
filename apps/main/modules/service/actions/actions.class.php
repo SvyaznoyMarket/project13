@@ -70,8 +70,15 @@ class serviceActions extends myActions
                         ->leftJoin('s.ServiceCategoryRelation sc on s.id=sc.service_id ')
                         ->leftJoin('s.Price p on s.id=p.service_id ')
                         #->addWhere('p.service_price_list_id = ? ', array($priceListDefaultId->id) )
-                        ->addWhere('sc.category_id IN ('.implode(',', $listInnerCatId). ')' )->fetchArray();
+                        ->addWhere('sc.category_id IN ('.implode(',', $listInnerCatId). ')' )
+                        ->execute();
+                        #->fetchArray();
+        #myDebug::dump($serviceList);
+        
         foreach($serviceList as & $service) {
+            #echo get_class($service) .'<br>';
+            #echo $service->getCurrentPrice();
+            /*
             foreach($service['Price'] as $price) {
                 if ($priceList->id == $price['service_price_list_id']) {
                   $service['currentPrice'] = $price['price'];
@@ -86,8 +93,8 @@ class serviceActions extends myActions
                       break;
                   }
               }          
-            }            
-        }
+            }  */          
+        } 
         #print_r($serviceList);
         #$list = $serviceCategory->getServiceList( array('level') );
     }
