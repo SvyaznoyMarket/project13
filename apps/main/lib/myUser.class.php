@@ -44,6 +44,7 @@ class myUser extends myGuardSecurityUser
     $cart = $this->getCart();
     $result['qty'] = 0;
     $result['sum'] = 0;
+    $result['productsInCart'] = array();
     foreach($cart->getProducts()->toArray() as $id => $product){
       $result['qty'] += $product['cart']['quantity'];
       $result['sum'] += $product['price'] * $product['cart']['quantity'];
