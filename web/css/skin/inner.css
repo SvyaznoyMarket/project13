@@ -259,6 +259,7 @@ border-radius:5px;
 .column215 {float:left; width:215px; margin-left:-100%; position:relative}
 .column685 {margin:0 0 0 235px}
 
+.bBlueButton .link1,
 .bSet__ePrice .link1,
 .button {overflow:visible; background-image:url(/css/skin/img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
 border-radius:5px;
@@ -276,7 +277,9 @@ border-radius:5px;
 .whitebuttonactive, .whitebuttonactive:hover {background-color:#c4c4c4; background-position:0 -192px}
 .whitebuttondisabled {background-color:#ececec; background-position:0 -224px; border-color:#e4e4e4; color:#e1e1e1}
 
+.bBlueButton .link1,
 .whitelink {display:inline-block; height:18px; padding:4px 10px 0 10px; background-color:#e5e5e5;  background-position:0 -128px; font-size:11px; color:#010101; border-color:#c9c9c9}
+.bBlueButton .link1:hover,
 .whitelink:hover {background-color:#c5c5c5; background-position:0 -160px; text-decoration:none}
 .whitelinkactive, .whitelinkactive:hover {background-color:#c4c4c4; background-position:0 -192px}
 .whitelinkdisabled {background-color:#ececec; background-position:0 -224px; border-color:#e4e4e4; color:#e1e1e1}
@@ -324,6 +327,7 @@ LABEL.prettyCheckbox {lline-height:19px}
 LABEL.prettyCheckbox SPAN.holderWrap {display:block; float:left; position:relative; margin:1px 5px 0 -18px; overflow:hidden}
 LABEL.prettyCheckbox SPAN.holder {display:block; position:absolute; top:0; left:0}
 LABEL.checked {color:#ffa901}
+
 .bSpec{
 	margin: 15px 0;
 	border: 1px solid #eaeaea;
@@ -1298,6 +1302,12 @@ border-radius: 5px;
 .serviceblock .info {float:left; width:505px; padding-left:20px}
 .serviceblock H3 {margin:0; padding-bottom:10px; font-size:24px}
 
+
+
+/* ------------------------------------------------------------------- */
+
+
+/* ----------- feedback form ------------- */
 .bForm{
 	margin: 0 0 100px 0;
 	}
@@ -1359,7 +1369,10 @@ border-radius: 5px;
 	background: #f3f3f3;
 	border: 1px solid #a6a6a6;
 	}
-.bPopupWrap {
+
+/* ----------- /feedback form ------------- */
+
+  .bPopupWrap {
     left: 0;
     margin-top: 200px;
     position: relative;
@@ -2037,6 +2050,35 @@ DT.bCtg__eOrange{
 		font: 12px Tahoma, sans-serif;
 		}
 
+
+.bDeliver2{
+	padding: 0 10px 10px 0;
+	}
+	.bDeliver2 h4{
+		margin: 0 0 15px 0;
+		padding: 0;
+		font: bold 14px Tahoma, sans-serif;
+		}
+	.bDeliver2 h5{
+		margin: 5px 0;
+		padding: 0;
+		font: 12px Tahoma, sans-serif;
+		}
+
+	.bDeliver2 li{
+		margin-bottom: 15px;
+		}
+	.bDeliver2 li div{
+		margin: 5px 0 5px 10px;
+		}
+	.bDeliver2 li div a{
+		text-decoration: underline;
+		}
+	.bDeliver2 li div,
+	.bDeliver2 li div a{
+		font: 12px Tahoma, sans-serif;
+		}
+
 /*----------------- /bSet -------------------*/
 
 
@@ -2110,3 +2152,85 @@ DT.bCtg__eOrange{
 	.bDropMenu div span:hover{
 		background: #e6e6e6;
 		}
+
+
+
+/* backert service */
+
+.bBacketServ{
+	padding-left: 70px;
+	border: 1px solid red;
+	background: url('img/icon_f1service_big.png') 0 0 no-repeat;
+	}
+	.bBacketServ.mSmall{
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+
+
+/* goods info */
+.bGood{}
+	.bGood__eArticle{
+		margin: 0 0 15px 0;
+		padding: 0 0 10px 0;
+		font: 12px Tahoma, sans-serif;
+		border-bottom: 1px solid #dfdfdf;
+		}
+	.bGood__eArticle a,
+	.bGood__eArticle img,
+	.bGood__eArticle span{
+		vertical-align: middle;
+		}
+	.bGood__eArticle img.rating{
+		padding: 0;
+		}
+	.bGood__eArticle img{
+		padding-right: 5px;
+		}
+	.bGood__eArticle span{
+		font-size: 14px;
+		}
+	.bGood .goodsbarbig{
+		margin-top: 3px;
+		margin-bottom: 14px;
+		}
+
+
+/* f1 info block */
+
+.bF1Info{
+	padding-left: 80px;
+	min-height: 66px;
+	background: url('img/f1info.png') 0 0 no-repeat;
+	}
+	.bF1Info h3{
+		color: #4fcbf4;
+		margin: 0 0 10px 0;
+		font: bold 14px Tahoma, sans-serif;
+		}
+	.bF1Info .link1{
+		color: #4fcbf4;
+		}
+	.bF1Info .link1:hover{
+		text-decoration: none;
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
