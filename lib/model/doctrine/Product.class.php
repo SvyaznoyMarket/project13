@@ -149,7 +149,7 @@ class Product extends BaseProduct
     {
       $this->main_photo = 'default.jpg';
     }
-    
+
     if (isset($data['is_model']) && 1 == $data['is_model'])
     {
       $property_ids = array();
@@ -157,7 +157,7 @@ class Product extends BaseProduct
       {
         $property_ids[$productPropertyModelRelation['product_property_id']] = $productPropertyModelRelation['id'];
       }
-      
+
       if (isset($data['property_model']) && count($data['property_model']))
       {
         foreach($data['property_model'] as $relationData)
@@ -176,7 +176,7 @@ class Product extends BaseProduct
           unset($property_ids[$productModelPropertyRelation['product_property_id']]);
         }
       }
-      
+
       //Удаляю все, что лишнее
       if (count($property_ids))
       {
@@ -188,7 +188,7 @@ class Product extends BaseProduct
         $deleted = $q->execute();
       }
     }
-    
+
     if ($this->isKit())
     {
       $part_ids = array();
@@ -196,7 +196,7 @@ class Product extends BaseProduct
       {
         $part_ids[$partRelation['part_id']] = $partRelation['id'];
       }
-      
+
       if (isset($data['kit']) && count($data['kit']))
       {
         foreach($data['kit'] as $relationData)
@@ -220,7 +220,7 @@ class Product extends BaseProduct
           unset($part_ids[$partRelation['part_id']]);
         }
       }
-      
+
       //Удаляю все, что лишнее
       if (count($part_ids))
       {
@@ -293,9 +293,7 @@ class Product extends BaseProduct
 
   public function getIsInsale()
   {
-    $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->id);
-
-    return $this->is_instock && (!empty($price) && $price->price > 0);
+    return $this->getTable()->isInsale($this);
   }
 
   public function getParameterByProperty($property_id)
@@ -313,7 +311,7 @@ class Product extends BaseProduct
 
   public function getFormattedPrice()
   {
-    return number_format($this->price, 0, ',', ' ');
+    return $this->getTable()->getFormattedPrice($this);
   }
 
   public function getSimilarProduct(array $params = array())
@@ -440,9 +438,7 @@ class Product extends BaseProduct
 
   public function getMainPhotoUrl($view = 0)
   {
-    $urls = sfConfig::get('app_product_photo_url');
-
-    return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto() : null;
+    return $this->getTable()->getMainPhotoUrl($this, $view);
   }
 
   public function getMainCategory()
@@ -475,19 +471,19 @@ class Product extends BaseProduct
 
     return $count;
   }
-  
+
   public function getModelProperty()
   {
     $q = ProductPropertyTable::getInstance()->createBaseQuery();
-    
+
     $q->innerJoin('productProperty.ProductModelRelation productModelRelation WITH productModelRelation.product_id = ?', array($this->is_model ? $this->id : $this->model_id))
       ->innerJoin('productProperty.ProductTypeRelation productTypeRelation WITH productTypeRelation.product_type_id = ?', $this->type_id)
       ->orderBy('productModelRelation.position ASC');
-    
-    
+
+
     return $q->execute();
   }
-  
+
   public function isKit()
   {
     return 2 == $this->set_id;

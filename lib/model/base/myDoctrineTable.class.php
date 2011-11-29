@@ -32,6 +32,14 @@ class myDoctrineTable extends Doctrine_Table
 
     $alias = $this->getQueryRootAlias();
 
+    foreach (array('offset', 'limit') as $k)
+    {
+      if (isset($params[$k]))
+      {
+        unset($params[$k]);
+      }
+    }
+
     // TODO: использовать редиска мультигет
     $list = $this->createList();
     foreach ($ids as $id)
@@ -94,9 +102,9 @@ class myDoctrineTable extends Doctrine_Table
     return $this->getById($id);
   }
 
-  public function getIdsByQuery(Doctrine_Query $q, array $params = array(), $hash = false)
+  public function getIdsByQuery(Doctrine_Query $query, array $params = array(), $hash = false)
   {
-    $q = clone $q;
+    $q = clone $query;
     $q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
     //$q->select($this->getQueryRootAlias().'.id')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
@@ -269,6 +277,7 @@ class myDoctrineTable extends Doctrine_Table
 
     if (in_array($this->getComponentName(), array(
       'Task',
+      'sfCombine',
     ))) {
       return array();
     }

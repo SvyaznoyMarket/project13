@@ -5,9 +5,9 @@
     <?php include_metas() ?>
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <?php include_stylesheets() ?>
-    <?php include_javascripts() ?>
-    <?php include_component('page', 'link_rel_canonical') ?>    
+    <?php include_combined_stylesheets() //include_stylesheets() ?>
+    <?php //include_javascripts() ?>
+    <?php include_component('page', 'link_rel_canonical') ?>
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25485956-1']);
@@ -37,7 +37,7 @@ _gaq.push(['_trackPageLoadTime']);
 </head>
 
 <body>
-<?php LastModifiedHandler::setLastModified();  ?>   
+<?php LastModifiedHandler::setLastModified();  ?>
 
 <script>
 	$(document).ready(function(){
@@ -113,11 +113,11 @@ _gaq.push(['_trackPageLoadTime']);
       <?php include_component('productCategory', 'root_list') ?>
       <!-- /Topmenu -->
 
-    <noindex>  
+    <noindex>
         <div class="searchbox">
           <?php include_component('search', 'form', array('view' => 'main')) ?>
         </div>
-    </noindex>    
+    </noindex>
 
 
     <div class="bigbanner"><a href=""><img src="" alt="" width="768" height="302" /></a></div>
@@ -129,6 +129,8 @@ _gaq.push(['_trackPageLoadTime']);
 
     <div class="clear"></div>
 </div>
+
+<?php include_combined_javascripts() ?>
 
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">
@@ -155,5 +157,6 @@ _gaq.push(['_trackPageLoadTime']);
 <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
+
 </body>
 </html>

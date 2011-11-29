@@ -11,9 +11,9 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
     $invoker = $event->getInvoker();
 
     // If record has been modified adds keys to nginx file
-    if ($invoker->isModified(true))
+    if ($invoker->isModified(true) && ($invoker->getTable() instanceof myDoctrineTable))
     {
-      CacheEraser::getInstance()->erase($this->getTable()->getCacheEraserKeys($invoker, 'save'));
+      CacheEraser::getInstance()->erase($invoker->getTable()->getCacheEraserKeys($invoker, 'save'));
     }
   }
 
@@ -21,7 +21,10 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
   {
     $invoker = $event->getInvoker();
 
-    $this->deleteResultCache($invoker);
+    if ($invoker->getTable() instanceof myDoctrineTable)
+    {
+      $this->deleteResultCache($invoker);
+    }
   }
 
   public function preDelete($event)
