@@ -34,7 +34,7 @@ $(document).ready(function(){
 				lbox = data.data
 				ltbx.update( lbox )
 				ltbx.save()
-				changeButtons( lbox )
+				changeButtons( lbox )				
 				/* ltbx */
 				var dropbx = $('div.lightboxinner > .dropbox')
 				if( dropbx.length ) {
@@ -57,7 +57,7 @@ $(document).ready(function(){
 			if( bx.length ) {
 				var button = $('a.link1', bx)
 				button.attr('href', $('.lightboxinner .point2').attr('href') )
-				button.unbind('click').addClass('active')
+				button.addClass('active')	//die('click') doesnt work			
 			}
 			bx = $('div.goodsbarbig[ref='+ token +']')
 			if( bx.length ) {
@@ -136,7 +136,7 @@ $(document).ready(function(){
 		if( $(button).hasClass('disabled') )
 			return false
 		if( $(button).hasClass('active') )
-			return true;
+			return true	
 		if (! currentItem ) return false
 
 		if( ltbx ){
@@ -152,7 +152,7 @@ $(document).ready(function(){
 				tmpitem.sum = data.data.full_price
 				ltbx.getBasket( tmpitem )
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
-				$(button).unbind('click').addClass('active')
+				$(button).addClass('active') 
 			}
 		})
 		e.stopPropagation()
@@ -185,17 +185,16 @@ $(document).ready(function(){
 		var carturl = $('.lightboxinner .point2').attr('href')
 		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active').unbind('click')
 		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине').unbind('click')
+		$('.bSet__ePrice .link1').unbind('click')
+		$('.goodsbar .link1').die('click')
 	}
 
 	$('.goodsbarbig .link1').click( function() {
 		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
-		if( $(button).hasClass('active') )
-			return true;
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {
 			if ( data.success && ltbx ) {
-			console.info(data.data.full_quantity)
 				var tmpitem = {
 					'id'    : $( button ).attr('href'),
 					'title' : $('h1').html(),
@@ -238,13 +237,13 @@ $(document).ready(function(){
 		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
-		if( $(button).hasClass('active') )
-			return true;
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {
 			if ( data.success && ltbx ) {
 				var tmpitem = {
 					'id'   : $( button ).attr('href'),
 					'title': $('h2').html(),
+					'vitems': data.data.full_quantity,
+					'sum'   : data.data.full_price,
 					'price': $('.bSet__ePrice .price').html(),
 					'img'  : $('.bSet__eImage img').attr('src')
 				}
