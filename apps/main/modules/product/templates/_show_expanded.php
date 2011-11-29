@@ -17,10 +17,12 @@
       <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
 
       <ul>
-        <?php if ($item['product']->getIsInsale()){  ?> 
-          <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
-          <li class="delivery-info" id="product-id-<?php echo $item['product']->core_id ?>">Доставка: уточните в контакт центре</li>
-        <?php } ?>
+        <?php  if ($item['product']->getIsInsale()):  ?>
+            <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
+            <?php if (false): ?>
+            <li class="delivery-info" id="product-id-<?php echo $item['product']->core_id ?>">Доставка: уточните в контакт центре</li>
+            <?php endif ?>
+        <?php endif ?>
       </ul>
 
     </div>
@@ -55,10 +57,12 @@
           <div class="extrainfo">
             <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
             <ul>
-              <?php if ($item['product']->getIsInsale()){  ?> 
+            <?php  if ($item['product']->getIsInsale()):  ?>
                 <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
+                <?php if (false): ?>
                 <li class="delivery-info product-id-<?php echo $item['product']->core_id ?>">Доставка: уточните в контакт центре</li>
-              <?php } ?>
+                <?php endif ?>
+            <?php endif ?>
             </ul>
           </div>
         </div>
