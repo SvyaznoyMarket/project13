@@ -24,6 +24,19 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
+    if (isset($this->product['ProductPrice']))
+    {
+      $this->product->mapValue('price', $this->product['ProductPrice']['price']);
+    }
+    else
+    {
+      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product->id);
+      if (!empty($price))
+      {
+        $this->product->mapValue('price', $price['price']);
+      }
+    }
+
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line')))
     {
       $this->view = 'default';
@@ -48,7 +61,9 @@ class productComponents extends myComponents
     {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
       $item['stock_url'] = url_for('productStock', $this->product);
-      $item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
+      //$item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
+      $item['shop_url'] = url_for('shop');
+
 
       sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
         $deliveries = Core::getInstance()->query('delivery.calc', array(), array(

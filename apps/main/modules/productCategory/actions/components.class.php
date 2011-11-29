@@ -65,7 +65,8 @@ class productCategoryComponents extends myComponents
     */
 	  $data = ProductCategoryTable::getInstance()->getSubList();
 	  $result = array();
-
+      
+     
 	  foreach ($data as $row) {
           #echo $row['id'] .'  '.$row['name'].'----'.$row['level'] .'---<br>';
           $coreIdToId[ $row['core_id'] ] = $row['id'];

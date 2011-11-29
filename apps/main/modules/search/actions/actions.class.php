@@ -49,7 +49,7 @@ class searchActions extends myActions
       'is_product_type_first_only' => $this->productType ? 'false' : 'true',
     );
     $response = Core::getInstance()->query('search.get', $params);
-    myDebug::dump($response);
+    #myDebug::dump($response);
     if (!$response)
     {
       return sfView::ERROR;
@@ -164,7 +164,7 @@ class searchActions extends myActions
     //myDebug::dump($response);
     if (!$response) {
       $this->_validateResult['success'] = false;
-      $this->_validateResult['error'] = 'Ошбика. От ядра не получен ответ.';
+      $this->_validateResult['error'] = 'Ошбика. Не удалось получить результаты поиска.';
       return $this->_refuse();          
     } else if (isset($response['result']) && ('empty' == $response['result'])) {
       $this->setTemplate('emptyAjax');

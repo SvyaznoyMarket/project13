@@ -4,6 +4,31 @@
     
     <dd>
         <ul>
+           <?php 
+           foreach($list as $key => $item) { ?>
+                <?php
+                if (!in_array($item['id'], $notFreeCatList) ) {
+                    continue; 
+                }
+                ?>
+                <li class="bCtg__eL<?php echo $item['level']+1;
+                if ($currentCat->level == 0 && $currentCat->id == $item['id']) echo " hidden";
+                elseif (is_array($pathAr) && in_array($item['id'], $pathAr)) echo " mBold";
+                elseif ($currentCat->id == $item['id']) echo " mSelected";
+                elseif ($hasChildren && $item['core_parent_id'] == $currentCat->core_id) echo '';
+                elseif (!$hasChildren && $item['core_parent_id'] == $currentCat->core_parent_id) echo '';
+                else echo ' hidden';
+                ?> ">
+                    <a href="<?php echo url_for('productCatalog_category', array("productCategory" => $item['token'])); ?>">
+                        <span><?php echo $item['name'] ?></span>
+                    </a>
+                </li>                
+           <?php 
+           }
+           ?>
+            
+            
+            <!--
             <?php $currentLevel1 = null; ?>
             <?php if ($currentDirectory->level > 0 ) { ?>
                 <li class="bCtg__eL1 mBold">
@@ -13,9 +38,6 @@
                 </li>            
             <?php } ?>     
             <?php foreach($root_list['children'] as $level1) { 
-                if ($level1->countProduct() < 1) {
-                    continue;
-                }
                 ?>
                 <?php 
                 if ($level1->core_parent_id == $currentDirectory->core_id) {
@@ -43,9 +65,6 @@
                 </li>   
                     <?php foreach($tree[$level1['id']]['children'] as $level2) { ?>
                     <?php 
-                    if ($level2->countProduct() < 1) {
-                        continue;
-                    }
                     
                     #echo count($tree[$level2->id]['children']) .'==<br>';                    
                     #echo $level2->id .'=='. $currentDirectory->id.'<br>';
@@ -76,9 +95,6 @@
                     <?php $classParent = $classCur; ?>
                     <?php foreach($tree[$level2['id']]['children'] as $level3) { ?>
                         <?php 
-                        if ($level3->countProduct() < 1) {
-                            continue;
-                        }
                         
                         #echo $level2->core_id .'=='. $currentDirectory->core_parent_id.'<br>';
                         
@@ -108,6 +124,7 @@
                     <?php } ?>                      
                 <?php } ?>              
             <?php } ?>  
+            -->
                                                                 
         </ul>
     </dd>

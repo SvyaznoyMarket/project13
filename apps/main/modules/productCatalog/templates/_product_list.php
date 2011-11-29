@@ -23,6 +23,9 @@ if ($module == 'tag') {
     //страница поиска
     $q = $request->getParameter('q');
     $dataAr['q'] = $q;
+    if (isset($productType)) {
+        $dataAr['product_type'] = $productType['token'];
+    }
     $infinityUrl = url_for('search_ajax', $dataAr);    
 } else {
     //страница каталога (любая. возможно, с фильтрами и тегами)
@@ -59,11 +62,11 @@ if ($module == 'tag') {
 <?php endif ?>
 
 <?php if( count($productPager->getLinks()) - 1  ): ?>
-<div data-url="<?php echo url_for('productCatalog_categoryAjax',array('productCategory' => $productCategory->token )); ?>"
+<div data-url="<?php echo $infinityUrl; ?>"
 	 data-page="<?php  echo $page; ?>"
 	 data-mode="<?php  echo $view; ?>"
-	 data-lastpage="<?php echo count($productPager->getLinks()); ?>"
-	 class="fr allpager mBtn"></div>
+	 data-lastpage="<?php echo $productPager->getLastPage(); ?>"
+	 class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"></div>
 <?php endif ?>
 
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>

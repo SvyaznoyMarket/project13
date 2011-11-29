@@ -105,7 +105,6 @@ class productCatalogActions extends myActions
   */
   public function executeTag(sfWebRequest $request)
   {
-      
     $this->productCategory = $this->getRoute()->getObject();
 
     $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
@@ -306,7 +305,11 @@ class productCatalogActions extends myActions
 
     if (isset($request['num'])) $limit = $request['num'];
     else $limit = sfConfig::get('app_product_max_items_on_category', 20);
-    $this->productPager = $this->getPager('Product', $q, $limit, array());
+
+    $this->productPager = $this->getPager('Product', $q, $limit, array(
+      'with_properties' => 'expanded' == $request['view'] ? true : false,
+      'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
+    ));    
 
     if($request['page'] > $this->productPager->getLastPage()){
         $this->_validateResult['success'] = false;
@@ -533,7 +536,6 @@ class productCatalogActions extends myActions
     // sorting
     $this->productSorting = $this->getProductSorting();
     $this->productSorting->setQuery($q);
-
 
     $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,

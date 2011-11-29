@@ -134,7 +134,7 @@ if (0 && count($f1)):
                 </label>
                 <input
                     <?php if (key_exists($service->id, $selectedServices)) echo 'checked="checked"'; ?>
-                    ref="<?php echo $service->id ?>" id="checkbox-small-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="1" />
+                    ref="<?php echo $service->token ?>" id="checkbox-small-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="1" />
             </li>
         <?php
          $num++;

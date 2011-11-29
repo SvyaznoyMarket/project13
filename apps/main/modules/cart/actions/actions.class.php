@@ -43,7 +43,7 @@ class cartActions extends myActions
     if ($result['value'])
     {
       $product = ProductTable::getInstance()->findOneByToken($request['product']);
-      
+
       if ($product)
       {
         if ($product->isKit())
@@ -54,7 +54,7 @@ class cartActions extends myActions
         {
           $products = array($product);
         }
-        
+
         try
         {
             $added = array();
@@ -72,7 +72,7 @@ class cartActions extends myActions
             {
               $this->getUser()->getCart()->addProduct($product, $request['quantity']);
             }
-            
+
             $added[] = array('product' => $product, 'quantity' => $currentNum);
           }
         }

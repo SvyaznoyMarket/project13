@@ -9,6 +9,7 @@ class ProjectSeoImportTask extends sfBaseTask
   
   private $_csvToDbRelation = array(
       'URL' => 'token',
+      'core_id' => 'core_id',
       'title' => 'seo_title',
       'description' => 'seo_description',
       'keywords' => 'seo_keywords',
@@ -56,6 +57,7 @@ EOF;
             if ($firstString) {
                 $string = trim($string);
                 if (!isset($this->_csvToDbRelation[$string])) {
+                    $numberKeyToField[0] = 'core_id';
                     continue;
                 }
                 $numberKeyToField[$numberKey] = $this->_csvToDbRelation[$string];
@@ -70,21 +72,25 @@ EOF;
         }
         $firstString = false;
         #print_r( $categoryData );
-        if (!isset($categoryData['token'])) {
+        if (!isset($categoryData['token']) && !isset($categoryData['core_id'])) {
             continue;
         }        
         
         $q = Doctrine_Query::create()->update('ProductCategory');
         foreach($categoryData as $k => $f) {
-            if ($k == 'token') continue;
+            if ($k == 'token' || $k == 'core_id') continue;
             #echo $k .'----'.$f . "\n\n";
             $q->set($k, '?', $f);
         }
-        $q->where('token = "' . $categoryData['token'] . '"'); 
+        if (isset($categoryData['token'])) {
+            $q->where('token = ?', $categoryData['token']); 
+        } elseif (isset($categoryData['core_id'])) {
+            #echo $categoryData['core_id'] ."==\n";
+            $q->where('core_id = ?', $categoryData['core_id']); 
+        }
         #echo $q->__toString() ."\n";
         $q->execute();                     
     }
-    #print_r($numberKeyToField);
 
   }
 }

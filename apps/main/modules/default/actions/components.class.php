@@ -146,7 +146,7 @@ class defaultComponents extends myComponents
       ),
       array(
         'token' => 'facebook',
-        'url'   => 'http://www.facebook.com/groups/250713421639363/',
+        'url'   => 'http://www.facebook.com/enter.ru',
       ),
       array(
         'token' => 'vkontakte',
