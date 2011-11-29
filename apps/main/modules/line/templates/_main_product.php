@@ -54,14 +54,6 @@
     <!-- /Watch -->
 
   </div>
-  <script type="text/javascript">
-    $('#watch-trigger').click(function(){
-      $('#watch-cnt').toggle();
-    });
-    $('#watch-cnt .close').click(function(){
-      $('#watch-cnt').hide();
-    });
-  </script>
   <div class="font14 pb15"><?php echo $item['description'] ?></div>
   <div class="clear"></div>
 

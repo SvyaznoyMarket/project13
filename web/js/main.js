@@ -654,5 +654,112 @@ $(document).ready(function(){
 			return false
 		})
 	}
+	
+	/* from inline tags */
+	if( $('#agree-field').length ) {
+		/* apps/main/modules/order/templates/confirmSuccess.php */
+		$('#agree-field')
+			/*
+			.bind('change', function() {
+			  var el = $(this)
+			
+			  if (el.prop('checked')) {
+				$('#confirm-button, #pay-button').removeClass('mDisabled')
+			  }
+			  else {
+				$('#confirm-button, #pay-button').addClass('mDisabled')
+			  }
+			})
+			*/
+			.everyTime(200, function() {
+			  var el = $(this)
+			  //if (el.attr('checked')) {
+			  if (el.next().hasClass('checked')) {
+				$('#confirm-button, #pay-button').removeClass('mDisabled')
+			  }
+			  else {
+				$('#confirm-button, #pay-button').addClass('mDisabled')
+			  }
+			})
+			
+		$('.form').bind('submit', function(e) {
+			if ($(this).find('input.mDisabled').length) {
+			  e.preventDefault()
+			}
+		})
+	}
+	/* apps/main/modules/line/templates/_main_product.php */
+	$('#watch-trigger').click(function(){
+      $('#watch-cnt').toggle();
+    });
+    $('#watch-cnt .close').click(function(){
+      $('#watch-cnt').hide();
+    });
+    /* apps/main/modules/product/templates/_property_grouped.php */
+    $('.point .title b').click(function(){
+		$(this).parent().parent().find('.prompting').show();
+	});
+	$('.point .title .pr .close').click(function(){
+		$(this).parent().hide();
+	});
+	
+	$('#auth_forgot-link').click(function() {
+    $('#auth_forgot-block').lightbox_me({
+      centered: true,
+      onLoad: function() {
+        $('#auth_forgot-form').show()
+        $('#auth_forgot-block').find('input:first').focus()
+      }
+    })
 
+    return false
+  })
+/* apps/main/modules/order/templates/loginSuccess.php */
+    if( $('#order_login-url').length ) {
+		var url_signin = $('#order_login-url').val(),
+			url_register = $('#order_login-url').val();
+		$('#radio-1').click(function(){
+		  $('#old-user').show();
+		  $('#old-user input').prop('disabled', null);
+		  $('#new-user').hide();
+		  $('#new-user input').prop('disabled', 'disabled');
+		  $('#form-step-1').prop('action', url_signin);
+		});
+		$('#radio-2').click(function(){
+		  $('#old-user').hide();
+		  $('#old-user input').prop('disabled', 'disabled');
+		  $('#new-user').show();
+		  $('#new-user input').prop('disabled', null);
+		  $('#form-step-1').prop('action', url_register);
+		});
+		var actionf = ( $('#module_action').length && $('#module_action').val() === 'register') ? 2 : 1
+		$('#radio-'+ actionf).click();
+		$('#form-step-1').submit(function(){
+		  if (this.action == '') return false;
+		});
+    }
+    
+    /* apps/main/modules/order/templates/_step1.php */
+	if( $('#user_signin-url').length ) {
+		var url_signin = $('#user_signin-url').val(),
+			url_register = $('#user_register-url').val();
+		$('#radio-1').click(function(){
+			$('#old-user').show();
+			$('#old-user input').prop('disabled', null);
+			$('#new-user').hide();
+			$('#new-user input').prop('disabled', 'disabled');
+			$('#form-step-1').prop('action', url_signin);
+		});
+		$('#radio-2').click(function(){
+			$('#old-user').hide();
+			$('#old-user input').prop('disabled', 'disabled');
+			$('#new-user').show();
+			$('#new-user input').prop('disabled', null);
+			$('#form-step-1').prop('action', url_register);
+		});
+		$('#radio-1').click();
+		$('#form-step-1').submit(function(){
+			if (this.action == '') return false;
+		});
+	}
 });
