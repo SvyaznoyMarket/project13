@@ -1,3 +1,4 @@
+<?php if (false) : ?>
 <script type="text/javascript">
 
 <?php if ('true' == $sf_request->getParameter('reload-parent')): ?>
@@ -10,3 +11,4 @@
   window.parent.$.fn.colorbox.close()
 
 </script>
+<?php endif ?>
