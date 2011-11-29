@@ -157,3 +157,4 @@ $(document).ready(function() {
 <?php endif ?>
 
 <input type="hidden" disabled="disabled" id="order_login-url" value="<?php echo url_for('@order_login') ?>" />
+<input type="hidden" disabled="disabled" id="module_action" value="<?php echo isset($action) ? $action : '' ?>" />
