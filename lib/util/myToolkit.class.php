@@ -2,6 +2,21 @@
 
 class myToolkit extends sfToolkit
 {
+  static $_months = array(
+    1 => 'января',
+    2 => 'февраля',
+    3 => 'марта',
+    4 => 'апреля',
+    5 => 'мая',
+    6 => 'июня',
+    7 => 'июля',
+    8 => 'августа',
+    9 => 'сентября',
+    10 => 'октября',
+    11 => 'ноября',
+    12 => 'декабря',
+  );
+  
   static public function declension($int, $expressions)
   {
     if (is_string($expressions)) $expressions = explode(' ', $expressions);
@@ -25,7 +40,8 @@ class myToolkit extends sfToolkit
 
   static public function formatDeliveryDate($period)
   {
-    $d = date('d-m-Y', time() + (3600*24*$period));
+    $ts = time() + (3600*24*$period);
+    $d = date('j', $ts).' '.self::$_months[date('m', $ts)];
     if ($period == 0) {
       return 'сегодня (' . $d . ')';
     } elseif ($period == 1) {

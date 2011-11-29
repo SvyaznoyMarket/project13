@@ -29,4 +29,29 @@ $(document).ready(function(){
 			mLib.show( $(this).attr('ref') , $(this).attr('href'))
 		return false
 	})
+    
+    var delivery_cnt = $('.delivery-info'),
+        coreid = delivery_cnt.prop('id').replace('product-id-', '');
+    $.post(delivery_cnt.data().calclink, {ids:[coreid]}, function(data){
+      data = data[coreid].deliveries;
+      var html = '<h4>Как получить заказ?</h4><ul>', i, row;
+      for (i in data) {
+        row = data[i];
+        if (row.object.core_id == 3) {
+          html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине '+row.text+'</h5><div>&mdash; <a href="'+delivery_cnt.data().shoplink+'">В каких магазинах ENTER можно забрать?</a></div></li>';
+          delete data[i];
+        }
+      }
+//      console.log(data);
+      if (data.length > 0) {
+        html += '<li><h5>Можно заказать сейчас с доставкой</h5>';
+        for (i in data) {
+          row = data[i];
+          html += '<div>&mdash; Можем доставить '+row.text+(row.price > 0 ? ', '+row.price+' руб.' : '') +'</div>';
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+      delivery_cnt.html(html);
+    }, 'json');
 })	

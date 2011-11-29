@@ -410,7 +410,7 @@ class Core
     ), JSON_FORCE_OBJECT);
     $result = true;
 
-    $this->logger->log('Trying to pass authentification... ');
+    $this->logger->log('Trying to pass authentification... '. $data);
     $response = $this->send($data);
 
 	//$this->logger->log($response);

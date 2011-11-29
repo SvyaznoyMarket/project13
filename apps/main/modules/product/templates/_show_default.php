@@ -59,17 +59,11 @@ foreach ($p3d as $p3d_obj)
 
         <div class="line pb15"></div>
 
-		<div class='bDeliver2'>
+		<div class="bDeliver2 delivery-info" id="product-id-<?php echo $item['product']->core_id ?>" data-shoplink="<?php echo url_for('shop') ?>" data-calclink="<?php echo url_for('product_delivery') ?>">
 			<h4>Как получить заказ?</h4>
 			<ul>
 				<li>
-					<h5>Можно заказать сейчас и самостоятельно забрать в магазине</h5>
-					<div>&mdash; <a href>В каких магазинах ENTER можно забрать?</a></div>
-				</li>
-				<li>
-					<h5>Можно заказать сейчас с доставкой</h5>
-					<div>&mdash; Можем доставить сегодня, 790 руб.</div>
-					<div>&mdash; Можем доставить завтра или в другой день, 290 руб.</div>
+					<h5>Идет расчет условий доставки...</h5>
 				</li>
 			</ul>
 		</div>
