@@ -105,6 +105,9 @@ class ProductTable extends myDoctrineTable
       'with_model'      => false,
     ));
 
+    $key = $this->getRecordQueryHash($id, $params);
+    
+
     $q = $this->createBaseQuery($params);
 
     $q->leftJoin('product.Category productCategory')
