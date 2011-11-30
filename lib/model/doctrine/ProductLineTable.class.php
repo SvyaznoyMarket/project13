@@ -25,11 +25,21 @@ class ProductLineTable extends myDoctrineTable
       'media_image' => 'photo',
     );
   }
-  
+
   public function getForRoute(array $params)
   {
     $id = isset($params['line']) ? $this->getIdBy('token', $params['line']) : null;
 
     return $this->getById($id, array());
+  }
+
+  public function getProductCountById($id)
+  {
+    $q = ProductTable::getInstance()->createBaseQuery(array('view' => 'list', ));
+    $q->addWhere('product.line_id = ?', $id);
+
+    //$q->useResultCache(true, null, $this->getTable()->getRecordQueryHash('productLine-count'.$id));
+
+    return $q->count();
   }
 }
