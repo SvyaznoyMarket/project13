@@ -72,7 +72,7 @@ all:
     config:
       automatic_cleaning_factor: 0
       lifetime: 604800
-      prefix: view
+      prefix: test
 
   payment:
    default_provider: uniteller

@@ -106,7 +106,10 @@ class ProductTable extends myDoctrineTable
     ));
 
     $key = $this->getRecordQueryHash($id, $params);
-    
+    if ($cached = $this->getCache()->get($key))
+    {
+      return $cached;
+    }
 
     $q = $this->createBaseQuery($params);
 
@@ -218,6 +221,9 @@ class ProductTable extends myDoctrineTable
         }
       }
     }
+
+    $this->getCache()->set($key, $record);
+    $this->getCache()->addTag($key, "product-{$record['id']}");
 
     return $record;
   }
