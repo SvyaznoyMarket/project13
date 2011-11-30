@@ -74,6 +74,10 @@ all:
       - Cache
       - myPartial
       - myUrl
+      - sfCombine
+
+    enabled_modules:
+      - sfCombine
 
     login_module:           guard
     login_action:           signin

@@ -42,4 +42,4 @@ $(document).ready(function() {
     link.text('еще...' == link.text() ? 'скрыть' : 'еще...')
   })
 
-})
+});

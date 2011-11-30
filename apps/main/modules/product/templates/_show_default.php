@@ -107,14 +107,6 @@ foreach ($p3d as $p3d_obj)
 
   </div>
   <?php endif ?>
-  <script type="text/javascript">
-    $('#watch-trigger').click(function(){
-      $('#watch-cnt').toggle();
-    });
-    $('#watch-cnt .close').click(function(){
-      $('#watch-cnt').hide();
-    });
-  </script>
   <div class="font14 pb15"><?php echo $item['product']->preview ?></div>
   <div class="clear"></div>
 

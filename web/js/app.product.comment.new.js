@@ -23,4 +23,4 @@ $(function(){
 //	$('.ratingvalue').each( function() {
 //		$(this).prev().prev().find('.ra'+$(this).val()).click()
 //	})
-})
+});

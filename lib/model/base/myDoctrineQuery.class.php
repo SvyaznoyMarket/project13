@@ -71,4 +71,12 @@ class myDoctrineQuery extends Doctrine_Query
     return (int) $count;
   }
 
+  public function countTotal()
+  {
+    $q = clone $this;
+    $q->offset(0)->limit(0);
+
+    return $q->count();
+  }
+
 }

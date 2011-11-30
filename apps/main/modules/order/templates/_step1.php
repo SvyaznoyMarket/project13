@@ -66,27 +66,8 @@
         <div class="line pb20"></div>
         <div class="pl235"><input type="submit" class="button bigbutton" value="Продолжить оформление" /></div>
     </form>
-	<script type="text/javascript">
-		var url_signin = '<?php echo url_for('@user_signin') ?>',
-			url_register = '<?php echo url_for('@user_register') ?>';
-		$('#radio-1').click(function(){
-			$('#old-user').show();
-			$('#old-user input').prop('disabled', null);
-			$('#new-user').hide();
-			$('#new-user input').prop('disabled', 'disabled');
-			$('#form-step-1').prop('action', url_signin);
-		});
-		$('#radio-2').click(function(){
-			$('#old-user').hide();
-			$('#old-user input').prop('disabled', 'disabled');
-			$('#new-user').show();
-			$('#new-user input').prop('disabled', null);
-			$('#form-step-1').prop('action', url_register);
-		});
-		$('#radio-1').click();
-		$('#form-step-1').submit(function(){
-			if (this.action == '') return false;
-		});
-	</script>
     <!-- /Form -->
 <?php endif ?>
+
+<input type="hidden" disabled="disabled" id="user_signin-url" value="<?php echo url_for('@user_signin') ?>" />
+<input type="hidden" disabled="disabled" id="user_register-url" value="<?php echo url_for('@user_register') ?>" />

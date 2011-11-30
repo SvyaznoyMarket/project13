@@ -376,6 +376,8 @@ function DDforLB( outer , ltbx ) {
 	
 	this.prepare = function( pageX, pageY, item ) {
 		itemdata = item
+		if(  $( '.boxhover[ref='+ itemdata.id +'] a.link1').hasClass('active') ) 
+			return
 		$(document).bind('mousemove.dragitem', function(e) {
 			e.preventDefault()
 			if(! isactive) {
@@ -449,10 +451,14 @@ function DDforLB( outer , ltbx ) {
 				case 2: //wishes 
 					lightbox.getWishes( itemdata )
 					break
-				case 3: //basket
-					$.getJSON('/cart/add/'+$( '.boxhover[ref='+ itemdata.id +']').attr('ref') +'/1', function(data) {
-						if ( data.success && ltbx )
-							ltbx.getBasket( itemdata )
+				case 3: //basket					
+					$.getJSON( $( '.boxhover[ref='+ itemdata.id +'] a.link1').attr('href') +'/1', function(data) {
+						if ( data.success && ltbx ) {
+							var tmpitem = itemdata
+							tmpitem.vitems = data.data.full_quantity
+							tmpitem.sum = data.data.full_price
+							ltbx.getBasket( tmpitem )
+						}	
 					})
 					//lightbox.getBasket( itemdata )
 					break

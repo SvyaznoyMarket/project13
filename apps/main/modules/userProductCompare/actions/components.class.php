@@ -21,12 +21,12 @@ class userProductCompareComponents extends myComponents
 
     if (isset($this->product))
     {
-      $this->button = $productCompare->hasProduct($this->product->type_id, $this->product->id) ? 'show' : 'add';
-      $this->productType = $this->product->Type;
+      $this->button = $productCompare->hasProduct($this->product['type_id'], $this->product['id']) ? 'show' : 'add';
+      $this->productType = $this->product['Type'];
     }
     else
     {
-      if (!$productCompare->hasProductType($this->productType->id))
+      if (!$productCompare->hasProductType($this->productType['id']))
       {
         return sfView::NONE;
       }

@@ -326,6 +326,10 @@ class guardActions extends myActions
   public function executeQuickRegister($request)
   {
     $this->userProfile = $this->getUser()->getProfile();
+    if (!$this->userProfile)
+    {
+      return sfView::ERROR;
+    }
 
     $this->user = new User();
     $this->user->email = $this->userProfile->getEmail();
