@@ -624,7 +624,8 @@ class ProductTable extends myDoctrineTable
     {
       $q->addWhere('product.is_lines_main = ?', 0);
     }
-    $q->orderBy('product.set_id DESC, (type.core_id = 790) DESC, product.score DESC');
+    //$q->orderBy('product.set_id DESC, (type.core_id = 790) DESC, product.score DESC');
+    $q->orderBy('FIELD(type.core_id, 775, 779, 796, 785, 792, 795, 780, 782, 788, 787, 781, 793, 746, 777, 742, 1134, 743, 1135, 750, 749, 748, 745, 744, 1145, 776, 789, 783, 791, 131, 1148, 1150, 1147, 790, 1149, 199, 757, 149, 198, 758, 756, 755, 759) DESC, product.set_id DESC');
 
     $this->setQueryParameters($q, $params);
 
