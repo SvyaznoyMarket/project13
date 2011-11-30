@@ -37,19 +37,50 @@ class myToolkit extends sfToolkit
     }
     return $result;
   }
+  
+  /**
+   *
+   * @param int $typeId
+   * @param int $period
+   * @return int|false если false - то не надо показывать этот тип доставки 
+   */
+  static public function fixDeliveryPeriod($typeId, $period)
+  {
+    switch ($typeId) {
+      case 1:
+        if (date('Gi') > 2000) {
+          return $period+1;
+        }
+        break;
+      case 2:
+        if (date('Gi') > 1415) {
+          return false;
+        }
+        break;
+      case 3:
+        if (date('Gi') > 2000) {
+          return $period+1;
+        }
+        break;
+      default:
+        return $period;
+        break;
+    }
+    return $period;
+  }
 
   static public function formatDeliveryDate($period)
   {
     $ts = time() + (3600*24*$period);
     $d = date('j', $ts).' '.self::$_months[date('m', $ts)];
     if ($period == 0) {
-      return 'сегодня (' . $d . ')';
+      return ' сегодня (' . $d . ')';
     } elseif ($period == 1) {
-      return 'завтра (' . $d . ')';
+      return ' завтра (' . $d . ')';
     } elseif ($period == 2) {
-      return 'послезавтра (' . $d . ')';
+      return ' послезавтра (' . $d . ')';
     } else {
-      return 'через ' . $period . ' ' . self::declension($period, 'день дня дней');
+      return ' через ' . $period . ' ' . self::declension($period, 'день дня дней');
     }
   }
   

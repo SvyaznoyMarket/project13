@@ -59,6 +59,7 @@ foreach ($p3d as $p3d_obj)
 
         <div class="line pb15"></div>
 
+        <?php if ($product->is_in_sale): ?>
 		<div class="bDeliver2 delivery-info" id="product-id-<?php echo $item['product']->core_id ?>" data-shoplink="<?php echo url_for('shop') ?>" data-calclink="<?php echo url_for('product_delivery') ?>">
 			<h4>Как получить заказ?</h4>
 			<ul>
@@ -67,6 +68,7 @@ foreach ($p3d as $p3d_obj)
 				</li>
 			</ul>
 		</div>
+        <?php endif ?>
 <?php if (false): ?>
 		<div class="line pb15"></div>
 

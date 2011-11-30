@@ -146,6 +146,8 @@ class OrderStep1Form extends BaseOrderForm
         $now = new DateTime();
         $deliveryPeriod = $minDeliveryDate->diff($now)->days;
         if ($deliveryPeriod < 0) $deliveryPeriod = 0;
+        $deliveryPeriod = myToolkit::fixDeliveryPeriod($deliveryType['mode_id'], $deliveryPeriod);
+        if ($deliveryPeriod === false) continue;
         $deliveryTypes[$deliveryObj['id']] = array(
           'label' => $deliveryObj['name'].$formatPrice($deliveryType['price']),
           'description' => $deliveryObj['description'],
