@@ -1,0 +1,1 @@
+CREATE TABLE `sf_combine` (`asset_key` VARCHAR(40), `files` LONGTEXT NOT NULL, PRIMARY KEY(`asset_key`)) ENGINE = INNODB;
