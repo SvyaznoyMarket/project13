@@ -32,7 +32,7 @@ $(document).ready(function(){
     
     var formatDateText = function(txt){
       txt = txt.replace('сегодня', '<b>сегодня</b>');
-      txt = txt.replace('завтра', '<b>завтра</b>');
+      txt = txt.replace(' завтра', ' <b>завтра</b>');
       return txt;
     }
     var formatPrice = function(price){
