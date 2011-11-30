@@ -330,4 +330,9 @@ class myDoctrineTable extends Doctrine_Table
       : Doctrine_Core::getTable($model)->findOneByCoreId($coreId)
     ;
   }
+
+  public function getCache()
+  {
+    return sfContext::getInstance()->get('cache');
+  }
 }
