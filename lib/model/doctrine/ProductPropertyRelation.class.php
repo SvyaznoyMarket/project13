@@ -21,10 +21,7 @@ class ProductPropertyRelation extends BaseProductPropertyRelation
 
   public function getRealValue()
   {
-    $property = ProductPropertyTable::getInstance()->getById($this->property_id, array('with_options' => false));
-    $field = $this->getTable()->getValueFieldByType($property->type);
-
-    return $this->get($field);
+    return $this->getTable()->getRealValue($this);
   }
 
   public function setRealValue($value)

@@ -113,41 +113,8 @@
   </div>
 
 
-
-  <script type="text/javascript">
-
-  $('#auth_forgot-link').click(function() {
-    $('#auth_forgot-block').lightbox_me({
-      centered: true,
-      onLoad: function() {
-        $('#auth_forgot-form').show()
-        $('#auth_forgot-block').find('input:first').focus()
-      }
-    })
-
-    return false
-  })
-
-    var url_signin = '<?php echo url_for('@order_login') ?>',
-    url_register = '<?php echo url_for('@order_login') ?>';
-    $('#radio-1').click(function(){
-      $('#old-user').show();
-      $('#old-user input').prop('disabled', null);
-      $('#new-user').hide();
-      $('#new-user input').prop('disabled', 'disabled');
-      $('#form-step-1').prop('action', url_signin);
-    });
-    $('#radio-2').click(function(){
-      $('#old-user').hide();
-      $('#old-user input').prop('disabled', 'disabled');
-      $('#new-user').show();
-      $('#new-user input').prop('disabled', null);
-      $('#form-step-1').prop('action', url_register);
-    });
-    $('#radio-<?php echo ((isset($action) && 'register' == $action) ? 2 : 1) ?>').click();
-    $('#form-step-1').submit(function(){
-      if (this.action == '') return false;
-    });
-  </script>
   <!-- /Form -->
 <?php endif ?>
+
+<input type="hidden" disabled="disabled" id="order_login-url" value="<?php echo url_for('@order_login') ?>" />
+<input type="hidden" disabled="disabled" id="module_action" value="<?php echo isset($action) ? $action : '' ?>" />

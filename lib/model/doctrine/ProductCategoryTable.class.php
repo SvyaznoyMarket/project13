@@ -108,6 +108,24 @@ class ProductCategoryTable extends myDoctrineTable
     return $this->createListByIds($ids, $params);
   }
 
+  public function getRootRecord($category, array $params = array())
+  {
+	  if (0 == $category['level'])
+    {
+		  return $category;
+	  }
+
+	  $q = $this->createBaseQuery();
+
+	  $q->andWhere('productCategory.root_id = ?', $category['root_id'])
+	    ->andWhere('productCategory.level = ?', 0)
+    ;
+
+    $q->useResultCache(true, null, $this->getQueryHash('productCategory-root-'.$category['root_id'], $params));
+
+	  return $q->fetchOne();
+  }
+
   // TODO: удалить
   public function getSubList(array $params = array())
   {

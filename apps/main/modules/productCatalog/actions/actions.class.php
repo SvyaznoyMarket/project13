@@ -57,10 +57,15 @@ class productCatalogActions extends myActions
     $this->productSorting->setQuery($q);
 
     // pager
+    /*
     $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
+    */
+    $this->productPager = $this->getProductPager($q);
+
+    $this->setVar('noInfinity', true);
 
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
@@ -270,8 +275,22 @@ class productCatalogActions extends myActions
     $getFilterData = $request->getParameter($this->productFilter->getName()) ;
     $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $getTagFilterData = $request->getParameter($this->productTagFilter->getName());
-    #var_dump($getFilterData);
-    if ( isset($getFilterData) ) {
+    
+    if ($this->productCategory->has_line) {
+        //если в категории должны отображться линии
+        $filter = array(
+          'category' => $this->productCategory,
+        );
+
+        $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+          'view'      => 'list',
+          'with_line' => 'line' == $request['view'] ? true : false,
+        ));
+
+        $this->view = 'line';
+        $this->list_view = false;        
+        
+    } elseif ( isset($getFilterData) ) {
         //если установлены фильтры
         $this->productFilter->bind($getFilterData);
         $q = ProductTable::getInstance()->createBaseQuery(array(
@@ -279,6 +298,8 @@ class productCatalogActions extends myActions
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
         $this->productFilter->buildQuery($q);
+        $this->view = $request['view'];
+        
     } elseif ($getTagFilterData) {
         //если установлены тэги
         $this->productTagFilter->bind($getTagFilterData);
@@ -287,21 +308,22 @@ class productCatalogActions extends myActions
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
         $this->productTagFilter->buildQuery($q);
+        $this->view = $request['view'];        
     //если фильтры не установлены
     } else {
         $filter = array(
           'category' => $this->productCategory,
         );
         $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-          'view'      => 'list',
+          'view'      => $request['view'],
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
+        $this->view = $request['view'];        
     }
 
     // sorting
     $this->productSorting = $this->getProductSorting();
     $this->productSorting->setQuery($q);
-
 
     if (isset($request['num'])) $limit = $request['num'];
     else $limit = sfConfig::get('app_product_max_items_on_category', 20);
@@ -421,12 +443,14 @@ class productCatalogActions extends myActions
     $this->productSorting = $this->getProductSorting();
     $this->productSorting->setQuery($q);
 
-
+    /*
     $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
-    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+    */
+
+    $this->productPager = $this->getProductPager($q);
 
     // SEO ::
     $list = array();
@@ -537,11 +561,15 @@ class productCatalogActions extends myActions
     $this->productSorting = $this->getProductSorting();
     $this->productSorting->setQuery($q);
 
+
+    /*
     $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+    */
+    $this->productPager = $this->getProductPager($q);
 
     $this->view = 'line';
     $this->list_view = false;
@@ -571,5 +599,23 @@ class productCatalogActions extends myActions
     $sorting->setActive($active[0], $active[1]);
 
     return $sorting;
+  }
+
+  public function getProductPager(myDoctrineQuery $q, $limit = null)
+  {
+	  $page = $this->getRequestParameter('page', 1);
+    $limit = $limit ?: sfConfig::get('app_product_max_items_on_category', 20);
+    $offset = intval($page - 1) * $limit;
+    $this->forward404If($offset < 0, 'Неверный номер страницы');
+
+    $q->offset($offset)->limit($limit);
+    $productIds = ProductTable::getInstance()->getIdsByQuery($q);
+
+    $pager = new FilledPager($productIds, $q->countTotal(), $limit);
+    $pager->setPage($page);
+    $pager->init();
+    $this->forward404If($page > $pager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+
+    return $pager;
   }
 }

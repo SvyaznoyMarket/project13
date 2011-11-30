@@ -67,7 +67,13 @@ $('.order-form').bind({
         	var el = $(e.target).find('option:selected')
         	if (!el.length) 
           		return
-          	$.post(form.data('updateFieldUrl'), {
+          	
+        }
+        if ('order[delivery_type_id]' == $(e.target).attr('name')) {
+          var el = form.find('[name="order[delivery_type_id]"]:checked')
+          if (el.length) {
+			triggerDelivery( el.val() )
+            $.post(form.data('updateFieldUrl'), {
 				  order: {
 				  	delivery_type_id: form.find('[name="order[delivery_type_id]"]:checked').val(),
 					shop_id: el.val()
@@ -89,11 +95,6 @@ $('.order-form').bind({
 				}).error(function() {
               		d.reject()
             	})
-        }
-        if ('order[delivery_type_id]' == $(e.target).attr('name')) {
-          var el = form.find('[name="order[delivery_type_id]"]:checked')
-          if (el.length) {
-			triggerDelivery( el.val() )
             $.post(form.data('updateFieldUrl'), {
               order: {
                 delivery_type_id: el.val()
@@ -147,7 +148,7 @@ $('.order-form').bind({
     }
   })
 
-	$('#order_shop_id').trigger('change')
+	//$('#order_shop_id').trigger('change')
 }
 
   $('.order_user_address').bind('change', function(e) {

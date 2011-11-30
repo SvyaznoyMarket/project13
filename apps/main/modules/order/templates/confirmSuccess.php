@@ -39,38 +39,3 @@
 <!--form action="<?php echo url_for('order_confirm') ?>" method="post">
 <input type="submit" value="Подтвердить" />
 </form-->
-
-
-<script type="text/javascript">
-$(document).ready(function() {
-  $('#agree-field')
-  /*
-    .bind('change', function() {
-      var el = $(this)
-
-      if (el.prop('checked')) {
-        $('#confirm-button, #pay-button').removeClass('mDisabled')
-      }
-      else {
-        $('#confirm-button, #pay-button').addClass('mDisabled')
-      }
-    })
-  */
-    .everyTime(200, function() {
-      var el = $(this)
-      //if (el.attr('checked')) {
-      if (el.next().hasClass('checked')) {
-        $('#confirm-button, #pay-button').removeClass('mDisabled')
-      }
-      else {
-        $('#confirm-button, #pay-button').addClass('mDisabled')
-      }
-    })
-
-  $('.form').bind('submit', function(e) {
-    if ($(this).find('input.mDisabled').length) {
-      e.preventDefault()
-    }
-  })
-})
-</script>

@@ -5,9 +5,9 @@
     <?php include_metas() ?>
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <?php include_stylesheets() ?>
-    <?php include_javascripts() ?>
-    <?php include_component('page', 'link_rel_canonical') ?>    
+    <?php include_combined_stylesheets() //include_stylesheets() ?>
+    <?php //include_javascripts() ?>
+    <?php include_component('page', 'link_rel_canonical') ?>
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25485956-1']);
@@ -37,8 +37,47 @@ _gaq.push(['_trackPageLoadTime']);
 </head>
 
 <body>
-<?php LastModifiedHandler::setLastModified();  ?>   
+<?php LastModifiedHandler::setLastModified();  ?>
 
+
+<div class="bannersbox">
+    <div class="bannersboxinner">
+	  <!-- /images/banners/small/banner3.png -->
+        <div class="banner banner2"><a href=""><img src="" alt="" /></a></div>
+        <div class="banner banner3"><a href=""><img src="" alt="" /></a></div>
+        <div class="banner banner4"><a href=""><img src="" alt="" /></a></div>
+        <div class="banner banner5"><a href=""><img src="" alt="" /></a></div>
+      <!-- -->
+      <?php // include_component('default', 'slot', array('token' => 'banner_default')) ?>
+    </div>
+</div>
+
+
+<div class="allpage">
+
+    <div class="logo">Enter Связной</div>
+      <!-- Topmenu -->
+      <?php include_component('productCategory', 'root_list') ?>
+      <!-- /Topmenu -->
+
+    <noindex>
+        <div class="searchbox">
+          <?php include_component('search', 'form', array('view' => 'main')) ?>
+        </div>
+    </noindex>
+
+
+    <div class="bigbanner"><a href=""><img src="" alt="" width="768" height="302" /></a></div>
+      <?php // include_component('default', 'slot', array('token' => 'big_banner')) ?>
+
+
+    <?php include_component('default', 'footer', array('view' => 'main')) ?>
+
+
+    <div class="clear"></div>
+</div>
+
+<?php include_combined_javascripts() ?>
 <script>
 	$(document).ready(function(){
 		function getRandomInt(min, max)
@@ -93,43 +132,6 @@ _gaq.push(['_trackPageLoadTime']);
 				})
 	})
 </script>
-<div class="bannersbox">
-    <div class="bannersboxinner">
-	  <!-- /images/banners/small/banner3.png -->
-        <div class="banner banner2"><a href=""><img src="" alt="" /></a></div>
-        <div class="banner banner3"><a href=""><img src="" alt="" /></a></div>
-        <div class="banner banner4"><a href=""><img src="" alt="" /></a></div>
-        <div class="banner banner5"><a href=""><img src="" alt="" /></a></div>
-      <!-- -->
-      <?php // include_component('default', 'slot', array('token' => 'banner_default')) ?>
-    </div>
-</div>
-
-
-<div class="allpage">
-
-    <div class="logo">Enter Связной</div>
-      <!-- Topmenu -->
-      <?php include_component('productCategory', 'root_list') ?>
-      <!-- /Topmenu -->
-
-    <noindex>  
-        <div class="searchbox">
-          <?php include_component('search', 'form', array('view' => 'main')) ?>
-        </div>
-    </noindex>    
-
-
-    <div class="bigbanner"><a href=""><img src="" alt="" width="768" height="302" /></a></div>
-      <?php // include_component('default', 'slot', array('token' => 'big_banner')) ?>
-
-
-    <?php include_component('default', 'footer', array('view' => 'main')) ?>
-
-
-    <div class="clear"></div>
-</div>
-
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">
 (function(w, c) {
@@ -155,5 +157,6 @@ _gaq.push(['_trackPageLoadTime']);
 <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
+
 </body>
 </html>

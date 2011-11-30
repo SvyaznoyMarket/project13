@@ -32,7 +32,7 @@ class productActions extends myActions
         $deliveries = array(array(
           'mode_id' => 1,
           'date' => date('Y-m-d', time()+(3600*48)),
-          'price' => 0,
+          'price' => null,
         ));
       }
       $deliveryData = null;

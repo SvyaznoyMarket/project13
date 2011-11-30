@@ -111,40 +111,50 @@ class OrderStep1Form extends BaseOrderForm
   public function getDeliveryTypes()
   {
     if ($this->_deliveryTypes === null) {
-        $dProducts_raw = sfContext::getInstance()->getUser()->getCart()->getProducts();
-        $dProducts = array();
-        foreach ($dProducts_raw as $dProduct) {
-            $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
+      $formatPrice = function($price){
+        if ($price === null) {
+          return '';
         }
-        $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
-            'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
-            'product' => $dProducts
+        if ($price > 0) {
+          return ', '.$price.' руб.';
+        } else {
+          return ', бесплатно.';
+        }
+      };
+      $dProducts_raw = sfContext::getInstance()->getUser()->getCart()->getProducts();
+      $dProducts = array();
+      foreach ($dProducts_raw as $dProduct) {
+        $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
+      }
+      $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
+        'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
+        'product' => $dProducts
+      ));
+      if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
+        $deliveries = array(array(
+          'mode_id' => 1,
+          'date' => date('Y-m-d', time()+(3600*48)),
+          'price' => null,
         ));
-        if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
-            $deliveries = array(array(
-                'mode_id' => 1,
-                'date' => date('Y-m-d', time()+(3600*48)),
-                'price' => 0,
-            ));
-        }
-        $deliveryTypes = array();
+      }
+      $deliveryTypes = array();
 
-        sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
-        foreach ($deliveries as $deliveryType) {
-            $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
-            $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
-            $now = new DateTime();
-            $deliveryPeriod = $minDeliveryDate->diff($now)->days;
-            if ($deliveryPeriod < 0) $deliveryPeriod = 0;
-            $deliveryTypes[$deliveryObj['id']] = array(
-                'label' => $deliveryObj['name'].', '.$deliveryType['price'].' руб',
-                'description' => $deliveryObj['description'],
-                //'description' => 'Доставка '.myToolkit::formatDeliveryDate($deliveryPeriod). ', стоимостью '.$deliveryType['price'].' руб',
-                'date_diff' => $deliveryPeriod,
-                'periods' => empty($deliveryType['interval']) ? array() : $deliveryType['interval'],
-            );
-        }
-        $this->_deliveryTypes = $deliveryTypes;
+      sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
+      foreach ($deliveries as $deliveryType) {
+        $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
+        $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
+        $now = new DateTime();
+        $deliveryPeriod = $minDeliveryDate->diff($now)->days;
+        if ($deliveryPeriod < 0) $deliveryPeriod = 0;
+        $deliveryTypes[$deliveryObj['id']] = array(
+          'label' => $deliveryObj['name'].$formatPrice($deliveryType['price']),
+          'description' => $deliveryObj['description'],
+          //'description' => 'Доставка '.myToolkit::formatDeliveryDate($deliveryPeriod). ', стоимостью '.$deliveryType['price'].' руб',
+          'date_diff' => $deliveryPeriod,
+          'periods' => empty($deliveryType['interval']) ? array() : $deliveryType['interval'],
+        );
+      }
+      $this->_deliveryTypes = $deliveryTypes;
     }
     return $this->_deliveryTypes;
   }
@@ -190,44 +200,44 @@ class OrderStep1Form extends BaseOrderForm
       'expanded'        => true,
       'renderer_class'  => 'myWidgetFormOrderSelectRadio',
     ) );
-//    $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ получения заказа:');
-//    $this->validatorSchema['delivery_type_id'] = new sfValidatorChoice(array('choices' => array_keys($deliveryTypes), 'required' => false));
-//    //$this->widgetSchema['receipt_type']->setOption('class', 'checkboxlist2');
+    $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ получения заказа:');
+    $this->validatorSchema['delivery_type_id'] = new sfValidatorChoice(array('choices' => array_keys($deliveryTypes), 'required' => false));
+    //$this->widgetSchema['receipt_type']->setOption('class', 'checkboxlist2');
 
-    //$choices = DeliveryTypeTable::getInstance()->getChoices();
-    /*if ('legal' == $this->object->person_type)
-    {
-      array_pop($choices);
-      $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
-    }*/
+    $choices = DeliveryTypeTable::getInstance()->getChoices();
+//    if ('legal' == $this->object->person_type)
+//    {
+//      array_pop($choices);
+//      $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
+//    }
     $defaultDelivery = DeliveryTypeTable::getInstance()->findOneByCoreId(1);
 //    
-//    if ($this->isOrderContainBigProduct()) {
-//        $q = DeliveryTypeTable::getInstance()->createBaseQuery();
-//        $q->addWhere('token != ?', 'self');
-//        $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
-//          //'choices'  => $choices,
-//          'model'           => 'DeliveryType',
-//          'method'          => 'getChoiceForOrder',
-//          //'table_method'    => 'createBaseQuery',
-//          'query'           => $q,
-//          'default'         => $defaultDelivery->id,
-//          'multiple'        => false,
-//          'expanded'        => true,
-//          'renderer_class'  => 'myWidgetFormOrderSelectRadio',
-//        ));
-//    } else {
-//        $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
-//          //'choices'  => $choices,
-//          'model'           => 'DeliveryType',
-//          'method'          => 'getChoiceForOrder',
-//          'table_method'    => 'createBaseQuery',
-//          'default'         => $defaultDelivery->id,
-//          'multiple'        => false,
-//          'expanded'        => true,
-//          'renderer_class'  => 'myWidgetFormOrderSelectRadio',
-//        ));
-//    }
+    if ($this->isOrderContainBigProduct()) {
+        $q = DeliveryTypeTable::getInstance()->createBaseQuery();
+        $q->addWhere('token != ?', 'self');
+        $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
+          //'choices'  => $choices,
+          'model'           => 'DeliveryType',
+          'method'          => 'getChoiceForOrder',
+          //'table_method'    => 'createBaseQuery',
+          'query'           => $q,
+          'default'         => $defaultDelivery->id,
+          'multiple'        => false,
+          'expanded'        => true,
+          'renderer_class'  => 'myWidgetFormOrderSelectRadio',
+        ));
+    } else {
+        $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
+          //'choices'  => $choices,
+          'model'           => 'DeliveryType',
+          'method'          => 'getChoiceForOrder',
+          'table_method'    => 'createBaseQuery',
+          'default'         => $defaultDelivery->id,
+          'multiple'        => false,
+          'expanded'        => true,
+          'renderer_class'  => 'myWidgetFormOrderSelectRadio',
+        ));
+    }
     $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ получения заказа:');
     $this->validatorSchema['delivery_type_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryType', 'required' => true));
 
@@ -241,7 +251,7 @@ class OrderStep1Form extends BaseOrderForm
     $this->validatorSchema['delivered_at'] = new sfValidatorChoice(array('choices' => array_keys($choices), 'required' => true));
 
     $this->widgetSchema['delivery_period_id'] = new sfWidgetFormChoice(array(
-      'choices'  => $this->filterDeliveryPeriods($deliveryTypes[$defaultDelivery->id]['periods']),
+      'choices'  => $defaultDelivery->DeliveryPeriod,//$this->filterDeliveryPeriods($deliveryTypes[$defaultDelivery->id]['periods']),
       'multiple' => false,
       'expanded' => false,
     ));
@@ -373,7 +383,9 @@ class OrderStep1Form extends BaseOrderForm
       // если НЕ самовывоз
       if ($deliveryType && ('self' != $deliveryType->token))
       {
+        $choices = $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']));
         $periods = $this->filterDeliveryPeriods($deliveryTypes[$taintedValues['delivery_type_id']]['periods']);
+        $this->widgetSchema['delivered_at']->setOption('choices', $choices);
         $this->validatorSchema['delivery_type_id']->setOption('required', true);
         if (count($periods) > 0) {
           $this->validatorSchema['delivery_period_id']->setOption('required', true);

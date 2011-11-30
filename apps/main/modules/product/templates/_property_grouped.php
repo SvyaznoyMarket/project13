@@ -28,12 +28,3 @@
 		</div>
 	<?php endforeach ?>
 <?php endforeach ?>
-
-<script type="text/javascript">
-$('.point .title b').click(function(){
-	$(this).parent().parent().find('.prompting').show();
-});
-$('.point .title .pr .close').click(function(){
-	$(this).parent().hide();
-});
-</script>
