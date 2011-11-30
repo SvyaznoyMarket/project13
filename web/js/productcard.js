@@ -36,7 +36,7 @@ $(document).ready(function(){
       return txt;
     }
     var formatPrice = function(price){
-      if (!price || price === null) {
+      if (typeof price === 'undefined' || price === null) {
         return '';
       }
       if (price > 0) {
