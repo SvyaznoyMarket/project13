@@ -167,6 +167,7 @@ class productCatalogComponents extends myComponents
         'productCategory' => $this->productCategory,
         'creator'         => $this->creator,
         'is_root'         => isset($this->is_root) ? $this->is_root : false,
+        'with_creator'    => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )),
       ));
     }
 
@@ -340,19 +341,19 @@ class productCatalogComponents extends myComponents
   public function executeFilter_parameter()
   {
   }
-  
+
   public function executeArticle_seo()
   {
-    $this->getResponse()->addMeta('title',$this->productCategory->seo_title);      
-    $this->getResponse()->addMeta('description',$this->productCategory->seo_description);      
-    $this->getResponse()->addMeta('keywords',$this->productCategory->seo_keywords);      
-     
+    $this->getResponse()->addMeta('title',$this->productCategory->seo_title);
+    $this->getResponse()->addMeta('description',$this->productCategory->seo_description);
+    $this->getResponse()->addMeta('keywords',$this->productCategory->seo_keywords);
+
     if (isset($this->productCategory) && isset($this->productCategory->seo_text)) {
         $this->setVar('article', $this->productCategory->seo_text, true);
     }
-    
-  }  
-  
+
+  }
+
   /**
   * Executes tag component
   *
@@ -365,7 +366,7 @@ class productCatalogComponents extends myComponents
       $this->form = new myProductTagFormFilter(array(), array(
         'productCategory' => $this->productCategory,
         'creator'         => $this->creator,
-        'with_creator'    => 'jewel' != $this->productCategory->getRootCategory()->token,
+        'with_creator'    => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )),
       ));
     }
 
@@ -482,7 +483,7 @@ class productCatalogComponents extends myComponents
 
   public function executeLeftCategoryList(){
 
-      
+
     $this->setVar('currentCat', $this->productCategory, true);
     $ancestorList = $this->productCategory->getNode()->getAncestors();
 
@@ -496,8 +497,8 @@ class productCatalogComponents extends myComponents
     } else {
         $rootCat = $this->productCategory;
     }
-    
-    
+
+
     $list = ProductCategoryTable::getInstance()
             ->createQuery()
             ->addWhere('root_id = ?', $rootCat->id)
@@ -505,8 +506,8 @@ class productCatalogComponents extends myComponents
             ->orderBy('core_lft')
             ->fetchArray()
             ;
-    
-    
+
+
     $isCurrent = false;
     foreach($list as $cat) {
         $fullIdList[] = $cat['id'];
@@ -516,21 +517,21 @@ class productCatalogComponents extends myComponents
           if ($cat['level'] > $this->productCategory->level) {
               $hasChildren = true;
           } else {
-              $hasChildren = false;              
+              $hasChildren = false;
           }
           $isCurrent = false;
         }
     }
-    
+
     $notFreeCatList = ProductCategoryTable::getInstance()->getNotEmptyCategoryList($fullIdList);
-    #myDebug::dump($productCountlist);        
+    #myDebug::dump($productCountlist);
     $this->setVar('notFreeCatList', $notFreeCatList, true);
     $this->setVar('pathAr', $pathAr, true);
     $this->setVar('list', $list, true);
     $this->setVar('hasChildren', $hasChildren, true);
     $this->setVar('quantity', $this->productCategory->countProduct(), true);
-    
-    
+
+
     /*
     $this->setVar('currentCat', $this->productCategory, true);
     $ancestorList = $this->productCategory->getNode()->getAncestors();
@@ -550,7 +551,7 @@ class productCatalogComponents extends myComponents
     $this->setVar('quantity', $this->productCategory->countProduct(), true);
 */
   }
-  
+
 
   public function getSiteCatTree($category, $result){
         if (is_object($category)) {

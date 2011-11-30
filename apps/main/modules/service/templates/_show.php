@@ -1,3 +1,8 @@
+<?php if (isset($service['main_photo'])) { ?>
+    <div class="pb5">
+      <img src="<?php echo $service['main_photo'] ?>" />
+    </div>  
+<?php } ?>
 <div class="pb5">
   <?php echo $service['description'] ?>
 </div>    

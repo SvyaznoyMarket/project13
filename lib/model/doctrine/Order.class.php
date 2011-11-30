@@ -88,7 +88,8 @@ class Order extends BaseOrder
     $data['type_id']              = 1;
     $data['ip']                   = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null; //sfContext::getInstance()->getUser()->getIp();
 
-
+    $data['mode_id'] = $data['delivery_type_id'];
+    
     if (isset($this->ProductRelation))
     {
       foreach ($this->ProductRelation as $product)

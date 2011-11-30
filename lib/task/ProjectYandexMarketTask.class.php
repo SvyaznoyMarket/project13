@@ -221,9 +221,9 @@ EOF;
   
     private function _xmlGenerateItself(){
         //корневой каталог
-        $this->_xmlResult = new SimpleXMLElement("<yml_catalog date='".date("Y-m-d H:n")."'></yml_catalog>");
+        $this->_xmlResult = new SimpleXMLElement("<yml_catalog date='".date("Y-m-d H:i")."'></yml_catalog>");
         file_put_contents($this->_xmlFilePath,'<?xml version="1.0" encoding="utf-8"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">');
-        file_put_contents($this->_xmlFilePath,"<yml_catalog  date='".date("Y-m-d H:n")."'>",FILE_APPEND);
+        file_put_contents($this->_xmlFilePath,"<yml_catalog  date='".date("Y-m-d H:i")."'>",FILE_APPEND);
         //базовое
         $this->_setShop();
         file_put_contents($this->_xmlFilePath,'</yml_catalog>',FILE_APPEND);      
@@ -312,7 +312,7 @@ EOF;
             ->select('pc.*') 
             ->whereIn('id',  array_keys($this->_categoryList))          
             ->orderBy('pc.id')
-            ->limit(50)
+            #->limit(50)
             ->fetchArray();
     foreach($categoryList as $cat){
         $catIdToCoreId[ $cat['core_id'] ] = $cat['id'];
@@ -388,7 +388,7 @@ EOF;
     }
     $offersList = $offersList
             ->orderBy('p.rating DESC')
-            ->limit(50)
+            #->limit(50)
             ->fetchArray();
     #echo $offersList;
     #print_r($offersList);

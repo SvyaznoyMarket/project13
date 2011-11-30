@@ -34,7 +34,12 @@ all:
       - 'http://fs01.enter.ru/6/1/163/'
     empty_photo_url:
       - ''
-
+      
+  service:
+    photo_url:
+      - 'http://fs01.enter.ru/11/1/160/'
+      - 'http://fs01.enter.ru/11/1/350/'
+      
   shop:
     photo_url:
       - 'http://fs01.enter.ru/8/1/40/'

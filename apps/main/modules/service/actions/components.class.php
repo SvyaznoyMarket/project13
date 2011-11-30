@@ -50,10 +50,15 @@ class serviceComponents extends myComponents
               } 
           }
       }
-      $service['currentPrice'] = number_format($service['currentPrice'], 2, ',', ' ');
+      if (isset($service['currentPrice'])) {
+          $service['currentPrice'] = number_format($service['currentPrice'], 2, ',', ' ');
+      } else {
+          $service['currentPrice'] = '';
+      }
       $service['name'] = $this->service->name;
       $service['description'] = $this->service->description;
       $service['work'] = $this->service->work;
+      $service['main_photo'] = $this->service->getPhotoUrl();
       $this->setVar('service', $service);
   }#
   
