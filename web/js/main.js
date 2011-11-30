@@ -85,14 +85,6 @@ $(document).ready(function(){
 		var params = []
 		if( $('.bigfilter.form').length ) 
 			params = $('.bigfilter.form').parent().serializeArray()
-/*		if( lsURL.match(/\?/ ) ) {	
-			var tmpar = lsURL.match(/\?(.)+$/)[0].replace(/\?/,'').split('=')
-
-			lsURL = lsURL.replace(/\?(.)+$/,'')
-			params.push( { name: tmpar[0], value : tmpar[1] }
-)
-						console.info(tmpar, params)
-		}*/
 		lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
 		var loader =
@@ -121,6 +113,17 @@ $(document).ready(function(){
 					tmpnode.after(data)
 			}
 			$('#ajaxgoods').remove()
+			if( $('#dlvrlinks').length ) {
+				var coreid = []
+				var nodd = $('<div>').html( data )
+				nodd.find('div.boxhover').each( function(){
+					var cid = $(this).data('cid') || 0
+					if( cid )
+						coreid.push( cid )
+				})
+				dlvrajax( coreid )
+			}
+				
 		})
 	}
 
@@ -654,6 +657,53 @@ $(document).ready(function(){
 				$(this).parent().hide()
 			return false
 		})
+	}
+	
+	/* delivery ajax */
+	
+	if( $('#dlvrlinks').length ) {
+		
+		function dlvrajax( coreid ) {
+			$.post( $('#dlvrlinks').data('calclink'), {ids:coreid}, function(data){
+				for(var i=0; i < coreid.length; i++) {
+					var raw = data[ coreid[i] ]
+					if ( !raw.success )
+						continue
+					var self = '', 
+						//express = '',
+						other = []
+					for( var j in raw.deliveries ) {
+					var dlvr = raw.deliveries[j]
+						switch ( dlvr.object.token ) {
+							case 'self':
+								self = 'Возможен самовывоз <br/>' + dlvr.text
+								break
+							case 'express':
+							//	express = 'Экспресс-доставка <br/>' + dlvr.text
+								break
+							default:
+								other.push('Доставка <br/>' + dlvr.text )							
+						}
+					}
+					var pnode = $( 'div.boxhover[data-cid='+coreid[i]+']' ).parent()
+					var tmp = $('<ul>')
+					$('<li>').html( self ).appendTo( tmp )
+//					$('<li>').html( express ).appendTo( tmp )
+					for(var ii=0; ii < other.length; ii++)
+						$('<li>').html( other[ii] ).appendTo( tmp )
+					var uls = pnode.find( 'div.extrainfo ul' )
+					uls.html( uls.html() + tmp.html() )
+				}
+			})
+		} // dlvrajax
+		
+		var coreid = []
+		$('div.boxhover').each( function(){
+			var cid = $(this).data('cid') || 0
+			if( cid )
+				coreid.push( cid )
+		})
+		dlvrajax( coreid )
 	}
 	
 	/* from inline tags */
