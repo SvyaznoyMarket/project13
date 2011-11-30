@@ -23,6 +23,13 @@ class ProductPropertyTable extends myDoctrineTable
     return 'productProperty';
   }
 
+  public function getDefaultParameters()
+  {
+    return array(
+      'hydrate_array'  => false,
+    );
+  }
+
   public function getCoreMapping()
   {
     return array(
@@ -54,6 +61,10 @@ class ProductPropertyTable extends myDoctrineTable
     }
 
     $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    if ($params['hydrate_array'])
+    {
+      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    }
 
     $record = $q->fetchOne();
 

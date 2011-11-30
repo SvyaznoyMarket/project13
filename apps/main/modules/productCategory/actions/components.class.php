@@ -278,7 +278,7 @@ class productCategoryComponents extends myComponents
       'root_name'         => (string)$this->productCategory->getRootCategory(),
       'url'               => url_for('productCatalog_category', $this->productCategory),
       'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
-      'product_quantity'  => $this->productCategory->countProduct(array('view' => 'list', )),
+      'product_quantity'  => $this->productCategory->countProduct(array('view' => 'list')),
       'links'             => $this->productCategory->getLinkList(),
       'has_line'          => $this->productCategory->has_line,
     );
