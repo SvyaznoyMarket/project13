@@ -4,7 +4,7 @@
     <?php if (has_slot('navigation_seo')) {
         include_slot('navigation_seo');
     }
-    ?>          
+    ?>
     <dl>
       <dt><a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>"><strong>О компании</strong></a></dt>
       <dd>Наша миссия: дарить время для</dd>
@@ -44,7 +44,7 @@
 <?php endif ?>
   <div class="footerbottom">
     <div class="copy">
-      &copy; &laquo;Enter&raquo; 2011. Все права защищены. Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br /><a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a>
+      &copy; &laquo;Enter&raquo; 2011. Все права защищены. Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br /><a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a><a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>">Правовая информация</a>
       <?php if (false): ?>
       &copy; &laquo;Enter&raquo; 2002-2011. Все права защищены.<br />
       Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.
