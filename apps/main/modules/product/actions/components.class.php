@@ -94,6 +94,7 @@ class productComponents extends myComponents
 
     $item = array(
       'id'         => $this->product['id'],
+      'core_id'    => $this->product['core_id'],
       'token'      => $this->product['token'],
       'article'    => $this->product['article'],
       'name'       => $this->product['name'],

@@ -3,13 +3,13 @@ $(document).ready(function(){
 	$('.viewstock').bind( 'mouseover', function(){
 		var trgtimg = $('#stock img[ref="'+$(this).attr('ref')+'"]')
 		var isrc    = trgtimg.attr('src')
-		var idu    = trgtimg.attr('data-url')	
+		var idu    = trgtimg.attr('data-url')
 		if( trgtimg[0].complete ) {
 			$('#goodsphoto img').attr('src', isrc)
 			$('#goodsphoto img').attr('href', idu)
-		}	
+		}
 	})
-	
+
 	/* Media library */
 	//var lkmv = null
 	var api = {
@@ -20,16 +20,16 @@ $(document).ready(function(){
 		'rollindex': '.scrollbox div b',
 		'propriate': ['.versioncontrol','.scrollbox']
 	}
-	
+
 	lkmv = new likemovie('#photobox', api, product_3d_small, product_3d_big )
-	var mLib = new mediaLib( $('#bigpopup') )	
+	var mLib = new mediaLib( $('#bigpopup') )
 
 	$('.viewme').click( function(){
 		if( mLib )
 			mLib.show( $(this).attr('ref') , $(this).attr('href'))
 		return false
 	})
-    
+
     var formatDateText = function(txt){
       txt = txt.replace('сегодня', '<b>сегодня</b>');
       txt = txt.replace(' завтра', ' <b>завтра</b>');
@@ -77,4 +77,4 @@ $(document).ready(function(){
         delivery_cnt.html(html);
       }, 'json');
     }
-})	
+})
