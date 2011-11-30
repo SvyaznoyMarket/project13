@@ -247,7 +247,7 @@ if (0 && count($f1)):
   </div>
 <?php endif ?>
 <!-- /Photo video -->
-<?php include_component('product', 'product_model', array('product' => $product,)) ?>
+<?php //include_component('product', 'product_model', array('product' => $product,)) ?>
 <div class="clear"></div>
 <div class="mb15"></div>
 
