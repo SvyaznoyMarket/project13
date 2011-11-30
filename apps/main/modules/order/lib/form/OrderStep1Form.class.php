@@ -111,40 +111,50 @@ class OrderStep1Form extends BaseOrderForm
   public function getDeliveryTypes()
   {
     if ($this->_deliveryTypes === null) {
-        $dProducts_raw = sfContext::getInstance()->getUser()->getCart()->getProducts();
-        $dProducts = array();
-        foreach ($dProducts_raw as $dProduct) {
-            $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
+      $formatPrice = function($price){
+        if ($price === null) {
+          return '';
         }
-        $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
-            'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
-            'product' => $dProducts
+        if ($price > 0) {
+          return ', '.$price.' руб.';
+        } else {
+          return ', бесплатно.';
+        }
+      };
+      $dProducts_raw = sfContext::getInstance()->getUser()->getCart()->getProducts();
+      $dProducts = array();
+      foreach ($dProducts_raw as $dProduct) {
+        $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
+      }
+      $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
+        'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
+        'product' => $dProducts
+      ));
+      if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
+        $deliveries = array(array(
+          'mode_id' => 1,
+          'date' => date('Y-m-d', time()+(3600*48)),
+          'price' => null,
         ));
-        if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
-            $deliveries = array(array(
-                'mode_id' => 1,
-                'date' => date('Y-m-d', time()+(3600*48)),
-                'price' => 0,
-            ));
-        }
-        $deliveryTypes = array();
+      }
+      $deliveryTypes = array();
 
-        sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
-        foreach ($deliveries as $deliveryType) {
-            $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
-            $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
-            $now = new DateTime();
-            $deliveryPeriod = $minDeliveryDate->diff($now)->days;
-            if ($deliveryPeriod < 0) $deliveryPeriod = 0;
-            $deliveryTypes[$deliveryObj['id']] = array(
-                'label' => $deliveryObj['name'].', '.$deliveryType['price'].' руб',
-                'description' => $deliveryObj['description'],
-                //'description' => 'Доставка '.myToolkit::formatDeliveryDate($deliveryPeriod). ', стоимостью '.$deliveryType['price'].' руб',
-                'date_diff' => $deliveryPeriod,
-                'periods' => empty($deliveryType['interval']) ? array() : $deliveryType['interval'],
-            );
-        }
-        $this->_deliveryTypes = $deliveryTypes;
+      sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
+      foreach ($deliveries as $deliveryType) {
+        $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
+        $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
+        $now = new DateTime();
+        $deliveryPeriod = $minDeliveryDate->diff($now)->days;
+        if ($deliveryPeriod < 0) $deliveryPeriod = 0;
+        $deliveryTypes[$deliveryObj['id']] = array(
+          'label' => $deliveryObj['name'].$formatPrice($deliveryType['price']),
+          'description' => $deliveryObj['description'],
+          //'description' => 'Доставка '.myToolkit::formatDeliveryDate($deliveryPeriod). ', стоимостью '.$deliveryType['price'].' руб',
+          'date_diff' => $deliveryPeriod,
+          'periods' => empty($deliveryType['interval']) ? array() : $deliveryType['interval'],
+        );
+      }
+      $this->_deliveryTypes = $deliveryTypes;
     }
     return $this->_deliveryTypes;
   }
