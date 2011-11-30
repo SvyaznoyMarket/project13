@@ -348,7 +348,7 @@ class Core
       'geo_id' => $geoId,
       'product' => array(array('id' => $productId, 'quantity' => 1))
     ));
-    $this->cache->set($cacheKey, $response, 3600*24);
+    $this->cache->set($cacheKey, $response, 3600*3);
     return $response;
   }
 
