@@ -107,7 +107,7 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
+    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
@@ -184,7 +184,7 @@ class productCatalogActions extends myActions
     $this->productCategory = $this->getRoute()->getObject();
 
     $this->productFilter = $this->getProductFilter(array('count' => true, ));
-    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, 'with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
+    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, 'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
       'view'          => 'list',
@@ -268,7 +268,7 @@ class productCatalogActions extends myActions
 
     $this->productFilter = $this->getProductFilter();
     $getFilterData = $request->getParameter($this->productFilter->getName()) ;
-    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
+    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $getTagFilterData = $request->getParameter($this->productTagFilter->getName());
     #var_dump($getFilterData);
     if ( isset($getFilterData) ) {
@@ -286,16 +286,16 @@ class productCatalogActions extends myActions
           'view'      => 'list',
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
-        $this->productTagFilter->buildQuery($q);        
+        $this->productTagFilter->buildQuery($q);
     //если фильтры не установлены
-    } else {    
+    } else {
         $filter = array(
           'category' => $this->productCategory,
-        );   
+        );
         $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
           'view'      => 'list',
           'with_line' => 'line' == $request['view'] ? true : false,
-        )); 
+        ));
     }
 
     // sorting
@@ -309,7 +309,7 @@ class productCatalogActions extends myActions
     $this->productPager = $this->getPager('Product', $q, $limit, array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
-    ));    
+    ));
 
     if($request['page'] > $this->productPager->getLastPage()){
         $this->_validateResult['success'] = false;
