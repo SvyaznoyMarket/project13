@@ -6,3 +6,5 @@ end_slot();
 ?>
 
 <?php include_component('service', 'show', array('service' => $service,)) ?>
+
+<?php include_component('service', 'alike_service', array('service' => $service,)) ?>

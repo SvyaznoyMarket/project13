@@ -15,7 +15,7 @@ class serviceComponents extends myComponents
   *
   * @param product $product Продукт
   */
-  public function executeListByProduct()
+  public function iexecuteListByProduct()
   {
     $list = $this->product->getServiceList();
 
@@ -29,38 +29,34 @@ class serviceComponents extends myComponents
   */
   public function executeShow()
   {
-      //ищем цену для текущего региона
-      
-      $priceList = ProductPriceListTable::getInstance()->getCurrent();      
-      foreach($this->service->Price as $price) {
-          if ($priceList->id == $price['service_price_list_id']) {
-              $service['currentPrice'] = $price['price'];
-              break;
-          }
-      }    
-      //если для текущего региона цены нет, ищем цену для региона по умолчанию
-      if (!isset($service['currentPrice'])) {
-          $priceListDefault = ProductPriceListTable::getInstance()->getDefault();      
-          if ($priceList->id != $priceListDefault->id) {
-              foreach($this->service->Price as $price) {
-                  if ($priceListDefault->id == $price['service_price_list_id']) {
-                      $service['currentPrice'] = $price['price'];
-                      break;
-                  }
-              } 
-          }
-      }
+
+      $serviceData['currentPrice'] = $this->service->getCurrentPrice();
       if (isset($service['currentPrice'])) {
-          $service['currentPrice'] = number_format($service['currentPrice'], 2, ',', ' ');
-      } else {
-          $service['currentPrice'] = '';
-      }
-      $service['name'] = $this->service->name;
-      $service['description'] = $this->service->description;
-      $service['work'] = $this->service->work;
-      $service['main_photo'] = $this->service->getPhotoUrl();
-      $this->setVar('service', $service);
-  }#
+          $service['currentPrice'] = number_format($serviceData['currentPrice'], 2, ',', ' ');
+      } 
+      $serviceData['name'] = $this->service->name;
+      $serviceData['description'] = $this->service->description;
+      $serviceData['work'] = $this->service->work;
+      $serviceData['main_photo'] = $this->service->getPhotoUrl();
+      $this->setVar('service', $serviceData);
+  }
+  
+  public function executeAlike_service()
+  {
+    $nearParent = ServiceCategoryTable::getInstance()
+            ->createQuery('sc')
+            ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
+            ->where('rel.service_id = ? AND sc.level = ?', array($this->service->id, 3) )
+            ->execute();
+    $list = ServiceTable::getInstance()
+            ->createQuery('s')
+            ->innerJoin('s.CategoryRelation as rel on s.id=rel.service_id')
+            ->where('rel.category_id = ?', $nearParent[0]->id )
+            ->addWhere('s.id != ?', $this->service->id)
+            ->execute();
+    $this->setVar('list', $list);
+      
+  }  
   
   public function executeRoot_page()
   {        
