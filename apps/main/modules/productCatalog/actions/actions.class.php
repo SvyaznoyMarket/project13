@@ -107,7 +107,7 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
+    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
@@ -184,7 +184,7 @@ class productCatalogActions extends myActions
     $this->productCategory = $this->getRoute()->getObject();
 
     $this->productFilter = $this->getProductFilter(array('count' => true, ));
-    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, 'with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
+    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, 'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
       'view'          => 'list',
@@ -268,10 +268,24 @@ class productCatalogActions extends myActions
 
     $this->productFilter = $this->getProductFilter();
     $getFilterData = $request->getParameter($this->productFilter->getName()) ;
-    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => ('jewel' != $this->productCategory->getRootCategory()->token), ));
+    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $getTagFilterData = $request->getParameter($this->productTagFilter->getName());
-    #var_dump($getFilterData);
-    if ( isset($getFilterData) ) {
+    
+    if ($this->productCategory->has_line) {
+        //если в категории должны отображться линии
+        $filter = array(
+          'category' => $this->productCategory,
+        );
+
+        $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
+          'view'      => 'list',
+          'with_line' => 'line' == $request['view'] ? true : false,
+        ));
+
+        $this->view = 'line';
+        $this->list_view = false;        
+        
+    } elseif ( isset($getFilterData) ) {
         //если установлены фильтры
         $this->productFilter->bind($getFilterData);
         $q = ProductTable::getInstance()->createBaseQuery(array(
@@ -279,6 +293,8 @@ class productCatalogActions extends myActions
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
         $this->productFilter->buildQuery($q);
+        $this->view = $request['view'];
+        
     } elseif ($getTagFilterData) {
         //если установлены тэги
         $this->productTagFilter->bind($getTagFilterData);
@@ -286,22 +302,23 @@ class productCatalogActions extends myActions
           'view'      => 'list',
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
-        $this->productTagFilter->buildQuery($q);        
+        $this->productTagFilter->buildQuery($q);
+        $this->view = $request['view'];        
     //если фильтры не установлены
-    } else {    
+    } else {
         $filter = array(
           'category' => $this->productCategory,
-        );   
+        );
         $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-          'view'      => 'list',
+          'view'      => $request['view'],
           'with_line' => 'line' == $request['view'] ? true : false,
-        )); 
+        ));
+        $this->view = $request['view'];        
     }
 
     // sorting
     $this->productSorting = $this->getProductSorting();
     $this->productSorting->setQuery($q);
-
 
     if (isset($request['num'])) $limit = $request['num'];
     else $limit = sfConfig::get('app_product_max_items_on_category', 20);
@@ -309,7 +326,7 @@ class productCatalogActions extends myActions
     $this->productPager = $this->getPager('Product', $q, $limit, array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
-    ));    
+    ));
 
     if($request['page'] > $this->productPager->getLastPage()){
         $this->_validateResult['success'] = false;

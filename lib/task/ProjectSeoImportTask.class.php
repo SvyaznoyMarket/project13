@@ -79,6 +79,15 @@ EOF;
         $q = Doctrine_Query::create()->update('ProductCategory');
         foreach($categoryData as $k => $f) {
             if ($k == 'token' || $k == 'core_id') continue;
+            if ($k == 'seo_text') {
+                $f = str_replace(array('"""', '""'), '"', $f);
+                if (substr($f, 0, 1) == '"') {
+                    $f = substr($f, 1);
+                }
+                if (substr($f, -1, 1) == '"') {
+                    $f = substr($f, 0, -1);
+                }
+            }
             #echo $k .'----'.$f . "\n\n";
             $q->set($k, '?', $f);
         }
