@@ -707,25 +707,14 @@ $(document).ready(function(){
 		dlvrajax( coreid )
 	}
 
-	/* from inline tags */
+	/* 
+		from inline scripts
+	*/
+	/* agree button */
 	if( $('#agree-field').length ) {
-		/* apps/main/modules/order/templates/confirmSuccess.php */
 		$('#agree-field')
-			/*
-			.bind('change', function() {
-			  var el = $(this)
-
-			  if (el.prop('checked')) {
-				$('#confirm-button, #pay-button').removeClass('mDisabled')
-			  }
-			  else {
-				$('#confirm-button, #pay-button').addClass('mDisabled')
-			  }
-			})
-			*/
 			.everyTime(200, function() {
 			  var el = $(this)
-			  //if (el.attr('checked')) {
 			  if (el.next().hasClass('checked')) {
 				$('#confirm-button, #pay-button').removeClass('mDisabled')
 			  }
@@ -740,14 +729,14 @@ $(document).ready(function(){
 			}
 		})
 	}
-	/* apps/main/modules/line/templates/_main_product.php */
+	/* */
 	$('#watch-trigger').click(function(){
       $('#watch-cnt').toggle()
     })
     $('#watch-cnt .close').click(function(){
       $('#watch-cnt').hide()
     })
-    /* apps/main/modules/product/templates/_property_grouped.php */
+    /* some oldish ? */
     $('.point .title b').click(function(){
 		$(this).parent().parent().find('.prompting').show()
 	})
@@ -756,17 +745,16 @@ $(document).ready(function(){
 	})
 
 	$('#auth_forgot-link').click(function() {
-    $('#auth_forgot-block').lightbox_me({
-      centered: true,
-      onLoad: function() {
-        $('#auth_forgot-form').show()
-        $('#auth_forgot-block').find('input:first').focus()
-      }
-    })
-
-    return false
-  })
-/* apps/main/modules/order/templates/loginSuccess.php */
+		$('#auth_forgot-block').lightbox_me({
+		  centered: true,
+		  onLoad: function() {
+			$('#auth_forgot-form').show()
+			$('#auth_forgot-block').find('input:first').focus()
+		  }
+		})	
+		return false
+	})
+	/* login processing */
     if( $('#order_login-url').length ) {
 		var url_signin = $('#order_login-url').val(),
 			url_register = $('#order_login-url').val()
@@ -791,7 +779,6 @@ $(document).ready(function(){
 		})
     }
 
-    /* apps/main/modules/order/templates/_step1.php */
 	if( $('#user_signin-url').length ) {
 		var url_signin = $('#user_signin-url').val(),
 			url_register = $('#user_register-url').val()
