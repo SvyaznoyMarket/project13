@@ -213,35 +213,6 @@ class OrderStep1Form extends BaseOrderForm
 //      $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
 //    }
     $defaultDelivery = DeliveryTypeTable::getInstance()->findOneByCoreId(1);
-//
-    if ($this->isOrderContainBigProduct()) {
-        $q = DeliveryTypeTable::getInstance()->createBaseQuery();
-        $q->addWhere('token != ?', 'self');
-        $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
-          //'choices'  => $choices,
-          'model'           => 'DeliveryType',
-          'method'          => 'getChoiceForOrder',
-          //'table_method'    => 'createBaseQuery',
-          'query'           => $q,
-          'default'         => $defaultDelivery->id,
-          'multiple'        => false,
-          'expanded'        => true,
-          'renderer_class'  => 'myWidgetFormOrderSelectRadio',
-        ));
-    } else {
-        $this->widgetSchema['delivery_type_id'] = new sfWidgetFormDoctrineChoice(array(
-          //'choices'  => $choices,
-          'model'           => 'DeliveryType',
-          'method'          => 'getChoiceForOrder',
-          'table_method'    => 'createBaseQuery',
-          'default'         => $defaultDelivery->id,
-          'multiple'        => false,
-          'expanded'        => true,
-          'renderer_class'  => 'myWidgetFormOrderSelectRadio',
-        ));
-    }
-    $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ получения заказа:');
-    $this->validatorSchema['delivery_type_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryType', 'required' => true));
 
     $choices = $this->getDeliveryDateChoises(max(0, $deliveryTypes[$defaultDelivery->id]['date_diff']));
     $this->widgetSchema['delivered_at'] = new sfWidgetFormChoice(array(
