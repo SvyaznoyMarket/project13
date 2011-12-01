@@ -27,9 +27,8 @@
 </form>
 
 <!-- /Basket -->
-<?php if ($order['number']): ?>
+
   <script type="text/javascript">
-    $(function(){
        _gaq.push(['_addTrans',
            '<?php echo $order['number'] ?>',           // Номер заказа
            '<?php echo $order->Shop ?>',  // Название магазина (Необязательно)
@@ -62,8 +61,5 @@
              });
   <?php endforeach ?>
            _gaq.push(['_trackTrans']);
-           window.yaCounter10067653.params(yaParams);
-         });
+           
   </script>
-  <?php
- endif ?>
