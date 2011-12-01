@@ -359,6 +359,7 @@ class OrderStep1Form extends BaseOrderForm
         $choices = $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']));
         $periods = $this->filterDeliveryPeriods($deliveryTypes[$taintedValues['delivery_type_id']]['periods']);
         $this->widgetSchema['delivered_at']->setOption('choices', $choices);
+        $this->validatorSchema['delivered_at']->setOption('choices', array_keys($choices));
         $this->validatorSchema['delivery_type_id']->setOption('required', true);
         if (count($periods) > 0) {
           $this->validatorSchema['delivery_period_id']->setOption('required', true);
@@ -372,7 +373,9 @@ class OrderStep1Form extends BaseOrderForm
       {
       // если самовывоз
         if (!empty($taintedValues['shop_id'])) {
-          $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3));
+          $choices = $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3);
+          $this->widgetSchema['delivered_at']->setOption('choices', $choices);
+          $this->validatorSchema['delivered_at']->setOption('choices', array_keys($choices));
 //            if (!$this->isOrderHaveEnougthInStock($taintedValues['shop_id'])) {
 //                $this->validatorSchema['delivered_at']->setOption('required', true);
 //                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1,3));
