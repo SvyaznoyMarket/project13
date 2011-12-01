@@ -357,34 +357,45 @@ $(document).ready(function(){
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
 	var corneroffsets = [167,222,290,362,435,515,587,662,717]
-
-	$('.topmenu a').bind( {
-		'mouseenter': function() {
-			$('.extramenu').hide()
-			var self = this
-
-			function showList() {
-				if(	$(self).data('run') ) {
-					var i = $(self).attr('class').replace(/\D+/,'')
-					var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
-					if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
-						punkt.show().find('.corner').css('left',corneroffsets[i-1])
-				}
-			}
-			$(self).data('run', true)
-			currentMenu = $(self).attr('id').replace(/\D+/,'')
-			idcm = setTimeout( showList, 300)
-		},
-		'mouseleave': function() {
-			var self = this
-
-			if(	$(self).data('run') ) {
-				clearTimeout( idcm )
-				$(self).data('run',false)
-			}
-			//currentMenu = 0
+	function showList( self ) {	
+		if(	$(self).data('run') ) {
+			var i = $(self).attr('class').replace(/\D+/,'')
+			var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
+			if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
+				punkt.show().find('.corner').css('left',corneroffsets[i-1])
 		}
-	})
+	}
+	var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )
+	if( isAndroid || isOSX ) {
+		$('.topmenu a').bind ('click', function(){
+			if( $(this).data('run') )
+				return true
+			$('.extramenu').hide()	
+			$('.topmenu a').each( function() { $(this).data('run', false) } )
+			$(this).data('run', true)
+			showList( this )
+			return false
+		})
+	} else {	
+		$('.topmenu a').bind( {
+			'mouseenter': function() {
+				$('.extramenu').hide()
+				var self = this				
+				$(self).data('run', true)
+				currentMenu = $(self).attr('id').replace(/\D+/,'')
+				idcm = setTimeout( function() { showList( self ) }, 300)
+			},
+			'mouseleave': function() {
+				var self = this
+	
+				if(	$(self).data('run') ) {
+					clearTimeout( idcm )
+					$(self).data('run',false)
+				}
+				//currentMenu = 0
+			}
+		})
+	}
 
 	$(document).click( function(e){
 		if (currentMenu) {

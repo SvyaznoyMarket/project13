@@ -2,14 +2,25 @@ $(document).ready(function() {
     
     var filterlink = $('.filter .filterlink:first');
 	var filterlist = $('.filter .filterlist');
-	filterlink.mouseenter(function(){
-		filterlink.hide();
-		filterlist.show();
-	});
-	filterlist.mouseleave(function(){
-		filterlist.hide();
-		filterlink.show();
-	});
+	var userag    = navigator.userAgent.toLowerCase()
+	var isAndroid = userag.indexOf("android") > -1
+	var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )
+	if( isAndroid || isOSX ) {
+		filterlink.click(function(){
+			filterlink.hide();
+			filterlist.show();
+			return false
+		});
+	} else {
+		filterlink.mouseenter(function(){
+			filterlink.hide();
+			filterlist.show();
+		});
+		filterlist.mouseleave(function(){
+			filterlist.hide();
+			filterlink.show();
+		});
+	}
 
     $('.product_rating-form').live({
         'form.ajax-submit.prepare': function(e, result) {
