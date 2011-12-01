@@ -10,8 +10,6 @@
     <link rel="stylesheet" type="text/css" href="/css/font.css"/>
     <?php include_javascripts() ?>
     <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.countdown.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.countdown-ru.js"></script>
     <?php include_component('page', 'link_rel_canonical') ?>
 <script type="text/javascript">
 var _gaq = _gaq || [];
@@ -39,7 +37,7 @@ _gaq.push(['_trackPageview']);
 _gaq.push(['_trackPageLoadTime']);
 (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();
 </script>
-<script>
+<!--script>
 $(document).ready(function(){
 	function relme () {
 		location.reload(true)
@@ -48,7 +46,7 @@ $(document).ready(function(){
 	austDay = new Date(austDay.getFullYear() , 11 - 1, 16)
 	$('#cd').countdown({ until: austDay , format: 'HMS', onExpiry: relme, expiryText: 'Перезагрузка страницы' })
 })
-</script>
+</script-->
   </head>
 
   <body>
