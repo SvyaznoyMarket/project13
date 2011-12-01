@@ -27,7 +27,7 @@
 </form>
 
 <!-- /Basket -->
-
+<?php if ($order['number']): ?>
   <script type="text/javascript">
        _gaq.push(['_addTrans',
            '<?php echo $order['number'] ?>',           // Номер заказа
@@ -63,3 +63,6 @@
            _gaq.push(['_trackTrans']);
            
   </script>
+
+<?php
+endif ?>
