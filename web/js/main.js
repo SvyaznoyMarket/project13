@@ -37,9 +37,9 @@
 $(document).ready(function(){
 	/* mobile fix for Lbox position='fixed' */
 	var userag    = navigator.userAgent.toLowerCase()
-	var isAndroid = userag.indexOf("android") > -1 
+	var isAndroid = userag.indexOf("android") > -1
 	var isOSX4    = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 ) && userag.indexOf('os 5') === -1
-	
+
 	if( isAndroid || isOSX4 ) {
 		var isOpera = userag.indexOf("opera") > -1
 		if( isOpera ) {
@@ -51,11 +51,11 @@ $(document).ready(function(){
 		if( isOSX4 )
 		$('.lightbox').css('top', window.pageYOffset + innerHeightM -41)
 		if ( Math.abs(window.orientation) === 90 ) {
-			var inittopv = innerHeightM - 41 
-			var inittoph = innerWidthM  - 41 
+			var inittopv = innerHeightM - 41
+			var inittoph = innerWidthM  - 41
 		} else {
-			var inittoph = innerHeightM - 41 
-			var inittopv = innerWidthM  - 41 
+			var inittoph = innerHeightM - 41
+			var inittopv = innerWidthM  - 41
 		}
 
 		window.addEventListener("orientationchange", setPosLbox, false)
@@ -83,16 +83,8 @@ $(document).ready(function(){
 	var compact = $("div.goodslist").length
 	function liveScroll( lsURL, pageid ) {
 		var params = []
-		if( $('.bigfilter.form').length ) 
+		if( $('.bigfilter.form').length )
 			params = $('.bigfilter.form').parent().serializeArray()
-/*		if( lsURL.match(/\?/ ) ) {	
-			var tmpar = lsURL.match(/\?(.)+$/)[0].replace(/\?/,'').split('=')
-
-			lsURL = lsURL.replace(/\?(.)+$/,'')
-			params.push( { name: tmpar[0], value : tmpar[1] }
-)
-						console.info(tmpar, params)
-		}*/
 		lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
 		var loader =
@@ -104,15 +96,15 @@ $(document).ready(function(){
 				"</div>" +
 			"</div>"
 		tmpnode.after( loader )
-					
+
 		if( $("#sorting").length ) {
-			
+
 			params.push( { name:'sort', value : $("#sorting").data('sort') }
 )
 		}
 
 		$.get( lsURL, params, function(data){
-			
+
 			if ( data != "" && !data.data ) { // JSON === error
 				ableToLoad = true
 				if( compact )
@@ -121,6 +113,17 @@ $(document).ready(function(){
 					tmpnode.after(data)
 			}
 			$('#ajaxgoods').remove()
+			if( $('#dlvrlinks').length ) {
+				var coreid = []
+				var nodd = $('<div>').html( data )
+				nodd.find('div.boxhover').each( function(){
+					var cid = $(this).data('cid') || 0
+					if( cid )
+						coreid.push( cid )
+				})
+				dlvrajax( coreid )
+			}
+
 		})
 	}
 
@@ -153,7 +156,7 @@ $(document).ready(function(){
 					name : 'infScroll',
 					value : 1
 				})
-				
+
 				var next = $('div.pageslist:first li:first')
 				if( next.hasClass('current') )
 					next = next.next()
@@ -197,16 +200,16 @@ $(document).ready(function(){
 		  	}
 		})
 	}
-	
+
 	$.ajaxPrefilter(function( options ) {
 		if( !options.url.match('search') )
 			options.url += '?ts=' + new Date().getTime()
 	})
-	
+
 	$('body').ajaxError(function(e, jqxhr, settings, exception) {
 		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
 	})
-	
+
 	$.ajaxSetup({
 		timeout: 7000,
 		statusCode: {
@@ -331,6 +334,7 @@ $(document).ready(function(){
 		  	}
 		})
 	}
+
 	/* --- */
     $(this).find('.ratingbox A').hover(function(){
         $("#ratingresult").html(this.innerHTML)
@@ -348,7 +352,7 @@ $(document).ready(function(){
     $(".goodsbar .link3").bind( 'click.css', function()   {
         //$(this).addClass("link3active");
     })
-	
+
 	/* top menu */
 	if( $('.topmenu').length ) {
 		$.get('/category/main_menu', function(data){
@@ -402,7 +406,7 @@ $(document).ready(function(){
 	if( $('.error_list').length && $('.basketheader').length ) {
 		$.scrollTo( $('.error_list:first'), 300 )
 	}
-	
+
 	/* CART */
 	function printPrice ( val ) {
 
@@ -654,7 +658,55 @@ $(document).ready(function(){
 			return false
 		})
 	}
-	
+
+	/* delivery ajax */
+
+	if( $('#dlvrlinks').length ) {
+
+		function dlvrajax( coreid ) {
+			$.post( $('#dlvrlinks').data('calclink'), {ids:coreid}, function(data){
+				for(var i=0; i < coreid.length; i++) {
+					var raw = data[ coreid[i] ]
+					if ( !raw.success )
+						continue
+					var self = '',
+						//express = '',
+						other = []
+					for( var j in raw.deliveries ) {
+					var dlvr = raw.deliveries[j]
+						switch ( dlvr.object.token ) {
+							case 'self':
+								self = 'Возможен самовывоз <br/>' + dlvr.text
+								break
+							case 'express':
+							//	express = 'Экспресс-доставка <br/>' + dlvr.text
+								break
+							default:
+								other.push('Доставка <br/>' + dlvr.text )
+						}
+					}
+					var pnode = $( 'div.boxhover[data-cid='+coreid[i]+']' ).parent()
+					var tmp = $('<ul>')
+					if(self)
+            $('<li>').html( self ).appendTo( tmp )
+//					$('<li>').html( express ).appendTo( tmp )
+					for(var ii=0; ii < other.length; ii++)
+						$('<li>').html( other[ii] ).appendTo( tmp )
+					var uls = pnode.find( 'div.extrainfo ul' )
+					uls.html( uls.html() + tmp.html() )
+				}
+			})
+		} // dlvrajax
+
+		var coreid = []
+		$('div.boxhover').each( function(){
+			var cid = $(this).data('cid') || 0
+			if( cid )
+				coreid.push( cid )
+		})
+		dlvrajax( coreid )
+	}
+
 	/* from inline tags */
 	if( $('#agree-field').length ) {
 		/* apps/main/modules/order/templates/confirmSuccess.php */
@@ -662,7 +714,7 @@ $(document).ready(function(){
 			/*
 			.bind('change', function() {
 			  var el = $(this)
-			
+
 			  if (el.prop('checked')) {
 				$('#confirm-button, #pay-button').removeClass('mDisabled')
 			  }
@@ -681,7 +733,7 @@ $(document).ready(function(){
 				$('#confirm-button, #pay-button').addClass('mDisabled')
 			  }
 			})
-			
+
 		$('.form').bind('submit', function(e) {
 			if ($(this).find('input.mDisabled').length) {
 			  e.preventDefault()
@@ -702,7 +754,7 @@ $(document).ready(function(){
 	$('.point .title .pr .close').click(function(){
 		$(this).parent().hide()
 	})
-	
+
 	$('#auth_forgot-link').click(function() {
     $('#auth_forgot-block').lightbox_me({
       centered: true,
@@ -738,7 +790,7 @@ $(document).ready(function(){
 		  if (this.action == '') return false
 		})
     }
-    
+
     /* apps/main/modules/order/templates/_step1.php */
 	if( $('#user_signin-url').length ) {
 		var url_signin = $('#user_signin-url').val(),

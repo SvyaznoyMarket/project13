@@ -275,7 +275,7 @@ class productCatalogActions extends myActions
     $getFilterData = $request->getParameter($this->productFilter->getName()) ;
     $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $getTagFilterData = $request->getParameter($this->productTagFilter->getName());
-    
+
     if ($this->productCategory->has_line) {
         //если в категории должны отображться линии
         $filter = array(
@@ -288,8 +288,8 @@ class productCatalogActions extends myActions
         ));
 
         $this->view = 'line';
-        $this->list_view = false;        
-        
+        $this->list_view = false;
+
     } elseif ( isset($getFilterData) ) {
         //если установлены фильтры
         $this->productFilter->bind($getFilterData);
@@ -299,7 +299,7 @@ class productCatalogActions extends myActions
         ));
         $this->productFilter->buildQuery($q);
         $this->view = $request['view'];
-        
+
     } elseif ($getTagFilterData) {
         //если установлены тэги
         $this->productTagFilter->bind($getTagFilterData);
@@ -308,7 +308,7 @@ class productCatalogActions extends myActions
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
         $this->productTagFilter->buildQuery($q);
-        $this->view = $request['view'];        
+        $this->view = $request['view'];
     //если фильтры не установлены
     } else {
         $filter = array(
@@ -318,7 +318,7 @@ class productCatalogActions extends myActions
           'view'      => $request['view'],
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
-        $this->view = $request['view'];        
+        $this->view = $request['view'];
     }
 
     // sorting
@@ -614,7 +614,7 @@ class productCatalogActions extends myActions
     $pager = new FilledPager($productIds, $q->countTotal(), $limit);
     $pager->setPage($page);
     $pager->init();
-    $this->forward404If($page > $pager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+    //$this->forward404If($page > $pager->getLastPage(), 'Номер страницы превышает максимальный для списка');
 
     return $pager;
   }

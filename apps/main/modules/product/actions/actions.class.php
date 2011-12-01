@@ -41,6 +41,8 @@ class productActions extends myActions
         $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $delivery['date']);
         $deliveryPeriod = $minDeliveryDate->diff($now)->days;
         if ($deliveryPeriod < 0) $deliveryPeriod = 0;
+        $deliveryPeriod = myToolkit::fixDeliveryPeriod($delivery['mode_id'], $deliveryPeriod);
+        if ($deliveryPeriod === false) continue;
         $delivery['period'] = $deliveryPeriod;
         $delivery['object'] = $deliveryObj->toArray(false);
         $delivery['text'] = myToolkit::formatDeliveryDate($deliveryPeriod);

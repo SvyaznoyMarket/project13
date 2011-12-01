@@ -16,20 +16,17 @@
     <div class="extrainfo">
       <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
 
-      <ul>
-        <?php  if ($item['is_insale']):  ?>
-            <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
-            <?php if (false): ?>
-            <li class="delivery-info" id="product-id-<?php echo $item['product']['core_id'] ?>">Доставка: уточните в контакт центре</li>
-            <?php endif ?>
-        <?php endif ?>
-      </ul>
+      <?php  if ($item['is_insale']):  ?>
+      <noindex><ul>
+            <li><strong class="orange">Есть в наличии</strong></li>
+      </ul></noindex>
+      <?php endif ?>
 
     </div>
   </div>
 
   <!-- Hover -->
-  <div class="boxhover"<?php if ($item['is_insale']): ?> ref="<?php echo $item['token'] ?>"<?php endif ?>>
+  <div class="boxhover"<?php if ($item['is_insale']): ?> ref="<?php echo $item['token'] ?>" data-cid="<?php echo $item['core_id'] ?>" <?php endif ?>>
     <!--a href="" class="fastview">Быстрый просмотр</a-->
     <div class="goodsbar">
       <?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1)) ?>
@@ -54,14 +51,11 @@
           </div>
           <div class="extrainfo">
             <span class="db font18 pb10"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
-            <ul>
             <?php  if ($item['is_insale']):  ?>
-                <noindex><li><strong class="orange">Есть в наличии</strong></li></noindex>
-                <?php if (false): ?>
-                <li class="delivery-info product-id-<?php echo $item['product']['core_id'] ?>">Доставка: уточните в контакт центре</li>
-                <?php endif ?>
+            <noindex><ul>
+                <li><strong class="orange">Есть в наличии</strong></li>
+            </ul></noindex>
             <?php endif ?>
-            </ul>
           </div>
         </div>
         <div class="clear"></div>

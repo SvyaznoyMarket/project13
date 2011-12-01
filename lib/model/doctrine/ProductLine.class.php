@@ -28,11 +28,6 @@ class ProductLine extends BaseProductLine
 
   public function getCount()
   {
-    $q = ProductTable::getInstance()->createBaseQuery(array('view' => 'list', ));
-    $q->addWhere('product.line_id = ?', $this->id);
-
-    $q->useResultCache(true, null, $this->getTable()->getRecordQueryHash('productLine-count'.$this->id));
-
-    return $q->count();
+    return $this->getTable()->getProductCountById($this->id);
   }
 }

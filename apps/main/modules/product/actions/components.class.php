@@ -94,6 +94,7 @@ class productComponents extends myComponents
 
     $item = array(
       'id'         => $this->product['id'],
+      'core_id'    => $this->product['core_id'],
       'token'      => $this->product['token'],
       'article'    => $this->product['article'],
       'name'       => $this->product['name'],
@@ -139,7 +140,9 @@ class productComponents extends myComponents
     }
     if ('line' == $this->view)
     {
-      $item['url'] = url_for('lineCard', $this->product['Line'], array('absolute' => true));
+      $item['url'] = url_for('lineCard', array('line' => $this->product['Line']['token'], ), array('absolute' => true));
+      $item['Line']['name'] = $this->product['Line']['name'];
+      $item['Line']['count'] = ProductLineTable::getInstance()->getProductCountById($this->product['Line']['id']);
     }
 
     $this->setVar('item', $item, true);

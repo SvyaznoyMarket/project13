@@ -12,7 +12,7 @@ class OrderStep1Form extends BaseOrderForm
 {
   protected $_deliveryTypes = null;
 //  protected $_deliveryIntervals = array();
-  
+
   protected function isOrderContainBigProduct()
   {
       $bigThings = array(1096, 1095, 1094, 76, 18, 2);
@@ -83,7 +83,7 @@ class OrderStep1Form extends BaseOrderForm
     }
     return $choices;
   }
-  
+
   protected function filterDeliveryTypes($deliveries)
   {
       $retval = array();
@@ -95,7 +95,7 @@ class OrderStep1Form extends BaseOrderForm
       }
       return $retval;
   }
-  
+
   protected function filterDeliveryPeriods($periods)
   {
       $retval = array();
@@ -146,6 +146,8 @@ class OrderStep1Form extends BaseOrderForm
         $now = new DateTime();
         $deliveryPeriod = $minDeliveryDate->diff($now)->days;
         if ($deliveryPeriod < 0) $deliveryPeriod = 0;
+        $deliveryPeriod = myToolkit::fixDeliveryPeriod($deliveryType['mode_id'], $deliveryPeriod);
+        if ($deliveryPeriod === false) continue;
         $deliveryTypes[$deliveryObj['id']] = array(
           'label' => $deliveryObj['name'].$formatPrice($deliveryType['price']),
           'description' => $deliveryObj['description'],
@@ -158,7 +160,7 @@ class OrderStep1Form extends BaseOrderForm
     }
     return $this->_deliveryTypes;
   }
-    
+
   public function configure()
   {
     parent::configure();
@@ -211,7 +213,7 @@ class OrderStep1Form extends BaseOrderForm
 //      $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
 //    }
     $defaultDelivery = DeliveryTypeTable::getInstance()->findOneByCoreId(1);
-//    
+//
     if ($this->isOrderContainBigProduct()) {
         $q = DeliveryTypeTable::getInstance()->createBaseQuery();
         $q->addWhere('token != ?', 'self');
