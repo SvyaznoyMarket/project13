@@ -96,8 +96,13 @@ _gaq.push(['_trackPageLoadTime']);
     });
 })(window, "yandex_metrika_callbacks");
 </script></div>
-<script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
+<script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript"></script>
 <noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<script>
+var yaParams
+if( yaParams )
+	window.yaCounter10503055.params(yaParams);
+</script>
 <!-- /Yandex.Metrika counter -->
 
 <!-- AdHands -->
