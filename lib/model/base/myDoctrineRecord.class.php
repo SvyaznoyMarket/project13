@@ -38,6 +38,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
 
   public function deleteResultCache($record)
   {
+    /*
     $prefix = sfConfig::get('app_doctrine_result_cache_prefix', 'dql:');
     $driver = $record->getTable()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
     if ($driver)
@@ -47,6 +48,9 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
         $driver->deleteByPattern($prefix.$key);
       }
     }
+    */
+    
+    $this->getCache()->removeByTag($this->getTable()->getCacheTags($record));
   }
 
   public function toParams()
@@ -256,5 +260,10 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
   protected function getRecordByCoreId($model, $coreId, $returnId = false)
   {
     return myDoctrineTable::getRecordByCoreId($model, $coreId, $returnId);
+  }
+
+  public function getCache()
+  {
+    return sfContext::getInstance()->get('cache');
   }
 }

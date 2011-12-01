@@ -71,15 +71,49 @@ class myDoctrineTable extends Doctrine_Table
   {
     if (!$id)
     {
-      return null;
+      return false;
     }
 
+    $cache = $this->getCache();
+
+    $key = $this->getRecordQueryHash($id, $params);
+    if ($cached = $cache->get($key))
+    {
+      return $cached;
+    }
+
+    $record = $this->getRecordById($id, $params);
+    if ($record)
+    {
+      $cache->set($key, $record);
+      foreach ($this->getCacheTags($record) as $tag)
+      {
+        $cache->addTag($tag, $key);
+      }
+    }
+
+    return $record;
+  }
+
+  public function getCacheTags($record)
+  {
+    $alias = $this->getQueryRootAlias();
+
+    $tags = array();
+    if (!empty($record['id']))
+    {
+      $tags[] = "{$alias}-{$record['id']}";
+    }
+
+    return $tags;
+  }
+
+  public function getRecordById($id, array $params = array())
+  {
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q);
 
-    $q->where($q->getRootAlias().'.id = ?', $id)
-      ->useResultCache(true, null, $this->getRecordQueryHash($id, $params))
-    ;
+    $q->where($q->getRootAlias().'.id = ?', $id);
 
     return $q->fetchOne();
   }

@@ -24,7 +24,7 @@ class ProductFilterGroupTable extends myDoctrineTable
 //    );
 //  }
 
-  public function getById($id, array $params = array())
+  public function getRecordById($id, array $params = array())
   {
     $this->applyDefaultParameters($params);
 

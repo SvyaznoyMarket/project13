@@ -48,7 +48,7 @@ class CreatorTable extends myDoctrineTable
     return $q;
   }
 
-  public function getById($id, array $params = array())
+  public function getRecordById($id, array $params = array())
   {
     $this->applyDefaultParameters($params);
 
@@ -57,7 +57,7 @@ class CreatorTable extends myDoctrineTable
     $this->setQueryParameters($q);
 
     $q->addWhere('creator.id = ?', $id);
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
 
     return $q->fetchOne();
   }

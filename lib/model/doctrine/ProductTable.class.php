@@ -96,7 +96,7 @@ class ProductTable extends myDoctrineTable
     return $q;
   }
 
-  public function getById($id, array $params = array())
+  public function getRecordById($id, array $params = array())
   {
     $this->applyDefaultParameters($params, array(
       'with_properties' => false,
@@ -104,12 +104,6 @@ class ProductTable extends myDoctrineTable
       'with_line'       => false,
       'with_model'      => false,
     ));
-
-    $key = $this->getRecordQueryHash($id, $params);
-    if ($cached = $this->getCache()->get($key))
-    {
-      return $cached;
-    }
 
     $q = $this->createBaseQuery($params);
 
@@ -125,7 +119,7 @@ class ProductTable extends myDoctrineTable
     $this->setQueryParameters($q, $params);
     $q->addWhere('product.id = ?', $id);
 
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
     if ($params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
@@ -221,9 +215,6 @@ class ProductTable extends myDoctrineTable
         }
       }
     }
-
-    $this->getCache()->set($key, $record);
-    $this->getCache()->addTag($key, "product-{$record['id']}");
 
     return $record;
   }

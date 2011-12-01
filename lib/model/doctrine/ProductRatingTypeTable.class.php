@@ -31,14 +31,14 @@ class ProductRatingTypeTable extends myDoctrineTable
     return $q;
   }
 
-  public function getById($id, array $params = array())
+  public function getRecordById($id, array $params = array())
   {
     $q = $this->createBaseQuery($params);
 
     $this->setQueryParameters($q, $params);
 
     $q->addWhere('productRatingType.id = ?', $id);
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
 
     return $q->fetchOne();
   }
