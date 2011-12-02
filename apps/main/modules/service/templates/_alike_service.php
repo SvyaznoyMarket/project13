@@ -11,14 +11,14 @@
 			<div class="bServiceCard__eImage">
                 <?php if ($service['photo']) { ?>
                     <div class="bServiceCard__eLogo"></div>
-                <?php } ?>
-                <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
-                    <?php if ($service['photo']) { ?>
+                    <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
                         <img src="<?php echo $service['photo']; ?>">
-                    <?php } else { ?>
-                        <img src="/images/f1infobig.png">
-                    <?php } ?>
-                </a>    
+                    </a>    
+                <?php } else { ?>
+                    <div class="bServiceCard__eLogo_free"></div>
+                    <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
+                    </a>    
+                <?php } ?>
             </div>
 			<p class="bServiceCard__eDescription">
                 <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
