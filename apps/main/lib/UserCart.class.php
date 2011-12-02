@@ -366,7 +366,7 @@ class UserCart extends BaseUserData
 
     foreach ($products as $product)
     {
-      $total += $product['price'] * $product['cart']['quantity'];
+      $total += $product['ProductPrice']['price'] * $product['cart']['quantity'];
     }    
     
     //$products = null;
