@@ -174,6 +174,8 @@ class cartActions extends myActions {
         }
 
         try {
+            //если передан продукт, но такой продукт не существует,
+            //добавляем услугу без привязки к продукту
             $productId = 0;
             if (isset($request['product'])) {
                 $product = ProductTable::getInstance()->findOneByToken($request['product']);
@@ -218,8 +220,8 @@ class cartActions extends myActions {
                 'success' => true,
                 'data' => array(
                     'quantity' => $request['quantity'],
-                    #'full_quantity' => $cartInfo['qty'],
-                    #'full_price' => $cartInfo['sum'],
+                    'full_quantity' => $cartInfo['qty'],
+                    'full_price' => $this->getUser()->getCart()->getTotal(),
                 )
             );
             return $this->renderJson($return);

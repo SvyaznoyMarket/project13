@@ -1,6 +1,9 @@
 <?php if ( count($list)):
     $num = 0;
 ?>
+<?php
+include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$product))
+?>
  <?php if (!$selectedNum) { ?>    
 <div class="service form bBacketServ mSmall mBR5">
                <table cellspacing="0">
@@ -42,7 +45,7 @@
                                     <?php } else { ?>
                                         <b title="Уменьшить" class="ajamore"></b>
                                     <?php } ?>
-                                    <span>1 шт.</span>
+                                    <span><?php echo $service['quantity'] ?> шт.</span>
                                     <a href="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product'=>$product->token)); ?>">
                                         <b title="Увеличить" class="ajamore"></b>
                                     </a>

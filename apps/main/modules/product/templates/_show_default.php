@@ -72,7 +72,7 @@ foreach ($p3d as $p3d_obj)
 		<div class="line pb15"></div>
         <?php endif ?>
         
-        <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
+        <?php include_component('service', 'listByProduct', array('product' => $product)) ?>
         
 <?php if (false): ?>
 

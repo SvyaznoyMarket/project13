@@ -13,9 +13,7 @@
                 <?php if (isset($service['currentPrice']) && $service['currentPrice']) { ?>
 				<strong class="font34"><?php echo $service['currentPrice']; ?> <span class="rubl">p</span></strong>  
                 <?php } ?>
-                <!--
 				<a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить услугу</a>
-                -->
 			</div>
 			
 		</div>
