@@ -79,5 +79,50 @@ class ServiceTable extends myDoctrineTable
 
     return $this->getById($id);
   }
+  
+  /*
+  public function getById($id, array $params = array())
+  {
+
+
+    $q = $this->createBaseQuery($params);
+
+    $q->leftJoin('service.Price price')
+      ->leftJoin('service.Category category')
+    ;
+    $this->setQueryParameters($q);
+
+    $q->addWhere('product.id = ?', $id);
+
+    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    //$q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    $record = $q->fetchOne();
+    if (!$record)
+    {
+      return $record;
+    }
+
+    /*
+    $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
+
+    if ($prices)
+    {
+      $record->mapValue('ProductPrice', $prices);
+      $record->price = $prices->price;
+    }
+
+    $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
+      'view'           =>
+        $params['with_properties']
+        ? ($params['property_view'] ? $params['property_view'] : $params['view'])
+        : false
+      ,
+      'group_property' => $params['group_property'],
+    ));
+
+
+
+    return $record;
+  }  */
 
 }

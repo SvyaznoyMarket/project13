@@ -399,13 +399,15 @@ class orderActions extends myActions
    */
   protected function saveOrder(Order &$order)
   {
+    $deliveryPrices = $this->getUser()->getCart()->getDeliveriesPrice();
+    $deliveryPrice = isset($deliveryPrices[$order->delivery_type_id]) ? $deliveryPrices[$order->delivery_type_id] : 0;
     $order->User = $this->getUser()->getGuardUser();
-    $order->sum = $this->getUser()->getCart()->getTotal();
+    $order->sum = $this->getUser()->getCart()->getTotal() + $deliveryPrice;
     $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
 
     //$this->order->User = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);//$this->getUser()->getGuardUser();
 
-    /*
+    
     foreach ($this->getUser()->getCart()->getProducts() as $product)
     {
       $relation = new OrderProductRelation();
@@ -416,8 +418,34 @@ class orderActions extends myActions
       ));
       $order->ProductRelation[] = $relation;
     }
-     *
-     */
+
+    foreach ($this->getUser()->getCart()->getServices() as $service)
+    {
+      if ($service->cart['quantity'] > 0) {
+          $relation = new OrderServiceRelation();
+          $relation->fromArray(array(
+            'service_id' => $service->id,
+            'price'      => $service->price,
+            'quantity'   => $service->cart['quantity'],
+          ));
+          $order->ServiceRelation[] = $relation;
+      }      
+      if (count($service->cart['product']) > 0) {
+          foreach($service->cart['product'] as $prodId => $qty) {
+              if (!$prodId || !$qty) continue;
+              $relation = new OrderServiceRelation();              
+              $relation->fromArray(array(
+                'service_id' => $service->id,
+                'product_id' => $prodId,
+                'price'      => $service->price,
+                'quantity'   => $qty,
+              ));
+              $order->ServiceRelation[] = $relation;
+          }
+      }
+    }
+    
+    /*
     foreach ($this->getUser()->getCart()->getProductServiceList() as $product)
     {
         $relation = new OrderProductRelation();
@@ -439,7 +467,7 @@ class orderActions extends myActions
             ));
             $order->ServiceRelation[] = $relation;
         }
-    }
+    } */
 
     try
     {

@@ -7,7 +7,7 @@
                     <?php foreach ($cart->getProductServiceList() as $product): ?>
                         <li><div><?php echo $product['name'] ?> (<?php echo $product['quantity'] ?>&nbsp;шт)</div><strong><?php echo ($product['priceFormatted']) ?> <span class="rubl">p</span></strong></li>
 
-                        <?php foreach($product['service'] as $service){ ?>                    
+                        <?php foreach($product['service'] as $service){ ?>
                             <li><div><?php echo $service['name'] ?> (<?php echo $service['quantity'] ?>&nbsp;шт)</div><strong><?php echo ($service['priceFormatted']) ?> <span class="rubl">p</span></strong></li>
                         <?php } ?>
 

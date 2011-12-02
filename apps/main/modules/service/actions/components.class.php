@@ -19,8 +19,53 @@ class serviceComponents extends myComponents
   {
     $list = $this->product->getServiceList();
 
-    $this->setVar('list', $list, true);
+    $servList = $this->getUser()->getCart()->getServices();
+    $servListId = array();
+    foreach ($servList as $next) {
+        foreach($next['cart']['product'] as $product => $qty) {
+            if ($product == $this->product->id) {
+                $servListId[] = $next->id;                
+            }
+        }
+    }
+    $this->setVar('servListId', $servListId, true);
+    $this->setVar('list', $list, true);   
   }
+  
+  public function executeList_for_product_in_cart()
+  {
+    $list = $this->product->getServiceList();
+    $result = array();
+    $selectedNum = 0;
+   # print_r( $this->services );
+    foreach($list as $next) {
+        $sel = false;
+        foreach($this->services as $selected) {
+            if ($next->id == $selected['id']) {
+                $selInfo = $selected;
+                $sel = true;
+                break;
+            }
+        }
+        if ($sel) {
+            $selectedNum++;
+            $selInfo['selected'] = true;
+            $selInfo['priceFormatted'] = $next->getFormattedPrice();
+            $result[] = $selInfo;
+        } else {
+            $result[] = array(
+                'selected' => false,
+                'name' => $next->name,
+                'id' => $next->id,
+                'token' => $next->token,
+                'priceFormatted' => $next->getFormattedPrice()
+            );
+        }
+    }
+    #  print_r($result);
+    $this->setVar('selectedNum', $selectedNum, true);
+    $this->setVar('list', $result, true);
+  }  
 
   /**
   * Executes show component
@@ -30,10 +75,11 @@ class serviceComponents extends myComponents
   public function executeShow()
   {
 
-      $serviceData['currentPrice'] = $this->service->getCurrentPrice();
-      if (isset($service['currentPrice'])) {
-          $service['currentPrice'] = number_format($serviceData['currentPrice'], 2, ',', ' ');
-      }
+      $serviceData['currentPrice'] = $this->service->getFormattedPrice();
+      #if (isset($service['currentPrice'])) {
+      #    $service['currentPrice'] = number_format($serviceData['currentPrice'], 2, ',', ' ');
+      #}
+      $serviceData['token'] = $this->service->token;
       $serviceData['name'] = $this->service->name;
       $serviceData['description'] = $this->service->description;
       $serviceData['work'] = $this->service->work;
@@ -43,6 +89,7 @@ class serviceComponents extends myComponents
 
   public function executeAlike_service()
   {
+    $serviceList = array();  
     $nearParent = ServiceCategoryTable::getInstance()
             ->createQuery('sc')
             ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
@@ -54,7 +101,16 @@ class serviceComponents extends myComponents
             ->where('rel.category_id = ?', $nearParent[0]->id )
             ->addWhere('s.id != ?', $this->service->id)
             ->execute();
-    $this->setVar('list', $list);
+    foreach($list as $service) {
+        $serviceList[] = array(
+            'name' => $service->name,
+            'token' => $service->token,
+            'name' => $service->name,
+            'photo' => $service->getPhotoUrl(2),
+            'price' =>$service->getFormattedPrice()
+        );
+    }
+    $this->setVar('list', $serviceList);
 
   }
 

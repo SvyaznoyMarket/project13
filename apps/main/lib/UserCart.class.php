@@ -4,7 +4,8 @@ class UserCart extends BaseUserData
 {
   protected
     $parameterHolder = null,
-    $products = null
+    $products = null,
+    $services = null
   ;
 
   function __construct($parameters = array())
@@ -26,6 +27,50 @@ class UserCart extends BaseUserData
     $this->parameterHolder->set('products', $products);
     $this->calculateDiscount();
   }
+  
+  
+  public function addService(Service $service, $quantity = 1, $product = NULL)
+  {
+    if ($product) {  
+        $products = $this->parameterHolder->get('products');
+        //если в корзине нет товара, к которому надо привязать услугу,
+        //добавим этот товар в корзину
+        if (!isset($products[$product->id])) {
+            $this->addProduct($product, 1);
+        }
+    }
+      
+    $services = $this->parameterHolder->get('services');
+    if (!isset($services[$service->id]) || empty($services[$service->id]))
+    {
+      $services[$service->id] = $this->getServiceDefaults();
+    }
+    if ($product) {        
+        //проверяем, можно ли добавлять эту услугу к этому продукту
+        $mayToAdd = false;
+        $avaleServiceList = ServiceTable::getInstance()->getListByProduct($product);
+        foreach ($avaleServiceList as $nextService) {
+            if ($nextService->id == $service->id) {
+                $mayToAdd = true;
+                break;
+            }
+        }
+        if ($mayToAdd) {
+            $services[$service->id]['product'][$product->id] = $quantity;
+        } else {
+            $services[$service->id]['quantity'] = $quantity;                            
+        } 
+        
+    } else {
+        $services[$service->id]['quantity'] = $quantity;                
+    }
+    $this->parameterHolder->set('services', $services);
+
+    $this->calculateDiscount();
+   # myDebug::dump( $this->services );
+    return true;
+    
+  }  
 
   public function getProduct($id)
   {
@@ -40,19 +85,49 @@ class UserCart extends BaseUserData
 
     return $product;
   }
+  
+  public function getService($id)
+  {
+    $services = $this->parameterHolder->get('services');
+    $service = null;
+
+    if (isset($services[$id]) && !empty($services[$id]))
+    {
+      $this->loadServices();
+      $service = $this->services->get($id);
+    }
+
+    return $service;
+  }  
 
   public function deleteProduct($id)
   {
+      
     $products = $this->parameterHolder->get('products');
 
     if (isset($products[$id]))
     {
       unset($products[$id]);
       $this->parameterHolder->set('products', $products);
-      $this->calculateDiscount();
+      #$this->calculateDiscount();
     }
+    
+    $services = $this->parameterHolder->get('services');
+    //удаляем из корзины сервисы, привязанные к этому товару
+    foreach($services as & $service) {
+        if (isset($service['product'][$id])) {
+            unset($service['product'][$id]);
+        }
+    }
+    #myDebug::dump($services);
+    $this->parameterHolder->set('services', $services);
+    $this->calculateDiscount();
+    
+    
   }
 
+  
+  /** DEPRICATED
   public function addService(Product $product, Service $service, $quantity = 1)
   {
     $products = $this->parameterHolder->get('products');
@@ -78,6 +153,8 @@ class UserCart extends BaseUserData
     $this->parameterHolder->set('products', $products);
     $this->calculateDiscount();
   }
+   *
+   * */
 
   public function getServicesByProductId($productId)
   {
@@ -106,6 +183,7 @@ class UserCart extends BaseUserData
             }
           }
     }
+    #myDebug::dump( $list );
     return $list;
 
   }
@@ -117,6 +195,7 @@ class UserCart extends BaseUserData
     {
       $services = $product->getServiceList();
       $service_for_list = array();
+      /*
       foreach ($services as $service)
       {
         $serviceAr = $service->toArray();
@@ -132,8 +211,12 @@ class UserCart extends BaseUserData
             );
         }
       }
+       * 
+       */
+            #print_r( $product['cart'] );
 
-      $list[] = array(
+      $list[$product->id] = array(
+        'type'      => 'product',           
         'id'      => $product->id,
         'token'      => $product->token,
         'name'      => $product->name,
@@ -146,19 +229,80 @@ class UserCart extends BaseUserData
         'photo'     => $product->getMainPhotoUrl(1),
       );
     }
+    #myDebug::dump($this->getServices());
+    foreach ($this->getServices() as $service)
+    {
+        if (isset($service['cart']['product']) && count($service['cart']['product'])>0) {
+            foreach($service['cart']['product'] as $product => $qty) {
+                
+                $list[$product]['service'][] = array(
+                    'id'      => $service->id,
+                    'token'     => $service->token,
+                    'name'      => $service->name,
+                    'quantity'  => $qty,
+                    #'service'   => $service,
+                    'price'     => $service->price,
+                    'priceFormatted'     => $service->getFormattedPrice(),
+                    'total'     => $service['cart']['formatted_total'],
+                    #'photo'     => $service->getPhotoUrl(2),
+                    );
+            }
+        }
+        if ($service['cart']['quantity'] > 0) {
+            #print_r( $service['cart'] );
+            $list[$service->id] = array(
+                'type'      => 'service', 
+                'id'        => $service->id,
+                'token'     => $service->token,
+                'name'      => $service->name,
+                'quantity'  => $service['cart']['quantity'],
+                'service'   => $service,
+                'price'     => $service->price,
+                'total'     => $service['cart']['formatted_total'],
+                'priceFormatted'  => $service->getFormattedPrice(),
+                'photo'     => $service->getPhotoUrl(2),
+                );            
+        }
+    }    
+    #myDebug::dump($list);
     return $list;
   }
 
-  public function deleteService(Product $product, Service $service)
+  public function getServiceForProductQty(Service $service, $productId = 0)
   {
-    $products = $this->parameterHolder->get('products');
-
-    if (isset($products[$product->id]['service'][$service->id]))
+    $services = $this->parameterHolder->get('services');
+    if ($productId) {
+        if (isset($services[$service->id]) && isset($services[$service->id]['product'][$productId])) {
+            return $services[$service->id]['product'][$productId];
+        }
+    } else {
+        return $services[$service->id]['quantity'];
+    }
+      
+  }  
+  public function deleteService(Service $service, $productId = 0)
+  {
+    $services = $this->parameterHolder->get('services');
+    if (isset($services[$service->id]))
     {
-      unset($products[$product->id]['service'][$service->id]);
-      $this->parameterHolder->set('products', $products);
+      if ($productId) {
+         # echo $productId.'--del';
+         # exit();
+        if (isset($services[$service->id]['product'][$productId])) {
+            unset($services[$service->id]['product'][$productId]); 
+        }
+      } else {  
+          $services[$service->id]['quantity'] = 0;
+      }
+      //если этого сервиса не осталось не по одиночке, не для товаров, удалим его вообще
+      if (isset($services[$service->id]) && !count($services[$service->id]['product']) && !$services[$service->id]['quantity'] ) {
+          unset( $services[$service->id] );
+      }
+      $this->parameterHolder->set('services', $services);
       $this->calculateDiscount();
     }
+    
+    
   }
 
   public function clear()
@@ -182,28 +326,110 @@ class UserCart extends BaseUserData
   {
 
   }
+  
+  /**
+   * array('mode_id' => 'price')
+   * @return array 
+   */
+  public function getDeliveriesPrice()
+  {
+    $dProducts_raw = $this->getProducts();
+    $dProducts = array();
+    foreach ($dProducts_raw as $dProduct) {
+      $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
+    }
+    $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
+      'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
+      'product' => $dProducts
+    ));
+    if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
+      $deliveries = array(array(
+        'mode_id' => 1,
+        'date' => date('Y-m-d', time()+(3600*48)),
+        'price' => null,
+      ));
+    }
+    $result = array();
+    foreach ($deliveries as $d) {
+      $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($d['mode_id']);
+      $result[$deliveryObj['id']] = $d['price'];
+    }
+    return $result;
+  }
 
   public function getTotal($is_formatted = false)
   {
     $total = 0;
-    $products = $this->getProductServiceList();
+    $products = $this->getProducts();
+    $services = $this->getServices();
+    #myDebug::dump($services);
 
-    //$products = null;
     foreach ($products as $product)
     {
-        $total += $product['price'] * $product['quantity'];
-        foreach($product['service'] as $service){
-            $total += $service['price'] * $service['quantity'];
+      $total += $product['ProductPrice']['price'] * $product['cart']['quantity'];
+    }    
+    
+    //$products = null;
+    foreach ($services as $service)
+    {
+        $qty = $service['cart']['quantity'];
+        if (isset($service['cart']['product'])) {
+            foreach($service['cart']['product'] as $prodQty) {
+                $qty += $prodQty;
+            }
         }
-    }
+        $total += ($service->getCurrentPrice() * $qty);
+    } 
 
     $result = $is_formatted ? number_format($total, 0, ',', ' ') : $total;
 
-    //myDebug::dump($result, 1);
 
     return $result;
   }
 
+  public function getReceiptList() {
+    $total = 0;
+    $products = $this->getProducts();
+    $services = $this->getServices();
+    #myDebug::dump($services);
+
+    foreach ($products as $product)
+    {
+        $list[] = array(
+            'type' => 'product',
+            'name' => $product->name,
+            'token' => $product->token,
+            'quantity' => $product['cart']['quantity'],
+            'price' => $product['cart']['formatted_total'],
+            'photo' => $product->getMainPhotoUrl(1)            
+        );
+    }    
+    
+    //$products = null;
+    foreach ($services as $service)
+    {
+        $qty = $service['cart']['quantity'];
+        if (isset($service['cart']['product'])) {
+            foreach($service['cart']['product'] as $prodQty) {
+                $qty += $prodQty;
+            }
+        }
+        $list[] = array(
+            'type' => 'service',
+            'name' => $service->name,
+            'token' => $service->token,
+            'quantity' => $qty,
+            'price' => $service->getCurrentPrice() * $qty,
+            'photo' => $service->getPhotoUrl(2)
+        );
+        
+    } 
+
+
+    return $list;      
+  }
+  
+  
   public function getQuantityByToken($token)
   {
     $products = $this->getProducts();
@@ -215,18 +441,43 @@ class UserCart extends BaseUserData
 
     return 0;
   }
+  
+  public function getServiceQuantityByToken($token)
+  {
+    $services = $this->getServices();
+
+    /*
+    foreach ($services as $service)
+    {
+        if ($services['token']==$token) return $services['cart']['quantity'];
+    }*/
+
+    return 0;
+  }  
 
   public function getProducts()
   {
     $this->calculateDiscount();
     return !empty($this->products) ? $this->products : array();
   }
+  
+  public function getServices()
+  {
+    $this->calculateDiscount();
+    return !empty($this->services) ? $this->services : array();
+  }  
 
   public function count()
   {
     $count = count($this->parameterHolder->get('products'));
     return $count;
   }
+  
+  public function countFull()
+  {
+    $count = count($this->parameterHolder->get('products')) + count($this->parameterHolder->get('services'));
+    return $count;
+  }  
 
   public function getParameterHolder()
   {
@@ -236,10 +487,19 @@ class UserCart extends BaseUserData
   protected function calculateDiscount()
   {
     $this->loadProducts(true);
+    $this->loadServices(true);
 
-    foreach ($this->products as $product)
-    {
-      $this->updateProductCart($product, 'discount', 0);
+    if ($this->products) {
+        foreach ($this->products as $product)
+        {
+          $this->updateProductCart($product, 'discount', 0);
+        }
+    }
+    if ($this->services) {
+        foreach ($this->services as $service)
+        {
+          $this->updateServiceProductCart($service, 'discount', 0);
+        }
     }
   }
 
@@ -272,12 +532,53 @@ class UserCart extends BaseUserData
       }
     }
     foreach ($this->products as $key => $product)
-    {
+    {        
       $this->updateProductCart($product, 'quantity', $products[$key]['quantity']);
       $this->updateProductCart($product, 'formatted_total', number_format($products[$key]['quantity'] * $product->price, 0, ',', ' '));
-      $this->updateProductCart($product, 'service', $products[$key]['service']);
+      #$this->updateProductCart($product, 'service', $products[$key]['service']);
     }
   }
+  
+  protected function loadServices($force = false)
+  {
+    $services = $this->parameterHolder->get('services');
+    $serviceIds = array();
+    if ($services) {
+        $serviceIds = array_keys($services);
+    }
+    $serviceTable = ServiceTable::getInstance();
+
+    if (is_null($this->services) || true === $force)
+    {
+      $this->services = $serviceTable->createListByIds($serviceIds, array('index' => array('service' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
+    }
+    else
+    {
+      $currentIds = $this->services->getKeys();
+
+      $toAddIds = array_diff($serviceIds, $currentIds);
+      $toDelIds = array_diff($currentIds, $serviceIds);
+
+      $toAdd = $serviceTable->createListByIds($toAddIds, array('index' => array('service' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
+      foreach ($toAdd as $key => $service)
+      {
+        $this->services[$key] = $service;
+      }
+
+      foreach ($toDelIds as $id)
+      {
+        $this->services->remove($id);
+      }
+    }
+    
+    foreach ($this->services as $key => $service)
+    {
+      $this->updateServiceProductCart($service, 'quantity', $services[$key]['quantity']);
+      $this->updateServiceProductCart($service, 'product', $services[$key]['product']);
+      $this->updateServiceProductCart($service, 'formatted_total', number_format($services[$key]['quantity'] * $service->getCurrentPrice(), 0, ',', ' '));
+    }
+  }
+  
 
   protected function updateProductCart(Doctrine_Record &$product, $property, $value)
   {
@@ -293,6 +594,21 @@ class UserCart extends BaseUserData
 
     $product->mapValue('cart', $cart);
   }
+  
+  protected function updateServiceProductCart(Doctrine_Record &$service, $property, $value)
+  {
+    if (isset($service->cart))
+    {
+      $cart = $service->cart;
+    }
+    else
+    {
+      $cart = $this->getServiceDefaults();
+    }
+    $cart[$property] = $value;
+
+    $service->mapValue('cart', $cart);
+  }  
 
   protected function getServiceById($id)
   {
@@ -309,9 +625,19 @@ class UserCart extends BaseUserData
     return array(
       'quantity' => 1,
       'discount' => 0,
-      'service' => array(),
+#      'service' => array(),
       'warranty' => array(),
     );
   }
+  
+  protected function getServiceDefaults()
+  {
+    return array(
+      'quantity' => 0,
+      'discount' => 0,
+      'product' => array(),        
+      'warranty' => array(),
+    );
+  }  
 }
 

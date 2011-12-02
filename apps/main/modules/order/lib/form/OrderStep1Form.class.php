@@ -139,7 +139,6 @@ class OrderStep1Form extends BaseOrderForm
       }
       $deliveryTypes = array();
 
-      sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
       foreach ($deliveries as $deliveryType) {
         $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
         $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
@@ -154,6 +153,7 @@ class OrderStep1Form extends BaseOrderForm
           //'description' => 'Доставка '.myToolkit::formatDeliveryDate($deliveryPeriod). ', стоимостью '.$deliveryType['price'].' руб',
           'date_diff' => $deliveryPeriod,
           'periods' => empty($deliveryType['interval']) ? array() : $deliveryType['interval'],
+          'price' => $deliveryType['price'],
         );
       }
       $this->_deliveryTypes = $deliveryTypes;

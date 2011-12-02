@@ -17,12 +17,14 @@
                }
                if (count($currentServiceList['list'])<1) continue;
             ?>   
-            <div class="serviceblock">
-                <?php if (isset($currentServiceList['photo'])) { ?>
-                    <div class="photo">
+            <div class="serviceblock mNewSB">
+                <div class="photo">
+                    <?php if (isset($currentServiceList['photo'])) { ?>
                         <img width="160" height="120" alt="" src="<?php echo $currentServiceList['photo']; ?>">
-                    </div>
-                <?php } ?>
+                    <?php } else { ?>                        
+                        <img alt="" src="/images/f1infobig.png">
+                    <?php } ?>                        
+                </div>
                 <div class="info">
                     <h3><?php echo $item['name'] ?></h3>
                     <?php 
@@ -32,16 +34,23 @@
                             <a href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>" >
                                 <?php echo $service['name'] ?>
                             </a>    
+                                <?php if ($service->getFormattedPrice()){ ?>
+                                    &mdash; 
+                                    <div class="font16 mInlineBlock">
+                                        <strong>
+                                            <?php echo $service->getFormattedPrice(); ?>
+                                            <?php if((int)$service->getFormattedPrice()) { ?>
+                                                &nbsp;<span class="rubl">p</span>
+                                            <?php } ?>    
+                                        </strong>
+                                    </div>             
+                                <?php }   ?>
                         </div>  
-                        <?php if (isset($service['description'])){ ?><div class="pb5"><?php echo $service['description'] ?> </div><?php } ?>
-                        <?php if (isset($service['work'])){ ?><div class="pb5"><?php echo $service['work'] ?> </div><?php } ?>
-                        <?php if ($service->getCurrentPrice()){ ?>
-                            <div class="font16 pb10">
-                                <strong><?php echo number_format($service->getCurrentPrice(), 2, ',', ' '); ?> Р</strong>
-                            </div>
-                        <?php }                         
-                    }
-                    ?>
+                        <div class="pb20">
+                        <?php if (isset($service['description'])){ ?><?php echo $service['description'] ?><?php } ?>
+                        <?php if (isset($service['work'])){ ?><?php echo $service['work'] ?> <?php } ?>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>                    
         <?php

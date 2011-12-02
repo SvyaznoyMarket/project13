@@ -78,6 +78,7 @@ TABLE {border-collapse:collapse}
 .mb25 {margin-bottom:25px}
 .mb70 {margin-bottom:70px}
 .mt-30 {margin-top:-30px}
+.mt32 {margin-top:32px}
 .ml5 {margin-left:5px}
 .ml20 {margin-left:20px}
 .ml70 {margin-left:70px}
@@ -265,6 +266,14 @@ border-radius:5px;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px
+}
+.mInlineBlock{
+display: inline-block;
+*display: inline;
+zoom: 1;
+}
+.mVAMiddle {
+    vertical-align: middle;
 }
 
 .yellowbutton {height:24px; padding:0 7px 3px 7px; background-color:#ffaa01;  background-position:0 0; font-size:11px; color:#fff; border-color:#f28900}
@@ -1973,7 +1982,15 @@ DT.bCtg__eOrange{
 		}
 	.bSet__eImage{
 		width: 500px;
-		height: 500px;
+		overflow: hidden;
+		vertical-align: top;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+	}
+	.bSet__eImage_small{
+		width: 130px;
+        margin-bottom: 30px;
 		overflow: hidden;
 		vertical-align: top;
 		display: inline-block;
@@ -1987,6 +2004,14 @@ DT.bCtg__eOrange{
 		*display: inline;
 		zoom: 1;
 	}
+	.bSet__eInfo_big{
+		width: 780px;
+		vertical-align: top;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+	}
+
 	.bSet .bSet__eArticul{
 		padding: 0;
 		margin: 0 0 15px 15px;
@@ -2013,6 +2038,9 @@ DT.bCtg__eOrange{
 		padding: 0;
 		margin: 0 0 10px 15px;
 		}
+    .bSet__eImage.mServiceBig {
+        position: relative;
+    }
 	.bSet__eG{
 		padding: 0;
 /*		color: #a6a6a6;*/
@@ -2333,14 +2361,135 @@ DT.bCtg__eOrange{
 		}
 
 
+/* bServiceCard */
+
+.bServiceCardWrap{
+	font-size: 0;
+	}
+.bServiceCard{
+	width: 220px;
+	vertical-align: top;
+	margin: 0 10px 30px 0;
+	}
+	.bServiceCard__eImage{
+		width: 160px;
+		height: 125px;
+		margin: 0 auto;
+		overflow: hidden;
+		position: relative;
+		}
+	.bServiceCard__eDescription{
+		font: 12px Tahoma, sans-serif;
+		}
+	.bServiceCard__ePrice{
+		margin-bottom: 7px;
+		font: 18px Tahoma, sans-serif;
+		}
+	.bServiceCard__eLogo{
+		top: 0;
+		left: 0;
+		width: 39px;
+		height: 41px;
+		position: absolute;
+		background: url('img/icon_f1service_small.png') no-repeat;
+		}
+	.mServiceBig .bServiceCard__eLogo{
+		width: 60px;
+		height: 68px;
+		background: url('img/icon_f1service_big.png') no-repeat;
+		}
 
 
+/* newSB */
+
+.mNewSB{}
+	.mNewSB h3{ color: #4fcbf4; }
+	.mNewSB .pb20{ color: #434343; }
+	.mNewSB .mSBlocker img{
+		visibility: hidden;
+}
+	.mNewSB .mSBlocker{
+    height: 125px;
+		background: url('img/f1infobig.png') 50% 0 no-repeat;
+}
 
 
+/* F1 Credit */
+
+.bF1Credit{
+	position: relative;
+	}
+	.bF1Credit h2{
+		padding: 0;
+		color: #4fcbf4;
+		margin: 0 0 13px 0;
+		font: bold 24px Tahoma, sans-serif;
+		}
+	.bF1Credit h3{
+		padding: 0;
+		color: #434343;
+		margin: 0 0 12px 0;
+		font: bold 18px/20px Tahoma, sans-serif;
+		}
+	.bF1Credit p{
+		padding: 0;
+		color: #434343;
+		margin: 0 0 60px 0;
+		font: 14px/20px Tahoma, sans-serif;
+		}
+	.bF1Credit__eImg{
+		position: absolute;
+		}
+	.bF1Credit__eImg.mI1{
+		bottom: 40px;
+		right: 45px;
+		width: 130px;
+		height: 113px;
+		background: url('/image/page/i1.png') 0 0 no-repeat;
+  }
+	.bF1Credit__eImg.mI2{
+		bottom: -25px;
+		right: 165px;
+		width: 151px;
+		height: 179px;
+		background: url('/image/page/i2.png') 0 0 no-repeat;
+		}
+	.bF1Credit__eImg.mI3{
+		right: 0;
+		bottom: 170px;
+		width: 106px;
+		height: 133px;
+		background: url('/image/page/i3.png') 0 0 no-repeat;
+		}
+	.bF1Credit__eImg.mI4{
+		top: 0;
+		right: 50px;
+		width: 215px;
+		height: 120px;
+		background: url('/image/page/i4.png') 0 0 no-repeat;
+		}
 
 
+/* bLiteboxF1 */
 
-
+.bLiteboxF1{
+	padding-top: 20px;
+	}
+	.bLiteboxF1__eWrap{
+		position: relative;
+		}
+	.bLiteboxF1__ePlus{
+		left: 0;
+		top: -22px;
+		color: #4fcbf4;
+		padding-left: 23px;
+		position: absolute;
+		font: bold 20px Tahoma, sans-serif;
+		}
+	.bLiteboxF1__eG,
+	.bLiteboxF1__eG a{
+		color: #434343;
+		}
 
 
 
