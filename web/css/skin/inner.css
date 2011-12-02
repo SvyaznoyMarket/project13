@@ -2393,6 +2393,15 @@ DT.bCtg__eOrange{
 		position: absolute;
 		background: url('img/icon_f1service_small.png') no-repeat;
 		}
+	.bServiceCard__eLogo_free{
+		top: 0;
+		left: 0;
+		width: 120px;
+		height: 120px;
+		position: absolute;
+		background: url('img/icon_f1service_small.png') no-repeat;
+        border: solid 1px #e6e6e6;
+		}        
 	.mServiceBig .bServiceCard__eLogo{
 		width: 60px;
 		height: 68px;

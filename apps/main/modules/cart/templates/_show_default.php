@@ -27,7 +27,7 @@
             <div class="basketleft">
                 <a href="<?php echo url_for('productCard', $item['product']) ?>"><?php if (isset($item['photo'])) echo image_tag($item['photo']) ?></a>
                 <?php if (count($item['product']->getServiceList())): ?>
-                <div class="ac font11"><a href="" class="f1link">Сервис F1</a> Сервис F1</div>
+                <!--<div class="ac font11"><a href="" class="f1link">Сервис F1</a> Сервис F1</div>-->
                 <?php endif ?>
             </div>
             <div class="basketright">
@@ -47,7 +47,7 @@
                 <div class="clear pb15"></div>
 
                 
-                <?php include_component('service', 'list_for_product_in_cart', array('product' => $item['product'], 'services' => $item['service'])) ?>
+                <?php #include_component('service', 'list_for_product_in_cart', array('product' => $item['product'], 'services' => $item['service'])) ?>
                 
             </div>
         </div>
