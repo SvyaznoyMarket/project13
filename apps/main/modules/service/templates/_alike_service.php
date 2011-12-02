@@ -9,8 +9,15 @@
 <?php foreach ($list as $service) { ?>
 		<div class="bServiceCard mInlineBlock">
 			<div class="bServiceCard__eImage">
+                <?php if ($service['photo']) { ?>
+                    <div class="bServiceCard__eLogo"></div>
+                <?php } ?>
                 <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
-                    <img src="<?php echo $service['photo']; ?>">
+                    <?php if ($service['photo']) { ?>
+                        <img src="<?php echo $service['photo']; ?>">
+                    <?php } else { ?>
+                        <img src="/images/f1infobig.png">
+                    <?php } ?>
                 </a>    
             </div>
 			<p class="bServiceCard__eDescription">
@@ -19,11 +26,11 @@
                 </a>
             </p>
 			<div class="bServiceCard__ePrice"><?php echo $service['price']; ?> <span class="rubl">p</span></div>
-            <!--
+            
             <form action="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" />
                 <input data-url="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" type="submit" class="button yellowbutton" value="Купить услугу">
             </form>    
-            -->
+            
 		</div>
 <?php
 $num++;

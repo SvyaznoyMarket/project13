@@ -18,11 +18,13 @@
                if (count($currentServiceList['list'])<1) continue;
             ?>   
             <div class="serviceblock mNewSB">
-                <?php if (isset($currentServiceList['photo'])) { ?>
-                    <div class="photo">
+                <div class="photo">
+                    <?php if (isset($currentServiceList['photo'])) { ?>
                         <img width="160" height="120" alt="" src="<?php echo $currentServiceList['photo']; ?>">
-                    </div>
-                <?php } ?>
+                    <?php } else { ?>                        
+                        <img alt="" src="/images/f1infobig.png">
+                    <?php } ?>                        
+                </div>
                 <div class="info">
                     <h3><?php echo $item['name'] ?></h3>
                     <?php 

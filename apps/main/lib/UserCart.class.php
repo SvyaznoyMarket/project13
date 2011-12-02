@@ -33,7 +33,11 @@ class UserCart extends BaseUserData
   {
     if ($product) {  
         $products = $this->parameterHolder->get('products');
-        if (!isset($products[$product->id])) return false;
+        //если в корзине нет товара, к которому надо привязать услугу,
+        //добавим этот товар в корзину
+        if (!isset($products[$product->id])) {
+            $this->addProduct($product, 1);
+        }
     }
       
     $services = $this->parameterHolder->get('services');

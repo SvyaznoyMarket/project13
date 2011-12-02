@@ -1,5 +1,5 @@
 <?php
-slot('title','Сервис F1');
+slot('title',$serviceCategory['name'] );
 slot('navigation');
   include_component('service', 'navigation', array('serviceCategory' => $serviceCategory));
 end_slot();
@@ -14,8 +14,7 @@ if (!$serviceCategory['core_parent_id']){
     
     <div class="float100">
     <div class="column685 pr">
-        <h2 class="bold motton"><?php echo $serviceCategory['name'] ?></h2>
-        <div class="line pb20"></div>
+        <div class="line pb20 mt32"></div>
         <?php         
             include_component('service', 'current_category_tree', array('listInner' => $listInner, 'serviceList' => $serviceList, 'serviceCategory' => $serviceCategory));
         ?>                    
