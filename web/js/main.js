@@ -78,7 +78,7 @@ $(document).ready(function(){
 	var compact = $("div.goodslist").length
 	function liveScroll( lsURL, pageid ) {
 		var params = []
-		if( $('.bigfilter.form').length )
+		if( $('.bigfilter.form').length && location.href.match(/_filter/) )
 			params = $('.bigfilter.form').parent().serializeArray()
 		lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
