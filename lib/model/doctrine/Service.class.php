@@ -54,7 +54,8 @@ class Service extends BaseService
     if (!$this->price) {
         $this->getCurrentPrice();
     }  
-    return number_format($this->price, 2, ',', ' ');
+    if ($this->price < 1) return 'бесплатно';
+    return number_format($this->price, 0, ',', ' ');
   }  
   
   public function getCurrentPrice() {
