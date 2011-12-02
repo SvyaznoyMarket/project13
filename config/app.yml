@@ -39,6 +39,9 @@ all:
     photo_url:
       - 'http://fs01.enter.ru/11/1/160/'
       - 'http://fs01.enter.ru/11/1/500/'
+      - 'http://fs01.enter.ru/11/1/120/'
+      
+      
   shop:
     photo_url:
       - 'http://fs01.enter.ru/8/1/40/'

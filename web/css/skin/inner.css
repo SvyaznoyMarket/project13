@@ -266,6 +266,14 @@ border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px
 }
+.mInlineBlock{
+display: inline-block;
+*display: inline;
+zoom: 1;
+}
+.mVAMiddle {
+    vertical-align: middle;
+}    
 
 .yellowbutton {height:24px; padding:0 7px 3px 7px; background-color:#ffaa01;  background-position:0 0; font-size:11px; color:#fff; border-color:#f28900}
 .yellowbutton:hover {background-color:#f79200; background-position:0 -32px}
@@ -1647,7 +1655,7 @@ DT.bCtg__eOrange{
 
 .bInfoBlock{
 	background: #fdfdfd;
-	margin: 13px 0;
+	margin: 30px 0;
 	border: 1px solid #e6e6e6;
 
 	border-radius: 10px;
@@ -2175,19 +2183,67 @@ DT.bCtg__eOrange{
 /* backert service */
 
 .bBacketServ{
-	padding-left: 70px;
-	border: 1px solid red;
+	border: 1px solid #e6e6e6;
+	padding: 10px 10px 10px 75px;
 	background: url('img/icon_f1service_big.png') 0 0 no-repeat;
 	}
+	.bBacketServ .whitelink{
+		font-weight: normal;
+		}
+	.bBacketServ .link1{
+		color: #4fcbf4;
+		margin-top: 8px;
+		}
 	.bBacketServ.mSmall{
 		display: inline-block;
 		*display: inline;
 		zoom: 1;
 		}
+	.bBacketServ.mBig table td:first-child{
+		width: 360px;
+		font: bold 14px Tahoma, sans-serif;
+		}
+	.bBacketServ.mBig .mPrice{
+		width: 105px;
+		text-align: right;
+		font: 14px Tahoma, sans-serif;
+		}
+	.bBacketServ.mBig td{
+		padding-bottom: 5px;
+		}
+	.bBacketServ.mBig .mEdit{
+		padding: 0 0 0 20px;
+		font: 11px Tahoma, sans-serif;
+		}
+	.bBacketServ.mBig .mEdit span a{
+		margin: 0 2px;
+		color: #a6a6a6;
+		text-decoration: underline;
+		}
+	.bBacketServ th{
+		color: #4fcbf4;
+		text-align: left;
+		padding-bottom: 5px;
+		font: 14px/20px Tahoma, sans-serif;
+		}
+	.bBacketServ.mSmall td{
+		font: 11px/13px Tahoma, sans-serif;
+		}
+	.bBacketServ__eMore{
+		color: #a6a6a6;
+		text-decoration: underline;
+		font: 11px Tahoma, sans-serif;
+		}
 
 
 /* goods info */
-.bGood{}
+.bF1Block.mGoods{
+	top: 410px;
+	left: 170px;
+	}
+
+.bGood{
+	}
 	.bGood__eArticle{
 		margin: 0 0 15px 0;
 		padding: 0 0 10px 0;
@@ -2223,8 +2279,12 @@ DT.bCtg__eOrange{
 	}
 	.bF1Info h3{
 		color: #4fcbf4;
-		margin: 0 0 10px 0;
+		margin: 0 0 7px 0;
 		font: bold 14px Tahoma, sans-serif;
+		}
+	.bF1Info div{
+		font: 14px Tahoma, sans-serif;
+		margin-bottom: 10px;
 		}
 	.bF1Info .link1{
 		color: #4fcbf4;
@@ -2233,21 +2293,101 @@ DT.bCtg__eOrange{
 		text-decoration: none;
 		}
 
+/* f1 popup block */
 
+.bF1Block{
+	top:350px;
+	left:140px;
+	display:block;
+	min-height: 60px;
+	padding: 10px 20px 20px 75px;
+	background: #fff url('img/icon_f1service_big.png') 0 0 no-repeat;
+	}
+	.bF1Block h2{
+		color: #4fcbf4;
+		margin: 0 0 10px 0;
+		font: bold 16px Tahoma, sans-serif;
+		}
+	.bF1Block table{
+		width: 650px;
+		}
+	.bF1Block th{
+		text-align: right;
+		text-decoration: underline;
+		font: 12px Tahoma, sans-serif;
+		}
+	.bF1Block_eInfo{
+		vertical-align: top;
+		padding: 15px 50px 15px 0;
+		border-top: 1px solid #e6e6e6;
+		font: 16px Tahoma, sans-serif;
+		}
+	.bF1Block_eInfo a{
+		color: #a6a6a6;
+		text-decoration: underline;
+		font: 12px/20px Tahoma, sans-serif;
+		}
+	.bF1Block_ePrice{
+		padding-right: 7px;
+		vertical-align: middle;
+		font: bold 16px Tahoma, sans-serif;
+		}
+	.bF1Block_eBuy{
+		width: 200px;
+		text-align: right;
+		vertical-align: top;
+		padding: 15px 0 15px 0;
+		border-top: 1px solid #e6e6e6;
+		}
+/* bServiceCard */
 
+.bServiceCardWrap{
+	font-size: 0;
+	}
+.bServiceCard{
+	width: 220px;
+	margin: 0 10px 30px 0;
+	}
+	.bServiceCard__eImage{
+		width: 160px;
+		height: 125px;
+		margin: 0 auto;
+		overflow: hidden;
+		position: relative;
+		}
+	.bServiceCard__eDescription{
+		font: 12px Tahoma, sans-serif;
+		}
+	.bServiceCard__ePrice{
+		margin-bottom: 7px;
+		font: 18px Tahoma, sans-serif;
+		}
+	.bServiceCard__eLogo{
+		top: 0;
+		left: 0;
+		width: 39px;
+		height: 41px;
+		position: absolute;
+		background: url('img/icon_f1service_small.png') no-repeat;
+		}
+	.mServiceBig .bServiceCard__eLogo{
+		width: 60px;
+		height: 68px;
+		background: url('img/icon_f1service_big.png') no-repeat;
+		}
+    
+.mNewSB h3 {
+    color: #4FCBF4;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.mNewSB .pb20 {
+    color: #434343;
+}
+.mBR5 {
+    border-radius: 5px 5px 5px 5px;
+}
+.bBacketServ {
+    background: url("img/icon_f1service_big.png") no-repeat scroll 0 0 transparent;
+    border: 1px solid #E6E6E6;
+    padding: 10px 10px 10px 75px;
+}

@@ -51,7 +51,10 @@ class Service extends BaseService
   }
   public function getFormattedPrice()
   {
-    return number_format($this->price, 0, ',', ' ');
+    if (!$this->price) {
+        $this->getCurrentPrice();
+    }  
+    return number_format($this->price, 2, ',', ' ');
   }  
   
   public function getCurrentPrice() {
@@ -75,7 +78,7 @@ class Service extends BaseService
               }
           }          
         }       
-       # $this->id = $currentPrice;
+        $this->price = $currentPrice;
         return $currentPrice;
         
   }
@@ -102,4 +105,11 @@ class Service extends BaseService
     return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto() : null;
   }  
 
+  public function getMainPhotoUrl($view = 1)
+  {
+    $urls = sfConfig::get('app_service_photo_url');
+
+    return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto() : null;
+  }  
+  
 }

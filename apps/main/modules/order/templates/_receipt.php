@@ -4,6 +4,7 @@
             <div class="chequebottom">
                 <div class="top font16">Ваш заказ:</div>
                 <ul>
+<<<<<<< HEAD
                     <?php foreach ($cart->getProductServiceList() as $product): ?>
                         <li><div><?php echo $product['name'] ?> (<?php echo $product['quantity'] ?>&nbsp;шт)</div><strong><?php echo ($product['priceFormatted']) ?> <span class="rubl">p</span></strong></li>
 
@@ -11,6 +12,15 @@
                             <li><div><?php echo $service['name'] ?> (<?php echo $service['quantity'] ?>&nbsp;шт)</div><strong><?php echo ($service['priceFormatted']) ?> <span class="rubl">p</span></strong></li>
                         <?php } ?>
 
+=======
+                    <?php foreach ($cart->getReceiptList() as $product): ?>
+                        <li>
+                            <div>
+                                <?php echo $product['name'] ?> (<?php echo $product['quantity'] ?> шт)
+                            </div>
+                            <strong><?php echo ($product['price']) ?> <span class="rubl">p</span></strong>
+                        </li>
+>>>>>>> olga
                     <?php endforeach ?>
                 </ul>
                 <div class="total">

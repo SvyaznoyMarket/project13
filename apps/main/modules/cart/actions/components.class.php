@@ -56,11 +56,13 @@ class cartComponents extends myComponents
     {
       $this->view = 'default';
     }
-
     $cart = $this->getUser()->getCart();
 
-    $list = $cart->getProductServiceList(true);
-
+    if ($this->view == 'order') {
+        $list = $cart->getReceiptList();        
+    } else {
+        $list = $cart->getProductServiceList(true);          
+    }
     $this->setVar('list', $list, true);
-  }
+ }
 }
