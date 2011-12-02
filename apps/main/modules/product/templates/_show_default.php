@@ -27,30 +27,30 @@ foreach ($p3d as $p3d_obj)
     <div class="goodsinfo bGood">
         <div class="bGood__eArticle">
             <div class="fr">
-          <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['product']->token )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
+          <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['token'] )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
             <?php
-            echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
-            echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
-            ?></span>
+            echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
+            echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
+            ?></span><strong class="ml5 hf"><?php echo round($product->rating, 1) ?></strong>
 
 
 				<a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $item['product']->getCommentCount() ?>)</span>
 			</div>
-            <span>Артикул #<?php echo $item['product']->article ?></span>
+            <span>Артикул #<?php echo $item['article'] ?></span>
         </div>
 
-        <div class="font14 pb15"><?php echo $item['product']->preview ?></div>
+        <div class="font14 pb15"><?php echo $item['preview'] ?></div>
         <div class="clear"></div>
 
         <div class="fl pb15">
-            <div class="pb10"><?php include_partial('product/price', array('price' => $item['product']->getFormattedPrice())) ?></div>
-            <?php if ($product->is_instock): ?>
+            <div class="pb10"><?php include_partial('product/price', array('price' => $item['price'])) ?></div>
+            <?php if ($product['is_instock']): ?>
             <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
             <?php endif ?>
         </div>
         <div class="fr ar pb15">
-            <div class="goodsbarbig" ref="<?php echo $item['product']->token ?>">
-              <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
+            <div class="goodsbarbig" ref="<?php echo $item['token'] ?>">
+              <?php echo include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1)) ?>
               <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
               <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
             </div>
@@ -60,8 +60,8 @@ foreach ($p3d as $p3d_obj)
                
         <div class="line pb15"></div>
 
-        <?php if ($product->is_in_sale): ?>
-		<div class="bDeliver2 delivery-info" id="product-id-<?php echo $item['product']->core_id ?>" data-shoplink="<?php echo url_for('shop') ?>" data-calclink="<?php echo url_for('product_delivery') ?>">
+        <?php if ($item['is_insale']): ?>
+		<div class="bDeliver2 delivery-info" id="product-id-<?php echo $item['core_id'] ?>" data-shoplink="<?php echo url_for('shop') ?>" data-calclink="<?php echo url_for('product_delivery') ?>">
 			<h4>Как получить заказ?</h4>
 			<ul>
 				<li>
@@ -69,12 +69,12 @@ foreach ($p3d as $p3d_obj)
 				</li>
 			</ul>
 		</div>
+		<div class="line pb15"></div>
         <?php endif ?>
         
         <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
         
 <?php if (false): ?>
-		<div class="line pb15"></div>
 
         <div class='bF1Info bBlueButton'>
 			<h3>Выбирай услуги F1<br> вместе с этим товаром</h3>

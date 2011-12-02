@@ -105,6 +105,7 @@ class productComponents extends myComponents
       'has_link'   => $this->product['view_show'],
       'photo'      => $table->getMainPhotoUrl($this->product, 2),
       'is_insale'  => $this->product['is_insale'],
+      'is_instock'  => $this->product['is_instock'],
       //'product'  => clone $this->product,
       'url'        => url_for('productCard', array('product' => $this->product['token']), array('absolute' => true)),
       'product'    => $this->product,
@@ -121,10 +122,11 @@ class productComponents extends myComponents
       $item['stock_url'] = url_for('productStock', $this->product);
       //$item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
       $item['shop_url'] = url_for('shop');
+      $item['preview'] = $this->product['preview'];
 
       $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
       $item['rated'] =
-        true || !$this->getUser()->isAuthenticated()
+        (true || !$this->getUser()->isAuthenticated())
         ? in_array($this->product['id'], $rated)
         : false
       ;

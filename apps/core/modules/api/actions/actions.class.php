@@ -61,6 +61,7 @@ class apiActions extends myActions
                 'type'           => $taskType,
                 'core_packet_id' => $i,
               ));
+              $data['packet_id'] = $i;
               $task->setContentData($data);
               $task->trySave();
             }

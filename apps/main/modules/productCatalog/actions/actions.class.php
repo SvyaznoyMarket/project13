@@ -42,7 +42,7 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-    $this->productFilter = $this->getProductFilter();
+    $this->productFilter = $this->getProductFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
@@ -188,7 +188,7 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-    $this->productFilter = $this->getProductFilter(array('count' => true, ));
+    $this->productFilter = $this->getProductFilter(array('count' => true, 'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $this->productTagFilter = $this->getProductTagFilter(array('count' => true, 'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
