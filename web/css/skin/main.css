@@ -101,3 +101,28 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .social_network img {
   vertical-align: middle;
 }
+
+/* index card */
+.hdn { display:none}
+.bIndexCard{
+	top: 234px;
+	left: 58px;
+	width: 797px;
+	height: 352px;
+	display: none;
+	position: absolute;
+	background: url('/images/banner_promo_2.jpg') 0 100% no-repeat;
+	}
+	.bIndexCard__eInfo{
+		bottom: 35px;
+		right: 140px;
+		position: absolute;
+		font: 14px Tahoma, sans-serif;
+		}
+	.bIndexCard__eInfo a{
+		color: #fb9600;
+		font-weight: bold;
+		}
+	.bIndexCard__eInfo span{
+		font-size: 11px;
+		}
