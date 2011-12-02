@@ -59,7 +59,9 @@ class orderComponents extends myComponents
         );
       }      
     }
-
+    
+    $deliveryPrices = $this->getUser()->getCart()->getDeliveriesPrice();
+    $this->setVar('deliveryPrice', isset($deliveryPrices[$this->order->delivery_type_id]) ? $deliveryPrices[$this->order->delivery_type_id] : null, true);
     $this->setVar('item', $item, true);
     $this->setVar('total', $this->getUser()->getCart()->getTotal());
   }

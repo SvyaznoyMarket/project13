@@ -322,6 +322,36 @@ class UserCart extends BaseUserData
   {
 
   }
+  
+  /**
+   * array('mode_id' => 'price')
+   * @return array 
+   */
+  public function getDeliveriesPrice()
+  {
+    $dProducts_raw = $this->getProducts();
+    $dProducts = array();
+    foreach ($dProducts_raw as $dProduct) {
+      $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
+    }
+    $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
+      'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
+      'product' => $dProducts
+    ));
+    if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
+      $deliveries = array(array(
+        'mode_id' => 1,
+        'date' => date('Y-m-d', time()+(3600*48)),
+        'price' => null,
+      ));
+    }
+    $result = array();
+    foreach ($deliveries as $d) {
+      $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($d['mode_id']);
+      $result[$deliveryObj['id']] = $d['price'];
+    }
+    return $result;
+  }
 
   public function getTotal($is_formatted = false)
   {

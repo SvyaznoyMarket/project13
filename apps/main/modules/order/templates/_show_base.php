@@ -5,7 +5,7 @@
 
         <div class="fr width250 ar">
             <div class="font16">Итого к оплате:</div>
-            <div class="font34"><strong><?php include_partial('default/sum', array('sum' => $total, )) ?> <span class="rubl">p</span></strong></div>
+            <div class="font34"><strong><?php include_partial('default/sum', array('sum' => $total+$deliveryPrice, )) ?> <span class="rubl">p</span></strong></div>
         </div>
 
         <div class="fl">
@@ -32,8 +32,16 @@
                 <?php if (!empty($order->address)): ?><div class="pb5"><span class="gray">Адрес доставки:</span> <?php echo $order->address ?></div><?php endif ?>
                 <?php if (!empty($order->shop_id)): ?><div class="pb5"><span class="gray">Забрать из магазина:</span> <?php echo $order->getShop()->name ?></div><?php endif ?>
             </div>
-
+            
             <div class="clear"></div>
+            
+            <?php if (!$order->isSelfDelivery()): ?>
+            <div class="fl width215 font16 mr20">Стоимость доставки:</div>
+            <div class="fl width430">
+                <strong><?php include_partial('default/sum', array('sum' => $deliveryPrice, )) ?> <span class="rubl">p</span></strong>
+            </div>
+            <div class="clear width500 pb15"></div>
+            <?php endif ?>
 
             <div class="fl width215 font16 mr20">Дополнительная информация:</div>
             <div class="fl width430 pb20">
