@@ -59,6 +59,12 @@ class pageComponents extends myComponents
           array('token' => 'how_pay', 'add_to_name' => '?'),
         ),
       ),
+      'service' => array(
+        'name'  => 'Услуги',
+        'links' => array(
+          array('token' => 'credit'),
+        ),
+      ),
     );
 
     foreach ($list as &$item)
