@@ -57,6 +57,7 @@ foreach ($p3d as $p3d_obj)
             <?php if (false): ?><div class="pb5"><strong><a href="" class="orange underline">Купить быстро в 1 клик</a></strong></div><?php endif ?>
         </div>
 
+               
         <div class="line pb15"></div>
 
         <?php if ($product->is_in_sale): ?>
@@ -69,6 +70,9 @@ foreach ($p3d as $p3d_obj)
 			</ul>
 		</div>
         <?php endif ?>
+        
+        <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
+        
 <?php if (false): ?>
 		<div class="line pb15"></div>
 
@@ -79,7 +83,9 @@ foreach ($p3d as $p3d_obj)
 <?php endif ?>
     </div>
     <!-- /Goods info -->
-
+   
+    
+    
 <?php if (false): //старая версия ?>
 <div class="goodsinfo"><!-- Goods info -->
   <h2 style="padding: 0;">Артикул #<?php echo $item['product']->article ?></h2>
@@ -128,6 +134,11 @@ foreach ($p3d as $p3d_obj)
   </div>
   <?php endif ?>
   </div>
+  
+  
+
+  
+  
   <div class="fr ar pb15">
     <div class="goodsbarbig" ref="<?php echo $item['product']->token ?>">
 		<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
@@ -163,38 +174,6 @@ foreach ($p3d as $p3d_obj)
 <!--        <div class="pb5">Понравилось? <a href="" class="share">Поделиться</a> <strong><a href="" class="nodecor">+87</a></strong></div>-->
   <div class="pb3"><?php include_component('userTag', 'product_link', array('product' => $product)) ?></div>
 
-  <?php $f1 = $product->getServiceList(); ?>
-<?php
-#print_r($f1->toArray());
-if (0 && count($f1)):
-    $num = 0;
-    ?>
-    <div class="f1links form">
-       <?php
-        include_component('product', 'f1_lightbox', array('f1' => $f1,))
-       ?>
-      <div class="f1linkslist">
-        <ul>
-          <?php foreach ($f1 as $service):
-                  if (!$service->getPriceByRegion()) continue;
-              ?>
-            <li>
-                <label for="checkbox-small-<?php echo $service->id ?>">
-                        <?php echo $service->name ?> (<?php echo (int)$service->getPriceByRegion() ?> Р)
-                </label>
-                <input
-                    <?php if (key_exists($service->id, $selectedServices)) echo 'checked="checked"'; ?>
-                    ref="<?php echo $service->token ?>" id="checkbox-small-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="1" />
-            </li>
-        <?php
-         $num++;
-         if ($num==3) break;
-         endforeach ?>
-        </ul>
-        <a href="#" class="underline">подробнее</a>
-      </div>
-    </div>
-<?php endif ?>
 
   <div class="line pb15"></div>
 

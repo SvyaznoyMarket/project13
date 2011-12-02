@@ -153,7 +153,7 @@ class ProjectYandexMarketTask extends sfBaseTask
           ),   
       array(
           'name' => 'export_mgcom.xml',
-          'list' => array(3,2,1,4,7)
+          'list' => array(3,2,1,4,7,8,5)
           ),           
   );
   
@@ -398,6 +398,7 @@ EOF;
     file_put_contents($this->_xmlFilePath,'<offers>',FILE_APPEND);
     
     foreach($offersList as $offerInfo){
+        $this->_currentIsAvalible = true;
         
         try{
             
@@ -434,14 +435,17 @@ EOF;
             $offer->addAttribute('id',$offerInfo['id']);
             if ($offerInfo['is_instock']) $inStock = 'true';
             else $inStock = 'false';
-            $offer->addAttribute('available',$inStock);
             $offer->addAttribute('type','vendor.model');
 
             //основные параметры
             foreach($this->_uploadParamsList as $param){
                 $value = $this->_getPropValueByCode($offerInfo,$param);
-                if ($value) $offer->$param = $value;
-            }            
+                if ($value !== false) $offer->$param = $value;
+            }      
+            if ($this->_currentIsAvalible === false) {
+                $inStock = 'false';
+            }
+            $offer->addAttribute('available',$inStock);
             //дополнительные параметры
             foreach($this->_additionalParams as $addParam){
                 $value = $this->_getAdditionalPropValueByCode($offerInfo,$addParam);
@@ -475,21 +479,30 @@ EOF;
   
   
   private function _getPropValueByCode($offerInfo,$code){
-        $value = "";
+        $value = false;
         switch ($code){
             case 'url':
                 $value = $this->_companyData['url'].'/products/'.$offerInfo['token'];
                 break;
             case 'price':
-                if (isset($offerInfo['ProductPrice'][0])) $value = $offerInfo['ProductPrice'][0]['price'];
+                if (isset($offerInfo['ProductPrice'][0])) {
+                    $value = $offerInfo['ProductPrice'][0]['price'];
+                } else {
+                    $value = '0.00';
+                    $this->_currentIsAvalible = false;                    
+                }
                 break;
             case 'categoryId':
                 if (isset($offerInfo['ProductCategoryProductRelation'][0]['product_category_id'])) 
                     $value = $offerInfo['ProductCategoryProductRelation'][0]['product_category_id'];
                 break;
             case 'picture':
-                if (isset($offerInfo['main_photo'])) 
+                if (isset($offerInfo['main_photo']) && $offerInfo['main_photo']) {
                     $value =  $this->_imageUrlsConfig[3] . $offerInfo['main_photo'];
+                } else {
+                    $value = '';
+                    $this->_currentIsAvalible = false;                    
+                }
                 break;
             case 'typePrefix':
                 #$value = $offerInfo['Type']['name'];

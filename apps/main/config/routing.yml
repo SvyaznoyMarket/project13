@@ -613,16 +613,16 @@ cart:
 #
 # cart add
 cart_add:
-  url:   /cart/add/:product/:quantity/:services
-  param: { module: cart, action: add, quantity: 1, services: 0 }
+  url:   /cart/add/:product/:quantity
+  param: { module: cart, action: add, quantity: 1 }
   requirements:
     sf_method: [ get,post ]
 
 #
 # cart delete
 cart_delete:
-  url:   /cart/delete/:product
-  param: { module: cart, action: delete }
+  url:   /cart/delete/:product/:service
+  param: { module: cart, action: delete, product: 0, service: 0 }
 #
 # cart clear
 cart_clear:
@@ -631,13 +631,13 @@ cart_clear:
 #
 # cart service add
 cart_service_add:
-  url:   /cart/add/:product/:service/:quantity
-  param: { module: cart, action: serviceAdd }
+  url:   /cart/add_service/:service/:quantity/:product
+  param: { module: cart, action: serviceAdd, quantity: 1, product: 0 }
 #
 # cart servcie delete
 cart_service_delete:
-  url:   /cart/delete/:product/:service
-  param: { module: cart, action: serviceDelete }
+  url:   /cart/delete_service/:service/:product
+  param: { module: cart, action: serviceDelete, product: 0 }
 
 
 #

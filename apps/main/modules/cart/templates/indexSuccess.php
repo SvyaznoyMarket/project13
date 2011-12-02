@@ -24,7 +24,7 @@
 
 <?php slot('title', 'Моя корзина') ?>
 
-    <?php if ($cart->count() > 0): ?>
+    <?php if ($cart->countFull() > 0): ?>
       <?php include_component('cart', 'show') ?>
 
     <!-- Total -->
