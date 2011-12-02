@@ -2,6 +2,28 @@ var initOrder = function(quickform) {
 
 quickform = quickform || false;
 
+function addDlvrInBill( innertxt ) {
+	var rubltmpl = $('<span class="rubl">p</span>')	
+	var dtmp  = innertxt.split(',')
+	var pritm = 0	
+	if ( dtmp[1].match(/\d+/) )
+		pritm = dtmp[1].match(/\d+/)[0] 
+
+	var total = $('div.cheque div.total').find('strong').text().replace(/\D+/, '') * 1 + pritm * 1  
+	if( $('#dlvrbill').length ) {
+		total -= $('#dlvrbill').find('strong').text().replace(/\D+/, '') * 1
+		$('#dlvrbill').remove()
+	}
+	if( pritm ) {
+		var dlvrline = $('<li>').attr('id', 'dlvrbill')
+								.append( $('<div>').text( dtmp[0] ) )
+								.append( $('<strong>').text( pritm + ' ').append( '<span class="rubl">p</span>' ) )
+		
+		$('div.cheque ul').append( dlvrline ) 
+	}
+	$('div.cheque div.total').find('strong').empty().text( total + ' ').append( rubltmpl )
+}
+
 function triggerDelivery( i, init ) {
     //init = init || false;
 	if ( i == 3 ) {
@@ -93,6 +115,7 @@ $('.order-form').bind({
         if ('order[delivery_type_id]' == $(e.target).attr('name')) {
           var el = form.find('[name="order[delivery_type_id]"]:checked')
           if (el.length) {
+          	addDlvrInBill( el.next().find('strong').text() )
 			triggerDelivery( el.val() )
             $.post(form.data('updateFieldUrl'), {
               order: {
