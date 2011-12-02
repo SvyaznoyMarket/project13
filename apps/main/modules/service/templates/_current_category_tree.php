@@ -34,10 +34,15 @@
                             <a href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>" >
                                 <?php echo $service['name'] ?>
                             </a>    
-                                <?php if ($service->getCurrentPrice()){ ?>
+                                <?php if ($service->getFormattedPrice()){ ?>
                                     &mdash; 
                                     <div class="font16 mInlineBlock">
-                                        <strong><?php echo $service->getCurrentPrice(); ?>&nbsp;<span class="rubl">p</span></strong>
+                                        <strong>
+                                            <?php echo $service->getFormattedPrice(); ?>
+                                            <?php if((int)$service->getFormattedPrice()) { ?>
+                                                &nbsp;<span class="rubl">p</span>
+                                            <?php } ?>    
+                                        </strong>
                                     </div>             
                                 <?php }   ?>
                         </div>  
