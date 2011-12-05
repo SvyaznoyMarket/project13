@@ -41,7 +41,7 @@ class UserTable extends GuardUserTable
     );
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  public function getCacheEraserKeys($record, $action = null)
   {
     return array();
   }

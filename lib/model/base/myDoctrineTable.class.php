@@ -331,7 +331,7 @@ class myDoctrineTable extends Doctrine_Table
     return $keys;
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  public function getCacheEraserKeys($record, $action = null)
   {
     return array();
 
@@ -343,21 +343,25 @@ class myDoctrineTable extends Doctrine_Table
     }
 
     $field = false;
-    foreach (array('core_id', 'id') as $v)
+    if ($record instanceof myDoctrineRecord)
     {
-      if ($this->hasColumn($v))
+      foreach (array('core_id', 'id') as $v)
       {
-        $field = $v;
-        break;
+        if ($this->hasColumn($v))
+        {
+          $field = $v;
+          break;
+        }
       }
     }
+
     if (!$field)
     {
       return array();
     }
 
     return array(
-      lcfirst($this->getComponentName()).'-'.$record->get($field),
+      lcfirst($this->getComponentName()).'-'.$record[$field],
     );
   }
 

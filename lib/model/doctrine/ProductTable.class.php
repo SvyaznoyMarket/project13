@@ -644,23 +644,28 @@ class ProductTable extends myDoctrineTable
     return $q;
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  public function getCacheEraserKeys($record, $action = null)
   {
     $return = array();
 
-    // for preSave
-    $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
-    // Массив полей, изменения в которых ведут к генерации кеш-ключей
-    $intersection = array_intersect($modified, array(
-      'is_instock',
-      //'name',
-      //'barcode',
-    ));
-    if (true
-      && (('save' == $action) && count($intersection))
-      || ('delete' == $action)
+    $intersection = array();
+    if ($record instanceof myDoctrineRecord)
+    {
+      // for preSave
+      $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
+      // Массив полей, изменения в которых ведут к генерации кеш-ключей
+      $intersection = array_intersect($modified, array(
+        'is_instock',
+        //'name',
+        //'barcode',
+      ));
+    }
+
+    if (
+      (('save' == $action) && count($intersection))
+      || in_array($action, array('delete', 'show'))
     ) {
-      $return[] = "product-{$record->core_id}";
+      $return[] = "product-{$record['core_id']}";
 
       /*
       foreach ($record->Category as $productCategory)
