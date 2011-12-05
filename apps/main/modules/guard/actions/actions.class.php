@@ -361,8 +361,10 @@ class guardActions extends myActions
           'is_active'   => true,
           'region_id'   => $this->getUser()->getRegion('id'),
         ));
-        $this->user->Profile[] = $this->userProfile;
         $this->user->save();
+        //$this->user->Profile[] = $this->userProfile;
+        $this->userProfile->user_id = $this->user->id;
+        $this->userProfile->save();
         $this->getUser()->signin($this->user, false);
 
         if ('frame' == $this->getLayout())

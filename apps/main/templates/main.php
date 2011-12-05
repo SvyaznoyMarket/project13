@@ -67,7 +67,22 @@ _gaq.push(['_trackPageLoadTime']);
     </noindex>
 
 
-    <div class="bigbanner"><a href=""><img src="" alt="" width="768" height="302" /></a></div>
+    <div class="bigbanner">
+    	<a href="#" class='bIndexCard__eA mInlineBlock' style='cursor:pointer;'><img src="/images/banner_promo_1.jpg" alt=""/></a>
+    	<div class="hdn"><img src="/images/banner_promo_2.jpg" alt=""/></div>
+    	<div class='bIndexCard'>
+			<div class='bIndexCard__eInfo'>
+				Приходите в любой магазин Enter в москве 10 декабря:<br><br>
+				<a href='http://www.enter.ru/shops/moskva/enter-na-ul-gruzinskiy-val-d-31'>Москва, ул. Грузинский вал, 31</a><br>
+				<a href='http://www.enter.ru/shops/moskva/magazin-na-ul-b-dorogomilovskaya-d-8'>Москва, ул. Дорогомиловская, 8</a><br>
+				<a href='http://www.enter.ru/shops/moskva/magazin--na-ul-ordgonikidze-d-11'>Москва, ул. Орджникидзе 11, стр.10</a><br><br>
+				Сделайте покупку на сумму от 1000 рублей<br>
+				Оставьте нам фото с вашей улыбкой и<br>
+				Получите золотой кулон в виде сердца! В подарок! :)<br><br>
+				<span>* Количество купонов ограничено. Одному покупателю - один подарок!</span>
+			</div>
+		</div>
+    </div>
       <?php // include_component('default', 'slot', array('token' => 'big_banner')) ?>
 
 
@@ -80,6 +95,13 @@ _gaq.push(['_trackPageLoadTime']);
 <?php include_combined_javascripts() ?>
 <script>
 	$(document).ready(function(){
+		
+		$('.bIndexCard__eA').click( function() { 
+			$('.bIndexCard').fadeIn()
+			return false
+		})
+
+	
 		function getRandomInt(min, max)
 		{
 		  return Math.floor(Math.random() * (max - min + 1)) + min
@@ -91,7 +113,7 @@ _gaq.push(['_trackPageLoadTime']);
 		var bignode = $('.bigbanner')
 		var bri = getRandomInt(1, 9)
 
-		bignode.find('img').attr('src','/images/banners/big/banner'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
+		//bignode.find('img').attr('src','/images/banners/big/banner'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
 		var ri = getRandomInt(1, 4)
 		while( bri == ri + 4 ) {
 			ri = getRandomInt(1, 4)

@@ -6,7 +6,14 @@
 <?php else: ?>
 
   <?php if ($ajax_flag): ?>
-    <?php include_partial('product/list_ajax_'.$view, $sf_data) ?>
+    <?php
+    if ($view == 'line') {
+        $include = 'product/list_ajax_compact';        
+    } else {
+        $include = 'product/list_ajax_'.$view;
+    }
+    include_partial($include, $sf_data)
+    ?>
   <?php else: ?>
     <?php include_partial('product/list_'.$view, $sf_data) ?>
   <?php endif ?>

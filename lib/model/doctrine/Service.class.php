@@ -51,6 +51,10 @@ class Service extends BaseService
   }
   public function getFormattedPrice()
   {
+    if (!$this->price) {
+        $this->getCurrentPrice();
+    }  
+    if ($this->price < 1) return 'бесплатно';
     return number_format($this->price, 0, ',', ' ');
   }  
   
@@ -75,7 +79,7 @@ class Service extends BaseService
               }
           }          
         }       
-       # $this->id = $currentPrice;
+        $this->price = $currentPrice;
         return $currentPrice;
         
   }
@@ -102,4 +106,11 @@ class Service extends BaseService
     return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto() : null;
   }  
 
+  public function getMainPhotoUrl($view = 1)
+  {
+    $urls = sfConfig::get('app_service_photo_url');
+
+    return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto() : null;
+  }  
+  
 }

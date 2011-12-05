@@ -6,7 +6,7 @@
 
   <?php //include_partial('product/name', array('product' => $product)) ?>
   <?php include_component('product', 'show', array('product' => $product)) ?>
-  <?php include_component('service', 'listByProduct', array('product' => $product)) ?>
+  <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
 
 <?php if ($product->isKit()): ?>
   <?php include_partial('product/kit', $sf_data) ?>

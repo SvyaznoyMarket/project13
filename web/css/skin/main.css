@@ -69,35 +69,123 @@ A.dotted.green {border-bottom:1px dashed #508f01}
   url('../fonts/enter_brash_01-webfont.ttf') format('truetype');
 }
 
-.content {float:left; width:390px; padding:7px 0 30px 29px; font-size:13px; z-index:1; position:relative; font-family:"Enter"}
+.content {float:left; width:280px; padding:7px 0 30px 29px; font-size:13px; z-index:1; position:relative; font-family:"Enter"}
 .vcardtitle {font-size:18px; padding-bottom:4px}
 .vcard {font-size:36px; padding-bottom:2px}
 .pb10 {padding-bottom:10px}
 .pb5 {padding-bottom:5px}
 
-.searchbox {float:right; position:relative; width:336px; height:66px; padding:15px 0 0 27px; background:url(img/bg_main.png) no-repeat -677px -108px}
+.searchbox {float:right; position:relative; width:336px; height:66px; padding:15px 0 0 27px; background:url(/images/bg_main.png) no-repeat -677px -108px}
 .searchbox .text {float:left; width:236px; height:36px; line-height:36px; padding:0; border:0; background:none; font-size:14px; color:#fff; margin-right:12px; outline:none}
 .searchbutton {float:left; width:45px; height:36px; border:0; background:none; text-indent:-10000px; cursor:pointer}
 
 .links {float:right; padding:0 40px 0 0}
-.links A {display:block; font-family:"Enter"; font-size:14px; text-decoration:none; text-transform:uppercase}
-.links .link6 {float:left; width:95px; background:url(/css/skin/img/callback.jpg) no-repeat center top; margin-top: 7px; padding-top: 70px; }
-.links .link5 {float:left; width:95px; background:url(/css/skin/img/logo_shop_enter.gif) no-repeat center top; margin-top: 7px; margin-left: 35px;  padding-top: 70px; }
-.links .link4 {float:left; width:70px; background:url(/css/skin/img/about.gif) no-repeat; margin-top: 7px; margin-left: 35px; padding-top: 70px; }
-.links .link1 {float:left; width:62px; padding-top:77px; margin-left: 38px; background:url(/css/skin/img/bg_main.png) no-repeat -830px 1px; text-align:center}
-.links .link2 {width:111px; height:16px; margin:23px 0 0 208px; background:url(/css/skin/img/bg_main.png) no-repeat -897px 0; text-indent:-10000px}
-.links .link3 {margin:38px 0 0 208px}
+.links A {display:inline-block; *display: inline; zoom: 1; font-family:"Enter"; font-size:16px; text-decoration:none;}
+.links .link1 {float:left; width:62px; padding-top:77px; background:url(/images/bg_main.png) no-repeat -830px 1px; text-align:center}
+.links .link2 {width:111px; height:16px; margin:23px 0 0 108px; background:url(/images/bg_main.png) no-repeat -897px 0; text-indent:-10000px}
+.links .link3 {margin:38px 0 0 108px}
 
-.copy {clear:both; padding-left:29px; color:#dcdcdc; font-size:11px}
-.copy A {color:#dcdcdc}
+.copy {clear:both; padding-left:29px; color:#dcdcdc; font-size:11px; padding-bottom: 20px}
+.copy A {color:#a6a6a6; font-size: 11px;}
+.copy .pb5 a{ margin: 0 5px; }
+
+/* index card */
+
+/* index card */
+.hdn { display:none}
+.bIndexCard{
+	top: 234px;
+	left: 58px;
+	width: 797px;
+	height: 352px;
+	display: none;
+	position: absolute;
+	background: url('/images/banner_promo_2.jpg') 0 100% no-repeat;
+	}
+	.bIndexCard__eInfo{
+		bottom: 35px;
+		right: 140px;
+		position: absolute;
+		font: 14px Tahoma, sans-serif;
+		}
+	.bIndexCard__eInfo a{
+		color: #fb9600;
+		font-weight: bold;
+		}
+	.bIndexCard__eInfo span{
+		font-size: 11px;
+		}
+
+
+/* index bottom links */
+
+.bIndexLinks{
+	width: 565px;
+	}
+	.bIndexLinks__eLinks{
+		width: 350px;
+
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bIndexLinks__eLinks a{
+		color: #fff;
+		width: 175px;
+		margin: 5px 0 9px 0;
+		vertical-align: middle;
+		}
+	.bIndexLinks__eLinks a:hover{
+		color: #ffa901;
+		}
+	.bIndexLinks__eLinks .mInlineBlock{
+		width: 21px;
+		height: 21px;
+		margin-right: 10px;
+		vertical-align: middle;
+
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.mShops{ background: url('/images/icon_shop.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mShops{ background: url('/images/icon_shop.gif') 100% 0 no-repeat; }
+	.mCo{ background: url('/images/icon_enter.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mCo{ background: url('/images/icon_enter.gif') 100% 0 no-repeat; }
+	.mReq{ background: url('/images/icon_basket.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mReq{ background: url('/images/icon_basket.gif') 100% 0 no-repeat; }
+	.mWork{ background: url('/images/icon_job.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mWork{ background: url('/images/icon_job.gif') 100% 0 no-repeat; }
+	.mBuy{ background: url('/images/icon_credit.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mBuy{ background: url('/images/icon_credit.gif') 100% 0 no-repeat; }
+	.mF1{ background: url('/images/icon_f1.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mF1{ background: url('/images/icon_f1.gif') 100% 0 no-repeat; }
+
+	.bIndexLinks__eMobile{
+		width: 204px;
+		height: 79px;
+		position: relative;
+		background: url('/images/icon_mobile_apps.gif') 0 0 no-repeat;
+
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bIndexLinks__eMobile div{
+		top: 35px;
+		left: 90px;
+		font: 16px 'Enter';
+		position: absolute;
+		}
+
 
 .social_network {
-  float: right;
-  width: 180px;
-}
+  	float: right;
+  	width: 180px;
+	}
 .social_network span {
-  padding-right: 6px;
-}
+  	padding-right: 6px;
+	}
 .social_network img {
-  vertical-align: middle;
-}
+  	vertical-align: middle;
+	}

@@ -49,6 +49,8 @@ ServiceCategory:
   - service_category
 Service:
   - service
+DeliveryMode:
+  - delivery_type
 ServicePrice:
   - service_price  
 ServiceProductRelation:

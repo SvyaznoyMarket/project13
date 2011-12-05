@@ -23,6 +23,70 @@ foreach ($p3d as $p3d_obj)
 <?php endforeach ?>
 </div>
 
+<!-- Goods info -->
+    <div class="goodsinfo bGood">
+        <div class="bGood__eArticle">
+            <div class="fr">
+          <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['token'] )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
+            <?php
+            echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
+            echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
+            ?></span><strong class="ml5 hf"><?php echo round($product->rating, 1) ?></strong>
+
+
+				<a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $item['product']->getCommentCount() ?>)</span>
+			</div>
+            <span>Артикул #<?php echo $item['article'] ?></span>
+        </div>
+
+        <div class="font14 pb15"><?php echo $item['preview'] ?></div>
+        <div class="clear"></div>
+
+        <div class="fl pb15">
+            <div class="pb10"><?php include_partial('product/price', array('price' => $item['price'])) ?></div>
+            <?php if ($product['is_instock']): ?>
+            <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+            <?php endif ?>
+        </div>
+        <div class="fr ar pb15">
+            <div class="goodsbarbig" ref="<?php echo $item['token'] ?>">
+              <?php echo include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1)) ?>
+              <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
+              <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
+            </div>
+            <?php if (false): ?><div class="pb5"><strong><a href="" class="orange underline">Купить быстро в 1 клик</a></strong></div><?php endif ?>
+        </div>
+
+               
+        <div class="line pb15"></div>
+
+        <?php if ($item['is_insale']): ?>
+		<div class="bDeliver2 delivery-info" id="product-id-<?php echo $item['core_id'] ?>" data-shoplink="<?php echo url_for('shop') ?>" data-calclink="<?php echo url_for('product_delivery') ?>">
+			<h4>Как получить заказ?</h4>
+			<ul>
+				<li>
+					<h5>Идет расчет условий доставки...</h5>
+				</li>
+			</ul>
+		</div>
+		<div class="line pb15"></div>
+        <?php endif ?>
+        
+        <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
+        
+<?php if (false): ?>
+
+        <div class='bF1Info bBlueButton'>
+			<h3>Выбирай услуги F1<br> вместе с этим товаром</h3>
+			<a href class='link1'>Выбрать услуги</a>
+        </div>
+<?php endif ?>
+    </div>
+    <!-- /Goods info -->
+   
+    
+    
+<?php if (false): //старая версия ?>
 <div class="goodsinfo"><!-- Goods info -->
   <h2 style="padding: 0;">Артикул #<?php echo $item['product']->article ?></h2>
   <div class="line mb10"></div>
@@ -60,15 +124,21 @@ foreach ($p3d as $p3d_obj)
     <?php if ($product->is_instock): ?>
       <noindex><div class="pb5"><strong class="orange">Есть в наличии</strong></div></noindex>
 <?php endif ?>
-      <?php if (false): ?>
+  <?php if (false): ?>
   <div class="pb3"><strong>Доставка: <?php echo $delivery['name'] ?></strong></div>
   <div class="font11 gray">
-      Стоимость: <strong><?php echo $delivery['price'] ?> руб.</strong><br />
+      Стоимость: <strong><?php echo $deliveryData['price'] ?> руб.</strong><br />
+      <?php echo 'Доставка возможна '.myToolkit::formatDeliveryDate($deliveryPeriod) ?>
 <!--      Москва. Доставим в течение 1-2 дней<br />
       <a href="" class="underline">Хотите быстрее?</a>-->
   </div>
   <?php endif ?>
   </div>
+  
+  
+
+  
+  
   <div class="fr ar pb15">
     <div class="goodsbarbig" ref="<?php echo $item['product']->token ?>">
 		<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
@@ -83,7 +153,7 @@ foreach ($p3d as $p3d_obj)
   </div>
 
   <div class="clear pb15"></div>
-  <div class="mb15 font12 orange infoblock">
+  <div class="mb15 font12 orange infoblock delivery-info" id="product-id-<?php echo $item['product']->core_id ?>">
     <?php if (count($item['product']->Category) && 'furniture' == $item['product']->Category->getFirst()->getRootCategory()->token): ?>
     Этот товар вы можете заказать с доставкой по удобному адресу.
     <?php else: ?>
@@ -104,38 +174,6 @@ foreach ($p3d as $p3d_obj)
 <!--        <div class="pb5">Понравилось? <a href="" class="share">Поделиться</a> <strong><a href="" class="nodecor">+87</a></strong></div>-->
   <div class="pb3"><?php include_component('userTag', 'product_link', array('product' => $product)) ?></div>
 
-  <?php $f1 = $product->getServiceList(); ?>
-<?php
-#print_r($f1->toArray());
-if (0 && count($f1)):
-    $num = 0;
-    ?>
-    <div class="f1links form">
-       <?php
-        include_component('product', 'f1_lightbox', array('f1' => $f1,))
-       ?>
-      <div class="f1linkslist">
-        <ul>
-          <?php foreach ($f1 as $service):
-                  if (!$service->getPriceByRegion()) continue;
-              ?>
-            <li>
-                <label for="checkbox-small-<?php echo $service->id ?>">
-                        <?php echo $service->name ?> (<?php echo (int)$service->getPriceByRegion() ?> Р)
-                </label>
-                <input
-                    <?php if (key_exists($service->id, $selectedServices)) echo 'checked="checked"'; ?>
-                    ref="<?php echo $service->token ?>" id="checkbox-small-<?php echo $service->id ?>" name="service[<?php echo $service->id ?>]" type="checkbox" value="1" />
-            </li>
-        <?php
-         $num++;
-         if ($num==3) break;
-         endforeach ?>
-        </ul>
-        <a href="#" class="underline">подробнее</a>
-      </div>
-    </div>
-<?php endif ?>
 
   <div class="line pb15"></div>
 
@@ -160,6 +198,8 @@ if (0 && count($f1)):
   </div-->
 <?php endif ?>
 </div><!-- Goods info -->
+<?php endif ?>
+
 
 <div class="clear"></div>
 
@@ -180,7 +220,7 @@ if (0 && count($f1)):
   </div>
 <?php endif ?>
 <!-- /Photo video -->
-<?php include_component('product', 'product_model', array('product' => $product,)) ?>
+<?php //include_component('product', 'product_model', array('product' => $product,)) ?>
 <div class="clear"></div>
 <div class="mb15"></div>
 

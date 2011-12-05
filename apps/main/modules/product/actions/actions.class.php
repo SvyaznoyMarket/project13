@@ -16,6 +16,49 @@ class productActions extends myActions
 
     $this->productList = ProductTable::getInstance()->getListByTokens($tokens);
   }
+  
+  /**
+   * @param sfWebRequest $request 
+   */
+  public function executeDeliveryInfo(sfWebRequest $request)
+  {
+    $productIds = $request->getParameter('ids');
+    $data = array();
+    $now = new DateTime();
+    foreach ($productIds as $productId) {
+      $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
+      $result = array('success' => true, 'deliveries' => array());
+      if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
+        $deliveries = array(array(
+          'mode_id' => 1,
+          'date' => date('Y-m-d', time()+(3600*48)),
+          'price' => null,
+        ));
+      }
+      $deliveryData = null;
+      foreach ($deliveries as $i => $delivery) {
+        $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($delivery['mode_id']);
+        $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $delivery['date']);
+        $deliveryPeriod = $minDeliveryDate->diff($now)->days;
+        if ($deliveryPeriod < 0) $deliveryPeriod = 0;
+        $deliveryPeriod = myToolkit::fixDeliveryPeriod($delivery['mode_id'], $deliveryPeriod);
+        if ($deliveryPeriod === false) continue;
+        $delivery['period'] = $deliveryPeriod;
+        $delivery['object'] = $deliveryObj->toArray(false);
+        $delivery['text'] = myToolkit::formatDeliveryDate($deliveryPeriod);
+        $result['deliveries'][] = $delivery;
+        if ($delivery['mode_id'] == 1) {
+          $deliveryData = $delivery;
+        }
+      }
+      if ($deliveryData === null) {
+        $deliveryData = reset($deliveries);
+      }
+      $result['delivery'] = $delivery;
+      $data[$productId] = $result;
+    }
+    return $this->renderJson($data);
+  }
 
  /**
   * Executes show action

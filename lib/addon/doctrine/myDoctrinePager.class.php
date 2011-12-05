@@ -19,5 +19,15 @@ class myDoctrinePager extends sfDoctrinePager
     $ids = $table->getIdsByQuery($this->getQuery());
 
     return $table->createListByIds($ids, $this->getParameter('query_params', array()));
+    
+//    $data = $table->createListByIds($ids, $this->getParameter('query_params', array()));
+//    foreach ($data as $dProduct) {
+//      $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
+//          'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
+//          'product' => array(array('id' => $dProduct->core_id, 'quantity' => 1))
+//      ));
+//      $dProduct->mapValue('deliveries', $deliveries);
+//    }
+//    return $data;
   }
 }

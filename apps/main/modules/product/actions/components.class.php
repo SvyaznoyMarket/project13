@@ -94,6 +94,7 @@ class productComponents extends myComponents
 
     $item = array(
       'id'         => $this->product['id'],
+      'core_id'    => $this->product['core_id'],
       'token'      => $this->product['token'],
       'article'    => $this->product['article'],
       'name'       => $this->product['name'],
@@ -104,6 +105,7 @@ class productComponents extends myComponents
       'has_link'   => $this->product['view_show'],
       'photo'      => $table->getMainPhotoUrl($this->product, 2),
       'is_insale'  => $this->product['is_insale'],
+      'is_instock'  => $this->product['is_instock'],
       //'product'  => clone $this->product,
       'url'        => url_for('productCard', array('product' => $this->product['token']), array('absolute' => true)),
       'product'    => $this->product,
@@ -120,20 +122,11 @@ class productComponents extends myComponents
       $item['stock_url'] = url_for('productStock', $this->product);
       //$item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
       $item['shop_url'] = url_for('shop');
-
-
-      $this->delivery = Core::getInstance()->query('delivery.calc', array(), array(
-        'date' => date('Y-m-d'),
-        'geo_id' => $this->getUser()->getRegion('core_id'),
-        'product' => array(
-            array('id' => $this->product['core_id'], 'quantity' => 1),
-        )
-      ));
-      $this->delivery = $this->delivery ? current($this->delivery) : null;
+      $item['preview'] = $this->product['preview'];
 
       $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
       $item['rated'] =
-        true || !$this->getUser()->isAuthenticated()
+        (true || !$this->getUser()->isAuthenticated())
         ? in_array($this->product['id'], $rated)
         : false
       ;
@@ -149,7 +142,9 @@ class productComponents extends myComponents
     }
     if ('line' == $this->view)
     {
-      $item['url'] = url_for('lineCard', $this->product['Line'], array('absolute' => true));
+      $item['url'] = url_for('lineCard', array('line' => $this->product['Line']['token'], ), array('absolute' => true));
+      $item['Line']['name'] = $this->product['Line']['name'];
+      $item['Line']['count'] = ProductLineTable::getInstance()->getProductCountById($this->product['Line']['id']);
     }
 
     $this->setVar('item', $item, true);

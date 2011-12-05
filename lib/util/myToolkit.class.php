@@ -2,6 +2,88 @@
 
 class myToolkit extends sfToolkit
 {
+  static $_months = array(
+    1 => 'января',
+    2 => 'февраля',
+    3 => 'марта',
+    4 => 'апреля',
+    5 => 'мая',
+    6 => 'июня',
+    7 => 'июля',
+    8 => 'августа',
+    9 => 'сентября',
+    10 => 'октября',
+    11 => 'ноября',
+    12 => 'декабря',
+  );
+  
+  static public function declension($int, $expressions)
+  {
+    if (is_string($expressions)) $expressions = explode(' ', $expressions);
+    if (count($expressions) < 3) $expressions[2] = $expressions[1];
+    settype($int, "integer");
+    $count = $int % 100;
+    if ($count >= 5 && $count <= 20) {
+        $result = $expressions[2];
+    } else {
+        $count = $count % 10;
+        if ($count == 1) {
+            $result = $expressions[0];
+        } elseif ($count >= 2 && $count <= 4) {
+            $result = $expressions[1];
+        } else {
+            $result = $expressions[2];
+        }
+    }
+    return $result;
+  }
+  
+  /**
+   *
+   * @param int $typeId
+   * @param int $period
+   * @return int|false если false - то не надо показывать этот тип доставки 
+   */
+  static public function fixDeliveryPeriod($typeId, $period)
+  {
+    switch ($typeId) {
+      case 1:
+        if (date('Gi') > 2000) {
+          return $period+1;
+        }
+        break;
+      case 2:
+        if (date('Gi') > 1415) {
+          return false;
+        }
+        break;
+      case 3:
+        if (date('Gi') > 2000) {
+          return $period+1;
+        }
+        break;
+      default:
+        return $period;
+        break;
+    }
+    return $period;
+  }
+
+  static public function formatDeliveryDate($period)
+  {
+    $ts = time() + (3600*24*$period);
+    $d = date('j', $ts).' '.self::$_months[date('m', $ts)];
+    if ($period == 0) {
+      return ' сегодня (' . $d . ')';
+    } elseif ($period == 1) {
+      return ' завтра (' . $d . ')';
+    } elseif ($period == 2) {
+      return ' послезавтра (' . $d . ')';
+    } else {
+      return ' через ' . $period . ' ' . self::declension($period, 'день дня дней');
+    }
+  }
+  
   static public function translite($value)
   {
     $tbl = array(

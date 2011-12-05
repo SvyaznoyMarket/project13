@@ -5,6 +5,11 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 ?>
 <?php $empty = 0 == $productPager->getNbResults() ?>
 
+<?php if($view == 'expanded') :?>
+<input type="hidden" id="dlvrlinks" data-shoplink="<?php echo url_for('shop') ?>" data-calclink="<?php echo url_for('product_delivery') ?>" />
+<?php endif?>
+
+
 <?php if( count($productPager->getLinks()) - 1 ): ?>
 <?php 
 $dataAr = array();

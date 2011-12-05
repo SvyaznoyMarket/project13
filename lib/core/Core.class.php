@@ -9,7 +9,8 @@ class Core
     $models = null,
     $logger = null,
     $token = null,
-    $client_id = null
+    $client_id = null,
+    $cache = null
   ;
   protected static
     $instance = null;
@@ -43,6 +44,13 @@ class Core
     curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
 
     $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/core_lib.log'));
+    
+    $redis = new sfRediskaCache(array('prefix' => str_replace(':', '', sfConfig::get('app_doctrine_result_cache_prefix'))));
+    if ($redis->has('core_api_client_id') && $redis->has('core_api_token')) {
+      $this->client_id = $redis->get('core_api_client_id');
+      $this->token = $redis->get('core_api_token');
+    }
+    $this->cache = $redis;
   }
 
   public function getConfig($name = null)
@@ -322,6 +330,27 @@ class Core
       return false;
     }
   }
+  
+  /**
+   *
+   * @param int $productId
+   * @param int $geoId
+   * @return array|false 
+   */
+  public function getProductDeliveryData($productId, $geoId)
+  {
+    $cacheKey = 'product-'.$productId.'/deliveries/'.$geoId;
+    $cacheData = $this->cache->get($cacheKey);
+    if ($cacheData !== null) {
+      return $cacheData;
+    }
+    $response = $this->query('delivery.calc', array(), array(
+      'geo_id' => $geoId,
+      'product' => array(array('id' => $productId, 'quantity' => 1))
+    ));
+    $this->cache->set($cacheKey, $response, 3600*3);
+    return $response;
+  }
 
 
   public function getData($record)
@@ -361,6 +390,7 @@ class Core
       if (isset($response['error']['message'])) $this->error['message'] = $response['error']['message'];
       $response = false;
     }
+    
     return $response;
   }
 
@@ -380,7 +410,7 @@ class Core
     ), JSON_FORCE_OBJECT);
     $result = true;
 
-    $this->logger->log('Trying to pass authentification... ');
+    $this->logger->log('Trying to pass authentification... '. $data);
     $response = $this->send($data);
 
 	//$this->logger->log($response);
@@ -397,6 +427,8 @@ class Core
     {
       $this->client_id = $response['id'];
       $this->token = $response['token'];
+      $this->cache->set('core_api_client_id', $this->client_id);
+      $this->cache->set('core_api_token', $this->token);
       $this->logger->log('Authentification passed');
     }
 
