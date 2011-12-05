@@ -89,7 +89,7 @@ class CreatorTable extends myDoctrineTable
       }
       //->addWhere('category.id = ?', $productCategory->id)
       //->where('product.category_id = ?', $productCategory->id)
-      $q->useResultCache(true, null, $this->getQueryHash("productCategory-{$productCategory->id}/creator-all", $params));
+      //$q->useResultCache(true, null, $this->getQueryHash("productCategory-{$productCategory->id}/creator-all", $params));
 
     $this->setQueryParameters($q, $params);
 

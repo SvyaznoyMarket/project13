@@ -24,6 +24,14 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
+    // checks for cached vars
+    /*
+    if ($this->setCachedVars())
+    {
+      return sfView::SUCCESS;
+    }
+    */
+
     $table = ProductTable::getInstance();
 
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line')))
@@ -153,6 +161,12 @@ class productComponents extends myComponents
     $this->setVar('selectedServices', $selectedServices, true);
 
     $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show'));
+
+    // caches vars
+    /*
+    $this->cacheVars();
+    $this->getCache()->addTag("product-{$this->product['id']}", $this->getCacheKey());
+    */
 
     //myDebug::dump($item, 1);
   }
