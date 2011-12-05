@@ -18,6 +18,7 @@
                                 &nbsp;<span class="rubl">p</span></span>
                                 <?php } ?>
                             <?php } ?>    
+
                            <?php
                            $selected = false;
                            foreach($servListId as $selectedId) {
@@ -27,10 +28,11 @@
                            }
                            if ($selected) {
                                ?>
-                                <input data-url="#" type="button" class="button yellowbutton" value="Уже в корзине">
+                                <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" data-url="#" type="button" class="button yellowbutton" value="Уже в корзине">
                            <?php } else { ?>     
-                                <input data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+                                <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
                            <?php } ?>     
+
                         </td>
                     </tr>                
              <?php  endforeach ?>                                  

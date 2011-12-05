@@ -1,10 +1,17 @@
 <?php if (count($list)): ?>
-<div class="line pb15"></div>
 <?php
 include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$product, 'servListId' => $servListId))
 ?>
 
 <div class="bF1Info bBlueButton">
+<script type="text/html" id="f1look">
+<div>
+<%=f1title%> - <%=f1price%>&nbsp;
+<span class="rubl">p</span>
+<br>
+<a class="bBacketServ__eMore" href="<?php echo url_for('cart_service_delete', array('service' => 'F1ID', 'product' => $product->token));?>">Отменить услугу</a>
+</div>
+</script>
     <?php if (count($servListId)) { ?>
         <h3>Вы добавили услуги:</h3>
           <?php

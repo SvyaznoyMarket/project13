@@ -174,21 +174,43 @@ $(document).ready(function(){
 
 	/* F1 */
 	if( $('div.bF1Info').length ) {
-		$('div.bF1Info').click( function(){
-			$('div.bF1Block').show()
+		var look    = $('div.bF1Info')
+		var f1lines = $('div.bF1Block')
+		// open popup
+		$('.link1', look).click( function(){
+			f1lines.show()
 			return false
 		})
-		$('div.bF1Block .close').click( function(){
-			$('div.bF1Block').hide()
-		})
-		$('div.bF1Block').delegate('input.button','click', function(){
-		console.info( $(this).data('url') )
-			$.getJSON( $(this).data('url'), function(data) {
+		// close popup
+		$('.close', f1lines).click( function(){
+			f1lines.hide()
+		})				
+		// add f1
+		f1lines.find('input.button').bind ('click', function() {
+			$(this).val('В корзине').unbind('click')
+			var f1item = $(this).data()
+			console.info(f1item)
+			$.getJSON( f1item.url, function(data) {
+				if( !data.success )
+					return true
+				f1lines.find('h3').text('Вы добавили услуги:')
+				var f1line = tmpl('f1look', f1item)
+				f1line = f1line.replace('F1ID', f1item.fid )
+				look.find('.link1').before( f1line )
 			})
 			return false
-			// change button title
-			// post buy F1 item
-				// if product not in cart - post buy product
+		})
+		// remove f1
+		$('a.bBacketServ__eMore', look).live('click', function(){
+			var thislink = this
+			$.getJSON( $(this).attr('href'), function(data) {
+				if( !data.success )
+					console.info('fa')//return true			
+				$(thislink).parent().remove()
+				if( !$('a.bBacketServ__eMore', look).length )
+					look.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')
+			})
+			return false
 		})
 	}
 	/* buy bottons */
