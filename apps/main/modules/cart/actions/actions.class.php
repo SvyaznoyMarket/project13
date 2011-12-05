@@ -110,7 +110,7 @@ class cartActions extends myActions {
                 'data' => array(
                     'quantity' => $request['quantity'],
                     'full_quantity' => $cartInfo['qty'],
-                    'full_price' => $cartInfo['sum'],
+                    'full_price' => $this->getUser()->getCart()->getTotal(),
                     'html' => $this->getComponent($this->getModuleName(), 'buy_button', array('product' => $product))
                 )
             );

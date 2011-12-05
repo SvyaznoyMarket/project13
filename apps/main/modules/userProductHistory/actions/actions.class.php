@@ -75,7 +75,7 @@ class userProductHistoryActions extends myActions
               'name' => $name,  
               'link' =>  url_for('user'),   //ссылка на личный кабинет
               'vitems' => $cartInfo['qty'],
-              'sum' => $cartInfo['sum'],
+              'sum' => $this->getUser()->getCart()->getTotal(),
               #'vwish' => count($delayProducts),
               'vcomp' => $user->getProductCompare()->getProductsNum(),
               'productsInCart' => $cartInfo['productsInCart'],
