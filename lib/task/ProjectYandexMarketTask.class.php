@@ -79,9 +79,9 @@ class ProjectYandexMarketTask extends sfBaseTask
       'model',
       'name',      
       'pickup',
-      'delivery',
       'description',
       'local_delivery_cost',
+      'delivery',
   );
   
   /**
@@ -523,16 +523,22 @@ EOF;
                 $value = 'true';
                 break;
             case 'delivery':
-                $value = 'true';
+                if ($this->_currentDeliveyIsAvalible) {
+                    $value = 'true';
+                } else { 
+                    $value = 'false';
+                }
                 break;
             case 'description':
                 $value = $offerInfo['description'];
                 break;
             case 'local_delivery_cost':
                 if (isset($offerInfo['DeliveryPrice']) && isset($offerInfo['DeliveryPrice'][0])) {                
-                    $value = $offerInfo['DeliveryPrice'][0]['price'];      
+                    $value = $offerInfo['DeliveryPrice'][0]['price'];   
+                    $this->_currentDeliveyIsAvalible = true;                                        
                 } else {
                     $value = false;
+                    $this->_currentDeliveyIsAvalible = false;                                        
                 }
                 break;
         }
