@@ -2164,6 +2164,7 @@ DT.bCtg__eOrange{
 		-o-border-radius: 7px;
 		}
 	.bDropMenu div{
+    min-width: 85px;
 		top: -1px;
 		left: -11px;
 		z-index: 100;
