@@ -2164,6 +2164,7 @@ DT.bCtg__eOrange{
 		-o-border-radius: 7px;
 		}
 	.bDropMenu div{
+    min-width: 85px;
 		top: -1px;
 		left: -11px;
 		z-index: 100;
@@ -2401,7 +2402,7 @@ DT.bCtg__eOrange{
 		position: absolute;
 		background: url('img/icon_f1service_small.png') no-repeat;
         border: solid 1px #e6e6e6;
-		}        
+		}
 	.mServiceBig .bServiceCard__eLogo{
 		width: 60px;
 		height: 68px;
