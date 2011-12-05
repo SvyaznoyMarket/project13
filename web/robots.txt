@@ -15,4 +15,5 @@ Disallow: /*?page=1$
 Disallow: /tags/
 Disallow: /*comments/new
 Disallow: /qr/*
+Disallow: /*//
 Host: www.enter.ru
