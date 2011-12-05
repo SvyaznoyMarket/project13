@@ -106,9 +106,7 @@ class myDoctrineTable extends Doctrine_Table
   {
     $alias = $this->getQueryRootAlias();
 
-    $tags = array(
-      $alias,
-    );
+    $tags = array();
     if (!empty($record['id']))
     {
       $tags[] = "{$alias}-{$record['id']}";
@@ -397,6 +395,6 @@ class myDoctrineTable extends Doctrine_Table
 
   public function getCache()
   {
-    return sfContext::getInstance()->get('cache');
+    return myCache::getInstance();
   }
 }

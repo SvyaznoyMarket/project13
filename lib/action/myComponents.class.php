@@ -47,6 +47,6 @@ class myComponents extends sfComponents
 
   public function getCache()
   {
-    return sfContext::getInstance()->get('cache');
+    return myCache::getInstance();
   }
 }

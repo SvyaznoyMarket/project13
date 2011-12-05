@@ -264,6 +264,6 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
 
   public function getCache()
   {
-    return sfContext::getInstance()->get('cache');
+    return myCache::getInstance();
   }
 }

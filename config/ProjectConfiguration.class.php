@@ -22,7 +22,7 @@ class ProjectConfiguration extends sfProjectConfiguration
 
     foreach (array(
       'doctrine.configure'     => array($this, 'listenToConfigureDoctrineEvent'),
-      'context.load_factories' => array($this, 'listenForLoadFactories'),
+      //'context.load_factories' => array($this, 'listenForLoadFactories'),
     ) as $k => $v) {
       $this->dispatcher->connect($k, $v);
     }
@@ -46,7 +46,7 @@ class ProjectConfiguration extends sfProjectConfiguration
 
   public function listenForLoadFactories(sfEvent $event)
   {
-    $context = $event->getSubject();
-    $context->set('cache', new myRedisCache(sfConfig::get('app_cache_config')));
+    //$context = $event->getSubject();
+    //$context->set('cache', new myRedisCache(sfConfig::get('app_cache_config')));
   }
 }
