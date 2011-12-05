@@ -259,6 +259,8 @@ class cartActions extends myActions {
             $return = array(
                 'success' => true,
                 'data' => array(
+                    'full_quantity' => $cartInfo['qty'],
+                    'full_price' => $this->getUser()->getCart()->getTotal(),                    
                 )
             );
             return $this->renderJson($return);
