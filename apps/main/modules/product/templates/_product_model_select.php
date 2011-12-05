@@ -8,6 +8,8 @@
     </select>
     </div>
 <?php endif ?>
+
+<?php if (false): ?>
 <div class="filter">
     <span class="fl" style="font-weight: bold; color: #000;"><?php echo $property->name ?>:</span>
     <div class="filterchoice">
@@ -22,4 +24,21 @@
         </div>
     </div>
 </div>
-    <div class="clear"></div>
+<div class="clear"></div>
+<?php endif ?>
+
+<div class="bDropWrap">
+  <h5><?php echo $property->name ?>:</h5>
+  <div class="bDropMenu">
+    <span><a href="<?php echo $property->values[$property->current]['url'] ?>"><?php echo $property->values[$property->current]['parameter']->getValue() ?></a></span>
+
+    <div>
+      <span><a href="<?php echo $property->values[$property->current]['url'] ?>"><?php echo $property->values[$property->current]['parameter']->getValue() ?></a></span>
+      <?php foreach ($property->values as $key => $value): if ($property->current == $key) continue; ?>
+        <span><a href="<?php echo $value['url'] ?>"><?php echo $value['parameter']->getValue() ?></a></span>
+      <?php endforeach ?>
+    </div>
+
+  </div>
+</div>
+

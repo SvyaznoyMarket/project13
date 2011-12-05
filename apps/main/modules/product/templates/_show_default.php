@@ -57,7 +57,7 @@ foreach ($p3d as $p3d_obj)
             <?php if (false): ?><div class="pb5"><strong><a href="" class="orange underline">Купить быстро в 1 клик</a></strong></div><?php endif ?>
         </div>
 
-               
+
         <div class="line pb15"></div>
 
         <?php if ($item['is_insale']): ?>
@@ -71,9 +71,9 @@ foreach ($p3d as $p3d_obj)
 		</div>
 		<div class="line pb15"></div>
         <?php endif ?>
-        
+
         <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
-        
+
 <?php if (false): ?>
 
         <div class='bF1Info bBlueButton'>
@@ -83,9 +83,9 @@ foreach ($p3d as $p3d_obj)
 <?php endif ?>
     </div>
     <!-- /Goods info -->
-   
-    
-    
+
+
+
 <?php if (false): //старая версия ?>
 <div class="goodsinfo"><!-- Goods info -->
   <h2 style="padding: 0;">Артикул #<?php echo $item['product']->article ?></h2>
@@ -134,11 +134,11 @@ foreach ($p3d as $p3d_obj)
   </div>
   <?php endif ?>
   </div>
-  
-  
 
-  
-  
+
+
+
+
   <div class="fr ar pb15">
     <div class="goodsbarbig" ref="<?php echo $item['product']->token ?>">
 		<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
