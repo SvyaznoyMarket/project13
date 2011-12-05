@@ -233,7 +233,8 @@ class ProductTable extends myDoctrineTable
   public function getListByCategory(ProductCategory $category, array $params = array())
   {
     $this->applyDefaultParameters($params, array(
-      'creator' => false,
+      'creator'  => false,
+      'only_ids' => false,
     ));
 
     $q = $this->createBaseQuery($params);
@@ -247,6 +248,10 @@ class ProductTable extends myDoctrineTable
 
     //$ids = $this->getIdsByQuery($q, $params, 'productCategory-'.$category->id.'/product-ids');
     $ids = $this->getIdsByQuery($q, $params);
+    if ($params['only_ids'])
+    {
+      return $ids;
+    }
 
     return $this->createListByIds($ids, $params);
   }

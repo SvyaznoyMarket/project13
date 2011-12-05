@@ -65,8 +65,8 @@ class productCategoryComponents extends myComponents
     */
 	  $data = ProductCategoryTable::getInstance()->getSubList();
 	  $result = array();
-      
-     
+
+
 	  foreach ($data as $row) {
           #echo $row['id'] .'  '.$row['name'].'----'.$row['level'] .'---<br>';
           $coreIdToId[ $row['core_id'] ] = $row['id'];
@@ -290,7 +290,13 @@ class productCategoryComponents extends myComponents
         return sfView::NONE;
       }
 
-      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array('with_properties' => false, 'limit' => 6, 'view' => 'list', 'property_view' => false));
+      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
+        'with_properties' => false,
+        'limit'           => 6,
+        'view'            => 'list',
+        'property_view'   => false,
+        'only_ids'        => true,
+      ));
     }
     if ('preview' == $this->view)
     {
