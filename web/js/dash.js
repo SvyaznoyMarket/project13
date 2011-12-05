@@ -201,20 +201,21 @@ $(document).ready(function(){
 				look.find('.link1').before( f1line )
 				f1lines.fadeOut()
 								
-				// flybox
-				if( !isInCart ) {
-					var tmpitem = {
-						'id'    : $('.goodsbarbig .link1').attr('href'),
-						'title' : $('h1').html(),
-						'vitems': data.data.full_quantity,
-						'sum'   : data.data.full_price,
-						'price' : $('.goodsinfo .price').html(),
-						'img'   : $('.goodsphoto img').attr('src')
-					}
-					tmpitem.f1 = f1item
-					ltbx.getBasket( tmpitem )
-					markPageButtons()
+				// flybox				
+				var tmpitem = {
+					'id'    : $('.goodsbarbig .link1').attr('href'),
+					'title' : $('h1').html(),
+					'vitems': data.data.full_quantity,
+					'sum'   : data.data.full_price,
+					'price' : $('.goodsinfo .price').html(),
+					'img'   : $('.goodsphoto img').attr('src')
 				}
+				tmpitem.f1 = f1item
+				if( isInCart )
+					tmpitem.f1.only = 'yes'
+				ltbx.getBasket( tmpitem )
+				if( !isInCart ) 
+					markPageButtons()
 			})
 			return false
 		})

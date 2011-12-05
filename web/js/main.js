@@ -524,7 +524,7 @@ $(document).ready(function(){
 
 	var basket = []
 
-	$('.basketline').each( function(){
+	$('.basketinfo').each( function(){
 		var tmpline = new basketline({
 						'line': $(this),
 						'less': $(this).find('.ajaless'),
