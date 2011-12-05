@@ -119,6 +119,11 @@ class defaultComponents extends myComponents
       }
     }
 
+    if (isset($this->keys) && is_array($this->keys))
+    {
+      $keys = $this->keys;
+    }
+
     $this->setVar('keys', $keys, true);
   }
 /**
