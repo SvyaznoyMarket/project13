@@ -11,7 +11,7 @@
                         <td class="bF1Block_eInfo"><?php echo $service->name ?><br>
                             <a href="<?php echo url_for('service_show', array('service'=>$service->token)) ?>">Подробнее об услуге</a>
                         </td>
-                        <td class="bF1Block_eBuy">
+                        <td class="bF1Block_eBuy" ref="<?php echo $service->token;?>">
                             <?php if ($service->getFormattedPrice()) { ?>
                                 <span class="bF1Block_ePrice"><?php echo $service->getFormattedPrice() ?>
                                 <?php if ((int)$service->getFormattedPrice()) { ?>
@@ -28,7 +28,7 @@
                            }
                            if ($selected) {
                                ?>
-                                <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" data-url="#" type="button" class="button yellowbutton" value="Уже в корзине">
+                                <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button disabled yellowbutton" value="В корзине">
                            <?php } else { ?>     
                                 <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
                            <?php } ?>     

@@ -300,8 +300,8 @@ function Flybox( parent ){
 					'<div class="bLiteboxF1__ePlus">+</div>'+
 					'<a href=""><img src="/images/f1info1.png" alt="" width="60" height="60" /></a></div>'+
 				'<div class="ml70">'+
-	                '<div class="pb5 bLiteboxF1__eG"><a href>'+ f1.title +'</a></div>'+
-	                '<strong>'+ f1.price +'<span class="rubl">p</span></strong>'+
+	                '<div class="pb5 bLiteboxF1__eG"><a href>'+ f1.f1title +'</a></div>'+
+	                '<strong>'+ f1.f1price +'<span class="rubl">p</span></strong>'+
 	            '</div>'+
 			'</div>'
 		basket = 

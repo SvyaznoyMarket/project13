@@ -5,9 +5,9 @@ include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$prod
 
 <div class="bF1Info bBlueButton">
 <script type="text/html" id="f1look">
-<div>
+<div ref="<%=fid%>">
 <%=f1title%> - <%=f1price%>&nbsp;
-<span class="rubl">p</span>
+<span class="rubl"> p</span>
 <br>
 <a class="bBacketServ__eMore" href="<?php echo url_for('cart_service_delete', array('service' => 'F1ID', 'product' => $product->token));?>">Отменить услугу</a>
 </div>
@@ -17,7 +17,7 @@ include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$prod
           <?php
           foreach ($list as $service) {  ?>  
                 <?php if (in_array($service->id, $servListId)) { ?>
-                    <div>
+                    <div ref="<?php echo $service->token ;?>">
                         <?php echo $service->name ?> - <?php echo $service->price ?>&nbsp;<span class="rubl">p</span><br>
                         <a class="bBacketServ__eMore" href="<?php echo url_for('cart_service_delete', array('service' => $service->token, 'product' => $product->token));?>">Отменить услугу</a>
                     </div>        

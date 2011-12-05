@@ -49,7 +49,7 @@ $(document).ready(function(){
 			}
 
 	})
-
+	var isInCart = false
 	var changeButtons = function( lbox ){
 		if(!lbox || !lbox.productsInCart ) return false
 		for( var token in lbox.productsInCart) {
@@ -64,6 +64,7 @@ $(document).ready(function(){
 				var button = $('a.link1', bx)
 				button.attr('href', $('.lightboxinner .point2').attr('href') )
 				button.unbind('click').addClass('active')
+				isInCart = true
 			}
 		}
 	}
@@ -187,9 +188,10 @@ $(document).ready(function(){
 		})				
 		// add f1
 		f1lines.find('input.button').bind ('click', function() {
-			$(this).val('В корзине').unbind('click')
+			if( $(this).hasClass('disabled') )
+				return false
+			$(this).val('В корзине').addClass('disabled')
 			var f1item = $(this).data()
-			console.info(f1item)
 			$.getJSON( f1item.url, function(data) {
 				if( !data.success )
 					return true
@@ -197,6 +199,22 @@ $(document).ready(function(){
 				var f1line = tmpl('f1look', f1item)
 				f1line = f1line.replace('F1ID', f1item.fid )
 				look.find('.link1').before( f1line )
+				f1lines.fadeOut()
+								
+				// flybox
+				if( !isInCart ) {
+					var tmpitem = {
+						'id'    : $('.goodsbarbig .link1').attr('href'),
+						'title' : $('h1').html(),
+						'vitems': data.data.full_quantity,
+						'sum'   : data.data.full_price,
+						'price' : $('.goodsinfo .price').html(),
+						'img'   : $('.goodsphoto img').attr('src')
+					}
+					tmpitem.f1 = f1item
+					ltbx.getBasket( tmpitem )
+					markPageButtons()
+				}
 			})
 			return false
 		})
@@ -205,10 +223,14 @@ $(document).ready(function(){
 			var thislink = this
 			$.getJSON( $(this).attr('href'), function(data) {
 				if( !data.success )
-					console.info('fa')//return true			
-				$(thislink).parent().remove()
+					return true			
+				var line = $(thislink).parent()
+				f1lines.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('disabled')
+				line.remove()
+				ltbx.update({ sum: data.data.full_price })
+				
 				if( !$('a.bBacketServ__eMore', look).length )
-					look.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')
+					look.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')	
 			})
 			return false
 		})
