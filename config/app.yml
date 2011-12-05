@@ -40,8 +40,8 @@ all:
       - 'http://fs01.enter.ru/11/1/160/'
       - 'http://fs01.enter.ru/11/1/500/'
       - 'http://fs01.enter.ru/11/1/120/'
-      
-      
+
+
   shop:
     photo_url:
       - 'http://fs01.enter.ru/8/1/40/'
@@ -71,10 +71,11 @@ all:
       prefix: 'CACHETAG::'
 
   cache:
+    enabled: true
     config:
       automatic_cleaning_factor: 0
       lifetime: 604800
-      prefix: test
+      prefix: cache
 
   payment:
    default_provider: uniteller
@@ -227,6 +228,9 @@ live:
     config:
       file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
       prefix: 'CACHETAG::'
+
+  cache:
+    enabled: true
 
 
 alpha:
