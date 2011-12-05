@@ -27,6 +27,9 @@ class productActions extends myActions
     $now = new DateTime();
     foreach ($productIds as $productId) {
       $productObj = ProductTable::getInstance()->findOneByCoreId($productId);
+      if (!$productObj || !$productObj instanceof Doctrine_Record) {
+        continue;
+      }
       if ($productObj->isKit()) {
         $setItems = ProductKitRelationTable::getInstance()->findByKitId($productObj->id);
         $setCoreIds = array();
