@@ -12,7 +12,10 @@
                         </td>
                         <td class="bF1Block_eBuy">
                             <?php if ($service->getFormattedPrice()) { ?>
-                                <span class="bF1Block_ePrice"><?php echo $service->getFormattedPrice() ?>&nbsp;<span class="rubl">p</span></span>
+                                <span class="bF1Block_ePrice"><?php echo $service->getFormattedPrice() ?>
+                                <?php if ((int)$service->getFormattedPrice()) { ?>
+                                &nbsp;<span class="rubl">p</span></span>
+                                <?php } ?>
                             <?php } ?>    
                             <input data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
                         </td>

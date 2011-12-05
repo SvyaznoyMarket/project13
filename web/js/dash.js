@@ -173,8 +173,19 @@ $(document).ready(function(){
 	})
 
 	/* F1 */
-	if( $('#selector').length ) {
-		$('#selector').click( function(){
+	if( $('div.bF1Info').length ) {
+		$('div.bF1Info').click( function(){
+			$('div.bF1Block').show()
+			return false
+		})
+		$('div.bF1Block .close').click( function(){
+			$('div.bF1Block').hide()
+		})
+		$('div.bF1Block').delegate('input.button','click', function(){
+		console.info( $(this).data('url') )
+			$.getJSON( $(this).data('url'), function(data) {
+			})
+			return false
 			// change button title
 			// post buy F1 item
 				// if product not in cart - post buy product

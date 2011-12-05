@@ -79,7 +79,10 @@ function Lightbox( jn, data ){
 		flybox.updateItem( item )				
 		$('#sum', plashka).html( item.sum )
 		$('.point2 b', plashka).html( item.vitems )
-		flybox.showBasket()
+		if( 'f1' in item )
+			flybox.showBasket( item.f1 )
+		else
+			flybox.showBasket()
 		
 		self.save()
 	}
@@ -288,7 +291,19 @@ function Flybox( parent ){
 		hidei = setTimeout( self.jinny, 7000 )
 	}
 	var hrefcart = $('.point2', parent).attr('href')
-	this.showBasket = function() {
+	this.showBasket = function( f1 ) {
+		var f1tmpl = ''
+		if ( typeof(f1) !== "undefined" )
+		 f1tmpl = 
+			'<br/><div class="bLiteboxF1">'+
+				'<div class="fl width70 bLiteboxF1__eWrap">'+
+					'<div class="bLiteboxF1__ePlus">+</div>'+
+					'<a href=""><img src="/images/f1info1.png" alt="" width="60" height="60" /></a></div>'+
+				'<div class="ml70">'+
+	                '<div class="pb5 bLiteboxF1__eG"><a href>'+ f1.title +'</a></div>'+
+	                '<strong>'+ f1.price +'<span class="rubl">p</span></strong>'+
+	            '</div>'+
+			'</div>'
 		basket = 
 			'<div class="font16 pb20">Только что был добавлен в корзину:</div>'+
 			'<div class="fl width70">'+
@@ -304,7 +319,7 @@ function Flybox( parent ){
 					thestuff.price +
 					'<span> &nbsp;</span><span class="rubl">p</span>'+
 				'</strong>'+
-			'</div>'+
+			'</div>'+ f1tmpl +
 			'<div class="clear pb10"></div>'+
 			'<div class="line pb5"></div>'+
 			'<div class="fr">Сумма: '+ thestuff.sum +' Р</div>'+

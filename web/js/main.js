@@ -799,4 +799,13 @@ $(document).ready(function(){
 			if (this.action == '') return false
 		})
 	}
+	
+	/* F1 */
+	//if f1 block
+	// add bottons bind with post
+	
+	// add F1:
+	// add line to initial block
+	// post to server 
+		// flybox on return
 });

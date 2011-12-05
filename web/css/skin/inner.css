@@ -2258,7 +2258,7 @@ DT.bCtg__eOrange{
 
 /* goods info */
 .bF1Block.mGoods{
-	top: 410px;
+	top: 415px;
 	left: 170px;
 	}
 
@@ -2353,7 +2353,7 @@ DT.bCtg__eOrange{
 		font: bold 16px Tahoma, sans-serif;
 		}
 	.bF1Block_eBuy{
-		width: 200px;
+		width: 220px;
 		text-align: right;
 		vertical-align: top;
 		padding: 15px 0 15px 0;
@@ -2419,7 +2419,7 @@ DT.bCtg__eOrange{
 }
 	.mNewSB .mSBlocker{
     height: 125px;
-		background: url('img/f1infobig.png') 50% 0 no-repeat;
+    background: url('img/f1infobig.png') 50% 0 no-repeat;
 }
 
 
@@ -2481,6 +2481,7 @@ DT.bCtg__eOrange{
 
 /* bLiteboxF1 */
 
+
 .bLiteboxF1{
 	padding-top: 20px;
 	}
@@ -2498,11 +2499,4 @@ DT.bCtg__eOrange{
 	.bLiteboxF1__eG,
 	.bLiteboxF1__eG a{
 		color: #434343;
-		}
-
-
-
-
-
-
-
+	}
