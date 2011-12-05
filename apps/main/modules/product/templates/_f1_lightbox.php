@@ -1,6 +1,7 @@
 <div class="hideblock bF1Block mGoods" style="display: none;">
         <i class="close" title="Закрыть">Закрыть</i> 
 		<h2>Добавление услуги F1</h2>
+
 		<table>
 			<tbody>
               <?php foreach ($f1 as $service):
@@ -17,7 +18,19 @@
                                 &nbsp;<span class="rubl">p</span></span>
                                 <?php } ?>
                             <?php } ?>    
-                            <input data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+                           <?php
+                           $selected = false;
+                           foreach($servListId as $selectedId) {
+                               if ($selectedId == $service->id) {
+                                   $selected = true;
+                               }
+                           }
+                           if ($selected) {
+                               ?>
+                                <input data-url="#" type="button" class="button yellowbutton" value="Уже в корзине">
+                           <?php } else { ?>     
+                                <input data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+                           <?php } ?>     
                         </td>
                     </tr>                
              <?php  endforeach ?>                                  

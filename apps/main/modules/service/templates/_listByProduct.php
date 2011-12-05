@@ -1,7 +1,7 @@
 <?php if (count($list)): ?>
 <div class="line pb15"></div>
 <?php
-include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$product))
+include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$product, 'servListId' => $servListId))
 ?>
 
 <div class="bF1Info bBlueButton">

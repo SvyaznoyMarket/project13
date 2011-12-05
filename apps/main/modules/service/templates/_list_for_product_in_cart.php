@@ -2,7 +2,15 @@
     $num = 0;
 ?>
 <?php
-include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$product))
+if (!$selectedNum) {
+    $servListId = array();
+} else {
+   foreach ($list as $service) {
+      if (!$service['selected']) continue; 
+      $servListId[] =  $service['id'];
+   }
+}
+include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$product, 'servListId' => $servListId))
 ?>
  <?php if (!$selectedNum) { ?>    
 <div class="service form bBacketServ mSmall mBR5">
