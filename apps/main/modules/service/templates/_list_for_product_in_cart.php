@@ -22,14 +22,13 @@ include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$prod
                     </tr>
 				</tbody></table>
 </div>
-<?php } else { ?>
+<?php } else {  ?>
 <div class="service form bBacketServ mBig mBR5">
                <table cellspacing="0">
  					<tbody><tr><th colspan="3">Для этого товара есть услуги:</th></tr>
                             
                         <?php foreach ($list as $service): ?>                            
-                        <?php if (!$service['selected']) break; ?>                           
-                            
+                        <?php if (!$service['selected']) continue; ?>                                                       
                         <tr>
                             <td>
                                 <?php echo $service['name'] ?><br>

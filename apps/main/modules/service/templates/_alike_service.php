@@ -9,21 +9,33 @@
 <?php foreach ($list as $service) { ?>
 		<div class="bServiceCard mInlineBlock">
 			<div class="bServiceCard__eImage">
-                <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
-                    <img src="<?php echo $service['photo']; ?>">
-                </a>    
+                <?php if ($service['photo']) { ?>
+                    <div class="bServiceCard__eLogo"></div>
+                    <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
+                        <img src="<?php echo $service['photo']; ?>">
+                    </a>    
+                <?php } else { ?>
+                    <div class="bServiceCard__eLogo_free"></div>
+                    <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
+                    </a>    
+                <?php } ?>
             </div>
 			<p class="bServiceCard__eDescription">
                 <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
                     <?php echo $service['name']; ?>                
                 </a>
             </p>
-			<div class="bServiceCard__ePrice"><?php echo $service['price']; ?> <span class="rubl">p</span></div>
-            
+			<div class="bServiceCard__ePrice">
+                <?php echo $service['price']; ?>
+                <?php if((int)$service['price']) { ?>
+                    <span class="rubl">p</span>
+                <?php } ?>    
+            </div>
+            <!--
             <form action="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" />
                 <input data-url="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" type="submit" class="button yellowbutton" value="Купить услугу">
             </form>    
-            
+            -->            
 		</div>
 <?php
 $num++;

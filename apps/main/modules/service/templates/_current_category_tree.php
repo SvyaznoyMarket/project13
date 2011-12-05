@@ -18,11 +18,13 @@
                if (count($currentServiceList['list'])<1) continue;
             ?>   
             <div class="serviceblock mNewSB">
-                <?php if (isset($currentServiceList['photo'])) { ?>
-                    <div class="photo">
+                <div class="photo">
+                    <?php if (isset($currentServiceList['photo'])) { ?>
                         <img width="160" height="120" alt="" src="<?php echo $currentServiceList['photo']; ?>">
-                    </div>
-                <?php } ?>
+                    <?php } else { ?>                        
+                        <img alt="" src="/images/f1infobig.png">
+                    <?php } ?>                        
+                </div>
                 <div class="info">
                     <h3><?php echo $item['name'] ?></h3>
                     <?php 
@@ -32,10 +34,15 @@
                             <a href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>" >
                                 <?php echo $service['name'] ?>
                             </a>    
-                                <?php if ($service->getCurrentPrice()){ ?>
+                                <?php if ($service->getFormattedPrice()){ ?>
                                     &mdash; 
                                     <div class="font16 mInlineBlock">
-                                        <strong><?php echo $service->getCurrentPrice(); ?>&nbsp;<span class="rubl">p</span></strong>
+                                        <strong>
+                                            <?php echo $service->getFormattedPrice(); ?>
+                                            <?php if((int)$service->getFormattedPrice()) { ?>
+                                                &nbsp;<span class="rubl">p</span>
+                                            <?php } ?>    
+                                        </strong>
                                     </div>             
                                 <?php }   ?>
                         </div>  

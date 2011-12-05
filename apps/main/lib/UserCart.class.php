@@ -329,14 +329,15 @@ class UserCart extends BaseUserData
 
   public function getTotal($is_formatted = false)
   {
+    $this->calculateDiscount();
+      
     $total = 0;
     $products = $this->getProducts();
     $services = $this->getServices();
-    #myDebug::dump($services);
 
     foreach ($products as $product)
     {
-        $total += $product['cart']['formatted_total'];
+        $total += $product['ProductPrice']['price'] * $product['cart']['quantity'];        
     }    
     
     //$products = null;
