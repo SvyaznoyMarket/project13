@@ -31,11 +31,11 @@
                     <span class="rubl">p</span>
                 <?php } ?>    
             </div>
-            <!--
+            
             <form action="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" />
                 <input data-url="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" type="submit" class="button yellowbutton" value="Купить услугу">
             </form>    
-            -->            
+                        
 		</div>
 <?php
 $num++;

@@ -29,9 +29,8 @@
                     <?php } ?>    
                 </strong>  
                 <?php } ?>
-                <!--
-				<a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить услугу</a>
-                -->
+                <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить услугу</a>
+                
 			</div>
 			
 		</div>

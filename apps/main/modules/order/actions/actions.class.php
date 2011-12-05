@@ -399,8 +399,10 @@ class orderActions extends myActions
    */
   protected function saveOrder(Order &$order)
   {
+    $deliveryPrices = $this->getUser()->getCart()->getDeliveriesPrice();
+    $deliveryPrice = isset($deliveryPrices[$order->delivery_type_id]) ? $deliveryPrices[$order->delivery_type_id] : 0;
     $order->User = $this->getUser()->getGuardUser();
-    $order->sum = $this->getUser()->getCart()->getTotal();
+    $order->sum = $this->getUser()->getCart()->getTotal() + $deliveryPrice;
     $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
 
     //$this->order->User = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);//$this->getUser()->getGuardUser();
