@@ -12,4 +12,4 @@
 </ul>
 <?php endif ?>
 
-<a href="<?php echo url_for('homepage') ?>">Enter.ru</a> &gt; <strong>Корзина</strong>
+<a href="<?php echo url_for('homepage') ?>">Enter.ru</a> &gt; <a href="<?php echo url_for('cart') ?>">Корзина</a> &gt; <strong>Оформление заказа</strong>
