@@ -49,7 +49,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
       }
     }
     */
-    
+
     $this->getCache()->removeByTag($this->getTable()->getCacheTags($record));
   }
 

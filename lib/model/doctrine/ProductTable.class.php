@@ -131,7 +131,6 @@ class ProductTable extends myDoctrineTable
     }
 
     $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
-
     if ($prices)
     {
       if ($record instanceof Product)
