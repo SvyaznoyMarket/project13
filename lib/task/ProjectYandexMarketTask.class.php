@@ -368,14 +368,15 @@ EOF;
     $offersList = Doctrine_Core::getTable('Product')
             ->createQuery('p')
             ->distinct()
-            ->select('p.*,pcr.product_category_id,cr.name,price.price,type.name,photo.resource') 
+            ->select('p.*,pcr.product_category_id,cr.name,price.price,type.name,photo.resource, dp.price') 
             ->addWhere('view_show = ?', 1)
             ->addWhere('view_list = ?', 1)
-            ->leftJoin('p.ProductCategoryProductRelation pcr on p.id=pcr.product_id ')      //категория     
+            ->leftJoin('p.ProductCategoryProductRelation pcr ')      //категория     
            # ->leftJoin('p.Photo photo on p.id=photo.product_id ')           //фото
-           # ->leftJoin('p.Type type on p.type_id=type.id ')                 //тип
-            ->leftJoin('p.Creator cr on cr.id=p.creator_id ')               //производитель
-            ->leftJoin('p.ProductPrice price on price.product_id=p.id ')    //цена    
+           # ->leftJoin('p.Type type ')                 //тип
+            ->leftJoin('p.Creator cr ')               //производитель
+            ->leftJoin('p.DeliveryPrice dp  ')               //цена на доставку
+            ->leftJoin('p.ProductPrice price ')    //цена    
             ;
     //если нужно выгрузить только те, что есть в наличии
     if (!$this->_exportNotInStock){
@@ -390,6 +391,7 @@ EOF;
             ->orderBy('p.rating DESC')
             #->limit(50)
             ->fetchArray();
+    
     #echo $offersList;
     #print_r($offersList);
     
@@ -527,7 +529,11 @@ EOF;
                 $value = $offerInfo['description'];
                 break;
             case 'local_delivery_cost':
-                $value = 0;         //TO DO. не известно на данный момент
+                if (isset($offerInfo['DeliveryPrice']) && isset($offerInfo['DeliveryPrice'][0])) {                
+                    $value = $offerInfo['DeliveryPrice'][0]['price'];      
+                } else {
+                    $value = false;
+                }
                 break;
         }
         return $value;     
