@@ -150,6 +150,7 @@ class ProductTable extends myDoctrineTable
         : false
       ,
       'group_property' => $params['group_property'],
+      'hydrate_array'  => $params['hydrate_array'],
     ));
 
     if ($params['with_properties'])

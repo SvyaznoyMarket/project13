@@ -10,7 +10,7 @@ class ProductParameter extends myDoctrineVirtualRecord
     $view_show = false
   ;
 
-  public function __construct(ProductTypePropertyRelation $productTypePropertyRelation, array $productPropertyRelationArray = array())
+  public function __construct($productTypePropertyRelation, array $productPropertyRelationArray = array())
   {
     $this->property = $productTypePropertyRelation['Property'];
     $this->group_id = $productTypePropertyRelation['group_id'];
@@ -24,11 +24,11 @@ class ProductParameter extends myDoctrineVirtualRecord
     foreach ($productPropertyRelationArray as $propertyRelation)
     {
       $realValue = $productPropertyRelationTable->getRealValue($propertyRelation);
-      switch ($this->property->type)
+      switch ($this->property['type'])
       {
         case 'select':
-          $option = ProductPropertyOptionTable::getInstance()->getById($propertyRelation['option_id']);
-          $value[] = $option ? $this->formatValue($this->property->pattern, $option->value, $option->unit) : null;
+          $option = ProductPropertyOptionTable::getInstance()->getById($propertyRelation['option_id'], array('hydrate_array' => true));
+          $value[] = $option ? $this->formatValue($this->property['pattern'], $option['value'], $option['unit']) : null;
           break;
         case 'integer': case 'float':
           if (false !== strpos($realValue, '.'))
@@ -45,16 +45,16 @@ class ProductParameter extends myDoctrineVirtualRecord
             $realValue = str_replace('.', ',', $realValue);
           }
 
-          $value[] = $this->formatValue($this->property->pattern, $realValue, $this->property->unit);
+          $value[] = $this->formatValue($this->property['pattern'], $realValue, $this->property['unit']);
         case 'boolean':
-          $value[] = $this->formatValue($this->property->pattern, $propertyRelation['value'], $this->property->unit);
+          $value[] = $this->formatValue($this->property['pattern'], $propertyRelation['value'], $this->property['unit']);
         default:
-          $value[] = $this->formatValue($this->property->pattern, $realValue, $this->property->unit);
+          $value[] = $this->formatValue($this->property['pattern'], $realValue, $this->property['unit']);
           break;
       }
     }
 
-    $this->value = $this->property->is_multiple ? $value : $value[0];
+    $this->value = $this->property['is_multiple'] ? $value : $value[0];
   }
 
   public function getProperty()
@@ -64,17 +64,17 @@ class ProductParameter extends myDoctrineVirtualRecord
 
   public function getName()
   {
-    return (string)$this->property;
+    return $this->property['name'];
   }
 
   public function getDescription()
   {
-    return $this->property->description;
+    return $this->property['description'];
   }
 
   public function isMultiple()
   {
-    return $this->property->is_multiple;
+    return $this->property['is_multiple'];
   }
 
   public function getGroupId()

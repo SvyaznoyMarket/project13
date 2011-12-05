@@ -75,7 +75,7 @@ class myDoctrineTable extends Doctrine_Table
     }
 
     // если гидрация массивом, тогда использовать кеш
-    if (sfConfig::get('app_cache_enabled', false) && isset($params['hydrate_array']) && $params['hydrate_array'])
+    if (sfConfig::get('app_cache_enabled', false) /*&& isset($params['hydrate_array']) && $params['hydrate_array']*/)
     {
       $cache = $this->getCache();
 
@@ -121,6 +121,10 @@ class myDoctrineTable extends Doctrine_Table
     $this->setQueryParameters($q);
 
     $q->where($q->getRootAlias().'.id = ?', $id);
+    if (isset($params['hydrate_array']) && $params['hydrate_array'])
+    {
+      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    }
 
     return $q->fetchOne();
   }
