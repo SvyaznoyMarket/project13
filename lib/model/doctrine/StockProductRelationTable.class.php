@@ -29,7 +29,7 @@ class StockProductRelationTable extends myDoctrineTable
       'shop_id'    => array('rel' => 'Shop'),
     );
   }
-  
+
   /**
    *
    * @param int $product_id
@@ -37,7 +37,7 @@ class StockProductRelationTable extends myDoctrineTable
    * @param int|null $store_id
    * @param int $quantity кол-во
    * @param array $params
-   * @return bool 
+   * @return bool
    */
   public function isInStock($product_id, $shop_id = null, $store_id = null, $quantity = 1, array $params = array())
   {
@@ -60,7 +60,7 @@ class StockProductRelationTable extends myDoctrineTable
     return false;
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  public function getCacheEraserKeys($record, $action = null)
   {
     $return = array();
 

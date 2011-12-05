@@ -152,6 +152,8 @@ class productComponents extends myComponents
     $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product['id']);
     $this->setVar('selectedServices', $selectedServices, true);
 
+    $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show'));
+
     //myDebug::dump($item, 1);
   }
 
