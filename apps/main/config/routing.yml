@@ -789,6 +789,11 @@ redirect_for_shop:
 redirect_for_productCard:
   url:   /products/:product
   param: { module: redirect, action: index, route: productCard }
+#
+# категория каталога товаров
+redirect_for_productCatalog_category:
+  url:   /catalog/:productCategory/
+  param: { module: redirect, action: index, route: productCatalog_category }
 
 
 
