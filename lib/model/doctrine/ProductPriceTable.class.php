@@ -48,14 +48,14 @@ class ProductPriceTable extends myDoctrineTable
     );
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  public function getCacheEraserKeys($record, $action = null)
   {
     $return = array();
 
     $q = ProductTable::getInstance()->createQuery('product')
       ->select('product.core_id')
       ->innerJoin('product.ProductPrice productPrice')
-      ->where('productPrice.id = ?', $record->id)
+      ->where('productPrice.id = ?', $record['id'])
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 

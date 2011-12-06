@@ -79,7 +79,7 @@ _gaq.push(['_trackPageLoadTime']);
 				Сделайте покупку на сумму от 1000 рублей<br>
 				Оставьте нам фото с вашей улыбкой и<br>
 				Получите золотой кулон в виде сердца! В подарок! :)<br><br>
-				<span>* Количество купонов ограничено. Одному покупателю - один подарок!</span>
+				<span>* Количество кулонов ограничено. Одному покупателю - один подарок!</span>
 			</div>
 		</div>
     </div>
@@ -95,13 +95,13 @@ _gaq.push(['_trackPageLoadTime']);
 <?php include_combined_javascripts() ?>
 <script>
 	$(document).ready(function(){
-		
-		$('.bIndexCard__eA').click( function() { 
+
+		$('.bIndexCard__eA').click( function() {
 			$('.bIndexCard').fadeIn()
 			return false
 		})
 
-	
+
 		function getRandomInt(min, max)
 		{
 		  return Math.floor(Math.random() * (max - min + 1)) + min

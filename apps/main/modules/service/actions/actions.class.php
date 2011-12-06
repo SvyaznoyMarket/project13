@@ -30,6 +30,7 @@ class serviceActions extends myActions
         #echo get_class($serviceCategory);
         $list = ServiceCategoryTable::getInstance()
                         ->createQuery('sc')
+                        ->where('sc.is_active= ? ', 1)
                         ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
                         ->orderBy('sc.lft')->fetchArray();
         //если первый уровень - выбираем перую подкатегорию и переходим на неё

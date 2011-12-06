@@ -447,3 +447,19 @@ ProductKitRelation:
   relations:
     Kit:         { class: Product, foreignAlias: PartRelation, local: kit_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Part:        { class: Product, foreignAlias: KitRelation, local: part_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+
+ProductDeliveryPrice:
+  options:
+    comment:          'Цены на доставку продуктов'
+  actAs:
+    Timestampable: ~    
+    Corable:          { push: disable }
+  columns:
+    id:               { type: integer(20), autoincrement: true, primary: true }
+    product_id:       { type: integer(20), notnull: true }
+    delivery_type_id: { type: integer(20), notnull: true, default: 1 }
+    price:            { type: integer(11) }
+  relations:
+    Product:          { class: Product, foreignAlias: DeliveryPrice, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    DeliveryType:     { class: DeliveryType, foreignAlias: ProductDeliveryPrice, local: delivery_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+   
