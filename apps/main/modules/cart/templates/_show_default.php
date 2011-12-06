@@ -25,10 +25,9 @@
     <?php if ($item['type'] == 'product'): ?>
         <div class="basketline">
             <div class="basketleft">
-                <a href="<?php echo url_for('productCard', $item['product']) ?>"><?php if (isset($item['photo'])) echo image_tag($item['photo']) ?></a>
-                <?php if (count($item['product']->getServiceList())): ?>
-                <div class="ac font11"><a href="" class="f1link">Сервис F1</a> Сервис F1</div>
-                <?php endif ?>
+                <a href="<?php echo url_for('productCard', $item['product']) ?>">
+                    <?php if (isset($item['photo'])) echo image_tag($item['photo']) ?>
+                </a>
             </div>
             <div class="basketright">
                 <div class="goodstitle">
@@ -54,7 +53,12 @@
     <?php else: ?>
         <div class="basketline">
             <div class="basketleft">
-                <a href="<?php echo url_for('service_show', array('service' => $item['token'])) ?>"><?php if (isset($item['photo'])) echo image_tag($item['photo']) ?></a>
+                <a href="<?php echo url_for('service_show', array('service' => $item['token'])) ?>">
+                    <?php
+                        if (isset($item['photo'])) echo image_tag($item['photo']);
+                        else echo '<div class="bServiceCard__eLogo_free pr_imp"></div>';
+                    ?>
+                </a>
             </div>
             <div class="basketright">
                 <div class="goodstitle">

@@ -50,6 +50,8 @@ class serviceComponents extends myComponents
         if ($sel) {
             $selectedNum++;
             $selInfo['selected'] = true;
+            $selInfo['total'] = $selInfo['quantity'] * $selInfo['price'];
+            $selInfo['totalFormatted'] = number_format($selInfo['quantity'] * $selInfo['price'], 0, ',', ' ');
             $selInfo['priceFormatted'] = $next->getFormattedPrice();
             $result[] = $selInfo;
         } else {

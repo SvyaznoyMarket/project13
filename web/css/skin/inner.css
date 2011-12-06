@@ -36,6 +36,7 @@ A.nodecor {text-decoration:none}
 .al {text-align:left}
 .vm {vertical-align:middle}
 .pr {position:relative}
+.pr_imp {position:relative !important; }
 .db {display:block}
 INPUT, SELECT {vertical-align:middle}
 INPUT, TEXTAREA {outline:none}

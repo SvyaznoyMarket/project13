@@ -33,7 +33,7 @@ include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$prod
                                 <?php echo $service['name'] ?><br>
                                 <a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service'=>$service['token'])); ?>">Подробнее об услуге</a>
                             </td>
-                            <td class="mPrice"><span class="price"><?php echo $service['price'] ?></span>&nbsp;<span class="rubl">p</span></td> 
+                            <td class="mPrice"><span class="price"><?php echo $service['totalFormatted'] ?></span>&nbsp;<span class="rubl">p</span></td> 
                             <td class="mEdit">
                                 <div class="numerbox mInlineBlock mVAMiddle">
                                     <?php if ($service['quantity'] > 1) { ?>
