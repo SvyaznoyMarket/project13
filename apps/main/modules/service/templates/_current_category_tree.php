@@ -16,7 +16,7 @@
                         }
                     }
                }
-               if (count($currentServiceList['list'])<1) continue;
+               if (!isset($currentServiceList['list']) || count($currentServiceList['list'])<1) continue;
             ?>   
             <div class="serviceblock mNewSB">
                 <div class="photo">
@@ -30,6 +30,7 @@
                     <h3><?php echo $item['name'] ?></h3>
                     <?php 
                     #print_r($currentServiceList);
+                    if (isset($currentServiceList['list']))
                     foreach($currentServiceList['list'] as $service){ ?>
                         <?php $usedList[] = $service['id']; ?>
                         <div class="font16 pb8">
