@@ -23,7 +23,7 @@
     <!-- Basket -->
   <?php foreach ($list as $item): ?>
     <?php if ($item['type'] == 'product'): ?>
-        <div class="basketline">
+        <div class="basketline" ref="<?php echo $item['product']->token ?>">
             <div class="basketleft">
                 <a href="<?php echo url_for('productCard', $item['product']) ?>">
                     <?php if (isset($item['photo'])) echo image_tag($item['photo']) ?>

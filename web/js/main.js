@@ -564,12 +564,29 @@ $(document).ready(function(){
 			//$('div.bF1Block').hide()
 			var f1popup = $('div.bF1Block', bline)
 			f1popup.show()
-			       .find('.close').click( function(){
+			       .find('.close').click( function() {
 			       		f1popup.hide()
 			       })
+			f1popup.find('input.button').click( function() {
+				   		if( $(this).hasClass('disabled') )
+							return false
+						$(this).val('В корзине').addClass('disabled')
+						var f1item = $(this).data()
+						$.getJSON( f1item.url, function(data) {
+						})
+						makeWide( bline, f1item )
+				   		f1popup.hide()
+				   })
 			return false
 		})
 	})
+	function makeWide( bline, f1item ) {
+		// hide short
+		var f1lineshead = $('div.bBacketServ tr:first', bline)
+		var f1linecart = tmpl('f1cartline', f1item)
+		f1linecart = f1linecart.replace('/F1ID/g', f1item.fid )
+		f1lineshead.after( f1linecart )
+	}
 
 	/* tags */
 	$('.fm').toggle( function(){
