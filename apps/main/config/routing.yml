@@ -83,10 +83,12 @@ productCatalog_creator:
 #
 # карточка товара
 productCard:
-  url:   /products/:product
+  url:   /product/:product
   param: { module: productCard, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 #
 # карточка товара по ид товара
 product_show:
@@ -686,12 +688,12 @@ payment_callback:
 search:
   url:      /search
   param:    { module: search, action: index }
-  
+
 #
 # search
 search_ajax:
   url:      search_ajax/:q/:product_type/:page/:view/:num
-  param:    { module: search, action: ajax, product_type: 0, page: 1, view: compact, num: 18 }  
+  param:    { module: search, action: ajax, product_type: 0, page: 1, view: compact, num: 18 }
 
 
 #callback
@@ -718,11 +720,11 @@ tag:
 tag_show:
   url:      /tags/:tag/:productType
   param:    { module: tag, action: show, productType: ~ }
-  
+
 # tag show
 tag_showAjax:
   url:      /tags_ajax/:tag/:productType/:page/:view/:num
-  param:    { module: tag, action: showAjax, productType: ~, num: 18, view: compact, page: 1 }  
+  param:    { module: tag, action: showAjax, productType: ~, num: 18, view: compact, page: 1 }
 
 #
 # redirect
@@ -730,7 +732,12 @@ tag_showAjax:
 # карточка магазина
 redirect_for_shop:
   url:   /shops/:region/
-  param: { module: default, action: redirect, route: shop }
+  param: { module: redirect, action: index, route: shop }
+#
+# карточка товара
+redirect_for_productCard:
+  url:   /products/:product
+  param: { module: redirect, action: index, route: productCard }
 
 
 
