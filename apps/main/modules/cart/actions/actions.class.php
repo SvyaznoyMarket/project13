@@ -18,6 +18,7 @@ class cartActions extends myActions {
      * @param sfRequest $request A request object
      */
     public function executeIndex(sfWebRequest $request) {
+        #myDebug::dump($this->getUser()->getCart()->getProducts());
         $cart = $this->getUser()->getCart();
         $this->setVar('cart', $cart, true);
     }
