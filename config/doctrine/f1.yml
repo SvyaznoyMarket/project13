@@ -25,6 +25,8 @@ ServiceCategory:
     id:                { type: integer(20), autoincrement: true, primary: true }
     root_id:           { type: integer(20), notnull: true }
     core_parent_id:    { type: integer(20), notnull: false, default: null, comment: 'ид родителя записи в Core' }
+    core_lft:          { type: integer(20), notnull: false, default: null, comment: 'lft записи в Core' }
+    core_rgt:          { type: integer(20), notnull: false, default: null, comment: 'rgt записи в Core' }    
     lft:               { type: integer(20), notnull: true }
     rgt:               { type: integer(20), notnull: true }
     level:             { type: integer(4), notnull: true }
