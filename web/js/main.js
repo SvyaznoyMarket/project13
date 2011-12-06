@@ -448,11 +448,15 @@ $(document).ready(function(){
 		$(nodes.less).data('run',false)
 		$(nodes.more).data('run',false)
 			var main = $(nodes.line)
-		var deladd   = $(nodes.more).parent().attr('href')
+		//var deladd   = $(nodes.more).parent().attr('href')
+		var delurl   = $(nodes.less).parent().attr('href')
+		var addurl   = $(nodes.more).parent().attr('href')
 		var drop     = $(nodes.drop).attr('href')
-		var  price   = $(nodes.price).html().replace(/\s/,'')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')
 		this.quantum = $(nodes.quan).html().replace(/\D/g,'')
+		var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
+		if( $(nodes.price).length )
+		    price    = $(nodes.price).html().replace(/\s/,'')		
 		this.noview  = false
 		var dropflag = false
 
@@ -476,7 +480,11 @@ $(document).ready(function(){
 		}
 
 		this.update = function( minimax, delta ) {
-			$.getJSON( deladd + '/'+ delta , function( data ) {
+			var tmpurl = (delta > 0) ? addurl : delurl
+			if( typeof(tmpurl)==='undefined' )
+				tmpurl = addurl + '/'+ delta
+			$.getJSON( tmpurl , function( data ) {
+			//$.getJSON( deladd + '/'+ delta , function( data ) {
 				$(minimax).data('run',false)
 				if( data.success && data.data.quantity ) {
 					$(nodes.quan).html( data.data.quantity + ' шт.' )
@@ -512,7 +520,6 @@ $(document).ready(function(){
 
 		$(nodes.more).click( function() {
 			var plus = this
-
 			if( ! $(plus).data('run') ) {
 				$(plus).data('run',true)
 				self.update( plus, 1 )
@@ -524,17 +531,44 @@ $(document).ready(function(){
 
 	var basket = []
 
-	$('.basketinfo').each( function(){
+	$('.basketline').each( function(){
+		var bline = $(this)
 		var tmpline = new basketline({
-						'line': $(this),
-						'less': $(this).find('.ajaless'),
-						'more': $(this).find('.ajamore'),
-						'quan': $(this).find('.ajaquant'),
-						'price': $(this).find('.basketinfo .price'),
-						'sum': $(this).find('.basketinfo .sum'),
-						'drop': $(this).find('.basketinfo .whitelink')
+						'line': bline,
+						'less': bline.find('.ajaless:first'),
+						'more': bline.find('.ajamore:first'),
+						'quan': bline.find('.ajaquant:first'),
+						'price': bline.find('.basketinfo .price:first'),
+						'sum': bline.find('.basketinfo .sum:first'),
+						'drop': bline.find('.basketinfo .whitelink:first')
 						})
 		basket.push( tmpline )
+		if( $('div.bBacketServ', bline).length ) {
+			$('div.bBacketServ tr', bline).each( function(){
+				if( $('.ajaquant', $(this)).length ) {
+					var subbline = $(this)
+					tmpline = new basketline({
+								'line': subbline,
+								'less': subbline.find('.ajaless'),
+								'more': subbline.find('.ajamore'),
+								'quan': subbline.find('.ajaquant'),
+								'price': '.none',
+								'sum': subbline.find('.price'),
+								'drop': subbline.find('.whitelink')
+								})
+					basket.push( tmpline )
+				}
+			})
+		}
+		bline.find('a.link1').click( function(){
+			//$('div.bF1Block').hide()
+			var f1popup = $('div.bF1Block', bline)
+			f1popup.show()
+			       .find('.close').click( function(){
+			       		f1popup.hide()
+			       })
+			return false
+		})
 	})
 
 	/* tags */
