@@ -21,6 +21,32 @@
 </table>
 <?php endif ?>
     <!-- Basket -->
+	<script type="text/html" id="f1cartline">
+		<tr ref="<%=fid%>">
+		<td>
+		<%=f1title%>
+		<br>
+		<a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service'=>'F1ID')); ?>">Подробнее об услуге</a>
+		</td>
+		<td class="mPrice">
+		<span class="price"><%=f1price%> </span>
+		<span class="rubl">p</span>
+		</td>
+		<td class="mEdit">
+		<div class="numerbox mInlineBlock mVAMiddle">
+		<a ref="<?php echo url_for('cart_service_add', array('service'=>'F1ID', 'quantity'=>-1, 'product'=>'PRID')); ?>" href="#">
+		<b class="ajaless" title="Уменьшить"></b>
+		</a>
+		<span class="ajaquant">1 шт.</span>
+		<a href="<?php echo url_for('cart_service_add', array('service'=>'F1ID', 'product'=>'PRID')); ?>">
+		<b class="ajamore" title="Увеличить"></b>
+		</a>
+		</div>
+		<a class="button whitelink ml5 mInlineBlock mVAMiddle" 
+			href="<?php echo url_for('cart_service_delete', array('service'=>'F1ID', 'product'=>'PRID')); ?>">Отменить</a>
+		</td>
+		</tr>
+	</script>    
   <?php foreach ($list as $item): ?>
     <?php if ($item['type'] == 'product'): ?>
         <div class="basketline" ref="<?php echo $item['product']->token ?>">

@@ -432,7 +432,7 @@ $(document).ready(function(){
 
 	function getTotal() {
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
-			if( ! basket[i].noview )
+			if( ! basket[i].noview && $.contains( document.body, basket[i].hasnodes[0] ) )
 				tmp += basket[i].sum * 1
 		}
 		if( !tmp ) {
@@ -442,15 +442,19 @@ $(document).ready(function(){
 		total.typewriter(800)
 	}
 
-	function basketline ( nodes ) {
+	function basketline ( nodes, clearfunction ) {
 		var self = this
-
+		this.hasnodes = $(nodes.drop)
+		
 		$(nodes.less).data('run',false)
 		$(nodes.more).data('run',false)
 			var main = $(nodes.line)
-		//var deladd   = $(nodes.more).parent().attr('href')
 		var delurl   = $(nodes.less).parent().attr('href')
 		var addurl   = $(nodes.more).parent().attr('href')
+		if( delurl === '#' )
+			delurl =  $(nodes.less).parent().attr('ref')
+		if( typeof(delurl)==='undefined' )
+			delurl = addurl + '/-1'
 		var drop     = $(nodes.drop).attr('href')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')
 		this.quantum = $(nodes.quan).html().replace(/\D/g,'')
@@ -465,15 +469,16 @@ $(document).ready(function(){
 			self.sum = price * q
 			$(nodes.sum).html( printPrice( self.sum ) )
 			$(nodes.sum).typewriter(800, getTotal)
-//			getTotal()
 		}
 
 		this.clear = function() {
 			$.getJSON( drop , function( data ) {
 				$(nodes.drop).data('run',false)
 				if( data.success ) {
-					main.hide()
+					main.remove()
 					self.noview = true
+					if( clearfunction ) 
+						clearfunction()
 					getTotal()
 				}
 			})
@@ -481,10 +486,7 @@ $(document).ready(function(){
 
 		this.update = function( minimax, delta ) {
 			var tmpurl = (delta > 0) ? addurl : delurl
-			if( typeof(tmpurl)==='undefined' )
-				tmpurl = addurl + '/'+ delta
 			$.getJSON( tmpurl , function( data ) {
-			//$.getJSON( deladd + '/'+ delta , function( data ) {
 				$(minimax).data('run',false)
 				if( data.success && data.data.quantity ) {
 					$(nodes.quan).html( data.data.quantity + ' шт.' )
@@ -529,7 +531,7 @@ $(document).ready(function(){
 
 	} // object basketline
 
-	var basket = []
+	var basket = []	
 
 	$('.basketline').each( function(){
 		var bline = $(this)
@@ -543,25 +545,15 @@ $(document).ready(function(){
 						'drop': bline.find('.basketinfo .whitelink:first')
 						})
 		basket.push( tmpline )
-		if( $('div.bBacketServ', bline).length ) {
-			$('div.bBacketServ tr', bline).each( function(){
+				
+		if( $('div.bBacketServ.mBig', bline).length ) {
+			$('div.bBacketServ.mBig tr', bline).each( function(){
 				if( $('.ajaquant', $(this)).length ) {
-					var subbline = $(this)
-					tmpline = new basketline({
-								'line': subbline,
-								'less': subbline.find('.ajaless'),
-								'more': subbline.find('.ajamore'),
-								'quan': subbline.find('.ajaquant'),
-								'price': '.none',
-								'sum': subbline.find('.price'),
-								'drop': subbline.find('.whitelink')
-								})
-					basket.push( tmpline )
+					addLine( $(this), bline )
 				}
 			})
 		}
 		bline.find('a.link1').click( function(){
-			//$('div.bF1Block').hide()
 			var f1popup = $('div.bF1Block', bline)
 			f1popup.show()
 			       .find('.close').click( function() {
@@ -580,12 +572,45 @@ $(document).ready(function(){
 			return false
 		})
 	})
+
+	function addLine( tr, bline ) {
+	
+		function checkWide() {
+			var buttons = $('td.bF1Block_eBuy', bline)
+			for(var i=0, l = $(buttons).length; i < l; i++) {
+				if( !$('div.bBacketServ.mBig tr[ref=' + $(buttons[i]).attr('ref') + ']').length ) {
+					console.info($(buttons[i]))
+					$(buttons[i]).find('input').val('Купить услугу').removeClass('disabled')
+					break
+				}	
+			}	
+						
+			if ( !$('div.bBacketServ.mBig .ajaquant', bline).length ) {	
+				$('div.bBacketServ.mBig', bline).hide()							
+				$('div.bBacketServ.mSmall', bline).show()
+			}	
+		}	
+		var tmpline = new basketline({
+					'line': tr,
+					'less': tr.find('.ajaless'),
+					'more': tr.find('.ajamore'),
+					'quan': tr.find('.ajaquant'),
+					'price': '.none',
+					'sum': tr.find('.price'),
+					'drop': tr.find('.whitelink')
+					}, checkWide)
+		basket.push( tmpline )
+	}		
+	
 	function makeWide( bline, f1item ) {
-		// hide short
-		var f1lineshead = $('div.bBacketServ tr:first', bline)
+		$('div.bBacketServ.mSmall', bline).hide()
+		$('div.bBacketServ.mBig', bline).show()		
+		var f1lineshead = $('div.bBacketServ.mBig tr:first', bline)
 		var f1linecart = tmpl('f1cartline', f1item)
-		f1linecart = f1linecart.replace('/F1ID/g', f1item.fid )
+		f1linecart = f1linecart.replace(/F1ID/g, f1item.fid ).replace(/PRID/g, bline.attr('ref') )
 		f1lineshead.after( f1linecart )
+		addLine( $('div.bBacketServ.mBig tr:eq(1)', bline) )
+		getTotal()
 	}
 
 	/* tags */

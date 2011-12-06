@@ -192,6 +192,7 @@ $(document).ready(function(){
 				return false
 			$(this).val('В корзине').addClass('disabled')
 			var f1item = $(this).data()
+			f1lines.fadeOut()
 			$.getJSON( f1item.url, function(data) {
 				if( !data.success )
 					return true
@@ -199,7 +200,7 @@ $(document).ready(function(){
 				var f1line = tmpl('f1look', f1item)
 				f1line = f1line.replace('F1ID', f1item.fid )
 				look.find('.link1').before( f1line )
-				f1lines.fadeOut()
+				
 								
 				// flybox				
 				var tmpitem = {
@@ -214,8 +215,10 @@ $(document).ready(function(){
 				if( isInCart )
 					tmpitem.f1.only = 'yes'
 				ltbx.getBasket( tmpitem )
-				if( !isInCart ) 
+				if( !isInCart ) {
+					isInCart = true
 					markPageButtons()
+				}	
 			})
 			return false
 		})
