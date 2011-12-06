@@ -34,8 +34,9 @@ class ProductCategory extends BaseProductCategory
   {
     parent::importFromCore($data);
 
+    $this->token = trim(preg_replace('/^\/catalog/', '', $data['link']), '/');
+
     $this->photo = !empty($data['media_image']) ? $data['media_image'] : 'default.jpg';
-    $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
 
     //Импорт фильтров для категории
     $filterGroup = $this->getFilterGroup();
