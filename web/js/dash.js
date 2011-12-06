@@ -196,7 +196,7 @@ $(document).ready(function(){
 			$.getJSON( f1item.url, function(data) {
 				if( !data.success )
 					return true
-				f1lines.find('h3').text('Вы добавили услуги:')
+				look.find('h3').text('Вы добавили услуги:')
 				var f1line = tmpl('f1look', f1item)
 				f1line = f1line.replace('F1ID', f1item.fid )
 				look.find('.link1').before( f1line )

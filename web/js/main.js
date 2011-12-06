@@ -457,9 +457,9 @@ $(document).ready(function(){
 			delurl = addurl + '/-1'
 		var drop     = $(nodes.drop).attr('href')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')
-		this.quantum = $(nodes.quan).html().replace(/\D/g,'')
+		this.quantum = $(nodes.quan).html().replace(/\D/g,'') * 1
 		var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
-		if( $(nodes.price).length )
+		if( 'price' in nodes )
 		    price    = $(nodes.price).html().replace(/\s/,'')		
 		this.noview  = false
 		var dropflag = false
@@ -472,29 +472,36 @@ $(document).ready(function(){
 		}
 
 		this.clear = function() {
+			main.remove()
+			self.noview = true
+			if( clearfunction ) 
+				clearfunction()
+			getTotal()
 			$.getJSON( drop , function( data ) {
 				$(nodes.drop).data('run',false)
-				if( data.success ) {
-					main.remove()
-					self.noview = true
-					if( clearfunction ) 
-						clearfunction()
-					getTotal()
+				if( !data.success ) {
+					location.href = location.href
 				}
 			})
 		}
 
 		this.update = function( minimax, delta ) {
 			var tmpurl = (delta > 0) ? addurl : delurl
+			self.quantum += delta
+			$(nodes.quan).html( self.quantum + ' шт.' )
+			self.calculate( self.quantum )
 			$.getJSON( tmpurl , function( data ) {
 				$(minimax).data('run',false)
-				if( data.success && data.data.quantity ) {
-					$(nodes.quan).html( data.data.quantity + ' шт.' )
-					self.calculate( data.data.quantity )
+				//if( data.success && data.data.quantity ) {
+					//$(nodes.quan).html( data.data.quantity + ' шт.' )
+					//self.calculate( data.data.quantity )
 					//var liteboxJSON = ltbx.restore()
 					//liteboxJSON.vitems += delta
 					//liteboxJSON.sum    += delta * price
 					//ltbx.update( liteboxJSON )
+				//}
+				if( !data.success ) {
+					location.href = location.href
 				}
 			})
 		}
@@ -579,7 +586,6 @@ $(document).ready(function(){
 			var buttons = $('td.bF1Block_eBuy', bline)
 			for(var i=0, l = $(buttons).length; i < l; i++) {
 				if( !$('div.bBacketServ.mBig tr[ref=' + $(buttons[i]).attr('ref') + ']').length ) {
-					console.info($(buttons[i]))
 					$(buttons[i]).find('input').val('Купить услугу').removeClass('disabled')
 					break
 				}	
@@ -595,7 +601,7 @@ $(document).ready(function(){
 					'less': tr.find('.ajaless'),
 					'more': tr.find('.ajamore'),
 					'quan': tr.find('.ajaquant'),
-					'price': '.none',
+					//'price': '.none',
 					'sum': tr.find('.price'),
 					'drop': tr.find('.whitelink')
 					}, checkWide)
