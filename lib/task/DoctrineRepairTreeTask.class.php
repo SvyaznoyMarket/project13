@@ -62,7 +62,14 @@ EOF;
     {
       $q->where('core_parent_id is NULL');
     }
-    $q->orderBy('position ASC');
+    
+    if ($table->hasColumn('position')) {
+        $q->orderBy('position ASC');        
+    } elseif ($table->hasColumn('core_lft')) {
+        $q->orderBy('core_lft DESC');
+    } else {
+        $q->orderBy('id DESC');        
+    }
 
     $list = $q->execute();
 
