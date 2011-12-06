@@ -97,6 +97,7 @@ _gaq.push(['_trackPageLoadTime']);
 	$(document).ready(function(){
 
 		$('.bIndexCard__eA').click( function() {
+      _gaq.push(['_trackEvent', 'Heart_banner', 'Click'])
 			$('.bIndexCard').fadeIn()
 			return false
 		})
