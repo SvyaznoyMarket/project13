@@ -103,6 +103,8 @@ productComment:
   param: { module: productComment, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # новый комментарий товара
 productComment_new:
@@ -112,6 +114,7 @@ productComment_new:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ post, get ]
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # создать комментарий товара
 productComment_create:
@@ -128,6 +131,8 @@ productComment_helpful:
   param: { module: productComment, action: helpful }
   class:   myDoctrineRoute
   options: { model: ProductComment, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 
 # список товаров
@@ -142,6 +147,8 @@ productStock:
   param: { module: productStock, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # аналогичные товары
 similarProduct:
@@ -149,6 +156,8 @@ similarProduct:
   param: { module: similarProduct, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # обновление товара по измененной характеристики для группы товаров
 changeProduct:
@@ -156,6 +165,8 @@ changeProduct:
   param: { module: product, action: change }
   class: myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 # Линии
 #
@@ -336,6 +347,8 @@ userDelayedProduct_create:
   param: { module: userDelayedProduct, action: create }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user delayed product delete
 userDelayedProduct_delete:
@@ -343,6 +356,8 @@ userDelayedProduct_delete:
   param: { module: userDelayedProduct, action: delete }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user delayed product clear
 userDelayedProduct_clear:
@@ -362,6 +377,8 @@ userProductNotice_show:
   param: { module: userProductNotice, action: show }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product notice create
 userProductNotice_create:
@@ -371,6 +388,7 @@ userProductNotice_create:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ post ]
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product notice delete
 userProductNotice_delete:
@@ -378,6 +396,8 @@ userProductNotice_delete:
   param: { module: userProductNotice, action: delete }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product notice clear
 userProductNotice_clear:
@@ -416,6 +436,8 @@ userTag_linkProduct:
   param:   { module: userTag, action: linkProduct }
   class:   myDoctrineRoute
   options: { model: UserTag, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user tag unlink product
 userTag_unlinkProduct:
@@ -423,6 +445,8 @@ userTag_unlinkProduct:
   param:   { module: userTag, action: unlinkProduct }
   class:   myDoctrineRoute
   options: { model: UserTag, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 
 
@@ -479,6 +503,8 @@ userProductCompare_add:
   param: { module: userProductCompare, action: add }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product compare delete
 userProductCompare_delete:
@@ -486,6 +512,8 @@ userProductCompare_delete:
   param: { module: userProductCompare, action: delete }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 
 
@@ -498,6 +526,7 @@ userProductRating_createtotal:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ get,post ]
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 #
 # user product rating create
@@ -618,13 +647,17 @@ cart_add:
   url:   /cart/add/:product/:quantity
   param: { module: cart, action: add, quantity: 1 }
   requirements:
-    sf_method: [ get,post ]
+    sf_method: [ get, post ]
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
 
 #
 # cart delete
 cart_delete:
   url:   /cart/delete/:product/:service
   param: { module: cart, action: delete, product: 0, service: 0 }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart clear
 cart_clear:
@@ -635,11 +668,15 @@ cart_clear:
 cart_service_add:
   url:   /cart/add_service/:service/:quantity/:product
   param: { module: cart, action: serviceAdd, quantity: 1, product: 0 }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart servcie delete
 cart_service_delete:
   url:   /cart/delete_service/:service/:product
   param: { module: cart, action: serviceDelete, product: 0 }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 
 #
@@ -744,5 +781,3 @@ redirect_for_productCard:
 default_show:
   url:   /:page
   param: { module: page, action: index }
-
-
