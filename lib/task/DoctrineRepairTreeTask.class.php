@@ -66,9 +66,9 @@ EOF;
     if ($table->hasColumn('position')) {
         $q->orderBy('position ASC');        
     } elseif ($table->hasColumn('core_lft')) {
-        $q->orderBy('core_lft DESC');
+        $q->orderBy('core_lft ASC');
     } else {
-        $q->orderBy('id DESC');        
+        $q->orderBy('id ASC');        
     }
 
     $list = $q->execute();
