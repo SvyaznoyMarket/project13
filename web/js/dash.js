@@ -65,19 +65,19 @@ $(document).ready(function(){
 				button.attr('href', $('.lightboxinner .point2').attr('href') )
 				button.unbind('click').addClass('active')
 				isInCart = true
+				if( lbox.servicesInCart )
+				for( var token in lbox.servicesInCart) {
+					var button = $('div.mServ[ref='+ token +'] a.link1')
+					if( button.length ) {				
+						button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
+					}
+					button = $('td.bF1Block_eBuy[ref='+ token +'] input.button')
+					if( button.length ) {				
+						button.addClass('disabled').val('В корзине')
+					}			
+				}				
 			}
-		}
-		if( lbox.servicesInCart )
-		for( var token in lbox.servicesInCart) {
-			var button = $('div.mServ[ref='+ token +'] a.link1')
-			if( button.length ) {				
-				button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
-			}
-			button = $('td.bF1Block_eBuy[ref='+ token +'] input.button')
-			if( button.length ) {				
-				button.addClass('disabled').val('В корзине')
-			}			
-		}
+		}		
 	}
 	/* ---- */
 

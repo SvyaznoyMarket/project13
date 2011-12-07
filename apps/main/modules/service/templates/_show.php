@@ -21,7 +21,7 @@
 			</p>
 			
 			<div class="bSet__ePrice mServ" ref="<?php echo $service['token'] ?>">
-                <?php if (isset($service['currentPrice']) && $service['currentPrice']) { ?>
+                <?php if (isset($service['priceFormatted']) && $service['priceFormatted']) { ?>
 				<strong class="font34">
                     <?php echo $service['priceFormatted']; ?>
                     <?php if((int)$service['priceFormatted']) { ?>

@@ -29,7 +29,8 @@ $servListId = $servListId->getRawValue();
                                 <?php if ($showInCardButton && in_array($service->id, $servListId)) { ?>
                                     <input data-url="#" type="button" class="button yellowbutton" value="В корзине">
                                <?php } else { ?>
-                                    <input data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+                                    <input  data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
+                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
                                <?php } ?>     
                             <?php } ?>    
                         </td>
