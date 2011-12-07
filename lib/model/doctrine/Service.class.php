@@ -62,17 +62,20 @@ class Service extends BaseService
   
   public function getCurrentPrice() {
       
-        $priceList = ProductPriceListTable::getInstance()->getCurrent();
-        $priceListDefault = ProductPriceListTable::getInstance()->getDefault();
+        $region = sfContext::getInstance()->getUser()->getRegion();
+        $priceList = $region['product_price_list_id'];
+        #$priceList = ProductPriceListTable::getInstance()->getCurrent();
+        #$priceListDefault = ProductPriceListTable::getInstance()->getDefault();
       
         $currentPrice = 0;
         foreach($this->Price as $price) {
-            if ($priceList->id == $price['service_price_list_id']) {
+            if ($priceList == $price['service_price_list_id']) {
               $currentPrice = $price['price'];
               break;
             }
         }
         //если для текущего региона цены нет, ищем цену для региона по умолчанию
+        /* по умолчанию уже получено
         if (!isset($currentPrice) && $priceList->id != $priceListDefault->id ) {
           foreach($service->Price as $price) {
               if ($priceListDefault->id == $price['service_price_list_id']) {
@@ -80,7 +83,7 @@ class Service extends BaseService
                   break;
               }
           }          
-        }       
+        } */      
         $this->price = $currentPrice;
         return $currentPrice;
         

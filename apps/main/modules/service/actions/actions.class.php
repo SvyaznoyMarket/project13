@@ -23,25 +23,16 @@ class serviceActions extends myActions
         $list = ServiceCategoryTable::getInstance()
                         ->createQuery('sc')
                         ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
-                        ->innerJoin('rel.Service as service on service.id=rel.service_id')                        
-                        ->addWhere('sc.core_parent_id=?',$serviceCategory['core_id'])
-                        #->addWhere('service.is_active=?', 1)
-                        ->fetchArray();
+                        ->where('sc.core_parent_id=?',$serviceCategory['core_id'])->fetchArray();
     } else {
         //страница категории
         $serviceCategory = $this->getRoute()->getObject();
         #echo get_class($serviceCategory);
         $list = ServiceCategoryTable::getInstance()
                         ->createQuery('sc')
-                        ->innerJoin('sc.ServiceRelation as rel')
-                        ->innerJoin('rel.Service as serv')                        
-                        ->where('sc.is_active= ? ', 1)
-                        #->where('serv.is_active="1"')
-                        ->orderBy('sc.lft')
-                        ->fetchArray();
-        ##echo $list;
-        #exit();
-        #myDebug::dump($list);
+                        ->leftJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
+                        ->orderBy('sc.lft')->fetchArray();
+        #print_r( $list );
         //если первый уровень - выбираем перую подкатегорию и переходим на неё
         if ($serviceCategory['level'] == 1){
             $getNext = false;
@@ -81,6 +72,7 @@ class serviceActions extends myActions
                         ->leftJoin('s.Price p on s.id=p.service_id ')
                         #->addWhere('p.service_price_list_id = ? ', array($priceListDefaultId->id) )
                         ->addWhere('sc.category_id IN ('.implode(',', $listInnerCatId). ')' )
+                        ->orderBy('s.name ASC')
                         ->execute();
                         #->fetchArray();
         #myDebug::dump($serviceList);

@@ -134,6 +134,7 @@ class myUser extends myGuardSecurityUser
       'name'      => $region->name,
       'full_name' => $region->name.', '.$parent_region->name,
       'type'      => $region->type,
+      'product_price_list_id' => $region->product_price_list_id,  
       'core_id'   => $region->core_id,
     );
 

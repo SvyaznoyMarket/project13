@@ -103,6 +103,7 @@ class serviceComponents extends myComponents
             ->innerJoin('s.CategoryRelation as rel on s.id=rel.service_id')
             ->where('rel.category_id = ?', $nearParent[0]->id )
             ->addWhere('s.id != ?', $this->service->id)
+            ->orderBy('s.name ASC')                    
             ->execute();
     foreach($list as $service) {
         $serviceList[] = array(

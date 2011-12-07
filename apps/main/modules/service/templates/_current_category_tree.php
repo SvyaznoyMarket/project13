@@ -16,10 +16,11 @@
                         }
                     }
                }
-               if (count($currentServiceList['list'])<1) continue;
+               if (!isset($currentServiceList['list']) || count($currentServiceList['list'])<1) continue;
             ?>   
             <div class="serviceblock mNewSB">
-                <div class="photo">
+                <div class="photo pr">
+                    <div class="bServiceCard__eLogo"></div>
                     <?php if (isset($currentServiceList['photo'])) { ?>
                         <img width="160" height="120" alt="" src="<?php echo $currentServiceList['photo']; ?>">
                     <?php } else { ?>                        
@@ -30,6 +31,7 @@
                     <h3><?php echo $item['name'] ?></h3>
                     <?php 
                     #print_r($currentServiceList);
+                    if (isset($currentServiceList['list']))
                     foreach($currentServiceList['list'] as $service){ ?>
                         <?php $usedList[] = $service['id']; ?>
                         <div class="font16 pb8">
