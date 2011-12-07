@@ -25,7 +25,7 @@ class productCatalogActions extends myActions
     ));
     */
     $this->productCategoryList = ProductCategoryTable::getInstance()->createQuery()
-      ->select('id, name, level')
+      ->select('id, name, level, token, token_prefix')
       ->orderBy('root_id, lft')
       ->fetchArray()
     ;
