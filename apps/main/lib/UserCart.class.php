@@ -24,6 +24,7 @@ class UserCart extends BaseUserData
       $products[$product->id] = $this->getDefaults();
     }
     $products[$product->id]['quantity'] = $quantity;
+    
     $this->parameterHolder->set('products', $products);
     $this->calculateDiscount();
   }

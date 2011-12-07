@@ -21,15 +21,17 @@
                  <?php echo $service['work']; ?>
 			</p>
 			<div class="bSet__ePrice">
-                <?php if (isset($service['currentPrice']) && $service['currentPrice']) { ?>
+                <?php if (isset($service['priceFormatted']) && $service['priceFormatted']) { ?>
 				<strong class="font34">
-                    <?php echo $service['currentPrice']; ?>
-                    <?php if((int)$service['currentPrice']) { ?>
+                    <?php echo $service['priceFormatted']; ?>
+                    <?php if((int)$service['priceFormatted']) { ?>
                         <span class="rubl">p</span>
                     <?php } ?>    
                 </strong>  
                 <?php } ?>
-                <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить услугу</a>
+                <?php if ((int)$service['price'] >= Service::MIN_BUY_PRICE) { ?>                
+                    <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить услугу</a>
+                <?php } ?>    
                 
 			</div>
 			
