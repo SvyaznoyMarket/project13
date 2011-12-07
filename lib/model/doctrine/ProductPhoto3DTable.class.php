@@ -34,7 +34,7 @@ class ProductPhoto3DTable extends myDoctrineTable
 	  return $q->execute();
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  public function getCacheEraserKeys($record, $action = null)
   {
     $return = array();
 

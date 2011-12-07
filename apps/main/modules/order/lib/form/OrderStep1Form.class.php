@@ -206,7 +206,7 @@ class OrderStep1Form extends BaseOrderForm
     $this->validatorSchema['delivery_type_id'] = new sfValidatorChoice(array('choices' => array_keys($deliveryTypes), 'required' => false));
     //$this->widgetSchema['receipt_type']->setOption('class', 'checkboxlist2');
 
-    $choices = DeliveryTypeTable::getInstance()->getChoices();
+//    $choices = DeliveryTypeTable::getInstance()->getChoices();
 //    if ('legal' == $this->object->person_type)
 //    {
 //      array_pop($choices);
@@ -214,7 +214,11 @@ class OrderStep1Form extends BaseOrderForm
 //    }
     $defaultDelivery = DeliveryTypeTable::getInstance()->findOneByCoreId(1);
 
-    $choices = $this->getDeliveryDateChoises(max(0, $deliveryTypes[$defaultDelivery->id]['date_diff']));
+    if (isset($deliveryTypes[$defaultDelivery->id])) {
+      $choices = $this->getDeliveryDateChoises(max(0, $deliveryTypes[$defaultDelivery->id]['date_diff']));
+    } else {
+      $choices = array();
+    }
     $this->widgetSchema['delivered_at'] = new sfWidgetFormChoice(array(
       'choices'  => $choices,
       'multiple' => false,
@@ -373,9 +377,13 @@ class OrderStep1Form extends BaseOrderForm
       {
       // если самовывоз
         if (!empty($taintedValues['shop_id'])) {
+          // чтобы не срабатывал валидатор, так как при самовывозе этого поля в форме нет.
+          unset($taintedValues['delivery_period_id']);
+          
           $choices = $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3);
           $this->widgetSchema['delivered_at']->setOption('choices', $choices);
           $this->validatorSchema['delivered_at']->setOption('choices', array_keys($choices));
+          $this->validatorSchema['delivery_period_id']->setOption('required', false);
 //            if (!$this->isOrderHaveEnougthInStock($taintedValues['shop_id'])) {
 //                $this->validatorSchema['delivered_at']->setOption('required', true);
 //                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1,3));
