@@ -282,10 +282,17 @@ EOF;
       return false;
     }
 
-    $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
-    //myDebug::dump($entity);
+    if (isset($data['id']))
+    {
+      $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
+      //myDebug::dump($entity);
 
-    $record = $table->getByCoreId($entity['id']);
+      $record = $table->getByCoreId($entity['id']);
+    }
+    else
+    {
+      $record = false;
+    }
 
     // если действие "создать", но запись с таким core_id уже существует
     if (('create' == $action) && $record)
