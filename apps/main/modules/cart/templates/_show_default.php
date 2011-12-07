@@ -49,7 +49,7 @@
 	</script>    
   <?php foreach ($list as $item): ?>
     <?php if ($item['type'] == 'product'): ?>
-        <div class="basketline" ref="<?php echo $item['product']->token ?>">
+        <div class="basketline mWrap" ref="<?php echo $item['product']->token ?>">
             <div class="basketleft">
                 <a href="<?php echo url_for('productCard', $item['product']) ?>">
                     <?php if (isset($item['photo'])) echo image_tag($item['photo']) ?>
@@ -74,10 +74,10 @@
                 
                 <?php include_component('service', 'list_for_product_in_cart', array('product' => $item['product'], 'services' => $item['service'])) ?>
                 
-            </div>
+            <!--/div-- IN PREVIOUS COMPONENT>
         </div>
     <?php else: ?>
-        <div class="basketline">
+        <div class="basketline mWrap">
             <div class="basketleft">
                 <a href="<?php echo url_for('service_show', array('service' => $item['token'])) ?>">
                     <?php
