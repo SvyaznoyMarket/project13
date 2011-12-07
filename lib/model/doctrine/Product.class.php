@@ -48,7 +48,10 @@ class Product extends BaseProduct
   {
     parent::importFromCore($data);
 
-    $this->token = trim(preg_replace('/^\/product/', '', $data['link']), '/');
+    $link = trim(preg_replace('/^\/product/', '', $data['link']), '/');
+    $v = explode('/', $link);
+    $this->token = array_pop($v);
+    $this->token_prefix = count($v) ? array_shift($v) : null;
 
     // check if creator doesn't exists
     if (!empty($data['brand_id']) && empty($this->creator_id))

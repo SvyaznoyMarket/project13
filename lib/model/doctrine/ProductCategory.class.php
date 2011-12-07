@@ -34,7 +34,10 @@ class ProductCategory extends BaseProductCategory
   {
     parent::importFromCore($data);
 
-    $this->token = trim(preg_replace('/^\/catalog/', '', $data['link']), '/');
+    $link = trim(preg_replace('/^\/catalog/', '', $data['link']), '/');
+    $v = explode('/', $link);
+    $this->token = array_pop($v);
+    $this->token_prefix = count($v) ? array_shift($v) : null;
 
     $this->photo = !empty($data['media_image']) ? $data['media_image'] : 'default.jpg';
 
