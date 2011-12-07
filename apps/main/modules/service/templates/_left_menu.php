@@ -2,7 +2,12 @@
 <div class="line pb10"></div>
 <?php    
     $lastLevel = 0;
-    foreach($list as $item){
+    foreach($list as $key => $item){
+        if ( (!isset($list[$key+1]) || $list[$key+1]['level'] <= $item['level'])
+                //&& !count($item['ServiceRelation'])
+                ) {
+            continue;
+        }
         if ($item['level'] == 1){
             if ($lastLevel) echo '</ul>';
             echo '<h2>'.$item['name'].'</h2>';
