@@ -52,29 +52,31 @@ $(document).ready(function(){
 	var isInCart = false
 	var changeButtons = function( lbox ){
 		if(!lbox || !lbox.productsInCart ) return false
-		for( var token in lbox.productsInCart) {
-			var bx = $('div.boxhover[ref='+ token +']')
+		for( var tokenP in lbox.productsInCart) {
+			var bx = $('div.boxhover[ref='+ tokenP +']')
 			if( bx.length ) {
 				var button = $('a.link1', bx)
 				button.attr('href', $('.lightboxinner .point2').attr('href') )
 				button.addClass('active')	//die('click') doesnt work			
 			}
-			bx = $('div.goodsbarbig[ref='+ token +']')
+			bx = $('div.goodsbarbig[ref='+ tokenP +']')
 			if( bx.length ) {
 				var button = $('a.link1', bx)
 				button.attr('href', $('.lightboxinner .point2').attr('href') )
 				button.unbind('click').addClass('active')
 				isInCart = true
 				if( lbox.servicesInCart )
-				for( var token in lbox.servicesInCart) {
-					var button = $('div.mServ[ref='+ token +'] a.link1')
-					if( button.length ) {				
-						button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
+				for( var tokenS in lbox.servicesInCart ) {
+					if( tokenP in lbox.servicesInCart[ tokenS ] ) {						
+						var button = $('div.mServ[ref='+ tokenS +'] a.link1')
+						if( button.length ) {				
+							button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
+						}
+						button = $('td.bF1Block_eBuy[ref='+ tokenS +'] input.button')
+						if( button.length ) {				
+							button.addClass('disabled').val('В корзине')
+						}			
 					}
-					button = $('td.bF1Block_eBuy[ref='+ token +'] input.button')
-					if( button.length ) {				
-						button.addClass('disabled').val('В корзине')
-					}			
 				}				
 			}
 		}		

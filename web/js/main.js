@@ -476,12 +476,13 @@ $(document).ready(function(){
 			self.noview = true
 			if( clearfunction ) 
 				clearfunction()
-			getTotal()
+			
 			$.getJSON( drop , function( data ) {
 				$(nodes.drop).data('run',false)
 				if( !data.success ) {
 					location.href = location.href
-				}
+				} else
+					getTotal()
 			})
 		}
 
@@ -584,10 +585,11 @@ $(document).ready(function(){
 	
 		function checkWide() {
 			var buttons = $('td.bF1Block_eBuy', bline)
+			var mBig = $('div.bBacketServ.mBig', bline)
 			for(var i=0, l = $(buttons).length; i < l; i++) {
-				if( !$('div.bBacketServ.mBig tr[ref=' + $(buttons[i]).attr('ref') + ']').length ) {
+				if( ! $('tr[ref=' + $(buttons[i]).attr('ref') + ']', mBig).length ) {
 					$(buttons[i]).find('input').val('Купить услугу').removeClass('disabled')
-					break
+					//break
 				}	
 			}	
 						

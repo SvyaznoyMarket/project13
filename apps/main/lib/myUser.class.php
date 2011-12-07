@@ -45,6 +45,7 @@ class myUser extends myGuardSecurityUser
     $result['qty'] = 0;
     $result['sum'] = 0;
     $result['productsInCart'] = array();
+    $result['servicesInCart'] = array();
     $cart = $this->getCart();
     if (!$cart || !$cart->getProducts()) {
        # return $result;

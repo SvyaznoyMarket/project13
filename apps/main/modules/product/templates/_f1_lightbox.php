@@ -21,17 +21,20 @@ $servListId = $servListId->getRawValue();
                         <td class="bF1Block_eBuy" ref="<?php echo $service->token ?>">
                             <?php if ($service->getFormattedPrice()) { ?>
                                 <span class="bF1Block_ePrice 
-                                      <?php if ($service->getCurrentPrice() < Service::MIN_BUY_PRICE) echo ' mr110'; ?> 
+                                      <?php if ($service->getCurrentPrice() < Service::MIN_BUY_PRICE || !$product->getIsInsale()) echo ' mr110'; ?> 
                                       ">
-                                    <?php echo $service->getFormattedPrice() ?>&nbsp;
-                                    <span class="rubl">p</span>                                    
+                                    <?php echo $service->getFormattedPrice() ?>
+                                    <?php if ((int)$service->getFormattedPrice()) { ?>
+                                        &nbsp;<span class="rubl">p</span>                                    
+                                   <?php } ?>     
                                 </span>
-                            <?php } ?>    
-                            <?php if ($service->getCurrentPrice() >= Service::MIN_BUY_PRICE) { ?>
+                            <?php } ?>  
+                            <?php if ($service->getCurrentPrice() >= Service::MIN_BUY_PRICE && $product->getIsInsale()) { ?>
                                 <?php if ($showInCardButton && in_array($service->id, $servListId)) { ?>
-                                    <input data-url="#" type="button" class="button yellowbutton" value="В корзине">
+                                    <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
+                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="В корзине">
                                <?php } else { ?>
-                                    <input  data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
+                                    <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
                                     data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
                                <?php } ?>     
                             <?php } ?>    
