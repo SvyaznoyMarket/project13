@@ -1,5 +1,6 @@
     <?php
-    #print_r($serviceList);
+    $usedList = array();
+    #myDebug::dump($serviceList);
     foreach($listInner as $item){
 
         if ($item['level'] == ($serviceCategory['level']+1)){ ?>
@@ -30,6 +31,7 @@
                     <?php 
                     #print_r($currentServiceList);
                     foreach($currentServiceList['list'] as $service){ ?>
+                        <?php $usedList[] = $service['id']; ?>
                         <div class="font16 pb8">
                             <a href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>" >
                                 <?php echo $service['name'] ?>
@@ -70,3 +72,18 @@
          
          
     }
+?>    
+    
+<?php 
+
+/* сервисы, которые находятся прямо в категории второго уровня. Надо ли их отображать?
+foreach($serviceList as $service){
+    foreach($service['ServiceCategoryRelation'] as $cat){
+        if ($cat['category_id'] == $serviceCategory['id'] && !in_array($service['id'], $usedList)){
+            echo $service['name'] .'<br>';
+        }
+    }
+}
+ * */
+
+?>

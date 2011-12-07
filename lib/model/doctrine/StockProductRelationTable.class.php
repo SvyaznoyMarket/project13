@@ -33,8 +33,8 @@ class StockProductRelationTable extends myDoctrineTable
   /**
    *
    * @param int $product_id
-   * @param int|null $shop_id
-   * @param int|null $store_id
+   * @param int|null|false $shop_id
+   * @param int|null|false $store_id
    * @param int $quantity кол-во
    * @param array $params
    * @return bool
@@ -45,11 +45,15 @@ class StockProductRelationTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
     $q->andWhere('stockProductRelation.product_id = ?', (int)$product_id);
-    if ($shop_id !== null) {
-        $q->andWhere('stockProductRelation.shop_id = ?', (int)$shop_id);
+    if ($shop_id === false) {
+      $q->andWhere('stockProductRelation.shop_id IS NULL');
+    } elseif ($shop_id !== null) {
+      $q->andWhere('stockProductRelation.shop_id = ?', (int)$shop_id);
     }
-    if ($store_id !== null) {
-        $q->andWhere('stockProductRelation.store_id = ?', (int)$store_id);
+    if ($store_id === false) {
+      $q->andWhere('stockProductRelation.stock_id IS NULL');
+    } elseif ($store_id !== null) {
+        $q->andWhere('stockProductRelation.stock_id = ?', (int)$store_id);
     }
     $data = $q->fetchArray();
     foreach ($data as $row) {
@@ -58,6 +62,18 @@ class StockProductRelationTable extends myDoctrineTable
         }
     }
     return false;
+  } 
+  
+  public function isSupplied($product_id, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+    $q->andWhere('stockProductRelation.product_id = ?', (int)$product_id);
+    if ($shop_id !== null) {
+        $q->andWhere('stockProductRelation.is_supplied = 1');
+    }
+    return $q->count() > 0;
   }
 
   public function getCacheEraserKeys($record, $action = null)

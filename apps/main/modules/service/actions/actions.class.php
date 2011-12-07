@@ -23,15 +23,25 @@ class serviceActions extends myActions
         $list = ServiceCategoryTable::getInstance()
                         ->createQuery('sc')
                         ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
-                        ->where('sc.core_parent_id=?',$serviceCategory['core_id'])->fetchArray();
+                        ->innerJoin('rel.Service as service on service.id=rel.service_id')                        
+                        ->addWhere('sc.core_parent_id=?',$serviceCategory['core_id'])
+                        #->addWhere('service.is_active=?', 1)
+                        ->fetchArray();
     } else {
         //страница категории
         $serviceCategory = $this->getRoute()->getObject();
         #echo get_class($serviceCategory);
         $list = ServiceCategoryTable::getInstance()
                         ->createQuery('sc')
-                        ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
-                        ->orderBy('sc.lft')->fetchArray();
+                        ->innerJoin('sc.ServiceRelation as rel')
+                        ->innerJoin('rel.Service as serv')                        
+                        ->where('sc.is_active= ? ', 1)
+                        #->where('serv.is_active="1"')
+                        ->orderBy('sc.lft')
+                        ->fetchArray();
+        ##echo $list;
+        #exit();
+        #myDebug::dump($list);
         //если первый уровень - выбираем перую подкатегорию и переходим на неё
         if ($serviceCategory['level'] == 1){
             $getNext = false;

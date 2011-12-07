@@ -10,7 +10,7 @@
     <a href='<?php echo url_for('shop') ?>'><div class='mShops mInlineBlock'></div>Наши магазины</a><a href='<?php echo url_for('default_show', array('page' => 'about_company',)) ?>'><div class='mCo mInlineBlock'></div>О Компании</a><a href='<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>'><div class='mReq mInlineBlock'></div>Как сделать заказ</a><a href='http://hh.ru/employer.do?employerId=799483' target='blank'><div class='mWork mInlineBlock'></div>Работать у нас</a><a href='<?php echo url_for('default_show', array('page' => 'credit',)) ?>'><div class='mBuy mInlineBlock'></div>Покупка в кредит</a><a href='<?php echo url_for('default_show', array('page' => 'f1',)) ?>'><div class='mF1 mInlineBlock'></div>Сервис F1</a>
   </div>
 <div class='bIndexLinks__eMobile'>
-  <div>Приложение для<br> iPhone и Android</div>
+  <div><a href='<?php echo url_for('default_show', array('page' => 'mobile_apps',)) ?>'>Приложение для<br> iPhone и Android</a></div>
 </div>
 </div>
 

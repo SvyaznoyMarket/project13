@@ -20,13 +20,12 @@ class ServiceCategoryTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'        => 'core_id',
-      'parent_id' => 'core_parent_id',
-      'name'      => 'name',
-      'level'      => 'level',
-      'is_active'  => 'is_active', 
-      'description'  => 'description', 
-      'media_image'  => 'main_photo'         
+      'id'          => 'core_id',
+      'parent_id'   => 'core_parent_id',
+      'lft'         => 'core_lft',
+      'rgt'         => 'core_rgt',
+      'name'        => 'name',
+      'is_active'   => 'is_active',
     );
   }
 
