@@ -31,9 +31,10 @@ $servListId = $servListId->getRawValue();
                             <?php } ?>  
                             <?php if ($service->getCurrentPrice() >= Service::MIN_BUY_PRICE && $product->getIsInsale()) { ?>
                                 <?php if ($showInCardButton && in_array($service->id, $servListId)) { ?>
-                                    <input data-url="#" type="button" class="button yellowbutton" value="В корзине">
+                                    <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
+                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="В корзине">
                                <?php } else { ?>
-                                    <input  data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
+                                    <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
                                     data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
                                <?php } ?>     
                             <?php } ?>    
