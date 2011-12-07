@@ -20,7 +20,8 @@
                                 </span>
                             <?php } ?>    
                             <?php if ($service->getCurrentPrice() >= Service::MIN_BUY_PRICE) { ?>
-                                <input data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+                                <input  data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
+                                data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
                             <?php } ?>    
                         </td>
                     </tr>                
