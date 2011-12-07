@@ -255,7 +255,7 @@ class searchActions extends myActions
         'property_view'   => 'expanded' == $view ? 'list' : false,
         'with_properties' => 'expanded' == $view ? true : false,
         'order'           => '_index',
-        'only_ids'        => true,
+        'with_model'      => true,
       ))
       : array()
     ;

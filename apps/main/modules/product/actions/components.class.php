@@ -188,7 +188,7 @@ class productComponents extends myComponents
    */
   public function executePager()
   {
-    $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
+    $this->view = !empty($this->view) ? $this->view : $this->getRequestParameter('view');
     if (!in_array($this->view, array('expanded', 'compact', 'line')))
     {
       $this->view = 'compact';

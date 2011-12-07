@@ -28,10 +28,6 @@ class Doctrine_Template_Corable extends Doctrine_Template
     }
 
     $ids = $table->getIdsByQuery($q, $params);
-    if (isset($params['only_ids']) && $params['only_ids'])
-    {
-      return $ids;
-    }
 
     return $table->createListByIds($ids, $params);
   }
