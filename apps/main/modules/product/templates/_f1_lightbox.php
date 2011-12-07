@@ -42,7 +42,7 @@ $servListId = $servListId->getRawValue();
 				<th colspan="2"><a href="<?php echo url_for('service_list') ?>">Подробнее о Сервисе F1</a></th>
 			</tr>
 		</tbody></table>
-        <?php if (count($service) > 3) echo '</div>';
+        <?php if (count($f1) > 3) echo '</div>';
         #else echo '</ul>';
         ?>
 </div>
