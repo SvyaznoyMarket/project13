@@ -205,7 +205,7 @@ $(document).ready(function(){
 	})
 
 	$.ajaxSetup({
-		timeout: 7000,
+		timeout: 10000,
 		statusCode: {
 			404: function() {
 				errorpopup(' 404 ошибка, страница не найдена')
@@ -236,7 +236,7 @@ $(document).ready(function(){
 			if( jqXHR.statusText == 'error' )
 				console.error(' неизвестная ajax ошибка')
 			else if ( textStatus=='timeout' )
-				errorpopup(' проверьте соединение с интернетом')
+				;//errorpopup(' проверьте соединение с интернетом')
 		}
 	})
 
