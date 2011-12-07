@@ -39,7 +39,7 @@ class redirectActions extends myActions
             return false;
           }
 
-          return array('product' => $product->token);
+          return array('product' => $product->token_prefix.'/'.$product->token);
         }
       );
 
