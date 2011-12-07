@@ -30,7 +30,7 @@ class searchActions extends myActions
     $this->searchString = $request->getParameter('q');
     $this->forward404Unless($this->searchString);
 
-    $title = 'Вы искали “'.  htmlspecialchars($this->searchString).'”';
+    $title = 'Вы искали “'.htmlspecialchars($this->searchString).'”';
     if ($page)
     {
       $title .= ' – '.$page;
