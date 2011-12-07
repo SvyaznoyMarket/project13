@@ -12,7 +12,9 @@
  */
 class Service extends BaseService
 {
-
+  CONST MIN_BUY_PRICE = 950;
+  
+  
   public $price;   
     
   public function toParams()

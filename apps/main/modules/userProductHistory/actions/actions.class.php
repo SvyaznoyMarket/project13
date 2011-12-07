@@ -53,14 +53,13 @@ class userProductHistoryActions extends myActions
       //подсчитываем общее количество и общую стоимость корзины
       $cartInfo = $user->getCartBaseInfo();
       
-      /*
       //отложенные товары
-      /*$delayProducts = array();
+      $delayProducts = array();
       if ($user->getGuardUser())
       {
         $userDelayedProduct = new UserDelayedProduct();
         $delayProducts = $userDelayedProduct->getUserDelayProducts($user->getGuardUser()->id);
-      } */
+      }
       
 #     echo '<pre>';
 #     echo '</pre>';      
@@ -75,10 +74,11 @@ class userProductHistoryActions extends myActions
               'name' => $name,  
               'link' =>  url_for('user'),   //ссылка на личный кабинет
               'vitems' => $cartInfo['qty'],
-              'sum' => $this->getUser()->getCart()->getTotal(),
-              #'vwish' => count($delayProducts),
+              'sum' => $cartInfo['sum'],
+              'vwish' => count($delayProducts),
               'vcomp' => $user->getProductCompare()->getProductsNum(),
               'productsInCart' => $cartInfo['productsInCart'],
+              'servicesInCart' => $cartInfo['servicesInCart'],
               'bingo' => false,
         )
       ));  

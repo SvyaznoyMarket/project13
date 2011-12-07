@@ -18,6 +18,8 @@ class cartActions extends myActions {
      * @param sfRequest $request A request object
      */
     public function executeIndex(sfWebRequest $request) {
+        #myDebug::dump($this->getUser()->getCart()->getProducts());
+        #myDebug::dump($this->getUser()->getCart()->getServices());
         $cart = $this->getUser()->getCart();
         $this->setVar('cart', $cart, true);
     }
@@ -80,7 +82,7 @@ class cartActions extends myActions {
             $result['value'] = false;
             $result['error'] = "Не удалось добавить в корзину товар token='" . $request['product'] . "'.";
             return $this->_refuse();            
-        }
+        }                      
         
         $this->getUser()->setCacheCookie();
 

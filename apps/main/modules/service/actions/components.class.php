@@ -77,7 +77,8 @@ class serviceComponents extends myComponents
   public function executeShow()
   {
 
-      $serviceData['currentPrice'] = $this->service->getFormattedPrice();
+      $serviceData['price'] = $this->service->getCurrentPrice();
+      $serviceData['priceFormatted'] = $this->service->getFormattedPrice();
       #if (isset($service['currentPrice'])) {
       #    $service['currentPrice'] = number_format($serviceData['currentPrice'], 2, ',', ' ');
       #}
@@ -109,7 +110,8 @@ class serviceComponents extends myComponents
             'token' => $service->token,
             'name' => $service->name,
             'photo' => $service->getPhotoUrl(2),
-            'price' =>$service->getFormattedPrice()
+            'price' =>$service->getCurrentPrice(),
+            'priceFormatted' =>$service->getFormattedPrice()
         );
     }
     $this->setVar('list', $serviceList);
