@@ -276,7 +276,11 @@ class UserCart extends BaseUserData
             return $services[$service->id]['product'][$productId];
         }
     } else {
-        return $services[$service->id]['quantity'];
+        if (isset($services[$service->id]) && isset($services[$service->id]['quantity'])) {
+            return $services[$service->id]['quantity'];
+        } else {
+            return 0;
+        }
     }
       
   }  
