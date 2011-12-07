@@ -87,6 +87,6 @@ foreach ($list as $service) {
 
 </div>
 <?php
-include_component('product', 'f1_lightbox', array('f1' => $list, 'product'=>$product, 'servListId' => $servListId))
+include_component('product', 'f1_lightbox', array('f1' => $list, 'product'=>$product, 'servListId' => $servListId, 'parentAction' => $this->getActionName()))
 ?>
 <?php endif ?>

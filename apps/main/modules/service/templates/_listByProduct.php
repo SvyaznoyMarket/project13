@@ -1,6 +1,6 @@
 <?php if (count($list)): ?>
 <?php
-include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$product, 'servListId' => $servListId))
+include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$product, 'servListId' => $servListId, 'parentAction' => $this->getActionName()))
 ?>
 
 <div class="bF1Info bBlueButton">
