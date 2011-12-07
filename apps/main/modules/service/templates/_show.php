@@ -15,12 +15,11 @@
             <div class="bSet__eInfo_big">            
         <?php } ?>
             
-
 			<p class="bSet__eDescription">
                 <?php echo $service['description'] ?>
                  <?php echo $service['work']; ?>
 			</p>
-			<div class="bSet__ePrice">
+			<div class="bSet__ePrice mServ" ref="<?php echo $service['token'] ?>">
                 <?php if (isset($service['currentPrice']) && $service['currentPrice']) { ?>
 				<strong class="font34">
                     <?php echo $service['currentPrice']; ?>
