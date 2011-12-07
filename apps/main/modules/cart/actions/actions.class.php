@@ -18,6 +18,8 @@ class cartActions extends myActions {
      * @param sfRequest $request A request object
      */
     public function executeIndex(sfWebRequest $request) {
+        #myDebug::dump($this->getUser()->getCart()->getProducts());
+        #myDebug::dump($this->getUser()->getCart()->getServices());
         $cart = $this->getUser()->getCart();
         $this->setVar('cart', $cart, true);
     }
@@ -80,7 +82,7 @@ class cartActions extends myActions {
             $result['value'] = false;
             $result['error'] = "Не удалось добавить в корзину товар token='" . $request['product'] . "'.";
             return $this->_refuse();            
-        }
+        }                      
         
         $this->getUser()->setCacheCookie();
 
@@ -110,7 +112,7 @@ class cartActions extends myActions {
                 'data' => array(
                     'quantity' => $request['quantity'],
                     'full_quantity' => $cartInfo['qty'],
-                    'full_price' => $cartInfo['sum'],
+                    'full_price' => $this->getUser()->getCart()->getTotal(),
                     'html' => $this->getComponent($this->getModuleName(), 'buy_button', array('product' => $product))
                 )
             );
@@ -259,6 +261,8 @@ class cartActions extends myActions {
             $return = array(
                 'success' => true,
                 'data' => array(
+                    'full_quantity' => $cartInfo['qty'],
+                    'full_price' => $this->getUser()->getCart()->getTotal(),                    
                 )
             );
             return $this->renderJson($return);

@@ -26,16 +26,17 @@
                 </a>
             </p>
 			<div class="bServiceCard__ePrice">
-                <?php echo $service['price']; ?>
-                <?php if((int)$service['price']) { ?>
+                <?php echo $service['priceFormatted']; ?>
+                <?php if((int)$service['priceFormatted']) { ?>
                     <span class="rubl">p</span>
                 <?php } ?>    
             </div>
-            <!--
-            <form action="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" />
-                <input data-url="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" type="submit" class="button yellowbutton" value="Купить услугу">
-            </form>    
-            -->            
+            <?php if ((int)$service['price'] >= Service::MIN_BUY_PRICE) { ?>
+                <form action="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" />
+                    <input data-url="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" type="submit" class="button yellowbutton" value="Купить услугу">
+                </form>    
+            <?php } ?>
+                        
 		</div>
 <?php
 $num++;

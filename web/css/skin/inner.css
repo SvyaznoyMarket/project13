@@ -36,6 +36,7 @@ A.nodecor {text-decoration:none}
 .al {text-align:left}
 .vm {vertical-align:middle}
 .pr {position:relative}
+.pr_imp {position:relative !important; }
 .db {display:block}
 INPUT, SELECT {vertical-align:middle}
 INPUT, TEXTAREA {outline:none}
@@ -87,6 +88,8 @@ TABLE {border-collapse:collapse}
 .mr5 {margin-right:5px}
 .mr10 {margin-right:10px}
 .mr20 {margin-right:20px}
+.mr110 {margin-right:110px}
+
 
 
 .font09 {font-size:0.9em}
@@ -2258,7 +2261,7 @@ DT.bCtg__eOrange{
 
 /* goods info */
 .bF1Block.mGoods{
-	top: 410px;
+	top: 415px;
 	left: 170px;
 	}
 	.bF1Block.mGoods div{
@@ -2357,7 +2360,7 @@ DT.bCtg__eOrange{
 		font: bold 16px Tahoma, sans-serif;
 		}
 	.bF1Block_eBuy{
-		width: 200px;
+		width: 220px;
 		text-align: right;
 		vertical-align: top;
 		padding: 15px 0 15px 0;
@@ -2423,7 +2426,7 @@ DT.bCtg__eOrange{
 }
 	.mNewSB .mSBlocker{
     height: 125px;
-		background: url('img/f1infobig.png') 50% 0 no-repeat;
+    background: url('img/f1infobig.png') 50% 0 no-repeat;
 }
 
 
@@ -2484,6 +2487,7 @@ DT.bCtg__eOrange{
 
 
 /* bLiteboxF1 */
+
 
 .bLiteboxF1{
 	padding-top: 20px;
@@ -2567,23 +2571,15 @@ DT.bCtg__eOrange{
 			position: absolute;
 			background: url('/images/pages/cs.png') no-repeat;
 			}
+	}
+/* bBacketLineWrap */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.mWrap{
+	position: relative;
+	}
+	.mWrap .bF1Block{
+		top: 91px;
+		right: 32px;
+		left: auto;
+		z-index: 100;
+		}

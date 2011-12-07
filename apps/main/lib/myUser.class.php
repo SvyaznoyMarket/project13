@@ -56,6 +56,13 @@ class myUser extends myGuardSecurityUser
       $result['sum'] += $product['price'] * $product['cart']['quantity'];
       $result['productsInCart'][ $product['token'] ] = $product['cart']['quantity'];          
     }        
+    foreach($cart->getServices()->toArray() as $id => $service){
+      $qty = $service['cart']['quantity'];
+      foreach($service['cart']['product'] as $pId => $pQty) {
+          $qty += $pQty;
+      }
+      $result['servicesInCart'][ $service['token'] ] = $qty;          
+    }        
     return $result;
   }  
 

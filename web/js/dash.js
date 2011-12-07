@@ -49,7 +49,7 @@ $(document).ready(function(){
 			}
 
 	})
-
+	var isInCart = false
 	var changeButtons = function( lbox ){
 		if(!lbox || !lbox.productsInCart ) return false
 		for( var token in lbox.productsInCart) {
@@ -64,7 +64,19 @@ $(document).ready(function(){
 				var button = $('a.link1', bx)
 				button.attr('href', $('.lightboxinner .point2').attr('href') )
 				button.unbind('click').addClass('active')
+				isInCart = true
 			}
+		}
+		if( lbox.servicesInCart )
+		for( var token in lbox.servicesInCart) {
+			var button = $('div.mServ[ref='+ token +'] a.link1')
+			if( button.length ) {				
+				button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
+			}
+			button = $('td.bF1Block_eBuy[ref='+ token +'] input.button')
+			if( button.length ) {				
+				button.addClass('disabled').val('В корзине')
+			}			
 		}
 	}
 	/* ---- */
@@ -173,11 +185,69 @@ $(document).ready(function(){
 	})
 
 	/* F1 */
-	if( $('#selector').length ) {
-		$('#selector').click( function(){
-			// change button title
-			// post buy F1 item
-				// if product not in cart - post buy product
+	if( $('div.bF1Info').length ) {
+		var look    = $('div.bF1Info')
+		var f1lines = $('div.bF1Block')
+		// open popup
+		$('.link1', look).click( function(){
+			f1lines.show()
+			return false
+		})
+		// close popup
+		$('.close', f1lines).click( function(){
+			f1lines.hide()
+		})				
+		// add f1
+		f1lines.find('input.button').bind ('click', function() {
+			if( $(this).hasClass('disabled') )
+				return false
+			$(this).val('В корзине').addClass('disabled')
+			var f1item = $(this).data()
+			f1lines.fadeOut()
+			$.getJSON( f1item.url, function(data) {
+				if( !data.success )
+					return true
+				look.find('h3').text('Вы добавили услуги:')
+				var f1line = tmpl('f1look', f1item)
+				f1line = f1line.replace('F1ID', f1item.fid )
+				look.find('.link1').before( f1line )
+				
+								
+				// flybox				
+				var tmpitem = {
+					'id'    : $('.goodsbarbig .link1').attr('href'),
+					'title' : $('h1').html(),
+					'vitems': data.data.full_quantity,
+					'sum'   : data.data.full_price,
+					'price' : $('.goodsinfo .price').html(),
+					'img'   : $('.goodsphoto img').attr('src')
+				}
+				tmpitem.f1 = f1item
+				if( isInCart )
+					tmpitem.f1.only = 'yes'
+				ltbx.getBasket( tmpitem )
+				if( !isInCart ) {
+					isInCart = true
+					markPageButtons()
+				}	
+			})
+			return false
+		})
+		// remove f1
+		$('a.bBacketServ__eMore', look).live('click', function(){
+			var thislink = this
+			$.getJSON( $(this).attr('href'), function(data) {
+				if( !data.success )
+					return true			
+				var line = $(thislink).parent()
+				f1lines.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('disabled')
+				line.remove()
+				ltbx.update({ sum: data.data.full_price })
+				
+				if( !$('a.bBacketServ__eMore', look).length )
+					look.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')	
+			})
+			return false
 		})
 	}
 	/* buy bottons */

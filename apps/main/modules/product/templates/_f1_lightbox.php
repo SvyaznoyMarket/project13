@@ -10,11 +10,18 @@
                         <td class="bF1Block_eInfo"><?php echo $service->name ?><br>
                             <a href="<?php echo url_for('service_show', array('service'=>$service->token)) ?>">Подробнее об услуге</a>
                         </td>
-                        <td class="bF1Block_eBuy">
+                        <td class="bF1Block_eBuy" ref="<?php echo $service->token ?>">
                             <?php if ($service->getFormattedPrice()) { ?>
-                                <span class="bF1Block_ePrice"><?php echo $service->getFormattedPrice() ?>&nbsp;<span class="rubl">p</span></span>
+                                <span class="bF1Block_ePrice 
+                                      <?php if ($service->getCurrentPrice() < Service::MIN_BUY_PRICE) echo ' mr110'; ?> 
+                                      ">
+                                    <?php echo $service->getFormattedPrice() ?>&nbsp;
+                                    <span class="rubl">p</span>                                    
+                                </span>
                             <?php } ?>    
-                            <input data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+                            <?php if ($service->getCurrentPrice() >= Service::MIN_BUY_PRICE) { ?>
+                                <input data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+                            <?php } ?>    
                         </td>
                     </tr>                
              <?php  endforeach ?>                                  

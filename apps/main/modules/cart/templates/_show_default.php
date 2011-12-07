@@ -21,14 +21,39 @@
 </table>
 <?php endif ?>
     <!-- Basket -->
+	<script type="text/html" id="f1cartline">
+		<tr ref="<%=fid%>">
+		<td>
+		<%=f1title%>
+		<br>
+		<a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service'=>'F1ID')); ?>">Подробнее об услуге</a>
+		</td>
+		<td class="mPrice">
+		<span class="price"><%=f1price%> </span>
+		<span class="rubl">p</span>
+		</td>
+		<td class="mEdit">
+		<div class="numerbox mInlineBlock mVAMiddle">
+		<a ref="<?php echo url_for('cart_service_add', array('service'=>'F1ID', 'quantity'=>-1, 'product'=>'PRID')); ?>" href="#">
+		<b class="ajaless" title="Уменьшить"></b>
+		</a>
+		<span class="ajaquant">1 шт.</span>
+		<a href="<?php echo url_for('cart_service_add', array('service'=>'F1ID', 'product'=>'PRID')); ?>">
+		<b class="ajamore" title="Увеличить"></b>
+		</a>
+		</div>
+		<a class="button whitelink ml5 mInlineBlock mVAMiddle" 
+			href="<?php echo url_for('cart_service_delete', array('service'=>'F1ID', 'product'=>'PRID')); ?>">Отменить</a>
+		</td>
+		</tr>
+	</script>    
   <?php foreach ($list as $item): ?>
     <?php if ($item['type'] == 'product'): ?>
-        <div class="basketline">
+        <div class="basketline mWrap" ref="<?php echo $item['product']->token ?>">
             <div class="basketleft">
-                <a href="<?php echo url_for('productCard', $item['product']) ?>"><?php if (isset($item['photo'])) echo image_tag($item['photo']) ?></a>
-                <?php if (count($item['product']->getServiceList())): ?>
-                <!--<div class="ac font11"><a href="" class="f1link">Сервис F1</a> Сервис F1</div>-->
-                <?php endif ?>
+                <a href="<?php echo url_for('productCard', $item['product']) ?>">
+                    <?php if (isset($item['photo'])) echo image_tag($item['photo']) ?>
+                </a>
             </div>
             <div class="basketright">
                 <div class="goodstitle">
@@ -47,14 +72,19 @@
                 <div class="clear pb15"></div>
 
                 
-                <?php #include_component('service', 'list_for_product_in_cart', array('product' => $item['product'], 'services' => $item['service'])) ?>
+                <?php include_component('service', 'list_for_product_in_cart', array('product' => $item['product'], 'services' => $item['service'])) ?>
                 
-            </div>
+            <!--/div-- IN PREVIOUS COMPONENT>
         </div>
     <?php else: ?>
-        <div class="basketline">
+        <div class="basketline mWrap">
             <div class="basketleft">
-                <a href="<?php echo url_for('service_show', array('service' => $item['token'])) ?>"><?php if (isset($item['photo'])) echo image_tag($item['photo']) ?></a>
+                <a href="<?php echo url_for('service_show', array('service' => $item['token'])) ?>">
+                    <?php
+                        if (isset($item['photo'])) echo image_tag($item['photo']);
+                        else echo '<div class="bServiceCard__eLogo_free pr_imp"></div>';
+                    ?>
+                </a>
             </div>
             <div class="basketright">
                 <div class="goodstitle">
