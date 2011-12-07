@@ -20,6 +20,8 @@ class ServiceProductRelationTable extends myDoctrineTable
     public function getCoreMapping()
     {
         return array(
+          'id'          => 'core_id',
+
           'service_id'  => array('rel' => 'Service'),
           'product_id'  => array('rel' => 'Product'),
         );
