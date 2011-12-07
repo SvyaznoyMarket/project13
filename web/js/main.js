@@ -476,12 +476,13 @@ $(document).ready(function(){
 			self.noview = true
 			if( clearfunction ) 
 				clearfunction()
-			getTotal()
+			
 			$.getJSON( drop , function( data ) {
 				$(nodes.drop).data('run',false)
 				if( !data.success ) {
 					location.href = location.href
-				}
+				} else
+					getTotal()
 			})
 		}
 
