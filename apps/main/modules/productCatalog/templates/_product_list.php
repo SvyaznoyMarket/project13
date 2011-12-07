@@ -11,7 +11,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 
 
 <?php if( count($productPager->getLinks()) - 1 ): ?>
-<?php 
+<?php
 $dataAr = array();
 $module = sfContext::getInstance()->getModuleName();
 if ($module == 'tag') {
@@ -23,7 +23,7 @@ if ($module == 'tag') {
         $dataAr['productType'] = $productType;
     }
     $infinityUrl = url_for('tag_showAjax', $dataAr);
-    
+
 } elseif ($module == 'search') {
     //страница поиска
     $q = $request->getParameter('q');
@@ -31,11 +31,11 @@ if ($module == 'tag') {
     if (isset($productType)) {
         $dataAr['product_type'] = $productType['token'];
     }
-    $infinityUrl = url_for('search_ajax', $dataAr);    
+    $infinityUrl = url_for('search_ajax', $dataAr);
 } else {
     //страница каталога (любая. возможно, с фильтрами и тегами)
-    $dataAr['productCategory'] = $productCategory->token;
-    $infinityUrl = url_for('productCatalog_categoryAjax', $dataAr);        
+    $dataAr['sf_subject'] = $sf_data->getRaw('productCategory');
+    $infinityUrl = url_for('productCatalog_categoryAjax', $dataAr);
 }
 #echo $infinityUrl .'====$infinityUrl';
 ?>

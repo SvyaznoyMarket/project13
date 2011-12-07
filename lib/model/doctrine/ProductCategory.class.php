@@ -21,7 +21,7 @@ class ProductCategory extends BaseProductCategory
   public function toParams()
   {
     return array(
-      'productCategory' => $this->token,
+      'productCategory' => $this->token_prefix ? ($this->token_prefix.'/'.$this->token) : $this->token,
     );
   }
 

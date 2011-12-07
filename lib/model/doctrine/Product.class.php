@@ -40,7 +40,7 @@ class Product extends BaseProduct
   public function toParams()
   {
     return array(
-      'product' => $this->token,
+      'product' => $this->token_prefix.'/'.$this->token,
     );
   }
 

@@ -439,7 +439,7 @@ class UserCart extends BaseUserData
 
     foreach ($products as $product)
     {
-        if ($product['token']==$token) return $product['cart']['quantity'];
+        if ($product['token_prefix'].'/'.$product['token']==$token) return $product['cart']['quantity'];
     }
 
     return 0;

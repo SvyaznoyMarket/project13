@@ -1,9 +1,9 @@
   <?php $i = 0; foreach ($list as $item): $i++ ?>
-  <?php 
+  <?php
     if ($item['type'] == 'product') {
-        $url = url_for('productCard', array('product' => $item['token'] ));
+        $url = url_for('productCard', array('product' => $item['token_prefix'].'/'.$item['token']));
     } else {
-        $url = url_for('service_show', array('service' => $item['token'] ));        
+        $url = url_for('service_show', array('service' => $item['token'] ));
     }
   ?>
         <div class="fl width685 pb20<?php if ($i > 1) echo ' pl235' ?>">

@@ -221,7 +221,7 @@ class ProductTable extends myDoctrineTable
 
   public function getForRoute(array $params)
   {
-    $id = isset($params['product']) ? $this->getIdBy('token', $params['product']) : null;
+    $id = isset($params['product']) ? $this->getIdByToken($params['product']) : null;
 
     return $this->getById($id, array(
       'group_property'  => true,
@@ -229,6 +229,34 @@ class ProductTable extends myDoctrineTable
       'property_view'   => 'show',
       'with_properties' => true,
     ));
+  }
+
+  public function getIdByToken($token)
+  {
+    $q = $this->createQuery()
+      ->select('id')
+    ;
+
+    if (false !== strpos($token, '/'))
+    {
+      list($tokenPrefix, $token) = explode('/', $token);
+      $q->where('token_prefix = ? AND token = ?', array($tokenPrefix, $token));
+    }
+    else {
+      $q->where('token = ?', $token);
+    }
+
+    $q->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+
+    return $q->fetchOne();
+  }
+
+  public function getByToken($token, array $params = array())
+  {
+
+    $id = $this->getIdByToken($token);
+
+    return $this->getById($id);
   }
 
   public function getListByCategory(ProductCategory $category, array $params = array())
