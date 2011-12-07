@@ -115,7 +115,7 @@ class productComponents extends myComponents
       'is_insale'  => $this->product['is_insale'],
       'is_instock'  => $this->product['is_instock'],
       //'product'  => clone $this->product,
-      'url'        => url_for('productCard', array('product' => $this->product['token']), array('absolute' => true)),
+      'url'        => url_for('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
       'product'    => $this->product,
     );
 

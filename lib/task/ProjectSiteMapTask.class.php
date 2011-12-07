@@ -5,51 +5,51 @@
 
 class ProjectSiteMapTask extends sfBaseTask
 {
-  
+
   /**
    * URL сайта
-   * @var string 
-   */    
+   * @var string
+   */
   private $_fullUrl =  'http://www.enter.ru';
-  
+
   /**
    * Шаблон для генерации имён файлов
-   * @var type 
+   * @var type
    */
   private $_fileNameTemplate = 'web/sitemap/sitemap_#NUM#.xml';
-  
+
   /**
    * Имя файла - индекса
-   * @var type 
+   * @var type
    */
   private $_indexFileName = 'web/sitemap.xml';
-  
+
   /**
    * Имя файла, в который идён запись на данный момент
-   * @var type 
+   * @var type
    */
   private $_fileName;
-  
+
   /**
    * Символы, которые необходимо заменять
-   * @var type 
+   * @var type
    */
   private $_replaceSymvols = array(
       'from' => array(
-        '&', "'", '"', '>', '<'  
+        '&', "'", '"', '>', '<'
         ),
       'to' => array(
-        '&amp;', '&apos;', '&quot;', '&gt;', '&lt;'  
+        '&amp;', '&apos;', '&quot;', '&gt;', '&lt;'
         )
   );
-  
+
   /**
    * Объект для маршрутизации
-   * @var type 
+   * @var type
    */
   private $_routing;
-  
-  
+
+
   /**
    *
    * @var type Максимальное количество записей в одном файле
@@ -58,16 +58,16 @@ class ProjectSiteMapTask extends sfBaseTask
 
   /**
    * Текущее количество записей в файле
-   * @var type 
+   * @var type
    */
   private $_currentNumInFile = 0;
 
   /**
    * Номер текущего файла
-   * @var type 
+   * @var type
    */
   private $_currentFileNum = 0;
-  
+
 
   protected function configure()
   {
@@ -103,14 +103,14 @@ EOF;
 
     sfContext::createInstance($this->configuration);
     $this->_routing = $this->getRouting();
-    
+
     //инициализация
-    $this->_createSitemapFolder();    
+    $this->_createSitemapFolder();
     file_put_contents($this->_indexFileName, '<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
     $this->_beginNewFile();
-    
-    
+
+
     $this->_putIndexUrl();
     $this->_putCategoryUrl();
     $this->_putProductUrl();
@@ -119,14 +119,14 @@ EOF;
     $this->_putShopUrl();
     $this->_putStaticPagesUrl();
     $this->_putAnotherUrl();
-        
+
     //закрываем все файлы
     $this->_put('</urlset>');
     file_put_contents($this->_indexFileName, '</sitemapindex>', FILE_APPEND);
-    
-    
+
+
   }
-  
+
   private function _createSitemapFolder() {
     $pathAr = explode('/', $this->_fileNameTemplate);
     $path = "";
@@ -138,7 +138,7 @@ EOF;
         if (!file_exists($path)) {
             mkdir($path)."\n";
         }
-    }    
+    }
     //удаляем старые файлы sitemap
     for($i=0; $i<100; $i++) {
         $name = str_replace("#NUM#", $i, $this->_fileNameTemplate);
@@ -147,15 +147,15 @@ EOF;
         }
     }
   }
-  
+
   private function _beginNewFile() {
     $this->_currentNumInFile = 0;
-      
+
     //завершим старый файл
     if (isset($this->_fileName)) {
         $this->_put('</urlset>');
     }
-    
+
     //следующий номер
     $this->_currentFileNum++;
     //соответствующее имя
@@ -164,126 +164,126 @@ EOF;
     //начинаем файл
     $this->_putNew('<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
-    
+
     //добавим в индекс новый файл
     $newFileData = '
   <sitemap>
       <loc>' . $this->_fullUrl . str_replace('web', '', $this->_fileName) . '</loc>
-  </sitemap>        
+  </sitemap>
         ';
     file_put_contents($this->_indexFileName, $newFileData, FILE_APPEND);
-    
-      
+
+
   }
-  
+
   private function _putIndexUrl() {
-        $xmlData = 
+        $xmlData =
 '<url>
   <loc>'.$this->_generateUrl('homepage').'</loc>
-  <changefreq>hourly</changefreq>    
-  <priority>0.8</priority>        
+  <changefreq>hourly</changefreq>
+  <priority>0.8</priority>
 </url>'
-;  
-        $this->_put($xmlData);      
+;
+        $this->_put($xmlData);
   }
-  
+
   private function _putAnotherUrl() {
-        $xmlData = 
+        $xmlData =
 '<url>
   <loc>'.$this->_generateUrl('callback').'</loc>
-  <changefreq>monthly</changefreq>    
-  <priority>0.5</priority>        
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
 </url>'
-;  
-        $this->_put($xmlData);      
-  }  
-  
+;
+        $this->_put($xmlData);
+  }
+
   private function _putStaticPagesUrl() {
     $eccenseList = Doctrine_Core::getTable('Page')
             ->createQuery('p')
-            ->fetchArray();      
+            ->fetchArray();
     foreach($eccenseList as $item) {
-        $xmlData = 
+        $xmlData =
 '<url>
 <loc>'.$this->_generateUrl('default_show', array('page' => $item['token'])).'</loc>
-<changefreq>monthly</changefreq>    
-<priority>0.5</priority>        
-</url>';  
-        $this->_put($xmlData);    
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>';
+        $this->_put($xmlData);
     }
   }
-  
+
   private function _putServiceUrl() {
     $eccenseList = Doctrine_Core::getTable('Service')
             ->createQuery('s')
             ->where('s.is_active = ?', 1)
             ->orderBy('s.id')
             #->limit(50)
-            ->fetchArray();      
+            ->fetchArray();
     foreach($eccenseList as $item) {
-        $xmlData = 
+        $xmlData =
 '<url>
   <loc>'.$this->_generateUrl('service_show', array('service' => $item['token'])).'</loc>
-  <changefreq>monthly</changefreq>    
-  <priority>0.5</priority>        
-</url>';  
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>';
         $this->_put($xmlData);
     }
   }
-  
+
   private function _putServiceCategoryUrl() {
-        $xmlData = 
+        $xmlData =
 '<url>
   <loc>'.$this->_generateUrl('service_list').'</loc>
-  <changefreq>monthly</changefreq>    
-  <priority>0.6</priority>        
-</url>';  
+  <changefreq>monthly</changefreq>
+  <priority>0.6</priority>
+</url>';
         $this->_put($xmlData);
-        
+
     $eccenseList = Doctrine_Core::getTable('ServiceCategory')
             ->createQuery('s')
             ->where('s.is_active = ? AND s.level = ?', array(1, 2))
             ->orderBy('s.id')
             #->limit(50)
-            ->fetchArray();      
+            ->fetchArray();
     foreach($eccenseList as $item) {
-        $xmlData = 
+        $xmlData =
 '<url>
   <loc>'.$this->_generateUrl('service_list', array('serviceCategory' => $item['token'])).'</loc>
-  <changefreq>monthly</changefreq>    
-  <priority>0.5</priority>        
-</url>';  
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>';
         $this->_put($xmlData);
     }
-  }  
-  
-  
+  }
+
+
   private function _putShopUrl() {
-        $xmlData = 
+        $xmlData =
 '<url>
   <loc>'.$this->_generateUrl('shop').'</loc>
-  <changefreq>daily</changefreq>    
-  <priority>0.6</priority>        
-</url>';  
+  <changefreq>daily</changefreq>
+  <priority>0.6</priority>
+</url>';
         $this->_put($xmlData);
-        
+
     $eccenseList = Doctrine_Core::getTable('Shop')
             ->createQuery('s')
             ->where('s.is_active = ?',1)
             #->limit(50)
-            ->fetchArray();      
+            ->fetchArray();
     foreach($eccenseList as $item) {
-        $xmlData = 
+        $xmlData =
 '<url>
   <loc>'.$this->_generateUrl('shop_show', array('shop' => $item['token'])).'</loc>
-  <changefreq>monthly</changefreq>    
-  <priority>0.5</priority>        
-</url>';  
+  <changefreq>monthly</changefreq>
+  <priority>0.5</priority>
+</url>';
         $this->_put($xmlData);
     }
-  }  
-  
-  
+  }
+
+
   private function _putProductUrl() {
     $categoryList = Doctrine_Core::getTable('Product')
             ->createQuery('pc')
@@ -291,61 +291,61 @@ EOF;
             ->where('view_show = ?', 1)
             ->orderBy('pc.id')
             #->limit(50)
-            ->fetchArray();      
+            ->fetchArray();
     foreach($categoryList as $cat) {
-        $xmlData = 
+        $xmlData =
 '<url>
-  <loc>'.$this->_generateUrl('productCard', array('product' => $cat['token'])).'</loc>
-  <changefreq>monthly</changefreq>    
-  <priority>0.6</priority>        
+  <loc>'.$this->_generateUrl('productCard', array('product' => $cat['token_prefix'].'/'.$cat['token'])).'</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.6</priority>
 </url>
 <url>
-  <loc>'.$this->_generateUrl('productComment', array('product' => $cat['token'])).'</loc>
-  <changefreq>monthly</changefreq>    
-  <priority>0.6</priority>        
+  <loc>'.$this->_generateUrl('productComment', array('product' => $cat['token_prefix'].'/'.$cat['token'])).'</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.6</priority>
 </url>
-';  
+';
         $this->_put($xmlData);
     }
   }
-  
+
   private function _putCategoryUrl() {
     $categoryList = Doctrine_Core::getTable('ProductCategory')
             ->createQuery('pc')
             ->where('is_active = ?', 1)
             ->orderBy('pc.id')
             #->limit(50)
-            ->fetchArray();      
+            ->fetchArray();
     foreach($categoryList as $cat) {
-        $xmlData = 
+        $xmlData =
 '<url>
-  <loc>'.$this->_generateUrl('productCatalog_category', array('productCategory' => $cat['token'])).'</loc>
-  <changefreq>daily</changefreq>    
-  <priority>0.8</priority>  
-</url>';  
+  <loc>'.$this->_generateUrl('productCatalog_category', array('productCategory' => $cat['token_prefix'] ? ($cat['token_prefix'].'/'.$cat['token']) : $cat['token'])).'</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.8</priority>
+</url>';
         $this->_put($xmlData);
     }
   }
-  
+
   private function _generateUrl($path, $data) {
       $url = $this->_fullUrl .
              $this->_routing->generate($path, $data);
       $url = str_replace($this->_replaceSymvols['from'], $this->_replaceSymvols['to'], $url);
-      return $url;      
+      return $url;
   }
-  
+
   private function _put($data) {
-        file_put_contents($this->_fileName, $data, FILE_APPEND);  
-        $this->_currentNumInFile ++;   
+        file_put_contents($this->_fileName, $data, FILE_APPEND);
+        $this->_currentNumInFile ++;
         //если файл заполнен, надо начинать новый
        # echo $this->_currentNumInFile .'-----------'. $this->_maxNumInFile."\n";
         if ( $this->_currentNumInFile >= $this->_maxNumInFile) {
-            $this->_beginNewFile();            
+            $this->_beginNewFile();
         }
   }
-  
+
   private function _putNew($data) {
-        file_put_contents($this->_fileName, $data);              
+        file_put_contents($this->_fileName, $data);
   }
-  
+
 }

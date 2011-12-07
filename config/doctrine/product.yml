@@ -56,7 +56,8 @@ ProductCategory:
     lft:               { type: integer(20), notnull: false, default: null }
     rgt:               { type: integer(20), notnull: false, default: null }
     level:             { type: integer(4), notnull: false, default: null }
-    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    token:             { type: string(255), notnull: true, notblank: true }
+    token_prefix:      { type: string(255), notnull: true }
     name:              { type: string(255), notnull: true, notblank: true }
     filter_group_id:   { type: integer(20), notnull: false, default: null }
     position:          { type: integer(4), notnull: false, default: 0 }
@@ -68,6 +69,10 @@ ProductCategory:
     seo_description:   { type: text, notnull: false, comment: 'SEO. Описание' }
     seo_header:        { type: text, notnull: false, comment: 'SEO заголовок. Используется для генерации нижних breadcrumbs' }
     seo_text:          { type: text, notnull: false, comment: 'SEO текст. Под фильтром категорий' }
+  indexes:
+    token:
+      fields: [ token, token_prefix ]
+      type: unique
   relations:
     FilterGroup:       { class: ProductFilterGroup, foreignAlias: Category, local: filter_group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ProductType:       { class: ProductType, foreignAlias: ProductCategory, refClass: ProductCategoryTypeRelation, local: product_category_id, foreign: product_type_id, type: many, foreignType: many }
@@ -210,7 +215,8 @@ Product:
   #listeners: [ myDoctrineRecordListener ]
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
-    token:             { type: string(255), unique: true, notnull: true, notblank: true }
+    token:             { type: string(255), notnull: true, notblank: true }
+    token_prefix:      { type: string(255), notnull: false, default: null }
     barcode:           { type: string(255), notnull: false, default: null }
     article:           { type: string(255), notnull: false, default: null }
     name:              { type: string(255), notnull: true, notblank: true }
@@ -236,6 +242,10 @@ Product:
     rating_quantity:   { type: integer(4), notnull: true, default: 0, comment: 'Количество голосов пользователей' }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара' }
     score:             { type: 'decimal(10,5)', notnull: true, default: 0, comment: 'Внутренний рейтинг' }
+  indexes:
+    token:
+      fields: [ token, token_prefix ]
+      type: unique
   relations:
     Type:              { class: ProductType, foreignAlias: Product, local: type_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
     Creator:           { class: Creator, foreignAlias: Product, local: creator_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
@@ -437,7 +447,7 @@ ProductCategoryProductLineRelation:
   relations:
     ProductLine:      { class: ProductLine, foreignAlias: ProductCategoryRelation, local: line_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     ProductCategory:  { class: ProductCategory, foreignAlias: ProductLineRelation, local: category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    
+
 ProductKitRelation:
   options:
     comment:      'Комплекты'
@@ -452,7 +462,7 @@ ProductDeliveryPrice:
   options:
     comment:          'Цены на доставку продуктов'
   actAs:
-    Timestampable: ~    
+    Timestampable: ~
     Corable:          { push: disable }
   columns:
     id:               { type: integer(20), autoincrement: true, primary: true }
@@ -462,4 +472,3 @@ ProductDeliveryPrice:
   relations:
     Product:          { class: Product, foreignAlias: DeliveryPrice, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     DeliveryType:     { class: DeliveryType, foreignAlias: ProductDeliveryPrice, local: delivery_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-   

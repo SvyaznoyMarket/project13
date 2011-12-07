@@ -114,8 +114,10 @@ class UserCart extends BaseUserData
 
     $services = $this->parameterHolder->get('services');
     //удаляем из корзины сервисы, привязанные к этому товару
-    foreach($services as & $service) {
-        if (isset($service['product'][$id])) {
+    if (count($services)) foreach($services as & $service)
+    {
+        if (isset($service['product'][$id]))
+        {
             unset($service['product'][$id]);
         }
     }
@@ -437,7 +439,7 @@ class UserCart extends BaseUserData
 
     foreach ($products as $product)
     {
-        if ($product['token']==$token) return $product['cart']['quantity'];
+        if ($product['token_prefix'].'/'.$product['token']==$token) return $product['cart']['quantity'];
     }
 
     return 0;
