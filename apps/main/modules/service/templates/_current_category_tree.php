@@ -19,7 +19,8 @@
                if (!isset($currentServiceList['list']) || count($currentServiceList['list'])<1) continue;
             ?>   
             <div class="serviceblock mNewSB">
-                <div class="photo">
+                <div class="photo pr">
+                    <div class="bServiceCard__eLogo"></div>
                     <?php if (isset($currentServiceList['photo'])) { ?>
                         <img width="160" height="120" alt="" src="<?php echo $currentServiceList['photo']; ?>">
                     <?php } else { ?>                        

@@ -72,6 +72,7 @@ class serviceActions extends myActions
                         ->leftJoin('s.Price p on s.id=p.service_id ')
                         #->addWhere('p.service_price_list_id = ? ', array($priceListDefaultId->id) )
                         ->addWhere('sc.category_id IN ('.implode(',', $listInnerCatId). ')' )
+                        ->orderBy('s.name ASC')
                         ->execute();
                         #->fetchArray();
         #myDebug::dump($serviceList);
