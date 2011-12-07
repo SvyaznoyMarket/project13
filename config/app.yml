@@ -61,9 +61,9 @@ all:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
-      consumer_key: test
-      signature: test
+      api_url: 'http://core/v1/json'
+      consumer_key: v6Q4UiTaQ6jWPHtJ
+      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
   cache_eraser:
     config:
@@ -213,7 +213,7 @@ live:
 
   core:
     config:
-      api_url: 'http://62.231.27.40/v1/json'
+      api_url: 'http://core/v1/json'
       consumer_key: v6Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
@@ -240,7 +240,7 @@ alpha:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
+      api_url: 'http://core/v1/json'
       consumer_key: test
       signature: test
 
@@ -251,6 +251,6 @@ alpha_dev:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
+      api_url: 'http://core/v1/json'
       consumer_key: test
       signature: test

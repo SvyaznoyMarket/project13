@@ -4,7 +4,7 @@ class DeliveryCalc
 {
   public static function getShopListForSelfDelivery()
   {
-    $haveInStock = false;
+    $haveInStock = true;
     $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
     $stockRel = StockProductRelationTable::getInstance();
     foreach ($cart as $product_id => $product)
