@@ -364,6 +364,15 @@ class productCatalogActions extends myActions
     $this->_seoRedirectOnPageDublicate($request);
     $this->productCategory = $this->getRoute()->getObject();
 
+    // 301-й редирект. Можно удалить 01.02.2012
+    if (false === strpos($request['productCategory'], '/'))
+    {
+      if (!empty($this->productCategory->token_prefix))
+      {
+        $this->redirect('productCatalog_category', $this->productCategory, 301);
+      }
+    }
+
 //    $title = $this->productCategory['name'];
 //    if ($request->getParameter('page')) {
 //      $title .= ' – '.$request->getParameter('page');
