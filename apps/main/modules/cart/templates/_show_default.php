@@ -46,7 +46,15 @@
 			href="<?php echo url_for('cart_service_delete', array('service'=>'F1ID', 'product'=>'PRID')); ?>">Отменить</a>
 		</td>
 		</tr>
-	</script>    
+	</script>   
+<?php
+/*
+$servListId = array();
+foreach ($list as $service) {                      
+ if ($service['type']!='product') continue;
+ $servListId[] = $service['id'];
+}*/
+?>    
   <?php foreach ($list as $item): ?>
     <?php if ($item['type'] == 'product'): ?>
         <div class="basketline mWrap" ref="<?php echo $item['product']->token ?>">
@@ -73,12 +81,18 @@
 
                 
                 <?php include_component('service', 'list_for_product_in_cart', array('product' => $item['product'], 'services' => $item['service'])) ?>
-                
-            <!--/div-- IN PREVIOUS COMPONENT>
-        </div>
+            <?php #include_component('product', 'f1_lightbox', array('f1' => $list, 'product'=>$item['product'], 'servListId' => $servListId)) ?>
+                                
+            </div>
+            
     <?php else: ?>
         <div class="basketline mWrap">
             <div class="basketleft">
+                <?php
+                    if (isset($item['photo'])){
+                        echo '<div class="bServiceCard__eLogo"></div>';                            
+                    }
+                ?>
                 <a href="<?php echo url_for('service_show', array('service' => $item['token'])) ?>">
                     <?php
                         if (isset($item['photo'])) echo image_tag($item['photo']);

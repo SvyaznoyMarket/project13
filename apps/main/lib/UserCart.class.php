@@ -42,11 +42,12 @@ class UserCart extends BaseUserData
     }
       
     $services = $this->parameterHolder->get('services');
+    #print_r( $services[$service->id] );
     if (!isset($services[$service->id]) || empty($services[$service->id]))
     {
       $services[$service->id] = $this->getServiceDefaults();
     }
-    if ($product) {        
+    if ($product) {     
         //проверяем, можно ли добавлять эту услугу к этому продукту
         $mayToAdd = false;
         $avaleServiceList = ServiceTable::getInstance()->getListByProduct($product);
@@ -66,9 +67,9 @@ class UserCart extends BaseUserData
         $services[$service->id]['quantity'] = $quantity;                
     }
     $this->parameterHolder->set('services', $services);
-
     $this->calculateDiscount();
-   # myDebug::dump( $this->services );
+    ##myDebug::dump( $this->services );
+    #exit();
     return true;
     
   }  
@@ -114,13 +115,25 @@ class UserCart extends BaseUserData
     }
     
     $services = $this->parameterHolder->get('services');
+    $services = $this->getServices();
     //удаляем из корзины сервисы, привязанные к этому товару
     foreach($services as & $service) {
-        if (isset($service['product'][$id])) {
-            unset($service['product'][$id]);
+        if (isset($service['cart']['product'][$id])) {
+            if (isset($service['cart']['product'][$id])) {
+                
+                unset($service['cart']['product'][$id]);
+                
+                #$serviceOb = ServiceTable::getInstance()->find($service['id']);
+                #myDebug::dump($service);
+                #$serviceOb['id'] = $service->id;
+                #echo $serviceOb['id'].'===';
+                #exit();
+                $this->deleteService($serviceOb, $id);
+            }
+            #unset($service['product'][$id]);
         }
     }
-    #myDebug::dump($services);
+    $services = $this->getServices();
     $this->parameterHolder->set('services', $services);
     $this->calculateDiscount();    
     
@@ -284,9 +297,13 @@ class UserCart extends BaseUserData
     }
       
   }  
-  public function deleteService(Service $service, $productId = 0)
+  /*
+  public function deleteService($service, $productId = 0)
   {
+      echo $productId .'==='. $service->id;
     $services = $this->parameterHolder->get('services');
+      myDebug::dump($services);
+      exit();
     if (isset($services[$service->id]))
     {
       if ($productId) {
@@ -307,7 +324,34 @@ class UserCart extends BaseUserData
     }
     
     
-  }
+  }*/
+  
+  public function deleteService($service, $productId = 0)
+  {
+    $services = $this->parameterHolder->get('services');
+    if (isset($services[$service['id']]))
+    {
+      if ($productId) {
+         # echo $productId.'--del';
+         # exit();
+        if (isset($services[$service['id']]['product'][$productId])) {
+            unset($services[$service['id']]['product'][$productId]); 
+        }
+      } else {  
+          $services[$service['id']]['quantity'] = 0;
+      }
+      //если этого сервиса не осталось не по одиночке, не для товаров, удалим его вообще
+      if (isset($services[$service['id']]) && !count($services[$service['id']]['product']) && !$services[$service['id']]['quantity'] ) {
+          unset( $services[$service['id']] );
+      }
+      #myDebug::dump($services);
+      #exit();
+      $this->parameterHolder->set('services', $services);
+      $this->calculateDiscount();
+    }
+    
+    
+  }  
 
   public function clear()
   {
@@ -523,6 +567,7 @@ class UserCart extends BaseUserData
   protected function loadServices($force = false)
   {
     $services = $this->parameterHolder->get('services');
+   # myDebug::dump( $services );
     $serviceIds = array();
     if ($services) {
         $serviceIds = array_keys($services);
