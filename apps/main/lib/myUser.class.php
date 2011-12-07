@@ -58,10 +58,22 @@ class myUser extends myGuardSecurityUser
     }        
     foreach($cart->getServices()->toArray() as $id => $service){
       $qty = $service['cart']['quantity'];
-      foreach($service['cart']['product'] as $pId => $pQty) {
-          $qty += $pQty;
+      if ($qty > 0) {
+        $result['servicesInCart'][ $service['token'] ][0] = $qty;          
       }
-      $result['servicesInCart'][ $service['token'] ] = $qty;          
+      foreach($service['cart']['product'] as $pId => $pQty) {
+          $token = false;
+          foreach($cart->getProducts()->toArray() as $id => $product){
+              #echo $product['id'] .'=='. $pId."\n";
+              if ($product['id'] == $pId) {
+                  $token = $product['token'];
+                  break;
+              }
+          }
+          if ($token && $pQty) {
+            $result['servicesInCart'][ $service['token'] ][$token] = $pQty;          
+          }
+      }
     }        
     return $result;
   }  

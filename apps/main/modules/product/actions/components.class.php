@@ -464,7 +464,12 @@ class productComponents extends myComponents
    *
    */
   public function executeF1_lightbox(){
-
+      if ($this->parentAction == '_list_for_product_in_cart') {
+          $showInCardButton = true;
+      } else {
+          $showInCardButton = false;          
+      }
+      $this->setVar('showInCardButton', $showInCardButton);
   }
 
   public function executeKit()
