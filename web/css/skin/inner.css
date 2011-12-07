@@ -2264,7 +2264,10 @@ DT.bCtg__eOrange{
 	top: 415px;
 	left: 170px;
 	}
-
+	.bF1Block.mGoods div{
+		max-height: 320px;
+		overflow-y: scroll;
+		}
 .bGood{
 	}
 	.bGood__eArticle{
@@ -2503,3 +2506,14 @@ DT.bCtg__eOrange{
 	.bLiteboxF1__eG a{
 		color: #434343;
 	}
+/* bBacketLineWrap */
+
+.mWrap{
+	position: relative;
+	}
+	.mWrap .bF1Block{
+		top: 91px;
+		right: 32px;
+		left: auto;
+		z-index: 100;
+		}	

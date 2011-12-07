@@ -9,9 +9,7 @@ foreach ($list as $service) {
 }
 ?>
 
-<?php
-include_component('product', 'f1_lightbox', array('f1' => $list, 'product'=>$product, 'servListId' => $servListId))
-?>
+
   
 <div class="service form bBacketServ mSmall mBR5" <?php if ($selectedNum) echo ' style="display:none;"';  ?> >
                <table cellspacing="0">
@@ -87,4 +85,8 @@ include_component('product', 'f1_lightbox', array('f1' => $list, 'product'=>$pro
 
 <?php } ?>        
 
+</div>
+<?php
+include_component('product', 'f1_lightbox', array('f1' => $list, 'product'=>$product, 'servListId' => $servListId))
+?>
 <?php endif ?>
