@@ -25,7 +25,8 @@ class productCatalogActions extends myActions
     ));
     */
     $this->productCategoryList = ProductCategoryTable::getInstance()->createQuery()
-      ->select('id, name, level')
+      ->select('id, name, level, token, token_prefix')
+      ->where('is_active = ?', true)
       ->orderBy('root_id, lft')
       ->fetchArray()
     ;
@@ -315,7 +316,7 @@ class productCatalogActions extends myActions
           'category' => $this->productCategory,
         );
         $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-          'view'      => $request['view'],
+          'view'      => 'list',//$request['view'],
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
         $this->view = $request['view'];
@@ -328,10 +329,13 @@ class productCatalogActions extends myActions
     if (isset($request['num'])) $limit = $request['num'];
     else $limit = sfConfig::get('app_product_max_items_on_category', 20);
 
+    /*
     $this->productPager = $this->getPager('Product', $q, $limit, array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
+    */
+    $this->productPager = $this->getProductPager($q);
 
     if($request['page'] > $this->productPager->getLastPage()){
         $this->_validateResult['success'] = false;
@@ -363,6 +367,15 @@ class productCatalogActions extends myActions
 
     $this->_seoRedirectOnPageDublicate($request);
     $this->productCategory = $this->getRoute()->getObject();
+
+    // 301-й редирект. Можно удалить 01.02.2012
+    if (false === strpos($request['productCategory'], '/'))
+    {
+      if (!empty($this->productCategory->token_prefix))
+      {
+        $this->redirect('productCatalog_category', $this->productCategory, 301);
+      }
+    }
 
 //    $title = $this->productCategory['name'];
 //    if ($request->getParameter('page')) {

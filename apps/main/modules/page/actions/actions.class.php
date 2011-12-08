@@ -18,7 +18,7 @@ class pageActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->page = PageTable::getInstance()->getByToken($request['page']);
-    $this->forward404Unless($this->page);
+    $this->forwardUnless($this->page, 'redirect', 'index');
 
     //TODO: ЭТО НАДО УБИТЬ, КОГДА ПОЯВИТСЯ НОРМАЛЬНЫЙ РАЗДЕЛ Service F1
     if ('f1' == $this->page->token)
@@ -26,8 +26,8 @@ class pageActions extends myActions
       $this->setLayout('layout');
     }
 
-	$pageTitle = !empty($this->page->title) ? $this->page->title : $this->page->name;
-	$this->getResponse()->setTitle($pageTitle.' – Enter.ru');
+    $pageTitle = !empty($this->page->title) ? $this->page->title : $this->page->name;
+    $this->getResponse()->setTitle($pageTitle.' – Enter.ru');
 
     $this->setVar('page', $this->page, true);
   }

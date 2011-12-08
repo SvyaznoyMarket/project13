@@ -115,7 +115,7 @@ class productComponents extends myComponents
       'is_insale'  => $this->product['is_insale'],
       'is_instock'  => $this->product['is_instock'],
       //'product'  => clone $this->product,
-      'url'        => url_for('productCard', array('product' => $this->product['token']), array('absolute' => true)),
+      'url'        => url_for('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
       'product'    => $this->product,
     );
 
@@ -188,7 +188,7 @@ class productComponents extends myComponents
    */
   public function executePager()
   {
-    $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
+    $this->view = !empty($this->view) ? $this->view : $this->getRequestParameter('view');
     if (!in_array($this->view, array('expanded', 'compact', 'line')))
     {
       $this->view = 'compact';
@@ -265,7 +265,7 @@ class productComponents extends myComponents
     }
 
     $list = array();
-    foreach ($this->product['Parameter'] as $parameter)
+    if (isset($this->product['Parameter'])) foreach ($this->product['Parameter'] as $parameter)
     {
       $value = $parameter->getValue();
 

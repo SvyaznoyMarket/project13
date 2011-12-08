@@ -14,7 +14,7 @@
 
   <noindex>
       <div class="searchbox">
-        <?php include_component('search', 'form') ?>
+        <?php include_component('search', 'form', array('searchString' => $searchString)) ?>
       </div>
   </noindex>
 
