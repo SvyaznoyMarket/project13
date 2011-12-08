@@ -72,7 +72,7 @@ _gaq.push(['_trackPageLoadTime']);
     	<div class="hdn"><img src="/images/banner_promo_2.jpg" alt=""/></div>
     	<div class='bIndexCard'>
 			<div class='bIndexCard__eInfo'>
-				Приходите в любой магазин Enter в москве 10 декабря:<br><br>
+				Приходите в любой магазин Enter в Москве 10 декабря:<br><br>
 				<a href='http://www.enter.ru/shops/moskva/enter-na-ul-gruzinskiy-val-d-31'>Москва, ул. Грузинский вал, 31</a><br>
 				<a href='http://www.enter.ru/shops/moskva/magazin-na-ul-b-dorogomilovskaya-d-8'>Москва, ул. Дорогомиловская, 8</a><br>
 				<a href='http://www.enter.ru/shops/moskva/magazin--na-ul-ordgonikidze-d-11'>Москва, ул. Орджникидзе 11, стр.10</a><br><br>
