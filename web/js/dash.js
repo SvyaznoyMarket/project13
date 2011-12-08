@@ -74,7 +74,7 @@ $(document).ready(function(){
 						}
 						button = $('td.bF1Block_eBuy[ref='+ tokenS +'] input.button')
 						if( button.length ) {				
-							button.addClass('disabled').val('В корзине')
+							button.addClass('active').val('В корзине')
 						}			
 					}
 				}				
@@ -85,11 +85,11 @@ $(document).ready(function(){
 			if( lbox.servicesInCart[ tokenS ][0] ) {
 				var button = $('div.mServ[ref='+ tokenS +'] a.link1')
 				if( button.length ) {				
-					button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
+					button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине').addClass('active')
 				}
 				button = $('div.bServiceCard[ref='+ tokenS +'] input')
 				if( button.length ) {				
-					button.val('В корзине').addClass('disabled')
+					button.val('В корзине').addClass('active')
 				}
 			}			
 		}
@@ -140,63 +140,9 @@ $(document).ready(function(){
 	})
 	/* ---- */
 
-	function parseItemNode( ref ){
-		var jn = $( '.boxhover[ref='+ ref +']')
-		//console.info( 'parseItemNode',ref, jn )
-		var item = {
-			'id'   : $(jn).attr('ref'),
-			'title': $('h3 a', jn).html(),
-			'price': $('.price', jn).html(),
-			'img'  : $('.photo img', jn).attr('src')
-		}
-		return item
-	}
-
-	/* stuff goes into lightbox */
 	$('.boxhover .lt').live('click', function(e) {
 		if( $(this).attr('data-url') )
 			window.location.href = $(this).attr('data-url')
-	})
-
-	$('.goodsbar .link1').live('click', function(e) {
-		var button = this
-		if( $(button).hasClass('disabled') )
-			return false
-		if( $(button).hasClass('active') )
-			return true	
-		if (! currentItem ) return false
-
-		if( ltbx ){
-			var tmp = $(this).parent().parent().find('.photo img')
-			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500, function() {
-				//ltbx.getBasket( parseItemNode( currentItem ) )
-			})
-		}
-		$.getJSON( $( button ).attr('href') +'/1', function(data) {
-			if ( data.success && ltbx ) {
-				var tmpitem = parseItemNode( currentItem )
-				tmpitem.vitems = data.data.full_quantity
-				tmpitem.sum = data.data.full_price
-				ltbx.getBasket( tmpitem )
-				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
-				$(button).addClass('active') 
-			}
-		})
-		e.stopPropagation()
-		return false
-	})
-	$('.goodsbar .link2').click( function() {
-		//if (! currentItem ) return
-		//if( ltbx )
-		//	ltbx.getWishes( parseItemNode( currentItem ) )
-		//TODO ajax
-		return false
-	})
-	$('.goodsbar .link3').click( function() {
-		//if( ltbx )
-		//	ltbx.getComparing()
-		//TODO ajax
-		return false
 	})
 
 	/* F1 */
@@ -268,105 +214,115 @@ $(document).ready(function(){
 	/* buy bottons */
 	var markPageButtons = function(){
 		var carturl = $('.lightboxinner .point2').attr('href')
-		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active').unbind('click')
-		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине').unbind('click')
+		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active')
+		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине')
 		$('.bSet__ePrice .link1').unbind('click')
 		$('.goodsbar .link1').die('click')
 	}
-
-	$('.goodsbarbig .link1').click( function() {
-		var button = this
-		if( $(button).hasClass('disabled') )
-			return false
-		$.getJSON( $( button ).attr('href') +'/1', function(data) {
-			if ( data.success && ltbx ) {
-				var tmpitem = {
-					'id'    : $( button ).attr('href'),
-					'title' : $('h1').html(),
-					'vitems': data.data.full_quantity,
-					'sum'   : data.data.full_price,
-					'price' : $('.goodsinfo .price').html(),
-					'img'   : $('.goodsphoto img').attr('src')
-				}
-				ltbx.getBasket( tmpitem )
-				markPageButtons()
-				//$(button).unbind('click')
-			}
-		})
-		return false
-	})
-
-	$('#bigpopup a.link1').click( function() {
-		var button = this
-		$.getJSON( $( button ).attr('href') +'/1', function(data) {
-			if ( data.success && ltbx ) {
-				var tmpitem = {
-					'id'    : $( button ).attr('href'),
-					'title' : $('h1').html(),
-					'vitems': data.data.full_quantity,
-					'sum'   : data.data.full_price,
-					'price' : $('.goodsinfo .price').html(),
-					'img'   : $('.goodsphoto img').attr('src')
-				}
-				ltbx.getBasket( tmpitem )
-				markPageButtons()
-				//$(button).unbind('click')
-			}
-		})
-		return false
-	})
-
-	$('.bSet__ePrice .link1').click( function() { // for F1 also
-		var button = this
-		if( $(button).hasClass('disabled') )
-			return false
-		$.getJSON( $( button ).attr('href') +'/1', function(data) {
-			if ( data.success && ltbx ) {
-				var jtitle = $('div.pagehead h2') // mobel set
-				if( !jtitle.length ) //f1 item
-					jtitle = $('div.pagehead h1')
-				var tmpitem = {
-					'id'   : $( button ).attr('href'),
-					'title': jtitle.html(),
-					'vitems': data.data.full_quantity,
-					'sum'   : data.data.full_price,
-					'price': $('.bSet__ePrice .price').html(),
-					'img'  : $('.bSet img:first').attr('src')
-				}
-				ltbx.getBasket( tmpitem )
-				markPageButtons()
-				if( $(button).parent().hasClass('mServ') ) // f1 item
-					$(button).text('В корзине').addClass('disabled')
-			}
-		})
-		return false
-	})
 	
-	/* buy F1 */
-	$('div.bServiceCardWrap').delegate('input','click', function(){
+	/* stuff go to litebox */
+	function parseItemNode( ref ){
+		var jn = $( '.boxhover[ref='+ ref +']')
+		var item = {
+			'id'   : $(jn).attr('ref'),
+			'title': $('h3 a', jn).html(),
+			'price': $('.price', jn).html(),
+			'img'  : $('.photo img', jn).attr('src')
+		}
+		return item
+	}
+	
+	$('.goodsbar .link1').live('click', function(e) {
 		var button = this
-		var papacard = $(this).parent().parent('.bServiceCard')
 		if( $(button).hasClass('disabled') )
 			return false
-		$.getJSON( $( button ).data('url'), function(data) {
+		if( $(button).hasClass('active') )
+			return true	
+		if (! currentItem ) return false
+
+		if( ltbx ){
+			var tmp = $(this).parent().parent().find('.photo img')
+			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
+		}
+		$.getJSON( $( button ).attr('href') +'/1', function(data) {
 			if ( data.success && ltbx ) {
-				var tmpitem = {
-					'id'   : papacard.attr('ref'),
-					'title': papacard.find('.bServiceCard__eDescription').text(),
-					'vitems': data.data.full_quantity,
-					'sum'   : data.data.full_price,
-					'price': papacard.find('.price').text(),
-					'img'  : papacard.find('.bServiceCard__eImage img').attr('src')
+				var tmpitem = parseItemNode( currentItem )
+				tmpitem.vitems = data.data.full_quantity
+				tmpitem.sum = data.data.full_price
+				ltbx.getBasket( tmpitem )
+				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
+				$(button).addClass('active') 
+			}
+		})
+		e.stopPropagation()
+		return false
+	})	
+
+	var BB = new BuyBottons()
+	BB.push( 'div.bServiceCardWrap input' ) // F1 
+	BB.push('div.goodsbarbig a.link1', $('div.goodsbarbig').data('value'), markPageButtons ) // product card, buy big
+	BB.push( '#bigpopup a.link1', $('div.popup_leftpanel').data('value'), markPageButtons ) // product card, buy in popup
+	BB.push('div.bSet a.link1', $('div.bSet').data('value'), markPageButtons ) // a set card, buy big
+	BB.push('div.mServ a.link1', $('div.mServ').data('value') ) // service card, buy big
+	
+	/* BB */
+	function BuyBottons() {
+		this.push = function( selector, jsond,  afterpost ) {
+			var carturl = $('.lightboxinner .point2').attr('href')
+			$('body').delegate( selector, 'click', function() {
+				var button = $(this)
+				if( !jsond )
+					jsond = button.data('value')
+				if( !jsond )	
+					return false				
+				if( button.hasClass('active') )
+					return true				
+				
+				var ajurl = '/404.html'
+				if( button.is('a') ) {
+					var bt = button.text().replace(/\s/g,'')
+					if( bt !== '' && bt !== '&nbsp;' )
+						button.text('В корзине')
+					ajurl = button.attr('href')	
+				}	
+				if( button.is('input') ) {
+					button.val('В корзине')
+					ajurl = jsond.url	
 				}				
-				ltbx.getBasket( tmpitem )
-				$(button).addClass('disabled').val('В корзине')
-			}
-		})
-		return false	
-	})
-	
+				button.addClass('active').attr('href', carturl)
+				
+				$.getJSON( ajurl, function( data ) {
+					if ( data.success && ltbx ) {
+						var tmpitem = {
+							'id'    : jsond.jsref,
+							'title' : jsond.jstitle,
+							'price' : jsond.jsprice,
+							'img'   : ( jsond.jsimg ) ? jsond.jsimg : '/images/logo.png',
+							'vitems': data.data.full_quantity,
+							'sum'   : data.data.full_price
+						}
+						ltbx.getBasket( tmpitem )	
+						if( afterpost )
+							afterpost()
+					}	
+				})
+				return false
+			})
+		}
+		
+	} // object BuyBottons
+
 	// hidden buttons wishlist+compare
-	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })
-
-
+	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })	
+	$('.goodsbar .link2').click( function() {
+		//if (! currentItem ) return
+		//if( ltbx )
+		//	ltbx.getWishes( parseItemNode( currentItem ) )
+		return false
+	})
+	$('.goodsbar .link3').click( function() {
+		//if( ltbx )
+		//	ltbx.getComparing()
+		return false
+	})	
 })

@@ -31,9 +31,21 @@
                     <span class="rubl">p</span>
                 <?php } ?>    
             </div>
+			 
+			<?php 
+			#JSON data
+				$json = array (
+					'jsref' => $service['token'],
+					'jsimg' => $service['photo'],
+					'jstitle' => $service['name'],
+					'jsprice' => $service['priceFormatted'],
+					'url'    => url_for('cart_service_add', array('service' => $service['token']))
+				)
+				
+			?>           
             <?php if ((int)$service['price'] >= Service::MIN_BUY_PRICE) { ?>
                 <form action="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" />
-                    <input data-url="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" type="submit" class="button yellowbutton" value="Купить услугу">
+                    <input data-value='<?php echo json_encode( $json ) ?>' type="submit" class="button yellowbutton" value="Купить услугу">
                 </form>    
             <?php } ?>
                         
