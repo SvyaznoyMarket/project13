@@ -282,7 +282,7 @@ EOF;
       return false;
     }
 
-    if (isset($data['id']))
+    if (isset($entity['id']))
     {
       $this->log($table->getComponentName().': '.$action.' '.$packet['type'].' ##'.$entity['id']);
       //myDebug::dump($entity);
