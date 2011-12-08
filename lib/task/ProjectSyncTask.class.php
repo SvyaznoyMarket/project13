@@ -337,6 +337,19 @@ EOF;
   {
     $entity = $packet['data'];
 
+    // подковырка: если действие delete, то угадывам item_type_id
+    if ('delete' == $action)
+    {
+      foreach (array('ProductPhoto' => 1, 'ProductPhoto3D' => 2, 'ShopPhoto' => 8) as $model => $itemTypeId)
+      {
+        if (Doctrine_Core::getTable($model)->getByCoreId($entity['id']))
+        {
+          $entity['item_type_id'] = $itemTypeId;
+          break;
+        }
+      }
+    }
+
     $record = false;
     if (isset($entity['item_type_id'])) switch ($entity['item_type_id'])
     {
