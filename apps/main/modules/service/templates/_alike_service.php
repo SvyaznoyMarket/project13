@@ -7,7 +7,7 @@
     
 <?php $num = 0; ?>    
 <?php foreach ($list as $service) { ?>
-		<div class="bServiceCard mInlineBlock">
+		<div class="bServiceCard mInlineBlock" ref="<?php echo $service['token'] ?>">
 			<div class="bServiceCard__eImage">
                 <?php if ($service['photo']) { ?>
                     <div class="bServiceCard__eLogo"></div>
@@ -26,7 +26,7 @@
                 </a>
             </p>
 			<div class="bServiceCard__ePrice">
-                <?php echo $service['priceFormatted']; ?>
+                <span class="price"><?php echo $service['priceFormatted']; ?></span>
                 <?php if((int)$service['priceFormatted']) { ?>
                     <span class="rubl">p</span>
                 <?php } ?>    

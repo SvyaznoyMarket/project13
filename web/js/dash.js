@@ -52,7 +52,7 @@ $(document).ready(function(){
 	var isInCart = false
 	var changeButtons = function( lbox ){
 		if(!lbox || !lbox.productsInCart ) return false
-		for( var tokenP in lbox.productsInCart) {
+		for( var tokenP in lbox.productsInCart) { // Product Card
 			var bx = $('div.boxhover[ref='+ tokenP +']')
 			if( bx.length ) {
 				var button = $('a.link1', bx)
@@ -79,7 +79,20 @@ $(document).ready(function(){
 					}
 				}				
 			}
-		}		
+		}
+		if( lbox.servicesInCart )
+		for( var tokenS in lbox.servicesInCart ) { // Service Card
+			if( lbox.servicesInCart[ tokenS ][0] ) {
+				var button = $('div.mServ[ref='+ tokenS +'] a.link1')
+				if( button.length ) {				
+					button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
+				}
+				button = $('div.bServiceCard[ref='+ tokenS +'] input')
+				if( button.length ) {				
+					button.val('В корзине').addClass('disabled')
+				}
+			}			
+		}
 	}
 	/* ---- */
 
@@ -302,31 +315,58 @@ $(document).ready(function(){
 		})
 		return false
 	})
-	// hidden buttons wishlist+compare
-	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })
 
-	$('.bSet__ePrice .link1').click( function() {
+	$('.bSet__ePrice .link1').click( function() { // for F1 also
 		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {
 			if ( data.success && ltbx ) {
+				var jtitle = $('div.pagehead h2') // mobel set
+				if( !jtitle.length ) //f1 item
+					jtitle = $('div.pagehead h1')
 				var tmpitem = {
 					'id'   : $( button ).attr('href'),
-					'title': $('h2').html(),
+					'title': jtitle.html(),
 					'vitems': data.data.full_quantity,
 					'sum'   : data.data.full_price,
 					'price': $('.bSet__ePrice .price').html(),
-					'img'  : $('.bSet__eImage img').attr('src')
+					'img'  : $('.bSet img:first').attr('src')
 				}
 				ltbx.getBasket( tmpitem )
 				markPageButtons()
-				//$(button).unbind('click')
+				if( $(button).parent().hasClass('mServ') ) // f1 item
+					$(button).text('В корзине').addClass('disabled')
 			}
 		})
 		return false
 	})
-	/* ---- */
+	
+	/* buy F1 */
+	$('div.bServiceCardWrap').delegate('input','click', function(){
+		var button = this
+		var papacard = $(this).parent().parent('.bServiceCard')
+		if( $(button).hasClass('disabled') )
+			return false
+		$.getJSON( $( button ).data('url'), function(data) {
+			if ( data.success && ltbx ) {
+				var tmpitem = {
+					'id'   : papacard.attr('ref'),
+					'title': papacard.find('.bServiceCard__eDescription').text(),
+					'vitems': data.data.full_quantity,
+					'sum'   : data.data.full_price,
+					'price': papacard.find('.price').text(),
+					'img'  : papacard.find('.bServiceCard__eImage img').attr('src')
+				}				
+				ltbx.getBasket( tmpitem )
+				$(button).addClass('disabled').val('В корзине')
+			}
+		})
+		return false	
+	})
+	
+	// hidden buttons wishlist+compare
+	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })
 
 
 })
