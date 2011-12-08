@@ -48,7 +48,7 @@ class productCatalogActions extends myActions
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
       'view'      => 'list',
-      'with_line' => 'line' == $request['view'] ? true : false,
+      'with_line' => false, //'line' == $request['view'] ? true : false,
     ));
 
     $this->productFilter->buildQuery($q);
@@ -195,6 +195,7 @@ class productCatalogActions extends myActions
     $q = ProductTable::getInstance()->createBaseQuery(array(
       'view'          => 'list',
       'property_view' => false,
+      'with_line'     => false,
     ));
 
     if ($request->hasParameter($this->productFilter->getName()))
