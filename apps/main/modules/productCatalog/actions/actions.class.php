@@ -316,7 +316,7 @@ class productCatalogActions extends myActions
           'category' => $this->productCategory,
         );
         $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-          'view'      => $request['view'],
+          'view'      => 'list',//$request['view'],
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
         $this->view = $request['view'];
@@ -329,10 +329,13 @@ class productCatalogActions extends myActions
     if (isset($request['num'])) $limit = $request['num'];
     else $limit = sfConfig::get('app_product_max_items_on_category', 20);
 
+    /*
     $this->productPager = $this->getPager('Product', $q, $limit, array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
+    */
+    $this->productPager = $this->getProductPager($q);
 
     if($request['page'] > $this->productPager->getLastPage()){
         $this->_validateResult['success'] = false;
