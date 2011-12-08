@@ -265,7 +265,7 @@ class productComponents extends myComponents
     }
 
     $list = array();
-    foreach ($this->product['Parameter'] as $parameter)
+    if (isset($this->product['Parameter'])) foreach ($this->product['Parameter'] as $parameter)
     {
       $value = $parameter->getValue();
 
