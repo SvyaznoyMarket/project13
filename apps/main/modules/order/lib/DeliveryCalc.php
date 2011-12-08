@@ -2,6 +2,56 @@
 
 class DeliveryCalc
 {
+  /**
+   *
+   * @param int $product_id
+   * @param int|null $shop_id
+   * @param int $quantity кол-во
+   * @return bool
+   */
+  public function isInStockShop($product_id, $shop_id = null, $quantity = 1)
+  {
+    $q = ShopTable::getInstance()->createBaseQuery();
+    $q->innerJoin('shop.ProductRelation productRelation');
+    $q->andWhere('productRelation.product_id = ?', (int)$product_id);
+    $q->andWhere('productRelation.stock_id IS NULL');
+    $q->andWhere('productRelation.quantity >= ?', $quantity);
+    if ($shop_id !== null) {
+      $q->andWhere('shop.id = ?', (int)$shop_id);
+    } else {
+      $q->andWhere('shop.region_id = ?', sfContext::getInstance()->getUser()->getRegion('id'));
+    }
+    if ($q->count() > 0) {
+      return true;
+    }
+    return false;
+  }
+  
+  /**
+   *
+   * @param int $product_id
+   * @param int|null $stock_id
+   * @param int $quantity кол-во
+   * @return bool
+   */
+  public function isInStockStore($product_id, $stock_id = null, $quantity = 1)
+  {
+    $q = StockProductRelationTable::getInstance()->createBaseQuery();
+    if ($stock_id !== null) {
+      $q->andWhere('stockProductRelation.stock_id = ?', (int)$stock_id);
+    } else {
+      $q->innerjoin('stockProductRelation.Stock stock');
+      $q->innerJoin('stock.Region region WITH region.id = ?', sfContext::getInstance()->getUser()->getRegion('id'));
+    }
+    $q->andWhere('stockProductRelation.product_id = ?', (int)$product_id);
+    $q->andWhere('stockProductRelation.shop_id IS NULL');
+    $q->andWhere('stockProductRelation.quantity >= ?', $quantity);
+    if ($q->count() > 0) {
+      return true;
+    }
+    return false;
+  }
+  
   public static function getShopListForSelfDelivery()
   {
     $haveInStock = true;
@@ -45,22 +95,26 @@ class DeliveryCalc
     $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
     $stockRel = StockProductRelationTable::getInstance();
     $ts = time();
+    $diff = 0;
     foreach ($cart as $product_id => $product)
     {
         if (StockProductRelationTable::getInstance()->isInStock($product_id, $shop_id, null, $product['cart']['quantity'])) {
           if (time() > $ts) {
             $ts = time();
+            $diff = 0;
           }
         } elseif (StockProductRelationTable::getInstance()->isInStock($product_id, false, null, $product['cart']['quantity'])) {
           if (strtotime('tomorrow') > $ts) {
             $ts = strtotime('tomorrow');
+            $diff = 1;
           }
         }
     }
     if ($returnDiff) {
-      $minDeliveryDate = DateTime::createFromFormat('Y-m-d', date('Y-m-d', $ts));
-      $now = new DateTime();
-      return $minDeliveryDate->diff($now)->days;
+//      $minDeliveryDate = DateTime::createFromFormat('Y-m-d', date('Y-m-d', $ts));
+//      $now = new DateTime();
+//      return $minDeliveryDate->diff($now)->days;
+      return $diff;
     } else {
       return date('Y-m-d', $ts);
     }
