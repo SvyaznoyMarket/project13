@@ -51,4 +51,19 @@ class productCardComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
+  
+  function executeHeader_meta_og() {
+      $defaultDescription = 'Enter - новый способ покупать. Любой из 20000 товаров нашего ассортимента можно купить где угодно, как угодно и когда угодно. Наша миссия: дарить время для настоящего. Честно. С любовью. Как для себя.';
+      $description = '';
+      if ($this->product->description) {
+          $description = $this->product->description;
+      } elseif ($this->product->tagline) { 
+          $description = $this->product->tagline;
+      } else {
+          $description = $defaultDescription;
+      }
+      $this->setVar('title', $this->product->name);
+      $this->setVar('description', $description);
+      $this->setVar('photo', $this->product->getMainPhotoUrl(3));
+  }
 }

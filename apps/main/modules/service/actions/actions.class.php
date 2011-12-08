@@ -23,32 +23,28 @@ class serviceActions extends myActions
         $list = ServiceCategoryTable::getInstance()
                         ->createQuery('sc')
                         ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
-                        ->innerJoin('rel.Service as service on service.id=rel.service_id')                        
-                        ->addWhere('sc.core_parent_id=?',$serviceCategory['core_id'])
-                        #->addWhere('service.is_active=?', 1)
-                        ->fetchArray();
+                        ->where('sc.core_parent_id=?',$serviceCategory['core_id'])->fetchArray();
     } else {
         //страница категории
         $serviceCategory = $this->getRoute()->getObject();
         #echo get_class($serviceCategory);
         $list = ServiceCategoryTable::getInstance()
                         ->createQuery('sc')
-                        ->innerJoin('sc.ServiceRelation as rel')
-                        ->innerJoin('rel.Service as serv')                        
-                        ->where('sc.is_active= ? ', 1)
-                        #->where('serv.is_active="1"')
-                        ->orderBy('sc.lft')
-                        ->fetchArray();
-        ##echo $list;
-        #exit();
-        #myDebug::dump($list);
+                        ->leftJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
+                        ->orderBy('sc.lft')->fetchArray();
         //если первый уровень - выбираем перую подкатегорию и переходим на неё
         if ($serviceCategory['level'] == 1){
             $getNext = false;
-            foreach($list as $item){
-                if ($getNext){
-                    $newCatId = $item['id'];
-                    break;
+            foreach($list as $key => $item){
+                if ($getNext) {
+                    if ($item['level'] == 2) {
+                        $currentLevel2 = $item;
+                    } elseif ($item['level'] == 3) {
+                        if ( count($item['ServiceRelation']) ){
+                            $newCatId = $currentLevel2['id'];
+                            break;
+                        }
+                    }
                 }
                 if ($item['id'] == $serviceCategory['id']) $getNext = true;
             }
@@ -81,6 +77,7 @@ class serviceActions extends myActions
                         ->leftJoin('s.Price p on s.id=p.service_id ')
                         #->addWhere('p.service_price_list_id = ? ', array($priceListDefaultId->id) )
                         ->addWhere('sc.category_id IN ('.implode(',', $listInnerCatId). ')' )
+                        ->orderBy('s.name ASC')
                         ->execute();
                         #->fetchArray();
         #myDebug::dump($serviceList);
@@ -92,6 +89,7 @@ class serviceActions extends myActions
 
     
     $this->setVar('serviceCategory', $serviceCategory, true);
+    #myDebug::dump($list);
     $this->setVar('list', $list, true);
     if (isset($listInner)) $this->setVar('listInner', $listInner, true);
     if (isset($serviceList)) $this->setVar('serviceList', $serviceList, true);
