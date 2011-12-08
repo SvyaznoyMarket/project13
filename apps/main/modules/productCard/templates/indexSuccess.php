@@ -1,3 +1,7 @@
+<?php slot('header_meta_og') ?>
+  <?php include_component('productCard', 'header_meta_og', array('product' => $product) ) ?>
+<?php end_slot() ?>
+
 <?php slot('navigation') ?>
   <?php include_component('productCatalog', 'navigation', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
 <?php end_slot() ?>
