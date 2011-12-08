@@ -31,3 +31,11 @@
 
 
   <?php include_component('productCatalog', 'navigation_seo', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
+
+
+<?php slot('seo_counters_advance') ?>
+  <?php
+  $rotCat = $product->getMainCategory();
+  include_component('productCategory', 'seo_counters_advance', array('unitId' => $rotCat->root_id))
+  ?>
+<?php end_slot() ?>

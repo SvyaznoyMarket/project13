@@ -39,3 +39,8 @@
 <!--form action="<?php echo url_for('order_confirm') ?>" method="post">
 <input type="submit" value="Подтвердить" />
 </form-->
+
+
+<?php slot('seo_counters_advance') ?>
+  <?php include_component('order', 'seo_counters_advance', array('step' => 3)) ?>
+<?php end_slot() ?>

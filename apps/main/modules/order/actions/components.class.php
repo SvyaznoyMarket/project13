@@ -221,6 +221,9 @@ class orderComponents extends myComponents
   {
     $this->setVar('cart', $this->getUser()->getCart());
   }
-
+  
+  function executeSeo_counters_advance() {      
+  } 
+  
 }
 
