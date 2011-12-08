@@ -164,7 +164,7 @@ class OrderStep1Form extends BaseOrderForm
   public function configure()
   {
     parent::configure();
-
+    
     sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
 
     $user = sfContext::getInstance()->getUser()->getGuardUser();
@@ -242,7 +242,7 @@ class OrderStep1Form extends BaseOrderForm
     $this->widgetSchema['shop_id'] = new sfWidgetFormChoice(array(
 //      'choices'  => myToolkit::arrayDeepMerge(array('' => ''), ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name')),
 //      'choices'  => ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name'),
-      'choices'         => ShopTable::getInstance()->getChoices(),
+      'choices'         => DeliveryCalc::getShopListForSelfDelivery(),
       'multiple'        => false,
       'expanded'        => false,
       'renderer_class'  => 'myWidgetFormOrderSelect',
@@ -375,12 +375,14 @@ class OrderStep1Form extends BaseOrderForm
       }
       if ($deliveryType && ('self' == $deliveryType->token))
       {
+//        $this->widgetSchema['shop_id']->setOption('choices', DeliveryCalc::getShopListForSelfDelivery());
       // если самовывоз
         if (!empty($taintedValues['shop_id'])) {
           // чтобы не срабатывал валидатор, так как при самовывозе этого поля в форме нет.
           unset($taintedValues['delivery_period_id']);
           
-          $choices = $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3);
+//          $choices = $this->getDeliveryDateChoises(DeliveryCalc::getMinDateForShopSelfDelivery($taintedValues['shop_id'], true), 3);
+          $choices = $this->getDeliveryDateChoises(max(0, DeliveryCalc::getMinDateForShopSelfDelivery($taintedValues['shop_id'], true), $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3);
           $this->widgetSchema['delivered_at']->setOption('choices', $choices);
           $this->validatorSchema['delivered_at']->setOption('choices', array_keys($choices));
           $this->validatorSchema['delivery_period_id']->setOption('required', false);
