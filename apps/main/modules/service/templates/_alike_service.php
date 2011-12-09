@@ -15,8 +15,8 @@
                         <img src="<?php echo $service['photo']; ?>">
                     </a>    
                 <?php } else { ?>
-                    <div class="bServiceCard__eLogo_free"></div>
                     <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
+                        <div class="bServiceCard__eLogo_free"></div>
                     </a>    
                 <?php } ?>
             </div>

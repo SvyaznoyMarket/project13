@@ -96,7 +96,7 @@ class ProductTable extends myDoctrineTable
     return $q;
   }
 
-  public function getById($id, array $params = array())
+  public function getRecordById($id, array $params = array())
   {
     $this->applyDefaultParameters($params, array(
       'with_properties' => false,
@@ -119,7 +119,7 @@ class ProductTable extends myDoctrineTable
     $this->setQueryParameters($q, $params);
     $q->addWhere('product.id = ?', $id);
 
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
     if ($params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
@@ -131,7 +131,6 @@ class ProductTable extends myDoctrineTable
     }
 
     $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
-
     if ($prices)
     {
       if ($record instanceof Product)
@@ -151,6 +150,7 @@ class ProductTable extends myDoctrineTable
         : false
       ,
       'group_property' => $params['group_property'],
+      'hydrate_array'  => $params['hydrate_array'],
     ));
 
     if ($params['with_properties'])
@@ -234,7 +234,8 @@ class ProductTable extends myDoctrineTable
   public function getListByCategory(ProductCategory $category, array $params = array())
   {
     $this->applyDefaultParameters($params, array(
-      'creator' => false,
+      'creator'  => false,
+      'only_ids' => false,
     ));
 
     $q = $this->createBaseQuery($params);
@@ -248,6 +249,10 @@ class ProductTable extends myDoctrineTable
 
     //$ids = $this->getIdsByQuery($q, $params, 'productCategory-'.$category->id.'/product-ids');
     $ids = $this->getIdsByQuery($q, $params);
+    if ($params['only_ids'])
+    {
+      return $ids;
+    }
 
     return $this->createListByIds($ids, $params);
   }

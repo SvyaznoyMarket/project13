@@ -4,6 +4,11 @@ class myRedisCache extends sfRediskaCache
 {
 	public function addTag($tag, $key)
 	{
+    if (!$tag)
+    {
+      return null;
+    }
+
     return $this->_rediska->addToSet($tag, $key);
 	}
 
@@ -17,6 +22,11 @@ class myRedisCache extends sfRediskaCache
     if (func_num_args() > 1)
     {
       $tag = func_get_args();
+    }
+
+    if (!$tag)
+    {
+      return null;
     }
 
     $keys =
@@ -40,6 +50,11 @@ class myRedisCache extends sfRediskaCache
       $tag = func_get_args();
     }
 
+    if (!$tag)
+    {
+      return null;
+    }
+
     $keys = array();
     foreach(
       is_array($tag)
@@ -50,6 +65,6 @@ class myRedisCache extends sfRediskaCache
       $keys[] = $this->getKey($key, 'lastmodified');
     }
 
-    return $this->_rediska->delete($keys);
+    return count($keys) ? $this->_rediska->delete($keys) : true;
 	}
 }

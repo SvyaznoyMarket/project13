@@ -65,4 +65,8 @@ class cartComponents extends myComponents
     }
     $this->setVar('list', $list, true);
  }
+ 
+  function executeSeo_counters_advance() {      
+  } 
+  
 }

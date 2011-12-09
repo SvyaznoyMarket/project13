@@ -39,7 +39,6 @@ _gaq.push(['_trackPageLoadTime']);
 <body>
 <?php LastModifiedHandler::setLastModified();  ?>
 
-
 <div class="bannersbox">
     <div class="bannersboxinner">
 	  <!-- /images/banners/small/banner3.png -->
@@ -72,10 +71,10 @@ _gaq.push(['_trackPageLoadTime']);
     	<div class="hdn"><img src="/images/banner_promo_2.jpg" alt=""/></div>
     	<div class='bIndexCard'>
 			<div class='bIndexCard__eInfo'>
-				Приходите в любой магазин Enter в москве 10 декабря:<br><br>
+				Приходите в любой магазин Enter в Москве 10 декабря:<br><br>
 				<a href='http://www.enter.ru/shops/moskva/enter-na-ul-gruzinskiy-val-d-31'>Москва, ул. Грузинский вал, 31</a><br>
 				<a href='http://www.enter.ru/shops/moskva/magazin-na-ul-b-dorogomilovskaya-d-8'>Москва, ул. Дорогомиловская, 8</a><br>
-				<a href='http://www.enter.ru/shops/moskva/magazin--na-ul-ordgonikidze-d-11'>Москва, ул. Орджникидзе 11, стр.10</a><br><br>
+				<a href='http://www.enter.ru/shops/moskva/magazin--na-ul-ordgonikidze-d-11'>Москва, ул. Орджoникидзе 11, стр.10</a><br><br>
 				Сделайте покупку на сумму от 1000 рублей<br>
 				Оставьте нам фото с вашей улыбкой и<br>
 				Получите золотой кулон в виде сердца! В подарок! :)<br><br>
@@ -180,6 +179,10 @@ _gaq.push(['_trackPageLoadTime']);
 <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
+
+<?php if (has_slot('seo_counters_advance')): ?>
+  <?php include_slot('seo_counters_advance') ?>
+<?php endif ?>
 
 </body>
 </html>

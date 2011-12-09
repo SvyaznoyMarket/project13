@@ -26,6 +26,13 @@ class ProductPropertyOptionTable extends myDoctrineTable
     );
   }
 
+  public function getDefaultParameters()
+  {
+    return array(
+      'hydrate_array' => false,
+    );
+  }
+
   public function getCacheEraserKeys($record, $action = null)
   {
     $return = array();

@@ -5,3 +5,7 @@
 <?php end_slot() ?>
 
 <?php include_component('shop', 'show', array('shop' => $shop)) ?>
+
+<?php slot('seo_counters_advance') ?>
+  <?php include_component('shop', 'seo_counters_advance') ?>
+<?php end_slot() ?>

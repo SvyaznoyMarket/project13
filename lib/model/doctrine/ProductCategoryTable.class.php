@@ -57,7 +57,7 @@ class ProductCategoryTable extends myDoctrineTable
     return $this->getById($id, array());
   }
 
-  public function getById($id, array $params = array())
+  public function getRecordById($id, array $params = array())
   {
     $this->applyDefaultParameters($params, array(
       'with_filters' => true,
@@ -69,7 +69,7 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q->addWhere('productCategory.id = ?', $id);
 
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
 
     $record = $q->fetchOne();
     if (!$record)
@@ -90,7 +90,7 @@ class ProductCategoryTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q, $params);
 
-    $ids = $this->getIdsByQuery($q, $params, 'productCategory-ids');
+    $ids = $this->getIdsByQuery($q, $params, 'productCategory-ids', 'productCategory');
 
     return $this->createListByIds($ids, $params);
   }
@@ -103,7 +103,7 @@ class ProductCategoryTable extends myDoctrineTable
     $q->addWhere('productCategory.level = ?', 0)
       ->orderBy('productCategory.position');
 
-    $ids = $this->getIdsByQuery($q, $params, 'productCategory-root-ids');
+    $ids = $this->getIdsByQuery($q, $params, 'productCategory-root-ids', 'productCategory');
 
     return $this->createListByIds($ids, $params);
   }
@@ -235,8 +235,9 @@ class ProductCategoryTable extends myDoctrineTable
     }
     $categoryIds = $this->getIdsByQuery($q, $params,
       $category
-      ? 'productCategory-'.$category->id.'/productCategory-descendant-ids'
-      : 'productCategory-descendant-ids'
+      ? "productCategory-{$category->id}/productCategory-descendant-ids"
+      : 'productCategory-descendant-ids',
+      $category ? "productCategory-{$category->id}" : 'productCategory'
     );
     if ($params['with_parent'])
     {
