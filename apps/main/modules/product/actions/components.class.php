@@ -43,6 +43,7 @@ class productComponents extends myComponents
     {
       $params = array(
         'hydrate_array' => true,
+        'with_model'    => true,
       );
 
       if ('default' == $this->view)
@@ -87,7 +88,7 @@ class productComponents extends myComponents
     }
     else
     {
-      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product->id);
+      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product['id']);
       if (!empty($price))
       {
         if ($this->product instanceof Product)
