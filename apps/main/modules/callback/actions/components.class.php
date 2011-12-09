@@ -35,4 +35,7 @@ class callbackComponents extends myComponents
   public function executeFieldtext(){
   }
 
+  function executeSeo_counters_advance() {
+      
+  }  
 }

@@ -26,3 +26,6 @@
            <input type="submit" value="Отправить сообщение" id="bigbutton" class="bYellowButton button yellowbutton" />           
        </form>         
   
+<?php slot('seo_counters_advance') ?>
+  <?php include_component('callback', 'seo_counters_advance') ?>
+<?php end_slot() ?>

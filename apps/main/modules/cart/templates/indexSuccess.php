@@ -46,3 +46,12 @@
       <p>в корзине нет товаров</p>
 
     <?php endif ?>
+      
+      
+<?php slot('seo_counters_advance') ?>
+  <?php include_component('cart', 'seo_counters_advance') ?>
+<?php end_slot() ?>
+      
+<!--Трэкер "Корзина"--> 
+<script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779415&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script> 
+<!--Трэкер "Корзина"-->

@@ -126,5 +126,9 @@
 <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
+
+<?php if (has_slot('seo_counters_advance')): ?>
+  <?php include_slot('seo_counters_advance') ?>
+<?php endif ?>
   </body>
 </html>

@@ -2570,9 +2570,128 @@ DT.bCtg__eOrange{
 			}
 
 
+/* bMobDownWrapAbs */
+
+.bMobDownWrapAbs{
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	position: fixed;
+	text-align: center;
+	*position: absolute;
+	*top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+	}
+
+.bMobDownWrapRel{
+	top: 25%;
+	bottom: 25%;
+	position: relative;
+	}
+.bMobDown{
+	margin: 0 auto;
+	padding: 20px;
+	background: #fff;
+	text-align: left;
+	border: 2px solid #ffa901;
+
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+
+	box-shadow: 0 0 10px #333;
+	-webkit-box-shadow: 0 0 10px #333;
+	-moz-box-shadow: 0 0 10px #333;
+	-ms-box-shadow: 0 0 10px #333;
+	-o-box-shadow: 0 0 10px #333;
+	}
+	/* .mW2 */
+	.bMobDown.mW2 .mNone{
+		display: none;
+		}
+	.bMobDown.mW2 table td{
+		max-width: 300px;
+		}
+	/* ---- */
+	.bMobDown__eWrap{
+		position: relative;
+		}
+	.bMobDown h2{
+		margin: 0;
+		padding: 0;
+		font: 30px 'Enter';
+		}
+	.bMobDown__eClose{
+		top: -20px;
+		right: -20px;
+		width: 26px;
+		height: 26px;
+		cursor: pointer;
+		position: absolute;
+		background:url(img/bg_inner.png) no-repeat -46px -179px;
+		}
+	.bMobDown table{
+		padding: 0;
+		margin: 20px -20px;
+		}
+	.bMobDown table td{
+		max-width: 200px;
+		padding: 0 20px 20px 20px;
+		vertical-align: top;
+		border-left: 1px solid #e6e6e6;
+		}
+	.bMobDown table td:first-child{
+		border-left: none;
+		}
+	.bMobDown table td h3{
+		margin: 0;
+		padding: 0;
+		font: 16px/20px Tahoma, sans-serif;
+		}
+	.bMobDown table td p{
+		font: 11px/14px Tahoma, sans-serif;
+        color:#434343;
+		}
+	.bMobDown table td img{}
+	.bMobDown table td input{
+		width: 100%;
+		height: 18px;
+		border: 1px solid #d8d8d8;
+
+		box-shadow: 0 0 5px #d8d8d8;
+		-webkit-box-shadow: 0 0 5px #d8d8d8;
+		-moz-box-shadow: 0 0 5px #d8d8d8;
+		-ms-box-shadow: 0 0 5px #d8d8d8;
+		-o-box-shadow: 0 0 5px #d8d8d8;
+		}
+	.bMobDown table td a,
+	.bMobDown table td img{
+		outline: none;
+		}
+	.bMobDown table td .link1{
+		margin: 12px 0;
+		padding-left: 15px;
+		padding-right: 15px;
+		cursor: pointer;
+		}
 
 
-
+	.bMobileCard__eLink{
+		margin: 10px 0 0 20px;
+		padding-left: 20px;
+		background: url('img/c.png') 0 50% no-repeat;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+		.bMobileCard__eLink a{
+			color: #ffa901;
+			text-decoration: underline;
+			font: 14px Tahoma, sans-serif;
+            font-weight: bold;
+			}
 
 
 
