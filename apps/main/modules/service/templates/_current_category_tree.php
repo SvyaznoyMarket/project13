@@ -38,7 +38,7 @@
                             <a href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>" >
                                 <?php echo $service['name'] ?>
                             </a>    
-                                <?php if ($service->getFormattedPrice()){ ?>
+                                <?php if ($service->getFormattedPrice() && ($serviceCategory['core_parent_id'] != 305 || $service->getFormattedPrice()!='бесплатно'  )){ ?>
                                     &mdash; 
                                     <div class="font16 mInlineBlock">
                                         <strong>
