@@ -1,1 +1,21 @@
-[{"id":18894,"type":"product_category","data":[{"type":"product_category","operation":1,"id":617,"data":{"id":617,"parent_id":615,"is_active":1,"name":"Musornie vedra i konteynery","media_image": "0a/50885.jpg","has_line":0,"lft":107,"rgt":108,"level":3,"added":"2011-11-11 13:26:04"}}],"added":"2011-11-11 13:26:04"}]
+[{"id":18894,"type":"product_category","data":[
+      {
+        "type": "product_category",
+        "operation": 2,
+        "id": "365",
+        "data": {
+          "id": "365",
+          "parent_id": "1268",
+          "is_active": "1",
+          "name": "Тест: Сборные модели",
+          "link": "/catalog/tovari-dlya-detey/sbornie-modeli/",
+          "media_image": "80/55855.jpg",
+          "has_line": "0",
+          "lft": "884",
+          "rgt": "893",
+          "level": "2",
+          "position": "0",
+          "added": "2011-12-06 18:14:37"
+        }
+      }
+],"added":"2011-11-11 13:26:04"}]
