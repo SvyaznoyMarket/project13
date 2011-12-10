@@ -17,7 +17,7 @@ class ProductState extends BaseProductState
     parent::importFromCore($data);
 
     //есть на складе, если есть хоть где-нибудь
-    $this->is_instock = $data['is_shop'] && $date['is_store'] && $data['is_supplier'];
+    $this->is_instock = $data['is_shop'] && $data['is_store'] && $data['is_supplier'];
 
     //карточка товара доступна всегда по прямой ссылке
     $this->view_show = 1;
