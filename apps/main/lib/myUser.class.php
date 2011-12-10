@@ -104,7 +104,7 @@ class myUser extends myGuardSecurityUser
       if (!$region)
       {
         $region = RegionTable::getInstance()->getDefault();
-        $this->setAttribute('region', $region->id);
+        $this->setRegion($region->id);
       }
     }
     $parent_region = $region->getNode()->getParent();
