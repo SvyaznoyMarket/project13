@@ -18,6 +18,7 @@
         </ul>
 <?php end_slot() ?>
 
+<form id="region" method="post" action="/"></form>
 <form class="form order-form" data-update-field-url="<?php echo url_for('order_updateField', array('step' => 1)) ?>" action="<?php echo url_for('order_new', array('step' => 1)) ?>" method="post" style="width: 665px;">
   <?php echo $form->renderHiddenFields() ?>
 

@@ -40,9 +40,9 @@
       <div class="allpageinner">
 
         <!-- Topbar -->
-        <div class="topbar">
-          <div class="region">
-            Регион: <?php include_partial('default/region') ?>
+        <div class="topbar" style="position: relative; z-index: 12;">
+          <div class="region" style="margin-top: 7px;">
+              <?php include_component('region', 'select') ?>
           </div>
           <noindex>
               <div class="usermenu">

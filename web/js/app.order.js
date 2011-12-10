@@ -2,28 +2,28 @@ var initOrder = function(quickform) {
 
 quickform = quickform || false;
 
-function printPrice ( val ) { 
+function printPrice ( val ) {
 	var float = (val+'').split('.')
 	var out = float[0]
 	var le = float[0].length
 	if( le > 6 ) { // billions
-		out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le ) 			
+		out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
 	} else if ( le > 3 ) { // thousands
-		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )			
-	}		
-	if( float.length == 2 ) 
+		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
+	}
+	if( float.length == 2 )
 		out += '.' + float[1]
 	return out
-}	
+}
 
 function addDlvrInBill( innertxt ) {
-	var rubltmpl = $('<span class="rubl">p</span>')	
+	var rubltmpl = $('<span class="rubl">p</span>')
 	var dtmp  = innertxt.split(',')
-	var pritm = 0	
+	var pritm = 0
 	if ( dtmp[1].match(/\d+/) )
-		pritm = dtmp[1].match(/\d+/)[0] 
+		pritm = dtmp[1].match(/\d+/)[0]
 
-	var total = $('div.cheque div.total').find('strong').text().replace(/\D+/g, '') * 1 + pritm * 1  
+	var total = $('div.cheque div.total').find('strong').text().replace(/\D+/g, '') * 1 + pritm * 1
 	if( $('#dlvrbill').length ) {
 		total -= $('#dlvrbill').find('strong').text().replace(/\D+/g, '') * 1
 		$('#dlvrbill').remove()
@@ -32,8 +32,8 @@ function addDlvrInBill( innertxt ) {
 		var dlvrline = $('<li>').attr('id', 'dlvrbill')
 								.append( $('<div>').text( dtmp[0] ) )
 								.append( $('<strong>').text( printPrice( pritm ) + ' ').append( '<span class="rubl">p</span>' ) )
-		
-		$('div.cheque ul').append( dlvrline ) 
+
+		$('div.cheque ul').append( dlvrline )
 	}
 	$('div.cheque div.total').find('strong').empty().text( printPrice( total ) + ' ').append( rubltmpl )
 }
@@ -72,7 +72,7 @@ if (quickform) {
     $('.order-form').find('[name="order[delivery_type_id]"]').change(function(){
         triggerDelivery( $(this).val() );
     });
-} else { // TODO REWRITE !!! 
+} else { // TODO REWRITE !!!
 $('.order-form').bind({
     'change': function(e) {
       var form = $(this)
@@ -99,9 +99,9 @@ $('.order-form').bind({
         var d = $.Deferred();
 
         // если изменился способ доставки
-        if ('order[shop_id]' == $(e.target).attr('name')) { 
+        if ('order[shop_id]' == $(e.target).attr('name')) {
         	var el = $(e.target).find('option:selected')
-        	if (!el.length) 
+        	if (!el.length)
           		return
           	$.post(form.data('updateFieldUrl'), {
 				  order: {
@@ -125,6 +125,12 @@ $('.order-form').bind({
 				}).error(function() {
               		d.reject()
             	})
+        }
+        if ('order[region_id]' == $(e.target).attr('name')) {
+          var el = $(e.target).find('option:selected')
+          var formreg = $('form#region')
+          formreg.attr('action', el.data('url'))
+          formreg.submit()
         }
         if ('order[delivery_type_id]' == $(e.target).attr('name')) {
           var el = form.find('[name="order[delivery_type_id]"]:checked')

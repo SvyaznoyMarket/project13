@@ -46,9 +46,23 @@
       <div class="allpageinner">
 
         <!-- Topbar -->
-        <div class="topbar">
-          <div class="region">
-            Регион: <?php include_partial('default/region') ?>
+        <div class="topbar" style="position: relative; z-index: 12;">
+          <div class="region" style="margin-top: 7px;">
+              <?php include_component('region', 'select') ?>
+<!--            Регион:
+<div id="sorting" class="filter" style="float: none;">
+    <span class="fl">Регион:</span>
+    <div class="filterchoice">
+        <a href="/" class="filterlink">Москва</a>
+        <div class="filterlist">
+            <a href="/" class="filterlink">Москва</a>
+            <ul>
+                <li><a href="/" style="font-weight: normal;">Рязань</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+/Filter -->
           </div>
           <noindex>
               <div class="usermenu">
