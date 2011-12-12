@@ -448,6 +448,26 @@ ProductKitRelation:
     Kit:         { class: Product, foreignAlias: PartRelation, local: kit_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Part:        { class: Product, foreignAlias: KitRelation, local: part_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
+ProductState:
+  options:
+    comment:          'Состояние товара по регионам'
+  actAs:
+    Corable:          { push: disable }
+  columns:
+    region_id:        { type: integer(20), notnull: true }
+    product_id:       { type: integer(20), notnull: true }
+    view_show:        { type: boolean, notnull: true, default: false, comment: 'Показывать товар по прямой ссылке?' }
+    view_list:        { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
+    is_instock:       { type: boolean, notnull: true, default: false, comment: 'Есть ли товар в наличии?' }
+    is_price:         { type: boolean, notnull: true, default: false, comment: 'Есть ли цена? (из core)' }
+    is_shop:          { type: boolean, notnull: true, default: false, comment: 'Есть ли наличие в магазине? (из core)' }
+    is_store:         { type: boolean, notnull: true, default: false, comment: 'Есть ли наличие на складах? (из core)' }
+    is_supplied:      { type: boolean, notnull: true, default: false, comment: 'Есть ли у поставщика? (из core)' }
+    status_id:        { type: integer(20), notnull: false, comment: 'Статус товара из core' }
+  relations:
+    Product:           { class: Product, foreignAlias: State, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Region:            { class: Region, foreignAlias: ProductState, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+
 ProductDeliveryPrice:
   options:
     comment:          'Цены на доставку продуктов'

@@ -118,3 +118,8 @@
 
 <input type="hidden" disabled="disabled" id="order_login-url" value="<?php echo url_for('@order_login') ?>" />
 <input type="hidden" disabled="disabled" id="module_action" value="<?php echo isset($action) ? $action : '' ?>" />
+
+
+<?php slot('seo_counters_advance') ?>
+  <?php include_component('order', 'seo_counters_advance', array('step' => 1)) ?>
+<?php end_slot() ?>

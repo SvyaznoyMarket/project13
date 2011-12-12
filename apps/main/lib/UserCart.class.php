@@ -112,15 +112,17 @@ class UserCart extends BaseUserData
       #$this->calculateDiscount();
     }
 
-    $services = $this->parameterHolder->get('services');
-    //удаляем из корзины сервисы, привязанные к этому товару
-    foreach($services as & $service) {
-        if (isset($service['product'][$id])) {
-            unset($service['product'][$id]);
-        }
+    if ($services = $this->parameterHolder->get('services'))
+    {
+      //удаляем из корзины сервисы, привязанные к этому товару
+      foreach($services as & $service) {
+          if (isset($service['product'][$id])) {
+              unset($service['product'][$id]);
+          }
+      }
+      #myDebug::dump($services);
+      $this->parameterHolder->set('services', $services);
     }
-    #myDebug::dump($services);
-    $this->parameterHolder->set('services', $services);
     $this->calculateDiscount();
 
 
@@ -191,6 +193,7 @@ class UserCart extends BaseUserData
   public function getProductServiceList($getAllServices = false){
 
     $list = array();
+    $productTable = ProductTable::getInstance();
     foreach ($this->getProducts() as $product)
     {
       $services = $product->getServiceList();
@@ -223,7 +226,7 @@ class UserCart extends BaseUserData
         'quantity'  => $product['cart']['quantity'],
         'service'   => $service_for_list,
         'product'   => $product,
-        'price'     => $product->price,
+        'price'     => $productTable->getRealPrice($product),
         'priceFormatted'     => $product->getFormattedPrice(),
         'total'     => $product['cart']['formatted_total'],
         'photo'     => $product->getMainPhotoUrl(1),
@@ -367,7 +370,7 @@ class UserCart extends BaseUserData
 
     foreach ($products as $product)
     {
-      $total += $product['ProductPrice']['price'] * $product['cart']['quantity'];
+      $total += ProductTable::getInstance()->getRealPrice($product) * $product['cart']['quantity'];
     }
 
     //$products = null;
@@ -512,7 +515,9 @@ class UserCart extends BaseUserData
 
     if (is_null($this->products) || true === $force)
     {
+      //myDebug::dump($productIds);
       $this->products = $productTable->createListByIds($productIds, array('index' => array('product' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
+      //myDebug::dump($this->products);
     }
     else
     {
@@ -534,8 +539,10 @@ class UserCart extends BaseUserData
     }
     foreach ($this->products as $key => $product)
     {
+      //myDebug::dump($product);
       $this->updateProductCart($product, 'quantity', $products[$key]['quantity']);
-      $this->updateProductCart($product, 'formatted_total', number_format($products[$key]['quantity'] * $product->price, 0, ',', ' '));
+      $this->updateProductCart($product, 'formatted_total', number_format($products[$key]['quantity'] * ProductTable::getInstance()->getRealPrice($product), 0, ',', ' '));
+      //myDebug::dump($product, 1);
       #$this->updateProductCart($product, 'service', $products[$key]['service']);
     }
   }

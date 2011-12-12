@@ -21,7 +21,7 @@
                  <?php echo $service['work']; ?>
 			</p>
 			<div class="bSet__ePrice">
-                <?php if (isset($service['currentPrice']) && $service['currentPrice']) { ?>
+                <?php if (isset($service['currentPrice']) && $service['currentPrice'] && ($showNoPrice || $service['currentPrice'] != 'бесплатно' )) { ?>
 				<strong class="font34">
                     <?php echo $service['currentPrice']; ?>
                     <?php if((int)$service['currentPrice']) { ?>

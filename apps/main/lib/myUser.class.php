@@ -38,7 +38,7 @@ class myUser extends myGuardSecurityUser
   {
     return $this->getUserData('cart');
   }
-  
+
   public function getCartBaseInfo()
   {
     $cart = $this->getCart();
@@ -50,14 +50,14 @@ class myUser extends myGuardSecurityUser
        # return $result;
     }
    # myDebug::dump($cart->getProducts());
-    
+
     foreach($cart->getProducts()->toArray() as $id => $product){
       $result['qty'] += $product['cart']['quantity'];
-      $result['sum'] += $product['price'] * $product['cart']['quantity'];
-      $result['productsInCart'][ $product['token'] ] = $product['cart']['quantity'];          
-    }        
+      $result['sum'] += ProductTable::getInstance()->getRealPrice($product) * $product['cart']['quantity'];
+      $result['productsInCart'][ $product['token'] ] = $product['cart']['quantity'];
+    }
     return $result;
-  }  
+  }
 
   public function getProductHistory()
   {
@@ -100,24 +100,33 @@ class myUser extends myGuardSecurityUser
     if (!isset($region) || !$region)
     {
       $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
-      $region = !empty($geoip['city_name']) ? RegionTable::getInstance()->findOneByName($geoip['city_name']) : null;
+      $region = !empty($geoip['region']) ? RegionTable::getInstance()->findOneByGeoip_code($geoip['region']) : null;
       if (!$region)
       {
         $region = RegionTable::getInstance()->getDefault();
-        $this->setAttribute('region', $region->id);
+        $this->setRegion($region->id);
       }
     }
     $parent_region = $region->getNode()->getParent();
 
     $result = array(
-      'id'        => $region->id,
-      'name'      => $region->name,
-      'full_name' => $region->name.', '.$parent_region->name,
-      'type'      => $region->type,
-      'core_id'   => $region->core_id,
+      'id'                    => $region->id,
+      'name'                  => $region->name,
+      'full_name'             => $region->name.', '.$parent_region->name,
+      'type'                  => $region->type,
+      'product_price_list_id' => $region->product_price_list_id,
+      'core_id'               => $region->core_id,
+      'geoip_code'            => $region->geoip_code,
+      'region'                => $region,
     );
 
     return !empty($key) ? $result[$key] : $result;
+  }
+
+  public function setRegion($region_id)
+  {
+    $this->setAttribute('region', $region_id);
+    $this->setRegionCookie();
   }
 
   public function getIp()
@@ -167,5 +176,11 @@ public function getRealIpAddr()
     $sessionId = session_id();
     $key = md5(strval($sessionId).strval(time()));
     sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_cache_cookie_name', 'enter_cache'), $key, null);
+  }
+
+  public function setRegionCookie()
+  {
+    $key = $this->getRegion('geoip_code');
+    sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'), $key, null);
   }
 }
