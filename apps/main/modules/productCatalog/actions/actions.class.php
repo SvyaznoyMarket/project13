@@ -271,7 +271,7 @@ class productCatalogActions extends myActions
       return $this->_refuse();
     }
 
-    $this->productFilter = $this->getProductFilter();
+    $this->productFilter = $this->getProductFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));    
     $getFilterData = $request->getParameter($this->productFilter->getName()) ;
     $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $getTagFilterData = $request->getParameter($this->productTagFilter->getName());
