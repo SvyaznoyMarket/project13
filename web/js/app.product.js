@@ -21,9 +21,6 @@ $(document).ready(function() {
 			filterlink.show();
 		});
 	}
-<<<<<<< HEAD
-
-=======
     $('.bDropMenu').each( function() {
 		var jspan  = $(this).find('span:first')
 		var jdiv   = $(this).find('div')
@@ -33,7 +30,6 @@ $(document).ready(function() {
 		else
 			jdiv.width( jspan.width() + 70)
 	})
->>>>>>> 983eb4c... Variation element maket fixed
     $('.product_rating-form').live({
         'form.ajax-submit.prepare': function(e, result) {
             $(this).find('input:submit').attr('disabled', true)
