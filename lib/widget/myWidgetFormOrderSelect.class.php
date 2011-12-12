@@ -91,9 +91,37 @@ class myWidgetFormOrderSelect extends sfWidgetFormChoiceBase
     $options = array();
     foreach ($choices as $key => $option)
     {
+      $is_data = false;
       if (is_array($option))
       {
+        //Ищу есть ли data- значения в опциях
+        $option_keys = array_keys($option);
+
+        foreach ($option_keys as $option_key)
+        {
+          $is_data |= false !== strstr($option_key, 'data-');
+        }
+      }
+      if (is_array($option) && !$is_data)
+      {
         $options[] = $this->renderContentTag('optgroup', implode("\n", $this->getOptionsForSelect($value, $option)), array('label' => self::escapeOnce($key)));
+      }
+      elseif (is_array($option) && $is_data && isset($option['name']))
+      {
+        $attributes = array('value' => self::escapeOnce($key));
+        if (isset($value_set[strval($key)]))
+        {
+          $attributes['selected'] = 'selected';
+        }
+        foreach ($option as $option_key => $option_value)
+        {
+          if (strstr($option_key, 'data-'))
+          {
+            $attributes[$option_key] = $option_value;
+          }
+        }
+
+        $options[] = $this->renderContentTag('option', self::escapeOnce($option['name']), $attributes);
       }
       else
       {

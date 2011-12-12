@@ -29,6 +29,8 @@ ProductPropertyGroup:
   - ProductPropertyGroups
 ProductPropertyOption:
   - product_option
+#ProductState:
+#  - product_state
 ProductType:
   - product_type
 Qrcode:
