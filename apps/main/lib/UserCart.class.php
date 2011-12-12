@@ -403,6 +403,7 @@ class UserCart extends BaseUserData
             'type' => 'product',
             'name' => $product->name,
             'token' => $product->token,
+            'token_prefix' => $product->token_prefix,
             'quantity' => $product['cart']['quantity'],
             'price' => $product['cart']['formatted_total'],
             'photo' => $product->getMainPhotoUrl(1)

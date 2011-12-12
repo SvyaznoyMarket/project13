@@ -88,22 +88,40 @@ EOF;
           $token = array_pop($v);
           $token_prefix = count($v) ? array_shift($v) : null;
 
-          $q = Doctrine_Core::getTable($model)->createQuery()
-            ->update($model)
-            ->set('token', '?', $token)
+          $record = Doctrine_Core::getTable($model)->createQuery()
             ->where('core_id = ?', $core_id)
+            ->fetchOne()
           ;
-          if (!empty($token_prefix))
+          if (!$record)
           {
-            $q->set('token_prefix', '?', $token_prefix);
-          }
-          else
-          {
-            $q->set('token_prefix', new Doctrine_Null());
+            echo '?';
+            continue;
           }
 
+          // redirect
+          if ('ProductCategory' == $model)
+          {
+            $redirect = new Redirect();
+            $redirect->fromArray(array(
+              'old_url' => '/catalog/'.$record->token.'/',
+              'new_url' => '/catalog/'.(!empty($record->token_prefix) ? ($record->token_prefix.'/'.$record->token) : $record->token).'/',
+            ));
+            if ($redirect->old_url == $redirect->new_url)
+            {
+              unset($redirect);
+            }
+          }
+
+          $record->token = !empty($token) ? $token : null;
+          $record->token_prefix = !empty($token_prefix) ? $token_prefix : null;
+
           try {
-            $q->execute();
+            $record->save();
+            if (isset($redirect))
+            {
+              $redirect->save();
+              unset($redirect);
+            }
           }
           catch (Exception $e)
           {

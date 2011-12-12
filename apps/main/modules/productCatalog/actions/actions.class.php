@@ -369,7 +369,15 @@ class productCatalogActions extends myActions
   {
 
     $this->_seoRedirectOnPageDublicate($request);
-    $this->productCategory = $this->getRoute()->getObject();
+
+    try
+    {
+      $this->productCategory = $this->getRoute()->getObject();
+    }
+    catch (sfError404Exception $e)
+    {
+      $this->forward('redirect', 'index');
+    }
 
     // 301-й редирект. Можно удалить 01.02.2012
     if (false === strpos($request['productCategory'], '/'))
