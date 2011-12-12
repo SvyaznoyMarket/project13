@@ -91,9 +91,16 @@ EOF;
           $q = Doctrine_Core::getTable($model)->createQuery()
             ->update($model)
             ->set('token', '?', $token)
-            ->set('token_prefix', '?', $token_prefix)
             ->where('core_id = ?', $core_id)
           ;
+          if (!empty($token_prefix))
+          {
+            $q->set('token_prefix', '?', $token_prefix);
+          }
+          else
+          {
+            $q->set('token_prefix', new Doctrine_Null());
+          }
 
           try {
             $q->execute();
