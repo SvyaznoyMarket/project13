@@ -143,7 +143,7 @@ class orderActions extends myActions
     }
 	  //$this->order = $this->getUser()->getOrder()->get();
   }
-  
+
   /**
   * Executes new action
   *
@@ -156,11 +156,8 @@ class orderActions extends myActions
     $this->step = $request->getParameter('step', 1);
     $this->order = $this->getUser()->getOrder()->get();
 
-    if (empty($this->order->region_id))
-    {
-     $this->order->region_id = $this->getUser()->getRegion('id');
-     $this->getUser()->getOrder()->set($this->order);
-    }
+    $this->order->region_id = $this->getUser()->getRegion('id');
+    $this->getUser()->getOrder()->set($this->order);
 
     $this->form = $this->getOrderForm($this->step);
     if ($request->isMethod('post'))
@@ -407,7 +404,7 @@ class orderActions extends myActions
 
     //$this->order->User = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);//$this->getUser()->getGuardUser();
 
-    
+
     foreach ($this->getUser()->getCart()->getProducts() as $product)
     {
       $relation = new OrderProductRelation();
@@ -429,11 +426,11 @@ class orderActions extends myActions
             'quantity'   => $service->cart['quantity'],
           ));
           $order->ServiceRelation[] = $relation;
-      }      
+      }
       if (count($service->cart['product']) > 0) {
           foreach($service->cart['product'] as $prodId => $qty) {
               if (!$prodId || !$qty) continue;
-              $relation = new OrderServiceRelation();              
+              $relation = new OrderServiceRelation();
               $relation->fromArray(array(
                 'service_id' => $service->id,
                 'product_id' => $prodId,
@@ -444,7 +441,7 @@ class orderActions extends myActions
           }
       }
     }
-    
+
     /*
     foreach ($this->getUser()->getCart()->getProductServiceList() as $product)
     {

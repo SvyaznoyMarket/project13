@@ -665,6 +665,15 @@ service_list:
 region_autocomplete:
   url:      /region/autocomplete/:type
   param:    { module: region, action: autocomplete, type: null }
+#
+# change region
+region_change:
+  url:      /region/change/:region
+  param:    { module: region, action: change }
+  class:   myDoctrineRoute
+  options: { model: Region, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
 
 
 #
@@ -686,12 +695,12 @@ payment_callback:
 search:
   url:      /search
   param:    { module: search, action: index }
-  
+
 #
 # search
 search_ajax:
   url:      search_ajax/:q/:product_type/:page/:view/:num
-  param:    { module: search, action: ajax, product_type: 0, page: 1, view: compact, num: 18 }  
+  param:    { module: search, action: ajax, product_type: 0, page: 1, view: compact, num: 18 }
 
 
 #callback
@@ -718,11 +727,11 @@ tag:
 tag_show:
   url:      /tags/:tag/:productType
   param:    { module: tag, action: show, productType: ~ }
-  
+
 # tag show
 tag_showAjax:
   url:      /tags_ajax/:tag/:productType/:page/:view/:num
-  param:    { module: tag, action: showAjax, productType: ~, num: 18, view: compact, page: 1 }  
+  param:    { module: tag, action: showAjax, productType: ~, num: 18, view: compact, page: 1 }
 
 #
 # redirect

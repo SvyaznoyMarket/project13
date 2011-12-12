@@ -116,6 +116,10 @@ class ProductTable extends myDoctrineTable
       $q->leftJoin('product.PropertyRelation productPropertyRelation');
     }
 
+    $q->leftJoin('product.ProductPrice productPrice')
+      ->innerJoin('productPrice.PriceList priceList')
+      ->innerJoin('priceList.Region region WITH region.id = ?', sfContext::getInstance()->getUser()->getRegion('id'));
+
     $this->setQueryParameters($q, $params);
     $q->addWhere('product.id = ?', $id);
 
@@ -129,18 +133,21 @@ class ProductTable extends myDoctrineTable
     {
       return $record;
     }
-
-    $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
-    if ($prices)
+    if (empty($record['ProductPrice']))
     {
-      if ($record instanceof Product)
+      $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
+    //$prices = ProductPriceTable::getInstance()->getByProductId($record['id']);
+      if ($prices)
       {
-        $record->mapValue('ProductPrice', $prices);
+        if ($record instanceof Product)
+        {
+          $record->mapValue('defaultProductPrice', $prices);
+        }
+        else {
+          $record['defaultProductPrice'] = $prices;
+        }
+        //$record['price'] = $prices->price;
       }
-      else {
-        $record['ProductPrice'] = $prices;
-      }
-      $record['price'] = $prices->price;
     }
 
     $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
@@ -650,7 +657,7 @@ class ProductTable extends myDoctrineTable
     return $q;
   }
 
-  public function getCacheEraserKeys($record, $action = null)
+  public function getCacheEraserKeys($record, $action = null, array $params = array())
   {
     $return = array();
 
@@ -671,7 +678,17 @@ class ProductTable extends myDoctrineTable
       (('save' == $action) && count($intersection))
       || in_array($action, array('delete', 'show'))
     ) {
-      $return[] = "product-{$record['core_id']}";
+      if (isset($params['region']) && is_array($params['region']))
+      {
+        foreach ($params['region'] as $region)
+        {
+          $return[] = "product-{$record['core_id']}-{$region}";
+        }
+      }
+      else
+      {
+        $return[] = "product-{$record['core_id']}".(isset($params['region']) ? ("-".$params['region']) : "");
+      }
 
       /*
       foreach ($record->Category as $productCategory)
@@ -725,7 +742,7 @@ class ProductTable extends myDoctrineTable
 
   public function getFormattedPrice($product)
   {
-    return number_format($product['price'], 0, ',', ' ');
+    return number_format($this->getRealPrice($product), 0, ',', ' ');
   }
 
   public function getMainPhotoUrl($product, $view = 0)
@@ -733,5 +750,34 @@ class ProductTable extends myDoctrineTable
     $urls = sfConfig::get('app_product_photo_url');
 
     return $product['main_photo'] ? $urls[$view].$product['main_photo'] : null;
+  }
+
+  public function getRealPrice($product)
+  {
+
+    if ($product instanceof Product)
+    {
+      if (!empty($product->ProductPrice))
+      {
+        return $product->ProductPrice->getFirst()->price;
+      }
+      else
+      {
+        return $product->defaultProductPrice->price;
+      }
+    }
+    elseif (is_array($product))
+    {
+      if (!empty($product['ProductPrice']))
+      {
+        return $product['ProductPrice'][0]['price'];
+      }
+      else
+      {
+        return $product['defaultProductPrice']['price'];
+      }
+    }
+
+    return false;
   }
 }

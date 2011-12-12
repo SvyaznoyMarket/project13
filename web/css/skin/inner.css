@@ -464,8 +464,8 @@ border-radius:5px;
 .filter {float:left; font-size:11px; color:#a6a6a6; padding:3px 0 9px 0}
 .filter.fr {float:right}
 .filterchoice {float:left; position:relative; z-index:4}
-.filterlink {display:inline-block; font-weight:bold; background:url(/css/skin/img/icons.png) no-repeat 100% -169px; padding-right:17px; margin-left:9px; text-decoration:underline; white-space:nowrap}
-.filterlist {display:none; position:absolute; z-index:2; top:-10px; left:-12px; padding:8px 10px 10px 10px; background-color:#fff; border:2px solid #eaeaea;
+.filterlink, .regionlink {display:inline-block; font-weight:bold; background:url(/css/skin/img/icons.png) no-repeat 100% -169px; padding-right:17px; margin-left:9px; text-decoration:underline; white-space:nowrap}
+.filterlist, .regionlist {display:none; position:absolute; z-index:2; top:-10px; left:-12px; padding:8px 10px 10px 10px; background-color:#fff; border:2px solid #eaeaea;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
@@ -475,9 +475,9 @@ border-radius:5px;
 box-shadow:0 0 7px #616161;
 //behavior: url(ie-css3.htc)
 }
-.filterlist UL {padding-top:6px}
-.filterlist LI  A {display:block; padding:4px 10px; white-space:nowrap}
-.filterlist LI A:hover {background-color:#e6e6e6; text-decoration:none; color:#000}
+.filterlist UL, .regionlist UL {padding-top:6px}
+.filterlist LI  A, .regionlist LI  A {display:block; padding:4px 10px; white-space:nowrap}
+.filterlist LI A:hover, .regionlist LI A:hover {background-color:#e6e6e6; text-decoration:none; color:#000}
 
 
 .view {float:right; margin-right:25px; padding-bottom:9px}
@@ -2405,7 +2405,7 @@ DT.bCtg__eOrange{
 		position: absolute;
 		background: url('img/icon_f1service_small.png') no-repeat;
         border: solid 1px #e6e6e6;
-		}        
+		}
 	.mServiceBig .bServiceCard__eLogo{
 		width: 60px;
 		height: 68px;
@@ -2680,7 +2680,7 @@ DT.bCtg__eOrange{
 		margin: 10px 0 0 20px;
 		padding-left: 20px;
 		background: url('img/c.png') 0 50% no-repeat;
-		
+
 		display: inline-block;
 		*display: inline;
 		zoom: 1;
