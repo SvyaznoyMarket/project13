@@ -712,6 +712,15 @@ service_list:
 region_autocomplete:
   url:      /region/autocomplete/:type
   param:    { module: region, action: autocomplete, type: null }
+#
+# change region
+region_change:
+  url:      /region/change/:region
+  param:    { module: region, action: change }
+  class:   myDoctrineRoute
+  options: { model: Region, type: object, method: getForRoute }
+  requirements:
+    sf_method: [ post ]
 
 
 #

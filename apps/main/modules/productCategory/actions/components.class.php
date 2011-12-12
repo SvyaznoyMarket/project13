@@ -335,4 +335,8 @@ class productCategoryComponents extends myComponents
 
     $this->setVar('table', myToolkit::groupByColumn($list, 4), true);
   }
+  
+  function executeSeo_counters_advance() {      
+  } 
+    
 }

@@ -16,8 +16,7 @@ class ProjectSiteMapTask extends sfBaseTask
    * Шаблон для генерации имён файлов
    * @var type
    */
-  private $_fileNameTemplate = 'web/sitemap/sitemap_#NUM#.xml';
-
+  private $_fileNameTemplate = 'web/xml/sitemap/sitemap_#NUM#.xml';
   /**
    * Имя файла - индекса
    * @var type

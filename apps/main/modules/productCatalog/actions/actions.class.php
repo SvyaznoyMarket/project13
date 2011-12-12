@@ -47,8 +47,9 @@ class productCatalogActions extends myActions
     $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
-      'view'      => 'list',
-      'with_line' => 'line' == $request['view'] ? true : false,
+      'view'       => 'list',
+      'with_line'  => 'line' == $request['view'] ? true : false,
+      'with_model' => true,
     ));
 
     $this->productFilter->buildQuery($q);
@@ -195,6 +196,8 @@ class productCatalogActions extends myActions
     $q = ProductTable::getInstance()->createBaseQuery(array(
       'view'          => 'list',
       'property_view' => false,
+      'with_line'     => false,
+      'with_model'    => true,
     ));
 
     if ($request->hasParameter($this->productFilter->getName()))
@@ -242,9 +245,8 @@ class productCatalogActions extends myActions
     }
   }
 
-  public function executeCategoryAjax(sfWebRequest $request){
-
-      #var_dump( $request->getParameter('f') );
+  public function executeCategoryAjax(sfWebRequest $request)
+  {
     $this->setVar('allOk', false);
 
     if (!isset($request['productCategory']))
@@ -295,8 +297,9 @@ class productCatalogActions extends myActions
         //если установлены фильтры
         $this->productFilter->bind($getFilterData);
         $q = ProductTable::getInstance()->createBaseQuery(array(
-          'view'      => 'list',
-          'with_line' => 'line' == $request['view'] ? true : false,
+          'view'       => 'list',
+          'with_line'  => 'line' == $request['view'] ? true : false,
+          'with_model' => true,
         ));
         $this->productFilter->buildQuery($q);
         $this->view = $request['view'];

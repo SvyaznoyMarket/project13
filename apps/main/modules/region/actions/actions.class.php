@@ -51,4 +51,16 @@ class regionActions extends myActions
       'data' => $list,
     ));
   }
+  
+  public function executeChange(sfWebRequest $request)
+  {
+    $region = $this->getRoute()->getObject();
+    
+    if ($region)
+    {
+      $this->getUser()->setRegion($region->id);
+    }
+    
+    $this->redirect($request->getReferer());
+  }
 }
