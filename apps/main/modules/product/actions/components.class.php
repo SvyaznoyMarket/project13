@@ -76,7 +76,7 @@ class productComponents extends myComponents
     }
 
     // price
-    if (isset($this->product['ProductPrice']))
+    /*if (isset($this->product['ProductPrice']))
     {
       if ($this->product instanceof Product)
       {
@@ -99,7 +99,7 @@ class productComponents extends myComponents
           $this->product['price'] = $price['price'];
         }
       }
-    }
+    }*/
 
     $item = array(
       'id'         => $this->product['id'],
@@ -114,7 +114,7 @@ class productComponents extends myComponents
       'has_link'   => $this->product['view_show'],
       'photo'      => $table->getMainPhotoUrl($this->product, 2),
       'is_insale'  => $this->product['is_insale'],
-      'is_instock'  => $this->product['is_instock'],
+      'is_instock' => $this->product['is_instock'],
       //'product'  => clone $this->product,
       'url'        => url_for('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
       'product'    => $this->product,
@@ -161,7 +161,7 @@ class productComponents extends myComponents
     $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product['id']);
     $this->setVar('selectedServices', $selectedServices, true);
 
-    $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show'));
+    $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
 
     // caches vars
     /*
