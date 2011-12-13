@@ -19,9 +19,8 @@
                 <?php echo $service['description'] ?>
                  <?php echo $service['work']; ?>
 			</p>
-			
-			<div class="bSet__ePrice mServ" ref="<?php echo $service['token'] ?>">
-                <?php if (isset($service['priceFormatted']) && $service['priceFormatted']) { ?>
+			<div class="bSet__ePrice">
+                <?php if (isset($service['currentPrice']) && $service['currentPrice'] && ($showNoPrice || $service['currentPrice'] != 'бесплатно' )) { ?>
 				<strong class="font34">
                     <?php echo $service['priceFormatted']; ?>
                     <?php if((int)$service['priceFormatted']) { ?>

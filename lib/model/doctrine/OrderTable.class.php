@@ -87,7 +87,7 @@ class OrderTable extends myDoctrineTable
     $this->setQueryParameters($q, $params);
 
     $q->addWhere('order.id = ?', $id);
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
 
     $record = $q->fetchOne();
     if (!$record)

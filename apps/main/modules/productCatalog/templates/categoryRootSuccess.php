@@ -20,3 +20,7 @@
 <?php echo include_component('productCategory', 'child_list', array('view' => 'preview', 'productCategory' => $productCategory)) ?>
 
 <?php //include_component('productCategory', 'productType_list', array('productCategory' => $productCategory)) ?>
+
+<?php slot('seo_counters_advance') ?>
+  <?php include_component('productCategory', 'seo_counters_advance', array('unitId' => $productCategory->root_id)) ?>
+<?php end_slot() ?>

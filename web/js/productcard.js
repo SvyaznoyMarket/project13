@@ -49,6 +49,7 @@ $(document).ready(function(){
     if (delivery_cnt.length) {
       var coreid = delivery_cnt.prop('id').replace('product-id-', '');
       $.post(delivery_cnt.data().calclink, {ids:[coreid]}, function(data){
+        if (!data[coreid]) return;
         data = data[coreid].deliveries;
         var html = '<h4>Как получить заказ?</h4><ul>', i, row;
         for (i in data) {

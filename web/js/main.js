@@ -195,14 +195,14 @@ $(document).ready(function(){
 		})
 	}
 
-	$.ajaxPrefilter(function( options ) {
-		if( !options.url.match('search') )
-			options.url += '?ts=' + new Date().getTime()
-	})
+	//$.ajaxPrefilter(function( options ) {
+	//	if( !options.url.match('search') )
+	//		options.url += '?ts=' + new Date().getTime()
+	//})
 
-	$('body').ajaxError(function(e, jqxhr, settings, exception) {
-		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
-	})
+	//$('body').ajaxError(function(e, jqxhr, settings, exception) {
+	//	$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
+	//})
 
 	$.ajaxSetup({
 		timeout: 10000,

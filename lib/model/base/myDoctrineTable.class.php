@@ -71,15 +71,60 @@ class myDoctrineTable extends Doctrine_Table
   {
     if (!$id)
     {
-      return null;
+      return false;
     }
 
+    // если гидрация массивом, тогда использовать кеш
+    if (sfConfig::get('app_cache_enabled', false) && isset($params['hydrate_array']) && $params['hydrate_array'])
+    {
+      $cache = $this->getCache();
+
+      $key = $this->getRecordQueryHash($id, $params);
+      if ($cached = $cache->get($key))
+      {
+        return $cached;
+      }
+
+      $record = $this->getRecordById($id, $params);
+      if ($record)
+      {
+        $cache->set($key, $record);
+        foreach ($this->getCacheTags($record) as $tag)
+        {
+          $cache->addTag($tag, $key);
+        }
+      }
+    }
+    else {
+      $record = $this->getRecordById($id, $params);
+    }
+
+    return $record;
+  }
+
+  public function getCacheTags($record)
+  {
+    $alias = $this->getQueryRootAlias();
+
+    $tags = array();
+    if (!empty($record['id']))
+    {
+      $tags[] = "{$alias}-{$record['id']}";
+    }
+
+    return $tags;
+  }
+
+  public function getRecordById($id, array $params = array())
+  {
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q);
 
-    $q->where($q->getRootAlias().'.id = ?', $id)
-      ->useResultCache(true, null, $this->getRecordQueryHash($id, $params))
-    ;
+    $q->where($q->getRootAlias().'.id = ?', $id);
+    if (isset($params['hydrate_array']) && $params['hydrate_array'])
+    {
+      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    }
 
     return $q->fetchOne();
   }
@@ -102,17 +147,23 @@ class myDoctrineTable extends Doctrine_Table
     return $this->getById($id);
   }
 
-  public function getIdsByQuery(Doctrine_Query $query, array $params = array(), $hash = false)
+  public function getIdsByQuery(Doctrine_Query $query, array $params = array(), $hash = false, $tags = array())
   {
     $q = clone $query;
     $q->select('DISTINCT '.$this->getQueryRootAlias().'.id')
-    //$q->select($this->getQueryRootAlias().'.id')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
     if (!empty($hash))
     {
-      $q->useResultCache(true, null, $this->getQueryHash($hash, $params));
+      // cache
+      $cache = $this->getCache();
+
+      $key = $this->getQueryHash($hash, $params);
+      if ($cached = $cache->get($key))
+      {
+        return $cached;
+      }
     }
 
     $ids = $q->execute();
@@ -120,8 +171,19 @@ class myDoctrineTable extends Doctrine_Table
     {
       $ids = array($ids);
     }
-    else {
-      //$ids = array_unique($ids); // вместо DISTINCT
+
+    if (!empty($hash))
+    {
+      if (!is_array($tags))
+      {
+        $tags = array($tags);
+      }
+
+      $cache->set($key, $ids);
+      foreach ($tags as $tag)
+      {
+        $cache->addTag($tag, $key);
+      }
     }
 
     return $ids;
@@ -333,5 +395,10 @@ class myDoctrineTable extends Doctrine_Table
           ->fetchOne()
       : Doctrine_Core::getTable($model)->findOneByCoreId($coreId)
     ;
+  }
+
+  public function getCache()
+  {
+    return myCache::getInstance();
   }
 }

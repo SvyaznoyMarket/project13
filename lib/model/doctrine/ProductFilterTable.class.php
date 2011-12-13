@@ -18,20 +18,6 @@ class ProductFilterTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductFilter');
   }
 
-  public function getListByGroup(ProductFilterGroup $group, array $params = array())
-  {
-    $this->applyDefaultParameters($params, array());
-
-    $q = $this->createBaseQuery($params);
-
-    $q->where('productFilter.group_id = ?', $group->id);
-
-    $this->setQueryParameters($q, $params);
-
-    $ids = $this->getIdsByQuery($q, $params, 'productFilterGroup-'.$group->id.'/productFilter-ids');
-
-    return $this->createListByIds($ids, $params);
-}
   public function getCoreMapping()
   {
     return array(
@@ -45,5 +31,20 @@ class ProductFilterTable extends myDoctrineTable
 
       'property_id' => array('rel' => 'Property'),
     );
+  }
+
+  public function getListByGroup(ProductFilterGroup $group, array $params = array())
+  {
+    $this->applyDefaultParameters($params, array());
+
+    $q = $this->createBaseQuery($params);
+
+    $q->where('productFilter.group_id = ?', $group->id);
+
+    $this->setQueryParameters($q, $params);
+
+    $ids = $this->getIdsByQuery($q, $params, 'productFilterGroup-'.$group->id.'/productFilter-ids');
+
+    return $this->createListByIds($ids, $params);
   }
 }

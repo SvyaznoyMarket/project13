@@ -46,9 +46,9 @@
       <div class="allpageinner">
 
         <!-- Topbar -->
-        <div class="topbar">
-          <div class="region">
-            Регион: <?php include_partial('default/region') ?>
+        <div class="topbar" style="position: relative; z-index: 12;">
+          <div class="region" style="margin-top: 7px;">
+              <?php include_component('region', 'select') ?>
           </div>
           <noindex>
               <div class="usermenu">
@@ -157,5 +157,10 @@ report.send();
 <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
+
+<?php if (has_slot('seo_counters_advance')): ?>
+  <?php include_slot('seo_counters_advance') ?>
+<?php endif ?>
+
   </body>
 </html>

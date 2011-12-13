@@ -26,10 +26,12 @@
                 </a>
             </p>
 			<div class="bServiceCard__ePrice">
-                <?php echo $service['priceFormatted']; ?>
-                <?php if((int)$service['priceFormatted']) { ?>
+            <?php if ($showNoPrice || $service['price'] != 'бесплатно') { ?>   
+                <?php echo $service['price']; ?>
+                <?php if((int)$service['price']) { ?>
                     <span class="rubl">p</span>
                 <?php } ?>    
+            <?php } ?>        
             </div>
             <?php if ((int)$service['price'] >= Service::MIN_BUY_PRICE) { ?>
                 <form action="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" />

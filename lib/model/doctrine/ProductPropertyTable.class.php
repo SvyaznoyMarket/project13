@@ -41,7 +41,7 @@ class ProductPropertyTable extends myDoctrineTable
     );
   }
 
-  public function getById($id, array $params = array())
+  public function getRecordById($id, array $params = array())
   {
     $this->applyDefaultParameters($params, array(
       'with_options' => false,
@@ -60,7 +60,7 @@ class ProductPropertyTable extends myDoctrineTable
     ;
     }
 
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
     if ($params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);

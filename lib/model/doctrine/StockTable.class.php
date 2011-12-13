@@ -18,6 +18,16 @@ class StockTable extends myDoctrineTable
     return Doctrine_Core::getTable('Stock');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'      => 'core_id',
+      'type_id' => 'type',
+      'name'    => 'name',
+      'added'   => 'created_at',
+    );
+  }
+
   public function getListByProduct($product_id, array $params = array())
   {
     $this->applyDefaultParameters($params);
@@ -35,15 +45,5 @@ class StockTable extends myDoctrineTable
     $this->setQueryParameters($q, $params);
 
     return $q->execute();
-  }
-
-  public function getCoreMapping()
-  {
-    return array(
-      'id'      => 'core_id',
-      'type_id' => 'type',
-      'name'    => 'name',
-      'added'   => 'created_at',
-    );
   }
 }

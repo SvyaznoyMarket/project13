@@ -20,29 +20,33 @@ class ProjectConfiguration extends sfProjectConfiguration
       'sfCombinePlugin',
     ));
 
-    $this->dispatcher->connect('doctrine.configure', array($this, 'listenToConfigureDoctrineEvent'));
+    foreach (array(
+      'doctrine.configure'     => array($this, 'listenToConfigureDoctrineEvent'),
+      //'context.load_factories' => array($this, 'listenForLoadFactories'),
+    ) as $k => $v) {
+      $this->dispatcher->connect($k, $v);
+    }
   }
 
   public function listenToConfigureDoctrineEvent(sfEvent $event)
   {
     if (!Doctrine_Core::getLoadedModelFiles())
     {
-      self::loadModelFiles();
+      $dir = sfConfig::get('sf_lib_dir').'/model/doctrine';
+      $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir), RecursiveIteratorIterator::LEAVES_ONLY);
+
+      foreach ($iterator as $file)
+      {
+        $className = str_replace($dir . DIRECTORY_SEPARATOR, null, $file->getPathName());
+        $className = substr($className, 0, strpos($className, '.'));
+        Doctrine_Core::loadModel(basename($className), $file->getPathName());
+      }
     }
   }
 
-  protected static function loadModelFiles()
+  public function listenForLoadFactories(sfEvent $event)
   {
-    $dir = sfConfig::get('sf_lib_dir').'/model/doctrine';
-    $it = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($dir),
-                RecursiveIteratorIterator::LEAVES_ONLY);
-
-    foreach ($it as $file)
-    {
-      $className = str_replace($dir . DIRECTORY_SEPARATOR, null, $file->getPathName());
-      $className = substr($className, 0, strpos($className, '.'));
-      Doctrine_Core::loadModel(basename($className), $file->getPathName());
-    }
+    //$context = $event->getSubject();
+    //$context->set('cache', new myRedisCache(sfConfig::get('app_cache_config')));
   }
 }

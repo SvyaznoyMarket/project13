@@ -22,6 +22,7 @@ Region:
     is_default:             { type: boolean, notnull: true, default: false, comment: 'Регион по-умолчанию?' }
     latitude:               { type: 'decimal(8,6)', notnull: false, default: null, comment: 'Широта' }
     longitude:              { type: 'decimal(8,6)', notnull: false, default: null, comment: 'Долгота' }
+    geoip_code:             { type: string(50), notnull: false, default: null, comment: 'Код региона для geo_ip' }
   relations:
     PriceList:              { class: ProductPriceList, foreignAlias: Region, local: product_price_list_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Stock:                  { class: Stock, foreignAlias: Region, local: stock_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
