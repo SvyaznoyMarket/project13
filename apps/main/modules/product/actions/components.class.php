@@ -373,6 +373,8 @@ class productComponents extends myComponents
       $value_to_map = array();
       foreach ($values as $id => $value)
       {
+        $product = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ));
+        if (!$product) continue;
         $realValue = $value->getRealValue();
         $value_to_map[$realValue]['id'] = $id;
         $value_to_map[$realValue]['url'] = url_for('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
@@ -391,7 +393,7 @@ class productComponents extends myComponents
         }
         if ($property->ProductModelRelation[0]->is_image)
         {
-          $value_to_map[$realValue]['photo'] = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ))->getMainPhotoUrl(1);
+          $value_to_map[$realValue]['photo'] = $product->getMainPhotoUrl(1);
         }
 
       }
