@@ -956,11 +956,11 @@ box-shadow:0 0 7px #616161;
 
 
 .mediablock {margin: 0 50px; height:724px; background:#fff url(/css/skin/img/bg_mediablock.gif) repeat-y 0 0}
-.mediablock .leftpanel {float:left; width:180px; height:714px; padding:0 10px 10px 10px}
+.mediablock .leftpanel {float:left; width:180px; padding:0 10px 10px 10px}
 .logobox {width:85px; height:95px; background:url(/css/skin/img/bg_inner.png) no-repeat -538px -284px; text-indent:-10000px; margin-bottom:20px}
 .mediablock .topblock {height:530px; padding:19px 9px 0 9px}
 
-.scalepanel {float:right; width:54px; height:694px; padding:30px 0 0 26px; background-color:#fff}
+.scalepanel {float:right; width:54px; padding:30px 0 0 26px; background-color:#fff}
 .scalepanel .versioncontrol {display:none;  position:absolute; bottom:15px; right: 5px; text-align:center; width: 54px;}
 .zoom {visibility:hidden; width:26px; height:25px; background:url(/css/skin/img/bg_inner.png) no-repeat -117px -158px; cursor:pointer; margin-bottom:30px}
 .scale {width:26px; height:217px; background:url(/css/skin/img/bg_inner.png) no-repeat -925px 0}
@@ -969,7 +969,7 @@ box-shadow:0 0 7px #616161;
 .scale DIV {position:relative; width:26px; height:71px}
 .scale DIV B {position:absolute; left:2px; width:22px; height:20px; background:url(/css/skin/img/bg.png) no-repeat -187px -77px}
 
-.photoview {margin:0 80px 0 200px; height:724px; position:relative}
+.photoview {margin:0 80px 0 200px; height:1000px; position:relative}
 .photobox {float:left; width:100%; height:100%; overflow:hidden; position:relative}
 .photobox IMG {position:relative}
 .scrollbox {display:none; position:absolute; z-index:10; bottom:0; left:50%; width:354px; height:71px; margin-left:-183px; background:url(/css/skin/img/podlogka.png) no-repeat 0 0}
