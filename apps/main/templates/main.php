@@ -91,20 +91,20 @@ _gaq.push(['_trackPageLoadTime']);
 		var bignode = $('.bigbanner')
 		var bri = getRandomInt(1, 9)
 
-		bignode.find('img').attr('src','/images/banners/big/banner'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
+		bignode.find('img').attr('src','/images/enter/big/enter'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
 		var ri = getRandomInt(1, 4)
 		while( bri == ri + 4 ) {
 			ri = getRandomInt(1, 4)
 		}
 
-		node.find('.banner2 img').attr('src','/images/banners/small/banner'+ (ri + 4) +'.jpg')
+		node.find('.banner2 img').attr('src','/images/enter/small/enter'+ (ri + 4) +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri + 3])
 		var ri_2 = getRandomInt(1, 4)
 		while( ri_2 == ri || bri == ri_2 + 4 ) {
 			ri_2 = getRandomInt(1, 4)
 		}
 
-		node.find('.banner5 img').attr('src','/images/banners/small/banner'+ (ri_2 + 4) +'.jpg')
+		node.find('.banner5 img').attr('src','/images/enter/small/enter'+ (ri_2 + 4) +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri_2 + 3])
 
 		ri = getRandomInt(1, 4)
@@ -112,14 +112,14 @@ _gaq.push(['_trackPageLoadTime']);
 			ri = getRandomInt(1, 4)
 		}
 
-		node.find('.banner3 img').attr('src','/images/banners/medium/banner'+ ri +'.jpg')
+		node.find('.banner3 img').attr('src','/images/enter/medium/enter'+ ri +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri - 1])
 		ri_2 = ri
 		while( ri_2 == ri || bri == ri_2 ) {
 			ri_2 = getRandomInt(1, 4)
 		}
 
-		node.find('.banner4 img').attr('src','/images/banners/medium/banner'+ ri_2 +'.jpg')
+		node.find('.banner4 img').attr('src','/images/enter/medium/enter'+ ri_2 +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri_2 - 1])
 
 		$('.startse').bind ({ 'blur': function(){
