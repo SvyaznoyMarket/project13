@@ -10,8 +10,8 @@
  */
 class searchActions extends myActions
 {
-  private $_validateResult; 
-  
+  private $_validateResult;
+
  /**
   * Executes index action
   *
@@ -19,7 +19,7 @@ class searchActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-      
+
     $limit = sfConfig::get('app_product_max_items_on_category', 20);
 	  $page = $request->getParameter('page', 1);
     $offset = intval($page - 1) * $limit;
@@ -27,10 +27,10 @@ class searchActions extends myActions
 
     //myDebug::dump($request, 1);
     //$this->searchString = iconv('windows-1251', 'utf-8', $request['q']);
-    $this->searchString = $request->getParameter('q');
+    $this->searchString = htmlspecialchars($request->getParameter('q'));
     $this->forward404Unless($this->searchString);
 
-    $title = 'Вы искали “'.  htmlspecialchars($this->searchString).'”';
+    $title = 'Вы искали “'. $this->searchString.'”';
     if ($page)
     {
       $title .= ' – '.$page;
@@ -125,7 +125,7 @@ class searchActions extends myActions
     $this->setVar('productTypeList', $productTypeList, true);
     $this->setVar('resultCount', $response[1]['count'], true);
   }
-  
+
   public function executeAjax(sfWebRequest $request)
   {
     //проверим сам запрос
@@ -133,18 +133,18 @@ class searchActions extends myActions
     if (!$this->searchString) {
       $this->_validateResult['success'] = false;
       $this->_validateResult['error'] = 'Не получен поисковый запрос.';
-      return $this->_refuse();                 
+      return $this->_refuse();
     }
-    
+
     //проверим страницы и количество на них
-    if (isset($request['num'])) $limit = $request['num'];  
+    if (isset($request['num'])) $limit = $request['num'];
     else $limit = sfConfig::get('app_product_max_items_on_category', 20);
 	$page = $request->getParameter('page', 1);
     $offset = intval($page - 1) * $limit;
     if ($offset < 0) {
       $this->_validateResult['success'] = false;
       $this->_validateResult['error'] = 'Неверный номер страницы.';
-      return $this->_refuse();         
+      return $this->_refuse();
     }
 
     //тип товаров, если есть
@@ -165,7 +165,7 @@ class searchActions extends myActions
     if (!$response) {
       $this->_validateResult['success'] = false;
       $this->_validateResult['error'] = 'Ошбика. Не удалось получить результаты поиска.';
-      return $this->_refuse();          
+      return $this->_refuse();
     } else if (isset($response['result']) && ('empty' == $response['result'])) {
       $this->setTemplate('emptyAjax');
 
@@ -182,7 +182,7 @@ class searchActions extends myActions
     if (isset($response[1]) && isset($response[1]['count'])) {
         $this->setVar('resultCount', $response[1]['count'], true);
     }
-    
+
     $productTypeList = array();
     $pagers = array();
     if (is_array($response)) foreach ($response as $core_id => $data)
@@ -214,10 +214,10 @@ class searchActions extends myActions
     }
 
     $this->setVar('searchString', $this->searchString, false);
-    $this->setVar('pagers', $pagers, true);    
-    $this->setVar('view', $request['view']);    
+    $this->setVar('pagers', $pagers, true);
+    $this->setVar('view', $request['view']);
   }
-  
+
 
 
 
@@ -278,7 +278,7 @@ class searchActions extends myActions
 
     return $pager;
   }
-  
+
   private function _refuse(){
     return $this->renderJson(array(
       'success' => $this->_validateResult['success'],
@@ -286,5 +286,5 @@ class searchActions extends myActions
         'error' => $this->_validateResult['error'],
       ),
     ));
-  }    
+  }
 }
