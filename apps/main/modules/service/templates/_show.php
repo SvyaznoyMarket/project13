@@ -1,4 +1,13 @@
-<div class="bSet">
+<?php 
+#JSON data
+	$json = array (
+		'jsref' => $service['token'],
+		'jsimg' => $service['main_photo'],
+		'jstitle' => $service['name'],
+		'jsprice' => $service['priceFormatted']
+	)	
+?> 
+<div>
 
         <?php if (isset($service['main_photo'])) { ?>
     
@@ -22,7 +31,7 @@
 			<div class="bSet__ePrice">
                 <?php if (isset($service['currentPrice']) && $service['currentPrice'] && ($showNoPrice || $service['currentPrice'] != 'бесплатно' )) { ?>
 				<strong class="font34">
-                    <?php echo $service['priceFormatted']; ?>
+                    <span class="price"><?php echo $service['priceFormatted']; ?></span>
                     <?php if((int)$service['priceFormatted']) { ?>
                         <span class="rubl">p</span>
                     <?php } ?>    
