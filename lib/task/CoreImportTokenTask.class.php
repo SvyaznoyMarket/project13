@@ -99,7 +99,7 @@ EOF;
             $redirect = new Redirect();
             $redirect->fromArray(array(
               'old_url' => '/catalog/'.$record->token.'/',
-              'new_url' => '/catalog/'.(!empty($record->token_prefix) ? ($record->token_prefix.'/'.$record->token) : $record->token).'/',
+              'new_url' => '/catalog/'.(!empty($token_prefix) ? ($token_prefix.'/'.$token) : $token).'/',
             ));
             if ($redirect->old_url == $redirect->new_url)
             {
