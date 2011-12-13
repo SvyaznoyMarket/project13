@@ -7,7 +7,7 @@
     
 <?php $num = 0; ?>    
 <?php foreach ($list as $service) { ?>
-		<div class="bServiceCard mInlineBlock">
+		<div class="bServiceCard mInlineBlock" ref="<?php echo $service['token'] ?>">
 			<div class="bServiceCard__eImage">
                 <?php if ($service['photo']) { ?>
                     <div class="bServiceCard__eLogo"></div>
@@ -26,14 +26,26 @@
                 </a>
             </p>
 			<div class="bServiceCard__ePrice">
-                <?php echo $service['priceFormatted']; ?>
+                <span class="price"><?php echo $service['priceFormatted']; ?></span>
                 <?php if((int)$service['priceFormatted']) { ?>
                     <span class="rubl">p</span>
                 <?php } ?>    
             </div>
+			 
+			<?php 
+			#JSON data
+				$json = array (
+					'jsref' => $service['token'],
+					'jsimg' => $service['photo'],
+					'jstitle' => $service['name'],
+					'jsprice' => $service['priceFormatted'],
+					'url'    => url_for('cart_service_add', array('service' => $service['token']))
+				)
+				
+			?>           
             <?php if ((int)$service['price'] >= Service::MIN_BUY_PRICE) { ?>
                 <form action="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" />
-                    <input data-url="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>" type="submit" class="button yellowbutton" value="Купить услугу">
+                    <input data-value='<?php echo json_encode( $json ) ?>' type="submit" class="button yellowbutton" value="Купить услугу">
                 </form>    
             <?php } ?>
                         

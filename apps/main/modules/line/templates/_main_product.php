@@ -1,7 +1,16 @@
+<?php 
+#JSON data
+	$json = array (
+		'jsref' => $item['product']->token,
+		'jsimg' => $item['photo'],
+		'jstitle' => $item['name'],
+		'jsprice' => $item['product']->getFormattedPrice()
+	)	
+?>  
     <h2 class="mbSet"><strong><?php echo $item['name'] ?></strong></h2>
     <div class="line pb15"></div>
 
-	<div class='bSet'>
+	<div class='bSet' data-value='<?php echo json_encode( $json ) ?>'>
 		<div class='bSet__eImage'>
 			<a href="<?php echo $item['url'] ?>" title="<?php echo $item['name'] ?>"><img src="<?php echo $item['photo'] ?>" alt="<?php echo $item['name'] ?>" width="500" height="500" title="" /></a>
 		</div>

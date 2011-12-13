@@ -1,4 +1,13 @@
-<div class="bSet">
+<?php 
+#JSON data
+	$json = array (
+		'jsref' => $service['token'],
+		'jsimg' => $service['main_photo'],
+		'jstitle' => $service['name'],
+		'jsprice' => $service['priceFormatted']
+	)	
+?> 
+<div>
 
         <?php if (isset($service['main_photo'])) { ?>
     
@@ -20,10 +29,10 @@
                  <?php echo $service['work']; ?>
 			</p>
 			
-			<div class="bSet__ePrice mServ" ref="<?php echo $service['token'] ?>">
+			<div class="bSet__ePrice mServ" ref="<?php echo $service['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
                 <?php if (isset($service['priceFormatted']) && $service['priceFormatted']) { ?>
 				<strong class="font34">
-                    <?php echo $service['priceFormatted']; ?>
+                    <span class="price"><?php echo $service['priceFormatted']; ?></span>
                     <?php if((int)$service['priceFormatted']) { ?>
                         <span class="rubl">p</span>
                     <?php } ?>    
