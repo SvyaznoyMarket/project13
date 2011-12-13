@@ -13,6 +13,7 @@ $servListId = $servListId->getRawValue();
 			<tbody>
               <?php foreach ($f1 as $service):
                   if (!isset($service->id)) $service = ServiceTable::getInstance()->getById($service['id']);
+                  if ($service->getCurrentPrice() < Service::MIN_BUY_PRICE) continue;
                   ?>                
                     <tr>
                         <td class="bF1Block_eInfo"><?php echo $service->name ?><br>
