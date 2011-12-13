@@ -50,7 +50,6 @@ class ServiceTable extends myDoctrineTable
       ->innerJoin('service.ProductRelation pr')
       ->andWhere('pr.product_id=?', array($product->id))
       ->innerJoin('service.Price price') 
-      ->orderBy('service.name ASC');            
             ;
 
 
@@ -68,7 +67,6 @@ class ServiceTable extends myDoctrineTable
     $q->innerJoin('service.CategoryRelation categoryRelation');
 
     $q->andWhere('categoryRelation.category_id=?', array($category_id,));
-    $q->orderBy('service.name ASC');
 
     $this->setQueryParameters($q, $params);
 

@@ -51,36 +51,30 @@ class Service extends BaseService
                 ;
 	  return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
   }
-  public function getFormattedPrice()
+  public function getFormattedPrice($productId = 0)
   {
-    if (!$this->price) {
-        $this->getCurrentPrice();
-    }  
-    if ($this->price < 1) return 'бесплатно';
-    return number_format($this->price, 0, ',', ' ');
+    #if (!$this->price) {
+    $price = $this->getCurrentPrice($productId);
+    #}  
+    if ($price < 1) return 'бесплатно';
+    return number_format($price, 0, ',', ' ');
   }  
   
-  public function getCurrentPrice() {
-      
-        $priceList = ProductPriceListTable::getInstance()->getCurrent();
-        $priceListDefault = ProductPriceListTable::getInstance()->getDefault();
+  public function getCurrentPrice($productId = 0) {
+     # myDebug::dump($this->PriceTariff);
+        $region = sfContext::getInstance()->getUser()->getRegion();
+        #$priceList = $region['product_price_list_id'];
+        #$priceList = ProductPriceListTable::getInstance()->getCurrent();
+        #$priceListDefault = ProductPriceListTable::getInstance()->getDefault();
       
         $currentPrice = 0;
-        foreach($this->Price as $price) {
-            if ($priceList->id == $price['service_price_list_id']) {
+        foreach($this->PriceTariff as $price) {
+            if ($region['id'] == $price['region_id'] && $productId == $price['product_id']) {
               $currentPrice = $price['price'];
               break;
             }
         }
-        //если для текущего региона цены нет, ищем цену для региона по умолчанию
-        if (!isset($currentPrice) && $priceList->id != $priceListDefault->id ) {
-          foreach($service->Price as $price) {
-              if ($priceListDefault->id == $price['service_price_list_id']) {
-                  $currentPrice = $price['price'];
-                  break;
-              }
-          }          
-        }       
+     
         $this->price = $currentPrice;
         return $currentPrice;
         
