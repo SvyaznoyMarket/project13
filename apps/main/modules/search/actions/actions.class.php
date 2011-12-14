@@ -31,6 +31,7 @@ class searchActions extends myActions
     $this->forward404Unless($this->searchString);
 
     $title = 'Вы искали “'. $this->searchString.'”';
+
     if ($page)
     {
       $title .= ' – '.$page;

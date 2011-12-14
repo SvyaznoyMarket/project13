@@ -5,14 +5,16 @@ class CoreImportTokenTask extends sfBaseTask
   protected function configure()
   {
     // // add your own arguments here
-    // $this->addArguments(array(
-    //   new sfCommandArgument('my_arg', sfCommandArgument::REQUIRED, 'My argument'),
-    // ));
+    $this->addArguments(array(
+      new sfCommandArgument('model', sfCommandArgument::REQUIRED, 'The model'),
+      new sfCommandArgument('query', sfCommandArgument::REQUIRED, 'The core query'),
+    ));
 
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'main'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
+      new sfCommandOption('offset', null, sfCommandOption::PARAMETER_REQUIRED, 'Offset', 0),
       new sfCommandOption('limit', null, sfCommandOption::PARAMETER_REQUIRED, 'Limit', 100),
       // add your own options here
     ));
@@ -36,15 +38,12 @@ EOF;
 
     // add your code here
 
-    foreach (array('ProductCategory' => 'product.category.get', 'Product' => 'product.get') as $model => $query)
-    {
-      $this->logSection('doctrine', 'import '.$model.'...');
-      $this->importModel($model, $query, $options['limit']);
-    }
-  }
+    $model = $arguments['model'];
+    $query = $arguments['query'];
 
-  public function importModel($model, $query, $limit = 10)
-  {
+    $offset = $options['offset'];
+    $limit = $options['limit'];
+
     $core = Core::getInstance();
     $prefix = false;
     switch ($model)
@@ -58,15 +57,11 @@ EOF;
     }
     if (!$prefix) throw Exception('Prefix not sets');
 
-    $offset = 0;
-    $response = true;
-    while ($response)
-    {
-      $response = $core->query($query, array(
-        'start'  => $offset,
-        'limit'  => $limit,
-        'expand' => array(),
-      ));
+    while ($response = $core->query($query, array(
+      'start'  => $offset,
+      'limit'  => $limit,
+      'expand' => array(),
+    ))) {
 
       if (!$response)
       {
@@ -104,7 +99,7 @@ EOF;
             $redirect = new Redirect();
             $redirect->fromArray(array(
               'old_url' => '/catalog/'.$record->token.'/',
-              'new_url' => '/catalog/'.(!empty($record->token_prefix) ? ($record->token_prefix.'/'.$record->token) : $record->token).'/',
+              'new_url' => '/catalog/'.(!empty($token_prefix) ? ($token_prefix.'/'.$token) : $token).'/',
             ));
             if ($redirect->old_url == $redirect->new_url)
             {
