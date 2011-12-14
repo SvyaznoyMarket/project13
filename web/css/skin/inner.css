@@ -2186,6 +2186,16 @@ DT.bCtg__eOrange{
 		padding: 5px 10px 5px 10px;
 		margin: 0 10px;
 		}
+	.bDropMenu div span a{
+		width: 100%;
+		height: 100%;
+		cursor: pointer;
+		text-decoration: none;
+
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
 	.bDropMenu div span:first-child{
 		padding: 5px 10px 10px 10px;
 		background: url('img/icons.png') 100% 12px no-repeat;
@@ -2548,8 +2558,21 @@ DT.bCtg__eOrange{
 		}
 
 	.bMobileCard.mDisable .bMobileCard__eImg div{
+		z-index: 3;
 		display: block;
 		}
+	.bMobileCard.mDisable .bMobileCard__eLink{
+		display: none;
+		}
+	.bMobileCard.mDisable .bMobileCard__eImg img{
+		opacity: 0.5;
+		-webkit-opacity: 0.5;
+		-moz-opacity: 0.5;
+		-ms-opacity: 0.5;
+		-o-opacity: 0.5;
+		z-index: 1;
+	}
+
 	.bMobileCard.mDisable h2,
 	.bMobileCard.mDisable p{
 		color: #a6a6a6;
@@ -2568,6 +2591,36 @@ DT.bCtg__eOrange{
 			position: absolute;
 			background: url('/images/pages/cs.png') no-repeat;
 			}
+	.bMobileCard__eLink{
+		margin: 10px 0 0 20px;
+		padding-left: 20px;
+		background: url('img/c.png') 0 50% no-repeat;
+
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+		.bMobileCard__eLink a{
+			color: #ffa901;
+			text-decoration: underline;
+			font: 14px Tahoma, sans-serif;
+			}
+
+
+/* bBacketLineWrap */
+
+.mWrap{
+	position: relative;
+	}
+	.mWrap .bF1Block{
+		top: 91px;
+		right: 32px;
+		left: auto;
+		z-index: 100;
+		}
+
+
+
 
 
 /* bMobDownWrapAbs */
