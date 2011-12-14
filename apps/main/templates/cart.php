@@ -6,7 +6,7 @@
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php include_stylesheets() ?>
-    <?php include_javascripts() ?>
+    <?php //include_javascripts() ?>
     <?php include_component('page', 'link_rel_canonical') ?>
 <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -95,7 +95,7 @@
       <div class="clear"></div>
     </div>
 
-
+    <?php include_javascripts() ?>
     <?php include_component('default', 'footer', array('class' => 'footer_cart', )) ?>
 
     <?php if (!include_slot('auth')) include_partial('default/auth') ?>

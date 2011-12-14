@@ -5,10 +5,15 @@
     <?php include_metas() ?>
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <?php include_combined_stylesheets() //include_stylesheets() ?>
+    <?php include_stylesheets() ?>
     <?php //include_javascripts() ?>
-    <?php include_component('page', 'link_rel_canonical') ?>
-
+    <?php include_component('page', 'link_rel_canonical') ?>    
+       
+    
+    <?php if (has_slot('header_meta_og')): ?>
+      <?php include_slot('header_meta_og') ?>
+    <?php endif ?>
+    
 <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25485956-1']);
@@ -122,7 +127,7 @@
       </div>
     </div>
     <!-- /Lightbox -->
-
+    <?php include_javascripts() ?>
     <?php if (!include_slot('auth'))
       include_partial('default/auth') ?>
 
