@@ -17,7 +17,7 @@ class myNewsRoute extends myDoctrineRoute
     return $parameters;
   }
 
-  public function generate($params, $context = array(), $absolute = false)
+  public function generate($params, $context = array(), $absolute = false, array $allow = array('/'))
   {
     if (isset($params['newsCategory']) && ($params['newsCategory'] instanceof NewsCategory))
     {
