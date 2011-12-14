@@ -172,7 +172,7 @@ class orderActions extends myActions
 
         if (self::LAST_STEP == $this->step)
         {
-          $this->redirect('order_confirm');
+          $this->redirect('order_create');
         }
         else {
           $this->redirect('order_new', array('step' => $this->getNextStep($order)));
@@ -309,15 +309,30 @@ class orderActions extends myActions
     if (!($this->order = $provider->getOrder($request)))
     {
       $this->order = $this->getUser()->getOrder()->get();
-      $this->getUser()->getOrder()->clear();
     }
     else
     {
       $this->result = $provider->getPaymentResult($this->order);
     }
+
+    $this->forwardUnless($this->order->exists(), $this->getModuleName(), 'new');
+
+    $this->form = new UserFormSilentRegister();
+    $this->form->bind(array(
+      'username'   => $this->order->recipient_phonenumbers,
+      'first_name' => trim($this->order->recipient_first_name.' '.$this->order->recipient_last_name),
+    ));
+
+    if (!$this->form->isValid())
+    {
+      $this->form = new UserFormBasicRegister(null, array('validate_username' => false));
+      $this->form->bind(array(
+        'first_name' => trim($this->order->recipient_first_name.' '.$this->order->recipient_last_name),
+      ));
+    }
+
     $this->getUser()->getCart()->clear();
     $this->getUser()->getOrder()->clear();
-    //myDebug::dump($this->order);
 
     //$this->setVar('order', $this->order, true);
   }

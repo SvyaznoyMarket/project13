@@ -329,6 +329,11 @@ user_quickRegister:
   url:   /quick-register
   param: { module: guard, action: quickRegister }
 #
+# user basic register
+user_basicRegister:
+  url:   /remember
+  param: { module: guard, action: basicRegister }
+#
 # user oauth callback
 user_oauth_callback:
   url:   /signin/:provider/callback

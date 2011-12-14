@@ -226,5 +226,35 @@ $('.order-form').bind({
     $('.order-form').submit()
   })
 
+
+  $('#basic_register-form').bind({
+    'submit': function(e) {
+      e.preventDefault()
+
+      var form = $(this)
+
+      form.ajaxSubmit({
+        'beforeSubmit': function() {
+          var button = form.find('input:submit')
+          button.attr('disabled', true)
+          button.attr('value', 'Запоминаю...')
+        },
+        'success': function(response) {
+          if (true !== response.success) {
+            form.find('.form-content:first').html(response.data.form)
+          }
+          else {
+            window.location = response.redirect
+          }
+        },
+        'complete': function() {
+          var button = form.find('input:submit')
+          button.attr('disabled', false)
+          button.attr('value', 'Запоминить меня')
+        }
+      })
+    }
+  })
+
 }
-$(document).ready( function(){ initOrder() });
+$(document).ready( function(){initOrder()});
