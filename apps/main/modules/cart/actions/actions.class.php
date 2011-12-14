@@ -48,7 +48,7 @@ class cartActions extends myActions {
             return $this->_refuse();
         }
 
-        $product = ProductTable::getInstance()->getByToken($request['product']);
+        $product = ProductTable::getInstance()->getByToken($request['product'], array('with_model' => true, ));
 
         if (!$product) {
             $this->_validateResult['success'] = false;

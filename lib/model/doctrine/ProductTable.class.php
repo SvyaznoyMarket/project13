@@ -263,7 +263,7 @@ class ProductTable extends myDoctrineTable
 
     $id = $this->getIdByToken($token);
 
-    return $this->getById($id);
+    return $this->getById($id, $params);
   }
 
   public function getListByCategory(ProductCategory $category, array $params = array())
