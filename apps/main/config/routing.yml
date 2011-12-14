@@ -38,6 +38,8 @@ productCatalog_filter:
   param: { module: productCatalog, action: filter }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 #
 # тэги каталога товаров
 productCatalog_tag:
@@ -45,6 +47,8 @@ productCatalog_tag:
   param: { module: productCatalog, action: tag }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 #
 # количество найденных товаров
 productCatalog_count:
@@ -52,6 +56,8 @@ productCatalog_count:
   param: { module: productCatalog, action: count }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 #
 # категория каталога товаров
 productCatalog_category:
@@ -59,20 +65,24 @@ productCatalog_category:
   param: { module: productCatalog, action: category}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
-
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 # категория каталога товаров ajax
 productCatalog_categoryAjax:
-  url:   /catalogajax/:productCategory/:page/:view/:num
+  url:   /catalog/:productCategory/_ajax/:page/:view/:num
   param: { module: productCatalog, action: categoryAjax, num: 18, view: compact, page: 1}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
-
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 # карусель ajax
 productCatalog_carousel:
-  url:   /catalog-carousel/:productCategory/
+  url:   /catalog/:productCategory/_carousel
   param: { module: productCategory, action: carousel}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 #
 # категория и производитель каталога товаров
 productCatalog_creator:
@@ -83,10 +93,12 @@ productCatalog_creator:
 #
 # карточка товара
 productCard:
-  url:   /products/:product
+  url:   /product/:product
   param: { module: productCard, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # карточка товара по ид товара
 product_show:
@@ -97,35 +109,41 @@ product_show:
 #
 # комментарии товара
 productComment:
-  url:   /products/:product/comments
+  url:   /product/:product/comments
   param: { module: productComment, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # новый комментарий товара
 productComment_new:
-  url:   /products/:product/comments/new
+  url:   /product/:product/comments/new
   param: { module: productComment, action: new }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ post, get ]
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # создать комментарий товара
 productComment_create:
-  url:   /products/:product/comments/create
+  url:   /product/:product/comments/create
   param: { module: productComment, action: create }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ post ]
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # оценить комментарий товара
 productComment_helpful:
-  url:   /products/:product/comments/:productComment/helpful
+  url:   /product/:product/comments/:productComment/helpful
   param: { module: productComment, action: helpful }
   class:   myDoctrineRoute
   options: { model: ProductComment, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 
 # список товаров
@@ -136,24 +154,30 @@ productCategory_menu:
 
 # наличие на складах
 productStock:
-  url:   /products/:product/stock
+  url:   /product/:product/stock
   param: { module: productStock, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # аналогичные товары
 similarProduct:
-  url:   /products/:product/similar
+  url:   /product/:product/similar
   param: { module: similarProduct, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # обновление товара по измененной характеристики для группы товаров
 changeProduct:
-  url:   /products/:product/change/:value
+  url:   /product/:product/change/:value
   param: { module: product, action: change }
   class: myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 # Линии
 #
@@ -334,6 +358,8 @@ userDelayedProduct_create:
   param: { module: userDelayedProduct, action: create }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user delayed product delete
 userDelayedProduct_delete:
@@ -341,6 +367,8 @@ userDelayedProduct_delete:
   param: { module: userDelayedProduct, action: delete }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user delayed product clear
 userDelayedProduct_clear:
@@ -360,6 +388,8 @@ userProductNotice_show:
   param: { module: userProductNotice, action: show }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product notice create
 userProductNotice_create:
@@ -369,6 +399,7 @@ userProductNotice_create:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ post ]
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product notice delete
 userProductNotice_delete:
@@ -376,6 +407,8 @@ userProductNotice_delete:
   param: { module: userProductNotice, action: delete }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product notice clear
 userProductNotice_clear:
@@ -414,6 +447,8 @@ userTag_linkProduct:
   param:   { module: userTag, action: linkProduct }
   class:   myDoctrineRoute
   options: { model: UserTag, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user tag unlink product
 userTag_unlinkProduct:
@@ -421,6 +456,8 @@ userTag_unlinkProduct:
   param:   { module: userTag, action: unlinkProduct }
   class:   myDoctrineRoute
   options: { model: UserTag, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 
 
@@ -477,6 +514,8 @@ userProductCompare_add:
   param: { module: userProductCompare, action: add }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product compare delete
 userProductCompare_delete:
@@ -484,19 +523,21 @@ userProductCompare_delete:
   param: { module: userProductCompare, action: delete }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 
 
 #
 # user product rating create
 userProductRating_createtotal:
-  url:   /product-rating/createtotal/:rating/:product
+  url:   /product-rating/createtotal/:product/:rating
   param: { module: userProductRating, action: createtotal, product : 0}
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
-    sf_method: [ get,post ]
-
+    sf_method: [ get, post ]
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product rating create
 userProductRating_create:
@@ -613,16 +654,18 @@ cart:
 #
 # cart add
 cart_add:
-  url:   /cart/add/:product/:quantity
+  url:   /cart/add/:product/_quantity/:quantity
   param: { module: cart, action: add, quantity: 1 }
   requirements:
-    sf_method: [ get,post ]
-
+    sf_method: [ get, post ]
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart delete
 cart_delete:
-  url:   /cart/delete/:product/:service
+  url:   /cart/delete/:product/_service/:service
   param: { module: cart, action: delete, product: 0, service: 0 }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart clear
 cart_clear:
@@ -631,13 +674,17 @@ cart_clear:
 #
 # cart service add
 cart_service_add:
-  url:   /cart/add_service/:service/:quantity/:product
+  url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/
   param: { module: cart, action: serviceAdd, quantity: 1, product: 0 }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart servcie delete
 cart_service_delete:
-  url:   /cart/delete_service/:service/:product
+  url:   /cart/delete_service/:product/_service/:service
   param: { module: cart, action: serviceDelete, product: 0 }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 
 #
@@ -739,12 +786,16 @@ tag_showAjax:
 # карточка магазина
 redirect_for_shop:
   url:   /shops/:region/
-  param: { module: default, action: redirect, route: shop }
+  param: { module: redirect, action: index, route: shop }
+#
+# карточка товара
+redirect_for_productCard:
+  url:   /products/:product
+  param: { module: redirect, action: index, route: productCard }
+
 
 
 
 default_show:
   url:   /:page
   param: { module: page, action: index }
-
-

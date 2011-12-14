@@ -211,7 +211,7 @@ class userProductRatingActions extends myActions
         //если передан token продукта
         if (isset($this->_request['product']))
         {
-            $this->_product = ProductTable::getInstance()->findOneByToken($this->_request['product']);
+            $this->_product = ProductTable::getInstance()->getByToken($this->_request['product']);
         }
         //иначе создаём для того продукта, на странице которого находимся
         if (!isset($this->_product))

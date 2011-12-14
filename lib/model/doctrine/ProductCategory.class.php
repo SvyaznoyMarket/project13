@@ -21,7 +21,7 @@ class ProductCategory extends BaseProductCategory
   public function toParams()
   {
     return array(
-      'productCategory' => $this->token,
+      'productCategory' => $this->token_prefix ? ($this->token_prefix.'/'.$this->token) : $this->token,
     );
   }
 
@@ -34,8 +34,12 @@ class ProductCategory extends BaseProductCategory
   {
     parent::importFromCore($data);
 
+    $link = trim(preg_replace('/^\/catalog/', '', $data['link']), '/');
+    $v = explode('/', $link);
+    $this->token = array_pop($v);
+    $this->token_prefix = count($v) ? array_shift($v) : null;
+
     $this->photo = !empty($data['media_image']) ? $data['media_image'] : 'default.jpg';
-    $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
 
     //Импорт фильтров для категории
     $filterGroup = $this->getFilterGroup();

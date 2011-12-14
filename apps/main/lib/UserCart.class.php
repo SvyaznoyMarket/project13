@@ -403,6 +403,7 @@ class UserCart extends BaseUserData
             'type' => 'product',
             'name' => $product->name,
             'token' => $product->token,
+            'token_prefix' => $product->token_prefix,
             'quantity' => $product['cart']['quantity'],
             'price' => $product['cart']['formatted_total'],
             'photo' => $product->getMainPhotoUrl(1)
@@ -440,7 +441,7 @@ class UserCart extends BaseUserData
 
     foreach ($products as $product)
     {
-        if ($product['token']==$token) return $product['cart']['quantity'];
+        if ($product['token_prefix'].'/'.$product['token']==$token) return $product['cart']['quantity'];
     }
 
     return 0;
@@ -516,7 +517,7 @@ class UserCart extends BaseUserData
     if (is_null($this->products) || true === $force)
     {
       //myDebug::dump($productIds);
-      $this->products = $productTable->createListByIds($productIds, array('index' => array('product' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
+      $this->products = $productTable->createListByIds($productIds, array('index' => array('product' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false, 'with_model' => true, ));
       //myDebug::dump($this->products);
     }
     else
@@ -526,7 +527,7 @@ class UserCart extends BaseUserData
       $toAddIds = array_diff($productIds, $currentIds);
       $toDelIds = array_diff($currentIds, $productIds);
 
-      $toAdd = $productTable->createListByIds($toAddIds, array('index' => array('product' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
+      $toAdd = $productTable->createListByIds($toAddIds, array('index' => array('product' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false, 'with_model' => true, ));
       foreach ($toAdd as $key => $product)
       {
         $this->products[$key] = $product;

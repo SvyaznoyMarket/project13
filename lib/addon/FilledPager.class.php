@@ -54,7 +54,7 @@ class FilledPager
       $links[] = $i++;
     }
 
-    $this->currentMaxLink = $links[count($links) - 1];
+    $this->currentMaxLink = isset($links[count($links) - 1]) ? $links[count($links) - 1] : 0;
 
     return $links;
   }

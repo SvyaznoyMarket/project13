@@ -34,6 +34,7 @@ class ProductCategoryTable extends myDoctrineTable
       'is_active'   => 'is_active',
       'media_image' => 'photo',
       'has_line'    => 'has_line',
+      'position'    => 'position',
     );
   }
 
@@ -52,9 +53,29 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getForRoute(array $params)
   {
-    $id = isset($params['productCategory']) ? $this->getIdBy('token', $params['productCategory']) : null;
+    $id = isset($params['productCategory']) ? $this->getIdByToken($params['productCategory']) : null;
 
     return $this->getById($id, array());
+  }
+
+  public function getIdByToken($token)
+  {
+    $q = $this->createQuery()
+      ->select('id')
+    ;
+
+    if (false !== strpos($token, '/'))
+    {
+      list($tokenPrefix, $token) = explode('/', $token);
+      $q->where('token_prefix = ? AND token = ?', array($tokenPrefix, $token));
+    }
+    else {
+      $q->where('token = ?', $token);
+    }
+
+    $q->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+
+    return $q->fetchOne();
   }
 
   public function getRecordById($id, array $params = array())
