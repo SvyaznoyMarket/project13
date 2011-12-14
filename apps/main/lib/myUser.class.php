@@ -42,18 +42,11 @@ class myUser extends myGuardSecurityUser
   public function getCartBaseInfo()
   {
     $cart = $this->getCart();
-    $result['qty'] = 0;
-    $result['sum'] = 0;
+    $result['qty'] = $cart->count();
+    $result['sum'] = $cart->getTotal();
     $result['productsInCart'] = array();
-    $cart = $this->getCart();
-    if (!$cart || !$cart->getProducts()) {
-       # return $result;
-    }
-   # myDebug::dump($cart->getProducts());
 
     foreach($cart->getProducts()->toArray() as $id => $product){
-      $result['qty'] += $product['cart']['quantity'];
-      $result['sum'] += ProductTable::getInstance()->getRealPrice($product) * $product['cart']['quantity'];
       $result['productsInCart'][ $product['token'] ] = $product['cart']['quantity'];
     }
     return $result;
