@@ -1,6 +1,6 @@
 <?php
 
-class myDoctrineRoute extends sfDoctrineRoute
+class myPatternRouting extends sfPatternRouting
 {
   public function generate($params, $context = array(), $absolute = false, array $allow = array('/'))
   {

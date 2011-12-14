@@ -32,8 +32,9 @@ class qrcodeActions extends myActions
     switch ($view)
     {
       case 'product.list';
-        $tokens = ProductTable::getInstance()->getTokensByIds($ids);
-        $request->setParameter('products', $tokens);
+        //$tokens = ProductTable::getInstance()->getTokensByIds($ids);
+        //$request->setParameter('products', $tokens);
+        $request->setParameter('products', $ids);
         $this->forward('product', 'list');
         break;
       case 'product.show':

@@ -48,7 +48,7 @@ class cartActions extends myActions {
             return $this->_refuse();
         }
 
-        $product = ProductTable::getInstance()->findOneByToken($request['product']);
+        $product = ProductTable::getInstance()->getByToken($request['product']);
 
         if (!$product) {
             $this->_validateResult['success'] = false;
@@ -79,9 +79,9 @@ class cartActions extends myActions {
         } catch (Exception $e) {
             $result['value'] = false;
             $result['error'] = "Не удалось добавить в корзину товар token='" . $request['product'] . "'.";
-            return $this->_refuse();            
-        }                      
-        
+            return $this->_refuse();
+        }
+
         $this->getUser()->setCacheCookie();
 
         #myDebug::dump( $added );
@@ -126,7 +126,7 @@ class cartActions extends myActions {
      * @param sfRequest $request A request object
      */
     public function executeDelete(sfWebRequest $request) {
-        $product = ProductTable::getInstance()->findOneByToken($request['product']);
+        $product = ProductTable::getInstance()->getByToken($request['product']);
 
         if ($product) {
             $this->getUser()->getCart()->deleteProduct($product->id);
@@ -153,9 +153,9 @@ class cartActions extends myActions {
         $this->redirect($this->getRequest()->getReferer());
     }
 
-    
+
     public function executeServiceAdd(sfWebRequest $request) {
-                        
+
         //валидация количества услуг
         if (!isset($request['quantity']))
             $request['quantity'] = 1;
@@ -178,19 +178,19 @@ class cartActions extends myActions {
             //добавляем услугу без привязки к продукту
             $productId = 0;
             if (isset($request['product'])) {
-                $product = ProductTable::getInstance()->findOneByToken($request['product']);
+                $product = ProductTable::getInstance()->getByToken($request['product']);
                 if (!$product) {
                     $product = NULL;
                 } else {
                     $productId = $product->id;
-                }                    
+                }
             }
-            
+
             $added = array();
             $currentNum = $this->getUser()->getCart()->getServiceForProductQty($service, $productId);
             $request['quantity'] = $request['quantity'] + $currentNum;
 
-            
+
             if ($request['quantity'] <= 0) {
                 $request['quantity'] = 0;
                 $this->getUser()->getCart()->deleteService($service, $productId);
@@ -199,17 +199,17 @@ class cartActions extends myActions {
                 if (!$ok) {
                     $this->_validateResult['success'] = false;
                     $this->_validateResult['error'] = "Невозможно добавить услугу к товару, которого нет в корзине.";
-                    return $this->_refuse();                    
+                    return $this->_refuse();
                 }
             }
             $added[] = array('service' => $service, 'quantity' => $request['quantity']);
-            
+
         } catch (Exception $e) {
             $this->_validateResult['success'] = false;
             $this->_validateResult['error'] = "Не удалось добавить в корзину услугу token='" . $request['service'] . "'.";
-            return $this->_refuse();            
+            return $this->_refuse();
         }
-        
+
         $this->getUser()->setCacheCookie();
 
         #myDebug::dump(  $this->getUser()->getCart()->getServices()  );
@@ -229,11 +229,11 @@ class cartActions extends myActions {
 
         $this->redirect($this->getRequest()->getReferer());
     }
-    
-    
+
+
     /**
     public function executeServiceAdd(sfWebRequest $request) {
-        $product = ProductTable::getInstance()->findOneByToken($request['product']);
+        $product = ProductTable::getInstance()->getByToken($request['product']);
         $service = ServiceTable::getInstance()->findOneByToken($request['service']);
 
         $this->getUser()->getCart()->addService($product, $service, $request['quantity']);
@@ -244,7 +244,7 @@ class cartActions extends myActions {
 
     public function executeServiceDelete(sfWebRequest $request) {
         $service = ServiceTable::getInstance()->findOneByToken($request['service']);
-        $product = ProductTable::getInstance()->findOneByToken($request['product']);
+        $product = ProductTable::getInstance()->getByToken($request['product']);
 
         if ($product) {
             $productId = $product->id;
@@ -253,7 +253,7 @@ class cartActions extends myActions {
         }
         $this->getUser()->getCart()->deleteService($service, $productId);
         $this->getUser()->setCacheCookie();
-        
+
         if ($request->isXmlHttpRequest()) {
             $cartInfo = $this->getUser()->getCartBaseInfo();
             $return = array(

@@ -42,8 +42,8 @@ class myUser extends myGuardSecurityUser
   public function getCartBaseInfo()
   {
     $cart = $this->getCart();
-    $result['qty'] = 0;
-    $result['sum'] = 0;
+    $result['qty'] = $cart->count();
+    $result['sum'] = $cart->getTotal();
     $result['productsInCart'] = array();
     $result['servicesInCart'] = array();
     $cart = $this->getCart();

@@ -4,7 +4,7 @@
 $servListId = $servListId->getRawValue();
 ?>
 <div class="hideblock bF1Block mGoods" style="display: none;">
-        <i class="close" title="Закрыть">Закрыть</i> 
+        <i class="close" title="Закрыть">Закрыть</i>
 		<h2>Добавление услуги F1</h2>
         <?php if (count($f1) > 3) echo '<div>';
         #else echo '<ul>';
@@ -40,8 +40,8 @@ $servListId = $servListId->getRawValue();
                                <?php } ?>     
                             <?php } ?>    
                         </td>
-                    </tr>                
-             <?php  endforeach ?>                                  
+                    </tr>
+             <?php  endforeach ?>
 			<tr>
 				<th colspan="2"><a href="<?php echo url_for('service_list') ?>">Подробнее о Сервисе F1</a></th>
 			</tr>

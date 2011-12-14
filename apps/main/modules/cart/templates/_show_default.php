@@ -12,10 +12,10 @@
     <td><?php echo $item['quantity'] ?></td>
     <td>
       <?php foreach ($item['service'] as $service): ?>
-      <?php echo "[".$service['quantity']."] ".$service['name']." [".link_to('добавить', 'cart_service_add', array('product' => $item['token'], 'service' => $service['token'], 'quantity' => 1, ))."]"." [".link_to('удалить', 'cart_service_delete', array('product' => $item['token'], 'service' => $service['token'], ))."]" ?>
+      <?php echo "[".$service['quantity']."] ".$service['name']." [".link_to('добавить', 'cart_service_add', array('product' => $item['token_prefix'].'/'.$item['token'], 'service' => $service['token'], 'quantity' => 1, ))."]"." [".link_to('удалить', 'cart_service_delete', array('product' => $item['token_prefix'].'/'.$item['token'], 'service' => $service['token'], ))."]" ?>
       <?php endforeach; ?>
     </td>
-    <td><?php echo link_to('удалить', 'cart_delete', array('product' => $item['token']), array('class' => 'cart cart-delete')) ?></td>
+    <td><?php echo link_to('удалить', 'cart_delete', array('product' => $item['token_prefix'].'/'.$item['token']), array('class' => 'cart cart-delete')) ?></td>
   </tr>
   <?php endforeach ?>
 </table>
@@ -70,11 +70,11 @@ foreach ($list as $service) {
                 </div>
                 <div class="basketinfo pb15">
                     <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo $item['priceFormatted'] ?></span> <span class="rubl">p</span></span></div>
-                    <div class="right"><div class="numerbox"><?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_add', array('product' => $item['product']->token, 'quantity' => -1, )) : '<b class="ajaless" title="Уменьшить"></b>' ?><span class="ajaquant"><?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_add', array('product' => $item['product']->token, 'quantity' => 1, )) ?></div></div>
+                    <div class="right"><div class="numerbox"><?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_add', array('product' => $item['product']->token_prefix.'/'.$item['product']->token, 'quantity' => -1, )) : '<b class="ajaless" title="Уменьшить"></b>' ?><span class="ajaquant"><?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_add', array('product' => $item['product']->token_prefix.'/'.$item['product']->token, 'quantity' => 1, )) ?></div></div>
                 </div>
                 <div class="basketinfo">
                     <div class="left font24"><span class="sum"><?php echo ($item['total']) ?></span> <span class="rubl">p</span></div>
-                    <div class="right"><a href="<?php echo url_for('cart_delete', array('product' => $item['product']->token, )) ?>" class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a--></div>
+                    <div class="right"><a href="<?php echo url_for('cart_delete', array('product' => $item['product']->token_prefix.'/'.$item['product']->token)) ?>" class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a--></div>
                 </div>
 
                 <div class="clear pb15"></div>
@@ -103,7 +103,7 @@ foreach ($list as $service) {
             <div class="basketright">
                 <div class="goodstitle">
                     <div class="font24 pb5">
-                        <a href="<?php echo url_for('service_show', array('service' => $item['token'])) ?>"><?php echo $item['name'] ?></a>                        
+                        <a href="<?php echo url_for('service_show', array('service' => $item['token'])) ?>"><?php echo $item['name'] ?></a>
                     </div>
                     <noindex><div class="font11">Есть в наличии</div></noindex>
                 </div>
@@ -126,7 +126,7 @@ foreach ($list as $service) {
 
             </div>
         </div>
-    
+
     <?php endif; ?>
   <?php endforeach ?>
     <!-- /Basket -->

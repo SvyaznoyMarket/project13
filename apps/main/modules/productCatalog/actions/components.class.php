@@ -123,7 +123,7 @@ class productCatalogComponents extends myComponents
     {
       $list[] = array(
         'name'  => $productCategory['name'],
-        //'url'   => url_for('productCatalog_category', $productCategory),
+        'url'   => url_for('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'].'/'.$productCategory['token']) : $productCategory['token'])),
         'level' => $productCategory['level'],
       );
     }

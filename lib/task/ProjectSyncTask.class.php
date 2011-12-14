@@ -191,33 +191,37 @@ EOF;
 
     if (('create' == $action) || ('update' == $action))
     {
-      $record->replace(); //$record->save();
-      if ($record instanceof ProductCategory)
-      {
-        if (!empty($record->FilterGroup))
-          $record->FilterGroup->replace();
-      }
-
       // проверка родителя
       if (!empty ($record->core_parent_id) && $record->getTable()->hasTemplate('NestedSet'))
       {
-        $modified = $record->getLastModified();
-        // Проверяет, сменился ли родитель
-        if (isset($modified['core_parent_id']))
+        // косвенно определяет существование записи в бд
+        $exists = !empty($record->lft) && !empty($record->rgt);
+
+        $modified = $record->getModified(); // если запись уже сохранялась, то $modified = $record->getLastModified();
+
+        // если запись не существует в бд или сменился родитель записи
+        if (!$exists || array_key_exists('core_parent_id', $modified))
         {
           $newParent = $record->getTable()->getByCoreId($record->core_parent_id);
-          $oldParent = $record->getNode()->getParent();
+          $oldParent = $exists ? $record->getNode()->getParent() : false;
 
           if (true
             && $newParent
             && (!$oldParent || ($oldParent->id != $newParent->id))
           ) {
-            $record->getNode()->moveAsLastChildOf($newParent);
+            if ($exists)
+            {
+              $record->getNode()->moveAsLastChildOf($newParent);
+            }
+            else {
+              $record->getNode()->insertAsLastChildOf($newParent);
+            }
           }
         }
         // Проверяет, изменилась ли позиция относительно соседей
-        if (isset($modified['position']))
+        if (array_key_exists('position', $modified))
         {
+          $record->replace();
           $parent = $record->getTable()->getByCoreId($record->core_parent_id);
           if ($parent)
           {
@@ -226,8 +230,6 @@ EOF;
               ->orderBy('position ASC')
               ->execute()
             ;
-            //myDebug::dump($record->getNode()->getParent());
-            //myDebug::dump($parent, 1);
             foreach ($childList->toValueArray('id') as $id)
             {
               $parent->refresh();
@@ -235,6 +237,15 @@ EOF;
               $child->getNode()->moveAsLastChildOf($parent);
             }
           }
+        }
+      }
+
+      $record->replace(); //$record->save();
+      if ($record instanceof ProductCategory)
+      {
+        if (!empty($record->FilterGroup))
+        {
+          $record->FilterGroup->replace();
         }
       }
 
@@ -336,6 +347,19 @@ EOF;
   protected function processUploadEntity($action, $packet)
   {
     $entity = $packet['data'];
+
+    // подковырка: если действие delete, то угадывам item_type_id
+    if ('delete' == $action)
+    {
+      foreach (array('ProductPhoto' => 1, 'ProductPhoto3D' => 2, 'ShopPhoto' => 8) as $model => $itemTypeId)
+      {
+        if (Doctrine_Core::getTable($model)->getByCoreId($entity['id']))
+        {
+          $entity['item_type_id'] = $itemTypeId;
+          break;
+        }
+      }
+    }
 
     $record = false;
     if (isset($entity['item_type_id'])) switch ($entity['item_type_id'])

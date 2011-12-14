@@ -15,13 +15,13 @@ foreach ($list as $service) {
                <table cellspacing="0">
  					<tbody><tr><th colspan="3">Для этого товара есть услуги:</th></tr>
                         <?php foreach ($list as $service): ?>
-                        <?php if ($num==3) break; ?>                           
+                        <?php if ($num==3) break; ?>
                             <tr><td><?php echo $service['name'] ?></td>
                                 <td class="mPrice"></td> <td class="mEdit"></td>
                             </tr>
-                        <?php $num++; ?>        
-                        <?php endforeach; ?>                    
-                                                                                  
+                        <?php $num++; ?>
+                        <?php endforeach; ?>
+
                     <tr>
                         <td class="bBlueButton"><a class="link1" href="">Выбрать услуги</a></td>
 						<td></td><td></td>
@@ -53,7 +53,7 @@ foreach ($list as $service) {
                         <tr ref="<?php echo $service['token'] ?>">
                             <td>
                                 <?php echo $service['name'] ?><br>
-                                <a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service'=>$service['token'])); ?>">Подробнее об услуге</a>
+                                <a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>">Подробнее об услуге</a>
                             </td>
                             <td class="mPrice"><span class="price"><?php echo $service['totalFormatted'] ?></span>&nbsp;<span class="rubl">p</span></td> 
                             <td class="mEdit">
@@ -72,10 +72,10 @@ foreach ($list as $service) {
                                         <b title="Увеличить" class="ajamore"></b>
                                     </a>
                                 </div>
-                                <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?php echo url_for('cart_service_delete', array('service'=>$service['token'], 'product'=>$product->token)); ?>">Отменить</a>
+                                <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?php echo url_for('cart_service_delete', array('service' => $service['token'], 'product' => $product->token_prefix.'/'.$product->token)); ?>">Отменить</a>
                             </td>
-                        </tr>                            
-                        <?php endforeach; ?>                              
+                        </tr>
+                        <?php endforeach; ?>
                     <tr>
                         <td class="bBlueButton"><a class="link1" href="">Выбрать услуги</a></td>
 						<td></td><td></td>
@@ -83,7 +83,7 @@ foreach ($list as $service) {
 				</tbody></table>
 </div>
 
-<?php } ?>        
+<?php } ?>
 
 </div>
 <?php

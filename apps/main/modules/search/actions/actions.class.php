@@ -31,6 +31,7 @@ class searchActions extends myActions
     $this->forward404Unless($this->searchString);
 
     $title = 'Вы искали “'. $this->searchString.'”';
+
     if ($page)
     {
       $title .= ' – '.$page;
@@ -249,11 +250,14 @@ class searchActions extends myActions
 
   protected function getProductPager(array $data)
   {
+    $view = $this->getRequestParameter('view');
+
     $list = !empty($data['data'])
       ? ProductTable::getInstance()->getListByCoreIds($data['data'], array(
-        'property_view'   => 'list',
-        'with_properties' => 'expanded' == $this->getRequestParameter('view') ? true : false,
+        'property_view'   => 'expanded' == $view ? 'list' : false,
+        'with_properties' => 'expanded' == $view ? true : false,
         'order'           => '_index',
+        'with_model'      => true,
       ))
       : array()
     ;
