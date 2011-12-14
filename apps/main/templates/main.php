@@ -85,11 +85,11 @@ _gaq.push(['_trackPageLoadTime']);
 		  return Math.floor(Math.random() * (max - min + 1)) + min
 		}
 		var pref = '/products/'
-		var hrefs = [  '2030000012503', '2060400005041', '2060101000062', '2010101001637', '2020201000751',
-					'2050600002612', '2020401001060', '2080501001025', '2060201000627']
+		var hrefs = [  '2060101001854', '2060701001476', '2060603000409', '2050200005747', '2040101007049',
+					'2020103002174', '2020301000941', '2080502001192', '2050100004444', '2050405000578', '2050301012576']
 		var node    = $('.bannersboxinner')
 		var bignode = $('.bigbanner')
-		var bri = getRandomInt(1, 9)
+		var bri = getRandomInt(1, 11)
 
 		bignode.find('img').attr('src','/images/enter/big/enter'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
 		var ri = getRandomInt(1, 4)
