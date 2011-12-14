@@ -214,17 +214,8 @@ class searchActions extends myActions
     }
 
     $this->setVar('searchString', $this->searchString, false);
-<<<<<<< HEAD
-<<<<<<< HEAD
-    $this->setVar('pagers', $pagers, true);
-=======
-    $this->setVar('pagers', $pagers, true);    
-    $this->setVar('view', $request['view']);    
->>>>>>> github/master
-=======
     $this->setVar('pagers', $pagers, true);
     $this->setVar('view', $request['view']);
->>>>>>> 7d9f86e4abf84edaab76b0076998176719c7a36f
   }
 
 
