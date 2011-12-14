@@ -46,21 +46,14 @@ class myUser extends myGuardSecurityUser
     $result['sum'] = $cart->getTotal();
     $result['productsInCart'] = array();
     $result['servicesInCart'] = array();
-    $cart = $this->getCart();
-    if (!$cart || !$cart->getProducts()) {
-       # return $result;
-    }
-   # myDebug::dump($cart->getProducts());
 
     foreach($cart->getProducts()->toArray() as $id => $product){
-      $result['qty'] += $product['cart']['quantity'];
-      $result['sum'] += ProductTable::getInstance()->getRealPrice($product) * $product['cart']['quantity'];
-      $result['productsInCart'][ $product['token'] ] = $product['cart']['quantity'];          
-    }        
+      $result['productsInCart'][ $product['token'] ] = $product['cart']['quantity'];
+    }
     foreach($cart->getServices()->toArray() as $id => $service){
       $qty = $service['cart']['quantity'];
       if ($qty > 0) {
-        $result['servicesInCart'][ $service['token'] ][0] = $qty;          
+        $result['servicesInCart'][ $service['token'] ][0] = $qty;
       }
       foreach($service['cart']['product'] as $pId => $pQty) {
           $token = false;
@@ -72,10 +65,10 @@ class myUser extends myGuardSecurityUser
               }
           }
           if ($token && $pQty) {
-            $result['servicesInCart'][ $service['token'] ][$token] = $pQty;          
+            $result['servicesInCart'][ $service['token'] ][$token] = $pQty;
           }
       }
-    }        
+    }
     return $result;
   }
 
