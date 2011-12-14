@@ -243,7 +243,7 @@ class UserCart extends BaseUserData
                     'name'      => $service->name,
                     'quantity'  => $qty,
                     #'service'   => $service,
-                    'price'     => $service->price,
+                    'price'     => $service->getCurrentPrice($product),
                     'priceFormatted'     => $service->getFormattedPrice(),
                     'total'     => $service['cart']['formatted_total'],
                     #'photo'     => $service->getPhotoUrl(2),
@@ -259,7 +259,7 @@ class UserCart extends BaseUserData
                 'name'      => $service->name,
                 'quantity'  => $service['cart']['quantity'],
                 'service'   => $service,
-                'price'     => $service->price,
+                'price'     => $service->getCurrentPrice(),
                 'total'     => $service['cart']['formatted_total'],
                 'priceFormatted'  => $service->getFormattedPrice(),
                 'photo'     => $service->getPhotoUrl(2),
@@ -456,9 +456,11 @@ class UserCart extends BaseUserData
     foreach ($services as $service)
     {
         $qty = $service['cart']['quantity'];
+        $price = $service->getCurrentPrice() * $qty;
         if (isset($service['cart']['product'])) {
-            foreach($service['cart']['product'] as $prodQty) {
+            foreach($service['cart']['product'] as $prodId => $prodQty) {
                 $qty += $prodQty;
+                $price += $service->getCurrentPrice($prodId) * $prodQty;
             }
         }
         $list[] = array(
@@ -466,7 +468,7 @@ class UserCart extends BaseUserData
             'name' => $service->name,
             'token' => $service->token,
             'quantity' => $qty,
-            'price' => $service->getCurrentPrice() * $qty,
+            'price' => number_format($price, 0, ',', ' '),
             'photo' => $service->getPhotoUrl(2)
         );
 
