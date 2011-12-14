@@ -81,10 +81,10 @@ foreach ($list as $service) {
 
                 
                 <?php include_component('service', 'list_for_product_in_cart', array('product' => $item['product'], 'services' => $item['service'])) ?>
-            <?php #include_component('product', 'f1_lightbox', array('f1' => $list, 'product'=>$item['product'], 'servListId' => $servListId)) ?>
+                <?php #include_component('product', 'f1_lightbox', array('f1' => $list, 'product'=>$item['product'], 'servListId' => $servListId)) ?>
                                 
             </div>
-            
+        </div>
     <?php else: ?>
         <div class="basketline mWrap">
             <div class="basketleft">
