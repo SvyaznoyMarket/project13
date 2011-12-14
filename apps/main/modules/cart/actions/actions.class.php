@@ -126,7 +126,7 @@ class cartActions extends myActions {
      * @param sfRequest $request A request object
      */
     public function executeDelete(sfWebRequest $request) {
-        $product = ProductTable::getInstance()->getByToken($request['product']);
+        $product = ProductTable::getInstance()->getByToken($request['product'], array('with_model' => true, ));
 
         if ($product) {
             $this->getUser()->getCart()->deleteProduct($product->id);
