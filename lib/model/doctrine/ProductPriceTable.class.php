@@ -80,7 +80,7 @@ class ProductPriceTable extends myDoctrineTable
       ->select('product.core_id, region.geoip_code, productPrice.id, priceList.id')
       ->innerJoin('product.ProductPrice productPrice')
       ->innerJoin('productPrice.PriceList priceList')
-      ->innerJoin('priceList.Region region')
+      ->innerJoin('priceList.Region region WITH region.geoip_code IS NOT NULL')
       ->where('productPrice.id = ?', $record['id'])
       ->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
     ;
