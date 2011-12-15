@@ -7,16 +7,16 @@ all:
   javascripts:
     - -*
     - jquery-1.6.4.min.js
-    - prettyCheckboxes.js
+    - bigjquery.min.js
+    #ivn- prettyCheckboxes.js
     #- jquery-ui-1.8.16.custom.min.js
-    - jquery.form.js
-    - jquery.lightbox_me.js
-    - typewriter.js
-    #- jquery.colorbox.js
+    #ivn- jquery.form.js
+    #ivn- jquery.lightbox_me.js
+    #ivn- typewriter.js
     - shelf/jquery.autocomplete-dev.js
-    - jquery.scrollto.js
+    #ivn- jquery.scrollto.js
     - app.order.js
-    - custom-form-elements.js
+    #ivn- custom-form-elements.js
     - main.js
     - app.auth.js
   layout: order

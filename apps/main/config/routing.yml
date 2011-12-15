@@ -642,6 +642,11 @@ order_error:
   url:   /orders/error
   param: { module: order, action: error }
 #
+# order get user
+order_getUser:
+  url:   /orders/get-user
+  param: { module: order, action: getUser }
+#
 # order show
 order_show:
   url:   /orders/:order
@@ -668,7 +673,7 @@ cart_add:
 # cart delete
 cart_delete:
   url:   /cart/delete/:product/_service/:service
-  param: { module: cart, action: delete, product: 0, service: 0 }
+  param: { module: cart, action: delete, product: '-/-', service: 0 }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
@@ -680,14 +685,14 @@ cart_clear:
 # cart service add
 cart_service_add:
   url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/
-  param: { module: cart, action: serviceAdd, quantity: 1, product: 0 }
+  param: { module: cart, action: serviceAdd, quantity: 1, product: '-/-' }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart servcie delete
 cart_service_delete:
   url:   /cart/delete_service/:product/_service/:service
-  param: { module: cart, action: serviceDelete, product: 0 }
+  param: { module: cart, action: serviceDelete, product: '-/-' }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 

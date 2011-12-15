@@ -36,6 +36,7 @@ A.nodecor {text-decoration:none}
 .al {text-align:left}
 .vm {vertical-align:middle}
 .pr {position:relative}
+.pr_imp {position:relative !important; }
 .db {display:block}
 INPUT, SELECT {vertical-align:middle}
 INPUT, TEXTAREA {outline:none}
@@ -87,6 +88,8 @@ TABLE {border-collapse:collapse}
 .mr5 {margin-right:5px}
 .mr10 {margin-right:10px}
 .mr20 {margin-right:20px}
+.mr110 {margin-right:110px}
+
 
 
 .font09 {font-size:0.9em}
@@ -137,6 +140,9 @@ TABLE {border-collapse:collapse}
 .height170 {height:170px}
 .height250 {height:250px}
 
+.mBR5 {
+    border-radius: 5px 5px 5px 5px;
+}
 #auth-link{display:none}
 
 .rubl {font-family:"Rouble"; font-size: 90%; margin: 0 0px 0 -5px}
@@ -956,11 +962,11 @@ box-shadow:0 0 7px #616161;
 
 
 .mediablock {margin: 0 50px; height:724px; background:#fff url(/css/skin/img/bg_mediablock.gif) repeat-y 0 0}
-.mediablock .leftpanel {float:left; width:180px; height:714px; padding:0 10px 10px 10px}
+.mediablock .leftpanel {float:left; width:180px; padding:0 10px 10px 10px}
 .logobox {width:85px; height:95px; background:url(/css/skin/img/bg_inner.png) no-repeat -538px -284px; text-indent:-10000px; margin-bottom:20px}
 .mediablock .topblock {height:530px; padding:19px 9px 0 9px}
 
-.scalepanel {float:right; width:54px; height:694px; padding:30px 0 0 26px; background-color:#fff}
+.scalepanel {float:right; width:54px; padding:30px 0 0 26px; background-color:#fff}
 .scalepanel .versioncontrol {display:none;  position:absolute; bottom:15px; right: 5px; text-align:center; width: 54px;}
 .zoom {visibility:hidden; width:26px; height:25px; background:url(/css/skin/img/bg_inner.png) no-repeat -117px -158px; cursor:pointer; margin-bottom:30px}
 .scale {width:26px; height:217px; background:url(/css/skin/img/bg_inner.png) no-repeat -925px 0}
@@ -969,7 +975,7 @@ box-shadow:0 0 7px #616161;
 .scale DIV {position:relative; width:26px; height:71px}
 .scale DIV B {position:absolute; left:2px; width:22px; height:20px; background:url(/css/skin/img/bg.png) no-repeat -187px -77px}
 
-.photoview {margin:0 80px 0 200px; height:724px; position:relative}
+.photoview {margin:0 80px 0 200px; height:1000px; position:relative}
 .photobox {float:left; width:100%; height:100%; overflow:hidden; position:relative}
 .photobox IMG {position:relative}
 .scrollbox {display:none; position:absolute; z-index:10; bottom:0; left:50%; width:354px; height:71px; margin-left:-183px; background:url(/css/skin/img/podlogka.png) no-repeat 0 0}
@@ -2269,7 +2275,7 @@ DT.bCtg__eOrange{
 
 /* goods info */
 .bF1Block.mGoods{
-	top: 410px;
+	top: 415px;
 	left: 170px;
 	}
 	.bF1Block.mGoods div{
@@ -2368,7 +2374,7 @@ DT.bCtg__eOrange{
 		font: bold 16px Tahoma, sans-serif;
 		}
 	.bF1Block_eBuy{
-		width: 200px;
+		width: 220px;
 		text-align: right;
 		vertical-align: top;
 		padding: 15px 0 15px 0;
@@ -2434,7 +2440,7 @@ DT.bCtg__eOrange{
 }
 	.mNewSB .mSBlocker{
     height: 125px;
-		background: url('img/f1infobig.png') 50% 0 no-repeat;
+    background: url('img/f1infobig.png') 50% 0 no-repeat;
 }
 
 
@@ -2495,6 +2501,7 @@ DT.bCtg__eOrange{
 
 
 /* bLiteboxF1 */
+
 
 .bLiteboxF1{
 	padding-top: 20px;
@@ -2747,16 +2754,178 @@ DT.bCtg__eOrange{
 			}
 
 
+/* bFormTable */
+.bNLogo{
+	float: left;
+	height: 130px;
+	margin-top: 20px;
+	font: 30px 'Enter';
+	padding: 20px 0 0 150px;
+	background: url('img/n_logo.png') 0 0 no-repeat;
+	}
+.mNLogo{
+	padding: 45px 20px 0 0;
+	}
+	.mNLogo span,
+	.mNLogo h2,
+  .mNLogo div{
+		font: 12px 'Enter';
+		text-align: left;
+		}
+	.mNLogo h2{
+		margin: 0;
+		padding: 0;
+		}
+	.mNLogo div{
+		font: 24px 'Enter';
+		}
+	.mNLogo span{
+		color: #a6a6a6;
+		}
+.bFormB{
+	text-align: center;
+	}
+	.bFormB a,
+	.bFormB span,
+	.bFormB input{
+		vertical-align: middle;
+		font: 24px Tahoma, sans-serif;
+		}
+	.bFormB a{
+		margin-right: 30px;
+		text-decoration: underline;
+		}
+	.bFormB input{
+		height: 40px;
+		padding: 3px 80px;
+		}
+
+.bFormAuth{
+	color: #434343;
+	padding: 12px 0;
+	font: 12px Tahoma, sans-serif;
+	}
+.bFormAuth a{
+	font-weight: bold;
+	text-decoration: underline;
+	}
+
+.bFormL{
+	margin: 20px 0;
+	padding-left: 250px;
+	}
+	.bFormL label{
+		width: 100%;
+		}
+	.bFormL label strong{
+		padding-top: 5px;
+
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bFormL label strong a{
+		text-decoration: underline;
+		}
+	.bFormL .checked a{
+		color: #ffa901;
+		}
 
 
+.bFormTable{}
+	.bFormTable td{
+		padding: 5px 0;
+		vertical-align: top;
+		}
+	.bFormTable td[colspan='2']{
+		padding-top: 20px;
+		padding-bottom: 20px;
+		}
+	.bFormTable td.width215{
+		color: #434343;
+		font: 12px Tahoma, sans-serif;
+		}
+	.bFormTable .text,
+	.bFormTable .mFormWrap strong,
+	.bFormTable label strong,
+	.bFormTable td label strong{
+		font: 14px Tahoma, sans-serif;
+		}
+	.bFormTable td label strong{
+		margin-top: 4px;
 
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bFormTable .mFormWrap strong{
+		margin-right: 12px;
+		}
+	.bFormTable .mFormWrap{
+		background: #f4f4f4;
+		border: 1px solid #e0e0e0;
+		padding: 10px 10px;
 
+		border-radius: 7px;
+		-webkit-border-radius: 7px;
+		-moz-border-radius: 7px;
+		-o-border-radius: 7px;
+		}
+	.bFormTable .mFormWrap .yellowbutton{
+		height: 18px;
+		text-decoration: none;
+		padding: 3px 10px 6px 10px;
+		font: bold 11px Tahoma, sans-serif;
+		}
+	.bFormTable .mFormWrap .yellowbutton:hover{
+		color: #fff;
+		}
+	.bFormTable .mBtnWrap{
+		float: right;
+		}
+	.bFormTable .text{
+		height: 30px;
+		background: #f4f4f4;
+		}
+	.bFormTable .textareabox{
+		background: #f4f4f4;
+		}
+	.bFormTable .font11{
+		color: #434343;
+		}
+	.bFormTable .mRed{
+		border: 1px solid red;
+		}
+	.bFormTable .checkboxlist2{
+		padding-left: 35px;
+		}
+	.bFormTable	label.prettyCheckbox span.holderWrap{
+		margin: 1px 5px 0 -35px;
+		}
+	.bFormTable .holderWrap,
+	.bFormTable .checked .holderWrap{
+		width: 24px !important;
+		height: 24px !important;
+		}
+	.bFormTable span.holder{
+		cursor: pointer;
+		width: 24px !important;
+		background: url('img/n_bg.png') 0 0 no-repeat !important;
+		}
+	.bFormTable label.checked span.holder:hover,
+	.bFormTable label.checked span.holder{
+		top: 0 !important;
+		cursor: pointer;
+		width: 24px !important;
+		background: url('img/n_bg_c.png') 0 0 no-repeat !important;
+		}
+	.bFormTable .ml20{
+		margin-left: 35px;
+		}
+	.bFormTable .ml20 label .font11{
+		margin-top: 6px;
 
-
-
-
-
-
-
-
-
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}

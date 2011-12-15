@@ -39,6 +39,11 @@
         <div class="right pt20">
             <a href="<?php echo url_for('order_new') ?>" class="button bigbuttonlink width214 mb15">Оформить заказ</a>
         </div>
+        <!--
+        <div class="right pt20">
+            <a href="<?php echo url_for('cart_clear') ?>" class="button bigbuttonlink width214 mb15">Очистить корзину</a>
+        </div>
+        -->
     </div>
     <!-- /Total -->
 

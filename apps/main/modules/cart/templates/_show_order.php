@@ -7,10 +7,21 @@
     }
   ?>
         <div class="fl width685 pb20<?php if ($i > 1) echo ' pl235' ?>">
-            <div class="fl width140">
-                <a href="<?php echo $url; ?>">
-                    <img src="<?php echo $item['photo']; ?>" alt="" width="120" height="120" />
-                </a>
+            <div class="fl width140 pr">
+                <?php if ($item['type'] == 'service') { ?>                    
+                    <a href="<?php echo $url; ?>">
+                        <?php if (isset($item['photo']) && $item['photo']) { ?>
+                            <div class="bServiceCard__eLogo"></div>                                           
+                            <img src="<?php echo $item['photo']; ?>" alt="" width="120" height="120" />
+                        <?php }else { ?>
+                            <div class="bServiceCard__eLogo_free pr_imp"></div>                            
+                        <?php } ?>
+                    </a>                
+                <?php } else { ?>    
+                    <a href="<?php echo $url; ?>">
+                        <img src="<?php echo $item['photo']; ?>" alt="" width="120" height="120" />
+                    </a>                
+                <?php } ?>    
             </div>
             <div class="fr width545 pb20">
                 <div class="fl width360">

@@ -5,7 +5,7 @@
   <?php include_metas() ?>
   <?php include_title() ?>
   <?php include_stylesheets() ?>
-  <?php include_javascripts() ?>
+  <?php //include_javascripts() ?>
   <?php include_component('page', 'link_rel_canonical') ?>
 <script type="text/javascript">
 var _gaq = _gaq || [];
@@ -42,27 +42,24 @@ _gaq.push(['_trackPageLoadTime']);
 
     <!-- Header -->
     <div class="basketheader">
-      <?php include_partial('default/logo') ?>
-      <?php include_slot('step') ?>
-        <div class="headerright" style="font-size: 14px; font-family: Enter; padding-top: 31px;">
-            Круглосуточный контакт cENTER
-            <div class="vcard"><div class="tel font24" style="font-size: 24px; line-height: 24px;">8 (800) 700-00-09<br /><span style="font-size: 10px;" class="gray">Звонок бесплатный. Радость в подарок :)</span></div></div>
+        <div class="bNLogo">Оформление заказа<br />Заполните форму</div>
+        <div class="headerright mNLogo">
+          <h2>Круглосуточный контакт сEnter</h2>
+          <div>8 (800) 700-00-09</div>
+
+          <span>Звонок бесплатный. Радость в подарок :)</span>
         </div>
     </div>
     <!-- /Header -->
 
     <!-- Page head -->
     <div class="pagehead">
-        <div class="breadcrumbs">
-        <?php if (has_slot('navigation')): ?>
-          <?php include_slot('navigation') ?>
-        <?php endif ?>
-        </div>
-        <div class="clear"></div>
-        <?php if (has_slot('title')): ?>
-        <h1><?php include_slot('title') ?></h1>
-        <?php endif ?>
-        <div class="line"></div>
+      <div class="clear"></div>
+      <div class="line"></div>
+      <div class='bFormAuth'>
+        <?php include_partial('order/user') ?>
+      </div>
+		<div class="line"></div>
     </div>
     <!-- Page head -->
 
@@ -78,7 +75,7 @@ _gaq.push(['_trackPageLoadTime']);
 
 </div>
 </div>
-
+    <?php include_javascripts() ?>
 <?php include_component('default', 'footer', array('view' => 'compact')) ?>
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>

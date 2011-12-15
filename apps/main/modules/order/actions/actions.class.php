@@ -337,6 +337,34 @@ class orderActions extends myActions
     //$this->setVar('order', $this->order, true);
   }
  /**
+  * Executes getUser action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeGetUser(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isXmlHttpRequest());
+
+    $user = $this->getUser()->getGuardUser();
+
+    $form = new OrderStep1Form();
+
+    return $this->renderJson(array(
+      'success' => $this->getUser()->isAuthenticated(),
+      'data'    => array(
+        'content' => $this->getPartial($this->getModuleName().'/user'),
+        'fields'  =>
+          $user
+          ? array(
+            $form['recipient_first_name']->renderName()   => $user->first_name,
+            $form['recipient_last_name']->renderName()    => $user->last_name,
+            $form['recipient_phonenumbers']->renderName() => $user->phonenumber,
+          )
+          : false,
+      ),
+    ));
+  }
+ /**
   * Executes error action
   *
   * @param sfRequest $request A request object
@@ -425,7 +453,7 @@ class orderActions extends myActions
       $relation = new OrderProductRelation();
       $relation->fromArray(array(
         'product_id' => $product->id,
-        'price'      => $product->price,
+        'price'      => ProductTable::getInstance()->getRealPrice($product),
         'quantity'   => $product->cart['quantity'],
       ));
       $order->ProductRelation[] = $relation;
