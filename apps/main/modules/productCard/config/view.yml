@@ -5,15 +5,15 @@ indexSuccess:
     - colorbox/colorbox.css
     
   javascripts:
-    - jquery.mousewheel.min.js
+    #ivn- jquery.mousewheel.min.js
     #- shelf/watch3d.js
     - watch3dv2.min.js
     - productcard.js
     - app.order.js
-    - prettyCheckboxes.js
-    - jquery.form.js
-    - typewriter.js
+    #ivn- prettyCheckboxes.js
+    #ivn- jquery.form.js
+    #ivn- typewriter.js
     - shelf/jquery.autocomplete-dev.js
-    - jquery.scrollto.js
+    #ivn- jquery.scrollto.js
     - main.js
     - app.product.js

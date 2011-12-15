@@ -52,7 +52,7 @@ class userProductHistoryActions extends myActions
 
       //подсчитываем общее количество и общую стоимость корзины
       $cartInfo = $user->getCartBaseInfo();
-      
+
       //отложенные товары
       $delayProducts = array();
       if ($user->getGuardUser())
@@ -78,11 +78,10 @@ class userProductHistoryActions extends myActions
               'vwish' => count($delayProducts),
               'vcomp' => $user->getProductCompare()->getProductsNum(),
               'productsInCart' => $cartInfo['productsInCart'],
+              'servicesInCart' => $cartInfo['servicesInCart'],
               'bingo' => false,
         )
-      ));  
-        exit();
-    
+      ));      
       $this->redirect($this->getRequest()->getReferer());
       
   }

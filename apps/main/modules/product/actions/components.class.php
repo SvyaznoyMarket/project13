@@ -43,6 +43,7 @@ class productComponents extends myComponents
     {
       $params = array(
         'hydrate_array' => true,
+        'with_model'    => true,
       );
 
       if ('default' == $this->view)
@@ -87,7 +88,7 @@ class productComponents extends myComponents
     }
     else
     {
-      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product->id);
+      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product['id']);
       if (!empty($price))
       {
         if ($this->product instanceof Product)
@@ -115,7 +116,7 @@ class productComponents extends myComponents
       'is_insale'  => $this->product['is_insale'],
       'is_instock' => $this->product['is_instock'],
       //'product'  => clone $this->product,
-      'url'        => url_for('productCard', array('product' => $this->product['token']), array('absolute' => true)),
+      'url'        => url_for('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
       'product'    => $this->product,
     );
 
@@ -188,7 +189,7 @@ class productComponents extends myComponents
    */
   public function executePager()
   {
-    $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
+    $this->view = !empty($this->view) ? $this->view : $this->getRequestParameter('view');
     if (!in_array($this->view, array('expanded', 'compact', 'line')))
     {
       $this->view = 'compact';
@@ -265,7 +266,7 @@ class productComponents extends myComponents
     }
 
     $list = array();
-    foreach ($this->product['Parameter'] as $parameter)
+    if (isset($this->product['Parameter'])) foreach ($this->product['Parameter'] as $parameter)
     {
       $value = $parameter->getValue();
 
@@ -480,7 +481,12 @@ class productComponents extends myComponents
    *
    */
   public function executeF1_lightbox(){
-
+      if ($this->parentAction == '_list_for_product_in_cart') {
+          $showInCardButton = true;
+      } else {
+          $showInCardButton = false;          
+      }
+      $this->setVar('showInCardButton', $showInCardButton);
   }
 
   public function executeKit()

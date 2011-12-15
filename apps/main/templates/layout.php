@@ -6,7 +6,7 @@
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php include_stylesheets() ?>
-    <?php include_javascripts() ?>
+    <?php //include_javascripts() ?>
     <?php include_component('page', 'link_rel_canonical') ?>    
        
     
@@ -127,7 +127,7 @@
       </div>
     </div>
     <!-- /Lightbox -->
-
+    <?php include_javascripts() ?>
     <?php if (!include_slot('auth'))
       include_partial('default/auth') ?>
 

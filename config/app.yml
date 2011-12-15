@@ -61,9 +61,12 @@ all:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
-      consumer_key: test
-      signature: test
+#      api_url: 'http://core.ent3.ru/v1/json'
+#      consumer_key: test
+#      signature: test
+      api_url: 'http://api.enter.ru/v1/json'
+      consumer_key: v6Q4UiTaQ6jWPHtJ
+      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
   cache_eraser:
     config:

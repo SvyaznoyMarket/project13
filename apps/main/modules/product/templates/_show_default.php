@@ -1,3 +1,12 @@
+<?php 
+#JSON data 
+	$json = array (
+		'jsref' => $item['product']->token,
+		'jstitle' => $item['product']->name,
+		'jsprice' => $item['price'],
+		'jsimg' => $product->getMainPhotoUrl(3)
+	)	
+?>
 <?php
 $photos = $product->getAllPhotos();
 $p3d = $product->getAll3dPhotos();
@@ -27,7 +36,7 @@ foreach ($p3d as $p3d_obj)
     <div class="goodsinfo bGood">
         <div class="bGood__eArticle">
             <div class="fr">
-          <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['token'] )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
+          <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $item['product'] )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
             <?php
             echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
             echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
@@ -49,7 +58,7 @@ foreach ($p3d as $p3d_obj)
             <?php endif ?>
         </div>
         <div class="fr ar pb15">
-            <div class="goodsbarbig" ref="<?php echo $item['token'] ?>">
+            <div class="goodsbarbig" ref="<?php echo $item['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
               <?php echo include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1)) ?>
               <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
               <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
@@ -71,9 +80,9 @@ foreach ($p3d as $p3d_obj)
 		</div>
 		<div class="line pb15"></div>
         <?php endif ?>
-
-        <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
-
+        
+        <?php include_component('service', 'listByProduct', array('product' => $product)) ?>
+        
 <?php if (false): ?>
 
         <div class='bF1Info bBlueButton'>
@@ -142,7 +151,7 @@ foreach ($p3d as $p3d_obj)
   <div class="fr ar pb15">
     <div class="goodsbarbig" ref="<?php echo $item['product']->token ?>">
 		<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
-<!--      <a href="<?php echo url_for('cart_add', array('product' => $product->token, 'quantity' => 1)) ?>" class="link1"></a>-->
+<!--      <a href="<?php echo url_for('cart_add', array('product' => $product->token_prefix.'/'.$product->token, 'quantity' => 1)) ?>" class="link1"></a>-->
       <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
       <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
     </div>
@@ -162,7 +171,7 @@ foreach ($p3d as $p3d_obj)
     <br /><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>" class="underline">Стоимость и условия доставки</a><br/><span class="black" style="line-height: 2;">Подробности по телефону 8 (800) 700 00 09</span>
   </div>
   <div class="pb5"><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать отзывы</a> (<?php echo $product->getCommentCount() ?>)</div>
-  <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $item['product']->token )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
+  <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $item['product'])) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
     Оценка пользователей:
     <?php
     echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
@@ -284,7 +293,7 @@ foreach ($p3d as $p3d_obj)
       <div class="pb5">
       <?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?>
       </div>
-      <div class="popup_leftpanel pb40" ref="<?php echo $item['product']->token ?>">
+      <div class="popup_leftpanel pb40" ref="<?php echo $item['product']->token ?>" data-value='<?php echo json_encode( $json ) ?>'>
       	<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'value' => array('купить', 'в корзине',), )) ?>
       </div>
 

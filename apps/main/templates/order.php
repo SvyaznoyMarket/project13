@@ -5,7 +5,7 @@
   <?php include_metas() ?>
   <?php include_title() ?>
   <?php include_stylesheets() ?>
-  <?php include_javascripts() ?>
+  <?php //include_javascripts() ?>
   <?php include_component('page', 'link_rel_canonical') ?>
 <script type="text/javascript">
 var _gaq = _gaq || [];
@@ -78,7 +78,7 @@ _gaq.push(['_trackPageLoadTime']);
 
 </div>
 </div>
-
+    <?php include_javascripts() ?>
 <?php include_component('default', 'footer', array('view' => 'compact')) ?>
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>

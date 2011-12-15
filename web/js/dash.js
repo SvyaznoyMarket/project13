@@ -49,22 +49,49 @@ $(document).ready(function(){
 			}
 
 	})
-
+	var isInCart = false
 	var changeButtons = function( lbox ){
 		if(!lbox || !lbox.productsInCart ) return false
-		for( var token in lbox.productsInCart) {
-			var bx = $('div.boxhover[ref='+ token +']')
+		for( var tokenP in lbox.productsInCart) { // Product Card
+			var bx = $('div.boxhover[ref='+ tokenP +']')
 			if( bx.length ) {
 				var button = $('a.link1', bx)
 				button.attr('href', $('.lightboxinner .point2').attr('href') )
 				button.addClass('active')	//die('click') doesnt work			
 			}
-			bx = $('div.goodsbarbig[ref='+ token +']')
+			bx = $('div.goodsbarbig[ref='+ tokenP +']')
 			if( bx.length ) {
 				var button = $('a.link1', bx)
 				button.attr('href', $('.lightboxinner .point2').attr('href') )
 				button.unbind('click').addClass('active')
+				isInCart = true
+				if( lbox.servicesInCart )
+				for( var tokenS in lbox.servicesInCart ) {
+					if( tokenP in lbox.servicesInCart[ tokenS ] ) {						
+						var button = $('div.mServ[ref='+ tokenS +'] a.link1')
+						if( button.length ) {				
+							button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
+						}
+						button = $('td.bF1Block_eBuy[ref='+ tokenS +'] input.button')
+						if( button.length ) {				
+							button.addClass('active').val('В корзине')
+						}			
+					}
+				}				
 			}
+		}
+		if( lbox.servicesInCart )
+		for( var tokenS in lbox.servicesInCart ) { // Service Card
+			if( lbox.servicesInCart[ tokenS ][0] ) {
+				var button = $('div.mServ[ref='+ tokenS +'] a.link1')
+				if( button.length ) {				
+					button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине').addClass('active')
+				}
+				button = $('div.bServiceCard[ref='+ tokenS +'] input')
+				if( button.length ) {				
+					button.val('В корзине').addClass('active')
+				}
+			}			
 		}
 	}
 	/* ---- */
@@ -113,9 +140,89 @@ $(document).ready(function(){
 	})
 	/* ---- */
 
+	$('.boxhover .lt').live('click', function(e) {
+		if( $(this).attr('data-url') )
+			window.location.href = $(this).attr('data-url')
+	})
+
+	/* F1 */
+	if( $('div.bF1Info').length ) {
+		var look    = $('div.bF1Info')
+		var f1lines = $('div.bF1Block')
+		// open popup
+		$('.link1', look).click( function(){
+			f1lines.show()
+			return false
+		})
+		// close popup
+		$('.close', f1lines).click( function(){
+			f1lines.hide()
+		})				
+		// add f1
+		f1lines.find('input.button').bind ('click', function() {
+			if( $(this).hasClass('disabled') )
+				return false
+			$(this).val('В корзине').addClass('disabled')
+			var f1item = $(this).data()
+			f1lines.fadeOut()
+			$.getJSON( f1item.url, function(data) {
+				if( !data.success )
+					return true
+				look.find('h3').text('Вы добавили услуги:')
+				var f1line = tmpl('f1look', f1item)
+				f1line = f1line.replace('F1ID', f1item.fid )
+				look.find('.link1').before( f1line )
+				
+								
+				// flybox				
+				var tmpitem = {
+					'id'    : $('.goodsbarbig .link1').attr('href'),
+					'title' : $('h1').html(),
+					'vitems': data.data.full_quantity,
+					'sum'   : data.data.full_price,
+					'price' : $('.goodsinfo .price').html(),
+					'img'   : $('.goodsphoto img').attr('src')
+				}
+				tmpitem.f1 = f1item
+				if( isInCart )
+					tmpitem.f1.only = 'yes'
+				ltbx.getBasket( tmpitem )
+				if( !isInCart ) {
+					isInCart = true
+					markPageButtons()
+				}	
+			})
+			return false
+		})
+		// remove f1
+		$('a.bBacketServ__eMore', look).live('click', function(){
+			var thislink = this
+			$.getJSON( $(this).attr('href'), function(data) {
+				if( !data.success )
+					return true			
+				var line = $(thislink).parent()
+				f1lines.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('disabled')
+				line.remove()
+				ltbx.update({ sum: data.data.full_price })
+				
+				if( !$('a.bBacketServ__eMore', look).length )
+					look.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')	
+			})
+			return false
+		})
+	}
+	/* buy bottons */
+	var markPageButtons = function(){
+		var carturl = $('.lightboxinner .point2').attr('href')
+		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active')
+		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине')
+		$('.bSet__ePrice .link1').unbind('click')
+		$('.goodsbar .link1').die('click')
+	}
+	
+	/* stuff go to litebox */
 	function parseItemNode( ref ){
 		var jn = $( '.boxhover[ref='+ ref +']')
-		//console.info( 'parseItemNode',ref, jn )
 		var item = {
 			'id'   : $(jn).attr('ref'),
 			'title': $('h3 a', jn).html(),
@@ -124,13 +231,7 @@ $(document).ready(function(){
 		}
 		return item
 	}
-
-	/* stuff goes into lightbox */
-	$('.boxhover .lt').live('click', function(e) {
-		if( $(this).attr('data-url') )
-			window.location.href = $(this).attr('data-url')
-	})
-
+	
 	$('.goodsbar .link1').live('click', function(e) {
 		var button = this
 		if( $(button).hasClass('disabled') )
@@ -141,9 +242,7 @@ $(document).ready(function(){
 
 		if( ltbx ){
 			var tmp = $(this).parent().parent().find('.photo img')
-			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500, function() {
-				//ltbx.getBasket( parseItemNode( currentItem ) )
-			})
+			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {
 			if ( data.success && ltbx ) {
@@ -157,104 +256,73 @@ $(document).ready(function(){
 		})
 		e.stopPropagation()
 		return false
-	})
+	})	
+
+	var BB = new BuyBottons()
+	BB.push( 'div.bServiceCardWrap input' ) // F1 
+	BB.push('div.goodsbarbig a.link1', $('div.goodsbarbig').data('value'), markPageButtons ) // product card, buy big
+	BB.push( '#bigpopup a.link1', $('div.popup_leftpanel').data('value'), markPageButtons ) // product card, buy in popup
+	BB.push('div.bSet a.link1', $('div.bSet').data('value'), markPageButtons ) // a set card, buy big
+	BB.push('div.mServ a.link1', $('div.mServ').data('value') ) // service card, buy big
+	
+	/* BB */
+	function BuyBottons() {
+		this.push = function( selector, jsond,  afterpost ) {
+			var carturl = $('.lightboxinner .point2').attr('href')
+			$('body').delegate( selector, 'click', function() {
+				var button = $(this)
+				if( !jsond )
+					jsond = button.data('value')
+				if( !jsond )	
+					return false				
+				if( button.hasClass('active') )
+					return true				
+				
+				var ajurl = '/404.html'
+				if( button.is('a') ) {
+					var bt = button.text().replace(/\s/g,'')
+					if( bt !== '' && bt !== '&nbsp;' )
+						button.text('В корзине')
+					ajurl = button.attr('href')	
+				}	
+				if( button.is('input') ) {
+					button.val('В корзине')
+					ajurl = jsond.url	
+				}				
+				button.addClass('active').attr('href', carturl)
+				
+				$.getJSON( ajurl, function( data ) {
+					if ( data.success && ltbx ) {
+						var tmpitem = {
+							'id'    : jsond.jsref,
+							'title' : jsond.jstitle,
+							'price' : jsond.jsprice,
+							'img'   : ( jsond.jsimg ) ? jsond.jsimg : '/images/logo.png',
+							'vitems': data.data.full_quantity,
+							'sum'   : data.data.full_price
+						}
+						ltbx.getBasket( tmpitem )	
+						if( afterpost )
+							afterpost()
+					}	
+				})
+				return false
+			})
+		}
+		
+	} // object BuyBottons
+
+	// hidden buttons wishlist+compare
+	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })	
 	$('.goodsbar .link2').click( function() {
 		//if (! currentItem ) return
 		//if( ltbx )
 		//	ltbx.getWishes( parseItemNode( currentItem ) )
-		//TODO ajax
 		return false
 	})
 	$('.goodsbar .link3').click( function() {
 		//if( ltbx )
 		//	ltbx.getComparing()
-		//TODO ajax
 		return false
-	})
-
-	/* F1 */
-	if( $('#selector').length ) {
-		$('#selector').click( function(){
-			// change button title
-			// post buy F1 item
-				// if product not in cart - post buy product
-		})
-	}
-	/* buy bottons */
-	var markPageButtons = function(){
-		var carturl = $('.lightboxinner .point2').attr('href')
-		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active').unbind('click')
-		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине').unbind('click')
-		$('.bSet__ePrice .link1').unbind('click')
-		$('.goodsbar .link1').die('click')
-	}
-
-	$('.goodsbarbig .link1').click( function() {
-		var button = this
-		if( $(button).hasClass('disabled') )
-			return false
-		$.getJSON( $( button ).attr('href') +'/1', function(data) {
-			if ( data.success && ltbx ) {
-				var tmpitem = {
-					'id'    : $( button ).attr('href'),
-					'title' : $('h1').html(),
-					'vitems': data.data.full_quantity,
-					'sum'   : data.data.full_price,
-					'price' : $('.goodsinfo .price').html(),
-					'img'   : $('.goodsphoto img').attr('src')
-				}
-				ltbx.getBasket( tmpitem )
-				markPageButtons()
-				//$(button).unbind('click')
-			}
-		})
-		return false
-	})
-
-	$('#bigpopup a.link1').click( function() {
-		var button = this
-		$.getJSON( $( button ).attr('href') +'/1', function(data) {
-			if ( data.success && ltbx ) {
-				var tmpitem = {
-					'id'    : $( button ).attr('href'),
-					'title' : $('h1').html(),
-					'vitems': data.data.full_quantity,
-					'sum'   : data.data.full_price,
-					'price' : $('.goodsinfo .price').html(),
-					'img'   : $('.goodsphoto img').attr('src')
-				}
-				ltbx.getBasket( tmpitem )
-				markPageButtons()
-				//$(button).unbind('click')
-			}
-		})
-		return false
-	})
-	// hidden buttons wishlist+compare
-	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })
-
-	$('.bSet__ePrice .link1').click( function() {
-		var button = this
-		if( $(button).hasClass('disabled') )
-			return false
-		$.getJSON( $( button ).attr('href') +'/1', function(data) {
-			if ( data.success && ltbx ) {
-				var tmpitem = {
-					'id'   : $( button ).attr('href'),
-					'title': $('h2').html(),
-					'vitems': data.data.full_quantity,
-					'sum'   : data.data.full_price,
-					'price': $('.bSet__ePrice .price').html(),
-					'img'  : $('.bSet__eImage img').attr('src')
-				}
-				ltbx.getBasket( tmpitem )
-				markPageButtons()
-				//$(button).unbind('click')
-			}
-		})
-		return false
-	})
-	/* ---- */
-
-
+	})	
 })

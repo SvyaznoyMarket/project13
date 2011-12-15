@@ -1,4 +1,13 @@
-<div class="bSet">
+<?php 
+#JSON data
+	$json = array (
+		'jsref' => $service['token'],
+		'jsimg' => $service['main_photo'],
+		'jstitle' => $service['name'],
+		'jsprice' => $service['priceFormatted']
+	)	
+?> 
+<div>
 
         <?php if (isset($service['main_photo'])) { ?>
     
@@ -15,7 +24,6 @@
             <div class="bSet__eInfo_big">            
         <?php } ?>
             
-
 			<p class="bSet__eDescription">
                 <?php echo $service['description'] ?>
                  <?php echo $service['work']; ?>
@@ -23,15 +31,16 @@
 			<div class="bSet__ePrice">
                 <?php if (isset($service['currentPrice']) && $service['currentPrice'] && ($showNoPrice || $service['currentPrice'] != 'бесплатно' )) { ?>
 				<strong class="font34">
-                    <?php echo $service['currentPrice']; ?>
-                    <?php if((int)$service['currentPrice']) { ?>
+                    <span class="price"><?php echo $service['priceFormatted']; ?></span>
+                    <?php if((int)$service['priceFormatted']) { ?>
                         <span class="rubl">p</span>
                     <?php } ?>    
                 </strong>  
                 <?php } ?>
-                <!--
-				<a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить услугу</a>
-                -->
+                <?php if ((int)$service['price'] >= Service::MIN_BUY_PRICE) { ?>                
+                    <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить услугу</a>
+                <?php } ?>    
+                
 			</div>
 			
 		</div>
