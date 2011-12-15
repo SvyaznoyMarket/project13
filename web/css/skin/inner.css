@@ -1059,7 +1059,8 @@ border-radius: 5px;
 
 
 
-.cheque {float:right; width:239px; background:url(/css/skin/img/bg_cheque.png) repeat-y -488px 0; margin-bottom:20px}
+.cheque-container {float:right; width:239px;}
+.cheque {float:right; width:239px; background:url(/css/skin/img/bg_cheque.png) repeat-y -488px 0; margin-bottom:10px}
 .chequetop {background:url(/css/skin/img/bg_cheque.png) no-repeat 0 0}
 .chequebottom {padding:0 19px; background:url(/css/skin/img/bg_cheque.png) no-repeat -244px 100%}
 .cheque .top {height:37px; padding-top:16px}
