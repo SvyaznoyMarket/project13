@@ -24,7 +24,15 @@ class shopActions extends myActions
       $this->redirect(array('sf_route' => 'shop_show', 'sf_subject' => $shop), 301);
     }
 
-    $this->region = !empty($request['region']) ? RegionTable::getInstance()->getByToken($request['region']) : RegionTable::getInstance()->getDefault();
+    if (!empty($request['region']))
+    {
+      $this->region = RegionTable::getInstance()->getByToken($request['region']);
+    }
+    else
+    {
+      $region = $this->getUser()->getRegion();//RegionTable::getInstance()->getDefault();
+      $this->region = $region['region'];
+    }
     $this->forward404Unless($this->region, 'Region not found');
   }
  /**

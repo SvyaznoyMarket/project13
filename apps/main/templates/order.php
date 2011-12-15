@@ -83,8 +83,6 @@ _gaq.push(['_trackPageLoadTime']);
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
-<?php include_combined_javascripts() ?>
-
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">
 (function(w, c) {
@@ -96,13 +94,8 @@ _gaq.push(['_trackPageLoadTime']);
     });
 })(window, "yandex_metrika_callbacks");
 </script></div>
-<script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript"></script>
+<script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
 <noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<script>
-var yaParams
-if( yaParams )
-	window.yaCounter10503055.params(yaParams);
-</script>
 <!-- /Yandex.Metrika counter -->
 
 <!-- AdHands -->
@@ -136,5 +129,10 @@ if( yaParams )
 <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
+
+<?php if (has_slot('seo_counters_advance')): ?>
+  <?php include_slot('seo_counters_advance') ?>
+<?php endif ?>
+
 </body>
 </html>

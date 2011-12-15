@@ -85,7 +85,16 @@ class ShopTable extends myDoctrineTable
 
     return $q->execute();
   }
-
+  
+  public function setQueryParameters(Doctrine_Query $q, array $params = null)
+  {
+    parent::setQueryParameters($q, $params);
+    
+    if (isset($params['region_id']))
+    {
+      $q->andWhere('shop.region_id = ?', $params['region_id']);
+    }
+  }
   /**
    *
    * @return Shop

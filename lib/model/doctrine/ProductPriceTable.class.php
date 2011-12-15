@@ -35,6 +35,30 @@ class ProductPriceTable extends myDoctrineTable
     return $result;
   }
 
+  public function getByProductId($product_id, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->innerJoin('productPrice.PriceList priceList')
+      ->innerJoin('priceList.Region region WITH region.id = ?', sfContext::getInstance()->getUser()->getRegion('id'));
+
+    $q->addWhere('productPrice.product_id = ?', $product_id);
+    //$q->addWhere('priceList.is_default = ?', 1);
+
+    $q->useResultCache(true, null, $this->getRecordQueryHash($product_id, $params));
+
+    $result = $q->fetchOne();
+
+    if (!$result)
+    {
+      $result = $this->getDefaultByProductId($product_id);
+    }
+
+    return $result;
+  }
+
   public function getCoreMapping()
   {
     return array(
@@ -48,26 +72,30 @@ class ProductPriceTable extends myDoctrineTable
     );
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  public function getCacheEraserKeys($record, $action = null)
   {
     $return = array();
 
     $q = ProductTable::getInstance()->createQuery('product')
-      ->select('product.core_id')
+      ->select('product.core_id, region.geoip_code, productPrice.id, priceList.id')
       ->innerJoin('product.ProductPrice productPrice')
-      ->where('productPrice.id = ?', $record->id)
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ->innerJoin('productPrice.PriceList priceList')
+      ->innerJoin('priceList.Region region')
+      ->where('productPrice.id = ?', $record['id'])
+      ->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
     ;
 
-    $ids = $q->execute();
-    if (!is_array($ids))
-    {
-      $ids = array($ids);
-    }
+    $products = $q->execute();
 
-    foreach ($ids as $id)
+    foreach ($products as $product)
     {
-      $return[] = "product-{$id}";
+      foreach ($product['ProductPrice'][0]['PriceList']['Region'] as $region)
+      {
+        if (!empty($region['geoip_code']))
+        {
+          $return[] = "product-{$product['core_id']}-{$region['geoip_code']}";
+        }
+      }
     }
 
     return $return;

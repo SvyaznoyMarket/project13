@@ -70,7 +70,7 @@ class NewsTable extends myDoctrineTable
 
   }
 
-  public function getById($id, array $params = array())
+  public function getRecordById($id, array $params = array())
   {
     $q = $this->createBaseQuery($params);
     $q->innerJoin('news.Category category');
@@ -78,7 +78,7 @@ class NewsTable extends myDoctrineTable
 
     $q->addWhere('news.id = ?', $id);
 
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
 
     $record = $q->fetchOne();
 

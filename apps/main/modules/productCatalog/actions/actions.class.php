@@ -25,7 +25,8 @@ class productCatalogActions extends myActions
     ));
     */
     $this->productCategoryList = ProductCategoryTable::getInstance()->createQuery()
-      ->select('id, name, level')
+      ->select('id, name, level, token, token_prefix')
+      ->where('is_active = ?', true)
       ->orderBy('root_id, lft')
       ->fetchArray()
     ;
@@ -46,8 +47,9 @@ class productCatalogActions extends myActions
     $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
-      'view'      => 'list',
-      'with_line' => 'line' == $request['view'] ? true : false,
+      'view'       => 'list',
+      'with_line'  => 'line' == $request['view'] ? true : false,
+      'with_model' => true,
     ));
 
     $this->productFilter->buildQuery($q);
@@ -194,6 +196,8 @@ class productCatalogActions extends myActions
     $q = ProductTable::getInstance()->createBaseQuery(array(
       'view'          => 'list',
       'property_view' => false,
+      'with_line'     => false,
+      'with_model'    => true,
     ));
 
     if ($request->hasParameter($this->productFilter->getName()))
@@ -241,9 +245,8 @@ class productCatalogActions extends myActions
     }
   }
 
-  public function executeCategoryAjax(sfWebRequest $request){
-
-      #var_dump( $request->getParameter('f') );
+  public function executeCategoryAjax(sfWebRequest $request)
+  {
     $this->setVar('allOk', false);
 
     if (!isset($request['productCategory']))
@@ -294,8 +297,9 @@ class productCatalogActions extends myActions
         //если установлены фильтры
         $this->productFilter->bind($getFilterData);
         $q = ProductTable::getInstance()->createBaseQuery(array(
-          'view'      => 'list',
-          'with_line' => 'line' == $request['view'] ? true : false,
+          'view'       => 'list',
+          'with_line'  => 'line' == $request['view'] ? true : false,
+          'with_model' => true,
         ));
         $this->productFilter->buildQuery($q);
         $this->view = $request['view'];
@@ -315,7 +319,7 @@ class productCatalogActions extends myActions
           'category' => $this->productCategory,
         );
         $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
-          'view'      => $request['view'],
+          'view'      => 'list',//$request['view'],
           'with_line' => 'line' == $request['view'] ? true : false,
         ));
         $this->view = $request['view'];
@@ -328,10 +332,13 @@ class productCatalogActions extends myActions
     if (isset($request['num'])) $limit = $request['num'];
     else $limit = sfConfig::get('app_product_max_items_on_category', 20);
 
+    /*
     $this->productPager = $this->getPager('Product', $q, $limit, array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
     ));
+    */
+    $this->productPager = $this->getProductPager($q);
 
     if($request['page'] > $this->productPager->getLastPage()){
         $this->_validateResult['success'] = false;
@@ -362,7 +369,24 @@ class productCatalogActions extends myActions
   {
 
     $this->_seoRedirectOnPageDublicate($request);
-    $this->productCategory = $this->getRoute()->getObject();
+
+    try
+    {
+      $this->productCategory = $this->getRoute()->getObject();
+    }
+    catch (sfError404Exception $e)
+    {
+      $this->forward('redirect', 'index');
+    }
+
+    // 301-й редирект. Можно удалить 01.02.2012
+    if (false === strpos($request['productCategory'], '/'))
+    {
+      if (!empty($this->productCategory->token_prefix))
+      {
+        $this->redirect('productCatalog_category', $this->productCategory, 301);
+      }
+    }
 
 //    $title = $this->productCategory['name'];
 //    if ($request->getParameter('page')) {

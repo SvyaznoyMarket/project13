@@ -9,5 +9,10 @@
 
 
 
-Спасибо, форма отправлена!       
+Спасибо, форма отправлена!    
+
+
+<?php slot('seo_counters_advance') ?>
+  <?php include_component('callback', 'seo_counters_advance') ?>
+<?php end_slot() ?>
   

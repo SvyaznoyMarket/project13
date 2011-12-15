@@ -140,5 +140,9 @@ class shopComponents extends myComponents
     $this->setVar('markers', $markers, true);
     $this->setVar('regions', $regions, true);
   }
+  
+  function executeSeo_counters_advance() {
+      
+  }
 }
 

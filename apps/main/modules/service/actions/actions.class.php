@@ -30,15 +30,21 @@ class serviceActions extends myActions
         #echo get_class($serviceCategory);
         $list = ServiceCategoryTable::getInstance()
                         ->createQuery('sc')
-                        ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
+                        ->leftJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
                         ->orderBy('sc.lft')->fetchArray();
         //если первый уровень - выбираем перую подкатегорию и переходим на неё
         if ($serviceCategory['level'] == 1){
             $getNext = false;
-            foreach($list as $item){
-                if ($getNext){
-                    $newCatId = $item['id'];
-                    break;
+            foreach($list as $key => $item){
+                if ($getNext) {
+                    if ($item['level'] == 2) {
+                        $currentLevel2 = $item;
+                    } elseif ($item['level'] == 3) {
+                        if ( count($item['ServiceRelation']) ){
+                            $newCatId = $currentLevel2['id'];
+                            break;
+                        }
+                    }
                 }
                 if ($item['id'] == $serviceCategory['id']) $getNext = true;
             }
@@ -71,6 +77,7 @@ class serviceActions extends myActions
                         ->leftJoin('s.Price p on s.id=p.service_id ')
                         #->addWhere('p.service_price_list_id = ? ', array($priceListDefaultId->id) )
                         ->addWhere('sc.category_id IN ('.implode(',', $listInnerCatId). ')' )
+                        ->orderBy('s.name ASC')
                         ->execute();
                         #->fetchArray();
         #myDebug::dump($serviceList);
@@ -82,6 +89,7 @@ class serviceActions extends myActions
 
     
     $this->setVar('serviceCategory', $serviceCategory, true);
+    #myDebug::dump($list);
     $this->setVar('list', $list, true);
     if (isset($listInner)) $this->setVar('listInner', $listInner, true);
     if (isset($serviceList)) $this->setVar('serviceList', $serviceList, true);
@@ -96,6 +104,13 @@ class serviceActions extends myActions
   {
     $this->service = $this->getRoute()->getObject();
     $this->getResponse()->setTitle('F1 - '.$this->service->name.' – Enter.ru');
+    
+    //хак для мебели!!!!!!! убрать
+    $parant = $this->service->getCatalogParent();
+    $showNoPrice = 1;
+    if ($parant['core_parent_id'] == 305) $showNoPrice = false;
+    else $showNoPrice = true;    
+    $this->setVar('showNoPrice', $showNoPrice, true);
     
   }
 

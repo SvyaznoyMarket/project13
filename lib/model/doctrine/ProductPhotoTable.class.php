@@ -39,7 +39,7 @@ class ProductPhotoTable extends myDoctrineTable
 	  return $q->fetchOne();
   }
 
-  public function getCacheEraserKeys(myDoctrineRecord $record, $action = null)
+  public function getCacheEraserKeys($record, $action = null)
   {
     $return = array();
 

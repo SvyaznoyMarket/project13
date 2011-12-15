@@ -1,0 +1,1 @@
+ALTER TABLE `region` ADD COLUMN `geoip_code` VARCHAR(50) NULL DEFAULT NULL COMMENT 'Код региона для geo_ip' AFTER `longitude`;

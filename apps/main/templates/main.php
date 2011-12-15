@@ -39,7 +39,6 @@ _gaq.push(['_trackPageLoadTime']);
 <body>
 <?php LastModifiedHandler::setLastModified();  ?>
 
-
 <div class="bannersbox">
     <div class="bannersboxinner">
 	  <!-- /images/banners/small/banner3.png -->
@@ -67,23 +66,8 @@ _gaq.push(['_trackPageLoadTime']);
     </noindex>
 
 
-    <div class="bigbanner">
-    	<a href="#" class='bIndexCard__eA mInlineBlock' style='cursor:pointer;'><img src="/images/banner_promo_1.jpg" alt=""/></a>
-    	<div class="hdn"><img src="/images/banner_promo_2.jpg" alt=""/></div>
-    	<div class='bIndexCard'>
-			<div class='bIndexCard__eInfo'>
-				Приходите в любой магазин Enter в москве 10 декабря:<br><br>
-				<a href='http://www.enter.ru/shops/moskva/enter-na-ul-gruzinskiy-val-d-31'>Москва, ул. Грузинский вал, 31</a><br>
-				<a href='http://www.enter.ru/shops/moskva/magazin-na-ul-b-dorogomilovskaya-d-8'>Москва, ул. Дорогомиловская, 8</a><br>
-				<a href='http://www.enter.ru/shops/moskva/magazin--na-ul-ordgonikidze-d-11'>Москва, ул. Орджникидзе 11, стр.10</a><br><br>
-				Сделайте покупку на сумму от 1000 рублей<br>
-				Оставьте нам фото с вашей улыбкой и<br>
-				Получите золотой кулон в виде сердца! В подарок! :)<br><br>
-				<span>* Количество купонов ограничено. Одному покупателю - один подарок!</span>
-			</div>
-		</div>
-    </div>
-      <?php // include_component('default', 'slot', array('token' => 'big_banner')) ?>
+    <div class="bigbanner"><a href=""><img src="" alt="" width="768" height="302" /></a></div>
+    <?php // include_component('default', 'slot', array('token' => 'big_banner')) ?>
 
 
     <?php include_component('default', 'footer', array('view' => 'main')) ?>
@@ -95,13 +79,7 @@ _gaq.push(['_trackPageLoadTime']);
 <?php include_combined_javascripts() ?>
 <script>
 	$(document).ready(function(){
-		
-		$('.bIndexCard__eA').click( function() { 
-			$('.bIndexCard').fadeIn()
-			return false
-		})
 
-	
 		function getRandomInt(min, max)
 		{
 		  return Math.floor(Math.random() * (max - min + 1)) + min
@@ -179,6 +157,10 @@ _gaq.push(['_trackPageLoadTime']);
 <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
+
+<?php if (has_slot('seo_counters_advance')): ?>
+  <?php include_slot('seo_counters_advance') ?>
+<?php endif ?>
 
 </body>
 </html>

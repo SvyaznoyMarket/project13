@@ -1,5 +1,6 @@
     <?php
-    #print_r($serviceList);
+    $usedList = array();
+    #myDebug::dump($serviceList);
     foreach($listInner as $item){
 
         if ($item['level'] == ($serviceCategory['level']+1)){ ?>
@@ -15,11 +16,12 @@
                         }
                     }
                }
-               if (count($currentServiceList['list'])<1) continue;
+               if (!isset($currentServiceList['list']) || count($currentServiceList['list'])<1) continue;
             ?>   
             <div class="serviceblock mNewSB">
-                <div class="photo">
+                <div class="photo pr">
                     <?php if (isset($currentServiceList['photo'])) { ?>
+                        <div class="bServiceCard__eLogo"></div>
                         <img width="160" height="120" alt="" src="<?php echo $currentServiceList['photo']; ?>">
                     <?php } else { ?>                        
                         <img alt="" src="/images/f1infobig.png">
@@ -29,12 +31,14 @@
                     <h3><?php echo $item['name'] ?></h3>
                     <?php 
                     #print_r($currentServiceList);
+                    if (isset($currentServiceList['list']))
                     foreach($currentServiceList['list'] as $service){ ?>
+                        <?php $usedList[] = $service['id']; ?>
                         <div class="font16 pb8">
                             <a href="<?php echo url_for('service_show', array('service' => $service['token'])); ?>" >
                                 <?php echo $service['name'] ?>
                             </a>    
-                                <?php if ($service->getFormattedPrice()){ ?>
+                                <?php if ($service->getFormattedPrice() && ($serviceCategory['core_parent_id'] != 305 || $service->getFormattedPrice()!='бесплатно'  )){ ?>
                                     &mdash; 
                                     <div class="font16 mInlineBlock">
                                         <strong>
@@ -70,3 +74,18 @@
          
          
     }
+?>    
+    
+<?php 
+
+/* сервисы, которые находятся прямо в категории второго уровня. Надо ли их отображать?
+foreach($serviceList as $service){
+    foreach($service['ServiceCategoryRelation'] as $cat){
+        if ($cat['category_id'] == $serviceCategory['id'] && !in_array($service['id'], $usedList)){
+            echo $service['name'] .'<br>';
+        }
+    }
+}
+ * */
+
+?>

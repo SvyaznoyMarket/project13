@@ -46,7 +46,8 @@ default:
     - mechanics.js
     - dash.js
     - app.search.js
+    - app.region.js
 
   has_layout:     true
   layout:         layout
-  
+

@@ -9,7 +9,7 @@ Service:
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string }
     work:              { type: string }
-    main_photo:        { type: string(255), notnull: false, default: null }        
+    main_photo:        { type: string(255), notnull: false, default: null }
     expendable:        { type: string }
     is_active:         { type: boolean, notnull: true, default: false }
   relations:
@@ -25,23 +25,25 @@ ServiceCategory:
     id:                { type: integer(20), autoincrement: true, primary: true }
     root_id:           { type: integer(20), notnull: true }
     core_parent_id:    { type: integer(20), notnull: false, default: null, comment: 'ид родителя записи в Core' }
+    core_lft:          { type: integer(20), notnull: false, default: null, comment: 'lft записи в Core' }
+    core_rgt:          { type: integer(20), notnull: false, default: null, comment: 'rgt записи в Core' }    
     lft:               { type: integer(20), notnull: true }
     rgt:               { type: integer(20), notnull: true }
     level:             { type: integer(4), notnull: true }
     token:             { type: string(255), unique: true, notnull: true, notblank: true }
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string }
-    main_photo:        { type: string(255), notnull: false, default: null }    
+    main_photo:        { type: string(255), notnull: false, default: null }
     is_active:         { type: boolean, notnull: true, default: false }
 
 ServicePrice:
   options:
     comment: 'Стоимость услуг F1 по регионам'
   actAs:
-    Corable:        { push: disable }    
+    Corable:        { push: disable }
   columns:
-    id:                     { type: integer(20), autoincrement: true, primary: true }    
-    service_price_list_id:  { type: integer(20), notnull: true }    
+    id:                     { type: integer(20), autoincrement: true, primary: true }
+    service_price_list_id:  { type: integer(20), notnull: true }
     service_id:        { type: integer(20), notnull: true, primary: true }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена услуги' }
   relations:
@@ -52,6 +54,8 @@ ServicePrice:
 ServiceProductRelation:
   options:
     comment: 'Связь услуги с продуктом'
+  actAs:
+    Corable:        { push: disable }
   columns:
     service_id:       { type: integer(20), notnull: true, primary: true }
     product_id:       { type: integer(20), notnull: true, primary: true }

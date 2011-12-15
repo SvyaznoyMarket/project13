@@ -12,7 +12,7 @@ all:
           persistent: true
 
   doctrine:
-    result_cache:        true   # кешировать результаты запросов
+    result_cache:        false   # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
   product:
@@ -40,8 +40,8 @@ all:
       - 'http://fs01.enter.ru/11/1/160/'
       - 'http://fs01.enter.ru/11/1/500/'
       - 'http://fs01.enter.ru/11/1/120/'
-      
-      
+
+
   shop:
     photo_url:
       - 'http://fs01.enter.ru/8/1/40/'
@@ -61,7 +61,10 @@ all:
 
   core:
     config:
-      api_url: 'http://62.231.27.40/v1/json'
+#      api_url: 'http://core.ent3.ru/v1/json'
+#      consumer_key: test
+#      signature: test
+      api_url: 'http://api.enter.ru/v1/json'
       consumer_key: v6Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
@@ -69,6 +72,13 @@ all:
     config:
       file: %SF_ROOT_DIR%/erase_barcode.cmd
       prefix: 'CACHETAG::'
+
+  cache:
+    enabled: true
+    config:
+      automatic_cleaning_factor: 0
+      lifetime: 604800
+      prefix: cache
 
   payment:
    default_provider: uniteller
@@ -221,6 +231,9 @@ live:
     config:
       file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
       prefix: 'CACHETAG::'
+
+  cache:
+    enabled: true
 
 
 alpha:

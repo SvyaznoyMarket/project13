@@ -46,9 +46,9 @@
       <div class="allpageinner">
 
         <!-- Topbar -->
-        <div class="topbar">
-          <div class="region">
-            Регион: <?php include_partial('default/region') ?>
+        <div class="topbar" style="position: relative; z-index: 12;">
+          <div class="region" style="margin-top: 7px;">
+              <?php include_component('region', 'select') ?>
           </div>
           <noindex>
               <div class="usermenu">
@@ -61,7 +61,7 @@
         <!-- /Topbar -->
         <!-- Header -->
         <div class="header">
-         <?php LastModifiedHandler::setLastModified();  ?>
+         <?php LastModifiedHandler::setLastModified();  ?>               
           <?php include_partial('default/logo') ?>
           <!-- Topmenu -->
           <?php include_component('productCategory', 'root_list') ?>
@@ -131,8 +131,7 @@
     <?php if (!include_slot('auth'))
       include_partial('default/auth') ?>
 
-<?php include_combined_javascripts() ?>
-
+<?php include_partial('default/admin') ?>
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">
 (function(w, c) {
@@ -158,6 +157,10 @@ report.send();
 <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
+
+<?php if (has_slot('seo_counters_advance')): ?>
+  <?php include_slot('seo_counters_advance') ?>
+<?php endif ?>
 
   </body>
 </html>
