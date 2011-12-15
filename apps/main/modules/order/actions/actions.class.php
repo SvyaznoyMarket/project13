@@ -151,6 +151,8 @@ class orderActions extends myActions
   */
   public function executeNew(sfWebRequest $request)
   {
+    $this->redirectUnless($this->getUser()->getCart()->countFull(), 'cart');
+
     $this->getResponse()->setTitle('Способ доставки и оплаты  – Enter.ru');
 
     $this->step = $request->getParameter('step', 1);
