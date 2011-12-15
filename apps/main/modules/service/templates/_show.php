@@ -7,7 +7,7 @@
 		'jsprice' => $service['priceFormatted']
 	)	
 ?> 
-<div>
+<div class="bSet">
 
         <?php if (isset($service['main_photo'])) { ?>
     
@@ -28,7 +28,7 @@
                 <?php echo $service['description'] ?>
                  <?php echo $service['work']; ?>
 			</p>
-			<div class="bSet__ePrice">
+			<div class="bSet__ePrice mServ" ref="<?php echo $service['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
                 <?php if (isset($service['currentPrice']) && $service['currentPrice'] && ($showNoPrice || $service['currentPrice'] != 'бесплатно' )) { ?>
 				<strong class="font34">
                     <span class="price"><?php echo $service['priceFormatted']; ?></span>
