@@ -17,7 +17,7 @@ class myProductCatalogRoute extends myDoctrineRoute
     return $parameters;
   }
 
-  public function generate($params, $context = array(), $absolute = false)
+  public function generate($params, $context = array(), $absolute = false, array $allow = array('/'))
   {
 
     if (isset($params['creator']) && ($params['creator'] instanceof Creator))
