@@ -32,4 +32,6 @@
     <strong><a href="<?php echo url_for('@cart') ?>" class="underline gray">Редактировать товары</a></strong>
   </div>
 
+  <br class="clear" />
+
 </div>

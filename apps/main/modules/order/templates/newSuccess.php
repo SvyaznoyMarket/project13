@@ -36,6 +36,7 @@
     <?php endforeach ?>
     </div>
 
+  <br class="clear" />
         <div class="pl235"><input type="submit" class="button bigbutton" id="bigbutton" value="Оформить заказ" /></div>
 
   <?php endif ?>
