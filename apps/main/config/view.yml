@@ -26,29 +26,21 @@ default:
     - navy.css
 
   javascripts:
-    #- jquery.js
-    #- jslib/jquery-1.4.2.js
     - jquery-1.6.4.min.js
-    - jquery-ui-1.8.16.custom.min.js
-    - jquery.effects.core.js
-    - jquery.effects.transfer.js
-    - jquery.lightbox_me.js
-    - prettyCheckboxes.js
-    - jcookies.js
-    - jquery.jshowoff.min.js
-    - typewriter.js
-    #- jslib/jquery.ui.widget.js
-    #- jslib/jquery.ui.mouse.js
-    #- jslib/jquery.ui.slider.js
-    - custom-form-elements.js
-    #- jslib/main.js
-    #- jquery-ui-custom.js
-    - jquery.form.js
-    - jquery.timers.js
-    - jquery.raty.js
-    #- jquery.scrollto.js
-    #- jquery.colorbox.js
-    #- jquery.autocomplete<?php echo 'dev' == sfConfig::get('sf_environment') ? '-dev' : '' ?>.js
+    - bigjquery.min.js
+    #ivn- jquery-ui-1.8.16.custom.min.js
+    #ivn- jquery.effects.core.js
+    #ivn- jquery.effects.transfer.js
+    #ivn- jquery.lightbox_me.js
+    #ivn- prettyCheckboxes.js
+    #ivn- jcookies.js
+    #ivn- jquery.jshowoff.min.js
+    #ivn- typewriter.js
+    #ivn- custom-form-elements.js
+    #ivn- jquery.form.js
+    #ivn- jquery.timers.js
+    #ivn- jquery.raty.js
+    #ivn- jquery.scrollto.js
     - main.js
     - app.auth.js
     - mechanics.js

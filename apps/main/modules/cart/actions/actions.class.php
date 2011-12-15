@@ -17,7 +17,7 @@ class cartActions extends myActions {
      *
      * @param sfRequest $request A request object
      */
-    public function executeIndex(sfWebRequest $request) {
+    public function executeIndex(sfWebRequest $request) {        
         $cart = $this->getUser()->getCart();
         $this->setVar('cart', $cart, true);
     }
@@ -48,7 +48,7 @@ class cartActions extends myActions {
             return $this->_refuse();
         }
 
-        $product = ProductTable::getInstance()->getByToken($request['product']);
+        $product = ProductTable::getInstance()->getByToken($request['product'], array('with_model' => true, ));
 
         if (!$product) {
             $this->_validateResult['success'] = false;
@@ -110,7 +110,7 @@ class cartActions extends myActions {
                 'data' => array(
                     'quantity' => $request['quantity'],
                     'full_quantity' => $cartInfo['qty'],
-                    'full_price' => $cartInfo['sum'],
+                    'full_price' => $this->getUser()->getCart()->getTotal(),
                     'html' => $this->getComponent($this->getModuleName(), 'buy_button', array('product' => $product))
                 )
             );
@@ -126,7 +126,7 @@ class cartActions extends myActions {
      * @param sfRequest $request A request object
      */
     public function executeDelete(sfWebRequest $request) {
-        $product = ProductTable::getInstance()->getByToken($request['product']);
+        $product = ProductTable::getInstance()->getByToken($request['product'], array('with_model' => true, ));
 
         if ($product) {
             $this->getUser()->getCart()->deleteProduct($product->id);
@@ -259,6 +259,8 @@ class cartActions extends myActions {
             $return = array(
                 'success' => true,
                 'data' => array(
+                    'full_quantity' => $cartInfo['qty'],
+                    'full_price' => $this->getUser()->getCart()->getTotal(),                    
                 )
             );
             return $this->renderJson($return);

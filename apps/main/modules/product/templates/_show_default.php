@@ -1,3 +1,12 @@
+<?php 
+#JSON data 
+	$json = array (
+		'jsref' => $item['product']->token,
+		'jstitle' => $item['product']->name,
+		'jsprice' => $item['price'],
+		'jsimg' => $product->getMainPhotoUrl(3)
+	)	
+?>
 <?php
 $photos = $product->getAllPhotos();
 $p3d = $product->getAll3dPhotos();
@@ -49,7 +58,7 @@ foreach ($p3d as $p3d_obj)
             <?php endif ?>
         </div>
         <div class="fr ar pb15">
-            <div class="goodsbarbig" ref="<?php echo $item['token'] ?>">
+            <div class="goodsbarbig" ref="<?php echo $item['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
               <?php echo include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1)) ?>
               <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
               <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
@@ -71,9 +80,9 @@ foreach ($p3d as $p3d_obj)
 		</div>
 		<div class="line pb15"></div>
         <?php endif ?>
-
-        <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
-
+        
+        <?php include_component('service', 'listByProduct', array('product' => $product)) ?>
+        
 <?php if (false): ?>
 
         <div class='bF1Info bBlueButton'>
@@ -284,7 +293,7 @@ foreach ($p3d as $p3d_obj)
       <div class="pb5">
       <?php include_partial('product/price', array('price' => $product->getFormattedPrice())) ?>
       </div>
-      <div class="popup_leftpanel pb40" ref="<?php echo $item['product']->token ?>">
+      <div class="popup_leftpanel pb40" ref="<?php echo $item['product']->token ?>" data-value='<?php echo json_encode( $json ) ?>'>
       	<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'value' => array('купить', 'в корзине',), )) ?>
       </div>
 

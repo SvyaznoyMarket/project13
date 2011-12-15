@@ -85,26 +85,26 @@ _gaq.push(['_trackPageLoadTime']);
 		  return Math.floor(Math.random() * (max - min + 1)) + min
 		}
 		var pref = '/products/'
-		var hrefs = [  '2030000012503', '2060400005041', '2060101000062', '2010101001637', '2020201000751',
-					'2050600002612', '2020401001060', '2080501001025', '2060201000627']
+		var hrefs = [  '2060101001854', '2060701001476', '2060603000409', '2050200005747', '2040101007049',
+					'2020103002174', '2020301000941', '2080502001192', '2050100004444', '2050405000578', '2050301012576']
 		var node    = $('.bannersboxinner')
 		var bignode = $('.bigbanner')
-		var bri = getRandomInt(1, 9)
+		var bri = getRandomInt(1, 11)
 
-		bignode.find('img').attr('src','/images/banners/big/banner'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
+		bignode.find('img').attr('src','/images/enter/big/enter'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
 		var ri = getRandomInt(1, 4)
 		while( bri == ri + 4 ) {
 			ri = getRandomInt(1, 4)
 		}
 
-		node.find('.banner2 img').attr('src','/images/banners/small/banner'+ (ri + 4) +'.jpg')
+		node.find('.banner2 img').attr('src','/images/enter/small/enter'+ (ri + 4) +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri + 3])
 		var ri_2 = getRandomInt(1, 4)
 		while( ri_2 == ri || bri == ri_2 + 4 ) {
 			ri_2 = getRandomInt(1, 4)
 		}
 
-		node.find('.banner5 img').attr('src','/images/banners/small/banner'+ (ri_2 + 4) +'.jpg')
+		node.find('.banner5 img').attr('src','/images/enter/small/enter'+ (ri_2 + 4) +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri_2 + 3])
 
 		ri = getRandomInt(1, 4)
@@ -112,14 +112,14 @@ _gaq.push(['_trackPageLoadTime']);
 			ri = getRandomInt(1, 4)
 		}
 
-		node.find('.banner3 img').attr('src','/images/banners/medium/banner'+ ri +'.jpg')
+		node.find('.banner3 img').attr('src','/images/enter/medium/enter'+ ri +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri - 1])
 		ri_2 = ri
 		while( ri_2 == ri || bri == ri_2 ) {
 			ri_2 = getRandomInt(1, 4)
 		}
 
-		node.find('.banner4 img').attr('src','/images/banners/medium/banner'+ ri_2 +'.jpg')
+		node.find('.banner4 img').attr('src','/images/enter/medium/enter'+ ri_2 +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri_2 - 1])
 
 		$('.startse').bind ({ 'blur': function(){

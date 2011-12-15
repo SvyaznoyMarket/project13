@@ -79,8 +79,14 @@ function Lightbox( jn, data ){
 		flybox.updateItem( item )				
 		$('#sum', plashka).html( item.sum )
 		$('.point2 b', plashka).html( item.vitems )
-		flybox.showBasket()
-		
+		if( 'f1' in item ) {
+			if( 'only' in item.f1  )
+				flybox.showBasketF1( item.f1 )
+			else
+				flybox.showBasket( item.f1 )
+		} else {
+			flybox.showBasket()
+		}
 		self.save()
 	}
 	this.getWishes = function( item ) {	
@@ -288,7 +294,19 @@ function Flybox( parent ){
 		hidei = setTimeout( self.jinny, 7000 )
 	}
 	var hrefcart = $('.point2', parent).attr('href')
-	this.showBasket = function() {
+	this.showBasket = function( f1 ) {
+		var f1tmpl = ''
+		if ( typeof(f1) !== "undefined" )
+		 f1tmpl = 
+			'<br/><div class="bLiteboxF1">'+
+				'<div class="fl width70 bLiteboxF1__eWrap">'+
+					'<div class="bLiteboxF1__ePlus">+</div>'+
+					'<a href=""><img src="/images/f1info1.png" alt="" width="60" height="60" /></a></div>'+
+				'<div class="ml70">'+
+	                '<div class="pb5 bLiteboxF1__eG"><a href>'+ f1.f1title +'</a></div>'+
+	                '<strong>'+ f1.f1price +' <span class="rubl">p</span></strong>'+
+	            '</div>'+
+			'</div>'
 		basket = 
 			'<div class="font16 pb20">Только что был добавлен в корзину:</div>'+
 			'<div class="fl width70">'+
@@ -304,7 +322,38 @@ function Flybox( parent ){
 					thestuff.price +
 					'<span> &nbsp;</span><span class="rubl">p</span>'+
 				'</strong>'+
-			'</div>'+
+			'</div>'+ f1tmpl +
+			'<div class="clear pb10"></div>'+
+			'<div class="line pb5"></div>'+
+			'<div class="fr">Сумма: '+ thestuff.sum +' Р</div>'+
+			'Всего товаров: '+ thestuff.vitems +
+			'<div class="clear pb10"></div>'+
+			'<div class="ar">'+ 
+				'<a class="button bigbuttonlink" value="" href="'+ hrefcart +'">Оформить заказ</a>'+
+			'</div>'	
+	
+		box.css({'left':'588px','width':'290px'})	
+		crnr.css('left','132px')	
+		this.fillup (basket)
+		box.fadeIn(500)
+		hidei = setTimeout( self.jinny, 5000 )
+	}
+	this.showBasketF1 = function( f1 ) {
+		if ( typeof(f1) === "undefined" )
+			return false
+		var f1tmpl = 
+			'<div class="bLiteboxF1">'+
+				'<div class="fl width70 bLiteboxF1__eWrap">'+
+					'<div class="bLiteboxF1__ePlus"></div>'+
+					'<a href=""><img src="/images/f1info1.png" alt="" width="60" height="60" /></a></div>'+
+				'<div class="ml70">'+
+	                '<div class="pb5 bLiteboxF1__eG"><a href>'+ f1.f1title +'</a></div>'+
+	                '<strong>'+ f1.f1price +' <span class="rubl">p</span></strong>'+
+	            '</div>'+
+			'</div>'
+		basket = 
+			'<div class="font16 pb20">Только что был добавлен в корзину:</div>'+
+			 f1tmpl +
 			'<div class="clear pb10"></div>'+
 			'<div class="line pb5"></div>'+
 			'<div class="fr">Сумма: '+ thestuff.sum +' Р</div>'+
