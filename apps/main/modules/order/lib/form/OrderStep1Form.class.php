@@ -305,7 +305,7 @@ class OrderStep1Form extends BaseOrderForm
 
     $this->widgetSchema['agreed'] = new sfWidgetFormInputCheckbox();
     $this->widgetSchema['agreed']->setLabel('Я ознакомлен и согласен с «Условиями продажи» и «Правовой информацией»');
-    $this->validatorSchema['agreed'] = new sfValidatorBoolean(array('required' => true));
+    $this->validatorSchema['agreed'] = new sfValidatorBoolean(array('required' => true), array('required' => 'Пожалуйста, ознакомьтесь с условиями продажи и правовой информацией и поставьте галочку'));
 
     $this->useFields(array(
       'region_id',

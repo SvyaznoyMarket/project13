@@ -56,10 +56,12 @@ _gaq.push(['_trackPageLoadTime']);
     <div class="pagehead">
       <div class="clear"></div>
       <div class="line"></div>
+      <?php if (has_slot('user')): ?>
       <div class='bFormAuth'>
-        <?php include_partial('order/user') ?>
+        <?php include_slot('user') ?>
       </div>
-		<div class="line"></div>
+      <div class="line"></div>
+      <?php endif ?>
     </div>
     <!-- Page head -->
 

@@ -315,7 +315,7 @@ class orderActions extends myActions
       $this->result = $provider->getPaymentResult($this->order);
     }
 
-    $this->forwardUnless($this->order->exists(), $this->getModuleName(), 'new');
+    $this->redirectUnless($this->order->exists(), 'order_new');
 
     $this->form = new UserFormSilentRegister();
     $this->form->bind(array(
