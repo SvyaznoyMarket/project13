@@ -172,7 +172,7 @@ class orderActions extends myActions
 
         if (self::LAST_STEP == $this->step)
         {
-          $this->redirect('order_confirm');
+          $this->redirect('order_create');
         }
         else {
           $this->redirect('order_new', array('step' => $this->getNextStep($order)));
@@ -309,17 +309,60 @@ class orderActions extends myActions
     if (!($this->order = $provider->getOrder($request)))
     {
       $this->order = $this->getUser()->getOrder()->get();
-      $this->getUser()->getOrder()->clear();
     }
     else
     {
       $this->result = $provider->getPaymentResult($this->order);
     }
+
+    $this->forwardUnless($this->order->exists(), $this->getModuleName(), 'new');
+
+    $this->form = new UserFormSilentRegister();
+    $this->form->bind(array(
+      'username'   => $this->order->recipient_phonenumbers,
+      'first_name' => trim($this->order->recipient_first_name.' '.$this->order->recipient_last_name),
+    ));
+
+    if (!$this->form->isValid())
+    {
+      $this->form = new UserFormBasicRegister(null, array('validate_username' => false));
+      $this->form->bind(array(
+        'first_name' => trim($this->order->recipient_first_name.' '.$this->order->recipient_last_name),
+      ));
+    }
+
     $this->getUser()->getCart()->clear();
     $this->getUser()->getOrder()->clear();
-    //myDebug::dump($this->order);
 
     //$this->setVar('order', $this->order, true);
+  }
+ /**
+  * Executes getUser action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeGetUser(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isXmlHttpRequest());
+
+    $user = $this->getUser()->getGuardUser();
+
+    $form = new OrderStep1Form();
+
+    return $this->renderJson(array(
+      'success' => $this->getUser()->isAuthenticated(),
+      'data'    => array(
+        'content' => $this->getPartial($this->getModuleName().'/user'),
+        'fields'  =>
+          $user
+          ? array(
+            $form['recipient_first_name']->renderName()   => $user->first_name,
+            $form['recipient_last_name']->renderName()    => $user->last_name,
+            $form['recipient_phonenumbers']->renderName() => $user->phonenumber,
+          )
+          : false,
+      ),
+    ));
   }
  /**
   * Executes error action

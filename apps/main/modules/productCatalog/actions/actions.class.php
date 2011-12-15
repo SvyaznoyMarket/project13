@@ -367,26 +367,9 @@ class productCatalogActions extends myActions
   */
   public function executeCategory(sfWebRequest $request)
   {
-
     $this->_seoRedirectOnPageDublicate($request);
 
-    try
-    {
-      $this->productCategory = $this->getRoute()->getObject();
-    }
-    catch (sfError404Exception $e)
-    {
-      $this->forward('redirect', 'index');
-    }
-
-    // 301-й редирект. Можно удалить 01.02.2012
-    if (false === strpos($request['productCategory'], '/'))
-    {
-      if (!empty($this->productCategory->token_prefix))
-      {
-        $this->redirect('productCatalog_category', $this->productCategory, 301);
-      }
-    }
+    $this->productCategory = $this->getRoute()->getObject();
 
 //    $title = $this->productCategory['name'];
 //    if ($request->getParameter('page')) {

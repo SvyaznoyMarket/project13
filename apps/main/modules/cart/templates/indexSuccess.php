@@ -37,7 +37,7 @@
             <div class="font34"><strong><span class="price"><?php echo $cart->getTotal(true) ?></span> <span class="rubl">p</span></strong></div>
         </div>
         <div class="right pt20">
-            <a href="<?php echo url_for('order_login') ?>" class="button bigbuttonlink width214 mb15">Оформить заказ</a>
+            <a href="<?php echo url_for('order_new') ?>" class="button bigbuttonlink width214 mb15">Оформить заказ</a>
         </div>
         <!--
         <div class="right pt20">
@@ -51,12 +51,12 @@
       <p>в корзине нет товаров</p>
 
     <?php endif ?>
-      
-      
+
+
 <?php slot('seo_counters_advance') ?>
   <?php include_component('cart', 'seo_counters_advance') ?>
 <?php end_slot() ?>
-      
-<!--Трэкер "Корзина"--> 
-<script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779415&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script> 
+
+<!--Трэкер "Корзина"-->
+<script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779415&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>
 <!--Трэкер "Корзина"-->

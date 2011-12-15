@@ -376,6 +376,43 @@ class guardActions extends myActions
       }
     }
   }
+  /**
+   * Executes basicRegister action
+   *
+   * @param sfRequest $request A request object
+   */
+  public function executeBasicRegister(sfWebRequest $request)
+  {
+    $this->form = new UserFormBasicRegister();
+    $this->form->bind($request->getParameter($this->form->getName()));
+
+    $return = array(
+      'success'  => false,
+      'data'     => array(),
+      'redirect' => $this->generateUrl('user_orders', array(), true),
+    );
+    if ($this->form->isValid())
+    {
+      try {
+        $this->user = $this->form->getObject();
+        $this->user->is_active = true;
+        $this->user = $this->form->save();
+        $this->getUser()->signin($this->user, false);
+        $return['success'] = true;
+      }
+      catch(Exception $e) {
+      }
+    }
+
+    $return['data'] = array('form' => $this->form->render());
+
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->renderJson($return);
+    }
+
+    return $this->redirect('user');
+  }
 
   /**
    * Executes oauthSignin action
