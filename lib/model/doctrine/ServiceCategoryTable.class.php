@@ -25,6 +25,7 @@ class ServiceCategoryTable extends myDoctrineTable
       'lft'         => 'core_lft',
       'rgt'         => 'core_rgt',
       'name'        => 'name',
+      'position'   => 'position',
       'is_active'   => 'is_active',
     );
   }
