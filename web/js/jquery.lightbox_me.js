@@ -107,7 +107,12 @@
                      .keydown(observeEscapePress);
 
             $self.find(opts.closeSelector).click(function() { removeModal(true); return false; });
-            $overlay.click(function() { if(opts.closeClick){ removeModal(true); return false;} });
+            function overlayclick () {
+            	$overlay.click( function() { 
+            		if(opts.closeClick){ removeModal(true); return false;} 
+            	})
+            }
+            setTimeout( overlayclick,500 );
 
 
             $self.bind('close.lme', function() { removeModal(true) });
