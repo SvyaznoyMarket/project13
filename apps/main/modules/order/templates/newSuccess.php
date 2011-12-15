@@ -36,7 +36,7 @@
     <?php endforeach ?>
     </div>
 
-        <div class="pl235"><input type="submit" class="button bigbutton" id="bigbutton" value="Продолжить оформление" /></div>
+        <div class="pl235"><input type="submit" class="button bigbutton" id="bigbutton" value="Оформить заказ" /></div>
 
   <?php endif ?>
 </form>
