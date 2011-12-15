@@ -65,6 +65,7 @@ Order:
     delivery_type_id:       { type: integer(20), notnull: false, default: null } # стандартная, экспресс
     delivered_at:           { type: timestamp, format: Y-m-d H:m:i, comment: 'Дата доставки' }
     delivery_period_id:     { type: integer(20), notnull: false, default: null }
+    delivery_price:         { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена доставки' }
     number:                 { type: string(32), notnull: false, default: null, comment: 'Номер заказа из 1С' }
     address:                { type: string, notnull: false, default: null, comment: 'Адрес доставки или получения' }
     zip_code:               { type: string(10), notnull: false, default: null, comment: 'Индекс' }
@@ -89,7 +90,7 @@ Order:
     UserAddress:            { class: UserAddress, foreignAlias: Order, local: user_address_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Region:                 { class: Region, autoComplete: false, local: region_id, foreign: id, type: one, onDelete: SET NULL }
     Product:                { class: Product, foreignAlias: Order, refClass: OrderProductRelation, local: order_id, foreign: product_id, type: many, foreignType: many }
-    Service:                { class: Product, foreignAlias: Order, refClass: OrderServiceRelation, local: order_id, foreign: service_id, type: many, foreignType: many }
+    Service:                { class: Service, foreignAlias: Order, refClass: OrderServiceRelation, local: order_id, foreign: service_id, type: many, foreignType: many }
     Status:                 { class: OrderStatus, foreignAlias: Order, local: status_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
 
 OrderProductRelation:

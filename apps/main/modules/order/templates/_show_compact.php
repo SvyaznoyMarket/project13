@@ -62,6 +62,19 @@ use_helper('Date');
            <?php } ?>
        <?php endforeach; ?>
            
+       <?php if ($item['delivery_price'] && $item['delivery_type'] ) { ?>
+            <tr>
+               <th>
+                    <?php echo $item['delivery_type'] ?> 
+               </th>
+               <td>
+                   <strong class="font14"><?php echo $item['delivery_price'] ?>&nbsp;<span class="rubl">p</span></strong>
+               </td>
+           </tr>
+               
+       <?php } ?>    
+               
+               
        <tr>
            <th>
                <?php if (isset($item['delivered_at'])){ ?><div class="font12 pb5"> Дата доставки: <?php $date = explode(" ",$item['delivered_at']);  echo format_date($date[0],'dd MMMM yyyy','ru')?>г. <?php if (isset($item['delivered_period'])) echo '('.$item['delivered_period'].')'; ?></div><?php } ?>

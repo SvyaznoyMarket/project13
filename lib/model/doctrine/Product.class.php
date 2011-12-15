@@ -311,6 +311,10 @@ class Product extends BaseProduct
 
     return $return;
   }
+  public function getRealPrice()
+  {
+    return $this->getTable()->getRealPrice($this);
+  }
 
   public function getFormattedPrice()
   {
