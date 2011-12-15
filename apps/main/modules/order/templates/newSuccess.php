@@ -37,7 +37,7 @@
     </div>
 
   <br class="clear" />
-        <div class="pl235"><input type="submit" class="button bigbutton" id="bigbutton" value="Оформить заказ" /></div>
+        <div class="pl235"><input type="submit" class="button bigbutton" id="bigbutton" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Оформить заказ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" /></div>
 
   <?php endif ?>
 </form>
