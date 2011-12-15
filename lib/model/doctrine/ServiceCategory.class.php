@@ -12,6 +12,13 @@
  */
 class ServiceCategory extends BaseServiceCategory
 {
+  public function importFromCore(array $data) {
+    parent::importFromCore($data);
+    
+    if (empty($this->token)) {
+      $this->token = myToolkit::urlize($this->name);
+    }
+  }
 
   public function getServiceList(array $params = array())
   {
