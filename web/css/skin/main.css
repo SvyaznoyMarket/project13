@@ -52,7 +52,7 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .topmenu .point9 {width:45px; background-position:-629px 0}
 .topmenu .point9:hover {background-position:-629px -90px}
 
-.bigbanner {padding:0 0 70px 38px}
+.bigbanner {padding:0 0 70px 70px}
 
 .bannersbox {position:absolute; width:100%; overflow:hidden; height:100%}
 .bannersboxinner {position:relative; z-index:10; width:920px; margin:0 auto}
