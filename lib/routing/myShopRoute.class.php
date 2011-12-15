@@ -17,7 +17,7 @@ class myShopRoute extends myDoctrineRoute
     return $parameters;
   }
 
-  public function generate($params, $context = array(), $absolute = false)
+  public function generate($params, $context = array(), $absolute = false, array $allow = array('/'))
   {
     if (isset($params['sf_subject']) && ($params['sf_subject'] instanceof Shop))
     {
