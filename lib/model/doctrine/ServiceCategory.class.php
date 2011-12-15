@@ -16,7 +16,7 @@ class ServiceCategory extends BaseServiceCategory
     parent::importFromCore($data);
     
     if (empty($this->token)) {
-      $this->token = myToolkit::urlize($this->name);
+      $this->token = myToolkit::urlize($this->name).'-'.$this->core_id;
     }
   }
 
