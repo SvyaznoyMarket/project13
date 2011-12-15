@@ -50,9 +50,9 @@ class ServiceTable extends myDoctrineTable
       ->innerJoin('service.ProductRelation pr')
       ->andWhere('pr.product_id=?', array($product->id))
       ->innerJoin('service.Price price') 
+      ->andWhere('price.price >= ?', Service::MIN_BUY_PRICE)
       ->orderBy('service.name ASC');            
             ;
-
 
     $this->setQueryParameters($q, $params);
     #$a = $q->execute();
