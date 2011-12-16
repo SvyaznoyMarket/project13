@@ -17,7 +17,7 @@ class cartActions extends myActions {
      *
      * @param sfRequest $request A request object
      */
-    public function executeIndex(sfWebRequest $request) {        
+    public function executeIndex(sfWebRequest $request) {
         $cart = $this->getUser()->getCart();
         $this->setVar('cart', $cart, true);
     }
@@ -37,6 +37,7 @@ class cartActions extends myActions {
      * @param sfRequest $request A request object
      */
     public function executeAdd(sfWebRequest $request) {
+      sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url'));
         $result['value'] = true;
         $result['error'] = "";
         //валидация количества товара
@@ -111,7 +112,8 @@ class cartActions extends myActions {
                     'quantity' => $request['quantity'],
                     'full_quantity' => $cartInfo['qty'],
                     'full_price' => $this->getUser()->getCart()->getTotal(),
-                    'html' => $this->getComponent($this->getModuleName(), 'buy_button', array('product' => $product))
+                    'link'  => url_for('order_new'),
+                    //'html' => $this->getComponent($this->getModuleName(), 'buy_button', array('product' => $product))
                 )
             );
             return $this->renderJson($return);
@@ -156,6 +158,7 @@ class cartActions extends myActions {
 
     public function executeServiceAdd(sfWebRequest $request) {
 
+      sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url'));
         //валидация количества услуг
         if (!isset($request['quantity']))
             $request['quantity'] = 1;
@@ -222,6 +225,7 @@ class cartActions extends myActions {
                     'quantity' => $request['quantity'],
                     'full_quantity' => $cartInfo['qty'],
                     'full_price' => $this->getUser()->getCart()->getTotal(),
+                    'link'  => url_for('order_new'),
                 )
             );
             return $this->renderJson($return);
@@ -260,7 +264,7 @@ class cartActions extends myActions {
                 'success' => true,
                 'data' => array(
                     'full_quantity' => $cartInfo['qty'],
-                    'full_price' => $this->getUser()->getCart()->getTotal(),                    
+                    'full_price' => $this->getUser()->getCart()->getTotal(),
                 )
             );
             return $this->renderJson($return);
