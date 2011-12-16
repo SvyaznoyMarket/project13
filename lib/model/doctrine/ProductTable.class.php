@@ -81,11 +81,29 @@ class ProductTable extends myDoctrineTable
       //$q->addWhere('product.is_instock = ?', true);
     }
 
-    if ($params['with_line'])
+    if (isset($params['with_line']))
     {
       $q->innerJoin('product.Line line');
     }
+    if (isset($params['with_creator']))
+    {
+      $q->leftJoin('product.Creator creator');
+    }
+    if (isset($params['with_delivery_price']))
+    {
+      $q->leftJoin('product.DeliveryPrice delivery_price');
+    }
+    if (isset($params['with_price']))
+    {
+      $q->innerJoin('product.ProductPrice price');
+    }
+    if (isset($params['with_category']))
+    {
+      $q->leftJoin('product.ProductCategoryProductRelation category');
+    }
 
+    
+    
     if (false == $params['with_model'] && 'show' != $params['view'])
     {
       $q->addWhere('product.model_id IS NULL OR product.is_model = ?', 1);
