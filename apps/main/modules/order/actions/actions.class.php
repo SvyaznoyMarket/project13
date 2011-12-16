@@ -333,6 +333,7 @@ class orderActions extends myActions
       ));
     }
 
+    $this->getUser()->setCacheCookie();
     $this->getUser()->getCart()->clear();
     $this->getUser()->getOrder()->clear();
 
