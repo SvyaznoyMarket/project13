@@ -9,6 +9,7 @@ $(document).ready(function(){
 					var dtmpl={}
 					dtmpl.user = data.data.name
 					var show_user = tmpl('auth_tmpl', dtmpl)
+          $('#auth-link').hide()
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
 			}
