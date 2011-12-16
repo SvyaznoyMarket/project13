@@ -51,15 +51,16 @@ class Service extends BaseService
                 ;
 	  return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
   }
-  public function getFormattedPrice()
+  public function getFormattedPrice($productId = 0)
   {
-    if (!$this->price) {
-        $this->getCurrentPrice();
-    }  
-    if ($this->price < 1) return 'бесплатно';
-    return number_format($this->price, 0, ',', ' ');
+    #if (!$this->price) {
+    $price = $this->getCurrentPrice($productId);
+    #}  
+    if ($price < 1) return 'бесплатно';
+    return number_format($price, 0, ',', ' ');
   }  
   
+
   public function getCurrentPrice() {
       
         $region = sfContext::getInstance()->getUser()->getRegion();

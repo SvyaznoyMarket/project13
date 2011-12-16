@@ -114,13 +114,13 @@ OrderServiceRelation:
   actAs: [ Timestampable ]
   columns:
     order_id:          { type: integer(20), notnull: true }
-    product_id:        { type: integer(20), notnull: true }
+    product_id:        { type: integer(20) }
     service_id:        { type: integer(20), notnull: true }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара в корзине' }
     quantity:          { type: integer(4), notnull: true, comment: 'Количество товара в корзине' }
   relations:
     Order:             { class: Order, foreignAlias: ServiceRelation, local: order_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Product:           { class: Product, foreignAlias: OrderRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Product:           { class: Product, foreignAlias: OrderRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Service:           { class: Service, foreignAlias: OrderRelation, local: service_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
 #PaymentStatus:
