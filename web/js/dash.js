@@ -34,7 +34,7 @@ $(document).ready(function(){
 				lbox = data.data
 				ltbx.update( lbox )
 				ltbx.save()
-				changeButtons( lbox )				
+				changeButtons( lbox )
 				/* ltbx */
 				var dropbx = $('div.lightboxinner > .dropbox')
 				if( dropbx.length ) {
@@ -44,6 +44,7 @@ $(document).ready(function(){
 					var dtmpl={}
 					dtmpl.user = data.data.name
 					var show_user = tmpl('auth_tmpl', dtmpl)
+          $('#auth-link').hide()
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
 			}
@@ -57,7 +58,7 @@ $(document).ready(function(){
 			if( bx.length ) {
 				var button = $('a.link1', bx)
 				button.attr('href', $('.lightboxinner .point2').attr('href') )
-				button.addClass('active')	//die('click') doesnt work			
+				button.addClass('active')	//die('click') doesnt work
 			}
 			bx = $('div.goodsbarbig[ref='+ tokenP +']')
 			if( bx.length ) {
@@ -67,31 +68,31 @@ $(document).ready(function(){
 				isInCart = true
 				if( lbox.servicesInCart )
 				for( var tokenS in lbox.servicesInCart ) {
-					if( tokenP in lbox.servicesInCart[ tokenS ] ) {						
+					if( tokenP in lbox.servicesInCart[ tokenS ] ) {
 						var button = $('div.mServ[ref='+ tokenS +'] a.link1')
-						if( button.length ) {				
+						if( button.length ) {
 							button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине')
 						}
 						button = $('td.bF1Block_eBuy[ref='+ tokenS +'] input.button')
-						if( button.length ) {				
+						if( button.length ) {
 							button.addClass('active').val('В корзине')
-						}			
+						}
 					}
-				}				
+				}
 			}
 		}
 		if( lbox.servicesInCart )
 		for( var tokenS in lbox.servicesInCart ) { // Service Card
 			if( lbox.servicesInCart[ tokenS ][0] ) {
 				var button = $('div.mServ[ref='+ tokenS +'] a.link1')
-				if( button.length ) {				
+				if( button.length ) {
 					button.attr('href', $('.lightboxinner .point2').attr('href') ).text('В корзине').addClass('active')
 				}
 				button = $('div.bServiceCard[ref='+ tokenS +'] input')
-				if( button.length ) {				
+				if( button.length ) {
 					button.val('В корзине').addClass('active')
 				}
-			}			
+			}
 		}
 	}
 	/* ---- */
@@ -157,7 +158,7 @@ $(document).ready(function(){
 		// close popup
 		$('.close', f1lines).click( function(){
 			f1lines.hide()
-		})				
+		})
 		// add f1
 		f1lines.find('input.button').bind ('click', function() {
 			if( $(this).hasClass('disabled') )
@@ -172,9 +173,9 @@ $(document).ready(function(){
 				var f1line = tmpl('f1look', f1item)
 				f1line = f1line.replace('F1ID', f1item.fid )
 				look.find('.link1').before( f1line )
-				
-								
-				// flybox				
+
+
+				// flybox
 				var tmpitem = {
 					'id'    : $('.goodsbarbig .link1').attr('href'),
 					'title' : $('h1').html(),
@@ -190,7 +191,7 @@ $(document).ready(function(){
 				if( !isInCart ) {
 					isInCart = true
 					markPageButtons()
-				}	
+				}
 			})
 			return false
 		})
@@ -199,14 +200,14 @@ $(document).ready(function(){
 			var thislink = this
 			$.getJSON( $(this).attr('href'), function(data) {
 				if( !data.success )
-					return true			
+					return true
 				var line = $(thislink).parent()
 				f1lines.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('disabled')
 				line.remove()
 				ltbx.update({ sum: data.data.full_price })
-				
+
 				if( !$('a.bBacketServ__eMore', look).length )
-					look.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')	
+					look.find('h3').html('Выбирай услуги F1<br/>вместе с этим товаром')
 			})
 			return false
 		})
@@ -219,7 +220,7 @@ $(document).ready(function(){
 		$('.bSet__ePrice .link1').unbind('click')
 		$('.goodsbar .link1').die('click')
 	}
-	
+
 	/* stuff go to litebox */
 	function parseItemNode( ref ){
 		var jn = $( '.boxhover[ref='+ ref +']')
@@ -231,13 +232,13 @@ $(document).ready(function(){
 		}
 		return item
 	}
-	
+
 	$('.goodsbar .link1').live('click', function(e) {
 		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
 		if( $(button).hasClass('active') )
-			return true	
+			return true
 		if (! currentItem ) return false
 
 		if( ltbx ){
@@ -251,20 +252,20 @@ $(document).ready(function(){
 				tmpitem.sum = data.data.full_price
 				ltbx.getBasket( tmpitem )
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
-				$(button).addClass('active') 
+				$(button).addClass('active')
 			}
 		})
 		e.stopPropagation()
 		return false
-	})	
+	})
 
 	var BB = new BuyBottons()
-	BB.push( 'div.bServiceCardWrap input' ) // F1 
+	BB.push( 'div.bServiceCardWrap input' ) // F1
 	BB.push('div.goodsbarbig a.link1', $('div.goodsbarbig').data('value'), markPageButtons ) // product card, buy big
 	BB.push( '#bigpopup a.link1', $('div.popup_leftpanel').data('value'), markPageButtons ) // product card, buy in popup
 	BB.push('div.bSet a.link1', $('div.bSet').data('value'), markPageButtons ) // a set card, buy big
 	BB.push('div.mServ a.link1', $('div.mServ').data('value') ) // service card, buy big
-	
+
 	/* BB */
 	function BuyBottons() {
 		this.push = function( selector, jsond,  afterpost ) {
@@ -273,24 +274,24 @@ $(document).ready(function(){
 				var button = $(this)
 				if( !jsond )
 					jsond = button.data('value')
-				if( !jsond )	
-					return false				
+				if( !jsond )
+					return false
 				if( button.hasClass('active') )
-					return true				
-				
+					return true
+
 				var ajurl = '/404.html'
 				if( button.is('a') ) {
 					var bt = button.text().replace(/\s/g,'')
 					if( bt !== '' && bt !== '&nbsp;' )
 						button.text('В корзине')
-					ajurl = button.attr('href')	
-				}	
+					ajurl = button.attr('href')
+				}
 				if( button.is('input') ) {
 					button.val('В корзине')
-					ajurl = jsond.url	
-				}				
+					ajurl = jsond.url
+				}
 				button.addClass('active').attr('href', carturl)
-				
+
 				$.getJSON( ajurl, function( data ) {
 					if ( data.success && ltbx ) {
 						var tmpitem = {
@@ -301,19 +302,19 @@ $(document).ready(function(){
 							'vitems': data.data.full_quantity,
 							'sum'   : data.data.full_price
 						}
-						ltbx.getBasket( tmpitem )	
+						ltbx.getBasket( tmpitem )
 						if( afterpost )
 							afterpost()
-					}	
+					}
 				})
 				return false
 			})
 		}
-		
+
 	} // object BuyBottons
 
 	// hidden buttons wishlist+compare
-	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })	
+	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })
 	$('.goodsbar .link2').click( function() {
 		//if (! currentItem ) return
 		//if( ltbx )
@@ -324,5 +325,5 @@ $(document).ready(function(){
 		//if( ltbx )
 		//	ltbx.getComparing()
 		return false
-	})	
+	})
 })
