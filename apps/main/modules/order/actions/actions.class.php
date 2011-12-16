@@ -317,7 +317,6 @@ class orderActions extends myActions
       $this->result = $provider->getPaymentResult($this->order);
     }
 
-    $this->order = OrderTable::getInstance()->find(852);
     $this->redirectUnless($this->order->exists(), 'order_new');
 
     $this->form = new UserFormSilentRegister();
