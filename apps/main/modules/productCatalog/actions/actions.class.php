@@ -274,7 +274,7 @@ class productCatalogActions extends myActions
       return $this->_refuse();
     }
 
-    $this->productFilter = $this->getProductFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));    
+    $this->productFilter = $this->getProductFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $getFilterData = $request->getParameter($this->productFilter->getName()) ;
     $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $getTagFilterData = $request->getParameter($this->productTagFilter->getName());
@@ -369,7 +369,23 @@ class productCatalogActions extends myActions
   {
     $this->_seoRedirectOnPageDublicate($request);
 
-    $this->productCategory = $this->getRoute()->getObject();
+    try
+    {
+      $this->productCategory = $this->getRoute()->getObject();
+    }
+    catch (sfError404Exception $e)
+    {
+      $this->forward('redirect', 'index');
+    }
+
+    // 301-й редирект. Можно удалить 01.02.2012
+    if (false === strpos($request['productCategory'], '/'))
+    {
+      if (!empty($this->productCategory->token_prefix))
+      {
+        $this->redirect('productCatalog_category', $this->productCategory, 301);
+      }
+    }
 
 //    $title = $this->productCategory['name'];
 //    if ($request->getParameter('page')) {

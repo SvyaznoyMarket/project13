@@ -14,7 +14,7 @@ class UserFormBasicRegister extends BaseUserForm
   {
     parent::configure();
 
-    $this->widgetSchema['username'] = new sfWidgetFormInputText();
+    $this->widgetSchema['username'] = new sfWidgetFormInputText(array(), array('class' => 'text width215 mt5'));
     $this->widgetSchema['username']->setLabel('Email или номер мобильного телефона');
     $this->validatorSchema['username'] = new sfValidatorString(array('max_length' => 128, 'required' => $this->getOption('validate_username', true) ? true : false));
 

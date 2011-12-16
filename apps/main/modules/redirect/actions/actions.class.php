@@ -51,8 +51,8 @@ class redirectActions extends myActions
       $url = urldecode($request->getPathInfo());
       $redirect = RedirectTable::getInstance()->getByUrl($url);
       $this->forward404Unless($redirect);
-
-      $this->redirect((sfConfig::get('sf_no_script_name') ? '' : $request->getScriptName()).$redirect['new_url'], $redirect['status_code']);
+      $getParameters = $request->getGetParameters();
+      $this->redirect((sfConfig::get('sf_no_script_name') ? '' : $request->getScriptName()).$redirect['new_url'].(count($getParameters) ? ('?'.http_build_query($getParameters)) : ''), $redirect['status_code']);
     }
   }
 }

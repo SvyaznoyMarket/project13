@@ -29,6 +29,8 @@ ProductPropertyGroup:
   - ProductPropertyGroups
 ProductPropertyOption:
   - product_option
+ProductState:
+  - product_state
 ProductType:
   - product_type
 Qrcode:
@@ -52,11 +54,11 @@ Service:
 DeliveryMode:
   - delivery_type
 ServicePrice:
-  - service_price  
+  - service_price
 ServiceTariff:
-  - service_tariff  
+  - service_tariff
 ServiceProductRelation:
-  - service_product_relation    
+  - service_product_relation
 #DeliveryType:
 #  - delivery_type
 #PaymentMethod:
