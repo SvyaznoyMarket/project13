@@ -303,6 +303,10 @@ class OrderStep1Form extends BaseOrderForm
     $this->widgetSchema['recipient_middle_name']->setLabel('Отчество');
     $this->validatorSchema['recipient_middle_name'] = new sfValidatorString(array('max_length' => 255, 'required' => false));*/
 
+    $this->widgetSchema['agreed'] = new sfWidgetFormInputCheckbox();
+    $this->widgetSchema['agreed']->setLabel('Я ознакомлен и согласен с «Условиями продажи» и «Правовой информацией»');
+    $this->validatorSchema['agreed'] = new sfValidatorBoolean(array('required' => true), array('required' => 'Пожалуйста, ознакомьтесь с условиями продажи и правовой информацией и поставьте галочку'));
+
     $this->useFields(array(
       'region_id',
       'person_type',
@@ -320,6 +324,7 @@ class OrderStep1Form extends BaseOrderForm
       'extra',
       //'recipient_middle_name',
       'payment_method_id',
+      'agreed',
     ));
 
     $this->widgetSchema->setNameFormat('order[%s]');

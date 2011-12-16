@@ -293,7 +293,7 @@ function Flybox( parent ){
 		box.fadeIn(1000)
 		hidei = setTimeout( self.jinny, 7000 )
 	}
-	var hrefcart = $('.point2', parent).attr('href')
+	var hrefcart = '/orders/new' //$('.point2', parent).attr('href')
 	this.showBasket = function( f1 ) {
 		var f1tmpl = ''
 		if ( typeof(f1) !== "undefined" )

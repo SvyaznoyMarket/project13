@@ -329,6 +329,11 @@ user_quickRegister:
   url:   /quick-register
   param: { module: guard, action: quickRegister }
 #
+# user basic register
+user_basicRegister:
+  url:   /remember
+  param: { module: guard, action: basicRegister }
+#
 # user oauth callback
 user_oauth_callback:
   url:   /signin/:provider/callback
@@ -636,6 +641,11 @@ order_cancel:
 order_error:
   url:   /orders/error
   param: { module: order, action: error }
+#
+# order get user
+order_getUser:
+  url:   /orders/get-user
+  param: { module: order, action: getUser }
 #
 # order show
 order_show:

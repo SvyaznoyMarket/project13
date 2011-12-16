@@ -59,38 +59,45 @@ $(document).ready(function() {
 
   $('#signin_password').warnings()
 
-  $('#login-form, #register-form').bind('submit', function(e) {
-    e.preventDefault()
+  $('#login-form, #register-form')
+    .data('redirect', true)
+    .bind('submit', function(e, param) {
+      e.preventDefault()
 
-    var form = $(e.target)
+      var form = $(e.target)
 
-    form.find('[type="submit"]:first')
-      .attr('disabled', true)
-      .val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...')
+      form.find('[type="submit"]:first')
+        .attr('disabled', true)
+        .val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...')
 
-    form.ajaxSubmit({
-      async: false,
-      data: {
-        redirect_to: form.find('[name="redirect_to"]:first').val()
-      },
-      success: function(response) {
-        if (true == response.success)
-        {
-          if (response.url) {
-            window.location = response.url
+      form.ajaxSubmit({
+        async: false,
+        data: {
+          redirect_to: form.find('[name="redirect_to"]:first').val()
+        },
+        success: function(response) {
+          if (true == response.success)
+          {
+            if (form.data('redirect')) {
+              if (response.url) {
+                window.location = response.url
+              }
+              else {
+                form.unbind('submit')
+                form.submit()
+              }
+            }
+            else {
+              $('#auth-block').trigger('close')
+            }
+            //console.info(response);
           }
           else {
-            form.unbind('submit')
-            form.submit()
+            form.html($(response.data.content).html())
           }
-          //console.info(response);
         }
-        else {
-          form.html($(response.data.content).html())
-        }
-      }
+      })
     })
-  })
 
 	$('#forgot-pwd-trigger').click(function(){
 		$('#reset-pwd-form').show();

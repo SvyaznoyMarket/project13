@@ -41,7 +41,7 @@ class orderComponents extends myComponents
       foreach ($this->order->ProductRelation as $orderProductRelation)
       {
         $item['products'][] = array(
-          'type'     => 'product',  
+          'type'     => 'product',
           'name'     => (string)$orderProductRelation->Product,
           'article'     => (string)$orderProductRelation->Product->article,
           'url'      => url_for('productCard', $orderProductRelation->Product),
@@ -53,15 +53,15 @@ class orderComponents extends myComponents
       foreach ($this->order->ServiceRelation as $orderServiceRelation)
       {
         $item['products'][] = array(
-          'type'     => 'service',  
+          'type'     => 'service',
           'name'     => (string)$orderServiceRelation->Service,
           'url'      => url_for('service_show', $orderServiceRelation->Service),
           'price'    => (int)$orderServiceRelation['price'],
           'quantity' => $orderServiceRelation['quantity'],
         );
-      }      
+      }
     }
-    
+
     $deliveryPrices = $this->getUser()->getCart()->getDeliveriesPrice();
     $this->setVar('deliveryPrice', isset($deliveryPrices[$this->order->delivery_type_id]) ? $deliveryPrices[$this->order->delivery_type_id] : null, true);
     $this->setVar('item', $item, true);
@@ -219,13 +219,17 @@ class orderComponents extends myComponents
   {
   }
 
+  public function executeField_agreed()
+  {
+  }
+
   public function executeReceipt()
   {
     $this->setVar('cart', $this->getUser()->getCart());
   }
-  
-  function executeSeo_counters_advance() {      
-  } 
-  
+
+  function executeSeo_counters_advance() {
+  }
+
 }
 

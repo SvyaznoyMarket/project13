@@ -1,22 +1,17 @@
-<?php slot('title', 'Оформление заказа - Шаг 2') ?>
+<?php slot('title', 'Оформление заказа') ?>
 
 <?php slot('navigation') ?>
   <?php include_component('order', 'navigation', array('order' => $order)) ?>
 <?php end_slot() ?>
 
-<?php //include_component('order', 'step'.$step, array('form' => $form)) ?>
+<?php slot('user') ?>
+  <?php include_partial('order/user') ?>
+<?php end_slot() ?>
 
 <?php slot('receipt') ?>
   <?php include_component('order', 'receipt') ?>
 <?php end_slot() ?>
 
-<?php slot('step') ?>
-        <ul class="steplist steplist2">
-            <li><a href="<?php echo url_for('order_login') ?>"><span>Шаг 1</span>Данные<br />покупателя</a></li>
-            <li><a href="<?php echo url_for('order_new') ?>"><span>Шаг 2</span>Способ доставки<br />и оплаты</a></li>
-            <li class="last"><span>Шаг 3</span>Подтверждение<br />заказа</li>
-        </ul>
-<?php end_slot() ?>
 
 <form id="region" method="post" action="/"></form>
 <form class="form order-form" data-update-field-url="<?php echo url_for('order_updateField', array('step' => 1)) ?>" action="<?php echo url_for('order_new', array('step' => 1)) ?>" method="post" style="width: 665px;">
@@ -40,8 +35,9 @@
 
     <?php endforeach ?>
     </div>
-        <div class="line pb20"></div>
-        <div class="pl235"><input type="submit" class="button bigbutton" id="bigbutton" value="Продолжить оформление" /></div>
+
+  <br class="clear" />
+        <div class="pl235"><input type="submit" class="button bigbutton" id="bigbutton" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Оформить заказ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" /></div>
 
   <?php endif ?>
 </form>

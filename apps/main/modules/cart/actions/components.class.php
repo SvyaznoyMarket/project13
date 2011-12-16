@@ -59,14 +59,14 @@ class cartComponents extends myComponents
     $cart = $this->getUser()->getCart();
 
     if ($this->view == 'order') {
-        $list = $cart->getReceiptList();        
+        $list = $cart->getReceiptList();
     } else {
-        $list = $cart->getProductServiceList(true);          
+        $list = $cart->getProductServiceList(true);
     }
     $this->setVar('list', $list, true);
  }
- 
-  function executeSeo_counters_advance() {      
-  } 
-  
+
+  function executeSeo_counters_advance() {
+  }
+
 }

@@ -328,7 +328,8 @@ EOF;
         if ($categoryInfo['core_parent_id'] && isset($catIdToCoreId[ $categoryInfo['core_parent_id'] ])) $cat->addAttribute('parentId', $catIdToCoreId[ $categoryInfo['core_parent_id'] ]);
         //если нужно добавить url
         if ($addCategoryUrl){
-            $cat->addAttribute('url',$this->_companyData['url'].'/catalog/'.$categoryInfo['token'].'/');
+            $cat->addAttribute('url', $this->_companyData['url'].$this->getRouting()->generate('productCatalog_category', array('productCategory' => (!empty($categoryInfo['token_prefix']) ? ($categoryInfo['token_prefix'].'/'.$categoryInfo['token']) : $categoryInfo['token']))));
+            //$cat->addAttribute('url',$this->_companyData['url'].'/catalog/'.$categoryInfo['token'].'/');
         }
 
         $numInRound++;
@@ -369,23 +370,24 @@ EOF;
             ->createQuery('p')
             ->distinct()
             ->select('p.*,pcr.product_category_id,cr.name,price.price,type.name,photo.resource, dp.price')
-            ->addWhere('view_show = ?', 1)
-            ->addWhere('view_list = ?', 1)
             ->leftJoin('p.ProductCategoryProductRelation pcr ')      //категория
            # ->leftJoin('p.Photo photo on p.id=photo.product_id ')           //фото
            # ->leftJoin('p.Type type ')                 //тип
             ->leftJoin('p.Creator cr ')               //производитель
             ->leftJoin('p.DeliveryPrice dp  ')               //цена на доставку
             ->innerJoin('p.ProductPrice price WITH price.product_price_list_id = ?', 1)    //цена
+            ->addWhere('p.view_show = ?', 1)
+            ->addWhere('p.view_list = ?', 1)
+            ->addWhere('p.token_prefix IS NOT NULL')
             ;
     //если нужно выгрузить только те, что есть в наличии
     if (!$this->_exportNotInStock){
-        $offersList->where('is_instock=?',1);
+        $offersList->addWhere('is_instock=?',1);
     }
     //если есть ограничения по категориям
     if (isset($catIdListString)){
         $offersList
-            ->where('pcr.product_category_id IN ('.$catIdListString.')');
+            ->addWhere('pcr.product_category_id IN ('.$catIdListString.')');
     }
     $offersList = $offersList
             ->orderBy('p.rating DESC')

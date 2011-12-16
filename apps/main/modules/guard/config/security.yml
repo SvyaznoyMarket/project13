@@ -3,20 +3,23 @@ all:
 
 forgotPassword:
   is_secure: false
-  
+
 resetPassword:
   is_secure: false
 
 signin:
   is_secure: false
-  
+
 signinajax:
-  is_secure: false  
+  is_secure: false
 
 register:
   is_secure: false
 
 quickRegister:
+  is_secure: false
+
+basicRegister:
   is_secure: false
 
 oauthSignin:

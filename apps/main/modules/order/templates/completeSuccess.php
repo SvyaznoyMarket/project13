@@ -21,8 +21,22 @@
 <div class="line pb20"></div>
 <!--input type="button" class="button bigbutton fl" value="Посмотреть мои заказы" /-->
 
+<?php if ($sf_user->isAuthenticated()): ?>
+<form method="get" action="<?php echo url_for('user_orders') ?>">
+  <input type="submit" class="button bigbutton fl" value="Посмотреть мои заказы" />
+</form>
+<?php else: ?>
+<form id="basic_register-form" method="post" action="<?php echo url_for('user_basicRegister') ?>">
+  <div class="form-content">
+    <?php echo $form ?>
+  </div>
+  <div class="pt10">
+    <input type="submit" class="button bigbutton fl" value="Запомнить меня" />
+  </div>
+</form>
+<?php endif ?>
+
 <form method="get" action="<?php echo url_for('homepage') ?>">
-  <input type="button" class="button bigbutton fl" value="Посмотреть мои заказы" onclick="window.location='<?php echo url_for('user_orders') ?>'" />
   <input type="submit" class="button bigbutton fr" value="Продолжить покупки" />
 </form>
 
@@ -61,11 +75,11 @@
              });
   <?php endforeach ?>
            _gaq.push(['_trackTrans']);
-           
+
   </script>
-  
-    <!--Трэкер "Покупка"--> 
-    <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script> 
-    <!--Трэкер "Покупка"-->  
+
+    <!--Трэкер "Покупка"-->
+    <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>
+    <!--Трэкер "Покупка"-->
 <?php
 endif ?>
