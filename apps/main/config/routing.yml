@@ -26,6 +26,10 @@ product_delivery:
 product_list:
   url:   /products/list/:products
   param: { module: product, action: list }
+# список товаров
+product_set:
+  url:   /products/set/:products
+  param: { module: product, action: set }
 #
 # каталог товаров
 productCatalog:

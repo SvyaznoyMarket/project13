@@ -2931,3 +2931,7 @@ DT.bCtg__eOrange{
 		*display: inline;
 		zoom: 1;
 		}
+
+.border-none {
+  border: 0 none;
+}
