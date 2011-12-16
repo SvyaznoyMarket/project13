@@ -62,7 +62,9 @@ class ProjectYandexMarketTask extends sfBaseTask
    */
   private $_uploadCategotyUrlFileList = array(
       'export_mgcom.xml',
-      'export_realweb.xml'
+      'export_realweb.xml',
+      'export_mgcom_ryazan.xml',
+      'export_realweb_ryazan.xml',
   );
 
   /**
@@ -141,19 +143,43 @@ class ProjectYandexMarketTask extends sfBaseTask
    * @var integer
    */
   private $_portionToLoadProduct = 100;
+  
+  private $_currentPriceListId;
 
   /**
    * Рутовые категории, из которых выгружаем в разные файлы
    * @var type
    */
   private $_globalCatList = array(
+      //для всех
+      array(
+          'name' => 'ya_market.xml',
+          'price_list_id' => 1     
+          ),
       array(
           'name' => 'export_realweb.xml',
-          'list' => array(6,5,8,9)
+          'list' => array(6,5,8,9),
+          'price_list_id' => 1         
           ),
       array(
           'name' => 'export_mgcom.xml',
-          'list' => array(3,2,1,4,7,8,5)
+          'list' => array(3,2,1,4,7,8,5),
+          'price_list_id' => 1
+          ),
+      //для Рязани
+      array(
+          'name' => 'ya_market_ryazan.xml',
+          'price_list_id' => 11
+          ),
+      array(
+          'name' => 'export_realweb_ryazan.xml',
+          'list' => array(6,5,8,9),
+          'price_list_id' => 11
+          ),
+      array(
+          'name' => 'export_mgcom_ryazan.xml',
+          'list' => array(3,2,1,4,7,8,5),
+          'price_list_id' => 11
           ),
   );
 
@@ -196,8 +222,8 @@ EOF;
     #exit();
 
     //генерируем файл со всеми товарами
-    $this->_xmlFilePath = $this->_xmlFolder . '/' . $this->_xmlFileName;  //'/mnt/hgfs/httpdFiles/'.
-    $this->_xmlGenerateItself();
+   # $this->_xmlFilePath = $this->_xmlFolder . '/' . $this->_xmlFileName;  //'/mnt/hgfs/httpdFiles/'.
+  #  $this->_xmlGenerateItself();
 
     $this->_generateCatList();
 
@@ -205,10 +231,13 @@ EOF;
 
     if (count($this->_globalCatList)>0)
     foreach($this->_globalCatList as $partInfo){
+        $this->_currentPriceListId = $partInfo['price_list_id'];
         //заполняем массив категорий
         $this->_categoryList = array();
-        foreach($partInfo['inner'] as $catId){
-            $this->_categoryList[$catId] = array();
+        if ($partInfo['inner']) {
+            foreach($partInfo['inner'] as $catId){
+                $this->_categoryList[$catId] = array();
+            }
         }
         $this->_xmlFilePath = $this->_xmlFolder . '/' . $partInfo['name'];
         //выполняем саму генарацию
@@ -232,14 +261,18 @@ EOF;
   public function _generateCatList(){
       //глобальные списки глобальных категорий
       foreach($this->_globalCatList as $k => $catList){
-            $idList = array();
-            $catList = Doctrine_Core::getTable('ProductCategory')
-                    ->createQuery('pc')
-                    ->where('pc.root_id IN ('.implode(',',$catList['list']) .')'  )
-                    ->fetchArray();
-                    ;
-            foreach($catList as $cat) $idList[] = $cat['id'];
-            $this->_globalCatList[$k]['inner'] = $idList;
+            if (isset($catList['list'])) {            
+                $idList = array();
+                $catListData = Doctrine_Core::getTable('ProductCategory')
+                        ->createQuery('pc')
+                        ->where('pc.root_id IN ('.implode(',',$catList['list']) .')'  )
+                        ->fetchArray();
+                        ;
+                foreach($catListData as $cat) $idList[] = $cat['id'];
+                $this->_globalCatList[$k]['inner'] = $idList;
+            } else {
+                $this->_globalCatList[$k]['inner'] = false;                
+            }
 
       }
     #  exit();
@@ -307,11 +340,12 @@ EOF;
     } else {
         $addCategoryUrl = true;
     }
-    $categoryList = Doctrine_Core::getTable('ProductCategory')
-            ->createQuery('pc')
-            ->select('pc.*')
-            ->whereIn('id',  array_keys($this->_categoryList))
-            ->orderBy('pc.id')
+    
+    $categoryList = ProductCategoryTable::getInstance()->createBaseQuery();    
+    if (count($this->_categoryList)) {
+        $categoryList = $categoryList->whereIn('id',  array_keys($this->_categoryList));
+    }
+    $categoryList = $categoryList
             #->limit(50)
             ->fetchArray();
     foreach($categoryList as $cat){
@@ -366,7 +400,20 @@ EOF;
     }
 
     //делаем выборку товаров
-    $offersList = Doctrine_Core::getTable('Product')
+    $params = array(
+        'with_creator' => true,
+        'with_delivery_price' => true,
+        'with_price' => true,
+        'with_category' => true,
+        'view' => 'show',
+    );
+    $offersList = ProductTable::getInstance()->createBaseQuery($params)
+            ->select('product.*,category.product_category_id,creator.name,price.price,delivery_price.price')
+            ->addWhere('price.product_price_list_id = ?', $this->_currentPriceListId)
+            ->addWhere('product.token_prefix IS NOT NULL')
+            ;
+    /*
+    $offersList = ProductTable::getInstance()->createBaseQuery()
             ->createQuery('p')
             ->distinct()
             ->select('p.*,pcr.product_category_id,cr.name,price.price,type.name,photo.resource, dp.price')
@@ -380,22 +427,24 @@ EOF;
             ->addWhere('p.view_list = ?', 1)
             ->addWhere('p.token_prefix IS NOT NULL')
             ;
+     * 
+     */
+    
     //если нужно выгрузить только те, что есть в наличии
     if (!$this->_exportNotInStock){
-        $offersList->addWhere('is_instock=?',1);
+        $offersList->addWhere('product.is_instock=?',1);
     }
     //если есть ограничения по категориям
-    if (isset($catIdListString)){
+    if (isset($catIdListString) && count($catIdListString)){
         $offersList
-            ->addWhere('pcr.product_category_id IN ('.$catIdListString.')');
+            ->addWhere('category.product_category_id IN ('.$catIdListString.')');
     }
+    #echo $this->_xmlFilePath ."\n";
+    #echo $offersList ."\n";
     $offersList = $offersList
-            ->orderBy('p.rating DESC')
             #->limit(50)
             ->fetchArray();
 
-    #echo $offersList;
-    #print_r($offersList);
 
     $numInRound = 0;
     $currentXml = "";

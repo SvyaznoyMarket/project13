@@ -59,6 +59,11 @@ class ProductTable extends myDoctrineTable
       'with_line'      => false,
       'with_model'     => false, // список только товаров, без моделей
       'hydrate_array'  => false,
+      'with_creator'   => false,
+      'with_price'     => false,
+      'with_category'  => false,
+      'with_delivery_price' => false,
+        
     );
   }
 
@@ -85,7 +90,26 @@ class ProductTable extends myDoctrineTable
     {
       $q->innerJoin('product.Line line');
     }
+    
+    if ($params['with_creator'])
+    {
+      $q->leftJoin('product.Creator creator');
+    }
+    if ($params['with_delivery_price'])
+    {
+      $q->leftJoin('product.DeliveryPrice delivery_price');
+    }
+    if ($params['with_price'])
+    {
+      $q->innerJoin('product.ProductPrice price');
+    }
+    if ($params['with_category'])
+    {
+      $q->leftJoin('product.ProductCategoryProductRelation category');
+    } 
 
+    
+    
     if (false == $params['with_model'] && 'show' != $params['view'])
     {
       $q->addWhere('product.model_id IS NULL OR product.is_model = ?', 1);
