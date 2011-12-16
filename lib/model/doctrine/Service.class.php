@@ -61,16 +61,16 @@ class Service extends BaseService
   }  
   
 
-  public function getCurrentPrice() {
+  public function getCurrentPrice($productId = 0) {
       
         $region = sfContext::getInstance()->getUser()->getRegion();
-        $priceList = $region['product_price_list_id'];
+        #$priceList = $region['product_price_list_id'];
         #$priceList = ProductPriceListTable::getInstance()->getCurrent();
         #$priceListDefault = ProductPriceListTable::getInstance()->getDefault();
       
         $currentPrice = 0;
-        foreach($this->Price as $price) {
-            if ($priceList == $price['service_price_list_id']) {
+        foreach($this->PriceTariff as $price) {
+            if ($region['id'] == $price['region_id']) {
               $currentPrice = $price['price'];
               break;
             }
@@ -85,7 +85,7 @@ class Service extends BaseService
               }
           }          
         } */      
-        $this->price = $currentPrice;
+        #$this->price = $currentPrice;
         return $currentPrice;
         
   }
