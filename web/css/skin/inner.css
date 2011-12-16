@@ -143,7 +143,7 @@ TABLE {border-collapse:collapse}
 .mBR5 {
     border-radius: 5px 5px 5px 5px;
 }
-#auth-link{display:none}
+/*#auth-link{display:none}*/
 
 .rubl {font-family:"Rouble"; font-size: 90%; margin: 0 0px 0 -5px}
 
@@ -576,7 +576,7 @@ border-radius:5px;
 .scroll A.forvard {background-position:-789px -165px}
 .scroll A.forvard:hover {background-position:-789px -191px}
 .scroll A.forvard.disabled {background-position:-789px -139px; cursor:default}
-.carousel {float:left; width:705px; margin-left:-2px; margin-bottom:-10px}
+.carousel {float:left; width:705px; margin-left:-2px; margin-bottom:-10px; padding-bottom:18px}
 
 .bigcarousel {float:left; width:935px; margin-right:-15px}
 .bigcarousel .goodsbox {width:147px; padding:10px; margin-bottom:14px; margin-right:20px; background-color:#fff; position:relative}
