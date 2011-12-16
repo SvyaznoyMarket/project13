@@ -61,11 +61,18 @@
             /*----------------------------------------------------
                CSS stuffs
             ---------------------------------------------------- */
-
+			function setHeight( jnode ) {
+				var jHeight = ($(window).height() - 80);
+				if( jHeight < 500 ) 
+					jHeight = 500
+				jnode.css('height', jHeight)
+			}
             // set css of the modal'd window
+            
 			if( opts.reallyBig ) { // fix for mediaLibrary by IVN
 				$self.css({marginLeft: '50px', marginRight:  '50px' });
 				setWrapPosition( $self.parent() );
+				setHeight( $self );
 			} else {
             	setSelfPosition();
             	$self.css({left: '50%', marginLeft: ($self.outerWidth() / 2) * -1,  zIndex: (opts.zIndex + 3) });
@@ -95,11 +102,21 @@
 
             $(window).resize(setOverlayHeight)
                      .resize( function(){ ( opts.reallyBig ) ? setWrapPosition( $self.parent() ) : setSelfPosition() })//IVN
+                     .resize( function(){ setHeight( $self ) } )
                      .scroll( function(){ if ( !opts.reallyBig ) setSelfPosition() })//IVN
                      .keydown(observeEscapePress);
 
             $self.find(opts.closeSelector).click(function() { removeModal(true); return false; });
-            $overlay.click(function() { if(opts.closeClick){ removeModal(true); return false;} });
+            $overlay.click( function(e) { 
+            	e.preventDefault();
+            	return false;
+            });
+            function overlayclick () {
+            	$overlay.click( function() { 
+            		if(opts.closeClick){ removeModal(true); return false;} 
+            	})
+            }
+            setTimeout( overlayclick,500 );
 
 
             $self.bind('close.lme', function() { removeModal(true) });

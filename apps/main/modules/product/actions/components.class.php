@@ -24,6 +24,14 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
+    // checks for cached vars
+    /*
+    if ($this->setCachedVars())
+    {
+      return sfView::SUCCESS;
+    }
+    */
+
     $table = ProductTable::getInstance();
 
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line')))
@@ -35,6 +43,7 @@ class productComponents extends myComponents
     {
       $params = array(
         'hydrate_array' => true,
+        'with_model'    => true,
       );
 
       if ('default' == $this->view)
@@ -67,7 +76,7 @@ class productComponents extends myComponents
     }
 
     // price
-    if (isset($this->product['ProductPrice']))
+    /*if (isset($this->product['ProductPrice']))
     {
       if ($this->product instanceof Product)
       {
@@ -79,7 +88,7 @@ class productComponents extends myComponents
     }
     else
     {
-      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product->id);
+      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product['id']);
       if (!empty($price))
       {
         if ($this->product instanceof Product)
@@ -90,7 +99,7 @@ class productComponents extends myComponents
           $this->product['price'] = $price['price'];
         }
       }
-    }
+    }*/
 
     $item = array(
       'id'         => $this->product['id'],
@@ -105,9 +114,9 @@ class productComponents extends myComponents
       'has_link'   => $this->product['view_show'],
       'photo'      => $table->getMainPhotoUrl($this->product, 2),
       'is_insale'  => $this->product['is_insale'],
-      'is_instock'  => $this->product['is_instock'],
+      'is_instock' => $this->product['is_instock'],
       //'product'  => clone $this->product,
-      'url'        => url_for('productCard', array('product' => $this->product['token']), array('absolute' => true)),
+      'url'        => url_for('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
       'product'    => $this->product,
     );
 
@@ -152,6 +161,14 @@ class productComponents extends myComponents
     $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product['id']);
     $this->setVar('selectedServices', $selectedServices, true);
 
+    $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
+
+    // caches vars
+    /*
+    $this->cacheVars();
+    $this->getCache()->addTag("product-{$this->product['id']}", $this->getCacheKey());
+    */
+
     //myDebug::dump($item, 1);
   }
 
@@ -172,7 +189,7 @@ class productComponents extends myComponents
    */
   public function executePager()
   {
-    $this->view = isset($this->view) ? $this->view : $this->getRequestParameter('view');
+    $this->view = !empty($this->view) ? $this->view : $this->getRequestParameter('view');
     if (!in_array($this->view, array('expanded', 'compact', 'line')))
     {
       $this->view = 'compact';
@@ -249,7 +266,7 @@ class productComponents extends myComponents
     }
 
     $list = array();
-    foreach ($this->product['Parameter'] as $parameter)
+    if (isset($this->product['Parameter'])) foreach ($this->product['Parameter'] as $parameter)
     {
       $value = $parameter->getValue();
 
@@ -356,6 +373,8 @@ class productComponents extends myComponents
       $value_to_map = array();
       foreach ($values as $id => $value)
       {
+        $product = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ));
+        if (!$product) continue;
         $realValue = $value->getRealValue();
         $value_to_map[$realValue]['id'] = $id;
         $value_to_map[$realValue]['url'] = url_for('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
@@ -374,7 +393,7 @@ class productComponents extends myComponents
         }
         if ($property->ProductModelRelation[0]->is_image)
         {
-          $value_to_map[$realValue]['photo'] = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ))->getMainPhotoUrl(1);
+          $value_to_map[$realValue]['photo'] = $product->getMainPhotoUrl(1);
         }
 
       }

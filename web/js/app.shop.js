@@ -172,7 +172,7 @@ $(document).ready(function() {
 
   if ($('#region_map-container').length) {
     $('#region_map-container').trigger('create', [
-      $('#map-centers').data('content')[0],
+      $('#map-center').data('content'),
       $('#map-markers').data('content'),
       $('#map-info_window-container')
     ])

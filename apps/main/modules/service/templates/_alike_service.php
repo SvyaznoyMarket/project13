@@ -15,8 +15,8 @@
                         <img src="<?php echo $service['photo']; ?>">
                     </a>    
                 <?php } else { ?>
-                    <div class="bServiceCard__eLogo_free"></div>
                     <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>" >
+                        <div class="bServiceCard__eLogo_free"></div>
                     </a>    
                 <?php } ?>
             </div>
@@ -26,10 +26,12 @@
                 </a>
             </p>
 			<div class="bServiceCard__ePrice">
-                <span class="price"><?php echo $service['priceFormatted']; ?></span>
-                <?php if((int)$service['priceFormatted']) { ?>
+            <?php if ($showNoPrice || $service['price'] != 'бесплатно') { ?>   
+                <?php echo $service['price']; ?>
+                <?php if((int)$service['price']) { ?>
                     <span class="rubl">p</span>
                 <?php } ?>    
+            <?php } ?>        
             </div>
 			 
 			<?php 

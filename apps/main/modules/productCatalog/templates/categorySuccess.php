@@ -15,4 +15,8 @@
 
 <?php include_partial('productCatalog/slot/default', $sf_data) ?>
 
+<?php slot('seo_counters_advance') ?>
+  <?php include_component('productCategory', 'seo_counters_advance', array('unitId' => $productCategory->root_id)) ?>
+<?php end_slot() ?>
+
 

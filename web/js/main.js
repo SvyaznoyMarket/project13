@@ -78,7 +78,7 @@ $(document).ready(function(){
 	var compact = $("div.goodslist").length
 	function liveScroll( lsURL, pageid ) {
 		var params = []
-		if( $('.bigfilter.form').length && location.href.match(/_filter/) )
+		if( $('.bigfilter.form').length && ( location.href.match(/_filter/) || location.href.match(/_tag/) ) )
 			params = $('.bigfilter.form').parent().serializeArray()
 		lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
@@ -195,14 +195,14 @@ $(document).ready(function(){
 		})
 	}
 
-	$.ajaxPrefilter(function( options ) {
-		if( !options.url.match('search') )
-			options.url += '?ts=' + new Date().getTime()
-	})
+	//$.ajaxPrefilter(function( options ) {
+	//	if( !options.url.match('search') )
+	//		options.url += '?ts=' + new Date().getTime()
+	//})
 
-	$('body').ajaxError(function(e, jqxhr, settings, exception) {
-		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
-	})
+	//$('body').ajaxError(function(e, jqxhr, settings, exception) {
+	//	$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
+	//})
 
 	$.ajaxSetup({
 		timeout: 10000,

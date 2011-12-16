@@ -123,7 +123,7 @@ class productCatalogComponents extends myComponents
     {
       $list[] = array(
         'name'  => $productCategory['name'],
-        //'url'   => url_for('productCatalog_category', $productCategory),
+        'url'   => url_for('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'].'/'.$productCategory['token']) : $productCategory['token'])),
         'level' => $productCategory['level'],
       );
     }
@@ -498,15 +498,9 @@ class productCatalogComponents extends myComponents
         $rootCat = $this->productCategory;
     }
 
-
-    $list = ProductCategoryTable::getInstance()
-            ->createQuery()
-            ->addWhere('root_id = ?', $rootCat->id)
-            ->addWhere('is_active = ?', 1)
-            ->orderBy('core_lft')
-            ->fetchArray()
-            ;
-
+    $q = ProductCategoryTable::getInstance()->createBaseQuery();
+    $q->addWhere('productCategory.root_id = ?', $rootCat->id);
+    $list = $q->fetchArray();
 
     $isCurrent = false;
     foreach($list as $cat) {

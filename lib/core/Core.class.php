@@ -333,21 +333,33 @@ class Core
   
   /**
    *
-   * @param int $productId
+   * @param int|array $productId
    * @param int $geoId
+   * @param array $kitProducts
    * @return array|false 
    */
-  public function getProductDeliveryData($productId, $geoId)
+  public function getProductDeliveryData($productId, $geoId, array $kitProducts = null)
   {
     $cacheKey = 'product-'.$productId.'/deliveries/'.$geoId;
     $cacheData = $this->cache->get($cacheKey);
     if ($cacheData !== null) {
       return $cacheData;
     }
-    $response = $this->query('delivery.calc', array(), array(
-      'geo_id' => $geoId,
-      'product' => array(array('id' => $productId, 'quantity' => 1))
-    ));
+    if ($kitProducts === null) {
+      $response = $this->query('delivery.calc', array(), array(
+        'geo_id' => $geoId,
+        'product' => array(array('id' => $productId, 'quantity' => 1))
+      ));
+    } else {
+      $pParam = array();
+      foreach ($kitProducts as $pId) {
+        $pParam[] = array('id' => $pId, 'quantity' => 1);
+      }
+      $response = $this->query('delivery.calc', array(), array(
+        'geo_id' => $geoId,
+        'product' => $pParam
+      ));
+    }
     $this->cache->set($cacheKey, $response, 3600*3);
     return $response;
   }

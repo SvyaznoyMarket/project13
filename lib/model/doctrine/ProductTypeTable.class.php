@@ -39,6 +39,7 @@ class ProductTypeTable extends myDoctrineTable
     return array(
       'view'           => false, // list, show
       'group_property' => false, // группировать свойства товара по группам
+      'hydrate_array'  => false,
     );
   }
 
@@ -67,7 +68,7 @@ class ProductTypeTable extends myDoctrineTable
     return $q;
   }
 
-  public function getById($id, array $params = array())
+  public function getRecordById($id, array $params = array())
   {
     $this->applyDefaultParameters($params);
 
@@ -76,7 +77,11 @@ class ProductTypeTable extends myDoctrineTable
     $this->setQueryParameters($q, $params);
 
     $q->addWhere('productType.id = ?', $id);
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    if ($params['hydrate_array'])
+    {
+      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    }
 
     $record = $q->fetchOne();
     if (!$record)
@@ -87,17 +92,22 @@ class ProductTypeTable extends myDoctrineTable
     if ($params['view'])
     {
       $groupedPropertyArray = array();
-      foreach ($record['PropertyRelation'] as $propertyRelation)
+      foreach ($record['PropertyRelation'] as $i => $propertyRelation)
       {
-        $propertyRelation['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id']);
+        $record['PropertyRelation'][$i]['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id'], array('hydrate_array' => $params['hydrate_array']));
 
         if ($params['group_property'])
         {
-          if (!isset($groupedPropertyArray[$propertyRelation->group_id]))
+          if (!isset($groupedPropertyArray[$propertyRelation['group_id']]))
           {
-            $groupedPropertyArray[$propertyRelation->group_id] = ProductPropertyTable::getInstance()->createList();
+            $groupedPropertyArray[$propertyRelation['group_id']] = ProductPropertyTable::getInstance()->createList();
           }
-          $groupedPropertyArray[$propertyRelation->group_id][] = $propertyRelation['Property'];
+          $groupedPropertyArray[$propertyRelation['group_id']][] = $propertyRelation['Property'];
+        }
+
+        if ($params['hydrate_array'])
+        {
+          $record['Property'][$i] = &$record['PropertyRelation'][$i]['Property'];
         }
       }
 
@@ -107,8 +117,8 @@ class ProductTypeTable extends myDoctrineTable
         {
           // TODO: Сделать поприличнее
           //if (isset($groupedPropertyArray[$propertyGroup->id])) {
-          if (array_key_exists($propertyGroup->id, $groupedPropertyArray)) {
-            $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup->id];
+          if (array_key_exists($propertyGroup['id'], $groupedPropertyArray)) {
+            $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup['id']];
           }
           else
           {

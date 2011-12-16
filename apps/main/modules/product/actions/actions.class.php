@@ -12,13 +12,15 @@ class productActions extends myActions
 {
   public function executeList(sfWebRequest $request)
   {
-    $tokens = is_array($request['products']) ? $request['products'] : explode(',', $request['products']);
+    //$tokens = is_array($request['products']) ? $request['products'] : explode(',', $request['products']);
+    $ids = is_array($request['products']) ? $request['products'] : explode(',', $request['products']);
 
-    $this->productList = ProductTable::getInstance()->getListByTokens($tokens);
+    //$this->productList = ProductTable::getInstance()->getListByTokens($tokens);
+    $this->productList = ProductTable::getInstance()->getListByIds($ids);
   }
-  
+
   /**
-   * @param sfWebRequest $request 
+   * @param sfWebRequest $request
    */
   public function executeDeliveryInfo(sfWebRequest $request)
   {
@@ -26,7 +28,20 @@ class productActions extends myActions
     $data = array();
     $now = new DateTime();
     foreach ($productIds as $productId) {
-      $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
+      $productObj = ProductTable::getInstance()->findOneByCoreId($productId);
+      if (!$productObj || !$productObj instanceof Doctrine_Record) {
+        continue;
+      }
+      if ($productObj->isKit()) {
+        $setItems = ProductKitRelationTable::getInstance()->findByKitId($productObj->id);
+        $setCoreIds = array();
+        foreach ($setItems as $setItem) {
+          $setCoreIds[] = $setItem->Part->core_id;
+        }
+        $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'), $setCoreIds);
+      } else {
+        $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
+      }
       $result = array('success' => true, 'deliveries' => array());
       if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
         $deliveries = array(array(
@@ -116,7 +131,7 @@ class productActions extends myActions
     $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
     //Продукты в серии
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
-    
+
     if (1 == count($product_ids))
     {
       $this->redirect(url_for('productCard', $this->product));

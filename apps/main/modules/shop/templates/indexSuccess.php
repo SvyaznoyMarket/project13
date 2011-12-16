@@ -7,4 +7,7 @@
 <?php include_component('shop', 'map', array('region' => $region)) ?>
 <?php include_component('shop', 'list', array('region' => $region)) ?>
 
+<?php slot('seo_counters_advance') ?>
+  <?php include_component('shop', 'seo_counters_advance') ?>
+<?php end_slot() ?>
 <div class="clear"></div>

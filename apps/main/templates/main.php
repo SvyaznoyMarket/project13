@@ -39,7 +39,6 @@ _gaq.push(['_trackPageLoadTime']);
 <body>
 <?php LastModifiedHandler::setLastModified();  ?>
 
-
 <div class="bannersbox">
     <div class="bannersboxinner">
 	  <!-- /images/banners/small/banner3.png -->
@@ -67,23 +66,8 @@ _gaq.push(['_trackPageLoadTime']);
     </noindex>
 
 
-    <div class="bigbanner">
-    	<a href="#" class='bIndexCard__eA mInlineBlock' style='cursor:pointer;'><img src="/images/banner_promo_1.jpg" alt=""/></a>
-    	<div class="hdn"><img src="/images/banner_promo_2.jpg" alt=""/></div>
-    	<div class='bIndexCard'>
-			<div class='bIndexCard__eInfo'>
-				Приходите в любой магазин Enter в москве 10 декабря:<br><br>
-				<a href='http://www.enter.ru/shops/moskva/enter-na-ul-gruzinskiy-val-d-31'>Москва, ул. Грузинский вал, 31</a><br>
-				<a href='http://www.enter.ru/shops/moskva/magazin-na-ul-b-dorogomilovskaya-d-8'>Москва, ул. Дорогомиловская, 8</a><br>
-				<a href='http://www.enter.ru/shops/moskva/magazin--na-ul-ordgonikidze-d-11'>Москва, ул. Орджникидзе 11, стр.10</a><br><br>
-				Сделайте покупку на сумму от 1000 рублей<br>
-				Оставьте нам фото с вашей улыбкой и<br>
-				Получите золотой кулон в виде сердца! В подарок! :)<br><br>
-				<span>* Количество купонов ограничено. Одному покупателю - один подарок!</span>
-			</div>
-		</div>
-    </div>
-      <?php // include_component('default', 'slot', array('token' => 'big_banner')) ?>
+    <div class="bigbanner"><a href=""><img src="" alt="" width="768" height="302" /></a></div>
+    <?php // include_component('default', 'slot', array('token' => 'big_banner')) ?>
 
 
     <?php include_component('default', 'footer', array('view' => 'main')) ?>
@@ -95,38 +79,36 @@ _gaq.push(['_trackPageLoadTime']);
 <?php include_combined_javascripts() ?>
 <script>
 	$(document).ready(function(){
-		
-		$('.bIndexCard__eA').click( function() { 
-			$('.bIndexCard').fadeIn()
-			return false
-		})
 
-	
 		function getRandomInt(min, max)
 		{
 		  return Math.floor(Math.random() * (max - min + 1)) + min
 		}
-		var pref = '/products/'
-		var hrefs = [  '2030000012503', '2060400005041', '2060101000062', '2010101001637', '2020201000751',
-					'2050600002612', '2020401001060', '2080501001025', '2060201000627']
+		var pref = '/'
+		var hrefs = [  'products/2060101001854', 'products/2060701001476', 'products/2060603000409', 'products/2050200005747', 
+					'products/2040101007049',
+					'products/2020103002174', 'products/2020301000941', 'products/2080502001192', 'products/2050100004444',
+					'products/2050405000578', 
+					'search?q=%D0%BA%D1%83%D1%85%D0%BD%D0%B8+%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B0']
+					//'2050301012576']
 		var node    = $('.bannersboxinner')
 		var bignode = $('.bigbanner')
-		var bri = getRandomInt(1, 9)
+		var bri = getRandomInt(1, 11)
 
-		//bignode.find('img').attr('src','/images/banners/big/banner'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
+		bignode.find('img').attr('src','/images/enter/big/enter'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
 		var ri = getRandomInt(1, 4)
 		while( bri == ri + 4 ) {
 			ri = getRandomInt(1, 4)
 		}
 
-		node.find('.banner2 img').attr('src','/images/banners/small/banner'+ (ri + 4) +'.jpg')
+		node.find('.banner2 img').attr('src','/images/enter/small/enter'+ (ri + 4) +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri + 3])
 		var ri_2 = getRandomInt(1, 4)
 		while( ri_2 == ri || bri == ri_2 + 4 ) {
 			ri_2 = getRandomInt(1, 4)
 		}
 
-		node.find('.banner5 img').attr('src','/images/banners/small/banner'+ (ri_2 + 4) +'.jpg')
+		node.find('.banner5 img').attr('src','/images/enter/small/enter'+ (ri_2 + 4) +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri_2 + 3])
 
 		ri = getRandomInt(1, 4)
@@ -134,14 +116,14 @@ _gaq.push(['_trackPageLoadTime']);
 			ri = getRandomInt(1, 4)
 		}
 
-		node.find('.banner3 img').attr('src','/images/banners/medium/banner'+ ri +'.jpg')
+		node.find('.banner3 img').attr('src','/images/enter/medium/enter'+ ri +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri - 1])
 		ri_2 = ri
 		while( ri_2 == ri || bri == ri_2 ) {
 			ri_2 = getRandomInt(1, 4)
 		}
 
-		node.find('.banner4 img').attr('src','/images/banners/medium/banner'+ ri_2 +'.jpg')
+		node.find('.banner4 img').attr('src','/images/enter/medium/enter'+ ri_2 +'.jpg')
 								 .parent().attr('href', pref + hrefs[ri_2 - 1])
 
 		$('.startse').bind ({ 'blur': function(){
@@ -179,6 +161,10 @@ _gaq.push(['_trackPageLoadTime']);
 <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
+
+<?php if (has_slot('seo_counters_advance')): ?>
+  <?php include_slot('seo_counters_advance') ?>
+<?php endif ?>
 
 </body>
 </html>

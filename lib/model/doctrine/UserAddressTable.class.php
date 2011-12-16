@@ -17,6 +17,18 @@ class UserAddressTable extends myDoctrineTable
       return Doctrine_Core::getTable('UserAddress');
   }
 
+  public function getCoreMapping()
+  {
+    return array(
+      'id'      => 'core_id',
+      //'name'    => 'name',
+      'address' => 'address',
+
+      'geo_id'  => array('rel' => 'City'),
+      'user_id' => array('rel' => 'User'),
+    );
+  }
+
   public function getListByUser($user_id, array $params = array())
   {
     $this->applyDefaultParameters($params);
@@ -30,17 +42,5 @@ class UserAddressTable extends myDoctrineTable
     $ids = $this->getIdsByQuery($q);
 
     return $this->createListByIds($ids, $params);
-  }
-
-  public function getCoreMapping()
-  {
-    return array(
-      'id'      => 'core_id',
-      //'name'    => 'name',
-      'address' => 'address',
-
-      'geo_id'  => array('rel' => 'City'),
-      'user_id' => array('rel' => 'User'),
-    );
   }
 }

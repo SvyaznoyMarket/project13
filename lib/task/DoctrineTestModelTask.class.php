@@ -37,6 +37,8 @@ EOF;
 
     foreach ($models as $model)
     {
+      if ((false !== strpos($model, 'Base')) || (false !== strpos($model, 'Table'))) continue;
+
       try
       {
         Doctrine_Core::getTable($model)->createQuery()->select('*')->limit(1)->execute();

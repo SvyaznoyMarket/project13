@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    
+
     var filterlink = $('.filter .filterlink:first');
 	var filterlist = $('.filter .filterlist');
 	var userag    = navigator.userAgent.toLowerCase()
@@ -21,7 +21,15 @@ $(document).ready(function() {
 			filterlink.show();
 		});
 	}
-
+    $('.bDropMenu').each( function() {
+		var jspan  = $(this).find('span:first')
+		var jdiv   = $(this).find('div')
+		jspan.css('display','block')
+		if( jspan.width() + 60 < jdiv.width() )
+			jspan.width( jdiv.width() - 70)
+		else
+			jdiv.width( jspan.width() + 70)
+	})
     $('.product_rating-form').live({
         'form.ajax-submit.prepare': function(e, result) {
             $(this).find('input:submit').attr('disabled', true)
