@@ -118,7 +118,7 @@ class ProductTable extends myDoctrineTable
 
     $q->leftJoin('product.ProductPrice productPrice')
       ->innerJoin('productPrice.PriceList priceList')
-      ->innerJoin('priceList.Region region WITH region.id = ?', sfContext::getInstance()->getUser()->getRegion('id'));
+      ->innerJoin('priceList.Region region WITH region.id = ?', sfContext::getInstance()->getUser()->getRegion('id')); // TODO: избавиться от sfContext
 
     $this->setQueryParameters($q, $params);
     $q->addWhere('product.id = ?', $id);
