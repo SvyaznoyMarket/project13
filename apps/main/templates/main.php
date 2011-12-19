@@ -84,56 +84,81 @@ _gaq.push(['_trackPageLoadTime']);
 		{
 		  return Math.floor(Math.random() * (max - min + 1)) + min
 		}
-		var pref = '/products/'
-		var hrefs = [  '2060101001854', '2060701001476', '2060603000409', '2050200005747', 
-					'2040101007049',
-					'2020103002174', '2020301000941', '2080502001192', '2030000048472',
-					'set/2030000054374,2030000054350', '2030000001330']
-					//'2050301012576']
+		var values = { '2060101001854': '/products/2060101001854',
+				    '2060701001476': '/products/2060701001476',
+				    '2060603000409': '/products/2060603000409',
+				    'ny': '/catalog/household/tovari-dlya-novogo-goda-i-rogdestva-novogodnie-elki-1271/',
+				    '2030000054374': '/products/set/2030000054374,2030000054350',
+				    '2020103002174': '/products/2020103002174',
+				    '2030000048472': '/products/2030000048472',
+				    '2080502001192': '/products/2080502001192',
+				    '2020301000408': '/products/2020301000408',
+				    '2060101000116': '/products/2060101000116',
+				    '2030000001330': '/products/2030000001330',
+				    'furniture': '/furniture/mebel-fabrik-divan-vika-21-beliy' }
+		var rotations = {
+			big:['2060101001854','2060701001476','2060603000409','ny','2030000054374','2020103002174','2030000048472',
+				 '2080502001192','2020301000408','2060101000116','2030000001330','furniture'],	 
+			med: ['2060101001854','2060701001476','2060603000409','ny'],
+			sm: ['2030000054374','2020103002174','2030000048472','2080502001192']
+		}
+
 		var node    = $('.bannersboxinner')
 		var bignode = $('.bigbanner')
-		var bri = getRandomInt(1, 11)
-
-		bignode.find('img').attr('src','/images/enter/big/enter'+ bri +'.jpg').parent().attr('href', pref + hrefs[bri - 1])
-		var ri = getRandomInt(1, 4)
-		while( bri == ri + 4 ) {
-			ri = getRandomInt(1, 4)
+		var ind = getRandomInt(0, rotations.big.length - 1 )
+		var bri = rotations.big[ ind ] + ''
+		bignode.find('img').attr('src','/images/enter/big/enter'+ (ind*1+1) +'.jpg')
+						   .parent().attr('href', values[bri])
+						   
+		ind = getRandomInt(0, rotations.med.length - 1 )
+		var mri = rotations.med[ ind ] + ''
+		while( bri === mri ) {
+			ind = getRandomInt(0, rotations.med.length - 1 )
+			mri = rotations.med[ ind ] + ''
 		}
-
-		node.find('.banner2 img').attr('src','/images/enter/small/enter'+ (ri + 4) +'.jpg')
-								 .parent().attr('href', pref + hrefs[ri + 3])
-		var ri_2 = getRandomInt(1, 4)
-		while( ri_2 == ri || bri == ri_2 + 4 ) {
-			ri_2 = getRandomInt(1, 4)
+		var mri_2 = mri
+		node.find('.banner3 img').attr('src','/images/enter/medium/enter'+ (ind*1+1) +'.jpg')
+								 .parent().attr('href', values[mri])
+		ind = getRandomInt(0, rotations.med.length - 1 )
+		var mri = rotations.med[ ind ] + ''
+		
+		while( bri === mri || mri_2 === mri) {
+			ind = getRandomInt(0, rotations.med.length - 1 )
+			mri = rotations.med[ ind ] + ''
 		}
+		node.find('.banner4 img').attr('src','/images/enter/medium/enter'+ (ind*1+1) +'.jpg')
+								 .parent().attr('href', values[mri])
 
-		node.find('.banner5 img').attr('src','/images/enter/small/enter'+ (ri_2 + 4) +'.jpg')
-								 .parent().attr('href', pref + hrefs[ri_2 + 3])
-
-		ri = getRandomInt(1, 4)
-		while( bri == ri ) {
-			ri = getRandomInt(1, 4)
+		ind = getRandomInt(0, rotations.sm.length - 1 )
+		var sri = rotations.sm[ ind ] + ''
+		while( bri === sri || mri === sri || mri_2 === sri) {
+			ind = getRandomInt(0, rotations.sm.length - 1 )
+			sri = rotations.sm[ ind ] + ''
 		}
-
-		node.find('.banner3 img').attr('src','/images/enter/medium/enter'+ ri +'.jpg')
-								 .parent().attr('href', pref + hrefs[ri - 1])
-		ri_2 = ri
-		while( ri_2 == ri || bri == ri_2 ) {
-			ri_2 = getRandomInt(1, 4)
+		var sri_2 = sri
+		node.find('.banner2 img').attr('src','/images/enter/small/enter'+ (ind*1+1) +'.jpg')
+								 .parent().attr('href', values[sri])
+		ind = getRandomInt(0, rotations.sm.length - 1 )
+		var sri = rotations.sm[ ind ] + ''
+		while( bri === sri || mri === sri || mri_2 === sri || sri_2 === sri) {
+			ind = getRandomInt(0, rotations.sm.length - 1 )
+			sri = rotations.sm[ ind ] + ''
 		}
+		node.find('.banner5 img').attr('src','/images/enter/small/enter'+ (ind*1+1) +'.jpg')
+								 .parent().attr('href', values[sri])
 
-		node.find('.banner4 img').attr('src','/images/enter/medium/enter'+ ri_2 +'.jpg')
-								 .parent().attr('href', pref + hrefs[ri_2 - 1])
-
-		$('.startse').bind ({ 'blur': function(){
+		$('.startse').bind ({
+			'blur': function() {
 				if (this.value == '')
 					this.value = 'Поиск среди 20 000 товаров'
-				},'focus': function() {
+			},
+			'focus': function() {
 					if (this.value == 'Поиск среди 20 000 товаров')
 						this.value = ''
-					}
-				})
-	})
+			}
+		})
+	})	
+	
 </script>
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">
