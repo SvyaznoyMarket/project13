@@ -1,15 +1,30 @@
 $(document).ready(function(){
+	function getCookie(c_name) {
+		var x , y, allcookies = document.cookie.split(';')
+		for ( var i=0, l=allcookies.length; i < l ; i++ ) {
+			x = allcookies[i].substr( 0, allcookies[i].indexOf('=') )
+			y = allcookies[i].substr( allcookies[i].indexOf('=') + 1 )
+			x = x.replace( /^\s+|\s+$/g, '' )
+			if (x === c_name) 
+				return unescape(y)
+		}
+		return false
+	}
+	var shortinfo = '/user/shortinfo'
+	if( !getCookie('enter') )
+		shortinfo += '?ts=' + new Date().getTime()
+	
 	/* Lightbox */
 	var lbox = {}
 	if (window.Lightbox === undefined) {
 		$('.lightboxinner').hide()
-		$.getJSON('/user/shortinfo', function(data) {
+		$.getJSON( shortinfo, function(data) {
 			if( data.success ) {
 				if( data.data.name ) {
 					var dtmpl={}
 					dtmpl.user = data.data.name
 					var show_user = tmpl('auth_tmpl', dtmpl)
-          $('#auth-link').hide()
+          			$('#auth-link').hide()
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
 			}
@@ -30,7 +45,7 @@ $(document).ready(function(){
 		draganddrop.cancel()
 	})
 	/* ---- */
-	$.getJSON('/user/shortinfo', function(data) {
+	$.getJSON( shortinfo, function(data) {
 			if( data.success ) {
 				lbox = data.data
 				ltbx.update( lbox )
@@ -45,7 +60,7 @@ $(document).ready(function(){
 					var dtmpl={}
 					dtmpl.user = data.data.name
 					var show_user = tmpl('auth_tmpl', dtmpl)
-          $('#auth-link').hide()
+          			$('#auth-link').hide()
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
 			}
