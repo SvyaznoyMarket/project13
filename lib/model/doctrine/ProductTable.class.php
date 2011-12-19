@@ -59,6 +59,7 @@ class ProductTable extends myDoctrineTable
       'with_line'      => false,
       'with_model'     => false, // список только товаров, без моделей
       'hydrate_array'  => false,
+      'region_id'      => sfContext::getInstance()->getUser()->getRegion('id'),
     );
   }
 
@@ -68,17 +69,19 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createQuery('product');
 
+    $q->leftJoin('product.State productState WITH productState.region_id = ?', $params['region_id']);
+
     if ('list' == $params['view'])
     {
-      $q->addWhere('product.view_list = ?', true);
+      $q->addWhere('IF(productState.view_list IS NULL, product.view_list, productState.view_list) = ?', true);
     }
     if ('show' == $params['view'])
     {
-      $q->addWhere('product.view_show = ?', true);
+      $q->addWhere('IF(productState.view_show IS NULL, product.view_show, productState.view_show) = ?', true);
     }
     elseif (!isset($param['old_goods']) || false == $param['old_goods'])
     {
-      //$q->addWhere('product.is_instock = ?', true);
+      //$q->addWhere('IF(productState.is_instock IS NULL, product.is_instock, productState.is_instock) = ?', true);
     }
 
     if ($params['with_line'])
@@ -118,7 +121,7 @@ class ProductTable extends myDoctrineTable
 
     $q->leftJoin('product.ProductPrice productPrice')
       ->innerJoin('productPrice.PriceList priceList')
-      ->innerJoin('priceList.Region region WITH region.id = ?', sfContext::getInstance()->getUser()->getRegion('id'));
+      ->innerJoin('priceList.Region region WITH region.id = ?', $params['region_id']);
 
     $this->setQueryParameters($q, $params);
     $q->addWhere('product.id = ?', $id);
@@ -133,10 +136,11 @@ class ProductTable extends myDoctrineTable
     {
       return $record;
     }
+
     if (empty($record['ProductPrice']))
     {
       $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
-    //$prices = ProductPriceTable::getInstance()->getByProductId($record['id']);
+      //$prices = ProductPriceTable::getInstance()->getByProductId($record['id']);
       if ($prices)
       {
         if ($record instanceof Product)
@@ -148,6 +152,14 @@ class ProductTable extends myDoctrineTable
         }
         //$record['price'] = $prices->price;
       }
+    }
+
+    if (!empty($record['State'][0]))
+    {
+      $record['view_show'] = $record['State'][0]['view_show'];
+      $record['view_list'] = $record['State'][0]['view_list'];
+      $record['is_instock'] = $record['State'][0]['is_instock'];
+      $record['status_id'] = $record['State'][0]['status_id'];
     }
 
     $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
