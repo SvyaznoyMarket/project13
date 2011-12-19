@@ -197,6 +197,7 @@ $(document).ready(function(){
 					'title' : $('h1').html(),
 					'vitems': data.data.full_quantity,
 					'sum'   : data.data.full_price,
+					'link'  : data.data.link,
 					'price' : $('.goodsinfo .price').html(),
 					'img'   : $('.goodsphoto img').attr('src')
 				}
@@ -266,6 +267,7 @@ $(document).ready(function(){
 				var tmpitem = parseItemNode( currentItem )
 				tmpitem.vitems = data.data.full_quantity
 				tmpitem.sum = data.data.full_price
+				tmpitem.link = data.data.link
 				ltbx.getBasket( tmpitem )
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).addClass('active')
@@ -316,7 +318,8 @@ $(document).ready(function(){
 							'price' : jsond.jsprice,
 							'img'   : ( jsond.jsimg ) ? jsond.jsimg : '/images/logo.png',
 							'vitems': data.data.full_quantity,
-							'sum'   : data.data.full_price
+							'sum'   : data.data.full_price,
+							'link'  : data.data.link
 						}
 						ltbx.getBasket( tmpitem )
 						if( afterpost )
