@@ -153,4 +153,33 @@ $(document).ready(function() {
         .fail(function(error) {})
     })
 
+
+    $('.order1click-link').bind('click', function(e) {
+      e.preventDefault()
+
+      var link = $(this)
+
+      $('#order1click-container').lightbox_me({
+        centered: true
+      })
+
+      if ($('#order1click-form').html() < 2) {
+        $.get(link.attr('href'), function(response) {
+          $('#order1click-form').html(response.data.form)
+        })
+      }
+    })
+
+    $('#order1click-form').bind('submit', function(e) {
+      e.preventDefault()
+
+      var form = $(this)
+
+      form.ajaxSubmit({
+        success: function(response) {
+          console.info(response);
+        }
+      })
+    })
+
 });

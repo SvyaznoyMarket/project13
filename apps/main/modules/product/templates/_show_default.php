@@ -1,11 +1,11 @@
-<?php 
-#JSON data 
+<?php
+#JSON data
 	$json = array (
 		'jsref' => $item['product']->token,
 		'jstitle' => $item['product']->name,
 		'jsprice' => $item['price'],
 		'jsimg' => $product->getMainPhotoUrl(3)
-	)	
+	)
 ?>
 <?php
 $photos = $product->getAllPhotos();
@@ -63,7 +63,7 @@ foreach ($p3d as $p3d_obj)
               <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
               <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
             </div>
-            <?php if (false): ?><div class="pb5"><strong><a href="" class="orange underline">Купить быстро в 1 клик</a></strong></div><?php endif ?>
+            <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
         </div>
 
 
@@ -80,9 +80,9 @@ foreach ($p3d as $p3d_obj)
 		</div>
 		<div class="line pb15"></div>
         <?php endif ?>
-        
+
         <?php include_component('service', 'listByProduct', array('product' => $product)) ?>
-        
+
 <?php if (false): ?>
 
         <div class='bF1Info bBlueButton'>
@@ -331,3 +331,16 @@ foreach ($p3d as $p3d_obj)
   </div>
 </div>
 <!-- /Media -->
+
+
+
+<div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
+  <div class="bMobDown__eWrap">
+    <div class="bMobDown__eClose close"></div>
+    <h2>Покупка в 1 клик!</h2>
+    <div class="clear line pb20"></div>
+
+    <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $product['barcode'])) ?>" method="post"></form>
+
+  </div>
+</div>

@@ -37,18 +37,31 @@ class orderActions extends myActions
   */
   public function execute1click(sfWebRequest $request)
   {
-    $this->setLayout(false);
-    sfConfig::set('sf_web_debug', false);
+    $return = array(
+      'success' => false,
+    );
 
-    $this->product = ProductTable::getInstance()->getById($request->getParameter('product_id'));
+    $this->product = ProductTable::getInstance()->getByBarcode($request->getParameter('product'));
+
     $this->order = new Order();
+    $this->order->User = $this->getUser()->getGuardUser();
+    $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product);
+    $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
+
+    $relation = new OrderProductRelation();
+    $relation->fromArray(array(
+      'product_id' => $this->product->id,
+      'price'      => ProductTable::getInstance()->getRealPrice($this->product),
+      'quantity'   => 1,
+    ));
+    $this->order->ProductRelation[] = $relation;
 
     if (empty($this->order->region_id))
     {
-     $this->order->region_id = $this->getUser()->getRegion('id');
+      $this->order->region_id = $this->getUser()->getRegion('id');
     }
 
-    $this->form = new OrderStep1Form($this->order);
+    $this->form = new OrderOneClickForm($this->order, array('user' => $this->getUser()->getGuardUser()));
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getParameter($this->form->getName()));
@@ -57,21 +70,33 @@ class orderActions extends myActions
       {
         $order = $this->form->updateObject();
 
-        if ($order->isOnlinePayment())
+        if ($this->save1clickOrder($order, $this->product))
         {
-          if ($this->save1clickOrder($order, $this->product))
-          {
-            $provider = $this->getPaymentProvider();
-            $this->paymentForm = $provider->getForm($order);
-            $this->paymentForm->setDefault('URL_RETURN', url_for('productCard', $this->product).'#1click-payment-ok');   //
-          }
-        } else {
-            if ($this->save1clickOrder($order, $this->product)) {
-                $this->message = 'Заказ успешно создан';
-            }
+          $return['success'] = true;
+          $return['message'] = 'Заказ успешно создан';
+        }
+        else {
+          $return['message'] = 'Не удалось создать заказ';
         }
       }
+      else {
+        $return = array(
+          'success' => false,
+          'data'    => array(
+            'form' => $this->getPartial($this->getModuleName().'/form_oneClick'),
+          ),
+        );
+      }
+
+      return $this->renderJson($return);
     }
+
+    return $this->renderJson(array(
+      'success' => true,
+      'data'    => array(
+        'form' => $this->getPartial($this->getModuleName().'/form_oneClick'),
+      ),
+    ));
   }
 
   public function executeLogin(sfWebRequest $request)
@@ -416,6 +441,8 @@ class orderActions extends myActions
   {
       $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
       $order->sum = $product->price;
+      $order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
+
       $relation = new OrderProductRelation();
       $relation->fromArray(array(
         'product_id' => $product->id,

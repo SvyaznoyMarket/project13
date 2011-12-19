@@ -34,7 +34,7 @@ class productComponents extends myComponents
 
     $table = ProductTable::getInstance();
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick')))
     {
       $this->view = 'default';
     }
@@ -105,6 +105,7 @@ class productComponents extends myComponents
       'id'         => $this->product['id'],
       'core_id'    => $this->product['core_id'],
       'token'      => $this->product['token'],
+      'barcode'      => $this->product['barcode'],
       'article'    => $this->product['article'],
       'name'       => $this->product['name'],
       //'creator'    => $this->product['Creator']['name'],
@@ -123,6 +124,11 @@ class productComponents extends myComponents
     if ('compact' == $this->view)
     {
         $item['root_name'] = ProductCategoryTable::getInstance()->getRootRecord($this->product['Category'][0]);//(string)$this->product['Category'][0]->getRootCategory();
+    }
+
+    if ('orderOneClick' == $this->view)
+    {
+      $item['photo'] = $this->product->getMainPhotoUrl(1);
     }
 
     if ('default' == $this->view)
@@ -484,7 +490,7 @@ class productComponents extends myComponents
       if ($this->parentAction == '_list_for_product_in_cart') {
           $showInCardButton = true;
       } else {
-          $showInCardButton = false;          
+          $showInCardButton = false;
       }
       $this->setVar('showInCardButton', $showInCardButton);
   }
