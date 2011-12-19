@@ -262,9 +262,10 @@ $(document).ready(function(){
 			var tmp = $(this).parent().parent().find('.photo img')
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}
+		var boughtItem = currentItem
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {
 			if ( data.success && ltbx ) {
-				var tmpitem = parseItemNode( currentItem )
+				var tmpitem = parseItemNode( boughtItem )
 				tmpitem.vitems = data.data.full_quantity
 				tmpitem.sum = data.data.full_price
 				tmpitem.link = data.data.link
