@@ -95,11 +95,14 @@ _gaq.push(['_trackPageLoadTime']);
 				    '2020301000408': '/products/2020301000408',
 				    '2060101000116': '/products/2060101000116',
 				    '2030000001330': '/products/2030000001330',
-				    'furniture': '/furniture/mebel-fabrik-divan-vika-21-beliy' }
+				    'furniture': '/product/furniture/mebel-fabrik-divan-vika-21-beliy' }
 		var rotations = {
+		// images/enter/big/ file by file 
 			big:['2060101001854','2060701001476','2060603000409','ny','2030000054374','2020103002174','2030000048472',
 				 '2080502001192','2020301000408','2060101000116','2030000001330','furniture'],	 
+		// images/enter/medium/ file by file 		 
 			med: ['2060101001854','2060701001476','2060603000409','ny'],
+		// images/enter/small/ file by file 	
 			sm: ['2030000054374','2020103002174','2030000048472','2080502001192']
 		}
 
