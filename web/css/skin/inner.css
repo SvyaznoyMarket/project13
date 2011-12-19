@@ -2935,3 +2935,41 @@ DT.bCtg__eOrange{
 .border-none {
   border: 0 none;
 }
+
+
+.bNewDelivery{}
+	.bNewDelivery h2{
+		margin: 0;
+		padding: 0 0 20px 0;
+		font: bold 16px Tahoma, sans-serif;
+		}
+	.bNewDelivery h3{
+		margin: 0;
+		padding: 0 0 20px 0;
+		font: 16px Tahoma, sans-serif;
+		}
+	.bNewDelivery div{
+		margin: 0 0 10px 0;
+		font: 14px Tahoma, sans-serif;
+		}
+	.bNewDelivery p{
+		margin: 0 0 20px 0;
+		font: 12px/16px Tahoma, sans-serif;
+		}
+	.bNewDelivery span{
+		display: block;
+		font: bold 12px/16px Tahoma, sans-serif;
+		}
+	.bNewDelivery i{
+		display: block;
+		margin: 10px 0;
+		text-decoration: underline;
+		font: normal 12px/16px Tahoma, sans-serif;
+		}
+	.bNewDelivery ul{
+		margin: 10px 0;
+		}
+	.bNewDelivery a{
+		text-decoration: underline;
+		}
+
