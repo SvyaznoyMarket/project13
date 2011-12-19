@@ -12,7 +12,7 @@ $(document).ready(function(){
 	}
 	var shortinfo = '/user/shortinfo'
 	if( !getCookie('enter') )
-		shortinfo += '?ts=' + new Date().getTime()
+		shortinfo += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000)
 	
 	/* Lightbox */
 	var lbox = {}
