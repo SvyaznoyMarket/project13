@@ -84,12 +84,11 @@ _gaq.push(['_trackPageLoadTime']);
 		{
 		  return Math.floor(Math.random() * (max - min + 1)) + min
 		}
-		var pref = '/'
-		var hrefs = [  'products/2060101001854', 'products/2060701001476', 'products/2060603000409', 'products/2050200005747', 
-					'products/2040101007049',
-					'products/2020103002174', 'products/2020301000941', 'products/2080502001192', 'products/2050100004444',
-					'products/2050405000578', 
-					'search?q=%D0%BA%D1%83%D1%85%D0%BD%D0%B8+%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B0']
+		var pref = '/products/'
+		var hrefs = [  '2060101001854', '2060701001476', '2060603000409', '2050200005747', 
+					'2040101007049',
+					'2020103002174', '2020301000941', '2080502001192', '2030000048472',
+					'set/2030000054374,2030000054350', '2030000001330']
 					//'2050301012576']
 		var node    = $('.bannersboxinner')
 		var bignode = $('.bigbanner')
