@@ -1142,14 +1142,14 @@ box-shadow:0 0 9px #616161;
 
 .mapbox {float:left; width:100%; position:relative; margin-bottom:20px}
 .mapbox .mark {position:absolute; display:block; width:39px; height:59px; background:url(img/bg.png) no-repeat -148px -241px}
-.mapbox .bigmark {position:absolute; }
-.mapbox .bigmark DIV {position:relative; padding:10px; background-color:#fba819; border:2px solid #e67b24; color:#fff; line-height:1.4em;
+.mMapPopup .bigmark1, .mapbox .bigmark {position:absolute; }
+.mMapPopup .bigmark1 div, .mapbox .bigmark DIV {position:relative; padding:10px; background-color:#fba819; border:2px solid #e67b24; color:#fff; line-height:1.4em;
 border-radius:5px; 
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 //behavior: url(border-radius.htc)
 }
-.mapbox .bigmark .corner {position:absolute; z-index:2; left:0; //left:3px; bottom:-19px; //bottom:-21px; display:block; width:24px; height:23px; background:url(img/bg.png) no-repeat -154px -214px}
+.mMapPopup .bigmark1 .corner, .mapbox .bigmark .corner {position:absolute; z-index:2; left:0; //left:3px; bottom:-19px; //bottom:-21px; display:block; width:24px; height:23px; background:url(img/bg.png) no-repeat -154px -214px}
 
 
 .printpage {background-color:#fff}
@@ -3004,4 +3004,196 @@ border-radius: 5px;
 			}
 
 
+.bGrayPopupBlock{
+	top:300px; 
+	left:180px;
+	z-index: 100;
+	display:block;
+	min-height: 60px;
+	background: #fff;
+	position: absolute;
+	text-align: left;
+	padding: 10px 25px 10px 20px;
+	}
+	.bGrayPopupBlock h2{
+		padding: 0;
+		margin: 0 0 10px 0;
+		font: 16px Tahoma, sans-serif;
+		}
+	.bGrayPopupBlock ul{
+		padding: 0;
+		margin-top: 10px;
+		}
+	.bGrayPopupBlock li{
+		margin: 3px 0;
+		}
+	.bGrayPopupBlock li a{
+		text-decoration: none;
+		font: 18px Tahoma, sans-serif;
+		}
+	.bGrayPopupBlock li a:hover{
+		color: #ffa901;
+		}
 
+.mMapPopup .bMobDownWrapRel{
+	top: 20px;
+	bottom: auto;
+	}
+	.mMapPopup .bMapShops__eMapWrap{
+		margin: 0;
+		}
+	.mMapPopup__eBottom{
+		padding-top: 20px;
+		}
+	.mMapPopup__eBottom .mGray{
+		color: #434343;
+		}
+	.mMapPopup__eBottom div.selectbox{
+		margin-left: 10px;
+		vertical-align: 4px;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.mMapPopup .bMapShops__eMapWrap{
+		position: relative;
+		}
+	.mMapPopup .whitebutton{
+		margin: 7px 0 0 0;
+		}
+	.mMapPopup .bigmark1{
+		max-width: 270px;
+		}
+	
+	
+/*- - -- --- -- - - -- - --*/
+.mCalendar{
+	top: 670px;
+	left: 215px;
+	}
+	.mCalendar table{
+		margin-top: 15px;
+		}
+	.mCalendar table th,
+	.mCalendar table td,
+	.mCalendar table td div{
+		margin: 0;
+		padding: 0;
+		width: 41px;
+		height: 41px;
+		}
+	.mCalendar table tr th:first-child,
+	.mCalendar table tr td:first-child,
+	.mCalendar table tr th:first-child div,
+	.mCalendar table tr td:first-child div{
+		width: 81px;
+		height: auto;
+		text-align: right;
+		font: 11px Tahoma, sans-serif;
+		}
+	.mCalendar table tr td:first-child div{
+		margin-right: 10px;
+		}
+	.mCalendar table th{
+		text-align: center;
+		font: bold 12px Tahoma, sans-serif;
+		}
+	.mCalendar table th,
+	.mCalendar table td{
+		border: 1px solid #e6e6e6;
+		}
+	.mCalendar .mEmpty{
+		cursor: default;
+		background: #fff;
+		}
+	.mCalendar table td div{
+		cursor: pointer;
+		background: url('img/cal_normal.png') 0 0 no-repeat;
+		}
+	.mCalendar .mChecked{
+		cursor: pointer;
+		background: url('img/cal_active.png') 0 0 no-repeat;
+		}
+	.mCalendar__eBottom{
+		color: #ffa901;
+		margin: 10px 0 5px 0;
+		text-align: center;
+		font: 14px Tahoma, sans-serif;
+		}
+	.mCalendar__eTop{
+		margin: 10px;
+		text-align: center;
+		}
+	.mCalendar__eTop span{
+		vertical-align: -18px;
+		}
+	.mCalendar__eTop .bCalLeft,
+	.mCalendar__eTop .bCalRight{
+		width: 25px;
+		height: 25px;
+		cursor: pointer;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.mCalendar__eTop .bCalLeft{
+		float: left;
+		background: url('img/cal_left.png') 0 0 no-repeat;
+		}
+	.mCalendar__eTop .bCalLeft.mDisabled{
+		cursor: default;
+		background: url('img/cal_left_h.png') 0 0 no-repeat;
+		}
+	.mCalendar__eTop .bCalRight{
+		float: right;
+		background: url('img/cal_right.png') 0 0 no-repeat;
+		}
+	.mCalendar__eTop .bCalRight.mDisabled{
+		cursor: default;
+		background: url('img/cal_right_h.png') 0 0 no-repeat;
+		}
+
+
+
+.bNewDelivery{}
+	.bNewDelivery h2{
+		margin: 0;
+		padding: 0 0 20px 0;
+		font: bold 16px Tahoma, sans-serif;
+		}
+	.bNewDelivery h3{
+		margin: 0;
+		padding: 0 0 20px 0;
+		font: 16px Tahoma, sans-serif;
+		}
+	.bNewDelivery div{
+		margin: 0 0 10px 0;
+		font: 14px Tahoma, sans-serif;
+		}	
+	.bNewDelivery p{
+		margin: 0 0 20px 0;
+		font: 12px/16px Tahoma, sans-serif;
+		}
+	.bNewDelivery span{
+		display: block;
+		font: bold 12px/16px Tahoma, sans-serif;
+		}
+	.bNewDelivery i{
+		display: block;
+		margin: 10px 0;
+		text-decoration: underline;
+		font: bold 12px/16px Tahoma, sans-serif;
+		}
+	.bNewDelivery ul{
+		margin: 10px 0;
+		}
+	.bNewDelivery a{
+		text-decoration: underline;
+		}
+	
+
+
+
+	
