@@ -260,8 +260,14 @@ class ProductTable extends myDoctrineTable
 
   public function getByToken($token, array $params = array())
   {
-
     $id = $this->getIdByToken($token);
+
+    return $this->getById($id, $params);
+  }
+
+  public function getByBarcode($barcode, array $params = array())
+  {
+    $id = $this->getIdBy('barcode', $barcode);
 
     return $this->getById($id, $params);
   }
@@ -533,6 +539,18 @@ class ProductTable extends myDoctrineTable
     foreach ($tokens as $token)
     {
       $list[] = $this->getByToken($token);
+    }
+
+    return $list;
+  }
+
+  public function getListByBarcodes(array $barcodes, array $params = array())
+  {
+    $list = $this->createList();
+
+    foreach ($barcodes as $barcode)
+    {
+      $list[] = $this->getByBarcode($barcode, $params);
     }
 
     return $list;
