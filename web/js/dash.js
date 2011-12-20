@@ -1,15 +1,30 @@
 $(document).ready(function(){
+	function getCookie(c_name) {
+		var x , y, allcookies = document.cookie.split(';')
+		for ( var i=0, l=allcookies.length; i < l ; i++ ) {
+			x = allcookies[i].substr( 0, allcookies[i].indexOf('=') )
+			y = allcookies[i].substr( allcookies[i].indexOf('=') + 1 )
+			x = x.replace( /^\s+|\s+$/g, '' )
+			if (x === c_name) 
+				return unescape(y)
+		}
+		return false
+	}
+	var shortinfo = '/user/shortinfo'
+	if( !getCookie('enter') )
+		shortinfo += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000)
+	
 	/* Lightbox */
 	var lbox = {}
 	if (window.Lightbox === undefined) {
 		$('.lightboxinner').hide()
-		$.getJSON('/user/shortinfo', function(data) {
+		$.getJSON( shortinfo, function(data) {
 			if( data.success ) {
 				if( data.data.name ) {
 					var dtmpl={}
 					dtmpl.user = data.data.name
 					var show_user = tmpl('auth_tmpl', dtmpl)
-          $('#auth-link').hide()
+          			$('#auth-link').hide()
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
 			}
@@ -30,7 +45,7 @@ $(document).ready(function(){
 		draganddrop.cancel()
 	})
 	/* ---- */
-	$.getJSON('/user/shortinfo', function(data) {
+	$.getJSON( shortinfo, function(data) {
 			if( data.success ) {
 				lbox = data.data
 				ltbx.update( lbox )
@@ -45,7 +60,7 @@ $(document).ready(function(){
 					var dtmpl={}
 					dtmpl.user = data.data.name
 					var show_user = tmpl('auth_tmpl', dtmpl)
-          $('#auth-link').hide()
+          			$('#auth-link').hide()
 					$('#auth-link').after(show_user)
 				} else $('#auth-link').show()
 			}
@@ -182,6 +197,7 @@ $(document).ready(function(){
 					'title' : $('h1').html(),
 					'vitems': data.data.full_quantity,
 					'sum'   : data.data.full_price,
+					'link'  : data.data.link,
 					'price' : $('.goodsinfo .price').html(),
 					'img'   : $('.goodsphoto img').attr('src')
 				}
@@ -246,11 +262,13 @@ $(document).ready(function(){
 			var tmp = $(this).parent().parent().find('.photo img')
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}
+		var boughtItem = currentItem
 		$.getJSON( $( button ).attr('href') +'/1', function(data) {
 			if ( data.success && ltbx ) {
-				var tmpitem = parseItemNode( currentItem )
+				var tmpitem = parseItemNode( boughtItem )
 				tmpitem.vitems = data.data.full_quantity
 				tmpitem.sum = data.data.full_price
+				tmpitem.link = data.data.link
 				ltbx.getBasket( tmpitem )
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).addClass('active')
@@ -301,7 +319,8 @@ $(document).ready(function(){
 							'price' : jsond.jsprice,
 							'img'   : ( jsond.jsimg ) ? jsond.jsimg : '/images/logo.png',
 							'vitems': data.data.full_quantity,
-							'sum'   : data.data.full_price
+							'sum'   : data.data.full_price,
+							'link'  : data.data.link
 						}
 						ltbx.getBasket( tmpitem )
 						if( afterpost )

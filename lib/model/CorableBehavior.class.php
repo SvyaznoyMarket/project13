@@ -86,4 +86,24 @@ class Doctrine_Template_Corable extends Doctrine_Template
 
     return $coreId ? $coreId : null;
   }
+
+  public function getCoreIdsByIdsTableProxy($ids, array $params = array())
+  {
+    if (!is_array($ids) || !count($ids))
+    {
+      return false;
+    }
+
+    $table = $this->getInvoker()->getTable();
+    $q = $table->createQuery();
+
+    $q->select('core_id')
+      ->whereIn('id', $ids)
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+    ;
+
+    $coreIds = $q->execute();
+
+    return is_array($coreIds) ? $coreIds : array($coreIds);
+  }
 }

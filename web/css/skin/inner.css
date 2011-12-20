@@ -2933,7 +2933,6 @@ DT.bCtg__eOrange{
 		}
 
 
-
 .bNewDelivery{}
 	.bNewDelivery h2{
 		margin: 0;
@@ -2971,6 +2970,7 @@ DT.bCtg__eOrange{
 		}
 
 
-
-
+.border-none {
+  border: 0 none;
+}
 

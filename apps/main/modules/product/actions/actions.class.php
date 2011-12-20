@@ -5,7 +5,7 @@
  *
  * @package    enter
  * @subpackage product
- * @author     РЎРІСЏР·РЅРѕР№ РњР°СЂРєРµС‚
+ * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
 class productActions extends myActions
@@ -16,7 +16,29 @@ class productActions extends myActions
     $ids = is_array($request['products']) ? $request['products'] : explode(',', $request['products']);
 
     //$this->productList = ProductTable::getInstance()->getListByTokens($tokens);
-    $this->productList = ProductTable::getInstance()->getListByIds($ids);
+    $this->productList = ProductTable::getInstance()->getListByCoreIds($ids);
+    $this->forward404Unless($this->productList->count());
+  }
+
+  public function executeSet(sfWebRequest $request)
+  {
+    $barcodes = is_array($request['products']) ? $request['products'] : explode(',', $request['products']);
+
+    $this->productList = ProductTable::getInstance()->getListByBarcodes($barcodes, array(
+      'with_properties' => true,
+      'property_view'   => 'list',
+    ));
+    $this->forward404Unless($this->productList->count());
+
+    $categoryIds = array();
+    foreach ($this->productList as $product)
+    {
+      if (in_array($product->Category[0]['id'], $categoryIds)) continue;
+
+      $categoryIds[] = $product->Category[0]['id'];
+    }
+
+    $this->setVar('productCategoryList', ProductCategoryTable::getInstance()->createListByIds($categoryIds), true);
   }
 
   /**
