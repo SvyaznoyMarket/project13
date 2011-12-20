@@ -13,13 +13,11 @@
     <div class="clear"></div>
     <div class="b1Click__eInp">
       <span>Имя получателя: </span>
-      <?php echo $form['recipient_first_name']->renderError() ?>
-      <?php echo $form['recipient_first_name']->render() ?>
+      <?php echo $form['recipient_first_name']->render($form['recipient_first_name']->hasError() ? array('class' => 'mRed') : array()) ?>
     </div>
     <div class="b1Click__eInp">
       <span>Телефон для связи:</span>
-      <?php echo $form['recipient_phonenumbers']->renderError() ?>
-      <?php echo $form['recipient_phonenumbers']->render() ?>
+      <?php echo $form['recipient_phonenumbers']->render($form['recipient_phonenumbers']->hasError() ? array('class' => 'mRed') : array()) ?>
     </div>
     <div class="bFormB2"><span><input type="submit" value="Оформить заказ" id="bigbutton" class="button bigbutton"> </span></div>
   </div>

@@ -2787,6 +2787,12 @@ DT.bCtg__eOrange{
 .bFormB{
 	text-align: center;
 	}
+	.bFormB2{
+		margin-bottom: 10px;
+		}
+	.bFormB2 a,
+	.bFormB2 span,
+	.bFormB2 input,
 	.bFormB a,
 	.bFormB span,
 	.bFormB input{
@@ -2797,9 +2803,17 @@ DT.bCtg__eOrange{
 		margin-right: 30px;
 		text-decoration: underline;
 		}
+	.bFormB2 a{
+		margin-left: 20px;
+		text-decoration: underline;
+		}
 	.bFormB input{
 		height: 40px;
 		padding: 3px 80px;
+		}
+	.bFormB2 input{
+		height: 40px;
+		padding: 3px 40px;
 		}
 
 .bFormAuth{
@@ -3014,6 +3028,9 @@ DT.bCtg__eOrange{
 			-moz-border-radius: 7px;
 			-o-border-radius: 7px;
 			}
+      .b1Click__eInp input.mRed {
+        border: 1px solid red;
+      }
 		.b1Click .bFormB2{
 			margin: 20px 0 0 130px;
 			}
