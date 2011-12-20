@@ -70,11 +70,13 @@ class orderActions extends myActions
 
         if ($this->product->isKit())
         {
-          foreach ($this->product->Part as $part)
+          foreach ($this->product->PartRelation as $partRelation)
           {
+            $part = ProductTable::getInstance()->getById($partRelation->part_id);
+
             $relation = new OrderProductRelation();
             $relation->fromArray(array(
-              'product_id' => $part->id,
+              'product_id' => $part['id'],
               'price'      => ProductTable::getInstance()->getRealPrice($part),
               'quantity'   => $this->form->getValue('product_quantity'),
             ));

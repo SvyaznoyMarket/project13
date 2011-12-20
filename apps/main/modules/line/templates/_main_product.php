@@ -22,11 +22,11 @@
         <?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1, 'value' => array('Купить набор'),)) ?>
 
         <?php if ($item['product']->is_insale): ?>
-        <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+				<div class="pb5"><strong class="orange">Есть в наличии</strong></div>
         <?php endif ?>
 
         <?php if ($item['product']->is_insale): ?>
-				<div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+        <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['product']->barcode)) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
         <?php endif ?>
 			</div>
 			<div class='bSet__eIconsWrap'>
@@ -44,3 +44,14 @@
 			</div>
 		</div>
 	</div>
+
+<div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
+  <div class="bMobDown__eWrap">
+    <div class="bMobDown__eClose close"></div>
+    <h2>Покупка в 1 клик!</h2>
+    <div class="clear line pb20"></div>
+
+    <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $product['barcode'])) ?>" method="post"></form>
+
+  </div>
+</div>
