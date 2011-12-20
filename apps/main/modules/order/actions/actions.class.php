@@ -54,14 +54,6 @@ class orderActions extends myActions
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
     $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
 
-    $relation = new OrderProductRelation();
-    $relation->fromArray(array(
-      'product_id' => $this->product->id,
-      'price'      => ProductTable::getInstance()->getRealPrice($this->product),
-      'quantity'   => 1,
-    ));
-    $this->order->ProductRelation[] = $relation;
-
     if (empty($this->order->region_id))
     {
       $this->order->region_id = $this->getUser()->getRegion('id');
@@ -76,8 +68,32 @@ class orderActions extends myActions
       {
         $order = $this->form->updateObject();
 
+        if ($this->product->isKit())
+        {
+          foreach ($this->product->Part as $part)
+          {
+            $relation = new OrderProductRelation();
+            $relation->fromArray(array(
+              'product_id' => $part->id,
+              'price'      => ProductTable::getInstance()->getRealPrice($part),
+              'quantity'   => $this->form->getValue('product_quantity'),
+            ));
+            $order->ProductRelation[] = $relation;
+          }
+        }
+        else {
+          $relation = new OrderProductRelation();
+          $relation->fromArray(array(
+            'product_id' => $this->product->id,
+            'price'      => ProductTable::getInstance()->getRealPrice($this->product),
+            'quantity'   => $this->form->getValue('product_quantity'),
+          ));
+          $order->ProductRelation[] = $relation;
+        }
+
         try
         {
+          $order->payment_details = 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.';
           $order->save();
 
           $form = new UserFormSilentRegister();

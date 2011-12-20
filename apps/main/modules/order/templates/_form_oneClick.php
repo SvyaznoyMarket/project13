@@ -8,7 +8,7 @@
 
 <div class="b1Click">
   <div class="b1Click__eTop">
-    <div class="b1Click__ePrice">Сумма заказа:<br><span class="b1Click__ePriceBig"><span class="price"><?php echo $order->sum ?></span> <span class="rubl">p</span></span></div>
+    <div class="b1Click__ePrice">Сумма заказа:<br><span class="b1Click__ePriceBig"><span class="price"><?php echo number_format($order['sum'], 0, ',', ' ') ?></span> <span class="rubl">p</span></span></div>
     Вы можете купить товар за 1 клик &mdash; оформление заказа займет всего 20 секунд, просто заполните 2 поля.
     <div class="clear"></div>
     <div class="b1Click__eInp">
