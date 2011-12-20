@@ -4,4 +4,4 @@
 
 <?php //slot('left_column') ?>
 
-<?php include_component('product', 'list', array('list' => $productList)) ?>
+<?php include_component('product', 'list', array('list' => $productList, 'in_row' => 4, )) ?>
