@@ -803,6 +803,16 @@ redirect_for_shop:
   param: { module: redirect, action: index, route: shop }
 #
 # карточка товара
+redirect_for_changeProduct:
+  url:   /products/:product/change/:value
+  param: { module: redirect, action: index, route: changeProduct }
+#
+# карточка товара
+#redirect_for_productComment:
+#  url:   /products/:product/comments
+#  param: { module: redirect, action: index, route: productComment }
+#
+# карточка товара
 redirect_for_productCard:
   url:   /products/:product
   param: { module: redirect, action: index, route: productCard }

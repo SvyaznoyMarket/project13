@@ -20,30 +20,26 @@ class redirectActions extends myActions
     $route = $request['route'];
     if ($route)
     {
-      $routes = array(
-        'default' => function($action) use ($request) {
-          $return = array();
-          foreach ($request->getRequestParameters() as $k => $v)
-          {
-            if (in_array($k, array('action', 'module', 'route')) || (0 === strpos($k, '_sf_'))) continue;
-            $return[$k] = $v;
-          }
-
-          return $return;
-        },
-        'productCard' => function($action) use ($request) {
+      $params = array();
+      switch ($route)
+      {
+        case 'productCard': case 'changeProduct': case 'productComment':
           $product = ProductTable::getInstance()->findOneByBarcode($request['product']);
           if (!$product)
           {
-            $action->forward404();
-            return false;
+            $this->forward404();
           }
 
-          return array('product' => $product->token_prefix.'/'.$product->token);
-        }
-      );
+          $params['product'] = $product->token_prefix.'/'.$product->token;
+          break;
+      }
 
-      $params = call_user_func_array(isset($routes[$route]) ? $routes[$route] : $routes['default'], array($this));
+      foreach ($request->getRequestParameters() as $k => $v)
+      {
+        if (in_array($k, array('action', 'module', 'route')) || (0 === strpos($k, '_sf_'))) continue;
+        if (array_key_exists($k, $params)) continue;
+        $params[$k] = $v;
+      }
 
       $this->redirect('@'.$route.'?'.http_build_query($params), 301);
     }
