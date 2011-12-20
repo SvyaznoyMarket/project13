@@ -62,12 +62,13 @@ class CallbackForm extends BaseCallbackForm
       'category_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Category'), 'required' => false)),
       'user_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'required' => true)),
       'name'        => new sfValidatorString(array('max_length' => 255, 'required' => true, 'trim'=>true)),
-      'email'       => new sfValidatorString(array('max_length' => 255, 'required' => true, 'trim'=>true)),
+      'email'       => new myValidatorEmail(array('max_length' => 128, 'required' => false, 'trim'=>true),array('invalid'=>'Вы указали неверный email.')),        
       'theme'       => new sfValidatorString(array('max_length' => 255, 'required' => true, 'trim'=>true)),
       'text'        => new sfValidatorString(array('required' => true, 'trim'=>true)),
       'created_at'  => new sfValidatorDateTime(),
       'updated_at'  => new sfValidatorDateTime(),
     ));
+    $this->
 
     $this->widgetSchema->setNameFormat('callback[%s]');
 

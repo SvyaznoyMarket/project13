@@ -18,11 +18,11 @@ class callbackActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    $this->getResponse()->setTitle('Обратная связь – Enter.ru');
 
     $this->setVar('currentPage', 'callback', true);
 
     $this->form = new CallbackForm();
-
 
     #$cart = $this->getUser()->getCart();
     #$this->setVar('cart', $cart, true);
@@ -30,6 +30,7 @@ class callbackActions extends myActions
 
     public function executeSend(sfWebRequest $request)
     {
+        $this->getResponse()->setTitle('Обратная связь – Enter.ru');
 
         $this->setVar('currentPage', 'callback', true);
 
