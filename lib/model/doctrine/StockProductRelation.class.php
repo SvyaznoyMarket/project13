@@ -16,6 +16,7 @@ class StockProductRelation extends BaseStockProductRelation
   {
     parent::importFromCore($data);
 
+    /*
     $conn = Doctrine_Manager::getInstance()->connection();
 
     $product = ProductTable::getInstance()->getByCoreId($data['product_id']);
@@ -23,7 +24,7 @@ class StockProductRelation extends BaseStockProductRelation
     {
       return false;
     }
-    
+
     $addWhere = "";
 
     $is_instock = $product->is_instock;
@@ -40,12 +41,12 @@ class StockProductRelation extends BaseStockProductRelation
       $is_instock = $this->quantity > 0;
       $addWhere = " AND NOT (`stock_id` IS NULL AND `shop_id` = ".$this->shop_id.") ";
     }
-    
+
     if (!$is_instock)
     {
       //если на текущем складе пропал товар, то проверяю все склады, которые уже есть в системе
       $sql = "SELECT SUM(IF(`is_supplied` = 1, 1, IF(`stock_id` = 1 AND `quantity` > 0, 1, IF(`shop_id` IS NOT NULL AND `quantity` > 0, 1, 0)))) > 0 FROM `stock_product_relation` WHERE `product_id` = ?".$addWhere."GROUP BY `product_id`";
- 
+
       $result = $conn->fetchOne($sql, array($this->product_id));
       if (!$result)
       {
@@ -54,11 +55,12 @@ class StockProductRelation extends BaseStockProductRelation
 
       $is_instock = $result;
     }
-    
+
     if ($product->is_instock != $is_instock)
     {
       $product->is_instock = $is_instock;
       $product->save();
     }
+    */
   }
 }
