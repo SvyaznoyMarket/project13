@@ -74,8 +74,19 @@ class orderActions extends myActions
         try
         {
           $order->save();
+
+          $form = new UserFormSilentRegister();
+          $form->bind(array(
+            'username'   => $order->recipient_phonenumbers,
+            'first_name' => trim($order->recipient_first_name.' '.$order->recipient_last_name),
+          ));
+
           $return['success'] = true;
           $return['message'] = 'Заказ успешно создан';
+          $return['data'] = array(
+            'title'   => 'Ваш заказ принят, спасибо!',
+            'content' => $this->getPartial($this->getModuleName().'/complete', array('order' => $order, 'form' => $form)),
+          );
         }
         catch (Exception $e)
         {

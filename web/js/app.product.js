@@ -172,7 +172,7 @@ $(document).ready(function() {
 		var cl1loaded = false
 		$('.order1click-link').bind('click', function(e) {
 			e.preventDefault()
-					
+
 			if ( !cl1loaded ) {
 				$('#ajaxgoods').lightbox_me({
 					centered: true,
@@ -197,7 +197,7 @@ $(document).ready(function() {
 				})
 			}
 		})
-		
+
 		function bindCalc() {
 			var quant = 1
 			var pric  = $('.b1Click__ePriceBig .price').html().replace(/\s/g,'')
@@ -210,25 +210,37 @@ $(document).ready(function() {
 				$('#order_product_quantity').val( quant )
 				$('.b1Click__ePriceBig .price').html( sum )
 			}
-			
+
 			$('.c1less').bind( 'click', function(){ recalc(-1) })
-			$('.c1more').bind( 'click', function(){ recalc(1) })			
+			$('.c1more').bind( 'click', function(){ recalc(1) })
 		}
-	
+
 		$('#order1click-form').bind('submit', function(e) {
 		  e.preventDefault()
-	
+
 		  var form = $(this)
-	
+
 		  form.ajaxSubmit({
-			success: function(response) {
-			 if (true !== response.success) {
-				if (response.data) $('#order1click-form').html(response.data.form)
-			  }
-			}
+        beforeSubmit: function() {
+          $('#order1click-form').find('input:submit').attr('disabled', true)
+        },
+        success: function(response) {
+          if (true !== response.success) {
+            if (response.data) {
+              $('#order1click-form').html(response.data.form)
+            }
+            $('#order1click-form').find('input:submit').attr('disabled', false)
+          }
+          else {
+            if (response.data) {
+              $('#order1click-container').find('h2').html(response.data.title)
+              $('#order1click-form').replaceWith(response.data.content)
+            }
+          }
+        }
 		  })
 		})
-    
+
     }
 
 });
