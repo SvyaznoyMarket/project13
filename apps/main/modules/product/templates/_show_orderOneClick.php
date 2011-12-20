@@ -8,7 +8,14 @@
     <div class="font11"><?php if ($item['is_instock']) echo 'Есть в наличии' ?></div>
   </div>
   <div class="basketinfo pb15">
-    <div class="left font11">Цена:<br><span class="font12"><?php echo $item['price'] ?> <span class="rubl">p</span></span></div>
-    <div class="right"><div class="numerbox"><b title="Уменьшить"></b><span>1 шт.</span><b title="Увеличить"></b></div></div>
+    <div class="left font11">Цена:<br>
+    	<span class="font12">
+    	<span class="c1price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
+    </div>
+    <div class="right"><div class="numerbox">
+		<b class="c1less" title="Уменьшить"></b>
+		<span class="c1quant">1 шт.</span>
+		<b class="c1more" title="Увеличить"></b>
+    </div></div>
   </div>
 </div>
