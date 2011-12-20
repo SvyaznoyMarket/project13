@@ -153,33 +153,82 @@ $(document).ready(function() {
         .fail(function(error) {})
     })
 
+	function printPrice ( val ) {
 
-    $('.order1click-link').bind('click', function(e) {
-      e.preventDefault()
+		var float = (val+'').split('.')
+		var out = float[0]
+		var le = float[0].length
+		if( le > 6 ) { // billions
+			out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
+		} else if ( le > 3 ) { // thousands
+			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
+		}
+		if( float.length == 2 )
+			out += '.' + float[1]
+		return out// + '&nbsp;'
+	}
 
-      var link = $(this)
-
-      $('#order1click-container').lightbox_me({
-        centered: true
-      })
-
-      if ($('#order1click-form').html() < 2) {
-        $.get(link.attr('href'), function(response) {
-          $('#order1click-form').html(response.data.form)
-        })
-      }
-    })
-
-    $('#order1click-form').bind('submit', function(e) {
-      e.preventDefault()
-
-      var form = $(this)
-
-      form.ajaxSubmit({
-        success: function(response) {
-          console.info(response);
-        }
-      })
-    })
+	if( $('.order1click-link').length ) {
+		var cl1loaded = false
+		$('.order1click-link').bind('click', function(e) {
+			e.preventDefault()
+					
+			if ( !cl1loaded ) {
+				$('#ajaxgoods').lightbox_me({
+					centered: true,
+					closeClick: false,
+					closeEsc: false
+				})
+				$.get( $(this).attr('href'), function( response ) {
+					//$('#ajaxgoods').trigger('close')
+					$('#ajaxgoods').hide()
+					if( typeof(response.success) !== 'undefined' && response.success ) {
+						$('#order1click-form').html(response.data.form)
+						$('#order1click-container').lightbox_me({
+							centered: true
+						})
+						cl1loaded = true
+						bindCalc()
+					}
+				})
+			} else {
+				$('#order1click-container').lightbox_me({
+					centered: true
+				})
+			}
+		})
+		
+		function bindCalc() {
+			var quant = 1
+			var pric  = $('.b1Click__ePriceBig .price').html().replace(/\s/g,'')
+			function recalc( delta ) {
+				if( quant == 1 && delta < 0 )
+					return
+				quant += delta
+				var sum = printPrice( pric * quant )
+				$('.c1quant').html( quant+ ' шт.')
+				$('#order_product_quantity').val( quant )
+				$('.b1Click__ePriceBig .price').html( sum )
+			}
+			
+			$('.c1less').bind( 'click', function(){ recalc(-1) })
+			$('.c1more').bind( 'click', function(){ recalc(1) })			
+		}
+	
+		$('#order1click-form').bind('submit', function(e) {
+		  e.preventDefault()
+	
+		  var form = $(this)
+	
+		  form.ajaxSubmit({
+			success: function(response) {
+			 if (true !== response.success) {
+				if (response.data) $('#order1click-form').html(response.data.form)
+			  }
+			}
+		  })
+		})
+    
+    }
 
 });
