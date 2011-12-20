@@ -86,7 +86,7 @@ class ProductTable extends myDoctrineTable
       //$q->addWhere('product.is_instock = ?', true);
     }
 
-    if ($params['with_line'])
+    if (isset($params['with_line']))
     {
       $q->innerJoin('product.Line line');
     }
@@ -107,6 +107,7 @@ class ProductTable extends myDoctrineTable
     {
       $q->leftJoin('product.ProductCategoryProductRelation category');
     } 
+
 
     
     
