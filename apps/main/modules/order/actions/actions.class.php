@@ -47,6 +47,7 @@ class orderActions extends myActions
     $this->order->User = $this->getUser()->getGuardUser();
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product);
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
+    $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
 
     $relation = new OrderProductRelation();
     $relation->fromArray(array(
@@ -68,16 +69,17 @@ class orderActions extends myActions
 
       if ($this->form->isValid())
       {
-        $this->product->mapValue('_quantity', $this->form->getValue('product_quantity'));
         $order = $this->form->updateObject();
 
-        if ($this->save1clickOrder($order, $this->product))
+        try
         {
+          $order->save();
           $return['success'] = true;
           $return['message'] = 'Заказ успешно создан';
         }
-        else {
-          $return['message'] = 'Не удалось создать заказ';
+        catch (Exception $e)
+        {
+          $return['message'] = 'Не удалось создать заказ'.(sfConfig::get('sf_debug') ? (' Ошибка: '.$e->getMessage()) : '');
         }
       }
       else {
@@ -430,37 +432,6 @@ class orderActions extends myActions
     $this->forward404Unless($order);
 
     $this->result = $provider->getPaymentResult($order);
-  }
-
-  /**
-   *
-   * @param Order $order
-   * @param Product $product
-   * @return bool
-   */
-  protected function save1clickOrder(Order $order, Product $product)
-  {
-      $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
-      $order->sum = $product->price;
-      $order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
-
-      $relation = new OrderProductRelation();
-      $relation->fromArray(array(
-        'product_id' => $product->id,
-        'price'      => $product->price,
-        'quantity'   => !empty($product->_quantity) ? $product->_quantity : 1,
-      ));
-      $order->ProductRelation[] = $relation;
-
-        try {
-            $order->save();
-            $this->getUser()->getOrder()->set($order);
-            return true;
-        } catch (Exception $e) {
-            $this->getLogger()->err('{' . __CLASS__ . '} create: can\'t save to core: ' . $e->getMessage());
-        }
-
-        return false;
   }
 
   /**
