@@ -2787,6 +2787,12 @@ DT.bCtg__eOrange{
 .bFormB{
 	text-align: center;
 	}
+	.bFormB2{
+		margin-bottom: 10px;
+		}
+	.bFormB2 a,
+	.bFormB2 span,
+	.bFormB2 input,
 	.bFormB a,
 	.bFormB span,
 	.bFormB input{
@@ -2797,9 +2803,17 @@ DT.bCtg__eOrange{
 		margin-right: 30px;
 		text-decoration: underline;
 		}
+	.bFormB2 a{
+		margin-left: 20px;
+		text-decoration: underline;
+		}
 	.bFormB input{
 		height: 40px;
 		padding: 3px 80px;
+		}
+	.bFormB2 input{
+		height: 40px;
+		padding: 3px 40px;
 		}
 
 .bFormAuth{
@@ -2932,6 +2946,9 @@ DT.bCtg__eOrange{
 		zoom: 1;
 		}
 
+.border-none {
+  border: 0 none;
+}
 
 .bNewDelivery{}
 	.bNewDelivery h2{
@@ -2970,7 +2987,50 @@ DT.bCtg__eOrange{
 		}
 
 
-.border-none {
-  border: 0 none;
-}
+/*-- -- - --- --- -- - */
+	.b1Click{
+		width: 605px;
+		margin-left: 140px;
+		}
+		.b1Click__eTop{
+			font: 16px Tahoma, sans-serif;
+			}
+		.b1Click__ePrice{
+			float: right;
+			text-align: right;
+			font: 16px Tahoma, sans-serif;
+			}
+		.b1Click__ePrice .b1Click__ePriceBig{
+			font: bold 34px Tahoma, sans-serif;
+			}
+		.b1Click__eInp{
+			margin: 10px 0;
+			}
+		.b1Click__eInp span{
+			width: 130px;
+			color: #434343;
+			font: 12px Tahoma, sans-serif;
 
+			display: inline-block;
+			*display: inline;
+			zoom: 1;
+			}
+		.b1Click__eInp input{
+			width: 455px;
+			height: 30px;
+			padding: 0 0 0 10px;
+			background: #f4f4f4;
+			vertical-align: middle;
+			border: 1px solid #e0e0e0;
+
+			border-radius: 7px;
+			-webkit-border-radius: 7px;
+			-moz-border-radius: 7px;
+			-o-border-radius: 7px;
+			}
+      .b1Click__eInp input.mRed {
+        border: 1px solid red;
+      }
+		.b1Click .bFormB2{
+			margin: 20px 0 0 130px;
+			}
