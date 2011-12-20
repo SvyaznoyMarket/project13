@@ -13,7 +13,7 @@
   <p class="bFormSave__eBtm">Нажмите кнопку «Запомнить мои данные» &mdash; при следующих покупках вам не придется заново указывать свои контакты и данные для доставки. Кстати, вы еще и сможете отслеживать статус заказа!</p>
   <div class="bFormB2">
 
-    <?php if ($form->isValid()): ?>
+    <?php if (!$sf_user->isAuthenticated() && $form->isValid()): ?>
     <div class="fl">
       <form id="basic_register-form" method="post" action="<?php echo url_for('user_basicRegister') ?>">
         <div class="form-content">

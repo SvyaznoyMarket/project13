@@ -222,14 +222,18 @@ $(document).ready(function() {
 
 		  form.ajaxSubmit({
         beforeSubmit: function() {
-          $('#order1click-form').find('input:submit').attr('disabled', true)
+          var button = $('#order1click-form').find('input:submit')
+          button.attr('disabled', true)
+          button.val('Оформляю заказ...')
         },
         success: function(response) {
           if (true !== response.success) {
             if (response.data) {
               $('#order1click-form').html(response.data.form)
             }
-            $('#order1click-form').find('input:submit').attr('disabled', false)
+            var button = $('#order1click-form').find('input:submit')
+            button.attr('disabled', false)
+            button.val('Оформить заказ')
           }
           else {
             if (response.data) {
@@ -237,6 +241,11 @@ $(document).ready(function() {
               $('#order1click-form').replaceWith(response.data.content)
             }
           }
+        },
+        error: function() {
+          var button = $('#order1click-form').find('input:submit')
+          button.attr('disabled', false)
+          button.val('Попробовать еще раз')
         }
 		  })
 		})

@@ -37,6 +37,11 @@ class orderActions extends myActions
   */
   public function execute1click(sfWebRequest $request)
   {
+    if (!$request->isXmlHttpRequest())
+    {
+      $this->redirect($request->getReferer().'#order1click-link');
+    }
+
     $return = array(
       'success' => false,
     );
