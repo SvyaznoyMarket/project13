@@ -68,6 +68,7 @@ class orderActions extends myActions
 
       if ($this->form->isValid())
       {
+        $this->product->mapValue('_quantity', $this->form->getValue('product_quantity'));
         $order = $this->form->updateObject();
 
         if ($this->save1clickOrder($order, $this->product))
@@ -447,7 +448,7 @@ class orderActions extends myActions
       $relation->fromArray(array(
         'product_id' => $product->id,
         'price'      => $product->price,
-        'quantity'   => 1,
+        'quantity'   => !empty($product->_quantity) ? $product->_quantity : 1,
       ));
       $order->ProductRelation[] = $relation;
 

@@ -177,7 +177,9 @@ $(document).ready(function() {
 
       form.ajaxSubmit({
         success: function(response) {
-          console.info(response);
+          if (true !== response.success) {
+            if (response.data) $('#order1click-form').html(response.data.form)
+          }
         }
       })
     })
