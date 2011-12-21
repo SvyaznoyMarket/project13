@@ -26,7 +26,7 @@ class DeliveryCalc
     }
     return false;
   }
-  
+
   /**
    *
    * @param int $product_id
@@ -51,36 +51,44 @@ class DeliveryCalc
     }
     return false;
   }
-  
+
   public static function getShopListForSelfDelivery()
   {
     $haveInStock = true;
     $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
     $region =  sfContext::getInstance()->getUser()->getRegion();
     $stockRel = StockProductRelationTable::getInstance();
+    $productsInStore = array();
     foreach ($cart as $product_id => $product)
     {
-      // stock_id = 1 HARDCODE 
+      // stock_id = 1 HARDCODE
       if (!$stockRel->isInStock($product_id, false, 1, $product['cart']['quantity'])) {
         $haveInStock = false;
+        $productsInStore[$product_id] = false;
+      } else {
+        $productsInStore[$product_id] = true;
       }
     }
     if ($haveInStock === true) {
       return ShopTable::getInstance()->getChoices('id', 'name', array('region_id' => $region['id'], ));
     } else {
-      $shops = ShopTable::getInstance()->getChoices();
+      $shops = ShopTable::getInstance()->getChoices('id', 'name', array('region_id' => $region['id'], ));
       foreach ($cart as $product_id => $product)
       {
-        $tmpshops = array();
-        $q = ShopTable::getInstance()->createBaseQuery();
-        $q->innerJoin('shop.ProductRelation productRelation');
-        $q->andWhere('productRelation.product_id = ?', (int)$product_id);
-        $q->andWhere('productRelation.stock_id IS NULL');
-        $q->andWhere('productRelation.quantity >= ?', $product['cart']['quantity']);
-        $q->andWhere('shop.region_id = ?', $region['id']);
-        $data = $q->fetchArray();
-        foreach ($data as $row) {
-            $tmpshops[$row['id']] = $row['name'];
+        if ($productsInStore[$product_id] === true) {
+          $tmpshops = $shops;
+        } else {
+          $tmpshops = array();
+          $q = ShopTable::getInstance()->createBaseQuery();
+          $q->innerJoin('shop.ProductRelation productRelation');
+          $q->andWhere('productRelation.product_id = ?', (int)$product_id);
+          $q->andWhere('productRelation.stock_id IS NULL');
+          $q->andWhere('productRelation.quantity >= ?', $product['cart']['quantity']);
+          $q->andWhere('shop.region_id = ?', $region['id']);
+          $data = $q->fetchArray();
+          foreach ($data as $row) {
+              $tmpshops[$row['id']] = $row['name'];
+          }
         }
         $shops = array_intersect_key($shops, $tmpshops);
         if (!count($shops)) {
@@ -90,7 +98,7 @@ class DeliveryCalc
       return $shops;
     }
   }
-  
+
   public static function getMinDateForShopSelfDelivery($shop_id, $returnDiff = false)
   {
     $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
