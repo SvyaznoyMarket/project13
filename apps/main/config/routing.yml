@@ -813,9 +813,9 @@ redirect_for_changeProduct:
   param: { module: redirect, action: index, route: changeProduct }
 #
 # карточка товара
-#redirect_for_productComment:
-#  url:   /products/:product/comments
-#  param: { module: redirect, action: index, route: productComment }
+redirect_for_productComment:
+  url:   /products/:product/comments
+  param: { module: redirect, action: index, route: productComment }
 #
 # карточка товара
 redirect_for_productCard:
