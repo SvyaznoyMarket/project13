@@ -212,9 +212,9 @@ TABLE {border-collapse:collapse}
 .topmenu .point9 {width:40px}
 .topmenu .point9:hover {background-position:-712px -137px}
 
-.headerright {float:left; padding-top:31px; color:#fff; font-size:11px}
-.headerright .tel {padding:4px 0 8px 0; font-size:20px; line-height:20px}
-.headerright .tel SPAN {font-size:10px; line-height:12px; vertical-align:top; margin-right:3px}
+.headerright {padding-top:37px; color:#fff; font:14px 'Enter'; margin-left: -13px; display: inline-block; *display: inline; zoom: 1;}
+.headerright .tel {padding:0; font-size:18px; }
+.headerright .tel SPAN {font-size:18px; vertical-align:top; margin-right:3px}
 .headerright A {color:#fff; text-decoration:underline; font-size:10px; line-height:16px}
 .headerright A:hover {color:#ffa901}
 
