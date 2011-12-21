@@ -387,13 +387,27 @@ class orderActions extends myActions
 
     if ($this->saveOrder($this->order))
     {
-      $this->redirect('order_complete');
+      $this->redirect($this->order->isOnlinePayment() ? 'order_payment' : 'order_complete');
     }
     else
     {
       $this->redirect('order_error');
     }
+  }
 
+ /**
+  * Executes payment action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executePayment(sfWebRequest $request)
+  {
+    $this->order = $this->getUser()->getOrder()->get();
+
+    $this->redirectUnless($this->order->isOnlinePayment(), 'order_new');
+
+    $provider = $this->getPaymentProvider();
+    $this->paymentForm = $provider->getForm($this->order);
   }
 
   public function executeCallback(sfWebRequest $request)

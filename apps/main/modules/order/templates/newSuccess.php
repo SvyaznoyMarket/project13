@@ -1,4 +1,4 @@
-<?php slot('title', 'Оформление заказа') ?>
+<?php slot('title', 'Оформление заказа<br />Заполните форму') ?>
 
 <?php slot('navigation') ?>
   <?php include_component('order', 'navigation', array('order' => $order)) ?>
