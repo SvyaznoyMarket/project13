@@ -181,5 +181,20 @@ $('.order-form').change( function(e) {
     })
   })
 
-
+	
+	;( function() {
+		var j_count = $('.timer')
+		if( !j_count.length ) 
+			return false
+		var interval = window.setInterval( sec5run, 1000)
+		var secs = j_count.html().replace(/\D/g,'') * 1
+		function sec5run() {
+			if( secs === 1 ) {
+				clearInterval( interval )
+				$('form').submit()
+			}
+			secs -= 1
+			j_count.html( secs )
+		}
+	})();
 });
