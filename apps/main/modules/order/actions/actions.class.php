@@ -379,7 +379,7 @@ class orderActions extends myActions
       $this->result = $provider->getPaymentResult($this->order);
     }
 
-    $this->redirectUnless($this->order->exists(), 'order_new');
+    //$this->redirectUnless($this->order->exists(), 'order_new');
 
     $this->form = new UserFormSilentRegister();
     $this->form->bind(array(
@@ -464,12 +464,20 @@ class orderActions extends myActions
   */
   public function executePayment(sfWebRequest $request)
   {
-    $this->order = $this->getUser()->getOrder()->get();
+    $user = $this->getUser();
+
+    $this->order = $user->hasFlash('order_id') ? OrderTable::getInstance()->getById($user->getFlash('order_id')) : $user->getOrder()->get();
 
     $this->redirectUnless($this->order->isOnlinePayment(), 'order_new');
 
     $provider = $this->getPaymentProvider();
     $this->paymentForm = $provider->getForm($this->order);
+
+    $user->setCacheCookie();
+    $user->getCart()->clear();
+    $user->getOrder()->clear();
+
+    $user->setFlash('order_id', $this->order->id);
   }
 
   public function executeCallback(sfWebRequest $request)
