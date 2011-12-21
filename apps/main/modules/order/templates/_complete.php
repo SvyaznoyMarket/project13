@@ -30,7 +30,7 @@
     <?php endif ?>
 
     <div class="fr">
-      <a href="<?php echo url_for('@homepage') ?>">Продолжить покупки</a> <span>&gt;</span>
+      <a href="<?php echo url_for('@homepage') ?>" onclick="$('#order1click-container').trigger('close'); return false">Продолжить покупки</a> <span>&gt;</span>
     </div>
   </div>
 
