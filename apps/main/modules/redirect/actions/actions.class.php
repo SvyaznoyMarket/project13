@@ -49,10 +49,14 @@ class redirectActions extends myActions
     }
     else {
       $url = urldecode($request->getPathInfo());
-      $redirect = RedirectTable::getInstance()->getByUrl($url);
+      //попытка вычленить из пути _filter и _tag для каталога
+      $matches = array();
+      preg_match('/(?<url>.*\/)(?<special>_.*)?$/', $url, $matches);
+
+      $redirect = RedirectTable::getInstance()->getByUrl($matches['url']);
       $this->forward404Unless($redirect);
       $getParameters = $request->getGetParameters();
-      $this->redirect((sfConfig::get('sf_no_script_name') ? '' : $request->getScriptName()).$redirect['new_url'].(count($getParameters) ? ('?'.http_build_query($getParameters)) : ''), $redirect['status_code']);
+      $this->redirect((sfConfig::get('sf_no_script_name') ? '' : $request->getScriptName()).$redirect['new_url'].(isset($matches['special']) ? $matches['special'] : '').(count($getParameters) ? ('?'.http_build_query($getParameters)) : ''), $redirect['status_code']);
     }
   }
 }

@@ -41,7 +41,8 @@ class productCatalogActions extends myActions
   */
   public function executeFilter(sfWebRequest $request)
   {
-    $this->productCategory = $this->getRoute()->getObject();
+    //$this->productCategory = $this->getRoute()->getObject();
+    $this->productCategory = $this->oldUrlRedirect($request);
 
     $this->productFilter = $this->getProductFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
@@ -112,7 +113,8 @@ class productCatalogActions extends myActions
   */
   public function executeTag(sfWebRequest $request)
   {
-    $this->productCategory = $this->getRoute()->getObject();
+    //$this->productCategory = $this->getRoute()->getObject();
+    $this->productCategory = $this->oldUrlRedirect($request);
 
     $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));
     $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
@@ -369,23 +371,7 @@ class productCatalogActions extends myActions
   {
     $this->_seoRedirectOnPageDublicate($request);
 
-    try
-    {
-      $this->productCategory = $this->getRoute()->getObject();
-    }
-    catch (sfError404Exception $e)
-    {
-      $this->forward('redirect', 'index');
-    }
-
-    // 301-й редирект. Можно удалить 01.02.2012
-    if (false === strpos($request['productCategory'], '/'))
-    {
-      if (!empty($this->productCategory->token_prefix))
-      {
-        $this->redirect('productCatalog_category', $this->productCategory, 301);
-      }
-    }
+    $this->productCategory = $this->oldUrlRedirect($request);
 
 //    $title = $this->productCategory['name'];
 //    if ($request->getParameter('page')) {
@@ -640,5 +626,28 @@ class productCatalogActions extends myActions
     //$this->forward404If($page > $pager->getLastPage(), 'Номер страницы превышает максимальный для списка');
 
     return $pager;
+  }
+
+  public function oldUrlRedirect(sfWebRequest $request)
+  {
+    try
+    {
+      $productCategory = $this->getRoute()->getObject();
+    }
+    catch (sfError404Exception $e)
+    {
+      $this->forward('redirect', 'index');
+    }
+
+    // 301-й редирект. Можно удалить 01.02.2012
+    if (false === strpos($request['productCategory'], '/'))
+    {
+      if (!empty($productCategory->token_prefix))
+      {
+        $this->redirect('productCatalog_category', $productCategory, 301);
+      }
+    }
+
+    return $productCategory;
   }
 }

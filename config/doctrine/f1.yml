@@ -26,7 +26,7 @@ ServiceCategory:
     root_id:           { type: integer(20), notnull: true }
     core_parent_id:    { type: integer(20), notnull: false, default: null, comment: 'ид родителя записи в Core' }
     core_lft:          { type: integer(20), notnull: false, default: null, comment: 'lft записи в Core' }
-    core_rgt:          { type: integer(20), notnull: false, default: null, comment: 'rgt записи в Core' }    
+    core_rgt:          { type: integer(20), notnull: false, default: null, comment: 'rgt записи в Core' }
     lft:               { type: integer(20), notnull: true }
     rgt:               { type: integer(20), notnull: true }
     level:             { type: integer(4), notnull: true }
@@ -34,7 +34,7 @@ ServiceCategory:
     name:              { type: string(255), notnull: true, notblank: true }
     description:       { type: string }
     main_photo:        { type: string(255), notnull: false, default: null }
-    position:          { type: integer(11), notnull: true, default: 1, comment: 'Порядок сортировки' }    
+    position:          { type: integer(11), notnull: true, default: 1, comment: 'Порядок сортировки' }
     is_active:         { type: boolean, notnull: true, default: false }
 
 ServicePrice:
@@ -88,5 +88,5 @@ ServiceCategoryRelation:
     category_id:       { type: integer(20), notnull: true, primary: true }
     service_id:        { type: integer(20), notnull: true, primary: true }
   relations:
-    Category:          { class: ServiceCategory, foreignAlias: ServiceRelation, local: category_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
-    Service:           { class: Service, foreignAlias: CategoryRelation, local: service_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
+    Category:          { class: ServiceCategory, foreignAlias: ServiceRelation, local: category_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Service:           { class: Service, foreignAlias: CategoryRelation, local: service_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

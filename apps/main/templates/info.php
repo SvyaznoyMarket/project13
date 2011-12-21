@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php include_stylesheets() ?>
     <?php include_javascripts() ?>
-    <?php include_component('page', 'link_rel_canonical') ?>        
+    <?php include_component('page', 'link_rel_canonical') ?>
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25485956-1']);
@@ -44,18 +44,18 @@ _gaq.push(['_trackPageLoadTime']);
           <div class="region" style="margin-top: 7px;">
             <?php include_component('region', 'select') ?>
           </div>
-          <noindex>  
+          <noindex>
               <div class="usermenu">
                 <div class="point"><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="f1">F1 сервис</a></div>
                 <div class="point"><?php include_partial('default/user') ?></div>
                 <div class="point next"><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></div>
               </div>
-          </noindex>    
+          </noindex>
         </div>
         <!-- /Topbar -->
         <!-- Header -->
         <div class="header">
-         <?php LastModifiedHandler::setLastModified();  ?>   
+         <?php LastModifiedHandler::setLastModified();  ?>
           <?php include_partial('default/logo') ?>
           <!-- Topmenu -->
           <?php include_component('productCategory', 'root_list') ?>
@@ -82,11 +82,11 @@ _gaq.push(['_trackPageLoadTime']);
             <h1><?php include_slot('title') ?></h1>
           <?php endif ?>
 
-          <noindex>  
+          <noindex>
               <div class="searchbox">
                 <?php include_component('search', 'form') ?>
               </div>
-          </noindex>    
+          </noindex>
           <div class="clear pb20"></div>
           <div class="line"></div>
         </div>
@@ -121,12 +121,6 @@ _gaq.push(['_trackPageLoadTime']);
     <!-- Lightbox -->
     <div class="lightbox">
       <div class="lightboxinner">
-        <!--div class="dropbox" style="left:365px; display:none;">
-          <p>Перетащите сюда</p>
-        </div>
-        <div class="dropbox" style="left:517px; display:none;">
-          <p>Перетащите сюда</p>
-        </div-->
         <div class="dropbox" style="left:703px; display:none;">
           <p>Перетащите сюда</p>
         </div>
@@ -134,43 +128,9 @@ _gaq.push(['_trackPageLoadTime']);
         <ul class="lightboxmenu">
           <li class="fl"><a href="<?php echo url_for('user_signin') ?>" class="point point1"><b></b>Личный кабинет</a></li>
           <li><a href="<?php echo url_for('cart') ?>" class="point point2"><b></b>Моя корзина<span class="total" style="display:none;"><span id="sum"></span> &nbsp;<span class="rubl">p</span></span></a></li>
-          <!--li><a href="" class="point point3"><b></b>Список желаний</a></li>
-          <li><a href="" class="point point4"><b></b>Сравнение</a></li-->
         </ul>
       </div>
     </div>
-    <div id="zaglu" style="display:none"><!-- AJAX emulation zaglushka-->
-      <ul class="comparisonblock">
-        <li>
-          <div class="photo"><b class="delete" title="Удалить"></b><a href=""><img src="images/photo34.jpg" alt="" width="120" height="120" /></a></div>
-          <a href="">Смартфон Samsung Galaxy S II (GT-I9100 )16 Гб</a> <strong>64 543 <span class="rubl">p</span></strong>
-        </li>
-        <li>
-          <div class="photo"><b class="delete" title="Удалить"></b><a href=""><img src="images/photo63.jpg" alt="" width="120" height="120" /></a></div>
-          <a href="">Смартфон HTC Wildfire S White 16 Гб</a> <strong>64 543 <span class="rubl">p</span></strong>
-        </li>
-        <li>
-          <div class="photo"><b class="delete" title="Удалить"></b><a href=""><img src="images/photo64.jpg" alt="" width="120" height="120" /></a></div>
-          <a href="">Смартфон HTC Sensation</a> <strong>64 543 <span class="rubl">p</span></strong>
-        </li>
-        <li>
-          <div class="comparphoto"></div>
-          <div class="gray ac">Товар для сравнения</div>
-        </li>
-      </ul>
-      <div class="fl form width230">
-        <div class="pb5">Товары, которые вы сравнивали в других разделах:</div>
-        <div class="selectbox selectbox225 mb70"><i></i>
-          <select class="styled" name="3">
-            <option value="1">Электроника</option>
-            <option value="2">Товары для дома</option>
-            <option value="3">Сделай сам (инструменты)</option>
-          </select>
-        </div>
-        <a href="" class="button bigbuttonlink" value="">Перейти в сравнение</a>
-      </div>
-    </div>
-
     <!-- /Lightbox -->
 
     <?php if (!include_slot('auth'))
