@@ -1,5 +1,5 @@
     <!-- Basket -->
-        <div class="fl width215 mr20"><strong class="font16">Давайте проверим ваш заказ:</strong></div>
+        <div class="fl width215 mr20"><strong class="font16">Ваш заказ:</strong></div>
 
         <?php include_component('cart', 'show', array('view' => 'order', )) ?>
 
@@ -32,9 +32,9 @@
                 <?php if (!empty($order->address)): ?><div class="pb5"><span class="gray">Адрес доставки:</span> <?php echo $order->address ?></div><?php endif ?>
                 <?php if (!empty($order->shop_id)): ?><div class="pb5"><span class="gray">Забрать из магазина:</span> <?php echo $order->getShop()->name ?></div><?php endif ?>
             </div>
-            
+
             <div class="clear"></div>
-            
+
             <?php if (!$order->isSelfDelivery()): ?>
             <div class="fl width215 font16 mr20">Стоимость доставки:</div>
             <div class="fl width430">
