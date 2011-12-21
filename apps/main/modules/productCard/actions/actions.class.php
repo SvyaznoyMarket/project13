@@ -52,14 +52,14 @@ class productCardActions extends myActions
     //
     // история просмотра товаров
     $this->getUser()->getProductHistory()->addProduct($this->product);
- 
+
     $q = ProductTable::getInstance()->getQueryByKit($this->product);
-    
+
     $this->productPager = $this->getPager('Product', $q, 8, array());
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
 
     $this->view = 'compact';
-    
+
   }
  /**
   * Executes preview action

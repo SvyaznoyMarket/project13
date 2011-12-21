@@ -52,7 +52,7 @@ class serviceComponents extends myComponents
             $selInfo['selected'] = true;
             $selInfo['total'] = $selInfo['quantity'] * $selInfo['price'];
             $selInfo['totalFormatted'] = number_format($selInfo['quantity'] * $selInfo['price'], 0, ',', ' ');
-            $selInfo['priceFormatted'] = $next->getFormattedPrice();
+            $selInfo['priceFormatted'] = $next->getFormattedPrice($this->product->id);
             $result[] = $selInfo;
         } else {
             $result[] = array(
@@ -60,7 +60,7 @@ class serviceComponents extends myComponents
                 'name' => $next->name,
                 'id' => $next->id,
                 'token' => $next->token,
-                'priceFormatted' => $next->getFormattedPrice()
+                'priceFormatted' => $next->getFormattedPrice($this->product->id)
             );
         }
     }

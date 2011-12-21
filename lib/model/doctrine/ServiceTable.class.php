@@ -48,10 +48,10 @@ class ServiceTable extends myDoctrineTable
     $q #->leftJoin('service.CategoryRelation cr')    //к категориям сервисов
       #->innerJoin('cr.Category c')
       ->innerJoin('service.ProductRelation pr')
-      ->andWhere('pr.product_id=?', array($product->id))
-      ->innerJoin('service.Price price') 
+      ->andWhere('pr.product_id = ?', array($product->id))
+      ->innerJoin('service.PriceTariff price') 
+      ->andWhere('price.product_id = ?', $product->id)
       ->andWhere('price.price >= ?', Service::MIN_BUY_PRICE)
-      ->orderBy('service.name ASC');            
             ;
 
     $this->setQueryParameters($q, $params);
@@ -68,7 +68,6 @@ class ServiceTable extends myDoctrineTable
     $q->innerJoin('service.CategoryRelation categoryRelation');
 
     $q->andWhere('categoryRelation.category_id=?', array($category_id,));
-    $q->orderBy('service.name ASC');
 
     $this->setQueryParameters($q, $params);
 
