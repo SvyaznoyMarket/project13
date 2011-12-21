@@ -42,7 +42,7 @@ _gaq.push(['_trackPageLoadTime']);
 
     <!-- Header -->
     <div class="basketheader">
-        <div class="bNLogo">Оформление заказа<br />Заполните форму</div>
+        <div class="bNLogo"><?php include_slot('title') ?></div>
         <div class="headerright mNLogo">
           <h2>Круглосуточный контакт сEnter</h2>
           <div>8 (800) 700-00-09</div>
