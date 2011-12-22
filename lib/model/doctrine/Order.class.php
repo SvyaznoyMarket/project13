@@ -12,11 +12,11 @@
  */
 class Order extends BaseOrder
 {
-    
+
     const STATUS_READY     = 6;
     const STATUS_CANCELLED     = 5;
 
-    
+
   public function __toString()
   {
     return (string)$this->token;
@@ -28,27 +28,60 @@ class Order extends BaseOrder
       'order' => $this->token,
     );
   }
-  
+
   public function getCityName()
   {
-	  return isset($this->Region) ? $this->Region->name : null;
+    $region = null;
+
+    if (isset($this->Region))
+    {
+      $region = $this->Region;
+    }
+    elseif (isset($this->region_id))
+    {
+      $region = RegionTable::getInstance()->getById($this->region_id);
+    }
+
+	  return $region ? $region->name : null;
   }
-  
+
   public function getAreaName()
   {
-	  if (isset($this->Region)) {
-		  $parent = $this->Region->getNode()->getParent();
+    $region = null;
+
+    if (isset($this->Region))
+    {
+      $region = $this->Region;
+    }
+    elseif (isset($this->region_id))
+    {
+      $region = RegionTable::getInstance()->getById($this->region_id);
+    }
+
+	  if ($region) {
+		  $parent = $region->getNode()->getParent();
 		  if ($parent && $parent->type == 'area') {
 			  return $parent->name;
 		  }
 	  }
 	  return null;
   }
-  
+
   public function getCountryName()
   {
-	  if (isset($this->Region)) {
-		  $parent = $this->Region->getNode()->getParent();
+    $region = null;
+
+    if (isset($this->Region))
+    {
+      $region = $this->Region;
+    }
+    elseif (isset($this->region_id))
+    {
+      $region = RegionTable::getInstance()->getById($this->region_id);
+    }
+
+	  if (isset($region)) {
+		  $parent = $region->getNode()->getParent();
 		  if ($parent && $parent->type == 'country') {
 			  return $parent->name;
 		  }
@@ -89,7 +122,7 @@ class Order extends BaseOrder
     $data['ip']                   = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null; //sfContext::getInstance()->getUser()->getIp();
 
     $data['mode_id'] = $data['delivery_type_id'];
-    
+
     if (isset($this->ProductRelation))
     {
       foreach ($this->ProductRelation as $product)
@@ -111,10 +144,10 @@ class Order extends BaseOrder
               'product_id'  => $productId,
               'quantity'    => $service->quantity,
             );
-      }      
+      }
    #   print_r($data);
    #   exit();
-      
+
     }
 
     return $data;
@@ -123,7 +156,7 @@ class Order extends BaseOrder
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
-    
+
     $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->number)) : $this->token;
 
     //$this->type = 1 == $data['type_id'] ? 'order' : 'preorder';
@@ -148,7 +181,7 @@ class Order extends BaseOrder
     {
       $product_ids[$productRelation['product_id']] = $productRelation['product_id'];
     }
-    
+
     if (isset($data['product']))
     {
       foreach ($data['product'] as $relationData)

@@ -10,6 +10,35 @@
     <span>В ближайшее время мы свяжемся с вами для уточнения параметров заказа.</span>
   </div>
 
+<?php if ($order['number']): ?>
+  <script type="text/javascript">
+    function runAnalitics(){
+       _gaq.push(['_addTrans',
+           '<?php echo $order['number'] ?>',           // Номер заказа
+           '<?php echo $order->Shop ?>',  // Название магазина (Необязательно)
+           '<?php echo str_replace(',', '.', $order['sum']) ?>',          // Полная сумма заказа (дроби через точку)
+           '0',              // Стоимость доставки (дроби через точку)
+           '<?php echo $order->getCityName() ?>',       // Город доставки (Необязательно)
+           '<?php echo $order->getAreaName() ?>',     // Область (необязательно)
+           '<?php echo $order->getCountryName() ?>'             // Страна (нобязательно)
+       ]);
+  <?php foreach ($order->ProductRelation as $product): ?>
+             _gaq.push(['_addItem',
+                  '<?php echo $order['number'] ?>',           // Номер заказа
+                  '<?php echo $product->Product['article'] ?>',           // Артикул
+                  '<?php echo $product->Product['name'] ?>',        // Название товара
+                  '<?php echo $product->Product->getMainCategory() ?>',   // Категория товара
+                  '<?php echo str_replace(',', '.', $product['price']) ?>',          // Стоимость 1 единицы товара
+                  '<?php echo str_replace(',', '.', $product['quantity']) ?>'               // Количество товара
+              ]);
+  <?php endforeach ?>
+           _gaq.push(['_trackTrans']);
+   }
+
+  </script>
+
+<?php endif ?>
+
   <div class="line"></div>
 
   <?php if ($rememberMe): ?>
