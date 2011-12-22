@@ -240,6 +240,8 @@ $(document).ready(function() {
 						if( response.data ) {
 							$('#order1click-container').find('h2').html(response.data.title)
 							$('#order1click-form').replaceWith(response.data.content)
+							if( runAnalitics )
+								runAnalitics()
 						}
 					}
 				},
