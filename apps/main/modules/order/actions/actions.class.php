@@ -50,10 +50,10 @@ class orderActions extends myActions
 
     $this->order = new Order();
     $this->order->User = $this->getUser()->getGuardUser();
-    $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product);
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
     $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
     $this->order->delivery_type_id = 1;
+    $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product); //нужна для правильного отбражения формы заказа
 
     if (empty($this->order->region_id))
     {
@@ -93,6 +93,13 @@ class orderActions extends myActions
           ));
           $order->ProductRelation[] = $relation;
         }
+
+        $sum = 0;
+        foreach ($order->ProductRelation as $product)
+        {
+          $sum += $product['price'] * $product['quantity'];
+        }
+        $this->order->sum = $sum;
 
         try
         {
