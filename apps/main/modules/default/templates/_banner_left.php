@@ -1,0 +1,1 @@
+  <a href="<?php echo url_for('default_show', array('page' => 'new_year_information_letter_from_rumyancev')) ?>"><img src="/images/ceo.jpg" style="margin-bottom: 10px;" /></a>

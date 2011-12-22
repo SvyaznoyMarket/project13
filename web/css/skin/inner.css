@@ -3034,3 +3034,25 @@ DT.bCtg__eOrange{
 		.b1Click .bFormB2{
 			margin: 20px 0 0 130px;
 			}
+.bSR{
+	font: 12px/17px Tahoma, sans-serif;
+	}
+	.bSR b{
+		font: bold 14px/17px Tahoma, sans-serif;
+		}
+	.bSR a{
+		font-weight: bold;
+		text-decoration: underline;
+		}
+	.bSR__ePort{
+		float: right;
+		margin: 0 0 20px 20px;
+		}
+	.bSR__eSign{
+		float: right;
+		width: 220px;
+		}
+	.bSR__eSign img{
+		margin-left: 30px;
+		}
+

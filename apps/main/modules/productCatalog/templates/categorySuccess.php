@@ -10,6 +10,7 @@
 <?php slot('left_column') ?>
   <?php include_component('productCatalog', 'leftCategoryList', array('productCategory' => $productCategory)) ?>
   <?php include_component('productCatalog', 'tag', array('productCategory' => $productCategory)) ?>
+  <?php include_partial('default/banner_left') ?>
   <?php include_component('productCatalog', 'article_seo', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
