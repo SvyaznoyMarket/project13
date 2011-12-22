@@ -53,6 +53,7 @@ class orderActions extends myActions
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product);
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
     $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
+    $this->order->delivery_type_id = 1;
 
     if (empty($this->order->region_id))
     {
