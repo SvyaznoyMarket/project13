@@ -37,18 +37,30 @@ class orderActions extends myActions
   */
   public function execute1click(sfWebRequest $request)
   {
-    $this->setLayout(false);
-    sfConfig::set('sf_web_debug', false);
+    if (!$request->isXmlHttpRequest())
+    {
+      $this->redirect($request->getReferer().'#order1click-link');
+    }
 
-    $this->product = ProductTable::getInstance()->getById($request->getParameter('product_id'));
+    $return = array(
+      'success' => false,
+    );
+
+    $this->product = ProductTable::getInstance()->getByBarcode($request->getParameter('product'), array('with_model' => true));
+
     $this->order = new Order();
+    $this->order->User = $this->getUser()->getGuardUser();
+    $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product);
+    $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
+    $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
+    $this->order->delivery_type_id = 1;
 
     if (empty($this->order->region_id))
     {
-     $this->order->region_id = $this->getUser()->getRegion('id');
+      $this->order->region_id = $this->getUser()->getRegion('id');
     }
 
-    $this->form = new OrderStep1Form($this->order);
+    $this->form = new OrderOneClickForm($this->order, array('user' => $this->getUser()->getGuardUser()));
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getParameter($this->form->getName()));
@@ -57,21 +69,72 @@ class orderActions extends myActions
       {
         $order = $this->form->updateObject();
 
-        if ($order->isOnlinePayment())
+        if ($this->product->isKit())
         {
-          if ($this->save1clickOrder($order, $this->product))
+          foreach ($this->product->PartRelation as $partRelation)
           {
-            $provider = $this->getPaymentProvider();
-            $this->paymentForm = $provider->getForm($order);
-            $this->paymentForm->setDefault('URL_RETURN', url_for('productCard', $this->product).'#1click-payment-ok');   //
+            $part = ProductTable::getInstance()->getById($partRelation->part_id, array('with_model' => true));
+
+            $relation = new OrderProductRelation();
+            $relation->fromArray(array(
+              'product_id' => $part['id'],
+              'price'      => ProductTable::getInstance()->getRealPrice($part),
+              'quantity'   => $this->form->getValue('product_quantity'),
+            ));
+            $order->ProductRelation[] = $relation;
           }
-        } else {
-            if ($this->save1clickOrder($order, $this->product)) {
-                $this->message = 'Заказ успешно создан';
-            }
+        }
+        else {
+          $relation = new OrderProductRelation();
+          $relation->fromArray(array(
+            'product_id' => $this->product->id,
+            'price'      => ProductTable::getInstance()->getRealPrice($this->product),
+            'quantity'   => $this->form->getValue('product_quantity'),
+          ));
+          $order->ProductRelation[] = $relation;
+        }
+
+        try
+        {
+          $order->payment_details = 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.';
+          $order->save();
+
+          $form = new UserFormSilentRegister();
+          $form->bind(array(
+            'username'   => $order->recipient_phonenumbers,
+            'first_name' => trim($order->recipient_first_name.' '.$order->recipient_last_name),
+          ));
+
+          $return['success'] = true;
+          $return['message'] = 'Заказ успешно создан';
+          $return['data'] = array(
+            'title'   => 'Ваш заказ принят, спасибо!',
+            'content' => $this->getPartial($this->getModuleName().'/complete', array('order' => $order, 'form' => $form)),
+          );
+        }
+        catch (Exception $e)
+        {
+          $return['message'] = 'Не удалось создать заказ'.(sfConfig::get('sf_debug') ? (' Ошибка: '.$e->getMessage()) : '');
         }
       }
+      else {
+        $return = array(
+          'success' => false,
+          'data'    => array(
+            'form' => $this->getPartial($this->getModuleName().'/form_oneClick'),
+          ),
+        );
+      }
+
+      return $this->renderJson($return);
     }
+
+    return $this->renderJson(array(
+      'success' => true,
+      'data'    => array(
+        'form' => $this->getPartial($this->getModuleName().'/form_oneClick'),
+      ),
+    ));
   }
 
   public function executeLogin(sfWebRequest $request)
@@ -317,7 +380,7 @@ class orderActions extends myActions
       $this->result = $provider->getPaymentResult($this->order);
     }
 
-    $this->redirectUnless($this->order->exists(), 'order_new');
+    //$this->redirectUnless($this->order->exists(), 'order_new');
 
     $this->form = new UserFormSilentRegister();
     $this->form->bind(array(
@@ -402,12 +465,20 @@ class orderActions extends myActions
   */
   public function executePayment(sfWebRequest $request)
   {
-    $this->order = $this->getUser()->getOrder()->get();
+    $user = $this->getUser();
+
+    $this->order = $user->hasFlash('order_id') ? OrderTable::getInstance()->getById($user->getFlash('order_id')) : $user->getOrder()->get();
 
     $this->redirectUnless($this->order->isOnlinePayment(), 'order_new');
 
     $provider = $this->getPaymentProvider();
     $this->paymentForm = $provider->getForm($this->order);
+
+    $user->setCacheCookie();
+    $user->getCart()->clear();
+    $user->getOrder()->clear();
+
+    $user->setFlash('order_id', $this->order->id);
   }
 
   public function executeCallback(sfWebRequest $request)
@@ -418,35 +489,6 @@ class orderActions extends myActions
     $this->forward404Unless($order);
 
     $this->result = $provider->getPaymentResult($order);
-  }
-
-  /**
-   *
-   * @param Order $order
-   * @param Product $product
-   * @return bool
-   */
-  protected function save1clickOrder(Order $order, Product $product)
-  {
-      $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
-      $order->sum = $product->price;
-      $relation = new OrderProductRelation();
-      $relation->fromArray(array(
-        'product_id' => $product->id,
-        'price'      => $product->price,
-        'quantity'   => 1,
-      ));
-      $order->ProductRelation[] = $relation;
-
-        try {
-            $order->save();
-            $this->getUser()->getOrder()->set($order);
-            return true;
-        } catch (Exception $e) {
-            $this->getLogger()->err('{' . __CLASS__ . '} create: can\'t save to core: ' . $e->getMessage());
-        }
-
-        return false;
   }
 
   /**

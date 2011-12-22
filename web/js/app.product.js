@@ -153,4 +153,106 @@ $(document).ready(function() {
         .fail(function(error) {})
     })
 
+	function printPrice ( val ) {
+
+		var float = (val+'').split('.')
+		var out = float[0]
+		var le = float[0].length
+		if( le > 6 ) { // billions
+			out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
+		} else if ( le > 3 ) { // thousands
+			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
+		}
+		if( float.length == 2 )
+			out += '.' + float[1]
+		return out// + '&nbsp;'
+	}
+
+	if( $('.order1click-link').length ) {
+		var cl1loaded = false
+		$('.order1click-link').bind('click', function(e) {
+			e.preventDefault()
+
+			if ( !cl1loaded ) {
+				$('#ajaxgoods').lightbox_me({
+					centered: true,
+					closeClick: false,
+					closeEsc: false
+				})
+				$.get( $(this).attr('href'), function( response ) {
+					//$('#ajaxgoods').trigger('close')
+					$('#ajaxgoods').hide()
+					if( typeof(response.success) !== 'undefined' && response.success ) {
+						$('#order1click-form').html(response.data.form)
+						$('#order1click-container').lightbox_me({
+							centered: true
+						})
+						cl1loaded = true
+						bindCalc()
+					}
+				})
+			} else {
+				$('#order1click-container').lightbox_me({
+					centered: true
+				})
+			}
+		})
+
+		function bindCalc() {
+			var quant = 1
+			var pric  = $('.b1Click__ePriceBig .price').html().replace(/\s/g,'')
+			function recalc( delta ) {
+				if( quant == 1 && delta < 0 )
+					return
+				quant += delta
+				var sum = printPrice( pric * quant )
+				$('.c1quant').html( quant+ ' шт.')
+				$('#order_product_quantity').val( quant )
+				$('.b1Click__ePriceBig .price').html( sum )
+			}
+
+			$('.c1less').bind( 'click', function(){ recalc(-1) })
+			$('.c1more').bind( 'click', function(){ recalc(1) })
+		}
+
+		$('#order1click-form').bind('submit', function(e) {
+			e.preventDefault()
+			
+			$(this).ajaxSubmit({
+				beforeSubmit: function() {
+					var button = $('#order1click-form').find('input:submit')
+					button.attr('disabled', true)
+					button.val('Оформляю заказ...')
+				},
+				success: function( response ) {
+					if( !response.success ) {
+						if( response.data ) {
+							$('#order1click-form').html(response.data.form)
+						}
+						var button = $('#order1click-form').find('input:submit')
+						button.attr('disabled', false)
+						button.val('Оформить заказ')
+						if( !$('#warn').length ) {
+							var warn = $('<span id="warn" style="color:red">').html('Не удалось оформить заказ. Приносим свои извинения! Повторите попытку или обратитесь с заказом в контакт cENTER&nbsp;8&nbsp;(800)&nbsp;700&nbsp;00&nbsp;09')
+							$('.bFormB2').before( warn )
+						}
+					} else {
+						if( response.data ) {
+							$('#order1click-container').find('h2').html(response.data.title)
+							$('#order1click-form').replaceWith(response.data.content)
+							if( runAnalitics )
+								runAnalitics()
+						}
+					}
+				},
+				error: function() {
+					var button = $('#order1click-form').find('input:submit')
+					button.attr('disabled', false)
+					button.val('Попробовать еще раз')
+				}
+			})
+		})
+
+    }
+
 });

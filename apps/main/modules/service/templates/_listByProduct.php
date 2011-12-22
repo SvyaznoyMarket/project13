@@ -18,7 +18,7 @@ include_component('product', 'f1_lightbox', array('f1' => $list,'product'=>$prod
           foreach ($list as $service) {  ?>
                 <?php if (in_array($service->id, $servListId)) { ?>
                     <div ref="<?php echo $service->token ;?>">
-                        <?php echo $service->name ?> - <?php echo $service->getFormattedPrice()  ?>&nbsp;<span class="rubl">p</span><br>
+                        <?php echo $service->name ?> - <?php echo $service->getFormattedPrice($product->id)  ?>&nbsp;<span class="rubl">p</span><br>
                         <a class="bBacketServ__eMore" href="<?php echo url_for('cart_service_delete', array('service' => $service->token, 'product' => $product->token));?>">Отменить услугу</a>
                     </div>        
                 <?php } ?>
