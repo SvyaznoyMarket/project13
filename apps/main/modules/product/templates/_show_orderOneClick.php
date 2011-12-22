@@ -5,7 +5,6 @@
 <div class="basketright">
   <div class="goodstitle">
     <div class="font24 pb5"><a href=""><?php echo $item['name'] ?></a></div>
-    <div class="font11"><?php if ($item['is_instock']) echo 'Есть в наличии' ?></div>
   </div>
   <div class="basketinfo pb15">
     <div class="left font11">Цена:<br>
