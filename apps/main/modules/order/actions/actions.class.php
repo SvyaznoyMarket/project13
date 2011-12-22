@@ -46,13 +46,14 @@ class orderActions extends myActions
       'success' => false,
     );
 
-    $this->product = ProductTable::getInstance()->getByBarcode($request->getParameter('product'));
+    $this->product = ProductTable::getInstance()->getByBarcode($request->getParameter('product'), array('with_model' => true));
 
     $this->order = new Order();
     $this->order->User = $this->getUser()->getGuardUser();
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product);
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
     $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
+    $this->order->delivery_type_id = 1;
 
     if (empty($this->order->region_id))
     {
@@ -72,7 +73,7 @@ class orderActions extends myActions
         {
           foreach ($this->product->PartRelation as $partRelation)
           {
-            $part = ProductTable::getInstance()->getById($partRelation->part_id);
+            $part = ProductTable::getInstance()->getById($partRelation->part_id, array('with_model' => true));
 
             $relation = new OrderProductRelation();
             $relation->fromArray(array(
