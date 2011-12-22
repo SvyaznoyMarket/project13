@@ -53,7 +53,7 @@ class ProductTable extends myDoctrineTable
 
   public function getDefaultParameters()
   {
-    return array(
+    $data =  array(
       'view'           => false, // list, show
       'group_property' => false, // группировать свойства товара по группам
       'with_line'      => false,
@@ -63,8 +63,11 @@ class ProductTable extends myDoctrineTable
       'with_price'     => false,
       'with_category'  => false,
       'with_delivery_price' => false,        
-      'region_id'      => sfContext::getInstance()->getUser()->getRegion('id'),
     );
+    if (sfContext::hasInstance()) {
+        $data['region_id'] = sfContext::getInstance()->getUser()->getRegion('id');
+    }  
+    return $data;
   }
 
   public function createBaseQuery(array $params = array())
@@ -107,7 +110,10 @@ class ProductTable extends myDoctrineTable
     }
     if ($params['with_category'])
     {
-      $q->leftJoin('product.ProductCategoryProductRelation category');
+      $q->leftJoin('product.ProductCategoryProductRelation category_rel')
+        ->leftJoin('category_rel.Category category')
+              ;
+      
     } 
 
 

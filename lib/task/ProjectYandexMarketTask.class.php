@@ -156,6 +156,7 @@ class ProjectYandexMarketTask extends sfBaseTask
           'name' => 'ya_market.xml',
           'price_list_id' => 1     
           ),
+      /*
       array(
           'name' => 'export_realweb.xml',
           'list' => array(6,5,8,9),
@@ -181,7 +182,18 @@ class ProjectYandexMarketTask extends sfBaseTask
           'list' => array(3,2,1,4,7,8,5),
           'price_list_id' => 11
           ),
+       */
   );
+  
+  /**
+   * Id бизнес-юнита ювелирки. 
+   * Для него особые правила для доставки.
+   * 
+   * @var integer 
+   */
+  private $_jewelUnit = 9;
+  
+  
 
   protected function configure()
   {
@@ -408,27 +420,11 @@ EOF;
         'view' => 'show',
     );
     $offersList = ProductTable::getInstance()->createBaseQuery($params)
-            ->select('product.*,category.product_category_id,creator.name,price.price,delivery_price.price')
+            ->select('product.*, category_rel.*, category.root_id, creator.name, price.price, delivery_price.price')
             ->addWhere('price.product_price_list_id = ?', $this->_currentPriceListId)
             ->addWhere('product.token_prefix IS NOT NULL')
             ;
-    /*
-    $offersList = ProductTable::getInstance()->createBaseQuery()
-            ->createQuery('p')
-            ->distinct()
-            ->select('p.*,pcr.product_category_id,cr.name,price.price,type.name,photo.resource, dp.price')
-            ->leftJoin('p.ProductCategoryProductRelation pcr ')      //категория
-           # ->leftJoin('p.Photo photo on p.id=photo.product_id ')           //фото
-           # ->leftJoin('p.Type type ')                 //тип
-            ->leftJoin('p.Creator cr ')               //производитель
-            ->leftJoin('p.DeliveryPrice dp  ')               //цена на доставку
-            ->innerJoin('p.ProductPrice price WITH price.product_price_list_id = ?', 1)    //цена
-            ->addWhere('p.view_show = ?', 1)
-            ->addWhere('p.view_list = ?', 1)
-            ->addWhere('p.token_prefix IS NOT NULL')
-            ;
-     * 
-     */
+
     
     //если нужно выгрузить только те, что есть в наличии
     if (!$this->_exportNotInStock){
@@ -437,22 +433,26 @@ EOF;
     //если есть ограничения по категориям
     if (isset($catIdListString) && count($catIdListString)){
         $offersList
-            ->addWhere('category.product_category_id IN ('.$catIdListString.')');
+            ->addWhere('category_rel.product_category_id IN ('.$catIdListString.')');
     }
     #echo $this->_xmlFilePath ."\n";
     #echo $offersList ."\n";
     $offersList = $offersList
-            #->limit(50)
+            #->limit(200)
             ->fetchArray();
 
-
+    
+    #echo count($offersList);
+    #print_r($offersList);
+    #exit();
+    
     $numInRound = 0;
     $currentXml = "";
     file_put_contents($this->_xmlFilePath,'<offers>',FILE_APPEND);
 
     foreach($offersList as $offerInfo){
         $this->_currentIsAvalible = true;
-
+        
         try{
 
             //DEPRICATED! не используем объект, так как с ним получается очень долго.
@@ -504,6 +504,11 @@ EOF;
                 $value = $this->_getAdditionalPropValueByCode($offerInfo,$addParam);
                 if ($value) $offer->$addParam['name'] = $value;
             }
+            
+            if (!$this->_currentDeliveyIsAvalible) {
+                continue;
+            }
+            
 
         }
 
@@ -511,6 +516,7 @@ EOF;
             #echo 'eeroor--'.$e->getMessage().$e->getFile().'=='.$e->getLine().'        ';
             continue;
         }
+        
 
         $numInRound++;
         //записываем в файл порциями по 100 штук
@@ -574,10 +580,14 @@ EOF;
                 $value = 'true';
                 break;
             case 'delivery':
-                if ($this->_currentDeliveyIsAvalible) {
-                    $value = 'true';
+                //для ювелирки доставки никогда нет
+                if (isset($offerInfo['ProductCategoryProductRelation'][0]['Category']['root_id'])
+                    && $offerInfo['ProductCategoryProductRelation'][0]['Category']['root_id'] == $this->_jewelUnit  ) {
+                    $value = 'false'; 
+                    $this->_currentDeliveyIsAvalible = 1;
+                //для остальных - отображаем только те, у которых есть доставка  
                 } else {
-                    $value = 'false';
+                    $value = 'true';
                 }
                 break;
             case 'description':
@@ -586,10 +596,10 @@ EOF;
             case 'local_delivery_cost':
                 if (isset($offerInfo['DeliveryPrice']) && isset($offerInfo['DeliveryPrice'][0])) {
                     $value = $offerInfo['DeliveryPrice'][0]['price'];
-                    $this->_currentDeliveyIsAvalible = true;
+                    $this->_currentDeliveyIsAvalible = 1;
                 } else {
                     $value = false;
-                    $this->_currentDeliveyIsAvalible = false;
+                    $this->_currentDeliveyIsAvalible = 0;
                 }
                 break;
         }
