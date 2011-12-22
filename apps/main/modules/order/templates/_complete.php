@@ -14,7 +14,7 @@
   <script type="text/javascript">
     function runAnalitics(){
        _gaq.push(['_addTrans',
-           '<?php echo $order['number'] ?>',           // Номер заказа
+           '<?php echo $order['number'].'_F' ?>',           // Номер заказа
            '<?php echo $order->Shop ?>',  // Название магазина (Необязательно)
            '<?php echo str_replace(',', '.', $order['sum']) ?>',          // Полная сумма заказа (дроби через точку)
            '0',              // Стоимость доставки (дроби через точку)
@@ -24,7 +24,7 @@
        ]);
   <?php foreach ($order->ProductRelation as $product): ?>
              _gaq.push(['_addItem',
-                  '<?php echo $order['number'] ?>',           // Номер заказа
+                  '<?php echo $order['number'].'_F' ?>',           // Номер заказа
                   '<?php echo $product->Product['article'] ?>',           // Артикул
                   '<?php echo $product->Product['name'] ?>',        // Название товара
                   '<?php echo $product->Product->getMainCategory() ?>',   // Категория товара
