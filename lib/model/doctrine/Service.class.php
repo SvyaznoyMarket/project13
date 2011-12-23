@@ -13,10 +13,10 @@
 class Service extends BaseService
 {
   CONST MIN_BUY_PRICE = 950;
-  
-  
-  public $price;   
-    
+
+
+  public $price;
+
   public function toParams()
   {
     return array(
@@ -28,6 +28,8 @@ class Service extends BaseService
   {
     parent::importFromCore($data);
 
+    $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
+
     // теги
     if (!empty($data['category'])) foreach ($data['category'] as $relationData)
     {
@@ -37,6 +39,7 @@ class Service extends BaseService
       ));
       $this->CategoryRelation[] = $relation;
     }
+
   }
 
   public function getPriceByRegion(Region $region = NULL)
@@ -55,19 +58,19 @@ class Service extends BaseService
   {
     #if (!$this->price) {
     $price = $this->getCurrentPrice($productId);
-    #}  
+    #}
     if ($price < 1) return 'бесплатно';
     return number_format($price, 0, ',', ' ');
-  }  
-  
+  }
+
 
   public function getCurrentPrice($productId = 0) {
-      
+
         $region = sfContext::getInstance()->getUser()->getRegion();
         #$priceList = $region['product_price_list_id'];
         #$priceList = ProductPriceListTable::getInstance()->getCurrent();
         #$priceListDefault = ProductPriceListTable::getInstance()->getDefault();
-      
+
         $currentPrice = 0;
         foreach($this->PriceTariff as $price) {
             if ($region['id'] == $price['region_id']) {
@@ -83,13 +86,13 @@ class Service extends BaseService
                   $currentPrice = $price['price'];
                   break;
               }
-          }          
-        } */      
+          }
+        } */
         #$this->price = $currentPrice;
         return $currentPrice;
-        
+
   }
-  
+
   public function getCatalogParent(){
     $result = ServiceCategoryTable::getInstance()
             ->createQuery('sc')
@@ -101,22 +104,22 @@ class Service extends BaseService
     if (isset($result[0])) {
         return $result[0];
     } else {
-        return false;            
-    }      
+        return false;
+    }
   }
-  
+
   public function getPhotoUrl($view = 1)
   {
     $urls = sfConfig::get('app_service_photo_url');
 
     return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto() : null;
-  }  
+  }
 
   public function getMainPhotoUrl($view = 1)
   {
     $urls = sfConfig::get('app_service_photo_url');
 
     return $this->getMainPhoto() ? $urls[$view].$this->getMainPhoto() : null;
-  }  
-  
+  }
+
 }
