@@ -118,14 +118,14 @@ class productCategoryComponents extends myComponents
          $avrHeight = round($avrHeight/4); // + $avrHeight/4/100*10);   //средняя (идеальная) высота колонки
          #echo $avrHeight .'   = '.$mainCatId.'--$avrHeight<br>';
 
-         $minHeight = round( $avrHeight - $avrHeight/100*30);   //максимальная -критичная высота. Отклонение 30%
-         $maxHeight = round($avrHeight + $avrHeight/100*30);   //минимальная -критичная высота. Отклонение 30%
+         $minHeight = round( $avrHeight - $avrHeight/100*25);   //максимальная -критичная высота. Отклонение 30%
+         $maxHeight = round($avrHeight + $avrHeight/100*25);   //минимальная -критичная высота. Отклонение 30%
 
          $useFierst = 0;
 
 
 
-         //print_r($mainCatList);
+         #print_r($mainCatList);
          //проходим по колонкам
          unset($mainCatList['']);
          for ($columnNum=0; $columnNum<$fullColumnNum; $columnNum++){
@@ -182,6 +182,7 @@ class productCategoryComponents extends myComponents
                  $goodId = 0;
                  $ratherGoodId = 0;
                  foreach($mainCatList as $id => $num){
+                     //пустые категории пока игнорируем
                      if ($num<=$sizeofWideElement) continue;
                      //идеально!
                      if ($num<=$freePlace){
@@ -193,8 +194,18 @@ class productCategoryComponents extends myComponents
                          $ratherGoodId = $id;
                      }
                  }
-                 if (!$goodId)
+                 if (!$goodId) {
                      $goodId = $ratherGoodId;
+                 }
+                 //посмотрим, возможно остались пустые категории, и их ещё можно добавить
+                 if (!$goodId){
+                     foreach($mainCatList as $id => $num){
+                         if ($num<=$sizeofWideElement) {
+                             $goodId = $id;
+                             break;
+                         }
+                     }    
+                 }
                  //больше нечего добавить в эту колонку.
                  if (!$goodId){
                      //в эту колонку больше нечего добавить. не пытаемся.

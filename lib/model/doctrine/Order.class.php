@@ -135,7 +135,11 @@ class Order extends BaseOrder
       }
       foreach ($this->ServiceRelation as $service)
       {
-            $productId = $productCoreIdList[ $service->product_id ];
+            if ($service->product_id > 0 && isset($productCoreIdList[ $service->product_id ])) {
+                $productId = $productCoreIdList[ $service->product_id ];
+            } else {
+                $productId = 0;
+            }
             if ($productId<0) {
                 continue;
             }
