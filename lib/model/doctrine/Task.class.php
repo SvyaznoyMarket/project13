@@ -96,6 +96,6 @@ class Task extends BaseTask
       : 2
     ;
 
-    $this->priority = $priority > 0 $priority : 1;
+    $this->priority = $priority > 0 ? $priority : 1;
   }
 }
