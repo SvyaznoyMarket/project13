@@ -62,9 +62,28 @@ use_helper('Date');
            <?php } ?>
        <?php endforeach; ?>
            
+       <?php if (isset($item['delivery_price']) && isset($item['delivery_type']) && (int)$item['delivery_price']>0 ) { ?>
+            <tr>
+               <th>
+                    <?php echo $item['delivery_type'] ?> 
+               </th>
+               <td>
+                   <strong class="font14"><?php echo $item['delivery_price'] ?>&nbsp;<span class="rubl">p</span></strong>
+               </td>
+           </tr>
+               
+       <?php } ?>    
+               
+               
        <tr>
            <th>
-               <?php if (isset($item['delivered_at'])){ ?><div class="font12 pb5"> Дата доставки: <?php $date = explode(" ",$item['delivered_at']);  echo format_date($date[0],'dd MMMM yyyy','ru')?>г. <?php if (isset($item['delivered_period'])) echo '('.$item['delivered_period'].')'; ?></div><?php } ?>
+               <?php if (isset($item['delivered_at'])){ ?>
+                    <div class="font12 pb5">
+                        <?php echo $item['delivery_type'] ."."; ?>
+                        <?php $date = explode(" ",$item['delivered_at']);  echo format_date($date[0],'dd MMMM yyyy','ru')?>г. 
+                        <?php if (isset($item['delivered_period'])) echo '('.$item['delivered_period'].')'; ?>
+                    </div>
+               <?php } ?>
                <div class="font12">Способ оплаты: <?php echo $item['payment_method_name']?></div>
            </th>
            <td>Итого к оплате:<br><strong class="font18"><?php echo $item['sum'] ?>&nbsp;<span class="rubl">p</span></strong></td>

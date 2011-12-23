@@ -30,6 +30,8 @@ class orderComponents extends myComponents
       'created_at'          => $this->order->created_at,
       'payment_method_name' => $this->order->PaymentMethod ? $this->order->PaymentMethod->name : null,
       'delivered_at'        => $this->order->delivered_at,
+      'delivery_type'        => $this->order->getDeliveryType(),
+      'delivery_price'        => $this->order->delivery_price,
       'delivered_period'    => $this->order->DeliveryPeriod ? $this->order->DeliveryPeriod->name : null,
     );
 

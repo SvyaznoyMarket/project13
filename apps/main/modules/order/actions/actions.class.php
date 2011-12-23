@@ -508,6 +508,7 @@ class orderActions extends myActions
     $deliveryPrices = $this->getUser()->getCart()->getDeliveriesPrice();
     $deliveryPrice = isset($deliveryPrices[$order->delivery_type_id]) ? $deliveryPrices[$order->delivery_type_id] : 0;
     $order->User = $this->getUser()->getGuardUser();
+    $order->delivery_price = $deliveryPrice;
     $order->sum = $this->getUser()->getCart()->getTotal() + $deliveryPrice;
     $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
 
