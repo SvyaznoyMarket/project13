@@ -84,34 +84,32 @@ _gaq.push(['_trackPageLoadTime']);
 		{
 		  return Math.floor(Math.random() * (max - min + 1)) + min
 		}
-		var values = { '2060101001854': '/products/2060101001854',
-				    '2060701001476': '/products/2060701001476',
-				    '2060603000409': '/products/2060603000409',
-				    'ny': '/catalog/household/tovari-dlya-novogo-goda-i-rogdestva-novogodnie-elki-1271/',
-				    '2030000054374': '/products/set/2030000054374,2030000054350',
-				    '2020103002174': '/products/2020103002174',
-				    '2030000048472': '/products/2030000048472',
-				    '2080502001192': '/products/2080502001192',
-				    '2020301000408': '/products/2020301000408',
-				    '2060101000116': '/products/2060101000116',
-				    '2030000001330': '/products/2030000001330',
-				    'furniture': '/product/furniture/mebel-fabrik-divan-vika-21-beliy',
-				    'iphone': '/products/set/2060302001851,2060302001844,2060302001882,2060302001875,2060302001868,2060302001899'}
+		var values = {
+			'2060302001844': '/products/2060302001844',
+			'2050600000380': '/products/2050600000380',
+			'selena': '/search?q=%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B0&product_type=677',
+			'2010103001529': '/products/2010103001529',
+			'2080502000751': '/products/2080502000751',
+			'2030000018871': '/products/2030000018871',			
+			'2010203001047': '/products/2010203001047',
+			'2020301001603': '/products/2020301001603',			
+			'2060101001236': '/products/2060101001236'
+		}	
 		var rotations = {
 		// images/enter/big/ file by file 
-			big:['2060101001854','2060701001476','2060603000409','ny','2030000054374','2020103002174','2030000048472',
-				 '2080502001192','2020301000408','2060101000116','2030000001330','furniture','iphone'],	 
+			big:['2060302001844','2050600000380','selena','2010103001529','2080502000751','2030000018871','2010203001047',
+				 '2020301001603','2060101001236'],	 
 		// images/enter/medium/ file by file 		 
-			med: ['2060101001854','2060701001476','2060603000409','ny'],
+			med: ['2060101001236 ','2080502000751','2010203001047','2010103001529'],
 		// images/enter/small/ file by file 	
-			sm: ['2030000054374','2020103002174','2030000048472','2080502001192']
+			sm: ['2020301001603','2030000018871','2060302001844','2050600000380']
 		}
 
 		var node    = $('.bannersboxinner')
 		var bignode = $('.bigbanner')
 		var ind = getRandomInt(0, rotations.big.length - 1 )
 		var bri = rotations.big[ ind ] + ''
-		bignode.find('img').attr('src','/images/enter/big/enter'+ (ind*1+1) +'.jpg')
+		bignode.find('img').attr('src','/images/enter/big/enter_'+ (ind*1+1) +'.jpg')
 						   .parent().attr('href', values[bri])
 						   
 		ind = getRandomInt(0, rotations.med.length - 1 )
@@ -121,7 +119,7 @@ _gaq.push(['_trackPageLoadTime']);
 			mri = rotations.med[ ind ] + ''
 		}
 		var mri_2 = mri
-		node.find('.banner3 img').attr('src','/images/enter/medium/enter'+ (ind*1+1) +'.jpg')
+		node.find('.banner3 img').attr('src','/images/enter/medium/enter_'+ (ind*1+1) +'.jpg')
 								 .parent().attr('href', values[mri])
 		ind = getRandomInt(0, rotations.med.length - 1 )
 		var mri = rotations.med[ ind ] + ''
@@ -130,7 +128,7 @@ _gaq.push(['_trackPageLoadTime']);
 			ind = getRandomInt(0, rotations.med.length - 1 )
 			mri = rotations.med[ ind ] + ''
 		}
-		node.find('.banner4 img').attr('src','/images/enter/medium/enter'+ (ind*1+1) +'.jpg')
+		node.find('.banner4 img').attr('src','/images/enter/medium/enter_'+ (ind*1+1) +'.jpg')
 								 .parent().attr('href', values[mri])
 
 		ind = getRandomInt(0, rotations.sm.length - 1 )
@@ -140,7 +138,7 @@ _gaq.push(['_trackPageLoadTime']);
 			sri = rotations.sm[ ind ] + ''
 		}
 		var sri_2 = sri
-		node.find('.banner2 img').attr('src','/images/enter/small/enter'+ (ind*1+1) +'.jpg')
+		node.find('.banner2 img').attr('src','/images/enter/small/enter_'+ (ind*1+1) +'.jpg')
 								 .parent().attr('href', values[sri])
 		ind = getRandomInt(0, rotations.sm.length - 1 )
 		var sri = rotations.sm[ ind ] + ''
@@ -148,7 +146,7 @@ _gaq.push(['_trackPageLoadTime']);
 			ind = getRandomInt(0, rotations.sm.length - 1 )
 			sri = rotations.sm[ ind ] + ''
 		}
-		node.find('.banner5 img').attr('src','/images/enter/small/enter'+ (ind*1+1) +'.jpg')
+		node.find('.banner5 img').attr('src','/images/enter/small/enter_'+ (ind*1+1) +'.jpg')
 								 .parent().attr('href', values[sri])
 
 		$('.startse').bind ({
