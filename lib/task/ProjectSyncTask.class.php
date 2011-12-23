@@ -45,7 +45,7 @@ EOF;
 
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
-    $connection = $databaseManager->getDatabase($options['connection'])->getConnection();
+    $this->connection = $databaseManager->getDatabase($options['connection'])->getConnection();
 
     // add your code here
     $this->core = Core::getInstance();
@@ -240,7 +240,23 @@ EOF;
         }
       }
 
+      //если это продукт, являющийся главной моделью, отрубаем внешние ключи, чтобы создать связь ProductModelPropertyRelation
+      $is_main_product_model = $record instanceof Product && $record->is_model;
+      if ($is_main_product_model)
+      {
+        $this->connection->exec('SET foreign_key_checks = 0');
+      }
+
       $record->replace(); //$record->save();
+
+      //если это продукт, являющийся главной моделью, ставим у него модельную ссылку на самого себя и включаем обратно внешние ключи
+      if ($is_main_product_model)
+      {
+        $record->model_id = $record->id;
+        $record->save();
+        $this->connection->exec('SET foreign_key_checks = 1');
+      }
+
       if ($record instanceof ProductCategory)
       {
         if (!empty($record->FilterGroup))
