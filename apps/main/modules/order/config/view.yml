@@ -16,7 +16,6 @@ all:
     - shelf/jquery.autocomplete-dev.js
     #ivn- jquery.scrollto.js
     - app.order.js
-    - app.order.complete.js
     #ivn- custom-form-elements.js
     - main.js
     - app.auth.js
