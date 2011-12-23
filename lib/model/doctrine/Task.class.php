@@ -92,8 +92,8 @@ class Task extends BaseTask
 
     $priority =
       $value <= $maxCorePriority
-      ? $maxCorePriority - $value + 1
-      : 1
+      ? $maxCorePriority - $value + 2
+      : 2
     ;
 
     $this->priority = $priority > 0 $priority : 1;
