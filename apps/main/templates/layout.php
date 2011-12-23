@@ -7,13 +7,13 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php include_stylesheets() ?>
     <?php //include_javascripts() ?>
-    <?php include_component('page', 'link_rel_canonical') ?>    
-       
-    
+    <?php include_component('page', 'link_rel_canonical') ?>
+
+
     <?php if (has_slot('header_meta_og')): ?>
       <?php include_slot('header_meta_og') ?>
     <?php endif ?>
-    
+
 <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25485956-1']);
@@ -61,17 +61,15 @@
         <!-- /Topbar -->
         <!-- Header -->
         <div class="header">
-         <?php LastModifiedHandler::setLastModified();  ?>               
+         <?php LastModifiedHandler::setLastModified();  ?>
           <?php include_partial('default/logo') ?>
           <!-- Topmenu -->
           <?php include_component('productCategory', 'root_list') ?>
           <!-- /Topmenu -->
-          <div class="headerright" style="font-size: 14px; font-family: Enter; padding-top: 30px;">
+          <div class="headerright">
             Контакт cENTER
-            <div class="vcard"><div class="tel" style="font-size: 24px; line-height: 24px;"><span style="font-size: 14px;">8 (800)</span><br />700-00-09<br /></div></div>
-            <div style="margin-top: -8px">круглосуточно</div>
-            <!--a href="">Перезвоните мне</a><br />
-            <a href="">Отследить мой заказ</a-->
+            <div class="tel"><span>8 (800)</span>700-00-09</div>
+            круглосуточно
           </div>
           <!-- Extramenu -->
           <?php #include_component('productCategory', 'extra_menu') ?>
