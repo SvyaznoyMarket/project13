@@ -21,10 +21,17 @@ class UserCart extends BaseUserData
 
     if (!isset($products[$product->id]) || empty($products[$product->id]))
     {
+      //убиваю первый товар в корзине, если размер превышает 50
+      if (count($products) >= 50)
+      {
+        $keys = array_keys($products);
+        unset($products[$keys[0]]);
+      }
+      
       $products[$product->id] = $this->getDefaults();
     }
     $products[$product->id]['quantity'] = $quantity;
-    
+
     $this->parameterHolder->set('products', $products);
     $this->calculateDiscount();
   }
@@ -315,7 +322,7 @@ class UserCart extends BaseUserData
 
 
   }*/
-  
+
   public function deleteService($service, $productId = 0)
   {
     $services = $this->parameterHolder->get('services');
@@ -325,9 +332,9 @@ class UserCart extends BaseUserData
          # echo $productId.'--del';
          # exit();
         if (isset($services[$service['id']]['product'][$productId])) {
-            unset($services[$service['id']]['product'][$productId]); 
+            unset($services[$service['id']]['product'][$productId]);
   }
-      } else {  
+      } else {
           $services[$service['id']]['quantity'] = 0;
       }
       //если этого сервиса не осталось не по одиночке, не для товаров, удалим его вообще
@@ -343,8 +350,8 @@ class UserCart extends BaseUserData
       $this->calculateDiscount();
     }
 
-    
-  }  
+
+  }
 
   public function clear()
   {
