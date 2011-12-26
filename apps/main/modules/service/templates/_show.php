@@ -29,7 +29,7 @@
                  <?php echo $service['work']; ?>
 			</p>
 			<div class="bSet__ePrice mServ" ref="<?php echo $service['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
-                <?php if (isset($service['currentPrice']) && $service['currentPrice'] && ($showNoPrice || $service['currentPrice'] != 'бесплатно' )) { ?>
+                <?php if (isset($service['priceFormatted']) && $service['priceFormatted'] && ($showNoPrice || $service['priceFormatted'] != 'бесплатно' )) { ?>
 				<strong class="font34">
                     <span class="price"><?php echo $service['priceFormatted']; ?></span>
                     <?php if((int)$service['priceFormatted']) { ?>
@@ -39,6 +39,8 @@
                 <?php } ?>
                 <?php if ((int)$service['price'] >= Service::MIN_BUY_PRICE) { ?>                
                     <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить услугу</a>
+                <?php } else { ?>  
+                    <b>доступна в магазине</b>
                 <?php } ?>    
                 
 			</div>

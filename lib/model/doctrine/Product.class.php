@@ -156,9 +156,9 @@ class Product extends BaseProduct
     if (isset($data['is_model']) && 1 == $data['is_model'])
     {
       $property_ids = array();
-      foreach ($this->ProductPropertyModelRelation as $productPropertyModelRelation)
+      foreach ($this->ProductModelPropertyRelation as $productModelPropertyRelation)
       {
-        $property_ids[$productPropertyModelRelation['product_property_id']] = $productPropertyModelRelation['id'];
+        $property_ids[$productModelPropertyRelation['product_property_id']] = $productModelPropertyRelation['id'];
       }
 
       if (isset($data['property_model']) && count($data['property_model']))
@@ -175,7 +175,7 @@ class Product extends BaseProduct
             $productModelPropertyRelation = new ProductModelPropertyRelation();
           }
           $productModelPropertyRelation->importFromCore($relationData);
-          $this->ProductPropertyModelRelation[] = $productModelPropertyRelation;
+          $this->ProductModelPropertyRelation[] = $productModelPropertyRelation;
           unset($property_ids[$productModelPropertyRelation['product_property_id']]);
         }
       }
@@ -190,6 +190,7 @@ class Product extends BaseProduct
 
         $deleted = $q->execute();
       }
+
     }
 
     if ($this->isKit())
@@ -310,6 +311,10 @@ class Product extends BaseProduct
     }
 
     return $return;
+  }
+  public function getRealPrice()
+  {
+    return $this->getTable()->getRealPrice($this);
   }
 
   public function getFormattedPrice()

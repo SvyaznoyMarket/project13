@@ -90,18 +90,18 @@ _gaq.push(['_trackPageLoadTime']);
 			'selena': '/search?q=%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B0&product_type=677',
 			'2010103001529': '/products/2010103001529',
 			'2080502000751': '/products/2080502000751',
-			'2030000018871': '/products/2030000018871',			
+			'2030000018871': '/products/2030000018871',
 			'2010203001047': '/products/2010203001047',
-			'2020301001603': '/products/2020301001603',			
+			'2020301001603': '/products/2020301001603',
 			'2060101001236': '/products/2060101001236'
-		}	
+		}
 		var rotations = {
-		// images/enter/big/ file by file 
+		// images/enter/big/ file by file
 			big:['2060302001844','2050600000380','selena','2010103001529','2080502000751','2030000018871','2010203001047',
-				 '2020301001603','2060101001236'],	 
-		// images/enter/medium/ file by file 		 
-			med: ['2060101001236 ','2080502000751','2010203001047','2010103001529'],
-		// images/enter/small/ file by file 	
+				 '2020301001603','2060101001236'],
+		// images/enter/medium/ file by file
+			med: ['2060101001236','2080502000751','2010203001047','2010103001529'],
+		// images/enter/small/ file by file
 			sm: ['2020301001603','2030000018871','2060302001844','2050600000380']
 		}
 
@@ -111,7 +111,7 @@ _gaq.push(['_trackPageLoadTime']);
 		var bri = rotations.big[ ind ] + ''
 		bignode.find('img').attr('src','/images/enter/big/enter_'+ (ind*1+1) +'.jpg')
 						   .parent().attr('href', values[bri])
-						   
+
 		ind = getRandomInt(0, rotations.med.length - 1 )
 		var mri = rotations.med[ ind ] + ''
 		while( bri === mri ) {
@@ -123,7 +123,7 @@ _gaq.push(['_trackPageLoadTime']);
 								 .parent().attr('href', values[mri])
 		ind = getRandomInt(0, rotations.med.length - 1 )
 		var mri = rotations.med[ ind ] + ''
-		
+
 		while( bri === mri || mri_2 === mri) {
 			ind = getRandomInt(0, rotations.med.length - 1 )
 			mri = rotations.med[ ind ] + ''
@@ -159,8 +159,8 @@ _gaq.push(['_trackPageLoadTime']);
 						this.value = ''
 			}
 		})
-	})	
-	
+	})
+
 </script>
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">

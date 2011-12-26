@@ -3,7 +3,7 @@
 class UnitellerPaymentProvider
 {
   protected $configHolder = null;
-
+  
   public function __construct(array $config)
   {
     $this->configHolder = new sfParameterHolder();
@@ -22,6 +22,46 @@ class UnitellerPaymentProvider
    */
   public function getForm(Order $order)
   {
+    $productInfo = array();  
+    $serviceInfo = array();
+    //информация для комментария
+    foreach($order->getProduct() as $product){
+        $productInfo[$product->id]['name'] = $product->name;
+        $productInfo[$product->id]['quantity'] = $product->cart['quantity'];
+        $productInfo[$product->id]['price'] =  number_format($product->getRealPrice() * $product->cart['quantity'], 0, ',', ' ');
+    }
+    
+    foreach($order->getService() as $service){
+        $serviceQty = $service->cart['quantity'];
+        foreach($service->cart['product'] as $qty) {
+            $serviceQty += $qty;
+        }        
+        $serviceInfo[$service->id]['name'] = $service->name;
+        $serviceInfo[$service->id]['quantity'] = $serviceQty;
+        $serviceInfo[$service->id]['price'] =  number_format($service->getCurrentPrice() * $serviceQty, 0, ',', ' ');
+    }
+    if (count($productInfo)) {
+        foreach($productInfo as $product){
+            $str = $product['name'] . ' (' . $product['quantity'] . 'шт.)';
+            $orderInfo[$str] = $product['price'];
+        }
+    }
+    if (count($serviceInfo)) {
+        foreach($serviceInfo as $service){
+            $str = $service['name'] . ' (' . $service['quantity'] . 'шт.)';
+            $orderInfo[$str] = $service['price'];
+        }
+    }
+    //цена доставки. если есть
+    if ($order->getDeliveryPrice() > 0 && $order->getDeliveryType() ) {
+         $orderInfo["'" . $order->getDeliveryType() . "'"] = $order->getDeliveryPrice(); 
+    }
+    if ($order->getDeliveredAt()) $orderInfo["ДатаДоставки"] = $order->getDeliveredAt();
+    #print_r($orderInfo);      
+    #exit();
+    $jsonOrderInfo = json_encode($orderInfo);    
+    
+      
     sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
 
     $params = array(
@@ -37,16 +77,24 @@ class UnitellerPaymentProvider
       'password'     => $this->getConfig('password'),
     )));
 
-    $form = new UnitellerPaymentForm(array(
+    $formData = array(
       'Shop_IDP'    => $this->getConfig('shop_id'),
       'Order_IDP'   => $order->token,
       'Subtotal_P'  => $order->sum,
       'Signature'   => $sig,
       'URL_RETURN'  => url_for($this->getConfig('return_url'), true),
-    ), array(
-      'url' => $this->getConfig('pay_url')
-    ));
+    );
+    $info = array(
+      'url' => $this->getConfig('pay_url'),
+      'Comment' => $jsonOrderInfo         
+    );
+    $form = new UnitellerPaymentForm($formData, $info);
 
+    
+    $logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/uniteller.log'));    
+    $logger->log("Form: ".$form);
+    $logger->log("Comment: ".$jsonOrderInfo);
+    
     return $form;
   }
 

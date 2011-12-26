@@ -17,6 +17,14 @@ api:
   url:   /api
   param: { module: api, action: index }
 
+api_packet_status:
+  url:   /api/packet_status
+  param: { module: api, action: packetStatus }
+
+api_cache_clean:
+  url:   /api/cache_clean
+  param: { module: api, action: cacheClean }
+
 api_log:
   url:   /api/log
   param: { module: api, action: log }

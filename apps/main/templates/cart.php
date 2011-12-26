@@ -59,12 +59,10 @@
           <!-- Topmenu -->
           <?php include_component('productCategory', 'root_list') ?>
           <!-- /Topmenu -->
-          <div class="headerright" style="font-size: 14px; font-family: Enter; padding-top: 30px;">
+          <div class="headerright">
             Контакт cENTER
-            <div class="vcard"><div class="tel" style="font-size: 24px; line-height: 24px;"><span style="font-size: 14px;">8 (800)</span><br />700-00-09<br /></div></div>
-            <div style="margin-top: -8px">круглосуточно</div>
-            <!--a href="">Перезвоните мне</a><br />
-            <a href="">Отследить мой заказ</a-->
+            <div class="tel"><span>8 (800)</span>700-00-09</div>
+            круглосуточно
           </div>
           <!-- Extramenu -->
           <?php #include_component('productCategory', 'extra_menu') ?>
@@ -106,7 +104,7 @@
 (function(w, c) {
     (w[c] = w[c] || []).push(function() {
         try {
-            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true});
+            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
         }
         catch(e) { }
     });

@@ -32,6 +32,13 @@
                     <span class="rubl">p</span>
                 <?php } ?>    
             <?php } ?>        
+
+            <?php if ((int)$service['price'] < Service::MIN_BUY_PRICE) { ?>
+                <div>
+                   доступна в магазине
+                </div>    
+            <?php } ?>
+
             </div>
 			 
 			<?php 
@@ -50,6 +57,7 @@
                     <input data-value='<?php echo json_encode( $json ) ?>' type="submit" class="button yellowbutton" value="Купить услугу">
                 </form>    
             <?php } ?>
+                
                         
 		</div>
 <?php
