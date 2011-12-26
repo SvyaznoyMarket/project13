@@ -13,11 +13,12 @@ class apiActions extends myActions
    
     
   /**
-   * Сбрасывает кеш сущности.
-   * 
-   * @param sfWebRequest $request
+   * Сбрасывает кеш списка сущностей.
+   * Принимает массив. Для каждой сущности передаётся:
    *  - type = [product, product_category]
    *  - id - id сущности
+   * 
+   * @param sfWebRequest $request
    */
   public function executeCacheClean(sfWebRequest $request)
   {
@@ -31,24 +32,24 @@ class apiActions extends myActions
       $logger->log('Response: '.$response);
 
       $data = json_decode($response, true);
-      if (!isset($data['type']) || !isset($data['id'])) {
-          $logger->err('Получен некорректный запрос на очистку кеша.');          
-          return $this->renderJson(array(
-            'confirmed' => false,
-          ));          
-      }
-      if ($data['type'] == 'product') {
-          $productTable = ProductTable::getInstance();
-          $product = $productTable->findOneBy('core_id', $data['id']);
-          #myDebug::dump($product);
-          CacheEraser::getInstance()->erase($product->getTable()->getCacheEraserKeys($product, 'show'));          
-      } else {
-          return $this->renderJson(array(
-            'confirmed' => false,
-          ));          
-      }
-      //очищаем кеш сущности
+      #$data[] = array('type' => 'product', 'id' => 10);
       #print_r($data);
+      $productTable = ProductTable::getInstance();
+      foreach($data as $item) {
+          if (!isset($item['type']) || !isset($item['id'])) {
+              continue;
+          }
+          if ($item['type'] == 'product') {
+              $product = $productTable->findOneBy('core_id', $item['id']);
+              if (!$product) {
+                  $logger->log('Попытка очистить кеш не существующего товара id='.$product['id']);
+                  continue;
+              }
+              #myDebug::dump($product);
+              //очищаем кеш сущности
+              CacheEraser::getInstance()->erase($product->getTable()->getCacheEraserKeys($product, 'show'));          
+          } 
+      }
       
       return $this->renderJson(array(
         'confirmed' => true,
@@ -65,7 +66,11 @@ class apiActions extends myActions
     
   
   /**
-   * Возвращает статус пакета синхранизации
+   * Возвращает статус списка пакетов синхранизации.
+   * Принимает массив id пакетов.
+   * Возвращает массив. Элемент массива имеет вид:
+   *    id пакета => [0 | 1]
+   * 
    * @param sfWebRequest $request
    * @return int 
    */
@@ -78,35 +83,40 @@ class apiActions extends myActions
       $logger->log('Response: '.$response);
 
       $data = json_decode($response, true);
+      
+      #$data['list'] = array(1881,1882,1883);
       #$data['id'] = 85318;
-      if (!isset($data['id'])) {
-          $logger->err('Ошибка. В запросе статуса пакета не передан id пакета.');          
+      if (!isset($data['list']) || !count($data['list'])) {
+          $logger->err('Ошибка. В запросе статуса пакетов не передан список id пакетов.');          
           return $this->renderJson(array(
             'confirmed' => false,
           ));          
       }
       #print_r($data);
-      
       $table = TaskTable::getInstance();
-      $packetInfo = $table->getQueryObject()
-              ->addWhere('core_packet_id = ?', $data['id'])
+      $packetList = $table->getQueryObject()
+              ->whereIn('core_packet_id', $data['list'])
               ->fetchArray()
             ;
-      if (isset($packetInfo[0]) && isset($packetInfo[0]['status'])) {
-          if ($packetInfo[0]['status'] == 'success') {
-              $status = 1;
-          } elseif ($packetInfo[0]['status'] == 'fail') {
-              $status = 2;
+      #print_r($packetList);
+      $result = array();
+      foreach($packetList as $packetInfo) {
+          if (isset($packetInfo) && isset($packetInfo['status'])) {
+              if ($packetInfo['status'] == 'success') {
+                  $result[$packetInfo['core_packet_id']] = 1;
+              } elseif ($packetInfo['status'] == 'fail') {
+                  $result[$packetInfo['core_packet_id']] = 2;
+              } else {
+                  $result[$packetInfo['core_packet_id']] = 0;
+              }
           } else {
-              $status = 0;
+              $result[$packetInfo['core_packet_id']] = 0;          
           }
-      } else {
-          $status = 0;          
       }
-      #echo $status .'==$status';
+      #print_r($result);
       return $this->renderJson(array(
         'confirmed' => true,
-        'status' => $status  
+        'status' => $result  
       ));
       
     }
