@@ -20,9 +20,10 @@ class ProductState extends BaseProductState
     $this->is_instock = $data['is_shop'] || $data['is_store'] || $data['is_supplier'];
 
     //карточка товара доступна всегда по прямой ссылке
-    $this->view_show = 1;
+    $this->view_show = $data['status_id'] >= 1;
 
     //в списке товара показывать только если есть картинка и цена
-    $this->view_list = $data['is_image'] && $data['is_price'] && $this->is_instock;
+    //$this->view_list = $data['is_image'] && $data['is_price'] && $this->is_instock;
+    $this->view_list = ($data['status_id'] >= 2) && $data['is_image'] && $data['is_price'] && $this->is_instock;
   }
 }
