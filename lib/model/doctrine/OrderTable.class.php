@@ -151,7 +151,8 @@ class OrderTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->addWhere('order.user_id = ?', $user_id);
+    $q->addWhere('order.user_id = ?', $user_id)
+            ->orderBy('delivered_at DESC');
 
     $this->setQueryParameters($q, $params);
 

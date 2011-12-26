@@ -3,10 +3,14 @@
 <?php slot('complete_order_id', $order['number']) ?>
 <?php slot('complete_order_sum', $order['sum']) ?>
 
-<?php slot('title', 'Ваш заказ принят, спасибо за покупку!') ?>
+<?php slot('title', 'Ваш заказ принят,<br />спасибо за покупку!') ?>
 <?php //myDebug::dump($order) ?>
 <!-- Basket -->
-<div class="fl width650 font16 pb20">
+		<div class="mSR fr">
+			<a href="<?php echo url_for('default_show', array('page' => 'new_year_information_letter_from_rumyancev')) ?>">Обращение<br> генерального<br> директора</a>
+		</div>
+
+<div class="fl width645 font16 pb20">
   <strong>Номер вашего заказа: <?php echo $order->number ?></strong><br /><br />
   Дата заказа: <?php echo format_date($order->created_at, 'D') ?><br />
   Сумма заказа: <?php include_partial('default/sum', array('sum' => $order->sum,)) ?> <span class="rubl">p</span><br /><br />

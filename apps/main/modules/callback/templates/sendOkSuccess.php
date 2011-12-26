@@ -7,9 +7,7 @@
 <?php slot('left_column', get_component('page', 'menu', array('currentPage' => $currentPage))) ?>
 
 
-
-
-Спасибо, форма отправлена!    
+Спасибо, ваше сообщение отправлено в Enter!  
 
 
 <?php slot('seo_counters_advance') ?>
