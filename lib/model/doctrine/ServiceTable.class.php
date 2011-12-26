@@ -25,7 +25,7 @@ class ServiceTable extends myDoctrineTable
       'description' => 'description',
       'work'        => 'work',
 //      'expendable'  => 'expendable',
-      'media_image'  => 'main_photo',                 
+      'media_image'  => 'main_photo',
       'is_active'   => 'is_active',
     );
   }
@@ -44,14 +44,14 @@ class ServiceTable extends myDoctrineTable
       ->innerJoin('service.Price price') ;
      *
      */
-    
+
     $q #->leftJoin('service.CategoryRelation cr')    //к категориям сервисов
       #->innerJoin('cr.Category c')
       ->innerJoin('service.ProductRelation pr')
       ->andWhere('pr.product_id = ?', array($product->id))
-      ->innerJoin('service.PriceTariff price') 
-      ->andWhere('price.product_id = ?', $product->id)
+      ->innerJoin('service.Price price')
       ->andWhere('price.price >= ?', Service::MIN_BUY_PRICE)
+      ->orderBy('service.name ASC');
             ;
 
     $this->setQueryParameters($q, $params);
@@ -80,7 +80,7 @@ class ServiceTable extends myDoctrineTable
 
     return $this->getById($id);
   }
-  
+
   /*
   public function getById($id, array $params = array())
   {
