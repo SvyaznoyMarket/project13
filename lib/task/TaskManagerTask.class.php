@@ -71,20 +71,28 @@ EOF;
         'connection'  => $options['connection'],
       ));
 
+      $task->setDefaultPriority();
+
       if ('success' == $task->status)
       {
         $this->logSection($task->type, "#{$task->id} ... ok");
       }
       else if ('fail' == $task->status)
       {
+        // если задача высокого приоритета, то даём ей еще один шанс
+        if ($task->start_priority <= 3)
+        {
+          $task->status = 'run';
+          $task->priority = TaskTable::coreMaxPriority;
+        }
+
         $this->logSection($task->type, "#{$task->id} ... fail", null, 'ERROR');
       }
 
-      $task->setDefaultPriority();
       $task->save();
     }
 
-    if ($task->attempt > 100)
+    if ($task->attempt > 700)
     {
       $task->status = 'fail';
       $task->save();

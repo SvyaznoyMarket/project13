@@ -77,6 +77,7 @@ class apiActions extends myActions
                 'core_packet_id' => $packet['id'],
                 'core_priority'  => $packet['priority'],
               ));
+              $task->start_priority = $task->priority;
               $task->setContentData($data);
 
               if (!$task->trySave())
