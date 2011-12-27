@@ -143,7 +143,7 @@ class ProjectYandexMarketTask extends sfBaseTask
    * @var integer
    */
   private $_portionToLoadProduct = 100;
-  
+
   private $_currentPriceListId;
 
   /**
@@ -154,13 +154,12 @@ class ProjectYandexMarketTask extends sfBaseTask
       //для всех
       array(
           'name' => 'ya_market.xml',
-          'price_list_id' => 1     
+          'price_list_id' => 1
           ),
-      /*
       array(
           'name' => 'export_realweb.xml',
           'list' => array(6,5,8,9),
-          'price_list_id' => 1         
+          'price_list_id' => 1
           ),
       array(
           'name' => 'export_mgcom.xml',
@@ -182,18 +181,17 @@ class ProjectYandexMarketTask extends sfBaseTask
           'list' => array(3,2,1,4,7,8,5),
           'price_list_id' => 11
           ),
-       */
   );
-  
+
   /**
-   * Id бизнес-юнита ювелирки. 
+   * Id бизнес-юнита ювелирки.
    * Для него особые правила для доставки.
-   * 
-   * @var integer 
+   *
+   * @var integer
    */
   private $_jewelUnit = 9;
-  
-  
+
+
 
   protected function configure()
   {
@@ -273,7 +271,7 @@ EOF;
   public function _generateCatList(){
       //глобальные списки глобальных категорий
       foreach($this->_globalCatList as $k => $catList){
-            if (isset($catList['list'])) {            
+            if (isset($catList['list'])) {
                 $idList = array();
                 $catListData = Doctrine_Core::getTable('ProductCategory')
                         ->createQuery('pc')
@@ -283,7 +281,7 @@ EOF;
                 foreach($catListData as $cat) $idList[] = $cat['id'];
                 $this->_globalCatList[$k]['inner'] = $idList;
             } else {
-                $this->_globalCatList[$k]['inner'] = false;                
+                $this->_globalCatList[$k]['inner'] = false;
             }
 
       }
@@ -352,8 +350,8 @@ EOF;
     } else {
         $addCategoryUrl = true;
     }
-    
-    $categoryList = ProductCategoryTable::getInstance()->createBaseQuery();    
+
+    $categoryList = ProductCategoryTable::getInstance()->createBaseQuery();
     if (count($this->_categoryList)) {
         $categoryList = $categoryList->whereIn('id',  array_keys($this->_categoryList));
     }
@@ -425,7 +423,7 @@ EOF;
             ->addWhere('product.token_prefix IS NOT NULL')
             ;
 
-    
+
     //если нужно выгрузить только те, что есть в наличии
     if (!$this->_exportNotInStock){
         $offersList->addWhere('product.is_instock=?',1);
@@ -441,18 +439,18 @@ EOF;
             #->limit(200)
             ->fetchArray();
 
-    
+
     #echo count($offersList);
     #print_r($offersList);
     #exit();
-    
+
     $numInRound = 0;
     $currentXml = "";
     file_put_contents($this->_xmlFilePath,'<offers>',FILE_APPEND);
 
     foreach($offersList as $offerInfo){
         $this->_currentIsAvalible = true;
-        
+
         try{
 
             //DEPRICATED! не используем объект, так как с ним получается очень долго.
@@ -504,11 +502,11 @@ EOF;
                 $value = $this->_getAdditionalPropValueByCode($offerInfo,$addParam);
                 if ($value) $offer->$addParam['name'] = $value;
             }
-            
+
             if (!$this->_currentDeliveyIsAvalible) {
                 continue;
             }
-            
+
 
         }
 
@@ -516,7 +514,7 @@ EOF;
             #echo 'eeroor--'.$e->getMessage().$e->getFile().'=='.$e->getLine().'        ';
             continue;
         }
-        
+
 
         $numInRound++;
         //записываем в файл порциями по 100 штук
@@ -583,9 +581,9 @@ EOF;
                 //для ювелирки доставки никогда нет
                 if (isset($offerInfo['ProductCategoryProductRelation'][0]['Category']['root_id'])
                     && $offerInfo['ProductCategoryProductRelation'][0]['Category']['root_id'] == $this->_jewelUnit  ) {
-                    $value = 'false'; 
+                    $value = 'false';
                     $this->_currentDeliveyIsAvalible = 1;
-                //для остальных - отображаем только те, у которых есть доставка  
+                //для остальных - отображаем только те, у которых есть доставка
                 } else {
                     $value = 'true';
                 }

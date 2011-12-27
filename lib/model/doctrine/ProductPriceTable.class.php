@@ -76,7 +76,7 @@ class ProductPriceTable extends myDoctrineTable
   {
     $return = array();
 
-    $q = ProductTable::getInstance()->createQuery('product')
+    /*$q = ProductTable::getInstance()->createQuery('product')
       ->select('product.core_id, region.geoip_code, productPrice.id, priceList.id')
       ->innerJoin('product.ProductPrice productPrice')
       ->innerJoin('productPrice.PriceList priceList')
@@ -96,7 +96,7 @@ class ProductPriceTable extends myDoctrineTable
           $return[] = "product-{$product['core_id']}-{$region['geoip_code']}";
         }
       }
-    }
+    }*/
 
     return $return;
   }
