@@ -27,7 +27,7 @@ class CallbackForm extends BaseCallbackForm
 
     $this->widgetSchema['text']->setLabel('Сообщение');
     $this->widgetSchema['text']->setAttribute('class', 'bInputBlock__eTextarea');
-    
+
     $this->useFields(array(
       'name',
       'email',
@@ -41,7 +41,7 @@ class CallbackForm extends BaseCallbackForm
   public function setup()
   {
     parent::setup();
-      
+
     $this->setWidgets(array(
       'id'          => new sfWidgetFormInputHidden(),
       'core_id'     => new sfWidgetFormInputText(),
@@ -55,20 +55,19 @@ class CallbackForm extends BaseCallbackForm
       'updated_at'  => new sfWidgetFormDateTime(),
     ));
 
-    
+
     $this->setValidators(array(
       'id'          => new sfValidatorChoice(array('choices' => array($this->getObject()->get('id')), 'empty_value' => $this->getObject()->get('id'), 'required' => false)),
       'core_id'     => new sfValidatorInteger(array('required' => false)),
       'category_id' => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Category'), 'required' => false)),
       'user_id'     => new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('User'), 'required' => true)),
       'name'        => new sfValidatorString(array('max_length' => 255, 'required' => true, 'trim'=>true)),
-      'email'       => new myValidatorEmail(array('max_length' => 128, 'required' => false, 'trim'=>true),array('invalid'=>'Вы указали неверный email.')),        
+      'email'       => new myValidatorEmail(array('max_length' => 128, 'required' => false, 'trim'=>true),array('invalid'=>'Вы указали неверный email.')),
       'theme'       => new sfValidatorString(array('max_length' => 255, 'required' => true, 'trim'=>true)),
       'text'        => new sfValidatorString(array('required' => true, 'trim'=>true)),
       'created_at'  => new sfValidatorDateTime(),
       'updated_at'  => new sfValidatorDateTime(),
     ));
-    $this->
 
     $this->widgetSchema->setNameFormat('callback[%s]');
 
@@ -76,13 +75,13 @@ class CallbackForm extends BaseCallbackForm
 
     $this->setupInheritance();
 
-  }  
-  
+  }
+
   public function getModelName()
   {
     return 'Callback';
-  }  
-  
+  }
+
 
   protected function updateNameColumn($value)
   {
