@@ -62,11 +62,11 @@ class ProductTable extends myDoctrineTable
       'with_creator'   => false,
       'with_price'     => false,
       'with_category'  => false,
-      'with_delivery_price' => false,        
+      'with_delivery_price' => false,
     );
     if (sfContext::hasInstance()) {
         $data['region_id'] = sfContext::getInstance()->getUser()->getRegion('id');
-    }  
+    }
     return $data;
   }
 
@@ -95,7 +95,7 @@ class ProductTable extends myDoctrineTable
     {
       $q->innerJoin('product.Line line');
     }
-    
+
     if ($params['with_creator'])
     {
       $q->leftJoin('product.Creator creator');
@@ -113,12 +113,12 @@ class ProductTable extends myDoctrineTable
       $q->leftJoin('product.ProductCategoryProductRelation category_rel')
         ->leftJoin('category_rel.Category category')
               ;
-      
-    } 
+
+    }
 
 
-    
-    
+
+
     if (false == $params['with_model'] && 'show' != $params['view'])
     {
       $q->addWhere('product.model_id IS NULL OR product.is_model = ?', 1);
@@ -756,7 +756,9 @@ class ProductTable extends myDoctrineTable
       $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
       // Массив полей, изменения в которых ведут к генерации кеш-ключей
       $intersection = array_intersect($modified, array(
-        'is_instock',
+        //'is_instock',
+        'view_show',
+        'view_list',
         //'name',
         //'barcode',
       ));
