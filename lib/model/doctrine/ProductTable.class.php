@@ -755,7 +755,9 @@ class ProductTable extends myDoctrineTable
       $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
       // Массив полей, изменения в которых ведут к генерации кеш-ключей
       $intersection = array_intersect($modified, array(
-        'is_instock',
+        //'is_instock',
+        'view_show',
+        'view_list',
         //'name',
         //'barcode',
       ));

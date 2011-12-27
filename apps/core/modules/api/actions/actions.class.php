@@ -161,36 +161,59 @@ class apiActions extends myActions
         }
         else if (!empty($data['action']))
         {
-          $packetId = !empty($data['packet_id']) ? $data['packet_id']: false;
-          if ($packetId)
+          //$packetId = !empty($data['packet_id']) ? $data['packet_id']: false;
+          $packets = !empty($data['packet']) && is_array($data['packet']) ? $data['packet'] : false;
+          //if ($packetId)
+          if ($packets)
           {
-            $range = array($packetId);
-
+            // находит максимальный номер пакета в бд
             $maxPacketId = $table->getMaxCorePacketId($taskType);
-            if ($packetId > $maxPacketId)
+
+            // находит минимальный номер пакета в ответе core
+            $minPacketId = isset($packets[0]['id']) ? $packets[0]['id'] : 0;
+
+            // если обнаружены пробылы в очередности пакетов
+            if (($minPacketId - $maxPacketId) > 1)
             {
-              $range = range($maxPacketId + 1, $packetId);
+              $maxPacketId++;
+              foreach (range($minPacketId, $maxPacketId) as $v)
+              {
+                $logger->log("Packet's autogeneration from {$minPacketId} to {$maxPacketId}", sfLogger::WARNING);
+                $packets[] = array(
+                  'id'       => $v,
+                  'priority' => 1, // общая очередь
+                  'type'     => '[]',
+                );
+              }
             }
 
-            foreach ($range as $i)
+            foreach ($packets as $packet)
             {
               $task = new Task();
               $task->fromArray(array(
                 'type'           => $taskType,
-                'core_packet_id' => $i,
+                'core_packet_id' => $packet['id'],
+                'core_priority'  => $packet['priority'],
               ));
-              $data['packet_id'] = $i;
+              $task->start_priority = $task->priority;
               $task->setContentData($data);
-              $task->trySave();
+
+              if (!$task->trySave())
+              {
+                $logger->log("Can't create task #packet={$packet['id']}", sfLogger::CRIT);
+              }
             }
           }
           else {
             $task = new Task();
             $task->fromArray(array(
-              'type'           => $taskType,
+              'type' => $taskType,
             ));
             $task->setContentData($data);
-            $task->trySave();
+            if (!$task->trySave())
+            {
+              $logger->log("Can't create task #packet={$packet['id']}", sfLogger::CRIT);
+            }
           }
         }
       }
