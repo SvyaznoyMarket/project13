@@ -54,19 +54,18 @@ class ProductTable extends myDoctrineTable
   public function getDefaultParameters()
   {
     $data =  array(
-      'view'           => false, // list, show
-      'group_property' => false, // группировать свойства товара по группам
-      'with_line'      => false,
-      'with_model'     => false, // список только товаров, без моделей
-      'hydrate_array'  => false,
-      'with_creator'   => false,
-      'with_price'     => false,
-      'with_category'  => false,
-      'with_delivery_price' => false,        
+      'view'                => false, // list, show
+      'group_property'      => false, // группировать свойства товара по группам
+      'with_line'           => false,
+      'with_model'          => false, // список только товаров, без моделей
+      'hydrate_array'       => false,
+      'with_creator'        => false,
+      'with_price'          => false,
+      'with_category'       => false,
+      'with_delivery_price' => false,
+      'region_id'           => sfContext::hasInstance() ? sfContext::getInstance()->getUser()->getRegion('id') : RegionTable::getInstance()->getDefault()->id,
     );
-    if (sfContext::hasInstance()) {
-        $data['region_id'] = sfContext::getInstance()->getUser()->getRegion('id');
-    }  
+
     return $data;
   }
 
@@ -95,7 +94,7 @@ class ProductTable extends myDoctrineTable
     {
       $q->innerJoin('product.Line line');
     }
-    
+
     if ($params['with_creator'])
     {
       $q->leftJoin('product.Creator creator');
@@ -113,12 +112,12 @@ class ProductTable extends myDoctrineTable
       $q->leftJoin('product.ProductCategoryProductRelation category_rel')
         ->leftJoin('category_rel.Category category')
               ;
-      
-    } 
+
+    }
 
 
-    
-    
+
+
     if (false == $params['with_model'] && 'show' != $params['view'])
     {
       $q->addWhere('product.model_id IS NULL OR product.is_model = ?', 1);
