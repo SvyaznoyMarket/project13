@@ -57,6 +57,7 @@ class pageComponents extends myComponents
           array('token' => 'how_make_order', 'add_to_name' => '?'),
           array('token' => 'how_get_order', 'add_to_name' => '?'),
           array('token' => 'how_pay', 'add_to_name' => '?'),
+          array('token' => 'mobile_apps'),
         ),
       ),
       'service' => array(

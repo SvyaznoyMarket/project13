@@ -407,7 +407,10 @@ class productComponents extends myComponents
       ksort($value_to_map);
       $property->mapValue('values', $value_to_map);
     }
-
+    if (!isset($property->current))
+    {
+      return sfView::NONE;
+    }
     $this->setVar('properties', $properties, true);
   }
 
