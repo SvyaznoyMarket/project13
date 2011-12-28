@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /new_year_information_letter_from_rumyancev
+Disallow: /region/change/*
 Disallow: /orders/*
 Disallow: /private/*
 Disallow: /cart

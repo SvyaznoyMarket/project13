@@ -39,10 +39,10 @@ class myProductSorting extends myBaseSorting
       ),
     );
   }
-  
+
   protected function setQueryForScore(myDoctrineQuery $q)
   {
-      
+
   }
 
   protected function setQueryForCreator(myDoctrineQuery $q)
@@ -55,7 +55,7 @@ class myProductSorting extends myBaseSorting
     $orders = $q->getDqlPart('orderby');
     $orderByInstock = array_shift($orders);
     $q->orderBy($orderByInstock);
-    $q->addOrderBy('creator.name '.$this->getDirection());
+    $q->orderBy('product.is_instock DESC, creator.name '.$this->getDirection());
     foreach ($orders as $ob) {
         $q->addOrderBy($ob);
     }
@@ -71,7 +71,7 @@ class myProductSorting extends myBaseSorting
     $orders = $q->getDqlPart('orderby');
     $orderByInstock = array_shift($orders);
     $q->orderBy($orderByInstock);
-    $q->addOrderBy('productPrice.price '.$this->getDirection());
+    $q->orderBy('product.is_instock DESC, productPrice.price '.$this->getDirection());
     foreach ($orders as $ob) {
         $q->addOrderBy($ob);
     }
@@ -82,7 +82,7 @@ class myProductSorting extends myBaseSorting
     $orders = $q->getDqlPart('orderby');
     $orderByInstock = array_shift($orders);
     $q->orderBy($orderByInstock);
-    $q->addOrderBy('product.rating '.$this->getDirection());
+    $q->orderBy('product.is_instock DESC, product.rating '.$this->getDirection());
     foreach ($orders as $ob) {
         $q->addOrderBy($ob);
     }
