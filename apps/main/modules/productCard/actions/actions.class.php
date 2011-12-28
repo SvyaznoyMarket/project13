@@ -55,8 +55,8 @@ class productCardActions extends myActions
 
     $q = ProductTable::getInstance()->getQueryByKit($this->product);
 
-    $this->productPager = $this->getPager('Product', $q, 8, array());
-    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+    $this->productPager = $this->getPager('Product', $q, 100, array());
+    //$this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
 
     $this->view = 'compact';
 
