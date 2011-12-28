@@ -122,6 +122,7 @@ class Order extends BaseOrder
     $data['ip']                   = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null; //sfContext::getInstance()->getUser()->getIp();
 
     $data['mode_id'] = $data['delivery_type_id'];
+myDebug::dump($this);
 
     if (isset($this->ProductRelation))
     {
@@ -133,8 +134,12 @@ class Order extends BaseOrder
             );
             $productCoreIdList[ $product->Product->id ] = $product->Product->core_id;
       }
+    }
+    if (isset($this->ServiceRelation))
+    {    
       foreach ($this->ServiceRelation as $service)
       {
+          echo 'next';
             if ($service->product_id > 0 && isset($productCoreIdList[ $service->product_id ])) {
                 $productId = $productCoreIdList[ $service->product_id ];
             } else {
@@ -149,9 +154,6 @@ class Order extends BaseOrder
               'quantity'    => $service->quantity,
             );
       }
-   #   print_r($data);
-   #   exit();
-
     }
 
     return $data;
