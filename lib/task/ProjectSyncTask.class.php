@@ -329,12 +329,12 @@ EOF;
     // если действие "обновить", но запись с таким core_id не существует
     if (('update' == $action) && !$record)
     {
-      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Force create...", null, 'INFO');
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exist. Force create...", null, 'INFO');
     }
     // если действие "удалить", но запись с таким core_id не существует
     if (('delete' == $action) && !$record)
     {
-      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exists. Skip...", null, 'INFO');
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exist. Skip...", null, 'INFO');
     }
 
     if (!$record)

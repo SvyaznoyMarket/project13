@@ -85,4 +85,18 @@ class Task extends BaseTask
   {
     $this->priority = $this->getTable()->getPriorityByType($this->type);
   }
+
+  public function setCorePriority($value)
+  {
+    $maxCorePriority = TaskTable::coreMaxPriority;
+    $minPriority = 2;
+
+    $priority =
+      $value <= $maxCorePriority
+      ? $maxCorePriority - $value + $minPriority
+      : $minPriority
+    ;
+
+    $this->priority = $priority > 0 ? $priority : $minPriority;
+  }
 }

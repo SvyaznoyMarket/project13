@@ -1,0 +1,1 @@
+ALTER TABLE `product_model_property_relation` DROP FOREIGN KEY `product_model_property_relation_product_id_product_model_id`;

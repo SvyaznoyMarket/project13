@@ -31,4 +31,53 @@ class ProductStateTable extends myDoctrineTable
       'product_id'  => array('rel' => 'Product'),
     );
   }
+
+  public function getCacheEraserKeys($record, $action = null, array $params = array())
+  {
+    $return = array();
+
+    $intersection = array();
+    if ($record instanceof myDoctrineRecord)
+    {
+      // for preSave
+      $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
+      // Массив полей, изменения в которых ведут к генерации кеш-ключей
+      $intersection = array_intersect($modified, array(
+        //'is_instock',
+        'view_show',
+        'view_list',
+      ));
+    }
+
+    if (
+      (('save' == $action) && count($intersection))
+      || in_array($action, array('delete', 'show'))
+    ) {
+      $product = array(
+        'core_id' => ProductTable::getInstance()->getCoreIdById($record['product_id']),
+      );
+      $region = RegionTable::getInstance()->getById($record['region_id']);
+
+      if (!empty($region['geoip_code']))
+      {
+        $return[] = "product-{$product['core_id']}-{$region['geoip_code']}";
+      }
+    }
+
+    return $return;
+  }
+
+  public function getCacheTags($record)
+  {
+    $alias = 'product';
+
+    $tags = array();
+    if (!empty($record['id']))
+    {
+      $tags[] = "{$alias}-{$record['product_id']}";
+    }
+
+    return $tags;
+  }
+
 }

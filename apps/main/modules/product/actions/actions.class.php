@@ -238,12 +238,13 @@ class productActions extends myActions
     //myDebug::dump($q->getParams(), 1);
     //myDebug::dump($q->getSqlQuery(), 1);
     $matches = $q->fetchArray();
-    //myDebug::dump($matches[0]);
+
+    //если не нашли новый товар, то остаемся в этом же
+    $new_product = !empty($matches) ? ProductTable::getInstance()->getById($matches[0]['id'], array('with_model' => true, )) : $this->product;
     //myDebug::dump($q->fetchArray(), true);
 
 
     //throw new sfException('We don\'t need a redirection');
-    $new_product = ProductTable::getInstance()->getById($matches[0]['id'], array('with_model' => true, ));
     $this->redirect(url_for('productCard', $new_product));
     //myDebug::dump($this->product);
     //$this->forward('productCard', 'show');

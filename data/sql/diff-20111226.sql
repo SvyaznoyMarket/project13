@@ -1,0 +1,1 @@
+ALTER TABLE `task`  ADD COLUMN `start_priority` INT(11) NOT NULL DEFAULT '1' COMMENT 'Начальный приоритет' AFTER `priority`;
