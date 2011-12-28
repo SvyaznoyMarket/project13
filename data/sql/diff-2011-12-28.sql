@@ -1,0 +1,1 @@
+ALTER TABLE `product` DROP FOREIGN KEY `product_status_id_product_status_id`;

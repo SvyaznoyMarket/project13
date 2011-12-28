@@ -254,7 +254,6 @@ Product:
 #    Group:             { class: ProductGroup, foreignAlias: Product, local: group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Line:              { class: ProductLine, foreignAlias: Product, local: line_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Model:             { class: Product, foreignAlias: SubProduct, local: model_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
-    Status:            { class: ProductStatus, foreignAlias: Product, local: status_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ModelProperty:     { class: ProductProperty, foreignAlias: MainModelProduct, refClass: ProductModelPropertyRelation, local: product_id, foreign: product_property_id, type: many, foreignType: many }
     Part:              { class: Product, foreignAlias: Kit, refClass: ProductKitRelation, local: kit_id, foreign: part_id, type: many, foreignType: many }
 
