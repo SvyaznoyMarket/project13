@@ -1,5 +1,5 @@
 /* CSS Document */
-HTML {width:100%; height:100%;  font-size:100.01%}
+HTML {overflow-x:hidden; width:100%; height:100%;  font-size:100.01%}
 BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,helvetica,sans-serif; color:#fff; background:#000}
 .allpage {width:920px; height:auto; min-height:100%;padding:0 20px; margin:0 auto; background-color:#000; position:relative; z-index:2}
 * html .allpage {height:100%}
@@ -52,15 +52,17 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .topmenu .point9 {width:45px; background-position:-629px 0}
 .topmenu .point9:hover {background-position:-629px -90px}
 
-.bigbanner {padding:0 0 70px 70px}
+.bigbanner {padding:0 0 0 0;}
 
-.bannersbox {position:absolute; width:100%; overflow:hidden; height:100%}
-.bannersboxinner {position:relative; z-index:10; width:920px; margin:0 auto}
-.banner {position:absolute; //z-index:20}
-.banner2 {top:231px; left:-340px}
-.banner3 {top:243px; left:883px}
-.banner4 {top:256px; left:-160px}
-.banner5 {top:369px; left:1100px}
+.bannersbox {position:absolute; width:100%; overflow:hidden; height:100%; top: 234px}
+.bannersboxinner {position:relative;  width:920px; margin:0 auto; height: 300px; font-size: 0; line-height: 300px;}
+.banner{
+	position: absolute;
+	cursor:pointer;
+	opacity:0.5;
+}
+.banner3 {left:943px; bottom: 0}
+.banner4 {left:-245px; bottom: 0}
 
 @font-face {
   font-family: 'Enter';
@@ -199,3 +201,35 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 		margin-top: 20px;
 		margin-left: 90px;
 		}
+		
+.bCarouselWrap{
+	width: 100%;
+	height: 600px;
+	text-align: center;
+	}
+	.bCarousel{
+		width: 830px;
+		height: 300px;
+		position: relative;
+		vertical-align: bottom;
+		display: inline-block; 
+		*display: inline; 
+		zoom: 1; 
+		}
+	.bCarousel img {
+		position:absolute;
+		left:32px;
+		cursor:pointer
+	}
+	.bCarousel__eBtnR,
+	.bCarousel__eBtnL{
+		top: 110px;
+		width: 76px;
+		height: 77px;
+		cursor: pointer;
+		position: absolute;
+		}
+	.bCarousel__eBtnL{ z-index:10; left: -40px; background: url('img/c_btn_left.png'); display:none }
+	.bCarousel__eBtnR{ z-index:10; left: 797px; background: url('img/c_btn_right.png'); display:none }		
+	.bCarousel__eBtnL:hover{ background: url('img/c_btn_left_h.png'); }
+	.bCarousel__eBtnR:hover{ background: url('img/c_btn_right_h.png'); }			
