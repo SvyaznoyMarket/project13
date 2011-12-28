@@ -359,7 +359,7 @@ ProductModelPropertyRelation:
   relations:
     Property:             { class: ProductProperty, foreignAlias: ProductModelRelation, local: product_property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     MainProduct:          { class: Product, foreignAlias: ProductPropertyModelRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Product:              { class: Product, foreignAlias: MainProductPropertyModelRelation, local: product_id, foreign: model_id, type: one, foreignType: many, onDelete: CASCADE }
+    #Product:              { class: Product, foreignAlias: MainProductPropertyModelRelation, local: product_id, foreign: model_id, type: one, foreignType: many, onDelete: CASCADE }
 
 ProductRatingType:
   options:
