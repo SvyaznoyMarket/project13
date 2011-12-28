@@ -231,20 +231,20 @@ class productActions extends myActions
       }
     }
     $q->select("product.id, SUM(IF(".$if_condition.", 1, 0)) as matches");
-    //Если у нас только 1 различающийся параметр (count($old_properties) = 1), то надо дать возможность выбрать этот же товар ($product_ids)
-    $q->addWhere('product.id IN ('.implode(', ', (count($old_properties) > 1) ? array_diff($product_ids, array($product->id,)) : $product_ids).')');
+    $q->addWhere('product.id IN ('.implode(', ', array_diff($product_ids, array($product->id,))).')');
     //$q->addWhere('');
     $q->groupBy('product.id');
     $q->orderBy('matches desc, score desc');
     //myDebug::dump($q->getParams(), 1);
     //myDebug::dump($q->getSqlQuery(), 1);
     $matches = $q->fetchArray();
-    //myDebug::dump($matches[0]);
+
+    //если не нашли новый товар, то остаемся в этом же
+    $new_product = !empty($matches) ? ProductTable::getInstance()->getById($matches[0]['id'], array('with_model' => true, )) : $this->product;
     //myDebug::dump($q->fetchArray(), true);
 
 
     //throw new sfException('We don\'t need a redirection');
-    $new_product = ProductTable::getInstance()->getById($matches[0]['id'], array('with_model' => true, ));
     $this->redirect(url_for('productCard', $new_product));
     //myDebug::dump($this->product);
     //$this->forward('productCard', 'show');
