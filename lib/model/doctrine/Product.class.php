@@ -237,8 +237,10 @@ class Product extends BaseProduct
       }
     }
 
+    //Отображение товара определяется только в product_state
+
     //Временные правила для отображения товара!!!
-    if (empty($data['media_image']))
+    /*if (empty($data['media_image']))
     {
       $this->view_list = 0;
       $this->view_show = 1;
@@ -255,7 +257,7 @@ class Product extends BaseProduct
         $this->view_list = 0;
       }
       $this->view_show = 1;
-    }
+    }*/
 
     //Постоянные правила для отображения товара!!!
     /*if (!empty($data['status_id']))
