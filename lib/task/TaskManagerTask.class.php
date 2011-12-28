@@ -92,7 +92,7 @@ EOF;
       $task->save();
     }
 
-    if ($task->attempt > 700)
+    if ($task->attempt > 200)
     {
       $task->status = 'fail';
       $task->save();
