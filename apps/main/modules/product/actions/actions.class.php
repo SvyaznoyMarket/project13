@@ -231,7 +231,8 @@ class productActions extends myActions
       }
     }
     $q->select("product.id, SUM(IF(".$if_condition.", 1, 0)) as matches");
-    $q->addWhere('product.id IN ('.implode(', ', array_diff($product_ids, array($product->id,))).')');
+    //Если у нас только 1 различающийся параметр (count($old_properties) = 1), то надо дать возможность выбрать этот же товар ($product_ids)
+    $q->addWhere('product.id IN ('.implode(', ', (count($old_properties) > 1) ? array_diff($product_ids, array($product->id,)) : $product_ids).')');
     //$q->addWhere('');
     $q->groupBy('product.id');
     $q->orderBy('matches desc, score desc');
