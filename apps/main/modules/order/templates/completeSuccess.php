@@ -3,14 +3,10 @@
 <?php slot('complete_order_id', $order['number']) ?>
 <?php slot('complete_order_sum', $order['sum']) ?>
 
-<?php slot('title', 'Ваш заказ принят,<br />спасибо за покупку!') ?>
+<?php slot('title', 'Ваш заказ принят, спасибо за покупку!') ?>
 <?php //myDebug::dump($order) ?>
 <!-- Basket -->
-		<div class="mSR fr">
-			<a href="<?php echo url_for('default_show', array('page' => 'new_year_information_letter_from_rumyancev')) ?>">Обращение<br> генерального<br> директора</a>
-		</div>
-
-<div class="fl width645 font16 pb20">
+<div class="fl width650 font16 pb20">
   <strong>Номер вашего заказа: <?php echo $order->number ?></strong><br /><br />
   Дата заказа: <?php echo format_date($order->created_at, 'D') ?><br />
   Сумма заказа: <?php include_partial('default/sum', array('sum' => $order->sum,)) ?> <span class="rubl">p</span><br /><br />
@@ -51,7 +47,7 @@
            '<?php echo $order['number'] ?>',           // Номер заказа
            '<?php echo $order->Shop ?>',  // Название магазина (Необязательно)
            '<?php echo str_replace(',', '.', $order['sum']) ?>',          // Полная сумма заказа (дроби через точку)
-           '0',              // Стоимость доставки (дроби через точку)
+           '<?php echo $order->getDeliveryPrice() ?>',              // Стоимость доставки (дроби через точку)
            '<?php echo $order->getCityName() ?>',       // Город доставки (Необязательно)
            '<?php echo $order->getAreaName() ?>',     // Область (необязательно)
            '<?php echo $order->getCountryName() ?>'             // Страна (нобязательно)
@@ -61,23 +57,43 @@
         'order_price': '<?php echo str_replace(',', '.', $order['sum']) ?>',
         'currency': 'RUR',
         'exchange_rate': 1,
-        'goods': []
-      };
+        'goods': [
   <?php foreach ($order->ProductRelation as $product): ?>
-             _gaq.push(['_addItem',
+          {
                   '<?php echo $order['number'] ?>',           // Номер заказа
                   '<?php echo $product->Product['article'] ?>',           // Артикул
                   '<?php echo $product->Product['name'] ?>',        // Название товара
                   '<?php echo $product->Product->getMainCategory() ?>',   // Категория товара
                   '<?php echo str_replace(',', '.', $product['price']) ?>',          // Стоимость 1 единицы товара
                   '<?php echo str_replace(',', '.', $product['quantity']) ?>'               // Количество товара
-              ]);
+           },
+  <?php endforeach ?>   
+  <?php foreach ($order->ServiceRelation as $service): ?>
+          {
+                  '<?php echo $order['number'] ?>',           // Номер заказа
+                  '<?php echo $service->Service['token'] ?>',           // id
+                  '<?php echo $service->Service['name'] ?>',        // Название услуги
+                  '',   // Категория товара
+                  '<?php echo str_replace(',', '.', $service['price']) ?>',          // Стоимость 1 единицы товара
+                  '<?php echo str_replace(',', '.', $service['quantity']) ?>'               // Количество услуг
+           },
+  <?php endforeach ?>      
+        ]
+      };
+  <?php foreach ($order->ProductRelation as $product): ?>
              yaParams.goods.push({
                'id': '<?php echo $product->Product['article'] ?>',
                'name': '<?php echo $product->Product['name'] ?>',
                'price': '<?php echo str_replace(',', '.', $product['price']) ?>'
              });
   <?php endforeach ?>
+  <?php foreach ($order->ServiceRelation as $service): ?>
+             yaParams.goods.push({
+               'id': '<?php echo $service->Service['token'] ?>',
+               'name': '<?php echo $service->Service['name'] ?>',
+               'price': '<?php echo str_replace(',', '.', $service['price']) ?>'
+             });
+  <?php endforeach ?>  
            _gaq.push(['_trackTrans']);
 
   </script>
