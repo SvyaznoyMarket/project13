@@ -53,6 +53,16 @@ class Product extends BaseProduct
     $this->token = array_pop($v);
     $this->token_prefix = count($v) ? array_shift($v) : null;
 
+    $this->view = 'default';
+    if (isset($data['view_id'])) foreach (array(1 => 'default', 2 => 'kit') as $k => $v)
+    {
+      if ($data['view_id'] == $k)
+      {
+        $this->view = $v;
+        break;
+      }
+    }
+
     // check if creator doesn't exist
     if (!empty($data['brand_id']) && empty($this->creator_id))
     {

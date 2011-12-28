@@ -1,0 +1,1 @@
+ALTER TABLE `product`  ADD COLUMN `view` VARCHAR(10) NOT NULL DEFAULT 'default' AFTER `preview`;

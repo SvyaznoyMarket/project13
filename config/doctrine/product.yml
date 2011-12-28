@@ -231,6 +231,7 @@ Product:
     set_id:            { type: integer(20), notnull: false, default: null }
     tagline:           { type: string(255), notnull: false, default: null }
     preview:           { type: string, notnull: false, default: null, comment: 'Анонс' }
+    view:              { type: enum, length: 10, values: [ default, kit ], notnull: true, default: 'default' }
     view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар по прямой ссылке?' }
     view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
     is_instock:        { type: boolean, notnull: true, default: false }
