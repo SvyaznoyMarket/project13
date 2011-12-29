@@ -102,19 +102,22 @@ EOF;
       return false;
     }
 
-    $params = $this->task->getContentData();
-    if (!$params['packet_id'] && !$options['entity'])
+    //$params = $this->task->getContentData();
+    //if (!$params['packet_id'] && !$options['entity'])
+    if (!$this->task->core_packet_id && !$options['entity'])
     {
       return false;
     }
 
     // add your code here
 
-    $this->logSection('core', 'loading packet #'.$params['packet_id']);
+    //$this->logSection('core', 'loading packet #'.$params['packet_id']);
+    $this->logSection('core', 'loading packet #'.$this->task->core_packet_id);
 
     if (!$options['entity'])
     {
-      $response = $this->core->query('sync.get', array('id' => $params['packet_id']));
+      //$response = $this->core->query('sync.get', array('id' => $params['packet_id']));
+      $response = $this->core->query('sync.get', array('id' => $this->task->core_packet_id));
     }
 
     if ($options['dump'])

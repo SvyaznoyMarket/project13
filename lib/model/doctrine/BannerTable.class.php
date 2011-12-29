@@ -143,6 +143,13 @@ class BannerTable extends myDoctrineTable
     return $this->createListByIds($ids, $params);
   }
 
+  public function getImageUrl($record, $view = 0)
+  {
+    $urls = sfConfig::get('app_banner_image_url');
+
+    return $record['image'] ? $urls[$view].$record['image'] : null;
+  }
+
   public function getCacheTags($record)
   {
     $tags = array();

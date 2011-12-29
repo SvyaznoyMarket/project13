@@ -1,4 +1,4 @@
-    <div class="delivery_block">
+    <div class="delivery_block js_address dynamic">
     		<div class="pb15">
               <?php echo $form['address']->renderLabel() ?>
               <?php echo $form['address']->renderError() ?>

@@ -54,16 +54,16 @@ class productActions extends myActions
       if (!$productObj || !$productObj instanceof Doctrine_Record) {
         continue;
       }
-      if ($productObj->isKit()) {
+      /*if ($productObj->isKit()) {
         $setItems = ProductKitRelationTable::getInstance()->findByKitId($productObj->id);
         $setCoreIds = array();
         foreach ($setItems as $setItem) {
           $setCoreIds[] = $setItem->Part->core_id;
         }
         $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'), $setCoreIds);
-      } else {
+      } else {*/
         $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
-      }
+      //}
       $result = array('success' => true, 'deliveries' => array());
       if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
         $deliveries = array(array(

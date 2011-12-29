@@ -1,1 +1,1 @@
-<input id="main_banner-data" type="hidden" disabled="disabled" data-value="<?php echo json_encode($list) ?>" />
+<input id="main_banner-data" type="hidden" disabled="disabled" data-value='<?php echo json_encode($list) ?>' />

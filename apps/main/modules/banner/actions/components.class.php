@@ -53,17 +53,21 @@ class bannerComponents extends myComponents
         $link = url_for('product_set', array('products' => implode(',', array_map(function($i) { return $i['barcode']; }, $productList))), true);
       }
 
-      $list[] = array(
-        'name'        => $banner['name'],
-        'image_small' => $banner['image'],
-        'image_big'   => $banner['image'],
-        'link'        => $link,
-        'timeout'     =>
+      $item = array(
+        'alt'  => $banner['name'],
+        'imgs' => BannerTable::getInstance()->getImageUrl($banner, 0),
+        'imgb' => BannerTable::getInstance()->getImageUrl($banner, 1),
+        'url'  => $link,
+        't'    =>
           !empty($banner['timeout'])
           ? $banner['timeout']
           : (count($list) ? sfConfig::get('app_banner_timeout', 2000) : 3000)
         ,
       );
+
+      if (empty($item['imgs']) || empty($item['imgb'])) continue;
+
+      $list[] = $item;
     }
 
     $this->setVar('list', $list, true);

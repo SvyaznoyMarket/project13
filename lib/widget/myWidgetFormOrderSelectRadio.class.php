@@ -81,6 +81,7 @@ class myWidgetFormOrderSelectRadio extends sfWidgetFormChoiceBase
         'type'  => 'radio',
         'value' => self::escapeOnce($key),
         'id'    => $id = $this->generateId($name, self::escapeOnce($key)),
+        'class' => 'dynamic js_delivery',
       );
 
       if (strval($key) == strval($value === false ? 0 : $value))

@@ -1,4 +1,4 @@
-            <div class="shop_block">
+            <div class="shop_block js_shoplist dynamic">
             <div class="pb10">
               <?php echo $form['shop_id']->renderLabel() ?>
               <?php echo $form['shop_id']->renderError() ?>
