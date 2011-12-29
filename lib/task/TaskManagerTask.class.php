@@ -106,7 +106,7 @@ EOF;
 
   protected function getRunningTask()
   {
-    return TaskTable::getInstance()->getRunning(array('with_minPriority' => true, 'check_zeroPriority' => true));
+    return TaskTable::getInstance()->getRunning(array('with_minPriority' => false, 'check_zeroPriority' => true));
   }
 
   public function logSection($section, $message, $size = null, $style = 'INFO')
