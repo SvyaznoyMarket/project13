@@ -101,8 +101,8 @@ class TaskTable extends myDoctrineTable
   {
     $priorities = array(
       'project.init' => 1,
-      'project.sync' => self::coreMaxPriority,
-      'default'      => self::coreMaxPriority + 1,
+      'project.sync' => self::coreMaxPriority + 1,
+      'default'      => self::coreMaxPriority + 2,
     );
 
     return isset($priorities[$type]) ? $priorities[$type] : $priorities['default'];

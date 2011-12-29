@@ -59,7 +59,9 @@ EOF;
 
     for ($step = 0; $step < $stepCount; $step++)
     {
-      $this->logSection($task->type, "#{$task->id} packet={$task->core_packet_id} ...");
+      $this->logSection($task->type, "#{$task->id} packet={$task->core_packet_id} priority={$task->priority} ...");
+
+      $priority = $task->priority;
 
       // приоритет реального времени
       $task->priority = 0;
@@ -80,10 +82,9 @@ EOF;
       else if ('fail' == $task->status)
       {
         // если задача высокого приоритета, то даём ей еще один шанс
-        if ($task->start_priority <= 3)
+        if ($task->priority == $priority)
         {
           $task->status = 'run';
-          $task->priority = TaskTable::coreMaxPriority;
         }
 
         $this->logSection($task->type, "#{$task->id} ... fail", null, 'ERROR');
