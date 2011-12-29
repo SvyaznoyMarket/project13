@@ -174,10 +174,9 @@ _gaq.push(['_trackPageLoadTime']);
 				$('.bCarousel div').hide()
 			})		
 		}
-				
-		$('.leftArrow').click( function() { goSlide( 1 ) } )
+		$('.leftArrow').click( function() { goSlide( -1 ) } )
 		$('.leftImage').click( function() { goSlide( -1 ) } )
-		$('.rightArrow').click( function() { goSlide( -1 ) } )
+		$('.rightArrow').click( function() { goSlide( 1 ) } )
 		$('.rightImage').click( function() { goSlide( 1 ) } )
 		$('.centerImage').click( function() { 
 			clearTimeout( idto )
