@@ -49,6 +49,7 @@ class BannerTable extends myDoctrineTable
     $q = $this->createQuery('banner');
 
     $q->where('banner.is_active = ?', true);
+    $q->addWhere('NOW() BETWEEN banner.start_at AND banner.end_at');
 
     return $q;
   }

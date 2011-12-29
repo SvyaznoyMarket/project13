@@ -218,7 +218,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
           {
             if ($coreValue != $data[$k]) continue;
 
-            $this->set($v, $realValue);
+            $this->set($v['name'], $realValue);
             break;
           }
         }
