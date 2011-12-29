@@ -23,7 +23,6 @@ class BannerItemTable extends myDoctrineTable
     return array(
       'id'           => 'core_id',
       'item_type_id' => array('name' => 'type', 'mapping' => array(1 => 'product')),
-      'item_id'      => 'object_id',
       'position'     => 'position',
     );
   }

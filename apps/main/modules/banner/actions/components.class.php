@@ -54,11 +54,15 @@ class bannerComponents extends myComponents
       }
 
       $list[] = array(
-        'name'          => $banner['name'],
-        'image_small'   => $banner['image'],
-        'image_big'     => $banner['image'],
-        'link'          => $link,
-        'timeout'       => !empty($banner['timeout']) ? $banner['timeout'] : sfConfig::get('app_banner_timeout', 2000),
+        'name'        => $banner['name'],
+        'image_small' => $banner['image'],
+        'image_big'   => $banner['image'],
+        'link'        => $link,
+        'timeout'     =>
+          !empty($banner['timeout'])
+          ? $banner['timeout']
+          : (count($list) ? sfConfig::get('app_banner_timeout', 2000) : 3000)
+        ,
       );
     }
 

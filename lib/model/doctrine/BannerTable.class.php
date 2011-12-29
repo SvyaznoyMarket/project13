@@ -48,8 +48,10 @@ class BannerTable extends myDoctrineTable
 
     $q = $this->createQuery('banner');
 
-    $q->where('banner.is_active = ?', true);
+    $q->where('banner.is_active = ? AND banner.is_dummy = ?', array(true, false));
     $q->addWhere('NOW() BETWEEN banner.start_at AND banner.end_at');
+
+    $q->orderBy('position ASC');
 
     return $q;
   }
@@ -102,6 +104,26 @@ class BannerTable extends myDoctrineTable
     }
 
     return $record;
+  }
+
+  public function getList(array $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+    $this->setQueryParameters($q, $params);
+
+    $ids = $this->getIdsByQuery($q);
+
+    if (!count($ids))
+    {
+      $q = $this->createQuery()
+        ->where('banner.is_active = ? AND banner.is_dummy = ?', array(true, true))
+        ->orderBy('position ASC')
+      ;
+
+      $ids = $this->getIdsByQuery($q);
+    }
+
+    return $this->createListByIds($ids, $params);
   }
 
   public function getListBySlot(Slot $slot, array $params = array())

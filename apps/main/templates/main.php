@@ -47,7 +47,7 @@ _gaq.push(['_trackPageLoadTime']);
         <div class="banner banner4"><a href=""><img src="" alt="" /></a></div>
         <div class="banner banner5"><a href=""><img src="" alt="" /></a></div>
       <!-- -->
-      <?php // include_component('default', 'slot', array('token' => 'banner_default')) ?>
+      <?php include_component('banner', 'show', array('view' => 'main')) ?>
     </div>
 </div>
 
@@ -95,7 +95,7 @@ _gaq.push(['_trackPageLoadTime']);
 			'2010203001047': '/products/2010203001047',
 			'2020301001603': '/products/2020301001603',
 			'2060101001236': '/products/2060101001236',
-			'2040302000771': '/products/2040302000771',//гирлянда			
+			'2040302000771': '/products/2040302000771',//гирлянда
 			'2070404000232': '/products/2070404000232',//коньки
 			'2030000048403': '/products/2030000048403',//часы
 			'2040302000412': '/products/2040302000412',//елка
@@ -104,7 +104,7 @@ _gaq.push(['_trackPageLoadTime']);
 			'2020103001443': '/products/2020103001443',//блендер
 			'2040101007056': '/products/2040101007056',//посуда
 			'2040302001983': '/products/2040302001983'//снеговик
-			
+
 		}
 		var rotations = {
 		// images/enter/big/ file by file
