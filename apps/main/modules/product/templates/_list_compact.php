@@ -4,12 +4,12 @@
 <?php $i = 0; foreach ($list as $item): $i++; ?>
   <?php include_component('product', 'show', array('view' => 'compact', 'product' => $item)) ?>
 
-  <?php if (!($i % $in_row)): ?>
+  <?php if (!($i % $in_row) && (count($list) == $i ? $last_line : true)): ?>
     <div class="line"></div>
   <?php endif ?>
 
 <?php endforeach ?>
-  <?php if ($i % $in_row && $last_line): ?>
+  <?php if (($i % $in_row) && $last_line): ?>
     <div class="line"></div>
   <?php endif ?>
 </div>
