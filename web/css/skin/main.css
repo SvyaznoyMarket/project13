@@ -54,7 +54,7 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 
 .bigbanner {padding:0 0 0 0;}
 
-.bannersbox {position:absolute; width:100%; overflow:hidden; height:100%; top: 234px}
+.bannersbox {position:absolute; width:100%; overflow:hidden; height:100%; top: 234px; left:0}
 .bannersboxinner {position:relative;  width:920px; margin:0 auto; height: 300px; font-size: 0; line-height: 300px;}
 .banner{
 	position: absolute;

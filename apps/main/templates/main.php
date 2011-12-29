@@ -160,12 +160,21 @@ _gaq.push(['_trackPageLoadTime']);
 		/* Visuals */
 //		$("html").css('overflow-x','hidden')
 
-		$('.bCarousel').mouseenter( function() {
+		var userag    = navigator.userAgent.toLowerCase()
+		var isAndroid = userag.indexOf("android") > -1
+		var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )
+	
+		if( isAndroid || isOSX ) {
 			$('.bCarousel div').show()
-		}).mouseleave( function() {
-			$('.bCarousel div').hide()
-		})
-		
+			$('.allpage').css('overflow','hidden')
+		} else {
+			$('.bCarousel').mouseenter( function() {
+				$('.bCarousel div').show()
+			}).mouseleave( function() {
+				$('.bCarousel div').hide()
+			})		
+		}
+				
 		$('.leftArrow').click( function() { goSlide( 1 ) } )
 		$('.leftImage').click( function() { goSlide( -1 ) } )
 		$('.rightArrow').click( function() { goSlide( -1 ) } )
