@@ -2,7 +2,7 @@
 #JSON data
 	$json = array (
 		'jsref' => $item['product']->token,
-		'jstitle' => $item['product']->name,
+		'jstitle' => htmlspecialchars($item['product']->name, ENT_QUOTES, 'UTF-8'),
 		'jsprice' => $item['price'],
 		'jsimg' => $product->getMainPhotoUrl(3)
 	)
