@@ -217,12 +217,12 @@ _gaq.push(['_trackPageLoadTime']);
 				var dir = 1
 			else // custom summon
 				clearTimeout( idto )
-			var shift   = '-=2000px',
-				inileft = '2032px'
+			var shift   = '-=1000px',
+				inileft = '1032px'
 			
 			if( dir < 0 ) {
-				shift   = '+=2000px',
-				inileft = '-1968px'
+				shift   = '+=1000px',
+				inileft = '-968px'
 			}
 			currentSl = (currentSl + dir) % promos.length
 			if( currentSl < 0 ) 
