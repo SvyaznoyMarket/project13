@@ -79,10 +79,10 @@
     <?php include_combined_javascripts() ?>
     <script>
       $(document).ready(function() {
-
-        var promos = $('#main_banner-data').data('value');
-        console.info(promos);
-
+		if( !$('#main_banner-data').length )
+        	return         	
+		var promos = $('#main_banner-data').data('value')
+		
         /* Shit happens */
         for(var i=0; i < promos.length; i++ ) {
           if( typeof(promos[i].imgb) === 'undefined' || typeof(promos[i].imgs) === 'undefined') {
