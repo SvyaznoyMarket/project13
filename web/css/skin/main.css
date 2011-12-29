@@ -201,7 +201,65 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 		margin-top: 20px;
 		margin-left: 90px;
 		}
+
+.bIndexLinks2{}
+	.bIndexLinks2__eBanners{}
+	.bIndexLinks2__eBan{
+		width: 300px;
+		height: 90px;
+		vertical-align: top;
 		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bIndexLinks2__eBan:first-child{
+		font-family: 'Enter';
+		text-align: left;
+		}
+	.bIndexLinks2__eBan a,
+	.bIndexLinks2__eBan img{
+		border: none;
+		outline: none;
+		text-decoration: none;
+		}
+	.bIndexLinks2__eLinks{
+		margin: 30px 0 15px 0;
+		}
+	.bIndexLinks2__eLinks a{
+		width: 227px;
+		color: #a6a6a6;
+		vertical-align: top;
+		font: 14px/20px Tahoma, sans-serif;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}		
+	.bIndexLinks2__eLinks a:hover{
+		color: #ffa901;
+		text-decoration: underline;
+		}
+		
+a[title="vkontakte"],
+a[title="twitter"],
+a[title="facebook"]{
+	width: 26px;
+	height: 26px;
+	
+	vertical-align: middle;
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+	}		
+a[title="twitter"]{ background: url('img/icon_twitter.png'); }
+a[title="facebook"]{ background: url('img/icon_facebook.png'); }
+a[title="vkontakte"]{ background: url('img/icon_vkontakte.png'); }
+
+a[title="twitter"]:hover{ background: url('img/icon_twitter_color.png'); }
+a[title="facebook"]:hover{ background: url('img/icon_facebook_color.png'); }
+a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
+
 .bCarouselWrap{
 	width: 100%;
 	height: 600px;

@@ -233,7 +233,7 @@ _gaq.push(['_trackPageLoadTime']);
 						'left' : shift
 					})
 					sliding = false
-					//idto = setTimeout( function() { goSlide() }, initis[1].t ) // AUTOPLAY
+					idto = setTimeout( function() { goSlide() }, initis[1].t ) // AUTOPLAY
 			})
 			sideBanner($('.leftImage'), 0)
 			sideBanner($('.rightImage'), 2)			
