@@ -116,9 +116,31 @@ _gaq.push(['_trackPageLoadTime']);
 		url: '/products/2030000048397', alt: ''}
 		]
 		
+		/* Shit happens */		
+		for(var i=0; i < promos.length; i++ ) {
+			if( typeof(promos[i].imgb) === 'undefined' || typeof(promos[i].imgs) === 'undefined') {
+				promos.splice( i,1 )
+			}	
+			if( typeof(promos[i].url) === 'undefined' ) {
+				promos[i].url = ''
+			}
+			if( typeof(promos[i].t) === 'undefined' ) {
+				promos[i].url = 4000
+			}
+			if( typeof(promos[i].alt) === 'undefined' ) {
+				promos[i].url = ''
+			}
+		}
+		var l = promos.length
+		if( l == 0 )
+			return
+		if( l == 1 || l == 2 ) {
+			$('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
+			return
+		}	
+		
 		/* Preload */
 		var hb = $('<div>').css('display','none')
-		var l = promos.length
 		for(var i=0; i < l; i++ ) {
 			$('<img>').attr('src', promos[i].imgb).appendTo( hb )
 			$('<img>').attr('src', promos[i].imgs).appendTo( hb )			
