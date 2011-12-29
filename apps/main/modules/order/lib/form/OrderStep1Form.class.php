@@ -61,6 +61,11 @@ class OrderStep1Form extends BaseOrderForm
     {
       $date = strtotime("+{$i} day");
 
+      if (in_array(date('dmY', $date), array('31122011', '01012012', '02012012','03012012')))
+      {
+        $stop++;
+        continue;
+      }
       $prefix = '';
       $val = $prefix.date('d.m.Y', $date);
       if (0 == $i)
