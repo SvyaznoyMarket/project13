@@ -15,6 +15,12 @@ all:
     result_cache:        false   # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
+  banner:
+    timeout: 2000
+    image_url:
+      - 'http://fs01.enter.ru/4/1/Размер/44/'
+      - 'http://fs01.enter.ru/4/1/Размер/44/'
+
   product:
     max_items:              10                      # максимально количество записей для списка товаров (по умолчанию)
     max_items_on_category:  18                      # максимально количество записей для списка товаров в категории

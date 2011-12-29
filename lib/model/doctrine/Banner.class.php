@@ -30,13 +30,13 @@ class Banner extends BaseBanner
 
     if (!empty($data['item_list']))
     {
-      $existing = array();
+      $existing = array(); // существуюшие элементы
       foreach ($this->Item as $index => $bannerItem)
       {
         $existing[$bannerItem->core_id] = $index;
       }
 
-      $new = array();
+      $new = array(); // новые элементы
       foreach ($data['item_list'] as $relationData)
       {
         $new[] = $relationData['id'];

@@ -29,7 +29,78 @@ class BannerTable extends myDoctrineTable
       'start'       => 'start_at',
       'finish'      => 'end_at',
       'position'    => 'position',
+      //'timeout'     => 'timeout',
     );
+  }
+
+  public function getDefaultParameters()
+  {
+    $data =  array(
+      'hydrate_array' => false,
+    );
+
+    return $data;
+  }
+
+  public function createBaseQuery(array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createQuery('banner');
+
+    $q->where('banner.is_active = ?', true);
+
+    return $q;
+  }
+
+  public function getRecordById($id, array $params = array())
+  {
+    $this->applyDefaultParameters($params, array(
+      'with_items' => true,
+    ));
+
+    $q = $this->createBaseQuery($params);
+
+    if ($params['with_items'])
+    {
+      $q->leftJoin('banner.Item bannerItem');
+    }
+
+    $this->setQueryParameters($q, $params);
+    $q->addWhere('banner.id = ?', $id);
+
+    if ($params['hydrate_array'])
+    {
+      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    }
+    $record = $q->fetchOne();
+    if (!$record)
+    {
+      return $record;
+    }
+
+    if ($params['with_items'])
+    {
+      foreach ($record['Item'] as $i => $bannerItem)
+      {
+        $bannerItem['Object'] = null;
+        if ('product' == $bannerItem['type'])
+        {
+          $product = ProductTable::getInstance()->getById($bannerItem['object_id'], array('hydrate_array' => true, 'with_model' => true));
+          if ($product && $product['view_list'])
+          {
+            $bannerItem['Object'] = $product;
+          }
+        }
+
+        if (is_array($bannerItem))
+        {
+          $record['Item'][$i] = $bannerItem;
+        }
+      }
+    }
+
+    return $record;
   }
 
   public function getListBySlot(Slot $slot, array $params = array())
@@ -47,5 +118,21 @@ class BannerTable extends myDoctrineTable
     $ids = $this->getIdsByQuery($q);
 
     return $this->createListByIds($ids, $params);
+  }
+
+  public function getCacheTags($record)
+  {
+    $tags = array();
+    if (!empty($record['id']))
+    {
+      $tags[] = "banner-{$record['id']}";
+
+      foreach ($record['Item'] as $bannerItem)
+      {
+        $tags[] = "{$bannerItem['type']}-{$bannerItem['object_id']}";
+      }
+    }
+
+    return $tags;
   }
 }

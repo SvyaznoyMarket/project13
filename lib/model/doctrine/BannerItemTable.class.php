@@ -21,11 +21,28 @@ class BannerItemTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'       => 'core_id',
-      'type_id'  => array('name' => 'type', 'mapping' => array(1 => 'product')),
-      'item_id'  => 'object_id',
-      'position' => 'position',
-      //'timeout'  => 'timeout',
+      'id'           => 'core_id',
+      'item_type_id' => array('name' => 'type', 'mapping' => array(1 => 'product')),
+      'item_id'      => 'object_id',
+      'position'     => 'position',
+    );
+  }
+
+  public function getCacheTags($record)
+  {
+    $tags = array();
+    if (!empty($record['id']))
+    {
+      $tags[] = "banner-{$record['banner_id']}";
+    }
+
+    return $tags;
+  }
+
+  public function getCacheEraserKeys($record, $action = null)
+  {
+    return array(
+      'banner-'.$record['banner_id'],
     );
   }
 }
