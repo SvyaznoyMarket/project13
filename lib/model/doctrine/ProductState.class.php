@@ -30,13 +30,14 @@ class ProductState extends BaseProductState
     // если регион по умолчанию
     if ($defaultRegion->id == $this->region_id)
     {
-      $product = ProductTable::getInstance()->getById($this->product_id);
+      $product = ProductTable::getInstance()->find($this->product_id);
       if ($product)
       {
         foreach (array('view_show', 'view_list', 'status_id', 'is_instock') as $v)
         {
           $product->set($v, $this->get($v));
         }
+        $product->save();
       }
     }
   }

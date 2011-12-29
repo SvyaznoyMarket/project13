@@ -756,8 +756,8 @@ class ProductTable extends myDoctrineTable
       // Массив полей, изменения в которых ведут к генерации кеш-ключей
       $intersection = array_intersect($modified, array(
         //'is_instock',
-        'view_show',
-        'view_list',
+        //'view_show',
+        //'view_list',
         //'name',
         //'barcode',
       ));

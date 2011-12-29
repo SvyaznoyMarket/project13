@@ -75,29 +75,43 @@ class ProductPriceTable extends myDoctrineTable
   public function getCacheEraserKeys($record, $action = null)
   {
     $return = array();
+    $intersection = array();
 
-    /*$q = ProductTable::getInstance()->createQuery('product')
-      ->select('product.core_id, region.geoip_code, productPrice.id, priceList.id')
-      ->innerJoin('product.ProductPrice productPrice')
-      ->innerJoin('productPrice.PriceList priceList')
-      ->innerJoin('priceList.Region region WITH region.geoip_code IS NOT NULL')
-      ->where('productPrice.id = ?', $record['id'])
-      ->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
-    ;
-
-    $products = $q->execute();
-
-    foreach ($products as $product)
+    if ($record instanceof myDoctrineRecord)
     {
-      foreach ($product['ProductPrice'][0]['PriceList']['Region'] as $region)
+      // for preSave
+      $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
+      // Массив полей, изменения в которых ведут к генерации кеш-ключей
+      $intersection = array_intersect($modified, array(
+        'price',
+      ));
+    }
+
+    if (count($intersection))
+    {
+      $q = ProductTable::getInstance()->createQuery('product')
+        ->select('product.core_id, region.geoip_code, productPrice.id, priceList.id')
+        ->innerJoin('product.ProductPrice productPrice')
+        ->innerJoin('productPrice.PriceList priceList')
+        ->innerJoin('priceList.Region region WITH region.geoip_code IS NOT NULL')
+        ->where('productPrice.id = ?', $record['id'])
+        ->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
+      ;
+
+      $products = $q->execute();
+
+      foreach ($products as $product)
       {
-        if (!empty($region['geoip_code']))
+        foreach ($product['ProductPrice'][0]['PriceList']['Region'] as $region)
         {
-          $return[] = "product-{$product['core_id']}-{$region['geoip_code']}";
+          if (!empty($region['geoip_code']))
+          {
+            $return[$region['geoip_code']] = "product-{$product['core_id']}-{$region['geoip_code']}";
+          }
         }
       }
-    }*/
+    }
 
-    return $return;
+    return array_values($return);
   }
 }
