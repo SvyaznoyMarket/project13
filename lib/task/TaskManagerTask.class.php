@@ -82,7 +82,7 @@ EOF;
       else if ('fail' == $task->status)
       {
         // если задача высокого приоритета, то даём ей еще один шанс
-        if ($task->priority == $priority)
+        if ($task->priority != $priority)
         {
           $task->status = 'run';
         }

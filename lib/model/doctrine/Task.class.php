@@ -21,7 +21,6 @@ class Task extends BaseTask
       $this->save();
     }
   }
-  */
 
   public function preSave($event)
   {
@@ -32,6 +31,7 @@ class Task extends BaseTask
       $record->setDefaultPriority();
     }
   }
+  */
 
   public function toParams()
   {
