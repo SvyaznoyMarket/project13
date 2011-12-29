@@ -23,4 +23,43 @@ class Banner extends BaseBanner
       $record->token = uniqid();
     }
   }
+
+  public function importFromCore(array $data)
+  {
+    parent::importFromCore($data);
+
+    if (!empty($data['item_list']))
+    {
+      $existing = array();
+      foreach ($this->Item as $index => $bannerItem)
+      {
+        $existing[$bannerItem->core_id] = $index;
+      }
+
+      $new = array();
+      foreach ($data['item_list'] as $relationData)
+      {
+        $new[] = $relationData['id'];
+
+        $index = array_key_exists($relationData['id'], $existing) ? $existing[$relationData['id']] : false;
+
+        if (false !== $index)
+        {
+          $this->Item[$index]->importFromCore($relationData);
+        }
+        else {
+          $bannerItem = new BannerItem();
+          $bannerItem->importFromCore($relationData);
+          $this->Item[] = $bannerItem;
+        }
+      }
+
+      $unlink = array_diff(array_keys($existing), $new);
+      $unlink = count($unlink) ? BannerItemTable::getInstance()->getIdsByCoreIds($unlink) : array();
+      if (count($unlink))
+      {
+        $this->unlink('Item', $unlink);
+      }
+    }
+  }
 }
