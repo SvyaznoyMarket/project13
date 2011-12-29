@@ -41,13 +41,8 @@ _gaq.push(['_trackPageLoadTime']);
 
 <div class="bannersbox">
     <div class="bannersboxinner">
-	  <!-- /images/banners/small/banner3.png -->
-        <div class="banner banner2"><a href=""><img src="" alt="" /></a></div>
-        <div class="banner banner3"><a href=""><img src="" alt="" /></a></div>
-        <div class="banner banner4"><a href=""><img src="" alt="" /></a></div>
-        <div class="banner banner5"><a href=""><img src="" alt="" /></a></div>
-      <!-- -->
-      <?php // include_component('default', 'slot', array('token' => 'banner_default')) ?>
+        <div class="banner banner3"><img class="rightImage" src="" alt="" /></div>
+        <div class="banner banner4"><img class="leftImage" src="" alt="" /></div>
     </div>
 </div>
 
@@ -65,103 +60,195 @@ _gaq.push(['_trackPageLoadTime']);
         </div>
     </noindex>
 
-
-    <div class="bigbanner"><a href=""><img src="" alt="" width="768" height="302" /></a></div>
-    <?php // include_component('default', 'slot', array('token' => 'big_banner')) ?>
-
+    <div class="bigbanner">
+		<div class='bCarouselWrap'>
+			<div class='bCarousel'>
+				<div class='bCarousel__eBtnL leftArrow'></div>
+				<div class='bCarousel__eBtnR rightArrow'></div>
+				<img class="centerImage" src="" alt=""/>
+			</div>
+		</div>				
+	</div>
 
     <?php include_component('default', 'footer', array('view' => 'main')) ?>
-
 
     <div class="clear"></div>
 </div>
 
 <?php include_combined_javascripts() ?>
 <script>
-	$(document).ready(function(){
-
-		function getRandomInt(min, max)
-		{
-		  return Math.floor(Math.random() * (max - min + 1)) + min
+	$(document).ready(function() {
+		
+		var promos = [
+		{ imgb: '/images/enter/bigpromo/img_1_big.jpg', imgs:'/images/enter/img_1_small.jpg', t:4000, 
+		url: '/products/2080501000981', alt: 'one'},
+		{ imgb: '/images/enter/bigpromo/img_2_big.jpg', imgs:'/images/enter/img_2_small.jpg', t:4000, 
+		url: '/products/2040404000044', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_3_big.jpg', imgs:'/images/enter/img_3_small.jpg', t:4000, 
+		url: '/products/2050600002612', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_4_big.jpg', imgs:'/images/enter/img_4_small.jpg', t:4000, 
+		url: '/products/2060400004099', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_5_big.jpg', imgs:'/images/enter/img_5_small.jpg', t:4000, 
+		url: '/products/2060402000150', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_6_big.jpg', imgs:'/images/enter/img_6_small.jpg', t:4000, 
+		url: '/products/2070401001089', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_7_big.jpg', imgs:'/images/enter/img_7_small.jpg', t:4000, 
+		url: '/products/2070903000023', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_8_big.jpg', imgs:'/images/enter/img_8_small.jpg', t:4000, 
+		url: '/products/2040201001220', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_9_big.jpg', imgs:'/images/enter/img_9_small.jpg', t:4000, 
+		url: '/products/2010102002206', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_10_big.jpg', imgs:'/images/enter/img_10_small.jpg', t:4000, 
+		url: '/products/2050405000608', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_11_big.jpg', imgs:'/images/enter/img_11_small.jpg', t:4000, 
+		url: '/products/2060101001984', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_12_big.jpg', imgs:'/images/enter/img_12_small.jpg', t:4000, 
+		url: '/products/2020103003898', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_13_big.jpg', imgs:'/images/enter/img_13_small.jpg', t:4000, 
+		url: '/products/2030000013999', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_14_big.jpg', imgs:'/images/enter/img_14_small.jpg', t:4000,
+		url: '/products/2040102005358', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_15_big.jpg', imgs:'/images/enter/img_15_small.jpg', t:4000,
+		url: '/products/2010203001030', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_16_big.jpg', imgs:'/images/enter/img_16_small.jpg', t:4000,
+		url: '/products/2060400006253', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_17_big.jpg', imgs:'/images/enter/img_17_small.jpg', t:4000,
+		url: '/products/2030000048397', alt: ''}
+		]
+		
+		/* Shit happens */		
+		for(var i=0; i < promos.length; i++ ) {
+			if( typeof(promos[i].imgb) === 'undefined' || typeof(promos[i].imgs) === 'undefined') {
+				promos.splice( i,1 )
+			}	
+			if( typeof(promos[i].url) === 'undefined' ) {
+				promos[i].url = ''
+			}
+			if( typeof(promos[i].t) === 'undefined' ) {
+				promos[i].url = 4000
+			}
+			if( typeof(promos[i].alt) === 'undefined' ) {
+				promos[i].url = ''
+			}
 		}
-		var values = {
-			'2060302001844': '/products/2060302001844',
-			'2050600000380': '/products/2050600000380',
-//			'selena': '/search?q=%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B0&product_type=677',
-			'selena': '/products/set/2050301012569,2050301012576,2050301012538,2050301012521,2050301012552,2050301012545',
-//			'2010103001529': '/products/2010103001529',
-			'2080502000751': '/products/2080502000751',
-			'2030000018871': '/products/2030000018871',
-			'2010203001047': '/products/2010203001047',
-			'2020301001603': '/products/2020301001603',
-			'2060101001236': '/products/2060101001236',
-			'2040302000771': '/products/2040302000771',//гирлянда			
-			'2070404000232': '/products/2070404000232',//коньки
-			'2030000048403': '/products/2030000048403',//часы
-			'2040302000412': '/products/2040302000412',//елка
-			'samsonite': 'product/sport/samsonite-chemodan-samsonite-atolas-65-cherniy', //чемодан
-			'2040404000051': '/products/2040404000051',//светильник
-			'2020103001443': '/products/2020103001443',//блендер
-			'2040101007056': '/products/2040101007056',//посуда
-			'2040302001983': '/products/2040302001983'//снеговик
+		var l = promos.length
+		if( l == 0 )
+			return
+		if( l == 1 || l == 2 ) {
+			$('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
+			return
+		}	
+		
+		/* Preload */
+		var hb = $('<div>').css('display','none')
+		for(var i=0; i < l; i++ ) {
+			$('<img>').attr('src', promos[i].imgb).appendTo( hb )
+			$('<img>').attr('src', promos[i].imgs).appendTo( hb )			
+		}
+		$('body').append( hb )
+		
+		/* Init */
+		$('.leftImage').attr({ "src": promos[l - 1].imgs, "alt": promos[l - 1].alt, "title": promos[l - 1].alt})
+		$('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
+		$('.rightImage').attr({ "src": promos[1].imgs, "alt": promos[1].alt, "title": promos[1].alt})
+		var currentSl = promos.length - 1	
+		var idto = null
+		var initis = []
+		var sliding = false
+		changeSrc( currentSl )
+		idto = setTimeout( function() { goSlide() }, initis[1].t )
+		/* Visuals */
+//		$("html").css('overflow-x','hidden')
+
+		var userag    = navigator.userAgent.toLowerCase()
+		var isAndroid = userag.indexOf("android") > -1
+		var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )
+	
+		if( isAndroid || isOSX ) {
+			$('.bCarousel div').show()
+			$('.allpage').css('overflow','hidden')
+		} else {
+			$('.bCarousel').mouseenter( function() {
+				$('.bCarousel div').show()
+			}).mouseleave( function() {
+				$('.bCarousel div').hide()
+			})		
+		}
+				
+		$('.leftArrow').click( function() { goSlide( 1 ) } )
+		$('.leftImage').click( function() { goSlide( -1 ) } )
+		$('.rightArrow').click( function() { goSlide( -1 ) } )
+		$('.rightImage').click( function() { goSlide( 1 ) } )
+		$('.centerImage').click( function() { 
+			clearTimeout( idto )
+			location.href = $(this).data('url') 
+		})
+		$('.promos').click( function(){ location.href = $(this).data('url') } )
+		
+		function sideBanner( block, i ) {
+			$(block).animate( {
+				"opacity" : "0"
+			},
+			400,
+			function() {
+				setTimeout( function() {
+					block.attr({ "src": initis[i].imgs, "alt": initis[i].alt, "title": initis[i].alt})
+					$(block).animate({
+					"opacity" : "1"
+					})
+				}, 350)
+			})
+		}
+		
+		function changeSrc( currentSl ) {
+			var delta = promos.length - currentSl - 3			
+			if( delta >= 0 )
+				initis = promos.slice( currentSl, currentSl + 3 )
+			else 
+				initis = promos.slice( currentSl ).concat( promos.slice(0, -delta) )
+			//console.info(currentSl, delta);console.info(initis)			
+		}
+		
+		function goSlide( dir ) {
+			if( sliding )
+				return false
+			sliding = true	
+			if( !dir )
+				var dir = 1
+			else // custom summon
+				clearTimeout( idto )
+			var shift   = '-=1000px',
+				inileft = '1032px'
 			
+			if( dir < 0 ) {
+				shift   = '+=1000px',
+				inileft = '-968px'
+			}
+			currentSl = (currentSl + dir) % promos.length
+			if( currentSl < 0 ) 
+				currentSl = promos.length - 1
+			changeSrc( currentSl )
+			
+			$('.centerImage').animate(
+				{
+					'left' : shift,
+					'opacity' : '0'
+				},
+				800,
+				function() {					
+					$('.centerImage').attr("src", initis[1].imgb ).data('url', initis[1].url)
+					$(this).css('left', inileft).animate({
+						'opacity' : '1',
+						'left' : shift
+					})
+					sliding = false
+					idto = setTimeout( function() { goSlide() }, initis[1].t ) // AUTOPLAY
+			})
+			sideBanner($('.leftImage'), 0)
+			sideBanner($('.rightImage'), 2)			
 		}
-		var rotations = {
-		// images/enter/big/ file by file
-			big:['2060302001844','2050600000380','selena','2080502000751','2030000018871','2010203001047',
-				 '2020301001603','2060101001236','2040302000771','2070404000232','2030000048403','2040302000412','samsonite',
-				 '2040404000051','2020103001443','2040101007056','2040302001983'],
-		// images/enter/medium/ file by file
-			med: ['2060101001236','2080502000751','2010203001047','2030000048403','2070404000232','2040302000412',
-				'2040302001983','2040404000051'],
-		// images/enter/small/ file by file
-			sm: ['2020301001603','2030000018871','2060302001844','2050600000380','2040302000771','samsonite']
-		}
-
-		var node    = $('.bannersboxinner')
-		var bignode = $('.bigbanner')
-		var ind = getRandomInt(0, rotations.big.length - 1 )
-		var bri = rotations.big[ ind ] + ''
-		bignode.find('img').attr('src','/images/enter/big/enter_'+ (ind*1+1) +'.jpg')
-						   .parent().attr('href', values[bri])
-
-		ind = getRandomInt(0, rotations.med.length - 1 )
-		var mri = rotations.med[ ind ] + ''
-		while( bri === mri ) {
-			ind = getRandomInt(0, rotations.med.length - 1 )
-			mri = rotations.med[ ind ] + ''
-		}
-		var mri_2 = mri
-		node.find('.banner3 img').attr('src','/images/enter/medium/enter_'+ (ind*1+1) +'.jpg')
-								 .parent().attr('href', values[mri])
-		ind = getRandomInt(0, rotations.med.length - 1 )
-		var mri = rotations.med[ ind ] + ''
-
-		while( bri === mri || mri_2 === mri) {
-			ind = getRandomInt(0, rotations.med.length - 1 )
-			mri = rotations.med[ ind ] + ''
-		}
-		node.find('.banner4 img').attr('src','/images/enter/medium/enter_'+ (ind*1+1) +'.jpg')
-								 .parent().attr('href', values[mri])
-
-		ind = getRandomInt(0, rotations.sm.length - 1 )
-		var sri = rotations.sm[ ind ] + ''
-		while( bri === sri || mri === sri || mri_2 === sri) {
-			ind = getRandomInt(0, rotations.sm.length - 1 )
-			sri = rotations.sm[ ind ] + ''
-		}
-		var sri_2 = sri
-		node.find('.banner2 img').attr('src','/images/enter/small/enter_'+ (ind*1+1) +'.jpg')
-								 .parent().attr('href', values[sri])
-		ind = getRandomInt(0, rotations.sm.length - 1 )
-		var sri = rotations.sm[ ind ] + ''
-		while( bri === sri || mri === sri || mri_2 === sri || sri_2 === sri) {
-			ind = getRandomInt(0, rotations.sm.length - 1 )
-			sri = rotations.sm[ ind ] + ''
-		}
-		node.find('.banner5 img').attr('src','/images/enter/small/enter_'+ (ind*1+1) +'.jpg')
-								 .parent().attr('href', values[sri])
-
+		
+		/* Search */
 		$('.startse').bind ({
 			'blur': function() {
 				if (this.value == '')
@@ -172,6 +259,7 @@ _gaq.push(['_trackPageLoadTime']);
 						this.value = ''
 			}
 		})
+		
 	})
 
 </script>
@@ -204,6 +292,7 @@ _gaq.push(['_trackPageLoadTime']);
 <?php if (has_slot('seo_counters_advance')): ?>
   <?php include_slot('seo_counters_advance') ?>
 <?php endif ?>
+
 
 </body>
 </html>
