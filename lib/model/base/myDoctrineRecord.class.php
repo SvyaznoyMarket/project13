@@ -181,7 +181,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
           // is relation one to one
           if ($relation->isOneToOne())
           {
-            $this->set($relation->getLocalFieldName(), Doctrine_Core::getTable($model)->getIdByCoreId($data[$k]));
+            $this->set($relation->getLocalFieldName(), Doctrine_Core::getTable($model)->getIdBy('core_id', $data[$k]));
           }
           // is relation many to many
           else {
@@ -190,7 +190,7 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
 
             if (isset($data[$k])) foreach ($data[$k] as $d)
             {
-              if (!$id = Doctrine_Core::getTable($model)->getIdByCoreId($d['id']))
+              if (!$id = Doctrine_Core::getTable($model)->getIdBy('core_id', $d['id']))
               {
                 throw new Exception('Can\'t find '.$model.' with core_id='.$d['id']);
               }

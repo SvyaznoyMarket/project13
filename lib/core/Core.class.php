@@ -372,6 +372,9 @@ class Core
 
   public function query($name, array $params = array(), array $data = array())
   {
+    $denided_actions = array('sync.get');
+    $is_log = in_array($name, $denided_actions);
+    
     $action = '/'.str_replace('.', '/', $name).'/';
 
     if (empty($this->client_id) || empty($this->token))
@@ -390,9 +393,15 @@ class Core
       ), $params),
       'data'   => $data), JSON_FORCE_OBJECT);
 
-    $this->logger->log("Request: ".$data);
+    if (!$is_log)
+    {
+      $this->logger->log("Request: ".$data);
+    }
     $response = $this->send($data);
-    $this->logger->log("Response: ".$response);
+    if (!$is_log)
+    {
+      $this->logger->log("Response: ".$response);
+    }
     $response = json_decode($response, true);
 
     if (isset($response['error']))
