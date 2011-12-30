@@ -67,7 +67,7 @@ _gaq.push(['_trackPageLoadTime']);
 				<div class='bCarousel__eBtnR rightArrow'></div>
 				<img class="centerImage" src="" alt=""/>
 			</div>
-		</div>				
+		</div>
 	</div>
 
     <?php include_component('default', 'footer', array('view' => 'main')) ?>
@@ -78,33 +78,33 @@ _gaq.push(['_trackPageLoadTime']);
 <?php include_combined_javascripts() ?>
 <script>
 	$(document).ready(function() {
-		
+
 		var promos = [
-		{ imgb: '/images/enter/bigpromo/img_1_big.jpg', imgs:'/images/enter/img_1_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_1_big.jpg', imgs:'/images/enter/img_1_small.jpg', t:4000,
 		url: '/products/2080501000981', alt: 'one'},
-		{ imgb: '/images/enter/bigpromo/img_2_big.jpg', imgs:'/images/enter/img_2_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_2_big.jpg', imgs:'/images/enter/img_2_small.jpg', t:4000,
 		url: '/products/2040404000044', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_3_big.jpg', imgs:'/images/enter/img_3_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_3_big.jpg', imgs:'/images/enter/img_3_small.jpg', t:4000,
 		url: '/products/2050600002612', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_4_big.jpg', imgs:'/images/enter/img_4_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_4_big.jpg', imgs:'/images/enter/img_4_small.jpg', t:4000,
 		url: '/products/2060400004099', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_5_big.jpg', imgs:'/images/enter/img_5_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_5_big.jpg', imgs:'/images/enter/img_5_small.jpg', t:4000,
 		url: '/products/2060402000150', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_6_big.jpg', imgs:'/images/enter/img_6_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_6_big.jpg', imgs:'/images/enter/img_6_small.jpg', t:4000,
 		url: '/products/2070401001089', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_7_big.jpg', imgs:'/images/enter/img_7_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_7_big.jpg', imgs:'/images/enter/img_7_small.jpg', t:4000,
 		url: '/products/2070903000023', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_8_big.jpg', imgs:'/images/enter/img_8_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_8_big.jpg', imgs:'/images/enter/img_8_small.jpg', t:4000,
 		url: '/products/2040201001220', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_9_big.jpg', imgs:'/images/enter/img_9_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_9_big.jpg', imgs:'/images/enter/img_9_small.jpg', t:4000,
 		url: '/products/2010102002206', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_10_big.jpg', imgs:'/images/enter/img_10_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_10_big.jpg', imgs:'/images/enter/img_10_small.jpg', t:4000,
 		url: '/products/2050405000608', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_11_big.jpg', imgs:'/images/enter/img_11_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_11_big.jpg', imgs:'/images/enter/img_11_small.jpg', t:4000,
 		url: '/products/2060101001984', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_12_big.jpg', imgs:'/images/enter/img_12_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_12_big.jpg', imgs:'/images/enter/img_12_small.jpg', t:4000,
 		url: '/products/2020103003898', alt: ''},
-		{ imgb: '/images/enter/bigpromo/img_13_big.jpg', imgs:'/images/enter/img_13_small.jpg', t:4000, 
+		{ imgb: '/images/enter/bigpromo/img_13_big.jpg', imgs:'/images/enter/img_13_small.jpg', t:4000,
 		url: '/products/2030000013999', alt: ''},
 		{ imgb: '/images/enter/bigpromo/img_14_big.jpg', imgs:'/images/enter/img_14_small.jpg', t:4000,
 		url: '/products/2040102005358', alt: ''},
@@ -113,14 +113,16 @@ _gaq.push(['_trackPageLoadTime']);
 		{ imgb: '/images/enter/bigpromo/img_16_big.jpg', imgs:'/images/enter/img_16_small.jpg', t:4000,
 		url: '/products/2060400006253', alt: ''},
 		{ imgb: '/images/enter/bigpromo/img_17_big.jpg', imgs:'/images/enter/img_17_small.jpg', t:4000,
-		url: '/products/2030000048397', alt: ''}
+		url: '/products/2030000048397', alt: ''},
+		{ imgb: '/images/enter/bigpromo/img_18_big.jpg', imgs:'/images/enter/img_18_small.jpg', t:4000,
+		url: '/product/appliances/pribor-dlya-ukladki-volos-braun-satin-hair-7-2020301000408', alt: ''}
 		]
-		
-		/* Shit happens */		
+
+		/* Shit happens */
 		for(var i=0; i < promos.length; i++ ) {
 			if( typeof(promos[i].imgb) === 'undefined' || typeof(promos[i].imgs) === 'undefined') {
 				promos.splice( i,1 )
-			}	
+			}
 			if( typeof(promos[i].url) === 'undefined' ) {
 				promos[i].url = ''
 			}
@@ -137,21 +139,21 @@ _gaq.push(['_trackPageLoadTime']);
 		if( l == 1 || l == 2 ) {
 			$('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
 			return
-		}	
-		
+		}
+
 		/* Preload */
 		var hb = $('<div>').css('display','none')
 		for(var i=0; i < l; i++ ) {
 			$('<img>').attr('src', promos[i].imgb).appendTo( hb )
-			$('<img>').attr('src', promos[i].imgs).appendTo( hb )			
+			$('<img>').attr('src', promos[i].imgs).appendTo( hb )
 		}
 		$('body').append( hb )
-		
+
 		/* Init */
 		$('.leftImage').attr({ "src": promos[l - 1].imgs, "alt": promos[l - 1].alt, "title": promos[l - 1].alt})
 		$('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
 		$('.rightImage').attr({ "src": promos[1].imgs, "alt": promos[1].alt, "title": promos[1].alt})
-		var currentSl = promos.length - 1	
+		var currentSl = promos.length - 1
 		var idto = null
 		var initis = []
 		var sliding = false
@@ -163,7 +165,7 @@ _gaq.push(['_trackPageLoadTime']);
 		var userag    = navigator.userAgent.toLowerCase()
 		var isAndroid = userag.indexOf("android") > -1
 		var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )
-	
+
 		if( isAndroid || isOSX ) {
 			$('.bCarousel div').show()
 			$('.allpage').css('overflow','hidden')
@@ -172,18 +174,18 @@ _gaq.push(['_trackPageLoadTime']);
 				$('.bCarousel div').show()
 			}).mouseleave( function() {
 				$('.bCarousel div').hide()
-			})		
+			})
 		}
 		$('.leftArrow').click( function() { goSlide( -1 ) } )
 		$('.leftImage').click( function() { goSlide( -1 ) } )
 		$('.rightArrow').click( function() { goSlide( 1 ) } )
 		$('.rightImage').click( function() { goSlide( 1 ) } )
-		$('.centerImage').click( function() { 
+		$('.centerImage').click( function() {
 			clearTimeout( idto )
-			location.href = $(this).data('url') 
+			location.href = $(this).data('url')
 		})
 		$('.promos').click( function(){ location.href = $(this).data('url') } )
-		
+
 		function sideBanner( block, i ) {
 			$(block).animate( {
 				"opacity" : "0"
@@ -198,43 +200,43 @@ _gaq.push(['_trackPageLoadTime']);
 				}, 350)
 			})
 		}
-		
+
 		function changeSrc( currentSl ) {
-			var delta = promos.length - currentSl - 3			
+			var delta = promos.length - currentSl - 3
 			if( delta >= 0 )
 				initis = promos.slice( currentSl, currentSl + 3 )
-			else 
+			else
 				initis = promos.slice( currentSl ).concat( promos.slice(0, -delta) )
-			//console.info(currentSl, delta);console.info(initis)			
+			//console.info(currentSl, delta);console.info(initis)
 		}
-		
+
 		function goSlide( dir ) {
 			if( sliding )
 				return false
-			sliding = true	
+			sliding = true
 			if( !dir )
 				var dir = 1
 			else // custom summon
 				clearTimeout( idto )
 			var shift   = '-=1000px',
 				inileft = '1032px'
-			
+
 			if( dir < 0 ) {
 				shift   = '+=1000px',
 				inileft = '-968px'
 			}
 			currentSl = (currentSl + dir) % promos.length
-			if( currentSl < 0 ) 
+			if( currentSl < 0 )
 				currentSl = promos.length - 1
 			changeSrc( currentSl )
-			
+
 			$('.centerImage').animate(
 				{
 					'left' : shift,
 					'opacity' : '0'
 				},
 				800,
-				function() {					
+				function() {
 					$('.centerImage').attr("src", initis[1].imgb ).data('url', initis[1].url)
 					$(this).css('left', inileft).animate({
 						'opacity' : '1',
@@ -244,9 +246,9 @@ _gaq.push(['_trackPageLoadTime']);
 					idto = setTimeout( function() { goSlide() }, initis[1].t ) // AUTOPLAY
 			})
 			sideBanner($('.leftImage'), 0)
-			sideBanner($('.rightImage'), 2)			
+			sideBanner($('.rightImage'), 2)
 		}
-		
+
 		/* Search */
 		$('.startse').bind ({
 			'blur': function() {
@@ -258,7 +260,7 @@ _gaq.push(['_trackPageLoadTime']);
 						this.value = ''
 			}
 		})
-		
+
 	})
 
 </script>
