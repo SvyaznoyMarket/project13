@@ -56,9 +56,13 @@ class Banner extends BaseBanner
 
       $unlink = array_diff(array_keys($existing), $new);
       $unlink = count($unlink) ? BannerItemTable::getInstance()->getIdsByCoreIds($unlink) : array();
-      if (count($unlink))
+      if ($this->id && count($unlink))
       {
-        $this->unlink('Item', $unlink);
+        $q = Doctrine_Query::create()
+           ->delete('BannerItem')
+           ->andWhereIn('id', $unlink)
+        ;
+        $deleted = $q->execute();
       }
     }
   }
