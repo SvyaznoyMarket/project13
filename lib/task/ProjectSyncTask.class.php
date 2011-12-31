@@ -336,7 +336,21 @@ EOF;
       $record = false;
     }
 
-    $this->actionLog($action, $record);
+    // если действие "создать", но запись с таким core_id уже существует
+    if (('create' == $action) && $record)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} #{$record->id} already exists. Force update...", null, 'INFO');
+    }
+    // если действие "обновить", но запись с таким core_id не существует
+    if (('update' == $action) && !$record)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exist. Force create...", null, 'INFO');
+    }
+    // если действие "удалить", но запись с таким core_id не существует
+    if (('delete' == $action) && !$record)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exist. Skip...", null, 'INFO');
+    }
 
     if (!$record)
     {
@@ -460,7 +474,21 @@ EOF;
     $sql = "SELECT * FROM `product_state` WHERE `core_id` = ?";
     $record = $this->conn->fetchRow($sql, array($entity['id'], ));
     
-    $this->actionLog($action, $record);
+    // если действие "создать", но запись с таким core_id уже существует
+    if (('create' == $action) && $record)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: ProductState #{$record['id']} already exists. Force update...", null, 'INFO');
+    }
+    // если действие "обновить", но запись с таким core_id не существует
+    if (('update' == $action) && !$record)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: ProductState doesn't exist. Force create...", null, 'INFO');
+    }
+    // если действие "удалить", но запись с таким core_id не существует
+    if (('delete' == $action) && !$record)
+    {
+      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: ProductState doesn't exist. Skip...", null, 'INFO');
+    }
     
     if ('delete' == $action)
     {
@@ -622,24 +650,5 @@ EOF;
   
   protected function postSaveProductTypeRecord(ProductType $record, array $entity)
   {
-  }
-  
-  protected function actionLog($action, $record)
-  {
-    // если действие "создать", но запись с таким core_id уже существует
-    if (('create' == $action) && $record)
-    {
-      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} #{$record->id} already exists. Force update...", null, 'INFO');
-    }
-    // если действие "обновить", но запись с таким core_id не существует
-    if (('update' == $action) && !$record)
-    {
-      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exist. Force create...", null, 'INFO');
-    }
-    // если действие "удалить", но запись с таким core_id не существует
-    if (('delete' == $action) && !$record)
-    {
-      $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: {$table->getComponentName()} doesn't exist. Skip...", null, 'INFO');
-    }
   }
 }
