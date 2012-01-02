@@ -113,9 +113,11 @@ _gaq.push(['_trackPageLoadTime']);
 		{ imgb: '/images/enter/bigpromo/img_16_big.jpg', imgs:'/images/enter/img_16_small.jpg', t:4000,
 		url: '/products/2060400006253', alt: ''},
 		{ imgb: '/images/enter/bigpromo/img_17_big.jpg', imgs:'/images/enter/img_17_small.jpg', t:4000,
-		url: '/products/2030000048397', alt: ''},
+		url: '/products/2030000048397', alt: ''}
+		<?php if (false): ?>
 		{ imgb: '/images/enter/bigpromo/img_18_big.jpg', imgs:'/images/enter/img_18_small.jpg', t:4000,
 		url: '/product/appliances/pribor-dlya-ukladki-volos-braun-satin-hair-7-2020301000408', alt: ''}
+		<?php endif ?>
 		]
 
 		/* Shit happens */
