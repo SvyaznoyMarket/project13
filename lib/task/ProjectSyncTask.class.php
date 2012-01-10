@@ -384,7 +384,7 @@ EOF;
     {
       foreach (array('ProductPhoto' => 1, 'ProductPhoto3D' => 2, 'ShopPhoto' => 8) as $model => $itemTypeId)
       {
-        if (Doctrine_Core::getTable($model)->getByCoreId($entity['id']))
+        if ($record = Doctrine_Core::getTable($model)->getByCoreId($entity['id']))
         {
           $entity['item_type_id'] = $itemTypeId;
           break;
@@ -392,55 +392,58 @@ EOF;
       }
     }
 
-    $record = false;
-    if (isset($entity['item_type_id']) && 'delete' != $action) switch ($entity['item_type_id'])
+    if (isset($entity['item_type_id']) && 'delete' != $action)
     {
-      case 1:
-        switch ($entity['type_id'])
-        {
-          case 1:
-            $table = ProductPhotoTable::getInstance();
-            $record = $table->getByCoreId($entity['id']);
-            if (!$record)
-            {
-              $record = $table->createRecordFromCore($entity);
-            }
+      $record = false;
+      switch ($entity['item_type_id'])
+      {
+        case 1:
+          switch ($entity['type_id'])
+          {
+            case 1:
+              $table = ProductPhotoTable::getInstance();
+              $record = $table->getByCoreId($entity['id']);
+              if (!$record)
+              {
+                $record = $table->createRecordFromCore($entity);
+              }
 
-            $record->importFromCore($entity);
-            //$record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
-            $record->view_show = 1;
-            break;
-          case 2:
-            $table = ProductPhoto3DTable::getInstance();
-            $record = $table->getByCoreId($entity['id']);
-            if (!$record)
-            {
-              $record = $table->createRecordFromCore($entity);
-            }
+              $record->importFromCore($entity);
+              //$record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
+              $record->view_show = 1;
+              break;
+            case 2:
+              $table = ProductPhoto3DTable::getInstance();
+              $record = $table->getByCoreId($entity['id']);
+              if (!$record)
+              {
+                $record = $table->createRecordFromCore($entity);
+              }
 
-            $record->importFromCore($entity);
-            //$record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
-            break;
-        }
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 6:
-        break;
-      case 8:
-        $table = ShopPhotoTable::getInstance();
-        $record = $table->getByCoreId($entity['id']);
-        if (!$record)
-        {
-          $record = $table->createRecordFromCore($entity);
-        }
+              $record->importFromCore($entity);
+              //$record->product_id = ProductTable::getInstance()->getIdByCoreId($entity['item_id']);
+              break;
+          }
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+        case 6:
+          break;
+        case 8:
+          $table = ShopPhotoTable::getInstance();
+          $record = $table->getByCoreId($entity['id']);
+          if (!$record)
+          {
+            $record = $table->createRecordFromCore($entity);
+          }
 
-        $record->importFromCore($entity);
-        break;
-      default:
-        break;
+          $record->importFromCore($entity);
+          break;
+        default:
+          break;
+      }
     }
 
     $this->processRecord($action, $record, $entity);
