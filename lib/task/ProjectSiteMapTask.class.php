@@ -16,7 +16,7 @@ class ProjectSiteMapTask extends sfBaseTask
    * Шаблон для генерации имён файлов
    * @var type
    */
-  private $_fileNameTemplate = 'web/xml/sitemap/sitemap_#NUM#.xml';
+  private $_fileNameTemplate = 'web/sitemap_#NUM#.xml';
   /**
    * Имя файла - индекса
    * @var type
@@ -82,14 +82,14 @@ class ProjectSiteMapTask extends sfBaseTask
       // add your own options here
     ));
 
-    $this->namespace        = 'Project';
-    $this->name             = 'SiteMap';
+    $this->namespace        = 'project';
+    $this->name             = 'sitemap';
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
 The [Project:SiteMap|INFO] task does things.
 Call it with:
 
-  [php symfony Project:SiteMap|INFO]
+  [php symfony project:sitemap|INFO]
 EOF;
   }
 
