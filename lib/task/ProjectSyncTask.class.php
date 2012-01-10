@@ -596,6 +596,8 @@ EOF;
       CacheEraser::getInstance()->erase(array("product-{$processed['relation']['product']['core_id']}-{$processed['relation']['region']['geoip_code']}", ));
     }
 
+    return true;
+
   }
 
   protected function updateRecord(array $mapping = array(), array $record = array(), array $data = array())
