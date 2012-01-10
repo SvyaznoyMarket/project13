@@ -231,6 +231,7 @@ Product:
     set_id:            { type: integer(20), notnull: false, default: null }
     tagline:           { type: string(255), notnull: false, default: null }
     preview:           { type: string, notnull: false, default: null, comment: 'Анонс' }
+    view:              { type: enum, length: 10, values: [ default, kit ], notnull: true, default: 'default' }
     view_show:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар по прямой ссылке?' }
     view_list:         { type: boolean, notnull: true, default: false, comment: 'Показывать товар в списке категорий?' }
     is_instock:        { type: boolean, notnull: true, default: false }
@@ -254,7 +255,6 @@ Product:
 #    Group:             { class: ProductGroup, foreignAlias: Product, local: group_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Line:              { class: ProductLine, foreignAlias: Product, local: line_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Model:             { class: Product, foreignAlias: SubProduct, local: model_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
-    Status:            { class: ProductStatus, foreignAlias: Product, local: status_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     ModelProperty:     { class: ProductProperty, foreignAlias: MainModelProduct, refClass: ProductModelPropertyRelation, local: product_id, foreign: product_property_id, type: many, foreignType: many }
     Part:              { class: Product, foreignAlias: Kit, refClass: ProductKitRelation, local: kit_id, foreign: part_id, type: many, foreignType: many }
 
@@ -359,7 +359,7 @@ ProductModelPropertyRelation:
   relations:
     Property:             { class: ProductProperty, foreignAlias: ProductModelRelation, local: product_property_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     MainProduct:          { class: Product, foreignAlias: ProductPropertyModelRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Product:              { class: Product, foreignAlias: MainProductPropertyModelRelation, local: product_id, foreign: model_id, type: one, foreignType: many, onDelete: CASCADE }
+    #Product:              { class: Product, foreignAlias: MainProductPropertyModelRelation, local: product_id, foreign: model_id, type: one, foreignType: many, onDelete: CASCADE }
 
 ProductRatingType:
   options:

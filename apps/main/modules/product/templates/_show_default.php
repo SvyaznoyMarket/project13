@@ -2,7 +2,7 @@
 #JSON data
 	$json = array (
 		'jsref' => $item['product']->token,
-		'jstitle' => $item['product']->name,
+		'jstitle' => htmlspecialchars($item['product']->name, ENT_QUOTES, 'UTF-8'),
 		'jsprice' => $item['price'],
 		'jsimg' => $product->getMainPhotoUrl(3)
 	)
@@ -247,7 +247,7 @@ foreach ($p3d as $p3d_obj)
     <div class="clear"></div>
 <?php endif ?>
 
-<?php if ($item['product']->isKit()): ?>
+<?php if ('kit' == $item['product']->view): ?>
     <?php //include_component('product', 'kit', array('product' => $item['product'])) ?>
 <?php else: ?>
 <!-- Description -->
@@ -272,9 +272,8 @@ foreach ($p3d as $p3d_obj)
 
 <?php endif ?>
 <!-- /Description -->
-<?php endif ?>
-
     <?php include_component('product', 'tags', array('product' => $product)) ?>
+<?php endif ?>
 
 <!-- Media -->
 <div class="popup mediablock" id="bigpopup"><!-- IVN block #bigpopup is media gallery popup  -->

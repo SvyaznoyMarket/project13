@@ -59,7 +59,9 @@ EOF;
 
     for ($step = 0; $step < $stepCount; $step++)
     {
-      $this->logSection($task->type, "#{$task->id} packet={$task->core_packet_id} ...");
+      $this->logSection($task->type, "#{$task->id} packet={$task->core_packet_id} priority={$task->priority} ...");
+
+      $priority = $task->priority;
 
       // приоритет реального времени
       $task->priority = 0;
@@ -71,20 +73,27 @@ EOF;
         'connection'  => $options['connection'],
       ));
 
+      $task->setDefaultPriority();
+
       if ('success' == $task->status)
       {
         $this->logSection($task->type, "#{$task->id} ... ok");
       }
       else if ('fail' == $task->status)
       {
+        // если задача высокого приоритета, то даём ей еще один шанс
+        if ($task->priority != $priority)
+        {
+          $task->status = 'run';
+        }
+
         $this->logSection($task->type, "#{$task->id} ... fail", null, 'ERROR');
       }
 
-      $task->setDefaultPriority();
       $task->save();
     }
 
-    if ($task->attempt > 100)
+    if ($task->attempt > 200)
     {
       $task->status = 'fail';
       $task->save();
@@ -97,7 +106,7 @@ EOF;
 
   protected function getRunningTask()
   {
-    return TaskTable::getInstance()->getRunning(array('with_minPriority' => true, 'check_zeroPriority' => true));
+    return TaskTable::getInstance()->getRunning(array('with_minPriority' => false, 'check_zeroPriority' => true));
   }
 
   public function logSection($section, $message, $size = null, $style = 'INFO')

@@ -15,14 +15,32 @@ class ProductState extends BaseProductState
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
-
+    
     //есть на складе, если есть хоть где-нибудь
     $this->is_instock = $data['is_shop'] || $data['is_store'] || $data['is_supplier'];
 
     //карточка товара доступна всегда по прямой ссылке
-    $this->view_show = 1;
+    $this->view_show = $data['status_id'] >= 1;
 
     //в списке товара показывать только если есть картинка и цена
-    $this->view_list = $data['is_image'] && $data['is_price'] && $this->is_instock;
+    //$this->view_list = $data['is_image'] && $data['is_price'] && $this->is_instock;
+    $this->view_list = ($data['status_id'] >= 2) && $data['is_image'] && $data['is_price'] && $this->is_instock;
+
+    //$defaultRegion = RegionTable::getInstance()->getDefault();
+    // если регион по умолчанию
+    //if ($defaultRegion->id == $this->region_id)
+    $region = RegionTable::getInstance()->find($this->region_id);
+    if ($region->is_default)
+    {
+      $product = ProductTable::getInstance()->find($this->product_id);
+      if ($product)
+      {
+        foreach (array('view_show', 'view_list', 'status_id', 'is_instock') as $v)
+        {
+          $product->set($v, $this->get($v));
+        }
+        $product->save();
+      }
+    }
   }
 }

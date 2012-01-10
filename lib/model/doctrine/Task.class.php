@@ -21,7 +21,6 @@ class Task extends BaseTask
       $this->save();
     }
   }
-  */
 
   public function preSave($event)
   {
@@ -32,6 +31,7 @@ class Task extends BaseTask
       $record->setDefaultPriority();
     }
   }
+  */
 
   public function toParams()
   {
@@ -84,5 +84,19 @@ class Task extends BaseTask
   public function setDefaultPriority()
   {
     $this->priority = $this->getTable()->getPriorityByType($this->type);
+  }
+
+  public function setCorePriority($value)
+  {
+    $maxCorePriority = TaskTable::coreMaxPriority;
+    $minPriority = 2;
+
+    $priority =
+      $value <= $maxCorePriority
+      ? $maxCorePriority - $value + $minPriority
+      : $minPriority
+    ;
+
+    $this->priority = $priority > 0 ? $priority : $minPriority;
   }
 }

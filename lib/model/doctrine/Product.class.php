@@ -53,7 +53,17 @@ class Product extends BaseProduct
     $this->token = array_pop($v);
     $this->token_prefix = count($v) ? array_shift($v) : null;
 
-    // check if creator doesn't exists
+    $this->view = 'default';
+    if (isset($data['view_id'])) foreach (array(1 => 'default', 2 => 'kit') as $k => $v)
+    {
+      if ($data['view_id'] == $k)
+      {
+        $this->view = $v;
+        break;
+      }
+    }
+
+    // check if creator doesn't exist
     if (!empty($data['brand_id']) && empty($this->creator_id))
     {
       if (!$response = Core::getInstance()->getCreator($data['brand_id']))
@@ -237,8 +247,10 @@ class Product extends BaseProduct
       }
     }
 
+    //Отображение товара определяется только в product_state
+
     //Временные правила для отображения товара!!!
-    if (empty($data['media_image']))
+    /*if (empty($data['media_image']))
     {
       $this->view_list = 0;
       $this->view_show = 1;
@@ -255,7 +267,7 @@ class Product extends BaseProduct
         $this->view_list = 0;
       }
       $this->view_show = 1;
-    }
+    }*/
 
     //Постоянные правила для отображения товара!!!
     /*if (!empty($data['status_id']))

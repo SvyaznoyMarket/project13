@@ -54,16 +54,16 @@ class productActions extends myActions
       if (!$productObj || !$productObj instanceof Doctrine_Record) {
         continue;
       }
-      if ($productObj->isKit()) {
+      /*if ($productObj->isKit()) {
         $setItems = ProductKitRelationTable::getInstance()->findByKitId($productObj->id);
         $setCoreIds = array();
         foreach ($setItems as $setItem) {
           $setCoreIds[] = $setItem->Part->core_id;
         }
         $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'), $setCoreIds);
-      } else {
+      } else {*/
         $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
-      }
+      //}
       $result = array('success' => true, 'deliveries' => array());
       if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
         $deliveries = array(array(
@@ -238,12 +238,13 @@ class productActions extends myActions
     //myDebug::dump($q->getParams(), 1);
     //myDebug::dump($q->getSqlQuery(), 1);
     $matches = $q->fetchArray();
-    //myDebug::dump($matches[0]);
+
+    //если не нашли новый товар, то остаемся в этом же
+    $new_product = !empty($matches) ? ProductTable::getInstance()->getById($matches[0]['id'], array('with_model' => true, )) : $this->product;
     //myDebug::dump($q->fetchArray(), true);
 
 
     //throw new sfException('We don\'t need a redirection');
-    $new_product = ProductTable::getInstance()->getById($matches[0]['id'], array('with_model' => true, ));
     $this->redirect(url_for('productCard', $new_product));
     //myDebug::dump($this->product);
     //$this->forward('productCard', 'show');

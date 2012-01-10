@@ -12,8 +12,17 @@
 <?php include_component('product', 'show', array('product' => $product)) ?>
 <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
 
-<?php if ($product->isKit()): ?>
+<?php if ('kit' == $product->view): ?>
   <?php include_partial('product/kit', $sf_data) ?>
+  <div class="clear pb25"></div>
+
+  <h2 class="bold"><?php echo $product->name ?> - Характеристики</h2>
+  <div class="line pb25"></div>
+  <div class="descriptionlist">
+    <?php include_component('product', 'property_grouped', array('product' => $product)) ?>
+  </div>
+
+  <?php include_component('product', 'tags', array('product' => $product)) ?>
 <?php endif ?>
 <?php /* include_component('productComment', 'list', array(
   'product' => $product,

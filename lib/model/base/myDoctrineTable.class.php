@@ -131,13 +131,15 @@ class myDoctrineTable extends Doctrine_Table
 
   public function getIdBy($column, $value)
   {
-    $q = $this->createQuery()
+    /*$q = $this->createQuery()
       ->select('id')
       ->where($column.' = ?', $value)
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
-    return $q->fetchOne();
+    return $q->fetchOne();*/
+    $sql = 'SELECT `id` FROM `'.$this->getTableName().'` WHERE `'.$column.'` = ?';
+    return $this->getConnection()->fetchOne($sql, array($value,));
   }
 
   public function getByToken($token, array $params = array())

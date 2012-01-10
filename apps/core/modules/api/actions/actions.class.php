@@ -10,21 +10,21 @@
  */
 class apiActions extends myActions
 {
-   
-    
+
+
   /**
    * Сбрасывает кеш списка сущностей.
    * Принимает массив. Для каждой сущности передаётся:
    *  - type = [product, product_category]
    *  - id - id сущности
-   * 
+   *
    * @param sfWebRequest $request
    */
   public function executeCacheClean(sfWebRequest $request)
   {
       #echo 'clean cash';
       #exit();
-      
+
     try {
       $response = trim(file_get_contents('php://input'));
 
@@ -47,32 +47,32 @@ class apiActions extends myActions
               }
               #myDebug::dump($product);
               //очищаем кеш сущности
-              CacheEraser::getInstance()->erase($product->getTable()->getCacheEraserKeys($product, 'show'));          
-          } 
+              CacheEraser::getInstance()->erase($product->getTable()->getCacheEraserKeys($product, 'show'));
+          }
       }
-      
+
       return $this->renderJson(array(
         'confirmed' => true,
       ));
-      
+
     }
     catch (Exception $e) {
       $logger->err($e->getCode().' - '.$e->getMessage());
       return $this->renderJson(array(
         'confirmed' => false,
-      ));          
-    }      
-  }    
-    
-  
+      ));
+    }
+  }
+
+
   /**
    * Возвращает статус списка пакетов синхранизации.
    * Принимает массив id пакетов.
    * Возвращает массив. Элемент массива имеет вид:
    *    id пакета => [0 | 1]
-   * 
+   *
    * @param sfWebRequest $request
-   * @return int 
+   * @return int
    */
   public function executePacketStatus(sfWebRequest $request)
   {
@@ -83,14 +83,14 @@ class apiActions extends myActions
       $logger->log('Response: '.$response);
 
       $data = json_decode($response, true);
-      
+
       #$data['list'] = array(1881,1882,1883);
       #$data['id'] = 85318;
       if (!isset($data['list']) || !count($data['list'])) {
-          $logger->err('Ошибка. В запросе статуса пакетов не передан список id пакетов.');          
+          $logger->err('Ошибка. В запросе статуса пакетов не передан список id пакетов.');
           return $this->renderJson(array(
             'confirmed' => false,
-          ));          
+          ));
       }
       #print_r($data);
       $table = TaskTable::getInstance();
@@ -110,23 +110,23 @@ class apiActions extends myActions
                   $result[$packetInfo['core_packet_id']] = 0;
               }
           } else {
-              $result[$packetInfo['core_packet_id']] = 0;          
+              $result[$packetInfo['core_packet_id']] = 0;
           }
       }
       #print_r($result);
       return $this->renderJson(array(
         'confirmed' => true,
-        'status' => $result  
+        'status' => $result
       ));
-      
+
     }
     catch (Exception $e) {
       $logger->err($e->getCode().' - '.$e->getMessage());
       return $this->renderJson(array(
         'confirmed' => false,
-      ));          
+      ));
     }
-    
+
   }
  /**
   * Executes index action
@@ -134,7 +134,7 @@ class apiActions extends myActions
   * @param sfRequest $request A request object
   */
   public function executeIndex(sfWebRequest $request)
-  {              
+  {
     try {
       $response = trim(file_get_contents('php://input'));
 
@@ -161,36 +161,60 @@ class apiActions extends myActions
         }
         else if (!empty($data['action']))
         {
-          $packetId = !empty($data['packet_id']) ? $data['packet_id']: false;
-          if ($packetId)
+          //$packetId = !empty($data['packet_id']) ? $data['packet_id']: false;
+          $packets = !empty($data['packet']) && is_array($data['packet']) ? $data['packet'] : false;
+          //if ($packetId)
+          if ($packets)
           {
-            $range = array($packetId);
-
+            // находит максимальный номер пакета в бд
             $maxPacketId = $table->getMaxCorePacketId($taskType);
-            if ($packetId > $maxPacketId)
+
+            // находит минимальный номер пакета в ответе core
+            $minPacketId = isset($packets[0]['id']) ? $packets[0]['id'] : 0;
+
+            // если обнаружены пробылы в очередности пакетов
+            if (($minPacketId - $maxPacketId) > 1)
             {
-              $range = range($maxPacketId + 1, $packetId);
+              $maxPacketId++;
+              foreach (range($minPacketId, $maxPacketId) as $v)
+              {
+                $logger->log("Packet's autogeneration from {$minPacketId} to {$maxPacketId}", sfLogger::WARNING);
+                $packets[] = array(
+                  'id'       => $v,
+                  'priority' => 1, // общая очередь
+                  'type'     => '[]',
+                );
+              }
             }
 
-            foreach ($range as $i)
+            foreach ($packets as $packet)
             {
               $task = new Task();
               $task->fromArray(array(
                 'type'           => $taskType,
-                'core_packet_id' => $i,
+                'core_packet_id' => $packet['id'],
               ));
-              $data['packet_id'] = $i;
+              $task->setCorePriority($packet['priority']); // sets priority
+
+              $task->start_priority = $task->priority;
               $task->setContentData($data);
-              $task->trySave();
+
+              if (!$task->trySave())
+              {
+                $logger->log("Can't create task #packet={$packet['id']}", sfLogger::CRIT);
+              }
             }
           }
           else {
             $task = new Task();
             $task->fromArray(array(
-              'type'           => $taskType,
+              'type' => $taskType,
             ));
             $task->setContentData($data);
-            $task->trySave();
+            if (!$task->trySave())
+            {
+              $logger->log("Can't create task #packet={$packet['id']}", sfLogger::CRIT);
+            }
           }
         }
       }

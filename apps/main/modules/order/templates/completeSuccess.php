@@ -6,7 +6,13 @@
 <?php slot('title', 'Ваш заказ принят, спасибо за покупку!') ?>
 <?php //myDebug::dump($order) ?>
 <!-- Basket -->
-<div class="fl width650 font16 pb20">
+
+<?php if (false): ?>
+		<div class="mSR fr">
+			<a href="<?php echo url_for('default_show', array('page' => 'new_year_information_letter_from_rumyancev')) ?>">Обращение<br> генерального<br> директора</a>
+		</div>
+<?php endif ?>
+<div class="fl width874 font16 pb20">
   <strong>Номер вашего заказа: <?php echo $order->number ?></strong><br /><br />
   Дата заказа: <?php echo format_date($order->created_at, 'D') ?><br />
   Сумма заказа: <?php include_partial('default/sum', array('sum' => $order->sum,)) ?> <span class="rubl">p</span><br /><br />
