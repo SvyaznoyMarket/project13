@@ -505,17 +505,17 @@ EOF;
 
       if ($record['is_instock'] != ($entity['is_shop'] || $entity['is_store'] || $entity['is_supplier']))
       {
-        $processed['to_update']['is_instock'] = $entity['is_shop'] || $entity['is_store'] || $entity['is_supplier'];
+        $processed['to_update']['is_instock'] = (int)($entity['is_shop'] || $entity['is_store'] || $entity['is_supplier']);
       }
       //карточка товара доступна всегда по прямой ссылке
       if ((boolean)$record['view_show'] != $entity['status_id'] >= 1)
       {
-        $processed['to_update']['view_show'] = $entity['status_id'] >= 1;
+        $processed['to_update']['view_show'] = (int)($entity['status_id'] >= 1);
       }
       //в списке товара показывать только если есть картинка и цена
       if ((boolean)$record['view_list'] != (($entity['status_id'] >= 2) && $entity['is_image'] && $entity['is_price'] && ($entity['is_shop'] || $entity['is_store'] || $entity['is_supplier'])))
       {
-        $processed['to_update']['view_list'] = ($entity['status_id'] >= 2) && $entity['is_image'] && $entity['is_price'] && ($entity['is_shop'] || $entity['is_store'] || $entity['is_supplier']);
+        $processed['to_update']['view_list'] = (int)(($entity['status_id'] >= 2) && $entity['is_image'] && $entity['is_price'] && ($entity['is_shop'] || $entity['is_store'] || $entity['is_supplier']));
       }
 
       if (count($processed['to_update']))
@@ -553,8 +553,8 @@ EOF;
       $processed = $this->updateRecord($mapping, array(), $entity);
 
       $processed['to_update']['is_instock'] = $entity['is_shop'] || $entity['is_store'] || $entity['is_supplier'];
-      $processed['to_update']['view_show'] = $entity['status_id'] >= 1;
-      $processed['to_update']['view_list'] = ($entity['status_id'] >= 2) && $entity['is_image'] && $entity['is_price'] && ($entity['is_shop'] || $entity['is_store'] || $entity['is_supplier']);
+      $processed['to_update']['view_show'] = (int)($entity['status_id'] >= 1);
+      $processed['to_update']['view_list'] = (int)(($entity['status_id'] >= 2) && $entity['is_image'] && $entity['is_price'] && ($entity['is_shop'] || $entity['is_store'] || $entity['is_supplier']));
 
       $fields = array();
       foreach ($processed['to_update'] as $field => $value)
