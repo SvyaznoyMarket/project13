@@ -43,11 +43,11 @@ EOF;
   {
     $start_time = microtime(true); //начало работы задачи
     sfConfig::set('sf_logging_enabled', $options['log']);
-    
+
     // initialize the database connection
     $databaseManager = new sfDatabaseManager($this->configuration);
     $this->connection = $databaseManager->getDatabase($options['connection'])->getConnection();
-    
+
     $this->conn = Doctrine_Manager::connection();
 
     // add your code here
@@ -189,9 +189,9 @@ EOF;
     }
 
     $this->task->save();
-    
+
     //$end_time = microtime(true);
-    
+
     $this->logSection('timer', 'total execution time: '.(microtime(true) - $start_time).' sec');
   }
 
@@ -393,7 +393,7 @@ EOF;
     }
 
     $record = false;
-    if (isset($entity['item_type_id'])) switch ($entity['item_type_id'])
+    if (isset($entity['item_type_id']) && 'delete' != $action) switch ($entity['item_type_id'])
     {
       case 1:
         switch ($entity['type_id'])
@@ -468,12 +468,12 @@ EOF;
       'product_id'  => array('table' => 'product', 'field' => 'product_id', ),
     );
     $entity = $packet['data'];
-    
+
     $this->log('ProductState: '.$action.' '.$packet['type'].' ##'.$entity['id']);
-    
+
     $sql = "SELECT * FROM `product_state` WHERE `core_id` = ?";
     $record = $this->conn->fetchRow($sql, array($entity['id'], ));
-    
+
     // если действие "создать", но запись с таким core_id уже существует
     if (('create' == $action) && $record)
     {
@@ -489,17 +489,17 @@ EOF;
     {
       $this->logSection($packet['type'], "{$action} {$packet['type']} ##{$entity['id']}: ProductState doesn't exist. Skip...", null, 'INFO');
     }
-    
+
     if ('delete' == $action)
     {
       $sql = "DELETE * FROM `product_state` WHERE `id` = ?";
       $this->conn->execute($sql, array($entity['id'], ));
     }
-    
+
     if ($record && ('delete' != $action)) //если есть такая запись, то будем ее изменять
     {
       $processed = $this->updateRecord($mapping, $record, $entity);
-      
+
       if ($record['is_instock'] != ($entity['is_shop'] || $entity['is_store'] || $entity['is_supplier']))
       {
         $processed['to_update']['is_instock'] = $entity['is_shop'] || $entity['is_store'] || $entity['is_supplier'];
@@ -514,7 +514,7 @@ EOF;
       {
         $processed['to_update']['view_list'] = ($entity['status_id'] >= 2) && $entity['is_image'] && $entity['is_price'] && ($entity['is_shop'] || $entity['is_store'] || $entity['is_supplier']);
       }
-      
+
       if (count($processed['to_update']))
       {
         $fields = array();
@@ -522,10 +522,10 @@ EOF;
         {
           $fields[] = '`'.$field.'` = '.(is_null($value) ? 'NULL' : $value);
         }
-      
+
         $sql = 'UPDATE `product_state` SET '.implode(', ', $fields).' WHERE `id` = ?';
         $this->conn->execute($sql, array($record['id'], ));
-      
+
         //тут очищаем кеш
       }
       if (isset($processed['relation']['region']) && $processed['relation']['region']['is_default'])
@@ -539,7 +539,7 @@ EOF;
             $fields[] = '`'.$field.'` = '.(is_null($processed['to_update'][$field]) ? 'NULL' : $processed['to_update'][$field]);
           }
           $fields[] = '`updated_at` = NOW()';
-        
+
           $sql = 'UPDATE `product` SET '.implode(', ', $fields).' WHERE `id` = ?';
           $this->conn->execute($sql, array($processed['relation']['product']['id'], ));
         }
@@ -558,12 +558,12 @@ EOF;
       {
         $fields['`'.$field.'`'] = is_null($value) ? 'NULL' : $value;
       }
-      
+
       $record = $processed['to_update'];
       $record['id'] = 'new';
       $sql = 'INSERT INTO `product_state` ('.implode(', ', array_keys($fields)).') VALUES ('.implode(', ', $fields).')';
       $this->conn->execute($sql);
-      
+
       if (isset($processed['relation']['region']) && $processed['relation']['region']['is_default'])
       {
         $products_fields_to_update = array_intersect(array_keys($processed['to_update']), array('view_list', 'view_show', 'status_id', 'is_instock', ));
@@ -575,36 +575,36 @@ EOF;
             $fields[] = '`'.$field.'` = '.(is_null($processed['to_update'][$field]) ? 'NULL' : $processed['to_update'][$field]);
           }
           $fields[] = '`updated_at` = NOW()';
-        
+
           $sql = 'UPDATE `product` SET '.implode(', ', $fields).' WHERE `id` = ?';
           $this->conn->execute($sql, array($processed['relation']['product']['id'], ));
         }
       }
-      
+
     }
-    
+
     //если изменились параметры отображения, или запись была удалена, то надо сбросить и кэш
     if ('delete' == $action || (count(array_intersect(array_keys($processed['to_update']), array('view_list', 'view_show', )))))
     {
       //очищаю redis кэш для товара
       myCache::getInstance()->removeByTag(ProductStateTable::getInstance()->getCacheTags($record));
-      
+
       //очищаю nginx кэш
       CacheEraser::getInstance()->erase(array("product-{$processed['relation']['product']['core_id']}-{$processed['relation']['region']['geoip_code']}", ));
     }
-    
+
   }
-  
+
   protected function updateRecord(array $mapping = array(), array $record = array(), array $data = array())
   {
     if (empty($mapping) || empty($data))
     {
       return false;
     }
-    
+
     $to_update = array();
     $relation = array();
-    
+
     foreach ($mapping as $k => $v)
     {
       if (is_array($v)) //если это свзяь
@@ -618,36 +618,36 @@ EOF;
         {
           $to_update[$v['field']] = $relationData['id'];
         }
-        
+
         $relation[$v['table']] = $relationData;
       }
       else //если простое сопоставление полей
       {
-        if (!isset($record[$v]) || $record[$v] != $data[$k])  
+        if (!isset($record[$v]) || $record[$v] != $data[$k])
         {
           $to_update[$v] = $data[$k];
         }
       }
     }
-    
-    //возвращаю массив, содержащий поля для обновления и 
+
+    //возвращаю массив, содержащий поля для обновления и
     return array(
       'to_update' => $to_update,
       'relation'  => $relation,
     );
   }
-  
+
   protected function getRelationData($table = '', $core_id = null)
   {
     if (empty($table) || empty($core_id))
     {
       return false;
     }
-    
+
     $sql = 'SELECT * FROM `'.$table.'` WHERE `core_id` =?';
     return $this->conn->fetchRow($sql, array($core_id, ));
   }
-  
+
   protected function postSaveProductTypeRecord(ProductType $record, array $entity)
   {
   }
