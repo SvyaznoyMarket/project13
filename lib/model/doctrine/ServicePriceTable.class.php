@@ -19,12 +19,13 @@ class ServicePriceTable extends myDoctrineTable
     
     public function getCoreMapping()
     {
-        return array(
-          'id' => 'core_id',
-          'price_list_id' => 'service_price_list_id',
-          'service_id'  => 'service_id',
-          'price' => 'price',
-        );
+      return array(
+        'id'            => 'core_id',
+        'price'         => 'price',
+
+        'service_id'    => array('rel' => 'Service'),
+        'price_list_id' => array('rel' => 'PriceList'),
+      );
     }
   
 }
