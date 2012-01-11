@@ -618,9 +618,11 @@ class productCatalogActions extends myActions
     $this->forward404If($offset < 0, 'Неверный номер страницы');
 
     $q->offset($offset)->limit($limit);
-    $productIds = ProductTable::getInstance()->getIdsByQuery($q);
+    //$productIds = ProductTable::getInstance()->getIdsByQuery($q);
 
-    $pager = new FilledPager($productIds, $q->countTotal(), $limit);
+    //$pager = new FilledPager($productIds, $q->countTotal(), $limit);
+    $pager = new myDoctrinePager('Product', $limit);
+    $pager->setQuery($q);
     $pager->setPage($page);
     $pager->init();
     //$this->forward404If($page > $pager->getLastPage(), 'Номер страницы превышает максимальный для списка');

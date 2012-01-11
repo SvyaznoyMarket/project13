@@ -70,40 +70,44 @@ class BannerTable extends myDoctrineTable
     }
 
     $this->setQueryParameters($q, $params);
-    $q->addWhere('banner.id = ?', $id);
+    $q->whereId($id);
 
     if ($params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     }
-    $record = $q->fetchOne();
-    if (!$record)
-    {
-      return $record;
-    }
 
-    if ($params['with_items'])
+    $list = $q->execute();
+    foreach ($list as $i => $record)
     {
-      foreach ($record['Item'] as $i => $bannerItem)
+      if ($params['with_items'])
       {
-        $bannerItem['Object'] = null;
-        if ('product' == $bannerItem['type'])
+        foreach ($record['Item'] as $i => $bannerItem)
         {
-          $product = ProductTable::getInstance()->getById($bannerItem['object_id'], array('hydrate_array' => true, 'with_model' => true));
-          if ($product && $product['view_list'])
+          $bannerItem['Object'] = null;
+          if ('product' == $bannerItem['type'])
           {
-            $bannerItem['Object'] = $product;
+            $product = ProductTable::getInstance()->getById($bannerItem['object_id'], array('hydrate_array' => true, 'with_model' => true));
+            if ($product && $product['view_list'])
+            {
+              $bannerItem['Object'] = $product;
+            }
+          }
+
+          if (is_array($bannerItem))
+          {
+            $record['Item'][$i] = $bannerItem;
           }
         }
+      }
 
-        if (is_array($bannerItem))
-        {
-          $record['Item'][$i] = $bannerItem;
-        }
+      if (is_array($record))
+      {
+        $list[$i] = $record;
       }
     }
 
-    return $record;
+    return $this->getResult($list, is_scalar($id));
   }
 
   public function getList(array $params = array())

@@ -71,6 +71,25 @@ class myDoctrineQuery extends Doctrine_Query
     return (int) $count;
   }
 
+  public function whereId($id)
+  {
+    if (is_array($id) && (1 === count($id)))
+    {
+      $id = array_shift($id);
+    }
+
+    if (is_array($id))
+    {
+      // сортировка по порядку значений в массиве $id
+      $this->orderBy('FIELD(id, '.implode(',', $id).')');
+
+      return $this->whereIn($this->getRootAlias().'.id', $id);
+    }
+    else {
+      return $this->where($this->getRootAlias().'.id = ?', $id);
+    }
+  }
+
   public function countTotal()
   {
     $q = clone $this;

@@ -51,24 +51,23 @@ class ProductPropertyTable extends myDoctrineTable
 
     $this->setQueryParameters($q);
 
-    $q->addWhere('productProperty.id = ?', $id);
+    $q->whereId($id);
 
     if ($params['with_options'])
     {
       $q->leftJoin('productProperty.Option productPropertyOption')
-      ->addOrderBy('productPropertyOption.position')
-    ;
+        ->addOrderBy('productPropertyOption.position')
+      ;
     }
 
-    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
     if ($params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     }
 
-    $record = $q->fetchOne();
+    $list = $q->execute();
 
-    return $record;
+    return $this->getResult($list, is_scalar($id));
   }
 
 /**

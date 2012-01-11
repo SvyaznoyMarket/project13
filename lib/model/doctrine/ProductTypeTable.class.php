@@ -76,59 +76,63 @@ class ProductTypeTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    $q->addWhere('productType.id = ?', $id);
-    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    $q->whereId($id);
+
     if ($params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     }
 
-    $record = $q->fetchOne();
-    if (!$record)
+    $list = $q->execute();
+    foreach ($list as $i => $record)
     {
-      return $record;
-    }
-
-    if ($params['view'])
-    {
-      $groupedPropertyArray = array();
-      foreach ($record['PropertyRelation'] as $i => $propertyRelation)
+      if ($params['view'])
       {
-        $record['PropertyRelation'][$i]['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id'], array('hydrate_array' => $params['hydrate_array']));
+        $groupedPropertyArray = array();
+        foreach ($record['PropertyRelation'] as $i => $propertyRelation)
+        {
+          $record['PropertyRelation'][$i]['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id'], array('hydrate_array' => $params['hydrate_array']));
+
+          if ($params['group_property'])
+          {
+            if (!isset($groupedPropertyArray[$propertyRelation['group_id']]))
+            {
+              $groupedPropertyArray[$propertyRelation['group_id']] = ProductPropertyTable::getInstance()->createList();
+            }
+            $groupedPropertyArray[$propertyRelation['group_id']][] = $propertyRelation['Property'];
+          }
+
+          if ($params['hydrate_array'])
+          {
+            $record['Property'][$i] = &$record['PropertyRelation'][$i]['Property'];
+          }
+        }
 
         if ($params['group_property'])
         {
-          if (!isset($groupedPropertyArray[$propertyRelation['group_id']]))
+          foreach ($record['PropertyGroup'] as $propertyGroup)
           {
-            $groupedPropertyArray[$propertyRelation['group_id']] = ProductPropertyTable::getInstance()->createList();
+            // TODO: Сделать поприличнее
+            //if (isset($groupedPropertyArray[$propertyGroup->id])) {
+            if (array_key_exists($propertyGroup['id'], $groupedPropertyArray))
+            {
+              $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup['id']];
+            }
+            else
+            {
+              //sfContext::getInstance()->getLogger()->err('{'.get_class($this).'} Can\'t add ProductProperty to ProductPropertyGroup');
+            }
           }
-          $groupedPropertyArray[$propertyRelation['group_id']][] = $propertyRelation['Property'];
-        }
-
-        if ($params['hydrate_array'])
-        {
-          $record['Property'][$i] = &$record['PropertyRelation'][$i]['Property'];
         }
       }
 
-      if ($params['group_property'])
+      if (is_array($record))
       {
-        foreach ($record['PropertyGroup'] as $propertyGroup)
-        {
-          // TODO: Сделать поприличнее
-          //if (isset($groupedPropertyArray[$propertyGroup->id])) {
-          if (array_key_exists($propertyGroup['id'], $groupedPropertyArray)) {
-            $propertyGroup['Property'] = $groupedPropertyArray[$propertyGroup['id']];
-          }
-          else
-          {
-            sfContext::getInstance()->getLogger()->err('{'.get_class($this).'} Can\'t add ProductProperty to ProductPropertyGroup');
-          }
-        }
+        $list[$i] = $record;
       }
     }
 
-    return $record;
+    return $this->getResult($list, is_scalar($id));
   }
 
   public function getListByTag(Tag $tag, array $params = array())

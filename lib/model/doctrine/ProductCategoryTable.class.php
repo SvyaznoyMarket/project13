@@ -88,22 +88,23 @@ class ProductCategoryTable extends myDoctrineTable
 
     $this->setQueryParameters($q);
 
-    $q->addWhere('productCategory.id = ?', $id);
+    $q->whereId($id);
 
-    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
-
-    $record = $q->fetchOne();
-    if (!$record)
+    $list = $q->execute();
+    foreach ($list as $i => $record)
     {
-      return $record;
+      if ($params['with_filters'] && $record['filter_group_id'])
+      {
+        $record['FilterGroup'] = ProductFilterGroupTable::getInstance()->getById($record['filter_group_id']);
+      }
+
+      if (is_array($record))
+      {
+        $list[$i] = $record;
+      }
     }
 
-    if ($params['with_filters'] && $record['filter_group_id'])
-    {
-      $record['FilterGroup'] = ProductFilterGroupTable::getInstance()->getById($record['filter_group_id']);
-    }
-
-    return $record;
+    return $this->getResult($list, is_scalar($id));
   }
 
   public function getList(array $params = array())
@@ -212,6 +213,7 @@ class ProductCategoryTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
 
     $ids = $this->getDescendatIds($category, array('depth' => 1));
+
     return $this->createListByIds($ids, $params);
   }
 

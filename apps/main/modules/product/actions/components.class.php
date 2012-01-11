@@ -201,7 +201,9 @@ class productComponents extends myComponents
       $this->view = 'compact';
     }
 
-    $this->setVar('list', $this->pager->getResults(), true);
+    $list = $this->pager->getResults();
+
+    $this->setVar('list', $list, true);
   }
 
   /**

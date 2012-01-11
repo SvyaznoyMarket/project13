@@ -28,7 +28,7 @@ class ProductCommentTable extends myDoctrineTable
       'content'    => 'content',
       //'helpful'   => 'helpful',
       //'unhelpful' => 'unhelpful',
-      
+
       'product_id' => array('rel' => 'Product'),
       'user_id'    => array('rel' => 'User'),
     );
@@ -52,7 +52,7 @@ class ProductCommentTable extends myDoctrineTable
 
     return $q;
   }
-  
+
   public function getCountByProduct(Product $product, array $params = array())
   {
 	  $q = $this->createBaseQuery($params);
@@ -66,7 +66,7 @@ class ProductCommentTable extends myDoctrineTable
    *
    * @param Product $product
    * @param array $params
-   * @return myDoctrinePager 
+   * @return myDoctrinePager
    */
   public function getListByProduct(Product $product, array $params = array())
   {
@@ -81,34 +81,35 @@ class ProductCommentTable extends myDoctrineTable
     ;
 
     $this->setQueryParameters($q, $params);
-	
-	if (isset($params['page'])) {
-		switch ($params['sort']) {
-			case 'rating_asc':
-				$q->orderBy('productComment.rating');
-				break;
-			case 'rating_desc':
-				$q->orderBy('productComment.rating DESC');
-				break;
-			case 'created_desc':
-				$q->orderBy('productComment.created_at DESC');
-				break;
-			case 'created_asc':
-			default:
-				$q->orderBy('productComment.created_at');
-				break;
-		}
-		$pager = new myDoctrinePager('ProductComment', 2);
-		$pager->setQuery($q);
-		$pager->setPage($params['page']);
-		$pager->setMaxPerPage(isset($params['per_page']) ? $params['per_page'] : 5);
-		$pager->init();
-		return $pager;
-	} else {
-		$q->orderBy('productComment.created_at');
-		$ids = $this->getIdsByQuery($q);
-		return $this->createListByIds($ids, $params);
-	}
+
+    if (isset($params['page'])) {
+      switch ($params['sort']) {
+        case 'rating_asc':
+          $q->orderBy('productComment.rating');
+          break;
+        case 'rating_desc':
+          $q->orderBy('productComment.rating DESC');
+          break;
+        case 'created_desc':
+          $q->orderBy('productComment.created_at DESC');
+          break;
+        case 'created_asc':
+        default:
+          $q->orderBy('productComment.created_at');
+          break;
+      }
+      $pager = new myDoctrinePager('ProductComment', 2);
+      $pager->setQuery($q);
+      $pager->setPage($params['page']);
+      $pager->setMaxPerPage(isset($params['per_page']) ? $params['per_page'] : 5);
+      $pager->init();
+      return $pager;
+    } else {
+      $q->orderBy('productComment.created_at');
+      $ids = $this->getIdsByQuery($q);
+
+      return $this->createListByIds($ids, $params);
+    }
   }
 
   public function getListByUser(User $user, array $params = array())

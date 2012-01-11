@@ -155,119 +155,123 @@ class ProductTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    $q->addWhere('product.id = ?', $id);
+    // sets id clause
+    $q->whereId($id);
 
+    // sets hydration mode
     if ($params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     }
 
-    $record = $q->fetchOne();
-
-    if (!$record)
+    $list = $q->execute();
+    foreach ($list as $i => $record)
     {
-      return $record;
-    }
-
-    if (empty($record['ProductPrice']))
-    {
-      $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
-      //$prices = ProductPriceTable::getInstance()->getByProductId($record['id']);
-      if ($prices)
+      if (empty($record['ProductPrice']))
       {
-        if ($record instanceof Product)
+        $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
+        //$prices = ProductPriceTable::getInstance()->getByProductId($record['id']);
+        if ($prices)
         {
-          $record->mapValue('defaultProductPrice', $prices);
-        }
-        else {
-          $record['defaultProductPrice'] = $prices;
-        }
-        //$record['price'] = $prices->price;
-      }
-    }
-
-    if (!empty($record['State'][0]))
-    {
-      $record['view_show'] = $record['State'][0]['view_show'];
-      $record['view_list'] = $record['State'][0]['view_list'];
-      $record['is_instock'] = $record['State'][0]['is_instock'];
-      $record['status_id'] = $record['State'][0]['status_id'];
-    }
-
-    $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
-      'view'           =>
-        $params['with_properties']
-        ? ($params['property_view'] ? $params['property_view'] : $params['view'])
-        : false
-      ,
-      'group_property' => $params['group_property'],
-      'hydrate_array'  => $params['hydrate_array'],
-    ));
-
-    if ($params['with_properties'])
-    {
-      $productPropertyRelationTable = ProductPropertyRelationTable::getInstance();
-
-      // группировка параметров продукта по свойствам продукта
-      $productPropertyRelationArray = array();
-      foreach ($record['PropertyRelation'] as $propertyRelation)
-      {
-        // temporary fix
-        //$realValue = $propertyRelation['real_value'];
-        $realValue = $productPropertyRelationTable->getRealValue($propertyRelation);
-        if (false
-          || ('' === $realValue)
-          || (null === $realValue)
-          || (0 === $realValue)
-          || (0.0000 === $realValue)
-          || ('0.0000' === $realValue)
-          || ('0' === $realValue)
-        ) continue;
-
-        if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
-        {
-          $productPropertyRelationArray[$propertyRelation['property_id']] = array();
-        }
-        $productPropertyRelationArray[$propertyRelation['property_id']][] = $propertyRelation;
-      }
-
-      // тип товара
-      foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
-      {
-        if (!isset($productPropertyRelationArray[$propertyRelation['property_id']])/* && null !== $productPropertyRelationArray[$propertyRelation['property_id']]*/) continue;
-
-        $record['Parameter'][] = new ProductParameter($propertyRelation, $productPropertyRelationArray[$propertyRelation['property_id']]);
-      }
-
-      $parameterGroup = array();
-      // группировка параметров товара по группам
-      if ($params['group_property'])
-      {
-        foreach ($record['Type']['PropertyGroupRelation'] as $propertyGroupRelation)
-        {
-          $propertyGroup = $propertyGroupRelation['PropertyGroup'];
-          $productParameterArray = array();
-          foreach ($record['Parameter'] as $productParameter)
+          if ($record instanceof myDoctrineRecord)
           {
-            if ($productParameter->getGroupId() == $propertyGroup['id'])
-            {
-              $productParameterArray[] = $productParameter;
-            }
+            $record->mapValue('defaultProductPrice', $prices);
           }
-          //myDebug::dump($propertyGroup);
-          $parameterGroup[$propertyGroupRelation['position']] = new ProductParameterGroup($propertyGroup, $productParameterArray);
-          //$record['ParameterGroup'][$propertyGroup['ProductTypePropertyGroupRelation'][0]->position] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+          else {
+            $record['defaultProductPrice'] = $prices;
+          }
+          //$record['price'] = $prices->price;
+        }
+      }
+
+      if (!empty($record['State'][0]))
+      {
+        $record['view_show'] = $record['State'][0]['view_show'];
+        $record['view_list'] = $record['State'][0]['view_list'];
+        $record['is_instock'] = $record['State'][0]['is_instock'];
+        $record['status_id'] = $record['State'][0]['status_id'];
+      }
+
+      $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
+        'view'           =>
+          $params['with_properties']
+          ? ($params['property_view'] ? $params['property_view'] : $params['view'])
+          : false
+        ,
+        'group_property' => $params['group_property'],
+        'hydrate_array'  => $params['hydrate_array'],
+      ));
+
+      if ($params['with_properties'])
+      {
+        $productPropertyRelationTable = ProductPropertyRelationTable::getInstance();
+
+        // группировка параметров продукта по свойствам продукта
+        $productPropertyRelationArray = array();
+        foreach ($record['PropertyRelation'] as $propertyRelation)
+        {
+          // temporary fix
+          //$realValue = $propertyRelation['real_value'];
+          $realValue = $productPropertyRelationTable->getRealValue($propertyRelation);
+          if (false
+            || ('' === $realValue)
+            || (null === $realValue)
+            || (0 === $realValue)
+            || (0.0000 === $realValue)
+            || ('0.0000' === $realValue)
+            || ('0' === $realValue)
+          ) continue;
+
+          if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
+          {
+            $productPropertyRelationArray[$propertyRelation['property_id']] = array();
+          }
+          $productPropertyRelationArray[$propertyRelation['property_id']][] = $propertyRelation;
         }
 
-        ksort($parameterGroup);
-        foreach ($parameterGroup as $productParameterGroup)
+        // тип товара
+        foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
         {
-          $record['ParameterGroup'][] = $productParameterGroup;
+          if (!isset($productPropertyRelationArray[$propertyRelation['property_id']])/* && null !== $productPropertyRelationArray[$propertyRelation['property_id']]*/) continue;
+
+          $record['Parameter'][] = new ProductParameter($propertyRelation, $productPropertyRelationArray[$propertyRelation['property_id']]);
         }
+
+        $parameterGroup = array();
+        // группировка параметров товара по группам
+        if ($params['group_property'])
+        {
+          foreach ($record['Type']['PropertyGroupRelation'] as $propertyGroupRelation)
+          {
+            $propertyGroup = $propertyGroupRelation['PropertyGroup'];
+            $productParameterArray = array();
+            foreach ($record['Parameter'] as $productParameter)
+            {
+              if ($productParameter->getGroupId() == $propertyGroup['id'])
+              {
+                $productParameterArray[] = $productParameter;
+              }
+            }
+            //myDebug::dump($propertyGroup);
+            $parameterGroup[$propertyGroupRelation['position']] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+            //$record['ParameterGroup'][$propertyGroup['ProductTypePropertyGroupRelation'][0]->position] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+          }
+
+          ksort($parameterGroup);
+          foreach ($parameterGroup as $productParameterGroup)
+          {
+            $record['ParameterGroup'][] = $productParameterGroup;
+          }
+        }
+      }
+
+      if (is_array($record))
+      {
+        $list[$i] = $record;
       }
     }
 
-    return $record;
+    return $this->getResult($list, is_scalar($id));
   }
 
   public function getForRoute(array $params)
