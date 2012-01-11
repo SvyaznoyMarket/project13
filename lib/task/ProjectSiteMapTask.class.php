@@ -16,7 +16,7 @@ class ProjectSiteMapTask extends sfBaseTask
    * Шаблон для генерации имён файлов
    * @var type
    */
-  private $_fileNameTemplate = 'web/xml/sitemap/sitemap_#NUM#.xml';
+  private $_fileNameTemplate = 'web/sitemap_#NUM#.xml';
   /**
    * Имя файла - индекса
    * @var type
@@ -82,14 +82,14 @@ class ProjectSiteMapTask extends sfBaseTask
       // add your own options here
     ));
 
-    $this->namespace        = 'Project';
-    $this->name             = 'SiteMap';
+    $this->namespace        = 'project';
+    $this->name             = 'sitemap';
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
 The [Project:SiteMap|INFO] task does things.
 Call it with:
 
-  [php symfony Project:SiteMap|INFO]
+  [php symfony project:sitemap|INFO]
 EOF;
   }
 
@@ -284,27 +284,30 @@ EOF;
 
 
   private function _putProductUrl() {
-    $categoryList = Doctrine_Core::getTable('Product')
+    $productList = Doctrine_Core::getTable('Product')
             ->createQuery('pc')
             ->where('is_active = ?', 1)
             ->where('view_show = ?', 1)
             ->orderBy('pc.id')
             #->limit(50)
             ->fetchArray();
-    foreach($categoryList as $cat) {
+    foreach($productList as $product) {
+      if (isset($product['token_prefix']) && !empty($product['token_prefix']))
+      {
         $xmlData =
 '<url>
-  <loc>'.$this->_generateUrl('productCard', array('product' => $cat['token_prefix'].'/'.$cat['token'])).'</loc>
+  <loc>'.$this->_generateUrl('productCard', array('product' => $product['token_prefix'].'/'.$product['token'])).'</loc>
   <changefreq>monthly</changefreq>
   <priority>0.6</priority>
 </url>
 <url>
-  <loc>'.$this->_generateUrl('productComment', array('product' => $cat['token_prefix'].'/'.$cat['token'])).'</loc>
+  <loc>'.$this->_generateUrl('productComment', array('product' => $product['token_prefix'].'/'.$product['token'])).'</loc>
   <changefreq>monthly</changefreq>
   <priority>0.6</priority>
 </url>
 ';
         $this->_put($xmlData);
+      }
     }
   }
 
@@ -326,7 +329,7 @@ EOF;
     }
   }
 
-  private function _generateUrl($path, $data) {
+  private function _generateUrl($path, $data = array()) {
       $url = $this->_fullUrl .
              $this->_routing->generate($path, $data);
       $url = str_replace($this->_replaceSymvols['from'], $this->_replaceSymvols['to'], $url);

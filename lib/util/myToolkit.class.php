@@ -16,7 +16,7 @@ class myToolkit extends sfToolkit
     11 => 'ноября',
     12 => 'декабря',
   );
-  
+
   static public function declension($int, $expressions)
   {
     if (is_string($expressions)) $expressions = explode(' ', $expressions);
@@ -37,12 +37,12 @@ class myToolkit extends sfToolkit
     }
     return $result;
   }
-  
+
   /**
    *
    * @param int $typeId
    * @param int $period
-   * @return int|false если false - то не надо показывать этот тип доставки 
+   * @return int|false если false - то не надо показывать этот тип доставки
    */
   static public function fixDeliveryPeriod($typeId, $period)
   {
@@ -72,7 +72,7 @@ class myToolkit extends sfToolkit
   static public function formatDeliveryDate($period)
   {
     $ts = time() + (3600*24*$period);
-    $d = date('j', $ts).' '.self::$_months[date('m', $ts)];
+    $d = date('j', $ts).' '.self::$_months[date('n', $ts)];
     if ($period == 0) {
       return ' сегодня (' . $d . ')';
     } elseif ($period == 1) {
@@ -83,7 +83,7 @@ class myToolkit extends sfToolkit
       return ' через ' . $period . ' ' . self::declension($period, 'день дня дней');
     }
   }
-  
+
   static public function translite($value)
   {
     $tbl = array(

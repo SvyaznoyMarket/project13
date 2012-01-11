@@ -115,7 +115,7 @@ OrderServiceRelation:
   actAs: [ Timestampable ]
   columns:
     order_id:          { type: integer(20), notnull: true }
-    product_id:        { type: integer(20) }
+    product_id:        { type: integer(20), notnull: false, default: null }
     service_id:        { type: integer(20), notnull: true }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена товара в корзине' }
     quantity:          { type: integer(4), notnull: true, comment: 'Количество товара в корзине' }
