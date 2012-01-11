@@ -149,8 +149,7 @@ class searchActions extends myActions
     }
 
     //тип товаров, если есть
-    $this->productType = !empty($request['product_type']) ? ProductTypeTable::getInstance()->find($request['product_type']) : false;
-
+    $this->productType = !empty($request['product_type']) ? ProductTypeTable::getInstance()->getQueryObject()->where('token = ?', $request['product_type'])->fetchOne() : false;
 
     // запрос к core
     $params = array(
