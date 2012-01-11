@@ -65,6 +65,8 @@ class ProjectYandexMarketTask extends sfBaseTask
       'export_realweb.xml',
       'export_mgcom_ryazan.xml',
       'export_realweb_ryazan.xml',
+      'export_mgcom_lipetsk.xml',
+      'export_realweb_lipetsk.xml',
   );
 
   /**
@@ -181,6 +183,21 @@ class ProjectYandexMarketTask extends sfBaseTask
           'list' => array(3,2,1,4,7,8,5),
           'price_list_id' => 11
           ),
+      //для Липецка
+      array(
+          'name' => 'ya_market_lipetsk.xml',
+          'price_list_id' => 12
+          ),
+      array(
+          'name' => 'export_realweb_lipetsk.xml',
+          'list' => array(6,5,8,9),
+          'price_list_id' => 12
+          ),
+      array(
+          'name' => 'export_mgcom_lipetsk.xml',
+          'list' => array(3,2,1,4,7,8,5),
+          'price_list_id' => 12
+          ),      
   );
 
   /**
@@ -436,7 +453,7 @@ EOF;
     #echo $this->_xmlFilePath ."\n";
     #echo $offersList ."\n";
     $offersList = $offersList
-            #->limit(200)
+            #->limit(50)
             ->fetchArray();
 
 
