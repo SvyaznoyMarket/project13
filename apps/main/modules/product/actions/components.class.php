@@ -25,7 +25,7 @@ class productComponents extends myComponents
     }
 
     // cache key
-    $cacheKey = sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
+    $cacheKey = (in_array($this->view, array('compact', 'expanded'))) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
       'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
       'region'  => $this->getUser()->getRegion('id'),
     )) : false;

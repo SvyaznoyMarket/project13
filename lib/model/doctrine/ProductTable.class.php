@@ -265,10 +265,9 @@ class ProductTable extends myDoctrineTable
         }
       }
 
-      $record['is_insale'] = $this->isInsale($record);
-
       if (is_array($record))
       {
+        $record['is_insale'] = $this->isInsale($record);
         $list[$i] = $record;
       }
     }
