@@ -25,7 +25,10 @@ class productComponents extends myComponents
     }
 
     // cache key
-    $cacheKey = false && sfConfig::get('app_cache_enabled', false) && is_scalar($this->product) ? $this->getCacheKey() : false;
+    $cacheKey = sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
+      'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
+      'region'  => $this->getUser()->getRegion('id'),
+    )) : false;
 
     // checks for cached vars
     if ($cacheKey && $this->setCachedVars($cacheKey))
@@ -40,7 +43,7 @@ class productComponents extends myComponents
       $this->view = 'default';
     }
 
-    if (!$this->product instanceof Product)
+    if (is_scalar($this->product))
     {
       $params = array(
         'hydrate_array' => true,

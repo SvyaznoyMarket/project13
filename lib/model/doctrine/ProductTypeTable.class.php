@@ -56,6 +56,8 @@ class ProductTypeTable extends myDoctrineTable
         ->addOrderBy('productTypePropertyRelation.group_id, productTypePropertyRelation.group_position') // TODO: check
       ;
 
+      $q->leftJoin('productTypePropertyRelation.Property productProperty');
+
       if ($params['group_property'])
       {
         $q->leftJoin('productType.PropertyGroupRelation propertyGroupRelation')
@@ -91,7 +93,7 @@ class ProductTypeTable extends myDoctrineTable
         $groupedPropertyArray = array();
         foreach ($record['PropertyRelation'] as $i => $propertyRelation)
         {
-          $record['PropertyRelation'][$i]['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id'], array('hydrate_array' => $params['hydrate_array']));
+          //$record['PropertyRelation'][$i]['Property'] = ProductPropertyTable::getInstance()->getById($propertyRelation['property_id'], array('hydrate_array' => $params['hydrate_array']));
 
           if ($params['group_property'])
           {
