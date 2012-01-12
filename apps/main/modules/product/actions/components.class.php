@@ -164,8 +164,11 @@ class productComponents extends myComponents
 
     $this->setVar('item', $item, true);
 
+    // что это? нигде не используется
+    /*
     $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product['id']);
     $this->setVar('selectedServices', $selectedServices, true);
+     */
 
     $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
 

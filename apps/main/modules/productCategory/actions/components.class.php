@@ -204,7 +204,7 @@ class productCategoryComponents extends myComponents
                              $goodId = $id;
                              break;
                          }
-                     }    
+                     }
                  }
                  //больше нечего добавить в эту колонку.
                  if (!$goodId){
@@ -346,8 +346,8 @@ class productCategoryComponents extends myComponents
 
     $this->setVar('table', myToolkit::groupByColumn($list, 4), true);
   }
-  
-  function executeSeo_counters_advance() {      
-  } 
-    
+
+  function executeSeo_counters_advance() {
+  }
+
 }
