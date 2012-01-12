@@ -5,10 +5,8 @@
 			<div class="vcard"><span class="tel">8 (800) 700 00 09</span></div>
 			<div class="address">Звонок бесплатный. Радость в подарок :)</div>
 		</div>
-		<div class='bIndexLinks2__eBan'><a href="/pdf/enter_promo_catalog_12_11.pdf"><img src='/images/ban1.png'></a></div>
-		<div class='bIndexLinks__eMobile'>
-      <div><a href='<?php echo url_for('default_show', array('page' => 'mobile_apps',)) ?>'>Приложение для<br> iPhone и Android</a></div>
-    </div>
+    <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'mobile_apps',)) ?>"><img src='/images/img_main_mobile_apps.jpg'></a></div>
+    <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><img src='/images/img_main_f1service.jpg'></a></div>
 	<div class='bIndexLinks2__eLinks'>
 		<a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">О компании</a>
 		<a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>">Сервис F1</a>
