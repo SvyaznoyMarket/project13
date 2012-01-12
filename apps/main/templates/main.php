@@ -109,7 +109,7 @@ _gaq.push(['_trackPageLoadTime']);
 		{ imgb: '/images/enter/bigpromo/img_14_big.jpg', imgs:'/images/enter/img_14_small.jpg', t:4000,
 		url: '/products/2040404000075', alt: 'Детский настенный светильник Disney Fairies 25 Вт Е14'},
 		{ imgb: '/images/enter/bigpromo/img_15_big.jpg', imgs:'/images/enter/img_15_small.jpg', t:4000,
-		url: '/products/2060201000382', alt: 'Телевизор LCD/LED Samsung (UE32D5000PW )'},
+		url: '/products/2060201000313', alt: 'Телевизор LCD/LED Samsung 32" Samsung UE32D4000NW'},
 		{ imgb: '/images/enter/bigpromo/img_16_big.jpg', imgs:'/images/enter/img_16_small.jpg', t:4000,
 		url: '/products/2030000048359', alt: 'Женские часы Morgan'},
 		{ imgb: '/images/enter/bigpromo/img_17_big.jpg', imgs:'/images/enter/img_17_small.jpg', t:4000,
