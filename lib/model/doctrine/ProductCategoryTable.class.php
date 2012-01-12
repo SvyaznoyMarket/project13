@@ -143,8 +143,6 @@ class ProductCategoryTable extends myDoctrineTable
 	    ->andWhere('productCategory.level = ?', 0)
     ;
 
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-root-'.$category['root_id'], $params));
-
 	  return $q->fetchOne();
   }
 
