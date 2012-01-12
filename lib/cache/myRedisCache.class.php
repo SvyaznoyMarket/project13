@@ -67,4 +67,11 @@ class myRedisCache extends sfRediskaCache
 
     return count($keys) ? $this->_rediska->delete($keys) : true;
 	}
+
+	public function get($key, $default = null)
+	{
+		$value = $this->_rediska->get($this->getKey($key));
+    //myDebug::dump($this->getKey($key));
+		return null === $value ? $default : $value;
+	}
 }

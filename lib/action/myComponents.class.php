@@ -28,9 +28,9 @@ class myComponents extends sfComponents
     return $key;
   }
 
-  public function setCachedVars()
+  public function setCachedVars($key)
   {
-    if ($cached = $this->getCache()->get($this->getCacheKey()))
+    if ($cached = $this->getCache()->get($key))
     {
       $this->getVarHolder()->add($cached);
 
@@ -40,9 +40,9 @@ class myComponents extends sfComponents
     return false;
   }
 
-  public function cacheVars()
+  public function cacheVars($key)
   {
-    $this->getCache()->set($this->getCacheKey(), $this->getVarHolder()->getAll());
+    $this->getCache()->set($key, $this->getVarHolder()->getAll());
   }
 
   public function getCache()

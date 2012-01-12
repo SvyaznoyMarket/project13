@@ -24,13 +24,14 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
+    // cache key
+    $cacheKey = false && sfConfig::get('app_cache_enabled', false) && is_scalar($this->product) ? $this->getCacheKey() : false;
+
     // checks for cached vars
-    /*
-    if ($this->setCachedVars())
+    if ($cacheKey && $this->setCachedVars($cacheKey))
     {
       return sfView::SUCCESS;
     }
-    */
 
     $table = ProductTable::getInstance();
 
@@ -172,13 +173,14 @@ class productComponents extends myComponents
 
     $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
 
-    // caches vars
-    /*
-    $this->cacheVars();
-    $this->getCache()->addTag("product-{$this->product['id']}", $this->getCacheKey());
-    */
-
     //myDebug::dump($item, 1);
+
+    // caches vars
+    if ($cacheKey)
+    {
+      $this->cacheVars($cacheKey);
+      $this->getCache()->addTag("product-{$this->product['id']}", $this->getCacheKey());
+    }
   }
 
   /**
