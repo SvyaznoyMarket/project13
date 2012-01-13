@@ -15,7 +15,7 @@ class ProductState extends BaseProductState
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
-
+    
     //есть на складе, если есть хоть где-нибудь
     $this->is_instock = $data['is_shop'] || $data['is_store'] || $data['is_supplier'];
 
@@ -26,9 +26,11 @@ class ProductState extends BaseProductState
     //$this->view_list = $data['is_image'] && $data['is_price'] && $this->is_instock;
     $this->view_list = ($data['status_id'] >= 2) && $data['is_image'] && $data['is_price'] && $this->is_instock;
 
-    $defaultRegion = RegionTable::getInstance()->getDefault();
+    //$defaultRegion = RegionTable::getInstance()->getDefault();
     // если регион по умолчанию
-    if ($defaultRegion->id == $this->region_id)
+    //if ($defaultRegion->id == $this->region_id)
+    $region = RegionTable::getInstance()->find($this->region_id);
+    if ($region->is_default)
     {
       $product = ProductTable::getInstance()->find($this->product_id);
       if ($product)

@@ -736,7 +736,11 @@ class ProductTable extends myDoctrineTable
 
   public function getQueryByKit(Product $product, array $params = array())
   {
-    $this->applyDefaultParameters($params);
+    //$this->applyDefaultParameters($params);
+
+    $params = myToolkit::arrayDeepMerge(array(
+      'with_model'  => true,
+    ), $params);
 
     $q = $this->createBaseQuery($params);
 

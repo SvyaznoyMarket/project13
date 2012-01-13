@@ -11,7 +11,7 @@ use_helper('Date');
   <?php } ?>
   <div class="font16 orange pb10"><strong>Заказ № <?php echo $item['number']?> от <?php echo format_date($item['created_at'],'dd.MM.yyyy')?></strong> на сумму&nbsp;<?php echo $item['sum']?> <span class="rubl">p</span></div>
 
-   <?php if ($info['status_id']!=Order::STATUS_READY && $info['status_id']!=Order::STATUS_CANCELLED){ ?>
+   <?php if ($info['status_id']!=Order::STATUS_READY && $info['status_id']!=Order::STATUS_CANCELLED && false){ ?>
     <table cellspacing="0" class="status">
                <tr>
                    <?php
@@ -34,7 +34,7 @@ use_helper('Date');
     </table>
   <?php } ?>
   <table class="order mb15">
-      
+
         <?php foreach($item['products'] as $product): ?>
             <?php if ($product['type'] == 'service') { ?>
                 <tr>
@@ -58,29 +58,29 @@ use_helper('Date');
                    <td>
                        <strong class="font14"><?php echo $product['price'] ?>&nbsp;<span class="rubl">p</span></strong>
                    </td>
-               </tr>               
+               </tr>
            <?php } ?>
        <?php endforeach; ?>
-           
+
        <?php if (isset($item['delivery_price']) && isset($item['delivery_type']) && (int)$item['delivery_price']>0 ) { ?>
             <tr>
                <th>
-                    <?php echo $item['delivery_type'] ?> 
+                    <?php echo $item['delivery_type'] ?>
                </th>
                <td>
                    <strong class="font14"><?php echo $item['delivery_price'] ?>&nbsp;<span class="rubl">p</span></strong>
                </td>
            </tr>
-               
-       <?php } ?>    
-               
-               
+
+       <?php } ?>
+
+
        <tr>
            <th>
                <?php if (isset($item['delivered_at'])){ ?>
                     <div class="font12 pb5">
                         <?php echo $item['delivery_type'] ."."; ?>
-                        <?php $date = explode(" ",$item['delivered_at']);  echo format_date($date[0],'dd MMMM yyyy','ru')?>г. 
+                        <?php $date = explode(" ",$item['delivered_at']);  echo format_date($date[0],'dd MMMM yyyy','ru')?>г.
                         <?php if (isset($item['delivered_period'])) echo '('.$item['delivered_period'].')'; ?>
                     </div>
                <?php } ?>

@@ -65,6 +65,8 @@ class ProjectYandexMarketTask extends sfBaseTask
       'export_realweb.xml',
       'export_mgcom_ryazan.xml',
       'export_realweb_ryazan.xml',
+      'export_mgcom_lipetsk.xml',
+      'export_realweb_lipetsk.xml',
   );
 
   /**
@@ -180,6 +182,21 @@ class ProjectYandexMarketTask extends sfBaseTask
           'name' => 'export_mgcom_ryazan.xml',
           'list' => array(3,2,1,4,7,8,5),
           'price_list_id' => 11
+          ),
+      //для Липецка
+      array(
+          'name' => 'ya_market_lipetsk.xml',
+          'price_list_id' => 12
+          ),
+      array(
+          'name' => 'export_realweb_lipetsk.xml',
+          'list' => array(6,5,8,9),
+          'price_list_id' => 12
+          ),
+      array(
+          'name' => 'export_mgcom_lipetsk.xml',
+          'list' => array(3,2,1,4,7,8,5),
+          'price_list_id' => 12
           ),
   );
 
@@ -411,23 +428,27 @@ EOF;
 
     //делаем выборку товаров
     $params = array(
-        'with_creator' => true,
+        'with_creator'        => true,
         'with_delivery_price' => true,
-        'with_price' => true,
-        'with_category' => true,
-        'view' => 'show',
+        'with_price'          => true,
+        'with_category'       => true,
+        'with_model'          => true,
+        'view'                => 'list',
     );
     $offersList = ProductTable::getInstance()->createBaseQuery($params)
             ->select('product.*, category_rel.*, category.root_id, creator.name, price.price, delivery_price.price')
+    //берем только продукты, доступные на МОЛКОМЕ в количестве не менее 3 шт
+            ->innerJoin('product.StockRelation stockRelation WITH stockRelation.stock_id = ? AND stockRelation.quantity > ?', array(1, 2))
             ->addWhere('price.product_price_list_id = ?', $this->_currentPriceListId)
+    //берем только продукты, с правильной ссылкой
             ->addWhere('product.token_prefix IS NOT NULL')
             ;
 
-
     //если нужно выгрузить только те, что есть в наличии
-    if (!$this->_exportNotInStock){
+    /*if (!$this->_exportNotInStock){
         $offersList->addWhere('product.is_instock=?',1);
-    }
+    }*/
+
     //если есть ограничения по категориям
     if (isset($catIdListString) && count($catIdListString)){
         $offersList
@@ -436,7 +457,7 @@ EOF;
     #echo $this->_xmlFilePath ."\n";
     #echo $offersList ."\n";
     $offersList = $offersList
-            #->limit(200)
+            #->limit(50)
             ->fetchArray();
 
 

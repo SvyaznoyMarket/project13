@@ -22,8 +22,6 @@ class apiActions extends myActions
    */
   public function executeCacheClean(sfWebRequest $request)
   {
-      #echo 'clean cash';
-      #exit();
 
     try {
       $response = trim(file_get_contents('php://input'));
@@ -33,27 +31,40 @@ class apiActions extends myActions
 
       $data = json_decode($response, true);
       #$data[] = array('type' => 'product', 'id' => 10);
-      #print_r($data);
-      $productTable = ProductTable::getInstance();
-      foreach($data as $item) {
-          if (!isset($item['type']) || !isset($item['id'])) {
-              continue;
-          }
-          if ($item['type'] == 'product') {
-              $product = $productTable->findOneBy('core_id', $item['id']);
-              if (!$product) {
-                  $logger->log('Попытка очистить кеш не существующего товара id='.$product['id']);
+
+      if ($data) {
+
+          foreach($data as $item) {
+              
+              if (!isset($item['type']) || !isset($item['id'])) {
                   continue;
               }
-              #myDebug::dump($product);
-              //очищаем кеш сущности
-              CacheEraser::getInstance()->erase($product->getTable()->getCacheEraserKeys($product, 'show'));
-          }
-      }
+              
+              if ($item['type'] == 'product') {
+                  $productTable = ProductTable::getInstance();
+                  $product = $productTable->findOneBy('core_id', $item['id']);
+                  if (!$product) {
+                      $logger->log('Попытка очистить кеш не существующего товара id='.$product['id']);
+                      continue;
+                  }
+                  #myDebug::dump($product);
+                  //очищаю redis кэш для товара
+                  myCache::getInstance()->removeByTag(ProductTable::getInstance()->getCacheTags($product));              
 
-      return $this->renderJson(array(
-        'confirmed' => true,
-      ));
+                  //очищаем кеш сущности для nginx
+                  CacheEraser::getInstance()->erase($product->getTable()->getCacheEraserKeys($product, 'show'));
+              }
+          }
+      
+          return $this->renderJson(array(
+            'confirmed' => true,
+          ));
+          
+      } else {
+          return $this->renderJson(array(
+            'confirmed' => false,
+          ));          
+      }
 
     }
     catch (Exception $e) {
@@ -124,6 +135,8 @@ class apiActions extends myActions
       $logger->err($e->getCode().' - '.$e->getMessage());
       return $this->renderJson(array(
         'confirmed' => false,
+            'error' => $e->getMessage(),
+          
       ));
     }
 
