@@ -14,6 +14,41 @@ $(document).ready(function(){
 	if( !getCookie('enter') )
 		shortinfo += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000)
 	
+	/* GEOIP fix */
+	if( !getCookie('geoshop') ) {
+		$.getJSON( '/region/init', function(data) {
+			if( !data.success ) 
+				return false
+			// paint popup			
+			var cities = data.data
+			var shtorka = $('<div>').addClass('graying')
+									.css( { 'opacity': '0.5'} ) //ie special							
+			var cityPopup = $('<div class="bCityPopupWrap">').html(
+				'<div class="hideblock bCityPopup">'+
+					'<i title="Закрыть" class="close">Закрыть</i>'+
+					'<div class="title">Привет, из какого ты города?</div>'+				
+				'</div>'+
+			'</div>')
+			cityPopup.find('.close').click( function() {
+				$('.graying').remove()
+				$('.bCityPopupWrap').hide()
+			})
+			for( var ci = 0, cl = cities.length; ci < cl; ci++ ) {
+				if( typeof( cities[ci].link ) === 'undefined' || typeof( cities[ci].name ) === 'undefined' )
+					continue
+				var cnode = $('<div>').append( $('<a>').attr( 'href', cities[ci].link ).text( cities[ci].name ) )
+				if( typeof( cities[ci].is_active ) !== 'undefined' ) {
+					cnode.addClass('bCityPopup__eCurrent')
+					cityPopup.find('.title').after( cnode )
+				} else {
+					cnode.addClass('bCityPopup__eBlock')
+					cityPopup.find('div:first').append( cnode )
+				}
+			}
+			$('body').append( shtorka ).append( cityPopup )
+		})
+	}
+	
 	/* Lightbox */
 	var lbox = {}
 	if (window.Lightbox === undefined) {
