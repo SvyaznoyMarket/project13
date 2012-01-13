@@ -3077,6 +3077,49 @@ DT.bCtg__eOrange{
 	.mSR a:hover{
     text-decoration: none;
 		}
+.bCityPopup{
+	z-index: 100;
+	width: 470px;
+	height: auto;
+	font-size: 0;
+	background: #000;
+	position: relative;
+	padding: 25px 25px 35px 25px;
+	border: 2px solid #d9d9d9;
+	
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+	}
+	.bCityPopupWrap{
+		top: 200px;
+		width: 100%;
+		text-align: center;
+		position: absolute;
+		}
+	.bCityPopup .close{ 
+		background: url('img/city_close.png') no-repeat; 
+		}
+	.bCityPopup .title{ 
+		color: #ffa800;
+		font: 30px 'Enter';
+		}
+	.bCityPopup__eCurrent a{
+		color: #fff;
+		font: bold 16px/24px Tahoma, sans-serif;
+		}
+	.bCityPopup__eBlock{
+		color: #fff;
+		width: 235px;
+		font: 16px/24px Tahoma, sans-serif;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bCityPopup__eBlock a{
+		color: #fff;
+		}
 
 
 

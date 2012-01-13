@@ -2,7 +2,7 @@
 <div class="footer lowfooter">
     <div class="footerbottom">
         <div class="copy">
-            &copy; &laquo;Enter&raquo; 2011. Все права защищены.<br />
+            &copy; &laquo;Enter&raquo; 2011&ndash;<?php echo date("Y") ?>. Все права защищены.<br />
             Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.
 <?php if (false): ?>
             <div>
