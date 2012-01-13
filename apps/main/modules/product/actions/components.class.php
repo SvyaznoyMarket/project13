@@ -25,7 +25,7 @@ class productComponents extends myComponents
     }
 
     // cache key
-    $cacheKey = (in_array($this->view, array('compact', 'expanded'))) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
+    $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
       'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
       'region'  => $this->getUser()->getRegion('id'),
     )) : false;
@@ -33,6 +33,7 @@ class productComponents extends myComponents
     // checks for cached vars
     if ($cacheKey && $this->setCachedVars($cacheKey))
     {
+      //myDebug::dump($this->getVarHolder()->getAll(), 1);
       return sfView::SUCCESS;
     }
 
@@ -79,40 +80,13 @@ class productComponents extends myComponents
       $this->product['is_insale'] = $table->isInsale($this->product);
     }
 
-    // price
-    /*if (isset($this->product['ProductPrice']))
-    {
-      if ($this->product instanceof Product)
-      {
-        $this->product->mapValue('price', $this->product['ProductPrice']['price']);
-      }
-      else {
-        $this->product['price'] = $this->product['ProductPrice']['price'];
-      }
-    }
-    else
-    {
-      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product['id']);
-      if (!empty($price))
-      {
-        if ($this->product instanceof Product)
-        {
-          $this->product->mapValue('price', $price['price']);
-        }
-        else {
-          $this->product['price'] = $price['price'];
-        }
-      }
-    }*/
-
     $item = array(
       'id'         => $this->product['id'],
       'core_id'    => $this->product['core_id'],
       'token'      => $this->product['token'],
-      'barcode'      => $this->product['barcode'],
+      'barcode'    => $this->product['barcode'],
       'article'    => $this->product['article'],
       'name'       => $this->product['name'],
-      //'creator'    => $this->product['Creator']['name'],
       'creator'    => (is_array($this->product['Creator']) || ($this->product['Creator'] instanceof Creator)) ? $this->product['Creator']['name'] : '',
       'rating'     => $this->product['rating'],
       'price'      => $table->getFormattedPrice($this->product), //$this->product->formatted_price,
@@ -120,9 +94,7 @@ class productComponents extends myComponents
       'photo'      => $table->getMainPhotoUrl($this->product, 2),
       'is_insale'  => $this->product['is_insale'],
       'is_instock' => $this->product['is_instock'],
-      //'product'  => clone $this->product,
       'url'        => url_for('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
-      'product'    => $this->product,
     );
 
     if ('compact' == $this->view)

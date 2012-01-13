@@ -306,7 +306,6 @@ class productCategoryComponents extends myComponents
         'limit'           => 6,
         'view'            => 'list',
         'property_view'   => false,
-        'only_ids'        => true,
       ));
     }
     if ('preview' == $this->view)

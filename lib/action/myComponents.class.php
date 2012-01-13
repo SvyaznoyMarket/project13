@@ -42,7 +42,18 @@ class myComponents extends sfComponents
 
   public function cacheVars($key)
   {
-    $this->getCache()->set($key, $this->getVarHolder()->getAll());
+    $cached = array();
+    foreach ($this->getVarHolder()->getAll() as $k => $v)
+    {
+      if ($v instanceof sfOutputEscaperSafe)
+      {
+        $v = $v->getValue();
+      }
+
+      $cached[$k] = $v;
+    }
+
+    $this->getCache()->set($key, $cached);
   }
 
   public function getCache()
