@@ -336,6 +336,12 @@ class ProductTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
+    // temporary fix
+    if ($category->has_line)
+    {
+      $params['with_line'] = true;
+    }
+
     $ids = $this->getIdsByQuery($q, $params, 'productCategory-'.$category->id.'/product-ids');
 
     return $this->createListByIds($ids, $params);
