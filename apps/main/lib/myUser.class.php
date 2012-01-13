@@ -192,6 +192,6 @@ public function getRealIpAddr()
   public function setRegionCookie()
   {
     $key = $this->getRegion('geoip_code');
-    sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'), $key, null);
+    sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'), $key, time()+60*60*24*365);
   }
 }
