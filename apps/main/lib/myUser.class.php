@@ -113,13 +113,11 @@ class myUser extends myGuardSecurityUser
     if (!isset($region) || !$region)
     {
       $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
-      $region = !empty($geoip['region']) ? RegionTable::getInstance()->findOneByGeoip_code($geoip['region']) : null;
-      if (!$region)
-      {
-        $region = RegionTable::getInstance()->getDefault();
-        $this->setRegion($region->id);
-      }
+      $region = !empty($geoip['region']) ? RegionTable::getInstance()->findOneByGeoip_code($geoip['region']) : RegionTable::getInstance()->getDefault();
+
+      $this->setRegion($region->id);
     }
+
     $parent_region = $region->getNode()->getParent();
 
     $result = array(
