@@ -48,9 +48,6 @@ class BannerTable extends myDoctrineTable
 
     $q = $this->createQuery('banner');
 
-    $q->where('banner.is_active = ? AND banner.is_dummy = ?', array(true, false));
-    $q->addWhere('NOW() BETWEEN banner.start_at AND banner.end_at');
-
     $q->orderBy('position ASC');
 
     return $q;
@@ -108,18 +105,24 @@ class BannerTable extends myDoctrineTable
 
   public function getList(array $params = array())
   {
-    $q = $this->createBaseQuery($params);
+    $q = $this->createBaseQuery($params)
+      ->where('banner.is_active = ? AND banner.is_dummy = ?', array(true, false))
+      ->addWhere('NOW() BETWEEN banner.start_at AND banner.end_at')
+    ;
+
     $this->setQueryParameters($q, $params);
 
     $ids = $this->getIdsByQuery($q);
 
     if (!count($ids))
     {
-      $q = $this->createQuery('banner')
+      $q = $this->createBaseQuery($params)
         ->where('banner.is_active = ? AND banner.is_dummy = ?', array(true, true))
-        ->orderBy('position ASC')
       ;
-
+      myToolkit::arrayDeepMerge(array(
+        'with_items' => false,
+      ), $params);
+      
       $ids = $this->getIdsByQuery($q);
     }
 

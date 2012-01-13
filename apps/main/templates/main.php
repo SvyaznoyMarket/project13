@@ -102,11 +102,13 @@
 		var l = promos.length
 		if( l == 0 )
 			return
-		if( l == 1 || l == 2 ) {
-			$('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
-			return
-		}
-
+                if( l == 1 ) {
+                  $('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
+                  .click( function() {
+                    location.href = $(this).data('url')
+                  })
+                  return
+                }
 		/* Preload */
 		var hb = $('<div>').css('display','none')
 		for(var i=0; i < l; i++ ) {
@@ -148,6 +150,7 @@
         $('.rightImage').click( function() { goSlide( 1 ) } )
         $('.centerImage').click( function() {
           clearTimeout( idto )
+          console.log($(this).data('url'))
           location.href = $(this).data('url')
         })
         $('.promos').click( function(){ location.href = $(this).data('url') } )

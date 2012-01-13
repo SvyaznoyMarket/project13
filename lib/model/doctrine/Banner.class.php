@@ -28,7 +28,7 @@ class Banner extends BaseBanner
   {
     parent::importFromCore($data);
 
-    if (!empty($data['item_list']))
+    if (isset($data['item_list']))
     {
       $existing = array(); // существуюшие элементы
       foreach ($this->Item as $index => $bannerItem)
