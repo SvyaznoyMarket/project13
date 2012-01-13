@@ -24,10 +24,16 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick')))
+    {
+      $this->view = 'default';
+    }
+
     // cache key
     $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
       'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
       'region'  => $this->getUser()->getRegion('id'),
+      'view'    => $this->view,
     )) : false;
 
     // checks for cached vars
@@ -38,11 +44,6 @@ class productComponents extends myComponents
     }
 
     $table = ProductTable::getInstance();
-
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick')))
-    {
-      $this->view = 'default';
-    }
 
     if (is_scalar($this->product))
     {
@@ -154,7 +155,7 @@ class productComponents extends myComponents
     if ($cacheKey)
     {
       $this->cacheVars($cacheKey);
-      $this->getCache()->addTag("product-{$this->product['id']}", $this->getCacheKey());
+      $this->getCache()->addTag("product-{$this->product['id']}", $cacheKey);
     }
   }
 

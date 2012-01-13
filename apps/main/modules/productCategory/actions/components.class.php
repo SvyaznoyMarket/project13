@@ -74,6 +74,20 @@ class productCategoryComponents extends myComponents
       $this->view = 'default';
     }
 
+    // cache key
+    $cacheKey = in_array($this->view, array('carousel')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
+      'productCategory' => is_scalar($this->productCategory) ? $this->productCategory : $this->productCategory['id'],
+      'region'          => $this->getUser()->getRegion('id'),
+      'view'            => $this->view,
+    )) : false;
+
+    // checks for cached vars
+    if ($cacheKey && $this->setCachedVars($cacheKey))
+    {
+      //myDebug::dump($this->getVarHolder()->getAll(), 1);
+      return sfView::SUCCESS;
+    }
+
     $item = array(
       'name'              => (string)$this->productCategory,
       'root_name'         => (string)$this->productCategory->getRootCategory(),
@@ -110,6 +124,16 @@ class productCategoryComponents extends myComponents
     }
 
     $this->setVar('item', $item, true);
+
+    // caches vars
+    if ($cacheKey)
+    {
+      $this->cacheVars($cacheKey);
+      foreach ($item['product_list'] as $product)
+      {
+        $this->getCache()->addTag("product-{$product['id']}", $cacheKey);
+      }
+    }
   }
   /**
   * Executes productType_list component
