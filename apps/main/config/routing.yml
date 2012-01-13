@@ -733,6 +733,13 @@ region_autocomplete:
   param:    { module: region, action: autocomplete, type: null }
 #
 # change region
+region_init:
+  url:      /region/init
+  param:    { module: region, action: init }
+  requirements:
+    sf_method: [ get,post ]
+#
+# change region
 region_change:
   url:      /region/change/:region
   param:    { module: region, action: change }

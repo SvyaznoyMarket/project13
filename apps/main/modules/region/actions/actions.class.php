@@ -51,16 +51,42 @@ class regionActions extends myActions
       'data' => $list,
     ));
   }
-  
+
   public function executeChange(sfWebRequest $request)
   {
     $region = $this->getRoute()->getObject();
-    
+
     if ($region)
     {
       $this->getUser()->setRegion($region->id);
     }
-    
+
     $this->redirect($request->getReferer());
+  }
+
+  public function executeInit(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isXmlHttpRequest());
+    sfProjectConfiguration::getActive()->loadHelpers('Url');
+
+    $user_region = $this->getUser()->getRegion();
+
+    $regions = RegionTable::getInstance()->getListHavingShops();
+
+    $return = array();
+    foreach ($regions as $region)
+    {
+      $item = array('name' => $region->name, 'link' => url_for('region_change', array('region' => $region->token, )), );
+      if ($region->id == $user_region['id'])
+      {
+        $item['is_active'] = 'active';
+      }
+      $return[] = $item;
+    }
+
+    return $this->renderJson(array(
+        'success' => true,
+        'data'    => $return,
+      ));
   }
 }
