@@ -22,17 +22,6 @@ class productCategoryComponents extends myComponents
     {
       $this->view = 'default';
     }
-
-    $list = array();
-    foreach ($this->productCategoryList as $productCategory)
-    {
-      $list[] = array(
-        'name'            => (string)$productCategory,
-        'productCategory' => $productCategory,
-      );
-    }
-
-    $this->setVar('list', $list, true);
   }
  /**
   * Executes root_list component
@@ -52,7 +41,101 @@ class productCategoryComponents extends myComponents
 
     $this->setVar('list', ProductCategoryTable::getInstance()->getRootList(), true);
   }
+ /**
+  * Executes child_list component
+  *
+  * @param ProductCategory $productCategory Родительская категория товара
+  * @param view $view Вид
+  */
+  public function executeChild_list()
+  {
+    if (!$this->view)
+    {
+      $this->view = 'default';
+    }
 
+    $this->setVar('productCategoryList',
+      $this->productCategory->getChildList(array(
+        //'select'       => 'productCategory.id, productCategory.name, productCategory.token',
+        'with_filters' => false,
+      ))
+    );
+  }
+ /**
+  * Executes show component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  * @param view $view Вид
+  */
+  public function executeShow()
+  {
+    if (!in_array($this->view, array('default', 'carousel', 'preview')))
+    {
+      $this->view = 'default';
+    }
+
+    $item = array(
+      'name'              => (string)$this->productCategory,
+      'root_name'         => (string)$this->productCategory->getRootCategory(),
+      'url'               => url_for('productCatalog_category', $this->productCategory),
+      'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
+      'product_quantity'  => $this->productCategory->countProduct(array('view' => 'list')),
+      'links'             => $this->productCategory->getLinkList(),
+      'has_line'          => $this->productCategory->has_line,
+    );
+
+    if ('carousel' == $this->view)
+    {
+      if (0 == $item['product_quantity'])
+      {
+        return sfView::NONE;
+      }
+
+      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
+        'with_properties' => false,
+        'limit'           => 6,
+        'view'            => 'list',
+        'property_view'   => false,
+        'hydrate_array'   => true,
+      ));
+    }
+    if ('preview' == $this->view)
+    {
+      if (0 == $item['product_quantity'])
+      {
+        return sfView::NONE;
+      }
+
+      $item['photo'] = $this->productCategory->getPhotoUrl();
+    }
+
+    $this->setVar('item', $item, true);
+  }
+  /**
+  * Executes productType_list component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  */
+  public function executeProductType_list()
+  {
+    $list = array();
+    foreach (ProductTypeTable::getInstance()->getListByProductCategory($this->productCategory, array(
+      'select'            => 'productType.id, productType.name',
+      'group'             => 'productType.id, productType.name',
+      'order'             => 'productType.name',
+      'with_productCount' => true,
+    )) as $productType) {
+      if (0 == $productType->product_count) continue;
+
+      $list[] = array(
+        'name'             => $productType->name,
+        'url'              => url_for(array('sf_route' => 'productCatalog_productType', 'sf_subject' => $this->productCategory, 'productType' => $productType->id)),
+        'product_quantity' => $productType->product_count,
+      );
+    }
+
+    $this->setVar('table', myToolkit::groupByColumn($list, 4), true);
+  }
   public function executeExtra_menu()
   {
     /*
@@ -247,103 +330,6 @@ class productCategoryComponents extends myComponents
 	  $this->setVar('rootlist', $result, true);
 	  $this->setVar('rootCat', $rootCat, true);
 	  $this->setVar('colomnsArr', $colomnsArr, true);
-  }
-
-
-
- /**
-  * Executes child_list component
-  *
-  * @param ProductCategory $productCategory Родительская категория товара
-  * @param view $view Вид
-  */
-  public function executeChild_list()
-  {
-    if (!$this->view)
-    {
-      $this->view = 'default';
-    }
-
-    $this->setVar('productCategoryList',
-      $this->productCategory->getChildList(array(
-        //'select'       => 'productCategory.id, productCategory.name, productCategory.token',
-        'with_filters' => false,
-      ))
-    );
-  }
- /**
-  * Executes show component
-  *
-  * @param ProductCategory $productCategory Категория товара
-  * @param view $view Вид
-  */
-  public function executeShow()
-  {
-    if (!in_array($this->view, array('default', 'carousel', 'preview')))
-    {
-      $this->view = 'default';
-    }
-
-    $item = array(
-      'name'              => (string)$this->productCategory,
-      'root_name'         => (string)$this->productCategory->getRootCategory(),
-      'url'               => url_for('productCatalog_category', $this->productCategory),
-      'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
-      'product_quantity'  => $this->productCategory->countProduct(array('view' => 'list')),
-      'links'             => $this->productCategory->getLinkList(),
-      'has_line'          => $this->productCategory->has_line,
-    );
-
-    if ('carousel' == $this->view)
-    {
-      if (0 == $item['product_quantity'])
-      {
-        return sfView::NONE;
-      }
-
-      $item['product_list'] = ProductTable::getInstance()->getListByCategory($this->productCategory, array(
-        'with_properties' => false,
-        'limit'           => 6,
-        'view'            => 'list',
-        'property_view'   => false,
-      ));
-    }
-    if ('preview' == $this->view)
-    {
-      if (0 == $item['product_quantity'])
-      {
-        return sfView::NONE;
-      }
-
-      $item['photo'] = $this->productCategory->getPhotoUrl();
-    }
-
-    $this->setVar('item', $item, true);
-  }
-  /**
-  * Executes productType_list component
-  *
-  * @param ProductCategory $productCategory Категория товара
-  */
-  public function executeProductType_list()
-  {
-    $list = array();
-    foreach (ProductTypeTable::getInstance()->getListByProductCategory($this->productCategory, array(
-      'select'            => 'productType.id, productType.name',
-      'group'             => 'productType.id, productType.name',
-      'order'             => 'productType.name',
-      'with_productCount' => true,
-    )) as $productType) {
-      if (0 == $productType->product_count) continue;
-
-      $list[] = array(
-        'name'             => $productType->name,
-        'url'              => url_for(array('sf_route' => 'productCatalog_productType', 'sf_subject' => $this->productCategory, 'productType' => $productType->id)),
-        'product_quantity' => $productType->product_count,
-      );
-    }
-
-    $this->setVar('table', myToolkit::groupByColumn($list, 4), true);
   }
 
   function executeSeo_counters_advance() {
