@@ -63,7 +63,7 @@ return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
   }
 
 
-  public function getCurrentPrice() {
+  public function getCurrentPrice($productId = 0) {
 
         $region = sfContext::getInstance()->getUser()->getRegion();
         $priceList = $region['product_price_list_id'];
@@ -71,25 +71,27 @@ return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
         #$priceListDefault = ProductPriceListTable::getInstance()->getDefault();
 
         $currentPrice = 0;
-        foreach($this->Price as $price) {
-            if ($priceList == $price['service_price_list_id']) {
-              $currentPrice = $price['price'];
-              break;
+        //если указан подукт, сначала ищем привязанную к продукту цену
+        if ($productId) {
+            foreach($this->Price as $price) {
+                if ($priceList == $price['service_price_list_id'] && $productId == $price['product_id']){
+                      $currentPrice = $price['price'];
+                      break;
+                }
             }
         }
-        //если для текущего региона цены нет, ищем цену для региона по умолчанию
-        /* по умолчанию уже получено
-if (!isset($currentPrice) && $priceList->id != $priceListDefault->id ) {
-foreach($service->Price as $price) {
-if ($priceListDefault->id == $price['service_price_list_id']) {
-$currentPrice = $price['price'];
-break;
-}
-}
-} */
+        //если продукт не указан, или привязанную к продукту цену не нашли,
+        //ищем цену без привязки к продукту
+        if (!$currentPrice) {
+            foreach($this->Price as $price) {
+                if (  $priceList == $price['service_price_list_id'] && $price['product_id'] == 0){
+                      $currentPrice = $price['price'];
+                      break;
+                }
+            }
+        }
         $this->price = $currentPrice;
         return $currentPrice;
-
   }
 
   public function getCatalogParent(){
