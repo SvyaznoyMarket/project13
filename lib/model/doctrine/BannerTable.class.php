@@ -115,7 +115,7 @@ class BannerTable extends myDoctrineTable
 
     if (!count($ids))
     {
-      $q = $this->createQuery()
+      $q = $this->createQuery('banner')
         ->where('banner.is_active = ? AND banner.is_dummy = ?', array(true, true))
         ->orderBy('position ASC')
       ;
