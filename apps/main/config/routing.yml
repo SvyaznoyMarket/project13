@@ -746,7 +746,7 @@ region_change:
   class:   myDoctrineRoute
   options: { model: Region, type: object, method: getForRoute }
   requirements:
-    sf_method: [ post ]
+    sf_method: [ get,post ]
 
 
 #
