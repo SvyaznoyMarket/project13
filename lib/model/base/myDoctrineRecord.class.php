@@ -211,6 +211,17 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
             }
           }
         }
+        // checks value mapping
+        else if (!empty($v['name']) && !empty($v['mapping']))
+        {
+          foreach ($v['mapping'] as $coreValue => $realValue)
+          {
+            if ($coreValue != $data[$k]) continue;
+
+            $this->set($v['name'], $realValue);
+            break;
+          }
+        }
       }
       else {
         $this->set($v, $data[$k]);

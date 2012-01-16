@@ -111,12 +111,8 @@ class ProductTable extends myDoctrineTable
     {
       $q->leftJoin('product.ProductCategoryProductRelation category_rel')
         ->leftJoin('category_rel.Category category')
-              ;
-
+      ;
     }
-
-
-
 
     if (false == $params['with_model'] && 'show' != $params['view'])
     {
@@ -139,28 +135,35 @@ class ProductTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->leftJoin('product.Category productCategory')
-      ->leftJoin('product.Creator creator')
-      ->leftJoin('product.Photo photo')
+    // category
+    $q->leftJoin('product.Category productCategory');
+    // creator
+    $q->leftJoin('product.Creator creator');
+    // photo
+    $q->leftJoin('product.Photo photo');
+    // price
+    $q->leftJoin('product.ProductPrice productPrice')
+      ->innerJoin('productPrice.PriceList priceList')
+      ->innerJoin('priceList.Region region WITH region.id = ?', $params['region_id'])
     ;
+
+    // properties
     if ($params['with_properties'])
     {
       $q->leftJoin('product.PropertyRelation productPropertyRelation');
     }
 
-    $q->leftJoin('product.ProductPrice productPrice')
-      ->innerJoin('productPrice.PriceList priceList')
-      ->innerJoin('priceList.Region region WITH region.id = ?', $params['region_id']);
-
     $this->setQueryParameters($q, $params);
+
     $q->addWhere('product.id = ?', $id);
 
-    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
     if ($params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     }
+
     $record = $q->fetchOne();
+
     if (!$record)
     {
       return $record;
@@ -733,7 +736,11 @@ class ProductTable extends myDoctrineTable
 
   public function getQueryByKit(Product $product, array $params = array())
   {
-    $this->applyDefaultParameters($params);
+    //$this->applyDefaultParameters($params);
+
+    $params = myToolkit::arrayDeepMerge(array(
+      'with_model'  => true,
+    ), $params);
 
     $q = $this->createBaseQuery($params);
 

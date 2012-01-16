@@ -49,6 +49,7 @@ all:
     param:
       auto_start: true
       session_name: enter
+      session_cookie_lifetime: 15552000
 
   user:
     class: myUser

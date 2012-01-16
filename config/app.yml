@@ -15,6 +15,14 @@ all:
     result_cache:        false   # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
+  banner:
+    timeout: 2000
+    image_url:
+      - 'http://fs01.enter.ru/4/1/230x302/'
+      - 'http://fs01.enter.ru/4/1/768x302/'
+#      - 'http://core.ent3.ru/upload/4/1/230x302/'
+#      - 'http://core.ent3.ru/upload/4/1/768x302/'
+
   product:
     max_items:              10                      # максимально количество записей для списка товаров (по умолчанию)
     max_items_on_category:  18                      # максимально количество записей для списка товаров в категории
@@ -61,12 +69,12 @@ all:
 
   core:
     config:
-#      api_url: 'http://core.ent3.ru/v1/json'
-#      consumer_key: test
-#      signature: test
-      api_url: 'http://api.enter.ru/v1/json'
-      consumer_key: v6Q4UiTaQ6jWPHtJ
-      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
+      api_url: 'http://core.ent3.ru/v1/json'
+      consumer_key: test
+      signature: test
+#      api_url: 'http://api.enter.ru/v1/json'
+#      consumer_key: v6Q4UiTaQ6jWPHtJ
+#      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
   cache_eraser:
     config:

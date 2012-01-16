@@ -113,13 +113,11 @@ class myUser extends myGuardSecurityUser
     if (!isset($region) || !$region)
     {
       $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
-      $region = !empty($geoip['region']) ? RegionTable::getInstance()->findOneByGeoip_code($geoip['region']) : null;
-      if (!$region)
-      {
-        $region = RegionTable::getInstance()->getDefault();
-        $this->setRegion($region->id);
-      }
+      $region = !empty($geoip['region']) ? RegionTable::getInstance()->findOneByGeoip_code($geoip['region']) : RegionTable::getInstance()->getDefault();
+
+      $this->setRegion($region->id);
     }
+
     $parent_region = $region->getNode()->getParent();
 
     $result = array(
@@ -194,6 +192,6 @@ public function getRealIpAddr()
   public function setRegionCookie()
   {
     $key = $this->getRegion('geoip_code');
-    sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'), $key, null);
+    sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'), $key, time()+60*60*24*365);
   }
 }
