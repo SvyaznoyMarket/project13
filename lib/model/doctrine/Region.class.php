@@ -52,4 +52,20 @@ class Region extends BaseRegion
   {
     return in_array('city', $this->type) ? 'г.' : '';
   }
+
+  public function isCity()
+  {
+    $return = false;
+
+    foreach ($this->type as $type)
+    {
+      if ('city' == $type)
+      {
+        $return = true;
+        break;
+      }
+    }
+
+    return $return;
+  }
 }
