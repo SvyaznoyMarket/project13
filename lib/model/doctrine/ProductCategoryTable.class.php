@@ -38,6 +38,13 @@ class ProductCategoryTable extends myDoctrineTable
     );
   }
 
+  public function getDefaultParameters()
+  {
+    return array(
+      'hydrate_array' => false,
+    );
+  }
+
   public function createBaseQuery(array $params = array())
   {
     $this->applyDefaultParameters($params);
@@ -89,6 +96,11 @@ class ProductCategoryTable extends myDoctrineTable
     $this->setQueryParameters($q);
 
     $q->whereId($id);
+
+    if ($params['hydrate_array'])
+    {
+      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    }
 
     $list = $q->execute();
     foreach ($list as $i => $record)
@@ -261,6 +273,59 @@ class ProductCategoryTable extends myDoctrineTable
       $category ? "productCategory-{$category->id}" : 'productCategory'
     );
     if ($params['with_parent'])
+    {
+      $categoryIds[] = $category->id;
+    }
+
+    return $categoryIds;
+  }
+
+  public function getAncestorList(ProductCategory $category = null, $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+
+    $ids = $this->getAncestorIds($category, $params);
+
+    return $this->createListByIds($ids, $params);
+  }
+
+  public function getAncestorIds(ProductCategory $category = null, $params = array())
+  {
+    $this->applyDefaultParameters($params, array(
+      'with_child'  => false,
+      'depth'       => null,
+      'min_level'   => null,
+      'max_level'   => null,
+    ));
+
+    $q = $this->createBaseQuery();
+
+    if ($category)
+    {
+      $q->addWhere('productCategory.lft < ? and productCategory.rgt > ? and productCategory.root_id = ?', array($category->lft, $category->rgt, empty($category->root_id) ? $category->id : $category->root_id, ));
+    }
+
+    if ($category && (null != $params['depth']))
+    {
+      $q->addWhere('productCategory.level >= ?', $category->level + $params['depth']);
+    }
+
+    if (null != $params['min_level'])
+    {
+      $q->addWhere('productCategory.level > ?', $params['min_level'] - 1);
+    }
+
+    if (null != $params['max_level'])
+    {
+      $q->addWhere('productCategory.level < ?', $params['max_level'] + 1);
+    }
+    $categoryIds = $this->getIdsByQuery($q, $params,
+      $category
+      ? "productCategory-{$category->id}/productCategory-ancestor-ids"
+      : 'productCategory-ancestor-ids',
+      $category ? "productCategory-{$category->id}" : 'productCategory'
+    );
+    if ($params['with_child'])
     {
       $categoryIds[] = $category->id;
     }

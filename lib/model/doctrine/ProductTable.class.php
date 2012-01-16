@@ -53,7 +53,7 @@ class ProductTable extends myDoctrineTable
 
   public function getDefaultParameters()
   {
-    $data =  array(
+    $data = array(
       'view'                => false, // list, show
       'group_property'      => false, // группировать свойства товара по группам
       'with_line'           => false,

@@ -386,17 +386,21 @@ class productCatalogActions extends myActions
 
     // SEO ::
     $list = array();
-    $ancestorList = $this->productCategory->getNode()->getAncestors();
-    if ($ancestorList) foreach ($ancestorList as $ancestor)
+    //$ancestorList = $this->productCategory->getNode()->getAncestors();
+    $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
+      'hydrate_array' => true,
+      'select'        => 'productCategory.id, productCategory.name',
+    ));
+    foreach ($ancestorList as $ancestor)
     {
-        $list[] = (string)$ancestor;
+      $list[] = $ancestor['name'];
     }
 
     $list[] = (string)$this->productCategory;
     $title = '%s - интернет-магазин Enter.ru - Москва';
     $this->getResponse()->setTitle(sprintf(
-        $title,
-        implode(' - ', $list)
+      $title,
+      implode(' - ', $list)
     ));
     // :: SEO
 
@@ -463,10 +467,14 @@ class productCatalogActions extends myActions
 
     // SEO ::
     $list = array();
-    $ancestorList = $this->productCategory->getNode()->getAncestors();
-    if ($ancestorList) foreach ($ancestorList as $ancestor)
+    //$ancestorList = $this->productCategory->getNode()->getAncestors();
+    $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
+      'hydrate_array' => true,
+      'select'        => 'productCategory.id, productCategory.name',
+    ));
+    foreach ($ancestorList as $ancestor)
     {
-        $list[] = (string)$ancestor;
+        $list[] = $ancestor['name'];
     }
     $list[] = (string)$this->productCategory;
     $title = '%s - страница %d из %d - интернет-магазин  Enter.ru - '.$this->getUser()->getRegion('name');
