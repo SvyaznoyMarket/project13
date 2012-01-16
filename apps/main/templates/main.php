@@ -61,95 +61,61 @@
         </div>
       </noindex>
 
-    <div class="bigbanner">
-		<div class='bCarouselWrap'>
-			<div class='bCarousel'>
-				<div class='bCarousel__eBtnL leftArrow'></div>
-				<div class='bCarousel__eBtnR rightArrow'></div>
-				<img class="centerImage" src="" alt=""/>
-			</div>
-		</div>
-	</div>
+      <div class="bigbanner">
+        <div class='bCarouselWrap'>
+          <div class='bCarousel'>
+            <div class='bCarousel__eBtnL leftArrow'></div>
+            <div class='bCarousel__eBtnR rightArrow'></div>
+            <img class="centerImage" src="" alt=""/>
+          </div>
+        </div>
+      </div>
 
       <?php include_component('default', 'footer', array('view' => 'main')) ?>
 
       <div class="clear"></div>
     </div>
 
-    <?php include_combined_javascripts() ?>
-    <script>
-      $(document).ready(function() {
+<?php include_combined_javascripts() ?>
+<script>
+	$(document).ready(function() {
 
-  		//var promos = $('#main_banner-data').data('value')
-		var promos = [
-		{ imgb: '/images/enter/bigpromo/img_1_big.jpg', imgs:'/images/enter/img_1_small.jpg', t:4000,
-		url: '/products/2050100005021', alt: 'Гарнитур для ванной Massima 70'},
-		{ imgb: '/images/enter/bigpromo/img_2_big.jpg', imgs:'/images/enter/img_2_small.jpg', t:4000,
-		url: '/products/2020103003911', alt: 'Универсальная соковыжималка Moulinex JU 2100'},
-		{ imgb: '/images/enter/bigpromo/img_3_big.jpg', imgs:'/images/enter/img_3_small.jpg', t:4000,
-		url: '/products/2040502001929', alt: 'Плед из флиса"Зимний узор",130х150см'},
-		{ imgb: '/images/enter/bigpromo/img_4_big.jpg', imgs:'/images/enter/img_4_small.jpg', t:4000,
-		url: '/products/2010106001991', alt: 'Интерактивный говорящий дом "Миссис Гудби"'},
-		{ imgb: '/images/enter/bigpromo/img_5_big.jpg', imgs:'/images/enter/img_5_small.jpg', t:4000,
-		url: '/products/2080501000967', alt: 'Электролобзик Калибр ЛЭМ-450Е'},
-		{ imgb: '/images/enter/bigpromo/img_6_big.jpg', imgs:'/images/enter/img_6_small.jpg', t:4000,
-		url: '/products/2060701001469', alt: 'Фотокамера Зеркальная Canon (EOS 1100D 18-55 Kit) Черный'},
-		{ imgb: '/images/enter/bigpromo/img_7_big.jpg', imgs:'/images/enter/img_7_small.jpg', t:4000,
-		url: '/products/2030000015245', alt: 'Золотое кольцо с топазом'},
-		{ imgb: '/images/enter/bigpromo/img_8_big.jpg', imgs:'/images/enter/img_8_small.jpg', t:4000,
-		url: '/products/2070301000595', alt: 'Чемодан Samsonite Atolas 65 черный'},
-		{ imgb: '/images/enter/bigpromo/img_9_big.jpg', imgs:'/images/enter/img_9_small.jpg', t:4000,
-		url: '/products/2060400002965', alt: 'MAG00060 Magellan: Крокодил настольная игра'},
-		{ imgb: '/images/enter/bigpromo/img_10_big.jpg', imgs:'/images/enter/img_10_small.jpg', t:4000,
-		url: '/products/2050600002773', alt: 'Диван - кровать Сомали'},
-		{ imgb: '/images/enter/bigpromo/img_11_big.jpg', imgs:'/images/enter/img_11_small.jpg', t:4000,
-		url: '/products/2020301000941', alt: 'Фен Philips HP4935/22'},
-		{ imgb: '/images/enter/bigpromo/img_12_big.jpg', imgs:'/images/enter/img_12_small.jpg', t:4000,
-		url: '/products/2040101000996', alt: 'Кувшинный фильтр "Барьер Лайт" + сменная кассета в подарок'},
-		{ imgb: '/images/enter/bigpromo/img_13_big.jpg', imgs:'/images/enter/img_13_small.jpg', t:4000,
-		url: '/products/2010203001047', alt: 'Трусики-подгузники Huggies Little Walkers 5'},
-		{ imgb: '/images/enter/bigpromo/img_14_big.jpg', imgs:'/images/enter/img_14_small.jpg', t:4000,
-		url: '/products/2040404000075', alt: 'Детский настенный светильник Disney Fairies 25 Вт Е14'},
-		{ imgb: '/images/enter/bigpromo/img_15_big.jpg', imgs:'/images/enter/img_15_small.jpg', t:4000,
-		url: '/products/2060201000313', alt: 'Телевизор LCD/LED Samsung 32" Samsung UE32D4000NW'},
-		{ imgb: '/images/enter/bigpromo/img_16_big.jpg', imgs:'/images/enter/img_16_small.jpg', t:4000,
-		url: '/products/2030000048359', alt: 'Женские часы Morgan'},
-		{ imgb: '/images/enter/bigpromo/img_17_big.jpg', imgs:'/images/enter/img_17_small.jpg', t:4000,
-		url: '/products/2070401001089', alt: 'Комплект беговые лыжи, палки и крепления Optima'},
-		{ imgb: '/images/enter/bigpromo/img_18_big.jpg', imgs:'/images/enter/img_18_small.jpg', t:4000,
-		url: '/products/2060400006796', alt: 'Alien vs. Predator - 7" Action Fig - Alien Warrior'}
-		]
+		if( !$('#main_banner-data').length )
+        	return
+		var promos = $('#main_banner-data').data('value')
 
-        /* Shit happens */
-        for(var i=0; i < promos.length; i++ ) {
-          if( typeof(promos[i].imgb) === 'undefined' || typeof(promos[i].imgs) === 'undefined') {
-            promos.splice( i,1 )
-          }
-          if( typeof(promos[i].url) === 'undefined' ) {
-            promos[i].url = ''
-          }
-          if( typeof(promos[i].t) === 'undefined' ) {
-            promos[i].url = 4000
-          }
-          if( typeof(promos[i].alt) === 'undefined' ) {
-            promos[i].url = ''
-          }
-        }
-        var l = promos.length
-        if( l == 0 )
-          return
-        if( l == 1 || l == 2 ) {
-          $('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
-          return
-        }
-
-        /* Preload */
-        var hb = $('<div>').css('display','none')
-        for(var i=0; i < l; i++ ) {
-          $('<img>').attr('src', promos[i].imgb).appendTo( hb )
-          $('<img>').attr('src', promos[i].imgs).appendTo( hb )
-        }
-        $('body').append( hb )
+		/* Shit happens */
+		for(var i=0; i < promos.length; i++ ) {
+			if( typeof(promos[i].imgb) === 'undefined' || typeof(promos[i].imgs) === 'undefined') {
+				promos.splice( i,1 )
+			}
+			if( typeof(promos[i].url) === 'undefined' ) {
+				promos[i].url = ''
+			}
+			if( typeof(promos[i].t) === 'undefined' ) {
+				promos[i].url = 4000
+			}
+			if( typeof(promos[i].alt) === 'undefined' ) {
+				promos[i].url = ''
+			}
+		}
+		var l = promos.length
+		if( l == 0 )
+			return
+                if( l == 1 ) {
+                  $('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
+                  .click( function() {
+                    location.href = $(this).data('url')
+                  })
+                  return
+                }
+		/* Preload */
+		var hb = $('<div>').css('display','none')
+		for(var i=0; i < l; i++ ) {
+			$('<img>').attr('src', promos[i].imgb).appendTo( hb )
+			$('<img>').attr('src', promos[i].imgs).appendTo( hb )
+		}
+		$('body').append( hb )
 
         /* Init */
         $('.leftImage').attr({ "src": promos[l - 1].imgs, "alt": promos[l - 1].alt, "title": promos[l - 1].alt})
@@ -184,6 +150,7 @@
         $('.rightImage').click( function() { goSlide( 1 ) } )
         $('.centerImage').click( function() {
           clearTimeout( idto )
+          console.log($(this).data('url'))
           location.href = $(this).data('url')
         })
         $('.promos').click( function(){ location.href = $(this).data('url') } )
