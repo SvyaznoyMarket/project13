@@ -76,8 +76,7 @@ class ProductCommentTable extends myDoctrineTable
 
     $q->leftJoin('productComment.User user')
       ->addWhere('productComment.product_id = ?', $product->id)
-	  ->addWhere('parent_id = ?', $params['parent_id'])
-      //->useResultCache(true, null, $this->getQueryHash("product-{$product->id}/productComment-all", $params))
+      ->addWhere('parent_id = ?', $params['parent_id'])
     ;
 
     $this->setQueryParameters($q, $params);

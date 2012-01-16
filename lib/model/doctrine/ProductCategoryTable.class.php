@@ -206,8 +206,6 @@ class ProductCategoryTable extends myDoctrineTable
     $q->orWhereIn('productCategory.id', $notEmptyCats);
     $q->orderBy('productCategory.lft');
 
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-sub', $params));
-
     return $q->execute();
 
     $ids = $this->getIdsByQuery($q);
@@ -362,7 +360,6 @@ class ProductCategoryTable extends myDoctrineTable
       ->groupBy('tagProductRelation.tag_id')
       ->orderBy('count(tagProductRelation.product_id) DESC')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-      ->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/tag-ids', array_merge($params, array('categoryIds' => $categoryIds))));
     ;
 
     return $q->execute();

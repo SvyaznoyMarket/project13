@@ -191,8 +191,6 @@ class ProductTypeTable extends myDoctrineTable
       ;
     }
 
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-'.$productCategory->id.'/productType-all', $params));
-
     return $q->execute();
   }
 }
