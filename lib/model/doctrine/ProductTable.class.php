@@ -643,6 +643,8 @@ class ProductTable extends myDoctrineTable
 
   public function countByCategory(ProductCategory $category, array $params = array())
   {
+    $return = 0;
+
     $this->applyDefaultParameters($params, array(
       'view' => 'list',
     ));
@@ -651,30 +653,51 @@ class ProductTable extends myDoctrineTable
 
     if ($category->has_line)
     {
-        $q->innerJoin('product.Line line')
-          ->innerJoin('line.Product line_product')
-          ->innerJoin('line_product.Category category WITH category.id = ?', $category->id)
-          ->addWhere('product.is_lines_main = ?', 1)
-        ;
-      //$q->addWhere('product.line_id IS NOT NULL')
-      //  ->addWhere('product.is_lines_main = ?', 1);
-        //->groupBy('product.line_id');
+      $q->innerJoin('product.Line line')
+        ->innerJoin('line.Product line_product')
+        ->innerJoin('line_product.Category category WITH category.id = ?', $category->id)
+        ->addWhere('product.is_lines_main = ?', 1)
+      ;
+      /*
+      $q->addWhere('product.line_id IS NOT NULL')
+        ->addWhere('product.is_lines_main = ?', 1);
+        ->groupBy('product.line_id')
+      ;
+       */
     }
     else
     {
       $ids = $category->getDescendantIds();
       $ids[] = $category->id;
 
-      $q->innerJoin('product.Category category')
-        ->whereIn('category.id', $ids)
+      $q->innerJoin('product.CategoryRelation productCategoryRelation')
+        ->whereIn('productCategoryRelation.product_category_id', $ids)
       ;
     }
 
     $this->setQueryParameters($q, $params);
 
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params));
+    if (sfConfig::get('app_cache_enabled', false))
+    {
+      $cache = $this->getCache();
 
-    return $q->count();
+      $key = $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params);
+      if ($cached = $cache->get($key))
+      {
+        return $cached;
+      }
+
+      $return = $q->count();
+      if ($return)
+      {
+        $cache->set($key, $return, 86400); // обновление кеша через 24 часа
+      }
+    }
+    else {
+      $return = $q->count();
+    }
+
+    return $return;
   }
 
   public function getByCategory(ProductCategory $category, array $params = array())
