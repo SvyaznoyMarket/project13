@@ -67,24 +67,22 @@ class myDoctrineTable extends Doctrine_Table
       return $this->getResult($id, is_scalar($id));
     }
 
-    // если гидрация массивом, тогда использовать кеш
-    if (sfConfig::get('app_cache_enabled', false) && isset($params['hydrate_array']) && $params['hydrate_array'] && is_scalar($id))
+    $key = $this->getRecordQueryHash($id, $params);
+    if (is_scalar($id) && isset($params['hydrate_array']) && $params['hydrate_array'])
     {
-      $cache = $this->getCache();
-
-      $key = $this->getRecordQueryHash($id, $params);
-      if ($cached = $cache->get($key))
+      if ($record = $this->getCachedByKey($key))
       {
-        return $cached;
+        return $record;
       }
-
-      $record = $this->getRecordById($id, $params);
-      if ($record)
-      {
-        $cache->set($key, $record);
-        foreach ($this->getCacheTags($record) as $tag)
+      else {
+        $record = $this->getRecordById($id, $params);
+        if ($this->isCacheEnabled() && $record)
         {
-          $cache->addTag($tag, $key);
+          $this->getCache()->set($key, $record);
+          foreach ($this->getCacheTags($record) as $tag)
+          {
+            $this->getCache()->addTag($tag, $key);
+          }
         }
       }
     }
@@ -417,10 +415,10 @@ class myDoctrineTable extends Doctrine_Table
 
     return $returnId
       ? Doctrine_Core::getTable($model)->createQuery()
-          ->select('id')
-          ->where('core_id = ?', $coreId)
-          ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-          ->fetchOne()
+        ->select('id')
+        ->where('core_id = ?', $coreId)
+        ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+        ->fetchOne()
       : Doctrine_Core::getTable($model)->findOneByCoreId($coreId)
     ;
   }

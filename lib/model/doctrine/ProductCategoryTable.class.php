@@ -345,8 +345,6 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getTagIds(ProductCategory $category = null, array $params = array())
   {
-    $return = array();
-
     if (!$category)
     {
       return false;

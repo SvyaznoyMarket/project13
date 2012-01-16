@@ -609,40 +609,29 @@ class ProductTable extends myDoctrineTable
 
   public function getMinPriceByCategory(ProductCategory $category, array $params = array())
   {
-    $return = 0;
-
     $this->applyDefaultParameters($params);
 
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash('productCategory-'.$category->id.'/product-minPrice', $params);
 
-    $q->select('MIN(productPrice.price) as price_min')
-      ->innerJoin('product.CategoryRelation productCategoryProductRelation')
-      ->innerJoin('product.ProductPrice productPrice')
-      ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
-      ->addWhere('productPrice.price > ?', 0)
-      ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-    ;
-
-    if (sfConfig::get('app_cache_enabled', false))
+    $return = $this->getCachedByKey($key);
+    if (!$return)
     {
-      $cache = $this->getCache();
+      $q = $this->createBaseQuery($params);
 
-      $key = $this->getQueryHash('productCategory-'.$category->id.'/product-minPrice', $params);
-      if ($cached = $cache->get($key))
-      {
-        return $cached;
-      }
+      $q->select('MIN(productPrice.price) as price_min')
+        ->innerJoin('product.CategoryRelation productCategoryProductRelation')
+        ->innerJoin('product.ProductPrice productPrice')
+        ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
+        ->addWhere('productPrice.price > ?', 0)
+        ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
+        ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ;
 
       $return = $q->fetchOne();
-      if ($return)
+      if ($this->isCacheEnabled())
       {
-        $cache->set($key, $return, 86400); // обновление кеша через 24 часа
+        $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
       }
-    }
-    else
-    {
-      $return = $q->fetchOne();
     }
 
     return $return;
@@ -650,40 +639,29 @@ class ProductTable extends myDoctrineTable
 
   public function getMaxPriceByCategory(ProductCategory $category, array $params = array())
   {
-    $return = 0;
-
     $this->applyDefaultParameters($params);
 
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash('productCategory-'.$category->id.'/product-maxPrice', $params);
 
-    $q->select('MAX(productPrice.price) as price_min')
-      ->innerJoin('product.CategoryRelation productCategoryProductRelation')
-      ->innerJoin('product.ProductPrice productPrice')
-      ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
-      ->addWhere('productPrice.price > ?', 0)
-      ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-    ;
-
-    if (sfConfig::get('app_cache_enabled', false))
+    $return = $this->getCachedByKey($key);
+    if (!$return)
     {
-      $cache = $this->getCache();
+      $q = $this->createBaseQuery($params);
 
-      $key = $this->getQueryHash('productCategory-'.$category->id.'/product-maxPrice', $params);
-      if ($cached = $cache->get($key))
-      {
-        return $cached;
-      }
+      $q->select('MAX(productPrice.price) as price_min')
+        ->innerJoin('product.CategoryRelation productCategoryProductRelation')
+        ->innerJoin('product.ProductPrice productPrice')
+        ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
+        ->addWhere('productPrice.price > ?', 0)
+        ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
+        ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ;
 
       $return = $q->fetchOne();
-      if ($return)
+      if ($this->isCacheEnabled())
       {
-        $cache->set($key, $return, 86400); // обновление кеша через 24 часа
+        $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
       }
-    }
-    else
-    {
-      $return = $q->fetchOne();
     }
 
     return $return;
@@ -691,58 +669,48 @@ class ProductTable extends myDoctrineTable
 
   public function countByCategory(ProductCategory $category, array $params = array())
   {
-    $return = 0;
-
     $this->applyDefaultParameters($params, array(
       'view' => 'list',
     ));
 
-    $q = $this->createBaseQuery($params);
-
-    if ($category->has_line)
+    $key = $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params);
+    $return = $this->getCachedByKey($key);
+    if (!$return)
     {
-      $q->innerJoin('product.Line line')
-        ->innerJoin('line.Product line_product')
-        ->innerJoin('line_product.Category category WITH category.id = ?', $category->id)
-        ->addWhere('product.is_lines_main = ?', 1)
-      ;
-      /*
-      $q->addWhere('product.line_id IS NOT NULL')
-        ->addWhere('product.is_lines_main = ?', 1);
-        ->groupBy('product.line_id')
-      ;
-       */
-    }
-    else
-    {
-      $ids = $category->getDescendantIds();
-      $ids[] = $category->id;
+      $q = $this->createBaseQuery($params);
 
-      $q->innerJoin('product.CategoryRelation productCategoryRelation')
-        ->whereIn('productCategoryRelation.product_category_id', $ids)
-      ;
-    }
-
-    $this->setQueryParameters($q, $params);
-
-    if (sfConfig::get('app_cache_enabled', false))
-    {
-      $cache = $this->getCache();
-
-      $key = $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params);
-      if ($cached = $cache->get($key))
+      if ($category->has_line)
       {
-        return $cached;
+        $q->innerJoin('product.Line line')
+          ->innerJoin('line.Product line_product')
+          ->innerJoin('line_product.Category category WITH category.id = ?', $category->id)
+          ->addWhere('product.is_lines_main = ?', 1)
+        ;
+        /*
+        $q->addWhere('product.line_id IS NOT NULL')
+          ->addWhere('product.is_lines_main = ?', 1);
+          ->groupBy('product.line_id')
+        ;
+         */
+      }
+      else
+      {
+        $ids = $category->getDescendantIds();
+        $ids[] = $category->id;
+
+        $q->innerJoin('product.CategoryRelation productCategoryRelation')
+          ->whereIn('productCategoryRelation.product_category_id', $ids)
+        ;
       }
 
+      $this->setQueryParameters($q, $params);
+
       $return = $q->count();
-      if ($return)
+      if ($this->isCacheEnabled())
       {
-        $cache->set($key, $return, 86400); // обновление кеша через 24 часа
+        // TODO: добавить тег ProductCategory-{$category}/product-count и сбрасывать по нему если обновился ProductState
+        $this->getCache()->set($key, $return, 14400); // обновление кеша через 4 часа
       }
-    }
-    else {
-      $return = $q->count();
     }
 
     return $return;

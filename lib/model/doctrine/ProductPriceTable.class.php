@@ -30,40 +30,31 @@ class ProductPriceTable extends myDoctrineTable
 
     $this->applyDefaultParameters($params);
 
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash('product-'.$product_id.'/productPrice-default', $params);
 
-    $q->select('productPrice.*');
-
-    $q->innerJoin('productPrice.PriceList priceList');
-
-    $q->addWhere('productPrice.product_id = ?', $product_id);
-    $q->addWhere('priceList.is_default = ?', 1);
-
-    if ($params['hydrate_array'])
+    $return = $this->getCachedByKey($key);
+    if (!$return)
     {
-      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
-    }
+      $q = $this->createBaseQuery($params);
 
-    if (sfConfig::get('app_cache_enabled', false))
-    {
-      $cache = $this->getCache();
+      $q->select('productPrice.*');
 
-      $key = $this->getQueryHash('product-'.$product_id.'/productPrice-default', $params);
-      if ($cached = $cache->get($key))
+      $q->innerJoin('productPrice.PriceList priceList');
+
+      $q->addWhere('productPrice.product_id = ?', $product_id);
+      $q->addWhere('priceList.is_default = ?', 1);
+
+      if ($params['hydrate_array'])
       {
-        return $cached;
+        $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
       }
 
       $return = $q->fetchOne();
-      if ($return)
+      if ($this->isCacheEnabled())
       {
-        $cache->set($key, $return);
-        $cache->addTag("product-{$product_id}", $key);
+        $this->getCache()->set($key, $return);
+        $this->getCache()->addTag("product-{$product_id}", $key);
       }
-    }
-    else
-    {
-      $return = $q->fetchOne();
     }
 
     return $return;
