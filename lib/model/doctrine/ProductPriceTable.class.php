@@ -124,6 +124,7 @@ class ProductPriceTable extends myDoctrineTable
       ;
 
       $products = $q->execute();
+      myDebug::dump($products);
 
       foreach ($products as $product)
       {
@@ -138,5 +139,16 @@ class ProductPriceTable extends myDoctrineTable
     }
 
     return array_values($return);
+  }
+
+  public function getCacheTags($record)
+  {
+    $tags = array();
+    if (!empty($record['product_id']))
+    {
+      $tags[] = "product-{$record['product_id']}";
+    }
+
+    return $tags;
   }
 }
