@@ -124,7 +124,6 @@ class ProductPriceTable extends myDoctrineTable
       ;
 
       $products = $q->execute();
-      myDebug::dump($products);
 
       foreach ($products as $product)
       {
