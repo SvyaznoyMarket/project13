@@ -93,6 +93,16 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
+    if ($params['with_filters'])
+    {
+      $q->leftJoin('productCategory.FilterGroup productFilterGroup');
+      $q->leftJoin('productFilterGroup.Filter productFilter')
+        ->addOrderBy('productFilter.position')
+      ;
+
+      $q->leftJoin('productFilter.Property productProperty');
+    }
+
     $this->setQueryParameters($q);
 
     $q->whereId($id);
@@ -103,6 +113,7 @@ class ProductCategoryTable extends myDoctrineTable
     }
 
     $list = $q->execute();
+    /*
     foreach ($list as $i => $record)
     {
       if ($params['with_filters'] && $record['filter_group_id'])
@@ -115,6 +126,7 @@ class ProductCategoryTable extends myDoctrineTable
         $list[$i] = $record;
       }
     }
+     */
 
     return $this->getResult($list, is_scalar($id));
   }
