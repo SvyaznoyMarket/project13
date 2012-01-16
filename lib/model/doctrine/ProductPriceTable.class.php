@@ -28,8 +28,6 @@ class ProductPriceTable extends myDoctrineTable
     $q->addWhere('productPrice.product_id = ?', $product_id);
     $q->addWhere('priceList.is_default = ?', 1);
 
-    $q->useResultCache(true, null, $this->getRecordQueryHash($product_id, $params));
-
     $result = $q->fetchOne();
 
     return $result;
@@ -46,8 +44,6 @@ class ProductPriceTable extends myDoctrineTable
 
     $q->addWhere('productPrice.product_id = ?', $product_id);
     //$q->addWhere('priceList.is_default = ?', 1);
-
-    $q->useResultCache(true, null, $this->getRecordQueryHash($product_id, $params));
 
     $result = $q->fetchOne();
 
