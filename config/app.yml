@@ -19,9 +19,9 @@ all:
     timeout: 2000
     image_url:
       - 'http://fs01.enter.ru/4/1/230x302/'
-      - 'http://fs01.enter.ru/4/1/640x252/'
+      - 'http://fs01.enter.ru/4/1/768x302/'
 #      - 'http://core.ent3.ru/upload/4/1/230x302/'
-#      - 'http://core.ent3.ru/upload/4/1/640x252/'
+#      - 'http://core.ent3.ru/upload/4/1/768x302/'
 
   product:
     max_items:              10                      # максимально количество записей для списка товаров (по умолчанию)
