@@ -607,6 +607,8 @@ class ProductTable extends myDoctrineTable
 
   public function getMinPriceByCategory(ProductCategory $category, array $params = array())
   {
+    $return = 0;
+
     $this->applyDefaultParameters($params);
 
     $q = $this->createBaseQuery($params);
@@ -620,11 +622,34 @@ class ProductTable extends myDoctrineTable
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
-    return $q->fetchOne();
+    if (sfConfig::get('app_cache_enabled', false))
+    {
+      $cache = $this->getCache();
+
+      $key = $this->getQueryHash('productCategory-'.$category->id.'/product-minPrice', $params);
+      if ($cached = $cache->get($key))
+      {
+        return $cached;
+      }
+
+      $return = $q->fetchOne();
+      if ($return)
+      {
+        $cache->set($key, $return, 86400); // обновление кеша через 24 часа
+      }
+    }
+    else
+    {
+      return $q->fetchOne();
+    }
+
+    return $return;
   }
 
   public function getMaxPriceByCategory(ProductCategory $category, array $params = array())
   {
+    $return = 0;
+
     $this->applyDefaultParameters($params);
 
     $q = $this->createBaseQuery($params);
@@ -638,7 +663,28 @@ class ProductTable extends myDoctrineTable
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
-    return $q->fetchOne();
+    if (sfConfig::get('app_cache_enabled', false))
+    {
+      $cache = $this->getCache();
+
+      $key = $this->getQueryHash('productCategory-'.$category->id.'/product-maxPrice', $params);
+      if ($cached = $cache->get($key))
+      {
+        return $cached;
+      }
+
+      $return = $q->fetchOne();
+      if ($return)
+      {
+        $cache->set($key, $return, 86400); // обновление кеша через 24 часа
+      }
+    }
+    else
+    {
+      return $q->fetchOne();
+    }
+
+    return $return;
   }
 
   public function countByCategory(ProductCategory $category, array $params = array())
