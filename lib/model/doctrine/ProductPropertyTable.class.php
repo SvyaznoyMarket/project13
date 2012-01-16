@@ -75,35 +75,47 @@ class ProductPropertyTable extends myDoctrineTable
   */
   public function getForFilter(ProductCategory $category = null)
   {
+    $return = $this->createList();
+
     if (!$category)
     {
       return false;
     }
 
-    //т.к. фильтры пока используются только для категорый без подкатегорий, сэкономим один запрос :)
-    //$categoryIds = ProductCategoryTable::getInstance()->getDescendatIds($category);
-    $categoryIds = array($category->id, );
+    $key = $this->getQueryHash('productCategory-'.$category['id'].'/productProperty-all', array($category['id']));
 
-    //трехэтажный запрос, конечно, ниочень, но лучше не получилось.
-    //можно попобовать оптимизтровать
-    $q = $this->createBaseQuery();
-    $q->select('productProperty.*, option.*')
-      ->innerJoin('productProperty.ProductRelation productRelation INDEXBY id')
-      //->innerJoin('productRelation.Product product')
-      ->innerJoin('productRelation.Product product WITH product.view_list = ?', 1)
-      ->innerJoin('productRelation.Option relationOption')
-      ->innerJoin('product.CategoryRelation categoryRelation')
-      ->innerJoin('productProperty.Option option WITH option.id = relationOption.id')
-      ->andWhere('productRelation.option_id IS NOT NULL')
-      ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
-      ->groupBy('productRelation.option_id')
-      ->orderBy('count(productRelation.product_id) DESC')
-      //->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
-    ;
+    $return = $this->getCachedByKey($key);
+    //$return = false;
+    if (!$return)
+    {
+      //т.к. фильтры пока используются только для категорый без подкатегорий, сэкономим один запрос :)
+      //$categoryIds = ProductCategoryTable::getInstance()->getDescendatIds($category);
+      $categoryIds = array($category['id']);
 
-    //формирую массив property_id => array(option_id)
-    $propertiesForFilter = array();
+      //трехэтажный запрос, конечно, ниочень, но лучше не получилось.
+      //можно попобовать оптимизтровать
+      $q = $this->createBaseQuery();
+      $q->select('productProperty.*, option.*')
+        ->innerJoin('productProperty.ProductRelation productRelation INDEXBY id')
+        //->innerJoin('productRelation.Product product')
+        ->innerJoin('productRelation.Product product WITH product.view_list = ?', 1)
+        ->innerJoin('productRelation.Option relationOption')
+        ->innerJoin('product.CategoryRelation categoryRelation')
+        ->innerJoin('productProperty.Option option WITH option.id = relationOption.id')
+        ->andWhere('productRelation.option_id IS NOT NULL')
+        ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
+        ->groupBy('productRelation.option_id')
+        ->orderBy('count(productRelation.product_id) DESC')
+        //->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
+      ;
 
-    return $q->execute();//$propertiesForFilter;
+      $return = $q->execute();
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
+      }
+    }
+
+    return $return;
   }
 }
