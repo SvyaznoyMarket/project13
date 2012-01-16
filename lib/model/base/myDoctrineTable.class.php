@@ -429,4 +429,14 @@ class myDoctrineTable extends Doctrine_Table
   {
     return myCache::getInstance();
   }
+
+  public function getCachedByKey($key)
+  {
+    return sfConfig::get('app_cache_enabled', false) ? $this->getCache()->get($key) : false;
+  }
+
+  public function isCacheEnabled()
+  {
+    return sfConfig::get('app_cache_enabled', false);
+  }
 }
