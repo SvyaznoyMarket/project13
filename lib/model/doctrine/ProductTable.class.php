@@ -169,7 +169,9 @@ class ProductTable extends myDoctrineTable
     {
       if (empty($record['ProductPrice']))
       {
-        $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
+        $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id'], array(
+          'hydrate_array' => $params['hydrate_array'],
+        ));
         //$prices = ProductPriceTable::getInstance()->getByProductId($record['id']);
         if ($prices)
         {
@@ -640,7 +642,7 @@ class ProductTable extends myDoctrineTable
     }
     else
     {
-      return $q->fetchOne();
+      $return = $q->fetchOne();
     }
 
     return $return;
@@ -681,7 +683,7 @@ class ProductTable extends myDoctrineTable
     }
     else
     {
-      return $q->fetchOne();
+      $return = $q->fetchOne();
     }
 
     return $return;

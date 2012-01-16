@@ -17,20 +17,54 @@ class ProductPriceTable extends myDoctrineTable
       return Doctrine_Core::getTable('ProductPrice');
   }
 
+  public function getDefaultParameters()
+  {
+    return array(
+      'hydrate_array' => false,
+    );
+  }
+
   public function getDefaultByProductId($product_id, array $params = array())
   {
     $this->applyDefaultParameters($params);
 
     $q = $this->createBaseQuery($params);
 
+    $q->select('productPrice.*');
+
     $q->innerJoin('productPrice.PriceList priceList');
 
     $q->addWhere('productPrice.product_id = ?', $product_id);
     $q->addWhere('priceList.is_default = ?', 1);
 
-    $result = $q->fetchOne();
+    if ($params['hydrate_array'])
+    {
+      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    }
 
-    return $result;
+    if (sfConfig::get('app_cache_enabled', false))
+    {
+      $cache = $this->getCache();
+
+      $key = $this->getQueryHash('product-'.$product_id.'/productPrice-default', $params);
+      if ($cached = $cache->get($key))
+      {
+        return $cached;
+      }
+
+      $return = $q->fetchOne();
+      if ($return)
+      {
+        $cache->set($key, $return);
+        $cache->addTag("product-{$product_id}", $key);
+      }
+    }
+    else
+    {
+      $return = $q->fetchOne();
+    }
+
+    return $return;
   }
 
   public function getByProductId($product_id, array $params = array())
@@ -38,6 +72,8 @@ class ProductPriceTable extends myDoctrineTable
     $this->applyDefaultParameters($params);
 
     $q = $this->createBaseQuery($params);
+
+    $q->select('productPrice.*');
 
     $q->innerJoin('productPrice.PriceList priceList')
       ->innerJoin('priceList.Region region WITH region.id = ?', sfContext::getInstance()->getUser()->getRegion('id'));
