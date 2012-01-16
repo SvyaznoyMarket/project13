@@ -26,6 +26,8 @@ class ProductPriceTable extends myDoctrineTable
 
   public function getDefaultByProductId($product_id, array $params = array())
   {
+    $return = false;
+
     $this->applyDefaultParameters($params);
 
     $q = $this->createBaseQuery($params);
