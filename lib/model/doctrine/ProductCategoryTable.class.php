@@ -88,7 +88,7 @@ class ProductCategoryTable extends myDoctrineTable
   public function getRecordById($id, array $params = array())
   {
     $this->applyDefaultParameters($params, array(
-      'with_filters' => true,
+      'with_filters' => false,
     ));
 
     $q = $this->createBaseQuery($params);
