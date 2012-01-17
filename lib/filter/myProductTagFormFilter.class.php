@@ -36,10 +36,19 @@ class myProductTagFormFilter extends myProductFormFilter
     // виджет производителя
     if ($this->getOption('with_creator', false))
     {
-      $choices = CreatorTable::getInstance()
-        ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name', 'with_descendat' => true, 'for_filter' => true, 'order' => 'creator.name'))
-        ->toKeyValueArray('id', 'name')
-      ;
+      $choices = array();
+      foreach (CreatorTable::getInstance()
+        ->getListByProductCategory($productCategory, array(
+          'select'         => 'creator.id, creator.name',
+          'with_descendat' => true,
+          'for_filter'     => true,
+          'order'          => 'creator.name',
+          'hydrate_array'  => true,
+        )
+      ) as $v) {
+        $choices[$v['id']] = $v['name'];
+      }
+
       if (count($choices) > 1)
       {
         $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
