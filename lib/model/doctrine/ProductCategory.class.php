@@ -164,7 +164,8 @@ class ProductCategory extends BaseProductCategory
       $propertyIds[$property['id']] = $key;
     }
 
-    foreach ($this->FilterGroup->getFilterList(array('order' => 'productFilter.position')) as $filter)
+    //foreach ($this->FilterGroup->getFilterList(array('order' => 'productFilter.position')) as $filter)
+    foreach ($this->FilterGroup->Filter as $filter)
     {
       if (false
         || (('choice' == $filter->type) && isset($propertyIds[$filter->property_id]))
