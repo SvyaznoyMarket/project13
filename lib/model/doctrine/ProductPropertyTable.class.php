@@ -85,7 +85,6 @@ class ProductPropertyTable extends myDoctrineTable
     $key = $this->getQueryHash('productCategory-'.$category['id'].'/productProperty-all', array($category['id']));
 
     $return = $this->getCachedByKey($key);
-    //$return = false;
     if (!$return)
     {
       //т.к. фильтры пока используются только для категорый без подкатегорий, сэкономим один запрос :)
