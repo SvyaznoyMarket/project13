@@ -53,7 +53,7 @@ class ProductTable extends myDoctrineTable
 
   public function getDefaultParameters()
   {
-    $data =  array(
+    $data = array(
       'view'                => false, // list, show
       'group_property'      => false, // группировать свойства товара по группам
       'with_line'           => false,
@@ -155,119 +155,126 @@ class ProductTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    $q->addWhere('product.id = ?', $id);
+    // sets id clause
+    $q->whereId($id);
 
+    // sets hydration mode
     if ($params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     }
 
-    $record = $q->fetchOne();
-
-    if (!$record)
+    $list = $q->execute();
+    foreach ($list as $i => $record)
     {
-      return $record;
-    }
-
-    if (empty($record['ProductPrice']))
-    {
-      $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
-      //$prices = ProductPriceTable::getInstance()->getByProductId($record['id']);
-      if ($prices)
+      if (empty($record['ProductPrice']))
       {
-        if ($record instanceof Product)
+        $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id'], array(
+          'hydrate_array' => $params['hydrate_array'],
+        ));
+        //$prices = ProductPriceTable::getInstance()->getByProductId($record['id']);
+        if ($prices)
         {
-          $record->mapValue('defaultProductPrice', $prices);
-        }
-        else {
-          $record['defaultProductPrice'] = $prices;
-        }
-        //$record['price'] = $prices->price;
-      }
-    }
-
-    if (!empty($record['State'][0]))
-    {
-      $record['view_show'] = $record['State'][0]['view_show'];
-      $record['view_list'] = $record['State'][0]['view_list'];
-      $record['is_instock'] = $record['State'][0]['is_instock'];
-      $record['status_id'] = $record['State'][0]['status_id'];
-    }
-
-    $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
-      'view'           =>
-        $params['with_properties']
-        ? ($params['property_view'] ? $params['property_view'] : $params['view'])
-        : false
-      ,
-      'group_property' => $params['group_property'],
-      'hydrate_array'  => $params['hydrate_array'],
-    ));
-
-    if ($params['with_properties'])
-    {
-      $productPropertyRelationTable = ProductPropertyRelationTable::getInstance();
-
-      // группировка параметров продукта по свойствам продукта
-      $productPropertyRelationArray = array();
-      foreach ($record['PropertyRelation'] as $propertyRelation)
-      {
-        // temporary fix
-        //$realValue = $propertyRelation['real_value'];
-        $realValue = $productPropertyRelationTable->getRealValue($propertyRelation);
-        if (false
-          || ('' === $realValue)
-          || (null === $realValue)
-          || (0 === $realValue)
-          || (0.0000 === $realValue)
-          || ('0.0000' === $realValue)
-          || ('0' === $realValue)
-        ) continue;
-
-        if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
-        {
-          $productPropertyRelationArray[$propertyRelation['property_id']] = array();
-        }
-        $productPropertyRelationArray[$propertyRelation['property_id']][] = $propertyRelation;
-      }
-
-      // тип товара
-      foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
-      {
-        if (!isset($productPropertyRelationArray[$propertyRelation['property_id']])/* && null !== $productPropertyRelationArray[$propertyRelation['property_id']]*/) continue;
-
-        $record['Parameter'][] = new ProductParameter($propertyRelation, $productPropertyRelationArray[$propertyRelation['property_id']]);
-      }
-
-      $parameterGroup = array();
-      // группировка параметров товара по группам
-      if ($params['group_property'])
-      {
-        foreach ($record['Type']['PropertyGroupRelation'] as $propertyGroupRelation)
-        {
-          $propertyGroup = $propertyGroupRelation['PropertyGroup'];
-          $productParameterArray = array();
-          foreach ($record['Parameter'] as $productParameter)
+          if ($record instanceof myDoctrineRecord)
           {
-            if ($productParameter->getGroupId() == $propertyGroup['id'])
-            {
-              $productParameterArray[] = $productParameter;
-            }
+            $record->mapValue('defaultProductPrice', $prices);
           }
-          //myDebug::dump($propertyGroup);
-          $parameterGroup[$propertyGroupRelation['position']] = new ProductParameterGroup($propertyGroup, $productParameterArray);
-          //$record['ParameterGroup'][$propertyGroup['ProductTypePropertyGroupRelation'][0]->position] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+          else {
+            $record['defaultProductPrice'] = $prices;
+          }
+          //$record['price'] = $prices->price;
+        }
+      }
+
+      if (!empty($record['State'][0]))
+      {
+        $record['view_show'] = $record['State'][0]['view_show'];
+        $record['view_list'] = $record['State'][0]['view_list'];
+        $record['is_instock'] = $record['State'][0]['is_instock'];
+        $record['status_id'] = $record['State'][0]['status_id'];
+      }
+
+      $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
+        'view'           =>
+          $params['with_properties']
+          ? ($params['property_view'] ? $params['property_view'] : $params['view'])
+          : false
+        ,
+        'group_property' => $params['group_property'],
+        'hydrate_array'  => $params['hydrate_array'],
+      ));
+
+      if ($params['with_properties'])
+      {
+        $productPropertyRelationTable = ProductPropertyRelationTable::getInstance();
+
+        // группировка параметров продукта по свойствам продукта
+        $productPropertyRelationArray = array();
+        foreach ($record['PropertyRelation'] as $propertyRelation)
+        {
+          // temporary fix
+          //$realValue = $propertyRelation['real_value'];
+          $realValue = $productPropertyRelationTable->getRealValue($propertyRelation);
+          if (false
+            || ('' === $realValue)
+            || (null === $realValue)
+            || (0 === $realValue)
+            || (0.0000 === $realValue)
+            || ('0.0000' === $realValue)
+            || ('0' === $realValue)
+          ) continue;
+
+          if (!isset($productPropertyRelationArray[$propertyRelation['property_id']]))
+          {
+            $productPropertyRelationArray[$propertyRelation['property_id']] = array();
+          }
+          $productPropertyRelationArray[$propertyRelation['property_id']][] = $propertyRelation;
         }
 
-        ksort($parameterGroup);
-        foreach ($parameterGroup as $productParameterGroup)
+        // тип товара
+        foreach ($record['Type']['PropertyRelation'] as $propertyRelation)
         {
-          $record['ParameterGroup'][] = $productParameterGroup;
+          if (!isset($productPropertyRelationArray[$propertyRelation['property_id']])/* && null !== $productPropertyRelationArray[$propertyRelation['property_id']]*/) continue;
+
+          $record['Parameter'][] = new ProductParameter($propertyRelation, $productPropertyRelationArray[$propertyRelation['property_id']]);
         }
+
+        $parameterGroup = array();
+        // группировка параметров товара по группам
+        if ($params['group_property'])
+        {
+          foreach ($record['Type']['PropertyGroupRelation'] as $propertyGroupRelation)
+          {
+            $propertyGroup = $propertyGroupRelation['PropertyGroup'];
+            $productParameterArray = array();
+            foreach ($record['Parameter'] as $productParameter)
+            {
+              if ($productParameter->getGroupId() == $propertyGroup['id'])
+              {
+                $productParameterArray[] = $productParameter;
+              }
+            }
+            //myDebug::dump($propertyGroup);
+            $parameterGroup[$propertyGroupRelation['position']] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+            //$record['ParameterGroup'][$propertyGroup['ProductTypePropertyGroupRelation'][0]->position] = new ProductParameterGroup($propertyGroup, $productParameterArray);
+          }
+
+          ksort($parameterGroup);
+          foreach ($parameterGroup as $productParameterGroup)
+          {
+            $record['ParameterGroup'][] = $productParameterGroup;
+          }
+        }
+      }
+
+      if (is_array($record))
+      {
+        $record['is_insale'] = $this->isInsale($record);
+        $list[$i] = $record;
       }
     }
 
-    return $record;
+    return $this->getResult($list, is_scalar($id));
   }
 
   public function getForRoute(array $params)
@@ -320,7 +327,6 @@ class ProductTable extends myDoctrineTable
   {
     $this->applyDefaultParameters($params, array(
       'creator'  => false,
-      'only_ids' => false,
     ));
 
     $q = $this->createBaseQuery($params);
@@ -332,12 +338,13 @@ class ProductTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    //$ids = $this->getIdsByQuery($q, $params, 'productCategory-'.$category->id.'/product-ids');
-    $ids = $this->getIdsByQuery($q, $params);
-    if ($params['only_ids'])
+    // temporary fix
+    if ($category->has_line)
     {
-      return $ids;
+      $params['with_line'] = true;
     }
+
+    $ids = $this->getIdsByQuery($q, $params, 'productCategory-'.$category->id.'/product-ids');
 
     return $this->createListByIds($ids, $params);
   }
@@ -604,36 +611,60 @@ class ProductTable extends myDoctrineTable
   {
     $this->applyDefaultParameters($params);
 
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash('productCategory-'.$category->id.'/product-minPrice', $params);
 
-    $q->select('MIN(productPrice.price) as price_min')
-      ->innerJoin('product.CategoryRelation productCategoryProductRelation')
-      ->innerJoin('product.ProductPrice productPrice')
-      ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
-      ->addWhere('productPrice.price > ?', 0)
-      ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-    ;
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
 
-    return $q->fetchOne();
+      $q->select('MIN(productPrice.price) as price_min')
+        ->innerJoin('product.CategoryRelation productCategoryProductRelation')
+        ->innerJoin('product.ProductPrice productPrice')
+        ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
+        ->addWhere('productPrice.price > ?', 0)
+        ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
+        ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ;
+
+      $return = $q->fetchOne();
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
+      }
+    }
+
+    return $return;
   }
 
   public function getMaxPriceByCategory(ProductCategory $category, array $params = array())
   {
     $this->applyDefaultParameters($params);
 
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash('productCategory-'.$category->id.'/product-maxPrice', $params);
 
-    $q->select('MAX(productPrice.price) as price_min')
-      ->innerJoin('product.CategoryRelation productCategoryProductRelation')
-      ->innerJoin('product.ProductPrice productPrice')
-      ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
-      ->addWhere('productPrice.price > ?', 0)
-      ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-    ;
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
 
-    return $q->fetchOne();
+      $q->select('MAX(productPrice.price) as price_min')
+        ->innerJoin('product.CategoryRelation productCategoryProductRelation')
+        ->innerJoin('product.ProductPrice productPrice')
+        ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
+        ->addWhere('productPrice.price > ?', 0)
+        ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
+        ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ;
+
+      $return = $q->fetchOne();
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
+      }
+    }
+
+    return $return;
   }
 
   public function countByCategory(ProductCategory $category, array $params = array())
@@ -642,34 +673,47 @@ class ProductTable extends myDoctrineTable
       'view' => 'list',
     ));
 
-    $q = $this->createBaseQuery($params);
-
-    if ($category->has_line)
+    $key = $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params);
+    $return = $this->getCachedByKey($key);
+    if (!$return)
     {
+      $q = $this->createBaseQuery($params);
+
+      if ($category->has_line)
+      {
         $q->innerJoin('product.Line line')
           ->innerJoin('line.Product line_product')
           ->innerJoin('line_product.Category category WITH category.id = ?', $category->id)
           ->addWhere('product.is_lines_main = ?', 1)
         ;
-      //$q->addWhere('product.line_id IS NOT NULL')
-      //  ->addWhere('product.is_lines_main = ?', 1);
-        //->groupBy('product.line_id');
+        /*
+        $q->addWhere('product.line_id IS NOT NULL')
+          ->addWhere('product.is_lines_main = ?', 1);
+          ->groupBy('product.line_id')
+        ;
+         */
+      }
+      else
+      {
+        $ids = $category->getDescendantIds();
+        $ids[] = $category->id;
+
+        $q->innerJoin('product.CategoryRelation productCategoryRelation')
+          ->whereIn('productCategoryRelation.product_category_id', $ids)
+        ;
+      }
+
+      $this->setQueryParameters($q, $params);
+
+      $return = $q->count();
+      if ($this->isCacheEnabled())
+      {
+        // TODO: добавить тег ProductCategory-{$category}/product-count и сбрасывать по нему если обновился ProductState
+        $this->getCache()->set($key, $return, 14400); // обновление кеша через 4 часа
+      }
     }
-    else
-    {
-      $ids = $category->getDescendantIds();
-      $ids[] = $category->id;
 
-      $q->innerJoin('product.Category category')
-        ->whereIn('category.id', $ids)
-      ;
-    }
-
-    $this->setQueryParameters($q, $params);
-
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params));
-
-    return $q->count();
+    return $return;
   }
 
   public function getByCategory(ProductCategory $category, array $params = array())

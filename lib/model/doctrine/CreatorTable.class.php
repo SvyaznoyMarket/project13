@@ -48,20 +48,6 @@ class CreatorTable extends myDoctrineTable
     return $q;
   }
 
-  public function getRecordById($id, array $params = array())
-  {
-    $this->applyDefaultParameters($params);
-
-    $q = $this->createBaseQuery($params);
-
-    $this->setQueryParameters($q);
-
-    $q->addWhere('creator.id = ?', $id);
-    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
-
-    return $q->fetchOne();
-  }
-
   public function getForRoute(array $params)
   {
     $id = isset($params['creator']) ? $this->getIdBy('token', $params['creator']) : null;
@@ -89,7 +75,6 @@ class CreatorTable extends myDoctrineTable
       }
       //->addWhere('category.id = ?', $productCategory->id)
       //->where('product.category_id = ?', $productCategory->id)
-      //$q->useResultCache(true, null, $this->getQueryHash("productCategory-{$productCategory->id}/creator-all", $params));
 
     $this->setQueryParameters($q, $params);
 

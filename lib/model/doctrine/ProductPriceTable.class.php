@@ -17,22 +17,47 @@ class ProductPriceTable extends myDoctrineTable
       return Doctrine_Core::getTable('ProductPrice');
   }
 
+  public function getDefaultParameters()
+  {
+    return array(
+      'hydrate_array' => false,
+    );
+  }
+
   public function getDefaultByProductId($product_id, array $params = array())
   {
+    $return = false;
+
     $this->applyDefaultParameters($params);
 
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash('product-'.$product_id.'/productPrice-default', $params);
 
-    $q->innerJoin('productPrice.PriceList priceList');
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
 
-    $q->addWhere('productPrice.product_id = ?', $product_id);
-    $q->addWhere('priceList.is_default = ?', 1);
+      $q->select('productPrice.*');
 
-    $q->useResultCache(true, null, $this->getRecordQueryHash($product_id, $params));
+      $q->innerJoin('productPrice.PriceList priceList');
 
-    $result = $q->fetchOne();
+      $q->addWhere('productPrice.product_id = ?', $product_id);
+      $q->addWhere('priceList.is_default = ?', 1);
 
-    return $result;
+      if ($params['hydrate_array'])
+      {
+        $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+      }
+
+      $return = $q->fetchOne();
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return);
+        $this->getCache()->addTag("product-{$product_id}", $key);
+      }
+    }
+
+    return $return;
   }
 
   public function getByProductId($product_id, array $params = array())
@@ -41,13 +66,13 @@ class ProductPriceTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
+    $q->select('productPrice.*');
+
     $q->innerJoin('productPrice.PriceList priceList')
       ->innerJoin('priceList.Region region WITH region.id = ?', sfContext::getInstance()->getUser()->getRegion('id'));
 
     $q->addWhere('productPrice.product_id = ?', $product_id);
     //$q->addWhere('priceList.is_default = ?', 1);
-
-    $q->useResultCache(true, null, $this->getRecordQueryHash($product_id, $params));
 
     $result = $q->fetchOne();
 
@@ -113,5 +138,16 @@ class ProductPriceTable extends myDoctrineTable
     }
 
     return array_values($return);
+  }
+
+  public function getCacheTags($record)
+  {
+    $tags = array();
+    if (!empty($record['product_id']))
+    {
+      $tags[] = "product-{$record['product_id']}";
+    }
+
+    return $tags;
   }
 }

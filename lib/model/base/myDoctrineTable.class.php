@@ -32,6 +32,11 @@ class myDoctrineTable extends Doctrine_Table
 
     $alias = $this->getQueryRootAlias();
 
+    $index = ($params['index'] && isset($params['index'][$alias]) && $this->hasColumn($params['index'][$alias]))
+      ? $params['index'][$alias]
+      : false
+    ;
+
     foreach (array('offset', 'limit') as $k)
     {
       if (isset($params[$k]))
@@ -40,28 +45,16 @@ class myDoctrineTable extends Doctrine_Table
       }
     }
 
-    // TODO: использовать редиска мультигет
-    $list = $this->createList();
-    foreach ($ids as $id)
+    if ($index)
     {
-      $record = $this->getById($id, $params);
-
-      if ($record)
+      $list = $this->createList();
+      foreach ($this->getById($ids, $params) as $record)
       {
-        $index = ($params['index'] && isset($params['index'][$alias]) && $this->hasColumn($params['index'][$alias]))
-          ? $params['index'][$alias]
-          : false
-        ;
-
-        if ($index)
-        {
-          $list[$record[$index]] = $record;
-        }
-        else
-        {
-          $list[] = $record;
-        }
+        $list[$record[$index]] = $record;
       }
+    }
+    else {
+      $list = $this->getById($ids, $params);
     }
 
     return $list;
@@ -71,27 +64,25 @@ class myDoctrineTable extends Doctrine_Table
   {
     if (!$id)
     {
-      return false;
+      return $this->getResult($id, is_scalar($id));
     }
 
-    // если гидрация массивом, тогда использовать кеш
-    if (sfConfig::get('app_cache_enabled', false) && isset($params['hydrate_array']) && $params['hydrate_array'])
+    $key = $this->getRecordQueryHash($id, $params);
+    if (is_scalar($id) && isset($params['hydrate_array']) && $params['hydrate_array'])
     {
-      $cache = $this->getCache();
-
-      $key = $this->getRecordQueryHash($id, $params);
-      if ($cached = $cache->get($key))
+      if ($record = $this->getCachedByKey($key))
       {
-        return $cached;
+        return $record;
       }
-
-      $record = $this->getRecordById($id, $params);
-      if ($record)
-      {
-        $cache->set($key, $record);
-        foreach ($this->getCacheTags($record) as $tag)
+      else {
+        $record = $this->getRecordById($id, $params);
+        if ($this->isCacheEnabled() && $record)
         {
-          $cache->addTag($tag, $key);
+          $this->getCache()->set($key, $record);
+          foreach ($this->getCacheTags($record) as $tag)
+          {
+            $this->getCache()->addTag($tag, $key);
+          }
         }
       }
     }
@@ -117,16 +108,48 @@ class myDoctrineTable extends Doctrine_Table
 
   public function getRecordById($id, array $params = array())
   {
+    $this->applyDefaultParameters($params);
+
     $q = $this->createBaseQuery($params);
     $this->setQueryParameters($q);
 
-    $q->where($q->getRootAlias().'.id = ?', $id);
+    $q->whereId($id);
+
     if (isset($params['hydrate_array']) && $params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     }
 
-    return $q->fetchOne();
+    return $this->getResult($q->execute(), is_scalar($id));
+  }
+
+  public function getResult($collection, $isOne)
+  {
+    if ($isOne)
+    {
+      if (is_scalar($collection))
+      {
+        return $collection;
+      }
+
+      if (0 === count($collection))
+      {
+        return false;
+      }
+
+      if ($collection instanceof Doctrine_Collection)
+      {
+        return $collection->getFirst();
+      }
+      else if (is_array($collection))
+      {
+        return array_shift($collection);
+      }
+
+      return false;
+    }
+
+    return null == $collection ? $this->createList() : $collection;
   }
 
   public function getIdBy($column, $value)
@@ -198,7 +221,8 @@ class myDoctrineTable extends Doctrine_Table
 
     $ids = $this->getIdsByQuery($q);
 
-    return $this->createListByIds($ids, $params);
+    //return $this->createListByIds($ids, $params);
+    return $this->getById($ids, $params);
   }
 
   public function getForRoute(array $params)
@@ -391,10 +415,10 @@ class myDoctrineTable extends Doctrine_Table
 
     return $returnId
       ? Doctrine_Core::getTable($model)->createQuery()
-          ->select('id')
-          ->where('core_id = ?', $coreId)
-          ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-          ->fetchOne()
+        ->select('id')
+        ->where('core_id = ?', $coreId)
+        ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+        ->fetchOne()
       : Doctrine_Core::getTable($model)->findOneByCoreId($coreId)
     ;
   }
@@ -402,5 +426,15 @@ class myDoctrineTable extends Doctrine_Table
   public function getCache()
   {
     return myCache::getInstance();
+  }
+
+  public function getCachedByKey($key)
+  {
+    return sfConfig::get('app_cache_enabled', false) ? $this->getCache()->get($key) : false;
+  }
+
+  public function isCacheEnabled()
+  {
+    return sfConfig::get('app_cache_enabled', false);
   }
 }

@@ -7,6 +7,7 @@
  */
 class ProductPriceListTable extends myDoctrineTable
 {
+
   /**
    * Returns an instance of this class.
    *
@@ -14,19 +15,19 @@ class ProductPriceListTable extends myDoctrineTable
    */
   public static function getInstance()
   {
-      return Doctrine_Core::getTable('ProductPriceList');
+    return Doctrine_Core::getTable('ProductPriceList');
   }
 
   public function getCoreMapping()
   {
     return array(
-      'id'           => 'core_id',
-      'name'         => 'name',
-      'is_primary'   => 'is_default',
-      'is_active'    => 'is_active',
+      'id'         => 'core_id',
+      'name'       => 'name',
+      'is_primary' => 'is_default',
+      'is_active'  => 'is_active',
     );
   }
-  
+
   public function getDefault()
   {
     return $this->createQuery('list')
@@ -35,19 +36,23 @@ class ProductPriceListTable extends myDoctrineTable
       ->addWhere('region.type = ?', 'city')
       ->fetchOne()
     ;
-  }  
+  }
+
   public function getCurrent()
   {
-      $region = sfContext::getInstance()->getUser()->getRegion();
-      if (isset($region->id)) {
-          return $this->createQuery('list')
-              ->leftJoin('list.Region as r on list.id=r.product_price_list_id')
-              ->where('r.id = ?', $region->id)
-              ->fetchOne()
-          ;          
-      } else {
-          return $this->getDefault();
-      }
-  }  
-  
+    $region = sfContext::getInstance()->getUser()->getRegion();
+    if (isset($region->id))
+    {
+      return $this->createQuery('list')
+        ->leftJoin('list.Region as r on list.id=r.product_price_list_id')
+        ->where('r.id = ?', $region->id)
+        ->fetchOne()
+      ;
+    }
+    else
+    {
+      return $this->getDefault();
+    }
+  }
+
 }

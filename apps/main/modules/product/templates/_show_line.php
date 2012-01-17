@@ -5,7 +5,7 @@
   <h3><a href="<?php echo $item['url'] ?>"><strong>Серия <?php echo $item['Line']['name'].'</strong> <span class="font10 gray">('.$item['Line']['count'].')</span>' ?></a></h3>
 
   <!-- Hover -->
-  <div class="boxhover"<?php if ($item['product']['is_insale']):?> ref="<?php echo $item['product']['token'] ?>"<?php endif ?>>
+  <div class="boxhover"<?php if ($product['is_insale']):?> ref="<?php echo $product['token'] ?>"<?php endif ?>>
     <b class="rt"></b><b class="lb"></b>
     <div class="rb">
       <div class="lt" data-url="<?php echo $item['url'] ?>">

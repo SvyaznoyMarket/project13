@@ -38,6 +38,13 @@ class ProductCategoryTable extends myDoctrineTable
     );
   }
 
+  public function getDefaultParameters()
+  {
+    return array(
+      'hydrate_array' => false,
+    );
+  }
+
   public function createBaseQuery(array $params = array())
   {
     $this->applyDefaultParameters($params);
@@ -86,24 +93,42 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
+    if ($params['with_filters'])
+    {
+      $q->leftJoin('productCategory.FilterGroup productFilterGroup');
+      $q->leftJoin('productFilterGroup.Filter productFilter')
+        ->addOrderBy('productFilter.position')
+      ;
+
+      $q->leftJoin('productFilter.Property productProperty');
+    }
+
     $this->setQueryParameters($q);
 
-    $q->addWhere('productCategory.id = ?', $id);
+    $q->whereId($id);
 
-    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
-
-    $record = $q->fetchOne();
-    if (!$record)
+    if ($params['hydrate_array'])
     {
-      return $record;
+      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     }
 
-    if ($params['with_filters'] && $record['filter_group_id'])
+    $list = $q->execute();
+    /*
+    foreach ($list as $i => $record)
     {
-      $record['FilterGroup'] = ProductFilterGroupTable::getInstance()->getById($record['filter_group_id']);
-    }
+      if ($params['with_filters'] && $record['filter_group_id'])
+      {
+        $record['FilterGroup'] = ProductFilterGroupTable::getInstance()->getById($record['filter_group_id']);
+      }
 
-    return $record;
+      if (is_array($record))
+      {
+        $list[$i] = $record;
+      }
+    }
+     */
+
+    return $this->getResult($list, is_scalar($id));
   }
 
   public function getList(array $params = array())
@@ -141,8 +166,6 @@ class ProductCategoryTable extends myDoctrineTable
 	  $q->andWhere('productCategory.root_id = ?', $category['root_id'])
 	    ->andWhere('productCategory.level = ?', 0)
     ;
-
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-root-'.$category['root_id'], $params));
 
 	  return $q->fetchOne();
   }
@@ -183,8 +206,6 @@ class ProductCategoryTable extends myDoctrineTable
     $q->orWhereIn('productCategory.id', $notEmptyCats);
     $q->orderBy('productCategory.lft');
 
-    $q->useResultCache(true, null, $this->getQueryHash('productCategory-sub', $params));
-
     return $q->execute();
 
     $ids = $this->getIdsByQuery($q);
@@ -212,6 +233,7 @@ class ProductCategoryTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
 
     $ids = $this->getDescendatIds($category, array('depth' => 1));
+
     return $this->createListByIds($ids, $params);
   }
 
@@ -268,6 +290,59 @@ class ProductCategoryTable extends myDoctrineTable
     return $categoryIds;
   }
 
+  public function getAncestorList(ProductCategory $category = null, $params = array())
+  {
+    $q = $this->createBaseQuery($params);
+
+    $ids = $this->getAncestorIds($category, $params);
+
+    return $this->createListByIds($ids, $params);
+  }
+
+  public function getAncestorIds(ProductCategory $category = null, $params = array())
+  {
+    $this->applyDefaultParameters($params, array(
+      'with_child'  => false,
+      'depth'       => null,
+      'min_level'   => null,
+      'max_level'   => null,
+    ));
+
+    $q = $this->createBaseQuery();
+
+    if ($category)
+    {
+      $q->addWhere('productCategory.lft < ? and productCategory.rgt > ? and productCategory.root_id = ?', array($category->lft, $category->rgt, empty($category->root_id) ? $category->id : $category->root_id, ));
+    }
+
+    if ($category && (null != $params['depth']))
+    {
+      $q->addWhere('productCategory.level >= ?', $category->level + $params['depth']);
+    }
+
+    if (null != $params['min_level'])
+    {
+      $q->addWhere('productCategory.level > ?', $params['min_level'] - 1);
+    }
+
+    if (null != $params['max_level'])
+    {
+      $q->addWhere('productCategory.level < ?', $params['max_level'] + 1);
+    }
+    $categoryIds = $this->getIdsByQuery($q, $params,
+      $category
+      ? "productCategory-{$category->id}/productCategory-ancestor-ids"
+      : 'productCategory-ancestor-ids',
+      $category ? "productCategory-{$category->id}" : 'productCategory'
+    );
+    if ($params['with_child'])
+    {
+      $categoryIds[] = $category->id;
+    }
+
+    return $categoryIds;
+  }
+
   public function getTagIds(ProductCategory $category = null, array $params = array())
   {
     if (!$category)
@@ -275,20 +350,31 @@ class ProductCategoryTable extends myDoctrineTable
       return false;
     }
 
-    $categoryIds = $this->getDescendatIds($category, array('with_parent' => true, ));
+    $key = $this->getQueryHash('productCategory-'.$category->id.'/tag-ids', $params);
 
-    $q = TagProductRelationTable::getInstance()->createBaseQuery();
-    $q->select('tagProductRelation.tag_id')
-      ->innerJoin('tagProductRelation.Product product WITH product.is_instock = ?', 1)
-      ->innerJoin('product.CategoryRelation categoryRelation')
-      ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
-      ->groupBy('tagProductRelation.tag_id')
-      ->orderBy('count(tagProductRelation.product_id) DESC')
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-      ->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/tag-ids', array_merge($params, array('categoryIds' => $categoryIds))));
-    ;
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $categoryIds = $this->getDescendatIds($category, array('with_parent' => true));
 
-    return $q->execute();
+      $q = TagProductRelationTable::getInstance()->createBaseQuery();
+      $q->select('tagProductRelation.tag_id')
+        ->innerJoin('tagProductRelation.Product product WITH product.is_instock = ?', 1)
+        ->innerJoin('product.CategoryRelation categoryRelation')
+        ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
+        ->groupBy('tagProductRelation.tag_id')
+        ->orderBy('count(tagProductRelation.product_id) DESC')
+        ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+      ;
+
+      $return = $q->execute();
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
+      }
+    }
+
+    return $return;
   }
 
   public function getCacheKeys(myDoctrineRecord $record)

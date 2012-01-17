@@ -95,7 +95,6 @@ class ServiceTable extends myDoctrineTable
 
     $q->addWhere('product.id = ?', $id);
 
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
     //$q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     $record = $q->fetchOne();
     if (!$record)

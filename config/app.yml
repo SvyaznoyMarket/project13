@@ -85,7 +85,7 @@ all:
     enabled: true
     config:
       automatic_cleaning_factor: 0
-      lifetime: 604800
+      lifetime: 2592000
       prefix: cache
 
   payment:

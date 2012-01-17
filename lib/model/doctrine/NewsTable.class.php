@@ -73,16 +73,16 @@ class NewsTable extends myDoctrineTable
   public function getRecordById($id, array $params = array())
   {
     $q = $this->createBaseQuery($params);
+
     $q->innerJoin('news.Category category');
+
     $this->setQueryParameters($q);
 
-    $q->addWhere('news.id = ?', $id);
+    $q->whereId($id);
 
-    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    $list = $q->execute();
 
-    $record = $q->fetchOne();
-
-    return $record;
+    return $this->getResult($list, is_scalar($id));
   }
 
   public function getForRoute(array $params)
