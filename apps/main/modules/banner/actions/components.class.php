@@ -34,7 +34,7 @@ class bannerComponents extends myComponents
       $productList = array();
       foreach ($banner['Item'] as $bannerItem)
       {
-        if ($bannerItem['Object'])
+        if (isset($bannerItem['Object']) && $bannerItem['Object'])
         {
           $productList[] = $bannerItem['Object'];
         }
