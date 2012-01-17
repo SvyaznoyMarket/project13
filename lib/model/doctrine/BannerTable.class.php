@@ -85,8 +85,8 @@ class BannerTable extends myDoctrineTable
           $bannerItem['Object'] = null;
           if ('product' == $bannerItem['type'])
           {
-            $product = ProductTable::getInstance()->getById($bannerItem['object_id'], array('hydrate_array' => true, 'with_model' => true));
-            if ($product && $product['view_list'])
+            $product = ProductTable::getInstance()->getById($bannerItem['object_id'], array('hydrate_array' => true, 'with_model' => true, 'view' => 'list'));
+            if ($product)
             {
               $bannerItem['Object'] = $product;
             }
