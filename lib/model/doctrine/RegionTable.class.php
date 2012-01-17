@@ -48,11 +48,24 @@ class RegionTable extends myDoctrineTable
 
   public function getDefault()
   {
-    return $this->createBaseQuery()
-      ->where('region.is_default = ?', 1)
-      ->addWhere('region.type = ?', 'city')
-      ->fetchOne()
-    ;
+    $key = $this->getQueryHash('region-default', $params);
+
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $return = $this->createBaseQuery()
+        ->where('region.is_default = true')
+        ->addWhere('region.type = ?', 'city')
+        ->fetchOne()
+      ;
+
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 2592000); // обновление кеша через 30 дней
+      }
+    }
+
+    return $return;
   }
 
   public function getListHavingShops(array $params = array())
