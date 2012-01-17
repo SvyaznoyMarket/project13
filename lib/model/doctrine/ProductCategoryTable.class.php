@@ -143,15 +143,29 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getRootList(array $params = array())
   {
-    $q = $this->createBaseQuery($params);
-    $this->setQueryParameters($q, $params);
+    $return = $this->createList();
 
-    $q->addWhere('productCategory.level = ?', 0)
-      ->orderBy('productCategory.position');
+    $key = $this->getQueryHash('productCategory-rootList', $params);
 
-    $ids = $this->getIdsByQuery($q, $params, 'productCategory-root-ids', 'productCategory');
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
+      $this->setQueryParameters($q, $params);
 
-    return $this->createListByIds($ids, $params);
+      $q->addWhere('productCategory.level = 0')
+        ->orderBy('productCategory.position');
+
+      $ids = $this->getIdsByQuery($q, $params);
+      $return = $this->createListByIds($ids, $params);
+
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 604800); // обновить кеш через неделю
+      }
+    }
+
+    return $return;
   }
 
   public function getRootRecord($category, array $params = array())

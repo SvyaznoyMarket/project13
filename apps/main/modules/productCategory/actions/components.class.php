@@ -39,7 +39,7 @@ class productCategoryComponents extends myComponents
 //      );
 //    }
 
-    $this->setVar('list', ProductCategoryTable::getInstance()->getRootList(), true);
+    $this->setVar('list', ProductCategoryTable::getInstance()->getRootList(array('hydrate_array' => true)), true);
   }
  /**
   * Executes child_list component
