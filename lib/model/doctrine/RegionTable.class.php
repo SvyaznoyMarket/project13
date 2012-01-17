@@ -46,7 +46,7 @@ class RegionTable extends myDoctrineTable
     return $this->getById($id);
   }
 
-  public function getDefault()
+  public function getDefault(array $params = array())
   {
     $key = $this->getQueryHash('region-default', $params);
 
