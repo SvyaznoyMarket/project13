@@ -53,7 +53,9 @@ class ProductTable extends myDoctrineTable
 
   public function getDefaultParameters()
   {
-    $data = array(
+    $region = $this->getParameter('region');
+
+    return array(
       'view'                => false, // list, show
       'group_property'      => false, // группировать свойства товара по группам
       'with_line'           => false,
@@ -63,10 +65,8 @@ class ProductTable extends myDoctrineTable
       'with_price'          => false,
       'with_category'       => false,
       'with_delivery_price' => false,
-      'region_id'           => sfContext::hasInstance() ? sfContext::getInstance()->getUser()->getRegion('id') : RegionTable::getInstance()->getDefault()->id,
+      'region_id'           => $region ? $region['id'] : null,
     );
-
-    return $data;
   }
 
   public function createBaseQuery(array $params = array())
@@ -669,11 +669,13 @@ class ProductTable extends myDoctrineTable
 
   public function countByCategory(ProductCategory $category, array $params = array())
   {
+    $region = $this->getParameter('region');
+
     $this->applyDefaultParameters($params, array(
       'view' => 'list',
     ));
 
-    $key = $this->getQueryHash("productCategory-{$category['id']}/product-count", $params);
+    $key = $this->getQueryHash("productCategory-{$category['id']}/product-count".($region ? "/region-{$region['id']}" : ''), $params);
     $return = $this->getCachedByKey($key);
     if (!$return)
     {
@@ -709,7 +711,7 @@ class ProductTable extends myDoctrineTable
       if ($this->isCacheEnabled())
       {
         $this->getCache()->set($key, $return);
-        $this->getCache()->addTag("productCategory-{$category['id']}/product-count", $key);
+        $this->getCache()->addTag("productCategory-{$category['id']}/product-count".($region ? "/region-{$region['id']}" : ''), $key);
       }
     }
 

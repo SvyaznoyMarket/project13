@@ -40,9 +40,11 @@ class Product extends BaseProduct
 
     if (array_key_exists('view_list', $record->getLastModified()))
     {
+      $region = $this->getTable()->getParameter('region');
+
       foreach ($record->CategoryRelation as $categoryRelation)
       {
-        $this->getCache()->removeByTag("productCategory-{$categoryRelation['product_category_id']}/product-count");
+        $this->getCache()->removeByTag("productCategory-{$categoryRelation['product_category_id']}/product-count".($region ? "/region-{$region['id']}" : ''));
       }
     }
   }
