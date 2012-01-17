@@ -32,6 +32,21 @@ class Product extends BaseProduct
     }
   }
 
+  public function postSave($event)
+  {
+    parent::postSave($event);
+
+    $record = $event->getInvoker();
+
+    if (array_key_exists('view_list', $record->getLastModified()))
+    {
+      foreach ($record->CategoryRelation as $categoryRelation)
+      {
+        $this->getCache()->removeByTag("productCategory-{$categoryRelation['product_category_id']}/product-count");
+      }
+    }
+  }
+
   public function __toString()
   {
     return (string) $this->name;

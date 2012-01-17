@@ -673,17 +673,17 @@ class ProductTable extends myDoctrineTable
       'view' => 'list',
     ));
 
-    $key = $this->getQueryHash('productCategory-'.$category->id.'/product-count', $params);
+    $key = $this->getQueryHash("productCategory-{$category['id']}/product-count", $params);
     $return = $this->getCachedByKey($key);
     if (!$return)
     {
       $q = $this->createBaseQuery($params);
 
-      if ($category->has_line)
+      if ($category['has_line'])
       {
         $q->innerJoin('product.Line line')
           ->innerJoin('line.Product line_product')
-          ->innerJoin('line_product.Category category WITH category.id = ?', $category->id)
+          ->innerJoin('line_product.Category category WITH category.id = ?', $category['id'])
           ->addWhere('product.is_lines_main = ?', 1)
         ;
         /*
@@ -696,7 +696,7 @@ class ProductTable extends myDoctrineTable
       else
       {
         $ids = $category->getDescendantIds();
-        $ids[] = $category->id;
+        $ids[] = $category['id'];
 
         $q->innerJoin('product.CategoryRelation productCategoryRelation')
           ->whereIn('productCategoryRelation.product_category_id', $ids)
@@ -708,8 +708,8 @@ class ProductTable extends myDoctrineTable
       $return = $q->count();
       if ($this->isCacheEnabled())
       {
-        // TODO: добавить тег ProductCategory-{$category}/product-count и сбрасывать по нему если обновился ProductState
-        $this->getCache()->set($key, $return, 14400); // обновление кеша через 4 часа
+        $this->getCache()->set($key, $return);
+        $this->getCache()->addTag("productCategory-{$category['id']}/product-count", $key);
       }
     }
 
@@ -793,6 +793,17 @@ class ProductTable extends myDoctrineTable
     $this->setQueryParameters($q, $params);
 
     return $q;
+  }
+
+  public function getCacheTags($record)
+  {
+    $tags = array();
+    if (!empty($record['id']))
+    {
+      $tags[] = "product-{$record['id']}";
+    }
+
+    return $tags;
   }
 
   public function getCacheEraserKeys($record, $action = null, array $params = array())

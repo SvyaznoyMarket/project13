@@ -12,6 +12,10 @@
  */
 class ProductCategory extends BaseProductCategory
 {
+  public function construct()
+  {
+    $this->mapValue('product_count', null);
+  }
 
   public function __toString()
   {
