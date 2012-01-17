@@ -339,6 +339,7 @@ class Product extends BaseProduct
 
     return $return;
   }
+
   public function getRealPrice()
   {
     return $this->getTable()->getRealPrice($this);
@@ -453,13 +454,16 @@ class Product extends BaseProduct
 	  return $result;
   }
 
-/*  public function getMainPhoto()
+  /*
+  public function getMainPhoto()
   {
-//	if ($this->_mainPhoto === null) {
-//		$this->_mainPhoto = ProductPhotoTable::getInstance()->getOneByProduct($this);
-//	}
+	  if ($this->_mainPhoto === null)
+    {
+  		$this->_mainPhoto = ProductPhotoTable::getInstance()->getOneByProduct($this);
+  	}
     return isset($this->main_photo) && null !== $this->main_photo ? $this->main_photo : ProductPhotoTable::getInstance()->getOneByProduct($this);
-  }*/
+  }
+   */
 
   public function getAllPhotos()
   {
