@@ -41,7 +41,7 @@ class bannerComponents extends myComponents
       }
 
       $link = false;
-      if (!count($productList))
+      if (!count($productList) && !$banner['is_dummy'])
       {
         continue;
       }
@@ -49,8 +49,12 @@ class bannerComponents extends myComponents
       {
         $link = url_for('productCard', array('product' => $productList[0]['token_prefix'].'/'.$productList[0]['token']), true);
       }
-      else {
+      elseif (count($productList) > 1) {
         $link = url_for('product_set', array('products' => implode(',', array_map(function($i) { return $i['barcode']; }, $productList))), true);
+      }
+      else
+      {
+        $link = "#";
       }
 
       $item = array(
@@ -64,7 +68,6 @@ class bannerComponents extends myComponents
           : (count($list) ? sfConfig::get('app_banner_timeout', 2000) : 3000)
         ,
       );
-
       if (empty($item['imgs']) || empty($item['imgb'])) continue;
 
       $list[] = $item;

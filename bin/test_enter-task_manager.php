@@ -29,7 +29,7 @@ else
   //а сюда - дочерний процесс
   while (true)
   {
-    shell_exec('cd /opt/WWWRoot/testground.ru/wwwroot && php symfony task-manager:run >> /dev/null');
+    shell_exec('cd /opt/WWWRoot/testground.ru/wwwroot && php symfony task-manager:run --application=main >> /dev/null');
     sleep($delay);
   }
 }
