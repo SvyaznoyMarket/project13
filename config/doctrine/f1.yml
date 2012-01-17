@@ -46,7 +46,7 @@ ServicePrice:
     id:                     { type: integer(20), autoincrement: true, primary: true }
     service_price_list_id:  { type: integer(20), notnull: true }
     service_id:        { type: integer(20), notnull: true, primary: true }
-    product_id:        { type: integer(20), notnull: true, primary: true }
+    product_id:        { type: integer(20), notnull: false, default: null, comment: 'Привязка к продукту (если есть)' }
     price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена услуги' }
   relations:
     Service:           { class: Service, foreignAlias: Price, local: service_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

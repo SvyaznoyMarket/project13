@@ -63,7 +63,7 @@ return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
   }
 
 
-  public function getCurrentPrice($productId = 0) {
+  public function getCurrentPrice($productId = NULL) {
 
         $region = sfContext::getInstance()->getUser()->getRegion();
         $priceList = $region['product_price_list_id'];
@@ -84,12 +84,13 @@ return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
         //ищем цену без привязки к продукту
         if (!$currentPrice) {
             foreach($this->Price as $price) {
-                if (  $priceList == $price['service_price_list_id'] && $price['product_id'] == 0){
+                if (  $priceList == $price['service_price_list_id'] && !$price['product_id']){
                       $currentPrice = $price['price'];
                       break;
                 }
             }
         }
+        #var_dump($currentPrice);
         $this->price = $currentPrice;
         return $currentPrice;
   }
