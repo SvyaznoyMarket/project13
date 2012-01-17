@@ -17,19 +17,22 @@ class regionComponents extends myComponents
 
     $region = $this->getUser()->getRegion();
     $regionTable = RegionTable::getInstance();
-    
+
     $active['name'] = $region['name'];
     $active['url'] = url_for('region_change', $regionTable->getById($region['id']));
-    foreach (RegionTable::getInstance()->findByType('city') as $item)
-    {
+    foreach (RegionTable::getInstance()->getCityList(array(
+      'hydrate_array' => true,
+      'select'        => 'region.id, region.name, region.token')
+    ) as $item) {
       if ($active['name'] == $item['name']) continue;
       $list[] = array(
-        'url'  => url_for('region_change', $item),
-        'name' => $item->name,
-        );
+        'url'  => url_for('region_change', array('region' => $item['token'])),
+        'name' => $item['name'],
+      );
     }
 
     $this->setVar('list', $list, true);
     $this->setVar('active', $active, true);
   }
+
 }

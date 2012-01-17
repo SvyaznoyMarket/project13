@@ -86,4 +86,31 @@ class RegionTable extends myDoctrineTable
 
     return $this->createListByIds($ids, $params);
   }
+
+  public function getCityList(array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $key = $this->getQueryHash('region-cityList', $params);
+
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
+
+      $q->addWhere('region.type = ?', 'city');
+
+      $q->orderBy('region.name');
+
+      $this->setQueryParameters($q, $params);
+
+      $return = $q->execute();
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 259200); // обновить кеш через 3 дня
+      }
+    }
+
+    return $return;
+  }
 }
