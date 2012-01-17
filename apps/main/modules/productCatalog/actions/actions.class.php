@@ -373,16 +373,36 @@ class productCatalogActions extends myActions
 
     $this->productCategory = $this->oldUrlRedirect($request);
 
-//    $title = $this->productCategory['name'];
-//    if ($request->getParameter('page')) {
-//      $title .= ' – '.$request->getParameter('page');
-//    }
-//    $rootCategory = $this->productCategory->getRootCategory();
-//    if ($rootCategory->id !== $this->productCategory->id)
-//    {
-//      $title .= ' – '.$rootCategory;
-//    }
-//    $this->getResponse()->setTitle($title.' – Enter.ru');
+    if ($this->productCategory->has_line) //если в категории должны отображться линии
+    {
+      $this->forward($this->getModuleName(), 'line');
+    }
+
+    if (false
+      || !$this->productCategory->getNode()->hasChildren()                  //нет дочерних категорий
+      //|| (1 == $this->productCategory->getNode()->getChildren()->count()) // одна дочерняя категория
+    ) {
+      $this->forward($this->getModuleName(), 'product');
+    }
+
+    // если категория корневая
+    if ($this->productCategory->getNode()->isRoot())
+    {
+      $this->setTemplate('categoryRoot');
+    }
+
+    /*
+    $title = $this->productCategory['name'];
+    if ($request->getParameter('page')) {
+      $title .= ' – '.$request->getParameter('page');
+    }
+    $rootCategory = $this->productCategory->getRootCategory();
+    if ($rootCategory->id !== $this->productCategory->id)
+    {
+      $title .= ' – '.$rootCategory;
+    }
+    $this->getResponse()->setTitle($title.' – Enter.ru');
+     */
 
     // SEO ::
     $list = array();
@@ -403,24 +423,6 @@ class productCatalogActions extends myActions
       implode(' - ', $list)
     ));
     // :: SEO
-
-    if ($this->productCategory->has_line) //если в категории должны отображться линии
-    {
-      $this->forward($this->getModuleName(), 'line');
-    }
-
-    if (false
-      || !$this->productCategory->getNode()->hasChildren()                  //нет дочерних категорий
-      //|| (1 == $this->productCategory->getNode()->getChildren()->count()) // одна дочерняя категория
-    ) {
-      $this->forward($this->getModuleName(), 'product');
-    }
-
-    // если категория корневая
-    if ($this->productCategory->getNode()->isRoot())
-    {
-      $this->setTemplate('categoryRoot');
-    }
   }
  /**
   * Executes product action
