@@ -100,7 +100,11 @@ class productComponents extends myComponents
 
     if ('compact' == $this->view)
     {
-        $item['root_name'] = ProductCategoryTable::getInstance()->getRootRecord($this->product['Category'][0]);//(string)$this->product['Category'][0]->getRootCategory();
+      $rootProductCategory = ProductCategoryTable::getInstance()->getRootRecord($this->product['Category'][0], array(
+        'hydrate_array' => true,
+        'select'        => 'productCategory.id, productCategory.name',
+      ));
+      $item['root_name'] = $rootProductCategory ? $rootProductCategory['name'] : '';
     }
 
     if ('orderOneClick' == $this->view)

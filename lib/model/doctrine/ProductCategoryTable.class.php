@@ -175,13 +175,29 @@ class ProductCategoryTable extends myDoctrineTable
 		  return $category;
 	  }
 
-	  $q = $this->createBaseQuery();
+    $key = $this->getQueryHash("productCategory-{$category['id']}/root", $params);
 
-	  $q->andWhere('productCategory.root_id = ?', $category['root_id'])
-	    ->andWhere('productCategory.level = ?', 0)
-    ;
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery();
 
-	  return $q->fetchOne();
+      $q->andWhere('productCategory.root_id = ?', $category['root_id'])
+        ->andWhere('productCategory.level = 0')
+      ;
+
+      $this->setQueryParameters($q, $params);
+
+      $return = $q->fetchOne();
+      if ($this->isCacheEnabled() && $return)
+      {
+        $this->getCache()->set($key, $return);
+        $this->getCache()->addTag("productCategory-{$category['id']}", $key);
+        $this->getCache()->addTag("productCategory-{$return['id']}", $key);
+      }
+    }
+
+    return $return;
   }
 
   // TODO: удалить
