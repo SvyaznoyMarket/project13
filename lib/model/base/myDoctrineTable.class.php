@@ -355,22 +355,6 @@ class myDoctrineTable extends Doctrine_Table
     return $path.'/'.$paramHash;
   }
 
-  public function getCacheKeys(myDoctrineRecord $record)
-  {
-    $keys = array(
-      '*'.$this->getQueryRootAlias().'-all/*',
-      '*'.$this->getQueryRootAlias().'-count/*',
-    );
-
-    if ($this->hasField('id'))
-    {
-      $keys[] = '*'.$this->getQueryRootAlias().'-'.$record->id.'/*';
-      $keys[] = '*'.$this->getQueryRootAlias().'-ids/*';
-    }
-
-    return $keys;
-  }
-
   public function getCacheEraserKeys($record, $action = null)
   {
     return array();

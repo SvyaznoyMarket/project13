@@ -407,19 +407,6 @@ class ProductCategoryTable extends myDoctrineTable
     return $return;
   }
 
-  public function getCacheKeys(myDoctrineRecord $record)
-  {
-    $keys = myToolkit::arrayDeepMerge(parent::getCacheKeys($record), array(
-      '*'.$this->getQueryRootAlias().'-root-all/*',
-      '*'.$this->getQueryRootAlias().'-root-ids/*',
-      '*'.$this->getQueryRootAlias().'-root-'.$record->root_id.'/*',
-      '*'.$this->getQueryRootAlias().'-descendant-ids/*',
-      '*'.$this->getQueryRootAlias().'-child-ids/*',
-    ));
-
-    return $keys;
-  }
-
   /**
    * Из полученного списка категорий отбирает не пустые.
    * Тоесть те, которые содержат либо вложенные категории, либо активные продукты
