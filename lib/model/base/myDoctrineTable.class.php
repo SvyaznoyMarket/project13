@@ -2,6 +2,18 @@
 
 class myDoctrineTable extends Doctrine_Table
 {
+  public function getParameter($name)
+  {
+    $value = null;
+
+    if ('region' == $name)
+    {
+      $value = sfContext::hasInstance() ? sfContext::getInstance()->getUser()->getRegion() : RegionTable::getInstance()->getDefault();
+    }
+
+    return $value;
+  }
+
   public function createBaseQuery(array $params = array())
   {
     $q = $this->createQuery($this->getQueryRootAlias());
