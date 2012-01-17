@@ -38,18 +38,6 @@ abstract class myDoctrineRecord extends sfDoctrineRecord
 
   public function deleteResultCache($record)
   {
-    /*
-    $prefix = sfConfig::get('app_doctrine_result_cache_prefix', 'dql:');
-    $driver = $record->getTable()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
-    if ($driver)
-    {
-      foreach ($this->getTable()->getCacheKeys($record) as $key)
-      {
-        $driver->deleteByPattern($prefix.$key);
-      }
-    }
-    */
-
     $this->getCache()->removeByTag($this->getTable()->getCacheTags($record));
   }
 

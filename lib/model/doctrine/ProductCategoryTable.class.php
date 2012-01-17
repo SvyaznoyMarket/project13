@@ -88,7 +88,7 @@ class ProductCategoryTable extends myDoctrineTable
   public function getRecordById($id, array $params = array())
   {
     $this->applyDefaultParameters($params, array(
-      'with_filters' => true,
+      'with_filters' => false,
     ));
 
     $q = $this->createBaseQuery($params);
@@ -143,15 +143,29 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getRootList(array $params = array())
   {
-    $q = $this->createBaseQuery($params);
-    $this->setQueryParameters($q, $params);
+    $return = $this->createList();
 
-    $q->addWhere('productCategory.level = ?', 0)
-      ->orderBy('productCategory.position');
+    $key = $this->getQueryHash('productCategory-rootList', $params);
 
-    $ids = $this->getIdsByQuery($q, $params, 'productCategory-root-ids', 'productCategory');
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
+      $this->setQueryParameters($q, $params);
 
-    return $this->createListByIds($ids, $params);
+      $q->addWhere('productCategory.level = 0')
+        ->orderBy('productCategory.position');
+
+      $ids = $this->getIdsByQuery($q, $params);
+      $return = $this->createListByIds($ids, $params);
+
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 604800); // обновить кеш через неделю
+      }
+    }
+
+    return $return;
   }
 
   public function getRootRecord($category, array $params = array())
@@ -161,13 +175,29 @@ class ProductCategoryTable extends myDoctrineTable
 		  return $category;
 	  }
 
-	  $q = $this->createBaseQuery();
+    $key = $this->getQueryHash("productCategory-{$category['id']}/root", $params);
 
-	  $q->andWhere('productCategory.root_id = ?', $category['root_id'])
-	    ->andWhere('productCategory.level = ?', 0)
-    ;
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery();
 
-	  return $q->fetchOne();
+      $q->andWhere('productCategory.root_id = ?', $category['root_id'])
+        ->andWhere('productCategory.level = 0')
+      ;
+
+      $this->setQueryParameters($q, $params);
+
+      $return = $q->fetchOne();
+      if ($this->isCacheEnabled() && $return)
+      {
+        $this->getCache()->set($key, $return);
+        $this->getCache()->addTag("productCategory-{$category['id']}", $key);
+        $this->getCache()->addTag("productCategory-{$return['id']}", $key);
+      }
+    }
+
+    return $return;
   }
 
   // TODO: удалить
@@ -350,44 +380,19 @@ class ProductCategoryTable extends myDoctrineTable
       return false;
     }
 
-    $key = $this->getQueryHash('productCategory-'.$category->id.'/tag-ids', $params);
+    $categoryIds = $this->getDescendatIds($category, array('with_parent' => true));
 
-    $return = $this->getCachedByKey($key);
-    if (!$return)
-    {
-      $categoryIds = $this->getDescendatIds($category, array('with_parent' => true));
+    $q = TagProductRelationTable::getInstance()->createBaseQuery();
+    $q->select('tagProductRelation.tag_id')
+      ->innerJoin('tagProductRelation.Product product WITH product.is_instock = ?', 1)
+      ->innerJoin('product.CategoryRelation categoryRelation')
+      ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
+      ->groupBy('tagProductRelation.tag_id')
+      ->orderBy('count(tagProductRelation.product_id) DESC')
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+    ;
 
-      $q = TagProductRelationTable::getInstance()->createBaseQuery();
-      $q->select('tagProductRelation.tag_id')
-        ->innerJoin('tagProductRelation.Product product WITH product.is_instock = ?', 1)
-        ->innerJoin('product.CategoryRelation categoryRelation')
-        ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
-        ->groupBy('tagProductRelation.tag_id')
-        ->orderBy('count(tagProductRelation.product_id) DESC')
-        ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-      ;
-
-      $return = $q->execute();
-      if ($this->isCacheEnabled())
-      {
-        $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
-      }
-    }
-
-    return $return;
-  }
-
-  public function getCacheKeys(myDoctrineRecord $record)
-  {
-    $keys = myToolkit::arrayDeepMerge(parent::getCacheKeys($record), array(
-      '*'.$this->getQueryRootAlias().'-root-all/*',
-      '*'.$this->getQueryRootAlias().'-root-ids/*',
-      '*'.$this->getQueryRootAlias().'-root-'.$record->root_id.'/*',
-      '*'.$this->getQueryRootAlias().'-descendant-ids/*',
-      '*'.$this->getQueryRootAlias().'-child-ids/*',
-    ));
-
-    return $keys;
+    return $q->execute();
   }
 
   /**

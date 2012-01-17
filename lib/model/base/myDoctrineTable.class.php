@@ -2,6 +2,18 @@
 
 class myDoctrineTable extends Doctrine_Table
 {
+  public function getParameter($name)
+  {
+    $value = null;
+
+    if ('region' == $name)
+    {
+      $value = sfContext::hasInstance() ? sfContext::getInstance()->getUser()->getRegion() : RegionTable::getInstance()->getDefault();
+    }
+
+    return $value;
+  }
+
   public function createBaseQuery(array $params = array())
   {
     $q = $this->createQuery($this->getQueryRootAlias());
@@ -341,22 +353,6 @@ class myDoctrineTable extends Doctrine_Table
     $paramHash = count($params) > 0 ? md5(serialize($params)) : '~';
 
     return $path.'/'.$paramHash;
-  }
-
-  public function getCacheKeys(myDoctrineRecord $record)
-  {
-    $keys = array(
-      '*'.$this->getQueryRootAlias().'-all/*',
-      '*'.$this->getQueryRootAlias().'-count/*',
-    );
-
-    if ($this->hasField('id'))
-    {
-      $keys[] = '*'.$this->getQueryRootAlias().'-'.$record->id.'/*';
-      $keys[] = '*'.$this->getQueryRootAlias().'-ids/*';
-    }
-
-    return $keys;
   }
 
   public function getCacheEraserKeys($record, $action = null)

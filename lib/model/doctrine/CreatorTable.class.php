@@ -42,7 +42,7 @@ class CreatorTable extends myDoctrineTable
 
     if ($params['for_filter'])
     {
-      $q->addWhere('creator.is_filter = ?', 1);
+      $q->addWhere('creator.is_filter = true');
     }
 
     return $q;
@@ -57,17 +57,24 @@ class CreatorTable extends myDoctrineTable
 
   public function getListByProductCategory(ProductCategory $productCategory, array $params = array())
   {
+    $return = $this->createList();
+
     $this->applyDefaultParameters($params);
 
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash("productCategory-{$productCategory['id']}/creatorList", $params);
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
 
-    $q->innerJoin('creator.Product product');
-//    $q->innerJoin('creator.Product product WITH product.is_instock = ?', 1)
+      $q->innerJoin('creator.Product product');
+      //$q->innerJoin('creator.Product product WITH product.is_instock = ?', 1)
       if (isset($params['with_descendat']) && $params['with_descendat'])
       {
-        $dIds = ProductCategoryTable::getInstance()->getDescendatIds($productCategory, array('with_parent' => true, ));
+        $descendatIds = ProductCategoryTable::getInstance()->getDescendatIds($productCategory, array('with_parent' => true));
         $q->innerJoin('product.Category category')
-          ->andWhereIn('category.id', $dIds);
+          ->andWhereIn('category.id', $descendatIds)
+        ;
       }
       else
       {
@@ -76,10 +83,21 @@ class CreatorTable extends myDoctrineTable
       //->addWhere('category.id = ?', $productCategory->id)
       //->where('product.category_id = ?', $productCategory->id)
 
-    $this->setQueryParameters($q, $params);
+      $this->setQueryParameters($q, $params);
 
-    $ids = $this->getIdsByQuery($q);
+      $ids = $this->getIdsByQuery($q);
+      $return = $this->createListByIds($ids, $params);
+      if ($this->isCacheEnabled() && count($ids))
+      {
+        $this->getCache()->set($key, $return, 604800); // обновить кеш через неделю
+        $this->getCache()->addTag("productCategory-{$productCategory['id']}", $key);
+        foreach ($ids as $id)
+        {
+          $this->getCache()->addTag("creator-{$id}", $key);
+        }
+      }
+    }
 
-    return $this->createListByIds($ids, $params);
+    return $return;
   }
 }

@@ -46,13 +46,26 @@ class RegionTable extends myDoctrineTable
     return $this->getById($id);
   }
 
-  public function getDefault()
+  public function getDefault(array $params = array())
   {
-    return $this->createBaseQuery()
-      ->where('region.is_default = ?', 1)
-      ->addWhere('region.type = ?', 'city')
-      ->fetchOne()
-    ;
+    $key = $this->getQueryHash('region-default', $params);
+
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $return = $this->createBaseQuery()
+        ->where('region.is_default = true')
+        ->addWhere('region.type = ?', 'city')
+        ->fetchOne()
+      ;
+
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 2592000); // обновление кеша через 30 дней
+      }
+    }
+
+    return $return;
   }
 
   public function getListHavingShops(array $params = array())
@@ -72,5 +85,32 @@ class RegionTable extends myDoctrineTable
     $ids = $this->getIdsByQuery($q, $params);
 
     return $this->createListByIds($ids, $params);
+  }
+
+  public function getCityList(array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $key = $this->getQueryHash('region-cityList', $params);
+
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
+
+      $q->addWhere('region.type = ?', 'city');
+
+      $q->orderBy('region.name');
+
+      $this->setQueryParameters($q, $params);
+
+      $return = $q->execute();
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 259200); // обновить кеш через 3 дня
+      }
+    }
+
+    return $return;
   }
 }
