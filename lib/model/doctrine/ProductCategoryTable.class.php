@@ -380,31 +380,19 @@ class ProductCategoryTable extends myDoctrineTable
       return false;
     }
 
-    $key = $this->getQueryHash('productCategory-'.$category->id.'/tag-ids', $params);
+    $categoryIds = $this->getDescendatIds($category, array('with_parent' => true));
 
-    $return = $this->getCachedByKey($key);
-    if (!$return)
-    {
-      $categoryIds = $this->getDescendatIds($category, array('with_parent' => true));
+    $q = TagProductRelationTable::getInstance()->createBaseQuery();
+    $q->select('tagProductRelation.tag_id')
+      ->innerJoin('tagProductRelation.Product product WITH product.is_instock = ?', 1)
+      ->innerJoin('product.CategoryRelation categoryRelation')
+      ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
+      ->groupBy('tagProductRelation.tag_id')
+      ->orderBy('count(tagProductRelation.product_id) DESC')
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
+    ;
 
-      $q = TagProductRelationTable::getInstance()->createBaseQuery();
-      $q->select('tagProductRelation.tag_id')
-        ->innerJoin('tagProductRelation.Product product WITH product.is_instock = ?', 1)
-        ->innerJoin('product.CategoryRelation categoryRelation')
-        ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
-        ->groupBy('tagProductRelation.tag_id')
-        ->orderBy('count(tagProductRelation.product_id) DESC')
-        ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-      ;
-
-      $return = $q->execute();
-      if ($this->isCacheEnabled())
-      {
-        $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
-      }
-    }
-
-    return $return;
+    return $q->execute();
   }
 
   /**

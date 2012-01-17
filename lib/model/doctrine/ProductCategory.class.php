@@ -124,24 +124,38 @@ class ProductCategory extends BaseProductCategory
     return ProductCategoryLinkTable::getInstance()->getListByCategory($this, $params);
   }
 /**
+ * TODO: нуждается в рефакторинге
  *
  * @return TagGroup Collection
  */
-  public function getTagGroupForFilter()
+  public function getTagGroupForFilter(array $params = array())
   {
-    //делаем список тэгов без учета тегов без товаров
-    $categoryTable = ProductCategoryTable::getInstance();
+    $table = $this->getTable();
 
-    //берем только тэги, у которых есть продукты
-    $tagIds = $categoryTable->getTagIds($this);
+    $key = $table->getQueryHash('productCategory-'.$this->id.'/tagGroup-forFilter', $params);
 
-    if (!is_array($tagIds))
+    $return = $table->getCachedByKey($key);
+    if (!$return)
     {
-      $tagIds = array($tagIds);
+      //делаем список тэгов без учета тегов без товаров
+
+      //берем только тэги, у которых есть продукты
+      $tagIds = ProductCategoryTable::getInstance()->getTagIds($this);
+
+      if (!is_array($tagIds))
+      {
+        $tagIds = array($tagIds);
+      }
+
+      //возвращаем тэги, отсортированные в правильном порядке
+      $return = $this->getTagGroupByIdWithOrder($tagIds, $params);
+      if ($table->isCacheEnabled())
+      {
+        $table->getCache()->set($key, $return, 28800); // обновление кеша через 8 часов
+      }
     }
 
-    //возвращаем тэги, отсортированные в правильном порядке
-    return $this->getTagGroupByIdWithOrder($tagIds);
+    return $return;
   }
 /**
  *
@@ -199,7 +213,8 @@ class ProductCategory extends BaseProductCategory
       return '/catalog/' . $this->token;
   }
 
-  public function getTagGroupByIdWithOrder(array $ids = array())
+  // TODO: нуждается в рефакторинге
+  public function getTagGroupByIdWithOrder(array $ids = array(), array $params = array())
   {
     if (!count($ids))
     {
@@ -212,6 +227,13 @@ class ProductCategory extends BaseProductCategory
       ->andWhereIn('tag.id', $ids)
       ->orderBy('productCategoryRelation.position, FIELD(tag.id, '.implode(',', $ids).')')
     ;
+
+    TagGroupTable::getInstance()->setQueryParameters($q, $params);
+
+    if (isset($params['hydrate_array']) && $params['hydrate_array'])
+    {
+      $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
+    }
 
     return  $q->execute();
   }
