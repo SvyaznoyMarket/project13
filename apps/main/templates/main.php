@@ -150,7 +150,6 @@
         $('.rightImage').click( function() { goSlide( 1 ) } )
         $('.centerImage').click( function() {
           clearTimeout( idto )
-          console.log($(this).data('url'))
           location.href = $(this).data('url')
         })
         $('.promos').click( function(){ location.href = $(this).data('url') } )
