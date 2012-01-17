@@ -85,7 +85,7 @@ class ProductPropertyTable extends myDoctrineTable
     $key = $this->getQueryHash('productCategory-'.$category['id'].'/productProperty-all', array($category['id']));
 
     $return = $this->getCachedByKey($key);
-    if (!$return)
+    if (true || !$return)
     {
       //т.к. фильтры пока используются только для категорый без подкатегорий, сэкономим один запрос :)
       //$categoryIds = ProductCategoryTable::getInstance()->getDescendatIds($category);
@@ -109,7 +109,7 @@ class ProductPropertyTable extends myDoctrineTable
       ;
 
       $return = $q->execute();
-      if ($this->isCacheEnabled())
+      if (false && $this->isCacheEnabled())
       {
         $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
       }

@@ -163,48 +163,37 @@ class ProductCategory extends BaseProductCategory
  */
   public function getFilterGroupForFilter()
   {
-    $key = $this->getQueryHash('productCategory-'.$this->id.'/productFilterGroup-forFilter', array());
+    //делаем список тэгов без учета тегов без товаров
+    $categoryTable = ProductCategoryTable::getInstance();
 
-    $return = $this->getCachedByKey($key);
-    if (!$return)
+    //берем property_id и option_id, которые существуют в этой категории
+    $properties = ProductPropertyTable::getInstance()->getForFilter($this);
+
+    //формируем новую коллекцию групп тегов только с рабочими тэгами
+    $newFilter = ProductFilterTable::getInstance()->createList();
+
+    $propertyIds = array();
+    foreach ($properties as $key => $property)
     {
-      //делаем список тэгов без учета тегов без товаров
-      $categoryTable = ProductCategoryTable::getInstance();
+      $propertyIds[$property['id']] = $key;
+    }
 
-      //берем property_id и option_id, которые существуют в этой категории
-      $properties = ProductPropertyTable::getInstance()->getForFilter($this);
-
-      //формируем новую коллекцию групп тегов только с рабочими тэгами
-      $return = ProductFilterTable::getInstance()->createList();
-
-      $propertyIds = array();
-      foreach ($properties as $key => $property)
-      {
-        $propertyIds[$property['id']] = $key;
-      }
-
-      foreach ($this->FilterGroup->Filter as $filter)
-      {
-        if (false
-          || (('choice' == $filter->type) && isset($propertyIds[$filter->property_id]))
-          || ('choice' != $filter->type)
-        ) {
-          if (isset($propertyIds[$filter->property_id]))
-          {
-            $filter['Property'] = $properties[$propertyIds[$filter->property_id]];
-          }
-
-          $return[] = $filter;
+    foreach ($this->FilterGroup->Filter as $filter)
+    {
+      if (false
+        || (('choice' == $filter->type) && isset($propertyIds[$filter->property_id]))
+        || ('choice' != $filter->type)
+      ) {
+        if (isset($propertyIds[$filter->property_id]))
+        {
+          $filter['Property'] = $properties[$propertyIds[$filter->property_id]];
         }
-      }
 
-      if ($this->isCacheEnabled())
-      {
-        $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
+        $newFilter[] = $filter;
       }
     }
 
-    return $return;
+    return $newFilter;
   }
 
   public function getDescendantIds(array $params = array())
