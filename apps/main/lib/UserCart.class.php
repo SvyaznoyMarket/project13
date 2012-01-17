@@ -405,7 +405,7 @@ class UserCart extends BaseUserData
     }
     $result = array();
     foreach ($deliveries as $d) {
-      $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($d['mode_id']);
+      $deliveryObj = DeliveryTypeTable::getInstance()->getByCoreId($d['mode_id']);
       $result[$deliveryObj['id']] = $d['price'];
     }
     return $result;
