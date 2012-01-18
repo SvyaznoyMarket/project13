@@ -379,7 +379,7 @@ class productCatalogActions extends myActions
     }
 
     if (false
-      || !$this->productCategory->getNode()->hasChildren()                  //нет дочерних категорий
+      || !$this->productCategory->hasChildren()                  //нет дочерних категорий
       //|| (1 == $this->productCategory->getNode()->getChildren()->count()) // одна дочерняя категория
     ) {
       $this->forward($this->getModuleName(), 'product');
