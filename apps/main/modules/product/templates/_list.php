@@ -1,6 +1,7 @@
 <?php $ajax_flag = isset($ajax_flag) ? $ajax_flag : false ?>
 
 <?php if (!isset($list[0])): ?>
+  <div class="clear"></div>
   <p>нет товаров</p>
 
 <?php else: ?>
@@ -8,7 +9,7 @@
   <?php if ($ajax_flag): ?>
     <?php
     if ($view == 'line') {
-        $include = 'product/list_ajax_compact';        
+        $include = 'product/list_ajax_compact';
     } else {
         $include = 'product/list_ajax_'.$view;
     }

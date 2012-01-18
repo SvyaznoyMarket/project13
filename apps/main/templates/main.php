@@ -81,7 +81,7 @@
 	$(document).ready(function() {
 
 		if( !$('#main_banner-data').length )
-        	return         	
+        	return
 		var promos = $('#main_banner-data').data('value')
 
 		/* Shit happens */

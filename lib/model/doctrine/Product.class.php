@@ -32,6 +32,23 @@ class Product extends BaseProduct
     }
   }
 
+  public function postSave($event)
+  {
+    parent::postSave($event);
+
+    $record = $event->getInvoker();
+
+    if (array_key_exists('view_list', $record->getLastModified()))
+    {
+      $region = $this->getTable()->getParameter('region');
+
+      foreach ($record->CategoryRelation as $categoryRelation)
+      {
+        $this->getCache()->removeByTag("productCategory-{$categoryRelation['product_category_id']}/product-count".($region ? "/region-{$region['id']}" : ''));
+      }
+    }
+  }
+
   public function __toString()
   {
     return (string) $this->name;
@@ -324,6 +341,7 @@ class Product extends BaseProduct
 
     return $return;
   }
+
   public function getRealPrice()
   {
     return $this->getTable()->getRealPrice($this);
@@ -438,13 +456,16 @@ class Product extends BaseProduct
 	  return $result;
   }
 
-/*  public function getMainPhoto()
+  /*
+  public function getMainPhoto()
   {
-//	if ($this->_mainPhoto === null) {
-//		$this->_mainPhoto = ProductPhotoTable::getInstance()->getOneByProduct($this);
-//	}
+	  if ($this->_mainPhoto === null)
+    {
+  		$this->_mainPhoto = ProductPhotoTable::getInstance()->getOneByProduct($this);
+  	}
     return isset($this->main_photo) && null !== $this->main_photo ? $this->main_photo : ProductPhotoTable::getInstance()->getOneByProduct($this);
-  }*/
+  }
+   */
 
   public function getAllPhotos()
   {

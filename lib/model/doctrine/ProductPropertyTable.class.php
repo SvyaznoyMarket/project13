@@ -51,24 +51,23 @@ class ProductPropertyTable extends myDoctrineTable
 
     $this->setQueryParameters($q);
 
-    $q->addWhere('productProperty.id = ?', $id);
+    $q->whereId($id);
 
     if ($params['with_options'])
     {
       $q->leftJoin('productProperty.Option productPropertyOption')
-      ->addOrderBy('productPropertyOption.position')
-    ;
+        ->addOrderBy('productPropertyOption.position')
+      ;
     }
 
-    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
     if ($params['hydrate_array'])
     {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     }
 
-    $record = $q->fetchOne();
+    $list = $q->execute();
 
-    return $record;
+    return $this->getResult($list, is_scalar($id));
   }
 
 /**
@@ -76,36 +75,46 @@ class ProductPropertyTable extends myDoctrineTable
   */
   public function getForFilter(ProductCategory $category = null)
   {
+    $return = $this->createList();
+
     if (!$category)
     {
       return false;
     }
 
-    //т.к. фильтры пока используются только для категорый без подкатегорий, сэкономим один запрос :)
-    //$categoryIds = ProductCategoryTable::getInstance()->getDescendatIds($category);
-    $categoryIds = array($category->id, );
+    $key = $this->getQueryHash('productCategory-'.$category['id'].'/productProperty-all', array($category['id']));
 
-    //трехэтажный запрос, конечно, ниочень, но лучше не получилось.
-    //можно попобовать оптимизтровать
-    $q = $this->createBaseQuery();
-    $q->select('productProperty.*, option.*')
-      ->innerJoin('productProperty.ProductRelation productRelation INDEXBY id')
-      //->innerJoin('productRelation.Product product')
-      ->innerJoin('productRelation.Product product WITH product.view_list = ?', 1)
-      ->innerJoin('productRelation.Option relationOption')
-      ->innerJoin('product.CategoryRelation categoryRelation')
-      ->innerJoin('productProperty.Option option WITH option.id = relationOption.id')
-      ->andWhere('productRelation.option_id IS NOT NULL')
-      ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
-      ->groupBy('productRelation.option_id')
-      ->orderBy('count(productRelation.product_id) DESC')
-      ->useResultCache(true, null, $this->getQueryHash('productCategory-'.$category->id.'/productProperty-all', $categoryIds))
-      //->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
-    ;
+    $return = $this->getCachedByKey($key);
+    if (true || !$return)
+    {
+      //т.к. фильтры пока используются только для категорый без подкатегорий, сэкономим один запрос :)
+      //$categoryIds = ProductCategoryTable::getInstance()->getDescendatIds($category);
+      $categoryIds = array($category['id']);
 
-    //формирую массив property_id => array(option_id)
-    $propertiesForFilter = array();
+      //трехэтажный запрос, конечно, ниочень, но лучше не получилось.
+      //можно попобовать оптимизтровать
+      $q = $this->createBaseQuery();
+      $q->select('productProperty.*, option.*')
+        ->innerJoin('productProperty.ProductRelation productRelation INDEXBY id')
+        //->innerJoin('productRelation.Product product')
+        ->innerJoin('productRelation.Product product WITH product.view_list = ?', 1)
+        ->innerJoin('productRelation.Option relationOption')
+        ->innerJoin('product.CategoryRelation categoryRelation')
+        ->innerJoin('productProperty.Option option WITH option.id = relationOption.id')
+        ->andWhere('productRelation.option_id IS NOT NULL')
+        ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
+        ->groupBy('productRelation.option_id')
+        ->orderBy('count(productRelation.product_id) DESC')
+        //->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
+      ;
 
-    return $q->execute();//$propertiesForFilter;
+      $return = $q->execute();
+      if (false && $this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 86400); // обновление кеша через 24 часа
+      }
+    }
+
+    return $return;
   }
 }

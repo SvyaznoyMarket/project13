@@ -28,12 +28,16 @@ class productCatalogComponents extends myComponents
     */
     if (isset($this->productCategory) && !empty($this->productCategory))
     {
-      $ancestorList = $this->productCategory->getNode()->getAncestors();
-      if ($ancestorList) foreach ($ancestorList as $ancestor)
+      //$ancestorList = $this->productCategory->getNode()->getAncestors();
+      $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
+        'hydrate_array' => true,
+        'select'        => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name',
+      ));
+      foreach ($ancestorList as $ancestor)
       {
         $list[] = array(
-          'name' => (string)$ancestor,
-          'url'  => url_for('productCatalog_category', $ancestor),
+          'name' => $ancestor['name'],
+          'url'  => url_for('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'].'/'.$ancestor['token']) : $ancestor['token'])),
         );
       }
       $list[] = array(
@@ -77,14 +81,18 @@ class productCatalogComponents extends myComponents
     */
     if (isset($this->productCategory) && !empty($this->productCategory))
     {
-      $ancestorList = $this->productCategory->getNode()->getAncestors();
+      //$ancestorList = $this->productCategory->getNode()->getAncestors();
+      $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
+        'hydrate_array' => true,
+        'select'        => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name, productCategory.seo_header',
+      ));
       if ($ancestorList)
       {
           foreach ($ancestorList as $ancestor)
           {
             $list[] = array(
-              'name' => (string) ($ancestor['seo_header']) ? $ancestor['seo_header'] : $ancestor['name'],
-              'url'  => url_for('productCatalog_category', $ancestor),
+              'name' => $ancestor['seo_header'] ? $ancestor['seo_header'] : $ancestor['name'],
+              'url'  => url_for('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'].'/'.$ancestor['token']) : $ancestor['token'])),
             );
           }
       }
@@ -485,7 +493,10 @@ class productCatalogComponents extends myComponents
 
 
     $this->setVar('currentCat', $this->productCategory, true);
-    $ancestorList = $this->productCategory->getNode()->getAncestors();
+    //$ancestorList = $this->productCategory->getNode()->getAncestors();
+    $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
+      'hydrate_array' => true,
+    ));
 
     $pathAr = array();
     if ($ancestorList)
@@ -499,7 +510,7 @@ class productCatalogComponents extends myComponents
     }
 
     $q = ProductCategoryTable::getInstance()->createBaseQuery();
-    $q->addWhere('productCategory.root_id = ?', $rootCat->id);
+    $q->addWhere('productCategory.root_id = ?', $rootCat['id']);
     $list = $q->fetchArray();
 
     $isCurrent = false;

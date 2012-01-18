@@ -52,13 +52,15 @@ class TagTable extends myDoctrineTable
 
   public function getByProduct($product_id, array $params = array())
   {
+    // TODO: use cache with key = "product-{$product_id}/tag-all"
+
     $q = TagTable::getInstance()->createBaseQuery();
     $q->select('tag.*, count(productRelation.product_id) count')
       ->innerJoin('tag.ProductRelation productRelation')
       ->groupBy('productRelation.tag_id')
       ->having('tag.id IN (SELECT tagProductRelation.tag_id FROM TagProductRelation tagProductRelation WHERE tagProductRelation.product_id = ?)', $product_id)
       ->orderBy('count DESC')
-      ->useResultCache(true, null, 'product-'.$product_id.'/tag-all');
+    ;
 
     return $q->execute();
   }

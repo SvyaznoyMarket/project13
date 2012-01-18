@@ -12,17 +12,12 @@
  */
 class ProductFilterGroup extends BaseProductFilterGroup
 {
-  public function getFilterList(array $params = array())
-  {
-    return ProductFilterTable::getInstance()->getListByGroup($this, $params);
-  }
-
   public function importFromCore(array $data)
   {
     //parent::importFromCore($data);
-      
+
     $this->name = 'Фильтр для '.$data['name'];
-      
+
     $filter_ids = array();
     foreach ($this->Filter as $filter)
     {
@@ -35,7 +30,7 @@ class ProductFilterGroup extends BaseProductFilterGroup
         $filter_ids[] = $filter['id'];
       }
     }
-      
+
     if (!empty($data['filter_property']))
     {
       //$this->Filter = new Doctrine_Collection(ProductFilterTable::getInstance());
@@ -47,12 +42,12 @@ class ProductFilterGroup extends BaseProductFilterGroup
         {
           $productFilter = new ProductFilter();
         }
-        
+
         $productFilter->importFromCore($relationData);
         $this->Filter[] = $productFilter;
       }
     }
-    
+
     //Удаляю все, что лишнее
     if ($this->id && count($filter_ids))
     {

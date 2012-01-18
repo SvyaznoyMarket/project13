@@ -27,7 +27,7 @@ class UserCart extends BaseUserData
         $keys = array_keys($products);
         unset($products[$keys[0]]);
       }
-      
+
       $products[$product->id] = $this->getDefaults();
     }
     $products[$product->id]['quantity'] = $quantity;
@@ -405,7 +405,7 @@ class UserCart extends BaseUserData
     }
     $result = array();
     foreach ($deliveries as $d) {
-      $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($d['mode_id']);
+      $deliveryObj = DeliveryTypeTable::getInstance()->getByCoreId($d['mode_id']);
       $result[$deliveryObj['id']] = $d['price'];
     }
     return $result;
@@ -569,9 +569,8 @@ class UserCart extends BaseUserData
 
     if (is_null($this->products) || true === $force)
     {
-      //myDebug::dump($productIds);
       $this->products = $productTable->createListByIds($productIds, array('index' => array('product' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false, 'with_model' => true, ));
-      //myDebug::dump($this->products);
+      //myDebug::dump($this->products, 1);
     }
     else
     {
@@ -591,6 +590,7 @@ class UserCart extends BaseUserData
         $this->products->remove($id);
       }
     }
+
     foreach ($this->products as $key => $product)
     {
       //myDebug::dump($product);
