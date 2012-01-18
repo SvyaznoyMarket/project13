@@ -37,6 +37,7 @@ class BannerTable extends myDoctrineTable
   {
     $data =  array(
       'hydrate_array' => false,
+      'dummy'         => false,
     );
 
     return $data;
