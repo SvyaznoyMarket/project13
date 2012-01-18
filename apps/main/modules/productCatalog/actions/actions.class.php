@@ -406,7 +406,6 @@ class productCatalogActions extends myActions
 
     // SEO ::
     $list = array();
-    //$ancestorList = $this->productCategory->getNode()->getAncestors();
     $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
       'hydrate_array' => true,
       'select'        => 'productCategory.id, productCategory.name',
@@ -469,7 +468,6 @@ class productCatalogActions extends myActions
 
     // SEO ::
     $list = array();
-    //$ancestorList = $this->productCategory->getNode()->getAncestors();
     $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
       'hydrate_array' => true,
       'select'        => 'productCategory.id, productCategory.name',
