@@ -279,12 +279,12 @@ class ProductCategoryTable extends myDoctrineTable
       $ids = $this->getDescendatIds($category, $params);
 
       $return = $this->createListByIds($ids, $params);
-      if ($this->isCacheEnabled() && $return)
+      if ($this->isCacheEnabled() && count($ids))
       {
         $this->getCache()->set($key, $return);
-        foreach ($return as $record)
+        foreach ($ids as $id)
         {
-          $this->getCache()->addTag("productCategory-{$record['id']}", $key);
+          $this->getCache()->addTag("productCategory-{$id}", $key);
         }
       }
     }
@@ -343,12 +343,12 @@ class ProductCategoryTable extends myDoctrineTable
       $ids = $this->getAncestorIds($category, $params);
 
       $return = $this->createListByIds($ids, $params);
-      if ($this->isCacheEnabled() && $return)
+      if ($this->isCacheEnabled() && count($ids))
       {
         $this->getCache()->set($key, $return);
-        foreach ($return as $record)
+        foreach ($ids as $id)
         {
-          $this->getCache()->addTag("productCategory-{$record['id']}", $key);
+          $this->getCache()->addTag("productCategory-{$id}", $key);
         }
       }
     }
