@@ -128,12 +128,10 @@ class myUser extends myGuardSecurityUser
         $this->setRegion($region->id);
       }
 
-      $parent_region = $region->getNode()->getParent();
-
       $this->region = array(
         'id'                    => $region->id,
         'name'                  => $region->name,
-        'full_name'             => $region->name.', '.$parent_region->name,
+        'full_name'             => $region->name.', '.$region->getParent()->name,
         'type'                  => $region->type,
         'product_price_list_id' => $region->product_price_list_id,
         'core_id'               => $region->core_id,

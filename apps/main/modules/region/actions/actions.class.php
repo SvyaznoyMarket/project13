@@ -39,7 +39,7 @@ class regionActions extends myActions
 
     $list = array();
     foreach ($q->execute() as $region) {
-      $parent = $region->getNode()->getParent();
+      $parent = $region->getParent();
 
       $list[] = array(
         'id'   => $region['id'],
