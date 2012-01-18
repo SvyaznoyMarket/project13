@@ -55,7 +55,7 @@ $(document).ready(function(){
         for (i in data) {
           row = data[i];
           if (row.object.core_id == 3) {
-            html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине '+formatDateText(row.text)+'</h5><div>&mdash; <a href="'+delivery_cnt.data().shoplink+'">В каких магазинах ENTER можно забрать?</a></div></li>';
+            html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине '+formatDateText(row.text)+'</h5><div>&mdash; <a target="blank" href="'+delivery_cnt.data().shoplink+'">В каких магазинах ENTER можно забрать?</a></div></li>';
             data.splice(i, 1);
           }
         }
