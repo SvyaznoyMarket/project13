@@ -260,11 +260,27 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getChildList(ProductCategory $category, $params = array())
   {
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash("productCategory-{$category['id']}/childList", $params);
 
-    $ids = $this->getDescendatIds($category, array('depth' => 1));
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
 
-    return $this->createListByIds($ids, $params);
+      $ids = $this->getDescendatIds($category, array('depth' => 1));
+
+      $return = $this->createListByIds($ids, $params);
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return);
+        foreach ($ids as $id)
+        {
+          $this->getCache()->addTag("productCategory-{$id}", $key);
+        }
+      }
+    }
+
+    return $return;
   }
 
   public function getDescendatList(ProductCategory $category = null, $params = array())
