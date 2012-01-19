@@ -260,20 +260,52 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getChildList(ProductCategory $category, $params = array())
   {
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash("productCategory-{$category['id']}/childList", $params);
 
-    $ids = $this->getDescendatIds($category, array('depth' => 1));
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
 
-    return $this->createListByIds($ids, $params);
+      $ids = $this->getDescendatIds($category, array('depth' => 1));
+
+      $return = $this->createListByIds($ids, $params);
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return);
+        foreach ($ids as $id)
+        {
+          $this->getCache()->addTag("productCategory-{$id}", $key);
+        }
+      }
+    }
+
+    return $return;
   }
 
   public function getDescendatList(ProductCategory $category = null, $params = array())
   {
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash('productCategory'.($category ? ('-'.$category['id']) : '').'/descendatList', $params);
 
-    $ids = $this->getDescendatIds($category, $params);
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
 
-    return $this->createListByIds($ids, $params);
+      $ids = $this->getDescendatIds($category, $params);
+
+      $return = $this->createListByIds($ids, $params);
+      if ($this->isCacheEnabled() && count($ids))
+      {
+        $this->getCache()->set($key, $return);
+        foreach ($ids as $id)
+        {
+          $this->getCache()->addTag("productCategory-{$id}", $key);
+        }
+      }
+    }
+
+    return $return;
   }
 
   public function getDescendatIds(ProductCategory $category = null, $params = array())
@@ -306,12 +338,7 @@ class ProductCategoryTable extends myDoctrineTable
     {
       $q->addWhere('productCategory.level < ?', $params['max_level'] + 1);
     }
-    $categoryIds = $this->getIdsByQuery($q, $params,
-      $category
-      ? "productCategory-{$category->id}/productCategory-descendant-ids"
-      : 'productCategory-descendant-ids',
-      $category ? "productCategory-{$category->id}" : 'productCategory'
-    );
+    $categoryIds = $this->getIdsByQuery($q, $params);
     if ($params['with_parent'])
     {
       $categoryIds[] = $category->id;
@@ -322,11 +349,27 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getAncestorList(ProductCategory $category = null, $params = array())
   {
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash('productCategory'.($category ? ('-'.$category['id']) : '').'/ancestorList', $params);
 
-    $ids = $this->getAncestorIds($category, $params);
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
 
-    return $this->createListByIds($ids, $params);
+      $ids = $this->getAncestorIds($category, $params);
+
+      $return = $this->createListByIds($ids, $params);
+      if ($this->isCacheEnabled() && count($ids))
+      {
+        $this->getCache()->set($key, $return);
+        foreach ($ids as $id)
+        {
+          $this->getCache()->addTag("productCategory-{$id}", $key);
+        }
+      }
+    }
+
+    return $return;
   }
 
   public function getAncestorIds(ProductCategory $category = null, $params = array())
@@ -359,12 +402,7 @@ class ProductCategoryTable extends myDoctrineTable
     {
       $q->addWhere('productCategory.level < ?', $params['max_level'] + 1);
     }
-    $categoryIds = $this->getIdsByQuery($q, $params,
-      $category
-      ? "productCategory-{$category->id}/productCategory-ancestor-ids"
-      : 'productCategory-ancestor-ids',
-      $category ? "productCategory-{$category->id}" : 'productCategory'
-    );
+    $categoryIds = $this->getIdsByQuery($q, $params);
     if ($params['with_child'])
     {
       $categoryIds[] = $category->id;

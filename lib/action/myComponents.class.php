@@ -7,22 +7,26 @@ class myComponents extends sfComponents
     return $this->getController()->getActionStack()->getLastEntry()->getActionInstance()->getLayout();
   }
 
-  public function getCacheKey()
+  public function getCacheKey($params = null)
   {
     $cache = $this->getCache();
 
-    $params = array();
-    foreach ($this->getVarHolder()->getAll() as $k => $v)
+    if (null == $params)
     {
-      if (($v instanceof myDoctrineRecord) && !empty($v['id']))
+      $params = array();
+      foreach ($this->getVarHolder()->getAll() as $k => $v)
       {
-        $params[$k] = $v['id'];
+        if (($v instanceof myDoctrineRecord) && !empty($v['id']))
+        {
+          $params[$k] = $v['id'];
+        }
+        else {
+          $params[$k] = $v;
+        }
       }
-      else {
-        $params[$k] = $v;
-      }
+      ksort($params);
     }
-    ksort($params);
+
     $key = $this->getModuleName().'/'.$this->getActionName().'/'.(count($params) > 0 ? md5(serialize($params)) : '~');
 
     return $key;
@@ -32,7 +36,11 @@ class myComponents extends sfComponents
   {
     if ($cached = $this->getCache()->get($key))
     {
-      $this->getVarHolder()->add($cached);
+      //$this->getVarHolder()->add($cached);
+      foreach ($cached as $k => $v)
+      {
+        $this->setVar($k, $v, true);
+      }
 
       return true;
     }
@@ -48,6 +56,10 @@ class myComponents extends sfComponents
       if ($v instanceof sfOutputEscaperSafe)
       {
         $v = $v->getValue();
+      }
+      else if ($v instanceof sfOutputEscaper)
+      {
+        $v = $v->getRawValue();
       }
 
       $cached[$k] = $v;

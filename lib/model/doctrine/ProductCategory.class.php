@@ -206,6 +206,10 @@ class ProductCategory extends BaseProductCategory
     return $this->getTable()->getAncestorIds($this, $params);
   }
 
+  public function hasChildren()
+  {
+    return $this->getNode()->hasChildren();
+  }
 
   // TODO: удалить, роутинг для чего нужен?
   public function getUrl(){

@@ -1,4 +1,4 @@
-<?php foreach ($rootlist as $i => $list): 
+<?php foreach ($rootlist as $i => $list):
     $c = count($list);
     $iInCol = 0;
     ?>
@@ -22,27 +22,27 @@
                     else
                     {
                         $from = 0;
-                        $to = $bigCat['num'] - 1;                        
+                        $to = $bigCat['num'] - 1;
                     }
                     if (!$from) echo '<dt><a href="'.url_for('productCatalog_category', $rootCat[ $bigCat['id'] ]).'">'.$rootCat[ $bigCat['id'] ].'</a></dt>';
                     //проходим по вложенным категориям
                     if ($from>0) echo '<dd>&nbsp;</dd>';
                     for($i=$from; $i<=$to; $i++)
                     {
-                        if (!isset($catTree[ $bigCat['id'] ][$i])  /*|| 
+                        if (!isset($catTree[ $bigCat['id'] ][$i])  /*||
                             !$catTree[ $bigCat['id'] ][$i]->countProduct() */   ){
                             continue;
                         }
-                        echo '<dd><a href="'.url_for('productCatalog_category', $catTree[ $bigCat['id'] ][$i]).'">'.$catTree[ $bigCat['id'] ][$i] . '</a></dd>'; 
+                        echo '<dd><a href="'.url_for('productCatalog_category', $catTree[ $bigCat['id'] ][$i]).'">'.$catTree[ $bigCat['id'] ][$i] . '</a></dd>';
                     }
                     $existList[ $bigCat['id'] ] = $to;
-                }                
+                }
                 echo '</dl>';
             }
 
-                
+
             ?>
-            
+
             <?php if (false): ?>
             <!--
             <?php foreach ($list as $ii => $item): ?>

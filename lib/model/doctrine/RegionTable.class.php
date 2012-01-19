@@ -68,6 +68,25 @@ class RegionTable extends myDoctrineTable
     return $return;
   }
 
+  public function getParentRecord($record, array $params = array())
+  {
+    $key = $this->getQueryHash("region-{$record['id']}/parent", $params);
+
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $return = $record->getNode()->getParent();
+
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 151200); // обновление кеша через неделю
+        $this->getCache()->addTag("region-{$record['id']}", $key);
+      }
+    }
+
+    return $return;
+  }
+
   public function getListHavingShops(array $params = array())
   {
     $this->applyDefaultParameters($params);

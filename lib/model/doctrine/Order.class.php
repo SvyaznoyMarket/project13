@@ -59,7 +59,7 @@ class Order extends BaseOrder
     }
 
 	  if ($region) {
-		  $parent = $region->getNode()->getParent();
+		  $parent = $region->getParent();
 		  if ($parent && $parent->type == 'area') {
 			  return $parent->name;
 		  }
@@ -81,11 +81,11 @@ class Order extends BaseOrder
     }
 
 	  if (isset($region)) {
-		  $parent = $region->getNode()->getParent();
+		  $parent = $region->getParent();
 		  if ($parent && $parent->type == 'country') {
 			  return $parent->name;
 		  }
-		  $parent = $parent->getNode()->getParent();
+		  $parent = $parent->getParent();
 		  if ($parent && $parent->type == 'country') {
 			  return $parent->name;
 		  }
@@ -136,7 +136,7 @@ class Order extends BaseOrder
       }
     }
     if (isset($this->ServiceRelation))
-    {    
+    {
       foreach ($this->ServiceRelation as $service)
       {
             #echo 'next';

@@ -12,6 +12,11 @@
  */
 class Region extends BaseRegion
 {
+  public function construct()
+  {
+    $this->mapValue('parent', null);
+  }
+
   public function importFromCore(array $data)
   {
     parent::importFromCore($data);
@@ -67,5 +72,10 @@ class Region extends BaseRegion
     }
 
     return $return;
+  }
+
+  public function getParent(array $params = array())
+  {
+    return $this->getTable()->getParentRecord($this);
   }
 }

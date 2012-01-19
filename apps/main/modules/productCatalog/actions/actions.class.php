@@ -379,7 +379,7 @@ class productCatalogActions extends myActions
     }
 
     if (false
-      || !$this->productCategory->getNode()->hasChildren()                  //нет дочерних категорий
+      || !$this->productCategory->hasChildren()                  //нет дочерних категорий
       //|| (1 == $this->productCategory->getNode()->getChildren()->count()) // одна дочерняя категория
     ) {
       $this->forward($this->getModuleName(), 'product');
@@ -406,7 +406,6 @@ class productCatalogActions extends myActions
 
     // SEO ::
     $list = array();
-    //$ancestorList = $this->productCategory->getNode()->getAncestors();
     $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
       'hydrate_array' => true,
       'select'        => 'productCategory.id, productCategory.name',
@@ -469,7 +468,6 @@ class productCatalogActions extends myActions
 
     // SEO ::
     $list = array();
-    //$ancestorList = $this->productCategory->getNode()->getAncestors();
     $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
       'hydrate_array' => true,
       'select'        => 'productCategory.id, productCategory.name',

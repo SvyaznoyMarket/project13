@@ -28,7 +28,6 @@ class productCatalogComponents extends myComponents
     */
     if (isset($this->productCategory) && !empty($this->productCategory))
     {
-      //$ancestorList = $this->productCategory->getNode()->getAncestors();
       $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
         'hydrate_array' => true,
         'select'        => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name',
@@ -81,7 +80,6 @@ class productCatalogComponents extends myComponents
     */
     if (isset($this->productCategory) && !empty($this->productCategory))
     {
-      //$ancestorList = $this->productCategory->getNode()->getAncestors();
       $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
         'hydrate_array' => true,
         'select'        => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name, productCategory.seo_header',
@@ -493,7 +491,6 @@ class productCatalogComponents extends myComponents
 
 
     $this->setVar('currentCat', $this->productCategory, true);
-    //$ancestorList = $this->productCategory->getNode()->getAncestors();
     $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
       'hydrate_array' => true,
     ));
@@ -539,7 +536,7 @@ class productCatalogComponents extends myComponents
 
     /*
     $this->setVar('currentCat', $this->productCategory, true);
-    $ancestorList = $this->productCategory->getNode()->getAncestors();
+    $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory);
 
     if (isset($ancestorList[0])) {
         $rootCat = $ancestorList[0];
