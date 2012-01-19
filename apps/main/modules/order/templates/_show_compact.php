@@ -88,6 +88,7 @@ use_helper('Date');
            </th>
            <td>Итого к оплате:<br><strong class="font18"><?php echo $item['sum'] ?>&nbsp;<span class="rubl">p</span></strong></td>
        </tr>
+<?php if (false): ?>
        <tr>
            <?php if ($info['status_id']==Order::STATUS_READY || $info['status_id']==Order::STATUS_CANCELLED){ ?>
                <!--<th><input type="button" value="Повторить заказ" class="button whitebutton"></th>-->
@@ -98,5 +99,6 @@ use_helper('Date');
           <?php } ?>
            <td></td>
        </tr>
+<?php endif ?>
     </table>
 
