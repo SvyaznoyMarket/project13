@@ -80,7 +80,7 @@ class BannerTable extends myDoctrineTable
     {
       if ($params['with_items'])
       {
-        foreach ($record['Item'] as $i => $bannerItem)
+        foreach ($record['Item'] as $j => $bannerItem)
         {
           $bannerItem['Object'] = null;
           if ('product' == $bannerItem['type'])
@@ -94,7 +94,7 @@ class BannerTable extends myDoctrineTable
 
           if (is_array($bannerItem))
           {
-            $record['Item'][$i] = $bannerItem;
+            $record['Item'][$j] = $bannerItem;
           }
         }
       }

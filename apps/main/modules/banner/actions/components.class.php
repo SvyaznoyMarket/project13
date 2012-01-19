@@ -65,7 +65,7 @@ class bannerComponents extends myComponents
         't'    =>
           !empty($banner['timeout'])
           ? $banner['timeout']
-          : (count($list) ? sfConfig::get('app_banner_timeout', 2000) : 3000)
+          : (count($list) ? sfConfig::get('app_banner_timeout', 6000) : 10000)
         ,
       );
       if (empty($item['imgs']) || empty($item['imgb'])) continue;

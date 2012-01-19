@@ -16,7 +16,7 @@ all:
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
   banner:
-    timeout: 2000
+    timeout: 6000
     image_url:
       - 'http://fs01.enter.ru/4/1/230x302/'
       - 'http://fs01.enter.ru/4/1/768x302/'
