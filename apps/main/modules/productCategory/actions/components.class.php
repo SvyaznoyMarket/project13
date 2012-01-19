@@ -153,7 +153,7 @@ class productCategoryComponents extends myComponents
 
       $list[] = array(
         'name'             => $productType->name,
-        'url'              => $this->generateUrl(array('sf_route' => 'productCatalog_productType', 'sf_subject' => $this->productCategory, 'productType' => $productType->id)),
+        'url'              => $this->generateUrl('productCatalog_productType', array('sf_subject' => $this->productCategory, 'productType' => $productType->id)),
         'product_quantity' => $productType->product_count,
       );
     }

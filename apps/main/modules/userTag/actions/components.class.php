@@ -70,7 +70,7 @@ class userTagComponents extends myComponents
       $list[] = array(
         'name'  => (string)$userTag,
         'class' => $userTagList->getByIndex('id', $userTag->id) ? 'delete' : 'add',
-        'url'   => $this->generateUrl(array('sf_route' => $userTagList->getByIndex('id', $userTag->id) ? 'userTag_unlinkProduct' : 'userTag_linkProduct', 'sf_subject' => $userTag, 'product' => $this->product->token)),
+        'url'   => $this->generateUrl($userTagList->getByIndex('id', $userTag->id) ? 'userTag_unlinkProduct' : 'userTag_linkProduct', array('sf_subject' => $userTag, 'product' => $this->product->token)),
       );
     }
 

@@ -48,14 +48,14 @@ class productCatalogComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$this->creator,
-        'url'  => $this->generateUrl(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+        'url'  => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
     if (isset($this->product))
     {
       $list[] = array(
         'name' => (string)$this->product,
-        'url'  => $this->generateUrl(array('sf_route' => 'productCard', 'sf_subject' => $this->product)),
+        'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
       );
     }
 
@@ -75,7 +75,7 @@ class productCatalogComponents extends myComponents
     /*
     $list[] = array(
       'name' => 'Каталог товаров',
-      'url'  => $this->generateUrl('@productCatalog'),
+      'url'  => $this->generateUrl('productCatalog'),
     );
     */
     if (isset($this->productCategory) && !empty($this->productCategory))
@@ -103,14 +103,14 @@ class productCatalogComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$this->creator,
-        'url'  => $this->generateUrl(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+        'url'  => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
     if (isset($this->product))
     {
       $list[] = array(
         'name' => (string)$this->product,
-        'url'  => $this->generateUrl(array('sf_route' => 'productCard', 'sf_subject' => $this->product)),
+        'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
       );
     }
 
@@ -152,7 +152,7 @@ class productCatalogComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$creator,
-        'url'  => $this->generateUrl(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $creator)),
+        'url'  => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $creator)),
       );
     }
 

@@ -43,7 +43,7 @@ class lineComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$this->creator,
-        'url'  => $this->generateUrl(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+        'url'  => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
 
