@@ -2,12 +2,14 @@
 
 class myUser extends myGuardSecurityUser
 {
+
   protected
     $cart = null,
     $productHistory = null,
     $productCompare = null,
     $order = null,
     $region = null
+
   ;
 
   public function shutdown()
@@ -48,28 +50,37 @@ class myUser extends myGuardSecurityUser
     $result['productsInCart'] = array();
     $result['servicesInCart'] = array();
 
-    foreach($cart->getProducts()->toArray() as $id => $product){
-      $result['productsInCart'][ $product['token'] ] = $product['cart']['quantity'];
+    foreach ($cart->getProducts() as $id => $product)
+    {
+      $result['productsInCart'][$product['token']] = $product['cart']['quantity'];
     }
-    foreach($cart->getServices()->toArray() as $id => $service){
+
+    foreach ($cart->getServices() as $id => $service)
+    {
       $qty = $service['cart']['quantity'];
-      if ($qty > 0) {
-        $result['servicesInCart'][ $service['token'] ][0] = $qty;
+      if ($qty > 0)
+      {
+        $result['servicesInCart'][$service['token']][0] = $qty;
       }
-      foreach($service['cart']['product'] as $pId => $pQty) {
-          $token = false;
-          foreach($cart->getProducts()->toArray() as $id => $product){
-              #echo $product['id'] .'=='. $pId."\n";
-              if ($product['id'] == $pId) {
-                  $token = $product['token'];
-                  break;
-              }
+      foreach ($service['cart']['product'] as $pId => $pQty)
+      {
+        $token = false;
+        foreach ($cart->getProducts() as $id => $product)
+        {
+          #echo $product['id'] .'=='. $pId."\n";
+          if ($product['id'] == $pId)
+          {
+            $token = $product['token'];
+            break;
           }
-          if ($token && $pQty) {
-            $result['servicesInCart'][ $service['token'] ][$token] = $pQty;
-          }
+        }
+        if ($token && $pQty)
+        {
+          $result['servicesInCart'][$service['token']][$token] = $pQty;
+        }
       }
     }
+
     return $result;
   }
 
@@ -129,14 +140,14 @@ class myUser extends myGuardSecurityUser
       }
 
       $this->region = array(
-        'id'                    => $region->id,
-        'name'                  => $region->name,
-        'full_name'             => $region->name.', '.$region->getParent()->name,
-        'type'                  => $region->type,
+        'id' => $region->id,
+        'name' => $region->name,
+        'full_name' => $region->name.', '.$region->getParent()->name,
+        'type' => $region->type,
         'product_price_list_id' => $region->product_price_list_id,
-        'core_id'               => $region->core_id,
-        'geoip_code'            => $region->geoip_code,
-        'region'                => $region,
+        'core_id' => $region->core_id,
+        'geoip_code' => $region->geoip_code,
+        'region' => $region,
       );
     }
 
@@ -163,22 +174,22 @@ class myUser extends myGuardSecurityUser
     return $ip;
   }
 
-public function getRealIpAddr()
-{
-  if (!empty($_SERVER['HTTP_CLIENT_IP'])) // Определение IP-адреса
+  public function getRealIpAddr()
   {
-    $ip=$_SERVER['HTTP_CLIENT_IP'];
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) // Определение IP-адреса
+    {
+      $ip = $_SERVER['HTTP_CLIENT_IP'];
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) // Проверка того, что IP идёт через прокси
+    {
+      $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    else
+    {
+      $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
   }
-  elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) // Проверка того, что IP идёт через прокси
-  {
-    $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
-  }
-  else
-  {
-    $ip=$_SERVER['REMOTE_ADDR'];
-  }
-  return $ip;
-}
 
   protected function getUserData($name)
   {
@@ -201,6 +212,7 @@ public function getRealIpAddr()
   public function setRegionCookie()
   {
     $key = $this->getRegion('geoip_code');
-    sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'), $key, time()+60*60*24*365);
+    sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'), $key, time() + 60 * 60 * 24 * 365);
   }
+
 }
