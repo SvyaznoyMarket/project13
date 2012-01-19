@@ -39,7 +39,7 @@ class searchComponents extends myComponents
 
     $list[] = array(
       'name' => "Поиск (".$this->searchString.")",
-      'url'  => url_for('search', array('searchString' => $this->searchString)),
+      'url'  => $this->generateUrl('search', array('searchString' => $this->searchString)),
     );
 
     $this->setVar('list', $list, false);
@@ -75,7 +75,7 @@ class searchComponents extends myComponents
       }
 
       $list[$index][] = array(
-        'url'      => url_for('search', array('q' => $this->searchString, 'product_type' => $productType->id)),
+        'url'      => $this->generateUrl('search', array('q' => $this->searchString, 'product_type' => $productType->id)),
         'name'     => (string)$productType,
         'token'    => $productType->id,
         'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,

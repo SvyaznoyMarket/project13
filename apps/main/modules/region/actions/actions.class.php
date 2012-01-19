@@ -67,7 +67,6 @@ class regionActions extends myActions
   public function executeInit(sfWebRequest $request)
   {
     $this->forward404Unless($request->isXmlHttpRequest());
-    sfProjectConfiguration::getActive()->loadHelpers('Url');
 
     $user_region = $this->getUser()->getRegion();
 
@@ -76,7 +75,7 @@ class regionActions extends myActions
     $return = array();
     foreach ($regions as $region)
     {
-      $item = array('name' => $region->name, 'link' => url_for('region_change', array('region' => $region->token, )), );
+      $item = array('name' => $region->name, 'link' => $this->generateUrl('region_change', array('region' => $region->token, )), );
       if ($region->id == $user_region['id'])
       {
         $item['is_active'] = 'active';
@@ -85,8 +84,8 @@ class regionActions extends myActions
     }
 
     return $this->renderJson(array(
-        'success' => true,
-        'data'    => $return,
-      ));
+      'success' => true,
+      'data'    => $return,
+    ));
   }
 }

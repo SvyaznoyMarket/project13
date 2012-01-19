@@ -35,7 +35,7 @@ class productCategoryComponents extends myComponents
 //    {
 //      $list[] = array(
 //        'name' => (string)$productCategory,
-//        'url'  => url_for('productCatalog_category', $productCategory),
+//        'url'  => $this->generateUrl('productCatalog_category', $productCategory),
 //      );
 //    }
 
@@ -91,8 +91,8 @@ class productCategoryComponents extends myComponents
     $item = array(
       'name'              => (string)$this->productCategory,
       'root_name'         => (string)$this->productCategory->getRootCategory(),
-      'url'               => url_for('productCatalog_category', $this->productCategory),
-      'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
+      'url'               => $this->generateUrl('productCatalog_category', $this->productCategory),
+      'carousel_data_url' => $this->generateUrl('productCatalog_carousel', $this->productCategory),
       'product_quantity'  => $this->productCategory->countProduct(array('view' => 'list')),
       'links'             => $this->productCategory->getLinkList(),
       'has_line'          => $this->productCategory->has_line,
@@ -153,7 +153,7 @@ class productCategoryComponents extends myComponents
 
       $list[] = array(
         'name'             => $productType->name,
-        'url'              => url_for(array('sf_route' => 'productCatalog_productType', 'sf_subject' => $this->productCategory, 'productType' => $productType->id)),
+        'url'              => $this->generateUrl(array('sf_route' => 'productCatalog_productType', 'sf_subject' => $this->productCategory, 'productType' => $productType->id)),
         'product_quantity' => $productType->product_count,
       );
     }

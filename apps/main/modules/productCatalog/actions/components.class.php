@@ -23,7 +23,7 @@ class productCatalogComponents extends myComponents
     /*
     $list[] = array(
       'name' => 'Каталог товаров',
-      'url'  => url_for('@productCatalog'),
+      'url'  => $this->generateUrl('productCatalog'),
     );
     */
     if (isset($this->productCategory) && !empty($this->productCategory))
@@ -36,26 +36,26 @@ class productCatalogComponents extends myComponents
       {
         $list[] = array(
           'name' => $ancestor['name'],
-          'url'  => url_for('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'].'/'.$ancestor['token']) : $ancestor['token'])),
+          'url'  => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'].'/'.$ancestor['token']) : $ancestor['token'])),
         );
       }
       $list[] = array(
         'name' => (string)$this->productCategory,
-        'url'  => url_for('productCatalog_category', $this->productCategory),
+        'url'  => $this->generateUrl('productCatalog_category', $this->productCategory),
       );
     }
     if (isset($this->creator))
     {
       $list[] = array(
         'name' => (string)$this->creator,
-        'url'  => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+        'url'  => $this->generateUrl(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
     if (isset($this->product))
     {
       $list[] = array(
         'name' => (string)$this->product,
-        'url'  => url_for(array('sf_route' => 'productCard', 'sf_subject' => $this->product)),
+        'url'  => $this->generateUrl(array('sf_route' => 'productCard', 'sf_subject' => $this->product)),
       );
     }
 
@@ -75,7 +75,7 @@ class productCatalogComponents extends myComponents
     /*
     $list[] = array(
       'name' => 'Каталог товаров',
-      'url'  => url_for('@productCatalog'),
+      'url'  => $this->generateUrl('@productCatalog'),
     );
     */
     if (isset($this->productCategory) && !empty($this->productCategory))
@@ -90,27 +90,27 @@ class productCatalogComponents extends myComponents
           {
             $list[] = array(
               'name' => $ancestor['seo_header'] ? $ancestor['seo_header'] : $ancestor['name'],
-              'url'  => url_for('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'].'/'.$ancestor['token']) : $ancestor['token'])),
+              'url'  => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'].'/'.$ancestor['token']) : $ancestor['token'])),
             );
           }
       }
       $list[] = array(
         'name' => (string) ($this->productCategory->seo_header) ? $this->productCategory->seo_header : $this->productCategory->name,
-        'url'  => url_for('productCatalog_category', $this->productCategory),
+        'url'  => $this->generateUrl('productCatalog_category', $this->productCategory),
       );
     }
     if (isset($this->creator))
     {
       $list[] = array(
         'name' => (string)$this->creator,
-        'url'  => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+        'url'  => $this->generateUrl(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
     if (isset($this->product))
     {
       $list[] = array(
         'name' => (string)$this->product,
-        'url'  => url_for(array('sf_route' => 'productCard', 'sf_subject' => $this->product)),
+        'url'  => $this->generateUrl(array('sf_route' => 'productCard', 'sf_subject' => $this->product)),
       );
     }
 
@@ -129,7 +129,7 @@ class productCatalogComponents extends myComponents
     {
       $list[] = array(
         'name'  => $productCategory['name'],
-        'url'   => url_for('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'].'/'.$productCategory['token']) : $productCategory['token'])),
+        'url'   => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'].'/'.$productCategory['token']) : $productCategory['token'])),
         'level' => $productCategory['level'],
       );
     }
@@ -152,7 +152,7 @@ class productCatalogComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$creator,
-        'url'  => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $creator)),
+        'url'  => $this->generateUrl(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $creator)),
       );
     }
 
@@ -178,7 +178,7 @@ class productCatalogComponents extends myComponents
     }
 
     $this->setVar('productFilterList', $this->productCategory->FilterGroup->Filter, true);
-    $this->url = url_for('productCatalog_filter', $this->productCategory);
+    $this->url = $this->generateUrl('productCatalog_filter', $this->productCategory);
   }
 /**
   * Executes filter_selected component
@@ -217,7 +217,7 @@ class productCatalogComponents extends myComponents
 
       $formName = $form->getName();
 
-      return url_for('productCatalog_filter', array('productCategory' => $productCategory->token, $formName => $filter));
+      return $this->generateUrl('productCatalog_filter', array('productCategory' => $productCategory->token, $formName => $filter));
     };
 
     foreach ($this->form->getValues() as $name => $value)
@@ -376,7 +376,7 @@ class productCatalogComponents extends myComponents
       ));
     }
 
-    $this->url = url_for('productCatalog_tag', $this->productCategory);
+    $this->url = $this->generateUrl('productCatalog_tag', $this->productCategory);
   }
 
 /**
@@ -416,7 +416,7 @@ class productCatalogComponents extends myComponents
 
       $formName = $form->getName();
 
-      return url_for('productCatalog_tag', array('productCategory' => $productCategory->token, $formName => $filter));
+      return $this->generateUrl('productCatalog_tag', array('productCategory' => $productCategory->token, $formName => $filter));
     };
 
     foreach ($this->form->getValues() as $name => $value)

@@ -126,20 +126,17 @@ class productActions extends myActions
 
   public function executeChange(sfWebRequest $request)
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url'));
-
-    //use_helper('url');
     $this->product = $this->getRoute()->getObject();
     if (!$this->product->is_model && !$this->product->model_id)
     {
-      $this->redirect(url_for('productCard', $this->product));
+      $this->redirect('productCard', $this->product);
     }
     $model_id = !empty($this->product->model_id) ? $this->product->model_id : $this->product->id;
 
     $produtPropertyRelation = ProductPropertyRelationTable::getInstance()->getById($this->getRequestParameter('value'));
     if (!$produtPropertyRelation)
     {
-      $this->redirect(url_for('productCard', $this->product));
+      $this->redirect('productCard', $this->product);
     }
 
     $property_id = $produtPropertyRelation->property_id;
@@ -156,7 +153,7 @@ class productActions extends myActions
 
     if (1 == count($product_ids))
     {
-      $this->redirect(url_for('productCard', $this->product));
+      $this->redirect('productCard', $this->product);
     }
     //myDebug::dump($product_ids);
     //$q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
@@ -245,7 +242,7 @@ class productActions extends myActions
 
 
     //throw new sfException('We don\'t need a redirection');
-    $this->redirect(url_for('productCard', $new_product));
+    $this->redirect('productCard', $new_product);
     //myDebug::dump($this->product);
     //$this->forward('productCard', 'show');
   }

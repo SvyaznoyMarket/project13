@@ -104,7 +104,7 @@ class userComponents extends myComponents
 
     $list[] = array(
       'name' => 'Личный кабинет',
-      'url'  => url_for('user'),
+      'url'  => $this->generateUrl('user'),
     );
 
 

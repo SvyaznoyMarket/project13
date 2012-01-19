@@ -6,12 +6,10 @@ class OpenAuthFacebookProvider extends BaseOpenAuthProvider
 
   public function getSigninUrl()
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
-
     return strtr('https://www.facebook.com/dialog/oauth?client_id={app_id}&redirect_uri={redirect_url}&scope={permissions}', array(
       '{app_id}'       => $this->getConfig('app_id'),
       '{permissions}'  => $this->getConfig('permissions'),
-      '{redirect_url}' => urlencode(url_for('user_oauth_callback', array('provider' => self::$name), true)),
+      '{redirect_url}' => urlencode($this->generateUrl('user_oauth_callback', array('provider' => self::$name), true)),
     ));
   }
 
@@ -50,12 +48,10 @@ class OpenAuthFacebookProvider extends BaseOpenAuthProvider
 
   public function getAccessTokenResponse($code)
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
-
     $url = strtr('{api_url}/oauth/access_token?client_id={app_id}&redirect_uri={redirect_url}&client_secret={secret_key}&code={code}', array(
       '{api_url}'      => $this->getConfig('api_url'),
       '{app_id}'       => $this->getConfig('app_id'),
-      '{redirect_url}' => url_for('user_oauth_callback', array('provider' => self::$name), true),
+      '{redirect_url}' => $this->generateUrl('user_oauth_callback', array('provider' => self::$name), true),
       '{secret_key}'   => $this->getConfig('secret_key'),
       '{code}'         => $code,
     ));

@@ -7,20 +7,16 @@ class OpenAuthOdnoklassnikiProvider extends BaseOpenAuthProvider
 
   public function getSigninUrl()
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
-
     return strtr('http://www.odnoklassniki.ru/oauth/authorize?client_id={app_id}&scope={permissions}&response_type=code&redirect_uri={redirect_url}', array(
       '{api_url}'      => $this->getConfig('api_url'),
       '{app_id}'       => $this->getConfig('app_id'),
       '{permissions}'  => $this->getConfig('permissions'),
-      '{redirect_url}' => urlencode(url_for('user_oauth_callback', array('provider' => self::$name), true)),
+      '{redirect_url}' => urlencode($this->generateUrl('user_oauth_callback', array('provider' => self::$name), true)),
     ));
   }
 
   public function getUserProfile(sfWebRequest $request, myUser $user)
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
-
     $userProfile = null;
 
     $code = $request['code'];
@@ -68,11 +64,9 @@ class OpenAuthOdnoklassnikiProvider extends BaseOpenAuthProvider
 
   public function getAccessTokenResponse($code)
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
-
     $data = http_build_query(array(
       'code'          => $code,
-      'redirect_uri'  => url_for('user_oauth_callback', array('provider' => self::$name), true),
+      'redirect_uri'  => $this->generateUrl('user_oauth_callback', array('provider' => self::$name), true),
       'grant_type'    => 'authorization_code',
       'client_id'     => $this->getConfig('app_id'),
       'client_secret' => $this->getConfig('private_key'),

@@ -27,7 +27,7 @@ class lineComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$rootCategory,
-        'url'  => url_for('productCatalog_category', $rootCategory),
+        'url'  => $this->generateUrl('productCatalog_category', $rootCategory),
       );
     }
 
@@ -35,7 +35,7 @@ class lineComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$productCategory,
-        'url'  => url_for('productCatalog_category', $productCategory),
+        'url'  => $this->generateUrl('productCatalog_category', $productCategory),
       );
     }
 
@@ -43,13 +43,13 @@ class lineComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$this->creator,
-        'url'  => url_for(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+        'url'  => $this->generateUrl(array('sf_route' => 'productCatalog_creator', 'sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
-    
+
     $list[] = array(
       'name' => 'Серия '.(string)$this->line,
-      'url'  => url_for('lineCard', $this->line),
+      'url'  => $this->generateUrl('lineCard', $this->line),
     );
 
     $this->setVar('list', $list, false);
@@ -64,9 +64,9 @@ class lineComponents extends myComponents
     {
       return sfView::NONE;
     }
-    
+
     $this->product = ProductTable::getInstance()->getById($this->product_id);
-    
+
     $item = array(
       'article'     => $this->product->article,
       'name'        => (string) $this->product,
@@ -75,13 +75,13 @@ class lineComponents extends myComponents
       'has_link'    => $this->product['view_show'],
       'photo'       => $this->product->getMainPhotoUrl(3),
       'product'     => $this->product,
-      'url'         => url_for('productCard', $this->product, array('absolute' => true)),
-      'stock_url'   => url_for('productStock', $this->product),
-      'shop_url'    => url_for('shop_show', ShopTable::getInstance()->getMainShop()),
+      'url'         => $this->generateUrl('productCard', $this->product, array('absolute' => true)),
+      'stock_url'   => $this->generateUrl('productStock', $this->product),
+      'shop_url'    => $this->generateUrl('shop_show', ShopTable::getInstance()->getMainShop()),
       'description' => $this->product->description,
       'part'        => array(),
     );
-    
+
     if ($this->product->isKit())
     {
       $parts = $this->product->getPart();
@@ -90,14 +90,14 @@ class lineComponents extends myComponents
         $item['part'][] = array(
           'name'  => $part->name,
           'photo' => $part->getMainPhotoUrl(1),
-          'url'   => url_for('productCard', $part),
+          'url'   => $this->generateUrl('productCard', $part),
         );
       }
     }
-    
+
     $this->setVar('item', $item, true);
   }
-  
+
   /**
    * Executes pager component
    *

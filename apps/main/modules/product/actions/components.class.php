@@ -95,7 +95,7 @@ class productComponents extends myComponents
       'photo'      => $table->getMainPhotoUrl($this->product, 2),
       'is_insale'  => $this->product['is_insale'],
       'is_instock' => $this->product['is_instock'],
-      'url'        => url_for('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
+      'url'        => $this->generateUrl('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
     );
 
     if ('compact' == $this->view)
@@ -115,9 +115,9 @@ class productComponents extends myComponents
     if ('default' == $this->view)
     {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
-      $item['stock_url'] = url_for('productStock', $this->product);
-      //$item['shop_url'] = url_for('shop_show', ShopTable::getInstance()->getMainShop());
-      $item['shop_url'] = url_for('shop');
+      $item['stock_url'] = $this->generateUrl('productStock', $this->product);
+      //$item['shop_url'] = $this->generateUrl('shop_show', ShopTable::getInstance()->getMainShop());
+      $item['shop_url'] = $this->generateUrl('shop');
       $item['preview'] = $this->product['preview'];
 
       $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
@@ -138,7 +138,7 @@ class productComponents extends myComponents
     }
     if ('line' == $this->view)
     {
-      $item['url'] = url_for('lineCard', array('line' => $this->product['Line']['token'], ), array('absolute' => true));
+      $item['url'] = $this->generateUrl('lineCard', array('line' => $this->product['Line']['token'], ), array('absolute' => true));
       $item['Line']['name'] = $this->product['Line']['name'];
       $item['Line']['count'] = ProductLineTable::getInstance()->getProductCountById($this->product['Line']['id']);
     }
@@ -370,7 +370,7 @@ class productComponents extends myComponents
         if (!$product) continue;
         $realValue = $value->getRealValue();
         $value_to_map[$realValue]['id'] = $id;
-        $value_to_map[$realValue]['url'] = url_for('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
+        $value_to_map[$realValue]['url'] = $this->generateUrl('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
         $value_to_map[$realValue]['parameter'] = new ProductParameter($property['ProductTypeRelation'][0], array($value, ));
         if (isset($values[$id]['is_selected']))
         {
@@ -458,7 +458,7 @@ class productComponents extends myComponents
     {
       $list[] = array(
         'token' => $tag->token,
-        'url'   => url_for('tag_show', array('tag' => $tag->token)),
+        'url'   => $this->generateUrl('tag_show', array('tag' => $tag->token)),
         'name'  => $tag->name,
       );
     }
