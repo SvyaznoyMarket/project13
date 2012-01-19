@@ -79,6 +79,17 @@
 <?php include_combined_javascripts() ?>
 <script>
 	$(document).ready(function() {
+		/* Search */
+        $('.startse').bind ({
+          'blur': function() {
+            if (this.value == '')
+              this.value = 'Поиск среди 20 000 товаров'
+          },
+          'focus': function() {
+            if (this.value == 'Поиск среди 20 000 товаров')
+              this.value = ''
+          }
+        })	
 
 		if( !$('#main_banner-data').length )
         	return
@@ -125,10 +136,11 @@
         var idto = null
         var initis = []
         var sliding = false
+        var permission = true
         changeSrc( currentSl )
         idto = setTimeout( function() { goSlide() }, initis[1].t )
         /* Visuals */
-        //		$("html").css('overflow-x','hidden')
+        $("html").css('overflow-x','hidden')
 
         var userag    = navigator.userAgent.toLowerCase()
         var isAndroid = userag.indexOf("android") > -1
@@ -153,6 +165,11 @@
           location.href = $(this).data('url')
         })
         $('.promos').click( function(){ location.href = $(this).data('url') } )
+        $('.centerImage').hover( function() {
+        	permission = false
+        }, function() {
+        	permission = true
+        })
 
         function sideBanner( block, i ) {
           $(block).animate( {
@@ -175,10 +192,13 @@
             initis = promos.slice( currentSl, currentSl + 3 )
           else
             initis = promos.slice( currentSl ).concat( promos.slice(0, -delta) )
-          //console.info(currentSl, delta);console.info(initis)
         }
 
         function goSlide( dir ) {
+          if( !permission ) {
+          	idto = setTimeout( function() { goSlide() }, initis[1].t )
+          	return
+          }
           if( sliding )
             return false
           sliding = true
@@ -216,20 +236,7 @@
           sideBanner($('.leftImage'), 0)
           sideBanner($('.rightImage'), 2)
         }
-
-        /* Search */
-        $('.startse').bind ({
-          'blur': function() {
-            if (this.value == '')
-              this.value = 'Поиск среди 20 000 товаров'
-          },
-          'focus': function() {
-            if (this.value == 'Поиск среди 20 000 товаров')
-              this.value = ''
-          }
-        })
-
-      })
+    })
 
     </script>
     <!-- Yandex.Metrika counter -->
