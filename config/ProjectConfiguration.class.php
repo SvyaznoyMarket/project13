@@ -23,6 +23,7 @@ class ProjectConfiguration extends sfProjectConfiguration
     foreach (array(
       'doctrine.configure'     => array($this, 'listenToConfigureDoctrineEvent'),
       //'context.load_factories' => array($this, 'listenForLoadFactories'),
+      'debug.web.load_panels'  => array('myWebDebugPanelEnvironment', 'listenToLoadDebugWebPanelEvent'),
     ) as $k => $v) {
       $this->dispatcher->connect($k, $v);
     }
