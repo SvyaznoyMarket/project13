@@ -81,7 +81,7 @@ class userProductHistoryActions extends myActions
     return $this->renderJson(array(
       'success' => true,
       'data' => array(
-        'name' => $name,
+        'name' => htmlspecialchars($name, ENT_QUOTES),
         'link' => $this->generateUrl('user'), //ссылка на личный кабинет
         'vitems' => $cartInfo['qty'],
         'sum' => $cartInfo['sum'],
