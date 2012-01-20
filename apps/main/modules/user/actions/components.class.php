@@ -94,8 +94,8 @@ class userComponents extends myComponents
 
   public function executeShortuserinfo()
   {
-      $this->setVar('user', $this->getUser(), true);
-      $this->setVar('userData', $this->getUser()->getGuardUser(), true);
+      $this->setVar('user', $this->getUser());
+      $this->setVar('userData', $this->getUser()->getGuardUser());
   }
 
   public function executeNavigation()

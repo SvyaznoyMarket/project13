@@ -30,8 +30,8 @@ class userProductHistoryActions extends myActions
 
     $this->redirect($this->getRequest()->getReferer());
   }
-  
-  
+
+
   /**
    *
    * Получает краткую информацию о пользователе:
@@ -41,13 +41,13 @@ class userProductHistoryActions extends myActions
    * -о сравниваемых товарах
    * -bingo TODO
    * Вызывается посредствам ajax. Параметров не принимает.
-   * 
+   *
    * @param sfWebRequest $request
-   * @return json 
+   * @return json
    */
   public function executeShortinfo(sfWebRequest $request)
   {
-      sfProjectConfiguration::getActive()->loadHelpers('Url');        
+      sfProjectConfiguration::getActive()->loadHelpers('Url');
       $user = $this->getUser();
 
       //подсчитываем общее количество и общую стоимость корзины
@@ -60,18 +60,18 @@ class userProductHistoryActions extends myActions
         $userDelayedProduct = new UserDelayedProduct();
         $delayProducts = $userDelayedProduct->getUserDelayProducts($user->getGuardUser()->id);
       }
-      
+
 #     echo '<pre>';
-#     echo '</pre>';      
+#     echo '</pre>';
    #   exit();
-      if (!isset($productsInCart)) $productsInCart = false; 
+      if (!isset($productsInCart)) $productsInCart = false;
       //имя есть только у авторизованного пользователя
       if ($user->isAuthenticated()) $name = $user->getName();
       else $name = false;
       return $this->renderJson(array(
         'success' => true,
         'data'    => array(
-              'name' => $name,  
+              'name' => htmlspecialchars($name, ENT_QUOTES),
               'link' =>  url_for('user'),   //ссылка на личный кабинет
               'vitems' => $cartInfo['qty'],
               'sum' => $cartInfo['sum'],
@@ -81,9 +81,9 @@ class userProductHistoryActions extends myActions
               'servicesInCart' => $cartInfo['servicesInCart'],
               'bingo' => false,
         )
-      ));      
+      ));
       $this->redirect($this->getRequest()->getReferer());
-      
+
   }
-  
+
 }
