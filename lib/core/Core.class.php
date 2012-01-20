@@ -392,12 +392,12 @@ class Core
       ), $params),
       'data'   => $data), JSON_FORCE_OBJECT);
 
-    if (!$isLog)
+    if ($isLog)
     {
       $this->logger->log("Request: ".$data);
     }
     $response = $this->send($data);
-    if (!$isLog)
+    if ($isLog)
     {
       $this->logger->log("Response: ".$response, isset($response['error']) ? sfLogger::ERR : sfLogger::INFO);
     }
