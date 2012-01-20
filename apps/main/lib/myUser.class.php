@@ -67,7 +67,6 @@ class myUser extends myGuardSecurityUser
         $token = false;
         foreach ($cart->getProducts() as $id => $product)
         {
-          #echo $product['id'] .'=='. $pId."\n";
           if ($product['id'] == $pId)
           {
             $token = $product['token'];

@@ -85,8 +85,7 @@ class UserCart extends BaseUserData
     $this->parameterHolder->set('services', $services);
 
     $this->calculateDiscount();
-    ##myDebug::dump( $this->services );
-    #exit();
+
     return true;
   }
 
@@ -575,7 +574,7 @@ class UserCart extends BaseUserData
   protected function calculateDiscount()
   {
     $this->loadProducts(true);
-    $this->loadServices(true);
+    $this->loadServices(false); //$this->loadServices(true);
 
     if ($this->products)
     {
@@ -641,11 +640,10 @@ class UserCart extends BaseUserData
     {
       $serviceIds = array_keys($services);
     }
-    $serviceTable = ServiceTable::getInstance();
 
     if (is_null($this->services) || true === $force)
     {
-      $this->services = $serviceTable->createListByIds($serviceIds, array('index' => array('service' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
+      $this->services = ServiceTable::getInstance()->createListByIds($serviceIds, array('index' => array('service' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
     }
     else
     {
@@ -654,7 +652,7 @@ class UserCart extends BaseUserData
       $toAddIds = array_diff($serviceIds, $currentIds);
       $toDelIds = array_diff($currentIds, $serviceIds);
 
-      $toAdd = $serviceTable->createListByIds($toAddIds, array('index' => array('service' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
+      $toAdd = ServiceTable::getInstance()->createListByIds($toAddIds, array('index' => array('service' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false));
       foreach ($toAdd as $key => $service)
       {
         $this->services[$key] = $service;
