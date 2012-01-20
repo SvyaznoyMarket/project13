@@ -34,6 +34,7 @@ class productComponents extends myComponents
       'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
       'region'  => $this->getUser()->getRegion('id'),
       'view'    => $this->view,
+      'i'       => $this->ii,
     )) : false;
 
     // checks for cached vars
