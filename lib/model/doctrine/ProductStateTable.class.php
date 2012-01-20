@@ -69,15 +69,12 @@ class ProductStateTable extends myDoctrineTable
 
   public function getCacheTags($record)
   {
-    $alias = 'product';
-
     $tags = array();
-    if (!empty($record['id']))
+    if (!empty($record['product_id']))
     {
-      $tags[] = "{$alias}-{$record['product_id']}";
+      $tags[] = "product-{$record['product_id']}";
     }
 
     return $tags;
   }
-
 }

@@ -37,9 +37,10 @@ class ProductRatingTypeTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    $q->addWhere('productRatingType.id = ?', $id);
-    //$q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
+    $q->whereId($id);
 
-    return $q->fetchOne();
+    $list = $q->execute();
+
+    return $this->getResult($list, is_scalar($id));
   }
 }

@@ -35,10 +35,17 @@ class myProductFormFilter extends sfFormFilter
     ));
 
     // виджет производителя
-    $choices = CreatorTable::getInstance()
-      ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name', 'for_filter' => true, 'order' => 'creator.name'))
-      ->toKeyValueArray('id', 'name')
-    ;
+    $choices = array();
+    foreach (CreatorTable::getInstance()
+      ->getListByProductCategory($productCategory, array(
+        'select'        => 'creator.id, creator.name',
+        'for_filter'    => true,
+        'order'         => 'creator.name',
+        'hydrate_array' => true,
+      )
+    ) as $v) {
+      $choices[$v['id']] = $v['name'];
+    }
 
     if ($this->getOption('with_creator', false))
     {

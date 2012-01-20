@@ -20,4 +20,3 @@
   <?php include_component('productCategory', 'seo_counters_advance', array('unitId' => $productCategory->root_id)) ?>
 <?php end_slot() ?>
 
-

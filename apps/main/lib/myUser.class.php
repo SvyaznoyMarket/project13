@@ -6,7 +6,8 @@ class myUser extends myGuardSecurityUser
     $cart = null,
     $productHistory = null,
     $productCompare = null,
-    $order = null
+    $order = null,
+    $region = null
   ;
 
   public function shutdown()
@@ -104,34 +105,44 @@ class myUser extends myGuardSecurityUser
 
   public function getRegion($key = null)
   {
-    $region_id = $this->getAttribute('region', null);
-    if ($region_id)
+    if (!$this->region)
     {
-      $region = RegionTable::getInstance()->findOneByIdAndType($region_id, 'city');
+      $region = false;
+      $region_id = $this->getAttribute('region', null);
+
+      if ($region_id)
+      {
+        //$region = RegionTable::getInstance()->findOneByIdAndType($region_id, 'city');
+        $region = RegionTable::getInstance()->getById($region_id);
+        if (!$region->isCity())
+        {
+          $region = false;
+        }
+      }
+
+      if (!$region)
+      {
+        $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
+        $region = !empty($geoip['region']) ? RegionTable::getInstance()->findOneByGeoip_code($geoip['region']) : RegionTable::getInstance()->getDefault();
+
+        $this->setRegion($region->id);
+      }
+
+      $parent_region = $region->getNode()->getParent();
+
+      $this->region = array(
+        'id'                    => $region->id,
+        'name'                  => $region->name,
+        'full_name'             => $region->name.', '.$parent_region->name,
+        'type'                  => $region->type,
+        'product_price_list_id' => $region->product_price_list_id,
+        'core_id'               => $region->core_id,
+        'geoip_code'            => $region->geoip_code,
+        'region'                => $region,
+      );
     }
 
-    if (!isset($region) || !$region)
-    {
-      $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
-      $region = !empty($geoip['region']) ? RegionTable::getInstance()->findOneByGeoip_code($geoip['region']) : RegionTable::getInstance()->getDefault();
-
-      $this->setRegion($region->id);
-    }
-
-    $parent_region = $region->getNode()->getParent();
-
-    $result = array(
-      'id'                    => $region->id,
-      'name'                  => $region->name,
-      'full_name'             => $region->name.', '.$parent_region->name,
-      'type'                  => $region->type,
-      'product_price_list_id' => $region->product_price_list_id,
-      'core_id'               => $region->core_id,
-      'geoip_code'            => $region->geoip_code,
-      'region'                => $region,
-    );
-
-    return !empty($key) ? $result[$key] : $result;
+    return !empty($key) ? $this->region[$key] : $this->region;
   }
 
   public function setRegion($region_id)

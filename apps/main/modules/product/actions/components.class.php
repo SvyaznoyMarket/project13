@@ -24,22 +24,28 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
-    // checks for cached vars
-    /*
-    if ($this->setCachedVars())
-    {
-      return sfView::SUCCESS;
-    }
-    */
-
-    $table = ProductTable::getInstance();
-
     if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick')))
     {
       $this->view = 'default';
     }
 
-    if (!$this->product instanceof Product)
+    // cache key
+    $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
+      'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
+      'region'  => $this->getUser()->getRegion('id'),
+      'view'    => $this->view,
+    )) : false;
+
+    // checks for cached vars
+    if ($cacheKey && $this->setCachedVars($cacheKey))
+    {
+      //myDebug::dump($this->getVarHolder()->getAll(), 1);
+      return sfView::SUCCESS;
+    }
+
+    $table = ProductTable::getInstance();
+
+    if (is_scalar($this->product))
     {
       $params = array(
         'hydrate_array' => true,
@@ -75,40 +81,13 @@ class productComponents extends myComponents
       $this->product['is_insale'] = $table->isInsale($this->product);
     }
 
-    // price
-    /*if (isset($this->product['ProductPrice']))
-    {
-      if ($this->product instanceof Product)
-      {
-        $this->product->mapValue('price', $this->product['ProductPrice']['price']);
-      }
-      else {
-        $this->product['price'] = $this->product['ProductPrice']['price'];
-      }
-    }
-    else
-    {
-      $price = ProductPriceTable::getInstance()->getDefaultByProductId($this->product['id']);
-      if (!empty($price))
-      {
-        if ($this->product instanceof Product)
-        {
-          $this->product->mapValue('price', $price['price']);
-        }
-        else {
-          $this->product['price'] = $price['price'];
-        }
-      }
-    }*/
-
     $item = array(
       'id'         => $this->product['id'],
       'core_id'    => $this->product['core_id'],
       'token'      => $this->product['token'],
-      'barcode'      => $this->product['barcode'],
+      'barcode'    => $this->product['barcode'],
       'article'    => $this->product['article'],
       'name'       => $this->product['name'],
-      //'creator'    => $this->product['Creator']['name'],
       'creator'    => (is_array($this->product['Creator']) || ($this->product['Creator'] instanceof Creator)) ? $this->product['Creator']['name'] : '',
       'rating'     => $this->product['rating'],
       'price'      => $table->getFormattedPrice($this->product), //$this->product->formatted_price,
@@ -116,14 +95,16 @@ class productComponents extends myComponents
       'photo'      => $table->getMainPhotoUrl($this->product, 2),
       'is_insale'  => $this->product['is_insale'],
       'is_instock' => $this->product['is_instock'],
-      //'product'  => clone $this->product,
       'url'        => url_for('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
-      'product'    => $this->product,
     );
 
     if ('compact' == $this->view)
     {
-        $item['root_name'] = ProductCategoryTable::getInstance()->getRootRecord($this->product['Category'][0]);//(string)$this->product['Category'][0]->getRootCategory();
+      $rootProductCategory = ProductCategoryTable::getInstance()->getRootRecord($this->product['Category'][0], array(
+        'hydrate_array' => true,
+        'select'        => 'productCategory.id, productCategory.name',
+      ));
+      $item['root_name'] = $rootProductCategory ? $rootProductCategory['name'] : '';
     }
 
     if ('orderOneClick' == $this->view)
@@ -164,18 +145,22 @@ class productComponents extends myComponents
 
     $this->setVar('item', $item, true);
 
+    // что это? нигде не используется
+    /*
     $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product['id']);
     $this->setVar('selectedServices', $selectedServices, true);
+     */
 
     $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
 
-    // caches vars
-    /*
-    $this->cacheVars();
-    $this->getCache()->addTag("product-{$this->product['id']}", $this->getCacheKey());
-    */
-
     //myDebug::dump($item, 1);
+
+    // caches vars
+    if ($cacheKey)
+    {
+      $this->cacheVars($cacheKey);
+      $this->getCache()->addTag("product-{$this->product['id']}", $cacheKey);
+    }
   }
 
   /**
@@ -201,7 +186,9 @@ class productComponents extends myComponents
       $this->view = 'compact';
     }
 
-    $this->setVar('list', $this->pager->getResults(), true);
+    $list = $this->pager->getResults();
+
+    $this->setVar('list', $list, true);
   }
 
   /**

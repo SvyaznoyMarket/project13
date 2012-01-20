@@ -17,12 +17,14 @@ class ProductFilterGroupTable extends myDoctrineTable
     return Doctrine_Core::getTable('ProductFilterGroup');
   }
 
-//  public function getCoreMapping()
-//  {
-//    return array(
-//      'filter_property' => array('rel' => 'Filter'),
-//    );
-//  }
+  /*
+  public function getCoreMapping()
+  {
+    return array(
+      'filter_property' => array('rel' => 'Filter'),
+    );
+  }
+  */
 
   public function getRecordById($id, array $params = array())
   {
@@ -34,23 +36,29 @@ class ProductFilterGroupTable extends myDoctrineTable
       ->addOrderBy('productFilter.position')
     ;
 
+    $q->leftJoin('productFilter.Property productProperty');
+
     $this->setQueryParameters($q);
 
-    $q->addWhere('productFilterGroup.id = ?', $id);
+    $q->whereId($id);
 
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
-
-    $record = $q->fetchOne();
-    if (!$record)
+    $list = $q->execute();
+    /*
+    foreach ($list as $i => $record)
     {
-      return $record;
-    }
+      /*
+      foreach ($record['Filter'] as $productFilter)
+      {
+        //$productFilter['Property'] = ProductPropertyTable::getInstance()->getById($productFilter['property_id']);
+      }
 
-    foreach ($record['Filter'] as $productFilter)
-    {
-      $productFilter['Property'] = ProductPropertyTable::getInstance()->getById($productFilter['property_id']);
+      if (is_array($record))
+      {
+        $list[$i] = $record;
+      }
     }
+    */
 
-    return $record;
+    return $this->getResult($list, is_scalar($id));
   }
 }

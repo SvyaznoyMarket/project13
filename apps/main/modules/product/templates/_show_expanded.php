@@ -9,7 +9,7 @@
 		?>
       <h3 class="bolder"><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
 
-      <?php include_component('product', 'property', array('product' => $item['product'])) ?>
+      <?php include_component('product', 'property', array('product' => $product)) ?>
 
       <span class="gray">Артикул #<?php echo $item['article'] ?></span>
     </div>
@@ -29,9 +29,9 @@
   <div class="boxhover"<?php if ($item['is_insale']): ?> ref="<?php echo $item['token'] ?>" data-cid="<?php echo $item['core_id'] ?>" <?php endif ?>>
     <!--a href="" class="fastview">Быстрый просмотр</a-->
     <div class="goodsbar">
-      <?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1)) ?>
-      <?php include_component('userDelayedProduct', 'add_button', array('product' => $item['product'])) ?>
-      <?php include_component('userProductCompare', 'button', array('product' => $item['product'])) ?>
+      <?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
+      <?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?>
+      <?php include_component('userProductCompare', 'button', array('product' => $product)) ?>
     </div>
     <b class="rt"></b><b class="lb"></b>
 
@@ -45,7 +45,7 @@
             <?php	echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating'])) ?>
             <h3 class="bolder"><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
 
-            <?php include_component('product', 'property', array('product' => $item['product'])) ?>
+            <?php include_component('product', 'property', array('product' => $product)) ?>
 
             <span class="gray">Артикул #<?php echo $item['article'] ?></span>
           </div>

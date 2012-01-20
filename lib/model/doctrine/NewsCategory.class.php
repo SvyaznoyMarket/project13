@@ -20,7 +20,6 @@ class NewsCategory extends BaseNewsCategory
     $this->setQueryParameters($q);
 
     $q->addWhere('newsCategory.id = ?', $id);
-    $q->useResultCache(true, null, $this->getRecordQueryHash($id, $params));
 
     $record = $q->fetchOne();
 

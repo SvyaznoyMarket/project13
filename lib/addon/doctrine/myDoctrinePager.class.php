@@ -19,7 +19,7 @@ class myDoctrinePager extends sfDoctrinePager
     $ids = $table->getIdsByQuery($this->getQuery());
 
     return $table->createListByIds($ids, $this->getParameter('query_params', array()));
-    
+
 //    $data = $table->createListByIds($ids, $this->getParameter('query_params', array()));
 //    foreach ($data as $dProduct) {
 //      $deliveries = Core::getInstance()->query('delivery.calc', array(), array(

@@ -17,7 +17,6 @@ class SimilarProductTable extends myDoctrineTable
     $q->innerJoin('product.MasterSimilarProduct masterProduct')
       ->addWhere('masterProduct.master_id = ?', $product->id)
       ->orderBy('product.rating DESC')
-      //->useResultCache(true, null, $this->getQueryHash("product-{$product->id}/productComment-all", $params))
     ;
 
     $this->setQueryParameters($q, $params);

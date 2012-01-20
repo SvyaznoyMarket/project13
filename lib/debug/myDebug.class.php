@@ -118,4 +118,19 @@ class myDebug
   {
     return 0 === strpos(PHP_OS, 'WIN');
   }
+
+
+  public function dumpTimer($name)
+  {
+    $timer = sfTimerManager::getTimer($name);
+
+    self::dump(
+      $name.': '
+      .(
+        $timer->getCalls()
+        ? $timer->getCalls().' calls, '.($timer->getElapsedTime() / $timer->getCalls()).' sec, '.$timer->getElapsedTime().' sec'
+        : '~'
+      )
+    );
+  }
 }

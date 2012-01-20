@@ -18,7 +18,7 @@
 
 <div class="clear"></div>
 
-<?php echo include_component('productCategory', 'child_list', array('view' => 'preview', 'productCategory' => $productCategory)) ?>
+<?php include_component('productCategory', 'child_list', array('view' => 'preview', 'productCategory' => $productCategory)) ?>
 
 <?php //include_component('productCategory', 'productType_list', array('productCategory' => $productCategory)) ?>
 

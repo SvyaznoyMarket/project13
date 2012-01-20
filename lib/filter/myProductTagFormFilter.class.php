@@ -36,10 +36,19 @@ class myProductTagFormFilter extends myProductFormFilter
     // виджет производителя
     if ($this->getOption('with_creator', false))
     {
-      $choices = CreatorTable::getInstance()
-        ->getListByProductCategory($productCategory, array('select' => 'creator.id, creator.name', 'with_descendat' => true, 'for_filter' => true, 'order' => 'creator.name'))
-        ->toKeyValueArray('id', 'name')
-      ;
+      $choices = array();
+      foreach (CreatorTable::getInstance()
+        ->getListByProductCategory($productCategory, array(
+          'select'         => 'creator.id, creator.name',
+          'with_descendat' => true,
+          'for_filter'     => true,
+          'order'          => 'creator.name',
+          'hydrate_array'  => true,
+        )
+      ) as $v) {
+        $choices[$v['id']] = $v['name'];
+      }
+
       if (count($choices) > 1)
       {
         $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
@@ -59,19 +68,23 @@ class myProductTagFormFilter extends myProductFormFilter
     }
 
     // виджеты параметров
-    $tagGroups = $this->getOption('count', false) ? $productCategory->getTagGroup() : $productCategory->getTagGroupForFilter();
+    $tagGroups =
+      $this->getOption('count', false)
+      ? $productCategory->getTagGroup()
+      : $productCategory->getTagGroupForFilter(array('hydrate_array' => true, 'select' => 'tagGroup.id, tagGroup.name, tag.id, tag.name'))
+    ;
     foreach ($tagGroups as $tagGroup/*$productCategoryTagGroupRelation*/)
     {
       //$tagGroup = $productCategoryTagGroupRelation->getTagGroup();
       //myDebug::dump($tagGroup); continue;
-      if (!count($tagGroup->Tag)) continue;
+      if (!count($tagGroup['Tag'])) continue;
 
       if (!$widget = call_user_func(array($this, 'getWidgetChoice'), $tagGroup)) continue;
 
-      $index = "tag-{$tagGroup->id}";
+      $index = "tag-{$tagGroup['id']}";
       $this->setWidget($index, $widget);
       $this->setValidator($index, new sfValidatorPass());
-      $this->widgetSchema[$index]->setLabel($tagGroup->name);
+      $this->widgetSchema[$index]->setLabel($tagGroup['name']);
     }
 
     $this->widgetSchema->setNameFormat('t[%s]');
@@ -111,9 +124,9 @@ class myProductTagFormFilter extends myProductFormFilter
   protected function getWidgetChoice($tagGroup)
   {
     $choices = array();
-    foreach ($tagGroup->Tag as $tag)
+    foreach ($tagGroup['Tag'] as $tag)
     {
-      $choices[$tag->id] = $tag->name;
+      $choices[$tag['id']] = $tag['name'];
     }
 
     return new myWidgetFormChoice(array(

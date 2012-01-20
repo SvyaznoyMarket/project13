@@ -38,8 +38,6 @@ class ProductLineTable extends myDoctrineTable
     $q = ProductTable::getInstance()->createBaseQuery(array('view' => 'list', ));
     $q->addWhere('product.line_id = ?', $id);
 
-    //$q->useResultCache(true, null, $this->getTable()->getRecordQueryHash('productLine-count'.$id));
-
     return $q->count();
   }
 }
