@@ -399,7 +399,8 @@ class Core
     $response = $this->send($data);
     if ($isLog)
     {
-      $this->logger->log("Response: ".$response, isset($response['error']) ? sfLogger::ERR : sfLogger::INFO);
+      //$this->logger->log("Response: ".$response, !empty($response['error']) ? sfLogger::ERR : sfLogger::INFO);
+      $this->logger->log("Response: ".$response);
     }
     $response = json_decode($response, true);
 
