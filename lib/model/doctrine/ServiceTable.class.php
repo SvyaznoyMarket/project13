@@ -35,29 +35,44 @@ class ServiceTable extends myDoctrineTable
   {
     $this->applyDefaultParameters($params);
 
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash('product-'.$product['id'].'/service-all', $params);
 
-    /*
-    $q->innerJoin('service.Category category')
-      ->innerJoin('category.ProductTypeRelation productTypeRelation')
-      ->andWhere('productTypeRelation.product_type_id=?', array($product->type_id))
-      ->innerJoin('service.Price price') ;
-     *
-     */
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
+      /*
+      $q->innerJoin('service.Category category')
+        ->innerJoin('category.ProductTypeRelation productTypeRelation')
+        ->andWhere('productTypeRelation.product_type_id=?', array($product->type_id))
+        ->innerJoin('service.Price price') ;
+       */
 
-    $q #->leftJoin('service.CategoryRelation cr')    //к категориям сервисов
-      #->innerJoin('cr.Category c')
-      ->innerJoin('service.ProductRelation pr')
-      ->andWhere('pr.product_id = ?', array($product->id))
-      ->innerJoin('service.Price price')
-      ->andWhere('price.price >= ?', Service::MIN_BUY_PRICE)
-      ->orderBy('service.name ASC');
-            ;
+      $q
+        //->leftJoin('service.CategoryRelation cr')    //к категориям сервисов
+        //->innerJoin('cr.Category c')
+        ->innerJoin('service.ProductRelation pr')
+        ->andWhere('pr.product_id = ?', array($product['id']))
+        ->innerJoin('service.Price price')
+        ->andWhere('price.price >= ?', Service::MIN_BUY_PRICE)
+        ->orderBy('service.name ASC');
+      ;
 
-    $this->setQueryParameters($q, $params);
-    #$a = $q->execute();
-    #print_r($a->toArray());
-    return $q->execute();
+      $this->setQueryParameters($q, $params);
+
+      $return = $q->execute();
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return);
+        $this->getCache()->addTag("product-{$product['id']}", $key);
+        foreach ($return as $record)
+        {
+          $this->getCache()->addTag("service-{$record['id']}", $key);
+        }
+      }
+    }
+
+    return $return;
   }
 
   public function getListByCategory($category_id, array $params = array())
@@ -80,49 +95,4 @@ class ServiceTable extends myDoctrineTable
 
     return $this->getById($id);
   }
-
-  /*
-  public function getById($id, array $params = array())
-  {
-
-
-    $q = $this->createBaseQuery($params);
-
-    $q->leftJoin('service.Price price')
-      ->leftJoin('service.Category category')
-    ;
-    $this->setQueryParameters($q);
-
-    $q->addWhere('product.id = ?', $id);
-
-    //$q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
-    $record = $q->fetchOne();
-    if (!$record)
-    {
-      return $record;
-    }
-
-    /*
-    $prices = ProductPriceTable::getInstance()->getDefaultByProductId($record['id']);
-
-    if ($prices)
-    {
-      $record->mapValue('ProductPrice', $prices);
-      $record->price = $prices->price;
-    }
-
-    $record['Type'] = ProductTypeTable::getInstance()->getById($record['type_id'], array(
-      'view'           =>
-        $params['with_properties']
-        ? ($params['property_view'] ? $params['property_view'] : $params['view'])
-        : false
-      ,
-      'group_property' => $params['group_property'],
-    ));
-
-
-
-    return $record;
-  }  */
-
 }
