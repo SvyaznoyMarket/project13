@@ -36,7 +36,7 @@ class productStockComponents extends myComponents
       $list[$index]['shops'][] = array(
         'name'     => $shop->name,
         'token'    => $shop->token,
-        'url'      => url_for('shop_show', $shop),
+        'url'      => $this->generateUrl('shop_show', $shop),
         'quantity' => isset($values[$shop->id]) ? $values[$shop->id] : 0,
       );
     }

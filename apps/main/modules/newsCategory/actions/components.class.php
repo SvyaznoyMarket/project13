@@ -20,7 +20,7 @@ class newsCategoryComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$newsCategory,
-        'url'  => url_for('newsCategory_show', $newsCategory),
+        'url'  => $this->generateUrl('newsCategory_show', $newsCategory),
       );
     }
 

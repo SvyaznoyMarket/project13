@@ -24,14 +24,14 @@ class serviceComponents extends myComponents
     foreach ($servList as $next) {
         foreach($next['cart']['product'] as $product => $qty) {
             if ($product == $this->product->id) {
-                $servListId[] = $next->id;                
+                $servListId[] = $next->id;
             }
         }
     }
     $this->setVar('servListId', $servListId, true);
-    $this->setVar('list', $list, true);   
+    $this->setVar('list', $list, true);
   }
-  
+
   public function executeList_for_product_in_cart()
   {
     $list = $this->product->getServiceList();
@@ -67,7 +67,7 @@ class serviceComponents extends myComponents
     #  print_r($result);
     $this->setVar('selectedNum', $selectedNum, true);
     $this->setVar('list', $result, true);
-  }  
+  }
 
   /**
   * Executes show component
@@ -92,7 +92,7 @@ class serviceComponents extends myComponents
 
   public function executeAlike_service()
   {
-    $serviceList = array();  
+    $serviceList = array();
     $nearParent = ServiceCategoryTable::getInstance()
             ->createQuery('sc')
             ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
@@ -103,7 +103,7 @@ class serviceComponents extends myComponents
             ->innerJoin('s.CategoryRelation as rel on s.id=rel.service_id')
             ->where('rel.category_id = ?', $nearParent[0]->id )
             ->addWhere('s.id != ?', $this->service->id)
-            ->orderBy('s.name ASC')                    
+            ->orderBy('s.name ASC')
             ->execute();
     foreach($list as $service) {
         $serviceList[] = array(
@@ -136,7 +136,7 @@ class serviceComponents extends myComponents
     $list = array();
     $list[] = array(
       'name' => 'F1 Сервис',
-      'url'  => url_for('service_list'),
+      'url'  => $this->generateUrl('service_list'),
     );
 
     if (isset($this->serviceCategory) && $this->serviceCategory) {
@@ -144,19 +144,19 @@ class serviceComponents extends myComponents
         if (isset($parentCategory) && isset($parentCategory['name'])) {
             $list[] = array(
               'name' => $parentCategory['name'],
-              'url'  => url_for('service_list', array('serviceCategory' => $parentCategory['token'])),
+              'url'  => $this->generateUrl('service_list', array('serviceCategory' => $parentCategory['token'])),
             );
         }
         $list[] = array(
           'name' => $this->serviceCategory['name'],
-          'url'  => url_for('service_list'),
+          'url'  => $this->generateUrl('service_list'),
         );
     } elseif (isset($this->service)) {
         $parentCategory = $this->service->getCatalogParent();
         if (isset($parentCategory) && isset($parentCategory['name'])) {
             $list[] = array(
               'name' => $parentCategory['name'],
-              'url'  => url_for('service_list', array('serviceCategory' => $parentCategory['token'])),
+              'url'  => $this->generateUrl('service_list', array('serviceCategory' => $parentCategory['token'])),
             );
         }
         $list[] = array(

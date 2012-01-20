@@ -21,10 +21,7 @@ class productCategoryActions extends myActions
 
   public function executeCarousel(sfWebRequest $request)
   {
-    //sfConfig::set('sf_web_debug', false);
-
     $this->setLayout(false);
-    $this->getContext()->getConfiguration()->loadHelpers('Url');
 
     $productCategory = $this->getRoute()->getObject();
     $page = (int)$request->getParameter('page', 1);

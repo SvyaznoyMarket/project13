@@ -15,6 +15,11 @@ abstract class BaseOpenAuthProvider
     return null == $name ? $this->configHolder->getAll() : $this->configHolder->get($name);
   }
 
+  public function generateUrl($route, $params = array(), $absolute = false)
+  {
+    return sfContext::getInstance()->getRouting()->generate($route, $params, $absolute);
+  }
+
   //abstract public function getSigninUrl();
   //abstract public function getProfile(sfWebRequest $request, myUser $user);
 }

@@ -110,31 +110,9 @@ class OrderTable extends myDoctrineTable
 
   public function getByToken($token, array $params = array())
   {
-    //TODO: тут должен быть вразумительный поиск по token
+    $id = $this->getIdBy('token', $token);
 
-    $this->applyDefaultParameters($params);
-
-    $q = $this->createBaseQuery($params);
-
-    $this->setQueryParameters($q, $params);
-
-    $q->addWhere('order.token = ?', $token);
-
-    $record = $q->fetchOne();
-    if (!$record)
-    {
-      return $record;
-    }
-
-    if ($params['with_products'])
-    {
-      foreach ($record['ProductRelation'] as $productRelation)
-      {
-        $productRelation['Product'] = ProductTable::getInstance()->getById($productRelation['product_id']);
-      }
-    }
-
-    return $record;
+    return $this->getById($id, $params);
   }
 
   public function getForRoute(array $params)
