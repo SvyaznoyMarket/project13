@@ -24,7 +24,7 @@ class myWebDebugPanelCore extends sfWebDebugPanel
     );
 
     //$this->setStatus(sfLogger::WARNING);
-    $this->title = '<img src="/images/icons/'.(false === strpos($this->content, '[err]') ? 'lightbulb_gray.png' : 'lightbulb.png').'" alt="Core logs" height="16" width="16" /> core';
+    $this->title = '<img src="/images/icons/'.(false === strpos($this->content, '"error"') ? 'lightbulb_gray.png' : 'lightbulb.png').'" alt="Core logs" height="16" width="16" /> core';
 
     $this->content = '<pre>'.$this->content.'</pre>';
   }
