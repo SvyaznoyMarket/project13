@@ -87,7 +87,7 @@ function Lightbox( jn, data ){
 		} else {
 			flybox.showBasket()
 		}
-		self.save()
+		//self.save()
 	}
 	this.getWishes = function( item ) {	
 		flybox.clear()
