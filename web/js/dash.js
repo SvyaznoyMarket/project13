@@ -84,7 +84,7 @@ $(document).ready(function(){
 			if( data.success ) {
 				lbox = data.data
 				ltbx.update( lbox )
-				ltbx.save()
+				//ltbx.save()
 				changeButtons( lbox )
 				/* ltbx */
 				var dropbx = $('div.lightboxinner > .dropbox')
