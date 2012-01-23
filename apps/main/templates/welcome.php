@@ -49,30 +49,36 @@ $(document).ready(function(){
 
     </div>
 
-<!-- Yandex.Metrika counter -->
-<div style="display:none;"><script type="text/javascript">
-(function(w, c) {
-    (w[c] = w[c] || []).push(function() {
-        try {
-            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
-        }
-        catch(e) { }
-    });
-})(window, "yandex_metrika_callbacks");
-</script></div>
-<script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
-<noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
-<!-- AdHands -->
-<script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
-<script type="text/javascript">
-    var report = new adhandsReport ('http://sedu.adhands.ru/site/');
-    report.id('1053');
-    report.send();
-</script>
-<noscript>
-<img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;" />
-</noscript>
-<!-- /AdHands -->
+
+
+<?php if ('live' == sfConfig::get('sf_environment')): ?>
+  <!-- Yandex.Metrika counter -->
+  <div style="display:none;"><script type="text/javascript">
+  (function(w, c) {
+      (w[c] = w[c] || []).push(function() {
+          try {
+              w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
+          }
+          catch(e) { }
+      });
+  })(window, "yandex_metrika_callbacks");
+  </script></div>
+  <script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
+  <noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+  <!-- AdHands -->
+  <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
+  <script type="text/javascript">
+      var report = new adhandsReport ('http://sedu.adhands.ru/site/');
+      report.id('1053');
+      report.send();
+  </script>
+  <noscript>
+  <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;" />
+  </noscript>
+  <!-- /AdHands -->
+<?php endif ?>
+
+
   </body>
 </html>
