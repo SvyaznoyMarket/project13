@@ -16,6 +16,7 @@ class ProjectConfiguration extends sfProjectConfiguration
 
     $this->enablePlugins(array(
       'sfDoctrinePlugin',
+      'sfPHPUnit2Plugin',
       //'fpErrorNotifierPlugin',
       'sfCombinePlugin',
     ));
