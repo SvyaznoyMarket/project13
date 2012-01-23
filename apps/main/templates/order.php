@@ -59,52 +59,55 @@
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
-<!-- Yandex.Metrika counter -->
-<div style="display:none;"><script type="text/javascript">
-(function(w, c) {
-    (w[c] = w[c] || []).push(function() {
-        try {
-            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
-        }
-        catch(e) { }
-    });
-})(window, "yandex_metrika_callbacks");
-</script></div>
-<script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
-<noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
 
-<!-- AdHands -->
-<?php
-  //если получена сумма и id заказа, добавим доплонительный код в adHands
-  ob_start();
-  include_slot('complete_order_sum');
-  $orderSum = ob_get_contents();
-  ob_end_clean();
-  ob_start();
-  include_slot('complete_order_id');
-  $orderId = ob_get_contents();
-  ob_end_clean();
-?>
-<script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
-<script type="text/javascript">
-    var report = new adhandsReport ('http://sedu.adhands.ru/site/');
-    report.id('1053');
-    <?php
-        if (isset($orderSum) && $orderSum>0 && isset($orderId) && $orderId>0){
-            echo
-    "report.data('am','".$orderSum."');
-    report.data('ordid','".$orderId."');
-"
-                ;
-        }
-    ?>
-    report.send();
-</script>
-<noscript>
-<img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
-</noscript>
-<!-- /AdHands -->
+<?php if ('live' == sfConfig::get('sf_environment')): ?>
+  <!-- Yandex.Metrika counter -->
+  <div style="display:none;"><script type="text/javascript">
+  (function(w, c) {
+      (w[c] = w[c] || []).push(function() {
+          try {
+              w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
+          }
+          catch(e) { }
+      });
+  })(window, "yandex_metrika_callbacks");
+  </script></div>
+  <script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
+  <noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  <!-- AdHands -->
+  <?php
+    //если получена сумма и id заказа, добавим доплонительный код в adHands
+    ob_start();
+    include_slot('complete_order_sum');
+    $orderSum = ob_get_contents();
+    ob_end_clean();
+    ob_start();
+    include_slot('complete_order_id');
+    $orderId = ob_get_contents();
+    ob_end_clean();
+  ?>
+  <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
+  <script type="text/javascript">
+      var report = new adhandsReport ('http://sedu.adhands.ru/site/');
+      report.id('1053');
+      <?php
+          if (isset($orderSum) && $orderSum>0 && isset($orderId) && $orderId>0){
+              echo
+      "report.data('am','".$orderSum."');
+      report.data('ordid','".$orderId."');
+  "
+                  ;
+          }
+      ?>
+      report.send();
+  </script>
+  <noscript>
+  <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
+  </noscript>
+  <!-- /AdHands -->
+<?php endif ?>
 
 <?php if (has_slot('seo_counters_advance')): ?>
   <?php include_slot('seo_counters_advance') ?>
