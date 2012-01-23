@@ -94,8 +94,8 @@ class userComponents extends myComponents
 
   public function executeShortuserinfo()
   {
-      $this->setVar('user', $this->getUser(), true);
-      $this->setVar('userData', $this->getUser()->getGuardUser(), true);
+      $this->setVar('user', $this->getUser());
+      $this->setVar('userData', $this->getUser()->getGuardUser());
   }
 
   public function executeNavigation()
@@ -104,7 +104,7 @@ class userComponents extends myComponents
 
     $list[] = array(
       'name' => 'Личный кабинет',
-      'url'  => url_for('user'),
+      'url'  => $this->generateUrl('user'),
     );
 
 

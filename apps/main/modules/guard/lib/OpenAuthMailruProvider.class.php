@@ -6,12 +6,11 @@ class OpenAuthMailruProvider extends BaseOpenAuthProvider
 
   public function getSigninUrl()
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
     $request = sfContext::getInstance()->getRequest();
 
     return strtr('https://connect.mail.ru/oauth/authorize?client_id={app_id}&response_type=code&redirect_uri={redirect_url}&host={host}', array(
       '{app_id}'       => $this->getConfig('app_id'),
-      '{redirect_url}' => urlencode(url_for('user_oauth_callback', array('provider' => self::$name), true)),
+      '{redirect_url}' => urlencode($this->generateUrl('user_oauth_callback', array('provider' => self::$name), true)),
       '{host}'         => urlencode('http://'.$request->getHost()),
     ));
   }
@@ -50,14 +49,12 @@ class OpenAuthMailruProvider extends BaseOpenAuthProvider
 
   public function getAccessTokenResponse($code)
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
-
     $data = http_build_query(array(
       'client_id'     => $this->getConfig('app_id'),
       'client_secret' => $this->getConfig('secret_key'),
       'grant_type'    => 'authorization_code',
       'code'          => $code,
-      'redirect_uri'  => url_for('user_oauth_callback', array('provider' => self::$name), true),
+      'redirect_uri'  => $this->generateUrl('user_oauth_callback', array('provider' => self::$name), true),
     ));
 
     $response = file_get_contents('https://connect.mail.ru/oauth/token', false, stream_context_create(array('http' => array(

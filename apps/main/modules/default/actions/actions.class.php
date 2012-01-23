@@ -25,6 +25,8 @@ class defaultActions extends myActions
   */
   public function executeWelcome(sfWebRequest $request)
   {
+    sfConfig::set('sf_web_debug', false); // важно!
+
     if (!sfConfig::get('app_welcome_enabled', false))
     {
       //$this->redirect('@homepage', 301);
@@ -36,8 +38,10 @@ class defaultActions extends myActions
     $secret = sfConfig::get('app_welcome_secret');
     if ($request->isMethod('post'))
     {
-      if ($secret == $request->getParameter($cookieName))
-      {
+      if (
+        ($secret == $request->getParameter($cookieName))
+        || (sfConfig::get('sf_csrf_secret') == $request->getParameter($cookieName))
+      ) {
         $this->getResponse()->setCookie($cookieName, md5($secret));
         $this->redirect($request['url'] ? $request['url'] : '@homepage');
       }

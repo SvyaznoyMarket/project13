@@ -38,7 +38,7 @@ class defaultComponents extends myComponents
     $list = (array)$this->list;
     array_unshift($list, array(
       'name' => 'Enter.ru',
-      'url'  => url_for('@homepage'),
+      'url'  => $this->generateUrl('homepage'),
     ));
 
     $this->setVar('list', $list, true);
@@ -59,7 +59,7 @@ class defaultComponents extends myComponents
     $list = (array)$this->list;
     array_unshift($list, array(
       'name' => 'Enter.ru',
-      'url'  => url_for('@homepage'),
+      'url'  => $this->generateUrl('homepage'),
     ));
 
     $this->setVar('list', $list, true);

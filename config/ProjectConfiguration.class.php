@@ -21,10 +21,13 @@ class ProjectConfiguration extends sfProjectConfiguration
     ));
 
     foreach (array(
-      'doctrine.configure'     => array($this, 'listenToConfigureDoctrineEvent'),
-      //'context.load_factories' => array($this, 'listenForLoadFactories'),
-    ) as $k => $v) {
-      $this->dispatcher->connect($k, $v);
+      array('doctrine.configure', array($this, 'listenToConfigureDoctrineEvent')),
+      array('context.load_factories', array($this, 'listenForLoadFactories')),
+      array('debug.web.load_panels', array('myWebDebugPanelEnvironment', 'listenToLoadDebugWebPanelEvent')),
+      array('debug.web.load_panels', array('myWebDebugPanelCore', 'listenToLoadDebugWebPanelEvent')),
+      array('debug.web.load_panels', array('myWebDebugPanelRedis', 'listenToLoadDebugWebPanelEvent')),
+    ) as $listener) {
+      $this->dispatcher->connect($listener[0], $listener[1]);
     }
   }
 

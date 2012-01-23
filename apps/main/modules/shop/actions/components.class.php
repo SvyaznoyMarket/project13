@@ -22,13 +22,13 @@ class shopComponents extends myComponents
 
     $list[] = array(
       'name' => 'Магазины Enter в '.($this->region->getLinguisticCase('п') ? mb_ucfirst($this->region->getLinguisticCase('п')) : ($this->region->prefix.$this->region)),
-      'url'  => url_for('shop', array('region' => $this->region->token)),
+      'url'  => $this->generateUrl('shop', array('region' => $this->region->token)),
     );
     if (isset($this->shop))
     {
       $list[] = array(
         'name' => (string)$this->shop,
-        'url'  => url_for('shop_show', $this->shop),
+        'url'  => $this->generateUrl('shop_show', $this->shop),
       );
     }
 
@@ -76,7 +76,7 @@ class shopComponents extends myComponents
 
     if ('inlist' == $this->view)
     {
-      $item['url'] = url_for('shop_show', $this->shop);
+      $item['url'] = $this->generateUrl('shop_show', $this->shop);
       $item['main_photo'] = isset($this->shop->Photo[0]) ? array(
         'url_small' => $this->shop->Photo[0]->getPhotoUrl(5),
       ) : false;
@@ -140,9 +140,9 @@ class shopComponents extends myComponents
     $this->setVar('markers', $markers, true);
     $this->setVar('regions', $regions, true);
   }
-  
+
   function executeSeo_counters_advance() {
-      
+
   }
 }
 

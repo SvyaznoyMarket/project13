@@ -20,12 +20,10 @@ class OpenAuthTwitterProvider extends BaseOpenAuthProvider
 
   public function getRequestToken()
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
-
     $oauth = new TwitterOAuth($this->getConfig('consumer_key'), $this->getConfig('consumer_secret'));
 
     // получаем временные ключи для получения PIN'а
-    $token = $oauth->getRequestToken(url_for('user_oauth_callback', array('provider' => self::$name), true));
+    $token = $oauth->getRequestToken($this->generateUrl('user_oauth_callback', array('provider' => self::$name), true));
     //$token = $oauth->getRequestToken();
 
     return $token;

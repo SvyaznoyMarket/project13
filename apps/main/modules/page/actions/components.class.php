@@ -77,7 +77,7 @@ class pageComponents extends myComponents
         }
         else{
             $link['name'] = $page->name.(isset($link['add_to_name']) ? $link['add_to_name'] : '');
-            $link['url'] = url_for('default_show', array('page' => $page->token));
+            $link['url'] = $this->generateUrl('default_show', array('page' => $page->token));
         }
       } if (isset($link)) unset($link);
     } if (isset($item)) unset($item);
@@ -95,11 +95,11 @@ class pageComponents extends myComponents
     $list = array(
 /*      array(
         'name' => 'Enter',
-        'url'  => url_for('homepage'),
+        'url'  => $this->generateUrl('homepage'),
       ),*/
       array(
         'name' => $this->page->name,
-        'url'  => url_for('default_show', array('page' => $this->page->token)),
+        'url'  => $this->generateUrl('default_show', array('page' => $this->page->token)),
       ),
     );
 

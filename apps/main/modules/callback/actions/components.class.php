@@ -16,26 +16,26 @@ class callbackComponents extends myComponents
     $list = array(
       array(
         'name' => 'Обратная связь',
-        'url'  => ''//url_for('default_show', array()),
+        'url'  => '', //$this->generateUrl('default_show', array()),
       ),
     );
 
     $this->setVar('list', $list, false);
-  }    
+  }
 
   public function executeFieldname(){
   }
-  
+
   public function executeFieldemail(){
   }
-  
+
   public function executeFieldtheme(){
   }
-  
+
   public function executeFieldtext(){
   }
 
   function executeSeo_counters_advance() {
-      
-  }  
+
+  }
 }

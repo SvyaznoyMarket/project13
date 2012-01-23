@@ -11,3 +11,4 @@
 /config/databases.yml
 erase.cmd
 erase_barcode.cmd
+*.nblh~

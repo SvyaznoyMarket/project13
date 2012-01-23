@@ -6,13 +6,11 @@ class OpenAuthVkontakteProvider extends BaseOpenAuthProvider
 
   public function getSigninUrl()
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Url');
-
     return strtr('{api_url}/oauth/authorize?client_id={app_id}&scope={permissions}&redirect_uri={redirect_url}&display=page&response_type=code', array(
       '{api_url}'      => $this->getConfig('api_url'),
       '{app_id}'       => $this->getConfig('app_id'),
       '{permissions}'  => $this->getConfig('permissions'),
-      '{redirect_url}' => urlencode(url_for('user_oauth_callback', array('provider' => self::$name), true)),
+      '{redirect_url}' => urlencode($this->generateUrl('user_oauth_callback', array('provider' => self::$name), true)),
     ));
   }
 

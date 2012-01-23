@@ -47,10 +47,10 @@ class bannerComponents extends myComponents
       }
       else if (1 == count($productList))
       {
-        $link = url_for('productCard', array('product' => $productList[0]['token_prefix'].'/'.$productList[0]['token']), true);
+        $link = $this->generateUrl('productCard', array('product' => $productList[0]['token_prefix'].'/'.$productList[0]['token']), true);
       }
       elseif (count($productList) > 1) {
-        $link = url_for('product_set', array('products' => implode(',', array_map(function($i) { return $i['barcode']; }, $productList))), true);
+        $link = $this->generateUrl('product_set', array('products' => implode(',', array_map(function($i) { return $i['barcode']; }, $productList))), true);
       }
       else
       {
@@ -65,7 +65,7 @@ class bannerComponents extends myComponents
         't'    =>
           !empty($banner['timeout'])
           ? $banner['timeout']
-          : (count($list) ? sfConfig::get('app_banner_timeout', 2000) : 3000)
+          : (count($list) ? sfConfig::get('app_banner_timeout', 6000) : 10000)
         ,
       );
       if (empty($item['imgs']) || empty($item['imgb'])) continue;

@@ -22,7 +22,7 @@ class productHelperComponents extends myComponents
     {
       $list[] = array(
         'name' => $productHelper->name,
-        'url'  => url_for('productHelper_show', $productHelper),
+        'url'  => $this->generateUrl('productHelper_show', $productHelper),
       );
     }
 

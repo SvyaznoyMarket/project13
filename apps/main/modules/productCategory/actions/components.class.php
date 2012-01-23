@@ -35,7 +35,7 @@ class productCategoryComponents extends myComponents
 //    {
 //      $list[] = array(
 //        'name' => (string)$productCategory,
-//        'url'  => url_for('productCatalog_category', $productCategory),
+//        'url'  => $this->generateUrl('productCatalog_category', $productCategory),
 //      );
 //    }
 
@@ -54,12 +54,12 @@ class productCategoryComponents extends myComponents
       $this->view = 'default';
     }
 
-    $this->setVar('productCategoryList',
-      $this->productCategory->getChildList(array(
-        //'select'       => 'productCategory.id, productCategory.name, productCategory.token',
-        'with_filters' => false,
-      ))
-    );
+    $productCategoryList = $this->productCategory->getChildList(array(
+      //'select'       => 'productCategory.id, productCategory.name, productCategory.token',
+      'with_filters'  => false,
+    ));
+
+    $this->setVar('productCategoryList', $productCategoryList);
   }
  /**
   * Executes show component
@@ -91,8 +91,8 @@ class productCategoryComponents extends myComponents
     $item = array(
       'name'              => (string)$this->productCategory,
       'root_name'         => (string)$this->productCategory->getRootCategory(),
-      'url'               => url_for('productCatalog_category', $this->productCategory),
-      'carousel_data_url' => url_for('productCatalog_carousel', $this->productCategory),
+      'url'               => $this->generateUrl('productCatalog_category', $this->productCategory),
+      'carousel_data_url' => $this->generateUrl('productCatalog_carousel', $this->productCategory),
       'product_quantity'  => $this->productCategory->countProduct(array('view' => 'list')),
       'links'             => $this->productCategory->getLinkList(),
       'has_line'          => $this->productCategory->has_line,
@@ -153,7 +153,7 @@ class productCategoryComponents extends myComponents
 
       $list[] = array(
         'name'             => $productType->name,
-        'url'              => url_for(array('sf_route' => 'productCatalog_productType', 'sf_subject' => $this->productCategory, 'productType' => $productType->id)),
+        'url'              => $this->generateUrl('productCatalog_productType', array('sf_subject' => $this->productCategory, 'productType' => $productType->id)),
         'product_quantity' => $productType->product_count,
       );
     }
@@ -162,14 +162,15 @@ class productCategoryComponents extends myComponents
   }
   public function executeExtra_menu()
   {
-    /*
-	  $data = ProductCategoryTable::getInstance()->getDescendatList(null, array(
-      'select'    => 'productCategory.id, productCategory.core_id, productCategory.token, productCategory.name',
-      'min_level' => 1,
-      'max_level' => 2,
-      'with_filters' => false
-    ));
-    */
+    $cacheKey = sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array()) : false;
+
+    // checks for cached vars
+    if ($cacheKey && $this->setCachedVars($cacheKey))
+    {
+      $vars = $this->getVarHolder()->getAll();
+      return sfView::SUCCESS;
+    }
+
 	  $data = ProductCategoryTable::getInstance()->getSubList();
 	  $result = array();
 
@@ -337,23 +338,26 @@ class productCategoryComponents extends myComponents
 
       }
 
-
-      /*
-      echo '<pre>';
-      #print_r($catTreeTmp);
-      #print_r($catTree);
-      #print_r($countResult);
-      print_r($colomnsArr);
-      echo '</pre>';
-      #exit();   */
-
-
-
+    /*
+    echo '<pre>';
+    #print_r($catTreeTmp);
+    #print_r($catTree);
+    #print_r($countResult);
+    print_r($colomnsArr);
+    echo '</pre>';
+    #exit();   */
 
 	  $this->setVar('catTree', $catTree, true);
 	  $this->setVar('rootlist', $result, true);
 	  $this->setVar('rootCat', $rootCat, true);
 	  $this->setVar('colomnsArr', $colomnsArr, true);
+
+    // caches vars
+    if ($cacheKey)
+    {
+      $this->cacheVars($cacheKey);
+      $this->getCache()->addTag('productCategory', $cacheKey);
+    }
   }
 
   function executeSeo_counters_advance() {

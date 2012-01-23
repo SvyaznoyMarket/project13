@@ -24,7 +24,7 @@ class tagComponents extends myComponents
       $list[] = array(
         'name'  => (string)$tag,
         'token' => $tag->token,
-        'url'   => url_for('tag_show', array('tag' => $tag->token)),
+        'url'   => $this->generateUrl('tag_show', array('tag' => $tag->token)),
       );
     }
 
@@ -42,7 +42,7 @@ class tagComponents extends myComponents
     /*
     $list[] = array(
       'name' => 'Теги',
-      'url'  => url_for('tag'),
+      'url'  => $this->generateUrl('tag'),
     );
     */
 
@@ -50,7 +50,7 @@ class tagComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$this->tag,
-        'url'  => url_for('tag_show', array('tag' => $this->tag->token)),
+        'url'  => $this->generateUrl('tag_show', array('tag' => $this->tag->token)),
       );
     }
 
@@ -87,7 +87,7 @@ class tagComponents extends myComponents
       }
 
       $list[$index][] = array(
-        'url'      => url_for('tag_show', array('tag' => $this->tag->token, 'productType' => $productType->token)),
+        'url'      => $this->generateUrl('tag_show', array('tag' => $this->tag->token, 'productType' => $productType->token)),
         'name'     => (string)$productType,
         'token'    => $productType->id,
         'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,

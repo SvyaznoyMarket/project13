@@ -30,8 +30,8 @@ class orderComponents extends myComponents
       'created_at'          => $this->order->created_at,
       'payment_method_name' => $this->order->PaymentMethod ? $this->order->PaymentMethod->name : null,
       'delivered_at'        => $this->order->delivered_at,
-      'delivery_type'        => $this->order->getDeliveryType(),
-      'delivery_price'        => $this->order->delivery_price,
+      'delivery_type'       => $this->order->getDeliveryType(),
+      'delivery_price'      => $this->order->delivery_price,
       'delivered_period'    => $this->order->DeliveryPeriod ? $this->order->DeliveryPeriod->name : null,
     );
 
@@ -44,7 +44,7 @@ class orderComponents extends myComponents
           'type'     => 'product',
           'name'     => (string)$orderProductRelation->Product,
           'article'     => (string)$orderProductRelation->Product->article,
-          'url'      => url_for('productCard', $orderProductRelation->Product),
+          'url'      => $this->generateUrl('productCard', $orderProductRelation->Product),
           'price'    => (int)$orderProductRelation['price'],
           'quantity' => $orderProductRelation['quantity'],
         );
@@ -55,7 +55,7 @@ class orderComponents extends myComponents
         $item['products'][] = array(
           'type'     => 'service',
           'name'     => (string)$orderServiceRelation->Service,
-          'url'      => url_for('service_show', $orderServiceRelation->Service),
+          'url'      => $this->generateUrl('service_show', $orderServiceRelation->Service),
           'price'    => (int)$orderServiceRelation['price'],
           'quantity' => $orderServiceRelation['quantity'],
         );
@@ -121,13 +121,13 @@ class orderComponents extends myComponents
     {
       $list[] = array(
         'name'      => $step.'-й шаг',
-        'url'       => url_for('order_new', array('step' => $step)),
+        'url'       => $this->generateUrl('order_new', array('step' => $step)),
         'is_active' => (null == $this->order->step ? 0 : $this->order->step) >= $step,
       );
     }
       $list[] = array(
         'name'      => '3-й шаг',
-        'url'       => url_for('order_confirm'),
+        'url'       => $this->generateUrl('order_confirm'),
         'is_active' => 3 == $this->order->step,
       );
 

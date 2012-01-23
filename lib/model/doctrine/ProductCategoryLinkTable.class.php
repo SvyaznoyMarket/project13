@@ -25,14 +25,31 @@ class ProductCategoryLinkTable extends myDoctrineTable
 
   public function getListByCategory(ProductCategory $category, array $params = array())
   {
-    $q = $this->createBaseQuery($params);
+    $key = $this->getQueryHash("productCategory-{$category['id']}/productCategoryLink-all", $params);
 
-    $q->addWhere('productCategoryLink.product_category_id = ?', $category->id);
+    $return = $this->getCachedByKey($key);
+    if (!$return)
+    {
+      $q = $this->createBaseQuery($params);
 
-    $this->setQueryParameters($q, $params);
+      $q->addWhere('productCategoryLink.product_category_id = ?', $category['id']);
 
-    $ids = $this->getIdsByQuery($q, $params, 'productCategory-'.$category->id.'/productCategoryLink-ids');
+      $this->setQueryParameters($q, $params);
 
-    return $this->createListByIds($ids, $params);
+      $ids = $this->getIdsByQuery($q, $params);
+
+      $return = $this->createListByIds($ids, $params);
+      if ($this->isCacheEnabled())
+      {
+        $this->getCache()->set($key, $return, 259200); // обновить кеш через 3 дня
+        $this->getCache()->addTag("productCategory-{$category['id']}", $key);
+        foreach ($ids as $id)
+        {
+          $this->getCache()->addTag("productCategoryLink-{$id}", $key);
+        }
+      }
+    }
+
+    return $return;
   }
 }

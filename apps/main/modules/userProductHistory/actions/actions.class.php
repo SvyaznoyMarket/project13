@@ -10,28 +10,29 @@
  */
 class userProductHistoryActions extends myActions
 {
- /**
-  * Executes index action
-  *
-  * @param sfRequest $request A request object
-  */
+
+  /**
+   * Executes index action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeIndex(sfWebRequest $request)
   {
     $this->setVar('productList', $this->getUser()->getProductHistory()->getProducts(), true);
   }
- /**
-  * Executes clear action
-  *
-  * @param sfRequest $request A request object
-  */
+
+  /**
+   * Executes clear action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeClear(sfWebRequest $request)
   {
     $this->getUser()->getProductHistory()->clear();
 
     $this->redirect($this->getRequest()->getReferer());
   }
-  
-  
+
   /**
    *
    * Получает краткую информацию о пользователе:
@@ -41,49 +42,58 @@ class userProductHistoryActions extends myActions
    * -о сравниваемых товарах
    * -bingo TODO
    * Вызывается посредствам ajax. Параметров не принимает.
-   * 
+   *
    * @param sfWebRequest $request
-   * @return json 
+   * @return json
    */
   public function executeShortinfo(sfWebRequest $request)
   {
-      sfProjectConfiguration::getActive()->loadHelpers('Url');        
-      $user = $this->getUser();
+    $user = $this->getUser();
 
-      //подсчитываем общее количество и общую стоимость корзины
-      $cartInfo = $user->getCartBaseInfo();
+    //подсчитываем общее количество и общую стоимость корзины
+    $cartInfo = $user->getCartBaseInfo();
 
-      //отложенные товары
-      $delayProducts = array();
-      if ($user->getGuardUser())
-      {
-        $userDelayedProduct = new UserDelayedProduct();
-        $delayProducts = $userDelayedProduct->getUserDelayProducts($user->getGuardUser()->id);
-      }
-      
+    //отложенные товары
+    $delayProducts = array();
+    if ($user->getGuardUser())
+    {
+      $userDelayedProduct = new UserDelayedProduct();
+      $delayProducts = $userDelayedProduct->getUserDelayProducts($user->getGuardUser()->id);
+    }
+
 #     echo '<pre>';
-#     echo '</pre>';      
-   #   exit();
-      if (!isset($productsInCart)) $productsInCart = false; 
-      //имя есть только у авторизованного пользователя
-      if ($user->isAuthenticated()) $name = $user->getName();
-      else $name = false;
-      return $this->renderJson(array(
-        'success' => true,
-        'data'    => array(
-              'name' => $name,  
-              'link' =>  url_for('user'),   //ссылка на личный кабинет
-              'vitems' => $cartInfo['qty'],
-              'sum' => $cartInfo['sum'],
-              'vwish' => count($delayProducts),
-              'vcomp' => $user->getProductCompare()->getProductsNum(),
-              'productsInCart' => $cartInfo['productsInCart'],
-              'servicesInCart' => $cartInfo['servicesInCart'],
-              'bingo' => false,
-        )
-      ));      
-      $this->redirect($this->getRequest()->getReferer());
-      
+#     echo '</pre>';
+    #   exit();
+    if (!isset($productsInCart))
+    {
+      $productsInCart = false;
+    }
+    //имя есть только у авторизованного пользователя
+    if ($user->isAuthenticated())
+    {
+      $name = $user->getName();
+    }
+    else
+    {
+      $name = false;
+    }
+
+    return $this->renderJson(array(
+      'success' => true,
+      'data' => array(
+        'name' => htmlspecialchars($name, ENT_QUOTES),
+        'link' => $this->generateUrl('user'), //ссылка на личный кабинет
+        'vitems' => $cartInfo['qty'],
+        'sum' => $cartInfo['sum'],
+        'vwish' => count($delayProducts),
+        'vcomp' => $user->getProductCompare()->getProductsNum(),
+        'productsInCart' => $cartInfo['productsInCart'],
+        'servicesInCart' => $cartInfo['servicesInCart'],
+        'bingo' => false,
+      )
+    ));
+
+    $this->redirect($this->getRequest()->getReferer());
   }
-  
+
 }

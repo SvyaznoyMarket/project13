@@ -78,7 +78,7 @@ class OrderTable extends myDoctrineTable
     return $q;
   }
 
-  public function getById($id, array $params = array())
+  public function getRecordById($id, array $params = array())
   {
     $this->applyDefaultParameters($params);
 
@@ -86,52 +86,33 @@ class OrderTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
-    $q->addWhere('order.id = ?', $id);
+    $q->whereId($id);
 
-    $record = $q->fetchOne();
-    if (!$record)
+    $list = $q->execute();
+    foreach ($list as $i => $record)
     {
-      return $record;
-    }
-
-    if ($params['with_products'])
-    {
-      foreach ($record['ProductRelation'] as $productRelation)
+      if ($params['with_products'])
       {
-        $productRelation['Product'] = ProductTable::getInstance()->getById($productRelation['product_id']);
+        foreach ($record['ProductRelation'] as $productRelation)
+        {
+          $productRelation['Product'] = ProductTable::getInstance()->getById($productRelation['product_id']);
+        }
+      }
+
+      if (is_array($record))
+      {
+        $list[$i] = $record;
       }
     }
 
-    return $record;
+    return $this->getResult($list, is_scalar($id));
   }
 
   public function getByToken($token, array $params = array())
   {
-    //TODO: тут должен быть вразумительный поиск по token
+    $id = $this->getIdBy('token', $token);
 
-    $this->applyDefaultParameters($params);
-
-    $q = $this->createBaseQuery($params);
-
-    $this->setQueryParameters($q, $params);
-
-    $q->addWhere('order.token = ?', $token);
-
-    $record = $q->fetchOne();
-    if (!$record)
-    {
-      return $record;
-    }
-
-    if ($params['with_products'])
-    {
-      foreach ($record['ProductRelation'] as $productRelation)
-      {
-        $productRelation['Product'] = ProductTable::getInstance()->getById($productRelation['product_id']);
-      }
-    }
-
-    return $record;
+    return $this->getById($id, $params);
   }
 
   public function getForRoute(array $params)

@@ -44,7 +44,7 @@ class Core
     curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
 
     $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/core_lib.log'));
-    
+
     $redis = new sfRediskaCache(array('prefix' => str_replace(':', '', sfConfig::get('app_doctrine_result_cache_prefix'))));
     if ($redis->has('core_api_client_id') && $redis->has('core_api_token')) {
       $this->client_id = $redis->get('core_api_client_id');
@@ -330,13 +330,13 @@ class Core
       return false;
     }
   }
-  
+
   /**
    *
    * @param int|array $productId
    * @param int $geoId
    * @param array $kitProducts
-   * @return array|false 
+   * @return array|false
    */
   public function getProductDeliveryData($productId, $geoId, array $kitProducts = null)
   {
@@ -372,9 +372,8 @@ class Core
 
   public function query($name, array $params = array(), array $data = array())
   {
-    $denided_actions = array('sync.get');
-    $is_log = in_array($name, $denided_actions);
-    
+    $isLog = !in_array($name, array('sync.get'));
+
     $action = '/'.str_replace('.', '/', $name).'/';
 
     if (empty($this->client_id) || empty($this->token))
@@ -393,13 +392,14 @@ class Core
       ), $params),
       'data'   => $data), JSON_FORCE_OBJECT);
 
-    if (!$is_log)
+    if ($isLog)
     {
       $this->logger->log("Request: ".$data);
     }
     $response = $this->send($data);
-    if (!$is_log)
+    if ($isLog)
     {
+      //$this->logger->log("Response: ".$response, !empty($response['error']) ? sfLogger::ERR : sfLogger::INFO);
       $this->logger->log("Response: ".$response);
     }
     $response = json_decode($response, true);
@@ -411,7 +411,7 @@ class Core
       if (isset($response['error']['message'])) $this->error['message'] = $response['error']['message'];
       $response = false;
     }
-    
+
     return $response;
   }
 
