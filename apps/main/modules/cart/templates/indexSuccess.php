@@ -1,56 +1,32 @@
-<?php if (false): ?>
-<div class="block wide">
-
-  <?php include_component('user', 'menu') ?>
-
-  <h1>Корзина товаров</h1>
-
-  <div class="block">
-    <?php if ($cart->count() > 0): ?>
-      <?php include_component('cart', 'show') ?>
-
-      <?php echo link_to('очистить', '@cart_clear', array('class' => 'cart cart-clear')) ?>
-
-      <p><a href="<?php echo url_for('order_new') ?>">Оформить заказ</a></p>
-
-    <?php else: ?>
-      <p>в корзине нет товаров</p>
-
-    <?php endif ?>
-  </div>
-
-</div>
-<?php endif ?>
-
 <?php slot('title', 'Моя корзина') ?>
 
-    <?php if ($cart->countFull() > 0): ?>
-      <?php include_component('cart', 'show') ?>
+<?php if ($cart->countFull() > 0): ?>
+  <?php include_component('cart', 'show') ?>
 
-    <!-- Total -->
-    <div class="fl font14 gray">
-        Для оформления заказа от вас потребуется<br />только имя и телефон для связи.
+  <!-- Total -->
+  <div class="fl font14 gray">
+    Для оформления заказа от вас потребуется<br />только имя и телефон для связи.
+  </div>
+  <div class="basketinfo">
+    <div class="left">
+      <div class="font16">Сумма заказа:</div>
+      <div class="font34"><strong><span class="price"><?php echo $cart->getTotal(true) ?></span> <span class="rubl">p</span></strong></div>
     </div>
-    <div class="basketinfo">
-        <div class="left">
-            <div class="font16">Сумма заказа:</div>
-            <div class="font34"><strong><span class="price"><?php echo $cart->getTotal(true) ?></span> <span class="rubl">p</span></strong></div>
-        </div>
-        <div class="right pt20">
-            <a href="<?php echo url_for('order_new') ?>" class="button bigbuttonlink width214 mb15">Оформить заказ</a>
-        </div>
-        <!--
-        <div class="right pt20">
-            <a href="<?php echo url_for('cart_clear') ?>" class="button bigbuttonlink width214 mb15">Очистить корзину</a>
-        </div>
-        -->
+    <div class="right pt20">
+      <a href="<?php echo url_for('order_new') ?>" class="button bigbuttonlink width214 mb15">Оформить заказ</a>
     </div>
-    <!-- /Total -->
+    <!--
+    <div class="right pt20">
+        <a href="<?php echo url_for('cart_clear') ?>" class="button bigbuttonlink width214 mb15">Очистить корзину</a>
+    </div>
+    -->
+  </div>
+  <!-- /Total -->
 
-    <?php else: ?>
-      <p>в корзине нет товаров</p>
+<?php else: ?>
+  <p>в корзине нет товаров</p>
 
-    <?php endif ?>
+<?php endif ?>
 
 
 <?php slot('seo_counters_advance') ?>
