@@ -99,7 +99,7 @@ $(document).ready(function() {
       })
     })
 
-	$('#forgot-pwd-trigger').click(function(){
+	$('#forgot-pwd-trigger').live('click', function(){
 		$('#reset-pwd-form').show();
 		$('#reset-pwd-key-form').hide();
 		$('#login-form').hide();

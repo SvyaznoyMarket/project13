@@ -840,7 +840,7 @@ class ProductTable extends myDoctrineTable
       }
       else
       {
-        $return[] = "product-{$record['core_id']}".(isset($params['region']) ? ("-".$params['region']) : "");
+        $return[] = "product-{$record['core_id']}".(isset($params['region']) ? ("-".$params['region']) : "-");
       }
 
       /*
