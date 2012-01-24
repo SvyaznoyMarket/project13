@@ -52,23 +52,6 @@ ServicePrice:
     PriceList:         { class: ProductPriceList, foreignAlias: Price, local: service_price_list_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
 
-ServiceTariff:
-  options:
-    comment: 'Тарифы услуг F1 по регионам'
-  actAs:
-    Corable:        { push: disable }
-  columns:
-    id:                { type: integer(20), autoincrement: true, primary: true }
-    region_id:         { type: integer(20), notnull: true }
-    service_id:        { type: integer(20), notnull: true }
-    product_id:        { type: integer(20), notnull: true }
-    price:             { type: 'decimal(12,2)', notnull: true, default: 0, comment: 'Цена услуги' }
-  relations:
-    Region:            { class: Region, foreignAlias: ServicePrice, local: region_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Service:           { class: Service, foreignAlias: PriceTariff, local: service_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Product:           { class: Product, foreignAlias: ServicePrice, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-
-
 ServiceProductRelation:
   options:
     comment: 'Связь услуги с продуктом'
@@ -106,4 +89,4 @@ ServiceTariff:
   relations:
     Region:            { class: Region, foreignAlias: ServicePrice, local: region_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Service:           { class: Service, foreignAlias: PriceTariff, local: service_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Product:           { class: Product, foreignAlias: ServicePrice, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
+    Product:           { class: Product, foreignAlias: ServicePrice, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
