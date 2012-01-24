@@ -69,24 +69,26 @@
           {
                'id': '<?php echo $product->Product['article'] ?>',
                'name': '<?php echo $product->Product['name'] ?>',
-               'price': '<?php echo str_replace(',', '.', $product['price']) ?>'              
+               'price': '<?php echo str_replace(',', '.', $product['price']) ?>'
            },
-  <?php endforeach ?>   
+  <?php endforeach ?>
   <?php foreach ($order->ServiceRelation as $service): ?>
           {
                'id': '<?php echo $service->Service['token'] ?>',
                'name': '<?php echo $service->Service['name'] ?>',
-               'price': '<?php echo str_replace(',', '.', $service['price']) ?>'              
+               'price': '<?php echo str_replace(',', '.', $service['price']) ?>'
            },
-  <?php endforeach ?>      
+  <?php endforeach ?>
         ]
       };
   <?php foreach ($order->ProductRelation as $product): ?>
+    <?php $category = $product->Product->getMainCategory() ?>
+    <?php $rootCategory = $category->getRootCategory() ?>
         _gaq.push(['_addItem',
            '<?php echo $order['number'] ?>',           // Номер заказа
            '<?php echo $product->Product['article'] ?>',           // Артикул
            '<?php echo $product->Product['name'] ?>',        // Название товара
-           '<?php echo $product->Product->getMainCategory() ?>',   // Категория товара
+           '<?php echo ($category-> id != $rootCategory->id) ? ($rootCategory.' - '.$category) : $category ?>',   // Категория товара
            '<?php echo str_replace(',', '.', $product['price']) ?>',          // Стоимость 1 единицы товара
            '<?php echo str_replace(',', '.', $product['quantity']) ?>'               // Количество товара
          ]);
@@ -95,7 +97,7 @@
       $catName = 'Услуга F1';
       $cat = $service->Service->getCatalogParent();
       if ($cat && isset($cat['name'])) {
-          $catName .= ' - ' . $cat['name'];
+          $catName .= ' - '.$cat['name'];
       }
       ?>
         _gaq.push(['_addItem',
@@ -106,7 +108,7 @@
           '<?php echo str_replace(',', '.', $service['price']) ?>',          // Стоимость 1 единицы товара
           '<?php echo str_replace(',', '.', $service['quantity']) ?>'               // Количество услуг
          ]);
-  <?php endforeach ?>  
+  <?php endforeach ?>
            _gaq.push(['_trackTrans']);
 
   </script>
