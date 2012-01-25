@@ -18,7 +18,6 @@ class ProjectConfiguration extends sfProjectConfiguration
       'sfDoctrinePlugin',
       'sfPHPUnit2Plugin',
       //'fpErrorNotifierPlugin',
-      'sfCombinePlugin',
     ));
 
     foreach (array(

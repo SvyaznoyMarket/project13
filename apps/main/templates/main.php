@@ -5,7 +5,7 @@
     <?php include_metas() ?>
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <?php include_combined_stylesheets() //include_stylesheets() ?>
+    <?php include_stylesheets() ?>
     <?php //include_javascripts() ?>
     <?php include_component('page', 'link_rel_canonical') ?>
 
@@ -53,7 +53,8 @@
       <div class="clear"></div>
     </div>
 
-<?php include_combined_javascripts() ?>
+<?php include_javascripts() ?>
+
 <script>
 	$(document).ready(function() {
 		/* Search */
