@@ -2757,7 +2757,7 @@ DT.bCtg__eOrange{
 	position: fixed;
 	text-align: center;
 	*position: absolute;
-	*top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+	*top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");
 	}
 
 .bMobDownWrapRel{
