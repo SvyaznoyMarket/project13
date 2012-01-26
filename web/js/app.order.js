@@ -54,15 +54,22 @@ function triggerDelivery( i ) {
 var checker = $('.order-form').find('[name="order[delivery_type_id]"]:checked')
 triggerDelivery( checker.val() )
 $('<img src="/images/ajaxnoti.gif" />').css('display', 'none').appendTo('body') //preload
-$('.order-form').submit( function(e) {
+var noti = $('<div>').html('<div><img src="/images/ajaxnoti.gif" /></br></br> Ваш заказ оформляется</div>')
+						 .attr('id', 'noti').appendTo('body')
+var scndRun = false						 
+$('.order-form').submit( function(e) {		
+	if( scndRun ) // firefox fix
+		return true
+	e.preventDefault()
+	scndRun = true	
 	$(this).find(':submit').val('Оформляется...')
-	var noti = $('<div>').html('<div><img src="/images/ajaxnoti.gif" /></br></br> Ваш заказ оформляется</div>')
-						 .attr('id', 'noti')
-	noti.lightbox_me({
+	
+	$('#noti').lightbox_me({
 		  centered: true,
 		  closeClick: false,
 		  closeEsc: false
 	})
+	setTimeout( function() { $('.order-form').trigger('submit') }, 500) // opera fix
 })
 
 $('.order-form').change( function(e) {
