@@ -45,33 +45,29 @@ EOF;
     }
 
     $data = json_decode(file_get_contents($combineFilename), true);
-    foreach ($data as &$item)
+    foreach ($data as $filename => &$timestamp)
     {
-      foreach ($item as $filename => &$timestamp)
+      $file = sfConfig::get('sf_web_dir').$filename;
+      $tmp = filemtime($file);
+
+      if ($options['force'] || ($tmp != $timestamp))
       {
-        $file = sfConfig::get('sf_web_dir').$filename;
-        $tmp = filemtime($file);
+        $this->log($file);
+        $timestamp = $tmp;
 
-        if ($options['force'] || ($tmp != $timestamp))
+        $targetFile = preg_replace('/.js$/', '.min.js', $file);
+
+        $command = 'java -jar '.sfConfig::get('app_js_combine_compiler').' --charset utf-8 --js '.$file.' --js_output_file '.$targetFile;
+        //myDebug::dump($command);
+        exec($command, $output, $return);
+        if (0 !== $return)
         {
-          $this->log($file);
-          $timestamp = $tmp;
-
-          $targetFile = preg_replace('/.js$/', '.min.js', $file);
-
-          $command = 'java -jar '.sfConfig::get('app_js_combine_compiler').' --charset utf-8 --js '.$file.' --js_output_file '.$targetFile;
-          //myDebug::dump($command);
-          exec($command, $output, $return);
-          if (0 !== $return)
-          {
-            $this->logBlock('Error compile '.$file, 'ERROR');
-            exec('cp '.$file.' '.$targetFile);
-          }
+          $this->logBlock('Error compile '.$file, 'ERROR');
+          exec('cp '.$file.' '.$targetFile);
         }
+      }
 
-      } if (isset($timestamp)) unset($timestamp);
-
-    } if (isset($item)) unset($item);
+    } if (isset($timestamp)) unset($timestamp);
 
     file_put_contents($combineFilename, json_encode($data));
   }
