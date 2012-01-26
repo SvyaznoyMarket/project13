@@ -53,6 +53,17 @@ function triggerDelivery( i ) {
 
 var checker = $('.order-form').find('[name="order[delivery_type_id]"]:checked')
 triggerDelivery( checker.val() )
+$('<img src="/images/ajaxnoti.gif" />').css('display', 'none').appendTo('body') //preload
+$('.order-form').submit( function(e) {
+	$(this).find(':submit').val('Оформляется...')
+	var noti = $('<div>').html('<div><img src="/images/ajaxnoti.gif" /></br></br> Ваш заказ оформляется</div>')
+						 .attr('id', 'noti')
+	noti.lightbox_me({
+		  centered: true,
+		  closeClick: false,
+		  closeEsc: false
+	})
+})
 
 $('.order-form').change( function(e) {
         var form = $(this)

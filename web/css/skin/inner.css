@@ -3120,6 +3120,21 @@ DT.bCtg__eOrange{
 	.bCityPopup__eBlock a{
 		color: #fff;
 		}
+#noti {
+	display: none;
+	width: 300px;
+	height: 200px;
+	background-color: #fff;
+	text-align: center;
+	font-size: 18px;
+	border-radius:15px;
+	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+}
+#noti div{
+	margin-top: 50px;
+}
+
 
 
 
