@@ -98,7 +98,11 @@ all:
        result_url: 'https://wpay.uniteller.ru/results/'
        shop_id: '35974-134'
        return_url: '@payment_callback'
-  # TODO: перенести в модель, чтобы не захламлять память
+
+  js_combine:
+    file:     %SF_WEB_DIR%/js/combine.json
+    compiler: %SF_LIB_DIR%/vendor/google-closure/compiler.jar
+
   open_auth:
     provider:
       vkontakte:
