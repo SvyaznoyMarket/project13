@@ -100,7 +100,7 @@ all:
        return_url: '@payment_callback'
 
   js_combine:
-    file:     %SF_WEB_DIR%/js/combine.json
+    file:     %SF_WEB_DIR%/js/combine.js
     compiler: %SF_LIB_DIR%/vendor/google-closure/compiler.jar
 
   open_auth:
