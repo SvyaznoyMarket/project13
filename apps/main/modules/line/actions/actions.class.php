@@ -32,6 +32,10 @@ class lineActions extends myActions
     $main_product = ProductTable::getInstance()->getByLine($this->line);
     $this->forward404If(!$main_product);
 
+    $region = $this->getUser()->getRegion('name');
+    $title = "{$main_product->name} - купить по цене {$main_product->getFormattedPrice()} руб. с доставкой и сборкой в г. {$region}. {$main_product->name} - описание, фотографии, отзывы в магазине Enter";
+    $this->getResponse()->setTitle($title);
+
     $q = ProductTable::getInstance()->getQueryByLine($this->line, array('with_main' => false, 'view' => 'list', ));
 
     $this->productPager = $this->getPager('Product', $q, $q->count());
