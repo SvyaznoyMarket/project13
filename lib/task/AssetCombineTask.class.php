@@ -45,7 +45,7 @@ EOF;
     }
 
     $content = file_get_contents($combineFilename);
-    $content = substr($content, strpos($content, "\n"));
+    $content = substr($content, strpos($content, "\n") + 1);
     $data = json_decode($content, true);
     foreach ($data as $filename => &$timestamp)
     {
@@ -71,6 +71,6 @@ EOF;
 
     } if (isset($timestamp)) unset($timestamp);
 
-    file_put_contents($combineFilename, "var filesWithVersion = \n".json_encode($data));
+    file_put_contents($combineFilename, "var filesWithVersion = \n".(count($data) ? json_encode($data) : '{}'));
   }
 }
