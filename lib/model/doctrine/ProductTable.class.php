@@ -826,6 +826,8 @@ class ProductTable extends myDoctrineTable
         //'barcode',
       ));
     }
+    //очищаем кеш по-любому
+    $intersection = $record->getModified();
 
     if (
       (('save' == $action) && count($intersection))
@@ -843,12 +845,10 @@ class ProductTable extends myDoctrineTable
         $return[] = "product-{$record['core_id']}".(isset($params['region']) ? ("-".$params['region']) : "-");
       }
 
-      /*
       foreach ($record->Category as $productCategory)
       {
-        $return[] = "productCategory-{$productCategory->core_id}";
+        $return[] = "productCategory-{$productCategory->core_id}-";
       }
-      */
     }
 
     return $return;
