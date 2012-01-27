@@ -518,7 +518,7 @@ class ProductCategoryTable extends myDoctrineTable
       ));
     }
     //очищаем кеш по-любому
-    $intersection = $record->getModified();
+    //$intersection = $record->getModified();
 
     if (
       (('save' == $action) && count($intersection))

@@ -818,16 +818,16 @@ class ProductTable extends myDoctrineTable
       // for preSave
       $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
       // Массив полей, изменения в которых ведут к генерации кеш-ключей
-      $intersection = array_intersect($modified, array(
+      //$intersection = array_intersect($modified, array(
         //'is_instock',
         //'view_show',
         //'view_list',
         //'name',
         //'barcode',
-      ));
+      //));
+      $intersection = $record->getModified();
     }
     //очищаем кеш по-любому
-    $intersection = $record->getModified();
 
     if (
       (('save' == $action) && count($intersection))
@@ -845,9 +845,9 @@ class ProductTable extends myDoctrineTable
         $return[] = "product-{$record['core_id']}".(isset($params['region']) ? ("-".$params['region']) : "-");
       }
 
-      foreach ($record->Category as $productCategory)
+      foreach ($record['Category'] as $productCategory)
       {
-        $return[] = "productCategory-{$productCategory->core_id}-";
+        $return[] = "productCategory-{$productCategory['core_id']}-";
       }
     }
 
