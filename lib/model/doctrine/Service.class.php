@@ -30,14 +30,16 @@ class Service extends BaseService
 
     $this->token = empty($this->token) ? (uniqid().'-'.myToolkit::urlize($this->name)) : $this->token;
 
-    // теги
-    if (!empty($data['category'])) foreach ($data['category'] as $relationData)
-    {
-      $relation = new ServiceCategoryRelation();
-      $relation->fromArray(array(
-        'category_id' => ServiceCategoryTable::getInstance()->getIdByCoreId($relationData['id']),
-      ));
-      $this->CategoryRelation[] = $relation;
+    $this->CategoryRelation->clear();
+    if (!empty($data['category'])) {
+        foreach ($data['category'] as $relationData)
+        {
+        $relation = new ServiceCategoryRelation();
+        $relation->fromArray(array(
+            'category_id' => ServiceCategoryTable::getInstance()->getIdByCoreId($relationData['id']),
+        ));
+        $this->CategoryRelation[] = $relation;
+        }
     }
   }
 
