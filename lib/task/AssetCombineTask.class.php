@@ -71,6 +71,6 @@ EOF;
 
     } if (isset($timestamp)) unset($timestamp);
 
-    file_put_contents($combineFilename, "var filesWithVersion = \n".(count($data) ? json_encode($data) : '{}'));
+    file_put_contents($combineFilename, "window.filesWithVersion = \n".(count($data) ? json_encode($data) : '{}'));
   }
 }
