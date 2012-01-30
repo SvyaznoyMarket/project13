@@ -46,4 +46,25 @@ class ProductPrice extends BaseProductPrice
       $product->save();
     }
   }
+
+  public function preSave($event)
+  {
+    $invoker = $event->getInvoker();
+
+    // If record has been modified adds keys to nginx file
+    if ($invoker->isModified(true) && ($invoker->getTable() instanceof myDoctrineTable))
+    {
+      CacheEraser::getInstance()->erase($invoker->getTable()->getCacheEraserKeys($invoker, 'save'), false, 'product_price changed');
+    }
+  }
+
+  public function preDelete($event)
+  {
+    $invoker = $event->getInvoker();
+
+    $this->deleteResultCache($invoker);
+
+    CacheEraser::getInstance()->erase($this->getTable()->getCacheEraserKeys($invoker, 'delete'), false, 'product_price deleted');
+  }
+
 }

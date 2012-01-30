@@ -89,7 +89,7 @@
             if (this.value == 'Поиск среди 20 000 товаров')
               this.value = ''
           }
-        })	
+        })
 
 		if( !$('#main_banner-data').length )
         	return
@@ -244,7 +244,7 @@
       (function(w, c) {
         (w[c] = w[c] || []).push(function() {
           try {
-            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true});
+            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true, params:window.yaParams||{ }});
           }
           catch(e) { }
         });

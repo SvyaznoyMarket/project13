@@ -20,9 +20,24 @@ class Product extends BaseProduct
     $this->mapValue('ParameterGroup', new myDoctrineVirtualCollection());
   }
 
+  public function preDelete($event)
+  {
+    $invoker = $event->getInvoker();
+
+    $this->deleteResultCache($invoker);
+
+    CacheEraser::getInstance()->log($this->getTable()->getCacheEraserKeys($invoker, 'delete'), 'product_ deleted');
+  }
+
   public function preSave($event)
   {
-    parent::preSave($event); // important!
+    $invoker = $event->getInvoker();
+
+    // If record has been modified adds keys to nginx file
+    if ($invoker->isModified(true) && ($invoker->getTable() instanceof myDoctrineTable))
+    {
+      CacheEraser::getInstance()->log($invoker->getTable()->getCacheEraserKeys($invoker, 'save'), 'product changed');
+    }
 
     $record = $event->getInvoker();
 

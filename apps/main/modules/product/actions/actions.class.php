@@ -220,6 +220,9 @@ class productActions extends myActions
             $field = 'option_id=';
           }
         break;
+        case 'boolean':
+          $field = 'value_boolean=';
+        break;
       endswitch;
       $if_condition .= $field."'".$value['value']."')";
       if ($id == $property_id)
