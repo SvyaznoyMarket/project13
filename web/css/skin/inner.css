@@ -556,17 +556,105 @@ border-radius:5px;
 .goodsboxlink:hover .link {text-decoration:underline}
 .ratingview {display:block; height:11px; background:url(/css/skin/img/stars.png) no-repeat 0 0; margin-bottom:10px}
 
-.goodsline {float:left; width:661px; padding:10px; margin-bottom:0; background-color:#fff; border-bottom:1px solid #e6e6e6}
-.goodsline .boxhover {display:none; width:681px; }
 
-.goodsline .goodsboxlink {float:left; width:661px; font-size:11px; cursor:pointer}
-.goodsline .photo {float:left; width:160px; margin:0}
-.goodsline .info {float:left; width:278px; padding:0 0 0 12px; margin-right:10px}
-.goodsline H3 {font-size:14px; font-weight:normal; margin:0; padding-bottom:5px}
-.goodsline .extrainfo {float:left; width:190px; min-height:160px; padding-left:10px; border-left:1px solid #e6e6e6}
-.goodsline LI {list-style-type:disc; padding:0 0 1px 0; margin-left:14px}
-.goodsline .goodsbar {display:none; position:absolute; z-index:2; bottom:10px; right:88px}
-.goodsline:hover .goodsbar {display:block}
+.bNewGoodsBox .ratingview {
+    display: inline-block;
+    height: 11px;
+    margin: 1px 5px 0 0;
+    vertical-align: top;
+    width: 63px;
+}
+.bNewGoodsBox h3 a {
+    font: 18px Tahoma,sans-serif;
+    text-decoration: underline;
+}
+.bNewGoodsBox .goodsbar {
+    margin-bottom: 10px;
+}
+.bNewGoodsBox .bNGB__eUl li {
+    color: #434343;
+    font: 12px/20px Tahoma,sans-serif;
+    list-style-type: none;
+    margin-left: 0;
+}
+.bNGB__eArt {
+    color: #000000;
+    font: 12px Tahoma,sans-serif;
+    margin: 8px 0;
+}
+.bNGB__eDesc {
+    color: #434343;
+    font: 12px/15px Tahoma,sans-serif;
+    margin: 8px 0;
+}
+.bNGB__eDrop {
+    vertical-align: top;
+}
+.bNGB__eDrop a {
+    background: url("img/droparrow.png") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 13px;
+    margin: 0 5px;
+    width: 13px;
+}
+.bNGB__eArt .ratingview {
+    margin-left: 10px;
+}
+
+.goodsline {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E6E6E6;
+    float: left;
+    margin-bottom: 0;
+    padding: 10px 0 10px 10px;
+    width: 675px;
+}
+.goodsline .boxhover {
+    width: 681px;
+}
+.goodsline .goodsboxlink {
+    cursor: pointer;
+    float: left;
+    font-size: 11px;
+    padding-bottom: 10px;
+    width: 675px;
+}
+.goodsline .photo {
+    float: left;
+    margin: 0;
+    width: 160px;
+}
+.goodsline .info {
+    float: left;
+    margin-right: 10px;
+    padding: 0 0 0 12px;
+    width: 278px;
+}
+.goodsline H3 {
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
+    padding-bottom: 5px;
+}
+.goodsline .extrainfo {
+    border-left: 1px solid #E6E6E6;
+    float: left;
+    min-height: 160px;
+    padding-left: 10px;
+    width: 204px;
+}
+.bNewGoodsBox .extrainfo {
+    border-left: medium none;
+}
+.goodsline LI {
+    list-style-type: disc;
+    margin-left: 14px;
+    padding: 0 0 1px;
+}
+.goodsline:hover .goodsbar {
+    display: block;
+}
 
 
 .carouseltitle {float:left; width:100%; position:relative}
@@ -641,19 +729,25 @@ border-radius:5px;
 
 
 .goodsbar {width:111px; height:25px}
-.goodsbar A {display:block; float:left; height:25px; background:url(/css/skin/img/bg_inner.png) no-repeat}
+.goodsbar A {display:block; float:left; height:25px; background:url(img/bg_inner.png) no-repeat}
 .goodsbar A:hover {text-decoration:none}
 .goodsbar A.link1 {width:37px; background-position:-349px -216px}
 .goodsbar A.link1:hover {background-position:-60px -216px}
-.goodsbar A.link1.active, .goodsbar A.link1.active:hover {/*background-color:#c4c4c4; */ background-position:-182px -216px}
-.goodsbar A.link2 {width:37px; background-position:-584px -216px}
-/* .goodsbar A.link2:hover {background-position:-465px -216px; z-index:2} */
-.goodsbar A.link2active, .goodsbar A.link2active:hover {background-color:#c4c4c4; background-position:-223px -216px}
-.goodsbar A.link3 {width:38px; background-position:-622px -216px; margin-left:-1px}
-/* .goodsbar A.link3:hover {background-position:-503px -216px} */
-.goodsbar A.link3active, .goodsbar A.link3active:hover {background-color:#c4c4c4; background-position:-263px -216px}
-.goodsbar A.link3.disabled {background-position:-622px -216px; margin-left:-1px}
-.goodsbar A.link1.disabled {background-position:-543px -216px; margin-left:-1px}
+.goodsbar A.link1active, .goodsbar A.link1active:hover {background-position:-182px -216px}
+.goodsbar A.link1.disabled {background-position:-543px -216px}
+.goodsbar A.link2 {width:37px; background-position:-386px -216px}
+.goodsbar A.link2:hover {background-position:-101px -216px; z-index:2}
+.goodsbar A.link2active, .goodsbar A.link2active:hover {background-position:-223px -216px}
+.goodsbar A.link2.disabled {background-position:-583px -216px}
+.goodsbar A.link3 {width:38px; background-position:-424px -216px; margin-left:-1px}
+.goodsbar A.link3:hover {background-position:-141px -216px}
+.goodsbar A.link3active, .goodsbar A.link3active:hover {background-position:-263px -216px}
+.goodsbar A.link3.disabled, .goodsbar A.link3.disabled:hover {background-position:-622px -216px; margin-left:-1px}
+.goodsbar.mSmallBtns.mR{ width: auto; height: auto; float: right}
+.goodsbar.mSmallBtns a.link1{ width: 37px; height: 24px; background: url('img/buy_buttons.png') 0 -62px no-repeat; }
+.goodsbar.mSmallBtns a.link1:hover{ background: url('img/buy_buttons.png') -38px -62px no-repeat; }
+.goodsbar.mSmallBtns a.link1active{ background: url('img/buy_buttons.png') -76px -62px no-repeat; }
+.font18.mSmallBtns{ line-height: 24px; vertical-align: middle; }
 
 .sectionlist {float:left; width:171px; padding-bottom:20px}
 .sectionlist LI {width:161px; padding:0 0 5px 0; font-size:11px; color:#7e7e7e}
@@ -720,6 +814,25 @@ border-radius:5px;
 .goodsbarbig A.link5 {width:105px; background-position:-201px -280px}
 .goodsbarbig A.link5.active {background-position:0 -316px}
 .goodsbarbig A.link5.disabled {background-position:-216px -316px}
+
+.goodsbarbig.mSmallBtns {
+    display: inline-block;
+    width: 137px;
+}
+.goodsbarbig.mSmallBtns a.link1 {
+    background: url("img/buy_buttons.png") no-repeat scroll 0 0 transparent;
+    height: 31px;
+    width: 137px;
+}
+.goodsbarbig.mSmallBtns a.link1:hover {
+    background: url("img/buy_buttons.png") no-repeat scroll 0 -31px transparent;
+}
+.goodsbarbig.mSmallBtns a.link1:active {
+    background: url("img/buy_buttons.png") no-repeat scroll 0 -87px transparent;
+}
+.goodsbarbig.mSmallBtns a.link1.active {
+    background: url("img/buy_buttons.png") no-repeat scroll 0 -87px transparent;
+}
 
 /*.button {overflow:visible; background-image:url(/css/skin/img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
 border-radius:5px;
@@ -3086,7 +3199,7 @@ DT.bCtg__eOrange{
 	position: relative;
 	padding: 25px 25px 35px 25px;
 	border: 2px solid #d9d9d9;
-	
+
 	display: inline-block;
 	*display: inline;
 	zoom: 1;
@@ -3097,10 +3210,10 @@ DT.bCtg__eOrange{
 		text-align: center;
 		position: absolute;
 		}
-	.bCityPopup .close{ 
-		background: url('img/city_close.png') no-repeat; 
+	.bCityPopup .close{
+		background: url('img/city_close.png') no-repeat;
 		}
-	.bCityPopup .title{ 
+	.bCityPopup .title{
 		color: #ffa800;
 		font: 30px 'Enter';
 		}
@@ -3112,7 +3225,7 @@ DT.bCtg__eOrange{
 		color: #fff;
 		width: 235px;
 		font: 16px/24px Tahoma, sans-serif;
-		
+
 		display: inline-block;
 		*display: inline;
 		zoom: 1;

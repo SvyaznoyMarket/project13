@@ -26,6 +26,9 @@ class ProductStateTable extends myDoctrineTable
       'is_store'    => 'is_store',
       'is_supplier' => 'is_supplied',
       'status_id'   => 'status_id',
+      'is_view_list'=> 'view_list',
+      'is_view_card'=> 'view_show',
+      'is_buyable'  => 'is_instock',
 
       'geo_id'      => array('rel' => 'Region'),
       'product_id'  => array('rel' => 'Product'),
