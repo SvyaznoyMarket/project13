@@ -125,9 +125,10 @@ class myProductFormFilter extends sfFormFilter
 
     $productFilterList = $productCategory->FilterGroup->Filter;
     $productFilterList->indexBy('id');
+
     foreach ($this->values as $id => $param)
     {
-      if (0 !== strpos($id, 'param-')) continue;
+      if (0 !== strpos($id, 'param-') || empty($param)) continue;
       $productFilter = $productFilterList->getByIndex('id', substr($id, 6));
       if (!$productFilter) continue;
 
@@ -139,7 +140,7 @@ class myProductFormFilter extends sfFormFilter
         'values' => $param,
       );
     }
-    //myDebug::dump($filter);
+
     ProductTable::getInstance()->setQueryForFilter($q, $filter);
   }
 
@@ -180,7 +181,6 @@ class myProductFormFilter extends sfFormFilter
   protected function getWidgetRange($productFilter)
   {
     $id = uniqid();
-    //myDebug::dump($productFilter);
 
     return new myWidgetFormRange(array(
       'value_from' => $productFilter['value_min'],
