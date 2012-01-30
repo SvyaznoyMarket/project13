@@ -212,9 +212,9 @@ $(document).ready(function(){
 		})
 		// add f1
 		f1lines.find('input.button').bind ('click', function() {
-			if( $(this).hasClass('disabled') )
+			if( $(this).hasClass('active') )
 				return false
-			$(this).val('В корзине').addClass('disabled')
+			$(this).val('В корзине').addClass('active')
 			var f1item = $(this).data()
 			f1lines.fadeOut()
 			$.getJSON( f1item.url, function(data) {
@@ -254,7 +254,7 @@ $(document).ready(function(){
 				if( !data.success )
 					return true
 				var line = $(thislink).parent()
-				f1lines.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('disabled')
+				f1lines.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('active')
 				line.remove()
 				ltbx.update({ sum: data.data.full_price })
 
