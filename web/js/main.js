@@ -111,7 +111,7 @@ $(document).ready(function(){
 			if( $('#dlvrlinks').length ) {
 				var coreid = []
 				var nodd = $('<div>').html( data )
-				nodd.find('div.boxhover').each( function(){
+				nodd.find('div.boxhover, div.goodsboxlink').each( function(){
 					var cid = $(this).data('cid') || 0
 					if( cid )
 						coreid.push( cid )
@@ -766,7 +766,7 @@ $(document).ready(function(){
 								other.push('Доставка <br/>' + dlvr.text )
 						}
 					}
-					var pnode = $( 'div.boxhover[data-cid='+coreid[i]+']' ).parent()
+					var pnode = $( 'div[data-cid='+coreid[i]+']' ).parent()
 					var tmp = $('<ul>')
 					if(self)
             $('<li>').html( self ).appendTo( tmp )
@@ -780,7 +780,7 @@ $(document).ready(function(){
 		} // dlvrajax
 
 		var coreid = []
-		$('div.boxhover').each( function(){
+		$('div.boxhover, div.goodsboxlink').each( function(){
 			var cid = $(this).data('cid') || 0
 			if( cid )
 				coreid.push( cid )
