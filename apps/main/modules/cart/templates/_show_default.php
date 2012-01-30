@@ -85,7 +85,9 @@ foreach ($list as $service) {
                                 
             </div>
         </div>
-    <?php else: ?>
+    <?php else:
+    //var_dump($item);    
+     ?>
         <div class="basketline mWrap">
             <div class="basketleft">
                 <?php
@@ -119,7 +121,14 @@ foreach ($list as $service) {
                 </div>
                 <div class="basketinfo">
                     <div class="left font24"><span class="sum"><?php echo $item['total']; ?></span> <span class="rubl">p</span></div>
-                    <div class="right"><a href="<?php echo url_for('cart_service_delete', array('service' => $item['token'], )) ?>" class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a--></div>
+                    <?php 
+                    $delData = array();
+                    $delData['service'] = $item['token'];
+                    if (isset($item['product'])) {
+                        $delData['product'] = $item['product'];                        
+                    }
+                    ?>
+                    <div class="right"><a href="<?php echo url_for('cart_service_delete', $delData) ?>" class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a--></div>
                 </div>
 
                 <div class="clear pb15"></div>
