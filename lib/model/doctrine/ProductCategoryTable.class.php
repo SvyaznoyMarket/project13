@@ -497,6 +497,7 @@ class ProductCategoryTable extends myDoctrineTable
     return $notFreeCatList;
   }
 
+
   public function getRecordUrlToken($record)
   {
     return $record['token_prefix'] ? ($record['token_prefix'].'/'.$record['token']) : $record['token'];
