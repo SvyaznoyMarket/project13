@@ -567,9 +567,9 @@ $(document).ready(function(){
 			       		f1popup.hide()
 			       })
 			f1popup.find('input.button').click( function() {
-				   		if( $(this).hasClass('disabled') )
+				   		if( $(this).hasClass('active') )
 							return false
-						$(this).val('В корзине').addClass('disabled')
+						$(this).val('В корзине').addClass('active')
 						var f1item = $(this).data()
 						$.getJSON( f1item.url, function(data) {
 						})
