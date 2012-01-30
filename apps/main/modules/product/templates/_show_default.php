@@ -37,8 +37,12 @@ foreach ($p3d as $p3d_obj)
         <div class="bGood__eArticle">
             <div class="fr">
           <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $product )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
-          <span class="ratingview" data-rating="<?php echo round($item['rating']) ?>"></span>
-          </span><strong class="ml5 hf"><?php echo round($product->rating, 1) ?></strong>
+            <?php
+              echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
+              echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
+            ?>
+          </span>
+          <strong class="ml5 hf"><?php echo round($product->rating, 1) ?></strong>
 
 
 				<a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span>

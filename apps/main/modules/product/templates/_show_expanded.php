@@ -5,7 +5,10 @@
       <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
       <span class="gray bNGB__eArt mInlineBlock">
         Артикул #<?php echo $item['article'] ?>
-        <span class="ratingview" data-rating="<?php echo round($item['rating']) ?>"></span>
+        <?php
+          echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
+          echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
+        ?>
         <span class="bNGB__eDrop"><a href="<?php echo $item['url'] ?>" style="display: none"></a></span>
       </span>
 
