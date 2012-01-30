@@ -1,5 +1,5 @@
 <div class="goodsbox goodsline bNewGoodsBox">
-  <div class="goodsboxlink">
+  <div class="goodsboxlink" <?php if ($item['is_insale']): ?> ref="<?php echo $item['token'] ?>" data-cid="<?php echo $item['core_id'] ?>" <?php endif ?>>
     <div class="photo"><img height="160" width="160" title="<?php echo $item['name'] ?>" alt="<?php echo $item['name'] ?>" src="<?php echo $item['photo'] ?>"></div>
     <div class="info">
       <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>

@@ -151,11 +151,15 @@ $(document).ready(function(){
 	/* IKEA-like hover */
 	var id          = null // setTimeout
 	var currentItem = 0 // ref= product ID
-	var bkgr = $('b.rt:first').css('background-image')
-
+	var bkgr = $('b.rt:first').css('background-image') 
 	$('.goodsbox').live( {
 		'mouseenter': function() {
 			var self = this
+			if( $(this).hasClass('goodsline') ) {
+				currentItem = $( '.goodsboxlink',self).attr('ref')
+				return
+			}
+			
 			$(self).css('cursor','pointer')
 			var im = $('.boxhover .photo img', $(self))
 
@@ -174,6 +178,7 @@ $(document).ready(function(){
 			id = setTimeout( showBorders, 200)
 		},
 		'mouseleave': function() {
+			if( $(this).hasClass('goodsline') ) return
 			var self = this
 			var im = $('.boxhover .photo img', self)
 			if(	$(self).data('run') ) {
@@ -275,7 +280,7 @@ $(document).ready(function(){
 
 	/* stuff go to litebox */
 	function parseItemNode( ref ){
-		var jn = $( '.boxhover[ref='+ ref +']')
+		var jn = $( 'div[ref='+ ref +']')
 		var item = {
 			'id'   : $(jn).attr('ref'),
 			'title': $('h3 a', jn).html(),
