@@ -299,7 +299,7 @@ $(document).ready(function(){
 		if (! currentItem ) return false
 
 		if( ltbx ){
-			var tmp = $(this).parent().parent().find('.photo img')
+			var tmp = $(this).parent().parent().parent().find('.photo img')
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}
 		var boughtItem = currentItem
