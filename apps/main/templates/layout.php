@@ -15,7 +15,7 @@
     <?php endif ?>
 
     <?php include_partial('default/googleAnalytics') ?>
-
+    <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
   <body>
     <div class="allpage">
