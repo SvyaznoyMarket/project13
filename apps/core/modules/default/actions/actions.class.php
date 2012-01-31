@@ -26,6 +26,8 @@ class defaultActions extends myActions
   */
   public function executeLogin(sfWebRequest $request)
   {
+    sfConfig::set('sf_web_debug', false);
+
     if ($request->isMethod('post'))
     {
       if ($request['secret'] == sfConfig::get('sf_csrf_secret'))
@@ -43,6 +45,8 @@ class defaultActions extends myActions
   */
   public function executeLogout(sfWebRequest $request)
   {
+    sfConfig::set('sf_web_debug', false);
+
     $this->getUser()->setAuthenticated(false);
 
     $this->redirect('homepage');

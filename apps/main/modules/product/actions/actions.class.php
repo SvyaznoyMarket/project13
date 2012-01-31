@@ -148,6 +148,8 @@ class productActions extends myActions
     //$property_id = $this->getRequestParameter('property');
 
     $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
+    //добавляем учет товара, доступного к продаже
+    $q->addWhere('IFNULL(productState.is_instock, product.is_instock) = ?', true);
     //Продукты в серии
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
 
