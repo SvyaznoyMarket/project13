@@ -55,7 +55,7 @@ $(function(){
 					'<div class="answerright">',
 						resp.data.content,
 					'</div>',
-				'</div>',
+				'</div>'
 			];
 			
 			form.find('textarea').val('');

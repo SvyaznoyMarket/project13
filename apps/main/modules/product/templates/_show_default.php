@@ -38,9 +38,11 @@ foreach ($p3d as $p3d_obj)
             <div class="fr">
           <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $product )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
             <?php
-            echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
-            echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
-            ?></span><strong class="ml5 hf"><?php echo round($product->rating, 1) ?></strong>
+              echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
+              echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
+            ?>
+          </span>
+          <strong class="ml5 hf"><?php echo round($product->rating, 1) ?></strong>
 
 
 				<a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span>
@@ -58,10 +60,8 @@ foreach ($p3d as $p3d_obj)
             <?php endif ?>
         </div>
         <div class="fr ar pb15">
-            <div class="goodsbarbig" ref="<?php echo $item['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
+            <div class="goodsbarbig mSmallBtns" ref="<?php echo $item['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
-              <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
-              <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
             </div>
             <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
             <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>

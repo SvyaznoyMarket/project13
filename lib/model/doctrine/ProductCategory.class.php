@@ -145,6 +145,12 @@ class ProductCategory extends BaseProductCategory
   {
     return ProductCategoryLinkTable::getInstance()->getListByCategory($this, $params);
   }
+
+  public function getUrlToken()
+  {
+    return $this->getTable()->getRecordUrlToken($this);
+  }
+
 /**
  * TODO: нуждается в рефакторинге
  *
