@@ -37,8 +37,9 @@ if (is_object($servListId)) {
                                     <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
                                     data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token_prefix."/".$product->token)) ?>" type="button" class="button yellowbutton" value="В корзине">
                                <?php } else { ?>
-                                    <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
-                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token_prefix."/".$product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+
+                                    <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice($product->id) ?>" data-fid="<?php echo $service->token;?>" 
+                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token_prefix."/".$product->token)) ?>" type="button" class="<?php if ($showInCardButton) echo "active"; ?> button yellowbutton" value="Купить услугу">
 
                                <?php } ?>     
                             <?php } ?>    
