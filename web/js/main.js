@@ -588,7 +588,7 @@ $(document).ready(function(){
 			var mBig = $('div.bBacketServ.mBig', bline)
 			for(var i=0, l = $(buttons).length; i < l; i++) {
 				if( ! $('tr[ref=' + $(buttons[i]).attr('ref') + ']', mBig).length ) {
-					$(buttons[i]).find('input').val('Купить услугу').removeClass('disabled')
+					$(buttons[i]).find('input').val('Купить услугу').removeClass('active')
 					//break
 				}	
 			}	
