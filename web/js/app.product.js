@@ -66,22 +66,27 @@ $(document).ready(function() {
             $('.product_comment_response-block').find('textarea:first').focus()
         }
     })
-
+/*$('.product_filter-block .hiddenCheckbox').change( function(e){
+	console.info('checkbox: ', $(this).attr('id')+' '+$(this).attr('checked'))
+	e.stopPropagation()
+})*/
     $('.product_filter-block')
+    /*.submit( function(e){
+    	e.preventDefault()
+    	console.info( $(this).serializeArray() )
+    })*/
     // change
     .bind('change', function(e) {
         var el = $(e.target)
 
         if (el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox']))) {
             el.trigger('preview')
-            return false
         }
     })
     // preview
     .bind('preview', function(e) {
         var el = $(e.target)
         var form = $(this)
-
         function disable() {
             var d = $.Deferred();
             //el.attr('disabled', true)
@@ -95,8 +100,7 @@ $(document).ready(function() {
         }
 
         function getData() {
-            var d = $.Deferred();
-
+            var d = $.Deferred();			
             form.ajaxSubmit({
                 url: form.data('action-count'),
                 success: d.resolve,
