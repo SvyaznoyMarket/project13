@@ -1,20 +1,3 @@
-<?php if (false): ?>
-      <!--  info block -->
-			<div class='bInfoBlock'>
-				<div id="rotator">
-					<div>
-						<img class="banner" src="/images/promo_1.jpg" alt=""/>
-					</div>
-					<div>
-						<img class="banner" src="/images/promo_2.jpg" alt=""/>
-					</div>
-					<div>
-						<img class="banner" src="/images/promo_3.jpg" alt=""/>
-					</div>
-				</div>
-			</div>
-			<!-- /info block -->
-<?php endif ?>
 <?php if (sfConfig::get('app_banner_adfox')): ?>
 <!-- ________________________AdFox Asynchronous code START__________________________ -->
 <!--enter-->
@@ -41,4 +24,21 @@ document.write('<div style="visibility:hidden; position:absolute;"><iframe id="A
 AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emue&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
 // -->
 </script>
-<!-- _________________________AdFox Asynchronous code END___________________________ --><?php endif ?>
+<!-- _________________________AdFox Asynchronous code END___________________________ -->
+<?php else: ?>
+      <!--  info block -->
+			<div class='bInfoBlock'>
+				<div id="rotator">
+					<div>
+						<img class="banner" src="/images/promo_1.jpg" alt=""/>
+					</div>
+					<div>
+						<img class="banner" src="/images/promo_2.jpg" alt=""/>
+					</div>
+					<div>
+						<img class="banner" src="/images/promo_3.jpg" alt=""/>
+					</div>
+				</div>
+			</div>
+			<!-- /info block -->
+<?php endif ?>
