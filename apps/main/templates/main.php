@@ -67,6 +67,11 @@
               this.value = ''
           }
         })
+        
+        $('.search-form').submit(function(e) {
+	        if( $(this).find('.startse').val() === 'Поиск среди 20 000 товаров' )
+	        	e.preventDefault()
+        })
 
 		if( !$('#main_banner-data').length )
         	return
