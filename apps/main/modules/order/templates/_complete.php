@@ -22,6 +22,7 @@
            '<?php echo $order->getAreaName() ?>',     // Область (необязательно)
            '<?php echo $order->getCountryName() ?>'             // Страна (нобязательно)
        ]);
+       _gaq.push(['_trackEvent', 'QuickOrder', 'Success']);
   <?php foreach ($order->ProductRelation as $product): ?>
     <?php $category = $product->Product->getMainCategory() ?>
     <?php $rootCategory = $category->getRootCategory() ?>
