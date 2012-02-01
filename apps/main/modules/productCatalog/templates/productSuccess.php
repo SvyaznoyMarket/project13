@@ -11,7 +11,7 @@
   <?php include_component('productCatalog', 'leftCategoryList', array('productCategory' => $productCategory)) ?>
   <?php include_component('productCatalog', 'filter', array('productCategory' => $productCategory)) ?>
   <?php include_partial('default/banner_left') ?>
-  <?php include_component('productCatalog', 'article_seo', array('productCategory' => $productCategory)) ?>
+  <?php include_component('productCatalog', 'article_seo', array('productCategory' => $productCategory, 'productPager' => $productPager)) ?>
 <?php end_slot() ?>
 
 <?php include_partial('productCatalog/product_list', $sf_data) ?>
