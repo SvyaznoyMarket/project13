@@ -361,7 +361,6 @@ class myDoctrineTable extends Doctrine_Table
 
     if (in_array($this->getComponentName(), array(
       'Task',
-      'sfCombine',
     ))) {
       return array();
     }

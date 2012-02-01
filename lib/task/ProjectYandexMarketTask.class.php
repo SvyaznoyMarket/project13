@@ -160,7 +160,7 @@ class ProjectYandexMarketTask extends sfBaseTask
           ),
       array(
           'name' => 'export_realweb.xml',
-          'list' => array(6,5,8,9),
+          'list' => array(6,8,9),
           'price_list_id' => 1
           ),
       array(
@@ -175,7 +175,7 @@ class ProjectYandexMarketTask extends sfBaseTask
           ),
       array(
           'name' => 'export_realweb_ryazan.xml',
-          'list' => array(6,5,8,9),
+          'list' => array(6,8,9),
           'price_list_id' => 11
           ),
       array(
@@ -190,7 +190,7 @@ class ProjectYandexMarketTask extends sfBaseTask
           ),
       array(
           'name' => 'export_realweb_lipetsk.xml',
-          'list' => array(6,5,8,9),
+          'list' => array(6,8,9),
           'price_list_id' => 12
           ),
       array(

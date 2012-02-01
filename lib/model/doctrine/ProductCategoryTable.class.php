@@ -158,7 +158,6 @@ class ProductCategoryTable extends myDoctrineTable
 
       $ids = $this->getIdsByQuery($q, $params);
       $return = $this->createListByIds($ids, $params);
-
       if ($this->isCacheEnabled())
       {
         $this->getCache()->set($key, $return, 604800); // обновить кеш через неделю
@@ -496,6 +495,12 @@ class ProductCategoryTable extends myDoctrineTable
     }
 
     return $notFreeCatList;
+  }
+
+
+  public function getRecordUrlToken($record)
+  {
+    return $record['token_prefix'] ? ($record['token_prefix'].'/'.$record['token']) : $record['token'];
   }
 
   public function getCacheEraserKeys($record, $action = null, array $params = array())

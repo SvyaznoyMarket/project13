@@ -86,22 +86,36 @@ class OrderTable extends myDoctrineTable
 
     $this->setQueryParameters($q, $params);
 
+    $q->leftJoin('order.DeliveryType deliveryType');
+    $q->leftJoin('order.PaymentMethod paymentMethod');
+
     $q->whereId($id);
 
     $list = $q->execute();
-    foreach ($list as $i => $record)
+    // TODO: сделать загрузку продуктов до цикла
+    if ($params['with_products'])
     {
-      if ($params['with_products'])
+      $productIds = array();
+      foreach ($list as $i => $record)
       {
         foreach ($record['ProductRelation'] as $productRelation)
         {
-          $productRelation['Product'] = ProductTable::getInstance()->getById($productRelation['product_id']);
+          $productIds[] = $productRelation['product_id'];
         }
       }
+      $productList = ProductTable::getInstance()->createListByIds(array_unique($productIds), array('index' => array('product' => 'id')));
 
-      if (is_array($record))
+      foreach ($list as $i => $record)
       {
-        $list[$i] = $record;
+        foreach ($record['ProductRelation'] as $productRelation)
+        {
+          $productRelation['Product'] = isset($productList[$productRelation['product_id']]) ? $productList[$productRelation['product_id']] : false;
+        }
+
+        if (is_array($record))
+        {
+          $list[$i] = $record;
+        }
       }
     }
 
@@ -131,7 +145,8 @@ class OrderTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
 
     $q->addWhere('order.user_id = ?', $user_id)
-            ->orderBy('delivered_at DESC');
+      ->orderBy('delivered_at DESC')
+    ;
 
     $this->setQueryParameters($q, $params);
 

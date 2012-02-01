@@ -1,16 +1,16 @@
 $(document).ready( function() {
 
 function printPrice ( val ) {
-	var float = (val+'').split('.')
-	var out = float[0]
-	var le = float[0].length
+	var floatv = (val+'').split('.')
+	var out = floatv[0]
+	var le = floatv[0].length
 	if( le > 6 ) { // billions
 		out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
 	} else if ( le > 3 ) { // thousands
 		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
 	}
-	if( float.length == 2 )
-		out += '.' + float[1]
+	if( floatv.length == 2 )
+		out += '.' + floatv[1]
 	return out
 }
 
@@ -53,6 +53,24 @@ function triggerDelivery( i ) {
 
 var checker = $('.order-form').find('[name="order[delivery_type_id]"]:checked')
 triggerDelivery( checker.val() )
+$('<img src="/images/ajaxnoti.gif" />').css('display', 'none').appendTo('body') //preload
+var noti = $('<div>').html('<div><img src="/images/ajaxnoti.gif" /></br></br> Ваш заказ оформляется</div>')
+			.attr('id', 'noti').appendTo('body')
+var scndRun = false
+$('.order-form').submit( function(e) {
+    if( scndRun ) // firefox fix
+	return true
+    e.preventDefault()
+    scndRun = true
+    $(this).find(':submit').val('Оформляется...')
+
+    $('#noti').lightbox_me({
+	centered: true,
+	closeClick: false,
+	closeEsc: false
+    })
+    setTimeout( function() { $('.order-form').trigger('submit') }, 500) // opera fix
+})
 
 $('.order-form').change( function(e) {
         var form = $(this)

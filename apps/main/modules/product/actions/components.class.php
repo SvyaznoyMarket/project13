@@ -370,6 +370,7 @@ class productComponents extends myComponents
       $value_to_map = array();
       foreach ($values as $id => $value)
       {
+        if (!$value->product_id) continue;
         $product = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ));
         if (!$product) continue;
         $realValue = $value->getRealValue();
@@ -394,7 +395,6 @@ class productComponents extends myComponents
         }
 
       }
-
       ksort($value_to_map);
       $property->mapValue('values', $value_to_map);
     }

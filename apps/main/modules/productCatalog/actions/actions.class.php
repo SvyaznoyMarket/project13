@@ -64,6 +64,10 @@ class productCatalogActions extends myActions
     $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
+
+      'view'       => 'list',
+      'with_line'  => 'line' == $request['view'] ? true : false,
+      'with_model' => true,
     ));
     //*/
     //$this->productPager = $this->getProductPager($q);
@@ -120,8 +124,9 @@ class productCatalogActions extends myActions
     $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
-      'view'      => 'list',
-      'with_line' => 'line' == $request['view'] ? true : false,
+      'view'        => 'list',
+      'with_line'   => 'line' == $request['view'] ? true : false,
+      'with_model'  => true,
     ));
     $this->productTagFilter->buildQuery($q);
 
@@ -132,6 +137,10 @@ class productCatalogActions extends myActions
     $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
+
+      'view'            => 'list',
+      'with_line'       => 'line' == $request['view'] ? true : false,
+      'with_model'      => true,
     ));
 
     //формируем title
