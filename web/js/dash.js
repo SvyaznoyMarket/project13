@@ -91,6 +91,7 @@ $(document).ready(function(){
 				if( dropbx.length ) {
 					dropbx.css('left', $('ul.lightboxmenu > li').eq(1).offset().left - $('div.lightboxinner').offset().left )
 				}
+				PubSub.publish( 'auth try', data.data.name );
 				if( data.data.name ) {
 					var dtmpl={}
 					dtmpl.user = data.data.name
