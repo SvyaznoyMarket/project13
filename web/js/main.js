@@ -111,7 +111,7 @@ $(document).ready(function(){
 			if( $('#dlvrlinks').length ) {
 				var coreid = []
 				var nodd = $('<div>').html( data )
-				nodd.find('div.boxhover').each( function(){
+				nodd.find('div.boxhover, div.goodsboxlink').each( function(){
 					var cid = $(this).data('cid') || 0
 					if( cid )
 						coreid.push( cid )
@@ -414,17 +414,16 @@ $(document).ready(function(){
 
 	/* CART */
 	function printPrice ( val ) {
-
-		var float = (val+'').split('.')
-		var out = float[0]
-		var le = float[0].length
+		var floatv = (val+'').split('.')
+		var out = floatv[0]
+		var le = floatv[0].length
 		if( le > 6 ) { // billions
 			out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
 		} else if ( le > 3 ) { // thousands
 			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
 		}
-		if( float.length == 2 )
-			out += '.' + float[1]
+		if( floatv.length == 2 )
+			out += '.' + floatv[1]
 		return out// + '&nbsp;'
 	}
 
@@ -767,7 +766,7 @@ $(document).ready(function(){
 								other.push('Доставка <br/>' + dlvr.text )
 						}
 					}
-					var pnode = $( 'div.boxhover[data-cid='+coreid[i]+']' ).parent()
+					var pnode = $( 'div[data-cid='+coreid[i]+']' ).parent()
 					var tmp = $('<ul>')
 					if(self)
             $('<li>').html( self ).appendTo( tmp )
@@ -781,7 +780,7 @@ $(document).ready(function(){
 		} // dlvrajax
 
 		var coreid = []
-		$('div.boxhover').each( function(){
+		$('div.boxhover, div.goodsboxlink').each( function(){
 			var cid = $(this).data('cid') || 0
 			if( cid )
 				coreid.push( cid )

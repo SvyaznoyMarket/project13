@@ -42,7 +42,7 @@ class CacheEraser
     return $this->getConfig('prefix');
   }
 
-  public function erase($keys)
+  public function erase($keys, $is_only_log = false, $extra = null)
   {
     if (empty($keys))
     {
@@ -52,6 +52,13 @@ class CacheEraser
     if (!is_array($keys))
     {
       $keys = array($keys);
+    }
+
+    $this->log($keys, $extra);
+
+    if ($is_only_log)
+    {
+      return true;
     }
 
     $file = $this->getConfig('file');
@@ -68,6 +75,48 @@ class CacheEraser
     }
     else {
       $this->logger->log(sfYaml::dump($keys, 0));
+    }
+  }
+
+  public function log($keys, $extra = null)
+  {
+    if (empty($keys))
+    {
+      return false;
+    }
+
+    if (!is_array($keys))
+    {
+      $keys = array($keys);
+    }
+
+    foreach ($keys as $key)
+    {
+      $record = new CacheEraserLog();
+      list($data['type'], $data['entity_id'], $data['region_id']) = explode('-', $key);
+
+      $record->type = $data['type'];
+
+      switch ($data['type'])
+      {
+        case 'product':
+          $entity_id = ProductTable::getInstance()->getRecordByCoreId('product', $data['entity_id'], true);
+          break;
+        case 'productCategory':
+          $entity_id = ProductCategoryTable::getInstance()->getRecordByCoreId('productCategory', $data['entity_id'], true);
+          break;
+        default:
+          $entity_id = null;
+      }
+      $record->entity_id = $entity_id;
+
+      $record->region_id = !empty($data['region_id']) ? RegionTable::getInstance()->getRecordByCoreId('region', $data['region_id'], true) : null;
+
+      $record->extra = !empty($extra) ? $extra : null;
+
+      $record->save();
+
+      unset($record);
     }
   }
 

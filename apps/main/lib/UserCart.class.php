@@ -284,7 +284,7 @@ class UserCart extends BaseUserData
         );
       }
     }
-    #myDebug::dump($list);
+
     return $list;
   }
 
@@ -573,7 +573,7 @@ class UserCart extends BaseUserData
 
   protected function calculateDiscount()
   {
-    $this->loadProducts(true);
+    $this->loadProducts(false); // $this->loadProducts(true);
     $this->loadServices(false); //$this->loadServices(true);
 
     if ($this->products)

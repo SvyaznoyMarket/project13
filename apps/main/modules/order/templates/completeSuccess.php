@@ -60,23 +60,25 @@
            '<?php echo $order->getCountryName() ?>'             // Страна (нобязательно)
        ]);
       var yaParams = {
-        'order_id': '<?php echo $order['number'] ?>',
-        'order_price': '<?php echo str_replace(',', '.', $order['sum']) ?>',
-        'currency': 'RUR',
-        'exchange_rate': 1,
-        'goods': [
+        order_id: '<?php echo $order['number'] ?>',
+        order_price: <?php echo str_replace(',', '.', $order['sum']) ?>,
+        currency: 'RUR',
+        exchange_rate: 1,
+        goods: [
   <?php foreach ($order->ProductRelation as $product): ?>
           {
-               'id': '<?php echo $product->Product['article'] ?>',
-               'name': '<?php echo $product->Product['name'] ?>',
-               'price': '<?php echo str_replace(',', '.', $product['price']) ?>'
+               id: '<?php echo $product->Product['article'] ?>',
+               name: '<?php echo $product->Product['name'] ?>',
+               price: <?php echo str_replace(',', '.', $product['price']) ?>,
+               quantity: <?php echo $product['quantity'] ?>
            },
   <?php endforeach ?>
   <?php foreach ($order->ServiceRelation as $service): ?>
           {
-               'id': '<?php echo $service->Service['token'] ?>',
-               'name': '<?php echo $service->Service['name'] ?>',
-               'price': '<?php echo str_replace(',', '.', $service['price']) ?>'
+               id: '<?php echo $service->Service['token'] ?>',
+               name: <?php echo $service->Service['name'] ?>,
+               price: <?php echo str_replace(',', '.', $service['price']) ?>,
+               quantity: <?php echo $service['quantity'] ?>
            },
   <?php endforeach ?>
         ]
@@ -90,7 +92,7 @@
            '<?php echo $product->Product['name'] ?>',        // Название товара
            '<?php echo ($category-> id != $rootCategory->id) ? ($rootCategory.' - '.$category) : $category ?>',   // Категория товара
            '<?php echo str_replace(',', '.', $product['price']) ?>',          // Стоимость 1 единицы товара
-           '<?php echo str_replace(',', '.', $product['quantity']) ?>'               // Количество товара
+           '<?php echo $product['quantity'] ?>'               // Количество товара
          ]);
   <?php endforeach ?>
   <?php foreach ($order->ServiceRelation as $service):
@@ -106,7 +108,7 @@
           '<?php echo $service->Service['name'] ?>',        // Название услуги
           '<?php echo $catName ?>',   // Категория товара
           '<?php echo str_replace(',', '.', $service['price']) ?>',          // Стоимость 1 единицы товара
-          '<?php echo str_replace(',', '.', $service['quantity']) ?>'               // Количество услуг
+          '<?php echo $service['quantity'] ?>'               // Количество услуг
          ]);
   <?php endforeach ?>
            _gaq.push(['_trackTrans']);

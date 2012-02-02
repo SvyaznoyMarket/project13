@@ -8,7 +8,7 @@ class myValidatorGuardUserSignin extends sfValidatorBase
     $this->addOption('username_field', 'username');
     $this->addOption('throw_global_error', false);
 
-    $this->setMessage('invalid', 'Неверные пользователь или пароль.');
+    $this->setMessage('invalid', 'Вы неверно указали логин и/или пароль');
   }
 
   protected function doClean($values)

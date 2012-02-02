@@ -5,12 +5,12 @@
     <?php include_metas() ?>
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <?php include_combined_stylesheets() //include_stylesheets() ?>
+    <?php include_stylesheets() ?>
     <?php //include_javascripts() ?>
     <?php include_component('page', 'link_rel_canonical') ?>
 
     <?php include_partial('default/googleAnalytics') ?>
-
+    <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
 
   <body>
@@ -26,7 +26,34 @@
     <?php include_component('banner', 'show', array('view' => 'main')) ?>
 
     <div class="allpage">
+<?php if (sfConfig::get('app_banner_adfox')): ?>
+<!-- ________________________AdFox Asynchronous code START__________________________ -->
+<!--enter-->
+<!--Площадка: Enter.ru / * / *-->
+<!--Тип баннера: 980х-->
+<!--Расположение: <верх страницы>-->
+<script type="text/javascript">
+<!--
+if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+if (typeof(document.referrer) != 'undefined') {
+  if (typeof(afReferrer) == 'undefined') {
+    afReferrer = escape(document.referrer);
+  }
+} else {
+  afReferrer = '';
+}
+var addate = new Date();
+var dl = escape(document.location);
+var pr1 = Math.floor(Math.random() * 1000000);
 
+document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
+document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
+
+AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emvi&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+// -->
+</script>
+<!-- _________________________AdFox Asynchronous code END___________________________ -->
+<?php endif ?>
       <div class="logo">Enter Связной</div>
       <!-- Topmenu -->
       <?php include_component('productCategory', 'root_list') ?>
@@ -53,7 +80,8 @@
       <div class="clear"></div>
     </div>
 
-<?php include_combined_javascripts() ?>
+<?php include_javascripts() ?>
+
 <script>
 	$(document).ready(function() {
 		/* Search */
@@ -225,33 +253,32 @@
 
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
-  <!-- Yandex.Metrika counter -->
-  <div style="display:none;"><script type="text/javascript">
-    (function(w, c) {
-      (w[c] = w[c] || []).push(function() {
-        try {
-          w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true});
-        }
-        catch(e) { }
-      });
-    })(window, "yandex_metrika_callbacks");
-    </script></div>
-  <script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
-  <noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-  <!-- /Yandex.Metrika counter -->
-  <!-- AdHands -->
-  <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
-  <script type="text/javascript">
-    var report = new adhandsReport ('http://sedu.adhands.ru/site/');
-    report.id('1053');
-    report.send();
-  </script>
-  <noscript>
-    <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
-  </noscript>
-  <!-- /AdHands -->
+    <!-- Yandex.Metrika counter -->
+    <div style="display:none;"><script type="text/javascript">
+      (function(w, c) {
+        (w[c] = w[c] || []).push(function() {
+          try {
+            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true, params:window.yaParams||{ }});
+          }
+          catch(e) { }
+        });
+      })(window, "yandex_metrika_callbacks");
+      </script></div>
+    <script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
+    <noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    <!-- AdHands -->
+    <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
+    <script type="text/javascript">
+      var report = new adhandsReport ('http://sedu.adhands.ru/site/');
+      report.id('1053');
+      report.send();
+    </script>
+    <noscript>
+      <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
+    </noscript>
+    <!-- /AdHands -->
 <?php endif ?>
-
 
     <?php if (has_slot('seo_counters_advance')): ?>
       <?php include_slot('seo_counters_advance') ?>

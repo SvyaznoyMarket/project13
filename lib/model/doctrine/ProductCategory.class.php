@@ -17,6 +17,28 @@ class ProductCategory extends BaseProductCategory
     $this->mapValue('product_count', null);
   }
 
+  public function preDelete($event)
+  {
+    $invoker = $event->getInvoker();
+
+    $this->deleteResultCache($invoker);
+
+    CacheEraser::getInstance()->log($this->getTable()->getCacheEraserKeys($invoker, 'delete'), 'product_category deleted');
+  }
+
+  public function preSave($event)
+  {
+    $invoker = $event->getInvoker();
+
+    // If record has been modified adds keys to nginx file
+    if ($invoker->isModified(true) && ($invoker->getTable() instanceof myDoctrineTable))
+    {
+      CacheEraser::getInstance()->log($invoker->getTable()->getCacheEraserKeys($invoker, 'save'), 'product_category changed');
+    }
+
+    $record = $event->getInvoker();
+  }
+
   public function __toString()
   {
     return (string) $this->name;
@@ -123,6 +145,12 @@ class ProductCategory extends BaseProductCategory
   {
     return ProductCategoryLinkTable::getInstance()->getListByCategory($this, $params);
   }
+
+  public function getUrlToken()
+  {
+    return $this->getTable()->getRecordUrlToken($this);
+  }
+
 /**
  * TODO: нуждается в рефакторинге
  *

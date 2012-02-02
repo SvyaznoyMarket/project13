@@ -63,11 +63,11 @@ class ProductPropertyRelationTable extends myDoctrineTable
   {
     $return = array();
 
-    /*
+
     $q = ProductTable::getInstance()->createQuery('product')
       ->select('product.core_id')
       ->innerJoin('product.PropertyRelation productPropertyRelation')
-      ->where('productPropertyRelation.property_id = ?', $record->id)
+      ->where('productPropertyRelation.id = ?', $record->id)
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
     ;
 
@@ -79,9 +79,8 @@ class ProductPropertyRelationTable extends myDoctrineTable
 
     foreach ($ids as $id)
     {
-      $return[] = "product-{$id}";
+      $return[] = "product-{$id}-";
     }
-    */
 
     return $return;
   }

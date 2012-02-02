@@ -148,6 +148,8 @@ class productActions extends myActions
     //$property_id = $this->getRequestParameter('property');
 
     $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
+    //добавляем учет товара, доступного к продаже
+    $q->addWhere('IFNULL(productState.is_instock, product.is_instock) = ?', true);
     //Продукты в серии
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
 
@@ -193,6 +195,7 @@ class productActions extends myActions
       }
     }
     $old_properties[$property_id]['value'] = $new_value;
+    //myDebug::dump($old_properties, 1);
 
     $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ));
     $q->innerJoin('product.PropertyRelation propertyRelation');
@@ -220,19 +223,25 @@ class productActions extends myActions
             $field = 'option_id=';
           }
         break;
+        case 'boolean':
+          $field = 'value_boolean=';
+        break;
       endswitch;
       $if_condition .= $field."'".$value['value']."')";
+
       if ($id == $property_id)
       {
-        $q->addWhere('propertyRelation.'.$field.'?', array($value['value']));
+        //$q->addWhere('propertyRelation.'.$field.'?', array($value['value']));
+        $is_changed_property_presents = "SUM(IF(propertyRelation.{$field}'{$value['value']}', 1, 0)) as changed_property_presents";
       }
     }
-    $q->select("product.id, SUM(IF(".$if_condition.", 1, 0)) as matches");
+    $q->select("product.id, SUM(IF({$if_condition}, 1, 0)) as matches, {$is_changed_property_presents}");
     $q->addWhere('product.id IN ('.implode(', ', array_diff($product_ids, array($product->id,))).')');
     //$q->addWhere('');
     $q->groupBy('product.id');
-    $q->orderBy('matches desc, score desc');
-    //myDebug::dump($q->getParams(), 1);
+    $q->orderBy('changed_property_presents desc, matches desc, score desc');
+    $q->having('matches > 0');
+    //myDebug::dump($q->getParams());
     //myDebug::dump($q->getSqlQuery(), 1);
     $matches = $q->fetchArray();
 

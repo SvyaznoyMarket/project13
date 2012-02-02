@@ -115,8 +115,9 @@ class ProductPriceTable extends myDoctrineTable
     if (count($intersection))
     {
       $q = ProductTable::getInstance()->createQuery('product')
-        ->select('product.core_id, region.geoip_code, productPrice.id, priceList.id')
+        ->select('product.core_id, region.geoip_code, productPrice.id, priceList.id, category.core_id')
         ->innerJoin('product.ProductPrice productPrice')
+        ->innerJoin('product.Category category')
         ->innerJoin('productPrice.PriceList priceList')
         ->innerJoin('priceList.Region region WITH region.geoip_code IS NOT NULL')
         ->where('productPrice.id = ?', $record['id'])
@@ -134,6 +135,12 @@ class ProductPriceTable extends myDoctrineTable
             $return[$region['geoip_code']] = "product-{$product['core_id']}-{$region['geoip_code']}";
           }
         }
+
+        foreach ($product['Category'] as $category)
+        {
+          $return[] = "productCategory-{$category['core_id']}-{$region['geoip_code']}";
+        }
+        //myDebug::dump($return, 1);
       }
     }
 

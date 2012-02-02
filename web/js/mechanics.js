@@ -45,19 +45,18 @@ function Lightbox( jn, data ){
 				}
 	}
 	
-	function printPrice ( val ) { // TODO SHARE THIS
-	
-		var float = (val+'').split('.')
-		var out = float[0]
-		var le = float[0].length
+	function printPrice ( val ) {
+		var floatv = (val+'').split('.')
+		var out = floatv[0]
+		var le = floatv[0].length
 		if( le > 6 ) { // billions
-			out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le ) 			
+			out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
 		} else if ( le > 3 ) { // thousands
-			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )			
-		}		
-		if( float.length == 2 ) 
-			out += '.' + float[1]
-		return out
+			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
+		}
+		if( floatv.length == 2 )
+			out += '.' + floatv[1]
+		return out// + '&nbsp;'
 	}		
 	
 	this.getBasket = function( item ) {

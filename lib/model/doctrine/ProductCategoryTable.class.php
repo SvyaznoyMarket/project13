@@ -158,7 +158,6 @@ class ProductCategoryTable extends myDoctrineTable
 
       $ids = $this->getIdsByQuery($q, $params);
       $return = $this->createListByIds($ids, $params);
-
       if ($this->isCacheEnabled())
       {
         $this->getCache()->set($key, $return, 604800); // обновить кеш через неделю
@@ -496,5 +495,43 @@ class ProductCategoryTable extends myDoctrineTable
     }
 
     return $notFreeCatList;
+  }
+
+
+  public function getRecordUrlToken($record)
+  {
+    return $record['token_prefix'] ? ($record['token_prefix'].'/'.$record['token']) : $record['token'];
+  }
+
+  public function getCacheEraserKeys($record, $action = null, array $params = array())
+  {
+    $return = array();
+
+    $intersection = array();
+    if ($record instanceof myDoctrineRecord)
+    {
+      // for preSave
+      $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
+      // Массив полей, изменения в которых ведут к генерации кеш-ключей
+      $intersection = array_intersect($modified, array(
+        'name',
+        'seo_title',
+        'seo_keywords',
+        'seo_description',
+        'seo_header',
+        'seo_text',
+      ));
+    }
+    //очищаем кеш по-любому
+    //$intersection = $record->getModified();
+
+    if (
+      (('save' == $action) && count($intersection))
+      || in_array($action, array('delete', 'show'))
+    ) {
+      $return[] = "productCategory-{$record->core_id}-";
+    }
+
+    return $return;
   }
 }

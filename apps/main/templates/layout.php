@@ -15,7 +15,7 @@
     <?php endif ?>
 
     <?php include_partial('default/googleAnalytics') ?>
-
+    <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
   <body>
     <div class="allpage">
@@ -102,6 +102,8 @@
     </div>
     <!-- /Lightbox -->
     <?php include_javascripts() ?>
+    <!--script src="/js/LAB.min.js" type="text/javascript"></script>
+    <script src="/js/loadjs.js" type="text/javascript"></script-->
     <?php if (!include_slot('auth'))
       include_partial('default/auth') ?>
 
@@ -114,7 +116,7 @@
   (function(w, c) {
   (w[c] = w[c] || []).push(function() {
   try {
-  w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
+  w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true, params:window.yaParams||{ }});
   }
   catch(e) { }
   });
@@ -135,7 +137,6 @@
   </noscript>
   <!-- /AdHands -->
 <?php endif ?>
-
 
 <?php if (has_slot('seo_counters_advance')): ?>
   <?php include_slot('seo_counters_advance') ?>

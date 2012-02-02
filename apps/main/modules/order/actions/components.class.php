@@ -74,7 +74,7 @@ class orderComponents extends myComponents
   public function executeList()
   {
     $list = $listProcess = $listReady = $listCancelled = array();
-    foreach ($this->getUser()->getGuardUser()->getOrderList() as $order)
+    foreach ($this->getUser()->getGuardUser()->getOrderList(array('with_products' => true)) as $order)
     {
       if ($order->status_id==Order::STATUS_READY)  $listReady[] = $order;
       elseif ($order->status_id==Order::STATUS_CANCELLED)  $listCancelled[] = $order;
