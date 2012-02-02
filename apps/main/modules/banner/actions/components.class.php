@@ -57,6 +57,7 @@ class bannerComponents extends myComponents
         $link = "#";
       }
 
+      //myDebug::dump($banner);
       $item = array(
         'alt'  => $banner['name'],
         'imgs' => BannerTable::getInstance()->getImageUrl($banner, 0),
@@ -67,6 +68,7 @@ class bannerComponents extends myComponents
           ? $banner['timeout']
           : (count($list) ? sfConfig::get('app_banner_timeout', 6000) : 10000)
         ,
+        'ga'  => $banner['id'] . ' - ' . $banner['name']
       );
       if (empty($item['imgs']) || empty($item['imgb'])) continue;
 
