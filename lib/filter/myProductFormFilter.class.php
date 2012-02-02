@@ -239,4 +239,16 @@ class myProductFormFilter extends sfFormFilter
 
     return !$rows ? '' : $widget->renderContentTag('ul', implode($widget->getOption('separator'), $rows), array('class' => $widget->getOption('class')));
   }
+
+  public function getSingleCreator()
+  {
+    $creator = null;
+
+    if (!empty($this->values['creator']) && (1 == count($this->values['creator'])))
+    {
+      $creator = CreatorTable::getInstance()->getById($this->values['creator'][0]);
+    }
+
+    return $creator;
+  }
 }

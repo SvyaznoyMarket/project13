@@ -10,6 +10,12 @@
  */
 class serviceActions extends myActions
 {
+  public function preExecute()
+  {
+    parent::postExecute();
+
+    $this->getRequest()->setParameter('_template', 'service');
+  }
  /**
   * Executes index action
   *
@@ -50,7 +56,7 @@ class serviceActions extends myActions
             }
             $serviceCategory = ServiceCategoryTable::getInstance()->getById($newCatId);
         }
-        
+
         $showFlag = false;
         foreach($list as $item){
             if ($item['id'] == $serviceCategory['id']){
@@ -60,12 +66,12 @@ class serviceActions extends myActions
                 if ($serviceCategory['id'] != $item['id'] && $serviceCategory['level'] == $item['level']){
                     $showFlag = false;
                     break;
-                }   
+                }
                 $listInner[] = $item;
                 $listInnerCatId[] = $item['id'];
             }
         }
-        
+
         $priceList = ProductPriceListTable::getInstance()->getCurrent();
         $priceListDefault = ProductPriceListTable::getInstance()->getDefault();
         #echo $priceListId->id .'----$priceListId';
@@ -81,13 +87,13 @@ class serviceActions extends myActions
                         ->execute();
                         #->fetchArray();
         #myDebug::dump($serviceList);
-        
+
         #print_r($serviceList);
         #$list = $serviceCategory->getServiceList( array('level') );
     }
     $this->getResponse()->setTitle('F1 - '.$serviceCategory['name'].' – Enter.ru');
 
-    
+
     $this->setVar('serviceCategory', $serviceCategory, true);
     #myDebug::dump($list);
     $this->setVar('list', $list, true);
@@ -104,14 +110,14 @@ class serviceActions extends myActions
   {
     $this->service = $this->getRoute()->getObject();
     $this->getResponse()->setTitle('F1 - '.$this->service->name.' – Enter.ru');
-    
+
     //хак для мебели!!!!!!! убрать
     $parant = $this->service->getCatalogParent();
     $showNoPrice = 1;
     if ($parant['core_parent_id'] == 305) $showNoPrice = false;
-    else $showNoPrice = true;    
+    else $showNoPrice = true;
     $this->setVar('showNoPrice', $showNoPrice, true);
-    
+
   }
 
  /**
@@ -126,5 +132,5 @@ class serviceActions extends myActions
     $this->setVar('list', $list, true);
   }
 
- 
+
 }

@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
 
-  <body>
+  <body data-template="main">
     <?php LastModifiedHandler::setLastModified(); ?>
 
     <div class="bannersbox">
