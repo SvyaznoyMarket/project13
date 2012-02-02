@@ -123,13 +123,15 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 		var l = promos.length
 		if( l == 0 )
 			return
-                if( l == 1 ) {
-                  $('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
-                  .click( function() {
-                    location.href = $(this).data('url')
-                  })
-                  return
-                }
+		if( l == 1 ) {
+		  $('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
+		  .click( function() {
+		  	if( typeof(_gaq)!=='undefined' && typeof(promos[0].ga)!=='undefined' )
+		  		_gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
+			location.href = $(this).data('url')
+		  })
+		  return
+		}
 		/* Preload */
 		var hb = $('<div>').css('display','none')
 		for(var i=0; i < l; i++ ) {
@@ -172,6 +174,8 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
         $('.rightImage').click( function() { goSlide( 1 ) } )
         $('.centerImage').click( function() {
           clearTimeout( idto )
+          if( typeof(_gaq)!=='undefined' && typeof(initis[1].ga)!=='undefined' )
+	          _gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);
           location.href = $(this).data('url')
         })
         $('.promos').click( function(){ location.href = $(this).data('url') } )

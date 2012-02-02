@@ -191,6 +191,12 @@ function Lightbox( jn, data ){
 			}
 		}
 	}
+	
+	this.authorized = function(){
+		if( init.name )
+			return true
+		else return false
+	}
 	// initia
 	this.update()
 	//setTimeout( function () { plashka.fadeIn('slow') }, 2000)
