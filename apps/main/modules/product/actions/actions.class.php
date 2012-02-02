@@ -232,7 +232,7 @@ class productActions extends myActions
       if ($id == $property_id)
       {
         //$q->addWhere('propertyRelation.'.$field.'?', array($value['value']));
-        $is_changed_property_presents = "SUM(IF(propertyRelation.{$field}{$value['value']}, 1, 0)) as changed_property_presents";
+        $is_changed_property_presents = "SUM(IF(propertyRelation.{$field}'{$value['value']}', 1, 0)) as changed_property_presents";
       }
     }
     $q->select("product.id, SUM(IF({$if_condition}, 1, 0)) as matches, {$is_changed_property_presents}");
