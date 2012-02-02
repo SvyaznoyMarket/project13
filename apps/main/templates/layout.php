@@ -17,7 +17,7 @@
     <?php include_partial('default/googleAnalytics') ?>
 
   </head>
-  <body>
+  <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>">
     <div class="allpage">
       <div class="allpageinner">
 

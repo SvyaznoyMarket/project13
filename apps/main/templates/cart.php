@@ -12,7 +12,7 @@
     <?php include_partial('default/googleAnalytics') ?>
 
   </head>
-  <body>
+  <body data-template="cart">
     <div class="allpage">
       <div class="allpageinner">
 

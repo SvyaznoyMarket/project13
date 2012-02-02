@@ -10,8 +10,14 @@
  */
 class productCatalogActions extends myActions
 {
+  private $_validateResult;
 
-    private $_validateResult;
+  public function preExecute()
+  {
+    parent::postExecute();
+
+    $this->getRequest()->setParameter('_template', 'product_catalog');
+  }
  /**
   * Executes index action
   *

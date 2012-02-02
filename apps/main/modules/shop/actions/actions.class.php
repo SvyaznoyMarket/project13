@@ -10,6 +10,12 @@
  */
 class shopActions extends myActions
 {
+  public function preExecute()
+  {
+    parent::postExecute();
+
+    $this->getRequest()->setParameter('_template', 'shop');
+  }
  /**
   * Executes index action
   *

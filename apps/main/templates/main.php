@@ -13,7 +13,7 @@
 
   </head>
 
-  <body>
+  <body data-template="main">
     <?php LastModifiedHandler::setLastModified(); ?>
 
     <div class="bannersbox">
