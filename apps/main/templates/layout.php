@@ -15,7 +15,7 @@
     <?php endif ?>
 
     <?php include_partial('default/googleAnalytics') ?>
-
+    <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
   <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>">
     <div class="allpage">

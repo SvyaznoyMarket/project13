@@ -22,6 +22,7 @@ all:
       - 'http://fs01.enter.ru/4/1/768x302/'
 #      - 'http://core.ent3.ru/upload/4/1/230x302/'
 #      - 'http://core.ent3.ru/upload/4/1/768x302/'
+    adfox: true
 
   product:
     max_items:              10                      # максимально количество записей для списка товаров (по умолчанию)
@@ -189,6 +190,9 @@ live:
 
   cache:
     enabled: true
+
+  banner:
+    adfox: false
 
 
 alpha:
