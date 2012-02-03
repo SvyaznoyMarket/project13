@@ -2,7 +2,7 @@
   <a href="<?php echo url_for('default_show', array('page' => 'new_year_information_letter_from_rumyancev')) ?>"><img src="/images/ceo.jpg" style="margin-bottom: 10px;" /></a><br />
   <a href="/pdf/enter_promo_catalog_12_11.pdf"><img src="/images/banner_promo_catalog_12_11.jpg" style="margin-bottom: 10px;" /></a>
 <?php endif ?>
-<?php if (sfConfig::get('app_banner_adfox')): ?>
+
   <div class="pb15">
 <!-- ________________________AdFox Asynchronous code START__________________________ -->
 <!--enter-->
@@ -31,4 +31,3 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 </script>
 <!-- _________________________AdFox Asynchronous code END___________________________ -->
   </div>
-<?php endif ?>
