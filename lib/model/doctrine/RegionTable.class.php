@@ -121,8 +121,6 @@ class RegionTable extends myDoctrineTable
 
       $q->addWhere('region.type = ?', 'city');
 
-      $q->addWhere('region.is_active = ?', 1);
-
       $q->orderBy('region.name');
 
       $this->setQueryParameters($q, $params);
