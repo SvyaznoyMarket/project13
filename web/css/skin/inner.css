@@ -826,7 +826,7 @@ border-radius:5px;
 .goodsbarbig.mSmallBtns a.link1:hover {
     background: url("img/buy_buttons.png") no-repeat scroll 0 -31px transparent;
 }
-.goodsbarbig.mSmallBtns a.link1:active {
+.goodsbarbig.mSmallBtns a.link1 disabled {
     background: url("img/buy_buttons.png") no-repeat scroll 0 -87px transparent;
 }
 .goodsbarbig.mSmallBtns a.link1.active {
