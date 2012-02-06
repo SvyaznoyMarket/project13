@@ -26,7 +26,7 @@ $json = array(
       <?php endif ?>
 
       <?php if ($item['product']->is_insale): ?>
-        <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['product']->barcode)) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+        <div class="pb5"><strong><a onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);"  href="<?php echo url_for('order_1click', array('product' => $item['product']->barcode)) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
       <?php endif ?>
     </div>
     <div class='bSet__eIconsWrap'>

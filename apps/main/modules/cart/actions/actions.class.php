@@ -64,34 +64,9 @@ class cartActions extends myActions
       return $this->_refuse();
     }
 
-    if ($product->isKit())
-    {
-      $products = ProductTable::getInstance()->getQueryByKit($product)->execute();
-    }
-    else
-    {
-      $products = array($product);
-    }
-
     try
     {
-      $added = array();
-      foreach ($products as $product)
-      {
-        $currentNum = $this->getUser()->getCart()->getQuantityByToken($request['product']);
-        $request['quantity'] += $currentNum;
-
-        if ($request['quantity'] <= 0)
-        {
-          $request['quantity'] = 0;
-          $this->getUser()->getCart()->deleteProduct($product['id']);
-        }
-        else
-        {
-          $this->getUser()->getCart()->addProduct($product, $request['quantity']);
-        }
-        $added[] = array('product' => $product, 'quantity' => $request['quantity']);
-      }
+        $this->getUser()->getCart()->addProduct($product, $request['quantity']);
     }
     catch (Exception $e)
     {
@@ -121,7 +96,8 @@ class cartActions extends myActions
 
     $this->redirect($this->getRequest()->getReferer());
   }
-
+  
+  
   /**
    * Executes delete action
    *

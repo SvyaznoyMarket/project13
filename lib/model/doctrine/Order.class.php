@@ -143,7 +143,11 @@ class Order extends BaseOrder
             if ($service->product_id > 0 && isset($productCoreIdList[ $service->product_id ])) {
                 $productId = $productCoreIdList[ $service->product_id ];
             } else {
-                $productId = 0;
+                $productOb = ProductTable::getInstance()->getById($service->product_id);
+                $productId = $productOb->core_id;
+                if (!$productId) {
+                    $productId = 0;
+                }
             }
             if ($productId<0) {
                 continue;

@@ -24,6 +24,7 @@ class ServicePriceTable extends myDoctrineTable
         'price'         => 'price',
 
         'service_id'    => array('rel' => 'Service'),
+        'product_id'    => array('rel' => 'Product'),
         'price_list_id' => array('rel' => 'PriceList'),
       );
     }

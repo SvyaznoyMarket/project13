@@ -17,7 +17,49 @@ class UserCart extends BaseUserData
     $this->parameterHolder->add($parameters);
   }
 
-  public function addProduct(Product $product, $quantity = 1)
+  public function addProduct(Product $product, $qty = 1)
+  {
+        if ($product->isKit())
+        {
+            $products = ProductTable::getInstance()->getQueryByKit($product)->execute();
+        }
+        else
+        {
+            $products = array($product);
+        }
+
+        try
+        {
+            //print_r($products);
+            $added = array();
+            foreach ($products as $product)
+            {
+                $currentNum = $this->getQuantityByToken($product->token);
+                $qty += $currentNum;
+
+                if ($qty <= 0)
+                {
+                    $qty = 0;
+                    $this->deleteProduct($product['id']);
+                }
+                else
+                {
+                    $this->_addProductItself($product, $qty);
+                }
+                $added[] = array('product' => $product, 'quantity' => $qty);
+            }
+        }
+        catch (Exception $e)
+        {
+            $result['value'] = false;
+            $result['error'] = "Не удалось добавить в корзину товар token='".$product->token."'.";
+            return false;
+        }      
+        return true;
+  }
+  
+  
+  private function _addProductItself(Product $product, $quantity = 1)
   {
     $products = $this->parameterHolder->get('products');
 
@@ -46,12 +88,13 @@ class UserCart extends BaseUserData
       //если в корзине нет товара, к которому надо привязать услугу,
       //добавим этот товар в корзину
       if (!isset($products[$product->id]))
-      {
+      {          
         $this->addProduct($product, 1);
       }
     }
 
     $services = $this->parameterHolder->get('services');
+    $products = $this->parameterHolder->get('products');
     if (!isset($services[$service->id]) || empty($services[$service->id]))
     {
       $services[$service->id] = $this->getServiceDefaults();
@@ -71,7 +114,19 @@ class UserCart extends BaseUserData
       }
       if ($mayToAdd)
       {
-        $services[$service->id]['product'][$product->id] = $quantity;
+        $isInCart = false; 
+        foreach($products as $inCartProductId => $info) {
+           if ($inCartProductId == $product->id) {
+               $isInCart = true;
+           } 
+        }  
+        //товар, к которому привязываем должен либо находиться в корзине,
+        //либо являться комплектом
+        if ($isInCart || $product->isKit()) {
+            $services[$service->id]['product'][$product->id] = $quantity;
+        } else {
+            $services[$service->id]['quantity'] = $quantity;            
+        }
       }
       else
       {
@@ -254,17 +309,34 @@ class UserCart extends BaseUserData
         foreach ($service['cart']['product'] as $product => $qty)
         {
 
-          $list[$product]['service'][] = array(
-            'id' => $service->id,
-            'token' => $service->token,
-            'name' => $service->name,
-            'quantity' => $qty,
-            #'service'   => $service,
-            'price' => $service->getCurrentPrice($product),
-            'priceFormatted' => $service->getFormattedPrice(),
-            'total' => $service['cart']['formatted_total'],
-            #'photo'     => $service->getPhotoUrl(2),
-          );
+          if (isset($list[$product])) {  
+            $list[$product]['service'][] = array(
+                'id' => $service->id,
+                'token' => $service->token,
+                'name' => $service->name,
+                'quantity' => $qty,
+                #'service'   => $service,
+                'price' => $service->getCurrentPrice($product),
+                'priceFormatted' => $service->getFormattedPrice(),
+                'total' => $service['cart']['formatted_total'],
+                #'photo'     => $service->getPhotoUrl(2),
+            );
+          } else {
+                $productOb = ProductTable::getInstance()->getById($product) ;
+                $list[$service->id] = array(
+                'type' => 'service',
+                'id' => $service->id,
+                'token' => $service->token,
+                'name' => $service->name,
+                'quantity' => $qty,
+                'service' => $service,
+                'price' => $service->getCurrentPrice($product),
+                'total' => number_format( (int)($service->getCurrentPrice($product) * $qty), 0, ',', ' '),
+                'priceFormatted' => $service->getFormattedPrice($product),
+                'photo' => $service->getPhotoUrl(2),
+                'product' => $productOb->token_prefix . '/' .  $productOb->token    
+                );              
+          }
         }
       }
       if ($service['cart']['quantity'] > 0)
@@ -347,8 +419,6 @@ class UserCart extends BaseUserData
     {
       if ($productId)
       {
-        # echo $productId.'--del';
-        # exit();
         if (isset($services[$service['id']]['product'][$productId]))
         {
           unset($services[$service['id']]['product'][$productId]);
@@ -455,12 +525,12 @@ class UserCart extends BaseUserData
       $qty = $service['cart']['quantity'];
       if (isset($service['cart']['product']))
       {
-        foreach ($service['cart']['product'] as $prodQty)
+        foreach ($service['cart']['product'] as $prodId => $prodQty)
         {
-          $qty += $prodQty;
+          //$qty += $prodQty;
+          $total += ($service->getCurrentPrice($prodId) * $prodQty);
         }
       }
-      $total += ($service->getCurrentPrice() * $qty);
     }
 
     $result = $is_formatted ? number_format($total, 0, ',', ' ') : $total;
