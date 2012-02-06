@@ -239,6 +239,11 @@ class ProductCategory extends BaseProductCategory
     return $this->getNode()->hasChildren();
   }
 
+  public function isRoot()
+  {
+    return $this->getNode()->isRoot();
+  }
+
   // TODO: удалить, роутинг для чего нужен?
   public function getUrl(){
       return '/catalog/' . $this->token;

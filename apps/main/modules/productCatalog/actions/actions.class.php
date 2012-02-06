@@ -10,8 +10,14 @@
  */
 class productCatalogActions extends myActions
 {
+  private $_validateResult;
 
-    private $_validateResult;
+  public function preExecute()
+  {
+    parent::postExecute();
+
+    $this->getRequest()->setParameter('_template', 'product_catalog');
+  }
  /**
   * Executes index action
   *
@@ -382,15 +388,13 @@ class productCatalogActions extends myActions
 
     $this->productCategory = $this->oldUrlRedirect($request);
 
-    if ($this->productCategory->has_line) //если в категории должны отображться линии
+    if ($this->productCategory->has_line) // если в категории должны отображться линии
     {
       $this->forward($this->getModuleName(), 'line');
     }
 
-    if (false
-      || !$this->productCategory->hasChildren()                  //нет дочерних категорий
-      //|| (1 == $this->productCategory->getNode()->getChildren()->count()) // одна дочерняя категория
-    ) {
+    if (!$this->productCategory->hasChildren()) // нет дочерних категорий
+    {
       $this->forward($this->getModuleName(), 'product');
     }
 
@@ -399,38 +403,6 @@ class productCatalogActions extends myActions
     {
       $this->setTemplate('categoryRoot');
     }
-
-    /*
-    $title = $this->productCategory['name'];
-    if ($request->getParameter('page')) {
-      $title .= ' – '.$request->getParameter('page');
-    }
-    $rootCategory = $this->productCategory->getRootCategory();
-    if ($rootCategory->id !== $this->productCategory->id)
-    {
-      $title .= ' – '.$rootCategory;
-    }
-    $this->getResponse()->setTitle($title.' – Enter.ru');
-     */
-
-    // SEO ::
-    $list = array();
-    $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
-      'hydrate_array' => true,
-      'select'        => 'productCategory.id, productCategory.name',
-    ));
-    foreach ($ancestorList as $ancestor)
-    {
-      $list[] = $ancestor['name'];
-    }
-
-    $list[] = (string)$this->productCategory;
-    $title = '%s - интернет-магазин Enter.ru - Москва';
-    $this->getResponse()->setTitle(sprintf(
-      $title,
-      implode(' - ', $list)
-    ));
-    // :: SEO
   }
  /**
   * Executes product action

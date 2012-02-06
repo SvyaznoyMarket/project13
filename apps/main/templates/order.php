@@ -12,7 +12,7 @@
 
 </head>
 
-<body>
+<body data-template="order">
 <?php LastModifiedHandler::setLastModified();  ?>
 <div class="allpage">
 <div class="allpageinner buyingpage">
