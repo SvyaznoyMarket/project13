@@ -526,7 +526,7 @@ border-radius:5px;
 
 
 .goodslist {float:left; width:705px; margin-left:-4px;  padding-bottom:5px; z-index:1; position:relative;}
-.goodsbox {float:left; width:195px; padding:10px; margin-bottom:14px; margin-right:20px}
+.goodsbox {float:left; width:195px; min-height: 284px;  padding:10px; margin-bottom:14px; margin-right:20px}
 .boxhover {display:none; position:absolute; z-index:3; width:215px; top:-4px; left:-4px;  padding:9px 0 0 9px; cursor:pointer}
 /*
 .goodsbox:hover {position:relative; z-index:2}
