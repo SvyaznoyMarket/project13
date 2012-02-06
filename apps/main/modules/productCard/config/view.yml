@@ -1,8 +1,8 @@
 indexSuccess:
   stylesheets:
-    - jquery.autocomplete.css
+    #ivn- jquery.autocomplete.css
     - jquery-ui-custom/jquery-ui-custom.css
-    - colorbox/colorbox.css
+    #ivn- colorbox/colorbox.css
     
   javascripts:
     #ivn- jquery.mousewheel.min.js
@@ -13,7 +13,7 @@ indexSuccess:
     #ivn- prettyCheckboxes.js
     #ivn- jquery.form.js
     #ivn- typewriter.js
-    - shelf/jquery.autocomplete-dev.js
+    #ivn- shelf/jquery.autocomplete-dev.js
     #ivn- jquery.scrollto.js
     - main.js
     - app.product.js
