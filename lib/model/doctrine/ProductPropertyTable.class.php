@@ -97,7 +97,7 @@ class ProductPropertyTable extends myDoctrineTable
       $q->select('productProperty.*, option.*')
         ->innerJoin('productProperty.ProductRelation productRelation INDEXBY id')
         //->innerJoin('productRelation.Product product')
-        ->innerJoin('productRelation.Product product WITH product.view_list = ?', 1)
+        ->innerJoin('productRelation.Product product WITH product.view_list = true')
         ->innerJoin('productRelation.Option relationOption')
         ->innerJoin('product.CategoryRelation categoryRelation')
         ->innerJoin('productProperty.Option option WITH option.id = relationOption.id')
