@@ -191,14 +191,29 @@ class Core
     return $result;
   }
 
-  public function createUserProductRating(UserProductRating $rec)
+  public function createUserProductRating($rec)
   {
-	$result = false;
+    $result = false;
     $data = $this->getData($rec);
+
     if (($response = $this->query('user.product.rating.create', array(), $data)))
     {
       $result = $response['confirmed'];
     }
+
+    return $result;
+  }
+
+  public function createUserProductRatingTotal($record)
+  {
+    $result = false;
+    $data = $this->getData($record);
+
+    if (($response = $this->query('user.product.rating.create', array(), $data)))
+    {
+      $result = $response['confirmed'];
+    }
+
     return $result;
   }
 
