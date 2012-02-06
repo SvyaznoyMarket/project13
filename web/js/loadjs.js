@@ -89,7 +89,6 @@
 				.script( getWithVersion('app.product.comment.new.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
-				.script( getWithVersion('productcard.js') )
 				.script( 'watch3dv2.min.js' )
 			})			
 			break	
