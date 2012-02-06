@@ -38,17 +38,20 @@ class productCommentActions extends myActions
       $descr, $this->product['name'], $this->product['name']
     ));
     $this->getResponse()->addMeta('keywords', sprintf('%s отзывы мнения покупателей владельцев пользователей', $this->product['name']));
-    // :: SEO
-//	$title = "«Отзывы»: ".$this->product['name'] . ' в магазинах "Enter" ';
-//    $mainCat = $this->product->getMainCategory();
-//    $title .= ' – '.$mainCat;
-//    if ($mainCat) {
-//      $rootCat = $mainCat->getRootRow();
-//      if ($rootCat->id !== $mainCat->id) {
-//        $title .= ' – '.$rootCat;
-//      }
-//    }
-//    $this->getResponse()->setTitle($title.' – Enter.ru');
+
+    /* SEO
+	  $title = "«Отзывы»: ".$this->product['name'] . ' в магазинах "Enter" ';
+    $mainCat = $this->product->getMainCategory();
+    $title .= ' – '.$mainCat;
+    if ($mainCat) {
+      $rootCat = $mainCat->getRootRow();
+      if ($rootCat->id !== $mainCat->id) {
+        $title .= ' – '.$rootCat;
+      }
+    }
+    $this->getResponse()->setTitle($title.' – Enter.ru');
+     *
+     */
   }
 
   /**
@@ -62,9 +65,8 @@ class productCommentActions extends myActions
 
     $this->product = $this->getRoute()->getObject();
 
-    if ($request->isMethod(sfWebRequest::POST))
+    if ($request->isMethod('post'))
     {
-
       if ($request->getParameter('content_resume') && $request->getParameter('rating'))
       {
 
@@ -101,7 +103,6 @@ class productCommentActions extends myActions
         }
         catch (Exception $e)
         {
-
         }
 
         // обновление общего рейтинга у продукта
@@ -111,6 +112,7 @@ class productCommentActions extends myActions
         $this->product->rating = $currentRatingFull / $this->product->rating_quantity;
         $this->product->save();
 
+        /*
         $ratings = $request->getParameter('rating_type');
         foreach ($ratings as $propertyId => $value)
         {
@@ -126,9 +128,11 @@ class productCommentActions extends myActions
           }
           catch (Exception $e)
           {
+            myDebug::dump($e, 1);
             throw $e;
           }
         }
+         */
 
         $this->redirect(array('sf_route' => 'productComment', 'sf_subject' => $this->product));
       }
