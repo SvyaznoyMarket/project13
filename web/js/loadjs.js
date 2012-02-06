@@ -13,6 +13,7 @@
 	$LAB.setGlobalDefaults({ AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.script('jquery-1.6.4.min.js')
 	.script('combine.js')
+	.wait()
 	
 	switch( document.body.getAttribute('data-template') ) {
 		case 'main':
