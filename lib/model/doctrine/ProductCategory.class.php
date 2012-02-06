@@ -145,6 +145,12 @@ class ProductCategory extends BaseProductCategory
   {
     return ProductCategoryLinkTable::getInstance()->getListByCategory($this, $params);
   }
+
+  public function getUrlToken()
+  {
+    return $this->getTable()->getRecordUrlToken($this);
+  }
+
 /**
  * TODO: нуждается в рефакторинге
  *
@@ -231,6 +237,11 @@ class ProductCategory extends BaseProductCategory
   public function hasChildren()
   {
     return $this->getNode()->hasChildren();
+  }
+
+  public function isRoot()
+  {
+    return $this->getNode()->isRoot();
   }
 
   // TODO: удалить, роутинг для чего нужен?

@@ -347,14 +347,55 @@ class productCatalogComponents extends myComponents
   public function executeFilter_parameter()
   {
   }
-
+  /**
+  * Executes article_seo component
+  *
+  * @param ProductCategory $productCategory Категория товара
+  * @param myDoctrinePager $productPager Листалка товаров
+  */
   public function executeArticle_seo()
   {
-    $this->getResponse()->addMeta('title',$this->productCategory->seo_title);
-    $this->getResponse()->addMeta('description',$this->productCategory->seo_description);
-    $this->getResponse()->addMeta('keywords',$this->productCategory->seo_keywords);
+    // title
+    if (empty($this->productCategory->seo_title))
+    {
+      $this->productCategory->seo_title = ''
+        .$this->productCategory->name
+        .(false == $this->productCategory->isRoot() ? " - {$this->productCategory->getRootCategory()->name}" : '')
+        .( // если передана листалка товаров и номер страницы не равен единице
+          ($this->productPager && (1 != $this->productPager->getPage()))
+          ? " - Страница {$this->productPager->getPage()} из {$this->productPager->getLastPage()}"
+          : ''
+        )
+        ." - {$this->getUser()->getRegion('name')}"
+        .' - ENTER.ru'
+      ;
+    }
+    // description
+    if (empty($this->productCategory->seo_description))
+    {
+      $region = $this->getUser()->getRegion('region');
+      $regionName = RegionTable::getInstance()->getLinguisticCase($region, 'п');
+      $regionName = $regionName ?: $region['name'];
 
-    if (isset($this->productCategory) && isset($this->productCategory->seo_text)) {
+      $this->productCategory->seo_description = ''
+        .$this->productCategory->name
+        ." в {$regionName}"
+        .' с ценами и описанием.'
+        .' Купить в магазине Enter'
+      ;
+    }
+    // keywords
+    if (empty($this->productCategory->seo_keywords))
+    {
+      $this->productCategory->seo_keywords = "{$this->productCategory->name} магазин продажа доставка {$this->getUser()->getRegion('name')} enter.ru";
+    }
+
+    $this->getResponse()->addMeta('title', $this->productCategory->seo_title);
+    $this->getResponse()->addMeta('description', $this->productCategory->seo_description);
+    $this->getResponse()->addMeta('keywords', $this->productCategory->seo_keywords);
+
+    if (isset($this->productCategory) && isset($this->productCategory->seo_text))
+    {
         $this->setVar('article', $this->productCategory->seo_text, true);
     }
 

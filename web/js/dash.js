@@ -151,11 +151,15 @@ $(document).ready(function(){
 	/* IKEA-like hover */
 	var id          = null // setTimeout
 	var currentItem = 0 // ref= product ID
-	var bkgr = $('b.rt:first').css('background-image')
-
+	var bkgr = $('b.rt:first').css('background-image') 
 	$('.goodsbox').live( {
 		'mouseenter': function() {
 			var self = this
+			if( $(this).hasClass('goodsline') ) {
+				currentItem = $( '.goodsboxlink',self).attr('ref')
+				return
+			}
+			
 			$(self).css('cursor','pointer')
 			var im = $('.boxhover .photo img', $(self))
 
@@ -174,6 +178,7 @@ $(document).ready(function(){
 			id = setTimeout( showBorders, 200)
 		},
 		'mouseleave': function() {
+			if( $(this).hasClass('goodsline') ) return
 			var self = this
 			var im = $('.boxhover .photo img', self)
 			if(	$(self).data('run') ) {
@@ -212,9 +217,9 @@ $(document).ready(function(){
 		})
 		// add f1
 		f1lines.find('input.button').bind ('click', function() {
-			if( $(this).hasClass('disabled') )
+			if( $(this).hasClass('active') )
 				return false
-			$(this).val('В корзине').addClass('disabled')
+			$(this).val('В корзине').addClass('active')
 			var f1item = $(this).data()
 			f1lines.fadeOut()
 			$.getJSON( f1item.url, function(data) {
@@ -254,7 +259,7 @@ $(document).ready(function(){
 				if( !data.success )
 					return true
 				var line = $(thislink).parent()
-				f1lines.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('disabled')
+				f1lines.find('td[ref='+ line.attr('ref') +']').find('input').val('Купить услугу').removeClass('active')
 				line.remove()
 				ltbx.update({ sum: data.data.full_price })
 
@@ -275,7 +280,7 @@ $(document).ready(function(){
 
 	/* stuff go to litebox */
 	function parseItemNode( ref ){
-		var jn = $( '.boxhover[ref='+ ref +']')
+		var jn = $( 'div[ref='+ ref +']')
 		var item = {
 			'id'   : $(jn).attr('ref'),
 			'title': $('h3 a', jn).html(),
@@ -294,7 +299,7 @@ $(document).ready(function(){
 		if (! currentItem ) return false
 
 		if( ltbx ){
-			var tmp = $(this).parent().parent().find('.photo img')
+			var tmp = $(this).parent().parent().parent().find('.photo img')
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}
 		var boughtItem = currentItem

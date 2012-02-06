@@ -58,15 +58,20 @@ class cartComponents extends myComponents
     }
     $cart = $this->getUser()->getCart();
 
-    if ($this->view == 'order') {
-        $list = $cart->getReceiptList();
-    } else {
-        $list = $cart->getProductServiceList(true);
+    if ($this->view == 'order')
+    {
+      $list = $cart->getReceiptList();
     }
-    $this->setVar('list', $list, true);
- }
+    else
+    {
+      $list = $cart->getProductServiceList(true);
+    }
 
-  function executeSeo_counters_advance() {
+    $this->setVar('list', $list, true);
+  }
+
+  public function executeSeo_counters_advance()
+  {
   }
 
 }

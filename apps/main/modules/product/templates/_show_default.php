@@ -38,9 +38,11 @@ foreach ($p3d as $p3d_obj)
             <div class="fr">
           <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $product )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
             <?php
-            echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
-            echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
-            ?></span><strong class="ml5 hf"><?php echo round($product->rating, 1) ?></strong>
+              echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
+              echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
+            ?>
+          </span>
+          <strong class="ml5 hf"><?php echo round($product->rating, 1) ?></strong>
 
 
 				<a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span>
@@ -58,10 +60,8 @@ foreach ($p3d as $p3d_obj)
             <?php endif ?>
         </div>
         <div class="fr ar pb15">
-            <div class="goodsbarbig" ref="<?php echo $item['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
+            <div class="goodsbarbig mSmallBtns" ref="<?php echo $item['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
-              <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
-              <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
             </div>
             <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
             <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
@@ -217,7 +217,7 @@ foreach ($p3d as $p3d_obj)
 <!-- Photo video -->
 <?php if (count($p3d) > 0 || count($photos) > 0): ?>
   <div class="fl width500">
-    <h2>Фото и видео товара:</h2>
+    <h2>Фото товара:</h2>
     <div class="font11 gray pb10">Всего фотографий <?php echo count($photos) ?></div>
     <ul class="previewlist">
       <!-- IVN '.viewme' for opening in the popup; @ref='image'/'360' is a type   -->
@@ -298,7 +298,7 @@ foreach ($p3d as $p3d_obj)
       	<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'value' => array('купить', 'в корзине',), )) ?>
       </div>
 
-      <h2>Фото и видео:</h2>
+      <h2>Фото:</h2>
       <ul class="previewlist">
         <?php foreach ($photos as $i => $photo): ?>
           <li class="viewstock" ref="photo<?php echo $i ?>"><b><a href="<?php echo $urls[4].$photo->resource ?>" class="viewme" ref="image" id="try-3"></a></b><img src="<?php echo $urls[2].$photo->resource ?>" alt="" width="48" height="48" /></li>

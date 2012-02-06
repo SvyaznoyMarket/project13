@@ -10,7 +10,12 @@
  */
 class productCommentActions extends myActions
 {
+  public function preExecute()
+  {
+    parent::postExecute();
 
+    $this->getRequest()->setParameter('_template', 'product_comment');
+  }
   /**
    * Executes index action
    *

@@ -125,9 +125,10 @@ class myProductFormFilter extends sfFormFilter
 
     $productFilterList = $productCategory->FilterGroup->Filter;
     $productFilterList->indexBy('id');
+
     foreach ($this->values as $id => $param)
     {
-      if (0 !== strpos($id, 'param-')) continue;
+      if (0 !== strpos($id, 'param-') || empty($param)) continue;
       $productFilter = $productFilterList->getByIndex('id', substr($id, 6));
       if (!$productFilter) continue;
 
@@ -139,7 +140,7 @@ class myProductFormFilter extends sfFormFilter
         'values' => $param,
       );
     }
-    //myDebug::dump($filter);
+
     ProductTable::getInstance()->setQueryForFilter($q, $filter);
   }
 
@@ -180,7 +181,6 @@ class myProductFormFilter extends sfFormFilter
   protected function getWidgetRange($productFilter)
   {
     $id = uniqid();
-    //myDebug::dump($productFilter);
 
     return new myWidgetFormRange(array(
       'value_from' => $productFilter['value_min'],
@@ -238,5 +238,17 @@ class myProductFormFilter extends sfFormFilter
     }
 
     return !$rows ? '' : $widget->renderContentTag('ul', implode($widget->getOption('separator'), $rows), array('class' => $widget->getOption('class')));
+  }
+
+  public function getSingleCreator()
+  {
+    $creator = null;
+
+    if (!empty($this->values['creator']) && (1 == count($this->values['creator'])))
+    {
+      $creator = CreatorTable::getInstance()->getById($this->values['creator'][0]);
+    }
+
+    return $creator;
   }
 }

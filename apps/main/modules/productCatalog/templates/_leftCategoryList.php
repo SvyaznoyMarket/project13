@@ -45,8 +45,7 @@ if (!isset($currentDirectory)) $currentDirectory = array();
                     </a>
                 </li>
             <?php } ?>
-            <?php foreach($root_list['children'] as $level1) {
-                ?>
+            <?php if (isset($root_list['children'])) foreach($root_list['children'] as $level1): ?>
                 <?php
                 if ($level1->core_parent_id == $currentDirectory->core_id) {
                     $classCur = "";
@@ -131,7 +130,7 @@ if (!isset($currentDirectory)) $currentDirectory = array();
                         </li>
                     <?php } ?>
                 <?php } ?>
-            <?php } ?>
+            <?php endforeach ?>
             -->
 
         </ul>
