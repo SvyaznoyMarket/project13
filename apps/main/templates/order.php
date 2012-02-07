@@ -54,8 +54,10 @@
 
 </div>
 </div>
-    <?php include_javascripts() ?>
+    
 <?php include_component('default', 'footer', array('view' => 'compact')) ?>
+<script src="/js/LAB.min.js" type="text/javascript"></script>
+<script src="/js/loadjs.js" type="text/javascript"></script>
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
