@@ -67,6 +67,8 @@ class ProjectYandexMarketTask extends sfBaseTask
       'export_realweb_ryazan.xml',
       'export_mgcom_lipetsk.xml',
       'export_realweb_lipetsk.xml',
+      'export_mgcom_belgorod.xml',
+      'export_realweb_belgorod.xml',
   );
 
   /**
@@ -198,6 +200,21 @@ class ProjectYandexMarketTask extends sfBaseTask
           'list' => array(3,2,1,4,7,8,5),
           'price_list_id' => 12
           ),
+      //для Белгорода
+      array(
+          'name' => 'ya_market_belgorod.xml',
+          'price_list_id' => 17
+      ),
+      array(
+          'name' => 'export_realweb_belgorod.xml',
+          'list' => array(6,8,9),
+          'price_list_id' => 17
+      ),
+      array(
+          'name' => 'export_mgcom_belgorod.xml',
+          'list' => array(3,2,1,4,7,8,5),
+          'price_list_id' => 17
+      ),
   );
 
   /**
