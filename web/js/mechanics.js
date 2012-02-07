@@ -571,10 +571,10 @@ function mediaLib( jn ) {
 					break
 				case '360':
 					if( ! running360 ){					
-						lkmv.start() 
+						if( typeof(lkmv.start)!=='undefined' ) lkmv.start() 
 						running360 = true
 					} else
-						lkmv.show()
+						if( typeof(lkmv.show)!=='undefined' ) lkmv.show()
 					break
 			}
 		}
@@ -589,7 +589,7 @@ function mediaLib( jn ) {
 			$('#gii').remove()
 		}
 		if ( running360 && lkmv ) {	
-			lkmv.hide()
+			if( typeof(lkmv.hide)!=='undefined' ) lkmv.hide()
 		}
 	}
 	
@@ -601,10 +601,10 @@ function mediaLib( jn ) {
 	
 	this.open360 = function() {	
 		if( ! running360 ){					
-			lkmv.start() 
+			if( typeof(lkmv.start)!=='undefined' ) lkmv.start() 
 			running360 = true
 		} else
-			lkmv.show()        
+			if( typeof(lkmv.show)!=='undefined' ) lkmv.show()        
 	}
 	
 } // mediaLib object
