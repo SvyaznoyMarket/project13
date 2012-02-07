@@ -523,6 +523,9 @@ class UserCart extends BaseUserData
     foreach ($services as $service)
     {
       $qty = $service['cart']['quantity'];
+      if ($qty) {
+          $total += ($service->getCurrentPrice() * $qty);
+      }
       if (isset($service['cart']['product']))
       {
         foreach ($service['cart']['product'] as $prodId => $prodQty)
