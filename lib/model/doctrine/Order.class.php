@@ -140,7 +140,9 @@ class Order extends BaseOrder
       foreach ($this->ServiceRelation as $service)
       {
             #echo 'next';
-            if ($service->product_id > 0 && isset($productCoreIdList[ $service->product_id ])) {
+            if (!$service->product_id) {
+                $productId = 0;
+            } elseif ($service->product_id > 0 && isset($productCoreIdList[ $service->product_id ])) {
                 $productId = $productCoreIdList[ $service->product_id ];
             } else {
                 $productOb = ProductTable::getInstance()->getById($service->product_id);
@@ -150,7 +152,7 @@ class Order extends BaseOrder
                 }
             }
             if ($productId<0) {
-                continue;
+                $productId = 0;
             }
             $data['service'][] = array(
               'id'          => $service->Service->core_id,
