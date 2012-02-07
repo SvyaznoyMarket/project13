@@ -22,7 +22,7 @@ default:
 #    - main.css
     - skin/inner.css
     - font.css
-    - main.css
+#    - skin/main.css
     - navy.css
 
   javascripts:
