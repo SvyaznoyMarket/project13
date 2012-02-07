@@ -1,7 +1,7 @@
 indexSuccess:
   stylesheets:
     #ivn- jquery.autocomplete.css
-    - jquery-ui-custom/jquery-ui-custom.css
+    #- jquery-ui-custom/jquery-ui-custom.css
     #ivn- colorbox/colorbox.css
     
   javascripts:
