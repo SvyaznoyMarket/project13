@@ -4,7 +4,7 @@
   <ul>
     <?php foreach ($list as $item): ?>
       <li>
-        <a href="<?php echo $item['url'] ?>" title="<?php echo $item['title'] ?>"><b>x</b> <?php echo $item['name'] ?></a>
+        <a href="<?php echo $item['url'] ?>" title="<?php echo $item['title'] ?>"><b>x</b> <?php echo $item['name'] ?><?php echo('price' == $item['type'] ? '&nbsp;<span class="rubl">p</span>' : '') ?></a>
       </li>
     <?php endforeach ?>
   </ul>
