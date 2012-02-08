@@ -29,3 +29,15 @@
   </div>
 </div>
 <!-- /shop list -->
+
+
+<div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
+  <div class="bMobDown__eWrap">
+    <div class="bMobDown__eClose close"></div>
+    <h2>Покупка в 1 клик!</h2>
+    <div class="clear line pb20"></div>
+
+    <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $product['barcode'])) ?>" method="post"></form>
+
+  </div>
+</div>

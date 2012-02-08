@@ -10,6 +10,12 @@
  */
 class productStockActions extends sfActions
 {
+  public function preExecute()
+  {
+    parent::postExecute();
+
+    $this->getRequest()->setParameter('_template', 'product_stock');
+  }
  /**
   * Executes index action
   *
