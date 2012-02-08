@@ -260,6 +260,7 @@ class Product extends BaseProduct
           $partRelation->fromArray(
             array(
               'part_id' => $part->id,
+              'quantity'=> $relationData['quantity'],
             )
           );
           $this->PartRelation[] = $partRelation;

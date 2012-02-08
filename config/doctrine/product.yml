@@ -454,6 +454,7 @@ ProductKitRelation:
   columns:
     kit_id:      { type: integer(20), notnull: true }
     part_id:     { type: integer(20), notnull: true }
+    quantity:    { type: integer(4),  notnull: true, default: 1, comment: 'Количество единиц товара в наборе' }
   relations:
     Kit:         { class: Product, foreignAlias: PartRelation, local: kit_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Part:        { class: Product, foreignAlias: KitRelation, local: part_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }

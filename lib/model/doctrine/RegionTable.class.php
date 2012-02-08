@@ -24,6 +24,7 @@ class RegionTable extends myDoctrineTable
       'id'        => 'core_id',
       'parent_id' => 'core_parent_id',
       'name'      => 'name',
+      'is_active' => 'is_active',
     );
   }
 
@@ -34,6 +35,7 @@ class RegionTable extends myDoctrineTable
     $q = $this->createQuery('region');
 
     $q->where('region.level > ?', 0);
+    $q->where('region.is_active = ?', 1);
     $q->orderBy('region.root_id, region.lft');
 
     return $q;
