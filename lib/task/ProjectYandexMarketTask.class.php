@@ -437,11 +437,13 @@ EOF;
     );
     $offersList = ProductTable::getInstance()->createBaseQuery($params)
             ->select('product.*, category_rel.*, category.root_id, creator.name, price.price, delivery_price.price')
-    //берем только продукты, доступные на МОЛКОМЕ в количестве не менее 3 шт
+            //берем только продукты, доступные на МОЛКОМЕ в количестве не менее 3 шт
             ->innerJoin('product.StockRelation stockRelation WITH stockRelation.stock_id = ? AND stockRelation.quantity > ?', array(1, 2))
             ->addWhere('price.product_price_list_id = ?', $this->_currentPriceListId)
-    //берем только продукты, с правильной ссылкой
+            //берем только продукты, с правильной ссылкой
             ->addWhere('product.token_prefix IS NOT NULL')
+            //при выборе цен на доставку, учитываем прайс лист
+            ->addWhere('delivery_price.price_list_id = ?', $this->_currentPriceListId)
             ;
 
     //если нужно выгрузить только те, что есть в наличии
@@ -457,7 +459,8 @@ EOF;
     #echo $this->_xmlFilePath ."\n";
     #echo $offersList ."\n";
     $offersList = $offersList
-            #->limit(50)
+           // ->limit(50)
+           //  ->orderBy('product.id')
             ->fetchArray();
 
 

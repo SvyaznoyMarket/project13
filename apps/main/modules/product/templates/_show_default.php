@@ -64,7 +64,7 @@ foreach ($p3d as $p3d_obj)
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
             </div>
             <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
-            <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
             <?php endif ?>
         </div>
 
@@ -158,7 +158,7 @@ foreach ($p3d as $p3d_obj)
       <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
     </div>
 <?php if (false): ?>
-    <div class="pb5"><strong><a id="1click-trigger" href="<?php echo url_for('order_1click', array('product_id' => $product->id)) ?>" class="red underline">Купить быстро в 1 клик</a></strong></div>
+    <div class="pb5"><strong><a onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" id="1click-trigger" href="<?php echo url_for('order_1click', array('product_id' => $product->id)) ?>" class="red underline">Купить быстро в 1 клик</a></strong></div>
 <?php endif; ?>
     <a href="<?php echo $item['shop_url'] ?>" class="underline">В каких магазинах ENTER можно купить?</a>
   </div>

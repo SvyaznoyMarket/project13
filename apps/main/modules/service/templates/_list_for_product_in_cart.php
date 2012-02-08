@@ -59,16 +59,16 @@ foreach ($list as $service) {
                             <td class="mEdit">
                                 <div class="numerbox mInlineBlock mVAMiddle">
                                     <?php if ($service['quantity'] > 1) { ?>
-                                    <a href="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'quantity'=>-1, 'product'=>$product->token)); ?>">
+                                    <a href="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'quantity'=>-1, 'product'=>$product->token_prefix.'/'.$product->token)); ?>">
                                         <b title="Уменьшить" class="ajaless"></b>
                                     </a>
                                     <?php } else { ?>
-                                    <a href="#" ref="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'quantity'=>-1, 'product'=>$product->token)); ?>">
+                                    <a href="#" ref="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'quantity'=>-1, 'product'=>$product->prefix . '/' . $product->token)); ?>">
                                         <b title="Уменьшить" class="ajaless"></b>
                                     </a>
                                     <?php } ?>
                                     <span class="ajaquant"><?php echo $service['quantity'] ?> шт.</span>
-                                    <a href="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product'=>$product->token)); ?>">
+                                    <a href="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product'=>$product->token_prefix.'/'.$product->token)); ?>">
                                         <b title="Увеличить" class="ajamore"></b>
                                     </a>
                                 </div>

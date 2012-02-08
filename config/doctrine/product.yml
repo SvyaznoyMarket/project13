@@ -486,9 +486,9 @@ ProductDeliveryPrice:
     Corable:          { push: disable }
   columns:
     id:               { type: integer(20), autoincrement: true, primary: true }
+    price_list_id:    { type: integer(20), notnull: true, default: 1 }
     product_id:       { type: integer(20), notnull: true }
-    delivery_type_id: { type: integer(20), notnull: true, default: 1 }
     price:            { type: integer(11) }
   relations:
+    PriceList:        { class: ProductPriceList, foreignAlias: DeliveryPrice, local: price_list_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:          { class: Product, foreignAlias: DeliveryPrice, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    DeliveryType:     { class: DeliveryType, foreignAlias: ProductDeliveryPrice, local: delivery_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
