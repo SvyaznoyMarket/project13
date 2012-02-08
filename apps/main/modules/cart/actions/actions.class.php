@@ -60,11 +60,11 @@ class cartActions extends myActions {
         try
         {
             if ($product->isKit()) {
-                $this->addKit($product, $request['quantity']);
+                $request['quantity'] = $this->addKit($product, $request['quantity']);
             }
             else
             {
-                $this->addProduct($product, $request['quantity']);
+                $request['quantity'] = $this->addProduct($product, $request['quantity']);
             }
         }
         catch (Exception $e)
@@ -257,21 +257,31 @@ class cartActions extends myActions {
     /**
      * @param Product $product
      * @param int $quantity
+     * @return int - количество этого товара в корзине после изменений
      */
     private function addProduct(Product $product, $quantity) {
         $currentNum = $this->getUser()->getCart()->getQuantityByToken($product['token_prefix'] . '/' . $product['token']);
         $quantity += $currentNum;
 
         if ($quantity <= 0) {
+            $quantity = 0;
             $this->getUser()->getCart()->deleteProduct($product['id']);
         }
         else
         {
             $this->getUser()->getCart()->addProduct($product, $quantity);
         }
+
+        return $quantity;
     }
 
+    /**
+     * @param Product $product
+     * @param $quantity
+     * @return int - суммарное количество всех товаров из набора в корзине после добавления
+     */
     private function addKit(Product $product, $quantity) {
+        $i=0;
         $products = ProductTable::getInstance()->getQueryByKit($product)->execute();
         foreach ($products as $subProduct) {
             $productQuantity = $quantity;
@@ -281,8 +291,10 @@ class cartActions extends myActions {
                     break;
                 }
             }
-            $this->addProduct($subProduct, $productQuantity);
+            $totalInCart = $this->addProduct($subProduct, $productQuantity);
+            $i+= $totalInCart;
         }
+        return $i;
     }
 
 }
