@@ -27,13 +27,24 @@ $(function(){
 				$('#auth-link').trigger('click')			
 			}
 			$('#rating_form').bind('submit.access', function(e){
+				$('#auth-link').trigger('click')
 				e.preventDefault()
 			})
 		}
 	}
 
 	var psAuth = PubSub.subscribe( 'auth try', checkForFeedbackForm ) // dash.js
-		
+	$('#rating_form').bind( 'submit.check', function(e) {
+		var alertnode = $('<div>').css({'color':'red', 'clear':'both'})
+		if( $(this).find('.ratingvalue').val() * 1 == 0 ) {
+			$(this).find('.ratingresult').after( alertnode.clone().text('Укажите свою оценку') )
+			e.preventDefault()
+		}
+		if( $(this).find('[name=content_resume]').val() === '' ) {
+			$(this).find('[name=content_resume]').after( alertnode.clone().text('Заполните поле') )
+			e.preventDefault()
+		}
+	})	
 // no init cause it is new user's comment	
 //	$('.ratingvalue').each( function() {
 //		$(this).prev().prev().find('.ra'+$(this).val()).click()
