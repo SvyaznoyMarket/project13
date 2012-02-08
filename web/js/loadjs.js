@@ -13,6 +13,12 @@
 	
 	$LAB.setGlobalDefaults({ AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.queueScript('jquery-1.6.4.min.js')
+	.queueWait( function(){
+		document.write = function( arge ){
+			//alert(arge)
+			$('head').append(arge)
+		}
+	})
 	.queueScript('combine.js')
 
 	switch( document.body.getAttribute('data-template') ) {
@@ -109,10 +115,11 @@
 			}).runQueue()
 			break
 		case 'shop':
-			$LAB.queueWait( function() {
+			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
 				$LAB.script('bigjquery.min.js')
-				.wait()
 				.script('google.maps.infobox.js')
+				.wait()
+				.script( getWithVersion('app.shop.js') ) 
 				.script( getWithVersion('main.js') )
 				.script( getWithVersion('app.auth.js') )
 				.script( getWithVersion('app.search.js') )
@@ -120,7 +127,6 @@
 				.script( getWithVersion('mechanics.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
-				.script( getWithVersion('app.shop.js') )
 				.script('tour.js')
 			}).runQueue()
 			break
