@@ -17,7 +17,7 @@
     <?php include_partial('default/googleAnalytics') ?>
     <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
-  <body>
+  <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>">
     <div class="allpage">
       <div class="allpageinner">
 
@@ -101,9 +101,8 @@
       </div>
     </div>
     <!-- /Lightbox -->
-    <?php include_javascripts() ?>
-    <!--script src="/js/LAB.min.js" type="text/javascript"></script>
-    <script src="/js/loadjs.js" type="text/javascript"></script-->
+    <script src="/js/LAB.min.js" type="text/javascript"></script>
+    <script src="/js/loadjs.js" type="text/javascript"></script>
     <?php if (!include_slot('auth'))
       include_partial('default/auth') ?>
 

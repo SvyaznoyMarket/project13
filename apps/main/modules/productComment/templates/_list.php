@@ -70,7 +70,7 @@
 
 <div class="clear"></div>
 
-<div class="fl mr20">Есть мнение по данному товару?<br />Напиши свой отзыв</div><a href="<?php echo url_for('productComment_new', $sf_data->getRaw('product')) ?>" class="button bigbuttonlink">Написать отзыв</a>
+<div class="fl mr20">Есть мнение по данному товару?<br />Напиши свой отзыв</div><a data-auth="<?php echo $sf_user->isAuthenticated() ? 'false' : 'true' ?>" href="<?php echo url_for('productComment_new', $sf_data->getRaw('product')) ?>" class="button bigbuttonlink">Написать отзыв</a>
 <div class="clear pb15"></div>
 
 		<?php if ($showSort !== false): ?>

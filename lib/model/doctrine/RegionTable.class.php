@@ -132,4 +132,29 @@ class RegionTable extends myDoctrineTable
 
     return $return;
   }
+
+  public function getLinguisticCase($record, $case = 'и', $field = 'name')
+  {
+    $cases = array(
+      'и' => array(), // именительный
+      'р' => array(), // родительный
+      'д' => array(), // дательный
+      'в' => array(), // винительный
+      'т' => array(), // творительный
+      'п' => array(   // предложный
+        'Москва'          => 'Москве',
+        'Санкт-Петербург' => 'Санкт-Петербурге',
+        'Белгород'        => 'Белгороде',
+        'Липецк'          => 'Липецке',
+        'Ногинск'         => 'Ногинске',
+        'Орел'            => 'Орле',
+        'Рязань'          => 'Рязани',
+        'Сергиев Посад'   => 'Сергиев Посаде',
+      ),
+    );
+
+    $value = $record[$field];
+
+    return isset($cases[$case][$value]) ? $cases[$case][$value] : false;
+  }
 }

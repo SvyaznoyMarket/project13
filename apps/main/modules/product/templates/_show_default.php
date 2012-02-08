@@ -64,7 +64,7 @@ foreach ($p3d as $p3d_obj)
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
             </div>
             <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
-            <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
             <?php endif ?>
         </div>
 
@@ -158,7 +158,7 @@ foreach ($p3d as $p3d_obj)
       <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
     </div>
 <?php if (false): ?>
-    <div class="pb5"><strong><a id="1click-trigger" href="<?php echo url_for('order_1click', array('product_id' => $product->id)) ?>" class="red underline">Купить быстро в 1 клик</a></strong></div>
+    <div class="pb5"><strong><a onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" id="1click-trigger" href="<?php echo url_for('order_1click', array('product_id' => $product->id)) ?>" class="red underline">Купить быстро в 1 клик</a></strong></div>
 <?php endif; ?>
     <a href="<?php echo $item['shop_url'] ?>" class="underline">В каких магазинах ENTER можно купить?</a>
   </div>
@@ -217,7 +217,7 @@ foreach ($p3d as $p3d_obj)
 <!-- Photo video -->
 <?php if (count($p3d) > 0 || count($photos) > 0): ?>
   <div class="fl width500">
-    <h2>Фото и видео товара:</h2>
+    <h2>Фото товара:</h2>
     <div class="font11 gray pb10">Всего фотографий <?php echo count($photos) ?></div>
     <ul class="previewlist">
       <!-- IVN '.viewme' for opening in the popup; @ref='image'/'360' is a type   -->
@@ -298,7 +298,7 @@ foreach ($p3d as $p3d_obj)
       	<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'value' => array('купить', 'в корзине',), )) ?>
       </div>
 
-      <h2>Фото и видео:</h2>
+      <h2>Фото:</h2>
       <ul class="previewlist">
         <?php foreach ($photos as $i => $photo): ?>
           <li class="viewstock" ref="photo<?php echo $i ?>"><b><a href="<?php echo $urls[4].$photo->resource ?>" class="viewme" ref="image" id="try-3"></a></b><img src="<?php echo $urls[2].$photo->resource ?>" alt="" width="48" height="48" /></li>

@@ -81,6 +81,15 @@ class myProductFormFilter extends sfFormFilter
 
       if (('range' == $productFilter->type) && ($productFilter->value_min == $productFilter->value_max)) continue;
 
+      if ('checkbox' == $productFilter->type)
+      {
+        $result = ProductPropertyRelationTable::getInstance()->countBooleanValueByProperty($productFilter->property_id, $productCategory->id);
+        if (($result[0] == $result[1]) || empty($result[0]) || empty($result[1]))
+        {
+          continue;
+        }
+      }
+
       if (!$widget = call_user_func_array(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), array($productFilter))) continue;
 
       $index = "param-{$productFilter->id}";
@@ -238,5 +247,17 @@ class myProductFormFilter extends sfFormFilter
     }
 
     return !$rows ? '' : $widget->renderContentTag('ul', implode($widget->getOption('separator'), $rows), array('class' => $widget->getOption('class')));
+  }
+
+  public function getSingleCreator()
+  {
+    $creator = null;
+
+    if (!empty($this->values['creator']) && (1 == count($this->values['creator'])))
+    {
+      $creator = CreatorTable::getInstance()->getById($this->values['creator'][0]);
+    }
+
+    return $creator;
   }
 }

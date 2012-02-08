@@ -1,4 +1,4 @@
-<?php slot('title', $productCategory) ?>
+<?php slot('title', $productCategory.($productFilter->getSingleCreator() ? (' '.$productFilter->getSingleCreator()->name) : '')) ?>
 
 <?php slot('navigation') ?>
   <?php include_component('productCatalog', 'navigation', array('productCategory' => $productCategory)) ?>

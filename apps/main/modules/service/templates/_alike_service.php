@@ -27,7 +27,11 @@
             </p>
 			<div class="bServiceCard__ePrice">
             <?php if ($showNoPrice || $service['price'] != 'бесплатно') { ?>   
-                <?php echo $service['price']; ?>
+                <?php 
+                if ($service['price'] < 1) echo 'бесплатно';
+                else echo $service['price']; 
+                ?>
+                
                 <?php if((int)$service['price']) { ?>
                     <span class="rubl">p</span>
                 <?php } ?>    
