@@ -260,7 +260,7 @@ class cartActions extends myActions {
      */
     private function addProduct(Product $product, $quantity) {
         $currentNum = $this->getUser()->getCart()->getQuantityByToken($product['token_prefix'] . '/' . $product['token']);
-        $quantity += $cur   rentNum;
+        $quantity += $currentNum;
 
         if ($quantity <= 0) {
             $this->getUser()->getCart()->deleteProduct($product['id']);
