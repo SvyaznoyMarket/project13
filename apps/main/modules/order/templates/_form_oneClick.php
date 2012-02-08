@@ -1,4 +1,5 @@
 <?php echo $form['product_quantity']->render() ?>
+<?php echo $form['shop_id']->render() ?>
 
 <div class="basketline">
   <?php include_component('product', 'show', array('view' => 'orderOneClick', 'product' => $product)) ?>

@@ -45,6 +45,15 @@ class ShopTable extends myDoctrineTable
     return $q;
   }
 
+  public function getDefaultParameters()
+  {
+    $region = $this->getParameter('region');
+
+    return array(
+      'region_id' => $region ? $region['id'] : null,
+    );
+  }
+
   public function getForRoute(array $params)
   {
     $id = isset($params['shop']) ? $this->getIdBy('token', $params['shop']) : null;
@@ -54,7 +63,9 @@ class ShopTable extends myDoctrineTable
 
   public function getListByProduct($product_id, array $params = array())
   {
-    $this->applyDefaultParameters($params);
+    $this->applyDefaultParameters($params, array(
+      'include_empty' => false,
+    ));
 
     $q = $this->createBaseQuery($params);
 
@@ -63,9 +74,19 @@ class ShopTable extends myDoctrineTable
       ->addWhere('shop.is_active = ?', 1);
     ;
 
-    $q->select('shop.token, shop.name, shop.region_id, shop.address, SUM(stockProductRelation.quantity) AS quantity')
+    if ($params['region_id'])
+    {
+      $q->addWhere('shop.region_id = ?', $params['region_id']);
+    }
+
+    $q->select('shop.token, shop.name, shop.region_id, shop.address, SUM(stockProductRelation.quantity) AS product_quantity')
       ->groupBy('shop.token, shop.name, shop.region_id, shop.address')
     ;
+
+    if (false == $params['include_empty'])
+    {
+      $q->having('product_quantity > 0');
+    }
 
     $this->setQueryParameters($q, $params);
 
@@ -85,11 +106,11 @@ class ShopTable extends myDoctrineTable
 
     return $q->execute();
   }
-  
+
   public function setQueryParameters(Doctrine_Query $q, array $params = null)
   {
     parent::setQueryParameters($q, $params);
-    
+
     if (isset($params['region_id']))
     {
       $q->andWhere('shop.region_id = ?', $params['region_id']);
