@@ -51,7 +51,6 @@
 
         <div class="clear pb15"></div>
 
-
         <?php include_component('service', 'list_for_product_in_cart', array('product' => $item['product'], 'services' => $item['service'])) ?>
         <?php //include_component('product', 'f1_lightbox', array('f1' => $list, 'product'=>$item['product'], 'servListId' => $servListId)) ?>
 
