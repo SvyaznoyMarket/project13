@@ -42,13 +42,12 @@
     <h2 class='bMapInfo__eTitle'><?php echo $item['address'] ?></h2>
     <p class='bMapInfo__eP'>
       <span class='bMapInfo__eSpan mBig'>
-        <!-- М. Белорусская<br> -->
 
         <?php if ($item['regime']): ?>
         Работаем <?php echo $item['regime'] ?><br />
         <?php endif ?>
         <?php if ($item['phonenumbers']): ?>
-        Телефон<?php echo false !== strpos($item['phonenumbers'], ',') ? 'ы:' : ':' ?>: <?php echo $item['phonenumbers'] ?><br />
+        Телефон<?php echo false !== strpos($item['phonenumbers'], ',') ? 'ы' : '' ?>: <?php echo $item['phonenumbers'] ?><br />
         <?php endif ?>
       </span>
     </p>
