@@ -142,9 +142,9 @@
 				.script( getWithVersion('app.auth.js') )
 				.script( getWithVersion('app.search.js') )
 				//.script( getWithVersion('app.region.js') )			
-				//.script( getWithVersion('mechanics.js') )
-				//.wait()
-				//.script( getWithVersion('dash.js') )
+				.script( getWithVersion('mechanics.js') )
+				.wait()
+				.script( getWithVersion('dash.js') )
 			}).runQueue()
 			break	
 	}
