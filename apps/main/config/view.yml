@@ -22,12 +22,13 @@ default:
 #    - main.css
     - skin/inner.css
     - font.css
-    - main.css
+#    - skin/main.css
     - navy.css
 
   javascripts:
     - jquery-1.6.4.min.js
     - bigjquery.min.js
+    - jquery.ui.touch-punch.min.js
     #ivn- jquery-ui-1.8.16.custom.min.js
     #ivn- jquery.effects.core.js
     #ivn- jquery.effects.transfer.js

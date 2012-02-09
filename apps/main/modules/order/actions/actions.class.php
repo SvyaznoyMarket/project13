@@ -75,11 +75,19 @@ class orderActions extends myActions
           {
             $part = ProductTable::getInstance()->getById($partRelation->part_id, array('with_model' => true));
 
+            $part_quantity = 1;
+            foreach ($part['KitRelation'] as $KitRelation) {
+              if ($KitRelation['kit_id'] == $partRelation->kit_id) {
+                  $part_quantity = $KitRelation['quantity'];
+                  break;
+              }
+            }
+
             $relation = new OrderProductRelation();
             $relation->fromArray(array(
               'product_id' => $part['id'],
               'price'      => ProductTable::getInstance()->getRealPrice($part),
-              'quantity'   => $this->form->getValue('product_quantity'),
+              'quantity'   => $this->form->getValue('product_quantity') * $part_quantity,
             ));
             $order->ProductRelation[] = $relation;
           }

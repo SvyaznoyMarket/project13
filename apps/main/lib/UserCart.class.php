@@ -630,7 +630,14 @@ class UserCart extends BaseUserData
 
   public function count()
   {
-    $count = count($this->parameterHolder->get('products'));
+    $count = 0;
+    $products = $this->parameterHolder->get('products');
+
+    foreach ($products as $product)
+    {
+      $count += $product['quantity'];
+    }
+
     return $count;
   }
 
@@ -673,7 +680,7 @@ class UserCart extends BaseUserData
 
     if (is_null($this->products) || true === $force)
     {
-      $this->products = $productTable->createListByIds($productIds, array('index' => array('product' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false, 'with_model' => true,));
+      $this->products = $productTable->createListByIds($productIds, array('index' => array('product' => 'id'), 'with_property' => false, 'property_view' => false, 'with_model' => true,));
       //myDebug::dump($this->products, 1);
     }
     else
@@ -683,7 +690,7 @@ class UserCart extends BaseUserData
       $toAddIds = array_diff($productIds, $currentIds);
       $toDelIds = array_diff($currentIds, $productIds);
 
-      $toAdd = $productTable->createListByIds($toAddIds, array('index' => array('product' => 'id'), 'with_property' => false, 'view' => 'list', 'property_view' => false, 'with_model' => true,));
+      $toAdd = $productTable->createListByIds($toAddIds, array('index' => array('product' => 'id'), 'with_property' => false, 'property_view' => false, 'with_model' => true,));
       foreach ($toAdd as $key => $product)
       {
         $this->products[$key] = $product;

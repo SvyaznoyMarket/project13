@@ -150,7 +150,7 @@ class myProductFormFilter extends sfFormFilter
       );
     }
 
-    ProductTable::getInstance()->setQueryForFilter($q, $filter);
+    ProductTable::getInstance()->setQueryForFilter($q, $filter, array('is_filter' => true, ));
   }
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)

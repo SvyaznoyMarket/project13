@@ -338,6 +338,8 @@ $(document).ready(function(){
 					return false
 				if( button.hasClass('active') )
 					return true
+				if( button.hasClass('disabled') )
+					return false	
 
 				var ajurl = '/404.html'
 				if( button.is('a') ) {
