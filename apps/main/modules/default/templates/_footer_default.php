@@ -44,7 +44,7 @@
 <?php endif ?>
   <div class="footerbottom">
     <div class="copy">
-      &copy; &laquo;Enter&raquo; 2011&ndash;<?php echo date("Y") ?>. Все права защищены. Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br /><a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a><a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>">Правовая информация</a>
+      &copy; &laquo;Enter&raquo; 2011&ndash;<?php echo date("Y") ?>. Все права защищены.<br />Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br /><a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a><a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>">Правовая информация</a>
       <?php if (false): ?>
       &copy; &laquo;Enter&raquo; 2002-2011. Все права защищены.<br />
       Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.
@@ -57,7 +57,7 @@
       <?php endif ?>
     </div>
 
-    <div class="social_network"><span class="gray font11">Посетите нас</span><?php include_component('default', 'social_networks') ?></div>
+    <div class="social_network fr"><span class="gray font11">Посетите нас</span><?php include_component('default', 'social_networks') ?></div>
 
     <?php if (false): ?>
     <div class="counter">
