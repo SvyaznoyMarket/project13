@@ -3,6 +3,14 @@
 
 <div class="basketline">
   <?php include_component('product', 'show', array('view' => 'orderOneClick', 'product' => $product)) ?>
+
+  <?php if ($shop): ?>
+    <br class="clear" />
+    <div class="pt10">
+      Магазин: <?php echo $shop->Region ?>, <?php echo $shop->address ?><br />
+      <?php echo $shop->regime ?>
+    </div>
+  <?php endif ?>
 </div>
 
 <div class="clear"></div>
