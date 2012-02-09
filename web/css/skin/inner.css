@@ -3261,10 +3261,16 @@ DT.bCtg__eOrange{
 		zoom: 1;
 		}
 	.bInShop__eMap{
-		width: 100%;
+		width: 676px;
 		height: 330px;
+		position:relative;
 		}
-
+	.bInShop__eMap h2 {
+		font-size:12px;
+	}
+	.bInShop__eMap .bigmark DIV {
+		line-height: 1;
+	}
 	.bInShop__eCurrent{
 		margin: 20px 0;
 		}

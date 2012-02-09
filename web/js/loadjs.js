@@ -14,9 +14,11 @@
 	$LAB.setGlobalDefaults({ AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.queueScript('jquery-1.6.4.min.js')
 	.queueWait( function(){
-		document.write = function( arge ){
-			//alert(arge)
-			$('head').append(arge)
+		document.write = function(){
+			if( arguments[0].match('javascript') )
+				$LAB.script( arguments[0].match(/src="(.*?)"/)[1])		
+			else
+				$('head').append( arguments[0] )
 		}
 	})
 	.queueScript('combine.js')
@@ -130,5 +132,20 @@
 				.script('tour.js')
 			}).runQueue()
 			break
+		case 'product_stock':
+			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
+				$LAB.script('bigjquery.min.js')
+				.script('google.maps.infobox.js')
+				.wait()
+				.script( getWithVersion('app.product.stock.js') ) 
+				.script( getWithVersion('main.js') )
+				.script( getWithVersion('app.auth.js') )
+				.script( getWithVersion('app.search.js') )
+				//.script( getWithVersion('app.region.js') )			
+				//.script( getWithVersion('mechanics.js') )
+				//.wait()
+				//.script( getWithVersion('dash.js') )
+			}).runQueue()
+			break	
 	}
 }());

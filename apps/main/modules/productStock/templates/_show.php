@@ -1,10 +1,21 @@
 <input id="map-center" type="hidden" data-content='<?php echo json_encode(array('latitude' => $region['latitude'], 'longitude' => $region['longitude'])) ?>' />
 <input id="map-markers" type="hidden" data-content='<?php echo json_encode($markers) ?>' />
-
+<div id="map-info_window-container" class="hf">
+  <div class="bigmark">
+    <b class="corner"></b>
+    <div>
+      <h2 class="title" data-name="name"></h2>
+      <span class="shopnum" data-name="url" style="display:none"></span>
+	<br>
+	<br>
+	<input class="button whitebutton shopchoose" type="button" value="Выбрать этот магазин">
+    </div>
+  </div>
+</div>
 <!-- shop list -->
 <div class='bInShop'>
   <div class='bInShop__eLeft'>
-    <div class='bInShop__eMap'><img src='/images/in_map.png'></div>
+    <div class='bInShop__eMap' id='gMap'></div>
     <div class='bInShop__eCurrent'><h2><?php echo ($region['prefix'] ? ($region['prefix'].' ') : '').$region['name'] ?></h2> <a href class='bGrayButton'>Другой город</a></div>
 
     <div class='bInShopLine mInF'>
@@ -39,5 +50,16 @@
 
     <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $product['barcode'])) ?>" method="post"></form>
 
+  </div>
+</div>
+<div id="ajaxgoods" class="popup width230" style="display: none">
+  <div  style="padding: 15px 15px 20px 5px">
+    <div class="bNavLoader__eIco">
+      <img src="/images/ajar.gif">
+    </div>
+    <div class="bNavLoader__eM">
+      <p class="bNavLoader__eText">Подождите немного</p>
+      <p class="bNavLoader__eText">Идет загрузка</p>
+    </div>
   </div>
 </div>
