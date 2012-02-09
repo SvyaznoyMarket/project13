@@ -1,0 +1,1 @@
+ALTER TABLE `product_kit_relation` ADD COLUMN `quantity` INT(4) NOT NULL DEFAULT 1  AFTER `part_id` ;

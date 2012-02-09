@@ -214,6 +214,7 @@ EOF;
 
         $modified = $record->getModified(); // если запись уже сохранялась, то $modified = $record->getLastModified();
 
+        $moved = false;
         // если запись не существует в бд или сменился родитель записи
         if (!$exists || array_key_exists('core_parent_id', $modified))
         {
@@ -227,6 +228,7 @@ EOF;
             if ($exists)
             {
               $record->getNode()->moveAsLastChildOf($newParent);
+              $moved = true;
             }
             else {
               $record->getNode()->insertAsLastChildOf($newParent);
@@ -234,7 +236,7 @@ EOF;
           }
         }
         // Проверяет, изменилась ли позиция относительно соседей
-        if (array_key_exists('position', $modified))
+        if (array_key_exists('position', $modified) || $moved)
         {
           $record->replace();
           $parent = $record->getTable()->getByCoreId($record->core_parent_id);

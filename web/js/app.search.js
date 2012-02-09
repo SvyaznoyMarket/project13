@@ -5,9 +5,11 @@ $(document).ready(function() {
 
     var form = $(this)
 
-    if (form.find('input:[name="q"]').val().length < 2) {
+    if (form.find('input:[name="q"]').val().length < 2)
       return
-    }
+    
+    if( form.find('input:[name="q"]').val() === 'Поиск среди 20 000 товаров' )
+	   return
 
     form.ajaxSubmit({
       async: false,
