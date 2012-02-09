@@ -265,8 +265,8 @@ border-radius:5px;
 .searchbox {float:right; width:343px; height:28px; margin-top:2px}
 .searchbox .searchtext {width:297px}
 
-.column215 {float:left; width:215px; margin-left:-100%; position:relative}
-.column685 {margin:0 0 0 235px}
+.column215 {float:left; width:215px; margin-left:-100%; position:relative; z-index:5;}
+.column685 {margin:0 0 0 235px; position:relative; z-index:1;}
 
 .bBlueButton .link1,
 .bSet__ePrice .link1,
@@ -356,7 +356,6 @@ LABEL.checked {color:#ffa901}
 	-webkit-box-shadow:0 0 9px #eaeaea;
 	box-shadow:0 0 9px #eaeaea;
 	//behavior: url(ie-css3.htc)
-
 	}
 .bSpec h2 {
     color: #FFA901;
@@ -526,8 +525,8 @@ border-radius:5px;
 .advertbox SPAN {display:block; font-size:18px; padding-bottom:10px}
 
 
-.goodslist {float:left; width:705px; margin-left:-4px;  padding-bottom:5px}
-.goodsbox {float:left; width:195px; padding:10px; margin-bottom:14px; margin-right:20px}
+.goodslist {float:left; width:705px; margin-left:-4px;  padding-bottom:5px; z-index:1; position:relative;}
+.goodsbox {float:left; width:195px; min-height: 284px;  padding:10px; margin-bottom:14px; margin-right:20px}
 .boxhover {display:none; position:absolute; z-index:3; width:215px; top:-4px; left:-4px;  padding:9px 0 0 9px; cursor:pointer}
 /*
 .goodsbox:hover {position:relative; z-index:2}
@@ -827,7 +826,7 @@ border-radius:5px;
 .goodsbarbig.mSmallBtns a.link1:hover {
     background: url("img/buy_buttons.png") no-repeat scroll 0 -31px transparent;
 }
-.goodsbarbig.mSmallBtns a.link1:active {
+.goodsbarbig.mSmallBtns a.link1 disabled {
     background: url("img/buy_buttons.png") no-repeat scroll 0 -87px transparent;
 }
 .goodsbarbig.mSmallBtns a.link1.active {
@@ -3262,10 +3261,16 @@ DT.bCtg__eOrange{
 		zoom: 1;
 		}
 	.bInShop__eMap{
-		width: 100%;
+		width: 676px;
 		height: 330px;
+		position:relative;
 		}
-
+	.bInShop__eMap h2 {
+		font-size:12px;
+	}
+	.bInShop__eMap .bigmark DIV {
+		line-height: 1;
+	}
 	.bInShop__eCurrent{
 		margin: 20px 0;
 		}
