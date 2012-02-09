@@ -160,7 +160,7 @@ class BannerTable extends myDoctrineTable
 
   public function getCacheTags($record)
   {
-    $tags = array();
+    /*$tags = array();
     if (!empty($record['id']))
     {
       $tags[] = "banner-{$record['id']}";
@@ -171,6 +171,12 @@ class BannerTable extends myDoctrineTable
       }
     }
 
-    return $tags;
+    return $tags;*/
+    return array();
+  }
+
+  public function getCacheEraserKeys($record, $action = null)
+  {
+    return array();
   }
 }

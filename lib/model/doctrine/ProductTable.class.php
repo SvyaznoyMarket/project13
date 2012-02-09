@@ -381,7 +381,8 @@ class ProductTable extends myDoctrineTable
           $q->innerJoin('product.Line line')
             ->innerJoin('line.Product line_product')
             ->innerJoin('line_product.Category category WITH category.id = ?', $filter['category']->id)
-            ->addWhere('product.is_lines_main = ?', 1)
+            //->addWhere('product.is_lines_main = ?', 1)
+            ->addWhere('product.set_id = ?', 2)
           ;
         }
         else
