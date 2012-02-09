@@ -48,7 +48,7 @@ class orderActions extends myActions
 
     $this->product = ProductTable::getInstance()->getByBarcode($request->getParameter('product'), array('with_model' => true));
 
-    $shop = $request['shop'] ? ShopTable::getInstance()->getByToken($request['shop']) : null;
+    $this->shop = $request['shop'] ? ShopTable::getInstance()->getByToken($request['shop']) : null;
 
     $this->order = new Order();
     $this->order->User = $this->getUser()->getGuardUser();
@@ -56,7 +56,7 @@ class orderActions extends myActions
     $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
     $this->order->delivery_type_id = 1;
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product); //нужна для правильного отбражения формы заказа
-    $this->order->shop_id = $shop ? $shop->id : null;
+    $this->order->shop_id = $this->shop ? $this->shop->id : null;
 
     if (empty($this->order->region_id))
     {
@@ -119,7 +119,7 @@ class orderActions extends myActions
           $return['message'] = 'Заказ успешно создан';
           $return['data'] = array(
             'title'   => 'Ваш заказ принят, спасибо!',
-            'content' => $this->getPartial($this->getModuleName().'/complete', array('order' => $order, 'form' => $form)),
+            'content' => $this->getPartial($this->getModuleName().'/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop)),
           );
         }
         catch (Exception $e)
