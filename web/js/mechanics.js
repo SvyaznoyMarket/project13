@@ -79,6 +79,7 @@ function Lightbox( jn, data ){
 		flybox.updateItem( item )				
 		$('#sum', plashka).html( item.sum )
 		$('.point2 b', plashka).html( item.vitems )
+		this.fillTopBlock()		
 		if( 'f1' in item ) {
 			if( 'only' in item.f1  )
 				flybox.showBasketF1( item.f1 )
@@ -153,6 +154,11 @@ function Lightbox( jn, data ){
 		} else return false
 	}
 	
+	this.fillTopBlock = function() {
+		if( $('#topBasket') ) {
+			$('#topBasket').text( '('+init.vitems+')' )
+		}
+	}
 	
 	this.update = function( newinit ) {
 		if ( newinit )
@@ -176,6 +182,7 @@ function Lightbox( jn, data ){
 			}		
 			if( init.vitems ) {
 				$('.point2 b', plashka).html(init.vitems)
+				this.fillTopBlock()
 			}		
 			if ( init.bingo && init.bingo.id ){
 				var li = $('<li>').addClass('fl').html(
