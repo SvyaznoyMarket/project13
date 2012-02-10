@@ -29,6 +29,7 @@
                 </div>
                 <div class="info">
                     <h3><?php echo $item['name'] ?></h3>
+                    <div class="hf">
                     <?php 
                     #print_r($currentServiceList);
                     if (isset($currentServiceList['list']))
@@ -55,8 +56,9 @@
                         <?php if (isset($service['work'])){ ?><?php echo $service['work'] ?> <?php } ?>
                         </div>
                     <?php } ?>
+                  </div>
                 </div>
-            </div>                    
+            </div>
         <?php
         }
         /*
