@@ -12,26 +12,30 @@
     </div>
   </div>
 </div>
+
+
 <!-- shop list -->
 <div class='bInShop'>
   <div class='bInShop__eLeft'>
     <div class='bInShop__eMap' id='gMap'></div>
     <div class='bInShop__eCurrent'><h2><?php echo ($region['prefix'] ? ($region['prefix'].' ') : '').$region['name'] ?></h2> <a href class='bGrayButton'>Другой город</a></div>
 
-    <div class='bInShopLine mInF'>
-      <div class='bInShopLine__eTitle'>Адреса магазинов</div>
-      <div class='bInShopLine__eCount mInF'>Наличие</div>
+    <?php if (count($shopList)): ?>
+      <div class='bInShopLine mInF'>
+        <div class='bInShopLine__eTitle'>Адреса магазинов</div>
+        <div class='bInShopLine__eCount mInF'>Наличие</div>
 
-      <div class='bInShopLine__eButton'></div>
-    </div>
+        <div class='bInShopLine__eButton'></div>
+      </div>
 
-    <?php foreach ($shopList as $shop): ?>
-    <div class='bInShopLine'>
-      <div class='bInShopLine__eTitle'><a href style='font: 14px Tahoma, sans-srif'><?php echo $shop['name'] ?></a></div>
-      <div class='bInShopLine__eCount'><?php include_partial('productStock/quantity', array('quantity' => $shop['product_quantity'])) ?></div>
-      <div class='bInShopLine__eButton'><a href="<?php echo url_for('order_1click', array('product' => $product['barcode'], 'shop' => $shop['token'])) ?>" class='bGrayButton'>Купить в этом магазине</a></div>
-    </div>
-    <?php endforeach ?>
+      <?php foreach ($shopList as $shop): ?>
+      <div class='bInShopLine'>
+        <div class='bInShopLine__eTitle'><a href style='font: 14px Tahoma, sans-srif'><?php echo $shop['name'] ?></a></div>
+        <div class='bInShopLine__eCount'><?php include_partial('productStock/quantity', array('quantity' => $shop['product_quantity'])) ?></div>
+        <div class='bInShopLine__eButton'><a href="<?php echo url_for('order_1click', array('product' => $product['barcode'], 'shop' => $shop['token'])) ?>" class='bGrayButton'>Купить в этом магазине</a></div>
+      </div>
+      <?php endforeach ?>
+    <?php endif ?>
 
   </div>
 

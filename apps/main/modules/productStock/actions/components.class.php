@@ -23,6 +23,7 @@ class productStockComponents extends myComponents
       'region_id' => $region['id'],
     ));
 
+    $markers = array();
     foreach ($shopList as $shop)
     {
       $markers[$shop->id] = array(
