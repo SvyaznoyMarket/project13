@@ -829,7 +829,17 @@ redirect_for_productCard:
   url:   /products/:product
   param: { module: redirect, action: index, route: productCard }
 
-
+#
+# credit info main page
+credit_default:
+  url:      /credit
+  param:    { module: credit, action: index }
+#
+# credit info main page
+credit_programs:
+  url:      /credit_programs
+  param:    { module: credit, action: programs }
+#
 
 
 default_show:

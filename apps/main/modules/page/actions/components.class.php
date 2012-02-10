@@ -127,4 +127,12 @@ class pageComponents extends myComponents
     }
   }
 
+  public function executeBreadcrumbs(){
+    if(!isset ($this->addToBreadcrumbs)){
+      $this->addToBreadcrumbs = null;
+    }
+
+    $this->setVar('addToBreadcrumbs', $this->addToBreadcrumb);
+  }
+
 }
