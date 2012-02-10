@@ -12,7 +12,7 @@ class serviceActions extends myActions
 {
   public function preExecute()
   {
-    parent::postExecute();
+    parent::preExecute();
 
     $this->getRequest()->setParameter('_template', 'service');
   }
