@@ -794,7 +794,7 @@ border-radius:5px;
 .article {float:left; width:100%; border-bottom:1px solid #e6e6e6; padding-bottom:5px; margin-bottom:10px; font-size:11px; color:#a6a6a6}
 .article A {color:#a6a6a6; margin-left:25px}
 
-.goodsbarbig {width:185px; height:31px; margin:26px 0 17px 0}
+.goodsbarbig {width:137px !important; height:31px; margin:26px 0 17px 0; position: relative;} 
 .goodsbarbig A {display:block; float:left; height:31px; background:url(/css/skin/img/bg_inner.png) no-repeat}
 .goodsbarbig A:hover {text-decoration:none}
 .goodsbarbig A.link1 {width:105px; background-position:-315px -250px}
@@ -815,6 +815,13 @@ border-radius:5px;
 .goodsbarbig A.link5 {width:105px; background-position:-201px -280px}
 .goodsbarbig A.link5.active {background-position:0 -316px}
 .goodsbarbig A.link5.disabled {background-position:-216px -316px}
+.goodsbarbig.mSmallBtns{ width: 137px; display: inline-block; *display: inline; zoom; 1;}
+.goodsbarbig.mSmallBtns a.link1{ width: 137px; height: 31px; background: url('/css/skin/img/buy_buttons.png') 0 0 no-repeat;}
+.goodsbarbig.mSmallBtns a.link1:hover{ background: url('/css/skin/img/buy_buttons.png') 0 -31px no-repeat; }
+.goodsbarbig.mSmallBtns a.link1:active{ background: url('/css/skin/img/buy_buttons.png') 0 -87px no-repeat; }
+.goodsbarbig.mSmallBtns a.link1.active{ background: url('/css/skin/img/buy_buttons.png') 0 -87px no-repeat; }
+.goodsbarbig.mSmallBtns a.link1.disabled{ background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
+.goodsbarbig.mSmallBtns a.link1.fr{ floar: right }
 
 .goodsbarbig.mSmallBtns {
     display: inline-block;
@@ -3520,3 +3527,52 @@ DT.bCtg__eOrange{
 		text-decoration: none;
 		border: 1px solid #cb5b00;
 		}
+
+		
+.bCountSet{
+	top: 0;
+	left: -90px;
+	color: #959595;
+	margin: 0 5px 0 0;
+	position: absolute;
+	border: 1px solid #dddddd;
+	
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+	
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	}		
+	.bCountSet a{
+		width: 14px;
+		height: auto;
+		color: #959595;
+		padding: 7px 1px;
+		text-align: center;
+		
+		vertical-align: middle;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bCountSet span{
+		margin: 7px 1px;
+		
+		vertical-align: middle;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bCountSet__eM{
+		float: left;
+		margin: 0 5px 0 2px;
+		background: url('/css/skin/img/set_shadows.png') 0 0 repeat-y !important;
+		}
+	.bCountSet__eP{
+		margin: 0 2px 0 5px;
+		float: right !important;
+		background: url('/css/skin/img/set_shadows.png') -15px 0 repeat-y !important;
+		}		
