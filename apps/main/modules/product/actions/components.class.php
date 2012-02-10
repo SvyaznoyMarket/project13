@@ -127,11 +127,7 @@ class productComponents extends myComponents
         ? in_array($this->product['id'], $rated)
         : false
       ;
-      $item['cart_quantity'] = 1;
-      if ($cartItem = $this->getUser()->getCart()->getProduct($this->product['id']))
-      {
-        $item['cart_quantity'] = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 1;
-      }
+      $item['is_incart'] = $this->getUser()->getCart()->hasProduct($this->product['id']);
     }
     if (in_array($this->view, array('expanded')))
     {
