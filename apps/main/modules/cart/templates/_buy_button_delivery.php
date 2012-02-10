@@ -1,0 +1,1 @@
+<a href="<?php echo url_for('cart_add', array('product' => $product['token_prefix'].'/'.$product['token'], 'quantity' => $quantity)) ?>" class='link1 bOrangeButton<?php if ($disable) echo ' disable' ?>'><i></i><span> Купить с доставкой</span></a>
