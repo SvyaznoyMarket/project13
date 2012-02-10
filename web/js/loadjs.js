@@ -141,6 +141,7 @@
 				.script( getWithVersion('app.auth.js') )
 				.script( getWithVersion('app.search.js') )
 				.script( getWithVersion('app.product.js') )	
+				.script( getWithVersion('app.region.js') )
 //				.wait()
 //				.script( getWithVersion('app.product.stock.js') ) 				
 				.script( getWithVersion('mechanics.js') )
