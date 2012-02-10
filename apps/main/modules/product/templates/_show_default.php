@@ -63,9 +63,11 @@ foreach ($p3d as $p3d_obj)
             <div class="goodsbarbig mSmallBtns" ref="<?php echo $item['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
 
               <div class='bCountSet'>
-                <?php if (!$item['cart_quantity']): ?>
+                <?php if (!$item['cart_quantity']) { ?>
               	<a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
-                <?php endif ?>
+                <?php } else { ?>
+              	<a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+              	<?php } ?>
                 <span><?php echo $item['cart_quantity'] ? $item['cart_quantity'] : 1 ?> шт.</span>
               </div>
 

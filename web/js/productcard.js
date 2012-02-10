@@ -13,11 +13,15 @@ $(document).ready(function(){
 		})
 		
 		$('.bCountSet__eP').click( function() {
+			if( $(this).hasClass('disabled') )
+				return false
 			$('.bCountSet').data('hm', $('.bCountSet').data('hm')*1 + 1 )
 			np.trigger('update')
 			return false
 		})
-		$('.bCountSet__eM').click( function() {		
+		$('.bCountSet__eM').click( function() {	
+			if( $(this).hasClass('disabled') )
+				return false		
 			var hm = $('.bCountSet').data('hm')//how many
 			if( hm == 1 )
 				return false
