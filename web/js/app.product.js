@@ -216,8 +216,8 @@ $(document).ready(function() {
 				$('.b1Click__ePriceBig .price').html( sum )
 			}
 
-			$('.c1less').bind( 'click', function(){ recalc(-1) })
-			$('.c1more').bind( 'click', function(){ recalc(1) })
+			$('.c1less').live( 'click', function(){ recalc(-1) })
+			$('.c1more').live( 'click', function(){ recalc(1) })
 		}
 
 		$('#order1click-form').bind('submit', function(e) {
