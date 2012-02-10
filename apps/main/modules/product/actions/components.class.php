@@ -24,7 +24,7 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock')))
     {
       $this->view = 'default';
     }
@@ -142,6 +142,14 @@ class productComponents extends myComponents
       $item['url'] = $this->generateUrl('lineCard', array('line' => $this->product['Line']['token'], ), array('absolute' => true));
       $item['Line']['name'] = $this->product['Line']['name'];
       $item['Line']['count'] = ProductLineTable::getInstance()->getProductCountById($this->product['Line']['id']);
+    }
+    if ('stock' == $this->view)
+    {
+      $item['description'] = implode('. ', array_slice(explode('. ', $this->product['description']), 0, 1)); // 1-е предложение
+      if (!empty($item['description']) && (strlen($item['description']) < strlen($this->product['description'])))
+      {
+        $item['description'] .= '...';
+      }
     }
 
     $this->setVar('item', $item, true);

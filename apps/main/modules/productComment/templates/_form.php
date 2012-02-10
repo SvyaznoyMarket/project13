@@ -2,11 +2,8 @@
 <h2 class="bold">Мой отзыв о <?php echo $product->name ?></h2>
 <div class="line pb15"></div>
 
-<<<<<<< HEAD
 <form class="fl" method="post" id="rating_form" action="<?php echo url_for('productComment_new', $sf_data->getRaw('product')) ?>">
-=======
-<form method="post" id="rating_form" action="<?php echo url_for('productComment_new', $sf_data->getRaw('product')) ?>">
->>>>>>> github/master
+
 
 <div class="fl width450">
 	<div class="font16 pb15">Моя общая оценка<span class="gray">*</span>:</div>

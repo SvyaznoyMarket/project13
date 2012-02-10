@@ -171,29 +171,31 @@ $(document).ready(function() {
 		return out// + '&nbsp;'
 	}
 
-	if( $('.order1click-link').length ) {
+	function getOneClick( href ){
+		$('#ajaxgoods').lightbox_me({
+			centered: true,
+			closeClick: false,
+			closeEsc: false
+		})
+		$.get( href, function( response ) {
+			$('#ajaxgoods').hide()
+			if( typeof(response.success) !== 'undefined' && response.success ) {
+				$('#order1click-form').html(response.data.form)
+				$('#order1click-container').lightbox_me({
+					centered: true
+				})
+				cl1loaded = true
+				bindCalc()
+			}
+		})
+	}
+	//if( $('.order1click-link').length ) {
 		var cl1loaded = false
 		$('.order1click-link').bind('click', function(e) {
 			e.preventDefault()
 
 			if ( !cl1loaded ) {
-				$('#ajaxgoods').lightbox_me({
-					centered: true,
-					closeClick: false,
-					closeEsc: false
-				})
-				$.get( $(this).attr('href'), function( response ) {
-					//$('#ajaxgoods').trigger('close')
-					$('#ajaxgoods').hide()
-					if( typeof(response.success) !== 'undefined' && response.success ) {
-						$('#order1click-form').html(response.data.form)
-						$('#order1click-container').lightbox_me({
-							centered: true
-						})
-						cl1loaded = true
-						bindCalc()
-					}
-				})
+				getOneClick( $(this).attr('href') )
 			} else {
 				$('#order1click-container').lightbox_me({
 					centered: true
@@ -214,8 +216,8 @@ $(document).ready(function() {
 				$('.b1Click__ePriceBig .price').html( sum )
 			}
 
-			$('.c1less').bind( 'click', function(){ recalc(-1) })
-			$('.c1more').bind( 'click', function(){ recalc(1) })
+			$('.c1less').live( 'click', function(){ recalc(-1) })
+			$('.c1more').live( 'click', function(){ recalc(1) })
 		}
 
 		$('#order1click-form').bind('submit', function(e) {
@@ -256,6 +258,175 @@ $(document).ready(function() {
 			})
 		})
 
+    //}
+    
+    if( $('#gMap').length ) {
+		$('#gMap').bind({
+			create: function(e, center, markers, infoWindowTemplate) {
+				var el = $(this)
+		
+				var position = new google.maps.LatLng(center.latitude, center.longitude);
+				var options = {
+				  zoom: 11,
+				  center: position,
+				  scrollwheel: false,
+				  mapTypeId: google.maps.MapTypeId.ROADMAP,
+				  /*
+				  scaleControl: ,
+				  navigationControlOptions: {
+					style: google.maps.NavigationControlStyle.DEFAULT
+				  },
+				  */
+				  mapTypeControlOptions: {
+					style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+				  }
+				  
+				}
+			  var map = new google.maps.Map(document.getElementById(el.attr('id')), options)
+			  
+			  //var infoWindow = new google.maps.InfoWindow()
+			  var infoWindow = new InfoBox({ // http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/docs/examples.html
+				disableAutoPan: false,
+				maxWidth: 0,
+				pixelOffset: new google.maps.Size(-11, -108),
+				zIndex: null,
+				boxStyle: {
+				  opacity: 0.85,
+				  width: '280px'
+				},
+				//closeBoxMargin: "10px 2px 2px 2px",
+				closeBoxURL: 'http://www.google.com/intl/en_us/mapfiles/close.gif',
+				//closeBoxURL: '',
+				infoBoxClearance: new google.maps.Size(1, 1),
+				isHidden: false,
+				pane: 'floatShadow',
+				enableEventPropagation: true
+			  })
+			
+			  var showWindow = function() {
+				var item = markers[this.id]
+			
+				el.trigger('showMarkers')
+				el.trigger('infoWindow', [ this, item ])
+			  }
+			
+			  // set markers
+			  el.data('markers', [])
+			  $.each(markers, function(i, item) {
+				var marker = new google.maps.Marker({
+				  position: new google.maps.LatLng(item.latitude, item.longitude),
+				  map: map,
+				  title: item.name,
+				  icon: '/images/marker.png',
+				  id: item.id
+				})
+				google.maps.event.addListener(marker, 'click', showWindow);
+				el.data('markers').push(marker)
+			  })
+			
+			  google.maps.event.addListener(map, 'bounds_changed', function () {
+				//el.data('infoWindow').close()
+			  })
+			  google.maps.event.addListener(map, 'click', function () {
+				//el.data('infoWindow').close()
+			  })
+			  google.maps.event.addListener(infoWindow, 'closeclick', function () {
+				el.trigger('showMarkers')
+			  })
+			
+			  el.data('map', map)
+			  el.data('infoWindow', infoWindow)
+			  el.data('infoWindowTemplate', infoWindowTemplate)
+			},
+			move: function(e, center) {
+			  var el = $(this)
+			  var map = el.data('map')
+			},
+			infoWindow: function(e, marker, item) {
+			  var el = $(this)
+			  var map = el.data('map')
+			  var infoWindow = el.data('infoWindow')
+			  var infoWindowTemplate = el.data('infoWindowTemplate')
+			  // hides marker
+			  marker.setMap(null)
+			  $.each(infoWindowTemplate.find('[data-name]'), function(i, el) {
+				el.innerHTML = item[$(el).data('name')]
+			  })
+			
+			  infoWindow.setContent(infoWindowTemplate.prop('innerHTML'));
+			  infoWindow.open(map, marker);
+			},
+			showMarkers: function() {
+			  var el = $(this)
+			  $.each(el.data('markers'), function(i, marker) {
+				if (null == marker.map) {
+				  marker.setMap(el.data('map'))
+				}
+			  })
+			}
+		})
+		
+		var mapContainer = $('#gMap')
+		
+		mapContainer.trigger('create', [
+			$('#map-center').data('content'),
+			$('#map-markers').data('content'),
+			$('#map-info_window-container')
+		])
+		
+		mapContainer.delegate('.shopchoose', 'click', function(e) { //desktops
+			pickStore( e.target )
+		})	
+		function handleStart(e) {
+			if( e.target.className.match('shopchoose') )
+				pickStore( e.target )
+		}
+		mapContainer[0].addEventListener("touchstart", handleStart  , false) //touch devices
+		
+	
+		function pickStore( node ) {
+			getOneClick( $(node).parent().find('.shopnum').text() )
+		}
+		
+		$('.bInShopLine__eButton a').bind('click', function(e) {
+			e.preventDefault()
+			getOneClick( $(this).attr('href') )
+		})  
+		
+		$('.bInShop__eCurrent a').click( function(){
+			$.getJSON( '/region/init', function(data) { //double /* GEOIP fix */ in dash.js
+				if( !data.success ) 
+					return false
+				// paint popup			
+				var cities = data.data
+				var shtorka = $('<div>').addClass('graying')
+										.css( { 'opacity': '0.5'} ) //ie special							
+				var cityPopup = $('<div class="bCityPopupWrap">').html(
+					'<div class="hideblock bCityPopup">'+
+						'<i title="Закрыть" class="close">Закрыть</i>'+
+						'<div class="title">Привет, из какого ты города?</div>'+				
+					'</div>'+
+				'</div>')
+				cityPopup.find('.close').click( function() {
+					$('.graying').remove()
+					$('.bCityPopupWrap').hide()
+				})
+				for( var ci = 0, cl = cities.length; ci < cl; ci++ ) {
+					if( typeof( cities[ci].link ) === 'undefined' || typeof( cities[ci].name ) === 'undefined' )
+						continue
+					var cnode = $('<div>').append( $('<a>').attr( 'href', cities[ci].link ).text( cities[ci].name ) )
+					if( typeof( cities[ci].is_active ) !== 'undefined' ) {
+						cnode.addClass('bCityPopup__eCurrent')
+						cityPopup.find('.title').after( cnode )
+					} else {
+						cnode.addClass('bCityPopup__eBlock')
+						cityPopup.find('div:first').append( cnode )
+					}
+				}
+				$('body').append( shtorka ).append( cityPopup )
+			})		
+			return false
+		})
     }
 
 });

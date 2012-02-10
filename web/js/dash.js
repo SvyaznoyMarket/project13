@@ -325,6 +325,11 @@ $(document).ready(function(){
 	BB.push( '#bigpopup a.link1', $('div.popup_leftpanel').data('value'), markPageButtons ) // product card, buy in popup
 	BB.push('div.bSet a.link1', $('div.bSet').data('value'), markPageButtons ) // a set card, buy big
 	BB.push('div.mServ a.link1', $('div.mServ').data('value') ) // service card, buy big
+	BB.push('div.bInShop__eButton a.link1', $('div.bInShop__eButton').data('value'), function(){
+		var link1 = $('div.bInShop__eButton a.link1')
+		link1.html( '<i> </i>'+link1.html( ) ) 
+	}) // stock product card, buy orange
+
 
 	/* BB */
 	function BuyBottons() {

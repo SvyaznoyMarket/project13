@@ -1,50 +1,69 @@
-<!-- Goods info -->
-<div class="goodsphotosmall"><div class="photo"><img src="<?php echo $product->getMainPhotoUrl(2) ?>" alt="" width="163" height="163" title="" /></div></div>
-<div class="fr width219">
-  <div class="font11 gray pb10">Перейти в:</div>
-  <div class="articlemenu">
-    <ul>
-      <li><a href="<?php echo url_for('productCard', $sf_data->getRaw('product')) ?>">Карточка товара</a></li>
-      <li><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>">Отзывы пользователей</a></li>
-      <li class="next"><a href="<?php echo url_for('productStock', $sf_data->getRaw('product')) ?>" class="current">Где купить в магазинах</a></li>
-    </ul>
-  </div>
-</div>
-
-<?php include_component('product', 'show', array('view' => 'description', 'product' => $product)) ?>
-<!-- /Goods info -->
-
-<div class="clear pb20"></div>
-
-
-<!-- Shop -->
-<h2 class="bold">Где купить <?php echo $product ?></h2>
-<div class="line pb15"></div>
-<div class="descriptionlist shoplist">
-  <!--
-  <div class="point">
-    <div class="title"><h3>Интернет магазин www.enter.ru (Доставка по всей России)</h3></div>
-    <div class="description"><b class="supply1"></b>Много</div>
-
-  </div>
-  -->
-
-  <?php foreach ($list as $item): ?>
-  <div class="pb15"><strong><?php echo $item['name'] ?>:</strong></div>
-
-    <?php foreach ($item['shops'] as $shop): ?>
-    <div class="point">
-      <div class="title"><h3><?php echo $shop['name'] ?></h3></div>
-      <div class="description">
-        <?php include_partial('productStock/quantity', array('quantity' => $shop['quantity'])) ?>
-      </div>
+<input id="map-center" type="hidden" data-content='<?php echo json_encode(array('latitude' => $region['latitude'], 'longitude' => $region['longitude'])) ?>' />
+<input id="map-markers" type="hidden" data-content='<?php echo json_encode($markers) ?>' />
+<div id="map-info_window-container" class="hf">
+  <div class="bigmark">
+    <b class="corner"></b>
+    <div>
+      <h2 class="title" data-name="name"></h2>
+      <span class="shopnum" data-name="url" style="display:none"></span>
+	<br>
+	<br>
+	<input class="button whitebutton shopchoose" type="button" value="Выбрать этот магазин">
     </div>
-    <?php endforeach ?>
-  <?php endforeach ?>
-
+  </div>
 </div>
-<!-- /Shop  -->
 
-<?php foreach ($list as $time): ?>
 
-<?php endforeach; ?>
+<!-- shop list -->
+<div class='bInShop'>
+  <div class='bInShop__eLeft'>
+    <div class='bInShop__eMap' id='gMap'></div>
+    <div class='bInShop__eCurrent'><h2><?php echo ($region['prefix'] ? ($region['prefix'].' ') : '').$region['name'] ?></h2> <a href class='bGrayButton'>Другой город</a></div>
+
+    <?php if (count($shopList)): ?>
+      <div class='bInShopLine mInF'>
+        <div class='bInShopLine__eTitle'>Адреса магазинов</div>
+        <div class='bInShopLine__eCount mInF'>Наличие</div>
+
+        <div class='bInShopLine__eButton'></div>
+      </div>
+
+      <?php foreach ($shopList as $shop): ?>
+      <div class='bInShopLine'>
+        <div class='bInShopLine__eTitle'><a href style='font: 14px Tahoma, sans-srif'><?php echo $shop['name'] ?></a></div>
+        <div class='bInShopLine__eCount'><?php include_partial('productStock/quantity', array('quantity' => $shop['product_quantity'])) ?></div>
+        <div class='bInShopLine__eButton'><a href="<?php echo url_for('order_1click', array('product' => $product['barcode'], 'shop' => $shop['token'])) ?>" class='bGrayButton'>Купить в этом магазине</a></div>
+      </div>
+      <?php endforeach ?>
+    <?php endif ?>
+
+  </div>
+
+  <div class='bInShop__eRight'>
+    <?php include_component('product', 'show', array('product' => $product, 'view' => 'stock')) ?>
+  </div>
+</div>
+<!-- /shop list -->
+
+
+<div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
+  <div class="bMobDown__eWrap">
+    <div class="bMobDown__eClose close"></div>
+    <h2>Покупка в 1 клик!</h2>
+    <div class="clear line pb20"></div>
+
+    <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $product['barcode'])) ?>" method="post"></form>
+
+  </div>
+</div>
+<div id="ajaxgoods" class="popup width230" style="display: none">
+  <div  style="padding: 15px 15px 20px 5px">
+    <div class="bNavLoader__eIco">
+      <img src="/images/ajar.gif">
+    </div>
+    <div class="bNavLoader__eM">
+      <p class="bNavLoader__eText">Подождите немного</p>
+      <p class="bNavLoader__eText">Идет загрузка</p>
+    </div>
+  </div>
+</div>
