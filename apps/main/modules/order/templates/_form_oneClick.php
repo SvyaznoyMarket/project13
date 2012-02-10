@@ -6,9 +6,9 @@
 
   <?php if ($shop): ?>
     <br class="clear" />
-    <div class="pt10">
+    <div class="sLocation">
       Магазин: <?php echo $shop->Region ?>, <?php echo $shop->address ?><br />
-      <?php echo $shop->regime ?>
+      Время работы: <?php echo $shop->regime ?>
     </div>
   <?php endif ?>
 </div>
