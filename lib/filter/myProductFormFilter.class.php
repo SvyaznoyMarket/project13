@@ -68,7 +68,8 @@ class myProductFormFilter extends sfFormFilter
     }
 
     // виджеты параметров
-    $productFilterList = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
+    //$productFilterList = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
+    $productFilterList = $productCategory->getFilterGroupForFilter();
     //$productFilterList = $productCategory->FilterGroup->Filter;
 
     foreach ($productFilterList as $productFilter)
@@ -123,7 +124,8 @@ class myProductFormFilter extends sfFormFilter
       'type'       => $productType,
     );
 
-    $productFilterList = $productCategory->FilterGroup->Filter;
+    //$productFilterList = $productCategory->FilterGroup->Filter;
+    $productFilterList = $productCategory->getFilterGroupForFilter();
     $productFilterList->indexBy('id');
 
     foreach ($this->values as $id => $param)
