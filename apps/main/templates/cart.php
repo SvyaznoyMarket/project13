@@ -12,7 +12,7 @@
     <?php include_partial('default/googleAnalytics') ?>
 
   </head>
-  <body data-template="cart">
+  <body data-template="cart" style="background: url('/images/bg_14fev.png') no-repeat scroll center 0 #F6F1E9">
     <div class="allpage">
       <div class="allpageinner">
 

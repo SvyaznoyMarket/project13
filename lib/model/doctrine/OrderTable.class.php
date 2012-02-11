@@ -109,7 +109,14 @@ class OrderTable extends myDoctrineTable
       {
         foreach ($record['ProductRelation'] as $productRelation)
         {
-          $productRelation['Product'] = isset($productList[$productRelation['product_id']]) ? $productList[$productRelation['product_id']] : false;
+          try
+          {
+            $productRelation['Product'] = isset($productList[$productRelation['product_id']]) ? $productList[$productRelation['product_id']] : false;
+          }
+          catch (Exception $e)
+          {
+            
+          }
         }
 
         if (is_array($record))
