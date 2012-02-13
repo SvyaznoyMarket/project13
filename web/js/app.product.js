@@ -177,16 +177,18 @@ $(document).ready(function() {
 			closeClick: false,
 			closeEsc: false
 		})
+		
 		$.get( href, function( response ) {
 			$('#ajaxgoods').hide()
 			if( typeof(response.success) !== 'undefined' && response.success ) {
 				$('#order1click-form').html(response.data.form)
-				
+				if( typeof(response.data.shop) !== 'undefined' ) {
 				if( typeof(response.data.shop.name) !== 'undefined' ) {
-				console.info(typeof(response.data.shop.name))
+					$('.sLocation').remove()
 					$('#order1click-container h2').text('Оформить и забрать в магазине')
 						.after( $('<div>').addClass('pb10').addClass('sLocation')
 							.html( response.data.shop.name + '. Время работы: ' + response.data.shop.regime ) )
+				}
 				}
 				$('#order1click-container').lightbox_me({
 					centered: true
@@ -211,8 +213,8 @@ $(document).ready(function() {
 		})
 
 		function bindCalc() {
-			var quant = 1
-			var pric  = $('.b1Click__ePriceBig .price').html().replace(/\s/g,'')
+			var quant = $('#order_product_quantity').val()*1 || 1
+			var pric  = Math.round( $('.b1Click__ePriceBig .price').html().replace(/\s/g,'')*1 / quant )
 			function recalc( delta ) {
 				if( quant == 1 && delta < 0 )
 					return
