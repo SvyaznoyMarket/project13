@@ -82,7 +82,7 @@ foreach ($p3d as $p3d_obj)
         <div class="line pb15"></div>
 
         <?php if ($item['is_insale']): ?>
-		<div class="bDeliver2 delivery-info" id="product-id-<?php echo $item['core_id'] ?>" data-shoplink="<?php echo url_for('shop') ?>" data-calclink="<?php echo url_for('product_delivery') ?>">
+		<div class="bDeliver2 delivery-info" id="product-id-<?php echo $item['core_id'] ?>" data-shoplink="<?php echo $item['stock_url'] ?>" data-calclink="<?php echo url_for('product_delivery') ?>">
 			<h4>Как получить заказ?</h4>
 			<ul>
 				<li>
@@ -167,10 +167,12 @@ foreach ($p3d as $p3d_obj)
       <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
       <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
     </div>
-<?php if (false): ?>
+
+  <?php if (false): ?>
     <div class="pb5"><strong><a onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" id="1click-trigger" href="<?php echo url_for('order_1click', array('product_id' => $product->id)) ?>" class="red underline">Купить быстро в 1 клик</a></strong></div>
-<?php endif; ?>
-    <a href="<?php echo $item['shop_url'] ?>" class="underline">В каких магазинах ENTER можно купить?</a>
+  <?php endif ?>
+
+    <a href="<?php echo $item['stock_url'] ?>" class="underline">В каких магазинах ENTER можно купить?</a>
   </div>
 
   <div class="clear pb15"></div>
