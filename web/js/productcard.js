@@ -5,14 +5,14 @@ $(document).ready(function(){
 		var l1 = np.parent().find('.link1')
 		var l1href = l1.attr('href')
 		var l1cl = $('a.order1click-link')
-		var l1href = l1cl.attr('href')
+		var l1clhref = l1cl.attr('href')
 		np.data('hm', np.find('span').text().replace(/\D/g,'') )
 		
 		np.bind('update', function() {
 			var hm = $(this).data('hm')
 			np.find('span').text( hm + '  шт.')
 			l1.attr('href', l1href + '/' +  hm )
-			l1cl.attr('href', l1href + '&quantity=' + hm )
+			l1cl.attr('href', l1clhref + '&quantity=' + hm )
 		})
 		
 		$('.bCountSet__eP').click( function() {
