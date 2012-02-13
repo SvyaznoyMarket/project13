@@ -150,11 +150,10 @@ class productComponents extends myComponents
     }
     if ('stock' == $this->view)
     {
-      $item['description'] = implode('. ', array_slice(explode('. ', $this->product['description']), 0, 1)); // 1-е предложение
-      if (!empty($item['description']) && (strlen($item['description']) < strlen($this->product['description'])))
-      {
-        $item['description'] .= '...';
-      }
+      $item['description'] = $this->product['description'];
+      $length = mb_strpos($item['description'], ' ', 120) ?: strlen($item['description']);
+      $item['description'] = mb_substr($item['description'], 0, $length);
+      $item['description'] = $item['description'].((mb_strlen($this->product['description']) > mb_strlen($item['description'])) ? '...' : '');
     }
 
     $this->setVar('item', $item, true);
