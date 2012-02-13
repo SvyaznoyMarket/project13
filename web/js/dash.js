@@ -277,8 +277,10 @@ $(document).ready(function(){
 		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине')
 		$('.bSet__ePrice .link1').unbind('click')
 		$('.goodsbar .link1').die('click')
+		$('.bCountSet__eP').html('&nbsp;').addClass('disabled')
+		$('.bCountSet__eM').html('&nbsp;').addClass('disabled')
 	}
-
+	
 	/* stuff go to litebox */
 	function parseItemNode( ref ){
 		var jn = $( 'div[ref='+ ref +']')

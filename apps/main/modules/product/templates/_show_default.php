@@ -61,6 +61,16 @@ foreach ($p3d as $p3d_obj)
         </div>
         <div class="fr ar pb15">
             <div class="goodsbarbig mSmallBtns" ref="<?php echo $item['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
+
+              <div class='bCountSet'>
+                <?php if (!$item['cart_quantity']) { ?>
+              	<a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
+                <?php } else { ?>
+              	<a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+              	<?php } ?>
+                <span><?php echo $item['cart_quantity'] ? $item['cart_quantity'] : 1 ?> шт.</span>
+              </div>
+
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
             </div>
             <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
