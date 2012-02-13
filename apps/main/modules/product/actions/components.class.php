@@ -24,7 +24,7 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock')))
     {
       $this->view = 'default';
     }
@@ -119,6 +119,7 @@ class productComponents extends myComponents
       $item['stock_url'] = $this->generateUrl('productStock', $this->product);
       //$item['shop_url'] = $this->generateUrl('shop_show', ShopTable::getInstance()->getMainShop());
       $item['shop_url'] = $this->generateUrl('shop');
+      $item['stock_url'] = $this->generateUrl('productStock', $this->product);
       $item['preview'] = $this->product['preview'];
 
       $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
@@ -127,7 +128,11 @@ class productComponents extends myComponents
         ? in_array($this->product['id'], $rated)
         : false
       ;
-
+      $item['cart_quantity'] = 0;
+      if ($cartItem = $this->getUser()->getCart()->getProduct($this->product['id']))
+      {
+        $item['cart_quantity'] = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
+      }
     }
     if (in_array($this->view, array('expanded')))
     {
@@ -142,6 +147,14 @@ class productComponents extends myComponents
       $item['url'] = $this->generateUrl('lineCard', array('line' => $this->product['Line']['token'], ), array('absolute' => true));
       $item['Line']['name'] = $this->product['Line']['name'];
       $item['Line']['count'] = ProductLineTable::getInstance()->getProductCountById($this->product['Line']['id']);
+    }
+    if ('stock' == $this->view)
+    {
+      $item['description'] = implode('. ', array_slice(explode('. ', $this->product['description']), 0, 1)); // 1-е предложение
+      if (!empty($item['description']) && (strlen($item['description']) < strlen($this->product['description'])))
+      {
+        $item['description'] .= '...';
+      }
     }
 
     $this->setVar('item', $item, true);

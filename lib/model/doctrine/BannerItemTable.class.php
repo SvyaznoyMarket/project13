@@ -29,19 +29,21 @@ class BannerItemTable extends myDoctrineTable
 
   public function getCacheTags($record)
   {
-    $tags = array();
+    /*$tags = array();
     if (!empty($record['id']))
     {
       $tags[] = "banner-{$record['banner_id']}";
     }
 
-    return $tags;
+    return $tags;*/
+    return array();
   }
 
   public function getCacheEraserKeys($record, $action = null)
   {
-    return array(
+    /*return array(
       'banner-'.$record['banner_id'],
-    );
+    );*/
+    return array();
   }
 }

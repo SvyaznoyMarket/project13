@@ -17,31 +17,30 @@ class productStockComponents extends myComponents
   */
   public function executeShow()
   {
-    $list = array();
+    $region = $this->getUser()->getRegion('region');
 
-    $values = $this->product->getShopList()->toKeyValueArray('id', 'quantity');
+    $shopList = $this->product->getShopList(array(
+      'region_id' => $region['id'],
+    ));
 
-    foreach (ShopTable::getInstance()->getList() as $shop)
+    $markers = array();
+    foreach ($shopList as $shop)
     {
-      $index = $shop->region_id;
-
-      if (!isset($list[$index]))
-      {
-        $list[$index] = array(
-          'name'  => $shop->Region->name,
-          'shops' => array(),
-        );
-      }
-
-      $list[$index]['shops'][] = array(
-        'name'     => $shop->name,
-        'token'    => $shop->token,
-        'url'      => $this->generateUrl('shop_show', $shop),
-        'quantity' => isset($values[$shop->id]) ? $values[$shop->id] : 0,
+      $markers[$shop->id] = array(
+        'id'        => $shop->id,
+        'region_id' => $shop->region_id,
+        'url'       => $this->generateUrl('order_1click', array('product' => $this->product['barcode'], 'shop' => $shop->token)),
+        'name'      => $shop->name,
+        'address'   => $shop->address,
+        'regime'    => $shop->regime,
+        'latitude'  => $shop->latitude,
+        'longitude' => $shop->longitude,
       );
     }
 
-    $this->setVar('list', $list, true);
+    $this->setVar('region', $region, true);
+    $this->setVar('shopList', $shopList, true);
+    $this->setVar('markers', $markers, true);
   }
 }
 

@@ -74,6 +74,7 @@ class TaskTable extends myDoctrineTable
     $q->orderBy('priority ASC, core_packet_id ASC');
 
     //$this->setQueryParameters($q, $params);
+    $q->limit(1);
 
     return $q->fetchOne();
   }

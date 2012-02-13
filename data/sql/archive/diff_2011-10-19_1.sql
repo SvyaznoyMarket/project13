@@ -1,0 +1,1 @@
+ALTER TABLE `product`  ADD COLUMN `main_photo` VARCHAR(255) NULL COMMENT 'Главная фотография товара' AFTER `description`;

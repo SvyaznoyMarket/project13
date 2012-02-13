@@ -38,6 +38,33 @@
            _gaq.push(['_trackTrans']);
    }
 
+    var yaParams = {
+        order_id: '<?php echo $order['number'] ?>',
+        order_price: <?php echo str_replace(',', '.', $order['sum']) ?>,
+        currency: 'RUR',
+        exchange_rate: 1,
+        goods: [
+            <?php foreach ($order->ProductRelation as $product): ?>
+                {
+                    id: '<?php echo $product->Product['article'] ?>',
+                    name: '<?php echo $product->Product['name'] ?>',
+                    price: <?php echo str_replace(',', '.', $product['price']) ?>,
+                    quantity: <?php echo $product['quantity'] ?>
+                },
+                <?php endforeach ?>
+        ]
+    };
+
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true, params:window.yaParams||{ }});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+
+
   </script>
 
 <?php endif ?>

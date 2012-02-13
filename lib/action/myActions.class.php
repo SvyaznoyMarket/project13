@@ -30,6 +30,14 @@ class myActions extends sfActions
     }
   }
 
+  public function postExecute()
+  {
+    if ('debug' == sfConfig::get('sf_environment'))
+    {
+      $this->getResponse()->addStylesheet('debug.css');
+    }
+  }
+
   public function renderJson($value, $header = true, array $params = array())
   {
     $params = myToolkit::arrayDeepMerge(array(

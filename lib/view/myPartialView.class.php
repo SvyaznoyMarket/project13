@@ -148,12 +148,7 @@ class myPartialView extends sfPHPView
 
     if ('debug' == sfConfig::get('sf_environment'))
     {
-      $retval = ''
-        .'<div class="component-container debug">'
-          .'<span class="title">'.$this->moduleName.'/'.$this->actionName.'</span>'
-          .$retval
-        .'</div>'
-      ;
+      $retval = '<div class="component-container debug">'.$this->moduleName.'/'.$this->actionName.'</div>'.$retval;
     }
 
     return $retval;

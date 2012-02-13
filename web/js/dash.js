@@ -277,8 +277,10 @@ $(document).ready(function(){
 		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине')
 		$('.bSet__ePrice .link1').unbind('click')
 		$('.goodsbar .link1').die('click')
+		$('.bCountSet__eP').html('&nbsp;').addClass('disabled')
+		$('.bCountSet__eM').html('&nbsp;').addClass('disabled')
 	}
-
+	
 	/* stuff go to litebox */
 	function parseItemNode( ref ){
 		var jn = $( 'div[ref='+ ref +']')
@@ -325,6 +327,11 @@ $(document).ready(function(){
 	BB.push( '#bigpopup a.link1', $('div.popup_leftpanel').data('value'), markPageButtons ) // product card, buy in popup
 	BB.push('div.bSet a.link1', $('div.bSet').data('value'), markPageButtons ) // a set card, buy big
 	BB.push('div.mServ a.link1', $('div.mServ').data('value') ) // service card, buy big
+	BB.push('div.bInShop__eButton a.link1', $('div.bInShop__eButton').data('value'), function(){
+		var link1 = $('div.bInShop__eButton a.link1')
+		link1.html( '<i> </i>'+link1.html( ) ) 
+	}) // stock product card, buy orange
+
 
 	/* BB */
 	function BuyBottons() {

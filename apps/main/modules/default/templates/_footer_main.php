@@ -5,13 +5,16 @@
 			<div class="vcard"><span class="tel">8 (800) 700 00 09</span></div>
 			<div class="address">Звонок бесплатный. Радость в подарок :)</div>
 		</div>
+    <?php if(false): ?>
     <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'mobile_apps',)) ?>"><img src='/images/img_main_mobile_apps.jpg'></a></div>
+    <?php endif ?>
+    <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('productCatalog_category', array('productCategory' => 'gifthobby/podarki-na-14-fevralya-1499',)) ?>"><img src='/images/icon_14feb.gif'></a></div>
     <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><img src='/images/img_main_f1service.jpg'></a></div>
 	<div class='bIndexLinks2__eLinks'>
 		<a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">О компании</a>
 		<a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>">Сервис F1</a>
 		<a href="<?php echo url_for('default_show', array('page' => 'credit',)) ?>">Покупка в кредит</a>
-		<a href="http://hh.ru/employer.do?employerId=799483" target="blank">Работать у нас</a>
+		<a href="http://job.enter.ru/" target="_blank">Работать у нас</a>
 		<a href="<?php echo url_for('shop') ?>">Наши магазины</a>
 		<a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Как сделать заказ</a>
 		<a href="<?php echo url_for('default_show', array('page' => 'mobile_apps')) ?>">Мобильные приложения</a>

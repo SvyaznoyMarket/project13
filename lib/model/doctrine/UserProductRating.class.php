@@ -16,16 +16,18 @@ class UserProductRating extends BaseUserProductRating
 	{
 		$data = parent::exportToCore();
 
+    myDebug::dump($this);
+    myDebug::dump($this->Property);
 		$data['user_id'] = $this->User->core_id;
 		$data['product_id'] = $this->Product->core_id;
 		//$data['property_id'] = $this->Property->core_id;
 		$data['criterion_id'] = $this->Property->core_id;
-		$data['ip'] = $_SERVER['REMOTE_ADDR'];
-		//$data['ip'] = sfContext::getInstance()->getUser()->getIp();
+		//$data['ip'] = $_SERVER['REMOTE_ADDR'];
+		$data['ip'] = sfContext::getInstance()->getUser()->getIp();
 
 		return $data;
 	}
-	
+
 //  public function postSave($event)
 //  {
 //    $rating = $this->getTable()->createBaseQuery()

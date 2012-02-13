@@ -61,6 +61,16 @@ foreach ($p3d as $p3d_obj)
         </div>
         <div class="fr ar pb15">
             <div class="goodsbarbig mSmallBtns" ref="<?php echo $item['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
+
+              <div class='bCountSet'>
+                <?php if (!$item['cart_quantity']): ?>
+                  <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
+                <?php else: ?>
+                  <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+              	<?php endif ?>
+                <span><?php echo $item['cart_quantity'] ? $item['cart_quantity'] : 1 ?> шт.</span>
+              </div>
+
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
             </div>
             <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
@@ -72,7 +82,7 @@ foreach ($p3d as $p3d_obj)
         <div class="line pb15"></div>
 
         <?php if ($item['is_insale']): ?>
-		<div class="bDeliver2 delivery-info" id="product-id-<?php echo $item['core_id'] ?>" data-shoplink="<?php echo url_for('shop') ?>" data-calclink="<?php echo url_for('product_delivery') ?>">
+		<div class="bDeliver2 delivery-info" id="product-id-<?php echo $item['core_id'] ?>" data-shoplink="<?php echo $item['stock_url'] ?>" data-calclink="<?php echo url_for('product_delivery') ?>">
 			<h4>Как получить заказ?</h4>
 			<ul>
 				<li>
@@ -157,10 +167,12 @@ foreach ($p3d as $p3d_obj)
       <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
       <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
     </div>
-<?php if (false): ?>
+
+  <?php if (false): ?>
     <div class="pb5"><strong><a onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" id="1click-trigger" href="<?php echo url_for('order_1click', array('product_id' => $product->id)) ?>" class="red underline">Купить быстро в 1 клик</a></strong></div>
-<?php endif; ?>
-    <a href="<?php echo $item['shop_url'] ?>" class="underline">В каких магазинах ENTER можно купить?</a>
+  <?php endif ?>
+
+    <a href="<?php echo $item['stock_url'] ?>" class="underline">В каких магазинах ENTER можно купить?</a>
   </div>
 
   <div class="clear pb15"></div>
