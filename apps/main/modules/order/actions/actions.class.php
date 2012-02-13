@@ -53,7 +53,7 @@ class orderActions extends myActions
     $quantity = (int) $request->getParameter('quantity');
     if ($quantity <= 0)
     {
-      $quantity = 5;
+      $quantity = 1;
     }
     $this->product->mapValue('cart', array('quantity' => $quantity));
 
