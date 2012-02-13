@@ -52,16 +52,16 @@ class creditActions extends myActions {
     $this->setVar('currentPage', 'credit', true );
 
     $creditOptions = array(
-      array("id" => 1, "name" => "Я беру в кредит мобильный телефон"),
-      array("id" => 2, "name" => "Я беру в кредит ноутбук"),
-      array("id" => 3, "name" => "Я беру в кредит электронику"),
-      array("id" => 4, "name" => "Я беру в кредит мебель"),
-      array("id" => 5, "name" => "Я беру в кредит ювелирные украшения (часы)"),
-      array("id" => 6, "name" => "Я беру в кредит бытовую технику"),
-      array("id" => 7, "name" => "Я беру в кредит товары для дома"),
-      array("id" => 8, "name" => "Я беру в кредит товары для спорта"),
-      array("id" => 9, "name" => "Я беру в кредит товары для детей"),
-      array("id" => 10, "name" => "Я беру в кредит инструменты")
+      array("id" => 1, "name" => "Я беру в кредит мобильный телефон", "button_name" => "Перейти в раздел &laquo;Мобильные телефоны&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'electronics/telefoni-mobilnie-telefoni-910',)), ),
+      array("id" => 2, "name" => "Я беру в кредит ноутбук", "button_name" => "Перейти в раздел &laquo;Ноутбуки&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'electronics/mobilnaya-elektronika-naushniki-875',)), ),
+      array("id" => 3, "name" => "Я беру в кредит электронику", "button_name" => "Перейти в раздел &laquo;Электроника&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'electronics',)), ),
+      array("id" => 4, "name" => "Я беру в кредит мебель", "button_name" => "Перейти в раздел &laquo;Мебель&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'furniture',)), ),
+      array("id" => 5, "name" => "Я беру в кредит ювелирные украшения (часы)", "button_name" => "Перейти в раздел &laquo;Украшения и часы&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'jewel',)), ),
+      array("id" => 6, "name" => "Я беру в кредит бытовую технику", "button_name" => "Перейти в раздел &laquo;Бытовая техника&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'appliances',)), ),
+      array("id" => 7, "name" => "Я беру в кредит товары для дома", "button_name" => "Перейти в раздел &laquo;Товары для дома&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'household',)), ),
+      array("id" => 8, "name" => "Я беру в кредит товары для спорта", "button_name" => "Перейти в раздел &laquo;Спорт&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'sport',)), ),
+      array("id" => 9, "name" => "Я беру в кредит товары для детей", "button_name" => "Перейти в раздел &laquo;Для мам и детей&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'children',)), ),
+      array("id" => 10, "name" => "Я беру в кредит инструменты", "button_name" => "Перейти в раздел &laquo;Сделай сам (инструменты)&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'do_it_yourself',)), )
     );
 
     $banks = array(
@@ -443,7 +443,7 @@ class creditActions extends myActions {
       array(
         'id'    => 3,
         'name'  => 'ОТП-Банк',
-        'image' => '/images/credit_otp.png',
+        'image' => '/images/credit_otp.gif',
         'programs'  => array(
           array(
             'name'    => 'Золотой',
