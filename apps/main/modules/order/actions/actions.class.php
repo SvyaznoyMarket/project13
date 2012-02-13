@@ -48,19 +48,30 @@ class orderActions extends myActions
 
     $this->product = ProductTable::getInstance()->getByBarcode($request->getParameter('product'), array('with_model' => true));
 
+    $quantity = (int) $request->getParameter('quantity');
+    if ($quantity <= 0)
+    {
+      $quantity = 5;
+    }
+    $this->product->mapValue('cart', array('quantity' => $quantity));
+
     $this->order = new Order();
     $this->order->User = $this->getUser()->getGuardUser();
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
     $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
     $this->order->delivery_type_id = 1;
-    $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product); //нужна для правильного отбражения формы заказа
+    $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product) * $quantity; //нужна для правильного отбражения формы заказа
 
     if (empty($this->order->region_id))
     {
       $this->order->region_id = $this->getUser()->getRegion('id');
     }
 
-    $this->form = new OrderOneClickForm($this->order, array('user' => $this->getUser()->getGuardUser()));
+    $this->form = new OrderOneClickForm($this->order, array('user' => $this->getUser()->getGuardUser(), 'quantity' => $quantity,));
+    //$this->form['product_quantity']->setDefault(5);
+    //$this->form->setValue('product_quantity', 5);
+    //$this->form->getValue('product_quantity');
+
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getParameter($this->form->getName()));
