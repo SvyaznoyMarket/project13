@@ -2595,14 +2595,14 @@ DT.bCtg__eOrange{
 		position: absolute;
 		}
 	.bF1Credit__eImg.mI1{
-		bottom: 40px;
+        bottom: 260px;
 		right: 45px;
 		width: 130px;
 		height: 113px;
 		background: url('/images/pages/i1.png') 0 0 no-repeat;
   }
 	.bF1Credit__eImg.mI2{
-		bottom: -25px;
+        bottom: 225px;
 		right: 165px;
 		width: 151px;
 		height: 179px;
@@ -2610,7 +2610,7 @@ DT.bCtg__eOrange{
 		}
 	.bF1Credit__eImg.mI3{
 		right: 0;
-		bottom: 170px;
+        bottom: 390px;
 		width: 106px;
 		height: 133px;
 		background: url('/images/pages/i3.png') 0 0 no-repeat;
@@ -3222,7 +3222,7 @@ DT.bCtg__eOrange{
 		position: absolute;
 		}
 	.bCityPopup .close{
-		background: url('img/city_close.png') no-repeat;
+		background: url('/images/city_close.png') no-repeat;
 		}
 	.bCityPopup .title{
 		color: #ffa800;
@@ -3258,6 +3258,103 @@ DT.bCtg__eOrange{
 #noti div{
 	margin-top: 50px;
 }
+
+.bCreditLine{}
+    .bCreditLine h2{
+        padding: 0;
+        color: #50ccf2;
+        font: bold 18px Tahoma, sans-serif;
+    }
+    .bCreditLine span{
+        color: #434343;
+        margin: 20px 0;
+        width: 590px;
+        font: 14px Tahoma, sans-serif;
+
+        display: inline-block;
+        *display: inline;
+        zoom: 1;
+    }
+    .bCreditLine span a{
+        color: #434343;
+        text-decoration: underline;
+    }
+    .bCreditLine span a:hover{
+        color: #000;
+    }
+    .bCreditLine b{
+        color: #434343;
+        text-decoration: underline;
+        font: bold 14px Tahoma, sans-serif;
+    }
+    .bCreditLine select{
+        height: 30px;
+        outline: none;
+        background: #f4f4f4;
+        margin: 20px 0 40px 0;
+        border: 1px solid #dddddd;
+        font: 14px Tahoma, sans-serif;
+
+        border-radius: 7px;
+        -webkit-border-radius: 7px;
+        -moz-border-radius: 7px;
+        -o-border-radius: 7px;
+    }
+    .bCreditLine dl{
+        color: #434343;
+        margin: 40px 0;
+    }
+    .bCreditLine dl dt{
+        width: 160px;
+
+        vertical-align: top;
+        display:inline-block;
+        *display: inline;
+        zoom: 1;
+    }
+    .bCreditLine dl dd{
+        width: 750px;
+
+        vertical-align: top;
+        display:inline-block;
+        *display: inline;
+        zoom: 1;
+    }
+    .bCreditLine dl dd h3{
+        margin: 0;
+        font: bold 18px Tahoma, sans-serif;
+    }
+    .bCreditLine dl dd h4{
+        margin: 20px 0 10px 0;
+        font: bold 14px Tahoma, sans-serif;
+    }
+    .bCreditLine ul{
+        padding-left: 30px;
+        font: 14px Tahoma, sans-serif;
+        list-style-image: url('/images/credit_list_style.png');
+    }
+    .bCreditLine ul li{
+        margin: 4px 0;
+    }
+    .bCreditLine__eLogo{
+        float: right;
+    }
+    .bCreditButtonWrap{
+        text-align: center;
+    }
+    .bCreditLine .bBigOrangeButton{
+        font-weight: normal;
+    }
+    .bCreditLine2{
+        color: #434343;
+    }
+    .bCreditLine2 i{
+        font: bold 14px Tahoma, sans-serif;
+    }
+    .bCreditLine2 li{
+        width: 550px;
+        padding: 5px 0;
+    }
 
 .bInShop{
 	clear: both;

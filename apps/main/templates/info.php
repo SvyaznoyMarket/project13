@@ -50,7 +50,9 @@
 
         <!-- Page head -->
         <div class="pagehead">
+          <?php if (!include_slot('page_breadcrumbs')): ?>
           <div class="breadcrumbs"><a href="<?php echo url_for('homepage') ?>">Enter.ru</a> &gt; <strong>Помощь пользователю</strong></div>
+          <?php endif ?>
 
           <div class="clear"></div>
           <?php if (has_slot('title')): ?>

@@ -33,16 +33,7 @@ class ProductParameter extends myDoctrineVirtualRecord
         case 'integer': case 'float':
           if (false !== strpos($realValue, '.'))
           {
-            $frac = $realValue - floor($realValue);
-            if (0 == $frac)
-            {
-              $realValue = intval($realValue);
-            }
-            else {
-              $realValue = rtrim($realValue, '0');
-            }
-
-            $realValue = str_replace('.', ',', $realValue);
+            $realValue = myToolkit::trimZero($realValue);
           }
 
           $value[] = $this->formatValue($this->property['pattern'], $realValue, $this->property['unit']);
