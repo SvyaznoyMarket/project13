@@ -8,7 +8,7 @@
       <span class="shopnum" data-name="url" style="display:none"></span>
 	<br>
 	<br>
-	<input class="button whitebutton shopchoose" type="button" value="Выбрать этот магазин">
+	<input class="button whitebutton shopchoose" type="button" value="Купить в этом магазине">
     </div>
   </div>
 </div>
