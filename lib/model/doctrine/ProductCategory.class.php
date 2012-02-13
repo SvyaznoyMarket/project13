@@ -206,7 +206,13 @@ class ProductCategory extends BaseProductCategory
       $propertyIds[$property['id']] = $key;
     }
 
-    foreach ($this->FilterGroup->Filter as $filter)
+    $q = ProductFilterTable::getInstance()->createBaseQuery();
+    $q->addWhere('productFilter.group_id = ?', $this->id)
+      ->orderBy('productFilter.position');
+
+    $filters = $q->execute();
+
+    foreach ($filters as $filter)
     {
       if (false
         || (('choice' == $filter->type) && isset($propertyIds[$filter->property_id]))

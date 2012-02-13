@@ -19,9 +19,20 @@ class productStockComponents extends myComponents
   {
     $region = $this->getUser()->getRegion('region');
 
-    $shopList = $this->product->getShopList(array(
-      'region_id' => $region['id'],
-    ));
+    $quantityInRegion = $this->product->getStockQuantity() ?: 0;
+
+    $shopList = $this->product->getShopList(array('region_id' => $region['id']));
+    // добавляет к каждому магазину количество товара на складе региона
+    // удаляет магазины, в которых нет товара
+    foreach ($shopList as $i => $shop)
+    {
+      $shop['product_quantity'] += $quantityInRegion;
+
+      if (0 == $shop['product_quantity'])
+      {
+        unset($shopList[$i]);
+      }
+    }
 
     $markers = array();
     foreach ($shopList as $shop)

@@ -53,10 +53,19 @@ class productCatalogComponents extends myComponents
     }
     if (isset($this->product))
     {
-      $list[] = array(
-        'name' => (string)$this->product,
-        'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
-      );
+      if ('productStock' == $this->getContext()->getRouting()->getCurrentRouteName())
+      {
+        $list[] = array(
+          'name' => 'Где купить '.mb_lcfirst((string)$this->product),
+          'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+        );
+      }
+      else {
+        $list[] = array(
+          'name' => (string)$this->product,
+          'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+        );
+      }
     }
 
     $this->setVar('list', $list, false);
