@@ -49,6 +49,11 @@ class orderActions extends myActions
     $this->product = ProductTable::getInstance()->getByBarcode($request->getParameter('product'), array('with_model' => true));
 
     $this->shop = $request['shop'] ? ShopTable::getInstance()->getByToken($request['shop']) : null;
+    $shopData =
+      $this->shop
+      ? array('name' => $this->shop->name, 'region' => $this->shop->Region->name, 'regime' => $this->shop->regime, 'address' => $this->shop->address)
+      : false
+    ;
 
     $this->order = new Order();
     $this->order->User = $this->getUser()->getGuardUser();
@@ -73,6 +78,12 @@ class orderActions extends myActions
         $taintedValues = $this->form->getTaintedValues();
         $this->shop = !empty($taintedValues['shop_id']) ? ShopTable::getInstance()->getById($taintedValues['shop_id']) : null;
       }
+      // Осторожно: нарушен прынцып DRY!
+      $shopData =
+        $this->shop
+        ? array('name' => $this->shop->name, 'region' => $this->shop->Region->name, 'regime' => $this->shop->regime, 'address' => $this->shop->address)
+        : false
+      ;
 
       if ($this->form->isValid())
       {
@@ -139,10 +150,12 @@ class orderActions extends myActions
           $return['data'] = array(
             'title'   => 'Ваш заказ принят, спасибо!',
             'content' => $this->getPartial($this->getModuleName().'/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop)),
+            'shop'    => $shopData,
           );
         }
         catch (Exception $e)
         {
+          $return['success'] = false;
           $return['message'] = 'Не удалось создать заказ'.(sfConfig::get('sf_debug') ? (' Ошибка: '.$e->getMessage()) : '');
         }
       }
@@ -151,6 +164,7 @@ class orderActions extends myActions
           'success' => false,
           'data'    => array(
             'form' => $this->getPartial($this->getModuleName().'/form_oneClick'),
+            'shop' => $shopData,
           ),
         );
       }
@@ -162,6 +176,7 @@ class orderActions extends myActions
       'success' => true,
       'data'    => array(
         'form' => $this->getPartial($this->getModuleName().'/form_oneClick'),
+        'shop' => $shopData,
       ),
     ));
   }

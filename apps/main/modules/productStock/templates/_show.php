@@ -35,6 +35,9 @@
         <div class='bInShopLine__eButton'><a href="<?php echo url_for('order_1click', array('product' => $product['barcode'], 'shop' => $shop['token'])) ?>" class='bGrayButton'>Купить в этом магазине</a></div>
       </div>
       <?php endforeach ?>
+
+    <?php else: ?>
+      <p class="font16">В этом регионе выбранный товар не найден. Отличный повод посетить другой город :)</p>
     <?php endif ?>
 
   </div>
