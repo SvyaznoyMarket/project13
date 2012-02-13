@@ -5,7 +5,10 @@
 			<div class="vcard"><span class="tel">8 (800) 700 00 09</span></div>
 			<div class="address">Звонок бесплатный. Радость в подарок :)</div>
 		</div>
+    <?php if(false): ?>
     <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'mobile_apps',)) ?>"><img src='/images/img_main_mobile_apps.jpg'></a></div>
+    <?php endif ?>
+    <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('productCatalog_category', array('productCategory' => 'gifthobby/podarki-na-14-fevralya-1499',)) ?>"><img src='/images/icon_14feb.gif'></a></div>
     <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><img src='/images/img_main_f1service.jpg'></a></div>
 	<div class='bIndexLinks2__eLinks'>
 		<a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">О компании</a>

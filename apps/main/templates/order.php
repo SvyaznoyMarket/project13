@@ -12,7 +12,7 @@
 
 </head>
 
-<body data-template="order">
+<body data-template="order" style="background: url('/images/bg_14fev.png') no-repeat scroll center 0 #F6F1E9">
 <?php LastModifiedHandler::setLastModified();  ?>
 <div class="allpage">
 <div class="allpageinner buyingpage">

@@ -12,7 +12,7 @@
     <?php include_partial('default/googleAnalytics') ?>
 
   </head>
-  <body>
+  <body style="background: url('/images/bg_14fev.png') no-repeat scroll center 0 #F6F1E9">
     <div class="allpage">
       <div class="allpageinner">
 
