@@ -1,8 +1,8 @@
 all:
   stylesheets:
-    - jquery.autocomplete.css
-    - jquery-ui-custom/jquery-ui-custom.css
-    - colorbox/colorbox.css
+    #- jquery.autocomplete.css
+    #- jquery-ui-custom/jquery-ui-custom.css
+    #- colorbox/colorbox.css
 
   javascripts:
     - -*
