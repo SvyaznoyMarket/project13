@@ -181,6 +181,13 @@ $(document).ready(function() {
 			$('#ajaxgoods').hide()
 			if( typeof(response.success) !== 'undefined' && response.success ) {
 				$('#order1click-form').html(response.data.form)
+				
+				if( typeof(response.data.shop.name) !== 'undefined' ) {
+				console.info(typeof(response.data.shop.name))
+					$('#order1click-container h2').text('Оформить и забрать в магазине')
+						.after( $('<div>').addClass('pb10').addClass('sLocation')
+							.html( response.data.shop.name + '. Время работы: ' + response.data.shop.regime ) )
+				}
 				$('#order1click-container').lightbox_me({
 					centered: true
 				})
