@@ -1,2 +1,2 @@
 window.filesWithVersion = 
-{"main.js":1327670781,"mechanics.js":1327670781,"dash.js":1327562456,"app.auth.js":1327655021,"app.order.js":1327671888,"app.product.comment.list.js":1327672697,"app.product.comment.new.js":1326443118,"app.product.js":1327670781,"app.region.js":1326443118,"app.search.js":1326443118,"app.shop.js":1326443118,"productcard.js":1327562456}
+{"bigjquery.min.js":1329115826,"wellcome.js":1329115826,"main.js":1329115826,"mechanics.js":1329115850,"dash.js":1329115850,"app.auth.js":1328777248,"app.order.js":1328777248,"app.product.comment.list.js":1328777248,"app.product.comment.new.js":1329116948,"app.product.js":1329115826,"app.region.js":1328172656,"app.search.js":1329115826,"app.shop.js":1328172656,"productcard.js":1329115850}

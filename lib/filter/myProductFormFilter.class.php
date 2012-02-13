@@ -82,6 +82,15 @@ class myProductFormFilter extends sfFormFilter
 
       if (('range' == $productFilter->type) && ($productFilter->value_min == $productFilter->value_max)) continue;
 
+      if ('checkbox' == $productFilter->type)
+      {
+        $result = ProductPropertyRelationTable::getInstance()->countBooleanValueByProperty($productFilter->property_id, $productCategory->id);
+        if (($result[0] == $result[1]) || empty($result[0]) || empty($result[1]))
+        {
+          continue;
+        }
+      }
+
       if (!$widget = call_user_func_array(array($this, 'getWidget'.sfInflector::camelize($productFilter->type)), array($productFilter))) continue;
 
       $index = "param-{$productFilter->id}";

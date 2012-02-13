@@ -2,7 +2,8 @@
 <h2 class="bold">Мой отзыв о <?php echo $product->name ?></h2>
 <div class="line pb15"></div>
 
-<form method="post" id="rating_form" action="<?php echo url_for('productComment_new', $sf_data->getRaw('product')) ?>">
+<form class="fl" method="post" id="rating_form" action="<?php echo url_for('productComment_new', $sf_data->getRaw('product')) ?>">
+
 
 <div class="fl width450">
 	<div class="font16 pb15">Моя общая оценка<span class="gray">*</span>:</div>
@@ -20,6 +21,7 @@
 	<input name="rating" class="ratingvalue" type="hidden" value="<?php echo $sf_request->getParameter('rating', 0) ?>"/>
 </div>
 
+<?php if (false): ?>
 <div class="fr width450">
 	<div class="font16 pb15">Моя потребительская оценка:</div>
 	<table class="gradetable mr20">
@@ -47,6 +49,7 @@
 	</tbody>
 	</table>
 </div>
+<?php endif ?>
 <!-- /Response  -->
 
 <div class="clear"></div>

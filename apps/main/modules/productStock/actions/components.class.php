@@ -17,31 +17,41 @@ class productStockComponents extends myComponents
   */
   public function executeShow()
   {
-    $list = array();
+    $region = $this->getUser()->getRegion('region');
 
-    $values = $this->product->getShopList()->toKeyValueArray('id', 'quantity');
+    $quantityInRegion = $this->product->getStockQuantity() ?: 0;
 
-    foreach (ShopTable::getInstance()->getList() as $shop)
+    $shopList = $this->product->getShopList(array('region_id' => $region['id']));
+    // добавляет к каждому магазину количество товара на складе региона
+    // удаляет магазины, в которых нет товара
+    foreach ($shopList as $i => $shop)
     {
-      $index = $shop->region_id;
+      $shop['product_quantity'] += $quantityInRegion;
 
-      if (!isset($list[$index]))
+      if (0 == $shop['product_quantity'])
       {
-        $list[$index] = array(
-          'name'  => $shop->Region->name,
-          'shops' => array(),
-        );
+        unset($shopList[$i]);
       }
+    }
 
-      $list[$index]['shops'][] = array(
-        'name'     => $shop->name,
-        'token'    => $shop->token,
-        'url'      => $this->generateUrl('shop_show', $shop),
-        'quantity' => isset($values[$shop->id]) ? $values[$shop->id] : 0,
+    $markers = array();
+    foreach ($shopList as $shop)
+    {
+      $markers[$shop->id] = array(
+        'id'        => $shop->id,
+        'region_id' => $shop->region_id,
+        'url'       => $this->generateUrl('order_1click', array('product' => $this->product['barcode'], 'shop' => $shop->token)),
+        'name'      => $shop->name,
+        'address'   => $shop->address,
+        'regime'    => $shop->regime,
+        'latitude'  => $shop->latitude,
+        'longitude' => $shop->longitude,
       );
     }
 
-    $this->setVar('list', $list, true);
+    $this->setVar('region', $region, true);
+    $this->setVar('shopList', $shopList, true);
+    $this->setVar('markers', $markers, true);
   }
 }
 

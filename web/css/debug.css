@@ -1,0 +1,25 @@
+.component-container.debug {
+  color: #000;
+  position: absolute;
+  z-index: 998;
+  border: solid 1px #ff0000;
+  background: #E75C58;
+  opacity: 0.3;
+  height: 30px;
+  width: 30px;
+  overflow: hidden;
+  padding-left: 4px;
+}
+
+.component-container.debug:hover {
+  z-index: 999;
+  margin-left: 8px;
+  margin-top: 4px;
+  height: 20px;
+  width: 280px;
+  opacity: 1;
+  border-radius: 3px;
+  -moz-box-shadow:    3px 3px 5px 6px #ccc;
+  -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  box-shadow:         3px 3px 5px 6px #ccc;
+}

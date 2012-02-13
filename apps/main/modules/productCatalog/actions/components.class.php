@@ -53,10 +53,19 @@ class productCatalogComponents extends myComponents
     }
     if (isset($this->product))
     {
-      $list[] = array(
-        'name' => (string)$this->product,
-        'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
-      );
+      if ('productStock' == $this->getContext()->getRouting()->getCurrentRouteName())
+      {
+        $list[] = array(
+          'name' => 'Где купить '.mb_lcfirst((string)$this->product),
+          'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+        );
+      }
+      else {
+        $list[] = array(
+          'name' => (string)$this->product,
+          'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+        );
+      }
     }
 
     $this->setVar('list', $list, false);
@@ -177,7 +186,7 @@ class productCatalogComponents extends myComponents
       ));
     }
 
-    $this->setVar('productFilterList', $this->productCategory->FilterGroup->Filter, true);
+    $this->setVar('productFilterList', $this->productCategory->FilterGroup->Filter);
     $this->url = $this->generateUrl('productCatalog_filter', $this->productCategory);
   }
 /**
@@ -233,10 +242,10 @@ class productCatalogComponents extends myComponents
         if (($value['from'] != $valueMin) || ($value['to'] != $valueMax))
         {
           $list[] = array(
+            'type' => 'price',
             'name' => ''
               .(($value['from'] != $valueMin) ? ('от '.$value['from'].' ') : '')
               .(($value['to'] != $valueMax) ? ('до '.$value['to'].' ') : '')
-              .'&nbsp;<span class="rubl">p</span>'
             ,
             'url'   => $getUrl($filter, $name),
             'title' => 'Цена',
@@ -252,6 +261,7 @@ class productCatalogComponents extends myComponents
           if (!$creator) continue;
 
           $list[] = array(
+            'type' => 'creator',
             'name' => $creator->name,
             'url'  => $getUrl($filter, $name, $v),
             'title' => 'Производитель',
@@ -271,6 +281,7 @@ class productCatalogComponents extends myComponents
             if (($value['from'] != $productFilter->value_min) || ($value['to'] != $productFilter->value_max))
             {
               $list[] = array(
+                'type' => 'parameter',
                 'name' => ''
                   .(($value['from'] != $productFilter->value_min) ? ('от '.$value['from'].' ') : '')
                   .(($value['to'] != $productFilter->value_max) ? ('до '.$value['to'].' ') : '')
@@ -288,6 +299,7 @@ class productCatalogComponents extends myComponents
               if (!$productPropertyOption) continue;
 
               $list[] = array(
+                'type' => 'parameter',
                 'name' =>
                   in_array($productPropertyOption->value, array('да', 'нет'))
                   ? $productFilter->name.': '.$productPropertyOption->value
@@ -302,6 +314,7 @@ class productCatalogComponents extends myComponents
             if ((null !== $value) && (1 == count($value)))
             {
               $list[] = array(
+                'type' => 'parameter',
                 'name' => $productFilter->name.': '.($value[0] ? 'да' : 'нет'),
                 'url'  => $getUrl($filter, $name),
                 'title' => '',
@@ -320,7 +333,7 @@ class productCatalogComponents extends myComponents
       return sfView::NONE;
     }
 
-    $this->setVar('list', $list, true);
+    $this->setVar('list', $list);
   }
 /**
   * Executes filter_price component
@@ -473,10 +486,10 @@ class productCatalogComponents extends myComponents
         if (($value['from'] != $valueMin) || ($value['to'] != $valueMax))
         {
           $list[] = array(
+            'type' => 'price',
             'name' => ''
               .(($value['from'] != $valueMin) ? ('от '.$value['from'].' ') : '')
               .(($value['to'] != $valueMax) ? ('до '.$value['to'].' ') : '')
-              .'&nbsp;<span class="rubl">p</span>'
             ,
             'url'   => $getUrl($filter, $name),
             'title' => 'Цена',
@@ -492,8 +505,9 @@ class productCatalogComponents extends myComponents
           if (!$creator) continue;
 
           $list[] = array(
-            'name' => $creator->name,
-            'url'  => $getUrl($filter, $name, $v),
+            'type'  => 'creator',
+            'name'  => $creator->name,
+            'url'   => $getUrl($filter, $name, $v),
             'title' => 'Производитель',
           );
         }
@@ -511,6 +525,7 @@ class productCatalogComponents extends myComponents
           if (!$tag) continue;
 
           $list[] = array(
+            'type'  => 'tag',
             'name'  => $tag->name,
             'url'   => $getUrl($filter, $name, $tag->id),
             'title' => $tagGroup->name,
@@ -525,7 +540,7 @@ class productCatalogComponents extends myComponents
       return sfView::NONE;
     }
 
-    $this->setVar('list', $list, true);
+    $this->setVar('list', $list);
   }
 
   public function executeLeftCategoryList(){

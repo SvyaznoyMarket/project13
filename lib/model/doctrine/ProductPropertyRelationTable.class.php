@@ -59,6 +59,21 @@ class ProductPropertyRelationTable extends myDoctrineTable
     return $productPropertyRelation[$field];
   }
 
+  public function countBooleanValueByProperty($property_id, $category_id)
+  {
+      $return = ProductPropertyRelationTable::getInstance()->createQuery('productPropertyRelation')
+        ->select('SUM(IF(value_boolean = 1, 1, 0)) AS sum_true, SUM(IF(value_boolean = 0, 1, 0)) as sum_false')
+        ->innerJoin('productPropertyRelation.Product product WITH product.view_list = true')
+        ->innerJoin('product.CategoryRelation productCategoryProductRelation')
+        ->where('productPropertyRelation.property_id = ?', $property_id)
+        ->andWhere('productCategoryProductRelation.product_category_id = ?', $category_id)
+        ->setHydrationMode(Doctrine_Core::HYDRATE_SCALAR)
+        ->execute()
+      ;
+
+      return isset($return[0]) ? array_values($return[0]) : array(0, 0);
+  }
+
   public function getCacheEraserKeys($record, $action = null)
   {
     $return = array();

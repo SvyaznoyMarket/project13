@@ -21,6 +21,8 @@ class UserProductRatingTotal extends BaseUserProductRatingTotal
   {
     $data = parent::exportToCore();
 
+    $data['ip'] = sfContext::getInstance()->getUser()->getIp();
+
     return $data;
   }
 }

@@ -28,6 +28,16 @@ class StockTable extends myDoctrineTable
     );
   }
 
+  public function getDefaultParameters()
+  {
+    $region = $this->getParameter('region');
+
+    return array(
+      'region_id' => $region ? $region['id'] : null, // для совместимости
+      'region'    => $region,
+    );
+  }
+
   public function getListByProduct($product_id, array $params = array())
   {
     $this->applyDefaultParameters($params);
@@ -41,6 +51,11 @@ class StockTable extends myDoctrineTable
     $q->select('stock.token, stock.name, stock.region_id, stock.shop_id, SUM(stockProductRelation.quantity) AS quantity')
       ->groupBy('stock.token, stock.name, stock.region_id, stock.shop_id')
     ;
+
+    if ($params['region'])
+    {
+      $q->addWhere('stockProductRelation.stock_id = ?', $params['region']['stock_id']);
+    }
 
     $this->setQueryParameters($q, $params);
 

@@ -1,4 +1,36 @@
 $(document).ready(function(){
+	/* product counter */
+	if( $('.bCountSet').length ) {
+		var np = $('.bCountSet')
+		var l1 = np.parent().find('.link1')
+		var l1href = l1.attr('href')
+		np.data('hm', np.find('span').text().replace(/\D/g,'') )
+		
+		np.bind('update', function() {
+			var hm = $(this).data('hm')
+			np.find('span').text( hm + '  шт.')
+			l1.attr('href', l1href + '/' +  hm )
+		})
+		
+		$('.bCountSet__eP').click( function() {
+			if( $(this).hasClass('disabled') )
+				return false
+			$('.bCountSet').data('hm', $('.bCountSet').data('hm')*1 + 1 )
+			np.trigger('update')
+			return false
+		})
+		$('.bCountSet__eM').click( function() {	
+			if( $(this).hasClass('disabled') )
+				return false		
+			var hm = $('.bCountSet').data('hm')//how many
+			if( hm == 1 )
+				return false
+			$('.bCountSet').data('hm', $('.bCountSet').data('hm')*1 - 1 )
+			np.trigger('update')
+			return false
+		})		
+	}
+	
 	/* Icons */
 	$('.viewstock').bind( 'mouseover', function(){
 		var trgtimg = $('#stock img[ref="'+$(this).attr('ref')+'"]')

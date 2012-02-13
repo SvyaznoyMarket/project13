@@ -1,4 +1,4 @@
-<?php 
+<?php
 #echo $this->getModule();
 #$servListId = (array)$servListId['*value'];
 if (is_object($servListId)) {
@@ -10,39 +10,38 @@ if (is_object($servListId)) {
 		<h2>Добавление услуги F1</h2>
         <?php if (count($f1) > 3) echo '<div>';
         #else echo '<ul>';
-        ?>        
+        ?>
 		<table>
 			<tbody>
               <?php foreach ($f1 as $service):
                   if (!isset($service->id)) $service = ServiceTable::getInstance()->getById($service['id']);
                   if ($service->getCurrentPrice($product->id) < Service::MIN_BUY_PRICE) continue;
-                  ?>                
+                  ?>
                     <tr>
                         <td class="bF1Block_eInfo"><?php echo $service->name ?><br>
                             <a href="<?php echo url_for('service_show', array('service'=>$service->token)) ?>">Подробнее об услуге</a>
                         </td>
                         <td class="bF1Block_eBuy" ref="<?php echo $service->token ?>">
                             <?php if ($service->getFormattedPrice($product->id)) { ?>
-                                <span class="bF1Block_ePrice 
-                                      <?php if ($service->getCurrentPrice($product->id) < Service::MIN_BUY_PRICE || !$product->getIsInsale()) echo ' mr110'; ?> 
+                                <span class="bF1Block_ePrice
+                                      <?php if ($service->getCurrentPrice($product->id) < Service::MIN_BUY_PRICE || !$product->getIsInsale()) echo ' mr110'; ?>
                                       ">
                                     <?php echo $service->getFormattedPrice($product->id) ?>
                                     <?php if ((int)$service->getFormattedPrice($product->id)) { ?>
-                                        &nbsp;<span class="rubl">p</span>                                    
-                                   <?php } ?>     
+                                        &nbsp;<span class="rubl">p</span>
+                                   <?php } ?>
                                 </span>
-                            <?php } ?>  
+                            <?php } ?>
                             <?php if ($service->getCurrentPrice($product->id) >= Service::MIN_BUY_PRICE && $product->getIsInsale()) { ?>
                                 <?php if ($showInCardButton && in_array($service->id, $servListId)) { ?>
-                                    <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>" 
+                                    <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>"
                                     data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token_prefix."/".$product->token)) ?>" type="button" class="active button yellowbutton" value="В корзине">
                                <?php } else { ?>
 
-                                    <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice($product->id) ?>" data-fid="<?php echo $service->token;?>" 
+                                    <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice($product->id) ?>" data-fid="<?php echo $service->token;?>"
                                     data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token_prefix."/".$product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
-
-                               <?php } ?>     
-                            <?php } ?>    
+                               <?php } ?>
+                            <?php } ?>
                         </td>
                     </tr>
              <?php  endforeach ?>

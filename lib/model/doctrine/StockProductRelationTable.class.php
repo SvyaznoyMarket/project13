@@ -30,6 +30,15 @@ class StockProductRelationTable extends myDoctrineTable
     );
   }
 
+  public function getDefaultParameters()
+  {
+    $region = $this->getParameter('region');
+
+    return array(
+      'region' => $region,
+    );
+  }
+
   /**
    *
    * @param int $product_id
@@ -62,8 +71,8 @@ class StockProductRelationTable extends myDoctrineTable
         }
     }
     return false;
-  } 
-  
+  }
+
   public function isSupplied($product_id, array $params = array())
   {
     $this->applyDefaultParameters($params);
@@ -74,6 +83,29 @@ class StockProductRelationTable extends myDoctrineTable
         $q->andWhere('stockProductRelation.is_supplied = 1');
     }
     return $q->count() > 0;
+  }
+
+  public function getQuantityByProduct($product, array $params = array())
+  {
+    $this->applyDefaultParameters($params);
+
+    $q = $this->createBaseQuery($params);
+
+    $q->select('SUM(stockProductRelation.quantity) AS quantity');
+
+    $q->addWhere('stockProductRelation.shop_id IS NULL');
+    $q->addWhere('stockProductRelation.product_id = ?', $product['id']);
+
+    if ($params['region'])
+    {
+      $q->addWhere('stockProductRelation.stock_id = ?', $params['region']['stock_id']);
+    }
+
+    $this->setQueryParameters($q, $params);
+
+    $q->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+
+    return $q->fetchOne();
   }
 
   public function getCacheEraserKeys($record, $action = null)

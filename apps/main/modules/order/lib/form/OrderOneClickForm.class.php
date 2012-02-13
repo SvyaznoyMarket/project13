@@ -22,6 +22,9 @@ class OrderOneClickForm extends BaseOrderForm
     $this->validatorSchema['product_quantity'] = new sfValidatorInteger(array('min' => 1, 'required' => true));
     $this->widgetSchema['product_quantity']->setDefault(1);
 
+    $this->widgetSchema['shop_id'] = new sfWidgetFormInputHidden();
+    $this->validatorSchema['shop_id'] = new sfValidatorDoctrineChoice(array('model' => $this->getRelatedModelName('Shop'), 'required' => false));
+
     if ($user = $this->getOption('user', false))
     {
       $this->setDefaults(array(

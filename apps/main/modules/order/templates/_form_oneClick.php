@@ -1,7 +1,16 @@
 <?php echo $form['product_quantity']->render() ?>
+<?php echo $form['shop_id']->render() ?>
 
 <div class="basketline">
   <?php include_component('product', 'show', array('view' => 'orderOneClick', 'product' => $product)) ?>
+
+  <?php if ($shop): ?>
+    <br class="clear" />
+    <div class="sLocation">
+      Магазин: <?php echo $shop->Region ?>, <?php echo $shop->address ?><br />
+      Время работы: <?php echo $shop->regime ?>
+    </div>
+  <?php endif ?>
 </div>
 
 <div class="clear"></div>

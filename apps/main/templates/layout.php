@@ -17,7 +17,7 @@
     <?php include_partial('default/googleAnalytics') ?>
     <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
-  <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>">
+  <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>" style="background: url('/images/bg_14fev.png') no-repeat scroll center 0 #F6F1E9">
     <div class="allpage">
       <div class="allpageinner">
 
@@ -28,9 +28,10 @@
           </div>
           <noindex>
               <div class="usermenu">
-                <div class="point"><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="f1">F1 сервис</a></div>
-                <div class="point"><?php include_partial('default/user') ?></div>
-                <div class="point next"><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></div>
+                <div class="point mTah12 next"><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="f1">F1 сервис</a></div>
+                <div class="point mTah12 next"><?php include_partial('default/user') ?></div>
+                <div class="point mTah12 next"><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></div>
+                <div class="point mTah12 next"><a href="<?php echo url_for('cart') ?>" class="hBasket"><b>Моя корзина </b> <span id="topBasket"></span></a></div>
               </div>
           </noindex>
         </div>
@@ -101,9 +102,8 @@
       </div>
     </div>
     <!-- /Lightbox -->
-    <?php include_javascripts() ?>
-    <!--script src="/js/LAB.min.js" type="text/javascript"></script>
-    <script src="/js/loadjs.js" type="text/javascript"></script-->
+    <script src="/js/LAB.min.js" type="text/javascript"></script>
+    <script src="/js/loadjs.js" type="text/javascript"></script>
     <?php if (!include_slot('auth'))
       include_partial('default/auth') ?>
 

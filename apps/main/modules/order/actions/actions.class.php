@@ -48,12 +48,14 @@ class orderActions extends myActions
 
     $this->product = ProductTable::getInstance()->getByBarcode($request->getParameter('product'), array('with_model' => true));
 
+    $this->shop = $request['shop'] ? ShopTable::getInstance()->getByToken($request['shop']) : null;
+
     $this->order = new Order();
     $this->order->User = $this->getUser()->getGuardUser();
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
     $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
-    $this->order->delivery_type_id = 1;
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product); //нужна для правильного отбражения формы заказа
+    $this->order->shop_id = $this->shop ? $this->shop->id : null;
 
     if (empty($this->order->region_id))
     {
@@ -64,6 +66,13 @@ class orderActions extends myActions
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getParameter($this->form->getName()));
+
+      // если в запросе нет shop добываем его из параметров формы
+      if (!$this->shop)
+      {
+        $taintedValues = $this->form->getTaintedValues();
+        $this->shop = !empty($taintedValues['shop_id']) ? ShopTable::getInstance()->getById($taintedValues['shop_id']) : null;
+      }
 
       if ($this->form->isValid())
       {
@@ -111,6 +120,11 @@ class orderActions extends myActions
 
         try
         {
+          $order->delivery_type_id =
+            !empty($order->shop_id) // если указан магазин, то тип получения заказа - самовывоз
+            ? DeliveryTypeTable::getInstance()->getByToken('self')->id
+            : DeliveryTypeTable::getInstance()->getByToken('standart')->id;
+
           $order->payment_details = 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.';
           $order->save();
 
@@ -124,7 +138,7 @@ class orderActions extends myActions
           $return['message'] = 'Заказ успешно создан';
           $return['data'] = array(
             'title'   => 'Ваш заказ принят, спасибо!',
-            'content' => $this->getPartial($this->getModuleName().'/complete', array('order' => $order, 'form' => $form)),
+            'content' => $this->getPartial($this->getModuleName().'/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop)),
           );
         }
         catch (Exception $e)

@@ -35,7 +35,7 @@ class orderComponents extends myComponents
       'delivered_period'    => $this->order->DeliveryPeriod ? $this->order->DeliveryPeriod->name : null,
     );
 
-    if ('default' == $this->view || $this->view=='compact')
+    if (in_array($this->view, array('default', 'compact')))
     {
       $item['products'] = array();
       foreach ($this->order->ProductRelation as $orderProductRelation)
