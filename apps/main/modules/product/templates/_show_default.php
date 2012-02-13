@@ -64,8 +64,10 @@ foreach ($p3d as $p3d_obj)
 
               <div class='bCountSet'>
                 <?php if (!$item['cart_quantity']): ?>
-              	<a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
-                <?php endif ?>
+                  <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
+                <?php else: ?>
+                  <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+              	<?php endif ?>
                 <span><?php echo $item['cart_quantity'] ? $item['cart_quantity'] : 1 ?> шт.</span>
               </div>
 
