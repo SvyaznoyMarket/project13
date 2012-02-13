@@ -126,4 +126,20 @@ class myToolkit extends sfToolkit
 
     return $return;
   }
+
+  static public function trimZero($value)
+  {
+    $frac = $value - floor($value);
+    if (0 == $frac)
+    {
+      $returnValue = intval($value);
+    }
+    else {
+      $returnValue = rtrim($value, '0');
+    }
+
+    $returnValue = str_replace('.', ',', $returnValue);
+
+    return $returnValue;
+  }
 }

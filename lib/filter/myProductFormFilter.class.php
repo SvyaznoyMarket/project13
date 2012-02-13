@@ -97,9 +97,11 @@ class myProductFormFilter extends sfFormFilter
       $this->setWidget($index, $widget);
       if ('range' == $productFilter->type)
       {
+        //Здесь временное решение, пока не допилим ja:
+        //меньшее значение округяем в меньшую сторону, а правое в большую
         $this->setDefault($index, array(
-          'from' => $productFilter->value_min,
-          'to'   => $productFilter->value_max,
+          'from' => str_replace(',', '.', myToolkit::trimZero($productFilter->value_min)),
+          'to'   => str_replace(',', '.', myToolkit::trimZero($productFilter->value_max)),
         ));
       }
 
@@ -194,8 +196,8 @@ class myProductFormFilter extends sfFormFilter
     $id = uniqid();
 
     return new myWidgetFormRange(array(
-      'value_from' => $productFilter['value_min'],
-      'value_to'   => $productFilter['value_max'],
+      'value_from' => myToolkit::trimZero($productFilter['value_min']),
+      'value_to'   => myToolkit::trimZero($productFilter['value_max']),
       'template'   => ''
         .'<div class="bSlide">'
           .'%value_from% %value_to%'
@@ -203,8 +205,8 @@ class myProductFormFilter extends sfFormFilter
             .'<div id="slider-'.$id.'" class="filter-range"></div>'
           .'</div>'
           .'<div class="pb5">'
-            .'<input class="slider-from" type="hidden" disabled="disabled" value="'.$productFilter['value_min'].'" />'
-            .'<input class="slider-to" type="hidden" disabled="disabled" value="'.$productFilter['value_max'].'" />'
+            .'<input class="slider-from" type="hidden" disabled="disabled" value="'.str_replace(',', '.', myToolkit::trimZero($productFilter['value_min'])).'" />'
+            .'<input class="slider-to" type="hidden" disabled="disabled" value="'.str_replace(',', '.', myToolkit::trimZero($productFilter['value_max'])).'" />'
             .'<span class="slider-interval"></span> '.(($productFilter instanceof ProductFilter) ? (!empty($productFilter->Property->unit) ? $productFilter->Property->unit : '') : '<span class="rubl">p</span>')
           .'</div>'
         .'</div>'
