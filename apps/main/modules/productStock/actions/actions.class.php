@@ -39,7 +39,7 @@ class productStockActions extends sfActions
         $this->product['name'],
         $this->product['name']
     ));
-    $this->getResponse()->addMeta('keywords', sprintf('%s отзывы мнения покупателей владельцев пользователей', $this->product['name']));
+    $this->getResponse()->addMeta('keywords', sprintf('%s где купить %s', mb_strtolower($this->product['name']), mb_strtolower($this->getUser()->getRegion('region'))));
     // :: SEO
 
 //    $title = '«Где купить»: ' . $this->product['name'] . ' в магазинах "Enter"';
