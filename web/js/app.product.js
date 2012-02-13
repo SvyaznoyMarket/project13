@@ -177,6 +177,7 @@ $(document).ready(function() {
 			closeClick: false,
 			closeEsc: false
 		})
+		
 		$.get( href, function( response ) {
 			$('#ajaxgoods').hide()
 			if( typeof(response.success) !== 'undefined' && response.success ) {
