@@ -545,4 +545,9 @@ class Product extends BaseProduct
   {
     return 2 == $this->set_id;
   }
+
+  public function getStockQuantity()
+  {
+    return StockProductRelationTable::getInstance()->getQuantityByProduct($this);
+  }
 }
