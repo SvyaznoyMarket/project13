@@ -119,6 +119,7 @@ class productComponents extends myComponents
       $item['stock_url'] = $this->generateUrl('productStock', $this->product);
       //$item['shop_url'] = $this->generateUrl('shop_show', ShopTable::getInstance()->getMainShop());
       $item['shop_url'] = $this->generateUrl('shop');
+      $item['stock_url'] = $this->generateUrl('productStock', $this->product);
       $item['preview'] = $this->product['preview'];
 
       $rated = explode('-', $this->getRequest()->getCookie('product_rating'));

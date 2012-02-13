@@ -80,7 +80,9 @@ use_helper('Date');
                <?php if (isset($item['delivered_at'])){ ?>
                     <div class="font12 pb5">
                         <?php echo $item['delivery_type'] ."."; ?>
+                        <?php if ('0000-00-00 00:00:00' !== $item['delivered_at']): ?>
                         <?php $date = explode(" ",$item['delivered_at']);  echo format_date($date[0],'dd MMMM yyyy','ru')?>г.
+                        <?php endif ?>
                         <?php if (isset($item['delivered_period'])) echo '('.$item['delivered_period'].')'; ?>
                     </div>
                <?php } ?>
