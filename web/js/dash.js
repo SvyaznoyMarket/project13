@@ -293,7 +293,7 @@ $(document).ready(function(){
 		return item
 	}
 
-	$('.goodsbar .link1').live('click', function(e) {
+	$('.boxhover .goodsbar .link1').live('click', function(e) {
 		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
@@ -331,6 +331,7 @@ $(document).ready(function(){
 		var link1 = $('div.bInShop__eButton a.link1')
 		link1.html( '<i> </i>'+link1.html( ) ) 
 	}) // stock product card, buy orange
+	BB.push('div.goodsinfosmall a.link1', $('div.goodsinfosmall').data('value') ) //feedback feed
 
 
 	/* BB */

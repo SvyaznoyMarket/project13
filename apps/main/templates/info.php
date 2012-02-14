@@ -23,9 +23,10 @@
           </div>
           <noindex>
               <div class="usermenu">
-                <div class="point"><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="f1">F1 сервис</a></div>
-                <div class="point"><?php include_partial('default/user') ?></div>
-                <div class="point next"><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></div>
+                <div class="point mTah12 next"><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="f1">F1 сервис</a></div>
+                <div class="point mTah12 next"><?php include_partial('default/user') ?></div>
+                <div class="point mTah12 next"><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></div>
+                <div class="point mTah12 next"><a href="<?php echo url_for('cart') ?>" class="hBasket"><b>Моя корзина </b> <span id="topBasket"></span></a></div>
               </div>
           </noindex>
         </div>
