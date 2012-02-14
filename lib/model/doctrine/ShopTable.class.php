@@ -100,7 +100,7 @@ class ShopTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
 
     //$q->addWhere('shop.region_id = ?', (isset($region['id']) ? $region['id'] : $region));
-    $params['region_id'] = is_scalar($region['id']) ? $region : $region['id'];
+    $params['region_id'] = is_scalar($region) ? $region : $region['id'];
 
     $this->setQueryParameters($q, $params);
 
