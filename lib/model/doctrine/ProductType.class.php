@@ -110,45 +110,5 @@ class ProductType extends BaseProductType
       ;
     }
     unset($unlink);
-
-    // фильтры категорий
-    if (!empty($data['property'])) foreach ($data['property'] as $relationData)
-    {
-      if ($relationData['is_filter'] && !empty($data['category']))
-      {
-        $propertyId = ProductPropertyTable::getInstance()->getIdByCoreId($relationData['id']);
-
-        foreach ($data['category'] as $categoryData)
-        {
-          $category = ProductCategoryTable::getInstance()->getByCoreId($categoryData['id']);
-          if (!$category) continue;
-
-          $groupId = isset($category->FilterGroup->id) ? $category->FilterGroup->id : null;
-          if (!$groupId) continue;
-
-          $filter = ProductFilterTable::getInstance()->createQuery()
-            ->where('property_id = ? AND group_id = ?', array($propertyId, $groupId))
-            ->fetchOne()
-          ;
-          if (!$filter)
-          {
-            $filter = new ProductFilter();
-          }
-
-          $filter->fromArray(array(
-            'name'        => $relationData['name'],
-            'type'        => (6 == $relationData['filter_type_id']) ? 'range' : 'choice',
-            'property_id' => $propertyId,
-            'group_id'    => $groupId,
-            'position'    => $relationData['filter_position'],
-            'is_multiple' => $relationData['is_multiple'],
-            'value_min'   => $relationData['filter_min'],
-            'value_max'   => $relationData['filter_max'],
-          ));
-
-          $filter->save();
-        }
-      }
-    }
   }
 }
