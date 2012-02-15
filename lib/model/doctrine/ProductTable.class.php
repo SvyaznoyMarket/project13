@@ -939,4 +939,16 @@ class ProductTable extends myDoctrineTable
 
     return false;
   }
+
+  public function getModelProperty($product)
+  {
+    $q = ProductPropertyTable::getInstance()->createBaseQuery();
+
+    $q->innerJoin('productProperty.ProductModelRelation productModelRelation WITH productModelRelation.product_id = ?', array($product['is_model'] ? $product['id'] : $product['model_id']))
+      ->innerJoin('productProperty.ProductTypeRelation productTypeRelation WITH productTypeRelation.product_type_id = ?', $product['type_id'])
+      ->orderBy('productModelRelation.position ASC');
+
+
+    return $q->execute();
+  }
 }
