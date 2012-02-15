@@ -41,7 +41,11 @@ class bannerComponents extends myComponents
       }
 
       $link = false;
-      if (!count($productList) && !$banner['is_dummy'])
+      if (!empty($banner['link']))
+      {
+        $link = $banner['link'];
+      }
+      else if (!count($productList) && !$banner['is_dummy'])
       {
         continue;
       }
