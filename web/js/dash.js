@@ -323,7 +323,6 @@ $(document).ready(function(){
 
 	var BB = new BuyBottons()
 	BB.push( 'div.bServiceCardWrap input' ) // F1
-	//BB.push('div.extrainfo a.link1', $('div.goodsbarbig').data('value'), markPageButtons ) // product card, buy big
 	BB.push('div.goodsbarbig a.link1', $('div.goodsbarbig').data('value'), markPageButtons ) // product card, buy big
 	BB.push( '#bigpopup a.link1', $('div.popup_leftpanel').data('value'), markPageButtons ) // product card, buy in popup
 	BB.push('div.bSet a.link1', $('div.bSet').data('value'), markPageButtons ) // a set card, buy big
