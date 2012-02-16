@@ -3215,6 +3215,9 @@ DT.bCtg__eOrange{
     cursor: pointer;
     margin-right: 10px;
 }
+.bListVariantsOutsideWrap a:hover {
+    text-decoration: none;
+}
 .bListVariantsInsideWrap {
     background: url("img/list_grad_bg.png") repeat-y scroll 100% 50% transparent;
     border-radius: 8px 8px 8px 8px;
