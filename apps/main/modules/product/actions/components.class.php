@@ -24,7 +24,7 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock', 'extra_compact')))
     {
       $this->view = 'default';
     }
@@ -99,13 +99,18 @@ class productComponents extends myComponents
       'url'        => $this->generateUrl('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
     );
 
-    if ('compact' == $this->view)
+    if (in_array($this->view, array('compact', 'extra_compact')))
     {
       $rootProductCategory = ProductCategoryTable::getInstance()->getRootRecord($this->product['Category'][0], array(
         'hydrate_array' => true,
         'select'        => 'productCategory.id, productCategory.name',
       ));
       $item['root_name'] = $rootProductCategory ? $rootProductCategory['name'] : '';
+
+      if ('extra_compact' == $this->view)
+      {
+        $item['photo'] = $table->getMainPhotoUrl($this->product, 1);
+      }
     }
 
     if ('orderOneClick' == $this->view)
@@ -133,6 +138,12 @@ class productComponents extends myComponents
       {
         $item['cart_quantity'] = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
       }
+
+      $criteria = new ProductRelatedCriteria();
+      $criteria->setParent($this->product['core_id']);
+      $criteria->setPager(new myPager(1, 5));
+      $item['related'] = RepositoryManager::get('Product')->getAccesories($criteria);
+      $item['related_quantity'] = $criteria->getPager()->getNbResults();
     }
     if (in_array($this->view, array('expanded')))
     {

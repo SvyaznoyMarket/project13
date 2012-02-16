@@ -287,6 +287,10 @@ foreach ($p3d as $p3d_obj)
     <?php include_component('product', 'tags', array('product' => $product)) ?>
 <?php endif ?>
 
+<?php if (count($item['related'])): ?>
+  <?php include_partial('product/product_related', $sf_data) ?>
+<?php endif ?>
+
 <!-- Media -->
 <div class="popup mediablock" id="bigpopup"><!-- IVN block #bigpopup is media gallery popup  -->
   <i title="Закрыть" class="close">Закрыть</i>
