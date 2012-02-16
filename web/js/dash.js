@@ -293,7 +293,7 @@ $(document).ready(function(){
 		return item
 	}
 
-	$('.boxhover .goodsbar .link1').live('click', function(e) {
+	$('.goodsbox a.link1').live('click', function(e) {
 		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
@@ -323,6 +323,7 @@ $(document).ready(function(){
 
 	var BB = new BuyBottons()
 	BB.push( 'div.bServiceCardWrap input' ) // F1
+	//BB.push('div.extrainfo a.link1', $('div.goodsbarbig').data('value'), markPageButtons ) // product card, buy big
 	BB.push('div.goodsbarbig a.link1', $('div.goodsbarbig').data('value'), markPageButtons ) // product card, buy big
 	BB.push( '#bigpopup a.link1', $('div.popup_leftpanel').data('value'), markPageButtons ) // product card, buy in popup
 	BB.push('div.bSet a.link1', $('div.bSet').data('value'), markPageButtons ) // a set card, buy big
