@@ -9,6 +9,9 @@ welcome:
   param:
     excluded_env: [ alpha ] # live and prod are hardcoded
 
+CityRedirect:
+  class: CityRedirectFilter
+
 # insert your own filters here
 
 cache:     ~
