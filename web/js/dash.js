@@ -293,7 +293,7 @@ $(document).ready(function(){
 		return item
 	}
 
-	$('.boxhover .goodsbar .link1').live('click', function(e) {
+	$('.goodsbox a.link1').live('click', function(e) {
 		var button = this
 		if( $(button).hasClass('disabled') )
 			return false
