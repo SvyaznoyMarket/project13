@@ -207,7 +207,7 @@ class ProductCategory extends BaseProductCategory
     }
 
     $q = ProductFilterTable::getInstance()->createBaseQuery();
-    $q->addWhere('productFilter.group_id = ?', $this->id)
+    $q->addWhere('productFilter.group_id = ?', $this->filter_group_id)
       ->orderBy('productFilter.position');
 
     $filters = $q->execute();
