@@ -543,7 +543,7 @@ border-radius:5px;
 .goodsbox:hover .fastview {display:block}
 .fastview:hover {text-decoration:none; background-position:0 -80px; color:#000}
 .goodsbox .photo {margin-bottom:9px; text-align:center; position:relative}
-.goodsbox .photo A {display:block; width:191px; text-align:center}
+.goodsbox .photo A {display:block; /*width:191px;*/ text-align:center}
 .goodsbox .photo I {position:absolute; left:0; top:0; display:block; height:23px; background:url(/css/skin/img/bg.png) no-repeat}
 .goodsbox .photo .new {width:70px; background-position:0 -54px}
 .goodsbox .photo .bestseller {width:81px; background-position:-75px -54px}
@@ -676,9 +676,9 @@ border-radius:5px;
 .bigcarousel .goodsrating {display:block; padding-bottom:5px; font-size:10px; color:#a6a6a6}
 .bigcarousel .ratingview {display:inline-block; width:63px; margin:0 5px 0 0; vertical-align:-1px; }
 .bigcarousel .goodsbox .buy {position:absolute; left:0; top:0; padding:3px 6px 4px 6px; background-color:#ffa901; color:#fff; font-size:11px;
-border-radius:5px;
--moz-border-radius:5px;
--webkit-border-radius:5px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
 }
 .bigcarousel .goodsbar {margin-top:10px}
 
