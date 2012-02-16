@@ -74,7 +74,7 @@ foreach ($p3d as $p3d_obj)
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
             </div>
             <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
-            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+            <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
             <?php endif ?>
         </div>
 
