@@ -20,6 +20,8 @@ class searchActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
 
+    $this->getRequest()->setParameter('_template', 'product_catalog');
+    
     $limit = sfConfig::get('app_product_max_items_on_category', 20);
 	  $page = $request->getParameter('page', 1);
     $offset = intval($page - 1) * $limit;
