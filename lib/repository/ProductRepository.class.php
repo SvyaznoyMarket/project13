@@ -2,15 +2,11 @@
 
 class ProductRepository extends BaseRepository
 {
-  public function get(array $ids)
-  {
-    return ProductTable::getInstance()->getById($ids, array('hydrate_array' => true));
-  }
-
   public function getRelated(ProductRelatedCriteria $criteria, $order = null)
   {
     $params = array(
-      'count' => 'false',
+      'count'  => 'false',
+      'geo_id' => $criteria->getRegion()->core_id,
     );
 
     $this->applyCriteria($criteria, $params);
@@ -19,9 +15,9 @@ class ProductRepository extends BaseRepository
 
     $q = $this->createQuery('product.related.get', $params);
 
-    $result = $q->getResult();
-    myDebug::dump($result);
-    myDebug::dump($q->getErrors());
+    $result = array_map(function($i) { return $i['id']; }, $q->getResult());
+    //myDebug::dump($result);
+    //myDebug::dump($q->getErrors());
 
     if (count($result))
     {
@@ -29,7 +25,7 @@ class ProductRepository extends BaseRepository
     }
 
     // tmp
-    $result = array(34, 1638, 1639, 1640);
+    //$result = array(34, 1638, 1639, 1640);
 
     return $this->get($result);
   }

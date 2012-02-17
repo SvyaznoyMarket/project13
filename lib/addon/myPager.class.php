@@ -50,7 +50,7 @@ class myPager
     return $this->nbResults;
   }
 
-  private function setNbResults($nb)
+  public function setNbResults($nb)
   {
     $this->nbResults = $nb;
   }

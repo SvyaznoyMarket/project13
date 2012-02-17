@@ -143,7 +143,6 @@ class productComponents extends myComponents
       $criteria->setParent($this->product['core_id']);
       $criteria->setPager(new myPager(1, 5));
       $item['related'] = RepositoryManager::get('Product')->getRelated($criteria);
-
       $item['related_quantity'] = $criteria->getPager()->getNbResults();
     }
     if (in_array($this->view, array('expanded')))

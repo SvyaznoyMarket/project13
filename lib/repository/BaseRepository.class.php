@@ -14,6 +14,11 @@ class BaseRepository
     return new CoreQuery($query, $params, $data);
   }
 
+  public function get(array $ids)
+  {
+    return ProductTable::getInstance()->getListByCoreIds($ids, array('hydrate_array' => true));
+  }
+
   public function getOne($id)
   {
     return array_shift($this->get(array($id)));
@@ -36,7 +41,7 @@ class BaseRepository
     if ($pager = $criteria->getPager())
     {
       $q->count();
-      $pager->setNbResult($q->count());
+      $pager->setNbResults($q->count());
     }
   }
 }
