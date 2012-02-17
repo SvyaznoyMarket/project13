@@ -821,13 +821,13 @@ $(document).ready(function(){
 					var dlvr = raw.deliveries[j]
 						switch ( dlvr.object.token ) {
 							case 'self':
-								self = 'Возможен самовывоз <br/>' + dlvr.text
+								self = 'Возможен самовывоз ' + dlvr.text
 								break
 							case 'express':
-							//	express = 'Экспресс-доставка <br/>' + dlvr.text
+							//	express = 'Экспресс-доставка ' + dlvr.text
 								break
 							default:
-								other.push('Доставка <br/>' + dlvr.text )
+								other.push('Доставка ' + dlvr.text )
 						}
 					}
 					var pnode = $( 'div[data-cid='+coreid[i]+']' ).parent()

@@ -1,6 +1,12 @@
 <?php use_helper('I18N') ?>
 
-<?php slot('title', trim(get_partial('search/product_count', array('count' => $resultCount, 'searchString' => $searchString)))) ?>
+<?php slot('title', trim(get_partial('search/product_count', array(
+  'count'         => $resultCount,
+  'searchString'  => $searchString,
+  'forceSearch'               => $forceSearch,
+  'meanSearchString'          => $meanSearchString,
+  'originalSearchString_quantity' => $originalSearchString_quantity,
+)))) ?>
 
 <?php slot('navigation') ?>
   <?php include_component('search', 'navigation', array('searchString' => $searchString)) ?>

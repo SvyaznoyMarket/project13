@@ -12,7 +12,7 @@
     <?php include_partial('default/googleAnalytics') ?>
 
   </head>
-  <body data-template="cart" style="background: url('/images/bg_14fev.png') no-repeat scroll center 0 #F6F1E9">
+  <body data-template="cart">
     <div class="allpage">
       <div class="allpageinner">
 
@@ -75,7 +75,7 @@
     <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
 <?php include_partial('default/admin') ?>
-    
+
 <script src="/js/LAB.min.js" type="text/javascript"></script>
 <script src="/js/loadjs.js" type="text/javascript"></script>
 

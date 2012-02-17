@@ -202,7 +202,8 @@ $(document).ready(function() {
 		var cl1loaded = false
 		$('.order1click-link').bind('click', function(e) {
 			e.preventDefault()
-
+			if( typeof(_gaq) !== 'undefined' )
+				_gaq.push(['_trackEvent', 'QuickOrder', 'Open'])
 			if ( !cl1loaded ) {
 				getOneClick( $(this).attr('href') )
 			} else {
