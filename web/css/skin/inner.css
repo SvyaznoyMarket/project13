@@ -528,7 +528,7 @@ border-radius:5px;
 
 
 .goodslist {float:left; width:705px; margin-left:-4px;  padding-bottom:5px; z-index:1; position:relative;}
-.goodsbox {float:left; width:195px; min-height: 284px;  padding:10px; margin-bottom:14px; margin-right:20px}
+.goodsbox {float:left; width:195px; /* min-height: 284px; */  padding:10px; margin-bottom:14px; margin-right:20px}
 .boxhover {display:none; position:absolute; z-index:3; width:215px; top:-4px; left:-4px;  padding:9px 0 0 9px; cursor:pointer}
 /*
 .goodsbox:hover {position:relative; z-index:2}
@@ -794,7 +794,7 @@ border-radius:5px;
 .article {float:left; width:100%; border-bottom:1px solid #e6e6e6; padding-bottom:5px; margin-bottom:10px; font-size:11px; color:#a6a6a6}
 .article A {color:#a6a6a6; margin-left:25px}
 
-.goodsbarbig {width:137px !important; height:31px; margin:26px 0 17px 0; position: relative;} 
+.goodsbarbig {width:137px !important; height:31px; margin:26px 0 17px 0; position: relative;}
 .goodsbarbig A {display:block; float:left; height:31px; background:url(/css/skin/img/bg_inner.png) no-repeat}
 .goodsbarbig A:hover {text-decoration:none}
 .goodsbarbig A.link1 {width:105px; background-position:-315px -250px}
@@ -3201,6 +3201,34 @@ DT.bCtg__eOrange{
 	.mSR a:hover{
     text-decoration: none;
 		}
+
+.bListVariants {
+    background: url("img/list_arrow_bg.png") no-repeat scroll 96% 50% transparent;
+    cursor: pointer;
+    padding: 10px 34px 10px 50px;
+}
+.bListVariantsOutsideWrap {
+    background: url("img/list_grad_ico.png") no-repeat scroll 15px 50% transparent;
+    border: 1px solid #D9D9D9;
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: 0 0 5px #D9D9D9;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.bListVariantsOutsideWrap a:hover {
+    text-decoration: none;
+}
+.bListVariantsInsideWrap {
+    background: url("img/list_grad_bg.png") repeat-y scroll 100% 50% transparent;
+    border-radius: 8px 8px 8px 8px;
+    cursor: pointer;
+}
+.bListVariants span {
+    color: #434343;
+    font: 11px Tahoma,sans-serif;
+}
+
+
 .bCityPopup{
 	z-index: 100;
 	width: 470px;
@@ -3627,7 +3655,7 @@ DT.bCtg__eOrange{
 		border: 1px solid #cb5b00;
 		}
 
-		
+
 .bCountSet{
 	top: 0;
 	left: -90px;
@@ -3635,23 +3663,23 @@ DT.bCtg__eOrange{
 	margin: 0 5px 0 0;
 	position: absolute;
 	border: 1px solid #dddddd;
-	
+
 	display: inline-block;
 	*display: inline;
 	zoom: 1;
-	
+
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	-o-border-radius: 5px;
-	}		
+	}
 	.bCountSet a{
 		width: 14px;
 		height: auto;
 		color: #959595;
 		padding: 7px 1px;
 		text-align: center;
-		
+
 		vertical-align: middle;
 		display: inline-block;
 		*display: inline;
@@ -3659,7 +3687,7 @@ DT.bCtg__eOrange{
 		}
 	.bCountSet span{
 		margin: 7px 1px;
-		
+
 		vertical-align: middle;
 		display: inline-block;
 		*display: inline;
@@ -3674,4 +3702,6 @@ DT.bCtg__eOrange{
 		margin: 0 2px 0 5px;
 		float: right !important;
 		background: url('/css/skin/img/set_shadows.png') -15px 0 repeat-y !important;
-		}		
+		}
+
+
