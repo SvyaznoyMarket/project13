@@ -35,6 +35,8 @@ $(document).ready(function() {
 			if( l == 1 ) {
 			  $('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
 			  .click( function() {
+				  if( typeof(_gaq)!=='undefined' && typeof(promos[0].ga)!=='undefined' )
+					_gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
 				location.href = $(this).data('url')
 			  })
 			  return
@@ -81,6 +83,8 @@ $(document).ready(function() {
 	$('.rightImage').click( function() { goSlide( 1 ) } )
 	$('.centerImage').click( function() {
 	  clearTimeout( idto )
+	if( typeof(_gaq)!=='undefined' && typeof(initis[1].ga)!=='undefined' )
+	    _gaq.push(['_trackEvent', 'BannerClick', initis[1].ga ]);	  
 	  location.href = $(this).data('url')
 	})
 	$('.promos').click( function(){ location.href = $(this).data('url') } )

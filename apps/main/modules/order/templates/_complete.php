@@ -13,6 +13,7 @@
 <?php if ($order['number']): ?>
   <script type="text/javascript">
     function runAnalitics(){
+    if( typeof(_gaq) !== 'undefined' ) {
        _gaq.push(['_addTrans',
            '<?php echo $order['number'].'_F' ?>',           // Номер заказа
            '<?php echo $order->Shop ?>',  // Название магазина (Необязательно)
@@ -54,17 +55,10 @@
                 <?php endforeach ?>
         ]
     };
-
-(function(w, c) {
-    (w[c] = w[c] || []).push(function() {
-        try {
-            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true, params:window.yaParams||{ }});
-        }
-        catch(e) { }
-    });
-})(window, "yandex_metrika_callbacks");
-
-
+    if( typeof(yaCounter10503055) !== 'undefined' )
+    	yaCounter10503055.reachGoal( 'QORDER', yaParams );
+    
+   } 
   </script>
 
 <?php endif ?>
