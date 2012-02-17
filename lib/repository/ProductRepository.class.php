@@ -17,20 +17,15 @@ class ProductRepository extends BaseRepository
 
     $params['id'] = $criteria->getParent();
 
-    $q = 'product.related.get';
+    $q = $this->createQuery('product.related.get', $params);
 
-    $result = $this->getCoreResult($q, $params);
+    $result = $q->getResult();
     myDebug::dump($result);
-    if (!$result)
-    {
-      $result = array();
-    }
+    myDebug::dump($q->getErrors());
 
     if (count($result))
     {
-      $params['count'] = 'true';
-      $nbResult = $this->getCoreResult($q, $params);
-      $this->initPager($criteria, $nbResult['count']);
+      $this->applyPager($criteria, $q);
     }
 
     // tmp

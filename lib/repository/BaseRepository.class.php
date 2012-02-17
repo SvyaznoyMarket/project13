@@ -9,16 +9,14 @@ class BaseRepository
     $this->core = Core::getInstance();
   }
 
-  public function getCoreResult($query, array $params = array(), array $data = array())
+  public function createQuery($query, array $params = array(), array $data = array())
   {
-    $response = $this->core->query($query, $params, $data);
+    return new CoreQuery($query, $params, $data);
+  }
 
-    if (isset($response['result']) && ('empty' == $response['result']))
-    {
-      $response = false;
-    }
-
-    return $response;
+  public function getOne($id)
+  {
+    return array_shift($this->get(array($id)));
   }
 
   protected function applyCriteria(BaseCriteria $criteria, array &$params)
@@ -33,16 +31,12 @@ class BaseRepository
     }
   }
 
-  protected function initPager(BaseCriteria $criteria, $nbResult = 0)
+  protected function applyPager(BaseCriteria $criteria, CoreQuery $q)
   {
     if ($pager = $criteria->getPager())
     {
-      $pager->setNbResult($nbResult);
+      $q->count();
+      $pager->setNbResult($q->count());
     }
-  }
-
-  public function getOne($id)
-  {
-    return array_shift($this->get(array($id)));
   }
 }
