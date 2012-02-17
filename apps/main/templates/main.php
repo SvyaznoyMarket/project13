@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <?php include_component('banner', 'show', array('view' => 'main')) ?>
+    <?php //include_component('banner', 'show', array('view' => 'main')) ?>
 
     <div class="allpage">
 <!-- ________________________AdFox Asynchronous code START__________________________ -->
@@ -64,6 +64,7 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
         </div>
       </noindex>
 
+      <?php if (false): ?>
       <div class="bigbanner">
         <div class='bCarouselWrap'>
           <div class='bCarousel'>
@@ -73,6 +74,8 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
           </div>
         </div>
       </div>
+      <?php endif ?>
+      <a href="/catalog/gifthobby/podarki-na-23-fevralya-1497/"><img src="/images/main_23fev.gif" style="padding-bottom: 30px; margin-top: -20px;" /></a>
 
       <?php include_component('default', 'footer', array('view' => 'main')) ?>
 
