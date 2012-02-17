@@ -12,6 +12,7 @@ Service:
     main_photo:        { type: string(255), notnull: false, default: null }
     expendable:        { type: string }
     is_active:         { type: boolean, notnull: true, default: false }
+    only_inshop:       { type: boolean, notnull: true, default: false, comment: 'доступна только в магазине?' }
   relations:
     Category:          { class: ServiceCategory, foreignAlias: Service, refClass: ServiceCategoryRelation, local: service_id, foreign: category_id, type: many, foreignType: many }
 

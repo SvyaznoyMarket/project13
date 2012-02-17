@@ -114,8 +114,15 @@ class serviceActions extends myActions
     //хак для мебели!!!!!!! убрать
     $parant = $this->service->getCatalogParent();
     $showNoPrice = 1;
-    if ($parant['core_parent_id'] == 305) $showNoPrice = false;
-    else $showNoPrice = true;
+    if ($parant['core_parent_id'] == 305)
+    {
+      $showNoPrice = false;
+    }
+    else
+    {
+      $showNoPrice = true;
+    }
+
     $this->setVar('showNoPrice', $showNoPrice, true);
 
   }
