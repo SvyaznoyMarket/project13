@@ -36,7 +36,7 @@ foreach ($p3d as $p3d_obj)
     <div class="goodsinfo bGood">
         <div class="bGood__eArticle">
             <div class="fr">
-          <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $product )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
+          <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $product['token_prefix'].'/'.$product['token'], )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
             <?php
               echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
               echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
