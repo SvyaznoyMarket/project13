@@ -75,7 +75,7 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
         </div>
       </div>
       <?php endif ?>
-      <a href="/catalog/gifthobby/podarki-na-23-fevralya-1497/"><img src="/images/main_23fev.gif" style="padding-bottom: 30px; margin-top: -20px;" /></a>
+      <a href="/catalog/gifthobby/podarki-na-23-fevralya-1497/" onclick="_gaq.push(['_trackEvent', 'BannerClick', '23_февраля_главная']);"><img src="/images/main_23fev.gif" style="padding-bottom: 30px; margin-top: -20px;" /></a>
 
       <?php include_component('default', 'footer', array('view' => 'main')) ?>
 
