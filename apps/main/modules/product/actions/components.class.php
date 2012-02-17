@@ -149,6 +149,16 @@ class productComponents extends myComponents
     if (in_array($this->view, array('expanded')))
     {
       $item['preview'] = $this->product['preview'];
+
+      $item['variation'] = array();
+      if ($this->product['is_model'])
+      {
+        foreach ($table->getModelProperty($this->product) as $property)
+        {
+          $item['variation'][] = mb_strtolower($property['name']);
+        }
+      }
+      $item['variation'] = implode(', ', $item['variation']);
     }
     if (in_array($this->view, array('description')))
     {
