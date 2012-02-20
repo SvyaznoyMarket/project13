@@ -541,7 +541,7 @@ userProductCompare_delete:
 # user product rating create
 userProductRating_createtotal:
   url:   /product-rating/createtotal/:product/:rating
-  param: { module: userProductRating, action: createtotal, product : 0}
+  param: { module: userProductRating, action: createtotal }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
