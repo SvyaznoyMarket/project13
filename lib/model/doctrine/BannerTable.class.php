@@ -30,7 +30,7 @@ class BannerTable extends myDoctrineTable
       'finish'      => 'end_at',
       'position'    => 'position',
       //'timeout'     => 'timeout',
-      'link'        => 'link',
+      'url'         => 'link',
     );
   }
 
