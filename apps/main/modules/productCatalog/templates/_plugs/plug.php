@@ -1,4 +1,3 @@
-<?php if (sfConfig::get('app_banner_adfox')): ?>
 <!-- ________________________AdFox Asynchronous code START__________________________ -->
 <!--enter-->
 <!--Площадка: Enter.ru / * / *-->
@@ -25,7 +24,7 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 // -->
 </script>
 <!-- _________________________AdFox Asynchronous code END___________________________ -->
-<?php else: ?>
+<?php if (false): ?>
       <!--  info block -->
 			<div class='bInfoBlock'>
 				<div id="rotator">
