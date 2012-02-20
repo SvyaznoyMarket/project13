@@ -29,12 +29,15 @@ class productComponents extends myComponents
       $this->view = 'default';
     }
 
+    $this->maxPerPage = $this->maxPerPage ?: 3;
+
     // cache key
-    $cacheKey = false && in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
-      'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
-      'region'  => $this->getUser()->getRegion('id'),
-      'view'    => $this->view,
-      'i'       => $this->ii,
+    $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
+      'product'    => is_scalar($this->product) ? $this->product : $this->product['id'],
+      'region'     => $this->getUser()->getRegion('id'),
+      'view'       => $this->view,
+      'i'          => $this->ii,
+      'maxPerPage' => $this->maxPerPage,
     )) : false;
 
     // checks for cached vars

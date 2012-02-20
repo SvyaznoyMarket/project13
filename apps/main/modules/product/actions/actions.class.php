@@ -277,6 +277,6 @@ class productActions extends myActions
 
     $this->setVar('item', $item, true);
 
-    return $this->renderPartial($this->getModuleName().'/product_related');
+    return $this->renderPartial($this->getModuleName().'/product_related_list');
   }
 }

@@ -12,9 +12,7 @@
 <div class="clear"></div>
 
 <div class="bigcarousel">
-  <?php foreach ($item['related'] as $i => $related): ?>
-    <?php include_component('product', 'show', array('view' => 'extra_compact', 'product' => $related, 'ii' => $i * $item['related_pager']->getPage())) ?>
-  <?php endforeach ?>
+  <?php include_partial('product/product_related_list', $sf_data) ?>
 </div>
 
 <div class="clear"></div>
