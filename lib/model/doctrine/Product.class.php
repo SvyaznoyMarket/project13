@@ -531,14 +531,7 @@ class Product extends BaseProduct
 
   public function getModelProperty()
   {
-    $q = ProductPropertyTable::getInstance()->createBaseQuery();
-
-    $q->innerJoin('productProperty.ProductModelRelation productModelRelation WITH productModelRelation.product_id = ?', array($this->is_model ? $this->id : $this->model_id))
-      ->innerJoin('productProperty.ProductTypeRelation productTypeRelation WITH productTypeRelation.product_type_id = ?', $this->type_id)
-      ->orderBy('productModelRelation.position ASC');
-
-
-    return $q->execute();
+    return $this->getTable()->getModelProperty($this);
   }
 
   public function isKit()

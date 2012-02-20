@@ -20,6 +20,8 @@ class searchActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
 
+    $this->getRequest()->setParameter('_template', 'product_catalog');
+    
     $limit = sfConfig::get('app_product_max_items_on_category', 20);
 	  $page = $request->getParameter('page', 1);
     $offset = intval($page - 1) * $limit;
@@ -48,9 +50,11 @@ class searchActions extends myActions
       'type_id'         => $this->getCoreIdBySearchType('product'), // ищет только товары
       'product_type_id' => $this->productType ? array($this->productType->core_id) : array(),
       'is_product_type_first_only' => $this->productType ? 'false' : 'true',
+      'use_mean'        => true,
     );
     $response = Core::getInstance()->query('search.get', $params);
-    #myDebug::dump($response);
+    //myDebug::dump($response);
+
     if (!$response)
     {
       return sfView::ERROR;
@@ -60,6 +64,20 @@ class searchActions extends myActions
       $this->setTemplate('empty');
 
       return sfView::SUCCESS;
+    }
+
+    $this->forceSearch = isset($response['forced_mean']) ? $response['forced_mean'] : false;
+    $this->meanSearchString = isset($response['did_you_mean']) ? $response['did_you_mean'] : '';
+
+    // если поисковая строка содержит ошибки
+    $this->originalSearchString_quantity = 0;
+    if ($this->meanSearchString)
+    {
+      $params['use_mean'] = false;
+      $tmpResponse = Core::getInstance()->query('search.get', $params);
+      //myDebug::dump($tmpResponse);
+
+      $this->originalSearchString_quantity = isset($tmpResponse[1]['count']) ? $tmpResponse[1]['count'] : 0;
     }
 
     if (!$this->productType)
