@@ -700,7 +700,6 @@ $(document).ready(function(){
 		var max = $(nodes.times).html() * 1
 		var wi  = nodes.width*1
 		var viswi = nodes.viswidth*1
-		console.info(viswi)
 		var buffer = 2
 		var ajaxflag = false
 
@@ -746,7 +745,6 @@ $(document).ready(function(){
 							var tr = $('<div>')
 							$(tr).html( data )
 							$(tr).find('.goodsbox').css('display','none')
-							console.info($(nodes.wrap))
 							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
 							tr = null
 						})
