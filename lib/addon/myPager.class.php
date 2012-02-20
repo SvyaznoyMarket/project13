@@ -112,26 +112,7 @@ class myPager
 
   public function setMaxPerPage($max)
   {
-    if ($max > 0)
-    {
-      $this->maxPerPage = $max;
-      if ($this->page == 0)
-      {
-        $this->page = 1;
-      }
-    }
-    else if ($max == 0)
-    {
-      $this->maxPerPage = 0;
-      $this->page = 0;
-    }
-    else
-    {
-      $this->maxPerPage = 1;
-      if ($this->page == 0)
-      {
-        $this->page = 1;
-      }
-    }
+    $this->maxPerPage = $max;
+    $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
   }
 }
