@@ -160,6 +160,10 @@ $(document).ready(function(){
 				currentItem = $( '.goodsboxlink',self).attr('ref')
 				return
 			}
+			if( $(this).parent().hasClass('bigcarousel') ) {
+				currentItem = $( '.boxhover',self).attr('ref')
+				return
+			}
 			
 			$(self).css('cursor','pointer')
 			var im = $('.boxhover .photo img', $(self))
@@ -179,7 +183,7 @@ $(document).ready(function(){
 			id = setTimeout( showBorders, 200)
 		},
 		'mouseleave': function() {
-			if( $(this).hasClass('goodsline') ) return
+			if( $(this).hasClass('goodsline') || $(this).parent().hasClass('bigcarousel')  ) return
 			var self = this
 			var im = $('.boxhover .photo img', self)
 			if(	$(self).data('run') ) {

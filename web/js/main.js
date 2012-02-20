@@ -698,7 +698,9 @@ $(document).ready(function(){
 		var self = this
 		var current = 1
 		var max = $(nodes.times).html() * 1
-		var wi  = $(nodes.width).html().replace(/\D/g,'')
+		var wi  = nodes.width*1
+		var viswi = nodes.viswidth*1
+		console.info(viswi)
 		var buffer = 2
 		var ajaxflag = false
 
@@ -718,7 +720,7 @@ $(document).ready(function(){
 			var boxes = $(nodes.wrap).find('.goodsbox')
 			$(boxes).hide()
 			var le = boxes.length
-			for(var j = (current - 1) * 3 ; j < current  * 3 ; j++) {
+			for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
 				boxes.eq( j ).show()
 			}
 		}
@@ -729,7 +731,7 @@ $(document).ready(function(){
 					var boxes = $(nodes.wrap).find('.goodsbox')
 					$(boxes).hide()
 					var le = boxes.length
-					var rest = ( wi % 3 ) ?  wi % 3  : 3
+					var rest = ( wi % viswi ) ?  wi % viswi  : viswi
 					for(var j = 1; j <= rest; j++)
 						boxes.eq( le - j ).show()
 					current++
@@ -744,6 +746,7 @@ $(document).ready(function(){
 							var tr = $('<div>')
 							$(tr).html( data )
 							$(tr).find('.goodsbox').css('display','none')
+							console.info($(nodes.wrap))
 							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
 							tr = null
 						})
@@ -769,14 +772,27 @@ $(document).ready(function(){
 	} // cardsCarousel object
 
 	$('.carouseltitle').each( function(){
-		var tmpline = new cardsCarousel ({
+		if( $(this).hasClass('carbig') ) {
+			var tmpline = new cardsCarousel ({
 					'prev'  : $(this).find('.back'),
 					'next'  : $(this).find('.forvard'),
 					'crnt'  : $(this).find('span:first'),
 					'times' : $(this).find('span:eq(1)'),
-					'width' : $(this).find('.rubrictitle strong'),
-					'wrap'  : $(this).find('~ .carousel').first()
+					'width' : $(this).find('.scroll').data('quantity'),
+					'wrap'  : $(this).find('~ .bigcarousel').first(),
+					'viswidth' : 5
+					})		
+		} else {
+			var tmpline = new cardsCarousel ({
+					'prev'  : $(this).find('.back'),
+					'next'  : $(this).find('.forvard'),
+					'crnt'  : $(this).find('span:first'),
+					'times' : $(this).find('span:eq(1)'),
+					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
+					'wrap'  : $(this).find('~ .carousel').first(),
+					'viswidth' : 3
 					})
+		}			
 	})
 
 	/* charachteristics */
