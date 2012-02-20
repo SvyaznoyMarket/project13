@@ -680,7 +680,7 @@ border-radius:5px;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
 }
-.bigcarousel .goodsbar {margin-top:10px}
+.bigcarousel .goodsbar {/*margin-top:10px*/}
 
 
 .carouselmenu {float:left; width:180px}
