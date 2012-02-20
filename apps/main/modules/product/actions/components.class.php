@@ -30,7 +30,7 @@ class productComponents extends myComponents
     }
 
     // cache key
-    $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
+    $cacheKey = false && in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
       'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
       'region'  => $this->getUser()->getRegion('id'),
       'view'    => $this->view,
@@ -143,7 +143,7 @@ class productComponents extends myComponents
       $criteria->setParent($this->product['core_id']);
       $criteria->setPager(new myPager(1, 5));
       $item['related'] = RepositoryManager::get('Product')->getRelated($criteria);
-      $item['related_quantity'] = $criteria->getPager()->getNbResults();
+      $item['related_pager'] = $criteria->getPager();
     }
     if (in_array($this->view, array('expanded')))
     {

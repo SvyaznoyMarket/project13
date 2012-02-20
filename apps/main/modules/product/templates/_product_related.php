@@ -1,9 +1,9 @@
-<div class="carouseltitle">
-  <div class="rubrictitle"><h3>С этим товаров часто покупают</h3></div>
-  <div class="scroll">
-    (страница <span>1</span> из <span><?php echo ceil($item['related_quantity'] / 3) ?></span>)
-    <a title="Предыдущие 3" class="back disabled" href=""></a>
-    <a title="Следующие 3" class="forvard" href=""></a>
+<div class="carouseltitle carbig">
+  <div class="rubrictitle"><h3>С этим товаров также покупают</h3></div>
+  <div class="scroll" data-quantity="<?php echo $item['related_pager']->getNbResults() ?>">
+    (страница <span><?php echo $item['related_pager']->getPage() ?></span> из <span><?php echo $item['related_pager']->getLastPage() ?></span>)
+    <a title="Предыдущие 3" class="back disabled" data-url="<?php echo url_for('product_related', $sf_data->getRaw('product')) ?>" href="javascript:void(0)"></a>
+    <a title="Следующие 3" class="forvard" data-url="<?php echo url_for('product_related', $sf_data->getRaw('product')) ?>" href="javascript:void(0)"></a>
   </div>
 </div>
 
@@ -12,8 +12,8 @@
 <div class="clear"></div>
 
 <div class="bigcarousel">
-  <?php foreach ($item['related'] as $related): ?>
-    <?php include_component('product', 'show', array('view' => 'extra_compact', 'product' => $related)) ?>
+  <?php foreach ($item['related'] as $i => $related): ?>
+    <?php include_component('product', 'show', array('view' => 'extra_compact', 'product' => $related, 'ii' => $i * $item['related_pager']->getPage())) ?>
   <?php endforeach ?>
 </div>
 

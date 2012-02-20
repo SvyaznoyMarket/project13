@@ -255,4 +255,28 @@ class productActions extends myActions
     //myDebug::dump($this->product);
     //$this->forward('productCard', 'show');
   }
+
+  /**
+   * Executes related action
+   *
+   * @param sfRequest $request A request object
+   */
+  public function executeRelated(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isXmlHttpRequest());
+
+    $this->page = $request->getParameter('page', 1);
+
+    $this->product = $this->getRoute()->getObject();
+
+    $criteria = new ProductRelatedCriteria();
+    $criteria->setParent($this->product['core_id']);
+    $criteria->setPager(new myPager($this->page, 5));
+    $item['related'] = RepositoryManager::get('Product')->getRelated($criteria);
+    $item['related_pager'] = $criteria->getPager();
+
+    $this->setVar('item', $item, true);
+
+    return $this->renderPartial($this->getModuleName().'/product_related');
+  }
 }

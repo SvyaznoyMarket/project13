@@ -24,9 +24,6 @@ class ProductRepository extends BaseRepository
       $this->applyPager($criteria, $q);
     }
 
-    // tmp
-    //$result = array(34, 1638, 1639, 1640);
-
     return $this->get($result);
   }
 }

@@ -53,6 +53,15 @@ class myPager
   public function setNbResults($nb)
   {
     $this->nbResults = $nb;
+
+    if (($this->getPage() == 0 || $this->getMaxPerPage() == 0))
+    {
+      $this->setLastPage(0);
+    }
+    else
+    {
+      $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
+    }
   }
 
   public function getFirstPage()
