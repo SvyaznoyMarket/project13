@@ -506,6 +506,7 @@ EOF;
 
     if ($record && ('delete' != $action)) //если есть такая запись, то будем ее изменять
     {
+      $processed['to_update'] = array();
       $processed = $this->updateRecord($mapping, $record, $entity);
 
 //      if ($record['is_instock'] != ($entity['is_shop'] || $entity['is_store'] || $entity['is_supplier']))
