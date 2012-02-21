@@ -142,12 +142,21 @@ class productComponents extends myComponents
         $item['cart_quantity'] = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
       }
 
+      // смежные товары
       $criteria = new ProductRelatedCriteria();
       $criteria->setParent($this->product['core_id']);
       $criteria->setPager(new myPager(1, 5 * 2));
       $item['related'] = RepositoryManager::get('Product')->getRelated($criteria);
       $criteria->getPager()->setMaxPerPage(5);
       $item['related_pager'] = $criteria->getPager();
+
+      // аксессуары
+      $criteria = new ProductRelatedCriteria();
+      $criteria->setParent($this->product['core_id']);
+      $criteria->setPager(new myPager(1, 5 * 2));
+      $item['accessory'] = RepositoryManager::get('Product')->getAccessory($criteria);
+      $criteria->getPager()->setMaxPerPage(5);
+      $item['accessory_pager'] = $criteria->getPager();
     }
     if (in_array($this->view, array('expanded')))
     {
