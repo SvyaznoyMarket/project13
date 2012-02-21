@@ -2909,38 +2909,37 @@ DT.bCtg__eOrange{
 	.mNLogo span{
 		color: #a6a6a6;
 		}
-.bFormB{
-	text-align: center;
-	}
-	.bFormB2{
-		margin-bottom: 10px;
-		}
-	.bFormB2 a,
-	.bFormB2 span,
-	.bFormB2 input,
-	.bFormB a,
-	.bFormB span,
-	.bFormB input{
-		vertical-align: middle;
-		font: 24px Tahoma, sans-serif;
-		}
-	.bFormB a{
-		margin-right: 30px;
-		text-decoration: underline;
-		}
-	.bFormB2 a{
-		margin-left: 20px;
-		text-decoration: underline;
-		}
-	.bFormB input{
-		height: 40px;
-		padding: 3px 80px;
-		}
-	.bFormB2 input{
-		height: 40px;
-		padding: 3px 40px;
-		}
-
+.bFormB {
+    text-align: center;
+}
+.bFormB2 {
+    margin-bottom: 10px;
+}
+.bFormB2 a, .bFormB2 span, .bFormB2 input, .bFormB a, .bFormB span, .bFormB input {
+    font: 24px Tahoma,sans-serif;
+    vertical-align: middle;
+}
+.bFormB a {
+    margin-right: 30px;
+    text-decoration: underline;
+}
+.bFormB2 a {
+    margin-left: 20px;
+    text-decoration: underline;
+}
+.bFormB2 .bBigOrangeButton {
+    text-align: center;
+    text-decoration: none;
+    width: 430px;
+}
+.bFormB input {
+    height: 40px;
+    padding: 3px 80px;
+}
+.bFormB2 input {
+    height: 40px;
+    padding: 3px 40px;
+}
 .bFormAuth{
 	color: #434343;
 	padding: 12px 0;
@@ -3113,52 +3112,48 @@ DT.bCtg__eOrange{
 
 
 /*-- -- - --- --- -- - */
-	.b1Click{
-		width: 605px;
-		margin-left: 140px;
-		}
-		.b1Click__eTop{
-			font: 16px Tahoma, sans-serif;
-			}
-		.b1Click__ePrice{
-			float: right;
-			text-align: right;
-			font: 16px Tahoma, sans-serif;
-			}
-		.b1Click__ePrice .b1Click__ePriceBig{
-			font: bold 34px Tahoma, sans-serif;
-			}
-		.b1Click__eInp{
-			margin: 10px 0;
-			}
-		.b1Click__eInp span{
-			width: 130px;
-			color: #434343;
-			font: 12px Tahoma, sans-serif;
+.b1Click {
+    width: 725px;
+}
+.b1Click__eTop {
+    font: 16px Tahoma,sans-serif;
+}
+.b1Click__eTop.mPR {
+    padding-right: 140px;
+}
+.b1Click__eTop.mPR .b1Click__ePriceBig {
+    padding-left: 10px;
+}
+.b1Click__ePrice {
+    float: right;
+    font: 16px Tahoma,sans-serif;
+    text-align: right;
+}
+.b1Click__ePrice .b1Click__ePriceBig {
+    font: bold 34px Tahoma,sans-serif;
+}
+.b1Click__eInp {
+    margin: 10px 0;
+}
+.b1Click__eInp span {
+    color: #434343;
+    display: inline-block;
+    font: 12px Tahoma,sans-serif;
+    width: 130px;
+}
+.b1Click__eInp input {
+    background: none repeat scroll 0 0 #F4F4F4;
+    border: 1px solid #E0E0E0;
+    border-radius: 7px 7px 7px 7px;
+    height: 30px;
+    padding: 0 0 0 10px;
+    vertical-align: middle;
+    width: 580px;
+}
+.b1Click .bFormB2 {
+    margin: 20px 0 0 110px;
+}
 
-			display: inline-block;
-			*display: inline;
-			zoom: 1;
-			}
-		.b1Click__eInp input{
-			width: 455px;
-			height: 30px;
-			padding: 0 0 0 10px;
-			background: #f4f4f4;
-			vertical-align: middle;
-			border: 1px solid #e0e0e0;
-
-			border-radius: 7px;
-			-webkit-border-radius: 7px;
-			-moz-border-radius: 7px;
-			-o-border-radius: 7px;
-			}
-      .b1Click__eInp input.mRed {
-        border: 1px solid red;
-      }
-		.b1Click .bFormB2{
-			margin: 20px 0 0 130px;
-			}
 .bSR{
 	font: 12px/17px Tahoma, sans-serif;
 	}
