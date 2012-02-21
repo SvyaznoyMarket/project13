@@ -8,7 +8,7 @@ all:
     default:
       servers:
         main:
-          host: 127.0.0.1
+          host: localhost
           persistent: true
 
   doctrine:
@@ -172,7 +172,7 @@ live:
 
   core:
     config:
-      api_url: 'http://62.231.27.40/v1/json'
+      api_url: 'http://api.enter.ru/v1/json'
       consumer_key: v6Q4UiTaQ6jWPHtJ
       signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
 
@@ -180,7 +180,7 @@ live:
     default:
       servers:
         main:
-          host: site-db
+          host: localhost
           persistent: true
 
   cache_eraser:
@@ -194,6 +194,57 @@ live:
   banner:
     adfox: false
 
+  welcome:
+    enabled: true
+
+live_dev:
+  open_auth:
+    provider:
+      vkontakte:
+        app_id: 2659726
+        secret_key: v4uMoJ3Fhne9R5SmHTiq
+      facebook:
+        app_id: 226981847349938 #
+        secret_key: e9b8bd45490396ff8ee0da18c777323b #
+      twitter:
+        consumer_key: IyHijpaPPEtzcXNB1a5lTw
+        consumer_secret: xAn2bD2Q90GrlU2DMS5upjteR2dgKhEQCFhijGopWw
+      odnoklassniki:
+        app_id: 5061376
+        public_key: 'CBAMDOEBABABABABA'
+        private_key: '37B3909065A020F45A9D073C'
+        app_url: 'http://www.odnoklassniki.ru/games/enter'
+      mailru:
+        app_id: 648413
+        private_key: '1d32486472b6d1ed5efe36070ac4f23c'
+        secret_key: '60ca8f63a5fa1c90d72f0be0f80e4037'
+
+  core:
+    config:
+      api_url: 'http://api.enter.ru/v1/json'
+      consumer_key: v6Q4UiTaQ6jWPHtJ
+      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
+
+  rediska:
+    default:
+      servers:
+        main:
+          host: localhost
+          persistent: true
+
+  cache_eraser:
+    config:
+      file: /opt/WWWRoot/enter.ru/ccontrol/erase_barcode.cmd
+      prefix: 'CACHETAG::'
+
+  cache:
+    enabled: true
+
+  banner:
+    adfox: false
+
+  welcome:
+    enabled: true
 
 alpha:
   doctrine:
