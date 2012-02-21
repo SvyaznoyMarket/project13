@@ -55,10 +55,10 @@
                 <?php endforeach ?>
         ]
     };
-    if( typeof(yaCounter10503055) !== 'undefined' )
-    	yaCounter10503055.reachGoal( 'QORDER', yaParams );
-    
-   } 
+    if( typeof(yaCounter10503055) !== 'undefined' )	yaCounter10503055.reachGoal( 'QORDER', yaParams );
+
+    if( typeof(window.adBelnder) != 'undefined') window.adBelnder.addOrder(<?php echo str_replace(',', '.', $order['sum']) ?>);
+   }
   </script>
 
 <?php endif ?>
