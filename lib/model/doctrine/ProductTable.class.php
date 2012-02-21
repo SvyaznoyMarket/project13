@@ -848,12 +848,16 @@ class ProductTable extends myDoctrineTable
       }
       else
       {
-        $return[] = "product-{$record['core_id']}".(isset($params['region']) ? ("-".$params['region']) : "-");
+        if (get_class($record) == 'Poduct') {
+            $return[] = "product-{$record['core_id']}".(isset($params['region']) ? ("-".$params['region']) : "-");
+        }
       }
 
-      foreach ($record['Category'] as $productCategory)
-      {
-        $return[] = "productCategory-{$productCategory['core_id']}-";
+      if (get_class($record) == 'Poduct') {
+          foreach ($record['Category'] as $productCategory)
+          {
+            $return[] = "productCategory-{$productCategory['core_id']}-";
+          }
       }
     }
 
@@ -906,9 +910,11 @@ class ProductTable extends myDoctrineTable
 
   public function getMainPhotoUrl($product, $view = 0)
   {
-    $urls = sfConfig::get('app_product_photo_url');
-
-    return $product['main_photo'] ? $urls[$view].$product['main_photo'] : null;
+    if (get_class($product) == 'Product') {
+        $urls = sfConfig::get('app_product_photo_url');
+        return $product['main_photo'] ? $urls[$view].$product['main_photo'] : null;
+    }
+    return null;
   }
 
   public function getRealPrice($product)

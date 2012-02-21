@@ -1,0 +1,1 @@
+<?php include_component('productSoa', 'list', array('list' => $list, 'ajax_flag' => $ajax_flag, 'view' => isset($view) ? $view : null, 'in_row' => isset($in_row) ? $in_row : null, 'last_line' => isset($last_line) ? $last_line : null)) ?>

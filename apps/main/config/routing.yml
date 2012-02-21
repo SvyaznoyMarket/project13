@@ -65,7 +65,7 @@ productCatalog_count:
 #
 # категория каталога товаров
 productCatalog_category:
-  url:   /catalog/:productCategory/
+  url:   /catalog/:productCategory
   param: { module: productCatalog, action: category}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
@@ -103,6 +103,18 @@ productCard:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
+
+# карточка товара. использует новый API
+productCardSoa:
+  url:   /product_soa/:product
+  param: { module: productCardSoa, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
+
 #
 # карточка товара по ид товара
 product_show:
