@@ -279,4 +279,28 @@ class productActions extends myActions
 
     return $this->renderPartial($this->getModuleName().'/product_related_list');
   }
+
+  /**
+   * Executes accessory action
+   *
+   * @param sfRequest $request A request object
+   */
+  public function executeAccessory(sfWebRequest $request)
+  {
+    $this->forward404Unless($request->isXmlHttpRequest());
+
+    $this->page = $request->getParameter('page', 1);
+
+    $this->product = $this->getRoute()->getObject();
+
+    $criteria = new ProductRelatedCriteria();
+    $criteria->setParent($this->product['core_id']);
+    $criteria->setPager(new myPager($this->page, 5));
+    $item['accessory'] = RepositoryManager::get('Product')->getAccessory($criteria);
+    $item['accessory_pager'] = $criteria->getPager();
+
+    $this->setVar('item', $item, true);
+
+    return $this->renderPartial($this->getModuleName().'/product_accessory_list');
+  }
 }
