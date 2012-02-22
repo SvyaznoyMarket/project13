@@ -181,6 +181,7 @@ function Lightbox( jn, data ){
 				$('.total').show()
 			}		
 			if( init.vitems ) {
+				$('.point2', plashka).addClass('orangeme')
 				$('.point2 b', plashka).html(init.vitems)
 				this.fillTopBlock()
 			}		
