@@ -102,7 +102,7 @@
 
             $(window).resize(setOverlayHeight)
                      .resize( function(){ ( opts.reallyBig ) ? setWrapPosition( $self.parent() ) : setSelfPosition() })//IVN
-                     .resize( function(){ setHeight( $self ) } )
+                     .resize( function(){ if( opts.reallyBig ) setHeight( $self ) } )
                      .scroll( function(){ if ( !opts.reallyBig ) setSelfPosition() })//IVN
                      .keydown(observeEscapePress);
 

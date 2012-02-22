@@ -1,10 +1,11 @@
 (function() {
 	if( typeof($LAB) === 'undefined' )
 		throw new Error( "Невозможно загрузить файлы JavaScript" )
-	function getWithVersion( flnm ) {
+	function getWithVersion( flnm, amin ) {
 		if( typeof( filesWithVersion[''+flnm] ) !== 'undefined' ) {
 			if( !document.location.search.match(/jsdbg/) ) {
 			flnm += '?' + filesWithVersion[''+flnm]
+			if( typeof(amin) === 'undefined' )
 			flnm = flnm.replace('js', 'min.js')
 			}
 		}
@@ -54,7 +55,7 @@
 			break
 		case 'product_catalog':
 			$LAB.queueWait( function() {
-				$LAB.script('bigjquery.min.js')
+				$LAB.script( getWithVersion('bigjquery.min.js', true) )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.script( getWithVersion('app.auth.js') )
@@ -104,7 +105,7 @@
 			break
 		case 'service':
 			$LAB.queueWait( function() {
-				$LAB.script('bigjquery.min.js')
+				$LAB.script( getWithVersion('bigjquery.min.js', true) )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.script( getWithVersion('app.auth.js') )
