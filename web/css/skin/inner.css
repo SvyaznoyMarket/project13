@@ -2508,50 +2508,41 @@ DT.bCtg__eOrange{
 
 /* bServiceCard */
 
-.bServiceCardWrap{
-	font-size: 0;
-	}
-.bServiceCard{
-	width: 220px;
-	vertical-align: top;
-	margin: 0 10px 30px 0;
-	}
-	.bServiceCard__eImage{
-		width: 160px;
-		height: 125px;
-		margin: 0 auto;
-		overflow: hidden;
-		position: relative;
-		}
-	.bServiceCard__eDescription{
-		font: 12px Tahoma, sans-serif;
-		}
-	.bServiceCard__ePrice{
-		margin-bottom: 7px;
-		font: 18px Tahoma, sans-serif;
-		}
-	.bServiceCard__eLogo{
-		top: 0;
-		left: 0;
-		width: 39px;
-		height: 41px;
-		position: absolute;
-		background: url('img/icon_f1service_small.png') no-repeat;
-		}
-	.bServiceCard__eLogo_free{
-		top: 0;
-		left: 0;
-		width: 120px;
-		height: 120px;
-		position: absolute;
-		background: url('img/icon_f1service_small.png') no-repeat;
-        border: solid 1px #e6e6e6;
-		}
-	.mServiceBig .bServiceCard__eLogo{
-		width: 60px;
-		height: 68px;
-		background: url('img/icon_f1service_big.png') no-repeat;
-		}
+.bServiceCardWrap {
+    font-size: 0;
+}
+.bServiceCard {
+    margin: 0 10px 30px 0;
+    vertical-align: top;
+    width: 220px;
+}
+.bServiceCard__eImage {
+    height: 125px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    width: 160px;
+}
+.bServiceCard__eDescription {
+    font: 12px Tahoma,sans-serif;
+}
+.bServiceCard__ePrice {
+    font: 18px Tahoma,sans-serif;
+    margin-bottom: 0;
+}
+.bServiceCard__eLogo {
+    background: url("img/icon_f1_image.png") no-repeat scroll 0 0 transparent;
+    height: 41px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 39px;
+}
+.mServiceBig .bServiceCard__eLogo {
+    background: url("img/icon_f1_image.png") no-repeat scroll 0 0 transparent;
+    height: 41px;
+    width: 39px;
+}
 
 
 /* newSB */
