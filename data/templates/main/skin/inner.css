@@ -228,6 +228,7 @@ border-radius:5px;
 -webkit-box-shadow:0 0 7px #616161;
 box-shadow:0 0 7px #616161;
 }
+
 .extramenu .corner {position:absolute; display:block; font-size:0; line-height:0; top:-15px; //top:-14px; width:20px; height:15px; background:url(img/bg.png) no-repeat 0 -218px}
 .extramenu DL {float:left; width:210px; margin:8px 6px 12px 12px; overflow:hidden}
 .extramenu DT {padding:10px 0 5px 0; font-size:16px}
@@ -2426,16 +2427,16 @@ border-radius: 5px;
 		}
 	.bServiceCard__eLogo{
 		top: 0;
-		left: 0;
+		right: 0;
 		width: 39px;
 		height: 41px;
 		position: absolute;
-		background: url('img/icon_f1service_small.png') no-repeat;
+		background: url('img/icon_f1_image.png') no-repeat;
 		}
 	.mServiceBig .bServiceCard__eLogo{
-		width: 60px;
-		height: 68px;
-		background: url('img/icon_f1service_big.png') no-repeat;
+		width: 39px;
+		height: 41px;
+		background: url('img/icon_f1_image.png') no-repeat;
 		}
 	
 
@@ -4596,9 +4597,91 @@ a[title="ovi"]:hover{ background: url('img/icon_ovi_store.png'); }
 		position: absolute;
 		background: url('img/23_feb_lr.jpg') 50% 0 no-repeat;
 		}				
+
+
+
+.bHeader{
+	font-size: 0;
+	height: 112px;
+	text-align: justify;
+	margin: 10px 0 20px 0;
+	padding: 20px 12px 0 0;
+	background: url('img/header_bg.png') no-repeat;
+	}
+	.bHeaderWrap{
+		z-index: 100;
+		position: relative;
+		}
+	.bToplogo,
+	.bHeader li,
+	.bToplink span,
+	.bHeader__eLong{
+		vertical-align: top;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}		
+	.bHeader li{
+		position: relative;
+		}
+	.bHeader li div{
+		top: 80px;
+		width: 100%;
+		position:absolute;
+		text-align: center;
+		}
+	.bCorner{   
+		width: 20px;
+		height:15px;
+		font-size:0; 
+		line-height:0;
+		display: none;
+		background:url(img/bg.png) no-repeat 0 -218px
+		}
+	.bToplogo{
+		width: 140px;
+		height: 91px;
+		background: url('img/bLogo.png') 50% 50% no-repeat;
+		}
+	.bToplink{
+		color: #ffffff;
+		min-width: 41px;
+		max-width: 68px;
+		text-align: center;
+		font: 11px 'Enter';
+		text-transform: uppercase;
 		
+		vertical-align: top;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bToplink:hover{
+		color: #ffa901;
+		text-decoration: none;
+		}
+	.bToplink span{
+		width: 41px;
+		height: 50px;
+		margin: 10px 0 5px 0;
+		border: 1px solid red;
+		}
+	.mMebel{}
+	.mTehn{}
+	.mZdor{}
+	.mDom{}
+	.mDeti{}
+	.mZoo{}
+	.mSam{}
+	.mElectro{}
+	.mUkr{}
+	.mSport{}
+	.mPodarki{}
+	.bHeader li:hover span{}
 		
-		
+	.bHeader__eLong{
+		width: 98%;
+		}		
 		
 		
 		

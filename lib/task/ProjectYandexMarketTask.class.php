@@ -14,24 +14,6 @@ class ProjectYandexMarketTask extends sfBaseTask
   private $_xmlFolder ='web/xml';
 
   /**
-   * Название файла дли экспорта
-   * @var string
-   */
-  private $_xmlFileName ='ya_market.xml';
-
-  /**
-   * Id региона, для которого выгружаем данные
-   * @var integer
-   */
-  private $_regionId;       //TO DO
-
-  /**
-   * Флаг - выгружать ли товары НЕ в наличии
-   * @var boolean
-   */
-  private $_exportNotInStock = false;
-
-  /**
    * Список категорий, данные из которых выгружаем
    * @var array
    * для каждого элемента:
@@ -150,7 +132,19 @@ class ProjectYandexMarketTask extends sfBaseTask
    */
   private $_portionToLoadProduct = 100;
 
-  private $_currentPriceListId;
+
+  /**
+   * Текущий регион
+   * @var Region
+   */
+  private $_currentRegion;
+
+
+  /**
+   * id региона по умолчанию
+   * @var int
+   */
+  private $_defaultRegionId = 83;
 
   /**
    * Рутовые категории, из которых выгружаем в разные файлы
@@ -160,77 +154,137 @@ class ProjectYandexMarketTask extends sfBaseTask
       //для всех
       array(
           'name' => 'ya_market.xml',
-          'price_list_id' => 1
+          'price_list_id' => 1,
+          'region_id' => 83,
+          'min_num' => 3,
           ),
       array(
           'name' => 'export_realweb.xml',
           'list' => array(6,8,9),
-          'price_list_id' => 1
+          'price_list_id' => 1,
+          'region_id' => 83,
+          'min_num' => 3,
           ),
       array(
           'name' => 'export_mgcom.xml',
           'list' => array(3,2,1,4,7,8,5),
-          'price_list_id' => 1
+          'price_list_id' => 1,
+          'region_id' => 83,
+          'min_num' => 3,
           ),
+      array(
+          'name' => 'max2.xml',
+          'price_list_id' => 1,
+          'region_id' => 83,
+          'max_num' => 2
+      ),
       //для Рязани
       array(
           'name' => 'ya_market_ryazan.xml',
-          'price_list_id' => 11
+          'price_list_id' => 11,
+          'region_id' => 10375 ,
+          'min_num' => 3,
           ),
       array(
           'name' => 'export_realweb_ryazan.xml',
           'list' => array(6,8,9),
-          'price_list_id' => 11
+          'price_list_id' => 11,
+          'region_id' => 10375,
+          'min_num' => 3,
           ),
       array(
           'name' => 'export_mgcom_ryazan.xml',
           'list' => array(3,2,1,4,7,8,5),
-          'price_list_id' => 11
+          'price_list_id' => 11,
+          'region_id' => 10375,
+          'min_num' => 3,
           ),
+      array(
+          'name' => 'max2_ryazan.xml',
+          'price_list_id' => 1,
+          'region_id' => 83,
+          'max_num' => 2
+      ),
       //для Липецка
       array(
           'name' => 'ya_market_lipetsk.xml',
-          'price_list_id' => 12
+          'price_list_id' => 12,
+          'region_id' => 100,
+          'min_num' => 3,
           ),
       array(
           'name' => 'export_realweb_lipetsk.xml',
           'list' => array(6,8,9),
-          'price_list_id' => 12
+          'price_list_id' => 12,
+          'region_id' => 100,
+          'min_num' => 3,
           ),
       array(
           'name' => 'export_mgcom_lipetsk.xml',
           'list' => array(3,2,1,4,7,8,5),
-          'price_list_id' => 12
+          'price_list_id' => 12,
+          'region_id' => 100,
+          'min_num' => 3,
           ),
+      array(
+          'name' => 'max2_lipetsk.xml',
+          'price_list_id' => 1,
+          'region_id' => 83,
+          'max_num' => 2
+      ),
       //для Белгорода
       array(
           'name' => 'ya_market_belgorod.xml',
-          'price_list_id' => 17
+          'price_list_id' => 17,
+          'region_id' => 13242,
+          'min_num' => 3,
       ),
       array(
           'name' => 'export_realweb_belgorod.xml',
           'list' => array(6,8,9),
-          'price_list_id' => 17
+          'price_list_id' => 17,
+          'region_id' => 13242,
+          'min_num' => 3,
       ),
       array(
           'name' => 'export_mgcom_belgorod.xml',
           'list' => array(3,2,1,4,7,8,5),
-          'price_list_id' => 17
+          'price_list_id' => 17,
+          'region_id' => 13242,
+          'min_num' => 3,
+      ),
+      array(
+          'name' => 'max2_belgorod.xml',
+          'price_list_id' => 1,
+          'region_id' => 83,
+          'max_num' => 2
       ),
       //для Орла
       array(
           'name' => 'ya_market_orel.xml',
-          'price_list_id' => 15
+          'price_list_id' => 15,
+          'region_id' => 13243,
+          'min_num' => 3,
       ),
       array(
           'name' => 'export_realweb_orel.xml',
           'list' => array(6,8,9),
-          'price_list_id' => 15
+          'price_list_id' => 15,
+          'region_id' => 13243,
+          'min_num' => 3,
       ),
       array(
           'name' => 'export_mgcom_orel.xml',
           'list' => array(3,2,1,4,7,8,5),
-          'price_list_id' => 15
+          'price_list_id' => 15,
+          'region_id' => 13243,
+          'min_num' => 3,
+      ),
+      array(
+          'name' => 'max2_orel.xml',
+          'price_list_id' => 1,
+          'region_id' => 83,
+          'max_num' => 2
       ),
   );
 
@@ -242,6 +296,12 @@ class ProjectYandexMarketTask extends sfBaseTask
    */
   private $_jewelUnit = 9;
 
+
+  /**
+   * Информация о файле, который сейчас обрабатывается
+   * @var array
+   */
+  private $_currentFileInfo;
 
 
   protected function configure()
@@ -282,17 +342,22 @@ EOF;
     #var_dump($this->_imageUrlsConfig);
     #exit();
 
-    //генерируем файл со всеми товарами
-   # $this->_xmlFilePath = $this->_xmlFolder . '/' . $this->_xmlFileName;  //'/mnt/hgfs/httpdFiles/'.
-  #  $this->_xmlGenerateItself();
-
     $this->_generateCatList();
 
     //генерируем файлы с определёнными категориями
 
     if (count($this->_globalCatList)>0)
     foreach($this->_globalCatList as $partInfo){
-        $this->_currentPriceListId = $partInfo['price_list_id'];
+        $this->_currentFileInfo = $partInfo;
+        $this->_currentRegion = RegionTable::getInstance()->getQueryObject()->addWhere('id = ?', $partInfo['region_id'])->fetchArray();
+        if (isset($this->_currentRegion[0])) {
+            $this->_currentRegion = $this->_currentRegion[0];
+        }
+        //print_r($this->_currentRegion);
+        //die();
+        if (!$this->_currentRegion || !isset($this->_currentRegion['id'])) {
+            continue;
+        }
         //заполняем массив категорий
         $this->_categoryList = array();
         if ($partInfo['inner']) {
@@ -469,33 +534,44 @@ EOF;
         'with_model'          => true,
         'view'                => 'list',
     );
-    $offersList = ProductTable::getInstance()->createBaseQuery($params)
+    $offersListStore = ProductTable::getInstance()->createBaseQuery($params)
             ->select('product.*, category_rel.*, category.root_id, creator.name, price.price, delivery_price.price')
             //берем только продукты, доступные на МОЛКОМЕ в количестве не менее 3 шт
-            ->innerJoin('product.StockRelation stockRelation WITH stockRelation.stock_id = ? AND stockRelation.quantity > ?', array(1, 2))
-            ->addWhere('price.product_price_list_id = ?', $this->_currentPriceListId)
+            ->leftJoin('product.StockRelation stockRelation WITH stock_id = ?', $this->_currentRegion['stock_id'])                                              //для тех что на складе проверяем количество на складе
+            ->addWhere('price.product_price_list_id = ?', $this->_currentRegion['product_price_list_id'])
             //берем только продукты, с правильной ссылкой
             ->addWhere('product.token_prefix IS NOT NULL')
             //при выборе цен на доставку, учитываем прайс лист
-            ->addWhere('delivery_price.price_list_id = ?', $this->_currentPriceListId)
+            ->addWhere('delivery_price.price_list_id = ?', $this->_currentRegion['product_price_list_id'])
             ;
+      if (isset($this->_currentFileInfo['min_num'])) {
+          $offersListStore
+              ->innerJoin('product.State state WITH state.region_id = ?', $this->_currentRegion['id'])         //проверяем статусы в текущем регионе
+              ->addWhere('state.is_supplied = ? OR stockRelation.quantity > ?', array(1,$this->_currentFileInfo['min_num']));                  //либо есть поставщик, либо количество на складе > 2
+      } elseif (isset($this->_currentFileInfo['max_num'])) {
+          $offersListStore->addWhere(' stockRelation.quantity <= ?', $this->_currentFileInfo['max_num']);
+      } else {
+          $offersListStore
+          ->innerJoin('product.State state WITH state.region_id = ?', $this->_currentRegion['id'])         //проверяем статусы в текущем регионе
+          ->addWhere('state.is_supplied = ? OR state.is_store = ?', array(1, 1));
+      }
 
-    //если нужно выгрузить только те, что есть в наличии
-    /*if (!$this->_exportNotInStock){
-        $offersList->addWhere('product.is_instock=?',1);
-    }*/
+
 
     //если есть ограничения по категориям
     if (isset($catIdListString) && count($catIdListString)){
-        $offersList
+        $offersListStore
             ->addWhere('category_rel.product_category_id IN ('.$catIdListString.')');
     }
     #echo $this->_xmlFilePath ."\n";
-    #echo $offersList ."\n";
-    $offersList = $offersList
-           // ->limit(50)
-           //  ->orderBy('product.id')
+    //echo $offersListStore->getSQLQuery() ."\n";
+    //var_dump($offersListStore->getParams());
+      //die();
+    $offersList = $offersListStore
+            //->limit(5)
+            //->orderBy('product.id')
             ->fetchArray();
+
 
 
     #echo count($offersList);
@@ -598,6 +674,9 @@ EOF;
         switch ($code){
             case 'url':
                 $value = $this->_companyData['url'].$this->getRouting()->generate('productCard', array('product' => $offerInfo['token_prefix'].'/'.$offerInfo['token']));
+                if ($this->_currentRegion['id'] != $this->_defaultRegionId) {
+                    $value .= '?city_id='. $this->_currentRegion['token'];
+                }
                 break;
             case 'price':
                 if (isset($offerInfo['ProductPrice'][0])) {
