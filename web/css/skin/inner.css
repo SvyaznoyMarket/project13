@@ -3782,8 +3782,8 @@ DT.bCtg__eOrange{
 .mElectro, .category-8{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
 .mUkr, .category-9{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
 .mSport, .category-10{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
-.mPodarki, .category-11{ width: 42px; background: url('img/header_icon_hobbies_gifts.gif') no-repeat; }
-.mSad, .category-12{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; }
+.mSad, .category-11{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; }
+.mPodarki, .category-12{ width: 42px; background: url('img/header_icon_hobbies_gifts.gif') no-repeat; }
 .bHeader .bToplink:hover span{
     background-position: 0 -71px;
 }

@@ -380,13 +380,13 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
     background: url("img/header_icon_sport.gif") no-repeat scroll 0 0 transparent;
     width: 43px;
 }
-.mPodarki, .category-11 {
-    background: url("img/header_icon_hobbies_gifts.gif") no-repeat scroll 0 0 transparent;
-    width: 42px;
-}
-.mSad, .category-12 {
+.mSad, .category-11 {
     background: url("img/header_icon_garden_orchard.gif") no-repeat scroll 0 0 transparent;
     width: 41px;
+}
+.mPodarki, .category-12 {
+    background: url("img/header_icon_hobbies_gifts.gif") no-repeat scroll 0 0 transparent;
+    width: 42px;
 }
 .bHeader .bToplink:hover span {
     background-position: 0 -71px;
