@@ -1,7 +1,7 @@
     <?php
     $usedList = array();
     #myDebug::dump($serviceList);
-    foreach($listInner as $item){
+    $count = count($listInner); foreach($listInner as $i => $item){
 
         if ($item['level'] == ($serviceCategory['level']+1)){ ?>
             <?php 
@@ -59,6 +59,10 @@
                   </div>
                 </div>
             </div>
+
+            <?php if ($count > ($i + 1)): ?>
+              <div class="line pb30"></div>
+            <?php endif ?>
         <?php
         }
         /*

@@ -1,11 +1,16 @@
 (function() {
 	if( typeof($LAB) === 'undefined' )
 		throw new Error( "Невозможно загрузить файлы JavaScript" )
-	function getWithVersion( flnm ) {
-		if( typeof( filesWithVersion[''+flnm] ) !== 'undefined' ) {
+	function getWithVersion( flnm ) { 
+		if( typeof( filesWithVersion[''+flnm] ) !== 'undefined' ){
 			if( !document.location.search.match(/jsdbg/) ) {
 			flnm += '?' + filesWithVersion[''+flnm]
 			flnm = flnm.replace('js', 'min.js')
+			}	
+		} else {
+			flnm = flnm.replace('js', 'min.js')
+			if( typeof( filesWithVersion[''+flnm] ) !== 'undefined' ) {
+				flnm += '?' + filesWithVersion[''+flnm]
 			}
 		}
 		return flnm
@@ -33,7 +38,7 @@
 			break
 		case 'cart':
 			$LAB.queueWait( function() {
-				$LAB.script('bigjquery.min.js')
+				$LAB.script( getWithVersion('bigjquery.js') )
 				.wait()
 				.script(getWithVersion('main.js'))
 				.script( getWithVersion('app.auth.js') )
@@ -45,7 +50,7 @@
 			break
 		case 'order':
 			$LAB.queueWait( function() {
-				$LAB.script('bigjquery.min.js')
+				$LAB.script( getWithVersion('bigjquery.js') )
 				.wait()
 				.script(getWithVersion('main.js'))
 				.script( getWithVersion('app.auth.js') )
@@ -54,7 +59,7 @@
 			break
 		case 'product_catalog':
 			$LAB.queueWait( function() {
-				$LAB.script('bigjquery.min.js')
+				$LAB.script( getWithVersion('bigjquery.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.script( getWithVersion('app.auth.js') )
@@ -68,7 +73,7 @@
 			break
 		case 'product_card':
 			$LAB.queueWait( function() {
-				$LAB.script('bigjquery.min.js')
+				$LAB.script( getWithVersion('bigjquery.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.script( getWithVersion('app.auth.js') )
@@ -86,7 +91,7 @@
 			break
 		case 'product_comment':
 			$LAB.queueWait( function() {
-				$LAB.script('bigjquery.min.js')
+				$LAB.script( getWithVersion('bigjquery.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.script( getWithVersion('app.auth.js') )
@@ -104,7 +109,7 @@
 			break
 		case 'service':
 			$LAB.queueWait( function() {
-				$LAB.script('bigjquery.min.js')
+				$LAB.script( getWithVersion('bigjquery.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.script( getWithVersion('app.auth.js') )
@@ -119,7 +124,7 @@
 			break
 		case 'shop':
 			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
-				$LAB.script('bigjquery.min.js')
+				$LAB.script( getWithVersion('bigjquery.js') )
 				.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('app.shop.js') )
@@ -135,7 +140,7 @@
 			break
 		case 'product_stock':
 			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
-				$LAB.script('bigjquery.min.js')
+				$LAB.script( getWithVersion('bigjquery.js') )
 				.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('main.js') )
