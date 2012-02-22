@@ -141,6 +141,12 @@ class ProjectYandexMarketTask extends sfBaseTask
 
 
   /**
+   * id региона по умолчанию
+   * @var int
+   */
+  private $_defaultRegionId = 83;
+
+  /**
    * Рутовые категории, из которых выгружаем в разные файлы
    * @var type
    */
@@ -607,6 +613,9 @@ EOF;
         switch ($code){
             case 'url':
                 $value = $this->_companyData['url'].$this->getRouting()->generate('productCard', array('product' => $offerInfo['token_prefix'].'/'.$offerInfo['token']));
+                if ($this->_currentRegion['id'] != $this->_defaultRegionId) {
+                    $value .= '?city_id='. $this->_currentRegion['token'];
+                }
                 break;
             case 'price':
                 if (isset($offerInfo['ProductPrice'][0])) {
