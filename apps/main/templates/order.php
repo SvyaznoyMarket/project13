@@ -113,7 +113,12 @@
 <!-- /AdHands -->
   <script type="text/javascript">
   (function() {
-  document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?<?php echo ((isset($orderSum) && $orderSum > 0 && isset($orderId) && $orderId > 0) ? "cost=' + escape({$orderSum}) + '&" : "") ?>r=' + Math.random() + '" ></sc' + 'ript>');
+<?php if (isset($orderSum) && $orderSum > 0 && isset($orderId) && $orderId > 0): ?>
+    var orderSum = '<?php echo $orderSum ?>';
+    document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape(orderSum) + '&r=' + Math.random() + '" ></sc' + 'ript>');
+<?php else: ?>
+    document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>');
+<?php endif ?>
   })();
   </script>
 <?php endif ?>
