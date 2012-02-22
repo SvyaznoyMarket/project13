@@ -625,11 +625,12 @@ class ProductTable extends myDoctrineTable
       $q = $this->createBaseQuery($params);
 
       $q->select('MIN(productPrice.price) as price_min')
-        ->innerJoin('product.CategoryRelation productCategoryProductRelation')
+        ->innerJoin('product.Category productCategory')
         ->innerJoin('product.ProductPrice productPrice')
         ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
         ->addWhere('productPrice.price > ?', 0)
-        ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
+        ->addWhere('productCategory.lft >= ? AND productCategory.rgt <= ? AND productCategory.root_id = ?', array($category['lft'], $category['rgt'], $category['root_id'], ))
+        ->removeDqlQueryPart('orderby')
         ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
       ;
 
@@ -655,11 +656,12 @@ class ProductTable extends myDoctrineTable
       $q = $this->createBaseQuery($params);
 
       $q->select('MAX(productPrice.price) as price_min')
-        ->innerJoin('product.CategoryRelation productCategoryProductRelation')
+        ->innerJoin('product.Category productCategory')
         ->innerJoin('product.ProductPrice productPrice')
         ->innerJoin('productPrice.PriceList priceList WITH priceList.is_default = ?', true)
         ->addWhere('productPrice.price > ?', 0)
-        ->andWhereIn('productCategoryProductRelation.product_category_id', $category->getDescendantIds(array('with_parent' => true)))
+        ->addWhere('productCategory.lft >= ? AND productCategory.rgt <= ? AND productCategory.root_id = ?', array($category['lft'], $category['rgt'], $category['root_id'], ))
+        ->removeDqlQueryPart('orderby')
         ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
       ;
 
