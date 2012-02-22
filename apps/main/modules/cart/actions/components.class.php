@@ -41,7 +41,7 @@ class cartComponents extends myComponents
       $this->button = 'buy';
     }
 
-    if (!in_array($this->view, array('default', 'delivery')))
+    if (!in_array($this->view, array('default', 'add')))
     {
       $this->view = 'default';
     }
