@@ -148,6 +148,7 @@ EOF;
   }
 
   private function _beginNewFile() {
+    $this->log('new file');
     $this->_currentNumInFile = 0;
 
     //завершим старый файл
@@ -346,11 +347,11 @@ EOF;
 
   private function _put($data) {
         file_put_contents($this->_fileName, $data, FILE_APPEND);
-        $this->_currentNumInFile ++;
+        $this->_currentNumInFile += substr_count($data, '<url>');
         //если файл заполнен, надо начинать новый
        # echo $this->_currentNumInFile .'-----------'. $this->_maxNumInFile."\n";
         if ( $this->_currentNumInFile >= $this->_maxNumInFile) {
-            $this->_beginNewFile();
+          $this->_beginNewFile();
         }
   }
 
