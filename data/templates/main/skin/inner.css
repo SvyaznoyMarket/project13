@@ -68,6 +68,8 @@ TABLE {border-collapse:collapse}
 .pb25 {padding-bottom:25px}
 .pb30 {padding-bottom:30px}
 .pb40 {padding-bottom:40px}
+.pl5 {padding-left:5px}
+.pl10 {padding-left:10px}
 .pl20 {padding-left:20px}
 .pl235 {padding-left:235px}
 
@@ -78,6 +80,7 @@ TABLE {border-collapse:collapse}
 .mb70 {margin-bottom:70px}
 .mt-30 {margin-top:-30px}
 .ml5 {margin-left:5px}
+.ml10 {margin-left:10px}
 .ml20 {margin-left:20px}
 .ml70 {margin-left:70px}
 .ml30 {margin-left:30px}
@@ -4601,11 +4604,10 @@ a[title="ovi"]:hover{ background: url('img/icon_ovi_store.png'); }
 
 
 .bHeader{
-	font-size: 0;
 	height: 112px;
 	text-align: justify;
 	margin: 10px 0 20px 0;
-	padding: 20px 12px 0 0;
+	padding: 20px 22px 0 0;
 	background: url('img/header_bg.png') no-repeat;
 	}
 	.bHeaderWrap{
@@ -4613,7 +4615,6 @@ a[title="ovi"]:hover{ background: url('img/icon_ovi_store.png'); }
 		position: relative;
 		}
 	.bToplogo,
-	.bHeader li,
 	.bToplink span,
 	.bHeader__eLong{
 		vertical-align: top;
@@ -4621,25 +4622,8 @@ a[title="ovi"]:hover{ background: url('img/icon_ovi_store.png'); }
 		*display: inline;
 		zoom: 1;
 		}		
-	.bHeader li{
-		position: relative;
-		}
-	.bHeader li div{
-		top: 80px;
-		width: 100%;
-		position:absolute;
-		text-align: center;
-		}
-	.bCorner{   
-		width: 20px;
-		height:15px;
-		font-size:0; 
-		line-height:0;
-		display: none;
-		background:url(img/bg.png) no-repeat 0 -218px
-		}
 	.bToplogo{
-		width: 140px;
+		width: 130px;
 		height: 91px;
 		background: url('img/bLogo.png') 50% 50% no-repeat;
 		}
@@ -4648,8 +4632,6 @@ a[title="ovi"]:hover{ background: url('img/icon_ovi_store.png'); }
 		min-width: 41px;
 		max-width: 68px;
 		text-align: center;
-		font: 11px 'Enter';
-		text-transform: uppercase;
 		
 		vertical-align: top;
 		display: inline-block;
@@ -4661,27 +4643,34 @@ a[title="ovi"]:hover{ background: url('img/icon_ovi_store.png'); }
 		text-decoration: none;
 		}
 	.bToplink span{
-		width: 41px;
-		height: 50px;
+		height: 71px;
 		margin: 10px 0 5px 0;
-		border: 1px solid red;
 		}
-	.mMebel{}
-	.mTehn{}
-	.mZdor{}
-	.mDom{}
-	.mDeti{}
-	.mZoo{}
-	.mSam{}
-	.mElectro{}
-	.mUkr{}
-	.mSport{}
-	.mPodarki{}
-	.bHeader li:hover span{}
-		
+	.mMebel{ width: 38px; background: url('img/header_icon_furniture.gif') no-repeat;}
+	.mTehn{ width: 43px; background: url('img/header_icon_home_appliances.gif') no-repeat; }
+	.mZdor{ width: 54px; background: url('img/header_icon_beauty_health.gif') no-repeat; }
+	.mDom{ width: 47px; background: url('img/header_icon_home_goods.gif') no-repeat; }
+	.mDeti{ width: 45px; background: url('img/header_icon_baby_goods.gif') no-repeat; }
+	.mZoo{ width: 54px; background: url('img/header_icon_zoo_goods.gif') no-repeat; }
+	.mSam{ width: 72px; background: url('img/header_icon_tools_goods.gif') no-repeat; }
+	.mElectro{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
+	.mUkr{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
+	.mSport{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
+	.mPodarki{ width: 42px; background: url('img/header_icon_hobbies_gifts.gif') no-repeat; }
+	.mSad{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; }
+	.bHeader .bToplink:hover span{
+		background-position: 0 -71px;
+		}		
 	.bHeader__eLong{
 		width: 98%;
 		}		
+		
+		
+.bRegion{ font: 14px Tahoma, sans-serif; }
+	.bRegion a{ text-decoration: underline; }
+	.bRegion b{ padding: 0 10px; }		
+		
+		
 		
 		
 		

@@ -165,7 +165,7 @@ TABLE {border-collapse:collapse}
 .logo {float:left; width:130px; padding:28px 0 0 24px}
 .logo A {display:block; width:99px; height:68px; text-indent:-10000px}
 
-.topmenu {float:left; width:631px; padding:30px 0 0 0}
+/*.topmenu {float:left; width:631px; padding:30px 0 0 0}
 .topmenu LI {float:left}
 .topmenu A {display:block; height:74px; text-indent:-10000px}
 .topmenu A:hover {background:url(/css/skin/img/bg_inner.png) no-repeat}
@@ -186,7 +186,7 @@ TABLE {border-collapse:collapse}
 .topmenu .point8 {width:51px; margin-right:17px}
 .topmenu .point8:hover {background-position:-644px -137px}
 .topmenu .point9 {width:40px}
-.topmenu .point9:hover {background-position:-712px -137px}
+.topmenu .point9:hover {background-position:-712px -137px}*/
 
 .headerright {padding-top:37px; color:#fff; font:14px 'Enter'; margin-left: -13px; display: inline-block; *display: inline; zoom: 1;}
 .headerright .tel {padding:0; font-size:18px; }
@@ -3726,3 +3726,70 @@ DT.bCtg__eOrange{
 		position: absolute;
 		background: url('/images/23_feb_lr.jpg') 50% 0 no-repeat;
 		}
+
+.bHeader{
+    height: 112px;
+    text-align: justify;
+    margin: 10px 0 20px 0;
+    padding: 20px 22px 0 0;
+    background: url('img/header_bg.png') no-repeat;
+}
+.bHeaderWrap{
+    z-index: 100;
+    position: relative;
+}
+.bToplogo,
+.bToplink span,
+.bHeader__eLong{
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+}
+.bToplogo{
+    text-indent: -1000px;
+    width: 130px;
+    height: 91px;
+    background: url('img/bLogo.png') 50% 50% no-repeat;
+}
+.bToplink{
+    color: #ffffff;
+    min-width: 41px;
+    max-width: 68px;
+    text-align: center;
+
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+}
+.bToplink:hover{
+    color: #ffa901;
+    text-decoration: none;
+}
+.bToplink span{
+    height: 71px;
+    margin: 10px 0 5px 0;
+}
+.mMebel, .category-1{ width: 38px; background: url('img/header_icon_furniture.gif') no-repeat;}
+.mTehn, .category-2{ width: 43px; background: url('img/header_icon_home_appliances.gif') no-repeat; }
+.mZdor, .category-3{ width: 54px; background: url('img/header_icon_beauty_health.gif') no-repeat; }
+.mDom, .category-4{ width: 47px; background: url('img/header_icon_home_goods.gif') no-repeat; }
+.mDeti, .category-5{ width: 45px; background: url('img/header_icon_baby_goods.gif') no-repeat; }
+.mZoo, .category-6{ width: 54px; background: url('img/header_icon_zoo_goods.gif') no-repeat; }
+.mSam, .category-7{ width: 72px; background: url('img/header_icon_tools_goods.gif') no-repeat; }
+.mElectro, .category-8{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
+.mUkr, .category-9{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
+.mSport, .category-10{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
+.mPodarki, .category-11{ width: 42px; background: url('img/header_icon_hobbies_gifts.gif') no-repeat; }
+.mSad, .category-12{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; }
+.bHeader .bToplink:hover span{
+    background-position: 0 -71px;
+}
+.bHeader__eLong{
+    width: 98%;
+}
+
+.bRegion{ font: 14px Tahoma, sans-serif; }
+.bRegion a{ text-decoration: underline; }
+.bRegion b{ padding: 0 10px; }

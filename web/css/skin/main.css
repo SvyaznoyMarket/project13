@@ -28,29 +28,29 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .font18 {font-size:18px}
 
 
-.logo {float:left; margin:27px 0 0 23px; width:151px; height:102px; background:url(/css/skin/img/bg_main.png) no-repeat -675px 0; text-indent:-10000px}
+/*.logo {float:left; margin:27px 0 0 23px; width:151px; height:102px; background:url(/css/skin/img/bg_main.png) no-repeat -675px 0; text-indent:-10000px}*/
 
-.topmenu {float:right; padding:45px 36px 23px 0}
-.topmenu LI {float:left}
-.topmenu A {display:block; height:85px; background:url(/css/skin/img/bg_main.png) no-repeat; text-indent:-10000px}
-.topmenu .point1 {width:50px; background-position:0 0; margin-right:20px}
-.topmenu .point1:hover {background-position:0 -90px}
-.topmenu .point2 {width:50px; background-position:-70px 0; margin-right:20px}
-.topmenu .point2:hover {background-position:-70px -90px}
-.topmenu .point3 {width:51px; background-position:-140px 0; margin-right:24px}
-.topmenu .point3:hover {background-position:-140px -90px}
-.topmenu .point4 {width:52px; background-position:-215px 0; margin-right:26px}
-.topmenu .point4:hover {background-position:-215px -90px}
-.topmenu .point5 {width:78px; background-position:-293px 0; margin-right:17px}
-.topmenu .point5:hover {background-position:-293px -90px}
-.topmenu .point6 {width:67px; background-position:-388px 0; margin-right:21px}
-.topmenu .point6:hover {background-position:-388px -90px}
-.topmenu .point7 {width:59px; background-position:-476px 0; margin-right:18px}
-.topmenu .point7:hover {background-position:-476px -90px}
-.topmenu .point8 {width:58px; background-position:-553px 0; margin-right:18px}
-.topmenu .point8:hover {background-position:-553px -90px}
-.topmenu .point9 {width:45px; background-position:-629px 0}
-.topmenu .point9:hover {background-position:-629px -90px}
+/*.topmenu {float:right; padding:45px 36px 23px 0}*/
+/*.topmenu LI {float:left}*/
+/*.topmenu A {display:block; height:85px; background:url(/css/skin/img/bg_main.png) no-repeat; text-indent:-10000px}*/
+/*.topmenu .point1 {width:50px; background-position:0 0; margin-right:20px}*/
+/*.topmenu .point1:hover {background-position:0 -90px}*/
+/*.topmenu .point2 {width:50px; background-position:-70px 0; margin-right:20px}*/
+/*.topmenu .point2:hover {background-position:-70px -90px}*/
+/*.topmenu .point3 {width:51px; background-position:-140px 0; margin-right:24px}*/
+/*.topmenu .point3:hover {background-position:-140px -90px}*/
+/*.topmenu .point4 {width:52px; background-position:-215px 0; margin-right:26px}*/
+/*.topmenu .point4:hover {background-position:-215px -90px}*/
+/*.topmenu .point5 {width:78px; background-position:-293px 0; margin-right:17px}*/
+/*.topmenu .point5:hover {background-position:-293px -90px}*/
+/*.topmenu .point6 {width:67px; background-position:-388px 0; margin-right:21px}*/
+/*.topmenu .point6:hover {background-position:-388px -90px}*/
+/*.topmenu .point7 {width:59px; background-position:-476px 0; margin-right:18px}*/
+/*.topmenu .point7:hover {background-position:-476px -90px}*/
+/*.topmenu .point8 {width:58px; background-position:-553px 0; margin-right:18px}*/
+/*.topmenu .point8:hover {background-position:-553px -90px}*/
+/*.topmenu .point9 {width:45px; background-position:-629px 0}*/
+/*.topmenu .point9:hover {background-position:-629px -90px}*/
 
 .bigbanner {padding:0 0 0 0;}
 
@@ -293,3 +293,104 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
 	.bCarousel__eBtnR{ z-index:10; left: 797px; background: url('img/c_btn_right.png'); display:none }
 	.bCarousel__eBtnL:hover{ background: url('img/c_btn_left_h.png'); }
 	.bCarousel__eBtnR:hover{ background: url('img/c_btn_right_h.png'); }
+
+
+
+.bHeader {
+    height: 112px;
+    margin: 10px 0 20px;
+    padding: 20px 12px 0 0;
+    text-align: justify;
+}
+.bHeaderWrap {
+    position: relative;
+    z-index: 100;
+}
+.bToplogo, .bToplink span, .bHeader__eLong {
+    display: inline-block;
+    vertical-align: top;
+}
+.bCorner {
+    background: url("img/bg.png") no-repeat scroll 0 -218px transparent;
+    display: none;
+    font-size: 0;
+    height: 15px;
+    line-height: 0;
+    width: 20px;
+}
+.bToplogo {
+    text-indent: -1000px;
+    background: url("img/logo_enter_main.gif") no-repeat scroll 50% 50% transparent;
+    height: 91px;
+    width: 140px;
+}
+.bToplink {
+    color: #FFFFFF;
+    display: inline-block;
+    max-width: 68px;
+    min-width: 41px;
+    text-align: center;
+    vertical-align: top;
+}
+.bToplink:hover {
+    color: #FFA901;
+    text-decoration: none;
+}
+.bToplink span {
+    height: 71px;
+    margin: 10px 0 5px;
+}
+.mMebel, .category-1 {
+    background: url("img/header_icon_furniture.gif") no-repeat scroll 0 0 transparent;
+    width: 38px;
+}
+.mTehn, .category-2 {
+    background: url("img/header_icon_home_appliances.gif") no-repeat scroll 0 0 transparent;
+    width: 43px;
+}
+.mZdor, .category-3 {
+    background: url("img/header_icon_beauty_health.gif") no-repeat scroll 0 0 transparent;
+    width: 54px;
+}
+.mDom, .category-4 {
+    background: url("img/header_icon_home_goods.gif") no-repeat scroll 0 0 transparent;
+    width: 47px;
+}
+.mDeti, .category-5 {
+    background: url("img/header_icon_baby_goods.gif") no-repeat scroll 0 0 transparent;
+    width: 45px;
+}
+.mZoo, .category-6 {
+    background: url("img/header_icon_zoo_goods.gif") no-repeat scroll 0 0 transparent;
+    width: 54px;
+}
+.mSam, .category-7 {
+    background: url("img/header_icon_tools_goods.gif") no-repeat scroll 0 0 transparent;
+    width: 72px;
+}
+.mElectro, .category-8 {
+    background: url("img/header_icon_electronics.gif") no-repeat scroll 0 0 transparent;
+    width: 61px;
+}
+.mUkr, .category-9 {
+    background: url("img/header_icon_jewelry.gif") no-repeat scroll 0 0 transparent;
+    width: 54px;
+}
+.mSport, .category-10 {
+    background: url("img/header_icon_sport.gif") no-repeat scroll 0 0 transparent;
+    width: 43px;
+}
+.mPodarki, .category-11 {
+    background: url("img/header_icon_hobbies_gifts.gif") no-repeat scroll 0 0 transparent;
+    width: 42px;
+}
+.mSad, .category-12 {
+    background: url("img/header_icon_garden_orchard.gif") no-repeat scroll 0 0 transparent;
+    width: 41px;
+}
+.bHeader .bToplink:hover span {
+    background-position: 0 -71px;
+}
+.bHeader__eLong {
+    width: 98%;
+}

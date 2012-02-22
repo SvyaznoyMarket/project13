@@ -1,7 +1,7 @@
 /* CSS Document */
 HTML {width:100%; height:100%;  font-size:100.01%}
 BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,helvetica,sans-serif; color:#fff; background:#000}
-.allpage {width:920px; height:auto; min-height:100%;padding:0 20px; margin:0 auto; background-color:#000; position:relative; z-index:2}
+.allpage {width:920px; height:auto; min-height:100%;padding:0 20px; margin:0 auto; background-color:#000; position:relative; z-index:20}
 * html .allpage {height:100%}
 
 
@@ -52,15 +52,15 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .topmenu .point9 {width:45px; background-position:-629px 0}
 .topmenu .point9:hover {background-position:-629px -90px}
 
-.bigbanner {padding:0 0 70px 38px}
+.bigbanner {padding:0 0 0 0;}
 
-.bannersbox {position:absolute; width:100%; overflow:hidden; height:100%}
-.bannersboxinner {position:relative; z-index:10; width:920px; margin:0 auto}
-.banner {position:absolute; //z-index:20}
-.banner2 {top:231px; left:-340px}
-.banner3 {top:243px; left:883px}
-.banner4 {top:256px; left:-160px}
-.banner5 {top:369px; left:1100px}
+.bannersbox {position:absolute; width:100%; overflow:hidden; top: 234px; left: 0}
+.bannersboxinner {position:relative; z-index:10; width:920px; margin:0 auto; height: 300px; font-size: 0; line-height: 300px;}
+.banner{
+	position: absolute;
+}
+.banner3 {left:943px; bottom: 0}
+.banner4 {left:-200px; bottom: 0}
 
 @font-face {
   font-family: 'Enter';
@@ -69,7 +69,7 @@ A.dotted.green {border-bottom:1px dashed #508f01}
   url('../fonts/enter_brash_01-webfont.ttf') format('truetype');
 }
 
-.content {float:left; width:390px; padding:7px 0 30px 29px; font-size:13px; z-index:1; position:relative; font-family:"Enter"}
+.content {float:left; width:280px; padding:7px 0 30px 29px; font-size:13px; z-index:1; position:relative; font-family:"Enter"}
 .vcardtitle {font-size:18px; padding-bottom:4px}
 .vcard {font-size:36px; padding-bottom:2px}
 .pb10 {padding-bottom:10px}
@@ -80,11 +80,290 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 .searchbutton {float:left; width:45px; height:36px; border:0; background:none; text-indent:-10000px; cursor:pointer}
 
 .links {float:right; padding:0 40px 0 0}
-.links A {display:block; font-family:"Enter"; font-size:14px; text-decoration:none; text-transform:uppercase}
+.links A {display:inline-block; *display: inline; zoom: 1; font-family:"Enter"; font-size:16px; text-decoration:none;}
 .links .link1 {float:left; width:62px; padding-top:77px; background:url(img/bg_main.png) no-repeat -830px 1px; text-align:center}
 .links .link2 {width:111px; height:16px; margin:23px 0 0 108px; background:url(img/bg_main.png) no-repeat -897px 0; text-indent:-10000px}
 .links .link3 {margin:38px 0 0 108px}
 
-.copy {clear:both; padding-left:29px; color:#dcdcdc; font-size:11px}
-.copy A {color:#dcdcdc}
+.copy {clear:both; padding-left:29px; color:#dcdcdc; font-size:11px; padding-bottom: 20px}
+.copy A {color:#a6a6a6; font-size: 11px;}
+.copy .pb5 a{ margin: 0 5px; }
 
+/* index card */
+
+.bIndexCard{
+	top: 234px;
+	left: 58px;
+	width: 797px;
+	height: 352px;
+	display: none;
+	position: absolute;
+	background: url('img/banner_promo_2.jpg') 0 100% no-repeat;
+	}
+	.bIndexCard__eInfo{
+		bottom: 35px;
+		right: 140px;
+		position: absolute;
+		font: 14px Tahoma, sans-serif;
+		}
+	.bIndexCard__eInfo a{
+		color: #fb9600;
+		font-weight: bold;
+		}
+	.bIndexCard__eInfo span{
+		font-size: 11px;
+		}
+
+		
+/* index bottom links */
+
+.bIndexLinks{
+	width: 565px;
+	}
+	.bIndexLinks__eLinks{
+		width: 350px;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bIndexLinks__eLinks a{
+		color: #fff;
+		width: 175px;
+		margin: 5px 0 9px 0;
+		vertical-align: middle;
+		}
+	.bIndexLinks__eLinks a:hover{
+		color: #ffa901;
+		}
+	.bIndexLinks__eLinks .mInlineBlock{
+		width: 21px;
+		height: 21px;
+		margin-right: 10px;
+		vertical-align: middle;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.mShops{ background: url('img/icon_shop.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mShops{ background: url('img/icon_shop.gif') 100% 0 no-repeat; }
+	.mCo{ background: url('img/icon_enter.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mCo{ background: url('img/icon_enter.gif') 100% 0 no-repeat; }
+	.mReq{ background: url('img/icon_basket.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mReq{ background: url('img/icon_basket.gif') 100% 0 no-repeat; }
+	.mWork{ background: url('img/icon_job.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mWork{ background: url('img/icon_job.gif') 100% 0 no-repeat; }
+	.mBuy{ background: url('img/icon_credit.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mBuy{ background: url('img/icon_credit.gif') 100% 0 no-repeat; }
+	.mF1{ background: url('img/icon_f1.gif') 0 0 no-repeat; }
+	.bIndexLinks__eLinks a:hover .mF1{ background: url('img/icon_f1.gif') 100% 0 no-repeat; }
+	
+	.bIndexLinks__eMobile{
+		width: 204px;
+		height: 79px;
+		position: relative;
+		background: url('img/icon_mobile_apps.gif') 0 0 no-repeat;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bIndexLinks__eMobile div{
+		top: 35px;
+		left: 90px;
+		font: 16px 'Enter';
+		position: absolute;
+		}
+		
+		
+.social_network {
+  	float: right;
+  	width: 180px;
+	}
+.social_network span {
+  	padding-right: 6px;
+	}
+.social_network img {
+  	vertical-align: middle;
+	}
+
+.mSR{
+	top: -13px;
+	height: 100px;
+	background: url('img/sr_index.png') 0 0 no-repeat;
+	}
+	.mSR a{
+		margin-top: 20px;
+		margin-left: 90px;
+		}
+		
+
+.bIndexLinks2{}
+	.bIndexLinks2__eBanners{}
+	.bIndexLinks2__eBan{
+		width: 300px;
+		height: 90px;
+		vertical-align: top;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bIndexLinks2__eBan:first-child{
+		font-family: 'Enter';
+		text-align: left;
+		}
+	.bIndexLinks2__eBan a,
+	.bIndexLinks2__eBan img{
+		border: none;
+		outline: none;
+		text-decoration: none;
+		}
+	.bIndexLinks2__eLinks{
+		margin: 30px 0 15px 0;
+		}
+	.bIndexLinks2__eLinks a{
+		width: 227px;
+		color: #a6a6a6;
+		vertical-align: top;
+		font: 14px/20px Tahoma, sans-serif;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}		
+	.bIndexLinks2__eLinks a:hover{
+		color: #ffa901;
+		text-decoration: underline;
+		}
+		
+
+a[title="vkontakte"],
+a[title="twitter"],
+a[title="facebook"]{
+	width: 26px;
+	height: 26px;
+	
+	vertical-align: middle;
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+	}		
+a[title="twitter"]{ background: url('img/icon_twitter.png'); }
+a[title="facebook"]{ background: url('img/icon_facebook.png'); }
+a[title="vkontakte"]{ background: url('img/icon_vkontakte.png'); }
+
+a[title="twitter"]:hover{ background: url('img/icon_twitter_color.png'); }
+a[title="facebook"]:hover{ background: url('img/icon_facebook_color.png'); }
+a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
+		
+		
+.bCarouselWrap{
+	width: 100%;
+	height: 600px;
+	text-align: center;
+	}
+	.bCarousel{
+		width: 830px;
+		height: 300px;
+		position: relative;
+		vertical-align: bottom;
+		border: 1px solid green;
+		
+		display: inline-block; 
+		*display: inline; 
+		zoom: 1; 
+		}	
+	.bCarousel__eBtnR,
+	.bCarousel__eBtnL{
+		top: 110px;
+		width: 76px;
+		height: 77px;
+		cursor: pointer;
+		position: absolute;
+		}
+	.bCarousel__eBtnL{ left: -40px; background: url('img/c_btn_left.png'); }
+	.bCarousel__eBtnR{ left: 797px; background: url('img/c_btn_right.png'); }		
+	.bCarousel__eBtnL:hover{ background: url('img/c_btn_left_h.png'); }
+	.bCarousel__eBtnR:hover{ background: url('img/c_btn_right_h.png'); }		
+		
+		
+
+
+
+.bHeader{
+	height: 112px;
+	text-align: justify;
+	margin: 10px 0 20px 0;
+	padding: 20px 12px 0 0;
+	}
+	.bHeaderWrap{
+		z-index: 100;
+		position: relative;
+		}
+	.bToplogo,
+	.bToplink span,
+	.bHeader__eLong{
+		vertical-align: top;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}		
+	.bCorner{   
+		width: 20px;
+		height:15px;
+		font-size:0; 
+		line-height:0;
+		display: none;
+		background:url(img/bg.png) no-repeat 0 -218px;
+		}
+	.bToplogo{
+		width: 140px;
+		height: 91px;
+		background: url('img/logo_enter_main.gif') 50% 50% no-repeat;
+		}
+	.bToplink{
+		color: #ffffff;
+		min-width: 41px;
+		max-width: 68px;
+		text-align: center;
+
+		vertical-align: top;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bToplink:hover{
+		color: #ffa901;
+		text-decoration: none;
+		}
+	.bToplink span{
+		height: 71px;
+		margin: 10px 0 5px 0;
+		}
+	.mMebel{ width: 38px; background: url('img/header_icon_furniture.gif') no-repeat;}
+	.mTehn{ width: 43px; background: url('img/header_icon_home_appliances.gif') no-repeat; }
+	.mZdor{ width: 54px; background: url('img/header_icon_beauty_health.gif') no-repeat; }
+	.mDom{ width: 47px; background: url('img/header_icon_home_goods.gif') no-repeat; }
+	.mDeti{ width: 45px; background: url('img/header_icon_baby_goods.gif') no-repeat; }
+	.mZoo{ width: 54px; background: url('img/header_icon_zoo_goods.gif') no-repeat; }
+	.mSam{ width: 72px; background: url('img/header_icon_tools_goods.gif') no-repeat; }
+	.mElectro{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
+	.mUkr{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
+	.mSport{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
+	.mPodarki{ width: 42px; background: url('img/header_icon_hobbies_gifts.gif') no-repeat; }
+	.mSad{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; }
+	.bHeader .bToplink:hover span{ background-position: 0 -71px; }
+
+	.bHeader__eLong{
+		width: 98%;
+		}		
+	
+	
+		
+		
+		
+		
+		
+		

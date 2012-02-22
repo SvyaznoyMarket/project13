@@ -53,10 +53,14 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 </script>
 <!-- _________________________AdFox Asynchronous code END___________________________ -->
 
-      <div class="logo">Enter Связной</div>
-      <!-- Topmenu -->
-      <?php include_component('productCategory', 'root_list') ?>
-      <!-- /Topmenu -->
+
+      <div class="bHeaderWrap">
+        <div class="bHeader">
+          <div class="bToplogo">Enter Связной</div>
+          <?php include_component('productCategory', 'root_list') ?>
+          <div class="bHeader__eLong"></div>
+        </div>
+      </div>
 
       <noindex>
         <div class="searchbox">
