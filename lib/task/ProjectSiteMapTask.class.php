@@ -53,7 +53,7 @@ class ProjectSiteMapTask extends sfBaseTask
    *
    * @var type Максимальное количество записей в одном файле
    */
-  private $_maxNumInFile = 50000;
+  private $_maxNumInFile = 49999;
 
   /**
    * Текущее количество записей в файле
@@ -76,7 +76,7 @@ class ProjectSiteMapTask extends sfBaseTask
     // ));
 
     $this->addOptions(array(
-      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name'),
+      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', 'main'),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
       // add your own options here
@@ -120,7 +120,7 @@ EOF;
     $this->_putAnotherUrl();
 
     //закрываем все файлы
-    $this->_put('</urlset>');
+    $this->_put('</urlset>'."\n");
     file_put_contents($this->_indexFileName, '</sitemapindex>', FILE_APPEND);
 
 
@@ -152,7 +152,7 @@ EOF;
 
     //завершим старый файл
     if (isset($this->_fileName)) {
-        $this->_put('</urlset>');
+        $this->_put('</urlset>'."\n");
     }
 
     //следующий номер
@@ -162,7 +162,8 @@ EOF;
     #echo $this->_fileName ."\n";
     //начинаем файл
     $this->_putNew('<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+');
 
     //добавим в индекс новый файл
     $newFileData = '
@@ -181,8 +182,8 @@ EOF;
   <loc>'.$this->_generateUrl('homepage').'</loc>
   <changefreq>hourly</changefreq>
   <priority>0.8</priority>
-</url>'
-;
+</url>
+';
         $this->_put($xmlData);
   }
 
@@ -192,8 +193,8 @@ EOF;
   <loc>'.$this->_generateUrl('callback').'</loc>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
-</url>'
-;
+</url>
+';
         $this->_put($xmlData);
   }
 
@@ -207,7 +208,8 @@ EOF;
 <loc>'.$this->_generateUrl('default_show', array('page' => $item['token'])).'</loc>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
-</url>';
+</url>
+';
         $this->_put($xmlData);
     }
   }
@@ -225,7 +227,8 @@ EOF;
   <loc>'.$this->_generateUrl('service_show', array('service' => $item['token'])).'</loc>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
-</url>';
+</url>
+';
         $this->_put($xmlData);
     }
   }
@@ -236,7 +239,8 @@ EOF;
   <loc>'.$this->_generateUrl('service_list').'</loc>
   <changefreq>monthly</changefreq>
   <priority>0.6</priority>
-</url>';
+</url>
+';
         $this->_put($xmlData);
 
     $eccenseList = Doctrine_Core::getTable('ServiceCategory')
@@ -251,7 +255,8 @@ EOF;
   <loc>'.$this->_generateUrl('service_list', array('serviceCategory' => $item['token'])).'</loc>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
-</url>';
+</url>
+';
         $this->_put($xmlData);
     }
   }
@@ -263,7 +268,8 @@ EOF;
   <loc>'.$this->_generateUrl('shop').'</loc>
   <changefreq>daily</changefreq>
   <priority>0.6</priority>
-</url>';
+</url>
+';
         $this->_put($xmlData);
 
     $eccenseList = Doctrine_Core::getTable('Shop')
@@ -277,7 +283,8 @@ EOF;
   <loc>'.$this->_generateUrl('shop_show', array('shop' => $item['token'])).'</loc>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
-</url>';
+</url>
+';
         $this->_put($xmlData);
     }
   }
@@ -324,7 +331,8 @@ EOF;
   <loc>'.$this->_generateUrl('productCatalog_category', array('productCategory' => $cat['token_prefix'] ? ($cat['token_prefix'].'/'.$cat['token']) : $cat['token'])).'</loc>
   <changefreq>daily</changefreq>
   <priority>0.8</priority>
-</url>';
+</url>
+';
         $this->_put($xmlData);
     }
   }
