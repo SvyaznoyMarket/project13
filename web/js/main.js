@@ -319,20 +319,14 @@ $(document).ready(function(){
 		$.getJSON( '/region/init', function(data) {
 			if( !data.success ) 
 				return false
-			// paint popup			
 			var cities = data.data
-			var shtorka = $('<div>').addClass('graying')
-									.css( { 'opacity': '0.5'} ) //ie special							
+			//TODO js template
 			var cityPopup = $('<div class="bCityPopupWrap">').html(
 				'<div class="hideblock bCityPopup">'+
 					'<i title="Закрыть" class="close">Закрыть</i>'+
 					'<div class="title">Привет, из какого ты города?</div>'+				
 				'</div>'+
 			'</div>')
-			cityPopup.find('.close').click( function() {
-				$('.graying').remove()
-				$('.bCityPopupWrap').hide()
-			})
 			for( var ci = 0, cl = cities.length; ci < cl; ci++ ) {
 				if( typeof( cities[ci].link ) === 'undefined' || typeof( cities[ci].name ) === 'undefined' )
 					continue
@@ -345,12 +339,28 @@ $(document).ready(function(){
 					cityPopup.find('div:first').append( cnode )
 				}
 			}
-			$('body').append( shtorka ).append( cityPopup )
+			cityPopup.css('display','none').appendTo( $('body') )
+			paintRegions()
 		})	
 	}
 	
+	function paintRegions() {
+		$('.graying').show()
+		$('.bCityPopupWrap').show()
+		$('body').delegate( '.bCityPopupWrap .close', 'click', function() {
+			$('.graying').hide()
+			$('.bCityPopupWrap').hide()
+		})
+	}
+	
 	$('#jsregion').click( function() {
-		getRegions()
+		if( !$(this).data('run') ) {
+			$(this).data('run', true)
+			getRegions()
+		} else {
+			if( $('.bCityPopupWrap').length )
+				paintRegions()
+		}
 		return false
 	})
 	
