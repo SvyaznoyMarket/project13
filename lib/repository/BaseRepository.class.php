@@ -40,7 +40,6 @@ class BaseRepository
   {
     if ($pager = $criteria->getPager())
     {
-      $q->count();
       $pager->setNbResults($q->count());
     }
   }

@@ -528,7 +528,8 @@ border-radius:5px;
 
 
 .goodslist {float:left; width:705px; margin-left:-4px;  padding-bottom:5px; z-index:1; position:relative;}
-.goodsbox {float:left; width:195px; /* min-height: 284px; */  padding:10px; margin-bottom:14px; margin-right:20px}
+.goodslist .goodsbox { min-height: 284px; }
+.goodsbox {float:left; width:195px; padding:10px; margin-bottom:14px; margin-right:20px}
 .boxhover {display:none; position:absolute; z-index:3; width:215px; top:-4px; left:-4px;  padding:9px 0 0 9px; cursor:pointer}
 /*
 .goodsbox:hover {position:relative; z-index:2}
@@ -1229,6 +1230,7 @@ border-radius: 5px;
 .lightboxmenu LI {float:right; background:url(/css/skin/img/lightboxmenu_icons.png) no-repeat 0 -400px; padding-left:1px}
 .lightboxmenu LI.fl {float:left; background:none; padding-left:0}
 .lightboxmenu LI A.point {float:left; display:block; height:29px; padding:11px 20px 0 20px; font-size:14px; color:#fff; text-decoration:none}
+.lightboxmenu LI A.orangeme{color:#ffa901}
 /*.lightboxmenu LI A.point2 {font-weight:bold} TMP */
 .lightboxmenu LI A.point5 {padding:11px 0 0 20px}
 .lightboxmenu LI A.point:hover {color:#ffa901; background:url(/css/skin/img/bg_lightbox.png) no-repeat; background-position:-10px -46px}
@@ -1240,6 +1242,7 @@ border-radius: 5px;
 .lightboxmenu LI A.point1:hover B {background-position:0 -350px}
 .lightboxmenu LI A.point2 B {background-position:0 -100px}
 .lightboxmenu LI A.point2:hover B {background-position:0 -300px}
+.lightboxmenu LI A.point2.orangeme B {background-position:0 -300px}
 .lightboxmenu LI A.point3 B {background-position:0 -50px}
 .lightboxmenu LI A.point3:hover B {background-position:0 -250px}
 .lightboxmenu LI A.point4 B {background-position:0 0}
@@ -2508,50 +2511,41 @@ DT.bCtg__eOrange{
 
 /* bServiceCard */
 
-.bServiceCardWrap{
-	font-size: 0;
-	}
-.bServiceCard{
-	width: 220px;
-	vertical-align: top;
-	margin: 0 10px 30px 0;
-	}
-	.bServiceCard__eImage{
-		width: 160px;
-		height: 125px;
-		margin: 0 auto;
-		overflow: hidden;
-		position: relative;
-		}
-	.bServiceCard__eDescription{
-		font: 12px Tahoma, sans-serif;
-		}
-	.bServiceCard__ePrice{
-		margin-bottom: 7px;
-		font: 18px Tahoma, sans-serif;
-		}
-	.bServiceCard__eLogo{
-		top: 0;
-		left: 0;
-		width: 39px;
-		height: 41px;
-		position: absolute;
-		background: url('img/icon_f1service_small.png') no-repeat;
-		}
-	.bServiceCard__eLogo_free{
-		top: 0;
-		left: 0;
-		width: 120px;
-		height: 120px;
-		position: absolute;
-		background: url('img/icon_f1service_small.png') no-repeat;
-        border: solid 1px #e6e6e6;
-		}
-	.mServiceBig .bServiceCard__eLogo{
-		width: 60px;
-		height: 68px;
-		background: url('img/icon_f1service_big.png') no-repeat;
-		}
+.bServiceCardWrap {
+    font-size: 0;
+}
+.bServiceCard {
+    margin: 0 10px 30px 0;
+    vertical-align: top;
+    width: 220px;
+}
+.bServiceCard__eImage {
+    height: 125px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    width: 120px;
+}
+.bServiceCard__eDescription {
+    font: 12px Tahoma,sans-serif;
+}
+.bServiceCard__ePrice {
+    font: 18px Tahoma,sans-serif;
+    margin-bottom: 0;
+}
+.bServiceCard__eLogo {
+    background: url("img/icon_f1_image.png") no-repeat scroll 0 0 transparent;
+    height: 41px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 39px;
+}
+.mServiceBig .bServiceCard__eLogo {
+    background: url("img/icon_f1_image.png") no-repeat scroll 0 0 transparent;
+    height: 41px;
+    width: 39px;
+}
 
 
 /* newSB */
@@ -2909,38 +2903,37 @@ DT.bCtg__eOrange{
 	.mNLogo span{
 		color: #a6a6a6;
 		}
-.bFormB{
-	text-align: center;
-	}
-	.bFormB2{
-		margin-bottom: 10px;
-		}
-	.bFormB2 a,
-	.bFormB2 span,
-	.bFormB2 input,
-	.bFormB a,
-	.bFormB span,
-	.bFormB input{
-		vertical-align: middle;
-		font: 24px Tahoma, sans-serif;
-		}
-	.bFormB a{
-		margin-right: 30px;
-		text-decoration: underline;
-		}
-	.bFormB2 a{
-		margin-left: 20px;
-		text-decoration: underline;
-		}
-	.bFormB input{
-		height: 40px;
-		padding: 3px 80px;
-		}
-	.bFormB2 input{
-		height: 40px;
-		padding: 3px 40px;
-		}
-
+.bFormB {
+    text-align: center;
+}
+.bFormB2 {
+    margin-bottom: 10px;
+}
+.bFormB2 a, .bFormB2 span, .bFormB2 input, .bFormB a, .bFormB span, .bFormB input {
+    font: 24px Tahoma,sans-serif;
+    vertical-align: middle;
+}
+.bFormB a {
+    margin-right: 30px;
+    text-decoration: underline;
+}
+.bFormB2 a {
+    margin-left: 20px;
+    text-decoration: underline;
+}
+.bFormB2 .bBigOrangeButton {
+    text-align: center;
+    text-decoration: none;
+    width: 430px;
+}
+.bFormB input {
+    height: 40px;
+    padding: 3px 80px;
+}
+.bFormB2 input {
+    height: 40px;
+    padding: 3px 40px;
+}
 .bFormAuth{
 	color: #434343;
 	padding: 12px 0;
@@ -3113,52 +3106,48 @@ DT.bCtg__eOrange{
 
 
 /*-- -- - --- --- -- - */
-	.b1Click{
-		width: 605px;
-		margin-left: 140px;
-		}
-		.b1Click__eTop{
-			font: 16px Tahoma, sans-serif;
-			}
-		.b1Click__ePrice{
-			float: right;
-			text-align: right;
-			font: 16px Tahoma, sans-serif;
-			}
-		.b1Click__ePrice .b1Click__ePriceBig{
-			font: bold 34px Tahoma, sans-serif;
-			}
-		.b1Click__eInp{
-			margin: 10px 0;
-			}
-		.b1Click__eInp span{
-			width: 130px;
-			color: #434343;
-			font: 12px Tahoma, sans-serif;
+.b1Click {
+    width: 725px;
+}
+.b1Click__eTop {
+    font: 16px Tahoma,sans-serif;
+}
+.b1Click__eTop.mPR {
+    padding-right: 140px;
+}
+.b1Click__eTop.mPR .b1Click__ePriceBig {
+    padding-left: 10px;
+}
+.b1Click__ePrice {
+    float: right;
+    font: 16px Tahoma,sans-serif;
+    text-align: right;
+}
+.b1Click__ePrice .b1Click__ePriceBig {
+    font: bold 34px Tahoma,sans-serif;
+}
+.b1Click__eInp {
+    margin: 10px 0;
+}
+.b1Click__eInp span {
+    color: #434343;
+    display: inline-block;
+    font: 12px Tahoma,sans-serif;
+    width: 130px;
+}
+.b1Click__eInp input {
+    background: none repeat scroll 0 0 #F4F4F4;
+    border: 1px solid #E0E0E0;
+    border-radius: 7px 7px 7px 7px;
+    height: 30px;
+    padding: 0 0 0 10px;
+    vertical-align: middle;
+    width: 580px;
+}
+.b1Click .bFormB2 {
+    margin: 20px 0 0 110px;
+}
 
-			display: inline-block;
-			*display: inline;
-			zoom: 1;
-			}
-		.b1Click__eInp input{
-			width: 455px;
-			height: 30px;
-			padding: 0 0 0 10px;
-			background: #f4f4f4;
-			vertical-align: middle;
-			border: 1px solid #e0e0e0;
-
-			border-radius: 7px;
-			-webkit-border-radius: 7px;
-			-moz-border-radius: 7px;
-			-o-border-radius: 7px;
-			}
-      .b1Click__eInp input.mRed {
-        border: 1px solid red;
-      }
-		.b1Click .bFormB2{
-			margin: 20px 0 0 130px;
-			}
 .bSR{
 	font: 12px/17px Tahoma, sans-serif;
 	}
