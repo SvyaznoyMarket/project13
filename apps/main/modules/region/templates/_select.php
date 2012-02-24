@@ -16,4 +16,4 @@
   </div>
 <?php endif ?>
 
-<a href="<?php echo $active['url']?>" data-url="<?php echo url_for('region_init') ?>"><?php echo $active['name']?></a>
+<a href="<?php echo $active['url']?>" id="jsregion" data-url="<?php echo url_for('region_init') ?>"><?php echo $active['name']?></a>

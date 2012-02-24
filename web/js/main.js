@@ -303,7 +303,62 @@ $(document).ready(function(){
 				;//errorpopup(' проверьте соединение с интернетом')
 		}
 	})
-
+	
+	function getCookie(c_name) {
+		var x , y, allcookies = document.cookie.split(';')
+		for ( var i=0, l=allcookies.length; i < l ; i++ ) {
+			x = allcookies[i].substr( 0, allcookies[i].indexOf('=') )
+			y = allcookies[i].substr( allcookies[i].indexOf('=') + 1 )
+			x = x.replace( /^\s+|\s+$/g, '' )
+			if (x === c_name) 
+				return unescape(y)
+		}
+		return false
+	}
+	function getRegions() {
+		$.getJSON( '/region/init', function(data) {
+			if( !data.success ) 
+				return false
+			// paint popup			
+			var cities = data.data
+			var shtorka = $('<div>').addClass('graying')
+									.css( { 'opacity': '0.5'} ) //ie special							
+			var cityPopup = $('<div class="bCityPopupWrap">').html(
+				'<div class="hideblock bCityPopup">'+
+					'<i title="Закрыть" class="close">Закрыть</i>'+
+					'<div class="title">Привет, из какого ты города?</div>'+				
+				'</div>'+
+			'</div>')
+			cityPopup.find('.close').click( function() {
+				$('.graying').remove()
+				$('.bCityPopupWrap').hide()
+			})
+			for( var ci = 0, cl = cities.length; ci < cl; ci++ ) {
+				if( typeof( cities[ci].link ) === 'undefined' || typeof( cities[ci].name ) === 'undefined' )
+					continue
+				var cnode = $('<div>').append( $('<a>').attr( 'href', cities[ci].link ).text( cities[ci].name ) )
+				if( typeof( cities[ci].is_active ) !== 'undefined' ) {
+					cnode.addClass('bCityPopup__eCurrent')
+					cityPopup.find('.title').after( cnode )
+				} else {
+					cnode.addClass('bCityPopup__eBlock')
+					cityPopup.find('div:first').append( cnode )
+				}
+			}
+			$('body').append( shtorka ).append( cityPopup )
+		})	
+	}
+	
+	$('#jsregion').click( function() {
+		getRegions()
+		return false
+	})
+	
+	/* GEOIP fix */
+	if( !getCookie('geoshop') ) {
+		getRegions()
+	}
+	
 	/* --- */
     $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes();
 
