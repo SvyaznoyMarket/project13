@@ -821,7 +821,7 @@ border-radius:5px;
 .goodsbarbig.mSmallBtns a.link1:hover{ background: url('/css/skin/img/buy_buttons.png') 0 -31px no-repeat; }
 .goodsbarbig.mSmallBtns a.link1:active{ background: url('/css/skin/img/buy_buttons.png') 0 -87px no-repeat; }
 .goodsbarbig.mSmallBtns a.link1.active{ background: url('/css/skin/img/buy_buttons.png') 0 -87px no-repeat; }
-.goodsbarbig.mSmallBtns a.link1.disabled{ background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
+.goodsbarbig.mSmallBtns a.link1.disabled, .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
 .goodsbarbig.mSmallBtns a.link1.fr{ floar: right }
 
 .goodsbarbig.mSmallBtns {
