@@ -329,6 +329,7 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
     display: inline-block;
     max-width: 68px;
     min-width: 41px;
+    position: relative;
     text-align: center;
     vertical-align: top;
 }
@@ -380,6 +381,8 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
     background: url("img/header_icon_sport.gif") no-repeat scroll 0 0 transparent;
     width: 43px;
 }
+.mSport i, .category-10 i { top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
+
 .mSad, .category-11 {
     background: url("img/header_icon_garden_orchard.gif") no-repeat scroll 0 0 transparent;
     width: 41px;
