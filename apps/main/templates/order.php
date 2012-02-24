@@ -12,10 +12,8 @@
 
 </head>
 
-<body data-template="order" class="feb23">
+<body data-template="order">
 <?php LastModifiedHandler::setLastModified();  ?>
-  <a class="feb23_link" href="/catalog/gifthobby/podarki-na-23-fevralya-1497/" onclick="_gaq.push(['_trackEvent', 'BannerClick', '23_февраля_уши']);"></a>
-  <div class="feb23_wrap"><div class="feb23_left"><div class="feb23_right"></div></div></div>
 <div class="allpage">
 <div class="allpageinner buyingpage">
 
