@@ -420,13 +420,12 @@ $(document).ready(function(){
 
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
-	var corneroffsets = [152,210,270,335,395,460,535,615,690,750,810,860]//[167,222,290,362,435,515,587,662,717]
 	function showList( self ) {	
 		if(	$(self).data('run') ) {
-			var i = $(self).find('span').attr('class').replace(/\D+/,'')
+			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 - 15
 			var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
 			if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
-				punkt.show().find('.corner').css('left',corneroffsets[i-1])
+				punkt.show().find('.corner').css('left', dmenu)
 		}
 	}
 	var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )
