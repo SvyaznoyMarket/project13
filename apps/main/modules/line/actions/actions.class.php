@@ -10,6 +10,13 @@
  */
 class lineActions extends myActions
 {
+  public function preExecute()
+  {
+    parent::postExecute();
+
+    $this->getRequest()->setParameter('_template', 'product_card');
+  }
+  
  /**
   * Executes index action
   *

@@ -24,17 +24,20 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock', 'extra_compact')))
     {
       $this->view = 'default';
     }
 
+    $this->maxPerPage = $this->maxPerPage ?: 3;
+
     // cache key
     $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
-      'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
-      'region'  => $this->getUser()->getRegion('id'),
-      'view'    => $this->view,
-      'i'       => $this->ii,
+      'product'    => is_scalar($this->product) ? $this->product : $this->product['id'],
+      'region'     => $this->getUser()->getRegion('id'),
+      'view'       => $this->view,
+      'i'          => $this->ii,
+      'maxPerPage' => $this->maxPerPage,
     )) : false;
 
     // checks for cached vars
@@ -99,13 +102,18 @@ class productComponents extends myComponents
       'url'        => $this->generateUrl('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
     );
 
-    if ('compact' == $this->view)
+    if (in_array($this->view, array('compact', 'extra_compact')))
     {
       $rootProductCategory = ProductCategoryTable::getInstance()->getRootRecord($this->product['Category'][0], array(
         'hydrate_array' => true,
         'select'        => 'productCategory.id, productCategory.name',
       ));
       $item['root_name'] = $rootProductCategory ? $rootProductCategory['name'] : '';
+
+      if ('extra_compact' == $this->view)
+      {
+        $item['photo'] = $table->getMainPhotoUrl($this->product, 1);
+      }
     }
 
     if ('orderOneClick' == $this->view)
@@ -133,10 +141,27 @@ class productComponents extends myComponents
       {
         $item['cart_quantity'] = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
       }
+
+      $criteria = new ProductRelatedCriteria();
+      $criteria->setParent($this->product['core_id']);
+      $criteria->setPager(new myPager(1, 5 * 2));
+      $item['related'] = RepositoryManager::get('Product')->getRelated($criteria);
+      $criteria->getPager()->setMaxPerPage(5);
+      $item['related_pager'] = $criteria->getPager();
     }
     if (in_array($this->view, array('expanded')))
     {
       $item['preview'] = $this->product['preview'];
+
+      $item['variation'] = array();
+      if ($this->product['is_model'])
+      {
+        foreach ($table->getModelProperty($this->product) as $property)
+        {
+          $item['variation'][] = mb_strtolower($property['name']);
+        }
+      }
+      $item['variation'] = implode(', ', $item['variation']);
     }
     if (in_array($this->view, array('description')))
     {

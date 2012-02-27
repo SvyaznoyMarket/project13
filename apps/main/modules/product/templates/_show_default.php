@@ -36,7 +36,7 @@ foreach ($p3d as $p3d_obj)
     <div class="goodsinfo bGood">
         <div class="bGood__eArticle">
             <div class="fr">
-          <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $product )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
+          <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $product['token_prefix'].'/'.$product['token'], )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
             <?php
               echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
               echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
@@ -74,7 +74,7 @@ foreach ($p3d as $p3d_obj)
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
             </div>
             <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
-            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+            <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
             <?php endif ?>
         </div>
 
@@ -285,6 +285,10 @@ foreach ($p3d as $p3d_obj)
 <?php endif ?>
 <!-- /Description -->
     <?php include_component('product', 'tags', array('product' => $product)) ?>
+<?php endif ?>
+
+<?php if (count($item['related'])): ?>
+  <?php include_partial('product/product_related', $sf_data) ?>
 <?php endif ?>
 
 <!-- Media -->

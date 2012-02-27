@@ -49,6 +49,7 @@ class pageComponents extends myComponents
           array('token' => 'mission'),
           array('token' => 'press'),
           array('token' => 'callback', 'url' => 'callback', 'name' => 'Обратная связь'),
+          array('token' => 'for_renter'),
         ),
       ),
       'buying' => array(

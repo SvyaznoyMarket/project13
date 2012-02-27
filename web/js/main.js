@@ -698,7 +698,8 @@ $(document).ready(function(){
 		var self = this
 		var current = 1
 		var max = $(nodes.times).html() * 1
-		var wi  = $(nodes.width).html().replace(/\D/g,'')
+		var wi  = nodes.width*1
+		var viswi = nodes.viswidth*1
 		var buffer = 2
 		var ajaxflag = false
 
@@ -718,7 +719,7 @@ $(document).ready(function(){
 			var boxes = $(nodes.wrap).find('.goodsbox')
 			$(boxes).hide()
 			var le = boxes.length
-			for(var j = (current - 1) * 3 ; j < current  * 3 ; j++) {
+			for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
 				boxes.eq( j ).show()
 			}
 		}
@@ -729,7 +730,7 @@ $(document).ready(function(){
 					var boxes = $(nodes.wrap).find('.goodsbox')
 					$(boxes).hide()
 					var le = boxes.length
-					var rest = ( wi % 3 ) ?  wi % 3  : 3
+					var rest = ( wi % viswi ) ?  wi % viswi  : viswi
 					for(var j = 1; j <= rest; j++)
 						boxes.eq( le - j ).show()
 					current++
@@ -769,14 +770,27 @@ $(document).ready(function(){
 	} // cardsCarousel object
 
 	$('.carouseltitle').each( function(){
-		var tmpline = new cardsCarousel ({
+		if( $(this).hasClass('carbig') ) {
+			var tmpline = new cardsCarousel ({
 					'prev'  : $(this).find('.back'),
 					'next'  : $(this).find('.forvard'),
 					'crnt'  : $(this).find('span:first'),
 					'times' : $(this).find('span:eq(1)'),
-					'width' : $(this).find('.rubrictitle strong'),
-					'wrap'  : $(this).find('~ .carousel').first()
+					'width' : $(this).find('.scroll').data('quantity'),
+					'wrap'  : $(this).find('~ .bigcarousel').first(),
+					'viswidth' : 5
+					})		
+		} else {
+			var tmpline = new cardsCarousel ({
+					'prev'  : $(this).find('.back'),
+					'next'  : $(this).find('.forvard'),
+					'crnt'  : $(this).find('span:first'),
+					'times' : $(this).find('span:eq(1)'),
+					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
+					'wrap'  : $(this).find('~ .carousel').first(),
+					'viswidth' : 3
 					})
+		}			
 	})
 
 	/* charachteristics */
@@ -821,13 +835,13 @@ $(document).ready(function(){
 					var dlvr = raw.deliveries[j]
 						switch ( dlvr.object.token ) {
 							case 'self':
-								self = 'Возможен самовывоз <br/>' + dlvr.text
+								self = 'Возможен самовывоз ' + dlvr.text
 								break
 							case 'express':
-							//	express = 'Экспресс-доставка <br/>' + dlvr.text
+							//	express = 'Экспресс-доставка ' + dlvr.text
 								break
 							default:
-								other.push('Доставка <br/>' + dlvr.text )
+								other.push('Доставка ' + dlvr.text )
 						}
 					}
 					var pnode = $( 'div[data-cid='+coreid[i]+']' ).parent()

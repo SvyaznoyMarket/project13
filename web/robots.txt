@@ -18,4 +18,7 @@ Disallow: /tags/
 Disallow: /*comments/new
 Disallow: /qr/*
 Disallow: /*//
+Disallow: /product/*/change/
 Host: www.enter.ru
+
+Sitemap: http://www.enter.ru/sitemap.xml

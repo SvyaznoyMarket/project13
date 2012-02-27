@@ -60,7 +60,7 @@ all:
     class: sfRediskaCache
     param:
       lifetime: 604800
-      prefix: view
+      prefix: 'view:'
 
   logger:
     param:

@@ -30,6 +30,14 @@ product_list:
 product_set:
   url:   /products/set/:products
   param: { module: product, action: set }
+# список смежных товаров
+product_related:
+  url:   /products/related/:product
+  param: { module: product, action: related }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # каталог товаров
 productCatalog:
@@ -553,7 +561,7 @@ userProductCompare_delete:
 # user product rating create
 userProductRating_createtotal:
   url:   /product-rating/createtotal/:product/:rating
-  param: { module: userProductRating, action: createtotal, product : 0}
+  param: { module: userProductRating, action: createtotal }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
