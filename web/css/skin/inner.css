@@ -3736,7 +3736,7 @@ DT.bCtg__eOrange{
     background: url('img/header_bg.png') no-repeat;
 }
 .bHeaderWrap{
-    z-index: 100;
+    z-index: 20;
     position: relative;
 }
 .bToplogo,
