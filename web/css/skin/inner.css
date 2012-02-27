@@ -3797,3 +3797,37 @@ div.mSportFont{ color: #e8303c; }
 .bRegion{ font: 14px Tahoma, sans-serif; }
 .bRegion a{ text-decoration: underline; }
 .bRegion b{ padding: 0 10px; }
+
+.snow{
+    position: relative;
+    background: #49c7ed;
+}
+.snow .allpage{
+    z-index: 3;
+    position: relative;
+}
+.snow_link{
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    position: fixed;
+    *position: absolute;
+    *top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+}
+.snow_wrap{
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 858px;
+    overflow: hidden;
+    position: absolute;
+    background: url('/images/bg_sale_sport.png') 50% 0 no-repeat;
+}

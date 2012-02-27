@@ -17,7 +17,12 @@
     <?php include_partial('default/googleAnalytics') ?>
     <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
-  <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>">
+  <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>"<?php echo has_slot('sport_sale_design')? " class='snow'" : '' ?>>
+
+  <?php if (has_slot('sport_sale_design')): ?>
+    <?php include_slot('sport_sale_design') ?>
+  <?php endif ?>
+
     <div class="allpage">
       <div class="allpageinner">
 
