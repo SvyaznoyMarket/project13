@@ -344,6 +344,46 @@ class productSoaComponents extends myComponents
    */
   public function executeProduct_model()
   {
+
+    if (!$this->product->model && !isset($this->product->model['property']))
+    {
+      return sfView::NONE;
+    }
+    $product = $this->product;
+    $this->setVar('product', $this->product, true);
+    foreach ($this->product->model['property'] as $prop) {
+        $property = array(
+            'id' => $prop['id'],
+            'name' => $prop['name'],
+            'is_image' => $prop['is_image'],
+        );
+        //print_r($this->product->model);
+        foreach ($this->product->model['product'] as $productModel) {
+            foreach ($productModel['property'] as $prodProp) {
+                if ($prodProp['id'] == $prop['id']) {
+                   $property['products'][] = array(
+                       'id' => $productModel['id'],
+                       'name' => $productModel['name'],
+                       'image' => $product::getMainPhotoUrlByMediaImage($productModel['media_image'], 1),
+                       'value' => $prodProp['value'],
+                       'is_selected' =>  ($this->product->id == $productModel['id']) ? 1 : 0,
+                       'url' => $productModel['link']
+                   );
+                   if ($product->id == $productModel['id']) {
+                       $property['current']['id'] = $productModel['id'];
+                       $property['current']['value'] = $prodProp['value'];
+                       $property['current']['url'] = $productModel['link'];
+                   }
+                }
+            }
+        }
+        $properties[] = $property;
+    }
+    $this->setVar('properties', $properties, true);
+    return;
+
+
+
     if (!$this->product->is_model && !$this->product->model_id)
     {
       return sfView::NONE;
@@ -509,8 +549,6 @@ class productSoaComponents extends myComponents
 
   public function executeKit()
   {
-      echo '!!!!!!!';
-      die();
       $this->kit = $this->product->kit;
     //$q = ProductTable::getInstance()->getQueryByKit($this->product);
     $this->productPager = $this->getPagerForArray($this->kit, 12, array());
@@ -519,4 +557,38 @@ class productSoaComponents extends myComponents
 
     $this->view = 'compact';
   }
+
+    public function executeDelivery()
+    {
+        $delivery = array();
+        if (isset($this->product->delivery[3])) {
+         $inf = $this->product->delivery[3];
+         $inf['mode'] = 3;
+         $delivery[] = $inf;
+        }
+        if (isset($this->product->delivery[2])) {
+            $inf = $this->product->delivery[2];
+            $inf['mode'] = 2;
+            $delivery[] = $inf;
+        }
+        if (isset($this->product->delivery[1])) {
+            $inf = $this->product->delivery[1];
+            $inf['mode'] = 1;
+            $delivery[] = $inf;
+        }
+
+        $now = new DateTime();
+        foreach ($delivery as & $item) {
+            $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($item['mode']);
+            $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $item[0]);
+            $deliveryPeriod = $minDeliveryDate->diff($now)->days;
+            if ($deliveryPeriod < 0) $deliveryPeriod = 0;
+            $deliveryPeriod = myToolkit::fixDeliveryPeriod($item['mode'], $deliveryPeriod);
+            $item['period'] = $deliveryPeriod;
+            $item['deliveryText'] = myToolkit::formatDeliveryDate($item['period']);
+            //$item['deliveryText'] = str_replace(array('сегодня', 'завтро'), array('<b>сегодня</b>', '<b>завтро</b>'), $item['deliveryText']);
+        }
+        //print_r($delivery);
+        $this->setVar('delivery', $delivery);
+    }
 }

@@ -1,4 +1,3 @@
-!!!!!!!!!
 <div class="goodsbox"<?php echo (isset($ii) && $ii > 3) ? ' style="display:none;"' : '' ?>>
 
   <div class="photo">

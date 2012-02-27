@@ -120,10 +120,23 @@ class CoreSoa extends Core
         return $response;
     }
 
-    public function getProduct($id)
+    public function getProductStatic($id)
     {
         $data['id'] = $id;
-        $this->action = 'product.get';
+        $this->action = 'product.get-static';
+        if ($response = $this->queryCore($data))
+        {
+            if (isset($response[0]) && isset($response[0]['id'])) {
+                return $response[0];
+            }
+        }
+        return array();
+    }
+
+    public function getProductDinamic($id)
+    {
+        $data['id'] = $id;
+        $this->action = 'product.get-dinamic';
         if ($response = $this->queryCore($data))
         {
             if (isset($response[0]) && isset($response[0]['id'])) {

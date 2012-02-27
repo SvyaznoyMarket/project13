@@ -36,7 +36,7 @@ foreach ($p3d as $p3d_obj)
     <div class="goodsinfo bGood">
         <div class="bGood__eArticle">
             <div class="fr">
-          <span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $product )) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
+          <span id="rating" data-url="<?php //echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $product )) ?>"<?php //if ($item['rated']) echo ' data-readonly="true"' ?>>
             <?php
               echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
               echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
@@ -54,7 +54,7 @@ foreach ($p3d as $p3d_obj)
         <div class="clear"></div>
 
         <div class="fl pb15">
-            <div class="pb10"><?php include_partial('productSoa/price', array('price' => $item['price'])) ?></div>
+            <div class="pb10"><?php include_partial('productSoa/price', array('price' => $product->getFormattedPrice())) ?></div>
             <?php if ($product->is_instock): ?>
             <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
             <?php endif ?>
@@ -74,7 +74,7 @@ foreach ($p3d as $p3d_obj)
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
             </div>
             <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
-            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $item->barcode)) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $product->barcode)) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
             <?php endif ?>
         </div>
 
@@ -82,146 +82,15 @@ foreach ($p3d as $p3d_obj)
         <div class="line pb15"></div>
 
         <?php if ($item['is_insale']): ?>
-		<div class="bDeliver2 delivery-info" id="product-id-<?php echo $item['core_id'] ?>" data-shoplink="<?php echo $item['stock_url'] ?>" data-calclink="<?php echo url_for('product_delivery') ?>">
-			<h4>Как получить заказ?</h4>
-			<ul>
-				<li>
-					<h5>Идет расчет условий доставки...</h5>
-				</li>
-			</ul>
-		</div>
-		<div class="line pb15"></div>
+            <?php include_component('productSoa', 'delivery', array('product' => $product)) ?>
         <?php endif ?>
 
-        <?php include_component('service', 'listByProduct', array('product' => $product)) ?>
+        <?php include_component('serviceSoa', 'listByProduct', array('product' => $product)) ?>
 
-<?php if (false): ?>
-
-        <div class='bF1Info bBlueButton'>
-			<h3>Выбирай услуги F1<br> вместе с этим товаром</h3>
-			<a href class='link1'>Выбрать услуги</a>
-        </div>
-<?php endif ?>
     </div>
     <!-- /Goods info -->
 
 
-
-<?php if (false): //старая версия ?>
-<div class="goodsinfo"><!-- Goods info -->
-  <h2 style="padding: 0;">Артикул #<?php echo $product->article ?></h2>
-  <div class="line mb10"></div>
-  <?php if (false): ?>
-  <div class="article">
-    <!--            <div class="fr"><a href="javascript:void()" id="watch-trigger">Следить за товаром</a> <a href="" rel="nofollow">Печать</a></div>-->
-    Артикул #<?php echo $product->article ?>
-
-    <!-- Watch -->
-    <div class="hideblock width358" id="watch-cnt">
-      <i title="Закрыть" class="close">Закрыть</i>
-      <div class="title">Получать сообщения</div>
-      <form action="" class="form">
-        <ul class="checkboxlist pb10">
-          <li><label for="checkbox-7">когда снизится цена</label><input id="checkbox-7" name="checkbox-3" type="checkbox" value="checkbox-1" /></li>
-          <li><label for="checkbox-8">когда появится новый отзыв </label><input id="checkbox-8" name="checkbox-3" type="checkbox" value="checkbox-2" /></li>
-          <li><label for="checkbox-9">когда товар появится в магазинах сети</label><input id="checkbox-9" name="checkbox-3" type="checkbox" value="checkbox-3" /></li>
-        </ul>
-        <div class="pb5">Ваш E-mail:</div>
-        <input type="text" class="text width181 mb10" value="user@mail.ru" />
-        <div class="pb20"><input type="button" class="yellowbutton yellowbutton106" value="Подтверждаю" /></div>
-        <div class="font11 gray">Внимание!<br />Вы всегда сможете отписаться от данной рассылки в самой рассылкеили в личном кабинете</div>
-      </form>
-    </div>
-    <!-- /Watch -->
-
-  </div>
-  <?php endif ?>
-  <div class="font14 pb15"><?php echo $product->preview ?></div>
-  <div class="clear"></div>
-
-  <div class="fl pb15">
-    <div class="font10"><br/><br/></div>
-    <div class="pb10"><?php include_partial('productSoa/price', array('price' => $product->getFormattedPrice())) ?></div>
-    <?php if ($product->is_instock): ?>
-      <noindex><div class="pb5"><strong class="orange">Есть в наличии</strong></div></noindex>
-<?php endif ?>
-  <?php if (false): ?>
-  <div class="pb3"><strong>Доставка: <?php echo $delivery['name'] ?></strong></div>
-  <div class="font11 gray">
-      Стоимость: <strong><?php echo $deliveryData['price'] ?> руб.</strong><br />
-      <?php echo 'Доставка возможна '.myToolkit::formatDeliveryDate($deliveryPeriod) ?>
-<!--      Москва. Доставим в течение 1-2 дней<br />
-      <a href="" class="underline">Хотите быстрее?</a>-->
-  </div>
-  <?php endif ?>
-  </div>
-
-
-
-
-
-  <div class="fr ar pb15">
-    <div class="goodsbarbig" ref="<?php echo $product->token ?>">
-		<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
-<!--      <a href="<?php echo url_for('cart_add', array('product' => $product->token_prefix.'/'.$product->token, 'quantity' => 1)) ?>" class="link1"></a>-->
-      <a href="<?php //echo url_for('userDelayedProduct_create', $sf_data->getRaw('product'))  ?>javascript:void()" class="link2"></a>
-      <a href="<?php //echo url_for('userProductCompare_add', $sf_data->getRaw('product'))  ?>javascript:void()" class="link3"></a>
-    </div>
-
-  <?php if (false): ?>
-    <div class="pb5"><strong><a onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" id="1click-trigger" href="<?php echo url_for('order_1click', array('product_id' => $product->id)) ?>" class="red underline">Купить быстро в 1 клик</a></strong></div>
-  <?php endif ?>
-
-    <a href="<?php echo $item['stock_url'] ?>" class="underline">В каких магазинах ENTER можно купить?</a>
-  </div>
-
-  <div class="clear pb15"></div>
-  <div class="mb15 font12 orange infoblock delivery-info" id="product-id-<?php echo $product->core_id ?>">
-    <?php if (count($product->Category) && 'furniture' == $product->Category->getFirst()->getRootCategory()->token): ?>
-    Этот товар вы можете заказать с доставкой по удобному адресу.
-    <?php else: ?>
-    Этот товар вы можете заказать с доставкой по удобному адресу или заказать и самостоятельно забрать в магазине.
-    <?php endif; ?>
-    <br /><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>" class="underline">Стоимость и условия доставки</a><br/><span class="black" style="line-height: 2;">Подробности по телефону 8 (800) 700 00 09</span>
-  </div>
-  <div class="pb5"><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline">Читать отзывы</a> (<?php echo $product->getCommentCount() ?>)</div>
-  <div class="pb5"><span id="rating" data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $product)) ?>"<?php if ($item['rated']) echo ' data-readonly="true"' ?>>
-    Оценка пользователей:
-    <?php
-    echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
-    echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
-    ?></span>
-    <strong class="ml5"><?php echo round($product->rating, 1) ?></strong>
-    <?php //include_component('userProductRating', 'show', array('product' => $product))  ?>
-  </div>
-<!--        <div class="pb5">Понравилось? <a href="" class="share">Поделиться</a> <strong><a href="" class="nodecor">+87</a></strong></div>-->
-  <div class="pb3"><?php include_component('userTag', 'product_link', array('product' => $product)) ?></div>
-
-
-  <div class="line pb15"></div>
-
-  <?php //echo $product->Creator ?>
-<?php if (false): ?>1
-  <ul class="inline">
-    <li><?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?></li>
-    <li><?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?></li>
-    <li><?php include_component('userProductCompare', 'button', array('product' => $product)) ?></li>
-  </ul>
-
-  <!--div class="inline">
-<?php //include_component('userProductRating', 'show', array('product' => $product))  ?>
-  </div->
-
-  <div class="inline">
-<?php //include_component('userTag', 'product_link', array('product' => $product))  ?>
-  </div>
-
-  <div class="block">
-<?php //echo link_to('Следить за этим товаром', 'userProductNotice_show', $sf_data->getRaw('product'), array('class' => 'event-click', 'data-event' => 'window.open'))  ?>
-  </div-->
-<?php endif ?>
-</div><!-- Goods info -->
-<?php endif ?>
 
 
 <div class="clear"></div>
@@ -243,6 +112,7 @@ foreach ($p3d as $p3d_obj)
   </div>
 <?php endif ?>
 <!-- /Photo video -->
+
 <?php include_component('productSoa', 'product_model', array('product' => $product,)) ?>
 <div class="clear"></div>
 <div class="mb15"></div>
@@ -266,23 +136,11 @@ foreach ($p3d as $p3d_obj)
 <h2 class="bold"><?php echo $product->name ?> - Характеристики</h2>
 <div class="line pb25"></div>
 
-<?php if (false && ($product->countParameter('show') > 5) && ($product->countParameter('list') > 0)): ?>
-  <div class="descriptionlist">
-    <?php include_component('productSoa', 'property_grouped', array('product' => $product, 'view' => 'inlist')) ?>
-  </div>
-<?php if (false): ?>
-  <div class="pb25"><a href="#" id="toggler" class="more">Все характеристики</a></div>
-<?php endif ?>
-  <div class="descriptionlist second" style="display: none;">
-  <?php include_component('productSoa', 'property_grouped', array('product' => $product)) ?>
-  </div>
 
-<?php else: ?>
-  <div class="descriptionlist">
-  <?php include_component('productSoa', 'property_grouped', array('product' => $product)) ?>
-  </div>
+<div class="descriptionlist">
+<?php include_component('productSoa', 'property_grouped', array('product' => $product)) ?>
+</div>
 
-<?php endif ?>
 <!-- /Description -->
     <?php include_component('productSoa', 'tags', array('product' => $product)) ?>
 <?php endif ?>

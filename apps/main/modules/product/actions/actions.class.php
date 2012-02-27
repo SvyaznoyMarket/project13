@@ -94,6 +94,7 @@ class productActions extends myActions
       $result['delivery'] = $delivery;
       $data[$productId] = $result;
     }
+    print_r($data);
     return $this->renderJson($data);
   }
 

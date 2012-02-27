@@ -6,26 +6,36 @@ class ProductSoa
     public $is_insale;
     public $is_instock;
     public $preview;
-    public $price = 100;
+    public $price;
     public $ParameterGroup;
     public $view;
+    public $kit;
+    public $announce;
 
 
 
     public function __construct($id)
     {
-        $this->_id = $id;
+        $this->id = $id;
         $core = CoreSoa::getInstance();
-        $productInfo = $core->getProduct($this->_id);
+        $productInfoStatic = $core->getProductStatic($this->id);
+        $productInfoDinamic = $core->getProductDinamic($this->id);
+        $productInfo = array_merge($productInfoStatic, $productInfoDinamic);
         foreach ($productInfo as $fieldName => $value) {
-           // $fieldName = '_' . $fieldName;
             $this->$fieldName = $value;
         }
         if (count($this->kit)) {
             $this->view = 'kit';
         }
         $this->preview = $this->announce;
+        $this->barcode = $this->bar_code;
+        $this->token_prefix = '';
+
+        $this->is_instock = 1;
+        $this->is_insale = 1;
+        $this->id = $id;
         //print_r($this);
+        //die();
     }
 
 
@@ -132,8 +142,7 @@ class ProductSoa
 
     public function getCommentCount(array $params = array())
     {
-       // return ProductCommentTable::getInstance()->getCountByProduct($this, $params);
-        return 5;
+        return $this->comments_num;
     }
 
     public function getUserTagList(array $params = array())
@@ -257,6 +266,13 @@ class ProductSoa
        // return $this->getTable()->getMainPhotoUrl($this, $view);
         $urls = sfConfig::get('app_product_photo_url');
         return $this->media_image ? $urls[$view] . $this->media_image : null;
+    }
+
+    static public function getMainPhotoUrlByMediaImage($mediaImage, $view = 0)
+    {
+        // return $this->getTable()->getMainPhotoUrl($this, $view);
+        $urls = sfConfig::get('app_product_photo_url');
+        return $mediaImage ? $urls[$view] . $mediaImage : null;
     }
 
     public function getMainCategory()
