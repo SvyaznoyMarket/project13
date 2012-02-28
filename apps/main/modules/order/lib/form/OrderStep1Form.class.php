@@ -152,8 +152,13 @@ class OrderStep1Form extends BaseOrderForm
         if ($deliveryPeriod < 0) $deliveryPeriod = 0;
         $deliveryPeriod = myToolkit::fixDeliveryPeriod($deliveryType['mode_id'], $deliveryPeriod);
         if ($deliveryPeriod === false) continue;
+        if ($deliveryType['mode_id'] == 5) {
+            $label =  $deliveryObj['name'];
+        } else {
+            $label = $deliveryObj['name'].$formatPrice($deliveryType['price']);
+        }
         $deliveryTypes[$deliveryObj['id']] = array(
-          'label' => $deliveryObj['name'].$formatPrice($deliveryType['price']),
+          'label' => $label,
           'description' => $deliveryObj['description'],
           //'description' => 'Доставка '.myToolkit::formatDeliveryDate($deliveryPeriod). ', стоимостью '.$deliveryType['price'].' руб',
           'date_diff' => $deliveryPeriod,
