@@ -25,22 +25,24 @@ class productCardSoaActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
 
-
     //$this->product = ($request['product'] instanceof Product) ? $request['product'] : $this->getRoute()->getObject();
 
-      $this->product = new ProductSoa(17531);
-    //  echo get_class( $this->getRoute() );
-   //   myDebug::dump($this->productInfo);
-     // myDebug::dump($this->product);
-    //die();
+      $productAr = explode('/', $request['product']);
+      //echo end($productAr);
+      //die();
 
+      try {
+        $this->product = new ProductSoa(end($productAr));
+      } catch (ErrorException $e) {
+         $this->forward404If($e->getMessage());
+      }
 
     $title = '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru';
     $this->getResponse()->setTitle(sprintf(
         $title,
         $this->product->name,
         100,
-        $this->productname
+        $this->product->name
     ));
     $descr = 'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону 8 (800) 700-00-09.';
     $this->getResponse()->addMeta('description', sprintf(

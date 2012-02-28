@@ -848,12 +848,12 @@ class ProductTable extends myDoctrineTable
       }
       else
       {
-        if (get_class($record) == 'Poduct') {
+        if (is_object($record) && get_class($record) == 'Poduct') {
             $return[] = "product-{$record['core_id']}".(isset($params['region']) ? ("-".$params['region']) : "-");
         }
       }
 
-      if (get_class($record) == 'Poduct') {
+      if (is_object($record) && get_class($record) == 'Poduct') {
           foreach ($record['Category'] as $productCategory)
           {
             $return[] = "productCategory-{$productCategory['core_id']}-";
@@ -910,9 +910,10 @@ class ProductTable extends myDoctrineTable
 
   public function getMainPhotoUrl($product, $view = 0)
   {
-    if (get_class($product) == 'Product') {
+
+    if (isset($product['main_photo'])) {
         $urls = sfConfig::get('app_product_photo_url');
-        return $product['main_photo'] ? $urls[$view].$product['main_photo'] : null;
+        return $urls[$view].$product['main_photo'];
     }
     return null;
   }

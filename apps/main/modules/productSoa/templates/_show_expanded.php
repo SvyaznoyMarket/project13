@@ -20,7 +20,7 @@
     <div class="extrainfo">
       <span class="db font18 pb10"><b><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></b></span>
       <div class="goodsbar mSmallBtns">
-        <?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
+        <?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1)) ?>
       </div>
         <?php if ($item['is_insale']): ?>
           <noindex><ul class="bNGB__eUl"><li><strong class="orange">Есть в наличии</strong></li></ul></noindex>
@@ -62,7 +62,7 @@
   <div class="boxhover"<?php if ($item['is_insale']): ?> ref="<?php echo $item['token'] ?>" data-cid="<?php echo $item['core_id'] ?>" <?php endif ?>>
     <!--a href="" class="fastview">Быстрый просмотр</a-->
     <div class="goodsbar">
-      <?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
+      <?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1)) ?>
       <?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?>
       <?php include_component('userProductCompare', 'button', array('product' => $product)) ?>
     </div>

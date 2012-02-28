@@ -34,11 +34,11 @@ if (is_object($servListId)) {
                             <?php if ($service['price'] >= Service::MIN_BUY_PRICE && $product->getIsInsale()) { ?>
                                 <?php if ($showInCardButton && in_array($service['id'], $servListId)) { ?>
                                     <input data-f1title="<?php echo $service['name'] ?>" data-f1price="<?php echo $service['price'] ?>" data-fid="<?php echo $service['token'];?>"
-                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product' => $product->token_prefix."/".$product->token)) ?>" type="button" class="active button yellowbutton" value="В корзине">
+                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product' => $product->path)) ?>" type="button" class="active button yellowbutton" value="В корзине">
                                <?php } else { ?>
 
                                     <input data-f1title="<?php echo $service['name'] ?>" data-f1price="<?php echo $service['price'] ?>" data-fid="<?php echo $service['token'];?>"
-                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product' => $product->token_prefix."/".$product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product' => $product->path)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
                                <?php } ?>
                             <?php } ?>
                         </td>

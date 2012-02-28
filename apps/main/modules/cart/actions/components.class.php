@@ -24,15 +24,27 @@ class cartComponents extends myComponents
       $this->quantity = 1;
     }
 
+    $cart = $this->getUser()->getCart();
     $this->disable = false;
-    if (!$this->product->is_insale)
-    {
-      $this->disable = true;
+    if (is_object($this->product)) {
+        if (!$this->product->is_insale)
+        {
+            $this->disable = true;
+        }
+        $hasProduct = $cart->hasProduct($this->product->id);
+    } else {
+        if (!$this->product['is_insale'])
+        {
+            $this->disable = true;
+        }
+        $hasProduct = $cart->hasProduct($this->product['id']);
     }
 
-    $cart = $this->getUser()->getCart();
 
-    if ($cart->hasProduct($this->product->id))
+
+
+
+    if ($hasProduct)
     {
       $this->button = 'cart';
     }
@@ -41,11 +53,15 @@ class cartComponents extends myComponents
       $this->button = 'buy';
     }
 
-    if (!in_array($this->view, array('default', 'delivery')))
-    {
+    if ($this->soa == true) {
+        $this->view = 'soa';
+    } elseif (!in_array($this->view, array('default', 'delivery'))) {
       $this->view = 'default';
     }
+
   }
+
+
  /**
   * Executes show component
   *

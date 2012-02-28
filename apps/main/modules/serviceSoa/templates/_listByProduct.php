@@ -9,7 +9,7 @@ include_component('productSoa', 'f1_lightbox', array('f1' => $list,'product'=>$p
 <%=f1title%> - <%=f1price%>&nbsp;
 <span class="rubl"> p</span>
 <br>
-<a class="bBacketServ__eMore" href="<?php echo url_for('cart_service_delete', array('service' => 'F1ID', 'product' => $product->token_prefix . '/' . $product->token));?>">Отменить услугу</a>
+<a class="bBacketServ__eMore" href="<?php echo url_for('cart_service_delete', array('service' => 'F1ID', 'product' => $product->path));?>">Отменить услугу</a>
 </div>
 </script>
     <?php if (count($servListId)) { ?>
@@ -19,7 +19,7 @@ include_component('productSoa', 'f1_lightbox', array('f1' => $list,'product'=>$p
                 <?php if (in_array($service->id, $servListId)) { ?>
                     <div ref="<?php echo $service['token'];?>">
                         <?php echo $service['name'] ?> - <?php echo $service['price']  ?>&nbsp;<span class="rubl">p</span><br>
-                        <a class="bBacketServ__eMore" href="<?php echo url_for('cart_service_delete', array('service' => $service['token'], 'product' => $product['token_prefix'] . '/' . $product['token']));?>">Отменить услугу</a>
+                        <a class="bBacketServ__eMore" href="<?php echo url_for('cart_service_delete', array('service' => $service['token'], 'product' => $product->path));?>">Отменить услугу</a>
                     </div>        
                 <?php } ?>
          <?php } ?>

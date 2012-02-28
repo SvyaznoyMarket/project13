@@ -158,6 +158,20 @@ class UserCart extends BaseUserData
     return $product;
   }
 
+    public function getProductByCoreId($id)
+    {
+        $product = null;
+        $this->loadProducts();
+        foreach ($this->products as $pr) {
+            if ($pr->core_id == $id) {
+                $product = $pr;
+                break;
+            }
+        }
+
+        return $product;
+    }
+
   public function getService($id)
   {
     $services = $this->parameterHolder->get('services');

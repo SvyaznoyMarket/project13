@@ -29,6 +29,7 @@ class productSoaComponents extends myComponents
       $this->view = 'default';
     }
 
+
     // cache key
     $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
       'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
@@ -44,130 +45,13 @@ class productSoaComponents extends myComponents
       return sfView::SUCCESS;
     }
 
-    $table = ProductTable::getInstance();
-
-    if (is_scalar($this->product))
-    {
-      $params = array(
-        'hydrate_array' => true,
-        'with_model'    => true,
-      );
-
-      if ('default' == $this->view)
-      {
-        $params = myToolkit::arrayDeepMerge($params, array(
-          'group_property'  => true,
-          'view'            => 'show',
-          'property_view'   => 'show',
-          'with_properties' => true,
-        ));
-      }
-      else if ('expanded' == $this->view)
-      {
-        $params = myToolkit::arrayDeepMerge($params, array(
-          'group_property'  => false,
-          'view'            => 'list',
-          'property_view'   => 'list',
-          'with_properties' => true,
-        ));
-      }
-      else {
-        $params = myToolkit::arrayDeepMerge($params, array(
-          'view'      => 'list',
-          'with_line' => 'line' == $this->view ? true : false,
-        ));
-      }
-
-      $this->product = $table->getById($this->product, $params);
-      $this->product['is_insale'] = $table->isInsale($this->product);
-    }
-     // return;
-
-    $item = array(
-  //    'id'         => $this->product['id'],
-  //    'core_id'    => $this->product['core_id'],
-      'token'      => $this->product->token,
-      'barcode'    => $this->product->barcode,
-      'article'    => $this->product->article,
-      'name'       => $this->product->name,
-   //   'creator'    => (is_array($this->product->Creator) || ($this->product->Creator instanceof Creator)) ? $this->product->Creator->name : '',
-      'rating'     => $this->product->rating,
-      'price'      => $table->getFormattedPrice($this->product), //$this->product->formatted_price,
-      'has_link'   => $this->product->view_show,
-      'photo'      => $table->getMainPhotoUrl($this->product, 2),
-      'is_insale'  => $this->product->is_insale,
-      'is_instock' => $this->product->is_instock,
-      'url'        => $this->generateUrl('productCard', array('product' => $this->product->link), array('absolute' => true)),
-    );
-
-    if ('compact' == $this->view)
-    {
-      $rootProductCategory = ProductCategoryTable::getInstance()->getRootRecord($this->product['Category'][0], array(
-        'hydrate_array' => true,
-        'select'        => 'productCategory.id, productCategory.name',
-      ));
-      $item['root_name'] = $rootProductCategory ? $rootProductCategory['name'] : '';
+    $cartItem = $this->getUser()->getCart()->getProductByCoreId($this->product->id);
+    if ($cartItem) {
+      $this->product->cart_quantity = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
     }
 
-    if ('orderOneClick' == $this->view)
-    {
-      $item['photo'] = $this->product->getMainPhotoUrl(1);
-    }
+    $this->setVar('keys', ProductTable::getInstance()->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
 
-    if ('default' == $this->view)
-    {
-      $item['photo'] = $this->product->getMainPhotoUrl(1);
-      $item['stock_url'] = $this->generateUrl('productStock', $this->product);
-      //$item['shop_url'] = $this->generateUrl('shop_show', ShopTable::getInstance()->getMainShop());
-      $item['shop_url'] = $this->generateUrl('shop');
-      $item['stock_url'] = $this->generateUrl('productStock', $this->product);
-      $item['preview'] = $this->product->preview;
-
-      $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
-      $item['rated'] =
-        (true || !$this->getUser()->isAuthenticated())
-        ? in_array($this->product->id, $rated)
-        : false
-      ;
-      $item['cart_quantity'] = 0;
-      if ($cartItem = $this->getUser()->getCart()->getProduct($this->product->id))
-      {
-        $item['cart_quantity'] = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
-      }
-    }
-    if (in_array($this->view, array('expanded')))
-    {
-      $item['preview'] = $this->product->preview;
-    }
-    if (in_array($this->view, array('description')))
-    {
-      $item['description'] = $this->product->description;
-    }
-    if ('line' == $this->view)
-    {
-      $item['url'] = $this->generateUrl('lineCard', array('line' => $this->product['Line']['token'], ), array('absolute' => true));
-      //$item['Line']['name'] = $this->product->Line->name;
-      $item['Line']['count'] = ProductLineTable::getInstance()->getProductCountById($this->product->Line->id);
-    }
-    if ('stock' == $this->view)
-    {
-      $item['description'] = $this->product->description;
-      $length = mb_strpos($item['description'], ' ', 120) ?: strlen($item['description']);
-      $item['description'] = mb_substr($item['description'], 0, $length);
-      $item['description'] = $item['description'].((mb_strlen($this->product->description) > mb_strlen($item['description'])) ? '...' : '');
-    }
-
-    $this->setVar('item', $item, true);
-
-    // что это? нигде не используется
-    /*
-    $selectedServices = $this->getUser()->getCart()->getServicesByProductId($this->product['id']);
-    $this->setVar('selectedServices', $selectedServices, true);
-     */
-
-    $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
-
-    //myDebug::dump($item, 1);
 
     // caches vars
     if ($cacheKey)
@@ -344,7 +228,6 @@ class productSoaComponents extends myComponents
    */
   public function executeProduct_model()
   {
-
     if (!$this->product->model && !isset($this->product->model['property']))
     {
       return sfView::NONE;

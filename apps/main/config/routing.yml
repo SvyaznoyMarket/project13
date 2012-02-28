@@ -73,7 +73,7 @@ productCatalog_count:
 #
 # категория каталога товаров
 productCatalog_category:
-  url:   /catalog/:productCategory
+  url:   /catalog/:productCategory/
   param: { module: productCatalog, action: category}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }

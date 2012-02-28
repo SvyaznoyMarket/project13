@@ -22,9 +22,13 @@ class productCardSoaComponents extends myComponents
     if (isset($this->product->category))
     {
       foreach ($this->product->category as $c) {
+        $link = str_replace('/catalog/','',$c['link']);
+        if (substr($link, -1, 1) == '/') {
+            $link = substr($link, 0, -1);
+        }
         $list[] = array(
           'name' => $c['name'],
-          'url'  => $this->generateUrl('productCatalog_category', array('productCategory' => str_replace('/catalog/','',$c['link'])) ),
+          'url'  => $this->generateUrl('productCatalog_category', array('productCategory' => $link) ),
         );
         //break;
       }
