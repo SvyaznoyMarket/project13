@@ -11,16 +11,30 @@ class ProductSoa
     public $view;
     public $kit;
     public $announce;
+    public $cart_quantity;
+    public $rating;
 
 
 
     public function __construct($id)
     {
-        $this->id = $id;
+       // $this->id = $id;
         $core = CoreSoa::getInstance();
-        $productInfoStatic = $core->getProductStatic($this->id);
-        $productInfoDinamic = $core->getProductDinamic($this->id);
-        $productInfo = array_merge($productInfoStatic, $productInfoDinamic);
+
+       // $core->getProductCard($id);
+       // die();
+
+        //загружаем статическе данные
+        $productInfoStatic = $core->getProductStatic($id);
+        if (!isset($productInfoStatic['id'])) {
+            throw new ErrorException('Товар не найден');
+            return;
+        }
+        //загружаем динамические данные
+        $productInfoDinamic = $core->getProductDinamic($id);
+        $productInfo = array_merge($productInfoDinamic, $productInfoStatic);
+        //print_r($productInfoStatic);
+        //die();
         foreach ($productInfo as $fieldName => $value) {
             $this->$fieldName = $value;
         }
@@ -29,11 +43,19 @@ class ProductSoa
         }
         $this->preview = $this->announce;
         $this->barcode = $this->bar_code;
-        $this->token_prefix = '';
+        //$this->token_prefix = '';
+        $this->path = str_replace('/product/', '', $this->link);
 
-        $this->is_instock = 1;
-        $this->is_insale = 1;
-        $this->id = $id;
+        //есть на складе, если есть хоть где-нибудь
+        $this->is_instock = $this->state['is_shop'] || $this->state['is_store'] || $this->state['is_supplier'];
+
+        if ($this->is_instock && $this->price>0) {
+            $this->is_insale = 1;
+        } else {
+            $this->is_insale = 0;
+        }
+
+       // $this->id = $id;
         //print_r($this);
         //die();
     }
@@ -251,10 +273,12 @@ class ProductSoa
 
     public function getAll3dPhotos()
     {
-       // return ProductPhoto3DTable::getInstance()->getByProduct($this);
         $d3List = array();
+        $urls = sfConfig::get('app_product_photo_url');
         foreach ($this->media as $media) {
             if ($media['type_id'] == 2) {
+                $media['path']['small'] =  $urls[0] . $media['source'];
+                $media['path']['big'] =  $urls[1] . $media['source'];
                 $d3List[] = $media;
             }
         }
@@ -275,9 +299,17 @@ class ProductSoa
         return $mediaImage ? $urls[$view] . $mediaImage : null;
     }
 
+    //оставляем пока, как объект из бД!! (чтоб ничего не сломать)
     public function getMainCategory()
     {
-        return isset($this->Category[0]) ? $this->Category[0] : null;
+        if (isset($this->category[0])) {
+            $catId = $this->category[0]['id'];
+            $cat = ProductCategoryTable::getInstance()->getById($catId);
+            if ($cat && $cat->id) {
+                return $cat;
+            }
+        }
+        return null;
     }
     public function getMainCategoryId()
     {
@@ -306,21 +338,10 @@ class ProductSoa
         return $count;
     }
 
-    public function getModelProperty()
-    {
-        $q = ProductPropertyTable::getInstance()->createBaseQuery();
-
-        $q->innerJoin('productProperty.ProductModelRelation productModelRelation WITH productModelRelation.product_id = ?', array($this->is_model ? $this->id : $this->model_id))
-            ->innerJoin('productProperty.ProductTypeRelation productTypeRelation WITH productTypeRelation.product_type_id = ?', $this->type_id)
-            ->orderBy('productModelRelation.position ASC');
-
-
-        return $q->execute();
-    }
 
     public function isKit()
     {
-        return 2 == $this->set_id;
+        return (!is_null($this->kit));
     }
 
     public function getStockQuantity()

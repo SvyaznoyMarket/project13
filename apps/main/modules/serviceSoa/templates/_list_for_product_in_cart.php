@@ -59,7 +59,7 @@ foreach ($list as $service) {
                             <td class="mEdit">
                                 <div class="numerbox mInlineBlock mVAMiddle">
                                     <?php if ($service['quantity'] > 1) { ?>
-                                    <a href="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'quantity'=>-1, 'product'=>$product->token_prefix.'/'.$product->token)); ?>">
+                                    <a href="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'quantity'=>-1, 'product'=>$product->path)); ?>">
                                         <b title="Уменьшить" class="ajaless"></b>
                                     </a>
                                     <?php } else { ?>
@@ -68,11 +68,11 @@ foreach ($list as $service) {
                                     </a>
                                     <?php } ?>
                                     <span class="ajaquant"><?php echo $service['quantity'] ?> шт.</span>
-                                    <a href="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product'=>$product->token_prefix.'/'.$product->token)); ?>">
+                                    <a href="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product'=>$product->path)); ?>">
                                         <b title="Увеличить" class="ajamore"></b>
                                     </a>
                                 </div>
-                                <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?php echo url_for('cart_service_delete', array('service' => $service['token'], 'product' => $product->token_prefix.'/'.$product->token)); ?>">Отменить</a>
+                                <a class="button whitelink ml5 mInlineBlock mVAMiddle" href="<?php echo url_for('cart_service_delete', array('service' => $service['token'], 'product' => $product->path)); ?>">Отменить</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

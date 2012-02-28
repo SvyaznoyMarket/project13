@@ -47,6 +47,6 @@
 <?php
 
 $rotCat = $product->getMainCategory();
-include_component('productCategory', 'seo_counters_advance', array('unitId' => $rotCat->root_id))
+include_component('productCategory', 'seo_counters_advance', array('unitId' => $rotCat['root_id']))
 ?>
 <?php end_slot() ?>

@@ -38,7 +38,7 @@ if (!isset($currentDirectory)) $currentDirectory = array();
 
             <!--
             <?php $currentLevel1 = null; ?>
-            <?php if ($currentDirectory->level > 0 ) { ?>
+            <?php if (isset($currentDirectory['level']) && $currentDirectory['level'] > 0 ) { ?>
                 <li class="bCtg__eL1 mBold">
                     <a href="<?php echo url_for('productCatalog_category', array('productCategory' => $root_info['token_prefix'] ? ($root_info['token_prefix'].'/'.$root_info['token']) : $root_info['token'])); ?>">
                         <span><?php echo $root_info['name'] ?></span>

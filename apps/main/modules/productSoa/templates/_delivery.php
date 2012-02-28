@@ -19,7 +19,7 @@
                     <div> &mdash; Можем доставить <?php echo $deliveryText ?>, <?php echo $price ?></div>
                 <?php } elseif ($info['mode']==3) { ?>
                     <h5>Можно заказать сейчас и самостоятельно забрать в магазине <?php echo $deliveryText ?></h5>
-                    <div>&mdash; <a target="blank" href="'+delivery_cnt.data().shoplink+'">В каких магазинах ENTER можно забрать?</a></div>
+                    <div>&mdash; <a target="blank" href="<?php echo url_for('productStock', array('product' => $product->path)) ?>">В каких магазинах ENTER можно забрать?</a></div>
                     <?php }
                 } ?>
         </li>

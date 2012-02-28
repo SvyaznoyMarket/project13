@@ -3,7 +3,7 @@
 	$json = array (
 		'jsref' => $product->token,
 		'jstitle' => htmlspecialchars($product->name, ENT_QUOTES, 'UTF-8'),
-		'jsprice' => $item['price'],
+		'jsprice' => $product->price,
 		'jsimg' => $product->getMainPhotoUrl(3)
 	)
 ?>
@@ -16,8 +16,8 @@ $p3d_res_small = array();
 $p3d_res_big = array();
 foreach ($p3d as $p3d_obj)
 {
-  $p3d_res_small[] = $urls3d[0].$p3d_obj->resource;
-  $p3d_res_big[] = $urls3d[1].$p3d_obj->resource;
+  $p3d_res_small[] = $p3d_obj['path']['small'];
+  $p3d_res_big[] = $p3d_obj['path']['big'];
 }
 ?>
 <script type="text/javascript">
@@ -38,19 +38,19 @@ foreach ($p3d as $p3d_obj)
             <div class="fr">
           <span id="rating" data-url="<?php //echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $product )) ?>"<?php //if ($item['rated']) echo ' data-readonly="true"' ?>>
             <?php
-              echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($item['rating']));
-              echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($item['rating']));
+              echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
+              echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
             ?>
           </span>
           <strong class="ml5 hf"><?php echo round($product->rating, 1) ?></strong>
 
 
-				<a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span>
+				<a href="<?php echo url_for('productComment', array('product' => $product->path)) ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $product->getCommentCount() ?>)</span>
 			</div>
-            <span>Артикул #<?php echo $item['article'] ?></span>
+            <span>Артикул #<?php echo $product->article ?></span>
         </div>
 
-        <div class="font14 pb15"><?php echo $item['preview'] ?></div>
+        <div class="font14 pb15"><?php echo $product->preview ?></div>
         <div class="clear"></div>
 
         <div class="fl pb15">
@@ -60,20 +60,20 @@ foreach ($p3d as $p3d_obj)
             <?php endif ?>
         </div>
         <div class="fr ar pb15">
-            <div class="goodsbarbig mSmallBtns" ref="<?php echo $item['token'] ?>" data-value='<?php echo json_encode( $json ) ?>'>
+            <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->token ?>" data-value='<?php echo json_encode( $json ) ?>'>
 
               <div class='bCountSet'>
-                <?php if (!$item['cart_quantity']): ?>
+                <?php if (!$product->cart_quantity): ?>
                   <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
                 <?php else: ?>
                   <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
               	<?php endif ?>
-                <span><?php echo $item['cart_quantity'] ? $item['cart_quantity'] : 1 ?> шт.</span>
+                <span><?php echo $product->cart_quantity ? $product->cart_quantity : 1 ?> шт.</span>
               </div>
 
-              <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
+              <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1)) ?>
             </div>
-            <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
+            <?php if ($product->is_insale && $sf_user->getRegion('region')->is_default): ?>
             <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $product->barcode)) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
             <?php endif ?>
         </div>
@@ -81,7 +81,7 @@ foreach ($p3d as $p3d_obj)
 
         <div class="line pb15"></div>
 
-        <?php if ($item['is_insale']): ?>
+        <?php if ($product->is_insale): ?>
             <?php include_component('productSoa', 'delivery', array('product' => $product)) ?>
         <?php endif ?>
 
@@ -165,7 +165,7 @@ foreach ($p3d as $p3d_obj)
       <?php include_partial('productSoa/price', array('price' => $product->getFormattedPrice())) ?>
       </div>
       <div class="popup_leftpanel pb40" ref="<?php echo $product->token ?>" data-value='<?php echo json_encode( $json ) ?>'>
-      	<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'value' => array('купить', 'в корзине',), )) ?>
+      	<?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1, 'value' => array('купить', 'в корзине',), )) ?>
       </div>
 
       <h2>Фото:</h2>

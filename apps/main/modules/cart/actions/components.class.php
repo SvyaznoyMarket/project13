@@ -41,11 +41,15 @@ class cartComponents extends myComponents
       $this->button = 'buy';
     }
 
-    if (!in_array($this->view, array('default', 'delivery')))
-    {
+    if ($this->soa == true) {
+        $this->view = 'soa';
+    } elseif (!in_array($this->view, array('default', 'delivery'))) {
       $this->view = 'default';
     }
+
   }
+
+
  /**
   * Executes show component
   *
