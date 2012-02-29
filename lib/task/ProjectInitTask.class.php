@@ -698,7 +698,8 @@ EOF;
   //DeliveryPeriod
   protected function createDeliveryPeriodRecord(array $data)
   {
-    $record = DeliveryPeriodTable::getInstance()->createRecordFromCore($data);
+    $record = array();
+    //$record = DeliveryPeriodTable::getInstance()->createRecordFromCore($data);
     //$record->delivery_type_id = $this->getRecordByCoreId('', $data['delivery_type_id'], true);
 
     return $record;

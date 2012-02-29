@@ -251,11 +251,11 @@ class OrderStep1Form extends BaseOrderForm
     $this->validatorSchema['delivered_at'] = new sfValidatorChoice(array('choices' => array_keys($choices), 'required' => true));
 
     $this->widgetSchema['delivery_period_id'] = new sfWidgetFormChoice(array(
-      'choices'  => $defaultDelivery->DeliveryPeriod,//$this->filterDeliveryPeriods($deliveryTypes[$defaultDelivery->id]['periods']),
+      'choices'  => array(),// $defaultDelivery->DeliveryPeriod,//$this->filterDeliveryPeriods($deliveryTypes[$defaultDelivery->id]['periods']),
       'multiple' => false,
       'expanded' => false,
     ));
-    $this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryPeriod', 'required' => false));
+    //$this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryPeriod', 'required' => false));
 
     $this->widgetSchema['address'] = new sfWidgetFormInputText();
 	  $this->widgetSchema['address']->setDefault($user->address);
@@ -346,6 +346,7 @@ class OrderStep1Form extends BaseOrderForm
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
+
     // если указан регион
     /*if (!empty($this->object->region_id))
     {
@@ -380,9 +381,12 @@ class OrderStep1Form extends BaseOrderForm
       }
     }*/
 
+     // myDebug::dump($deliveryTypes);
+     // myDebug::dump($taintedValues);
     // проверяет типа доставки
     if (!empty($taintedValues['delivery_type_id']))
     {
+
       $deliveryTypes = $this->getDeliveryTypes();
       $deliveryType = DeliveryTypeTable::getInstance()->find($taintedValues['delivery_type_id']);
       // если НЕ самовывоз

@@ -32,7 +32,7 @@ class orderComponents extends myComponents
       'delivered_at'        => $this->order->delivered_at,
       'delivery_type'       => $this->order->getDeliveryType(),
       'delivery_price'      => $this->order->delivery_price,
-      'delivered_period'    => $this->order->DeliveryPeriod ? $this->order->DeliveryPeriod->name : null,
+     // 'delivered_period'    => $this->order->DeliveryPeriod ? $this->order->DeliveryPeriod->name : null,
     );
 
     if (in_array($this->view, array('default', 'compact')))
