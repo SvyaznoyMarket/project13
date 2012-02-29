@@ -44,6 +44,7 @@ class ProductSoa
         $this->preview = $this->announce;
         $this->barcode = $this->bar_code;
         //$this->token_prefix = '';
+
         $this->path = self::_generatePathByLink($this->link);
 
 
@@ -91,6 +92,7 @@ class ProductSoa
 
             }
         }
+
        // $this->id = $id;
         //print_r($this);
         //die();

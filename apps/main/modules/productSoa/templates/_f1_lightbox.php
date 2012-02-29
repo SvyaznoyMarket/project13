@@ -39,6 +39,7 @@ if (is_object($servListId)) {
 
                                     <input data-f1title="<?php echo $service['name'] ?>" data-f1price="<?php echo $service['priceFormatted'] ?>" data-fid="<?php echo $service['id'];?>"
                                     data-url="<?php echo url_for('cart_service_add', array('service'=>$service['id'], 'product' => $product->path)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+
                                <?php } ?>
                             <?php } ?>
                         </td>
