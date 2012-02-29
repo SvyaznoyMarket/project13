@@ -123,7 +123,7 @@ $('.order-form').change( function(e) {
 			triggerDelivery( el.val() )
 			//dirty hack
 			var postdt = el.val()
-			if (postdt==4) postdt=3
+			//if (postdt==4) postdt=3
 			//
             $.post(form.data('updateFieldUrl'), {
               order: {
