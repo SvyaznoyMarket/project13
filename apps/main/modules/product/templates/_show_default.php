@@ -96,7 +96,7 @@ foreach ($p3d as $p3d_obj)
 
 
 
-
+        <div style="margin-bottom: 20px;">
         <!--AdFox START-->
         <!--enter-->
         <!--Ïëîùàäêà: Enter.ru / * / *-->
@@ -124,7 +124,7 @@ foreach ($p3d as $p3d_obj)
             // -->
         </script>
         <!-- _________________________AdFox Asynchronous code END___________________________ -->
-
+        </div>
 
 
 
