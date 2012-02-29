@@ -55,9 +55,27 @@ class ProductSoa
             $this->is_insale = 0;
         }
 
+        if ($this->service) {
+            $serviceIdList = array();
+            foreach ($this->service as & $service) {
+                $service['priceFormatted'] = number_format($service['price'], 0, ',', ' ');
+                $serviceIdList[] = $service['id'];
+            }
+            //временно! получаем старые сайтвоый token услуг. Чтобы сгенерировать ссылки на них.
+            //убрать после переделки раздела услуг!
+            $siteServiceInfo = ServiceTable::getInstance()->getQueryObject()->whereIn('core_id', $serviceIdList)->fetchArray();
+            foreach ($siteServiceInfo as $siteSevice) {
+                foreach ($this->service as $service) {
+                    if ($siteSevice['core_id'] == $service['id']) {
+                        $service['site_token'] = $siteSevice['token'];
+                        break;
+                    }
+                }
+            }
+        }
        // $this->id = $id;
-        //print_r($this);
-        //die();
+       // print_r($this);
+       // die();
     }
 
 

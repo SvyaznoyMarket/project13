@@ -140,8 +140,10 @@ class cartActions extends myActions {
             $this->_validateResult['error'] = "Некорректное количество услуг.";
             return $this->_refuse();
         }
-
-        $service = ServiceTable::getInstance()->findOneByToken($request['service']);
+        $service = ServiceTable::getInstance()->getByToken($request['service']);
+        if (!$service) {
+            $service = ServiceTable::getInstance()->findOneByCoreId($request['service']);
+        }
 
         if (!$service) {
             $this->_validateResult['success'] = false;
@@ -225,7 +227,10 @@ class cartActions extends myActions {
     $this->redirect($this->getRequest()->getReferer());
     } */
     public function executeServiceDelete(sfWebRequest $request) {
-        $service = ServiceTable::getInstance()->findOneByToken($request['service']);
+        $service = ServiceTable::getInstance()->getByToken($request['service']);
+        if (!$service) {
+            $service = ServiceTable::getInstance()->findOneByCoreId($request['service']);
+        }
         $product = ProductTable::getInstance()->getByToken($request['product']);
 
         if ($product) {

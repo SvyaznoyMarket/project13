@@ -241,9 +241,17 @@ class productSoaComponents extends myComponents
             'is_image' => $prop['is_image'],
         );
         //print_r($this->product->model);
+        $valueList = array();
         foreach ($this->product->model['product'] as $productModel) {
             foreach ($productModel['property'] as $prodProp) {
                 if ($prodProp['id'] == $prop['id']) {
+                   if ($product->id == $productModel['id']) {
+                        $property['current']['id'] = $productModel['id'];
+                        $property['current']['value'] = $prodProp['value'];
+                        $property['current']['url'] = $productModel['link'];
+                   } elseif (in_array($prodProp['value'], $valueList)) {
+                       //continue;
+                   }
                    $property['products'][] = array(
                        'id' => $productModel['id'],
                        'name' => $productModel['name'],
@@ -252,16 +260,14 @@ class productSoaComponents extends myComponents
                        'is_selected' =>  ($this->product->id == $productModel['id']) ? 1 : 0,
                        'url' => $productModel['link']
                    );
-                   if ($product->id == $productModel['id']) {
-                       $property['current']['id'] = $productModel['id'];
-                       $property['current']['value'] = $prodProp['value'];
-                       $property['current']['url'] = $productModel['link'];
-                   }
+                   $valueList[] = $prodProp['value'];
                 }
             }
         }
         $properties[] = $property;
     }
+    //print_r($properties);
+     // die();
     $this->setVar('properties', $properties, true);
     return;
 

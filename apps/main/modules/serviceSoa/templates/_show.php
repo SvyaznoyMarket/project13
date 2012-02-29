@@ -1,7 +1,7 @@
 <?php 
 #JSON data
 	$json = array (
-		'jsref' => $service['token'],
+		'jsref' => $service['id'],
 		'jsimg' => $service['main_photo'],
 		'jstitle' => $service['name'],
 		'jsprice' => $service['priceFormatted']
