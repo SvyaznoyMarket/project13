@@ -3933,3 +3933,81 @@ div.mSportFont{ color: #e8303c; }
         *display: block;
         zoom: 1;
     }
+
+.march8{
+        position: relative;
+        overflow-x: hidden;
+    }
+    .march8 .allpageinner{
+        z-index: 10;
+    }
+    .march8 .allpage{
+        position: relative;
+    }
+    .march8_link{
+        top: 0;
+        left: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        position: fixed;
+        *position: absolute;
+        *top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+
+        display: inline-block;
+        *display: inline;
+        zoom: 1;
+    }
+    .march8_wrap{
+        top: 0;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        height: 858px;
+        overflow: hidden;
+        position: absolute;
+        background: url('/images/23_feb_lr.jpg') 50% 0 no-repeat;
+    }
+    .march8_inner_left,
+    .march8_inner_right{
+        width: 50%;
+        height: 100%;
+        position: absolute;
+    }
+    .march8_inner_left{
+        left: -50%;
+        background: url('/images/grass_line_left.png') 100% 0 repeat-y;
+    }
+    .march8_inner_right{
+        right: -50%;
+        background: url('/images/grass_line_right.png') 0 0 repeat-y;
+    }
+    .march_8_leftbg,
+    .march_8_rightbg{
+        height: 100%;
+        position: relative;
+    }
+    .march_8_leftbg{
+        margin-right: 26px;
+        background: url('/images/grass_bg.png') 100% 0;
+    }
+    .march_8_rightbg{
+        margin-left: 26px;
+        background: url('/images/grass_bg.png') 0 0;
+    }
+    .march_8_lefttopbg,
+    .march_8_righttopbg{
+        top: 0;
+        width: 100%;
+        height: 695px;
+        position: absolute;
+    }
+    .march_8_lefttopbg{
+        right: -26px;
+        background: url('/images/img_8gifts_left.png') 100% 0 no-repeat;
+    }
+    .march_8_righttopbg{
+        left: -26px;
+        background: url('/images/img_8gifts_right.png') 0 0 no-repeat;
+    }
