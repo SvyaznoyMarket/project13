@@ -5,8 +5,6 @@ CallbackCategory:
 Creator:
   - brand
   - Brands
-DeliveryPeriod:
-  - delivery_interval
 Order:
   - order
 OrderProductRelation:
