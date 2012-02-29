@@ -3,10 +3,10 @@ HTML {width:100%; height:100%;  font-size:100.01%}
 BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,helvetica,sans-serif; color:#000; background:#f6f1e9}
 .allpage {width:920px; padding:0 20px; height:auto; min-height:100%; margin:0 auto; background-color:#fff}
 * html .allpage {height:100%}
-.allpageinner {padding-bottom:270px; position:relative}
+.allpageinner {padding-bottom:431px; position:relative}
 .buyingpage {padding-bottom:96px}
 *+ html .allpageinner {float:left; width:100%} /* for IE7 */
-.footer {width:920px; height:271px; margin:-271px auto 0 auto; position:relative; z-index: 50; }
+.footer {width:920px; height:388px; margin:-388px auto 0 auto; position:relative; z-index: 50; }
 .lowfooter {height:66px; margin:-66px auto 0 auto}
 
 
@@ -3831,3 +3831,105 @@ div.mSportFont{ color: #e8303c; }
     position: absolute;
     background: url('/images/bg_sale_sport.png') 50% 0 no-repeat;
 }
+
+.bFooter{
+        color: #ffffff;
+        background: #000000;
+
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -o-border-radius: 5px;
+    }
+    .bFooter__eLeft,
+    .bFooter__eRight,
+    .bFooter__eLeft a,
+    .bFooter__eLeft span,
+    .bFooter__eRight .mFDiv{
+        vertical-align: top;
+        display: inline-block;
+        *display: inline;
+        zoom: 1;
+    }
+
+    .bFooter__eLeft{
+        width: 145px;
+        min-height: 282px;
+        padding: 15px 0 0 25px;
+        background: url('/images/footer_left_bg.jpg') no-repeat;
+    }
+    .bFooter__eLogo{
+        width: 83px;
+        height: 58px;
+        padding-bottom: 15px;
+        background: url('/images/footer_logo.png') no-repeat;
+    }
+    .bFooter__eLeft a{
+        color: #ffffff;
+        margin: 2px 0;
+        font: 14px Tahoma, sans-serif;
+    }
+    .bFooter__eLeft span{
+        margin: 20px 0 10px 0;
+        font: 12px Tahoma, sans-serif;
+    }
+
+    .bFooter__eRight{
+        padding-left: 14px;
+        background: url('/images/footer_bottom.png') 0 32px no-repeat;
+    }
+    .bFooter__eRight dt{
+        color: #ffa901;
+        margin: 12px 0 5px 0;
+        font: 24px 'Enter';
+    }
+    .bFooter__eRight h3{
+        margin: 0;
+        color: #49c7ed;
+        font: 21px 'Enter';
+    }
+    .bFooter__eRight dd{
+        margin-left: 12px;
+    }
+    .bFooter__eRight .mFDiv{
+        width: 230px;
+    }
+    .mFoot1{
+        background: url('/images/footer_left1.png') 90% 5px no-repeat;
+    }
+    .mFoot2{
+        background: url('/images/footer_left2.png') 90% 5px no-repeat;
+    }
+    .bFooter__eRight dd div{
+        list-style-image: url('/images/footer_list_style.png');
+    }
+    .bFooter__eRight ul{
+        padding: 10px 0 0 17px;
+    }
+    .bFooter__eRight li{
+        padding-bottom: 10px;
+        font: 14px Tahoma, sans-serif;
+    }
+    .bFooter__eRight li a{
+        color: #ffffff;
+        text-decoration: underline;
+    }
+    .bFooter__eRight .mFphone{
+        font: 16px Tahoma, sans-serif;
+    }
+    .bFooterF1{
+        height: 45px;
+        margin: 15px 0;
+        background: url('/images/f1_footer_logo.png') no-repeat;
+    }
+    .bFooterF1 a{
+        color: #fff;
+        height: 45px;
+        cursor: pointer;
+        padding-left: 70px;
+        text-decoration: none;
+
+        display: inline-block;
+        *display: block;
+        zoom: 1;
+    }
