@@ -130,7 +130,7 @@ foreach ($p3d as $p3d_obj)
 <?php endif ?>
 
 <?php if ('kit' == $product->view): ?>
-    <?php //include_component('product', 'kit', array('product' => $product)) ?>
+    <?php //include_component('productSoa', 'kit', array('product' => $product)) ?>
 <?php else: ?>
 <!-- Description -->
 <h2 class="bold"><?php echo $product->name ?> - Характеристики</h2>

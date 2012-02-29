@@ -45,9 +45,17 @@ class productSoaComponents extends myComponents
       return sfView::SUCCESS;
     }
 
-    $cartItem = $this->getUser()->getCart()->getProductByCoreId($this->product->id);
+      if (is_array($this->product)) {
+          $productId = $this->product['id'];
+      } else {
+          $productId = $this->product->id;
+      }
+      //myDebug::dump($this->product);
+    $cartItem = $this->getUser()->getCart()->getProductByCoreId($productId);
     if ($cartItem) {
-      $this->product->cart_quantity = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
+      if (is_object($this->product)) {
+        $this->product->cart_quantity = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
+      }
     }
 
     $this->setVar('keys', ProductTable::getInstance()->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
@@ -57,7 +65,7 @@ class productSoaComponents extends myComponents
     if ($cacheKey)
     {
       $this->cacheVars($cacheKey);
-      $this->getCache()->addTag("product-{$this->product->id}", $cacheKey);
+      $this->getCache()->addTag("product-{$productId}", $cacheKey);
     }
   }
 
@@ -193,7 +201,7 @@ class productSoaComponents extends myComponents
     }
      // print_r($this->product->property);
     foreach ($this->product->property as $prop) {
-      if (!$prop['is_view_card']) {
+      if (!isset($prop['is_view_card']) || !$prop['is_view_card']) {
           //continue;
       }
       if (isset($prop['group_id']) && $prop['group_id']) {
@@ -248,17 +256,17 @@ class productSoaComponents extends myComponents
                    if ($product->id == $productModel['id']) {
                         $property['current']['id'] = $productModel['id'];
                         $property['current']['value'] = $prodProp['value'];
-                        $property['current']['url'] = $productModel['link'];
+                        $property['current']['url'] = $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel['link']) ));
                    } elseif (in_array($prodProp['value'], $valueList)) {
-                       //continue;
+                       continue;
                    }
-                   $property['products'][] = array(
+                   $property['products'][$prodProp['value']] = array(
                        'id' => $productModel['id'],
                        'name' => $productModel['name'],
                        'image' => $product::getMainPhotoUrlByMediaImage($productModel['media_image'], 1),
                        'value' => $prodProp['value'],
                        'is_selected' =>  ($this->product->id == $productModel['id']) ? 1 : 0,
-                       'url' => $productModel['link']
+                       'url' => $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel['link']) ))
                    );
                    $valueList[] = $prodProp['value'];
                 }
@@ -267,7 +275,7 @@ class productSoaComponents extends myComponents
         $properties[] = $property;
     }
     //print_r($properties);
-     // die();
+    //die();
     $this->setVar('properties', $properties, true);
     return;
 
@@ -438,9 +446,9 @@ class productSoaComponents extends myComponents
 
   public function executeKit()
   {
-      $this->kit = $this->product->kit;
+    $this->kit = $this->product->kit;
     //$q = ProductTable::getInstance()->getQueryByKit($this->product);
-    $this->productPager = $this->getPagerForArray($this->kit, 12, array());
+    //$this->productPager = $this->getPagerForArray($this->kit, 12, array());
 
     //$this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
 

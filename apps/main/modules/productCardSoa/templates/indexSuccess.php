@@ -13,7 +13,9 @@
 <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
 
 <?php if ('kit' == $product->view): ?>
-  <?php include_partial('productSoa/kit', $sf_data) ?>
+  <?php //include_partial('productSoa/kit', $sf_data) ?>
+  <?php include_component('productSoa', 'kit', array('product' => $product)) ?>
+
   <div class="clear pb25"></div>
 
   <h2 class="bold"><?php echo $product->name ?> - Характеристики</h2>

@@ -23,23 +23,28 @@ class cartComponents extends myComponents
     {
       $this->quantity = 1;
     }
-
     $cart = $this->getUser()->getCart();
     $this->disable = false;
+    $productPath = '';
     if (is_object($this->product)) {
         if (!$this->product->is_insale)
         {
             $this->disable = true;
         }
-        $hasProduct = $cart->hasProduct($this->product->id);
+        $productId = $this->product->id;
+        if (property_exists($this->product, 'path')) {
+            $productPath = $this->product->path;
+        }
     } else {
         if (!$this->product['is_insale'])
         {
             $this->disable = true;
         }
-        $hasProduct = $cart->hasProduct($this->product['id']);
+        $productId = $this->product['id'];
+        $productPath = $this->product['path'];
     }
-
+    $hasProduct = $cart->hasProduct($productId);
+    $this->setVar('productPath', $productPath);
 
 
 

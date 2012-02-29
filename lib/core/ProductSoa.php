@@ -44,7 +44,8 @@ class ProductSoa
         $this->preview = $this->announce;
         $this->barcode = $this->bar_code;
         //$this->token_prefix = '';
-        $this->path = str_replace('/product/', '', $this->link);
+        $this->path = self::_generatePathByLink($this->link);
+
 
         //есть на складе, если есть хоть где-нибудь
         $this->is_instock = $this->state['is_shop'] || $this->state['is_store'] || $this->state['is_supplier'];
@@ -58,14 +59,14 @@ class ProductSoa
         if ($this->service) {
             $serviceIdList = array();
             foreach ($this->service as & $service) {
-                $service['priceFormatted'] = number_format($service['price'], 0, ',', ' ');
+                $service['priceFormatted'] = self::_priceFormat($service['price']);
                 $serviceIdList[] = $service['id'];
             }
             //временно! получаем старые сайтвоый token услуг. Чтобы сгенерировать ссылки на них.
             //убрать после переделки раздела услуг!
             $siteServiceInfo = ServiceTable::getInstance()->getQueryObject()->whereIn('core_id', $serviceIdList)->fetchArray();
             foreach ($siteServiceInfo as $siteSevice) {
-                foreach ($this->service as $service) {
+                foreach ($this->service as & $service) {
                     if ($siteSevice['core_id'] == $service['id']) {
                         $service['site_token'] = $siteSevice['token'];
                         break;
@@ -73,15 +74,40 @@ class ProductSoa
                 }
             }
         }
+
+        if ($this->kit) {
+            $urls = sfConfig::get('app_product_photo_url');
+            foreach ($this->kit as & $kit) {
+                $kit['photo'] = $urls[2] . $kit['media_image'];
+                $kit['path'] = self::_generatePathByLink($kit['link']);
+                $kit['priceFormatted'] = self::_priceFormat($kit['price']);
+
+                $is_instock = $kit['state']['is_shop'] || $kit['state']['is_store'] || $kit['state']['is_supplier'];
+                if ($is_instock && $kit['price']>0) {
+                    $kit['is_insale'] = 1;
+                } else {
+                    $kit['is_insale'] = 0;
+                }
+
+            }
+        }
        // $this->id = $id;
-       // print_r($this);
-       // die();
+        //print_r($this);
+        //die();
     }
 
 
 
     protected $_mainPhoto = null;
 
+
+    private static function _generatePathByLink($link) {
+       return str_replace('/product/', '', $link);
+    }
+
+    private static function _priceFormat($price) {
+        return number_format($price, 0, ',', ' ');
+    }
 
     public function preDelete($event)
     {
@@ -334,9 +360,7 @@ class ProductSoa
         return isset($this->Category[0]) ? $this->Category[0]['id'] : null;
     }
 
-    public function getUrl(){
-        return '/product/' . $this->_token;
-    }
+
 
     public function countParameter($view = null)
     {
