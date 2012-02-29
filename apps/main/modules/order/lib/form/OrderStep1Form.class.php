@@ -103,12 +103,15 @@ class OrderStep1Form extends BaseOrderForm
 
   protected function filterDeliveryPeriods($periods)
   {
+     // echo '!!!!!!!!!!!1';
+    //  die();
       $retval = array();
       foreach ($periods as $period) {
-          $periodObj = DeliveryPeriodTable::getInstance()->findOneByCoreId($period['id']);
-          if ($periodObj) {
-            $retval[$periodObj->id] = $periodObj->name;
-          }
+          $retval[$period['id']] = 'с ' . $period['time_begin'] . ' до ' . $period['time_end'];
+//          $periodObj = DeliveryPeriodTable::getInstance()->findOneByCoreId($period['id']);
+//          if ($periodObj) {
+//            $retval[$periodObj->id] = $periodObj->name;
+//          }
       }
       return $retval;
   }
@@ -144,6 +147,7 @@ class OrderStep1Form extends BaseOrderForm
       }
       $deliveryTypes = array();
 
+        //myDebug::dump($deliveries);
       foreach ($deliveries as $deliveryType) {
         $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
         $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
