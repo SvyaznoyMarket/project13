@@ -139,7 +139,7 @@ $('.order-form').change( function(e) {
 
     $('[name="order[address]"]').val(el.val())
   })
-
+/* RETIRED 
   $('#basic_register-form').bind({
     'submit': function(e) {
       e.preventDefault()
@@ -168,7 +168,7 @@ $('.order-form').change( function(e) {
       })
     }
   })
-
+*/
 
   $('.auth-link').bind('click', function(e) {
     e.preventDefault()

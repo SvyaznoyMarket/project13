@@ -250,7 +250,44 @@ $(document).ready(function() {
 
 		$('#order1click-form').bind('submit', function(e) {
 			e.preventDefault()
+			var form = $(this)
 			
+			function get1ClickResult( response ) {
+				if( !response.success ) {
+						if( response.data ) {
+							$('#order1click-form').html(response.data.form)
+						}
+						var button = $('#order1click-form').find('input:submit')
+						button.attr('disabled', false)
+						button.val('Оформить заказ')
+						if( !$('#warn').length ) {
+							var warn = $('<span id="warn" style="color:red">').html('Не удалось оформить заказ. Приносим свои извинения! Повторите попытку или обратитесь с заказом в контакт cENTER&nbsp;8&nbsp;(800)&nbsp;700&nbsp;00&nbsp;09')
+							$('.bFormB2').before( warn )
+						}
+					} else {
+						if( response.data ) {
+							$('#order1click-container').find('h2').html(response.data.title)
+							$('#order1click-form').replaceWith(response.data.content)
+							if( runAnalitics )
+								runAnalitics()
+						}
+					}			
+			}
+			
+			var button = form.find('input:submit')
+			button.attr('disabled', true)
+			button.val('Оформляю заказ...')
+			
+			var wholemessage = form.serializeArray()
+			$.ajax({
+				type: 'POST',
+				url: form.attr('action'),
+				data: wholemessage,
+				success: get1ClickResult
+			})
+			
+			 
+			/* RETIRED
 			$(this).ajaxSubmit({
 				beforeSubmit: function() {
 					var button = $('#order1click-form').find('input:submit')
@@ -284,6 +321,7 @@ $(document).ready(function() {
 					button.val('Попробовать еще раз')
 				}
 			})
+			*/
 		})
 
     //}

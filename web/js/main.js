@@ -93,16 +93,41 @@ $(document).ready(function(){
   $('#signin_password').warnings()
 
   $('#login-form, #register-form')
-    .data('redirect', true)
-    .bind('submit', function(e, param) {
-      e.preventDefault()
+	.data('redirect', true)
+	.bind('submit', function(e, param) {
+		e.preventDefault()
+		var form = $(this) //$(e.target)
+		form.find('[type="submit"]:first')
+			.attr('disabled', true)
+			.val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...')
+		var wholemessage = form.serializeArray()
+		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val()
+		
+		function authFromServer(response) {
+          if ( response.success ) {
+            if ( form.data('redirect') ) {
+              if (response.url) {
+                window.location = response.url
+              } else {
+                form.unbind('submit')
+                form.submit()
+              }
+            } else {
+              $('#auth-block').trigger('close')
+            }
+          } else {
+            form.html( $(response.data.content).html() )
+          }
+		}
+		
+		$.ajax({
+			type: 'POST',
+			url: form.attr('action'),
+			data: wholemessage,
+			success: authFromServer
+		})
 
-      var form = $(e.target)
-
-      form.find('[type="submit"]:first')
-        .attr('disabled', true)
-        .val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...')
-
+      /* RETIRED
       form.ajaxSubmit({
         async: false,
         data: {
@@ -129,6 +154,7 @@ $(document).ready(function(){
           }
         }
       })
+      */
     })
 
 	$('#forgot-pwd-trigger').live('click', function(){
@@ -483,7 +509,27 @@ $(document).ready(function(){
 			return
 		if( form.find('input:[name="q"]').val() === 'Поиск среди 20 000 товаров' )
 			return
-
+		var wholemessage = form.serializeArray()
+		function getSearchResults( response ) {
+				if( response.success ) {
+					form.unbind('submit')
+					form.submit()
+				} else {
+					var el = $(response.data.content)
+					el.appendTo('body')
+					$('#search_popup-block').lightbox_me({
+						centered: true//,
+						//onLoad: function() { $(this).find('input:first').focus() }
+					})
+				}
+		}
+		$.ajax({
+			type: 'GET',
+			url: form.attr('action'),
+			data: wholemessage,
+			success: getSearchResults
+		})
+		/* RETIRED
 		form.ajaxSubmit({
 			async: false,
 			success: function(response) {
@@ -503,6 +549,7 @@ $(document).ready(function(){
 				}
 			}
 		})
+		*/
 	})
 
 	$('.bCtg__eMore').bind('click', function(e) {
@@ -562,6 +609,7 @@ $(document).ready(function(){
 			filterlink.show()
 		})
 	}	
+	
 	$('.product_filter-block')
     .bind('change', function(e) {
         var el = $(e.target)
@@ -573,18 +621,58 @@ $(document).ready(function(){
     .bind('preview', function(e) {
         var el = $(e.target)
         var form = $(this)
-        function disable() {
-            var d = $.Deferred();
-            //el.attr('disabled', true)
-            return d.resolve();
+		function getFiltersResult (result) {
+			if( result.success ) {
+                $('.product_count-block').remove()
+                switch (result.data % 10) {
+                  case 1:
+                    ending = 'ь';
+                    break
+                  case 2: case 3: case 4:
+                    ending = 'и';
+                    break
+                  default:
+                    ending = 'ей';
+                    break
+                }
+                switch (result.data % 100) {
+                  case 11: case 12: case 13: case 14:
+                    ending = 'ей';
+                    break
+                }
+                var firstli = null
+                if ( el.is("div") ) //triggered from filter slider !
+                	firstli = el
+                else
+	                firstli = el.parent().find('> label').first()
+                firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
+                $('.product_count-block')
+					.hover(
+						function() {
+							$(this).stopTime('hide')
+						},
+						function() {
+							$(this).oneTime(2000, 'hide', function() {
+								$(this).remove()
+							})
+						}
+						)
+					.click(function() {
+						form.submit()
+					})
+					.trigger('mouseout')
+            }
         }
 
-        function enable() {
-            var d = $.Deferred();
-            //el.attr('disabled', false)
-            return d.promise();
-        }
-
+		var wholemessage = form.serializeArray()
+		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val()
+		$.ajax({
+			type: 'GET',
+			url: form.data('action-count'),
+			data: wholemessage,
+			success: getFiltersResult
+		})
+		/* RETIRED
         function getData() {
             var d = $.Deferred();			
             form.ajaxSubmit({
@@ -641,6 +729,7 @@ $(document).ready(function(){
             }
         })
         .fail(function(error) {})
+        */
     })
     
 	/* Sliders */
