@@ -1,24 +1,12 @@
 $(document).ready( function() {
-
-function printPrice ( val ) {
-	var floatv = (val+'').split('.')
-	var out = floatv[0]
-	var le = floatv[0].length
-	if( le > 6 ) { // billions
-		out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
-	} else if ( le > 3 ) { // thousands
-		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
-	}
-	if( floatv.length == 2 )
-		out += '.' + floatv[1]
-	return out
-}
+$('#order_delivery_type_id_4').parent().css('color','#E8303A')
+	.find('div').removeClass('font11')
 
 function addDlvrInBill( innertxt ) {
 	var rubltmpl = $('<span class="rubl">p</span>')
 	var dtmp  = innertxt.split(',')
 	var pritm = 0
-	if ( dtmp[1].match(/\d+/) )
+	if ( typeof(dtmp[1])!== 'undefined' && dtmp[1].match(/\d+/) )
 		pritm = dtmp[1].match(/\d+/)[0]
 
 	var total = $('div.cheque div.total').find('strong').text().replace(/\D+/g, '') * 1 + pritm * 1
@@ -48,6 +36,14 @@ function triggerDelivery( i ) {
 		$('.deliverytext').html('Кому и куда доставить:')
         $('#delivered_at_block label').html('Выберите дату доставки:')
 	}
+	// dirty hack
+	if( i == 4 ){ 
+		$('#order_payment_method_id_1').parent().hide()
+		$('#order_payment_method_id_2').parent().hide()
+	} else {
+ 		$('.checkboxlist2 li:hidden').show()
+	}
+	//
 	$('#order_shop_id').trigger('change')
 }
 
@@ -111,9 +107,13 @@ $('.order-form').change( function(e) {
           if (el.length) {
           	addDlvrInBill( el.next().find('strong').text() )
 			triggerDelivery( el.val() )
+			//dirty hack
+			var postdt = el.val()
+			//if (postdt==4) postdt=3
+			//
             $.post(form.data('updateFieldUrl'), {
               order: {
-                delivery_type_id: el.val()
+                delivery_type_id: postdt
               },
               field: 'delivery_period_id'
             }, function(result) {

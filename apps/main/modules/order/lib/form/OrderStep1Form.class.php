@@ -103,12 +103,15 @@ class OrderStep1Form extends BaseOrderForm
 
   protected function filterDeliveryPeriods($periods)
   {
+     // echo '!!!!!!!!!!!1';
+    //  die();
       $retval = array();
       foreach ($periods as $period) {
-          $periodObj = DeliveryPeriodTable::getInstance()->findOneByCoreId($period['id']);
-          if ($periodObj) {
-            $retval[$periodObj->id] = $periodObj->name;
-          }
+          $retval[$period['id']] = 'с ' . $period['time_begin'] . ' до ' . $period['time_end'];
+//          $periodObj = DeliveryPeriodTable::getInstance()->findOneByCoreId($period['id']);
+//          if ($periodObj) {
+//            $retval[$periodObj->id] = $periodObj->name;
+//          }
       }
       return $retval;
   }
@@ -144,6 +147,7 @@ class OrderStep1Form extends BaseOrderForm
       }
       $deliveryTypes = array();
 
+        //myDebug::dump($deliveries);
       foreach ($deliveries as $deliveryType) {
         $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
         $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
@@ -152,8 +156,13 @@ class OrderStep1Form extends BaseOrderForm
         if ($deliveryPeriod < 0) $deliveryPeriod = 0;
         $deliveryPeriod = myToolkit::fixDeliveryPeriod($deliveryType['mode_id'], $deliveryPeriod);
         if ($deliveryPeriod === false) continue;
+        if ($deliveryType['mode_id'] == 5) {
+            $label =  $deliveryObj['name'];
+        } else {
+            $label = $deliveryObj['name'].$formatPrice($deliveryType['price']);
+        }
         $deliveryTypes[$deliveryObj['id']] = array(
-          'label' => $deliveryObj['name'].$formatPrice($deliveryType['price']),
+          'label' => $label,
           'description' => $deliveryObj['description'],
           //'description' => 'Доставка '.myToolkit::formatDeliveryDate($deliveryPeriod). ', стоимостью '.$deliveryType['price'].' руб',
           'date_diff' => $deliveryPeriod,
@@ -242,11 +251,11 @@ class OrderStep1Form extends BaseOrderForm
     $this->validatorSchema['delivered_at'] = new sfValidatorChoice(array('choices' => array_keys($choices), 'required' => true));
 
     $this->widgetSchema['delivery_period_id'] = new sfWidgetFormChoice(array(
-      'choices'  => $defaultDelivery->DeliveryPeriod,//$this->filterDeliveryPeriods($deliveryTypes[$defaultDelivery->id]['periods']),
+      'choices'  => array(),// $defaultDelivery->DeliveryPeriod,//$this->filterDeliveryPeriods($deliveryTypes[$defaultDelivery->id]['periods']),
       'multiple' => false,
       'expanded' => false,
     ));
-    $this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryPeriod', 'required' => false));
+    //$this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryPeriod', 'required' => false));
 
     $this->widgetSchema['address'] = new sfWidgetFormInputText();
 	  $this->widgetSchema['address']->setDefault($user->address);
@@ -337,6 +346,7 @@ class OrderStep1Form extends BaseOrderForm
 
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
+
     // если указан регион
     /*if (!empty($this->object->region_id))
     {
@@ -371,9 +381,12 @@ class OrderStep1Form extends BaseOrderForm
       }
     }*/
 
+     // myDebug::dump($deliveryTypes);
+     // myDebug::dump($taintedValues);
     // проверяет типа доставки
     if (!empty($taintedValues['delivery_type_id']))
     {
+
       $deliveryTypes = $this->getDeliveryTypes();
       $deliveryType = DeliveryTypeTable::getInstance()->find($taintedValues['delivery_type_id']);
       // если НЕ самовывоз

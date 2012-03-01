@@ -45,8 +45,9 @@
 			}).runQueue()
 			break
 		case 'order':
-			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+			$LAB.queueScript('bigjquery.min.js')
+			.queueWait( function() {
+				$LAB.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('main.js'))
 				.script( getWithVersion('app.order.js') )

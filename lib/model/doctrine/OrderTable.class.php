@@ -47,7 +47,7 @@ class OrderTable extends myDoctrineTable
       'status_id'             => array('rel' => 'Status'),
       'payment_id'            => array('rel' => 'PaymentMethod'),
       'geo_id'                => array('rel' => 'Region'),
-      'delivery_interval_id'  => array('rel' => 'DeliveryPeriod'),
+      'delivery_interval_id'  => 'delivery_period_id',
       'delivery_type_id'      => array('rel' => 'DeliveryType'),
       'address_id'            => array('rel' => 'UserAddress'),
       'shop_id'               => array('rel' => 'Shop'),

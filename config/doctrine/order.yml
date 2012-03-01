@@ -26,17 +26,6 @@ DeliveryType:
     description:       { type: string(500), notnull: true, notblank: true }
     is_active:         { type: boolean, notnull: true, default: false, comment: 'Тип доставки активен?' }
 
-DeliveryPeriod:
-  options:
-    comment: 'Периоды времени для доставки'
-  actAs:
-    Corable:           { push: disable }
-  columns:
-    id:                { type: integer(20), autoincrement: true, primary: true }
-    delivery_type_id:  { type: integer(20), notnull: true }
-    name:              { type: string(255), notnull: true, notblank: true }
-  relations:
-    DeliveryType:      { class: DeliveryType, foreignAlias: DeliveryPeriod, local: delivery_type_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE}
 
 Order:
   options:
@@ -86,7 +75,6 @@ Order:
 #    PaymentStatus:          { class: PaymentStatus, foreignAlias: Order, local: payment_status_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Shop:                   { class: Shop, foreignAlias: Order, local: shop_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     DeliveryType:           { class: DeliveryType, foreignAlias: Order, local: delivery_type_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
-    DeliveryPeriod:         { class: DeliveryPeriod, foreignAlias: Order, local: delivery_period_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     UserAddress:            { class: UserAddress, foreignAlias: Order, local: user_address_id, foreign: id, type: one, foreignType: many, onDelete: SET NULL }
     Region:                 { class: Region, autoComplete: false, local: region_id, foreign: id, type: one, onDelete: SET NULL }
     Product:                { class: Product, foreignAlias: Order, refClass: OrderProductRelation, local: order_id, foreign: product_id, type: many, foreignType: many }
