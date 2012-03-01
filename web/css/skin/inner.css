@@ -3934,6 +3934,33 @@ div.mSportFont{ color: #e8303c; }*/
         zoom: 1;
     }
 
+a[title="appstore"],
+a[title="android"],
+a[title="ovi"],
+a[title="vkontakte"],
+a[title="twitter"],
+a[title="facebook"],
+a[title="visa"],
+a[title="mastercard"]{
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    margin: 0 2px;
+
+    vertical-align: middle;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+}
+a[title="visa"],
+a[title="mastercard"]{
+    width: auto;
+    height: auto;
+}
+a[title="twitter"]{ background: url('img/icon_twitter_color.png'); }
+a[title="facebook"]{ background: url('img/icon_facebook_color.png'); }
+a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
+
 .march8{
         position: relative;
         overflow-x: hidden;
