@@ -73,7 +73,7 @@ foreach ($p3d as $p3d_obj)
 
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
             </div>
-            <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
+            <?php if (false && $item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
             <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
             <?php endif ?>
         </div>
@@ -387,7 +387,7 @@ foreach ($p3d as $p3d_obj)
 <!-- /Media -->
 
 
-
+<?php /*
 <div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
   <div class="bMobDown__eWrap">
     <div class="bMobDown__eClose close"></div>
@@ -398,6 +398,7 @@ foreach ($p3d as $p3d_obj)
 
   </div>
 </div>
+ */ ?>
 
 <div id="ajaxgoods" class="popup width230" style="display: none">
   <div  style="padding: 15px 15px 20px 5px">

@@ -3,10 +3,10 @@ HTML {width:100%; height:100%;  font-size:100.01%}
 BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,helvetica,sans-serif; color:#000; background:#f6f1e9}
 .allpage {width:920px; padding:0 20px; height:auto; min-height:100%; margin:0 auto; background-color:#fff}
 * html .allpage {height:100%}
-.allpageinner {padding-bottom:270px; position:relative}
+.allpageinner {padding-bottom:431px; position:relative}
 .buyingpage {padding-bottom:96px}
 *+ html .allpageinner {float:left; width:100%} /* for IE7 */
-.footer {width:920px; height:271px; margin:-271px auto 0 auto; position:relative; z-index: 50; }
+.footer {width:920px; height:388px; margin:-388px auto 0 auto; position:relative; z-index: 50; }
 .lowfooter {height:66px; margin:-66px auto 0 auto}
 
 
@@ -3780,13 +3780,13 @@ DT.bCtg__eOrange{
 .mElectro, .category-8{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
 .mUkr, .category-9{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
 .mSport, .category-10{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
-.mSport i, .category-10 i{ top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
+/*.mSport i, .category-10 i{ top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
 a.mSportFont{ color: #e8303c; font-weight: bold; }
-div.mSportFont{ color: #e8303c; }
+div.mSportFont{ color: #e8303c; }*/
 .bHeader .bToplink:hover span{ background-position: 0 -71px; }
 
 /* .mSad, .category-11{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; } */
-.mPodarki, .category-11{ width: 42px; background: url('img/header_icon_hobbies_gifts.gif') no-repeat; }
+.mPodarki, .category-11{ width: 42px; background: url('img/header_icon_hobbies_gifts_lighted.gif') no-repeat; }
 .bHeader .bToplink:hover span{
     background-position: 0 -71px;
 }
@@ -3831,3 +3831,210 @@ div.mSportFont{ color: #e8303c; }
     position: absolute;
     background: url('/images/bg_sale_sport.png') 50% 0 no-repeat;
 }
+
+.bFooter{
+        color: #ffffff;
+        background: #000000;
+
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -o-border-radius: 5px;
+    }
+    .bFooter__eLeft,
+    .bFooter__eRight,
+    .bFooter__eLeft a,
+    .bFooter__eLeft span,
+    .bFooter__eRight .mFDiv{
+        vertical-align: top;
+        display: inline-block;
+        *display: inline;
+        zoom: 1;
+    }
+
+    .bFooter__eLeft{
+        width: 145px;
+        min-height: 282px;
+        padding: 15px 0 0 25px;
+        background: url('/images/footer_left_bg.jpg') no-repeat;
+    }
+    .bFooter__eLogo{
+        width: 83px;
+        height: 58px;
+        padding-bottom: 15px;
+        background: url('/images/footer_logo.png') no-repeat;
+    }
+    .bFooter__eLeft a{
+        color: #ffffff;
+        margin: 2px 0;
+        font: 14px Tahoma, sans-serif;
+    }
+    .bFooter__eLeft span{
+        margin: 20px 0 10px 0;
+        font: 12px Tahoma, sans-serif;
+    }
+
+    .bFooter__eRight{
+        padding-left: 14px;
+        background: url('/images/footer_bottom.png') 0 32px no-repeat;
+    }
+    .bFooter__eRight dt{
+        color: #ffa901;
+        margin: 12px 0 5px 0;
+        font: 24px 'Enter';
+    }
+    .bFooter__eRight h3{
+        margin: 0;
+        color: #49c7ed;
+        font: 21px 'Enter';
+    }
+    .bFooter__eRight dd{
+        margin-left: 12px;
+    }
+    .bFooter__eRight .mFDiv{
+        width: 230px;
+    }
+    .mFoot1{
+        background: url('/images/footer_left1.png') 90% 5px no-repeat;
+    }
+    .mFoot2{
+        background: url('/images/footer_left2.png') 90% 5px no-repeat;
+    }
+    .bFooter__eRight dd div{
+        list-style-image: url('/images/footer_list_style.png');
+    }
+    .bFooter__eRight ul{
+        padding: 10px 0 0 17px;
+    }
+    .bFooter__eRight li{
+        padding-bottom: 10px;
+        font: 14px Tahoma, sans-serif;
+    }
+    .bFooter__eRight li a{
+        color: #ffffff;
+        text-decoration: underline;
+    }
+    .bFooter__eRight .mFphone{
+        font: 16px Tahoma, sans-serif;
+    }
+    .bFooterF1{
+        height: 45px;
+        margin: 15px 0;
+        background: url('/images/f1_footer_logo.png') no-repeat;
+    }
+    .bFooterF1 a{
+        color: #fff;
+        height: 45px;
+        cursor: pointer;
+        padding-left: 70px;
+        text-decoration: none;
+
+        display: inline-block;
+        *display: block;
+        zoom: 1;
+    }
+
+a[title="appstore"],
+a[title="android"],
+a[title="ovi"],
+a[title="vkontakte"],
+a[title="twitter"],
+a[title="facebook"],
+a[title="visa"],
+a[title="mastercard"]{
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    margin: 0 2px;
+
+    vertical-align: middle;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+}
+a[title="visa"],
+a[title="mastercard"]{
+    width: auto;
+    height: auto;
+}
+a[title="twitter"]{ background: url('img/icon_twitter_color.png'); }
+a[title="facebook"]{ background: url('img/icon_facebook_color.png'); }
+a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
+
+.march8{
+        position: relative;
+        overflow-x: hidden;
+    }
+    .march8 .allpageinner{
+        z-index: 10;
+    }
+    .march8 .allpage{
+        position: relative;
+    }
+    .march8_link{
+        top: 0;
+        left: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        position: fixed;
+        *position: absolute;
+        *top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+
+        display: inline-block;
+        *display: inline;
+        zoom: 1;
+    }
+    .march8_wrap{
+        top: 0;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        height: 858px;
+        overflow: hidden;
+        position: absolute;
+        background: url('/images/23_feb_lr.jpg') 50% 0 no-repeat;
+    }
+    .march8_inner_left,
+    .march8_inner_right{
+        width: 50%;
+        height: 100%;
+        position: absolute;
+    }
+    .march8_inner_left{
+        left: -50%;
+        background: url('/images/grass_line_left.png') 100% 0 repeat-y;
+    }
+    .march8_inner_right{
+        right: -50%;
+        background: url('/images/grass_line_right.png') 0 0 repeat-y;
+    }
+    .march_8_leftbg,
+    .march_8_rightbg{
+        height: 100%;
+        position: relative;
+    }
+    .march_8_leftbg{
+        margin-right: 26px;
+        background: url('/images/grass_bg.png') 100% 0;
+    }
+    .march_8_rightbg{
+        margin-left: 26px;
+        background: url('/images/grass_bg.png') 0 0;
+    }
+    .march_8_lefttopbg,
+    .march_8_righttopbg{
+        top: 0;
+        width: 100%;
+        height: 695px;
+        position: absolute;
+    }
+    .march_8_lefttopbg{
+        right: -26px;
+        background: url('/images/img_8gifts_left.png') 100% 0 no-repeat;
+    }
+    .march_8_righttopbg{
+        left: -26px;
+        background: url('/images/img_8gifts_right.png') 0 0 no-repeat;
+    }

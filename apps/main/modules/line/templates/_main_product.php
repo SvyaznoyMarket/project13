@@ -25,7 +25,7 @@ $json = array(
         <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
       <?php endif ?>
 
-      <?php if ($item['product']->is_insale): ?>
+      <?php if (false && $item['product']->is_insale): ?>
         <div class="pb5"><strong><a onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);"  href="<?php echo url_for('order_1click', array('product' => $item['product']->barcode)) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
       <?php endif ?>
     </div>
@@ -45,6 +45,7 @@ $json = array(
   </div>
 </div>
 
+<?php /*
 <div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
   <div class="bMobDown__eWrap">
     <div class="bMobDown__eClose close"></div>
@@ -54,4 +55,4 @@ $json = array(
     <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $product['barcode'])) ?>" method="post"></form>
 
   </div>
-</div>
+</div> */ ?>
