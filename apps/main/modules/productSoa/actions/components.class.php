@@ -29,7 +29,6 @@ class productSoaComponents extends myComponents
       $this->view = 'default';
     }
 
-
     // cache key
     $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
       'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
@@ -50,8 +49,9 @@ class productSoaComponents extends myComponents
       } else {
           $productId = $this->product->id;
       }
-      //myDebug::dump($this->product);
+
     $cartItem = $this->getUser()->getCart()->getProductByCoreId($productId);
+    //myDebug::dump($cartItem);
     if ($cartItem) {
       if (is_object($this->product)) {
         $this->product->cart_quantity = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
@@ -476,14 +476,12 @@ class productSoaComponents extends myComponents
 
         $now = new DateTime();
         foreach ($delivery as & $item) {
-            $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($item['mode']);
             $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $item[0]);
             $deliveryPeriod = $minDeliveryDate->diff($now)->days;
             if ($deliveryPeriod < 0) $deliveryPeriod = 0;
             $deliveryPeriod = myToolkit::fixDeliveryPeriod($item['mode'], $deliveryPeriod);
             $item['period'] = $deliveryPeriod;
             $item['deliveryText'] = myToolkit::formatDeliveryDate($item['period']);
-            //$item['deliveryText'] = str_replace(array('сегодня', 'завтро'), array('<b>сегодня</b>', '<b>завтро</b>'), $item['deliveryText']);
         }
         //print_r($delivery);
         $this->setVar('delivery', $delivery);

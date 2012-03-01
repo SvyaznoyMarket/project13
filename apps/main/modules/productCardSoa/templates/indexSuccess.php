@@ -42,7 +42,7 @@
 
 <br class="clear" />
 
-<?php include_component('productCatalog', 'navigation_seo', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
+<?php //include_component('productCatalog', 'navigation_seo', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
 
 
 <?php slot('seo_counters_advance') ?>
