@@ -381,16 +381,17 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
     background: url("img/header_icon_sport.gif") no-repeat scroll 0 0 transparent;
     width: 43px;
 }
+/*
 .mSport i, .category-10 i { top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
 
-/*
+
 .mSad, .category-11 {
     background: url("img/header_icon_garden_orchard.gif") no-repeat scroll 0 0 transparent;
     width: 41px;
 }
 */
 .mPodarki, .category-11 {
-    background: url("img/header_icon_hobbies_gifts.gif") no-repeat scroll 0 0 transparent;
+    background: url("img/header_icon_hobbies_gifts_lighted.gif") no-repeat scroll 0 0 transparent;
     width: 42px;
 }
 .bHeader .bToplink:hover span {
