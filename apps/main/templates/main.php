@@ -56,7 +56,7 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 
       <div class="bHeaderWrap">
         <div class="bHeader">
-          <div class="bToplogo">Enter Связной</div>
+          <a href class='bToplogo'></a>
           <?php include_component('productCategory', 'root_list') ?>
           <div class="bHeader__eLong"></div>
         </div>
