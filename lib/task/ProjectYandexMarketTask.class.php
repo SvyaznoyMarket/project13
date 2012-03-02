@@ -194,7 +194,7 @@ class ProjectYandexMarketTask extends sfBaseTask
           ),
       array(
           'name' => 'max2_ryazan.xml',
-          'region_id' => 83,
+          'region_id' => 10375,
           'max_num' => 2
       ),
       //для Липецка
@@ -217,7 +217,7 @@ class ProjectYandexMarketTask extends sfBaseTask
           ),
       array(
           'name' => 'max2_lipetsk.xml',
-          'region_id' => 83,
+          'region_id' => 100,
           'max_num' => 2
       ),
       //для Белгорода
@@ -240,7 +240,7 @@ class ProjectYandexMarketTask extends sfBaseTask
       ),
       array(
           'name' => 'max2_belgorod.xml',
-          'region_id' => 83,
+          'region_id' => 13242,
           'max_num' => 2
       ),
       //для Орла
@@ -263,7 +263,7 @@ class ProjectYandexMarketTask extends sfBaseTask
       ),
       array(
           'name' => 'max2_orel.xml',
-          'region_id' => 83,
+          'region_id' => 13243,
           'max_num' => 2
       ),
     );
@@ -689,7 +689,8 @@ EOF;
         } elseif (isset($this->_currentFileInfo['max_num'])) {
             //берем только продукты, с правильной ссылкой
             $sql .=
-                 'AND ps.is_supplied="1" OR spr.quantity<="'.$this->_currentFileInfo['max_num'].'"
+                'AND ps.region_id="'.$this->_currentRegion['id'].'"
+                 AND ps.is_store="1" AND spr.quantity<="'.$this->_currentFileInfo['max_num'].'"
             ';
         } else {
             //при выборе цен на доставку, учитываем прайс лист
