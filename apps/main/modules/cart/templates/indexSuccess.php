@@ -30,7 +30,7 @@
 
 
 <?php slot('seo_counters_advance') ?>
-  <?php include_component('cart', 'seo_counters_advance') ?>
+  <?php include_component('cart', 'seo_counters_advance', array('cart' => $cart)) ?>
 <?php end_slot() ?>
 
 <!--Трэкер "Корзина"-->
