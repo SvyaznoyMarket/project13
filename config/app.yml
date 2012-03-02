@@ -70,7 +70,7 @@ all:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
+      api_url: 'http://core.my/v1/json'
       consumer_key: test
       signature: test
 #      api_url: 'http://api.enter.ru/v1/json'
@@ -253,7 +253,7 @@ alpha:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
+      api_url: 'http://core.my/v1/json'
       consumer_key: test
       signature: test
 
@@ -264,6 +264,6 @@ alpha_dev:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
+      api_url: 'http://core.my/v1/json'
       consumer_key: test
       signature: test
