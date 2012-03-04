@@ -130,7 +130,7 @@ class ProjectYandexMarketTask extends sfBaseTask
      * По сколько штук записывать в файл товары
      * @var integer
      */
-    private $_portionToLoadProduct = 500;
+    private $_portionToLoadProduct = 5000;
 
 
     /**
@@ -542,10 +542,11 @@ EOF;
 //            if ($tmpNum>=2) {
 //                break;
 //            }
-//            $tmpNum++;
+            //$tmpNum++;
 
             //делаем выборку товаров
             $sql = $this->_makeProductListQuery($catIdListString);
+
             $sql .=
                 ' LIMIT ' . $this->_portionToLoadProduct . '
                  OFFSET ' . $currentOffset
@@ -557,6 +558,8 @@ EOF;
             while ($row = mysql_fetch_assoc($listRs)) {
                 $offersList[] = $row;
             }
+ //                       echo 'count---'.count($offersList) . $this->_xmlFilePath . "=====\n";
+//                        die();
 
             // для каждого выбранного продукта
             foreach ($offersList as $offerInfo) {
@@ -654,6 +657,22 @@ EOF;
 
     private function _makeProductListQuery($catIdListString = array()) {
 
+        $stockCondition = '';
+        if (isset($this->_currentFileInfo['min_num'])) {
+            //берем только продукты, доступные на МОЛКОМЕ в количестве не менее 3 шт
+            $stockCondition =
+                ' AND  (ps.is_supplied="1" OR spr.quantity>"'.$this->_currentFileInfo['min_num'].'")
+            ';
+        } elseif (isset($this->_currentFileInfo['max_num'])) {
+            //берем только продукты, с правильной ссылкой
+            $stockCondition =
+                ' AND (ps.is_store="1" AND spr.quantity<="'.$this->_currentFileInfo['max_num'].'")
+            ';
+        } else {
+            $stockCondition =
+                ' AND (ps.is_supplied="1" OR ps.is_store="1")
+            ';
+        }
 
         $sql = '
             SELECT
@@ -661,13 +680,13 @@ EOF;
             pcpr.product_category_id, pcat.root_id as category_root_id, creator.name as creator_name,
             pp.price, pdp.price as delivery_price, ps.is_instock
             FROM `product` as p
-            LEFT JOIN `product_state` as ps on p.id=ps.product_id
+            LEFT JOIN `stock_product_relation` as spr on spr.product_id=p.id
+            LEFT JOIN `product_state` as ps on p.id=ps.product_id AND ps.region_id="'.$this->_currentRegion['id'].'"  '.$stockCondition.'
             LEFT JOIN `creator` on p.creator_id=creator.id
             LEFT JOIN `product_delivery_price` as pdp on pdp.product_id=p.id
             LEFT JOIN `product_price` as pp on pp.product_id=p.id
             LEFT JOIN `product_category_product_relation` as pcpr on pcpr.product_id=p.id
             LEFT JOIN `product_category` as pcat on pcat.id=pcpr.product_category_id
-            LEFT JOIN `stock_product_relation` as spr on spr.product_id=p.id
 
             WHERE
             ps.view_list = "1" AND
@@ -680,25 +699,6 @@ EOF;
 
             ';
 
-        if (isset($this->_currentFileInfo['min_num'])) {
-            //берем только продукты, доступные на МОЛКОМЕ в количестве не менее 3 шт
-            $sql .=
-                'AND ps.region_id="'.$this->_currentRegion['id'].'"
-                 AND ps.is_supplied="1" OR spr.quantity>"'.$this->_currentFileInfo['min_num'].'"
-            ';
-        } elseif (isset($this->_currentFileInfo['max_num'])) {
-            //берем только продукты, с правильной ссылкой
-            $sql .=
-                'AND ps.region_id="'.$this->_currentRegion['id'].'"
-                 AND ps.is_store="1" AND spr.quantity<="'.$this->_currentFileInfo['max_num'].'"
-            ';
-        } else {
-            //при выборе цен на доставку, учитываем прайс лист
-            $sql .=
-                'AND ps.region_id="'.$this->_currentRegion['id'].'"
-                 AND ps.is_supplied="1" OR ps.is_store="1"
-            ';
-        }
         //если есть ограничения по категориям
         if (isset($catIdListString) && count($catIdListString)){
             $sql .= ' AND pcpr.product_category_id IN ('.$catIdListString.') ';
