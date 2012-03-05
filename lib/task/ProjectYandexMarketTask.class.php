@@ -542,7 +542,7 @@ EOF;
 //            if ($tmpNum>=2) {
 //                break;
 //            }
-            //$tmpNum++;
+//            $tmpNum++;
 
             //делаем выборку товаров
             $sql = $this->_makeProductListQuery($catIdListString);
@@ -594,6 +594,7 @@ EOF;
 
     private function _generateOneOfferNode($offerInfo)
     {
+
         //если ограничения по категориям существуют - проверяем каждый товар
         //возможно его цена меньше разрешенной
         //либо достаточное для данной категории количество уже набрано
@@ -616,6 +617,7 @@ EOF;
         }
 
 
+        $offer = $this->_xmlResultShop->addChild('offer');
         //создаём узел продукта и устанавливаем значения атрибутов
         if ($offerInfo['is_instock']) {
             $inStock = 'true';
@@ -623,33 +625,35 @@ EOF;
         else {
             $inStock = 'false';
         }
-
-        $offerAttr = ' type="vendor.model" ';
+        $offer->addAttribute('id', $offerInfo['id']);
+        $offer->addAttribute('type', 'vendor.model');
         $offerInner = '';
 
         //основные параметры
         foreach($this->_uploadParamsList as $param){
             $value = $this->_getPropValueByCode($offerInfo,$param);
-            if ($value !== false) {
-                $offerInner .= '<'.$param.'>'.$value.'</'.$param.'>';
+            if ($param && $value !== false) {
+                $value = htmlspecialchars($value);
+                $offer->addChild($param, $value);
             }
         }
         if ($this->_currentIsAvalible === false) {
             $inStock = 'false';
         }
-        $offerAttr .= ' available="'.$inStock.'" ';
+        $offer->addAttribute('available', $inStock);
 
         //дополнительные параметры
         foreach($this->_additionalParams as $addParam){
             $value = $this->_getAdditionalPropValueByCode($offerInfo,$addParam);
             if ($value) {
-                $offerInner .= '<'.$addParam['name'].'>'.$value.'</'.$addParam['name'].'>';
+                $offer->addChild($addParam['name'], $value);
             }
         }
-        $offer = "<offer $offerAttr > $offerInner  </offer> ";
         //echo $offer;
         //die();
-        return $offer;
+        $xml = $offer->asXML();
+        unset($offer);
+        return $xml;
 
     }
 
