@@ -290,6 +290,13 @@ user_orders:
   url:   /private/orders/
   param: { module: user, action: orders }
 #
+# страница формы юридической консультации в ЛК
+user_legalConsultation:
+  url:     /private/consultation/legal
+  param:   { module: user, action: legalConsultation }
+user_legalConsultationSend:
+  url:     /private/consultation/legal/send
+  param:   { module: user, action: sendLegalConsultation }
 
 
 # user. get short info about cart, wishlist, etc.
@@ -484,7 +491,6 @@ userTag_unlinkProduct:
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
-
 
 
 #

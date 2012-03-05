@@ -8,6 +8,10 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
+
+/**
+ * @property $form CallbackForm
+ */
 class userActions extends myActions
 {
  /**
@@ -44,6 +48,11 @@ class userActions extends myActions
                 'name'   => 'Изменить пароль',
                 'url'    => '@user_changePassword',
                 'routes' => array('user_changePassword'),
+              ),
+              array(
+                'name'   => 'Юридические консультации',
+                'url'    => '@user_legalConsultation',
+                'routes' => array('user_legalConsultation'),
               ),
           )
       ),
@@ -169,4 +178,38 @@ class userActions extends myActions
   public function executeOrders(sfWebRequest $request)
   {
   }
+
+  public function executeLegalConsultation(sfWebRequest $request){
+    $this->form = new CallbackForm();
+  }
+
+  public function executeSendLegalConsultation(sfWebRequest $request){
+    $this->form = new CallbackForm();
+    $data = $request->getParameter($this->form->getName());
+    $data['channel_id'] = 2;
+    $this->form->bind($data);
+    $this->setVar('error', '', true);
+
+    if ($this->form->isValid())
+    {
+      try
+      {
+        #$this->form->getObject()->setCorePush(false);
+        $this->form->save();
+        $this->setTemplate('sendLegalConsultationOk');
+      }
+      catch (Exception $e)
+      {
+        //echo $e->getMessage();
+        $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
+        $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
+        $this->setTemplate('LegalConsultation');
+      }
+    } else {
+      //echo $this->form->renderGlobalErrors();
+      //$this->redirect('callback');
+      $this->setTemplate('LegalConsultation');
+    }
+  }
+
 }
