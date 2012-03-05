@@ -660,15 +660,17 @@ border-radius:5px;
 
 
 .carouseltitle {float:left; width:100%; position:relative}
-.scroll {float:right; color:#a6a6a6}
-.scroll A {display:inline-block; width:28px; height:23px; background:url(/css/skin/img/bg_inner.png) no-repeat; vertical-align:middle}
-.scroll A.back {background-position:-757px -165px}
-.scroll A.back:hover {background-position:-757px -191px}
-.scroll A.back.disabled {background-position:-757px -139px; cursor:default}
-.scroll A.forvard {background-position:-789px -165px}
-.scroll A.forvard:hover {background-position:-789px -191px}
-.scroll A.forvard.disabled {background-position:-789px -139px; cursor:default}
-.carousel {float:left; width:705px; margin-left:-2px; margin-bottom:-10px; padding-bottom:18px}
+.scroll {float:right; color:#a6a6a6; color: #000; font: 14px, Tahoma, sans-serif;}
+.scroll .srcoll_link_button {display:inline-block; width:28px; height:23px; background:url(img/bg_inner.png) no-repeat; vertical-align:middle}
+.scroll .srcoll_link_button.back {background-position:-757px -165px}
+.scroll .srcoll_link_button.back:hover {background-position:-757px -191px}
+.scroll .srcoll_link_button.back.disabled {background-position:-757px -139px; cursor:default}
+.scroll .srcoll_link_button.forvard {background-position:-789px -165px}
+.scroll .srcoll_link_button.forvard:hover {background-position:-789px -191px}
+.scroll .srcoll_link_button.forvard.disabled {background-position:-789px -139px; cursor:default}
+.scroll span{ vertical-align: middle; padding-right: 10px; font: 14px Tahoma, sans-serif;}
+.srcoll_link{ font: 14px Tahoma, sans-serif; color: #000; font: 14px Tahoma, sans-serif; margin-right: 3px; text-decoration: underline;}
+.carousel {float:left; width:705px; margin-left:-2px; margin-bottom:-10px}
 
 .bigcarousel {float:left; width:935px; margin-right:-15px}
 .bigcarousel .goodsbox {width:147px; padding:10px; margin-bottom:14px; margin-right:20px; background-color:#fff; position:relative}
@@ -681,7 +683,7 @@ border-radius:5px;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
 }
-.bigcarousel .goodsbar {/*margin-top:10px*/}
+.bigcarousel .goodsbar {margin-top:10px}
 
 
 .carouselmenu {float:left; width:180px}
