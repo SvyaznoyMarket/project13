@@ -461,7 +461,7 @@ EOF;
             if (isset($this->_uploadCategotyUrlFileList)) {
                 $addCategoryUrl = false;
                 foreach($this->_uploadCategotyUrlFileList as $trueFile) {
-                    if (strpos($this->_xmlFilePath, $trueFile) !== false ) {
+                    if (strpos($this->_xmlFilePathReal, $trueFile) !== false ) {
                         $addCategoryUrl = true;
                         break;
                     }
