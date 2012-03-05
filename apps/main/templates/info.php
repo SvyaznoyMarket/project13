@@ -12,42 +12,14 @@
     <?php include_partial('default/googleAnalytics') ?>
 
   </head>
-  <body>
+  <body class='march8'>
     <div class="allpage">
+      <div class='march8_inner_left'><div class='march_8_leftbg'><div class='march_8_lefttopbg'></div></div></div>
+      <div class='march8_inner_right'><div class='march_8_rightbg'><div class='march_8_righttopbg'></div></div></div>
+      <a class='march8_link' onclick="gaq.push(['_trackEvent', 'BannerClick', '8 марта уши']);" href='<?php echo url_for('productCatalog_category', array('productCategory' => 'gifthobby/podarki-na-8-marta-1522')) ?>'></a>
       <div class="allpageinner">
 
-        <!-- Topbar -->
-        <div class="topbar" style="position: relative; z-index: 12;">
-          <div class="region" style="margin-top: 7px;">
-            <?php include_component('region', 'select') ?>
-          </div>
-          <noindex>
-              <div class="usermenu">
-                <div class="point mTah12 next"><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>" class="f1">F1 сервис</a></div>
-                <div class="point mTah12 next"><?php include_partial('default/user') ?></div>
-                <div class="point mTah12 next"><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Помощь покупателю</a></div>
-                <div class="point mTah12 next"><a href="<?php echo url_for('cart') ?>" class="hBasket"><b>Моя корзина </b> <span id="topBasket"></span></a></div>
-              </div>
-          </noindex>
-        </div>
-        <!-- /Topbar -->
-        <!-- Header -->
-        <div class="header">
-         <?php LastModifiedHandler::setLastModified();  ?>
-          <?php include_partial('default/logo') ?>
-          <!-- Topmenu -->
-          <?php include_component('productCategory', 'root_list') ?>
-          <!-- /Topmenu -->
-          <div class="headerright">
-            Контакт cENTER
-            <div class="tel"><span>8 (800)</span>700-00-09</div>
-            круглосуточно
-          </div>
-          <!-- Extramenu -->
-          <?php #include_component('productCategory', 'extra_menu') ?>
-          <!-- /Extramenu -->
-        </div>
-        <!-- /Header -->
+        <?php include_partial('default/header') ?>
 
         <!-- Page head -->
         <div class="pagehead">

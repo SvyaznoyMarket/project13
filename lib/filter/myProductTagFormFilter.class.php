@@ -19,8 +19,8 @@ class myProductTagFormFilter extends myProductFormFilter
     $productTable = ProductTable::getInstance();
 
     // виджет цены
-    $valueMin = (int)$productTable->getMinPriceByCategory($productCategory);
-    $valueMax = (int)$productTable->getMaxPriceByCategory($productCategory);
+    $valueMin = (int)$productTable->getMinPriceByCategory($productCategory, array('with_model' => true, 'view' => 'list', ));
+    $valueMax = (int)$productTable->getMaxPriceByCategory($productCategory, array('with_model' => true, 'view' => 'list', ));
     $value = array(
       'min' => $valueMin,
       'max' => $valueMax,

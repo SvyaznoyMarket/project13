@@ -105,7 +105,10 @@ $(document).ready(function(){
           }
           for (i in data) {
             row = data[i];
-            html += '<div>&mdash; Можем доставить '+formatDateText(row.text)+formatPrice(row.price)+'</div>';
+            if (row.object.core_id == 1) {
+            	html += '<div>&mdash; Можем доставить '+formatDateText(row.text)+formatPrice(row.price)+'</div>';
+            	data.splice(i, 1);
+            }	
           }
           html += '</li>';
         }

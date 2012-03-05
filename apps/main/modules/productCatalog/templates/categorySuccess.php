@@ -20,3 +20,10 @@
   <?php include_component('productCategory', 'seo_counters_advance', array('unitId' => $productCategory->root_id)) ?>
 <?php end_slot() ?>
 
+<?php if(false && 7 == $productCategory->getRootId()): ?>
+  <?php slot('sport_sale_design') ?>
+    <a class='snow_link' href='<?php echo url_for('productCatalog_category', array('productCategory' => 'sport/zimnie-vidi-sporta-710')) ?>'></a>
+    <div class='snow_wrap'><div class='snow_left'><div class='snow_right'></div></div></div>
+  <?php end_slot() ?>
+<?php endif; ?>
+

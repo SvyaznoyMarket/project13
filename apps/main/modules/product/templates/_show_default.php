@@ -73,7 +73,7 @@ foreach ($p3d as $p3d_obj)
 
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
             </div>
-            <?php if ($item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
+            <?php if (false && $item['is_insale'] && $sf_user->getRegion('region')->is_default): ?>
             <div class="pb5"><strong><a href="<?php echo url_for('order_1click', array('product' => $item['barcode'])) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
             <?php endif ?>
         </div>
@@ -92,6 +92,44 @@ foreach ($p3d as $p3d_obj)
 		</div>
 		<div class="line pb15"></div>
         <?php endif ?>
+
+
+
+
+        <div style="margin-bottom: 20px;">
+        <!--AdFox START-->
+        <!--enter-->
+        <!--Ïëîùàäêà: Enter.ru / * / *-->
+        <!--Òèï áàííåðà: 400x-->
+        <!--Ðàñïîëîæåíèå: <âåðõ ñòðàíèöû>-->
+        <!-- ________________________AdFox Asynchronous code START__________________________ -->
+        <script type="text/javascript">
+            <!--
+            if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+            if (typeof(document.referrer) != 'undefined') {
+                if (typeof(afReferrer) == 'undefined') {
+                    afReferrer = escape(document.referrer);
+                }
+            } else {
+                afReferrer = '';
+            }
+            var addate = new Date();
+            var dl = escape(document.location);
+            var pr1 = Math.floor(Math.random() * 1000000);
+
+            document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
+            document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
+
+            AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+            // -->
+        </script>
+        <!-- _________________________AdFox Asynchronous code END___________________________ -->
+        </div>
+
+
+
+
+
 
         <?php include_component('service', 'listByProduct', array('product' => $product)) ?>
 
@@ -350,7 +388,7 @@ foreach ($p3d as $p3d_obj)
 <!-- /Media -->
 
 
-
+<?php /*
 <div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
   <div class="bMobDown__eWrap">
     <div class="bMobDown__eClose close"></div>
@@ -361,6 +399,7 @@ foreach ($p3d as $p3d_obj)
 
   </div>
 </div>
+ */ ?>
 
 <div id="ajaxgoods" class="popup width230" style="display: none">
   <div  style="padding: 15px 15px 20px 5px">

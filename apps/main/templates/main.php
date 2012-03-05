@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <?php include_component('banner', 'show', array('view' => 'main')) ?>
+    <?php //include_component('banner', 'show', array('view' => 'main')) ?>
 
     <div class="allpage">
 <!-- ________________________AdFox Asynchronous code START__________________________ -->
@@ -53,10 +53,14 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 </script>
 <!-- _________________________AdFox Asynchronous code END___________________________ -->
 
-      <div class="logo">Enter Связной</div>
-      <!-- Topmenu -->
-      <?php include_component('productCategory', 'root_list') ?>
-      <!-- /Topmenu -->
+
+      <div class="bHeaderWrap">
+        <div class="bHeader">
+          <div class="bToplogo">Enter Связной</div>
+          <?php include_component('productCategory', 'root_list') ?>
+          <div class="bHeader__eLong"></div>
+        </div>
+      </div>
 
       <noindex>
         <div class="searchbox">
@@ -64,6 +68,7 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
         </div>
       </noindex>
 
+      <?php if (false): ?>
       <div class="bigbanner">
         <div class='bCarouselWrap'>
           <div class='bCarousel'>
@@ -73,6 +78,10 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
           </div>
         </div>
       </div>
+      <?php endif ?>
+      <a href="<?php echo url_for('productCatalog_category', array('productCategory' => 'gifthobby/podarki-na-8-marta-1522')) ?>" onclick="_gaq.push(['_trackEvent', 'BannerClick', '8 марта главная']);"><img src="/images/promo_8March_2012.png" style="padding-bottom: 30px; margin-top: -20px;" /></a>
+
+
 
       <?php include_component('default', 'footer', array('view' => 'main')) ?>
 

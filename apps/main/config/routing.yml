@@ -38,6 +38,14 @@ product_related:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+# список аксессуаров
+product_accessory:
+  url:   /products/accessories/:product
+  param: { module: product, action: accessory }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # каталог товаров
 productCatalog:

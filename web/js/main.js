@@ -303,7 +303,72 @@ $(document).ready(function(){
 				;//errorpopup(' проверьте соединение с интернетом')
 		}
 	})
-
+	
+	function getCookie(c_name) {
+		var x , y, allcookies = document.cookie.split(';')
+		for ( var i=0, l=allcookies.length; i < l ; i++ ) {
+			x = allcookies[i].substr( 0, allcookies[i].indexOf('=') )
+			y = allcookies[i].substr( allcookies[i].indexOf('=') + 1 )
+			x = x.replace( /^\s+|\s+$/g, '' )
+			if (x === c_name) 
+				return unescape(y)
+		}
+		return false
+	}
+	function getRegions() {
+		$.getJSON( '/region/init', function(data) {
+			if( !data.success ) 
+				return false
+			var cities = data.data
+			//TODO js template
+			var cityPopup = $('<div class="bCityPopupWrap">').html(
+				'<div class="hideblock bCityPopup">'+
+					'<i title="Закрыть" class="close">Закрыть</i>'+
+					'<div class="title">Привет, из какого ты города?</div>'+				
+				'</div>'+
+			'</div>')
+			for( var ci = 0, cl = cities.length; ci < cl; ci++ ) {
+				if( typeof( cities[ci].link ) === 'undefined' || typeof( cities[ci].name ) === 'undefined' )
+					continue
+				var cnode = $('<div>').append( $('<a>').attr( 'href', cities[ci].link ).text( cities[ci].name ) )
+				if( typeof( cities[ci].is_active ) !== 'undefined' ) {
+					cnode.addClass('bCityPopup__eCurrent')
+					cityPopup.find('.title').after( cnode )
+				} else {
+					cnode.addClass('bCityPopup__eBlock')
+					cityPopup.find('div:first').append( cnode )
+				}
+			}
+			cityPopup.css('display','none').appendTo( $('body') )
+			paintRegions()
+		})	
+	}
+	
+	function paintRegions() {
+		$('.graying').show()
+		$('.bCityPopupWrap').show()
+		$('body').delegate( '.bCityPopupWrap .close', 'click', function() {
+			$('.graying').hide()
+			$('.bCityPopupWrap').hide()
+		})
+	}
+	
+	$('#jsregion').click( function() {
+		if( !$(this).data('run') ) {
+			$(this).data('run', true)
+			getRegions()
+		} else {
+			if( $('.bCityPopupWrap').length )
+				paintRegions()
+		}
+		return false
+	})
+	
+	/* GEOIP fix */
+	if( !getCookie('geoshop') ) {
+		getRegions()
+	}
+	
 	/* --- */
     $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes();
 
@@ -414,19 +479,18 @@ $(document).ready(function(){
 	/* top menu */
 	if( $('.topmenu').length ) {
 		$.get('/category/main_menu', function(data){
-			$('.header').append( data )
+			$('.bHeader').append( data )
 		})
 	}
 
 	var idcm          = null // setTimeout
 	var currentMenu = 0 // ref= product ID
-	var corneroffsets = [167,222,290,362,435,515,587,662,717]
 	function showList( self ) {	
 		if(	$(self).data('run') ) {
-			var i = $(self).attr('class').replace(/\D+/,'')
+			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 - 15
 			var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
 			if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
-				punkt.show().find('.corner').css('left',corneroffsets[i-1])
+				punkt.show().find('.corner').css('left', dmenu)
 		}
 	}
 	var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )

@@ -21,13 +21,13 @@
           <?php endif ?>
         </div>
 
-        <p class="bServiceCard__eDescription">
+        <p class="bServiceCard__eDescription mb5">
           <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>">
             <?php echo $service['name']; ?>
           </a>
         </p>
 
-        <div class="bServiceCard__ePrice">
+        <div class="bServiceCard__ePrice pb10">
           <?php if ($showNoPrice || $service['price'] != 'бесплатно'): ?>
             <?php echo ($service['price'] < 1) ? 'бесплатно' : $service['price'] ?>
 

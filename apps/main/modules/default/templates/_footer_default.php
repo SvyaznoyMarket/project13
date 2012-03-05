@@ -1,71 +1,75 @@
 <!-- Footer -->
 <div class="footer<?php if (isset($class)) echo " ".$class ?>">
-  <div class="bottommenu">
+  <div class="bFooter">
+    <div class='bFooter__eLeft'>
+      <div class='bFooter__eLogo'></div>
+      <a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">О Компании</a><br>
+      <a href="<?php echo url_for('shop') ?>">Наши магазины</a><br>
+      <a href="http://job.enter.ru/" target="_blank">Работать у нас</a><br>
+      <a href="<?php echo url_for('callback') ?>">Напишите нам</a><br>
+      <span>Еще больше<br> интересного<br> для вас в:</span><br>
+      <a href="http://www.facebook.com/enter.ru" title="facebook" target="blank"></a>
+      <a href="http://twitter.com/#!/enter_ru" title="twitter" target="blank"></a>
+      <a href="http://vkontakte.ru/public31456119" title="vkontakte" target="blank"></a>
+    </div>
+
+    <dl class='bFooter__eRight'>
+      <dt>Как это работает</dt>
+      <dd>
+        <div class='mFDiv mFoot1'>
+          <h3>1. Заказываю товар</h3>
+          <ul>
+            <li>в Контакт cEnter<br>
+              <b class='mFphone'>8 (800) 700 00 09</b><br>
+              <div class='bBottommenu__eSkype'><i>Skype</i><b>skype2enter и call2enter</b></div>
+              <div class='bBottommenu__eICQ'><i>ICQ</i><b>648198963</b></div>
+            </li>
+            <li>Через сайт или по каталогу</li>
+            <li>Терминалы в магазине</li>
+            <li><a href="<?php echo url_for('default_show', array('page' => 'mobile_apps')) ?>">Мобильные и социальные приложения</a></li>
+          </ul>
+        </div>
+        <div class='mFDiv mFoot2'>
+          <h3>2. Получаю заказ</h3>
+          <ul>
+            <li>Мне доставляет курьер<br>
+              <a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>">Посмотреть условия<br> доставки</a></li>
+            <li>Бесплатно забираю сам<br>в одном из 9 магазинов<br>
+              <a href="<?php echo url_for('shop') ?>">Найти Enter рядом со мной</a>
+            </li>
+          </ul>
+        </div>
+        <div class='mFDiv'>
+          <h3>3. Оплачиваю заказ</h3>
+          <ul>
+            <li>Наличными<br>
+              <a href="<?php echo url_for('default_show', array('page' => 'how_pay',)) ?>">Банковской картой</a><br>
+              (Visa, MasterCard и др.)<br>
+              на сайте, курьеру<br>
+              или в магазне
+            </li>
+            <li>
+              <a href="<?php echo url_for('default_show', array('page' => 'credit',)) ?>">Оформляю кредит</a>
+            </li>
+          </ul>
+        </div>
+      </dd>
+      <dd class='bFooterF1'>
+        <a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>">
+          <h3>Заказывают услуги в сервисной Службе F1</h3>
+          Мне собирают, подключают, настраивают и рекомендуют
+        </a>
+      </dd>
+    </dl>
+  </div>
+
+  <div class='bFooterBottom'>
+    &copy; &laquo;Enter&raquo; 2002-2011. Все права защищены. Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br>
+    <a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>">Правовая информация</a>
+    <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a>
     <?php if (has_slot('navigation_seo')) {
-        include_slot('navigation_seo');
-    }
-    ?>
-    <dl>
-      <dt><a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>"><strong>О компании</strong></a></dt>
-      <dd>Наша миссия: дарить время для</dd>
-      <dd>настоящего. Честно. С любовью.</dd>
-      <dd>Как для себя.</dd>
-    </dl>
-    <dl>
-      <dt><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>"><strong>Помощь покупателю</strong></a></dt>
-      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Как сделать заказ?</a></dd>
-      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>">Как получить заказ?</a></dd>
-      <dd><a href="<?php echo url_for('default_show', array('page' => 'how_pay',)) ?>">Как оплатить заказ?</a></dd>
-    </dl>
-    <dl>
-      <dt><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><strong>F1 сервис</strong></a></dt>
-      <dd><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><img src="/images/enter/f1_footer.jpg" alt="F1 услуги" width="209" height="46"></img></a></dd>
-    </dl>
-    <dl class="next">
-      <dt><strong>Круглосуточный контакт cENTER</strong></dt>
-      <dd><strong class="font16">8 (800) 700 00 09</strong></dd>
-      <dd>Звонок бесплатный.<br />Радость в подарок :)</dd>
-    </dl>
-  </div>
-<?php if (false): ?>
-  <div class="social">
-    Посетите нас
-    <a href="#" class="twitter">twitter</a>
-    <a href="#" class="facebook">facebook</a>
-    <a href="#" class="vkontakte">vkontakte</a>
-    <a href="#" class="livejournal">livejournal</a>
-    <a href="#" class="youtube">youtube</a>
-    <a href="#" class="mobile">mobile</a>
-  </div>
-
-  <div class="subscribeform">
-    <form action=""><input type="text" class="text" value="Введите Ваш E-mail" onfocus="if (this.value == 'Введите Ваш E-mail') this.value = '';" onblur="if (this.value == '') this.value = 'Введите Ваш E-mail';"  /><input type="button" class="subscribebutton" value="Подписаться на рассылку" /></form>
-  </div>
-<?php endif ?>
-  <div class="footerbottom">
-    <div class="copy">
-      &copy; &laquo;Enter&raquo; 2011&ndash;<?php echo date("Y") ?>. Все права защищены.<br />Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br /><a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a><a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>">Правовая информация</a>
-      <?php if (false): ?>
-      &copy; &laquo;Enter&raquo; 2002-2011. Все права защищены.<br />
-      Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.
-
-      <div>
-        <a href="">Политика конфидециальности</a>
-        <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи в интернет-магазине</a>
-        <b><i class="mistakeimg"></i><a href="" class="orange">сообщить!</a></b>
-      </div>
-      <?php endif ?>
-    </div>
-
-    <div class="social_network fr"><span class="gray font11">Посетите нас</span><?php include_component('default', 'social_networks') ?></div>
-
-    <?php if (false): ?>
-    <div class="counter">
-      <a href=""><img src="/images/images/counter1.gif" alt="" width="80" height="30" /></a>
-      <a href=""><img src="/images/images/counter2.gif" alt="" width="50" height="30" /></a>
-      <a href=""><img src="/images/images/counter3.gif" alt="" width="50" height="30" /></a>
-    </div>
-    <?php endif ?>
+    include_slot('navigation_seo');
+  } ?>
   </div>
 </div>
 <!-- /Footer -->
