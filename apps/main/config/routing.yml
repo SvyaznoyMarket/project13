@@ -697,14 +697,14 @@ cart_add:
   param: { module: cart, action: add, quantity: 1 }
   requirements:
     sf_method: [ get, post ]
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+   # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart delete
 cart_delete:
   url:   /cart/delete/:product/_service/:service
   param: { module: cart, action: delete, product: '-/-', service: 0 }
   requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+   # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart clear
 cart_clear:
@@ -716,14 +716,14 @@ cart_service_add:
   url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/
   param: { module: cart, action: serviceAdd, quantity: 1, product: '-/-' }
   requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+   # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart servcie delete
 cart_service_delete:
   url:   /cart/delete_service/:product/_service/:service
   param: { module: cart, action: serviceDelete, product: '-/-' }
   requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+   # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 
 #

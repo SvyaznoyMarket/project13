@@ -24,11 +24,11 @@ class serviceSoaComponents extends myComponents
     $servListId = array();
     foreach ($servList as $next)
     {
-      foreach ($next['cart']['product'] as $product => $qty)
+      foreach ($next['products'] as $product => $qty)
       {
         if ($product == $this->product->id)
         {
-          $servListId[] = $next->id;
+          $servListId[] = $next['id'];
         }
       }
     }
@@ -38,16 +38,15 @@ class serviceSoaComponents extends myComponents
 
   public function executeList_for_product_in_cart()
   {
-    $list = $this->product->getServiceList();
+    $list = ServiceTable::getInstance()->getListByProductCoreId($this->product['id']); //$this->services;
     $result = array();
     $selectedNum = 0;
-    # print_r( $this->services );
     foreach ($list as $next)
     {
       $sel = false;
       foreach ($this->services as $selected)
       {
-        if ($next->id == $selected['id'])
+        if ($next['id'] == $selected['id'])
         {
           $selInfo = $selected;
           $sel = true;
@@ -58,23 +57,27 @@ class serviceSoaComponents extends myComponents
       {
         $selectedNum++;
         $selInfo['selected'] = true;
+        $selInfo['site_token'] = $next->token;
         $selInfo['total'] = $selInfo['quantity'] * $selInfo['price'];
         $selInfo['totalFormatted'] = number_format($selInfo['quantity'] * $selInfo['price'], 0, ',', ' ');
-        $selInfo['priceFormatted'] = $next->getFormattedPrice($this->product->id);
+        $selInfo['price'] = $next->getCurrentPrice($this->product['id']);
+        $selInfo['priceFormatted'] = $next->getFormattedPrice($this->product['id']);
         $result[] = $selInfo;
       }
       else
       {
         $result[] = array(
           'selected' => false,
-          'name' => $next->name,
-          'id' => $next->id,
-          'token' => $next->token,
-          'priceFormatted' => $next->getFormattedPrice($this->product->id)
+          'site_token' => $next->token,
+          'name' => $next['name'],
+          'id' => $next['id'],
+          'token' => $next['token'],
+          'price' => $next->getCurrentPrice($this->product['id']),
+          'priceFormatted' => $next->getFormattedPrice($this->product['id'])
         );
       }
     }
-    #  print_r($result);
+
     $this->setVar('selectedNum', $selectedNum, true);
     $this->setVar('list', $result, true);
   }

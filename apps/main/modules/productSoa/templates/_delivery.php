@@ -4,8 +4,8 @@
         <li>
             <?php
             foreach ($delivery as $info) {
-                if ($info[1] > 0) {
-                    $price = $info[1] . ' руб.';
+                if ($info['price'] > 0) {
+                    $price = $info['price'] . ' руб.';
                 } else {
                     $price = 'бесплатно.';
                 }

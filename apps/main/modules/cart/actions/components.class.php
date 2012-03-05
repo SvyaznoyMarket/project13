@@ -33,7 +33,7 @@ class cartComponents extends myComponents
         }
         $productId = $this->product->id;
         if (property_exists($this->product, 'path')) {
-            $productPath = $this->product->path;
+            $productPath = $this->product->token;
         }
     } else {
         if (!$this->product['is_insale'])
@@ -41,11 +41,11 @@ class cartComponents extends myComponents
             $this->disable = true;
         }
         $productId = $this->product['id'];
-        $productPath = $this->product['path'];
+        $productPath = $this->product['token'];
     }
     $hasProduct = $cart->hasProduct($productId);
     $this->setVar('productPath', $productPath);
-
+    $this->setVar('productId', $productId);
 
 
 
@@ -57,6 +57,7 @@ class cartComponents extends myComponents
     {
       $this->button = 'buy';
     }
+      //myDebug::dump($this->button);
 
     if ($this->soa == true) {
         $this->view = 'soa';

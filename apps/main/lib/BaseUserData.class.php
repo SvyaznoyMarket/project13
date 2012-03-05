@@ -4,6 +4,6 @@ class BaseUserData
 {
   public function dump()
   {
-    return $this->parameterHolder->getAll();
+    //return $this->parameterHolder->getAll();
   }
 }

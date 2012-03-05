@@ -50,8 +50,9 @@ class cartActions extends myActions {
             return $this->_refuse();
         }
 
-        $product = ProductTable::getInstance()->getByToken($request['product'], array('with_model' => true));
-        if (!$product) {
+        $productId = $request['product'];
+        //$product = ProductTable::getInstance()->getByToken($request['product'], array('with_model' => true));
+        if (!$productId) {
             $this->_validateResult['success'] = false;
             $this->_validateResult['error'] = "Товар " . $request['product'] . " не найден.";
             return $this->_refuse();
@@ -59,12 +60,12 @@ class cartActions extends myActions {
 
         try
         {
-            if ($product->isKit()) {
+            if (0) { //} $product->isKit()) {
                 $request['quantity'] = $this->addKit($product, $request['quantity']);
             }
             else
             {
-                $request['quantity'] = $this->addProduct($product, $request['quantity']);
+                $request['quantity'] = $this->addProduct($productId, $request['quantity']);
             }
         }
         catch (Exception $e)
@@ -77,7 +78,7 @@ class cartActions extends myActions {
         $this->getUser()->setCacheCookie();
 
         if ($request->isXmlHttpRequest()) {
-            $cartInfo = $this->getUser()->getCartBaseInfo();
+            $cartInfo = $this->getUser()->getCart()->getBaseInfo();
             $return = array(
                 'success' => $result['value'],
                 'data' => array(
@@ -91,7 +92,6 @@ class cartActions extends myActions {
 
             return $this->renderJson($return);
         }
-
         $this->redirect($this->getRequest()->getReferer());
     }
 
@@ -101,10 +101,10 @@ class cartActions extends myActions {
      * @param sfRequest $request A request object
      */
     public function executeDelete(sfWebRequest $request) {
-        $product = ProductTable::getInstance()->getByToken($request['product'], array('with_model' => true,));
+        $product = $request['product'];
 
         if ($product) {
-            $this->getUser()->getCart()->deleteProduct($product->id);
+            $this->getUser()->getCart()->deleteProduct($product);
             $this->getUser()->setCacheCookie();
         }
 
@@ -140,14 +140,11 @@ class cartActions extends myActions {
             $this->_validateResult['error'] = "Некорректное количество услуг.";
             return $this->_refuse();
         }
-        $service = ServiceTable::getInstance()->getByToken($request['service']);
-        if (!$service) {
-            $service = ServiceTable::getInstance()->findOneByCoreId($request['service']);
-        }
+        $serviceId = $request['service'];
 
-        if (!$service) {
+        if (!$serviceId) {
             $this->_validateResult['success'] = false;
-            $this->_validateResult['error'] = "Услуга " . $request['service'] . " не найдена.";
+            $this->_validateResult['error'] = "Услуга " . $serviceId . " не найдена.";
             return $this->_refuse();
         }
 
@@ -155,37 +152,27 @@ class cartActions extends myActions {
         {
             //если передан продукт, но такой продукт не существует,
             //добавляем услугу без привязки к продукту
-            $productId = 0;
-            if (isset($request['product'])) {
-                $product = ProductTable::getInstance()->getByToken($request['product']);
-                if (!$product) {
-                    $product = NULL;
-                }
-                else
-                {
-                    $productId = $product->id;
-                }
-            }
+            $productId = $request['product'];
 
             $added = array();
-            $currentNum = $this->getUser()->getCart()->getServiceForProductQty($service, $productId);
+            $currentNum = $this->getUser()->getCart()->getServiceQuantityById($serviceId, $productId);
             $request['quantity'] = $request['quantity'] + $currentNum;
 
 
             if ($request['quantity'] <= 0) {
                 $request['quantity'] = 0;
-                $this->getUser()->getCart()->deleteService($service, $productId);
+                $this->getUser()->getCart()->deleteService($serviceId, $productId);
             }
             else
             {
-                $ok = $this->getUser()->getCart()->addService($service, $request['quantity'], $product);
+                $ok = $this->getUser()->getCart()->addService($serviceId, $request['quantity'], $productId);
                 if (!$ok) {
                     $this->_validateResult['success'] = false;
                     $this->_validateResult['error'] = "Невозможно добавить услугу к товару, которого нет в корзине.";
                     return $this->_refuse();
                 }
             }
-            $added[] = array('service' => $service, 'quantity' => $request['quantity']);
+            $added[] = array('service' => $serviceId, 'quantity' => $request['quantity']);
         }
         catch (Exception $e)
         {
@@ -199,7 +186,7 @@ class cartActions extends myActions {
         #myDebug::dump(  $this->getUser()->getCart()->getServices()  );
 
         if ($request->isXmlHttpRequest()) {
-            $cartInfo = $this->getUser()->getCartBaseInfo();
+            $cartInfo = $this->getUser()->getCart()->getBaseInfo();
             $return = array(
                 'success' => true,
                 'data' => array(
@@ -227,24 +214,17 @@ class cartActions extends myActions {
     $this->redirect($this->getRequest()->getReferer());
     } */
     public function executeServiceDelete(sfWebRequest $request) {
-        $service = ServiceTable::getInstance()->getByToken($request['service']);
-        if (!$service) {
-            $service = ServiceTable::getInstance()->findOneByCoreId($request['service']);
-        }
-        $product = ProductTable::getInstance()->getByToken($request['product']);
+        $serviceId = $request['service'];
+        $productId = $request['product'];
 
-        if ($product) {
-            $productId = $product->id;
-        }
-        else
-        {
+        if (!$productId) {
             $productId = 0;
         }
-        $this->getUser()->getCart()->deleteService($service, $productId);
+        $this->getUser()->getCart()->deleteService($serviceId, $productId);
         $this->getUser()->setCacheCookie();
 
         if ($request->isXmlHttpRequest()) {
-            $cartInfo = $this->getUser()->getCartBaseInfo();
+            $cartInfo = $this->getUser()->getCart()->getBaseInfo();
             $return = array(
                 'success' => true,
                 'data' => array(
@@ -264,17 +244,17 @@ class cartActions extends myActions {
      * @param int $quantity
      * @return int - количество этого товара в корзине после изменений
      */
-    private function addProduct(Product $product, $quantity) {
-        $currentNum = $this->getUser()->getCart()->getQuantityByToken($product['token_prefix'] . '/' . $product['token']);
+    private function addProduct($productId, $quantity) {
+        $currentNum = $this->getUser()->getCart()->getQuantityById($productId);
         $quantity += $currentNum;
 
         if ($quantity <= 0) {
             $quantity = 0;
-            $this->getUser()->getCart()->deleteProduct($product['id']);
+            $this->getUser()->getCart()->deleteProduct($productId);
         }
         else
         {
-            $this->getUser()->getCart()->addProduct($product, $quantity);
+            $this->getUser()->getCart()->addProduct($productId, $quantity);
         }
 
         return $quantity;

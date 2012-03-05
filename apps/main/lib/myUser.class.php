@@ -50,9 +50,9 @@ class myUser extends myGuardSecurityUser
     $result['productsInCart'] = array();
     $result['servicesInCart'] = array();
 
-    foreach ($cart->getProducts() as $id => $product)
+    foreach ($cart->getProducts() as $token => $product)
     {
-      $result['productsInCart'][$product['token']] = $product['cart']['quantity'];
+      $result['productsInCart'][$token] = $product['quantity'];
     }
 
     foreach ($cart->getServices() as $id => $service)

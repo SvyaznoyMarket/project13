@@ -46,15 +46,17 @@ class productSoaComponents extends myComponents
 
       if (is_array($this->product)) {
           $productId = $this->product['id'];
+          $productToken = $this->product['token'];
       } else {
           $productId = $this->product->id;
+          $productToken = $this->product->token;
       }
 
-    $cartItem = $this->getUser()->getCart()->getProductByCoreId($productId);
+    $cartItem = $this->getUser()->getCart()->getProduct($productId);
     //myDebug::dump($cartItem);
     if ($cartItem) {
       if (is_object($this->product)) {
-        $this->product->cart_quantity = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
+        $this->product->cart_quantity = isset($cartItem['quantity']) ? $cartItem['quantity'] : 0;
       }
     }
 
@@ -441,6 +443,12 @@ class productSoaComponents extends myComponents
       } else {
           $showInCardButton = false;
       }
+      if (is_array($this->product)) {
+          $prodId = $this->product['id'];
+      } else {
+          $prodId = $this->product->id;
+      }
+      $this->setVar('productId', $prodId, true);
       $this->setVar('showInCardButton', $showInCardButton);
   }
 
@@ -476,7 +484,7 @@ class productSoaComponents extends myComponents
 
         $now = new DateTime();
         foreach ($delivery as & $item) {
-            $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $item[0]);
+            $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $item['date'][0]['date']);
             $deliveryPeriod = $minDeliveryDate->diff($now)->days;
             if ($deliveryPeriod < 0) $deliveryPeriod = 0;
             $deliveryPeriod = myToolkit::fixDeliveryPeriod($item['mode'], $deliveryPeriod);

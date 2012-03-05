@@ -23,7 +23,7 @@ if (is_object($servListId)) {
                         <td class="bF1Block_eBuy" ref="<?php echo $service['token'] ?>">
                             <?php if ($service['price']) { ?>
                                 <span class="bF1Block_ePrice
-                                      <?php if ($service['price'] < Service::MIN_BUY_PRICE || !$product->getIsInsale()) echo ' mr110'; ?>
+                                      <?php if ($service['price'] < Service::MIN_BUY_PRICE|| 1 /*|| !$product->getIsInsale()*/) echo ' mr110'; ?>
                                       ">
                                     <?php echo $service['priceFormatted'] ?>
                                     <?php if ((int)$service['price']) { ?>
@@ -31,14 +31,14 @@ if (is_object($servListId)) {
                                    <?php } ?>
                                 </span>
                             <?php } ?>
-                            <?php if ($service['price'] >= Service::MIN_BUY_PRICE && $product->getIsInsale()) { ?>
+                            <?php if ($service['price'] >= Service::MIN_BUY_PRICE /*&& $product->getIsInsale()*/) { ?>
                                 <?php if ($showInCardButton && in_array($service['id'], $servListId)) { ?>
                                     <input data-f1title="<?php echo $service['name'] ?>" data-f1price="<?php echo $service['priceFormatted'] ?>" data-fid="<?php echo $service['id'];?>"
-                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product' => $product->path)) ?>" type="button" class="active button yellowbutton" value="В корзине">
+                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service['token'], 'product' => $productId)) ?>" type="button" class="active button yellowbutton" value="В корзине">
                                <?php } else { ?>
 
                                     <input data-f1title="<?php echo $service['name'] ?>" data-f1price="<?php echo $service['priceFormatted'] ?>" data-fid="<?php echo $service['id'];?>"
-                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service['id'], 'product' => $product->path)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service['id'], 'product' => $productId)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
 
                                <?php } ?>
                             <?php } ?>

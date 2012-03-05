@@ -129,12 +129,13 @@ class OrderStep1Form extends BaseOrderForm
       $dProducts_raw = sfContext::getInstance()->getUser()->getCart()->getProducts();
       $dProducts = array();
       foreach ($dProducts_raw as $dProduct) {
-        $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
+        $dProducts[] = array('id' => $dProduct['id'], 'quantity' => $dProduct['quantity']);
       }
       $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
         'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
         'product' => $dProducts
       ));
+        //myDebug::dump($deliveries);
       if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
         $deliveries = array(array(
           'mode_id' => 1,
@@ -144,13 +145,13 @@ class OrderStep1Form extends BaseOrderForm
       }
       $deliveryTypes = array();
 
-      foreach ($deliveries as $deliveryType) {
-        $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
-        $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
+      foreach ($deliveries as $modeId => $deliveryType) {
+        $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($modeId);
+        $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date'][0]['date']);
         $now = new DateTime();
         $deliveryPeriod = $minDeliveryDate->diff($now)->days;
         if ($deliveryPeriod < 0) $deliveryPeriod = 0;
-        $deliveryPeriod = myToolkit::fixDeliveryPeriod($deliveryType['mode_id'], $deliveryPeriod);
+        $deliveryPeriod = myToolkit::fixDeliveryPeriod($modeId, $deliveryPeriod);
         if ($deliveryPeriod === false) continue;
         $deliveryTypes[$deliveryObj['id']] = array(
           'label' => $deliveryObj['name'].$formatPrice($deliveryType['price']),

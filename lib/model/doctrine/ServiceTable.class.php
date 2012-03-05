@@ -75,6 +75,53 @@ class ServiceTable extends myDoctrineTable
     return $return;
   }
 
+
+    public function getListByProductCoreId($productCoreId, array $params = array())
+    {
+        $prod = ProductTable::getInstance()->findOneBy('core_id',$productCoreId);
+        $pructId = $prod->id;
+        $this->applyDefaultParameters($params);
+
+        $key = $this->getQueryHash('product-'.$pructId.'/service-all', $params);
+
+        $return = $this->getCachedByKey($key);
+        if (!$return)
+        {
+            $q = $this->createBaseQuery($params);
+            /*
+           $q->innerJoin('service.Category category')
+             ->innerJoin('category.ProductTypeRelation productTypeRelation')
+             ->andWhere('productTypeRelation.product_type_id=?', array($product->type_id))
+             ->innerJoin('service.Price price') ;
+            */
+
+            $q
+            //->leftJoin('service.CategoryRelation cr')    //к категориям сервисов
+            //->innerJoin('cr.Category c')
+                ->innerJoin('service.ProductRelation pr')
+                ->andWhere('pr.product_id = ?', array($pructId))
+                ->innerJoin('service.Price price')
+                ->andWhere('price.price >= ?', Service::MIN_BUY_PRICE)
+                ->orderBy('service.name ASC');
+            ;
+
+            $this->setQueryParameters($q, $params);
+
+            $return = $q->execute();
+            if ($this->isCacheEnabled())
+            {
+                $this->getCache()->set($key, $return);
+                $this->getCache()->addTag("product-{$pructId}", $key);
+                foreach ($return as $record)
+                {
+                    $this->getCache()->addTag("service-{$record['id']}", $key);
+                }
+            }
+        }
+        return $return;
+    }
+
+
   public function getListByCategory($category_id, array $params = array())
   {
     $this->applyDefaultParameters($params);
