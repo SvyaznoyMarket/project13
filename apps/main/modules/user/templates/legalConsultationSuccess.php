@@ -1,7 +1,6 @@
 <?php slot('title','Юридические консультации') ?>
 <div class="float100">
   <div class="column685 ">
-
     <ul class="error_list"><li><?php if (isset($error)) echo $error ?></li></ul>
     <form action="<?php echo url_for('user_legalConsultationSend')?>" class="bForm" method="post">
       <?php foreach ($form as $name => $field): ?>
@@ -19,8 +18,6 @@
       <div class="bComment">Все поля обязательны для заполнения</div>
       <input type="submit" value="Отправить сообщение" id="bigbutton" class="bYellowButton button yellowbutton" />
     </form>
-
-
   </div>
 </div>
 

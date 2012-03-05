@@ -180,7 +180,19 @@ class userActions extends myActions
   }
 
   public function executeLegalConsultation(sfWebRequest $request){
+//    echo '<pre>';
+//    var_export($this->getUser()->getGuardUser()->getData());
+//    exit();
+    $userData = $this->getUser()->getGuardUser()->getData();
+
+    $email = (isset($userData['email']) && strlen($userData['email']) > 1)? $userData['email'] : '';
+    $name = (isset($userData['last_name']) && strlen($userData['last_name']) > 1)? $userData['last_name'].' ' : '';
+    $name .= $userData['first_name'];
+    $name .= (isset($userData['middle_name']) && strlen($userData['middle_name']) > 1)? ' '.$userData['middle_name'] : '';
+    $formData = array('email' => $email, 'name' => $name);
+
     $this->form = new CallbackForm();
+    $this->form->bind($formData);
   }
 
   public function executeSendLegalConsultation(sfWebRequest $request){
