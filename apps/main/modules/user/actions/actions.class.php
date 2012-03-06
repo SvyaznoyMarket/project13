@@ -21,7 +21,6 @@ class userActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-
     //пункты для главной страницы личного кабинета
     $list = array(
       array(
@@ -48,11 +47,6 @@ class userActions extends myActions
                 'name'   => 'Изменить пароль',
                 'url'    => '@user_changePassword',
                 'routes' => array('user_changePassword'),
-              ),
-              array(
-                'name'   => 'Юридические консультации',
-                'url'    => '@user_legalConsultation',
-                'routes' => array('user_legalConsultation'),
               ),
           )
       ),
@@ -92,8 +86,18 @@ class userActions extends myActions
                 'routes' => array('@userTag'),
               ),*/
           )
-      )
+      ),
 
+      array(
+        'title' => 'сервисы для клиентов',
+        'list' => array(
+          array(
+            'name'   => 'cEnter защиты прав потребителей',
+            'url'    => '@user_legalConsultation',
+            'routes' => array('user_legalConsultation'),
+          ),
+        )
+      )
     );
 
     /*
@@ -180,19 +184,18 @@ class userActions extends myActions
   }
 
   public function executeLegalConsultation(sfWebRequest $request){
-//    echo '<pre>';
-//    var_export($this->getUser()->getGuardUser()->getData());
-//    exit();
     $userData = $this->getUser()->getGuardUser()->getData();
 
     $email = (isset($userData['email']) && strlen($userData['email']) > 1)? $userData['email'] : '';
     $name = (isset($userData['last_name']) && strlen($userData['last_name']) > 1)? $userData['last_name'].' ' : '';
     $name .= $userData['first_name'];
     $name .= (isset($userData['middle_name']) && strlen($userData['middle_name']) > 1)? ' '.$userData['middle_name'] : '';
-    $formData = array('email' => $email, 'name' => $name);
 
-    $this->form = new CallbackForm();
-    $this->form->bind($formData);
+    $callback = new Callback();
+    $callback->setEmail($email);
+    $callback->setName($name);
+
+    $this->form = new CallbackForm($callback);
   }
 
   public function executeSendLegalConsultation(sfWebRequest $request){
