@@ -1,4 +1,4 @@
-<?php slot('title','Юридические консультации') ?>
+<?php slot('title','Юридическая помощь') ?>
 <div class="float100">
   <div class="column685 ">
     <ul class="error_list"><li><?php if (isset($error)) echo $error ?></li></ul>

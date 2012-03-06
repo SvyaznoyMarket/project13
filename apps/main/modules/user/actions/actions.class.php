@@ -89,10 +89,10 @@ class userActions extends myActions
       ),
 
       array(
-        'title' => 'сервисы для клиентов',
+        'title' => 'cEnter защиты прав потребителей ',
         'list' => array(
           array(
-            'name'   => 'cEnter защиты прав потребителей',
+            'name'   => 'Юридическая помощь',
             'url'    => '@user_legalConsultation',
             'routes' => array('user_legalConsultation'),
           ),
