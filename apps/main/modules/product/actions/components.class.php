@@ -435,6 +435,9 @@ class productComponents extends myComponents
         {
           $property->mapValue('current', $realValue);
         }
+        else{
+          $property->mapValue('current', null);
+        }
         if ($property->ProductModelRelation[0]->is_image)
         {
           $value_to_map[$realValue]['photo'] = $product->getMainPhotoUrl(1);
