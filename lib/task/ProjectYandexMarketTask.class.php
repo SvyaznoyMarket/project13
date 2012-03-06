@@ -546,7 +546,6 @@ EOF;
 
             //делаем выборку товаров
             $sql = $this->_makeProductListQuery($catIdListString);
-
             $sql .=
                 ' LIMIT ' . $this->_portionToLoadProduct . '
                  OFFSET ' . $currentOffset
@@ -700,7 +699,7 @@ EOF;
             pp.product_price_list_id = "'.$this->_currentRegion['product_price_list_id'].'" AND
             p.token_prefix IS NOT NULL AND
             pdp.price_list_id = "'.$this->_currentRegion['product_price_list_id'].'"
-
+            GROUP BY p.id
             ';
 
         //если есть ограничения по категориям
