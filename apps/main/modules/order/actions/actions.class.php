@@ -69,6 +69,7 @@ class orderActions extends myActions
     $this->order->shop_id = $this->shop ? $this->shop->id : null;
     $this->order->delivery_type_id = 1;
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product) * $quantity; //нужна для правильного отбражения формы заказа
+    $this->order->type_id = Order::TYPE_1CLICK;
 
     if (empty($this->order->region_id))
     {
