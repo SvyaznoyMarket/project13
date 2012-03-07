@@ -12,11 +12,8 @@
     <?php include_partial('default/googleAnalytics') ?>
 
   </head>
-  <body class='march8'>
+  <body>
     <div class="allpage">
-      <div class='march8_inner_left'><div class='march_8_leftbg'><div class='march_8_lefttopbg'></div></div></div>
-      <div class='march8_inner_right'><div class='march_8_rightbg'><div class='march_8_righttopbg'></div></div></div>
-      <a class='march8_link' onclick="_gaq.push(['_trackEvent', 'BannerClick', '8 марта уши']);" href='<?php echo url_for('productCatalog_category', array('productCategory' => 'gifthobby/podarki-na-8-marta-1522')) ?>'></a>
       <div class="allpageinner">
 
         <?php include_partial('default/header') ?>
