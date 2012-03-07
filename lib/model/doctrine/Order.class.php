@@ -12,10 +12,13 @@
  */
 class Order extends BaseOrder
 {
+  const STATUS_READY     = 6;
+  const STATUS_CANCELLED     = 5;
 
-    const STATUS_READY     = 6;
-    const STATUS_CANCELLED     = 5;
-
+  const TYPE_ORDER = 1;
+  const TYPE_PREORDER = 2;
+  const TYPE_CUSTOM = 3;
+  const TYPE_1CLICK = 9;
 
   public function __toString()
   {
@@ -118,7 +121,9 @@ class Order extends BaseOrder
     $data['satus_id']             = $this->Status->core_id;
     */
     $data['store_id']             = null;
-    $data['type_id']              = 1;
+    if (empty($data['type_id'])) {
+      $data['type_id'] = self::TYPE_ORDER;
+    }
     $data['ip']                   = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null; //sfContext::getInstance()->getUser()->getIp();
 
     $data['mode_id'] = $data['delivery_type_id'];

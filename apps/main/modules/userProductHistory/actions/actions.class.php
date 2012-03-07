@@ -50,6 +50,11 @@ class userProductHistoryActions extends myActions
   {
     $user = $this->getUser();
 
+    if (!$request->getCookie(sfConfig::get('app_guard_cache_cookie_name')))
+    {
+        $user->setCacheCookie();
+    }
+
     //подсчитываем общее количество и общую стоимость корзины
     $cartInfo = $user->getCartBaseInfo();
 
