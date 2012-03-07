@@ -610,6 +610,8 @@ $(document).ready(function(){
 		})
 	}	
 	
+	var ajaxFilterCounter = 0
+	
 	$('.product_filter-block')
     .bind('change', function(e) {
         var el = $(e.target)
@@ -621,7 +623,11 @@ $(document).ready(function(){
     .bind('preview', function(e) {
         var el = $(e.target)
         var form = $(this)
+        ajaxFilterCounter++
 		function getFiltersResult (result) {
+			ajaxFilterCounter--
+			if( ajaxFilterCounter > 0 )
+				return
 			if( result.success ) {
                 $('.product_count-block').remove()
                 switch (result.data % 10) {
