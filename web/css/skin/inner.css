@@ -3782,9 +3782,9 @@ DT.bCtg__eOrange{
 .mElectro, .category-8{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
 .mUkr, .category-9{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
 .mSport, .category-10{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
-/*.mSport i, .category-10 i{ top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
+.mSport i, .category-10 i{ top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
 a.mSportFont{ color: #e8303c; font-weight: bold; }
-div.mSportFont{ color: #e8303c; }*/
+div.mSportFont{ color: #e8303c; }
 .bHeader .bToplink:hover span{ background-position: 0 -71px; }
 
 /* .mSad, .category-11{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; } */
