@@ -2,20 +2,6 @@ $(document).ready( function() {
 $('#order_delivery_type_id_4').parent().css('color','#E8303A')
 	.find('div').removeClass('font11')
 
-function printPrice ( val ) {
-	var floatv = (val+'').split('.')
-	var out = floatv[0]
-	var le = floatv[0].length
-	if( le > 6 ) { // billions
-		out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
-	} else if ( le > 3 ) { // thousands
-		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
-	}
-	if( floatv.length == 2 )
-		out += '.' + floatv[1]
-	return out
-}
-
 function addDlvrInBill( innertxt ) {
 	var rubltmpl = $('<span class="rubl">p</span>')
 	var dtmp  = innertxt.split(',')
@@ -153,7 +139,7 @@ $('.order-form').change( function(e) {
 
     $('[name="order[address]"]').val(el.val())
   })
-
+/* RETIRED 
   $('#basic_register-form').bind({
     'submit': function(e) {
       e.preventDefault()
@@ -182,7 +168,7 @@ $('.order-form').change( function(e) {
       })
     }
   })
-
+*/
 
   $('.auth-link').bind('click', function(e) {
     e.preventDefault()

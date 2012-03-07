@@ -95,7 +95,6 @@ foreach ($p3d as $p3d_obj)
 
 
 
-
         <div style="margin-bottom: 20px;">
         <!--AdFox START-->
         <!--enter-->

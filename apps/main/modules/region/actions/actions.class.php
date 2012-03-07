@@ -59,6 +59,7 @@ class regionActions extends myActions
     if ($region)
     {
       $this->getUser()->setRegion($region->id);
+      $this->getUser()->setRegionCookie();
     }
 
     $this->redirect($request->getReferer());

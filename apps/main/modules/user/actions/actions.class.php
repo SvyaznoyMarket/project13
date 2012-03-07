@@ -8,6 +8,10 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
+
+/**
+ * @property $form CallbackForm
+ */
 class userActions extends myActions
 {
  /**
@@ -17,7 +21,6 @@ class userActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-
     //пункты для главной страницы личного кабинета
     $list = array(
       array(
@@ -83,8 +86,18 @@ class userActions extends myActions
                 'routes' => array('@userTag'),
               ),*/
           )
-      )
+      ),
 
+      array(
+        'title' => 'cEnter защиты прав потребителей ',
+        'list' => array(
+          array(
+            'name'   => 'Юридическая помощь',
+            'url'    => '@user_legalConsultation',
+            'routes' => array('user_legalConsultation'),
+          ),
+        )
+      )
     );
 
     /*
@@ -169,4 +182,49 @@ class userActions extends myActions
   public function executeOrders(sfWebRequest $request)
   {
   }
+
+  public function executeLegalConsultation(sfWebRequest $request){
+    $userData = $this->getUser()->getGuardUser()->getData();
+
+    $email = (isset($userData['email']) && strlen($userData['email']) > 1)? $userData['email'] : '';
+    $name = (isset($userData['last_name']) && strlen($userData['last_name']) > 1)? $userData['last_name'].' ' : '';
+    $name .= $userData['first_name'];
+    $name .= (isset($userData['middle_name']) && strlen($userData['middle_name']) > 1)? ' '.$userData['middle_name'] : '';
+
+    $callback = new Callback();
+    $callback->setEmail($email);
+    $callback->setName($name);
+
+    $this->form = new CallbackForm($callback);
+  }
+
+  public function executeSendLegalConsultation(sfWebRequest $request){
+    $this->form = new CallbackForm();
+    $data = $request->getParameter($this->form->getName());
+    $data['channel_id'] = 2;
+    $this->form->bind($data);
+    $this->setVar('error', '', true);
+
+    if ($this->form->isValid())
+    {
+      try
+      {
+        #$this->form->getObject()->setCorePush(false);
+        $this->form->save();
+        $this->setTemplate('sendLegalConsultationOk');
+      }
+      catch (Exception $e)
+      {
+        //echo $e->getMessage();
+        $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
+        $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
+        $this->setTemplate('LegalConsultation');
+      }
+    } else {
+      //echo $this->form->renderGlobalErrors();
+      //$this->redirect('callback');
+      $this->setTemplate('LegalConsultation');
+    }
+  }
+
 }
