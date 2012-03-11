@@ -67,6 +67,8 @@ class ProductCategory extends BaseProductCategory
 
     $this->photo = !empty($data['media_image']) ? $data['media_image'] : 'default.jpg';
 
+    $this->product_view = 1 == $data['product_view_id'] ? 'compact' : 'expanded';
+
     //Импорт фильтров для категории
     $filterGroup = $this->getFilterGroup();
     if (empty($filterGroup))
