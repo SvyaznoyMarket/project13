@@ -80,9 +80,11 @@ $(document).ready(function() {
 		'rollindex': '.scrollbox div b',
 		'propriate': ['.versioncontrol','.scrollbox']
 	}
-
-	lkmv = new likemovie('#photobox', api, product_3d_small, product_3d_big )
-	var mLib = new mediaLib( $('#bigpopup') )
+	
+	if( typeof( product_3d_small ) !== 'undefined' && typeof( product_3d_big ) !== 'undefined' )
+		lkmv = new likemovie('#photobox', api, product_3d_small, product_3d_big )
+	if( $('#bigpopup').length )
+		var mLib = new mediaLib( $('#bigpopup') )
 
 	$('.viewme').click( function(){
 		if( mLib )
