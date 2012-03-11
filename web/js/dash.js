@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	var shortinfo = '/user/shortinfo'
-	if( !getCookie('enter') )
+	if( !getCookie('enter') ||  !getCookie('enter_auth'))
 		shortinfo += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000)
 	
 	/* Lightbox */

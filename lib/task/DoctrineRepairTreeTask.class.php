@@ -51,7 +51,7 @@ EOF;
 
   }
 
-  protected function updateChildren($table, $parent = null, $level = 0, $i = 0)
+  protected function updateChildren($table, $parent = null, $level = 0, $i = 0, $root_id = 0)
   {
     $q = $table->createQuery();
     if (!empty($parent))
@@ -77,19 +77,24 @@ EOF;
       'lft' => 0,
       'rgt' => 0,
       'level' => 0,
+      'root_id' => $root_id,
     );
 
     foreach ($list as $item)
     {
-      if (0 == $level) $i = 0;
+      if (0 == $level)
+      {
+        $i = 0;
+        $tree['root_id'] = $item['root_id'];
+      }
 
       $tree['level'] = $level;
       $i++;
       $tree['lft'] = $i;
-      $i = $this->updateChildren($table, $item, $level + 1, $i) + 1;
+      $i = $this->updateChildren($table, $item, $level + 1, $i, $tree['root_id']) + 1;
       $tree['rgt'] = $i;
 
-      if ($item['level'] != $tree['level'] || $item['lft'] != $tree['lft'] || $item['rgt'] != $tree['rgt'])
+      if ($item['level'] != $tree['level'] || $item['lft'] != $tree['lft'] || $item['rgt'] != $tree['rgt'] || $item['root_id'] != $tree['root_id'])
       {
         $this->logSection('ERROR', 'broken entity #'.$item['id'].' '.$item['name']);
         if (!$options['check'])
@@ -97,6 +102,7 @@ EOF;
           $item->level = $tree['level'];
           $item->lft = $tree['lft'];
           $item->rgt = $tree['rgt'];
+          $item['root_id'] = $tree['root_id'];
           $item->save();
         }
       }

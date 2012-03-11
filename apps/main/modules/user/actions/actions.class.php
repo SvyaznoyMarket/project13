@@ -218,12 +218,12 @@ class userActions extends myActions
         //echo $e->getMessage();
         $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
         $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
-        $this->setTemplate('LegalConsultation');
+        $this->setTemplate('legalConsultation');
       }
     } else {
       //echo $this->form->renderGlobalErrors();
       //$this->redirect('callback');
-      $this->setTemplate('LegalConsultation');
+      $this->setTemplate('legalConsultation');
     }
   }
 

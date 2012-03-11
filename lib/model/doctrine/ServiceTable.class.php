@@ -55,6 +55,7 @@ class ServiceTable extends myDoctrineTable
         ->andWhere('pr.product_id = ?', array($product['id']))
         ->innerJoin('service.Price price')
         ->andWhere('price.price >= ?', Service::MIN_BUY_PRICE)
+        ->andWhere('service.only_inshop = ?', 0)
         ->orderBy('service.name ASC');
       ;
 
