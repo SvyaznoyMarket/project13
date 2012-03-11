@@ -79,12 +79,13 @@
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
-				.script( getWithVersion('app.product.js') )
-				.script( getWithVersion('app.product.comment.list.js') )
-				.script( getWithVersion('app.product.comment.new.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.script( 'watch3dv2.min.js' )
+				.wait()
+				.script( getWithVersion('app.product.js') )
+				.script( getWithVersion('app.product.comment.list.js') )
+				.script( getWithVersion('app.product.comment.new.js') )
 			}).runQueue()
 			break
 		case 'service':
@@ -114,9 +115,10 @@
 				.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('main.js') )
-				.script( getWithVersion('app.product.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
+				.wait()
+				.script( getWithVersion('app.product.js') )
 			}).runQueue()
 			break
 	}
