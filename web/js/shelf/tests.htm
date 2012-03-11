@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="/css/qunit.css">
+<script src="/js/shelf/qunit.js"></script>
+<script src="/js/library.min.js"></script>
+<script>
+module('printPrice function')
+test("pricing 1234", function() {
+    equal( printPrice(1234) , "1 234")
+    equal( printPrice(1234.3) , "1 234.3")
+    equal( printPrice(12345) , "12 345")
+    equal( printPrice(123456) , "123 456")
+    equal( printPrice(1234567) , "1 234 567")
+})
+module('brwsr object')
+test("brwsr object", function() {
+	var br = new brwsr()
+    equal( br.isAndroid , false, 'isAndroid')
+})
+module('JSON object')
+test("JSON", function(){
+	var foo = {};  
+	foo.bar = "new property";  
+	foo.baz = 3;  	  
+	var JSONfoo = JSON.stringify(foo);
+	equal( JSONfoo, '{"bar":"new property","baz":3}', 'stringify');
+	var backToJS = JSON.parse(JSONfoo);
+	deepEqual( foo, backToJS, 'parse')
+});
+
+</script>
+<h1 id="qunit-header">QUnit-based tests</h1>
+<h2 id="qunit-banner"></h2>
+<ol id="qunit-tests"></ol>
