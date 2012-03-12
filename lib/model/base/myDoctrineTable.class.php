@@ -432,4 +432,9 @@ class myDoctrineTable extends Doctrine_Table
   {
     return sfConfig::get('app_cache_enabled', false);
   }
+
+  public function getCore()
+  {
+    return Core::getInstance();
+  }
 }

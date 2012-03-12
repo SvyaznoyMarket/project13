@@ -159,4 +159,35 @@ class RegionTable extends myDoctrineTable
 
     return isset($cases[$case][$value]) ? $cases[$case][$value] : false;
   }
+
+    public function getListForOrder(array $productIds, array $params = array())
+    {
+        $return = $this->createList();
+
+        if (!count($productIds))
+        {
+            return $return;
+        }
+
+        $ids = RegionTable::getInstance()->getListHavingShops()->toValueArray('id');
+
+        // удаляет регионы, в которых хотя бы один из товаров недоступен
+        $q = ProductStateTable::getInstance()->createBaseQuery();
+
+        $q->select('DISTINCT productState.region_id');
+        $q->andWhere('productState.is_instock = true');
+        $q->andWhereIn('productState.product_id', $productIds);
+
+        $q->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+
+        $available = $q->execute();
+        if (!is_array($available))
+        {
+            $available = array($available);
+        }
+
+        $ids = array_intersect($ids, $available);
+
+        return $this->createListByIds($ids, $params);
+    }
 }

@@ -1,17 +1,12 @@
-<?php /* ?>
-<li data-field="region_id" class="form-row">
-  <?php echo $form['region_id']->renderLabel() ?>
-  <?php echo $form['region_id']->renderError() ?>
-  <div class="content">
-    <?php echo $widget->render('order_region', (string)$region) ?>
-  </div>
-</li>
-<?php */ ?>
+<dl class='bBuyingLine'>
+  <dt>Ваш город:</dt>
+  <dd>
+    <input type="hidden" name="<?php echo $name?>" value="<?php echo $value ?>" />
+    <div>
+      <p></p>
+      <input disabled="disabled" class='bBuyingLine__eText' type='text' value="<?php echo $displayValue ?>">
+      <a id="jsregion" class='bGrayButton' data-url="<?php echo url_for('region_init') ?>" href="<?php echo url_for('region_change', $sf_data->getRaw('region')) ?>">Другой город</a>
+    </div>
+  </dd>
+</dl>
 
-<div class="pb10">
-  <?php echo $form['region_id']->renderLabel() ?>
-  <?php echo $form['region_id']->renderError() ?>
-</div>
-<div data-field="region_id" class="selectbox selectbox429 mb10"><i></i>
-  <?php echo $form['region_id']->render(array('class' => 'styled' )) ?>
-</div>

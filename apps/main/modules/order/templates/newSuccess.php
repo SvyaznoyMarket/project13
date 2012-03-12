@@ -1,48 +1,116 @@
-<?php slot('title', 'Оформление заказа<br />Заполните форму') ?>
+<?php include_partial('order/header', array('title' => 'Финальный шаг :)')) ?>
 
-<?php slot('navigation') ?>
-  <?php include_component('order', 'navigation', array('order' => $order)) ?>
-<?php end_slot() ?>
+<?php slot('js_template', get_partial('order/js_template', $sf_data)) ?>
 
-<?php slot('user') ?>
-  <?php include_partial('order/user') ?>
-<?php end_slot() ?>
+<div class='bBuyingInfo'>
 
-<?php slot('receipt') ?>
-  <?php include_component('order', 'receipt') ?>
-<?php end_slot() ?>
+  <h2>Информация о заказе</h2>
+
+  <?php echo $form['region_id'] ?>
+
+  <?php echo $form['delivery_type_id'] ?>
+
+  <span>Отличный выбор! Для вашего удобства мы сформировали несколько заказов в зависимости от типа доставки:</span>
+</div>
 
 
-<form id="region" method="post" action="/"></form>
-<form class="form order-form" data-update-field-url="<?php echo url_for('order_updateField', array('step' => 1)) ?>" action="<?php echo url_for('order_new', array('step' => 1)) ?>" method="post" style="width: 665px;">
-  <?php echo $form->renderHiddenFields() ?>
+<?php include_partial('order/field_product_list', $sf_data)?>
 
-  <div class="fl width215 mr20"><strong class="font16">Способ получения заказа:</strong></div>
-    <div class="fl width430">
 
-  <?php if (empty($form->getObject()->region_id)): ?>
-    <?php include_component('order', 'field_region_id', array('form' => $form)) ?>
-      <input type="submit" value="Подтвердить" />
+<div class='bBuyingInfo'>
+  <h2>Информация о счастливом получателе</h2>
 
-  <?php else: ?>
-    <?php foreach ($form as $name => $field): ?>
-      <?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?>
-      <?php if (sfContext::getInstance()->getController()->componentExists('order', 'field_'.$name)): ?>
-        <?php include_component('order', 'field_'.$name, array('form' => $form)) ?>
-      <?php else: ?>
-        <?php echo $form[$name]->renderRow(); ?>
-      <?php endif ?>
+  <dl class='bBuyingLine'>
 
-    <?php endforeach ?>
-    </div>
+    <dt>Имя и Фамилия получателя*:</dt>
+    <dd>
+      <div>
+        <p></p>
+        <?php echo $form['recipient_first_name']->render(array('class' => 'bBuyingLine__eText mInputLong')) ?>
+      </div>
+    </dd>
+  </dl>
 
-  <br class="clear" />
-        <div class="pl235"><input type="submit" class="button bigbutton" id="bigbutton" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Оформить заказ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" /></div>
+  <dl class='bBuyingLine'>
+    <dt>Телефон для связи*:</dt>
+    <dd>
 
-  <?php endif ?>
-</form>
+      <div>
+        <p></p>
+        <?php echo $form['recipient_phonenumbers']->render(array('class' => 'bBuyingLine__eText mInputLong')) ?>
+      <div>
+        <p></p>
+        <label>
+          <b></b> <h5>Я хочу получать СМС уведомления об изменении статуса заказа</h5>
+          <?php echo $form['is_receive_sms']->render(array('class' => 'bBuyingLine__eRadio')) ?>
+        </label>
+      </div>
+    </dd>
+  </dl>
+
+
+  <dl class='bBuyingLine'>
+    <dt>Адрес доставки*:</dt>
+    <dd>
+      <div>
+        <p></p>
+        <?php echo $form['address']->render(array('class' => 'bBuyingLine__eText mInputLong')) ?>
+      </div>
+    </dd>
+  </dl>
+
+  <dl class='bBuyingLine'>
+    <dt>Пожелания и дополнения</dt>
+
+    <dd>
+      <div>
+        <p></p>
+        <?php echo $form['extra']->render(array('class' => 'bBuyingLine__eTextarea')) ?>
+        <i class='mILong'>Сколько раз повернуть направо, наличие бабушек у подъезда или цвет глаз секретаря - укажите любую информацию, которая поможет нам еще быстрее выполнить Ваш заказ.</i>
+      </div>
+    </dd>
+  </dl>
+
+  <h2>Об оплате</h2>
+
+  <?php echo $form['payment_method_id'] ?>
+
+  <div class='line'></div>
+
+  <dl class='bBuyingLine'>
+    <dt></dt>
+    <dd>
+
+      <div>
+        <label class='mLabelLong'>
+          <b></b>
+          <h4>Я ознакомлен и согласен с &laquo;<a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>" target="_blank">Условиями продажи</a>&raquo; и &laquo;<a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>" target="_blank">Правовой информацией</a>&raquo;*</h4>
+          <?php echo $form['extra']->render(array('class' => 'bBuyingLine__eRadio')) ?>
+        </label>
+      </div>
+
+      <div>
+        <p></p>
+        <i class='mILong'>* Поля обязательные для заполнения</i>
+      </div>
+    </dd>
+  </dl>
+
+</div>
+
+
+<dl class='bBuyingLine mConfirm'>
+
+  <dt>< <a href="<?php echo url_for('cart') ?>">Вернуться к покупкам</a></dt>
+  <dd>
+    <div><a class='bBigOrangeButton' href>Завершить оформление</a></div>
+  </dd>
+</dl>
+
+
+<?php include_partial('order/footer') ?>
 
 
 <?php slot('seo_counters_advance') ?>
-  <?php include_component('order', 'seo_counters_advance', array('step' => 2)) ?>
+<?php include_component('order', 'seo_counters_advance', array('step' => 2)) ?>
 <?php end_slot() ?>
