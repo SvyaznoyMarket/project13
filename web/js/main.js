@@ -850,9 +850,14 @@ $(document).ready(function(){
 	function cardsCarousel ( nodes ) {
 		var self = this
 		var current = 1
-		var max = $(nodes.times).html() * 1
+
 		var wi  = nodes.width*1
 		var viswi = nodes.viswidth*1
+
+		if( !isNaN($(nodes.times).html()) )
+			var max = $(nodes.times).html() * 1
+		else
+			var max = Math.ceil(wi / viswi)			
 		var buffer = 2
 		var ajaxflag = false
 
@@ -910,6 +915,7 @@ $(document).ready(function(){
 				}
 				self.notify()
 			}
+			return false
 		})
 
 		$(nodes.prev).click( function() {
@@ -918,6 +924,7 @@ $(document).ready(function(){
 				shiftme()
 				self.notify()
 			}
+			return false
 		})
 
 	} // cardsCarousel object
@@ -937,9 +944,10 @@ $(document).ready(function(){
 			var tmpline = new cardsCarousel ({
 					'prev'  : $(this).find('.back'),
 					'next'  : $(this).find('.forvard'),
-					'crnt'  : $(this).find('span:first'),
+					'crnt'  : $(this).find('.none'),
 					'times' : $(this).find('span:eq(1)'),
-					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
+					'width' : $(this).find('.jshm').html().replace(/\D/g,''),
+//					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
 					'wrap'  : $(this).find('~ .carousel').first(),
 					'viswidth' : 3
 					})
