@@ -176,11 +176,13 @@ $(document).ready(function(){
 		form.find('.error_list').html('');
 		$.post(form.prop('action'), form.serializeArray(), function(resp){
 			if (resp.success === true) {
-
-				$('#reset-pwd-form').hide();
-				$('#login-form').show();
-				alert('Новый пароль был вам выслан по почте или смс');
-
+				//$('#reset-pwd-form').hide();
+				//$('#login-form').show();
+				//alert('Новый пароль был вам выслан по почте или смс');
+				var resetForm = $('#reset-pwd-form > div')
+				resetForm.find('input').remove()
+				resetForm.find('.pb5').remove()
+				resetForm.find('.error_list').html('Новый пароль был вам выслан по почте или смс!')
 			} else {
 				var txterr = ( resp.error !== '' ) ? resp.error : 'Вы ввели неправильные данные'
 				form.find('.error_list').text( txterr );
