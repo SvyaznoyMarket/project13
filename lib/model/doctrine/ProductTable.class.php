@@ -26,6 +26,7 @@ class ProductTable extends myDoctrineTable
   {
     return array(
       'id'              => 'core_id',
+      'label_id'        => 'core_label_id',
       'name'            => 'name',
       'bar_code'        => 'barcode',
       'article'         => 'article',
