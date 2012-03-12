@@ -699,14 +699,13 @@ EOF;
             pp.product_price_list_id = "'.$this->_currentRegion['product_price_list_id'].'" AND
             p.token_prefix IS NOT NULL AND
             pdp.price_list_id = "'.$this->_currentRegion['product_price_list_id'].'"
-            GROUP BY p.id
             ';
 
         //если есть ограничения по категориям
         if (isset($catIdListString) && count($catIdListString)){
             $sql .= ' AND pcpr.product_category_id IN ('.$catIdListString.') ';
         }
-
+        $sql .= ' GROUP BY p.id';
         //echo $sql;
 
         return $sql;

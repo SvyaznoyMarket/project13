@@ -9,6 +9,8 @@ Options +FollowSymLinks +ExecCGI
   # getting no_script_name to work
   #RewriteBase /
 
+  RewriteRule ^region/init$ region_init.php [L]
+
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$
   #RewriteCond %{REQUEST_URI} !\.html$
