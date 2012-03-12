@@ -4040,3 +4040,5 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
         left: -26px;
         background: url('/images/img_8gifts_right.png') 0 0 no-repeat;
     }
+
+.error_list{ color:red }    

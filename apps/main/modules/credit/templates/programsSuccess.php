@@ -42,49 +42,6 @@
   </dl>
 </script>
 
-  <script type="text/javascript">
-    $(document).ready(function(){
-        document.getElementById("requirementsFullInfoHref").style.cursor="pointer";
-        $('#requirementsFullInfoHref').bind('click', function() {
-          $('.bCreditLine2').toggle();
-        });
-
-        var creditOptions = $.parseJSON('<?php echo json_encode($creditOptions); ?>');
-        var bankInfo = $.parseJSON('<?php echo json_encode($banks); ?>');
-        var relations = $.parseJSON('<?php echo json_encode($optionsToBanksRelations); ?>');
-
-        for (var i=0; i< creditOptions.length; i++){
-          creditOption = creditOptions[i];
-          $('<option>').val(creditOption.id).text(creditOption.name).appendTo("#productSelector");
-        }
-
-        $('#productSelector').change(function() {
-          var key = $(this).val();
-          var bankRelations = relations[key];
-          $('#bankProductInfoContainer').empty();
-          for(i in bankRelations){
-            var dtmpl={}
-            dtmpl.bankName = bankInfo[i].name;
-            dtmpl.bankImage = bankInfo[i].image;
-
-            programNames = '';
-
-            for(j in bankRelations[i]){
-              programNames += "<h4>" + bankInfo[i].programs[j].name + "</h4>\r\n<ul>";
-              for(k in bankInfo[i].programs[j].params){
-                programNames += "\t<li>" + bankInfo[i].programs[j].params[k] + "</li>\r\n";
-              }
-              programNames += "</ul>";
-            }
-
-            dtmpl.programNames = programNames;
-
-            var show_bank = tmpl('bank_program_list_tmpl', dtmpl)
-            $('#bankProductInfoContainer').append(show_bank);
-          }
-          $('#bankProductInfoContainer').append('<p class="ac mb25"><a class="bBigOrangeButton" href="'+creditOptions[key-1]['url']+'">'+creditOptions[key-1]['button_name']+'</a></p>');
-        });
-      }
-    );
-
-  </script>
+<input type="hidden" id="creditOptions" data-value='<?php echo json_encode($creditOptions); ?>'/>
+<input type="hidden" id="bankInfo" data-value='<?php echo json_encode($banks); ?>'/>
+<input type="hidden" id="relations" data-value='<?php echo json_encode($optionsToBanksRelations); ?>'/>
