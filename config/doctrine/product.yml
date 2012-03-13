@@ -224,6 +224,7 @@ Product:
     name:              { type: string(255), notnull: true, notblank: true }
     prefix:            { type: string(255), notnull: false, default: null }
     type_id:           { type: integer(20), notnull: true }
+    core_label_id:     { type: integer(20), notnull: false, default: null }
     creator_id:        { type: integer(20), notnull: false, default: null }
     line_id:           { type: integer(20), notnull: false, default: null }
     model_id:          { type: integer(20), notnull: false, default: null }

@@ -14,9 +14,9 @@ class BaseRepository
     return new CoreQuery($query, $params, $data);
   }
 
-  public function get(array $ids)
+  public function get(array $ids, $index = null)
   {
-    return ProductTable::getInstance()->getListByCoreIds($ids, array('hydrate_array' => true));
+    return array();
   }
 
   public function getOne($id)
