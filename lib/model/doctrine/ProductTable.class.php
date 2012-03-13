@@ -166,6 +166,12 @@ class ProductTable extends myDoctrineTable
     }
 
     $list = $q->execute();
+
+    // шильдики
+    $label_ids = array_unique(array_map(function($i) { return $i['core_label_id']; }, is_array($list) ? $list : iterator_to_array($list)));
+    $labels = RepositoryManager::getProductLabel()->get($label_ids, 'id');
+    //myDebug::dump($labels);
+
     foreach ($list as $i => $record)
     {
       if (empty($record['ProductPrice']))
@@ -204,6 +210,8 @@ class ProductTable extends myDoctrineTable
         'group_property' => $params['group_property'],
         'hydrate_array'  => $params['hydrate_array'],
       ));
+
+      $record['Label'] = array_key_exists($record['core_label_id'], $labels) ? $labels[$record['core_label_id']] : new ProductLabelEntity();
 
       if ($params['with_properties'])
       {
