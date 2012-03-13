@@ -24,7 +24,7 @@ class myProductFormFilter extends sfFormFilter
     $this->createCreatorWidget($productCategory);
 
     // виджет шильдиков
-    $this->createLabelWidget();
+    $this->createLabelWidget($productCategory);
 
     // виджеты параметров
     //$productFilterList = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
@@ -242,9 +242,14 @@ class myProductFormFilter extends sfFormFilter
     ));
   }
 
-  protected function createLabelWidget()
+  protected function createLabelWidget($productCategory)
   {
-    $labels = RepositoryManager::getProductLabel()->getAll();
+    $criteria = new ProductLabelCriteria();
+    $labels = RepositoryManager::getProductLabel()->getByCategory(
+      $criteria->setCategory($productCategory)
+    );
+
+    $choices = array();
     /**
      * @var $label ProductLabelEntity
      */
@@ -252,18 +257,22 @@ class myProductFormFilter extends sfFormFilter
     {
       $choices[$label->getId()] = $label->getName();
     }
-    $this->widgetSchema['label'] = new myWidgetFormChoice(array(
-      'choices'          => $choices,
-      'multiple'         => true,
-      'expanded'         => true,
-      'renderer_class'   => 'myWidgetFormSelectCheckbox',
-      'renderer_options' => array(
-        'formatter'       => array($this, 'show_part'),
-        'label_separator' => '',
-      ),
-    ));
-    $this->widgetSchema['label']->setLabel('Метка');
-    $this->validatorSchema['label'] = new sfValidatorPass();
+
+    if (count($choices))
+    {
+      $this->widgetSchema['label'] = new myWidgetFormChoice(array(
+        'choices'          => $choices,
+        'multiple'         => true,
+        'expanded'         => true,
+        'renderer_class'   => 'myWidgetFormSelectCheckbox',
+        'renderer_options' => array(
+          'formatter'       => array($this, 'show_part'),
+          'label_separator' => '',
+        ),
+      ));
+      $this->widgetSchema['label']->setLabel('Метка');
+      $this->validatorSchema['label'] = new sfValidatorPass();
+    }
   }
 
   protected function createCreatorWidget($productCategory)

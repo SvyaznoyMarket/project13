@@ -22,7 +22,7 @@ class myProductTagFormFilter extends myProductFormFilter
     $this->createCreatorWidget($productCategory);
 
     // виджет шильдиков
-    $this->createLabelWidget();
+    $this->createLabelWidget($productCategory);
 
     // виджеты параметров
     $tagGroups =
