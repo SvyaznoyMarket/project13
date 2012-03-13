@@ -14,7 +14,7 @@ class productCatalogActions extends myActions
 
   public function preExecute()
   {
-    parent::postExecute();
+    parent::preExecute();
 
     $this->getRequest()->setParameter('_template', 'product_catalog');
   }
@@ -239,7 +239,7 @@ class productCatalogActions extends myActions
     //необходимо для seo
     $redirectAr = array(
       'page' => 1,
-      'view' => 'compact'
+      'view' => $this->productCategory->product_view,
     );
     foreach($redirectAr as $key => $val)
     {
@@ -257,7 +257,7 @@ class productCatalogActions extends myActions
                 $replaceStr = array("$key=$val&", "&$key=$val");
             }
             $uri = str_replace($replaceStr, '', $this->getRequest()->getUri());
-            $this->redirect( $uri );
+            $this->redirect($uri, 301);
         }
     }
   }
@@ -384,9 +384,9 @@ class productCatalogActions extends myActions
   */
   public function executeCategory(sfWebRequest $request)
   {
-    $this->_seoRedirectOnPageDublicate($request);
-
     $this->productCategory = $this->oldUrlRedirect($request);
+
+    $this->_seoRedirectOnPageDublicate($request);
 
     if ($this->productCategory->has_line) // если в категории должны отображться линии
     {
@@ -413,6 +413,8 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
+    $this->view = $request->getParameter('view', $this->productCategory->product_view);
+
     $title = $this->productCategory['name'];
     if ($request->getParameter('page'))
     {
@@ -431,7 +433,7 @@ class productCatalogActions extends myActions
 
     $q = ProductTable::getInstance()->getQueryByFilter($filter, array(
       'view'      => 'list',
-      'with_line' => 'line' == $request['view'] ? true : false,
+      'with_line' => 'line' == $this->view ? true : false,
     ));
 
     // sorting
@@ -440,8 +442,8 @@ class productCatalogActions extends myActions
 
     ///*
     $this->productPager = $this->getPager('Product', $q, sfConfig::get('app_product_max_items_on_category', 20), array(
-      'with_properties' => 'expanded' == $request['view'] ? true : false,
-      'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
+      'with_properties' => 'expanded' == $this->view ? true : false,
+      'property_view'   => 'expanded' == $this->view ? 'list' : false,
       'hydrate_array'   => true,
     ));
     //*/

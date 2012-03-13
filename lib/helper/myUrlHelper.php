@@ -1,11 +1,14 @@
 <?php
 
-function replace_url_for($name, $value, $route_name = null, $params = array())
+function replace_url_for($name, $value, $route_name = null, $params = array(), array $excluded = null)
 {
-  $excluded = array(
-      'view' => 'compact',
+  $excluded = null == $excluded
+    ? array(
+      //'view' => 'compact',
       'page' => '1',
-  );
+    )
+    : $excluded
+  ;
 
   $context = sfContext::getInstance();
 
