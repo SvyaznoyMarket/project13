@@ -3845,7 +3845,7 @@ DT.bCtg__eOrange{
 		cursor: pointer;
 		position: fixed;
 		*position: absolute;
-	  	*top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+	  	*top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");
 
 		display: inline-block;
 		*display: inline;
@@ -3949,7 +3949,7 @@ div.mSportFont{ color: #e8303c; }
     cursor: pointer;
     position: fixed;
     *position: absolute;
-    *top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+    *top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");
 
     display: inline-block;
     *display: inline;
@@ -4114,7 +4114,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
         cursor: pointer;
         position: fixed;
         *position: absolute;
-        *top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+        *top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");
 
         display: inline-block;
         *display: inline;
@@ -4300,31 +4300,35 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     zoom: 1;
 }
 .bBuyingLine__eText{
-    width: 320px;
+    width: 350px;
     height: 27px;
     outline: none;
     vertical-align: top;
     border: 1px solid #dddddd;
-	padding-left: 35px;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     -o-border-radius: 5px;
 }
+.bBuyingLine__eText.city{
+	width: 320px;
+	padding-left: 35px;	
+}
 .bBuyingLine__eText:focus{
     border-color: #ffa901;
 }
 .bBuyingLine__eText.mInputLong{
-    width: 480px;
+    width: 460px;
+    padding-left: 25px;	
 }
 
 .bBuyingLine__eTextarea{
-    width: 480px;
+    width: 475px;
     height: 70px;
     outline: none;
     margin: 0 0 10px 0;
     border: 1px solid #dddddd;
-
+	padding:5px;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;

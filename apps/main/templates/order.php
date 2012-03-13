@@ -13,7 +13,7 @@
 </head>
 
 <body data-template="order">
-
+<div class="graying" style="opacity: 0.5; display: none;"></div>
 <?php include_slot('js_template') ?>
 
 <div class="allpage" data="privet">

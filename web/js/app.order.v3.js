@@ -25,10 +25,10 @@ $(document).ready(function(){
 			schedule : [ 'с 9:00 до 14:00', 'с 14:00 до 18:00', 'с 18:00 до 21:00' ],
 			products : [
 				{ moveable: true, dlvr: [{ txt: 'В доставку', lbl: 'delay'}, { txt: 'В самовывоз', lbl: 'selfy'}],
-					price: '999', title: 'Чайник со свистком 2,5 л', hm: '1', img: '/images/z_img2.png',
+					price: '999', title: 'Чайник со свистком 2,5 л', hm: '2', img: '/images/z_img2.png',
 					locs: [ 1, 2 ] },
 				{ moveable: false, 
-					price: '1 400', title: 'Мягкая игрушка Fancy &laquo;Медведь Топа&raquo;', hm: '1', img: '/images/z_img1.png',
+					price: '1 400', title: 'Мягкая игрушка Fancy &laquo;Медведь Топа&raquo;', hm: '3', img: '/images/z_img1.png',
 					locs: [ 1, 2 ] },
 				{ moveable: true, dlvr: [{ txt: 'В доставку', lbl: 'delay'}, { txt: 'В самовывоз', lbl: 'selfy'}],
 					price: '4 495', title: 'Смартфон Samsung Wave 525 черный', hm: '1', img: '/images/z_img8.png',
@@ -458,4 +458,24 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 //console.info('pickME ', node)
 		MVM.shiftingInShops( $(node).parent().find('.shopnum').text() )
 	}
+	
+	/* other form handlers */
+	$('body').delegate('.bBuyingLine label', 'click', function() {
+		if( $(this).find('input').attr('type') == 'radio' ) {
+			var thatName = $('.mChecked input[name="'+$(this).find('input').attr('name')+'"]')
+			if( thatName.length ) {
+				thatName.each( function(i, item) {
+					$(item).parent('label').removeClass('mChecked')
+				})
+			}
+		}
+		
+		$(this).addClass('mChecked')
+	})	
+
+	$('body').delegate('.bBuyingLine input:radio, .bBuyingLine input:checkbox', 'click', function(e) {
+console.info( e.target, e.currentTarget, e.timeStamp, $(this).attr('checked') )
+		e.stopPropagation()
+	})	
+
 });	
