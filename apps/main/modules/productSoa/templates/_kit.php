@@ -13,6 +13,8 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 <div style="width: 940px; float: none; margin: 0;" class="goodslist">
  <?php
   foreach ($product->kit as $product) {
+      //echo get_class($product);
+      //print_r($product);
       include_component('productSoa', 'show', array('view' => 'compact', 'product' => $product));
   }
   ?>

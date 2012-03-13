@@ -32,11 +32,14 @@ class productCardSoaActions extends myActions
       //die();
 
       try {
-        $this->product = new ProductSoa(end($productAr));
+        $factory = new ProductFactory();
+        $this->product = $factory->createProductFromCore(array('slug' => end($productAr)), true);
       } catch (ErrorException $e) {
          $this->forward404If($e->getMessage());
       }
-
+//      myDebug::dump($this->product);
+//      print_r($this->product);
+//      die();
     $title = '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru';
     $this->getResponse()->setTitle(sprintf(
         $title,

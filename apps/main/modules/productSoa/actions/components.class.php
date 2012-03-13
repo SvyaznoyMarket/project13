@@ -24,14 +24,14 @@ class productSoaComponents extends myComponents
       return sfView::NONE;
     }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock')))
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock', 'extra_compact')))
     {
       $this->view = 'default';
     }
 
     // cache key
     $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
-      'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
+      'product' => is_scalar($this->product) ? $this->product : $this->product->id,
       'region'  => $this->getUser()->getRegion('id'),
       'view'    => $this->view,
       'i'       => $this->ii,
@@ -44,15 +44,8 @@ class productSoaComponents extends myComponents
       return sfView::SUCCESS;
     }
 
-      if (is_array($this->product)) {
-          $productId = $this->product['id'];
-          $productToken = $this->product['token'];
-      } else {
-          $productId = $this->product->id;
-          $productToken = $this->product->token;
-      }
 
-    $cartItem = $this->getUser()->getCart()->getProduct($productId);
+    $cartItem = $this->getUser()->getCart()->getProduct($this->product->id);
     //myDebug::dump($cartItem);
     if ($cartItem) {
       if (is_object($this->product)) {
@@ -67,7 +60,7 @@ class productSoaComponents extends myComponents
     if ($cacheKey)
     {
       $this->cacheVars($cacheKey);
-      $this->getCache()->addTag("product-{$productId}", $cacheKey);
+      $this->getCache()->addTag("product-{$product->id}", $cacheKey);
     }
   }
 
@@ -244,6 +237,21 @@ class productSoaComponents extends myComponents
     }
     $product = $this->product;
     $this->setVar('product', $this->product, true);
+
+    //print_r($this->product->model['property']);
+    $propIdList = array();
+    foreach ($this->product->model['property'] as $prop) {
+        $propIdList[] = $prop['id'];
+    }
+    foreach ($this->product->model['product'] as $prod) {
+        foreach ($prod->property as $prop) {
+            if (in_array($prop['id'], $propIdList)) {
+                $prodPropValue[$prod->id][$prop['id']] = $prop['value'];
+            }
+        }
+    }
+//      print_r($prodPropValue);
+//      die();
     foreach ($this->product->model['property'] as $prop) {
         $property = array(
             'id' => $prop['id'],
@@ -253,22 +261,25 @@ class productSoaComponents extends myComponents
         //print_r($this->product->model);
         $valueList = array();
         foreach ($this->product->model['product'] as $productModel) {
-            foreach ($productModel['property'] as $prodProp) {
+            foreach ($this->product->model['property'] as $prodProp) {
                 if ($prodProp['id'] == $prop['id']) {
-                   if ($product->id == $productModel['id']) {
-                        $property['current']['id'] = $productModel['id'];
-                        $property['current']['value'] = $prodProp['value'];
-                        $property['current']['url'] = $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel['link']) ));
-                   } elseif (in_array($prodProp['value'], $valueList)) {
-                       continue;
-                   }
+                   $value = $prodPropValue[$productModel->id][$prodProp['id']];
+                   if ($product->id == $productModel->id) {
+                        $property['current']['id'] = $productModel->id;
+                        $property['current']['value'] = $value;
+                        $property['current']['url'] = $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel->link) ));
+                   } //elseif (in_array($prodProp['value'], $valueList)) {
+//                       continue;
+//                   }
+                   //foreach (['property'])
+                   $prodProp['value'] = $value;
                    $property['products'][$prodProp['value']] = array(
-                       'id' => $productModel['id'],
-                       'name' => $productModel['name'],
-                       'image' => $product::getMainPhotoUrlByMediaImage($productModel['media_image'], 1),
+                       'id' => $productModel->id,
+                       'name' => $productModel->name,
+                       'image' => $product::getMainPhotoUrlByMediaImage($productModel->media_image, 1),
                        'value' => $prodProp['value'],
-                       'is_selected' =>  ($this->product->id == $productModel['id']) ? 1 : 0,
-                       'url' => $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel['link']) ))
+                       'is_selected' =>  ($this->product->id == $productModel->id) ? 1 : 0,
+                       'url' => $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel->link) ))
                    );
                    $valueList[] = $prodProp['value'];
                 }
@@ -419,7 +430,7 @@ class productSoaComponents extends myComponents
     {
       $list[] = array(
         'token' => $tag['token'],
-        'url'   => $this->generateUrl('tag_show', array('tag' => $tag['token'])),
+        'url'   => $this->generateUrl('tag_show', array('tag' => $tag['site_token'])),
         'name'  => $tag['name'],
       );
     }

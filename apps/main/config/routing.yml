@@ -112,8 +112,8 @@ productCatalog_creator:
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # карточка товара
-productCard:
-  url:   /product/:product
+productCardOld:
+  url:   /product_old/:product
   param: { module: productCard, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
@@ -122,14 +122,21 @@ productCard:
 
 
 # карточка товара. использует новый API
-productCardSoa:
-  url:   /product_soa/:product
+productCard:
+  url:   /product/:product
   param: { module: productCardSoa, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-
+# карточка товара. использует новый API
+productCardSoa:
+  url:   /product/:product
+  param: { module: productCardSoa, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 #
 # карточка товара по ид товара

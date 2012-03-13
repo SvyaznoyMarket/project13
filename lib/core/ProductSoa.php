@@ -7,7 +7,6 @@ class ProductSoa
     public $is_instock;
     public $preview;
     public $price;
-    public $ParameterGroup;
     public $view;
     public $kit;
     public $announce;
@@ -16,8 +15,12 @@ class ProductSoa
 
 
 
-    public function __construct($id)
+    public function __construct()
     {
+        return;
+        if (!isset($data['id']) && !isset($data['slug'])) {
+            return;
+        }
        // $this->id = $id;
         $core = CoreSoa::getInstance();
 
@@ -25,13 +28,13 @@ class ProductSoa
        // die();
 
         //загружаем статическе данные
-        $productInfoStatic = $core->getProductStatic($id);
+        $productInfoStatic = $core->getProductStatic($data);
         if (!isset($productInfoStatic['id'])) {
             throw new ErrorException('Товар не найден');
             return;
         }
         //загружаем динамические данные
-        $productInfoDinamic = $core->getProductDinamic($id);
+        $productInfoDinamic = $core->getProductDinamic($data);
         $productInfo = array_merge($productInfoDinamic, $productInfoStatic);
         //print_r($productInfoStatic);
         //die();
@@ -103,11 +106,15 @@ class ProductSoa
     protected $_mainPhoto = null;
 
 
-    private static function _generatePathByLink($link) {
+    public static function generatePathByLink($link) {
        return str_replace('/product/', '', $link);
     }
 
-    private static function _priceFormat($price) {
+    public function getPriceFormatted() {
+        return number_format($this->price, 0, ',', ' ');
+    }
+
+    public static function priceFormat($price) {
         return number_format($price, 0, ',', ' ');
     }
 

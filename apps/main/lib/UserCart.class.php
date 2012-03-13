@@ -43,19 +43,10 @@ class UserCart extends BaseUserData
 
         try
         {
-            $region = sfContext::getInstance()->getUser()->getRegion();
-            $priceList = $region['product_price_list_id'];
-            $priceAr = ProductPriceTable::getInstance()->getQueryObject()
-                ->whereIn('product_id', $products)
-                ->addWhere('product_price_list_id = ?', $priceList)
-                ->fetchArray()
-            ;
-            foreach ($priceAr as $k => $info) {
-                unset($priceAr[$k]);
-                $priceAr[$info['product_id']] = $info;
-            }
-            //print_r($priceAr);
-            //print_r($products);
+            //загружаем объект из ядра, чтоб узнать его цену
+            $factory = new ProductFactory();
+            $productOb = $factory->createProductFromCore(array('id' => $id), true);
+
             foreach ($products as $product)
             {
                 if ($qty <= 0)
@@ -68,7 +59,7 @@ class UserCart extends BaseUserData
                     $this->_products[$product] = array(
                         'id' => $product,
                         'quantity' => $qty,
-                        'price' => $priceAr[$product]['price'],
+                        'price' => $productOb->price,
                        // 'priceFormatted' => number_format($priceAr[$product]['price'], 0, ',', ' '),
                        // 'total' => number_format($priceAr[$product]['price'] * $qty, 0, ',', ' ')
                     );
@@ -112,17 +103,18 @@ class UserCart extends BaseUserData
         $this->addProduct($productId, 1);
       }
     }
-
     //получаем цену на услугу. пока из БД!
     $region = sfContext::getInstance()->getUser()->getRegion();
     $priceList = $region['product_price_list_id'];
+    $serviceInfo = ServiceTable::getInstance()->findOneBy('core_id', $serviceId);
     $priceData = ServicePriceTable::getInstance()->getQueryObject()
-      ->where('service_id = ?', $serviceId)
+      ->addWhere('service_id = ?', $serviceInfo->id)
       ->addWhere('service_price_list_id = ?', $priceList)
-      ->addWhere('product_id = ?', $productId)
-      ->orWhere('product_id IS NULL')
+      ->addWhere('product_id = ? OR product_id IS NULL', $productId)
       ->fetchArray()
     ;
+//      print_r($priceData);
+//      die();
     foreach ($priceData as $k => $info) {
         if ($info['product_id'] == $productId) {
             $priceVal = $info['price'];
@@ -436,8 +428,7 @@ class UserCart extends BaseUserData
     $total = 0;
     foreach ($this->_products as $product)
     {
-      $price = 100;
-      $total += $price * $product['quantity'];
+      $total += $product['price'] * $product['quantity'];
     }
 
     foreach ($this->_services as $service)
@@ -446,8 +437,7 @@ class UserCart extends BaseUserData
       {
         foreach ($service['products'] as $prodToken => $prodQty)
         {
-          $price = 5000;
-          $total += ($price * $prodQty['quantity']);
+          $total += ($prodQty['price'] * $prodQty['quantity']);
         }
       }
     }
