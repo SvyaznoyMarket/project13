@@ -1,37 +1,37 @@
 <?php
 
-class ProductLabelRepository extends BaseRepository
+class ProductLabelRepository extends ObjectRepository
 {
   public function get(array $ids, $index = null)
   {
     $entities = array();
 
-    if (empty($ids))
+    if (!count($ids))
     {
       return $entities;
     }
 
-    $indexAccessor = $index ? 'get'.ucfirst($index) : null;
-
     $q = $this->createQuery('product.label.get', array('id' => $ids));
-    foreach ($q->getResult() as $data)
-    {
-      $entity = new ProductLabelEntity();
-      $entity->setId($data['id']);
-      $entity->setImage($data['media_image']);
-      $entity->setName($data['name']);
-
-      if ($indexAccessor)
-      {
-        $entities[$entity->$indexAccessor()] = $entity;
-
-      }
-      else {
-        $entities[] = $entity;
-      }
-
-    }
+    $entities = $this->createList($q->getResult(), $index);
 
     return $entities;
+  }
+
+  public function getAll($index = null)
+  {
+    $q = $this->createQuery('product.label.get', array());
+    $entities = $this->createList($q->getResult(), $index);
+
+    return $entities;
+  }
+
+  public function create($data)
+  {
+    $entity = new ProductLabelEntity();
+    $entity->setId($data['id']);
+    $entity->setImage($data['media_image']);
+    $entity->setName($data['name']);
+
+    return $entity;
   }
 }

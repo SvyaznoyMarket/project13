@@ -34,6 +34,10 @@ class myProductFormFilter extends sfFormFilter
       'to'   => $value['max'],
     ));
 
+    // виджет шильдиков
+    $labels = RepositoryManager::getProductLabel()->getAll();
+    myDebug::dump($labels);
+
     // виджет производителя
     $choices = array();
     foreach (CreatorTable::getInstance()
