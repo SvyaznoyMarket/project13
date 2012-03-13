@@ -63,6 +63,7 @@ ProductCategory:
     position:          { type: integer(4), notnull: false, default: 0 }
     photo:             { type: string(255), notnull: false, default: null }
     is_active:         { type: boolean, notnull: true, default: false, comment: 'Действующая категория?' }
+    is_shown_in_menu:  { type: boolean, notnull: true, default: false, comment: 'Отображать ли категорию в верхнем меню?' }
     has_line:          { type: boolean, notnull: true, default: false, comment: 'Есть серии для отображения' }
     product_view:      { type: enum, length: 10, values: [ compact, expanded ], notnull: true, default: 'compact', comment: 'Вид отображения товаров в списке' }
     seo_title:         { type: text, notnull: false, comment: 'SEO. Заголовок страницы' }
