@@ -435,6 +435,9 @@ class productComponents extends myComponents
         {
           $property->mapValue('current', $realValue);
         }
+        else{
+          $property->mapValue('current', null);
+        }
         if ($property->ProductModelRelation[0]->is_image)
         {
           $value_to_map[$realValue]['photo'] = $product->getMainPhotoUrl(1);
@@ -466,6 +469,8 @@ class productComponents extends myComponents
    */
   public function executeList_view()
   {
+    $this->view = $this->view ?: $this->getRequestParameter('view', 'compact');
+
     $list = array(
       array(
         'name'  => 'compact',
@@ -481,9 +486,14 @@ class productComponents extends myComponents
 
     foreach ($list as &$item)
     {
+      $excluded = ($this->productCategory && ($item['name'] == $this->productCategory->product_view))
+        ? array('view' => $item['name'])
+        : null
+      ;
+
       $item = array_merge($item, array(
-        'url' => replace_url_for('view', $item['name']),
-        'current' => $this->getRequestParameter('view', 'compact') == $item['name'],
+        'url' => replace_url_for('view', $item['name'], null, array(), $excluded),
+        'current' => $this->view == $item['name'],
         ));
     } if (isset($item))
       unset($item);

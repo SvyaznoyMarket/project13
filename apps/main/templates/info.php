@@ -6,17 +6,14 @@
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php include_stylesheets() ?>
-    <?php include_javascripts() ?>
+    <?php //include_javascripts() ?>
     <?php include_component('page', 'link_rel_canonical') ?>
 
     <?php include_partial('default/googleAnalytics') ?>
 
   </head>
-  <body class='march8'>
+  <body data-template="<?php echo $sf_request->getParameter('_template', 'infopage') ?>">
     <div class="allpage">
-      <div class='march8_inner_left'><div class='march_8_leftbg'><div class='march_8_lefttopbg'></div></div></div>
-      <div class='march8_inner_right'><div class='march_8_rightbg'><div class='march_8_righttopbg'></div></div></div>
-      <a class='march8_link' onclick="gaq.push(['_trackEvent', 'BannerClick', '8 марта уши']);" href='<?php echo url_for('productCatalog_category', array('productCategory' => 'gifthobby/podarki-na-8-marta-1522')) ?>'></a>
       <div class="allpageinner">
 
         <?php include_partial('default/header') ?>
@@ -82,6 +79,8 @@
       </div>
     </div>
     <!-- /Lightbox -->
+    <script src="/js/LAB.min.js" type="text/javascript"></script>
+    <script src="/js/loadjs.js" type="text/javascript"></script>
 
     <?php if (!include_slot('auth'))
       include_partial('default/auth') ?>

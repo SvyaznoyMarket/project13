@@ -1,26 +1,151 @@
 $(document).ready(function() {
-
-    var filterlink = $('.filter .filterlink:first');
-	var filterlist = $('.filter .filterlist');
-	var userag    = navigator.userAgent.toLowerCase()
-	var isAndroid = userag.indexOf("android") > -1
-	var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )
-	if( isAndroid || isOSX ) {
-		filterlink.click(function(){
-			filterlink.hide();
-			filterlist.show();
-			return false
-		});
-	} else {
-		filterlink.mouseenter(function(){
-			filterlink.hide();
-			filterlist.show();
-		});
-		filterlist.mouseleave(function(){
-			filterlist.hide();
-			filterlink.show();
-		});
+	/* Rating */
+	if( $('#rating').length ) {
+		var iscore = $('#rating').next().html().replace(/\D/g,'')
+		$('#rating span').remove()
+		$('#rating').raty({
+		  start: iscore,
+		  showHalf: true,
+		  path: '/css/skin/img/',
+		  readOnly: $('#rating').data('readonly'),
+		  starHalf: 'star_h.png',
+		  starOn: 'star_a.png',
+		  starOff: 'star_p.png',
+		  hintList: ['плохо', 'удовлетворительно', 'нормально', 'хорошо', 'отлично'],
+		  click: function( score ) {
+		  		$.getJSON( $('#rating').attr('data-url').replace('score', score ) , function(data){
+		  			if( data.success === true && data.data.rating ) {
+		  				$.fn.raty.start( data.data.rating ,'#rating' )
+		  				$('#rating').next().html( data.data.rating )
+		  			}
+		  		})
+		  		$.fn.raty.readOnly(true, '#rating')
+		  	}
+		})
 	}
+	
+	/* Product Counter */
+	if( $('.bCountSet').length ) {
+		var np = $('.bCountSet')
+		var l1 = np.parent().find('.link1')
+		var l1href = l1.attr('href')
+		var l1cl = $('a.order1click-link')
+		var l1clhref = l1cl.attr('href')
+		np.data('hm', np.find('span').text().replace(/\D/g,'') )
+		
+		np.bind('update', function() {
+			var hm = $(this).data('hm')
+			np.find('span').text( hm + '  шт.')
+			l1.attr('href', l1href + '/' +  hm )
+			l1cl.attr('href', l1clhref + '&quantity=' + hm )
+		})
+		
+		$('.bCountSet__eP').click( function() {
+			if( $(this).hasClass('disabled') )
+				return false
+			$('.bCountSet').data('hm', $('.bCountSet').data('hm')*1 + 1 )
+			np.trigger('update')
+			return false
+		})
+		$('.bCountSet__eM').click( function() {	
+			if( $(this).hasClass('disabled') )
+				return false		
+			var hm = $('.bCountSet').data('hm')//how many
+			if( hm == 1 )
+				return false
+			$('.bCountSet').data('hm', $('.bCountSet').data('hm')*1 - 1 )
+			np.trigger('update')
+			return false
+		})		
+	}
+	
+	/* Icons */
+	$('.viewstock').bind( 'mouseover', function(){
+		var trgtimg = $('#stock img[ref="'+$(this).attr('ref')+'"]')
+		var isrc    = trgtimg.attr('src')
+		var idu    = trgtimg.attr('data-url')
+		if( trgtimg[0].complete ) {
+			$('#goodsphoto img').attr('src', isrc)
+			$('#goodsphoto img').attr('href', idu)
+		}
+	})
+
+	/* Media library */
+	//var lkmv = null
+	var api = {
+		'makeLite' : '#turnlite',
+		'makeFull' : '#turnfull',
+		'loadbar'  : '#percents',
+		'zoomer'   : '#bigpopup .scale',
+		'rollindex': '.scrollbox div b',
+		'propriate': ['.versioncontrol','.scrollbox']
+	}
+	
+	if( typeof( product_3d_small ) !== 'undefined' && typeof( product_3d_big ) !== 'undefined' )
+		lkmv = new likemovie('#photobox', api, product_3d_small, product_3d_big )
+	if( $('#bigpopup').length )
+		var mLib = new mediaLib( $('#bigpopup') )
+
+	$('.viewme').click( function(){
+		if( mLib )
+			mLib.show( $(this).attr('ref') , $(this).attr('href'))
+		return false
+	})
+	
+	/* Delivery Block */
+    var formatDateText = function(txt){
+      txt = txt.replace('сегодня', '<b>сегодня</b>');
+      txt = txt.replace(' завтра', ' <b>завтра</b>');
+      return txt;
+    }
+    var formatPrice = function(price){
+      if (typeof price === 'undefined' || price === null) {
+        return '';
+      }
+      if (price > 0) {
+        return ', '+price+' руб.'
+      } else {
+        return ', бесплатно.'
+      }
+    }
+    var delivery_cnt = $('.delivery-info');
+    if (delivery_cnt.length) {
+      var coreid = delivery_cnt.prop('id').replace('product-id-', '');
+      $.post(delivery_cnt.data().calclink, {ids:[coreid]}, function(data){
+        if (!data[coreid]) return;
+        data = data[coreid].deliveries;
+        var html = '<h4>Как получить заказ?</h4><ul>', i, row;
+        for (i in data) {
+          row = data[i];
+          if (row.object.core_id == 3) {
+            html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине '+formatDateText(row.text)+'</h5><div>&mdash; <a target="blank" href="'+delivery_cnt.data().shoplink+'">В каких магазинах ENTER можно забрать?</a></div></li>';
+            data.splice(i, 1);
+          }
+        }
+        if (data.length > 0) {
+          html += '<li><h5>Можно заказать сейчас с доставкой</h5>';
+          for (i in data) {
+            row = data[i];
+            if (row.object.core_id == 2) {
+              html += '<div>&mdash; Можем доставить '+formatDateText(row.text)+formatPrice(row.price)+'</div>';
+              data.splice(i, 1);
+            }
+          }
+          for (i in data) {
+            row = data[i];
+            if (row.object.core_id == 1) {
+            	html += '<div>&mdash; Можем доставить '+formatDateText(row.text)+formatPrice(row.price)+'</div>';
+            	data.splice(i, 1);
+            }
+          }
+          html += '</li>';
+        }
+        html += '</ul>';
+        delivery_cnt.html(html);
+      }, 'json');
+    }
+    
+	/* Some handlers */
     $('.bDropMenu').each( function() {
 		var jspan  = $(this).find('span:first')
 		var jdiv   = $(this).find('div')
@@ -30,6 +155,7 @@ $(document).ready(function() {
 		else
 			jdiv.width( jspan.width() + 70)
 	})
+	
     $('.product_rating-form').live({
         'form.ajax-submit.prepare': function(e, result) {
             $(this).find('input:submit').attr('disabled', true)
@@ -66,111 +192,8 @@ $(document).ready(function() {
             $('.product_comment_response-block').find('textarea:first').focus()
         }
     })
-/*$('.product_filter-block .hiddenCheckbox').change( function(e){
-	console.info('checkbox: ', $(this).attr('id')+' '+$(this).attr('checked'))
-	e.stopPropagation()
-})*/
-    $('.product_filter-block')
-    /*.submit( function(e){
-    	e.preventDefault()
-    	console.info( $(this).serializeArray() )
-    })*/
-    // change
-    .bind('change', function(e) {
-        var el = $(e.target)
-
-        if (el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox']))) {
-            el.trigger('preview')
-        }
-    })
-    // preview
-    .bind('preview', function(e) {
-        var el = $(e.target)
-        var form = $(this)
-        function disable() {
-            var d = $.Deferred();
-            //el.attr('disabled', true)
-            return d.resolve();
-        }
-
-        function enable() {
-            var d = $.Deferred();
-            //el.attr('disabled', false)
-            return d.promise();
-        }
-
-        function getData() {
-            var d = $.Deferred();			
-            form.ajaxSubmit({
-                url: form.data('action-count'),
-                success: d.resolve,
-                error: d.reject
-            })
-
-            return d.promise();
-        }
-
-        $.when(getData())
-        .then(function(result) {
-            if (true === result.success) {
-                $('.product_count-block').remove();
-                //el.parent().find('> label').first().after('<div class="product_count-block" style="position: absolute; background: #fff; padding: 4px; opacity: 0.9; border-radius: 5px; border: 1px solid #ccc; cursor: pointer;">Найдено '+result.data+'</div>')
-                switch (result.data % 10) {
-                  case 1:
-                    ending = 'ь';
-                    break
-                  case 2: case 3: case 4:
-                    ending = 'и';
-                    break
-                  default:
-                    ending = 'ей';
-                    break
-                }
-                switch (result.data % 100) {
-                  case 11: case 12: case 13: case 14:
-                    ending = 'ей';
-                    break
-                }
-                var firstli = null
-                if ( el.is("div") ) //triggered from filter slider !
-                	firstli = el
-                else
-	                firstli = el.parent().find('> label').first()
-                firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
-                $('.product_count-block')
-                .hover(
-                    function() {
-                        $(this).stopTime('hide')
-                    },
-                    function() {
-                        $(this).oneTime(2000, 'hide', function() {
-                            $(this).remove()
-                        })
-                    }
-                    )
-                .click(function() {
-                    form.submit()
-                })
-                .trigger('mouseout')
-            }
-        })
-        .fail(function(error) {})
-    })
-
-	function printPrice ( val ) {
-		var floatv = (val+'').split('.')
-		var out = floatv[0]
-		var le = floatv[0].length
-		if( le > 6 ) { // billions
-			out = out.substr( 0, le - 6) + ' ' + out.substr( le - 6, le - 4) + ' ' + out.substr( le - 3, le )
-		} else if ( le > 3 ) { // thousands
-			out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
-		}
-		if( floatv.length == 2 )
-			out += '.' + floatv[1]
-		return out// + '&nbsp;'
-	}
-
+	
+	/* One Click Order */
 	function getOneClick( href ){
 		$('#ajaxgoods').lightbox_me({
 			centered: true,
@@ -232,7 +255,44 @@ $(document).ready(function() {
 
 		$('#order1click-form').bind('submit', function(e) {
 			e.preventDefault()
+			var form = $(this)
 			
+			function get1ClickResult( response ) {
+				if( !response.success ) {
+						if( response.data ) {
+							$('#order1click-form').html(response.data.form)
+						}
+						var button = $('#order1click-form').find('input:submit')
+						button.attr('disabled', false)
+						button.val('Оформить заказ')
+						if( !$('#warn').length ) {
+							var warn = $('<span id="warn" style="color:red">').html('Не удалось оформить заказ. Приносим свои извинения! Повторите попытку или обратитесь с заказом в контакт cENTER&nbsp;8&nbsp;(800)&nbsp;700&nbsp;00&nbsp;09')
+							$('.bFormB2').before( warn )
+						}
+					} else {
+						if( response.data ) {
+							$('#order1click-container').find('h2').html(response.data.title)
+							$('#order1click-form').replaceWith(response.data.content)
+							if( runAnalitics )
+								runAnalitics()
+						}
+					}			
+			}
+			
+			var button = form.find('input:submit')
+			button.attr('disabled', true)
+			button.val('Оформляю заказ...')
+			
+			var wholemessage = form.serializeArray()
+			$.ajax({
+				type: 'POST',
+				url: form.attr('action'),
+				data: wholemessage,
+				success: get1ClickResult
+			})
+			
+			 
+			/* RETIRED
 			$(this).ajaxSubmit({
 				beforeSubmit: function() {
 					var button = $('#order1click-form').find('input:submit')
@@ -266,6 +326,7 @@ $(document).ready(function() {
 					button.val('Попробовать еще раз')
 				}
 			})
+			*/
 		})
 
     //}

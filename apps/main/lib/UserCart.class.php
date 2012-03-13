@@ -586,6 +586,7 @@ class UserCart extends BaseUserData
     );
   }
 
+
     public function getBaseInfo()
     {
         $result['qty'] = $this->count();
@@ -608,6 +609,17 @@ class UserCart extends BaseUserData
         }
 
         return $result;
+    }
+
+    public function getSeoCartArticle()
+    {
+        $orderArticleAR = array();
+        foreach ($this->getProducts() as $product) {
+            $orderArticleAR[] = $product->barcode;
+        }
+        $orderArticle = implode(',', $orderArticleAR);
+        return $orderArticle;
+
     }
 
 }

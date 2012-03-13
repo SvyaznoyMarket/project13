@@ -1,17 +1,6 @@
 $(document).ready(function(){
-	function getCookie(c_name) {
-		var x , y, allcookies = document.cookie.split(';')
-		for ( var i=0, l=allcookies.length; i < l ; i++ ) {
-			x = allcookies[i].substr( 0, allcookies[i].indexOf('=') )
-			y = allcookies[i].substr( allcookies[i].indexOf('=') + 1 )
-			x = x.replace( /^\s+|\s+$/g, '' )
-			if (x === c_name) 
-				return unescape(y)
-		}
-		return false
-	}
 	var shortinfo = '/user/shortinfo'
-	if( !getCookie('enter') )
+	if( !getCookie('enter') ||  !getCookie('enter_auth'))
 		shortinfo += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000)
 	
 	/* Lightbox */
@@ -353,17 +342,4 @@ $(document).ready(function(){
 
 	} // object BuyBottons
 
-	// hidden buttons wishlist+compare
-	$('.goodsbarbig .link2, .goodsbarbig .link3').addClass('disabled').attr('href', '#').click( function(){ return false })
-	$('.goodsbar .link2').click( function() {
-		//if (! currentItem ) return
-		//if( ltbx )
-		//	ltbx.getWishes( parseItemNode( currentItem ) )
-		return false
-	})
-	$('.goodsbar .link3').click( function() {
-		//if( ltbx )
-		//	ltbx.getComparing()
-		return false
-	})
 })

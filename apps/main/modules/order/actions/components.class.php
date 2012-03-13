@@ -229,6 +229,22 @@ class orderComponents extends myComponents
   }
 
   function executeSeo_counters_advance() {
+      if ($this->step == 2) {
+          $orderArticle = $this->getUser()->getCart()->getSeoCartArticle();
+          $this->setVar('orderArticle', $orderArticle, true);
+      } elseif ($this->step == 4) {
+          $qtyAr = array();
+          $barcodeAr = array();
+          foreach ($this->order->ProductRelation as $product) {
+              $qtyAr[] = $product['quantity'];
+              $barcodeAr[] = $product->Product['barcode'];
+          }
+          $qty = implode(',', $qtyAr);
+          $barcodeStr = implode(',', $barcodeAr);
+          $this->setVar('quantityString', $qty, true);
+          echo $barcodeStr .'=============';
+          $this->setVar('orderArticle', $barcodeStr, true);
+      }
   }
 
 }

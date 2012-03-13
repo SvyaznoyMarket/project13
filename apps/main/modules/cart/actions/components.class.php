@@ -94,6 +94,8 @@ class cartComponents extends myComponents
 
   public function executeSeo_counters_advance()
   {
+      $orderArticle = $this->getUser()->getCart()->getSeoCartArticle();
+      $this->setVar('orderArticle', $orderArticle, true);
   }
 
 }

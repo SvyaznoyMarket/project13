@@ -1,12 +1,12 @@
 <?php
 $request = sfContext::getInstance()->getRequest();
-$page = $request->getParameter('page');
-$view = $request->getParameter('view', isset($view) ? $view : null);
+$page = $request['page'];
+$view = isset($view) ? $view : $request['view'];
 ?>
 <?php $empty = 0 == $productPager->getNbResults() ?>
 
-<?php if($view == 'expanded') :?>
-<input type="hidden" id="dlvrlinks" data-shoplink="<?php echo url_for('shop') ?>" data-calclink="<?php echo url_for('product_delivery') ?>" />
+<?php if($view == 'expanded'): ?>
+  <input type="hidden" id="dlvrlinks" data-shoplink="<?php echo url_for('shop') ?>" data-calclink="<?php echo url_for('product_delivery') ?>" />
 <?php endif?>
 
 
@@ -49,7 +49,7 @@ if ($module == 'tag') {
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
 
 <?php if (!$empty && !(isset($list_view) && false === $list_view)): ?>
-  <?php include_component('product', 'list_view') ?>
+  <?php include_component('product', 'list_view', array('view' => $view, 'productCategory' => $productCategory)) ?>
 <?php endif ?>
 
 <?php if (!isset($noSorting) || !$noSorting): ?>

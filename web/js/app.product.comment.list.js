@@ -1,4 +1,3 @@
-
 $(function(){
 	
 	var filterlink = $('.filter .filterlink:first');
@@ -39,7 +38,6 @@ $(function(){
 			trigger = cnt.find('.subcomments-trigger'),
 			num = parseInt(trigger.html().replace(/Комментарии \((\d+)\)/, '$1'));
 		
-		//alert(trigger.html());
 		$.post(form.prop('action'), form.serializeArray(), function(resp){
 			
 			var html = [

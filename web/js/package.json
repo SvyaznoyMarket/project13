@@ -1,0 +1,71 @@
+{
+	"name": "enter.ru",
+	"jsdev": "Ivan Kotov",
+	
+	"files": [
+		{
+			"title": "bigjquery.min.js",
+			"files": [
+				{ "title": "custom-form-elements.js" },
+				{ "title": "jcookies.js" },
+				{ "title": "jquery-ui-1.8.16.custom.min.js" },
+				{ "title": "jquery.effects.core.js" },
+				{ "title": "jquery.effects.transfer.js" },
+				{ "title": "jquery.lightbox_me.js" },
+				{ "title": "jquery.mousewheel.min.js" },
+				{ "title": "jquery.raty.js" },
+				{ "title": "jquery.scrollto.js" },
+				{ "title": "jquery.timers.js" },
+				{ "title": "prettyCheckboxes.js" },
+				{ "title": "typewriter.js" },
+				{ "title": "jquery.ui.touch-punch.js" }
+			]
+		},
+		{
+			"title": "tour.js"			
+		},
+		{
+			"title": "watch3dv2.min.js"			
+		},
+		{
+			"title": "wellcome.js"			
+		},
+		{
+			"title": "loadjs.js"			
+		},
+		{
+			"title": "LAB.min.js"			
+		},
+		{
+			"title": "google.maps.infobox.js"			
+		},
+		{
+			"title": "dash.js"			
+		},
+		{
+			"title": "library.js"			
+		},		
+		{
+			"title": "app.shop.js"			
+		},
+		{
+			"title": "app.product.js"			
+		},
+		{
+			"title": "app.product.comment.new.js"			
+		},
+		{
+			"title": "app.product.comment.list.js"			
+		},
+		{
+			"title": "app.order.js"			
+		},
+		{
+			"title": "app.cart.js"			
+		},
+		{
+			"title": "jquery-1.6.4.min.js"			
+		}
+		
+	]
+}

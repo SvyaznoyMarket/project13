@@ -95,7 +95,6 @@ foreach ($p3d as $p3d_obj)
 
 
 
-
         <div style="margin-bottom: 20px;">
         <!--AdFox START-->
         <!--enter-->
@@ -327,6 +326,10 @@ foreach ($p3d as $p3d_obj)
 
 <?php if (count($item['related'])): ?>
   <?php include_partial('product/product_related', $sf_data) ?>
+<?php endif ?>
+
+<?php if (count($item['accessory'])): ?>
+  <?php include_partial('product/product_accessory', $sf_data) ?>
 <?php endif ?>
 
 <!-- Media -->
