@@ -173,7 +173,8 @@ $(document).ready(function(){
 
 	$('#reset-pwd-form, #auth_forgot-form').submit(function(){
 		var form = $(this);
-		form.find('.error_list').html('');
+		form.find('.error_list').html('Запрос отправлен. Идет обработка...');
+		form.find('.whitebutton').attr('disabled', 'disabled')
 		$.post(form.prop('action'), form.serializeArray(), function(resp){
 			if (resp.success === true) {
 				//$('#reset-pwd-form').hide();
