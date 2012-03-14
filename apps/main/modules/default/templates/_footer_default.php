@@ -56,7 +56,7 @@
       </dd>
       <dd class='bFooterF1'>
         <a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>">
-          <h3>Заказывают услуги в сервисной Службе F1</h3>
+          <h3>Заказываю услуги в сервисной Службе F1</h3>
           Мне собирают, подключают, настраивают и рекомендуют
         </a>
       </dd>
@@ -64,7 +64,7 @@
   </div>
 
   <div class='bFooterBottom'>
-    &copy; &laquo;Enter&raquo; 2002-2011. Все права защищены. Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br>
+    &copy; &laquo;Enter&raquo; 2002&ndash;<?php echo date("Y") ?>. Все права защищены. Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br>
     <a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>">Правовая информация</a>
     <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a>
     <?php if (has_slot('navigation_seo')) {
