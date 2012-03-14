@@ -17,7 +17,7 @@
 
 <!-- Header -->
 <div class="bHeaderWrap">
-  <div class="bHeader">
+  <div class="bHeader topmenu">
     <?php LastModifiedHandler::setLastModified();  ?>
     <?php include_partial('default/logo') ?>
     <?php include_component('productCategory', 'root_list') ?>
