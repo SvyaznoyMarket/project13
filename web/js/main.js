@@ -173,7 +173,8 @@ $(document).ready(function(){
 
 	$('#reset-pwd-form, #auth_forgot-form').submit(function(){
 		var form = $(this);
-		form.find('.error_list').html('');
+		form.find('.error_list').html('Запрос отправлен. Идет обработка...');
+		form.find('.whitebutton').attr('disabled', 'disabled')
 		$.post(form.prop('action'), form.serializeArray(), function(resp){
 			if (resp.success === true) {
 				//$('#reset-pwd-form').hide();
@@ -270,19 +271,12 @@ $(document).ready(function(){
 			}
 			if( location.href.match(/sort=/) &&  location.href.match(/page=/) ) { // Redirect on first in sort case
 				$(this).bind('click', function(){
-					$.jCookies({
-					name : 'infScroll',
-					value : 1
-					})
+					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
 					location.href = location.href.replace(/page=\d+/,'')
 				})
 			} else {
 				$(this).bind('click', function(){
-					$.jCookies({
-						name : 'infScroll',
-						value : 1
-					})
-	
+					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
 					var next = $('div.pageslist:first li:first')
 					if( next.hasClass('current') )
 						next = next.next()
@@ -295,7 +289,8 @@ $(document).ready(function(){
 					$('div.pageslist ul').append( next )
 										 .find('a')
 										 .bind('click', function(){
-											$.jCookies({ erase : 'infScroll' })
+										 console.info('infScroll')
+											docCookies.removeItem( 'infScroll' )
 										  })
 					$('div.allpager').addClass('mChecked')
 					checkScroll()
@@ -304,7 +299,7 @@ $(document).ready(function(){
 			}
 		})
 
-		if( $.jCookies({ get : 'infScroll' }) )
+		if( docCookies.hasItem( 'infScroll' ) )
 			$('div.allpager:first').trigger('click')
 	}
 	
@@ -424,7 +419,7 @@ $(document).ready(function(){
 	})
 	
 	/* GEOIP fix */
-	if( !getCookie('geoshop') ) {
+	if( !docCookies.hasItem('geoshop') ) {
 		getRegions()
 	}
 	
