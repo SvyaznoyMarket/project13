@@ -18,16 +18,20 @@
       <dd>
         <div class='mFDiv mFoot1'>
           <h3>1. Заказываю товар</h3>
+
           <ul>
             <li>в Контакт cEnter<br>
               <b class='mFphone'>8 (800) 700 00 09</b><br>
-              <div class='bBottommenu__eSkype'><i>Skype</i><b>skype2enter и call2enter</b></div>
-              <div class='bBottommenu__eICQ'><i>ICQ</i><b>648198963</b></div>
+              <div class="bBottommenu__eSkype">
+                <i class="mCall"><a class="bCall" onclick="typeof(_gaq)=='undefined'?'':_gaq.push(['_trackEvent', 'Zingaya', 'ButtonClick']);typeof(_gat)=='undefined'?'':_gat._getTrackerByName()._setAllowLinker(true); window.open(typeof(_gat)=='undefined'?this.href+'?referrer='+escape(window.location.href):_gat._getTrackerByName()._getLinkerUrl(this.href+'?referrer='+escape(window.location.href)), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false" href="http://zingaya.com/widget/e990d486d664dfcff5f469b52f6bdb62">Позвонить с сайта</a></i><b><br></b>
+                <i>Skype<b>:</b></i><b>skype2enter и call2enter<br></b>
+                <i>ICQ<b>:</b></i><b>648198963</b></div>
             </li>
             <li>Через сайт или по каталогу</li>
             <li>Терминалы в магазине</li>
             <li><a href="<?php echo url_for('default_show', array('page' => 'mobile_apps')) ?>">Мобильные и социальные приложения</a></li>
           </ul>
+
         </div>
         <div class='mFDiv mFoot2'>
           <h3>2. Получаю заказ</h3>
@@ -56,7 +60,7 @@
       </dd>
       <dd class='bFooterF1'>
         <a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>">
-          <h3>Заказывают услуги в сервисной Службе F1</h3>
+          <h3>Заказываю услуги в сервисной Службе F1</h3>
           Мне собирают, подключают, настраивают и рекомендуют
         </a>
       </dd>
@@ -68,9 +72,7 @@
     <a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>">Правовая информация</a>
     <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a>
     <a href="<?php echo url_for('default_show', array('page' => 'media_info')) ?>">Информация о СМИ</a>
-    <?php if (has_slot('navigation_seo')) {
-    include_slot('navigation_seo');
-  } ?>
+    <?php if (has_slot('navigation_seo')) include_slot('navigation_seo') ?>
   </div>
 </div>
 <!-- /Footer -->

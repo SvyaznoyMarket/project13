@@ -6,7 +6,7 @@ BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,hel
 .allpageinner {padding-bottom:431px; position:relative}
 .buyingpage {padding-bottom:96px}
 *+ html .allpageinner {float:left; width:100%} /* for IE7 */
-.footer {width:920px; height:388px; margin:-388px auto 0 auto; position:relative; z-index: 50; }
+.footer {height: 438px; margin: -438px auto 0; position: relative; width: 920px;}
 .lowfooter {height:66px; margin:-66px auto 0 auto}
 
 
@@ -4041,4 +4041,98 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
         background: url('/images/img_8gifts_right.png') 0 0 no-repeat;
     }
 
-.error_list{ color:red }    
+.error_list{ color:red }
+
+
+.bBottommenu {
+    background: none repeat scroll 0 0 #FAFAFA;
+    border: 2px solid #DCDCDC;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 3px #DCDCDC;
+    font-size: 0;
+    margin-bottom: 20px;
+    padding: 25px 80px 20px 25px;
+    text-align: justify;
+}
+.bBottommenu__eSkype {
+    cursor: pointer;
+    display: inline-block;
+    font: 12px Tahoma,sans-serif;
+    padding: 7px 10px 3px 0;
+}
+.bBottommenu__eSkype i, .bBottommenu__eSkype b {
+    font: 12px Tahoma,sans-serif;
+}
+.bBottommenu__eSkype:first-letter {
+}
+.bBottommenu__eSkype b {
+    display: none;
+}
+.bBottommenu__eSkype:hover b {
+    display: inline;
+}
+.bBottommenu__eSkype i {
+    padding-left: 5px;
+    text-decoration: underline;
+}
+.bBottommenu__eSkype:hover i, .bBottommenu__eSkype i:first-child {
+    padding-left: 0;
+}
+.bBottommenu__eSkype:hover i {
+    display: inline-block;
+    width: 45px;
+}
+.bBottommenu__eSkype .mCall {
+    width: auto !important;
+}
+.bBottommenu__eIco {
+    background: url("img/footer_ico.png") no-repeat scroll 0 0 transparent;
+    height: 102px;
+    text-align: center;
+    width: 120px;
+}
+.bBottommenu__eIco h4 {
+    color: #FFFFFF;
+    font: 34px 'Enter',sans-serif;
+    margin: 0;
+    padding: 10px 0 0 10px;
+}
+.bBottommenu__eIco p {
+    color: #FFFFFF;
+    font: 14px 'Enter',sans-serif;
+    margin: 0;
+    padding: 0 0 0 10px;
+}
+.bBottommenu__eLong {
+    width: 95%;
+}
+.bBottommenu dl, .bBottommenu__eLong {
+    display: inline-block;
+    vertical-align: top;
+}
+.bBottommenu dt {
+    font: 14px/24px Tahoma,sans-serif;
+}
+.bBottommenu h3 {
+    font: 19px Tahoma,sans-serif;
+    margin: 0 0 5px;
+}
+.bBottommenu span {
+    color: #434343;
+    font: 10px Tahoma,sans-serif;
+}
+.bBottommenu a {
+    color: #434343;
+    font: 12px/16px Tahoma,sans-serif;
+}
+.bFooterBottom {
+    padding: 10px 0 60px;
+}
+.bFooterBottom, .bFooterBottom a {
+    color: #A6A6A6;
+    font: 11px/20px Tahoma,sans-serif;
+}
+.bFooterBottom a {
+    margin-right: 10px;
+    text-decoration: underline;
+}
