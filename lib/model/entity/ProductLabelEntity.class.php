@@ -64,4 +64,11 @@ class ProductLabelEntity
   {
     return $this->name;
   }
+
+  public function getImageUrl($size = 0)
+  {
+    $config = sfConfig::get('app_product_label_photo_url');
+
+    return $this->getImage() ? $config[$size]."/{$this->getImage()}" : null;
+  }
 }

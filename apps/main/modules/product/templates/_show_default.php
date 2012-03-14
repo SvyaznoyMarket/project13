@@ -24,7 +24,14 @@ foreach ($p3d as $p3d_obj)
   product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
   product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
 </script>
-<div class="goodsphoto"><!--i class="bestseller"></i--><a href="<?php echo $product->getMainPhotoUrl(4)  ?>" class="viewme" ref="image" onclick="return false"><img src="<?php echo $product->getMainPhotoUrl(3) ?>" alt="" width="500" height="500" title="" /></a></div>
+<div class="goodsphoto">
+  <a href="<?php echo $product->getMainPhotoUrl(4)  ?>" class="viewme" ref="image" onclick="return false">
+    <?php if ($item['label']): ?>
+      <img class="bLabels" src="<?php echo $item['label']->getImageUrl(1) ?>" alt="<?php echo $item['label']->getName() ?>" />
+    <?php endif ?>
+    <img src="<?php echo $product->getMainPhotoUrl(3) ?>" alt="" width="500" height="500" title="" />
+  </a>
+</div>
 <div style="display:none;" id="stock">
   <!-- list of images 500*500 for preview -->
   <?php foreach ($photos as $i => $photo): ?>

@@ -39,6 +39,11 @@ all:
       - 'http://fs01.enter.ru/1/2/500/'
       - 'http://fs01.enter.ru/1/2/2500/'
 
+  product_label:
+    photo_url:
+      - 'http://fs01.enter.ru/7/1/40/'
+      - 'http://fs01.enter.ru/7/1/120/'
+
   category:
     photo_url:
       - 'http://fs01.enter.ru/6/1/163/'

@@ -100,6 +100,7 @@ class productComponents extends myComponents
       'is_insale'  => $this->product['is_insale'],
       'is_instock' => $this->product['is_instock'],
       'url'        => $this->generateUrl('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
+      'label'      => $this->product['Label']->getId() ? $this->product['Label'] : null,
     );
 
     if (in_array($this->view, array('compact', 'extra_compact')))
