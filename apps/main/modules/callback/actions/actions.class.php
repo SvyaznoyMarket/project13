@@ -40,17 +40,18 @@ class callbackActions extends myActions
 
         $this->form = new CallbackForm();
         $data = $request->getParameter($this->form->getName());
-        
-       
+
+
         #$user = $this->getUser();
         #if (isset($user) && $user->getGuardUser() && $user->isAuthenticated()) $userId = $user->getGuardUser()->id;
         #else $userId = 0;
 
 
+        $data['channel_id'] = 1;
         $this->form->bind($data);
         $this->setTemplate('index');
-        $this->setVar('error', '', true);                          
-        
+        $this->setVar('error', '', true);
+
 
         if ($this->form->isValid())
         {
@@ -61,7 +62,7 @@ class callbackActions extends myActions
                 $this->setTemplate('sendOk');
             }
             catch (Exception $e)
-            {                
+            {
                 //echo $e->getMessage();
                 $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
                 $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());

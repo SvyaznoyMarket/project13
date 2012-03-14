@@ -173,14 +173,17 @@ $(document).ready(function(){
 
 	$('#reset-pwd-form, #auth_forgot-form').submit(function(){
 		var form = $(this);
-		form.find('.error_list').html('');
+		form.find('.error_list').html('Запрос отправлен. Идет обработка...');
+		form.find('.whitebutton').attr('disabled', 'disabled')
 		$.post(form.prop('action'), form.serializeArray(), function(resp){
 			if (resp.success === true) {
-
-				$('#reset-pwd-form').hide();
-				$('#login-form').show();
-				alert('Новый пароль был вам выслан по почте или смс');
-
+				//$('#reset-pwd-form').hide();
+				//$('#login-form').show();
+				//alert('Новый пароль был вам выслан по почте или смс');
+				var resetForm = $('#reset-pwd-form > div')
+				resetForm.find('input').remove()
+				resetForm.find('.pb5').remove()
+				resetForm.find('.error_list').html('Новый пароль был вам выслан по почте или смс!')
 			} else {
 				var txterr = ( resp.error !== '' ) ? resp.error : 'Вы ввели неправильные данные'
 				form.find('.error_list').text( txterr );
@@ -268,19 +271,12 @@ $(document).ready(function(){
 			}
 			if( location.href.match(/sort=/) &&  location.href.match(/page=/) ) { // Redirect on first in sort case
 				$(this).bind('click', function(){
-					$.jCookies({
-					name : 'infScroll',
-					value : 1
-					})
+					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
 					location.href = location.href.replace(/page=\d+/,'')
 				})
 			} else {
 				$(this).bind('click', function(){
-					$.jCookies({
-						name : 'infScroll',
-						value : 1
-					})
-	
+					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
 					var next = $('div.pageslist:first li:first')
 					if( next.hasClass('current') )
 						next = next.next()
@@ -293,7 +289,8 @@ $(document).ready(function(){
 					$('div.pageslist ul').append( next )
 										 .find('a')
 										 .bind('click', function(){
-											$.jCookies({ erase : 'infScroll' })
+										 console.info('infScroll')
+											docCookies.removeItem( 'infScroll' )
 										  })
 					$('div.allpager').addClass('mChecked')
 					checkScroll()
@@ -302,7 +299,7 @@ $(document).ready(function(){
 			}
 		})
 
-		if( $.jCookies({ get : 'infScroll' }) )
+		if( docCookies.hasItem( 'infScroll' ) )
 			$('div.allpager:first').trigger('click')
 	}
 	
@@ -422,7 +419,7 @@ $(document).ready(function(){
 	})
 	
 	/* GEOIP fix */
-	if( !getCookie('geoshop') ) {
+	if( !docCookies.hasItem('geoshop') ) {
 		getRegions()
 	}
 	
@@ -850,9 +847,14 @@ $(document).ready(function(){
 	function cardsCarousel ( nodes ) {
 		var self = this
 		var current = 1
-		var max = $(nodes.times).html() * 1
+
 		var wi  = nodes.width*1
 		var viswi = nodes.viswidth*1
+
+		if( !isNaN($(nodes.times).html()) )
+			var max = $(nodes.times).html() * 1
+		else
+			var max = Math.ceil(wi / viswi)			
 		var buffer = 2
 		var ajaxflag = false
 
@@ -910,6 +912,7 @@ $(document).ready(function(){
 				}
 				self.notify()
 			}
+			return false
 		})
 
 		$(nodes.prev).click( function() {
@@ -918,6 +921,7 @@ $(document).ready(function(){
 				shiftme()
 				self.notify()
 			}
+			return false
 		})
 
 	} // cardsCarousel object
@@ -937,9 +941,10 @@ $(document).ready(function(){
 			var tmpline = new cardsCarousel ({
 					'prev'  : $(this).find('.back'),
 					'next'  : $(this).find('.forvard'),
-					'crnt'  : $(this).find('span:first'),
+					'crnt'  : $(this).find('.none'),
 					'times' : $(this).find('span:eq(1)'),
-					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
+					'width' : $(this).find('.jshm').html().replace(/\D/g,''),
+//					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
 					'wrap'  : $(this).find('~ .carousel').first(),
 					'viswidth' : 3
 					})

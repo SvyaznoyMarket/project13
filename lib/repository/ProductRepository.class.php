@@ -2,6 +2,11 @@
 
 class ProductRepository extends BaseRepository
 {
+  public function get(array $ids, $index = null)
+  {
+    return ProductTable::getInstance()->getListByCoreIds($ids, array('hydrate_array' => true));
+  }
+
   public function getRelated(ProductRelatedCriteria $criteria, $order = null)
   {
     $params = array(

@@ -24,13 +24,14 @@ class BannerTable extends myDoctrineTable
       'id'          => 'core_id',
       'name'        => 'name',
       'is_active'   => 'is_active',
-      'is_dummy'    => 'is_dummy',
+      //'is_dummy'    => 'is_dummy',
       'media_image' => 'image',
       'start'       => 'start_at',
       'finish'      => 'end_at',
       'position'    => 'position',
       //'timeout'     => 'timeout',
       'url'         => 'link',
+      'type_id'     => array('name' => 'type', 'mapping' => array(1 => 'banner', 2 => 'dummy', 3 => 'exclusive', )),
     );
   }
 
@@ -83,14 +84,24 @@ class BannerTable extends myDoctrineTable
       {
         foreach ($record['Item'] as $j => $bannerItem)
         {
-          $bannerItem['Object'] = null;
-          if ('product' == $bannerItem['type'])
+          switch ($bannerItem['type'])
           {
-            $product = ProductTable::getInstance()->getById($bannerItem['object_id'], array('hydrate_array' => true, 'with_model' => true, 'view' => 'list'));
-            if ($product)
-            {
-              $bannerItem['Object'] = $product;
-            }
+            case 'product':
+              $product = ProductTable::getInstance()->getById($bannerItem['object_id'], array('hydrate_array' => true, 'with_model' => true, 'view' => 'list'));
+              if ($product)
+              {
+                $bannerItem['Object'] = $product;
+              }
+              break;
+            case 'product_category':
+              $product_category = ProductCategoryTable::getInstance()->getById($bannerItem['object_id'], array('hydrate_array' => true, ));
+              if ($product_category)
+              {
+                $bannerItem['Object'] = $product_category;
+              }
+              break;
+            default:
+              $bannerItem['Object'] = null;
           }
 
           if (is_array($bannerItem))
@@ -112,10 +123,10 @@ class BannerTable extends myDoctrineTable
   public function getList(array $params = array())
   {
     $q = $this->createBaseQuery($params)
-      ->where('banner.is_active = ? AND banner.is_dummy = ?', array(true, false))
+      ->where('banner.is_active = ? AND banner.type = ?', array(true, 'exclusive'))
       ->addWhere('NOW() BETWEEN banner.start_at AND banner.end_at')
+      ->limit(1);
     ;
-
     $this->setQueryParameters($q, $params);
 
     $ids = $this->getIdsByQuery($q);
@@ -123,13 +134,25 @@ class BannerTable extends myDoctrineTable
     if (!count($ids))
     {
       $q = $this->createBaseQuery($params)
-        ->where('banner.is_active = ? AND banner.is_dummy = ?', array(true, true))
+        ->where('banner.is_active = ? AND banner.type = ?', array(true, 'banner'))
+        ->addWhere('NOW() BETWEEN banner.start_at AND banner.end_at')
       ;
-      myToolkit::arrayDeepMerge(array(
-        'with_items' => false,
-      ), $params);
+
+      $this->setQueryParameters($q, $params);
 
       $ids = $this->getIdsByQuery($q);
+
+      if (!count($ids))
+      {
+        $q = $this->createBaseQuery($params)
+          ->where('banner.is_active = ? AND banner.type = ?', array(true, 'dummy'))
+        ;
+        myToolkit::arrayDeepMerge(array(
+          'with_items' => false,
+        ), $params);
+
+        $ids = $this->getIdsByQuery($q);
+      }
     }
 
     return $this->createListByIds($ids, $params);
@@ -179,5 +202,41 @@ class BannerTable extends myDoctrineTable
   public function getCacheEraserKeys($record, $action = null)
   {
     return array();
+  }
+
+  public function isBanner($banner)
+  {
+    if (isset($banner['type']) && 'banner' == $banner['type'])
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  public function isDummy($banner)
+  {
+    if (isset($banner['type']) && 'dummy' == $banner['type'])
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  public function isExclusive($banner)
+  {
+    if (isset($banner['type']) && 'exclusive' == $banner['type'])
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 }

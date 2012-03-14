@@ -7,7 +7,6 @@
 			"title": "bigjquery.min.js",
 			"files": [
 				{ "title": "custom-form-elements.js" },
-				{ "title": "jcookies.js" },
 				{ "title": "jquery-ui-1.8.16.custom.min.js" },
 				{ "title": "jquery.effects.core.js" },
 				{ "title": "jquery.effects.transfer.js" },
@@ -42,6 +41,9 @@
 		{
 			"title": "dash.js"			
 		},
+		{
+			"title": "library.js"			
+		},		
 		{
 			"title": "app.shop.js"			
 		},

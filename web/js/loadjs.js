@@ -36,6 +36,16 @@
 			break
 		case 'default':
 			break
+		case 'infopage':
+			$LAB.queueWait( function() {
+				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				.wait()
+				.script(getWithVersion('main.js'))
+				.wait()
+				.script( getWithVersion('dash.js') )
+				.script( getWithVersion('infopages.js') )
+			}).runQueue()
+			break
 		case 'cart':
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
