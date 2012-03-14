@@ -24,6 +24,7 @@ A.nodecor {text-decoration:none}
 .orange, .orange:hover, .orange.underline:hover {color:#ffa901}
 .green {color:#6ea428}
 .white {color:#fff}
+.black {color:#000}
 .motton {color:#4fcbf4}
 .fl {float:left}
 .fr {float:right}
@@ -55,14 +56,39 @@ TABLE {border-collapse:collapse}
   url('../fonts/rouble.ttf') format('truetype');
 }
 
-@font-face{ 
-	font-family: 'Enter Regular';
-	src: url('../fonts/enter_type_regular-webfont.eot');
-	src: url('../fonts/enter_type_regular-webfont.eot?#iefix') format('embedded-opentype'),
-	     url('../fonts/enter_type_regular-webfont.woff') format('woff'),
-	     url('../fonts/enter_type_regular-webfont.ttf') format('truetype'),
-	     url('../fonts/enter_type_regular-webfont.svg#webfont') format('svg');
-	}
+@font-face {
+    font-family: 'EnterTypeRegular';
+    src: url('../fonts/enter_type_regular-webfont.eot');
+    src: url('../fonts/enter_type_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/enter_type_regular-webfont.woff') format('woff'),
+         url('../fonts/enter_type_regular-webfont.ttf') format('truetype'),
+         url('../fonts/enter_type_regular-webfont.svg#EnterTypeRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+	font-family: 'EnterTypeBold';
+	src: url('../fonts/EnterType_Bold.eot');
+	src: local('☺'), 
+		url('../fonts/EnterType_Bold.woff') format('woff'), 
+		url('../fonts/EnterType_Bold.ttf') format('truetype'), 
+		url('../fonts/EnterType_Bold.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'EnterTypeItalic';
+	src: url('../fonts/EnterType_Italic.eot');
+	src: local('☺'), 
+		url('../fonts/EnterType_Italic.woff') format('woff'), 
+		url('../fonts/EnterType_Italic.ttf') format('truetype'), 
+		url('../fonts/EnterType_Italic.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
 .pt5 {padding-top:5px}
 .pt7 {padding-top:7px}
 .pt10 {padding-top:10px}
@@ -4971,32 +4997,16 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 .mBuyButtonBottom{ padding: 20px 120px 0 0; }
 .mBButtonFont{ font: bold 16px Tahoma, sans-serif; width: 490px; padding: 32px 0 0 0; }
 
-.bLabelsBigBestseller,
-.bLabelsSmallBestseller,
-.bLabelsBigNew,
-.bLabelsSmallNew,
-.bLabelsBigPromo,
-.bLabelsSmallPromo,
-.bLabelsBigSale,
-.bLabelsSmallSale{ 
+.bLabels{
 	left: 0; 
 	display: block;
 	position: absolute;
+	top: 10px !important;
 	}
-	
-	.bLabelsBigBestseller{ top: 10px !important; width: 110px; height: 38px !important; background: url('img/label_bestseller_big.png') no-repeat !important; }
-	.bLabelsSmallBestseller{ top: 10px !important; width: 59px; height: 23px !important; background: url('img/label_bestseller_small.png') no-repeat !important; }
-	.bLabelsBigNew{ top: 10px !important; width: 87px; height: 38px !important; background: url('img/label_new_big.png') no-repeat !important; }
-	.bLabelsSmallNew{ top: 10px !important; width: 46px; height: 23px !important; background: url('img/label_new_small.png') no-repeat !important; }
-	.bLabelsBigPrice{ top: 10px !important; width: 124px; height: 38px !important; background: url('img/label_price_big.png') no-repeat !important; }
-	.bLabelsSmallPrice{ top: 10px !important; width: 66px; height: 23px !important; background: url('img/label_price_small.png') no-repeat !important; }
-	.bLabelsBigPromo{ top: 10px !important; width: 84px; height: 38px !important; background: url('img/label_promo_big.png') no-repeat !important; }
-	.bLabelsSmallPromo{ top: 10px !important; width: 46px; height: 23px !important; background: url('img/label_promo_small.png') no-repeat !important; }
-	.bLabelsBigSale{ top: 10px !important; width: 143px; height: 38px !important; background: url('img/label_sale_big.png') no-repeat !important; }
-	.bLabelsSmallSale{ top: 10px !important; width: 76px; height: 23px !important; background: url('img/label_sale_small.png') no-repeat !important; }
 
 .bSMI{ color: #000; padding-bottom: 100px; font: 16px Tahoma, sans-serif; }
-
+.mOur{ color: #000; font: 12px Tahoma, sans-serif; }
+.mOurGray{ color: #a1a1a1; font: 12px Tahoma, sans-serif; }
 
 	
 		

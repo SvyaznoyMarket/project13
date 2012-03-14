@@ -67,6 +67,7 @@
     &copy; &laquo;Enter&raquo; 2002-2011. Все права защищены. Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br>
     <a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>">Правовая информация</a>
     <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a>
+    <a href="<?php echo url_for('default_show', array('page' => 'media_info')) ?>">Информация о СМИ</a>
     <?php if (has_slot('navigation_seo')) {
     include_slot('navigation_seo');
   } ?>

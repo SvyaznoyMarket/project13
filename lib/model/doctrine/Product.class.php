@@ -18,6 +18,7 @@ class Product extends BaseProduct
   {
     $this->mapValue('Parameter', new myDoctrineVirtualCollection());
     $this->mapValue('ParameterGroup', new myDoctrineVirtualCollection());
+    $this->mapValue('Label', new ProductLabelEntity());
   }
 
   public function preDelete($event)
@@ -338,6 +339,11 @@ class Product extends BaseProduct
       $this->is_instock = 0;
     }*/
 
+  }
+
+  public function setLabel(ProductLabelEntity $label)
+  {
+    $this->mapValue('Label', $label);
   }
 
   public function getIsInsale()
