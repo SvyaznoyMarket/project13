@@ -419,7 +419,7 @@ class productComponents extends myComponents
         if (!$value->product_id) continue;
         $product = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ));
         if (!$product) continue;
-        $realValue = $value->getRealValue();
+        $realValue = strval($value->getRealValue());
         $value_to_map[$realValue]['id'] = $id;
         $value_to_map[$realValue]['url'] = $this->generateUrl('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
         $value_to_map[$realValue]['parameter'] = new ProductParameter($property['ProductTypeRelation'][0], array($value, ));
@@ -447,10 +447,11 @@ class productComponents extends myComponents
       ksort($value_to_map);
       $property->mapValue('values', $value_to_map);
     }
-    if (!isset($property->current))
+    if (empty($property->current))
     {
       return sfView::NONE;
     }
+
     $this->setVar('properties', $properties, true);
   }
 
