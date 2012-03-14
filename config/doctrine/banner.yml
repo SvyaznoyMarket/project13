@@ -13,7 +13,7 @@ Banner:
     image:             { type: string(255), notnull: false, default: null, comment: 'оригинальная картинка' }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
     is_active:         { type: boolean, notnull: true, default: false }
-    is_dummy:          { type: boolean, notnull: true, default: false }
+    type:              { type: enum, length: 20, values: [ banner, dummy, exclusive ], notnull: true }
     start_at:          { type: timestamp, format: Y-m-d H:m:i }
     end_at:            { type: timestamp, format: Y-m-d H:m:i }
     timeout:           { type: integer(4), notnull: false, default: null }
@@ -29,7 +29,7 @@ BannerItem:
   columns:
     id:                { type: integer(20), autoincrement: true, primary: true }
     banner_id:         { type: integer(20), notnull: true }
-    type:              { type: enum, length: 20, values: [ product ], notnull: true }
+    type:              { type: enum, length: 20, values: [ product, product_category ], notnull: true }
     object_id:         { type: integer(20), notnull: false, default: null }
     position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
   relations:
