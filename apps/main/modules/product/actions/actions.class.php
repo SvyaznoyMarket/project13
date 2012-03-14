@@ -22,6 +22,8 @@ class productActions extends myActions
 
   public function executeSet(sfWebRequest $request)
   {
+    $this->getRequest()->setParameter('_template', 'product_catalog');
+    
     $barcodes = is_array($request['products']) ? $request['products'] : explode(',', $request['products']);
 
     $this->productList = ProductTable::getInstance()->getListByBarcodes($barcodes, array(

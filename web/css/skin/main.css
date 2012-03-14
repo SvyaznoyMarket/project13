@@ -294,53 +294,58 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
 	.bCarousel__eBtnL:hover{ background: url('img/c_btn_left_h.png'); }
 	.bCarousel__eBtnR:hover{ background: url('img/c_btn_right_h.png'); }
 
-
-
-.bHeader {
+  .bHeader{
     height: 112px;
-    margin: 20px 0 20px;
-    padding: 20px 12px 0 0;
     text-align: justify;
-}
-.bHeaderWrap {
-    position: relative;
+    margin: 20px 0 20px 0;
+    padding: 20px 12px 0 0;
+  }
+  .bHeaderWrap{
     z-index: 100;
-}
-.bToplogo, .bToplink span, .bHeader__eLong {
-    display: inline-block;
+    position: relative;
+  }
+  .bToplogo,
+  .bToplink span,
+  .bHeader__eLong{
     vertical-align: top;
-}
-.bCorner {
-    background: url("img/bg.png") no-repeat scroll 0 -218px transparent;
-    display: none;
-    font-size: 0;
-    height: 15px;
-    line-height: 0;
-    width: 20px;
-}
-.bToplogo {
-    text-indent: -1000px;
-    background: url("img/logo_enter_main.gif") no-repeat scroll 50% 50% transparent;
-    height: 91px;
-    width: 140px;
-}
-.bToplink {
-    color: #FFFFFF;
     display: inline-block;
-    max-width: 68px;
+    *display: inline;
+    zoom: 1;
+  }
+  .bCorner{
+    width: 20px;
+    height:15px;
+    font-size:0;
+    line-height:0;
+    display: none;
+    background:url(img/bg.png) no-repeat 0 -218px;
+  }
+  .bToplogo{
+    width: 140px;
+    height: 91px;
+    background: url('img/logo_enter_main.gif') 50% 50% no-repeat;
+  }
+  .bToplink{
+    color: #ffffff;
     min-width: 41px;
+    max-width: 68px;
     position: relative;
     text-align: center;
+
     vertical-align: top;
-}
-.bToplink:hover {
-    color: #FFA901;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+  }
+  .bToplink:hover{
+    color: #ffa901;
     text-decoration: none;
-}
-.bToplink span {
+  }
+  .bToplink span{
     height: 71px;
-    margin: 10px 0 5px;
-}
+    margin: 10px 0 5px 0;
+  }
+
 .mMebel, .category-1 {
     background: url("img/header_icon_furniture.gif") no-repeat scroll 0 0 transparent;
     width: 38px;
@@ -394,9 +399,24 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
     background: url("img/header_icon_hobbies_gifts.gif") no-repeat scroll 0 0 transparent;
     width: 42px;
 }
-.bHeader .bToplink:hover span {
-    background-position: 0 -71px;
-}
-.bHeader__eLong {
+.bHeader .bToplink:hover span{ background-position: 0 -71px; }
+
+  .bHeader__eLong{
     width: 98%;
-}
+  }
+
+  .bCall{
+    height: 16px;
+    margin: 5px 0;
+    padding-left: 20px;
+    font: 12px Tahoma, sans-serif;
+    text-decoration: underline !important;
+    background: url('img/bCall.png') 0 -16px no-repeat;
+
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+  }
+  .address{
+    font: 12px Tahoma, sans-serif;
+  }
