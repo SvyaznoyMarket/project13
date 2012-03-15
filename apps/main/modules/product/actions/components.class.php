@@ -412,14 +412,14 @@ class productComponents extends myComponents
           $values[$products_property->id]->mapValue('is_selected', true);
         }
       }
-      //myDebug::dump($values);
+
       $value_to_map = array();
       foreach ($values as $id => $value)
       {
         if (!$value->product_id) continue;
         $product = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ));
         if (!$product) continue;
-        $realValue = $value->getRealValue();
+        $realValue = strval($value->getRealValue());
         $value_to_map[$realValue]['id'] = $id;
         $value_to_map[$realValue]['url'] = $this->generateUrl('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
         $value_to_map[$realValue]['parameter'] = new ProductParameter($property['ProductTypeRelation'][0], array($value, ));
@@ -435,9 +435,6 @@ class productComponents extends myComponents
         {
           $property->mapValue('current', $realValue);
         }
-        else{
-          $property->mapValue('current', null);
-        }
         if ($property->ProductModelRelation[0]->is_image)
         {
           $value_to_map[$realValue]['photo'] = $product->getMainPhotoUrl(1);
@@ -447,10 +444,11 @@ class productComponents extends myComponents
       ksort($value_to_map);
       $property->mapValue('values', $value_to_map);
     }
-    if (!isset($property->current))
+    if (empty($property->current))
     {
       return sfView::NONE;
     }
+
     $this->setVar('properties', $properties, true);
   }
 
