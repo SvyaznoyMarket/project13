@@ -986,6 +986,8 @@ $(document).ready(function(){
 							case 'express':
 							//	express = 'Экспресс-доставка ' + dlvr.text
 								break
+							case 'free':
+								break								
 							default:
 								other.push('Доставка ' + dlvr.text )
 						}
