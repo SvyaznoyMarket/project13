@@ -87,6 +87,7 @@ class OrderDefaultForm extends BaseOrderForm
       'address',
       'extra',
       'payment_method_id',
+      'agreed',
     ));
 
     $this->widgetSchema->setNameFormat('order[%s]');
