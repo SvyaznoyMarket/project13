@@ -412,7 +412,7 @@ class productComponents extends myComponents
           $values[$products_property->id]->mapValue('is_selected', true);
         }
       }
-      //myDebug::dump($values);
+
       $value_to_map = array();
       foreach ($values as $id => $value)
       {
@@ -434,9 +434,6 @@ class productComponents extends myComponents
         if ($value_to_map[$realValue]['is_selected'])
         {
           $property->mapValue('current', $realValue);
-        }
-        else{
-          $property->mapValue('current', null);
         }
         if ($property->ProductModelRelation[0]->is_image)
         {
