@@ -103,15 +103,10 @@ class OrderStep1Form extends BaseOrderForm
 
   protected function filterDeliveryPeriods($periods)
   {
-     // echo '!!!!!!!!!!!1';
-    //  die();
+
       $retval = array();
       foreach ($periods as $period) {
           $retval[$period['id']] = 'с ' . $period['time_begin'] . ' до ' . $period['time_end'];
-//          $periodObj = DeliveryPeriodTable::getInstance()->findOneByCoreId($period['id']);
-//          if ($periodObj) {
-//            $retval[$periodObj->id] = $periodObj->name;
-//          }
       }
       return $retval;
   }
@@ -138,7 +133,6 @@ class OrderStep1Form extends BaseOrderForm
         'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
         'product' => $dProducts
       ));
-        //myDebug::dump($deliveries);
       if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
         $deliveries = array(array(
           'mode_id' => 1,
@@ -148,7 +142,8 @@ class OrderStep1Form extends BaseOrderForm
       }
       $deliveryTypes = array();
 
-      foreach ($deliveries as $modeId => $deliveryType) {
+      foreach ($deliveries as  $deliveryType) {
+        $modeId = $deliveryType['mode_id'];
         $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($modeId);
         $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
         $now = new DateTime();

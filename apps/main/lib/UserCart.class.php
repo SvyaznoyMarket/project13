@@ -4,6 +4,7 @@ class UserCart extends BaseUserData
 {
 
   public
+    $parameterHolder,
     $attributeHolder,
     $_products = array(),
     $_services = array()
@@ -19,6 +20,10 @@ class UserCart extends BaseUserData
       if (isset($cart['services'])) {
           $this->_services = $cart['services'];
       }
+      $parameters = myToolkit::arrayDeepMerge(array('products' => array(),), $parameters);
+      $this->parameterHolder = new sfParameterHolder();
+      $this->parameterHolder->add($parameters);
+
   }
 
   private function _save() {
@@ -383,6 +388,7 @@ class UserCart extends BaseUserData
     if (count($this->_services)) {
       $this->_services = array();
     }
+    $this->_save();
   }
 
   public function hasProduct($id)
