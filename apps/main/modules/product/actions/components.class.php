@@ -414,6 +414,7 @@ class productComponents extends myComponents
       }
 
       $value_to_map = array();
+      $property->mapValue('current', null);
       foreach ($values as $id => $value)
       {
         if (!$value->product_id) continue;
