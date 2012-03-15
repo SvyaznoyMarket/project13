@@ -1,21 +1,19 @@
 <?php
 
+/**
+ * Метка товара
+ */
 class ProductLabelEntity
 {
-  /**
-   * @var integer
-   */
+  /* @var integer */
   private $id;
 
-  /**
-   * @var string
-   */
+  /* @var string */
   private $image;
 
-  /**
-   * @var string
-   */
+  /* @var string */
   private $name;
+
 
   /**
    * @param int $id
