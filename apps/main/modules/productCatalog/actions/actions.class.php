@@ -637,7 +637,8 @@ class productCatalogActions extends myActions
     {
       if (!empty($productCategory->token_prefix))
       {
-        $this->redirect('productCatalog_category', $productCategory, 301);
+        //TODO: не дает сброситься фильтрам
+        //$this->redirect('productCatalog_category', $productCategory, 301);
       }
     }
 
