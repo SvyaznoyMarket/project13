@@ -74,6 +74,9 @@ all:
     signin_url: '@user'
     #remember_key_expiration_age: 1296000
 
+  online_call:
+    enabled: false
+
   core:
     config:
       api_url: 'http://core.ent3.ru/v1/json'
