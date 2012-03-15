@@ -19,6 +19,7 @@ class productSoaComponents extends myComponents
    */
   public function executeShow()
   {
+
     if (!$this->product)
     {
       return sfView::NONE;
@@ -55,12 +56,11 @@ class productSoaComponents extends myComponents
 
     $this->setVar('keys', ProductTable::getInstance()->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
 
-
     // caches vars
     if ($cacheKey)
     {
       $this->cacheVars($cacheKey);
-      $this->getCache()->addTag("product-{$product->id}", $cacheKey);
+      $this->getCache()->addTag("product-{$this->product->id}", $cacheKey);
     }
   }
 

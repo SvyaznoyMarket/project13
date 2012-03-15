@@ -31,7 +31,7 @@
         ?>
         <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
         <div class="goodsbar mSmallBtns mR">
-          <?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
+          <?php include_component('cart', 'buy_button', array('product' => $product->core_id, 'quantity' => 1)) ?>
         </div>
         <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></div>
       </div>

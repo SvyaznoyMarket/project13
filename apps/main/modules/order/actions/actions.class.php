@@ -567,64 +567,31 @@ class orderActions extends myActions
 
     foreach ($this->getUser()->getCart()->getProducts() as $product)
     {
-      $relation = new OrderProductRelation();
-      $relation->fromArray(array(
-        'product_id' => $product->id,
-        'price'      => ProductTable::getInstance()->getRealPrice($product),
-        'quantity'   => $product->cart['quantity'],
-      ));
-      $order->ProductRelation[] = $relation;
+        $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $product['id'])->fetchOne();
+        $relation = new OrderProductRelation();
+        $relation->fromArray(array(
+            'product_id' => $productOb->id,
+            'price'      => $product['price'], //ProductTable::getInstance()->getRealPrice($product),
+            'quantity'   => $product['quantity'],
+        ));
+        $order->ProductRelation[] = $relation;
     }
 
     foreach ($this->getUser()->getCart()->getServices() as $service)
     {
-      if ($service->cart['quantity'] > 0) {
+      $serviceOb = ServiceTable::getInstance()->getQueryObject()->where('core_id = ?', $service['id'])->fetchOne();
+      foreach($service['products'] as $prodId => $prodServInfo) {
+          if (!$prodId || !$prodServInfo['quantity']) continue;
           $relation = new OrderServiceRelation();
           $relation->fromArray(array(
-            'service_id' => $service->id,
-            'price'      => $service->price,
-            'quantity'   => $service->cart['quantity'],
+            'service_id' => $serviceOb->id,
+            'product_id' => $prodId,
+            'price'      => $prodServInfo['price'],
+            'quantity'   => $prodServInfo['quantity'],
           ));
           $order->ServiceRelation[] = $relation;
       }
-      if (count($service->cart['product']) > 0) {
-          foreach($service->cart['product'] as $prodId => $qty) {
-              if (!$prodId || !$qty) continue;
-              $relation = new OrderServiceRelation();
-              $relation->fromArray(array(
-                'service_id' => $service->id,
-                'product_id' => $prodId,
-                'price'      => $service->price,
-                'quantity'   => $qty,
-              ));
-              $order->ServiceRelation[] = $relation;
-          }
-      }
     }
-
-    /*
-    foreach ($this->getUser()->getCart()->getProductServiceList() as $product)
-    {
-        $relation = new OrderProductRelation();
-        $relation->fromArray(array(
-            'product_id' => $product['id'],
-            'price'      => $product['price'],
-            'quantity'   => $product['quantity'],
-        ));
-        $order->ProductRelation[] = $relation;
-
-        foreach ($product['service'] as $service)
-        {
-            $relation = new OrderServiceRelation();
-            $relation->fromArray(array(
-                'product_id' => $product['id'],
-                'service_id' => $service['id'],
-                'price'      => $service['price'],
-                'quantity'   => $service['quantity'],
-            ));
-            $order->ServiceRelation[] = $relation;
-        }
-    } */
 
     try
     {

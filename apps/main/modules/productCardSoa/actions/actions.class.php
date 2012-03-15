@@ -25,6 +25,7 @@ class productCardSoaActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
 
+
     //$this->product = ($request['product'] instanceof Product) ? $request['product'] : $this->getRoute()->getObject();
 
       $productAr = explode('/', $request['product']);
@@ -33,7 +34,8 @@ class productCardSoaActions extends myActions
 
       try {
         $factory = new ProductFactory();
-        $this->product = $factory->createProductFromCore(array('slug' => end($productAr)), true);
+        $productObList = $factory->createProductFromCore(array('slug' => end($productAr)), true, true);
+        $this->product = $productObList[0];
       } catch (ErrorException $e) {
          $this->forward404If($e->getMessage());
       }
@@ -66,6 +68,10 @@ class productCardSoaActions extends myActions
 //      'with_model'  => true,
 //    ));
     //$this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+
+    $this->setVar('relatedPagesNum', ceil(count($this->product->fullRelatedList) / $factory->numRelatedOnPage));
+    $this->setVar('accessoryPagesNum', ceil(count($this->product->fullAccessoriesList) / $factory->numRelatedOnPage));
+
 
     $this->view = 'compact';
 

@@ -29,39 +29,48 @@ class UserCart extends BaseUserData
       sfContext::getInstance()->getUser()->setAttribute('cartSoa', $cart);
   }
 
-  public function addProduct($id, $qty = 1, $isKit = false)
+  public function addProduct($id, $qty = 1)
   {
-        if ($isKit)
+      //получаем информацию о продукте из ядра
+      $factory = new ProductFactory();
+      $productList = $factory->createProductFromCore(array('id' => $id));
+      $productOb = $productList[0];
+
+        $isKit = false;
+        if ($productOb->set_id == 2)
         {
-            //TODO комплекты
-            $products = array('1', '2', '3');
-        }
-        else
-        {
-            $products = array($id);
+            $isKit = true;
+            //загружаем инфу о составе комплекта
+            $kitIdList = array();
+            $kitQtyByIdList = array();
+            foreach ($productOb->kit as $kit) {
+                $kitIdList[] = $kit['id'];
+                $kitQtyByIdList[$kit['id']] = $kit['quantity'];
+            }
+            $productList = $factory->createProductFromCore(array('id' => implode(',', $kitIdList)));
         }
 
         try
         {
-            //загружаем объект из ядра, чтоб узнать его цену
-            $factory = new ProductFactory();
-            $productOb = $factory->createProductFromCore(array('id' => $id), true);
-
-            foreach ($products as $product)
+            foreach ($productList as $product)
             {
                 if ($qty <= 0)
                 {
                     $qty = 0;
-                    $this->deleteProduct($product);
+                    $this->deleteProduct($product->id);
                 }
                 else
                 {
-                    $this->_products[$product] = array(
-                        'id' => $product,
-                        'quantity' => $qty,
-                        'price' => $productOb->price,
-                       // 'priceFormatted' => number_format($priceAr[$product]['price'], 0, ',', ' '),
-                       // 'total' => number_format($priceAr[$product]['price'] * $qty, 0, ',', ' ')
+                    if ($isKit) {
+                        //нужное количество умножаем на количество предметов в комплекте
+                        $addQty = $qty * $kitQtyByIdList[$product->id];
+                    } else {
+                        $addQty = $qty;
+                    }
+                    $this->_products[$product->id] = array(
+                        'id' => $product->id,
+                        'quantity' => $addQty,
+                        'price' => $product->price,
                     );
                 }
             }
@@ -103,7 +112,7 @@ class UserCart extends BaseUserData
         $this->addProduct($productId, 1);
       }
     }
-    //получаем цену на услугу. пока из БД!
+    //получаем цену на услугу. пока из БД! пока нет API для услуг! передалать!
     $region = sfContext::getInstance()->getUser()->getRegion();
     $priceList = $region['product_price_list_id'];
     $serviceInfo = ServiceTable::getInstance()->findOneBy('core_id', $serviceId);
@@ -395,31 +404,32 @@ class UserCart extends BaseUserData
    */
   public function getDeliveriesPrice()
   {
-//    $dProducts_raw = $this->getProducts();
-//    $dProducts = array();
-//    foreach ($dProducts_raw as $dProduct)
-//    {
-//      $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
-//    }
-//    $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
-//      'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
-//      'products' => $dProducts
-//      ));
-//    if (!$deliveries || !count($deliveries) || isset($deliveries['result']))
-//    {
-//      $deliveries = array(array(
-//        'mode_id' => 1,
-//        'date' => date('Y-m-d', time() + (3600 * 48)),
-//        'price' => null,
-//      ));
-//    }
-//    $result = array();
-//    foreach ($deliveries as $d)
-//    {
-//      $deliveryObj = DeliveryTypeTable::getInstance()->getByCoreId($d['mode_id']);
-//      $result[$deliveryObj['id']] = $d['price'];
-//    }
+    $dProducts = array();
+    foreach ($this->_products as $dProduct)
+    {
+      $dProducts[] = array(
+          'id' => $dProduct['id'],
+          'quantity' => $dProduct['quantity']
+      );
+    }
+    $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
+      'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
+      'product' => $dProducts
+      ));
+    if (!$deliveries || !count($deliveries) || isset($deliveries['result']))
+    {
+      $deliveries = array(array(
+        'mode_id' => 1,
+        'date' => date('Y-m-d', time() + (3600 * 48)),
+        'price' => null,
+      ));
+    }
     $result = array();
+    foreach ($deliveries as $d)
+    {
+      $deliveryObj = DeliveryTypeTable::getInstance()->getByCoreId($d['mode_id']);
+      $result[$deliveryObj['id']] = $d['price'];
+    }
     return $result;
   }
 
@@ -435,7 +445,7 @@ class UserCart extends BaseUserData
     {
       if (isset($service['products']))
       {
-        foreach ($service['products'] as $prodToken => $prodQty)
+        foreach ($service['products'] as $prodId => $prodQty)
         {
           $total += ($prodQty['price'] * $prodQty['quantity']);
         }
@@ -450,48 +460,48 @@ class UserCart extends BaseUserData
 
   public function getReceiptList()
   {
-//    $total = 0;
-//    $products = $this->getProducts();
-//    $services = $this->getServices();
-//    #myDebug::dump($services);
-//
-//    foreach ($products as $product)
-//    {
-//      $list[] = array(
-//        'type' => 'products',
-//        'name' => $product->name,
-//        'token' => $product->token,
-//        'token_prefix' => $product->token_prefix,
-//        'quantity' => $product['cart']['quantity'],
-//        'price' => $product['cart']['formatted_total'],
-//        'photo' => $product->getMainPhotoUrl(1)
-//      );
-//    }
-//
-//    //$products = null;
-//    foreach ($services as $service)
-//    {
-//      $qty = $service['cart']['quantity'];
-//      $price = $service->getCurrentPrice() * $qty;
-//      if (isset($service['cart']['products']))
-//      {
-//        foreach ($service['cart']['products'] as $prodId => $prodQty)
-//        {
-//          $qty += $prodQty;
-//          $price += $service->getCurrentPrice($prodId) * $prodQty;
-//        }
-//      }
-//      $list[] = array(
-//        'type' => 'service',
-//        'name' => $service->name,
-//        'token' => $service->token,
-//        'quantity' => $qty,
-//        'price' => number_format($price, 0, ',', ' '),
-//        'photo' => $service->getPhotoUrl(2)
-//      );
-//    }
+    $prodIdList = array();
+    foreach ($this->_products as $productId =>  $productInfo)
+    {
+        $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $productId)->fetchOne();
+        //myDebug::dump($productOb);
+        //$productOb = $productOb[0];
+       // $prodIdList[] = $productId;
+        $list[] = array(
+            'type' => 'products',
+            'name' => $productOb->name,
+            'token' => $productOb->token,
+            'token_prefix' => $productOb->token_prefix,
+            'quantity' => $productInfo['quantity'],
+            'price' => number_format($productInfo['price'], 0, ',', ' '),
+        );
+    }
 
-    $list = array();
+    //$factory = new ProductFactory();
+    //$this->product = $factory->createProductFromCore(array('id' => implode(',', $prodIdList)));
+
+    //$products = null;
+    foreach ($this->_services as $serviceId => $serviceInfo)
+    {
+        $serviceOb = ServiceTable::getInstance()->getQueryObject()->where('core_id = ?', $serviceId)->fetchOne();
+
+        $qty = 0;
+        $price = 0;
+        foreach ($serviceInfo['products'] as $prodId => $prodServInfo)
+        {
+          $qty += $prodServInfo['quantity'];
+          $price += $prodServInfo['price'] * $prodServInfo['quantity'];
+        }
+        $list[] = array(
+            'type' => 'service',
+            'name' => $serviceOb->name,
+            'token' => $serviceOb->token,
+            'quantity' => $qty,
+            'price' => number_format($price, 0, ',', ' '),
+        );
+    }
+
+    //$list = array();
     return $list;
   }
 
@@ -614,8 +624,8 @@ class UserCart extends BaseUserData
     public function getSeoCartArticle()
     {
         $orderArticleAR = array();
-        foreach ($this->getProducts() as $product) {
-            $orderArticleAR[] = $product->barcode;
+        foreach ($this->getProducts() as $productId =>  $product) {
+            $orderArticleAR[] = $productId;
         }
         $orderArticle = implode(',', $orderArticleAR);
         return $orderArticle;

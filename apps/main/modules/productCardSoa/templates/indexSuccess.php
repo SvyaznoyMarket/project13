@@ -34,6 +34,14 @@
   'showPage' => false
   )) */ ?>
 
+<?php if (count($product->related)): ?>
+<?php include_partial('productSoa/product_related', $sf_data) ?>
+<?php endif ?>
+
+<?php if (count($product->accessories)): ?>
+<?php include_partial('productSoa/product_accessory', $sf_data) ?>
+<?php endif ?>
+
 <?php //echo link_to('Комментарии', 'productComment', $sf_data->getRaw('product')) ?>
 
 <?php //echo link_to('Аналогичные товары', 'similarProduct', $sf_data->getRaw('product')) ?>

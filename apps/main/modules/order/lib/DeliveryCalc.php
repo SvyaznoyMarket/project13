@@ -62,7 +62,7 @@ class DeliveryCalc
     foreach ($cart as $product_id => $product)
     {
       // stock_id = 1 HARDCODE
-      if (!$stockRel->isInStock($product_id, false, 1, $product['cart']['quantity'])) {
+      if (!$stockRel->isInStock($product_id, false, 1, $product['quantity'])) {
         $haveInStock = false;
         $productsInStore[$product_id] = false;
       } else {
@@ -83,7 +83,7 @@ class DeliveryCalc
           $q->innerJoin('shop.ProductRelation productRelation');
           $q->andWhere('productRelation.product_id = ?', (int)$product_id);
           $q->andWhere('productRelation.stock_id IS NULL');
-          $q->andWhere('productRelation.quantity >= ?', $product['cart']['quantity']);
+          $q->andWhere('productRelation.quantity >= ?', $product['quantity']);
           $q->andWhere('shop.region_id = ?', $region['id']);
           $data = $q->fetchArray();
           foreach ($data as $row) {
@@ -107,12 +107,12 @@ class DeliveryCalc
     $diff = 0;
     foreach ($cart as $product_id => $product)
     {
-        if (StockProductRelationTable::getInstance()->isInStock($product_id, $shop_id, null, $product['cart']['quantity'])) {
+        if (StockProductRelationTable::getInstance()->isInStock($product_id, $shop_id, null, $product['quantity'])) {
           if (time() > $ts) {
             $ts = time();
             $diff = 0;
           }
-        } elseif (StockProductRelationTable::getInstance()->isInStock($product_id, false, null, $product['cart']['quantity'])) {
+        } elseif (StockProductRelationTable::getInstance()->isInStock($product_id, false, null, $product['quantity'])) {
           if (strtotime('tomorrow') > $ts) {
             $ts = strtotime('tomorrow');
             $diff = 1;

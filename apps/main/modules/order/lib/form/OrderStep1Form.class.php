@@ -43,7 +43,7 @@ class OrderStep1Form extends BaseOrderForm
       $stockRel = StockProductRelationTable::getInstance();
       foreach ($cart as $product_id => $product)
       {
-          if (!$stockRel->isInStock($product_id, $shop_id, null, $product['cart']['quantity'])) {
+          if (!$stockRel->isInStock($product_id, $shop_id, null, $product['quantity'])) {
               return false;
           }
       }
@@ -150,7 +150,7 @@ class OrderStep1Form extends BaseOrderForm
 
       foreach ($deliveries as $modeId => $deliveryType) {
         $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($modeId);
-        $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date'][0]['date']);
+        $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
         $now = new DateTime();
         $deliveryPeriod = $minDeliveryDate->diff($now)->days;
         if ($deliveryPeriod < 0) $deliveryPeriod = 0;

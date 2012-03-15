@@ -33,11 +33,11 @@ product_set:
 # список смежных товаров
 product_related:
   url:   /products/related/:product
-  param: { module: product, action: related }
+  param: { module: productSoa, action: related }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+    #product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 # список аксессуаров
 product_accessory:
   url:   /products/accessories/:product

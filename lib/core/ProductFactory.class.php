@@ -11,9 +11,22 @@
 class ProductFactory
 {
 
+    /**
+     * Количество связанных продуктов и аксессуаров, которые загружаем вместе с продуктом сразу
+     * @var int
+     */
+    public $numRelatedOnPage = 5;
 
 
-    public function createProductFromCore($data, $loadFriendProducts = false)
+    /**
+     * Загружает список продуктов из ядра
+     *
+     * @param $data  - данные о продуктах, которые  нужно загрузить - списки id и/или slug
+     * @param bool $loadFriendProducts - загружать ли "дрижественные" продукты (комплекты, модели, связанные. аксессуары)
+     * @param bool $loadDelivery - загрузать ли информацию о доставках
+     * @return array - массив объектов ProductSoa
+     */
+    public function createProductFromCore($data, $loadFriendProducts = false, $loadDelivery = false)
     {
 
         if (!isset($data['id']) && !isset($data['slug'])) {
@@ -21,20 +34,31 @@ class ProductFactory
         }
 
         //загружаем данные о продукте
-        $baseInfo = $this->_getDataFromCore($data, true);
-        reset($baseInfo);
-        $baseInfo = current($baseInfo);
-       // print_r($baseInfo);
-//        die();
-        //создаём продукт с базывыми свойствами
-        $product = $this->_setMainProps($baseInfo);
+        $baseInfoArray = $this->_getDataFromCore($data, $loadDelivery);
 
+        $result = array();
+        //для каждого из загруженных продуктов
+        foreach ($baseInfoArray as $baseInfo) {
 
-        //если требуется загрузка связанных продуктов, загружаем
-        if ($loadFriendProducts) {
-            $this->_loadFriendProducts($product, $baseInfo);
+            //создаём продукт с базывыми свойствами
+            $product = $this->_createBaseProduct($baseInfo);
+
+            //если требуется загрузка связанных продуктов, загружаем
+            if ($loadFriendProducts) {
+                $this->_loadFriendProducts($product, $baseInfo);
+
+                //некоторая информацию из БД пока требуется
+                $this->_loadTmpDbData($product);
+            }
+            $result[] = $product;
         }
 
+        return $result;
+    }
+
+    private function _loadTmpDbData($product)
+    {
+        //дополнительные данные
         if ($product->tag) {
             $tagIdList = array();
             foreach ($product->tag as & $tag) {
@@ -71,36 +95,14 @@ class ProductFactory
                 }
             }
         }
-
-        return $product;
-
-//        if ($product->kit) {
-//            $urls = sfConfig::get('app_product_photo_url');
-//            foreach ($product->kit as & $kit) {
-//                $kit['photo'] = $urls[2] . $kit['media_image'];
-//                $kit['path'] = ProductSoa::generatePathByLink($kit['link']);
-//                $kit['priceFormatted'] = ProductSoa::priceFormat($kit['price']);
-//
-//                $is_instock = $kit['state']['is_shop'] || $kit['state']['is_store'] || $kit['state']['is_supplier'];
-//                if ($is_instock && $kit['price']>0) {
-//                    $kit['is_insale'] = 1;
-//                } else {
-//                    $kit['is_insale'] = 0;
-//                }
-//
-//            }
-//        }
-
-        return $product;
     }
 
     private function _loadFriendProducts($product, $baseInfo)
     {
         //собираем список ид продуктов, как либо связанных с текущем.
-        $numRelatedOnPage = 5;
         $friendIdList = array_merge(
-            array_slice($product->related, 0 , $numRelatedOnPage),
-            array_slice($product->accessories, 0, $numRelatedOnPage)
+            array_slice($product->related, 0 , $this->numRelatedOnPage),
+            array_slice($product->accessories, 0, $this->numRelatedOnPage)
         );
         //print_r($friendIdList);
         if (isset($product->model['product'])) {
@@ -123,7 +125,7 @@ class ProductFactory
         //для комплектов
         $kitList = array();
         foreach ($product->kit as $kit) {
-            $kitList[] = $this->_setMainProps($friendsInfo[$kit['id']]);
+            $kitList[] = $this->_createBaseProduct($friendsInfo[$kit['id']]);
         }
         $product->kit = $kitList;
 
@@ -132,7 +134,7 @@ class ProductFactory
             $product->model['product'][] = $product->id;
             $modelList = array();
             foreach ($product->model['product'] as $model) {
-                $modelList[] = $this->_setMainProps($friendsInfo[$model]);
+                $modelList[] = $this->_createBaseProduct($friendsInfo[$model]);
             }
             $product->model['product'] = $modelList;
         }
@@ -141,7 +143,7 @@ class ProductFactory
         $relatedList = array();
         foreach ($product->related as $related) {
             if (isset($friendsInfo[$related])) {
-                $relatedList[] = $this->_setMainProps($friendsInfo[$related]);
+                $relatedList[] = $this->_createBaseProduct($friendsInfo[$related]);
             }
         }
         $product->related = $relatedList;
@@ -150,13 +152,19 @@ class ProductFactory
         $accessoriesList = array();
         foreach ($product->accessories as $accessory) {
             if (isset($friendsInfo[$accessory])) {
-                $accessoriesList[] = $this->_setMainProps($friendsInfo[$accessory]);
+                $accessoriesList[] = $this->_createBaseProduct($friendsInfo[$accessory]);
             }
         }
         $product->accessories = $accessoriesList;
     }
 
-    private function _setMainProps($info)
+    /**
+     * Из массива создаёт объект ProductSoa и заполняет базовые свойства. (не требующие выполнения каких-либо дополнительных запросов)
+     *
+     * @param $info
+     * @return ProductSoa
+     */
+    private function _createBaseProduct($info)
     {
         $product = new ProductSoa();
 
@@ -186,40 +194,52 @@ class ProductFactory
         } else {
             $product->is_insale = 0;
         }
+
+        $product->fullKitList = $product->kit;
+        $product->fullRelatedList = $product->related;
+        $product->fullAccessoriesList = $product->accessories;
+
         return $product;
     }
 
 
+    /**
+     *  Получает информацию о продуктах из ядра
+     *
+     * @param $data - инфа о продуктах
+     * @param bool $getDelivery - нужна ли информация о доставках
+     * @return array
+     */
     private function _getDataFromCore($data, $getDelivery = false)
     {
         $core = CoreSoa::getInstance();
 
-        //загружаем статическе данные
-        $productInfoStatic = $core->getProductStatic($data);
-        if (isset($productInfoStatic['result'])) {
-            throw new ErrorException('Товар не найден');
-        }
-        //var_dump($productInfoStatic);
-        //die();
-
-        //загружаем динамические данные
-        $productInfoDynamic = $core->getProductDynamic($data);
-        foreach ($productInfoStatic as $key => & $info) {
-            $info = array_merge($productInfoDynamic[$key], $info);
-        }
-
-        //загружаем данные о доставках
+        $core->resetData();
+        $core->prepareDataForStatic($data);
+        $core->prepareDataForDynamic($data);
         if ($getDelivery) {
-            $productInfoDelivery = $core->getDeliveryCalc($data);
-            foreach ($productInfoStatic as $key => & $info) {
-                $info['delivery'] = $productInfoDelivery[$key];
-            }
-        } else {
-            foreach ($productInfoStatic as $key => & $info) {
-                $info['delivery1'] = array();
-            }
+            $core->prepareDataForDelivery($data);
         }
+        $core->multiThreadQuery();
+        $coreResult = $core->getData();
+//        print_r($coreResult);
+//        die();
 
-        return $productInfoStatic;
+        $productsBaseData = array();
+        foreach ($coreResult as $queryResult) {
+           foreach ($queryResult['result'] as $itemKey => $itemData) {
+                if ($queryResult['action'] == 'product/get-delivery') {
+                    $productsBaseData[$itemKey]['delivery'] = $itemData;
+                } elseif (!isset($productsBaseData[$itemKey])) {
+                    $productsBaseData[$itemKey] = $itemData;
+                } else {
+                    $productsBaseData[$itemKey] = array_merge($productsBaseData[$itemKey], $itemData);
+                }
+           }
+        }
+        //print_r($productsBaseData);
+        //die();
+        return $productsBaseData;
+
     }
 }

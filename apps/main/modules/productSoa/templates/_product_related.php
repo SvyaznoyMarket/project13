@@ -1,12 +1,12 @@
 <div class="carouseltitle carbig">
   <div class="rubrictitle"><h3>С этим товаром также покупают</h3></div>
-  <!--
+  <?php $product = $sf_data->getRaw('product'); ?>
   <div class="scroll" data-quantity="<?php //echo $item['related_pager']->getNbResults() ?>">
-    (страница <span><?php //echo $item['related_pager']->getPage() ?></span> из <span><?php //echo $item['related_pager']->getLastPage() ?></span>)
-    <a title="Предыдущие 3" class="back disabled" data-url="<?php //echo url_for('product_related', $sf_data->getRaw('product')) ?>" href="javascript:void(0)"></a>
-    <a title="Следующие 3" class="forvard" data-url="<?php //echo url_for('product_related', $sf_data->getRaw('product')) ?>" href="javascript:void(0)"></a>
+    (страница <span>1<?php //echo $item['related_pager']->getPage() ?></span> из <span><?php echo $relatedPagesNum; //echo $item['related_pager']->getLastPage() ?></span>)
+    <a title="Предыдущие 5" class="back disabled" data-url="<?php echo url_for('product_related', array('product' => $product->id)) ?>" href="javascript:void(0)"></a>
+    <a title="Следующие 5" class="forvard" data-url="<?php echo url_for('product_related', array('product' => $product->id)) ?>" href="javascript:void(0)"></a>
   </div>
-  -->
+
 </div>
 
 <div class="line pb10"></div>

@@ -24,7 +24,7 @@ class serviceComponents extends myComponents
     $servListId = array();
     foreach ($servList as $next)
     {
-      foreach ($next['cart']['product'] as $product => $qty)
+      foreach ($next['products'] as $product => $prodData)
       {
         if ($product == $this->product->id)
         {

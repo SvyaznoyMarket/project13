@@ -42,46 +42,6 @@ class myUser extends myGuardSecurityUser
     return $this->getUserData('cart');
   }
 
-  public function getCartBaseInfo()
-  {
-    $cart = $this->getCart();
-    $result['qty'] = $cart->count();
-    $result['sum'] = $cart->getTotal();
-    $result['productsInCart'] = array();
-    $result['servicesInCart'] = array();
-
-    foreach ($cart->getProducts() as $token => $product)
-    {
-      $result['productsInCart'][$token] = $product['quantity'];
-    }
-
-    foreach ($cart->getServices() as $id => $service)
-    {
-      $qty = $service['cart']['quantity'];
-      if ($qty > 0)
-      {
-        $result['servicesInCart'][$service['token']][0] = $qty;
-      }
-      foreach ($service['cart']['product'] as $pId => $pQty)
-      {
-        $token = false;
-        foreach ($cart->getProducts() as $id => $product)
-        {
-          if ($product['id'] == $pId)
-          {
-            $token = $product['token'];
-            break;
-          }
-        }
-        if ($token && $pQty)
-        {
-          $result['servicesInCart'][$service['token']][$token] = $pQty;
-        }
-      }
-    }
-
-    return $result;
-  }
 
   public function getProductHistory()
   {

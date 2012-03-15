@@ -13,7 +13,7 @@
     </div>
     <div class="right"><div class="numerbox">
 		<b class="c1less" title="Уменьшить"></b>
-		<span class="c1quant"><?php echo $product['cart']['quantity'] ?> шт.</span>
+		<span class="c1quant"><?php echo $product['quantity'] ?> шт.</span>
 		<b class="c1more" title="Увеличить"></b>
     </div></div>
   </div>

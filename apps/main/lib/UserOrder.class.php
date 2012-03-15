@@ -11,7 +11,9 @@ class UserOrder extends BaseUserData
 
   public function get()
   {
-    $order = $this->parameterHolder->get('order', array());
+    //$order = $this->parameterHolder->get('order', array());
+    $order = sfContext::getInstance()->getUser()->getAttribute('order', array());
+
     //$order = new Order();
     //$order->fromArray($this->parameterHolder->get('order', array()));
 
@@ -30,11 +32,18 @@ class UserOrder extends BaseUserData
 
   public function set(Order $order)
   {
-    $this->parameterHolder->set('order', $order->toArray(false));
+      //print_r($order->toArray(false));
+      sfContext::getInstance()->getUser()->setAttribute('order', $order->toArray(false));
+
+   // $this->parameterHolder->set('order1', $order->toArray(false));
+//      print_r($_SESSION);
+//      die();
   }
 
   public function clear()
   {
-    $this->parameterHolder->set('order', array());
+   // $this->parameterHolder->set('order', array());
+      sfContext::getInstance()->getUser()->setAttribute('order', array());
+
   }
 }
