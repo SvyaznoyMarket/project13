@@ -24,7 +24,7 @@ class myProductFormFilter extends sfFormFilter
     $this->createCreatorWidget($productCategory);
 
     // виджет шильдиков
-    $this->createLabelWidget($productCategory);
+    //$this->createLabelWidget($productCategory);
 
     // виджеты параметров
     //$productFilterList = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
