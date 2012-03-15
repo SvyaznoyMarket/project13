@@ -41,7 +41,7 @@
           <ul>
             <li>Мне доставляет курьер<br>
               <a href="<?php echo url_for('default_show', array('page' => 'how_get_order',)) ?>">Посмотреть условия<br> доставки</a></li>
-            <li>Бесплатно забираю сам<br>в одном из 9 магазинов<br>
+            <li>Бесплатно забираю сам<br>в одном из <?php echo $shopCount ?> магазинов<br>
               <a href="<?php echo url_for('shop') ?>">Найти Enter рядом со мной</a>
             </li>
           </ul>
@@ -75,7 +75,6 @@
     <a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>">Правовая информация</a>
     <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a>
     <a href="<?php echo url_for('default_show', array('page' => 'media_info')) ?>">Информация о СМИ</a>
-    <?php if (has_slot('navigation_seo')) include_slot('navigation_seo') ?>
   </div>
 </div>
 <!-- /Footer -->
