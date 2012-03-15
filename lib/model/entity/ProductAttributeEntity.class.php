@@ -3,7 +3,7 @@
 /**
  * Атрибут товара
  */
-class ProductAttributeEntity extends BaseEntity
+class ProductAttributeEntity
 {
   /* @var ProductEntity */
   private $product;

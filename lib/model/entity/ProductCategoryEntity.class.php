@@ -3,7 +3,7 @@
 /**
  * Категория товара
  */
-class ProductCategoryEntity extends BaseEntity
+class ProductCategoryEntity
 {
   /* @var integer */
   private $id;
