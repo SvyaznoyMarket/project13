@@ -15,14 +15,14 @@ class myProductTagFormFilter extends myProductFormFilter
       throw new InvalidArgumentException('You must provide a productCategory object.');
     }
 
+    // виджет шильдиков
+    $this->createLabelWidget($productCategory);
+
     // виджет цены
     $this->createPriceWidget($productCategory);
 
     // виджет производителя
     $this->createCreatorWidget($productCategory);
-
-    // виджет шильдиков
-    //$this->createLabelWidget($productCategory);
 
     // виджеты параметров
     $tagGroups =
