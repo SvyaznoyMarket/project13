@@ -378,6 +378,7 @@ class ProductTable extends myDoctrineTable
       'price'      => array('from' => null, 'to' => null),
       'tag'        => false,
       'type'       => false,
+      'label'      => false,
     ), $filter);
 
     // категория
@@ -427,6 +428,18 @@ class ProductTable extends myDoctrineTable
       }
       else {
         $q->addWhere('product.creator_id = ?', ($filter['creator'] instanceof Creator) ? $filter['creator']->id : $filter['creator']);
+      }
+    }
+
+    // шильдики
+    if ($filter['label'])
+    {
+      if (is_array($filter['label']))
+      {
+        $q->whereIn('product.core_label_id', $filter['label']);
+      }
+      else {
+        $q->addWhere('product.core_label_id = ?', ($filter['label'] instanceof ProductLabelEntity) ? $filter['label']->getId() : $filter['label']);
       }
     }
 
@@ -530,6 +543,7 @@ class ProductTable extends myDoctrineTable
       'creator'    => false,
       'parameters' => array(),
       'price'      => array('from' => null, 'to' => null),
+      'label'      => false,
     ), $filter);
 
     // категория
@@ -562,6 +576,18 @@ class ProductTable extends myDoctrineTable
       }
       else {
         $q->addWhere('product.creator_id = ?', ($filter['creator'] instanceof Creator) ? $filter['creator']->id : $filter['creator']);
+      }
+    }
+
+    // шильдики
+    if ($filter['label'])
+    {
+      if (is_array($filter['label']))
+      {
+        $q->whereIn('product.core_label_id', $filter['label']);
+      }
+      else {
+        $q->addWhere('product.core_label_id = ?', ($filter['label'] instanceof ProductLabelEntity) ? $filter['label']->getId() : $filter['label']);
       }
     }
 

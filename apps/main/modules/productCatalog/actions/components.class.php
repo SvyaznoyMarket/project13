@@ -261,10 +261,27 @@ class productCatalogComponents extends myComponents
           if (!$creator) continue;
 
           $list[] = array(
-            'type' => 'creator',
-            'name' => $creator->name,
-            'url'  => $getUrl($filter, $name, $v),
+            'type'  => 'creator',
+            'name'  => $creator->name,
+            'url'   => $getUrl($filter, $name, $v),
             'title' => 'Производитель',
+          );
+        }
+      }
+      // шильдик
+      if ('label' == $name)
+      {
+        $labels = RepositoryManager::getProductLabel()->get($value, 'id');
+        /**
+         * @var $label ProductLabelEntity
+         */
+        foreach ($labels as $label)
+        {
+          $list[] = array(
+            'type'  => 'label',
+            'name'  => $label->getName(),
+            'url'   => $getUrl($filter, $name, $label->getId()),
+            'title' => 'Метка',
           );
         }
       }
@@ -299,13 +316,13 @@ class productCatalogComponents extends myComponents
               if (!$productPropertyOption) continue;
 
               $list[] = array(
-                'type' => 'parameter',
-                'name' =>
+                'type'  => 'parameter',
+                'name'  =>
                   in_array($productPropertyOption->value, array('да', 'нет'))
                   ? $productFilter->name.': '.$productPropertyOption->value
                   : $productPropertyOption->value
                 ,
-                'url'  => $getUrl($filter, $name, $productPropertyOption->id),
+                'url'   => $getUrl($filter, $name, $productPropertyOption->id),
                 'title' => $productFilter->name,
               );
             }
@@ -314,9 +331,9 @@ class productCatalogComponents extends myComponents
             if ((null !== $value) && (1 == count($value)))
             {
               $list[] = array(
-                'type' => 'parameter',
-                'name' => $productFilter->name.': '.($value[0] ? 'да' : 'нет'),
-                'url'  => $getUrl($filter, $name),
+                'type'  => 'parameter',
+                'name'  => $productFilter->name.': '.($value[0] ? 'да' : 'нет'),
+                'url'   => $getUrl($filter, $name),
                 'title' => '',
                 'title' => $productFilter->name,
               );
@@ -509,6 +526,23 @@ class productCatalogComponents extends myComponents
             'name'  => $creator->name,
             'url'   => $getUrl($filter, $name, $v),
             'title' => 'Производитель',
+          );
+        }
+      }
+      // шильдик
+      if ('label' == $name)
+      {
+        $labels = RepositoryManager::getProductLabel()->get($value, 'id');
+        /**
+         * @var $label ProductLabelEntity
+         */
+        foreach ($labels as $label)
+        {
+          $list[] = array(
+            'type'  => 'label',
+            'name'  => $label->getName(),
+            'url'   => $getUrl($filter, $name, $label->getId()),
+            'title' => 'Метка',
           );
         }
       }
