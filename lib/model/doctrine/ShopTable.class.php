@@ -31,6 +31,7 @@ class ShopTable extends myDoctrineTable
       'coord_lat'     => 'latitude',
       'way_walk'      => 'way_walk',
       'way_auto'      => 'way_auto',
+      'is_active'     => 'is_active',
     );
   }
 
@@ -124,5 +125,12 @@ class ShopTable extends myDoctrineTable
   {
       $q = $this->createBaseQuery();
       return $q->fetchOne();
+  }
+
+  public function getCount()
+  {
+    $q = $this->createBaseQuery();
+
+    return $q->count();
   }
 }

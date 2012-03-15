@@ -24,6 +24,6 @@ class Shop extends BaseShop
     parent::importFromCore($data);
 
     $this->token = empty($this->token) ? myToolkit::urlize($this->name) : $this->token;
-    //$this->region_id = RegionTable::getInstance()->getIdByCoreId($data['geo_id']);
+    $this->region_id = RegionTable::getInstance()->getIdByCoreId($data['geo_id']);
   }
 }
