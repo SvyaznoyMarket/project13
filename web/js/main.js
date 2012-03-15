@@ -802,17 +802,17 @@ $(document).ready(function(){
 		}
 	}
 	if( clientBrowser.isTouch ) {
-		$('.topmenu a').bind ('click', function(){
+		$('.topmenu a.bToplink').bind ('click', function(){
 			if( $(this).data('run') )
 				return true
 			$('.extramenu').hide()	
-			$('.topmenu a').each( function() { $(this).data('run', false) } )
+			$('.topmenu a.bToplink').each( function() { $(this).data('run', false) } )
 			$(this).data('run', true)
 			showList( this )
 			return false
 		})
 	} else {	
-		$('.topmenu a').bind( {
+		$('.topmenu a.bToplink').bind( {
 			'mouseenter': function() {
 				$('.extramenu').hide()
 				var self = this				
