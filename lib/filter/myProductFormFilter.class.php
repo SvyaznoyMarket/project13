@@ -14,17 +14,16 @@ class myProductFormFilter extends sfFormFilter
     {
       throw new InvalidArgumentException('You must provide a productCategory object.');
     }
-    $creator = $this->getOption('creator', null);
     $productType = $this->getOption('productType', null);
+
+    // виджет шильдиков
+    $this->createLabelWidget($productCategory);
 
     // виджет цены
     $this->createPriceWidget($productCategory);
 
     // виджет производителя
     $this->createCreatorWidget($productCategory);
-
-    // виджет шильдиков
-    //$this->createLabelWidget($productCategory);
 
     // виджеты параметров
     //$productFilterList = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
@@ -270,7 +269,7 @@ class myProductFormFilter extends sfFormFilter
           'label_separator' => '',
         ),
       ));
-      $this->widgetSchema['label']->setLabel('Метка');
+      $this->widgetSchema['label']->setLabel('WOW-товары');
       $this->validatorSchema['label'] = new sfValidatorPass();
     }
   }
