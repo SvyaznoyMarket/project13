@@ -22,7 +22,7 @@
                 <div class="photo pr">
                     <?php if (isset($currentServiceList['photo'])) { ?>
                         <div class="bServiceCard__eLogo"></div>
-                        <img width="160" height="120" alt="" src="<?php echo $currentServiceList['photo']; ?>">
+                        <img class='bF1ServiceImg' alt="" src="<?php echo $currentServiceList['photo']; ?>">
                     <?php } else { ?>                        
                         <img alt="" src="/images/f1infobig.png">
                     <?php } ?>                        
