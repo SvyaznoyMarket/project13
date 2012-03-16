@@ -2,16 +2,26 @@
 
 abstract class ObjectRepository
 {
+  /* @var Core */
   protected $core = null;
+
+  /* @var CoreClient */
+  protected $coreClient = null;
 
   public function __construct()
   {
     $this->core = Core::getInstance();
+    $this->coreClient = CoreClient::getInstance();
   }
 
   public function createQuery($query, array $params = array(), array $data = array())
   {
     return new CoreQuery($query, $params, $data);
+  }
+
+  public function getRepository($name)
+  {
+    return RepositoryManager::get($name);
   }
 
   abstract public function get(array $ids, $index = null);

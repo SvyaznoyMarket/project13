@@ -75,14 +75,18 @@ all:
     #remember_key_expiration_age: 1296000
 
   online_call:
-    enabled: true
+    enabled: false
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
-      userapi_url: 'http://core.my/userapi/'
-      consumer_key: test
-      signature: test
+      api_url: 'http://core.ent3.ru/v1/json' # v1
+      userapi_url: 'http://test2.core.ent3.ru/userapi/'
+      client_id: 1
+      consumer_key: test # v1
+      signature: test # v1
+      log_enabled: true
+      log_file: %SF_LOG_DIR%/core_client_2.log
+      log_response: false # логировать ответ
 
   cache_eraser:
     config:

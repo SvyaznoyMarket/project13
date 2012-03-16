@@ -12,17 +12,15 @@ class ProductLabelRepository extends ObjectRepository
     }
 
     $q = $this->createQuery('product.label.get', array('id' => $ids));
-    $entities = $this->createList($q->getResult(), $index);
 
-    return $entities;
+    return $this->createList($q->getResult(), $index);
   }
 
   public function getAll($index = null)
   {
     $q = $this->createQuery('product.label.get', array());
-    $entities = $this->createList($q->getResult(), $index);
 
-    return $entities;
+    return $this->createList($q->getResult(), $index);
   }
 
   public function create($data)

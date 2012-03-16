@@ -12,6 +12,9 @@ class ProductCategoryEntity
   private $parent = null;
 
   /* @var string */
+  private $token;
+
+  /* @var string */
   private $name;
 
   /* @var boolean */
@@ -40,6 +43,9 @@ class ProductCategoryEntity
 
   /* @var string */
   private $image;
+
+  /* @var integer */
+  private $productView;
 
   /* @var ProductCategoryEntity[] */
   private $child;
@@ -178,5 +184,37 @@ class ProductCategoryEntity
   public function getChild()
   {
     return $this->child;
+  }
+
+  /**
+   * @param string $token
+   */
+  public function setToken($token)
+  {
+    $this->token = $token;
+  }
+
+  /**
+   * @return string
+   */
+  public function getToken()
+  {
+    return $this->token;
+  }
+
+  /**
+   * @param int $productView
+   */
+  public function setProductView($productView)
+  {
+    $this->productView = $productView;
+  }
+
+  /**
+   * @return int
+   */
+  public function getProductView()
+  {
+    return $this->productView;
   }
 }

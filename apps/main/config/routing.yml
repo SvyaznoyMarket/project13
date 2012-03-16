@@ -863,6 +863,15 @@ credit_programs:
   param:    { module: credit, action: programs }
 #
 
+###
+# productCard
+productCard_:
+  url:   /_test/product/:product
+  param: { module: productCard_, action: index }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+###
+
 
 default_show:
   url:   /:page
