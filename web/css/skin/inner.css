@@ -4140,9 +4140,4 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 .bLabels{ left: 0; display: block; position: absolute; top: 10px !important; }
 
 
-a.zingaya {
-    font-weight: bold;
-    padding-right: 20px;
-    background: url(img/headset.png) no-repeat right center;
-    margin-right: 10px;
-}
+.bRegion .bCall{ display: inline-block; *display: inline; zoom: 1; height: 16px; background: url('img/bCall.png') no-repeat; padding-left: 20px; padding-right: 10px; }
