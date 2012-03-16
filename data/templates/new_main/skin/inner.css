@@ -2432,18 +2432,23 @@ border-radius: 5px;
 		font: 12px/20px Tahoma, sans-serif;
 		}
 	.bF1Block_ePrice{
-		padding-right: 7px;
+		width: 120px;
 		vertical-align: middle;
 		font: bold 16px Tahoma, sans-serif;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
 		}
 	.bF1Block_eBuy{
 		width: 300px;
-		text-align: right;
 		vertical-align: top;
 		padding: 15px 0 15px 0;
 		border-top: 1px solid #e6e6e6;
 		}
-
+	.bF1Block__eInShop{
+		font: 16px/20px Tahoma, sans-serif;
+		}
 .bF1ServiceImg{
 	width: 160px;
 	height: 160px;
