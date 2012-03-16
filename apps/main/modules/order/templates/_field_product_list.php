@@ -20,15 +20,17 @@
 						<li style="display:none" class='bBuyingDates__eEnable'>13 <span>Чт</span></li> 
 						<li class='weektoggle bBuyingDates__eRight' data-bind="click: cWeek, css: { mDisabled: weeknum() }"><b></b><span></span></li>
 					</ul>
-					<span class="bBuyingDatePopup" style="top: 2px; display:none">
-						<h3 class="bBuyingDatePopup__eTitle" data-bind="text: curDate"></h3>
+					<!-- ko foreach: dates -->
+					<span class="bBuyingDatePopup" data-bind="attr: {ref: dv}" style="top: 2px; display:none">
+						<h3 class="bBuyingDatePopup__eTitle" data-bind="text: $parent.curDate"></h3>
 						<!-- ko foreach: schedule -->
 						<span class="bBuyingDatePopup__eLine">
-							<i data-bind="css: { bBuyingDatePopup__eOK: $parent.curTime() == $data }"></i>
-							<span data-bind="text: $data, click: $parent.pickTime">c 9:00 до 14:00</span>
+							<i data-bind="css: { bBuyingDatePopup__eOK: $parents[1].curTime() == txt }"></i>
+							<span data-bind="text: txt, click: $parents[1].pickTime">c 9:00 до 14:00</span>
 						</span>
 						<!-- /ko -->
 					</span>
+					<!-- /ko -->
 				</div>
 			</dd>
 		</dl>

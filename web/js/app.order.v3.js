@@ -1,5 +1,5 @@
 $(document).ready(function(){
-
+	
 	/* Model Simulation */
 	orderModel = {
 		Rapid : {
@@ -110,6 +110,83 @@ $(document).ready(function(){
 		]
 	}
 	
+	/* Sync Model */
+	
+	function getDateDM( datestring ) {
+		var dd = new Date( datestring )
+		var monthA = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 
+		'сентября', 'октября', 'ноября', 'декабря']
+		return dd.getDate() + ' ' + monthA[ dd.getMonth() ]
+	}
+	
+	function getDateHTML( datestring ) {
+		var dd = new Date( datestring )
+		var weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+		return dd.getDate() + ' <span>' + weekdays[ dd.getDay() ] + '</span>'
+	}	
+	
+	function getTimeFT( timeobj ) {
+		var time_begin = timeobj.time_begin
+		if( time_begin[0] == '0' )
+			time_begin = time_begin.slice(1)
+		return 'с ' + time_begin + ' до ' + timeobj.time_end
+	}
+	
+	console.info( $('#delivery-map').data('value') )
+	var ServerModel =  $('#delivery-map').data('value')
+	orderModel.Rapid.addCost = ServerModel.standart_rapid.price*1
+	orderModel.Rapid.dlvrDate = getDateDM( ServerModel.standart_rapid.date_default ) 
+	orderModel.Rapid.dlvrTime = getTimeFT( ServerModel.standart_rapid.date_list[0].interval[0] )
+	orderModel.Rapid.vcalend = []
+	for(var i=0, l= ServerModel.standart_rapid.date_list.length; i<l; i++) {
+		var item = ServerModel.standart_rapid.date_list[i]
+		var scheduleItem = {}
+		scheduleItem.sw = (i<7) ? 0 : 1
+		scheduleItem.state = 'act'
+		scheduleItem.dv = getDateDM( item.date )
+		scheduleItem.dhtml = getDateHTML( item.date )
+		scheduleItem.schedule = []
+		for(var j=0, jl = item.interval.length; j < jl; j++) {
+			var intervalItem = {}
+			intervalItem.id = item.interval[j].id
+			intervalItem.txt = getTimeFT( item.interval[j] )
+			scheduleItem.schedule.push( intervalItem )
+			intervalItem = {}
+		}
+		
+		orderModel.Rapid.vcalend.push( scheduleItem ) 
+		scheduleItem = {}
+		item = {}
+	}
+//console.info(orderModel.Rapid.vcalend)
+	
+	orderModel.Rapid.products = []
+	for(var i=0, l= ServerModel.standart_rapid.products.length; i<l; i++) {
+		var item = ServerModel.standart_rapid.products[i]
+		var productItem = {}
+		productItem.title = item.name
+		productItem.moveable = item.moveable
+		productItem.price = item.price+''
+		productItem.hm = item.quantity*1
+		productItem.locs = item.moveto_shop
+		productItem.img = item.moveable
+		productItem.dlvr = []
+		
+		for(var j = 0, jl=item.moveto_mode.length; j<jl; j++) {
+			switch( item.moveto_mode[j] ) {
+				case 'self':
+					productItem.dlvr.push( { txt: 'В самовывоз', lbl: 'selfy'} )
+					break
+				case 'standart_delay':
+					productItem.dlvr.push( { txt: 'В доставку', lbl: 'delay'} )
+					break					
+			}
+		}
+		orderModel.Rapid.products.push( productItem )
+		item = {}
+		productItem = {}
+	}
+	
 	/* ViewModel */
 	function MyViewModel() {
 		var self = this
@@ -130,13 +207,14 @@ $(document).ready(function(){
 				if( $(e.currentTarget).hasClass('bBuyingDates__eDisable') )
 					return false
 				me.curDate( dateit.dv )
-				me.papa.find('.bBuyingDatePopup').css({'left': $(e.target).position().left }).show()
+				me.papa.find('.bBuyingDatePopup[ref="'+dateit.dv+'"]').css({'left': $(e.target).position().left }).show()
 			}
 			if( typeof(ct) !== 'undefined' ) {
 				me.curTime  = ko.observable( ct )
-				me.schedule = ko.observableArray( sch )				
+				if( typeof(sch) !== 'undefined' ) 
+					me.schedule = ko.observableArray( sch )				
 				me.pickTime = function( timeit ) {
-					me.curTime( timeit )
+					me.curTime( timeit.txt )
 				}
 			}
 		}
