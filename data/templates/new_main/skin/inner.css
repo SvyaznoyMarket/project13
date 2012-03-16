@@ -2444,6 +2444,11 @@ border-radius: 5px;
 		border-top: 1px solid #e6e6e6;
 		}
 
+.bF1ServiceImg{
+	width: 160px;
+	height: 160px;
+	}
+
 
 /* bServiceCard */
 
@@ -5007,6 +5012,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 .bSMI{ color: #000; padding-bottom: 100px; font: 16px Tahoma, sans-serif; }
 .mOur{ color: #000; font: 12px Tahoma, sans-serif; }
 .mOurGray{ color: #a1a1a1; font: 12px Tahoma, sans-serif; }
+
 
 	
 		
