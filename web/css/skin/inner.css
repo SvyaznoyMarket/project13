@@ -2498,17 +2498,22 @@ DT.bCtg__eOrange{
 		font: 12px/20px Tahoma, sans-serif;
 		}
 	.bF1Block_ePrice{
-		padding-right: 7px;
+        width: 100px;
 		vertical-align: middle;
 		font: bold 16px Tahoma, sans-serif;
-		}
+        display: inline-block;
+        *display: inline;
+        zoom: 1;
+    }
 	.bF1Block_eBuy{
-		width: 220px;
-		text-align: right;
+		width: 248px;
 		vertical-align: top;
 		padding: 15px 0 15px 0;
 		border-top: 1px solid #e6e6e6;
 		}
+  .bF1Block__eInShop{
+       font: 12px/20px Tahoma, sans-serif;
+       }
 
 .bF1ServiceImg{
     width: 160px;
