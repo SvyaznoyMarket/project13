@@ -121,7 +121,7 @@ $(document).ready(function(){
 	
 	function getDateHTML( datestring ) {
 		var dd = new Date( datestring )
-		var weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+		var weekdays = ['Вс','Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 		return dd.getDate() + ' <span>' + weekdays[ dd.getDay() ] + '</span>'
 	}	
 	
@@ -132,61 +132,88 @@ $(document).ready(function(){
 		return 'с ' + time_begin + ' до ' + timeobj.time_end
 	}
 	
+	function fillSIPartly( sw, act, datestring ) {
+		var item = {}
+		item.sw       = sw
+		item.state    = act
+		item.dv       = getDateDM( datestring )
+		item.dhtml    = getDateHTML( datestring )
+		item.schedule = []		
+		console.info(item)
+		return item
+	}	
 	console.info( $('#delivery-map').data('value') )
 	var ServerModel =  $('#delivery-map').data('value')
-	orderModel.Rapid.addCost = ServerModel.standart_rapid.price*1
-	orderModel.Rapid.dlvrDate = getDateDM( ServerModel.standart_rapid.date_default ) 
-	orderModel.Rapid.dlvrTime = getTimeFT( ServerModel.standart_rapid.date_list[0].interval[0] )
-	orderModel.Rapid.vcalend = []
-	for(var i=0, l= ServerModel.standart_rapid.date_list.length; i<l; i++) {
-		var item = ServerModel.standart_rapid.date_list[i]
-		var scheduleItem = {}
-		scheduleItem.sw = (i<7) ? 0 : 1
-		scheduleItem.state = 'act'
-		scheduleItem.dv = getDateDM( item.date )
-		scheduleItem.dhtml = getDateHTML( item.date )
-		scheduleItem.schedule = []
-		for(var j=0, jl = item.interval.length; j < jl; j++) {
-			var intervalItem = {}
-			intervalItem.id = item.interval[j].id
-			intervalItem.txt = getTimeFT( item.interval[j] )
-			scheduleItem.schedule.push( intervalItem )
-			intervalItem = {}
+	
+	function syncBlock( sender, reciever ) {
+	
+		reciever.addCost  = sender.price*1
+		reciever.dlvrDate = getDateDM( sender.date_default ) 
+		reciever.dlvrTime = getTimeFT( sender.date_list[0].interval[0] )
+		reciever.vcalend  = []
+		var defaultDate = new Date( sender.date_list[0].date )
+		var lost = defaultDate.getDay()
+		if( lost === 0 )
+			lost = 6
+		else	
+			lost --
+		defaultDate.setDate( defaultDate.getDate() - lost )
+	
+		for(var i=0; i < lost; i++) {
+			var scheduleItem = fillSIPartly( 0, 'dis', defaultDate.getTime() )
+			reciever.vcalend.push( scheduleItem ) 
+			
+			defaultDate.setDate( defaultDate.getDate() + 1 )
+			scheduleItem = {}
 		}
 		
-		orderModel.Rapid.vcalend.push( scheduleItem ) 
-		scheduleItem = {}
-		item = {}
-	}
-//console.info(orderModel.Rapid.vcalend)
-	
-	orderModel.Rapid.products = []
-	for(var i=0, l= ServerModel.standart_rapid.products.length; i<l; i++) {
-		var item = ServerModel.standart_rapid.products[i]
-		var productItem = {}
-		productItem.title = item.name
-		productItem.moveable = item.moveable
-		productItem.price = item.price+''
-		productItem.hm = item.quantity*1
-		productItem.locs = item.moveto_shop
-		productItem.img = item.moveable
-		productItem.dlvr = []
-		
-		for(var j = 0, jl=item.moveto_mode.length; j<jl; j++) {
-			switch( item.moveto_mode[j] ) {
-				case 'self':
-					productItem.dlvr.push( { txt: 'В самовывоз', lbl: 'selfy'} )
-					break
-				case 'standart_delay':
-					productItem.dlvr.push( { txt: 'В доставку', lbl: 'delay'} )
-					break					
+		for(var i=0, l= sender.date_list.length; i<l; i++) {
+			var item = sender.date_list[i]
+			var scheduleItem = fillSIPartly(  ( i < (7 - lost) ) ? 0 : 1 , 'act', item.date )
+			for(var j=0, jl = item.interval.length; j < jl; j++) {
+				var intervalItem = {}
+				intervalItem.id  = item.interval[j].id
+				intervalItem.txt = getTimeFT( item.interval[j] )
+				scheduleItem.schedule.push( intervalItem )
+				intervalItem  = {}
 			}
+			
+			reciever.vcalend.push( scheduleItem ) 
+			scheduleItem = {}
+			item = {}
 		}
-		orderModel.Rapid.products.push( productItem )
-		item = {}
-		productItem = {}
-	}
+	//console.info(orderModel.Rapid.vcalend)
+		
+		reciever.products = []
+		for(var i=0, l = sender.products.length; i<l; i++) {
+			var item = sender.products[i]
+			var productItem = {}
+			productItem.title    = item.name
+			productItem.moveable = item.moveable
+			productItem.price    = item.price+''
+			productItem.hm       = item.quantity*1
+			productItem.locs     = item.moveto_shop
+			productItem.img      = item.moveable
+			productItem.dlvr     = []
+			
+			for(var j = 0, jl=item.moveto_mode.length; j<jl; j++) {
+				switch( item.moveto_mode[j] ) {
+					case 'self':
+						productItem.dlvr.push( { txt: 'В самовывоз', lbl: 'selfy'} )
+						break
+					case 'standart_delay':
+						productItem.dlvr.push( { txt: 'В доставку', lbl: 'delay'} )
+						break					
+				}
+			}
+			reciever.products.push( productItem )
+			item = {}
+			productItem = {}
+		}	
+	} // syncBlock function
+	syncBlock( ServerModel.standart_rapid, orderModel.Rapid )
 	
+
 	/* ViewModel */
 	function MyViewModel() {
 		var self = this
