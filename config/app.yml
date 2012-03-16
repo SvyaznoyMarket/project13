@@ -79,8 +79,8 @@ all:
 
   core:
     config:
+
       api_url: 'http://core.ent3.ru/v1/json'
-      userapi_url: 'http://core.my/userapi/'
       consumer_key: test
       signature: test
 

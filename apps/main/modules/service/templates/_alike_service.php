@@ -28,13 +28,11 @@
         </p>
 
         <div class="bServiceCard__ePrice pb10">
-          <?php if ($showNoPrice || $service['price'] != 'бесплатно'): ?>
-            <?php echo ($service['price'] < 1) ? 'бесплатно' : $service['price'] ?>
+        <?php echo $service['priceFormatted']; //echo ($service['price'] < 1) ? 'бесплатно' : $service['price'] ?>
 
-            <?php if ((int)$service['price']): ?><span class="rubl">p</span><?php endif ?>
-          <?php endif ?>
+        <?php if ((int)$service['price']): ?><span class="rubl">p</span><?php endif ?>
 
-          <?php if ($service['only_inshop']): ?>
+          <?php if ($service['isOnlyInShop']): ?>
             <div>доступна в магазине</div>
           <?php endif ?>
 
@@ -48,10 +46,10 @@
           'url'     => url_for('cart_service_add', array('service' => $service['token'])),
         ) ?>
 
-        <?php if (!$service['only_inshop']): ?>
-        <form action="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>"/>
-        <input data-value='<?php echo json_encode($json) ?>' type="submit" class="button yellowbutton" value="Купить услугу">
-        </form>
+        <?php if ($service['isInSale'] ) : ?>
+            <form action="<?php echo url_for('cart_service_add', array('service' => $service['token'])) ?>"/>
+            <input data-value='<?php echo json_encode($json) ?>' type="submit" class="button yellowbutton" value="Купить услугу">
+            </form>
         <?php endif ?>
 
 
