@@ -145,17 +145,17 @@ class productComponents extends myComponents
 
       // смежные товары
       $criteria = new ProductRelatedCriteria();
-      $criteria->setParent($this->product['core_id']);
-      $criteria->setPager(new myPager(1, 5 * 2));
-      $item['related'] = RepositoryManager::get('Product')->getRelated($criteria);
+      $item['related'] = RepositoryManager::get('Product')->getRelated(
+        $criteria->setParent($this->product['core_id'])->setPager(new myPager(1, 5 * 2))
+      );
       $criteria->getPager()->setMaxPerPage(5);
       $item['related_pager'] = $criteria->getPager();
 
       // аксессуары
       $criteria = new ProductRelatedCriteria();
-      $criteria->setParent($this->product['core_id']);
-      $criteria->setPager(new myPager(1, 5 * 2));
-      $item['accessory'] = RepositoryManager::get('Product')->getAccessory($criteria);
+      $item['accessory'] = RepositoryManager::get('Product')->getAccessory(
+        $criteria->setParent($this->product['core_id'])->setPager(new myPager(1, 5 * 2))
+      );
       $criteria->getPager()->setMaxPerPage(5);
       $item['accessory_pager'] = $criteria->getPager();
     }
