@@ -111,19 +111,19 @@ class serviceActions extends myActions
     $this->service = $this->getRoute()->getObject();
     $this->getResponse()->setTitle('F1 - '.$this->service->name.' – Enter.ru');
 
-    //хак для мебели!!!!!!! убрать
-    $parant = $this->service->getCatalogParent();
-    $showNoPrice = 1;
-    if ($parant['core_parent_id'] == 305)
-    {
-      $showNoPrice = false;
-    }
-    else
-    {
-      $showNoPrice = true;
-    }
-
-    $this->setVar('showNoPrice', $showNoPrice, true);
+//    //хак для мебели!!!!!!! убрать
+//    $parant = $this->service->getCatalogParent();
+//    $showNoPrice = 1;
+//    if ($parant['core_parent_id'] == 305)
+//    {
+//      $showNoPrice = false;
+//    }
+//    else
+//    {
+//      $showNoPrice = true;
+//    }
+//
+//    $this->setVar('showNoPrice', $showNoPrice, true);
 
   }
 

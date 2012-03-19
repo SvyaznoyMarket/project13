@@ -60,9 +60,29 @@ return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
     #if (!$this->price) {
     $price = $this->getCurrentPrice($productId);
     #}
-    if ($price < 1) return 'бесплатно';
+    if ($price === false) {
+        return '';
+    } elseif ($price < 1) {
+        return 'бесплатно';
+    }
     return number_format($price, 0, ',', ' ');
   }
+
+    public function isInSale($productId = 0) {
+        $price = $this->getCurrentPrice($productId);
+        if (!$this->only_inshop && $price && $price >= self::MIN_BUY_PRICE) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isOnlyInShop() {
+        if ($this->only_inshop) {
+            return true;
+        }
+        return false;
+    }
+
 
 
   public function getCurrentPrice($productId = NULL) {
@@ -72,7 +92,7 @@ return $q->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
         #$priceList = ProductPriceListTable::getInstance()->getCurrent();
         #$priceListDefault = ProductPriceListTable::getInstance()->getDefault();
 
-        $currentPrice = 0;
+        $currentPrice = false;
         //если указан подукт, сначала ищем привязанную к продукту цену
         if ($productId) {
             foreach($this->Price as $price) {
