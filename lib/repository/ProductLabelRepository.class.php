@@ -37,12 +37,13 @@ class ProductLabelRepository extends ObjectRepository
 
   public function getByCategory(ProductLabelCriteria $criteria, $order = null)
   {
-    $result = ProductTable::getInstance()->createBaseQuery()
+    $q = ProductTable::getInstance()->createBaseQuery(array('view' => 'list'))
       ->select('DISTINCT core_label_id')
       ->innerJoin('product.CategoryRelation categoryRelation')
-      ->andWhereIn('categoryRelation.product_category_id', ProductCategoryTable::getInstance()->getDescendatIds($criteria->getCategory()))
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-      ->execute();
+      ->whereIn('categoryRelation.product_category_id', ProductCategoryTable::getInstance()->getDescendatIds($criteria->getCategory()))
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+
+    $result = $q->execute();
 
     return $this->get(is_array($result) ? $result : array());
   }
