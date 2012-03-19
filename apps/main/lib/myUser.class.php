@@ -153,6 +153,35 @@ class myUser extends myGuardSecurityUser
     return !empty($key) ? $this->region[$key] : $this->region;
   }
 
+  public function getRegion_()
+  {
+    if (!$this->region)
+    {
+      $region = false;
+      $region_id = $this->getAttribute('region', null);
+
+      if ($region_id)
+      {
+        $region = RepositoryManager::getRegion()->getOne($region_id);
+      }
+
+      if (!$region)
+      {
+        $regionData = sfContext::getInstance()->getRequest()->getParameter('geoip');
+        $region =
+          (!empty($regionData['region']) && !empty($regionData['name']))
+          ? RepositoryManager::getRegion()->getOneByToken($regionData['region'].'-'.$regionData['name'])
+          : RepositoryManager::getRegion()->getOneDefault();
+
+        $this->setRegion($region->getId());
+      }
+
+      $this->region = $region;
+    }
+
+    return $this->region;
+  }
+
   public function setRegion($region_id)
   {
     $this->setAttribute('region', $region_id);

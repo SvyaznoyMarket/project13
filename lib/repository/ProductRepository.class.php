@@ -9,7 +9,7 @@ class ProductRepository extends ObjectRepository
 
   public function create($data)
   {
-    myDebug::dump($data);
+    myDebug::dump($data, 1);
     $entity = new ProductEntity();
 
     $mapping = array(
@@ -36,23 +36,28 @@ class ProductRepository extends ObjectRepository
     }
 
     // sets productType
-    $productType = $this->getRepository('ProductType')->create(array_key_exists('type', $data) ? $data['type'] : array('id' => $data['type_id']));
-    $entity->setType($productType);
+    $entity->setType($this->getRepository('ProductType')->create(array_key_exists('type', $data) ? $data['type'] : array('id' => $data['type_id'])));
 
     // sets categories
-    $categories = $this->getRepository('ProductCategory')->createList($data['category']);
-    $entity->setCategory($categories);
+    $entity->setCategory($this->getRepository('ProductCategory')->createList($data['category']));
 
     return $entity;
   }
 
-  public function getOneByToken(ProductCriteria $criteria, $order = null)
+  public function getOneByToken(ProductCriteria $criteria)
   {
-    $params = array(
-      'slug' => $criteria->getToken(),
-    );
+    $resultStatic = $this->coreClient->query('product/get-static', array(
+      'slug' => $criteria->getToken()
+    ));
 
-    $result = $this->coreClient->query('product/get-static', $params);
+    $resultDynamic = $this->coreClient->query('product/get-dynamic', array(
+      'slug'   => $criteria->getToken(),
+      'geo_id' => $criteria->getRegion()->getId(),
+    ));
+
+    $result = array_merge($resultStatic, $resultDynamic);
+    myDebug::dump($resultStatic);
+    myDebug::dump($result, 1);
 
     return $result ? $this->create(array_shift($result)) : null;
   }

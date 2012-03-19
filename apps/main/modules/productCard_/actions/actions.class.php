@@ -29,6 +29,6 @@ class productCard_Actions extends myActions
     $criteria = new ProductCriteria();
     $this->product = RepositoryManager::getProduct()->getOneByToken($criteria->setToken($product_token));
 
-    myDebug::dump($this->product, 1);
+    //myDebug::dump($this->product);
   }
 }

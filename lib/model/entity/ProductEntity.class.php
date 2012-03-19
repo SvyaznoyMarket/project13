@@ -127,6 +127,14 @@ class ProductEntity
     return $this->category;
   }
 
+  /**
+   * @return ProductCategoryEntity
+   */
+  public function getMainCategory()
+  {
+    return count($this->category) > 0 ? $this->category[0] : null;
+  }
+
   public function setAttribute(array $attribute)
   {
     $this->attribute = $attribute;

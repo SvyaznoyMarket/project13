@@ -16,6 +16,15 @@ class RepositoryManager
 
   /**
    * @static
+   * @return RegionRepository
+   */
+  public static function getRegion()
+  {
+    return self::get('Region');
+  }
+
+  /**
+   * @static
    * @return ProductRepository
    */
   public static function getProduct()

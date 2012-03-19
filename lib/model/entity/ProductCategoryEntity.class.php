@@ -8,9 +8,6 @@ class ProductCategoryEntity
   /* @var integer */
   private $id;
 
-  /* @var ProductCategoryEntity|null */
-  private $parent = null;
-
   /* @var string */
   private $token;
 
@@ -46,6 +43,9 @@ class ProductCategoryEntity
 
   /* @var integer */
   private $productView;
+
+  /* @var ProductCategoryEntity|null */
+  private $parent = null;
 
   /* @var ProductCategoryEntity[] */
   private $child;
