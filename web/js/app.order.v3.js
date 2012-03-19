@@ -139,19 +139,20 @@ $(document).ready(function(){
 		item.dv       = getDateDM( datestring )
 		item.dhtml    = getDateHTML( datestring )
 		item.schedule = []		
-		console.info(item)
+//console.info(item)
 		return item
 	}	
+	
 	console.info( $('#delivery-map').data('value') )
 	var ServerModel =  $('#delivery-map').data('value')
 	
-	function syncBlock( sender, reciever ) {
+	function syncBlock( _sender, _receiver ) {
 	
-		reciever.addCost  = sender.price*1
-		reciever.dlvrDate = getDateDM( sender.date_default ) 
-		reciever.dlvrTime = getTimeFT( sender.date_list[0].interval[0] )
-		reciever.vcalend  = []
-		var defaultDate = new Date( sender.date_list[0].date )
+		_receiver.addCost  = _sender.price*1
+		_receiver.dlvrDate = getDateDM( _sender.date_default ) 
+		_receiver.dlvrTime = getTimeFT( _sender.date_list[0].interval[0] )
+		_receiver.vcalend  = []
+		var defaultDate = new Date( _sender.date_list[0].date )
 		var lost = defaultDate.getDay()
 		if( lost === 0 )
 			lost = 6
@@ -161,14 +162,14 @@ $(document).ready(function(){
 	
 		for(var i=0; i < lost; i++) {
 			var scheduleItem = fillSIPartly( 0, 'dis', defaultDate.getTime() )
-			reciever.vcalend.push( scheduleItem ) 
+			_receiver.vcalend.push( scheduleItem ) 
 			
 			defaultDate.setDate( defaultDate.getDate() + 1 )
 			scheduleItem = {}
 		}
 		
-		for(var i=0, l= sender.date_list.length; i<l; i++) {
-			var item = sender.date_list[i]
+		for(var i=0, l= _sender.date_list.length; (i < l) && (i < 14 - lost); i++) {
+			var item = _sender.date_list[i]
 			var scheduleItem = fillSIPartly(  ( i < (7 - lost) ) ? 0 : 1 , 'act', item.date )
 			for(var j=0, jl = item.interval.length; j < jl; j++) {
 				var intervalItem = {}
@@ -178,15 +179,18 @@ $(document).ready(function(){
 				intervalItem  = {}
 			}
 			
-			reciever.vcalend.push( scheduleItem ) 
+			_receiver.vcalend.push( scheduleItem ) 
 			scheduleItem = {}
 			item = {}
 		}
-	//console.info(orderModel.Rapid.vcalend)
 		
-		reciever.products = []
-		for(var i=0, l = sender.products.length; i<l; i++) {
-			var item = sender.products[i]
+			
+	} // syncBlock function
+	
+	function syncProducts( _sender, _receiver ) {
+		_receiver.products = []
+		for(var i=0, l = _sender.products.length; i<l; i++) {
+			var item = _sender.products[i]
 			var productItem = {}
 			productItem.title    = item.name
 			productItem.moveable = item.moveable
@@ -200,19 +204,46 @@ $(document).ready(function(){
 				switch( item.moveto_mode[j] ) {
 					case 'self':
 						productItem.dlvr.push( { txt: 'В самовывоз', lbl: 'selfy'} )
+					//	productItem.dlvr.push( { txt: 'В доставку', lbl: 'delay'} ) // remove it
 						break
 					case 'standart_delay':
 						productItem.dlvr.push( { txt: 'В доставку', lbl: 'delay'} )
 						break					
 				}
 			}
-			reciever.products.push( productItem )
+			_receiver.products.push( productItem )
 			item = {}
 			productItem = {}
 		}	
-	} // syncBlock function
-	syncBlock( ServerModel.standart_rapid, orderModel.Rapid )
+	} // syncProducts function
 	
+	syncBlock( ServerModel.standart_rapid, orderModel.Rapid )
+	syncProducts( ServerModel.standart_rapid, orderModel.Rapid )
+
+	syncBlock( ServerModel.standart_delayed, orderModel.Delay )
+	syncProducts( ServerModel.standart_delayed, orderModel.Delay )
+	
+	function syncShops( _sender, _receiver ) {
+		_receiver.shops = []
+		for(var i=0, l = _sender.shops.length; i<l; i++) {
+			var item = _sender.shops[i]
+			var shopItem = {}
+			shopItem.shid     = item.id
+			shopItem.title  = item.address
+			shopItem.fromto  = item.working_time
+			shopItem.latitude = item.coord_lat
+			shopItem.longitude = item.coord_long
+			shopItem.markerImg = ''			
+			syncProducts( item, shopItem )
+			
+			_receiver.shops.push( shopItem )
+			item = {}
+			shopItem = {}
+		}	
+	}
+	
+	syncBlock( ServerModel.self, orderModel.Selfy )
+	syncShops( ServerModel.self, orderModel.Selfy )
 
 	/* ViewModel */
 	function MyViewModel() {
@@ -285,7 +316,7 @@ $(document).ready(function(){
 		for(var s=0, l= self.shops().length; s<l; s++)
 			self.shops()[s].products = ko.observableArray( orderModel.Selfy.shops[s].products )
 			
-		self.shifting = function( line, sender, target, e ) {
+		self.shifting = function( line, _sender, target, e ) {
 			$(e.currentTarget).parent().parent().find('.mBacket').trigger('click') // hack
 
 			switch( target.lbl() ) {
@@ -307,7 +338,7 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 			break
 			}
 			var ind = line.dlvr.indexOf( target )
-			line.dlvr[ ind ].lbl ( sender )
+			line.dlvr[ ind ].lbl ( _sender )
 		}
 		
 		self.totalPrice = ko.computed(function() {
@@ -359,17 +390,17 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 		
 		self.popupWithShops = ko.observableArray([])
 		
-		var shopSender = null
+		var shop_sender = null
 		var movingItem = null
 		
-		self.shiftingInShops = function( shopReciever ) {
-			if( typeof(shopReciever) === 'object' )
-				shopReciever = shopReciever.shid
+		self.shiftingInShops = function( shop_receiver ) {
+			if( typeof(shop_receiver) === 'object' )
+				shop_receiver = shop_receiver.shid
 //console.info('rec ', movingItem)
-//console.info( self.shops.indexOf( shopSender ), shopReciever )
-			self.shops()[ self.shops.indexOf( shopSender ) ].products.remove( movingItem )
+//console.info( self.shops.indexOf( shop_sender ), shop_receiver )
+			self.shops()[ self.shops.indexOf( shop_sender ) ].products.remove( movingItem )
 			for(var i=0, l=self.shops().length; i<l; i++) {
-				if( self.shops()[i].shid == shopReciever ) {
+				if( self.shops()[i].shid == shop_receiver ) {
 					self.shops()[i].products.push( movingItem )
 					break
 				}	
@@ -378,7 +409,7 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 		}
 		
 		self.fillPopupWithShops = function( shop, item ) {
-			shopSender = shop
+			shop_sender = shop
 			movingItem = item
 			self.productforPopup(item)
 			var double_popupWithShops = self.popupWithShops.slice(0)
@@ -398,12 +429,14 @@ sloop:			for(var s=0, ls=double_popupWithShops.length; s<ls; s++) {
 //console.info('doublelocs', doublelocs)
 locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 				if(  !doublelocs[i] ) continue
-				for(var asi=0, asl=self.allshops.length; asi<asl; asi++) {
-					if( self.allshops[asi].shid == doublelocs[i] ) {
+				var shopsHub = self.shops()
+				for(var asi=0, asl=shopsHub.length; asi<asl; asi++) {
+					console.info(shopsHub[asi].shid , doublelocs[i])
+					if( shopsHub[asi].shid == doublelocs[i] ) {
 //console.info( asi )
-						var shopitem = self.allshops[asi]
+						var shopitem = shopsHub[asi]
 						shopitem.markerImg = ko.observable( )
-						self.popupWithShops.push( self.allshops[asi] )
+						self.popupWithShops.push( shopsHub[asi] )
 						continue locsloop
 					}
 				}
