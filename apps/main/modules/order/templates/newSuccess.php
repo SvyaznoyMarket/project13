@@ -19,7 +19,7 @@
   </div>
 
 
-  <?php include_partial('order/field_product_list', $sf_data)?>
+  <?php include_partial('order/field_product_list', $sf_data) ?>
 
 
   <div class='bBuyingInfo'>
