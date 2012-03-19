@@ -669,6 +669,7 @@ border-radius:5px;
 .scroll .srcoll_link_button.forvard:hover {background-position:-789px -191px}
 .scroll .srcoll_link_button.forvard.disabled {background-position:-789px -139px; cursor:default}
 .scroll span{ vertical-align: middle; padding-right: 10px; font: 14px Tahoma, sans-serif;}
+.carbig .scroll span{ font: 14px Tahoma, sans-serif; padding: 0; vertical-align: top;}
 .srcoll_link{ font: 14px Tahoma, sans-serif; color: #000; font: 14px Tahoma, sans-serif; margin-right: 3px; text-decoration: underline;}
 .carousel {float:left; width:705px; margin-left:-2px; margin-bottom:-10px}
 
