@@ -936,9 +936,10 @@ $(document).ready(function(){
 					'width' : $(this).find('.scroll').data('quantity'),
 					'wrap'  : $(this).find('~ .bigcarousel').first(),
 					'viswidth' : 5
-					})		
+				})		
 		} else {
-			var tmpline = new cardsCarousel ({
+			if( $(this).find('.jshm').length ) {
+				var tmpline = new cardsCarousel ({
 					'prev'  : $(this).find('.back'),
 					'next'  : $(this).find('.forvard'),
 					'crnt'  : $(this).find('.none'),
@@ -947,7 +948,8 @@ $(document).ready(function(){
 //					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
 					'wrap'  : $(this).find('~ .carousel').first(),
 					'viswidth' : 3
-					})
+				})
+			}		
 		}			
 	})
 
