@@ -606,14 +606,51 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 					$(item).parent('label').removeClass('mChecked')
 				})
 			}
+			$(this).addClass('mChecked')
+			return
 		}
 		
-		$(this).addClass('mChecked')
+		if( $(this).find('input').attr('type') == 'checkbox' ) {
+			$(this).toggleClass('mChecked')
+		}
+		
 	})	
 
 	$('body').delegate('.bBuyingLine input:radio, .bBuyingLine input:checkbox', 'click', function(e) {
-console.info( e.target, e.currentTarget, e.timeStamp, $(this).attr('checked') )
+//console.info( e.target, e.timeStamp, $(this).attr('checked') )
 		e.stopPropagation()
 	})	
-
+	
+	/* Mail to Server */
+	function syncClientServer() {
+		ServerModel.standart_rapid.products = MVM.bitems()//.slice(0)
+		ServerModel.standart_delayed.products = MVM.bitems_D()//.slice(0)
+		//var tmpShops = MVM.shops().slice(0)
+		
+		//ServerModel.self.shops = tmpShops
+		for(var i=0, l = ServerModel.self.shops.length; i<l; i++) {
+//console.info(i)
+			ServerModel.self.shops[i].products = MVM.shops()[i].products().slice(0)
+		}
+//console.info(tmpShops)
+//		tmpShops=[]
+	}
+	
+	$('.mConfirm a.bBigOrangeButton').click( function(e) {
+		e.preventDefault()
+		
+		var form = $('#order')
+		syncClientServer()		
+		var toSend = form.serializeArray()
+		toSend.push( { name: 'products_hash', value: JSON.stringify( ServerModel )  } )//encodeURIComponent
+//console.info( toSend )
+		$.ajax({
+			url: form.attr('action'),
+			type: "POST",
+			data: toSend,
+			success: function( data ) {
+//	console.info(data)
+			}
+		})
+	})
 });	

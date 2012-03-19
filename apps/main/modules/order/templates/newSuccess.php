@@ -5,7 +5,7 @@
 
 <?php slot('js_template', get_partial('order/js_template', $sf_data)) ?>
 
-<form method="post" action="<?php echo url_for('order_new') ?>">
+<form id="order" method="post" action="<?php echo url_for('order_new') ?>">
 
   <div class='bBuyingInfo'>
 
