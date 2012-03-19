@@ -232,10 +232,13 @@ class ProductFactory
                     $productsBaseData[$itemKey]['delivery'] = $itemData;
                 } elseif (!isset($productsBaseData[$itemKey])) {
                     $productsBaseData[$itemKey] = $itemData;
-                } else {
+                } elseif (is_array($productsBaseData[$itemKey]) && is_array($itemData)) {
                     $productsBaseData[$itemKey] = array_merge($productsBaseData[$itemKey], $itemData);
                 }
            }
+        }
+        if (isset($productsBaseData['result'])) {
+            throw new ErrorException('Товар не найден');
         }
         //print_r($productsBaseData);
         //die();

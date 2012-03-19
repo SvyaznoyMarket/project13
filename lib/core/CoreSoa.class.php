@@ -45,8 +45,8 @@ class CoreSoa
     protected function initialize()
     {
         $this->_isLog = true;
-        $this->_client_id = 7;
         $config = sfConfig::getAll();
+        $this->_client_id = $config['app_core_config']['client_code'];
         $this->_coreApiUrl = $config['app_core_config']['userapi_url'];
 
 

@@ -233,7 +233,11 @@ class ProductSoa
        // return ProductPhotoTable::getInstance()->getByProduct($this);
         $urls = sfConfig::get('app_product_photo_url');
         $mediaList = $this->media;
-        foreach ($mediaList as & $media) {
+        foreach ($mediaList as $k => & $media) {
+            if ($media['type_id'] != 1) {
+                unset($mediaList[$k]);
+                continue;
+            }
             //генерируем пути сразу для всех размеров
             foreach ($urls as $num => $url) {
                 $media['path'][$num] = $url . $media['source'];
