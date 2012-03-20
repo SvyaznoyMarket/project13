@@ -31,29 +31,30 @@ class ProjectYandexMarketTask extends sfBaseTask
      */
     private $_categoryList = array();
 
-    /**
-     * Флаг - выгжужать  url категорий
-     * @var boolean
-     */
-    private $_uploadCategotyUrl = true;
-    /**
-     * Используется только, если $_uploadCategotyUrl = true;
-     * Список файлов, для которых выгружать URL
-     * Если не задано - выгружать для всех
-     * @var type
-     */
-    private $_uploadCategotyUrlFileList = array(
-        'export_mgcom.xml',
-        'export_realweb.xml',
-        'export_mgcom_ryazan.xml',
-        'export_realweb_ryazan.xml',
-        'export_mgcom_lipetsk.xml',
-        'export_realweb_lipetsk.xml',
-        'export_mgcom_belgorod.xml',
-        'export_realweb_belgorod.xml',
-        'export_mgcom_orel.xml',
-        'export_realweb_orel.xml',
-    );
+//DEPRICATED
+//    /**
+//     * Флаг - выгжужать  url категорий
+//     * @var boolean
+//     */
+//    private $_uploadCategotyUrl = true;
+//    /**
+//     * Используется только, если $_uploadCategotyUrl = true;
+//     * Список файлов, для которых выгружать URL
+//     * Если не задано - выгружать для всех
+//     * @var type
+//     */
+//    private $_uploadCategotyUrlFileList = array(
+//        'export_mgcom.xml',
+//        'export_realweb.xml',
+//        'export_mgcom_ryazan.xml',
+//        'export_realweb_ryazan.xml',
+//        'export_mgcom_lipetsk.xml',
+//        'export_realweb_lipetsk.xml',
+//        'export_mgcom_belgorod.xml',
+//        'export_realweb_belgorod.xml',
+//        'export_mgcom_orel.xml',
+//        'export_realweb_orel.xml',
+//    );
 
     /**
      * Список товаров, выгружаемых для товара
@@ -457,21 +458,23 @@ EOF;
      */
     private function _setCategoryList(){
         //ваясним, выгружать ли URL категорий в текущий файл
-        if ($this->_uploadCategotyUrl) {
-            if (isset($this->_uploadCategotyUrlFileList)) {
-                $addCategoryUrl = false;
-                foreach($this->_uploadCategotyUrlFileList as $trueFile) {
-                    if (strpos($this->_xmlFilePathReal, $trueFile) !== false ) {
-                        $addCategoryUrl = true;
-                        break;
-                    }
-                }
-            } else {
-                $addCategoryUrl = true;
-            }
-        } else {
-            $addCategoryUrl = true;
-        }
+        $addCategoryUrl = true;
+//DEPRICATED
+//        if ($this->_uploadCategotyUrl) {
+//            if (isset($this->_uploadCategotyUrlFileList)) {
+//                $addCategoryUrl = false;
+//                foreach($this->_uploadCategotyUrlFileList as $trueFile) {
+//                    if (strpos($this->_xmlFilePathReal, $trueFile) !== false ) {
+//                        $addCategoryUrl = true;
+//                        break;
+//                    }
+//                }
+//            } else {
+//                $addCategoryUrl = true;
+//            }
+//        } else {
+//            $addCategoryUrl = true;
+//        }
 
         $categoryList = ProductCategoryTable::getInstance()->createBaseQuery();
         if (count($this->_categoryList)) {
@@ -534,15 +537,15 @@ EOF;
 
 
         $currentOffset = 0;
-        $this->_portionToLoadProduct = 5;
-        $tmpNum = 1;
+//        $this->_portionToLoadProduct = 5;
+//        $tmpNum = 1;
         $currentXml = '';
         file_put_contents($this->_xmlFilePath,'<offers>',FILE_APPEND);
         do {
-            if ($tmpNum>=2) {
-                break;
-            }
-            $tmpNum++;
+//            if ($tmpNum>=2) {
+//                break;
+//            }
+//            $tmpNum++;
 
             //делаем выборку товаров
             $sql = $this->_makeProductListQuery($catIdListString);
