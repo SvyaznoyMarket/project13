@@ -20,6 +20,7 @@ all:
     image_url:
       - 'http://fs01.enter.ru/4/1/230x302/'
       - 'http://fs01.enter.ru/4/1/768x302/'
+      - 'http://fs01.enter.ru/4/1/920x320/'
 #      - 'http://core.ent3.ru/upload/4/1/230x302/'
 #      - 'http://core.ent3.ru/upload/4/1/768x302/'
     adfox: true
@@ -37,6 +38,11 @@ all:
     photo_3d_url:
       - 'http://fs01.enter.ru/1/2/500/'
       - 'http://fs01.enter.ru/1/2/2500/'
+
+  product_label:
+    photo_url:
+      - 'http://fs01.enter.ru/7/1/x23/'
+      - 'http://fs01.enter.ru/7/1/x38/'
 
   category:
     photo_url:
@@ -67,6 +73,9 @@ all:
     signout_url: '@user'
     signin_url: '@user'
     #remember_key_expiration_age: 1296000
+
+  online_call:
+    enabled: true
 
   core:
     config:

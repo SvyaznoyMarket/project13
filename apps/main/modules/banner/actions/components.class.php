@@ -31,12 +31,14 @@ class bannerComponents extends myComponents
     //foreach (BannerTable::getInstance()->getListBySlot($this->slot) as $banner)
     foreach (BannerTable::getInstance()->getList(array('hydrate_array' => true)) as $banner)
     {
+      $bannerTable = BannerTable::getInstance();
       $productList = array();
+
       foreach ($banner['Item'] as $bannerItem)
       {
         if (!empty($bannerItem['Object']))
         {
-          $productList[] = $bannerItem['Object'];
+          $objectList[] = $bannerItem['Object'];
         }
       }
 
@@ -45,40 +47,71 @@ class bannerComponents extends myComponents
       {
         $link = $banner['link'];
       }
-      else if (!count($productList) && !$banner['is_dummy'])
+      else if (!count($objectList) && !$bannerTable->isDummy($banner))
       {
         continue;
       }
-      else if (1 == count($productList))
-      {
-        $link = $this->generateUrl('productCard', array('product' => $productList[0]['token_prefix'].'/'.$productList[0]['token']), true);
-      }
-      elseif (count($productList) > 1) {
-        $link = $this->generateUrl('product_set', array('products' => implode(',', array_map(function($i) { return $i['barcode']; }, $productList))), true);
-      }
       else
       {
-        $link = "#";
+        $link = $this->getBannerUrl($objectList, $bannerItem['type']);
       }
 
       //myDebug::dump($banner);
       $item = array(
-        'alt'  => $banner['name'],
-        'imgs' => BannerTable::getInstance()->getImageUrl($banner, 0),
-        'imgb' => BannerTable::getInstance()->getImageUrl($banner, 1),
-        'url'  => $link,
-        't'    =>
+        'alt'   => $banner['name'],
+        'imgs'  => $bannerTable->getImageUrl($banner, 0),
+        'imgb'  => BannerTable::getInstance()->getImageUrl($banner, $bannerTable->isExclusive($banner) ? 2 : 1),
+        'url'   => $link,
+        't'     =>
           !empty($banner['timeout'])
           ? $banner['timeout']
           : (count($list) ? sfConfig::get('app_banner_timeout', 6000) : 10000)
         ,
-        'ga'  => $banner['id'] . ' - ' . $banner['name']
+        'ga'    => $banner['id'] . ' - ' . $banner['name'],
       );
+      if ($bannerTable->isExclusive($banner))
+      {
+        $item['is_exclusive'] = true;
+      }
       if (empty($item['imgs']) || empty($item['imgb'])) continue;
 
       $list[] = $item;
     }
 
     $this->setVar('list', $list, true);
+  }
+
+  protected function getBannerUrl($list, $type)
+  {
+    $link = '#';
+    if (1 == count($list))
+    {
+      switch ($type)
+      {
+        case 'product':
+          $link = $this->generateUrl('productCard', array('product' => $list[0]['token_prefix'].'/'.$list[0]['token']), true);
+        break;
+        case 'product_category':
+          $link = $this->generateUrl('productCatalog_category', array('productCategory' => (!empty($list[0]['token_prefix']) ? ($list[0]['token_prefix'].'/') : '').$list[0]['token']), true);
+        break;
+      }
+    }
+    elseif (count($list) > 1)
+    {
+      $barcodeLast = array();
+      foreach ($list as $item)
+      {
+        if (isset($item['barcode']))
+        {
+          $barcodeList[] = $item['barcode'];
+        }
+        if (count($barcodeList))
+        {
+          $link = $this->generateUrl('product_set', array('products' => implode(',', $barcodeList)), true);
+        }
+      }
+    }
+
+    return $link;
   }
 }

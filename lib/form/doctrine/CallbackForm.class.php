@@ -21,6 +21,7 @@ class CallbackForm extends BaseCallbackForm
 
     $this->widgetSchema['email']->setLabel('Ваша электронная почта');
     $this->widgetSchema['email']->setAttribute('class', 'bInputBlock__eInput');
+    $this->validatorSchema['email'] = new sfValidatorEmail();
 
     $this->widgetSchema['theme']->setLabel('Тема');
     $this->widgetSchema['theme']->setAttribute('class', 'bInputBlock__eInput');

@@ -26,15 +26,16 @@ class ProductCategoryTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'          => 'core_id',
-      'parent_id'   => 'core_parent_id',
-      'lft'         => 'core_lft',
-      'rgt'         => 'core_rgt',
-      'name'        => 'name',
-      'is_active'   => 'is_active',
-      'media_image' => 'photo',
-      'has_line'    => 'has_line',
-      'position'    => 'position',
+      'id'                => 'core_id',
+      'parent_id'         => 'core_parent_id',
+      'lft'               => 'core_lft',
+      'rgt'               => 'core_rgt',
+      'name'              => 'name',
+      'is_active'         => 'is_active',
+      'media_image'       => 'photo',
+      'has_line'          => 'has_line',
+      'position'          => 'position',
+      'is_shown_in_menu'  => 'is_shown_in_menu',
     );
   }
 

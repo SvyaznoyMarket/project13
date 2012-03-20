@@ -14,58 +14,16 @@ class myProductFormFilter extends sfFormFilter
     {
       throw new InvalidArgumentException('You must provide a productCategory object.');
     }
-    $creator = $this->getOption('creator', null);
     $productType = $this->getOption('productType', null);
 
-    $productTable = ProductTable::getInstance();
+    // виджет шильдиков
+    $this->createLabelWidget($productCategory);
 
     // виджет цены
-    $valueMin = (int)$productTable->getMinPriceByCategory($productCategory, array('with_model' => true, 'view' => 'list', ));
-    $valueMax = (int)$productTable->getMaxPriceByCategory($productCategory, array('with_model' => true, 'view' => 'list', ));
-    $value = array(
-      'min' => $valueMin,
-      'max' => $valueMax,
-    );
-    $this->widgetSchema['price'] = $this->getWidgetRange(array('value_min' => $valueMin, 'value_max' => $valueMax));
-    $this->widgetSchema['price']->setLabel('Цена');
-    $this->validatorSchema['price'] = new sfValidatorPass();
-    $this->setDefault('price', array(
-      'from' => $value['min'],
-      'to'   => $value['max'],
-    ));
+    $this->createPriceWidget($productCategory);
 
     // виджет производителя
-    $choices = array();
-    foreach (CreatorTable::getInstance()
-      ->getListByProductCategory($productCategory, array(
-        'select'        => 'creator.id, creator.name',
-        'for_filter'    => true,
-        'order'         => 'creator.name',
-        'hydrate_array' => true,
-      )
-    ) as $v) {
-      $choices[$v['id']] = $v['name'];
-    }
-
-    if ($this->getOption('with_creator', false))
-    {
-      if (count($choices) > 1)
-      {
-        $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
-          'choices'          => $choices,
-          'multiple'         => true,
-          'expanded'         => true,
-          'renderer_class'   => 'myWidgetFormSelectCheckbox',
-          'renderer_options' => array(
-            'formatter'       => array($this, 'show_part'),
-            'label_separator' => '',
-          ),
-        ));
-        $this->widgetSchema['creator']->setLabel('Производитель');
-        $this->widgetSchema['creator']->setDefault($creator ? $creator->id : null);
-        $this->validatorSchema['creator'] = new sfValidatorPass();
-      }
-    }
+    $this->createCreatorWidget($productCategory);
 
     // виджеты параметров
     //$productFilterList = $this->getOption('count', false) ? $productCategory->FilterGroup->Filter : $productCategory->getFilterGroupForFilter();
@@ -127,6 +85,7 @@ class myProductFormFilter extends sfFormFilter
     $filter = array(
       'category'   => $productCategory,
       'creator'    => isset($this->values['creator']) ? $this->values['creator'] : false,
+      'label'      => isset($this->values['label']) ? $this->values['label'] : false,
       'price'      => (isset($this->values['price']['from']) && isset($this->values['price']['to'])) ? array(
         'from' => $this->values['price']['from'],
         'to'   => $this->values['price']['to'],
@@ -263,5 +222,92 @@ class myProductFormFilter extends sfFormFilter
     }
 
     return $creator;
+  }
+
+  protected function createPriceWidget($productCategory)
+  {
+    $valueMin = (int)ProductTable::getInstance()->getMinPriceByCategory($productCategory, array('with_model' => true, 'view' => 'list'));
+    $valueMax = (int)ProductTable::getInstance()->getMaxPriceByCategory($productCategory, array('with_model' => true, 'view' => 'list'));
+    $value = array(
+      'min' => $valueMin,
+      'max' => $valueMax,
+    );
+    $this->widgetSchema['price'] = $this->getWidgetRange(array('value_min' => $valueMin, 'value_max' => $valueMax));
+    $this->widgetSchema['price']->setLabel('Цена');
+    $this->validatorSchema['price'] = new sfValidatorPass();
+    $this->setDefault('price', array(
+      'from' => $value['min'],
+      'to'   => $value['max'],
+    ));
+  }
+
+  protected function createLabelWidget($productCategory)
+  {
+    $criteria = new ProductLabelCriteria();
+    $labels = RepositoryManager::getProductLabel()->getByCategory(
+      $criteria->setCategory($productCategory)
+    );
+
+    $choices = array();
+    /**
+     * @var $label ProductLabelEntity
+     */
+    foreach ($labels as $label)
+    {
+      $choices[$label->getId()] = $label->getName();
+    }
+
+    if (count($choices))
+    {
+      $this->widgetSchema['label'] = new myWidgetFormChoice(array(
+        'choices'          => $choices,
+        'multiple'         => true,
+        'expanded'         => true,
+        'renderer_class'   => 'myWidgetFormSelectCheckbox',
+        'renderer_options' => array(
+          'formatter'       => array($this, 'show_part'),
+          'label_separator' => '',
+        ),
+      ));
+      $this->widgetSchema['label']->setLabel('WOW-товары');
+      $this->validatorSchema['label'] = new sfValidatorPass();
+    }
+  }
+
+  protected function createCreatorWidget($productCategory)
+  {
+    $creator = $this->getOption('creator', null);
+
+    $choices = array();
+    foreach (CreatorTable::getInstance()
+               ->getListByProductCategory($productCategory, array(
+        'select'        => 'creator.id, creator.name',
+        'for_filter'    => true,
+        'order'         => 'creator.name',
+        'hydrate_array' => true,
+      )
+             ) as $v) {
+      $choices[$v['id']] = $v['name'];
+    }
+
+    if ($this->getOption('with_creator', false))
+    {
+      if (count($choices) > 1)
+      {
+        $this->widgetSchema['creator'] = new myWidgetFormChoice(array(
+          'choices'          => $choices,
+          'multiple'         => true,
+          'expanded'         => true,
+          'renderer_class'   => 'myWidgetFormSelectCheckbox',
+          'renderer_options' => array(
+            'formatter'       => array($this, 'show_part'),
+            'label_separator' => '',
+          ),
+        ));
+        $this->widgetSchema['creator']->setLabel('Производитель');
+        $this->widgetSchema['creator']->setDefault($creator ? $creator->id : null);
+        $this->validatorSchema['creator'] = new sfValidatorPass();
+      }
+    }
   }
 }

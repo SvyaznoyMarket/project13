@@ -173,7 +173,8 @@ $(document).ready(function(){
 
 	$('#reset-pwd-form, #auth_forgot-form').submit(function(){
 		var form = $(this);
-		form.find('.error_list').html('');
+		form.find('.error_list').html('Запрос отправлен. Идет обработка...');
+		form.find('.whitebutton').attr('disabled', 'disabled')
 		$.post(form.prop('action'), form.serializeArray(), function(resp){
 			if (resp.success === true) {
 				//$('#reset-pwd-form').hide();
@@ -270,19 +271,12 @@ $(document).ready(function(){
 			}
 			if( location.href.match(/sort=/) &&  location.href.match(/page=/) ) { // Redirect on first in sort case
 				$(this).bind('click', function(){
-					$.jCookies({
-					name : 'infScroll',
-					value : 1
-					})
+					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
 					location.href = location.href.replace(/page=\d+/,'')
 				})
 			} else {
 				$(this).bind('click', function(){
-					$.jCookies({
-						name : 'infScroll',
-						value : 1
-					})
-	
+					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
 					var next = $('div.pageslist:first li:first')
 					if( next.hasClass('current') )
 						next = next.next()
@@ -295,7 +289,8 @@ $(document).ready(function(){
 					$('div.pageslist ul').append( next )
 										 .find('a')
 										 .bind('click', function(){
-											$.jCookies({ erase : 'infScroll' })
+										 console.info('infScroll')
+											docCookies.removeItem( 'infScroll' )
 										  })
 					$('div.allpager').addClass('mChecked')
 					checkScroll()
@@ -304,7 +299,7 @@ $(document).ready(function(){
 			}
 		})
 
-		if( $.jCookies({ get : 'infScroll' }) )
+		if( docCookies.hasItem( 'infScroll' ) )
 			$('div.allpager:first').trigger('click')
 	}
 	
@@ -424,7 +419,7 @@ $(document).ready(function(){
 	})
 	
 	/* GEOIP fix */
-	if( !getCookie('geoshop') ) {
+	if( !docCookies.hasItem('geoshop') ) {
 		getRegions()
 	}
 	
@@ -802,17 +797,17 @@ $(document).ready(function(){
 		}
 	}
 	if( clientBrowser.isTouch ) {
-		$('.topmenu a').bind ('click', function(){
+		$('.topmenu a.bToplink').bind ('click', function(){
 			if( $(this).data('run') )
 				return true
 			$('.extramenu').hide()	
-			$('.topmenu a').each( function() { $(this).data('run', false) } )
+			$('.topmenu a.bToplink').each( function() { $(this).data('run', false) } )
 			$(this).data('run', true)
 			showList( this )
 			return false
 		})
 	} else {	
-		$('.topmenu a').bind( {
+		$('.topmenu a.bToplink').bind( {
 			'mouseenter': function() {
 				$('.extramenu').hide()
 				var self = this				
@@ -941,9 +936,10 @@ $(document).ready(function(){
 					'width' : $(this).find('.scroll').data('quantity'),
 					'wrap'  : $(this).find('~ .bigcarousel').first(),
 					'viswidth' : 5
-					})		
+				})		
 		} else {
-			var tmpline = new cardsCarousel ({
+			if( $(this).find('.jshm').length ) {
+				var tmpline = new cardsCarousel ({
 					'prev'  : $(this).find('.back'),
 					'next'  : $(this).find('.forvard'),
 					'crnt'  : $(this).find('.none'),
@@ -952,7 +948,8 @@ $(document).ready(function(){
 //					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
 					'wrap'  : $(this).find('~ .carousel').first(),
 					'viswidth' : 3
-					})
+				})
+			}		
 		}			
 	})
 

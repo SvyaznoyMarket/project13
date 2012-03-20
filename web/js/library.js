@@ -808,10 +808,6 @@ var PubSub = {};
   };
 })();
 
-function getCookie(c_name) {
-	return docCookies.hasItem( c_name )
-}
-
 /* https://developer.mozilla.org/en/DOM/document.cookie */
 /* IVN: object into cookie is available */
 window.docCookies = {  
@@ -859,8 +855,9 @@ window.docCookies = {
   removeItem: function (sKey) {  
     if (!sKey || !this.hasItem(sKey)) { return; }  
     var oExpDate = new Date();  
-    oExpDate.setDate(oExpDate.getDate() - 1);  
+    oExpDate.setDate(oExpDate.getDate() - 1);
     document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";  
+        console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
   },  
   hasItem: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }  
 };
@@ -911,15 +908,12 @@ function Lightbox( jn, data ){
 	this.save = function() {
 		var cooka = init
 		cooka.basket={}
-		$.jCookies({
-			name : 'Lightbox',
-			value : cooka,
-			minutes : 20
-		})	
+		console.info(cooka)
+		docCookies.setItem( true, 'Lightbox', cooka, 20*60, '/' )
 	}
 	
 	this.restore = function() {
-		return $.jCookies({ get : 'Lightbox' })
+		return docCookies.getItem('Lightbox', true)
 	}
 	
 	if( ! init.name ) {

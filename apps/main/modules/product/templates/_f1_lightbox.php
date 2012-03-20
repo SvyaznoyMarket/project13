@@ -15,7 +15,6 @@ if (is_object($servListId)) {
 			<tbody>
               <?php foreach ($f1 as $service):
                   if (!isset($service->id)) $service = ServiceTable::getInstance()->getById($service['id']);
-                  if ($service['only_inshop']) continue;
                   ?>
                     <tr>
                         <td class="bF1Block_eInfo"><?php echo $service->name ?><br>
@@ -24,22 +23,26 @@ if (is_object($servListId)) {
                         <td class="bF1Block_eBuy" ref="<?php echo $service->token ?>">
                             <?php if ($service->getFormattedPrice($product->id)) { ?>
                                 <span class="bF1Block_ePrice
-                                      <?php if ($service['only_inshop'] || !$product->getIsInsale()) echo ' mr110'; ?>
-                                      ">
+                                      <?php if (!$product->getIsInsale()) echo ' mr110'; ?> ">
                                     <?php echo $service->getFormattedPrice($product->id) ?>
                                     <?php if ((int)$service->getFormattedPrice($product->id)) { ?>
                                         &nbsp;<span class="rubl">p</span>
                                    <?php } ?>
                                 </span>
                             <?php } ?>
-                            <?php if (!$service['only_inshop'] && $product->getIsInsale()) { ?>
-                                <?php if ($showInCardButton && in_array($service->id, $servListId)) { ?>
+                            <?php if ($product->getIsInsale()) { ?>
+                                <?php if (!$service->isInSale($product->id))  { ?>
+                                    <?php if ($service->isOnlyInShop()) { ?>
+                                        <span class='bF1Block__eInShop'>доступна в магазине</span>
+                                    <?php } ?>
+                                <?php } elseif ($showInCardButton && in_array($service->id, $servListId)) { ?>
                                     <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice() ?>" data-fid="<?php echo $service->token;?>"
-                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token_prefix."/".$product->token)) ?>" type="button" class="active button yellowbutton" value="В корзине">
+                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token_prefix."/".$product->token)) ?>"
+                                    type="button" class="active button yellowbutton" value="В корзине">
                                <?php } else { ?>
-
                                     <input data-f1title="<?php echo $service->name ?>" data-f1price="<?php echo $service->getFormattedPrice($product->id) ?>" data-fid="<?php echo $service->token;?>"
-                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token_prefix."/".$product->token)) ?>" type="button" class="button yellowbutton" value="Купить услугу">
+                                    data-url="<?php echo url_for('cart_service_add', array('service'=>$service->token, 'product' => $product->token_prefix."/".$product->token)) ?>"
+                                    type="button" class="button yellowbutton" value="Купить услугу">
                                <?php } ?>
                             <?php } ?>
                         </td>

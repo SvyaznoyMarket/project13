@@ -420,3 +420,11 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
   .address{
     font: 12px Tahoma, sans-serif;
   }
+
+
+a.zingaya {
+    font-weight: bold;
+    padding-right: 20px;
+    background: url(img/headset.png) no-repeat right center;
+    margin-right: 10px;
+}

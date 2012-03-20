@@ -97,7 +97,8 @@ class serviceComponents extends myComponents
     $serviceData['description'] = $this->service->description;
     $serviceData['work'] = $this->service->work;
     $serviceData['main_photo'] = $this->service->getPhotoUrl();
-    $serviceData['only_inshop'] = $this->service->only_inshop;
+    $serviceData['isInSale'] = $this->service->isInSale();
+    $serviceData['isOnlyInShop'] = $this->service->isOnlyInShop();
 
     $this->setVar('service', $serviceData);
   }
@@ -126,7 +127,9 @@ class serviceComponents extends myComponents
         'photo' => $service->getPhotoUrl(2),
         'price' => $service->getCurrentPrice(),
         'priceFormatted' => $service->getFormattedPrice(),
-        'only_inshop' => $service->only_inshop,
+        'isInSale' => $service->isInSale(),
+        'isOnlyInShop' => $service->isOnlyInShop()
+
       );
     }
     $this->setVar('list', $serviceList);

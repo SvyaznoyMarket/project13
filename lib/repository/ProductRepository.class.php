@@ -1,7 +1,21 @@
 <?php
 
-class ProductRepository extends BaseRepository
+class ProductRepository extends ObjectRepository
 {
+  public function get(array $ids, $index = null)
+  {
+    return ProductTable::getInstance()->getListByCoreIds($ids, array('hydrate_array' => true));
+  }
+
+  public function create($data)
+  {
+    $entity = new ProductEntity();
+    $entity->setId($data['id']);
+    $entity->setName($data['name']);
+
+    return $entity;
+  }
+
   public function getRelated(ProductRelatedCriteria $criteria, $order = null)
   {
     $params = array(

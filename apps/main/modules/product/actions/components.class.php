@@ -100,6 +100,7 @@ class productComponents extends myComponents
       'is_insale'  => $this->product['is_insale'],
       'is_instock' => $this->product['is_instock'],
       'url'        => $this->generateUrl('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
+      'label'      => $this->product['Label']->getId() ? $this->product['Label'] : null,
     );
 
     if (in_array($this->view, array('compact', 'extra_compact')))
@@ -144,17 +145,17 @@ class productComponents extends myComponents
 
       // смежные товары
       $criteria = new ProductRelatedCriteria();
-      $criteria->setParent($this->product['core_id']);
-      $criteria->setPager(new myPager(1, 5 * 2));
-      $item['related'] = RepositoryManager::get('Product')->getRelated($criteria);
+      $item['related'] = RepositoryManager::get('Product')->getRelated(
+        $criteria->setParent($this->product['core_id'])->setPager(new myPager(1, 5 * 2))
+      );
       $criteria->getPager()->setMaxPerPage(5);
       $item['related_pager'] = $criteria->getPager();
 
       // аксессуары
       $criteria = new ProductRelatedCriteria();
-      $criteria->setParent($this->product['core_id']);
-      $criteria->setPager(new myPager(1, 5 * 2));
-      $item['accessory'] = RepositoryManager::get('Product')->getAccessory($criteria);
+      $item['accessory'] = RepositoryManager::get('Product')->getAccessory(
+        $criteria->setParent($this->product['core_id'])->setPager(new myPager(1, 5 * 2))
+      );
       $criteria->getPager()->setMaxPerPage(5);
       $item['accessory_pager'] = $criteria->getPager();
     }
@@ -414,6 +415,7 @@ class productComponents extends myComponents
       }
 
       $value_to_map = array();
+      $property->mapValue('current', null);
       foreach ($values as $id => $value)
       {
         if (!$value->product_id) continue;

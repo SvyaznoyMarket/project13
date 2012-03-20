@@ -1,6 +1,6 @@
 <?php
 
-class BaseRepository
+abstract class ObjectRepository
 {
   protected $core = null;
 
@@ -14,14 +14,41 @@ class BaseRepository
     return new CoreQuery($query, $params, $data);
   }
 
-  public function get(array $ids)
+  abstract public function get(array $ids, $index = null);
+
+  abstract public function create($data);
+
+  public function getAll($index = null)
   {
-    return ProductTable::getInstance()->getListByCoreIds($ids, array('hydrate_array' => true));
+    return array();
   }
 
   public function getOne($id)
   {
     return array_shift($this->get(array($id)));
+  }
+
+  public function createList($data, $index = null)
+  {
+    $indexAccessor = $index ? 'get'.ucfirst($index) : null;
+
+    $entities = array();
+    foreach ($data as $item)
+    {
+      $entity = $this->create($item);
+
+      if ($indexAccessor)
+      {
+        $entities[$entity->$indexAccessor()] = $entity;
+
+      }
+      else {
+        $entities[] = $entity;
+      }
+
+    }
+
+    return $entities;
   }
 
   protected function applyCriteria(BaseCriteria $criteria, array &$params)
