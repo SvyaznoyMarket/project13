@@ -2708,8 +2708,7 @@ border-radius: 5px;
 	}
 
 .bMobDownWrapRel{
-	top: 30px;
-	bottom: 25%;
+	top: 170px;
 	position: relative;
 	}
 .bMobDown{
@@ -3016,6 +3015,10 @@ border-radius: 5px;
 		}
 	.bFormSave__eBtm a{
 		text-decoration: underline;
+		}
+/* ---- --- -- -- - - -*/
+	.mW750{
+		width: 750px;
 		}
 /* ---- --- -- -- - - -*/
 	.mW900{
