@@ -2,7 +2,7 @@
 
   <div class="photo">
     <a href="<?php echo url_for('productCardSoa', array('product' => $product)) ?>">
-    <img src="<?php echo $product->getMainPhotoUrl(2) ?>" alt="<?php echo $product->name ?> - <?php //echo $product->root_name ?>" title="<?php echo $product->name ?> - <?php echo $product->root_name ?>" width="119" height="120" />
+    <img src="<?php echo $product->getMainPhotoUrl(2) ?>" alt="<?php echo $product->name ?> - <?php //echo $product->root_name ?>" title="<?php echo $product->name ?> - <?php //echo $product->root_name ?>" width="119" height="120" />
     </a>
   </div>
 

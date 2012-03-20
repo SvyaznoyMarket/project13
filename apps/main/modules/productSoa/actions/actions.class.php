@@ -269,24 +269,61 @@ class productSoaActions extends myActions
         $productId = $request->getParameter('product');
 
         $factory = new ProductFactory();
-        $productList = $factory->createProductFromCore(array('id' => $id));
+        $productList = $factory->createProductFromCore(array('id' => $productId));
         $productOb = $productList[0];
+        //print_r($productOb->related);
 
-        echo $productId;
-        //$this->product = $this->getRoute()->getObject();
-        myDebug::dump($this->product);
-        die();
-
-        $criteria = new ProductRelatedCriteria();
-        $criteria->setParent($this->product['core_id']);
-        $criteria->setPager(new myPager($this->page, 5));
-        $item['related'] = RepositoryManager::get('Product')->getRelated($criteria);
-        $item['related_pager'] = $criteria->getPager();
-
-        $this->setVar('item', $item, true);
-
+        //выбираем продукты для текущей страницы
+        $beginNum = $factory->numRelatedOnPage * ($this->page - 1);
+        $endNum = $beginNum + $factory->numRelatedOnPage - 1;
+        //echo $beginNum .'==='.$endNum;
+        //die();
+        $relatedIdList = array();
+        for ($i = $beginNum; $i <= $endNum; $i++) {
+            if (!isset($productOb->related[$i])) {
+                break;
+            }
+            $relatedIdList[] = $productOb->related[$i];
+        }
+        //print_r($productOb);
+        //print_r($relatedIdList);
+        $relatedProductList = $factory->createProductFromCore(array('id' => $relatedIdList));
+        $productOb->related = $relatedProductList;
+        $this->setVar('product', $productOb, true);
         return $this->renderPartial($this->getModuleName().'/product_related_list');
     }
 
+    /**
+     * Executes accessory action
+     *
+     * @param sfRequest $request A request object
+     */
+    public function executeAccessory(sfWebRequest $request)
+    {
+        $this->page = $request->getParameter('page', 1);
+        $productId = $request->getParameter('product');
 
+        $factory = new ProductFactory();
+        $productList = $factory->createProductFromCore(array('id' => $productId));
+        $productOb = $productList[0];
+
+        //выбираем продукты для текущей страницы
+        $beginNum = $factory->numAccessoriesOnPage * ($this->page - 1);
+        $endNum = $beginNum + $factory->numAccessoriesOnPage - 1;
+        //echo $beginNum .'==='.$endNum;
+        //die();
+        $accessoriesIdList = array();
+        for ($i = $beginNum; $i <= $endNum; $i++) {
+            if (!isset($productOb->accessories[$i])) {
+                break;
+            }
+            $accessoriesIdList[] = $productOb->accessories[$i];
+        }
+        //print_r($productOb);
+        //print_r($accessoriesIdList);
+        $accessoriesProductList = $factory->createProductFromCore(array('id' => $accessoriesIdList));
+        $productOb->accessories = $accessoriesProductList;
+        $this->setVar('product', $productOb, true);
+        return $this->renderPartial($this->getModuleName().'/product_accessory_list');
+    }
 }

@@ -95,14 +95,15 @@ class ProductFactory
                 }
             }
         }
+
     }
 
     private function _loadFriendProducts($product, $baseInfo)
     {
         //собираем список ид продуктов, как либо связанных с текущем.
         $friendIdList = array_merge(
-            array_slice($product->related, 0 , $this->numRelatedOnPage),
-            array_slice($product->accessories, 0, $this->numRelatedOnPage)
+            array_slice($product->related, 0 , $this->numRelatedOnPage * 2),
+            array_slice($product->accessories, 0, $this->numRelatedOnPage * 2)
         );
         //print_r($friendIdList);
         if (isset($product->model['product'])) {
@@ -201,6 +202,12 @@ class ProductFactory
         $product->fullKitList = $product->kit;
         $product->fullRelatedList = $product->related;
         $product->fullAccessoriesList = $product->accessories;
+
+        foreach ($product->category as & $cat) {
+            if (!isset($cat['is_shown_in_menu'])) {
+               $cat['is_shown_in_menu'] = 1;
+            }
+        }
 
         return $product;
     }
