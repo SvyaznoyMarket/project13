@@ -18,7 +18,12 @@ class productCardSoaComponents extends myComponents
   public function executeNavigation()
   {
     $list = array();
-
+    $isSeo = $this->seo;
+    if ($isSeo) {
+        $this->setVar('tpl_postfix', '_seo');
+    } else {
+        $this->setVar('tpl_postfix', '');
+    }
     if (isset($this->product->category))
     {
       foreach ($this->product->category as $c) {
@@ -26,8 +31,13 @@ class productCardSoaComponents extends myComponents
         if (substr($link, -1, 1) == '/') {
             $link = substr($link, 0, -1);
         }
+        if ($isSeo && isset($c['seo_header']) && $c['seo_header']) {
+            $name = $c['seo_header'];
+        } else {
+            $name = $c['name'];
+        }
         $list[] = array(
-          'name' => $c['name'],
+          'name' => $name,
           'url'  => $this->generateUrl('productCatalog_category', array('productCategory' => $link) ),
         );
         //break;
