@@ -50,6 +50,8 @@
 
 <br class="clear" />
 
+<?php include_component('productCardSoa', 'navigation', array('product' => $product, 'seo' => true)) ?>
+
 <?php //include_component('productCatalog', 'navigation_seo', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
 
 
