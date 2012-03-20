@@ -5021,8 +5021,47 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 .mOur{ color: #000; font: 12px Tahoma, sans-serif; }
 .mOurGray{ color: #a1a1a1; font: 12px Tahoma, sans-serif; }
 
-
-	
+.bEvent{
+	margin-bottom: 70px;
+	}
+	.bEvent__eImage{
+		position: relative;
+		}
+	.bEvent__eImage a{
+		position: absolute;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.mLTop{
+		top: 216px;
+		left: 458px;
+		width: 205px;
+		height: 126px;
+		}
+	.mLBottom{
+		top: 352px;
+		left: 105px;
+		width: 169px;
+		height: 135px;
+		}
+		
+	.bEvent h2{
+		padding: 0;
+		margin: 15px 0;
+		font: 24px Tahoma, sans-serif;
+		}
+		
+	.bEvent ul{
+		font: 14px Tahoma, sans-serif;
+		}
+	.bEvent li{
+		padding: 2px 0;
+		}
+	.bEvent li a{
+		text-decoration: underline;
+		}
 		
 		
 		
