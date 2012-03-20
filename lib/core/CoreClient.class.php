@@ -1,111 +1,137 @@
 <?php
 
+class CoreClientException extends Exception
+{
+}
+
 class CoreClient
 {
-  /* @var array */
+  /* @var sfParameterHolder */
   private $parameters = null;
-
-  /* @var resource */
-  private $connection = null;
 
   /* @var sfFileLogger */
   private $logger = null;
-
-  /* @var array */
-  private $errors = array();
-
-  /* @var CoreClient */
-  protected static $instance = null;
 
   /**
    * @return CoreClient
    */
   static public function getInstance()
   {
-    if (null == self::$instance)
-    {
-      self::$instance = new CoreClient();
-      self::$instance->initialize(sfConfig::get('app_core_config'));
+    static $instance;
+    if (!$instance) {
+      $instance = new CoreClient(sfConfig::get('app_core_config'));
     }
-
-    return self::$instance;
+    return $instance;
   }
 
-  protected function initialize(array $parameters)
+  private function __construct(array $parameters)
   {
     $this->parameters = new sfParameterHolder();
     $this->parameters->add($parameters);
-
-    $this->connection = curl_init();
-    curl_setopt($this->connection, CURLOPT_URL, $this->getParameter('userapi_url'));
-    curl_setopt($this->connection, CURLOPT_HEADER, 0);
-    curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
-
-    $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => $this->getParameter('log_file')));
+    $this->logger = new sfAggregateLogger(new sfEventDispatcher());
+    $this->logger->addLogger(new sfFileLogger(new sfEventDispatcher(), array('file' => $this->parameters->get('log_file'))));
+    $this->logger->addLogger(sfContext::getInstance()->getLogger());
   }
 
+  /**
+   * @param $action
+   * @param array $params
+   * @param array $data
+   * @return array
+   * @throws CoreClientException
+   */
   public function query($action, array $params = array(), array $data = array())
   {
     $isPostMethod = !empty($data);
 
-    $query = $this->getParameter('userapi_url')
-      .str_replace('.', '/', $action)
-      .'?'.http_build_query(array_merge($params, array('client_id' => $this->getParameter('client_id'))));
-    $this->log(($isPostMethod ? 'post' : 'get').': '.$query);
+    $query = $this->parameters->get('userapi_url')
+      . str_replace('.', '/', $action)
+      . '?' . http_build_query(array_merge($params, array('client_id' => $this->parameters->get('client_id'))));
 
-    curl_setopt($this->connection, CURLOPT_URL, $query);
+    $this->logger->info('Send core requset ' . ($isPostMethod ? 'post' : 'get') . ': ' . $query);
 
-    if ($isPostMethod)
-    {
-      curl_setopt($this->connection, CURLOPT_POST, true);
-      curl_setopt($this->connection, CURLOPT_POSTFIELDS, $data);
+    $connection = curl_init();
+    curl_setopt($connection, CURLOPT_HEADER, 0);
+    curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($connection, CURLOPT_URL, $query);
+
+    if ($isPostMethod) {
+      curl_setopt($connection, CURLOPT_POST, true);
+      curl_setopt($connection, CURLOPT_POSTFIELDS, $data);
     }
 
-    $response = curl_exec($this->connection);
-    if (curl_errno($this->connection) > 0)
-    {
-      $this->errors[] = array(curl_errno($this->connection) => curl_error($this->connection));
-      $response = null;
-      $this->log(json_encode(end($this->errors)), 'ERROR');
+    $response = curl_exec($connection);
+    try {
+      if (curl_errno($connection) > 0) {
+        throw new CoreClientException(curl_error($connection), curl_errno($connection));
+      }
+      $responseDecoded = $this->decode($response);
+      if ($this->parameters->get('log_response')) {
+        $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
+        $this->logger->info('Core response info: ' . $this->encode(curl_getinfo($connection)));
+      }
+      curl_close($connection);
+      return $responseDecoded;
     }
-    if (is_array($response) && array_key_exists('error', $response))
-    {
-      $this->errors[] = $response['error'];
-      $response = null;
-      $this->log(json_encode(end($this->errors)), 'ERROR');
+    catch (CoreClientException $e) {
+      curl_close($connection);
+      $this->logger->err($e->__toString());
+      throw $e;
     }
-
-    if ($response && $this->getParameter('log_response'))
-    {
-      $this->log('response: '.$response);
-    }
-
-    return json_decode($response, true);
   }
 
-  public function getParameter($name)
+  /**
+   * @param $response
+   * @return array
+   * @throws CoreClientException
+   */
+  private function decode($response)
   {
-    return $this->parameters->get($name);
-  }
-
-  public function getParameters()
-  {
-    return $this->parameters->getAll();
-  }
-
-  public function log($message, $type = 'INFO')
-  {
-    if (!$this->getParameter('log_enabled'))
-    {
-      return false;
+    $decoded = json_decode($response, true);
+    // check json error
+    if ($code = json_last_error()) {
+      switch ($code) {
+        case JSON_ERROR_DEPTH:
+          $error = 'Maximum stack depth exceeded';
+          break;
+        case JSON_ERROR_STATE_MISMATCH:
+          $error = 'Underflow or the modes mismatch';
+          break;
+        case JSON_ERROR_CTRL_CHAR:
+          $error = 'Unexpected control character found';
+          break;
+        case JSON_ERROR_SYNTAX:
+          $error = 'Syntax error, malformed JSON';
+          break;
+        case JSON_ERROR_UTF8:
+          $error = 'Malformed UTF-8 characters, possibly incorrectly encoded';
+          break;
+        default:
+          $error = 'Unknown error';
+          break;
+      }
+      $errorMessage = sprintf('Json error: "%s", Response: "%s"', $error, $response);
+      throw new CoreClientException($errorMessage, $code);
     }
 
-    $message = preg_replace_callback(
+    if (is_array($decoded) && array_key_exists('error', $decoded)) {
+      throw new CoreClientException(reset($decoded['error']), next($decoded['error']));
+    }
+    return $decoded;
+  }
+
+  /**
+   * @param $data
+   * @return string
+   */
+  private function encode($data)
+  {
+    $data = json_encode($data);
+    $data = preg_replace_callback(
       '/\\\u([0-9a-fA-F]{4})/',
       create_function('$match', 'return mb_convert_encoding("&#" . intval($match[1], 16) . ";", "UTF-8", "HTML-ENTITIES");'),
-      $message
+      $data
     );
-
-    call_user_func_array(array($this->logger, 'INFO' == $type ? 'log' : 'err'), array($message));
+    return $data;
   }
 }
