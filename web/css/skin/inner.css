@@ -4152,3 +4152,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 
 
 .bRegion .bCall{ display: inline-block; *display: inline; zoom: 1; height: 16px; background: url('img/bCall.png') no-repeat; padding-left: 20px; padding-right: 10px; }
+
+.mOur{ color: #000; font: 12px Tahoma, sans-serif; font-weight: bold; }
+
+.mOurGray{ color: #434343; font: 12px Tahoma, sans-serif; }

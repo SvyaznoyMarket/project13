@@ -938,9 +938,21 @@ class ProductTable extends myDoctrineTable
     return $product['is_instock'] && (!empty($price) && $price->price > 0);
   }
 
-  public function getFormattedPrice($product)
+  public function getFormattedPrice($product, $type = 'real')
   {
-    return number_format($this->getRealPrice($product), 0, ',', ' ');
+    switch ($type)
+    {
+      case 'real':
+        $price = $this->getRealPrice($product);
+      break;
+      case 'avg':
+        $price = $this->getAveragePrice($product);
+      break;
+      default:
+        $price = $this->getRealPrice($product);
+      break;
+    }
+    return number_format($price, 0, ',', ' ');
   }
 
   public function getMainPhotoUrl($product, $view = 0)
@@ -973,6 +985,34 @@ class ProductTable extends myDoctrineTable
       else
       {
         return $product['defaultProductPrice']['price'];
+      }
+    }
+
+    return false;
+  }
+
+  public function getAveragePrice($product)
+  {
+    if ($product instanceof Product)
+    {
+      if (!empty($product->ProductPrice))
+      {
+        return $product->ProductPrice->getFirst()->avg_price;
+      }
+      else
+      {
+        return $product->defaultProductPrice->avg_price;
+      }
+    }
+    elseif (is_array($product))
+    {
+      if (!empty($product['ProductPrice']))
+      {
+        return $product['ProductPrice'][0]['avg_price'];
+      }
+      else
+      {
+        return $product['defaultProductPrice']['avg_price'];
       }
     }
 

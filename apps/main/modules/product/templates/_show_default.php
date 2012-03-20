@@ -60,6 +60,12 @@ foreach ($p3d as $p3d_obj)
         <div class="font14 pb15"><?php echo $item['preview'] ?></div>
         <div class="clear"></div>
 
+        <?php if (!empty($item['label']) && $item['avg_price'] > 0 && $item['price'] < $item['avg_price']): ?>
+        <div class="mOurGray">Цена не у нас<br><?php include_partial('product/price', array('price' => $item['avg_price'], 'noStrong' => true, )) ?></div>
+        <div class="clear"></div>
+
+        <div class="clear mOur pt10">Наша цена</div>
+        <?php endif ?>
         <div class="fl pb15">
             <div class="pb10"><?php include_partial('product/price', array('price' => $item['price'])) ?></div>
             <?php if ($product['is_instock']): ?>
