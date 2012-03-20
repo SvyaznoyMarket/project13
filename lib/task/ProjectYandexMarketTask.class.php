@@ -157,115 +157,115 @@ class ProjectYandexMarketTask extends sfBaseTask
             'region_id' => 83,
             'min_num' => 3,
         ),
-      array(
-          'name' => 'export_realweb.xml',
-          'list' => array(6,8,9),
-          'region_id' => 83,
-          'min_num' => 3,
-          ),
-      array(
-          'name' => 'export_mgcom.xml',
-          'list' => array(3,2,1,4,7,8,5),
-          'region_id' => 83,
-          'min_num' => 3,
-          ),
-      array(
-          'name' => 'max2.xml',
-          'region_id' => 83,
-          'max_num' => 2
-      ),
-      //для Рязани
-      array(
-          'name' => 'ya_market_ryazan.xml',
-          'region_id' => 10375 ,
-          'min_num' => 3,
-          ),
-      array(
-          'name' => 'export_realweb_ryazan.xml',
-          'list' => array(6,8,9),
-          'region_id' => 10375,
-          'min_num' => 3,
-          ),
-      array(
-          'name' => 'export_mgcom_ryazan.xml',
-          'list' => array(3,2,1,4,7,8,5),
-          'region_id' => 10375,
-          'min_num' => 3,
-          ),
-      array(
-          'name' => 'max2_ryazan.xml',
-          'region_id' => 10375,
-          'max_num' => 2
-      ),
-      //для Липецка
-      array(
-          'name' => 'ya_market_lipetsk.xml',
-          'region_id' => 100,
-          'min_num' => 3,
-          ),
-      array(
-          'name' => 'export_realweb_lipetsk.xml',
-          'list' => array(6,8,9),
-          'region_id' => 100,
-          'min_num' => 3,
-          ),
-      array(
-          'name' => 'export_mgcom_lipetsk.xml',
-          'list' => array(3,2,1,4,7,8,5),
-          'region_id' => 100,
-          'min_num' => 3,
-          ),
-      array(
-          'name' => 'max2_lipetsk.xml',
-          'region_id' => 100,
-          'max_num' => 2
-      ),
-      //для Белгорода
-      array(
-          'name' => 'ya_market_belgorod.xml',
-          'region_id' => 13242,
-          'min_num' => 3,
-      ),
-      array(
-          'name' => 'export_realweb_belgorod.xml',
-          'list' => array(6,8,9),
-          'region_id' => 13242,
-          'min_num' => 3,
-      ),
-      array(
-          'name' => 'export_mgcom_belgorod.xml',
-          'list' => array(3,2,1,4,7,8,5),
-          'region_id' => 13242,
-          'min_num' => 3,
-      ),
-      array(
-          'name' => 'max2_belgorod.xml',
-          'region_id' => 13242,
-          'max_num' => 2
-      ),
-      //для Орла
-      array(
-          'name' => 'ya_market_orel.xml',
-          'region_id' => 13243,
-          'min_num' => 3,
-      ),
-      array(
-          'name' => 'export_realweb_orel.xml',
-          'list' => array(6,8,9),
-          'region_id' => 13243,
-          'min_num' => 3,
-      ),
-      array(
-          'name' => 'export_mgcom_orel.xml',
-          'list' => array(3,2,1,4,7,8,5),
-          'region_id' => 13243,
-          'min_num' => 3,
-      ),
-      array(
-          'name' => 'max2_orel.xml',
-          'region_id' => 13243,
-          'max_num' => 2
-      ),
+//      array(
+//          'name' => 'export_realweb.xml',
+//          'list' => array(6,8,9),
+//          'region_id' => 83,
+//          'min_num' => 3,
+//          ),
+//      array(
+//          'name' => 'export_mgcom.xml',
+//          'list' => array(3,2,1,4,7,8,5),
+//          'region_id' => 83,
+//          'min_num' => 3,
+//          ),
+//      array(
+//          'name' => 'max2.xml',
+//          'region_id' => 83,
+//          'max_num' => 2
+//      ),
+//      //для Рязани
+//      array(
+//          'name' => 'ya_market_ryazan.xml',
+//          'region_id' => 10375 ,
+//          'min_num' => 3,
+//          ),
+//      array(
+//          'name' => 'export_realweb_ryazan.xml',
+//          'list' => array(6,8,9),
+//          'region_id' => 10375,
+//          'min_num' => 3,
+//          ),
+//      array(
+//          'name' => 'export_mgcom_ryazan.xml',
+//          'list' => array(3,2,1,4,7,8,5),
+//          'region_id' => 10375,
+//          'min_num' => 3,
+//          ),
+//      array(
+//          'name' => 'max2_ryazan.xml',
+//          'region_id' => 10375,
+//          'max_num' => 2
+//      ),
+//      //для Липецка
+//      array(
+//          'name' => 'ya_market_lipetsk.xml',
+//          'region_id' => 100,
+//          'min_num' => 3,
+//          ),
+//      array(
+//          'name' => 'export_realweb_lipetsk.xml',
+//          'list' => array(6,8,9),
+//          'region_id' => 100,
+//          'min_num' => 3,
+//          ),
+//      array(
+//          'name' => 'export_mgcom_lipetsk.xml',
+//          'list' => array(3,2,1,4,7,8,5),
+//          'region_id' => 100,
+//          'min_num' => 3,
+//          ),
+//      array(
+//          'name' => 'max2_lipetsk.xml',
+//          'region_id' => 100,
+//          'max_num' => 2
+//      ),
+//      //для Белгорода
+//      array(
+//          'name' => 'ya_market_belgorod.xml',
+//          'region_id' => 13242,
+//          'min_num' => 3,
+//      ),
+//      array(
+//          'name' => 'export_realweb_belgorod.xml',
+//          'list' => array(6,8,9),
+//          'region_id' => 13242,
+//          'min_num' => 3,
+//      ),
+//      array(
+//          'name' => 'export_mgcom_belgorod.xml',
+//          'list' => array(3,2,1,4,7,8,5),
+//          'region_id' => 13242,
+//          'min_num' => 3,
+//      ),
+//      array(
+//          'name' => 'max2_belgorod.xml',
+//          'region_id' => 13242,
+//          'max_num' => 2
+//      ),
+//      //для Орла
+//      array(
+//          'name' => 'ya_market_orel.xml',
+//          'region_id' => 13243,
+//          'min_num' => 3,
+//      ),
+//      array(
+//          'name' => 'export_realweb_orel.xml',
+//          'list' => array(6,8,9),
+//          'region_id' => 13243,
+//          'min_num' => 3,
+//      ),
+//      array(
+//          'name' => 'export_mgcom_orel.xml',
+//          'list' => array(3,2,1,4,7,8,5),
+//          'region_id' => 13243,
+//          'min_num' => 3,
+//      ),
+//      array(
+//          'name' => 'max2_orel.xml',
+//          'region_id' => 13243,
+//          'max_num' => 2
+//      ),
     );
 
     /**
@@ -490,7 +490,7 @@ EOF;
         $currentXml = "";
         foreach($categoryList as $categoryInfo){
             $cat = $cats->addChild('category',$categoryInfo['name']);
-            $cat->addAttribute('id',$categoryInfo['id']);
+            $cat->addAttribute('id',$categoryInfo['core_id']);
             if ($categoryInfo['core_parent_id'] && isset($catIdToCoreId[ $categoryInfo['core_parent_id'] ])) $cat->addAttribute('parentId', $catIdToCoreId[ $categoryInfo['core_parent_id'] ]);
             //если нужно добавить url
             if ($addCategoryUrl){
@@ -534,15 +534,15 @@ EOF;
 
 
         $currentOffset = 0;
-//        $this->_portionToLoadProduct = 5;
-//        $tmpNum = 1;
+        $this->_portionToLoadProduct = 5;
+        $tmpNum = 1;
         $currentXml = '';
         file_put_contents($this->_xmlFilePath,'<offers>',FILE_APPEND);
         do {
-//            if ($tmpNum>=2) {
-//                break;
-//            }
-//            $tmpNum++;
+            if ($tmpNum>=2) {
+                break;
+            }
+            $tmpNum++;
 
             //делаем выборку товаров
             $sql = $this->_makeProductListQuery($catIdListString);
@@ -624,7 +624,7 @@ EOF;
         else {
             $inStock = 'false';
         }
-        $offer->addAttribute('id', $offerInfo['id']);
+        $offer->addAttribute('id', $offerInfo['core_id']);
         $offer->addAttribute('type', 'vendor.model');
         $offerInner = '';
 
@@ -679,8 +679,8 @@ EOF;
 
         $sql = '
             SELECT
-            p.id, p.name, p.description, p.token_prefix, p.token, p.prefix, p.main_photo,
-            pcpr.product_category_id, pcat.root_id as category_root_id, creator.name as creator_name,
+            p.id, p.core_id, p.name, p.description, p.token_prefix, p.token, p.prefix, p.main_photo,
+            pcpr.product_category_id, pcat.core_id as product_category_core_id, pcat.root_id as category_root_id, creator.name as creator_name,
             pp.price, pdp.price as delivery_price, ps.is_instock
             FROM `product` as p
             LEFT JOIN `stock_product_relation` as spr on spr.product_id=p.id
@@ -731,8 +731,8 @@ EOF;
                 }
                 break;
             case 'categoryId':
-                if (isset($offerInfo['product_category_id']))
-                    $value = $offerInfo['product_category_id'];
+                if (isset($offerInfo['product_category_core_id']))
+                    $value = $offerInfo['product_category_core_id'];
                 break;
             case 'picture':
                 if (isset($offerInfo['main_photo']) && $offerInfo['main_photo']) {
