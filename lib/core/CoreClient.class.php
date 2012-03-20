@@ -48,7 +48,9 @@ class CoreClient
       . str_replace('.', '/', $action)
       . '?' . http_build_query(array_merge($params, array('client_id' => $this->parameters->get('client_id'))));
 
-    $this->logger->info('Send core requset ' . ($isPostMethod ? 'post' : 'get') . ': ' . $query);
+    if ($this->parameters->get('log_enabled')) {
+      $this->logger->info('Send core requset ' . ($isPostMethod ? 'post' : 'get') . ': ' . $query);
+    }
 
     $connection = curl_init();
     curl_setopt($connection, CURLOPT_HEADER, 0);
@@ -66,7 +68,7 @@ class CoreClient
         throw new CoreClientException(curl_error($connection), curl_errno($connection));
       }
       $responseDecoded = $this->decode($response);
-      if ($this->parameters->get('log_response')) {
+      if ($this->parameters->get('log_enabled')) {
         $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
         $this->logger->info('Core response info: ' . $this->encode(curl_getinfo($connection)));
       }
@@ -129,7 +131,10 @@ class CoreClient
     $data = json_encode($data);
     $data = preg_replace_callback(
       '/\\\u([0-9a-fA-F]{4})/',
-      create_function('$match', 'return mb_convert_encoding("&#" . intval($match[1], 16) . ";", "UTF-8", "HTML-ENTITIES");'),
+      function($match){
+        return mb_convert_encoding("&#" . intval($match[1], 16) . ";", "UTF-8", "HTML-ENTITIES");
+      },
+      //create_function('$match', 'return mb_convert_encoding("&#" . intval($match[1], 16) . ";", "UTF-8", "HTML-ENTITIES");'),
       $data
     );
     return $data;
