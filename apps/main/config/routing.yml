@@ -33,11 +33,11 @@ product_set:
 # список смежных товаров
 product_related:
   url:   /products/related/:product
-  param: { module: product, action: related }
+  param: { module: productSoa, action: related }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+    #product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 # список аксессуаров
 product_accessory:
   url:   /products/accessories/:product
@@ -51,11 +51,25 @@ product_accessory:
 productCatalog:
   url:   /catalog/
   param: { module: productCatalog, action: index }
+# @core
+# каталог товаров
+productCatalog_:
+  url:   /catalog_core/
+  param: { module: productCatalog_, action: index }
 #
 # фильтр каталога товаров
 productCatalog_filter:
   url:   /catalog/:productCategory/_filter
   param: { module: productCatalog, action: filter }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# @core
+# фильтр каталога товаров core
+productCatalog__filter:
+  url:   /catalog_core/:productCategory/_filter
+  param: { module: productCatalog_, action: filter }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
@@ -69,6 +83,15 @@ productCatalog_tag:
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# @core
+# тэги каталога товаров
+productCatalog__tag:
+  url:   /catalog_core/:productCategory/_tag
+  param: { module: productCatalog_, action: tag }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 #
 # количество найденных товаров
 productCatalog_count:
@@ -77,7 +100,16 @@ productCatalog_count:
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
-    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)']
+# @core
+# количество найденных товаров
+productCatalog__count:
+  url:   /catalog_core/:productCategory/_count
+  param: { module: productCatalog_, action: count }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)']
 #
 # категория каталога товаров
 productCatalog_category:
@@ -87,6 +119,16 @@ productCatalog_category:
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# @core
+# категория каталога товаров
+productCatalog__category:
+  url:   /catalog_core/:productCategory/
+  param: { module: productCatalog_, action: category}
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+#
 # категория каталога товаров ajax
 productCatalog_categoryAjax:
   url:   /catalog/:productCategory/_ajax/:page/:view/:num
@@ -95,10 +137,29 @@ productCatalog_categoryAjax:
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# @core
+# категория каталога товаров ajax
+productCatalog__categoryAjax:
+  url:   /catalog_core/:productCategory/_ajax/:page/:view/:num
+  param: { module: productCatalog_, action: category, num: 18, view: compact, page: 1}
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+#
 # карусель ajax
 productCatalog_carousel:
   url:   /catalog/:productCategory/_carousel
   param: { module: productCategory, action: carousel}
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# @core
+# карусель ajax
+productCatalog__carousel:
+  url:   /catalog_core/:productCategory/_carousel
+  param: { module: productCategoryCore, action: carousel}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
@@ -110,15 +171,41 @@ productCatalog_creator:
   param: { module: productCatalog, action: creator }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
+# @core
+# категория и производитель каталога товаров
+productCatalog__creator:
+  url:   /catalog_core/:productCategory/:creator/
+  param: { module: productCatalog_, action: creator }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # карточка товара
-productCard:
-  url:   /product/:product
+productCardOld:
+  url:   /product_old/:product
   param: { module: productCard, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
+
+# карточка товара. использует новый API
+productCard:
+  url:   /product/:product
+  param: { module: productCardSoa, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+# карточка товара. использует новый API
+productCardSoa:
+  url:   /product/:product
+  param: { module: productCardSoa, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
 #
 # карточка товара по ид товара
 product_show:
@@ -699,14 +786,14 @@ cart_add:
   param: { module: cart, action: add, quantity: 1 }
   requirements:
     sf_method: [ get, post ]
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+   # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart delete
 cart_delete:
   url:   /cart/delete/:product/_service/:service
   param: { module: cart, action: delete, product: '-/-', service: 0 }
   requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+   # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart clear
 cart_clear:
@@ -718,14 +805,14 @@ cart_service_add:
   url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/
   param: { module: cart, action: serviceAdd, quantity: 1, product: '-/-' }
   requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+   # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # cart servcie delete
 cart_service_delete:
   url:   /cart/delete_service/:product/_service/:service
   param: { module: cart, action: serviceDelete, product: '-/-' }
   requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+   # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 
 #
@@ -862,15 +949,6 @@ credit_programs:
   url:      /credit_programs
   param:    { module: credit, action: programs }
 #
-
-###
-# productCard
-productCard_:
-  url:   /_test/product/:product
-  param: { module: productCard_, action: index }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-###
 
 
 default_show:
