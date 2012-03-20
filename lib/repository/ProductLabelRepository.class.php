@@ -40,13 +40,13 @@ class ProductLabelRepository extends ObjectRepository
     $q = ProductTable::getInstance()->createBaseQuery(array('view' => 'list'))
       ->select('DISTINCT product.core_label_id')
       ->innerJoin('product.Category category')
-      ->where('category.root_id = ? and category.lft >= ? and category.rgt <= ?', array($criteria->getCategory()->root_id, $criteria->getCategory()->lft, $criteria->getCategory()->rgt, ))
+      ->addWhere('category.root_id = ? and category.lft >= ? and category.rgt <= ?', array($criteria->getCategory()->root_id, $criteria->getCategory()->lft, $criteria->getCategory()->rgt, ))
       ->addWhere('product.core_label_id IS NOT NULL')
       ->removeDqlQueryPart('orderby')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 
     $result = $q->execute();
 
-    return $this->get(is_array($result) ? $result : array());
+    return $this->get(is_array($result) ? $result : array($result));
   }
 }
