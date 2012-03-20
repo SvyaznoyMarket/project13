@@ -624,7 +624,7 @@ EOF;
         else {
             $inStock = 'false';
         }
-        $offer->addAttribute('id', $offerInfo['id']);
+        $offer->addAttribute('id', $offerInfo['core_id']);
         $offer->addAttribute('type', 'vendor.model');
         $offerInner = '';
 
