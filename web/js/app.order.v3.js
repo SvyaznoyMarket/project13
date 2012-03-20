@@ -1,5 +1,16 @@
 $(document).ready(function(){
-	
+	if (!Date.prototype.toISOString) {
+    Date.prototype.toISOString = function() {
+        function pad(n) { return n < 10 ? '0' + n : n }
+        return this.getUTCFullYear() + '-'
+            + pad(this.getUTCMonth() + 1) + '-'
+                + pad(this.getUTCDate()) + 'T'
+                    + pad(this.getUTCHours()) + ':'
+                        + pad(this.getUTCMinutes()) + ':'
+                            + pad(this.getUTCSeconds()) + 'Z';
+    };
+	}
+
 	/* Model Simulation */
 	orderModel = {
 		Rapid : {
@@ -138,8 +149,8 @@ $(document).ready(function(){
 		item.state    = act
 		item.dv       = getDateDM( datestring )
 		item.dhtml    = getDateHTML( datestring )
-		item.schedule = []		
-//console.info(item)
+		item.ISO      = datestring
+		item.schedule = []
 		return item
 	}	
 	
@@ -149,8 +160,10 @@ $(document).ready(function(){
 	function syncBlock( _sender, _receiver ) {
 	
 		_receiver.addCost  = _sender.price*1
-		_receiver.dlvrDate = getDateDM( _sender.date_default ) 
+		_receiver.dlvrDate = getDateDM( _sender.date_default )
+		_receiver.ISODate  = _sender.date_default
 		_receiver.dlvrTime = getTimeFT( _sender.date_list[0].interval[0] )
+		_receiver.dlvrID   = _sender.date_list[0].interval[0].id
 		_receiver.vcalend  = []
 		var defaultDate = new Date( _sender.date_list[0].date )
 		var lost = defaultDate.getDay()
@@ -169,7 +182,7 @@ $(document).ready(function(){
 		}
 		
 		for(var i=0, l= _sender.date_list.length; (i < l) && (i < 14 - lost); i++) {
-			var item = _sender.date_list[i]
+			var item = _sender.date_list[i]					
 			var scheduleItem = fillSIPartly(  ( i < (7 - lost) ) ? 0 : 1 , 'act', item.date )
 			for(var j=0, jl = item.interval.length; j < jl; j++) {
 				var intervalItem = {}
@@ -178,7 +191,7 @@ $(document).ready(function(){
 				scheduleItem.schedule.push( intervalItem )
 				intervalItem  = {}
 			}
-			
+	
 			_receiver.vcalend.push( scheduleItem ) 
 			scheduleItem = {}
 			item = {}
@@ -194,7 +207,7 @@ $(document).ready(function(){
 			var productItem = {}
 			productItem.title    = item.name
 			productItem.moveable = item.moveable
-			productItem.price    = item.price+''
+			productItem.price    = printPrice( item.price )
 			productItem.hm       = item.quantity*1
 			productItem.locs     = item.moveto_shop
 			productItem.img      = item.moveable
@@ -204,10 +217,12 @@ $(document).ready(function(){
 				switch( item.moveto_mode[j] ) {
 					case 'self':
 						productItem.dlvr.push( { txt: 'В самовывоз', lbl: 'selfy'} )
-					//	productItem.dlvr.push( { txt: 'В доставку', lbl: 'delay'} ) // remove it
 						break
 					case 'standart_delay':
 						productItem.dlvr.push( { txt: 'В доставку', lbl: 'delay'} )
+						break					
+					case 'standart_rapid':
+						productItem.dlvr.push( { txt: 'В доставку', lbl: 'rapid'} )
 						break					
 				}
 			}
@@ -249,11 +264,12 @@ $(document).ready(function(){
 	function MyViewModel() {
 		var self = this
 					
-		function customCal( papa, cd, dd, ct, sch ) {
+		function customCal( papa, cd, cdf, dd, ct, ctid, sch ) {
 			var me = this
 			me.papa = papa
 			me.curDate  = ko.observable( cd )
-			me.dates    =  dd 
+			me.curDateF = cdf // formatted ISO
+			me.dates    = dd 
 			me.weeknum  = ko.observable( false )
 			me.cWeek = function(d, e){
 				if( ! $(e.currentTarget).hasClass('mDisabled') ) {
@@ -265,14 +281,17 @@ $(document).ready(function(){
 				if( $(e.currentTarget).hasClass('bBuyingDates__eDisable') )
 					return false
 				me.curDate( dateit.dv )
+				me.curDateF = dateit.ISO
 				me.papa.find('.bBuyingDatePopup[ref="'+dateit.dv+'"]').css({'left': $(e.target).position().left }).show()
 			}
 			if( typeof(ct) !== 'undefined' ) {
-				me.curTime  = ko.observable( ct )
+				me.curTime   = ko.observable( ct )
+				me.curTimeId = ctid
 				if( typeof(sch) !== 'undefined' ) 
 					me.schedule = ko.observableArray( sch )				
 				me.pickTime = function( timeit ) {
 					me.curTime( timeit.txt )
+					me.curTimeId = timeit.id
 				}
 			}
 		}
@@ -280,16 +299,18 @@ $(document).ready(function(){
 		self.addCost  = orderModel.Rapid.addCost
 		self.bitems   = ko.observableArray( orderModel.Rapid.products )
 
-		self.RapidCalend = new customCal( $('.rapid'), orderModel.Rapid.dlvrDate , orderModel.Rapid.vcalend, orderModel.Rapid.dlvrTime, orderModel.Rapid.schedule)
+		self.RapidCalend = new customCal( $('.rapid'), orderModel.Rapid.dlvrDate, orderModel.Rapid.ISODate, orderModel.Rapid.vcalend, 
+					orderModel.Rapid.dlvrTime, orderModel.Rapid.dlvrID, orderModel.Rapid.schedule)
 
 		self.addCost_D  = orderModel.Delay.addCost
 		self.bitems_D   = ko.observableArray( orderModel.Delay.products )
 
-		self.DelayCalend = new customCal( $('.delay'), orderModel.Delay.dlvrDate , orderModel.Delay.vcalend, orderModel.Delay.dlvrTime, orderModel.Delay.schedule)
+		self.DelayCalend = new customCal( $('.delay'), orderModel.Delay.dlvrDate, orderModel.Delay.ISODate, orderModel.Delay.vcalend, 
+					orderModel.Delay.dlvrTime, orderModel.Delay.dlvrID, orderModel.Delay.schedule)
 
 		self.shops      = ko.observableArray( orderModel.Selfy.shops )
 
-		self.SelfyCalend = new customCal( $('.selfy'), orderModel.Selfy.dlvrDate , orderModel.Selfy.vcalend )
+		self.SelfyCalend = new customCal( $('.selfy'), orderModel.Selfy.dlvrDate, orderModel.Selfy.ISODate, orderModel.Selfy.vcalend )
 		
 		for(var b=0, lb= self.bitems().length; b<lb; b++) {
 			if( typeof( self.bitems()[b].dlvr ) !== 'undefined' )
@@ -337,8 +358,9 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 				}
 			break
 			}
-			var ind = line.dlvr.indexOf( target )
-			line.dlvr[ ind ].lbl ( _sender )
+			// change lbl is complicated
+			//var ind = line.dlvr.indexOf( target )
+			//line.dlvr[ ind ].lbl ( _sender )
 		}
 		
 		self.totalPrice = ko.computed(function() {
@@ -431,7 +453,6 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 				if(  !doublelocs[i] ) continue
 				var shopsHub = self.shops()
 				for(var asi=0, asl=shopsHub.length; asi<asl; asi++) {
-					console.info(shopsHub[asi].shid , doublelocs[i])
 					if( shopsHub[asi].shid == doublelocs[i] ) {
 //console.info( asi )
 						var shopitem = shopsHub[asi]
@@ -597,7 +618,7 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 		MVM.shiftingInShops( $(node).parent().find('.shopnum').text() )
 	}
 	
-	/* other form handlers */
+	/* Other Form Handlers */
 	$('body').delegate('.bBuyingLine label', 'click', function() {
 		if( $(this).find('input').attr('type') == 'radio' ) {
 			var thatName = $('.mChecked input[name="'+$(this).find('input').attr('name')+'"]')
@@ -623,18 +644,20 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	
 	/* Mail to Server */
 	function syncClientServer() {
-		ServerModel.standart_rapid.products = MVM.bitems()//.slice(0)
-		ServerModel.standart_delayed.products = MVM.bitems_D()//.slice(0)
-		//var tmpShops = MVM.shops().slice(0)
+		ServerModel.standart_rapid.products   = MVM.bitems()
+		ServerModel.standart_delayed.products = MVM.bitems_D()
 		
-		//ServerModel.self.shops = tmpShops
+		ServerModel.standart_rapid.date_default   = MVM.RapidCalend.curDateF
+		ServerModel.standart_rapid.time_default   = MVM.RapidCalend.curTimeId
+		ServerModel.standart_delayed.date_default = MVM.DelayCalend.curDateF
+		ServerModel.standart_delayed.time_default = MVM.DelayCalend.curTimeId
+		ServerModel.self.date_default             = MVM.SelfyCalend.curDateF
+		
 		for(var i=0, l = ServerModel.self.shops.length; i<l; i++) {
-//console.info(i)
 			ServerModel.self.shops[i].products = MVM.shops()[i].products().slice(0)
 		}
-//console.info(tmpShops)
-//		tmpShops=[]
-	}
+console.info(ServerModel)	
+	} // syncClientServer function
 	
 	$('.mConfirm a.bBigOrangeButton').click( function(e) {
 		e.preventDefault()
@@ -643,7 +666,6 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 		syncClientServer()		
 		var toSend = form.serializeArray()
 		toSend.push( { name: 'products_hash', value: JSON.stringify( ServerModel )  } )//encodeURIComponent
-//console.info( toSend )
 		$.ajax({
 			url: form.attr('action'),
 			type: "POST",

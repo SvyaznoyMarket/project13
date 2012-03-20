@@ -42,13 +42,15 @@
 					<p><span data-bind="text: price"></span> <span class="rubl">p</span></p>
 					<p>
 						<a class='bImgButton mBacket' href data-bind="click: $parent.removeIt"></a>
-						<!-- ko if: moveable -->
+						<!-- ko if: ((dlvr.length > 1 ) || (dlvr[0].lbl() !== 'rapid') && (dlvr.length === 1)) -->
 						<a class='bImgButton mArrows' href></a>
 						<span class="bButtonPopup" style="left: 203px; display:none">
 							<span class="bButtonPopup__eTitle">Переместить товар:</span>
 							<!-- ko foreach: dlvr -->
+							<!-- ko if: lbl() !== 'rapid' -->
 							<a class="bButtonPopup__eLine moveline" 
 							data-bind="text: txt, click: $root.shifting.bind($data, $parent, 'rapid' )"></a>
+							<!-- /ko -->
 							<!-- /ko -->
 						</span>
 						<!-- /ko -->
@@ -106,13 +108,15 @@
 					<p><span data-bind="text: price"></span> <span class="rubl">p</span></p>
 					<p>
 						<a class='bImgButton mBacket' href data-bind="click: $parent.removeIt"></a>
-						<!-- ko if: moveable -->
+						<!-- ko if: ((dlvr.length > 1 ) || (dlvr[0].lbl() !== 'delay') && (dlvr.length === 1)) -->
 						<a class='bImgButton mArrows' href></a>
 						<span class="bButtonPopup" style="left: 203px; display:none">
 							<span class="bButtonPopup__eTitle">Переместить товар:</span>
 							<!-- ko foreach: dlvr -->
+							<!-- ko if: dlvr[0].lbl() !== 'delay' -->
 							<a class="bButtonPopup__eLine moveline" 
 							data-bind="text: txt, click: $root.shifting.bind($data, $parent, 'delay' )"></a>
+							<!-- /ko -->
 							<!-- /ko -->
 						</span>
 						<!-- /ko -->
@@ -160,13 +164,15 @@
 					<p><span data-bind="text: price"></span> <span class="rubl">p</span></p>
 					<p>
 						<a class='bImgButton mBacket' href data-bind="click: $root.removeFromShop.bind($data, $parent )"></a>
-						<!-- ko if: moveable -->
+						<!-- ko if: ((dlvr.length > 1 ) || (dlvr[0].lbl !== 'selfy') && (dlvr.length === 1)) -->
 						<a class='bImgButton mArrows' href></a>
 						<span class="bButtonPopup" style="left: 203px; display:none">
 							<span class="bButtonPopup__eTitle">Переместить товар:</span>
 							<!-- ko foreach: dlvr -->
+							<!-- ko if: lbl() !== 'selfy' -->
 							<a class="bButtonPopup__eLine moveline" 
 							data-bind="text: txt, click: $root.shifting.bind($data, $parent, 'selfy' )"></a>
+							<!-- /ko -->
 							<!-- /ko -->
 						</span>
 						<!-- /ko -->
