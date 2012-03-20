@@ -167,6 +167,9 @@ class ProductFactory
     private function _createBaseProduct($info)
     {
         $product = new ProductSoa();
+        if (!$info['id']) {
+            return;
+        }
 
         foreach ($info as $fieldName => $value) {
             $product->$fieldName = $value;
@@ -227,6 +230,9 @@ class ProductFactory
 
         $productsBaseData = array();
         foreach ($coreResult as $queryResult) {
+           if (!isset($queryResult['result'])) {
+               continue;
+           }
            foreach ($queryResult['result'] as $itemKey => $itemData) {
                 if ($queryResult['action'] == 'product/get-delivery') {
                     $productsBaseData[$itemKey]['delivery'] = $itemData;

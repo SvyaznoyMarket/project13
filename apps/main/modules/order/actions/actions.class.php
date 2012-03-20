@@ -565,9 +565,11 @@ class orderActions extends myActions
     //$this->order->User = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);//$this->getUser()->getGuardUser();
 
 
+    $prodObList = array();
     foreach ($this->getUser()->getCart()->getProducts() as $product)
     {
         $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $product['id'])->fetchOne();
+        $prodObList[$product['id']] = $productOb;
         $relation = new OrderProductRelation();
         $relation->fromArray(array(
             'product_id' => $productOb->id,
@@ -582,10 +584,15 @@ class orderActions extends myActions
       $serviceOb = ServiceTable::getInstance()->getQueryObject()->where('core_id = ?', $service['id'])->fetchOne();
       foreach($service['products'] as $prodId => $prodServInfo) {
           if (!$prodId || !$prodServInfo['quantity']) continue;
+          if (isset($prodObList[$prodId])) {
+              $productOb = $prodObList[$prodId];
+          } else {
+              $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $prodId)->fetchOne();
+          }
           $relation = new OrderServiceRelation();
           $relation->fromArray(array(
             'service_id' => $serviceOb->id,
-            'product_id' => $prodId,
+            'product_id' => $productOb->id,
             'price'      => $prodServInfo['price'],
             'quantity'   => $prodServInfo['quantity'],
           ));
