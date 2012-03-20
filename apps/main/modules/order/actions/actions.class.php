@@ -157,6 +157,7 @@ class orderActions extends myActions
     return $this->renderJson(array('success' => true, 'data' => array('form' => $this->getPartial($this->getModuleName() . '/form_oneClick'), 'shop' => $shopData,),));
   }
 
+  // TODO: удалить
   public function executeLogin(sfWebRequest $request)
   {
     $this->getResponse()->setTitle('Данные покупателя – Enter.ru');
@@ -249,7 +250,34 @@ class orderActions extends myActions
 
       if ($this->form->isValid())
       {
-        $order = $this->form->updateObject();
+        $baseOrder = $this->form->updateObject();
+
+        // подзаказы
+        $orders = array();
+        $productData = json_decode($request['products_hash'], true);
+        foreach ($productData as $data)
+        {
+          /* @var $order Order */
+          $order = clone $baseOrder;
+
+          /* @var $deliveryType DeliveryType */
+          $deliveryType = DeliveryTypeTable::getInstance()->getByCoreId($data['mode_id']);
+          $order->delivery_type_id = $deliveryType;
+          if ('self' == $deliveryType->token)
+          {
+            $order->address = null;
+          }
+          else {
+            $order->shop_id = null;
+          }
+          $order->delivered_at = date_format(new DateTime($data['date_default']), 'Y-m-d 00:00:00');
+
+          $orders[] = $order;
+        }
+        myDebug::dump($orders);
+
+        myDebug::dump($productData);
+        myDebug::dump($order, 1);
         $order->step = self::LAST_STEP == $this->step ? (self::LAST_STEP + 1) : $this->step;
         $this->getUser()->getOrder()->set($order);
 
