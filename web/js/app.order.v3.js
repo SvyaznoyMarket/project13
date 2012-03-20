@@ -351,16 +351,20 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 		}
 		
 		self.totalPrice = ko.computed(function() {
-			var tp = self.addCost
+			var tp = 0
 			for(var i=0; i<self.bitems().length; i++)
 				tp += self.bitems()[i].price.replace(/\D/g,'')*1
+			 if( tp > 0 )
+			 	tp += self.addCost	
 			return printPrice( tp )
 		}, this)
 		
 		self.totalPrice_D = ko.computed(function() {
-			var tp = self.addCost_D
+			var tp = 0
 			for(var i=0; i<self.bitems_D().length; i++)
 				tp += self.bitems_D()[i].price.replace(/\D/g,'')*1
+			 if( tp > 0 )
+			 	tp += self.addCost_D
 			return printPrice( tp )
 		}, this)
 
@@ -368,7 +372,7 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 			var tp = 0
 			for(var i=0; i<self.shops().length; i++)
 				for(var j=0; j<self.shops()[i].products().length; j++)
-				tp += self.shops()[i].products()[j].price.replace(/\D/g,'')*1
+				tp += self.shops()[i].products()[j].price.replace(/\D/g,'')*1				
 			return printPrice( tp )
 		}, this)
 
