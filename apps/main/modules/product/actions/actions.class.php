@@ -106,8 +106,6 @@ class productActions extends myActions
   */
   public function executeShow(sfWebRequest $request)
   {
-    $table = ProductTable::getInstance();
-
     $field = 'id';
     $id = $request['product'];
     foreach (array('id', 'token', 'core_id', 'barcode', 'article') as $v)
