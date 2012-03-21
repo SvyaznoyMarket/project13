@@ -85,12 +85,12 @@
       };
   <?php foreach ($order->ProductRelation as $product): ?>
     <?php $category = $product->Product->getMainCategory() ?>
-    <?php $rootCategory = $category->getRootCategory() ?>
+    <?php if (!empty($category)) $rootCategory = $category->getRootCategory() ?>
         _gaq.push(['_addItem',
            '<?php echo $order['number'] ?>',           // Номер заказа
            '<?php echo $product->Product['article'] ?>',           // Артикул
            '<?php echo $product->Product['name'] ?>',        // Название товара
-           '<?php echo ($category-> id != $rootCategory->id) ? ($rootCategory.' - '.$category) : $category ?>',   // Категория товара
+           '<?php if (!empty($category)) { echo ($category->id != $rootCategory->id) ? ($rootCategory.' - '.$category) : $category; } ?>',   // Категория товара
            '<?php echo str_replace(',', '.', $product['price']) ?>',          // Стоимость 1 единицы товара
            '<?php echo $product['quantity'] ?>'               // Количество товара
          ]);
