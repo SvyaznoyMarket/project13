@@ -56,7 +56,7 @@
 			break
 		case 'order':
 			$LAB.queueScript('bigjquery.min.js').queueScript('knockout-2.0.0.js')
-			.queueScript('http://maps.google.com/maps/api/js?sensor=false')
+			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
 				.wait()

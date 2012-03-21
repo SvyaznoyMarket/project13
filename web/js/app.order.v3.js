@@ -143,7 +143,7 @@ $(document).ready(function() {
 		return item
 	}	
 	
-console.info( $('#delivery-map').data('value') )
+//console.info( $('#delivery-map').data('value') )
 	var ServerModel =  $('#delivery-map').data('value')
 	
 	function syncBlock( _sender, _receiver ) {
@@ -280,9 +280,10 @@ console.info( $('#delivery-map').data('value') )
 				me.curTimeId = ctid
 				if( typeof(sch) !== 'undefined' ) 
 					me.schedule = ko.observableArray( sch )				
-				me.pickTime = function( timeit ) {
+				me.pickTime = function( timeit, e ) {		
 					me.curTime( timeit.txt )
 					me.curTimeId = timeit.id
+					$(e.currentTarget).parent().parent().hide()
 				}
 			}
 		}
@@ -425,6 +426,11 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 			}
 		}
 		
+		self.shiftAndClose = function( shop_receiver ) {
+			window.regionMap.closeMap()
+			self.shiftingInShops( shop_receiver )
+		}
+		
 		self.fillPopupWithShops = function( shop, item ) {
 			shop_sender = shop
 			movingItem = item
@@ -471,36 +477,42 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	
 	
 	/* JQUERY handlers */
+	var agent = new brwsr()
+	if( !agent.isTouch ) {
+		$('body').delegate('.bImgButton', 'mouseenter', function() {
+			var tipData = {cssl: '-64px', tiptext: 'tip'}
+			if( $(this).hasClass('mMap') )
+				tipData = {cssl: '-64px', tiptext: 'Выбрать другой магазин'}
+			if( $(this).hasClass('mBacket') )
+				tipData = {cssl: '-36px', tiptext: 'Удалить товар'}
+			if( $(this).hasClass('mArrows') )
+				tipData = {cssl: '-87px', tiptext: 'Поместить товар в другой заказ'}
+			$(this).html( tmpl("tip_tmpl", tipData) )
+		})
+		
+		$('body').delegate('.bImgButton', 'mouseleave', function() { 
+			$(this).empty()		
+		})
+		
+		$('body').delegate('.bButtonPopup', 'mouseleave', function() {
+			$(this).hide()
+		})
+		
+		$('body').delegate('.bBuyingDatePopup', 'mouseleave', function() {
+			$(this).hide()
+		})	
+	} 
 	
-	$('body').delegate('.bImgButton', 'mouseenter', function(){
-		var tipData = {cssl: '-64px', tiptext: 'tip'}
-		if( $(this).hasClass('mMap') )
-			tipData = {cssl: '-64px', tiptext: 'Выбрать другой магазин'}
-		if( $(this).hasClass('mBacket') )
-			tipData = {cssl: '-36px', tiptext: 'Удалить товар'}
-		if( $(this).hasClass('mArrows') )
-			tipData = {cssl: '-87px', tiptext: 'Поместить товар в другой заказ'}
-		$(this).html( tmpl("tip_tmpl", tipData) )
-	})
-	
-	$('body').delegate('.bImgButton', 'mouseleave', function(){ 
-		$(this).empty()		
-	})
-	
-	$('body').delegate('.bButtonPopup', 'mouseleave', function(){
+	$('body').delegate('.bButtonPopup__eTitle', 'click', function(e) { // TODO iOS
 		$(this).hide()
 	})
 	
-	$('body').delegate('.bBuyingDatePopup', 'mouseleave', function(){
-		$(this).hide()
-	})	
-	
-	$('body').delegate('.mArrows', 'click', function(e){
+	$('body').delegate('.mArrows', 'click', function(e) {
 		e.preventDefault()
 		$(this).parent().find('.bButtonPopup').show()
 		return false
 	})		
-	$('body').delegate('.mMap', 'click', function(e){
+	$('body').delegate('.mMap', 'click', function(e) {
 		e.preventDefault()
 		// TODO проверка загруженности карты
 		var markersPull = {}
@@ -589,6 +601,11 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 			})
 		}
 		
+		this.closeMap = function( markers ) {
+			self.infoWindow.close()
+			$('.mMapPopup').trigger('close') // close lightbox_me
+		}
+		
 		/* main() */
 		create()
 		
@@ -609,10 +626,8 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	mapContainer[0].addEventListener("touchstart", handleStart  , false) //touch devices
 	
 	function pickStore( node ) {
-//console.info('pickME ', node)
-		regionMap.infoWindow.close()
-		$('.mMapPopup').trigger('close') // close lightbox_me
-		MVM.shiftingInShops( $(node).parent().find('.shopnum').text() )
+//console.info('pickME ', node)		
+		MVM.shiftAndClose( $(node).parent().find('.shopnum').text() )
 	}
 	
 	/* Other Form Handlers */

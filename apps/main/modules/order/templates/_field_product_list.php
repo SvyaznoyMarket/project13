@@ -265,7 +265,7 @@
 						</div>
 						<h3>Выберите магазин Enter для самовывоза</h3>
 						<ul data-bind="foreach: $root.popupWithShops">
-							<li data-bind="click: $root.shiftingInShops">
+							<li data-bind="click: $root.shiftAndClose">
 								<div class='bMapShops__eListNum'><img data-bind="attr: { src: markerImg }" alt=""/></div>
 								<div data-bind="text: title"></div>
 								<span>Работаем </span><span data-bind="text: fromto"></span>
