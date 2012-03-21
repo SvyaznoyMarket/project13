@@ -364,7 +364,7 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
 }
 .mDeti, .category-5 {
     background: url("img/header_icon_baby_goods.gif") no-repeat scroll 0 0 transparent;
-    width: 45px;
+    width: 39px;
 }
 .mZoo, .category-6 {
     background: url("img/header_icon_zoo_goods.gif") no-repeat scroll 0 0 transparent;
@@ -372,7 +372,7 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
 }
 .mSam, .category-7 {
     background: url("img/header_icon_tools_goods.gif") no-repeat scroll 0 0 transparent;
-    width: 72px;
+    width: 34px;
 }
 .mElectro, .category-8 {
     background: url("img/header_icon_electronics.gif") no-repeat scroll 0 0 transparent;
