@@ -1983,6 +1983,10 @@ DT.bCtg__eOrange{
 		font-size: 0;
 		}
 		
+.customalign h2.pb30 {
+	padding-bottom: 30px;	
+}
+
 .mMapPopup .bMobDownWrapRel{
 	top: 5px;
 	bottom: auto;
@@ -2883,7 +2887,11 @@ DT.bCtg__eOrange{
 
 
 /* bMobDownWrapAbs */
-
+.mW750{ width: 750px }
+.bMobDownWrapAbs.customalign{ 
+	width: 100%;
+	height: 100%; 
+}
 .bMobDownWrapAbs{
 	top: 0;
 	left: 0;
@@ -2931,7 +2939,7 @@ DT.bCtg__eOrange{
 		}
 	.bMobDown h2{
 		margin: 0;
-		padding: 0;
+		padding: 0 0 10px 0;
 		font: 30px 'Enter';
 		}
 	.bMobDown .sLocation{

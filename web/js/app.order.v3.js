@@ -192,6 +192,7 @@ console.info( $('#delivery-map').data('value') )
 		for(var i=0, l = _sender.products.length; i<l; i++) {
 			var item = _sender.products[i]
 			var productItem = {}
+			productItem.id       = item.id
 			productItem.title    = item.name
 			productItem.moveable = item.moveable
 			productItem.price    = printPrice( item.price )
@@ -250,7 +251,10 @@ console.info( $('#delivery-map').data('value') )
 	/* ViewModel */
 	function MyViewModel() {
 		var self = this
-					
+		
+		self.noSuchItemError = ko.observable( false )
+		self.stolenItems = ko.observableArray( [] )
+		
 		function customCal( papaSelector, cd, cdf, dd, ct, ctid, sch ) {
 			var me = this
 			me.papa = papaSelector
@@ -291,6 +295,7 @@ console.info( $('#delivery-map').data('value') )
 
 		self.addCost_D  = orderModel.Delay.addCost
 		self.bitems_D   = ko.observableArray( orderModel.Delay.products )
+self.stolenItems.push( self.bitems()[0] ) // TODO change for real server answer data
 
 		self.DelayCalend = new customCal( '.delay', orderModel.Delay.dlvrDate, orderModel.Delay.ISODate, orderModel.Delay.vcalend, 
 					orderModel.Delay.dlvrTime, orderModel.Delay.dlvrID, orderModel.Delay.schedule)
