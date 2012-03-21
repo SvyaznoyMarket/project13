@@ -95,6 +95,7 @@ class productComponents extends myComponents
       'creator'    => (is_array($this->product['Creator']) || ($this->product['Creator'] instanceof Creator)) ? $this->product['Creator']['name'] : '',
       'rating'     => $this->product['rating'],
       'price'      => $table->getFormattedPrice($this->product), //$this->product->formatted_price,
+      'avg_price'  => $table->getFormattedPrice($this->product, 'avg'), //$this->product->formatted_price,
       'has_link'   => $this->product['view_show'],
       'photo'      => $table->getMainPhotoUrl($this->product, 2),
       'is_insale'  => $this->product['is_insale'],

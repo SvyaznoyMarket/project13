@@ -3787,9 +3787,9 @@ DT.bCtg__eOrange{
 .mTehn, .category-2{ width: 43px; background: url('img/header_icon_home_appliances.gif') no-repeat; }
 .mZdor, .category-3{ width: 54px; background: url('img/header_icon_beauty_health.gif') no-repeat; }
 .mDom, .category-4{ width: 47px; background: url('img/header_icon_home_goods.gif') no-repeat; }
-.mDeti, .category-5{ width: 45px; background: url('img/header_icon_baby_goods.gif') no-repeat; }
+.mDeti, .category-5{ width: 39px; background: url('img/header_icon_baby_goods.gif') no-repeat; }
 .mZoo, .category-6{ width: 54px; background: url('img/header_icon_zoo_goods.gif') no-repeat; }
-.mSam, .category-7{ width: 72px; background: url('img/header_icon_tools_goods.gif') no-repeat; }
+.mSam, .category-7{ width: 34px; background: url('img/header_icon_tools_goods.gif') no-repeat; }
 .mElectro, .category-8{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
 .mUkr, .category-9{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
 .mSport, .category-10{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
@@ -4152,3 +4152,121 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 
 
 .bRegion .bCall{ display: inline-block; *display: inline; zoom: 1; height: 16px; background: url('img/bCall.png') no-repeat; padding-left: 20px; padding-right: 10px; }
+
+.mOur{ color: #000; font: 12px Tahoma, sans-serif; font-weight: bold; }
+
+.mOurGray{ color: #434343; font: 12px Tahoma, sans-serif; }
+
+
+.bEvent{
+	margin-bottom: 70px;
+	}
+	.bEvent__eImage{
+		position: relative;
+		}
+	.bEvent__eImage a{
+		position: absolute;
+
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.mLTop{
+		top: 216px;
+		left: 458px;
+		width: 205px;
+		height: 126px;
+		}
+	.mLBottom{
+		top: 352px;
+		left: 105px;
+		width: 169px;
+		height: 135px;
+		}
+
+	.bEvent h2{
+		padding: 0;
+		margin: 15px 0;
+		font: 24px Tahoma, sans-serif;
+		}
+
+	.bEvent ul{
+		font: 14px Tahoma, sans-serif;
+		}
+	.bEvent li{
+		padding: 2px 0;
+		}
+	.bEvent li a{
+		text-decoration: underline;
+		}
+
+
+.bPayment{
+  color: #434343;
+  font: 14px Tahoma, sans-serif;
+  padding-bottom: 50px;
+  }
+  .bPayment h2{
+    margin: 15px 0;
+    padding: 0;
+    vertical-align: middle;
+    font: bold 18px Tahoma, sans-serif;
+    }
+  .bPayment p{
+    margin: 0;
+    padding: 0;
+    }
+  .bPayment p a{
+    color: #434343;
+    text-decoration: underline;
+    }
+  .bPayment__ePay1{
+    min-height: 39px;
+    line-height: 39px !important;
+    padding-left: 50px !important;
+    background: url('/images/pages/bPay1.png') 0 50% no-repeat;
+    }
+  .bPayment__ePay2{
+    min-height: 33px;
+    line-height: 33px !important;
+    padding-left: 55px !important;
+    background: url('/images/pages/bPay2.png') 0 50% no-repeat;
+    }
+  .bPayment__ePay3{
+    min-height: 41px;
+    line-height: 41px !important;
+    padding-left: 43px !important;
+    background: url('/images/pages/bPay3.png') 0 50% no-repeat;
+    }
+
+  .mPayLink{
+    padding: 0;
+    overflow: hidden;
+    margin: 10px 0 10px 20px;
+    vertical-align: middle;
+    display: inline-block;
+    *display: inline;
+    zoom: 1s;
+    }
+
+  .bPayment__eVisa{
+    width: 61px;
+    height: 19px;
+    margin-left: 0;
+    background: url('/images/pages/bPaySystems.png') 0 0 no-repeat;
+    }
+  .bPayment__eMC{
+    width: 49px;
+    height: 29px;
+    background: url('/images/pages/bPaySystems.png') 0 -23px no-repeat;
+    }
+  .bPayment__eDC{
+    width: 54px;
+    height: 29px;
+    background: url('/images/pages/bPaySystems.png') 0 -53px no-repeat;
+    }
+  .bPayment__eJCB{
+    width: 39px;
+    height: 30px;
+    background: url('/images/pages/bPaySystems.png') 0 -83px no-repeat;
+    }

@@ -65,6 +65,7 @@ class pageComponents extends myComponents
         'name'  => 'Услуги',
         'links' => array(
           array('token' => 'credit'),
+          array('token' => 'f1', 'url' => 'f1', 'name' => 'F1 сервис'),
         ),
       ),
     );
@@ -131,9 +132,9 @@ class pageComponents extends myComponents
   public function executeBreadcrumbs(){
     if(!isset ($this->addToBreadcrumbs)){
       $this->addToBreadcrumbs = null;
+      $this->setVar('addToBreadcrumbs', $this->addToBreadcrumb);
     }
 
-    $this->setVar('addToBreadcrumbs', $this->addToBreadcrumb);
   }
 
 }
