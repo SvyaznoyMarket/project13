@@ -5,7 +5,7 @@
 </div>
 
 <div class="block">
-    <?php include_component('productCatalog_', 'filter', array('productCategory' => $productCategory, 'creator' => $creator)) ?>
+  <?php include_partial('filter_', $sf_data) ?>
 </div>
 
 <?php echo include_partial('productCatalog_/slot/default', $sf_data) ?>

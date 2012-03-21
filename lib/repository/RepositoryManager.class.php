@@ -40,4 +40,13 @@ class RepositoryManager
   {
     return self::get('ProductLabel');
   }
+
+  /**
+   * @static
+   * @return ProductCategoryFilterRepository
+   */
+  public static function getProductCategoryFilter()
+  {
+    return self::get('ProductCategoryFilter');
+  }
 }

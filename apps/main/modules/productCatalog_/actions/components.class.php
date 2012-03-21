@@ -13,507 +13,500 @@
  * @property Product $product
  * @property ProductCategory[] $productCategoryList
  * @property myProductFormFilter[] $form
+ * @property ProductCoreFormFilterSimple $productFilter
  */
 class productCatalog_Components extends myComponents
 {
-    public function executeNavigation()
-    {
-        sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
-        $list = array();
+  public function executeNavigation()
+  {
+    sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+    $list = array();
 
-        if (isset($this->productCategory) && !empty($this->productCategory)) {
-            $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
-                'hydrate_array' => true,
-                'select' => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name',
-            ));
-            foreach ($ancestorList as $ancestor)
+    if (isset($this->productCategory) && !empty($this->productCategory)) {
+      $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
+        'hydrate_array' => true,
+        'select' => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name',
+      ));
+      foreach ($ancestorList as $ancestor)
+      {
+        $list[] = array(
+          'name' => $ancestor['name'],
+          'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'] . '/' . $ancestor['token']) : $ancestor['token'])),
+        );
+      }
+      $list[] = array(
+        'name' => (string)$this->productCategory,
+        'url' => $this->generateUrl('productCatalog_category', $this->productCategory),
+      );
+    }
+    if (isset($this->creator)) {
+      $list[] = array(
+        'name' => (string)$this->creator,
+        'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+      );
+    }
+    if (isset($this->product)) {
+      if ('productStock' == $this->getContext()->getRouting()->getCurrentRouteName()) {
+        $list[] = array(
+          'name' => 'Где купить ' . mb_lcfirst((string)$this->product),
+          'url' => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+        );
+      }
+      else {
+        $list[] = array(
+          'name' => (string)$this->product,
+          'url' => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+        );
+      }
+    }
+
+    $this->setVar('list', $list, false);
+  }
+
+  public function executeNavigation_seo()
+  {
+    sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+    $list = array();
+
+    if (isset($this->productCategory) && !empty($this->productCategory)) {
+      $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
+        'hydrate_array' => true,
+        'select' => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name, productCategory.seo_header',
+      ));
+      if ($ancestorList) {
+        foreach ($ancestorList as $ancestor)
+        {
+          $list[] = array(
+            'name' => $ancestor['seo_header'] ? $ancestor['seo_header'] : $ancestor['name'],
+            'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'] . '/' . $ancestor['token']) : $ancestor['token'])),
+          );
+        }
+      }
+      $list[] = array(
+        'name' => (string)($this->productCategory->seo_header) ? $this->productCategory->seo_header : $this->productCategory->name,
+        'url' => $this->generateUrl('productCatalog_category', $this->productCategory),
+      );
+    }
+    if (isset($this->creator)) {
+      $list[] = array(
+        'name' => (string)$this->creator,
+        'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+      );
+    }
+    if (isset($this->product)) {
+      $list[] = array(
+        'name' => (string)$this->product,
+        'url' => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+      );
+    }
+
+    $this->setVar('list', $list, false);
+  }
+
+  public function executeCategory_list()
+  {
+    sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+    $list = array();
+    foreach ($this->productCategoryList as $productCategory)
+    {
+      $list[] = array(
+        'name' => $productCategory['name'],
+        'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'] . '/' . $productCategory['token']) : $productCategory['token'])),
+        'level' => $productCategory['level'],
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
+
+  public function executeCreator_list()
+  {
+    sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+    $creatorList = CreatorTable::getInstance()->getListByProductCategory($this->productCategory, array(
+      'order' => 'creator.name',
+    ));
+
+    $list = array();
+    foreach ($creatorList as $creator)
+    {
+      $list[] = array(
+        'name' => (string)$creator,
+        'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $creator)),
+      );
+    }
+
+    $this->setVar('list', $list, true);
+  }
+
+  public function executeFilter()
+  {
+    sfContext::getInstance()->getLogger()->info(__METHOD__ . __LINE__);
+    if (empty($this->form)) {
+      echo "<pre>";
+      echo new Exception();
+      echo "</pre>";
+      $this->form = new myProductFormFilter(array(), array(
+        'productCategory' => $this->productCategory,
+        'creator' => $this->creator,
+        'is_root' => isset($this->is_root) ? $this->is_root : false,
+        'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),
+      ));
+    }
+    sfContext::getInstance()->getLogger()->info(__METHOD__ . __LINE__);
+    $this->url = $this->generateUrl('productCatalog__filter', $this->productCategory);
+    sfContext::getInstance()->getLogger()->info(__METHOD__ . __LINE__);
+  }
+
+  public function executeFilter_()
+  {
+    $this->url = $this->generateUrl('productCatalog__filter', $this->productCategory);
+  }
+
+  public function executeFilter_selected()
+  {
+    sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+    $form = $this->form;
+    $productCategory = $this->productCategory;
+
+    $list = array();
+
+    if (!isset($this->form)) {
+      return sfView::NONE;
+    }
+
+    $filter = $this->getRequestParameter($this->form->getName());
+    $getUrl = function ($filter, $name, $value = null) use ($productCategory, $form)
+    {
+      if (array_key_exists($name, $filter)) {
+        if (null == $value) {
+          unset($filter[$name]);
+        }
+        else foreach ($filter[$name] as $k => $v)
+        {
+          if ($v == $value) {
+            unset($filter[$name][$k]);
+          }
+        }
+      }
+
+      $formName = $form->getName();
+
+      return url_for('productCatalog__filter', array('productCategory' => $productCategory->token, $formName => $filter));
+    };
+
+    foreach ($this->form->getValues() as $name => $value)
+    {
+      if (is_array($value) ? !count($value) : empty($value)) continue;
+
+      // цена
+      if ('price' == $name) {
+        $valueMin = ProductTable::getInstance()->getMinPriceByCategory($productCategory);
+        $valueMax = ProductTable::getInstance()->getMaxPriceByCategory($productCategory);
+
+        if (($value['from'] != $valueMin) || ($value['to'] != $valueMax)) {
+          $list[] = array(
+            'type' => 'price',
+            'name' => ''
+              . (($value['from'] != $valueMin) ? ('от ' . $value['from'] . ' ') : '')
+              . (($value['to'] != $valueMax) ? ('до ' . $value['to'] . ' ') : '')
+          ,
+            'url' => $getUrl($filter, $name),
+            'title' => 'Цена',
+          );
+        }
+      }
+      // производитель
+      if ('creator' == $name) {
+        foreach ($value as $v)
+        {
+          $creator = CreatorTable::getInstance()->getById($v);
+          if (!$creator) continue;
+
+          $list[] = array(
+            'type' => 'creator',
+            'name' => $creator->name,
+            'url' => $getUrl($filter, $name, $v),
+            'title' => 'Производитель',
+          );
+        }
+      }
+      // свойства товара
+      else if (0 === strpos($name, 'param-')) {
+        $filterId = preg_replace('/^param-/', '', $name);
+        $productFilter = !empty($filterId) ? ProductFilterTable::getInstance()->getById($filterId) : false;
+        if (!$productFilter) continue;
+
+        switch ($productFilter->type)
+        {
+          case 'range':
+            if (($value['from'] != $productFilter->value_min) || ($value['to'] != $productFilter->value_max)) {
+              $list[] = array(
+                'type' => 'parameter',
+                'name' => ''
+                  . (($value['from'] != $productFilter->value_min) ? ('от ' . $value['from'] . ' ') : '')
+                  . (($value['to'] != $productFilter->value_max) ? ('до ' . $value['to'] . ' ') : '')
+                  . ($productFilter->Property->unit ? $productFilter->Property->unit : '')
+              ,
+                'url' => $getUrl($filter, $name),
+                'title' => $productFilter->name,
+              );
+            }
+            break;
+          case 'choice':
+            foreach ($value as $v)
             {
-                $list[] = array(
-                    'name' => $ancestor['name'],
-                    'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'] . '/' . $ancestor['token']) : $ancestor['token'])),
-                );
+              $productPropertyOption = ProductPropertyOptionTable::getInstance()->getById($v);
+              if (!$productPropertyOption) continue;
+
+              $list[] = array(
+                'type' => 'parameter',
+                'name' =>
+                in_array($productPropertyOption->value, array('да', 'нет'))
+                  ? $productFilter->name . ': ' . $productPropertyOption->value
+                  : $productPropertyOption->value
+              ,
+                'url' => $getUrl($filter, $name, $productPropertyOption->id),
+                'title' => $productFilter->name,
+              );
             }
-            $list[] = array(
-                'name' => (string)$this->productCategory,
-                'url' => $this->generateUrl('productCatalog_category', $this->productCategory),
-            );
-        }
-        if (isset($this->creator)) {
-            $list[] = array(
-                'name' => (string)$this->creator,
-                'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
-            );
-        }
-        if (isset($this->product)) {
-            if ('productStock' == $this->getContext()->getRouting()->getCurrentRouteName()) {
-                $list[] = array(
-                    'name' => 'Где купить ' . mb_lcfirst((string)$this->product),
-                    'url' => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
-                );
-            }
-            else {
-                $list[] = array(
-                    'name' => (string)$this->product,
-                    'url' => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
-                );
-            }
-        }
-
-        $this->setVar('list', $list, false);
-    }
-
-    public function executeNavigation_seo()
-    {
-        sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
-        $list = array();
-
-        if (isset($this->productCategory) && !empty($this->productCategory)) {
-            $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
-                'hydrate_array' => true,
-                'select' => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name, productCategory.seo_header',
-            ));
-            if ($ancestorList) {
-                foreach ($ancestorList as $ancestor)
-                {
-                    $list[] = array(
-                        'name' => $ancestor['seo_header'] ? $ancestor['seo_header'] : $ancestor['name'],
-                        'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'] . '/' . $ancestor['token']) : $ancestor['token'])),
-                    );
-                }
-            }
-            $list[] = array(
-                'name' => (string)($this->productCategory->seo_header) ? $this->productCategory->seo_header : $this->productCategory->name,
-                'url' => $this->generateUrl('productCatalog_category', $this->productCategory),
-            );
-        }
-        if (isset($this->creator)) {
-            $list[] = array(
-                'name' => (string)$this->creator,
-                'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
-            );
-        }
-        if (isset($this->product)) {
-            $list[] = array(
-                'name' => (string)$this->product,
-                'url' => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
-            );
-        }
-
-        $this->setVar('list', $list, false);
-    }
-
-    public function executeCategory_list()
-    {
-        sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
-        $list = array();
-        foreach ($this->productCategoryList as $productCategory)
-        {
-            $list[] = array(
-                'name' => $productCategory['name'],
-                'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'] . '/' . $productCategory['token']) : $productCategory['token'])),
-                'level' => $productCategory['level'],
-            );
-        }
-
-        $this->setVar('list', $list, true);
-    }
-
-    public function executeCreator_list()
-    {
-        sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
-        $creatorList = CreatorTable::getInstance()->getListByProductCategory($this->productCategory, array(
-            'order' => 'creator.name',
-        ));
-
-        $list = array();
-        foreach ($creatorList as $creator)
-        {
-            $list[] = array(
-                'name' => (string)$creator,
-                'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $creator)),
-            );
-        }
-
-        $this->setVar('list', $list, true);
-    }
-
-    public function executeFilter()
-    {
-        sfContext::getInstance()->getLogger()->info(__METHOD__ . __LINE__);
-        if (empty($this->form)) {
-            echo "<pre>";
-            echo new Exception();
-            echo "</pre>";
-            $this->form = new myProductFormFilter(array(), array(
-                'productCategory' => $this->productCategory,
-                'creator' => $this->creator,
-                'is_root' => isset($this->is_root) ? $this->is_root : false,
-                'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),
-            ));
-        }
-        sfContext::getInstance()->getLogger()->info(__METHOD__ . __LINE__);
-        $this->url = $this->generateUrl('productCatalog__filter', $this->productCategory);
-        sfContext::getInstance()->getLogger()->info(__METHOD__ . __LINE__);
-    }
-
-    public function executeFilter_selected()
-    {
-        sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
-        $form = $this->form;
-        $productCategory = $this->productCategory;
-
-        $list = array();
-
-        if (!isset($this->form)) {
-            return sfView::NONE;
-        }
-
-        $filter = $this->getRequestParameter($this->form->getName());
-        $getUrl = function ($filter, $name, $value = null) use ($productCategory, $form)
-        {
-            if (array_key_exists($name, $filter)) {
-                if (null == $value) {
-                    unset($filter[$name]);
-                }
-                else foreach ($filter[$name] as $k => $v)
-                {
-                    if ($v == $value) {
-                        unset($filter[$name][$k]);
-                    }
-                }
+            break;
+          case 'checkbox':
+            if ((null !== $value) && (1 == count($value))) {
+              $list[] = array(
+                'type' => 'parameter',
+                'name' => $productFilter->name . ': ' . ($value[0] ? 'да' : 'нет'),
+                'url' => $getUrl($filter, $name),
+                'title' => '',
+                'title' => $productFilter->name,
+              );
             }
 
-            $formName = $form->getName();
-
-            return url_for('productCatalog__filter', array('productCategory' => $productCategory->token, $formName => $filter));
-        };
-
-        foreach ($this->form->getValues() as $name => $value)
-        {
-            if (is_array($value) ? !count($value) : empty($value)) continue;
-
-            // цена
-            if ('price' == $name) {
-                $valueMin = ProductTable::getInstance()->getMinPriceByCategory($productCategory);
-                $valueMax = ProductTable::getInstance()->getMaxPriceByCategory($productCategory);
-
-                if (($value['from'] != $valueMin) || ($value['to'] != $valueMax)) {
-                    $list[] = array(
-                        'type' => 'price',
-                        'name' => ''
-                            . (($value['from'] != $valueMin) ? ('от ' . $value['from'] . ' ') : '')
-                            . (($value['to'] != $valueMax) ? ('до ' . $value['to'] . ' ') : '')
-                    ,
-                        'url' => $getUrl($filter, $name),
-                        'title' => 'Цена',
-                    );
-                }
-            }
-            // производитель
-            if ('creator' == $name) {
-                foreach ($value as $v)
-                {
-                    $creator = CreatorTable::getInstance()->getById($v);
-                    if (!$creator) continue;
-
-                    $list[] = array(
-                        'type' => 'creator',
-                        'name' => $creator->name,
-                        'url' => $getUrl($filter, $name, $v),
-                        'title' => 'Производитель',
-                    );
-                }
-            }
-            // свойства товара
-            else if (0 === strpos($name, 'param-')) {
-                $filterId = preg_replace('/^param-/', '', $name);
-                $productFilter = !empty($filterId) ? ProductFilterTable::getInstance()->getById($filterId) : false;
-                if (!$productFilter) continue;
-
-                switch ($productFilter->type)
-                {
-                    case 'range':
-                        if (($value['from'] != $productFilter->value_min) || ($value['to'] != $productFilter->value_max)) {
-                            $list[] = array(
-                                'type' => 'parameter',
-                                'name' => ''
-                                    . (($value['from'] != $productFilter->value_min) ? ('от ' . $value['from'] . ' ') : '')
-                                    . (($value['to'] != $productFilter->value_max) ? ('до ' . $value['to'] . ' ') : '')
-                                    . ($productFilter->Property->unit ? $productFilter->Property->unit : '')
-                            ,
-                                'url' => $getUrl($filter, $name),
-                                'title' => $productFilter->name,
-                            );
-                        }
-                        break;
-                    case 'choice':
-                        foreach ($value as $v)
-                        {
-                            $productPropertyOption = ProductPropertyOptionTable::getInstance()->getById($v);
-                            if (!$productPropertyOption) continue;
-
-                            $list[] = array(
-                                'type' => 'parameter',
-                                'name' =>
-                                in_array($productPropertyOption->value, array('да', 'нет'))
-                                    ? $productFilter->name . ': ' . $productPropertyOption->value
-                                    : $productPropertyOption->value
-                            ,
-                                'url' => $getUrl($filter, $name, $productPropertyOption->id),
-                                'title' => $productFilter->name,
-                            );
-                        }
-                        break;
-                    case 'checkbox':
-                        if ((null !== $value) && (1 == count($value))) {
-                            $list[] = array(
-                                'type' => 'parameter',
-                                'name' => $productFilter->name . ': ' . ($value[0] ? 'да' : 'нет'),
-                                'url' => $getUrl($filter, $name),
-                                'title' => '',
-                                'title' => $productFilter->name,
-                            );
-                        }
-
-                        break;
-                }
-            }
+            break;
         }
-
-        if (0 == count($list)) {
-            return sfView::NONE;
-        }
-
-        $this->setVar('list', $list);
+      }
     }
 
-    public function executeFilter_price()
-    {
-
+    if (0 == count($list)) {
+      return sfView::NONE;
     }
 
-    public function executeFilter_creator()
-    {
-    }
-
-    public function executeFilter_parameter()
-    {
-    }
+    $this->setVar('list', $list);
+  }
 
     public function executeArticle_seo()
-    {
-        sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
-        // title
-        if (empty($this->productCategory->seo_title)) {
-            $this->productCategory->seo_title = ''
-                . $this->productCategory->name
-                . (false == $this->productCategory->isRoot() ? " - {$this->productCategory->getRootCategory()->name}" : '')
-                . ( // если передана листалка товаров и номер страницы не равен единице
-                ($this->productPager && (1 != $this->productPager->getPage()))
-                    ? " - Страница {$this->productPager->getPage()} из {$this->productPager->getLastPage()}"
-                    : ''
-                )
-                . " - {$this->getUser()->getRegion('name')}"
-                . ' - ENTER.ru';
-        }
-        // description
-        if (empty($this->productCategory->seo_description)) {
-            $region = $this->getUser()->getRegion('region');
-            $regionName = RegionTable::getInstance()->getLinguisticCase($region, 'п');
-            $regionName = $regionName ? : $region['name'];
+  {
+    sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+    // title
+    if (empty($this->productCategory->seo_title)) {
+      $this->productCategory->seo_title = ''
+        . $this->productCategory->name
+        . (false == $this->productCategory->isRoot() ? " - {$this->productCategory->getRootCategory()->name}" : '')
+        . ( // если передана листалка товаров и номер страницы не равен единице
+        ($this->productPager && (1 != $this->productPager->getPage()))
+          ? " - Страница {$this->productPager->getPage()} из {$this->productPager->getLastPage()}"
+          : ''
+        )
+        . " - {$this->getUser()->getRegion('name')}"
+        . ' - ENTER.ru';
+    }
+    // description
+    if (empty($this->productCategory->seo_description)) {
+      $region = $this->getUser()->getRegion('region');
+      $regionName = RegionTable::getInstance()->getLinguisticCase($region, 'п');
+      $regionName = $regionName ? : $region['name'];
 
-            $this->productCategory->seo_description = ''
-                . $this->productCategory->name
-                . " в {$regionName}"
-                . ' с ценами и описанием.'
-                . ' Купить в магазине Enter';
-        }
-        // keywords
-        if (empty($this->productCategory->seo_keywords)) {
-            $this->productCategory->seo_keywords = "{$this->productCategory->name} магазин продажа доставка {$this->getUser()->getRegion('name')} enter.ru";
-        }
-
-        $this->getResponse()->addMeta('title', $this->productCategory->seo_title);
-        $this->getResponse()->addMeta('description', $this->productCategory->seo_description);
-        $this->getResponse()->addMeta('keywords', $this->productCategory->seo_keywords);
-
-        if (isset($this->productCategory) && isset($this->productCategory->seo_text)) {
-            $this->setVar('article', $this->productCategory->seo_text, true);
-        }
-
+      $this->productCategory->seo_description = ''
+        . $this->productCategory->name
+        . " в {$regionName}"
+        . ' с ценами и описанием.'
+        . ' Купить в магазине Enter';
+    }
+    // keywords
+    if (empty($this->productCategory->seo_keywords)) {
+      $this->productCategory->seo_keywords = "{$this->productCategory->name} магазин продажа доставка {$this->getUser()->getRegion('name')} enter.ru";
     }
 
-    public function executeTag()
-    {
-        sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
-        if (empty($this->form)) {
-            $this->form = new myProductTagFormFilter(array(), array(
-                'productCategory' => $this->productCategory,
-                'creator' => $this->creator,
-                'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),
-            ));
-        }
+    $this->getResponse()->addMeta('title', $this->productCategory->seo_title);
+    $this->getResponse()->addMeta('description', $this->productCategory->seo_description);
+    $this->getResponse()->addMeta('keywords', $this->productCategory->seo_keywords);
 
-        $this->url = $this->generateUrl('productCatalog_tag', $this->productCategory);
+    if (isset($this->productCategory) && isset($this->productCategory->seo_text)) {
+      $this->setVar('article', $this->productCategory->seo_text, true);
     }
 
-    public function executeTag_selected()
+  }
+
+  public function executeTag()
+  {
+    sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+    if (empty($this->form)) {
+      $this->form = new myProductTagFormFilter(array(), array(
+        'productCategory' => $this->productCategory,
+        'creator' => $this->creator,
+        'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),
+      ));
+    }
+
+    $this->url = $this->generateUrl('productCatalog_tag', $this->productCategory);
+  }
+
+  public function executeTag_selected()
+  {
+    sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+    $form = $this->form;
+    $productCategory = $this->productCategory;
+
+    $list = array();
+
+    if (!isset($this->form)) {
+      return sfView::NONE;
+    }
+
+    $filter = $this->getRequestParameter($this->form->getName());
+    $getUrl = function ($filter, $name, $value = null) use ($productCategory, $form)
     {
-        sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
-        $form = $this->form;
-        $productCategory = $this->productCategory;
-
-        $list = array();
-
-        if (!isset($this->form)) {
-            return sfView::NONE;
+      if (array_key_exists($name, $filter)) {
+        if (null == $value) {
+          unset($filter[$name]);
         }
-
-        $filter = $this->getRequestParameter($this->form->getName());
-        $getUrl = function ($filter, $name, $value = null) use ($productCategory, $form)
+        else foreach ($filter[$name] as $k => $v)
         {
-            if (array_key_exists($name, $filter)) {
-                if (null == $value) {
-                    unset($filter[$name]);
-                }
-                else foreach ($filter[$name] as $k => $v)
-                {
-                    if ($v == $value) {
-                        unset($filter[$name][$k]);
-                    }
-                }
-            }
+          if ($v == $value) {
+            unset($filter[$name][$k]);
+          }
+        }
+      }
 
-            $formName = $form->getName();
+      $formName = $form->getName();
 
-            return url_for('productCatalog_tag', array('productCategory' => $productCategory->token, $formName => $filter));
-        };
+      return url_for('productCatalog_tag', array('productCategory' => $productCategory->token, $formName => $filter));
+    };
 
-        foreach ($this->form->getValues() as $name => $value)
+    foreach ($this->form->getValues() as $name => $value)
+    {
+      if (is_array($value) ? !count($value) : empty($value)) continue;
+
+      // цена
+      if ('price' == $name) {
+        $valueMin = ProductTable::getInstance()->getMinPriceByCategory($productCategory);
+        $valueMax = ProductTable::getInstance()->getMaxPriceByCategory($productCategory);
+
+        if (($value['from'] != $valueMin) || ($value['to'] != $valueMax)) {
+          $list[] = array(
+            'type' => 'price',
+            'name' => ''
+              . (($value['from'] != $valueMin) ? ('от ' . $value['from'] . ' ') : '')
+              . (($value['to'] != $valueMax) ? ('до ' . $value['to'] . ' ') : '')
+          ,
+            'url' => $getUrl($filter, $name),
+            'title' => 'Цена',
+          );
+        }
+      }
+      // производитель
+      if ('creator' == $name) {
+        foreach ($value as $v)
         {
-            if (is_array($value) ? !count($value) : empty($value)) continue;
+          $creator = CreatorTable::getInstance()->getById($v);
+          if (!$creator) continue;
 
-            // цена
-            if ('price' == $name) {
-                $valueMin = ProductTable::getInstance()->getMinPriceByCategory($productCategory);
-                $valueMax = ProductTable::getInstance()->getMaxPriceByCategory($productCategory);
-
-                if (($value['from'] != $valueMin) || ($value['to'] != $valueMax)) {
-                    $list[] = array(
-                        'type' => 'price',
-                        'name' => ''
-                            . (($value['from'] != $valueMin) ? ('от ' . $value['from'] . ' ') : '')
-                            . (($value['to'] != $valueMax) ? ('до ' . $value['to'] . ' ') : '')
-                    ,
-                        'url' => $getUrl($filter, $name),
-                        'title' => 'Цена',
-                    );
-                }
-            }
-            // производитель
-            if ('creator' == $name) {
-                foreach ($value as $v)
-                {
-                    $creator = CreatorTable::getInstance()->getById($v);
-                    if (!$creator) continue;
-
-                    $list[] = array(
-                        'type' => 'creator',
-                        'name' => $creator->name,
-                        'url' => $getUrl($filter, $name, $v),
-                        'title' => 'Производитель',
-                    );
-                }
-            }
-            // свойства товара
-            else if (0 === strpos($name, 'tag-')) {
-                $tagGroupId = preg_replace('/^tag-/', '', $name);
-                $tagGroup = !empty($tagGroupId) ? TagGroupTable::getInstance()->getById($tagGroupId) : false;
-                if (!$tagGroup) continue;
-
-                foreach ($value as $v)
-                {
-                    $tag = TagTable::getInstance()->getById($v);
-                    if (!$tag) continue;
-
-                    $list[] = array(
-                        'type' => 'tag',
-                        'name' => $tag->name,
-                        'url' => $getUrl($filter, $name, $tag->id),
-                        'title' => $tagGroup->name,
-                    );
-                }
-            }
+          $list[] = array(
+            'type' => 'creator',
+            'name' => $creator->name,
+            'url' => $getUrl($filter, $name, $v),
+            'title' => 'Производитель',
+          );
         }
+      }
+      // свойства товара
+      else if (0 === strpos($name, 'tag-')) {
+        $tagGroupId = preg_replace('/^tag-/', '', $name);
+        $tagGroup = !empty($tagGroupId) ? TagGroupTable::getInstance()->getById($tagGroupId) : false;
+        if (!$tagGroup) continue;
 
-        if (0 == count($list)) {
-            return sfView::NONE;
+        foreach ($value as $v)
+        {
+          $tag = TagTable::getInstance()->getById($v);
+          if (!$tag) continue;
+
+          $list[] = array(
+            'type' => 'tag',
+            'name' => $tag->name,
+            'url' => $getUrl($filter, $name, $tag->id),
+            'title' => $tagGroup->name,
+          );
         }
-
-        $this->setVar('list', $list);
+      }
     }
 
-    public function executeLeftCategoryList()
-    {
-        sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+    if (0 == count($list)) {
+      return sfView::NONE;
+    }
 
-        $this->setVar('currentCat', $this->productCategory, true);
-        $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
-            'hydrate_array' => true,
-        ));
+    $this->setVar('list', $list);
+  }
 
-        $pathAr = array();
-        if ($ancestorList)
-            foreach ($ancestorList as $next) {
-                $pathAr[] = $next['id'];
-            }
-        if (isset($ancestorList[0])) {
-            $rootCat = $ancestorList[0];
+  public function executeLeftCategoryList()
+  {
+    sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+
+    $this->setVar('currentCat', $this->productCategory, true);
+    $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
+      'hydrate_array' => true,
+    ));
+
+    $pathAr = array();
+    if ($ancestorList)
+      foreach ($ancestorList as $next) {
+        $pathAr[] = $next['id'];
+      }
+    if (isset($ancestorList[0])) {
+      $rootCat = $ancestorList[0];
+    } else {
+      $rootCat = $this->productCategory;
+    }
+
+    $q = ProductCategoryTable::getInstance()->createBaseQuery();
+    $q->addWhere('productCategory.root_id = ?', $rootCat['id']);
+    $list = $q->fetchArray();
+
+    $isCurrent = false;
+    $hasChildren = false;
+    foreach ($list as $cat) {
+      $fullIdList[] = $cat['id'];
+      if ($cat['id'] == $this->productCategory->id) {
+        $isCurrent = true;
+      } elseif ($isCurrent) {
+        if ($cat['level'] > $this->productCategory->level) {
+          $hasChildren = true;
         } else {
-            $rootCat = $this->productCategory;
+          $hasChildren = false;
         }
-
-        $q = ProductCategoryTable::getInstance()->createBaseQuery();
-        $q->addWhere('productCategory.root_id = ?', $rootCat['id']);
-        $list = $q->fetchArray();
-
         $isCurrent = false;
-        $hasChildren = false;
-        foreach ($list as $cat) {
-            $fullIdList[] = $cat['id'];
-            if ($cat['id'] == $this->productCategory->id) {
-                $isCurrent = true;
-            } elseif ($isCurrent) {
-                if ($cat['level'] > $this->productCategory->level) {
-                    $hasChildren = true;
-                } else {
-                    $hasChildren = false;
-                }
-                $isCurrent = false;
-            }
-        }
-
-        $notFreeCatList = ProductCategoryTable::getInstance()->getNotEmptyCategoryList($fullIdList);
-        $this->setVar('notFreeCatList', $notFreeCatList, true);
-        $this->setVar('pathAr', $pathAr, true);
-        $this->setVar('list', $list, true);
-        $this->setVar('hasChildren', $hasChildren, true);
-        $this->setVar('quantity', $this->productCategory->countProduct(), true);
+      }
     }
 
-    public function getSiteCatTree($category, $result)
-    {
-        sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
-        if (is_object($category)) {
-            $result[$category['id']]['category'] = $category;
-            $result[$category['id']]['children'] = $category->getChildList(array(
-                    'with_filters' => false,
-                )
-            );
-            foreach ($result[$category['id']]['children'] as $cat) {
-                $result = $this->getSiteCatTree($cat, $result);
-            }
-        }
-        return $result;
+    $notFreeCatList = ProductCategoryTable::getInstance()->getNotEmptyCategoryList($fullIdList);
+    $this->setVar('notFreeCatList', $notFreeCatList, true);
+    $this->setVar('pathAr', $pathAr, true);
+    $this->setVar('list', $list, true);
+    $this->setVar('hasChildren', $hasChildren, true);
+    $this->setVar('quantity', $this->productCategory->countProduct(), true);
+  }
+
+  public function getSiteCatTree($category, $result)
+  {
+    sfContext::getInstance()->getLogger()->info("call " . __METHOD__);
+    if (is_object($category)) {
+      $result[$category['id']]['category'] = $category;
+      $result[$category['id']]['children'] = $category->getChildList(array(
+          'with_filters' => false,
+        )
+      );
+      foreach ($result[$category['id']]['children'] as $cat) {
+        $result = $this->getSiteCatTree($cat, $result);
+      }
     }
+    return $result;
+  }
 }

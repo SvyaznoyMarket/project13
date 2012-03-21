@@ -6,7 +6,7 @@
 
 <?php slot('left_column') ?>
 <?php include_component('productCatalog_', 'leftCategoryList', array('productCategory' => $productCategory)) ?>
-<?php include_component('productCatalog_', 'filter', array('productCategory' => $productCategory)) ?>
+<?php include_partial('filter_', $sf_data) ?>
 <?php include_partial('default/banner_left') ?>
 <?php include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>

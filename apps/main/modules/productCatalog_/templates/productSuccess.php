@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var $productCategory ProductCategory
+ * @var $productFilter ProductCoreFormFilter
+ * @var $filterList ProductCategoryFilterEntity
+ * @var $productPager ProductCorePager
+ * @var $sf_data mixed
+ */
+?>
 <?php slot('title', $productCategory) ?>
 
 <?php slot('navigation') ?>
@@ -9,7 +18,7 @@
 
 <?php slot('left_column') ?>
 <?php include_component('productCatalog_', 'leftCategoryList', array('productCategory' => $productCategory)) ?>
-<?php include_component('productCatalog_', 'filter', array('productCategory' => $productCategory, 'form' => $productFilter)) ?>
+<?php include_partial('filter_', $sf_data) ?>
 <?php include_partial('default/banner_left') ?>
 <?php include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory, 'productPager' => $productPager)) ?>
 <?php end_slot() ?>
