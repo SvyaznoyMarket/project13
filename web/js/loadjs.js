@@ -62,7 +62,6 @@
 				.wait()
 				.script(getWithVersion('app.order.v3.js'))
 				.script(getWithVersion('main.js'))
-				.script( getWithVersion('app.order.js') )
 			}).runQueue()
 			break
 		case 'product_catalog':
