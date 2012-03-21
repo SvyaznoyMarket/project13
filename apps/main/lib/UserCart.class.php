@@ -54,11 +54,11 @@ class UserCart extends BaseUserData
             $result['value'] = false;
             $result['error'] = "Не удалось добавить в корзину товар token='".$product->token."'.";
             return false;
-        }      
+        }
         return true;
   }
-  
-  
+
+
   private function _addProductItself(Product $product, $quantity = 1)
   {
     $products = $this->parameterHolder->get('products');
@@ -88,7 +88,7 @@ class UserCart extends BaseUserData
       //если в корзине нет товара, к которому надо привязать услугу,
       //добавим этот товар в корзину
       if (!isset($products[$product->id]))
-      {          
+      {
         $this->addProduct($product, 1);
       }
     }
@@ -114,18 +114,18 @@ class UserCart extends BaseUserData
       }
       if ($mayToAdd)
       {
-        $isInCart = false; 
+        $isInCart = false;
         foreach($products as $inCartProductId => $info) {
            if ($inCartProductId == $product->id) {
                $isInCart = true;
-           } 
-        }  
+           }
+        }
         //товар, к которому привязываем должен либо находиться в корзине,
         //либо являться комплектом
         if ($isInCart || $product->isKit()) {
             $services[$service->id]['product'][$product->id] = $quantity;
         } else {
-            $services[$service->id]['quantity'] = $quantity;            
+            $services[$service->id]['quantity'] = $quantity;
         }
       }
       else
@@ -309,7 +309,7 @@ class UserCart extends BaseUserData
         foreach ($service['cart']['product'] as $product => $qty)
         {
 
-          if (isset($list[$product])) {  
+          if (isset($list[$product])) {
             $list[$product]['service'][] = array(
                 'id' => $service->id,
                 'token' => $service->token,
@@ -334,8 +334,8 @@ class UserCart extends BaseUserData
                 'total' => number_format( (int)($service->getCurrentPrice($product) * $qty), 0, ',', ' '),
                 'priceFormatted' => $service->getFormattedPrice($product),
                 'photo' => $service->getPhotoUrl(2),
-                'product' => $productOb->token_prefix . '/' .  $productOb->token    
-                );              
+                'product' => $productOb->token_prefix . '/' .  $productOb->token
+                );
           }
         }
       }
@@ -680,7 +680,7 @@ class UserCart extends BaseUserData
 
     if (is_null($this->products) || true === $force)
     {
-      $this->products = $productTable->createListByIds($productIds, array('index' => array('product' => 'id'), 'with_property' => false, 'property_view' => false, 'with_model' => true,));
+      $this->products = $productTable->createListByIds($productIds, array('index' => array('product' => 'id'), 'with_property' => false, 'property_view' => false, 'with_model' => true, 'is_instock' => true,));
       //myDebug::dump($this->products, 1);
     }
     else
@@ -690,7 +690,7 @@ class UserCart extends BaseUserData
       $toAddIds = array_diff($productIds, $currentIds);
       $toDelIds = array_diff($currentIds, $productIds);
 
-      $toAdd = $productTable->createListByIds($toAddIds, array('index' => array('product' => 'id'), 'with_property' => false, 'property_view' => false, 'with_model' => true,));
+      $toAdd = $productTable->createListByIds($toAddIds, array('index' => array('product' => 'id'), 'with_property' => false, 'property_view' => false, 'with_model' => true, 'is_instock' => true,));
       foreach ($toAdd as $key => $product)
       {
         $this->products[$key] = $product;
