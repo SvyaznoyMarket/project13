@@ -379,6 +379,17 @@ class Core
     return $response;
   }
 
+  public function getDeliveryMap($geoId, $productsInCart, $servicesInCart)
+  {
+    $result = $this->query('order.calc', array(), array(
+      'geo_id'  => $geoId,
+      'product' => $productsInCart,
+      'service' => $servicesInCart,
+    ));
+
+    return $result;
+  }
+
 
   public function getData($record)
   {

@@ -37,6 +37,9 @@ class myUser extends myGuardSecurityUser
     parent::signOut();
   }
 
+  /**
+   * @return UserCart
+   */
   public function getCart()
   {
     return $this->getUserData('cart');

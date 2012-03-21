@@ -101,8 +101,8 @@ class myActions extends sfActions
     return $pager;
   }
 
-  public function getCoreService()
+  public function getCore()
   {
-    return CoreService::getInstance();
+    return Core::getInstance();
   }
 }
