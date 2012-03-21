@@ -251,9 +251,9 @@ console.info( $('#delivery-map').data('value') )
 	function MyViewModel() {
 		var self = this
 					
-		function customCal( papa, cd, cdf, dd, ct, ctid, sch ) {
+		function customCal( papaSelector, cd, cdf, dd, ct, ctid, sch ) {
 			var me = this
-			me.papa = papa
+			me.papa = papaSelector
 			me.curDate  = ko.observable( cd )
 			me.curDateF = cdf // formatted ISO
 			me.dates    = dd 
@@ -269,7 +269,7 @@ console.info( $('#delivery-map').data('value') )
 					return false
 				me.curDate( dateit.dv )
 				me.curDateF = dateit.ISO
-				me.papa.find('.bBuyingDatePopup[ref="'+dateit.dv+'"]').css({'left': $(e.target).position().left }).show()
+				$(me.papa).find('.bBuyingDatePopup[ref="'+dateit.dv+'"]').css({'left': $(e.target).position().left }).show()
 			}
 			if( typeof(ct) !== 'undefined' ) {
 				me.curTime   = ko.observable( ct )
@@ -286,18 +286,18 @@ console.info( $('#delivery-map').data('value') )
 		self.addCost  = orderModel.Rapid.addCost
 		self.bitems   = ko.observableArray( orderModel.Rapid.products )
 
-		self.RapidCalend = new customCal( $('.rapid'), orderModel.Rapid.dlvrDate, orderModel.Rapid.ISODate, orderModel.Rapid.vcalend, 
+		self.RapidCalend = new customCal( '.rapid', orderModel.Rapid.dlvrDate, orderModel.Rapid.ISODate, orderModel.Rapid.vcalend, 
 					orderModel.Rapid.dlvrTime, orderModel.Rapid.dlvrID, orderModel.Rapid.schedule)
 
 		self.addCost_D  = orderModel.Delay.addCost
 		self.bitems_D   = ko.observableArray( orderModel.Delay.products )
 
-		self.DelayCalend = new customCal( $('.delay'), orderModel.Delay.dlvrDate, orderModel.Delay.ISODate, orderModel.Delay.vcalend, 
+		self.DelayCalend = new customCal( '.delay', orderModel.Delay.dlvrDate, orderModel.Delay.ISODate, orderModel.Delay.vcalend, 
 					orderModel.Delay.dlvrTime, orderModel.Delay.dlvrID, orderModel.Delay.schedule)
 
 		self.shops      = ko.observableArray( orderModel.Selfy.shops )
 
-		self.SelfyCalend = new customCal( $('.selfy'), orderModel.Selfy.dlvrDate, orderModel.Selfy.ISODate, orderModel.Selfy.vcalend )
+		self.SelfyCalend = new customCal( '.selfy', orderModel.Selfy.dlvrDate, orderModel.Selfy.ISODate, orderModel.Selfy.vcalend )
 		
 		for(var b=0, lb= self.bitems().length; b<lb; b++) {
 			if( typeof( self.bitems()[b].dlvr ) !== 'undefined' )
@@ -418,7 +418,6 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 					break
 				}	
 			}
-			$('.mMapPopup').trigger('close')
 		}
 		
 		self.fillPopupWithShops = function( shop, item ) {
@@ -544,8 +543,8 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 			}
 		  self.mapWS = new google.maps.Map( document.getElementById( DOMid ), options )
 		  self.infoWindow = new google.maps.InfoWindow({
-			disableAutoPan: false,
-			maxWidth: 280
+			maxWidth: 400,
+			disableAutoPan: false
 		  })
 		}
 
@@ -606,6 +605,8 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	
 	function pickStore( node ) {
 //console.info('pickME ', node)
+		regionMap.infoWindow.close()
+		$('.mMapPopup').trigger('close') // close lightbox_me
 		MVM.shiftingInShops( $(node).parent().find('.shopnum').text() )
 	}
 	

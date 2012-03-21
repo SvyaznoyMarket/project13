@@ -2094,10 +2094,10 @@ DT.bCtg__eOrange{
 	.bMapShops__ePopupRel .bGrayButton{ /* .bMapShops__ePopup .bGrayButton */
 		margin: 15px 0 0 0;
 		}
-	/*.bMapShops__ePopupRel{
+	.bMapShops__ePopupRel{
 		position: relative;
-		padding: 20px;
-		}*/
+		padding: 8px;
+		}
 	.bMapShops__ePopupClose{
 		top: 5px;
 		right: 15px;
