@@ -1,5 +1,5 @@
- <!-- IVN: MVVM -->
-	<div class='bBuyingLineWrap rapid' data-bind="if: bitems().length > 0">
+<div data-bind="if: bitems().length > 0">
+	<div class='bBuyingLineWrap rapid'>
 		
 		<dl class='bBuyingLine' data-bind="with: RapidCalend"> 
 			<dt><h2>Доставим <span data-bind="text: curDate"></span><br>
@@ -35,7 +35,7 @@
 			</dd>
 		</dl>
 		
-		<dl class='bBuyingLine' data-bind="foreach: bitems"> <!-- IVN: MVVM -->
+		<dl class='bBuyingLine' data-bind="foreach: bitems">
 			<dt></dt>
 			<dd>
 				<div>
@@ -64,12 +64,15 @@
 			</dd>
 		</dl>
 		
-		<div class='bBuyingLineWrap__eSum'>Итого с доставкой: <b><span data-bind="text: totalPrice"></span> <span class="rubl">p</span></b></div>
+		<div class='bBuyingLineWrap__eSum'>Итого с доставкой: <b>
+		<span data-bind="text: totalPrice"></span> <span class="rubl">p</span></b></div>
 	</div>
-	
-	<div class='bBuyingLineWrap delay' data-bind="if: bitems_D().length > 0">
+</div>
+
+<div data-bind="if: bitems_D().length > 0">
+	<div class='bBuyingLineWrap delay'>
 		
-		<dl class='bBuyingLine' data-bind="with: DelayCalend"> <!-- IVN: MVVM -->
+		<dl class='bBuyingLine' data-bind="with: DelayCalend">
 			<dt><h2>Доставим <span data-bind="text: curDate"></span><br>
 				<span data-bind="text: curTime"></span></h2><i>Стоимость доставки 
 				<span data-bind="text: $root.addCost_D"></span> <span class="rubl">p</span><i>
@@ -101,7 +104,7 @@
 			</dd>
 		</dl>
 		
-		<dl class='bBuyingLine' data-bind="foreach: bitems_D"> <!-- IVN: MVVM -->
+		<dl class='bBuyingLine' data-bind="foreach: bitems_D">
 			<dt></dt>
 			<dd>
 				<div>
@@ -132,8 +135,9 @@
 		
 		<div class='bBuyingLineWrap__eSum'>Итого с доставкой: <b><span data-bind="text: totalPrice_D"></span> <span class="rubl">p</span></b></div>
 	</div>
-
-	<div class='bBuyingLineWrap selfy' data-bind="if: shops().length > 0">
+</div>
+<div data-bind="if: $root.totalPrice_S() != '0'">
+	<div class='bBuyingLineWrap selfy'>
 		
 		<dl class='bBuyingLine' data-bind="with: SelfyCalend">
 			<dt><h2>Самовывоз <span data-bind="text: curDate"></span></h2><i>Бесплатно<i></dt>
@@ -202,17 +206,14 @@
 		<!-- /ko -->
 		<div class='bBuyingLineWrap__eSum'>Итого: <b><span data-bind="text: totalPrice_S"></span> <span class="rubl">p</span></b></div>
 	</div>
-	
+</div>
+
 	<dl class='bBuyingLine mSumm'>
 		<dt><a href alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
 		<dd>
 			<div>Сумма всех заказов: <h3><span data-bind="text: $root.totalSum()"></span> <span class="rubl">p</span></h3></div>
 		</dd>
 	</dl>
- <!-- IVN: MVVM -->
- 
-<!-- IVN map -->
-	<input id="map-center" type="hidden" data-content='{"latitude":"55.755798","longitude":"37.617636"}'>
 
 	<div id="map-info_window-container" style="display:none">
 		<div class='bMapShops__ePopupRel'>
@@ -222,9 +223,7 @@
 			<a href class='bGrayButton shopchoose'>Забрать из этого магазина</a>
 		</div>
 	</div>
-<!-- /IVN map -->
 
-<!-- IVN popup -->
 	<div class='bMobDownWrapAbs mMapPopup' style="display:none">
 		<div class='bMobDownWrapRel'>
 
@@ -232,10 +231,8 @@
 				<div class='bMobDown__eWrap'>
 					<div class='bMobDown__eClose close'></div>
 					
-					<!-- map api -->
 					<div class='bMapShops__eMapWrap' id="mapPopup" >
 					</div>
-					<!-- /map api -->
 					
 					<div class='bMapShops__eList' data-bind="with: productforPopup()">
 						<div class='bMapShops__eListTitle'>
@@ -258,4 +255,3 @@
 
 		</div>
 	</div>
-<!-- /IVN popup -->

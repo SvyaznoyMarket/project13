@@ -1,17 +1,5 @@
-$(document).ready(function(){
-	if (!Date.prototype.toISOString) {
-    Date.prototype.toISOString = function() {
-        function pad(n) { return n < 10 ? '0' + n : n }
-        return this.getUTCFullYear() + '-'
-            + pad(this.getUTCMonth() + 1) + '-'
-                + pad(this.getUTCDate()) + 'T'
-                    + pad(this.getUTCHours()) + ':'
-                        + pad(this.getUTCMinutes()) + ':'
-                            + pad(this.getUTCSeconds()) + 'Z';
-    };
-	}
-
-	/* Model Simulation */
+$(document).ready(function() {
+	/* Model Simulation 
 	orderModel = {
 		Rapid : {
 			addCost  : 290, 
@@ -120,7 +108,8 @@ $(document).ready(function(){
 				latitude: 55.851993, longitude: 37.442905, markerImg: '' }
 		]
 	}
-	
+	*/
+	var orderModel = { Rapid: {}, Delay: {}, Selfy: {} }
 	/* Sync Model */
 	
 	function getDateDM( datestring ) {
@@ -154,7 +143,7 @@ $(document).ready(function(){
 		return item
 	}	
 	
-	console.info( $('#delivery-map').data('value') )
+console.info( $('#delivery-map').data('value') )
 	var ServerModel =  $('#delivery-map').data('value')
 	
 	function syncBlock( _sender, _receiver ) {
@@ -167,7 +156,7 @@ $(document).ready(function(){
 		_receiver.vcalend  = []
 		var defaultDate = new Date( _sender.date_list[0].date )
 		var lost = defaultDate.getDay()
-		if( lost === 0 )
+		if( lost === 0 ) // voskresenie
 			lost = 6
 		else	
 			lost --
@@ -196,8 +185,6 @@ $(document).ready(function(){
 			scheduleItem = {}
 			item = {}
 		}
-		
-			
 	} // syncBlock function
 	
 	function syncProducts( _sender, _receiver ) {
@@ -358,22 +345,26 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 				}
 			break
 			}
-			// change lbl is complicated
+			// change lbl is complicated, side-effect
 			//var ind = line.dlvr.indexOf( target )
 			//line.dlvr[ ind ].lbl ( _sender )
 		}
 		
 		self.totalPrice = ko.computed(function() {
-			var tp = self.addCost
+			var tp = 0
 			for(var i=0; i<self.bitems().length; i++)
 				tp += self.bitems()[i].price.replace(/\D/g,'')*1
+			 if( tp > 0 )
+			 	tp += self.addCost	
 			return printPrice( tp )
 		}, this)
 		
 		self.totalPrice_D = ko.computed(function() {
-			var tp = self.addCost_D
+			var tp = 0
 			for(var i=0; i<self.bitems_D().length; i++)
 				tp += self.bitems_D()[i].price.replace(/\D/g,'')*1
+			 if( tp > 0 )
+			 	tp += self.addCost_D
 			return printPrice( tp )
 		}, this)
 
@@ -381,7 +372,7 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 			var tp = 0
 			for(var i=0; i<self.shops().length; i++)
 				for(var j=0; j<self.shops()[i].products().length; j++)
-				tp += self.shops()[i].products()[j].price.replace(/\D/g,'')*1
+				tp += self.shops()[i].products()[j].price.replace(/\D/g,'')*1				
 			return printPrice( tp )
 		}, this)
 
@@ -656,12 +647,15 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 		for(var i=0, l = ServerModel.self.shops.length; i<l; i++) {
 			ServerModel.self.shops[i].products = MVM.shops()[i].products().slice(0)
 		}
-console.info(ServerModel)	
+//console.info(ServerModel)	
 	} // syncClientServer function
 	
+	var sended = false
 	$('.mConfirm a.bBigOrangeButton').click( function(e) {
 		e.preventDefault()
-		
+		if( sended ) return
+		sended = true
+		$(this).html('Минутку...')
 		var form = $('#order')
 		syncClientServer()		
 		var toSend = form.serializeArray()
@@ -671,6 +665,7 @@ console.info(ServerModel)
 			type: "POST",
 			data: toSend,
 			success: function( data ) {
+				sended = false
 //	console.info(data)
 			}
 		})
