@@ -41,8 +41,8 @@ all:
 
   product_label:
     photo_url:
-      - 'http://fs01.enter.ru/7/1/x23/'
-      - 'http://fs01.enter.ru/7/1/x38/'
+      - 'http://fs01.enter.ru/7/1/66x23/'
+      - 'http://fs01.enter.ru/7/1/124x38/'
 
   category:
     photo_url:
