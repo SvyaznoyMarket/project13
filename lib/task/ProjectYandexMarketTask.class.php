@@ -158,115 +158,115 @@ class ProjectYandexMarketTask extends sfBaseTask
             'region_id' => 83,
             'min_num' => 3,
         ),
-//      array(
-//          'name' => 'export_realweb.xml',
-//          'list' => array(6,8,9),
-//          'region_id' => 83,
-//          'min_num' => 3,
-//          ),
-//      array(
-//          'name' => 'export_mgcom.xml',
-//          'list' => array(3,2,1,4,7,8,5),
-//          'region_id' => 83,
-//          'min_num' => 3,
-//          ),
-//      array(
-//          'name' => 'max2.xml',
-//          'region_id' => 83,
-//          'max_num' => 2
-//      ),
-//      //для Рязани
-//      array(
-//          'name' => 'ya_market_ryazan.xml',
-//          'region_id' => 10375 ,
-//          'min_num' => 3,
-//          ),
-//      array(
-//          'name' => 'export_realweb_ryazan.xml',
-//          'list' => array(6,8,9),
-//          'region_id' => 10375,
-//          'min_num' => 3,
-//          ),
-//      array(
-//          'name' => 'export_mgcom_ryazan.xml',
-//          'list' => array(3,2,1,4,7,8,5),
-//          'region_id' => 10375,
-//          'min_num' => 3,
-//          ),
-//      array(
-//          'name' => 'max2_ryazan.xml',
-//          'region_id' => 10375,
-//          'max_num' => 2
-//      ),
-//      //для Липецка
-//      array(
-//          'name' => 'ya_market_lipetsk.xml',
-//          'region_id' => 100,
-//          'min_num' => 3,
-//          ),
-//      array(
-//          'name' => 'export_realweb_lipetsk.xml',
-//          'list' => array(6,8,9),
-//          'region_id' => 100,
-//          'min_num' => 3,
-//          ),
-//      array(
-//          'name' => 'export_mgcom_lipetsk.xml',
-//          'list' => array(3,2,1,4,7,8,5),
-//          'region_id' => 100,
-//          'min_num' => 3,
-//          ),
-//      array(
-//          'name' => 'max2_lipetsk.xml',
-//          'region_id' => 100,
-//          'max_num' => 2
-//      ),
-//      //для Белгорода
-//      array(
-//          'name' => 'ya_market_belgorod.xml',
-//          'region_id' => 13242,
-//          'min_num' => 3,
-//      ),
-//      array(
-//          'name' => 'export_realweb_belgorod.xml',
-//          'list' => array(6,8,9),
-//          'region_id' => 13242,
-//          'min_num' => 3,
-//      ),
-//      array(
-//          'name' => 'export_mgcom_belgorod.xml',
-//          'list' => array(3,2,1,4,7,8,5),
-//          'region_id' => 13242,
-//          'min_num' => 3,
-//      ),
-//      array(
-//          'name' => 'max2_belgorod.xml',
-//          'region_id' => 13242,
-//          'max_num' => 2
-//      ),
-//      //для Орла
-//      array(
-//          'name' => 'ya_market_orel.xml',
-//          'region_id' => 13243,
-//          'min_num' => 3,
-//      ),
-//      array(
-//          'name' => 'export_realweb_orel.xml',
-//          'list' => array(6,8,9),
-//          'region_id' => 13243,
-//          'min_num' => 3,
-//      ),
-//      array(
-//          'name' => 'export_mgcom_orel.xml',
-//          'list' => array(3,2,1,4,7,8,5),
-//          'region_id' => 13243,
-//          'min_num' => 3,
-//      ),
-//      array(
-//          'name' => 'max2_orel.xml',
-//          'region_id' => 13243,
-//          'max_num' => 2
-//      ),
+      array(
+          'name' => 'export_realweb.xml',
+          'list' => array(6,8,9),
+          'region_id' => 83,
+          'min_num' => 3,
+          ),
+      array(
+          'name' => 'export_mgcom.xml',
+          'list' => array(3,2,1,4,7,8,5),
+          'region_id' => 83,
+          'min_num' => 3,
+          ),
+      array(
+          'name' => 'max2.xml',
+          'region_id' => 83,
+          'max_num' => 2
+      ),
+      //для Рязани
+      array(
+          'name' => 'ya_market_ryazan.xml',
+          'region_id' => 10375 ,
+          'min_num' => 3,
+          ),
+      array(
+          'name' => 'export_realweb_ryazan.xml',
+          'list' => array(6,8,9),
+          'region_id' => 10375,
+          'min_num' => 3,
+          ),
+      array(
+          'name' => 'export_mgcom_ryazan.xml',
+          'list' => array(3,2,1,4,7,8,5),
+          'region_id' => 10375,
+          'min_num' => 3,
+          ),
+      array(
+          'name' => 'max2_ryazan.xml',
+          'region_id' => 10375,
+          'max_num' => 2
+      ),
+      //для Липецка
+      array(
+          'name' => 'ya_market_lipetsk.xml',
+          'region_id' => 100,
+          'min_num' => 3,
+          ),
+      array(
+          'name' => 'export_realweb_lipetsk.xml',
+          'list' => array(6,8,9),
+          'region_id' => 100,
+          'min_num' => 3,
+          ),
+      array(
+          'name' => 'export_mgcom_lipetsk.xml',
+          'list' => array(3,2,1,4,7,8,5),
+          'region_id' => 100,
+          'min_num' => 3,
+          ),
+      array(
+          'name' => 'max2_lipetsk.xml',
+          'region_id' => 100,
+          'max_num' => 2
+      ),
+      //для Белгорода
+      array(
+          'name' => 'ya_market_belgorod.xml',
+          'region_id' => 13242,
+          'min_num' => 3,
+      ),
+      array(
+          'name' => 'export_realweb_belgorod.xml',
+          'list' => array(6,8,9),
+          'region_id' => 13242,
+          'min_num' => 3,
+      ),
+      array(
+          'name' => 'export_mgcom_belgorod.xml',
+          'list' => array(3,2,1,4,7,8,5),
+          'region_id' => 13242,
+          'min_num' => 3,
+      ),
+      array(
+          'name' => 'max2_belgorod.xml',
+          'region_id' => 13242,
+          'max_num' => 2
+      ),
+      //для Орла
+      array(
+          'name' => 'ya_market_orel.xml',
+          'region_id' => 13243,
+          'min_num' => 3,
+      ),
+      array(
+          'name' => 'export_realweb_orel.xml',
+          'list' => array(6,8,9),
+          'region_id' => 13243,
+          'min_num' => 3,
+      ),
+      array(
+          'name' => 'export_mgcom_orel.xml',
+          'list' => array(3,2,1,4,7,8,5),
+          'region_id' => 13243,
+          'min_num' => 3,
+      ),
+      array(
+          'name' => 'max2_orel.xml',
+          'region_id' => 13243,
+          'max_num' => 2
+      ),
     );
 
     /**
