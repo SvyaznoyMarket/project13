@@ -1,3 +1,26 @@
+<div data-bind="style: { display: noSuchItemError() ? 'block' : 'none' }" class="hf">
+	<div class='bMobDownWrapAbs customalign'>
+		<div class='bMobDownWrapRel'>
+			<div class='bMobDown mBR5 mW2 mW750'>
+				<div class='bMobDown__eWrap'>
+					<img class='fr pt20 mr20' src='/images/error_ajax.gif'/>
+					<h2 class="pb30">Кто-то был быстрее вас.<br/>
+					Некоторых товаров уже нет в наличии:</h2>
+					<!-- ko foreach: stolenItems -->
+					<div class='bFormSave'>
+						<span data-bind="html: title"></span>
+						<h2><span data-bind="html: price"></span> <span class='rubl'>p</span></h2>
+					</div>
+					<!-- /ko -->
+					<a class='bOrangeButton mr20' href>Оформить заказ без этих товаров</a>
+					<a class='bOrangeButton' href>Подобрать похожий товар</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="graying"></div>
+</div>
+
 <div data-bind="if: bitems().length > 0">
 	<div class='bBuyingLineWrap rapid'>
 		
