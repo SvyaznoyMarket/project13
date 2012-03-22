@@ -159,6 +159,7 @@
 		<div class='bBuyingLineWrap__eSum'>Итого с доставкой: <b><span data-bind="text: totalPrice_D"></span> <span class="rubl">p</span></b></div>
 	</div>
 </div>
+
 <div data-bind="if: $root.totalPrice_S() != '0'">
 	<div class='bBuyingLineWrap selfy'>
 		

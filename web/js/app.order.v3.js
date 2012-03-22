@@ -143,9 +143,8 @@ $(document).ready(function() {
 		return item
 	}	
 	
-//console.info( $('#delivery-map').data('value') )
+console.info( $('#delivery-map').data('value') )
 	var ServerModel =  $('#delivery-map').data('value')
-	
 	function syncBlock( _sender, _receiver ) {
 	
 		_receiver.addCost  = _sender.price*1
@@ -180,7 +179,7 @@ $(document).ready(function() {
 				scheduleItem.schedule.push( intervalItem )
 				intervalItem  = {}
 			}
-	
+
 			_receiver.vcalend.push( scheduleItem ) 
 			scheduleItem = {}
 			item = {}
@@ -189,43 +188,71 @@ $(document).ready(function() {
 	
 	function syncProducts( _sender, _receiver ) {
 		_receiver.products = []
-		for(var i=0, l = _sender.products.length; i<l; i++) {
-			var item = _sender.products[i]
-			var productItem = {}
-			productItem.id       = item.id
-			productItem.title    = item.name
-			productItem.moveable = item.moveable
-			productItem.price    = printPrice( item.price )
-			productItem.hm       = item.quantity*1
-			productItem.locs     = item.moveto_shop
-			productItem.img      = item.moveable
-			productItem.dlvr     = []
-			
-			for(var j = 0, jl=item.moveto_mode.length; j<jl; j++) {
-				switch( item.moveto_mode[j] ) {
-					case 'self':
-						productItem.dlvr.push( { txt: 'В самовывоз', lbl: 'selfy'} )
-						break
-					case 'standart_delay':
-						productItem.dlvr.push( { txt: 'В доставку', lbl: 'delay'} )
-						break					
-					case 'standart_rapid':
-						productItem.dlvr.push( { txt: 'В доставку', lbl: 'rapid'} )
-						break					
+		function grabItems( banka, is_service ) {
+			for(var i=0, l = banka.length; i<l; i++) {
+				var item = banka[i]
+				var productItem = {}
+				productItem.is_service = is_service
+				productItem.id         = item.id
+				productItem.title      = item.name
+				productItem.moveable   = item.moveable			
+				productItem.price      = ( item.price * 1 > 0 ) ? printPrice( item.price ) : '1'
+				productItem.hm         = item.quantity*1
+				productItem.locs       = item.moveto_shop
+				productItem.img        = ( item.media_image !== null ) ? item.media_image : '/images/f1_footer_logo.png'
+				productItem.dlvr       = []
+				
+				for(var j = 0, jl=item.moveto_mode.length; j<jl; j++) {
+					switch( item.moveto_mode[j] ) {
+						case 'self':
+							productItem.dlvr.push( { txt: 'В самовывоз', lbl: 'selfy'} )
+							break
+						case 'standart_delay':
+							productItem.dlvr.push( { txt: 'В доставку', lbl: 'delay'} )
+							break					
+						case 'standart_rapid':
+							productItem.dlvr.push( { txt: 'В доставку', lbl: 'rapid'} )
+							break					
+					}
 				}
-			}
-			_receiver.products.push( productItem )
-			item = {}
-			productItem = {}
-		}	
+				_receiver.products.push( productItem )
+				item = {}
+				productItem = {}
+			}	
+		}
+		
+		grabItems( _sender.products, false )
+		if( 'services' in _sender )
+			grabItems( _sender.services, true )		
 	} // syncProducts function
-	
+
+function clone(o) {
+ if(!o || 'object' !== typeof o)  {
+   return o;
+ }
+ varc = 'function' === typeof o.pop ? [] : {};
+ var p, v;
+ for(p in o) {
+ if(o.hasOwnProperty(p)) {
+  v = o[p];
+  if(v && 'object' === typeof v) {
+    c[p] = clone(v);
+  }
+  else {
+    c[p] = v;
+  }
+ }
+}
+ return c;
+}
+//	ServerModel.standart_delayed = clone( ServerModel.standart_rapid )
+
 	syncBlock( ServerModel.standart_rapid, orderModel.Rapid )
 	syncProducts( ServerModel.standart_rapid, orderModel.Rapid )
 
 	syncBlock( ServerModel.standart_delayed, orderModel.Delay )
 	syncProducts( ServerModel.standart_delayed, orderModel.Delay )
-	
+
 	function syncShops( _sender, _receiver ) {
 		_receiver.shops = []
 		for(var i=0, l = _sender.shops.length; i<l; i++) {
