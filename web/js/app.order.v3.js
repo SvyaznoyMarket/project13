@@ -280,6 +280,7 @@ function clone(o) {
 		var self = this
 		
 		self.noSuchItemError = ko.observable( false )
+		self.appIsLoaded = ko.observable( false )
 		self.stolenItems = ko.observableArray( [] )
 		
 		function customCal( papaSelector, cd, cdf, dd, ct, ctid, sch ) {
@@ -536,7 +537,7 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	
 	ko.applyBindings(MVM) // this way, Lukas!
 	
-	
+	MVM.appIsLoaded(true)
 	/* JQUERY handlers */
 	var agent = new brwsr()
 	if( !agent.isTouch ) {

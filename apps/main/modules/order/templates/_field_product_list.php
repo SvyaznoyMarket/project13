@@ -1,3 +1,7 @@
+<div class='bOrderPreloader' data-bind="style: { display: appIsLoaded() ? 'none' : 'block' }">
+	<span>Ваш заказ формируется...</span><img src='/images/bPreloader.gif'>
+</div>
+
 <div data-bind="style: { display: noSuchItemError() ? 'block' : 'none' }" class="hf">
 	<div class='bMobDownWrapAbs customalign'>
 		<div class='bMobDownWrapRel'>
@@ -19,6 +23,11 @@
 		</div>
 	</div>
 	<div class="graying"></div>
+</div>
+
+<div data-bind="style: { display: appIsLoaded() ? 'block' : 'none' }" class="hf">
+<div class='bBuyingInfo'>
+<span>Отличный выбор! Для вашего удобства мы сформировали несколько заказов в зависимости от типа доставки:</span>
 </div>
 
 <div data-bind="if: bitems().length > 0">
@@ -279,3 +288,4 @@
 
 		</div>
 	</div>
+</div>	
