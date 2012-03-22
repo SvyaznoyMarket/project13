@@ -621,11 +621,6 @@ order_1click:
   url:   /orders/1click
   param: { module: order, action: 1click }
 #
-# order login
-order_login:
-  url:   /orders/login
-  param: { module: order, action: login }
-#
 # order new
 order_new:
   url:   /orders/new/:step

@@ -71,11 +71,18 @@ all:
 
   core:
     config:
+      # v1
       #api_url: 'http://core.ent3.ru/v1/json'
       api_url: 'http://buldezir.core.ent3.ru/v1/json'
-      userapi_url: 'http://core.my/userapi/'
       consumer_key: test
       signature: test
+
+      # v2
+      userapi_url: 'http://buldezir.core.ent3.ru/userapi/'
+      client_id: 1
+      log_enabled: true
+      log_file: %SF_LOG_DIR%/core_client_2.log
+      log_response: false # логировать ответ
 
   cache_eraser:
     config:
