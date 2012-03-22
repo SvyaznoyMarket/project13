@@ -12,6 +12,12 @@ class CoreClient
   /* @var sfFileLogger */
   private $logger = null;
 
+  /** @var resource */
+  private $multiHandler;
+  /** @var callback[] */
+  private $callbacks = array();
+  private $resources = array();
+
   /**
    * @return CoreClient
    */
@@ -34,6 +40,8 @@ class CoreClient
   }
 
   /**
+   * Run synchronous query.
+   *
    * @param $action
    * @param array $params
    * @param array $data
@@ -41,6 +49,110 @@ class CoreClient
    * @throws CoreClientException
    */
   public function query($action, array $params = array(), array $data = array())
+  {
+    $connection = $this->createCurlResource($action, $params, $data);
+    $response = curl_exec($connection);
+    try {
+      if (curl_errno($connection) > 0) {
+        throw new CoreClientException(curl_error($connection), curl_errno($connection));
+      }
+      $responseDecoded = $this->decode($response);
+      if ($this->parameters->get('log_enabled')) {
+        $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
+        $this->logger->info('Core response info: ' . $this->encode(curl_getinfo($connection)));
+      }
+      curl_close($connection);
+      return $responseDecoded;
+    }
+    catch (CoreClientException $e) {
+      curl_close($connection);
+      $this->logger->err($e->__toString());
+      throw $e;
+    }
+  }
+
+  /**
+   * Add task to queue.
+   *
+   * @see execute
+   * @param $action
+   * @param array $params
+   * @param array $data
+   * @param callback $callback
+   */
+  public function addQuery($action, array $params = array(), array $data = array(), $callback)
+  {
+    if (!$this->multiHandler) {
+      $this->multiHandler = curl_multi_init();
+    }
+    $resource = $this->createCurlResource($action, $params, $data);
+    curl_multi_add_handle($this->multiHandler, $resource);
+    $this->callbacks[(string)$resource] = $callback;
+    $this->resources[] = $resource;
+  }
+
+  /**
+   * Run all added query in parallel mode.
+   * Callbacks are called in the order of answers http, and not in order of call addQuery.
+   * Note, application is blocked until the processing of all requests.
+   *
+   * @see addQuery
+   * @throws CoreClientException
+   */
+  public function execute()
+  {
+    if (!$this->multiHandler)
+      throw new CoreClientException('No query to execute');
+
+    $active = null;
+    $error = null;
+    try {
+      do {
+        $code = curl_multi_exec($this->multiHandler, $still_executing);
+        if ($code == CURLM_OK) {
+          // if one or more descriptors is ready, read content and run callbacks
+          while ($done = curl_multi_info_read($this->multiHandler)) {
+            $ch = $done['handle'];
+            if (curl_errno($ch) > 0)
+              throw new CoreClientException(curl_error($ch), curl_errno($ch));
+            $content = curl_multi_getcontent($ch);
+            $responseDecoded = $this->decode($content);
+            if ($this->parameters->get('log_enabled')) {
+              $this->logger->info('Core response resurce: ' . $ch);
+              $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
+              $this->logger->info('Core response info: ' . $this->encode(curl_getinfo($ch)));
+            }
+            /** @var $callback callback */
+            $callback = $this->callbacks[(string)$ch];
+            $callback($responseDecoded);
+          }
+        } elseif ($code != CURLM_CALL_MULTI_PERFORM) {
+          throw new CoreClientException("multi_curl failure [$code]");
+        }
+      } while ($still_executing);
+    } catch (Exception $e) {
+      $error = $e;
+    }
+    // clear multi container
+    foreach ($this->resources as $resource)
+      curl_multi_remove_handle($this->multiHandler, $resource);
+    curl_multi_close($this->multiHandler);
+    $this->multiHandler = null;
+    $this->callbacks = array();
+    $this->resources = array();
+    if ($error) {
+      $this->logger->err((string)$error);
+      throw $error;
+    }
+  }
+
+  /**
+   * @param $action
+   * @param array $params
+   * @param array $data
+   * @return resource
+   */
+  private function createCurlResource($action, array $params = array(), array $data = array())
   {
     $isPostMethod = !empty($data);
 
@@ -61,25 +173,7 @@ class CoreClient
       curl_setopt($connection, CURLOPT_POST, true);
       curl_setopt($connection, CURLOPT_POSTFIELDS, $data);
     }
-
-    $response = curl_exec($connection);
-    try {
-      if (curl_errno($connection) > 0) {
-        throw new CoreClientException(curl_error($connection), curl_errno($connection));
-      }
-      $responseDecoded = $this->decode($response);
-      if ($this->parameters->get('log_enabled')) {
-        $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
-        $this->logger->info('Core response info: ' . $this->encode(curl_getinfo($connection)));
-      }
-      curl_close($connection);
-      return $responseDecoded;
-    }
-    catch (CoreClientException $e) {
-      curl_close($connection);
-      $this->logger->err($e->__toString());
-      throw $e;
-    }
+    return $connection;
   }
 
   /**
@@ -117,7 +211,7 @@ class CoreClient
     }
 
     if (is_array($decoded) && array_key_exists('error', $decoded)) {
-      throw new CoreClientException(reset($decoded['error']), next($decoded['error']));
+      throw new CoreClientException((string)$decoded['error']['message'] . " " . json_encode($decoded), (int)$decoded['error']['code']);
     }
     return $decoded;
   }
@@ -131,10 +225,10 @@ class CoreClient
     $data = json_encode($data);
     $data = preg_replace_callback(
       '/\\\u([0-9a-fA-F]{4})/',
-      function($match){
+      function($match)
+      {
         return mb_convert_encoding("&#" . intval($match[1], 16) . ";", "UTF-8", "HTML-ENTITIES");
       },
-      //create_function('$match', 'return mb_convert_encoding("&#" . intval($match[1], 16) . ";", "UTF-8", "HTML-ENTITIES");'),
       $data
     );
     return $data;
