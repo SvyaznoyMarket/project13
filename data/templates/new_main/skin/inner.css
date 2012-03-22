@@ -4004,6 +4004,9 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.bBuyingLine__eText.mInputLong{
 		width: 480px;
 		}
+	.mInputLong.mRed{
+		border: 1px solid red;
+		}
 	
 	.bBuyingLine__eTextarea{
 		width: 480px;
