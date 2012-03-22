@@ -64,7 +64,7 @@
 				<div>
 					<p><span data-bind="text: price"></span> <span class="rubl">p</span></p>
 					<p>
-						<a class='bImgButton mBacket' href data-bind="click: $parent.removeIt"></a>
+						<a class='bImgButton mBacket' href data-bind="click: $parent.removeIt.bind($data, 'rapid' )"></a>
 						<!-- ko if: ((dlvr.length > 1 ) || (dlvr[0].lbl() !== 'rapid') && (dlvr.length === 1)) -->
 						<a class='bImgButton mArrows' href></a>
 						<span class="bButtonPopup" style="left: 203px; display:none">
@@ -191,7 +191,7 @@
 				<div>
 					<p><span data-bind="text: price"></span> <span class="rubl">p</span></p>
 					<p>
-						<a class='bImgButton mBacket' href data-bind="click: $root.removeFromShop.bind($data, $parent )"></a>
+						<a class='bImgButton mBacket' href data-bind="click: $root.removeIt.bind($data, 'selfy' )"></a>
 						<!-- ko if: ((dlvr.length > 1 ) || (dlvr[0].lbl !== 'selfy') && (dlvr.length === 1)) -->
 						<a class='bImgButton mArrows' href></a>
 						<span class="bButtonPopup" style="left: 203px; display:none">

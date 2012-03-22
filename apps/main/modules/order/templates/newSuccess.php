@@ -2,6 +2,9 @@
 
 <input disabled="disabled" id="delivery-map" type="hidden" data-value='<?php echo $deliveryMap ?>' />
 <input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>'>
+<input disabled="disabled" id="delete-urls" type="hidden"
+	data-services='{"71": "/cart/delete_service/-/-/_service/4ebc429412648-megapak-premium-pc"}'
+	data-products='{"2027": "/cart/delete/household/nastolniy-svetilnik-start-st04-2040402002033/_service"}'>
 
 <?php slot('js_template', get_partial('order/js_template', $sf_data)) ?>
 
