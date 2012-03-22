@@ -34,7 +34,7 @@ $(document).ready(function(){
 <body>
 	
 	<!-- popup -->
-	<div class='bMobDownWrapAbs'>
+	<div class='bMobDownWrapAbs' style='display: none'>
 		<div class='bMobDownWrapRel'>
 			
 			<div class='bMobDown mBR5 mW2 mW750'>
@@ -59,7 +59,7 @@ $(document).ready(function(){
 	</div>
 	<!-- /popup -->
 	
-<div class="graying"></div>
+<div class="graying" style='display: none'></div>
 <div class="allpage">
 <div class="allpageinner buyingpage">
 
@@ -97,12 +97,15 @@ $(document).ready(function(){
 				
 			</dd>
 		</dl>
-		<span>Отличный выбор! Для вашего удобства мы сформировали несколько заказов в зависимости от типа доставки:</span>
+		<span style='display: none'>Отличный выбор! Для вашего удобства мы сформировали несколько заказов в зависимости от типа доставки:</span>
+		
+		<div class='bOrderPreloader'><span>Ваш заказ формируется...</span><img src='images/bPreloader.gif'></div>
+		
  	</div>
 
 
 	<!--  buying wrap -->
-	<div class='bBuyingLineWrap'>
+	<div class='bBuyingLineWrap' style='display: none'>
 		
 		<dl class='bBuyingLine'>
 			<dt><h2>Доставим 12 декабря<br>с 9:00 до 14:00</h2><i>Стоимость доставки 290 <span class="rubl">p</span><i></dt>
@@ -168,7 +171,7 @@ $(document).ready(function(){
 
 
 	<!--  buying wrap -->
-	<div class='bBuyingLineWrap'>
+	<div class='bBuyingLineWrap' style='display: none'>
 		
 		<dl class='bBuyingLine'>
 			<dt><h2>Доставим 16 декабря<br>с 12:00 до 18:00</h2><i>Стоимость доставки 700 <span class="rubl">p</span><i></dt>
@@ -255,7 +258,7 @@ $(document).ready(function(){
 
 
 	<!--  buying wrap -->
-	<div class='bBuyingLineWrap'>
+	<div class='bBuyingLineWrap' style='display: none'>
 		
 		<dl class='bBuyingLine'>
 			<dt><h2>Доставим 12 декабря<br>с 9:00 до 21:00</h2><i>Бесплатно<i></dt>
@@ -419,7 +422,7 @@ $(document).ready(function(){
     <!--  /buying wrap -->
     
 	
-	<dl class='bBuyingLine mSumm'>
+	<dl class='bBuyingLine mSumm' style='display: none'>
 		<dt>< <a href>Редактировать товары</a></dt>
 		<dd>
 			<div>Сумма всех заказов: <h3>52 574 <span class="rubl">p</span></h3></div>
