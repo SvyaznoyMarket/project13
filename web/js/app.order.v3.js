@@ -358,8 +358,8 @@ self.stolenItems.push( self.bitems()[0] ) // TODO change for real server answer 
 			self.shops()[s].products = ko.observableArray( orderModel.Selfy.shops[s].products )
 			
 		self.shifting = function( line, _sender, target, e ) {
-			$(e.currentTarget).parent().parent().find('.mBacket').trigger('click') // hack
-
+			//$(e.currentTarget).parent().parent().find('.mBacket').trigger('click') // hack
+			self.interfaceMove( _sender, line )
 			switch( target.lbl() ) {
 			case "delay":
 				self.bitems_D.unshift( line )
@@ -413,18 +413,52 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 			var tp = self.totalPrice().replace(/\D/g,'')*1 + self.totalPrice_D().replace(/\D/g,'')*1 + self.totalPrice_S().replace(/\D/g,'')*1
 			return printPrice( tp )
 		}, this)
-		
-		self.removeIt = function(item) {
-			self.bitems.remove(item)
-			self.bitems_D.remove(item)
+
+		var deleteUrls = {}
+		deleteUrls.products = $('#delete-urls').data('products')
+		deleteUrls.services = $('#delete-urls').data('services')	
+
+		var orderMove = function( item ) {
+			var tmpUrls = ( item.is_service ) ? deleteUrls.services : deleteUrls.products
+			if( item.id in tmpUrls ) {
+				$.ajax({
+					url: tmpUrls[item.id],
+					success: function(data) {
+//console.info(data)
+					}
+				})
+			}			
 		}
 		
-		self.removeFromShop = function( shop, item ) {
+		self.interfaceMove = function( _sender, item ) {
+			switch( _sender ) {
+				case 'rapid':
+					self.bitems.remove(item)
+				break
+				case 'delay':
+					self.bitems_D.remove(item)
+				break
+				case 'selfy':
+					for(var i=0, l=self.shops().length; i<l; i++) {
+						self.shops()[i].products.remove(item)
+					}
+				break
+			}		
+		}
+		
+		self.removeIt = function( _sender, item ) {	
+			orderMove( item )
+			self.interfaceMove( _sender, item )
+		}
+		
+		/* RETIRED
+		self.removeFromShop = function( shop, item ) { 
 			var ind = self.shops.indexOf( shop )
 			self.shops()[ind].products.remove(item)
 			//if( !self.shops()[ind].products().length )
 				//self.shops.remove( shop )
 		}
+		*/
 		
 		self.allshops = orderModel.allshops
 		
