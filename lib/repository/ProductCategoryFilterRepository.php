@@ -25,6 +25,16 @@ class ProductCategoryFilterRepository
   /**
    * Example of asynchronous query
    *
+   * <code>
+   * $repo->getListAsync(82, 127, function($filterList){
+   *    foreach($filterList as $filter) {
+   *      $filter; // ProductCategoryFilterEntity
+   *    }
+   * });
+   * CoreClient::getInstance()->execute();
+   * // there all queue queries is loaded
+   * </code>
+   *
    * @see CoreClient::execute
    * @see CoreClient::addQuery
    * @param $regionId
