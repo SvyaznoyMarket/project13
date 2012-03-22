@@ -158,7 +158,7 @@ $(document).ready(function(){
 			<tr><td colspan=2><strong class="font18">Представьтесь</strong></td></tr>
 			<tr>
 				<td class='width215'><div class="pb10">Имя получателя:</div></td>
-				<td class='width430'><input type="text" value="Василий" class="text width418 mb15 mRed"></td> <!-- mRed - ошибка -->
+				<td class='width430'><input type="text" value="Василий" class="text width418 mRed"><span class='bFormError mb10'>Заполните поле.</span></td> <!-- mRed - ошибка -->
 			</tr>
 			<tr>
 				<td class='width215'><div class="pb10">Фамилия получателя:</div></td>
@@ -167,7 +167,7 @@ $(document).ready(function(){
 			<tr>
 				<td class='width215'><div class="pb10">Мобильный телефон для связи:</div></td>
 				<td class='width430'>
-					<input type="text" value="456217894" class="text width418 mb10 textdisabled">
+					<input type="text" value="456217894" class="text width418 mRed"><span class='bFormError mb10'>Заполните поле.</span>
 		            <div class="ml20 pb15"><label for="checkbox-8"><span class='font11'>Я хочу получать СМС уведомления об изменении статуса заказа</span></label><input id="checkbox-8" name="checkbox-3" type="checkbox" value="checkbox-1" /></div>
 				</td>
 			</tr>
@@ -187,13 +187,14 @@ $(document).ready(function(){
 			<tr><td colspan=2><strong class="font18">Способы оплаты</strong></td></tr>
 			<tr>
 				<td class='width215'><div class="pb15">Выберите способ оплаты:</div></td>
-				<td class='width430'>
-					<ul class="checkboxlist2 pb10">
+				<td class='width430 pb10'>
+					<ul class="checkboxlist2">
 		                <li><label for="checkbox-4"><strong>Наличный расчет</strong></label><input id="checkbox-4" name="checkbox-2" type="radio" value="checkbox-1" /><div class="font11 pt5">Вы оплачиваете заказ наличными курьеру при его получении. Вместе с заказом Вы получаете кассовый и товарный чек, содержащий все товарные позиции Вашего заказа.</div></li>
 		                <li><label for="checkbox-5"><strong>Оплата онлайн банковской картой</strong></label><input id="checkbox-5" name="checkbox-2" type="radio" value="checkbox-2" /><div class="font11 pt5">Оплата осуществляется через интернет сразу после оформления заказа. К оплате принимаются банковские карты платежных систем Visa, MasterCard. НЕ принимаются банковские карты American Express, Diners Club, STB Card. Предоплаченный заказ вручается ТОЛЬКО лицу, указанному в качестве держателя карты по документу, удостоверяющему личность. Услуга бесплатная.</div></li>
 		                <li><label for="checkbox-6"><strong>Банковский перевод для частных лиц</strong></label><input id="checkbox-6" name="checkbox-2" type="radio" value="checkbox-3" /><div class="font11 pt5">Вы можете оплатить заказ через любой банк, действующий на территории России. Сделайте заказ, и мы пришлем Вам заполненную квитанцию для оплаты. С ее помощью Вы сможете оплатить заказ в банке. Срок зачисления денежных средств - 2-3 рабочих дня. После поступления денег мы сразу доставляем Ваш заказ.</div></li>
 		                <li><label for="checkbox-7"><strong>Оплата через Qiwi, Элекснет, Мастер-банк, Webmoney, RBKMoney, CONTACT</strong></label><input id="checkbox-7" name="checkbox-2" type="radio" value="checkbox-4" /><div class="font11 pt5">Вы можете оплатить заказ через любую из удобных вам систем: Qiwi, Webmoney, RBKMoney, Элекснет, CONTACT - кроме того, оплатить заказ можно также через банкоматы «Мастер-банк». Важно! Через данные системы можно оплачивать заказы суммой не более 15 000 рулей.</div></li>
 		            </ul>
+					<span class='bFormError mb10'>Выберите способ оплаты.</span>
 				</td>
 			</tr>
 		     

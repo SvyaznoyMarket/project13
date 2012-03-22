@@ -5162,6 +5162,14 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		}
 
 
+.bFormError{
+	color: #ec323b;
+	font-size: 14px;
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+	}
+
 
 
 
