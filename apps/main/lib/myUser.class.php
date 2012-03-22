@@ -149,6 +149,8 @@ class myUser extends myGuardSecurityUser
         'product_price_list_id' => $region->product_price_list_id,
         'core_id' => $region->core_id,
         'geoip_code' => $region->geoip_code,
+        'latitude' => $region->latitude,
+        'longitude' => $region->longitude,
         'region' => $region,
       );
     }

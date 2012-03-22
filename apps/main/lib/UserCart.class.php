@@ -80,7 +80,7 @@ class UserCart extends BaseUserData
     $this->calculateDiscount();
   }
 
-  public function addService(Service $service, $quantity = 1, $product = NULL)
+  public function addService(Service $service, $quantity = 1, $product = null)
   {
     if ($product)
     {
