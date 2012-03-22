@@ -732,16 +732,37 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 //console.info(ServerModel)	
 	} // syncClientServer function
 	
+	function markError( node ) {
+		console.info(node)
+	}
+	
 	var sended = false
 	$('.mConfirm a.bBigOrangeButton').click( function(e) {
 		e.preventDefault()
 		if( sended ) return
-		sended = true
-		$(this).html('Минутку...')
+	//	sended = true
 		var form = $('#order')
+		var serArray = form.serializeArray()
+console.info( serArray )
+		var fieldToValidate = $('#validator').data('value')
+flds:	for( field in fieldToValidate ) {
+			if( !form.find('[name="'+field+'"]:visible').length )
+				continue
+			for(var i=0, l=serArray.length; i<l; i++) {
+				if( serArray[i].name == field ) {				
+					if( serArray[i].value == '' )
+						markError( field ) // cause is empty
+					continue flds
+				}
+			}
+			markError( field ) // cause not in serArray
+		}
+		
+		$(this).html('Минутку...')
 		syncClientServer()		
 		var toSend = form.serializeArray()
 		toSend.push( { name: 'products_hash', value: JSON.stringify( ServerModel )  } )//encodeURIComponent
+		return
 		$.ajax({
 			url: form.attr('action'),
 			type: "POST",

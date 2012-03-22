@@ -6,6 +6,10 @@
 	data-services='<?php echo json_encode($serviceDeleteUrls) ?>'
 	data-products='<?php echo json_encode($productDeleteUrls) ?>'>
 
+<input disabled="disabled" id="validator" type="hidden"
+	data-value='{"order[recipient_first_name]":"Заполните поле", "order[recipient_phonenumbers]":"Заполните поле", "order[address]":"Заполните поле", "order[payment_method_id]":"Выберите способ оплаты", "order[agreed]":"Необходимо согласие"}'>
+
+
 <?php slot('js_template', get_partial('order/js_template', $sf_data)) ?>
 
 <form id="order" method="post" action="<?php echo url_for('order_new') ?>">
@@ -16,7 +20,7 @@
 
     <?php echo $form['region_id'] ?>
 
-    <?php echo $form['delivery_type_id'] ?>
+    <?php if(false) { echo $form['delivery_type_id']; }?>
 
     <span>Отличный выбор! Для вашего удобства мы сформировали несколько заказов в зависимости от типа доставки:</span>
   </div>
