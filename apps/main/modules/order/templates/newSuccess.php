@@ -58,7 +58,7 @@
     </dl>
 
 
-    <dl class='bBuyingLine'>
+    <dl class='bBuyingLine' id="addressField">
       <dt>Адрес доставки*:</dt>
       <dd>
         <div>
