@@ -3,7 +3,7 @@
   <div class="photo">
     <a href="<?php echo $item['url'] ?>">
       <?php if ($item['label']): ?>
-        <img class="bLabels" src="<?php echo $item['label']->getImageUrl() ?>" alt="<?php echo $item['label']->getName() ?>">
+        <img class="bLabels" src="<?php echo $item['label']->getImageUrl() ?>" alt="<?php echo $item['label']->getName() ?>" />
       <?php endif ?>
       <img src="<?php echo $item['photo'] ?>" alt="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" title="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" width="160" height="160" />
     </a>
@@ -26,7 +26,7 @@
         <div class="photo">
           <a href="<?php echo $item['url'] ?>">
             <?php if ($item['label']): ?>
-              <img class="bLabels" src="<?php echo $item['label']->getImageUrl() ?>" alt="<?php echo $item['label']->getName() ?>">
+              <img class="bLabels" src="<?php echo $item['label']->getImageUrl() ?>" alt="<?php echo $item['label']->getName() ?>" />
             <?php endif ?>
             <img src="<?php echo $item['photo'] ?>" alt="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" title="<?php echo $item['name'] ?> - <?php echo $item['root_name'] ?>" width="160" height="160" />
           </a>
