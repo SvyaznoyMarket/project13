@@ -201,7 +201,8 @@ class orderActions extends myActions
       array_map($getItemsInCart, $cart->getServices()->toArray())
     );
 
-    $this->setVar('deliveryMap', json_encode($deliveryMap));
+    //$this->setVar('deliveryMap', '{"standart_delayed":{"name":"\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442","slug":"standart_delayed","mode_id":1,"delivery_type_id":11,"delivery_id":1,"type":"delivery","price":"290","date_default":"2012-03-18T18:47:21+04:00","date_list":[{"date":"2012-03-18T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-19T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-20T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-21T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-22T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-23T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-24T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-25T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-26T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-27T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-28T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-29T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-30T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-31T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]}],"products":[]},"self":{"name":"\u0441\u0430\u043c\u043e\u0432\u044b\u0432\u043e\u0437","slug":"self","mode_id":3,"delivery_type_id":3,"delivery_id":3,"type":"self","price":"0","date_default":"2012-03-17T18:47:21+04:00","date_list":[{"date":"2012-03-17T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-18T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-19T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-20T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-21T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-22T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-23T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-24T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-25T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-26T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-27T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-28T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-29T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]},{"date":"2012-03-30T00:00:00+04:00","interval":[{"id":21,"time_begin":"10:00","time_end":"21:00"}]}],"shops":[{"id":1,"name":"ENTER - \u041c\u043e\u0441\u043a\u0432\u0430, \u0443\u043b. \u0413\u0440\u0443\u0437\u0438\u043d\u0441\u043a\u0438\u0439 \u0432\u0430\u043b, \u0434. 31 edited","working_time":"\u0441 9.00 \u0434\u043e 21.00","address":"\u0443\u043b. \u0413\u0440\u0443\u0437\u0438\u043d\u0441\u043a\u0438\u0439 \u0412\u0430\u043b, \u0434. 31","coord_long":"37.581675","coord_lat":"55.775004","products":[{"id":2,"name":"\u041a\u0430\u0442\u0430\u043b\u043a\u0430-\u043a\u0430\u0447\u0430\u043b\u043a\u0430 Kiddieland \u00ab\u041f\u043e\u043d\u0438\u00bb","media_image":"http:\/\/core\/upload\/1\/1\/60\/","moveable":true,"price":2260,"quantity":1,"moveto_mode":["standart_delayed","self"],"moveto_shop":[1,2,3]},{"id":305,"name":"\u0424\u0438\u0433\u0443\u0440\u043a\u0430 South Park Butters Talking Wacky Wobbler","media_image":"http:\/\/core\/upload\/1\/1\/60\/6f\/18.jpg","moveable":true,"price":750,"quantity":1,"moveto_mode":["self"],"moveto_shop":[1]}]},{"id":2,"name":"ENTER - \u041c\u043e\u0441\u043a\u0432\u0430, \u0443\u043b. \u041e\u0440\u0434\u0436\u043e\u043d\u0438\u043a\u0438\u0434\u0437\u0435, \u0434. 11","working_time":"\u0441 9.00 \u0434\u043e 21.00","address":"\u041e\u0440\u0434\u0436\u043e\u043d\u0438\u043a\u0438\u0434\u0437\u0435, \u0434. 11, \u0441\u0442\u0440. 10","coord_long":"37.596997","coord_lat":"55.706488","products":[{"id":3,"name":"\u0429\u0435\u0442\u043a\u0430 \u0441 \u0440\u0435\u0437\u0435\u0440\u0432\u0443\u0430\u0440\u043e\u043c \u0434\u043b\u044f \u043c\u044b\u0442\u044c\u044f \u043f\u043e\u0441\u0443\u0434\u044b  Rozenbal","media_image":"a6\/54.jpg","moveable":true,"price":149,"quantity":1,"moveto_mode":["self"],"moveto_shop":[2,3]}]},{"id":3,"name":"ENTER - \u041c\u043e\u0441\u043a\u0432\u0430, \u0443\u043b. \u0411. \u0414\u043e\u0440\u043e\u0433\u043e\u043c\u0438\u043b\u043e\u0432\u0441\u043a\u0430\u044f, \u0434. 8","working_time":"\u0441 9.00 \u0434\u043e 21.00","address":"\u0443\u043b. \u0411. \u0414\u043e\u0440\u043e\u0433\u043e\u043c\u0438\u043b\u043e\u0432\u0441\u043a\u0430\u044f, \u0434. 8","coord_long":"37.565389","coord_lat":"55.746197","products":[]}]},"standart_rapid":{"name":"\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442","slug":"standart_rapid","mode_id":1,"delivery_type_id":11,"delivery_id":2,"type":"delivery","price":"700","date_default":"2012-03-16T18:47:21+04:00","date_list":[{"date":"2012-03-16T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-17T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-18T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-19T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-20T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-21T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-22T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-23T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-24T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-25T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-26T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-27T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-28T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]},{"date":"2012-03-29T00:00:00+04:00","interval":[{"id":2,"time_begin":"09:00","time_end":"14:00"},{"id":5,"time_begin":"09:00","time_end":"18:00"},{"id":3,"time_begin":"14:00","time_end":"18:00"},{"id":4,"time_begin":"18:00","time_end":"21:00"}]}],"products":[{"id":2494,"name":"\u041a\u0443\u043f\u043e\u043b\u044c\u043d\u0430\u044f \u0432\u044b\u0442\u044f\u0436\u043a\u0430 Krona Stella smart 900 5P","media_image":"80\/6100.jpg","moveable":true,"price":23590,"quantity":1,"moveto_mode":["self","standart_rapid"],"moveto_shop":[1,2,3]}]}}');
+    $this->setVar('deliveryMap', json_encode($deliveryMap), true);
     $this->setVar('mapCenter', json_encode(array('latitude' => $region->getLatitude(), 'longitude' => $region->getLongitude())));
   }
 
@@ -237,7 +238,7 @@ class orderActions extends myActions
       $result = array('success' => true, 'data' => array('content' => isset($renderers[$field]) ? $renderers[$field]($form) : $this->getPartial($this->getModuleName() . '/field_' . $field, array('form' => $form)),),);
     } else
     {
-      $result = array('success' => false,);
+      $result = array('success' => false);
     }
 
     return $this->renderJson($result);
@@ -300,11 +301,8 @@ class orderActions extends myActions
     //$cart = $this->getUser()->getCart();
     if ($order->isOnlinePayment())
     {
-      if ($this->saveOrder($order))
-      {
-        $provider = $this->getPaymentProvider();
-        $this->paymentForm = $provider->getForm($order);
-      }
+      $provider = $this->getPaymentProvider();
+      $this->paymentForm = $provider->getForm($order);
     }
 
     $this->setVar('order', $order);
@@ -498,18 +496,21 @@ class orderActions extends myActions
    */
   protected function saveOrder(Order $baseOrder, array $data)
   {
+    $guardUser = $this->getUser()->getGuardUser();
     $cart = $this->getUser()->getCart();
 
-    $createOrderProducts = function($data) use ($cart)
+    $deliveryPrices = $cart->getDeliveriesPrice();
+
+    $fillOrderProducts = function(Order $order, $data) use ($cart)
     {
       /* @var $cart UserCart */
-      $return = array();
 
       foreach ($data as $productData)
       {
         if (empty($productData['is_service']))
         {
           $product_id = ProductTable::getInstance()->getIdByCoreId($productData['id']);
+
           /* @var $product Product */
           $product = $cart->getProduct($product_id);
           if (!$product) continue;
@@ -519,23 +520,21 @@ class orderActions extends myActions
           $relation->setPrice(ProductTable::getInstance()->getRealPrice($product));
           $relation->setQuantity($product->cart['quantity']);
 
-          $return[] = $relation;
+          $order->ProductRelation[] = $relation;
         }
       }
-
-      return $return;
     };
 
-    $createOrderServices = function($data) use ($cart)
+    $fillOrderServices = function(Order $order, $data) use ($cart)
     {
       /* @var $cart UserCart */
-      $return = array();
 
       foreach ($data as $serviceData)
       {
         if (!empty($serviceData['is_service']))
         {
           $service_id = ServiceTable::getInstance()->getIdByCoreId($serviceData['id']);
+
           /* @var $service Service */
           $service = $cart->getService($service_id);
           if (!$service) continue;
@@ -547,7 +546,7 @@ class orderActions extends myActions
             $relation->setPrice($service->price);
             $relation->setQuantity($service->cart['quantity']);
 
-            $return[] = $relation;
+            $order->ServiceRelation[] = $relation;
           }
           if (count($service->cart['product']) > 0)
           {
@@ -561,17 +560,26 @@ class orderActions extends myActions
               $relation->setPrice($service->price);
               $relation->setQuantity($quantity);
 
-              $return[] = $relation;
+              $order->ServiceRelation[] = $relation;
             }
           }
         }
       }
-
-      return $return;
     };
 
-    //myDebug::dump($data);
-    $deliveryPrices = $this->getUser()->getCart()->getDeliveriesPrice();
+    myDebug::dump($deliveryPrices);
+    $fillOrder = function(Order $order, array $data) use ($cart, $guardUser, $deliveryPrices) {
+      /* @var $cart UserCart */
+
+      $deliveryPrice = isset($deliveryPrices[$order->delivery_type_id]) ? $deliveryPrices[$order->delivery_type_id] : 0;
+
+      $order->delivery_price = $deliveryPrice;
+      $order->delivery_period_id = !empty($data['time_default']) ? $data['time_default'] : null;
+      $order->delivered_at = date_format(new DateTime($data['date_default']), 'Y-m-d 00:00:00');
+      $order->User = $guardUser;
+      $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
+      $order->sum = $cart->getTotalForOrder($order)/* + $deliveryPrice*/;
+    };
 
     $orderData = array();
     foreach ($data as $item)
@@ -587,139 +595,47 @@ class orderActions extends myActions
 
           $shop = ShopTable::getInstance()->getByCoreId($shopData['id']);
 
-          $orderData[] = array(
-            'deliveryType'  => $deliveryType,
-            'orderProducts' => $createOrderProducts($shopData['products']),
-            'orderServices' => $createOrderServices($shopData['products']),
-            'shop'          => $shop,
-          );
-        }
-      }
-      else {
-        $orderData[] = array(
-          'deliveryType'  => $deliveryType,
-          'orderProducts' => $createOrderProducts($item['products']),
-          'orderServices' => $createOrderServices($item['products']),
-          'shop'          => null,
-        );
-      }
-    }
-
-    myDebug::dump($orderData, 1);
-
-    $orders = array();
-    foreach ($orderData as $data)
-    {
-      /* @var $deliveryType DeliveryType */
-      $deliveryType = !empty($data['mode_id']) ? DeliveryTypeTable::getInstance()->getByCoreId($data['mode_id']) : null;
-      if (!$deliveryType) continue;
-
-      if ('self' == $deliveryType->token)
-      {
-        foreach ($data['shops'] as $shopData)
-        {
           /* @var $order Order */
           $order = clone $baseOrder;
-          $order->address = null;
-          $order->Shop = ShopTable::getInstance()->getByCoreId($shopData['id']);
 
           $order->delivery_type_id = $deliveryType->id;
+          $order->Shop = $shop;
+
+          $fillOrderProducts($order, $shopData['products']);
+          $fillOrderServices($order, $shopData['products']);
+
+          $fillOrder($order, $item);
+
+          if (count($order->ProductRelation) || count($order->ServiceRelation))
+          {
+            $orders[] = $order;
+            myDebug::dump(array($deliveryType->token.'-'.$deliveryType->id => $order->sum));
+          }
         }
       }
       else {
         /* @var $order Order */
         $order = clone $baseOrder;
 
+        $order->delivery_type_id = $deliveryType->id;
         $order->shop_id = null;
-      }
+        $order->address = null;
 
+        $fillOrderProducts($order, $item['products']);
+        $fillOrderServices($order, $item['products']);
 
-      $deliveryPrice = isset($deliveryPrices[$order->delivery_type_id]) ? $deliveryPrices[$order->delivery_type_id] : 0;
-      $order->delivery_price = $deliveryPrice;
+        $fillOrder($order, $item);
 
-      $order->delivery_period_id = !empty($data['time_default']) ? $data['time_default'] : null;
-      $order->delivered_at = date_format(new DateTime($data['date_default']), 'Y-m-d 00:00:00');
-      $order->User = $this->getUser()->getGuardUser();
-      $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
-
-
-      foreach ($this->getUser()->getCart()->getProducts() as $product)
-      {
-        $relation = new OrderProductRelation();
-        $relation->fromArray(array('product_id' => $product->id, 'price' => ProductTable::getInstance()->getRealPrice($product), 'quantity' => $product->cart['quantity']));
-        $order->ProductRelation[] = $relation;
-      }
-
-      // если заказ не содержит товаров, то пропустить
-      if (count($products))
-      {
-        $orders[] = $order;
+        if (count($order->ProductRelation) || count($order->ServiceRelation))
+        {
+          $orders[] = $order;
+          myDebug::dump(array($deliveryType->token.'-'.$deliveryType->id => $order->sum));
+        }
       }
     }
-    myDebug::dump($orders);
-    myDebug::dump($productData, 1);
 
-
-//    $deliveryPrices = $this->getUser()->getCart()->getDeliveriesPrice();
-//    $deliveryPrice = isset($deliveryPrices[$order->delivery_type_id]) ? $deliveryPrices[$order->delivery_type_id] : 0;
-//    $order->User = $this->getUser()->getGuardUser();
-//    $order->delivery_price = $deliveryPrice;
-    $order->sum = $this->getUser()->getCart()->getTotal() + $deliveryPrice;
-
-
-    //$this->order->User = UserTable::getInstance()->findOneById($this->getUser()->getGuardUser()->id);//$this->getUser()->getGuardUser();
-
-
-//    foreach ($this->getUser()->getCart()->getProducts() as $product)
-//    {
-//      $relation = new OrderProductRelation();
-//      $relation->fromArray(array('product_id' => $product->id, 'price' => ProductTable::getInstance()->getRealPrice($product), 'quantity' => $product->cart['quantity'],));
-//      $order->ProductRelation[] = $relation;
-//    }
-
-//    foreach ($this->getUser()->getCart()->getServices() as $service)
-//    {
-//      if ($service->cart['quantity'] > 0)
-//      {
-//        $relation = new OrderServiceRelation();
-//        $relation->fromArray(array('service_id' => $service->id, 'price' => $service->price, 'quantity' => $service->cart['quantity'],));
-//        $order->ServiceRelation[] = $relation;
-//      }
-//      if (count($service->cart['product']) > 0)
-//      {
-//        foreach ($service->cart['product'] as $prodId => $qty)
-//        {
-//          if (!$prodId || !$qty) continue;
-//          $relation = new OrderServiceRelation();
-//          $relation->fromArray(array('service_id' => $service->id, 'product_id' => $prodId, 'price' => $service->price, 'quantity' => $qty,));
-//          $order->ServiceRelation[] = $relation;
-//        }
-//      }
-//    }
-
-    /*
-   foreach ($this->getUser()->getCart()->getProductServiceList() as $product)
-   {
-       $relation = new OrderProductRelation();
-       $relation->fromArray(array(
-           'product_id' => $product['id'],
-           'price'      => $product['price'],
-           'quantity'   => $product['quantity'],
-       ));
-       $order->ProductRelation[] = $relation;
-
-       foreach ($product['service'] as $service)
-       {
-           $relation = new OrderServiceRelation();
-           $relation->fromArray(array(
-               'product_id' => $product['id'],
-               'service_id' => $service['id'],
-               'price'      => $service['price'],
-               'quantity'   => $service['quantity'],
-           ));
-           $order->ServiceRelation[] = $relation;
-       }
-   } */
+    //myDebug::dump($orderData, 1);
+    exit();
 
     try
     {
