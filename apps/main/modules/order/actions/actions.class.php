@@ -164,9 +164,15 @@ class orderActions extends myActions
    */
   public function executeNew(sfWebRequest $request)
   {
+    /* @var myUser */
     $user = $this->getUser();
 
-    $this->redirectUnless($this->getUser()->getCart()->countFull(), 'cart');
+    if (true
+      && (0 == count($user->getCart()->getProducts()))
+      && (0 == count($user->getCart()->getServices()))
+    ) {
+      $this->redirect('cart');
+    }
 
     $this->getResponse()->setTitle('Способ доставки и оплаты  – Enter.ru');
 
@@ -242,6 +248,11 @@ class orderActions extends myActions
       $productDeleteUrls[$product->core_id] = $this->generateUrl('cart_delete', array(
         'product' => $product->token_prefix.'/'.$product->token,
       ));
+    }
+
+    if (!is_array($deliveryMap))
+    {
+      return sfView::ERROR;
     }
 
     foreach ($deliveryMap as &$item)
@@ -656,7 +667,16 @@ class orderActions extends myActions
       }
     }
 
-    myDebug::dump($orders, 1);
+    //myDebug::dump($orders);
+    $coreData = array_map(function($order) { return $order->exportToCore(); }, $orders);
+    if ($response = Core::getInstance()->query('order.create-packet', array(), $coreData))
+    {
+      myDebug::dump($response);
+    }
+    else {
+      myDebug::dump($response);
+    }
+
     exit();
 
     try
