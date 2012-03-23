@@ -30,18 +30,22 @@ class UserOrder extends BaseUserData
 
   public function getList()
   {
-    $order = $this->parameterHolder->get('orders', array());
-    //$order = new Order();
-    //$order->fromArray($this->parameterHolder->get('order', array()));
+    $data = $this->parameterHolder->get('orders', array());
 
-    if (isset($order['id']) && !empty($order['id']))
+    $result = array();
+    foreach ($data as $item)
     {
-      $result = OrderTable::getInstance()->getById($order['id']);
-    }
-    else
-    {
-      $result = new Order();
-      $result->fromArray($order);
+      if (!empty($item['id']))
+      {
+        $result[] = OrderTable::getInstance()->getById($item['id']);
+      }
+      else
+      {
+        $order = new Order();
+        $order->fromArray($item);
+
+        $result[] = $order;
+      }
     }
 
     return $result;

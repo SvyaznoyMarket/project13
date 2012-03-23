@@ -452,6 +452,7 @@ class orderActions extends myActions
    */
   public function executeComplete(sfWebRequest $request)
   {
+    /*
     $provider = $this->getPaymentProvider();
     if (!($this->order = $provider->getOrder($request)))
     {
@@ -477,6 +478,16 @@ class orderActions extends myActions
     $this->getUser()->getOrder()->clear();
 
     //$this->setVar('order', $this->order, true);
+    */
+
+    $request->setParameter('_template', 'order_complete');
+
+    $this->orders = $this->getUser()->getOrder()->getList();
+    myDebug::dump($this->orders, 1);
+
+    //$this->getUser()->setCacheCookie();
+    //$this->getUser()->getCart()->clear();
+    //$this->getUser()->getOrder()->clear();
   }
 
   /**
@@ -585,7 +596,7 @@ class orderActions extends myActions
           $relation = new OrderProductRelation();
           $relation->setProduct($product);
           $relation->setPrice(ProductTable::getInstance()->getRealPrice($product));
-          $relation->setQuantity(1000 + $product->cart['quantity']);
+          $relation->setQuantity($product->cart['quantity']);
 
           $order->ProductRelation[] = $relation;
         }
@@ -745,6 +756,7 @@ class orderActions extends myActions
           );
         }
 
+        $response['error']['token'] = 'unavailable';
         $response['error']['details'] = array(
           'products'     => $products,
           'category_url' => $categoryUrl,
