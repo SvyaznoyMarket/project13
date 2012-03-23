@@ -34,7 +34,7 @@ $(document).ready(function(){
 <body>
 	
 	<!-- popup -->
-	<div class='bMobDownWrapAbs'>
+	<div class='bMobDownWrapAbs' style='display: none'>
 		<div class='bMobDownWrapRel'>
 			
 			<div class='bMobDown mBR5 mW2 mW750'>
@@ -52,6 +52,24 @@ $(document).ready(function(){
 					</div>
 					<a class='bOrangeButton mr20' href>Оформить заказ без этих товаров</a>
 					<a class='bOrangeButton' href>Подобрать похожий товар</a>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<!-- /popup -->
+	
+	<!-- popup -->
+	<div class='bMobDownWrapAbs'>
+		<div class='bMobDownWrapRel'>
+			
+			<div class='bMobDown mBR5 mW2 mW750'>
+				<div class='bMobDown__eWrap'>
+					<img class='fr pt20 mr20' src='images/bWtf.png'/>
+					<div class='pt50'>
+						<h2>Товары для оформления заказа<br>не выбраны.</h2><br>
+						<a class='bOrangeButton' href>Выбрать товар</a>
+					</div>
 				</div>
 			</div>
 			
@@ -98,6 +116,9 @@ $(document).ready(function(){
 			</dd>
 		</dl>
 		<span>Отличный выбор! Для вашего удобства мы сформировали несколько заказов в зависимости от типа доставки:</span>
+		
+		<div class='bOrderPreloader' style='display: none'><span>Ваш заказ формируется...</span><img src='images/bPreloader.gif'></div>
+		
  	</div>
 
 
@@ -433,14 +454,14 @@ $(document).ready(function(){
 		<dl class='bBuyingLine'>
 			<dt>Имя и Фамилия получателя*:</dt>
 			<dd>
-				<div><p></p><input class='bBuyingLine__eText mInputLong' type='text'></div>
+				<div><p></p><input class='bBuyingLine__eText mInputLong mRed' type='text'><span class='bFormError mb10 pt5'>Заполните поле.</span></div>
 			</dd>
 		</dl>
 		
 		<dl class='bBuyingLine'>
 			<dt>Телефон для связи*:</dt>
 			<dd>
-				<div><p></p><input class='bBuyingLine__eText mInputLong' type='text'></div>
+				<div><p></p><input class='bBuyingLine__eText mInputLong mRed' type='text'><span class='bFormError mb10 pt5'>Заполните поле.</span></div>
 				<div>
 					<p></p>
 					<label><b></b> <h5>Я хочу получать СМС уведомления об изменении статуса заказа</h5> <input class='bBuyingLine__eRadio' name='r1' type='radio'></label>
@@ -492,7 +513,7 @@ $(document).ready(function(){
 					<label><b></b> Оплата банковской картой, сейчас на сайте<input class='bBuyingLine__eRadio' name='r1' type='radio'></label>
 					<i>Вы можете оплатить ваш заказ прямо сейчас. Коплате принимаются банковские карты платежных систем Visa, MasterCard, Diners Club, JCB. Услуга бесплатная, никаких дополнительных процентов вы не платите.</i>
 				</div>
-				
+				<span class='bFormError mb10 pt5'>Выберите способ оплаты.</span>
 			</dd>
 		</dl>
 		
