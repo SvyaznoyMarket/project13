@@ -29,7 +29,16 @@ class RegionEntity
   /* @var PriceTypeEntity|null */
   private $priceType = null;
 
+  private $name;
 
+  public function __construct(array $data = array()){
+    if(array_key_exists('id', $data))         $this->setId($data['id']);
+    if(array_key_exists('is_active', $data))  $this->setIsActive($data['is_active']);
+    if(array_key_exists('name', $data))       $this->setName($data['name']);
+    if(array_key_exists('level', $data))      $this->setLevel($data['level']);
+    if(array_key_exists('lft', $data))        $this->setLft($data['lft']);
+    if(array_key_exists('rgt', $data))        $this->setRgt($data['rgt']);
+  }
   /**
    * @param int $id
    */
@@ -150,5 +159,15 @@ class RegionEntity
   public function getPriceType()
   {
     return $this->priceType;
+  }
+
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
+
+  public function getName()
+  {
+    return $this->name;
   }
 }

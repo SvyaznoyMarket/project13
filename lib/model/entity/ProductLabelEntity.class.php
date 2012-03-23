@@ -14,6 +14,11 @@ class ProductLabelEntity
   /* @var string */
   private $name;
 
+  public function __construct(array $data = array()){
+    if(array_key_exists('id', $data))     $this->setId($data['id']);
+    if(array_key_exists('image', $data))  $this->setImage($data['image']);
+    if(array_key_exists('name', $data))   $this->setName($data['name']);
+  }
 
   /**
    * @param int $id

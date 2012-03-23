@@ -44,7 +44,7 @@ class ProductCategoryEntity
   private $mediaImage;
 
   /* @var integer */
-  private $productView;
+  private $productViewId;
 
   /* @var ProductCategoryEntity|null */
   private $parent = null;
@@ -68,6 +68,7 @@ class ProductCategoryEntity
     if(array_key_exists('position', $data)) $this->setPosition($data['position']);
     if(array_key_exists('level', $data)) $this->setLevel($data['level']);
     if(array_key_exists('seo_header', $data)) $this->setSeoHeader($data['seo_header']);
+    if(array_key_exists('product_view_id', $data)) $this->setProductViewId($data['product_view_id']);
   }
 
   public function setId($id)
@@ -222,19 +223,19 @@ class ProductCategoryEntity
   }
 
   /**
-   * @param int $productView
+   * @param int $productViewId
    */
-  public function setProductView($productView)
+  public function setProductViewId($productViewId)
   {
-    $this->productView = $productView;
+    $this->productViewId = $productViewId;
   }
 
   /**
    * @return int
    */
-  public function getProductView()
+  public function getProductViewId()
   {
-    return $this->productView;
+    return $this->productViewId;
   }
 
   public function setIsShownInMenu($isShownInMenu)

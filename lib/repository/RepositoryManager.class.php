@@ -67,15 +67,4 @@ class RepositoryManager
     if(!$repo) $repo = new ProductCategoryRepository();
     return $repo;
   }
-
-  /**
-   * @static
-   * @return PriceTypeRepository
-   */
-  public static function getPriceType()
-  {
-    static $repo;
-    if(!$repo) $repo = new PriceTypeRepository();
-    return $repo;
-  }
 }

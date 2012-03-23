@@ -162,7 +162,7 @@ class myUser extends myGuardSecurityUser
 
       if ($region_id)
       {
-        $region = RepositoryManager::getRegion()->getOne($region_id);
+        $region = RepositoryManager::getRegion()->getById($region_id);
       }
 
       if (!$region)
@@ -170,7 +170,7 @@ class myUser extends myGuardSecurityUser
         $regionData = sfContext::getInstance()->getRequest()->getParameter('geoip');
         $region =
           (!empty($regionData['region']) && !empty($regionData['name']))
-          ? RepositoryManager::getRegion()->getOneByToken($regionData['region'].'-'.$regionData['name'])
+          ? RepositoryManager::getRegion()->getByToken($regionData['region'].'-'.$regionData['name'])
           : RepositoryManager::getRegion()->getOneDefault();
 
         $this->setRegion($region->getId());

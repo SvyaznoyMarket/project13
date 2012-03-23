@@ -11,26 +11,21 @@ class ProductLabelRepository extends ObjectRepository
       return $entities;
     }
 
-    $q = $this->createQuery('product.label.get', array('id' => $ids));
+    $q = new CoreQuery('product.label.get', array('id' => $ids));
 
     return $this->createList($q->getResult(), $index);
   }
 
   public function getAll($index = null)
   {
-    $q = $this->createQuery('product.label.get', array());
+    $q = new CoreQuery('product.label.get', array());
 
     return $this->createList($q->getResult(), $index);
   }
 
   public function create($data)
   {
-    $entity = new ProductLabelEntity();
-    $entity->setId($data['id']);
-    $entity->setImage($data['media_image']);
-    $entity->setName($data['name']);
-
-    return $entity;
+    return new ProductLabelEntity($data);
   }
 
   public function getByCategory(ProductLabelCriteria $criteria, $order = null)

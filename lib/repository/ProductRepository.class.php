@@ -18,8 +18,10 @@ class ProductRepository extends ObjectRepository
   {
     $entity = new ProductEntity($data);
     if(isset($data['type_id'])){
-      $type = new ProductTypeEntity(array('id' => $data['type_id']));
-      $entity->setType($type);
+      $entity->setType(new ProductTypeEntity(array('id' => $data['type_id'])));
+    }
+    elseif(isset($data['type'])){
+      $entity->setType(new ProductTypeEntity($data['type']));
     }
     if(isset($data['category'])){
       foreach($data['category'] as $categoryData)
@@ -68,7 +70,7 @@ class ProductRepository extends ObjectRepository
     );
     $this->applyCriteria($criteria, $params);
     $params['id'] = $criteria->getParent();
-    $q = $this->createQuery('product.related.get', $params);
+    $q = new CoreQuery('product.related.get', $params);
     $result = array_map(function($i) { return $i['id']; }, $q->getResult());
     $this->applyPager($criteria, $q);
     return $this->get($result);
@@ -82,7 +84,7 @@ class ProductRepository extends ObjectRepository
     );
     $this->applyCriteria($criteria, $params);
     $params['id'] = $criteria->getParent();
-    $q = $this->createQuery('product.accessory.get', $params);
+    $q = new CoreQuery('product.accessory.get', $params);
     $result = array_map(function($i) { return $i['id']; }, $q->getResult());
     $this->applyPager($criteria, $q);
     return $this->get($result);
@@ -110,5 +112,25 @@ class ProductRepository extends ObjectRepository
     foreach($data as $item)
       $list[] = $this->create($item);
     return $list;
+  }
+
+  private function applyCriteria(BaseCriteria $criteria, array &$params)
+  {
+    if ($pager = $criteria->getPager())
+    {
+      if (null !== $pager->getPage())
+      {
+        $params['start'] = (string)(($pager->getPage() - 1) * $pager->getMaxPerPage());
+        $params['limit'] = (string)$pager->getMaxPerPage();
+      }
+    }
+  }
+
+  private function applyPager(BaseCriteria $criteria, CoreQuery $q)
+  {
+    if ($pager = $criteria->getPager())
+    {
+      $pager->setNbResults($q->count());
+    }
   }
 }
