@@ -192,7 +192,9 @@ class orderActions extends myActions
         $baseOrder = $this->form->updateObject();
 
         $productData = json_decode($request['products_hash'], true);
-        $this->saveOrder($baseOrder, $productData);
+        $result = $this->saveOrder($baseOrder, $productData);
+
+        return $this->renderJson($result);
       }
     }
 
@@ -306,8 +308,21 @@ class orderActions extends myActions
         }
       }
 
+      $products = array();
+      foreach ($productIds as $productId)
+      {
+        $productId = ProductTable::getInstance()->getIdByCoreId($productId);
+        $product = $user->getCart()->getProduct($productId);
+        $products[] = array(
+          'id'       => $product->core_id,
+          'name'     => $product->name,
+          'price'    => $product->getRealPrice(),
+          'quantity' => $product->cart['quantity'],
+        );
+      }
+
       $deliveryMap['unavailable'] = array(
-        'products'     => $productIds,
+        'products'     => $products,
         'category_url' => $categoryUrl,
       );
     }
@@ -690,33 +705,51 @@ class orderActions extends myActions
     //myDebug::dump($orders);
     $coreData = array_map(function($order) { return $order->exportToCore(); }, $orders);
     //myDebug::dump($coreData, 1);
-    if ($response = Core::getInstance()->query('order.create-packet', array(), $coreData))
+    $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
+
+    if (!$response['confirmed'] && isset($response['error']))
     {
-      if (!$response['confirmed'] && isset($response['error']))
+      if (isset($response['error']['details']['products']))
       {
-        return $this->renderJson(array(
-          'success' => false,
-          'error'   => $response['error'],
-        ));
+        $productIds = array_keys($response['error']['details']['products']);
+        $categoryUrl = false;
+        if (count($productIds))
+        {
+          /* @var $product Product */
+          $product = ProductTable::getInstance()->getByCoreId($productIds[0]);
+          if ($product)
+          {
+            $categoryUrl = $this->generateUrl('productCatalog_category', $product->getMainCategory());
+          }
+        }
+
+        $response['error']['details'] = array(
+          'products'     => $productIds,
+          'category_url' => $categoryUrl,
+        );
       }
+
+      return array(
+        'success' => false,
+        'error'   => $response['error'],
+      );
+    }
+    else if ($response['confirmed']) {
+      return array(
+        'success' => true,
+        'content' => array(
+          'orders' => $response['orders'],
+        ),
+        'redirect' => $this->generateUrl('order_complete'),
+      );
     }
 
-    exit();
-
-    try
-    {
-      $order->save();
-
-      //$this->order->update
-      $this->getUser()->getOrder()->set($order);
-      //$this->getUser()->getCart()->clear();
-      return true;
-    } catch (Exception $e)
-    {
-      $this->getLogger()->err('{' . __CLASS__ . '} create: can\'t save to core: ' . $e->getMessage());
-    }
-
-    return false;
+    return array(
+      'success' => false,
+      'error'   => array(
+        'message' => 'Ошибка при формировании заказа',
+      ),
+    );
   }
 
   /**
