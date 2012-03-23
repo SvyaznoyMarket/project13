@@ -585,7 +585,7 @@ class orderActions extends myActions
           $relation = new OrderProductRelation();
           $relation->setProduct($product);
           $relation->setPrice(ProductTable::getInstance()->getRealPrice($product));
-          $relation->setQuantity(1000 + $product->cart['quantity']);
+          $relation->setQuantity($product->cart['quantity']);
 
           $order->ProductRelation[] = $relation;
         }

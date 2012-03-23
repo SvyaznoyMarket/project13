@@ -258,6 +258,8 @@ console.info( $('#delivery-map').data('value') )
 	function MyViewModel() {
 		var self = this
 		
+		self.RequestError = ko.observable( false )
+		self.errorText = ko.observable( '' )
 		self.noSuchItemError = ko.observable( false )
 		self.urlaftererror = ko.observable( '/' )
 		self.appIsLoaded = ko.observable( false )
@@ -794,6 +796,19 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 		}
 	}
 	
+	function printErrors( error ) {
+		switch( error.code ) {
+			case 705:
+				console.info(error)
+				MVM.showUnavailable( error.details.products, error.details.category_url )
+			break
+			default:
+				MVM.RequestError(true)
+				MVM.errorText('error.message')
+			break
+		}
+	}
+	
 	var sended = false
 	$('.mConfirm a.bBigOrangeButton').click( function(e) {
 		e.preventDefault()
@@ -830,11 +845,12 @@ flds:	for( field in fieldToValidate ) {
 			data: toSend,
 			success: function( data ) {
 				sended = false
-				if( data.error == 'moved_items' ) {
-					var stolen = data.content.items
-					//MVM.showUnavailable()
+				console.info(data)
+				if( !data.success ) {
+					printErrors( data.error )
+					return
 				}
-				
+				window.location = data.redirect
 			}
 		})
 	})

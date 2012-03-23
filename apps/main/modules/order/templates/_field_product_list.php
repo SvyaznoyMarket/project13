@@ -25,6 +25,20 @@
 	<div class="graying"></div>
 </div>
 
+<div data-bind="style: { display: RequestError() ? 'block' : 'none' }" class="hf">
+	<div class='bMobDownWrapAbs customalign'>
+		<div class='bMobDownWrapRel'>
+			<div class='bMobDown mBR5 mW2 mW750'>
+				<div class='bMobDown__eWrap'>
+					<img class='fr pt20 mr20' src='/images/error_ajax.gif'/>
+					<h2 class="pb30" data-bind="html: errorText"></h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="graying"></div>
+</div>
+
 <div data-bind="style: { display: appIsLoaded() ? 'block' : 'none' }" class="hf">
 <div class='bBuyingInfo'>
 <span>Отличный выбор! Для вашего удобства мы сформировали несколько заказов в зависимости от типа доставки:</span>
