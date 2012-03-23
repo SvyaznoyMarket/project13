@@ -272,7 +272,7 @@ class productActions extends myActions
     $this->product = $this->getRoute()->getObject();
 
     $criteria = new ProductRelatedCriteria();
-    $item['related'] = RepositoryManager::get('Product')->getRelated(
+    $item['related'] = RepositoryManager::getProduct()->getRelated(
       $criteria->setParent($this->product['core_id'])->setPager(new myPager($this->page, 5))
     );
     $item['related_pager'] = $criteria->getPager();
@@ -296,7 +296,7 @@ class productActions extends myActions
     $this->product = $this->getRoute()->getObject();
 
     $criteria = new ProductRelatedCriteria();
-    $item['accessory'] = RepositoryManager::get('Product')->getAccessory(
+    $item['accessory'] = RepositoryManager::getProduct()->getAccessory(
       $criteria->setParent($this->product['core_id'])->setPager(new myPager($this->page, 5))
     );
     $item['accessory_pager'] = $criteria->getPager();
