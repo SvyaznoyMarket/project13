@@ -7,6 +7,8 @@
  * @subpackage productCard_
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ *
+ * @property ProductEntity $product
  */
 class productCard_Actions extends myActions
 {
@@ -26,9 +28,6 @@ class productCard_Actions extends myActions
   {
     $product_token = end(explode('/', $request['product']));
 
-    $criteria = new ProductCriteria();
-    $this->product = RepositoryManager::getProduct()->getOneByToken($criteria->setToken($product_token));
-
-    //myDebug::dump($this->product);
+    $this->product = RepositoryManager::getProduct()->getByToken($product_token);
   }
 }
