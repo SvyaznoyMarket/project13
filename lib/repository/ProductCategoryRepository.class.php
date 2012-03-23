@@ -1,30 +1,35 @@
 <?php
 
-class ProductCategoryRepository extends ObjectRepository
+class ProductCategoryRepository
 {
-  public function get(array $ids, $index = null)
+  public function getById($id)
   {
-    $entities = array();
-
-    if (!count($ids))
-    {
-      return $entities;
+    $query = new CoreQuery('product.category.get', array('id' => $id));
+    if($data = reset($query->getResult())){
+      return new ProductCategoryEntity($data);
     }
-
-    $q = new CoreQuery('product.category.get', array('id' => $ids));
-
-    return $this->createList($q->getResult(), $index);
+    else
+      return null;
   }
 
-  public function getAll($index = null)
+  public function getListById(array $idList)
   {
-    $q = new CoreQuery('product.category.get', array());
-
-    return $this->createList($q->getResult(), $index);
+    if (!count($idList))
+      return array();
+    else
+      return $this->getListByQuery(new CoreQuery('product.category.get', array('id' => $idList)));
   }
 
-  public function create($data)
+  public function getAll()
   {
-    return new ProductCategoryEntity($data);
+    return $this->getListByQuery(new CoreQuery('product.category.get', array()));
+  }
+
+  private function getListByQuery(CoreQuery $query){
+    $list = array();
+    foreach($query->getResult() as $data){
+      $list[] = new ProductCategoryEntity($data);
+    }
+    return $list;
   }
 }
