@@ -482,8 +482,8 @@ class orderActions extends myActions
 
     $request->setParameter('_template', 'order_complete');
 
-    $this->orders = $this->getUser()->getOrder()->getList();
-    myDebug::dump($this->orders, 1);
+    $this->setVar('orders', $this->getUser()->getOrder()->getList(), true);
+    //myDebug::dump($this->orders, 1);
 
     //$this->getUser()->setCacheCookie();
     //$this->getUser()->getCart()->clear();
