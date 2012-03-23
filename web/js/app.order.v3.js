@@ -1,114 +1,666 @@
 $(document).ready(function() {
-	/* Model Simulation 
-	orderModel = {
-		Rapid : {
-			addCost  : 290, 
-			dlvrDate : '12 декабря',
-			dlvrTime : 'с 9:00 до 14:00',
-			vcalend : [ 
-				{ sw: 0, state: 'dis', dv: '10 декабря', dhtml: '10 <span>Пн</span>'},
-				{ sw: 0, state: 'dis', dv: '11 декабря', dhtml: '11 <span>Вт</span>'}, 
-				{ sw: 0, state: 'act', dv: '12 декабря', dhtml: '12 <span>Ср</span>'},
-				{ sw: 0, state: 'act', dv: '13 декабря', dhtml: '13 <span>Чт</span>'}, 
-				{ sw: 0, state: 'act', dv: '14 декабря', dhtml: '14 <span>Пт</span>'},
-				{ sw: 0, state: 'act', dv: '15 декабря', dhtml: '15 <span>Сб</span>'}, 
-				{ sw: 0, state: 'act', dv: '16 декабря', dhtml: '16 <span>Вс</span>'},
-				{ sw: 1, state: 'act', dv: '17 декабря', dhtml: '17 <span>Пн</span>'},
-				{ sw: 1, state: 'act', dv: '18 декабря', dhtml: '18 <span>Вт</span>'},			
-				{ sw: 1, state: 'act', dv: '19 декабря', dhtml: '19 <span>Ср</span>'},
-				{ sw: 1, state: 'act', dv: '20 декабря', dhtml: '20 <span>Чт</span>'}, 
-				{ sw: 1, state: 'act', dv: '21 декабря', dhtml: '21 <span>Пт</span>'},
-				{ sw: 1, state: 'act', dv: '22 декабря', dhtml: '22 <span>Сб</span>'}, 
-				{ sw: 1, state: 'act', dv: '23 декабря', dhtml: '23 <span>Вс</span>'}
-			],
-			schedule : [ 'с 9:00 до 14:00', 'с 14:00 до 18:00', 'с 18:00 до 21:00' ],
-			products : [
-				{ moveable: true, dlvr: [{ txt: 'В доставку', lbl: 'delay'}, { txt: 'В самовывоз', lbl: 'selfy'}],
-					price: '999', title: 'Чайник со свистком 2,5 л', hm: '2', img: '/images/z_img2.png',
-					locs: [ 1, 2 ] },
-				{ moveable: false, 
-					price: '1 400', title: 'Мягкая игрушка Fancy &laquo;Медведь Топа&raquo;', hm: '3', img: '/images/z_img1.png',
-					locs: [ 1, 2 ] },
-				{ moveable: true, dlvr: [{ txt: 'В доставку', lbl: 'delay'}, { txt: 'В самовывоз', lbl: 'selfy'}],
-					price: '4 495', title: 'Смартфон Samsung Wave 525 черный', hm: '1', img: '/images/z_img8.png',
-					locs: [ 2 ] }            
-			]
-		} , //Rapid
-		Delay : {
-			addCost  : 700, 
-			dlvrDate : '22 декабря',
-			dlvrTime : 'с 9:00 до 14:00',
-			vcalend : [ 
-				{ sw: 0, state: 'dis', dv: '20 декабря', dhtml: '20 <span>Пн</span>'},
-				{ sw: 0, state: 'dis', dv: '21 декабря', dhtml: '21 <span>Вт</span>'}, 
-				{ sw: 0, state: 'act', dv: '22 декабря', dhtml: '22 <span>Ср</span>'},
-				{ sw: 0, state: 'act', dv: '23 декабря', dhtml: '23 <span>Чт</span>'}, 
-				{ sw: 0, state: 'act', dv: '24 декабря', dhtml: '24 <span>Пт</span>'},
-				{ sw: 0, state: 'act', dv: '25 декабря', dhtml: '25 <span>Сб</span>'}, 
-				{ sw: 0, state: 'act', dv: '26 декабря', dhtml: '26 <span>Вс</span>'},
-				{ sw: 1, state: 'act', dv: '27 декабря', dhtml: '27 <span>Пн</span>'},
-				{ sw: 1, state: 'act', dv: '28 декабря', dhtml: '28 <span>Вт</span>'},			
-				{ sw: 1, state: 'act', dv: '29 декабря', dhtml: '29 <span>Ср</span>'},
-				{ sw: 1, state: 'act', dv: '30 декабря', dhtml: '30 <span>Чт</span>'}, 
-				{ sw: 1, state: 'act', dv: '31 декабря', dhtml: '31 <span>Пт</span>'},
-				{ sw: 1, state: 'act', dv: '01 января', dhtml: '01 <span>Сб</span>'}, 
-				{ sw: 1, state: 'act', dv: '02 января', dhtml: '02 <span>Вс</span>'}
-			],
-			schedule : [ 'с 9:00 до 14:00', 'с 14:00 до 18:00', 'с 18:00 до 21:00' ],
-			products : [
-				{ moveable: false, price: '24 190', title: 'Угловой диван-кровать Вика 32 ', hm: '1', img: '/images/z_img3.png' },
-				{ moveable: false, price: '1 900', title: 'Утилизация демонтированной мебели', hm: '2', img: '/images/z_img4.png' }
-			]
-		} , //Delay
-		Selfy : {
-			addCost  : 0, 
-			dlvrDate : '13 декабря',
-			vcalend : [ 
-				{ sw: 0, state: 'dis', dv: '10 декабря', dhtml: '10 <span>Пн</span>'},
-				{ sw: 0, state: 'dis', dv: '11 декабря', dhtml: '11 <span>Вт</span>'}, 
-				{ sw: 0, state: 'act', dv: '12 декабря', dhtml: '12 <span>Ср</span>'},
-				{ sw: 0, state: 'act', dv: '13 декабря', dhtml: '13 <span>Чт</span>'}, 
-				{ sw: 0, state: 'act', dv: '14 декабря', dhtml: '14 <span>Пт</span>'},
-				{ sw: 0, state: 'act', dv: '15 декабря', dhtml: '15 <span>Сб</span>'}, 
-				{ sw: 0, state: 'act', dv: '16 декабря', dhtml: '16 <span>Вс</span>'},
-				{ sw: 1, state: 'act', dv: '17 декабря', dhtml: '17 <span>Пн</span>'},
-				{ sw: 1, state: 'act', dv: '18 декабря', dhtml: '18 <span>Вт</span>'},			
-				{ sw: 1, state: 'act', dv: '19 декабря', dhtml: '19 <span>Ср</span>'},
-				{ sw: 1, state: 'act', dv: '20 декабря', dhtml: '20 <span>Чт</span>'}, 
-				{ sw: 1, state: 'act', dv: '21 декабря', dhtml: '21 <span>Пт</span>'},
-				{ sw: 1, state: 'act', dv: '22 декабря', dhtml: '22 <span>Сб</span>'}, 
-				{ sw: 1, state: 'act', dv: '23 декабря', dhtml: '23 <span>Вс</span>'}
-			],
-			shops: [
-				{ shid: 1, title: 'м. Белорусская, магазин на ул. Грузинский вал, д. 31', fromto: 'с 9.00 до 22.00', products: [
-					{ moveable: false, price: '9 900', title: 'Сноуборд Salomon Salvatore Sanchez ', hm: '1', img: '/images/z_img6.png',
-						locs: [ 1, 2, 3 ] },
-					{ moveable: false, price: '3 900', title: 'Сноубордические ботинки Head Classic', hm: '2', img: '/images/z_img7.png',
-						locs: [ 1, 2 ] }
-				] },
-				{ shid: 2, title: 'м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10', fromto: 'с 9.00 до 22.00', products: [
-					{ moveable: false, price: '800', title: 'Фигурка South Park Cartman Talking Wacky Wobbeler', hm: '2', img: '/images/z_img9.png',
-						locs: [ 2 ]}
-				] },
-				{ shid: 3, title: 'м. Киевская, ул. Б. Дорогомиловская, д. 8', fromto: 'с 9.00 до 22.00', products: [
-					{ moveable: false, price: '4 490', title: 'Смартфон Samsung Wave 525 черный ', hm: '2', img: '/images/z_img8.png',
-						locs: [ 3 ]}
-				] },
-				{ shid: 220, title: 'новый магаз', fromto: 'с 9.00 до 22.00' , products: [] }
-			]
-		}, //Selfy
-		allshops: [
-			{ shid: 1, title: 'м. Белорусская, магазин на ул. Грузинский вал, д. 31', fromto: 'с 9.00 до 22.00',
-				latitude: 55.775004, longitude: 37.581675, markerImg: '' },
-			{ shid: 2, title: 'м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10', fromto: 'с 9.00 до 22.00',
-				latitude: 55.706488, longitude: 37.596997, markerImg: '' },
-			{ shid: 3, title: 'м. Киевская, ул. Б. Дорогомиловская, д. 8', fromto: 'с 9.00 до 22.00',
-				latitude: 55.746197, longitude: 37.565389, markerImg: '' },
-			{ shid: 220, title: 'новый магаз', fromto: 'с 9.00 до 22.00',
-				latitude: 55.851993, longitude: 37.442905, markerImg: '' }
-		]
-	}
-	*/
+var zitata = {
+"standart_rapid":{
+"name":"стандарт",
+"slug":"standart_rapid",
+"mode_id":1,
+"delivery_type_id":11,
+"delivery_id":1,
+"type":"delivery",
+"price":"290",
+"date_default":"2012-03-23T19:08:36+04:00",
+"date_list":[
+{
+"date":"2012-03-23T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-24T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-25T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-26T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-27T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-28T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-29T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-30T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-31T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-04-01T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+}
+],
+"products":[
+],
+"services":{
+}
+},
+"self":{
+"name":"самовывоз",
+"slug":"self",
+"mode_id":3,
+"delivery_type_id":3,
+"delivery_id":3,
+"type":"self",
+"price":"0",
+"date_default":"2012-03-23T19:08:36+04:00",
+"date_list":[
+{
+"date":"2012-03-23T00:00:00+04:00",
+"interval":[
+{
+"id":21,
+"time_begin":"10:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-24T00:00:00+04:00",
+"interval":[
+{
+"id":21,
+"time_begin":"10:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-25T00:00:00+04:00",
+"interval":[
+{
+"id":21,
+"time_begin":"10:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-26T00:00:00+04:00",
+"interval":[
+{
+"id":21,
+"time_begin":"10:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-27T00:00:00+04:00",
+"interval":[
+{
+"id":21,
+"time_begin":"10:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-28T00:00:00+04:00",
+"interval":[
+{
+"id":21,
+"time_begin":"10:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-29T00:00:00+04:00",
+"interval":[
+{
+"id":21,
+"time_begin":"10:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-30T00:00:00+04:00",
+"interval":[
+{
+"id":21,
+"time_begin":"10:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-31T00:00:00+04:00",
+"interval":[
+{
+"id":21,
+"time_begin":"10:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-04-01T00:00:00+04:00",
+"interval":[
+{
+"id":21,
+"time_begin":"10:00",
+"time_end":"21:00"
+}
+]
+}
+],
+"shops":[
+{
+"id":2,
+"name":"ENTER - Москва, ул. Орджоникидзе, д. 11",
+"working_time":"с 9.00 до 21.00",
+"address":"Орджоникидзе, д. 11, стр. 10",
+"coord_long":"37.596997",
+"coord_lat":"55.706488",
+"products":{
+},
+"services":{
+}
+}
+]
+},
+"standart_delayed":{
+"name":"стандарт",
+"slug":"standart_delayed",
+"mode_id":1,
+"delivery_type_id":11,
+"delivery_id":1,
+"type":"delivery",
+"price":270,
+"date_default":"2012-03-23T19:08:36+04:00",
+"date_list":[
+{
+"date":"2012-03-23T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-24T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-25T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-26T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-27T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-28T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-29T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-30T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-03-31T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+},
+{
+"date":"2012-04-01T00:00:00+04:00",
+"interval":[
+{
+"id":2,
+"time_begin":"09:00",
+"time_end":"14:00"
+},
+{
+"id":5,
+"time_begin":"09:00",
+"time_end":"18:00"
+},
+{
+"id":3,
+"time_begin":"14:00",
+"time_end":"18:00"
+},
+{
+"id":4,
+"time_begin":"18:00",
+"time_end":"21:00"
+}
+]
+}
+],
+"products":{
+},
+"services":{
+}
+}
+}
+// zitata exists for case when only unavailable is recieved
+
 	var orderModel = { Rapid: {}, Delay: {}, Selfy: {} }
 	/* Sync Model */
 	
@@ -225,13 +777,7 @@ console.info( $('#delivery-map').data('value') )
 		if( 'services' in _sender )
 			grabItems( _sender.services, true )		
 	} // syncProducts function
-
-	syncBlock( ServerModel.standart_rapid, orderModel.Rapid )
-	syncProducts( ServerModel.standart_rapid, orderModel.Rapid )
-
-	syncBlock( ServerModel.standart_delayed, orderModel.Delay )
-	syncProducts( ServerModel.standart_delayed, orderModel.Delay )
-
+	
 	function syncShops( _sender, _receiver ) {
 		_receiver.shops = []
 		for(var i=0, l = _sender.shops.length; i<l; i++) {
@@ -251,9 +797,30 @@ console.info( $('#delivery-map').data('value') )
 		}	
 	}
 	
-	syncBlock( ServerModel.self, orderModel.Selfy )
-	syncShops( ServerModel.self, orderModel.Selfy )
-
+	if( 'standart_rapid' in ServerModel ) {
+		syncBlock( ServerModel.standart_rapid, orderModel.Rapid )
+		syncProducts( ServerModel.standart_rapid, orderModel.Rapid )
+	} else {
+		syncBlock( zitata.standart_rapid, orderModel.Rapid )
+		syncProducts( zitata.standart_rapid, orderModel.Rapid )		
+	}
+	
+	if( 'standart_rapid' in ServerModel ) {
+		syncBlock( ServerModel.standart_delayed, orderModel.Delay )
+		syncProducts( ServerModel.standart_delayed, orderModel.Delay )
+	} else {
+		syncBlock( zitata.standart_delayed, orderModel.Delay )
+		syncProducts( zitata.standart_delayed, orderModel.Delay )
+	}
+	
+	if( 'standart_rapid' in ServerModel ) {
+		syncBlock( ServerModel.self, orderModel.Selfy )
+		syncShops( ServerModel.self, orderModel.Selfy )
+	} else {
+		syncBlock( zitata.self, orderModel.Selfy )
+		syncShops( zitata.self, orderModel.Selfy )
+	}
+	
 	/* ViewModel */
 	function MyViewModel() {
 		var self = this
@@ -797,14 +1364,18 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	}
 	
 	function printErrors( error ) {
+		if( 'token' in error ) {
+			MVM.showUnavailable( error.details.products, error.details.category_url )
+			return
+		}
 		switch( error.code ) {
 			case 705:
-				console.info(error)
-				MVM.showUnavailable( error.details.products, error.details.category_url )
+				MVM.RequestError(true)
+				MVM.errorText(error.message)
 			break
 			default:
 				MVM.RequestError(true)
-				MVM.errorText('error.message')
+				MVM.errorText(error.message)
 			break
 		}
 	}
