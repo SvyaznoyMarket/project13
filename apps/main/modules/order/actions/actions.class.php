@@ -485,9 +485,9 @@ class orderActions extends myActions
     $this->setVar('orders', $this->getUser()->getOrder()->getList(), true);
     //myDebug::dump($this->orders, 1);
 
-    //$this->getUser()->setCacheCookie();
-    //$this->getUser()->getCart()->clear();
-    //$this->getUser()->getOrder()->clear();
+    $this->getUser()->setCacheCookie();
+    $this->getUser()->getCart()->clear();
+    $this->getUser()->getOrder()->clear();
   }
 
   /**
