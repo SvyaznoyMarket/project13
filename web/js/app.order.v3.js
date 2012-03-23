@@ -259,6 +259,7 @@ console.info( $('#delivery-map').data('value') )
 		var self = this
 		
 		self.noSuchItemError = ko.observable( false )
+		self.urlaftererror = ko.observable( '/' )
 		self.appIsLoaded = ko.observable( false )
 		self.stolenItems = ko.observableArray( [] )
 		
@@ -303,7 +304,6 @@ console.info( $('#delivery-map').data('value') )
 
 		self.addCost_D  = orderModel.Delay.addCost
 		self.bitems_D   = ko.observableArray( orderModel.Delay.products )
-self.stolenItems.push( self.bitems()[0] ) // TODO change for real server answer data
 
 		self.DelayCalend = new customCal( '.delay', orderModel.Delay.dlvrDate, orderModel.Delay.ISODate, orderModel.Delay.vcalend, 
 					orderModel.Delay.dlvrTime, orderModel.Delay.dlvrID, orderModel.Delay.schedule)
@@ -448,6 +448,53 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 		
 		self.allshops = orderModel.allshops
 		
+		self.showUnavailable = function() {
+		var zzz= {error: "moved_items", content: { items: [10167], url:'http://ivn2.ent3.ru/catalog/appliances/stiralnie-mashini-76/' } }
+			
+			data = zzz
+			if( data.error != 'moved_items' ) 
+				return
+			var stolen = data.content.items
+			self.urlaftererror(data.content.url)
+			self.noSuchItemError(true)
+			var obsArray = []
+stln:		for(var i=0, l=stolen.length; i<l; i++) {
+				obsArray = self.bitems()
+				for(var ind=0, le=obsArray.length; ind<le; ind++) {
+					if( obsArray[ind].id == stolen[i] ) {
+						var tmp = obsArray[ind]
+						self.stolenItems.push( tmp )
+						self.bitems.remove( tmp )
+						continue stln
+					}
+				}
+				
+				obsArray = self.bitems_D()
+				for(var ind=0, le=obsArray.length; ind<le; ind++) {
+					if( obsArray[ind].id == stolen[i] ) {
+						var tmp = obsArray[ind]
+						self.stolenItems.push( tmp )
+						self.bitems_D.remove( tmp )
+						continue stln
+					}
+				}
+				
+				for(var j=0, lj=self.shops().length; j<lj; j++) {
+					obsArray = self.shops()[j].products()
+					for(var ind=0, le=obsArray.length; ind<le; ind++) {
+						if( obsArray[ind].id == stolen[i] ) {
+							var tmp = obsArray[ind]
+							self.stolenItems.push( tmp )
+							self.shops()[j].products.remove( tmp )
+							continue stln
+						}
+					}
+				}
+
+			} // stln
+			
+		}
+		
 		self.productforPopup = ko.observable( {
 			moveable: false, price: '9 900', 
 			title: 'Сноуборд Salomon Salvatore Sanchez ', hm: '1', img: '/images/z_img6.png',
@@ -523,6 +570,7 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	ko.applyBindings(MVM) // this way, Lukas!
 	
 	MVM.appIsLoaded(true)
+	MVM.showUnavailable()
 	
 	/* JQUERY handlers */
 	var agent = new brwsr()
@@ -586,6 +634,10 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 		
 	}) //.mMap click
 	
+	$('#tocontinue').click( function(e) {
+		e.preventDefault()
+		MVM.noSuchItemError(false)
+	})
 	
 	function MapWithShops( center, infoWindowTemplate, DOMid ) {
 //console.info( arguments )
@@ -758,14 +810,20 @@ flds:	for( field in fieldToValidate ) {
 		syncClientServer()		
 		var toSend = form.serializeArray()
 		toSend.push( { name: 'products_hash', value: JSON.stringify( ServerModel )  } )//encodeURIComponent
+
 		return
+
 		$.ajax({
 			url: form.attr('action'),
 			type: "POST",
 			data: toSend,
 			success: function( data ) {
 				sended = false
-//	console.info(data)
+				if( data.error == 'moved_items' ) {
+					var stolen = data.content.items
+					MVM.showUnavailable()
+				}
+				
 			}
 		})
 	})
