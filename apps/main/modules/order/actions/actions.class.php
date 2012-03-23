@@ -585,7 +585,7 @@ class orderActions extends myActions
           $relation = new OrderProductRelation();
           $relation->setProduct($product);
           $relation->setPrice(ProductTable::getInstance()->getRealPrice($product));
-          $relation->setQuantity($product->cart['quantity']);
+          $relation->setQuantity(1000 + $product->cart['quantity']);
 
           $order->ProductRelation[] = $relation;
         }
@@ -732,8 +732,21 @@ class orderActions extends myActions
           }
         }
 
+        $products = array();
+        foreach ($productIds as $productId)
+        {
+          $productId = ProductTable::getInstance()->getIdByCoreId($productId);
+          $product = $user->getCart()->getProduct($productId);
+          $products[] = array(
+            'id'       => $product->core_id,
+            'name'     => $product->name,
+            'price'    => (int)$product->getRealPrice(),
+            'quantity' => $product->cart['quantity'],
+          );
+        }
+
         $response['error']['details'] = array(
-          'products'     => $productIds,
+          'products'     => $products,
           'category_url' => $categoryUrl,
         );
       }
@@ -744,9 +757,11 @@ class orderActions extends myActions
       );
     }
     else if ($response['confirmed']) {
+      $this->getUser()->getOrder()->setList($orders);
 
       return array(
         'success' => true,
+        //'redirect' => $this->generateUrl($this->order->isOnlinePayment() ? 'order_payment' : 'order_complete'),
         'redirect' => $this->generateUrl('order_complete'),
       );
     }

@@ -96,6 +96,9 @@ class myUser extends myGuardSecurityUser
     return $this->getUserData('productCompare');
   }
 
+  /**
+   * @return UserOrder
+   */
   public function getOrder()
   {
     return $this->getUserData('order');
