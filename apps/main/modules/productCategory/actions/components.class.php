@@ -143,12 +143,14 @@ class productCategoryComponents extends myComponents
   public function executeProductType_list()
   {
     $list = array();
+    $region = $this->getUser()->getRegion();
+    $priceListId = $region['product_price_list_id'];
     foreach (ProductTypeTable::getInstance()->getListByProductCategory($this->productCategory, array(
       'select'            => 'productType.id, productType.name',
       'group'             => 'productType.id, productType.name',
       'order'             => 'productType.name',
       'with_productCount' => true,
-    )) as $productType) {
+    ), $priceListId) as $productType) {
       if (0 == $productType->product_count) continue;
 
       $list[] = array(
