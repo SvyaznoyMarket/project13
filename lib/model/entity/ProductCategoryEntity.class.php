@@ -50,25 +50,25 @@ class ProductCategoryEntity
   private $parent = null;
 
   /* @var ProductCategoryEntity[] */
-  private $child;
+  private $child = array();
   /** @var string */
   private $seoHeader;
 
   public function __construct(array $data = array())
   {
-    if(array_key_exists('id', $data)) $this->setId($data['id']);
-    if(array_key_exists('is_active', $data)) $this->setIsActive($data['is_active']);
-    if(array_key_exists('is_furniture', $data)) $this->setIsFurniture($data['is_furniture']);
-    if(array_key_exists('name', $data)) $this->setName($data['name']);
-    if(array_key_exists('link', $data)) $this->setLink($data['link']);
-    if(array_key_exists('token', $data)) $this->setToken($data['token']);
-    if(array_key_exists('media_image', $data)) $this->setMediaImage($data['media_image']);
-    if(array_key_exists('has_line', $data)) $this->setHasLine($data['has_line']);
-    if(array_key_exists('is_shown_in_menu', $data)) $this->setIsShownInMenu($data['is_shown_in_menu']);
-    if(array_key_exists('position', $data)) $this->setPosition($data['position']);
-    if(array_key_exists('level', $data)) $this->setLevel($data['level']);
-    if(array_key_exists('seo_header', $data)) $this->setSeoHeader($data['seo_header']);
-    if(array_key_exists('product_view_id', $data)) $this->setProductViewId($data['product_view_id']);
+    if (array_key_exists('id', $data)) $this->setId($data['id']);
+    if (array_key_exists('is_active', $data)) $this->setIsActive($data['is_active']);
+    if (array_key_exists('is_furniture', $data)) $this->setIsFurniture($data['is_furniture']);
+    if (array_key_exists('name', $data)) $this->setName($data['name']);
+    if (array_key_exists('link', $data)) $this->setLink($data['link']);
+    if (array_key_exists('token', $data)) $this->setToken($data['token']);
+    if (array_key_exists('media_image', $data)) $this->setMediaImage($data['media_image']);
+    if (array_key_exists('has_line', $data)) $this->setHasLine($data['has_line']);
+    if (array_key_exists('is_shown_in_menu', $data)) $this->setIsShownInMenu($data['is_shown_in_menu']);
+    if (array_key_exists('position', $data)) $this->setPosition($data['position']);
+    if (array_key_exists('level', $data)) $this->setLevel($data['level']);
+    if (array_key_exists('seo_header', $data)) $this->setSeoHeader($data['seo_header']);
+    if (array_key_exists('product_view_id', $data)) $this->setProductViewId($data['product_view_id']);
   }
 
   public function setId($id)

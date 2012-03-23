@@ -13,21 +13,41 @@ class ProductRepository extends ObjectRepository
   /**
    * @param $data
    * @return ProductEntity
+   * @todo add process all product properties
    */
   public function create($data)
   {
     $entity = new ProductEntity($data);
-    if(isset($data['type_id'])){
+    if (isset($data['type_id'])) {
       $entity->setType(new ProductTypeEntity(array('id' => $data['type_id'])));
     }
-    elseif(isset($data['type'])){
+    elseif (isset($data['type'])) {
       $entity->setType(new ProductTypeEntity($data['type']));
     }
-    if(isset($data['category'])){
-      foreach($data['category'] as $categoryData)
+    if (isset($data['category'])) {
+      foreach ($data['category'] as $categoryData)
       {
         $entity->addCategory(new ProductCategoryEntity($categoryData));
       }
+    }
+    if (isset($data['brand'])) {
+      $entity->setBrand(new BrandEntity($data['brand']));
+    }
+    if (isset($data['property'])) {
+      foreach ($data['property'] as $prop) {
+        $attr = new ProductAttributeEntity($prop);
+        if (!empty($prop['option_id']))
+          foreach ($prop['option_id'] as $option)
+            $attr->addOption(new ProductPropertyOptionEntity($option));
+        $entity->addAttribute($attr);
+      }
+    }
+    if (isset($data['model'])) {
+      $model = new ProductModelEntity();
+      $model->setProductIdList($data['model']['product']);
+      foreach ($data['model']['property'] as $prop)
+        $model->addProperty(new ProductPropertyEntity($prop));
+      $entity->setModel($model);
     }
     return $entity;
   }
@@ -39,7 +59,7 @@ class ProductRepository extends ObjectRepository
    */
   public function getByToken($token, $regionId = null)
   {
-    if($regionId == null){
+    if ($regionId == null) {
       $regionId = RepositoryManager::getRegion()->getDefaultRegionId();
     }
     $list = $this->getListFyFilter(array(
@@ -56,7 +76,8 @@ class ProductRepository extends ObjectRepository
    * @param bool $loadDynamic is load dynamic data
    * @return ProductEntity[]
    */
-  public function getListById(array $idList, $loadDynamic = false){
+  public function getListById(array $idList, $loadDynamic = false)
+  {
     return $this->getListFyFilter(array(
       'id' => $idList,
     ), $loadDynamic);
@@ -65,13 +86,16 @@ class ProductRepository extends ObjectRepository
   public function getRelated(ProductRelatedCriteria $criteria, $order = null)
   {
     $params = array(
-      'count'  => 'false',
+      'count' => 'false',
       'geo_id' => $criteria->getRegion()->core_id,
     );
     $this->applyCriteria($criteria, $params);
     $params['id'] = $criteria->getParent();
     $q = new CoreQuery('product.related.get', $params);
-    $result = array_map(function($i) { return $i['id']; }, $q->getResult());
+    $result = array_map(function($i)
+    {
+      return $i['id'];
+    }, $q->getResult());
     $this->applyPager($criteria, $q);
     return $this->get($result);
   }
@@ -79,13 +103,16 @@ class ProductRepository extends ObjectRepository
   public function getAccessory(ProductRelatedCriteria $criteria, $order = null)
   {
     $params = array(
-      'count'  => 'false',
+      'count' => 'false',
       'geo_id' => $criteria->getRegion()->core_id,
     );
     $this->applyCriteria($criteria, $params);
     $params['id'] = $criteria->getParent();
     $q = new CoreQuery('product.accessory.get', $params);
-    $result = array_map(function($i) { return $i['id']; }, $q->getResult());
+    $result = array_map(function($i)
+    {
+      return $i['id'];
+    }, $q->getResult());
     $this->applyPager($criteria, $q);
     return $this->get($result);
   }
@@ -95,31 +122,31 @@ class ProductRepository extends ObjectRepository
    * @param bool $loadDynamic
    * @return array
    */
-  private function getListFyFilter(array $filter, $loadDynamic = false){
+  private function getListFyFilter(array $filter, $loadDynamic = false)
+  {
     $data = array();
-    $callback = function($response) use (&$data){
-      if(empty($data))
+    $callback = function($response) use (&$data)
+    {
+      if (empty($data))
         $data = $response;
       else // array_merge do not combine equals keys
-        foreach($response as $key => $value)
+        foreach ($response as $key => $value)
           $data[$key] = array_merge($data[$key], $value);
     };
-    $this->coreClient->addQuery('product/get-static',$filter,array(),$callback);
-    if($loadDynamic)
-      $this->coreClient->addQuery('product/get-dynamic',$filter,array(),$callback);
+    $this->coreClient->addQuery('product/get-static', $filter, array(), $callback);
+    if ($loadDynamic)
+      $this->coreClient->addQuery('product/get-dynamic', $filter, array(), $callback);
     $this->coreClient->execute();
     $list = array();
-    foreach($data as $item)
+    foreach ($data as $item)
       $list[] = $this->create($item);
     return $list;
   }
 
   private function applyCriteria(BaseCriteria $criteria, array &$params)
   {
-    if ($pager = $criteria->getPager())
-    {
-      if (null !== $pager->getPage())
-      {
+    if ($pager = $criteria->getPager()) {
+      if (null !== $pager->getPage()) {
         $params['start'] = (string)(($pager->getPage() - 1) * $pager->getMaxPerPage());
         $params['limit'] = (string)$pager->getMaxPerPage();
       }
@@ -128,8 +155,7 @@ class ProductRepository extends ObjectRepository
 
   private function applyPager(BaseCriteria $criteria, CoreQuery $q)
   {
-    if ($pager = $criteria->getPager())
-    {
+    if ($pager = $criteria->getPager()) {
       $pager->setNbResults($q->count());
     }
   }

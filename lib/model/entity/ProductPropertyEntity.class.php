@@ -23,6 +23,16 @@ class ProductPropertyEntity
   /* @var string */
   private $hint;
 
+  public function __construct(array $data = array())
+  {
+    if (array_key_exists('id', $data)) $this->setId($data['id']);
+    if (array_key_exists('is_multiple', $data)) $this->setIsMultiple($data['is_multiple']);
+    if (array_key_exists('name', $data)) $this->setName($data['name']);
+    if (array_key_exists('type', $data)) $this->setType($data['type']);
+    if (array_key_exists('unit', $data)) $this->setUnit($data['unit']);
+    if (array_key_exists('hint', $data)) $this->setHint($data['hint']);
+  }
+
 
   public function setId($id)
   {

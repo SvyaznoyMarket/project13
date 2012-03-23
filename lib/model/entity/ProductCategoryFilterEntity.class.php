@@ -17,7 +17,7 @@ class ProductCategoryFilterEntity
   private $is_slider;
   private $min;
   private $max;
-  private $options = array();
+  private $optionList = array();
 
   public function __construct(array $data = array())
   {
@@ -29,7 +29,7 @@ class ProductCategoryFilterEntity
     if (array_key_exists('is_slider', $data)) $this->setIsSlider($data['is_slider']);
     if (array_key_exists('min', $data)) $this->setMin($data['min']);
     if (array_key_exists('max', $data)) $this->setMax($data['max']);
-    if (array_key_exists('options', $data)) $this->setOptions($data['options']);
+    if (array_key_exists('options', $data)) $this->setOptionList($data['options']);
   }
 
   public function toArray()
@@ -43,7 +43,7 @@ class ProductCategoryFilterEntity
       'is_slider' => $this->is_slider,
       'min' => $this->min,
       'max' => $this->max,
-      'options' => $this->options,
+      'options' => $this->optionList,
     );
   }
 
@@ -107,14 +107,14 @@ class ProductCategoryFilterEntity
     return $this->name;
   }
 
-  public function setOptions(array $options)
+  public function setOptionList(array $options)
   {
-    $this->options = $options;
+    $this->optionList = $options;
   }
 
-  public function getOptions()
+  public function getOptionList()
   {
-    return $this->options;
+    return $this->optionList;
   }
 
   public function setTypeId($type_id)
