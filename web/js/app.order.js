@@ -121,15 +121,18 @@ $('.order-form').change( function(e) {
                 var select = $('[name="order[delivery_period_id]"]'),
                   opts = result.data.content;
                 select.empty()
-                $.each(opts, function(v, n) {
-                  if (n == 'с 09:00 до 18:00') {
-                    select.append('<option value="'+v+'">'+n+'</option>')
-                  }
-                })
-                $.each(opts, function (v, n) {
-                  if (n != 'с 09:00 до 18:00') {
-                    select.append('<option value="' + v + '">' + n + '</option>')
-                  }
+//                $.each(opts, function(v, n) {
+//                  if (n == 'с 09:00 до 18:00') {
+//                    select.append('<option value="'+v+'">'+n+'</option>')
+//                  }
+//                })
+//                $.each(opts, function (v, n) {
+//                  if (n != 'с 09:00 до 18:00') {
+//                    select.append('<option value="' + v + '">' + n + '</option>')
+//                  }
+//                })
+                $.each(opts, function (n, v) {
+                  select.append('<option value="' + v[0] + '">' + v[1] + '</option>')
                 })
                 select.find(':first').attr('selected', 'selected')
                 select.change()
