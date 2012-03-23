@@ -763,6 +763,7 @@ flds:	for( field in fieldToValidate ) {
 			url: form.attr('action'),
 			type: "POST",
 			data: toSend,
+            timeout: 20000,
 			success: function( data ) {
 				sended = false
 //	console.info(data)

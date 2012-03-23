@@ -428,7 +428,12 @@ class Core
       //$this->logger->log("Response: ".$response, !empty($response['error']) ? sfLogger::ERR : sfLogger::INFO);
       $this->logger->log("Response: ".$response);
     }
+
     $response = json_decode($response, true);
+    if (isset($response['result']) && ($response['result'] == 'empty'))
+    {
+      $response = false;
+    }
 
     if (!$clean && isset($response['error']))
     {
@@ -460,7 +465,7 @@ class Core
     $this->logger->log('Trying to pass authentification... '. $data);
     $response = $this->send($data);
 
-	//$this->logger->log($response);
+	  //$this->logger->log($response);
     $response = json_decode($response, true);
 
     if (isset($response['error']))
@@ -484,8 +489,6 @@ class Core
 
   protected function send($request)
   {
-    $response = false;
-
     curl_setopt($this->connection, CURLOPT_POSTFIELDS, $request);
     $response = curl_exec($this->connection);
 

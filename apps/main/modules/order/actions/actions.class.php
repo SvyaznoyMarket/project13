@@ -714,7 +714,6 @@ class orderActions extends myActions
 
     //myDebug::dump($orders);
     $coreData = array_map(function($order) { return $order->exportToCore(); }, $orders);
-    //myDebug::dump($coreData, 1);
     $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
 
     if (!$response['confirmed'] && isset($response['error']))
@@ -748,7 +747,7 @@ class orderActions extends myActions
 
       return array(
         'success' => true,
-        //'redirect' => $this->generateUrl('homepage'),
+        'redirect' => $this->generateUrl('order_complete'),
       );
     }
 
