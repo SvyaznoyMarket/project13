@@ -695,8 +695,9 @@ var zitata = {
 		return item
 	}	
 	
-console.info( $('#delivery-map').data('value') )
+
 	var ServerModel =  $('#delivery-map').data('value')
+//console.info( ServerModel )
 	function syncBlock( _sender, _receiver ) {
 	
 		_receiver.addCost  = _sender.price*1
@@ -1065,7 +1066,7 @@ stln:		for(var i=0, l=stolen.length; i<l; i++) {
 		
 		self.productforPopup = ko.observable( {
 			moveable: false, price: '9 900', 
-			title: 'Сноуборд Salomon Salvatore Sanchez ', hm: '1', img: '/images/z_img6.png',
+			title: 'Сноуборд Salomon Salvatore Sanchez ', hm: '1', img: '/images/f1_footer_logo.png',
 			locs: [ 20, 10 ] 
 		} )
 		
@@ -1416,7 +1417,6 @@ flds:	for( field in fieldToValidate ) {
 			data: toSend,
 			success: function( data ) {
 				sended = false
-				console.info(data)
 				if( !data.success ) {
 					printErrors( data.error )
 					return
