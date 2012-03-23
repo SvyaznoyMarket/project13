@@ -769,11 +769,13 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	} // syncClientServer function
 	
 	var form = $('#order')
+	var tosubmit = true
 	
 	function markError( field, mess ) {
+		tosubmit = false
 		$('body').delegate('input[name="'+field+'"]', 'change', function() {
 			if( $(this).val().replace(/\s+/g,'') != '' ) {
-				$('input[name="'+field+'"]').removeClass('mRed')//.closest('bFormError').remove()
+				$('input[name="'+field+'"]').removeClass('mRed')
 				$('input[name="'+field+'"]').closest('.bBuyingLine').find('.bFormError').remove()
 			}	
 		})	
@@ -789,17 +791,15 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 				node.parent().parent().parent().append( '<span class="bFormError mb10 pt5">'+mess+'</span>' ) // AWARE: CUSTOM
 			break
 		}
-
 	}
 	
 	var sended = false
 	$('.mConfirm a.bBigOrangeButton').click( function(e) {
 		e.preventDefault()
 		if( sended ) return
-		sended = true
+		
 		
 		var serArray = form.serializeArray()
-//console.info( serArray )
 		var fieldToValidate = $('#validator').data('value')
 flds:	for( field in fieldToValidate ) {
 			if( !form.find('[name="'+field+'"]:visible').length )
@@ -814,7 +814,10 @@ flds:	for( field in fieldToValidate ) {
 			}
 			markError( field, fieldToValidate[field] ) // cause not in serArray
 		}
+		if( !tosubmit )
+			return
 		
+		sended = true
 		$(this).html('Минутку...')
 		syncClientServer()		
 		var toSend = form.serializeArray()
@@ -825,7 +828,6 @@ flds:	for( field in fieldToValidate ) {
 			timeout: 20000,
 			type: "POST",
 			data: toSend,
-            timeout: 20000,
 			success: function( data ) {
 				sended = false
 				if( data.error == 'moved_items' ) {
