@@ -68,12 +68,14 @@
   var report = new adhandsReport('http://sedu.adhands.ru/site/');
   report.id('1053');
     <?php
-    if (isset($orderSum) && $orderSum > 0 && isset($orderId) && $orderId > 0)
+    if (isset($orderSum) && isset($orderId))
     {
-      echo
-        "report.data('am','" . $orderSum . "');
-    report.data('ordid','" . $orderId . "');
-";
+      foreach ($orderSum as $i) {
+        echo "report.data('am','" . $i . "')";
+      }
+      foreach ($orderId as $i) {
+        echo "report.data('ordid','" . $orderId . "')";
+      }
     }
     ?>
   report.send();
