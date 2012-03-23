@@ -32,7 +32,8 @@ class OrderDefaultForm extends BaseOrderForm
       'component' => array('order', 'field_delivery_type_id'),
       'component_param' => array('deliveryTypeList' => $deliveryTypeList),
     ));
-    $this->validatorSchema['delivery_type_id'] = new sfValidatorChoice(array('choices' => $deliveryTypeList->toValueArray('id'), 'required' => true), array('required' => 'Выберите способ получения заказа'));
+    //$this->validatorSchema['delivery_type_id'] = new sfValidatorChoice(array('choices' => $deliveryTypeList->toValueArray('id'), 'required' => true), array('required' => 'Выберите способ получения заказа'));
+    $this->validatorSchema['delivery_type_id'] = new sfValidatorPass();
     $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ получения заказа:');
     $this->widgetSchema['delivery_type_id']->setDefault(DeliveryTypeTable::getInstance()->getDefaultRecord()->id);
 

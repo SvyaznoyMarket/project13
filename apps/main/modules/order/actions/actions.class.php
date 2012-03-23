@@ -164,9 +164,15 @@ class orderActions extends myActions
    */
   public function executeNew(sfWebRequest $request)
   {
+    /* @var myUser */
     $user = $this->getUser();
 
-    $this->redirectUnless($this->getUser()->getCart()->countFull(), 'cart');
+    if (true
+      && (0 == count($user->getCart()->getProducts()))
+      && (0 == count($user->getCart()->getServices()))
+    ) {
+      $this->redirect('cart');
+    }
 
     $this->getResponse()->setTitle('Способ доставки и оплаты  – Enter.ru');
 
@@ -206,7 +212,6 @@ class orderActions extends myActions
     }
 
     $deliveryMap = $this->getCore()->getDeliveryMap($user->getRegion('core_id'), $productsInCart, $servicesInCart);
-    // ХммммммээДжaaaaaaaaaaaa!!! Понеслась %)
 
     // группировка услуг по товарам
     $servicesByProduct = array();
@@ -242,6 +247,11 @@ class orderActions extends myActions
       $productDeleteUrls[$product->core_id] = $this->generateUrl('cart_delete', array(
         'product' => $product->token_prefix.'/'.$product->token,
       ));
+    }
+
+    if (!is_array($deliveryMap))
+    {
+      return sfView::ERROR;
     }
 
     foreach ($deliveryMap as &$item)
@@ -280,6 +290,27 @@ class orderActions extends myActions
         } if (isset($shopData)) unset($shopData);
       }
     } if (isset($item)) unset($item);
+
+    // недоступные товары
+    if (isset($deliveryMap['unavailable']))
+    {
+      $productIds = array_keys($deliveryMap['unavailable']);
+      $categoryUrl = false;
+      if (count($productIds))
+      {
+        /* @var $product Product */
+        $product = ProductTable::getInstance()->getByCoreId($productIds[0]);
+        if ($product)
+        {
+          $categoryUrl = $this->generateUrl('productCatalog_category', $product->getMainCategory());
+        }
+      }
+
+      $deliveryMap['unavailable'] = array(
+        'products'     => $productIds,
+        'category_url' => $categoryUrl,
+      );
+    }
 
     $this->setVar('deliveryMap', json_encode($deliveryMap), true);
     $this->setVar('mapCenter', json_encode(array('latitude' => $user->getRegion('latitude'), 'longitude' => $user->getRegion('longitude'))));
@@ -656,7 +687,20 @@ class orderActions extends myActions
       }
     }
 
-    myDebug::dump($orders, 1);
+    //myDebug::dump($orders);
+    $coreData = array_map(function($order) { return $order->exportToCore(); }, $orders);
+    //myDebug::dump($coreData, 1);
+    if ($response = Core::getInstance()->query('order.create-packet', array(), $coreData))
+    {
+      if (!$response['confirmed'] && isset($response['error']))
+      {
+        return $this->renderJson(array(
+          'success' => false,
+          'error'   => $response['error'],
+        ));
+      }
+    }
+
     exit();
 
     try

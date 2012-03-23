@@ -811,8 +811,6 @@ flds:	for( field in fieldToValidate ) {
 		var toSend = form.serializeArray()
 		toSend.push( { name: 'products_hash', value: JSON.stringify( ServerModel )  } )//encodeURIComponent
 
-		return
-
 		$.ajax({
 			url: form.attr('action'),
 			type: "POST",
