@@ -226,27 +226,6 @@ console.info( $('#delivery-map').data('value') )
 			grabItems( _sender.services, true )		
 	} // syncProducts function
 
-function clone(o) {
- if(!o || 'object' !== typeof o)  {
-   return o;
- }
- varc = 'function' === typeof o.pop ? [] : {};
- var p, v;
- for(p in o) {
- if(o.hasOwnProperty(p)) {
-  v = o[p];
-  if(v && 'object' === typeof v) {
-    c[p] = clone(v);
-  }
-  else {
-    c[p] = v;
-  }
- }
-}
- return c;
-}
-//	ServerModel.standart_delayed = clone( ServerModel.standart_rapid )
-
 	syncBlock( ServerModel.standart_rapid, orderModel.Rapid )
 	syncProducts( ServerModel.standart_rapid, orderModel.Rapid )
 
@@ -280,6 +259,7 @@ function clone(o) {
 		var self = this
 		
 		self.noSuchItemError = ko.observable( false )
+		self.appIsLoaded = ko.observable( false )
 		self.stolenItems = ko.observableArray( [] )
 		
 		function customCal( papaSelector, cd, cdf, dd, ct, ctid, sch ) {
@@ -434,14 +414,20 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 			switch( _sender ) {
 				case 'rapid':
 					self.bitems.remove(item)
+					if( self.totalPrice_D() == '0' && self.totalPrice() == '0' )
+						toggleDlvr( 'fromshop' )
 				break
 				case 'delay':
 					self.bitems_D.remove(item)
+					if( self.totalPrice_D() == '0' && self.totalPrice() == '0' )
+						toggleDlvr( 'fromshop' )
 				break
 				case 'selfy':
 					for(var i=0, l=self.shops().length; i<l; i++) {
 						self.shops()[i].products.remove(item)
 					}
+					if( self.totalPrice_S() == '0' )
+						toggleDlvr( 'standart' )
 				break
 			}		
 		}
@@ -536,6 +522,7 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	
 	ko.applyBindings(MVM) // this way, Lukas!
 	
+	MVM.appIsLoaded(true)
 	
 	/* JQUERY handlers */
 	var agent = new brwsr()
@@ -692,6 +679,15 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	}
 	
 	/* Other Form Handlers */
+	function toggleDlvr( dlvrtitle ) {
+		if( dlvrtitle === 'standart' ) {
+			$('#addressField').show()
+		}
+		if( dlvrtitle === 'fromshop' ) {
+			$('#addressField').hide()
+		}
+	} //toggleDlvr function
+	
 	$('body').delegate('.bBuyingLine label', 'click', function() {
 		if( $(this).find('input').attr('type') == 'radio' ) {
 			var thatName = $('.mChecked input[name="'+$(this).find('input').attr('name')+'"]')
