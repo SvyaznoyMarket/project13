@@ -2,11 +2,17 @@
 
 /**
  * Товар
+ * @todo check label
+ * @todo check is_in_sale
  */
 class ProductEntity
 {
   /* @var integer */
   private $id;
+  /** @var int */
+  private $viewId;
+  /** @var int */
+  private $setId;
 
   /* @var string */
   private $token;
@@ -18,13 +24,15 @@ class ProductEntity
   private $brand = null;
 
   /* @var ProductCategoryEntity[] */
-  private $category = array();
+  private $categoryList = array();
 
   /* @var ProductAttributeEntity[] */
   private $attribute = array();
 
   /* @var string */
   private $name;
+  /** @var string */
+  private $nameWeb;
 
   /* @var string */
   private $prefix;
@@ -37,12 +45,19 @@ class ProductEntity
 
   /* @var boolean */
   private $isModel;
+  /** @var int  */
+  private $modelId;
+
+  /** @var boolean */
+  private $isPrimaryLine;
 
   /* @var string */
   private $announce;
 
   /* @var string */
   private $description;
+  /** @var string */
+  private $mediaImage;
 
   /* @var string */
   private $view;
@@ -56,18 +71,41 @@ class ProductEntity
   /* @var string */
   private $tagline;
 
-  /* @var string */
-  private $defaultImage;
-
   /* @var integer */
   private $rating;
 
   /* @var integer */
   private $ratingQuantity;
+  /** @var int */
+  private $commentsNum;
+  /** @var int */
+  private $price;
 
 
-  public function __construct()
+  public function __construct($data = array())
   {
+    if(array_key_exists('id', $data))               $this->setId($data['id']);
+    if(array_key_exists('view_id', $data))          $this->setViewId($data['view_id']);
+    if(array_key_exists('set_id', $data))           $this->setSetId($data['set_id']);
+    if(array_key_exists('is_model', $data))         $this->setIsModel($data['is_model']);
+    if(array_key_exists('is_primary_line', $data))  $this->setIsPrimaryLine($data['is_primary_line']);
+    if(array_key_exists('model_id', $data))         $this->setModelId($data['model_id']);
+    if(array_key_exists('score', $data))            $this->setScore($data['score']);
+    if(array_key_exists('name', $data))             $this->setName($data['name']);
+    if(array_key_exists('link', $data))             $this->setLink($data['link']);
+    if(array_key_exists('token', $data))            $this->setToken($data['token']);
+    if(array_key_exists('name_web', $data))         $this->setNameWeb($data['name_web']);
+    if(array_key_exists('prefix', $data))           $this->setPrefix($data['prefix']);
+    if(array_key_exists('article', $data))          $this->setArticle($data['article']);
+    if(array_key_exists('bar_code', $data))         $this->setBarcode($data['bar_code']);
+    if(array_key_exists('tagline', $data))          $this->setTagline($data['tagline']);
+    if(array_key_exists('announce', $data))         $this->setAnnounce($data['announce']);
+    if(array_key_exists('description', $data))      $this->setDescription($data['description']);
+    if(array_key_exists('media_image', $data))      $this->setMediaImage($data['media_image']);
+    if(array_key_exists('rating', $data))           $this->setRating($data['rating']);
+    if(array_key_exists('rating_count', $data))     $this->setRatingCount($data['rating_count']);
+    if(array_key_exists('comments_num', $data))     $this->setCommentsNum($data['comments_num']);
+    if(array_key_exists('price', $data))            $this->setPrice($data['price']);
   }
 
   public function setId($id)
@@ -83,7 +121,7 @@ class ProductEntity
   /**
    * @param \ProductTypeEntity $type
    */
-  public function setType($type)
+  public function setType(ProductTypeEntity $type)
   {
     $this->type = $type;
   }
@@ -109,22 +147,22 @@ class ProductEntity
     return $this->brand;
   }
 
-  public function setCategory(array $category)
+  public function setCategoryList(array $category)
   {
-    $this->category = $category;
+    $this->categoryList = $category;
   }
 
   public function addCategory(ProductCategoryEntity $category)
   {
-    $this->category[] = $category;
+    $this->categoryList[] = $category;
   }
 
   /**
    * @return ProductCategoryEntity
    */
-  public function getCategory()
+  public function getCategoryList()
   {
-    return $this->category;
+    return $this->categoryList;
   }
 
   /**
@@ -132,7 +170,7 @@ class ProductEntity
    */
   public function getMainCategory()
   {
-    return count($this->category) > 0 ? $this->category[0] : null;
+    return count($this->categoryList) > 0 ? $this->categoryList[0] : null;
   }
 
   public function setAttribute(array $attribute)
@@ -330,11 +368,18 @@ class ProductEntity
   }
 
   /**
-   * @return string
+   * @param int $viewId
+   * @return null|string
    */
-  public function getDefaultImage()
+  public function getMediaImageUrl($viewId = 1)
   {
-    return $this->defaultImage;
+    if($this->mediaImage){
+      $urls = sfConfig::get('app_product_photo_url');
+      return $urls[$viewId].$this->mediaImage;
+    }
+    else{
+      return null;
+    }
   }
 
   /**
@@ -356,7 +401,7 @@ class ProductEntity
   /**
    * @param int $ratingQuantity
    */
-  public function setRatingQuantity($ratingQuantity)
+  public function setRatingCount($ratingQuantity)
   {
     $this->ratingQuantity = $ratingQuantity;
   }
@@ -367,6 +412,134 @@ class ProductEntity
   public function getRatingQuantity()
   {
     return $this->ratingQuantity;
+  }
+
+  /**
+   * @param int $viewId
+   */
+  public function setViewId($viewId)
+  {
+    $this->viewId = $viewId;
+  }
+
+  /**
+   * @return int
+   */
+  public function getViewId()
+  {
+    return $this->viewId;
+  }
+
+  /**
+   * @param int $setId
+   */
+  public function setSetId($setId)
+  {
+    $this->setId = $setId;
+  }
+
+  /**
+   * @return int
+   */
+  public function getSetId()
+  {
+    return $this->setId;
+  }
+
+  /**
+   * @param boolean $isPrimaryLine
+   */
+  public function setIsPrimaryLine($isPrimaryLine)
+  {
+    $this->isPrimaryLine = $isPrimaryLine;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsPrimaryLine()
+  {
+    return $this->isPrimaryLine;
+  }
+
+  /**
+   * @param int $modelId
+   */
+  public function setModelId($modelId)
+  {
+    $this->modelId = $modelId;
+  }
+
+  /**
+   * @return int
+   */
+  public function getModelId()
+  {
+    return $this->modelId;
+  }
+
+  /**
+   * @param string $nameWeb
+   */
+  public function setNameWeb($nameWeb)
+  {
+    $this->nameWeb = $nameWeb;
+  }
+
+  /**
+   * @return string
+   */
+  public function getNameWeb()
+  {
+    return $this->nameWeb;
+  }
+
+  /**
+   * @param string $mediaImage
+   */
+  public function setMediaImage($mediaImage)
+  {
+    $this->mediaImage = $mediaImage;
+  }
+
+  /**
+   * @return string
+   */
+  public function getMediaImage()
+  {
+    return $this->mediaImage;
+  }
+
+  /**
+   * @param int $commentsNum
+   */
+  public function setCommentsNum($commentsNum)
+  {
+    $this->commentsNum = $commentsNum;
+  }
+
+  /**
+   * @return int
+   */
+  public function getCommentsNum()
+  {
+    return $this->commentsNum;
+  }
+
+  /**
+   * @param int $price
+   */
+  public function setPrice($price)
+  {
+    $this->price = $price;
+  }
+
+  /**
+   * @return int
+   */
+  public function getPrice()
+  {
+    return $this->price;
   }
 
 }

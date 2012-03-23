@@ -36,10 +36,10 @@ class RegionRepository extends ObjectRepository
     }
 
     // sets parent
-    $entity->setType($this->getRepository('ProductCategory')->create(array_key_exists('parent', $data) ? $data['parent'] : array('id' => $data['parent_id'])));
+    $entity->setType(RepositoryManager::getProductCategory()->create(array_key_exists('parent', $data) ? $data['parent'] : array('id' => $data['parent_id'])));
 
     // sets price type
-    $entity->setPriceType($this->getRepository('PriceType')->create(array_key_exists('price_list', $data) ? $data['price_list'] : array('id' => $data['price_list_id'])));
+    $entity->setPriceType(RepositoryManager::getPriceType()->create(array_key_exists('price_list', $data) ? $data['price_list'] : array('id' => $data['price_list_id'])));
 
     return $entity;
   }
@@ -49,5 +49,15 @@ class RegionRepository extends ObjectRepository
     $q = $this->createQuery('geo.get', array('slug' => $criteria->getToken()));
 
     return $this->create(array_shift($q->getResult()));
+  }
+
+  /**
+   * Get default region core_id
+   * @return int
+   */
+  public function getDefaultRegionId(){
+    /** @var $user myUser */
+    $user = sfContext::getInstance()->getUser();
+    return $user->getRegion('core_id');
   }
 }

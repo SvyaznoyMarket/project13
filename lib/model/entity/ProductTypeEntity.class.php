@@ -12,6 +12,11 @@ class ProductTypeEntity
   private $name;
 
 
+  public function __construct(array $data = array()){
+    if(array_key_exists('id', $data)) $this->setId($data['id']);
+    if(array_key_exists('name', $data)) $this->setId($data['name']);
+  }
+
   /**
    * @param int $id
    */

@@ -4,23 +4,13 @@ class RepositoryManager
 {
   /**
    * @static
-   * @param $name название репозитория
-   * @return BaseRepository
-   */
-  public static function get($name)
-  {
-    $class = $name.'Repository';
-
-    return new $class();
-  }
-
-  /**
-   * @static
    * @return RegionRepository
    */
   public static function getRegion()
   {
-    return self::get('Region');
+    static $repo;
+    if(!$repo) $repo = new RegionRepository();
+    return $repo;
   }
 
   /**
@@ -29,7 +19,9 @@ class RepositoryManager
    */
   public static function getProduct()
   {
-    return self::get('Product');
+    static $repo;
+    if(!$repo) $repo = new ProductRepository();
+    return $repo;
   }
 
   /**
@@ -38,7 +30,9 @@ class RepositoryManager
    */
   public static function getProductLabel()
   {
-    return self::get('ProductLabel');
+    static $repo;
+    if(!$repo) $repo = new ProductLabelRepository();
+    return $repo;
   }
 
   /**
@@ -47,6 +41,41 @@ class RepositoryManager
    */
   public static function getProductCategoryFilter()
   {
-    return self::get('ProductCategoryFilter');
+    static $repo;
+    if(!$repo) $repo = new ProductCategoryFilterRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return ProductTypeRepository
+   */
+  public static function getProductType()
+  {
+    static $repo;
+    if(!$repo) $repo = new ProductTypeRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return ProductCategoryRepository
+   */
+  public static function getProductCategory()
+  {
+    static $repo;
+    if(!$repo) $repo = new ProductCategoryRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return PriceTypeRepository
+   */
+  public static function getPriceType()
+  {
+    static $repo;
+    if(!$repo) $repo = new PriceTypeRepository();
+    return $repo;
   }
 }

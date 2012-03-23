@@ -22,6 +22,8 @@ class ProductCategoryEntity
 
   /* @var boolean */
   private $isFurniture;
+  /** @var boolean */
+  private $isShownInMenu;
 
   /* @var integer */
   private $level;
@@ -39,7 +41,7 @@ class ProductCategoryEntity
   private $link;
 
   /* @var string */
-  private $image;
+  private $mediaImage;
 
   /* @var integer */
   private $productView;
@@ -49,7 +51,24 @@ class ProductCategoryEntity
 
   /* @var ProductCategoryEntity[] */
   private $child;
+  /** @var string */
+  private $seoHeader;
 
+  public function __construct(array $data = array())
+  {
+    if(array_key_exists('id', $data)) $this->setId($data['id']);
+    if(array_key_exists('is_active', $data)) $this->setIsActive($data['is_active']);
+    if(array_key_exists('is_furniture', $data)) $this->setIsFurniture($data['is_furniture']);
+    if(array_key_exists('name', $data)) $this->setName($data['name']);
+    if(array_key_exists('link', $data)) $this->setLink($data['link']);
+    if(array_key_exists('token', $data)) $this->setToken($data['token']);
+    if(array_key_exists('media_image', $data)) $this->setMediaImage($data['media_image']);
+    if(array_key_exists('has_line', $data)) $this->setHasLine($data['has_line']);
+    if(array_key_exists('is_shown_in_menu', $data)) $this->setIsShownInMenu($data['is_shown_in_menu']);
+    if(array_key_exists('position', $data)) $this->setPosition($data['position']);
+    if(array_key_exists('level', $data)) $this->setLevel($data['level']);
+    if(array_key_exists('seo_header', $data)) $this->setSeoHeader($data['seo_header']);
+  }
 
   public function setId($id)
   {
@@ -71,14 +90,14 @@ class ProductCategoryEntity
     return $this->hasLine;
   }
 
-  public function setImage($image)
+  public function setMediaImage($image)
   {
-    $this->image = $image;
+    $this->mediaImage = $image;
   }
 
-  public function getImage()
+  public function getMediaImage()
   {
-    return $this->image;
+    return $this->mediaImage;
   }
 
   public function setIsActive($isActive)
@@ -216,5 +235,31 @@ class ProductCategoryEntity
   public function getProductView()
   {
     return $this->productView;
+  }
+
+  public function setIsShownInMenu($isShownInMenu)
+  {
+    $this->isShownInMenu = $isShownInMenu;
+  }
+
+  public function getIsShownInMenu()
+  {
+    return $this->isShownInMenu;
+  }
+
+  /**
+   * @param string $seoHeader
+   */
+  public function setSeoHeader($seoHeader)
+  {
+    $this->seoHeader = $seoHeader;
+  }
+
+  /**
+   * @return string
+   */
+  public function getSeoHeader()
+  {
+    return $this->seoHeader;
   }
 }
