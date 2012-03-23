@@ -97,7 +97,11 @@
             <?php echo $form['agreed']->render(array('class' => 'bBuyingLine__eRadio')) ?>
           </label>
         </div>
-
+	  </dd>
+	</dl>
+	<dl class='bBuyingLine'>
+      <dt></dt>
+	  <dd>
         <div>
           <p></p>
           <i class='mILong'>* Поля обязательные для заполнения</i>
@@ -123,5 +127,5 @@
 
 
 <?php slot('seo_counters_advance') ?>
-  <?php include_component('order', 'seo_counters_advance', array('step' => 2)) ?>
+<?php include_component('order', 'seo_counters_advance', array('step' => 2)) ?>
 <?php end_slot() ?>

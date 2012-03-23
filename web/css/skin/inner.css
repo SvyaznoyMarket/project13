@@ -4329,7 +4329,9 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     width: 460px;
     padding-left: 25px;	
 }
-
+.mInputLong.mRed{
+	border: 1px solid red;
+}
 .bBuyingLine__eTextarea{
     width: 475px;
     height: 70px;
@@ -4815,7 +4817,13 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 .bBuyingDatePopup__eOK{
     background: url('img/z_ok.png') no-repeat;
 }
-
+.bFormError{
+  color: #ec323b;
+  font-size: 14px;
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
 .bOrderPreloader{
 	margin: 25px 0;
 	padding: 20px 0;

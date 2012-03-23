@@ -16,8 +16,8 @@
 						<h2><span data-bind="html: price"></span> <span class='rubl'>p</span></h2>
 					</div>
 					<!-- /ko -->
-					<a class='bOrangeButton mr20' href>Оформить заказ без этих товаров</a>
-					<a class='bOrangeButton' href>Подобрать похожий товар</a>
+					<a class='bOrangeButton mr20' id="tocontinue" href>Оформить заказ без этих товаров</a>
+					<a class='bOrangeButton' data-bind="attr: { href: urlaftererror }">Подобрать похожий товар</a>
 				</div>
 			</div>
 		</div>

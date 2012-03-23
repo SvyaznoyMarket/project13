@@ -259,6 +259,7 @@ console.info( $('#delivery-map').data('value') )
 		var self = this
 		
 		self.noSuchItemError = ko.observable( false )
+		self.urlaftererror = ko.observable( '/' )
 		self.appIsLoaded = ko.observable( false )
 		self.stolenItems = ko.observableArray( [] )
 		
@@ -303,7 +304,6 @@ console.info( $('#delivery-map').data('value') )
 
 		self.addCost_D  = orderModel.Delay.addCost
 		self.bitems_D   = ko.observableArray( orderModel.Delay.products )
-self.stolenItems.push( self.bitems()[0] ) // TODO change for real server answer data
 
 		self.DelayCalend = new customCal( '.delay', orderModel.Delay.dlvrDate, orderModel.Delay.ISODate, orderModel.Delay.vcalend, 
 					orderModel.Delay.dlvrTime, orderModel.Delay.dlvrID, orderModel.Delay.schedule)
@@ -446,7 +446,53 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 		}
 		*/
 		
-		self.allshops = orderModel.allshops
+		//self.allshops = orderModel.allshops
+
+		self.showUnavailable = function( stolen, category_url ) {
+			self.urlaftererror( category_url )
+			self.noSuchItemError(true)
+			var obsArray = []
+stln:		for(var i=0, l=stolen.length; i<l; i++) {
+				obsArray = self.bitems()
+				for(var ind=0, le=obsArray.length; ind<le; ind++) {
+					if( obsArray[ind].id == stolen[i].id ) {
+						var tmp = obsArray[ind]
+						self.stolenItems.push( tmp )
+						self.bitems.remove( tmp )
+						continue stln
+					}
+				}
+				
+				obsArray = self.bitems_D()
+				for(var ind=0, le=obsArray.length; ind<le; ind++) {
+					if( obsArray[ind].id == stolen[i].id ) {
+						var tmp = obsArray[ind]
+						self.stolenItems.push( tmp )
+						self.bitems_D.remove( tmp )
+						continue stln
+					}
+				}
+				
+				for(var j=0, lj=self.shops().length; j<lj; j++) {
+					obsArray = self.shops()[j].products()
+					for(var ind=0, le=obsArray.length; ind<le; ind++) {
+						if( obsArray[ind].id == stolen[i].id ) {
+							var tmp = obsArray[ind]
+							self.stolenItems.push( tmp )
+							self.shops()[j].products.remove( tmp )
+							continue stln
+						}
+					}
+				}
+				
+				var tmp = {}
+				tmp.id    = stolen[i].id
+				tmp.title = stolen[i].name
+				tmp.price = printPrice( stolen[i].price )
+				self.stolenItems.push( tmp )
+			} // stln
+			
+		}
 		
 		self.productforPopup = ko.observable( {
 			moveable: false, price: '9 900', 
@@ -462,8 +508,6 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 		self.shiftingInShops = function( shop_receiver ) {
 			if( typeof(shop_receiver) === 'object' )
 				shop_receiver = shop_receiver.shid
-//console.info('rec ', movingItem)
-//console.info( self.shops.indexOf( shop_sender ), shop_receiver )
 			self.shops()[ self.shops.indexOf( shop_sender ) ].products.remove( movingItem )
 			for(var i=0, l=self.shops().length; i<l; i++) {
 				if( self.shops()[i].shid == shop_receiver ) {
@@ -487,22 +531,18 @@ ull:				for(var i=0, li=line.locs.length; i < li; i++) {
 sloop:			for(var s=0, ls=double_popupWithShops.length; s<ls; s++) {
 				for(var i=0, l=item.locs.length; i<l; i++) {
 					var shid = item.locs[i]
-//console.info(s)
 					if( double_popupWithShops[s].shid == shid ) {
 						doublelocs[i] = 0
 						continue sloop
 					}	
 				}
-//console.info(s,double_popupWithShops[s])
 				self.popupWithShops.remove( double_popupWithShops[s] )
 			}
-//console.info('doublelocs', doublelocs)
 locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 				if(  !doublelocs[i] ) continue
 				var shopsHub = self.shops()
 				for(var asi=0, asl=shopsHub.length; asi<asl; asi++) {
 					if( shopsHub[asi].shid == doublelocs[i] ) {
-//console.info( asi )
 						var shopitem = shopsHub[asi]
 						shopitem.markerImg = ko.observable( )
 						self.popupWithShops.push( shopsHub[asi] )
@@ -523,6 +563,9 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	ko.applyBindings(MVM) // this way, Lukas!
 	
 	MVM.appIsLoaded(true)
+	if( 'unavailable' in ServerModel )
+		MVM.showUnavailable( ServerModel.unavailable.products, ServerModel.unavailable.category_url )
+
 	
 	/* JQUERY handlers */
 	var agent = new brwsr()
@@ -576,7 +619,6 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 				markerImg: tmp[i].markerImg()
 			}
 		}
-//console.info(markersPull)
 		$('.mMapPopup').lightbox_me({
 			centered: true,
 			onLoad: function() {
@@ -586,9 +628,12 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 		
 	}) //.mMap click
 	
+	$('#tocontinue').click( function(e) {
+		e.preventDefault()
+		MVM.noSuchItemError(false)
+	})
 	
 	function MapWithShops( center, infoWindowTemplate, DOMid ) {
-//console.info( arguments )
 		var self = this
 		self.mapWS = null
 		self.infoWindow = null
@@ -628,7 +673,6 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 
 		this.showMarkers = function( markers ) {
 			$.each( self.markers, function(i, item) {
-//console.info( item.ref, item.name)
 				 if( typeof( item.ref ) !== 'undefined' )
 					item.ref.setMap(null)
 			})
@@ -636,7 +680,6 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 			google.maps.event.trigger( self.mapWS, 'resize' )
 			self.mapWS.setCenter( self.positionC )
 			$.each( markers, function(i, item) {
-//console.info(item)
 				var marker = new google.maps.Marker({
 				  position: new google.maps.LatLng(item.latitude, item.longitude),
 				  map: self.mapWS,
@@ -674,7 +717,6 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	mapContainer[0].addEventListener("touchstart", handleStart  , false) //touch devices
 	
 	function pickStore( node ) {
-//console.info('pickME ', node)		
 		MVM.shiftAndClose( $(node).parent().find('.shopnum').text() )
 	}
 	
@@ -707,7 +749,6 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	})	
 
 	$('body').delegate('.bBuyingLine input:radio, .bBuyingLine input:checkbox', 'click', function(e) {
-//console.info( e.target, e.timeStamp, $(this).attr('checked') )
 		e.stopPropagation()
 	})	
 	
@@ -725,48 +766,75 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 		for(var i=0, l = ServerModel.self.shops.length; i<l; i++) {
 			ServerModel.self.shops[i].products = MVM.shops()[i].products().slice(0)
 		}
-//console.info(ServerModel)	
 	} // syncClientServer function
 	
-	function markError( node ) {
-		console.info(node)
+	var form = $('#order')
+	var tosubmit = true
+	
+	function markError( field, mess ) {
+		tosubmit = false
+		$('body').delegate('input[name="'+field+'"]', 'change', function() {
+			if( $(this).val().replace(/\s+/g,'') != '' ) {
+				$('input[name="'+field+'"]').removeClass('mRed')
+				$('input[name="'+field+'"]').closest('.bBuyingLine').find('.bFormError').remove()
+			}	
+		})	
+		var node = $('input[name="'+field+'"]:first') 
+		if( node.hasClass('mRed') ) return
+		switch( node.attr('type') ) {
+			case 'text':
+				node.addClass('mRed')
+				node.after( '<span class="bFormError mb10 pt5">'+mess+'</span>' ) // AWARE: CUSTOM
+			break	
+			default: // radio, checkbox
+				node.addClass('mRed')
+				node.parent().parent().parent().append( '<span class="bFormError mb10 pt5">'+mess+'</span>' ) // AWARE: CUSTOM
+			break
+		}
 	}
 	
 	var sended = false
 	$('.mConfirm a.bBigOrangeButton').click( function(e) {
 		e.preventDefault()
 		if( sended ) return
-	//	sended = true
-		var form = $('#order')
+		
+		
 		var serArray = form.serializeArray()
-console.info( serArray )
 		var fieldToValidate = $('#validator').data('value')
 flds:	for( field in fieldToValidate ) {
 			if( !form.find('[name="'+field+'"]:visible').length )
 				continue
 			for(var i=0, l=serArray.length; i<l; i++) {
-				if( serArray[i].name == field ) {				
+				if( serArray[i].name == field ) {
+					console.info(field,  fieldToValidate[field] )
 					if( serArray[i].value == '' )
-						markError( field ) // cause is empty
+						markError( field, fieldToValidate[field] ) // cause is empty
 					continue flds
 				}
 			}
-			markError( field ) // cause not in serArray
+			markError( field, fieldToValidate[field] ) // cause not in serArray
 		}
+		if( !tosubmit )
+			return
 		
+		sended = true
 		$(this).html('Минутку...')
 		syncClientServer()		
 		var toSend = form.serializeArray()
 		toSend.push( { name: 'products_hash', value: JSON.stringify( ServerModel )  } )//encodeURIComponent
-		//return
+
 		$.ajax({
 			url: form.attr('action'),
+			timeout: 20000,
 			type: "POST",
 			data: toSend,
-            timeout: 20000,
 			success: function( data ) {
 				sended = false
-//	console.info(data)
+				if( data.error == 'moved_items' ) {
+					var stolen = data.content.items
+					//MVM.showUnavailable()
+				}
+				
 			}
 		})
 	})
