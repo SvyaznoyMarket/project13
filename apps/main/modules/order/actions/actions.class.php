@@ -192,10 +192,20 @@ class orderActions extends myActions
         $baseOrder = $this->form->updateObject();
 
         $productData = json_decode($request['products_hash'], true);
-        $result = $this->saveOrder($baseOrder, $productData);
+        try {
+          $result = $this->saveOrder($baseOrder, $productData);
+        }
+        catch(Exception $e) {
+          $result = array('success' => false);
+        }
 
         return $this->renderJson($result);
       }
+
+      return $this->renderJson(array(
+        'success' => false,
+        'error'   => array('message' => 'Форма содержит ошибки'),
+      ));
     }
 
     $productsInCart = array();
@@ -316,7 +326,7 @@ class orderActions extends myActions
         $products[] = array(
           'id'       => $product->core_id,
           'name'     => $product->name,
-          'price'    => $product->getRealPrice(),
+          'price'    => (int)$product->getRealPrice(),
           'quantity' => $product->cart['quantity'],
         );
       }
@@ -704,7 +714,6 @@ class orderActions extends myActions
 
     //myDebug::dump($orders);
     $coreData = array_map(function($order) { return $order->exportToCore(); }, $orders);
-    //myDebug::dump($coreData, 1);
     $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
 
     if (!$response['confirmed'] && isset($response['error']))
@@ -735,11 +744,9 @@ class orderActions extends myActions
       );
     }
     else if ($response['confirmed']) {
+
       return array(
         'success' => true,
-        'content' => array(
-          'orders' => $response['orders'],
-        ),
         'redirect' => $this->generateUrl('order_complete'),
       );
     }

@@ -825,6 +825,7 @@ flds:	for( field in fieldToValidate ) {
 			timeout: 20000,
 			type: "POST",
 			data: toSend,
+            timeout: 20000,
 			success: function( data ) {
 				sended = false
 				if( data.error == 'moved_items' ) {
