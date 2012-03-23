@@ -396,7 +396,7 @@ class Core
     return $record->exportToCore();
   }
 
-  public function query($name, array $params = array(), array $data = array())
+  public function query($name, array $params = array(), array $data = array(), $clean = false)
   {
     $isLog = !in_array($name, array('sync.get'));
 
@@ -430,7 +430,7 @@ class Core
     }
     $response = json_decode($response, true);
 
-    if (isset($response['error']))
+    if (!$clean && isset($response['error']))
     {
       $this->error = array($response['error']['code'] => $response['error']['message'], );
       if (isset($response['error']['detail'])) $this->error['detail'] = $response['error']['detail'];
