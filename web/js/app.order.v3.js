@@ -1401,8 +1401,10 @@ flds:	for( field in fieldToValidate ) {
 			}
 			markError( field, fieldToValidate[field] ) // cause not in serArray
 		}
-		if( broken > 0 )
+		if( broken > 0 ) {
+			$.scrollTo( '.mRed:first' , 500 )
 			return
+		}	
 		
 		sended = true
 		$(this).html('Минутку...')
