@@ -769,12 +769,13 @@ locsloop:		for(var i=0, l=doublelocs.length; i<l; i++) {
 	} // syncClientServer function
 	
 	var form = $('#order')
-	var tosubmit = true
+	var broken = 0
 	
 	function markError( field, mess ) {
-		tosubmit = false
+		broken++
 		$('body').delegate('input[name="'+field+'"]', 'change', function() {
 			if( $(this).val().replace(/\s+/g,'') != '' ) {
+				broken--
 				$('input[name="'+field+'"]').removeClass('mRed')
 				$('input[name="'+field+'"]').closest('.bBuyingLine').find('.bFormError').remove()
 			}	
@@ -806,7 +807,6 @@ flds:	for( field in fieldToValidate ) {
 				continue
 			for(var i=0, l=serArray.length; i<l; i++) {
 				if( serArray[i].name == field ) {
-					console.info(field,  fieldToValidate[field] )
 					if( serArray[i].value == '' )
 						markError( field, fieldToValidate[field] ) // cause is empty
 					continue flds
@@ -814,7 +814,7 @@ flds:	for( field in fieldToValidate ) {
 			}
 			markError( field, fieldToValidate[field] ) // cause not in serArray
 		}
-		if( !tosubmit )
+		if( broken > 0 )
 			return
 		
 		sended = true
