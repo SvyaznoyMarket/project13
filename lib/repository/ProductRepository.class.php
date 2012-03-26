@@ -49,6 +49,9 @@ class ProductRepository extends ObjectRepository
         $model->addProperty(new ProductPropertyEntity($prop));
       $entity->setModel($model);
     }
+    if (isset($data['state'])) {
+      $entity->setState(new ProductStateEntity($data['state']));
+    }
     return $entity;
   }
 

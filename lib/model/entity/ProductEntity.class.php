@@ -83,9 +83,10 @@ class ProductEntity
   private $commentsNum;
   /** @var int */
   private $price;
+  /** @var ProductStateEntity */
+  private $state;
 
-
-  public function __construct($data = array())
+  public function __construct(array $data = array())
   {
     if (array_key_exists('id', $data)) $this->setId($data['id']);
     if (array_key_exists('view_id', $data)) $this->setViewId($data['view_id']);
@@ -584,4 +585,24 @@ class ProductEntity
     return $this->model;
   }
 
+  /**
+   * @param \ProductStateEntity $state
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+
+  /**
+   * @return \ProductStateEntity
+   */
+  public function getState()
+  {
+    return $this->state;
+  }
+
+  public function getIsBuyable()
+  {
+    return $this->getState() && $this->getState()->getIsBuyable();
+  }
 }
