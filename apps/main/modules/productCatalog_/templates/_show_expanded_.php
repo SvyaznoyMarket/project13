@@ -1,13 +1,12 @@
 <?php
 /**
  * @todo labels!
- * @todo labels!
  * @var $item ProductEntity|sfOutputEscaperObjectDecorator
  */
 ?>
 <div class="goodsbox goodsline bNewGoodsBox">
-  <div
-    class="goodsboxlink" <?php /* if ($item['is_insale']): ?> ref="<?php echo $item->getToken() ?>" data-cid="<?php echo $item->getId() ?>" <?php endif */ ?>>
+  <div class="goodsboxlink" <?php if ($item->getIsBuyable()): ?> ref="<?php echo $item->getToken() ?>"
+       data-cid="<?php echo $item->getId() ?>" <?php endif ?>>
     <div class="photo">
       <?php /* if ($item['label']): ?>
         <img class="bLabels" src="<?php echo $item['label']->getImageUrl() ?>" alt="<?php echo $item['label']->getName() ?>" />
@@ -54,11 +53,15 @@
         class="rubl">p</span></b></span>
 
       <div class="goodsbar mSmallBtns">
-        <?php // include_component('cart', 'buy_button', array('product' => $item, 'quantity' => 1)) ?>
+        <?php include_component('cart_', 'buy_button', array('product' => $item, 'quantity' => 1)) ?>
       </div>
-      <?php /* if ($item['is_insale']): ?>
-          <noindex><ul class="bNGB__eUl"><li><strong class="orange">Есть в наличии</strong></li></ul></noindex>
-        <?php endif */ ?>
+      <?php if ($item->getIsBuyable()): ?>
+      <noindex>
+        <ul class="bNGB__eUl">
+          <li><strong class="orange">Есть в наличии</strong></li>
+        </ul>
+      </noindex>
+      <?php endif ?>
     </div>
   </div>
 </div>

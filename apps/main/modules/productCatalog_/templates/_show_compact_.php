@@ -4,7 +4,6 @@
  * @var $maxPerPage
  * @var ProductEntity $item
  * @todo labels!
- * @todo cart!
  */
 ?>
 <div class="goodsbox"<?php echo (isset($ii) && ($ii > $maxPerPage)) ? ' style="display:none;"' : '' ?>>
@@ -34,7 +33,7 @@
   <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item->getPrice() ?></span> <span
     class="rubl">p</span></div>
   <!-- Hover -->
-  <div class="boxhover"<?php /* if ($item['is_insale']): ?> ref="<?php echo $item->getToken() ?>"<?php endif */ ?>>
+  <div class="boxhover"<?php if ($item->getIsBuyable()): ?> ref="<?php echo $item->getToken() ?>"<?php endif ?>>
     <b class="rt"></b><b class="lb"></b>
 
     <div class="rb">
@@ -57,7 +56,7 @@
         <h3><a href="<?php echo $item->getLink() ?>"><?php echo $item->getName() ?></a></h3>
 
         <div class="goodsbar mSmallBtns mR">
-          e<?php // @todo add cart integration include_component('cart', 'buy_button', array('product' => $item, 'quantity' => 1)) ?>
+          <?php include_component('cart_', 'buy_button', array('product' => $item, 'quantity' => 1)) ?>
         </div>
         <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item->getPrice() ?></span> <span
           class="rubl">p</span></div>

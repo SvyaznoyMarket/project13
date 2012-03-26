@@ -20,7 +20,7 @@
 <?php include_component('productCatalog_', 'leftCategoryList', array('productCategory' => $productCategory)) ?>
 <?php include_partial('filter_', $sf_data) ?>
 <?php include_partial('default/banner_left') ?>
-<?php // include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory, 'productPager' => $productPager)) ?>
+<?php include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory, 'productPager' => $productPager)) ?>
 <?php end_slot() ?>
 
 <?php include_partial('product_list_', $sf_data) ?>
