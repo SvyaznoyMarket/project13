@@ -50,32 +50,25 @@ class userProductHistoryActions extends myActions
   {
     $user = $this->getUser();
 
-    if (!$request->getCookie(sfConfig::get('app_guard_cache_cookie_name')))
-    {
-        $user->setCacheCookie();
+    if (!$request->getCookie(sfConfig::get('app_guard_cache_cookie_name'))) {
+      $user->setCacheCookie();
     }
 
     //подсчитываем общее количество и общую стоимость корзины
-    $cartInfo = $user->getCartBaseInfo();
-
+    $cartInfo = $user->getCart()->getBaseInfo();
     //отложенные товары
-    $delayProducts = array();
-    if ($user->getGuardUser())
-    {
-      $userDelayedProduct = new UserDelayedProduct();
-      $delayProducts = $userDelayedProduct->getUserDelayProducts($user->getGuardUser()->id);
-    }
+    //    $delayProducts = array();
+    //    if ($user->getGuardUser())
+    //    {
+    //      $userDelayedProduct = new UserDelayedProduct();
+    //      $delayProducts = $userDelayedProduct->getUserDelayProducts($user->getGuardUser()->id);
+    //    }
 
-#     echo '<pre>';
-#     echo '</pre>';
-    #   exit();
-    if (!isset($productsInCart))
-    {
+    if (!isset($productsInCart)) {
       $productsInCart = false;
     }
     //имя есть только у авторизованного пользователя
-    if ($user->isAuthenticated())
-    {
+    if ($user->isAuthenticated()) {
       $name = $user->getName();
     }
     else

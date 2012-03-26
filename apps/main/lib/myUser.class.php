@@ -8,15 +8,13 @@ class myUser extends myGuardSecurityUser
     $productHistory = null,
     $productCompare = null,
     $order = null,
-    $region = null
-
-  ;
+    $region = null;
 
   public function shutdown()
   {
     foreach (array('cart', 'productHistory', 'productCompare', 'order') as $name)
     {
-      $object = call_user_func(array($this, 'get'.ucfirst($name)));
+      $object = call_user_func(array($this, 'get' . ucfirst($name)));
       $this->setAttribute($name, $object->dump());
     }
 
@@ -42,46 +40,6 @@ class myUser extends myGuardSecurityUser
     return $this->getUserData('cart');
   }
 
-  public function getCartBaseInfo()
-  {
-    $cart = $this->getCart();
-    $result['qty'] = $cart->count();
-    $result['sum'] = $cart->getTotal();
-    $result['productsInCart'] = array();
-    $result['servicesInCart'] = array();
-
-    foreach ($cart->getProducts() as $id => $product)
-    {
-      $result['productsInCart'][$product['token']] = $product['cart']['quantity'];
-    }
-
-    foreach ($cart->getServices() as $id => $service)
-    {
-      $qty = $service['cart']['quantity'];
-      if ($qty > 0)
-      {
-        $result['servicesInCart'][$service['token']][0] = $qty;
-      }
-      foreach ($service['cart']['product'] as $pId => $pQty)
-      {
-        $token = false;
-        foreach ($cart->getProducts() as $id => $product)
-        {
-          if ($product['id'] == $pId)
-          {
-            $token = $product['token'];
-            break;
-          }
-        }
-        if ($token && $pQty)
-        {
-          $result['servicesInCart'][$service['token']][$token] = $pQty;
-        }
-      }
-    }
-
-    return $result;
-  }
 
   public function getProductHistory()
   {
@@ -115,23 +73,19 @@ class myUser extends myGuardSecurityUser
 
   public function getRegion($key = null)
   {
-    if (!$this->region)
-    {
+    if (!$this->region) {
       $region = false;
       $region_id = $this->getAttribute('region', null);
 
-      if ($region_id)
-      {
+      if ($region_id) {
         //$region = RegionTable::getInstance()->findOneByIdAndType($region_id, 'city');
         $region = RegionTable::getInstance()->getById($region_id);
-        if (!$region->isCity())
-        {
+        if (!$region->isCity()) {
           $region = false;
         }
       }
 
-      if (!$region)
-      {
+      if (!$region) {
         $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
         $region = !empty($geoip['region']) ? RegionTable::getInstance()->findOneByGeoip_code($geoip['region']) : RegionTable::getInstance()->getDefault();
 
@@ -141,7 +95,7 @@ class myUser extends myGuardSecurityUser
       $this->region = array(
         'id' => $region->id,
         'name' => $region->name,
-        'full_name' => $region->name.', '.$region->getParent()->name,
+        'full_name' => $region->name . ', ' . $region->getParent()->name,
         'type' => $region->type,
         'product_price_list_id' => $region->product_price_list_id,
         'core_id' => $region->core_id,
@@ -155,23 +109,20 @@ class myUser extends myGuardSecurityUser
 
   public function getRegion_()
   {
-    if (!$this->region)
-    {
+    if (!$this->region) {
       $region = false;
       $region_id = $this->getAttribute('region', null);
 
-      if ($region_id)
-      {
+      if ($region_id) {
         $region = RepositoryManager::getRegion()->getById($region_id);
       }
 
-      if (!$region)
-      {
+      if (!$region) {
         $regionData = sfContext::getInstance()->getRequest()->getParameter('geoip');
         $region =
           (!empty($regionData['region']) && !empty($regionData['name']))
-          ? RepositoryManager::getRegion()->getByToken($regionData['region'].'-'.$regionData['name'])
-          : RepositoryManager::getRegion()->getOneDefault();
+            ? RepositoryManager::getRegion()->getByToken($regionData['region'] . '-' . $regionData['name'])
+            : RepositoryManager::getRegion()->getOneDefault();
 
         $this->setRegion($region->getId());
       }
@@ -192,8 +143,7 @@ class myUser extends myGuardSecurityUser
   {
     $ip = $this->getAttribute('ip', null);
 
-    if (!$ip)
-    {
+    if (!$ip) {
       $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
       $ip = $geoip['ip_address'];
       $this->setAttribute('ip', $ip);
@@ -221,9 +171,8 @@ class myUser extends myGuardSecurityUser
 
   protected function getUserData($name)
   {
-    if (null == $this->$name)
-    {
-      $class = sfInflector::camelize('user_'.$name);
+    if (null == $this->$name) {
+      $class = sfInflector::camelize('user_' . $name);
       $this->$name = new $class($this->getAttribute($name, array()));
     }
 
@@ -233,7 +182,7 @@ class myUser extends myGuardSecurityUser
   public function setCacheCookie()
   {
     $sessionId = session_id();
-    $key = md5(strval($sessionId).strval(time()));
+    $key = md5(strval($sessionId) . strval(time()));
     sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_cache_cookie_name', 'enter_cache'), $key, null);
   }
 

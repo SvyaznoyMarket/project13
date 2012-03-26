@@ -79,8 +79,8 @@ all:
 
   core:
     config:
-      api_url: 'http://mitallast.core.ent3.ru/v1/json'
-      userapi_url: 'http://mitallast.core.ent3.ru/index.php/userapi/'
+      api_url: 'http://test2.core.ent3.ru/v1/json'
+      userapi_url: 'http://test2.core.ent3.ru/userapi/'
       client_id: 1
       consumer_key: test # v1
       signature: test # v1

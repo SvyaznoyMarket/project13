@@ -1,49 +1,73 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <?php include_http_metas() ?>
-    <?php include_metas() ?>
-    <?php include_title() ?>
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <?php include_stylesheets() ?>
-    <?php //include_javascripts() ?>
-    <?php include_component('page', 'link_rel_canonical') ?>
+<head>
+  <?php include_http_metas() ?>
+  <?php include_metas() ?>
+  <?php include_title() ?>
+  <link rel="shortcut icon" href="/favicon.ico"/>
+  <?php include_stylesheets() ?>
+  <?php //include_javascripts() ?>
+  <?php include_component('page', 'link_rel_canonical') ?>
 
-    <?php include_partial('default/googleAnalytics') ?>
+  <?php include_partial('default/googleAnalytics') ?>
 
-  </head>
-  <body data-template="cart">
-    <div class="allpage">
-     <div class="allpageinner">
+</head>
+<body data-template="cart">
+<div class="allpage" id="page">
+  <!--AdFox START-->
+  <!--enter-->
+  <!--Площадка: Enter.ru / * / *-->
+  <!--Тип баннера: BackGround-->
+  <!--Расположение: <верх страницы>-->
+  <script type="text/javascript">
+    <!--
+    if (typeof(pr) == 'undefined') {
+      var pr = Math.floor(Math.random() * 1000000);
+    }
+    if (typeof(document.referrer) != 'undefined') {
+      if (typeof(afReferrer) == 'undefined') {
+        afReferrer = escape(document.referrer);
+      }
+    } else {
+      afReferrer = '';
+    }
+    var addate = new Date();
+    document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=enlz&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr + '&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>');
+    // -->
+  </script>
+  <!--AdFox END-->
+  <div class="allpageinner">
 
-        <?php include_partial('default/header') ?>
+    <?php include_partial('default/header') ?>
 
-        <!-- Page head -->
-        <?php if (!include_slot('page_head')): ?>
-          <?php include_partial('default/page_head') ?>
-        <?php endif ?>
-        <!-- Page head -->
+    <!-- Page head -->
+    <?php if (!include_slot('page_head')): ?>
+    <?php include_partial('default/page_head') ?>
+    <?php endif ?>
+    <!-- Page head -->
 
-        <?php if (has_slot('left_column')): ?>
-          <div class="float100">
-            <div class="column685">
-              <?php echo $sf_content ?>
-            </div>
-          </div>
-          <div class="column215">
-            <?php include_slot('left_column') ?>
-          </div>
-        <?php else: ?>
-          <?php echo $sf_content ?>
-        <?php endif ?>
-        <div class="clear"></div>
+    <?php if (has_slot('left_column')): ?>
+    <div class="float100">
+      <div class="column685">
+        <?php echo $sf_content ?>
       </div>
-      <div class="clear"></div>
     </div>
+    <div class="column215">
+      <?php include_slot('left_column') ?>
+    </div>
+    <?php else: ?>
+    <?php echo $sf_content ?>
+    <?php endif ?>
+    <div class="clear"></div>
+    <?php if (has_slot('navigation_seo')) include_slot('navigation_seo') ?>
+  </div>
+  <div class="clear"></div>
+</div>
 
-    <?php include_component('default', 'footer', array('class' => 'footer_cart', )) ?>
+<?php include_component('default', 'footer', array('class' => 'footer_cart',)) ?>
 
-    <?php if (!include_slot('auth')) include_partial('default/auth') ?>
+<?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
 <?php include_partial('default/admin') ?>
 
@@ -51,40 +75,46 @@
 <script src="/js/loadjs.js" type="text/javascript"></script>
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
-  <!-- Yandex.Metrika counter -->
-  <div style="display:none;"><script type="text/javascript">
-  (function(w, c) {
-      (w[c] = w[c] || []).push(function() {
-          try {
-              w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true, params:window.yaParams||{ }});
-          }
-          catch(e) { }
+<!-- Yandex.Metrika counter -->
+<div style="display:none;">
+  <script type="text/javascript">
+    (function (w, c) {
+      (w[c] = w[c] || []).push(function () {
+        try {
+          w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll:true, webvisor:true, params:window.yaParams || { }});
+        }
+        catch (e) {
+        }
       });
-  })(window, "yandex_metrika_callbacks");
-  </script></div>
-  <script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
-  <noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-  <!-- /Yandex.Metrika counter -->
-  <!-- AdHands -->
-  <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
-  <script type="text/javascript">
-      var report = new adhandsReport ('http://sedu.adhands.ru/site/');
-      report.id('1053');
-      report.send();
+    })(window, "yandex_metrika_callbacks");
   </script>
-  <noscript>
-  <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
-  </noscript>
-  <!-- /AdHands -->
-  <script type="text/javascript">
-  (function() {
-  document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>');
+</div>
+<script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
+<noscript>
+  <div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
+<!-- /Yandex.Metrika counter -->
+<!-- AdHands -->
+<script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
+<script type="text/javascript">
+  var report = new adhandsReport('http://sedu.adhands.ru/site/');
+  report.id('1053');
+  report.send();
+</script>
+<noscript>
+  <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123"
+       style="display:none;">
+</noscript>
+<!-- /AdHands -->
+<script type="text/javascript">
+  (function () {
+    document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>');
   })();
-  </script>
-<?php endif ?>
+</script>
+  <?php endif ?>
 
 <?php if (has_slot('seo_counters_advance')): ?>
   <?php include_slot('seo_counters_advance') ?>
-<?php endif ?>
-  </body>
+  <?php endif ?>
+</body>
 </html>

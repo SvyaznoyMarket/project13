@@ -4,7 +4,7 @@ class UserOrder extends BaseUserData
 {
   function __construct($parameters = array())
   {
-    $parameters = myToolkit::arrayDeepMerge(array('order' => array(), ), $parameters);
+    $parameters = myToolkit::arrayDeepMerge(array('order' => array(),), $parameters);
     $this->parameterHolder = new sfParameterHolder();
     $this->parameterHolder->add($parameters);
   }
@@ -15,8 +15,7 @@ class UserOrder extends BaseUserData
     //$order = new Order();
     //$order->fromArray($this->parameterHolder->get('order', array()));
 
-    if (isset($order['id']) && !empty($order['id']))
-    {
+    if (isset($order['id']) && !empty($order['id'])) {
       $result = OrderTable::getInstance()->getById($order['id']);
     }
     else

@@ -1,1112 +1,1130 @@
-$(document).ready(function(){
-	/* mobile fix for Lbox position='fixed' */
-	var clientBrowser = new brwsr()
-	if( clientBrowser.isAndroid || clientBrowser.isOSX4 ) {
-		if( clientBrowser.isOpera ) {
-			$('.lightbox').hide()
-		}
-		$('.lightbox').css('position','absolute')
-		var innerHeightM = ( clientBrowser.isOSX4 ) ? window.innerHeight : document.documentElement.clientHeight
-		var innerWidthM  = ( clientBrowser.isOSX4 ) ? window.innerWidth  : document.documentElement.clientWidth
-		if(  clientBrowser.isOSX4  )
-			$('.lightbox').css('top', window.pageYOffset + innerHeightM -41)
-		if ( Math.abs(window.orientation) === 90 ) {
-			var inittopv = innerHeightM - 41
-			var inittoph = innerWidthM  - 41
-		} else {
-			var inittoph = innerHeightM - 41
-			var inittopv = innerWidthM  - 41
-		}
+$(document).ready(function () {
+    /* mobile fix for Lbox position='fixed' */
+    var clientBrowser = new brwsr()
+    if (clientBrowser.isAndroid || clientBrowser.isOSX4) {
+        if (clientBrowser.isOpera) {
+            $('.lightbox').hide()
+        }
+        $('.lightbox').css('position', 'absolute')
+        var innerHeightM = ( clientBrowser.isOSX4 ) ? window.innerHeight : document.documentElement.clientHeight
+        var innerWidthM = ( clientBrowser.isOSX4 ) ? window.innerWidth : document.documentElement.clientWidth
+        if (clientBrowser.isOSX4)
+            $('.lightbox').css('top', window.pageYOffset + innerHeightM - 41)
+        if (Math.abs(window.orientation) === 90) {
+            var inittopv = innerHeightM - 41
+            var inittoph = innerWidthM - 41
+        } else {
+            var inittoph = innerHeightM - 41
+            var inittopv = innerWidthM - 41
+        }
 
-		window.addEventListener("orientationchange", setPosLbox, false)
-		window.addEventListener("scroll", setPosLbox, false)
-		window.onscroll = setPosLbox
+        window.addEventListener("orientationchange", setPosLbox, false)
+        window.addEventListener("scroll", setPosLbox, false)
+        window.onscroll = setPosLbox
 
-		function setPosLbox() {
-			if( !window.pageYOffset ){
-				$('.lightbox').css('top', ( Math.abs(window.orientation) === 90 ) ? inittopv : inittoph )
-			} else {
-				innerHeightM = ( clientBrowser.isOSX4 ) ? window.innerHeight : document.documentElement.clientHeight
-				$('.lightbox').css('top', window.pageYOffset + innerHeightM -41)
-			}
-		}
-
-	} // isAndroid || isOSX4
-
-	/* Authorization process */
-	$('.open_auth-link').bind('click', function(e) {
-		e.preventDefault()
-		
-		var el = $(this)
-		window.open(el.attr('href'), 'oauthWindow', 'status = 1, width = 540, height = 420').focus()
-	})
-		
-	$('#auth-link').click(function() {
-		$('#auth-block').lightbox_me({
-			centered: true,
-			onLoad: function() {
-				$('#auth-block').find('input:first').focus()
-			}
-		})
-		return false
-	})
-
-	;(function($) {
-		$.fn.warnings = function() {
-			var rwn = $('<strong id="ruschars" class="pswwarning">RUS</strong>')
-			rwn.css({
-				'border': '1px solid red',
-				'color': 'red',
-				'border-radius': '3px',
-				'background-color':'#fff',
-				'position': 'absolute',
-				'height': '16px',
-				'padding': '1px 3px',
-				'margin-top': '2px'
-			})
-			var cln = rwn.clone().attr('id','capslock').html('CAPS LOCK').css('marginLeft', '-78px')
-
-			$(this).keypress(function(e) {
-				var s = String.fromCharCode( e.which )
-				if ( s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey ) {
-					if( !$('#capslock').length ) $(this).after(cln)
-				} else {
-					if( $('#capslock').length ) $('#capslock').remove()
-				}
-		  })
-		  $(this).keyup(function(e) {
-				if( /[а-яА-ЯёЁ]/.test( $(this).val() ) ) {
-					if( !$('#ruschars').length ) {
-						if( $('#capslock').length )
-							rwn.css('marginLeft','-116px')
-						else
-							rwn.css('marginLeft','-36px')
-						$(this).after(rwn)
-					}
-				} else {
-					if( $('#ruschars').length ) $('#ruschars').remove()
-				}
-		  })
-		}
-	})(jQuery);
-
-  $('#signin_password').warnings()
-
-  $('#login-form, #register-form')
-	.data('redirect', true)
-	.bind('submit', function(e, param) {
-		e.preventDefault()
-		var form = $(this) //$(e.target)
-		form.find('[type="submit"]:first')
-			.attr('disabled', true)
-			.val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...')
-		var wholemessage = form.serializeArray()
-		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val()
-		
-		function authFromServer(response) {
-          if ( response.success ) {
-            if ( form.data('redirect') ) {
-              if (response.url) {
-                window.location = response.url
-              } else {
-                form.unbind('submit')
-                form.submit()
-              }
+        function setPosLbox() {
+            if (!window.pageYOffset) {
+                $('.lightbox').css('top', ( Math.abs(window.orientation) === 90 ) ? inittopv : inittoph)
             } else {
-              $('#auth-block').trigger('close')
+                innerHeightM = ( clientBrowser.isOSX4 ) ? window.innerHeight : document.documentElement.clientHeight
+                $('.lightbox').css('top', window.pageYOffset + innerHeightM - 41)
             }
-          } else {
-            form.html( $(response.data.content).html() )
-          }
-		}
-		
-		$.ajax({
-			type: 'POST',
-			url: form.attr('action'),
-			data: wholemessage,
-			success: authFromServer
-		})
-
-      /* RETIRED
-      form.ajaxSubmit({
-        async: false,
-        data: {
-          redirect_to: form.find('[name="redirect_to"]:first').val()
-        },
-        success: function(response) {
-          if (true == response.success)
-          {
-            if (form.data('redirect')) {
-              if (response.url) {
-                window.location = response.url
-              }
-              else {
-                form.unbind('submit')
-                form.submit()
-              }
-            }
-            else {
-              $('#auth-block').trigger('close')
-            }
-          }
-          else {
-            form.html($(response.data.content).html())
-          }
         }
-      })
-      */
+
+    } // isAndroid || isOSX4
+
+    /* Authorization process */
+    $('.open_auth-link').bind('click', function (e) {
+        e.preventDefault()
+
+        var el = $(this)
+        window.open(el.attr('href'), 'oauthWindow', 'status = 1, width = 540, height = 420').focus()
     })
 
-	$('#forgot-pwd-trigger').live('click', function(){
-		$('#reset-pwd-form').show();
-		$('#reset-pwd-key-form').hide();
-		$('#login-form').hide();
-		return false;
-	})
-
-	$('#remember-pwd-trigger,#remember-pwd-trigger2').click(function(){
-		$('#reset-pwd-form').hide();
-		$('#reset-pwd-key-form').hide();
-		$('#login-form').show();
-		return false;
-	})
-
-	$('#reset-pwd-form, #auth_forgot-form').submit(function(){
-		var form = $(this);
-		form.find('.error_list').html('Запрос отправлен. Идет обработка...');
-		form.find('.whitebutton').attr('disabled', 'disabled')
-		$.post(form.prop('action'), form.serializeArray(), function(resp){
-			if (resp.success === true) {
-				//$('#reset-pwd-form').hide();
-				//$('#login-form').show();
-				//alert('Новый пароль был вам выслан по почте или смс');
-				var resetForm = $('#reset-pwd-form > div')
-				resetForm.find('input').remove()
-				resetForm.find('.pb5').remove()
-				resetForm.find('.error_list').html('Новый пароль был вам выслан по почте или смс!')
-			} else {
-				var txterr = ( resp.error !== '' ) ? resp.error : 'Вы ввели неправильные данные'
-				form.find('.error_list').text( txterr );
-			}
-		}, 'json');
-
-		return false;
-	})
-	/* RETIRED
-	$('#reset-pwd-key-form').submit(function(){
-		var form = $(this);
-		form.find('.error_list').html('');
-		$.post(form.prop('action'), form.serializeArray(), function(resp){
-			if (resp.success == true) {
-				$('#reset-pwd-form').hide();
-				$('#reset-pwd-key-form').hide();
-				$('#login-form').show();
-				alert('Новый пароль был вам выслан по почте или смс');
-			} else {
-				form.find('.error_list').html('Вы ввели неправильный ключ');
-			}
-		}, 'json');
-		return false;
-	})	
-	*/
-	
-	/* Infinity scroll */
-	var ableToLoad = true
-	var compact = $("div.goodslist").length
-	function liveScroll( lsURL, pageid ) {
-		var params = []
-		if( $('.bigfilter.form').length && ( location.href.match(/_filter/) || location.href.match(/_tag/) ) )
-			params = $('.bigfilter.form').parent().serializeArray()
-		lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
-		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
-		var loader =
-			"<div id='ajaxgoods' class='bNavLoader'>" +
-				"<div class='bNavLoader__eIco'><img src='/images/ajar.gif'></div>" +
-				"<div class='bNavLoader__eM'>" +
-					"<p class='bNavLoader__eText'>Подождите немного</p>"+
-					"<p class='bNavLoader__eText'>Идет загрузка</p>"+
-				"</div>" +
-			"</div>"
-		tmpnode.after( loader )
-
-		if( $("#sorting").length ) {
-			params.push( { name:'sort', value : $("#sorting").data('sort') })
-		}
-
-		$.get( lsURL, params, function(data){
-			if ( data != "" && !data.data ) { // JSON === error
-				ableToLoad = true
-				if( compact )
-					tmpnode.append(data)
-				else
-					tmpnode.after(data)
-			}
-			$('#ajaxgoods').remove()
-			if( $('#dlvrlinks').length ) {
-				var coreid = []
-				var nodd = $('<div>').html( data )
-				nodd.find('div.boxhover, div.goodsboxlink').each( function() {
-					var cid = $(this).data('cid') || 0
-					if( cid )
-						coreid.push( cid )
-				})
-				dlvrajax( coreid )
-			}
-		})
-	}
-
-	if( $('div.allpager').length ) {
-		$('div.allpager').each(function() {
-			var lsURL = $(this).data('url')
-			var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
-			var vinit = vnext - 1
-			var vlast = parseInt('0' + $(this).data('lastpage') , 10)
-			function checkScroll(){
-				if ( ableToLoad && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
-					ableToLoad = false
-					if( vlast + vinit > vnext )
-						liveScroll( lsURL, ((vnext % vlast) ? (vnext % vlast) : vnext ))
-					vnext += 1
-				}
-			}
-			if( location.href.match(/sort=/) &&  location.href.match(/page=/) ) { // Redirect on first in sort case
-				$(this).bind('click', function(){
-					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
-					location.href = location.href.replace(/page=\d+/,'')
-				})
-			} else {
-				$(this).bind('click', function(){
-					docCookies.setItem( false, 'infScroll', 1, 4*7*24*60*60, '/' )
-					var next = $('div.pageslist:first li:first')
-					if( next.hasClass('current') )
-						next = next.next()
-					var next_a = next.find('a')
-									.html('<span>123</span>')
-									.addClass('borderedR')
-					next_a.attr('href', next_a.attr('href').replace(/page=\d+/,'') )
-	
-					$('div.pageslist li').remove()
-					$('div.pageslist ul').append( next )
-										 .find('a')
-										 .bind('click', function(){
-										 console.info('infScroll')
-											docCookies.removeItem( 'infScroll' )
-										  })
-					$('div.allpager').addClass('mChecked')
-					checkScroll()
-					$(window).scroll( checkScroll )
-				})
-			}
-		})
-
-		if( docCookies.hasItem( 'infScroll' ) )
-			$('div.allpager:first').trigger('click')
-	}
-	
-	/* AJAX */
-	$('body').append('<div style="display:none"><img src="/images/error_ajax.gif" alt=""/></div>')
-	var errorpopup = function( txt ) {
-	var block =	'<div id="ajaxerror" class="popup">' +
-					'<i class="close" title="Закрыть">Закрыть</i>' +
-					'<div class="popupbox width650 height170">' +
-						'<h2 class="pouptitle">Непредвиденная ошибка</h2><div class="clear"></div>' +
-						'<div class="fl"><div class="font16 pb20 width345"> Что-то произошло, но мы постараемся это починить :) Попробуйте повторить ваше последнее действие еще раз.<br/>' +
-						'Причина ошибки: ' + txt + ' </div></div>' +
-						'<div class="clear"></div><div style="position:absolute; right:30px; top: 20px; margin-bottom:20px;"><img src="/images/error_ajax.gif" width="" height="" alt=""/></div>' +
-					'</div>' +
-				'</div>	'
-		$('body').append( $(block) )
-		$('#ajaxerror').lightbox_me({
-		  centered: true,
-		  onClose: function(){
-		  		$('#ajaxerror').remove()
-		  	}
-		})
-	}
-	/* RETIRED
-	$.ajaxPrefilter(function( options ) {
-		if( !options.url.match('search') )
-			options.url += '?ts=' + new Date().getTime()
-	})
-
-	$('body').ajaxError(function(e, jqxhr, settings, exception) {
-		$('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
-	})
-	*/
-
-	$.ajaxSetup({
-		timeout: 10000,
-		statusCode: {
-			404: function() {
-				errorpopup(' 404 ошибка, страница не найдена')
-			},
-			401: function() {
-				if( $('#auth-block').length ) {
-					$('#auth-block').lightbox_me({
-						centered: true,
-						onLoad: function() {
-							$('#auth-block').find('input:first').focus()
-						}
-					})
-				} else
-					errorpopup(' 401 ошибка, авторизуйтесь заново')
-			},
-			500: function() {
-				errorpopup(' сервер перегружен')
-			},
-			503: function() {
-				errorpopup(' 503 ошибка, сервер перегружен')
-			},
-			504: function() {
-				errorpopup(' 504 ошибка, проверьте соединение с интернетом')
-			}
-
-		  },
-		error: function (jqXHR, textStatus, errorThrown) {
-			if( jqXHR.statusText == 'error' )
-				console.error(' неизвестная ajax ошибка')
-			else if ( textStatus=='timeout' )
-				;//errorpopup(' проверьте соединение с интернетом')
-		}
-	})
-	
-	function getRegions() {
-		$.getJSON( '/region/init', function(data) {
-			if( !data.success ) 
-				return false
-			var cities = data.data
-			var cityPopup = $('<div class="bCityPopupWrap">').html(
-				'<div class="hideblock bCityPopup">'+
-					'<i title="Закрыть" class="close">Закрыть</i>'+
-					'<div class="title">Привет, из какого ты города?</div>'+				
-				'</div>'+
-			'</div>')
-			for( var ci = 0, cl = cities.length; ci < cl; ci++ ) {
-				if( typeof( cities[ci].link ) === 'undefined' || typeof( cities[ci].name ) === 'undefined' )
-					continue
-				var cnode = $('<div>').append( $('<a>').attr( 'href', cities[ci].link ).text( cities[ci].name ) )
-				if( typeof( cities[ci].is_active ) !== 'undefined' ) {
-					cnode.addClass('bCityPopup__eCurrent')
-					cityPopup.find('.title').after( cnode )
-				} else {
-					cnode.addClass('bCityPopup__eBlock')
-					cityPopup.find('div:first').append( cnode )
-				}
-			}
-			cityPopup.css('display','none').appendTo( $('body') )
-			paintRegions()
-		})	
-	}
-	
-	function paintRegions() {
-		$('.graying').show()
-		$('.bCityPopupWrap').show()
-		$('body').delegate( '.bCityPopupWrap .close', 'click', function() {
-			$('.graying').hide()
-			$('.bCityPopupWrap').hide()
-		})
-	}
-	
-	$('#jsregion').click( function() {
-		if( !$(this).data('run') ) {
-			$(this).data('run', true)
-			getRegions()
-		} else {
-			if( $('.bCityPopupWrap').length )
-				paintRegions()
-		}
-		return false
-	})
-	
-	/* GEOIP fix */
-	if( !docCookies.hasItem('geoshop') ) {
-		getRegions()
-	}
-	
-	/* RETIRED
-	var regionlink = $('.regionselect .regionlink:first');
-	var regionlist = $('.regionselect .regionlist');
-	var userag    = navigator.userAgent.toLowerCase()
-	var isAndroid = userag.indexOf("android") > -1
-	var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )
-	if( isAndroid || isOSX ) {
-		regionlink.click(function(){
-			regionlink.hide();
-			regionlist.show();
-			return false
-		});
-	} else {
-		regionlink.mouseenter(function(){
-			regionlink.hide();
-			regionlist.show();
-		});
-		regionlist.mouseleave(function(){
-			regionlist.hide();
-			regionlink.show();
-		});
-	}
-
-	$('.regionchoice a').click( function() {
-		var button = this
-    var form = $('form#region')
-    form.attr('action', button.href)
-    form.submit()
-
-		return false
-	})
-	*/
-	
-	/* Services Toggler */
-	if( $('.serviceblock').length ) {
-		$('.info h3').css('cursor', 'pointer')
-		.click( function() {
-			$(this).parent().find('> div').toggle()
-		})
-		if( $('.info h3').length === 1 )
-			$('.info h3').trigger('click')
-	}
-	
-	/* prettyCheckboxes */
-    $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes()
-
-	/* Rotator */
-	if($('#rotator').length) {
-		$('#rotator').jshowoff({ speed:8000, controls:false })
-		$('.jshowoff-slidelinks a').wrapInner('<span/>')
-	}
-	
-	/* tags */
-	$('.fm').toggle( function(){
-		$(this).parent().find('.hf').slideDown()
-		$(this).html('скрыть')
-	}, function(){
-		$(this).parent().find('.hf').slideUp()
-		$(this).html('еще...')
-	})
-	
-	/* search tags */
-	if( $('#plus10').length ) {
-		if( $('#filter_product_type-form li').length < 10 )
-			$('#plus10').hide()
-		else
-			$('#plus10').html( 'еще '+ ($('#filter_product_type-form .hf').length % 10 + 1) +' из ' + $('#filter_product_type-form li').length )
-		$('#plus10').click( function(){
-			$('#filter_product_type-form .hf').slice(0,10).removeClass('hf')
-			if ( !$('#filter_product_type-form .hf').length )
-				$(this).parent().hide()
-			return false
-		})
-	}
-	
-	/* Search */
-	$('.search-form').bind('submit', function(e) {
-		e.preventDefault()
-		var form = $(this)
-		if (form.find('input:[name="q"]').val().length < 2)
-			return
-		if( form.find('input:[name="q"]').val() === 'Поиск среди 20 000 товаров' )
-			return
-		var wholemessage = form.serializeArray()
-		function getSearchResults( response ) {
-				if( response.success ) {
-					form.unbind('submit')
-					form.submit()
-				} else {
-					var el = $(response.data.content)
-					el.appendTo('body')
-					$('#search_popup-block').lightbox_me({
-						centered: true//,
-						//onLoad: function() { $(this).find('input:first').focus() }
-					})
-				}
-		}
-		$.ajax({
-			type: 'GET',
-			url: form.attr('action'),
-			data: wholemessage,
-			success: getSearchResults
-		})
-		/* RETIRED
-		form.ajaxSubmit({
-			async: false,
-			success: function(response) {
-				if (true === response.success) {
-					form.unbind('submit')
-					form.submit()
-				}
-				else {
-					var el = $(response.data.content)
-					el.appendTo('body')
-					$('#search_popup-block').lightbox_me({
-					centered: true,
-					onLoad: function() {
-					//$(this).find('input:first').focus()
-					}
-					})
-				}
-			}
-		})
-		*/
-	})
-
-	$('.bCtg__eMore').bind('click', function(e) {
-		e.preventDefault()
-		var el = $(this)
-		el.parent().find('li.hf').slideToggle()
-		var link = el.find('a')
-		link.text('еще...' == link.text() ? 'скрыть' : 'еще...')
-	})
-  
-	/* Side Filter Block handlers */
-	$(".bigfilter dt").click(function(){
-		$(this).next(".bigfilter dd").slideToggle(200)
-		$(this).toggleClass("current")
-		return false
-	})
-	
-	$(".f1list dt B").click(function(){
-		$(this).parent("dt").next(".f1list dd").slideToggle(200)
-		$(this).toggleClass("current")
-		return false
-	})
-
-	$(".tagslist dt").click(function(){
-		$(this).next(".tagslist dd").slideToggle(200)
-		$(this).toggleClass("current")
-		return false
-	})
-	$('.product_filter-block input:submit').addClass('mDisabled')
-	var launch = false
-	$('.product_filter-block').change(function(){
-		activateForm()
-	})
-	function activateForm() {
-		if ( !launch ) {
-			$('.product_filter-block input:submit').removeClass('mDisabled')
-			launch = true
-		}
-	}
-	
-	/* Side Filters */
-    var filterlink = $('.filter .filterlink:first')
-	var filterlist = $('.filter .filterlist')
-	if( clientBrowser.isTouch ) {
-		filterlink.click(function(){
-			filterlink.hide()
-			filterlist.show()
-			return false
-		})
-	} else {
-		filterlink.mouseenter(function(){
-			filterlink.hide()
-			filterlist.show()
-		})
-		filterlist.mouseleave(function(){
-			filterlist.hide()
-			filterlink.show()
-		})
-	}	
-	
-	var ajaxFilterCounter = 0
-	
-	$('.product_filter-block')
-    .bind('change', function(e) {
-        var el = $(e.target)
-
-        if (el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox']))) {
-            el.trigger('preview')
-        }
-    })
-    .bind('preview', function(e) {
-        var el = $(e.target)
-        var form = $(this)
-        ajaxFilterCounter++
-		function getFiltersResult (result) {
-			ajaxFilterCounter--
-			if( ajaxFilterCounter > 0 )
-				return
-			if( result.success ) {
-                $('.product_count-block').remove()
-                switch (result.data % 10) {
-                  case 1:
-                    ending = 'ь';
-                    break
-                  case 2: case 3: case 4:
-                    ending = 'и';
-                    break
-                  default:
-                    ending = 'ей';
-                    break
-                }
-                switch (result.data % 100) {
-                  case 11: case 12: case 13: case 14:
-                    ending = 'ей';
-                    break
-                }
-                var firstli = null
-                if ( el.is("div") ) //triggered from filter slider !
-                	firstli = el
-                else
-	                firstli = el.parent().find('> label').first()
-                firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
-                $('.product_count-block')
-					.hover(
-						function() {
-							$(this).stopTime('hide')
-						},
-						function() {
-							$(this).oneTime(2000, 'hide', function() {
-								$(this).remove()
-							})
-						}
-						)
-					.click(function() {
-						form.submit()
-					})
-					.trigger('mouseout')
-            }
-        }
-
-		var wholemessage = form.serializeArray()
-		wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val()
-		$.ajax({
-			type: 'GET',
-			url: form.data('action-count'),
-			data: wholemessage,
-			success: getFiltersResult
-		})
-		/* RETIRED
-        function getData() {
-            var d = $.Deferred();			
-            form.ajaxSubmit({
-                url: form.data('action-count'),
-                success: d.resolve,
-                error: d.reject
-            })
-
-            return d.promise();
-        }
-
-        $.when(getData())
-        .then(function(result) {
-            if (true === result.success) {
-                $('.product_count-block').remove();
-                //el.parent().find('> label').first().after('<div class="product_count-block" style="position: absolute; background: #fff; padding: 4px; opacity: 0.9; border-radius: 5px; border: 1px solid #ccc; cursor: pointer;">Найдено '+result.data+'</div>')
-                switch (result.data % 10) {
-                  case 1:
-                    ending = 'ь';
-                    break
-                  case 2: case 3: case 4:
-                    ending = 'и';
-                    break
-                  default:
-                    ending = 'ей';
-                    break
-                }
-                switch (result.data % 100) {
-                  case 11: case 12: case 13: case 14:
-                    ending = 'ей';
-                    break
-                }
-                var firstli = null
-                if ( el.is("div") ) //triggered from filter slider !
-                	firstli = el
-                else
-	                firstli = el.parent().find('> label').first()
-                firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
-                $('.product_count-block')
-                .hover(
-                    function() {
-                        $(this).stopTime('hide')
-                    },
-                    function() {
-                        $(this).oneTime(2000, 'hide', function() {
-                            $(this).remove()
-                        })
-                    }
-                    )
-                .click(function() {
-                    form.submit()
-                })
-                .trigger('mouseout')
+    $('#auth-link').click(function () {
+        $('#auth-block').lightbox_me({
+            centered:true,
+            onLoad:function () {
+                $('#auth-block').find('input:first').focus()
             }
         })
-        .fail(function(error) {})
-        */
-    })
-    
-	/* Sliders */
-	$('.sliderbox').each( function(){
-		var sliderRange = $('.filter-range', this)
-		var filterrange = $(this)
-		var papa = filterrange.parent()
-		var mini = $('.slider-from',  $(this).next() ).val() * 1
-		var maxi = $('.slider-to',  $(this).next() ).val() * 1
-		var informator = $('.slider-interval', $(this).next())
-		var from = papa.find('input:first')
-		var to   = papa.find('input:eq(1)')
-		informator.html( printPrice( from.val() ) + ' - ' + printPrice( to.val() ) )
-		var stepf = (/price/.test( from.attr('id') ) ) ?  10 : 1
-		sliderRange.slider({
-			range: true,
-			step: stepf,
-			min: mini,
-			max: maxi,
-			values: [ from.val()  ,  to.val() ],
-			slide: function( e, ui ) {
-				informator.html( printPrice( ui.values[ 0 ] ) + ' - ' + printPrice( ui.values[ 1 ] ) )
-				from.val( ui.values[ 0 ] )
-				to.val( ui.values[ 1 ] )
-			},
-			change: function(e, ui) {
-				if ( parseFloat(to.val()) > 0 ){
-					from.parent().trigger('preview')
-					activateForm()
-				}
-			}
-		})
-
-	})
-
-	/* RETIRED
-    $(this).find('.ratingbox A').hover(function(){
-        $("#ratingresult").html(this.innerHTML)
         return false
     })
-	*/
-	
-    $(".goodsbar .link1").bind( 'click.css', function()   {
+
+    ;
+    (function ($) {
+        $.fn.warnings = function () {
+            var rwn = $('<strong id="ruschars" class="pswwarning">RUS</strong>')
+            rwn.css({
+                'border':'1px solid red',
+                'color':'red',
+                'border-radius':'3px',
+                'background-color':'#fff',
+                'position':'absolute',
+                'height':'16px',
+                'padding':'1px 3px',
+                'margin-top':'2px'
+            })
+            var cln = rwn.clone().attr('id', 'capslock').html('CAPS LOCK').css('marginLeft', '-78px')
+
+            $(this).keypress(function (e) {
+                var s = String.fromCharCode(e.which)
+                if (s.toUpperCase() === s && s.toLowerCase() !== s && !e.shiftKey) {
+                    if (!$('#capslock').length) $(this).after(cln)
+                } else {
+                    if ($('#capslock').length) $('#capslock').remove()
+                }
+            })
+            $(this).keyup(function (e) {
+                if (/[а-яА-ЯёЁ]/.test($(this).val())) {
+                    if (!$('#ruschars').length) {
+                        if ($('#capslock').length)
+                            rwn.css('marginLeft', '-116px')
+                        else
+                            rwn.css('marginLeft', '-36px')
+                        $(this).after(rwn)
+                    }
+                } else {
+                    if ($('#ruschars').length) $('#ruschars').remove()
+                }
+            })
+        }
+    })(jQuery);
+
+    $('#signin_password').warnings()
+
+    $('#login-form, #register-form')
+        .data('redirect', true)
+        .bind('submit', function (e, param) {
+            e.preventDefault()
+            var form = $(this) //$(e.target)
+            form.find('[type="submit"]:first')
+                .attr('disabled', true)
+                .val('login-form' == form.attr('id') ? 'Вхожу...' : 'Регистрируюсь...')
+            var wholemessage = form.serializeArray()
+            wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val()
+
+            function authFromServer(response) {
+                if (response.success) {
+                    if (form.data('redirect')) {
+                        if (response.url) {
+                            window.location = response.url
+                        } else {
+                            form.unbind('submit')
+                            form.submit()
+                        }
+                    } else {
+                        $('#auth-block').trigger('close')
+                    }
+                } else {
+                    form.html($(response.data.content).html())
+                }
+            }
+
+            $.ajax({
+                type:'POST',
+                url:form.attr('action'),
+                data:wholemessage,
+                success:authFromServer
+            })
+
+            /* RETIRED
+             form.ajaxSubmit({
+             async: false,
+             data: {
+             redirect_to: form.find('[name="redirect_to"]:first').val()
+             },
+             success: function(response) {
+             if (true == response.success)
+             {
+             if (form.data('redirect')) {
+             if (response.url) {
+             window.location = response.url
+             }
+             else {
+             form.unbind('submit')
+             form.submit()
+             }
+             }
+             else {
+             $('#auth-block').trigger('close')
+             }
+             }
+             else {
+             form.html($(response.data.content).html())
+             }
+             }
+             })
+             */
+        })
+
+    $('#forgot-pwd-trigger').live('click', function () {
+        $('#reset-pwd-form').show();
+        $('#reset-pwd-key-form').hide();
+        $('#login-form').hide();
+        return false;
+    })
+
+    $('#remember-pwd-trigger,#remember-pwd-trigger2').click(function () {
+        $('#reset-pwd-form').hide();
+        $('#reset-pwd-key-form').hide();
+        $('#login-form').show();
+        return false;
+    })
+
+    $('#reset-pwd-form, #auth_forgot-form').submit(function () {
+        var form = $(this);
+        form.find('.error_list').html('Запрос отправлен. Идет обработка...');
+        form.find('.whitebutton').attr('disabled', 'disabled')
+        $.post(form.prop('action'), form.serializeArray(), function (resp) {
+            if (resp.success === true) {
+                //$('#reset-pwd-form').hide();
+                //$('#login-form').show();
+                //alert('Новый пароль был вам выслан по почте или смс');
+                var resetForm = $('#reset-pwd-form > div')
+                resetForm.find('input').remove()
+                resetForm.find('.pb5').remove()
+                resetForm.find('.error_list').html('Новый пароль был вам выслан по почте или смс!')
+            } else {
+                var txterr = ( resp.error !== '' ) ? resp.error : 'Вы ввели неправильные данные'
+                form.find('.error_list').text(txterr);
+            }
+        }, 'json');
+
+        return false;
+    })
+    /* RETIRED
+     $('#reset-pwd-key-form').submit(function(){
+     var form = $(this);
+     form.find('.error_list').html('');
+     $.post(form.prop('action'), form.serializeArray(), function(resp){
+     if (resp.success == true) {
+     $('#reset-pwd-form').hide();
+     $('#reset-pwd-key-form').hide();
+     $('#login-form').show();
+     alert('Новый пароль был вам выслан по почте или смс');
+     } else {
+     form.find('.error_list').html('Вы ввели неправильный ключ');
+     }
+     }, 'json');
+     return false;
+     })
+     */
+
+    /* Infinity scroll */
+    var ableToLoad = true
+    var compact = $("div.goodslist").length
+
+    function liveScroll(lsURL, pageid) {
+        var params = []
+        if ($('.bigfilter.form').length && ( location.href.match(/_filter/) || location.href.match(/_tag/) ))
+            params = $('.bigfilter.form').parent().serializeArray()
+        lsURL += '/' + pageid + '/' + (( compact ) ? 'compact' : 'expanded')
+        var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
+        var loader =
+            "<div id='ajaxgoods' class='bNavLoader'>" +
+                "<div class='bNavLoader__eIco'><img src='/images/ajar.gif'></div>" +
+                "<div class='bNavLoader__eM'>" +
+                "<p class='bNavLoader__eText'>Подождите немного</p>" +
+                "<p class='bNavLoader__eText'>Идет загрузка</p>" +
+                "</div>" +
+                "</div>"
+        tmpnode.after(loader)
+
+        if ($("#sorting").length) {
+            params.push({ name:'sort', value:$("#sorting").data('sort') })
+        }
+
+        $.get(lsURL, params, function (data) {
+            if (data != "" && !data.data) { // JSON === error
+                ableToLoad = true
+                if (compact)
+                    tmpnode.append(data)
+                else
+                    tmpnode.after(data)
+            }
+            $('#ajaxgoods').remove()
+            if ($('#dlvrlinks').length) {
+                var coreid = []
+                var nodd = $('<div>').html(data)
+                nodd.find('div.boxhover, div.goodsboxlink').each(function () {
+                    var cid = $(this).data('cid') || 0
+                    if (cid)
+                        coreid.push(cid)
+                })
+                dlvrajax(coreid)
+            }
+        })
+    }
+
+    if ($('div.allpager').length) {
+        $('div.allpager').each(function () {
+            var lsURL = $(this).data('url')
+            var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
+            var vinit = vnext - 1
+            var vlast = parseInt('0' + $(this).data('lastpage'), 10)
+
+            function checkScroll() {
+                if (ableToLoad && $(window).scrollTop() + 800 > $(document).height() - $(window).height()) {
+                    ableToLoad = false
+                    if (vlast + vinit > vnext)
+                        liveScroll(lsURL, ((vnext % vlast) ? (vnext % vlast) : vnext ))
+                    vnext += 1
+                }
+            }
+
+            if (location.href.match(/sort=/) && location.href.match(/page=/)) { // Redirect on first in sort case
+                $(this).bind('click', function () {
+                    docCookies.setItem(false, 'infScroll', 1, 4 * 7 * 24 * 60 * 60, '/')
+                    location.href = location.href.replace(/page=\d+/, '')
+                })
+            } else {
+                $(this).bind('click', function () {
+                    docCookies.setItem(false, 'infScroll', 1, 4 * 7 * 24 * 60 * 60, '/')
+                    var next = $('div.pageslist:first li:first')
+                    if (next.hasClass('current'))
+                        next = next.next()
+                    var next_a = next.find('a')
+                        .html('<span>123</span>')
+                        .addClass('borderedR')
+                    next_a.attr('href', next_a.attr('href').replace(/page=\d+/, ''))
+
+                    $('div.pageslist li').remove()
+                    $('div.pageslist ul').append(next)
+                        .find('a')
+                        .bind('click', function () {
+                            console.info('infScroll')
+                            docCookies.removeItem('infScroll')
+                        })
+                    $('div.allpager').addClass('mChecked')
+                    checkScroll()
+                    $(window).scroll(checkScroll)
+                })
+            }
+        })
+
+        if (docCookies.hasItem('infScroll'))
+            $('div.allpager:first').trigger('click')
+    }
+
+    /* AJAX */
+    $('body').append('<div style="display:none"><img src="/images/error_ajax.gif" alt=""/></div>')
+    var errorpopup = function (txt) {
+        var block = '<div id="ajaxerror" class="popup">' +
+            '<i class="close" title="Закрыть">Закрыть</i>' +
+            '<div class="popupbox width650 height170">' +
+            '<h2 class="pouptitle">Непредвиденная ошибка</h2><div class="clear"></div>' +
+            '<div class="fl"><div class="font16 pb20 width345"> Что-то произошло, но мы постараемся это починить :) Попробуйте повторить ваше последнее действие еще раз.<br/>' +
+            'Причина ошибки: ' + txt + ' </div></div>' +
+            '<div class="clear"></div><div style="position:absolute; right:30px; top: 20px; margin-bottom:20px;"><img src="/images/error_ajax.gif" width="" height="" alt=""/></div>' +
+            '</div>' +
+            '</div>	'
+        $('body').append($(block))
+        $('#ajaxerror').lightbox_me({
+            centered:true,
+            onClose:function () {
+                $('#ajaxerror').remove()
+            }
+        })
+    }
+    /* RETIRED
+     $.ajaxPrefilter(function( options ) {
+     if( !options.url.match('search') )
+     options.url += '?ts=' + new Date().getTime()
+     })
+
+     $('body').ajaxError(function(e, jqxhr, settings, exception) {
+     $('#ajaxerror div.fl').append('<small>'+ settings.url.replace(/(.*)\?ts=/,'')+'</small>')
+     })
+     */
+
+    $.ajaxSetup({
+        timeout:10000,
+        statusCode:{
+            404:function () {
+                errorpopup(' 404 ошибка, страница не найдена')
+            },
+            401:function () {
+                if ($('#auth-block').length) {
+                    $('#auth-block').lightbox_me({
+                        centered:true,
+                        onLoad:function () {
+                            $('#auth-block').find('input:first').focus()
+                        }
+                    })
+                } else
+                    errorpopup(' 401 ошибка, авторизуйтесь заново')
+            },
+            500:function () {
+                errorpopup(' сервер перегружен')
+            },
+            503:function () {
+                errorpopup(' 503 ошибка, сервер перегружен')
+            },
+            504:function () {
+                errorpopup(' 504 ошибка, проверьте соединение с интернетом')
+            }
+
+        },
+        error:function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.statusText == 'error')
+                console.error(' неизвестная ajax ошибка')
+            else if (textStatus == 'timeout')
+                ;//errorpopup(' проверьте соединение с интернетом')
+        }
+    })
+
+    function getRegions() {
+        $.getJSON('/region/init', function (data) {
+            if (!data.success)
+                return false
+            var cities = data.data
+            var cityPopup = $('<div class="bCityPopupWrap">').html(
+                '<div class="hideblock bCityPopup">' +
+                    '<i title="Закрыть" class="close">Закрыть</i>' +
+                    '<div class="title">Привет, из какого ты города?</div>' +
+                    '</div>' +
+                    '</div>')
+            for (var ci = 0, cl = cities.length; ci < cl; ci++) {
+                if (typeof( cities[ci].link ) === 'undefined' || typeof( cities[ci].name ) === 'undefined')
+                    continue
+                var cnode = $('<div>').append($('<a>').attr('href', cities[ci].link).text(cities[ci].name))
+                if (typeof( cities[ci].is_active ) !== 'undefined') {
+                    cnode.addClass('bCityPopup__eCurrent')
+                    cityPopup.find('.title').after(cnode)
+                } else {
+                    cnode.addClass('bCityPopup__eBlock')
+                    cityPopup.find('div:first').append(cnode)
+                }
+            }
+            cityPopup.css('display', 'none').appendTo($('body'))
+            paintRegions()
+        })
+    }
+
+    function paintRegions() {
+        $('.graying').show()
+        $('.bCityPopupWrap').show()
+        $('body').delegate('.bCityPopupWrap .close', 'click', function () {
+            $('.graying').hide()
+            $('.bCityPopupWrap').hide()
+        })
+    }
+
+    $('#jsregion').click(function () {
+        if (!$(this).data('run')) {
+            $(this).data('run', true)
+            getRegions()
+        } else {
+            if ($('.bCityPopupWrap').length)
+                paintRegions()
+        }
+        return false
+    })
+
+    /* GEOIP fix */
+    if (!docCookies.hasItem('geoshop')) {
+        getRegions()
+    }
+
+    /* RETIRED
+     var regionlink = $('.regionselect .regionlink:first');
+     var regionlist = $('.regionselect .regionlist');
+     var userag    = navigator.userAgent.toLowerCase()
+     var isAndroid = userag.indexOf("android") > -1
+     var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )
+     if( isAndroid || isOSX ) {
+     regionlink.click(function(){
+     regionlink.hide();
+     regionlist.show();
+     return false
+     });
+     } else {
+     regionlink.mouseenter(function(){
+     regionlink.hide();
+     regionlist.show();
+     });
+     regionlist.mouseleave(function(){
+     regionlist.hide();
+     regionlink.show();
+     });
+     }
+
+     $('.regionchoice a').click( function() {
+     var button = this
+     var form = $('form#region')
+     form.attr('action', button.href)
+     form.submit()
+
+     return false
+     })
+     */
+
+    /* Services Toggler */
+    if ($('.serviceblock').length) {
+        $('.info h3').css('cursor', 'pointer')
+            .click(function () {
+                $(this).parent().find('> div').toggle()
+            })
+        if ($('.info h3').length === 1)
+            $('.info h3').trigger('click')
+    }
+
+    /* prettyCheckboxes */
+    $('.form input[type=checkbox],.form input[type=radio]').prettyCheckboxes()
+
+    /* Rotator */
+    if ($('#rotator').length) {
+        $('#rotator').jshowoff({ speed:8000, controls:false })
+        $('.jshowoff-slidelinks a').wrapInner('<span/>')
+    }
+
+    /* tags */
+    $('.fm').toggle(function () {
+        $(this).parent().find('.hf').slideDown()
+        $(this).html('скрыть')
+    }, function () {
+        $(this).parent().find('.hf').slideUp()
+        $(this).html('еще...')
+    })
+
+    /* search tags */
+    if ($('#plus10').length) {
+        if ($('#filter_product_type-form li').length < 10)
+            $('#plus10').hide()
+        else
+            $('#plus10').html('еще ' + ($('#filter_product_type-form .hf').length % 10 + 1) + ' из ' + $('#filter_product_type-form li').length)
+        $('#plus10').click(function () {
+            $('#filter_product_type-form .hf').slice(0, 10).removeClass('hf')
+            if (!$('#filter_product_type-form .hf').length)
+                $(this).parent().hide()
+            return false
+        })
+    }
+
+    /* Search */
+    $('.search-form').bind('submit', function (e) {
+        e.preventDefault()
+        var form = $(this)
+        if (form.find('input:[name="q"]').val().length < 2)
+            return
+        if (form.find('input:[name="q"]').val() === 'Поиск среди 20 000 товаров')
+            return
+        var wholemessage = form.serializeArray()
+
+        function getSearchResults(response) {
+            if (response.success) {
+                form.unbind('submit')
+                form.submit()
+            } else {
+                var el = $(response.data.content)
+                el.appendTo('body')
+                $('#search_popup-block').lightbox_me({
+                    centered:true//,
+                    //onLoad: function() { $(this).find('input:first').focus() }
+                })
+            }
+        }
+
+        $.ajax({
+            type:'GET',
+            url:form.attr('action'),
+            data:wholemessage,
+            success:getSearchResults
+        })
+        /* RETIRED
+         form.ajaxSubmit({
+         async: false,
+         success: function(response) {
+         if (true === response.success) {
+         form.unbind('submit')
+         form.submit()
+         }
+         else {
+         var el = $(response.data.content)
+         el.appendTo('body')
+         $('#search_popup-block').lightbox_me({
+         centered: true,
+         onLoad: function() {
+         //$(this).find('input:first').focus()
+         }
+         })
+         }
+         }
+         })
+         */
+    })
+
+    $('.bCtg__eMore').bind('click', function (e) {
+        e.preventDefault()
+        var el = $(this)
+        el.parent().find('li.hf').slideToggle()
+        var link = el.find('a')
+        link.text('еще...' == link.text() ? 'скрыть' : 'еще...')
+    })
+
+    /* Side Filter Block handlers */
+    $(".bigfilter dt").click(function () {
+        $(this).next(".bigfilter dd").slideToggle(200)
+        $(this).toggleClass("current")
+        return false
+    })
+
+    $(".f1list dt B").click(function () {
+        $(this).parent("dt").next(".f1list dd").slideToggle(200)
+        $(this).toggleClass("current")
+        return false
+    })
+
+    $(".tagslist dt").click(function () {
+        $(this).next(".tagslist dd").slideToggle(200)
+        $(this).toggleClass("current")
+        return false
+    })
+    $('.product_filter-block input:submit').addClass('mDisabled')
+    var launch = false
+    $('.product_filter-block').change(function () {
+        activateForm()
+    })
+    function activateForm() {
+        if (!launch) {
+            $('.product_filter-block input:submit').removeClass('mDisabled')
+            launch = true
+        }
+    }
+
+    /* Side Filters */
+    var filterlink = $('.filter .filterlink:first')
+    var filterlist = $('.filter .filterlist')
+    if (clientBrowser.isTouch) {
+        filterlink.click(function () {
+            filterlink.hide()
+            filterlist.show()
+            return false
+        })
+    } else {
+        filterlink.mouseenter(function () {
+            filterlink.hide()
+            filterlist.show()
+        })
+        filterlist.mouseleave(function () {
+            filterlist.hide()
+            filterlink.show()
+        })
+    }
+
+    var ajaxFilterCounter = 0
+
+    $('.product_filter-block')
+        .bind('change', function (e) {
+            var el = $(e.target)
+
+            if (el.is('input') && (-1 != $.inArray(el.attr('type'), ['radio', 'checkbox']))) {
+                el.trigger('preview')
+            }
+        })
+        .bind('preview', function (e) {
+            var el = $(e.target)
+            var form = $(this)
+            ajaxFilterCounter++
+            function getFiltersResult(result) {
+                ajaxFilterCounter--
+                if (ajaxFilterCounter > 0)
+                    return
+                if (result.success) {
+                    $('.product_count-block').remove()
+                    switch (result.data % 10) {
+                        case 1:
+                            ending = 'ь';
+                            break
+                        case 2:
+                        case 3:
+                        case 4:
+                            ending = 'и';
+                            break
+                        default:
+                            ending = 'ей';
+                            break
+                    }
+                    switch (result.data % 100) {
+                        case 11:
+                        case 12:
+                        case 13:
+                        case 14:
+                            ending = 'ей';
+                            break
+                    }
+                    var firstli = null
+                    if (el.is("div")) //triggered from filter slider !
+                        firstli = el
+                    else
+                        firstli = el.parent().find('> label').first()
+                    firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано ' + result.data + ' модел' + ending + '<br /><a>Показать</a></div>')
+                    $('.product_count-block')
+                        .hover(
+                        function () {
+                            $(this).stopTime('hide')
+                        },
+                        function () {
+                            $(this).oneTime(2000, 'hide', function () {
+                                $(this).remove()
+                            })
+                        }
+                    )
+                        .click(function () {
+                            form.submit()
+                        })
+                        .trigger('mouseout')
+                }
+            }
+
+            var wholemessage = form.serializeArray()
+            wholemessage["redirect_to"] = form.find('[name="redirect_to"]:first').val()
+            $.ajax({
+                type:'GET',
+                url:form.data('action-count'),
+                data:wholemessage,
+                success:getFiltersResult
+            })
+            /* RETIRED
+             function getData() {
+             var d = $.Deferred();
+             form.ajaxSubmit({
+             url: form.data('action-count'),
+             success: d.resolve,
+             error: d.reject
+             })
+
+             return d.promise();
+             }
+
+             $.when(getData())
+             .then(function(result) {
+             if (true === result.success) {
+             $('.product_count-block').remove();
+             //el.parent().find('> label').first().after('<div class="product_count-block" style="position: absolute; background: #fff; padding: 4px; opacity: 0.9; border-radius: 5px; border: 1px solid #ccc; cursor: pointer;">Найдено '+result.data+'</div>')
+             switch (result.data % 10) {
+             case 1:
+             ending = 'ь';
+             break
+             case 2: case 3: case 4:
+             ending = 'и';
+             break
+             default:
+             ending = 'ей';
+             break
+             }
+             switch (result.data % 100) {
+             case 11: case 12: case 13: case 14:
+             ending = 'ей';
+             break
+             }
+             var firstli = null
+             if ( el.is("div") ) //triggered from filter slider !
+             firstli = el
+             else
+             firstli = el.parent().find('> label').first()
+             firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
+             $('.product_count-block')
+             .hover(
+             function() {
+             $(this).stopTime('hide')
+             },
+             function() {
+             $(this).oneTime(2000, 'hide', function() {
+             $(this).remove()
+             })
+             }
+             )
+             .click(function() {
+             form.submit()
+             })
+             .trigger('mouseout')
+             }
+             })
+             .fail(function(error) {})
+             */
+        })
+
+    /* Sliders */
+    $('.sliderbox').each(function () {
+        var sliderRange = $('.filter-range', this)
+        var filterrange = $(this)
+        var papa = filterrange.parent()
+        var mini = $('.slider-from', $(this).next()).val() * 1
+        var maxi = $('.slider-to', $(this).next()).val() * 1
+        var informator = $('.slider-interval', $(this).next())
+        var from = papa.find('input:first')
+        var to = papa.find('input:eq(1)')
+        informator.html(printPrice(from.val()) + ' - ' + printPrice(to.val()))
+        var stepf = (/price/.test(from.attr('id')) ) ? 10 : 1
+        sliderRange.slider({
+            range:true,
+            step:stepf,
+            min:mini,
+            max:maxi,
+            values:[ from.val()  , to.val() ],
+            slide:function (e, ui) {
+                informator.html(printPrice(ui.values[ 0 ]) + ' - ' + printPrice(ui.values[ 1 ]))
+                from.val(ui.values[ 0 ])
+                to.val(ui.values[ 1 ])
+            },
+            change:function (e, ui) {
+                if (parseFloat(to.val()) > 0) {
+                    from.parent().trigger('preview')
+                    activateForm()
+                }
+            }
+        })
+
+    })
+
+    /* RETIRED
+     $(this).find('.ratingbox A').hover(function(){
+     $("#ratingresult").html(this.innerHTML)
+     return false
+     })
+     */
+
+    $(".goodsbar .link1").bind('click.css', function () {
         $(this).addClass("link1active")
     })
 
-	/* Top Menu */
-	if( $('.topmenu').length ) {
-		$.get('/category/main_menu', function(data){
-			$('.bHeader').append( data )
-		})
-	}
-
-	var idcm          = null // setTimeout
-	var currentMenu = 0 // ref= product ID
-	function showList( self ) {	
-		if(	$(self).data('run') ) {
-			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 - 15
-			var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
-			if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
-				punkt.show().find('.corner').css('left', dmenu)
-		}
-	}
-	if( clientBrowser.isTouch ) {
-		$('.topmenu a.bToplink').bind ('click', function(){
-			if( $(this).data('run') )
-				return true
-			$('.extramenu').hide()	
-			$('.topmenu a.bToplink').each( function() { $(this).data('run', false) } )
-			$(this).data('run', true)
-			showList( this )
-			return false
-		})
-	} else {	
-		$('.topmenu a.bToplink').bind( {
-			'mouseenter': function() {
-				$('.extramenu').hide()
-				var self = this				
-				$(self).data('run', true)
-				currentMenu = $(self).attr('id').replace(/\D+/,'')
-				idcm = setTimeout( function() { showList( self ) }, 300)
-			},
-			'mouseleave': function() {
-				var self = this
-	
-				if(	$(self).data('run') ) {
-					clearTimeout( idcm )
-					$(self).data('run',false)
-				}
-				//currentMenu = 0
-			}
-		})
-	}
-
-	$(document).click( function(e){
-		if (currentMenu) {
-			if( e.which == 1 )
-				$( '#extramenu-root-'+currentMenu+'').data('run', false).hide()
-		}
-	})
-
-	$('.extramenu').click( function(e){
-		e.stopPropagation()
-	})
-	
-	/* ---- */
-	if( $('.error_list').length && $('.basketheader').length ) {
-		$.scrollTo( $('.error_list:first'), 300 )
-	}
-
-	/* Cards Carousel  */
-	function cardsCarousel ( nodes ) {
-		var self = this
-		var current = 1
-
-		var wi  = nodes.width*1
-		var viswi = nodes.viswidth*1
-
-		if( !isNaN($(nodes.times).html()) )
-			var max = $(nodes.times).html() * 1
-		else
-			var max = Math.ceil(wi / viswi)			
-		var buffer = 2
-		var ajaxflag = false
-
-		this.notify = function() {
-			$(nodes.crnt).html( current )
-			if ( current == 1 )
-				$(nodes.prev).addClass('disabled')
-			else
-				$(nodes.prev).removeClass('disabled')
-			if ( current == max )
-				$(nodes.next).addClass('disabled')
-			else
-				$(nodes.next).removeClass('disabled')
-		}
-
-		var shiftme = function() {
-			var boxes = $(nodes.wrap).find('.goodsbox')
-			$(boxes).hide()
-			var le = boxes.length
-			for(var j = (current - 1) * viswi ; j < current  * viswi ; j++) {
-				boxes.eq( j ).show()
-			}
-		}
-
-		$(nodes.next).bind('click', function() {
-			if( current < max && !ajaxflag ) {
-				if( current + 1 == max ) { //the last pull is loaded , so special shift
-					var boxes = $(nodes.wrap).find('.goodsbox')
-					$(boxes).hide()
-					var le = boxes.length
-					var rest = ( wi % viswi ) ?  wi % viswi  : viswi
-					for(var j = 1; j <= rest; j++)
-						boxes.eq( le - j ).show()
-					current++
-				} else {
-					if( current + 1 >= buffer ) { // we have to get new pull from server
-						$(nodes.next).css('opacity','0.4') // addClass dont work ((
-						ajaxflag = true
-						$.get( $(nodes.prev).attr('data-url') + '?page=' + (buffer+1), function(data) {
-							buffer++
-							$(nodes.next).css('opacity','1')
-							ajaxflag = false
-							var tr = $('<div>')
-							$(tr).html( data )
-							$(tr).find('.goodsbox').css('display','none')
-							$(nodes.wrap).html( $(nodes.wrap).html() + tr.html() )
-							tr = null
-						})
-						current++
-						shiftme()
-					} else { // we have new portion as already loaded one
-						current++
-						shiftme() // TODO repair
-					}
-				}
-				self.notify()
-			}
-			return false
-		})
-
-		$(nodes.prev).click( function() {
-			if( current > 1 ) {
-				current--
-				shiftme()
-				self.notify()
-			}
-			return false
-		})
-
-	} // cardsCarousel object
-
-	$('.carouseltitle').each( function(){
-		if( $(this).hasClass('carbig') ) {
-			var tmpline = new cardsCarousel ({
-					'prev'  : $(this).find('.back'),
-					'next'  : $(this).find('.forvard'),
-					'crnt'  : $(this).find('span:first'),
-					'times' : $(this).find('span:eq(1)'),
-					'width' : $(this).find('.scroll').data('quantity'),
-					'wrap'  : $(this).find('~ .bigcarousel').first(),
-					'viswidth' : 5
-					})		
-		} else {
-			var tmpline = new cardsCarousel ({
-					'prev'  : $(this).find('.back'),
-					'next'  : $(this).find('.forvard'),
-					'crnt'  : $(this).find('.none'),
-					'times' : $(this).find('span:eq(1)'),
-					'width' : $(this).find('.jshm').html().replace(/\D/g,''),
-//					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
-					'wrap'  : $(this).find('~ .carousel').first(),
-					'viswidth' : 3
-					})
-		}			
-	})
-
-	/* charachteristics RETIRED
-	if ( $('#toggler').length ) {
-		$('#toggler').toggle( function(){
-			$('.descriptionlist:first').slideUp()
-			$('.descriptionlist.second').slideDown()
-			$(this).html('Общие характеристики')
-		},  function(){
-			$('.descriptionlist.second').slideUp()
-			$('.descriptionlist:first').slideDown()
-			$(this).html('Все характеристики')
-		})
-	}
-	*/
-
-	/* Delivery Ajax */
-	if( $('#dlvrlinks').length ) {
-
-		function dlvrajax( coreid ) {
-			$.post( $('#dlvrlinks').data('calclink'), {ids:coreid}, function(data){
-				for(var i=0; i < coreid.length; i++) {
-					var raw = data[ coreid[i] ]
-					if ( !raw.success )
-						continue
-					var self = '',
-						//express = '',
-						other = []
-					for( var j in raw.deliveries ) {
-					var dlvr = raw.deliveries[j]
-						switch ( dlvr.object.token ) {
-							case 'self':
-								self = 'Возможен самовывоз ' + dlvr.text
-								break
-							case 'express':
-							//	express = 'Экспресс-доставка ' + dlvr.text
-								break
-							case 'free':
-								break								
-							default:
-								other.push('Доставка ' + dlvr.text )
-						}
-					}
-					var pnode = $( 'div[data-cid='+coreid[i]+']' ).parent()
-					var tmp = $('<ul>')
-					if(self)
-            $('<li>').html( self ).appendTo( tmp )
-//					$('<li>').html( express ).appendTo( tmp )
-					for(var ii=0; ii < other.length; ii++)
-						$('<li>').html( other[ii] ).appendTo( tmp )
-					var uls = pnode.find( 'div.extrainfo ul' )
-					uls.html( uls.html() + tmp.html() )
-				}
-			})
-		} // dlvrajax
-
-		var coreid = []
-		$('div.boxhover, div.goodsboxlink').each( function(){
-			var cid = $(this).data('cid') || 0
-			if( cid )
-				coreid.push( cid )
-		})
-		dlvrajax( coreid )
-	}
-
-	/* 
-		from inline scripts
-	*/
-	/* agree button */
-	if( $('#agree-field').length ) {
-		$('#agree-field')
-			.everyTime(200, function() {
-			  var el = $(this)
-			  if (el.next().hasClass('checked')) {
-				$('#confirm-button, #pay-button').removeClass('mDisabled')
-			  }
-			  else {
-				$('#confirm-button, #pay-button').addClass('mDisabled')
-			  }
-			})
-
-		$('.form').bind('submit', function(e) {
-			if ($(this).find('input.mDisabled').length) {
-			  e.preventDefault()
-			}
-		})
-	}
-	/* */
-	$('#watch-trigger').click(function(){
-      $('#watch-cnt').toggle()
-    })
-    $('#watch-cnt .close').click(function(){
-      $('#watch-cnt').hide()
-    })
-    /* some oldish ? */
-    $('.point .title b').click(function(){
-		$(this).parent().parent().find('.prompting').show()
-	})
-	$('.point .title .pr .close').click(function(){
-		$(this).parent().hide()
-	})
-
-	$('#auth_forgot-link').click(function() {
-		$('#auth_forgot-block').lightbox_me({
-		  centered: true,
-		  onLoad: function() {
-			$('#auth_forgot-form').show()
-			$('#auth_forgot-block').find('input:first').focus()
-		  }
-		})	
-		return false
-	})
-	
-	/* Login processing */
-    if( $('#order_login-url').length ) {
-		var url_signin = $('#order_login-url').val(),
-			url_register = $('#order_login-url').val()
-		$('#radio-1').click(function(){
-		  $('#old-user').show()
-		  $('#old-user input').prop('disabled', null)
-		  $('#new-user').hide()
-		  $('#new-user input').prop('disabled', 'disabled')
-		  $('#form-step-1').prop('action', url_signin)
-		});
-		$('#radio-2').click(function(){
-		  $('#old-user').hide()
-		  $('#old-user input').prop('disabled', 'disabled')
-		  $('#new-user').show()
-		  $('#new-user input').prop('disabled', null)
-		  $('#form-step-1').prop('action', url_register)
-		})
-		var actionf = ( $('#module_action').length && $('#module_action').val() === 'register') ? 2 : 1
-		$('#radio-'+ actionf).click()
-		$('#form-step-1').submit(function(){
-		  if (this.action == '') return false
-		})
+    /* Top Menu */
+    if ($('.topmenu').length) {
+        $.get('/category/main_menu', function (data) {
+            $('.bHeader').append(data)
+        })
     }
 
-	if( $('#user_signin-url').length ) {
-		var url_signin = $('#user_signin-url').val(),
-			url_register = $('#user_register-url').val()
-		$('#radio-1').click(function(){
-			$('#old-user').show()
-			$('#old-user input').prop('disabled', null)
-			$('#new-user').hide()
-			$('#new-user input').prop('disabled', 'disabled')
-			$('#form-step-1').prop('action', url_signin)
-		})
-		$('#radio-2').click(function(){
-			$('#old-user').hide()
-			$('#old-user input').prop('disabled', 'disabled')
-			$('#new-user').show()
-			$('#new-user input').prop('disabled', null)
-			$('#form-step-1').prop('action', url_register)
-		})
-		$('#radio-1').click()
-		$('#form-step-1').submit(function(){
-			if (this.action == '') return false
-		})
-	}
+    var idcm = null // setTimeout
+    var currentMenu = 0 // ref= product ID
+    function showList(self) {
+        if ($(self).data('run')) {
+            var dmenu = $(self).position().left * 1 + $(self).width() * 1 / 2 - 15
+            var punkt = $('#extramenu-root-' + $(self).attr('id').replace(/\D+/, ''))
+            if (punkt.length && punkt.find('dl').html().replace(/\s/g, '') != '')
+                punkt.show().find('.corner').css('left', dmenu)
+        }
+    }
+
+    if (clientBrowser.isTouch) {
+        $('.topmenu a.bToplink').bind('click', function () {
+            if ($(this).data('run'))
+                return true
+            $('.extramenu').hide()
+            $('.topmenu a.bToplink').each(function () {
+                $(this).data('run', false)
+            })
+            $(this).data('run', true)
+            showList(this)
+            return false
+        })
+    } else {
+        $('.topmenu a.bToplink').bind({
+            'mouseenter':function () {
+                $('.extramenu').hide()
+                var self = this
+                $(self).data('run', true)
+                currentMenu = $(self).attr('id').replace(/\D+/, '')
+                idcm = setTimeout(function () {
+                    showList(self)
+                }, 300)
+            },
+            'mouseleave':function () {
+                var self = this
+
+                if ($(self).data('run')) {
+                    clearTimeout(idcm)
+                    $(self).data('run', false)
+                }
+                //currentMenu = 0
+            }
+        })
+    }
+
+    $(document).click(function (e) {
+        if (currentMenu) {
+            if (e.which == 1)
+                $('#extramenu-root-' + currentMenu + '').data('run', false).hide()
+        }
+    })
+
+    $('.extramenu').click(function (e) {
+        e.stopPropagation()
+    })
+
+    /* ---- */
+    if ($('.error_list').length && $('.basketheader').length) {
+        $.scrollTo($('.error_list:first'), 300)
+    }
+
+    /* Cards Carousel  */
+    function cardsCarousel(nodes) {
+        var self = this
+        var current = 1
+
+        var wi = nodes.width * 1
+        var viswi = nodes.viswidth * 1
+
+        if (!isNaN($(nodes.times).html()))
+            var max = $(nodes.times).html() * 1
+        else
+            var max = Math.ceil(wi / viswi)
+        var buffer = 2
+        var ajaxflag = false
+
+        this.notify = function () {
+            $(nodes.crnt).html(current)
+            if (current == 1)
+                $(nodes.prev).addClass('disabled')
+            else
+                $(nodes.prev).removeClass('disabled')
+            if (current == max)
+                $(nodes.next).addClass('disabled')
+            else
+                $(nodes.next).removeClass('disabled')
+        }
+
+        var shiftme = function () {
+            var boxes = $(nodes.wrap).find('.goodsbox')
+            $(boxes).hide()
+            var le = boxes.length
+            for (var j = (current - 1) * viswi; j < current * viswi; j++) {
+                boxes.eq(j).show()
+            }
+        }
+
+        $(nodes.next).bind('click', function () {
+            if (current < max && !ajaxflag) {
+                if (current + 1 == max) { //the last pull is loaded , so special shift
+                    var boxes = $(nodes.wrap).find('.goodsbox')
+                    $(boxes).hide()
+                    var le = boxes.length
+                    var rest = ( wi % viswi ) ? wi % viswi : viswi
+                    for (var j = 1; j <= rest; j++)
+                        boxes.eq(le - j).show()
+                    current++
+                } else {
+                    if (current + 1 >= buffer) { // we have to get new pull from server
+                        $(nodes.next).css('opacity', '0.4') // addClass dont work ((
+                        ajaxflag = true
+                        $.get($(nodes.prev).attr('data-url') + '?page=' + (buffer + 1), function (data) {
+                            buffer++
+                            $(nodes.next).css('opacity', '1')
+                            ajaxflag = false
+                            var tr = $('<div>')
+                            $(tr).html(data)
+                            $(tr).find('.goodsbox').css('display', 'none')
+                            $(nodes.wrap).html($(nodes.wrap).html() + tr.html())
+                            tr = null
+                        })
+                        current++
+                        shiftme()
+                    } else { // we have new portion as already loaded one
+                        current++
+                        shiftme() // TODO repair
+                    }
+                }
+                self.notify()
+            }
+            return false
+        })
+
+        $(nodes.prev).click(function () {
+            if (current > 1) {
+                current--
+                shiftme()
+                self.notify()
+            }
+            return false
+        })
+
+    } // cardsCarousel object
+
+    $('.carouseltitle').each(function () {
+        if ($(this).hasClass('carbig')) {
+            var tmpline = new cardsCarousel({
+                'prev':$(this).find('.back'),
+                'next':$(this).find('.forvard'),
+                'crnt':$(this).find('span:first'),
+                'times':$(this).find('span:eq(1)'),
+                'width':$(this).find('.scroll').data('quantity'),
+                'wrap':$(this).find('~ .bigcarousel').first(),
+                'viswidth':5
+            })
+        } else {
+            if ($(this).find('.jshm').length) {
+                var tmpline = new cardsCarousel({
+                    'prev':$(this).find('.back'),
+                    'next':$(this).find('.forvard'),
+                    'crnt':$(this).find('.none'),
+                    'times':$(this).find('span:eq(1)'),
+                    'width':$(this).find('.jshm').html().replace(/\D/g, ''),
+//					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
+                    'wrap':$(this).find('~ .carousel').first(),
+                    'viswidth':3
+                })
+            }
+        }
+    })
+
+    /* charachteristics RETIRED
+     if ( $('#toggler').length ) {
+     $('#toggler').toggle( function(){
+     $('.descriptionlist:first').slideUp()
+     $('.descriptionlist.second').slideDown()
+     $(this).html('Общие характеристики')
+     },  function(){
+     $('.descriptionlist.second').slideUp()
+     $('.descriptionlist:first').slideDown()
+     $(this).html('Все характеристики')
+     })
+     }
+     */
+
+    /* Delivery Ajax */
+    if ($('#dlvrlinks').length) {
+
+        function dlvrajax(coreid) {
+            $.post($('#dlvrlinks').data('calclink'), {ids:coreid}, function (data) {
+                for (var i = 0; i < coreid.length; i++) {
+                    var raw = data[ coreid[i] ]
+                    if (!raw.success)
+                        continue
+                    var self = '',
+                        //express = '',
+                        other = []
+                    for (var j in raw.deliveries) {
+                        var dlvr = raw.deliveries[j]
+                        switch (dlvr.object.token) {
+                            case 'self':
+                                self = 'Возможен самовывоз ' + dlvr.text
+                                break
+                            case 'express':
+                                //	express = 'Экспресс-доставка ' + dlvr.text
+                                break
+                            case 'free':
+                                break
+                            default:
+                                other.push('Доставка ' + dlvr.text)
+                        }
+                    }
+                    var pnode = $('div[data-cid=' + coreid[i] + ']').parent()
+                    var tmp = $('<ul>')
+                    if (self)
+                        $('<li>').html(self).appendTo(tmp)
+//					$('<li>').html( express ).appendTo( tmp )
+                    for (var ii = 0; ii < other.length; ii++)
+                        $('<li>').html(other[ii]).appendTo(tmp)
+                    var uls = pnode.find('div.extrainfo ul')
+                    uls.html(uls.html() + tmp.html())
+                }
+            })
+        } // dlvrajax
+
+        var coreid = []
+        $('div.boxhover, div.goodsboxlink').each(function () {
+            var cid = $(this).data('cid') || 0
+            if (cid)
+                coreid.push(cid)
+        })
+        dlvrajax(coreid)
+    }
+
+    /*
+     from inline scripts
+     */
+    /* agree button */
+    if ($('#agree-field').length) {
+        $('#agree-field')
+            .everyTime(200, function () {
+                var el = $(this)
+                if (el.next().hasClass('checked')) {
+                    $('#confirm-button, #pay-button').removeClass('mDisabled')
+                }
+                else {
+                    $('#confirm-button, #pay-button').addClass('mDisabled')
+                }
+            })
+
+        $('.form').bind('submit', function (e) {
+            if ($(this).find('input.mDisabled').length) {
+                e.preventDefault()
+            }
+        })
+    }
+    /* */
+    $('#watch-trigger').click(function () {
+        $('#watch-cnt').toggle()
+    })
+    $('#watch-cnt .close').click(function () {
+        $('#watch-cnt').hide()
+    })
+    /* some oldish ? */
+    $('.point .title b').click(function () {
+        $(this).parent().parent().find('.prompting').show()
+    })
+    $('.point .title .pr .close').click(function () {
+        $(this).parent().hide()
+    })
+
+    $('#auth_forgot-link').click(function () {
+        $('#auth_forgot-block').lightbox_me({
+            centered:true,
+            onLoad:function () {
+                $('#auth_forgot-form').show()
+                $('#auth_forgot-block').find('input:first').focus()
+            }
+        })
+        return false
+    })
+
+    /* Login processing */
+    if ($('#order_login-url').length) {
+        var url_signin = $('#order_login-url').val(),
+            url_register = $('#order_login-url').val()
+        $('#radio-1').click(function () {
+            $('#old-user').show()
+            $('#old-user input').prop('disabled', null)
+            $('#new-user').hide()
+            $('#new-user input').prop('disabled', 'disabled')
+            $('#form-step-1').prop('action', url_signin)
+        });
+        $('#radio-2').click(function () {
+            $('#old-user').hide()
+            $('#old-user input').prop('disabled', 'disabled')
+            $('#new-user').show()
+            $('#new-user input').prop('disabled', null)
+            $('#form-step-1').prop('action', url_register)
+        })
+        var actionf = ( $('#module_action').length && $('#module_action').val() === 'register') ? 2 : 1
+        $('#radio-' + actionf).click()
+        $('#form-step-1').submit(function () {
+            if (this.action == '') return false
+        })
+    }
+
+    if ($('#user_signin-url').length) {
+        var url_signin = $('#user_signin-url').val(),
+            url_register = $('#user_register-url').val()
+        $('#radio-1').click(function () {
+            $('#old-user').show()
+            $('#old-user input').prop('disabled', null)
+            $('#new-user').hide()
+            $('#new-user input').prop('disabled', 'disabled')
+            $('#form-step-1').prop('action', url_signin)
+        })
+        $('#radio-2').click(function () {
+            $('#old-user').hide()
+            $('#old-user input').prop('disabled', 'disabled')
+            $('#new-user').show()
+            $('#new-user input').prop('disabled', null)
+            $('#form-step-1').prop('action', url_register)
+        })
+        $('#radio-1').click()
+        $('#form-step-1').submit(function () {
+            if (this.action == '') return false
+        })
+    }
 });

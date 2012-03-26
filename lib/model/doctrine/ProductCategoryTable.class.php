@@ -26,16 +26,16 @@ class ProductCategoryTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'                => 'core_id',
-      'parent_id'         => 'core_parent_id',
-      'lft'               => 'core_lft',
-      'rgt'               => 'core_rgt',
-      'name'              => 'name',
-      'is_active'         => 'is_active',
-      'media_image'       => 'photo',
-      'has_line'          => 'has_line',
-      'position'          => 'position',
-      //'is_shown_in_menu'  => 'is_shown_in_menu',
+      'id' => 'core_id',
+      'parent_id' => 'core_parent_id',
+      'lft' => 'core_lft',
+      'rgt' => 'core_rgt',
+      'name' => 'name',
+      'is_active' => 'is_active',
+      'media_image' => 'photo',
+      'has_line' => 'has_line',
+      'position' => 'position',
+      'is_shown_in_menu' => 'is_shown_in_menu',
     );
   }
 
@@ -69,11 +69,9 @@ class ProductCategoryTable extends myDoctrineTable
   public function getIdByToken($token)
   {
     $q = $this->createQuery()
-      ->select('id')
-    ;
+      ->select('id');
 
-    if (false !== strpos($token, '/'))
-    {
+    if (false !== strpos($token, '/')) {
       list($tokenPrefix, $token) = explode('/', $token);
       $q->where('token_prefix = ? AND token = ?', array($tokenPrefix, $token));
     }
@@ -94,12 +92,10 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    if ($params['with_filters'])
-    {
+    if ($params['with_filters']) {
       $q->leftJoin('productCategory.FilterGroup productFilterGroup');
       $q->leftJoin('productFilterGroup.Filter productFilter')
-        ->addOrderBy('productFilter.position')
-      ;
+        ->addOrderBy('productFilter.position');
 
       $q->leftJoin('productFilter.Property productProperty');
     }
@@ -108,8 +104,7 @@ class ProductCategoryTable extends myDoctrineTable
 
     $q->whereId($id);
 
-    if ($params['hydrate_array'])
-    {
+    if ($params['hydrate_array']) {
       $q->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY);
     }
 
@@ -149,8 +144,7 @@ class ProductCategoryTable extends myDoctrineTable
     $key = $this->getQueryHash('productCategory-rootList', $params);
 
     $return = $this->getCachedByKey($key);
-    if (!$return)
-    {
+    if (!$return) {
       $q = $this->createBaseQuery($params);
       $this->setQueryParameters($q, $params);
 
@@ -159,8 +153,7 @@ class ProductCategoryTable extends myDoctrineTable
 
       $ids = $this->getIdsByQuery($q, $params);
       $return = $this->createListByIds($ids, $params);
-      if ($this->isCacheEnabled())
-      {
+      if ($this->isCacheEnabled()) {
         $this->getCache()->set($key, $return, 604800); // обновить кеш через неделю
       }
     }
@@ -170,27 +163,23 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getRootRecord($category, array $params = array())
   {
-	  if (0 == $category['level'])
-    {
-		  return $category;
-	  }
+    if (0 == $category['level']) {
+      return $category;
+    }
 
     $key = $this->getQueryHash("productCategory-{$category['id']}/root", $params);
 
     $return = $this->getCachedByKey($key);
-    if (!$return)
-    {
+    if (!$return) {
       $q = $this->createBaseQuery();
 
       $q->andWhere('productCategory.root_id = ?', $category['root_id'])
-        ->andWhere('productCategory.level = 0')
-      ;
+        ->andWhere('productCategory.level = 0');
 
       $this->setQueryParameters($q, $params);
 
       $return = $q->fetchOne();
-      if ($this->isCacheEnabled() && $return)
-      {
+      if ($this->isCacheEnabled() && $return) {
         $this->getCache()->set($key, $return);
         $this->getCache()->addTag("productCategory-{$category['id']}", $key);
         $this->getCache()->addTag("productCategory-{$return['id']}", $key);
@@ -242,18 +231,17 @@ class ProductCategoryTable extends myDoctrineTable
 
     return $this->createListByIds($ids, $params);*/
     $q = ProductCategoryTable::getInstance()->createBaseQuery();
-    $q->addWhere('productCategory.level < 3 and productCategory.level > 0')
-            ;
+    $q->addWhere('productCategory.level < 3 and productCategory.level > 0');
     $data = $q->execute();
-    foreach($data as $cat) {
-        $idList[] = $cat['id'];
+    foreach ($data as $cat) {
+      $idList[] = $cat['id'];
     }
 
     $res = $this->getNotEmptyCategoryList($idList);
-    foreach($data as $k => $cat) {
-        if (!in_array($cat['id'], $res)) {
-            unset($data[$k]);
-        }
+    foreach ($data as $k => $cat) {
+      if (!in_array($cat['id'], $res)) {
+        unset($data[$k]);
+      }
     }
     return $data;
   }
@@ -263,15 +251,13 @@ class ProductCategoryTable extends myDoctrineTable
     $key = $this->getQueryHash("productCategory-{$category['id']}/childList", $params);
 
     $return = $this->getCachedByKey($key);
-    if (!$return)
-    {
+    if (!$return) {
       $q = $this->createBaseQuery($params);
 
       $ids = $this->getDescendatIds($category, array('depth' => 1));
 
       $return = $this->createListByIds($ids, $params);
-      if ($this->isCacheEnabled())
-      {
+      if ($this->isCacheEnabled()) {
         $this->getCache()->set($key, $return);
         foreach ($ids as $id)
         {
@@ -285,18 +271,16 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getDescendatList(ProductCategory $category = null, $params = array())
   {
-    $key = $this->getQueryHash('productCategory'.($category ? ('-'.$category['id']) : '').'/descendatList', $params);
+    $key = $this->getQueryHash('productCategory' . ($category ? ('-' . $category['id']) : '') . '/descendatList', $params);
 
     $return = $this->getCachedByKey($key);
-    if (!$return)
-    {
+    if (!$return) {
       $q = $this->createBaseQuery($params);
 
       $ids = $this->getDescendatIds($category, $params);
 
       $return = $this->createListByIds($ids, $params);
-      if ($this->isCacheEnabled() && count($ids))
-      {
+      if ($this->isCacheEnabled() && count($ids)) {
         $this->getCache()->set($key, $return);
         foreach ($ids as $id)
         {
@@ -312,35 +296,30 @@ class ProductCategoryTable extends myDoctrineTable
   {
     $this->applyDefaultParameters($params, array(
       'with_parent' => false,
-      'depth'       => null,
-      'min_level'   => null,
-      'max_level'   => null,
+      'depth' => null,
+      'min_level' => null,
+      'max_level' => null,
     ));
 
     $q = $this->createBaseQuery();
 
-    if ($category)
-    {
-      $q->addWhere('productCategory.lft > ? and productCategory.rgt < ? and productCategory.root_id = ?', array($category->lft, $category->rgt, empty($category->root_id) ? $category->id : $category->root_id, ));
+    if ($category) {
+      $q->addWhere('productCategory.lft > ? and productCategory.rgt < ? and productCategory.root_id = ?', array($category->lft, $category->rgt, empty($category->root_id) ? $category->id : $category->root_id,));
     }
 
-    if ($category && (null != $params['depth']))
-    {
+    if ($category && (null != $params['depth'])) {
       $q->addWhere('productCategory.level <= ?', $category->level + $params['depth']);
     }
 
-    if (null != $params['min_level'])
-    {
+    if (null != $params['min_level']) {
       $q->addWhere('productCategory.level > ?', $params['min_level'] - 1);
     }
 
-    if (null != $params['max_level'])
-    {
+    if (null != $params['max_level']) {
       $q->addWhere('productCategory.level < ?', $params['max_level'] + 1);
     }
     $categoryIds = $this->getIdsByQuery($q, $params);
-    if ($params['with_parent'])
-    {
+    if ($params['with_parent']) {
       $categoryIds[] = $category->id;
     }
 
@@ -349,18 +328,16 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getAncestorList(ProductCategory $category = null, $params = array())
   {
-    $key = $this->getQueryHash('productCategory'.($category ? ('-'.$category['id']) : '').'/ancestorList', $params);
+    $key = $this->getQueryHash('productCategory' . ($category ? ('-' . $category['id']) : '') . '/ancestorList', $params);
 
     $return = $this->getCachedByKey($key);
-    if (!$return)
-    {
+    if (!$return) {
       $q = $this->createBaseQuery($params);
 
       $ids = $this->getAncestorIds($category, $params);
 
       $return = $this->createListByIds($ids, $params);
-      if ($this->isCacheEnabled() && count($ids))
-      {
+      if ($this->isCacheEnabled() && count($ids)) {
         $this->getCache()->set($key, $return);
         foreach ($ids as $id)
         {
@@ -375,36 +352,31 @@ class ProductCategoryTable extends myDoctrineTable
   public function getAncestorIds(ProductCategory $category = null, $params = array())
   {
     $this->applyDefaultParameters($params, array(
-      'with_child'  => false,
-      'depth'       => null,
-      'min_level'   => null,
-      'max_level'   => null,
+      'with_child' => false,
+      'depth' => null,
+      'min_level' => null,
+      'max_level' => null,
     ));
 
     $q = $this->createBaseQuery();
 
-    if ($category)
-    {
-      $q->addWhere('productCategory.lft < ? and productCategory.rgt > ? and productCategory.root_id = ?', array($category->lft, $category->rgt, empty($category->root_id) ? $category->id : $category->root_id, ));
+    if ($category) {
+      $q->addWhere('productCategory.lft < ? and productCategory.rgt > ? and productCategory.root_id = ?', array($category->lft, $category->rgt, empty($category->root_id) ? $category->id : $category->root_id,));
     }
 
-    if ($category && (null != $params['depth']))
-    {
+    if ($category && (null != $params['depth'])) {
       $q->addWhere('productCategory.level >= ?', $category->level + $params['depth']);
     }
 
-    if (null != $params['min_level'])
-    {
+    if (null != $params['min_level']) {
       $q->addWhere('productCategory.level > ?', $params['min_level'] - 1);
     }
 
-    if (null != $params['max_level'])
-    {
+    if (null != $params['max_level']) {
       $q->addWhere('productCategory.level < ?', $params['max_level'] + 1);
     }
     $categoryIds = $this->getIdsByQuery($q, $params);
-    if ($params['with_child'])
-    {
+    if ($params['with_child']) {
       $categoryIds[] = $category->id;
     }
 
@@ -413,8 +385,7 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getTagIds(ProductCategory $category = null, array $params = array())
   {
-    if (!$category)
-    {
+    if (!$category) {
       return false;
     }
 
@@ -427,8 +398,7 @@ class ProductCategoryTable extends myDoctrineTable
       ->andWhereIn('categoryRelation.product_category_id', $categoryIds)
       ->groupBy('tagProductRelation.tag_id')
       ->orderBy('count(tagProductRelation.product_id) DESC')
-      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR)
-    ;
+      ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 
     return $q->execute();
   }
@@ -439,59 +409,58 @@ class ProductCategoryTable extends myDoctrineTable
    * @param type $idList
    * @return type
    */
-  public function getNotEmptyCategoryList($idList = array()) {
+  public function getNotEmptyCategoryList($idList = array())
+  {
 
     //ищем тех, у которых есть продукты
     $productCountlist = ProductCategoryProductRelationTable::getInstance()
-            ->createQuery('r')
-            ->select('product_category_id, COUNT(product_id)' )
-            ->leftJoin('r.Product as p on r.product_id=p.id')
-            ->addWhere('p.view_list = ?', 1);
+      ->createQuery('r')
+      ->select('product_category_id, COUNT(product_id)')
+      ->leftJoin('r.Product as p on r.product_id=p.id')
+      ->addWhere('p.view_list = ?', 1);
 
-    if (count($idList)>0) {
-        $productCountlist = $productCountlist
-                            ->addWhere('product_category_id IN ('.implode(',', $idList).')');
+    if (count($idList) > 0) {
+      $productCountlist = $productCountlist
+        ->addWhere('product_category_id IN (' . implode(',', $idList) . ')');
     }
     $productCountlist = $productCountlist
-                    ->groupBy('product_category_id')
-                    ->fetchArray()
-            ;
+      ->groupBy('product_category_id')
+      ->fetchArray();
 
-    foreach($productCountlist as $a) {
-        $notFreeCatList[] = $a['product_category_id'];
+    foreach ($productCountlist as $a) {
+      $notFreeCatList[] = $a['product_category_id'];
     }
 
     #print_r($idList);
     //ищем тех, у которых есть вложенные категории
     $catCoreId = ProductCategoryTable::getInstance()
-            ->createQuery('p')
-            ->select('p.core_id, p.id' )
-            ->where('is_active = ?', 1);
+      ->createQuery('p')
+      ->select('p.core_id, p.id')
+      ->where('is_active = ?', 1);
     if (isset($idList)) {
-        $catCoreId = $catCoreId->addWhere('p.id IN ('.implode(',', $idList).')');
+      $catCoreId = $catCoreId->addWhere('p.id IN (' . implode(',', $idList) . ')');
     }
     $catCoreId = $catCoreId->fetchArray();
-    foreach($catCoreId as $cat) {
-        $coreIdList[] = $cat['core_id'];
-        $coreIdToId[$cat['core_id']] = $cat['id'];
+    foreach ($catCoreId as $cat) {
+      $coreIdList[] = $cat['core_id'];
+      $coreIdToId[$cat['core_id']] = $cat['id'];
     }
 
     #print_r($coreIdToId);
     $productCatlist = ProductCategoryTable::getInstance()
-            ->createQuery('c')
-            ->select('core_parent_id, COUNT(id)' )
-            ->where('is_active = ?', 1)
-            ;
-    if (count($coreIdList)>0) {
-        $productCatlist = $productCatlist
-                            ->addWhere('core_parent_id IN ('.implode(',', $coreIdList).')');
+      ->createQuery('c')
+      ->select('core_parent_id, COUNT(id)')
+      ->where('is_active = ?', 1);
+    if (count($coreIdList) > 0) {
+      $productCatlist = $productCatlist
+        ->addWhere('core_parent_id IN (' . implode(',', $coreIdList) . ')');
     }
     $productCatlist = $productCatlist
-                    ->groupBy('core_parent_id')
-                    ->fetchArray();
-    foreach($productCatlist as $cat) {
-        #print_r($cat);
-        $notFreeCatList[] = $coreIdToId[$cat['core_parent_id']];
+      ->groupBy('core_parent_id')
+      ->fetchArray();
+    foreach ($productCatlist as $cat) {
+      #print_r($cat);
+      $notFreeCatList[] = $coreIdToId[$cat['core_parent_id']];
 
     }
 
@@ -501,7 +470,7 @@ class ProductCategoryTable extends myDoctrineTable
 
   public function getRecordUrlToken($record)
   {
-    return $record['token_prefix'] ? ($record['token_prefix'].'/'.$record['token']) : $record['token'];
+    return $record['token_prefix'] ? ($record['token_prefix'] . '/' . $record['token']) : $record['token'];
   }
 
   public function getCacheEraserKeys($record, $action = null, array $params = array())
@@ -509,8 +478,7 @@ class ProductCategoryTable extends myDoctrineTable
     $return = array();
 
     $intersection = array();
-    if ($record instanceof myDoctrineRecord)
-    {
+    if ($record instanceof myDoctrineRecord) {
       // for preSave
       $modified = array_keys($record->getModified()); // if postSave, then $modified = array_keys($record->getLastModified());
       // Массив полей, изменения в которых ведут к генерации кеш-ключей

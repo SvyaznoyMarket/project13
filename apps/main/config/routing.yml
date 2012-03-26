@@ -41,7 +41,7 @@ product_related:
 # список аксессуаров
 product_accessory:
   url:   /products/accessories/:product
-  param: { module: product, action: accessory }
+  param: { module: productSoa, action: accessory }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:

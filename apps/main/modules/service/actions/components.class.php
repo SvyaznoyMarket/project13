@@ -24,10 +24,9 @@ class serviceComponents extends myComponents
     $servListId = array();
     foreach ($servList as $next)
     {
-      foreach ($next['cart']['product'] as $product => $qty)
+      foreach ($next['products'] as $product => $prodData)
       {
-        if ($product == $this->product->id)
-        {
+        if ($product == $this->product->id) {
           $servListId[] = $next->id;
         }
       }
@@ -47,15 +46,13 @@ class serviceComponents extends myComponents
       $sel = false;
       foreach ($this->services as $selected)
       {
-        if ($next->id == $selected['id'])
-        {
+        if ($next->id == $selected['id']) {
           $selInfo = $selected;
           $sel = true;
           break;
         }
       }
-      if ($sel)
-      {
+      if ($sel) {
         $selectedNum++;
         $selInfo['selected'] = true;
         $selInfo['total'] = $selInfo['quantity'] * $selInfo['price'];
@@ -97,7 +94,8 @@ class serviceComponents extends myComponents
     $serviceData['description'] = $this->service->description;
     $serviceData['work'] = $this->service->work;
     $serviceData['main_photo'] = $this->service->getPhotoUrl();
-    $serviceData['only_inshop'] = $this->service->only_inshop;
+    $serviceData['isInSale'] = $this->service->isInSale();
+    $serviceData['isOnlyInShop'] = $this->service->isOnlyInShop();
 
     $this->setVar('service', $serviceData);
   }
@@ -126,7 +124,9 @@ class serviceComponents extends myComponents
         'photo' => $service->getPhotoUrl(2),
         'price' => $service->getCurrentPrice(),
         'priceFormatted' => $service->getFormattedPrice(),
-        'only_inshop' => $service->only_inshop,
+        'isInSale' => $service->isInSale(),
+        'isOnlyInShop' => $service->isOnlyInShop()
+
       );
     }
     $this->setVar('list', $serviceList);
@@ -155,11 +155,9 @@ class serviceComponents extends myComponents
       'url' => $this->generateUrl('service_list'),
     );
 
-    if (isset($this->serviceCategory) && $this->serviceCategory)
-    {
+    if (isset($this->serviceCategory) && $this->serviceCategory) {
       $parentCategory = $this->serviceCategory->getParentCategory();
-      if (isset($parentCategory) && isset($parentCategory['name']))
-      {
+      if (isset($parentCategory) && isset($parentCategory['name'])) {
         $list[] = array(
           'name' => $parentCategory['name'],
           'url' => $this->generateUrl('service_list', array('serviceCategory' => $parentCategory['token'])),
@@ -173,8 +171,7 @@ class serviceComponents extends myComponents
     elseif (isset($this->service))
     {
       $parentCategory = $this->service->getCatalogParent();
-      if (isset($parentCategory) && isset($parentCategory['name']))
-      {
+      if (isset($parentCategory) && isset($parentCategory['name'])) {
         $list[] = array(
           'name' => $parentCategory['name'],
           'url' => $this->generateUrl('service_list', array('serviceCategory' => $parentCategory['token'])),

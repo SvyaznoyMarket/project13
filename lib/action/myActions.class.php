@@ -24,16 +24,14 @@ class myActions extends sfActions
   {
     parent::preExecute();
 
-    if (in_array($this->getRequestParameter('frame'), array('1', 'true', 'on')))
-    {
+    if (in_array($this->getRequestParameter('frame'), array('1', 'true', 'on'))) {
       $this->setLayout('frame');
     }
   }
 
   public function postExecute()
   {
-    if ('debug' == sfConfig::get('sf_environment'))
-    {
+    if ('debug' == sfConfig::get('sf_environment')) {
       $this->getResponse()->addStylesheet('debug.css');
     }
   }
@@ -44,16 +42,14 @@ class myActions extends sfActions
       'debug' => true,
     ), $params);
 
-    if ($header)
-    {
+    if ($header) {
       $this->getResponse()->setHttpHeader('Content-type', 'application/json');
     }
 
-    if ($params['debug'] && is_array($value) && (true == sfConfig::get('sf_debug')))
-    {
+    if ($params['debug'] && is_array($value) && (true == sfConfig::get('sf_debug'))) {
       $value['debug'] = array(
         'request' => $this->getRequest()->getParameterHolder()->getAll(),
-        'user'    => $this->getUser()->getAttributeHolder()->getAll(),
+        'user' => $this->getUser()->getAttributeHolder()->getAll(),
       );
     }
 
@@ -66,8 +62,7 @@ class myActions extends sfActions
   {
     foreach ($values as $name => $value)
     {
-      if (isset($this->$name) && (null !== $this->$name))
-      {
+      if (isset($this->$name) && (null !== $this->$name)) {
         continue;
       }
 
@@ -85,6 +80,20 @@ class myActions extends sfActions
     $pager->init();
 
     return $pager;
+  }
+
+  public function getPagerForArray(array $data, $limit = 20, array $params = array())
+  {
+    $page = (int)$this->getRequest()->getParameter('page', 1);
+
+    $first = ($page - 1) * $limit;
+    $first = $page * $limit;
+    for ($i = $first; $i < $last; $i++) {
+      $result[] = $data[$i];
+    }
+
+
+    return $result;
   }
 
   public function getCoreService()

@@ -1,8 +1,8 @@
 <?php
 #JSON data
 $json = array(
-  'jsref'   => $service['token'],
-  'jsimg'   => $service['main_photo'],
+  'jsref' => $service['token'],
+  'jsimg' => $service['main_photo'],
   'jstitle' => $service['name'],
   'jsprice' => $service['priceFormatted']
 )
@@ -30,7 +30,7 @@ $json = array(
   </p>
 
   <div class="bSet__ePrice mServ" ref="<?php echo $service['token'] ?>" data-value='<?php echo json_encode($json) ?>'>
-    <?php if (isset($service['priceFormatted']) && $service['priceFormatted'] && ($showNoPrice || $service['priceFormatted'] != 'бесплатно')) { ?>
+    <?php if (isset($service['priceFormatted']) && $service['priceFormatted']) { ?>
     <strong class="font34">
       <span class="price"><?php echo $service['priceFormatted']; ?></span>
       <?php if ((int)$service['priceFormatted']) { ?>
@@ -38,21 +38,27 @@ $json = array(
       <?php } ?>
     </strong>
     <?php } ?>
-    <?php if (!$service['only_inshop']) { ?>
-    <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить услугу</a>
-    <?php } else { ?>
-    <br />
-    <b>Доступна в магазине</b>
+    <?php
+    //если мы можем продавать этот товар на сайте
+    if ($service['isInSale']) {
+      ?>
+      <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить
+        услугу</a>
+      <?php
+      //если нам известно, что товар доступен только в магазине
+    } elseif ($service['isOnlyInShop']) {
+      ?>
+      <br/>
+      <b>Доступна в магазине</b>
+      <p class="font14">Специалисты контакт cENTER с радостью проконсультируют по данной услуге и подскажут ближайший
+        магазин Enter</p>
 
-    <p class="font14">Специалисты контакт cENTER с радостью проконсультируют по данной услуге и подскажут ближайший магазин Enter</p>
-
-    <p class="font14">
-      <strong>8 (800) 700 00 09</strong><br />
-      Skype: skype2enter и call2enter<br />
-      ICQ: 648198963
-    </p>
-
-    <?php } ?>
+      <p class="font14">
+        <strong>8 (800) 700 00 09</strong><br/>
+        Skype: skype2enter и call2enter<br/>
+        ICQ: 648198963
+      </p>
+      <?php } ?>
 
   </div>
 
