@@ -18,22 +18,22 @@ class ProductRepository extends ObjectRepository
   public function create($data)
   {
     $entity = new ProductEntity($data);
-    if (isset($data['type_id'])) {
+    if (!empty($data['type_id'])) {
       $entity->setType(new ProductTypeEntity(array('id' => $data['type_id'])));
     }
-    elseif (isset($data['type'])) {
+    elseif (!empty($data['type'])) {
       $entity->setType(new ProductTypeEntity($data['type']));
     }
-    if (isset($data['category'])) {
+    if (!empty($data['category'])) {
       foreach ($data['category'] as $categoryData)
       {
         $entity->addCategory(new ProductCategoryEntity($categoryData));
       }
     }
-    if (isset($data['brand'])) {
+    if (!empty($data['brand'])) {
       $entity->setBrand(new BrandEntity($data['brand']));
     }
-    if (isset($data['property'])) {
+    if (!empty($data['property'])) {
       foreach ($data['property'] as $prop) {
         $attr = new ProductAttributeEntity($prop);
         if (!empty($prop['option_id']))
@@ -42,16 +42,19 @@ class ProductRepository extends ObjectRepository
         $entity->addAttribute($attr);
       }
     }
-    if (isset($data['model'])) {
+    if (!empty($data['model'])) {
       $model = new ProductModelEntity();
       $model->setProductIdList($data['model']['product']);
       foreach ($data['model']['property'] as $prop)
         $model->addProperty(new ProductPropertyEntity($prop));
       $entity->setModel($model);
     }
-    if (isset($data['state'])) {
+    if (!empty($data['state'])) {
       $entity->setState(new ProductStateEntity($data['state']));
     }
+    //  if(!empty($data['line'])){
+    $entity->setLine(new ProductLineEntity($data['line']));
+    //  }
     return $entity;
   }
 

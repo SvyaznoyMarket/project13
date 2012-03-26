@@ -85,6 +85,8 @@ class ProductEntity
   private $price;
   /** @var ProductStateEntity */
   private $state;
+  /** @var ProductLineEntity */
+  private $line;
 
   public function __construct(array $data = array())
   {
@@ -604,5 +606,21 @@ class ProductEntity
   public function getIsBuyable()
   {
     return $this->getState() && $this->getState()->getIsBuyable();
+  }
+
+  /**
+   * @param \ProductLineEntity $line
+   */
+  public function setLine($line)
+  {
+    $this->line = $line;
+  }
+
+  /**
+   * @return \ProductLineEntity
+   */
+  public function getLine()
+  {
+    return $this->line;
   }
 }
