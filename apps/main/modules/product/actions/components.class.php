@@ -187,7 +187,11 @@ class productComponents extends myComponents
     if ('stock' == $this->view)
     {
       $item['description'] = $this->product['description'];
-      $length = mb_strpos($item['description'], ' ', 120) ?: strlen($item['description']);
+      $length = strlen($item['description']);
+      if ($length > 120)
+      {
+        $length = mb_strpos($item['description'], ' ', 120);
+      }
       $item['description'] = mb_substr($item['description'], 0, $length);
       $item['description'] = $item['description'].((mb_strlen($this->product['description']) > mb_strlen($item['description'])) ? '...' : '');
     }
