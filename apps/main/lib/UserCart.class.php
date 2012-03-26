@@ -75,6 +75,7 @@ class UserCart extends BaseUserData
       $products[$product->id] = $this->getDefaults();
     }
     $products[$product->id]['quantity'] = $quantity;
+    $products[$product->id]['token'] = $product->getToken();
 
     $this->parameterHolder->set('products', $products);
     $this->calculateDiscount();
@@ -137,6 +138,8 @@ class UserCart extends BaseUserData
     {
       $services[$service->id]['quantity'] = $quantity;
     }
+    $services[$service->id]['token'] = $service->getToken();
+
     $this->parameterHolder->set('services', $services);
 
     $this->calculateDiscount();
@@ -705,11 +708,18 @@ class UserCart extends BaseUserData
     foreach ($this->products as $key => $product)
     {
       //myDebug::dump($product);
+//      $this->updateProductCart($product, 'token', $product->getToken());
       $this->updateProductCart($product, 'quantity', $products[$key]['quantity']);
       $this->updateProductCart($product, 'formatted_total', number_format($products[$key]['quantity'] * ProductTable::getInstance()->getRealPrice($product), 0, ',', ' '));
       //myDebug::dump($product, 1);
       #$this->updateProductCart($product, 'service', $products[$key]['service']);
+      if(isset($products[$key])){
+        $products[$key]['token'] = $product->getToken();
+        $products[$key]['total'] = $products[$key]['quantity'] * ProductTable::getInstance()->getRealPrice($product);
+      }
     }
+
+    $this->parameterHolder->set('products', $products);
   }
 
   protected function loadServices($force = false)
@@ -749,7 +759,22 @@ class UserCart extends BaseUserData
       $this->updateServiceProductCart($service, 'quantity', $services[$key]['quantity']);
       $this->updateServiceProductCart($service, 'product', $services[$key]['product']);
       $this->updateServiceProductCart($service, 'formatted_total', number_format($services[$key]['quantity'] * $service->getCurrentPrice(), 0, ',', ' '));
+      if(isset($services[$key])){
+        $services[$key] ['token'] = $service->getToken();
+        $services[$key] ['total'] = $services[$key] ['quantity'] * $service->getCurrentPrice();
+        if (isset($services[$key]['product']))
+        {
+          foreach ($services[$key]['product'] as $prodId => $prodQty)
+          {
+            //$qty += $prodQty;
+            $services[$key] ['total'] += ($service->getCurrentPrice($prodId) * $prodQty);
+          }
+        }
+      }
     }
+
+    $this->parameterHolder->set('services', $services);
+
   }
 
   protected function updateProductCart(Doctrine_Record &$product, $property, $value)

@@ -1,37 +1,69 @@
 <?php
+	if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest')
+	{
+		header('HTTP/1.0 404 Not Found');
+		require('../apps/main/modules/default/templates/error404Success.php');
+		exit();
+	}
 
-  $sessionName = 'enter';
-  $dbName = 'enter';
-  $dbUser = 'root';
-  $dbPassword = 'qazwsxedc';
-  $dbHost = '10.20.33.2';
-  $cookieGeoipName = 'geoshop';
+	//устанавливаю заголовок ответа json
+	header('Content-Type:	application/json');
 
-  if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest')
-  {
-    header('HTTP/1.0 404 Not Found');
-    require('../apps/main/modules/default/templates/error404Success.php');
-    exit();
-  }
+	define('MODE', 'prod');
+	define('SESSION_NAME', 'enter');
+	define('COOKIE_GEOIP_NAME', 'geoshop');
+	try
+	{
+		require_once dirname(__FILE__).'/../lib/vendor/symfony/lib/yaml/sfYamlParser.php';
+		$yaml = new sfYamlParser();
+		$dbConfig = $yaml->parse(file_get_contents(dirname(__FILE__).'/../config/databases.yml'));
+		if(!isset($dbConfig[MODE])){
+			if(!isset($dbConfig['all'])){
+				throw new Exception('cant load config');
+			}
+			$dbConfig = $dbConfig['all'];
+		}
+		else{
+			$dbConfig = $dbConfig[MODE];
+		}
 
-  //устанавливаю заголовок ответа json
-  header('Content-Type:	application/json');
+		if(!isset($dbConfig['doctrine']['param'])){
+			throw new Exception('cant load config');
+		}
+
+		$dbConfig = array_merge(array('host' =>'', 'username'=>'', 'password'=>'', 'dbname'=>''), $dbConfig['doctrine']['param']);
+
+		$dsn = str_replace('mysql:', '', $dbConfig['dsn']);
+		$params = explode(';', $dsn);
+		foreach($params as $param){
+			list($key, $val) = explode('=', $param);
+			$key = trim($key);
+			$dbConfig[$key] = trim($val);
+		}
+		//подключаюсь к базе
+		if (! ($conn = mysql_connect($dbConfig['host'], $dbConfig['username'], $dbConfig['password'])))
+		{
+			throw new Exception('cant connect to db "'.$dbConfig['host'].'"');
+		}
+
+		//переключаюсь на нужную базу
+		if (!mysql_select_db($dbConfig['dbname'], $conn))
+		{
+			throw new Exception('cant select db "'.$dbConfig['dbname'].'"');
+		}
+	}
+	catch (Exception $e)
+	{
+		if($conn){
+			mysql_close($conn);
+		}
+		//	echo $e;
+		die(json_encode(array('success' => false, 'data' => array())));
+	}
 
   //стартую сессию symfony
-  session_name($sessionName);
+  session_name(SESSION_NAME);
   session_start();
-
-  //подключаюсь к базе
-  if (! ($conn = mysql_connect($dbHost, $dbUser, $dbPassword)))
-  {
-    die(json_encode(array('success' => false, 'data' => array())));
-  }
-
-  //переключаюсь на нужную базу
-  if (!mysql_select_db($dbName, $conn))
-  {
-    die(json_encode(array('success' => false, 'data' => array())));
-  }
 
   //получаю пользовательские данные из сессии
   $user_attributes = isset($_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes']) ? $_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'] : array();
@@ -86,7 +118,7 @@
       if (!$region_id)
       {
         $_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes']['region'] = $row['id'];
-        setcookie($cookieGeoipName, $row['geoip_code'], time() + 60 * 60 * 24 * 365);
+        setcookie(COOKIE_GEOIP_NAME, $row['geoip_code'], time() + 60 * 60 * 24 * 365);
       }
     }
 
