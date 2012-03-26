@@ -134,17 +134,17 @@ i{ font-family: 'EnterTypeItalic' !important; }
 
 
 .font09 {font-size:0.9em}
-.font9 {font-size:9px}
-.font10 {font-size:10px}
-.font11 {font-size:11px}
-.font12 {font-size:12px}
-.font14 {font-size:14px}
-.font16 {font-size:16px}
-.font18 {font-size:18px}
-.font19 {font-size:19px}
-.font24 {font-size:24px}
-.font34 {font-size:34px}
-.font48 {font-size:48px}
+.font9 {font-size:11px}
+.font10 {font-size:12px}
+.font11 {font-size:13px}
+.font12 {font-size:14px}
+.font14 {font-size:16px}
+.font16 {font-size:18px}
+.font18 {font-size:20px}
+.font19 {font-size:21px}
+.font24 {font-size:26px}
+.font34 {font-size:36px}
+.font48 {font-size:50px}
 
 .lh13 {line-height:1.3em}
 .lh15, Ul.lh15 LI {line-height:1.5em}
@@ -200,7 +200,7 @@ i{ font-family: 'EnterTypeItalic' !important; }
 
 .rubl {font-family:"Rouble"; font-size: 90%; margin: 0 0px 0 -5px}
 
-.topbar {height:25px; padding-top:7px; font-size:11px}
+.topbar {height:25px; padding-top:7px; font-size:13px}
 .region {float:left}
 .region A {font-weight:bold; text-transform:uppercase}
 
@@ -240,12 +240,12 @@ i{ font-family: 'EnterTypeItalic' !important; }
 .topmenu .point9:hover {background-position:-712px -137px}*/
 
 .headerright {padding-top:37px; color:#fff; font:14px 'Enter'; margin-left: -13px; display: inline-block; *display: inline; zoom: 1;}
-.headerright .tel {padding:0; font-size:18px; }
-.headerright .tel SPAN {font-size:18px; vertical-align:top; margin-right:3px}
-.headerright A {color:#fff; text-decoration:underline; font-size:10px; line-height:16px}
+.headerright .tel {padding:0; font-size:20px; }
+.headerright .tel SPAN {font-size:20px; vertical-align:top; margin-right:3px}
+.headerright A {color:#fff; text-decoration:underline; font-size:12px; line-height:16px}
 .headerright A:hover {color:#ffa901}
 
-.extramenu {position:absolute; top:115px; left:0; width:914px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #ffa901;
+.extramenu {position:absolute; top:115px; left:0; width:914px; background:#fff; color:#000; font-size:14px; text-align:left; border:2px solid #ffa901;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
@@ -256,11 +256,11 @@ box-shadow:0 0 7px #616161;
 
 .extramenu .corner {position:absolute; display:block; font-size:0; line-height:0; top:-15px; //top:-14px; width:20px; height:15px; background:url(img/bg.png) no-repeat 0 -218px}
 .extramenu DL {float:left; width:210px; margin:8px 6px 12px 12px; overflow:hidden}
-.extramenu DT {padding:10px 0 5px 0; font-size:16px}
+.extramenu DT {padding:10px 0 5px 0; font-size:18px}
 .extramenu DD {margin-bottom:1px}
-.extramenu DD A {display:block; padding:2px 9px; font-size:11px; text-decoration:none}
+.extramenu DD A {display:block; padding:2px 9px; font-size:13px; text-decoration:none}
 .extramenu DD A:hover {background-color:#e6e6e6}
-.extramenu LI {float:left; width:201px; margin:10px 6px 20px 21px; overflow:hidden; font-size:11px}
+.extramenu LI {float:left; width:201px; margin:10px 6px 20px 21px; overflow:hidden; font-size:13px}
 .extramenu LI IMG {float:left; margin-right:13px; border:1px solid #ececec}
 
 
@@ -269,12 +269,12 @@ box-shadow:0 0 7px #616161;
 .steplist {float:left; padding-left:50px; margin-top:28px; background:url(img/bg_steps.png) no-repeat 0 6px}
 .steplist2 {background-position:0 -94px}
 .steplist3 {background-position:0 -194px}
-.steplist LI {float:left; width:158px; font-size:11px; color:#a6a6a6}
+.steplist LI {float:left; width:158px; font-size:13px; color:#a6a6a6}
 .steplist A {float:left; color:#ffa901}
 .steplist A:hover {text-decoration:none}
 .steplist SPAN {display:block; font-size:24px; font-family:"Enter"; text-transform:uppercase}
 .steplist .last { width: 90px; }
-.basketheader .headerright {float:right; color:#000; font-size:14px; text-align:right}
+.basketheader .headerright {float:right; color:#000; font-size:16px; text-align:right}
 .paysystem {float:left; padding-top:40px}
 .paysystem A {float:left; display:block; height:24px; margin-right:20px; background:url(img/pay_system.png) no-repeat}
 .paysystem .visa {width:44px; background-position:0 0}
@@ -284,23 +284,23 @@ box-shadow:0 0 7px #616161;
 
 
 .pagehead {float:left; width:100%; padding-bottom:20px}
-.breadcrumbs {float:left; padding-bottom:9px; font-size:11px; color:#a6a6a6}
+.breadcrumbs {float:left; padding-bottom:9px; font-size:13px; color:#a6a6a6}
 .breadcrumbs A {color:#a6a6a6}
-.breadcrumbs-footer {padding:0px 0px 14px 10px; font-size:11px; color:#a6a6a6}
+.breadcrumbs-footer {padding:0px 0px 14px 10px; font-size:13px; color:#a6a6a6}
 .breadcrumbs-footer A {color:#a6a6a6}
 
-.searchnumber {float:right; padding-bottom:9px; font-size:11px; color:#a6a6a6; white-space:nowrap}
-.searchtitle {clear:both; font-size:16px; font-weight:bold;  padding:7px 0}
+.searchnumber {float:right; padding-bottom:9px; font-size:13px; color:#a6a6a6; white-space:nowrap}
+.searchtitle {clear:both; font-size:18px; font-weight:bold;  padding:7px 0}
 
 H1 {float:left; width:560px; margin:0; font-weight:normal; font-size:30px; font-family:"Enter"}
-H2 {padding:0 0 11px 0; margin:0; font-size:16px; font-weight:normal}
+H2 {padding:0 0 11px 0; margin:0; font-size:18px; font-weight:normal}
 H2.bold {font-weight:bold}
 .heart {display:inline-block; width:55px; height:27px; background:url(img/bg_inner.png) no-repeat 0 -212px; margin-left:15px}
 .entertitle {font-size:30px; font-family:"Enter"}
 
 .rubrictitle {float:left}
 .rubrictitle H2 {float:left; margin-right:5px; font-weight:bold}
-.rubrictitle H3 {float:left; padding:0 0 11px 0; margin:0 5px 0 0; font-size:16px}
+.rubrictitle H3 {float:left; padding:0 0 11px 0; margin:0 5px 0 0; font-size:18px}
 .rubrictitle STRONG {float:left; padding-top:5px}
 
 .line {clear:both; font-size:0; line-height:0; border-top:1px solid #e6e6e6}
@@ -330,18 +330,18 @@ border-radius:5px;
 -webkit-border-radius:5px
 }
 
-.yellowbutton {height:24px; padding:0 7px 3px 7px; background-color:#ffaa01;  background-position:0 0; font-size:11px; color:#fff; border-color:#f28900}
+.yellowbutton {height:24px; padding:0 7px 3px 7px; background-color:#ffaa01;  background-position:0 0; font-size:13px; color:#fff; border-color:#f28900}
 .yellowbutton:hover {background-color:#f79200; background-position:0 -32px}
 .yellowbuttonactive, .yellowbuttonactive:hover {background-color:#f79200; background-position:0 -64px}
 .yellowbuttondisabled {background-color:#ececec; background-position:0 -96px; border-color:#e4e4e4; color:#e1e1e1}
 
-.whitebutton {height:24px; padding:0 7px 3px 7px; background-color:#e5e5e5;  background-position:0 -128px; font-size:11px; color:#010101; border-color:#c9c9c9}
+.whitebutton {height:24px; padding:0 7px 3px 7px; background-color:#e5e5e5;  background-position:0 -128px; font-size:13px; color:#010101; border-color:#c9c9c9}
 .whitebutton:hover {background-color:#c5c5c5; background-position:0 -160px}
 .whitebuttonactive, .whitebuttonactive:hover {background-color:#c4c4c4; background-position:0 -192px}
 .whitebuttondisabled {background-color:#ececec; background-position:0 -224px; border-color:#e4e4e4; color:#e1e1e1}
 
 .bBlueButton .link1,
-.whitelink {display:inline-block; height:18px; padding:4px 10px 0 10px; background-color:#e5e5e5;  background-position:0 -128px; font-size:11px; color:#010101; border-color:#c9c9c9}
+.whitelink {display:inline-block; height:18px; padding:4px 10px 0 10px; background-color:#e5e5e5;  background-position:0 -128px; font-size:13px; color:#010101; border-color:#c9c9c9}
 .bBlueButton .link1:hover,
 .whitelink:hover {background-color:#c5c5c5; background-position:0 -160px; text-decoration:none}
 .whitelinkactive, .whitelinkactive:hover {background-color:#c4c4c4; background-position:0 -192px}
@@ -349,18 +349,18 @@ border-radius:5px;
 .whitelink .leaf {display:inline-block; width:16px; height:14px; background:url(img/bg.png) no-repeat -197px -101px; vertical-align:-3px; margin-right:8px}
 .whitelink .map {display:inline-block; width:16px; height:16px; background:url(img/bg_inner.png) no-repeat -104px -133px; vertical-align:-5px; margin-right:8px}
 
-.bigbutton {height:33px; padding:0 7px 3px 7px; background-color:#ffa901; background-position:0 -256px; font-size:14px; color:#fff; border-color:#f28900}
+.bigbutton {height:33px; padding:0 7px 3px 7px; background-color:#ffa901; background-position:0 -256px; font-size:16px; color:#fff; border-color:#f28900}
 .bSet__ePrice .link1:hover,
 .bigbutton:hover {background-color:#f79200; background-position:0 -297px}
 .bigbuttonactive, .bigbuttonactive:hover {background-color:#f79200; background-position:0 -338px}
 
-.bigbuttonlink {display:inline-block; height:26px; padding:7px 11px 0 11px; background-color:#ffa901; background-position:0 -256px;  font-size:14px; color:#fff;  border-color:#f28900}
+.bigbuttonlink {display:inline-block; height:26px; padding:7px 11px 0 11px; background-color:#ffa901; background-position:0 -256px;  font-size:16px; color:#fff;  border-color:#f28900}
 .bigbuttonlink:hover {background-color:#f79200; background-position:0 -297px; color:#fff; text-decoration:none}
 .bigbuttonlinkactive, .bigbuttonlinkactive:hover {background-color:#f79200; background-position:0 -338px}
 .bigbuttonlink.width214 {width:214px; padding:7px 0 0 0; text-align:center}
 .bigbuttonlink.mDisabled, .bigbutton.mDisabled {background: #f9f9f9; border-color:#e4e4e4; color: #dcdcdc; cursor: default;}
 
-.bSet__ePrice .link1{display:inline-block; height:26px; padding:7px 11px 0 11px; background-color:#ffa901; background-position:0 -256px;  font-size:14px; color:#fff;  border-color:#f28900}
+.bSet__ePrice .link1{display:inline-block; height:26px; padding:7px 11px 0 11px; background-color:#ffa901; background-position:0 -256px;  font-size:16px; color:#fff;  border-color:#f28900}
 .bSet__ePrice .link1:hover{background-color:#f79200; background-position:0 -297px; color:#fff; text-decoration:none}
 .bSet__ePrice .link1.disabled{background: #f9f9f9; border-color:#e4e4e4; color: #dcdcdc; cursor: default;}
 
@@ -426,7 +426,7 @@ LABEL.checked {color:#ffa901}
 .bigfilter LI {padding:2px 5px 3px 29px; margin-bottom:1px; cursor:pointer}
 .bSpec LI{ padding: 5px 5px 5px 35px;}
 .bigfilter LI:hover {background-color:#e6e6e6}
-.bigfilter LI LABEL {display:block; font-size:12px; cursor:pointer}
+.bigfilter LI LABEL {display:block; font-size:14px; cursor:pointer}
 .bSpec DT:hover {color: #ffa901;}
 .bSpec h2{ padding:0; margin: 10px 0 10px 10px; font: 16px 'EnterTypeBold'; color: #ffa901;}
 
@@ -480,7 +480,7 @@ box-shadow:0 0 9px #616161;
 
 
 .sliderbox {width:181px; margin: 0 auto 10px;}
-.sliderbox SPAN {display:block; padding-top:8px; font-size:10px; color:#A6A6A6}
+.sliderbox SPAN {display:block; padding-top:8px; font-size:12px; color:#A6A6A6}
 .filter-range {height:16px; background:#ffe6b4 url(img/bg.png) repeat-x 0 -34px;  position: relative;
 border-radius:4px;
 -moz-border-radius:4px;
@@ -493,17 +493,17 @@ border-radius:4px;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px}
-.advice DIV {border-bottom:1px solid #dcdcdc; padding:12px 12px 1px 12px; font-size:16px}
+.advice DIV {border-bottom:1px solid #dcdcdc; padding:12px 12px 1px 12px; font-size:18px}
 .advice UL {padding:12px 0 4px 0}
 .advice LI {padding:0 12px 12px 12px}
-.advice H3 {font-size:12px; font-weight:normal; margin:0; padding:0}
+.advice H3 {font-size:14px; font-weight:normal; margin:0; padding:0}
 .advice A, .advice A.underline {color:#308fce}
 .advice .whitelink {color:#010101}
 
 .article {font-size:0.9em; color:#a6a6a6; position:relative}
-.article H2 {font-weight:bold; font-size:11px; padding-bottom:5px}
+.article H2 {font-weight:bold; font-size:13px; padding-bottom:5px}
 
-.filter {float:left; font-size:11px; color:#a6a6a6; padding:3px 0 9px 0}
+.filter {float:left; font-size:13px; color:#a6a6a6; padding:3px 0 9px 0}
 .filter.fr {float:right}
 .filterchoice {float:left; position:relative; z-index:4}
 .filterlink, .regionlink {display:inline-block; font-weight:bold; background:url(img/icons.png) no-repeat 100% -169px; padding-right:17px; margin-left:9px; text-decoration:underline; white-space:nowrap}
@@ -530,13 +530,13 @@ box-shadow:0 0 7px #616161;
 .view .listview {background-position:-26px -132px}
 .view .listview.active {background-position:-78px -132px}
 
-.pageslist {float:right; font-size:11px; text-align:center; padding-bottom:9px}
+.pageslist {float:right; font-size:13px; text-align:center; padding-bottom:9px}
 .pageslist UL {float:left}
 .pageslist LI {float:left;  border-right:1px solid #e9e9e9; padding:0 2px}
 .pageslist LI.next {border:0}
 .pageslist .current {border-right:none; background-color:#fff; padding:0 3px; margin:0 0 0 -1px}
 .pageslist SPAN {float:left; display:block; padding:3px 5px 0 0; color:#a6a6a6}
-.pageslist A {float:left; display:block; height:18px; padding:3px 7px 0 7px; vertical-align:middle; text-decoration:none; color:#a6a6a6; font-size:12px}
+.pageslist A {float:left; display:block; height:18px; padding:3px 7px 0 7px; vertical-align:middle; text-decoration:none; color:#a6a6a6; font-size:14px}
 .pageslist .current A, .pageslist .current A:hover {background-color:#000; color:#fff; border:none; position:relative;
 border-radius:5px;
 -moz-border-radius:5px;
@@ -557,7 +557,7 @@ border-radius:5px;
 .advertbox LI {padding:17px 0; border-bottom:1px solid #fff; position:relative}
 .advertbox .current I {position:absolute; left:0; top:50%; margin:-15px 0 0 -32px; display:block; width:15px; height:29px;  background:url(img/bg.png) no-repeat -195px -33px}
 .advertbox A {color:#fff}
-.advertbox SPAN {display:block; font-size:18px; padding-bottom:10px}
+.advertbox SPAN {display:block; font-size:20px; padding-bottom:10px}
 
 
 .goodslist {float:left; width:705px; margin-left:-4px;  padding-bottom:5px; z-index:1; position:relative;}
@@ -573,7 +573,7 @@ border-radius:5px;
 .boxhover .rb {lposition:relative; lmargin:9px 0 0 9px; background:#fff url(img/bg_shadow.png) no-repeat 100% 100%}
 .boxhover .lt {position:relative; top:-9px; left:-9px; zoom:1; background:#fff url(img/bg_shadow.png) no-repeat 0 0; padding:14px 6px 6px 14px}
 
-.fastview {display:none; position:absolute; top:145px; left:10px; z-index:20; width:117px; height:21px; padding-top:4px; background:url(img/bg.png) no-repeat 0 -109px; font-size:11px; color:#7e7e7e; text-align:center; text-decoration:none}
+.fastview {display:none; position:absolute; top:145px; left:10px; z-index:20; width:117px; height:21px; padding-top:4px; background:url(img/bg.png) no-repeat 0 -109px; font-size:13px; color:#7e7e7e; text-align:center; text-decoration:none}
 .goodsbox:hover .fastview {display:block}
 .fastview:hover {text-decoration:none; background-position:0 -80px; color:#000}
 .goodsbox .photo {margin-bottom:9px; text-align:center; position:relative}
@@ -583,7 +583,7 @@ border-radius:5px;
 .goodsbox .photo .bestseller {width:81px; background-position:-75px -54px}
 .goodsbox H2 {margin:0; padding-bottom:10px; font-weight:bold}
 .goodsbox LI {padding-bottom:7px}
-.goodsbox H3 {font-size:12px; font-weight:normal; margin:0; padding-bottom:5px}
+.goodsbox H3 {font-size:14px; font-weight:normal; margin:0; padding-bottom:5px}
 
 .goodsboxlink {display:block}
 .goodsboxlink:hover {text-decoration:none}
@@ -651,7 +651,7 @@ border-radius:5px;
 .goodsline .goodsboxlink {
     cursor: pointer;
     float: left;
-    font-size: 11px;
+    font-size: 13px;
     padding-bottom: 10px;
     width: 675px;
 }
@@ -667,7 +667,7 @@ border-radius:5px;
     width: 278px;
 }
 .goodsline H3 {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: normal;
     margin: 0;
     padding-bottom: 5px;
@@ -709,9 +709,9 @@ border-radius:5px;
 .bigcarousel .goodsbox {width:147px; padding:10px; margin-bottom:14px; margin-right:20px; background-color:#fff; position:relative}
 .bigcarousel .boxhover {width:167px}
 .bigcarousel .goodsbox:hover .boxhover {display:block}
-.bigcarousel .goodsrating {display:block; padding-bottom:5px; font-size:10px; color:#a6a6a6}
+.bigcarousel .goodsrating {display:block; padding-bottom:5px; font-size:12px; color:#a6a6a6}
 .bigcarousel .ratingview {display:inline-block; width:63px; margin:0 5px 0 0; vertical-align:-1px; }
-.bigcarousel .goodsbox .buy {position:absolute; left:0; top:0; padding:3px 6px 4px 6px; background-color:#ffa901; color:#fff; font-size:11px;
+.bigcarousel .goodsbox .buy {position:absolute; left:0; top:0; padding:3px 6px 4px 6px; background-color:#ffa901; color:#fff; font-size:13px;
     border-radius:5px;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
@@ -743,7 +743,7 @@ border-radius:5px;
 .ratingbox A.ra4:hover {width:120px}
 .ratingbox A.ra5 {left:120px}
 .ratingbox A.ra5:hover {width:150px}
-#ratingresult {float:left; font-size:18px; line-height:27px; color:#ffa901; margin-left:10px}
+#ratingresult {float:left; font-size:20px; line-height:27px; color:#ffa901; margin-left:10px}
 
 .ratingscale {float:left; width:150px; height:8px; color:#757575; font-family:'EnterTypeRegular'; font-size:13px; position:relative; margin:6px 0 3px 0; background:url(img/bg_inner.png) no-repeat -633px -289px}
 .ratingscalebox {width:150px; height:8px;  position:relative}
@@ -787,8 +787,8 @@ border-radius:5px;
 .font18.mSmallBtns{ line-height: 24px; vertical-align: middle; }
 
 .sectionlist {float:left; width:171px; padding-bottom:20px}
-.sectionlist LI {width:161px; padding:0 0 5px 0; font-size:11px; color:#7e7e7e}
-.sectionlist A {font-size:12px; text-decoration:underline}
+.sectionlist LI {width:161px; padding:0 0 5px 0; font-size:13px; color:#7e7e7e}
+.sectionlist A {font-size:14px; text-decoration:underline}
 
 .popular {float:left; width:701px; margin-right:-16px}
 .popular LI {float:left; width:81px; margin-right:16px}
@@ -827,7 +827,7 @@ border-radius:5px;
 .goodsphotosmall .bestseller {width:81px; background-position:-75px -54px}
 
 .goodsinfo {float:left; width:400px; padding:0 0 40px 20px}
-.article {float:left; width:100%; border-bottom:1px solid #e6e6e6; padding-bottom:5px; margin-bottom:10px; font-size:11px; color:#a6a6a6}
+.article {float:left; width:100%; border-bottom:1px solid #e6e6e6; padding-bottom:5px; margin-bottom:10px; font-size:13px; color:#a6a6a6}
 .article A {color:#a6a6a6; margin-left:25px}
 
 .goodsbarbig {width:137px !important; height:31px; margin:26px 0 17px 0; position: relative;}
@@ -889,7 +889,7 @@ border-radius:5px;
 .yellowbuttonactive, .yellowbuttonactive:hover {background-color:#f79200; background-position:0 -64px}
 .yellowbuttondisabled {background-color:#ececec; background-position:0 -96px; border-color:#e4e4e4; color:#e1e1e1}*/
 
-.popup_leftpanel A.link1 { overflow:visible; display:block; background:url(img/bg_buttons.png) repeat-x; border:1px solid; height:16px; padding:3px 7px 3px 7px; font-weight:bold; background-color:#ffaa01; border-color:#f28900; width: 70px; text-align: center; font-size: 11px; color: #fff;
+.popup_leftpanel A.link1 { overflow:visible; display:block; background:url(img/bg_buttons.png) repeat-x; border:1px solid; height:16px; padding:3px 7px 3px 7px; font-weight:bold; background-color:#ffaa01; border-color:#f28900; width: 70px; text-align: center; font-size: 13px; color: #fff;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px
@@ -899,12 +899,12 @@ border-radius:5px;
 .popup_leftpanel A.link1.disabled {background-color:#ececec; background-position:0 -96px; border-color:#e4e4e4; color:#e1e1e1}
 
 .share {display:inline-block; width:105px; height:25px; background:url(img/bg_inner.png) no-repeat -668px -218px; vertical-align:middle; text-indent:-10000px}
-.marklist {font-size:11px; position:relative}
+.marklist {font-size:13px; position:relative}
 .marklist SPAN {margin:0 3px}
 .marklist A {font-weight:bold}
 .mark {display:inline-block; width:23px; height:16px; background:url(img/bg_inner.png) no-repeat -776px -218px; vertical-align:middle; text-indent:-10000px}
 
-.f1links {font-size:11px}
+.f1links {font-size:13px}
 .f1links .f1linkbox {float:left; width:70px; text-align:center; padding-bottom:20px; position:relative}
 .f1link {display:block; width:33px; height:31px; margin:10px auto 5px auto; background:url(img/bg_inner.png) no-repeat -821px -190px; text-indent:-10000px}
 .f1links .f1linkslist {float:right; width:301px; padding:0 0 20px 29px}
@@ -931,7 +931,7 @@ border-radius: 7px;
 
 .variationlist {float:left; width:100%; padding-bottom:8px}
 .variationlist LI {float:left; height:29px; margin:0 10px 5px 0}
-.variationlist A {display:block; height:19px; padding:6px 8px 0 8px; font-weight:bold; font-size:11px; background-color:#fff; border:2px solid #e7e7e7;
+.variationlist A {display:block; height:19px; padding:6px 8px 0 8px; font-weight:bold; font-size:13px; background-color:#fff; border:2px solid #e7e7e7;
 border-radius: 7px;
 -moz-border-radius:7px;
 -webkit-border-radius:7px;
@@ -941,21 +941,21 @@ border-radius: 7px;
 
 .completemenu {float:left; width:295px; padding-bottom:20px}
 .completemenu LI {position:relative; padding:0 0 5px 55px; min-height:29px}
-.completemenu .number, .completepoint .number {position:absolute; top:0; left:0; display:block; width:25px; height:19px; padding-top:6px; background-color:#fff; border:2px solid #e7e7e7; text-align:center; font-weight:normal; font-size:10px;
+.completemenu .number, .completepoint .number {position:absolute; top:0; left:0; display:block; width:25px; height:19px; padding-top:6px; background-color:#fff; border:2px solid #e7e7e7; text-align:center; font-weight:normal; font-size:12px;
 border-radius: 7px;
 -moz-border-radius:7px;
 -webkit-border-radius:7px;
 }
-.completemenu .textpoint {display:block; margin-left:-17px; font-size:10px; color:#a6a6a6}
+.completemenu .textpoint {display:block; margin-left:-17px; font-size:12px; color:#a6a6a6}
 
 .complete {float:left; width:615px; padding:0 0 20px 10px}
 .completepoint {float:left; width:120px; height:120px; position:relative}
-.sign {float:left; width:24px; height:68px; padding-top:52px; text-align:center; font-size:18px; color:#cb3735}
+.sign {float:left; width:24px; height:68px; padding-top:52px; text-align:center; font-size:20px; color:#cb3735}
 .completeresult {float:left; width:175px; padding-left:8px}
 
 .descriptionlist .point {float:left; width:100%; padding-bottom:15px}
 .descriptionlist .title {float:left; width:320px; border-bottom:1px solid #e6e6e6}
-.descriptionlist .title  H3 {float:left; display:inline-block; font-size:12px; font-weight:normal; margin:0 0 -5px 0; padding-right:10px; background-color:#fff}
+.descriptionlist .title  H3 {float:left; display:inline-block; font-size:14px; font-weight:normal; margin:0 0 -5px 0; padding-right:10px; background-color:#fff}
 .descriptionlist .title B {display:inline-block; width:14px; height:11px; background:url(img/bg.png) no-repeat -38px 0; vertical-align:bottom; margin-left:5px}
 .descriptionlist .point .pr {display:inline}
 .descriptionlist .point .prompting {top:25px; left:-50px}
@@ -976,37 +976,37 @@ border-radius: 7px;
 .gradetable THEAD TH {padding:0 0 12px 0}
 .gradetable TH {padding:0 0 5px 0; text-align:right}
 .gradetable.fr TBODY TH {padding:0 0 8px 0}
-.gradetable TH A {font-size:10px; text-decoration:underline}
+.gradetable TH A {font-size:12px; text-decoration:underline}
 .gradetable TD { padding:0 0 5px 20px}
 .gradetable THEAD TD {padding:0 0 12px 20px}
 .gradetable.fr TBODY TD {padding:0 0 8px 20px}
-.gradetable TBODY TD {font-size:10px; color:#a6a6a6}
+.gradetable TBODY TD {font-size:12px; color:#a6a6a6}
 .grade {float:left; width:84px; height:6px; line-height:0; font-size:0; margin:3px 6px 0 0; border:1px solid #f4a201;
 border-radius: 5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
 }
 .grade DIV {float:left; height:6px; background:#ffb721; line-height:0; font-size:0}
-.percentbox {display:inline-block; width:64px; height:32px; padding-top:2px; text-align:center; font-size:18px; background:url(img/bg_inner.png) no-repeat -707px -250px; vertical-align:middle}
+.percentbox {display:inline-block; width:64px; height:32px; padding-top:2px; text-align:center; font-size:20px; background:url(img/bg_inner.png) no-repeat -707px -250px; vertical-align:middle}
 .recomendbox {margin:-5px 330px 0 330px}
 
 
 .comment {float:left; width:100%; padding-bottom:19px; border-bottom:1px solid #e6e6e6; margin-bottom:15px}
 .commentleft {float:left; width:195px; padding-right:20px; text-align:right; line-height:18px}
 .real {float:right; width:131px; height:54px;  background:#f4f4f4 url(img/bg_inner.png) no-repeat -432px -284px; margin-bottom:5px}
-.realtext {float:left; padding:15px 0 0 13px; font-size:10px; line-height:12px; text-align:left}
+.realtext {float:left; padding:15px 0 0 13px; font-size:12px; line-height:12px; text-align:left}
 .comment .avatar {padding-bottom:5px}
 .real .avatar {padding:0}
 .vote A {font-weight:bold; text-decoration:underline}
 .vote A.green:hover {color:#6ea428}
 .commentright {float:left; width:684px; min-height:147px; padding-left:20px; border-left:1px solid #e6e6e6}
 .commenttext {float:left; width:450px; overflow:hidden}
-.gradelist {float:right; margin-right:20px; font-size:10px; color:#a6a6a6}
+.gradelist {float:right; margin-right:20px; font-size:12px; color:#a6a6a6}
 .gradelist LI {padding-bottom:5px}
-.gradelist DIV {padding-bottom:3px; font-size:12px; color:#000}
+.gradelist DIV {padding-bottom:3px; font-size:14px; color:#000}
 
 .sharebox {float:right; position:relative; padding-right:10px}
-.sharelink, .sharelink:hover {position:relative; z-index:2; display:inline-block; padding:5px 0 1px 28px; background:url(img/icons.png) no-repeat 0 -236px; font-size:11px; color:#5da7d9}
+.sharelink, .sharelink:hover {position:relative; z-index:2; display:inline-block; padding:5px 0 1px 28px; background:url(img/icons.png) no-repeat 0 -236px; font-size:13px; color:#5da7d9}
 .sharelist {display:none; position:absolute; bottom:-12px; right:0; padding:10px 12px 37px 12px; background:#fff; border:2px solid #eaeaea;
 border-radius:5px;
 -moz-border-radius:5px;
@@ -1053,7 +1053,7 @@ border-radius: 5px;
 .answer .avatar IMG {vertical-align:top}
 .answerright {float:right; width:571px; overflow:hidden}
 
-.hideblock {display:none; position:absolute; z-index:10; padding:15px 20px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #eaeaea;
+.hideblock {display:none; position:absolute; z-index:10; padding:15px 20px; background:#fff; color:#000; font-size:14px; text-align:left; border:2px solid #eaeaea;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
@@ -1064,8 +1064,8 @@ box-shadow:0 0 7px #616161;
 //behavior: url(ie-css3.htc)
 }
 .hideblock .close {position:absolute ;top:0px; right:0px; //right:-2px; display:block;  width:26px; height:26px; background:url(img/bg_inner.png) no-repeat -102px -179px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
-.hideblock .title {font-size:16px; padding-bottom:15px}
-.hideblock LABEL {font-size:12px}
+.hideblock .title {font-size:18px; padding-bottom:15px}
+.hideblock LABEL {font-size:14px}
 
 .text {height:22px; padding:0 5px; border:1px solid #c9c9c9;
 border-radius:5px;
@@ -1085,13 +1085,13 @@ border-radius:5px;
 .simplelist LI {padding-bottom:5px}
 
 .deliverilist {margin:0 -20px}
-.deliverilist LI {border-bottom:1px solid #e6e6e6; padding:0 10px 10px 40px; margin-bottom:10px; font-size:11px; color:#a6a6a6}
+.deliverilist LI {border-bottom:1px solid #e6e6e6; padding:0 10px 10px 40px; margin-bottom:10px; font-size:13px; color:#a6a6a6}
 .deliverilist LI.next {border:none}
 .deliverilist LABEL STRONG {color:#000}
 
 .f1list {margin:0 -20px 20px -20px; border-bottom:1px solid #e6e6e6}
 .f1list DT {border-top:1px solid #e6e6e6; padding:10px 35px 10px 40px; position:relative}
-.f1list LABEL {font-size:16px}
+.f1list LABEL {font-size:18px}
 .f1list LABEL.prettyCheckbox span.holderWrap {margin-top:3px}
 .f1list DT B {position:absolute; top:15px; right:16px; display:inline-block; width:11px; height:11px; background:url(img/bg_inner.png) no-repeat -857px -210px; vertical-align:middle; margin-left:5px; cursor:pointer}
 .f1list DT B.current  {background-position:-857px -191px}
@@ -1100,14 +1100,14 @@ border-radius:5px;
 
 .tagslist {clear:both; margin:0 -20px; padding-top:20px}
 .tagslist.pt0 {padding-top:0}
-.tagslist DT {clear:both; border-top:1px solid #e6e6e6; padding:10px 35px 10px 20px; position:relative; font-size:16px; cursor:pointer}
+.tagslist DT {clear:both; border-top:1px solid #e6e6e6; padding:10px 35px 10px 20px; position:relative; font-size:18px; cursor:pointer}
 .tagslist DT.first {border:0}
 .tagslist DT B {position:absolute; top:15px; right:16px; display:inline-block; width:11px; height:11px; background:url(img/bg_inner.png) no-repeat -857px -210px; vertical-align:middle; margin-left:5px; cursor:pointer}
 .tagslist DT.current  B {background-position:-857px -191px}
 .tagslist DD {display:none; padding:0 10px 10px 20px}
 .tagslist A {font-weight:normal; text-decoration:underline; margin-right:10px; line-height:18px}
 
-.popup {position:relative; display:none; z-index:1000; overflow:hidden; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #ffa901;
+.popup {position:relative; display:none; z-index:1000; overflow:hidden; background:#fff; color:#000; font-size:14px; text-align:left; border:2px solid #ffa901;
 border-radius:5px;
 -moz-border-radius:5px;
 -webkit-border-radius:5px;
@@ -1148,7 +1148,7 @@ box-shadow:0 0 7px #616161;
 .articlecard {position:relative; display:none; z-index:1000; width:897px; height:auto; padding:10px; background:#fff}
 .articlecard .goodsphoto {padding:0}
 .articlecard .goodsinfo {float:left; width:373px; padding:0 0 0 17px}
-.articlecard H3 {font-size:24px; font-weight:normal; margin:0; padding-bottom:10px}
+.articlecard H3 {font-size:26px; font-weight:normal; margin:0; padding-bottom:10px}
 .articlecard .f1links .f1linkslist {width:274px}
 
 
@@ -1211,9 +1211,9 @@ border-radius: 5px;
 .numerbox {width:109px; height:25px; background:url(img/bg_inner.png) no-repeat -765px -321px}
 .numerbox B {float:left; display:block; width:27px; height:25px; cursor:pointer}
 .numerbox SPAN {float:left; display:block; width:55px; padding-top:4px; text-align:center}
-.service LI {float:left; width:760px; padding:0 0 5px 20px; font-size:11px}
+.service LI {float:left; width:760px; padding:0 0 5px 20px; font-size:13px}
 .service LI .pricedata {display:none; float:right; width:451px}
-.service LI .pricedata .left {float:left; width:215px; margin-right:20px; text-align:right; font-size:12px}
+.service LI .pricedata .left {float:left; width:215px; margin-right:20px; text-align:right; font-size:14px}
 .service LI .pricedata .right {float:left; width:216px}
 
 
@@ -1229,7 +1229,7 @@ border-radius: 5px;
 .cheque LI STRONG {line-height:20px}
 
 .wishlinks LI {padding-bottom:3px}
-.wishlinks A, .wishlinks A:hover {font-size:11px; color:#a6a6a6; text-decoration:underline}
+.wishlinks A, .wishlinks A:hover {font-size:13px; color:#a6a6a6; text-decoration:underline}
 .questionicon {display:inline-block; width:14px; height:11px; background:url(img/bg.png) no-repeat -38px 0; vertical-align:middle; margin-left:5px; cursor:pointer}
 
 .wishlistmenu A {display:block; padding:3px}
@@ -1239,7 +1239,7 @@ border-radius: 5px;
 .wishline {float:left; width:100%; padding-bottom:20px}
 .wishline .photo {float:left; width:120px}
 .whishinfo {float:left; width:550px; padding-left:15px}
-.wishline .filterchoice {font-size:11px; color:#a6a6a6; padding-top:5px}
+.wishline .filterchoice {font-size:13px; color:#a6a6a6; padding-top:5px}
 .wishline .filterchoice A {color:#a6a6a6; text-decoration:underline}
 .wishline .filterlink {color:#a6a6a6; font-weight:normal; margin-right:15px}
 .wishline .filterlist {top:-5px}
@@ -1247,7 +1247,7 @@ border-radius: 5px;
 
 
 .citylist {margin-right:100px}
-.citylist LI {font-size:14px; padding-bottom:3px}
+.citylist LI {font-size:16px; padding-bottom:3px}
 
 
 .registerbox {clear:both; background:url(img/gray_point.gif) repeat-y 50% 0}
@@ -1264,7 +1264,7 @@ border-radius: 5px;
 .lightboxmenu {float:left; width:923px}
 .lightboxmenu LI {float:right; background:url(img/lightboxmenu_icons.png) no-repeat 0 -400px; padding-left:1px}
 .lightboxmenu LI.fl {float:left; background:none; padding-left:0}
-.lightboxmenu LI A.point {float:left; display:block; height:29px; padding:11px 20px 0 20px; font-size:14px; color:#fff; text-decoration:none}
+.lightboxmenu LI A.point {float:left; display:block; height:29px; padding:11px 20px 0 20px; font-size:16px; color:#fff; text-decoration:none}
 .lightboxmenu LI A.orangeme{color:#ffa901}
 /*.lightboxmenu LI A.point2 {font-weight:bold} TMP */
 .lightboxmenu LI A.point5 {padding:11px 0 0 20px}
@@ -1272,7 +1272,7 @@ border-radius: 5px;
 .lightboxmenu LI A.point1:hover, .lightboxmenu LI A.point6:hover {background-position:-3px -46px}
 .lightboxmenu LI A.point2:hover {background-position:100% -46px}
 .lightboxmenu LI A.point5:hover {background:none}
-.lightboxmenu LI A.point B {float:left; display:block; height:19px; padding-left:23px; margin-right:10px; background:url(img/lightboxmenu_icons.png) no-repeat; font-size:9px; line-height:9px}
+.lightboxmenu LI A.point B {float:left; display:block; height:19px; padding-left:23px; margin-right:10px; background:url(img/lightboxmenu_icons.png) no-repeat; font-size:11px; line-height:9px}
 .lightboxmenu LI A.point1 B {background-position:0 -150px}
 .lightboxmenu LI A.point1:hover B {background-position:0 -350px}
 .lightboxmenu LI A.point2 B {background-position:0 -100px}
@@ -1285,7 +1285,7 @@ border-radius: 5px;
 .lightboxmenu LI A.point5 B {width:25px; height:23px; padding:0; margin-top:-3px; background-position:0 -550px}
 .lightboxmenu LI A.point6 B {background-position:0 -450px}
 .lightboxmenu LI A.point6:hover B {background-position:0 -500px}
-.lightboxmenu LI A.point .total {font-weight:normal; font-size:12px; margin-left:10px; color:#ffa901}
+.lightboxmenu LI A.point .total {font-weight:normal; font-size:14px; margin-left:10px; color:#ffa901}
 
 .flybox {display:none; position:absolute; bottom:41px; z-index:101;  padding:15px 20px 20px 20px; font-weight:normal; cursor:auto; background-color:#fff; border:2px solid #ffa901;
 border-radius:5px;
@@ -1302,7 +1302,7 @@ box-shadow:0 0 9px #616161;
 
 .dragbox {width:100%; lheight:100%; position:fixed; z-index:101; top:0; left:0; right:0; bottom:41px}
 .dragbox DIV {position:absolute; z-index:102; width:60px; height:60px; background-color:#fff; cursor:pointer}
-.dropbox {position:absolute; bottom:44px; z-index:101; width:70px; height:73px; padding-top:5px; background:url(img/bg.png) no-repeat 0 -241px; color:#fff; font-size:10px; text-align:center}
+.dropbox {position:absolute; bottom:44px; z-index:101; width:70px; height:73px; padding-top:5px; background:url(img/bg.png) no-repeat 0 -241px; color:#fff; font-size:12px; text-align:center}
 .dropbox.active {background-position:-75px -241px; color:#ffa901}
 .dropbox P {margin:0; padding-top:18px}
 
@@ -1319,7 +1319,7 @@ box-shadow:0 0 9px #616161;
 .comparisontable TD {padding:0 0 15px 10px; vertical-align:top}
 .comparisontable .pointhead DIV {position:relative; margin-left:-10px; border-bottom:1px solid #e6e6e6; padding:20px 0 10px 0}
 .comparisontable .goodsbox {width:165px; padding:0; margin:0}
-.comparisontable .goodsrating {display:block; padding-bottom:5px; font-size:10px; color:#a6a6a6}
+.comparisontable .goodsrating {display:block; padding-bottom:5px; font-size:12px; color:#a6a6a6}
 .comparisontable .ratingview {display:inline-block; width:63px; margin:0 5px 0 0; vertical-align:-1px; }
 .comparisontable .photo {width:120px; margin:0 auto 9px auto}
 .comparisontable .delete {position:absolute; top:0; right:0; display:block; width:20px; height:20px; background:url(img/bg.png) no-repeat -51px -218px; cursor:pointer}
@@ -1351,7 +1351,7 @@ border-radius:5px;
 .printpage .allpage {width:760px; margin:0}
 .printpage .allpageinner {padding-bottom:96px}
 .printfooter {width:760px; height:80px; padding-top:20px; margin:-80px 0 0 20px; position:relative; border-top:1px solid #e6e6e6}
-.printfooter .headerright {float:right; color:#000; font-size:14px; text-align:right; padding-top:0}
+.printfooter .headerright {float:right; color:#000; font-size:16px; text-align:right; padding-top:0}
 
 .printpage .goodsphoto {margin:0 auto; float:none; padding-bottom:10px}
 .printpage .doublebox {float:left; width:100%; background:url(img/gray_point.gif) repeat-y 50% 0}
@@ -1369,10 +1369,10 @@ border-radius: 5px;
 .bottommenu DL {float:left; width:214px; height:104px; padding:0 10px;  border-right:1px solid #e6e6e6}
 .bottommenu DL.next {width:200px; padding:0 0 0 10px; border:0}
 .bottommenu DT {margin-bottom:14px}
-.bottommenu DD {padding:0; font-size:11px; line-height:15px}
-.bottommenu .tel {font-size:16px}
+.bottommenu DD {padding:0; font-size:13px; line-height:15px}
+.bottommenu .tel {font-size:18px}
 
-.social {float:left; font-size:11px; padding-bottom:30px; color:#8b8b8b}
+.social {float:left; font-size:13px; padding-bottom:30px; color:#8b8b8b}
 .social A {display:inline-block; width:20px; height:20px; background:url(img/bg.png) no-repeat; vertical-align:middle; text-indent:-10000px; margin-left:5px}
 .social .twitter {background-position:-57px 0}
 .social .facebook {background-position:-82px 0}
@@ -1388,7 +1388,7 @@ border-radius: 5px;
 
 .footerbottom {float:left; width:100%}
 .counter {float:right}
-.copy {float:left; padding-top:4px; font-size:11px}
+.copy {float:left; padding-top:4px; font-size:13px}
 .copy DIV {padding-top:5px}
 .copy A {margin-right:25px; text-decoration:underline}
 .mistakeimg {display:inline-block; width:92px; height:17px; background:url(img/bg_inner.png) no-repeat 0 -158px; vertical-align:middle; margin:-8px 5px 0 0; //margin-top:-4px}
@@ -1396,7 +1396,7 @@ border-radius: 5px;
 .leftmenu LI {background:url(img/icons.png) no-repeat -6px -53px; padding:0 0 5px 16px}
 
 .status {width:100%; border-collapse:separate; margin-bottom:20px}
-.status TD {height:23px; padding:0; text-align:center;  font-size:11px; background:#fff1d6 url(img/bg_status.png) no-repeat -4px 0; border-right:1px solid #ffd870; border-left:1px solid #f4a201}
+.status TD {height:23px; padding:0; text-align:center;  font-size:13px; background:#fff1d6 url(img/bg_status.png) no-repeat -4px 0; border-right:1px solid #ffd870; border-left:1px solid #f4a201}
 .status TD.first {border-left:0; background-position:0 0}
 .status TD.next {border-right:0; background-position:100% 0}
 .status TD.active {background-color:#ffac08; background-position:-4px -28px; color:#fff}
@@ -1404,7 +1404,7 @@ border-radius: 5px;
 .status TD.next.active {background-position:100% -28px}
 
 .order {width:100%}
-.order TH {text-align:left; padding:0 10px 15px 0; font-size:14px}
+.order TH {text-align:left; padding:0 10px 15px 0; font-size:16px}
 .order TD {text-align:right; padding:0 0 15px 10px}
 
 .commentline {float:left; width:100%; overflow:hidden; padding-bottom:25px}
@@ -1412,10 +1412,10 @@ border-radius: 5px;
 .avatarlist LI {float:left; margin:0 10px 10px 0; cursor:pointer}
 
 .attention {background:url(img/attention.gif) no-repeat 0 0; padding:2px 0 2px 26px}
-.help {position:absolute; left:20px; width:240px; font-size:11px; color:#434343}
+.help {position:absolute; left:20px; width:240px; font-size:13px; color:#434343}
 .doublehelp {height:46px; padding:15px 0 0 40px; background:url(img/help.png) no-repeat 0 0; margin-top:10px}
 
-.cabinethelp {background:url(img/attention.gif) no-repeat 0 0; padding:20px 0 10px 0; font-size:11px}
+.cabinethelp {background:url(img/attention.gif) no-repeat 0 0; padding:20px 0 10px 0; font-size:13px}
 
 .errorpage404 {background:#fff url(img/error_404.png) no-repeat 50% 110px}
 .errorpage503 {background:#fff url(img/error_503.png) no-repeat 50% 0}
@@ -1427,15 +1427,15 @@ border-radius: 5px;
 .ui-effects-transfer{ border:1px dashed black; z-index:102;}
 
 .tearmlist {float:left; width:100%}
-.tearmlist DT {float:left; width:905px; padding:0 0 15px 15px; font-size:16px; /*cursor:pointer;*/ background:url(img/icons.png) no-repeat -6px -49px}
+.tearmlist DT {float:left; width:905px; padding:0 0 15px 15px; font-size:18px; /*cursor:pointer;*/ background:url(img/icons.png) no-repeat -6px -49px}
 /*.tearmlist DT.current {color:#ffa901; font-weight:bold; background-position:-6px 9px}*/
 .tearmlist DD {/*display:none;*/ float:left; width:905px; padding:0 0 10px 15px}
 .tearmlist DD LI {float:left; width:905px; padding-bottom:10px}
 .tearmlist DD DIV {float:right; width:870px}
 
 
-.plug {width:303px; padding-left:344px; padding-right:50px; margin:0 -6px 20px -6px; font-size:14px}
-.plug H2 {font-size:24px; font-weight:bold}
+.plug {width:303px; padding-left:344px; padding-right:50px; margin:0 -6px 20px -6px; font-size:16px}
+.plug H2 {font-size:26px; font-weight:bold}
 .plug1 {height:175px; padding-top:35px; background:url(/images/plug1.jpg) no-repeat 0 0;}
 .plug2 {height:175px; padding-top:35px; background:url(/images/plug2.jpg) no-repeat 0 0;}
 .plug3 {height:183px; padding-top:27px; background:url(/images/plug3.jpg) no-repeat 0 0;}
@@ -1452,11 +1452,11 @@ border-radius: 5px;
 
 .infoblock { background: url('img/bg_info_article.gif') no-repeat; width: 350px; height: 73px; padding: 15px 15px 10px 35px; }
 
-.servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(img/bg_service.jpg) no-repeat 0 0; color:#fff; font-size:14px; line-height:14px; margin-bottom:25px}
-.servicebanner DIV {font-size:24px; line-height:24px; padding-bottom:5px}
+.servicebanner {clear:both; width:320px; height:131px; padding:33px 0 0 600px; background:#4fcbf4 url(img/bg_service.jpg) no-repeat 0 0; color:#fff; font-size:16px; line-height:14px; margin-bottom:25px}
+.servicebanner DIV {font-size:26px; line-height:26px; padding-bottom:5px}
 
-.slogan {color:#4fcbf4; margin-bottom:30px; font-size:14px}
-.slogan STRONG {display:block; font-size:24px; padding-bottom:5px}
+.slogan {color:#4fcbf4; margin-bottom:30px; font-size:16px}
+.slogan STRONG {display:block; font-size:26px; padding-bottom:5px}
 
 .servicebox {width:456px; position:relative}
 .servicebox:hover {background:url(img/bg_servicebox.png) repeat-y -922px 0}
@@ -1478,7 +1478,7 @@ border-radius: 5px;
 .serviceblock {float:left; width:100%; padding-bottom:20px}
 .serviceblock .photo {float:left; width:160px}
 .serviceblock .info {float:left; width:505px; padding-left:20px}
-.serviceblock H3 {margin:0; padding-bottom:10px; font-size:24px}
+.serviceblock H3 {margin:0; padding-bottom:10px; font-size:26px}
 
 
 
@@ -1498,12 +1498,12 @@ border-radius: 5px;
 		padding: 0;
 		}
 	.bInputBlock__eH2{
-		font-size: 12px;
+		font-size: 14px;
 		font-weight: bold;
 		}
 	.bComment,
 	.bInputBlock__eP{
-		font-size: 11px;
+		font-size: 13px;
 		}
 	.bInputBlock__eP{
 		margin: 2px 0 5px 0;
@@ -1788,7 +1788,7 @@ border-radius: 5px;
 	.bCtg__eL4.mSelected span div{ visibility: hidden }
 
     .catProductNum{
-        font-size:14px;
+        font-size:16px;
         padding:11px 0px 3px 0px;
     }
 
@@ -1916,7 +1916,7 @@ DT.bCtg__eOrange{
     background: none repeat scroll 0 0 transparent;
     border: 0 none;
 /*    color: #A6A6A6; */
-    font-size: 11px;
+    font-size: 13px;
     height: 13px;
     padding: 0;
 }
@@ -2465,7 +2465,7 @@ DT.bCtg__eOrange{
 		padding-right: 5px;
 		}
 	.bGood__eArticle span{
-		font-size: 14px;
+		font-size: 16px;
 		}
 	.bGood .goodsbarbig{
 		margin-top: 3px;
@@ -2845,7 +2845,7 @@ DT.bCtg__eOrange{
 		font: 30px 'Enter';
 		}
 	.bMobDown .sLocation{
-		font-size:16px;
+		font-size:18px;
 	}
 	.bMobDown__eClose{
 		top: -20px;
@@ -3313,7 +3313,7 @@ DT.bCtg__eOrange{
 	height: 200px;
 	background-color: #fff;
 	text-align: center;
-	font-size: 18px;
+	font-size: 20px;
 	border-radius:15px;
 	-moz-border-radius:15px;
 	-webkit-border-radius:15px;
@@ -3465,7 +3465,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 		position:relative;
 		}
 	.bInShop__eMap h2 {
-		font-size:12px;
+		font-size:14px;
 	}
 	.bInShop__eMap .bigmark DIV {
 		line-height: 1;
@@ -3565,7 +3565,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 		margin: 0 0 15px 0;
 		}
 	.bInShop__ePrice{
-		font-size: 36px;
+		font-size: 38px;
 		margin: 0 0 10px 0;
 		}
 	.bInShop__eDescription{
