@@ -145,7 +145,7 @@ class ProjectYandexMarketTask extends sfBaseTask
      * id региона по умолчанию
      * @var int
      */
-    private $_defaultRegionId = 83;
+    private $_defaultRegionId = 19355;
 
     /**
      * Рутовые категории, из которых выгружаем в разные файлы
@@ -155,24 +155,24 @@ class ProjectYandexMarketTask extends sfBaseTask
         //для всех
         array(
             'name' => 'ya_market.xml',
-            'region_id' => 83,
+            'region_id' => 19355,
             'min_num' => 3,
         ),
       array(
           'name' => 'export_realweb.xml',
           'list' => array(6,8,9),
-          'region_id' => 83,
+          'region_id' => 19355,
           'min_num' => 3,
           ),
       array(
           'name' => 'export_mgcom.xml',
           'list' => array(3,2,1,4,7,8,5),
-          'region_id' => 83,
+          'region_id' => 19355,
           'min_num' => 3,
           ),
       array(
           'name' => 'max2.xml',
-          'region_id' => 83,
+          'region_id' => 19355,
           'max_num' => 2
       ),
       //для Рязани

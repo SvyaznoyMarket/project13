@@ -37,7 +37,7 @@ function triggerDelivery( i ) {
         $('#delivered_at_block label').html('Выберите дату доставки:')
 	}
 	// dirty hack
-	if( i == 4 ){ 
+	if( i == 4 ){
 		$('#order_payment_method_id_1').parent().hide()
 		$('#order_payment_method_id_2').parent().hide()
 	} else {
@@ -70,7 +70,7 @@ $('.order-form').submit( function(e) {
 
 $('.order-form').change( function(e) {
         var form = $(this)
-        
+
         if ('order[shop_id]' == $(e.target).attr('name')) {
         	var el = $(e.target).find('option:selected')
         	if (!el.length)
@@ -83,7 +83,7 @@ $('.order-form').change( function(e) {
 				  field: 'delivered_at'
 				  }, function(result) {
 					if (false === result.success) {
-						
+
 					}
 					var toupdate = form.find('[name="order[delivered_at]"]')
 					toupdate.empty()
@@ -94,14 +94,14 @@ $('.order-form').change( function(e) {
 					toupdate.change()
 				})
         }
-        
+
         if ('order[region_id]' == $(e.target).attr('name')) {
           var el = $(e.target).find('option:selected')
           var formreg = $('form#region')
           formreg.attr('action', el.data('url'))
           formreg.submit()
         }
-        
+
         if ('order[delivery_type_id]' == $(e.target).attr('name')) {
           var el = form.find('[name="order[delivery_type_id]"]:checked')
           if (el.length) {
@@ -118,17 +118,28 @@ $('.order-form').change( function(e) {
               field: 'delivery_period_id'
             }, function(result) {
               if ( typeof( result.success ) !== 'undefined' && result.success ) {
-                var select = $('[name="order[delivery_period_id]"]')
+                var select = $('[name="order[delivery_period_id]"]'),
+                  opts = result.data.content;
                 select.empty()
-                $.each(result.data.content, function(v, n) {
-                  select.append('<option value="'+v+'">'+n+'</option>')
+//                $.each(opts, function(v, n) {
+//                  if (n == 'с 09:00 до 18:00') {
+//                    select.append('<option value="'+v+'">'+n+'</option>')
+//                  }
+//                })
+//                $.each(opts, function (v, n) {
+//                  if (n != 'с 09:00 до 18:00') {
+//                    select.append('<option value="' + v + '">' + n + '</option>')
+//                  }
+//                })
+                $.each(opts, function (n, v) {
+                  select.append('<option value="' + v[0] + '">' + v[1] + '</option>')
                 })
                 select.find(':first').attr('selected', 'selected')
                 select.change()
-              }              
-            }, 'json')            
+              }
+            }, 'json')
           }
-        }        
+        }
   })
 
   $('#order_shop_id').trigger('change')
@@ -139,7 +150,7 @@ $('.order-form').change( function(e) {
 
     $('[name="order[address]"]').val(el.val())
   })
-/* RETIRED 
+/* RETIRED
   $('#basic_register-form').bind({
     'submit': function(e) {
       e.preventDefault()
@@ -199,10 +210,10 @@ $('.order-form').change( function(e) {
     })
   })
 
-	
+
 	;( function() {
 		var j_count = $('.timer')
-		if( !j_count.length ) 
+		if( !j_count.length )
 			return false
 		var interval = window.setInterval( sec5run, 1000)
 		var secs = j_count.html().replace(/\D/g,'') * 1

@@ -152,9 +152,11 @@ class productCatalogComponents extends myComponents
   */
   public function executeCreator_list()
   {
+    $region = $this->getUser()->getRegion();
+    $priceListId = $region['product_price_list_id'];
     $creatorList = CreatorTable::getInstance()->getListByProductCategory($this->productCategory, array(
       'order' => 'creator.name',
-    ));
+    ), $priceListId);
 
     $list = array();
     foreach ($creatorList as $creator)

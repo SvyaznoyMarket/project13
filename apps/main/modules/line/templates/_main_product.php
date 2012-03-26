@@ -19,7 +19,7 @@ $json = array(
     <p class='bSet__eDescription'><?php echo $item['description'] ?></p>
     <div class='bSet__ePrice'>
       <?php include_partial('product/price', array('price' => $item['product']->getFormattedPrice(),)) ?>
-      <?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1, 'value' => array('Купить набор'),)) ?>
+      <?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1, 'value' => array('Купить'.(count($item['part']) ? ' набор' : '')),)) ?>
 
       <?php if ($item['product']->is_insale): ?>
         <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
@@ -40,7 +40,7 @@ $json = array(
           </ul>
         </div>
       <?php endif ?>
-      <div class='bSet__eTWrap'><a class='bSet__eMoreInfo' href="<?php echo $item['url'] ?>">Подробнее о наборе</a></div>
+      <div class='bSet__eTWrap'><a class='bSet__eMoreInfo' href="<?php echo $item['url'] ?>">Подробнее о <?php echo count($item['part']) ? 'наборе' : 'товаре' ?></a></div>
     </div>
   </div>
 </div>
