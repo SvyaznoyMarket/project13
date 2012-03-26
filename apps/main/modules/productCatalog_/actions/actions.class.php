@@ -74,7 +74,7 @@ class productCatalog_Actions extends myActions
       $this->productPager->getLastPage()
     ));
     $timer->addTime();
-    sfContext::getInstance()->getLogger()->info('Action '.__METHOD__.' loaded at '.$timer->getElapsedTime());
+    sfContext::getInstance()->getLogger()->info('Action ' . __METHOD__ . ' loaded at ' . $timer->getElapsedTime());
   }
 
   public function executeCategory(sfWebRequest $request)
@@ -157,10 +157,10 @@ class productCatalog_Actions extends myActions
     $productPagerTimer->addTime();
     $loadListTimer->addTime();
 
-    sfContext::getInstance()->getLogger()->info('$productFilterTimer at '.$productFilterTimer->getElapsedTime());
-    sfContext::getInstance()->getLogger()->info('$productSortingTimer at '.$productSortingTimer->getElapsedTime());
-    sfContext::getInstance()->getLogger()->info('$productPagerTimer at '.$productPagerTimer->getElapsedTime());
-    sfContext::getInstance()->getLogger()->info('$loadListTimer at '.$loadListTimer->getElapsedTime());
+    sfContext::getInstance()->getLogger()->info('$productFilterTimer at ' . $productFilterTimer->getElapsedTime());
+    sfContext::getInstance()->getLogger()->info('$productSortingTimer at ' . $productSortingTimer->getElapsedTime());
+    sfContext::getInstance()->getLogger()->info('$productPagerTimer at ' . $productPagerTimer->getElapsedTime());
+    sfContext::getInstance()->getLogger()->info('$loadListTimer at ' . $loadListTimer->getElapsedTime());
 
     $this->setVar('view', $request->getParameter('view', $this->getProductCategory($request)->product_view));
     $this->setVar("productFilter", $productFilter);
@@ -312,15 +312,13 @@ class ProductCorePager extends sfPager
     $response = CoreClient::getInstance()->query("listing.list", $query);
     $this->setNbResults($response['count']);
     $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
-
-    /** @var $table ProductTable */
-    $this->result = ProductTable::getInstance()->getListByCoreIds($response['list'], $this->queryParams);
+    $this->result = RepositoryManager::getProduct()->getListById($response['list'], true);
   }
 
   /**
    * Returns an array of results on the given page.
    *
-   * @return Product[]
+   * @return ProductEntity[]
    */
   public function getResults()
   {
@@ -446,8 +444,8 @@ class ProductCoreFormFilterSimple
           $name = '';
           if ($value['from'] != $filter->getMin()) $name .= sprintf('от %d', $value['from']);
           if ($value['to'] != $filter->getMax()) $name .= sprintf('до %d', $value['to']);
-          if($name == '') continue;
-          if($filter->getFilterId() == 'price') $name .= ' р.';
+          if ($name == '') continue;
+          if ($filter->getFilterId() == 'price') $name .= ' р.';
           $list[] = array(
             'type' => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
             'name' => $name,
@@ -466,7 +464,7 @@ class ProductCoreFormFilterSimple
           break;
         case ProductCategoryFilterEntity::TYPE_LIST:
           if (!is_array($value)) continue;
-          foreach ($filter->getOptions() as $option)
+          foreach ($filter->getOptionList() as $option)
             if (in_array($option['id'], $value))
               $list[] = array(
                 'type' => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
@@ -497,27 +495,29 @@ class ProductCoreFormFilterSimple
   public function getValue(ProductCategoryFilterEntity $filter)
   {
     if (isset($this->values[$filter->getFilterId()]))
-      return $this->values[$filter->getFilterId()];
+      return (array)$this->values[$filter->getFilterId()];
     else
-      return null;
+      return array();
   }
 
-  public function getValueMin(ProductCategoryFilterEntity $filter){
-    $value=$this->getValue($filter);
-    if(isset($value['from'])){
+  public function getValueMin(ProductCategoryFilterEntity $filter)
+  {
+    $value = $this->getValue($filter);
+    if (isset($value['from'])) {
       return $value['from'];
     }
-    else{
+    else {
       return $filter->getMin();
     }
   }
 
-  public function getValueMax(ProductCategoryFilterEntity $filter){
-    $value=$this->getValue($filter);
-    if(isset($value['to'])){
+  public function getValueMax(ProductCategoryFilterEntity $filter)
+  {
+    $value = $this->getValue($filter);
+    if (isset($value['to'])) {
       return $value['to'];
     }
-    else{
+    else {
       return $filter->getMax();
     }
   }
