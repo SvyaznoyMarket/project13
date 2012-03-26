@@ -57,8 +57,8 @@ class CoreClient
         throw new CoreClientException(curl_error($connection), curl_errno($connection));
       }
       $info = curl_getinfo($connection);
-      if($info['http_code'] >= 300){
-        throw new CoreClientException(sprintf('Invalid http code: %d', $info['http_code']));
+      if ($info['http_code'] >= 300) {
+        throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
       $responseDecoded = $this->decode($response);
       if ($this->parameters->get('log_enabled')) {
@@ -116,15 +116,15 @@ class CoreClient
         if ($code == CURLM_OK) {
           // if one or more descriptors is ready, read content and run callbacks
           while ($done = curl_multi_info_read($this->multiHandler)) {
-            $this->logger->info('Core response done: ' . print_r($done,1));
+            $this->logger->info('Core response done: ' . print_r($done, 1));
             $ch = $done['handle'];
             if (curl_errno($ch) > 0)
               throw new CoreClientException(curl_error($ch), curl_errno($ch));
             $info = curl_getinfo($ch);
-            if($info['http_code'] >= 300){
-              throw new CoreClientException(sprintf('Invalid http code: %d', $info['http_code']));
-            }
             $content = curl_multi_getcontent($ch);
+            if ($info['http_code'] >= 300) {
+              throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
+            }
             $responseDecoded = $this->decode($content);
             if ($this->parameters->get('log_enabled')) {
               $this->logger->info('Core response resurce: ' . $ch);
@@ -192,7 +192,7 @@ class CoreClient
    */
   private function decode($response)
   {
-    if(is_null($response)){
+    if (is_null($response)) {
       throw new CoreClientException('Response cannot be null');
     }
     $decoded = json_decode($response, true);
@@ -225,7 +225,7 @@ class CoreClient
     if (is_array($decoded) && array_key_exists('error', $decoded)) {
       throw new CoreClientException((string)$decoded['error']['message'] . " " . json_encode($decoded), (int)$decoded['error']['code']);
     }
-    if(array_key_exists('result', $decoded)){
+    if (array_key_exists('result', $decoded)) {
       $decoded = $decoded['result'];
     }
     return $decoded;
