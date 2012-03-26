@@ -49,7 +49,7 @@ if ($module == 'tag') {
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
 
 <?php if (!$empty && !(isset($list_view) && false === $list_view)): ?>
-  <?php include_component('product', 'list_view', array('view' => $view, 'productCategory' => $productCategory)) ?>
+  <?php include_component('product', 'list_view', array('view' => $view)); //, 'productCategory' => $productCategory)) ?>
 <?php endif ?>
 
 <?php if (!isset($noSorting) || !$noSorting): ?>

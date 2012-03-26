@@ -124,6 +124,7 @@ class productCatalogActions extends myActions
   public function executeTag(sfWebRequest $request)
   {
     //$this->productCategory = $this->getRoute()->getObject();
+      myDebug::dump($request);
     $this->productCategory = $this->oldUrlRedirect($request);
 
     $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )), ));

@@ -2,6 +2,12 @@
 
   <div class="photo">
     <a href="<?php echo url_for('productCardSoa', array('product' => $product)) ?>">
+        <?php if ($product->label): ?>
+        <?php foreach ($product->label as $label): ?>
+            <img class="bLabels" src="<?php echo $product->getLabelUrl($label['media_image']) ?>" alt="<?php echo $label['name'] ?>">
+            <?php endforeach ?>
+        <?php endif ?>
+
     <img src="<?php echo $product->getMainPhotoUrl(2) ?>" alt="<?php echo $product->name ?> - <?php //echo $product->root_name ?>" title="<?php echo $product->name ?> - <?php //echo $product->root_name ?>" width="119" height="120" />
     </a>
   </div>

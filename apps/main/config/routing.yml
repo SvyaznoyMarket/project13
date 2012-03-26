@@ -587,7 +587,7 @@ userProductRating_createtotal:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ get, post ]
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+    #product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product rating create
 userProductRating_create:

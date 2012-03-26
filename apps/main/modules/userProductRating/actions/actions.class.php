@@ -82,22 +82,24 @@ class userProductRatingActions extends myActions
   */
   public function executeCreatetotal(sfWebRequest $request)
   {
-    //$this->getResponse();
-    $product = $this->getRoute()->getObject();
+    $productId = $request->getParameter('product');
+    if (!$productId) {
+      return;
+    }
     $rated = explode('-', $request->getCookie('product_rating'));
 
-    if (in_array($product->id, $rated))
-    {
-      return $this->renderJson(array(
-        'success' => false,
-      ));
-    }
+//    if (in_array($productId, $rated))
+//    {
+//      return $this->renderJson(array(
+//        'success' => false,
+//      ));
+//    }
 
         $this->_request = $request;
 
         try{
           //производим валидацию входящих данных
-          $this->_validateCreateTotalData();
+          //$this->_validateCreateTotalData();
         }
         catch(Exception $e){
           $this->_validateResult['success'] = false;
@@ -106,7 +108,7 @@ class userProductRatingActions extends myActions
 
         //оповещаем об ошибке
         if (!$this->_validateResult['success']){
-          return $this->_refuse();
+         // return $this->_refuse();
         }
 
 
@@ -116,7 +118,7 @@ class userProductRatingActions extends myActions
         if (isset($user) && $user->getGuardUser() && $user->isAuthenticated()){
             //посмотрим в локальной базе. Вероятно, пользователь уже голосовал за этот товар, и информация есть здесь
             $table = UserProductRatingTotalTable::getInstance();
-            $existItems = $table->getQueryObject()->andWhere('product_id=? AND user_id=? ',array($this->_product->id,$user->getGuardUser()->id))->fetchArray();
+            $existItems = $table->getQueryObject()->andWhere('product_id=? AND user_id=? ',array($productId,$user->getGuardUser()->id))->fetchArray();
             //print_r($existItems);
             if (count($existItems)>0){
               $this->_validateResult['success'] = false;
@@ -127,7 +129,7 @@ class userProductRatingActions extends myActions
             //отправляем запос на голосование в ядро
             $core = Core::getInstance();
             $ratingInfo = $core->query('/user/product/rating/create/',array(),array(
-                                                                                'product_id'=>$this->_product->id,
+                                                                                'product_id'=>$productId,
                                                                                 'user_id'=>$user->getGuardUser()->id,
                                                                                 'ip'=>$user->getRealIpAddr(),
                                                                                 'value'=>$this->_request['rating']
@@ -142,7 +144,7 @@ class userProductRatingActions extends myActions
             //пользователь авторизован, но не голосовал
             //добавляем голос пользователя
             $userRate = new UserProductRatingTotal();
-            $userRate->fromArray(array( 'product_id'=>$this->_product->id,
+            $userRate->fromArray(array( 'product_id'=>$productId,
                                         'user_id'=>$user->getGuardUser()->id,
                                         'value'=>$this->_request['rating']));
             $userRate->save();
@@ -152,11 +154,12 @@ class userProductRatingActions extends myActions
             //если пользователь не авторизован - отправим запрос в ядро - вероятоно,
             //пользователь с таким ip голосовал и ядро запретит голосование
             $core = Core::getInstance();
-            $ratingInfo = $core->query('/user/product/rating/create/',array(),array('product_id'=>$this->_product->id,'ip'=>$user->getRealIpAddr(),'value'=>$this->_request['rating']));
+            $ratingInfo = $core->query('/user/product/rating/create/',array(),array('product_id'=>$productId,'ip'=>$user->getRealIpAddr(),'value'=>$this->_request['rating']));
             //если от ядра был получен отказ на запись данных
             if (!$ratingInfo){
               //обрабатываем ответ ядра
               $error = $core->getError();
+              $errText = '';
               if (isset($error['detail']['ip']['rateImpossible'])) $errText = "Вы уже голосовали за этот товар, и не можете проголосовать повторно.";
               elseif (isset($error['detail']['ip']['isEmpty'])) $errText = "IP адрес не доступен. Голосование не возможно.";
               $this->_validateResult['success'] = false;
@@ -167,15 +170,14 @@ class userProductRatingActions extends myActions
 
 
         //всё хорошо, пересчитываем рейтинг товара
-        $this->_product->rating;
-        $this->_product->rating_quantity;
+        $this->_product = ProductTable::getInstance()->findOneBy('core_id', $productId);
         $currentRatingFull = $this->_product->rating * $this->_product->rating_quantity;
         $this->_product->rating_quantity++;
         $currentRatingFull += $this->_request['rating'];
         $this->_product->rating = $currentRatingFull / $this->_product->rating_quantity;
         $this->_product->save();
 
-        $rated[] = $product->id;
+        $rated[] = $productId;
         $rated = array_unique($rated);
         $this->getResponse()->setCookie('product_rating', implode('-', $rated), time() + 86400);
 

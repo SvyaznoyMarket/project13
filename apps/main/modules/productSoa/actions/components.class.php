@@ -211,6 +211,9 @@ class productSoaComponents extends myComponents
         } elseif ($prop['value'] == 'false') {
             $prop['value'] = 'нет';
         }
+        if ($prop['unit']) {
+            $prop['value'] .= ' ' . $prop['unit'];
+        }
         $list[$prop['group_id']]['parameters'][] = $prop;
       }
     }

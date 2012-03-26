@@ -321,4 +321,10 @@ class ProductSoa
     {
         return StockProductRelationTable::getInstance()->getQuantityByProduct($this);
     }
+
+    public function getLabelUrl($mediaImage, $view = 0)
+    {
+        $urls = sfConfig::get('app_product_label_photo_url');
+        return $mediaImage ? $urls[$view] . $mediaImage : null;
+    }
 }

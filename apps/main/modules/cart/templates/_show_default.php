@@ -37,7 +37,7 @@
       </div>
       <div class="basketright">
         <div class="goodstitle">
-          <div class="font24 pb5"><?php echo link_to((string) $item['name'], 'productCard', array('product' => $item['token'])) ?></div>
+          <div class="font24 pb5"><?php echo link_to((string) $item['name'], 'productCard', array('product' => $item['token_prefix'] . '/' .$item['token'])) ?></div>
           <noindex><div class="font11">Есть в наличии</div></noindex>
         </div>
         <div class="basketinfo pb15">
