@@ -158,7 +158,8 @@ class serviceComponents extends myComponents
       'url' => $this->generateUrl('service_list'),
     );
 
-    if (isset($this->serviceCategory) && $this->serviceCategory)
+    //  myDebug::dump($this->serviceCategory);
+    if (isset($this->serviceCategory) && $this->serviceCategory && $this->serviceCategory->core_parent_id)
     {
       $parentCategory = $this->serviceCategory->getParentCategory();
       if (isset($parentCategory) && isset($parentCategory['name']))
