@@ -25,11 +25,25 @@ class serviceActions extends myActions
   {
     if (!isset($request['serviceCategory']) || !$request['serviceCategory']){
         //главная страница f1
+        $list = array();
         $serviceCategory = ServiceCategoryTable::getInstance()->getQueryObject()->where('core_parent_id IS NULL')->fetchOne();
-        $list = ServiceCategoryTable::getInstance()
+        $listTop = ServiceCategoryTable::getInstance()
                         ->createQuery('sc')
-                        ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
+                        //->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
                         ->where('sc.core_parent_id=?',$serviceCategory['core_id'])->fetchArray();
+        foreach ($listTop as $topCat) {
+            $listInner = ServiceCategoryTable::getInstance()
+                ->createQuery('sc')
+                ->where('sc.lft >= ? AND sc.rgt <= ?', array($topCat['lft'], $topCat['rgt']))
+                ->innerJoin('sc.ServiceRelation as rel on sc.id=rel.category_id')
+                ->fetchArray();
+            //myDebug::dump($list);
+            if (count($listInner)) {
+                $list[] = $topCat;
+            }
+
+        }
+       // print_r($list);
     } else {
         //страница категории
         $serviceCategory = $this->getRoute()->getObject();
@@ -72,24 +86,18 @@ class serviceActions extends myActions
             }
         }
 
-        $priceList = ProductPriceListTable::getInstance()->getCurrent();
-        $priceListDefault = ProductPriceListTable::getInstance()->getDefault();
-        #echo $priceListId->id .'----$priceListId';
+        //$priceListId = $this->getUser()->getRegion()->product_price_list_id;
+        //echo $priceListId .'----$priceListId';
+        $region = $this->getUser()->getRegion();
+        $priceListId = $region['product_price_list_id'];
         //получаем списки сервисов
         $serviceList = ServiceTable::getInstance()
-                        ->createQuery('s')
+                        ->createBaseQuery()
                         ->distinct()
-                        ->leftJoin('s.ServiceCategoryRelation sc on s.id=sc.service_id ')
-                        ->leftJoin('s.Price p on s.id=p.service_id ')
-                        #->addWhere('p.service_price_list_id = ? ', array($priceListDefaultId->id) )
-                        ->addWhere('sc.category_id IN ('.implode(',', $listInnerCatId). ')' )
-                        ->orderBy('s.name ASC')
+                        ->innerJoin('service.ServiceCategoryRelation sc WITH sc.category_id IN ('.implode(',', $listInnerCatId). ')')
+                        ->innerJoin('service.Price p WITH p.service_price_list_id = ? AND product_id IS NULL', $priceListId)
+                        ->orderBy('service.name ASC')
                         ->execute();
-                        #->fetchArray();
-        #myDebug::dump($serviceList);
-
-        #print_r($serviceList);
-        #$list = $serviceCategory->getServiceList( array('level') );
     }
     $this->getResponse()->setTitle('F1 - '.$serviceCategory['name'].' – Enter.ru');
 

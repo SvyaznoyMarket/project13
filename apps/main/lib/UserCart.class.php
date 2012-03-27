@@ -842,7 +842,7 @@ class UserCart extends BaseUserData
     {
         $orderArticleAR = array();
         foreach ($this->getProducts() as $product) {
-            $orderArticleAR[] = $product->barcode;
+            $orderArticleAR[] = $product->core_id;
         }
         $orderArticle = implode(',', $orderArticleAR);
         return $orderArticle;

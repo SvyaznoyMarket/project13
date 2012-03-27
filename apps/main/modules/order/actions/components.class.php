@@ -237,12 +237,11 @@ class orderComponents extends myComponents
           $barcodeAr = array();
           foreach ($this->order->ProductRelation as $product) {
               $qtyAr[] = $product['quantity'];
-              $barcodeAr[] = $product->Product['barcode'];
+              $barcodeAr[] = $product->Product['core_id'];
           }
           $qty = implode(',', $qtyAr);
           $barcodeStr = implode(',', $barcodeAr);
           $this->setVar('quantityString', $qty, true);
-          echo $barcodeStr .'=============';
           $this->setVar('orderArticle', $barcodeStr, true);
       }
   }
