@@ -1,7 +1,7 @@
 <?php
 /**
- * @var $view
- * @var $sf_dataw
+ * @var string $view
+ * @var $sf_data
  * @var ProductCorePager|sfOutputEscaper $productPager
  */
 $ajax_flag = isset($ajax_flag) ? $ajax_flag : false;

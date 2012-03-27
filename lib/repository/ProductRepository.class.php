@@ -52,9 +52,9 @@ class ProductRepository extends ObjectRepository
     if (!empty($data['state'])) {
       $entity->setState(new ProductStateEntity($data['state']));
     }
-    //  if(!empty($data['line'])){
-    $entity->setLine(new ProductLineEntity($data['line']));
-    //  }
+    if (!empty($data['line'])) {
+      $entity->setLine(new ProductLineEntity($data['line']));
+    }
     return $entity;
   }
 

@@ -31,18 +31,18 @@ class productCatalog_Components extends myComponents
       {
         $list[] = array(
           'name' => $ancestor['name'],
-          'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'] . '/' . $ancestor['token']) : $ancestor['token'])),
+          'url' => $this->generateUrl('productCatalog__category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'] . '/' . $ancestor['token']) : $ancestor['token'])),
         );
       }
       $list[] = array(
         'name' => (string)$this->productCategory,
-        'url' => $this->generateUrl('productCatalog_category', $this->productCategory),
+        'url' => $this->generateUrl('productCatalog__category', $this->productCategory),
       );
     }
     if (isset($this->creator)) {
       $list[] = array(
         'name' => (string)$this->creator,
-        'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+        'url' => $this->generateUrl('productCatalog__creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
     if (isset($this->product)) {
@@ -78,19 +78,19 @@ class productCatalog_Components extends myComponents
         {
           $list[] = array(
             'name' => $ancestor['seo_header'] ? $ancestor['seo_header'] : $ancestor['name'],
-            'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'] . '/' . $ancestor['token']) : $ancestor['token'])),
+            'url' => $this->generateUrl('productCatalog__category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'] . '/' . $ancestor['token']) : $ancestor['token'])),
           );
         }
       }
       $list[] = array(
         'name' => (string)($this->productCategory->seo_header) ? $this->productCategory->seo_header : $this->productCategory->name,
-        'url' => $this->generateUrl('productCatalog_category', $this->productCategory),
+        'url' => $this->generateUrl('productCatalog__category', $this->productCategory),
       );
     }
     if (isset($this->creator)) {
       $list[] = array(
         'name' => (string)$this->creator,
-        'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+        'url' => $this->generateUrl('productCatalog__creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
     if (isset($this->product)) {
@@ -111,7 +111,7 @@ class productCatalog_Components extends myComponents
     {
       $list[] = array(
         'name' => $productCategory['name'],
-        'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'] . '/' . $productCategory['token']) : $productCategory['token'])),
+        'url' => $this->generateUrl('productCatalog__category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'] . '/' . $productCategory['token']) : $productCategory['token'])),
         'level' => $productCategory['level'],
       );
     }
@@ -173,7 +173,7 @@ class productCatalog_Components extends myComponents
       ));
     }
 
-    $this->url = $this->generateUrl('productCatalog_tag', $this->productCategory);
+    $this->url = $this->generateUrl('productCatalog__tag', $this->productCategory);
   }
 
   public function executeTag_selected()
@@ -205,7 +205,7 @@ class productCatalog_Components extends myComponents
 
       $formName = $form->getName();
 
-      return url_for('productCatalog_tag', array('productCategory' => $productCategory->token, $formName => $filter));
+      return url_for('productCatalog__tag', array('productCategory' => $productCategory->token, $formName => $filter));
     };
 
     foreach ($this->form->getValues() as $name => $value)

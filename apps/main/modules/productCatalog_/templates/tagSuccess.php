@@ -11,7 +11,7 @@
 <?php include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
-<?php echo include_partial('productCatalog_/product_list', $sf_data) ?>
+<?php include_partial('product_list_', $sf_data) ?>
 
 <div class="clear"></div>
 

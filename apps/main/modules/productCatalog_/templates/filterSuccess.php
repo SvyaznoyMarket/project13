@@ -11,7 +11,7 @@
 <?php include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
-<?php echo include_partial('productCatalog_/product_list', $sf_data) ?>
+<?php echo include_partial('product_list_', $sf_data) ?>
 
 <?php slot('seo_counters_advance') ?>
 <?php include_component('productCategory', 'seo_counters_advance', array('unitId' => $productCategory->root_id)) ?>

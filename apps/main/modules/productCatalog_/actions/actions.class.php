@@ -17,12 +17,7 @@ class productCatalog_Actions extends myActions
     $this->getRequest()->setParameter('_template', 'product_catalog');
   }
 
-  /**
-   * Executes index action
-   *
-   * @param sfWebRequest $request A request object
-   */
-  public function executeIndex(sfWebRequest $request)
+  public function executeIndex()
   {
     $productCategoryList = ProductCategoryTable::getInstance()->createQuery()
       ->select('id, name, level, token, token_prefix')
@@ -114,6 +109,42 @@ class productCatalog_Actions extends myActions
       'success' => true,
       'data' => $productPager->count(),
     ));
+  }
+
+  public function executeLine(sfWebRequest $request)
+  {
+    $this->loadList($request);
+    $this->setVar('list_view', false);
+    $this->setVar('view', 'line');
+
+    $productCategory = $this->getProductCategory($request);
+    // generate title
+    $title = $productCategory['name'];
+    if ($request->getParameter('page')) {
+      $title .= ' – ' . $request->getParameter('page');
+    }
+    $rootCategory = $productCategory->getRootCategory();
+    if ($rootCategory->id !== $productCategory->id) {
+      $title .= ' – ' . $rootCategory;
+    }
+    /** @var $response sfWebResponse */
+    $response = $this->getResponse();
+    $response->setTitle($title . ' – Enter.ru');
+  }
+
+  public function executeTag(sfWebRequest $request)
+  {
+
+  }
+
+  public function executeCategoryAjax(sfWebRequest $request)
+  {
+
+  }
+
+  public function executeCreator(sfWebRequest $request)
+  {
+
   }
 
   /**

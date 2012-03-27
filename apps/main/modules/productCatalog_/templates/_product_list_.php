@@ -4,6 +4,7 @@
  * @var $productSorting
  * @var $sf_data
  * @var $infinityUrl
+ * @var $view
  */
 $request = sfContext::getInstance()->getRequest();
 $page = $request->getParameter('page');
