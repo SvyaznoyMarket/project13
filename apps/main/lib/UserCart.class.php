@@ -138,7 +138,6 @@ class UserCart extends BaseUserData
             }
         }
 
-
         if (!isset($this->_services[$serviceId]) || empty($this->_services[$serviceId]))
         {
             $this->_services[$serviceId] = $this->getServiceDefaults();
@@ -545,6 +544,7 @@ class UserCart extends BaseUserData
         return !empty($this->_services) ? $this->_services : array();
     }
 
+
     public function count()
     {
         $count = 0;
@@ -582,6 +582,7 @@ class UserCart extends BaseUserData
             return $this->_services[$id];
         }
     }
+
 
 
     protected function getDefaults()

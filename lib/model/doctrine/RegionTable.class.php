@@ -56,7 +56,7 @@ class RegionTable extends myDoctrineTable
     if (!$return)
     {
       $return = $this->createBaseQuery()
-        ->where('region.is_default = true')
+        ->where('region.is_default = ?', true)
         ->addWhere('region.type = ?', 'city')
         ->fetchOne()
       ;

@@ -1,6 +1,6 @@
 /* CSS Document */
 HTML {width:100%; height:100%;  font-size:100.01%}
-BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,helvetica,sans-serif; color:#000; background:#f6f1e9}
+BODY {height:100%; margin:0; padding:0; font:normal 75% 'EnterTypeRegular',verdana,arial,helvetica,sans-serif; color:#000; background:#f6f1e9}
 .allpage {width:920px; padding:0 20px; height:auto; min-height:100%; margin:0 auto; background-color:#fff}
 * html .allpage {height:100%}
 .allpageinner {padding-bottom:481px; position:relative}
@@ -10,7 +10,7 @@ BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,hel
 .lowfooter {height:66px; margin:-66px auto 0 auto}
 
 
-TD, TH, UL, OL, LI, DL, DT, DD, INPUT, TEXTAREA, SELECT, LABEL, BUTTON {font:normal 1em tahoma,verdana,arial,helvetica,sans-serif}
+TD, TH, UL, OL, LI, DL, DT, DD, INPUT, TEXTAREA, SELECT, LABEL, BUTTON {font:normal 1em 'EnterTypeRegular',verdana,arial,helvetica,sans-serif}
 UL, DL, DD, OL, LI {margin:0; padding:0; list-style-type:none}
 FORM {margin:0}
 IMG {border:0}
@@ -58,11 +58,11 @@ TABLE {border-collapse:collapse}
 
 @font-face {
     font-family: 'EnterTypeRegular';
-    src: url('../fonts/enter_type_regular-webfont.eot');
-    src: url('../fonts/enter_type_regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/enter_type_regular-webfont.woff') format('woff'),
-         url('../fonts/enter_type_regular-webfont.ttf') format('truetype'),
-         url('../fonts/enter_type_regular-webfont.svg#EnterTypeRegular') format('svg');
+    src: url('../fonts/enter_type-webfont.eot');
+    src: url('../fonts/enter_type-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/enter_type-webfont.woff') format('woff'),
+         url('../fonts/enter_type-webfont.ttf') format('truetype'),
+         url('../fonts/enter_type-webfont.svg#EnterTypeRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -89,10 +89,15 @@ TABLE {border-collapse:collapse}
 	font-style: normal;
 }
 
+
+b{ font-family: 'EnterTypeBold' !important; }
+i{ font-family: 'EnterTypeItalic' !important; }
+
 .pt5 {padding-top:5px}
 .pt7 {padding-top:7px}
 .pt10 {padding-top:10px}
 .pt20 {padding-top:20px}
+.pt50 {padding-top:50px}
 .pb3 {padding-bottom:3px}
 .pb5 {padding-bottom:5px}
 .pb8 {padding-bottom:8px}
@@ -221,7 +226,7 @@ TABLE {border-collapse:collapse}
 .usermenu .point.next {border:0; padding-right:0}
 .f1 {background:url(img/icons.png) no-repeat 0 -111px; padding:3px 0 3px 25px}
 .entry {background:url(img/icons.png) no-repeat 0 -139px; padding:3px 0 3px 23px;}
-.mTah12{ font: 12px Tahoma, sans-serif; }
+.mTah12{ font: 14px 'EnterTypeRegular'; }
 .hBasket{ background: url('img/h_basket.png') no-repeat; padding:9px 0 3px 30px;}
 
 .header {width:920px; height:132px; background:url(img/bg_inner.png) no-repeat 0 0; margin-bottom:18px; position:relative; /*z-index:11*/ z-index:101;}
@@ -411,7 +416,7 @@ LABEL.checked {color:#ffa901}
 .bigfilter LI:hover {background-color:#e6e6e6}
 .bigfilter LI LABEL {display:block; font-size:12px; cursor:pointer}
 .bSpec DT:hover {color: #ffa901;}
-.bSpec h2{ padding:0; margin: 10px 0 10px 10px; font: bold 14px Tahoma,sans-serif; color: #ffa901;}
+.bSpec h2{ padding:0; margin: 10px 0 10px 10px; font: 16px 'EnterTypeBold'; color: #ffa901;}
 
 .bigfilter.width450 DT {float:left; width:100%}
 .bigfilter.width450 DD {float:left; width:100%}
@@ -423,8 +428,8 @@ LABEL.checked {color:#ffa901}
 	}
 	.bSpecSel.mDisabled{ display: none; }
 	.bSpecSel h3,
-	.bSpecSel ul li a{font: 12px Tahoma, sans-serif; padding: 0 11px; text-decoration: none;}
-	.bSpecSel a{ font: 12px Tahoma, sans-serif; }
+	.bSpecSel ul li a{font: 14px 'EnterTypeRegular'; padding: 0 11px; text-decoration: none;}
+	.bSpecSel a{ font: 14px 'EnterTypeRegular'; }
 	
 	.bSpecSel h3{ margin: 5px 0; }
 	.bSpecSel ul{ margin: 0; list-style-type: none; }
@@ -436,7 +441,7 @@ LABEL.checked {color:#ffa901}
 .bSlide{}
 	.bSlide .pb5,
 	.bSlide .pb5 input{ text-align: center; }
-	.bSlide .pb5 input{ height:13px; padding:0;  line-height:13px; border:0; background:none; font:11px Tahoma, sans-serif; color:#a6a6a6; }
+	.bSlide .pb5 input{ height:13px; padding:0;  line-height:13px; border:0; background:none; font:13px 'EnterTypeRegular'; color:#a6a6a6; }
 
 .prompting {display:none; position:absolute; left:-39px; top:13px; //top:29px; z-index:10; width:350px; padding:10px 15px 15px 15px; font-weight:normal; cursor:auto; background-color:#fff; border:2px solid #308fcf;
 border-radius:5px; 
@@ -576,11 +581,11 @@ border-radius:5px;
 .goodsboxlink:hover .link {text-decoration:underline}
 .ratingview {display:block; height:11px; background:url(img/stars.png) no-repeat 0 0; margin-bottom:10px}
 .bNewGoodsBox .ratingview{ display:inline-block; *display: inline; zoom: 1; width: 63px; height: 11px; vertical-align: top; margin: 1px 5px 0 0;}
-	.bNewGoodsBox h3 a{ font: 18px Tahoma, sans-serif; text-decoration: underline;}
+	.bNewGoodsBox h3 a{ font: 20px 'EnterTypeRegular'; text-decoration: underline;}
 	.bNewGoodsBox .goodsbar{ margin-bottom: 10px; }
-	.bNewGoodsBox .bNGB__eUl li{ list-style-type: none; margin-left: 0; font: 12px/20px Tahoma, sans-serif; color: #434343; }
-	.bNGB__eArt{ font: 12px Tahoma, sans-serif; color: #000; margin: 8px 0;}
-	.bNGB__eDesc{ font: 12px/15px Tahoma, sans-serif; color: #434343; margin: 8px 0; }
+	.bNewGoodsBox .bNGB__eUl li{ list-style-type: none; margin-left: 0; font: 14px/20px 'EnterTypeRegular'; color: #434343; }
+	.bNGB__eArt{ font: 14px 'EnterTypeRegular'; color: #000; margin: 8px 0;}
+	.bNGB__eDesc{ font: 14px/15px 'EnterTypeRegular'; color: #434343; margin: 8px 0; }
 	.bNGB__eDrop{ vertical-align: top; }
 	.bNGB__eDrop a{ display:inline-block; *display: inline; zoom: 1; margin: 0 5px; cursor: pointer; width: 13px; height: 13px; background: url('img/droparrow.png') no-repeat;}
 	.bNGB__eArt .ratingview{ margin-left: 10px; }
@@ -600,7 +605,7 @@ border-radius:5px;
 
 
 .carouseltitle {float:left; width:100%; position:relative}
-.scroll {float:right; color:#a6a6a6; color: #000; font: 14px, Tahoma, sans-serif;}
+.scroll {float:right; color:#a6a6a6; color: #000; font: 16px 'EnterTypeRegular';}
 .scroll .srcoll_link_button {display:inline-block; width:28px; height:23px; background:url(img/bg_inner.png) no-repeat; vertical-align:middle}
 .scroll .srcoll_link_button.back {background-position:-757px -165px}
 .scroll .srcoll_link_button.back:hover {background-position:-757px -191px}
@@ -608,8 +613,8 @@ border-radius:5px;
 .scroll .srcoll_link_button.forvard {background-position:-789px -165px}
 .scroll .srcoll_link_button.forvard:hover {background-position:-789px -191px}
 .scroll .srcoll_link_button.forvard.disabled {background-position:-789px -139px; cursor:default}
-.scroll span{ vertical-align: middle; padding-right: 10px; font: 14px Tahoma, sans-serif;}
-.srcoll_link{ font: 14px Tahoma, sans-serif; color: #000; font: 14px Tahoma, sans-serif; margin-right: 3px; text-decoration: underline;}
+.scroll span{ vertical-align: middle; padding-right: 10px; font: 16px 'EnterTypeRegular';}
+.srcoll_link{ font: 16px 'EnterTypeRegular'; color: #000; font: 16px 'EnterTypeRegular'; margin-right: 3px; text-decoration: underline;}
 .carousel {float:left; width:705px; margin-left:-2px; margin-bottom:-10px} 
 
 .bigcarousel {float:left; width:935px; margin-right:-15px}
@@ -634,7 +639,7 @@ border-radius:5px;
 
 
 
-.rating {width:150px; height:27px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin-bottom:10px}
+.rating {width:150px; height:27px; color:#757575; font-family:'EnterTypeRegular'; font-size:13px; position:relative; margin-bottom:10px}
 .ratingbox {width:150px; height:27px; background:url(img/stars.gif) repeat-x 0 0; position:relative}
 .ratingbox DIV.current {display:block; height:27px; background:url(img/stars.gif) repeat-x 0 -64px; position:absolute; text-indent:-9000px; z-index:1}
 .ratingbox DIV {float:left; text-indent:-90000px}
@@ -652,7 +657,7 @@ border-radius:5px;
 .ratingbox A.ra5:hover {width:150px}
 #ratingresult {float:left; font-size:18px; line-height:27px; color:#ffa901; margin-left:10px}
 
-.ratingscale {float:left; width:150px; height:8px; color:#757575; font-family:tahoma; font-size:11px; position:relative; margin:6px 0 3px 0; background:url(img/bg_inner.png) no-repeat -633px -289px}
+.ratingscale {float:left; width:150px; height:8px; color:#757575; font-family:'EnterTypeRegular'; font-size:13px; position:relative; margin:6px 0 3px 0; background:url(img/bg_inner.png) no-repeat -633px -289px}
 .ratingscalebox {width:150px; height:8px;  position:relative}
 .ratingscalebox DIV.current {display:block; height:8px; background:url(img/bg_ratingscale.gif) repeat-x 0 0; position:absolute; text-indent:-9000px; z-index:1}
 .ratingscalebox DIV {float:left; text-indent:-90000px}
@@ -1440,7 +1445,7 @@ border-radius: 5px;
 	.bMap__eImagesTitle{
 		margin: 10px 0;
 		padding: 0;
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		}
 	.bMap__eImg{
 		width: 696px;
@@ -1527,7 +1532,7 @@ border-radius: 5px;
 	.bMapInfo__eTitle{
 		padding: 0;
 		margin: 0 0 20px 0;
-		font: 24px Tahoma, sans-serif;
+		font: 26px 'EnterTypeRegular';
 		}
 	.bMapInfo__eP{
 		padding: 0;
@@ -1535,11 +1540,11 @@ border-radius: 5px;
 		}
 		.bMapInfo__eSpan{}
 	.mSmall{
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		line-height: 1.6;
 		}
 	.mBig{
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		line-height: 1.6;
 		}
 	
@@ -1568,18 +1573,18 @@ border-radius: 5px;
 		padding: 0;
 		}
 	.bLInfo__eH2{
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		}
 	.bLInfo__eP{
 		margin: 13px 0 22px 0;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		line-height: 1.6;
 		}
 /* ----------- /INFORMATION ------------- */
 
 /* ----------- bigfilter update ------------- */
 .newbigfilter {margin-bottom:15px}
-.newbigfilter DT {padding:7px 0 8px 0; font: 14px Tahoma, sans-serif; cursor:pointer; color: #a6a6a6;}
+.newbigfilter DT {padding:7px 0 8px 0; font: 16px 'EnterTypeRegular'; cursor:pointer; color: #a6a6a6;}
 .newbigfilter DT DIV.pr {display:inline}
 .newbigfilter DD UL {padding-bottom:10px}
 .newbigfilter LI {padding:2px 5px 3px 18px; margin-bottom:1px; cursor:pointer}
@@ -1595,7 +1600,7 @@ border-radius: 5px;
 /* ----------- categories ------------- */
 .bCtg{
 	padding: 14px 0;
-	font: 13px Tahoma, sans-serif;
+	font: 15px 'EnterTypeRegular';
 	border-bottom: 1px solid #e6e6e6;
 	}
 	
@@ -1684,11 +1689,11 @@ border-radius: 5px;
 		max-width: 480px;
 		}
 	.bInfoBlock__eSpan{
-		font: bold 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeBold';
 		}
 	.bInfoBlock__eP{
 		margin: 0;
-		font: 13px/17px Tahoma, sans-serif;
+		font: 15px/17px 'EnterTypeRegular';
 		}
 	.bInfoBlock__eBottomControls{
 		margin: 0 25px; 
@@ -1744,7 +1749,7 @@ border-radius: 5px;
 	float: right;
 	color: #a6a6a6;
 	margin-left: 20px;
-	font: 11px Tahoma, sans-serif;
+	font: 12px 'EnterTypeRegular';
 	display: inline-block;
 	*display: inline;
 	zoom: 1;
@@ -1828,7 +1833,7 @@ border-radius: 5px;
 		color: #ffa901;
 		text-align: right;
 		padding-right: 65px;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bNavLoader__eIco{
 		width: 45px;
@@ -1860,11 +1865,11 @@ border-radius: 5px;
 		}
 	.bAbout__eText,
 	.bAbout__eList li{
-		font: 14px/20px Tahoma, sans-serif;
+		font: 16px/20px 'EnterTypeRegular';
 		}		
 	.bAbout__eTitle{
 		margin-top: 30px;
-		font: bold 18px/20px Tahoma, sans-serif;
+		font: 20px/20px 'EnterTypeBold';
 		}
 	.bAbout__eList li{
 		margin-left: 15px;
@@ -1915,16 +1920,16 @@ border-radius: 5px;
 	.bMapShops__eRegionTitle{
 		margin: 0 0 10px 0;
 		padding: 0;
-		font: 24px Tahoma, sans-serif;
+		font: 26px 'EnterTypeRegular';
 		}
 	.bMapShops__eRegionText{
 		margin-bottom: 6px;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bMapShops__eTitle{
 		padding: 0;
 		margin: 20px 0;
-		font: bold 24px Tahoma;
+		font: 26px 'EnterTypeBold';
 		}
 	.bMapShops .bMapShops__eTitle{
 		margin-left: 20px;
@@ -1968,12 +1973,12 @@ border-radius: 5px;
 	.bShopCard__eTitle{
 		margin: 0;
 		padding: 10px;
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		}
 	.bShopCard__eDescription{
 		margin: 0;
 		padding: 0 0 15px 10px;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bShopCard .bShopCard__eView{
 		color: #000;
@@ -1981,7 +1986,7 @@ border-radius: 5px;
 		padding: 3px 10px;
 		visibility: hidden;
 		text-decoration: none;
-		font: bold 11px Tahoma, sans-serif;
+		font: 13px 'EnterTypeBold';
 		background: url('img/view_bg.png') repeat-x;
 		
 		border-radius: 5px;
@@ -2013,7 +2018,7 @@ border-radius: 5px;
 	.bFakeSelectWrap span{
 		padding: 0;
 		color: #a6a6a6;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.mFakeSelect{
 		margin-top: 4px;
@@ -2063,7 +2068,7 @@ border-radius: 5px;
 .bSet{
 	}
 	.mbSet{
-		font: 24px Tahoma, sans-serif;
+		font: 26px 'EnterTypeRegular';
 		}
 	.bSet__eImage{
 		width: 500px;
@@ -2086,17 +2091,17 @@ border-radius: 5px;
 	.bSet .bSet__eArticul{
 		padding: 0;
 		margin: 0 0 15px 15px;
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		}
 	.bSet__eDescription{
 		padding: 0;
 		margin: 0 0 15px 15px;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bSet__ePrice{
 		padding: 0;
 		margin: 0 0 3px 15px;
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		}
 	.bSet__ePrice strong{
 		margin-right: 10px;
@@ -2113,7 +2118,7 @@ border-radius: 5px;
 		padding: 0;
 /*		color: #a6a6a6;*/
 		margin: 0 0 7px 0;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bSet__eTWrap{
 		clear: both;
@@ -2123,7 +2128,7 @@ border-radius: 5px;
 /*		color: #ffa901;*/
 		text-decoration: none;
 		border-bottom: 2px solid #000;
-		font: bold 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeBold';
 		}
 	.bSet__eMoreInfo:hover{
 		text-decoration: none;
@@ -2143,12 +2148,12 @@ border-radius: 5px;
 	.bDeliver h4{
 		margin: 0 0 10px -20px;
 		padding: 0;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bDeliver h5{
 		margin: 5px 0;
 		padding: 0;
-		font: bold 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeBold';
 		}
 
 	.bDeliver li{
@@ -2160,7 +2165,7 @@ border-radius: 5px;
 		}
 	.bDeliver li div,
 	.bDeliver li div a{
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 		
 		
@@ -2170,12 +2175,12 @@ border-radius: 5px;
 	.bDeliver2 h4{
 		margin: 0 0 15px 0;
 		padding: 0;
-		font: bold 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeBold';
 		}
 	.bDeliver2 h5{
 		margin: 5px 0;
 		padding: 0;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 
 	.bDeliver2 li{
@@ -2189,7 +2194,7 @@ border-radius: 5px;
 		}
 	.bDeliver2 li div,
 	.bDeliver2 li div a{
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bDeliver2__eBanner, .bDeliver2__eBanner img{
 		text-decoration: none;
@@ -2208,7 +2213,7 @@ border-radius: 5px;
 		padding: 0;
 		color: #a6a6a6;
 		margin: 0 0 3px 0;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 		
 .bDropMenu{ 
@@ -2304,19 +2309,19 @@ border-radius: 5px;
 		}
 	.bBacketServ.mBig table td:first-child{
 		width: 360px;
-		font: bold 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeBold';
 		}
 	.bBacketServ.mBig .mPrice{
 		width: 105px;
 		text-align: right;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bBacketServ.mBig td{
 		padding-bottom: 5px;
 		}
 	.bBacketServ.mBig .mEdit{
 		padding: 0 0 0 20px;
-		font: 11px Tahoma, sans-serif;
+		font: 13px 'EnterTypeRegular';
 		}
 	.bBacketServ.mBig .mEdit span a{
 		margin: 0 2px;
@@ -2327,15 +2332,15 @@ border-radius: 5px;
 		color: #4fcbf4;
 		text-align: left;
 		padding-bottom: 5px;
-		font: 14px/20px Tahoma, sans-serif;
+		font: 16px/20px 'EnterTypeRegular';
 		}
 	.bBacketServ.mSmall td{
-		font: 11px/13px Tahoma, sans-serif;
+		font: 13px/13px 'EnterTypeRegular';
 		}
 	.bBacketServ__eMore{
 		color: #a6a6a6;
 		text-decoration: underline;
-		font: 11px Tahoma, sans-serif;
+		font: 13px 'EnterTypeRegular';
 		}
 
 
@@ -2354,7 +2359,7 @@ border-radius: 5px;
 	.bGood__eArticle{ 
 		margin: 0 0 15px 0;
 		padding: 0 0 10px 0;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		border-bottom: 1px solid #dfdfdf;
 		}
 	.bGood__eArticle a,
@@ -2384,10 +2389,10 @@ border-radius: 5px;
 	.bF1Info h3{
 		color: #4fcbf4;
 		margin: 0 0 7px 0;
-		font: bold 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeBold';
 		}
 	.bF1Info div{
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		margin-bottom: 10px;
 		}
 	.bF1Info .link1{
@@ -2410,7 +2415,7 @@ border-radius: 5px;
 	.bF1Block h2{
 		color: #4fcbf4;
 		margin: 0 0 10px 0;
-		font: bold 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeBold';
 		}
 	.bF1Block table{
 		width: 650px;
@@ -2418,23 +2423,23 @@ border-radius: 5px;
 	.bF1Block th{
 		text-align: right;
 		text-decoration: underline;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bF1Block_eInfo{
 		vertical-align: top;
 		padding: 15px 50px 15px 0;
 		border-top: 1px solid #e6e6e6;
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		}
 	.bF1Block_eInfo a{
 		color: #a6a6a6;
 		text-decoration: underline;
-		font: 12px/20px Tahoma, sans-serif;
+		font: 14px/20px 'EnterTypeRegular';
 		}
 	.bF1Block_ePrice{
 		width: 120px;
 		vertical-align: middle;
-		font: bold 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeBold';
 		
 		display: inline-block;
 		*display: inline;
@@ -2447,7 +2452,7 @@ border-radius: 5px;
 		border-top: 1px solid #e6e6e6;
 		}
 	.bF1Block__eInShop{
-		font: 16px/20px Tahoma, sans-serif;
+		font: 18px/20px 'EnterTypeRegular';
 		}
 .bF1ServiceImg{
 	width: 160px;
@@ -2473,11 +2478,11 @@ border-radius: 5px;
 		position: relative;
 		}
 	.bServiceCard__eDescription{
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bServiceCard__ePrice{
 		margin-bottom: 0;
-		font: 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeRegular';
 		}
 	.bServiceCard__eLogo{
 		top: 0;
@@ -2517,19 +2522,19 @@ border-radius: 5px;
 		padding: 0;
 		color: #4fcbf4;
 		margin: 0 0 13px 0;
-		font: bold 24px Tahoma, sans-serif;
+		font: 26px 'EnterTypeBold';
 		}
 	.bF1Credit h3{
 		padding: 0;
 		color: #434343;
 		margin: 0 0 12px 0;
-		font: bold 18px/20px Tahoma, sans-serif;
+		font: 20px/20px 'EnterTypeBold';
 		}
 	.bF1Credit p{
 		padding: 0;
 		color: #434343;
 		margin: 0 0 60px 0;
-		font: 14px/20px Tahoma, sans-serif;
+		font: 16px/20px 'EnterTypeRegular';
 		}		
 	.bF1Credit__eImg{
 		position: absolute;
@@ -2578,7 +2583,7 @@ border-radius: 5px;
 		color: #4fcbf4;
 		padding-left: 23px;
 		position: absolute;
-		font: bold 20px Tahoma, sans-serif;
+		font: 22px 'EnterTypeRegular';
 		}
 	.bLiteboxF1__eG,
 	.bLiteboxF1__eG a{
@@ -2598,7 +2603,7 @@ border-radius: 5px;
 		}
 	.bMobileApps__eHead div{
 		padding: 50px 0 0 0;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 		
 		
@@ -2617,14 +2622,14 @@ border-radius: 5px;
 	.bMobileCard h2{
 		padding: 0;
 		margin: 15px 20px 10px 20px;
-		font: 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeRegular';
 		}
 	.bMobileCard p{
 		padding: 0;
 		margin: 0 20px;
 		color: #434343;
 /*		text-align: justify;*/
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 		
 	.bMobileCard.mDisable .bMobileCard__eImg div{
@@ -2673,7 +2678,7 @@ border-radius: 5px;
 		.bMobileCard__eLink a{
 			color: #ffa901;
 			text-decoration: underline;
-			font: 14px Tahoma, sans-serif;
+			font: 16px 'EnterTypeRegular';
 			}
 
 
@@ -2708,8 +2713,7 @@ border-radius: 5px;
 	}
 
 .bMobDownWrapRel{
-	top: 30px;
-	bottom: 25%;
+	top: 170px;
 	position: relative;
 	}
 .bMobDown{
@@ -2772,10 +2776,10 @@ border-radius: 5px;
 	.bMobDown table td h3{
 		margin: 0;
 		padding: 0;
-		font: 16px/20px Tahoma, sans-serif;
+		font: 18px/20px 'EnterTypeRegular';
 		}
 	.bMobDown table td p{
-		font: 11px/14px Tahoma, sans-serif;
+		font: 13px/14px 'EnterTypeRegular';
 		}
 	.bMobDown table td img{}
 	.bMobDown table td input{
@@ -2842,7 +2846,7 @@ border-radius: 5px;
 	.bFormB span,
 	.bFormB input{
 		vertical-align: middle;
-		font: 24px Tahoma, sans-serif;
+		font: 26px 'EnterTypeRegular';
 		}
 	.bFormB a{
 		margin-right: 30px;
@@ -2869,7 +2873,7 @@ border-radius: 5px;
 .bFormAuth{
 	color: #434343;
 	padding: 12px 0;
-	font: 12px Tahoma, sans-serif;
+	font: 14px 'EnterTypeRegular';
 	}
 .bFormAuth a{
 	font-weight: bold;
@@ -2909,13 +2913,13 @@ border-radius: 5px;
 		}
 	.bFormTable td.width215{
 		color: #434343;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bFormTable .text,
 	.bFormTable .mFormWrap strong,
 	.bFormTable label strong,
 	.bFormTable td label strong{
-		font: 14px Tahoma, sans-serif;
+		font: 15px 'EnterTypeRegular';
 		}
 	.bFormTable td label strong{
 		margin-top: 4px;
@@ -2941,7 +2945,7 @@ border-radius: 5px;
 		height: 18px;
 		text-decoration: none;
 		padding: 3px 10px 6px 10px;
-		font: bold 11px Tahoma, sans-serif;
+		font: 13px 'EnterTypeBold';
 		}
 	.bFormTable .mFormWrap .yellowbutton:hover{
 		color: #fff;
@@ -3001,12 +3005,12 @@ border-radius: 5px;
 	}
 	.bFormSave,
 	.bFormSave__eBtm{
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		}
 	.bFormSave h2{
 		padding: 0;
 		margin: 0 0 10px 0;
-		font: bold 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeBold';
 		}
 	.bFormSave p{
 		margin: 10px 0;
@@ -3016,6 +3020,10 @@ border-radius: 5px;
 		}
 	.bFormSave__eBtm a{
 		text-decoration: underline;
+		}
+/* ---- --- -- -- - - -*/
+	.mW750{
+		width: 750px;
 		}
 /* ---- --- -- -- - - -*/
 	.mW900{
@@ -3038,7 +3046,7 @@ border-radius: 5px;
 		width: 725px;
 		}
 		.b1Click__eTop{
-			font: 16px Tahoma, sans-serif;
+			font: 18px 'EnterTypeRegular';
 			}
 		.b1Click__eTop.mPR{
 			padding-right: 140px;
@@ -3049,10 +3057,10 @@ border-radius: 5px;
 		.b1Click__ePrice{ 
 			float: right;
 			text-align: right;
-			font: 16px Tahoma, sans-serif;
+			font: 18px 'EnterTypeRegular';
 			}
 		.b1Click__ePrice .b1Click__ePriceBig{
-			font: bold 34px Tahoma, sans-serif;
+			font: 36px 'EnterTypeBold';
 			}
 		.b1Click__eInp{
 			margin: 10px 0;
@@ -3060,7 +3068,7 @@ border-radius: 5px;
 		.b1Click__eInp span{
 			width: 130px;
 			color: #434343;
-			font: 12px Tahoma, sans-serif;
+			font: 14px 'EnterTypeRegular';
 			
 			display: inline-block;
 			*display: inline;
@@ -3098,7 +3106,7 @@ border-radius: 5px;
 	.bGrayPopupBlock h2{
 		padding: 0;
 		margin: 0 0 10px 0;
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		}
 	.bGrayPopupBlock ul{
 		padding: 0;
@@ -3109,7 +3117,7 @@ border-radius: 5px;
 		}
 	.bGrayPopupBlock li a{
 		text-decoration: none;
-		font: 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeRegular';
 		}
 	.bGrayPopupBlock li a:hover{
 		color: #ffa901;
@@ -3170,11 +3178,11 @@ border-radius: 5px;
 	.bMapShops__eList h3{
 		margin-bottom: 0;
 		padding: 0 35px 0 20px;
-		font: 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeRegular';
 		}
 	.bMapShops__eListTitle{
 		padding: 20px 35px 15px 20px;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bMapShops__eListTitle img{
 		float: right;
@@ -3185,13 +3193,13 @@ border-radius: 5px;
 	.bMapShops__eList li{
 		cursor: pointer;
 		padding: 12px 35px 12px 20px;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bMapShops__eList li:hover{
 		background: #fff1d8;
 		}
 	.bMapShops__eList li span{
-		font: 12px/26px Tahoma, sans-serif;
+		font: 14px/26px 'EnterTypeRegular';
 		}
 	.bMapShops__eListNum{
 		float: left;
@@ -3201,7 +3209,7 @@ border-radius: 5px;
 		padding-top: 4px;
 		margin-right: 14px;
 		text-align: center;
-		font: bold 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeBold';
 		background: url('img/z_map_popup.png') no-repeat;
 		}
 	.mNumPos{
@@ -3219,10 +3227,10 @@ border-radius: 5px;
 		}
 	.bMapShops__ePopup h3{
 		margin: 0 0 15px 0;
-		font: 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeRegular';
 		}
 	.bMapShops__ePopup span{
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bMapShops__ePopup .bGrayButton{
 		margin: 15px 0 0 0;
@@ -3237,7 +3245,7 @@ border-radius: 5px;
 		color: #818181;
 		cursor: pointer;
 		position: absolute;
-		font: 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeRegular';
 		text-decoration: none !important;
 		}
 	.bMapShops__ePopupArrow{
@@ -3274,14 +3282,14 @@ border-radius: 5px;
 		width: 81px;
 		height: auto;
 		text-align: right;
-		font: 11px Tahoma, sans-serif;
+		font: 13px 'EnterTypeRegular';
 		}
 	.mCalendar table tr td:first-child div{
 		margin-right: 10px;
 		}
 	.mCalendar table th{
 		text-align: center;
-		font: bold 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeBold';
 		}
 	.mCalendar table th,
 	.mCalendar table td{
@@ -3303,7 +3311,7 @@ border-radius: 5px;
 		color: #ffa901;
 		margin: 10px 0 5px 0;
 		text-align: center;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.mCalendar__eTop{
 		margin: 10px;
@@ -3345,30 +3353,30 @@ border-radius: 5px;
 	.bNewDelivery h2{
 		margin: 0;
 		padding: 0 0 20px 0;
-		font: bold 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeBold';
 		}
 	.bNewDelivery h3{
 		margin: 0;
 		padding: 0 0 20px 0;
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		}
 	.bNewDelivery div{
 		margin: 0 0 10px 0;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}	
 	.bNewDelivery p{
 		margin: 0 0 20px 0;
-		font: 12px/16px Tahoma, sans-serif;
+		font: 14px/16px 'EnterTypeRegular';
 		}
 	.bNewDelivery span{
 		display: block;
-		font: bold 12px/16px Tahoma, sans-serif;
+		font: 14px/16px 'EnterTypeBold';
 		}
 	.bNewDelivery i{
 		display: block;
 		margin: 10px 0;
 		text-decoration: underline;
-		font: bold 12px/16px Tahoma, sans-serif;
+		font: 14px/16px 'EnterTypeBold';
 		}
 	.bNewDelivery ul{
 		margin: 10px 0;
@@ -3380,10 +3388,10 @@ border-radius: 5px;
 
 
 .bSR{
-	font: 12px/17px Tahoma, sans-serif;
+	font: 14px/17px 'EnterTypeRegular';
 	}
 	.bSR b{
-		font: bold 14px/17px Tahoma, sans-serif;
+		font: 16px/17px 'EnterTypeBold';
 		}
 	.bSR a{
 		font-weight: bold;
@@ -3424,7 +3432,7 @@ border-radius: 5px;
 	margin-right: 10px;
 	border: 1px solid #d9d9d9;
 	padding: 10px 24px 10px 38px;
-	font: 11px Tahoma, sans-serif;
+	font: 13px 'EnterTypeRegular';
 	background: url('img/bVariation.png') 7px 10px no-repeat;
 	}
 	.bListVariants.mShort{ 
@@ -3461,12 +3469,12 @@ border-radius: 5px;
 		}
 	.bCityPopup__eCurrent{
 		color: #fff;
-		font: bold 16px/24px Tahoma, sans-serif;
+		font: 18px/24px 'EnterTypeBold';
 		}
 	.bCityPopup__eBlock{
 		color: #fff;
 		width: 235px;
-		font: 16px/24px Tahoma, sans-serif;
+		font: 18px/24px 'EnterTypeRegular';
 		
 		display: inline-block;
 		*display: inline;
@@ -3498,9 +3506,9 @@ border-radius: 5px;
 	-o-box-shadow: 0 0 3px #dcdcdc;
 	}
 	
-	.bBottommenu__eSkype{ cursor: pointer; font: 12px Tahoma, sans-serif; padding: 7px 10px 3px 0; display: inline-block; *display: inline; zoom: 1; }			
+	.bBottommenu__eSkype{ cursor: pointer; font: 14px 'EnterTypeRegular'; padding: 7px 10px 3px 0; display: inline-block; *display: inline; zoom: 1; }			
 	.bBottommenu__eSkype i,
-	.bBottommenu__eSkype b{ font: 12px Tahoma, sans-serif; }
+	.bBottommenu__eSkype b{ font: 14px 'EnterTypeRegular'; }
 	.bBottommenu__eSkype::first-letter{ //color: #00c6ff; }
 	.bBottommenu__eSkype b{ display: none; }
 	.bBottommenu__eSkype:hover b{ display: inline; }
@@ -3528,19 +3536,19 @@ border-radius: 5px;
 		zoom: 1;
 		}
 	.bBottommenu dt{
-		font: 14px/24px Tahoma, sans-serif;
+		font: 16px/24px 'EnterTypeRegular';
 		}
 	.bBottommenu h3{
 		margin: 0 0 5px 0;
-		font: 19px Tahoma, sans-serif;
+		font: 21px 'EnterTypeRegular';
 		}
 	.bBottommenu span{
 		color: #434343;
-		font: 10px Tahoma, sans-serif;
+		font: 12px 'EnterTypeRegular';
 		}
 	.bBottommenu a{
 		color: #434343;
-		font: 12px/16px Tahoma, sans-serif;
+		font: 14px/16px 'EnterTypeRegular';
 		}
 
 .bFooterBottom{
@@ -3549,7 +3557,7 @@ border-radius: 5px;
 	.bFooterBottom,
 	.bFooterBottom a{
 		color: #a6a6a6;
-		font: 11px/20px Tahoma, sans-serif;
+		font: 13px/20px 'EnterTypeRegular';
 		}
 	.bFooterBottom a{
 		margin-right: 10px;
@@ -3611,21 +3619,21 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		}
 	.bInShop__eCurrent h2{
 		padding: 0 20px 0 0;
-		font: bold 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeBold';
 		display: inline-block;
 		*display: inline;
 		zoom: 1;
 		}
 	.bInShop__eCurrent a{
 		color: #434343;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	
 	
 	.bInShopLine{
 		color: #a6a6a6;
 		padding: 20px 0;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		border-top: 1px solid #e6e6e6;
 		}
 	.bInShopLine.mInF{
@@ -3663,7 +3671,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.bInShopLine__eCount i.mIn3{ background: url('img/in_shop.png') 0 -24px no-repeat; }
 	.bInShopLine__eCount span{
 		color: #000;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bInShopLine__eButton{
 		width: 217px;
@@ -3694,7 +3702,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		padding: 0;
 		margin: 0 0 15px 0;
 		color: #434343;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bInShop__eImage{
 		text-align: center;
@@ -3706,7 +3714,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		}
 	.bInShop__eDescription{
 		color: #434343;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bInShop__eButton{
 		margin: 10px 0 0 0;
@@ -3721,7 +3729,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	padding: 6px 15px;
 	background: #f4f4f4;
 	border: 1px solid #dddddd;
-	font: 14px Tahoma, sans-serif;
+	font: 16px 'EnterTypeRegular';
 	
 	display: inline-block;
 	*display: inline;
@@ -3754,7 +3762,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	padding: 6px 15px;
 	background: #ffffff;
 	border: 1px solid #dddddd;
-	font: 14px Tahoma, sans-serif;
+	font: 16px 'EnterTypeRegular';
 	
 	display: inline-block;
 	*display: inline;
@@ -3788,7 +3796,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	padding: 6px 15px;
 	background: #f89b1c;
 	border: 1px solid #e26500;
-	font: 14px Tahoma, sans-serif;
+	font: 16px 'EnterTypeRegular';
 
 	display: inline-block;
 	*display: inline;
@@ -3834,7 +3842,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	padding: 6px 80px;
 	background: #f89b1c;
 	border: 1px solid #e26500;
-	font: bold 24px Tahoma, sans-serif;
+	font: 26px 'EnterTypeBold';
 
 	display: inline-block;
 	*display: inline;
@@ -3916,10 +3924,10 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	padding: 0 0 10px 0;
 	}
 	.bBuyingInfo h2{ 
-		font: 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeRegular';
 		}
 	.bBuyingInfo span{
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 
 
@@ -3931,7 +3939,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		width: 260px;
 		margin-right: 10px;
 		vertical-align: top;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		
 		display: inline-block;
 		*display: inline;
@@ -3939,22 +3947,22 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		}
 	.bBuyingLine dt a{
 		text-decoration: none;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		border-bottom: 1px solid #000000;
 		}
 	.bBuyingLine dt h2{
 		margin: 0;
 		padding: 0;
-		font: 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeRegular';
 		}
 	.bBuyingLine dt i{
 		color: #a8a8a8;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bBuyingLine dd{
 		width: 650px;
 		vertical-align: top;
-		font: bold 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeBold';
 		
 		display: inline-block;
 		*display: inline;
@@ -3973,7 +3981,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		float: right;
 		text-align: right;
 		vertical-align: top;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		
 		display: inline-block;
 		*display: inline;
@@ -3996,6 +4004,9 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		}
 	.bBuyingLine__eText.mInputLong{
 		width: 480px;
+		}
+	.mInputLong.mRed{
+		border: 1px solid red;
 		}
 	
 	.bBuyingLine__eTextarea{
@@ -4022,7 +4033,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.bBuyingLine label{
 		width: 460px;
 		vertical-align: top;
-		font: bold 14px/24px Tahoma, sans-serif;
+		font: 16px/24px 'EnterTypeBold';
 		
 		display: inline-block;
 		*display: inline;
@@ -4054,7 +4065,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.bBuyingLine h5{
 		margin: 0;
 		color: #434343;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		
 		display: inline-block;
 		*display: inline;
@@ -4063,7 +4074,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.bBuyingLine h4{
 		margin: 0;
 		padding: 0;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 
 		display: inline-block;
 		*display: inline;
@@ -4076,7 +4087,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		width: 450px;
 		color: #434343;
 		padding-left: 33px;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		display: inline-block;
 		*display: inline;
 		zoom: 1;
@@ -4093,19 +4104,19 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		}
 	.bBuyingLine__eInfo span{
 		color: #a8a8a8;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bBuyingLine.mSumm{
 		margin-bottom: 30px;
 		}
 	.bBuyingLine.mSumm div{
 		text-align: right;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bBuyingLine.mSumm h3{
 		padding: 0;
 		margin: 0 0 0 10px;
-		font: 30px Tahoma, sans-serif;
+		font: 32px 'EnterTypeRegular';
 		
 		display: inline-block;
 		*display: inline;
@@ -4137,12 +4148,12 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		color: #a8a8a8;
 		margin: 0 12px 10px 0;
 		text-align: right;
-		font: 10px Tahoma, sans-serif;
+		font: 12px 'EnterTypeRegular';
 		}
 	.bBuyingLineWrap__eSum b{
 		color: #000;
 		margin-left: 10px;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bBuyingLineWrap .bBuyingLine dt{
 		width: 230px;
@@ -4227,7 +4238,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		top: -18px;
 		left: 21px;
 		position: absolute;
-		font: 11px Tahoma, sans-serif;
+		font: 13px 'EnterTypeRegular';
 		}
 	.bBuyingDates__eLeft,
 	.bBuyingDates__eRight{
@@ -4309,12 +4320,12 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		
 	.bBuyingDates__eDisable{
 		color: #e0e0e0;
-		font: 17px Tahoma, sans-serif;
+		font: 19px 'EnterTypeRegular';
 		}
 	.bBuyingDates__eCurrent{
 		color: #ffffff;
 		background: #ffa901;
-		font: bold 17px Tahoma, sans-serif;
+		font: 19px 'EnterTypeBold';
 		
 		border-radius: 5px;
 		-webkit-border-radius: 5px;
@@ -4326,7 +4337,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		}
 	.bBuyingDates__eEnable{
 		cursor: pointer;
-		font: 17px Tahoma, sans-serif;
+		font: 19px 'EnterTypeRegular';
 		}
 	.bBuyingDates__eEnable:hover{
 		background: #d5d5d5;
@@ -4371,10 +4382,10 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		font: 18px 'Enter';
 		}
 	.bBuyingFooter span{
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bBuyingFooter span b{
-		font: 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeRegular';
 		}
 		
 	.bBuyingFooter__eEnter{
@@ -4409,7 +4420,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		background: #4e4e4e;
 		white-space: nowrap;
 		padding: 6px 12px;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		
 		display: inline-block;
 		*display: inline;
@@ -4458,13 +4469,13 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.bBuyingDatePopup__eTitle{
 		padding: 0;
 		margin: 0 0 10px 0;
-		font: bold 17px Tahoma, sans-serif;
+		font: 19px 'EnterTypeBold';
 		}
 	.bBuyingDatePopup__eLine{
 		margin: 5px 0;
 		cursor: pointer;
 		word-spacing: nowrap;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		
 		display: inline-block;
 		*display: inline;
@@ -4512,13 +4523,13 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		color: #000;
 		display: block;
 		margin: 0 0 10px;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bButtonPopup__eLine{
 		display: block;
 		margin: 10px 0;
 		cursor: pointer;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 		
 		
@@ -4575,13 +4586,13 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.bCreditLine h2{
 		padding: 0;
 		color: #50ccf2;
-		font: bold 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeBold';
 		}
 	.bCreditLine span{
 		color: #434343;
 		margin: 20px 0;
 		width: 590px;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		
 		display: inline-block;
 		*display: inline;
@@ -4597,7 +4608,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.bCreditLine b{
 		color: #434343;
 		text-decoration: underline;
-		font: bold 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeBold';
 		}
 	.bCreditLine select{
 		height: 30px;
@@ -4605,7 +4616,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		background: #f4f4f4;
 		margin: 20px 0 40px 0;
 		border: 1px solid #dddddd;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		
 		border-radius: 7px;
 		-webkit-border-radius: 7px;
@@ -4634,15 +4645,15 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		}
 	.bCreditLine dl dd h3{
 		margin: 0;
-		font: bold 18px Tahoma, sans-serif;
+		font: 20px 'EnterTypeBold';
 		}
 	.bCreditLine dl dd h4{
 		margin: 20px 0 10px 0;
-		font: bold 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeBold';
 		}
 	.bCreditLine ul{
 		padding-left: 30px;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		list-style-image: url('img/credit_list_style.png');
 		}
 	.bCreditLine ul li{
@@ -4661,7 +4672,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		color: #434343;
 		}
 	.bCreditLine2 i{
-		font: bold 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeBold';
 		}
 	.bCreditLine2 li{
 		width: 550px;
@@ -4789,9 +4800,9 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.mTehn{ width: 43px; background: url('img/header_icon_home_appliances.gif') no-repeat; }
 	.mZdor{ width: 54px; background: url('img/header_icon_beauty_health.gif') no-repeat; }
 	.mDom{ width: 47px; background: url('img/header_icon_home_goods.gif') no-repeat; }
-	.mDeti{ width: 45px; background: url('img/header_icon_baby_goods.gif') no-repeat; }
+	.mDeti{ width: 39px; background: url('img/header_icon_baby_goods.gif') no-repeat; }
 	.mZoo{ width: 54px; background: url('img/header_icon_zoo_goods.gif') no-repeat; }
-	.mSam{ width: 72px; background: url('img/header_icon_tools_goods.gif') no-repeat; }
+	.mSam{ width: 34px; background: url('img/header_icon_tools_goods.gif') no-repeat; }
 	.mElectro{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
 	.mUkr{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
 	.mSport{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
@@ -4810,12 +4821,12 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		}		
 		
 		
-.bRegion{ font: 14px Tahoma, sans-serif; vertical-align: middle; }
+.bRegion{ font: 16px 'EnterTypeRegular'; vertical-align: middle; }
 	.bRegion li{ display: inline-block; *display: inline; zoom: 1; vertical-align: middle; margin-left: 40px;}
 	.bRegion li:first-child{ margin-left: 0; }
 	.bRegion a{ text-decoration: underline; }	
 	.bRegion .bCall{ display: inline-block; *display: inline; zoom: 1; height: 16px; background: url('img/bCall.png') no-repeat; padding-left: 20px; }
-	.bRegion__eGray{ color: #a1a1a1; font: 11px Tahoma, sans-serif; }
+	.bRegion__eGray{ color: #a1a1a1; font: 13px 'EnterTypeRegular'; }
 	.bRegion .usermenu{ vertical-align: middle;  margin-top: 7px; }
 		
 		
@@ -4855,11 +4866,11 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.bFooter__eLeft a{
 		color: #ffffff;
 		margin: 2px 0;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bFooter__eLeft span{
 		margin: 20px 0 10px 0;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	
 	.bFooter__eRight{
@@ -4896,14 +4907,14 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		}
 	.bFooter__eRight li{
 		padding-bottom: 10px;
-		font: 14px Tahoma, sans-serif;
+		font: 16px 'EnterTypeRegular';
 		}
 	.bFooter__eRight li a{
 		color: #ffffff;
 		text-decoration: underline;
 		}
 	.bFooter__eRight .mFphone{
-		font: 16px Tahoma, sans-serif;
+		font: 18px 'EnterTypeRegular';
 		}
 	.bFooterF1{
 		height: 45px;
@@ -5005,7 +5016,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	
 
 .mBuyButtonBottom{ padding: 20px 120px 0 0; }
-.mBButtonFont{ font: bold 16px Tahoma, sans-serif; width: 490px; padding: 32px 0 0 0; }
+.mBButtonFont{ font: 18px 'EnterTypeBold'; width: 490px; padding: 32px 0 0 0; }
 
 .bLabels{
 	left: 0; 
@@ -5014,15 +5025,222 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	top: 10px !important;
 	}
 
-.bSMI{ color: #000; padding-bottom: 100px; font: 16px Tahoma, sans-serif; }
-.mOur{ color: #000; font: 12px Tahoma, sans-serif; }
-.mOurGray{ color: #a1a1a1; font: 12px Tahoma, sans-serif; }
+.bSMI{ color: #000; padding-bottom: 100px; font: 18px 'EnterTypeRegular'; }
+.mOur{ color: #000; font: 14px 'EnterTypeRegular'; }
+.mOurGray{ color: #434343; font: 14px 'EnterTypeRegular'; }
 
-
+.bEvent{
+	margin-bottom: 70px;
+	}
+	.bEvent__eImage{
+		position: relative;
+		}
+	.bEvent__eImage a{
+		position: absolute;
+		
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.mLTop{
+		top: 216px;
+		left: 458px;
+		width: 205px;
+		height: 126px;
+		}
+	.mLBottom{
+		top: 352px;
+		left: 105px;
+		width: 169px;
+		height: 135px;
+		}
+		
+	.bEvent h2{
+		padding: 0;
+		margin: 15px 0;
+		font: 26px 'EnterTypeRegular';
+		}
+		
+	.bEvent ul{
+		font: 16px 'EnterTypeRegular';
+		}
+	.bEvent li{
+		padding: 2px 0;
+		}
+	.bEvent li a{
+		text-decoration: underline;
+		}
+		
+.bPayment{
+	color: #434343;
+	font: 16px 'EnterTypeRegular';
+	}
+	.bPayment h2{
+		margin: 15px 0;
+		padding: 0;
+		vertical-align: middle;
+		font: 20px 'EnterTypeBold';
+		}
+	.bPayment p{
+		margin: 0;
+		padding: 0;
+		}
+	.bPayment p a{
+		color: #434343;
+		text-decoration: underline;
+		}
+	.bPayment__ePay1{
+		min-height: 39px;
+		line-height: 39px !important;
+		padding-left: 50px !important;
+		background: url('img/bPay1.png') 0 50% no-repeat;
+		}
+	.bPayment__ePay2{
+		min-height: 33px;
+		line-height: 33px !important;
+		padding-left: 55px !important;
+		background: url('img/bPay2.png') 0 50% no-repeat;
+		}
+	.bPayment__ePay3{
+		min-height: 41px;
+		line-height: 41px !important;
+		padding-left: 43px !important;
+		background: url('img/bPay3.png') 0 50% no-repeat;
+		}
 	
+	.mPayLink{
+		padding: 0;
+		overflow: hidden;
+		margin: 10px 0 10px 20px;
+		vertical-align: middle;
+		display: inline-block;
+		*display: inline;
+		zoom: 1s;
+		}
+			
+	.bPayment__eVisa{
+		width: 61px;
+		height: 19px;
+		margin-left: 0;
+		background: url('img/bPaySystems.png') 0 0 no-repeat;
+		}
+	.bPayment__eMC{
+		width: 49px;
+		height: 29px;
+		background: url('img/bPaySystems.png') 0 -23px no-repeat;
+		}
+	.bPayment__eDC{
+		width: 54px;
+		height: 29px;
+		background: url('img/bPaySystems.png') 0 -53px no-repeat;
+		}
+	.bPayment__eJCB{
+		width: 39px;
+		height: 30px;
+		background: url('img/bPaySystems.png') 0 -83px no-repeat;
+		}
+
+.bOrderPreloader{
+	margin: 25px 0;
+	padding: 20px 0;
+	background: #f6f6f6;
+	border: 1px solid #ddd;
+	
+	border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	-ms-border-radius: 7px;
+	-o-border-radius: 7px;
+	}
+	.bOrderPreloader img,
+	.bOrderPreloader span{
+		vertical-align: middle;
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.bOrderPreloader span{
+		width: 240px;
+		padding-left: 15px;
+		font: 20px 'EnterTypeRegular';
+		}
+
+
+.bFormError{
+	color: #ec323b;
+	font-size: 14px;
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+	}
+
+
+
+
+
+.b404{
+	position: relative;
+	background: #ffffff;
+	}
+	.b404Block,
+	.b404__eLogo{
+		display: inline-block;
+		*display: inline;
+		zoom: 1;
+		}
+	.b404InnerWrap{
+		width: 100%;
+		height: 100%;
+		text-align: center;		
+		}
+	.b404InnerWrap td{
+		vertical-align: middle;
+		}
+	.b404__eLogo{
+		top: 10px;
+		right: 10px;
+		width: 95px;
+		height: 87px;
+		position: absolute;
+		background: url('img/b404Logo.png');
+		}
+	.b404Block{
+		height: 305px;
+		text-align: left;
+		padding: 120px 0 0 500px;
+		background: url('img/b404.png') no-repeat;
+		}
+	.b404Block span{
+		font-size: 16px;
+		}
+	.b404Block h2{
+		padding: 0;
+		margin: 15px 0;
+		font-size: 26px;
+		}
+	.b404Block input{
+		width: 279px;
+		height: 27px;
+		outline: none;
+		font-size: 16px;
+		padding-left: 10px;
+		margin-right: 10px;
+		border: 1px solid #dddddd;
 		
-		
-		
+		border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-ms-border-radius: 5px;
+		-o-border-radius: 5px;
+		}
+	.b404Block input,
+	.b404Block .bOrangeButton{
+		vertical-align: middle;
+		}
+
+
+
+
 
 
 	

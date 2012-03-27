@@ -46,6 +46,7 @@ product_accessory:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
 #
 # каталог товаров
 productCatalog:
@@ -138,6 +139,11 @@ productCardSoa:
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
+
+# битые ссылки
+productCard_showByBarcode:
+  url:   /product/:product
+  param: { module: productCard, action: showByBarcode }
 #
 # карточка товара по ид товара
 product_show:

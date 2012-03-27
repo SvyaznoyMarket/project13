@@ -1,11 +1,11 @@
 /* CSS Document */
 HTML {width:100%; height:100%;  font-size:100.01%}
-BODY {height:100%; margin:0; padding:0; font:normal 75% tahoma,verdana,arial,helvetica,sans-serif; color:#fff; background:#000}
+BODY {height:100%; margin:0; padding:0; font:normal 75% 'EnterTypeRegular',verdana,arial,helvetica,sans-serif; color:#fff; background:#000}
 .allpage {width:920px; height:auto; min-height:100%;padding:0 20px; margin:0 auto; background-color:#000; position:relative; z-index:20}
 * html .allpage {height:100%}
 
 
-TD, TH, UL, OL, LI, DL, DT, DD, INPUT, TEXTAREA, SELECT, LABEL, BUTTON {font:normal 1em tahoma,verdana,arial,helvetica,sans-serif}
+TD, TH, UL, OL, LI, DL, DT, DD, INPUT, TEXTAREA, SELECT, LABEL, BUTTON {font:normal 1em 'EnterTypeRegular',verdana,arial,helvetica,sans-serif}
 UL, DL, DD, OL {margin:0; padding:0; list-style-type:none}
 FORM {margin:0}
 IMG {border:0}
@@ -69,6 +69,44 @@ A.dotted.green {border-bottom:1px dashed #508f01}
   url('../fonts/enter_brash_01-webfont.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'EnterTypeRegular';
+    src: url('../fonts/enter_type-webfont.eot');
+    src: url('../fonts/enter_type-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/enter_type-webfont.woff') format('woff'),
+         url('../fonts/enter_type-webfont.ttf') format('truetype'),
+         url('../fonts/enter_type-webfont.svg#EnterTypeRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+	font-family: 'EnterTypeBold';
+	src: url('../fonts/EnterType_Bold.eot');
+	src: local('☺'), 
+		url('../fonts/EnterType_Bold.woff') format('woff'), 
+		url('../fonts/EnterType_Bold.ttf') format('truetype'), 
+		url('../fonts/EnterType_Bold.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'EnterTypeItalic';
+	src: url('../fonts/EnterType_Italic.eot');
+	src: local('☺'), 
+		url('../fonts/EnterType_Italic.woff') format('woff'), 
+		url('../fonts/EnterType_Italic.ttf') format('truetype'), 
+		url('../fonts/EnterType_Italic.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+b{ font-family: 'EnterTypeBold' !important; }
+i{ font-family: 'EnterTypeItalic' !important; }
+
+
 .content {float:left; width:280px; padding:7px 0 30px 29px; font-size:13px; z-index:1; position:relative; font-family:"Enter"}
 .vcardtitle {font-size:18px; padding-bottom:4px}
 .vcard {font-size:36px; padding-bottom:2px}
@@ -104,7 +142,7 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 		bottom: 35px;
 		right: 140px;
 		position: absolute;
-		font: 14px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 	.bIndexCard__eInfo a{
 		color: #fb9600;
@@ -227,7 +265,7 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 		width: 227px;
 		color: #a6a6a6;
 		vertical-align: top;
-		font: 14px/20px Tahoma, sans-serif;
+		font: 16px/20px 'EnterTypeRegular';
 		
 		display: inline-block;
 		*display: inline;
@@ -367,7 +405,7 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
 		height: 16px;
 		margin: 5px 0;
 		padding-left: 20px;
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		text-decoration: underline !important;
 		background: url('img/bCall.png') 0 -16px no-repeat;
 		
@@ -376,7 +414,7 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
 		zoom: 1;
 		}	
 	.address{
-		font: 12px Tahoma, sans-serif;
+		font: 14px 'EnterTypeRegular';
 		}
 		
 		

@@ -79,4 +79,17 @@ class productCardActions extends myActions
   {
     $this->product = $this->getRoute()->getObject();
   }
+  /**
+   * Executes showByBarcode action
+   *
+   * @param sfRequest $request A request object
+   */
+  public function executeShowByBarcode(sfWebRequest $request)
+  {
+    $this->getResponse()->setStatusCode(404);
+    $this->product = ProductTable::getInstance()->getByBarcode($request['product']);
+    $this->view = 'compact';
+
+    $this->setTemplate('index');
+  }
 }

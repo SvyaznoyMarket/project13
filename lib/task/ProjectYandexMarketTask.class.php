@@ -31,29 +31,30 @@ class ProjectYandexMarketTask extends sfBaseTask
      */
     private $_categoryList = array();
 
-    /**
-     * Флаг - выгжужать  url категорий
-     * @var boolean
-     */
-    private $_uploadCategotyUrl = true;
-    /**
-     * Используется только, если $_uploadCategotyUrl = true;
-     * Список файлов, для которых выгружать URL
-     * Если не задано - выгружать для всех
-     * @var type
-     */
-    private $_uploadCategotyUrlFileList = array(
-        'export_mgcom.xml',
-        'export_realweb.xml',
-        'export_mgcom_ryazan.xml',
-        'export_realweb_ryazan.xml',
-        'export_mgcom_lipetsk.xml',
-        'export_realweb_lipetsk.xml',
-        'export_mgcom_belgorod.xml',
-        'export_realweb_belgorod.xml',
-        'export_mgcom_orel.xml',
-        'export_realweb_orel.xml',
-    );
+//DEPRICATED
+//    /**
+//     * Флаг - выгжужать  url категорий
+//     * @var boolean
+//     */
+//    private $_uploadCategotyUrl = true;
+//    /**
+//     * Используется только, если $_uploadCategotyUrl = true;
+//     * Список файлов, для которых выгружать URL
+//     * Если не задано - выгружать для всех
+//     * @var type
+//     */
+//    private $_uploadCategotyUrlFileList = array(
+//        'export_mgcom.xml',
+//        'export_realweb.xml',
+//        'export_mgcom_ryazan.xml',
+//        'export_realweb_ryazan.xml',
+//        'export_mgcom_lipetsk.xml',
+//        'export_realweb_lipetsk.xml',
+//        'export_mgcom_belgorod.xml',
+//        'export_realweb_belgorod.xml',
+//        'export_mgcom_orel.xml',
+//        'export_realweb_orel.xml',
+//    );
 
     /**
      * Список товаров, выгружаемых для товара
@@ -144,7 +145,7 @@ class ProjectYandexMarketTask extends sfBaseTask
      * id региона по умолчанию
      * @var int
      */
-    private $_defaultRegionId = 83;
+    private $_defaultRegionId = 19355;
 
     /**
      * Рутовые категории, из которых выгружаем в разные файлы
@@ -154,24 +155,24 @@ class ProjectYandexMarketTask extends sfBaseTask
         //для всех
         array(
             'name' => 'ya_market.xml',
-            'region_id' => 83,
+            'region_id' => 19355,
             'min_num' => 3,
         ),
       array(
           'name' => 'export_realweb.xml',
           'list' => array(6,8,9),
-          'region_id' => 83,
+          'region_id' => 19355,
           'min_num' => 3,
           ),
       array(
           'name' => 'export_mgcom.xml',
           'list' => array(3,2,1,4,7,8,5),
-          'region_id' => 83,
+          'region_id' => 19355,
           'min_num' => 3,
           ),
       array(
           'name' => 'max2.xml',
-          'region_id' => 83,
+          'region_id' => 19355,
           'max_num' => 2
       ),
       //для Рязани
@@ -457,21 +458,23 @@ EOF;
      */
     private function _setCategoryList(){
         //ваясним, выгружать ли URL категорий в текущий файл
-        if ($this->_uploadCategotyUrl) {
-            if (isset($this->_uploadCategotyUrlFileList)) {
-                $addCategoryUrl = false;
-                foreach($this->_uploadCategotyUrlFileList as $trueFile) {
-                    if (strpos($this->_xmlFilePathReal, $trueFile) !== false ) {
-                        $addCategoryUrl = true;
-                        break;
-                    }
-                }
-            } else {
-                $addCategoryUrl = true;
-            }
-        } else {
-            $addCategoryUrl = true;
-        }
+        $addCategoryUrl = true;
+//DEPRICATED
+//        if ($this->_uploadCategotyUrl) {
+//            if (isset($this->_uploadCategotyUrlFileList)) {
+//                $addCategoryUrl = false;
+//                foreach($this->_uploadCategotyUrlFileList as $trueFile) {
+//                    if (strpos($this->_xmlFilePathReal, $trueFile) !== false ) {
+//                        $addCategoryUrl = true;
+//                        break;
+//                    }
+//                }
+//            } else {
+//                $addCategoryUrl = true;
+//            }
+//        } else {
+//            $addCategoryUrl = true;
+//        }
 
         $categoryList = ProductCategoryTable::getInstance()->createBaseQuery();
         if (count($this->_categoryList)) {
@@ -490,7 +493,7 @@ EOF;
         $currentXml = "";
         foreach($categoryList as $categoryInfo){
             $cat = $cats->addChild('category',$categoryInfo['name']);
-            $cat->addAttribute('id',$categoryInfo['id']);
+            $cat->addAttribute('id',$categoryInfo['core_id']);
             if ($categoryInfo['core_parent_id'] && isset($catIdToCoreId[ $categoryInfo['core_parent_id'] ])) $cat->addAttribute('parentId', $catIdToCoreId[ $categoryInfo['core_parent_id'] ]);
             //если нужно добавить url
             if ($addCategoryUrl){
@@ -624,7 +627,7 @@ EOF;
         else {
             $inStock = 'false';
         }
-        $offer->addAttribute('id', $offerInfo['id']);
+        $offer->addAttribute('id', $offerInfo['core_id']);
         $offer->addAttribute('type', 'vendor.model');
         $offerInner = '';
 
@@ -679,8 +682,8 @@ EOF;
 
         $sql = '
             SELECT
-            p.id, p.name, p.description, p.token_prefix, p.token, p.prefix, p.main_photo,
-            pcpr.product_category_id, pcat.root_id as category_root_id, creator.name as creator_name,
+            p.id, p.core_id, p.name, p.description, p.token_prefix, p.token, p.prefix, p.main_photo,
+            pcpr.product_category_id, pcat.core_id as product_category_core_id, pcat.root_id as category_root_id, creator.name as creator_name,
             pp.price, pdp.price as delivery_price, ps.is_instock
             FROM `product` as p
             LEFT JOIN `stock_product_relation` as spr on spr.product_id=p.id
@@ -731,8 +734,8 @@ EOF;
                 }
                 break;
             case 'categoryId':
-                if (isset($offerInfo['product_category_id']))
-                    $value = $offerInfo['product_category_id'];
+                if (isset($offerInfo['product_category_core_id']))
+                    $value = $offerInfo['product_category_core_id'];
                 break;
             case 'picture':
                 if (isset($offerInfo['main_photo']) && $offerInfo['main_photo']) {
