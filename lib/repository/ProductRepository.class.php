@@ -7,6 +7,19 @@ class ProductRepository extends BaseRepository
     return ProductTable::getInstance()->getListByCoreIds($ids, array('hydrate_array' => true));
   }
 
+  public function create($data)
+  {
+    $data = array_merge(array(
+      'id' => null,
+    ), $data);
+
+    $entity = new ProductEntity();
+
+    $entity->setId($data['id']);
+
+    return $entity;
+  }
+
   public function getRelated(ProductRelatedCriteria $criteria, $order = null)
   {
     $params = array(

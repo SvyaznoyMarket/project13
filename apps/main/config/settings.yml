@@ -73,6 +73,7 @@ all:
 
     standard_helpers:
       - Cache
+      - Date
       - myPartial
       - myUrl
 

@@ -1,0 +1,5 @@
+all:
+  layout: order
+
+index:
+  layout: layout

@@ -50,7 +50,7 @@
 		<dl class='bBuyingLine' data-bind="with: RapidCalend"> 
 			<dt><h2>Доставим <span data-bind="text: curDate"></span><br>
 				<span data-bind="text: curTime"></span></h2><i>Стоимость доставки 
-				<span data-bind="text: $root.addCost"></span> <span class="rubl">p</span><i>
+				<span data-bind="text: $root.addCost"></span> <span class="rubl">p</span></i>
 			</dt>
 			<dd>
 				<div>
@@ -121,7 +121,7 @@
 		<dl class='bBuyingLine' data-bind="with: DelayCalend">
 			<dt><h2>Доставим <span data-bind="text: curDate"></span><br>
 				<span data-bind="text: curTime"></span></h2><i>Стоимость доставки 
-				<span data-bind="text: $root.addCost_D"></span> <span class="rubl">p</span><i>
+				<span data-bind="text: $root.addCost_D"></span> <span class="rubl">p</span></i>
 			</dt>
 			<dd>
 				<div>
@@ -187,7 +187,7 @@
 	<div class='bBuyingLineWrap selfy'>
 		
 		<dl class='bBuyingLine' data-bind="with: SelfyCalend">
-			<dt><h2>Самовывоз <span data-bind="text: curDate"></span></h2><i>Бесплатно<i></dt>
+			<dt><h2>Самовывоз <span data-bind="text: curDate"></span></h2><i>Бесплатно</i></dt>
 			<dd>
 				<div>
 					<p></p>

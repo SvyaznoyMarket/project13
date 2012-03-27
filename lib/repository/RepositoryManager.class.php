@@ -16,6 +16,24 @@ class RepositoryManager
 
   /**
    * @static
+   * @return ShopRepository
+   */
+  public static function getShop()
+  {
+    return self::get('Shop');
+  }
+
+  /**
+   * @static
+   * @return DeliveryTypeRepository
+   */
+  public static function getDeliveryType()
+  {
+    return self::get('DeliveryType');
+  }
+
+  /**
+   * @static
    * @return ProductRepository
    */
   public static function getProduct()

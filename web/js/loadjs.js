@@ -60,7 +60,7 @@
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
 				.wait()
-				.script(getWithVersion('app.order.v3.js'))
+				.script(getWithVersion('app.order.v3.2.js'))
 				.script(getWithVersion('main.js'))
 			}).runQueue()
 			break
