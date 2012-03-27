@@ -110,7 +110,7 @@ class CacheEraser
       }
       $record->entity_id = $entity_id;
 
-      $record->region_id = !empty($data['region_id']) ? RegionTable::getInstance()->getRecordByCoreId('region', $data['region_id'], true) : null;
+      $record->region_id = !empty($data['region_id']) ? RegionTable::getInstance()->findOneByGeoipCode($data['region_id'])->id : null;
 
       $record->extra = !empty($extra) ? $extra : null;
 
