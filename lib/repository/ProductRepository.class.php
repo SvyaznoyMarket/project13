@@ -84,6 +84,8 @@ class ProductRepository extends ObjectRepository
    */
   public function getListById(array $idList, $loadDynamic = false)
   {
+    if (empty($idList))
+      return array();
     return $this->getListFyFilter(array(
       'id' => $idList,
     ), $loadDynamic);
