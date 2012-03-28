@@ -29,28 +29,24 @@
     }
     ?>
     <?php
-    $view = null;
-    switch ($filter->getTypeId()) {
-      case ProductCategoryFilterEntity::TYPE_NUMBER:
-      case ProductCategoryFilterEntity::TYPE_SLIDER:
-        $view = 'filter_slider';
-        break;
-      case ProductCategoryFilterEntity::TYPE_LIST:
-        $view = 'filter_list';
-        break;
-      case ProductCategoryFilterEntity::TYPE_BOOLEAN:
-        $view = 'filter_choice';
-        break;
-      default:
-        continue;
-        break;
-    }
-    include_partial($view, array(
+    $data = array(
       'productFilter' => $productFilter,
       'filter' => $filter,
       'i' => $i,
       'open' => $open,
-    ));?>
+    );
+    switch ($filter->getTypeId()) {
+      case ProductCategoryFilterEntity::TYPE_NUMBER:
+      case ProductCategoryFilterEntity::TYPE_SLIDER:
+        include_partial('filter_slider', $data);
+        break;
+      case ProductCategoryFilterEntity::TYPE_LIST:
+        include_partial('filter_list', $data);
+        break;
+      case ProductCategoryFilterEntity::TYPE_BOOLEAN:
+        include_partial('filter_choice', $data);
+        break;
+    }?>
     <?php endforeach; ?>
     <div class="pb10"><input type="submit" class="button yellowbutton" value="Подобрать"/></div>
   </dl>
