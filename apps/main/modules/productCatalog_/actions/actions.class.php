@@ -8,6 +8,9 @@
  * @author     Связной Маркет
  *
  * @property ProductCorePager $productPager
+ * @method myUser getUser
+ * @method sfWebResponse getResponse
+ * @method sfWebRequest getRequest
  */
 class productCatalog_Actions extends myActions
 {
@@ -29,11 +32,6 @@ class productCatalog_Actions extends myActions
     $this->setVar('infinity', true);
   }
 
-  public function executeFilter(sfWebRequest $request)
-  {
-    $this->loadList($request);
-  }
-
   public function executeProductType(sfWebRequest $request)
   {
     $productType = !empty($request['productType']) ? ProductTypeTable::getInstance()->getById($request['productType']) : false;
@@ -45,7 +43,6 @@ class productCatalog_Actions extends myActions
 
   public function executeProduct(sfWebRequest $request)
   {
-    $timer = sfTimerManager::getTimer(__METHOD__);
     $productCategory = $this->getProductCategory($request);
 
     $this->loadList($request);
@@ -68,8 +65,6 @@ class productCatalog_Actions extends myActions
       $request->getParameter('page', 1),
       $this->productPager->getLastPage()
     ));
-    $timer->addTime();
-    sfContext::getInstance()->getLogger()->info('Action ' . __METHOD__ . ' loaded at ' . $timer->getElapsedTime());
   }
 
   public function executeCategory(sfWebRequest $request)
@@ -77,8 +72,7 @@ class productCatalog_Actions extends myActions
     if (!$request->isXmlHttpRequest())
       $this->seoRedirectOnPageDublicate($request);
 
-    if (!$request->isXmlHttpRequest())
-      $productCategory = $this->getProductCategory($request);
+    $productCategory = $this->getProductCategory($request);
 
     if ($productCategory->has_line) // если в категории должны отображться линии
     {
@@ -98,12 +92,15 @@ class productCatalog_Actions extends myActions
 
   public function executeCount(sfWebRequest $request)
   {
+    // @todo implement in core api
+    $productCategory = $this->getProductCategory($request);
+    if ($productCategory->hasChildren())
+      $this->forward('productCatalog', 'count');
+
     $productFilter = $this->getProductFilter($request);
-
     $productPager = new ProductCorePager(0, array(), $this->getUser());
-
     $productPager->setProductFilter($productFilter);
-    $productPager->init();
+    $productPager->init(false);
 
     return $this->renderJson(array(
       'success' => true,
@@ -132,26 +129,28 @@ class productCatalog_Actions extends myActions
     $response->setTitle($title . ' – Enter.ru');
   }
 
+  // @todo implement in core api
   public function executeTag(sfWebRequest $request)
   {
-
+    $this->forward('productCatalog', 'tag');
   }
 
+  // @todo implement in core api
   public function executeCategoryAjax(sfWebRequest $request)
   {
-
+    $this->forward('productCatalog', 'categoryAjax');
   }
 
+  // @todo implement in core api
   public function executeCreator(sfWebRequest $request)
   {
-
+    $this->forward('productCatalog', 'creator');
   }
 
   /**
    * @param sfWebRequest $request
-   * @param array $options
    */
-  private function loadList(sfWebRequest $request, array $options = array())
+  private function loadList(sfWebRequest $request)
   {
     $loadListTimer = sfTimerManager::getTimer('$loadListTimer');
     $productFilterTimer = sfTimerManager::getTimer('$productFilterTimer');
@@ -206,7 +205,7 @@ class productCatalog_Actions extends myActions
   {
     $productFilter = new ProductCoreFormFilterSimple(
       $this->getProductCategory($request),
-      $this->getUser()->getRegion('core_id')
+      (int)$this->getUser()->getRegion('core_id')
     );
     $productFilter->setValues($request->getParameter($productFilter->getName(), array()));
     return $productFilter;
@@ -327,8 +326,9 @@ class ProductCorePager extends sfPager
    * Initialize the pager.
    *
    * Function to be called after parameters have been set.
+   * @param bool $loadData
    */
-  public function init()
+  public function init($loadData = true)
   {
     $query = array(
       "filter" => array(
@@ -343,7 +343,9 @@ class ProductCorePager extends sfPager
     $response = CoreClient::getInstance()->query("listing.list", $query);
     $this->setNbResults($response['count']);
     $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
-    $this->result = RepositoryManager::getProduct()->getListById($response['list'], true);
+    if ($loadData) {
+      $this->result = RepositoryManager::getProduct()->getListById($response['list'], true);
+    }
   }
 
   /**
@@ -457,8 +459,12 @@ class ProductCoreFormFilterSimple
         }
       }
     }
-    return url_for('productCatalog__filter', array(
-      'productCategory' => $this->productCategory->token,
+    $token = $this->productCategory->token;
+    if ($this->productCategory->token_prefix) {
+      $token = $this->productCategory->token_prefix . '/' . $token;
+    }
+    return url_for('productCatalog__category', array(
+      'productCategory' => $token,
       $this->name => $data
     ));
   }
@@ -485,16 +491,16 @@ class ProductCoreFormFilterSimple
           );
           break;
         case ProductCategoryFilterEntity::TYPE_BOOLEAN:
-          if (!is_array($value)) continue;
+          if (!is_array($value) || count($value) == 0) continue;
           $list[] = array(
             'type' => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
-            'name' => $filter->getName() . ': ' . reset($value) ? 'да' : 'нет',
+            'name' => $filter->getName() . ': ' . reset($value) == 1 ? 'да' : 'нет',
             'url' => $this->getUrl($filter->getFilterId(), $value),
             'title' => $filter->getName(),
           );
           break;
         case ProductCategoryFilterEntity::TYPE_LIST:
-          if (!is_array($value)) continue;
+          if (!is_array($value) || count($value) == 0) continue;
           foreach ($filter->getOptionList() as $option)
             if (in_array($option['id'], $value))
               $list[] = array(
