@@ -3,19 +3,16 @@
  * @var $ii
  * @var $maxPerPage
  * @var ProductEntity $item
- * @todo labels!
  */
 ?>
 <div class="goodsbox"<?php echo (isset($ii) && ($ii > $maxPerPage)) ? ' style="display:none;"' : '' ?>>
 
   <div class="photo">
     <a href="<?php echo $item->getLink() ?>">
-      <?php //@todo check label
-      /* if ($item['label']): ?>
-      <img class="bLabels" src="<?php echo $item['label']->getImageUrl() ?>" alt="<?php echo $item['label']->getName() ?>">
-    <?php endif */
-      $title = $item->getName() . ' - ' . $item->getMainCategory()->getName();
-      ?>
+      <?php if ($label = $item->getMainLabel()): ?>
+      <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
+      <?php endif; ?>
+      <?php $title = $item->getName() . ' - ' . $item->getMainCategory()->getName();?>
       <img src="<?php echo $item->getMediaImageUrl() ?>"
            alt="<?php echo $title ?>"
            title="<?php echo $title ?>"
@@ -41,10 +38,9 @@
         <!--<a href="" class="fastview">Быстрый просмотр</a>-->
         <div class="photo">
           <a href="<?php echo $item->getLink() ?>">
-            <?php // @todo check label
-            /* if ($item['label']): ?>
-            <img class="bLabels" src="<?php echo $item['label']->getImageUrl() ?>" alt="<?php echo $item['label']->getName() ?>">
-          <?php endif */ ?>
+            <?php if ($label = $item->getMainLabel()): ?>
+            <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
+            <?php endif; ?>
             <img src="<?php echo $item->getMediaImageUrl() ?>" alt="<?php echo $title ?>" title="<?php echo $title ?>"
                  width="160" height="160"/>
           </a>

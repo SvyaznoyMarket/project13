@@ -17,21 +17,21 @@ class ProductRepository extends ObjectRepository
    */
   public function create($data)
   {
-    $entity = new ProductEntity($data);
+    $product = new ProductEntity($data);
     if (!empty($data['type_id'])) {
-      $entity->setType(new ProductTypeEntity(array('id' => $data['type_id'])));
+      $product->setType(new ProductTypeEntity(array('id' => $data['type_id'])));
     }
     elseif (!empty($data['type'])) {
-      $entity->setType(new ProductTypeEntity($data['type']));
+      $product->setType(new ProductTypeEntity($data['type']));
     }
     if (!empty($data['category'])) {
       foreach ($data['category'] as $categoryData)
       {
-        $entity->addCategory(new ProductCategoryEntity($categoryData));
+        $product->addCategory(new ProductCategoryEntity($categoryData));
       }
     }
     if (!empty($data['brand'])) {
-      $entity->setBrand(new BrandEntity($data['brand']));
+      $product->setBrand(new BrandEntity($data['brand']));
     }
     if (!empty($data['property'])) {
       foreach ($data['property'] as $prop) {
@@ -39,7 +39,7 @@ class ProductRepository extends ObjectRepository
         if (!empty($prop['option_id']))
           foreach ($prop['option_id'] as $option)
             $attr->addOption(new ProductPropertyOptionEntity($option));
-        $entity->addAttribute($attr);
+        $product->addAttribute($attr);
       }
     }
     if (!empty($data['model'])) {
@@ -47,15 +47,20 @@ class ProductRepository extends ObjectRepository
       $model->setProductIdList($data['model']['product']);
       foreach ($data['model']['property'] as $prop)
         $model->addProperty(new ProductPropertyEntity($prop));
-      $entity->setModel($model);
+      $product->setModel($model);
     }
     if (!empty($data['state'])) {
-      $entity->setState(new ProductStateEntity($data['state']));
+      $product->setState(new ProductStateEntity($data['state']));
     }
     if (!empty($data['line'])) {
-      $entity->setLine(new ProductLineEntity($data['line']));
+      $product->setLine(new ProductLineEntity($data['line']));
     }
-    return $entity;
+    if (!empty($data['label'])) {
+      foreach ($data['label'] as $label) {
+        $product->addLabel(new ProductLabelEntity($label));
+      }
+    }
+    return $product;
   }
 
   /**

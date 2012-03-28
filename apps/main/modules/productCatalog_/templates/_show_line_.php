@@ -1,17 +1,15 @@
 <?php
 /**
  * @var ProductEntity $item
- * @todo labels!
  * @todo line count!
  */
 ?>
 <div class="goodsbox height250"<?php echo (isset($ii) && $ii > 3) ? ' style="display:none;"' : '' ?>>
   <div class="photo">
     <a href="<?php echo $item->getLink() ?>">
-      <?php /* if ($item['label']): ?>
-      <img class="bLabels" src="<?php echo $item['label']->getImageUrl() ?>"
-           alt="<?php echo $item['label']->getName() ?>"/>
-      <?php endif */ ?>
+      <?php if ($label = $item->getMainLabel()): ?>
+      <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
+      <?php endif; ?>
       <img src="<?php echo $item->getMediaImageUrl() ?>"
            alt="Серия <?php echo $item->getLine()->getName() ?>"
            title="Серия <?php echo $item->getLine()->getName() ?>"

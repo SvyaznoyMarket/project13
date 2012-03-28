@@ -1,6 +1,5 @@
 <?php
 /**
- * @todo labels!
  * @var $item ProductEntity|sfOutputEscaperObjectDecorator
  */
 ?>
@@ -8,9 +7,9 @@
   <div class="goodsboxlink" <?php if ($item->getIsBuyable()): ?> ref="<?php echo $item->getToken() ?>"
        data-cid="<?php echo $item->getId() ?>" <?php endif ?>>
     <div class="photo">
-      <?php /* if ($item['label']): ?>
-        <img class="bLabels" src="<?php echo $item['label']->getImageUrl() ?>" alt="<?php echo $item['label']->getName() ?>" />
-      <?php endif */ ?>
+      <?php if ($label = $item->getMainLabel()): ?>
+      <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
+      <?php endif; ?>
       <img height="160" width="160" title="<?php echo $item->getName() ?>" alt="<?php echo $item->getName() ?>"
            src="<?php echo $item->getMediaImageUrl() ?>">
     </div>

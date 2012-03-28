@@ -29,6 +29,9 @@ class ProductEntity
   /* @var ProductAttributeEntity[] */
   private $attributeList = array();
 
+  /** @var ProductLabelEntity[] */
+  private $labelList = array();
+
   /* @var string */
   private $name;
   /** @var string */
@@ -622,5 +625,36 @@ class ProductEntity
   public function getLine()
   {
     return $this->line;
+  }
+
+  /**
+   * @param ProductLabelEntity[] $labelList
+   */
+  public function setLabelList($labelList)
+  {
+    $this->labelList = array();
+    foreach ($labelList as $label)
+      $this->addLabel($label);
+  }
+
+  public function addLabel(ProductLabelEntity $label)
+  {
+    $this->labelList[] = $label;
+  }
+
+  /**
+   * @return ProductLabelEntity[]
+   */
+  public function getLabelList()
+  {
+    return $this->labelList;
+  }
+
+  /**
+   * @return ProductLabelEntity|null
+   */
+  public function getMainLabel()
+  {
+    return reset($this->labelList);
   }
 }
