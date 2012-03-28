@@ -16,7 +16,7 @@ class productCatalog_Actions extends myActions
 {
   public function preExecute()
   {
-    parent::postExecute();
+    parent::preExecute();
     $this->getRequest()->setParameter('_template', 'product_catalog');
   }
 
