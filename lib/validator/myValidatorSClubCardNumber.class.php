@@ -37,7 +37,9 @@ class myValidatorSClubCardNumber extends sfValidatorBase
 
 		$totalSumm = $evenNumSumm + $oddNumSumm;
 
-		if($lastNum != (10 - ($totalSumm % 10))){
+		$lastNumProceed = 10 - ((($totalSumm % 10) == 0)? 10 : ($totalSumm % 10));
+
+		if($lastNum != $lastNumProceed){
 			throw new sfValidatorError($this, 'invalid', array('value' => $value));
 		}
 		return $value;
