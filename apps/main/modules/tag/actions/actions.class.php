@@ -10,7 +10,15 @@
  */
 class tagActions extends myActions
 {
-  private $_validateResult;    
+  private $_validateResult;
+
+  public function preExecute()
+  {
+    parent::preExecute();
+
+    $this->getRequest()->setParameter('_template', 'product_catalog');
+  }
+
  /**
   * Executes index action
   *
@@ -66,7 +74,7 @@ class tagActions extends myActions
 
     $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
-  
+
 
  /**
   * Executes show action
@@ -78,15 +86,15 @@ class tagActions extends myActions
     if (!isset($request['tag'])) {
       $this->_validateResult['success'] = false;
       $this->_validateResult['error'] = 'Не получен tag.';
-      return $this->_refuse();        
-    }      
+      return $this->_refuse();
+    }
     $this->tag = !empty($request['tag']) ? TagTable::getInstance()->getByToken($request['tag']) : false;
     if (!$this->tag) {
       $this->_validateResult['success'] = false;
       $this->_validateResult['error'] = 'Tag не найден.';
-      return $this->_refuse();        
+      return $this->_refuse();
     }
-    
+
     $this->productTypeList = ProductTypeTable::getInstance()->getListByTag($this->tag, array(
       'select'            => 'productType.id, productType.name',
       'group'             => 'productType.id, productType.name',
@@ -110,7 +118,7 @@ class tagActions extends myActions
     ));
 
     if (isset($request['num'])) $limit = $request['num'];
-    else $limit = sfConfig::get('app_product_max_items_on_category', 20);    
+    else $limit = sfConfig::get('app_product_max_items_on_category', 20);
     $this->productPager = $this->getPager('Product', $q, $limit, array(
       'with_properties' => 'expanded' == $request['view'] ? true : false,
       'property_view'   => 'expanded' == $request['view'] ? 'list' : false,
@@ -121,10 +129,10 @@ class tagActions extends myActions
     if ($request['page'] > $this->productPager->getLastPage() ) {
       $this->_validateResult['success'] = false;
       $this->_validateResult['error'] = 'Номер страницы превышает максимальный для списка';
-      return $this->_refuse();          
+      return $this->_refuse();
     }
-  }  
-  
+  }
+
   private function _refuse(){
     return $this->renderJson(array(
       'success' => $this->_validateResult['success'],
@@ -132,5 +140,5 @@ class tagActions extends myActions
         'error' => $this->_validateResult['error'],
       ),
     ));
-  }  
+  }
 }
