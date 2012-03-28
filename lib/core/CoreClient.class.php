@@ -57,13 +57,16 @@ class CoreClient
         throw new CoreClientException(curl_error($connection), curl_errno($connection));
       }
       $info = curl_getinfo($connection);
+      if ($this->parameters->get('log_enabled')) {
+        $this->logger->info('Core response resource: ' . $connection);
+        $this->logger->info('Core response info: ' . $this->encodeInfo($info));
+      }
       if ($info['http_code'] >= 300) {
         throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
       $responseDecoded = $this->decode($response);
-      if ($this->parameters->get('log_enabled')) {
+      if ($this->parameters->get('log_data_enabled')) {
         $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
-        $this->logger->info('Core response info: ' . $this->encode($info));
       }
       curl_close($connection);
       return $responseDecoded;
@@ -118,18 +121,20 @@ class CoreClient
           while ($done = curl_multi_info_read($this->multiHandler)) {
             $this->logger->info('Core response done: ' . print_r($done, 1));
             $ch = $done['handle'];
+            $info = curl_getinfo($ch);
+            if ($this->parameters->get('log_enabled')) {
+              $this->logger->info('Core response resurce: ' . $ch);
+              $this->logger->info('Core response info: ' . $this->encodeInfo($info));
+            }
             if (curl_errno($ch) > 0)
               throw new CoreClientException(curl_error($ch), curl_errno($ch));
-            $info = curl_getinfo($ch);
             $content = curl_multi_getcontent($ch);
             if ($info['http_code'] >= 300) {
               throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
             }
             $responseDecoded = $this->decode($content);
-            if ($this->parameters->get('log_enabled')) {
-              $this->logger->info('Core response resurce: ' . $ch);
+            if ($this->parameters->get('log_data_enabled')) {
               $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
-              $this->logger->info('Core response info: ' . $this->encode($info));
             }
             /** @var $callback callback */
             $callback = $this->callbacks[(string)$ch];
@@ -247,5 +252,19 @@ class CoreClient
       $data
     );
     return $data;
+  }
+
+  /**
+   * @param array $info
+   * @return string
+   */
+  private function encodeInfo($info)
+  {
+    return $this->encode(array_intersect_key($info, array_flip(array(
+      'content_type', 'http_code', 'header_size', 'request_size',
+      'redirect_count', 'total_time', 'namelookup_time', 'connect_time', 'pretransfer_time', 'size_upload',
+      'size_download', 'speed_download',
+      'starttransfer_time', 'redirect_time', 'certinfo', 'redirect_url'
+    ))));
   }
 }
