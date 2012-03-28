@@ -51,6 +51,7 @@ class OrderTable extends myDoctrineTable
       'delivery_type_id'      => array('rel' => 'DeliveryType'),
       'address_id'            => array('rel' => 'UserAddress'),
       'shop_id'               => array('rel' => 'Shop'),
+	    'svyaznoy_club_card_number' => 'sclub_card_number',
 //      'product'               => array('rel' => 'Product'),
     );
   }
