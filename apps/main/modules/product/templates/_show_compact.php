@@ -16,6 +16,9 @@
 
   <h3><a href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a></h3>
   <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></div>
+  <?php if ($item['variation']): ?>
+  <div class='bListVariants mShort'>Доступно в разных вариантах</div>
+  <?php endif ?>
   <!-- Hover -->
   <div class="boxhover"<?php if ($item['is_insale']): ?> ref="<?php echo $item['token'] ?>"<?php endif ?>>
     <b class="rt"></b><b class="lb"></b>
@@ -40,6 +43,9 @@
           <?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?>
         </div>
         <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></div>
+        <?php if ($item['variation']): ?>
+        <div class='bListVariants mShort'>Доступно в разных вариантах</div>
+        <?php endif ?>
       </div>
     </div>
   </div>

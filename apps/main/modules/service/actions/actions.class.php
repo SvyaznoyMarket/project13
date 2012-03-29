@@ -95,7 +95,7 @@ class serviceActions extends myActions
                         ->createBaseQuery()
                         ->distinct()
                         ->innerJoin('service.ServiceCategoryRelation sc WITH sc.category_id IN ('.implode(',', $listInnerCatId). ')')
-                        ->innerJoin('service.Price p WITH p.service_price_list_id = ? AND product_id IS NULL', $priceListId)
+                        ->leftJoin('service.Price p WITH p.service_price_list_id = ? AND product_id IS NULL', $priceListId)
                         ->orderBy('service.name ASC')
                         ->execute();
     }
@@ -116,22 +116,15 @@ class serviceActions extends myActions
   */
   public function executeShow(sfWebRequest $request)
   {
-    $this->service = $this->getRoute()->getObject();
+    if (!isset($request['service']) || !$request['service']) {
+        return;
+    }
+    $params = array(
+        'price' => true,
+        'price_product' => 0
+    );
+    $this->service = ServiceTable::getInstance()->createBaseQuery($params)->where('token = ?', $request['service'])->fetchOne();
     $this->getResponse()->setTitle('F1 - '.$this->service->name.' – Enter.ru');
-
-//    //хак для мебели!!!!!!! убрать
-//    $parant = $this->service->getCatalogParent();
-//    $showNoPrice = 1;
-//    if ($parant['core_parent_id'] == 305)
-//    {
-//      $showNoPrice = false;
-//    }
-//    else
-//    {
-//      $showNoPrice = true;
-//    }
-//
-//    $this->setVar('showNoPrice', $showNoPrice, true);
 
   }
 

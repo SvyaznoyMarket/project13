@@ -1,10 +1,10 @@
 <?php
-if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest')
-{
-  header('HTTP/1.0 404 Not Found');
-  require('../apps/main/modules/default/templates/error404Success.php');
-  exit();
-}
+//if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest')
+//{
+//  header('HTTP/1.0 404 Not Found');
+//  require('../apps/main/modules/default/templates/error404Success.php');
+//  exit();
+//}
 
 //устанавливаю заголовок ответа json
 header('Content-Type:	application/json');
@@ -244,8 +244,39 @@ if(isset($user_attributes['cart']) && isset($user_attributes['cart']['products']
 }
 $servicesInCart = array();
 if(isset($user_attributes['cart']) && isset($user_attributes['cart']['services'])){
-  foreach($user_attributes['cart']['services'] as $service){
-    $servicesInCart[$service['token']] = $service['quantity'];
+	$neededProductTokens = array();
+	foreach($user_attributes['cart']['services'] as $service){
+		if(isset($service['product']) && is_array($service['product'])){
+			foreach($service['product'] as $productId => $productQuantity){
+				$neededProductTokens[$productId] = false;
+			}
+		}
+
+		$query = "Select id, token from product where id in(".implode(', ', array_keys($neededProductTokens)).")";
+		if ($result = mysql_query($query, $conn)){
+			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+				$neededProductTokens[$row['id']] = $row['token'];
+			}
+		}
+		else{
+			mysql_close($conn);
+			die(json_encode(array('success' => false, 'data' => array())));
+		}
+	}
+
+	foreach($user_attributes['cart']['services'] as $service){
+	  if($service['quantity'] > 0){
+		  $servicesInCart[$service['token']] = array();
+		  $servicesInCart[$service['token']]['0'] = $service['quantity'];
+	  }
+	  if(isset($service['product']) && is_array($service['product'])){
+			if(!isset($servicesInCart[$service['token']])){
+			  $servicesInCart[$service['token']] = array();
+		  }
+		  foreach($service['product'] as $productId => $productQuantity){
+			  $servicesInCart[$service['token']][$neededProductTokens[$productId]] = $productQuantity;
+		  }
+	  }
   }
 }
 

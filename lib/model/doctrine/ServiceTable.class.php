@@ -7,6 +7,28 @@
  */
 class ServiceTable extends myDoctrineTable
 {
+
+    public function createBaseQuery(array $params = array())
+    {
+        $region = sfContext::getInstance()->getUser()->getRegion();
+        $priceListId = $region['product_price_list_id'];
+        $this->applyDefaultParameters($params);
+
+        $q = $this->createQuery('service');
+        if (isset($params['price'])){
+            $regionCondition = 'service_price_list_id = ';
+            if (isset($params['price_product'])) {
+                if (is_null( $params['price_product']) || $params['price_product'] == 0) {
+                    $q->leftJoin('service.Price WITH product_id IS NULL AND service_price_list_id = ?', $priceListId);
+                } else {
+                    $q->leftJoin('service.Price WITH product_id =? AND service_price_list_id = ?', array($params['price_product'], $priceListId));
+                }
+            } else {
+                $q->leftJoin('service.Price WITH service_price_list_id = ?', $priceListId);
+            }
+        }
+        return $q;
+    }
   /**
    * Returns an instance of this class.
    *

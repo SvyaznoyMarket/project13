@@ -160,7 +160,7 @@ class productComponents extends myComponents
       $criteria->getPager()->setMaxPerPage(5);
       $item['accessory_pager'] = $criteria->getPager();
     }
-    if (in_array($this->view, array('expanded')))
+    if (in_array($this->view, array('expanded', 'compact', )))
     {
       $item['preview'] = $this->product['preview'];
 
