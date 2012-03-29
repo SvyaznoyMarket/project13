@@ -36,9 +36,13 @@ class order_Actions extends myActions
       $this->redirect('cart');
     }
 
+    $deliveryMap = $this->getDeliveryMapView();
+
     $this->order = new Order();
     $this->order->region_id = $this->getUser()->getRegion('id');
     $this->form = $this->getOrderForm($this->order);
+
+    $this->setVar('deliveryMap', $deliveryMap, true);
   }
 
   /**
@@ -56,41 +60,9 @@ class order_Actions extends myActions
     $deliveryType = $request['delivery_type_id'] ? DeliveryTypeTable::getInstance()->getById($request['delivery_type_id']) : null;
     $this->forward404Unless($deliveryType);
 
-    $productsInCart = array();
-    foreach ($user->getCart()->getProducts() as $product)
-    {
-      $productsInCart[] = array('id' => $product['core_id'], 'quantity' => $product['cart']['quantity']);
-    }
+    $shop = $request['shop_id'] ? ShopTable::getInstance()->getById($request['shop_id']) : null;
 
-    $servicesInCart = array();
-    foreach ($user->getCart()->getServices() as $service)
-    {
-      // если услуга принадлежит товару, то пропустить
-      if (count($service['cart']['product'])) continue;
-
-      $servicesInCart[] = array('id' => $service['core_id'], 'quantity' => $service['cart']['quantity']);
-    }
-
-    //$result = json_decode(file_get_contents(__DIR__.'/../data/order-calc.json'), true);
-    $result = Core::getInstance()->getDeliveryMap(
-      $user->getRegion('core_id'),
-      $productsInCart,
-      $servicesInCart,
-      'self' == $deliveryType->token ? ($deliveryType->token.'_24') : $deliveryType->token
-    );
-    $deliveryMap = $result;
-    foreach($deliveryMap['products'] as &$productData)
-    {
-      $product = ProductTable::getInstance()->createQuery()->where('core_id = ?', $productData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
-
-      $productData['image'] = $productData['media_image'];
-      unset($productData['media_image']);
-
-      $productData['cost'] = $productData['price'] * $productData['quantity'];
-      $productData['delete_url'] = $this->generateUrl('cart_delete', array('product' => $product['token_prefix'].'/'.$product['token']));
-    } if (isset($productData)) unset($productData);
-    //$deliveryMap = array();
-    //myDebug::dump($deliveryMap, 1);
+    $deliveryMap = $this->getDeliveryMapView($deliveryType, $shop);
 
     return $this->renderJson(array(
       'success' => true,
@@ -158,5 +130,134 @@ class order_Actions extends myActions
     }
 
     return new OrderDefaultForm($order, array('user' => $this->getUser(), 'regions' => $regions, 'deliveryTypes' => $deliveryTypes));
+  }
+
+  private function getDeliveryMapView($deliveryType = null, $shop = null)
+  {
+    $this->getContext()->getConfiguration()->loadHelpers('Date');
+
+    /* @var myUser */
+    $user = $this->getUser();
+
+    $productsInCart = array();
+    foreach ($user->getCart()->getProducts() as $product)
+    {
+      $productsInCart[] = array('id' => $product['core_id'], 'quantity' => $product['cart']['quantity']);
+    }
+
+    $servicesInCart = array();
+    foreach ($user->getCart()->getServices() as $service)
+    {
+      // если услуга принадлежит товару, то пропустить
+      if (count($service['cart']['product'])) continue;
+
+      $servicesInCart[] = array('id' => $service['core_id'], 'quantity' => $service['cart']['quantity']);
+    }
+
+    //$result = json_decode(file_get_contents(__DIR__.'/../data/order-calc.json'), true);
+    $result = Core::getInstance()->getDeliveryMap(
+      $user->getRegion('core_id'),
+      $productsInCart,
+      $servicesInCart,
+      $deliveryType ? $deliveryType->token : null,
+      $shop ? $shop->core_id : null
+    );
+    //myDebug::dump($result, 1);
+
+    $deliveryMapView = new Order_DeliveryMapView();
+
+    foreach ($result['shops'] as $coreData)
+    {
+      $shopView = new Order_ShopView();
+      $shopView->address = $coreData['address'];
+      $shopView->id = $coreData['id'];
+      $shopView->latitude = $coreData['coord_lat'];
+      $shopView->longitude = $coreData['coord_long'];
+      $shopView->name = $coreData['name'];
+      $shopView->regime = $coreData['working_time'];
+
+      $deliveryMapView->shops[$shopView->id] = $shopView;
+    }
+
+    // сборка товаров
+    foreach ($result['products'] as $coreData)
+    {
+      $recordData = ProductTable::getInstance()->createQuery()->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
+      $cartData = $user->getCart()->getProduct($recordData['id'])->cart;
+
+      $itemView = new Order_ItemView();
+      $itemView->deleteUrl = $this->generateUrl('cart_delete', array('product' => $recordData['token_prefix'].'/'.$recordData['token']));
+      $itemView->id = $coreData['id'];
+      $itemView->name = $coreData['name'];
+      //$itemView->image = ProductTable::getInstance()->getMainPhotoUrl($recordData, 0);
+      $itemView->image = $coreData['media_image'];
+      $itemView->price = $coreData['price'];
+      $itemView->quantity = $cartData['quantity'];
+      $itemView->total = $cartData['total'];
+      $itemView->totalFormatted = $cartData['formatted_total'];
+      $itemView->type = Order_ItemView::TYPE_PRODUCT;
+      $itemView->url = $this->generateUrl('productCard', array('product' => $recordData['token_prefix'].'/'.$recordData['token']));
+      $itemView->token = $itemView->type.'-'.$itemView->id;
+
+      foreach ($coreData['deliveries'] as $deliveryToken => $deliveryData)
+      {
+        $deliveryView = new Order_DeliveryView();
+        $deliveryView->price = $deliveryData['price'];
+        $deliveryView->token = $deliveryToken;
+        foreach ($deliveryData['dates'] as $dateData)
+        {
+          $dateView = new Order_DateView();
+          $dateView->day = date('j', strtotime($dateData['date']));
+          $dateView->dayOfWeek = format_date($dateData['date'], 'EEE', 'ru');
+          $dateView->value = $dateData['date'];
+          foreach ($dateData['interval'] as $intervalData)
+          {
+            $intervalView = new Order_IntervalView();
+            $intervalView->start_at = $intervalData['time_begin'];
+            $intervalView->end_at = $intervalData['time_end'];
+
+            $dateView->intervals[] = $intervalView;
+          }
+
+          $deliveryView->dates[] = $dateView;
+        }
+
+        $itemView->deliveries[$deliveryView->token] = $deliveryView;
+      }
+
+      $deliveryMapView->items[$itemView->token] = $itemView;
+    }
+
+    // сборка типов доставки
+    foreach ($result['deliveries'] as $deliveryTypeToken => $coreData)
+    {
+      $recordData = DeliveryTypeTable::getInstance()->createQuery()->where('token = ?', $coreData['token'])->fetchOne(array(), Doctrine::HYDRATE_ARRAY);
+
+      $deliveryTypeView = new Order_DeliveryTypeView();
+      $deliveryTypeView->description = $recordData['description'];
+      $deliveryTypeView->id = $coreData['mode_id'];
+      $deliveryTypeView->name = $recordData['name'];
+      $deliveryTypeView->type = $recordData['token'];
+      $deliveryTypeView->token = $deliveryTypeToken;
+
+      $deliveryTypeView->shop =
+        array_key_exists($coreData['shop_id'], $deliveryMapView->shops)
+          ? $deliveryMapView->shops[$coreData['shop_id']]->id
+          : null
+      ;
+
+      foreach ($deliveryMapView->items as $itemView)
+      {
+        if (!in_array($itemView->id, $coreData['products'])) continue;
+
+        $deliveryTypeView->items[$itemView->token] = $itemView->id;
+      }
+
+      $deliveryMapView->deliveryTypes[$deliveryTypeView->token] = $deliveryTypeView;
+    }
+
+    //var_dump($deliveryMapView); die();
+
+    return $deliveryMapView;
   }
 }

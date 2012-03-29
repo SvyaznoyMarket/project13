@@ -747,9 +747,12 @@ class UserCart extends BaseUserData
 
     foreach ($this->products as $key => $product)
     {
+      $realPrice = ProductTable::getInstance()->getRealPrice($product);
+
       //myDebug::dump($product);
       $this->updateProductCart($product, 'quantity', $products[$key]['quantity']);
-      $this->updateProductCart($product, 'formatted_total', number_format($products[$key]['quantity'] * ProductTable::getInstance()->getRealPrice($product), 0, ',', ' '));
+      $this->updateProductCart($product, 'formatted_total', number_format($products[$key]['quantity'] * $realPrice, 0, ',', ' '));
+      $this->updateProductCart($product, 'total', $products[$key]['quantity'] * $realPrice);
       //myDebug::dump($product, 1);
       #$this->updateProductCart($product, 'service', $products[$key]['service']);
     }
@@ -792,6 +795,7 @@ class UserCart extends BaseUserData
       $this->updateServiceProductCart($service, 'quantity', $services[$key]['quantity']);
       $this->updateServiceProductCart($service, 'product', $services[$key]['product']);
       $this->updateServiceProductCart($service, 'formatted_total', number_format($services[$key]['quantity'] * $service->getCurrentPrice(), 0, ',', ' '));
+      $this->updateServiceProductCart($service, 'total', $services[$key]['quantity'] * $service->getCurrentPrice());
     }
   }
 

@@ -24,13 +24,13 @@
 
   <div id="order-loader-holder"></div>
 
-  <div id="order-form-part2" class="hf">
+  <div id="order-form-part2" class="hidden">
 
     <div class='bBuyingInfo'>
       <span style="white-space: nowrap;">Отличный выбор! Для вашего удобства мы сформировали несколько заказов в зависимости от типа доставки:</span>
     </div>
 
-    <div id="order-delivery-holder"></div>
+    <?php include_component('order_', 'field_products', $sf_data) ?>
 
     <dl class='bBuyingLine mSumm'>
       <dt><a href alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
@@ -138,10 +138,6 @@
 
 <div id="order-loader" class='bOrderPreloader hf'>
   <span>Формирую заказ...</span><img src='/images/bPreloader.gif'>
-</div>
-
-<div id="order-delivery" class="hidden">
-  <?php include_component('order_', 'field_products', $sf_data) ?>
 </div>
 
 <?php include_partial('order_/footer') ?>
