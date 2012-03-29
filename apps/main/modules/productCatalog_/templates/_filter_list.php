@@ -33,7 +33,7 @@ $values = $productFilterRaw->getValue($filter->getRawValue());
       </label>
     </li>
     <?php $i++; endforeach; ?>
-    <?php if ($i > 4) { ?>
+    <?php if ($i > 5) { ?>
     <li class="bCtg__eMore" style="padding-left: 10px;">
       <a href="#">еще...</a>
     </li>
