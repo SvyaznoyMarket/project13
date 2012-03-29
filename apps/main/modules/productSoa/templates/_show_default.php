@@ -76,7 +76,7 @@ foreach ($p3d as $p3d_obj)
             <?php endif ?>
         </div>
         <div class="fr ar pb15">
-            <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->token ?>" data-value='<?php echo json_encode( $json ) ?>'>
+            <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->id ?>" data-value='<?php echo json_encode( $json ) ?>'>
 
               <div class='bCountSet'>
                 <?php if (!$product->cart_quantity): ?>

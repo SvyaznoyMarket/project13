@@ -57,7 +57,7 @@ class userProductHistoryActions extends myActions
 
     //подсчитываем общее количество и общую стоимость корзины
     $cartInfo = $user->getCart()->getBaseInfo();
-     // print_r($cartInfo);
+      //print_r($cartInfo);
     //отложенные товары
 //    $delayProducts = array();
 //    if ($user->getGuardUser())

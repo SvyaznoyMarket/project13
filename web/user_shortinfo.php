@@ -1,10 +1,10 @@
 <?php
-//if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest')
-//{
-//  header('HTTP/1.0 404 Not Found');
-//  require('../apps/main/modules/default/templates/error404Success.php');
-//  exit();
-//}
+if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest')
+{
+  header('HTTP/1.0 404 Not Found');
+  require('../apps/main/modules/default/templates/error404Success.php');
+  exit();
+}
 
 //устанавливаю заголовок ответа json
 header('Content-Type:	application/json');
@@ -65,9 +65,10 @@ catch (Exception $e)
 session_name(SESSION_NAME);
 session_start();
 
+$sessionCartIndex = 'cartSoa';
+
 //получаю пользовательские данные из сессии
 $user_attributes = isset($_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes']) ? $_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'] : array();
-
 $user_name = isset($_SESSION['symfony/user/sfUser/attributes']['guard']['user_name']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['user_name'] : null;
 $user_id = isset($_SESSION['symfony/user/sfUser/attributes']['guard']['user_id']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['user_id'] : null;
 $user_id = intval($user_id);
@@ -75,8 +76,8 @@ $region_id = isset($user_attributes['region']) ? $user_attributes['region'] : nu
 
 $quantity = 0;
 
-if(isset($user_attributes['cart']) && isset($user_attributes['cart']['products'])){
-  foreach($user_attributes['cart']['products'] as $product){
+if(isset($user_attributes[$sessionCartIndex]) && isset($user_attributes[$sessionCartIndex]['products'])){
+  foreach($user_attributes[$sessionCartIndex]['products'] as $product){
     $quantity += $product['quantity'];
   }
 }
@@ -104,8 +105,8 @@ if(isset($user_attributes['productCompare']) && isset($user_attributes['productC
  */
 $prod_sum =0;
 $needDb = false;
-if(isset($user_attributes['cart']) && isset($user_attributes['cart']['products'])){
-  foreach($user_attributes['cart']['products'] as $product){
+if(isset($user_attributes[$sessionCartIndex]) && isset($user_attributes[$sessionCartIndex]['products'])){
+  foreach($user_attributes[$sessionCartIndex]['products'] as $product){
     if(!isset($product['token']) || !isset($product['total'])){
       $needDb = true;
       break;
@@ -133,7 +134,7 @@ if(isset($user_attributes['cart']) && isset($user_attributes['cart']['products']
 					$user_attributes['cart']['products'][$row['product_id']]['total'] = $user_attributes['cart']['products'][$row['product_id']]['quantity'] * $row['price'];
 					if(isset($_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes']['cart']['products'][$row['product_id']])){
 						$_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes']['cart']['products'][$row['product_id']]['token'] = $row['token'];
-						$_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes']['cart']['products'][$row['product_id']]['total'] = $user_attributes['cart']['products'][$row['product_id']]['total'];
+						$_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes']['cart']['products'][$row['product_id']]['total'] = $user_attributes[$sessionCartIndex]['products'][$row['product_id']]['total'];
 					}
 				}
 		  }
@@ -150,8 +151,8 @@ if(isset($user_attributes['cart']) && isset($user_attributes['cart']['products']
 
 $service_sum = 0;
 $needDb = false;
-if(isset($user_attributes['cart']) && isset($user_attributes['cart']['services'])){
-  foreach($user_attributes['cart']['services'] as $service){
+if(isset($user_attributes[$sessionCartIndex]) && isset($user_attributes[$sessionCartIndex]['services'])){
+  foreach($user_attributes[$sessionCartIndex]['services'] as $service){
     if(!isset($service['token']) || !isset($service['total'])){
       $needDb = true;
       break;
@@ -237,46 +238,15 @@ if(isset($user_attributes['cart']) && isset($user_attributes['cart']['services']
 }
 
 $productsInCart = array();
-if(isset($user_attributes['cart']) && isset($user_attributes['cart']['products'])){
-  foreach($user_attributes['cart']['products'] as $product){
+if(isset($user_attributes[$sessionCartIndex]) && isset($user_attributes[$sessionCartIndex]['products'])){
+  foreach($user_attributes[$sessionCartIndex]['products'] as $product){
     $productsInCart[$product['token']] = $product['quantity'];
   }
 }
 $servicesInCart = array();
-if(isset($user_attributes['cart']) && isset($user_attributes['cart']['services'])){
-	$neededProductTokens = array();
-	foreach($user_attributes['cart']['services'] as $service){
-		if(isset($service['product']) && is_array($service['product'])){
-			foreach($service['product'] as $productId => $productQuantity){
-				$neededProductTokens[$productId] = false;
-			}
-		}
-
-		$query = "Select id, token from product where id in(".implode(', ', array_keys($neededProductTokens)).")";
-		if ($result = mysql_query($query, $conn)){
-			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
-				$neededProductTokens[$row['id']] = $row['token'];
-			}
-		}
-		else{
-			mysql_close($conn);
-			die(json_encode(array('success' => false, 'data' => array())));
-		}
-	}
-
-	foreach($user_attributes['cart']['services'] as $service){
-	  if($service['quantity'] > 0){
-		  $servicesInCart[$service['token']] = array();
-		  $servicesInCart[$service['token']]['0'] = $service['quantity'];
-	  }
-	  if(isset($service['product']) && is_array($service['product'])){
-			if(!isset($servicesInCart[$service['token']])){
-			  $servicesInCart[$service['token']] = array();
-		  }
-		  foreach($service['product'] as $productId => $productQuantity){
-			  $servicesInCart[$service['token']][$neededProductTokens[$productId]] = $productQuantity;
-		  }
-	  }
+if(isset($user_attributes[$sessionCartIndex]) && isset($user_attributes[$sessionCartIndex]['services'])){
+  foreach($user_attributes[$sessionCartIndex]['services'] as $service){
+    $servicesInCart[$service['token']] = $service['quantity'];
   }
 }
 
