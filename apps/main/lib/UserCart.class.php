@@ -13,6 +13,8 @@ class UserCart extends BaseUserData
 
     function __construct($parameters = array())
     {
+//        sfContext::getInstance()->getUser()->setAttribute('cartSoa', array());
+//        return;
         $cart = sfContext::getInstance()->getUser()->getAttribute('cartSoa', array());
         if (isset($cart['products'])) {
             $this->_products = $cart['products'];
@@ -24,6 +26,37 @@ class UserCart extends BaseUserData
         $this->parameterHolder = new sfParameterHolder();
         $this->parameterHolder->add($parameters);
 
+        //заглядываем в старую карзину
+        $this->_useOldCart();
+
+    }
+
+    /**
+     * если у пользователя сохранилась корзина старого образца, переписываем её на новую, а про старое забываем.
+     */
+    private function _useOldCart()
+    {
+        $cartOld = sfContext::getInstance()->getUser()->getAttribute('cart', array());
+        if (isset($cartOld['products'])) {
+            foreach ($cartOld['products'] as $oldCartItemId => $oldCartItem) {
+                $prodDbOb = ProductTable::getInstance()->createBaseQuery()->where('id = ?', $oldCartItemId)->fetchOne();
+                $this->addProduct($prodDbOb->core_id, $oldCartItem['quantity']);
+            }
+        }
+        if (isset($cartOld['services'])) {
+            foreach ($cartOld['services'] as $oldCartServiceId => $oldCartService) {
+                $serviceDbOb = ServiceTable::getInstance()->createBaseQuery()->where('id = ?', $oldCartServiceId)->fetchOne();
+                if (isset($oldCartService['quantity']) && $oldCartService['quantity'] > 0) {
+                    $this->addService($serviceDbOb->core_id, $oldCartService['quantity'], 0);
+                }
+                if (isset($oldCartService['product'])) {
+                    foreach ($oldCartService['product'] as $prodId => $prodQty) {
+                        $this->addService($serviceDbOb->core_id, $prodQty, $prodId);
+                    }
+                }
+            }
+        }
+        sfContext::getInstance()->getUser()->setAttribute('cart', array());
     }
 
     private function _save() {
@@ -74,6 +107,7 @@ class UserCart extends BaseUserData
                     }
                     $this->_products[$product->id] = array(
                         'id' => $product->id,
+                        'token' => $product->token,
                         'quantity' => $addQty,
                         'price' => $product->price,
                     );
@@ -138,10 +172,11 @@ class UserCart extends BaseUserData
             }
         }
 
-        if (!isset($this->_services[$serviceId]) || empty($this->_services[$serviceId]))
-        {
-            $this->_services[$serviceId] = $this->getServiceDefaults();
-        }
+        $serviceCartInfo = array(
+            'quantity' => $quantity,
+            'price' => $priceVal
+        );
+
         if ($productId)
         {
             //проверяем, можно ли добавлять эту услугу к этому продукту
@@ -167,29 +202,19 @@ class UserCart extends BaseUserData
                 //товар, к которому привязываем должен либо находиться в корзине,
                 //либо являться комплектом
                 if ($isInCart) { // || $product->isKit()) {
-                    $this->_services[$serviceId]['products'][$productId] = array(
-                        'quantity' => $quantity,
-                        'price' => $priceVal
-                    );
+                    $this->_services[$serviceId]['products'][$productId] = $serviceCartInfo;
                 } else {
-                    $this->_services[$serviceId]['products'][0] = array(
-                        'quantity' => $quantity,
-                        'price' => $priceVal
-                    );
+                    $this->_services[$serviceId]['products'][0] = $serviceCartInfo;
                 }
             } else {
-                $this->_services[$serviceId]['products'][0] = array(
-                    'quantity' => $quantity,
-                    'price' => $priceVal
-                );
+                $this->_services[$serviceId]['products'][0] = $serviceCartInfo;
             }
         } else {
-            $this->_services[$serviceId]['products'][0] = array(
-                'quantity' => $quantity,
-                'price' => $priceVal
-            );
+            $this->_services[$serviceId]['products'][0] = $serviceCartInfo;
         }
         $this->_services[$serviceId]['id'] = $serviceId;
+        $this->_services[$serviceId]['token'] = $serviceInfo['token'];
+
 
         $this->_save();
         return true;
@@ -561,20 +586,6 @@ class UserCart extends BaseUserData
     }
 
 
-    protected function updateServiceProductCart(Doctrine_Record &$service, $property, $value)
-    {
-        if (isset($service->cart))
-        {
-            $cart = $service->cart;
-        }
-        else
-        {
-            $cart = $this->getServiceDefaults();
-        }
-        $cart[$property] = $value;
-
-        $service->mapValue('cart', $cart);
-    }
 
     protected function getServiceById($id)
     {
@@ -584,14 +595,6 @@ class UserCart extends BaseUserData
     }
 
 
-
-    protected function getDefaults()
-    {
-        return array(
-            //'discount' => 0,
-            //'warranty' => array(),
-        );
-    }
 
     protected function getServiceDefaults()
     {
