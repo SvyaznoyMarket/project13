@@ -135,10 +135,11 @@ class productCatalog_Actions extends myActions
     $this->forward('productCatalog', 'tag');
   }
 
-  // @todo implement in core api
   public function executeCategoryAjax(sfWebRequest $request)
   {
-    $this->forward('productCatalog', 'categoryAjax');
+    $this->setVar('allOk', false);
+    $this->loadList($request);
+    $this->setVar('allOk', true);
   }
 
   // @todo implement in core api

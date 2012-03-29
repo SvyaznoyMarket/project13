@@ -1,3 +1,6 @@
-<?php foreach ($list as $item): ?>
-<?php include_component('product', 'show', array('view' => 'expanded', 'product' => $item)) ?>
-<?php endforeach ?>
+<?php
+/**
+ * @var $list
+ */
+foreach ($list as $item)
+  include_partial('show_', array('view' => 'expanded', 'item' => $item));

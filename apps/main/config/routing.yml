@@ -65,15 +65,6 @@ productCatalog_filter:
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
-# @core
-# фильтр каталога товаров core
-productCatalog__filter:
-  url:   /catalog_core/:productCategory/_filter
-  param: { module: productCatalog_, action: filter }
-  class:   myProductCatalogRoute
-  options: { model: ProductCategory, type: object, method: getForRoute }
-  requirements:
-    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 #
 # тэги каталога товаров
 productCatalog_tag:
@@ -141,7 +132,7 @@ productCatalog_categoryAjax:
 # категория каталога товаров ajax
 productCatalog__categoryAjax:
   url:   /catalog_core/:productCategory/_ajax/:page/:view/:num
-  param: { module: productCatalog_, action: category, num: 18, view: compact, page: 1}
+  param: { module: productCatalog_, action: categoryAjax, num: 18, view: compact, page: 1}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
