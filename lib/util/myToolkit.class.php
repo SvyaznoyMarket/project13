@@ -24,16 +24,16 @@ class myToolkit extends sfToolkit
     settype($int, "integer");
     $count = $int % 100;
     if ($count >= 5 && $count <= 20) {
-        $result = $expressions[2];
+      $result = $expressions[2];
     } else {
-        $count = $count % 10;
-        if ($count == 1) {
-            $result = $expressions[0];
-        } elseif ($count >= 2 && $count <= 4) {
-            $result = $expressions[1];
-        } else {
-            $result = $expressions[2];
-        }
+      $count = $count % 10;
+      if ($count == 1) {
+        $result = $expressions[0];
+      } elseif ($count >= 2 && $count <= 4) {
+        $result = $expressions[1];
+      } else {
+        $result = $expressions[2];
+      }
     }
     return $result;
   }
@@ -49,7 +49,7 @@ class myToolkit extends sfToolkit
     switch ($typeId) {
       case 1:
         if (date('Gi') > 2000) {
-          return $period+1;
+          return $period + 1;
         }
         break;
       case 2:
@@ -59,7 +59,7 @@ class myToolkit extends sfToolkit
         break;
       case 3:
         if (date('Gi') > 2000) {
-          return $period+1;
+          return $period + 1;
         }
         break;
       default:
@@ -71,8 +71,8 @@ class myToolkit extends sfToolkit
 
   static public function formatDeliveryDate($period)
   {
-    $ts = time() + (3600*24*$period);
-    $d = date('j', $ts).' '.self::$_months[date('n', $ts)];
+    $ts = time() + (3600 * 24 * $period);
+    $d = date('j', $ts) . ' ' . self::$_months[date('n', $ts)];
     if ($period == 0) {
       return ' сегодня (' . $d . ')';
     } elseif ($period == 1) {
@@ -87,15 +87,15 @@ class myToolkit extends sfToolkit
   static public function translite($value)
   {
     $tbl = array(
-      'а'=>'a', 'б'=>'b', 'в'=>'v', 'г'=>'g', 'д'=>'d', 'е'=>'e', 'ж'=>'g', 'з'=>'z',
-      'и'=>'i', 'й'=>'y', 'к'=>'k', 'л'=>'l', 'м'=>'m', 'н'=>'n', 'о'=>'o', 'п'=>'p',
-      'р'=>'r', 'с'=>'s', 'т'=>'t', 'у'=>'u', 'ф'=>'f', 'ы'=>'i', 'э'=>'e', 'А'=>'A',
-      'Б'=>'B', 'В'=>'V', 'Г'=>'G', 'Д'=>'D', 'Е'=>'E', 'Ж'=>'G', 'З'=>'Z', 'И'=>'I',
-      'Й'=>'Y', 'К'=>'K', 'Л'=>'L', 'М'=>'M', 'Н'=>'N', 'О'=>'O', 'П'=>'P', 'Р'=>'R',
-      'С'=>'S', 'Т'=>'T', 'У'=>'U', 'Ф'=>'F', 'Ы'=>'I', 'Э'=>'E', 'ё'=>'yo', 'х'=>'h',
-      'ц'=>'ts', 'ч'=>'ch', 'ш'=>'sh', 'щ'=>'shch', 'ъ'=>'', 'ь'=>'', 'ю'=>'yu', 'я'=>'ya',
-      'Ё'=>'YO', 'Х'=>'H', 'Ц'=>'TS', 'Ч'=>'CH', 'Ш'=>'SH', 'Щ'=>'SHCH', 'Ъ'=>'', 'Ь'=>'',
-      'Ю'=>'YU', 'Я'=>'YA'
+      'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ж' => 'g', 'з' => 'z',
+      'и' => 'i', 'й' => 'y', 'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p',
+      'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', 'ф' => 'f', 'ы' => 'i', 'э' => 'e', 'А' => 'A',
+      'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Д' => 'D', 'Е' => 'E', 'Ж' => 'G', 'З' => 'Z', 'И' => 'I',
+      'Й' => 'Y', 'К' => 'K', 'Л' => 'L', 'М' => 'M', 'Н' => 'N', 'О' => 'O', 'П' => 'P', 'Р' => 'R',
+      'С' => 'S', 'Т' => 'T', 'У' => 'U', 'Ф' => 'F', 'Ы' => 'I', 'Э' => 'E', 'ё' => 'yo', 'х' => 'h',
+      'ц' => 'ts', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'shch', 'ъ' => '', 'ь' => '', 'ю' => 'yu', 'я' => 'ya',
+      'Ё' => 'YO', 'Х' => 'H', 'Ц' => 'TS', 'Ч' => 'CH', 'Ш' => 'SH', 'Щ' => 'SHCH', 'Ъ' => '', 'Ь' => '',
+      'Ю' => 'YU', 'Я' => 'YA'
     );
 
     return strtr($value, $tbl);
@@ -103,7 +103,7 @@ class myToolkit extends sfToolkit
 
   static public function urlize($value)
   {
-    return strtolower(preg_replace(array( '/[^-a-zA-Z0-9\s]/', '/[\s]/' ), array('', '-' ), self::translite($value)));
+    return strtolower(preg_replace(array('/[^-a-zA-Z0-9\s]/', '/[\s]/'), array('', '-'), self::translite($value)));
   }
 
   static public function groupByColumn(array $list, $columnCount)
@@ -112,13 +112,12 @@ class myToolkit extends sfToolkit
 
     $count = count($list);
     $itemCount_perColumn = intval($count / $columnCount);
-    for ($i = 0; $i < $columnCount; $i ++)
+    for ($i = 0; $i < $columnCount; $i++)
     {
       $start = (0 == $i ? 0 : $start + $offset);
       $offset = ($itemCount_perColumn + (($count % $columnCount) >= ($i + 1) ? 1 : 0));
 
-      if ($start > ($count - 1))
-      {
+      if ($start > ($count - 1)) {
         break;
       }
       $return[$i] = array_slice($list, $start, $offset, false);
@@ -130,8 +129,7 @@ class myToolkit extends sfToolkit
   static public function trimZero($value)
   {
     $frac = $value - floor($value);
-    if (0 == $frac)
-    {
+    if (0 == $frac) {
       $returnValue = intval($value);
     }
     else {
@@ -139,6 +137,19 @@ class myToolkit extends sfToolkit
     }
 
     $returnValue = str_replace('.', ',', $returnValue);
+
+    return $returnValue;
+  }
+
+  static public function clearZero($value)
+  {
+    $frac = $value - floor($value);
+    if (0 == $frac) {
+      $returnValue = intval($value);
+    }
+    else {
+      $returnValue = rtrim($value, '0');
+    }
 
     return $returnValue;
   }

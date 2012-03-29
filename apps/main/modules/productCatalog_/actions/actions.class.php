@@ -480,8 +480,8 @@ class ProductCoreFormFilterSimple
         case ProductCategoryFilterEntity::TYPE_NUMBER:
           if (empty($value['from']) && empty($value['to'])) continue;
           $name = '';
-          if ($value['from'] != $filter->getMin()) $name .= sprintf('от %d', $value['from']);
-          if ($value['to'] != $filter->getMax()) $name .= sprintf('до %d', $value['to']);
+          if (!($this->isEqualNumeric($value['from'], $filter->getMin()))) $name .= sprintf('от %d', $value['from']);
+          if (!($this->isEqualNumeric($value['to'], $filter->getMax()))) $name .= sprintf('до %d', $value['to']);
           if ($name == '') continue;
           if ($filter->getFilterId() == 'price') $name .= ' р.';
           $list[] = array(
@@ -582,5 +582,12 @@ class ProductCoreFormFilterSimple
   public function getProductCategory()
   {
     return $this->productCategory;
+  }
+
+  private function isEqualNumeric($first, $second)
+  {
+    $first = myToolkit::clearZero((float)$first);
+    $second = myToolkit::clearZero((float)$second);
+    return $first == $second;
   }
 }
