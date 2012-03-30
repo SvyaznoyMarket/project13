@@ -13,6 +13,8 @@ class UserCart extends BaseUserData
 
     function __construct($parameters = array())
     {
+	      //заглядываем в старую карзину
+	      $this->_useOldCart();
 //        sfContext::getInstance()->getUser()->setAttribute('cartSoa', array());
 //        return;
         $cart = sfContext::getInstance()->getUser()->getAttribute('cartSoa', array());
@@ -25,10 +27,6 @@ class UserCart extends BaseUserData
         $parameters = myToolkit::arrayDeepMerge(array('products' => array(),), $parameters);
         $this->parameterHolder = new sfParameterHolder();
         $this->parameterHolder->add($parameters);
-
-        //заглядываем в старую карзину
-        $this->_useOldCart();
-
     }
 
     /**
