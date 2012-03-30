@@ -7,7 +7,7 @@
             ?>
                 <h5>Можно заказать сейчас с доставкой</h5>
                 <div>&mdash; Можем доставить <?php echo myToolkit::formatDeliveryDate(2); ?></div>
-            <?
+            <?php
             } else {
                 foreach ($delivery as $info) {
                     if ($info['price'] > 0) {
@@ -26,7 +26,8 @@
                     <?php } elseif ($info['mode']==3) { ?>
                         <h5>Можно заказать сейчас и самостоятельно забрать в магазине <?php echo $deliveryText ?></h5>
                         <div>&mdash; <a target="blank" href="<?php echo url_for('productStock', array('product' => $product->path)) ?>">В каких магазинах ENTER можно забрать?</a></div>
-                        <?php }
+                        <?php
+                    }
                 }
             }
             ?>
