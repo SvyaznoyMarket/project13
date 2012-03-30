@@ -99,6 +99,16 @@ $(document).ready(function() {
         popup.show()
     })
 
+    $('body').delegate('.order-delivery_date-control', 'click', function() {
+        var el = $(this)
+        console.info(el)
+
+        var weekNum = el.data('value')
+
+        el.parent().find('.order-delivery_date').hide()
+        el.parent().find('.order-delivery_date[data-week="'+weekNum+'"]').show()
+    })
+
     Templating = {
         assign: function (el, data) {
             $.each(el.data('assign'), function(varName, callback) {
@@ -205,6 +215,7 @@ $(document).ready(function() {
 
             itemHolder.html('')
 
+            // стоимость доставки
             var priceHolder = deliveryTypeHolder.find('.order-delivery_price')
             priceHolder.html('')
             var price = self.getDeliveryPrice(deliveryType)
@@ -220,6 +231,7 @@ $(document).ready(function() {
                 priceHolder.html('Бесплатно')
             }
 
+            // общая стоимость
             var totalHolder = deliveryTypeHolder.find('.order-delivery_total-holder')
             totalHolder.html('')
             var total = self.getDeliveryTotal(deliveryType)
@@ -230,6 +242,27 @@ $(document).ready(function() {
             })
             totalContainer.appendTo(totalHolder)
 
+            // доступность дат
+            var dates = []
+            $.each(deliveryType.items, function(i, itemToken) {
+                $.each(data.items[itemToken].deliveries[deliveryType.token].dates, function(i, date) {
+                    dates.push(date.value)
+                })
+            })
+            $.each(deliveryTypeHolder.find('.order-delivery_date'), function(i, el) {
+                var el = $(el)
+                var value = el.data('value')
+                var exists = -1 !== $.inArray(value, dates)
+
+                if (exists) {
+                    el.removeClass('bBuyingDates__eDisable')
+                    el.addClass('bBuyingDates__eEnable')
+                }
+                else {
+                    el.removeClass('bBuyingDates__eEnable')
+                    el.addClass('bBuyingDates__eDisable')
+                }
+            })
 
             $.each(deliveryType.items, function(i, itemToken) {
                 self.renderItem(itemHolder, data.items[itemToken])

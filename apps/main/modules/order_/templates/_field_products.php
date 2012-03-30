@@ -25,11 +25,11 @@
           <div>
             <p></p>
             <ul class="bBuyingDates">
-              <li class="bBuyingDates__eLeft mDisabled"><b></b><span></span></li>
+              <li class="bBuyingDates__eLeft mDisabled order-delivery_date-control" data-value="1"><b></b><span></span></li>
               <?php foreach ($dates as $i => $date): ?>
-                <li<?php echo $i >= 7 ? ' style="display:none"' : '' ?> class='bBuyingDates__eDisable' data-assign-date='{"text": "data.date"}' data-week="<?php echo floor($i / 7) + 1 ?>"><?php echo $date['day'] ?> <span><?php echo $date['dayOfWeek'] ?></span></li>
+                <li<?php echo $i >= 7 ? ' style="display:none"' : '' ?> class='bBuyingDates__eDisable order-delivery_date' data-value='<?php echo $date['value'] ?>' data-week="<?php echo floor($i / 7) + 1 ?>"><?php echo $date['day'] ?> <span><?php echo $date['dayOfWeek'] ?></span></li>
               <?php endforeach ?>
-              <li class="bBuyingDates__eRight"><b></b><span></span></li>
+              <li class="bBuyingDates__eRight order-delivery_date-control" data-value="2"><b></b><span></span></li>
             </ul>
 
             <span class="order-interval-holder" data-template="#order-interval-template"></span>

@@ -211,7 +211,7 @@ class order_Actions extends myActions
           $dateView = new Order_DateView();
           $dateView->day = date('j', strtotime($dateData['date']));
           $dateView->dayOfWeek = format_date($dateData['date'], 'EEE', 'ru');
-          $dateView->value = $dateData['date'];
+          $dateView->value = date('Y-m-d', strtotime($dateData['date']));
           foreach ($dateData['interval'] as $intervalData)
           {
             $intervalView = new Order_IntervalView();
