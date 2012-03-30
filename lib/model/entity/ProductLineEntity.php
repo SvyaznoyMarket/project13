@@ -20,6 +20,7 @@ class ProductLineEntity
     if (isset($data['name'])) $this->setName($data['name']);
     if (isset($data['media_image'])) $this->setMediaImage($data['media_image']);
     if (isset($data['product_count'])) $this->setProductCount($data['product_count']);
+    if (isset($data['products_quantity'])) $this->setProductCount($data['products_quantity']);
   }
 
   /**
