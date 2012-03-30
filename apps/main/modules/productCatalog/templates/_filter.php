@@ -8,47 +8,48 @@
 <?php include_component('default', 'cache', array('collection' => $productFilterList)) ?>
 
 <!-- Filter -->
-<form class="product_filter-block" action="<?php echo $url ?>" method="get" data-action-count="<?php echo url_for('productCatalog_count', $sf_data->getRaw('productCategory')) ?>">
+<form class="product_filter-block" action="<?php echo $url ?>" method="get"
+      data-action-count="<?php echo url_for('productCatalog_count', $sf_data->getRaw('productCategory')) ?>">
   <?php echo $form->renderHiddenFields() ?>
   <dl class="bigfilter form bSpec">
     <h2>Выбираем:</h2>
     <?php include_component('productCatalog', 'filter_selected', array('form' => $form, 'productCategory' => $productCategory)) ?>
     <?php $openNum = 0; ?>
-    <?php $i = 0; foreach ($form as $name => $field): /* if ($i++ > 7) break; */  ?>
-      <?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?>
+    <?php $i = 0; foreach ($form as $name => $field): /* if ($i++ > 7) break; */ ?>
+    <?php if ((isset($form[$name]) && $form[$name]->isHidden()) || (!isset($form[$name]) && $field->isReal())) continue ?>
 
-      <dt<?php if (5 > $i) echo ' class="'.((1 == $i) ? ' first' : '').'"' ?>>
-        <?php echo $form[$name]->renderLabelName() ?>
-        <?php //include_partial('productCatalog/filter_hint')  ?>
-      </dt>
+    <dt<?php if (5 > $i) echo ' class="' . ((1 == $i) ? ' first' : '') . '"' ?>>
+      <?php echo $form[$name]->renderLabelName() ?>
+      <?php //include_partial('productCatalog/filter_hint')  ?>
+    </dt>
 
-      <?php
-        if ($name == 'price' || $name == 'creator'){
-            $open = 'block';
-        } elseif ($openNum < 5) {
-            $openNum++;
-            $open = 'block';
-        } else {
-            $open = 'none';
-        }
-      ?>
-      <dd style="display: <?php echo $open ?>;">
+    <?php
+    if (in_array($name, array('price', 'creator', 'label',))) {
+      $open = 'block';
+    } elseif ($openNum < 5) {
+      $openNum++;
+      $open = 'block';
+    } else {
+      $open = 'none';
+    }
+    ?>
+    <dd style="display: <?php echo $open ?>;">
 
-        <?php if ($form[$name]->getWidget() instanceof myWidgetFormInputCheckbox): ?>
-        <ul>
-          <li>
-            <?php echo $form[$name]->render() ?>
-            <label for="<?php echo $form[$name]->renderId() ?>">да</label>
-          </li>
-        </ul>
-
-        <?php else: ?>
+      <?php if ($form[$name]->getWidget() instanceof myWidgetFormInputCheckbox): ?>
+      <ul>
+        <li>
           <?php echo $form[$name]->render() ?>
-        <?php endif ?>
+          <label for="<?php echo $form[$name]->renderId() ?>">да</label>
+        </li>
+      </ul>
 
-      </dd>
+      <?php else: ?>
+      <?php echo $form[$name]->render() ?>
+      <?php endif ?>
+
+    </dd>
     <?php endforeach; ?>
-    <div class="pb10"><input type="submit" class="button yellowbutton" value="Подобрать" /></div>
+    <div class="pb10"><input type="submit" class="button yellowbutton" value="Подобрать"/></div>
   </dl>
 
   <!--div class="pb15"><a href="" class="button whitelink">Расширенный поиск</a></div-->

@@ -10,38 +10,36 @@
  */
 class pageComponents extends myComponents
 {
- /**
-  * Executes form component
-  *
-  * @param array $form Форма страницы
-  */
+  /**
+   * Executes form component
+   *
+   * @param array $form Форма страницы
+   */
   public function executeForm()
   {
-    if (empty($this->form))
-    {
+    if (empty($this->form)) {
       $this->form = new PageForm();
     }
   }
- /**
-  * Executes menu component
-  *
-  * @param Page $Page Страница
-  */
+
+  /**
+   * Executes menu component
+   *
+   * @param Page $Page Страница
+   */
   public function executeMenu()
   {
-    if (!$this->page instanceof Page)
-    {
-     // return sfView::NONE;
+    if (!$this->page instanceof Page) {
+      // return sfView::NONE;
     }
 
-    if (!$this->view)
-    {
+    if (!$this->view) {
       $this->view = 'default';
     }
 
     $list = array(
-      'about'  => array(
-        'name'  => 'О нас',
+      'about' => array(
+        'name' => 'О нас',
         'links' => array(
           array('token' => 'about_company'),
           array('token' => 'as_it_was'),
@@ -53,7 +51,7 @@ class pageComponents extends myComponents
         ),
       ),
       'buying' => array(
-        'name'  => 'Покупки в Enter',
+        'name' => 'Покупки в Enter',
         'links' => array(
           array('token' => 'how_make_order', 'add_to_name' => '?'),
           array('token' => 'how_get_order', 'add_to_name' => '?'),
@@ -62,9 +60,10 @@ class pageComponents extends myComponents
         ),
       ),
       'service' => array(
-        'name'  => 'Услуги',
+        'name' => 'Услуги',
         'links' => array(
           array('token' => 'credit'),
+          array('token' => 'f1', 'url' => 'f1', 'name' => 'F1 сервис'),
         ),
       ),
     );
@@ -74,22 +73,23 @@ class pageComponents extends myComponents
       foreach ($item['links'] as &$link)
       {
         if (isset($link['token'])) $page = PageTable::getInstance()->findOneByToken($link['token']);
-        if (!$page || !isset($page)){
+        if (!$page || !isset($page)) {
         }
-        else{
-            $link['name'] = $page->name.(isset($link['add_to_name']) ? $link['add_to_name'] : '');
-            $link['url'] = $this->generateUrl('default_show', array('page' => $page->token));
+        else {
+          $link['name'] = $page->name . (isset($link['add_to_name']) ? $link['add_to_name'] : '');
+          $link['url'] = $this->generateUrl('default_show', array('page' => $page->token));
         }
-      } if (isset($link)) unset($link);
-    } if (isset($item)) unset($item);
+      }
+      if (isset($link)) unset($link);
+    }
+    if (isset($item)) unset($item);
 
     $this->setVar('list', $list, true);
   }
 
   public function executeNavigation()
   {
-    if (!isset($this->page) || !$this->page instanceof Page)
-    {
+    if (!isset($this->page) || !$this->page instanceof Page) {
       return sfView::NONE;
     }
 
@@ -100,40 +100,42 @@ class pageComponents extends myComponents
       ),*/
       array(
         'name' => $this->page->name,
-        'url'  => $this->generateUrl('default_show', array('page' => $this->page->token)),
+        'url' => $this->generateUrl('default_show', array('page' => $this->page->token)),
       ),
     );
 
     $this->setVar('list', $list, false);
   }
 
-  public function executeLink_rel_canonical(){
+  public function executeLink_rel_canonical()
+  {
     $request = sfContext::getInstance()->getRequest();
     $page = $request['page'];
     #var_dump( $page );
     #echo intVal($page) .'=='. $page;
-    if ($page && strval(intVal($page)) == $page){
-        $this->setVar('show_link', false);
+    if ($page && strval(intVal($page)) == $page) {
+      $this->setVar('show_link', false);
     } else {
-        $this->setVar('show_link', true);
-        $info = $request->getPathInfoArray();
-        #print_r($info);
-        $ar = explode('?',$info['REQUEST_URI']);
-        $path = str_replace(array('_filter', '_tag'), '', $ar[0]);
-        if ($path == "/") {
-            $path = '';
-        }
+      $this->setVar('show_link', true);
+      $info = $request->getPathInfoArray();
+      #print_r($info);
+      $ar = explode('?', $info['REQUEST_URI']);
+      $path = str_replace(array('_filter', '_tag'), '', $ar[0]);
+      if ($path == "/") {
+        $path = '';
+      }
 
-        $this->setVar('href', 'http://' . $info['SERVER_NAME'] . $path);
+      $this->setVar('href', 'http://' . $info['SERVER_NAME'] . $path);
     }
   }
 
-  public function executeBreadcrumbs(){
-    if(!isset ($this->addToBreadcrumbs)){
+  public function executeBreadcrumbs()
+  {
+    if (!isset ($this->addToBreadcrumbs)) {
       $this->addToBreadcrumbs = null;
+      $this->setVar('addToBreadcrumbs', $this->addToBreadcrumb);
     }
 
-    $this->setVar('addToBreadcrumbs', $this->addToBreadcrumb);
   }
 
 }

@@ -19,64 +19,58 @@ class productComponents extends myComponents
    */
   public function executeShow()
   {
-    if (!$this->product)
-    {
+    if (!$this->product) {
       return sfView::NONE;
     }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock', 'extra_compact')))
-    {
+    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock', 'extra_compact'))) {
       $this->view = 'default';
     }
 
-    $this->maxPerPage = $this->maxPerPage ?: 3;
+    $this->maxPerPage = $this->maxPerPage ? : 3;
 
     // cache key
     $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
-      'product'    => is_scalar($this->product) ? $this->product : $this->product['id'],
-      'region'     => $this->getUser()->getRegion('id'),
-      'view'       => $this->view,
-      'i'          => $this->ii,
+      'product' => is_scalar($this->product) ? $this->product : $this->product['id'],
+      'region' => $this->getUser()->getRegion('id'),
+      'view' => $this->view,
+      'i' => $this->ii,
       'maxPerPage' => $this->maxPerPage,
     )) : false;
 
     // checks for cached vars
-    if ($cacheKey && $this->setCachedVars($cacheKey))
-    {
+    if ($cacheKey && $this->setCachedVars($cacheKey)) {
       //myDebug::dump($this->getVarHolder()->getAll(), 1);
       return sfView::SUCCESS;
     }
 
     $table = ProductTable::getInstance();
 
-    if (is_scalar($this->product))
-    {
+    if (is_scalar($this->product)) {
       $params = array(
         'hydrate_array' => true,
-        'with_model'    => true,
+        'with_model' => true,
       );
 
-      if ('default' == $this->view)
-      {
+      if ('default' == $this->view) {
         $params = myToolkit::arrayDeepMerge($params, array(
-          'group_property'  => true,
-          'view'            => 'show',
-          'property_view'   => 'show',
+          'group_property' => true,
+          'view' => 'show',
+          'property_view' => 'show',
           'with_properties' => true,
         ));
       }
-      else if ('expanded' == $this->view)
-      {
+      else if ('expanded' == $this->view) {
         $params = myToolkit::arrayDeepMerge($params, array(
-          'group_property'  => false,
-          'view'            => 'list',
-          'property_view'   => 'list',
+          'group_property' => false,
+          'view' => 'list',
+          'property_view' => 'list',
           'with_properties' => true,
         ));
       }
       else {
         $params = myToolkit::arrayDeepMerge($params, array(
-          'view'      => 'list',
+          'view' => 'list',
           'with_line' => 'line' == $this->view ? true : false,
         ));
       }
@@ -86,44 +80,41 @@ class productComponents extends myComponents
     }
 
     $item = array(
-      'id'         => $this->product['id'],
-      'core_id'    => $this->product['core_id'],
-      'token'      => $this->product['token'],
-      'barcode'    => $this->product['barcode'],
-      'article'    => $this->product['article'],
-      'name'       => $this->product['name'],
-      'creator'    => (is_array($this->product['Creator']) || ($this->product['Creator'] instanceof Creator)) ? $this->product['Creator']['name'] : '',
-      'rating'     => $this->product['rating'],
-      'price'      => $table->getFormattedPrice($this->product), //$this->product->formatted_price,
-      'has_link'   => $this->product['view_show'],
-      'photo'      => $table->getMainPhotoUrl($this->product, 2),
-      'is_insale'  => $this->product['is_insale'],
+      'id' => $this->product['id'],
+      'core_id' => $this->product['core_id'],
+      'token' => $this->product['token'],
+      'barcode' => $this->product['barcode'],
+      'article' => $this->product['article'],
+      'name' => $this->product['name'],
+      'creator' => (is_array($this->product['Creator']) || ($this->product['Creator'] instanceof Creator)) ? $this->product['Creator']['name'] : '',
+      'rating' => $this->product['rating'],
+      'price' => $table->getFormattedPrice($this->product), //$this->product->formatted_price,
+      'avg_price' => $table->getFormattedPrice($this->product, 'avg'), //$this->product->formatted_price,
+      'has_link' => $this->product['view_show'],
+      'photo' => $table->getMainPhotoUrl($this->product, 2),
+      'is_insale' => $this->product['is_insale'],
       'is_instock' => $this->product['is_instock'],
-      'url'        => $this->generateUrl('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
-      'label'      => $this->product['Label']->getId() ? $this->product['Label'] : null,
+      'url' => $this->generateUrl('productCard', array('product' => $this->product['token_prefix'] . '/' . $this->product['token']), array('absolute' => true)),
+      'label' => $this->product['Label']->getId() ? $this->product['Label'] : null,
     );
 
-    if (in_array($this->view, array('compact', 'extra_compact')))
-    {
+    if (in_array($this->view, array('compact', 'extra_compact'))) {
       $rootProductCategory = ProductCategoryTable::getInstance()->getRootRecord($this->product['Category'][0], array(
         'hydrate_array' => true,
-        'select'        => 'productCategory.id, productCategory.name',
+        'select' => 'productCategory.id, productCategory.name',
       ));
       $item['root_name'] = $rootProductCategory ? $rootProductCategory['name'] : '';
 
-      if ('extra_compact' == $this->view)
-      {
+      if ('extra_compact' == $this->view) {
         $item['photo'] = $table->getMainPhotoUrl($this->product, 1);
       }
     }
 
-    if ('orderOneClick' == $this->view)
-    {
+    if ('orderOneClick' == $this->view) {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
     }
 
-    if ('default' == $this->view)
-    {
+    if ('default' == $this->view) {
       $item['photo'] = $this->product->getMainPhotoUrl(1);
       $item['stock_url'] = $this->generateUrl('productStock', $this->product);
       //$item['shop_url'] = $this->generateUrl('shop_show', ShopTable::getInstance()->getMainShop());
@@ -134,12 +125,10 @@ class productComponents extends myComponents
       $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
       $item['rated'] =
         (true || !$this->getUser()->isAuthenticated())
-        ? in_array($this->product['id'], $rated)
-        : false
-      ;
+          ? in_array($this->product['id'], $rated)
+          : false;
       $item['cart_quantity'] = 0;
-      if ($cartItem = $this->getUser()->getCart()->getProduct($this->product['id']))
-      {
+      if ($cartItem = $this->getUser()->getCart()->getProduct($this->product['id'])) {
         $item['cart_quantity'] = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
       }
 
@@ -159,13 +148,11 @@ class productComponents extends myComponents
       $criteria->getPager()->setMaxPerPage(5);
       $item['accessory_pager'] = $criteria->getPager();
     }
-    if (in_array($this->view, array('expanded')))
-    {
+    if (in_array($this->view, array('expanded'))) {
       $item['preview'] = $this->product['preview'];
 
       $item['variation'] = array();
-      if ($this->product['is_model'])
-      {
+      if ($this->product['is_model']) {
         foreach ($table->getModelProperty($this->product) as $property)
         {
           $item['variation'][] = mb_strtolower($property['name']);
@@ -173,22 +160,19 @@ class productComponents extends myComponents
       }
       $item['variation'] = implode(', ', $item['variation']);
     }
-    if (in_array($this->view, array('description')))
-    {
+    if (in_array($this->view, array('description'))) {
       $item['description'] = $this->product['description'];
     }
-    if ('line' == $this->view)
-    {
-      $item['url'] = $this->generateUrl('lineCard', array('line' => $this->product['Line']['token'], ), array('absolute' => true));
+    if ('line' == $this->view) {
+      $item['url'] = $this->generateUrl('lineCard', array('line' => $this->product['Line']['token'],), array('absolute' => true));
       $item['Line']['name'] = $this->product['Line']['name'];
       $item['Line']['count'] = ProductLineTable::getInstance()->getProductCountById($this->product['Line']['id']);
     }
-    if ('stock' == $this->view)
-    {
+    if ('stock' == $this->view) {
       $item['description'] = $this->product['description'];
-      $length = mb_strpos($item['description'], ' ', 120) ?: strlen($item['description']);
+      $length = mb_strpos($item['description'], ' ', 120) ? : strlen($item['description']);
       $item['description'] = mb_substr($item['description'], 0, $length);
-      $item['description'] = $item['description'].((mb_strlen($this->product['description']) > mb_strlen($item['description'])) ? '...' : '');
+      $item['description'] = $item['description'] . ((mb_strlen($this->product['description']) > mb_strlen($item['description'])) ? '...' : '');
     }
 
     $this->setVar('item', $item, true);
@@ -199,13 +183,12 @@ class productComponents extends myComponents
     $this->setVar('selectedServices', $selectedServices, true);
      */
 
-    $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
+    $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'),)));
 
     //myDebug::dump($item, 1);
 
     // caches vars
-    if ($cacheKey)
-    {
+    if ($cacheKey) {
       $this->cacheVars($cacheKey);
       $this->getCache()->addTag("product-{$this->product['id']}", $cacheKey);
     }
@@ -229,8 +212,7 @@ class productComponents extends myComponents
   public function executePager()
   {
     $this->view = !empty($this->view) ? $this->view : $this->getRequestParameter('view');
-    if (!in_array($this->view, array('expanded', 'compact', 'line')))
-    {
+    if (!in_array($this->view, array('expanded', 'compact', 'line'))) {
       $this->view = 'compact';
     }
 
@@ -252,14 +234,13 @@ class productComponents extends myComponents
     $active['url'] = replace_url_for('sort', implode('-', array($active['name'], $active['direction'])));
     foreach ($this->productSorting->getList() as $item)
     {
-      if ($active['name'] == $item['name'] && $active['direction'] == $item['direction'])
-      {
-//        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
+      if ($active['name'] == $item['name'] && $active['direction'] == $item['direction']) {
+        //        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
         continue;
       }
       $list[] = array_merge($item, array(
         'url' => replace_url_for('sort', implode('-', array($item['name'], $item['direction'])))
-        ));
+      ));
     }
 
     $this->setVar('list', $list, true);
@@ -274,8 +255,7 @@ class productComponents extends myComponents
   public function executeList()
   {
     $this->view = (isset($this->view) && !empty($this->view)) ? $this->view : $this->getRequestParameter('view');
-    if (!in_array($this->view, array('expanded', 'compact', 'line', )))
-    {
+    if (!in_array($this->view, array('expanded', 'compact', 'line',))) {
       $this->view = 'compact';
     }
   }
@@ -287,8 +267,7 @@ class productComponents extends myComponents
    */
   public function executePagination()
   {
-    if (!$this->pager->haveToPaginate())
-    {
+    if (!$this->pager->haveToPaginate()) {
       return sfView::NONE;
     }
   }
@@ -301,8 +280,7 @@ class productComponents extends myComponents
    */
   public function executeProperty()
   {
-    if (!in_array($this->view, array('default', 'inlist')))
-    {
+    if (!in_array($this->view, array('default', 'inlist'))) {
       $this->view = 'default';
     }
 
@@ -331,8 +309,7 @@ class productComponents extends myComponents
    */
   public function executeProperty_grouped()
   {
-    if (!in_array($this->view, array('default', 'inlist')))
-    {
+    if (!in_array($this->view, array('default', 'inlist'))) {
       $this->view = 'default';
     }
 
@@ -347,15 +324,15 @@ class productComponents extends myComponents
         if (('inlist' == $this->view) && !$parameter->isViewList()) continue;
 
         $parameters[] = array(
-          'name'        => $parameter->getName(),
-          'value'       => $value,
+          'name' => $parameter->getName(),
+          'value' => $value,
           'description' => $parameter->getDescription(),
         );
       }
       if (0 == count($parameters)) continue;
 
       $list[] = array(
-        'name'       => $parameterGroup->getName(),
+        'name' => $parameterGroup->getName(),
         'parameters' => $parameters,
       );
     }
@@ -371,27 +348,24 @@ class productComponents extends myComponents
    */
   public function executeProduct_model()
   {
-    if (!$this->product->is_model && !$this->product->model_id)
-    {
+    if (!$this->product->is_model && !$this->product->model_id) {
       return sfView::NONE;
     }
 
     $properties = $this->product->getModelProperty();
-    if (!count($properties))
-    {
+    if (!count($properties)) {
       return sfView::NONE;
     }
 
     //myDebug::dump($properties);
     $model_id = !empty($this->product->model_id) ? $this->product->model_id : $this->product->id;
-    $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
+    $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true,))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
     //добавляем учет товара, доступного к продаже
     $q->addWhere('IFNULL(productState.is_instock, product.is_instock) = ?', true);
 
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
 
-    if (empty($product_ids))
-    {
+    if (empty($product_ids)) {
       return sfView::NONE;
     }
 
@@ -408,8 +382,7 @@ class productComponents extends myComponents
       $values = ProductPropertyRelationTable::getInstance()->createListByIds($value_ids, array('index' => array('productPropertyRelation' => 'id',)));
       foreach ($products_properties as $products_property)
       {
-        if ($property->id == $products_property->property_id)
-        {
+        if ($property->id == $products_property->property_id) {
           $values[$products_property->id]->mapValue('is_selected', true);
         }
       }
@@ -419,26 +392,23 @@ class productComponents extends myComponents
       foreach ($values as $id => $value)
       {
         if (!$value->product_id) continue;
-        $product = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ));
+        $product = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true,));
         if (!$product) continue;
         $realValue = strval($value->getRealValue());
         $value_to_map[$realValue]['id'] = $id;
         $value_to_map[$realValue]['url'] = $this->generateUrl('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
-        $value_to_map[$realValue]['parameter'] = new ProductParameter($property['ProductTypeRelation'][0], array($value, ));
-        if (isset($values[$id]['is_selected']))
-        {
+        $value_to_map[$realValue]['parameter'] = new ProductParameter($property['ProductTypeRelation'][0], array($value,));
+        if (isset($values[$id]['is_selected'])) {
           $value_to_map[$realValue]['is_selected'] = $values[$id]['is_selected'];
         }
         elseif (!isset($value_to_map[$realValue]['is_selected']))
         {
           $value_to_map[$realValue]['is_selected'] = 0;
         }
-        if ($value_to_map[$realValue]['is_selected'])
-        {
+        if ($value_to_map[$realValue]['is_selected']) {
           $property->mapValue('current', $realValue);
         }
-        if ($property->ProductModelRelation[0]->is_image)
-        {
+        if ($property->ProductModelRelation[0]->is_image) {
           $value_to_map[$realValue]['photo'] = $product->getMainPhotoUrl(1);
         }
 
@@ -446,8 +416,7 @@ class productComponents extends myComponents
       ksort($value_to_map);
       $property->mapValue('values', $value_to_map);
     }
-    if (empty($property->current))
-    {
+    if (empty($property->current)) {
       return sfView::NONE;
     }
 
@@ -460,7 +429,7 @@ class productComponents extends myComponents
    */
   public function executeList_ajax_view()
   {
-      $this->executeList_view();
+    $this->executeList_view();
   }
 
   /**
@@ -469,16 +438,16 @@ class productComponents extends myComponents
    */
   public function executeList_view()
   {
-    $this->view = $this->view ?: $this->getRequestParameter('view', 'compact');
+    $this->view = $this->view ? : $this->getRequestParameter('view', 'compact');
 
     $list = array(
       array(
-        'name'  => 'compact',
+        'name' => 'compact',
         'title' => 'компактный',
         'class' => 'tableview',
       ),
       array(
-        'name'  => 'expanded',
+        'name' => 'expanded',
         'title' => 'расширенный',
         'class' => 'listview',
       ),
@@ -488,26 +457,26 @@ class productComponents extends myComponents
     {
       $excluded = ($this->productCategory && ($item['name'] == $this->productCategory->product_view))
         ? array('view' => $item['name'])
-        : null
-      ;
+        : null;
 
       $item = array_merge($item, array(
         'url' => replace_url_for('view', $item['name'], null, array(), $excluded),
         'current' => $this->view == $item['name'],
-        ));
-    } if (isset($item))
+      ));
+    }
+    if (isset($item))
       unset($item);
 
     $this->setVar('list', $list, true);
   }
+
   /**
    * Executes tags component
    *
    */
   public function executeTags()
   {
-    if (!$this->product instanceof Product)
-    {
+    if (!$this->product instanceof Product) {
       return sfView::NONE;
     }
 
@@ -518,31 +487,32 @@ class productComponents extends myComponents
     {
       $list[] = array(
         'token' => $tag->token,
-        'url'   => $this->generateUrl('tag_show', array('tag' => $tag->token)),
-        'name'  => $tag->name,
+        'url' => $this->generateUrl('tag_show', array('tag' => $tag->token)),
+        'name' => $tag->name,
       );
     }
 
     $this->count = count($list);
-    if (0 == $this->count)
-    {
+    if (0 == $this->count) {
       return sfView::NONE;
     }
 
     $this->setVar('list', $list);
     $this->limit = 6 < count($list) ? 6 : count($list);
   }
+
   /**
    * Executes f1_lightbox component
    *
    */
-  public function executeF1_lightbox(){
-      if ($this->parentAction == '_list_for_product_in_cart') {
-          $showInCardButton = true;
-      } else {
-          $showInCardButton = false;
-      }
-      $this->setVar('showInCardButton', $showInCardButton);
+  public function executeF1_lightbox()
+  {
+    if ($this->parentAction == '_list_for_product_in_cart') {
+      $showInCardButton = true;
+    } else {
+      $showInCardButton = false;
+    }
+    $this->setVar('showInCardButton', $showInCardButton);
   }
 
   public function executeKit()

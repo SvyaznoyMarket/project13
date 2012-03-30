@@ -10,24 +10,18 @@
  */
 class pageActions extends myActions
 {
- /**
-  * Executes index action
-  *
-  * @param sfRequest $request A request object
-  */
+  /**
+   * Executes index action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeIndex(sfWebRequest $request)
   {
     $this->page = PageTable::getInstance()->getByToken($request['page']);
     $this->forwardUnless($this->page, 'redirect', 'index');
 
-    //TODO: ЭТО НАДО УБИТЬ, КОГДА ПОЯВИТСЯ НОРМАЛЬНЫЙ РАЗДЕЛ Service F1
-    if ('f1' == $this->page->token)
-    {
-      $this->setLayout('layout');
-    }
-
     $pageTitle = !empty($this->page->title) ? $this->page->title : $this->page->name;
-    $this->getResponse()->setTitle($pageTitle.' – Enter.ru');
+    $this->getResponse()->setTitle($pageTitle . ' – Enter.ru');
 
     $this->setVar('page', $this->page, true);
   }
