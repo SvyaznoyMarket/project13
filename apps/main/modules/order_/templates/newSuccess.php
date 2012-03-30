@@ -133,8 +133,9 @@
 
   </div>
 
-</form>
+  <div id="order-shop-popup" class="hidden"></div>
 
+</form>
 
 <div id="order-loader" class='bOrderPreloader hf'>
   <span>Формирую заказ...</span><img src='/images/bPreloader.gif'>

@@ -6,6 +6,7 @@ class Order_DeliveryTypeView
   public $type;
   public $token;
   public $name;
+  public $shortName;
   public $description;
 
   /* @var $shop Order_ShopView */

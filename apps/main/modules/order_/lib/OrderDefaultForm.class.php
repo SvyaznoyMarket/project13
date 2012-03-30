@@ -35,6 +35,9 @@ class OrderDefaultForm extends BaseOrderForm
     ));
     $this->validatorSchema['delivery_type_id'] = new sfValidatorChoice(array('choices' => array_map(function($i) { return $i->getToken(); }, $deliveryTypes), 'required' => true), array('required' => 'Выберите способ получения заказа'));
     $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ получения заказа:');
+    if (1 == count($deliveryTypes)) {
+      $this->widgetSchema['delivery_type_id']->setDefault($deliveryTypes[0]->getId());
+    }
 
     // recipient_first_name
     $this->widgetSchema['recipient_first_name'] = new sfWidgetFormInputText();
@@ -45,7 +48,6 @@ class OrderDefaultForm extends BaseOrderForm
     $this->widgetSchema['recipient_phonenumbers'] = new sfWidgetFormInputText();
     $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('max_length' => 255, 'required' => true), array('required' => 'Укажите телефон для связи'));
     $this->widgetSchema['recipient_phonenumbers']->setLabel('Мобильный телефон для связи:');
-
 
     // is_receive_sms
     $this->widgetSchema['is_receive_sms'] = new sfWidgetFormInputCheckbox();

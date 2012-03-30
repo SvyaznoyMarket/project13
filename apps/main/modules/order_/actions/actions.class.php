@@ -36,11 +36,13 @@ class order_Actions extends myActions
       $this->redirect('cart');
     }
 
-    $deliveryMap = $this->getDeliveryMapView();
-
     $this->order = new Order();
     $this->order->region_id = $this->getUser()->getRegion('id');
     $this->form = $this->getOrderForm($this->order);
+
+    $deliveryTypes = $this->form->getOption('deliveryTypes');
+    $defaultDeliveryType = (1 == count($deliveryTypes)) ? $deliveryTypes[0] : null;
+    $deliveryMap = $this->getDeliveryMapView($defaultDeliveryType);
 
     $this->setVar('deliveryMap', $deliveryMap, true);
   }
@@ -159,7 +161,7 @@ class order_Actions extends myActions
       $user->getRegion('core_id'),
       $productsInCart,
       $servicesInCart,
-      $deliveryType ? $deliveryType->token : null,
+      $deliveryType ? $deliveryType->getToken() : null,
       $shop ? $shop->core_id : null
     );
     //myDebug::dump($result, 1);
@@ -204,6 +206,7 @@ class order_Actions extends myActions
         $deliveryView = new Order_DeliveryView();
         $deliveryView->price = $deliveryData['price'];
         $deliveryView->token = $deliveryToken;
+        $deliveryView->name = 0 === strpos($deliveryToken, 'self') ? 'В самовывоз' : 'В доставку';
         foreach ($deliveryData['dates'] as $dateData)
         {
           $dateView = new Order_DateView();
@@ -239,10 +242,11 @@ class order_Actions extends myActions
       $deliveryTypeView->name = $recordData['name'];
       $deliveryTypeView->type = $recordData['token'];
       $deliveryTypeView->token = $deliveryTypeToken;
+      $deliveryTypeView->shortName = 0 === strpos($deliveryTypeView->type, 'self') ? 'Самовывоз' : 'Доставим';
 
       $deliveryTypeView->shop =
         array_key_exists($coreData['shop_id'], $deliveryMapView->shops)
-          ? $deliveryMapView->shops[$coreData['shop_id']]->id
+          ? $deliveryMapView->shops[$coreData['shop_id']]
           : null
       ;
 
