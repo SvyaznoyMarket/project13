@@ -81,7 +81,7 @@ function moveOldDataToNewFormat($oldFormatData, &$newFormatDataContainer, $regio
 	/*
 	 * Перенос продуктов
 	 */
-	if(isset($oldFormatData['products'])){
+	if(isset($oldFormatData['products']) && count($oldFormatData['products'])){
 		$needProductInfo = array_keys($oldFormatData['products']);
 		foreach($needProductInfo as $key => $productId){
 			if(isset($newFormatDataContainer[$productId])){
@@ -92,11 +92,13 @@ function moveOldDataToNewFormat($oldFormatData, &$newFormatDataContainer, $regio
 				$needProductInfo[$key] = intval($productId);
 			}
 		}
-		$productInfoList = getProductInfoByIds($needProductInfo, $region_id);
-		foreach($productInfoList as $productId => $productInfo){
-			$newFormatDataContainer['products'][$productId] = $productInfo;
-			$newFormatDataContainer['products'][$productId]['quantity'] = $oldFormatData['products'][$productId]['quantity'];
-		}
+        if (count($needProductInfo)) {
+            $productInfoList = getProductInfoByIds($needProductInfo, $region_id);
+            foreach($productInfoList as $productId => $productInfo){
+                $newFormatDataContainer['products'][$productId] = $productInfo;
+                $newFormatDataContainer['products'][$productId]['quantity'] = $oldFormatData['products'][$productId]['quantity'];
+            }
+        }
 	}
 
 	/*
