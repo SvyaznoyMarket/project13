@@ -237,7 +237,7 @@ class ProductFactory
 
         $productsBaseData = array();
         foreach ($coreResult as $queryResult) {
-           if (!isset($queryResult['result'])) {
+           if (!isset($queryResult['result']) || !isset($queryResult['result']['result'])) {
                continue;
            }
            foreach ($queryResult['result']['result'] as $itemKey => $itemData) {
