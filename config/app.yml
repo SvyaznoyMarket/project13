@@ -41,7 +41,7 @@ all:
 
   product_label:
     photo_url:
-      - 'http://fs01.enter.ru/7/1/x23/'
+      - 'http://fs01.enter.ru/7/1/66x23/'
       - 'http://fs01.enter.ru/7/1/x38/'
 
   category:
@@ -80,7 +80,7 @@ all:
   core:
     config:
       api_url: 'http://test2.core.ent3.ru/v1/json'
-      userapi_url: 'http://test2.core.ent3.ru/userapi/'
+      userapi_url: 'http://test2.core.ent3.ru/v2/'
       client_id: 1
       consumer_key: test # v1
       signature: test # v1
