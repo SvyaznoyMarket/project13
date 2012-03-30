@@ -161,8 +161,7 @@ class order_Actions extends myActions
       $user->getRegion('core_id'),
       $productsInCart,
       $servicesInCart,
-      $deliveryType ? $deliveryType->getToken() : null,
-      $shop ? $shop->core_id : null
+      $deliveryType ? $deliveryType->getToken() : null
     );
     //myDebug::dump($result, 1);
 

@@ -17,7 +17,7 @@
         <br><span>с 12:00 до 18:00</span>
       </h2>
 
-      <i>Стоимость доставки 700 <span class="rubl">p</span><i></i></i>
+      <i class="order-delivery_price" data-template="#order-delivery_price-template"></i>
     </dt>
     <i>
       <i>
@@ -48,7 +48,7 @@
         <dd class="order-item-holder" data-template="#order-item-template"></dd>
       </dl>
 
-      <div class="bBuyingLineWrap__eSum">Итого с доставкой: <b>30 840 <span class="rubl">p</span></b></div>
+      <div class="order-delivery_total-holder" data-template="#order-delivery_total-template"></div>
     </i>
   </i>
 </div>
@@ -93,3 +93,14 @@
 </div>
 <!-- } -->
 
+<!-- шаблон стоимости доставки -->
+<div id="order-delivery_price-template">
+  <span>Стоимость доставки <data data-assign='{"price": ["text", "_value"]}'></data> <span class="rubl">p</span><i></i></span>
+</div>
+<!-- } -->
+
+<!-- шаблон стоимости подзаказа -->
+<div id="order-delivery_total-template">
+  <div class="bBuyingLineWrap__eSum"><data data-assign='{"name": ["text", "_value"]}'></data>: <b><data data-assign='{"total": ["text", "_value"]}'></data> <span class="rubl">p</span></b></div>
+</div>
+<!-- } -->

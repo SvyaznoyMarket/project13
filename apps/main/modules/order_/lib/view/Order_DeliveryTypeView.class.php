@@ -8,6 +8,8 @@ class Order_DeliveryTypeView
   public $name;
   public $shortName;
   public $description;
+  public $date;
+  public $interval;
 
   /* @var $shop Order_ShopView */
   public $shop;

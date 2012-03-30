@@ -379,13 +379,13 @@ class Core
     return $response;
   }
 
-  public function getDeliveryMap($geoId, $productsInCart, $servicesInCart, $deliveryMode, $shopId = null)
+  public function getDeliveryMap($geoId, $productsInCart, $servicesInCart, $deliveryMode = null)
   {
     $result = $this->query('order.calc', array(), array(
       'geo_id'  => $geoId,
       'product' => $productsInCart,
       'service' => $servicesInCart,
-      'mode'    => $deliveryMode ? ($deliveryMode.($shopId ? ('_'.$shopId) : '')) : null,
+      'mode'    => $deliveryMode,
     ));
 
     return $result;

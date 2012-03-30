@@ -151,9 +151,33 @@ $(document).ready(function() {
             })
             data.deliveryTypes[toDeliveryTypeToken].items.push(itemToken)
             self.data(data)
-            console.info(self.data())
 
             this.render()
+        },
+
+        getDeliveryPrice: function(deliveryType) {
+            var data = this.data()
+
+            var price = 0
+            $.each(deliveryType.items, function(i, itemToken) {
+                var deliveryPrice = data.items[itemToken].deliveries[deliveryType.token].price
+                if (deliveryPrice > price) {
+                    price = deliveryPrice
+                }
+            })
+
+            return price
+        },
+
+        getDeliveryTotal: function(deliveryType) {
+            var data = this.data()
+
+            var total = 0
+            $.each(deliveryType.items, function(i, itemToken) {
+                total += data.items[itemToken].total
+            })
+
+            return total
         },
 
         render: function() {
@@ -176,12 +200,38 @@ $(document).ready(function() {
         renderDeliveryType: function(deliveryTypeHolder) {
             var self = this
             var data = this.data()
-            var deliveryTypeData = data.deliveryTypes[deliveryTypeHolder.data('value')]
+            var deliveryType = data.deliveryTypes[deliveryTypeHolder.data('value')]
             var itemHolder = deliveryTypeHolder.find('.order-item-holder')
 
             itemHolder.html('')
 
-            $.each(deliveryTypeData.items, function(i, itemToken) {
+            var priceHolder = deliveryTypeHolder.find('.order-delivery_price')
+            priceHolder.html('')
+            var price = self.getDeliveryPrice(deliveryType)
+            if (price > 0) {
+                var priceContainer = Templating.clone($(priceHolder.data('template')))
+
+                priceContainer.find('[data-assign]').each(function(i, el) {
+                    Templating.assign($(el), { price: price })
+                })
+                priceContainer.appendTo(priceHolder)
+            }
+            else {
+                priceHolder.html('Бесплатно')
+            }
+
+            var totalHolder = deliveryTypeHolder.find('.order-delivery_total-holder')
+            totalHolder.html('')
+            var total = self.getDeliveryTotal(deliveryType)
+            var totalContainer = Templating.clone($(totalHolder.data('template')))
+
+            totalContainer.find('[data-assign]').each(function(i, el) {
+                Templating.assign($(el), { total: printPrice(total), name: 'Итого' + ('self' == deliveryType.type ? ' с доставкой' : '') })
+            })
+            totalContainer.appendTo(totalHolder)
+
+
+            $.each(deliveryType.items, function(i, itemToken) {
                 self.renderItem(itemHolder, data.items[itemToken])
             })
         },
@@ -196,25 +246,11 @@ $(document).ready(function() {
                 Templating.assign($(el), data)
             })
 
-            if (Object.keys(data.deliveries).length <= 1) {
+            if (true || Object.keys(data.deliveries).length <= 1) {
                 itemContainer.find('.order-item_delivery-button').remove()
             }
 
             itemHolder.append(itemContainer)
-        }
-    }
-
-    ShopMap = {
-        holder: $('#order-shop-popup'),
-        open: function () {
-            var self = this
-
-            self.holder.lightbox_me({
-                centered: true,
-                onLoad: function() {
-                    regionMap.showMarkers(self.holder.data('markers'))
-                }
-            })
         }
     }
 
