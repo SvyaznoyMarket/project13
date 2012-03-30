@@ -254,10 +254,24 @@ class order_Actions extends myActions
       {
         if (!in_array($itemView->id, $coreData['products'])) continue;
 
-        $deliveryTypeView->items[$itemView->token] = $itemView->id;
+        $deliveryTypeView->items[] = $itemView->token;
       }
 
       $deliveryMapView->deliveryTypes[$deliveryTypeView->token] = $deliveryTypeView;
+    }
+
+    foreach ($deliveryMapView->items as $itemView)
+    {
+      foreach ($itemView->deliveries as $deliveryView)
+      {
+        $deliveryView->name .= ''
+          .(
+            $deliveryMapView->deliveryTypes[$deliveryView->token]->shop
+            ? (' '.str_replace('г. Москва,', '', $deliveryMapView->deliveryTypes[$deliveryView->token]->shop->address))
+            : ''
+          )
+        ;
+      }
     }
 
     //var_dump($deliveryMapView); die();

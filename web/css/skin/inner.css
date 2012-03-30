@@ -4850,7 +4850,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 
 .bButtonPopup{
     z-index: 5;
-    width: 190px;
+    width: 320px;
     color: #ffffff;
     text-align: left;
     padding: 10px 20px;

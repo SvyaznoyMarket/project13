@@ -56,15 +56,42 @@ $(document).ready(function() {
     $('body').delegate('.order-item_delivery-button', 'click', function(e) {
         e.preventDefault()
 
+        var data = DeliveryMap.data()
         var el = $(this)
-
         var popup = Templating.clone($(el.data('template')))
+        var item = data.items[el.data('value')]
+
+        var fromDeliveryTypeToken = null
+        $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
+            $.each(deliveryType.items, function(i, itemToken) {
+                if (itemToken == item.token) {
+                    fromDeliveryTypeToken = deliveryTypeToken
+                }
+            })
+        })
+
+        var deliveryTemplate = popup.find('a')
+        $.each(item.deliveries, function(deliveryToken, delivery) {
+            if (delivery.token == fromDeliveryTypeToken) return
+
+            var deliveryEl = deliveryTemplate.clone()
+            var data = {
+                name: delivery.name,
+                route: JSON.stringify({ item: item.token, from: fromDeliveryTypeToken, to: delivery.token })
+            }
+            Templating.assign(deliveryEl, data)
+            deliveryEl.insertAfter(deliveryTemplate)
+        })
+        deliveryTemplate.remove()
 
         popup.appendTo(el.parent())
         popup.bind({
             mouseleave: function() { $(this).remove() },
             click: function(e) {
-                if ($(e.target).is('a')) {
+                el = $(e.target)
+                if (el.is('a')) {
+                    var route = el.data('value')
+                    DeliveryMap.moveItem(route.item, route.from, route.to)
                     $(this).remove()
                 }
             }
@@ -112,21 +139,37 @@ $(document).ready(function() {
             }
         },
 
-        moveItem: function(itemToken, fromDeliveryToken, toDeliveryToken) {
+        moveItem: function(itemToken, fromDeliveryTypeToken, toDeliveryTypeToken) {
+            var self = this
             var data = this.data()
 
             var item = data.items[itemToken]
-            delete data.deliveryTypes[fromDeliveryToken].items[itemToken]
-            data.deliveryTypes[toDeliveryToken].items[itemToken] = item.id
+            $.each(data.deliveryTypes[fromDeliveryTypeToken].items, function(i, token) {
+                if (token == itemToken) {
+                    data.deliveryTypes[fromDeliveryTypeToken].items.splice(i, 1)
+                }
+            })
+            data.deliveryTypes[toDeliveryTypeToken].items.push(itemToken)
+            self.data(data)
+            console.info(self.data())
 
             this.render()
         },
 
         render: function() {
             var self = this
+            var data = this.data()
 
             $('.order-delivery-holder').each(function(i, deliveryTypeHolder) {
-                self.renderDeliveryType($(deliveryTypeHolder))
+                deliveryTypeHolder = $(deliveryTypeHolder)
+                self.renderDeliveryType(deliveryTypeHolder)
+
+                if (0 == data.deliveryTypes[deliveryTypeHolder.data('value')].items.length) {
+                    deliveryTypeHolder.hide()
+                }
+                else {
+                    deliveryTypeHolder.show()
+                }
             })
         },
 
@@ -138,7 +181,7 @@ $(document).ready(function() {
 
             itemHolder.html('')
 
-            $.each(deliveryTypeData.items, function(itemToken, itemId) {
+            $.each(deliveryTypeData.items, function(i, itemToken) {
                 self.renderItem(itemHolder, data.items[itemToken])
             })
         },
@@ -152,6 +195,10 @@ $(document).ready(function() {
             itemContainer.find('[data-assign]').each(function(i, el) {
                 Templating.assign($(el), data)
             })
+
+            if (Object.keys(data.deliveries).length <= 1) {
+                itemContainer.find('.order-item_delivery-button').remove()
+            }
 
             itemHolder.append(itemContainer)
         }

@@ -72,14 +72,14 @@
 
     <p>
       <a data-assign='{"deleteUrl": ["attr", ["href", "_value"]]}' href="#" class="bImgButton mBacket"></a>
-      <a class="bImgButton mArrows order-item_delivery-button" href="" data-template="#order-item_delivery-template"></a>
+      <a class="bImgButton mArrows order-item_delivery-button" href="#" data-assign='{"token": ["attr", ["data-value", "_value"]]}' data-value='' data-template="#order-item_delivery-template"></a>
     </p>
     <img data-assign='{"image": ["attr", ["src", "_value"]], "name": ["attr", ["alt", "_value"]]}' src="" alt="" />
 
-        <span class="bBuyingLine__eInfo">
-          <data data-assign='{"name": ["text", "_value"]}'></data>
-          <br><span>(<data data-assign='{"quantity": ["text", "_value"]}'></data> шт.)</span>
-        </span>
+    <span class="bBuyingLine__eInfo">
+      <data data-assign='{"name": ["text", "_value"]}'></data>
+      <br><span>(<data data-assign='{"quantity": ["text", "_value"]}'></data> шт.)</span>
+    </span>
   </div>
 </div>
 <!-- } -->
@@ -88,7 +88,7 @@
 <div id="order-item_delivery-template" class="hidden">
   <span class="bButtonPopup">
     <span class="bButtonPopup__eTitle">Переместить товар:</span>
-    <a class="bButtonPopup__eLine" data-assign='{"name": ["text", "_value"]}'></a>
+    <a class="bButtonPopup__eLine" data-assign='{"name": ["text", "_value"], "route": ["attr", ["data-value", "_value"]]}' data-value=''></a>
   </span>
 </div>
 <!-- } -->
