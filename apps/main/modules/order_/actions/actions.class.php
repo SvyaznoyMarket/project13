@@ -45,6 +45,7 @@ class order_Actions extends myActions
     $deliveryMap = $this->getDeliveryMapView($defaultDeliveryType);
 
     $this->setVar('deliveryMap', $deliveryMap, true);
+    $this->setVar('mapCenter', json_encode(array('latitude' => $user->getRegion('latitude'), 'longitude' => $user->getRegion('longitude'))));
   }
 
   /**
