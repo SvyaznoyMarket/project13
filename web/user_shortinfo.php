@@ -192,6 +192,31 @@ function getProductInfoByIds($idList = array(), $region_id){
 	return $return;
 }
 
+function get_name_by_id($id) {
+    $conn = DB::get();
+    $query = 'SELECT first_name,last_name, middle_name  FROM guard_user WHERE id="'.$id.'"';
+    if ($result = mysql_query($query, $conn)){
+        $userData = mysql_fetch_array($result, MYSQL_ASSOC);
+        if (!$userData) {
+            return null;
+        }
+        $name = '';
+        if (isset($userData['first_name'])) {
+            $name .= ' '. $userData['first_name'];
+        }
+        if (isset($userData['middle_name'])) {
+          $name .= ' '. $userData['middle_name'];
+        }
+        if (isset($userData['last_name'])) {
+            $name .= ' '. $userData['last_name'];
+        }
+        return $name;
+    }
+    else{
+        throw new Exception('cant query db');
+    }
+}
+
 function getServiceProductInfo($serviceInfo, $region_id){
 	$conn = DB::get();
 
@@ -274,9 +299,14 @@ if(!isset($_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attri
 
 //получаю пользовательские данные из сессии
 $user_attributes = isset($_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes']) ? $_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'] : array();
-$user_name = isset($_SESSION['symfony/user/sfUser/attributes']['guard']['user_name']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['user_name'] : null;
 $user_id = isset($_SESSION['symfony/user/sfUser/attributes']['guard']['user_id']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['user_id'] : null;
 $user_id = intval($user_id);
+
+if ($user_id>0) {
+    $user_name = get_name_by_id($user_id);
+} else {
+    $user_name = null;
+}
 
 if(!isset($user_attributes['region'])){
 	$query = "SELECT id FROM `region` WHERE `is_default` = 1 LIMIT 1";
