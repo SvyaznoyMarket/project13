@@ -112,6 +112,10 @@ $(document).ready(function() {
         el.addClass('mDisabled')
     })
 
+    $('body').delegate('.order-delivery_date', 'click', function() {
+
+    })
+
     Templating = {
         assign: function (el, data) {
             $.each(el.data('assign'), function(varName, callback) {
