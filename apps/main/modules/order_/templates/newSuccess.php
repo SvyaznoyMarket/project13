@@ -141,6 +141,8 @@
   <span>Формирую заказ...</span><img src='/images/bPreloader.gif'>
 </div>
 
+<?php include_partial('order_/map', $sf_data) ?>
+
 <?php include_partial('order_/footer') ?>
 
 <?php if (false): ?>

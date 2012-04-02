@@ -40,6 +40,7 @@ class order_Components extends myComponents
         'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$deliveryType->getId(),
         'label'       => $deliveryType->getName(),
         'description' => $deliveryType->getDescription(),
+        'type'        => $deliveryType->getToken(),
       );
     }
 
@@ -81,7 +82,7 @@ class order_Components extends myComponents
 
     $dates = array();
     $now = time();
-    $time = strtotime('Last Monday', $now);
+    $time = 1 == date('w') ? $now : strtotime('Last Monday', $now);
     foreach (range(1, 7 * $maxWeek) as $i)
     {
       $dayDiff = intval(floor(($time - $now) / 86400));

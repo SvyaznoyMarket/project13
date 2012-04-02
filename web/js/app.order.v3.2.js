@@ -27,29 +27,28 @@ $(document).ready(function() {
         var url = $('#order-form').data('deliveryMapUrl')
 
         $('#order-form-part2').hide()
+        $('.order-shop-button').hide()
 
-        $('#order-loader').clone().appendTo('#order-loader-holder').show()
+        if ('self' == el.data('deliveryType')) {
+            $('.order-shop-button').show('medium')
+        }
+        else {
+            $('#order-loader').clone().appendTo('#order-loader-holder').show()
 
-        $.ajax({
-            type: 'POST',
-            async: false,
-            timeout: 60000,
-            url: url,
-            dataType: 'json',
-            data: {
-                'delivery_type_id': el.val()
-            },
-            success: function(result) {
-                var data = result.data
+            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val()}, function(data) {
+                this.render()
 
-                DeliveryMap.data(data)
-                DeliveryMap.render()
-
-                $('#order-form-part2').show('fast')
-            },
-            complete: function() {
                 $('#order-loader-holder').html('')
-            }
+                $('#order-form-part2').show('fast')
+            })
+        }
+    })
+
+    $('body').delegate('.order-shop-button', 'click', function(e) {
+        e.preventDefault()
+
+        DeliveryMap.openShopMap(function(data) {
+            console.info(data)
         })
     })
 
@@ -101,12 +100,16 @@ $(document).ready(function() {
 
     $('body').delegate('.order-delivery_date-control', 'click', function() {
         var el = $(this)
-        console.info(el)
 
         var weekNum = el.data('value')
 
         el.parent().find('.order-delivery_date').hide()
         el.parent().find('.order-delivery_date[data-week="'+weekNum+'"]').show()
+
+        el.parent().find('.order-delivery_date-control').each(function(i, el) {
+            $(el).removeClass('mDisabled')
+        })
+        el.addClass('mDisabled')
     })
 
     Templating = {
@@ -147,6 +150,31 @@ $(document).ready(function() {
             else {
                 return this.dataHolder.data('value')
             }
+        },
+
+        getRemoteData: function(url, params, callback) {
+            var self = this
+
+            $.ajax({
+                type: 'POST',
+                async: false,
+                timeout: 60000,
+                url: url,
+                dataType: 'json',
+                data: {
+                    'delivery_type_id': params.deliveryTypeId
+                },
+                success: function(result) {
+                    var data = result.data
+
+                    self.data(data)
+
+                    if ($.isFunction(callback)) {
+                        callback.call(self, [data])
+                    }
+                },
+                complete: function() {}
+            })
         },
 
         moveItem: function(itemToken, fromDeliveryTypeToken, toDeliveryTypeToken) {
@@ -284,6 +312,18 @@ $(document).ready(function() {
             }
 
             itemHolder.append(itemContainer)
+        },
+
+        openShopMap: function(callback) {
+            $('.mMapPopup').lightbox_me({
+                centered: true,
+                onLoad: function() {
+                    //regionMap.showMarkers( markersPull )
+                },
+                onClose: function() {
+                    callback.call(this, [{ shopId: null }])
+                }
+            })
         }
     }
 
