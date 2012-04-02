@@ -21,7 +21,7 @@ qrcode:
 # инфа по доставке
 product_delivery:
   url:   /product/delivery-info/:product
-  param: { module: productSoa, action: deliveryInfo }
+  param: { module: productSoa, action: deliveryInfo, product: 0 }
 # список товаров
 product_list:
   url:   /products/list/:products

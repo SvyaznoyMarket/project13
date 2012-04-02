@@ -47,10 +47,12 @@ class productSoaActions extends myActions
   public function executeDeliveryInfo(sfWebRequest $request)
   {
     $productId = $request->getParameter('product');
-    $productIds = array($productId);
-//    myDebug::dump($productIds);
-//      echo '!!!';
-//      die();
+    if (!$productId) {
+        $productIds = $request->getParameter('ids');
+    } else {
+        $productIds = array($productId);
+    }
+
     $data = array();
     $now = new DateTime();
     foreach ($productIds as $productId) {
