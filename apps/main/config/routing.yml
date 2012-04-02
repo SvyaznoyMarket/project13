@@ -748,7 +748,7 @@ cart_service_add:
 # cart servcie delete
 cart_service_delete:
   url:   /cart/delete_service/:product/_service/:service
-  param: { module: cart, action: serviceDelete, product: '-/-' }
+  param: { module: cart, action: serviceDelete, product: '0' }
   requirements:
    # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
