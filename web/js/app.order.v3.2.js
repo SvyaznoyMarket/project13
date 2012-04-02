@@ -101,6 +101,10 @@ $(document).ready(function() {
     $('body').delegate('.order-delivery_date-control', 'click', function() {
         var el = $(this)
 
+        if ($(el).hasClass('mDisabled')) {
+            return
+        }
+
         var weekNum = el.data('value')
 
         el.parent().find('.order-delivery_date').hide()
@@ -113,7 +117,78 @@ $(document).ready(function() {
     })
 
     $('body').delegate('.order-delivery_date', 'click', function() {
+        var el = $(this)
 
+        if (!el.hasClass('bBuyingDates__eDisable')) {
+            el.removeClass('bBuyingDates__eEnable')
+            el.parent().find('.order-delivery_date')
+                .removeClass('bBuyingDates__eCurrent')
+                .addClass('bBuyingDates__eEnable')
+
+            el.removeClass('bBuyingDates__eEnable').addClass('bBuyingDates__eCurrent')
+        }
+    })
+
+    $('body').delegate('ul[data-interval-holder] .order-delivery_date', 'mouseenter', function(e) {
+        var el = $(this)
+        var intervalHolder = $(el.closest('[data-interval-holder]').data('intervalHolder'))
+        var intervalContainer = Templating.clone($(intervalHolder.data('template')))
+
+        el.closest('.order-delivery-holder').find('.bBuyingDatePopup').remove()
+
+        var date = el.data('value')
+        var displayDate = el.data('displayValue')
+        var deliveryTypeToken = el.closest('.order-delivery-holder').data('value')
+        var deliveryType = DeliveryMap.data()['deliveryTypes'][deliveryTypeToken]
+        var intervals = DeliveryMap.getDeliveryInterval(deliveryType, date)
+
+        var intervalElementTemplate = intervalContainer.find('.order-interval')
+        $.each(intervals, function(i, interval) {
+            intervalElement = intervalElementTemplate.clone()
+
+            Templating.assign(intervalElement, { value: interval.start_at+','+interval.end_at, date: date, deliveryType: deliveryType.token })
+            $.each(intervalElement.find('[data-assign]'), function(i, el) {
+                Templating.assign($(el), { name: 'с '+interval.start_at+' по '+ interval.end_at })
+            })
+            intervalElement.appendTo(intervalContainer)
+        })
+        intervalElementTemplate.remove()
+
+        intervalContainer.css({'left': el.position().left, 'top': el.position().top })
+        intervalContainer
+            .mouseenter(function() {
+                clearTimeout($(this).data('timeoutId'))
+            })
+            .mouseleave(function() {
+                var el = $(this)
+                var timeoutId = setTimeout(function() {
+                    el.remove()
+                }, 50)
+
+            })
+
+        $.each(intervalContainer.find('[data-assign]'), function(i, el) {
+            Templating.assign($(el), {
+                date: displayDate
+            })
+        })
+
+        intervalContainer.appendTo(intervalHolder)
+    })
+    $('body').delegate('ul[data-interval-holder] .order-delivery_date', 'mouseleave', function(e) {
+        var el = $(this)
+        var intervalHolder = $(el.closest('[data-interval-holder]').data('intervalHolder'))
+    })
+
+    $('body').delegate('.order-interval', 'click', function(e) {
+        var el = $(this)
+
+        el.parent().find('.order-interval').removeClass('bBuyingDatePopup__eOK')
+        el.addClass('bBuyingDatePopup__eOK')
+        var date = el.data('date')
+        var deliveryTypeToken = el.data('deliveryType')
+
+        $('.order-delivery-holder[data-value="'+deliveryTypeToken+'"]').find('.order-delivery_date[data-value="'+date+'"]').click()
     })
 
     Templating = {
@@ -220,6 +295,23 @@ $(document).ready(function() {
             })
 
             return total
+        },
+
+        getDeliveryInterval: function(deliveryType, date) {
+            var data = this.data()
+
+            var intervals = {}
+            $.each(deliveryType.items, function(i, itemToken) {
+                $.each(data.items[itemToken].deliveries[deliveryType.token].dates, function(i, v) {
+                    if (v.value == date) {
+                        $.each(v.intervals, function(i, interval) {
+                            intervals[interval.start_at+'-'+interval.end_at] = interval
+                        })
+                    }
+                })
+            })
+
+            return intervals
         },
 
         render: function() {

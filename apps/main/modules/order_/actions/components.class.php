@@ -105,7 +105,8 @@ class order_Components extends myComponents
         'value'     => date('Y-m-d', $time),
         'day'       => date('j', $time),
         'dayOfWeek' => format_date($time, 'EEE', 'ru'),
-        'name'      => $prefix.date('Y-m-d', $time),
+        //'name'      => $prefix.date('Y-m-d', $time),
+        'displayValue' => format_date($time, 'd MMMM', 'ru'),
       );
 
       // icrement day
