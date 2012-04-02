@@ -19,7 +19,7 @@ A:hover {color:#404040; text-decoration:underline}
 A.underline {text-decoration:underline}
 A.underline:hover {color:#404040}
 A.nodecor {text-decoration:none}
-.red, .red:hover {color:#cb3735}
+.red, .red:hover {color:#cb3735 !important;}
 .gray {color:#a6a6a6}
 .orange, .orange:hover, .orange.underline:hover {color:#ffa901}
 .green {color:#6ea428}
@@ -70,8 +70,7 @@ TABLE {border-collapse:collapse}
 @font-face {
 	font-family: 'EnterTypeBold';
 	src: url('../fonts/EnterType_Bold.eot');
-	src: local('☺'), 
-		url('../fonts/EnterType_Bold.woff') format('woff'), 
+	src: local('☺'),  
 		url('../fonts/EnterType_Bold.ttf') format('truetype'), 
 		url('../fonts/EnterType_Bold.svg') format('svg');
 	font-weight: normal;
@@ -82,7 +81,6 @@ TABLE {border-collapse:collapse}
 	font-family: 'EnterTypeItalic';
 	src: url('../fonts/EnterType_Italic.eot');
 	src: local('☺'), 
-		url('../fonts/EnterType_Italic.woff') format('woff'), 
 		url('../fonts/EnterType_Italic.ttf') format('truetype'), 
 		url('../fonts/EnterType_Italic.svg') format('svg');
 	font-weight: normal;
