@@ -92,7 +92,6 @@ class productCatalog_Actions extends myActions
 
   public function executeCount(sfWebRequest $request)
   {
-    // @todo implement in core api
     $productCategory = $this->getProductCategory($request);
     if ($productCategory->hasChildren())
       $this->forward('productCatalog', 'count');
@@ -479,15 +478,15 @@ class ProductCoreFormFilterSimple
         case ProductCategoryFilterEntity::TYPE_SLIDER:
         case ProductCategoryFilterEntity::TYPE_NUMBER:
           if (empty($value['from']) && empty($value['to'])) continue;
-          $name = '';
-          if (!($this->isEqualNumeric($value['from'], $filter->getMin()))) $name .= sprintf('от %d', $value['from']);
-          if (!($this->isEqualNumeric($value['to'], $filter->getMax()))) $name .= sprintf('до %d', $value['to']);
-          if ($name == '') continue;
-          if ($filter->getFilterId() == 'price') $name .= ' р.';
+          $name = array();
+          if (!($this->isEqualNumeric($value['from'], $filter->getMin()))) $name[] = sprintf('от %d', $value['from']);
+          if (!($this->isEqualNumeric($value['to'], $filter->getMax()))) $name[] = sprintf('до %d', $value['to']);
+          if (!$name) continue;
+          if ($filter->getFilterId() == 'price') $name[] .= 'р.';
           $list[] = array(
             'type' => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
-            'name' => $name,
-            'url' => $this->getUrl($filter->getFilterId(), $value),
+            'name' => join(' ', $name),
+            'url' => $this->getUrl($filter->getFilterId()),
             'title' => $filter->getName(),
           );
           break;
@@ -496,7 +495,7 @@ class ProductCoreFormFilterSimple
           $list[] = array(
             'type' => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
             'name' => $filter->getName() . ': ' . reset($value) == 1 ? 'да' : 'нет',
-            'url' => $this->getUrl($filter->getFilterId(), $value),
+            'url' => $this->getUrl($filter->getFilterId()),
             'title' => $filter->getName(),
           );
           break;
@@ -507,7 +506,7 @@ class ProductCoreFormFilterSimple
               $list[] = array(
                 'type' => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
                 'name' => $option['name'],
-                'url' => $this->getUrl($filter->getFilterId(), $value),
+                'url' => $this->getUrl($filter->getFilterId(), $option['id']),
                 'title' => $filter->getName(),
               );
           break;
