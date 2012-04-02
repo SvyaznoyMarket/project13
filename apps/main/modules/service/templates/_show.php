@@ -42,7 +42,7 @@ $json = array(
       //если мы можем продавать этот товар на сайте
       if ($service['isInSale']) {
     ?>
-        <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['token'])); ?>">Купить услугу</a>
+        <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service['core_id'])); ?>">Купить услугу</a>
     <?php
       //если нам известно, что товар доступен только в магазине
       } elseif ($service['isOnlyInShop']) {

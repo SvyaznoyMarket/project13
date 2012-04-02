@@ -741,7 +741,7 @@ cart_clear:
 # cart service add
 cart_service_add:
   url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/
-  param: { module: cart, action: serviceAdd, quantity: 1, product: '-/-' }
+  param: { module: cart, action: serviceAdd, quantity: 1, product: '0' }
   requirements:
    # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #

@@ -43,7 +43,7 @@
           'jsimg'   => $service['photo'],
           'jstitle' => $service['name'],
           'jsprice' => $service['priceFormatted'],
-          'url'     => url_for('cart_service_add', array('service' => $service['token'])),
+          'url'     => url_for('cart_service_add', array('service' => $service['core_id'])),
         ) ?>
 
         <?php if ($service['isInSale'] ) : ?>
