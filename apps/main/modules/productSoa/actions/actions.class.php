@@ -46,7 +46,11 @@ class productSoaActions extends myActions
    */
   public function executeDeliveryInfo(sfWebRequest $request)
   {
-    $productIds = $request->getParameter('ids');
+    $productId = $request->getParameter('product');
+    $productIds = array($productId);
+//    myDebug::dump($productIds);
+//      echo '!!!';
+//      die();
     $data = array();
     $now = new DateTime();
     foreach ($productIds as $productId) {
@@ -54,16 +58,8 @@ class productSoaActions extends myActions
       if (!$productObj || !$productObj instanceof Doctrine_Record) {
         continue;
       }
-      /*if ($productObj->isKit()) {
-        $setItems = ProductKitRelationTable::getInstance()->findByKitId($productObj->id);
-        $setCoreIds = array();
-        foreach ($setItems as $setItem) {
-          $setCoreIds[] = $setItem->Part->core_id;
-        }
-        $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'), $setCoreIds);
-      } else {*/
-        $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
-      //}
+
+      $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
       $result = array('success' => true, 'deliveries' => array());
       if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
         $deliveries = array(array(

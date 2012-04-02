@@ -228,7 +228,8 @@ class ProductFactory
         $core->prepareDataForStatic($data);
         $core->prepareDataForDynamic($data);
         if ($getDelivery) {
-            $core->prepareDataForDelivery($data);
+            //доставки через новый API пока не загружаем!!! 1С к этому не готов
+            //$core->prepareDataForDelivery($data);
         }
         $core->multiThreadQuery();
         $coreResult = $core->getData();
