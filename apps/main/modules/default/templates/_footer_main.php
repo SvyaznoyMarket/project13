@@ -11,7 +11,7 @@
         <?php endif ?>
       </div>
 		</div>
-    <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'mobile_apps',)) ?>"><img src='/images/img_main_mobile_apps.jpg'></a></div>
+    <div class='bIndexLinks2__eBan'><a href="/pdf/research_enter.pdf" target="_blank"><img src='/images/img_main_research_enter.jpg'></a></div>
     <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><img src='/images/img_main_f1service.jpg'></a></div>
 	<div class='bIndexLinks2__eLinks'>
 		<a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">О компании</a>
