@@ -22,19 +22,13 @@
       </div>
 
       <?php if ($item['variation']): ?>
-      <div class="bListVariantsOutsideWrap">
-        <div class="bListVariantsInsideWrap">
+
           <a href="<?php echo $item['url'] ?>">
             <div class="bListVariants">
-              <span>
                 Доступно в разных вариантах<br>
                 (<?php echo $item['variation'] ?>)
-                <span></span>
-              </span>
             </div>
           </a>
-        </div>
-      </div>
       <?php endif ?>
 
     </div>

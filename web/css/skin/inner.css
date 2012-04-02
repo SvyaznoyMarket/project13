@@ -3204,10 +3204,14 @@ DT.bCtg__eOrange{
     text-decoration: none;
 		}
 
-.bListVariants {
-    background: url("img/list_arrow_bg.png") no-repeat scroll 96% 50% transparent;
+.bListVariants{
+    color: #434343;
     cursor: pointer;
-    padding: 10px 34px 10px 50px;
+    margin-right: 10px;
+    border: 1px solid #d9d9d9;
+    padding: 10px 24px 10px 38px;
+    font: 11px Tahoma, sans-serif;
+    background: url('img/bVariation.png') 7px 10px no-repeat;
 }
 .bListVariants span {
     color: #434343;
@@ -3226,10 +3230,10 @@ DT.bCtg__eOrange{
     border-radius: 8px 8px 8px 8px;
     cursor: pointer;
 }
-	.bListVariants.mShort{
-		margin-right: 0;
-		padding: 10px 5px 10px 35px;
-		}
+.bListVariants.mShort{
+    margin-right: 0;
+    padding: 10px 5px 10px 35px;
+}
 
 
 .bCityPopup{
