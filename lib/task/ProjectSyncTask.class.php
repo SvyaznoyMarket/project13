@@ -183,7 +183,7 @@ EOF;
     }
     $this->logSection('timer', 'updating data: '.(microtime(true) - $start_processing_time).' sec');
 
-    if ('run' == $this->task->status)
+    if ('run' == $this->task->status || 'async_run' == $this->task->status)
     {
       $this->task->status = 'success';
     }
