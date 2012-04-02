@@ -47,10 +47,12 @@ class ProductCategoryEntity
   private $productViewId;
 
   /* @var ProductCategoryEntity|null */
-  private $parent = null;
+  private $parent;
+  /** @var int */
+  private $parentId;
 
   /* @var ProductCategoryEntity[] */
-  private $child = array();
+  private $children = array();
   /** @var string */
   private $seoHeader;
 
@@ -69,6 +71,7 @@ class ProductCategoryEntity
     if (array_key_exists('level', $data)) $this->setLevel($data['level']);
     if (array_key_exists('seo_header', $data)) $this->setSeoHeader($data['seo_header']);
     if (array_key_exists('product_view_id', $data)) $this->setProductViewId($data['product_view_id']);
+    if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
   }
 
   public function setId($id)
@@ -191,19 +194,19 @@ class ProductCategoryEntity
     return $this->rgt;
   }
 
-  public function setChild(array $child)
+  public function setChildren(array $child)
   {
-    $this->child = $child;
+    $this->children = $child;
   }
 
   public function addChild($child)
   {
-    $this->child[] = $child;
+    $this->children[] = $child;
   }
 
-  public function getChild()
+  public function getChildren()
   {
-    return $this->child;
+    return $this->children;
   }
 
   /**
@@ -262,5 +265,43 @@ class ProductCategoryEntity
   public function getSeoHeader()
   {
     return $this->seoHeader;
+  }
+
+  /**
+   * @param int $parentId
+   */
+  public function setParentId($parentId)
+  {
+    $this->parentId = (int)$parentId;
+  }
+
+  /**
+   * @return int
+   */
+  public function getParentId()
+  {
+    return $this->parentId;
+  }
+
+  /**
+   * @param int $id Core id
+   * @return boolean
+   */
+  public function getHasChild($id)
+  {
+    if ($this->children) {
+      foreach ($this->children as $child) {
+        if ($child->getId() == $id)
+          return true;
+        if ($child->getHasChild($id))
+          return true;
+      }
+    }
+    return false;
+  }
+
+  public function getHasChildren()
+  {
+    return (boolean)$this->children;
   }
 }

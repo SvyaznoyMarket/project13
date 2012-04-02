@@ -187,6 +187,13 @@ class productCatalog_Actions extends myActions
     $productPagerTimer->addTime();
     $loadListTimer->addTime();
 
+    $category = $this->getProductCategory($request);
+    $categoryTree = RepositoryManager::getProductCategory()->getChildren(
+      $category->hasChildren() ? $category->core_id : $category->core_parent_id,
+      $category->level + 1,
+      true
+    );
+
     sfContext::getInstance()->getLogger()->info('$productFilterTimer at ' . $productFilterTimer->getElapsedTime());
     sfContext::getInstance()->getLogger()->info('$productSortingTimer at ' . $productSortingTimer->getElapsedTime());
     sfContext::getInstance()->getLogger()->info('$productPagerTimer at ' . $productPagerTimer->getElapsedTime());
@@ -197,6 +204,8 @@ class productCatalog_Actions extends myActions
     $this->setVar("productSorting", $productSorting);
     $this->setVar('noInfinity', true);
     $this->setVar('productPager', $productPager);
+    $this->setVar('quantity', $productPager->getNbResults());
+    $this->setVar('categoryTree', $categoryTree);
 
     $this->forward404If($page > 1 && $page > $productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
@@ -443,6 +452,8 @@ class ProductCoreFormFilterSimple
       $this->regionId,
       $this->productCategory->core_id
     );
+
+
   }
 
   private function getUrl($filterId, $value = null)
