@@ -19,7 +19,7 @@ A:hover {color:#404040; text-decoration:underline}
 A.underline {text-decoration:underline}
 A.underline:hover {color:#404040}
 A.nodecor {text-decoration:none}
-.red, .red:hover {color:#cb3735}
+.red, .red:hover {color:#cb3735 !important;}
 .gray {color:#a6a6a6}
 .orange, .orange:hover, .orange.underline:hover {color:#ffa901}
 .green {color:#6ea428}

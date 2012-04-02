@@ -11,6 +11,8 @@
 class ProductFactory
 {
 
+    const LABEL_SALE = 1;
+
     /**
      * Количество связанных продуктов и аксессуаров, которые загружаем вместе с продуктом сразу
      * @var int
@@ -209,6 +211,15 @@ class ProductFactory
             }
         }
 
+        $product->sale_label = false;
+        if ($product->label) {
+            foreach ($product->label as $label) {
+                if ($label['id'] == self::LABEL_SALE) {
+                    $product->sale_label = true;
+                }
+            }
+        }
+        //print_r($product);
         return $product;
     }
 
