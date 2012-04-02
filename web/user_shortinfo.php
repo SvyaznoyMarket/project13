@@ -303,11 +303,7 @@ $user_attributes = isset($_SESSION['symfony/user/sfUser/attributes']['symfony/us
 $user_id = isset($_SESSION['symfony/user/sfUser/attributes']['guard']['user_id']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['user_id'] : null;
 $user_id = intval($user_id);
 
-<<<<<<< HEAD
 if ($user_id>0) {
-=======
-if ($user_id) {
->>>>>>> 23dfe75b114135323c3912b23c841ec27e711781
     $user_name = get_name_by_id($user_id);
 } else {
     $user_name = null;
