@@ -266,6 +266,9 @@ class productSoaComponents extends myComponents
         foreach ($this->product->model['product'] as $productModel) {
             foreach ($this->product->model['property'] as $prodProp) {
                 if ($prodProp['id'] == $prop['id']) {
+                   if (!isset($prodPropValue[$productModel->id]) || !isset($prodPropValue[$productModel->id][$prodProp['id']])) {
+                       continue;
+                   }
                    $value = $prodPropValue[$productModel->id][$prodProp['id']];
                    if ($product->id == $productModel->id) {
                         $property['current']['id'] = $productModel->id;

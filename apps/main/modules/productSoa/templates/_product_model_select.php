@@ -1,3 +1,10 @@
+<?php
+//если для текущего продаукта это свойства не задано, считаем
+//фильтр моделей по нему некорректным
+if (!isset($property['current'])) {
+    return;
+}
+?>
 <div class="bDropWrap">
   <h5><?php echo $property['name'] ?>:</h5>
   <div class="bDropMenu">
