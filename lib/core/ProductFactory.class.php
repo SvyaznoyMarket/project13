@@ -19,6 +19,7 @@ class ProductFactory
      */
     public $numRelatedOnPage = 5;
 
+    public $numAccessoriesOnPage = 5;
 
     /**
      * Загружает список продуктов из ядра
