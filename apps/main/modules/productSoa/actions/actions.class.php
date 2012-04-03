@@ -267,7 +267,8 @@ class productSoaActions extends myActions
         $productId = $request->getParameter('product');
 
         $factory = new ProductFactory();
-        if (strlen($productId) < 8)  {
+        if (preg_match('/^[0-9]+$/i', trim($productId)))  {
+	          $productId = intval(trim($productId));
             $productList = $factory->createProductFromCore(array('id' => $productId));
         } else {
             $ar = explode('/', $productId);
@@ -312,7 +313,8 @@ class productSoaActions extends myActions
 //        echo $productId;
 //        die();
         $factory = new ProductFactory();
-        if (strlen($productId) < 8)  {
+		    if (preg_match('/^[0-9]+$/i', trim($productId)))  {
+			      $productId = intval(trim($productId));
             $productList = $factory->createProductFromCore(array('id' => $productId));
         } else {
             $ar = explode('/', $productId);
