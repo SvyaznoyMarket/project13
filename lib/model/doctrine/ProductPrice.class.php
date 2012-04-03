@@ -16,7 +16,7 @@ class ProductPrice extends BaseProductPrice
   {
     parent::importFromCore($data);
 
-    $product = ProductTable::getInstance()->getByCoreId($data['product_id']);
+    /*$product = ProductTable::getInstance()->getByCoreId($data['product_id']);
     if (!$product)
     {
       return false;
@@ -44,7 +44,7 @@ class ProductPrice extends BaseProductPrice
     {
       $product->view_list = $view_list;
       $product->save();
-    }
+    }*/
   }
 
   public function preSave($event)

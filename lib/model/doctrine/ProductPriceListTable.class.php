@@ -33,7 +33,8 @@ class ProductPriceListTable extends myDoctrineTable
     return $this->createQuery('list')
       ->leftJoin('list.Region as r on list.id=r.product_price_list_id')
       ->where('r.is_default = ?', 1)
-      ->addWhere('region.type = ?', 'city')
+      ->addWhere('r.type = ?', 'city')
+      ->limit(1)
       ->fetchOne()
     ;
   }
