@@ -257,6 +257,25 @@ class order_Actions extends myActions
         $deliveryTypeView->items[] = $itemView->token;
       }
 
+      $tmpDates = null;
+      $dates = array();
+      foreach ($deliveryTypeView->items as $itemToken)
+      {
+        $dates = array_map(function($i) { return $i->value; }, $deliveryMapView->items[$itemToken]->deliveries[$deliveryTypeView->token]->dates);
+        $dates = is_array($tmpDates) ? array_intersect($dates, $tmpDates) : $dates;
+        $tmpDates = $dates;
+      }
+      $deliveryTypeView->date = array_shift($dates);
+      $deliveryTypeView->displayDate = format_date($deliveryTypeView->date, 'd MMMM', 'ru');
+
+      $interval =
+        isset($deliveryMapView->items[$itemToken]->deliveries[$deliveryTypeView->token]->dates[0]->intervals[0])
+        ? $deliveryMapView->items[$itemToken]->deliveries[$deliveryTypeView->token]->dates[0]->intervals[0]
+        : null
+      ;
+      $deliveryTypeView->interval = ($interval) ? ($interval->start_at.','.$interval->end_at) : null;
+      $deliveryTypeView->displayInterval = ($interval) ? ('с '.$interval->start_at.' по '.$interval->end_at) : null;
+
       $deliveryMapView->deliveryTypes[$deliveryTypeView->token] = $deliveryTypeView;
     }
 

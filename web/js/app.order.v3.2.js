@@ -120,17 +120,30 @@ $(document).ready(function() {
         var el = $(this)
 
         if (!el.hasClass('bBuyingDates__eDisable')) {
+            var deliveryTypeHolder = el.closest('.order-delivery-holder')
+            var deliveryTypeToken = el.data('value')
+            var displayDate = el.data('displayValue')
+
             el.removeClass('bBuyingDates__eEnable')
             el.parent().find('.order-delivery_date')
                 .removeClass('bBuyingDates__eCurrent')
                 .addClass('bBuyingDates__eEnable')
 
             el.removeClass('bBuyingDates__eEnable').addClass('bBuyingDates__eCurrent')
+
+            deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
+                Templating.assign($(el), { displayDate: displayDate })
+            })
         }
     })
 
     $('body').delegate('ul[data-interval-holder] .order-delivery_date', 'mouseenter', function(e) {
         var el = $(this)
+
+        if (el.hasClass('bBuyingDates__eDisable')) {
+            return
+        }
+
         var intervalHolder = $(el.closest('[data-interval-holder]').data('intervalHolder'))
         var intervalContainer = Templating.clone($(intervalHolder.data('template')))
 
@@ -138,7 +151,8 @@ $(document).ready(function() {
 
         var date = el.data('value')
         var displayDate = el.data('displayValue')
-        var deliveryTypeToken = el.closest('.order-delivery-holder').data('value')
+        var deliveryTypeHolder = el.closest('.order-delivery-holder')
+        var deliveryTypeToken = deliveryTypeHolder.data('value')
         var deliveryType = DeliveryMap.data()['deliveryTypes'][deliveryTypeToken]
         var intervals = DeliveryMap.getDeliveryInterval(deliveryType, date)
 
@@ -146,10 +160,16 @@ $(document).ready(function() {
         $.each(intervals, function(i, interval) {
             intervalElement = intervalElementTemplate.clone()
 
-            Templating.assign(intervalElement, { value: interval.start_at+','+interval.end_at, date: date, deliveryType: deliveryType.token })
+            var value = interval.start_at+','+interval.end_at
+            var displayValue = 'с '+interval.start_at+' по '+ interval.end_at
+            Templating.assign(intervalElement, { value: value, date: date, deliveryType: deliveryType.token })
             $.each(intervalElement.find('[data-assign]'), function(i, el) {
-                Templating.assign($(el), { name: 'с '+interval.start_at+' по '+ interval.end_at })
+                Templating.assign($(el), { name: displayValue })
             })
+            if ((deliveryType.interval == value) && (deliveryType.date == date)) {
+                intervalElement.addClass('bBuyingDatePopup__eOK')
+            }
+
             intervalElement.appendTo(intervalContainer)
         })
         intervalElementTemplate.remove()
@@ -182,13 +202,26 @@ $(document).ready(function() {
 
     $('body').delegate('.order-interval', 'click', function(e) {
         var el = $(this)
+        var data = DeliveryMap.data()
 
         el.parent().find('.order-interval').removeClass('bBuyingDatePopup__eOK')
         el.addClass('bBuyingDatePopup__eOK')
         var date = el.data('date')
         var deliveryTypeToken = el.data('deliveryType')
+        var deliveryTypeHolder = el.closest('.order-delivery-holder')
+        var displayValue = el.data('value').split(',')
+        displayValue = 'с '+displayValue[0]+' по '+displayValue[1]
+
+        deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
+            Templating.assign($(el), { displayInterval: displayValue })
+        })
 
         $('.order-delivery-holder[data-value="'+deliveryTypeToken+'"]').find('.order-delivery_date[data-value="'+date+'"]').click()
+
+        data['deliveryTypes'][deliveryTypeToken].date = date
+        data['deliveryTypes'][deliveryTypeToken].interval = el.data('value')
+
+        DeliveryMap.data(data)
     })
 
     Templating = {
@@ -378,12 +411,15 @@ $(document).ready(function() {
                 var value = el.data('value')
                 var exists = -1 !== $.inArray(value, dates)
 
+                el.removeClass('bBuyingDates__eDisable').removeClass('bBuyingDates__eEnable').removeClass('bBuyingDates__eCurrent')
+                if (deliveryType.date == value)
+                {
+                    el.addClass('bBuyingDates__eCurrent')
+                }
                 if (exists) {
-                    el.removeClass('bBuyingDates__eDisable')
                     el.addClass('bBuyingDates__eEnable')
                 }
                 else {
-                    el.removeClass('bBuyingDates__eEnable')
                     el.addClass('bBuyingDates__eDisable')
                 }
             })
@@ -411,15 +447,7 @@ $(document).ready(function() {
         },
 
         openShopMap: function(callback) {
-            $('.mMapPopup').lightbox_me({
-                centered: true,
-                onLoad: function() {
-                    //regionMap.showMarkers( markersPull )
-                },
-                onClose: function() {
-                    callback.call(this, [{ shopId: null }])
-                }
-            })
+            regionMap.openMap()
         }
     }
 
@@ -427,5 +455,12 @@ $(document).ready(function() {
         DeliveryMap.render()
         $('#order-form-part2').show('fast')
     }
+
+
+    window.regionMap = new MapWithShops($('#map-center').data('content'),
+    $('#map-info_window-container'), 'mapPopup', function (shopId) {
+        console.log(shopId)
+        regionMap.closeMap()
+    })
 
 })

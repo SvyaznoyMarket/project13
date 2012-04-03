@@ -109,14 +109,3 @@ function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
   create()
 
 } // object MapWithShops
-
-$(document).ready(function() {
-
-  window.regionMap = new MapWithShops($('#map-center').data('content'),
-    $('#map-info_window-container'), 'mapPopup', function (shopId) {
-      console.log(shopId);
-      regionMap.closeMap();
-    });
-
-  regionMap.openMap();
-})

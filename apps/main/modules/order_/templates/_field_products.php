@@ -13,8 +13,8 @@
     <dt>
       <h2>
         <?php echo $deliveryType->shortName ?>
-        <span>30 марта</span>
-        <br><span>с 12:00 до 18:00</span>
+        <span data-assign='{"displayDate": ["text", "_value"]}'><?php echo $deliveryType->displayDate ?></span>
+        <br><span data-assign='{"displayInterval": ["text", "_value"]}'><?php echo $deliveryType->displayInterval ?></span>
       </h2>
 
       <i class="order-delivery_price" data-template="#order-delivery_price-template"></i>
