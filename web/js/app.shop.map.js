@@ -9,6 +9,7 @@ function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
   self.infoWindow = null
   self.positionC = null
   self.markers = []
+  self.inited = false
 
   function create() {
     self.positionC = new google.maps.LatLng(center.latitude, center.longitude)
@@ -65,6 +66,9 @@ function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
   }
 
   this.showMarkers = function () {
+    if (self.inited === true) {
+      return;
+    }
     var markers = getMarkers();
     $.each(self.markers, function (i, item) {
       if (typeof( item.ref ) !== 'undefined')
@@ -89,6 +93,7 @@ function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
       self.renderShopInfo(item);
     })
     $('#mapPopup_shopInfo li').click(function(){ selectCallback($(this).data('id')); });
+    self.inited = true;
   }
 
   this.closeMap = function() {
