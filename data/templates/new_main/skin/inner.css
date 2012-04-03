@@ -5026,6 +5026,17 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 .bSMI{ color: #000; padding-bottom: 100px; font: 18px 'EnterTypeRegular'; }
 .mOur{ color: #000; font: 14px 'EnterTypeRegular'; }
 .mOurGray{ color: #434343; font: 14px 'EnterTypeRegular'; }
+.mOurGray.mIco{ 
+	color: #434343;
+	min-height: 16px; 
+	padding-right: 30px; 
+	font: 20px 'EnterTypeRegular'; 
+	background: url('img/bPriceRate.png') 100% 50% no-repeat; 
+	
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+	}
 
 .bEvent{
 	margin-bottom: 70px;
