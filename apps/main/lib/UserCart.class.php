@@ -185,6 +185,10 @@ class UserCart extends BaseUserData
     }
 
     $services = $this->parameterHolder->get('services');
+    if (is_null($services))
+    {
+      $services = array();
+    }
     //удаляем из корзины сервисы, привязанные к этому товару
     foreach ($services as $serviceId => & $service)
     {

@@ -1,6 +1,47 @@
 $(document).ready(function() {
+    $('#order-loader-holder').html('')
 
-    $('body').delegate('.bBuyingLine label', 'click', function() {
+    $('#order-form-part1').show()
+
+    $('body').delegate('.bImgButton.mBacket', 'click', function(e) {
+        e.preventDefault()
+
+        var el = $(this)
+        var itemToken = el.data('token')
+
+        $.ajax({
+            async: false,
+            url: el.attr('href'),
+            success: function(result) {
+                el.closest('.order-item-container').hide('medium', function() {
+                    $(this).remove()
+                })
+            }
+        })
+
+        var data = DeliveryMap.data()
+        $.each(data['deliveryTypes'], function(i, deliveryType) {
+            $.each(deliveryType.items, function(ii, token) {
+                if (token == itemToken) {
+                    data.deliveryTypes[deliveryType.token].items.splice(ii, 1)
+                    delete data.items[token]
+
+                }
+            })
+        })
+
+
+        DeliveryMap.data(data)
+        DeliveryMap.render()
+
+    })
+
+    $('body').delegate('.bBuyingLine label', 'click', function(e) {
+        var target = $(e.target)
+        if (!target.is('input')) {
+            return
+        }
+
         if( $(this).find('input').attr('type') == 'radio' ) {
             var thatName = $('.mChecked input[name="'+$(this).find('input').attr('name')+'"]')
             if( thatName.length ) {
@@ -9,20 +50,12 @@ $(document).ready(function() {
                 })
             }
             $(this).addClass('mChecked')
-            return
         }
 
         if( $(this).find('input').attr('type') == 'checkbox' ) {
             $(this).toggleClass('mChecked')
         }
 
-    })
-
-    $('body').delegate('.bBuyingLine input:radio, .bBuyingLine input:checkbox', 'click', function(e) {
-        e.stopPropagation()
-    })
-
-    $('body').delegate('.bBuyingLine label', 'click', function() {
         var el = $(this).find('input[type="radio"]')
         var url = $('#order-form').data('deliveryMapUrl')
 
@@ -30,7 +63,9 @@ $(document).ready(function() {
         $('.order-shop-button').hide()
 
         if ('self' == el.data('deliveryType')) {
-            $('.order-shop-button').show('medium')
+            $('.order-shop-button')
+                .css('display', 'block')
+                .show()
         }
         else {
             $('#order-loader').clone().appendTo('#order-loader-holder').show()
@@ -140,7 +175,7 @@ $(document).ready(function() {
     $('body').delegate('ul[data-interval-holder] .order-delivery_date', 'mouseenter', function(e) {
         var el = $(this)
 
-        if (el.hasClass('bBuyingDates__eDisable')) {
+        if (el.hasClass('bBuyingDates__eDisable') || !(el.closest('ul[data-interval-holder]').data('intervalHolder'))) {
             return
         }
 
@@ -274,7 +309,8 @@ $(document).ready(function() {
                 url: url,
                 dataType: 'json',
                 data: {
-                    'delivery_type_id': params.deliveryTypeId
+                    'delivery_type_id': params.deliveryTypeId,
+                    'shop_id':          params.shopId
                 },
                 success: function(result) {
                     var data = result.data
@@ -457,10 +493,27 @@ $(document).ready(function() {
     }
 
 
-    window.regionMap = new MapWithShops($('#map-center').data('content'),
-    $('#map-info_window-container'), 'mapPopup', function (shopId) {
-        console.log(shopId)
-        regionMap.closeMap()
-    })
+    window.regionMap = new MapWithShops(
+        $('#map-center').data('content'),
+        $('#map-info_window-container'),
+        'mapPopup',
+        function (shopId) {
+            var el = $('.bBuyingLine__eRadio:checked')
+            var url = $('#order-form').data('deliveryMapUrl')
+
+            regionMap.closeMap()
+            $('#order-form-part2').hide()
+            $('#order-loader').clone().appendTo('#order-loader-holder').show()
+
+            setTimeout(function() {
+                DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val(), shopId: shopId }, function(data) {
+                    this.render()
+
+                    $('#order-loader-holder').html('')
+                    $('#order-form-part2').show('fast')
+                })
+            }, 100)
+        }
+    )
 
 })

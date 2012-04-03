@@ -115,6 +115,12 @@ class order_Actions extends myActions
       'product' => $productsInCart,
       'service' => $servicesInCart,
     ));
+    if (!$result)
+    {
+      $this->getLogger()->err('{Order} calculate: empty response from core');
+      $this->redirect('cart');
+    }
+
     foreach ($result as $k => $item)
     {
       if ('unavailable' == $k) continue;
@@ -129,6 +135,7 @@ class order_Actions extends myActions
     // если нет регионов или способов доставки
     if (!count($regions) || !count($deliveryTypes))
     {
+      $this->getLogger()->err('{Order} calculate: empty regions or delivery\'s types');
       $this->redirect('cart');
     }
 
@@ -162,7 +169,8 @@ class order_Actions extends myActions
       $user->getRegion('core_id'),
       $productsInCart,
       $servicesInCart,
-      $deliveryType ? $deliveryType->getToken() : null
+      $deliveryType ? $deliveryType->getToken() : null,
+      $shop ? $shop->getId() : null
     );
     //myDebug::dump($result, 1);
 
@@ -269,8 +277,8 @@ class order_Actions extends myActions
       $deliveryTypeView->displayDate = format_date($deliveryTypeView->date, 'd MMMM', 'ru');
 
       $interval =
-        isset($deliveryMapView->items[$itemToken]->deliveries[$deliveryTypeView->token]->dates[0]->intervals[0])
-        ? $deliveryMapView->items[$itemToken]->deliveries[$deliveryTypeView->token]->dates[0]->intervals[0]
+        (isset($deliveryTypeView->items[0]) && isset($deliveryMapView->items[$deliveryTypeView->items[0]]->deliveries[$deliveryTypeView->token]->dates[0]->intervals[0]))
+        ? $deliveryMapView->items[$deliveryTypeView->items[0]]->deliveries[$deliveryTypeView->token]->dates[0]->intervals[0]
         : null
       ;
       $deliveryTypeView->interval = ($interval) ? ($interval->start_at.','.$interval->end_at) : null;

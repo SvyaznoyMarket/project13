@@ -9,7 +9,9 @@
         </label>
         <i><?php echo $v['description'] ?></i>
         <?php if ('self' == $v['type']): ?>
-          <div class="pl20 pt5"><a href="#" class="order-shop-button hidden">Выберите магазин</a></div>
+          <div class="pl20 pt5">
+            <a class="button bigbuttonlink width214 mb15 order-shop-button hidden" href="#">Выберите магазин</a>
+          </div>
         <?php endif ?>
       </div>
     <?php endforeach ?>

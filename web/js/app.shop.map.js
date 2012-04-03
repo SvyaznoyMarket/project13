@@ -103,6 +103,9 @@ function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
 
   this.openMap = function() {
     $('.mMapPopup').lightbox_me({
+      showOverlay: false,
+      overlaySpeed: 0,
+      lightboxSpeed: 'fast',
       centered:true,
       onLoad:function() {
         self.showMarkers()

@@ -24,7 +24,7 @@
         <dd>
           <div>
             <p></p>
-            <ul class="bBuyingDates" data-interval-holder="<?php echo('self' != $deliveryType->token ? ('#order-interval_'.$deliveryType->token.'-holder') : '') ?>">
+            <ul class="bBuyingDates" data-interval-holder="<?php echo('self' != $deliveryType->type ? ('#order-interval_'.$deliveryType->token.'-holder') : '') ?>">
               <li class="bBuyingDates__eLeft mDisabled order-delivery_date-control" data-value="1"><b></b><span></span></li>
               <?php foreach ($dates as $i => $date): ?>
                 <li<?php echo $i >= 7 ? ' style="display:none"' : '' ?> class='bBuyingDates__eDisable order-delivery_date' data-value='<?php echo $date['value'] ?>' data-display-value='<?php echo $date['displayValue'] ?>' data-week="<?php echo floor($i / 7) + 1 ?>"><?php echo $date['day'] ?> <span><?php echo $date['dayOfWeek'] ?></span></li>
@@ -66,11 +66,11 @@
 
 <!-- шаблон товаров { -->
 <div id="order-item-template" class="hidden">
-  <div>
+  <div class="order-item-container">
     <p><data data-assign='{"totalFormatted": ["text", "_value"]}'></data> <span class="rubl">p</span></p>
 
     <p>
-      <a data-assign='{"deleteUrl": ["attr", ["href", "_value"]]}' href="#" class="bImgButton mBacket"></a>
+      <a data-assign='{"deleteUrl": ["attr", ["href", "_value"]], "token": ["attr", ["data-token", "_value"]]}' href="#" class="bImgButton mBacket" data-token=""></a>
       <a class="bImgButton mArrows order-item_delivery-button" href="#" data-assign='{"token": ["attr", ["data-value", "_value"]]}' data-value='' data-template="#order-item_delivery-template"></a>
     </p>
     <img data-assign='{"image": ["attr", ["src", "_value"]], "name": ["attr", ["alt", "_value"]]}' src="" alt="" />

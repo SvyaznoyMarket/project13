@@ -9,7 +9,7 @@
 
 <form id="order-form" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>">
 
-  <div id="order-form-part1" class='bBuyingInfo'>
+  <div id="order-form-part1" class='bBuyingInfo hidden'>
 
     <h2>Информация о заказе</h2>
 
@@ -19,7 +19,11 @@
 
   </div>
 
-  <div id="order-loader-holder"></div>
+  <div id="order-loader-holder">
+    <div class='bOrderPreloader'>
+      <span>Загрузка...</span><img src='/images/bPreloader.gif'>
+    </div>
+  </div>
 
   <div id="order-form-part2" class="hidden">
 
