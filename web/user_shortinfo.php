@@ -1,10 +1,10 @@
 <?php
-//if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest')
-//{
-//  header('HTTP/1.0 404 Not Found');
-//  require('../apps/main/modules/default/templates/error404Success.php');
-//  exit();
-//}
+if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest')
+{
+  header('HTTP/1.0 404 Not Found');
+  require('../apps/main/modules/default/templates/error404Success.php');
+  exit();
+}
 
 //устанавливаю заголовок ответа json
 header('Content-Type:	application/json');
