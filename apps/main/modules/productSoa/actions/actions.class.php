@@ -267,7 +267,12 @@ class productSoaActions extends myActions
         $productId = $request->getParameter('product');
 
         $factory = new ProductFactory();
-        $productList = $factory->createProductFromCore(array('id' => $productId));
+        if (strlen($productId) < 8)  {
+            $productList = $factory->createProductFromCore(array('id' => $productId));
+        } else {
+            $ar = explode('/', $productId);
+            $productList = $factory->createProductFromCore(array('slug' => $ar[1]));
+        }
         $productOb = $productList[0];
         //print_r($productOb->related);
 
@@ -277,15 +282,18 @@ class productSoaActions extends myActions
         //echo $beginNum .'==='.$endNum;
         //die();
         $relatedIdList = array();
+
         for ($i = $beginNum; $i <= $endNum; $i++) {
             if (!isset($productOb->related[$i])) {
                 break;
             }
             $relatedIdList[] = $productOb->related[$i];
         }
-        //print_r($productOb);
-        //print_r($relatedIdList);
-        $relatedProductList = $factory->createProductFromCore(array('id' => $relatedIdList));
+        if (!count($relatedIdList)) {
+            $relatedProductList = array();
+        } else {
+            $relatedProductList = $factory->createProductFromCore(array('id' => $relatedIdList));
+        }
         $productOb->related = $relatedProductList;
         $this->setVar('product', $productOb, true);
         return $this->renderPartial($this->getModuleName().'/product_related_list');
@@ -301,8 +309,15 @@ class productSoaActions extends myActions
         $this->page = $request->getParameter('page', 1);
         $productId = $request->getParameter('product');
 
+//        echo $productId;
+//        die();
         $factory = new ProductFactory();
-        $productList = $factory->createProductFromCore(array('id' => $productId));
+        if (strlen($productId) < 8)  {
+            $productList = $factory->createProductFromCore(array('id' => $productId));
+        } else {
+            $ar = explode('/', $productId);
+            $productList = $factory->createProductFromCore(array('slug' => $ar[1]));
+        }
         $productOb = $productList[0];
 
         //выбираем продукты для текущей страницы
@@ -311,6 +326,7 @@ class productSoaActions extends myActions
         //echo $beginNum .'==='.$endNum;
         //die();
         $accessoriesIdList = array();
+
         for ($i = $beginNum; $i <= $endNum; $i++) {
             if (!isset($productOb->accessories[$i])) {
                 break;
@@ -318,8 +334,11 @@ class productSoaActions extends myActions
             $accessoriesIdList[] = $productOb->accessories[$i];
         }
         //print_r($productOb);
-        //print_r($accessoriesIdList);
-        $accessoriesProductList = $factory->createProductFromCore(array('id' => $accessoriesIdList));
+        if (!count($accessoriesIdList)) {
+            $accessoriesProductList = array();
+        } else {
+            $accessoriesProductList = $factory->createProductFromCore(array('id' => $accessoriesIdList));
+        }
         $productOb->accessories = $accessoriesProductList;
         $this->setVar('product', $productOb, true);
         return $this->renderPartial($this->getModuleName().'/product_accessory_list');
