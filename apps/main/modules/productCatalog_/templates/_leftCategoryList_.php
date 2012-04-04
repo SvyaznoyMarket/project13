@@ -4,26 +4,29 @@
  * @var $categoryTree
  * @var $quantity
  */
-if (!$productCategory || !$categoryTree) {
-  return;
-}
 $renderList = function($categoryList) use ($productCategory, &$renderList)
 {
   /** @var $categoryList ProductCategoryEntity[] */
   /** @var $productCategory ProductCategory */
-
+  $render = '';
   foreach ($categoryList as $item) {
 
-    echo '<li class="bCtg__eL', $item->getLevel(), ' ';
-    if ($productCategory->isRoot() && $productCategory->core_id == $item->getId()) echo "hidden";
-    elseif ($item->getHasChild($productCategory->core_id)) echo "mBold";
-    elseif ($productCategory->core_id == $item->getId()) echo "mSelected";
-    elseif ($item->getParentId() == $productCategory->core_parent_id) echo '';
-    else echo 'hidden';
-    echo '"><a href="', $item->getLink(), '"><span>', $item->getName(), '</span></a>';
-    if ($item->getHasChildren()) $renderList($item->getChildren());
-    echo '</li>';
+    if ($productCategory->isRoot() && $productCategory->core_id == $item->getId()) $class = "hidden";
+    elseif ($item->getHasChild($productCategory->core_id)) $class = "mBold";
+    elseif ($productCategory->core_id == $item->getId()) $class = "mSelected";
+    elseif ($item->getParentId() == $productCategory->core_parent_id) $class = '';
+    elseif ($item->getParentId() == $productCategory->core_id) $class = '';
+    else $class = 'hidden';
+
+    $render .= sprintf('<li class="bCtg__eL%d %s"><a href="%s"><span>%s<span></a>%s</li>',
+      $item->getLevel(),
+      $class,
+      $item->getLink(),
+      $item->getName(),
+      $item->getHasChildren() ? $renderList($item->getChildren()) : ''
+    );
   }
+  return $render;
 }
 ?>
 <div class="catProductNum"><b>Всего <?php echo $quantity . ($productCategory->has_line ? ' серий' : ' товаров') ?></b>
@@ -32,7 +35,7 @@ $renderList = function($categoryList) use ($productCategory, &$renderList)
 <dl class="bCtg">
   <dd>
     <ul>
-      <?php $renderList($categoryTree); ?>
+      <?php echo $renderList($categoryTree); ?>
     </ul>
   </dd>
 </dl>
