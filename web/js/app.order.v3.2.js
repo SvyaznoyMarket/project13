@@ -519,6 +519,10 @@ $(document).ready(function() {
             $.each(deliveryType.items, function(i, itemToken) {
                 self.renderItem(itemHolder, data.items[itemToken])
             })
+
+            deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
+                Templating.assign($(el), { displayDate: deliveryType.displayDate })
+            })
         },
 
         renderItem: function(itemHolder, data) {
