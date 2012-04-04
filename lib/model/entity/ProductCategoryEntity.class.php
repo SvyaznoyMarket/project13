@@ -300,8 +300,47 @@ class ProductCategoryEntity
     return false;
   }
 
+  /**
+   * @param int $id
+   * @return null|ProductCategoryEntity
+   */
+  public function getNode($id)
+  {
+    if ($this->getId() == $id)
+      return $this;
+    if ($this->children)
+      foreach ($this->children as $child)
+        if ($node = $child->getNode($id))
+          return $node;
+    return null;
+  }
+
   public function getHasChildren()
   {
     return (boolean)$this->children;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getHasLine()
+  {
+    return $this->hasLine;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsActive()
+  {
+    return $this->isActive;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsFurniture()
+  {
+    return $this->isFurniture;
   }
 }
