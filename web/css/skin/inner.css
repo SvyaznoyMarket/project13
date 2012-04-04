@@ -4277,7 +4277,6 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 }
 .bBuyingLine dt i{
     /* color: #a8a8a8; */
-    color: red;
     font: 14px Tahoma, sans-serif;
 }
 .bBuyingLine dd{

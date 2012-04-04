@@ -6,6 +6,10 @@ $(document).ready(function() {
     $('body').delegate('.bImgButton.mBacket', 'click', function(e) {
         e.preventDefault()
 
+        if (!confirm('Удалить выбранный товар из корзины?')) {
+           return
+        }
+
         var el = $(this)
         var itemToken = el.data('token')
 
@@ -76,6 +80,8 @@ $(document).ready(function() {
                 $('#order-loader-holder').html('')
                 $('#order-form-part2').show('fast')
             })
+
+            DeliveryMap.renderUndeliveredMessage(el.val())
         }
     })
 
@@ -449,6 +455,10 @@ $(document).ready(function() {
             $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
                 deliveryHolder.append($('.order-delivery-holder[data-value="'+deliveryTypeToken+'"]'))
             })
+
+            var form = $('#order-form')
+            form.find('.mRed').removeClass('mRed')
+            form.find('.bFormError').remove()
         },
 
         renderDeliveryType: function(deliveryTypeHolder) {
@@ -530,6 +540,31 @@ $(document).ready(function() {
 
         openShopMap: function(callback) {
             regionMap.openMap()
+        },
+
+        getUndeliveredItem: function(deliveryTypeId) {
+            var data = this.data()
+
+            var allItems = Object.keys(data.items)
+            var items = []
+            $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
+                if (deliveryType.id == deliveryTypeId) {
+                    items = deliveryType.items
+                    return false
+                }
+            })
+
+            return array_values(array_diff(allItems, items))
+        },
+
+        renderUndeliveredMessage: function(deliveryTypeId) {
+            var undeliveredItems = this.getUndeliveredItem(deliveryTypeId)
+            if (undeliveredItems.length) {
+                $('#order-message').html('<span class="red">Некоторые товары не могут быть получены выбранным способом доставки.</span>')
+            }
+            else {
+                $('#order-message').html('<span>Отличный выбор!</span>')
+            }
         }
     }
 
@@ -556,9 +591,42 @@ $(document).ready(function() {
 
                 $('#order-loader-holder').html('')
                 $('#order-form-part2').show('fast')
+
+                DeliveryMap.renderUndeliveredMessage(el.val())
             }, true)
         }
     )
+
+    $('#order-submit').click(function(e) {
+        e.preventDefault()
+
+        var form = $(this).closest('form')
+        var validator = $(form.data('validator')).data('value')
+
+        form.find('.mRed').removeClass('mRed')
+        form.find('.bFormError').remove()
+
+        var data = form.serializeArray()
+
+        var hasError = false
+        $.each(validator, function(field, message) {
+            var fieldEl = form.find('[name="'+field+'"]:visible:first')
+
+            if (
+                !fieldEl.val()
+                || ((fieldEl.is(':checkbox') || fieldEl.is(':radio')) && !fieldEl.attr('checked'))
+            ) {
+                //console.info(fieldEl)
+                fieldEl.addClass('mRed')
+                fieldEl.after( '<span class="bFormError mb10 pt5">'+message+'</span>' )
+                hasError = true
+            }
+        })
+
+        if (hasError) {
+            $.scrollTo('.mRed:first', 300)
+        }
+    })
 
 })
 
@@ -595,6 +663,36 @@ function array_intersect(arr1) {
             continue arr1keys;        }
     }
 
+    return retArr;
+}
+
+function array_diff (arr1) {
+    // Returns the entries of arr1 that have values which are not present in any of the others arguments.
+    //
+    // version: 1109.2015
+    // discuss at: http://phpjs.org/functions/array_diff    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   improved by: Sanjoy Roy
+    // +    revised by: Brett Zamir (http://brett-zamir.me)
+    // *     example 1: array_diff(['Kevin', 'van', 'Zonneveld'], ['van', 'Zonneveld']);
+    // *     returns 1: {0:'Kevin'}
+    var retArr = {},
+    argl = arguments.length,
+        k1 = '',
+        i = 1,
+        k = '',
+        arr = {};
+
+    arr1keys: for (k1 in arr1) {
+        for (i = 1; i < argl; i++) {
+            arr = arguments[i];
+            for (k in arr) {
+                if (arr[k] === arr1[k1]) {
+                    // If it reaches here, it was found in at least one array, so try next value
+                    continue arr1keys;
+                }            }
+            retArr[k1] = arr1[k1];
+        }
+    }
     return retArr;
 }
 

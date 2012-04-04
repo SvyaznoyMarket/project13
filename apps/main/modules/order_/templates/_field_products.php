@@ -104,7 +104,7 @@ foreach ($dates as $i => $date) {
 
 <!-- шаблон стоимости доставки -->
 <div id="order-delivery_price-template" class="hidden">
-  <span>Стоимость доставки <data data-assign='{"price": ["text", "_value"]}'></data> <span class="rubl">p</span><i></i></span>
+  <span class="red">Стоимость доставки <data data-assign='{"price": ["text", "_value"]}'></data> <span class="rubl">p</span><i></i></span>
 </div>
 <!-- } -->
 

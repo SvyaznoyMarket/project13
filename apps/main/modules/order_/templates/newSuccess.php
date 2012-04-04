@@ -1,10 +1,9 @@
 <?php include_partial('order_/header', array('title' => 'Финальный шаг :)')) ?>
 
-  <input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>'>
-  <input disabled="disabled" id="validator" type="hidden"
-         data-value='{"order[recipient_first_name]":"Заполните поле", "order[recipient_phonenumbers]":"Заполните поле", "order[address]":"Заполните поле", "order[payment_method_id]":"Выберите способ оплаты", "order[agreed]":"Необходимо согласие"}'>
+<input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>' />
+<input disabled="disabled" id="order-validator" type="hidden" data-value='{"order[recipient_first_name]":"Заполните поле", "order[recipient_phonenumbers]":"Заполните поле", "order[address]":"Заполните поле", "order[payment_method_id]":"Выберите способ оплаты", "order[agreed]":"Необходимо согласие"}' />
 
-<form id="order-form" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>">
+<form id="order-form" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>">
 
   <div id="order-form-part1" class='bBuyingInfo hidden'>
 
@@ -24,8 +23,8 @@
 
   <div id="order-form-part2" class="hidden">
 
-    <div class='bBuyingInfo'>
-      <span style="white-space: nowrap;">Отличный выбор! Для вашего удобства мы сформировали несколько заказов в зависимости от типа доставки:</span>
+    <div id="order-message" class='bBuyingInfo'>
+      <span>Отличный выбор!</span>
     </div>
 
     <div id="order-delivery-holder">
@@ -127,7 +126,7 @@
 
       <dt>< <a href="<?php echo url_for('cart') ?>">Вернуться к покупкам</a></dt>
       <dd>
-        <div><a class='bBigOrangeButton' href>Завершить оформление</a></div>
+        <div><a id="order-submit" class='bBigOrangeButton' href="#">Завершить оформление</a></div>
       </dd>
     </dl>
 
