@@ -50,6 +50,10 @@
 
 <br class="clear" />
 
+<?php if (has_slot('additional_data')): ?>
+    <?php include_slot('additional_data') ?>
+<?php endif ?>
+
 <?php include_component('productCardSoa', 'navigation', array('product' => $product, 'seo' => true)) ?>
 
 <?php //include_component('productCatalog', 'navigation_seo', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>

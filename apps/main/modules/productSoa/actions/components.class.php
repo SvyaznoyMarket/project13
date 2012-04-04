@@ -275,6 +275,11 @@ class productSoaComponents extends myComponents
 //                       continue;
 //                   }
                    //foreach (['property'])
+                   if (trim($value) == 'true') {
+                       $value = 'да';
+                   } elseif (trim($value) == 'false') {
+                       $value = 'нет';
+                   }
                    $prodProp['value'] = $value;
                    $property['products'][$prodProp['value']] = array(
                        'id' => $productModel->id,
