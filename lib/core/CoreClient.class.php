@@ -228,7 +228,7 @@ class CoreClient
     }
 
     if (is_array($decoded) && array_key_exists('error', $decoded)) {
-      throw new CoreClientException((string)$decoded['error']['message'] . " " . json_encode($decoded), (int)$decoded['error']['code']);
+      throw new CoreClientException((string)$decoded['error']['message'] . " " . $this->encode($decoded), (int)$decoded['error']['code']);
     }
     if (array_key_exists('result', $decoded)) {
       $decoded = $decoded['result'];
