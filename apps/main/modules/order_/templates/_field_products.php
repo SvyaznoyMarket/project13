@@ -55,7 +55,13 @@ foreach ($dates as $i => $date) {
     <i>
 
       <dl class="bBuyingLine">
-        <dt><?php echo $deliveryType->shop ? $deliveryType->shop->name : '' ?></dt>
+        <dt>
+        <?php if ($deliveryType->shop): ?>
+          <span data-assign='{"shopName": ["text", "_value"]}'><?php echo $deliveryType->shop->name ?></span>
+          <p></p>
+          <a class="bBigOrangeButton order-shop-button" data-delivery="<?php echo $deliveryType->token ?>" style="display: none; font-size: 16px; padding: 6px 30px; border: 1px solid #E26500;" href="#">Другой магазин</a>
+        <?php endif ?>
+        </dt>
         <dd class="order-item-holder" data-template="#order-item-template"></dd>
       </dl>
 

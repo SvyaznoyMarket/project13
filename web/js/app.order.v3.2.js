@@ -1,287 +1,4 @@
 $(document).ready(function() {
-    $('#order-loader-holder').html('')
-
-    $('#order-form-part1').show()
-
-    $('body').delegate('.bImgButton.mBacket', 'click', function(e) {
-        e.preventDefault()
-
-        if (!confirm('Удалить выбранный товар из корзины?')) {
-           return
-        }
-
-        var el = $(this)
-        var itemToken = el.data('token')
-
-        $.ajax({
-            async: false,
-            url: el.attr('href'),
-            success: function(result) {
-                el.closest('.order-item-container').hide('medium', function() {
-                    $(this).remove()
-                })
-            }
-        })
-
-        var data = DeliveryMap.data()
-        $.each(data['deliveryTypes'], function(i, deliveryType) {
-            $.each(deliveryType.items, function(ii, token) {
-                if (token == itemToken) {
-                    data.deliveryTypes[deliveryType.token].items.splice(ii, 1)
-                    delete data.items[token]
-
-                }
-            })
-        })
-
-
-        DeliveryMap.data(data)
-        DeliveryMap.render()
-
-    })
-
-    $('body').delegate('.bBuyingLine label', 'click', function(e) {
-        var target = $(e.target)
-        if (!target.is('input')) {
-            return
-        }
-
-        if( $(this).find('input').attr('type') == 'radio' ) {
-            var thatName = $('.mChecked input[name="'+$(this).find('input').attr('name')+'"]')
-            if( thatName.length ) {
-                thatName.each( function(i, item) {
-                    $(item).parent('label').removeClass('mChecked')
-                })
-            }
-            $(this).addClass('mChecked')
-        }
-
-        if( $(this).find('input').attr('type') == 'checkbox' ) {
-            $(this).toggleClass('mChecked')
-        }
-
-        var el = $(this).find('input[type="radio"]')
-        var url = $('#order-form').data('deliveryMapUrl')
-
-        $('#order-form-part2').hide()
-        $('.order-shop-button').hide()
-
-        if ('self' == el.data('deliveryType')) {
-            $('.order-shop-button')
-                //.css('display', 'block')
-                .show()
-        }
-        else {
-            $('#order-loader').clone().appendTo('#order-loader-holder').show()
-
-            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val()}, function(data) {
-                this.render()
-
-                $('#order-loader-holder').html('')
-                $('#order-form-part2').show('fast')
-            })
-
-            DeliveryMap.renderUndeliveredMessage(el.val())
-        }
-    })
-
-    $('body').delegate('.order-shop-button', 'click', function(e) {
-        e.preventDefault()
-
-        DeliveryMap.openShopMap(function(data) {
-            console.info(data)
-        })
-    })
-
-    $('body').delegate('.order-item_delivery-button', 'click', function(e) {
-        e.preventDefault()
-
-        var data = DeliveryMap.data()
-        var el = $(this)
-        var popup = Templating.clone($(el.data('template')))
-        var item = data.items[el.data('value')]
-
-        var fromDeliveryTypeToken = null
-        $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
-            $.each(deliveryType.items, function(i, itemToken) {
-                if (itemToken == item.token) {
-                    fromDeliveryTypeToken = deliveryTypeToken
-                }
-            })
-        })
-
-        var deliveryTemplate = popup.find('a')
-        $.each(item.deliveries, function(deliveryToken, delivery) {
-            if (delivery.token == fromDeliveryTypeToken) return
-
-            var deliveryEl = deliveryTemplate.clone()
-            var data = {
-                name: delivery.name,
-                route: JSON.stringify({ item: item.token, from: fromDeliveryTypeToken, to: delivery.token })
-            }
-            Templating.assign(deliveryEl, data)
-            deliveryEl.insertAfter(deliveryTemplate)
-        })
-        deliveryTemplate.remove()
-
-        popup.appendTo(el.parent())
-        popup.bind({
-            mouseleave: function() { $(this).remove() },
-            click: function(e) {
-                el = $(e.target)
-                if (el.is('a')) {
-                    var route = el.data('value')
-                    DeliveryMap.moveItem(route.item, route.from, route.to)
-                    $(this).remove()
-                }
-            }
-        })
-        popup.show()
-    })
-
-    $('body').delegate('.order-delivery_date-control', 'click', function() {
-        var el = $(this)
-
-        if ($(el).hasClass('mDisabled')) {
-            return
-        }
-
-        var parent = el.parent()
-        var weekNum = parseInt(el.data('value'))
-
-        if (parent.find('.order-delivery_date[data-week="'+weekNum+'"]').length) {
-            parent.find('.order-delivery_date').hide()
-            parent.find('.order-delivery_date[data-week="'+weekNum+'"]').show()
-        }
-
-
-        var prevEl = parent.find('.order-delivery_date-control[data-direction="prev"]')
-        if (parent.find('.order-delivery_date[data-week="'+(weekNum - 1)+'"]').length) {
-            prevEl.data('value', weekNum - 1)
-            prevEl.removeClass('mDisabled')
-        }
-        else {
-            prevEl.addClass('mDisabled')
-        }
-
-        var nextEl = parent.find('.order-delivery_date-control[data-direction="next"]')
-        if (parent.find('.order-delivery_date[data-week="'+(weekNum + 1)+'"]').length) {
-            nextEl.data('value', weekNum + 1)
-            nextEl.removeClass('mDisabled')
-        }
-        else {
-            nextEl.addClass('mDisabled')
-        }
-    })
-
-    $('body').delegate('.order-delivery_date', 'click', function(e) {
-        var el = $(this)
-
-        if (el.hasClass('bBuyingDates__eDisable')) {
-            return
-        }
-
-        var deliveryTypeHolder = el.closest('.order-delivery-holder')
-        var deliveryTypeToken = el.data('value')
-        var displayDate = el.data('displayValue')
-
-        el.parent().find('.order-delivery_date')
-            .removeClass('bBuyingDates__eCurrent')
-            .addClass('bBuyingDates__eEnable')
-
-        el.removeClass('bBuyingDates__eEnable').addClass('bBuyingDates__eCurrent')
-
-        deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
-            Templating.assign($(el), { displayDate: displayDate })
-        })
-
-
-        var el = $(this)
-        if (!(el.closest('ul[data-interval-holder]').data('intervalHolder'))) {
-            return
-        }
-
-        var intervalHolder = $(el.closest('[data-interval-holder]').data('intervalHolder'))
-        var intervalContainer = Templating.clone($(intervalHolder.data('template')))
-
-        el.closest('.order-delivery-holder').find('.bBuyingDatePopup').remove()
-
-        var date = el.data('value')
-        var displayDate = el.data('displayValue')
-        var deliveryTypeHolder = el.closest('.order-delivery-holder')
-        var deliveryTypeToken = deliveryTypeHolder.data('value')
-        var deliveryType = DeliveryMap.data()['deliveryTypes'][deliveryTypeToken]
-        var intervals = DeliveryMap.getDeliveryInterval(deliveryType, date)
-
-        var intervalElementTemplate = intervalContainer.find('.order-interval')
-        $.each(intervals, function(i, interval) {
-            intervalElement = intervalElementTemplate.clone()
-
-            var value = interval.start_at+','+interval.end_at
-            var displayValue = 'с '+interval.start_at+' по '+ interval.end_at
-            Templating.assign(intervalElement, { value: value, date: date, deliveryType: deliveryType.token })
-            $.each(intervalElement.find('[data-assign]'), function(i, el) {
-                Templating.assign($(el), { name: displayValue })
-            })
-            if ((deliveryType.interval == value) && (deliveryType.date == date)) {
-                intervalElement.addClass('bBuyingDatePopup__eOK')
-            }
-
-            intervalElement.appendTo(intervalContainer)
-        })
-        intervalElementTemplate.remove()
-
-        intervalContainer.css({'left': el.position().left, 'top': el.position().top })
-        intervalContainer
-            .mouseenter(function() {
-            clearTimeout($(this).data('timeoutId'))
-        })
-            .mouseleave(function() {
-                var el = $(this)
-                var timeoutId = setTimeout(function() {
-                    el.remove()
-                }, 50)
-
-            })
-
-        $.each(intervalContainer.find('[data-assign]'), function(i, el) {
-            Templating.assign($(el), {
-                date: displayDate
-            })
-        })
-
-        intervalContainer.appendTo(intervalHolder)
-
-    })
-
-    $('body').delegate('.order-interval', 'click', function(e) {
-        var el = $(this)
-        var data = DeliveryMap.data()
-
-        el.parent().find('.order-interval').each(function(i, el) {
-            $(el).removeClass('bBuyingDatePopup__eOK')
-        })
-        el.addClass('bBuyingDatePopup__eOK')
-
-        var date = el.data('date')
-        var deliveryTypeToken = el.data('deliveryType')
-        var deliveryTypeHolder = el.closest('.order-delivery-holder')
-        var displayValue = el.data('value').split(',')
-        displayValue = 'с '+displayValue[0]+' по '+displayValue[1]
-
-        deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
-            Templating.assign($(el), { displayInterval: displayValue })
-        })
-
-        data['deliveryTypes'][deliveryTypeToken].date = date
-        data['deliveryTypes'][deliveryTypeToken].interval = el.data('value')
-
-        DeliveryMap.data(data)
-
-        setTimeout(function() {
-            el.closest('.order-delivery-holder').find('.bBuyingDatePopup').hide(50, function() { $(this).remove() })
-        }, 150)
-    })
 
     Templating = {
         assign: function (el, data) {
@@ -542,10 +259,6 @@ $(document).ready(function() {
             itemHolder.append(itemContainer)
         },
 
-        openShopMap: function(callback) {
-            regionMap.openMap()
-        },
-
         getUndeliveredItem: function(deliveryTypeId) {
             var data = this.data()
 
@@ -569,37 +282,339 @@ $(document).ready(function() {
             else {
                 $('#order-message').html('<span>Отличный выбор!</span>')
             }
+        },
+
+        openShopMap: function(deliveryToken) {
+            this.onShopSelected =
+                !deliveryToken
+                ? function(deliveryTypeId, shopId) {
+                    var url = $('#order-form').data('deliveryMapUrl')
+                    DeliveryMap.getRemoteData(url, { deliveryTypeId: deliveryTypeId, shopId: shopId }, function(data) {
+                        this.render()
+
+                        $('#order-loader-holder').html('')
+                        $('#order-form-part2').show('fast')
+
+                        DeliveryMap.renderUndeliveredMessage(deliveryTypeId)
+                    }, true)
+                }
+                : function(deliveryTypeId, shopId) {
+                }
+
+            regionMap.openMap()
+        },
+
+        onShopSelected: function() {
+
+        },
+
+        onMapClosed: function(shopId) {
+            var el = $('.bBuyingLine__eRadio:checked')
+
+            regionMap.closeMap()
+
+            $('#order-form-part2').hide()
+            $('#order-loader').clone().appendTo('#order-loader-holder').show()
+            DeliveryMap.onShopSelected.apply(this, [el.val(), shopId])
         }
     }
-
-    if ($('.bBuyingLine__eRadio"]:checked').length) {
-        DeliveryMap.render()
-        $('#order-form-part2').show('fast')
-    }
-
 
     window.regionMap = new MapWithShops(
         $('#map-center').data('content'),
         $('#map-info_window-container'),
         'mapPopup',
-        function (shopId) {
-            var el = $('.bBuyingLine__eRadio:checked')
-            var url = $('#order-form').data('deliveryMapUrl')
+        DeliveryMap.onMapClosed
+    )
 
-            regionMap.closeMap()
-            $('#order-form-part2').hide()
+
+
+    $('#order-loader-holder').html('')
+
+    $('#order-form-part1').show()
+
+    $('body').delegate('.bImgButton.mBacket', 'click', function(e) {
+        e.preventDefault()
+
+        if (!confirm('Удалить выбранный товар из корзины?')) {
+           return
+        }
+
+        var el = $(this)
+        var itemToken = el.data('token')
+
+        $.ajax({
+            async: false,
+            url: el.attr('href'),
+            success: function(result) {
+                el.closest('.order-item-container').hide('medium', function() {
+                    $(this).remove()
+                })
+            }
+        })
+
+        var data = DeliveryMap.data()
+        $.each(data['deliveryTypes'], function(i, deliveryType) {
+            $.each(deliveryType.items, function(ii, token) {
+                if (token == itemToken) {
+                    data.deliveryTypes[deliveryType.token].items.splice(ii, 1)
+                    delete data.items[token]
+
+                }
+            })
+        })
+
+
+        DeliveryMap.data(data)
+        DeliveryMap.render()
+
+    })
+
+    $('body').delegate('.bBuyingLine label', 'click', function(e) {
+        var target = $(e.target)
+        if (!target.is('input')) {
+            return
+        }
+
+        if( $(this).find('input').attr('type') == 'radio' ) {
+            var thatName = $('.mChecked input[name="'+$(this).find('input').attr('name')+'"]')
+            if( thatName.length ) {
+                thatName.each( function(i, item) {
+                    $(item).parent('label').removeClass('mChecked')
+                })
+            }
+            $(this).addClass('mChecked')
+        }
+
+        if( $(this).find('input').attr('type') == 'checkbox' ) {
+            $(this).toggleClass('mChecked')
+        }
+
+        var el = $(this).find('input[type="radio"]')
+        var url = $('#order-form').data('deliveryMapUrl')
+
+        $('#order-form-part2').hide()
+        $('.order-shop-button').hide()
+
+        if ('self' == el.data('deliveryType')) {
+            $('.order-shop-button')
+                //.css('display', 'block')
+                .show()
+        }
+        else {
             $('#order-loader').clone().appendTo('#order-loader-holder').show()
 
-            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val(), shopId: shopId }, function(data) {
+            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val()}, function(data) {
                 this.render()
 
                 $('#order-loader-holder').html('')
                 $('#order-form-part2').show('fast')
+            })
 
-                DeliveryMap.renderUndeliveredMessage(el.val())
-            }, true)
+            DeliveryMap.renderUndeliveredMessage(el.val())
         }
-    )
+    })
+
+    $('body').delegate('.order-shop-button', 'click', function(e) {
+        e.preventDefault()
+
+        DeliveryMap.openShopMap($(this).data('delivery'))
+    })
+
+    $('body').delegate('.order-item_delivery-button', 'click', function(e) {
+        e.preventDefault()
+
+        var data = DeliveryMap.data()
+        var el = $(this)
+        var popup = Templating.clone($(el.data('template')))
+        var item = data.items[el.data('value')]
+
+        var fromDeliveryTypeToken = null
+        $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
+            $.each(deliveryType.items, function(i, itemToken) {
+                if (itemToken == item.token) {
+                    fromDeliveryTypeToken = deliveryTypeToken
+                }
+            })
+        })
+
+        var deliveryTemplate = popup.find('a')
+        $.each(item.deliveries, function(deliveryToken, delivery) {
+            if (delivery.token == fromDeliveryTypeToken) return
+
+            var deliveryEl = deliveryTemplate.clone()
+            var data = {
+                name: delivery.name,
+                route: JSON.stringify({ item: item.token, from: fromDeliveryTypeToken, to: delivery.token })
+            }
+            Templating.assign(deliveryEl, data)
+            deliveryEl.insertAfter(deliveryTemplate)
+        })
+        deliveryTemplate.remove()
+
+        popup.appendTo(el.parent())
+        popup.bind({
+            mouseleave: function() { $(this).remove() },
+            click: function(e) {
+                el = $(e.target)
+                if (el.is('a')) {
+                    var route = el.data('value')
+                    DeliveryMap.moveItem(route.item, route.from, route.to)
+                    $(this).remove()
+                }
+            }
+        })
+        popup.show()
+    })
+
+    $('body').delegate('.order-delivery_date-control', 'click', function() {
+        var el = $(this)
+
+        if ($(el).hasClass('mDisabled')) {
+            return
+        }
+
+        var parent = el.parent()
+        var weekNum = parseInt(el.data('value'))
+
+        if (parent.find('.order-delivery_date[data-week="'+weekNum+'"]').length) {
+            parent.find('.order-delivery_date').hide()
+            parent.find('.order-delivery_date[data-week="'+weekNum+'"]').show()
+        }
+
+
+        var prevEl = parent.find('.order-delivery_date-control[data-direction="prev"]')
+        if (parent.find('.order-delivery_date[data-week="'+(weekNum - 1)+'"]').length) {
+            prevEl.data('value', weekNum - 1)
+            prevEl.removeClass('mDisabled')
+        }
+        else {
+            prevEl.addClass('mDisabled')
+        }
+
+        var nextEl = parent.find('.order-delivery_date-control[data-direction="next"]')
+        if (parent.find('.order-delivery_date[data-week="'+(weekNum + 1)+'"]').length) {
+            nextEl.data('value', weekNum + 1)
+            nextEl.removeClass('mDisabled')
+        }
+        else {
+            nextEl.addClass('mDisabled')
+        }
+    })
+
+    $('body').delegate('.order-delivery_date', 'click', function(e) {
+        var el = $(this)
+
+        if (el.hasClass('bBuyingDates__eDisable')) {
+            return
+        }
+
+        var deliveryTypeHolder = el.closest('.order-delivery-holder')
+        var deliveryTypeToken = el.data('value')
+        var displayDate = el.data('displayValue')
+
+        el.parent().find('.order-delivery_date')
+            .removeClass('bBuyingDates__eCurrent')
+            .addClass('bBuyingDates__eEnable')
+
+        el.removeClass('bBuyingDates__eEnable').addClass('bBuyingDates__eCurrent')
+
+        deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
+            Templating.assign($(el), { displayDate: displayDate })
+        })
+
+
+        var el = $(this)
+        if (!(el.closest('ul[data-interval-holder]').data('intervalHolder'))) {
+            return
+        }
+
+        var intervalHolder = $(el.closest('[data-interval-holder]').data('intervalHolder'))
+        var intervalContainer = Templating.clone($(intervalHolder.data('template')))
+
+        el.closest('.order-delivery-holder').find('.bBuyingDatePopup').remove()
+
+        var date = el.data('value')
+        var displayDate = el.data('displayValue')
+        var deliveryTypeHolder = el.closest('.order-delivery-holder')
+        var deliveryTypeToken = deliveryTypeHolder.data('value')
+        var deliveryType = DeliveryMap.data()['deliveryTypes'][deliveryTypeToken]
+        var intervals = DeliveryMap.getDeliveryInterval(deliveryType, date)
+
+        var intervalElementTemplate = intervalContainer.find('.order-interval')
+        $.each(intervals, function(i, interval) {
+            intervalElement = intervalElementTemplate.clone()
+
+            var value = interval.start_at+','+interval.end_at
+            var displayValue = 'с '+interval.start_at+' по '+ interval.end_at
+            Templating.assign(intervalElement, { value: value, date: date, deliveryType: deliveryType.token })
+            $.each(intervalElement.find('[data-assign]'), function(i, el) {
+                Templating.assign($(el), { name: displayValue })
+            })
+            if ((deliveryType.interval == value) && (deliveryType.date == date)) {
+                intervalElement.addClass('bBuyingDatePopup__eOK')
+            }
+
+            intervalElement.appendTo(intervalContainer)
+        })
+        intervalElementTemplate.remove()
+
+        intervalContainer.css({'left': el.position().left, 'top': el.position().top })
+        intervalContainer
+            .mouseenter(function() {
+            clearTimeout($(this).data('timeoutId'))
+        })
+            .mouseleave(function() {
+                var el = $(this)
+                var timeoutId = setTimeout(function() {
+                    el.remove()
+                }, 50)
+
+            })
+
+        $.each(intervalContainer.find('[data-assign]'), function(i, el) {
+            Templating.assign($(el), {
+                date: displayDate
+            })
+        })
+
+        intervalContainer.appendTo(intervalHolder)
+
+    })
+
+    $('body').delegate('.order-interval', 'click', function(e) {
+        var el = $(this)
+        var data = DeliveryMap.data()
+
+        el.parent().find('.order-interval').each(function(i, el) {
+            $(el).removeClass('bBuyingDatePopup__eOK')
+        })
+        el.addClass('bBuyingDatePopup__eOK')
+
+        var date = el.data('date')
+        var deliveryTypeToken = el.data('deliveryType')
+        var deliveryTypeHolder = el.closest('.order-delivery-holder')
+        var displayValue = el.data('value').split(',')
+        displayValue = 'с '+displayValue[0]+' по '+displayValue[1]
+
+        deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
+            Templating.assign($(el), { displayInterval: displayValue })
+        })
+
+        data['deliveryTypes'][deliveryTypeToken].date = date
+        data['deliveryTypes'][deliveryTypeToken].interval = el.data('value')
+
+        DeliveryMap.data(data)
+
+        setTimeout(function() {
+            el.closest('.order-delivery-holder').find('.bBuyingDatePopup').hide(50, function() { $(this).remove() })
+        }, 150)
+    })
+
+
+    if ($('.bBuyingLine__eRadio"]:checked').length) {
+        DeliveryMap.render()
+        $('#order-form-part2').show('fast')
+    }
 
     $('#order-submit').click(function(e) {
         e.preventDefault()
