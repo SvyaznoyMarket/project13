@@ -64,7 +64,7 @@ $(document).ready(function() {
 
         if ('self' == el.data('deliveryType')) {
             $('.order-shop-button')
-                .css('display', 'block')
+                //.css('display', 'block')
                 .show()
         }
         else {
@@ -143,8 +143,10 @@ $(document).ready(function() {
         var parent = el.parent()
         var weekNum = parseInt(el.data('value'))
 
-        parent.find('.order-delivery_date').hide()
-        parent.find('.order-delivery_date[data-week="'+weekNum+'"]').show()
+        if (parent.find('.order-delivery_date[data-week="'+weekNum+'"]').length) {
+            parent.find('.order-delivery_date').hide()
+            parent.find('.order-delivery_date[data-week="'+weekNum+'"]').show()
+        }
 
 
         var prevEl = parent.find('.order-delivery_date-control[data-direction="prev"]')

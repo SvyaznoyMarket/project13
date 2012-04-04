@@ -10,7 +10,7 @@
         <i><?php echo $v['description'] ?></i>
         <?php if ('self' == $v['type']): ?>
           <div class="pl20 pt5">
-            <a class="button bigbuttonlink width214 mb15 order-shop-button hidden" href="#">Выберите магазин</a>
+            <a class="bBigOrangeButton order-shop-button" style="display: none; font-size: 16px; padding: 6px 30px;" href="#">Выберите магазин</a>
           </div>
         <?php endif ?>
       </div>
