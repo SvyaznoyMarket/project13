@@ -28,7 +28,9 @@
       <span style="white-space: nowrap;">Отличный выбор! Для вашего удобства мы сформировали несколько заказов в зависимости от типа доставки:</span>
     </div>
 
-    <?php include_component('order_', 'field_products', $sf_data) ?>
+    <div id="order-delivery-holder">
+      <?php include_component('order_', 'field_products', $sf_data) ?>
+    </div>
 
     <dl class='bBuyingLine mSumm order-total-container'>
       <dt><a href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>

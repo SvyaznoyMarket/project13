@@ -441,6 +441,12 @@ $(document).ready(function() {
             $('.order-total-container').find('[data-assign]').each(function(i, el) {
                 Templating.assign($(el), { total: printPrice(total) })
             })
+
+            // сортировка
+            var deliveryHolder = $('#order-delivery-holder')
+            $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
+                deliveryHolder.append($('.order-delivery-holder[data-value="'+deliveryTypeToken+'"]'))
+            })
         },
 
         renderDeliveryType: function(deliveryTypeHolder) {
