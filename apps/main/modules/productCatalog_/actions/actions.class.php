@@ -188,7 +188,7 @@ class productCatalog_Actions extends myActions
     $loadListTimer->addTime();
 
     $category = $this->getProductCategory($request);
-    $categoryTree = RepositoryManager::getProductCategory()->getChildren(
+    $categoryTree = RepositoryManager::getProductCategory()->getTree(
       $category->hasChildren() ? $category->core_id : $category->core_parent_id,
       $category->level + 1,
       true

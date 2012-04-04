@@ -26,17 +26,31 @@ class ProductCategoryRepository
   }
 
   /**
+   * @param string[] $tokenList
+   * @return ProductCategoryEntity[]
+   */
+  public function getListByToken(array $tokenList)
+  {
+    $data = CoreClient::getInstance()->query('category.token', array(
+      'token_list' => $tokenList,
+      'region_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ));
+    return $this->fromArray($data);
+  }
+
+  /**
    * @param int $categoryId core category id
    * @param int $maxLevel
    * @param bool $loadParents
    * @return ProductCategoryEntity[]
    */
-  public function getChildren($categoryId, $maxLevel = null, $loadParents = false)
+  public function getTree($categoryId, $maxLevel = null, $loadParents = false)
   {
     $data = CoreClient::getInstance()->query('category.tree', array(
       'root_id' => $categoryId,
       'max_level' => $maxLevel,
       'is_load_parents' => $loadParents,
+      'region_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
     ));
     return $this->fromArray($data);
   }
