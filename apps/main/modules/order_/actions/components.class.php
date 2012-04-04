@@ -102,11 +102,12 @@ class order_Components extends myComponents
       }
 
       $dates[] = array(
-        'value'     => date('Y-m-d', $time),
-        'day'       => date('j', $time),
-        'dayOfWeek' => format_date($time, 'EEE', 'ru'),
+        'value'        => date('Y-m-d', $time),
+        'day'          => date('j', $time),
+        'dayOfWeek'    => format_date($time, 'EEE', 'ru'),
         //'name'      => $prefix.date('Y-m-d', $time),
         'displayValue' => format_date($time, 'd MMMM', 'ru'),
+        'weekNum'      => floor(($i - 1) / 7) + 1,
       );
 
       // icrement day

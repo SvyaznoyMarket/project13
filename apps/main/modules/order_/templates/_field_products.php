@@ -7,6 +7,17 @@
 <input id="order-delivery_map-data" type="hidden" data-value='<?php echo json_encode($deliveryMap) ?>' />
 
 <?php foreach ($deliveryMap->deliveryTypes as $deliveryType): ?>
+
+<?php
+$currentWeekNum = 1;
+foreach ($dates as $i => $date) {
+    if ($date['value'] == $deliveryType->date) {
+      $currentWeekNum = $date['weekNum'];
+      break;
+    }
+}
+?>
+
 <div data-value="<?php echo $deliveryType->token ?>" class="bBuyingLineWrap order-delivery-holder">
 
   <dl class="bBuyingLine">
@@ -25,11 +36,11 @@
           <div>
             <p></p>
             <ul class="bBuyingDates" data-interval-holder="<?php echo('self' != $deliveryType->type ? ('#order-interval_'.$deliveryType->token.'-holder') : '') ?>">
-              <li class="bBuyingDates__eLeft mDisabled order-delivery_date-control" data-value="1" data-direction="prev"><b></b><span></span></li>
+              <li class="bBuyingDates__eLeft order-delivery_date-control" data-value="<?php echo $currentWeekNum > 1 ? ($currentWeekNum - 1) : 1 ?>" data-direction="prev"><b></b><span></span></li>
               <?php foreach ($dates as $i => $date): ?>
-                <li<?php echo $i >= 7 ? ' style="display:none"' : '' ?> class='bBuyingDates__eDisable order-delivery_date' data-value='<?php echo $date['value'] ?>' data-display-value='<?php echo $date['displayValue'] ?>' data-week="<?php echo floor($i / 7) + 1 ?>"><?php echo $date['day'] ?> <span><?php echo $date['dayOfWeek'] ?></span></li>
+                <li<?php echo $date['weekNum'] != $currentWeekNum ? ' style="display:none"' : '' ?> class='bBuyingDates__eDisable order-delivery_date' data-value='<?php echo $date['value'] ?>' data-display-value='<?php echo $date['displayValue'] ?>' data-week="<?php echo $date['weekNum'] ?>"><?php echo $date['day'] ?> <span><?php echo $date['dayOfWeek'] ?></span></li>
               <?php endforeach ?>
-              <li class="bBuyingDates__eRight order-delivery_date-control" data-value="2" data-direction="next"><b></b><span></span></li>
+              <li class="bBuyingDates__eRight order-delivery_date-control" data-value="<?php echo $currentWeekNum + 1 ?>" data-direction="next"><b></b><span></span></li>
             </ul>
 
             <span id="<?php echo 'order-interval_'.$deliveryType->token.'-holder' ?>" class="order-interval-holder" data-template="#order-interval-template"></span>

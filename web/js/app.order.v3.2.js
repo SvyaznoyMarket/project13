@@ -271,8 +271,8 @@ $(document).ready(function() {
         DeliveryMap.data(data)
 
         setTimeout(function() {
-            el.closest('.order-delivery-holder').find('.bBuyingDatePopup').remove()
-        }, 100)
+            el.closest('.order-delivery-holder').find('.bBuyingDatePopup').hide(50, function() { $(this).remove() })
+        }, 150)
     })
 
     Templating = {
@@ -383,6 +383,23 @@ $(document).ready(function() {
             return parseInt(total)
         },
 
+        getDeliveryDate: function(deliveryType) {
+            var data = this.data()
+
+            var dates = null
+            $.each(deliveryType.items, function(i, itemToken) {
+                var tmp = []
+                $.each(data.items[itemToken].deliveries[deliveryType.token].dates, function(i, date) {
+                    tmp.push(date.value)
+                })
+
+                dates = (null === dates) ? tmp : array_intersect(dates, tmp)
+                //console.info(dates)
+            })
+
+            return null === dates ? [] : array_values(dates)
+        },
+
         getDeliveryInterval: function(deliveryType, date) {
             var data = this.data()
 
@@ -462,12 +479,7 @@ $(document).ready(function() {
             totalContainer.appendTo(totalHolder)
 
             // доступность дат
-            var dates = []
-            $.each(deliveryType.items, function(i, itemToken) {
-                $.each(data.items[itemToken].deliveries[deliveryType.token].dates, function(i, date) {
-                    dates.push(date.value)
-                })
-            })
+            var dates = self.getDeliveryDate(deliveryType)
             $.each(deliveryTypeHolder.find('.order-delivery_date'), function(i, el) {
                 var el = $(el)
                 var value = el.data('value')
@@ -541,3 +553,58 @@ $(document).ready(function() {
     )
 
 })
+
+
+
+function array_intersect(arr1) {
+    // Returns the entries of arr1 that have values which are present in all the other arguments
+    //
+    // version: 1109.2015
+    // discuss at: http://phpjs.org/functions/array_intersect    // +   original by: Brett Zamir (http://brett-zamir.me)
+    // %        note 1: These only output associative arrays (would need to be
+    // %        note 1: all numeric and counting from zero to be numeric)
+    // *     example 1: $array1 = {'a' : 'green', 0:'red', 1: 'blue'};
+    // *     example 1: $array2 = {'b' : 'green', 0:'yellow', 1:'red'};    // *     example 1: $array3 = ['green', 'red'];
+    // *     example 1: $result = array_intersect($array1, $array2, $array3);
+    // *     returns 1: {0: 'red', a: 'green'}
+    var retArr = {},
+        argl = arguments.length,        arglm1 = argl - 1,
+        k1 = '',
+        arr = {},
+        i = 0,
+        k = '';
+    arr1keys: for (k1 in arr1) {
+        arrs: for (i = 1; i < argl; i++) {
+            arr = arguments[i];
+            for (k in arr) {                if (arr[k] === arr1[k1]) {
+                if (i === arglm1) {
+                    retArr[k1] = arr1[k1];
+                }
+                // If the innermost loop always leads at least once to an equal value, continue the loop until done                    continue arrs;
+            }
+            }
+            // If it reaches here, it wasn't found in at least one array, so try next value
+            continue arr1keys;        }
+    }
+
+    return retArr;
+}
+
+function array_values (input) {
+    // Return just the values from the input array
+    //
+    // version: 1109.2015
+    // discuss at: http://phpjs.org/functions/array_values    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +      improved by: Brett Zamir (http://brett-zamir.me)
+    // *     example 1: array_values( {firstname: 'Kevin', surname: 'van Zonneveld'} );
+    // *     returns 1: {0: 'Kevin', 1: 'van Zonneveld'}
+    var tmp_arr = [],        key = '';
+
+    if (input && typeof input === 'object' && input.change_key_case) { // Duck-type check for our own array()-created PHPJS_Array
+        return input.values();
+    }
+    for (key in input) {
+        tmp_arr[tmp_arr.length] = input[key];
+    }
+    return tmp_arr;
+}
