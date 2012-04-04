@@ -243,6 +243,7 @@ class productSoaComponents extends myComponents
 
     //print_r($this->product->model['property']);
     $propIdList = array();
+    $propType = array();
     foreach ($this->product->model['property'] as $prop) {
         $propIdList[] = $prop['id'];
     }
@@ -250,10 +251,11 @@ class productSoaComponents extends myComponents
         foreach ($prod->property as $prop) {
             if (in_array($prop['id'], $propIdList)) {
                 $prodPropValue[$prod->id][$prop['id']] = $prop['value'];
+                $propType[$prop['id']] = $prop['type_id'];
             }
         }
     }
-//      print_r($prodPropValue);
+//      print_r($propType);
 //      die();
     foreach ($this->product->model['property'] as $prop) {
         $property = array(
@@ -288,95 +290,24 @@ class productSoaComponents extends myComponents
                 }
             }
         }
+        $needSort = false;
+        if ($propType[$prop['id']] == 3) {
+            $needSort = true;
+        } elseif ($propType[$prop['id']] == 5) {
+            $a = current($property['products']);
+            if (preg_match('/^\d+$/', $a['value'])) {
+                $needSort = true;
+            }
+        }
+        if ($needSort) {
+            ksort($property['products']);
+        }
         $properties[] = $property;
     }
-    //print_r($properties);
-    //die();
     $this->setVar('properties', $properties, true);
     return;
-
-
-
-    if (!$this->product->is_model && !$this->product->model_id)
-    {
-      return sfView::NONE;
-    }
-
-    $properties = $this->product->getModelProperty();
-    if (!count($properties))
-    {
-      return sfView::NONE;
-    }
-
-    //myDebug::dump($properties);
-    $model_id = !empty($this->product->model_id) ? $this->product->model_id : $this->product->id;
-    $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
-    //добавляем учет товара, доступного к продаже
-    $q->addWhere('IFNULL(productState.is_instock, product.is_instock) = ?', true);
-
-    $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
-
-    if (empty($product_ids))
-    {
-      return sfView::NONE;
-    }
-
-    $q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
-    $products_properties = $this->product->getPropertyRelation();
-
-    foreach ($properties as $property)
-    {
-      $query = clone $q;
-      $query->addWhere('productPropertyRelation.property_id = ?', array($property->id,));
-      $query->andWhereIn('productPropertyRelation.product_id', $product_ids);
-      $query->distinct();
-      $value_ids = ProductPropertyRelationTable::getInstance()->getIdsByQuery($query);
-      $values = ProductPropertyRelationTable::getInstance()->createListByIds($value_ids, array('index' => array('productPropertyRelation' => 'id',)));
-      foreach ($products_properties as $products_property)
-      {
-        if ($property->id == $products_property->property_id)
-        {
-          $values[$products_property->id]->mapValue('is_selected', true);
-        }
-      }
-      //myDebug::dump($values);
-      $value_to_map = array();
-      foreach ($values as $id => $value)
-      {
-        if (!$value->product_id) continue;
-        $product = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ));
-        if (!$product) continue;
-        $realValue = $value->getRealValue();
-        $value_to_map[$realValue]['id'] = $id;
-        $value_to_map[$realValue]['url'] = $this->generateUrl('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
-        $value_to_map[$realValue]['parameter'] = new ProductParameter($property['ProductTypeRelation'][0], array($value, ));
-        if (isset($values[$id]['is_selected']))
-        {
-          $value_to_map[$realValue]['is_selected'] = $values[$id]['is_selected'];
-        }
-        elseif (!isset($value_to_map[$realValue]['is_selected']))
-        {
-          $value_to_map[$realValue]['is_selected'] = 0;
-        }
-        if ($value_to_map[$realValue]['is_selected'])
-        {
-          $property->mapValue('current', $realValue);
-        }
-        if ($property->ProductModelRelation[0]->is_image)
-        {
-          $value_to_map[$realValue]['photo'] = $product->getMainPhotoUrl(1);
-        }
-
-      }
-      ksort($value_to_map);
-      $property->mapValue('values', $value_to_map);
-    }
-    if (!isset($property->current))
-    {
-      return sfView::NONE;
-    }
-    $this->setVar('properties', $properties, true);
   }
+
 
   /**
    * Executes list_view component
