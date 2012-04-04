@@ -25,11 +25,11 @@
           <div>
             <p></p>
             <ul class="bBuyingDates" data-interval-holder="<?php echo('self' != $deliveryType->type ? ('#order-interval_'.$deliveryType->token.'-holder') : '') ?>">
-              <li class="bBuyingDates__eLeft mDisabled order-delivery_date-control" data-value="1"><b></b><span></span></li>
+              <li class="bBuyingDates__eLeft mDisabled order-delivery_date-control" data-value="1" data-direction="prev"><b></b><span></span></li>
               <?php foreach ($dates as $i => $date): ?>
                 <li<?php echo $i >= 7 ? ' style="display:none"' : '' ?> class='bBuyingDates__eDisable order-delivery_date' data-value='<?php echo $date['value'] ?>' data-display-value='<?php echo $date['displayValue'] ?>' data-week="<?php echo floor($i / 7) + 1 ?>"><?php echo $date['day'] ?> <span><?php echo $date['dayOfWeek'] ?></span></li>
               <?php endforeach ?>
-              <li class="bBuyingDates__eRight order-delivery_date-control" data-value="2"><b></b><span></span></li>
+              <li class="bBuyingDates__eRight order-delivery_date-control" data-value="2" data-direction="next"><b></b><span></span></li>
             </ul>
 
             <span id="<?php echo 'order-interval_'.$deliveryType->token.'-holder' ?>" class="order-interval-holder" data-template="#order-interval-template"></span>
@@ -58,7 +58,6 @@
 <div id="order-interval-template" class="hidden">
   <span class="bBuyingDatePopup">
     <h3 class="bBuyingDatePopup__eTitle" data-assign='{"date": ["text", "_value"]}'></h3>
-    <!--<span class="bBuyingDatePopup__eLine"><i class="bBuyingDatePopup__eOK"></i> c 9:00 до 14:00</span>-->
     <span class="bBuyingDatePopup__eLine order-interval" data-assign='{"value": ["attr", ["data-value", "_value"]], "date": ["attr", ["data-date", "_value"]], "deliveryType": ["attr", ["data-delivery-type", "_value"]]}' data-value="" data-date="" data-delivery-type=""><i></i><data data-assign='{"name": ["text", "_value"]}'></data></span>
   </span>
 </div>
@@ -93,13 +92,13 @@
 <!-- } -->
 
 <!-- шаблон стоимости доставки -->
-<div id="order-delivery_price-template">
+<div id="order-delivery_price-template" class="hidden">
   <span>Стоимость доставки <data data-assign='{"price": ["text", "_value"]}'></data> <span class="rubl">p</span><i></i></span>
 </div>
 <!-- } -->
 
 <!-- шаблон стоимости подзаказа -->
-<div id="order-delivery_total-template">
+<div id="order-delivery_total-template" class="hidden">
   <div class="bBuyingLineWrap__eSum"><data data-assign='{"name": ["text", "_value"]}'></data>: <b><data data-assign='{"total": ["text", "_value"]}'></data> <span class="rubl">p</span></b></div>
 </div>
 <!-- } -->

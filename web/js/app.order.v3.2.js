@@ -140,42 +140,56 @@ $(document).ready(function() {
             return
         }
 
-        var weekNum = el.data('value')
+        var parent = el.parent()
+        var weekNum = parseInt(el.data('value'))
 
-        el.parent().find('.order-delivery_date').hide()
-        el.parent().find('.order-delivery_date[data-week="'+weekNum+'"]').show()
+        parent.find('.order-delivery_date').hide()
+        parent.find('.order-delivery_date[data-week="'+weekNum+'"]').show()
 
-        el.parent().find('.order-delivery_date-control').each(function(i, el) {
-            $(el).removeClass('mDisabled')
-        })
-        el.addClass('mDisabled')
-    })
 
-    $('body').delegate('.order-delivery_date', 'click', function() {
-        var el = $(this)
+        var prevEl = parent.find('.order-delivery_date-control[data-direction="prev"]')
+        if (parent.find('.order-delivery_date[data-week="'+(weekNum - 1)+'"]').length) {
+            prevEl.data('value', weekNum - 1)
+            prevEl.removeClass('mDisabled')
+        }
+        else {
+            prevEl.addClass('mDisabled')
+        }
 
-        if (!el.hasClass('bBuyingDates__eDisable')) {
-            var deliveryTypeHolder = el.closest('.order-delivery-holder')
-            var deliveryTypeToken = el.data('value')
-            var displayDate = el.data('displayValue')
-
-            el.removeClass('bBuyingDates__eEnable')
-            el.parent().find('.order-delivery_date')
-                .removeClass('bBuyingDates__eCurrent')
-                .addClass('bBuyingDates__eEnable')
-
-            el.removeClass('bBuyingDates__eEnable').addClass('bBuyingDates__eCurrent')
-
-            deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
-                Templating.assign($(el), { displayDate: displayDate })
-            })
+        var nextEl = parent.find('.order-delivery_date-control[data-direction="next"]')
+        if (parent.find('.order-delivery_date[data-week="'+(weekNum + 1)+'"]').length) {
+            nextEl.data('value', weekNum + 1)
+            nextEl.removeClass('mDisabled')
+        }
+        else {
+            nextEl.addClass('mDisabled')
         }
     })
 
-    $('body').delegate('ul[data-interval-holder] .order-delivery_date', 'mouseenter', function(e) {
+    $('body').delegate('.order-delivery_date', 'click', function(e) {
         var el = $(this)
 
-        if (el.hasClass('bBuyingDates__eDisable') || !(el.closest('ul[data-interval-holder]').data('intervalHolder'))) {
+        if (el.hasClass('bBuyingDates__eDisable')) {
+            return
+        }
+
+        var deliveryTypeHolder = el.closest('.order-delivery-holder')
+        var deliveryTypeToken = el.data('value')
+        var displayDate = el.data('displayValue')
+
+        el.parent().find('.order-delivery_date')
+            .removeClass('bBuyingDates__eCurrent')
+            .addClass('bBuyingDates__eEnable')
+
+        el.removeClass('bBuyingDates__eEnable').addClass('bBuyingDates__eCurrent')
+
+        deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
+            Templating.assign($(el), { displayDate: displayDate })
+        })
+
+
+        var el = $(this)
+        if (!(el.closest('ul[data-interval-holder]').data('intervalHolder'))) {
             return
         }
 
@@ -212,8 +226,8 @@ $(document).ready(function() {
         intervalContainer.css({'left': el.position().left, 'top': el.position().top })
         intervalContainer
             .mouseenter(function() {
-                clearTimeout($(this).data('timeoutId'))
-            })
+            clearTimeout($(this).data('timeoutId'))
+        })
             .mouseleave(function() {
                 var el = $(this)
                 var timeoutId = setTimeout(function() {
@@ -229,18 +243,18 @@ $(document).ready(function() {
         })
 
         intervalContainer.appendTo(intervalHolder)
-    })
-    $('body').delegate('ul[data-interval-holder] .order-delivery_date', 'mouseleave', function(e) {
-        var el = $(this)
-        var intervalHolder = $(el.closest('[data-interval-holder]').data('intervalHolder'))
+
     })
 
     $('body').delegate('.order-interval', 'click', function(e) {
         var el = $(this)
         var data = DeliveryMap.data()
 
-        el.parent().find('.order-interval').removeClass('bBuyingDatePopup__eOK')
+        el.parent().find('.order-interval').each(function(i, el) {
+            $(el).removeClass('bBuyingDatePopup__eOK')
+        })
         el.addClass('bBuyingDatePopup__eOK')
+
         var date = el.data('date')
         var deliveryTypeToken = el.data('deliveryType')
         var deliveryTypeHolder = el.closest('.order-delivery-holder')
@@ -251,12 +265,14 @@ $(document).ready(function() {
             Templating.assign($(el), { displayInterval: displayValue })
         })
 
-        $('.order-delivery-holder[data-value="'+deliveryTypeToken+'"]').find('.order-delivery_date[data-value="'+date+'"]').click()
-
         data['deliveryTypes'][deliveryTypeToken].date = date
         data['deliveryTypes'][deliveryTypeToken].interval = el.data('value')
 
         DeliveryMap.data(data)
+
+        setTimeout(function() {
+            el.closest('.order-delivery-holder').find('.bBuyingDatePopup').remove()
+        }, 100)
     })
 
     Templating = {
@@ -299,12 +315,13 @@ $(document).ready(function() {
             }
         },
 
-        getRemoteData: function(url, params, callback) {
+        getRemoteData: function(url, params, callback, async) {
             var self = this
+            var async = async || false
 
             $.ajax({
                 type: 'POST',
-                async: false,
+                async: async,
                 timeout: 60000,
                 url: url,
                 dataType: 'json',
@@ -352,7 +369,7 @@ $(document).ready(function() {
                 }
             })
 
-            return price
+            return parseInt(price)
         },
 
         getDeliveryTotal: function(deliveryType) {
@@ -363,7 +380,7 @@ $(document).ready(function() {
                 total += data.items[itemToken].total
             })
 
-            return total
+            return parseInt(total)
         },
 
         getDeliveryInterval: function(deliveryType, date) {
@@ -398,6 +415,15 @@ $(document).ready(function() {
                     deliveryTypeHolder.show()
                 }
             })
+
+            var total = 0
+            $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
+                total += (self.getDeliveryTotal(deliveryType) + self.getDeliveryPrice(deliveryType))
+            })
+
+            $('.order-total-container').find('[data-assign]').each(function(i, el) {
+                Templating.assign($(el), { total: printPrice(total) })
+            })
         },
 
         renderDeliveryType: function(deliveryTypeHolder) {
@@ -427,11 +453,11 @@ $(document).ready(function() {
             // общая стоимость
             var totalHolder = deliveryTypeHolder.find('.order-delivery_total-holder')
             totalHolder.html('')
-            var total = self.getDeliveryTotal(deliveryType)
+            var total = self.getDeliveryTotal(deliveryType) + self.getDeliveryPrice(deliveryType)
             var totalContainer = Templating.clone($(totalHolder.data('template')))
 
             totalContainer.find('[data-assign]').each(function(i, el) {
-                Templating.assign($(el), { total: printPrice(total), name: 'Итого' + ('self' == deliveryType.type ? ' с доставкой' : '') })
+                Templating.assign($(el), { total: printPrice(total), name: 'Итого' + ('self' != deliveryType.type ? ' с доставкой' : '') })
             })
             totalContainer.appendTo(totalHolder)
 
@@ -487,7 +513,7 @@ $(document).ready(function() {
         }
     }
 
-    if ($('[name="order[delivery_type_id]"]:checked').length) {
+    if ($('.bBuyingLine__eRadio"]:checked').length) {
         DeliveryMap.render()
         $('#order-form-part2').show('fast')
     }
@@ -505,14 +531,12 @@ $(document).ready(function() {
             $('#order-form-part2').hide()
             $('#order-loader').clone().appendTo('#order-loader-holder').show()
 
-            setTimeout(function() {
-                DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val(), shopId: shopId }, function(data) {
-                    this.render()
+            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val(), shopId: shopId }, function(data) {
+                this.render()
 
-                    $('#order-loader-holder').html('')
-                    $('#order-form-part2').show('fast')
-                })
-            }, 100)
+                $('#order-loader-holder').html('')
+                $('#order-form-part2').show('fast')
+            }, true)
         }
     )
 

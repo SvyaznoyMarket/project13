@@ -78,7 +78,7 @@ class order_Components extends myComponents
   {
     date_default_timezone_set('Europe/Moscow');
 
-    $maxWeek = 2;
+    $maxWeek = 4;
 
     $dates = array();
     $now = time();

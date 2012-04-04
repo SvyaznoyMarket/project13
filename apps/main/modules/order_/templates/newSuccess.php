@@ -1,9 +1,6 @@
 <?php include_partial('order_/header', array('title' => 'Финальный шаг :)')) ?>
 
   <input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>'>
-  <input disabled="disabled" id="delete-urls" type="hidden"
-         data-services='<?php echo json_encode($serviceDeleteUrls) ?>'
-         data-products='<?php echo json_encode($productDeleteUrls) ?>'>
   <input disabled="disabled" id="validator" type="hidden"
          data-value='{"order[recipient_first_name]":"Заполните поле", "order[recipient_phonenumbers]":"Заполните поле", "order[address]":"Заполните поле", "order[payment_method_id]":"Выберите способ оплаты", "order[agreed]":"Необходимо согласие"}'>
 
@@ -33,10 +30,10 @@
 
     <?php include_component('order_', 'field_products', $sf_data) ?>
 
-    <dl class='bBuyingLine mSumm'>
-      <dt><a href alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
+    <dl class='bBuyingLine mSumm order-total-container'>
+      <dt><a href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
       <dd>
-        <div>Сумма всех заказов: <h3><span data-bind="text: $root.totalSum()"></span> <span class="rubl">p</span></h3></div>
+        <div>Сумма всех заказов: <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
       </dd>
     </dl>
 
