@@ -248,6 +248,8 @@ $(document).ready(function() {
         renderItem: function(itemHolder, data) {
             var self = this
 
+            data.totalFormatted = printPrice(data.total)
+
             var template = $(itemHolder.data('template'))
             var itemContainer = Templating.clone(template)
 

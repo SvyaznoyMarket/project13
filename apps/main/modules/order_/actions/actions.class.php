@@ -87,6 +87,10 @@ class order_Actions extends myActions
   }
 
 
+  /**
+   * @param Order|null $order
+   * @return OrderDefaultForm
+   */
   private function getOrderForm($order = null)
   {
     /* @var $user myUser */
@@ -142,6 +146,11 @@ class order_Actions extends myActions
     return new OrderDefaultForm($order, array('user' => $this->getUser(), 'regions' => $regions, 'deliveryTypes' => $deliveryTypes));
   }
 
+  /**
+   * @param DeliveryType $deliveryType
+   * @param Shop $shop
+   * @return Order_DeliveryMapView
+   */
   private function getDeliveryMapView($deliveryType = null, $shop = null)
   {
     $this->getContext()->getConfiguration()->loadHelpers('Date');
@@ -149,12 +158,14 @@ class order_Actions extends myActions
     /* @var myUser */
     $user = $this->getUser();
 
+    // товары в корзине для запроса к ядру
     $productsInCart = array();
     foreach ($user->getCart()->getProducts() as $product)
     {
       $productsInCart[] = array('id' => $product['core_id'], 'quantity' => $product['cart']['quantity']);
     }
 
+    // услуги в корзине для запроса к ядру
     $servicesInCart = array();
     foreach ($user->getCart()->getServices() as $service)
     {
@@ -162,6 +173,27 @@ class order_Actions extends myActions
       if (count($service['cart']['product'])) continue;
 
       $servicesInCart[] = array('id' => $service['core_id'], 'quantity' => $service['cart']['quantity']);
+    }
+
+    // услуги к товарам
+    $servicesForProduct = array();
+    foreach ($user->getCart()->getServices() as $service)
+    {
+      // если услуга не принадлежит товару, то пропустить
+      if (!count($service['cart']['product'])) continue;
+
+      foreach ($service['cart']['product'] as $productId => $productQuantity)
+      {
+        $productData = ProductTable::getInstance()->createQuery()->where('id = ?', $productId)->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
+        if (!array_key_exists($productData['core_id'], $servicesForProduct))
+        {
+          $servicesForProduct[$productData['core_id']] = array();
+        }
+        $cart = $service->cart;
+        $cart['quantity'] = $productQuantity;
+        $service->cart = $cart;
+        $servicesForProduct[$productData['core_id']][] = $service;
+      }
     }
 
     //$result = json_decode(file_get_contents(__DIR__.'/../data/order-calc.json'), true);
@@ -176,6 +208,7 @@ class order_Actions extends myActions
 
     $deliveryMapView = new Order_DeliveryMapView();
 
+    // сборка магазинов
     foreach ($result['shops'] as $coreData)
     {
       $shopView = new Order_ShopView();
@@ -200,6 +233,16 @@ class order_Actions extends myActions
           : $user->getCart()->getService($recordData['id'])->cart
         ;
 
+        $serviceTotal = 0; $serviceName = '';
+        if (('products' == $itemType) && array_key_exists($coreData['id'], $servicesForProduct))
+        {
+          foreach ($servicesForProduct[$coreData['id']] as $service)
+          {
+            $serviceName .= " + {$service->name} ({$service->cart['quantity']} шт.)";
+            $serviceTotal += ($service->price * $service->cart['quantity']);
+          }
+        }
+
         $itemView = new Order_ItemView();
         $itemView->deleteUrl =
           'products' == $itemType
@@ -207,13 +250,12 @@ class order_Actions extends myActions
           : $this->generateUrl('cart_service_delete', array('service' => $recordData['token'], 'product' => '-/-'))
         ;
         $itemView->id = $coreData['id'];
-        $itemView->name = $coreData['name'];
+        $itemView->name = $coreData['name'].$serviceName;
         //$itemView->image = ProductTable::getInstance()->getMainPhotoUrl($recordData, 0);
         $itemView->image = $coreData['media_image'];
         $itemView->price = $coreData['price'];
         $itemView->quantity = $cartData['quantity'];
-        $itemView->total = $cartData['total'];
-        $itemView->totalFormatted = $cartData['formatted_total'];
+        $itemView->total = $cartData['total'] + $serviceTotal;
         $itemView->type = 'products' == $itemType ? Order_ItemView::TYPE_PRODUCT : Order_ItemView::TYPE_SERVICE;
         $itemView->url =
           'products' == $itemType

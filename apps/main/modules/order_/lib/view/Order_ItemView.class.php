@@ -13,7 +13,6 @@ class Order_ItemView
   public $price;
   public $quantity;
   public $total;
-  public $totalFormatted;
   public $url;
   public $deleteUrl;
 
