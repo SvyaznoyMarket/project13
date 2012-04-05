@@ -64,8 +64,14 @@ class productCardComponents extends myComponents
       } else {
           $description = $defaultDescription;
       }
+	    if(is_object($this->product) && method_exists($this->product, 'getMainPhotoUrl')){
+		    $photo = $this->product->getMainPhotoUrl(3);
+	    }
+		  else{
+			  $photo = null;
+		  }
       $this->setVar('title', $this->product->name);
       $this->setVar('description', $description);
-      $this->setVar('photo', $this->product->getMainPhotoUrl(3));
+      $this->setVar('photo', $photo);
   }
 }
