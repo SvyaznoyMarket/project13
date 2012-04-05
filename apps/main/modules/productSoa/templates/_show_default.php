@@ -64,7 +64,13 @@ foreach ($p3d as $p3d_obj)
         <div class="clear"></div>
 
         <?php if (!empty($product->label) && $product->price_average > 0 && $product->price < $product->price_average): ?>
-            <div class="mOurGray">Цена не у нас<br><?php include_partial('product/price', array('price' => $product->price_average, 'noStrong' => true, )) ?></div>
+            <div class="mOurGray">
+                Средняя цена в магазинах города*<br><div class='mOurGray mIco'><?php include_partial('product/price', array('price' => $product->price_average, 'noStrong' => true, )) ?> &nbsp;<span class="rubl">p</span></div>
+            </div>
+            <?php slot('additional_data') ?>
+                <div class="gray pt20 mb10">*по данным мониторинга компании Enter</div>
+                <div class="clear"></div>
+            <?php end_slot() ?>
             <div class="clear"></div>
             <div class="clear mOur pt10 <?php if ($product->sale_label) echo 'red'; ?>">Наша цена</div>
         <?php endif ?>

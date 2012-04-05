@@ -234,7 +234,7 @@ box-shadow:0 0 7px #616161;
 .pagehead {float:left; width:100%; padding-bottom:20px}
 .breadcrumbs {float:left; padding-bottom:9px; font-size:11px; color:#a6a6a6}
 .breadcrumbs A {color:#a6a6a6}
-.breadcrumbs-footer {padding:0px 0px 14px 10px; font-size:11px; color:#a6a6a6}
+.breadcrumbs-footer {padding:0px 0px 14px 0px; font-size:11px; color:#a6a6a6}
 .breadcrumbs-footer A {color:#a6a6a6}
 
 .searchnumber {float:right; padding-bottom:9px; font-size:11px; color:#a6a6a6; white-space:nowrap}
@@ -4275,3 +4275,14 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     height: 30px;
     background: url('/images/pages/bPaySystems.png') 0 -83px no-repeat;
     }
+
+.mOurGray.mIco{
+  color: #434343;
+  min-height: 16px;
+  padding-right: 30px;
+  font: 20px 'EnterTypeRegular';
+  background: url('img/bPriceRate.png') 100% 50% no-repeat;
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+}
