@@ -134,7 +134,7 @@ class productComponents extends myComponents
 
       // смежные товары
       $criteria = new ProductRelatedCriteria();
-      $item['related'] = RepositoryManager::getProduct()->getRelated(
+      $item['related'] = RepositoryManager::get('Product')->getRelated(
         $criteria->setParent($this->product['core_id'])->setPager(new myPager(1, 5 * 2))
       );
       $criteria->getPager()->setMaxPerPage(5);
@@ -142,13 +142,13 @@ class productComponents extends myComponents
 
       // аксессуары
       $criteria = new ProductRelatedCriteria();
-      $item['accessory'] = RepositoryManager::getProduct()->getAccessory(
+      $item['accessory'] = RepositoryManager::get('Product')->getAccessory(
         $criteria->setParent($this->product['core_id'])->setPager(new myPager(1, 5 * 2))
       );
       $criteria->getPager()->setMaxPerPage(5);
       $item['accessory_pager'] = $criteria->getPager();
     }
-    if (in_array($this->view, array('expanded'))) {
+    if (in_array($this->view, array('expanded', 'compact',))) {
       $item['preview'] = $this->product['preview'];
 
       $item['variation'] = array();
@@ -170,7 +170,10 @@ class productComponents extends myComponents
     }
     if ('stock' == $this->view) {
       $item['description'] = $this->product['description'];
-      $length = mb_strpos($item['description'], ' ', 120) ? : strlen($item['description']);
+      $length = strlen($item['description']);
+      if ($length > 120) {
+        $length = mb_strpos($item['description'], ' ', 120);
+      }
       $item['description'] = mb_substr($item['description'], 0, $length);
       $item['description'] = $item['description'] . ((mb_strlen($this->product['description']) > mb_strlen($item['description'])) ? '...' : '');
     }

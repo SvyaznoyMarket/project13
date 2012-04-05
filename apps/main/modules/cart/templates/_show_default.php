@@ -41,7 +41,7 @@
     <div class="basketright">
       <div class="goodstitle">
         <div
-          class="font24 pb5"><?php echo link_to((string)$item['name'], 'productCard', array('product' => $item['token'])) ?></div>
+          class="font24 pb5"><?php echo link_to((string)$item['name'], 'productCard', array('product' => $item['token_prefix'] . '/' . $item['token'])) ?></div>
         <noindex>
           <div class="font11">Есть в наличии</div>
         </noindex>
@@ -106,7 +106,7 @@
       <div class="basketinfo">
         <div class="left font24"><span class="sum"><?php echo $item['total']; ?></span> <span class="rubl">p</span>
         </div>
-        <div class="right"><a href="<?php echo url_for('cart_service_delete', array('service' => $item['token'],)) ?>"
+        <div class="right"><a href="<?php echo url_for('cart_service_delete', array('service' => $item['core_id'],)) ?>"
                               class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a-->
         </div>
       </div>

@@ -307,7 +307,12 @@ class orderActions extends myActions
     $renderers = array(
       'delivery_period_id' => function($form)
       {
-        return myToolkit::arrayDeepMerge(array('' => ''), $form['delivery_period_id']->getWidget()->getChoices());
+        $r = myToolkit::arrayDeepMerge(array('' => ''), $form['delivery_period_id']->getWidget()->getChoices());
+        $res = array();
+        foreach ($r as $k => $v) {
+          $res[] = array($k, $v);
+        }
+        return $res;
       },
       'delivered_at' => function($form)
       {
@@ -563,20 +568,25 @@ class orderActions extends myActions
       $order->ProductRelation[] = $relation;
     }
 
+    //print_r($this->getUser()->getCart()->getServices());
     foreach ($this->getUser()->getCart()->getServices() as $service)
     {
       $serviceOb = ServiceTable::getInstance()->getQueryObject()->where('core_id = ?', $service['id'])->fetchOne();
       foreach ($service['products'] as $prodId => $prodServInfo) {
-        if (!$prodId || !$prodServInfo['quantity']) continue;
         if (isset($prodObList[$prodId])) {
           $productOb = $prodObList[$prodId];
         } else {
           $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $prodId)->fetchOne();
         }
+        if (is_object($productOb)) {
+          $prodId = $productOb->id;
+        } else {
+          $prodId = NULL;
+        }
         $relation = new OrderServiceRelation();
         $relation->fromArray(array(
           'service_id' => $serviceOb->id,
-          'product_id' => $productOb->id,
+          'product_id' => $prodId,
           'price' => $prodServInfo['price'],
           'quantity' => $prodServInfo['quantity'],
         ));

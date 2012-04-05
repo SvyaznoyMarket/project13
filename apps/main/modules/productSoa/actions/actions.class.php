@@ -46,7 +46,13 @@ class productSoaActions extends myActions
    */
   public function executeDeliveryInfo(sfWebRequest $request)
   {
-    $productIds = $request->getParameter('ids');
+    $productId = $request->getParameter('product');
+    if (!$productId) {
+      $productIds = $request->getParameter('ids');
+    } else {
+      $productIds = array($productId);
+    }
+
     $data = array();
     $now = new DateTime();
     foreach ($productIds as $productId) {
@@ -54,16 +60,8 @@ class productSoaActions extends myActions
       if (!$productObj || !$productObj instanceof Doctrine_Record) {
         continue;
       }
-      /*if ($productObj->isKit()) {
-        $setItems = ProductKitRelationTable::getInstance()->findByKitId($productObj->id);
-        $setCoreIds = array();
-        foreach ($setItems as $setItem) {
-          $setCoreIds[] = $setItem->Part->core_id;
-        }
-        $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'), $setCoreIds);
-      } else {*/
+
       $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
-      //}
       $result = array('success' => true, 'deliveries' => array());
       if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
         $deliveries = array(array(
@@ -264,7 +262,13 @@ class productSoaActions extends myActions
     $productId = $request->getParameter('product');
 
     $factory = new ProductFactory();
-    $productList = $factory->createProductFromCore(array('id' => $productId));
+    if (preg_match('/^[0-9]+$/i', trim($productId))) {
+      $productId = intval(trim($productId));
+      $productList = $factory->createProductFromCore(array('id' => $productId));
+    } else {
+      $ar = explode('/', $productId);
+      $productList = $factory->createProductFromCore(array('slug' => $ar[1]));
+    }
     $productOb = $productList[0];
     //print_r($productOb->related);
 
@@ -274,15 +278,18 @@ class productSoaActions extends myActions
     //echo $beginNum .'==='.$endNum;
     //die();
     $relatedIdList = array();
+
     for ($i = $beginNum; $i <= $endNum; $i++) {
       if (!isset($productOb->related[$i])) {
         break;
       }
       $relatedIdList[] = $productOb->related[$i];
     }
-    //print_r($productOb);
-    //print_r($relatedIdList);
-    $relatedProductList = $factory->createProductFromCore(array('id' => $relatedIdList));
+    if (!count($relatedIdList)) {
+      $relatedProductList = array();
+    } else {
+      $relatedProductList = $factory->createProductFromCore(array('id' => $relatedIdList));
+    }
     $productOb->related = $relatedProductList;
     $this->setVar('product', $productOb, true);
     return $this->renderPartial($this->getModuleName() . '/product_related_list');
@@ -298,8 +305,16 @@ class productSoaActions extends myActions
     $this->page = $request->getParameter('page', 1);
     $productId = $request->getParameter('product');
 
+    //        echo $productId;
+    //        die();
     $factory = new ProductFactory();
-    $productList = $factory->createProductFromCore(array('id' => $productId));
+    if (preg_match('/^[0-9]+$/i', trim($productId))) {
+      $productId = intval(trim($productId));
+      $productList = $factory->createProductFromCore(array('id' => $productId));
+    } else {
+      $ar = explode('/', $productId);
+      $productList = $factory->createProductFromCore(array('slug' => $ar[1]));
+    }
     $productOb = $productList[0];
 
     //выбираем продукты для текущей страницы
@@ -308,6 +323,7 @@ class productSoaActions extends myActions
     //echo $beginNum .'==='.$endNum;
     //die();
     $accessoriesIdList = array();
+
     for ($i = $beginNum; $i <= $endNum; $i++) {
       if (!isset($productOb->accessories[$i])) {
         break;
@@ -315,8 +331,11 @@ class productSoaActions extends myActions
       $accessoriesIdList[] = $productOb->accessories[$i];
     }
     //print_r($productOb);
-    //print_r($accessoriesIdList);
-    $accessoriesProductList = $factory->createProductFromCore(array('id' => $accessoriesIdList));
+    if (!count($accessoriesIdList)) {
+      $accessoriesProductList = array();
+    } else {
+      $accessoriesProductList = $factory->createProductFromCore(array('id' => $accessoriesIdList));
+    }
     $productOb->accessories = $accessoriesProductList;
     $this->setVar('product', $productOb, true);
     return $this->renderPartial($this->getModuleName() . '/product_accessory_list');

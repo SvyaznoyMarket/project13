@@ -16,7 +16,7 @@ class ProductPrice extends BaseProductPrice
   {
     parent::importFromCore($data);
 
-    $product = ProductTable::getInstance()->getByCoreId($data['product_id']);
+    /*$product = ProductTable::getInstance()->getByCoreId($data['product_id']);
     if (!$product)
     {
       return false;
@@ -44,7 +44,7 @@ class ProductPrice extends BaseProductPrice
     {
       $product->view_list = $view_list;
       $product->save();
-    }
+    }*/
   }
 
   public function preSave($event)
@@ -52,8 +52,7 @@ class ProductPrice extends BaseProductPrice
     $invoker = $event->getInvoker();
 
     // If record has been modified adds keys to nginx file
-    if ($invoker->isModified(true) && ($invoker->getTable() instanceof myDoctrineTable))
-    {
+    if ($invoker->isModified(true) && ($invoker->getTable() instanceof myDoctrineTable)) {
       CacheEraser::getInstance()->erase($invoker->getTable()->getCacheEraserKeys($invoker, 'save'), false, 'product_price changed');
     }
   }

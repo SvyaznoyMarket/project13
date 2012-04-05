@@ -106,8 +106,6 @@ class productActions extends myActions
    */
   public function executeShow(sfWebRequest $request)
   {
-    $table = ProductTable::getInstance();
-
     $field = 'id';
     $id = $request['product'];
     foreach (array('id', 'token', 'core_id', 'barcode', 'article') as $v)
@@ -291,7 +289,7 @@ class productActions extends myActions
     $this->product = $this->getRoute()->getObject();
 
     $criteria = new ProductRelatedCriteria();
-    $item['accessory'] = RepositoryManager::getProduct()->getAccessory(
+    $item['accessory'] = RepositoryManager::get('Product')->getAccessory(
       $criteria->setParent($this->product['core_id'])->setPager(new myPager($this->page, 5))
     );
     $item['accessory_pager'] = $criteria->getPager();

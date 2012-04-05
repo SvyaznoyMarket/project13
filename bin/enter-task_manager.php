@@ -2,20 +2,18 @@
 <?php
 
 $pidFile = '/tmp/enter-task_manager.pid';
-$delay = 12; //sec
+$delay = 2; //sec
 
 $pid = pcntl_fork();
 
-if (isDaemonActive($pidFile))
-{
+if (isDaemonActive($pidFile)) {
   echo "Daemon already active\n";
   exit();
 }
 
 file_put_contents($pidFile, getmypid());
 
-if ($pid == -1)
-{
+if ($pid == -1) {
   echo "Critical error: get no pid\n";
   exit();
 }
@@ -29,7 +27,7 @@ else
   //а сюда - дочерний процесс
   while (true)
   {
-    shell_exec('cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run >> /dev/null');
+    shell_exec('cd /opt/WWWRoot/enter.ru/wwwroot && php symfony task-manager:run --env=live >> /dev/null');
     sleep($delay);
   }
 }
@@ -44,20 +42,17 @@ posix_setsid();
  */
 function isDaemonActive($pidFile)
 {
-  if (is_file($pidFile))
-  {
+  if (is_file($pidFile)) {
     $pid = file_get_contents($pidFile);
     //проверяем на наличие процесса
-    if (posix_kill($pid, 0))
-    {
+    if (posix_kill($pid, 0)) {
       //демон уже запущен
       return true;
     }
     else
     {
       //pid-файл есть, но процесса нет
-      if (!unlink($pidFile))
-      {
+      if (!unlink($pidFile)) {
         //не могу уничтожить pid-файл. ошибка
         exit(-1);
       }

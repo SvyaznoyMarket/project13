@@ -36,6 +36,15 @@ class cartActions extends myActions
     ));
   }
 
+
+  public function executeAddOld(sfWebRequest $request)
+  {
+    $ar = explode('/', $request['product']);
+    $token = $ar[1];
+    $product = ProductTable::getInstance()->createBaseQuery()->where('token = ?', $token)->fetchOne();
+    $this->redirect('cart_add', array('product' => $product->core_id));
+  }
+
   /**
    * Executes add action
    *
@@ -43,6 +52,8 @@ class cartActions extends myActions
    */
   public function executeAdd(sfWebRequest $request)
   {
+    //myDebug::dump($request);
+    //die();
     $result['value'] = true;
     $result['error'] = "";
     //валидация количества товара
@@ -101,6 +112,15 @@ class cartActions extends myActions
     $this->redirect($this->getRequest()->getReferer());
   }
 
+
+  public function executeDeleteOld(sfWebRequest $request)
+  {
+    $ar = explode('/', $request['product']);
+    $token = $ar[1];
+    $product = ProductTable::getInstance()->createBaseQuery()->where('token = ?', $token)->fetchOne();
+    $this->redirect('cart_delete', array('product' => $product->core_id));
+  }
+
   /**
    * Executes delete action
    *
@@ -134,6 +154,21 @@ class cartActions extends myActions
     $this->getUser()->setCacheCookie();
 
     $this->redirect($this->getRequest()->getReferer());
+  }
+
+
+  public function executeServiceAddOld(sfWebRequest $request)
+  {
+    $ar = explode('/', $request['product']);
+    $token = $ar[1];
+    if ($token && $token != '-') {
+      $product = ProductTable::getInstance()->createBaseQuery()->where('token = ?', $token)->fetchOne();
+      $prodId = $product->core_id;
+    } else {
+      $prodId = 0;
+    }
+    $service = ServiceTable::getInstance()->createBaseQuery()->where('token = ?', $request['service'])->fetchOne();
+    $this->redirect('cart_service_add', array('product' => $prodId, 'service' => $service->core_id));
   }
 
   public function executeServiceAdd(sfWebRequest $request)
@@ -222,6 +257,23 @@ class cartActions extends myActions
 
   $this->redirect($this->getRequest()->getReferer());
   } */
+
+
+  public function executeServiceDeleteOld(sfWebRequest $request)
+  {
+    $ar = explode('/', $request['product']);
+    $token = $ar[1];
+    if ($token && $token != '-') {
+      $product = ProductTable::getInstance()->createBaseQuery()->where('token = ?', $token)->fetchOne();
+      $prodId = $product->core_id;
+    } else {
+      $prodId = 0;
+    }
+    $service = ServiceTable::getInstance()->createBaseQuery()->where('token = ?', $request['service'])->fetchOne();
+    $this->redirect('cart_service_delete', array('product' => $prodId, 'service' => $service->core_id));
+  }
+
+
   public function executeServiceDelete(sfWebRequest $request)
   {
     $serviceId = $request['service'];

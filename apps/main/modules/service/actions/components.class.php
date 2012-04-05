@@ -90,6 +90,7 @@ class serviceComponents extends myComponents
     #    $service['currentPrice'] = number_format($serviceData['currentPrice'], 2, ',', ' ');
     #}
     $serviceData['token'] = $this->service->token;
+    $serviceData['core_id'] = $this->service->core_id;
     $serviceData['name'] = $this->service->name;
     $serviceData['description'] = $this->service->description;
     $serviceData['work'] = $this->service->work;
@@ -120,6 +121,7 @@ class serviceComponents extends myComponents
       $serviceList[] = array(
         'name' => $service->name,
         'token' => $service->token,
+        'core_id' => $service->core_id,
         'name' => $service->name,
         'photo' => $service->getPhotoUrl(2),
         'price' => $service->getCurrentPrice(),
@@ -155,7 +157,8 @@ class serviceComponents extends myComponents
       'url' => $this->generateUrl('service_list'),
     );
 
-    if (isset($this->serviceCategory) && $this->serviceCategory) {
+    //  myDebug::dump($this->serviceCategory);
+    if (isset($this->serviceCategory) && $this->serviceCategory && $this->serviceCategory->core_parent_id) {
       $parentCategory = $this->serviceCategory->getParentCategory();
       if (isset($parentCategory) && isset($parentCategory['name'])) {
         $list[] = array(

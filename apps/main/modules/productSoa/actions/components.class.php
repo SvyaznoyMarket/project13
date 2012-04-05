@@ -201,6 +201,9 @@ class productSoaComponents extends myComponents
         } elseif ($prop['value'] == 'false') {
           $prop['value'] = 'нет';
         }
+        if ($prop['unit']) {
+          $prop['value'] .= ' ' . $prop['unit'];
+        }
         $list[$prop['group_id']]['parameters'][] = $prop;
       }
     }
@@ -442,6 +445,7 @@ class productSoaComponents extends myComponents
       $prodId = $this->product->id;
     }
     $this->setVar('productId', $prodId, true);
+    $this->setVar('productIsInSale', $this->product->is_insale, true);
     $this->setVar('showInCardButton', $showInCardButton);
   }
 

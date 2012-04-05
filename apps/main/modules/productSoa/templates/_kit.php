@@ -25,8 +25,6 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 <?php //include_component('productSoa', 'list_view') ?>
 <?php //endif ?>
 
-<div class="line"></div>
-
 <?php //include_component('productSoa', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view, 'in_row' => 4, 'last_line' => false, )) ?>
 
 <?php //include_component('productSoa', 'pagination', array('pager' => $productPager)) ?>
