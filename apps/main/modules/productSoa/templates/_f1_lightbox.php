@@ -26,8 +26,7 @@ if (is_object($servListId)) {
                         </td>
                         <td class="bF1Block_eBuy" ref="<?php echo $service['token'] ?>">
                             <?php if ($service['price']) { ?>
-                            <span class="bF1Block_ePrice
-                                      <?php if (!$product->getIsInsale()) echo ' mr110'; ?> ">
+                            <span class="bF1Block_ePrice">
                                     <?php echo $service['priceFormatted'] ?>
                                 <?php if ($service['price'] >= 1) { ?>
                                 &nbsp;<span class="rubl">p</span>
