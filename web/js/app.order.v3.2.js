@@ -406,7 +406,11 @@ $(document).ready(function() {
             $(this).toggleClass('mChecked')
         }
 
-        var el = $(this).find('input[type="radio"]')
+        var el = $(this).find('input[type="radio"][data-delivery-type]')
+        if (!el.length) {
+            return
+        }
+
         var url = $('#order-form').data('deliveryMapUrl')
 
         $('#order-form-part2').hide()
