@@ -3,8 +3,8 @@
   <?php if ($accessoryPagesNum > 1) { ?>
       <div class="scroll" data-quantity="<?php //echo $item['accessory_pager']->getNbResults() ?>">
         (страница <span>1<?php //echo $item['accessory_pager']->getPage() ?></span> из <span><?php echo $accessoryPagesNum; //echo $item['accessory_pager']->getLastPage() ?></span>)
-        <a title="Предыдущие 3" class="srcoll_link_button back disabled" data-url="<?php echo url_for('product_accessory', $sf_data->getRaw('product')) ?>" href="javascript:void(0)"></a>
-        <a title="Следующие 3" class="srcoll_link_button forvard" data-url="<?php echo url_for('product_accessory', $sf_data->getRaw('product')) ?>" href="javascript:void(0)"></a>
+        <a title="Предыдущие 3" class="srcoll_link_button back disabled" data-url="<?php echo url_for('product_accessory', $sf_data->getRaw('product')->id) ?>" href="javascript:void(0)"></a>
+        <a title="Следующие 3" class="srcoll_link_button forvard" data-url="<?php echo url_for('product_accessory', $sf_data->getRaw('product')->id) ?>" href="javascript:void(0)"></a>
       </div>
   <?php } ?>
 </div>
