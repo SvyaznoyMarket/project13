@@ -128,7 +128,10 @@ class order_Actions extends myActions
 
     foreach ($result as $k => $item)
     {
-      if ('unavailable' == $k) continue;
+      if ('unavailable' == $k)
+      {
+        continue;
+      }
 
       $deliveryData = DeliveryTypeTable::getInstance()->createQuery()->select('name, description')->where('token = ?', $item['token'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
       $item['name'] = $deliveryData['name'];
@@ -208,6 +211,17 @@ class order_Actions extends myActions
     //myDebug::dump($result, 1);
 
     $deliveryMapView = new Order_DeliveryMapView();
+
+    $deliveryMapView->unavailable = array();
+    //$deliveryMapView->unavailable = array('product-23595');
+    /*
+    foreach ($result['unavailable'] as $itemType => $itemIds)
+    {
+      $deliveryMapView->unavailable = array_merge($deliveryMapView->unavailable, array_map(function($id) use ($itemType) {
+        return $itemType.'-'.$id;
+      }, $itemIds));
+    }
+    */
 
     // сборка магазинов
     foreach ($result['shops'] as $coreData)

@@ -149,6 +149,22 @@ $(document).ready(function() {
             var self = this
             var data = this.data()
 
+            // проверка на пустую корзину
+            var isEmpty = true
+            $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
+                if (deliveryType.items.length) {
+                    isEmpty = false
+                    return false
+                }
+            })
+            if (isEmpty) {
+                var url = $('#order-form').data('cartUrl')
+                window.location = url ? url : '/'
+            }
+
+            // блок для недоступных товаров
+            self.renderUnavailable()
+
             $('.order-delivery-holder').each(function(i, deliveryTypeHolder) {
                 deliveryTypeHolder = $(deliveryTypeHolder)
                 self.renderDeliveryType(deliveryTypeHolder)
@@ -262,6 +278,32 @@ $(document).ready(function() {
             }
 
             itemHolder.append(itemContainer)
+        },
+
+        renderUnavailable: function() {
+            var data = this.data()
+            var unavailableContainer = $('#order-unavailable')
+
+            if (data.unavailable.length) {
+                $.each(data.unavailable, function(i, itemToken) {
+                    var item = data.items[itemToken]
+                    if (!item) return false
+                    var itemContainer = Templating.clone($('#order-item-template'))
+
+                    item.totalFormatted = printPrice(item.total)
+
+                    itemContainer.find('[data-assign]').each(function(i, el) {
+                        Templating.assign($(el), item)
+                    })
+
+                    unavailableContainer.find('.order-item-holder').append(itemContainer)
+                })
+
+                unavailableContainer.show('fast')
+            }
+            else {
+                unavailableContainer.hide('fast')
+            }
         },
 
         getUndeliveredItem: function(deliveryTypeId) {
@@ -381,6 +423,12 @@ $(document).ready(function() {
                 }
             })
         })
+
+        var i = $.inArray(itemToken, data.unavailable)
+        if (-1 !== i) {
+            data.unavailable.splice(i, 1)
+            //console.info(data.unavailable)
+        }
 
 
         DeliveryMap.data(data)

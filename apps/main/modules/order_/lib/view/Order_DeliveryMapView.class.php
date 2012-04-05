@@ -10,4 +10,7 @@ class Order_DeliveryMapView
 
   /* @var $shops Order_ShopView[] */
   public $shops = array();
+
+  /* @var $unavailable array */
+  public $unavailable = array();
 }
