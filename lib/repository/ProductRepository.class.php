@@ -36,9 +36,13 @@ class ProductRepository extends ObjectRepository
     if (!empty($data['property'])) {
       foreach ($data['property'] as $prop) {
         $attr = new ProductAttributeEntity($prop);
-        if (!empty($prop['option_id']))
-          foreach ($prop['option_id'] as $option)
-            $attr->addOption(new ProductPropertyOptionEntity($option));
+        if (!empty($prop['option_id'])) {
+          if (is_array($prop['option_id']))
+            foreach ($prop['option_id'] as $option)
+              $attr->addOption(new ProductPropertyOptionEntity($option));
+          else if (is_numeric($prop['option_id']))
+            $attr->setOptionList(array(new ProductPropertyOptionEntity(array('id' => $prop['option_id']))));
+        }
         $product->addAttribute($attr);
       }
     }
