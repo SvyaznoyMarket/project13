@@ -65,7 +65,7 @@ foreach ($p3d as $p3d_obj)
 
         <?php if (!empty($product->label) && $product->price_average > 0 && $product->price < $product->price_average): ?>
             <div class="mOurGray">
-                Средняя цена в магазинах города*<br><div class='mOurGray mIco'><?php include_partial('product/price', array('price' => $product->price_average, 'noStrong' => true, )) ?> &nbsp;<span class="rubl">p</span></div>
+                Средняя цена в магазинах города*<br><div class='mOurGray mIco'><?php include_partial('product/price', array('price' => $product->price_average, 'noStrong' => true, )) ?> &nbsp;</div>
             </div>
             <?php slot('additional_data') ?>
                 <div class="gray pt20 mb10">*по данным мониторинга компании Enter</div>
