@@ -11,6 +11,8 @@ class UserCart extends BaseUserData
 
   function __construct($parameters = array())
   {
+    //заглядываем в старую карзину
+    $this->_useOldCart();
     //        sfContext::getInstance()->getUser()->setAttribute('cartSoa', array());
     //        return;
     $cart = sfContext::getInstance()->getUser()->getAttribute('cartSoa', array());
@@ -23,10 +25,6 @@ class UserCart extends BaseUserData
     $parameters = myToolkit::arrayDeepMerge(array('products' => array(),), $parameters);
     $this->parameterHolder = new sfParameterHolder();
     $this->parameterHolder->add($parameters);
-
-    //заглядываем в старую карзину
-    $this->_useOldCart();
-
   }
 
   /**
@@ -294,6 +292,7 @@ class UserCart extends BaseUserData
 
     //die();
     $urls = sfConfig::get('app_product_photo_url');
+    $urlsService = sfConfig::get('app_service_photo_url');
     foreach ($this->_products as $product)
     {
       $prodId = $product['id'];
@@ -334,7 +333,7 @@ class UserCart extends BaseUserData
               'price' => $serviceProductData['price'],
               'total' => number_format($serviceProductData['price'] * $serviceProductData['quantity'], 0, ',', ' '),
               'priceFormatted' => number_format($serviceProductData['price'], 0, ',', ' '),
-              'photo' => $urls[2] . $serviceBDList[$serviceId]['main_photo'],
+              'photo' => $urlsService[2] . $serviceBDList[$serviceId]['main_photo'],
             );
           } elseif (isset($list[$product])) {
             $list[$product]['service'][] = array(
@@ -360,7 +359,7 @@ class UserCart extends BaseUserData
               'price' => $serviceProductData['price'],
               'total' => number_format($serviceProductData['price'] * $serviceProductData['quantity'], 0, ',', ' '),
               'priceFormatted' => number_format($serviceProductData['price'], 0, ',', ' '),
-              'photo' => $urls[2] . $serviceBDList[$serviceId]['main_photo'],
+              'photo' => $urlsService[2] . $serviceBDList[$serviceId]['main_photo'],
               'products' => $serviceBDList[$serviceId]['token_prefix'] . '/' . $serviceBDList[$serviceId]['token']
             );
           }

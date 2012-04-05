@@ -382,7 +382,7 @@ $(document).ready(function () {
             var cityPopup = $('<div class="bCityPopupWrap">').html(
                 '<div class="hideblock bCityPopup">' +
                     '<i title="Закрыть" class="close">Закрыть</i>' +
-                    '<div class="title">Привет, из какого ты города?</div>' +
+                    '<div class="title">Привет! Из какого вы города?</div>' +
                     '</div>' +
                     '</div>')
             for (var ci = 0, cl = cities.length; ci < cl; ci++) {

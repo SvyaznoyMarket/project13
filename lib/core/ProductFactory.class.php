@@ -11,12 +11,17 @@
 class ProductFactory
 {
 
+  const LABEL_SALE = 1;
+
+  const MIN_SERVICE_BUY_PRICE = 950;
+
   /**
    * Количество связанных продуктов и аксессуаров, которые загружаем вместе с продуктом сразу
    * @var int
    */
   public $numRelatedOnPage = 5;
 
+  public $numAccessoriesOnPage = 5;
 
   /**
    * Загружает список продуктов из ядра
@@ -80,7 +85,11 @@ class ProductFactory
     if ($product->service) {
       $serviceIdList = array();
       foreach ($product->service as & $service) {
-        $service['priceFormatted'] = ProductSoa::priceFormat($service['price']);
+        if ($service['price'] < 1) {
+          $service['priceFormatted'] = 'бесплатно';
+        } else {
+          $service['priceFormatted'] = ProductSoa::priceFormat($service['price']);
+        }
         $serviceIdList[] = $service['id'];
       }
       //временно! получаем старые сайтвоый token услуг. Чтобы сгенерировать ссылки на них.
@@ -90,11 +99,19 @@ class ProductFactory
         foreach ($product->service as & $service) {
           if ($siteSevice['core_id'] == $service['id']) {
             $service['site_token'] = $siteSevice['token'];
+            $service['only_inshop'] = $siteSevice['only_inshop'];
+            if (!$service['only_inshop'] && $service['price'] && $service['price'] >= self::MIN_SERVICE_BUY_PRICE) {
+              $service['in_sale'] = true;
+            } else {
+              $service['in_sale'] = false;
+            }
             break;
           }
         }
       }
     }
+    //        print_r($product->service);
+    //        die();
 
   }
 
@@ -209,6 +226,15 @@ class ProductFactory
       }
     }
 
+    $product->sale_label = false;
+    if ($product->label) {
+      foreach ($product->label as $label) {
+        if ($label['id'] == self::LABEL_SALE) {
+          $product->sale_label = true;
+        }
+      }
+    }
+    //print_r($product);
     return $product;
   }
 
@@ -228,7 +254,8 @@ class ProductFactory
     $core->prepareDataForStatic($data);
     $core->prepareDataForDynamic($data);
     if ($getDelivery) {
-      $core->prepareDataForDelivery($data);
+      //доставки через новый API пока не загружаем!!! 1С к этому не готов
+      //$core->prepareDataForDelivery($data);
     }
     $core->multiThreadQuery();
     $coreResult = $core->getData();
@@ -237,7 +264,7 @@ class ProductFactory
 
     $productsBaseData = array();
     foreach ($coreResult as $queryResult) {
-      if (!isset($queryResult['result'])) {
+      if (!isset($queryResult['result']) || !isset($queryResult['result']['result'])) {
         continue;
       }
       foreach ($queryResult['result']['result'] as $itemKey => $itemData) {

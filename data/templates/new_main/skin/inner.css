@@ -96,7 +96,7 @@ A.nodecor {
 }
 
 .red, .red:hover {
-    color: #cb3735
+    color: #cb3735 !important;
 }
 
 .gray {
@@ -214,7 +214,7 @@ TABLE {
 @font-face {
     font-family: 'EnterTypeBold';
     src: url('../fonts/EnterType_Bold.eot');
-    src: local('☺'), url('../fonts/EnterType_Bold.woff') format('woff'), url('../fonts/EnterType_Bold.ttf') format('truetype'), url('../fonts/EnterType_Bold.svg') format('svg');
+    src: local('☺'), url('../fonts/EnterType_Bold.ttf') format('truetype'), url('../fonts/EnterType_Bold.svg') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -222,7 +222,7 @@ TABLE {
 @font-face {
     font-family: 'EnterTypeItalic';
     src: url('../fonts/EnterType_Italic.eot');
-    src: local('☺'), url('../fonts/EnterType_Italic.woff') format('woff'), url('../fonts/EnterType_Italic.ttf') format('truetype'), url('../fonts/EnterType_Italic.svg') format('svg');
+    src: local('☺'), url('../fonts/EnterType_Italic.ttf') format('truetype'), url('../fonts/EnterType_Italic.svg') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -9917,6 +9917,18 @@ div.mSportFont {
 .mOurGray {
     color: #434343;
     font: 14px 'EnterTypeRegular';
+}
+
+.mOurGray.mIco {
+    color: #434343;
+    min-height: 16px;
+    padding-right: 30px;
+    font: 20px 'EnterTypeRegular';
+    background: url('img/bPriceRate.png') 100% 50% no-repeat;
+
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
 }
 
 .bEvent {

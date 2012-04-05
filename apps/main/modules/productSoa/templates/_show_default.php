@@ -72,18 +72,21 @@ foreach ($p3d as $p3d_obj)
     нас<br><?php include_partial('product/price', array('price' => $product->price_average, 'noStrong' => true,)) ?>
   </div>
   <div class="clear"></div>
-  <div class="clear mOur pt10">Наша цена</div>
+  <div class="clear mOur pt10 <?php if ($product->sale_label) echo 'red'; ?>">Наша цена</div>
   <?php endif ?>
 
   <div class="fl pb15">
     <div
-      class="pb10"><?php include_partial('productSoa/price', array('price' => $product->getFormattedPrice())) ?></div>
+      class="pb10 <?php if ($product->sale_label) echo 'red'; ?>"><?php include_partial('productSoa/price', array('price' => $product->getFormattedPrice())) ?></div>
     <?php if ($product->is_instock): ?>
     <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
     <?php endif ?>
   </div>
+
+
   <div class="fr ar pb15">
-    <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->id ?>" data-value='<?php echo json_encode($json) ?>'>
+    <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->token ?>"
+         data-value='<?php echo json_encode($json) ?>'>
 
       <div class='bCountSet'>
         <?php if (!$product->cart_quantity): ?>
@@ -106,9 +109,25 @@ foreach ($p3d as $p3d_obj)
 
   <div class="line pb15"></div>
 
+
   <?php if ($product->is_insale): ?>
-  <?php include_component('productSoa', 'delivery', array('product' => $product)) ?>
+  <?php //include_component('productSoa', 'delivery', array('product' => $product)) ?>
+  <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->id ?>"
+       data-shoplink="<?php //echo $product->stock_url ?>"
+       data-calclink="<?php echo url_for('product_delivery', array('product' => $product->id)) ?>">
+    <h4>Как получить заказ?</h4>
+    <ul>
+      <li>
+        <h5>Идет расчет условий доставки...</h5>
+      </li>
+    </ul>
+  </div>
+  <div class="line pb15"></div>
   <?php endif ?>
+
+
+
+
 
   <?php include_component('serviceSoa', 'listByProduct', array('product' => $product)) ?>
 
