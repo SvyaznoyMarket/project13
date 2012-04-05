@@ -189,54 +189,73 @@ class order_Actions extends myActions
       $deliveryMapView->shops[$shopView->id] = $shopView;
     }
 
-    // сборка товаров
-    foreach ($result['products'] as $coreData)
-    {
-      $recordData = ProductTable::getInstance()->createQuery()->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
-      $cartData = $user->getCart()->getProduct($recordData['id'])->cart;
-
-      $itemView = new Order_ItemView();
-      $itemView->deleteUrl = $this->generateUrl('cart_delete', array('product' => $recordData['token_prefix'].'/'.$recordData['token']));
-      $itemView->id = $coreData['id'];
-      $itemView->name = $coreData['name'];
-      //$itemView->image = ProductTable::getInstance()->getMainPhotoUrl($recordData, 0);
-      $itemView->image = $coreData['media_image'];
-      $itemView->price = $coreData['price'];
-      $itemView->quantity = $cartData['quantity'];
-      $itemView->total = $cartData['total'];
-      $itemView->totalFormatted = $cartData['formatted_total'];
-      $itemView->type = Order_ItemView::TYPE_PRODUCT;
-      $itemView->url = $this->generateUrl('productCard', array('product' => $recordData['token_prefix'].'/'.$recordData['token']));
-      $itemView->token = $itemView->type.'-'.$itemView->id;
-
-      foreach ($coreData['deliveries'] as $deliveryToken => $deliveryData)
+    // сборка товаров и услуг
+    foreach (array('products', 'services') as $itemType) {
+      foreach ($result[$itemType] as $coreData)
       {
-        $deliveryView = new Order_DeliveryView();
-        $deliveryView->price = $deliveryData['price'];
-        $deliveryView->token = $deliveryToken;
-        $deliveryView->name = 0 === strpos($deliveryToken, 'self') ? 'В самовывоз' : 'В доставку';
-        foreach ($deliveryData['dates'] as $dateData)
-        {
-          $dateView = new Order_DateView();
-          $dateView->day = date('j', strtotime($dateData['date']));
-          $dateView->dayOfWeek = format_date($dateData['date'], 'EEE', 'ru');
-          $dateView->value = date('Y-m-d', strtotime($dateData['date']));
-          foreach ($dateData['interval'] as $intervalData)
-          {
-            $intervalView = new Order_IntervalView();
-            $intervalView->start_at = $intervalData['time_begin'];
-            $intervalView->end_at = $intervalData['time_end'];
+        $recordData = Doctrine_Core::getTable('products' == $itemType ? 'Product' : 'Service')->createQuery()->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
+        $cartData =
+          'products' == $itemType
+          ? $user->getCart()->getProduct($recordData['id'])->cart
+          : $user->getCart()->getService($recordData['id'])->cart
+        ;
 
-            $dateView->intervals[] = $intervalView;
+        $itemView = new Order_ItemView();
+        $itemView->deleteUrl =
+          'products' == $itemType
+          ? $this->generateUrl('cart_delete', array('product' => $recordData['token_prefix'].'/'.$recordData['token']))
+          : $this->generateUrl('cart_service_delete', array('service' => $recordData['token'], 'product' => '-/-'))
+        ;
+        $itemView->id = $coreData['id'];
+        $itemView->name = $coreData['name'];
+        //$itemView->image = ProductTable::getInstance()->getMainPhotoUrl($recordData, 0);
+        $itemView->image = $coreData['media_image'];
+        $itemView->price = $coreData['price'];
+        $itemView->quantity = $cartData['quantity'];
+        $itemView->total = $cartData['total'];
+        $itemView->totalFormatted = $cartData['formatted_total'];
+        $itemView->type = 'products' == $itemType ? Order_ItemView::TYPE_PRODUCT : Order_ItemView::TYPE_SERVICE;
+        $itemView->url =
+          'products' == $itemType
+          ? $this->generateUrl('productCard', array('product' => $recordData['token_prefix'].'/'.$recordData['token']))
+          : $this->generateUrl('service_show', array('service' => $recordData['token']))
+        ;
+        $itemView->token = $itemView->type.'-'.$itemView->id;
+
+        foreach ($coreData['deliveries'] as $deliveryToken => $deliveryData)
+        {
+          $deliveryView = new Order_DeliveryView();
+          $deliveryView->price = $deliveryData['price'];
+          $deliveryView->token = $deliveryToken;
+          $deliveryView->name = 0 === strpos($deliveryToken, 'self') ? 'В самовывоз' : 'В доставку';
+
+          if (!isset($deliveryData['dates']))
+          {
+            $deliveryData['dates'] = array();
+          }
+          foreach ($deliveryData['dates'] as $dateData)
+          {
+            $dateView = new Order_DateView();
+            $dateView->day = date('j', strtotime($dateData['date']));
+            $dateView->dayOfWeek = format_date($dateData['date'], 'EEE', 'ru');
+            $dateView->value = date('Y-m-d', strtotime($dateData['date']));
+            foreach ($dateData['interval'] as $intervalData)
+            {
+              $intervalView = new Order_IntervalView();
+              $intervalView->start_at = $intervalData['time_begin'];
+              $intervalView->end_at = $intervalData['time_end'];
+
+              $dateView->intervals[] = $intervalView;
+            }
+
+            $deliveryView->dates[] = $dateView;
           }
 
-          $deliveryView->dates[] = $dateView;
+          $itemView->deliveries[$deliveryView->token] = $deliveryView;
         }
 
-        $itemView->deliveries[$deliveryView->token] = $deliveryView;
+        $deliveryMapView->items[$itemView->token] = $itemView;
       }
-
-      $deliveryMapView->items[$itemView->token] = $itemView;
     }
 
     // сборка типов доставки
@@ -260,7 +279,8 @@ class order_Actions extends myActions
 
       foreach ($deliveryMapView->items as $itemView)
       {
-        if (!in_array($itemView->id, $coreData['products'])) continue;
+        if (($itemView->type == Order_ItemView::TYPE_PRODUCT) && !in_array($itemView->id, $coreData['products'])) continue;
+        if (($itemView->type == Order_ItemView::TYPE_SERVICE) && !in_array($itemView->id, $coreData['services'])) continue;
 
         $deliveryTypeView->items[] = $itemView->token;
       }
