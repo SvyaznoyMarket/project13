@@ -48,7 +48,7 @@ class productCardComponents extends myComponents
      */
     $list[] = array(
       'name' => $this->product->name,
-      'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+      'url'  => $this->generateUrl('productCardSoa', array('sf_subject' => $this->product)),
     );
 
     $this->setVar('list', $list, true);

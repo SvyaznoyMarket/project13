@@ -46,7 +46,7 @@ class productCardSoaComponents extends myComponents
 
     $list[] = array(
       'name' => $this->product->name,
-      'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+      'url'  => $this->generateUrl('productCardSoa', array('sf_subject' => $this->product)),
     );
     //print_r($list);
     $this->setVar('list', $list, true);
@@ -62,8 +62,14 @@ class productCardSoaComponents extends myComponents
       } else {
           $description = $defaultDescription;
       }
+		  if(is_object($this->product) && method_exists($this->product, 'getMainPhotoUrl')){
+			  $photo = $this->product->getMainPhotoUrl(3);
+		  }
+		  else{
+			  $photo = null;
+		  }
       $this->setVar('title', $this->product->name);
       $this->setVar('description', $description);
-      $this->setVar('photo', $this->product->getMainPhotoUrl(3));
+      $this->setVar('photo', $photo);
   }
 }
