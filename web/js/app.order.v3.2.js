@@ -72,6 +72,11 @@ $(document).ready(function() {
             var data = this.data()
 
             var item = data.items[itemToken]
+
+            if ((typeof(itemToken) == 'undefined') || (-1 == $.inArray(toDeliveryTypeToken, Object.keys(item.deliveries)))) {
+                return
+            }
+
             $.each(data.deliveryTypes[fromDeliveryTypeToken].items, function(i, token) {
                 if (token == itemToken) {
                     data.deliveryTypes[fromDeliveryTypeToken].items.splice(i, 1)
@@ -79,8 +84,6 @@ $(document).ready(function() {
             })
             data.deliveryTypes[toDeliveryTypeToken].items.push(itemToken)
             self.data(data)
-
-            this.render()
         },
 
         getDeliveryPrice: function(deliveryType) {
@@ -288,6 +291,9 @@ $(document).ready(function() {
             this.onShopSelected =
                 !deliveryToken
                 ? function(deliveryTypeId, shopId) {
+                    $('#order-form-part2').hide()
+                    $('#order-loader').clone().appendTo('#order-loader-holder').show()
+
                     var url = $('#order-form').data('deliveryMapUrl')
                     DeliveryMap.getRemoteData(url, { deliveryTypeId: deliveryTypeId, shopId: shopId }, function(data) {
                         this.render()
@@ -299,22 +305,33 @@ $(document).ready(function() {
                     }, true)
                 }
                 : function(deliveryTypeId, shopId) {
+                    var data = DeliveryMap.data()
+
+                    var toDeliveryToken = 'self_'+shopId
+
+                    $.each(data.deliveryTypes[deliveryToken].items, function(i, itemToken) {
+                        DeliveryMap.moveItem(itemToken, deliveryToken, toDeliveryToken)
+                    })
+
+                    if (!data.deliveryTypes[toDeliveryToken].date) {
+                        var data = DeliveryMap.data()
+                        data.deliveryTypes[toDeliveryToken].date = DeliveryMap.getDeliveryDate(data.deliveryTypes[toDeliveryToken]).shift()
+                        DeliveryMap.data(data)
+                    }
+
+                    DeliveryMap.render()
                 }
 
             regionMap.openMap()
         },
 
-        onShopSelected: function() {
-
-        },
+        onShopSelected: function() {},
 
         onMapClosed: function(shopId) {
             var el = $('.bBuyingLine__eRadio:checked')
 
             regionMap.closeMap()
 
-            $('#order-form-part2').hide()
-            $('#order-loader').clone().appendTo('#order-loader-holder').show()
             DeliveryMap.onShopSelected.apply(this, [el.val(), shopId])
         }
     }
