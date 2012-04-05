@@ -472,7 +472,6 @@ class productSoaComponents extends myComponents
           $prodId = $this->product->id;
       }
       $this->setVar('productId', $prodId, true);
-      $this->setVar('productIsInSale', $this->product->is_insale, true);
       $this->setVar('showInCardButton', $showInCardButton);
   }
 

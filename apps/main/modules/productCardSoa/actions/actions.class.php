@@ -34,7 +34,7 @@ class productCardSoaActions extends myActions
 
       try {
         $factory = new ProductFactory();
-        $productObList = $factory->createProductFromCore(array('slug' => end($productAr)), true, true);
+        $productObList = $factory->createProductFromCore(array('slug' => end($productAr)), true, true, true);
         $this->product = $productObList[0];
       } catch (ErrorException $e) {
          $this->forward404If($e->getMessage());

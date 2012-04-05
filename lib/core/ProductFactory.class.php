@@ -31,7 +31,7 @@ class ProductFactory
      * @param bool $loadDelivery - загрузать ли информацию о доставках
      * @return array - массив объектов ProductSoa
      */
-    public function createProductFromCore($data, $loadFriendProducts = false, $loadDelivery = false)
+    public function createProductFromCore($data, $loadFriendProducts = false, $loadDelivery = false, $loadTmpData = false)
     {
 
         if (!isset($data['id']) && !isset($data['slug'])) {
@@ -51,7 +51,8 @@ class ProductFactory
             //если требуется загрузка связанных продуктов, загружаем
             if ($loadFriendProducts) {
                 $this->_loadFriendProducts($product, $baseInfo);
-
+            }
+            if ($loadTmpData) {
                 //некоторая информацию из БД пока требуется
                 $this->_loadTmpDbData($product);
             }
