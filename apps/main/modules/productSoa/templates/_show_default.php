@@ -98,7 +98,7 @@ foreach ($p3d as $p3d_obj)
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1)) ?>
             </div>
             <?php if (false && $product->is_insale && $sf_user->getRegion('region')->is_default): ?>
-            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $product->barcode)) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $product->barcode));  ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
             <?php endif ?>
         </div>
 
@@ -108,7 +108,7 @@ foreach ($p3d as $p3d_obj)
 
         <?php if ($product->is_insale): ?>
         <?php //include_component('productSoa', 'delivery', array('product' => $product)) ?>
-        <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->id ?>" data-shoplink="<?php //echo $product->stock_url ?>" data-calclink="<?php echo url_for('product_delivery', array('product' => $product->id)) ?>">
+        <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->id ?>" data-shoplink="<?php echo url_for('productStock', array('product' => $product->path)) ?>" data-calclink="<?php echo url_for('product_delivery', array('product' => $product->id)) ?>">
             <h4>Как получить заказ?</h4>
             <ul>
                 <li>
