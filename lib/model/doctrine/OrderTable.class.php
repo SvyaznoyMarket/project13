@@ -21,36 +21,37 @@ class OrderTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'                    => 'core_id',
-      'number'                => 'number',
-      'is_legal'              => 'is_legal',
-      'last_name'             => 'recipient_last_name',
-      'first_name'            => 'recipient_first_name',
-      'middle_name'           => 'recipient_middle_name',
-      'mobile'                => 'recipient_phonenumbers',
-      'is_receive_sms'        => 'is_receive_sms',
-      'payment_status_id'     => 'payment_status_id',
-      'payment_detail'        => 'payment_details',
-      'sum'                   => 'sum',
-      'is_delivery'           => 'is_delivery',
-      'delivery_date'         => 'delivered_at',
-      'address'               => 'address',
-      'zip_code'              => 'zip_code',
-      'is_gift'               => 'is_gift',
-      'extra'                 => 'extra',
-      'ip'                    => 'ip',
-      'is_paid_delivery'      => 'is_paid_delivery',
-      'store_id'              => 'store_id',
-      'added'                 => 'core_created_at',
+      'id' => 'core_id',
+      'number' => 'number',
+      'is_legal' => 'is_legal',
+      'last_name' => 'recipient_last_name',
+      'first_name' => 'recipient_first_name',
+      'middle_name' => 'recipient_middle_name',
+      'mobile' => 'recipient_phonenumbers',
+      'is_receive_sms' => 'is_receive_sms',
+      'payment_status_id' => 'payment_status_id',
+      'payment_detail' => 'payment_details',
+      'sum' => 'sum',
+      'is_delivery' => 'is_delivery',
+      'delivery_date' => 'delivered_at',
+      'address' => 'address',
+      'zip_code' => 'zip_code',
+      'is_gift' => 'is_gift',
+      'extra' => 'extra',
+      'ip' => 'ip',
+      'is_paid_delivery' => 'is_paid_delivery',
+      'store_id' => 'store_id',
+      'added' => 'core_created_at',
 
-      'user_id'               => array('rel' => 'User'),
-      'status_id'             => array('rel' => 'Status'),
-      'payment_id'            => array('rel' => 'PaymentMethod'),
-      'geo_id'                => array('rel' => 'Region'),
-      'delivery_interval_id'  => 'delivery_period_id',
-      'delivery_type_id'      => array('rel' => 'DeliveryType'),
-      'address_id'            => array('rel' => 'UserAddress'),
-      'shop_id'               => array('rel' => 'Shop'),
+      'user_id' => array('rel' => 'User'),
+      'status_id' => array('rel' => 'Status'),
+      'payment_id' => array('rel' => 'PaymentMethod'),
+      'geo_id' => array('rel' => 'Region'),
+      'delivery_interval_id' => 'delivery_period_id',
+      'delivery_type_id' => array('rel' => 'DeliveryType'),
+      'address_id' => array('rel' => 'UserAddress'),
+      'shop_id' => array('rel' => 'Shop'),
+      'svyaznoy_club_card_number' => 'sclub_card_number',
 //      'product'               => array('rel' => 'Product'),
     );
   }
@@ -68,11 +69,9 @@ class OrderTable extends myDoctrineTable
 
     $q = $this->createQuery('order');
 
-    if ($params['with_products'])
-    {
+    if ($params['with_products']) {
       $q->leftJoin('order.ProductRelation orderProductRelation')
-        ->addOrderBy('orderProductRelation.position')
-      ;
+        ->addOrderBy('orderProductRelation.position');
     }
 
     return $q;
@@ -93,8 +92,7 @@ class OrderTable extends myDoctrineTable
 
     $list = $q->execute();
     // TODO: сделать загрузку продуктов до цикла
-    if ($params['with_products'])
-    {
+    if ($params['with_products']) {
       $productIds = array();
       foreach ($list as $i => $record)
       {
@@ -115,12 +113,11 @@ class OrderTable extends myDoctrineTable
           }
           catch (Exception $e)
           {
-            
+
           }
         }
 
-        if (is_array($record))
-        {
+        if (is_array($record)) {
           $list[$i] = $record;
         }
       }
@@ -152,8 +149,7 @@ class OrderTable extends myDoctrineTable
     $q = $this->createBaseQuery($params);
 
     $q->addWhere('order.user_id = ?', $user_id)
-      ->orderBy('delivered_at DESC')
-    ;
+      ->orderBy('delivered_at DESC');
 
     $this->setQueryParameters($q, $params);
 

@@ -46,6 +46,7 @@ class pageComponents extends myComponents
           array('token' => 'we'),
           array('token' => 'mission'),
           array('token' => 'press'),
+          array('token' => 'release'),
           array('token' => 'callback', 'url' => 'callback', 'name' => 'Обратная связь'),
           array('token' => 'for_renter'),
         ),
@@ -68,6 +69,14 @@ class pageComponents extends myComponents
       ),
     );
 
+    //берем рутовую страницу
+    if ($this->page->level > 0) {
+      $q = PageTable::getInstance()->createBaseQuery()
+        ->addWhere('page.root_id = ? AND page.level = ?', array($this->page['root_id'], 0))
+        ->limit(1);
+      $rootPage = $q->fetchOne();
+    }
+
     foreach ($list as &$item)
     {
       foreach ($item['links'] as &$link)
@@ -78,6 +87,11 @@ class pageComponents extends myComponents
         else {
           $link['name'] = $page->name . (isset($link['add_to_name']) ? $link['add_to_name'] : '');
           $link['url'] = $this->generateUrl('default_show', array('page' => $page->token));
+
+          //если меню и текущая страница или рутовая страница совпадают, будем выделять в меню
+          if ((isset($rootPage) && $page['token'] == $rootPage['token']) || $this->page['token'] == $page['token']) {
+            $link['is_selected'] = true;
+          }
         }
       }
       if (isset($link)) unset($link);

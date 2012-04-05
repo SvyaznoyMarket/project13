@@ -240,7 +240,7 @@ class ProductFactory
       if (!isset($queryResult['result'])) {
         continue;
       }
-      foreach ($queryResult['result'] as $itemKey => $itemData) {
+      foreach ($queryResult['result']['result'] as $itemKey => $itemData) {
         if ($queryResult['action'] == 'product/get-delivery') {
           $productsBaseData[$itemKey]['delivery'] = $itemData;
         } elseif (!isset($productsBaseData[$itemKey])) {
@@ -250,11 +250,11 @@ class ProductFactory
         }
       }
     }
-    if (isset($productsBaseData['result'])) {
+    if (!count($productsBaseData)) {
       throw new ErrorException('Товар не найден');
     }
-    //print_r($productsBaseData);
-    //die();
+    //        print_r($productsBaseData);
+    //        die();
     return $productsBaseData;
 
   }

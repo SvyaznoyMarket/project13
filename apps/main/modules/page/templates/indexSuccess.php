@@ -8,6 +8,6 @@
 
 <?php if ($page->has_menu) slot('left_column', get_component('page', 'menu', array('page' => $page))) ?>
 
-<?php if (in_array($page->id, array(73,))) slot('page_breadcrumbs', get_component('page', 'breadcrumbs', array('page' => $page, 'addToBreadcrumbs' => array(array('name' => $page->name,),),))) ?>
+<?php slot('page_breadcrumbs', get_component('page', 'breadcrumbs', array('page' => $page, 'addToBreadcrumbs' => $addToBreadcrumbs,))) ?>
 
 <?php echo $page['content'] ?>

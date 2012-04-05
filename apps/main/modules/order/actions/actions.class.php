@@ -307,7 +307,12 @@ class orderActions extends myActions
     $renderers = array(
       'delivery_period_id' => function($form)
       {
-        return myToolkit::arrayDeepMerge(array('' => ''), $form['delivery_period_id']->getWidget()->getChoices());
+        $r = myToolkit::arrayDeepMerge(array('' => ''), $form['delivery_period_id']->getWidget()->getChoices());
+        $res = array();
+        foreach ($r as $k => $v) {
+          $res[] = array($k, $v);
+        }
+        return $res;
       },
       'delivered_at' => function($form)
       {

@@ -30,7 +30,7 @@ all:
     max_items_on_category:  18                      # максимально количество записей для списка товаров в категории
     comment_helpful_cookie: product_comment_helpful
     photo_url:
-      - 'http://fs01.enter.ru/1/1/60/'
+      - 'http://fs01.enter.ru/1/1/40/'
       - 'http://fs01.enter.ru/1/1/120/'
       - 'http://fs01.enter.ru/1/1/163/'
       - 'http://fs01.enter.ru/1/1/500/'
@@ -79,11 +79,11 @@ all:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
-      userapi_url: 'http://core.ent3.ru/v2/'
-      client_id: 1
-      consumer_key: test # v1
-      signature: test # v1
+      api_url: 'http://test2.ent3.ru/v1/json'
+      userapi_url: 'http://test2.ent3.ru/v2/'
+      client_code: site
+      consumer_key: test
+      signature: test
       log_enabled: true
       log_file: %SF_LOG_DIR%/core_client_2.log
       log_response: false # логировать ответ
@@ -264,7 +264,7 @@ alpha:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
+      api_url: 'http://core.my/v1/json'
       consumer_key: test
       signature: test
 

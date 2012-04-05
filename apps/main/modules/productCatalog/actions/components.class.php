@@ -177,7 +177,7 @@ class productCatalogComponents extends myComponents
         'productCategory' => $this->productCategory,
         'creator' => $this->creator,
         'is_root' => isset($this->is_root) ? $this->is_root : false,
-        'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),
+        'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel',)),
       ));
     }
 
@@ -425,7 +425,7 @@ class productCatalogComponents extends myComponents
       $this->form = new myProductTagFormFilter(array(), array(
         'productCategory' => $this->productCategory,
         'creator' => $this->creator,
-        'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),
+        'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel',)),
       ));
     }
 

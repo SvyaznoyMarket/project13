@@ -24,9 +24,18 @@ foreach ($p3d as $p3d_obj)
   product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
   product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
 </script>
-<div class="goodsphoto"><!--i class="bestseller"></i--><a href="<?php echo $product->getMainPhotoUrl(4)  ?>"
-                                                          class="viewme" ref="image" onclick="return false"><img
-  src="<?php echo $product->getMainPhotoUrl(3) ?>" alt="" width="500" height="500" title=""/></a></div>
+<div class="goodsphoto">
+  <a href="<?php echo $product->getMainPhotoUrl(4)  ?>" class="viewme" ref="image" onclick="return false">
+    <?php
+    if ($product->label): ?>
+      <?php foreach ($product->label as $label): ?>
+        <img class="bLabels" src="<?php echo $product->getLabelUrl($label['media_image'], 1) ?>"
+             alt="<?php echo $label['name'] ?>"/>
+        <?php endforeach ?>
+      <?php endif ?>
+    <img src="<?php echo $product->getMainPhotoUrl(3) ?>" alt="" width="500" height="500" title=""/>
+  </a>
+</div>
 <div style="display:none;" id="stock">
   <!-- list of images 500*500 for preview -->
   <?php foreach ($photos as $i => $photo): ?>
@@ -40,7 +49,7 @@ foreach ($p3d as $p3d_obj)
   <div class="bGood__eArticle">
     <div class="fr">
           <span id="rating"
-                data-url="<?php //echo url_for('userProductRating_createtotal', array('rating' => 'score', 'sf_subject' => $product )) ?>"<?php //if ($item['rated']) echo ' data-readonly="true"' ?>>
+                data-url="<?php echo url_for('userProductRating_createtotal', array('rating' => 'score', 'product' => $product->id)) ?>"<?php //if ($item['rated']) echo ' data-readonly="true"' ?>>
             <?php
             echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;"></span>', round($product->rating));
             echo str_repeat('<span class="ratingview" style="width:13px;vertical-align:middle;display:inline-block;background-position:-51px 0;"></span>', 5 - round($product->rating));
@@ -58,6 +67,14 @@ foreach ($p3d as $p3d_obj)
   <div class="font14 pb15"><?php echo $product->preview ?></div>
   <div class="clear"></div>
 
+  <?php if (!empty($product->label) && $product->price_average > 0 && $product->price < $product->price_average): ?>
+  <div class="mOurGray">Цена не у
+    нас<br><?php include_partial('product/price', array('price' => $product->price_average, 'noStrong' => true,)) ?>
+  </div>
+  <div class="clear"></div>
+  <div class="clear mOur pt10">Наша цена</div>
+  <?php endif ?>
+
   <div class="fl pb15">
     <div
       class="pb10"><?php include_partial('productSoa/price', array('price' => $product->getFormattedPrice())) ?></div>
@@ -66,8 +83,7 @@ foreach ($p3d as $p3d_obj)
     <?php endif ?>
   </div>
   <div class="fr ar pb15">
-    <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->token ?>"
-         data-value='<?php echo json_encode($json) ?>'>
+    <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->id ?>" data-value='<?php echo json_encode($json) ?>'>
 
       <div class='bCountSet'>
         <?php if (!$product->cart_quantity): ?>
@@ -80,7 +96,7 @@ foreach ($p3d as $p3d_obj)
 
       <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1)) ?>
     </div>
-    <?php if ($product->is_insale && $sf_user->getRegion('region')->is_default): ?>
+    <?php if (false && $product->is_insale && $sf_user->getRegion('region')->is_default): ?>
     <div class="pb5"><strong><a onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);"
                                 href="<?php echo url_for('order_1click', array('product' => $product->barcode)) ?>"
                                 class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>

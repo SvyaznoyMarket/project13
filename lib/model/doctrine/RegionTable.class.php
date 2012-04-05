@@ -21,9 +21,9 @@ class RegionTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'        => 'core_id',
+      'id' => 'core_id',
       'parent_id' => 'core_parent_id',
-      'name'      => 'name',
+      'name' => 'name',
       'is_active' => 'is_active',
     );
   }
@@ -53,16 +53,13 @@ class RegionTable extends myDoctrineTable
     $key = $this->getQueryHash('region-default', $params);
 
     $return = $this->getCachedByKey($key);
-    if (!$return)
-    {
+    if (!$return) {
       $return = $this->createBaseQuery()
-        ->where('region.is_default = true')
+        ->where('region.is_default = ?', true)
         ->addWhere('region.type = ?', 'city')
-        ->fetchOne()
-      ;
+        ->fetchOne();
 
-      if ($this->isCacheEnabled())
-      {
+      if ($this->isCacheEnabled()) {
         $this->getCache()->set($key, $return, 2592000); // обновление кеша через 30 дней
       }
     }
@@ -75,12 +72,10 @@ class RegionTable extends myDoctrineTable
     $key = $this->getQueryHash("region-{$record['id']}/parent", $params);
 
     $return = $this->getCachedByKey($key);
-    if (!$return)
-    {
+    if (!$return) {
       $return = $record->getNode()->getParent();
 
-      if ($this->isCacheEnabled())
-      {
+      if ($this->isCacheEnabled()) {
         $this->getCache()->set($key, $return, 151200); // обновление кеша через неделю
         $this->getCache()->addTag("region-{$record['id']}", $key);
       }
@@ -98,8 +93,7 @@ class RegionTable extends myDoctrineTable
     $q->select('region.product_price_list_id, region.stock_id, region.token, region.name, region.type, COUNT(shop.id) AS shop_count')
       ->innerJoin('region.Shop shop WITH shop.is_active = ?', 1)
       ->groupBy('region.product_price_list_id, region.stock_id, region.token, region.name, region.type')
-      ->having('COUNT(shop.id) > 0')
-    ;
+      ->having('COUNT(shop.id) > 0');
 
     $this->setQueryParameters($q, $params);
 
@@ -115,8 +109,7 @@ class RegionTable extends myDoctrineTable
     $key = $this->getQueryHash('region-cityList', $params);
 
     $return = $this->getCachedByKey($key);
-    if (!$return)
-    {
+    if (!$return) {
       $q = $this->createBaseQuery($params);
 
       $q->addWhere('region.type = ?', 'city');
@@ -126,8 +119,7 @@ class RegionTable extends myDoctrineTable
       $this->setQueryParameters($q, $params);
 
       $return = $q->execute();
-      if ($this->isCacheEnabled())
-      {
+      if ($this->isCacheEnabled()) {
         $this->getCache()->set($key, $return, 259200); // обновить кеш через 3 дня
       }
     }
@@ -143,15 +135,15 @@ class RegionTable extends myDoctrineTable
       'д' => array(), // дательный
       'в' => array(), // винительный
       'т' => array(), // творительный
-      'п' => array(   // предложный
-        'Москва'          => 'Москве',
+      'п' => array( // предложный
+        'Москва' => 'Москве',
         'Санкт-Петербург' => 'Санкт-Петербурге',
-        'Белгород'        => 'Белгороде',
-        'Липецк'          => 'Липецке',
-        'Ногинск'         => 'Ногинске',
-        'Орел'            => 'Орле',
-        'Рязань'          => 'Рязани',
-        'Сергиев Посад'   => 'Сергиев Посаде',
+        'Белгород' => 'Белгороде',
+        'Липецк' => 'Липецке',
+        'Ногинск' => 'Ногинске',
+        'Орел' => 'Орле',
+        'Рязань' => 'Рязани',
+        'Сергиев Посад' => 'Сергиев Посаде',
       ),
     );
 

@@ -314,6 +314,10 @@ class OrderStep1Form extends BaseOrderForm
     $this->widgetSchema['agreed']->setLabel('Я ознакомлен и согласен с «Условиями продажи» и «Правовой информацией»');
     $this->validatorSchema['agreed'] = new sfValidatorBoolean(array('required' => true), array('required' => 'Пожалуйста, ознакомьтесь с условиями продажи и правовой информацией и поставьте галочку'));
 
+    $this->widgetSchema['sclub_card_number'] = new sfWidgetFormInputText();
+    $this->widgetSchema['sclub_card_number']->setLabel('Номер карточки связного клуба');
+    $this->validatorSchema['sclub_card_number'] = new myValidatorSClubCardNumber(array('required' => false), array('invalid' => 'номер карточки введен неверно'));
+
     $this->useFields(array(
       'region_id',
       'person_type',
@@ -329,9 +333,10 @@ class OrderStep1Form extends BaseOrderForm
       //'zip_code',
       'address',
       'extra',
+      'sclub_card_number',
       //'recipient_middle_name',
       'payment_method_id',
-      'agreed',
+      'agreed'
     ));
 
     $this->widgetSchema->setNameFormat('order[%s]');
