@@ -119,6 +119,7 @@ class order_Actions extends myActions
       'product' => $productsInCart,
       'service' => $servicesInCart,
     ));
+    //myDebug::dump($result, 1);
     if (!$result)
     {
       $this->getLogger()->err('{Order} calculate: empty response from core');
@@ -271,10 +272,19 @@ class order_Actions extends myActions
           $deliveryView->token = $deliveryToken;
           $deliveryView->name = 0 === strpos($deliveryToken, 'self') ? 'В самовывоз' : 'В доставку';
 
-          if (!isset($deliveryData['dates']))
+          // если нет дат для услуг
+          if ($itemView->type == Order_ItemView::TYPE_SERVICE)
           {
             $deliveryData['dates'] = array();
+            $now = time();
+            $time = $time = strtotime("+1 day", $now);
+            foreach (range(1, 7 * 4) as $i)
+            {
+              $deliveryData['dates'][] = array('date' => date('Y-m-d', $time), 'interval' => array());
+              $time = strtotime("+1 day", $time);
+            }
           }
+
           foreach ($deliveryData['dates'] as $dateData)
           {
             $dateView = new Order_DateView();

@@ -558,7 +558,7 @@ $(document).ready(function() {
             var intervals = DeliveryMap.getDeliveryInterval(deliveryType, date)
             var interval = Object.keys(intervals).shift()
             data.deliveryTypes[deliveryTypeToken].interval = interval
-            displayInterval = 'с '+intervals[interval].start_at+' по '+intervals[interval].end_at
+            displayInterval = intervals[interval] ? ('с '+intervals[interval].start_at+' по '+intervals[interval].end_at) : ''
             deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
                 Templating.assign($(el), { displayInterval: displayInterval })
             })
