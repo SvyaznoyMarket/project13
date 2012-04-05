@@ -121,6 +121,15 @@ productCardOld:
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
+
+# карточка товара. использует новый API
+productCard:
+  url:   /product/:product
+  param: { module: productCardSoa, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 # карточка товара. использует новый API
 productCardSoa:
   url:   /product/:product
