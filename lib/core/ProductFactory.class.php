@@ -13,6 +13,8 @@ class ProductFactory
 
     const LABEL_SALE = 1;
 
+    const MIN_SERVICE_BUY_PRICE = 950;
+
     /**
      * Количество связанных продуктов и аксессуаров, которые загружаем вместе с продуктом сразу
      * @var int
@@ -83,7 +85,11 @@ class ProductFactory
         if ($product->service) {
             $serviceIdList = array();
             foreach ($product->service as & $service) {
-                $service['priceFormatted'] = ProductSoa::priceFormat($service['price']);
+                if ($service['price'] < 1) {
+                    $service['priceFormatted'] = 'бесплатно';
+                } else {
+                    $service['priceFormatted'] = ProductSoa::priceFormat($service['price']);
+                }
                 $serviceIdList[] = $service['id'];
             }
             //временно! получаем старые сайтвоый token услуг. Чтобы сгенерировать ссылки на них.
@@ -93,11 +99,19 @@ class ProductFactory
                 foreach ($product->service as & $service) {
                     if ($siteSevice['core_id'] == $service['id']) {
                         $service['site_token'] = $siteSevice['token'];
+                        $service['only_inshop'] = $siteSevice['only_inshop'];
+                        if (!$service['only_inshop'] && $service['price'] && $service['price'] >= self::MIN_SERVICE_BUY_PRICE) {
+                            $service['in_sale'] = true;
+                        } else {
+                            $service['in_sale'] = false;
+                        }
                         break;
                     }
                 }
             }
         }
+//        print_r($product->service);
+//        die();
 
     }
 
