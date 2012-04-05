@@ -106,23 +106,47 @@ class productCatalog_Actions extends myActions
     $currentCategory = $currentCategory->getNode($requestCategory->core_id);
 
     $productFilter = $this->getProductFilter($request);
+    $maxPerPage = 3;
     $viewList = RepositoryManager::getProductCategoryTagView()->getListByCategory(
       $currentCategory->getChildren(),
-      $productFilter->getCoreProductFilter(),
+      $productFilter->getCoreProductFilter(false),
       array(),
       0,
-      6
+      $maxPerPage * 2
     );
 
+    $this->setVar('maxPerPage', $maxPerPage);
     $this->setVar('categoryTree', $categoryTree);
     $this->setVar('categoryTagList', $viewList);
     $this->setVar('productFilter', $productFilter);
   }
 
+  public function executeCarousel(sfWebRequest $request)
+  {
+    $this->setLayout(false);
+    $productCategory = $this->getProductCategory($request, false);
+    $page = (int)$request->getParameter('page', 1);
+    $limit = (int)$request->getParameter('limit', 3);
+    $limit = max(min($limit, 27), 3);
+
+    $productFilter = $this->getProductFilter($request);
+    $productPager = new ProductCorePager($limit);
+    $productPager->setProductFilter($productFilter);
+    $productPager->setPage($page);
+    $productPager->init();
+
+    foreach ($productPager->getResults() as $item)
+    {
+      $this->renderPartial('show_', array('view' => $productCategory->has_line ? 'line' : 'compact', 'item' => $item));
+    }
+
+    return sfView::NONE;
+  }
+
   public function executeCount(sfWebRequest $request)
   {
-    $productCategory = $this->getProductCategory($request);
-    if ($productCategory->hasChildren())
+    $productCategory = $this->getProductCategory($request, false);
+    if ($productCategory->isRoot())
       $this->forward('productCatalog', 'count');
 
     $productFilter = $this->getProductFilter($request);
@@ -207,7 +231,7 @@ class productCatalog_Actions extends myActions
     $productPagerTimer->addTime();
     $loadListTimer->addTime();
 
-    $category = $this->getProductCategory($request);
+    $category = $this->getProductCategory($request, false);
     $categoryTree = RepositoryManager::getProductCategory()->getTree(
       $category->hasChildren() ? $category->core_id : $category->core_parent_id,
       $category->level + 1,
@@ -219,7 +243,7 @@ class productCatalog_Actions extends myActions
     sfContext::getInstance()->getLogger()->info('$productPagerTimer at ' . $productPagerTimer->getElapsedTime());
     sfContext::getInstance()->getLogger()->info('$loadListTimer at ' . $loadListTimer->getElapsedTime());
 
-    $this->setVar('view', $request->getParameter('view', $this->getProductCategory($request)->product_view));
+    $this->setVar('view', $request->getParameter('view', $category->product_view));
     $this->setVar("productFilter", $productFilter);
     $this->setVar("productSorting", $productSorting);
     $this->setVar('noInfinity', true);
@@ -232,7 +256,7 @@ class productCatalog_Actions extends myActions
 
   private function getProductFilter(sfWebRequest $request)
   {
-    $productFilter = new ProductCoreFormFilterSimple($this->getProductCategory($request));
+    $productFilter = new ProductCoreFormFilterSimple($this->getProductCategory($request, false));
     $productFilter->setValues($request->getParameter($productFilter->getName(), array()));
     return $productFilter;
   }
@@ -270,10 +294,11 @@ class productCatalog_Actions extends myActions
 
   /**
    * @param sfWebRequest $request
+   * @param bool $checkRedirect
    * @return ProductCategory
    * @throws sfException
    */
-  private function oldUrlRedirect(sfWebRequest $request)
+  private function oldUrlRedirect(sfWebRequest $request, $checkRedirect = true)
   {
     try
     {
@@ -283,12 +308,13 @@ class productCatalog_Actions extends myActions
       $productCategory = $route->getObject();
 
       // 301-й редирект. Можно удалить 01.02.2012
-      if (false === strpos($request['productCategory'], '/')) {
-        if (!empty($productCategory->token_prefix)) {
-          $this->redirect('productCatalog__category', $productCategory, 301);
+      if ($checkRedirect) {
+        if (false === strpos($request['productCategory'], '/')) {
+          if (!empty($productCategory->token_prefix)) {
+            $this->redirect('productCatalog__category', $productCategory, 301);
+          }
         }
       }
-
       return $productCategory;
     }
     catch (sfError404Exception $e)
@@ -301,12 +327,13 @@ class productCatalog_Actions extends myActions
 
   /**
    * @param $request
+   * @param bool $checkRedirect
    * @return ProductCategory
    */
-  private function getProductCategory($request)
+  private function getProductCategory($request, $checkRedirect = true)
   {
     if (!$this->productCategoryCache) {
-      $this->productCategoryCache = $this->oldUrlRedirect($request);
+      $this->productCategoryCache = $this->oldUrlRedirect($request, $checkRedirect);
       $this->setVar('productCategory', $this->productCategoryCache);
     }
     return $this->productCategoryCache;
@@ -439,16 +466,17 @@ class ProductCoreFormFilterSimple
 
   /**
    * Mapper from current front-end listing filter to core listing filter API
+   * @param bool $useCategoryFilter
    * @return array
    */
-  public function getCoreProductFilter()
+  public function getCoreProductFilter($useCategoryFilter = true)
   {
     $filters = array(
       array('is_view_list', 1, array(true)),
       array('is_model', 1, array(true)),
     );
 
-    if ($this->productCategory) {
+    if ($this->productCategory && $useCategoryFilter) {
       $filters[] = array('category', 1, $this->productCategory->core_id);
     }
 

@@ -29,28 +29,47 @@ class ListingRepository
   }
 
   /**
-   * @param callback $callback First parameter:
+   *
+   * @param array $filterList
    * <pre>
-   * array(
-   *  "list" => array(1,2,3,4,5),
-   *  "count" => 134,
-   * );
+   * [
+   *    {
+   *        limit: 10, // optional
+   *        offset: 20, // optional
+   *        filters: [   // optional
+   *            // property name, filter type range, min, max, is filter exclude
+   *            [id, 2, 199, 1000, true],
+   *            // property name, filter type values, list of values, is filter exclude
+   *            [category, 1, [1,2,3,4], false],
+   *            [brand, 1, [1]],
+   *            [price, 2, 1000, 10000],
+   *            [tag, 1, [44]],
+   *            // some additional property
+   *            // property id, filter type range, min, max, is filter exclude
+   *            [1, 2, 10, 1999],
+   *            // property name, filter type values, list of values, is filter exclude
+   *            [2, 1, ["foo"]],
+   *        ],
+   *        sort: {id: "desc"},  // optional
+   *    }
+   * ]
    * </pre>
-   * @param array $filters
-   * @param array $sort
-   * @param null $offset
-   * @param null $limit
+   * @return array
+   * <pre>
+   * [
+   *    {
+   *        list: [1,2,3,4,5],
+   *        count: 134,
+   *    },
+   *    ... // another answers
+   * ];
+   * </pre>
    */
-  public function getListingAsync($callback, $filters = array(), $sort = array(), $offset = null, $limit = null)
+  public function getListingMultiple($filterList = array())
   {
-    CoreClient::getInstance()->addQuery("listing.list", $query = array(
-      "filter" => array(
-        'filters' => $filters,
-        'sort' => $sort,
-        'offset' => $offset,
-        'limit' => $limit,
-      ),
+    return CoreClient::getInstance()->query("listing.multilist", $query = array(
+      "filter_list" => $filterList,
       "region_id" => RepositoryManager::getRegion()->getDefaultRegionId(),
-    ), array(), $callback);
+    ));
   }
 }

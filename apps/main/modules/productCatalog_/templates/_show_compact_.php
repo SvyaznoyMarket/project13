@@ -5,7 +5,7 @@
  * @var ProductEntity $item
  */
 ?>
-<div class="goodsbox"<?php echo (isset($ii) && ($ii > $maxPerPage)) ? ' style="display:none;"' : '' ?>>
+<div class="goodsbox"<?php echo (isset($ii, $maxPerPage) && ($ii > $maxPerPage)) ? ' style="display:none;"' : '' ?>>
 
   <div class="photo">
     <a href="<?php echo $item->getLink() ?>">

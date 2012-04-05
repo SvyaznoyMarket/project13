@@ -8,6 +8,9 @@ class ProductCategoryTagView
   public $productList;
   /** @var int */
   public $productCount;
-  /** @var string */
-  public $dataUrl;
+
+  public function getDataUrl()
+  {
+    return url_for('productCatalog__carousel', array('productCategory' => $this->category->getToken()));
+  }
 }

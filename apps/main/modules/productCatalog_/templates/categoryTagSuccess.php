@@ -5,6 +5,7 @@
  * @var $categoryTree
  * @var $categoryTagList
  * @var $productFilter
+ * @var $maxPerPage
  */
 ?>
 <?php slot('title', $productCategory) ?>

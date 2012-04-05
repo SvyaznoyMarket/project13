@@ -151,7 +151,7 @@ productCatalog_carousel:
 # карусель ajax
 productCatalog__carousel:
   url:   /catalog_core/:productCategory/_carousel
-  param: { module: productCategoryCore, action: carousel}
+  param: { module: productCatalog_, action: carousel}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
