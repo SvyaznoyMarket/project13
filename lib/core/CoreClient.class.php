@@ -172,7 +172,7 @@ class CoreClient
 
     $query = $this->parameters->get('userapi_url')
       . str_replace('.', '/', $action)
-      . '?' . http_build_query(array_merge($params, array('client_id' => $this->parameters->get('client_id'))));
+      . '?' . http_build_query(array_merge($params, array('client_id' => $this->parameters->get('client_code'))));
 
     if ($this->parameters->get('log_enabled')) {
       $this->logger->info('Send core requset ' . ($isPostMethod ? 'post' : 'get') . ': ' . $query);
