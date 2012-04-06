@@ -176,6 +176,8 @@ class CoreClient
 
     if ($this->parameters->get('log_enabled')) {
       $this->logger->info('Send core requset ' . ($isPostMethod ? 'post' : 'get') . ': ' . $query);
+      if ($data)
+        $this->logger->info('Request post:' . $this->encode($data));
     }
 
     $connection = curl_init();
@@ -185,7 +187,7 @@ class CoreClient
 
     if ($isPostMethod) {
       curl_setopt($connection, CURLOPT_POST, true);
-      curl_setopt($connection, CURLOPT_POSTFIELDS, $data);
+      curl_setopt($connection, CURLOPT_POSTFIELDS, http_build_query($data));
     }
     return $connection;
   }
