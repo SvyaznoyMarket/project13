@@ -254,7 +254,7 @@ class ProductFactory
         $core->resetData();
         $core->prepareDataForStatic($data);
         $region = sfContext::getInstance()->getUser()->getRegion();
-        $data['geo_id'] = $region['id'];
+        $data['geo_id'] = $region['core_id'];
         $core->prepareDataForDynamic($data);
         if ($getDelivery) {
             //доставки через новый API пока не загружаем!!! 1С к этому не готов
