@@ -67,7 +67,7 @@ class ListingRepository
    */
   public function getListingMultiple($filterList = array())
   {
-    return CoreClient::getInstance()->query("listing.multilist", $query = array(
+    return CoreClient::getInstance()->query("listing.multilist", array(), array(
       "filter_list" => $filterList,
       "region_id" => RepositoryManager::getRegion()->getDefaultRegionId(),
     ));
