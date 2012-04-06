@@ -905,10 +905,17 @@ class ProductTable extends myDoctrineTable
       }
 
       if (is_object($record) && in_array(get_class($record), array('Poduct', 'ProductSoa'))) {
-          foreach ($record['Category'] as $productCategory)
-          {
+	      if(get_class($record) == 'Poduct'){
+		      foreach ($record['Category'] as $productCategory)
+		      {
+			      $return[] = "productCategory-{$productCategory['core_id']}-";
+		      }
+	      }
+        elseif(isset($record->Category) && is_array($record->Category)){
+          foreach($record->Category as $productCategory){
             $return[] = "productCategory-{$productCategory['core_id']}-";
           }
+        }
       }
     }
 
