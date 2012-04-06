@@ -1,5 +1,5 @@
 <dl class='bBuyingLine'>
-  <dt>Ваш город:</dt>
+  <dt>Ваш город</dt>
   <dd>
     <input type="hidden" name="<?php echo $name?>" value="<?php echo $value ?>" />
     <div>

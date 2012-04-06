@@ -34,7 +34,7 @@
     <dl class='bBuyingLine mSumm order-total-container'>
       <dt><a href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
       <dd>
-        <div>Сумма всех заказов: <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
+        <div>Сумма всех заказов <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
       </dd>
     </dl>
 
@@ -43,7 +43,7 @@
 
       <dl class='bBuyingLine'>
 
-        <dt>Имя и Фамилия получателя*:</dt>
+        <dt>Имя и Фамилия получателя*</dt>
         <dd>
           <div>
             <p></p>
@@ -53,7 +53,7 @@
       </dl>
 
       <dl class='bBuyingLine'>
-        <dt>Телефон для связи*:</dt>
+        <dt>Телефон для связи*</dt>
         <dd>
 
             <p></p>
@@ -70,7 +70,7 @@
 
 
       <dl class='bBuyingLine' id="addressField">
-        <dt>Адрес доставки*:</dt>
+        <dt>Адрес доставки*</dt>
         <dd>
           <div>
             <p></p>
@@ -92,6 +92,17 @@
       </dl>
 
       <h2>Об оплате</h2>
+
+      <dl class='bBuyingLine' id="addressField">
+        <dt>У вас есть карта "Связной-Клуб"?</dt>
+        <dd>
+          <div>
+            <p></p>
+            <?php echo $form['sclub_card_number']->render(array('class' => 'bBuyingLine__eText mInputLong')) ?>
+            <i class='mILong' style="white-space: nowrap;">Введите без пробелов 16 цифр с лицевой стороны карты Связной-Клуб.</i>
+          </div>
+        </dd>
+      </dl>
 
       <?php echo $form['payment_method_id'] ?>
 

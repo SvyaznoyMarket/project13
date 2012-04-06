@@ -1,5 +1,5 @@
 <dl class='bBuyingLine'>
-  <dt>Выберите удобный для вас способ:</dt>
+  <dt>Выберите удобный для вас способ*</dt>
 
   <dd>
   <?php foreach ($choices as $k => $v): ?>

@@ -64,6 +64,11 @@ class OrderDefaultForm extends BaseOrderForm
     $this->validatorSchema['extra'] = new sfValidatorString(array('required' => false));
     $this->widgetSchema['extra']->setLabel('Комментарии:');
 
+    // sclub_card_number
+    $this->widgetSchema['sclub_card_number'] = new sfWidgetFormInputText();
+    $this->widgetSchema['sclub_card_number']->setLabel('Номер карточки связного клуба');
+    $this->validatorSchema['sclub_card_number'] = new myValidatorSClubCardNumber(array('required' => false), array('invalid' => 'номер карточки введен неверно'));
+
     // payment_method_id
     $choices = array();
     $this->widgetSchema['payment_method_id'] = new myWidgetFormComponent(array(
@@ -87,6 +92,7 @@ class OrderDefaultForm extends BaseOrderForm
       'is_receive_sms',
       'address',
       'extra',
+      'sclub_card_number',
       'payment_method_id',
       'agreed',
     ));

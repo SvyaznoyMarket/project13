@@ -1,5 +1,5 @@
 <dl class='bBuyingLine'>
-  <dt>Выберите предпочтительный способ:</dt>
+  <dt>Выберите предпочтительный способ</dt>
   <dd>
     <?php foreach ($sf_data->getRaw('choices') as $k => $v): ?>
       <div>
