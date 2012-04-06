@@ -718,30 +718,56 @@ $(document).ready(function() {
         form.find('.mRed').removeClass('mRed')
         form.find('.bFormError').remove()
 
-        var data = form.serializeArray()
-
         var hasError = false
         $.each(validator, function(field, message) {
-            var fieldEl = form.find('[name="'+field+'"]:visible:first')
+            var el = form.find('[name="'+field+'"]:visible')
 
-            if (
-                !fieldEl.val()
-                || ((fieldEl.is(':checkbox') || fieldEl.is(':radio')) && !fieldEl.attr('checked'))
-            ) {
-                //console.info(fieldEl)
-                fieldEl.addClass('mRed')
-                fieldEl.after( '<span class="bFormError mb10 pt5">'+message+'</span>' )
+            // если группа радио и не выбрано ни одного
+            if (el.is(':radio') && !el.is(':checked') && (el.length > 1)) {
                 hasError = true
+                showError(el.first().parent().parent(), message, false)
             }
+            // если чекбокс и не выбран
+            else if (el.is(':checkbox') && !el.is(':checked') && (el.length == 1)) {
+                hasError = true
+                showError(el.first().parent().parent(), message, false)
+            }
+            else if (el.is(':text') && !el.val()) {
+                hasError = true
+                showError(el, message, true)
+            }
+
         })
 
         if (hasError) {
-            $.scrollTo('.mRed:first', 300)
+            $.scrollTo('.bFormError:first', 300)
+        }
+        else {
+            var data = form.serializeArray()
+            data.push({ name: 'delivery_map', value: JSON.stringify(DeliveryMap.data()) })
+
+            $.ajax({
+                url: form.attr('action'),
+                timeout: 60000,
+                async: false,
+                type: 'POST',
+                data: data,
+                success: function(result) {
+                    console.info(result)
+                }
+            })
         }
     })
 
 })
 
+
+function showError(el, message, border) {
+    if (border) {
+        el.addClass('mRed')
+    }
+    el.before( '<span class="bFormError mb10 pt5">'+message+'</span>' )
+}
 
 
 function array_intersect(arr1) {

@@ -83,7 +83,54 @@ class order_Actions extends myActions
     /* @var myUser */
     $user = $this->getUser();
 
+    $result = array('success' => false);
 
+    $form = $this->getOrderForm($this->order);
+    $form->bind($request->getParameter($form->getName()));
+    if ($form->isValid())
+    {
+      $baseOrder = $form->updateObject();
+
+      $deliveryMap = json_decode($request['delivery_map'], true);
+      try {
+        $this->saveOrder($baseOrder, $deliveryMap);
+
+        $result = array_merge($result, array(
+          'success'  => true,
+          'redirect' => $this->generateUrl('order_complete'),
+        ));
+      }
+      catch (Exception $e) {
+        $result = array_merge($result, array(
+          'success' => false,
+          'error'   => array(
+            'code'    => 'create',
+            'message' => sfConfig::get('sf_web_debug') ? $e->getMessage() : 'При создании заказа возникли проблемы',
+          ),
+        ));
+      }
+    }
+    else {
+      $errors = array();
+      foreach($form->getWidgetSchema()->getPositions() as $widgetName)
+      {
+        if ($form[$widgetName]->hasError())
+        {
+          $errors[$form[$widgetName]->renderName()] = $form[$widgetName]->getError()->getMessageFormat();
+        }
+      }
+
+      $result = array_merge($result, array(
+        'success' => false,
+        'error'   => array(
+          'code'    => 'invalid',
+          'message' => 'Форма заполнена неверно',
+        ),
+        'errors'  => $errors,
+      ));
+    }
+
+    return $this->renderJson($result);
   }
 
 
@@ -148,6 +195,119 @@ class order_Actions extends myActions
     }
 
     return new OrderDefaultForm($order, array('user' => $this->getUser(), 'regions' => $regions, 'deliveryTypes' => $deliveryTypes));
+  }
+
+  private function saveOrder(Order $baseOrder, $deliveryMap)
+  {
+    $coreClient = CoreClient::getInstance();
+    /* @var myUser */
+    $user = $this->getUser();
+
+    $orders = array();
+    foreach ($deliveryMap['deliveryTypes'] as $deliveryTypeData)
+    {
+      if (empty($deliveryTypeData['items'])) continue;
+
+      $deliveryType = !empty($deliveryTypeData['id']) ? DeliveryTypeTable::getInstance()->getByCoreId($deliveryTypeData['id']) : null;
+      if (!$deliveryType) continue;
+
+      /* @var $order Order */
+      $order = clone $baseOrder;
+
+      $order->delivery_type_id = null;
+      $order->DeliveryType = $deliveryType;
+      $order->User = $user->getGuardUser();
+      $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
+      $order->delivered_at = date_format(new DateTime($deliveryTypeData['date']), 'Y-m-d 00:00:00');
+      if (!empty($deliveryTypeData['interval']))
+      {
+        //$data['interval']
+        //$order->delivery_period_id = $interval;
+      }
+
+      if ('self' == $deliveryType->token)
+      {
+        $shop = !empty($deliveryTypeData['shop']['id']) ? ShopTable::getInstance()->getByCoreId($deliveryTypeData['shop']['id']) : null;
+
+        $order->address = null;
+        $order->shop_id = $shop ? $shop->id : null;
+      }
+      else {
+        $order->shop_id = null;
+      }
+
+      foreach ($deliveryTypeData['items'] as $itemToken)
+      {
+        list($itemType, $itemId) = explode('-', $itemToken);
+        if ('product' == $itemType)
+        {
+          $productId = ProductTable::getInstance()->getIdByCoreId($itemId);
+
+          /* @var $product Product */
+          $product = $user->getCart()->getProduct($productId);
+          if (!$product) continue;
+
+          $relation = new OrderProductRelation();
+          $relation->setProduct($product);
+          $relation->setPrice(ProductTable::getInstance()->getRealPrice($product));
+          $relation->setQuantity($product->cart['quantity']);
+
+          $order->ProductRelation[] = $relation;
+        }
+        if ('service' == $itemType)
+        {
+          $serviceId = ServiceTable::getInstance()->getIdByCoreId($itemId);
+
+          /* @var $service Service */
+          $service = $user->getCart()->getService($serviceId);
+          if (!$service) continue;
+
+          if ($service->cart['quantity'] > 0)
+          {
+            $relation = new OrderServiceRelation();
+            $relation->setService($service);
+            $relation->setPrice($service->price);
+            $relation->setQuantity($service->cart['quantity']);
+
+            $order->ServiceRelation[] = $relation;
+          }
+          if (count($service->cart['product']) > 0)
+          {
+            foreach ($service->cart['product'] as $product_id => $quantity)
+            {
+              if (!$product_id || !$quantity) continue;
+
+              $relation = new OrderServiceRelation();
+              $relation->setService($service);
+              $relation->setProductId($product_id);
+              $relation->setPrice($service->price);
+              $relation->setQuantity($quantity);
+
+              $order->ServiceRelation[] = $relation;
+            }
+          }
+        }
+      }
+
+      $result = $coreClient->query('product.get-delivery-price', array(
+        'geo_id'  => $user->getRegion('core_id'),
+        'id'      => array_map(function($orderProductRelation) { return $orderProductRelation->Product->core_id; }, iterator_to_array($order->ProductRelation)),
+        'mode_id' => $order->DeliveryType->core_id,
+      ));
+      if (!isset($result['result']))
+      {
+        $this->getLogger()->err('{Order} get delivery price: empty response from core');
+      }
+
+      $deliveryPrice = (int)$result['result'];
+      $order->sum = $user->getCart()->getTotalForOrder($order) + $deliveryPrice;
+
+      $orders[] = $order;
+    }
+    //myDebug::dump($orders);
+
+    //$coreData = array_map(function($order) { return $order->exportToCore(); }, $orders);
+    //$response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
   }
 
   /**
