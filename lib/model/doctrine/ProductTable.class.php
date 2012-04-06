@@ -896,13 +896,15 @@ class ProductTable extends myDoctrineTable
       }
       else
       {
+        /*
         if (is_object($record) && in_array(get_class($record), array('Poduct', 'ProductSoa'))) {
             $return[] = "product-{$recordId}".(isset($params['region']) ? ("-".$params['region']) : "-");
         }
-
+        */
+        $return[] = "product-{$recordId}".(isset($params['region']) ? ("-".$params['region']) : "-");
       }
 
-      if (is_object($record) && get_class($record) == 'Poduct') {
+      if (is_object($record) && in_array(get_class($record), array('Poduct', 'ProductSoa'))) {
           foreach ($record['Category'] as $productCategory)
           {
             $return[] = "productCategory-{$productCategory['core_id']}-";
