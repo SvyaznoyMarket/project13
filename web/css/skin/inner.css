@@ -3803,8 +3803,8 @@ a.mSportFont{ color: #e8303c; font-weight: bold; }
 div.mSportFont{ color: #e8303c; }
 .bHeader .bToplink:hover span{ background-position: 0 -71px; }
 
-/* .mSad, .category-11{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; } */
 .mPodarki, .category-11{ width: 42px; background: url('img/header_icon_hobbies_gifts.gif') no-repeat; }
+.mSad, .category-12{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; }
 .bHeader .bToplink:hover span{
     background-position: 0 -71px;
 }

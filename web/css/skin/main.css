@@ -389,16 +389,18 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
 
 .mSport i, .category-10 i { top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
 
-/*
-.mSad, .category-11 {
-    background: url("img/header_icon_garden_orchard.gif") no-repeat scroll 0 0 transparent;
-    width: 41px;
-}
-*/
 .mPodarki, .category-11 {
     background: url("img/header_icon_hobbies_gifts.gif") no-repeat scroll 0 0 transparent;
     width: 42px;
 }
+
+
+.mSad, .category-12 {
+    background: url("img/header_icon_garden_orchard.gif") no-repeat scroll 0 0 transparent;
+    width: 41px;
+}
+
+
 .bHeader .bToplink:hover span{ background-position: 0 -71px; }
 
   .bHeader__eLong{
