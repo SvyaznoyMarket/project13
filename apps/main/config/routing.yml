@@ -664,7 +664,7 @@ order_confirm:
 # order complete
 order_complete:
   url:   /orders/complete
-  param: { module: order, action: complete }
+  param: { module: order_, action: complete }
 #
 # order payment
 order_payment:

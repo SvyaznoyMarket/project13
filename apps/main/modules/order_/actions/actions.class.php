@@ -93,11 +93,16 @@ class order_Actions extends myActions
 
       $deliveryMap = json_decode($request['delivery_map'], true);
       try {
-        $this->saveOrder($baseOrder, $deliveryMap);
+        $orders = $this->saveOrder($baseOrder, $deliveryMap);
+        $user->setFlash('complete_orders', array_map(function($i) { return $i['id']; }, $orders));
+
+        $this->getUser()->setCacheCookie();
+        $this->getUser()->getCart()->clear();
+        $this->getUser()->getOrder()->clear(); //FIXME: убрать
 
         $result = array_merge($result, array(
-          'success'  => true,
-          'redirect' => $this->generateUrl('order_complete'),
+          'success' => true,
+          'data'    => array('redirect' => $this->generateUrl('order_complete')),
         ));
       }
       catch (Exception $e) {
@@ -131,6 +136,38 @@ class order_Actions extends myActions
     }
 
     return $this->renderJson($result);
+  }
+
+  /**
+   * Executes complete action
+   *
+   * @param sfRequest $request A request object
+   */
+  public function executeComplete(sfWebRequest $request)
+  {
+    /* @var myUser */
+    $user = $this->getUser();
+
+    $orderIds = $user->getFlash('complete_orders');
+    if (empty($orderIds))
+    {
+      $this->redirect('homepage');
+    }
+
+    $result = Core::getInstance()->query('order.get', array(
+      'id'     => $orderIds,
+      'expand' => array(),
+    ));
+    //myDebug::dump($result);
+    if (!$result)
+    {
+      $this->getLogger()->err('{Order} get list: empty response from core');
+    }
+    $orders = $result;
+
+    $user->setFlash('complete_orders', $orderIds);
+
+    $this->setVar('orders', $orders, true);
   }
 
 
@@ -199,7 +236,6 @@ class order_Actions extends myActions
 
   private function saveOrder(Order $baseOrder, $deliveryMap)
   {
-    $coreClient = CoreClient::getInstance();
     /* @var myUser */
     $user = $this->getUser();
 
@@ -221,8 +257,7 @@ class order_Actions extends myActions
       $order->delivered_at = date_format(new DateTime($deliveryTypeData['date']), 'Y-m-d 00:00:00');
       if (!empty($deliveryTypeData['interval']))
       {
-        //$data['interval']
-        //$order->delivery_period_id = $interval;
+        $order->mapValue('delivery_period', explode(',', $deliveryTypeData['interval']));
       }
 
       if ('self' == $deliveryType->token)
@@ -289,25 +324,29 @@ class order_Actions extends myActions
         }
       }
 
-      $result = $coreClient->query('product.get-delivery-price', array(
-        'geo_id'  => $user->getRegion('core_id'),
-        'id'      => array_map(function($orderProductRelation) { return $orderProductRelation->Product->core_id; }, iterator_to_array($order->ProductRelation)),
-        'mode_id' => $order->DeliveryType->core_id,
-      ));
-      if (!isset($result['result']))
-      {
-        $this->getLogger()->err('{Order} get delivery price: empty response from core');
-      }
-
-      $deliveryPrice = (int)$result['result'];
-      $order->sum = $user->getCart()->getTotalForOrder($order) + $deliveryPrice;
+      // расчет доставки: рассчитывается в ядре
+      $deliveryPrice = 0;
+      //$order->sum = $user->getCart()->getTotalForOrder($order) + $deliveryPrice;
 
       $orders[] = $order;
     }
     //myDebug::dump($orders);
 
-    //$coreData = array_map(function($order) { return $order->exportToCore(); }, $orders);
-    //$response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
+    $coreData = array_map(function($order) {
+      $return = $order->exportToCore();
+      $return['delivery_period'] = $order->delivery_period;
+
+      return $return;
+    }, $orders);
+    $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
+    //myDebug::dump($response, 1);
+    if (is_array($response) && array_key_exists('confirmed', $response) && $response['confirmed'])
+    {
+      return $response['orders'];
+    }
+    else {
+      throw new Exception('Не удалось принять заказ');
+    }
   }
 
   /**

@@ -388,6 +388,28 @@ $(document).ready(function() {
             regionMap.closeMap()
 
             DeliveryMap.onShopSelected.apply(this, [el.val(), shopId])
+        },
+
+        validate: function(el, message) {
+            var form = $('#order-form')
+            var hasError = false
+
+            // если группа радио и не выбрано ни одного
+            if (el.is(':radio') && !el.is(':checked') && (el.length > 1)) {
+                hasError = true
+                showError(el.first().parent().parent(), message, false)
+            }
+            // если чекбокс и не выбран
+            else if (el.is(':checkbox') && !el.is(':checked') && (el.length == 1)) {
+                hasError = true
+                showError(el.first().parent().parent(), message, false)
+            }
+            else if (el.is(':text') && !el.val()) {
+                hasError = true
+                showError(el, message, true)
+            }
+
+            return hasError
         }
     }
 
@@ -712,7 +734,8 @@ $(document).ready(function() {
     $('#order-submit').click(function(e) {
         e.preventDefault()
 
-        var form = $(this).closest('form')
+        var button = $(this)
+        var form = button.closest('form')
         var validator = $(form.data('validator')).data('value')
 
         form.find('.mRed').removeClass('mRed')
@@ -721,28 +744,15 @@ $(document).ready(function() {
         var hasError = false
         $.each(validator, function(field, message) {
             var el = form.find('[name="'+field+'"]:visible')
-
-            // если группа радио и не выбрано ни одного
-            if (el.is(':radio') && !el.is(':checked') && (el.length > 1)) {
-                hasError = true
-                showError(el.first().parent().parent(), message, false)
-            }
-            // если чекбокс и не выбран
-            else if (el.is(':checkbox') && !el.is(':checked') && (el.length == 1)) {
-                hasError = true
-                showError(el.first().parent().parent(), message, false)
-            }
-            else if (el.is(':text') && !el.val()) {
-                hasError = true
-                showError(el, message, true)
-            }
-
+            hasError = DeliveryMap.validate(el, message)
         })
 
         if (hasError) {
             $.scrollTo('.bFormError:first', 300)
         }
         else {
+            button.text('Оформляю заказ...')
+
             var data = form.serializeArray()
             data.push({ name: 'delivery_map', value: JSON.stringify(DeliveryMap.data()) })
 
@@ -753,7 +763,24 @@ $(document).ready(function() {
                 type: 'POST',
                 data: data,
                 success: function(result) {
-                    console.info(result)
+                    var form = $('#order-form')
+
+                    if (result.success) {
+                        window.location = result.data.redirect
+                    }
+                    else if (result.error) {
+                        if ('invalid' == result.error.code) {
+                            $('#order-message').html('<span class="red">'+result.error.message+'</span>')
+                            $.each(result.errors, function(k, v) {
+                                var el = form.find('[name="'+k+'"]:visible')
+
+                                showError(el, v, true)
+                            })
+                        }
+                    }
+                },
+                complete: function() {
+                    button.text('Завершить оформление')
                 }
             })
         }
