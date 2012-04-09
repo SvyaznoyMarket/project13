@@ -1,14 +1,13 @@
 <?php
 
 /**
- * credit actions.
- *
- * @package    enter
- * @subpackage credit
- * @author     Связной Маркет
- */
-class creditActions extends myActions
-{
+* credit actions.
+*
+* @package    enter
+* @subpackage credit
+* @author     Связной Маркет
+*/
+class creditActions extends myActions {
 
   const PAGE_NAME = 'Покупка в кредит';
 
@@ -17,8 +16,7 @@ class creditActions extends myActions
    *
    * @param sfRequest $request A request object
    */
-  public function executeIndex(sfWebRequest $request)
-  {
+  public function executeIndex(sfWebRequest $request) {
     $this->getResponse()->setTitle('Покупка в кредит – Enter.ru');
     $this->setVar('title', 'Покупка в кредит', true);
 
@@ -32,11 +30,10 @@ class creditActions extends myActions
     $page = new Page;
     $page->setToken('credit');
     $this->setVar('page', $page, true);
-    $this->setVar('currentPage', 'credit', true);
+    $this->setVar('currentPage', 'credit', true );
   }
 
-  public function executePrograms(sfWebRequest $request)
-  {
+  public function executePrograms(sfWebRequest $request) {
     $this->getResponse()->setTitle('Кредитные программы – Enter.ru');
     $this->setVar('title', 'Кредитные программы', true);
     $addToBreadcrumbs = array(
@@ -52,32 +49,32 @@ class creditActions extends myActions
     $page = new Page;
     $page->setToken('credit');
     $this->setVar('page', $page, true);
-    $this->setVar('currentPage', 'credit', true);
+    $this->setVar('currentPage', 'credit', true );
 
     $creditOptions = array(
-      array("id" => 1, "name" => "Я беру в кредит мобильный телефон", "button_name" => "Перейти в раздел &laquo;Мобильные телефоны&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'electronics/telefoni-mobilnie-telefoni-910',)),),
-      array("id" => 2, "name" => "Я беру в кредит ноутбук", "button_name" => "Перейти в раздел &laquo;Ноутбуки&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'electronics/mobilnaya-elektronika-naushniki-875',)),),
-      array("id" => 3, "name" => "Я беру в кредит электронику", "button_name" => "Перейти в раздел &laquo;Электроника&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'electronics',)),),
-      array("id" => 4, "name" => "Я беру в кредит мебель", "button_name" => "Перейти в раздел &laquo;Мебель&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'furniture',)),),
-      array("id" => 5, "name" => "Я беру в кредит ювелирные украшения (часы)", "button_name" => "Перейти в раздел &laquo;Украшения и часы&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'jewel',)),),
-      array("id" => 6, "name" => "Я беру в кредит бытовую технику", "button_name" => "Перейти в раздел &laquo;Бытовая техника&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'appliances',)),),
-      array("id" => 7, "name" => "Я беру в кредит товары для дома", "button_name" => "Перейти в раздел &laquo;Товары для дома&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'household',)),),
-      array("id" => 8, "name" => "Я беру в кредит товары для спорта", "button_name" => "Перейти в раздел &laquo;Спорт&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'sport',)),),
-      array("id" => 9, "name" => "Я беру в кредит товары для детей", "button_name" => "Перейти в раздел &laquo;Для мам и детей&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'children',)),),
-      array("id" => 10, "name" => "Я беру в кредит инструменты", "button_name" => "Перейти в раздел &laquo;Сделай сам (инструменты)&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'do_it_yourself',)),),
-      array("id" => 11, "name" => "Я беру в кредит прибор для красоты или здоровья", "button_name" => "Перейти в раздел &laquo;Красота и здоровье&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'krasota-i-zdorove-21',)),),
+      array("id" => 1, "name" => "Я беру в кредит мобильный телефон", "button_name" => "Перейти в раздел &laquo;Мобильные телефоны&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'electronics/telefoni-mobilnie-telefoni-910',)), ),
+      array("id" => 2, "name" => "Я беру в кредит ноутбук", "button_name" => "Перейти в раздел &laquo;Ноутбуки&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'electronics/mobilnaya-elektronika-naushniki-875',)), ),
+      array("id" => 3, "name" => "Я беру в кредит электронику", "button_name" => "Перейти в раздел &laquo;Электроника&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'electronics',)), ),
+      array("id" => 4, "name" => "Я беру в кредит мебель", "button_name" => "Перейти в раздел &laquo;Мебель&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'furniture',)), ),
+      array("id" => 5, "name" => "Я беру в кредит ювелирные украшения (часы)", "button_name" => "Перейти в раздел &laquo;Украшения и часы&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'jewel',)), ),
+      array("id" => 6, "name" => "Я беру в кредит бытовую технику", "button_name" => "Перейти в раздел &laquo;Бытовая техника&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'appliances',)), ),
+      array("id" => 7, "name" => "Я беру в кредит товары для дома", "button_name" => "Перейти в раздел &laquo;Товары для дома&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'household',)), ),
+      array("id" => 8, "name" => "Я беру в кредит товары для спорта", "button_name" => "Перейти в раздел &laquo;Спорт&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'sport',)), ),
+      array("id" => 9, "name" => "Я беру в кредит товары для детей", "button_name" => "Перейти в раздел &laquo;Для мам и детей&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'children',)), ),
+      array("id" => 10, "name" => "Я беру в кредит инструменты", "button_name" => "Перейти в раздел &laquo;Сделай сам (инструменты)&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'do_it_yourself',)), ),
+      array("id" => 11, "name" => "Я беру в кредит прибор для красоты или здоровья", "button_name" => "Перейти в раздел &laquo;Красота и здоровье&raquo;", "url" => $this->generateUrl("productCatalog_category", array('productCategory' => 'krasota-i-zdorove-21',)), ),
     );
 
     $banks = array(
       array(
-        'id' => 0,
-        'name' => 'Хоум Кредит энд Финанс Банк',
+        'id'    => 0,
+        'name'  => 'Хоум Кредит энд Финанс Банк',
         'image' => '/images/credit_home.png',
-        'programs' => array(
+        'programs'  => array(
           array(
-            'name' => '10*10*10',
-            'id' => 0,
-            'params' => array(
+            'name'    => '10*10*10',
+            'id'      => 0,
+            'params'  => array(
               'Действует на все группы товаров, кроме мобильных телефонов.',
               'Сумма кредита: от 3 000 до 200 000 руб.',
               'Первоначальный взнос: 10% от стоимости товара. ',
@@ -88,9 +85,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Удачный',
-            'id' => 1,
-            'params' => array(
+            'name'    => 'Удачный',
+            'id'      => 1,
+            'params'  => array(
               'Действует на все группы товаров, кроме мобильных телефонов.',
               'Сумма кредита: от 3 000 до 100 000 руб.',
               'Первоначальный взнос: 0-20% от стоимости товара. ',
@@ -100,9 +97,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Универсальный',
-            'id' => 2,
-            'params' => array(
+            'name'    => 'Универсальный',
+            'id'      => 2,
+            'params'  => array(
               'Действует на группу товаров: мебель.',
               'Сумма кредита: от 3 000 до 300 000 руб.',
               'Первоначальный взнос: 0-60% от стоимости товара. ',
@@ -112,9 +109,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => '1% в месяц',
-            'id' => 3,
-            'params' => array(
+            'name'    => '1% в месяц',
+            'id'      => 3,
+            'params'  => array(
               'Действует на группу товаров: мебель.',
               'Сумма кредита: от 3 000 до 200 000 руб.',
               'Первоначальный взнос: 0-20% от стоимости товара.',
@@ -125,9 +122,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => '1,5% в месяц',
-            'id' => 4,
-            'params' => array(
+            'name'    => '1,5% в месяц',
+            'id'      => 4,
+            'params'  => array(
               'Действует на группу товаров: мебель, ноутбуки.',
               'Сумма кредита: от 3 000 до 200 000 руб.',
               'Первоначальный взнос: 0-50% от стоимости товара.',
@@ -138,9 +135,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Мобильный',
-            'id' => 5,
-            'params' => array(
+            'name'    => 'Мобильный',
+            'id'      => 5,
+            'params'  => array(
               'Действует на группу товаров: электроника, мобильные телефоны.',
               'Сумма кредита: от 3 000 до 50 000 руб.',
               'Первоначальный взнос: 10-50% от стоимости товара. ',
@@ -150,9 +147,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Ювелирный 1,5% в месяц',
-            'id' => 6,
-            'params' => array(
+            'name'    => 'Ювелирный 1,5% в месяц',
+            'id'      => 6,
+            'params'  => array(
               'Действует на группу товаров: ювелирные украшения и часы.',
               'Сумма кредита: от 3 000 до 100 000 руб.',
               'Первоначальный взнос: 30 % от стоимости товара.',
@@ -163,9 +160,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Стандартный',
-            'id' => 7,
-            'params' => array(
+            'name'    => 'Стандартный',
+            'id'      => 7,
+            'params'  => array(
               'Действует на все группы товаров, кроме мобильных телефонов.',
               'Сумма кредита: от 3 000 до 200 000 руб.',
               'Первоначальный взнос: 0%, 10%, 20% от стоимости товара.',
@@ -177,14 +174,14 @@ class creditActions extends myActions
         )
       ),
       array(
-        'id' => 1,
-        'name' => 'Банк Ренессанс Капитал',
+        'id'    => 1,
+        'name'  => 'Банк Ренессанс Капитал',
         'image' => '/images/credit_ren.png',
-        'programs' => array(
+        'programs'  => array(
           array(
-            'name' => 'Универсальный стандарт',
-            'id' => 0,
-            'params' => array(
+            'name'    => 'Универсальный стандарт',
+            'id'	=> 0,
+            'params'  => array(
               'Действует на все группы товаров, кроме ювелирных изделий.',
               'Сумма кредита: от 3 000 до 80 000 руб.',
               'Первоначальный взнос: 10-99% от стоимости товара. ',
@@ -194,9 +191,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => '0-25',
-            'id' => 1,
-            'params' => array(
+            'name'    => '0-25',
+            'id'	=> 1,
+            'params'  => array(
               'Действует на все группы товаров, кроме ювелирных изделий.',
               'Сумма кредита: от 3 000 до 15 000 руб.',
               'Первоначальный взнос: 0% от стоимости товара. ',
@@ -206,9 +203,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Твой выбор - 1',
-            'id' => 2,
-            'params' => array(
+            'name'    => 'Рассрочка (Твой выбор - 1)',
+            'id'	=> 2,
+            'params'  => array(
               'Действует на все группы товаров, кроме мобильных телефонов, аудио- и видеотехники, фотокамер, компьютеров, бытовой техники, ювелирных украшений и часов.',
               'Сумма кредита: от 3 000 до 80 000 руб.',
               'Первоначальный взнос: 10% от стоимости товара. ',
@@ -219,9 +216,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Твой выбор - 2',
-            'id' => 3,
-            'params' => array(
+            'name'    => 'Рассрочка (Твой выбор - 2)',
+            'id'	=> 3,
+            'params'  => array(
               'Действует на группы товаров, кроме автоаксессуаров, товаров для дома, мебели, товаров для спорта, товаров для детей, ювелирных украшений и часов.',
               'Сумма кредита: от 3 000 до 80 000 руб.',
               'Первоначальный взнос: 10% от стоимости товара. ',
@@ -232,9 +229,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Доступный кредит',
-            'id' => 4,
-            'params' => array(
+            'name'    => 'Доступный кредит',
+            'id'	=> 4,
+            'params'  => array(
               'Действует на группы товаров: мебель, товары для дома, товары для спорта, товары для детей, инструменты.',
               'Сумма кредита: от 3 000 до 80 000 руб.',
               'Первоначальный взнос: 10-99% от стоимости товара. ',
@@ -244,9 +241,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Классический',
-            'id' => 5,
-            'params' => array(
+            'name'    => 'Классический',
+            'id'	=> 5,
+            'params'  => array(
               'Действует на группы товаров: ювелирные украшения и часы.',
               'Сумма кредита: от 3 000 до 30 000 руб.',
               'Первоначальный взнос: 10-90% от стоимости товара. ',
@@ -258,14 +255,14 @@ class creditActions extends myActions
         )
       ),
       array(
-        'id' => 2,
-        'name' => 'Альфа-Банк',
+        'id'    => 2,
+        'name'  => 'Альфа-Банк',
         'image' => '/images/credit_alpha.png',
-        'programs' => array(
+        'programs'  => array(
           array(
-            'name' => 'Оптимальный',
-            'id' => 0,
-            'params' => array(
+            'name'    => 'Оптимальный',
+            'id'	=> 0,
+            'params'  => array(
               'Действует на все группы товаров, кроме мобильных телефонов и ювелирных украшений и часов.',
               'Сумма кредита: от 5 400 до 84 000 руб.',
               'Первоначальный взнос: 0-99% от стоимости товара. ',
@@ -275,9 +272,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Универсальный',
-            'id' => 1,
-            'params' => array(
+            'name'    => 'Универсальный',
+            'id'	=> 1,
+            'params'  => array(
               'Действует на все группы товаров, кроме мобильных телефонов и ювелирных украшений и часов.',
               'Сумма кредита: от 5 400 до 84 000 руб.',
               'Первоначальный взнос: 0-99% от стоимости товара. ',
@@ -287,9 +284,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Индивидуальный',
-            'id' => 2,
-            'params' => array(
+            'name'    => 'Индивидуальный',
+            'id'	=> 2,
+            'params'  => array(
               'Действует на все группы товаров, кроме мобильных телефонов и ювелирных украшений и часов.',
               'Сумма кредита: от 5 400 до 84 000 руб.',
               'Первоначальный взнос: 0-99% от стоимости товара. ',
@@ -299,9 +296,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Простой Кредит',
-            'id' => 3,
-            'params' => array(
+            'name'    => 'Простой Кредит',
+            'id'	=> 3,
+            'params'  => array(
               'Действует на все группы товаров, кроме мобильных телефонов и ювелирных украшений и часов.',
               'Сумма кредита: от 5 400 до 84 000 руб.',
               'Первоначальный взнос: 0-99% от стоимости товара. ',
@@ -311,9 +308,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Потребительский кредит без комиссии',
-            'id' => 4,
-            'params' => array(
+            'name'    => 'Потребительский кредит без комиссии',
+            'id'	=> 4,
+            'params'  => array(
               'Действует на все группы товаров, кроме мобильных телефонов и ювелирных украшений и часов.',
               'Сумма кредита: от 5 400 до 84 000 руб.',
               'Первоначальный взнос: 0-99 % от стоимости товара. ',
@@ -323,9 +320,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Бескомиссионный ПВ выше 50%',
-            'id' => 5,
-            'params' => array(
+            'name'    => 'Бескомиссионный ПВ выше 50%',
+            'id'	=> 5,
+            'params'  => array(
               'Действует на все группы товаров, кроме ювелирных украшений и часов.',
               'Сумма кредита: от 5 400 до 40 000 руб.',
               'Первоначальный взнос: 50-90% от стоимости товара. ',
@@ -335,9 +332,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Бескомиссионный ПВ 20-50',
-            'id' => 6,
-            'params' => array(
+            'name'    => 'Бескомиссионный ПВ 20-50',
+            'id'	=> 6,
+            'params'  => array(
               'Действует на все группы товаров, кроме ювелирных украшений и часов.',
               'Сумма кредита: от 5 400 до 40 000 руб.',
               'Первоначальный взнос: 20-50% от стоимости товара. ',
@@ -347,9 +344,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Бескомиссионный ПВ 10-20',
-            'id' => 7,
-            'params' => array(
+            'name'    => 'Бескомиссионный ПВ 10-20',
+            'id'	=> 7,
+            'params'  => array(
               'Действует на все группы товаров, кроме ювелирных украшений и часов.',
               'Сумма кредита: от 5 400 до 40 000 руб.',
               'Первоначальный взнос: 10-20% от стоимости товара. ',
@@ -359,9 +356,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Бескомиссионный ПВ 0-10',
-            'id' => 8,
-            'params' => array(
+            'name'    => 'Бескомиссионный ПВ 0-10',
+            'id'	=> 8,
+            'params'  => array(
               'Действует на все группы товаров, кроме ювелирных украшений и часов.',
               'Сумма кредита: от 5 400 до 40 000 руб.',
               'Первоначальный взнос: 0-10% от стоимости товара. ',
@@ -371,9 +368,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => '10*10*10',
-            'id' => 9,
-            'params' => array(
+            'name'    => '10*10*10',
+            'id'	=> 9,
+            'params'  => array(
               'Действует на все группы товаров, кроме мобильных телефонов, ноутбуков, ювелирных украшений и часов.',
               'Сумма кредита: от 5 400 до 84 000 руб.',
               'Первоначальный взнос: 10% от стоимости товара. ',
@@ -385,14 +382,14 @@ class creditActions extends myActions
         )
       ),
       array(
-        'id' => 3,
-        'name' => 'ОТП-Банк',
+        'id'    => 3,
+        'name'  => 'ОТП-Банк',
         'image' => '/images/credit_otp.gif',
-        'programs' => array(
+        'programs'  => array(
           array(
-            'name' => 'Золотой',
-            'id' => 0,
-            'params' => array(
+            'name'    => 'Золотой',
+            'id'	=> 0,
+            'params'  => array(
               'Действует на группы товаров: ювелирные украшения и часы.',
               'Сумма кредита:  от 2 000 до 300 000 руб.',
               'Первоначальный взнос: от 40% до 99% от стоимости товара',
@@ -402,9 +399,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Кредит на мебель',
-            'id' => 1,
-            'params' => array(
+            'name'    => 'Кредит на мебель',
+            'id'	=> 1,
+            'params'  => array(
               'Действует на группы товаров: мебель',
               'Сумма кредита:  от 2 000 до 300 000 руб.',
               'Первоначальный взнос: от 0% до 99% от стоимости товара.',
@@ -414,11 +411,11 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'ОТП Весеннее настроение',
-            'id' => 2,
-            'params' => array(
+            'name'    => 'ОТП Весеннее настроение',
+            'id'	=> 2,
+            'params'  => array(
               'Действует на все группы товаров.',
-              'Сумма кредита:  от 2 000 до 150 000 руб.',
+              'Сумма кредита:  от 2 000 до 100 000 руб.',
               'Первоначальный взнос: от 0 до 99% от стоимости товара.',
               'Срок кредита: от 6 до 36 месяцев.',
               'Процентная ставка: 28,5% годовых.',
@@ -426,9 +423,9 @@ class creditActions extends myActions
             )
           ),
           array(
-            'name' => 'Ваш выбор',
-            'id' => 3,
-            'params' => array(
+            'name'    => 'Ваш выбор',
+            'id'	=> 3,
+            'params'  => array(
               'Действует на все группы товаров',
               'Сумма кредита:  от 2 000 до 300 000 руб.',
               'Первоначальный взнос: от 0% до 90% от стоимости товара.',
@@ -440,44 +437,44 @@ class creditActions extends myActions
         )
       )
     );
-    /*
-          0 => array( //Хоум кредит
-            0, //10*10*10
-            1, //удачный
-            2, //Универсальный
-            3, //1% в месяц
-            4, //1,5% в месяц
-            5, //Мобильный
-            6, //Ювелирный 1,5% в месяц
-            7, //Стандартный
-          ),
-          1 => array( //Банк Ренессанс Капитал
-            0, //универсальный стандарт
-            1, //0-25
-            2, //Твой выбор - 1
-            3, //Твой выбор - 2
-            4, //Доступный кредит
-            5, //Классический
-          ),
-          2 => array( //Альфа-Банк
-            0, //оптимальный
-            1, //универсальный
-            2, //индивидуальный
-            3, //простой кредит
-            4, //Потребительский кредит без комиссии
-            5, //бескомиссионный ПВ выше 50%
-            6, //бескомиссионный ПВ 20-50
-            7, //бескомиссионный ПВ 10-20
-            8, //бескомиссионный ПВ 0-10
-            9, //10*10*10
-          ),
-          3 => array( //ОТП-Банк
-            0, //золотой
-            1, //Кредит на мебель
-            2, //весеннее настроение
-            3, //ваш выбор
-          )
-    */
+/*
+        0 => array( //Хоум кредит
+          0, //10*10*10
+          1, //удачный
+          2, //Универсальный
+          3, //1% в месяц
+          4, //1,5% в месяц
+          5, //Мобильный
+          6, //Ювелирный 1,5% в месяц
+          7, //Стандартный
+        ),
+        1 => array( //Банк Ренессанс Капитал
+          0, //универсальный стандарт
+          1, //0-25
+          2, //Твой выбор - 1
+          3, //Твой выбор - 2
+          4, //Доступный кредит
+          5, //Классический
+        ),
+        2 => array( //Альфа-Банк
+          0, //оптимальный
+          1, //универсальный
+          2, //индивидуальный
+          3, //простой кредит
+          4, //Потребительский кредит без комиссии
+          5, //бескомиссионный ПВ выше 50%
+          6, //бескомиссионный ПВ 20-50
+          7, //бескомиссионный ПВ 10-20
+          8, //бескомиссионный ПВ 0-10
+          9, //10*10*10
+        ),
+        3 => array( //ОТП-Банк
+          0, //золотой
+          1, //Кредит на мебель
+          2, //весеннее настроение
+          3, //ваш выбор
+        )
+  */
     $optionsToBanksRelations = array(
       1 => array( //мобильный телефон
         0 => array( //Хоум кредит

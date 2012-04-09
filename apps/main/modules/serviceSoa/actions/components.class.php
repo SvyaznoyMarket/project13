@@ -26,7 +26,8 @@ class serviceSoaComponents extends myComponents
     {
       foreach ($next['products'] as $product => $qty)
       {
-        if ($product == $this->product->id) {
+        if ($product == $this->product->id)
+        {
           $servListId[] = $next['id'];
         }
       }
@@ -37,7 +38,9 @@ class serviceSoaComponents extends myComponents
 
   public function executeList_for_product_in_cart()
   {
-    $list = ServiceTable::getInstance()->getListByProductCoreId($this->product['id']); //$this->services;
+    $factory = new ProductFactory();
+    $prodOb = $factory->createProductFromCore(array('id'=> $this->product['core_id']), false, false, true);
+    $list = $prodOb[0]->service;
     $result = array();
     $selectedNum = 0;
     foreach ($list as $next)
@@ -45,35 +48,43 @@ class serviceSoaComponents extends myComponents
       $sel = false;
       foreach ($this->services as $selected)
       {
-        if ($next['id'] == $selected['id']) {
+        if ($next['id'] == $selected['core_id'])
+        {
           $selInfo = $selected;
           $sel = true;
           break;
         }
       }
-      if ($sel) {
+      if ($sel)
+      {
         $selectedNum++;
         $selInfo['selected'] = true;
-        $selInfo['site_token'] = $next->token;
-        $selInfo['total'] = $selInfo['quantity'] * $selInfo['price'];
-        $selInfo['totalFormatted'] = number_format($selInfo['quantity'] * $selInfo['price'], 0, ',', ' ');
-        $selInfo['price'] = $next->getCurrentPrice($this->product['id']);
-        $selInfo['priceFormatted'] = $next->getFormattedPrice($this->product['id']);
+        $selInfo['site_token'] = $next['site_token'];
+        $selInfo['total'] = $selInfo['quantity'] * $next['price'];
+        $selInfo['totalFormatted'] = number_format($selInfo['quantity'] * $next['price'], 0, ',', ' ');
+        $selInfo['price'] = $next['price'];
+        $selInfo['only_inshop'] = $next['only_inshop'];
+        $selInfo['in_sale'] = $next['in_sale'];
+        $selInfo['priceFormatted'] = number_format($next['price']);
         $result[] = $selInfo;
       }
       else
       {
         $result[] = array(
           'selected' => false,
-          'site_token' => $next->token,
+          'site_token' => $next['site_token'],
           'name' => $next['name'],
           'id' => $next['id'],
           'token' => $next['token'],
-          'price' => $next->getCurrentPrice($this->product['id']),
-          'priceFormatted' => $next->getFormattedPrice($this->product['id'])
+          'price' => $next['price'],
+          'only_inshop' => $next['only_inshop'],
+          'in_sale' => $next['in_sale'],
+          'priceFormatted' => number_format($next['price']),
         );
       }
     }
+//      print_r($result);
+//      die();
 
     $this->setVar('selectedNum', $selectedNum, true);
     $this->setVar('list', $result, true);
@@ -152,9 +163,11 @@ class serviceSoaComponents extends myComponents
       'url' => $this->generateUrl('service_list'),
     );
 
-    if (isset($this->serviceCategory) && $this->serviceCategory) {
+    if (isset($this->serviceCategory) && $this->serviceCategory)
+    {
       $parentCategory = $this->serviceCategory->getParentCategory();
-      if (isset($parentCategory) && isset($parentCategory['name'])) {
+      if (isset($parentCategory) && isset($parentCategory['name']))
+      {
         $list[] = array(
           'name' => $parentCategory['name'],
           'url' => $this->generateUrl('service_list', array('serviceCategory' => $parentCategory['token'])),
@@ -168,7 +181,8 @@ class serviceSoaComponents extends myComponents
     elseif (isset($this->service))
     {
       $parentCategory = $this->service->getCatalogParent();
-      if (isset($parentCategory) && isset($parentCategory['name'])) {
+      if (isset($parentCategory) && isset($parentCategory['name']))
+      {
         $list[] = array(
           'name' => $parentCategory['name'],
           'url' => $this->generateUrl('service_list', array('serviceCategory' => $parentCategory['token'])),
