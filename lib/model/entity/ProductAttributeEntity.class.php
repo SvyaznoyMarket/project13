@@ -236,11 +236,17 @@ class ProductAttributeEntity
     if (!empty($this->optionList)) {
       $value = array();
       foreach ($this->optionList as $option)
-        $value[] = $option->getName();
+        $value[] = $option->getHumanizedName();
       return join(', ', $value);
     }
     else
     {
+      if (in_array($this->value, array('false', false), true)) {
+        return 'нет';
+      }
+      if (in_array($this->value, array('true', true), true)) {
+        return 'да';
+      }
       return $this->value;
     }
   }

@@ -49,4 +49,15 @@ class ProductPropertyOptionEntity
   {
     return $this->name;
   }
+
+  public function getHumanizedName()
+  {
+    if (in_array($this->name, array('false', false), true)) {
+      return 'нет';
+    }
+    if (in_array($this->name, array('true', true), true)) {
+      return 'да';
+    }
+    return $this->name;
+  }
 }

@@ -25,9 +25,9 @@
       </span>
 
       <div class="pb5 bNGB__eDesc">
-        <?php foreach ($item->getAttributeListForListing() as $attr) { ?>
+        <?php foreach ($item->getAttributeListForListing() as $attr): ?>
         <?php echo $attr->getName() ?>: <?php echo $attr->getStringValue() ?><br/>
-        <?php } ?>
+        <?php endforeach ?>
       </div>
 
       <?php if ($item->getModel() && $item->getModel()->getPropertyList()): ?>
