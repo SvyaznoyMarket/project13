@@ -31,19 +31,12 @@
       </div>
 
       <?php if ($item->getModel() && $item->getModel()->getPropertyList()): ?>
-      <div class="bListVariantsOutsideWrap">
-        <div class="bListVariantsInsideWrap">
-          <a href="<?php echo $item->getLink() ?>">
-            <div class="bListVariants">
-              <span>
-                Доступно в разных вариантах<br>
-                (<?php echo $item->getModel()->getVariations() ?>)
-                <span></span>
-              </span>
-            </div>
-          </a>
+      <a href="<?php echo $item->getLink() ?>">
+        <div class="bListVariants">
+          Доступно в разных вариантах<br>
+          (<?php echo $item->getModel()->getVariations() ?>)
         </div>
-      </div>
+      </a>
       <?php endif ?>
 
     </div>
