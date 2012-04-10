@@ -65,6 +65,20 @@ class regionActions extends myActions
     $this->redirect($request->getReferer());
   }
 
+  public function executeRedirect(sfWebRequest $request)
+  {
+    $region = RegionTable::getInstance()->getByToken($request['region']);
+
+    if ($region)
+    {
+      $this->getUser()->setRegion($region->id);
+      $this->getUser()->setRegionCookie();
+    }
+
+    $newUrl = preg_replace('/\/reg\/.*?\//i', '/', $request->getUri());
+    $this->redirect($newUrl);
+  }
+
   public function executeInit(sfWebRequest $request)
   {
     $this->forward404Unless($request->isXmlHttpRequest());
