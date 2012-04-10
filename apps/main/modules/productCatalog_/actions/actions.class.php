@@ -110,8 +110,6 @@ class productCatalog_Actions extends myActions
   public function executeLine(sfWebRequest $request)
   {
     $this->loadList($request);
-    $this->setVar('list_view', false);
-    $this->setVar('view', 'line');
 
     $productCategory = $this->getProductCategory($request);
     // generate title
@@ -192,7 +190,15 @@ class productCatalog_Actions extends myActions
     sfContext::getInstance()->getLogger()->info('$productPagerTimer at ' . $productPagerTimer->getElapsedTime());
     sfContext::getInstance()->getLogger()->info('$loadListTimer at ' . $loadListTimer->getElapsedTime());
 
-    $this->setVar('view', $request->getParameter('view', $this->getProductCategory($request)->product_view));
+    $productCategory = $this->getProductCategory($request);
+    if ($productCategory->has_line) {
+      $this->setVar('view', 'line');
+      $this->setVar('list_view', false);
+    }
+    else {
+      $this->setVar('view', $request->getParameter('view', $this->getProductCategory($request)->product_view));
+    }
+
     $this->setVar("productFilter", $productFilter);
     $this->setVar("productSorting", $productSorting);
     $this->setVar('noInfinity', true);

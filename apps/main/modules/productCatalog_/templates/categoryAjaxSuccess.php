@@ -3,6 +3,7 @@
  * @var $productPager
  * @var $view
  * @var $allOk
+ * @var $sf_data
  */
 if ($allOk)
-  include_partial('list_', array('productPager' => $productPager, 'ajax_flag' => true, 'view' => $view,));
+  include_partial('list_', $sf_data);
