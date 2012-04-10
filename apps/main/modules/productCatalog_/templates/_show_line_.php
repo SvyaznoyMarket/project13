@@ -33,6 +33,9 @@
 
         <div class="photo"><!--<i class="new" title="Новинка"></i>-->
           <a href="<?php echo $item->getLink() ?>">
+            <?php if ($label = $item->getMainLabel()): ?>
+            <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
+            <?php endif; ?>
             <img src="<?php echo $item->getMediaImageUrl() ?>"
                  alt="Серия <?php echo $item->getLine()->getName() ?>"
                  title="Серия <?php echo $item->getLine()->getName() ?>"
