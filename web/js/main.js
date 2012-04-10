@@ -378,7 +378,7 @@ $(document).ready(function(){
 			var cityPopup = $('<div class="bCityPopupWrap">').html(
 				'<div class="hideblock bCityPopup">'+
 					'<i title="Закрыть" class="close">Закрыть</i>'+
-					'<div class="title">Привет, из какого ты города?</div>'+				
+					'<div class="title">Привет! Из какого вы города?</div>'+
 				'</div>'+
 			'</div>')
 			for( var ci = 0, cl = cities.length; ci < cl; ci++ ) {
@@ -797,17 +797,17 @@ $(document).ready(function(){
 		}
 	}
 	if( clientBrowser.isTouch ) {
-		$('.topmenu a').bind ('click', function(){
+		$('.topmenu a.bToplink').bind ('click', function(){
 			if( $(this).data('run') )
 				return true
 			$('.extramenu').hide()	
-			$('.topmenu a').each( function() { $(this).data('run', false) } )
+			$('.topmenu a.bToplink').each( function() { $(this).data('run', false) } )
 			$(this).data('run', true)
 			showList( this )
 			return false
 		})
 	} else {	
-		$('.topmenu a').bind( {
+		$('.topmenu a.bToplink').bind( {
 			'mouseenter': function() {
 				$('.extramenu').hide()
 				var self = this				
@@ -936,9 +936,10 @@ $(document).ready(function(){
 					'width' : $(this).find('.scroll').data('quantity'),
 					'wrap'  : $(this).find('~ .bigcarousel').first(),
 					'viswidth' : 5
-					})		
+				})		
 		} else {
-			var tmpline = new cardsCarousel ({
+			if( $(this).find('.jshm').length ) {
+				var tmpline = new cardsCarousel ({
 					'prev'  : $(this).find('.back'),
 					'next'  : $(this).find('.forvard'),
 					'crnt'  : $(this).find('.none'),
@@ -947,7 +948,8 @@ $(document).ready(function(){
 //					'width' : $(this).find('.rubrictitle strong').html().replace(/\D/g,''),
 					'wrap'  : $(this).find('~ .carousel').first(),
 					'viswidth' : 3
-					})
+				})
+			}		
 		}			
 	})
 
@@ -986,6 +988,8 @@ $(document).ready(function(){
 							case 'express':
 							//	express = 'Экспресс-доставка ' + dlvr.text
 								break
+							case 'free':
+								break								
 							default:
 								other.push('Доставка ' + dlvr.text )
 						}

@@ -2,7 +2,7 @@
 <?php
 
 $pidFile = '/tmp/enter-task_manager.pid';
-$delay = 12; //sec
+$delay = 2; //sec
 
 $pid = pcntl_fork();
 
@@ -29,7 +29,7 @@ else
   //а сюда - дочерний процесс
   while (true)
   {
-    shell_exec('cd /opt/WWWRoot/green.testground.ru/wwwroot && php symfony task-manager:run >> /dev/null');
+    shell_exec('cd /opt/WWWRoot/enter.ru/wwwroot && php symfony task-manager:run --env=live >> /dev/null');
     sleep($delay);
   }
 }

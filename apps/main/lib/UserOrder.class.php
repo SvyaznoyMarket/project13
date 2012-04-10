@@ -4,7 +4,7 @@ class UserOrder extends BaseUserData
 {
   function __construct($parameters = array())
   {
-    $parameters = myToolkit::arrayDeepMerge(array('order' => array(), 'orders' => array()), $parameters);
+    $parameters = myToolkit::arrayDeepMerge(array('order' => array(), ), $parameters);
     $this->parameterHolder = new sfParameterHolder();
     $this->parameterHolder->add($parameters);
   }
@@ -28,48 +28,13 @@ class UserOrder extends BaseUserData
     return $result;
   }
 
-  public function getList()
-  {
-    $data = $this->parameterHolder->get('orders', array());
-
-    $result = array();
-    foreach ($data as $item)
-    {
-      if (!empty($item['id']))
-      {
-        $result[] = OrderTable::getInstance()->getById($item['id']);
-      }
-      else
-      {
-        $order = new Order();
-        $order->fromArray($item);
-
-        $result[] = $order;
-      }
-    }
-
-    return $result;
-  }
-
   public function set(Order $order)
   {
     $this->parameterHolder->set('order', $order->toArray(false));
   }
 
-  public function setList($orders)
-  {
-    $data = array();
-    foreach ($orders as $order)
-    {
-      $data[] = $order->toArray(false);
-    }
-
-    $this->parameterHolder->set('orders', $data);
-  }
-
   public function clear()
   {
     $this->parameterHolder->set('order', array());
-    $this->parameterHolder->set('orders', array());
   }
 }

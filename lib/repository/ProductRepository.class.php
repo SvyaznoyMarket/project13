@@ -1,6 +1,6 @@
 <?php
 
-class ProductRepository extends BaseRepository
+class ProductRepository extends ObjectRepository
 {
   public function get(array $ids, $index = null)
   {
@@ -16,6 +16,7 @@ class ProductRepository extends BaseRepository
     $entity = new ProductEntity();
 
     $entity->setId($data['id']);
+    $entity->setName($data['name']);
 
     return $entity;
   }

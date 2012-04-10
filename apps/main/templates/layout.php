@@ -17,13 +17,29 @@
     <?php include_partial('default/googleAnalytics') ?>
     <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
-  <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>"<?php echo has_slot('sport_sale_design')? " class='snow'" : "" ?>>
+  <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>">
 
-  <?php if (has_slot('sport_sale_design')): ?>
-    <?php include_slot('sport_sale_design') ?>
-  <?php endif ?>
-
-    <div class="allpage">
+    <div class="allpage" id="page">
+    <!--AdFox START-->
+    <!--enter-->
+    <!--Площадка: Enter.ru / * / *-->
+    <!--Тип баннера: BackGround-->
+    <!--Расположение: <верх страницы>-->
+    <script type="text/javascript">
+    <!--
+    if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+    if (typeof(document.referrer) != 'undefined') {
+      if (typeof(afReferrer) == 'undefined') {
+        afReferrer = escape(document.referrer);
+      }
+    } else {
+      afReferrer = '';
+    }
+    var addate = new Date();
+    document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=enlz&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>');
+    // -->
+    </script>
+    <!--AdFox END-->
      <div class="allpageinner">
 
         <?php include_partial('default/header') ?>
@@ -47,6 +63,7 @@
           <?php echo $sf_content ?>
         <?php endif ?>
         <div class="clear"></div>
+        <?php if (has_slot('navigation_seo')) include_slot('navigation_seo') ?>
       </div>
       <div class="clear"></div>
     </div>

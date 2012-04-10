@@ -7,6 +7,28 @@
  */
 class ServiceTable extends myDoctrineTable
 {
+
+    public function createBaseQuery(array $params = array())
+    {
+        $region = sfContext::getInstance()->getUser()->getRegion();
+        $priceListId = $region['product_price_list_id'];
+        $this->applyDefaultParameters($params);
+
+        $q = $this->createQuery('service');
+        if (isset($params['price'])){
+            $regionCondition = 'service_price_list_id = ';
+            if (isset($params['price_product'])) {
+                if (is_null( $params['price_product']) || $params['price_product'] == 0) {
+                    $q->leftJoin('service.Price WITH product_id IS NULL AND service_price_list_id = ?', $priceListId);
+                } else {
+                    $q->leftJoin('service.Price WITH (product_id = ? OR product_id IS NULL) AND service_price_list_id = ?', array($params['price_product'], $priceListId));
+                }
+            } else {
+                $q->leftJoin('service.Price WITH service_price_list_id = ?', $priceListId);
+            }
+        }
+        return $q;
+    }
   /**
    * Returns an instance of this class.
    *
@@ -30,9 +52,13 @@ class ServiceTable extends myDoctrineTable
     );
   }
 
-  /* TODO добавить условие выборки по региону */
-  public function getListByProduct(Product $product, array $params = array())
+
+  public function getListByProduct(Product $product, array $params = array(), $priceListId = 0)
   {
+    if (!$priceListId) {
+        $region = sfContext::getInstance()->getUser()->getRegion();
+        $priceListId = $region['product_price_list_id'];
+    }
     $this->applyDefaultParameters($params);
 
     $key = $this->getQueryHash('product-'.$product['id'].'/service-all', $params);
@@ -53,15 +79,18 @@ class ServiceTable extends myDoctrineTable
         //->innerJoin('cr.Category c')
         ->innerJoin('service.ProductRelation pr')
         ->andWhere('pr.product_id = ?', array($product['id']))
-        ->innerJoin('service.Price price')
-        ->andWhere('price.price >= ?', Service::MIN_BUY_PRICE)
-        ->andWhere('service.only_inshop = ?', 0)
+//        ->innerJoin('service.Price price')
+//        ->andWhere('price.product_id = ? OR price.product_id IS NULL', array($product['id']))
+//        ->addWhere('price.service_price_list_id = ?', $priceListId)
+        //->andWhere('price.price >= ?', Service::MIN_BUY_PRICE)
+        //->andWhere('service.only_inshop = ?', 0)
         ->orderBy('service.name ASC');
       ;
 
       $this->setQueryParameters($q, $params);
 
       $return = $q->execute();
+
       if ($this->isCacheEnabled())
       {
         $this->getCache()->set($key, $return);
@@ -75,6 +104,7 @@ class ServiceTable extends myDoctrineTable
 
     return $return;
   }
+
 
   public function getListByCategory($category_id, array $params = array())
   {

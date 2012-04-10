@@ -52,23 +52,20 @@ class userProductHistoryActions extends myActions
 
     if (!$request->getCookie(sfConfig::get('app_guard_cache_cookie_name')))
     {
-        $user->setCacheCookie();
+        //$user->setCacheCookie();
     }
 
     //подсчитываем общее количество и общую стоимость корзины
-    $cartInfo = $user->getCartBaseInfo();
-
+    $cartInfo = $user->getCart()->getBaseInfo();
+      //print_r($cartInfo);
     //отложенные товары
-    $delayProducts = array();
-    if ($user->getGuardUser())
-    {
-      $userDelayedProduct = new UserDelayedProduct();
-      $delayProducts = $userDelayedProduct->getUserDelayProducts($user->getGuardUser()->id);
-    }
+//    $delayProducts = array();
+//    if ($user->getGuardUser())
+//    {
+//      $userDelayedProduct = new UserDelayedProduct();
+//      $delayProducts = $userDelayedProduct->getUserDelayProducts($user->getGuardUser()->id);
+//    }
 
-#     echo '<pre>';
-#     echo '</pre>';
-    #   exit();
     if (!isset($productsInCart))
     {
       $productsInCart = false;
@@ -90,7 +87,7 @@ class userProductHistoryActions extends myActions
         'link' => $this->generateUrl('user'), //ссылка на личный кабинет
         'vitems' => $cartInfo['qty'],
         'sum' => $cartInfo['sum'],
-        'vwish' => count($delayProducts),
+       // 'vwish' => count($delayProducts),
         'vcomp' => $user->getProductCompare()->getProductsNum(),
         'productsInCart' => $cartInfo['productsInCart'],
         'servicesInCart' => $cartInfo['servicesInCart'],

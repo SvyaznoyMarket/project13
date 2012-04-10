@@ -21,7 +21,7 @@
       </dt>
 
       <?php
-        if ($name == 'price' || $name == 'creator'){
+        if (in_array($name, array('price', 'creator', 'label', ))){
             $open = 'block';
         } else {
             $open = 'none';

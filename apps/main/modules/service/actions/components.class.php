@@ -24,7 +24,7 @@ class serviceComponents extends myComponents
     $servListId = array();
     foreach ($servList as $next)
     {
-      foreach ($next['cart']['product'] as $product => $qty)
+      foreach ($next['products'] as $product => $prodData)
       {
         if ($product == $this->product->id)
         {
@@ -93,11 +93,13 @@ class serviceComponents extends myComponents
     #    $service['currentPrice'] = number_format($serviceData['currentPrice'], 2, ',', ' ');
     #}
     $serviceData['token'] = $this->service->token;
+    $serviceData['core_id'] = $this->service->core_id;
     $serviceData['name'] = $this->service->name;
     $serviceData['description'] = $this->service->description;
     $serviceData['work'] = $this->service->work;
     $serviceData['main_photo'] = $this->service->getPhotoUrl();
-    $serviceData['only_inshop'] = $this->service->only_inshop;
+    $serviceData['isInSale'] = $this->service->isInSale();
+    $serviceData['isOnlyInShop'] = $this->service->isOnlyInShop();
 
     $this->setVar('service', $serviceData);
   }
@@ -122,11 +124,14 @@ class serviceComponents extends myComponents
       $serviceList[] = array(
         'name' => $service->name,
         'token' => $service->token,
+        'core_id' => $service->core_id,
         'name' => $service->name,
         'photo' => $service->getPhotoUrl(2),
         'price' => $service->getCurrentPrice(),
         'priceFormatted' => $service->getFormattedPrice(),
-        'only_inshop' => $service->only_inshop,
+        'isInSale' => $service->isInSale(),
+        'isOnlyInShop' => $service->isOnlyInShop()
+
       );
     }
     $this->setVar('list', $serviceList);
@@ -155,7 +160,8 @@ class serviceComponents extends myComponents
       'url' => $this->generateUrl('service_list'),
     );
 
-    if (isset($this->serviceCategory) && $this->serviceCategory)
+    //  myDebug::dump($this->serviceCategory);
+    if (isset($this->serviceCategory) && $this->serviceCategory && $this->serviceCategory->core_parent_id)
     {
       $parentCategory = $this->serviceCategory->getParentCategory();
       if (isset($parentCategory) && isset($parentCategory['name']))

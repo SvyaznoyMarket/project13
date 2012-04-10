@@ -1,21 +1,19 @@
 <?php
 
+/**
+ * Метка товара
+ */
 class ProductLabelEntity
 {
-  /**
-   * @var integer
-   */
+  /* @var integer */
   private $id;
 
-  /**
-   * @var string
-   */
+  /* @var string */
   private $image;
 
-  /**
-   * @var string
-   */
+  /* @var string */
   private $name;
+
 
   /**
    * @param int $id
@@ -63,5 +61,12 @@ class ProductLabelEntity
   public function getName()
   {
     return $this->name;
+  }
+
+  public function getImageUrl($size = 0)
+  {
+    $config = sfConfig::get('app_product_label_photo_url');
+
+    return $this->getImage() ? $config[$size]."{$this->getImage()}" : null;
   }
 }

@@ -9,7 +9,7 @@ class ProductEntity
   private $id;
 
   /* @var BrandEntity */
-  private $brand = null;
+  private $brand;
 
   /* @var ProductCategoryEntity[] */
   private $category = array();
@@ -43,6 +43,7 @@ class ProductEntity
 
   public function __construct()
   {
+    $this->brand = new BrandEntity();
   }
 
   public function setBrand(BrandEntity $brand)

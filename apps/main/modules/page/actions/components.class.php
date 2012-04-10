@@ -48,6 +48,7 @@ class pageComponents extends myComponents
           array('token' => 'we'),
           array('token' => 'mission'),
           array('token' => 'press'),
+          array('token' => 'release'),
           array('token' => 'callback', 'url' => 'callback', 'name' => 'Обратная связь'),
           array('token' => 'for_renter'),
         ),
@@ -65,9 +66,19 @@ class pageComponents extends myComponents
         'name'  => 'Услуги',
         'links' => array(
           array('token' => 'credit'),
+          array('token' => 'f1', 'url' => 'f1', 'name' => 'F1 сервис'),
         ),
       ),
     );
+
+    //берем рутовую страницу
+    if ($this->page->level > 0)
+    {
+      $q = PageTable::getInstance()->createBaseQuery()
+        ->addWhere('page.root_id = ? AND page.level = ?', array($this->page['root_id'], 0))
+        ->limit(1);
+      $rootPage = $q->fetchOne();
+    }
 
     foreach ($list as &$item)
     {
@@ -79,6 +90,12 @@ class pageComponents extends myComponents
         else{
             $link['name'] = $page->name.(isset($link['add_to_name']) ? $link['add_to_name'] : '');
             $link['url'] = $this->generateUrl('default_show', array('page' => $page->token));
+
+            //если меню и текущая страница или рутовая страница совпадают, будем выделять в меню
+            if ((isset($rootPage) && $page['token'] == $rootPage['token']) || $this->page['token'] == $page['token'])
+            {
+              $link['is_selected'] = true;
+            }
         }
       } if (isset($link)) unset($link);
     } if (isset($item)) unset($item);
@@ -131,9 +148,9 @@ class pageComponents extends myComponents
   public function executeBreadcrumbs(){
     if(!isset ($this->addToBreadcrumbs)){
       $this->addToBreadcrumbs = null;
+      $this->setVar('addToBreadcrumbs', $this->addToBreadcrumb);
     }
 
-    $this->setVar('addToBreadcrumbs', $this->addToBreadcrumb);
   }
 
 }

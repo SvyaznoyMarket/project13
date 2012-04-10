@@ -66,6 +66,7 @@ class ProductTable extends myDoctrineTable
       'with_price'          => false,
       'with_category'       => false,
       'with_delivery_price' => false,
+      'is_instock'          => false,
       'region_id'           => $region ? $region['id'] : null,
     );
   }
@@ -80,15 +81,20 @@ class ProductTable extends myDoctrineTable
 
     if ('list' == $params['view'])
     {
-      $q->addWhere('IF(productState.view_list IS NULL, product.view_list, productState.view_list) = ?', true);
+      $q->addWhere('IFNULL(productState.view_list, product.view_list) = ?', true);
     }
     if ('show' == $params['view'])
     {
-      $q->addWhere('IF(productState.view_show IS NULL, product.view_show, productState.view_show) = ?', true);
+      $q->addWhere('IFNULL(productState.view_show, product.view_show) = ?', true);
     }
     elseif (!isset($param['old_goods']) || false == $param['old_goods'])
     {
       //$q->addWhere('IF(productState.is_instock IS NULL, product.is_instock, productState.is_instock) = ?', true);
+    }
+
+    if ($params['is_instock'])
+    {
+      $q->addWhere('IFNULL(productState.is_instock, product.is_instock) = ?', true);
     }
 
     if ($params['with_line'])
@@ -132,6 +138,7 @@ class ProductTable extends myDoctrineTable
       'property_view'   => false,
       'with_line'       => false,
       'with_model'      => false,
+      'is_instock'      => false,
     ));
 
     $q = $this->createBaseQuery($params);
@@ -157,7 +164,7 @@ class ProductTable extends myDoctrineTable
     $this->setQueryParameters($q, $params);
 
     // sets id clause
-    $q->whereId($id);
+    $q->andWhereIn('product.id', $id);
 
     // sets hydration mode
     if ($params['hydrate_array'])
@@ -378,6 +385,7 @@ class ProductTable extends myDoctrineTable
       'price'      => array('from' => null, 'to' => null),
       'tag'        => false,
       'type'       => false,
+      'label'      => false,
     ), $filter);
 
     // категория
@@ -427,6 +435,18 @@ class ProductTable extends myDoctrineTable
       }
       else {
         $q->addWhere('product.creator_id = ?', ($filter['creator'] instanceof Creator) ? $filter['creator']->id : $filter['creator']);
+      }
+    }
+
+    // шильдики
+    if ($filter['label'])
+    {
+      if (is_array($filter['label']))
+      {
+        $q->whereIn('product.core_label_id', $filter['label']);
+      }
+      else {
+        $q->addWhere('product.core_label_id = ?', ($filter['label'] instanceof ProductLabelEntity) ? $filter['label']->getId() : $filter['label']);
       }
     }
 
@@ -530,6 +550,7 @@ class ProductTable extends myDoctrineTable
       'creator'    => false,
       'parameters' => array(),
       'price'      => array('from' => null, 'to' => null),
+      'label'      => false,
     ), $filter);
 
     // категория
@@ -562,6 +583,18 @@ class ProductTable extends myDoctrineTable
       }
       else {
         $q->addWhere('product.creator_id = ?', ($filter['creator'] instanceof Creator) ? $filter['creator']->id : $filter['creator']);
+      }
+    }
+
+    // шильдики
+    if ($filter['label'])
+    {
+      if (is_array($filter['label']))
+      {
+        $q->whereIn('product.core_label_id', $filter['label']);
+      }
+      else {
+        $q->addWhere('product.core_label_id = ?', ($filter['label'] instanceof ProductLabelEntity) ? $filter['label']->getId() : $filter['label']);
       }
     }
 
@@ -848,6 +881,8 @@ class ProductTable extends myDoctrineTable
     }
     //очищаем кеш по-любому
 
+    $recordId = $record instanceof ProductSoa ? $record->id : $record['core_id'];
+
     if (
       (('save' == $action) && count($intersection))
       || in_array($action, array('delete', 'show'))
@@ -856,17 +891,31 @@ class ProductTable extends myDoctrineTable
       {
         foreach ($params['region'] as $region)
         {
-          $return[] = "product-{$record['core_id']}-{$region}";
+          $return[] = "product-{$recordId}-{$region}";
         }
       }
       else
       {
-        $return[] = "product-{$record['core_id']}".(isset($params['region']) ? ("-".$params['region']) : "-");
+        /*
+        if (is_object($record) && in_array(get_class($record), array('Poduct', 'ProductSoa'))) {
+            $return[] = "product-{$recordId}".(isset($params['region']) ? ("-".$params['region']) : "-");
+        }
+        */
+        $return[] = "product-{$recordId}".(isset($params['region']) ? ("-".$params['region']) : "-");
       }
 
-      foreach ($record['Category'] as $productCategory)
-      {
-        $return[] = "productCategory-{$productCategory['core_id']}-";
+      if (is_object($record) && in_array(get_class($record), array('Poduct', 'ProductSoa'))) {
+	      if(get_class($record) == 'Poduct'){
+		      foreach ($record['Category'] as $productCategory)
+		      {
+			      $return[] = "productCategory-{$productCategory['core_id']}-";
+		      }
+	      }
+        elseif(isset($record->Category) && is_array($record->Category)){
+          foreach($record->Category as $productCategory){
+            $return[] = "productCategory-{$productCategory['core_id']}-";
+          }
+        }
       }
     }
 
@@ -912,16 +961,31 @@ class ProductTable extends myDoctrineTable
     return $product['is_instock'] && (!empty($price) && $price->price > 0);
   }
 
-  public function getFormattedPrice($product)
+  public function getFormattedPrice($product, $type = 'real')
   {
-    return number_format($this->getRealPrice($product), 0, ',', ' ');
+    switch ($type)
+    {
+      case 'real':
+        $price = $this->getRealPrice($product);
+      break;
+      case 'avg':
+        $price = $this->getAveragePrice($product);
+      break;
+      default:
+        $price = $this->getRealPrice($product);
+      break;
+    }
+    return number_format($price, 0, ',', ' ');
   }
 
   public function getMainPhotoUrl($product, $view = 0)
   {
-    $urls = sfConfig::get('app_product_photo_url');
 
-    return $product['main_photo'] ? $urls[$view].$product['main_photo'] : null;
+    if (isset($product['main_photo'])) {
+        $urls = sfConfig::get('app_product_photo_url');
+        return $urls[$view].$product['main_photo'];
+    }
+    return null;
   }
 
   public function getRealPrice($product)
@@ -947,6 +1011,34 @@ class ProductTable extends myDoctrineTable
       else
       {
         return $product['defaultProductPrice']['price'];
+      }
+    }
+
+    return false;
+  }
+
+  public function getAveragePrice($product)
+  {
+    if ($product instanceof Product)
+    {
+      if (!empty($product->ProductPrice))
+      {
+        return $product->ProductPrice->getFirst()->avg_price;
+      }
+      else
+      {
+        return $product->defaultProductPrice->avg_price;
+      }
+    }
+    elseif (is_array($product))
+    {
+      if (!empty($product['ProductPrice']))
+      {
+        return $product['ProductPrice'][0]['avg_price'];
+      }
+      else
+      {
+        return $product['defaultProductPrice']['avg_price'];
       }
     }
 

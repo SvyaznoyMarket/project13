@@ -39,6 +39,11 @@ all:
       - 'http://fs01.enter.ru/1/2/500/'
       - 'http://fs01.enter.ru/1/2/2500/'
 
+  product_label:
+    photo_url:
+      - 'http://fs01.enter.ru/7/1/66x23/'
+      - 'http://fs01.enter.ru/7/1/124x38/'
+
   category:
     photo_url:
       - 'http://fs01.enter.ru/6/1/163/'
@@ -69,16 +74,22 @@ all:
     signin_url: '@user'
     #remember_key_expiration_age: 1296000
 
+  online_call:
+    enabled: false
+
   core:
     config:
       # v1
-      #api_url: 'http://core.ent3.ru/v1/json'
-      api_url: 'http://buldezir.core.ent3.ru/v1/json'
+      api_url: 'http://core.ent3.ru/v1/json'
+      #api_url: 'http://buldezir.core.ent3.ru/v1/json'
+      userapi_url: 'http://core.ent3.ru/v2/'
+      client_code: site
       consumer_key: test
       signature: test
 
       # v2
-      userapi_url: 'http://buldezir.core.ent3.ru/userapi/'
+      #userapi_url: 'http://buldezir.core.ent3.ru/userapi/'
+      userapi_url: 'http://core.ent3.ru/v2/'
       client_id: 1
       log_enabled: true
       log_file: %SF_LOG_DIR%/core_client_2.log
@@ -260,7 +271,7 @@ alpha:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
+      api_url: 'http://core.my/v1/json'
       consumer_key: test
       signature: test
 

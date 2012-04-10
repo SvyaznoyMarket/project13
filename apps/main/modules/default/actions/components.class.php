@@ -95,6 +95,8 @@ class defaultComponents extends myComponents
     {
       $this->view = 'default';
     }
+
+    $this->shopCount = ShopTable::getInstance()->getCount();
   }
 /**
   * Executes cache component

@@ -30,6 +30,13 @@ dev:
     no_script_name:         false
     etag:                   false
 
+live_dev:
+  .settings:
+    web_debug:              true
+    cache:                  false
+    no_script_name:         false
+    etag:                   false
+
 debug:
   .settings:
     error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>

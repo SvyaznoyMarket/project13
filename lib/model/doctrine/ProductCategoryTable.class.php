@@ -35,7 +35,7 @@ class ProductCategoryTable extends myDoctrineTable
       'media_image'       => 'photo',
       'has_line'          => 'has_line',
       'position'          => 'position',
-      //'is_shown_in_menu'  => 'is_shown_in_menu',
+      'is_shown_in_menu'  => 'is_shown_in_menu',
     );
   }
 

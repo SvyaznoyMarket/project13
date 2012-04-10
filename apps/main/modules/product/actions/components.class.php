@@ -95,11 +95,13 @@ class productComponents extends myComponents
       'creator'    => (is_array($this->product['Creator']) || ($this->product['Creator'] instanceof Creator)) ? $this->product['Creator']['name'] : '',
       'rating'     => $this->product['rating'],
       'price'      => $table->getFormattedPrice($this->product), //$this->product->formatted_price,
+      'avg_price'  => $table->getFormattedPrice($this->product, 'avg'), //$this->product->formatted_price,
       'has_link'   => $this->product['view_show'],
       'photo'      => $table->getMainPhotoUrl($this->product, 2),
       'is_insale'  => $this->product['is_insale'],
       'is_instock' => $this->product['is_instock'],
       'url'        => $this->generateUrl('productCard', array('product' => $this->product['token_prefix'].'/'.$this->product['token']), array('absolute' => true)),
+      'label'      => $this->product['Label']->getId() ? $this->product['Label'] : null,
     );
 
     if (in_array($this->view, array('compact', 'extra_compact')))
@@ -144,21 +146,21 @@ class productComponents extends myComponents
 
       // смежные товары
       $criteria = new ProductRelatedCriteria();
-      $criteria->setParent($this->product['core_id']);
-      $criteria->setPager(new myPager(1, 5 * 2));
-      $item['related'] = RepositoryManager::get('Product')->getRelated($criteria);
+      $item['related'] = RepositoryManager::get('Product')->getRelated(
+        $criteria->setParent($this->product['core_id'])->setPager(new myPager(1, 5 * 2))
+      );
       $criteria->getPager()->setMaxPerPage(5);
       $item['related_pager'] = $criteria->getPager();
 
       // аксессуары
       $criteria = new ProductRelatedCriteria();
-      $criteria->setParent($this->product['core_id']);
-      $criteria->setPager(new myPager(1, 5 * 2));
-      $item['accessory'] = RepositoryManager::get('Product')->getAccessory($criteria);
+      $item['accessory'] = RepositoryManager::get('Product')->getAccessory(
+        $criteria->setParent($this->product['core_id'])->setPager(new myPager(1, 5 * 2))
+      );
       $criteria->getPager()->setMaxPerPage(5);
       $item['accessory_pager'] = $criteria->getPager();
     }
-    if (in_array($this->view, array('expanded')))
+    if (in_array($this->view, array('expanded', 'compact', )))
     {
       $item['preview'] = $this->product['preview'];
 
@@ -185,7 +187,11 @@ class productComponents extends myComponents
     if ('stock' == $this->view)
     {
       $item['description'] = $this->product['description'];
-      $length = mb_strpos($item['description'], ' ', 120) ?: strlen($item['description']);
+      $length = strlen($item['description']);
+      if ($length > 120)
+      {
+        $length = mb_strpos($item['description'], ' ', 120);
+      }
       $item['description'] = mb_substr($item['description'], 0, $length);
       $item['description'] = $item['description'].((mb_strlen($this->product['description']) > mb_strlen($item['description'])) ? '...' : '');
     }
@@ -412,8 +418,9 @@ class productComponents extends myComponents
           $values[$products_property->id]->mapValue('is_selected', true);
         }
       }
-      //myDebug::dump($values);
+
       $value_to_map = array();
+      $property->mapValue('current', null);
       foreach ($values as $id => $value)
       {
         if (!$value->product_id) continue;
@@ -434,9 +441,6 @@ class productComponents extends myComponents
         if ($value_to_map[$realValue]['is_selected'])
         {
           $property->mapValue('current', $realValue);
-        }
-        else{
-          $property->mapValue('current', null);
         }
         if ($property->ProductModelRelation[0]->is_image)
         {

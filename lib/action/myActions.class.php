@@ -101,7 +101,26 @@ class myActions extends sfActions
     return $pager;
   }
 
+  public function getPagerForArray(array $data, $limit = 20, array $params = array())
+  {
+      $page = (int)$this->getRequest()->getParameter('page', 1);
+
+      $first = ($page-1) * $limit;
+      $first = $page * $limit;
+      for ($i=$first; $i<$last; $i++) {
+          $result[] = $data[$i];
+      }
+
+
+      return $result;
+  }
+
   public function getCore()
+  {
+    return Core::getInstance();
+  }
+
+  public function getCoreService()
   {
     return Core::getInstance();
   }

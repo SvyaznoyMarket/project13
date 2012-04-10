@@ -20,8 +20,8 @@ qrcode:
 #
 # инфа по доставке
 product_delivery:
-  url:   /product/delivery-info
-  param: { module: product, action: deliveryInfo }
+  url:   /product/delivery-info/:product
+  param: { module: productSoa, action: deliveryInfo, product: 0 }
 # список товаров
 product_list:
   url:   /products/list/:products
@@ -33,19 +33,20 @@ product_set:
 # список смежных товаров
 product_related:
   url:   /products/related/:product
-  param: { module: product, action: related }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
+  param: { module: productSoa, action: related }
+  #class:   myDoctrineRoute
+  #options: { model: Product, type: object, method: getForRoute }
   requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+    product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 # список аксессуаров
 product_accessory:
   url:   /products/accessories/:product
-  param: { module: product, action: accessory }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
+  param: { module: productSoa, action: accessory }
+  #class:   myDoctrineRoute
+  #options: { model: Product, type: object, method: getForRoute }
   requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+    product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+
 #
 # каталог товаров
 productCatalog:
@@ -112,13 +113,37 @@ productCatalog_creator:
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
 # карточка товара
-productCard:
-  url:   /product/:product
+productCardOld:
+  url:   /product_old/:product
   param: { module: productCard, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
+
+# карточка товара. использует новый API
+productCard:
+  url:   /product/:product
+  param: { module: productCardSoa, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+# карточка товара. использует новый API
+productCardSoa:
+  url:   /product/:product
+  param: { module: productCardSoa, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
+
+# битые ссылки
+productCard_showByBarcode:
+  url:   /product/:product
+  param: { module: productCard, action: showByBarcode }
 #
 # карточка товара по ид товара
 product_show:
@@ -568,7 +593,7 @@ userProductRating_createtotal:
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     sf_method: [ get, post ]
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+    #product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
 # user product rating create
 userProductRating_create:
@@ -707,14 +732,30 @@ cart_add:
   param: { module: cart, action: add, quantity: 1 }
   requirements:
     sf_method: [ get, post ]
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+    product: \d+
 #
+
+cart_add_old:
+  url: /cart/add/:product/_quantity/:quantity
+  param: { module: cart, action: addOld, quantity: 1 }
+  requirements:
+    sf_method: [ get, post ]
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
 # cart delete
 cart_delete:
   url:   /cart/delete/:product/_service/:service
   param: { module: cart, action: delete, product: '-/-', service: 0 }
   requirements:
+  product: \d+
+
+# cart delete
+cart_delete_old:
+  url:   /cart/delete/:product/_service/:service
+  param: { module: cart, action: deleteOld, product: '-/-', service: 0 }
+  requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
 #
 # cart clear
 cart_clear:
@@ -724,14 +765,32 @@ cart_clear:
 # cart service add
 cart_service_add:
   url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/
-  param: { module: cart, action: serviceAdd, quantity: 1, product: '-/-' }
+  param: { module: cart, action: serviceAdd, quantity: 1, product: '0' }
+  requirements:
+    product: \d+
+    service: \d+
+   # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
+# cart service add
+cart_service_add_old:
+  url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/
+  param: { module: cart, action: serviceAddOld, quantity: 1, product: '-/-' }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+
 #
 # cart servcie delete
 cart_service_delete:
   url:   /cart/delete_service/:product/_service/:service
-  param: { module: cart, action: serviceDelete, product: '-/-' }
+  param: { module: cart, action: serviceDelete, product: '0' }
+  requirements:
+    product: \d+
+    service: \d+
+
+# cart servcie delete
+cart_service_delete_old:
+  url:   /cart/delete_service/:product/_service/:service
+  param: { module: cart, action: serviceDeleteOld, product: '-/-' }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 

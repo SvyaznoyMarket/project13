@@ -180,21 +180,21 @@ class order_Actions extends myActions
     /* @var $user myUser */
     $user = $this->getUser();
 
-    $regions = RegionTable::getInstance()->getListForOrder($this->getUser()->getCart()->getProducts()->toValueArray('id'));
+    $regions = RegionTable::getInstance()->getListForOrder(array_map(function($i) { return $i['id']; }, $this->getUser()->getCart()->getProducts()));
 
     $productsInCart = array();
     foreach ($user->getCart()->getProducts() as $product)
     {
-      $productsInCart[] = array('id' => $product['core_id'], 'quantity' => $product['cart']['quantity']);
+      $productsInCart[] = array('id' => $product['id'], 'quantity' => $product['quantity']);
     }
 
     $servicesInCart = array();
     foreach ($user->getCart()->getServices() as $service)
     {
-      // если услуга принадлежит товару, то пропустить
-      if (count($service['cart']['product'])) continue;
+      // если услуга не принадлежит товару 0, то пропустить
+      if (!array_key_exists(0, $service['products'])) continue;
 
-      $servicesInCart[] = array('id' => $service['core_id'], 'quantity' => $service['cart']['quantity']);
+      $servicesInCart[] = array('id' => $service['id'], 'quantity' => $service['products'][0]['quantity']);
     }
 
     $deliveryTypes = array();
@@ -217,7 +217,7 @@ class order_Actions extends myActions
         continue;
       }
 
-      $deliveryData = DeliveryTypeTable::getInstance()->createQuery()->select('name, description')->where('token = ?', $item['token'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
+      $deliveryData = DeliveryTypeTable::getInstance()->createQuery()->select('name, description')->where('core_id = ?', $item['mode_id'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
       $item['name'] = $deliveryData['name'];
       $item['desc'] = $deliveryData['description'];
       $deliveryTypes[] = RepositoryManager::getDeliveryType()->create($item);
@@ -255,10 +255,7 @@ class order_Actions extends myActions
       $order->User = $user->getGuardUser();
       $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
       $order->delivered_at = date_format(new DateTime($deliveryTypeData['date']), 'Y-m-d 00:00:00');
-      if (!empty($deliveryTypeData['interval']))
-      {
-        $order->mapValue('delivery_period', explode(',', $deliveryTypeData['interval']));
-      }
+      $order->mapValue('delivery_period', !empty($deliveryTypeData['interval']) ? explode(',', $deliveryTypeData['interval']) : null);
 
       if ('self' == $deliveryType->token)
       {
@@ -365,37 +362,36 @@ class order_Actions extends myActions
     $productsInCart = array();
     foreach ($user->getCart()->getProducts() as $product)
     {
-      $productsInCart[] = array('id' => $product['core_id'], 'quantity' => $product['cart']['quantity']);
+      $productsInCart[] = array('id' => $product['id'], 'quantity' => $product['quantity']);
     }
 
     // услуги в корзине для запроса к ядру
     $servicesInCart = array();
     foreach ($user->getCart()->getServices() as $service)
     {
-      // если услуга принадлежит товару, то пропустить
-      if (count($service['cart']['product'])) continue;
+      if (!array_key_exists(0, $service['products'])) continue;
 
-      $servicesInCart[] = array('id' => $service['core_id'], 'quantity' => $service['cart']['quantity']);
+      $servicesInCart[] = array('id' => $service['id'], 'quantity' => $service['products'][0]['quantity']);
     }
 
     // услуги к товарам
     $servicesForProduct = array();
     foreach ($user->getCart()->getServices() as $service)
     {
-      // если услуга не принадлежит товару, то пропустить
-      if (!count($service['cart']['product'])) continue;
-
-      foreach ($service['cart']['product'] as $productId => $productQuantity)
+      foreach ($service['products'] as $productId => $productData)
       {
-        $productData = ProductTable::getInstance()->createQuery()->where('id = ?', $productId)->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
-        if (!array_key_exists($productData['core_id'], $servicesForProduct))
+        if (empty($productId)) continue;
+
+        if (!array_key_exists($productId, $servicesForProduct))
         {
-          $servicesForProduct[$productData['core_id']] = array();
+          $servicesForProduct[$productId] = array();
         }
-        $cart = $service->cart;
-        $cart['quantity'] = $productQuantity;
-        $service->cart = $cart;
-        $servicesForProduct[$productData['core_id']][] = $service;
+        $servicesForProduct[$productId][] = array(
+          'id'       => $service['id'],
+          'token'    => $service['token'],
+          'quantity' => $productData['quantity'],
+          'price'    => $productData['price'],
+        );
       }
     }
 
@@ -443,17 +439,23 @@ class order_Actions extends myActions
         $recordData = Doctrine_Core::getTable('products' == $itemType ? 'Product' : 'Service')->createQuery()->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
         $cartData =
           'products' == $itemType
-          ? $user->getCart()->getProduct($recordData['id'])->cart
-          : $user->getCart()->getService($recordData['id'])->cart
+          ? $user->getCart()->getProduct($recordData['core_id'])
+          : $user->getCart()->getService($recordData['core_id'])
         ;
+
+        if (('services' == $itemType) && isset($cartData['products'][0]))
+        {
+          $cartData['quantity'] = $cartData['products'][0]['quantity'];
+          $cartData['price'] = $cartData['products'][0]['price'];
+        }
 
         $serviceTotal = 0; $serviceName = '';
         if (('products' == $itemType) && array_key_exists($coreData['id'], $servicesForProduct))
         {
           foreach ($servicesForProduct[$coreData['id']] as $service)
           {
-            $serviceName .= " + {$service->name} ({$service->cart['quantity']} шт.)";
-            $serviceTotal += ($service->price * $service->cart['quantity']);
+            $serviceName .= " + {$recordData['name']} ({$service['quantity']} шт.)";
+            $serviceTotal += ($service['price'] * $service['quantity']);
           }
         }
 
@@ -469,7 +471,7 @@ class order_Actions extends myActions
         $itemView->image = $coreData['media_image'];
         $itemView->price = $coreData['price'];
         $itemView->quantity = $cartData['quantity'];
-        $itemView->total = $cartData['total'] + $serviceTotal;
+        $itemView->total = ($cartData['price'] * $cartData['quantity']) + $serviceTotal;
         $itemView->type = 'products' == $itemType ? Order_ItemView::TYPE_PRODUCT : Order_ItemView::TYPE_SERVICE;
         $itemView->url =
           'products' == $itemType

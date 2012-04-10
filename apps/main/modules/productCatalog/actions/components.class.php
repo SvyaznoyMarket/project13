@@ -152,9 +152,11 @@ class productCatalogComponents extends myComponents
   */
   public function executeCreator_list()
   {
+    $region = $this->getUser()->getRegion();
+    $priceListId = $region['product_price_list_id'];
     $creatorList = CreatorTable::getInstance()->getListByProductCategory($this->productCategory, array(
       'order' => 'creator.name',
-    ));
+    ), $priceListId);
 
     $list = array();
     foreach ($creatorList as $creator)
@@ -182,7 +184,7 @@ class productCatalogComponents extends myComponents
         'productCategory' => $this->productCategory,
         'creator'         => $this->creator,
         'is_root'         => isset($this->is_root) ? $this->is_root : false,
-        'with_creator'    => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )),
+        'with_creator'    => !in_array($this->productCategory->getRootCategory()->token, array('jewel', )),
       ));
     }
 
@@ -261,10 +263,27 @@ class productCatalogComponents extends myComponents
           if (!$creator) continue;
 
           $list[] = array(
-            'type' => 'creator',
-            'name' => $creator->name,
-            'url'  => $getUrl($filter, $name, $v),
+            'type'  => 'creator',
+            'name'  => $creator->name,
+            'url'   => $getUrl($filter, $name, $v),
             'title' => 'Производитель',
+          );
+        }
+      }
+      // шильдик
+      if ('label' == $name)
+      {
+        $labels = RepositoryManager::getProductLabel()->get($value, 'id');
+        /**
+         * @var $label ProductLabelEntity
+         */
+        foreach ($labels as $label)
+        {
+          $list[] = array(
+            'type'  => 'label',
+            'name'  => $label->getName(),
+            'url'   => $getUrl($filter, $name, $label->getId()),
+            'title' => 'Метка',
           );
         }
       }
@@ -299,13 +318,13 @@ class productCatalogComponents extends myComponents
               if (!$productPropertyOption) continue;
 
               $list[] = array(
-                'type' => 'parameter',
-                'name' =>
+                'type'  => 'parameter',
+                'name'  =>
                   in_array($productPropertyOption->value, array('да', 'нет'))
                   ? $productFilter->name.': '.$productPropertyOption->value
                   : $productPropertyOption->value
                 ,
-                'url'  => $getUrl($filter, $name, $productPropertyOption->id),
+                'url'   => $getUrl($filter, $name, $productPropertyOption->id),
                 'title' => $productFilter->name,
               );
             }
@@ -314,9 +333,9 @@ class productCatalogComponents extends myComponents
             if ((null !== $value) && (1 == count($value)))
             {
               $list[] = array(
-                'type' => 'parameter',
-                'name' => $productFilter->name.': '.($value[0] ? 'да' : 'нет'),
-                'url'  => $getUrl($filter, $name),
+                'type'  => 'parameter',
+                'name'  => $productFilter->name.': '.($value[0] ? 'да' : 'нет'),
+                'url'   => $getUrl($filter, $name),
                 'title' => '',
                 'title' => $productFilter->name,
               );
@@ -426,7 +445,7 @@ class productCatalogComponents extends myComponents
       $this->form = new myProductTagFormFilter(array(), array(
         'productCategory' => $this->productCategory,
         'creator'         => $this->creator,
-        'with_creator'    => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture', )),
+        'with_creator'    => !in_array($this->productCategory->getRootCategory()->token, array('jewel', )),
       ));
     }
 
@@ -509,6 +528,23 @@ class productCatalogComponents extends myComponents
             'name'  => $creator->name,
             'url'   => $getUrl($filter, $name, $v),
             'title' => 'Производитель',
+          );
+        }
+      }
+      // шильдик
+      if ('label' == $name)
+      {
+        $labels = RepositoryManager::getProductLabel()->get($value, 'id');
+        /**
+         * @var $label ProductLabelEntity
+         */
+        foreach ($labels as $label)
+        {
+          $list[] = array(
+            'type'  => 'label',
+            'name'  => $label->getName(),
+            'url'   => $getUrl($filter, $name, $label->getId()),
+            'title' => 'Метка',
           );
         }
       }

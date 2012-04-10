@@ -54,7 +54,7 @@ include_component('productCategory', 'seo_counters_advance', array('unitId' => $
         var HEIAS_PARAMS = [];
         HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
         HEIAS_PARAMS.push(['pb', '1']);
-        HEIAS_PARAMS.push(['product_id', '<?php echo $product->barcode; ?>']);
+        HEIAS_PARAMS.push(['product_id', '<?php echo $product->core_id; ?>']);
         if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
         window.HEIAS.push(HEIAS_PARAMS);
         var scr = d.createElement('script');

@@ -32,15 +32,25 @@ $(document).ready(function() {
 	var l = promos.length
 	if( l == 0 )
 		return
-			if( l == 1 ) {
-			  $('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
-			  .click( function() {
-				  if( typeof(_gaq)!=='undefined' && typeof(promos[0].ga)!=='undefined' )
-					_gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
-				location.href = $(this).data('url')
-			  })
-			  return
-			}
+	if( l == 1 ) {
+		if( 'is_exclusive' in promos[0] && promos[0].is_exclusive ) {
+			var exclImg = $('<img>').attr('src', promos[0].imgb).css('cursor','pointer').data('url', promos[0].url)
+			.click( function() {
+			  if( typeof(_gaq)!=='undefined' && typeof(promos[0].ga)!=='undefined' )
+				_gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
+			location.href = $(this).data('url')
+			})			
+			$('.bCarouselWrap').html(exclImg)
+			return
+		}
+		$('.centerImage').attr('src', promos[0].imgb ).data('url', promos[0].url)
+		.click( function() {
+		  if( typeof(_gaq)!=='undefined' && typeof(promos[0].ga)!=='undefined' )
+			_gaq.push(['_trackEvent', 'BannerClick', promos[0].ga ]);
+		location.href = $(this).data('url')
+		})
+		return
+	}
 	/* Preload */
 	var hb = $('<div>').css('display','none')
 	for(var i=0; i < l; i++ ) {

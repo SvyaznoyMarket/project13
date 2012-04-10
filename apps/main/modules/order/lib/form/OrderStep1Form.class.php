@@ -43,7 +43,7 @@ class OrderStep1Form extends BaseOrderForm
       $stockRel = StockProductRelationTable::getInstance();
       foreach ($cart as $product_id => $product)
       {
-          if (!$stockRel->isInStock($product_id, $shop_id, null, $product['cart']['quantity'])) {
+          if (!$stockRel->isInStock($product_id, $shop_id, null, $product['quantity'])) {
               return false;
           }
       }
@@ -103,15 +103,10 @@ class OrderStep1Form extends BaseOrderForm
 
   protected function filterDeliveryPeriods($periods)
   {
-     // echo '!!!!!!!!!!!1';
-    //  die();
+
       $retval = array();
       foreach ($periods as $period) {
           $retval[$period['id']] = 'с ' . $period['time_begin'] . ' до ' . $period['time_end'];
-//          $periodObj = DeliveryPeriodTable::getInstance()->findOneByCoreId($period['id']);
-//          if ($periodObj) {
-//            $retval[$periodObj->id] = $periodObj->name;
-//          }
       }
       return $retval;
   }
@@ -132,7 +127,7 @@ class OrderStep1Form extends BaseOrderForm
       $dProducts_raw = sfContext::getInstance()->getUser()->getCart()->getProducts();
       $dProducts = array();
       foreach ($dProducts_raw as $dProduct) {
-        $dProducts[] = array('id' => $dProduct->core_id, 'quantity' => $dProduct->cart['quantity']);
+        $dProducts[] = array('id' => $dProduct['id'], 'quantity' => $dProduct['quantity']);
       }
       $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
         'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
@@ -147,14 +142,14 @@ class OrderStep1Form extends BaseOrderForm
       }
       $deliveryTypes = array();
 
-        //myDebug::dump($deliveries);
-      foreach ($deliveries as $deliveryType) {
-        $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($deliveryType['mode_id']);
+      foreach ($deliveries as  $deliveryType) {
+        $modeId = $deliveryType['mode_id'];
+        $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($modeId);
         $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
         $now = new DateTime();
         $deliveryPeriod = $minDeliveryDate->diff($now)->days;
         if ($deliveryPeriod < 0) $deliveryPeriod = 0;
-        $deliveryPeriod = myToolkit::fixDeliveryPeriod($deliveryType['mode_id'], $deliveryPeriod);
+        $deliveryPeriod = myToolkit::fixDeliveryPeriod($modeId, $deliveryPeriod);
         if ($deliveryPeriod === false) continue;
         if ($deliveryType['mode_id'] == 5) {
             $label =  $deliveryObj['name'];
@@ -321,6 +316,10 @@ class OrderStep1Form extends BaseOrderForm
     $this->widgetSchema['agreed']->setLabel('Я ознакомлен и согласен с «Условиями продажи» и «Правовой информацией»');
     $this->validatorSchema['agreed'] = new sfValidatorBoolean(array('required' => true), array('required' => 'Пожалуйста, ознакомьтесь с условиями продажи и правовой информацией и поставьте галочку'));
 
+	  $this->widgetSchema['sclub_card_number'] = new sfWidgetFormInputText();
+	  $this->widgetSchema['sclub_card_number']->setLabel('Номер карточки связного клуба');
+	  $this->validatorSchema['sclub_card_number'] = new myValidatorSClubCardNumber(array('required' => false), array('invalid' => 'номер карточки введен неверно'));
+
     $this->useFields(array(
       'region_id',
       'person_type',
@@ -336,9 +335,10 @@ class OrderStep1Form extends BaseOrderForm
       //'zip_code',
       'address',
       'extra',
+	    'sclub_card_number',
       //'recipient_middle_name',
       'payment_method_id',
-      'agreed',
+      'agreed'
     ));
 
     $this->widgetSchema->setNameFormat('order[%s]');

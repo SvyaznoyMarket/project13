@@ -20,15 +20,20 @@ class pageActions extends myActions
     $this->page = PageTable::getInstance()->getByToken($request['page']);
     $this->forwardUnless($this->page, 'redirect', 'index');
 
-    //TODO: ЭТО НАДО УБИТЬ, КОГДА ПОЯВИТСЯ НОРМАЛЬНЫЙ РАЗДЕЛ Service F1
-    if ('f1' == $this->page->token)
-    {
-      $this->setLayout('layout');
-    }
-
     $pageTitle = !empty($this->page->title) ? $this->page->title : $this->page->name;
     $this->getResponse()->setTitle($pageTitle.' – Enter.ru');
 
+    if ($this->page['level'])
+    {
+      $q = PageTable::getInstance()->createBaseQuery()
+        ->addWhere('page.root_id = ? AND page.level = ?', array($this->page['root_id'], 0))
+        ->limit(1);
+      $rootPage = $q->fetchOne();
+      $addToBreadcrumbs[] = array('name' => $rootPage['name'], 'url' => $this->generateUrl('default_show', array('page' => $rootPage['token'], )));
+    }
+    $addToBreadcrumbs[] = array('name' => $this->page['name']);
+
     $this->setVar('page', $this->page, true);
+    $this->setVar('addToBreadcrumbs', $addToBreadcrumbs, true);
   }
 }

@@ -1,5 +1,5 @@
 all:
-  layout: order
+  layout: order_
 
 index:
   layout: layout

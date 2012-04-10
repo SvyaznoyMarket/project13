@@ -23,16 +23,33 @@ class cartComponents extends myComponents
     {
       $this->quantity = 1;
     }
-
-    $this->disable = false;
-    if (!$this->product['is_insale'])
-    {
-      $this->disable = true;
-    }
-
     $cart = $this->getUser()->getCart();
+    $this->disable = false;
+    $productPath = '';
+    if (is_object($this->product)) {
+        if (!$this->product->is_insale)
+        {
+            $this->disable = true;
+        }
+        $productId = $this->product->id;
+        if (property_exists($this->product, 'path')) {
+            $productPath = $this->product->token;
+        }
+    } else {
+        if (!$this->product['is_insale'])
+        {
+            $this->disable = true;
+        }
+        $productId = $this->product['id'];
+        $productPath = $this->product['token'];
+    }
+    $hasProduct = $cart->hasProduct($productId);
+    $this->setVar('productPath', $productPath);
+    $this->setVar('productId', $productId);
 
-    if ($cart->hasProduct($this->product['id']))
+
+
+    if ($hasProduct)
     {
       $this->button = 'cart';
     }
@@ -40,12 +57,17 @@ class cartComponents extends myComponents
     {
       $this->button = 'buy';
     }
+      //myDebug::dump($this->button);
 
-    if (!in_array($this->view, array('default', 'add')))
-    {
+    if ($this->soa == true) {
+        $this->view = 'soa';
+    } elseif (!in_array($this->view, array('default', 'delivery'))) {
       $this->view = 'default';
     }
+
   }
+
+
  /**
   * Executes show component
   *

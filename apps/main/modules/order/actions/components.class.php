@@ -119,29 +119,6 @@ class orderComponents extends myComponents
     $this->setVar('cart', $this->getUser()->getCart());
   }
 
-  function executeSeo_counters_advance()
-  {
-    if ($this->step == 2)
-    {
-      $orderArticle = $this->getUser()->getCart()->getSeoCartArticle();
-      $this->setVar('orderArticle', $orderArticle, true);
-    } elseif ($this->step == 4)
-    {
-      $qtyAr = array();
-      $barcodeAr = array();
-      foreach ($this->order->ProductRelation as $product)
-      {
-        $qtyAr[] = $product['quantity'];
-        $barcodeAr[] = $product->Product['barcode'];
-      }
-      $qty = implode(',', $qtyAr);
-      $barcodeStr = implode(',', $barcodeAr);
-      $this->setVar('quantityString', $qty, true);
-      echo $barcodeStr . '=============';
-      $this->setVar('orderArticle', $barcodeStr, true);
-    }
-  }
-
   /**
    * Executes field_region_id component
    *
@@ -200,6 +177,29 @@ class orderComponents extends myComponents
     }
 
     $this->setVar('choices', $choices, true);
+  }
+
+	public function executeField_sclub_card_number()
+	{
+	}
+
+  public function executeSeo_counters_advance()
+  {
+      if ($this->step == 2) {
+          $orderArticle = $this->getUser()->getCart()->getSeoCartArticle();
+          $this->setVar('orderArticle', $orderArticle, true);
+      } elseif ($this->step == 4) {
+          $qtyAr = array();
+          $barcodeAr = array();
+          foreach ($this->order->ProductRelation as $product) {
+              $qtyAr[] = $product['quantity'];
+              $barcodeAr[] = $product->Product['core_id'];
+          }
+          $qty = implode(',', $qtyAr);
+          $barcodeStr = implode(',', $barcodeAr);
+          $this->setVar('quantityString', $qty, true);
+          $this->setVar('orderArticle', $barcodeStr, true);
+      }
   }
 }
 
