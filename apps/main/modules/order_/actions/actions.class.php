@@ -260,6 +260,7 @@ class order_Actions extends myActions
       if ('self' == $deliveryType->token)
       {
         $shop = !empty($deliveryTypeData['shop']['id']) ? ShopTable::getInstance()->getByCoreId($deliveryTypeData['shop']['id']) : null;
+        if (!$shop) continue;
 
         $order->address = null;
         $order->shop_id = $shop ? $shop->id : null;
@@ -273,50 +274,40 @@ class order_Actions extends myActions
         list($itemType, $itemId) = explode('-', $itemToken);
         if ('product' == $itemType)
         {
-          $productId = ProductTable::getInstance()->getIdByCoreId($itemId);
+          $productId = $itemId;
 
           /* @var $product Product */
-          $product = $user->getCart()->getProduct($productId);
+          $cartData = $user->getCart()->getProduct($productId);
+          $product = ProductTable::getInstance()->getByCoreId($productId);
           if (!$product) continue;
 
           $relation = new OrderProductRelation();
           $relation->setProduct($product);
-          $relation->setPrice(ProductTable::getInstance()->getRealPrice($product));
-          $relation->setQuantity($product->cart['quantity']);
+          $relation->setPrice($cartData['price']);
+          $relation->setQuantity($cartData['quantity']);
 
           $order->ProductRelation[] = $relation;
         }
         if ('service' == $itemType)
         {
-          $serviceId = ServiceTable::getInstance()->getIdByCoreId($itemId);
+          $serviceId = $itemId;
 
           /* @var $service Service */
-          $service = $user->getCart()->getService($serviceId);
+          $cartData = $user->getCart()->getService($serviceId);
+          $service = ServiceTable::getInstance()->getByCoreId($serviceId);
           if (!$service) continue;
 
-          if ($service->cart['quantity'] > 0)
+          foreach ($cartData['products'] as $productId => $productData)
           {
+            if (empty($productData['quantity'])) continue;
+
             $relation = new OrderServiceRelation();
             $relation->setService($service);
-            $relation->setPrice($service->price);
-            $relation->setQuantity($service->cart['quantity']);
+            $relation->setProductId(empty($productId) ? $productId : null);
+            $relation->setPrice($productData['price']);
+            $relation->setQuantity($productData['quantity']);
 
             $order->ServiceRelation[] = $relation;
-          }
-          if (count($service->cart['product']) > 0)
-          {
-            foreach ($service->cart['product'] as $product_id => $quantity)
-            {
-              if (!$product_id || !$quantity) continue;
-
-              $relation = new OrderServiceRelation();
-              $relation->setService($service);
-              $relation->setProductId($product_id);
-              $relation->setPrice($service->price);
-              $relation->setQuantity($quantity);
-
-              $order->ServiceRelation[] = $relation;
-            }
           }
         }
       }
@@ -327,7 +318,7 @@ class order_Actions extends myActions
 
       $orders[] = $order;
     }
-    //myDebug::dump($orders);
+    //myDebug::dump($orders, 1);
 
     $coreData = array_map(function($order) {
       $return = $order->exportToCore();
@@ -335,6 +326,7 @@ class order_Actions extends myActions
 
       return $return;
     }, $orders);
+    //myDebug::dump($coreData, 1);
     $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
     //myDebug::dump($response, 1);
     if (is_array($response) && array_key_exists('confirmed', $response) && $response['confirmed'])

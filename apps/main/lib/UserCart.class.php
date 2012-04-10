@@ -462,27 +462,30 @@ class UserCart extends BaseUserData
         return $result;
     }
 
-    public function getTotal($is_formatted = false)
+  public function getTotal($is_formatted = false)
+  {
+    $total = 0;
+    foreach ($this->_products as $product)
     {
-        $total = 0;
-        foreach ($this->_products as $product)
-        {
-            $total += $product['price'] * $product['quantity'];
-        }
-
-        foreach ($this->_services as $service)
-        {
-            if (isset($service['products']))
-            {
-                foreach ($service['products'] as $prodId => $prodQty)
-                {
-                    $total += ($prodQty['price'] * $prodQty['quantity']);
-                }
-            }
-        }
-
-        $result = $is_formatted ? number_format($total, 0, ',', ' ') : $total;
+      $total += $product['price'] * $product['quantity'];
     }
+
+    foreach ($this->_services as $service)
+    {
+      if (isset($service['products']))
+      {
+        foreach ($service['products'] as $prodId => $prodQty)
+        {
+          $total += ($prodQty['price'] * $prodQty['quantity']);
+        }
+      }
+    }
+
+    $result = $is_formatted ? number_format($total, 0, ',', ' ') : $total;
+
+
+    return $result;
+  }
 
   public function getTotalForOrder(Order $order)
   {
