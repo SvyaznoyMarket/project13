@@ -263,6 +263,7 @@ class orderComponents extends myComponents
       }
       $catList = ProductCategoryTable::getInstance()->createBaseQuery()->whereIn('id', $catIdList)->fetchArray();
       $resultData = array();
+
       foreach ($catList as $cat) {
           $resultData[$cat['core_id']] = $data[$cat['id']];
           $resultData[$cat['core_id']]['number'] .= '-' . $cat['core_id'];
