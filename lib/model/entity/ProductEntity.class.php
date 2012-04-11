@@ -214,7 +214,7 @@ class ProductEntity
   {
     $list = array();
     foreach ($this->attributeList as $attr)
-      if ($attr->getIsViewList())
+      if ($attr->getIsViewList() && $attr->getStringValue())
         $list[] = $attr;
     usort($list, function(ProductAttributeEntity $a, ProductAttributeEntity $b)
     {

@@ -84,10 +84,7 @@ class productCatalog_Actions extends myActions
       $this->forward($this->getModuleName(), 'product');
     }
 
-    // если категория корневая
-    if ($productCategory->getNode()->isRoot()) {
-      $this->setTemplate('categoryRoot');
-    }
+    $this->forward('productCatalog', 'category');
   }
 
   public function executeCount(sfWebRequest $request)
@@ -223,11 +220,17 @@ class productCatalog_Actions extends myActions
    */
   private function seoRedirectOnPageDublicate(sfWebRequest $request)
   {
-    //если передано page=1 или view=compact, отрезаем этот параметр и делаем редирект.
+    /** @var $route sfObjectRoute */
+    $route = $this->getRoute();
+    /** @var $productCategory ProductCategory */
+    $productCategory = $route->getObject();
+    $view = $productCategory->product_view;
+    if (empty($view)) $view = 'compact';
+    //если передано page=1 или view c дефолным значением, отрезаем этот параметр и делаем редирект.
     //необходимо для seo
     $redirectAr = array(
       'page' => 1,
-      'view' => 'compact'
+      'view' => $view,
     );
     foreach ($redirectAr as $key => $val)
     {
