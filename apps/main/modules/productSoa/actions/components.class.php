@@ -241,19 +241,35 @@ class productSoaComponents extends myComponents
     $product = $this->product;
     $this->setVar('product', $this->product, true);
 
-    //print_r($this->product->model['property']);
+//    print_r($this->product);
+//      die();
     $propIdList = array();
+    $propType = array();
     foreach ($this->product->model['property'] as $prop) {
         $propIdList[] = $prop['id'];
     }
     foreach ($this->product->model['product'] as $prod) {
         foreach ($prod->property as $prop) {
             if (in_array($prop['id'], $propIdList)) {
-                $prodPropValue[$prod->id][$prop['id']] = $prop['value'];
+                if ($prop['value']) {
+                    $value = $prop['value'];
+                } elseif ($prop['option_id'] && is_array($prop['option_id'])) {
+                    $valueList = array();
+                    foreach ($prop['option_id'] as $opt) {
+                        $valueList[] = $opt['value'];
+                    }
+                    $value = implode(',', $valueList);
+                }
+                $prodPropValue[$prod->id][$prop['id']] = $value;
+                if (isset($prop['type_id'])) {
+                    $propType[$prop['id']] = $prop['type_id'];
+                } else {
+                    $propType[$prop['id']] = 1;
+                }
             }
         }
     }
-//      print_r($prodPropValue);
+  //   print_r($prodPropValue);
 //      die();
     foreach ($this->product->model['property'] as $prop) {
         $property = array(
@@ -266,16 +282,7 @@ class productSoaComponents extends myComponents
         foreach ($this->product->model['product'] as $productModel) {
             foreach ($this->product->model['property'] as $prodProp) {
                 if ($prodProp['id'] == $prop['id']) {
-                   if (!isset($prodPropValue[$productModel->id]) || !isset($prodPropValue[$productModel->id][$prodProp['id']])) {
-                      $value = '-';
-                   } else {
-                        $value = $prodPropValue[$productModel->id][$prodProp['id']];
-                   }
-                    if (trim($value) == 'true') {
-                        $value = 'да';
-                    } elseif (trim($value) == 'false') {
-                        $value = 'нет';
-                    }
+                   $value = $prodPropValue[$productModel->id][$prodProp['id']];
                    if ($product->id == $productModel->id) {
                         $property['current']['id'] = $productModel->id;
                         $property['current']['value'] = $value;
@@ -297,95 +304,25 @@ class productSoaComponents extends myComponents
                 }
             }
         }
+        $needSort = false;
+        if ($propType[$prop['id']] == 3) {
+            $needSort = true;
+        } elseif ($propType[$prop['id']] == 5) {
+            $a = current($property['products']);
+            if (preg_match('/^\d+$/', $a['value'])) {
+                $needSort = true;
+            }
+        }
+        if ($needSort) {
+            ksort($property['products']);
+        }
         $properties[] = $property;
     }
-    //print_r($properties);
-    //die();
+    //  print_r($properties);
     $this->setVar('properties', $properties, true);
     return;
-
-
-
-    if (!$this->product->is_model && !$this->product->model_id)
-    {
-      return sfView::NONE;
-    }
-
-    $properties = $this->product->getModelProperty();
-    if (!count($properties))
-    {
-      return sfView::NONE;
-    }
-
-    //myDebug::dump($properties);
-    $model_id = !empty($this->product->model_id) ? $this->product->model_id : $this->product->id;
-    $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
-    //добавляем учет товара, доступного к продаже
-    $q->addWhere('IFNULL(productState.is_instock, product.is_instock) = ?', true);
-
-    $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
-
-    if (empty($product_ids))
-    {
-      return sfView::NONE;
-    }
-
-    $q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
-    $products_properties = $this->product->getPropertyRelation();
-
-    foreach ($properties as $property)
-    {
-      $query = clone $q;
-      $query->addWhere('productPropertyRelation.property_id = ?', array($property->id,));
-      $query->andWhereIn('productPropertyRelation.product_id', $product_ids);
-      $query->distinct();
-      $value_ids = ProductPropertyRelationTable::getInstance()->getIdsByQuery($query);
-      $values = ProductPropertyRelationTable::getInstance()->createListByIds($value_ids, array('index' => array('productPropertyRelation' => 'id',)));
-      foreach ($products_properties as $products_property)
-      {
-        if ($property->id == $products_property->property_id)
-        {
-          $values[$products_property->id]->mapValue('is_selected', true);
-        }
-      }
-      //myDebug::dump($values);
-      $value_to_map = array();
-      foreach ($values as $id => $value)
-      {
-        if (!$value->product_id) continue;
-        $product = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true, ));
-        if (!$product) continue;
-        $realValue = $value->getRealValue();
-        $value_to_map[$realValue]['id'] = $id;
-        $value_to_map[$realValue]['url'] = $this->generateUrl('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
-        $value_to_map[$realValue]['parameter'] = new ProductParameter($property['ProductTypeRelation'][0], array($value, ));
-        if (isset($values[$id]['is_selected']))
-        {
-          $value_to_map[$realValue]['is_selected'] = $values[$id]['is_selected'];
-        }
-        elseif (!isset($value_to_map[$realValue]['is_selected']))
-        {
-          $value_to_map[$realValue]['is_selected'] = 0;
-        }
-        if ($value_to_map[$realValue]['is_selected'])
-        {
-          $property->mapValue('current', $realValue);
-        }
-        if ($property->ProductModelRelation[0]->is_image)
-        {
-          $value_to_map[$realValue]['photo'] = $product->getMainPhotoUrl(1);
-        }
-
-      }
-      ksort($value_to_map);
-      $property->mapValue('values', $value_to_map);
-    }
-    if (!isset($property->current))
-    {
-      return sfView::NONE;
-    }
-    $this->setVar('properties', $properties, true);
   }
+
 
   /**
    * Executes list_view component
@@ -472,6 +409,7 @@ class productSoaComponents extends myComponents
           $prodId = $this->product->id;
       }
       $this->setVar('productId', $prodId, true);
+      $this->setVar('productIsInSale', $this->product->is_insale, true);
       $this->setVar('showInCardButton', $showInCardButton);
   }
 
