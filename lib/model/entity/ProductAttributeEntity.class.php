@@ -233,14 +233,7 @@ class ProductAttributeEntity
 
   public function getStringValue()
   {
-    if (!empty($this->optionList)) {
-      $value = array();
-      foreach ($this->optionList as $option)
-        $value[] = $option->getHumanizedName();
-      return join(', ', $value);
-    }
-    else
-    {
+    if (!empty($this->value)) {
       if (in_array($this->value, array('false', false), true)) {
         return 'нет';
       }
@@ -252,5 +245,13 @@ class ProductAttributeEntity
       }
       return $this->value;
     }
+    if (!empty($this->optionList)) {
+      $value = array();
+      foreach ($this->optionList as $option)
+        $value[] = $option->getHumanizedName();
+      return join(', ', $value);
+    }
+    else
+      return null;
   }
 }
