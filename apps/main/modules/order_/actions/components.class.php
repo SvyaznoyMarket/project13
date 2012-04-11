@@ -15,7 +15,6 @@ class order_Components extends myComponents
    *
    * @param string $name Название поля
    * @param mixed $value Значение поля
-   * @param array $regionList Коллекция регионов
    */
   public function executeField_region_id()
   {

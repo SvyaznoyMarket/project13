@@ -24,7 +24,7 @@
   <div id="order-form-part2" class="hidden">
 
     <div id="order-message" class='bBuyingInfo'>
-      <span>Отличный выбор!</span>
+      <span><?php count($deliveryMap->unavailable) ? 'Некоторые товары не могут быть доставлены' : 'Отличный выбор!' ?></span>
     </div>
 
     <div id="order-delivery-holder">

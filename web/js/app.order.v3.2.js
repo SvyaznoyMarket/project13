@@ -286,6 +286,8 @@ $(document).ready(function() {
             var data = this.data()
             var unavailableContainer = $('#order-unavailable')
 
+            unavailableContainer.find('.order-item-holder').html('')
+
             if (data.unavailable.length) {
                 $.each(data.unavailable, function(i, itemToken) {
                     var item = data.items[itemToken]

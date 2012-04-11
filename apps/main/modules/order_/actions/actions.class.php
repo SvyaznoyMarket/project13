@@ -224,14 +224,15 @@ class order_Actions extends myActions
     }
     //myDebug::dump($deliveryTypes, 1);
 
-    // если нет регионов или способов доставки
-    if (!count($regions) || !count($deliveryTypes))
+    // если нет способов доставки
+    //myDebug::dump($deliveryTypes, 1);
+    if (!count($deliveryTypes))
     {
-      $this->getLogger()->err('{Order} calculate: empty regions or delivery\'s types');
+      $this->getLogger()->err('{Order} calculate: empty delivery\'s types');
       $this->redirect('cart');
     }
 
-    return new OrderDefaultForm($order, array('user' => $this->getUser(), 'regions' => $regions, 'deliveryTypes' => $deliveryTypes));
+    return new OrderDefaultForm($order, array('user' => $this->getUser(), 'deliveryTypes' => $deliveryTypes));
   }
 
   private function saveOrder(Order $baseOrder, $deliveryMap)
@@ -250,7 +251,8 @@ class order_Actions extends myActions
       /* @var $order Order */
       $order = clone $baseOrder;
 
-      $order->mapValue('Item', array());
+      $order->mapValue('ProductItem', array());
+      $order->mapValue('ServiceItem', array());
       $order->delivery_type_id = null;
       $order->DeliveryType = $deliveryType;
       $order->User = $user->getGuardUser();
@@ -270,48 +272,37 @@ class order_Actions extends myActions
         $order->shop_id = null;
       }
 
+      $productItems = array(); $serviceItems = array();
       foreach ($deliveryTypeData['items'] as $itemToken)
       {
         list($itemType, $itemId) = explode('-', $itemToken);
         if ('product' == $itemType)
         {
-          $productId = $itemId;
-
           /* @var $product Product */
-          $cartData = $user->getCart()->getProduct($productId);
-          $product = ProductTable::getInstance()->getByCoreId($productId);
-          if (!$product) continue;
-
-          $relation = new OrderProductRelation();
-          $relation->setProduct($product);
-          $relation->setPrice($cartData['price']);
-          $relation->setQuantity($cartData['quantity']);
-
-          $order->ProductRelation[] = $relation;
+          $cartData = $user->getCart()->getProduct($itemId);
+          $productItems[] = array(
+            'id'       => $itemId,
+            'quantity' => $cartData['quantity'],
+          );
         }
         if ('service' == $itemType)
         {
-          $serviceId = $itemId;
-
           /* @var $service Service */
-          $cartData = $user->getCart()->getService($serviceId);
-          $service = ServiceTable::getInstance()->getByCoreId($serviceId);
-          if (!$service) continue;
+          $cartData = $user->getCart()->getService($itemId);
 
           foreach ($cartData['products'] as $productId => $productData)
           {
             if (empty($productData['quantity'])) continue;
-
-            $relation = new OrderServiceRelation();
-            $relation->setService($service);
-            $relation->setProductId(empty($productId) ? $productId : null);
-            $relation->setPrice($productData['price']);
-            $relation->setQuantity($productData['quantity']);
-
-            $order->ServiceRelation[] = $relation;
+            $serviceItems[] = array(
+              'id'       => $itemId,
+              'quantity' => $productData['quantity'],
+            );
           }
         }
       }
+
+      $order->ProductItem = $productItems;
+      $order->ServiceItem = $serviceItems;
 
       // расчет доставки: рассчитывается в ядре
       $deliveryPrice = 0;
@@ -325,6 +316,8 @@ class order_Actions extends myActions
       /* @var $order Order */
       $return = $order->exportToCore();
       $return['delivery_period'] = $order->delivery_period;
+      $return['product'] = $order->ProductItem;
+      $return['service'] = $order->ServiceItem;
 
       return $return;
     }, $orders);
@@ -439,11 +432,14 @@ class order_Actions extends myActions
     foreach (array('products', 'services') as $itemType) {
       foreach ($result[$itemType] as $coreData)
       {
-        $recordData = Doctrine_Core::getTable('products' == $itemType ? 'Product' : 'Service')->createQuery()->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
+        $recordData = array_shift(Core::getInstance()->query('products' == $itemType ? 'product.get' : 'service.get', array(
+          'id'     => $coreData['id'],
+          'expand' => array(),
+        )));
         $cartData =
           'products' == $itemType
-          ? $user->getCart()->getProduct($recordData['core_id'])
-          : $user->getCart()->getService($recordData['core_id'])
+          ? $user->getCart()->getProduct($recordData['id'])
+          : $user->getCart()->getService($recordData['id'])
         ;
 
         if (('services' == $itemType) && isset($cartData['products'][0]))
@@ -465,8 +461,8 @@ class order_Actions extends myActions
         $itemView = new Order_ItemView();
         $itemView->deleteUrl =
           'products' == $itemType
-          ? $this->generateUrl('cart_delete', array('product' => $recordData['token_prefix'].'/'.$recordData['token']))
-          : $this->generateUrl('cart_service_delete', array('service' => $recordData['token'], 'product' => '-/-'))
+          ? $this->generateUrl('cart_delete', array('product' => $recordData['id']))
+          : $this->generateUrl('cart_service_delete', array('service' => $recordData['id'], 'product' => 0))
         ;
         $itemView->id = $coreData['id'];
         $itemView->name = $coreData['name'].$serviceName;
@@ -476,11 +472,7 @@ class order_Actions extends myActions
         $itemView->quantity = $cartData['quantity'];
         $itemView->total = ($cartData['price'] * $cartData['quantity']) + $serviceTotal;
         $itemView->type = 'products' == $itemType ? Order_ItemView::TYPE_PRODUCT : Order_ItemView::TYPE_SERVICE;
-        $itemView->url =
-          'products' == $itemType
-          ? $this->generateUrl('productCard', array('product' => $recordData['token_prefix'].'/'.$recordData['token']))
-          : $this->generateUrl('service_show', array('service' => $recordData['token']))
-        ;
+        $itemView->url = '';
         $itemView->token = $itemView->type.'-'.$itemView->id;
 
         foreach ($coreData['deliveries'] as $deliveryToken => $deliveryData)
