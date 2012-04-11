@@ -321,6 +321,7 @@ class order_Actions extends myActions
     //myDebug::dump($orders, 1);
 
     $coreData = array_map(function($order) {
+      /* @var $order Order */
       $return = $order->exportToCore();
       $return['delivery_period'] = $order->delivery_period;
 
@@ -361,7 +362,7 @@ class order_Actions extends myActions
     $servicesInCart = array();
     foreach ($user->getCart()->getServices() as $service)
     {
-      if (!array_key_exists(0, $service['products'])) continue;
+      if (!isset($service['products'][0])) continue;
 
       $servicesInCart[] = array('id' => $service['id'], 'quantity' => $service['products'][0]['quantity']);
     }
@@ -378,8 +379,12 @@ class order_Actions extends myActions
         {
           $servicesForProduct[$productId] = array();
         }
+
+        $coreData = array_shift(Core::getInstance()->query('service.get', array('id' => $service['id'], 'expand' => array())));
+
         $servicesForProduct[$productId][] = array(
           'id'       => $service['id'],
+          'name'     => $coreData['name'],
           'token'    => $service['token'],
           'quantity' => $productData['quantity'],
           'price'    => $productData['price'],
@@ -395,20 +400,25 @@ class order_Actions extends myActions
       $deliveryType ? $deliveryType->getToken() : null,
       $shop ? $shop->getId() : null
     );
+    if (!$result)
+    {
+      $this->message = 'Товары не могут быть доставлены';
+
+      $this->setTemplate('error');
+      return sfView::SUCCESS;
+    }
     //myDebug::dump($result, 1);
 
     $deliveryMapView = new Order_DeliveryMapView();
 
     $deliveryMapView->unavailable = array();
     //$deliveryMapView->unavailable = array('product-23595');
-    /*
-    foreach ($result['unavailable'] as $itemType => $itemIds)
+    if (array_key_exists('unavailable', $result)) foreach ($result['unavailable'] as $itemType => $itemIds)
     {
       $deliveryMapView->unavailable = array_merge($deliveryMapView->unavailable, array_map(function($id) use ($itemType) {
         return $itemType.'-'.$id;
       }, $itemIds));
     }
-    */
 
     // сборка магазинов
     foreach ($result['shops'] as $coreData)
@@ -446,7 +456,7 @@ class order_Actions extends myActions
         {
           foreach ($servicesForProduct[$coreData['id']] as $service)
           {
-            $serviceName .= " + {$recordData['name']} ({$service['quantity']} шт.)";
+            $serviceName .= " + {$service['name']} ({$service['quantity']} шт.)";
             $serviceTotal += ($service['price'] * $service['quantity']);
           }
         }
