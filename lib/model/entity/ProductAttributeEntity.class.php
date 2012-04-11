@@ -247,6 +247,9 @@ class ProductAttributeEntity
       if (in_array($this->value, array('true', true), true)) {
         return 'да';
       }
+      if (!empty($this->unit)) {
+        return sprintf('%s %s', $this->value, $this->unit);
+      }
       return $this->value;
     }
   }
