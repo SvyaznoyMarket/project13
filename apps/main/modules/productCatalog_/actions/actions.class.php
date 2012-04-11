@@ -84,10 +84,7 @@ class productCatalog_Actions extends myActions
       $this->forward($this->getModuleName(), 'product');
     }
 
-    // если категория корневая
-    if ($productCategory->getNode()->isRoot()) {
-      $this->setTemplate('categoryRoot');
-    }
+    $this->forward('productCatalog', 'category');
   }
 
   public function executeCount(sfWebRequest $request)

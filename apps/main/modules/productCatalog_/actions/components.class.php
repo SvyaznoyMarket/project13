@@ -293,7 +293,7 @@ class productCatalog_Components extends myComponents
     }
 
     $q = ProductCategoryTable::getInstance()->createBaseQuery();
-    $q->addWhere('productCategory.root_id = ?', $rootCat['id']);
+    $q->addWhere('productCategory.root_id = ?', $rootCat['root_id']);
     $list = $q->fetchArray();
 
     $isCurrent = false;
