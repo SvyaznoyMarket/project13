@@ -250,6 +250,7 @@ class order_Actions extends myActions
       /* @var $order Order */
       $order = clone $baseOrder;
 
+      $order->mapValue('Item', array());
       $order->delivery_type_id = null;
       $order->DeliveryType = $deliveryType;
       $order->User = $user->getGuardUser();
@@ -416,7 +417,7 @@ class order_Actions extends myActions
     if (array_key_exists('unavailable', $result)) foreach ($result['unavailable'] as $itemType => $itemIds)
     {
       $deliveryMapView->unavailable = array_merge($deliveryMapView->unavailable, array_map(function($id) use ($itemType) {
-        return $itemType.'-'.$id;
+        return ('products' == $itemType ? 'product' : 'service').'-'.$id;
       }, $itemIds));
     }
 
