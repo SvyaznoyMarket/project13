@@ -64,7 +64,13 @@ foreach ($p3d as $p3d_obj)
         <div class="clear"></div>
 
         <?php if (!empty($product->label) && $product->price_average > 0 && $product->price < $product->price_average): ?>
-            <div class="mOurGray">Цена не у нас<br><?php include_partial('product/price', array('price' => $product->price_average, 'noStrong' => true, )) ?></div>
+            <div class="mOurGray">
+                Средняя цена в магазинах города*<br><div class='mOurGray mIco'><?php include_partial('product/price', array('price' => $product->price_average, 'noStrong' => true, )) ?> &nbsp;</div>
+            </div>
+            <?php slot('additional_data') ?>
+                <div class="gray pt20 mb10">*по данным мониторинга компании Enter</div>
+                <div class="clear"></div>
+            <?php end_slot() ?>
             <div class="clear"></div>
             <div class="clear mOur pt10 <?php if ($product->sale_label) echo 'red'; ?>">Наша цена</div>
         <?php endif ?>
@@ -92,7 +98,7 @@ foreach ($p3d as $p3d_obj)
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1)) ?>
             </div>
             <?php if (false && $product->is_insale && $sf_user->getRegion('region')->is_default): ?>
-            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $product->barcode)) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $product->barcode));  ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
             <?php endif ?>
         </div>
 
@@ -102,7 +108,7 @@ foreach ($p3d as $p3d_obj)
 
         <?php if ($product->is_insale): ?>
         <?php //include_component('productSoa', 'delivery', array('product' => $product)) ?>
-        <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->id ?>" data-shoplink="<?php //echo $product->stock_url ?>" data-calclink="<?php echo url_for('product_delivery', array('product' => $product->id)) ?>">
+        <div class="bDeliver2 delivery-info" id="product-id-<?php echo $product->id ?>" data-shoplink="<?php echo url_for('productStock', array('product' => $product->path)) ?>" data-calclink="<?php echo url_for('product_delivery', array('product' => $product->id)) ?>">
             <h4>Как получить заказ?</h4>
             <ul>
                 <li>
@@ -113,9 +119,35 @@ foreach ($p3d as $p3d_obj)
         <div class="line pb15"></div>
         <?php endif ?>
 
+	    <div style="margin-bottom: 20px;">
+		    <!--AdFox START-->
+		    <!--enter-->
+		    <!--Площадка: Enter.ru / * / *-->
+		    <!--Тип баннера: 400x-->
+		    <!--Расположение: <верх страницы>-->
+		    <!-- ________________________AdFox Asynchronous code START__________________________ -->
+		    <script type="text/javascript">
+			    <!--
+			    if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+			    if (typeof(document.referrer) != 'undefined') {
+				    if (typeof(afReferrer) == 'undefined') {
+					    afReferrer = escape(document.referrer);
+				    }
+			    } else {
+				    afReferrer = '';
+			    }
+			    var addate = new Date();
+			    var dl = escape(document.location);
+			    var pr1 = Math.floor(Math.random() * 1000000);
 
+			    document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
+			    document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
 
-
+			    AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+			    // -->
+		    </script>
+		    <!-- _________________________AdFox Asynchronous code END___________________________ -->
+	    </div>
 
         <?php include_component('serviceSoa', 'listByProduct', array('product' => $product)) ?>
 
@@ -177,9 +209,37 @@ foreach ($p3d as $p3d_obj)
     <?php include_component('productSoa', 'tags', array('product' => $product)) ?>
 <?php endif ?>
 
+<?php //if 2nd buttom ?>
+	<div class="fr ar pb15">
+		<div class="goodsbarbig mSmallBtns" ref="<?php echo $product->token ?>" data-value='<?php echo json_encode( $json ) ?>'>
+
+		  <div class='bCountSet'>
+			<?php if (!$product->cart_quantity): ?>
+			  <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
+			<?php else: ?>
+			  <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+			<?php endif ?>
+			<span><?php echo $product->cart_quantity ? $product->cart_quantity : 1 ?> шт.</span>
+		  </div>
+
+		  <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1)) ?>
+		</div>
+		<?php if (false && $product->is_insale && $sf_user->getRegion('region')->is_default): ?>
+		<div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $product->barcode));  ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+		<?php endif ?>
+	</div>
+<div class="fr mBuyButtonBottom">
+	<div class="pb10"><?php include_partial('productSoa/price', array('price' => $product->getFormattedPrice())) ?></div>
+</div>	
+<div class="fl mBuyButtonBottom ">
+	<h2 class="bold"><?php echo $product->name ?></h2>
+</div>
+
+<?php //endif ?>
+
 <?php //if (count($product->related)): ?>
 <?php //include_partial('productSoa/product_related', $sf_data) ?>
-<?php //endif ?>
+
 
 <?php //if (count($product->accessories)): ?>
 <?php //include_partial('productSoa/product_accessory', $sf_data) ?>

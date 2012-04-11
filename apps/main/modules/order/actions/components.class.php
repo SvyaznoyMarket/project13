@@ -223,6 +223,12 @@ class orderComponents extends myComponents
   {
   }
 
+	public function executeField_sclub_card_number()
+	{
+//		echo 'fied sclub_card_number execute !!';
+//		exit();
+	}
+
   public function executeReceipt()
   {
     $this->setVar('cart', $this->getUser()->getCart());

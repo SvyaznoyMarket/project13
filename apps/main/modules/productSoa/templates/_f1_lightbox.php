@@ -26,26 +26,23 @@ if (is_object($servListId)) {
                         </td>
                         <td class="bF1Block_eBuy" ref="<?php echo $service['token'] ?>">
                             <?php if ($service['price']) { ?>
-                            <span class="bF1Block_ePrice
-                                      <?php if (!$product->getIsInsale()) echo ' mr110'; ?> ">
+                            <span class="bF1Block_ePrice">
                                     <?php echo $service['priceFormatted'] ?>
                                 <?php if ($service['price'] >= 1) { ?>
                                 &nbsp;<span class="rubl">p</span>
                                 <?php } ?>
                                 </span>
                             <?php } ?>
-                            <?php if ($productIsInSale) { ?>
-                                <?php if ($service['only_inshop']) { ?>
-                                    <span class='bF1Block__eInShop'>доступна в магазине</span>
-                                <?php } elseif ($service['in_sale'] && in_array($service['id'], $servListId)) { ?>
-                                <input data-f1title="<?php echo $service['name'] ?>" data-f1price="<?php echo $service['priceFormatted'] ?>" data-fid="<?php echo $service['token'];?>"
-                                       data-url="<?php echo url_for('cart_service_add', array('service'=>$service['id'], 'product' => $productId)) ?>"
-                                       type="button" class="active button yellowbutton" value="В корзине">
-                                <?php } elseif ($service['in_sale']) { ?>
-                                <input data-f1title="<?php echo $service['name'] ?>" data-f1price="<?php echo $service['priceFormatted'] ?>" data-fid="<?php echo $service['token'];?>"
-                                       data-url="<?php echo url_for('cart_service_add', array('service'=>$service['id'], 'product' => $productId)) ?>"
-                                       type="button" class="button yellowbutton" value="Купить услугу">
-                                <?php } ?>
+                            <?php if ($service['only_inshop']) { ?>
+                                <span class='bF1Block__eInShop'>доступна в магазине</span>
+                            <?php } elseif ($service['in_sale'] && in_array($service['id'], $servListId)) { ?>
+                            <input data-f1title="<?php echo $service['name'] ?>" data-f1price="<?php echo $service['price'] ?>" data-fid="<?php echo $service['id'];?>"
+                                   data-url="<?php echo url_for('cart_service_add', array('service'=>$service['id'], 'product' => $productId)) ?>"
+                                   type="button" class="active button yellowbutton" value="В корзине">
+                            <?php } elseif ($service['in_sale']) { ?>
+                            <input data-f1title="<?php echo $service['name'] ?>" data-f1price="<?php echo $service['price'] ?>" data-fid="<?php echo $service['id'];?>"
+                                   data-url="<?php echo url_for('cart_service_add', array('service'=>$service['id'], 'product' => $productId)) ?>"
+                                   type="button" class="button yellowbutton" value="Купить услугу">
                             <?php } ?>
                         </td>
 

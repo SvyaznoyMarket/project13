@@ -881,6 +881,8 @@ class ProductTable extends myDoctrineTable
     }
     //очищаем кеш по-любому
 
+    $recordId = $record instanceof ProductSoa ? $record->id : $record['core_id'];
+
     if (
       (('save' == $action) && count($intersection))
       || in_array($action, array('delete', 'show'))
@@ -889,21 +891,31 @@ class ProductTable extends myDoctrineTable
       {
         foreach ($params['region'] as $region)
         {
-          $return[] = "product-{$record['core_id']}-{$region}";
+          $return[] = "product-{$recordId}-{$region}";
         }
       }
       else
       {
-        if (is_object($record) && get_class($record) == 'Poduct') {
-            $return[] = "product-{$record['core_id']}".(isset($params['region']) ? ("-".$params['region']) : "-");
+        /*
+        if (is_object($record) && in_array(get_class($record), array('Poduct', 'ProductSoa'))) {
+            $return[] = "product-{$recordId}".(isset($params['region']) ? ("-".$params['region']) : "-");
         }
+        */
+        $return[] = "product-{$recordId}".(isset($params['region']) ? ("-".$params['region']) : "-");
       }
 
-      if (is_object($record) && get_class($record) == 'Poduct') {
-          foreach ($record['Category'] as $productCategory)
-          {
+      if (is_object($record) && in_array(get_class($record), array('Poduct', 'ProductSoa'))) {
+	      if(get_class($record) == 'Poduct'){
+		      foreach ($record['Category'] as $productCategory)
+		      {
+			      $return[] = "productCategory-{$productCategory['core_id']}-";
+		      }
+	      }
+        elseif(isset($record->Category) && is_array($record->Category)){
+          foreach($record->Category as $productCategory){
             $return[] = "productCategory-{$productCategory['core_id']}-";
           }
+        }
       }
     }
 
