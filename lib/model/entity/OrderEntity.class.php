@@ -7,7 +7,8 @@ class OrderEntity
 {
   const TYPE_ORDER = 1;
   const TYPE_PREORDER = 2;
-  const TYPE_SUBORDER = 3;
+  const TYPE_CUSTOM = 3;
+  const TYPE_1CLICK = 9;
 
   const STATUS_FORMED = 1;
   const STATUS_APPROVED_BY_CALL_CENTER = 2;
@@ -92,7 +93,7 @@ class OrderEntity
   private $createdAt;
 
   /* @var DateTime */
-  private $upDateTimedAt;
+  private $updateAt;
 
   /* @var OrderItem[] */
   private $item;
@@ -461,22 +462,6 @@ class OrderEntity
   }
 
   /**
-   * @param DateTime $upDateTimedAt
-   */
-  public function setUpDateTimedAt($upDateTimedAt)
-  {
-    $this->upDateTimedAt = $upDateTimedAt;
-  }
-
-  /**
-   * @return DateTime
-   */
-  public function getUpDateTimedAt()
-  {
-    return $this->upDateTimedAt;
-  }
-
-  /**
    * @param UserEntity $user
    */
   public function setUser($user)
@@ -490,5 +475,21 @@ class OrderEntity
   public function getUser()
   {
     return $this->user;
+  }
+
+  /**
+   * @param \DateTime $updateAt
+   */
+  public function setUpdateAt($updateAt)
+  {
+    $this->updateAt = $updateAt;
+  }
+
+  /**
+   * @return \DateTime
+   */
+  public function getUpdateAt()
+  {
+    return $this->updateAt;
   }
 }
