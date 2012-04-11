@@ -56,14 +56,14 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 
 <?php if (count($productPager->getLinks()) > 1): ?>
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
+<?php endif ?>
 
 <?php if (!$empty && !(isset($list_view) && false === $list_view)): ?>
-  <?php include_component('product', 'list_view') ?>
-  <?php endif ?>
+<?php include_component('product', 'list_view', array('view' => $view)) ?>
+<?php endif ?>
 
 <?php if (!isset($noSorting) || !$noSorting): ?>
-  <?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?>
-  <?php endif ?>
+<?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?>
 <?php endif ?>
 
 <?php if (!$empty): ?>
