@@ -73,7 +73,7 @@
 			}).runQueue()
 			break
 		case 'product_card':
-			$LAB.queueWait( function() {
+			$LAB.queueScript('knockout-2.0.0.js').queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )

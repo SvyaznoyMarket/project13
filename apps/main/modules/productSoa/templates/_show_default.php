@@ -4,7 +4,8 @@
 		'jsref' => $product->token,
 		'jstitle' => htmlspecialchars($product->name, ENT_QUOTES, 'UTF-8'),
 		'jsprice' => $product->price,
-		'jsimg' => $product->getMainPhotoUrl(3)
+		'jsimg' => $product->getMainPhotoUrl(3),
+		'jsbimg' => $product->getMainPhotoUrl(2)
 	)
 ?>
 <?php
@@ -91,8 +92,12 @@ foreach ($p3d as $p3d_obj)
 
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1)) ?>
             </div>
-            <?php if (false && $product->is_insale && $sf_user->getRegion('region')->is_default): ?>
-            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $product->barcode)) ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+            <?php if ( $product->is_insale && $sf_user->getRegion('region')->is_default): ?>
+            <div class="pb5"><strong>
+            	<a href=""
+            		data-model='<?php echo json_encode( $json ) ?>'
+            		class="red underline order1click-link">Купить быстро в 1 клик</a>
+            </strong></div>
             <?php endif ?>
         </div>
 
@@ -243,18 +248,7 @@ foreach ($p3d as $p3d_obj)
 </div>
 <!-- /Media -->
 
-
-
-<div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
-  <div class="bMobDown__eWrap">
-    <div class="bMobDown__eClose close"></div>
-    <h2>Покупка в 1 клик!</h2>
-    <div class="clear line pb20"></div>
-
-    <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $product->barcode)) ?>" method="post"></form>
-
-  </div>
-</div>
+<?php include_partial('productSoa/oneclickTemplate', array()) ?>
 
 <div id="ajaxgoods" class="popup width230" style="display: none">
   <div  style="padding: 15px 15px 20px 5px">

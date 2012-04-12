@@ -194,142 +194,81 @@ $(document).ready(function() {
     })
 	
 	/* One Click Order */
-	function getOneClick( href ){
-		$('#ajaxgoods').lightbox_me({
-			centered: true,
-			closeClick: false,
-			closeEsc: false
-		})
-		
-		$.get( href, function( response ) {
-			$('#ajaxgoods').hide()
-			if( typeof(response.success) !== 'undefined' && response.success ) {
-				$('#order1click-form').html(response.data.form)
-				if( typeof(response.data.shop) !== 'undefined' ) {
-				if( typeof(response.data.shop.name) !== 'undefined' ) {
-					$('.sLocation').remove()
-					$('#order1click-container h2').text('Оформить и забрать в магазине')
-						.after( $('<div>').addClass('pb10').addClass('sLocation')
-							.html( response.data.shop.name + '. Время работы: ' + response.data.shop.regime ) )
-				}
-				}
-				$('#order1click-container').lightbox_me({
-					centered: true
-				})
-				cl1loaded = true
-				bindCalc()
+	if( $('.order1click-link').length ) {
+		console.info( $('.order1click-link').data('model') )
+		var Model = $('.order1click-link').data('model')
+		Deliveries = [
+			{
+				id: 4,
+				name: 'Доставка',
+				price: 400,
+				dates: [ {value: '10-02-2012', text: '10 февраля'}, {value: '11-02-2012', text: '11 февраля'} ]
+
+			},
+			{
+				id: 2,
+				name: 'Самовывоз',
+				price: 0,
+				dates: [ {value: '08-02-2012', text: '8 февраля'}, {value: '09-02-2012', text: '9 февраля'} ],
+				shops: [
+					{id:2,
+					name:"г. Москва, м. Ленинский проспект, магазин  на ул. Орджоникидзе, д. 11, стр. 10",
+					regime:"с 9.00 до 21.00",
+					address:"м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10",
+					latitude:"55.706488",
+					longitude:"37.596997" },
+					{id:3,
+					name:"г. Москва, м. Киевская, магазин на ул. Б. Дорогомиловская, д. 8",
+					regime:"с 9.00 до 22.00",
+					address:"м. Киевская, ул. Б. Дорогомиловская, д. 8",
+					latitude:"55.746197",
+					longitude:"37.565389"}
+				]			
 			}
-		})
-	}
-	//if( $('.order1click-link').length ) {
-		var cl1loaded = false
+		]
+		var sla=0, slo=0
+		for(var i=0, l=Deliveries[1].shops.length ;i<l;i++) {
+			sla += Deliveries[1].shops[i].latitude*1
+			slo += Deliveries[1].shops[i].longitude*1		
+		}
+		console.info(sla/Deliveries[1].shops.length, slo/Deliveries[1].shops.length)
+		
+		/* ViewModel */
+		function MyViewModel() {
+			var self = this	
+			self.title = Model.jstitle
+			self.price = Model.jsprice
+			self.icon  = Model.jsbimg
+			
+			self.dates = ko.observableArray( Deliveries[1].dates.slice(0) )
+			
+			self.changeDlvr = function(item, e) {
+				var ind = 0
+				if( e.currentTarget.value == 2 )
+					ind = 1	
+				else
+					ind =0
+				while( self.dates().length )
+					self.dates.pop()
+				for(var i=0; i< Deliveries[ind].dates.length; i++ )	
+					self.dates.push( Deliveries[ind].dates[i] )	
+			}
+			
+		}	// 
+		MVM = new MyViewModel() 
+		
+		ko.applyBindings(MVM) // this way, Lukas!
+
+	
 		$('.order1click-link').bind('click', function(e) {
 			e.preventDefault()
 			if( typeof(_gaq) !== 'undefined' )
 				_gaq.push(['_trackEvent', 'QuickOrder', 'Open'])
-			if ( !cl1loaded ) {
-				getOneClick( $(this).attr('href') )
-			} else {
-				$('#order1click-container').lightbox_me({
-					centered: true
-				})
-			}
-		})
-
-		function bindCalc() {
-			var quant = $('#order_product_quantity').val()*1 || 1
-			var pric  = Math.round( $('.b1Click__ePriceBig .price').html().replace(/\s/g,'')*1 / quant )
-			function recalc( delta ) {
-				if( quant == 1 && delta < 0 )
-					return
-				quant += delta
-				var sum = printPrice( pric * quant )
-				$('.c1quant').html( quant+ ' шт.')
-				$('#order_product_quantity').val( quant )
-				$('.b1Click__ePriceBig .price').html( sum )
-			}
-
-			$('.c1less').live( 'click', function(){ recalc(-1) })
-			$('.c1more').live( 'click', function(){ recalc(1) })
-		}
-
-		$('#order1click-form').bind('submit', function(e) {
-			e.preventDefault()
-			var form = $(this)
-			
-			function get1ClickResult( response ) {
-				if( !response.success ) {
-						if( response.data ) {
-							$('#order1click-form').html(response.data.form)
-						}
-						var button = $('#order1click-form').find('input:submit')
-						button.attr('disabled', false)
-						button.val('Оформить заказ')
-						if( !$('#warn').length ) {
-							var warn = $('<span id="warn" style="color:red">').html('Не удалось оформить заказ. Приносим свои извинения! Повторите попытку или обратитесь с заказом в контакт cENTER&nbsp;8&nbsp;(800)&nbsp;700&nbsp;00&nbsp;09')
-							$('.bFormB2').before( warn )
-						}
-					} else {
-						if( response.data ) {
-							$('#order1click-container').find('h2').html(response.data.title)
-							$('#order1click-form').replaceWith(response.data.content)
-							if( runAnalitics )
-								runAnalitics()
-						}
-					}			
-			}
-			
-			var button = form.find('input:submit')
-			button.attr('disabled', true)
-			button.val('Оформляю заказ...')
-			
-			var wholemessage = form.serializeArray()
-			$.ajax({
-				type: 'POST',
-				url: form.attr('action'),
-				data: wholemessage,
-				success: get1ClickResult
+			$('#order1click-container').lightbox_me({
+				centered: true
 			})
-			
-			 
-			/* RETIRED
-			$(this).ajaxSubmit({
-				beforeSubmit: function() {
-					var button = $('#order1click-form').find('input:submit')
-					button.attr('disabled', true)
-					button.val('Оформляю заказ...')
-				},
-				success: function( response ) {
-					if( !response.success ) {
-						if( response.data ) {
-							$('#order1click-form').html(response.data.form)
-						}
-						var button = $('#order1click-form').find('input:submit')
-						button.attr('disabled', false)
-						button.val('Оформить заказ')
-						if( !$('#warn').length ) {
-							var warn = $('<span id="warn" style="color:red">').html('Не удалось оформить заказ. Приносим свои извинения! Повторите попытку или обратитесь с заказом в контакт cENTER&nbsp;8&nbsp;(800)&nbsp;700&nbsp;00&nbsp;09')
-							$('.bFormB2').before( warn )
-						}
-					} else {
-						if( response.data ) {
-							$('#order1click-container').find('h2').html(response.data.title)
-							$('#order1click-form').replaceWith(response.data.content)
-							if( runAnalitics )
-								runAnalitics()
-						}
-					}
-				},
-				error: function() {
-					var button = $('#order1click-form').find('input:submit')
-					button.attr('disabled', false)
-					button.val('Попробовать еще раз')
-				}
-			})
-			*/
 		})
-
-    //}
+	}
     
     if( $('#gMap').length ) {
 		$('#gMap').bind({
