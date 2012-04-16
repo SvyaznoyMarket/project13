@@ -44,6 +44,7 @@ class OrderStep1Form extends BaseOrderForm
     $stockRel = StockProductRelationTable::getInstance();
     foreach ($cart as $product_id => $product)
     {
+      $product_id = ProductTable::getInstance()->getIdBy('core_id',$product_id);
       if (!$stockRel->isInStock($product_id, $shop_id, null, $product['quantity'])) {
         return false;
       }
