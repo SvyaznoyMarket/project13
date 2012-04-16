@@ -19,8 +19,6 @@ Disallow: /*comments/new
 Disallow: /qr/*
 Disallow: /*//
 Disallow: /product/*/change/
-Disallow: /main_dev.php*
-Disallow: /main_debug.php*
 Host: www.enter.ru
 
 Sitemap: http://www.enter.ru/sitemap.xml

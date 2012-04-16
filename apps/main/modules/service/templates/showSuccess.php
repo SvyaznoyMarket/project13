@@ -1,7 +1,7 @@
 <?php
-slot('title',$service);
+slot('title', $service);
 slot('navigation');
-  include_component('service', 'navigation', array('service' => $service));
+include_component('service', 'navigation', array('service' => $service));
 end_slot();
 ?>
 

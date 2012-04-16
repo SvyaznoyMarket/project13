@@ -1,5 +1,5 @@
 <div class="basketleft">
-  <a href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>" /></a>
+  <a href="<?php echo $item['url'] ?>"><img src="<?php echo $item['photo'] ?>"/></a>
 </div>
 
 <div class="basketright">
@@ -11,10 +11,12 @@
     	<span class="font12">
     	<span class="c1price"><?php echo $item['price'] ?></span> <span class="rubl">p</span></span>
     </div>
-    <div class="right"><div class="numerbox">
-		<b class="c1less" title="Уменьшить"></b>
-		<span class="c1quant"><?php echo $product['quantity'] ?> шт.</span>
-		<b class="c1more" title="Увеличить"></b>
-    </div></div>
+    <div class="right">
+      <div class="numerbox">
+        <b class="c1less" title="Уменьшить"></b>
+        <span class="c1quant"><?php echo $product['quantity'] ?> шт.</span>
+        <b class="c1more" title="Увеличить"></b>
+      </div>
+    </div>
   </div>
 </div>

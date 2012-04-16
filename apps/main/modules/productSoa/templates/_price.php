@@ -1,1 +1,2 @@
-<strong <?php echo (isset($noClasses) && $noClasses) ? '' : 'class="font34"' ?>><span class="price"><?php echo $price ?></span> <span class="rubl">p</span></strong>
+<strong <?php echo (isset($noClasses) && $noClasses) ? '' : 'class="font34"' ?>><span
+  class="price"><?php echo $price ?></span> <span class="rubl">p</span></strong>

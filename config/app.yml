@@ -84,6 +84,9 @@ all:
       client_code: site
       consumer_key: test
       signature: test
+      log_enabled: true
+      log_file: %SF_LOG_DIR%/core_client_2.log
+      log_response: false # логировать ответ
 
   cache_eraser:
     config:

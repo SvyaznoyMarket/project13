@@ -10,12 +10,12 @@
  */
 class productCatalogComponents extends myComponents
 {
-/**
-  * Executes navigation component
-  *
-  * @param ProductCategory $productCategory Категория товара
-  * @param Creator $creator Производитель
-  */
+  /**
+   * Executes navigation component
+   *
+   * @param ProductCategory $productCategory Категория товара
+   * @param Creator $creator Производитель
+   */
   public function executeNavigation()
   {
     $list = array();
@@ -26,44 +26,40 @@ class productCatalogComponents extends myComponents
       'url'  => $this->generateUrl('productCatalog'),
     );
     */
-    if (isset($this->productCategory) && !empty($this->productCategory))
-    {
+    if (isset($this->productCategory) && !empty($this->productCategory)) {
       $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
         'hydrate_array' => true,
-        'select'        => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name',
+        'select' => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name',
       ));
       foreach ($ancestorList as $ancestor)
       {
         $list[] = array(
           'name' => $ancestor['name'],
-          'url'  => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'].'/'.$ancestor['token']) : $ancestor['token'])),
+          'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'] . '/' . $ancestor['token']) : $ancestor['token'])),
         );
       }
       $list[] = array(
         'name' => (string)$this->productCategory,
-        'url'  => $this->generateUrl('productCatalog_category', $this->productCategory),
+        'url' => $this->generateUrl('productCatalog_category', $this->productCategory),
       );
     }
-    if (isset($this->creator))
-    {
+    if (isset($this->creator)) {
       $list[] = array(
         'name' => (string)$this->creator,
-        'url'  => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+        'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
-    if (isset($this->product))
-    {
-      if ('productStock' == $this->getContext()->getRouting()->getCurrentRouteName())
-      {
+    if (isset($this->product)) {
+      if ('productStock' == $this->getContext()->getRouting()->getCurrentRouteName()) {
         $list[] = array(
-          'name' => 'Где купить '.mb_lcfirst((string)$this->product),
-          'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+          'name' => 'Где купить ' . mb_lcfirst((string)$this->product),
+          'url' => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
         );
       }
       else {
         $list[] = array(
           'name' => (string)$this->product,
-          'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+          'url' => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
         );
       }
     }
@@ -71,12 +67,12 @@ class productCatalogComponents extends myComponents
     $this->setVar('list', $list, false);
   }
 
-/**
-  * Executes navigation component
-  *
-  * @param ProductCategory $productCategory Категория товара
-  * @param Creator $creator Производитель
-  */
+  /**
+   * Executes navigation component
+   *
+   * @param ProductCategory $productCategory Категория товара
+   * @param Creator $creator Производитель
+   */
   public function executeNavigation_seo()
   {
     $list = array();
@@ -87,69 +83,66 @@ class productCatalogComponents extends myComponents
       'url'  => $this->generateUrl('productCatalog'),
     );
     */
-    if (isset($this->productCategory) && !empty($this->productCategory))
-    {
+    if (isset($this->productCategory) && !empty($this->productCategory)) {
       $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($this->productCategory, array(
         'hydrate_array' => true,
-        'select'        => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name, productCategory.seo_header',
+        'select' => 'productCategory.id, productCategory.token, productCategory.token_prefix, productCategory.name, productCategory.seo_header',
       ));
-      if ($ancestorList)
-      {
-          foreach ($ancestorList as $ancestor)
-          {
-            $list[] = array(
-              'name' => $ancestor['seo_header'] ? $ancestor['seo_header'] : $ancestor['name'],
-              'url'  => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'].'/'.$ancestor['token']) : $ancestor['token'])),
-            );
-          }
+      if ($ancestorList) {
+        foreach ($ancestorList as $ancestor)
+        {
+          $list[] = array(
+            'name' => $ancestor['seo_header'] ? $ancestor['seo_header'] : $ancestor['name'],
+            'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $ancestor['token_prefix'] ? ($ancestor['token_prefix'] . '/' . $ancestor['token']) : $ancestor['token'])),
+          );
+        }
       }
       $list[] = array(
-        'name' => (string) ($this->productCategory->seo_header) ? $this->productCategory->seo_header : $this->productCategory->name,
-        'url'  => $this->generateUrl('productCatalog_category', $this->productCategory),
+        'name' => (string)($this->productCategory->seo_header) ? $this->productCategory->seo_header : $this->productCategory->name,
+        'url' => $this->generateUrl('productCatalog_category', $this->productCategory),
       );
     }
-    if (isset($this->creator))
-    {
+    if (isset($this->creator)) {
       $list[] = array(
         'name' => (string)$this->creator,
-        'url'  => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
+        'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
-    if (isset($this->product))
-    {
+    if (isset($this->product)) {
       $list[] = array(
         'name' => (string)$this->product,
-        'url'  => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
+        'url' => $this->generateUrl('productCard', array('sf_subject' => $this->product)),
       );
     }
 
     $this->setVar('list', $list, false);
   }
 
- /**
-  * Executes category_list component
-  *
-  * @param Doctrine_Collection $productCategoryList Коллекция категорий товаров
-  */
+  /**
+   * Executes category_list component
+   *
+   * @param Doctrine_Collection $productCategoryList Коллекция категорий товаров
+   */
   public function executeCategory_list()
   {
     $list = array();
     foreach ($this->productCategoryList as $productCategory)
     {
       $list[] = array(
-        'name'  => $productCategory['name'],
-        'url'   => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'].'/'.$productCategory['token']) : $productCategory['token'])),
+        'name' => $productCategory['name'],
+        'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'] . '/' . $productCategory['token']) : $productCategory['token'])),
         'level' => $productCategory['level'],
       );
     }
 
     $this->setVar('list', $list, true);
   }
-/**
-  * Executes creator_list component
-  *
-  * @param ProductCategory $productCategory Категория товара
-  */
+
+  /**
+   * Executes creator_list component
+   *
+   * @param ProductCategory $productCategory Категория товара
+   */
   public function executeCreator_list()
   {
     $region = $this->getUser()->getRegion();
@@ -163,40 +156,41 @@ class productCatalogComponents extends myComponents
     {
       $list[] = array(
         'name' => (string)$creator,
-        'url'  => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $creator)),
+        'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $creator)),
       );
     }
 
     $this->setVar('list', $list, true);
   }
-/**
-  * Executes filter component
-  *
-  * @param ProductCategory $productCategory Категория товара
-  * @param Creator $creator Производитель
-  * @param myProductFormFilter $form Форма фильтра с параметрами товаров
-  */
+
+  /**
+   * Executes filter component
+   *
+   * @param ProductCategory $productCategory Категория товара
+   * @param Creator $creator Производитель
+   * @param myProductFormFilter $form Форма фильтра с параметрами товаров
+   */
   public function executeFilter()
   {
-    if (empty($this->form))
-    {
+    if (empty($this->form)) {
       $this->form = new myProductFormFilter(array(), array(
         'productCategory' => $this->productCategory,
-        'creator'         => $this->creator,
-        'is_root'         => isset($this->is_root) ? $this->is_root : false,
-        'with_creator'    => !in_array($this->productCategory->getRootCategory()->token, array('jewel', )),
+        'creator' => $this->creator,
+        'is_root' => isset($this->is_root) ? $this->is_root : false,
+        'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel',)),
       ));
     }
 
     $this->setVar('productFilterList', $this->productCategory->FilterGroup->Filter);
     $this->url = $this->generateUrl('productCatalog_filter', $this->productCategory);
   }
-/**
-  * Executes filter_selected component
-  *
-  * @param myProductFormFilter $form            Форма фильтра с параметрами товаров
-  * @param ProductCategory     $productCategory Категория товара
-  */
+
+  /**
+   * Executes filter_selected component
+   *
+   * @param myProductFormFilter $form            Форма фильтра с параметрами товаров
+   * @param ProductCategory     $productCategory Категория товара
+   */
   public function executeFilter_selected()
   {
     $form = $this->form;
@@ -204,23 +198,20 @@ class productCatalogComponents extends myComponents
 
     $list = array();
 
-    if (!isset($this->form))
-    {
+    if (!isset($this->form)) {
       return sfView::NONE;
     }
 
     $filter = $this->getRequestParameter($this->form->getName());
-    $getUrl = function ($filter, $name, $value = null) use ($productCategory, $form) {
-      if (array_key_exists($name, $filter))
-      {
-        if (null == $value)
-        {
+    $getUrl = function ($filter, $name, $value = null) use ($productCategory, $form)
+    {
+      if (array_key_exists($name, $filter)) {
+        if (null == $value) {
           unset($filter[$name]);
         }
         else foreach ($filter[$name] as $k => $v)
         {
-          if ($v == $value)
-          {
+          if ($v == $value) {
             unset($filter[$name][$k]);
           }
         }
@@ -236,43 +227,39 @@ class productCatalogComponents extends myComponents
       if (is_array($value) ? !count($value) : empty($value)) continue;
 
       // цена
-      if ('price' == $name)
-      {
+      if ('price' == $name) {
         $valueMin = ProductTable::getInstance()->getMinPriceByCategory($productCategory);
         $valueMax = ProductTable::getInstance()->getMaxPriceByCategory($productCategory);
 
-        if (($value['from'] != $valueMin) || ($value['to'] != $valueMax))
-        {
+        if (($value['from'] != $valueMin) || ($value['to'] != $valueMax)) {
           $list[] = array(
             'type' => 'price',
             'name' => ''
-              .(($value['from'] != $valueMin) ? ('от '.$value['from'].' ') : '')
-              .(($value['to'] != $valueMax) ? ('до '.$value['to'].' ') : '')
-            ,
-            'url'   => $getUrl($filter, $name),
+              . (($value['from'] != $valueMin) ? ('от ' . $value['from'] . ' ') : '')
+              . (($value['to'] != $valueMax) ? ('до ' . $value['to'] . ' ') : '')
+          ,
+            'url' => $getUrl($filter, $name),
             'title' => 'Цена',
           );
         }
       }
       // производитель
-      if ('creator' == $name)
-      {
+      if ('creator' == $name) {
         foreach ($value as $v)
         {
           $creator = CreatorTable::getInstance()->getById($v);
           if (!$creator) continue;
 
           $list[] = array(
-            'type'  => 'creator',
-            'name'  => $creator->name,
-            'url'   => $getUrl($filter, $name, $v),
+            'type' => 'creator',
+            'name' => $creator->name,
+            'url' => $getUrl($filter, $name, $v),
             'title' => 'Производитель',
           );
         }
       }
       // шильдик
-      if ('label' == $name)
-      {
+      if ('label' == $name) {
         $labels = RepositoryManager::getProductLabel()->get($value, 'id');
         /**
          * @var $label ProductLabelEntity
@@ -280,16 +267,15 @@ class productCatalogComponents extends myComponents
         foreach ($labels as $label)
         {
           $list[] = array(
-            'type'  => 'label',
-            'name'  => $label->getName(),
-            'url'   => $getUrl($filter, $name, $label->getId()),
+            'type' => 'label',
+            'name' => $label->getName(),
+            'url' => $getUrl($filter, $name, $label->getId()),
             'title' => 'Метка',
           );
         }
       }
       // свойства товара
-      else if (0 === strpos($name, 'param-'))
-      {
+      else if (0 === strpos($name, 'param-')) {
         $filterId = preg_replace('/^param-/', '', $name);
         $productFilter = !empty($filterId) ? ProductFilterTable::getInstance()->getById($filterId) : false;
         if (!$productFilter) continue;
@@ -297,16 +283,15 @@ class productCatalogComponents extends myComponents
         switch ($productFilter->type)
         {
           case 'range':
-            if (($value['from'] != $productFilter->value_min) || ($value['to'] != $productFilter->value_max))
-            {
+            if (($value['from'] != $productFilter->value_min) || ($value['to'] != $productFilter->value_max)) {
               $list[] = array(
                 'type' => 'parameter',
                 'name' => ''
-                  .(($value['from'] != $productFilter->value_min) ? ('от '.$value['from'].' ') : '')
-                  .(($value['to'] != $productFilter->value_max) ? ('до '.$value['to'].' ') : '')
-                  .($productFilter->Property->unit ? $productFilter->Property->unit : '')
-                ,
-                'url'  => $getUrl($filter, $name),
+                  . (($value['from'] != $productFilter->value_min) ? ('от ' . $value['from'] . ' ') : '')
+                  . (($value['to'] != $productFilter->value_max) ? ('до ' . $value['to'] . ' ') : '')
+                  . ($productFilter->Property->unit ? $productFilter->Property->unit : '')
+              ,
+                'url' => $getUrl($filter, $name),
                 'title' => $productFilter->name,
               );
             }
@@ -318,24 +303,23 @@ class productCatalogComponents extends myComponents
               if (!$productPropertyOption) continue;
 
               $list[] = array(
-                'type'  => 'parameter',
-                'name'  =>
-                  in_array($productPropertyOption->value, array('да', 'нет'))
-                  ? $productFilter->name.': '.$productPropertyOption->value
+                'type' => 'parameter',
+                'name' =>
+                in_array($productPropertyOption->value, array('да', 'нет'))
+                  ? $productFilter->name . ': ' . $productPropertyOption->value
                   : $productPropertyOption->value
-                ,
-                'url'   => $getUrl($filter, $name, $productPropertyOption->id),
+              ,
+                'url' => $getUrl($filter, $name, $productPropertyOption->id),
                 'title' => $productFilter->name,
               );
             }
             break;
           case 'checkbox':
-            if ((null !== $value) && (1 == count($value)))
-            {
+            if ((null !== $value) && (1 == count($value))) {
               $list[] = array(
-                'type'  => 'parameter',
-                'name'  => $productFilter->name.': '.($value[0] ? 'да' : 'нет'),
-                'url'   => $getUrl($filter, $name),
+                'type' => 'parameter',
+                'name' => $productFilter->name . ': ' . ($value[0] ? 'да' : 'нет'),
+                'url' => $getUrl($filter, $name),
                 'title' => '',
                 'title' => $productFilter->name,
               );
@@ -347,78 +331,76 @@ class productCatalogComponents extends myComponents
     }
     //myDebug::dump($list);
 
-    if (0 == count($list))
-    {
+    if (0 == count($list)) {
       return sfView::NONE;
     }
 
     $this->setVar('list', $list);
   }
-/**
-  * Executes filter_price component
-  *
-  * @param ProductCategory $productCategory Категория товара
-  */
+
+  /**
+   * Executes filter_price component
+   *
+   * @param ProductCategory $productCategory Категория товара
+   */
   public function executeFilter_price()
   {
 
   }
- /**
-  * Executes filter_creator component
-  *
-  * @param ProductCategory $productCategory Категория товара
-  */
+
+  /**
+   * Executes filter_creator component
+   *
+   * @param ProductCategory $productCategory Категория товара
+   */
   public function executeFilter_creator()
   {
   }
+
   /**
-  * Executes filter_parameter component
-  *
-  * @param ProductCategory $productCategory Категория товара
-  */
+   * Executes filter_parameter component
+   *
+   * @param ProductCategory $productCategory Категория товара
+   */
   public function executeFilter_parameter()
   {
   }
+
   /**
-  * Executes article_seo component
-  *
-  * @param ProductCategory $productCategory Категория товара
-  * @param myDoctrinePager $productPager Листалка товаров
-  */
+   * Executes article_seo component
+   *
+   * @param ProductCategory $productCategory Категория товара
+   * @param myDoctrinePager $productPager Листалка товаров
+   */
   public function executeArticle_seo()
   {
     // title
-    if (empty($this->productCategory->seo_title))
-    {
+    if (empty($this->productCategory->seo_title)) {
       $this->productCategory->seo_title = ''
-        .$this->productCategory->name
-        .(false == $this->productCategory->isRoot() ? " - {$this->productCategory->getRootCategory()->name}" : '')
-        .( // если передана листалка товаров и номер страницы не равен единице
-          ($this->productPager && (1 != $this->productPager->getPage()))
+        . $this->productCategory->name
+        . (false == $this->productCategory->isRoot() ? " - {$this->productCategory->getRootCategory()->name}" : '')
+        . ( // если передана листалка товаров и номер страницы не равен единице
+        ($this->productPager && (1 != $this->productPager->getPage()))
           ? " - Страница {$this->productPager->getPage()} из {$this->productPager->getLastPage()}"
           : ''
         )
-        ." - {$this->getUser()->getRegion('name')}"
-        .' - ENTER.ru'
-      ;
+        . " - {$this->getUser()->getRegion('name')}"
+        . ' - ENTER.ru';
     }
     // description
-    if (empty($this->productCategory->seo_description))
-    {
+    if (empty($this->productCategory->seo_description)) {
       $region = $this->getUser()->getRegion('region');
       $regionName = RegionTable::getInstance()->getLinguisticCase($region, 'п');
-      $regionName = $regionName ?: $region['name'];
+      $regionName = $regionName ? : $region['name'];
 
       $this->productCategory->seo_description = ''
-        .$this->productCategory->name
-        ." в {$regionName}"
-        .' с ценами и описанием.'
-        .' Купить в магазине Enter'
-      ;
+        . $this->productCategory->name
+        . " в {$regionName}"
+        . ' с ценами и описанием.'
+        . ' Купить в магазине Enter';
     }
     // keywords
-    if (empty($this->productCategory->seo_keywords))
-    {
+    if (empty($this->productCategory->seo_keywords)) {
       $this->productCategory->seo_keywords = "{$this->productCategory->name} магазин продажа доставка {$this->getUser()->getRegion('name')} enter.ru";
     }
 
@@ -426,38 +408,36 @@ class productCatalogComponents extends myComponents
     $this->getResponse()->addMeta('description', $this->productCategory->seo_description);
     $this->getResponse()->addMeta('keywords', $this->productCategory->seo_keywords);
 
-    if (isset($this->productCategory) && isset($this->productCategory->seo_text))
-    {
-        $this->setVar('article', $this->productCategory->seo_text, true);
+    if (isset($this->productCategory) && isset($this->productCategory->seo_text)) {
+      $this->setVar('article', $this->productCategory->seo_text, true);
     }
 
   }
 
   /**
-  * Executes tag component
-  *
-  * @param myProductTagFormFilter $form Форма фильтров
-  */
+   * Executes tag component
+   *
+   * @param myProductTagFormFilter $form Форма фильтров
+   */
   public function executeTag()
   {
-    if (empty($this->form))
-    {
+    if (empty($this->form)) {
       $this->form = new myProductTagFormFilter(array(), array(
         'productCategory' => $this->productCategory,
-        'creator'         => $this->creator,
-        'with_creator'    => !in_array($this->productCategory->getRootCategory()->token, array('jewel', )),
+        'creator' => $this->creator,
+        'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel',)),
       ));
     }
 
     $this->url = $this->generateUrl('productCatalog_tag', $this->productCategory);
   }
 
-/**
-  * Executes filter_selected component
-  *
-  * @param myProductFormFilter $form            Форма фильтра с параметрами товаров
-  * @param ProductCategory     $productCategory Категория товара
-  */
+  /**
+   * Executes filter_selected component
+   *
+   * @param myProductFormFilter $form            Форма фильтра с параметрами товаров
+   * @param ProductCategory     $productCategory Категория товара
+   */
   public function executeTag_selected()
   {
     $form = $this->form;
@@ -465,23 +445,20 @@ class productCatalogComponents extends myComponents
 
     $list = array();
 
-    if (!isset($this->form))
-    {
+    if (!isset($this->form)) {
       return sfView::NONE;
     }
 
     $filter = $this->getRequestParameter($this->form->getName());
-    $getUrl = function ($filter, $name, $value = null) use ($productCategory, $form) {
-      if (array_key_exists($name, $filter))
-      {
-        if (null == $value)
-        {
+    $getUrl = function ($filter, $name, $value = null) use ($productCategory, $form)
+    {
+      if (array_key_exists($name, $filter)) {
+        if (null == $value) {
           unset($filter[$name]);
         }
         else foreach ($filter[$name] as $k => $v)
         {
-          if ($v == $value)
-          {
+          if ($v == $value) {
             unset($filter[$name][$k]);
           }
         }
@@ -497,43 +474,39 @@ class productCatalogComponents extends myComponents
       if (is_array($value) ? !count($value) : empty($value)) continue;
 
       // цена
-      if ('price' == $name)
-      {
+      if ('price' == $name) {
         $valueMin = ProductTable::getInstance()->getMinPriceByCategory($productCategory);
         $valueMax = ProductTable::getInstance()->getMaxPriceByCategory($productCategory);
 
-        if (($value['from'] != $valueMin) || ($value['to'] != $valueMax))
-        {
+        if (($value['from'] != $valueMin) || ($value['to'] != $valueMax)) {
           $list[] = array(
             'type' => 'price',
             'name' => ''
-              .(($value['from'] != $valueMin) ? ('от '.$value['from'].' ') : '')
-              .(($value['to'] != $valueMax) ? ('до '.$value['to'].' ') : '')
-            ,
-            'url'   => $getUrl($filter, $name),
+              . (($value['from'] != $valueMin) ? ('от ' . $value['from'] . ' ') : '')
+              . (($value['to'] != $valueMax) ? ('до ' . $value['to'] . ' ') : '')
+          ,
+            'url' => $getUrl($filter, $name),
             'title' => 'Цена',
           );
         }
       }
       // производитель
-      if ('creator' == $name)
-      {
+      if ('creator' == $name) {
         foreach ($value as $v)
         {
           $creator = CreatorTable::getInstance()->getById($v);
           if (!$creator) continue;
 
           $list[] = array(
-            'type'  => 'creator',
-            'name'  => $creator->name,
-            'url'   => $getUrl($filter, $name, $v),
+            'type' => 'creator',
+            'name' => $creator->name,
+            'url' => $getUrl($filter, $name, $v),
             'title' => 'Производитель',
           );
         }
       }
       // шильдик
-      if ('label' == $name)
-      {
+      if ('label' == $name) {
         $labels = RepositoryManager::getProductLabel()->get($value, 'id');
         /**
          * @var $label ProductLabelEntity
@@ -541,16 +514,15 @@ class productCatalogComponents extends myComponents
         foreach ($labels as $label)
         {
           $list[] = array(
-            'type'  => 'label',
-            'name'  => $label->getName(),
-            'url'   => $getUrl($filter, $name, $label->getId()),
+            'type' => 'label',
+            'name' => $label->getName(),
+            'url' => $getUrl($filter, $name, $label->getId()),
             'title' => 'Метка',
           );
         }
       }
       // свойства товара
-      else if (0 === strpos($name, 'tag-'))
-      {
+      else if (0 === strpos($name, 'tag-')) {
         $tagGroupId = preg_replace('/^tag-/', '', $name);
         $tagGroup = !empty($tagGroupId) ? TagGroupTable::getInstance()->getById($tagGroupId) : false;
         if (!$tagGroup) continue;
@@ -561,9 +533,9 @@ class productCatalogComponents extends myComponents
           if (!$tag) continue;
 
           $list[] = array(
-            'type'  => 'tag',
-            'name'  => $tag->name,
-            'url'   => $getUrl($filter, $name, $tag->id),
+            'type' => 'tag',
+            'name' => $tag->name,
+            'url' => $getUrl($filter, $name, $tag->id),
             'title' => $tagGroup->name,
           );
         }
@@ -571,15 +543,15 @@ class productCatalogComponents extends myComponents
     }
     //myDebug::dump($list);
 
-    if (0 == count($list))
-    {
+    if (0 == count($list)) {
       return sfView::NONE;
     }
 
     $this->setVar('list', $list);
   }
 
-  public function executeLeftCategoryList(){
+  public function executeLeftCategoryList()
+  {
 
 
     $this->setVar('currentCat', $this->productCategory, true);
@@ -589,13 +561,13 @@ class productCatalogComponents extends myComponents
 
     $pathAr = array();
     if ($ancestorList)
-    foreach($ancestorList as $next) {
+      foreach ($ancestorList as $next) {
         $pathAr[] = $next['id'];
-    }
+      }
     if (isset($ancestorList[0])) {
-        $rootCat = $ancestorList[0];
+      $rootCat = $ancestorList[0];
     } else {
-        $rootCat = $this->productCategory;
+      $rootCat = $this->productCategory;
     }
 
     $q = ProductCategoryTable::getInstance()->createBaseQuery();
@@ -603,18 +575,18 @@ class productCatalogComponents extends myComponents
     $list = $q->fetchArray();
 
     $isCurrent = false;
-    foreach($list as $cat) {
-        $fullIdList[] = $cat['id'];
-        if ($cat['id'] == $this->productCategory->id) {
-            $isCurrent = true;
-        } elseif ($isCurrent) {
-          if ($cat['level'] > $this->productCategory->level) {
-              $hasChildren = true;
-          } else {
-              $hasChildren = false;
-          }
-          $isCurrent = false;
+    foreach ($list as $cat) {
+      $fullIdList[] = $cat['id'];
+      if ($cat['id'] == $this->productCategory->id) {
+        $isCurrent = true;
+      } elseif ($isCurrent) {
+        if ($cat['level'] > $this->productCategory->level) {
+          $hasChildren = true;
+        } else {
+          $hasChildren = false;
         }
+        $isCurrent = false;
+      }
     }
 
     $notFreeCatList = ProductCategoryTable::getInstance()->getNotEmptyCategoryList($fullIdList);
@@ -647,18 +619,19 @@ class productCatalogComponents extends myComponents
   }
 
 
-  public function getSiteCatTree($category, $result){
-        if (is_object($category)) {
-            $result[$category['id']]['category'] = $category;
-            $result[$category['id']]['children'] = $category->getChildList(array(
-                //'select'       => 'productCategory.id,productCategory.core_id, productCategory.name, productCategory.token',
-                'with_filters' => false,
-                )
-            );
-            foreach($result[$category['id']]['children'] as $cat){
-                $result = $this->getSiteCatTree($cat, $result);
-            }
-        }
-        return $result;
+  public function getSiteCatTree($category, $result)
+  {
+    if (is_object($category)) {
+      $result[$category['id']]['category'] = $category;
+      $result[$category['id']]['children'] = $category->getChildList(array(
+          //'select'       => 'productCategory.id,productCategory.core_id, productCategory.name, productCategory.token',
+          'with_filters' => false,
+        )
+      );
+      foreach ($result[$category['id']]['children'] as $cat) {
+        $result = $this->getSiteCatTree($cat, $result);
+      }
+    }
+    return $result;
   }
 }

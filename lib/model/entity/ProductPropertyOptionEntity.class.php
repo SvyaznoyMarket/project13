@@ -5,48 +5,59 @@
  */
 class ProductPropertyOptionEntity
 {
-  /* @var integer */
+  /* @var int */
   private $id;
-
-  /* @var ProductPropertyEntity */
-  private $property;
 
   /* @var string */
   private $name;
 
-
-  public function __construct()
+  public function __construct(array $data = array())
   {
-    $this->property = new ProductPropertyEntity();
+    if (array_key_exists('id', $data)) $this->setId($data['id']);
+    if (array_key_exists('name', $data)) $this->setName($data['name']);
+    if (array_key_exists('value', $data)) $this->setName($data['value']);
   }
 
+  /**
+   * @param int $id
+   */
   public function setId($id)
   {
-    $this->id = $id;
+    $this->id = (int)$id;
   }
 
+  /**
+   * @return int
+   */
   public function getId()
   {
     return $this->id;
   }
 
-  public function setProperty(ProductPropertyEntity $property)
-  {
-    $this->property = $property;
-  }
-
-  public function getProperty()
-  {
-    return $this->property;
-  }
-
+  /**
+   * @param string $name
+   */
   public function setName($name)
   {
-    $this->name = $name;
+    $this->name = (string)$name;
   }
 
+  /**
+   * @return string
+   */
   public function getName()
   {
+    return $this->name;
+  }
+
+  public function getHumanizedName()
+  {
+    if (in_array($this->name, array('false', false), true)) {
+      return 'нет';
+    }
+    if (in_array($this->name, array('true', true), true)) {
+      return 'да';
+    }
     return $this->name;
   }
 }

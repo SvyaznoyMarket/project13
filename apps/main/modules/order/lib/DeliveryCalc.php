@@ -56,7 +56,7 @@ class DeliveryCalc
   {
     $haveInStock = true;
     $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
-    $region =  sfContext::getInstance()->getUser()->getRegion();
+    $region = sfContext::getInstance()->getUser()->getRegion();
     $stockRel = StockProductRelationTable::getInstance();
     $productsInStore = array();
     foreach ($cart as $product_id => $product)
@@ -74,9 +74,9 @@ class DeliveryCalc
       }
     }
     if ($haveInStock === true) {
-      return ShopTable::getInstance()->getChoices('id', 'name', array('region_id' => $region['id'], ));
+      return ShopTable::getInstance()->getChoices('id', 'name', array('region_id' => $region['id'],));
     } else {
-      $shops = ShopTable::getInstance()->getChoices('id', 'name', array('region_id' => $region['id'], ));
+      $shops = ShopTable::getInstance()->getChoices('id', 'name', array('region_id' => $region['id'],));
       foreach ($cart as $product_id => $product)
       {
         if ($productsInStore[$product_id] === true) {
@@ -91,7 +91,7 @@ class DeliveryCalc
           $q->andWhere('shop.region_id = ?', $region['id']);
           $data = $q->fetchArray();
           foreach ($data as $row) {
-              $tmpshops[$row['id']] = $row['name'];
+            $tmpshops[$row['id']] = $row['name'];
           }
         }
         $shops = array_intersect_key($shops, $tmpshops);
@@ -111,22 +111,22 @@ class DeliveryCalc
     $diff = 0;
     foreach ($cart as $product_id => $product)
     {
-        if (StockProductRelationTable::getInstance()->isInStock($product_id, $shop_id, null, $product['quantity'])) {
-          if (time() > $ts) {
-            $ts = time();
-            $diff = 0;
-          }
-        } elseif (StockProductRelationTable::getInstance()->isInStock($product_id, false, null, $product['quantity'])) {
-          if (strtotime('tomorrow') > $ts) {
-            $ts = strtotime('tomorrow');
-            $diff = 1;
-          }
+      if (StockProductRelationTable::getInstance()->isInStock($product_id, $shop_id, null, $product['quantity'])) {
+        if (time() > $ts) {
+          $ts = time();
+          $diff = 0;
         }
+      } elseif (StockProductRelationTable::getInstance()->isInStock($product_id, false, null, $product['quantity'])) {
+        if (strtotime('tomorrow') > $ts) {
+          $ts = strtotime('tomorrow');
+          $diff = 1;
+        }
+      }
     }
     if ($returnDiff) {
-//      $minDeliveryDate = DateTime::createFromFormat('Y-m-d', date('Y-m-d', $ts));
-//      $now = new DateTime();
-//      return $minDeliveryDate->diff($now)->days;
+      //      $minDeliveryDate = DateTime::createFromFormat('Y-m-d', date('Y-m-d', $ts));
+      //      $now = new DateTime();
+      //      return $minDeliveryDate->diff($now)->days;
       return $diff;
     } else {
       return date('Y-m-d', $ts);
