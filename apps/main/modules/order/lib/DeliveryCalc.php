@@ -111,6 +111,7 @@ class DeliveryCalc
     $diff = 0;
     foreach ($cart as $product_id => $product)
     {
+      $product_id = ProductTable::getInstance()->getIdBy('core_id',$product_id);
       if (StockProductRelationTable::getInstance()->isInStock($product_id, $shop_id, null, $product['quantity'])) {
         if (time() > $ts) {
           $ts = time();
