@@ -351,7 +351,9 @@ class ProductCorePager extends sfPager
 
     $response = CoreClient::getInstance()->query("listing.list", $query);
     $this->setNbResults($response['count']);
-    $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
+    if($this->getMaxPerPage()){
+      $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
+    }
     if ($loadData) {
       $this->result = RepositoryManager::getProduct()->getListById($response['list'], true);
     }
