@@ -101,4 +101,20 @@ class ProductLineEntity
   {
     $this->productCount = (int)$productCount;
   }
+
+  // @todo move to Soa data loading
+  public function getLink()
+  {
+    /** @var $cache myRedisCache */
+    $cache = myCache::getInstance();
+    $key = __CLASS__.':id'.$this->id;
+    if(!($token = $cache->get($key))){
+      /** @var $line ProductLine */
+      $line = ProductLineTable::getInstance()->getByCoreId($this->id);
+      $token = $line->token;
+      $cache->set($key, $token);
+      $cache->addTag('productLine-'.$line->id, $key);
+    }
+    return sfContext::getInstance()->getRouting()->generate('lineCard', array('line' => $token));
+  }
 }

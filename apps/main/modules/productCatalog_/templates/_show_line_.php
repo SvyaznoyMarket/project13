@@ -6,7 +6,7 @@
 ?>
 <div class="goodsbox height250"<?php echo (isset($ii) && $ii > 3) ? ' style="display:none;"' : '' ?>>
   <div class="photo">
-    <a href="<?php echo $item->getLink() ?>">
+    <a href="<?php echo $item->getLine()->getLink() ?>">
       <?php if ($label = $item->getMainLabel()): ?>
       <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
       <?php endif; ?>
@@ -17,7 +17,7 @@
     </a>
   </div>
   <h3>
-    <a href="<?php echo $item->getLink() ?>">
+    <a href="<?php echo $item->getLine()->getLink() ?>">
       <strong>Серия <?php echo $item->getLine()->getName() ?></strong>
       <span class="font10 gray"> (<?php echo $item->getLine()->getProductCount() ?>)</span>
     </a>
@@ -28,11 +28,11 @@
     <b class="rt"></b><b class="lb"></b>
 
     <div class="rb">
-      <div class="lt" data-url="<?php echo $item->getLink() ?>">
+      <div class="lt" data-url="<?php echo $item->getLine()->getLink() ?>">
         <!--a href="" class="fastview">Быстрый просмотр</a-->
 
         <div class="photo"><!--<i class="new" title="Новинка"></i>-->
-          <a href="<?php echo $item->getLink() ?>">
+          <a href="<?php echo $item->getLine()->getLink() ?>">
             <?php if ($label = $item->getMainLabel()): ?>
             <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
             <?php endif; ?>
@@ -44,7 +44,7 @@
           </a>
         </div>
         <h3>
-          <a href="<?php echo $item->getLink() ?>">
+          <a href="<?php echo $item->getLine()->getLink() ?>">
             <strong>Серия <?php echo $item->getLine()->getName() ?></strong>
             <span class="font10 gray"> (<?php echo $item->getLine()->getProductCount() ?>)</span>
           </a>
