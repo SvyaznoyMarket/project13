@@ -19,14 +19,14 @@ class productStockComponents extends myComponents
   {
     $region = $this->getUser()->getRegion('region');
 
-    //$quantityInRegion = $this->product->getStockQuantity() ?: 0; #1421
+    $quantityInRegion = $this->product->getStockQuantity() ?: 0; //1421
 
     $shopList = $this->product->getShopList(array('region_id' => $region['id']));
     // добавляет к каждому магазину количество товара на складе региона
     // удаляет магазины, в которых нет товара
     foreach ($shopList as $i => $shop)
     {
-      //$shop['product_quantity'] += $quantityInRegion; #1421
+      $shop['product_quantity'] += $quantityInRegion; //1421
 
       if (0 == $shop['product_quantity'])
       {

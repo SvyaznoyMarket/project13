@@ -62,7 +62,11 @@ class DeliveryCalc
     foreach ($cart as $product_id => $product)
     {
       // stock_id = 1 HARDCODE
-      if (!$stockRel->isInStock($product_id, false, 1, $product['quantity'])) {
+
+        //by #2035
+        $product_id = ProductTable::getInstance()->getIdBy('core_id',$product_id);
+
+        if (!$stockRel->isInStock($product_id, false, 1, $product['quantity'])) {
         $haveInStock = false;
         $productsInStore[$product_id] = false;
       } else {

@@ -258,5 +258,39 @@ class orderComponents extends myComponents
     }
   }
 
+  function executeSeo_admitad() {
+
+      //идентификатор категории для admited - core_id
+      // myDebug::dump($this->order);
+
+      $catIdList = array();
+      $data = array();
+      foreach ($this->order->ProductRelation as $product) {
+         $catIdList[] = $product->Product->Category[0]['root_id'];
+         $data[$product->Product->Category[0]['root_id']]['sum'] += $product['price'] * $product['quantity'];
+         $data[$product->Product->Category[0]['root_id']]['number'] = $this->order->number;
+      }
+      if (!$catIdList) {
+          return;
+      }
+      $catList = ProductCategoryTable::getInstance()->createBaseQuery()->whereIn('id', $catIdList)->fetchArray();
+      $resultData = array();
+
+      foreach ($catList as $cat) {
+          $resultData[$cat['core_id']] = $data[$cat['id']];
+          $resultData[$cat['core_id']]['number'] .= '-' . $cat['core_id'];
+      }
+
+      $uid = sfContext::getInstance()->getUser()->getAttribute('admitad_uid');
+      if ($uid) {
+        $resultData['uid'] = $uid;
+      } else {
+        $resultData['uid'] = '';
+      }
+
+      //print_r($resultData);
+      $this->setVar('data', $resultData, true);
+  }
+
 }
 
