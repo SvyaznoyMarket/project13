@@ -88,15 +88,16 @@ productCatalog__tag:
 # количество найденных товаров
 productCatalog_count:
   url:   /catalog/:productCategory/_count
-  param: { module: productCatalog, action: count }
+  param: { module: productCatalog_, action: count }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)']
 # @core
+# @modified
 # количество найденных товаров
 productCatalog__count:
-  url:   /catalog_core/:productCategory/_count
+  url:   /catalog/:productCategory/_count
   param: { module: productCatalog_, action: count }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
@@ -106,15 +107,16 @@ productCatalog__count:
 # категория каталога товаров
 productCatalog_category:
   url:   /catalog/:productCategory/
-  param: { module: productCatalog, action: category}
+  param: { module: productCatalog_, action: category}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 # @core
+# @modified
 # категория каталога товаров
 productCatalog__category:
-  url:   /catalog_core/:productCategory/
+  url:   /catalog/:productCategory/
   param: { module: productCatalog_, action: category}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
@@ -124,15 +126,16 @@ productCatalog__category:
 # категория каталога товаров ajax
 productCatalog_categoryAjax:
   url:   /catalog/:productCategory/_ajax/:page/:view/:num
-  param: { module: productCatalog, action: categoryAjax, num: 18, view: compact, page: 1}
+  param: { module: productCatalog_, action: categoryAjax, num: 18, view: compact, page: 1}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 # @core
+# @modified
 # категория каталога товаров ajax
 productCatalog__categoryAjax:
-  url:   /catalog_core/:productCategory/_ajax/:page/:view/:num
+  url:   /catalog/:productCategory/_ajax/:page/:view/:num
   param: { module: productCatalog_, action: categoryAjax, num: 18, view: compact, page: 1}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
