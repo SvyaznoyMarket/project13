@@ -228,6 +228,12 @@ class orderComponents extends myComponents
   {
   }
 
+	public function executeField_sclub_card_number()
+	{
+//		echo 'fied sclub_card_number execute !!';
+//		exit();
+	}
+
   public function executeReceipt()
   {
     $this->setVar('cart', $this->getUser()->getCart());
@@ -250,6 +256,40 @@ class orderComponents extends myComponents
       $this->setVar('quantityString', $qty, true);
       $this->setVar('orderArticle', $barcodeStr, true);
     }
+  }
+
+  function executeSeo_admitad() {
+
+      //идентификатор категории для admited - core_id
+      // myDebug::dump($this->order);
+
+      $catIdList = array();
+      $data = array();
+      foreach ($this->order->ProductRelation as $product) {
+         $catIdList[] = $product->Product->Category[0]['root_id'];
+         $data[$product->Product->Category[0]['root_id']]['sum'] += $product['price'] * $product['quantity'];
+         $data[$product->Product->Category[0]['root_id']]['number'] = $this->order->number;
+      }
+      if (!$catIdList) {
+          return;
+      }
+      $catList = ProductCategoryTable::getInstance()->createBaseQuery()->whereIn('id', $catIdList)->fetchArray();
+      $resultData = array();
+
+      foreach ($catList as $cat) {
+          $resultData[$cat['core_id']] = $data[$cat['id']];
+          $resultData[$cat['core_id']]['number'] .= '-' . $cat['core_id'];
+      }
+
+      $uid = sfContext::getInstance()->getUser()->getAttribute('admitad_uid');
+      if ($uid) {
+        $resultData['uid'] = $uid;
+      } else {
+        $resultData['uid'] = '';
+      }
+
+      //print_r($resultData);
+      $this->setVar('data', $resultData, true);
   }
 
 }

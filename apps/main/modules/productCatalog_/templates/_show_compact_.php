@@ -29,6 +29,9 @@
 
   <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item->getPrice() ?></span> <span
     class="rubl">p</span></div>
+  <?php if ($item->getModel() && $item->getModel()->getPropertyList()): ?>
+  <div class='bListVariants mShort'>Доступно в разных вариантах</div>
+  <?php endif ?>
   <!-- Hover -->
   <div class="boxhover"<?php if ($item->getIsBuyable()): ?> ref="<?php echo $item->getToken() ?>"<?php endif ?>>
     <b class="rt"></b><b class="lb"></b>

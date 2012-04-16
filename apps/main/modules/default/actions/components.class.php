@@ -167,4 +167,13 @@ class defaultComponents extends myComponents
 
     $this->setVar('list', $list, true);
   }
+
+
+    public function executeAdmitad()
+    {
+        $uid = $this->getRequestParameter('admitad_uid');
+        if ($uid && strlen($uid) == 32) {
+            sfContext::getInstance()->getUser()->setAttribute('admitad_uid', $uid);
+        }
+    }
 }

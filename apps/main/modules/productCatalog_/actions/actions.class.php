@@ -163,8 +163,6 @@ class productCatalog_Actions extends myActions
   public function executeLine(sfWebRequest $request)
   {
     $this->loadList($request);
-    $this->setVar('list_view', false);
-    $this->setVar('view', 'line');
 
     $productCategory = $this->getProductCategory($request);
     // generate title
@@ -243,7 +241,15 @@ class productCatalog_Actions extends myActions
     sfContext::getInstance()->getLogger()->info('$productPagerTimer at ' . $productPagerTimer->getElapsedTime());
     sfContext::getInstance()->getLogger()->info('$loadListTimer at ' . $loadListTimer->getElapsedTime());
 
-    $this->setVar('view', $request->getParameter('view', $category->product_view));
+    $productCategory = $this->getProductCategory($request);
+    if ($productCategory->has_line) {
+      $this->setVar('view', 'line');
+      $this->setVar('list_view', false);
+    }
+    else {
+      $this->setVar('view', $request->getParameter('view', $this->getProductCategory($request)->product_view));
+    }
+
     $this->setVar("productFilter", $productFilter);
     $this->setVar("productSorting", $productSorting);
     $this->setVar('noInfinity', true);
@@ -267,11 +273,17 @@ class productCatalog_Actions extends myActions
    */
   private function seoRedirectOnPageDublicate(sfWebRequest $request)
   {
-    //если передано page=1 или view=compact, отрезаем этот параметр и делаем редирект.
+    /** @var $route sfObjectRoute */
+    $route = $this->getRoute();
+    /** @var $productCategory ProductCategory */
+    $productCategory = $route->getObject();
+    $view = $productCategory->product_view;
+    if (empty($view)) $view = 'compact';
+    //если передано page=1 или view c дефолным значением, отрезаем этот параметр и делаем редирект.
     //необходимо для seo
     $redirectAr = array(
       'page' => 1,
-      'view' => 'compact'
+      'view' => $view,
     );
     foreach ($redirectAr as $key => $val)
     {

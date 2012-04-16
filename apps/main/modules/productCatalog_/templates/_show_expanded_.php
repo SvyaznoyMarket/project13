@@ -7,11 +7,13 @@
   <div class="goodsboxlink" <?php if ($item->getIsBuyable()): ?> ref="<?php echo $item->getToken() ?>"
        data-cid="<?php echo $item->getId() ?>" <?php endif ?>>
     <div class="photo">
+      <a href="<?php echo $item->getLink() ?>">
       <?php if ($label = $item->getMainLabel()): ?>
       <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
       <?php endif; ?>
       <img height="160" width="160" title="<?php echo $item->getName() ?>" alt="<?php echo $item->getName() ?>"
            src="<?php echo $item->getMediaImageUrl() ?>">
+      </a>
     </div>
     <div class="info">
       <h3><a href="<?php echo $item->getLink() ?>"><?php echo $item->getName() ?></a></h3>
@@ -25,25 +27,18 @@
       </span>
 
       <div class="pb5 bNGB__eDesc">
-        <?php foreach ($item->getAttributeListForListing() as $attr) { ?>
+        <?php foreach ($item->getAttributeListForListing() as $attr): ?>
         <?php echo $attr->getName() ?>: <?php echo $attr->getStringValue() ?><br/>
-        <?php } ?>
+        <?php endforeach ?>
       </div>
 
       <?php if ($item->getModel() && $item->getModel()->getPropertyList()): ?>
-      <div class="bListVariantsOutsideWrap">
-        <div class="bListVariantsInsideWrap">
-          <a href="<?php echo $item->getLink() ?>">
-            <div class="bListVariants">
-              <span>
-                Доступно в разных вариантах<br>
-                (<?php echo $item->getModel()->getVariations() ?>)
-                <span></span>
-              </span>
-            </div>
-          </a>
+      <a href="<?php echo $item->getLink() ?>">
+        <div class="bListVariants">
+          Доступно в разных вариантах<br>
+          (<?php echo $item->getModel()->getVariations() ?>)
         </div>
-      </div>
+      </a>
       <?php endif ?>
 
     </div>
