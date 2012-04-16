@@ -829,6 +829,13 @@ region_change:
   requirements:
     sf_method: [ get,post ]
 
+# redirect region
+region_redirect:
+  url:      /reg/:region/:redirectTo
+  param:    { module: region, action: redirect }
+  requirements:
+    product: '((\/{1})[a-zA-Z_0-9-]+)'
+    redirectTo: '(.*)'
 
 #
 # payment
