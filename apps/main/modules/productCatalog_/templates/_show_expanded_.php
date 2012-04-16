@@ -7,11 +7,13 @@
   <div class="goodsboxlink" <?php if ($item->getIsBuyable()): ?> ref="<?php echo $item->getToken() ?>"
        data-cid="<?php echo $item->getId() ?>" <?php endif ?>>
     <div class="photo">
+      <a href="<?php echo $item->getLink() ?>">
       <?php if ($label = $item->getMainLabel()): ?>
       <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
       <?php endif; ?>
       <img height="160" width="160" title="<?php echo $item->getName() ?>" alt="<?php echo $item->getName() ?>"
            src="<?php echo $item->getMediaImageUrl() ?>">
+      </a>
     </div>
     <div class="info">
       <h3><a href="<?php echo $item->getLink() ?>"><?php echo $item->getName() ?></a></h3>
