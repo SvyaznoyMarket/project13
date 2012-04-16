@@ -85,11 +85,52 @@ class productCatalog_Actions extends myActions
     }
 
     // если категория корневая
-    if ($productCategory->getNode()->isRoot()) {
-      $this->setTemplate('categoryRoot');
+    if ($productCategory->isRoot())
+    {
+      $this->forward($this->getModuleName(), 'categoryRoot');
     }
 
     $this->forward($this->getModuleName(), 'categoryTag');
+  }
+
+  public function executeCategoryRoot(sfWebRequest $request)
+  {
+    $productCategory = $this->getProductCategory($request);
+    $categoryTree = RepositoryManager::getProductCategory()->getTree(
+      $productCategory->core_id,
+      $productCategory->level + 2,
+      false
+    );
+    $productFilter = $this->getProductFilter($request);
+    /** @var $rootCategory ProductCategoryEntity */
+    $rootCategory = reset($categoryTree);
+    $categoryList = $rootCategory->getChildren();
+
+    $filterList = array();
+    $filters = $productFilter->getCoreProductFilter(false);
+
+    // filter categories by listing resutl
+    foreach ($categoryList as $category) {
+      $filterList[] = array(
+        'count_only' => true,
+        'filters' => array_merge($filters, array(
+          array('category', 1, $category->getId())
+        ))
+      );
+    }
+    $productData = RepositoryManager::getListing()->getListingMultiple($filterList);
+    foreach ($productData as $key => $data) {
+      $categoryList[$key]->setProductCount($data['count']);
+      if ($data['count'] == 0)
+        unset($categoryList[$key]);
+    }
+
+    $this->setVar('productCategory', $productCategory);
+    $this->setVar('categoryTree', $categoryTree);
+    $this->setVar('categoryList', $categoryList);
+    $this->setVar('rootCategory', $rootCategory);
+    $this->setVar('productFilter', $productFilter);
+    $this->setVar('quantity', $rootCategory->getProductCount());
   }
 
   public function executeCategoryTag(sfWebRequest $request)
@@ -119,6 +160,7 @@ class productCatalog_Actions extends myActions
     $this->setVar('categoryTree', $categoryTree);
     $this->setVar('categoryTagList', $viewList);
     $this->setVar('productFilter', $productFilter);
+    $this->setVar('quantity', $currentCategory->getProductCount());
   }
 
   public function executeCarousel(sfWebRequest $request)
@@ -145,18 +187,18 @@ class productCatalog_Actions extends myActions
 
   public function executeCount(sfWebRequest $request)
   {
-    $productCategory = $this->getProductCategory($request, false);
-    if ($productCategory->isRoot())
-      $this->forward('productCatalog', 'count');
-
     $productFilter = $this->getProductFilter($request);
-    $productPager = new ProductCorePager(0);
-    $productPager->setProductFilter($productFilter);
-    $productPager->init(false);
+    $data = RepositoryManager::getListing()->getListing(
+      $productFilter->getCoreProductFilter(),
+      array(),
+      null,
+      null,
+      true
+    );
 
     return $this->renderJson(array(
       'success' => true,
-      'data' => $productPager->count(),
+      'data' => $data['count'],
     ));
   }
 
@@ -235,6 +277,9 @@ class productCatalog_Actions extends myActions
       $category->level + 1,
       true
     );
+    /** @var $rootCategory ProductCategoryEntity */
+    $rootCategory = reset($categoryTree);
+    $quantity = $rootCategory->getNode($category->getCoreId())->getProductCount();
 
     sfContext::getInstance()->getLogger()->info('$productFilterTimer at ' . $productFilterTimer->getElapsedTime());
     sfContext::getInstance()->getLogger()->info('$productSortingTimer at ' . $productSortingTimer->getElapsedTime());
@@ -254,7 +299,7 @@ class productCatalog_Actions extends myActions
     $this->setVar("productSorting", $productSorting);
     $this->setVar('noInfinity', true);
     $this->setVar('productPager', $productPager);
-    $this->setVar('quantity', $productPager->getNbResults());
+    $this->setVar('quantity', $quantity);
     $this->setVar('categoryTree', $categoryTree);
 
     $this->forward404If($page > 1 && $page > $productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
