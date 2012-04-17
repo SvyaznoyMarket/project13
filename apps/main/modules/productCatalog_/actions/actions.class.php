@@ -230,6 +230,7 @@ class productCatalog_Actions extends myActions
   public function executeCategoryAjax(sfWebRequest $request)
   {
     $this->setVar('allOk', false);
+    $this->setVar('ajax_flag', true);
     $this->loadList($request);
     $this->setVar('allOk', true);
   }

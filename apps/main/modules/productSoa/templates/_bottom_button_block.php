@@ -1,5 +1,6 @@
-<div class="fr ar pb15">
-    <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->token ?>" data-value='<?php echo $json ?>'>
+<div class="line"></div>
+<div class="fr ar">
+    <div class="goodsbarbig mSmallBtns" ref="<?php echo $product->token ?>" data-value='<?php echo json_encode( $json ) ?>'>
 
         <div class='bCountSet'>
             <?php if (!$product->cart_quantity): ?>
@@ -19,8 +20,6 @@
 <div class="fr mBuyButtonBottom">
     <div class="pb10"><?php include_partial('productSoa/price', array('price' => $product->getFormattedPrice())) ?></div>
 </div>
-<div class="fl mBuyButtonBottom ">
+<div class="fl mBuyButtonBottom onleft" >
     <h2 class="bold"><?php echo $product->name ?></h2>
 </div>
-<div class="clear"></div>
-<div class="mb15"></div>

@@ -184,6 +184,8 @@ live:
   core:
     config:
       api_url: 'http://api.enter.ru/v1/json'
+      userapi_url: 'http://api.enter.ru/v2/'
+      client_code: site
       consumer_key: s7urupe7Efrus8un
       signature: mEbradRUBruprUT7ukuvAxupraCrEcuk
 
@@ -233,6 +235,8 @@ live_dev:
   core:
     config:
       api_url: 'http://api.enter.ru/v1/json'
+      userapi_url: 'http://api.enter.ru/v2/'
+      client_code: site
       consumer_key: s7urupe7Efrus8un
       signature: mEbradRUBruprUT7ukuvAxupraCrEcuk
 
@@ -264,7 +268,7 @@ alpha:
 
   core:
     config:
-      api_url: 'http://core.my/v1/json'
+      api_url: 'http://core.ent3.ru/v1/json'
       consumer_key: test
       signature: test
 
