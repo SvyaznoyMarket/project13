@@ -210,8 +210,6 @@ foreach ($p3d as $p3d_obj)
     <?php include_component('productSoa', 'tags', array('product' => $product)) ?>
 <?php endif ?>
 
-
-
 <?php //if (count($product->related)): ?>
 <?php //include_partial('productSoa/product_related', $sf_data) ?>
 
