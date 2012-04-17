@@ -182,6 +182,9 @@ foreach ($p3d as $p3d_obj)
 
 <?php include_component('productSoa', 'product_model', array('product' => $product,)) ?>
 
+<?php if (count($product->related)): ?>
+<?php include_partial('productSoa/product_related', $sf_data) ?>
+<?php endif ?> 
 
 <?php if (!empty($product->description)): ?>
     <!-- Information -->
