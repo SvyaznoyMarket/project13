@@ -11,6 +11,6 @@ class ProductCategoryTagView
 
   public function getDataUrl()
   {
-    return url_for('productCatalog__carousel', array('productCategory' => $this->category->getToken()));
+    return url_for('productCatalog_carousel', array('productCategory' => $this->category->getToken()));
   }
 }

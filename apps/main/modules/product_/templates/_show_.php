@@ -4,4 +4,4 @@
  * @var $sf_data
  * @var $item
  */
-include_partial('show_' . $view . '_', $sf_data);
+include_partial('product_/show_' . $view . '_', $sf_data);

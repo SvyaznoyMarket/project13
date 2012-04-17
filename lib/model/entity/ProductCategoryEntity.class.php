@@ -55,6 +55,8 @@ class ProductCategoryEntity
   private $children = array();
   /** @var string */
   private $seoHeader;
+  /** @var int */
+  private $product_count;
 
   public function __construct(array $data = array())
   {
@@ -72,6 +74,7 @@ class ProductCategoryEntity
     if (array_key_exists('seo_header', $data)) $this->setSeoHeader($data['seo_header']);
     if (array_key_exists('product_view_id', $data)) $this->setProductViewId($data['product_view_id']);
     if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
+    if (array_key_exists('product_count', $data)) $this->setProductCount($data['product_count']);
   }
 
   public function setId($id)
@@ -102,6 +105,17 @@ class ProductCategoryEntity
   public function getMediaImage()
   {
     return $this->mediaImage;
+  }
+
+  public function getMediaImageUrl($size = 0)
+  {
+    if ($this->mediaImage) {
+      $urls = sfConfig::get('app_category_photo_url');
+      return $urls[$size] . $this->mediaImage;
+    }
+    else {
+      return null;
+    }
   }
 
   public function setIsActive($isActive)
@@ -342,5 +356,21 @@ class ProductCategoryEntity
   public function getIsFurniture()
   {
     return $this->isFurniture;
+  }
+
+  /**
+   * @param int $product_count
+   */
+  public function setProductCount($product_count)
+  {
+    $this->product_count = (int)$product_count;
+  }
+
+  /**
+   * @return int
+   */
+  public function getProductCount()
+  {
+    return $this->product_count;
   }
 }

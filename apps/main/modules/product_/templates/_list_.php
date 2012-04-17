@@ -21,8 +21,8 @@ $list = $productPager->getResults();
     } else {
       $include = 'list_ajax_' . $view . '_';
     }
-    include_partial($include, array('list' => $list, 'view' => $view));
+    include_partial('product_/'.$include, array('list' => $list, 'view' => $view));
   } else {
-    include_partial('list_' . $view . '_', array('list' => $list, 'view' => $view));
+    include_partial('product_/list_' . $view . '_', array('list' => $list, 'view' => $view));
   }
 }

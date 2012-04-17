@@ -11,11 +11,11 @@
 <form class="product_filter-block"
       action=""
       method="get"
-      data-action-count="<?php echo url_for('productCatalog__count', $sf_data->getRaw('productCategory')) ?>">
+      data-action-count="<?php echo url_for('productCatalog_count', $sf_data->getRaw('productCategory')) ?>">
 
   <dl class="bigfilter form bSpec">
     <h2>Выбираем:</h2>
-    <?php include_partial('filter_selected_', $sf_data) ?>
+    <?php include_partial('productCatalog_/filter_selected_', $sf_data) ?>
     <?php $openNum = 0; ?>
     <?php $i = 0; foreach ($productFilter->getFilterList() as $filter): ?>
     <?php
@@ -38,13 +38,13 @@
     switch ($filter->getTypeId()) {
       case ProductCategoryFilterEntity::TYPE_NUMBER:
       case ProductCategoryFilterEntity::TYPE_SLIDER:
-        include_partial('filter_slider', $data);
+        include_partial('productCatalog_/filter_slider', $data);
         break;
       case ProductCategoryFilterEntity::TYPE_LIST:
-        include_partial('filter_list', $data);
+        include_partial('productCatalog_/filter_list', $data);
         break;
       case ProductCategoryFilterEntity::TYPE_BOOLEAN:
-        include_partial('filter_choice', $data);
+        include_partial('productCatalog_/filter_choice', $data);
         break;
     }?>
     <?php endforeach; ?>

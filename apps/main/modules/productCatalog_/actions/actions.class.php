@@ -4,7 +4,7 @@
  * productCatalog_ actions.
  *
  * @package    enter
- * @subpackage productCatalog
+ * @subpackage productCatalog_
  * @author     Связной Маркет
  *
  * @property ProductCorePager $productPager
@@ -20,6 +20,9 @@ class productCatalog_Actions extends myActions
     $this->getRequest()->setParameter('_template', 'product_catalog');
   }
 
+  /**
+   * @todo rewrite to core api
+   */
   public function executeIndex()
   {
     $productCategoryList = ProductCategoryTable::getInstance()->createQuery()
@@ -29,6 +32,18 @@ class productCatalog_Actions extends myActions
       ->fetchArray();
 
     $this->setVar('productCategoryList', $productCategoryList);
+
+    $list = array();
+    foreach ($productCategoryList as $productCategory)
+    {
+      $list[] = array(
+        'name' => $productCategory['name'],
+        'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'] . '/' . $productCategory['token']) : $productCategory['token'])),
+        'level' => $productCategory['level'],
+      );
+    }
+
+    $this->setVar('list', $list, true);
     $this->setVar('infinity', true);
   }
 
@@ -104,6 +119,7 @@ class productCatalog_Actions extends myActions
     $productFilter = $this->getProductFilter($request);
     /** @var $rootCategory ProductCategoryEntity */
     $rootCategory = reset($categoryTree);
+    /** @var $categoryList ProductCategoryEntity[] */
     $categoryList = $rootCategory->getChildren();
 
     $filterList = array();
@@ -221,24 +237,12 @@ class productCatalog_Actions extends myActions
     $response->setTitle($title . ' – Enter.ru');
   }
 
-  // @todo remove after implement all to core api
-  public function executeTag(sfWebRequest $request)
-  {
-    $this->forward('productCatalog', 'tag');
-  }
-
   public function executeCategoryAjax(sfWebRequest $request)
   {
     $this->setVar('allOk', false);
     $this->setVar('ajax_flag', true);
     $this->loadList($request);
     $this->setVar('allOk', true);
-  }
-
-  // @todo implement in core api
-  public function executeCreator(sfWebRequest $request)
-  {
-    $this->forward('productCatalog', 'creator');
   }
 
   /**
@@ -254,7 +258,7 @@ class productCatalog_Actions extends myActions
 
     // sorting
     $productSortingTimer = sfTimerManager::getTimer('$productSortingTimer');
-    $productSorting = new myProductSorting();
+    $productSorting = new ProductSorting();
     $active = array_pad(explode('-', $this->getRequest()->getParameter('sort')), 2, null);
     $productSorting->setActive($active[0], $active[1]);
     $productSortingTimer->addTime();
@@ -369,7 +373,7 @@ class productCatalog_Actions extends myActions
       if ($checkRedirect) {
         if (false === strpos($request['productCategory'], '/')) {
           if (!empty($productCategory->token_prefix)) {
-            $this->redirect('productCatalog__category', $productCategory, 301);
+            $this->redirect('productCatalog_category', $productCategory, 301);
           }
         }
       }
@@ -419,7 +423,7 @@ class ProductCorePager extends sfPager
     $this->filter = $filter;
   }
 
-  public function setProductSort(myProductSorting $sort)
+  public function setProductSort(ProductSorting $sort)
   {
     $this->sort = $sort;
   }
@@ -518,7 +522,7 @@ class ProductCoreFormFilterSimple
     if ($this->productCategory->token_prefix) {
       $token = $this->productCategory->token_prefix . '/' . $token;
     }
-    return url_for('productCatalog__category', array(
+    return url_for('productCatalog_category', array(
       'productCategory' => $token,
       $this->name => $data
     ));
