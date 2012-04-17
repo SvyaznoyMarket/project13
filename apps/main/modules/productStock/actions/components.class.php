@@ -26,7 +26,7 @@ class productStockComponents extends myComponents
     // удаляет магазины, в которых нет товара
     foreach ($shopList as $i => $shop)
     {
-      $shop['product_quantity'] += $quantityInRegion; //1421
+      //$shop['product_quantity'] += $quantityInRegion; //1421
 
       if (0 == $shop['product_quantity'])
       {
