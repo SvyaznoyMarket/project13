@@ -13,33 +13,33 @@ class orderActions extends myActions
   const LAST_STEP = 1;
 
   /**
-  * Executes index action
-  *
-  * @param sfRequest $request A request object
-  */
+   * Executes index action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeIndex(sfWebRequest $request)
   {
   }
- /**
-  * Executes show action
-  *
-  * @param sfRequest $request A request object
-  */
+
+  /**
+   * Executes show action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeShow(sfWebRequest $request)
   {
     $this->order = $this->getRoute()->getObject();
   }
 
   /**
-  * Executes 1click action
-  *
-  * @param sfRequest $request A request object
-  */
+   * Executes 1click action
+   *
+   * @param sfRequest $request A request object
+   */
   public function execute1click(sfWebRequest $request)
   {
-    if (!$request->isXmlHttpRequest())
-    {
-      $this->redirect($request->getReferer().'#order1click-link');
+    if (!$request->isXmlHttpRequest()) {
+      $this->redirect($request->getReferer() . '#order1click-link');
     }
 
     $return = array(
@@ -51,13 +51,11 @@ class orderActions extends myActions
     $this->shop = $request['shop'] ? ShopTable::getInstance()->getByToken($request['shop']) : null;
     $shopData =
       $this->shop
-      ? array('name' => $this->shop->name, 'region' => $this->shop->Region->name, 'regime' => $this->shop->regime, 'address' => $this->shop->address)
-      : false
-    ;
+        ? array('name' => $this->shop->name, 'region' => $this->shop->Region->name, 'regime' => $this->shop->regime, 'address' => $this->shop->address)
+        : false;
 
-    $quantity = (int) $request->getParameter('quantity');
-    if ($quantity <= 0)
-    {
+    $quantity = (int)$request->getParameter('quantity');
+    if ($quantity <= 0) {
       $quantity = 1;
     }
     $this->product->mapValue('cart', array('quantity' => $quantity));
@@ -71,8 +69,7 @@ class orderActions extends myActions
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product) * $quantity; //нужна для правильного отбражения формы заказа
     $this->order->type_id = Order::TYPE_1CLICK;
 
-    if (empty($this->order->region_id))
-    {
+    if (empty($this->order->region_id)) {
       $this->order->region_id = $this->getUser()->getRegion('id');
     }
 
@@ -81,29 +78,24 @@ class orderActions extends myActions
     //$this->form->setValue('product_quantity', 5);
     //$this->form->getValue('product_quantity');
 
-    if ($request->isMethod('post'))
-    {
+    if ($request->isMethod('post')) {
       $this->form->bind($request->getParameter($this->form->getName()));
 
       // если в запросе нет shop добываем его из параметров формы
-      if (!$this->shop)
-      {
+      if (!$this->shop) {
         $taintedValues = $this->form->getTaintedValues();
         $this->shop = !empty($taintedValues['shop_id']) ? ShopTable::getInstance()->getById($taintedValues['shop_id']) : null;
       }
       // Осторожно: нарушен прынцып DRY!
       $shopData =
         $this->shop
-        ? array('name' => $this->shop->name, 'region' => $this->shop->Region->name, 'regime' => $this->shop->regime, 'address' => $this->shop->address)
-        : false
-      ;
+          ? array('name' => $this->shop->name, 'region' => $this->shop->Region->name, 'regime' => $this->shop->regime, 'address' => $this->shop->address)
+          : false;
 
-      if ($this->form->isValid())
-      {
+      if ($this->form->isValid()) {
         $order = $this->form->updateObject();
 
-        if ($this->product->isKit())
-        {
+        if ($this->product->isKit()) {
           foreach ($this->product->PartRelation as $partRelation)
           {
             $part = ProductTable::getInstance()->getById($partRelation->part_id, array('with_model' => true));
@@ -111,16 +103,16 @@ class orderActions extends myActions
             $part_quantity = 1;
             foreach ($part['KitRelation'] as $KitRelation) {
               if ($KitRelation['kit_id'] == $partRelation->kit_id) {
-                  $part_quantity = $KitRelation['quantity'];
-                  break;
+                $part_quantity = $KitRelation['quantity'];
+                break;
               }
             }
 
             $relation = new OrderProductRelation();
             $relation->fromArray(array(
               'product_id' => $part['id'],
-              'price'      => ProductTable::getInstance()->getRealPrice($part),
-              'quantity'   => $this->form->getValue('product_quantity') * $part_quantity,
+              'price' => ProductTable::getInstance()->getRealPrice($part),
+              'quantity' => $this->form->getValue('product_quantity') * $part_quantity,
             ));
             $order->ProductRelation[] = $relation;
           }
@@ -129,8 +121,8 @@ class orderActions extends myActions
           $relation = new OrderProductRelation();
           $relation->fromArray(array(
             'product_id' => $this->product->id,
-            'price'      => ProductTable::getInstance()->getRealPrice($this->product),
-            'quantity'   => $this->form->getValue('product_quantity'),
+            'price' => ProductTable::getInstance()->getRealPrice($this->product),
+            'quantity' => $this->form->getValue('product_quantity'),
           ));
           $order->ProductRelation[] = $relation;
         }
@@ -146,37 +138,37 @@ class orderActions extends myActions
         {
           $order->delivery_type_id =
             !empty($order->shop_id) // если указан магазин, то тип получения заказа - самовывоз
-            ? DeliveryTypeTable::getInstance()->getByToken('self')->id
-            : DeliveryTypeTable::getInstance()->getByToken('standart')->id;
+              ? DeliveryTypeTable::getInstance()->getByToken('self')->id
+              : DeliveryTypeTable::getInstance()->getByToken('standart')->id;
 
           $order->payment_details = 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.';
           $order->save();
 
           $form = new UserFormSilentRegister();
           $form->bind(array(
-            'username'   => $order->recipient_phonenumbers,
-            'first_name' => trim($order->recipient_first_name.' '.$order->recipient_last_name),
+            'username' => $order->recipient_phonenumbers,
+            'first_name' => trim($order->recipient_first_name . ' ' . $order->recipient_last_name),
           ));
 
           $return['success'] = true;
           $return['message'] = 'Заказ успешно создан';
           $return['data'] = array(
-            'title'   => 'Ваш заказ принят, спасибо!',
-            'content' => $this->getPartial($this->getModuleName().'/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop)),
-            'shop'    => $shopData,
+            'title' => 'Ваш заказ принят, спасибо!',
+            'content' => $this->getPartial($this->getModuleName() . '/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop)),
+            'shop' => $shopData,
           );
         }
         catch (Exception $e)
         {
           $return['success'] = false;
-          $return['message'] = 'Не удалось создать заказ'.(sfConfig::get('sf_debug') ? (' Ошибка: '.$e->getMessage()) : '');
+          $return['message'] = 'Не удалось создать заказ' . (sfConfig::get('sf_debug') ? (' Ошибка: ' . $e->getMessage()) : '');
         }
       }
       else {
         $return = array(
           'success' => false,
-          'data'    => array(
-            'form' => $this->getPartial($this->getModuleName().'/form_oneClick'),
+          'data' => array(
+            'form' => $this->getPartial($this->getModuleName() . '/form_oneClick'),
             'shop' => $shopData,
           ),
         );
@@ -187,8 +179,8 @@ class orderActions extends myActions
 
     return $this->renderJson(array(
       'success' => true,
-      'data'    => array(
-        'form' => $this->getPartial($this->getModuleName().'/form_oneClick'),
+      'data' => array(
+        'form' => $this->getPartial($this->getModuleName() . '/form_oneClick'),
         'shop' => $shopData,
       ),
     ));
@@ -198,29 +190,25 @@ class orderActions extends myActions
   {
     $this->getResponse()->setTitle('Данные покупателя – Enter.ru');
 
-    if (!$this->getUser()->getCart()->count())
-    {
+    if (!$this->getUser()->getCart()->count()) {
       $this->redirect($this->getUser()->getReferer());
     }
-	  if (!$this->getUser()->isAuthenticated())
-    {
+    if (!$this->getUser()->isAuthenticated()) {
       $this->formSignin = new UserFormSignin();
       $this->formRegister = new UserFormRegister();
       $action = $request->hasParameter($this->formRegister->getName()) ? 'register' : 'login';
-	  }
+    }
     else
     {
       $this->redirect('order_new');
     }
 
-    if ($request->isMethod('post') && isset($action))
-    {
+    if ($request->isMethod('post') && isset($action)) {
       switch ($action)
       {
         case 'login':
           $this->formSignin->bind($request->getParameter($this->formSignin->getName()));
-          if ($this->formSignin->isValid())
-          {
+          if ($this->formSignin->isValid()) {
             $values = $this->formSignin->getValues();
             $this->getUser()->signin($values['user'], array_key_exists('remember', $values) ? $values['remember'] : false);
             $this->redirect('order_new');
@@ -233,8 +221,7 @@ class orderActions extends myActions
         case 'register':
           $this->formRegister->bind($request->getParameter($this->formRegister->getName()));
 
-          if ($this->formRegister->isValid())
-          {
+          if ($this->formRegister->isValid()) {
             $user = $this->formRegister->getObject();
 
             $user->is_active = true;
@@ -252,7 +239,7 @@ class orderActions extends myActions
             }
             catch (Exception $e)
             {
-              $this->getLogger()->err('{'.__CLASS__.'} '.$e->getMessage());
+              $this->getLogger()->err('{' . __CLASS__ . '} ' . $e->getMessage());
             }
             //$user->refresh();
           }
@@ -261,14 +248,14 @@ class orderActions extends myActions
       //myDebug::dump($request->getParameter('action'));
       $this->setVar('action', $action);
     }
-	  //$this->order = $this->getUser()->getOrder()->get();
+    //$this->order = $this->getUser()->getOrder()->get();
   }
 
   /**
-  * Executes new action
-  *
-  * @param sfRequest $request A request object
-  */
+   * Executes new action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeNew(sfWebRequest $request)
   {
     $this->redirectUnless($this->getUser()->getCart()->countFull(), 'cart');
@@ -282,18 +269,15 @@ class orderActions extends myActions
     $this->getUser()->getOrder()->set($this->order);
 
     $this->form = $this->getOrderForm($this->step);
-    if ($request->isMethod('post'))
-    {
+    if ($request->isMethod('post')) {
       $this->form->bind($request->getParameter($this->form->getName()));
 
-      if ($this->form->isValid())
-      {
+      if ($this->form->isValid()) {
         $order = $this->form->updateObject();
         $order->step = self::LAST_STEP == $this->step ? (self::LAST_STEP + 1) : $this->step;
         $this->getUser()->getOrder()->set($order);
 
-        if (self::LAST_STEP == $this->step)
-        {
+        if (self::LAST_STEP == $this->step) {
           $this->redirect('order_create');
         }
         else {
@@ -310,17 +294,19 @@ class orderActions extends myActions
       }
     }
   }
- /**
-  * Executes updateField action
-  *
-  * @param sfRequest $request A request object
-  */
+
+  /**
+   * Executes updateField action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeUpdateField(sfWebRequest $request)
   {
     $this->forward404Unless($request->isXmlHttpRequest());
 
     $renderers = array(
-      'delivery_period_id'  => function($form) {
+      'delivery_period_id' => function($form)
+      {
         $r = myToolkit::arrayDeepMerge(array('' => ''), $form['delivery_period_id']->getWidget()->getChoices());
         $res = array();
         foreach ($r as $k => $v) {
@@ -328,7 +314,8 @@ class orderActions extends myActions
         }
         return $res;
       },
-      'delivered_at'  => function($form) {
+      'delivered_at' => function($form)
+      {
         return myToolkit::arrayDeepMerge(array('' => ''), $form['delivered_at']->getWidget()->getChoices());
       },
     );
@@ -337,8 +324,7 @@ class orderActions extends myActions
     $this->step = $request->getParameter('step', 1);
 
     $form = new OrderStep1Form($this->getUser()->getOrder()->get());
-    if (isset($form[$field]))
-    {
+    if (isset($form[$field])) {
       //$form->useFields(array($field) + array_keys($request->getParameter($form->getName())));
       $form->bind($request->getParameter($form->getName()));
 
@@ -347,8 +333,8 @@ class orderActions extends myActions
 
       $result = array(
         'success' => true,
-        'data'    => array(
-          'content' => isset($renderers[$field]) ? $renderers[$field]($form) : $this->getPartial($this->getModuleName().'/field_'.$field, array('form' => $form)),
+        'data' => array(
+          'content' => isset($renderers[$field]) ? $renderers[$field]($form) : $this->getPartial($this->getModuleName() . '/field_' . $field, array('form' => $form)),
         ),
       );
     }
@@ -360,11 +346,12 @@ class orderActions extends myActions
 
     return $this->renderJson($result);
   }
- /**
-  * Executes edit action
-  *
-  * @param sfRequest $request A request object
-  */
+
+  /**
+   * Executes edit action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeEdit(sfWebRequest $request)
   {
   }
@@ -375,38 +362,36 @@ class orderActions extends myActions
    */
   public function executeCancel(sfWebRequest $request)
   {
-      $token = $request['token'];
-      if (!$token)     $this->redirect($this->getRequest()->getReferer());
+    $token = $request['token'];
+    if (!$token) $this->redirect($this->getRequest()->getReferer());
 
-      $orderL = OrderTable::getInstance()->findBy('token', $token);
-      foreach($orderL as $order) $coreId = $order->core_id;
-      //print_r($order->getData());
-      $res = Core::getInstance()->query('order.cancel',array('id'=>$coreId));
-      //если отменилось на ядре, отменим здесь тоже
-      if ($res){
-          //$order->setData( array('status_id'=>Order::STATUS_CANCELLED));
-          //->set('status_id', Order::STATUS_CANCELLED);
-          $order->setCorePush(false);
-          $order->setArray(array('status_id'=>Order::STATUS_CANCELLED));
-          $a = $order->save();
-      }
-      $this->redirect($this->getRequest()->getReferer());
+    $orderL = OrderTable::getInstance()->findBy('token', $token);
+    foreach ($orderL as $order) $coreId = $order->core_id;
+    //print_r($order->getData());
+    $res = Core::getInstance()->query('order.cancel', array('id' => $coreId));
+    //если отменилось на ядре, отменим здесь тоже
+    if ($res) {
+      //$order->setData( array('status_id'=>Order::STATUS_CANCELLED));
+      //->set('status_id', Order::STATUS_CANCELLED);
+      $order->setCorePush(false);
+      $order->setArray(array('status_id' => Order::STATUS_CANCELLED));
+      $a = $order->save();
+    }
+    $this->redirect($this->getRequest()->getReferer());
   }
 
 
- /**
-  * Executes confirm action
-  *
-  * @param sfRequest $request A request object
-  */
+  /**
+   * Executes confirm action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeConfirm(sfWebRequest $request)
   {
     $this->getResponse()->setTitle('Подтверждение заказа – Enter.ru');
 
-    if ($request->isMethod('post'))
-    {
-      if ('yes' == $request['agree'])
-      {
+    if ($request->isMethod('post')) {
+      if ('yes' == $request['agree']) {
         $this->forward($this->getModuleName(), 'create');
       }
     }
@@ -414,10 +399,8 @@ class orderActions extends myActions
     $order = $this->getUser()->getOrder()->get();
     $this->forwardUnless($order->step, $this->getModuleName(), 'new');
     //$cart = $this->getUser()->getCart();
-    if ($order->isOnlinePayment())
-    {
-      if ($this->saveOrder($order))
-      {
+    if ($order->isOnlinePayment()) {
+      if ($this->saveOrder($order)) {
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $provider->getForm($order);
       }
@@ -425,16 +408,16 @@ class orderActions extends myActions
 
     $this->setVar('order', $order);
   }
- /**
-  * Executes complete action
-  *
-  * @param sfRequest $request A request object
-  */
+
+  /**
+   * Executes complete action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeComplete(sfWebRequest $request)
   {
     $provider = $this->getPaymentProvider();
-    if (!($this->order = $provider->getOrder($request)))
-    {
+    if (!($this->order = $provider->getOrder($request))) {
       $this->order = $this->getUser()->getOrder()->get();
     }
     else
@@ -446,15 +429,14 @@ class orderActions extends myActions
 
     $this->form = new UserFormSilentRegister();
     $this->form->bind(array(
-      'username'   => $this->order->recipient_phonenumbers,
-      'first_name' => trim($this->order->recipient_first_name.' '.$this->order->recipient_last_name),
+      'username' => $this->order->recipient_phonenumbers,
+      'first_name' => trim($this->order->recipient_first_name . ' ' . $this->order->recipient_last_name),
     ));
 
-    if (!$this->form->isValid())
-    {
+    if (!$this->form->isValid()) {
       $this->form = new UserFormBasicRegister(null, array('validate_username' => false));
       $this->form->bind(array(
-        'first_name' => trim($this->order->recipient_first_name.' '.$this->order->recipient_last_name),
+        'first_name' => trim($this->order->recipient_first_name . ' ' . $this->order->recipient_last_name),
       ));
     }
 
@@ -464,11 +446,12 @@ class orderActions extends myActions
 
     //$this->setVar('order', $this->order, true);
   }
- /**
-  * Executes getUser action
-  *
-  * @param sfRequest $request A request object
-  */
+
+  /**
+   * Executes getUser action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeGetUser(sfWebRequest $request)
   {
     $this->forward404Unless($request->isXmlHttpRequest());
@@ -479,39 +462,40 @@ class orderActions extends myActions
 
     return $this->renderJson(array(
       'success' => $this->getUser()->isAuthenticated(),
-      'data'    => array(
-        'content' => $this->getPartial($this->getModuleName().'/user'),
-        'fields'  =>
-          $user
+      'data' => array(
+        'content' => $this->getPartial($this->getModuleName() . '/user'),
+        'fields' =>
+        $user
           ? array(
-            $form['recipient_first_name']->renderName()   => $user->first_name,
-            $form['recipient_last_name']->renderName()    => $user->last_name,
-            $form['recipient_phonenumbers']->renderName() => $user->phonenumber,
-          )
+          $form['recipient_first_name']->renderName() => $user->first_name,
+          $form['recipient_last_name']->renderName() => $user->last_name,
+          $form['recipient_phonenumbers']->renderName() => $user->phonenumber,
+        )
           : false,
       ),
     ));
   }
- /**
-  * Executes error action
-  *
-  * @param sfRequest $request A request object
-  */
+
+  /**
+   * Executes error action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeError(sfWebRequest $request)
   {
     $this->getUser()->getOrder()->clear();
   }
- /**
-  * Executes create action
-  *
-  * @param sfRequest $request A request object
-  */
+
+  /**
+   * Executes create action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeCreate(sfWebRequest $request)
   {
     $this->order = $this->getUser()->getOrder()->get();
 
-    if ($this->saveOrder($this->order))
-    {
+    if ($this->saveOrder($this->order)) {
       $this->redirect($this->order->isOnlinePayment() ? 'order_payment' : 'order_complete');
     }
     else
@@ -520,11 +504,11 @@ class orderActions extends myActions
     }
   }
 
- /**
-  * Executes payment action
-  *
-  * @param sfRequest $request A request object
-  */
+  /**
+   * Executes payment action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executePayment(sfWebRequest $request)
   {
     $user = $this->getUser();
@@ -573,40 +557,40 @@ class orderActions extends myActions
     $prodObList = array();
     foreach ($this->getUser()->getCart()->getProducts() as $product)
     {
-        $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $product['id'])->fetchOne();
-        $prodObList[$product['id']] = $productOb;
-        $relation = new OrderProductRelation();
-        $relation->fromArray(array(
-            'product_id' => $productOb->id,
-            'price'      => $product['price'], //ProductTable::getInstance()->getRealPrice($product),
-            'quantity'   => $product['quantity'],
-        ));
-        $order->ProductRelation[] = $relation;
+      $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $product['id'])->fetchOne();
+      $prodObList[$product['id']] = $productOb;
+      $relation = new OrderProductRelation();
+      $relation->fromArray(array(
+        'product_id' => $productOb->id,
+        'price' => $product['price'], //ProductTable::getInstance()->getRealPrice($product),
+        'quantity' => $product['quantity'],
+      ));
+      $order->ProductRelation[] = $relation;
     }
 
-      //print_r($this->getUser()->getCart()->getServices());
+    //print_r($this->getUser()->getCart()->getServices());
     foreach ($this->getUser()->getCart()->getServices() as $service)
     {
       $serviceOb = ServiceTable::getInstance()->getQueryObject()->where('core_id = ?', $service['id'])->fetchOne();
-      foreach($service['products'] as $prodId => $prodServInfo) {
-          if (isset($prodObList[$prodId])) {
-              $productOb = $prodObList[$prodId];
-          } else {
-              $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $prodId)->fetchOne();
-          }
-          if (is_object($productOb)) {
-              $prodId = $productOb->id;
-          } else {
-              $prodId = NULL;
-          }
-          $relation = new OrderServiceRelation();
-          $relation->fromArray(array(
-            'service_id' => $serviceOb->id,
-            'product_id' => $prodId,
-            'price'      => $prodServInfo['price'],
-            'quantity'   => $prodServInfo['quantity'],
-          ));
-          $order->ServiceRelation[] = $relation;
+      foreach ($service['products'] as $prodId => $prodServInfo) {
+        if (isset($prodObList[$prodId])) {
+          $productOb = $prodObList[$prodId];
+        } else {
+          $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $prodId)->fetchOne();
+        }
+        if (is_object($productOb)) {
+          $prodId = $productOb->id;
+        } else {
+          $prodId = NULL;
+        }
+        $relation = new OrderServiceRelation();
+        $relation->fromArray(array(
+          'service_id' => $serviceOb->id,
+          'product_id' => $prodId,
+          'price' => $prodServInfo['price'],
+          'quantity' => $prodServInfo['quantity'],
+        ));
+        $order->ServiceRelation[] = $relation;
       }
     }
 
@@ -621,7 +605,7 @@ class orderActions extends myActions
     }
     catch (Exception $e)
     {
-      $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save to core: '.$e->getMessage());
+      $this->getLogger()->err('{' . __CLASS__ . '} create: can\'t save to core: ' . $e->getMessage());
     }
 
     return false;
@@ -660,13 +644,12 @@ class orderActions extends myActions
    */
   protected function getPaymentProvider($name = null)
   {
-    if (null == $name)
-    {
+    if (null == $name) {
       $name = sfConfig::get('app_payment_default_provider');
     }
 
     $providers = sfConfig::get('app_payment_provider');
-    $class = sfInflector::camelize($name.'payment_provider');
+    $class = sfInflector::camelize($name . 'payment_provider');
 
     return new $class($providers[$name]);
   }

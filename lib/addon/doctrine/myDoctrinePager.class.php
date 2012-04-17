@@ -18,7 +18,24 @@ class myDoctrinePager extends sfDoctrinePager
 
     $ids = $table->getIdsByQuery($this->getQuery());
 
-    return $table->createListByIds($ids, $this->getParameter('query_params', array()));
+    $list = $table->createListByIds($ids, $this->getParameter('query_params', array()));
+
+    $return = array();
+
+    $positions = array();
+
+    foreach($list as $i => $product){
+      $positions[$product['id']] = $i;
+    }
+
+    foreach($ids as $id){
+      $pos = $positions[$id];
+      $return[] = $list[$pos];
+    }
+
+    return $return;
+
+//    return $table->createListByIds($ids, $this->getParameter('query_params', array()));
 
 //    $data = $table->createListByIds($ids, $this->getParameter('query_params', array()));
 //    foreach ($data as $dProduct) {

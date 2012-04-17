@@ -13,7 +13,16 @@ class ProductLabelEntity
 
   /* @var string */
   private $name;
+  /** @var int */
+  private $priority;
 
+  public function __construct(array $data = array())
+  {
+    if (array_key_exists('id', $data)) $this->setId($data['id']);
+    if (array_key_exists('image', $data)) $this->setImage($data['image']);
+    if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
+    if (array_key_exists('name', $data)) $this->setName($data['name']);
+  }
 
   /**
    * @param int $id
@@ -63,10 +72,34 @@ class ProductLabelEntity
     return $this->name;
   }
 
+  /**
+   * @param int $size
+   * @return null|string
+   */
   public function getImageUrl($size = 0)
   {
-    $config = sfConfig::get('app_product_label_photo_url');
+    if ($this->image) {
+      $urls = sfConfig::get('app_product_label_photo_url');
+      return $urls[$size] . $this->image;
+    }
+    else {
+      return null;
+    }
+  }
 
-    return $this->getImage() ? $config[$size]."{$this->getImage()}" : null;
+  /**
+   * @param int $priority
+   */
+  public function setPriority($priority)
+  {
+    $this->priority = $priority;
+  }
+
+  /**
+   * @return int
+   */
+  public function getPriority()
+  {
+    return $this->priority;
   }
 }

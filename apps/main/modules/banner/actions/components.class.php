@@ -32,7 +32,7 @@ class bannerComponents extends myComponents
     foreach (BannerTable::getInstance()->getList(array('hydrate_array' => true)) as $banner)
     {
       $bannerTable = BannerTable::getInstance();
-      $productList = array();
+      $objectList = array();
 
       foreach ($banner['Item'] as $bannerItem)
       {

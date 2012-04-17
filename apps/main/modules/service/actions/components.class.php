@@ -26,8 +26,7 @@ class serviceComponents extends myComponents
     {
       foreach ($next['products'] as $product => $prodData)
       {
-        if ($product == $this->product->id)
-        {
+        if ($product == $this->product->id) {
           $servListId[] = $next->id;
         }
       }
@@ -47,15 +46,13 @@ class serviceComponents extends myComponents
       $sel = false;
       foreach ($this->services as $selected)
       {
-        if ($next->id == $selected['id'])
-        {
+        if ($next->id == $selected['id']) {
           $selInfo = $selected;
           $sel = true;
           break;
         }
       }
-      if ($sel)
-      {
+      if ($sel) {
         $selectedNum++;
         $selInfo['selected'] = true;
         $selInfo['total'] = $selInfo['quantity'] * $selInfo['price'];
@@ -161,11 +158,9 @@ class serviceComponents extends myComponents
     );
 
     //  myDebug::dump($this->serviceCategory);
-    if (isset($this->serviceCategory) && $this->serviceCategory && $this->serviceCategory->core_parent_id)
-    {
+    if (isset($this->serviceCategory) && $this->serviceCategory && $this->serviceCategory->core_parent_id) {
       $parentCategory = $this->serviceCategory->getParentCategory();
-      if (isset($parentCategory) && isset($parentCategory['name']))
-      {
+      if (isset($parentCategory) && isset($parentCategory['name'])) {
         $list[] = array(
           'name' => $parentCategory['name'],
           'url' => $this->generateUrl('service_list', array('serviceCategory' => $parentCategory['token'])),
@@ -179,8 +174,7 @@ class serviceComponents extends myComponents
     elseif (isset($this->service))
     {
       $parentCategory = $this->service->getCatalogParent();
-      if (isset($parentCategory) && isset($parentCategory['name']))
-      {
+      if (isset($parentCategory) && isset($parentCategory['name'])) {
         $list[] = array(
           'name' => $parentCategory['name'],
           'url' => $this->generateUrl('service_list', array('serviceCategory' => $parentCategory['token'])),

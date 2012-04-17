@@ -249,7 +249,7 @@ class ProductSoa
     public function getAll3dPhotos()
     {
         $d3List = array();
-        $urls = sfConfig::get('app_product_photo_url');
+        $urls = sfConfig::get('app_product_photo_3d_url');
         foreach ($this->media as $media) {
             if ($media['type_id'] == 2) {
                 $media['path']['small'] =  $urls[0] . $media['source'];

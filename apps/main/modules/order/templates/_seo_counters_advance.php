@@ -53,6 +53,8 @@ document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=179070&s
     }(document));
 </script>
 
+
+
 <?php } elseif ($step == 3) { ?>
 
 <!--  AdRiver code START. Type:counter(zeropixel) Site: sventer SZ: step3 PZ: 0 BN: 0 -->
@@ -74,4 +76,9 @@ document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=179070&s
     var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + order_article + '|product_quantity|' + product_quantity + '|order_id|' + order_id + '|order_total|' + order_total + '';
     document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
 </script>
+
+
+<?php include_component('order','seo_admitad', $sf_data) ?>
+
+
 <?php } ?>
