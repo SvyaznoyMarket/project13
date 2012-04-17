@@ -52,8 +52,7 @@ class ProductPrice extends BaseProductPrice
     $invoker = $event->getInvoker();
 
     // If record has been modified adds keys to nginx file
-    if ($invoker->isModified(true) && ($invoker->getTable() instanceof myDoctrineTable))
-    {
+    if ($invoker->isModified(true) && ($invoker->getTable() instanceof myDoctrineTable)) {
       CacheEraser::getInstance()->erase($invoker->getTable()->getCacheEraserKeys($invoker, 'save'), false, 'product_price changed');
     }
   }

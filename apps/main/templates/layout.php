@@ -137,6 +137,7 @@
 <?php if (has_slot('seo_counters_advance')): ?>
   <?php include_slot('seo_counters_advance') ?>
 <?php endif ?>
+<?php include_component('default', 'admitad') ?>
 
   </body>
 </html>

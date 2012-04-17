@@ -1,1 +1,1 @@
-<?php include_component('default', 'navigation'.$tpl_postfix, $sf_data) ?>
+<?php include_component('default', 'navigation' . $tpl_postfix, $sf_data) ?>

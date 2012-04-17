@@ -3,10 +3,10 @@
 /**
  * product components.
  *
- * @package    enter
+ * @package enter
  * @subpackage product
- * @author     Связной Маркет
- * @version    SVN: $Id: components.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ * @author Связной Маркет
+ * @version SVN: $Id: components.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
 class productSoaComponents extends myComponents
 {
@@ -33,9 +33,9 @@ class productSoaComponents extends myComponents
     // cache key
     $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
       'product' => is_scalar($this->product) ? $this->product : $this->product->id,
-      'region'  => $this->getUser()->getRegion('id'),
-      'view'    => $this->view,
-      'i'       => $this->ii,
+      'region' => $this->getUser()->getRegion('id'),
+      'view' => $this->view,
+      'i' => $this->ii,
     )) : false;
 
     // checks for cached vars
@@ -107,12 +107,12 @@ class productSoaComponents extends myComponents
     {
       if ($active['name'] == $item['name'] && $active['direction'] == $item['direction'])
       {
-//        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
+        // $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
         continue;
       }
       $list[] = array_merge($item, array(
         'url' => replace_url_for('sort', implode('-', array($item['name'], $item['direction'])))
-        ));
+      ));
     }
 
     $this->setVar('list', $list, true);
@@ -192,37 +192,37 @@ class productSoaComponents extends myComponents
     $list = array();
 
     foreach ($this->product->property_group as $group) {
-        $list[$group['id']] = $group;
+      $list[$group['id']] = $group;
     }
-     // print_r($this->product->property);
+    // print_r($this->product->property);
     foreach ($this->product->property as $prop) {
       if (!isset($prop['is_view_card']) || !$prop['is_view_card']) {
-          //continue;
+        //continue;
       }
       if (isset($prop['group_id']) && $prop['group_id']) {
         if (is_array($prop['option_id'])) {
-           $valueAr = array();
-           foreach ($prop['option_id'] as $option) {
-               $valueAr[] = $option['value'];
-           }
-           $prop['value'] = implode(', ', $valueAr);
+          $valueAr = array();
+          foreach ($prop['option_id'] as $option) {
+            $valueAr[] = $option['value'];
+          }
+          $prop['value'] = implode(', ', $valueAr);
         } elseif ($prop['value'] == 'true') {
-            $prop['value'] = 'да';
+          $prop['value'] = 'да';
         } elseif ($prop['value'] == 'false') {
-            $prop['value'] = 'нет';
+          $prop['value'] = 'нет';
         }
         if ($prop['unit']) {
-            $prop['value'] .= ' ' . $prop['unit'];
+          $prop['value'] .= ' ' . $prop['unit'];
         }
         $list[$prop['group_id']]['parameters'][] = $prop;
       }
     }
-      foreach ($list as $key =>  $group) {
-          if (!isset($group['parameters'])) {
-              unset($list[$key]);
-          }
+    foreach ($list as $key => $group) {
+      if (!isset($group['parameters'])) {
+        unset($list[$key]);
       }
-      //   print_r($list);
+    }
+    // print_r($list);
     $this->setVar('list', $list, true);
     $this->setVar('product', $this->product, true);
   }
@@ -241,84 +241,97 @@ class productSoaComponents extends myComponents
     $product = $this->product;
     $this->setVar('product', $this->product, true);
 
-//    print_r($this->product);
-//      die();
+    //print_r($this->product->model['property']);
     $propIdList = array();
     $propType = array();
     foreach ($this->product->model['property'] as $prop) {
-        $propIdList[] = $prop['id'];
+      $propIdList[] = $prop['id'];
     }
     foreach ($this->product->model['product'] as $prod) {
-        foreach ($prod->property as $prop) {
-            if (in_array($prop['id'], $propIdList)) {
-                if ($prop['value']) {
-                    $value = $prop['value'];
-                } elseif ($prop['option_id'] && is_array($prop['option_id'])) {
-                    $valueList = array();
-                    foreach ($prop['option_id'] as $opt) {
-                        $valueList[] = $opt['value'];
-                    }
-                    $value = implode(',', $valueList);
-                }
-                $prodPropValue[$prod->id][$prop['id']] = $value;
-                if (isset($prop['type_id'])) {
-                    $propType[$prop['id']] = $prop['type_id'];
-                } else {
-                    $propType[$prop['id']] = 1;
-                }
-            }
+      foreach ($prod->property as $prop) {
+        if (in_array($prop['id'], $propIdList)) {
+          $prodPropValue[$prod->id][$prop['id']] = $prop['value'];
+          $propType[$prop['id']] = $prop['type_id'];
         }
+      }
     }
-  //   print_r($prodPropValue);
-//      die();
+    // print_r($propType);
+    // die();
+    $valueForCurrentProduct = array();
     foreach ($this->product->model['property'] as $prop) {
-        $property = array(
-            'id' => $prop['id'],
-            'name' => $prop['name'],
-            'is_image' => $prop['is_image'],
-        );
-        //print_r($this->product->model);
-        $valueList = array();
-        foreach ($this->product->model['product'] as $productModel) {
-            foreach ($this->product->model['property'] as $prodProp) {
-                if ($prodProp['id'] == $prop['id']) {
-                   $value = $prodPropValue[$productModel->id][$prodProp['id']];
-                   if ($product->id == $productModel->id) {
-                        $property['current']['id'] = $productModel->id;
-                        $property['current']['value'] = $value;
-                        $property['current']['url'] = $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel->link) ));
-                   } //elseif (in_array($prodProp['value'], $valueList)) {
-//                       continue;
-//                   }
-                   //foreach (['property'])
-                   $prodProp['value'] = $value;
-                   $property['products'][$prodProp['value']] = array(
-                       'id' => $productModel->id,
-                       'name' => $productModel->name,
-                       'image' => $product::getMainPhotoUrlByMediaImage($productModel->media_image, 1),
-                       'value' => $prodProp['value'],
-                       'is_selected' =>  ($this->product->id == $productModel->id) ? 1 : 0,
-                       'url' => $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel->link) ))
-                   );
-                   $valueList[] = $prodProp['value'];
-                }
-            }
-        }
-        $needSort = false;
-        if ($propType[$prop['id']] == 3) {
-            $needSort = true;
-        } elseif ($propType[$prop['id']] == 5) {
-            $a = current($property['products']);
-            if (preg_match('/^\d+$/', $a['value'])) {
-                $needSort = true;
-            }
-        }
-        if ($needSort) {
-            ksort($property['products']);
-        }
-        $properties[] = $property;
+      $valueForCurrentProduct[$prop['id']] = $this->product->property[$prop['id']]['value'];
     }
-    //  print_r($properties);
+    //print_r($valueForCurrentProduct);
+    foreach ($this->product->model['property'] as $prop) {
+      $property = array(
+        'id' => $prop['id'],
+        'name' => $prop['name'],
+        'is_image' => $prop['is_image'],
+      );
+      $valueForCurrentProduct[$prop['id']] = $this->product->property[$prop['id']]['value'];
+      foreach ($this->product->model['product'] as $productModel) {
+        foreach ($this->product->model['property'] as $prodProp) {
+          if ($prodProp['id'] == $prop['id']) {
+            if (!isset($prodPropValue[$productModel->id]) || !isset($prodPropValue[$productModel->id][$prodProp['id']])) {
+              $value = '-';
+            } else {
+              $value = $prodPropValue[$productModel->id][$prodProp['id']];
+            }
+            if (trim($value) == 'true') {
+              $value = 'да';
+            } elseif (trim($value) == 'false') {
+              $value = 'нет';
+            }
+            if ($product->id == $productModel->id) {
+              $property['current']['id'] = $productModel->id;
+              $property['current']['value'] = $value;
+              $property['current']['url'] = $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel->link) ));
+            } //elseif (in_array($prodProp['value'], $valueList)) {
+            // continue;
+            // }
+            //foreach (['property'])
+            $prodProp['value'] = $value;
+            $setThisProduct = false;
+            if (!isset($property['products'][$prodProp['value']])) {
+              $setThisProduct = true;
+            } else {
+              foreach ($valueForCurrentProduct as $anotherPropId => $mainProdValue) {
+                if ($anotherPropId == $prodProp['id']) {
+                  continue;
+                }
+                if ($mainProdValue == $prodPropValue[$productModel->id][$anotherPropId]) {
+                  $setThisProduct = true;
+                }
+              }
+            }
+            if ($setThisProduct) {
+              $property['products'][$prodProp['value']] = array(
+                'id' => $productModel->id,
+                'name' => $productModel->name,
+                'image' => $product::getMainPhotoUrlByMediaImage($productModel->media_image, 1),
+                'value' => $prodProp['value'],
+                'is_selected' => ($this->product->id == $productModel->id) ? 1 : 0,
+                'url' => $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel->link) ))
+              );
+            }
+          }
+        }
+      }
+      //print_r($property);
+      $needSort = false;
+      if ($propType[$prop['id']] == 3) {
+        $needSort = true;
+      } elseif ($propType[$prop['id']] == 5) {
+        $a = current($property['products']);
+        if (preg_match('/^\d+$/', $a['value'])) {
+          $needSort = true;
+        }
+      }
+      if ($needSort) {
+        ksort($property['products']);
+      }
+      $properties[] = $property;
+    }
     $this->setVar('properties', $properties, true);
     return;
   }
@@ -330,7 +343,7 @@ class productSoaComponents extends myComponents
    */
   public function executeList_ajax_view()
   {
-      $this->executeList_view();
+    $this->executeList_view();
   }
 
   /**
@@ -341,12 +354,12 @@ class productSoaComponents extends myComponents
   {
     $list = array(
       array(
-        'name'  => 'compact',
+        'name' => 'compact',
         'title' => 'компактный',
         'class' => 'tableview',
       ),
       array(
-        'name'  => 'expanded',
+        'name' => 'expanded',
         'title' => 'расширенный',
         'class' => 'listview',
       ),
@@ -357,9 +370,9 @@ class productSoaComponents extends myComponents
       $item = array_merge($item, array(
         'url' => replace_url_for('view', $item['name']),
         'current' => $this->getRequestParameter('view', 'compact') == $item['name'],
-        ));
+      ));
     } if (isset($item))
-      unset($item);
+    unset($item);
 
     $this->setVar('list', $list, true);
   }
@@ -379,8 +392,8 @@ class productSoaComponents extends myComponents
     {
       $list[] = array(
         'token' => $tag['token'],
-        'url'   => $this->generateUrl('tag_show', array('tag' => $tag['site_token'])),
-        'name'  => $tag['name'],
+        'url' => $this->generateUrl('tag_show', array('tag' => $tag['site_token'])),
+        'name' => $tag['name'],
       );
     }
 
@@ -398,18 +411,18 @@ class productSoaComponents extends myComponents
    *
    */
   public function executeF1_lightbox(){
-      if ($this->parentAction == '_list_for_product_in_cart') {
-          $showInCardButton = true;
-      } else {
-          $showInCardButton = false;
-      }
-      if (is_array($this->product)) {
-          $prodId = $this->product['id'];
-      } else {
-          $prodId = $this->product->id;
-      }
-      $this->setVar('productId', $prodId, true);
-      $this->setVar('showInCardButton', $showInCardButton);
+    if ($this->parentAction == '_list_for_product_in_cart') {
+      $showInCardButton = true;
+    } else {
+      $showInCardButton = false;
+    }
+    if (is_array($this->product)) {
+      $prodId = $this->product['id'];
+    } else {
+      $prodId = $this->product->id;
+    }
+    $this->setVar('productId', $prodId, true);
+    $this->setVar('showInCardButton', $showInCardButton);
   }
 
   public function executeKit()
@@ -423,35 +436,35 @@ class productSoaComponents extends myComponents
     $this->view = 'compact';
   }
 
-    public function executeDelivery()
-    {
-        $delivery = array();
-        if (isset($this->product->delivery[3])) {
-         $inf = $this->product->delivery[3];
-         $inf['mode'] = 3;
-         $delivery[] = $inf;
-        }
-        if (isset($this->product->delivery[2])) {
-            $inf = $this->product->delivery[2];
-            $inf['mode'] = 2;
-            $delivery[] = $inf;
-        }
-        if (isset($this->product->delivery[1])) {
-            $inf = $this->product->delivery[1];
-            $inf['mode'] = 1;
-            $delivery[] = $inf;
-        }
-
-        $now = new DateTime();
-        foreach ($delivery as & $item) {
-            $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $item['date'][0]['date']);
-            $deliveryPeriod = $minDeliveryDate->diff($now)->days;
-            if ($deliveryPeriod < 0) $deliveryPeriod = 0;
-            $deliveryPeriod = myToolkit::fixDeliveryPeriod($item['mode'], $deliveryPeriod);
-            $item['period'] = $deliveryPeriod;
-            $item['deliveryText'] = myToolkit::formatDeliveryDate($item['period']);
-        }
-        //print_r($delivery);
-        $this->setVar('delivery', $delivery);
+  public function executeDelivery()
+  {
+    $delivery = array();
+    if (isset($this->product->delivery[3])) {
+      $inf = $this->product->delivery[3];
+      $inf['mode'] = 3;
+      $delivery[] = $inf;
     }
+    if (isset($this->product->delivery[2])) {
+      $inf = $this->product->delivery[2];
+      $inf['mode'] = 2;
+      $delivery[] = $inf;
+    }
+    if (isset($this->product->delivery[1])) {
+      $inf = $this->product->delivery[1];
+      $inf['mode'] = 1;
+      $delivery[] = $inf;
+    }
+
+    $now = new DateTime();
+    foreach ($delivery as & $item) {
+      $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $item['date'][0]['date']);
+      $deliveryPeriod = $minDeliveryDate->diff($now)->days;
+      if ($deliveryPeriod < 0) $deliveryPeriod = 0;
+      $deliveryPeriod = myToolkit::fixDeliveryPeriod($item['mode'], $deliveryPeriod);
+      $item['period'] = $deliveryPeriod;
+      $item['deliveryText'] = myToolkit::formatDeliveryDate($item['period']);
+    }
+    //print_r($delivery);
+    $this->setVar('delivery', $delivery);
+  }
 }

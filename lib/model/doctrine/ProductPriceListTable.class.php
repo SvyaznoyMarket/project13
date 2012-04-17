@@ -21,10 +21,10 @@ class ProductPriceListTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'         => 'core_id',
-      'name'       => 'name',
+      'id' => 'core_id',
+      'name' => 'name',
       'is_primary' => 'is_default',
-      'is_active'  => 'is_active',
+      'is_active' => 'is_active',
     );
   }
 
@@ -35,20 +35,17 @@ class ProductPriceListTable extends myDoctrineTable
       ->where('r.is_default = ?', 1)
       ->addWhere('r.type = ?', 'city')
       ->limit(1)
-      ->fetchOne()
-    ;
+      ->fetchOne();
   }
 
   public function getCurrent()
   {
     $region = sfContext::getInstance()->getUser()->getRegion();
-    if (isset($region->id))
-    {
+    if (isset($region->id)) {
       return $this->createQuery('list')
         ->leftJoin('list.Region as r on list.id=r.product_price_list_id')
         ->where('r.id = ?', $region->id)
-        ->fetchOne()
-      ;
+        ->fetchOne();
     }
     else
     {

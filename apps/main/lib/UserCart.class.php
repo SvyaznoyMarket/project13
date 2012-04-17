@@ -149,6 +149,9 @@ class UserCart extends BaseUserData
                 $this->addProduct($productId, 1);
             }
         }
+        $prodOb = ProductTable::getInstance()->createBaseQuery()->where('core_id = ?', $productId)->fetchOne();
+        $siteProductId = $prodOb->id;
+
         //получаем цену на услугу. пока из БД! пока нет API для услуг! передалать!
         $region = sfContext::getInstance()->getUser()->getRegion();
         $priceList = $region['product_price_list_id'];
@@ -156,13 +159,13 @@ class UserCart extends BaseUserData
         $priceData = ServicePriceTable::getInstance()->getQueryObject()
             ->addWhere('service_id = ?', $serviceInfo->id)
             ->addWhere('service_price_list_id = ?', $priceList)
-            ->addWhere('product_id = ? OR product_id IS NULL', $productId)
+            ->addWhere('product_id = ? OR product_id IS NULL', $siteProductId)
             ->fetchArray()
         ;
         //      print_r($priceData);
         //      die();
         foreach ($priceData as $k => $info) {
-            if ($info['product_id'] == $productId) {
+            if ($info['product_id'] == $siteProductId) {
                 $priceVal = $info['price'];
                 break;
             } elseif (!$info['product_id']) {

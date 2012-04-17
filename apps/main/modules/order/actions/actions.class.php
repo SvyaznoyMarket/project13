@@ -20,6 +20,7 @@ class orderActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
   }
+
   /**
    * Executes show action
    *
@@ -37,9 +38,8 @@ class orderActions extends myActions
    */
   public function execute1click(sfWebRequest $request)
   {
-    if (!$request->isXmlHttpRequest())
-    {
-      $this->redirect($request->getReferer().'#order1click-link');
+    if (!$request->isXmlHttpRequest()) {
+      $this->redirect($request->getReferer() . '#order1click-link');
     }
 
     $return = array(
@@ -52,12 +52,10 @@ class orderActions extends myActions
     $shopData =
       $this->shop
         ? array('name' => $this->shop->name, 'region' => $this->shop->Region->name, 'regime' => $this->shop->regime, 'address' => $this->shop->address)
-        : false
-    ;
+        : false;
 
-    $quantity = (int) $request->getParameter('quantity');
-    if ($quantity <= 0)
-    {
+    $quantity = (int)$request->getParameter('quantity');
+    if ($quantity <= 0) {
       $quantity = 1;
     }
     $this->product->mapValue('cart', array('quantity' => $quantity));
@@ -71,8 +69,7 @@ class orderActions extends myActions
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product) * $quantity; //нужна для правильного отбражения формы заказа
     $this->order->type_id = Order::TYPE_1CLICK;
 
-    if (empty($this->order->region_id))
-    {
+    if (empty($this->order->region_id)) {
       $this->order->region_id = $this->getUser()->getRegion('id');
     }
 
@@ -81,13 +78,11 @@ class orderActions extends myActions
     //$this->form->setValue('product_quantity', 5);
     //$this->form->getValue('product_quantity');
 
-    if ($request->isMethod('post'))
-    {
+    if ($request->isMethod('post')) {
       $this->form->bind($request->getParameter($this->form->getName()));
 
       // если в запросе нет shop добываем его из параметров формы
-      if (!$this->shop)
-      {
+      if (!$this->shop) {
         $taintedValues = $this->form->getTaintedValues();
         $this->shop = !empty($taintedValues['shop_id']) ? ShopTable::getInstance()->getById($taintedValues['shop_id']) : null;
       }
@@ -95,15 +90,12 @@ class orderActions extends myActions
       $shopData =
         $this->shop
           ? array('name' => $this->shop->name, 'region' => $this->shop->Region->name, 'regime' => $this->shop->regime, 'address' => $this->shop->address)
-          : false
-      ;
+          : false;
 
-      if ($this->form->isValid())
-      {
+      if ($this->form->isValid()) {
         $order = $this->form->updateObject();
 
-        if ($this->product->isKit())
-        {
+        if ($this->product->isKit()) {
           foreach ($this->product->PartRelation as $partRelation)
           {
             $part = ProductTable::getInstance()->getById($partRelation->part_id, array('with_model' => true));
@@ -155,28 +147,28 @@ class orderActions extends myActions
           $form = new UserFormSilentRegister();
           $form->bind(array(
             'username' => $order->recipient_phonenumbers,
-            'first_name' => trim($order->recipient_first_name.' '.$order->recipient_last_name),
+            'first_name' => trim($order->recipient_first_name . ' ' . $order->recipient_last_name),
           ));
 
           $return['success'] = true;
           $return['message'] = 'Заказ успешно создан';
           $return['data'] = array(
             'title' => 'Ваш заказ принят, спасибо!',
-            'content' => $this->getPartial($this->getModuleName().'/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop)),
+            'content' => $this->getPartial($this->getModuleName() . '/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop)),
             'shop' => $shopData,
           );
         }
         catch (Exception $e)
         {
           $return['success'] = false;
-          $return['message'] = 'Не удалось создать заказ'.(sfConfig::get('sf_debug') ? (' Ошибка: '.$e->getMessage()) : '');
+          $return['message'] = 'Не удалось создать заказ' . (sfConfig::get('sf_debug') ? (' Ошибка: ' . $e->getMessage()) : '');
         }
       }
       else {
         $return = array(
           'success' => false,
           'data' => array(
-            'form' => $this->getPartial($this->getModuleName().'/form_oneClick'),
+            'form' => $this->getPartial($this->getModuleName() . '/form_oneClick'),
             'shop' => $shopData,
           ),
         );
@@ -188,7 +180,7 @@ class orderActions extends myActions
     return $this->renderJson(array(
       'success' => true,
       'data' => array(
-        'form' => $this->getPartial($this->getModuleName().'/form_oneClick'),
+        'form' => $this->getPartial($this->getModuleName() . '/form_oneClick'),
         'shop' => $shopData,
       ),
     ));
@@ -198,12 +190,10 @@ class orderActions extends myActions
   {
     $this->getResponse()->setTitle('Данные покупателя – Enter.ru');
 
-    if (!$this->getUser()->getCart()->count())
-    {
+    if (!$this->getUser()->getCart()->count()) {
       $this->redirect($this->getUser()->getReferer());
     }
-    if (!$this->getUser()->isAuthenticated())
-    {
+    if (!$this->getUser()->isAuthenticated()) {
       $this->formSignin = new UserFormSignin();
       $this->formRegister = new UserFormRegister();
       $action = $request->hasParameter($this->formRegister->getName()) ? 'register' : 'login';
@@ -213,14 +203,12 @@ class orderActions extends myActions
       $this->redirect('order_new');
     }
 
-    if ($request->isMethod('post') && isset($action))
-    {
+    if ($request->isMethod('post') && isset($action)) {
       switch ($action)
       {
         case 'login':
           $this->formSignin->bind($request->getParameter($this->formSignin->getName()));
-          if ($this->formSignin->isValid())
-          {
+          if ($this->formSignin->isValid()) {
             $values = $this->formSignin->getValues();
             $this->getUser()->signin($values['user'], array_key_exists('remember', $values) ? $values['remember'] : false);
             $this->redirect('order_new');
@@ -233,8 +221,7 @@ class orderActions extends myActions
         case 'register':
           $this->formRegister->bind($request->getParameter($this->formRegister->getName()));
 
-          if ($this->formRegister->isValid())
-          {
+          if ($this->formRegister->isValid()) {
             $user = $this->formRegister->getObject();
 
             $user->is_active = true;
@@ -252,7 +239,7 @@ class orderActions extends myActions
             }
             catch (Exception $e)
             {
-              $this->getLogger()->err('{'.__CLASS__.'} '.$e->getMessage());
+              $this->getLogger()->err('{' . __CLASS__ . '} ' . $e->getMessage());
             }
             //$user->refresh();
           }
@@ -282,18 +269,15 @@ class orderActions extends myActions
     $this->getUser()->getOrder()->set($this->order);
 
     $this->form = $this->getOrderForm($this->step);
-    if ($request->isMethod('post'))
-    {
+    if ($request->isMethod('post')) {
       $this->form->bind($request->getParameter($this->form->getName()));
 
-      if ($this->form->isValid())
-      {
+      if ($this->form->isValid()) {
         $order = $this->form->updateObject();
         $order->step = self::LAST_STEP == $this->step ? (self::LAST_STEP + 1) : $this->step;
         $this->getUser()->getOrder()->set($order);
 
-        if (self::LAST_STEP == $this->step)
-        {
+        if (self::LAST_STEP == $this->step) {
           $this->redirect('order_create');
         }
         else {
@@ -310,6 +294,7 @@ class orderActions extends myActions
       }
     }
   }
+
   /**
    * Executes updateField action
    *
@@ -320,7 +305,8 @@ class orderActions extends myActions
     $this->forward404Unless($request->isXmlHttpRequest());
 
     $renderers = array(
-      'delivery_period_id' => function($form) {
+      'delivery_period_id' => function($form)
+      {
         $r = myToolkit::arrayDeepMerge(array('' => ''), $form['delivery_period_id']->getWidget()->getChoices());
         $res = array();
         foreach ($r as $k => $v) {
@@ -328,7 +314,8 @@ class orderActions extends myActions
         }
         return $res;
       },
-      'delivered_at' => function($form) {
+      'delivered_at' => function($form)
+      {
         return myToolkit::arrayDeepMerge(array('' => ''), $form['delivered_at']->getWidget()->getChoices());
       },
     );
@@ -337,8 +324,7 @@ class orderActions extends myActions
     $this->step = $request->getParameter('step', 1);
 
     $form = new OrderStep1Form($this->getUser()->getOrder()->get());
-    if (isset($form[$field]))
-    {
+    if (isset($form[$field])) {
       //$form->useFields(array($field) + array_keys($request->getParameter($form->getName())));
       $form->bind($request->getParameter($form->getName()));
 
@@ -348,7 +334,7 @@ class orderActions extends myActions
       $result = array(
         'success' => true,
         'data' => array(
-          'content' => isset($renderers[$field]) ? $renderers[$field]($form) : $this->getPartial($this->getModuleName().'/field_'.$field, array('form' => $form)),
+          'content' => isset($renderers[$field]) ? $renderers[$field]($form) : $this->getPartial($this->getModuleName() . '/field_' . $field, array('form' => $form)),
         ),
       );
     }
@@ -360,6 +346,7 @@ class orderActions extends myActions
 
     return $this->renderJson($result);
   }
+
   /**
    * Executes edit action
    *
@@ -379,15 +366,15 @@ class orderActions extends myActions
     if (!$token) $this->redirect($this->getRequest()->getReferer());
 
     $orderL = OrderTable::getInstance()->findBy('token', $token);
-    foreach($orderL as $order) $coreId = $order->core_id;
+    foreach ($orderL as $order) $coreId = $order->core_id;
     //print_r($order->getData());
-    $res = Core::getInstance()->query('order.cancel',array('id'=>$coreId));
+    $res = Core::getInstance()->query('order.cancel', array('id' => $coreId));
     //если отменилось на ядре, отменим здесь тоже
-    if ($res){
+    if ($res) {
       //$order->setData( array('status_id'=>Order::STATUS_CANCELLED));
       //->set('status_id', Order::STATUS_CANCELLED);
       $order->setCorePush(false);
-      $order->setArray(array('status_id'=>Order::STATUS_CANCELLED));
+      $order->setArray(array('status_id' => Order::STATUS_CANCELLED));
       $a = $order->save();
     }
     $this->redirect($this->getRequest()->getReferer());
@@ -403,10 +390,8 @@ class orderActions extends myActions
   {
     $this->getResponse()->setTitle('Подтверждение заказа – Enter.ru');
 
-    if ($request->isMethod('post'))
-    {
-      if ('yes' == $request['agree'])
-      {
+    if ($request->isMethod('post')) {
+      if ('yes' == $request['agree']) {
         $this->forward($this->getModuleName(), 'create');
       }
     }
@@ -414,10 +399,8 @@ class orderActions extends myActions
     $order = $this->getUser()->getOrder()->get();
     $this->forwardUnless($order->step, $this->getModuleName(), 'new');
     //$cart = $this->getUser()->getCart();
-    if ($order->isOnlinePayment())
-    {
-      if ($this->saveOrder($order))
-      {
+    if ($order->isOnlinePayment()) {
+      if ($this->saveOrder($order)) {
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $provider->getForm($order);
       }
@@ -425,6 +408,7 @@ class orderActions extends myActions
 
     $this->setVar('order', $order);
   }
+
   /**
    * Executes complete action
    *
@@ -433,8 +417,7 @@ class orderActions extends myActions
   public function executeComplete(sfWebRequest $request)
   {
     $provider = $this->getPaymentProvider();
-    if (!($this->order = $provider->getOrder($request)))
-    {
+    if (!($this->order = $provider->getOrder($request))) {
       $this->order = $this->getUser()->getOrder()->get();
     }
     else
@@ -447,14 +430,13 @@ class orderActions extends myActions
     $this->form = new UserFormSilentRegister();
     $this->form->bind(array(
       'username' => $this->order->recipient_phonenumbers,
-      'first_name' => trim($this->order->recipient_first_name.' '.$this->order->recipient_last_name),
+      'first_name' => trim($this->order->recipient_first_name . ' ' . $this->order->recipient_last_name),
     ));
 
-    if (!$this->form->isValid())
-    {
+    if (!$this->form->isValid()) {
       $this->form = new UserFormBasicRegister(null, array('validate_username' => false));
       $this->form->bind(array(
-        'first_name' => trim($this->order->recipient_first_name.' '.$this->order->recipient_last_name),
+        'first_name' => trim($this->order->recipient_first_name . ' ' . $this->order->recipient_last_name),
       ));
     }
 
@@ -464,6 +446,7 @@ class orderActions extends myActions
 
     //$this->setVar('order', $this->order, true);
   }
+
   /**
    * Executes getUser action
    *
@@ -480,7 +463,7 @@ class orderActions extends myActions
     return $this->renderJson(array(
       'success' => $this->getUser()->isAuthenticated(),
       'data' => array(
-        'content' => $this->getPartial($this->getModuleName().'/user'),
+        'content' => $this->getPartial($this->getModuleName() . '/user'),
         'fields' =>
         $user
           ? array(
@@ -492,6 +475,7 @@ class orderActions extends myActions
       ),
     ));
   }
+
   /**
    * Executes error action
    *
@@ -501,6 +485,7 @@ class orderActions extends myActions
   {
     $this->getUser()->getOrder()->clear();
   }
+
   /**
    * Executes create action
    *
@@ -510,8 +495,7 @@ class orderActions extends myActions
   {
     $this->order = $this->getUser()->getOrder()->get();
 
-    if ($this->saveOrder($this->order))
-    {
+    if ($this->saveOrder($this->order)) {
       $this->redirect($this->order->isOnlinePayment() ? 'order_payment' : 'order_complete');
     }
     else
@@ -588,7 +572,7 @@ class orderActions extends myActions
     foreach ($this->getUser()->getCart()->getServices() as $service)
     {
       $serviceOb = ServiceTable::getInstance()->getQueryObject()->where('core_id = ?', $service['id'])->fetchOne();
-      foreach($service['products'] as $prodId => $prodServInfo) {
+      foreach ($service['products'] as $prodId => $prodServInfo) {
         if (isset($prodObList[$prodId])) {
           $productOb = $prodObList[$prodId];
         } else {
@@ -621,7 +605,7 @@ class orderActions extends myActions
     }
     catch (Exception $e)
     {
-      $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save to core: '.$e->getMessage());
+      $this->getLogger()->err('{' . __CLASS__ . '} create: can\'t save to core: ' . $e->getMessage());
     }
 
     return false;
@@ -660,15 +644,13 @@ class orderActions extends myActions
    */
   protected function getPaymentProvider($name = null)
   {
-    if (null == $name)
-    {
+    if (null == $name) {
       $name = sfConfig::get('app_payment_default_provider');
     }
 
     $providers = sfConfig::get('app_payment_provider');
-    $class = sfInflector::camelize($name.'payment_provider');
+    $class = sfInflector::camelize($name . 'payment_provider');
 
     return new $class($providers[$name]);
   }
 }
-

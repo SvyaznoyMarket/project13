@@ -52,6 +52,11 @@ product_accessory:
 productCatalog:
   url:   /catalog/
   param: { module: productCatalog, action: index }
+# @core
+# каталог товаров
+productCatalog_:
+  url:   /catalog_core/
+  param: { module: productCatalog_, action: index }
 #
 # фильтр каталога товаров
 productCatalog_filter:
@@ -70,36 +75,86 @@ productCatalog_tag:
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# @core
+# тэги каталога товаров
+productCatalog__tag:
+  url:   /catalog_core/:productCategory/_tag
+  param: { module: productCatalog_, action: tag }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 #
 # количество найденных товаров
 productCatalog_count:
   url:   /catalog/:productCategory/_count
-  param: { module: productCatalog, action: count }
+  param: { module: productCatalog_, action: count }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)']
+# @core
+# @modified
+# количество найденных товаров
+productCatalog__count:
+  url:   /catalog/:productCategory/_count
+  param: { module: productCatalog_, action: count }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)']
+#
+# категория каталога товаров
+productCatalog_category:
+  url:   /catalog/:productCategory/
+  param: { module: productCatalog_, action: category}
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# @core
+# @modified
+# категория каталога товаров
+productCatalog__category:
+  url:   /catalog/:productCategory/
+  param: { module: productCatalog_, action: category}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 #
-# категория каталога товаров
-productCatalog_category:
-  url:   /catalog/:productCategory/
-  param: { module: productCatalog, action: category}
-  class:   myProductCatalogRoute
-  options: { model: ProductCategory, type: object, method: getForRoute }
-  requirements:
-    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 # категория каталога товаров ajax
 productCatalog_categoryAjax:
   url:   /catalog/:productCategory/_ajax/:page/:view/:num
-  param: { module: productCatalog, action: categoryAjax, num: 18, view: compact, page: 1}
+  param: { module: productCatalog_, action: categoryAjax, num: 18, view: compact, page: 1}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# @core
+# @modified
+# категория каталога товаров ajax
+productCatalog__categoryAjax:
+  url:   /catalog/:productCategory/_ajax/:page/:view/:num
+  param: { module: productCatalog_, action: categoryAjax, num: 18, view: compact, page: 1}
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+#
 # карусель ajax
 productCatalog_carousel:
   url:   /catalog/:productCategory/_carousel
   param: { module: productCategory, action: carousel}
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# @core
+# карусель ajax
+productCatalog__carousel:
+  url:   /catalog_core/:productCategory/_carousel
+  param: { module: productCategoryCore, action: carousel}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
   requirements:
@@ -109,6 +164,13 @@ productCatalog_carousel:
 productCatalog_creator:
   url:   /catalog/:productCategory/:creator/
   param: { module: productCatalog, action: creator }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+# @core
+# категория и производитель каталога товаров
+productCatalog__creator:
+  url:   /catalog_core/:productCategory/:creator/
+  param: { module: productCatalog_, action: creator }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
 #
@@ -837,6 +899,13 @@ region_change:
   requirements:
     sf_method: [ get,post ]
 
+# redirect region
+region_redirect:
+  url:      /reg/:region/:redirectTo
+  param:    { module: region, action: redirect }
+  requirements:
+    product: '((\/{1})[a-zA-Z_0-9-]+)'
+    redirectTo: '(.*)'
 
 #
 # payment

@@ -1,0 +1,8 @@
+all:
+  javascripts:
+    - -mechanics.js
+    #- -dash.js
+  metas:
+    title: Корзина - Enter.ru
+  layout:
+    cart

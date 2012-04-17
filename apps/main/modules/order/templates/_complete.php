@@ -6,67 +6,72 @@
 
   <div class="bFormSave">
     <h2>Номер вашего заказа: <?php echo $order['number'] ?></h2>
-    <p>Дата заказа: <?php echo format_date($order['created_at'], 'dd.MM.yyyy') ?>.<br>Сумма заказа: <?php echo number_format($order['sum'], 0, ',', ' ') ?> <span class="rubl">p</span></p>
+
+    <p>Дата заказа: <?php echo format_date($order['created_at'], 'dd.MM.yyyy') ?>.<br>Сумма
+      заказа: <?php echo number_format($order['sum'], 0, ',', ' ') ?> <span class="rubl">p</span></p>
     <span>В ближайшее время мы свяжемся с вами для уточнения параметров заказа.</span>
   </div>
 
-<?php if ($order['number']): ?>
+  <?php if ($order['number']): ?>
   <script type="text/javascript">
-    function runAnalitics(){
-    if( typeof(_gaq) !== 'undefined' ) {
-       _gaq.push(['_addTrans',
-           '<?php echo $order['number'].'_F' ?>',           // Номер заказа
-           '<?php echo $order->Shop ?>',  // Название магазина (Необязательно)
-           '<?php echo str_replace(',', '.', $order['sum']) ?>',          // Полная сумма заказа (дроби через точку)
-           '0',              // Стоимость доставки (дроби через точку)
-           '<?php echo $order->getCityName() ?>',       // Город доставки (Необязательно)
-           '<?php echo $order->getAreaName() ?>',     // Область (необязательно)
-           '<?php echo $order->getCountryName() ?>'             // Страна (нобязательно)
-       ]);
-       _gaq.push(['_trackEvent', 'QuickOrder', 'Success']);
-  <?php foreach ($order->ProductRelation as $product): ?>
-    <?php $category = $product->Product->getMainCategory() ?>
-    <?php if (!empty($category)) $rootCategory = $category->getRootCategory() ?>
-             _gaq.push(['_addItem',
-                  '<?php echo $order['number'].'_F' ?>',           // Номер заказа
-                  '<?php echo $product->Product['article'] ?>',           // Артикул
-                  '<?php echo $product->Product['name'] ?>',        // Название товара
-                  '<?php if (!empty($category)) { echo ($category->id != $rootCategory->id) ? ($rootCategory.' - '.$category) : $category; } ?>',   // Категория товара
-                  '<?php echo str_replace(',', '.', $product['price']) ?>',          // Стоимость 1 единицы товара
-                  '<?php echo str_replace(',', '.', $product['quantity']) ?>'               // Количество товара
-              ]);
-  <?php endforeach ?>
-           _gaq.push(['_trackTrans']);
-   }
+    function runAnalitics() {
+      if (typeof(_gaq) !== 'undefined') {
+        _gaq.push(['_addTrans',
+          '<?php echo $order['number'] . '_F' ?>', // Номер заказа
+          '<?php echo $order->Shop ?>', // Название магазина (Необязательно)
+          '<?php echo str_replace(',', '.', $order['sum']) ?>', // Полная сумма заказа (дроби через точку)
+          '0', // Стоимость доставки (дроби через точку)
+          '<?php echo $order->getCityName() ?>', // Город доставки (Необязательно)
+          '<?php echo $order->getAreaName() ?>', // Область (необязательно)
+          '<?php echo $order->getCountryName() ?>'             // Страна (нобязательно)
+        ]);
+        _gaq.push(['_trackEvent', 'QuickOrder', 'Success']);
+        <?php foreach ($order->ProductRelation as $product): ?>
+          <?php $category = $product->Product->getMainCategory() ?>
+          <?php if (!empty($category)) $rootCategory = $category->getRootCategory() ?>
+          _gaq.push(['_addItem',
+            '<?php echo $order['number'] . '_F' ?>', // Номер заказа
+            '<?php echo $product->Product['article'] ?>', // Артикул
+            '<?php echo $product->Product['name'] ?>', // Название товара
+            '<?php if (!empty($category)) {
+              echo ($category->id != $rootCategory->id) ? ($rootCategory . ' - ' . $category) : $category;
+            } ?>', // Категория товара
+            '<?php echo str_replace(',', '.', $product['price']) ?>', // Стоимость 1 единицы товара
+            '<?php echo str_replace(',', '.', $product['quantity']) ?>'               // Количество товара
+          ]);
+          <?php endforeach ?>
+        _gaq.push(['_trackTrans']);
+      }
 
-    var yaParams = {
-        order_id: '<?php echo $order['number'] ?>',
+      var yaParams = {
+        order_id:'<?php echo $order['number'] ?>',
         order_price: <?php echo str_replace(',', '.', $order['sum']) ?>,
-        currency: 'RUR',
-        exchange_rate: 1,
-        goods: [
-            <?php foreach ($order->ProductRelation as $product): ?>
-                {
-                    id: '<?php echo $product->Product['article'] ?>',
-                    name: '<?php echo $product->Product['name'] ?>',
-                    price: <?php echo str_replace(',', '.', $product['price']) ?>,
-                    quantity: <?php echo $product['quantity'] ?>
-                },
-                <?php endforeach ?>
+        currency:'RUR',
+        exchange_rate:1,
+        goods:[
+          <?php foreach ($order->ProductRelation as $product): ?>
+            {
+              id:'<?php echo $product->Product['article'] ?>',
+              name:'<?php echo $product->Product['name'] ?>',
+              price: <?php echo str_replace(',', '.', $product['price']) ?>,
+              quantity: <?php echo $product['quantity'] ?>
+            },
+            <?php endforeach ?>
         ]
-    };
-    if( typeof(yaCounter10503055) !== 'undefined' )	yaCounter10503055.reachGoal( 'QORDER', yaParams );
+      };
+      if (typeof(yaCounter10503055) !== 'undefined')  yaCounter10503055.reachGoal('QORDER', yaParams);
 
-    if( typeof(window.adBelnder) != 'undefined') window.adBelnder.addOrder(<?php echo str_replace(',', '.', $order['sum']) ?>);
-   }
+      if (typeof(window.adBelnder) != 'undefined') window.adBelnder.addOrder(<?php echo str_replace(',', '.', $order['sum']) ?>);
+    }
   </script>
 
-<?php endif ?>
+  <?php endif ?>
 
   <div class="line"></div>
 
   <?php if ($rememberMe): ?>
-  <p class="bFormSave__eBtm">Нажмите кнопку «Запомнить мои данные» &mdash; при следующих покупках вам не придется заново указывать свои контакты и данные для доставки. Кстати, вы еще и сможете отслеживать статус заказа!</p>
+  <p class="bFormSave__eBtm">Нажмите кнопку «Запомнить мои данные» &mdash; при следующих покупках вам не придется заново
+    указывать свои контакты и данные для доставки. Кстати, вы еще и сможете отслеживать статус заказа!</p>
   <?php endif ?>
 
   <div class="bFormB2">
@@ -83,7 +88,8 @@
     <?php endif ?>
 
     <div class="fr">
-      <a href="<?php echo url_for('@homepage') ?>" onclick="$('#order1click-container').trigger('close'); return false">Продолжить покупки</a> <span>&gt;</span>
+      <a href="<?php echo url_for('@homepage') ?>" onclick="$('#order1click-container').trigger('close'); return false">Продолжить
+        покупки</a> <span>&gt;</span>
     </div>
   </div>
 

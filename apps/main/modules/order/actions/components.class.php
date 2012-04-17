@@ -3,10 +3,10 @@
 /**
  * order components.
  *
- * @package    enter
+ * @package enter
  * @subpackage order
- * @author     Связной Маркет
- * @version    SVN: $Id: components.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ * @author Связной Маркет
+ * @version SVN: $Id: components.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
 class orderComponents extends myComponents
 {
@@ -17,25 +17,46 @@ class orderComponents extends myComponents
    */
   public function executeShow()
   {
-    if (!in_array($this->view, array('default', 'compact', 'base')))
-    {
+    if (!in_array($this->view, array('default', 'compact', 'base'))) {
       $this->view = 'default';
     }
 
-    $item = array('name' => (string)$this->order, 'token' => $this->order->token, 'number' => $this->order->number, 'sum' => (int)$this->order->sum, 'created_at' => $this->order->created_at, 'payment_method_name' => $this->order->PaymentMethod ? $this->order->PaymentMethod->name : null, 'delivered_at' => $this->order->delivered_at, 'delivery_type' => $this->order->getDeliveryType(), 'delivery_price' => $this->order->delivery_price,// 'delivered_period'    => $this->order->DeliveryPeriod ? $this->order->DeliveryPeriod->name : null,
+    $item = array(
+      'name' => (string)$this->order,
+      'token' => $this->order->token,
+      'number' => $this->order->number,
+      'sum' => (int)$this->order->sum,
+      'created_at' => $this->order->created_at,
+      'payment_method_name' => $this->order->PaymentMethod ? $this->order->PaymentMethod->name : null,
+      'delivered_at' => $this->order->delivered_at,
+      'delivery_type' => $this->order->getDeliveryType(),
+      'delivery_price' => $this->order->delivery_price,
+      // 'delivered_period' => $this->order->DeliveryPeriod ? $this->order->DeliveryPeriod->name : null,
     );
 
-    if (in_array($this->view, array('default', 'compact')))
-    {
+    if (in_array($this->view, array('default', 'compact'))) {
       $item['products'] = array();
       foreach ($this->order->ProductRelation as $orderProductRelation)
       {
-        $item['products'][] = array('type' => 'product', 'name' => (string)$orderProductRelation->Product, 'article' => (string)$orderProductRelation->Product->article, 'url' => $this->generateUrl('productCard', $orderProductRelation->Product), 'price' => (int)$orderProductRelation['price'], 'quantity' => $orderProductRelation['quantity'],);
+        $item['products'][] = array(
+          'type' => 'product',
+          'name' => (string)$orderProductRelation->Product,
+          'article' => (string)$orderProductRelation->Product->article,
+          'url' => $this->generateUrl('productCard', $orderProductRelation->Product),
+          'price' => (int)$orderProductRelation['price'],
+          'quantity' => $orderProductRelation['quantity'],
+        );
       }
       $item['services'] = array();
       foreach ($this->order->ServiceRelation as $orderServiceRelation)
       {
-        $item['products'][] = array('type' => 'service', 'name' => (string)$orderServiceRelation->Service, 'url' => $this->generateUrl('service_show', $orderServiceRelation->Service), 'price' => (int)$orderServiceRelation['price'], 'quantity' => $orderServiceRelation['quantity'],);
+        $item['products'][] = array(
+          'type' => 'service',
+          'name' => (string)$orderServiceRelation->Service,
+          'url' => $this->generateUrl('service_show', $orderServiceRelation->Service),
+          'price' => (int)$orderServiceRelation['price'],
+          'quantity' => $orderServiceRelation['quantity'],
+        );
       }
     }
 
@@ -54,7 +75,9 @@ class orderComponents extends myComponents
     $list = $listProcess = $listReady = $listCancelled = array();
     foreach ($this->getUser()->getGuardUser()->getOrderList(array('with_products' => true)) as $order)
     {
-      if ($order->status_id == Order::STATUS_READY) $listReady[] = $order; elseif ($order->status_id == Order::STATUS_CANCELLED) $listCancelled[] = $order; else $listProcess[] = $order;
+      if ($order->status_id == Order::STATUS_READY) $listReady[] = $order;
+      elseif ($order->status_id == Order::STATUS_CANCELLED) $listCancelled[] = $order;
+      else $listProcess[] = $order;
     }
     $list = array_merge($listProcess, $listReady, $listCancelled);
 
@@ -91,27 +114,124 @@ class orderComponents extends myComponents
   public function executeNavigation()
   {
     /*if (empty($this->step))
-    {
-      $this->step = 1;
-    }
+{
+$this->step = 1;
+}
 
-    $list = array();
-    foreach (range(1, 2) as $step)
-    {
-      $list[] = array(
-        'name'      => $step.'-й шаг',
-        'url'       => $this->generateUrl('order_new', array('step' => $step)),
-        'is_active' => (null == $this->order->step ? 0 : $this->order->step) >= $step,
-      );
-    }
-      $list[] = array(
-        'name'      => '3-й шаг',
-        'url'       => $this->generateUrl('order_confirm'),
-        'is_active' => 3 == $this->order->step,
-      );
+$list = array();
+foreach (range(1, 2) as $step)
+{
+$list[] = array(
+'name' => $step.'-й шаг',
+'url' => $this->generateUrl('order_new', array('step' => $step)),
+'is_active' => (null == $this->order->step ? 0 : $this->order->step) >= $step,
+);
+}
+$list[] = array(
+'name' => '3-й шаг',
+'url' => $this->generateUrl('order_confirm'),
+'is_active' => 3 == $this->order->step,
+);
 
 
-    $this->setVar('list', $list, true);*/
+$this->setVar('list', $list, true);*/
+  }
+
+  /**
+   * Executes field_address component
+   *
+   * @param OrderStep1Form $form Форма заказа 1-го шага
+   */
+  public function executeField_address()
+  {
+    $this->setVar('widget', new sfWidgetFormChoice(array(
+      'choices' => $this->getUser()->isAuthenticated() ? array_merge(array('' => ''), UserAddressTable::getInstance()->getListByUser($this->getUser()->getGuardUser()->id)->toKeyValueArray('address', 'name')) : array(),
+      'multiple' => false,
+      'expanded' => false,
+    )), true);
+  }
+
+  /**
+   * Executes field_shop_id component
+   *
+   * @param OrderStep1Form $form Форма заказа 1-го шага
+   */
+  public function executeField_shop_id()
+  {
+  }
+
+  /**
+   * Executes field_region_id component
+   *
+   * @param OrderStep1Form $form Форма заказа 1-го шага
+   */
+  public function executeField_region_id()
+  {
+    // $regionId = $this->form->getValue('region_id');
+    //
+    // $this->region = !empty($regionId) ? RegionTable::getInstance()->find($regionId) : '';
+    //
+    // $this->setVar('widget', new sfWidgetFormInputText(array(), array(
+    // 'class' => 'order_region_name'
+    // )), true);
+  }
+
+  public function executeField_person_type()
+  {
+  }
+
+  public function executeField_receipt_type()
+  {
+  }
+
+  public function executeField_delivered_at()
+  {
+  }
+
+  public function executeField_payment_method_id()
+  {
+  }
+
+  public function executeField_recipient_last_name()
+  {
+  }
+
+  public function executeField_recipient_first_name()
+  {
+  }
+
+  public function executeField_delivery_type_id()
+  {
+  }
+
+  public function executeField_delivery_period_id()
+  {
+  }
+
+  public function executeField_recipient_phonenumbers()
+  {
+  }
+
+  public function executeField_is_receive_sms()
+  {
+  }
+
+  public function executeField_zip_code()
+  {
+  }
+
+  public function executeField_extra()
+  {
+  }
+
+  public function executeField_agreed()
+  {
+  }
+
+  public function executeField_sclub_card_number()
+  {
+    // echo 'fied sclub_card_number execute !!';
+    // exit();
   }
 
   public function executeReceipt()
@@ -119,87 +239,57 @@ class orderComponents extends myComponents
     $this->setVar('cart', $this->getUser()->getCart());
   }
 
-  /**
-   * Executes field_region_id component
-   *
-   * @param string $name Название поля
-   * @param mixed $value Значение поля
-   * @param array $regionList Коллекция регионов
-   */
-  public function executeField_region_id()
+  function executeSeo_counters_advance()
   {
-    $this->region = !empty($this->value) ? RegionTable::getInstance()->getById($this->value) : false;
-    $this->displayValue = $this->region ? $this->region->name : '';
-  }
-  /**
-   * Executes field_delivery_type_id component
-   *
-   * @param string $name Название поля
-   * @param mixed $value Значение поля
-   * @param myDoctrineCollection $deliveryTypeList Коллекция типов доставки для пользователя (с учетом региона и товаров в корзине)
-   */
-  public function executeField_delivery_type_id()
-  {
-    //myDebug::dump($this->deliveryTypeList, 1);
-    $choices = array();
-    foreach ($this->deliveryTypeList as $deliveryType)
-    {
-      $choices[$deliveryType['id']] = array(
-        'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$deliveryType['id'],
-        'label'       => $deliveryType['name'].', '.($deliveryType['price'] > 0 ? ($deliveryType['price'].' руб.') : 'бесплатно'),
-        'price'       => $deliveryType['price'],
-        'description' => $deliveryType['description'],
-      );
-    }
-
-    $this->name = $this->name;
-    $this->setVar('choices', $choices, true);
-  }
-  /**
-   * Executes field_payment_method_id component
-   *
-   * @param string $name Название поля
-   * @param mixed $value Значение поля
-   */
-  public function executeField_payment_method_id()
-  {
-    $choices = array();
-
-    foreach (PaymentMethodTable::getInstance()->getList() as $paymentMethod)
-    {
-      if ('online' == $paymentMethod->token) continue;
-
-      $choices[$paymentMethod->id] = array(
-        'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$paymentMethod->id,
-        'label'       => $paymentMethod->name,
-        'description' => $paymentMethod->description,
-      );
-    }
-
-    $this->setVar('choices', $choices, true);
-  }
-
-	public function executeField_sclub_card_number()
-	{
-	}
-
-  public function executeSeo_counters_advance()
-  {
-      if ($this->step == 2) {
-          $orderArticle = $this->getUser()->getCart()->getSeoCartArticle();
-          $this->setVar('orderArticle', $orderArticle, true);
-      } elseif ($this->step == 4) {
-          $qtyAr = array();
-          $barcodeAr = array();
-          foreach ($this->order->ProductRelation as $product) {
-              $qtyAr[] = $product['quantity'];
-              $barcodeAr[] = $product->Product['core_id'];
-          }
-          $qty = implode(',', $qtyAr);
-          $barcodeStr = implode(',', $barcodeAr);
-          $this->setVar('quantityString', $qty, true);
-          $this->setVar('orderArticle', $barcodeStr, true);
+    if ($this->step == 2) {
+      $orderArticle = $this->getUser()->getCart()->getSeoCartArticle();
+      $this->setVar('orderArticle', $orderArticle, true);
+    } elseif ($this->step == 4) {
+      $qtyAr = array();
+      $barcodeAr = array();
+      foreach ($this->order->ProductRelation as $product) {
+        $qtyAr[] = $product['quantity'];
+        $barcodeAr[] = $product->Product['core_id'];
       }
+      $qty = implode(',', $qtyAr);
+      $barcodeStr = implode(',', $barcodeAr);
+      $this->setVar('quantityString', $qty, true);
+      $this->setVar('orderArticle', $barcodeStr, true);
+    }
   }
-}
 
+  function executeSeo_admitad() {
+
+    //идентификатор категории для admited - core_id
+    // myDebug::dump($this->order);
+
+    $catIdList = array();
+    $data = array();
+    foreach ($this->order->ProductRelation as $product) {
+      $catIdList[] = $product->Product->Category[0]['root_id'];
+      $data[$product->Product->Category[0]['root_id']]['sum'] += $product['price'] * $product['quantity'];
+      $data[$product->Product->Category[0]['root_id']]['number'] = $this->order->number;
+    }
+    if (!$catIdList) {
+      return;
+    }
+    $catList = ProductCategoryTable::getInstance()->createBaseQuery()->whereIn('id', $catIdList)->fetchArray();
+    $resultData = array();
+
+    foreach ($catList as $cat) {
+      $resultData[$cat['core_id']] = $data[$cat['id']];
+      $resultData[$cat['core_id']]['number'] .= '-' . $cat['core_id'];
+    }
+
+    $uid = sfContext::getInstance()->getUser()->getAttribute('admitad_uid');
+    if ($uid) {
+      $resultData['uid'] = $uid;
+    } else {
+      $resultData['uid'] = '';
+    }
+
+    //print_r($resultData);
+    $this->setVar('data', $resultData, true);
+  }
+
+}

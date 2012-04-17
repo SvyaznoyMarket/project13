@@ -8,7 +8,8 @@
  * @author Связной Маркет
  * @version SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class cartActions extends myActions {
+class cartActions extends myActions
+{
 
   private $_validateResult;
 
@@ -17,14 +18,16 @@ class cartActions extends myActions {
    *
    * @param sfRequest $request A request object
    */
-  public function executeIndex(sfWebRequest $request) {
+  public function executeIndex(sfWebRequest $request)
+  {
     $cart = $this->getUser()->getCart();
     $this->setVar('cart', $cart, true);
 
     $this->getUser()->setCacheCookie();
   }
 
-  private function _refuse() {
+  private function _refuse()
+  {
     return $this->renderJson(array(
       'success' => $this->_validateResult['success'],
       'data' => array(
@@ -34,18 +37,21 @@ class cartActions extends myActions {
   }
 
 
-  public function executeAddOld(sfWebRequest $request) {
+  public function executeAddOld(sfWebRequest $request)
+  {
     $ar = explode('/', $request['product']);
     $token = $ar[1];
     $product = ProductTable::getInstance()->createBaseQuery()->where('token = ?', $token)->fetchOne();
     $this->redirect('cart_add', array('product' => $product->core_id));
   }
+
   /**
    * Executes add action
    *
    * @param sfRequest $request A request object
    */
-  public function executeAdd(sfWebRequest $request) {
+  public function executeAdd(sfWebRequest $request)
+  {
     //myDebug::dump($request);
     //die();
     $result['value'] = true;
@@ -107,18 +113,21 @@ class cartActions extends myActions {
   }
 
 
-  public function executeDeleteOld(sfWebRequest $request) {
+  public function executeDeleteOld(sfWebRequest $request)
+  {
     $ar = explode('/', $request['product']);
     $token = $ar[1];
     $product = ProductTable::getInstance()->createBaseQuery()->where('token = ?', $token)->fetchOne();
     $this->redirect('cart_delete', array('product' => $product->core_id));
   }
+
   /**
    * Executes delete action
    *
    * @param sfRequest $request A request object
    */
-  public function executeDelete(sfWebRequest $request) {
+  public function executeDelete(sfWebRequest $request)
+  {
     $product = $request['product'];
 
     if ($product) {
@@ -139,7 +148,8 @@ class cartActions extends myActions {
    *
    * @param sfRequest $request A request object
    */
-  public function executeClear(sfWebRequest $request) {
+  public function executeClear(sfWebRequest $request)
+  {
     $this->getUser()->getCart()->clear();
     $this->getUser()->setCacheCookie();
 
@@ -147,7 +157,8 @@ class cartActions extends myActions {
   }
 
 
-  public function executeServiceAddOld(sfWebRequest $request) {
+  public function executeServiceAddOld(sfWebRequest $request)
+  {
     $ar = explode('/', $request['product']);
     $token = $ar[1];
     if ($token && $token != '-') {
@@ -160,7 +171,8 @@ class cartActions extends myActions {
     $this->redirect('cart_service_add', array('product' => $prodId, 'service' => $service->core_id));
   }
 
-  public function executeServiceAdd(sfWebRequest $request) {
+  public function executeServiceAdd(sfWebRequest $request)
+  {
 
     //валидация количества услуг
     if (!isset($request['quantity'])) {
@@ -247,7 +259,8 @@ class cartActions extends myActions {
   } */
 
 
-  public function executeServiceDeleteOld(sfWebRequest $request) {
+  public function executeServiceDeleteOld(sfWebRequest $request)
+  {
     $ar = explode('/', $request['product']);
     $token = $ar[1];
     if ($token && $token != '-') {
@@ -261,7 +274,8 @@ class cartActions extends myActions {
   }
 
 
-  public function executeServiceDelete(sfWebRequest $request) {
+  public function executeServiceDelete(sfWebRequest $request)
+  {
     $serviceId = $request['service'];
     $productId = $request['product'];
 
@@ -292,7 +306,8 @@ class cartActions extends myActions {
    * @param int $quantity
    * @return int - количество этого товара в корзине после изменений
    */
-  private function addProduct($productId, $quantity) {
+  private function addProduct($productId, $quantity)
+  {
     $currentNum = $this->getUser()->getCart()->getQuantityById($productId);
     $quantity += $currentNum;
 
@@ -313,8 +328,9 @@ class cartActions extends myActions {
    * @param $quantity
    * @return int - суммарное количество всех товаров из набора в корзине после добавления
    */
-  private function addKit(Product $product, $quantity) {
-    $i=0;
+  private function addKit(Product $product, $quantity)
+  {
+    $i = 0;
     $products = ProductTable::getInstance()->getQueryByKit($product)->execute();
     foreach ($products as $subProduct) {
       $productQuantity = $quantity;
@@ -325,7 +341,7 @@ class cartActions extends myActions {
         }
       }
       $totalInCart = $this->addProduct($subProduct, $productQuantity);
-      $i+= $totalInCart;
+      $i += $totalInCart;
     }
     return $i;
   }
