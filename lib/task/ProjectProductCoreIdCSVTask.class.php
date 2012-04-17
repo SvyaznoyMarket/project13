@@ -16,8 +16,8 @@ class ProjectProductCoreIdCSVTask extends sfBaseTask
       // add your own options here
     ));
 
-    $this->namespace        = 'Project';
-    $this->name             = 'ProductCoreIdCSV';
+    $this->namespace = 'Project';
+    $this->name = 'ProductCoreIdCSV';
     $this->briefDescription = '';
     $this->detailedDescription = <<<EOF
 The [ProjectProductCoreIdCSV|INFO] task does things.
@@ -35,7 +35,7 @@ EOF;
     $productList = ProductTable::getInstance()->createBaseQuery()->fetchArray();
     $text = "id;core_id\n";
     foreach ($productList as $product) {
-        $text .= $product['id'].";".$product['core_id']."\n";
+      $text .= $product['id'] . ";" . $product['core_id'] . "\n";
     }
     unset($productList);
     file_put_contents('web/xml/product_core_id_relation.csv', $text);
@@ -44,7 +44,7 @@ EOF;
     $productCatList = ProductCategoryTable::getInstance()->createBaseQuery()->fetchArray();
     $text = "id;core_id\n";
     foreach ($productCatList as $productCat) {
-      $text .= $productCat['id'].";".$productCat['core_id']."\n";
+      $text .= $productCat['id'] . ";" . $productCat['core_id'] . "\n";
     }
 
     unset($productCatList);

@@ -6,33 +6,25 @@ class ProductLabelRepository extends ObjectRepository
   {
     $entities = array();
 
-    if (!count($ids))
-    {
+    if (!count($ids)) {
       return $entities;
     }
 
-    $q = $this->createQuery('product.label.get', array('id' => $ids));
-    $entities = $this->createList($q->getResult(), $index);
+    $q = new CoreQuery('product.label.get', array('id' => $ids));
 
-    return $entities;
+    return $this->createList($q->getResult(), $index);
   }
 
   public function getAll($index = null)
   {
-    $q = $this->createQuery('product.label.get', array());
-    $entities = $this->createList($q->getResult(), $index);
+    $q = new CoreQuery('product.label.get', array());
 
-    return $entities;
+    return $this->createList($q->getResult(), $index);
   }
 
   public function create($data)
   {
-    $entity = new ProductLabelEntity();
-    $entity->setId($data['id']);
-    $entity->setImage($data['media_image']);
-    $entity->setName($data['name']);
-
-    return $entity;
+    return new ProductLabelEntity($data);
   }
 
   public function getByCategory(ProductLabelCriteria $criteria, $order = null)
@@ -40,7 +32,7 @@ class ProductLabelRepository extends ObjectRepository
     $q = ProductTable::getInstance()->createBaseQuery(array('view' => 'list'))
       ->select('DISTINCT product.core_label_id')
       ->innerJoin('product.Category category')
-      ->addWhere('category.root_id = ? and category.lft >= ? and category.rgt <= ?', array($criteria->getCategory()->root_id, $criteria->getCategory()->lft, $criteria->getCategory()->rgt, ))
+      ->addWhere('category.root_id = ? and category.lft >= ? and category.rgt <= ?', array($criteria->getCategory()->root_id, $criteria->getCategory()->lft, $criteria->getCategory()->rgt,))
       ->addWhere('product.core_label_id IS NOT NULL')
       ->removeDqlQueryPart('orderby')
       ->setHydrationMode(Doctrine_Core::HYDRATE_SINGLE_SCALAR);

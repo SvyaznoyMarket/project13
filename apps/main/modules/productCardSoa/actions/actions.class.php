@@ -34,7 +34,7 @@ class productCardSoaActions extends myActions
 
       try {
         $factory = new ProductFactory();
-        $productObList = $factory->createProductFromCore(array('slug' => end($productAr)), true, true);
+        $productObList = $factory->createProductFromCore(array('slug' => end($productAr)), true, true, true);
         $this->product = $productObList[0];
       } catch (ErrorException $e) {
          $this->forward404If($e->getMessage());
@@ -74,6 +74,16 @@ class productCardSoaActions extends myActions
 
 
     $this->view = 'compact';
+
+      $json = array (
+          'jsref' => $this->product->token,
+          'jstitle' => htmlspecialchars($this->product->name, ENT_QUOTES, 'UTF-8'),
+          'jsprice' => $this->product->price,
+          'jsimg' => $this->product->getMainPhotoUrl(3),
+  		  'jsbimg' =>  $this->product->getMainPhotoUrl(2),
+  		  'jsshortcut' =>  $this->product->article
+      );
+      $this->setVar('json', json_encode($json));
 
   }
  /**

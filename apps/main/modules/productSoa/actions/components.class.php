@@ -11,411 +11,438 @@
 class productSoaComponents extends myComponents
 {
 
-  /**
-   * Executes show component
-   *
-   * @param Product $product Товар
-   * @param view $view Вид
-   */
-  public function executeShow()
-  {
-
-    if (!$this->product)
+    /**
+     * Executes show component
+     *
+     * @param Product $product Товар
+     * @param view $view Вид
+     */
+    public function executeShow()
     {
-      return sfView::NONE;
-    }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock', 'extra_compact')))
-    {
-      $this->view = 'default';
-    }
-
-    // cache key
-    $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
-      'product' => is_scalar($this->product) ? $this->product : $this->product->id,
-      'region'  => $this->getUser()->getRegion('id'),
-      'view'    => $this->view,
-      'i'       => $this->ii,
-    )) : false;
-
-    // checks for cached vars
-    if ($cacheKey && $this->setCachedVars($cacheKey))
-    {
-      //myDebug::dump($this->getVarHolder()->getAll(), 1);
-      return sfView::SUCCESS;
-    }
-
-
-    $cartItem = $this->getUser()->getCart()->getProduct($this->product->id);
-    //myDebug::dump($cartItem);
-    if ($cartItem) {
-      if (is_object($this->product)) {
-        $this->product->cart_quantity = isset($cartItem['quantity']) ? $cartItem['quantity'] : 0;
-      }
-    }
-
-    $this->setVar('keys', ProductTable::getInstance()->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
-
-    // caches vars
-    if ($cacheKey)
-    {
-      $this->cacheVars($cacheKey);
-      $this->getCache()->addTag("product-{$this->product->id}", $cacheKey);
-    }
-  }
-
-  /**
-   * Executes preview component
-   *
-   * @param Product $product Товар
-   */
-  public function executePreview()
-  {
-
-  }
-
-  /**
-   * Executes pager component
-   *
-   * @param myDoctrinePager $pager Листалка товаров
-   */
-  public function executePager()
-  {
-    $this->view = !empty($this->view) ? $this->view : $this->getRequestParameter('view');
-    if (!in_array($this->view, array('expanded', 'compact', 'line')))
-    {
-      $this->view = 'compact';
-    }
-
-    $list = $this->pager->getResults();
-
-    $this->setVar('list', $list, true);
-  }
-
-  /**
-   * Executes sorting component
-   *
-   * @param array $productSorting Сортировка списка товаров
-   */
-  public function executeSorting()
-  {
-    $list = array();
-
-    $active = $this->productSorting->getActive();
-    $active['url'] = replace_url_for('sort', implode('-', array($active['name'], $active['direction'])));
-    foreach ($this->productSorting->getList() as $item)
-    {
-      if ($active['name'] == $item['name'] && $active['direction'] == $item['direction'])
-      {
-//        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
-        continue;
-      }
-      $list[] = array_merge($item, array(
-        'url' => replace_url_for('sort', implode('-', array($item['name'], $item['direction'])))
-        ));
-    }
-
-    $this->setVar('list', $list, true);
-    $this->setVar('active', $active, true);
-  }
-
-  /**
-   * Executes list component
-   *
-   * @param myDoctrineCollection | array $list Коллекция товаров | массив ид товаров
-   */
-  public function executeList()
-  {
-    $this->view = (isset($this->view) && !empty($this->view)) ? $this->view : $this->getRequestParameter('view');
-    if (!in_array($this->view, array('expanded', 'compact', 'line', )))
-    {
-      $this->view = 'compact';
-    }
-  }
-
-  /**
-   * Executes pagination component
-   *
-   * @param myDoctrinePager $pager Листалка товаров
-   */
-  public function executePagination()
-  {
-    if (!$this->pager->haveToPaginate())
-    {
-      return sfView::NONE;
-    }
-  }
-
-  /**
-   * Executes property component
-   *
-   * @param Product $product Товар
-   * @param string $view Вид
-   */
-  public function executeProperty()
-  {
-    if (!in_array($this->view, array('default', 'inlist')))
-    {
-      $this->view = 'default';
-    }
-
-    $list = array();
-    if (isset($this->product['Parameter'])) foreach ($this->product['Parameter'] as $parameter)
-    {
-      $value = $parameter->getValue();
-
-      if (empty($value)) continue;
-
-      if ('inlist' == $this->view && !$parameter->isViewList()) continue;
-
-      $list[] = array(
-        'name' => $parameter->getName(),
-        'value' => $value,
-      );
-    }
-
-    $this->setVar('list', $list, true);
-  }
-
-  /**
-   * Executes property_grouped component
-   *
-   * @param Product $product Товар
-   */
-  public function executeProperty_grouped()
-  {
-    if (!in_array($this->view, array('default', 'inlist')))
-    {
-      $this->view = 'default';
-    }
-
-    $list = array();
-
-    foreach ($this->product->property_group as $group) {
-        $list[$group['id']] = $group;
-    }
-     // print_r($this->product->property);
-    foreach ($this->product->property as $prop) {
-      if (!isset($prop['is_view_card']) || !$prop['is_view_card']) {
-          //continue;
-      }
-      if (isset($prop['group_id']) && $prop['group_id']) {
-        if (is_array($prop['option_id'])) {
-           $valueAr = array();
-           foreach ($prop['option_id'] as $option) {
-               $valueAr[] = $option['value'];
-           }
-           $prop['value'] = implode(', ', $valueAr);
-        } elseif ($prop['value'] == 'true') {
-            $prop['value'] = 'да';
-        } elseif ($prop['value'] == 'false') {
-            $prop['value'] = 'нет';
+        if (!$this->product)
+        {
+            return sfView::NONE;
         }
-        if ($prop['unit']) {
-            $prop['value'] .= ' ' . $prop['unit'];
+
+        if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock', 'extra_compact')))
+        {
+            $this->view = 'default';
         }
-        $list[$prop['group_id']]['parameters'][] = $prop;
-      }
-    }
-      foreach ($list as $key =>  $group) {
-          if (!isset($group['parameters'])) {
-              unset($list[$key]);
-          }
-      }
-      //   print_r($list);
-    $this->setVar('list', $list, true);
-    $this->setVar('product', $this->product, true);
-  }
 
-  /**
-   * Executes product_group component
-   *
-   * @param Product $product Товар
-   */
-  public function executeProduct_model()
-  {
-    if (!$this->product->model && !isset($this->product->model['property']))
-    {
-      return sfView::NONE;
-    }
-    $product = $this->product;
-    $this->setVar('product', $this->product, true);
+        // cache key
+        $cacheKey = in_array($this->view, array('compact', 'expanded')) && sfConfig::get('app_cache_enabled', false) ? $this->getCacheKey(array(
+            'product' => is_scalar($this->product) ? $this->product : $this->product->id,
+            'region'  => $this->getUser()->getRegion('id'),
+            'view'    => $this->view,
+            'i'       => $this->ii,
+        )) : false;
 
-    //print_r($this->product->model['property']);
-    $propIdList = array();
-    $propType = array();
-    foreach ($this->product->model['property'] as $prop) {
-        $propIdList[] = $prop['id'];
-    }
-    foreach ($this->product->model['product'] as $prod) {
-        foreach ($prod->property as $prop) {
-            if (in_array($prop['id'], $propIdList)) {
-                $prodPropValue[$prod->id][$prop['id']] = $prop['value'];
-                $propType[$prop['id']] = $prop['type_id'];
+        // checks for cached vars
+        if ($cacheKey && $this->setCachedVars($cacheKey))
+        {
+            //myDebug::dump($this->getVarHolder()->getAll(), 1);
+            return sfView::SUCCESS;
+        }
+
+
+        $cartItem = $this->getUser()->getCart()->getProduct($this->product->id);
+        //myDebug::dump($cartItem);
+        if ($cartItem) {
+            if (is_object($this->product)) {
+                $this->product->cart_quantity = isset($cartItem['quantity']) ? $cartItem['quantity'] : 0;
             }
         }
+
+        $this->setVar('keys', ProductTable::getInstance()->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'), )));
+
+        // caches vars
+        if ($cacheKey)
+        {
+            $this->cacheVars($cacheKey);
+            $this->getCache()->addTag("product-{$this->product->id}", $cacheKey);
+        }
     }
-//      print_r($propType);
-//      die();
-    foreach ($this->product->model['property'] as $prop) {
-        $property = array(
-            'id' => $prop['id'],
-            'name' => $prop['name'],
-            'is_image' => $prop['is_image'],
-        );
-        //print_r($this->product->model);
-        $valueList = array();
-        foreach ($this->product->model['product'] as $productModel) {
-            foreach ($this->product->model['property'] as $prodProp) {
-                if ($prodProp['id'] == $prop['id']) {
-                   $value = $prodPropValue[$productModel->id][$prodProp['id']];
-                   if ($product->id == $productModel->id) {
-                        $property['current']['id'] = $productModel->id;
-                        $property['current']['value'] = $value;
-                        $property['current']['url'] = $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel->link) ));
-                   } //elseif (in_array($prodProp['value'], $valueList)) {
-//                       continue;
-//                   }
-                   //foreach (['property'])
-                   $prodProp['value'] = $value;
-                   $property['products'][$prodProp['value']] = array(
-                       'id' => $productModel->id,
-                       'name' => $productModel->name,
-                       'image' => $product::getMainPhotoUrlByMediaImage($productModel->media_image, 1),
-                       'value' => $prodProp['value'],
-                       'is_selected' =>  ($this->product->id == $productModel->id) ? 1 : 0,
-                       'url' => $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel->link) ))
-                   );
-                   $valueList[] = $prodProp['value'];
+
+    /**
+     * Executes preview component
+     *
+     * @param Product $product Товар
+     */
+    public function executePreview()
+    {
+
+    }
+
+    /**
+     * Executes pager component
+     *
+     * @param myDoctrinePager $pager Листалка товаров
+     */
+    public function executePager()
+    {
+        $this->view = !empty($this->view) ? $this->view : $this->getRequestParameter('view');
+        if (!in_array($this->view, array('expanded', 'compact', 'line')))
+        {
+            $this->view = 'compact';
+        }
+
+        $list = $this->pager->getResults();
+
+        $this->setVar('list', $list, true);
+    }
+
+    /**
+     * Executes sorting component
+     *
+     * @param array $productSorting Сортировка списка товаров
+     */
+    public function executeSorting()
+    {
+        $list = array();
+
+        $active = $this->productSorting->getActive();
+        $active['url'] = replace_url_for('sort', implode('-', array($active['name'], $active['direction'])));
+        foreach ($this->productSorting->getList() as $item)
+        {
+            if ($active['name'] == $item['name'] && $active['direction'] == $item['direction'])
+            {
+                //        $item['direction'] = 'asc' == $item['direction'] ? 'desc' : 'asc';
+                continue;
+            }
+            $list[] = array_merge($item, array(
+                'url' => replace_url_for('sort', implode('-', array($item['name'], $item['direction'])))
+            ));
+        }
+
+        $this->setVar('list', $list, true);
+        $this->setVar('active', $active, true);
+    }
+
+    /**
+     * Executes list component
+     *
+     * @param myDoctrineCollection | array $list Коллекция товаров | массив ид товаров
+     */
+    public function executeList()
+    {
+        $this->view = (isset($this->view) && !empty($this->view)) ? $this->view : $this->getRequestParameter('view');
+        if (!in_array($this->view, array('expanded', 'compact', 'line', )))
+        {
+            $this->view = 'compact';
+        }
+    }
+
+    /**
+     * Executes pagination component
+     *
+     * @param myDoctrinePager $pager Листалка товаров
+     */
+    public function executePagination()
+    {
+        if (!$this->pager->haveToPaginate())
+        {
+            return sfView::NONE;
+        }
+    }
+
+    /**
+     * Executes property component
+     *
+     * @param Product $product Товар
+     * @param string $view Вид
+     */
+    public function executeProperty()
+    {
+        if (!in_array($this->view, array('default', 'inlist')))
+        {
+            $this->view = 'default';
+        }
+
+        $list = array();
+        if (isset($this->product['Parameter'])) foreach ($this->product['Parameter'] as $parameter)
+        {
+            $value = $parameter->getValue();
+
+            if (empty($value)) continue;
+
+            if ('inlist' == $this->view && !$parameter->isViewList()) continue;
+
+            $list[] = array(
+                'name' => $parameter->getName(),
+                'value' => $value,
+            );
+        }
+
+        $this->setVar('list', $list, true);
+    }
+
+    /**
+     * Executes property_grouped component
+     *
+     * @param Product $product Товар
+     */
+    public function executeProperty_grouped()
+    {
+        if (!in_array($this->view, array('default', 'inlist')))
+        {
+            $this->view = 'default';
+        }
+
+        $list = array();
+
+        foreach ($this->product->property_group as $group) {
+            $list[$group['id']] = $group;
+        }
+        // print_r($this->product->property);
+        foreach ($this->product->property as $prop) {
+            if (!isset($prop['is_view_card']) || !$prop['is_view_card']) {
+                //continue;
+            }
+            if (isset($prop['group_id']) && $prop['group_id']) {
+                if (is_array($prop['option_id'])) {
+                    $valueAr = array();
+                    foreach ($prop['option_id'] as $option) {
+                        $valueAr[] = $option['value'];
+                    }
+                    $prop['value'] = implode(', ', $valueAr);
+                } elseif ($prop['value'] == 'true') {
+                    $prop['value'] = 'да';
+                } elseif ($prop['value'] == 'false') {
+                    $prop['value'] = 'нет';
+                }
+                if ($prop['unit']) {
+                    $prop['value'] .= ' ' . $prop['unit'];
+                }
+                $list[$prop['group_id']]['parameters'][] = $prop;
+            }
+        }
+        foreach ($list as $key =>  $group) {
+            if (!isset($group['parameters'])) {
+                unset($list[$key]);
+            }
+        }
+        //   print_r($list);
+        $this->setVar('list', $list, true);
+        $this->setVar('product', $this->product, true);
+    }
+
+    /**
+     * Executes product_group component
+     *
+     * @param Product $product Товар
+     */
+    public function executeProduct_model()
+    {
+        if (!$this->product->model && !isset($this->product->model['property']))
+        {
+            return sfView::NONE;
+        }
+        $product = $this->product;
+        $this->setVar('product', $this->product, true);
+
+        //print_r($this->product->model['property']);
+        $propIdList = array();
+        $propType = array();
+        foreach ($this->product->model['property'] as $prop) {
+            $propIdList[] = $prop['id'];
+        }
+        foreach ($this->product->model['product'] as $prod) {
+            foreach ($prod->property as $prop) {
+                if (in_array($prop['id'], $propIdList)) {
+                    $prodPropValue[$prod->id][$prop['id']] = $prop['value'];
+                    $propType[$prop['id']] = $prop['type_id'];
                 }
             }
         }
-        $needSort = false;
-        if ($propType[$prop['id']] == 3) {
-            $needSort = true;
-        } elseif ($propType[$prop['id']] == 5) {
-            $a = current($property['products']);
-            if (preg_match('/^\d+$/', $a['value'])) {
-                $needSort = true;
+        //      print_r($propType);
+        //      die();
+        $valueForCurrentProduct = array();
+        foreach ($this->product->model['property'] as $prop) {
+            $valueForCurrentProduct[$prop['id']] = $this->product->property[$prop['id']]['value'];
+        }
+        //print_r($valueForCurrentProduct);
+        foreach ($this->product->model['property'] as $prop) {
+            $property = array(
+                'id' => $prop['id'],
+                'name' => $prop['name'],
+                'is_image' => $prop['is_image'],
+            );
+            $valueForCurrentProduct[$prop['id']] = $this->product->property[$prop['id']]['value'];
+            foreach ($this->product->model['product'] as $productModel) {
+                foreach ($this->product->model['property'] as $prodProp) {
+                    if ($prodProp['id'] == $prop['id']) {
+                        if (!isset($prodPropValue[$productModel->id]) || !isset($prodPropValue[$productModel->id][$prodProp['id']])) {
+                            $value = '-';
+                        } else {
+                            $value = $prodPropValue[$productModel->id][$prodProp['id']];
+                        }
+                        if (trim($value) == 'true') {
+                            $value = 'да';
+                        } elseif (trim($value) == 'false') {
+                            $value = 'нет';
+                        }
+                        if ($product->id == $productModel->id) {
+                            $property['current']['id'] = $productModel->id;
+                            $property['current']['value'] = $value;
+                            $property['current']['url'] = $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel->link) ));
+                        } //elseif (in_array($prodProp['value'], $valueList)) {
+                        //                       continue;
+                        //                   }
+                        //foreach (['property'])
+                        $prodProp['value'] = $value;
+                        $setThisProduct = false;
+                        if (!isset($property['products'][$prodProp['value']])) {
+                            $setThisProduct = true;
+                        } else {
+                            foreach ($valueForCurrentProduct as $anotherPropId => $mainProdValue) {
+                                if ($anotherPropId == $prodProp['id']) {
+                                    continue;
+                                }
+                                if ($mainProdValue == $prodPropValue[$productModel->id][$anotherPropId]) {
+                                    $setThisProduct = true;
+                                }
+                            }
+                        }
+                        if ($setThisProduct) {
+                            $property['products'][$prodProp['value']] = array(
+                                'id' => $productModel->id,
+                                'name' => $productModel->name,
+                                'image' => $product::getMainPhotoUrlByMediaImage($productModel->media_image, 1),
+                                'value' => $prodProp['value'],
+                                'is_selected' =>  ($this->product->id == $productModel->id) ? 1 : 0,
+                                'url' => $this->generateUrl('productCardSoa', array('product' => str_replace('/product/', '', $productModel->link) ))
+                            );
+                        }
+                    }
+                }
             }
+            //print_r($property);
+            $needSort = false;
+            if ($propType[$prop['id']] == 3) {
+                $needSort = true;
+            } elseif ($propType[$prop['id']] == 5) {
+                $a = current($property['products']);
+                if (preg_match('/^\d+$/', $a['value'])) {
+                    $needSort = true;
+                }
+            }
+            if ($needSort) {
+                ksort($property['products']);
+            }
+            $properties[] = $property;
         }
-        if ($needSort) {
-            ksort($property['products']);
+        $this->setVar('properties', $properties, true);
+        return;
+    }
+
+
+    /**
+     * Executes list_view component
+     *
+     */
+    public function executeList_ajax_view()
+    {
+        $this->executeList_view();
+    }
+
+    /**
+     * Executes list_view component
+     *
+     */
+    public function executeList_view()
+    {
+        $list = array(
+            array(
+                'name'  => 'compact',
+                'title' => 'компактный',
+                'class' => 'tableview',
+            ),
+            array(
+                'name'  => 'expanded',
+                'title' => 'расширенный',
+                'class' => 'listview',
+            ),
+        );
+
+        foreach ($list as &$item)
+        {
+            $item = array_merge($item, array(
+                'url' => replace_url_for('view', $item['name']),
+                'current' => $this->getRequestParameter('view', 'compact') == $item['name'],
+            ));
+        } if (isset($item))
+        unset($item);
+
+        $this->setVar('list', $list, true);
+    }
+    /**
+     * Executes tags component
+     *
+     */
+    public function executeTags()
+    {
+        if (!$this->product instanceof ProductSoa)
+        {
+            return sfView::NONE;
         }
-        $properties[] = $property;
+
+        $list = array();
+        foreach ($this->product->tag as $tag)
+        {
+            $list[] = array(
+                'token' => $tag['token'],
+                'url'   => $this->generateUrl('tag_show', array('tag' => $tag['site_token'])),
+                'name'  => $tag['name'],
+            );
+        }
+
+        $this->count = count($list);
+        if (0 == $this->count)
+        {
+            return sfView::NONE;
+        }
+
+        $this->setVar('list', $list);
+        $this->limit = 6 < count($list) ? 6 : count($list);
     }
-    $this->setVar('properties', $properties, true);
-    return;
-  }
-
-
-  /**
-   * Executes list_view component
-   *
-   */
-  public function executeList_ajax_view()
-  {
-      $this->executeList_view();
-  }
-
-  /**
-   * Executes list_view component
-   *
-   */
-  public function executeList_view()
-  {
-    $list = array(
-      array(
-        'name'  => 'compact',
-        'title' => 'компактный',
-        'class' => 'tableview',
-      ),
-      array(
-        'name'  => 'expanded',
-        'title' => 'расширенный',
-        'class' => 'listview',
-      ),
-    );
-
-    foreach ($list as &$item)
-    {
-      $item = array_merge($item, array(
-        'url' => replace_url_for('view', $item['name']),
-        'current' => $this->getRequestParameter('view', 'compact') == $item['name'],
-        ));
-    } if (isset($item))
-      unset($item);
-
-    $this->setVar('list', $list, true);
-  }
-  /**
-   * Executes tags component
-   *
-   */
-  public function executeTags()
-  {
-    if (!$this->product instanceof ProductSoa)
-    {
-      return sfView::NONE;
+    /**
+     * Executes f1_lightbox component
+     *
+     */
+    public function executeF1_lightbox(){
+        if ($this->parentAction == '_list_for_product_in_cart') {
+            $showInCardButton = true;
+        } else {
+            $showInCardButton = false;
+        }
+        if (is_array($this->product)) {
+            $prodId = $this->product['id'];
+        } else {
+            $prodId = $this->product->id;
+        }
+        $this->setVar('productId', $prodId, true);
+        $this->setVar('showInCardButton', $showInCardButton);
     }
 
-    $list = array();
-    foreach ($this->product->tag as $tag)
+    public function executeKit()
     {
-      $list[] = array(
-        'token' => $tag['token'],
-        'url'   => $this->generateUrl('tag_show', array('tag' => $tag['site_token'])),
-        'name'  => $tag['name'],
-      );
+        $this->kit = $this->product->kit;
+        //$q = ProductTable::getInstance()->getQueryByKit($this->product);
+        //$this->productPager = $this->getPagerForArray($this->kit, 12, array());
+
+        //$this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+
+        $this->view = 'compact';
     }
-
-    $this->count = count($list);
-    if (0 == $this->count)
-    {
-      return sfView::NONE;
-    }
-
-    $this->setVar('list', $list);
-    $this->limit = 6 < count($list) ? 6 : count($list);
-  }
-  /**
-   * Executes f1_lightbox component
-   *
-   */
-  public function executeF1_lightbox(){
-      if ($this->parentAction == '_list_for_product_in_cart') {
-          $showInCardButton = true;
-      } else {
-          $showInCardButton = false;
-      }
-      if (is_array($this->product)) {
-          $prodId = $this->product['id'];
-      } else {
-          $prodId = $this->product->id;
-      }
-      $this->setVar('productId', $prodId, true);
-      $this->setVar('productIsInSale', $this->product->is_insale, true);
-      $this->setVar('showInCardButton', $showInCardButton);
-  }
-
-  public function executeKit()
-  {
-    $this->kit = $this->product->kit;
-    //$q = ProductTable::getInstance()->getQueryByKit($this->product);
-    //$this->productPager = $this->getPagerForArray($this->kit, 12, array());
-
-    //$this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
-
-    $this->view = 'compact';
-  }
 
     public function executeDelivery()
     {
         $delivery = array();
         if (isset($this->product->delivery[3])) {
-         $inf = $this->product->delivery[3];
-         $inf['mode'] = 3;
-         $delivery[] = $inf;
+            $inf = $this->product->delivery[3];
+            $inf['mode'] = 3;
+            $delivery[] = $inf;
         }
         if (isset($this->product->delivery[2])) {
             $inf = $this->product->delivery[2];

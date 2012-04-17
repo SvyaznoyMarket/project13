@@ -14,6 +14,7 @@ class ProductSoa
     public $rating;
 
 
+    const LABEL_SALE = 1;
 
     public function __construct()
     {
@@ -249,7 +250,7 @@ class ProductSoa
     public function getAll3dPhotos()
     {
         $d3List = array();
-        $urls = sfConfig::get('app_product_photo_url');
+        $urls = sfConfig::get('app_product_photo_3d_url');
         foreach ($this->media as $media) {
             if ($media['type_id'] == 2) {
                 $media['path']['small'] =  $urls[0] . $media['source'];
@@ -326,5 +327,32 @@ class ProductSoa
     {
         $urls = sfConfig::get('app_product_label_photo_url');
         return $mediaImage ? $urls[$view] . $mediaImage : null;
+    }
+
+   /**
+     * Имеет ли продукт шильдик распродажи
+     */
+    public function hasInSaleLabel()
+    {
+        $has = false;
+        foreach ($this->label as $label) {
+            if ($label['id'] == self::LABEL_SALE) {
+                $has = true;
+                break;
+            }
+        }
+        return $has;
+    }
+
+    /**
+     *  Опеределяет, нужно ли отображать среднюю цену на странице продукта
+     * @return bool
+     */
+    public function haveToShowAveragePrice()
+    {
+        if ($this->hasInSaleLabel() && $this->price_average > 0 && $this->price < $this->price_average) {
+            return true;
+        }
+        return false;
     }
 }

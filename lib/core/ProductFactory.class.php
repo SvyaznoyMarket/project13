@@ -31,7 +31,7 @@ class ProductFactory
      * @param bool $loadDelivery - загрузать ли информацию о доставках
      * @return array - массив объектов ProductSoa
      */
-    public function createProductFromCore($data, $loadFriendProducts = false, $loadDelivery = false)
+    public function createProductFromCore($data, $loadFriendProducts = false, $loadDelivery = false, $loadTmpData = false)
     {
 
         if (!isset($data['id']) && !isset($data['slug'])) {
@@ -51,7 +51,8 @@ class ProductFactory
             //если требуется загрузка связанных продуктов, загружаем
             if ($loadFriendProducts) {
                 $this->_loadFriendProducts($product, $baseInfo);
-
+            }
+            if ($loadTmpData) {
                 //некоторая информацию из БД пока требуется
                 $this->_loadTmpDbData($product);
             }
@@ -252,6 +253,8 @@ class ProductFactory
 
         $core->resetData();
         $core->prepareDataForStatic($data);
+        $region = sfContext::getInstance()->getUser()->getRegion();
+        $data['geo_id'] = $region['core_id'];
         $core->prepareDataForDynamic($data);
         if ($getDelivery) {
             //доставки через новый API пока не загружаем!!! 1С к этому не готов

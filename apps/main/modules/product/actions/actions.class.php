@@ -23,12 +23,12 @@ class productActions extends myActions
   public function executeSet(sfWebRequest $request)
   {
     $this->getRequest()->setParameter('_template', 'product_catalog');
-    
+
     $barcodes = is_array($request['products']) ? $request['products'] : explode(',', $request['products']);
 
     $this->productList = ProductTable::getInstance()->getListByBarcodes($barcodes, array(
       'with_properties' => true,
-      'property_view'   => 'list',
+      'property_view' => 'list',
     ));
     $this->forward404Unless($this->productList->count());
 
@@ -64,13 +64,13 @@ class productActions extends myActions
         }
         $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'), $setCoreIds);
       } else {*/
-        $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
+      $deliveries = Core::getInstance()->getProductDeliveryData($productId, $this->getUser()->getRegion('core_id'));
       //}
       $result = array('success' => true, 'deliveries' => array());
       if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
         $deliveries = array(array(
           'mode_id' => 1,
-          'date' => date('Y-m-d', time()+(3600*48)),
+          'date' => date('Y-m-d', time() + (3600 * 48)),
           'price' => null,
         ));
       }
@@ -99,21 +99,20 @@ class productActions extends myActions
     return $this->renderJson($data);
   }
 
- /**
-  * Executes show action
-  *
-  * @param sfRequest $request A request object
-  */
+  /**
+   * Executes show action
+   *
+   * @param sfRequest $request A request object
+   */
   public function executeShow(sfWebRequest $request)
   {
     $field = 'id';
     $id = $request['product'];
     foreach (array('id', 'token', 'core_id', 'barcode', 'article') as $v)
     {
-      if (0 === strpos($request['product'], $v))
-      {
+      if (0 === strpos($request['product'], $v)) {
         $field = $v;
-        $id = preg_replace('/^'.$v.'/', '', $id);
+        $id = preg_replace('/^' . $v . '/', '', $id);
 
         break;
       }
@@ -127,15 +126,13 @@ class productActions extends myActions
   public function executeChange(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
-    if (!$this->product->is_model && !$this->product->model_id)
-    {
+    if (!$this->product->is_model && !$this->product->model_id) {
       $this->redirect('productCard', $this->product);
     }
     $model_id = !empty($this->product->model_id) ? $this->product->model_id : $this->product->id;
 
     $produtPropertyRelation = ProductPropertyRelationTable::getInstance()->getById($this->getRequestParameter('value'));
-    if (!$produtPropertyRelation)
-    {
+    if (!$produtPropertyRelation) {
       $this->redirect('productCard', $this->product);
     }
 
@@ -147,14 +144,13 @@ class productActions extends myActions
     //$new_value = $this->getRequestParameter('value');
     //$property_id = $this->getRequestParameter('property');
 
-    $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
+    $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true,))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
     //добавляем учет товара, доступного к продаже
     $q->addWhere('IFNULL(productState.is_instock, product.is_instock) = ?', true);
     //Продукты в серии
     $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
 
-    if (1 == count($product_ids))
-    {
+    if (1 == count($product_ids)) {
       $this->redirect('productCard', $this->product);
     }
     //myDebug::dump($product_ids);
@@ -171,7 +167,7 @@ class productActions extends myActions
       ->from('ProductProperty productProperty indexby productProperty.id')
       ->innerJoin('productProperty.ProductModelRelation productModelRelation')
       ->select('productProperty.*')
-      ->addWhere('productModelRelation.product_id = ?', array($model_id, ));
+      ->addWhere('productModelRelation.product_id = ?', array($model_id,));
     //$group_property_ids = ProductGroupPropertyRelationTable::getInstance()->getIdsByQuery($q);
     //свойства, которые различаются в группе
     $groups_properties = $q->fetchArray();
@@ -187,8 +183,7 @@ class productActions extends myActions
     $old_properties = array();
     foreach ($product->getPropertyRelation() as $property)
     {
-      if (in_array($property->property_id, $group_property_ids))
-      {
+      if (in_array($property->property_id, $group_property_ids)) {
         $old_properties[$property->property_id]['value'] = $property->getRealValue();
         $old_properties[$property->property_id]['type'] = $property->getProperty()->getType();
         $old_properties[$property->property_id]['is_multiple'] = $property->getProperty()->is_multiple;
@@ -197,46 +192,46 @@ class productActions extends myActions
     $old_properties[$property_id]['value'] = $new_value;
     //myDebug::dump($old_properties, 1);
 
-    $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true, ));
+    $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true,));
     $q->innerJoin('product.PropertyRelation propertyRelation');
     //$q->addSelect('SUM(IF(id = ' . $product->id . ', 1, 0)) as sum_id');
     $if_condition = "";
     foreach ($old_properties as $id => $value)
     {
       $if_condition .= strlen($if_condition) ? " OR " : "";
-      $if_condition .= "(propertyRelation.property_id=".$id." AND propertyRelation.";
+      $if_condition .= "(propertyRelation.property_id=" . $id . " AND propertyRelation.";
       $field = "";
       switch ($value['type']):
-        case 'string': case 'text':
-          $field = 'value_'.$value['type'].'=';
-        break;
-        case 'integer': case 'float':
+        case 'string':
+        case 'text':
+          $field = 'value_' . $value['type'] . '=';
+          break;
+        case 'integer':
+        case 'float':
           $field = 'value_float=';
-        break;
+          break;
         case 'select':
-          if (!$value['is_multiple'])
-          {
+          if (!$value['is_multiple']) {
             $field = 'option_id=';
           }
           else
           {
             $field = 'option_id=';
           }
-        break;
+          break;
         case 'boolean':
           $field = 'value_boolean=';
-        break;
+          break;
       endswitch;
-      $if_condition .= $field."'".$value['value']."')";
+      $if_condition .= $field . "'" . $value['value'] . "')";
 
-      if ($id == $property_id)
-      {
+      if ($id == $property_id) {
         //$q->addWhere('propertyRelation.'.$field.'?', array($value['value']));
         $is_changed_property_presents = "SUM(IF(propertyRelation.{$field}'{$value['value']}', 1, 0)) as changed_property_presents";
       }
     }
     $q->select("product.id, SUM(IF({$if_condition}, 1, 0)) as matches, {$is_changed_property_presents}");
-    $q->addWhere('product.id IN ('.implode(', ', array_diff($product_ids, array($product->id,))).')');
+    $q->addWhere('product.id IN (' . implode(', ', array_diff($product_ids, array($product->id,))) . ')');
     //$q->addWhere('');
     $q->groupBy('product.id');
     $q->orderBy('changed_property_presents desc, matches desc, score desc');
@@ -246,7 +241,7 @@ class productActions extends myActions
     $matches = $q->fetchArray();
 
     //если не нашли новый товар, то остаемся в этом же
-    $new_product = !empty($matches) ? ProductTable::getInstance()->getById($matches[0]['id'], array('with_model' => true, )) : $this->product;
+    $new_product = !empty($matches) ? ProductTable::getInstance()->getById($matches[0]['id'], array('with_model' => true,)) : $this->product;
     //myDebug::dump($q->fetchArray(), true);
 
 
@@ -277,7 +272,7 @@ class productActions extends myActions
 
     $this->setVar('item', $item, true);
 
-    return $this->renderPartial($this->getModuleName().'/product_related_list');
+    return $this->renderPartial($this->getModuleName() . '/product_related_list');
   }
 
   /**
@@ -301,6 +296,6 @@ class productActions extends myActions
 
     $this->setVar('item', $item, true);
 
-    return $this->renderPartial($this->getModuleName().'/product_accessory_list');
+    return $this->renderPartial($this->getModuleName() . '/product_accessory_list');
   }
 }

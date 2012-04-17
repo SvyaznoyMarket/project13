@@ -6,16 +6,14 @@ $delay = 2; //sec
 
 $pid = pcntl_fork();
 
-if (isDaemonActive($pidFile))
-{
+if (isDaemonActive($pidFile)) {
   echo "Daemon already active\n";
   exit();
 }
 
 file_put_contents($pidFile, getmypid());
 
-if ($pid == -1)
-{
+if ($pid == -1) {
   echo "Critical error: get no pid\n";
   exit();
 }
@@ -44,20 +42,17 @@ posix_setsid();
  */
 function isDaemonActive($pidFile)
 {
-  if (is_file($pidFile))
-  {
+  if (is_file($pidFile)) {
     $pid = file_get_contents($pidFile);
     //проверяем на наличие процесса
-    if (posix_kill($pid, 0))
-    {
+    if (posix_kill($pid, 0)) {
       //демон уже запущен
       return true;
     }
     else
     {
       //pid-файл есть, но процесса нет
-      if (!unlink($pidFile))
-      {
+      if (!unlink($pidFile)) {
         //не могу уничтожить pid-файл. ошибка
         exit(-1);
       }

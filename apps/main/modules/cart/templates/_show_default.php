@@ -29,7 +29,7 @@
 <?php foreach ($list as $item): ?>
 
   <?php if ($item['type'] == 'product'): ?>
-    <div class="basketline mWrap" ref="<?php echo $item['token_prefix'] . '/' .$item['token'] ?>">
+    <div class="basketline mWrap" ref="<?php echo $item['id'] ?>">
       <div class="basketleft">
         <a href="<?php echo url_for('productCard', array('product' => $item['token_prefix'] . '/' .$item['token'])) ?>">
           <?php if (isset($item['photo'])) echo image_tag($item['photo']) ?>

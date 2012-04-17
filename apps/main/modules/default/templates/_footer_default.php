@@ -53,7 +53,7 @@
               <a href="<?php echo url_for('default_show', array('page' => 'how_pay',)) ?>">Банковской картой</a><br>
               (Visa, MasterCard и др.)<br>
               на сайте, курьеру<br>
-              или в магазне
+              или в магазине
             </li>
             <li>
               <a href="<?php echo url_for('default_show', array('page' => 'credit',)) ?>">Оформляю кредит</a>

@@ -84,6 +84,9 @@ all:
       client_code: site
       consumer_key: test
       signature: test
+      log_enabled: true
+      log_file: %SF_LOG_DIR%/core_client_2.log
+      log_response: false # логировать ответ
 
   cache_eraser:
     config:
@@ -102,7 +105,7 @@ all:
    provider:
      uniteller:
        login: 125
-       password: 'DErlW8GnwZTCDYLD9kj7zKHxpEXpHrSNCRWQXuOOonMYQEdKoKXk8OkDgx7CcRBAoCrM1LAwESnHugUW'
+       password: 'OYOTEEl5Fp3YXQSSHKEWeuWM4Gh0IObjAm64RWFHeHtdCsgZ0ChccMmWOpIWNlw0qaa3PshWepTW6WH8'
        pay_url: 'https://wpay.uniteller.ru/pay/'
        result_url: 'https://wpay.uniteller.ru/results/'
        shop_id: '35974-134'
@@ -181,8 +184,10 @@ live:
   core:
     config:
       api_url: 'http://api.enter.ru/v1/json'
-      consumer_key: v6Q4UiTaQ6jWPHtJ
-      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
+      userapi_url: 'http://api.enter.ru/v2/'
+      client_code: site
+      consumer_key: s7urupe7Efrus8un
+      signature: mEbradRUBruprUT7ukuvAxupraCrEcuk
 
   rediska:
     default:
@@ -230,8 +235,10 @@ live_dev:
   core:
     config:
       api_url: 'http://api.enter.ru/v1/json'
-      consumer_key: v6Q4UiTaQ6jWPHtJ
-      signature: FGZuEsnRew3EIoTdsKhn2bxThRQ7yjRd
+      userapi_url: 'http://api.enter.ru/v2/'
+      client_code: site
+      consumer_key: s7urupe7Efrus8un
+      signature: mEbradRUBruprUT7ukuvAxupraCrEcuk
 
   rediska:
     default:
@@ -261,7 +268,7 @@ alpha:
 
   core:
     config:
-      api_url: 'http://core.my/v1/json'
+      api_url: 'http://core.ent3.ru/v1/json'
       consumer_key: test
       signature: test
 

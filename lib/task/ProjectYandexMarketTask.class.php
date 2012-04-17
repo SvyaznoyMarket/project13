@@ -435,7 +435,7 @@ EOF;
         //категории товаров
         $this->_setCategoryList();
         //товары
-        $this->_setOffersList();
+        //$this->_setOffersList();
 
         file_put_contents($this->_xmlFilePath,'</shop>',FILE_APPEND);
 
@@ -483,9 +483,7 @@ EOF;
         $categoryList = $categoryList
         #->limit(50)
             ->fetchArray();
-        foreach($categoryList as $cat){
-            $catIdToCoreId[ $cat['core_id'] ] = $cat['id'];
-        }
+
         $cats = $this->_xmlResultShop->addChild('categories');
 
         file_put_contents($this->_xmlFilePath,'<categories>',FILE_APPEND);
@@ -494,7 +492,9 @@ EOF;
         foreach($categoryList as $categoryInfo){
             $cat = $cats->addChild('category',$categoryInfo['name']);
             $cat->addAttribute('id',$categoryInfo['core_id']);
-            if ($categoryInfo['core_parent_id'] && isset($catIdToCoreId[ $categoryInfo['core_parent_id'] ])) $cat->addAttribute('parentId', $catIdToCoreId[ $categoryInfo['core_parent_id'] ]);
+            if (isset($categoryInfo['core_parent_id']) && $categoryInfo['core_parent_id']) {
+                $cat->addAttribute('parentId', $categoryInfo['core_parent_id']);
+            }
             //если нужно добавить url
             if ($addCategoryUrl){
                 $cat->addAttribute('url', $this->_companyData['url'].$this->getRouting()->generate('productCatalog_category', array('productCategory' => (!empty($categoryInfo['token_prefix']) ? ($categoryInfo['token_prefix'].'/'.$categoryInfo['token']) : $categoryInfo['token']))));

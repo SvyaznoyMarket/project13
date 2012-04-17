@@ -2,16 +2,12 @@
 
 abstract class ObjectRepository
 {
-  protected $core = null;
+  /* @var CoreClient */
+  protected $coreClient = null;
 
   public function __construct()
   {
-    $this->core = Core::getInstance();
-  }
-
-  public function createQuery($query, array $params = array(), array $data = array())
-  {
-    return new CoreQuery($query, $params, $data);
+    $this->coreClient = CoreClient::getInstance();
   }
 
   abstract public function get(array $ids, $index = null);
@@ -49,25 +45,5 @@ abstract class ObjectRepository
     }
 
     return $entities;
-  }
-
-  protected function applyCriteria(BaseCriteria $criteria, array &$params)
-  {
-    if ($pager = $criteria->getPager())
-    {
-      if (null !== $pager->getPage())
-      {
-        $params['start'] = (string)(($pager->getPage() - 1) * $pager->getMaxPerPage());
-        $params['limit'] = (string)$pager->getMaxPerPage();
-      }
-    }
-  }
-
-  protected function applyPager(BaseCriteria $criteria, CoreQuery $q)
-  {
-    if ($pager = $criteria->getPager())
-    {
-      $pager->setNbResults($q->count());
-    }
   }
 }

@@ -9,7 +9,7 @@
 <?php slot('title', $product->name) ?>
 
 <?php //include_partial('product/name', array('product' => $product)) ?>
-<?php include_component('productSoa', 'show', array('product' => $product)) ?>
+<?php include_component('productSoa', 'show', array('product' => $product, 'json' => $json)) ?>
 <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
 
 <?php if ('kit' == $product->view): ?>
@@ -26,13 +26,7 @@
 
   <?php include_component('productSoa', 'tags', array('product' => $product)) ?>
 <?php endif ?>
-<?php /* include_component('productComment', 'list', array(
-  'product' => $product,
-  'page' => 1,
-  'sort' => 'rating_desc',
-  'showSort' => false,
-  'showPage' => false
-  )) */ ?>
+
 
 <?php if (count($product->related)): ?>
 <?php include_partial('productSoa/product_related', $sf_data) ?>
@@ -42,25 +36,24 @@
 <?php include_partial('productSoa/product_accessory', $sf_data) ?>
 <?php endif ?>
 
-<?php //echo link_to('Комментарии', 'productComment', $sf_data->getRaw('product')) ?>
-
-<?php //echo link_to('Аналогичные товары', 'similarProduct', $sf_data->getRaw('product')) ?>
-
-<?php //echo link_to('Наличие в сети', 'productStock', $sf_data->getRaw('product')) ?>
+<?php include_partial('productSoa/bottom_button_block', $sf_data) ?>
 
 <br class="clear" />
 
-<?php include_component('productCardSoa', 'navigation', array('product' => $product, 'seo' => true)) ?>
+<?php if (has_slot('additional_data')): ?>
+    <?php include_slot('additional_data') ?>
+<?php endif ?>
 
-<?php //include_component('productCatalog', 'navigation_seo', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
+<?php include_component('productCardSoa', 'navigation', array('product' => $product, 'seo' => true)) ?>
 
 
 <?php slot('seo_counters_advance') ?>
-<?php
 
+<?php
 $rotCat = $product->getMainCategory();
 include_component('productCategory', 'seo_counters_advance', array('unitId' => $rotCat['root_id']))
 ?>
+
 <script type="text/javascript">
     (function(d){
         var HEIAS_PARAMS = [];

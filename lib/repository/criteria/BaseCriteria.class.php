@@ -33,6 +33,9 @@ class BaseCriteria
     return $this;
   }
 
+  /**
+   * @return Region
+   */
   public function getRegion()
   {
     return $this->region;

@@ -53,6 +53,8 @@ document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=179070&s
     }(document));
 </script>
 
+
+
 <?php } elseif ($step == 3) { ?>
 
 <!--  AdRiver code START. Type:counter(zeropixel) Site: sventer SZ: step3 PZ: 0 BN: 0 -->
@@ -74,4 +76,20 @@ document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=179070&s
     var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + order_article + '|product_quantity|' + product_quantity + '|order_id|' + order_id + '|order_total|' + order_total + '';
     document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
 </script>
+
+
+<?php include_component('order','seo_admitad', $sf_data) ?>
+
+<script type='text/javascript'><!--//<![CDATA[
+var p = (location.protocol=='https:'?'https://delivery.ctasnet.com/adserver/www/delivery/tjs.php':'http://delivery.ctasnet.com/adserver/www/delivery/tjs.php');
+
+var r=Math.floor(Math.random()*999999);
+var r2=Math.floor(Math.random()*999999);
+document.write ("<" + "script language='JavaScript' ");
+document.write ("type='text/javascript' src='"+p);
+document.write ("?trackerid=1288&amp;append=1&amp;r="+r);
+if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
+document.write("'><" + "\/script>");
+//]]>--></script><noscript><div id='m3_tracker_1288' style='position: absolute; left: 0px; top: 0px; visibility: hidden;'><img src='http://delivery.ctasnet.com/adserver/www/delivery/ti.php?trackerid=1288&amp;cb='+r2 width='0' height='0' alt='' /></div></noscript>
+
 <?php } ?>

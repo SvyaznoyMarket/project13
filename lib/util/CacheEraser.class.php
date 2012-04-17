@@ -4,8 +4,7 @@ class CacheEraser
 {
 
   protected
-    $config = null
-  ;
+    $config = null;
 
   protected static $instance = null;
 
@@ -15,8 +14,7 @@ class CacheEraser
    */
   static public function getInstance()
   {
-    if (null == self::$instance)
-    {
+    if (null == self::$instance) {
       self::$instance = new CacheEraser();
       self::$instance->initialize(sfConfig::get('app_cache_eraser_config'));
     }
@@ -29,7 +27,7 @@ class CacheEraser
     $this->config = new sfParameterHolder();
     $this->config->add($config);
 
-    $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/cache_eraser.log'));
+    $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir') . '/cache_eraser.log'));
   }
 
   public function getConfig($name = null)
@@ -44,33 +42,29 @@ class CacheEraser
 
   public function erase($keys, $is_only_log = false, $extra = null)
   {
-    if (empty($keys))
-    {
+    if (empty($keys)) {
       return false;
     }
 
-    if (!is_array($keys))
-    {
+    if (!is_array($keys)) {
       $keys = array($keys);
     }
 
     $this->log($keys, $extra);
 
-    if ($is_only_log)
-    {
+    if ($is_only_log) {
       return true;
     }
 
     $file = $this->getConfig('file');
 
-    foreach($keys as & $key) {
-        if (substr($key,-1,1) != "-") {
-            $key .= ';';
-        }
+    foreach ($keys as & $key) {
+      if (substr($key, -1, 1) != "-") {
+        $key .= ';';
+      }
     }
-    $result = file_put_contents($file, implode("\n", $keys)."\n", FILE_APPEND | LOCK_EX);
-    if (false === $result)
-    {
+    $result = file_put_contents($file, implode("\n", $keys) . "\n", FILE_APPEND | LOCK_EX);
+    if (false === $result) {
       $this->logger->err('Can\'t write to file');
     }
     else {
@@ -80,13 +74,11 @@ class CacheEraser
 
   public function log($keys, $extra = null)
   {
-    if (empty($keys))
-    {
+    if (empty($keys)) {
       return false;
     }
 
-    if (!is_array($keys))
-    {
+    if (!is_array($keys)) {
       $keys = array($keys);
     }
 

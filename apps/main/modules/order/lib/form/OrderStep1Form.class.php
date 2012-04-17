@@ -2,58 +2,60 @@
 
 class UserDefaultsMock
 {
-    public function __get($name)
-    {
-        return '';
-    }
+  public function __get($name)
+  {
+    return '';
+  }
 }
 
 class OrderStep1Form extends BaseOrderForm
 {
   protected $_deliveryTypes = null;
+
 //  protected $_deliveryIntervals = array();
 
   protected function isOrderContainBigProduct()
   {
-      $bigThings = array(1096, 1095, 1094, 76, 18, 2);
-      $furnitureCat = ProductCategoryTable::getInstance()->findOneByCoreId(80);
-      foreach (sfContext::getInstance()->getUser()->getCart()->getProductServiceList() as $product)
-      {
-          foreach ($product['product']->Category as $category) {
-              if ($category->root_id == $furnitureCat->root_id) {
-                  return true;
-              }
-              if (in_array($category->core_id, $bigThings)) {
-                  return true;
-              }
-              $ancs = $category->getNode()->getAncestors();
-              foreach ($ancs as $anc) {
-                  if (in_array($anc->core_id, $bigThings)) {
-                      return true;
-                  }
-              }
+    $bigThings = array(1096, 1095, 1094, 76, 18, 2);
+    $furnitureCat = ProductCategoryTable::getInstance()->findOneByCoreId(80);
+    foreach (sfContext::getInstance()->getUser()->getCart()->getProductServiceList() as $product)
+    {
+      foreach ($product['product']->Category as $category) {
+        if ($category->root_id == $furnitureCat->root_id) {
+          return true;
+        }
+        if (in_array($category->core_id, $bigThings)) {
+          return true;
+        }
+        $ancs = $category->getNode()->getAncestors();
+        foreach ($ancs as $anc) {
+          if (in_array($anc->core_id, $bigThings)) {
+            return true;
           }
+        }
       }
-      return false;
+    }
+    return false;
   }
 
   protected function isOrderHaveEnougthInStock($shop_id)
   {
-      $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
-      $stockRel = StockProductRelationTable::getInstance();
-      foreach ($cart as $product_id => $product)
-      {
-          if (!$stockRel->isInStock($product_id, $shop_id, null, $product['quantity'])) {
-              return false;
-          }
+    $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
+    $stockRel = StockProductRelationTable::getInstance();
+    foreach ($cart as $product_id => $product)
+    {
+      $product_id = ProductTable::getInstance()->getIdBy('core_id',$product_id);
+      if (!$stockRel->isInStock($product_id, $shop_id, null, $product['quantity'])) {
+        return false;
       }
-      return true;
+    }
+    return true;
   }
 
   protected function getDeliveryDateChoises($start = 0, $length = 7)
   {
     if ($start == 0 && date('H') >= 20) {
-        $start = 1;
+      $start = 1;
     }
     $stop = $start + $length;
     $choices = array();
@@ -61,27 +63,23 @@ class OrderStep1Form extends BaseOrderForm
     {
       $date = strtotime("+{$i} day");
 
-      if (in_array(date('dmY', $date), array('30122011', '31122011', '01012012', '02012012','03012012')))
-      {
+      if (in_array(date('dmY', $date), array('30122011', '31122011', '01012012', '02012012', '03012012'))) {
         $stop++;
         continue;
       }
       $prefix = '';
-      $val = $prefix.date('d.m.Y', $date);
-      if (0 == $i)
-      {
+      $val = $prefix . date('d.m.Y', $date);
+      if (0 == $i) {
         $prefix = 'сегодня ';
-        $val = $prefix.'('.date('d.m.Y', $date).')';
+        $val = $prefix . '(' . date('d.m.Y', $date) . ')';
       }
-      if (1 == $i)
-      {
+      if (1 == $i) {
         $prefix = 'завтра ';
-        $val = $prefix.'('.date('d.m.Y', $date).')';
+        $val = $prefix . '(' . date('d.m.Y', $date) . ')';
       }
-      if (2 == $i)
-      {
+      if (2 == $i) {
         $prefix = 'послезавтра ';
-        $val = $prefix.'('.date('d.m.Y', $date).')';
+        $val = $prefix . '(' . date('d.m.Y', $date) . ')';
       }
 
       $choices[date('Y-m-d', $date)] = $val;
@@ -91,35 +89,36 @@ class OrderStep1Form extends BaseOrderForm
 
   protected function filterDeliveryTypes($deliveries)
   {
-      $retval = array();
-      foreach ($deliveries as $id => $deliveryType) {
-          $retval[$id] = array(
-              'label' => $deliveryType['label'],
-              'description' => $deliveryType['description'],
-          );
-      }
-      return $retval;
+    $retval = array();
+    foreach ($deliveries as $id => $deliveryType) {
+      $retval[$id] = array(
+        'label' => $deliveryType['label'],
+        'description' => $deliveryType['description'],
+      );
+    }
+    return $retval;
   }
 
   protected function filterDeliveryPeriods($periods)
   {
 
-      $retval = array();
-      foreach ($periods as $period) {
-          $retval[$period['id']] = 'с ' . $period['time_begin'] . ' до ' . $period['time_end'];
-      }
-      return $retval;
+    $retval = array();
+    foreach ($periods as $period) {
+      $retval[$period['id']] = 'с ' . $period['time_begin'] . ' до ' . $period['time_end'];
+    }
+    return $retval;
   }
 
   public function getDeliveryTypes()
   {
     if ($this->_deliveryTypes === null) {
-      $formatPrice = function($price){
+      $formatPrice = function($price)
+      {
         if ($price === null) {
           return '';
         }
         if ($price > 0) {
-          return ', '.$price.' руб.';
+          return ', ' . $price . ' руб.';
         } else {
           return ', бесплатно.';
         }
@@ -136,13 +135,13 @@ class OrderStep1Form extends BaseOrderForm
       if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
         $deliveries = array(array(
           'mode_id' => 1,
-          'date' => date('Y-m-d', time()+(3600*48)),
+          'date' => date('Y-m-d', time() + (3600 * 48)),
           'price' => null,
         ));
       }
       $deliveryTypes = array();
 
-      foreach ($deliveries as  $deliveryType) {
+      foreach ($deliveries as $deliveryType) {
         $modeId = $deliveryType['mode_id'];
         $deliveryObj = DeliveryTypeTable::getInstance()->findOneByCoreId($modeId);
         $minDeliveryDate = DateTime::createFromFormat('Y-m-d', $deliveryType['date']);
@@ -152,9 +151,9 @@ class OrderStep1Form extends BaseOrderForm
         $deliveryPeriod = myToolkit::fixDeliveryPeriod($modeId, $deliveryPeriod);
         if ($deliveryPeriod === false) continue;
         if ($deliveryType['mode_id'] == 5) {
-            $label =  $deliveryObj['name'];
+          $label = $deliveryObj['name'];
         } else {
-            $label = $deliveryObj['name'].$formatPrice($deliveryType['price']);
+          $label = $deliveryObj['name'] . $formatPrice($deliveryType['price']);
         }
         $deliveryTypes[$deliveryObj['id']] = array(
           'label' => $label,
@@ -178,7 +177,7 @@ class OrderStep1Form extends BaseOrderForm
 
     $user = sfContext::getInstance()->getUser()->getGuardUser();
     if (!$user) {
-        $user = new UserDefaultsMock;
+      $user = new UserDefaultsMock;
     }
 
     $this->disableCSRFProtection();
@@ -192,20 +191,20 @@ class OrderStep1Form extends BaseOrderForm
     }
 
     $this->widgetSchema['region_id'] = new sfWidgetFormChoice(array(
-      'choices'         => $region_choices,
-      'multiple'        => false,
-      'expanded'        => false,
-      'renderer_class'  => 'myWidgetFormOrderSelect',
-    )
-      /*, array(
+        'choices' => $region_choices,
+        'multiple' => false,
+        'expanded' => false,
+        'renderer_class' => 'myWidgetFormOrderSelect',
+      )
+    /*, array(
       'data-url' => url_for('region_autocomplete', array('type' => 'city')),
-	  'renderer_class'  => 'myWidgetFormOrderSelect',
+    'renderer_class'  => 'myWidgetFormOrderSelect',
     )*/);
     $this->widgetSchema['region_id']->setLabel('В каком городе вы будете получать заказ?'); //->setLabel('Город');
     $this->validatorSchema['region_id'] = new sfValidatorDoctrineChoice(array('model' => 'Region', 'required' => true));
 
     $this->widgetSchema['person_type'] = new sfWidgetFormChoice(array(
-      'choices'  => array('individual' => 'для себя (как частное лицо)', 'legal' => 'для компании (на юридическое лицо)'),
+      'choices' => array('individual' => 'для себя (как частное лицо)', 'legal' => 'для компании (на юридическое лицо)'),
       'multiple' => false,
       'expanded' => true,
     ));
@@ -215,21 +214,21 @@ class OrderStep1Form extends BaseOrderForm
     // !!!!!!!!!!
     $deliveryTypes = $this->getDeliveryTypes();
     $this->widgetSchema['delivery_type_id'] = new sfWidgetFormChoice(array(
-      'choices'         => $this->filterDeliveryTypes($deliveryTypes),
-      'multiple'        => false,
-      'expanded'        => true,
-      'renderer_class'  => 'myWidgetFormOrderSelectRadio',
-    ) );
+      'choices' => $this->filterDeliveryTypes($deliveryTypes),
+      'multiple' => false,
+      'expanded' => true,
+      'renderer_class' => 'myWidgetFormOrderSelectRadio',
+    ));
     $this->widgetSchema['delivery_type_id']->setLabel('Выберите способ получения заказа:');
     $this->validatorSchema['delivery_type_id'] = new sfValidatorChoice(array('choices' => array_keys($deliveryTypes), 'required' => false));
     //$this->widgetSchema['receipt_type']->setOption('class', 'checkboxlist2');
 
-//    $choices = DeliveryTypeTable::getInstance()->getChoices();
-//    if ('legal' == $this->object->person_type)
-//    {
-//      array_pop($choices);
-//      $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
-//    }
+    //    $choices = DeliveryTypeTable::getInstance()->getChoices();
+    //    if ('legal' == $this->object->person_type)
+    //    {
+    //      array_pop($choices);
+    //      $this->object->delivery_type_id = DeliveryTypeTable::getInstance()->findOneByToken('standart')->id;
+    //    }
     $defaultDelivery = DeliveryTypeTable::getInstance()->findOneByCoreId(1);
 
     if (isset($deliveryTypes[$defaultDelivery->id])) {
@@ -238,7 +237,7 @@ class OrderStep1Form extends BaseOrderForm
       $choices = array();
     }
     $this->widgetSchema['delivered_at'] = new sfWidgetFormChoice(array(
-      'choices'  => $choices,
+      'choices' => $choices,
       'multiple' => false,
       'expanded' => false,
     ));
@@ -246,35 +245,35 @@ class OrderStep1Form extends BaseOrderForm
     $this->validatorSchema['delivered_at'] = new sfValidatorChoice(array('choices' => array_keys($choices), 'required' => true));
 
     $this->widgetSchema['delivery_period_id'] = new sfWidgetFormChoice(array(
-      'choices'  => array(),// $defaultDelivery->DeliveryPeriod,//$this->filterDeliveryPeriods($deliveryTypes[$defaultDelivery->id]['periods']),
+      'choices' => array(), // $defaultDelivery->DeliveryPeriod,//$this->filterDeliveryPeriods($deliveryTypes[$defaultDelivery->id]['periods']),
       'multiple' => false,
       'expanded' => false,
     ));
     //$this->validatorSchema['delivery_period_id'] = new sfValidatorDoctrineChoice(array('model' => 'DeliveryPeriod', 'required' => false));
 
     $this->widgetSchema['address'] = new sfWidgetFormInputText();
-	  $this->widgetSchema['address']->setDefault($user->address);
+    $this->widgetSchema['address']->setDefault($user->address);
     $this->widgetSchema['address']->setLabel('Адрес доставки:');
     $this->validatorSchema['address'] = new sfValidatorString(array('required' => false));
 
     $this->widgetSchema['shop_id'] = new sfWidgetFormChoice(array(
 //      'choices'  => myToolkit::arrayDeepMerge(array('' => ''), ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name')),
 //      'choices'  => ShopTable::getInstance()->getListByRegion($this->object->region_id)->toKeyValueArray('id', 'name'),
-      'choices'         => DeliveryCalc::getShopListForSelfDelivery(),
-      'multiple'        => false,
-      'expanded'        => false,
-      'renderer_class'  => 'myWidgetFormOrderSelect',
+      'choices' => DeliveryCalc::getShopListForSelfDelivery(),
+      'multiple' => false,
+      'expanded' => false,
+      'renderer_class' => 'myWidgetFormOrderSelect',
     ));
     $this->widgetSchema['shop_id']->setLabel('Выберите магазин, в котором хотите получить заказ:');
     $this->validatorSchema['shop_id'] = new sfValidatorDoctrineChoice(array('model' => 'Shop', 'required' => false));
 
     //$this->validatorSchema->setOption('allow_extra_fields', true);
     $this->widgetSchema['payment_method_id'] = new sfWidgetFormDoctrineChoice(array(
-      'model'           => 'PaymentMethod',
-      'method'          => 'getChoiseForOrder',
-      'add_empty'       => false,
-      'expanded'        => true,
-      'renderer_class'  => 'myWidgetFormOrderSelectRadio',
+      'model' => 'PaymentMethod',
+      'method' => 'getChoiseForOrder',
+      'add_empty' => false,
+      'expanded' => true,
+      'renderer_class' => 'myWidgetFormOrderSelectRadio',
     ));
     $this->widgetSchema['payment_method_id']->setLabel('Выберите способ оплаты:');
     $this->validatorSchema['payment_method_id'] = new sfValidatorDoctrineChoice(array('model' => 'PaymentMethod', 'required' => true));
@@ -292,16 +291,16 @@ class OrderStep1Form extends BaseOrderForm
     $this->widgetSchema['recipient_phonenumbers'] = new sfWidgetFormInputText();
     $this->widgetSchema['recipient_phonenumbers']->setDefault($user->phonenumber);
     $this->widgetSchema['recipient_phonenumbers']->setLabel('Мобильный телефон для связи:');
-    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('max_length' => 255, ));
+    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('max_length' => 255,));
 
     //$choices = array(1 => 'Я хочу получать СМС уведомления об изменении статуса заказа');
     $this->widgetSchema['is_receive_sms'] = new sfWidgetFormInputCheckbox();
     $this->widgetSchema['is_receive_sms']->setLabel('Я хочу получать СМС уведомления об изменении статуса заказа');
     $this->validatorSchema['is_receive_sms'] = new sfValidatorBoolean();
 
-//    $this->widgetSchema['zip_code'] = new sfWidgetFormInputText();
-//    $this->widgetSchema['zip_code']->setLabel('Почтовый индекс:');
-//    $this->validatorSchema['zip_code'] = new sfValidatorPass();
+    //    $this->widgetSchema['zip_code'] = new sfWidgetFormInputText();
+    //    $this->widgetSchema['zip_code']->setLabel('Почтовый индекс:');
+    //    $this->validatorSchema['zip_code'] = new sfValidatorPass();
 
     $this->widgetSchema['extra'] = new sfWidgetFormTextarea();
     $this->widgetSchema['extra']->setAttribute('cols', null)->setAttribute('style', 'width:100%;');
@@ -315,6 +314,10 @@ class OrderStep1Form extends BaseOrderForm
     $this->widgetSchema['agreed'] = new sfWidgetFormInputCheckbox();
     $this->widgetSchema['agreed']->setLabel('Я ознакомлен и согласен с «Условиями продажи» и «Правовой информацией»');
     $this->validatorSchema['agreed'] = new sfValidatorBoolean(array('required' => true), array('required' => 'Пожалуйста, ознакомьтесь с условиями продажи и правовой информацией и поставьте галочку'));
+
+	  $this->widgetSchema['sclub_card_number'] = new sfWidgetFormInputText();
+	  $this->widgetSchema['sclub_card_number']->setLabel('Номер карточки связного клуба');
+	  $this->validatorSchema['sclub_card_number'] = new myValidatorSClubCardNumber(array('required' => false), array('invalid' => 'номер карточки введен неверно'));
 
     $this->useFields(array(
       'region_id',
@@ -331,9 +334,10 @@ class OrderStep1Form extends BaseOrderForm
       //'zip_code',
       'address',
       'extra',
+	    'sclub_card_number',
       //'recipient_middle_name',
       'payment_method_id',
-      'agreed',
+      'agreed'
     ));
 
     $this->widgetSchema->setNameFormat('order[%s]');
@@ -376,17 +380,15 @@ class OrderStep1Form extends BaseOrderForm
       }
     }*/
 
-     // myDebug::dump($deliveryTypes);
-     // myDebug::dump($taintedValues);
+    // myDebug::dump($deliveryTypes);
+    // myDebug::dump($taintedValues);
     // проверяет типа доставки
-    if (!empty($taintedValues['delivery_type_id']))
-    {
+    if (!empty($taintedValues['delivery_type_id'])) {
 
       $deliveryTypes = $this->getDeliveryTypes();
       $deliveryType = DeliveryTypeTable::getInstance()->find($taintedValues['delivery_type_id']);
       // если НЕ самовывоз
-      if ($deliveryType && ('self' != $deliveryType->token))
-      {
+      if ($deliveryType && ('self' != $deliveryType->token)) {
         $choices = $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']));
         $periods = $this->filterDeliveryPeriods($deliveryTypes[$taintedValues['delivery_type_id']]['periods']);
         $this->widgetSchema['delivered_at']->setOption('choices', $choices);
@@ -400,25 +402,24 @@ class OrderStep1Form extends BaseOrderForm
         }
         $this->widgetSchema['delivery_period_id']->setOption('choices', $periods);
       }
-      if ($deliveryType && ('self' == $deliveryType->token))
-      {
-//        $this->widgetSchema['shop_id']->setOption('choices', DeliveryCalc::getShopListForSelfDelivery());
-      // если самовывоз
+      if ($deliveryType && ('self' == $deliveryType->token)) {
+        //        $this->widgetSchema['shop_id']->setOption('choices', DeliveryCalc::getShopListForSelfDelivery());
+        // если самовывоз
         if (!empty($taintedValues['shop_id'])) {
           // чтобы не срабатывал валидатор, так как при самовывозе этого поля в форме нет.
           unset($taintedValues['delivery_period_id']);
 
-//          $choices = $this->getDeliveryDateChoises(DeliveryCalc::getMinDateForShopSelfDelivery($taintedValues['shop_id'], true), 3);
-          $choices = $this->getDeliveryDateChoises(max(0, DeliveryCalc::getMinDateForShopSelfDelivery($taintedValues['shop_id'], true), $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3);
+          //          $choices = $this->getDeliveryDateChoises(DeliveryCalc::getMinDateForShopSelfDelivery($taintedValues['shop_id'], true), 3);
+          $choices = $this->getDeliveryDateChoises(max(0, DeliveryCalc::getMinDateForShopSelfDelivery($taintedValues['shop_id'], true), $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']), 3);
           $this->widgetSchema['delivered_at']->setOption('choices', $choices);
           $this->validatorSchema['delivered_at']->setOption('choices', array_keys($choices));
           $this->validatorSchema['delivery_period_id']->setOption('required', false);
-//            if (!$this->isOrderHaveEnougthInStock($taintedValues['shop_id'])) {
-//                $this->validatorSchema['delivered_at']->setOption('required', true);
-//                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1,3));
-//            } else {
-//                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3));
-//            }
+          //            if (!$this->isOrderHaveEnougthInStock($taintedValues['shop_id'])) {
+          //                $this->validatorSchema['delivered_at']->setOption('required', true);
+          //                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(1,3));
+          //            } else {
+          //                $this->widgetSchema['delivered_at']->setOption('choices', $this->getDeliveryDateChoises(max(0, $deliveryTypes[$taintedValues['delivery_type_id']]['date_diff']),3));
+          //            }
         }
       }
     }
@@ -430,12 +431,10 @@ class OrderStep1Form extends BaseOrderForm
   {
     parent::doUpdateObject($values);
 
-    if (!empty($values['delivery_type_id']))
-    {
+    if (!empty($values['delivery_type_id'])) {
       $deliveryType = DeliveryTypeTable::getInstance()->find($values['delivery_type_id']);
       // если самовывоз
-      if ($deliveryType && ('self' == $deliveryType->token))
-      {
+      if ($deliveryType && ('self' == $deliveryType->token)) {
         $this->object->address = $this->object->Shop->address;
       }
       else
