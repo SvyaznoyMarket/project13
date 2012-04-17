@@ -75,6 +75,14 @@ class productCardSoaActions extends myActions
 
     $this->view = 'compact';
 
+      $json = array (
+          'jsref' => $this->product->token,
+          'jstitle' => htmlspecialchars($this->product->name, ENT_QUOTES, 'UTF-8'),
+          'jsprice' => $this->product->price,
+          'jsimg' => $this->product->getMainPhotoUrl(3)
+      );
+      $this->setVar('json', json_encode($json));
+
   }
  /**
   * Executes preview action
