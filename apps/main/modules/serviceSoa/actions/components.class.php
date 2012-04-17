@@ -43,8 +43,12 @@ class serviceSoaComponents extends myComponents
     $list = $prodOb[0]->service;
     $result = array();
     $selectedNum = 0;
+    if (is_array($list) && count($list))
     foreach ($list as $next)
     {
+      if (!isset($next['site_token'])) {
+          continue;
+      }
       $sel = false;
       foreach ($this->services as $selected)
       {
