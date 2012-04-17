@@ -845,7 +845,19 @@ border-radius:5px;
 .goodsbarbig.mSmallBtns a.link1.active {
     background: url("img/buy_buttons.png") no-repeat scroll 0 -87px transparent;
 }
+.mBuyButtonBottom {
+padding: 20px 120px 0 0;
+}
+.mBuyButtonBottom.onleft{
+padding: 30px 10px 0 0;
+width:470px;
+}
 
+.mBButtonFont {
+font: 18px 'EnterTypeBold';
+width: 490px;
+padding: 32px 0 0 0;
+}
 /*.button {overflow:visible; background-image:url(/css/skin/img/bg_buttons.png); background-repeat:repeat-x; border:1px solid; font-weight:bold; cursor:pointer;
 border-radius:5px;
 -moz-border-radius:5px;
