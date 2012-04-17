@@ -1,5 +1,5 @@
 
-<div class='bMobDown mBR5 mW2 mW1000 p0' id="order1click-container">
+<div class='bMobDown mBR5 mW2 mW1000 p0' style="display:none" id="order1click-container">
 	<div class='bMobDown__eWrap'>
 		<div class='bMobDown__eClose top0 close'></div>
 		
@@ -7,7 +7,7 @@
 		<table class='bFast' cellpadding=0 cellspacing=0>
 			<td class='bFast__eItem'>
 				<div class='bFast__eArrow'></div>
-				<div class='bFast__eNum'>Артикул #454-9366</div>
+				<div class='bFast__eNum'>Артикул #<span data-bind="text: shortcut">454-9366</span></div>
 				<div class="bFast__eTitle"><a href="" data-bind="text: title">Смартфон Samsung Galaxy SII черный</a></div>
 				<div class='bFast__eCenter'><a href=""><img alt="" data-bind="attr: {src: icon}"/></a></div>
 				<div class='bFast__eCenter'>

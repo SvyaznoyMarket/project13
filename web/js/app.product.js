@@ -26,7 +26,7 @@ $(document).ready(function() {
 	
 	/* Product Counter */
 	if( $('.bCountSet').length ) {
-		var np = $('.bCountSet')
+		var np = $('.goodsbarbig .bCountSet')
 		var l1 = np.parent().find('.link1')
 		var l1href = l1.attr('href')
 		var l1cl = $('a.order1click-link')
@@ -40,20 +40,20 @@ $(document).ready(function() {
 			l1cl.attr('href', l1clhref + '&quantity=' + hm )
 		})
 		
-		$('.bCountSet__eP').click( function() {
+		$('.bCountSet__eP', np).click( function() {
 			if( $(this).hasClass('disabled') )
 				return false
-			$('.bCountSet').data('hm', $('.bCountSet').data('hm')*1 + 1 )
+			np.data('hm', np.data('hm')*1 + 1 )
 			np.trigger('update')
 			return false
 		})
-		$('.bCountSet__eM').click( function() {	
+		$('.bCountSet__eM', np).click( function() {	
 			if( $(this).hasClass('disabled') )
 				return false		
-			var hm = $('.bCountSet').data('hm')//how many
+			var hm = np.data('hm')//how many
 			if( hm == 1 )
 				return false
-			$('.bCountSet').data('hm', $('.bCountSet').data('hm')*1 - 1 )
+			np.data('hm', np.data('hm')*1 - 1 )
 			np.trigger('update')
 			return false
 		})		
@@ -240,6 +240,7 @@ $(document).ready(function() {
 			self.title = Model.jstitle
 			self.price = Model.jsprice
 			self.icon  = Model.jsbimg
+			self.shortcut  = Model.jsshortcut
 
 			self.quantity = ko.observable(2)
 			self.quantityTxt = ko.computed(function() {
