@@ -31,7 +31,7 @@ $(document).ready(function() {
 		var l1href = l1.attr('href')
 		var l1cl = $('a.order1click-link')
 		var l1clhref = l1cl.attr('href')
-		np.data('hm', np.find('span').text().replace(/\D/g,'') )
+		np.data('hm', np.first().find('span').text().replace(/\D/g,'') )
 		
 		np.bind('update', function() {
 			var hm = $(this).data('hm')
@@ -195,6 +195,7 @@ $(document).ready(function() {
 	
 	/* One Click Order */
 	if( $('.order1click-link').length ) {
+		
 		console.info( $('.order1click-link').data('model') )
 		var Model = $('.order1click-link').data('model')
 		Deliveries = [
@@ -239,6 +240,14 @@ $(document).ready(function() {
 			self.title = Model.jstitle
 			self.price = Model.jsprice
 			self.icon  = Model.jsbimg
+
+			self.quantity = ko.observable(2)
+			self.quantityTxt = ko.computed(function() {
+				return self.quantity() + ' шт.'
+			}, this)
+			self.total = ko.computed(function() {
+				return self.price * self.quantity()
+			}, this)
 			
 			self.dates = ko.observableArray( Deliveries[1].dates.slice(0) )
 			

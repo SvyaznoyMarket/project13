@@ -25,6 +25,9 @@ foreach ($p3d as $p3d_obj)
   product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
   product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
 </script>
+
+	
+
 <div class="goodsphoto">
     <a href="<?php echo $product->getMainPhotoUrl(4)  ?>" class="viewme" ref="image" onclick="return false">
         <?php
