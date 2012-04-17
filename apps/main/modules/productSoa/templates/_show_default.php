@@ -63,7 +63,7 @@ foreach ($p3d as $p3d_obj)
         <div class="font14 pb15"><?php echo $product->preview ?></div>
         <div class="clear"></div>
 
-        <?php if (!empty($product->label) && $product->price_average > 0 && $product->price < $product->price_average): ?>
+        <?php if ($product->haveToShowAveragePrice()): ?>
             <div class="mOurGray">
                 Средняя цена в магазинах города*<br><div class='mOurGray mIco'><?php include_partial('product/price', array('price' => $product->price_average, 'noStrong' => true, )) ?> &nbsp;</div>
             </div>
