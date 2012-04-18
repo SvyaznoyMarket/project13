@@ -259,8 +259,13 @@ $(document).ready(function() {
             })
 
             deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
-                Templating.assign($(el), { displayDate: deliveryType.displayDate })
+                Templating.assign($(el), { displayDate: deliveryTypeHolder.find('.order-delivery_date[data-value="'+deliveryType.date+'"]').data('displayValue') })
             })
+
+            if (true || deliveryType.date) {
+                deliveryTypeHolder.find('.order-delivery_date').removeClass('bBuyingDates__eCurrent')
+                deliveryTypeHolder.find('.order-delivery_date[data-value="'+deliveryType.date+'"]').addClass('bBuyingDates__eCurrent')
+            }
         },
 
         renderItem: function(itemHolder, data) {
@@ -388,7 +393,6 @@ $(document).ready(function() {
                         $('.order-delivery-holder[data-value="'+deliveryToken+'"]').effect('pulsate', { times: 2 }, 1000, function() {
                             $(this).find('.delivery-message').html('')
                         })
-                        //console.info(unmoved)
                     }
                 }
 
