@@ -167,6 +167,28 @@ $(document).ready(function() {
             // блок для недоступных товаров
             self.renderUnavailable()
 
+            if (data.unavailable.length) {
+                $.each(data.unavailable, function(i, itemToken) {
+                    var item = data.items[itemToken]
+
+                    if ((0 == item.stock) || (item.type != 'product')) return true
+                    if (confirm('Вы заказали товар "'+item.name+'" в количестве '+item.quantity+' шт. Доступно только '+item.stock+' шт. Заказать '+item.stock+'шт?')) {
+                        $('.bImgButton.mBacket[data-token="'+item.token+'"]').click()
+                        $.ajax({
+                            url: item.addUrl,
+                            async: false,
+                            success: function() {
+                                data.items[itemToken].quantity = data.items[itemToken].stock
+                                DeliveryMap.data(data)
+                            }
+                        })
+                    }
+                    else {
+                        $('.bImgButton.mBacket[data-token="'+item.token+'"]').click()
+                    }
+                })
+            }
+
             $('.order-delivery-holder').each(function(i, deliveryTypeHolder) {
                 deliveryTypeHolder = $(deliveryTypeHolder)
                 self.renderDeliveryType(deliveryTypeHolder)
@@ -448,10 +470,6 @@ $(document).ready(function() {
     $('body').delegate('.bImgButton.mBacket', 'click', function(e) {
         e.preventDefault()
 
-        if (!confirm('Удалить выбранный товар из корзины?')) {
-           return
-        }
-
         var el = $(this)
         var itemToken = el.data('token')
 
@@ -531,6 +549,7 @@ $(document).ready(function() {
                 $('#order-loader-holder').html('')
                 $('#order-form-part2').show('fast')
             })
+
 
             DeliveryMap.renderUndeliveredMessage(el.val())
         }

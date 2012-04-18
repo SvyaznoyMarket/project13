@@ -8,6 +8,7 @@ class Order_ItemView
   public $id;
   public $type; // товар или услуга
   public $token;
+  public $stock;
   public $name;
   public $image;
   public $price;

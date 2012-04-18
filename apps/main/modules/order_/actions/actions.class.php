@@ -408,7 +408,6 @@ class order_Actions extends myActions
       $this->setTemplate('error');
       return sfView::SUCCESS;
     }
-    //myDebug::dump($result, 1);
 
     $deliveryMapView = new Order_DeliveryMapView();
 
@@ -481,6 +480,12 @@ class order_Actions extends myActions
         $itemView->type = 'products' == $itemType ? Order_ItemView::TYPE_PRODUCT : Order_ItemView::TYPE_SERVICE;
         $itemView->url = '';
         $itemView->token = $itemView->type.'-'.$itemView->id;
+        $itemView->stock = isset($coreData['stock']) ? $coreData['stock'] : 0;
+        $itemView->addUrl =
+          'products' == $itemType
+            ? $this->generateUrl('cart_add', array('product' => $recordData['id'], 'quantity' => $coreData['stock']))
+            : ''
+        ;
 
         foreach ($coreData['deliveries'] as $deliveryToken => $deliveryData)
         {
