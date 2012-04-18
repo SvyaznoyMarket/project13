@@ -3,6 +3,8 @@
 <input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>' />
 <input disabled="disabled" id="order-validator" type="hidden" data-value='{"order[recipient_first_name]":"Заполните поле", "order[recipient_phonenumbers]":"Заполните поле", "order[address]":"Заполните поле", "order[payment_method_id]":"Выберите способ оплаты", "order[agreed]":"Необходимо согласие"}' />
 
+<div class="pb15">< <a href="<?php echo url_for('cart') ?>">Вернуться к покупкам</a></div>
+
 <form id="order-form" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
 
   <div id="order-form-part1" class='bBuyingInfo hidden'>
@@ -32,7 +34,7 @@
     </div>
 
     <dl class='bBuyingLine mSumm order-total-container'>
-      <dt><a href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
+      <dt><a class="red" style="border-color: #cb3735" href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
       <dd>
         <div>Сумма всех заказов <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
       </dd>
@@ -135,7 +137,7 @@
 
     <dl class='bBuyingLine mConfirm'>
 
-      <dt>< <a href="<?php echo url_for('cart') ?>">Вернуться к покупкам</a></dt>
+      <dt>&nbsp;</dt>
       <dd>
         <div><a id="order-submit" class='bBigOrangeButton' href="#">Завершить оформление</a></div>
       </dd>

@@ -38,6 +38,8 @@ foreach ($dates as $i => $date) {
 
 <div data-value="<?php echo $deliveryType->token ?>" class="bBuyingLineWrap order-delivery-holder">
 
+  <div class="delivery-message red"></div>
+
   <dl class="bBuyingLine">
     <dt>
       <h2>
@@ -77,7 +79,7 @@ foreach ($dates as $i => $date) {
         <?php if ($deliveryType->shop): ?>
           <span data-assign='{"shopName": ["text", "_value"]}'><?php echo $deliveryType->shop->name ?></span>
           <p></p>
-          <a class="bBigOrangeButton order-shop-button" data-delivery="<?php echo $deliveryType->token ?>" style="display: none; font-size: 16px; padding: 6px 30px; border: 1px solid #E26500;" href="#">Другой магазин</a>
+          <a class="bBigOrangeButton order-shop-button" data-delivery="<?php echo $deliveryType->token ?>" style="font-size: 16px; padding: 6px 30px; border: 1px solid #E26500;" href="#">Другой магазин</a>
         <?php endif ?>
         </dt>
         <dd class="order-item-holder" data-template="#order-item-template"></dd>
@@ -106,7 +108,7 @@ foreach ($dates as $i => $date) {
 
     <p>
       <a data-assign='{"deleteUrl": ["attr", ["href", "_value"]], "token": ["attr", ["data-token", "_value"]]}' href="#" class="bImgButton mBacket" data-token=""></a>
-      <!--<a class="bImgButton mArrows order-item_delivery-button" href="#" data-assign='{"token": ["attr", ["data-value", "_value"]]}' data-value='' data-template="#order-item_delivery-template"></a>-->
+      <a class="bImgButton mArrows order-item_delivery-button" href="#" data-assign='{"token": ["attr", ["data-value", "_value"]]}' data-value='' data-template="#order-item_delivery-template"></a>
     </p>
     <img data-assign='{"image": ["attr", ["src", "_value"]], "name": ["attr", ["alt", "_value"]]}' src="" alt="" />
 

@@ -275,7 +275,7 @@ $(document).ready(function() {
                 Templating.assign($(el), data)
             })
 
-            if (true || Object.keys(data.deliveries).length <= 1) {
+            if (true || (Object.keys(data.deliveries).length <= 1)) {
                 itemContainer.find('.order-item_delivery-button').remove()
             }
 
@@ -313,12 +313,22 @@ $(document).ready(function() {
         getUndeliveredItem: function(deliveryTypeId) {
             var data = this.data()
 
+            var currentDeliveryType = {}
+
             var allItems = Object.keys(data.items)
             var items = []
-            $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
+            $.each(data.deliveryTypes, function(token, deliveryType) {
                 if (deliveryType.id == deliveryTypeId) {
-                    items = deliveryType.items
+                    currentDeliveryType = deliveryType
                     return false
+                }
+            })
+
+            $.each(data.deliveryTypes, function(token, deliveryType) {
+                if (((currentDeliveryType.type == 'standart') && (deliveryType.type == 'standart')) || (deliveryType.token == currentDeliveryType.token)) {
+                    $.each(deliveryType.items, function (i, item) {
+                        items.push(item)
+                    })
                 }
             })
 
@@ -374,7 +384,10 @@ $(document).ready(function() {
                     DeliveryMap.render()
 
                     if (unmoved.length) {
-                        $('.order-delivery-holder[data-value="'+deliveryToken+'"]').effect('pulsate', {}, 500)
+                        $('.order-delivery-holder[data-value="'+deliveryToken+'"]').find('.delivery-message').html('<div class="red">Невозможно переместить товары</div>')
+                        $('.order-delivery-holder[data-value="'+deliveryToken+'"]').effect('pulsate', { times: 2 }, 1000, function() {
+                            $(this).find('.delivery-message').html('')
+                        })
                         //console.info(unmoved)
                     }
                 }
@@ -498,10 +511,10 @@ $(document).ready(function() {
         var url = $('#order-form').data('deliveryMapUrl')
 
         $('#order-form-part2').hide()
-        $('.order-shop-button').hide()
+        $('.order-shop-button:first').hide()
 
         if ('self' == el.data('deliveryType')) {
-            $('.order-shop-button')
+            $('.order-shop-button:first')
                 //.css('display', 'block')
                 .show()
         }
@@ -547,8 +560,9 @@ $(document).ready(function() {
             if (delivery.token == fromDeliveryTypeToken) return
 
             var deliveryEl = deliveryTemplate.clone()
+            var date = DeliveryMap.data().deliveryTypes[delivery.token].date
             var data = {
-                name: delivery.name,
+                name: delivery.name + (date ? (' ' + date) : ''),
                 route: JSON.stringify({ item: item.token, from: fromDeliveryTypeToken, to: delivery.token })
             }
             Templating.assign(deliveryEl, data)
@@ -565,6 +579,15 @@ $(document).ready(function() {
                     var route = el.data('value')
                     DeliveryMap.moveItem(route.item, route.from, route.to)
                     $(this).remove()
+
+                    // проверка на пустую дату
+                    var data = DeliveryMap.data()
+                    if (!data.deliveryTypes[route.to].date) {
+                        data.deliveryTypes[route.to].date = data.items[route.item].deliveries[route.to].dates[0].value
+                        DeliveryMap.data(data)
+                    }
+
+                    DeliveryMap.render()
                 }
             }
         })

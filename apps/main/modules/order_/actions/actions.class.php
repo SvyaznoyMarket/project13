@@ -10,6 +10,11 @@
  */
 class order_Actions extends myActions
 {
+  public function preExecute()
+  {
+    $this->getRequest()->setParameter('_template', 'order');
+  }
+
  /**
   * Executes index action
   *
@@ -145,6 +150,8 @@ class order_Actions extends myActions
    */
   public function executeComplete(sfWebRequest $request)
   {
+    $request->setParameter('_template', 'order_complete');
+
     /* @var myUser */
     $user = $this->getUser();
 

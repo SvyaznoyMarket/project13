@@ -12,7 +12,7 @@
   <?php include_partial('default/googleAnalytics') ?>
 </head>
 
-<body data-template="order">
+<body data-template="<?php echo $sf_request->getParameter('_template') ?>">
 <div class="graying" style="opacity: 0.5; display: none;"></div>
 <?php include_slot('js_template') ?>
 
@@ -30,7 +30,7 @@
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
-<?php if ('live' == sfConfig::get('sf_environment')): ?>
+<?php if ( true || 'live' == sfConfig::get('sf_environment')): ?>
 <!-- Yandex.Metrika counter -->
 <div style="display:none;">
   <script type="text/javascript">
@@ -52,50 +52,9 @@
 <!-- /Yandex.Metrika counter -->
 
 <!-- AdHands -->
-  <?php
-  //если получена сумма и id заказа, добавим доплонительный код в adHands
-  ob_start();
-  include_slot('complete_order_sum');
-  $orderSum = ob_get_contents();
-  ob_end_clean();
-  ob_start();
-  include_slot('complete_order_id');
-  $orderId = ob_get_contents();
-  ob_end_clean();
-  ?>
-<script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
-<script type="text/javascript">
-  var report = new adhandsReport('http://sedu.adhands.ru/site/');
-  report.id('1053');
-    <?php
-    if (isset($orderSum) && isset($orderId))
-    {
-      foreach ($orderSum as $i) {
-        echo "report.data('am','" . $i . "')";
-      }
-      foreach ($orderId as $i) {
-        echo "report.data('ordid','" . $orderId . "')";
-      }
-    }
-    ?>
-  report.send();
-</script>
-<noscript>
-  <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123"
-       style="display:none;">
-</noscript>
-<!-- /AdHands -->
-<script type="text/javascript">
-  (function () {
-    <?php if (isset($orderSum) && $orderSum > 0 && isset($orderId) && $orderId > 0): ?>
-      var orderSum = '<?php echo $orderSum ?>';
-      document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape(orderSum) + '&r=' + Math.random() + '" ></sc' + 'ript>');
-      <?php else: ?>
-      document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>');
-      <?php endif ?>
-  })();
-</script>
-  <?php endif ?>
+<?php if (has_slot('adhands_report')) include_slot('adhands_report') ?>
+
+<?php endif ?>
 
 <?php if (has_slot('seo_counters_advance')) include_slot('seo_counters_advance') ?>
 
