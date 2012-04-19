@@ -219,7 +219,7 @@ class ProductFactory
         //есть на складе, если есть хоть где-нибудь
         $product->is_instock = $product->state['is_shop'] || $product->state['is_store'] || $product->state['is_supplier'];
 
-        if ($product->is_instock && $product->price>0) {
+        if ($product->state['is_buyable'] && $product->price>0) {
             $product->is_insale = 1;
         } else {
             $product->is_insale = 0;
