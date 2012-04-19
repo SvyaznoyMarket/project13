@@ -68,9 +68,9 @@
 								<!-- /ko -->
 							</a>
 					</td></tr>
-					<!-- /ko -->
+					
 
-					<tr><td colspan="2" data-bind="style: { display: showMap() ? 'block' : 'none' }">
+					<tr><td colspan="2" data-bind="style: { display: showMap() ? 'table-cell' : 'none' }">
 						<div class='bMapShops__eMapWrap' id="mapPopup" style="display:none"> </div>
 						<div id="map-info_window-container" data-bind="with: pickedShop" style="display:none">
 							<div class='bMapShops__ePopupRel'>
@@ -81,6 +81,7 @@
 							</div>
 						</div>					
 					</td></tr>
+					<!-- /ko -->
 
 					<!-- ko foreach: textfields -->
 					<tr>
