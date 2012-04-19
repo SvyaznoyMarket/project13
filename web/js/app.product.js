@@ -297,8 +297,7 @@ console.info( 'Deliveries: ', Deliveries )
 			self.chosenDate = ko.observable( self.dates()[0] )
 			self.pickDate = function( item ) {
 				self.chosenDate( item )
-				//shops mod
-console.info(item)				
+				//shops mod		
 				if( 'shopIds' in item ) 
 					if( item.shopIds.length > 0 ) {
 						self.shops.removeAll()// = ko.observableArray( Deliveries['self'].shops.slice(0) )
@@ -308,6 +307,7 @@ console.info(item)
 								self.shops.push( Deliveries['self'].shops[key] )
 						}
 					}
+				self.showMarkers()	
 			}
 			
 			self.shops = ko.observableArray( Deliveries['self'].shops.slice(0) )
@@ -322,9 +322,6 @@ console.info(item)
 						self.pickedShop( self.shops()[i] )
 						return
 					}
-			}
-			self.shopChoose = function() {
-console.info(arguments)			
 			}
 			
 			self.showMap = ko.observable( false )
@@ -396,7 +393,7 @@ console.info(arguments)
 			}) )
 			
 			self.validateField = function( textfield, e ) {
-console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.currentTarget.value ) )
+//console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.currentTarget.value ) )
 				var valerror = false
 				if( e.currentTarget.value.replace(/\s/g, '') == '' ||  !textfield.regexp.test( e.currentTarget.value ) ) {
 					valerror = true
@@ -415,7 +412,7 @@ console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.current
 			}
 
 			self.validateForm = function() {
-console.info('validateForm')	
+//console.info('validateForm')	
 				if( self.formStatus() !== 'typing' ) // double or repeated click
 					return 
 				//change title
@@ -423,7 +420,7 @@ console.info('validateForm')
 				
 				//validate fields
 				$('#oneClick input').trigger('change')
-console.info( 'CHECK', self.formStatus()	)
+//console.info( 'CHECK', self.formStatus()	)
 				if( self.formStatus() === 'typing' ) // validation error
 					return
 				//form request
