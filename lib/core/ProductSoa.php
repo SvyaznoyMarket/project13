@@ -12,6 +12,11 @@ class ProductSoa
     public $announce;
     public $cart_quantity;
     public $rating;
+    public $state;
+    public $related = array();
+    public $accessories = array();
+    public $model = array();
+    public $service = array();
 
 
     const LABEL_SALE = 1;

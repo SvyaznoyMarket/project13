@@ -246,7 +246,7 @@ $(document).ready(function(){
 			'id'   : $(jn).attr('ref'),
 			'title': $('h3 a', jn).html(),
 			'price': $('.price', jn).html(),
-			'img'  : $('.photo img', jn).attr('src')
+			'img'  : $('.photo img.mainImg', jn).attr('src')
 		}
 		return item
 	}
@@ -260,7 +260,7 @@ $(document).ready(function(){
 		if (! currentItem ) return false
 
 		if( ltbx ){
-			var tmp = $(this).parent().parent().parent().find('.photo img')
+			var tmp = $(this).parent().parent().parent().find('.photo img.mainImg')
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}
 		var boughtItem = currentItem
