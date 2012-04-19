@@ -29,12 +29,17 @@
 <div class="clear"></div>
 
 <!-- Goods -->
-<div class="goodslist">
-  <?php
-  foreach ($categoryList as $category)
-    render_partial('productCatalog_/templates/_category_preview_.php', array('category' => $category, 'rootCategory' => $rootCategory));
-  ?>
-</div>
+
+<?php if(count($categoryList) > 0): ?>
+  <div class="goodslist">
+    <?php foreach ($categoryList as $category): ?>
+      <?php render_partial('productCatalog_/templates/_category_preview_.php', array('category' => $category, 'rootCategory' => $rootCategory));?>
+    <?php endforeach ?>
+  </div>
+<?php else: ?>
+  <p>Нет категорий</p>
+<?php endif ?>
+
 <!-- /Goods -->
 
 <?php slot('seo_counters_advance') ?>
