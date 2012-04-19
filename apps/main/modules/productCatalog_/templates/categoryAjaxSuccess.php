@@ -6,4 +6,4 @@
  * @var $sf_data
  */
 if ($allOk)
-  include_partial('product_/list_', $sf_data);
+  require APP_MAIN_MODULES_PATH.'/product_/templates/_list_.php';

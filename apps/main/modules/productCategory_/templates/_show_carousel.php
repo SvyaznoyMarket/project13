@@ -38,7 +38,7 @@ $view = $category->getHasLine() ? 'line' : 'compact';
 
 <div class="carousel">
   <?php $i = 0; foreach ($productList as $item): $i++; ?>
-  <?php include_partial('productCatalog_/show_', array('view' => $view, 'ii' => $i, 'item' => $item, 'maxPerPage' => $maxPerPage)) ?>
+  <?php render_partial('product_/templates/_show_.php', array('view' => $view, 'ii' => $i, 'item' => $item, 'maxPerPage' => $maxPerPage)) ?>
   <?php endforeach ?>
 </div>
 <!-- Carousel -->

@@ -18,13 +18,13 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-<?php include_partial('productCatalog_/leftCategoryList_', $sf_data) ?>
-<?php include_partial('productCatalog_/filter_', $sf_data) ?>
-<?php include_partial('default/banner_left') ?>
+<?php require '_leftCategoryList_.php' ?>
+<?php require '_filter_.php' ?>
+<?php require APP_MAIN_MODULES_PATH.'/default/templates/_banner_left.php' ?>
 <?php include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory, 'productPager' => $productPager)) ?>
 <?php end_slot() ?>
 
-<?php include_partial('productCatalog_/product_list_', $sf_data) ?>
+<?php require '_product_list_.php' ?>
 
 <?php slot('seo_counters_advance') ?>
 <?php include_component('productCategory', 'seo_counters_advance', array('unitId' => $productCategory->root_id)) ?>

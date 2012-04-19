@@ -1,5 +1,7 @@
 <?php
 
+define('APP_MAIN_MODULES_PATH', realpath(__DIR__.'/../apps/main/modules/'));
+
 // autoload fix
 require_once dirname(__FILE__).'/../lib/vendor/symfony/lib/autoload/sfCoreAutoload.class.php';
 sfCoreAutoload::register();

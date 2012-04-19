@@ -3,4 +3,4 @@
  * @var $list
  */
 foreach ($list as $item)
-  include_partial('product_/show_', array('view' => 'expanded', 'item' => $item));
+  render_partial('product_/templates/_show_.php', array('view' => 'expanded', 'item' => $item));

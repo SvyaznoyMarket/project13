@@ -6,7 +6,7 @@
 ?>
 <?php $i = 0;
 foreach ($list as $item): $i++; ?>
-<?php include_partial('product_/show_', array('view' => $view, 'item' => $item)) ?>
+<?php render_partial('product_/templates/_show_.php', array('view' => $view, 'item' => $item)) ?>
 <?php if (!($i % 3)): ?>
   <div class="line"></div>
   <?php endif ?>

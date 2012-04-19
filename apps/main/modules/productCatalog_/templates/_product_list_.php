@@ -70,7 +70,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 <div class="line"></div>
 <?php endif ?>
 
-<?php include_partial('product_/list_', array('productPager' => $productPager, 'ajax_flag' => false, 'view' => $view,)) ?>
+<?php render_partial('product_/templates/_list_.php', array('productPager' => $productPager, 'view' => $view,)) ?>
 
 <?php if (count($productPager->getLinks()) > 1): ?>
 <div data-url="<?php echo $infinityUrl; ?>"

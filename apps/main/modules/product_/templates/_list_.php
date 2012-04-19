@@ -6,23 +6,38 @@
  * @var ProductCorePager|sfOutputEscaper $productPager
  */
 $ajax_flag = isset($ajax_flag) ? $ajax_flag : false;
-$productPager = $productPager->getRawValue();
 $list = $productPager->getResults();
 ?>
 
-<?php if (count($list) == 0) { ?>
+<?php if ($productPager->getNbResults() == 0) { ?>
 <div class="clear"></div>
 <p>нет товаров</p>
 <?php
 } else {
   if ($ajax_flag) {
-    if ($view == 'line') {
-      $include = 'list_ajax_compact_';
-    } else {
-      $include = 'list_ajax_' . $view . '_';
-    }
-    include_partial('product_/'.$include, array('list' => $list, 'view' => $view));
+      switch($view){
+        case 'line':
+        case 'compact':
+          require '_list_ajax_compact_.php';
+          break;
+        case 'expanded':
+          require '_list_ajax_expanded_.php';
+          break;
+      }
   } else {
-    include_partial('product_/list_' . $view . '_', array('list' => $list, 'view' => $view));
+    switch($view){
+      case 'compact':
+        require '_list_compact_.php';
+        break;
+      case 'expanded':
+        require '_list_expanded_.php';
+        break;
+      case 'line':
+        require '_list_line_.php';
+        break;
+      case 'view':
+        require '_list_view_.php';
+        break;
+    }
   }
 }

@@ -18,13 +18,13 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-<?php include_partial('productCatalog_/leftCategoryList_', $sf_data) ?>
-<?php include_partial('productCatalog_/filter_', $sf_data) ?>
-<?php include_partial('default/banner_left') ?>
+<?php require '_leftCategoryList_.php'; ?>
+<?php require '_filter_.php'; ?>
+<?php require APP_MAIN_MODULES_PATH.'/default/templates/_banner_left.php' ?>
 <?php include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
-<?php include_partial('productCatalog_/plugs/plug') ?>
+<?php require '_plugs/plug.php' ?>
 
 <div class="clear"></div>
 
@@ -32,7 +32,7 @@
 <div class="goodslist">
   <?php
   foreach ($categoryList as $category)
-    include_partial('productCatalog_/category_preview_', array('category' => $category, 'rootCategory' => $rootCategory));
+    render_partial('productCatalog_/templates/_category_preview_.php', array('category' => $category, 'rootCategory' => $rootCategory));
   ?>
 </div>
 <!-- /Goods -->

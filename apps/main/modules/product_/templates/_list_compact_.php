@@ -7,7 +7,7 @@
 <?php $last_line = isset($last_line) ? $last_line : true ?>
 <div class="goodslist"<?php echo (4 == $in_row) ? ' style="width: 940px; float: none; margin: 0;"' : ''?>>
   <?php $i = 0; foreach ($list as $item): $i++; ?>
-  <?php include_partial('product_/show_', array('view' => 'compact', 'item' => $item)); ?>
+  <?php render_partial('product_/templates/_show_.php', array('view' => 'compact', 'item' => $item)); ?>
 
   <?php if (!($i % $in_row) && (count($list) == $i ? $last_line : true)): ?>
     <div class="line"></div>

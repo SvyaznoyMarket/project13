@@ -55,7 +55,7 @@
         <h3><a href="<?php echo $item->getLink() ?>"><?php echo $item->getName() ?></a></h3>
 
         <div class="goodsbar mSmallBtns mR">
-          <?php include_component('cart_', 'buy_button', array('product' => $item, 'quantity' => 1)) ?>
+          <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
         </div>
         <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item->getPrice() ?></span> <span
           class="rubl">p</span></div>

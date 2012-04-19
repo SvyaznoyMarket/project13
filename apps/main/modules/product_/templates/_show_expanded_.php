@@ -47,7 +47,7 @@
         class="rubl">p</span></b></span>
 
       <div class="goodsbar mSmallBtns">
-        <?php include_component('cart_', 'buy_button', array('product' => $item, 'quantity' => 1)) ?>
+        <?php render_partial('cart_/templates/_buy_button.php', array('product' => $item)) ?>
       </div>
       <?php if ($item->getIsBuyable()): ?>
       <noindex>

@@ -5,7 +5,7 @@
  */
 foreach ($categoryTagList as $productTagCategory)
 {
-  include_partial('productCategory_/show_carousel', array(
+  render_partial('productCategory_/templates/_show_carousel.php', array(
     'productTagCategory' => $productTagCategory,
     'maxPerPage' => $maxPerPage,
   ));
