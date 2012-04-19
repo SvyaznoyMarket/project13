@@ -67,7 +67,8 @@ class regionActions extends myActions
 
   public function executeRedirect(sfWebRequest $request)
   {
-    $region = RegionTable::getInstance()->getByToken($request['region']);
+//    $region = RegionTable::getInstance()->getByToken($request['region']);
+    $region = RegionTable::getInstance()->findOneBy('core_id', intval($request['region']));
 
     if ($region)
     {

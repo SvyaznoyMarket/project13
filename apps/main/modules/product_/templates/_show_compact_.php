@@ -13,7 +13,7 @@
       <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
       <?php endif; ?>
       <?php $title = $item->getName() . ' - ' . $item->getMainCategory()->getName();?>
-      <img src="<?php echo $item->getMediaImageUrl() ?>"
+      <img class="mainImg" src="<?php echo $item->getMediaImageUrl() ?>"
            alt="<?php echo $title ?>"
            title="<?php echo $title ?>"
            width="160" height="160"/>
@@ -44,7 +44,7 @@
             <?php if ($label = $item->getMainLabel()): ?>
             <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
             <?php endif; ?>
-            <img src="<?php echo $item->getMediaImageUrl() ?>" alt="<?php echo $title ?>" title="<?php echo $title ?>"
+            <img class="mainImg" src="<?php echo $item->getMediaImageUrl() ?>" alt="<?php echo $title ?>" title="<?php echo $title ?>"
                  width="160" height="160"/>
           </a>
         </div>
