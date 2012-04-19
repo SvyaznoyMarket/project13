@@ -28,7 +28,9 @@ foreach ($p3d as $p3d_obj)
   product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
 </script>
 
-	
+<?php slot('after_body_block') ?>
+<?php include_partial('productSoa/oneclickTemplate', array()) ?>
+<?php end_slot() ?>
 
 <div class="goodsphoto">
     <a href="<?php echo $product->getMainPhotoUrl(4)  ?>" class="viewme" ref="image" onclick="return false">
@@ -285,8 +287,6 @@ foreach ($p3d as $p3d_obj)
   </div>
 </div>
 <!-- /Media -->
-
-<?php include_partial('productSoa/oneclickTemplate', array()) ?>
 
 <div id="ajaxgoods" class="popup width230" style="display: none">
   <div  style="padding: 15px 15px 20px 5px">
