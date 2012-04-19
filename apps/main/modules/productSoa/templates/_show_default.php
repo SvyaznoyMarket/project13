@@ -191,6 +191,7 @@ foreach ($p3d as $p3d_obj)
 
 <?php include_component('productSoa', 'product_model', array('product' => $product,)) ?>
 
+<div class="clear"></div>
 
 <?php if (!empty($product->description)): ?>
     <!-- Information -->
