@@ -17,6 +17,7 @@ class CoreClient
   /** @var callback[] */
   private $callbacks = array();
   private $resources = array();
+  private $isOnExecute = false;
 
   /**
    * @return CoreClient
@@ -58,8 +59,7 @@ class CoreClient
       }
       $info = curl_getinfo($connection);
       if ($this->parameters->get('log_enabled')) {
-        $this->logger->info('Core response resource: ' . $connection);
-        $this->logger->info('Core response info: ' . $this->encodeInfo($info));
+        $this->logger->info('Core response '.$connection.' : ' . $this->encodeInfo($info));
       }
       if ($info['http_code'] >= 300) {
         throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
@@ -108,7 +108,13 @@ class CoreClient
    */
   public function execute()
   {
-    if (!$this->multiHandler)
+    if($this->isOnExecute){
+      if ($this->parameters->get('log_enabled')) {
+        $this->logger->err('Call execute at callback - ignored');
+      }
+      return;
+    }
+    if (!is_resource($this->multiHandler))
       throw new CoreClientException('No query to execute');
 
     $active = null;
@@ -119,18 +125,22 @@ class CoreClient
         if ($code == CURLM_OK) {
           // if one or more descriptors is ready, read content and run callbacks
           while ($done = curl_multi_info_read($this->multiHandler)) {
-            $this->logger->info('Core response done: ' . print_r($done, 1));
+
             $ch = $done['handle'];
             $info = curl_getinfo($ch);
             if ($this->parameters->get('log_enabled')) {
-              $this->logger->info('Core response resurce: ' . $ch);
-              $this->logger->info('Core response info: ' . $this->encodeInfo($info));
+              $this->logger->info('Core response '.$ch.' done: ' . $this->encodeInfo($info));
             }
             if (curl_errno($ch) > 0)
               throw new CoreClientException(curl_error($ch), curl_errno($ch));
             $content = curl_multi_getcontent($ch);
             if ($info['http_code'] >= 300) {
-              throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
+              throw new CoreClientException(sprintf(
+                "Invalid http code: %d, \nResponse: %s, %s",
+                $info['http_code'],
+                $content,
+                print_r($info,1)
+              ));
             }
             $responseDecoded = $this->decode($content);
             if ($this->parameters->get('log_data_enabled')) {
@@ -143,10 +153,18 @@ class CoreClient
         } elseif ($code != CURLM_CALL_MULTI_PERFORM) {
           throw new CoreClientException("multi_curl failure [$code]");
         }
+        if($still_executing == 0){
+          curl_multi_exec($this->multiHandler, $still_executing);
+        }
       } while ($still_executing);
     } catch (Exception $e) {
       $error = $e;
     }
+
+    if ($this->parameters->get('log_enabled')) {
+      $this->logger->info('Close current multiquery queue');
+    }
+
     // clear multi container
     foreach ($this->resources as $resource)
       curl_multi_remove_handle($this->multiHandler, $resource);
@@ -155,7 +173,9 @@ class CoreClient
     $this->callbacks = array();
     $this->resources = array();
     if ($error) {
-      $this->logger->err((string)$error);
+      if ($this->parameters->get('log_enabled')) {
+        $this->logger->err((string)$error);
+      }
       throw $error;
     }
   }
@@ -174,12 +194,6 @@ class CoreClient
       . str_replace('.', '/', $action)
       . '?' . http_build_query(array_merge($params, array('client_id' => $this->parameters->get('client_code'))));
 
-    if ($this->parameters->get('log_enabled')) {
-      $this->logger->info('Send core requset ' . ($isPostMethod ? 'post' : 'get') . ': ' . $query);
-      if ($data)
-        $this->logger->info('Request post:' . $this->encode($data));
-    }
-
     $connection = curl_init();
     curl_setopt($connection, CURLOPT_HEADER, 0);
     curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
@@ -188,6 +202,12 @@ class CoreClient
     if ($isPostMethod) {
       curl_setopt($connection, CURLOPT_POST, true);
       curl_setopt($connection, CURLOPT_POSTFIELDS, http_build_query($data));
+    }
+
+    if ($this->parameters->get('log_enabled')) {
+      $this->logger->info('Send core request ' . $connection.' '. ($isPostMethod ? 'post' : 'get') . ': ' . $query);
+      if ($data)
+        $this->logger->info('Request post:' . $this->encode($data));
     }
     return $connection;
   }

@@ -55,7 +55,27 @@ class ProductCategoryRepository
     return $this->fromArray($data);
   }
 
-  private function fromArray(array $categoryDataList)
+  /**
+   * @param callback $callback
+   * @param int $categoryId core category id
+   * @param int $maxLevel
+   * @param bool $loadParents
+   */
+  public function getTreeAsync($callback, $categoryId, $maxLevel = null, $loadParents = false)
+  {
+    $self = $this;
+    CoreClient::getInstance()->addQuery('category.tree', array(
+      'root_id' => $categoryId,
+      'max_level' => $maxLevel,
+      'is_load_parents' => $loadParents,
+      'region_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ), array(), function($data) use($self, $callback){
+      /** @var $self ProductCategoryRepository */
+      $callback($self->fromArray($data));
+    });
+  }
+
+  public function fromArray(array $categoryDataList)
   {
     $list = array();
     foreach ($categoryDataList as $categoryData)

@@ -100,6 +100,23 @@ class ProductRepository extends ObjectRepository
     ), $loadDynamic);
   }
 
+  /**
+   * Load ProductEntity by id from core.
+   *
+   * @param $callback
+   * @param array $idList
+   * @param bool $loadDynamic is load dynamic data
+   * @return ProductEntity[]
+   */
+  public function getListByIdAsync($callback, array $idList, $loadDynamic = false)
+  {
+    if (empty($idList)){
+      $callback(array());
+      return;
+    }
+    $this->getListFyFilterAsync($callback, array('id' => $idList), $loadDynamic);
+  }
+
   public function getRelated(ProductRelatedCriteria $criteria, $order = null)
   {
     $params = array(
@@ -132,6 +149,41 @@ class ProductRepository extends ObjectRepository
     }, $q->getResult());
     $this->applyPager($criteria, $q);
     return $this->get($result);
+  }
+
+  /**
+   * @param $callback
+   * @param array $filter
+   * @param bool $loadDynamic
+   * @return array
+   */
+  private function getListFyFilterAsync($callback, array $filter, $loadDynamic = false)
+  {
+    $data = array();
+    $self = $this;
+    $count = 1;
+    $cb = function($response) use (&$self, &$data, &$callback, &$count)
+    {
+      /** @var $self ProductRepository */
+      if (empty($data))
+        $data = $response;
+      else // array_merge do not combine equals keys
+        foreach ($response as $key => $value)
+          $data[$key] = array_merge($data[$key], $value);
+      $count--;
+      if($count === 0)
+      {
+        $list = array();
+        foreach ($data as $item)
+          $list[] = $self->create($item);
+        $callback($list);
+      }
+    };
+    $this->coreClient->addQuery('product/get-static', $filter, array(), $cb);
+    if ($loadDynamic){
+      $this->coreClient->addQuery('product/get-dynamic', $filter, array(), $cb);
+      $count++;
+    }
   }
 
   /**

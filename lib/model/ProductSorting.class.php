@@ -58,6 +58,12 @@ class ProductSorting
     return $this->list[$this->active]['direction'];
   }
 
+  public function getCoreSort()
+  {
+    $active = $this->getActive();
+    return array($active['name'] => $active['direction']);
+  }
+
   public function setActive($name, $direction = 'asc')
   {
     $id = $name."_".$direction;

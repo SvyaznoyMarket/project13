@@ -29,6 +29,26 @@ class ListingRepository
   }
 
   /**
+   * @param $callback
+   * @param array $filters
+   * @param array $sort
+   * @param null $offset
+   * @param null $limit
+   */
+  public function getListingAsync($callback, $filters = array(), $sort = array(), $offset = null, $limit = null)
+  {
+    CoreClient::getInstance()->addQuery("listing.list", array(
+      "filter" => array(
+        'filters' => $filters,
+        'sort' => $sort,
+        'offset' => $offset,
+        'limit' => $limit,
+      ),
+      "region_id" => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ), array(), $callback);
+  }
+
+  /**
    *
    * @param array $filterList
    * <pre>

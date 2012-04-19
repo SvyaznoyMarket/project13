@@ -220,6 +220,13 @@ function get_partial($templateName, $vars = array())
   return $view->render();
 }
 
+function render_partial($templatePath, $vars = array())
+{
+  extract($vars);
+  sfContext::getInstance()->getLogger()->info('Render '.$templatePath);
+  require APP_MAIN_MODULES_PATH.DIRECTORY_SEPARATOR.ltrim($templatePath, '/');
+}
+
 /**
  * Begins the capturing of the slot.
  *
