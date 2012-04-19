@@ -1,100 +1,108 @@
 
 <div class='bMobDown mBR5 mW2 mW1000 p0' style="display:none" id="order1click-container">
+<form id="oneClick" action="">
 	<div class='bMobDown__eWrap'>
 		<div class='bMobDown__eClose top0 close'></div>
 		
 		
 		<table class='bFast' cellpadding=0 cellspacing=0>
 			<td class='bFast__eItem'>
-				<div class='bFast__eArrow'></div>
-				<div class='bFast__eNum'>Артикул #<span data-bind="text: shortcut">454-9366</span></div>
-				<div class="bFast__eTitle"><a href="" data-bind="text: title">Смартфон Samsung Galaxy SII черный</a></div>
-				<div class='bFast__eCenter'><a href=""><img alt="" data-bind="attr: {src: icon}"/></a></div>
-				<div class='bFast__eCenter'>
-					<div class='bCountSet'><a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
-					<span data-bind="text: quantityTxt">1 шт.</span> </div> </div>
-				<div class='bFast__ePrice'>Цена: <div><span data-bind="text: price"></span> &#8399;</div></div> 
-				<div class='bFast__ePrice'>Сумма заказа: <div><span data-bind="text: total()"></span> &#8399;</div></div> 
+				<div class='bFast__eItemWrap'>
+					<div class='bFast__eArrow'></div>
+					<div class='bFast__eNum'>Артикул #<span data-bind="text: shortcut">454-9366</span></div>
+					<div class="bFast__eTitle"><a href="" data-bind="text: title">Смартфон Samsung Galaxy SII черный</a></div>
+					<div class='bFast__eCenter'><a href=""><img alt="" data-bind="attr: {src: icon}"/></a></div>
+					<div class='bFast__eCenter'>
+						<div class='bCountSet'>
+							<a class='bCountSet__eP' href="#" data-bind="click: plusItem">+</a>
+							<a class='bCountSet__eM' href"#" data-bind="click: minusItem">-</a>
+						<span data-bind="text: quantityTxt">1 шт.</span> </div> </div>
+					<div class='bFast__ePrice'>Цена: <div><span data-bind="text: priceTxt"></span> &#8399;</div></div> 
+					<div class='bFast__ePrice'>Сумма заказа: <div><span data-bind="text: total()"></span> &#8399;</div></div> 
+				</div>
 			</td>
 			<td class='bFast__eForm'>
 				<table cellpadding=0 cellspacing=0 class='bFastInner'>
 					<tr><th colspan=2><h2>Заполните форму быстрого заказа:</h2></th></tr>
-					<tr><td>Способ получения заказа:</td>
+					<tr><td width="200">Способ получения заказа:</td>
 						<td>
-							
-							
 							<div class='bSelect mFastInpSmall'>
-								<span>Самовывоз</span>
+								<span data-bind="text: chosenDlvr().name"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>
-									<div><span>Самовывоз</span></div>
-									<div><span>Доставка</span></div>
+									<!-- ko foreach : dlvrs -->
+									<div data-bind="click: $root.changeDlvr"><span data-bind="text: name"></span></div>
+									<!-- /ko -->
 								</div>
 							</div>
 							
-							<div class='bSelect mFastInpSmall mDisabled'>
-								<span>Сегодня (20.03.12)</span>
+							<div class='bSelect mFastInpSmall'><!-- mDisabled -->
+								<span data-bind="text: chosenDate().text"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>
 									<!-- ko foreach : dates -->
-									<div><span data-bind="text: text"></span></div>									
+									<div data-bind="click: $root.pickDate"><span data-bind="text: text"></span></div>									
 									<!-- /ko -->
-									<div><span>Сегодня (20.03.12)</span></div>
-									<div><span>Завтра (21.03.12)</span></div>
-									<div><span>Послезавтра (22.03.12)</span></div>
-									<div><span>Через 30 лет (22.03.42)</span></div>
 								</div>
 							</div>
-							
 						</td></tr>
+					<!-- ko if: chosenDlvr().type == 'self' -->	
 					<tr><td>Магазин самовывоза:</td>
 						<td>
 							<div class='bSelect mFastInpBig'>
-								<span>г. Москва, Волгоградский пр-т, д.119А.</span>
+								<span data-bind="text: chosenShop().addressTxt"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>
-									<div><span>г. Москва, Волгоградский пр-т, д.119А.</span></div>
-									<div><span>г. Москва, Волгоградский пр-т, д.119А.</span></div>
-									<div><span>Ад</span></div>
-									<div><span>г. Москва, Волгоградский пр-т, д.119А.</span></div>
+									<!-- ko foreach : shops -->
+									<div data-bind="click: $root.pickShop"><span data-bind="text: address"></span></div>
+									<!-- /ko -->
 								</div>
 							</div>
 							
-							<a class='bFast__eMapLink' href>Показать карту магазинов</a>
+							<a class='bFast__eMapLink' href="" data-bind="click: toggleMap">
+								<!-- ko if: !showMap() -->	
+								Показать карту магазинов
+								<!-- /ko -->
+								<!-- ko if: showMap() -->
+								Скрыть карту магазинов
+								<!-- /ko -->
+							</a>
 					</td></tr>
-					<tr><td colspan=2 style='display: none'>
-						
-							<div class='bMapShops__eMapWrap'>
+					<!-- /ko -->
 
-								<div class='bMapShops__ePopup' style='top: 50px; left: 50px'>
-									<div class='bMapShops__ePopupRel'>
-										<a class='bMapShops__ePopupClose' href>x</a>
-										<div class='bMapShops__ePopupArrow'></div>
-										<h3>м. Белорусская, магазин на ул. Грузинский вал, д. 31</h3>
-										<span>Работаем с 9.00 до 22.00</span><br>
-										<a href class='bGrayButton'>Забрать из этого магазина</a>
-									</div>
-								</div>
-
-								<div class='bMapShops__eListNum mNumPos' style='top: 200px; left: 300px'>1</div>
-								<div class='bMapShops__eListNum mNumPos' style='top: 490px; left: 363px'>2</div>
-								<div class='bMapShops__eListNum mNumPos' style='top: 400px; left: 150px'>3</div>
-								<div class='bMapShops__eListNum mNumPos' style='top: 100px; left: 450px'>4</div>
-								<div class='bMapShops__eListNum mNumPos' style='top: 420px; left: 550px'>5</div>
+					<tr><td colspan="2" data-bind="style: { display: showMap() ? 'block' : 'none' }">
+						<div class='bMapShops__eMapWrap' id="mapPopup" style="display:none"> </div>
+						<div id="map-info_window-container" data-bind="with: pickedShop" style="display:none">
+							<div class='bMapShops__ePopupRel'>
+								<h3 data-bind="text: address"></h3>
+								<span data-bind="text: regtime"></span><br>
+								<span class="shopnum" style="display:none" data-bind="text: id"></span>
+								<a href class='bGrayButton shopchoose' data-bind="click: $root.shopChoose">Забрать из этого магазина</a>
 							</div>
-							
-							</td></tr>
-					<tr><td>Имя получателя:</td>
-						<td><input class='bFastInner__eInput mEmpty'><br><span class='mEmpty'>(!) Пожалуйста заполните поля</span></td></tr>
-					<tr><td>Телефон для связи:</td>
-						<td><input class='bFastInner__eInput' value='8 (800) 800 80 80'></td></tr>
+						</div>					
+					</td></tr>
+
+					<!-- ko foreach: textfields -->
+					<tr>
+						<td><span data-bind="text: title"></span>:</td>
+						<td>
+							<input data-bind="event: { change: $root.validateField }, value: value, attr: { name: name }, css: { mEmpty: valerror }" class='bFastInner__eInput'>
+							<!-- ko if: valerror -->
+							<span class='mEmpty'>(!) Пожалуйста, заполните поле</span>
+							<!-- /ko -->
+						</td>
+					</tr>					
+					<!-- /ko -->
+
 					<tr><td colspan=2>Отправьте заказ и мы вам скоро перезвоним :)<br>
 					Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.</td></tr>
-					<tr><td colspan=2><a class='bBigOrangeButton' href>Отправить заказ</a></td></tr>
+					<tr><td colspan=2>
+						<a class='bBigOrangeButton' href="" data-bind="text: formStatusTxt, click: validateForm"></a>
+					</td></tr>
 				</table>
 			</td>
 		</table>
-					
 		</div>
 	</div>
+</form>	
 </div>

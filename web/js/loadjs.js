@@ -73,9 +73,12 @@
 			}).runQueue()
 			break
 		case 'product_card':
-			$LAB.queueScript('knockout-2.0.0.js').queueWait( function() {
+			$LAB.queueScript('knockout-2.0.0.js')
+			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
+			.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
+				.script( 'jquery.effects.blind.js' )
 				.script( getWithVersion('main.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )

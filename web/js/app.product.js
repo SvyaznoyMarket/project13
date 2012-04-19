@@ -196,43 +196,50 @@ $(document).ready(function() {
 	/* One Click Order */
 	if( $('.order1click-link').length ) {
 		
-		console.info( $('.order1click-link').data('model') )
+console.info( 'MODEL: ', $('.order1click-link').data('model') )
 		var Model = $('.order1click-link').data('model')
-		Deliveries = [
-			{
+		Deliveries = {
+			'courier': {
 				id: 4,
 				name: 'Доставка',
 				price: 400,
 				dates: [ {value: '10-02-2012', text: '10 февраля'}, {value: '11-02-2012', text: '11 февраля'} ]
 
 			},
-			{
+			'self' : {
 				id: 2,
 				name: 'Самовывоз',
 				price: 0,
-				dates: [ {value: '08-02-2012', text: '8 февраля'}, {value: '09-02-2012', text: '9 февраля'} ],
+				dates: [ {value: '08-02-2012', shopIds: [2,3], text: '8 февраля'}, {value: '09-02-2012', shopIds: [2], text: '9 февраля'} ],
 				shops: [
 					{id:2,
 					name:"г. Москва, м. Ленинский проспект, магазин  на ул. Орджоникидзе, д. 11, стр. 10",
-					regime:"с 9.00 до 21.00",
+					regtime:"с 9.00 до 21.00",
 					address:"м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10",
+					addressTxt:"м. Ленинский проспект, ул. Орджоникидзе, д. 11...",
 					latitude:"55.706488",
 					longitude:"37.596997" },
 					{id:3,
 					name:"г. Москва, м. Киевская, магазин на ул. Б. Дорогомиловская, д. 8",
-					regime:"с 9.00 до 22.00",
+					regtime:"с 9.00 до 22.00",
 					address:"м. Киевская, ул. Б. Дорогомиловская, д. 8",
+					addressTxt:"м. Киевская, ул. Б. Дорогомиловская, д. 8",
 					latitude:"55.746197",
 					longitude:"37.565389"}
 				]			
 			}
-		]
-		var sla=0, slo=0
-		for(var i=0, l=Deliveries[1].shops.length ;i<l;i++) {
-			sla += Deliveries[1].shops[i].latitude*1
-			slo += Deliveries[1].shops[i].longitude*1		
 		}
-		console.info(sla/Deliveries[1].shops.length, slo/Deliveries[1].shops.length)
+console.info( 'Deliveries: ', Deliveries )		
+		
+		var sla=0, slo=0
+		for(var i=0, l=Deliveries['self'].shops.length ;i<l;i++) {
+			sla += Deliveries['self'].shops[i].latitude*1
+			slo += Deliveries['self'].shops[i].longitude*1		
+		}
+		var mapCenter = {
+			latitude  : sla/Deliveries['self'].shops.length,
+			longitude : slo/Deliveries['self'].shops.length
+		}
 		
 		/* ViewModel */
 		function MyViewModel() {
@@ -242,43 +249,306 @@ $(document).ready(function() {
 			self.icon  = Model.jsbimg
 			self.shortcut  = Model.jsshortcut
 
-			self.quantity = ko.observable(2)
+			self.quantity = ko.observable(1)
 			self.quantityTxt = ko.computed(function() {
 				return self.quantity() + ' шт.'
 			}, this)
-			self.total = ko.computed(function() {
-				return self.price * self.quantity()
+			self.priceTxt = ko.computed(function() {
+				return printPrice( self.price )
 			}, this)
 			
-			self.dates = ko.observableArray( Deliveries[1].dates.slice(0) )
+			self.chosenDlvr = ko.observable( {} )
 			
-			self.changeDlvr = function(item, e) {
-				var ind = 0
-				if( e.currentTarget.value == 2 )
-					ind = 1	
-				else
-					ind =0
-				while( self.dates().length )
-					self.dates.pop()
-				for(var i=0; i< Deliveries[ind].dates.length; i++ )	
-					self.dates.push( Deliveries[ind].dates[i] )	
+			self.dlvrs = []
+			for(var obj in Deliveries ) {
+				self.dlvrs.push( {
+					type: obj,
+					name: Deliveries[obj].name
+				})
+				if( obj == 'self' )
+					self.chosenDlvr( self.dlvrs[ self.dlvrs.length - 1 ] )
 			}
 			
+			self.total = ko.computed(function() {
+				return printPrice( self.price * self.quantity() + Deliveries[ self.chosenDlvr().type ].price * 1 )
+			}, this)
+			
+			self.changeDlvr = function( argDlvr ) {		
+				self.chosenDlvr( argDlvr )
+				self.dates.removeAll()
+				//while( self.dates().length )
+				//	self.dates.pop()
+				for(var i=0; i< Deliveries[ argDlvr.type ].dates.length; i++ )	
+					self.dates.push( Deliveries[ argDlvr.type ].dates[i] )	
+				self.chosenDate( self.dates()[0] )
+			}
+			
+			self.plusItem = function() {
+				self.quantity( self.quantity() + 1 )
+				return false
+			}
+			self.minusItem = function() {
+				if( self.quantity() > 1 )
+					self.quantity( self.quantity() - 1 )
+				return false
+			}
+			
+			self.dates = ko.observableArray( Deliveries['self'].dates.slice(0) )
+			self.chosenDate = ko.observable( self.dates()[0] )
+			self.pickDate = function( item ) {
+				self.chosenDate( item )
+				//shops mod
+console.info(item)				
+				if( 'shopIds' in item ) 
+					if( item.shopIds.length > 0 ) {
+						self.shops.removeAll()// = ko.observableArray( Deliveries['self'].shops.slice(0) )
+						for(var key in Deliveries['self'].shops ) {
+							console.info( Deliveries['self'].shops[key], item.shopIds.indexOf( Deliveries['self'].shops[key].id ))
+							if( item.shopIds.indexOf( Deliveries['self'].shops[key].id ) !== -1 )
+								self.shops.push( Deliveries['self'].shops[key] )
+						}
+					}
+			}
+			
+			self.shops = ko.observableArray( Deliveries['self'].shops.slice(0) )
+			self.chosenShop = ko.observable( self.shops()[0] )
+			self.pickedShop = ko.observable( self.shops()[0] )
+			self.pickShop = function( item ) {
+				self.chosenShop( item )
+			}
+			self.pickShopOnMap = function( shid ) {
+				for(var i=0, l=self.shops().length; i<l; i++)
+					if( self.shops()[i].id == shid ) {
+						self.pickedShop( self.shops()[i] )
+						return
+					}
+			}
+			self.shopChoose = function() {
+console.info(arguments)			
+			}
+			
+			self.showMap = ko.observable( false )
+			self.toggleMap = function() {
+				if( self.showMap() ) { // like toggle but more precise
+					$('#mapPopup').hide('blind', null, 800, function() {
+						self.showMap(false)
+					})
+				} else {
+					self.showMap(true)
+					$('#mapPopup').show( 'blind', null, 1000 )
+				}
+				
+				if( !self.showMap() )
+					return
+				self.showMarkers()	
+			}
+			
+			self.showMarkers = function() {
+				var markersPull = {}
+				var tmp = self.shops()//MVM.popupWithShops()
+				for(var i=0, l = tmp.length; i<l; i++) {
+					var key = tmp[i].id + ''
+					markersPull[ key ] = {
+						id: tmp[i].id,
+						name: tmp[i].address,
+						regtime: tmp[i].regtime,
+						latitude: tmp[i].latitude,
+						longitude: tmp[i].longitude
+					}
+				}
+				regionMap.showMarkers( markersPull )				
+			}
+			
+			self.formStatus = ko.observable( 'typing' ) // 'process' 'error' 'sending'
+			self.formStatusTxt = ko.computed( function() {
+				var status = ''
+				switch( self.formStatus() ) {
+					case 'typing':
+						status = 'Отправить заказ'
+					break
+					case 'process':
+						status = 'Проверка...'
+					break
+					case 'error':
+						status = 'Произошла ошибка!'
+					break
+					case 'sending':
+						status = 'Отправка...'
+					break
+				}
+				return status
+			}, this)
+			
+			self.textfields = []
+			self.textfields.push( ko.observable({
+				title: 'Имя получателя',
+				name: 'fio', //UNIQUE!
+				value: 'Иван',
+				valerror: false,
+				regexp: /^[a-zа-я\s]+$/i
+			}) )
+			self.textfields.push( ko.observable({
+				title: 'Телефон для связи',
+				name: 'phone', //UNIQUE!
+				value: '',
+				valerror: false,
+				regexp: /^[0-9\-\+\s]+$/
+			}) )
+			
+			self.validateField = function( textfield, e ) {
+console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.currentTarget.value ) )
+				var valerror = false
+				if( e.currentTarget.value.replace(/\s/g, '') == '' ||  !textfield.regexp.test( e.currentTarget.value ) ) {
+					valerror = true
+					self.formStatus('typing')
+				}	
+				for(var i=0, l=self.textfields.length; i<l; i++) // like indexOf
+					if( self.textfields[i]().name === textfield.name ) {
+						var tmp = self.textfields[i]()
+						tmp.valerror = valerror
+						tmp.value = e.currentTarget.value
+						self.textfields[i]( tmp )
+						
+						break
+					}
+				return	
+			}
+
+			self.validateForm = function() {
+console.info('validateForm')	
+				if( self.formStatus() !== 'typing' ) // double or repeated click
+					return 
+				//change title
+				self.formStatus('process')
+				
+				//validate fields
+				$('#oneClick input').trigger('change')
+console.info( 'CHECK', self.formStatus()	)
+				if( self.formStatus() === 'typing' ) // validation error
+					return
+				//form request
+				
+				//send ajax
+				setTimeout( function(){ self.formStatus('sending') }, 500)
+			}
 		}	// 
 		MVM = new MyViewModel() 
 		
 		ko.applyBindings(MVM) // this way, Lukas!
 
+		/* MAP */
+		function MapWithShops( center, infoWindowTemplate, DOMid ) {
+			var self = this
+			self.mapWS = null
+			self.infoWindow = null
+			self.positionC = null
+			self.markers = []
 	
-		$('.order1click-link').bind('click', function(e) {
+			function create() {
+				self.positionC = new google.maps.LatLng(center.latitude, center.longitude)			
+				var options = {
+					zoom: 11,
+					center: self.positionC,
+					scrollwheel: false,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					mapTypeControlOptions: {
+					style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+					}
+				}
+				self.mapWS = new google.maps.Map( document.getElementById( DOMid ), options )
+				self.infoWindow = new google.maps.InfoWindow({
+					maxWidth: 400,
+					disableAutoPan: false
+				})
+			}
+	
+			this.showInfobox = function( marker ) {
+				var item = self.markers[marker.id]
+				MVM.pickShopOnMap( marker.id )
+				marker.setVisible(false) // hides marker
+	
+				self.infoWindow.setContent( infoWindowTemplate.prop('innerHTML') )
+				self.infoWindow.setPosition( marker.position )
+				self.infoWindow.open( self.mapWS )
+				google.maps.event.addListener( self.infoWindow, 'closeclick', function() { marker.setVisible(true) })
+			}
+	
+			this.showMarkers = function( markers ) {
+				$.each( self.markers, function(i, item) {
+					 if( typeof( item.ref ) !== 'undefined' )
+						item.ref.setMap(null)
+				})
+				self.markers = markers
+				google.maps.event.trigger( self.mapWS, 'resize' )
+				self.mapWS.setCenter( self.positionC )
+				$.each( markers, function(i, item) {
+					var marker = new google.maps.Marker({
+					  position: new google.maps.LatLng(item.latitude, item.longitude),
+					  map: self.mapWS,
+					  title: item.name,
+					  //icon: item.markerImg,
+					  icon: '/images/marker.png',
+					  id: item.id
+					})
+					google.maps.event.addListener(marker, 'click', function() { self.showInfobox(this) })
+					self.markers[marker.id].ref = marker
+				})
+			}
+	
+			this.closeMap = function( markers ) {
+				self.infoWindow.close()
+				$('#mapPopup').hide('blind', null, 800, function() {
+					MVM.showMap(false) // hides map
+				})
+			}
+	
+			/* main() */
+			create()
+	
+		} // object MapWithShops
+	
+		window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )
+		
+		var mapContainer = $('#mapPopup')
+		mapContainer.delegate('.shopchoose', 'click', function(e) { //desktops
+			e.preventDefault()
+			pickStore( e.target )
+		})	
+		function handleStart(e) {
+			e.preventDefault()
+			if( e.target.className.match('shopchoose') )
+				pickStore( e.target )
+		}
+		mapContainer[0].addEventListener("touchstart", handleStart  , false) //touch devices
+	
+		function pickStore( node ) {
+			var shopnum = $(node).parent().find('.shopnum').text()
+			window.regionMap.closeMap()
+			for(var i=0, l=MVM.shops().length; i<l; i++) {
+				if( MVM.shops()[i].id == shopnum )
+					MVM.chosenShop( MVM.shops()[i] )
+			}
+		}
+		
+		// MAP end 
+		
+		$('#order1click-container').delegate( '.bSelect', 'click', function() {	// custom selectors
+			$(this).find('.bSelect__eDropmenu').toggle()
+		})
+	
+		$('.order1click-link').bind('click', function(e) { // button 'Купить в один клик'
 			e.preventDefault()
 			if( typeof(_gaq) !== 'undefined' )
 				_gaq.push(['_trackEvent', 'QuickOrder', 'Open'])
 			$('#order1click-container').lightbox_me({
-				centered: true
+				centered: true,
+				onClose: function() {
+					MVM.showMap(false)
+				}
 			})
 		})
-	}
+		
+	} // One Click Order
     
     if( $('#gMap').length ) {
 		$('#gMap').bind({
