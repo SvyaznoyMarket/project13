@@ -4185,6 +4185,8 @@ DT.bCtg__eOrange{
 		display: inline-block;
 		*display: inline;
 		zoom: 1;
+		text-decoration:none;
+		cursor:pointer;
 		}
 	.bCountSet span{
 		margin: 7px 1px;

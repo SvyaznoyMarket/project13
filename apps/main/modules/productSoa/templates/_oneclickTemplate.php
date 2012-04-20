@@ -23,8 +23,9 @@
 			</td>
 			<td class='bFast__eForm'>
 				<table cellpadding=0 cellspacing=0 class='bFastInner'>
-					<tr><th colspan=2><h2>Заполните форму быстрого заказа:</h2></th></tr>
-					<tr><td width="200">Способ получения заказа:</td>
+					<tr><th colspan="2"><h2>Заполните форму быстрого заказа:</h2></th></tr>
+					<tr data-bind="visible: noDelivery()"><td colspan="2"><h2 class="red">Доставка и самовывоз невозможны!</h2></td></tr>
+					<tr data-bind="visible: !noDelivery()"><td width="200">Способ получения заказа:</td>
 						<td>
 							<div class='bSelect mFastInpSmall'>
 								<span data-bind="text: chosenDlvr().name"></span>

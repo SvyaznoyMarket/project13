@@ -39,8 +39,11 @@ console.info( 'Deliveries: ', Deliveries )
 		
 		/* ViewModel */
 		function MyViewModel() {
-console.info('IN DEL ', Deliveries)		
+console.info('IN DEL ', Deliveries)	
+			
 			var self = this	
+			self.noDelivery = ko.observable(false)
+			
 			self.title = Model.jstitle
 			self.price = Model.jsprice
 			self.icon  = Model.jsbimg
@@ -53,13 +56,6 @@ console.info('IN DEL ', Deliveries)
 			self.priceTxt = ko.computed(function() {
 				return printPrice( self.price )
 			}, this)
-			
-			self.loaded = ko.observable(false)
-			
-			self.loadData = function() {
-				//var inputUrl = 'http://stierus.ent3.ru/delivery1click.php'
-			}
-			self.loadData()
 			
 			self.chosenDlvr = ko.observable( {} )
 			
@@ -93,12 +89,39 @@ console.info('IN DEL ', Deliveries)
 			
 			self.plusItem = function() {
 				self.quantity( self.quantity() + 1 )
+				self.loadData()
 				return false
 			}
 			self.minusItem = function() {
 				if( self.quantity() > 1 )
 					self.quantity( self.quantity() - 1 )
 				return false
+			}
+			self.loadData = function() {
+				var postData = {
+					product_id: Model.jsitemid,
+					product_quantity: 100,
+					region_id: Model.jsregionid*1
+				}
+				
+				$.post( inputUrl, postData, function(data) {
+					if( !data.success )
+						return false
+					//self.loaded(true)
+					Deliveries = data.data
+					selfAvailable = 'self' in Deliveries
+					if( selfAvailable ) {
+						var sla=0, slo=0
+						for(var i=0, l=Deliveries['self'].shops.length ;i<l;i++) {
+							sla += Deliveries['self'].shops[i].latitude*1
+							slo += Deliveries['self'].shops[i].longitude*1		
+						}
+						var mapCenter = {
+							latitude  : sla/Deliveries['self'].shops.length,
+							longitude : slo/Deliveries['self'].shops.length
+						}
+					}
+				})	
 			}
 			
 			self.dates = ko.observableArray( Deliveries[ self.chosenDlvr().type+'' ].dates.slice(0) )
@@ -107,17 +130,18 @@ console.info('IN DEL ', Deliveries)
 				self.chosenDate( item )
 				//shops mod		
 				if( selfAvailable ) {
-				if( 'shopIds' in item ) 
-					if( item.shopIds.length > 0 ) {
-						self.shops.removeAll()// = ko.observableArray( Deliveries['self'].shops.slice(0) )
-						for(var key in Deliveries['self'].shops ) {
-							console.info( Deliveries['self'].shops[key], item.shopIds.indexOf( Deliveries['self'].shops[key].id ))
-							if( item.shopIds.indexOf( Deliveries['self'].shops[key].id ) !== -1 )
-								self.shops.push( Deliveries['self'].shops[key] )
+					if( 'shopIds' in item ) 
+						if( item.shopIds.length > 0 ) {
+							self.shops.removeAll()// = ko.observableArray( Deliveries['self'].shops.slice(0) )
+							for(var key in Deliveries['self'].shops ) {
+								console.info( Deliveries['self'].shops[key], item.shopIds.indexOf( Deliveries['self'].shops[key].id ))
+								if( item.shopIds.indexOf( Deliveries['self'].shops[key].id ) !== -1 )
+									self.shops.push( Deliveries['self'].shops[key] )
+							}
 						}
-					}
-				}	
-				self.showMarkers()	
+				}
+				if( self.showMap() )
+					self.showMarkers()	
 			}
 			if( selfAvailable ) {
 				self.shops = ko.observableArray( Deliveries['self'].shops.slice(0) )
