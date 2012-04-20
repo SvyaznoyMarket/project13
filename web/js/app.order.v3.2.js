@@ -193,6 +193,7 @@ $(document).ready(function() {
             self.renderUnavailable()
 
             if (data.unavailable.length) {
+                var reload = false
                 $.each(data.unavailable, function(i, itemToken) {
                     var item = data.items[itemToken]
 
@@ -211,7 +212,15 @@ $(document).ready(function() {
                     else {
                         $('.bImgButton.mBacket[data-token="'+item.token+'"]').click()
                     }
+
+                    reload = true
                 })
+
+                if (reload) {
+                    $('#order-form-part2').hide()
+                    window.location.reload()
+                    return false
+                }
             }
 
             $('.order-delivery-holder').each(function(i, deliveryTypeHolder) {
@@ -842,10 +851,12 @@ $(document).ready(function() {
                     var form = $('#order-form')
 
                     if (result.success) {
+                        button.text('Готово!').attr('disabled', true)
                         window.location = result.data.redirect
                     }
                     else if (result.error) {
                         if ('invalid' == result.error.code) {
+                            console.info()
                             $('#order-message').html('<span class="red">'+result.error.message+'</span>')
                             $.each(result.errors, function(k, v) {
                                 var el = form.find('[name="'+k+'"]:visible')
