@@ -1,5 +1,5 @@
 
-<div class='bMobDown mBR5 mW2 mW1000 p0' style="display:none" id="order1click-container">
+<div class='bMobDown mBR5 mW2 mW1000 p0' style="display:none" id="order1click-container-new">
 <form id="oneClick" action="">
 	<div class='bMobDown__eWrap'>
 		<div class='bMobDown__eClose top0 close'></div>
@@ -17,12 +17,12 @@
 							<a class='bCountSet__eP' href="#" data-bind="click: plusItem">+</a>
 							<a class='bCountSet__eM' href"#" data-bind="click: minusItem">-</a>
 						<span data-bind="text: quantityTxt">1 шт.</span> </div> </div>
-					<div class='bFast__ePrice'>Цена: <div><span data-bind="text: priceTxt"></span> &#8399;</div></div> 
-					<div class='bFast__ePrice'>Сумма заказа: <div><span data-bind="text: total()"></span> &#8399;</div></div> 
+					<div class='bFast__ePrice'>Цена: <div><span data-bind="text: priceTxt"></span> <span class="rubl">p</span></div></div> 
+					<div class='bFast__ePrice'>Сумма заказа: <div><span data-bind="text: total()"></span> <span class="rubl">p</span></div></div> 
 				</div>
 			</td>
 			<td class='bFast__eForm'>
-				<table cellpadding=0 cellspacing=0 class='bFastInner'>
+				<table cellpadding=0 cellspacing=0 class='bFastInner' data-bind="visible: loaded">
 					<tr><th colspan=2><h2>Заполните форму быстрого заказа:</h2></th></tr>
 					<tr><td width="200">Способ получения заказа:</td>
 						<td>
@@ -37,17 +37,17 @@
 							</div>
 							
 							<div class='bSelect mFastInpSmall'><!-- mDisabled -->
-								<span data-bind="text: chosenDate().text"></span>
+								<span data-bind="text: chosenDate().name"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>
 									<!-- ko foreach : dates -->
-									<div data-bind="click: $root.pickDate"><span data-bind="text: text"></span></div>									
+									<div data-bind="click: $root.pickDate"><span data-bind="text: name"></span></div>									
 									<!-- /ko -->
 								</div>
 							</div>
 						</td></tr>
 					<!-- ko if: chosenDlvr().type == 'self' -->	
-					<tr><td>Магазин самовывоза:</td>
+					<tr><td>Магазин для самовывоза:</td>
 						<td>
 							<div class='bSelect mFastInpBig'>
 								<span data-bind="text: chosenShop().addressTxt"></span>
@@ -68,7 +68,7 @@
 								<!-- /ko -->
 							</a>
 					</td></tr>
-					
+					<!-- /ko -->
 
 					<tr><td colspan="2" data-bind="style: { display: showMap() ? 'table-cell' : 'none' }">
 						<div class='bMapShops__eMapWrap' id="mapPopup" style="display:none"> </div>
@@ -81,7 +81,7 @@
 							</div>
 						</div>					
 					</td></tr>
-					<!-- /ko -->
+					
 
 					<!-- ko foreach: textfields -->
 					<tr>
@@ -89,7 +89,7 @@
 						<td>
 							<input data-bind="event: { change: $root.validateField }, value: value, attr: { name: name }, css: { mEmpty: valerror }" class='bFastInner__eInput'>
 							<!-- ko if: valerror -->
-							<span class='mEmpty'>(!) Пожалуйста, заполните поле</span>
+							<span class='mEmpty'>(!) Пожалуйста, верно заполните поле</span>
 							<!-- /ko -->
 						</td>
 					</tr>					
