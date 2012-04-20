@@ -40,8 +40,13 @@ else{
   $route = new Route(array('class' => 'error', 'method' => 'jsonErrorMessage'), array('message' => 'bad request params'));
 }
 
-
-$response = Controller::Run($route);
+try{
+  $response = Controller::Run($route);
+}
+catch(Exception $e){
+  $route = new Route(array('class' => 'error', 'method' => 'jsonErrorMessage'), array('message' => $e->getMessage()));
+  $response = Controller::Run($route);
+}
 TimeDebug::end('Total');
 $response->sendHeaders();
 $response->sendContent();
