@@ -47,8 +47,8 @@ class delivery
     }
     catch(Exception $e){
       $return = array(
-        'error' => true,
-        'error_message' => $e->getMessage()
+        'success' => false,
+        'error' => $e->getMessage()
       );
     }
 
