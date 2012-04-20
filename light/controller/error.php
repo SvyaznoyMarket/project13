@@ -10,8 +10,8 @@ class error
 {
   public function jsonErrorMessage($params, Response $response){
     $return = array(
-      'error' => true,
-      'error_message' => $params['message']
+      'success' => false,
+      'error' => $params['message']
     );
     $response->setContentType('application/json');
     $response->setContent(json_encode($return));
