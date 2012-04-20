@@ -59,20 +59,22 @@ console.info('IN DEL ', Deliveries)
 			
 			self.chosenDlvr = ko.observable( {} )
 			
-			self.dlvrs = []
+			self.dlvrs = ko.observableArray([])
 			for(var obj in Deliveries ) {
 				self.dlvrs.push( {
 					type: obj,
 					name: Deliveries[obj].name,
-					modeID: Deliveries[obj].modeId
+					modeID: Deliveries[obj].modeId,
+					price: Deliveries[obj].price
 				})
 				if( obj == 'self' )
-					self.chosenDlvr( self.dlvrs[ self.dlvrs.length - 1 ] )
+					self.chosenDlvr( self.dlvrs()[ self.dlvrs().length - 1 ] )
 			}
-			if( ! ('type' in self.chosenDlvr()) )
-				self.chosenDlvr( self.dlvrs[ 0 ] )			
+console.info( self.chosenDlvr() )			
+			if( ! ('type' in self.chosenDlvr() ) )
+				self.chosenDlvr( self.dlvrs()[ 0 ] )			
 			self.total = ko.computed(function() {
-				return printPrice( self.price * self.quantity() + Deliveries[ self.chosenDlvr().type ].price * 1 )
+				return printPrice( self.price * self.quantity() + self.chosenDlvr().price * 1 )
 			}, this)
 			
 			self.changeDlvr = function( argDlvr ) {		
@@ -109,17 +111,18 @@ console.info('IN DEL ', Deliveries)
 						return false
 					//self.loaded(true)
 					Deliveries = data.data
+					var le = 0
+					for(var key in Deliveries )
+						le++
+					if( le === 0 ) {
+						self.noDelivery(true)
+						return false
+					} else {
+						self.noDelivery(false)
+					}
 					selfAvailable = 'self' in Deliveries
 					if( selfAvailable ) {
-						var sla=0, slo=0
-						for(var i=0, l=Deliveries['self'].shops.length ;i<l;i++) {
-							sla += Deliveries['self'].shops[i].latitude*1
-							slo += Deliveries['self'].shops[i].longitude*1		
-						}
-						var mapCenter = {
-							latitude  : sla/Deliveries['self'].shops.length,
-							longitude : slo/Deliveries['self'].shops.length
-						}
+						
 					}
 				})	
 			}
@@ -219,14 +222,14 @@ console.info('IN DEL ', Deliveries)
 			self.textfields = []
 			self.textfields.push( ko.observable({
 				title: 'Имя получателя',
-				name: 'fio', //UNIQUE!
+				name: 'order[recipient_first_name]', //UNIQUE!
 				value: '',
 				valerror: false,
 				regexp: /^[a-zа-я\s]+$/i
 			}) )
 			self.textfields.push( ko.observable({
 				title: 'Телефон для связи',
-				name: 'phone', //UNIQUE!
+				name: 'order[recipient_phonenumbers]', //UNIQUE!
 				value: '',
 				valerror: false,
 				regexp: /^[0-9\-\+\s]+$/
@@ -253,6 +256,8 @@ console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.current
 
 			self.validateForm = function() {
 console.info('validateForm')	
+				if( self.noDelivery() )
+					return false
 				if( self.formStatus() !== 'typing' ) // double or repeated click
 					return 
 				//change title
@@ -275,11 +280,12 @@ console.info('validateForm')
 				self.formStatus('sending')
 				var outputUrl = 'none'
 				var postData = {
-					quantity: self.quantity(),
-					delivery: self.chosenDlvr().modeID, //change to ID
-					date: self.chosenDate().value,
-					shop: self.chosenShop().id
+					'order[product_quantity]' : self.quantity(),
+					'order[delivered_at]' : self.chosenDate().value
+//					delivery: self.chosenDlvr().modeID					
 				}
+				if( self.chosenDlvr().type == 'self' )
+					postData[ 'order[shop_id]' ] = self.chosenShop().id
 				for(var i=0,l=self.textfields.length; i<l; i++)
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
 console.info( postData)
