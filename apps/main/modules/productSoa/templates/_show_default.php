@@ -108,9 +108,10 @@ foreach ($p3d as $p3d_obj)
 
             <?php if ( $product->is_insale && (true or $sf_user->getRegion('region')->is_default)): ?>
             <div class="pb5"><strong>
-            	<a href=""
-            		data-model='<?php echo $json ?>'
-            		class="red underline order1click-link-new">Купить быстро в 1 клик</a>
+              <a href=""
+                data-model='<?php echo $json ?>'
+                link-input='<?php echo url_for('product_delivery_1click') ?>'
+                class="red underline order1click-link-new">Купить быстро в 1 клик</a>
             </strong></div>
 
             <?php endif ?>
