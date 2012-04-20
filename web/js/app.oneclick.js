@@ -6,17 +6,17 @@ console.info( 'MODEL: ', $('.order1click-link-new').data('model') )
 		var Model = $('.order1click-link-new').data('model')
 		Deliveries = {
 			'courier': {
-				id: 4,
+				modeId: 4,
 				name: 'Доставка',
 				price: 400,
-				dates: [ {value: '10-02-2012', text: '10 февраля'}, {value: '11-02-2012', text: '11 февраля'} ]
+				dates: [ {value: '10-02-2012', name: '10 февраля'}, {value: '11-02-2012', name: '11 февраля'} ]
 
 			},
 			'self' : {
-				id: 2,
+				modeId: 2,
 				name: 'Самовывоз',
 				price: 0,
-				dates: [ {value: '08-02-2012', shopIds: [2,3], text: '8 февраля'}, {value: '09-02-2012', shopIds: [2], text: '9 февраля'} ],
+				dates: [ {value: '08-02-2012', shopIds: [2,3], name: '8 февраля'}, {value: '09-02-2012', shopIds: [2], name: '9 февраля'} ],
 				shops: [
 					{id:2,
 					name:"г. Москва, м. Ленинский проспект, магазин  на ул. Орджоникидзе, д. 11, стр. 10",
@@ -54,7 +54,22 @@ console.info( 'Deliveries: ', Deliveries )
 			self.price = Model.jsprice
 			self.icon  = Model.jsbimg
 			self.shortcut  = Model.jsshortcut
-
+			
+			self.loaded = ko.observable(false)
+			
+			self.loadData = function() {
+				var url = 'none.htm'
+/*				$.get( url , function(data) {
+					self.loaded(true)
+					Deliveries = data
+				})
+*/
+				setTimeout( function(data) { 
+					self.loaded(true)
+				}, 5000)
+			}
+			self.loadData()
+			
 			self.quantity = ko.observable(1)
 			self.quantityTxt = ko.computed(function() {
 				return self.quantity() + ' шт.'
@@ -188,7 +203,7 @@ console.info( 'Deliveries: ', Deliveries )
 			self.textfields.push( ko.observable({
 				title: 'Имя получателя',
 				name: 'fio', //UNIQUE!
-				value: 'Иван',
+				value: '',
 				valerror: false,
 				regexp: /^[a-zа-я\s]+$/i
 			}) )
@@ -234,7 +249,27 @@ console.info( 'Deliveries: ', Deliveries )
 				//form request
 				
 				//send ajax
-				setTimeout( function(){ self.formStatus('sending') }, 500)
+//				setTimeout( function(){ self.formStatus('sending') }, 500)
+				self.sendData()
+			}
+			
+						
+			self.sendData = function() {
+				self.formStatus('sending')
+				var outputUrl = 'none'
+				var postData = {
+					quantity: self.quantity(),
+					delivery: self.chosenDlvr().type, //change to ID
+					date: self.chosenDate().value,
+					shop: self.chosenShop().id
+				}
+				for(var i=0,l=self.textfields.length; i<l; i++)
+					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
+console.info( postData)
+/*				$.post( outputUrl, postData, function() {
+					
+				})
+*/				
 			}
 		}	// 
 		MVM = new MyViewModel() 
