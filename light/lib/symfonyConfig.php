@@ -42,6 +42,9 @@ class symfonyConfig
       $config = $yaml->parse(file_get_contents($fileFullPath));
 //      return $config;
       $ret = new self();
+      if(!isset($config[$mode])){
+        $mode = 'all';
+      }
       $ret->setParsed($config[$mode]);
       return $ret;
     }
