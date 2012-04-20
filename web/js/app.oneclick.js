@@ -22,14 +22,12 @@ console.info( 'MODEL: ', $('.order1click-link-new').data('model') )
 					name:"г. Москва, м. Ленинский проспект, магазин  на ул. Орджоникидзе, д. 11, стр. 10",
 					regtime:"с 9.00 до 21.00",
 					address:"м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10",
-					addressTxt:"м. Ленинский проспект, ул. Орджоникидзе, д. 11...",
 					latitude:"55.706488",
 					longitude:"37.596997" },
 					{id:3,
 					name:"г. Москва, м. Киевская, магазин на ул. Б. Дорогомиловская, д. 8",
 					regtime:"с 9.00 до 22.00",
 					address:"м. Киевская, ул. Б. Дорогомиловская, д. 8",
-					addressTxt:"м. Киевская, ул. Б. Дорогомиловская, д. 8",
 					latitude:"55.746197",
 					longitude:"37.565389"}
 				]			
@@ -55,11 +53,25 @@ console.info( 'Deliveries: ', Deliveries )
 			self.icon  = Model.jsbimg
 			self.shortcut  = Model.jsshortcut
 			
+			self.quantity = ko.observable(1)
+			self.quantityTxt = ko.computed(function() {
+				return self.quantity() + ' шт.'
+			}, this)
+			self.priceTxt = ko.computed(function() {
+				return printPrice( self.price )
+			}, this)
+			
 			self.loaded = ko.observable(false)
 			
 			self.loadData = function() {
-				var url = 'none.htm'
-/*				$.get( url , function(data) {
+				var inputUrl = 'http://stierus.ent3.ru/delivery1click.php'
+				var postData = {
+					product_id: Model.jsitemid,
+					product_quantity: self.quantity(),
+					region_id: Model.jsregionid*1
+				}
+/*				
+				$.post( inputUrl, postData, function(data) {
 					self.loaded(true)
 					Deliveries = data
 				})
@@ -70,21 +82,14 @@ console.info( 'Deliveries: ', Deliveries )
 			}
 			self.loadData()
 			
-			self.quantity = ko.observable(1)
-			self.quantityTxt = ko.computed(function() {
-				return self.quantity() + ' шт.'
-			}, this)
-			self.priceTxt = ko.computed(function() {
-				return printPrice( self.price )
-			}, this)
-			
 			self.chosenDlvr = ko.observable( {} )
 			
 			self.dlvrs = []
 			for(var obj in Deliveries ) {
 				self.dlvrs.push( {
 					type: obj,
-					name: Deliveries[obj].name
+					name: Deliveries[obj].name,
+					modeID: Deliveries[obj].modeId
 				})
 				if( obj == 'self' )
 					self.chosenDlvr( self.dlvrs[ self.dlvrs.length - 1 ] )
@@ -216,7 +221,7 @@ console.info( 'Deliveries: ', Deliveries )
 			}) )
 			
 			self.validateField = function( textfield, e ) {
-//console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.currentTarget.value ) )
+console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.currentTarget.value ) )
 				var valerror = false
 				if( e.currentTarget.value.replace(/\s/g, '') == '' ||  !textfield.regexp.test( e.currentTarget.value ) ) {
 					valerror = true
@@ -235,7 +240,7 @@ console.info( 'Deliveries: ', Deliveries )
 			}
 
 			self.validateForm = function() {
-//console.info('validateForm')	
+console.info('validateForm')	
 				if( self.formStatus() !== 'typing' ) // double or repeated click
 					return 
 				//change title
@@ -259,7 +264,7 @@ console.info( 'Deliveries: ', Deliveries )
 				var outputUrl = 'none'
 				var postData = {
 					quantity: self.quantity(),
-					delivery: self.chosenDlvr().type, //change to ID
+					delivery: self.chosenDlvr().modeID, //change to ID
 					date: self.chosenDate().value,
 					shop: self.chosenShop().id
 				}

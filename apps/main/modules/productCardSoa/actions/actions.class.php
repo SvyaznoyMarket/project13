@@ -81,7 +81,9 @@ class productCardSoaActions extends myActions
           'jsprice' => $this->product->price,
           'jsimg' => $this->product->getMainPhotoUrl(3),
   		  'jsbimg' =>  $this->product->getMainPhotoUrl(2),
-  		  'jsshortcut' =>  $this->product->article
+  		  'jsshortcut' =>  $this->product->article,
+  		  'jsitemid' =>  $this->product->id,
+  		  'jsregionid' => $this->getUser()->getRegion('id')
       );
       $this->setVar('json', json_encode($json));
 
