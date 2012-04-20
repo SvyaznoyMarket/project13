@@ -11,7 +11,7 @@ console.info( 'MODEL: ', $('.order1click-link-new').data('model') )
 				price: 400,
 				dates: [ {value: '10-02-2012', name: '10 февраля'}, {value: '11-02-2012', name: '11 февраля'} ]
 
-			},
+			}/*,
 			'self' : {
 				modeId: 2,
 				name: 'Самовывоз',
@@ -31,22 +31,15 @@ console.info( 'MODEL: ', $('.order1click-link-new').data('model') )
 					latitude:"55.746197",
 					longitude:"37.565389"}
 				]			
-			}
+			}*/
 		}
 console.info( 'Deliveries: ', Deliveries )		
 		
-		var sla=0, slo=0
-		for(var i=0, l=Deliveries['self'].shops.length ;i<l;i++) {
-			sla += Deliveries['self'].shops[i].latitude*1
-			slo += Deliveries['self'].shops[i].longitude*1		
-		}
-		var mapCenter = {
-			latitude  : sla/Deliveries['self'].shops.length,
-			longitude : slo/Deliveries['self'].shops.length
-		}
+		var selfAvailable = 'self' in Deliveries
 		
 		/* ViewModel */
 		function MyViewModel() {
+console.info('IN DEL ', Deliveries)		
 			var self = this	
 			self.title = Model.jstitle
 			self.price = Model.jsprice
@@ -64,21 +57,7 @@ console.info( 'Deliveries: ', Deliveries )
 			self.loaded = ko.observable(false)
 			
 			self.loadData = function() {
-				var inputUrl = 'http://stierus.ent3.ru/delivery1click.php'
-				var postData = {
-					product_id: Model.jsitemid,
-					product_quantity: self.quantity(),
-					region_id: Model.jsregionid*1
-				}
-/*				
-				$.post( inputUrl, postData, function(data) {
-					self.loaded(true)
-					Deliveries = data
-				})
-*/
-				setTimeout( function(data) { 
-					self.loaded(true)
-				}, 5000)
+				//var inputUrl = 'http://stierus.ent3.ru/delivery1click.php'
 			}
 			self.loadData()
 			
@@ -94,7 +73,8 @@ console.info( 'Deliveries: ', Deliveries )
 				if( obj == 'self' )
 					self.chosenDlvr( self.dlvrs[ self.dlvrs.length - 1 ] )
 			}
-			
+			if( ! ('type' in self.chosenDlvr()) )
+				self.chosenDlvr( self.dlvrs[ 0 ] )			
 			self.total = ko.computed(function() {
 				return printPrice( self.price * self.quantity() + Deliveries[ self.chosenDlvr().type ].price * 1 )
 			}, this)
@@ -121,11 +101,12 @@ console.info( 'Deliveries: ', Deliveries )
 				return false
 			}
 			
-			self.dates = ko.observableArray( Deliveries['self'].dates.slice(0) )
+			self.dates = ko.observableArray( Deliveries[ self.chosenDlvr().type+'' ].dates.slice(0) )
 			self.chosenDate = ko.observable( self.dates()[0] )
 			self.pickDate = function( item ) {
 				self.chosenDate( item )
 				//shops mod		
+				if( selfAvailable ) {
 				if( 'shopIds' in item ) 
 					if( item.shopIds.length > 0 ) {
 						self.shops.removeAll()// = ko.observableArray( Deliveries['self'].shops.slice(0) )
@@ -135,12 +116,19 @@ console.info( 'Deliveries: ', Deliveries )
 								self.shops.push( Deliveries['self'].shops[key] )
 						}
 					}
+				}	
 				self.showMarkers()	
 			}
-			
-			self.shops = ko.observableArray( Deliveries['self'].shops.slice(0) )
-			self.chosenShop = ko.observable( self.shops()[0] )
-			self.pickedShop = ko.observable( self.shops()[0] )
+			if( selfAvailable ) {
+				self.shops = ko.observableArray( Deliveries['self'].shops.slice(0) )
+				self.chosenShop = ko.observable( self.shops()[0] )
+				self.pickedShop = ko.observable( self.shops()[0] )
+			} else {
+				self.shops = ko.observableArray([])
+				var leer = { address: '', regtime: '', id : 1 }
+				self.chosenShop = ko.observable( leer )
+				self.pickedShop = ko.observable( leer )
+			}
 			self.pickShop = function( item ) {
 				self.chosenShop( item )
 			}
@@ -181,7 +169,7 @@ console.info( 'Deliveries: ', Deliveries )
 						longitude: tmp[i].longitude
 					}
 				}
-				regionMap.showMarkers( markersPull )				
+				window.regionMap.showMarkers( markersPull )				
 			}
 			
 			self.formStatus = ko.observable( 'typing' ) // 'process' 'error' 'sending'
@@ -277,9 +265,40 @@ console.info( postData)
 */				
 			}
 		}	// 
-		MVM = new MyViewModel() 
 		
-		ko.applyBindings(MVM) // this way, Lukas!
+		
+		/* Load Data from Server */
+		oneClickIsReady = false
+		var inputUrl = $('.order1click-link-new').attr('link-input')
+		var postData = {
+			product_id: Model.jsitemid,
+			product_quantity: 1,
+			region_id: Model.jsregionid*1
+		}
+		
+		$.post( inputUrl, postData, function(data) {
+			//self.loaded(true)
+			Deliveries = data.data
+			selfAvailable = 'self' in Deliveries
+			if( selfAvailable ) {
+				var sla=0, slo=0
+				for(var i=0, l=Deliveries['self'].shops.length ;i<l;i++) {
+					sla += Deliveries['self'].shops[i].latitude*1
+					slo += Deliveries['self'].shops[i].longitude*1		
+				}
+				var mapCenter = {
+					latitude  : sla/Deliveries['self'].shops.length,
+					longitude : slo/Deliveries['self'].shops.length
+				}
+			}			
+			
+			MVM = new MyViewModel() 
+			ko.applyBindings(MVM) // this way, Lukas!
+				
+			if( selfAvailable )
+				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )			
+			oneClickIsReady = true
+		})
 
 		/* MAP */
 		function MapWithShops( center, infoWindowTemplate, DOMid ) {
@@ -351,8 +370,7 @@ console.info( postData)
 			create()
 	
 		} // object MapWithShops
-	
-		window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )
+
 		
 		var mapContainer = $('#mapPopup')
 		mapContainer.delegate('.shopchoose', 'click', function(e) { //desktops
@@ -380,9 +398,11 @@ console.info( postData)
 		$('#order1click-container-new').delegate( '.bSelect', 'click', function() {	// custom selectors
 			$(this).find('.bSelect__eDropmenu').toggle()
 		})
-	
+
 		$('.order1click-link-new').bind('click', function(e) { // button 'Купить в один клик'
 			e.preventDefault()
+			if( !oneClickIsReady )
+				return
 			if( typeof(_gaq) !== 'undefined' )
 				_gaq.push(['_trackEvent', 'QuickOrder', 'Open'])
 			$('#order1click-container-new').lightbox_me({

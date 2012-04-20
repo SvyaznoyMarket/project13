@@ -22,7 +22,7 @@
 				</div>
 			</td>
 			<td class='bFast__eForm'>
-				<table cellpadding=0 cellspacing=0 class='bFastInner' data-bind="visible: loaded">
+				<table cellpadding=0 cellspacing=0 class='bFastInner'>
 					<tr><th colspan=2><h2>Заполните форму быстрого заказа:</h2></th></tr>
 					<tr><td width="200">Способ получения заказа:</td>
 						<td>
