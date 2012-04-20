@@ -93,18 +93,19 @@
         </dd>
       </dl>
 
-      <h2>Об оплате</h2>
-
-      <dl class='bBuyingLine' id="addressField">
-        <dt>У вас есть карта "Связной-Клуб"?</dt>
-        <dd>
-          <div>
-            <p></p>
-            <?php echo $form['sclub_card_number']->render(array('class' => 'bBuyingLine__eText mInputLong')) ?>
-            <i class='mILong' style="white-space: nowrap;">Введите без пробелов 16 цифр с лицевой стороны карты Связной-Клуб.</i>
+      <dl class='bBuyingLine'>
+        <dt>У вас есть карта &laquo;Связной-Клуб&raquo;?</dt>
+        <dd class="bSClub">
+          <div class="bSClub__eWrap pb25">
+            <?php echo $form['sclub_card_number']->render(array('class' => 'bBuyingLine__eText mInputShort mb15')) ?>
+            <h4>Номер карты для зачисления баллов</h4><br>
+            Номер под штрихкодом на оборотной стороне карты, начинается на 298
           </div>
+          <!--<label><b></b> <h5>Сохранить мои данные для следующих покупок</h5> <input class='bBuyingLine__eRadio' name='r1' type='radio'></label>-->
         </dd>
       </dl>
+
+      <h2>Об оплате</h2>
 
       <?php echo $form['payment_method_id'] ?>
 
