@@ -110,6 +110,7 @@ foreach ($p3d as $p3d_obj)
             <div class="pb5"><strong>
               <a href=""
                 data-model='<?php echo $json ?>'
+                link-output='<?php echo url_for('order_1click', array('product' => $product->barcode)) ?>'
                 link-input='<?php echo url_for('product_delivery_1click') ?>'
                 class="red underline order1click-link-new">Купить быстро в 1 клик</a>
             </strong></div>
