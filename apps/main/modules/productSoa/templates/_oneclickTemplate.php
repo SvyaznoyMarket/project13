@@ -50,7 +50,7 @@
 					<tr><td>Магазин для самовывоза:</td>
 						<td>
 							<div class='bSelect mFastInpBig'>
-								<span data-bind="text: chosenShop().addressTxt"></span>
+								<span data-bind="text: chosenShop().address"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>
 									<!-- ko foreach : shops -->
