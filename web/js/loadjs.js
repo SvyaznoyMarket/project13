@@ -85,6 +85,7 @@
 				.script( 'watch3dv2.min.js' )
 				.wait()
 				.script( getWithVersion('app.product.js') )
+				.script( getWithVersion('app.oneclick.js') )
 			}).runQueue()
 			break
 		case 'product_comment':
@@ -132,6 +133,7 @@
 				.script( getWithVersion('dash.js') )
 				.wait()
 				.script( getWithVersion('app.product.js') )
+				.script( getWithVersion('app.oneclick.js') )
 			}).runQueue()
 			break
 	}

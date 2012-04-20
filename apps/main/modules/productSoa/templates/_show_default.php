@@ -110,7 +110,7 @@ foreach ($p3d as $p3d_obj)
             <div class="pb5"><strong>
             	<a href=""
             		data-model='<?php echo $json ?>'
-            		class="red underline order1click-link">Купить быстро в 1 клик</a>
+            		class="red underline order1click-link-new">Купить быстро в 1 клик</a>
             </strong></div>
 
             <?php endif ?>

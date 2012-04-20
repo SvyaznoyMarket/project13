@@ -1,5 +1,5 @@
 
-<div class='bMobDown mBR5 mW2 mW1000 p0' style="display:none" id="order1click-container">
+<div class='bMobDown mBR5 mW2 mW1000 p0' style="display:none" id="order1click-container-new">
 <form id="oneClick" action="">
 	<div class='bMobDown__eWrap'>
 		<div class='bMobDown__eClose top0 close'></div>
@@ -68,7 +68,7 @@
 								<!-- /ko -->
 							</a>
 					</td></tr>
-					
+					<!-- /ko -->
 
 					<tr><td colspan="2" data-bind="style: { display: showMap() ? 'table-cell' : 'none' }">
 						<div class='bMapShops__eMapWrap' id="mapPopup" style="display:none"> </div>
@@ -81,7 +81,7 @@
 							</div>
 						</div>					
 					</td></tr>
-					<!-- /ko -->
+					
 
 					<!-- ko foreach: textfields -->
 					<tr>
