@@ -115,7 +115,9 @@ console.info('IN DEL ', Deliveries)
 			
 			self.plusItem = function() {
 				self.quantity( self.quantity() + 1 )
-				self.loadData()
+				var curq =  self.quantity() * 1
+console.info('cur', curq)				
+				setTimeout( function(){ self.loadData( curq ) } , 500 )
 				return false
 			}
 			self.minusItem = function() {
@@ -124,7 +126,10 @@ console.info('IN DEL ', Deliveries)
 				return false
 			}
 			
-			self.loadData = function() {
+			self.loadData = function( momentq ) {
+console.info( self.quantity(), momentq )				
+				if( self.quantity() > momentq )
+					return
 				var postData = {
 					product_id: Model.jsitemid,
 					product_quantity: 5,
