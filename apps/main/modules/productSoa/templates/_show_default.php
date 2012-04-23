@@ -184,6 +184,10 @@ foreach ($p3d as $p3d_obj)
 
 <div class="clear"></div>
 
+<?php if (count($product->related)): ?>
+<?php include_partial('productSoa/product_related', $sf_data) ?>
+<?php endif ?> 
+
 <?php if (!empty($product->description)): ?>
     <!-- Information -->
     <h2 class="bold"><?php echo $product->name ?> - Информация о товаре</h2>

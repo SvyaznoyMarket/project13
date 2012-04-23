@@ -128,8 +128,10 @@ class ProductFactory
             $product->model['product'][] = $product->id;
             $friendIdList = array_merge($friendIdList, $product->model['product']);
         }
-        foreach ($product->kit as $kit) {
-            $friendIdList[] = $kit['id'];
+        if (count($product->kit)) {
+            foreach ($product->kit as $kit) {
+                $friendIdList[] = $kit['id'];
+            }
         }
 //        print_r($friendIdList);
 //        die();
@@ -143,10 +145,12 @@ class ProductFactory
 
         //для комплектов
         $kitList = array();
-        foreach ($product->kit as $kit) {
-            $kitList[] = $this->_createBaseProduct($friendsInfo[$kit['id']]);
+        if (count($product->kit)) {
+            foreach ($product->kit as $kit) {
+                $kitList[] = $this->_createBaseProduct($friendsInfo[$kit['id']]);
+            }
+            $product->kit = $kitList;
         }
-        $product->kit = $kitList;
 
         //для моделей
         if (isset($product->model['product'])) {
@@ -160,18 +164,22 @@ class ProductFactory
 
         //для связанных продуктов
         $relatedList = array();
-        foreach ($product->related as $related) {
-            if (isset($friendsInfo[$related])) {
-                $relatedList[] = $this->_createBaseProduct($friendsInfo[$related]);
+        if (count($product->related)) {
+            foreach ($product->related as $related) {
+                if (isset($friendsInfo[$related])) {
+                    $relatedList[] = $this->_createBaseProduct($friendsInfo[$related]);
+                }
             }
         }
         $product->related = $relatedList;
 
         //для аксессуаров
         $accessoriesList = array();
-        foreach ($product->accessories as $accessory) {
-            if (isset($friendsInfo[$accessory])) {
-                $accessoriesList[] = $this->_createBaseProduct($friendsInfo[$accessory]);
+        if (count($product->accessories)) {
+            foreach ($product->accessories as $accessory) {
+                if (isset($friendsInfo[$accessory])) {
+                    $accessoriesList[] = $this->_createBaseProduct($friendsInfo[$accessory]);
+                }
             }
         }
         $product->accessories = $accessoriesList;
@@ -211,7 +219,7 @@ class ProductFactory
         //есть на складе, если есть хоть где-нибудь
         $product->is_instock = $product->state['is_shop'] || $product->state['is_store'] || $product->state['is_supplier'];
 
-        if ($product->is_instock && $product->price>0) {
+        if ($product->state['is_buyable'] && $product->price>0) {
             $product->is_insale = 1;
         } else {
             $product->is_insale = 0;

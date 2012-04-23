@@ -27,11 +27,6 @@
   <?php include_component('productSoa', 'tags', array('product' => $product)) ?>
 <?php endif ?>
 
-
-<?php if (count($product->related)): ?>
-<?php include_partial('productSoa/product_related', $sf_data) ?>
-<?php endif ?>
-
 <?php if (count($product->accessories)): ?>
 <?php include_partial('productSoa/product_accessory', $sf_data) ?>
 <?php endif ?>
