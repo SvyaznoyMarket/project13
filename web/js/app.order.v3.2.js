@@ -95,7 +95,8 @@ $(document).ready(function() {
 
             var unmoved = []
 
-            for (i = 0; i < data.deliveryTypes[fromDeliveryTypeToken].items.length; i++) {
+            var length = data.deliveryTypes[fromDeliveryTypeToken].items.length
+            for (i = 0; i < length; i++) {
                 var token = data.deliveryTypes[fromDeliveryTypeToken].items[i]
                 var item = data.items[token]
                 if (!array_key_exists(toDeliveryTypeToken, item.deliveries)) {
