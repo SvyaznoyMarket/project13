@@ -1,0 +1,2433 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!DOCTYPE yml_catalog SYSTEM "shops.dtd">
+<yml_catalog date="2012-04-23 11:51:48">
+<shop>
+<name>Enter.ru</name>
+<company>Enter.ru</company>
+<url>http://www.enter.ru</url>
+<currencies><currency id="RUR" rate="1"/></currencies>
+<categories>
+<category id="1888" parentId="145">Табуреты</category>
+<category id="1887" parentId="145">Стулья со спинкой</category>
+<category id="1886" parentId="145">Пуфики</category>
+<category id="1885" parentId="145">Банкетки</category>
+<category id="1851" parentId="1333">Ведра и лейки</category>
+<category id="1864" parentId="311">Садовое освещение</category>
+<category id="1848" parentId="1553">Защита от садовых вредителей</category>
+<category id="1913" parentId="1895">Хозяйственные товары</category>
+<category id="1912" parentId="1895">Товары для летнего отдыха</category>
+<category id="1911" parentId="1895">Товары для кухни и сервировки стола</category>
+<category id="1910" parentId="1895">Товары для ванной и бани</category>
+<category id="1909" parentId="1895">Текстиль</category>
+<category id="1908" parentId="1897">Электроника и цифровая техника</category>
+<category id="1898" parentId="1897">Аксессуары</category>
+<category id="1897" parentId="1889">Электроника</category>
+<category id="1896" parentId="1889">Товары для сада</category>
+<category id="1895" parentId="1889">Товары для дома</category>
+<category id="1905" parentId="1894">Игрушки, игры, спорт</category>
+<category id="1903" parentId="1894">Для сна и отдыха</category>
+<category id="1902" parentId="1894">Для прогулки</category>
+<category id="1899" parentId="1894">Гигиена, кормление, приучение малыша</category>
+<category id="1894" parentId="1889">Товары для детей</category>
+<category id="1893" parentId="1889">Спорт и Отдых</category>
+<category id="1892" parentId="1889">Сделай Сам</category>
+<category id="1907" parentId="1891">Мягкая мебель</category>
+<category id="1906" parentId="1891">Мебель корпусная</category>
+<category id="1904" parentId="1891">Для спальни</category>
+<category id="1901" parentId="1891">Для кухни</category>
+<category id="1900" parentId="1891">Для ванной</category>
+<category id="1891" parentId="1889">Мебель</category>
+<category id="1890" parentId="1889">Бытовая техника</category>
+<category id="1852" parentId="1333">Дождеватели и пистолеты для полива</category>
+<category id="1853" parentId="1333">Соединительные и ремонтные элементы</category>
+<category id="1854" parentId="1333">Шланги и аксессуары</category>
+<category id="1849" parentId="1553">Садовая обувь</category>
+<category id="1850" parentId="1553">Садовые перчатки</category>
+<category id="1855" parentId="1554">Баки</category>
+<category id="1856" parentId="1554">Крупный садовый инвентарь</category>
+<category id="1862" parentId="1856">Вилы</category>
+<category id="1863" parentId="1856">Метлы</category>
+<category id="1857" parentId="1554">Опрыскиватели</category>
+<category id="1858" parentId="1554">Рукомойники</category>
+<category id="1859" parentId="1554">Тачки</category>
+<category id="1860" parentId="1554">Термометры</category>
+<category id="1861" parentId="311">Украшение дома</category>
+<category id="1865" parentId="311">Садовый декор</category>
+<category id="1866" parentId="311">Антимоскитные свечи</category>
+<category id="1867" parentId="311">Пикник</category>
+<category id="1868" parentId="311">Садовая мебель и аксессуары</category>
+<category id="1869" parentId="311">Уход за уличными растениями</category>
+<category id="1871" parentId="789">FM-трансмиттеры</category>
+<category id="1872" parentId="141">Мойки</category>
+<category id="1873" parentId="141">Смесители</category>
+<category id="1880" parentId="966">Кольца с искусственными камнями</category>
+<category id="1875" parentId="966">Кольца с эмалью</category>
+<category id="1876" parentId="967">Подвески с эмалью</category>
+<category id="1877" parentId="1004">Серьги с эмалью</category>
+<category id="1874" parentId="1804">Joli</category>
+<category id="1878" parentId="325">Детский садовый инвентарь</category>
+<category id="1914" parentId="1889">Подарки и хобби</category>
+<category id="1879" parentId="1593">Кормушки и скворечники</category>
+<category id="1881" parentId="967">Подвески с искусственными камнями</category>
+<category id="1882" parentId="1004">Серьги с искусственными камнями</category>
+<category id="1883" parentId="967">Подвески с поделочными камнями</category>
+<category id="1884" parentId="1549">Комплектующие для столешниц</category>
+<category id="1" parentId="0">Бытовая техника</category>
+<category id="2" parentId="1">Встраиваемая техника</category>
+<category id="3" parentId="2">Варочные поверхности</category>
+<category id="4" parentId="2">Встраиваемые микроволновые печи</category>
+<category id="5" parentId="2">Встраиваемые посудомоечные машины</category>
+<category id="6" parentId="2">Встраиваемые стиральные машины</category>
+<category id="7" parentId="2">Встраиваемые холодильники</category>
+<category id="8" parentId="2">Дополнительная встраиваемая техника</category>
+<category id="9" parentId="8">Встраиваемые грили</category>
+<category id="10" parentId="8">Встраиваемые кофеварки и кофемашины</category>
+<category id="11" parentId="8">Встраиваемые кухонные комбайны</category>
+<category id="12" parentId="2">Духовки</category>
+<category id="13" parentId="2">Комплекты варочная панель и духовой шкаф</category>
+<category id="14" parentId="2">Вытяжки</category>
+<category id="1493" parentId="2">Аксессуары для встраиваемой техники</category>
+<category id="15" parentId="1">Климатическая техника</category>
+<category id="16" parentId="15">Вентиляторы</category>
+<category id="17" parentId="15">Водонагреватели</category>
+<category id="18" parentId="15">Кондиционеры</category>
+<category id="19" parentId="15">Обогревательные приборы</category>
+<category id="20" parentId="15">Системы очистки и увлажнения воздуха</category>
+<category id="1474" parentId="15">Камины</category>
+<category id="1492" parentId="15">Аксессуары для климатической техники</category>
+<category id="41" parentId="1">Малая бытовая техника для кухни</category>
+<category id="42" parentId="41">Блинницы и вафельницы</category>
+<category id="44" parentId="41">Кофемашины и кофеварки</category>
+<category id="46" parentId="41">Кухонные весы и электрооткрывалки</category>
+<category id="47" parentId="41">Кухонные комбайны, миксеры, блендеры</category>
+<category id="48" parentId="47">Блендеры</category>
+<category id="49" parentId="47">Кухонные комбайны и процессоры</category>
+<category id="50" parentId="47">Миксеры</category>
+<category id="51" parentId="47">Измельчители</category>
+<category id="53" parentId="41">Микроволновые печи</category>
+<category id="57" parentId="41">Мясорубки и ломтерезки</category>
+<category id="58" parentId="41">Пароварки, мультиварки, йогуртницы</category>
+<category id="60" parentId="41">Соковыжималки</category>
+<category id="61" parentId="41">Тостеры, минипечки, гриль</category>
+<category id="65" parentId="41">Фритюрницы</category>
+<category id="66" parentId="41">Хлебопечи</category>
+<category id="67" parentId="41">Чайники и термопоты</category>
+<category id="1491" parentId="41">Аксессуары для кухонной техники</category>
+<category id="72" parentId="1">Уборка дома и уход за одеждой</category>
+<category id="73" parentId="72">Машинки для удаления катышек</category>
+<category id="74" parentId="72">Прочие приборы для ухода за домом</category>
+<category id="75" parentId="72">Пылесосы</category>
+<category id="77" parentId="72">Сушильные машины</category>
+<category id="78" parentId="72">Утюги</category>
+<category id="79" parentId="72">Швейные машины</category>
+<category id="1259" parentId="72">Парогенераторы</category>
+<category id="1490" parentId="72">Аксессуары для пылесосов</category>
+<category id="76" parentId="1">Стиральные машины</category>
+<category id="1094" parentId="1">Плиты</category>
+<category id="1095" parentId="1">Посудомоечные машины</category>
+<category id="1096" parentId="1">Холодильники и морозильники</category>
+<category id="1479" parentId="1">Аксессуары для бытовой техники</category>
+<category id="1480" parentId="1479">Аксессуары для каминов</category>
+<category id="1481" parentId="1479">Жидкость для очистки бытовой техники</category>
+<category id="1482" parentId="1479">Аксессуары для пылесосов</category>
+<category id="1487" parentId="1479">Аксессуары для кухонной техники</category>
+<category id="1489" parentId="1479">Аксессуары для стиральных и посудомоечных машин</category>
+<category id="1495" parentId="1479">Аксессуары для климатической техники</category>
+<category id="1496" parentId="1479">Аксессуары для бритв, эпиляторов, зубных щеток</category>
+<category id="1512" parentId="1479">Прочие аксессуары для бытовой техники</category>
+<category id="21" parentId="0">Красота и здоровье</category>
+<category id="22" parentId="21">Бритвы</category>
+<category id="23" parentId="21">Весы</category>
+<category id="24" parentId="21">Приборы для стрижки волос</category>
+<category id="26" parentId="21">Щипцы и выпрямители для волос</category>
+<category id="28" parentId="21">Косметические приборы</category>
+<category id="32" parentId="21">Массажеры</category>
+<category id="35" parentId="21">Фены</category>
+<category id="36" parentId="21">Эпиляторы</category>
+<category id="1314" parentId="21">Приборы для здоровья</category>
+<category id="30" parentId="1314">Зубные щетки</category>
+<category id="1557" parentId="1314">Глюкометры</category>
+<category id="1558" parentId="1314">Дозиметры, экотестеры, нитрат-тестеры</category>
+<category id="1559" parentId="1314">Небулайзеры</category>
+<category id="1560" parentId="1314">Термометры</category>
+<category id="1561" parentId="1314">Тонометры</category>
+<category id="1562" parentId="1314">Шагомеры</category>
+<category id="1563" parentId="1314">Системы для обогрева постели</category>
+<category id="1386" parentId="21">Аромадиффузоры</category>
+<category id="1494" parentId="21">Аксессуары для бритв, эпиляторов, зубных щеток</category>
+<category id="80" parentId="0">Мебель</category>
+<category id="81" parentId="80">Мебель для ванной</category>
+<category id="82" parentId="81">Гарнитуры для ванной комнаты</category>
+<category id="83" parentId="81">Зеркала и зеркальные шкафы</category>
+<category id="86" parentId="81">Комоды для ванной</category>
+<category id="87" parentId="81">Тумбы с раковиной</category>
+<category id="89" parentId="81">Полки и подсветка для ванной</category>
+<category id="90" parentId="81">Раковины</category>
+<category id="91" parentId="81">Тумбы без раковины</category>
+<category id="92" parentId="81">Настенные шкафы для ванной</category>
+<category id="93" parentId="81">Шкафы-колонны для ванной</category>
+<category id="94" parentId="80">Мебель для гостиной</category>
+<category id="100" parentId="94">Модульные гостиные</category>
+<category id="102" parentId="94">Стенки для гостиной</category>
+<category id="1425" parentId="94">Тумбы для ТВ</category>
+<category id="1426" parentId="94">Журнальные столики</category>
+<category id="1427" parentId="94">Кофейные и сервировочные столики</category>
+<category id="1429" parentId="94">Стеллажи</category>
+<category id="107" parentId="80">Мебель для детской</category>
+<category id="1365" parentId="107">Модульные детские комнаты</category>
+<category id="1366" parentId="107">Матрасы для детей от 3 лет</category>
+<category id="1368" parentId="107">Диваны и кушетки для детской</category>
+<category id="1423" parentId="107">Письменные столы для детской</category>
+<category id="1424" parentId="107">Компьютерные столы</category>
+<category id="1505" parentId="107">Кровати для детей от 3 лет</category>
+<category id="1778" parentId="107">Мебель для новорожденных</category>
+<category id="1367" parentId="1778">Матрасы для новорожденных</category>
+<category id="1774" parentId="1778">Кроватки для новорожденных</category>
+<category id="121" parentId="80">Мебель для домашнего кабинета</category>
+<category id="123" parentId="121">Офисные кресла</category>
+<category id="124" parentId="121">Письменные и компьютерные столы</category>
+<category id="126" parentId="121">Стеллажи для кабинета</category>
+<category id="128" parentId="121">Системы хранения</category>
+<category id="1017" parentId="121">Готовые домашние кабинеты</category>
+<category id="1267" parentId="121">Мягкая мебель для домашнего кабинета</category>
+<category id="1779" parentId="121">Комоды и тумбы для кабинета</category>
+<category id="129" parentId="80">Мебель для кухни</category>
+<category id="130" parentId="129">Модульные кухонные гарнитуры</category>
+<category id="131" parentId="129">Готовые кухонные гарнитуры</category>
+<category id="138" parentId="129">Столешницы</category>
+<category id="139" parentId="129">Обеденные столы</category>
+<category id="141" parentId="129">Мойки и смесители</category>
+<category id="145" parentId="129">Стулья для кухни</category>
+<category id="1470" parentId="129">Стеновые панели</category>
+<category id="1549" parentId="129">Комплектующие для кухонных гарнитуров</category>
+<category id="1437" parentId="1549">Цоколи для кухни</category>
+<category id="1471" parentId="1549">Плинтуса</category>
+<category id="1731" parentId="129">Кухонные уголки</category>
+<category id="1732" parentId="129">Готовые наборы столы со стульями</category>
+<category id="1733" parentId="1731">Кухонные диваны</category>
+<category id="1734" parentId="1731">Обеденные столы</category>
+<category id="1735" parentId="1731">Стулья</category>
+<category id="1736" parentId="1731">Табуреты</category>
+<category id="146" parentId="80">Мягкая мебель</category>
+<category id="147" parentId="146">Диваны</category>
+<category id="148" parentId="146">Кресла</category>
+<category id="149" parentId="146">Кушетки</category>
+<category id="150" parentId="146">Пуфы</category>
+<category id="1506" parentId="146">Матрасы для диванов</category>
+<category id="151" parentId="80">Мебель для прихожей</category>
+<category id="155" parentId="151">Готовые прихожие</category>
+<category id="158" parentId="151">Модульные прихожие</category>
+<category id="1430" parentId="151">Навесные полки</category>
+<category id="1431" parentId="151">Вешалки для одежды</category>
+<category id="1432" parentId="151">Зеркала</category>
+<category id="1433" parentId="151">Стеллажи</category>
+<category id="1435" parentId="151">Комоды и тумбы для прихожей</category>
+<category id="1762" parentId="151">Обувницы</category>
+<category id="162" parentId="80">Мебель для спальни</category>
+<category id="170" parentId="162">Матрасы и наматрасники</category>
+<category id="1202" parentId="170">Матрасы</category>
+<category id="1203" parentId="170">Наматрасники</category>
+<category id="172" parentId="162">Ортопедические подушки</category>
+<category id="174" parentId="162">Модульные спальные гарнитуры</category>
+<category id="1207" parentId="162">Комоды для спальни</category>
+<category id="1208" parentId="162">Основания для кроватей</category>
+<category id="1362" parentId="162">Интерьерные кровати</category>
+<category id="1434" parentId="162">Кровати</category>
+<category id="1722" parentId="162">Шкафы для спальни</category>
+<category id="180" parentId="80">Шкафы-купе</category>
+<category id="1193" parentId="80">Матрасы</category>
+<category id="1194" parentId="1193">Детские матрасы</category>
+<category id="1195" parentId="1193">Матрасы для новорожденных</category>
+<category id="1196" parentId="1193">Матрасы и наматрасники</category>
+<category id="1197" parentId="1196">Матрасы</category>
+<category id="1198" parentId="1196">Матрасы для диванов</category>
+<category id="1199" parentId="1196">Наматрасники</category>
+<category id="1200" parentId="1193">Ортопедические подушки</category>
+<category id="185" parentId="0">Подарки и хобби</category>
+<category id="186" parentId="185">Активные развлечения</category>
+<category id="187" parentId="186">Умный пластилин</category>
+<category id="188" parentId="186">Hip Hop Pops</category>
+<category id="189" parentId="186">Астроджекс (Astrojax)</category>
+<category id="191" parentId="186">Жонглирование</category>
+<category id="192" parentId="186">Йо-йо (Yo-Yo)</category>
+<category id="193" parentId="186">Кендама (Kendama)</category>
+<category id="194" parentId="186">Огоспорт</category>
+<category id="195" parentId="186">Пои</category>
+<category id="196" parentId="186">Слинки (Slinks)</category>
+<category id="197" parentId="186">Сокс</category>
+<category id="199" parentId="186">Танглы (Tangles)</category>
+<category id="200" parentId="186">Фингербоард и BMX</category>
+<category id="1724" parentId="186">Бумеранги</category>
+<category id="1725" parentId="186">Спид Стэкс (Speed Stacks)</category>
+<category id="1726" parentId="186">Фрисби (Frisby)</category>
+<category id="205" parentId="185">Коллекционные игрушки</category>
+<category id="206" parentId="205">Герои игр</category>
+<category id="207" parentId="205">Герои музыки</category>
+<category id="208" parentId="205">Герои мультфильмов</category>
+<category id="209" parentId="205">Герои фильмов</category>
+<category id="1305" parentId="205">Дизайнерские игрушки</category>
+<category id="211" parentId="185">Настольные игры 12+</category>
+<category id="212" parentId="211">Wargame</category>
+<category id="213" parentId="211">Игры для вечеринки</category>
+<category id="214" parentId="211">Интеллектуальные игры</category>
+<category id="215" parentId="211">Коллекционные карточные игры</category>
+<category id="216" parentId="211">Логические игры</category>
+<category id="217" parentId="211">Покер</category>
+<category id="218" parentId="211">Стратегические игры</category>
+<category id="1097" parentId="185">Головоломки 12+</category>
+<category id="1098" parentId="185">Мягкие игрушки</category>
+<category id="1099" parentId="185">Наборы для выращивания</category>
+<category id="1100" parentId="185">Пазлы (Puzzles)</category>
+<category id="1101" parentId="185">Сувениры</category>
+<category id="1370" parentId="185">Сборные модели</category>
+<category id="1497" parentId="185">Подарки на 23 февраля</category>
+<category id="1500" parentId="1497">ценой до 1000 рублей</category>
+<category id="1501" parentId="1497">ценой от 1000 до 2999 рублей</category>
+<category id="1502" parentId="1497">ценой от 10000 рублей</category>
+<category id="1503" parentId="1497">ценой от 3000 до 4999 рублей</category>
+<category id="1504" parentId="1497">ценой от 5000 до 9999 рублей</category>
+<category id="1499" parentId="185">Подарки на 14 февраля</category>
+<category id="1511" parentId="185">Подарочная упаковка</category>
+<category id="1522" parentId="185">Подарки на 8 марта</category>
+<category id="1523" parentId="1522">Подарки для бабушки</category>
+<category id="1524" parentId="1522">Подарки для детей</category>
+<category id="1525" parentId="1522">Подарки для друзей семьи</category>
+<category id="1526" parentId="1522">Подарки для коллег</category>
+<category id="1527" parentId="1522">Подарки для любимой</category>
+<category id="1528" parentId="1522">Подарки для мамы</category>
+<category id="1529" parentId="1522">Подарки для тинейджеров</category>
+<category id="1540" parentId="1522">Упаковка для подарков</category>
+<category id="1727" parentId="185">Головоломки 12+</category>
+<category id="1728" parentId="185">Необычные сувениры и подарки</category>
+<category id="1730" parentId="1728">Подставки под телефон</category>
+<category id="1729" parentId="185">Подарки на День святого Валентина</category>
+<category id="224" parentId="0">Сделай сам</category>
+<category id="225" parentId="224">Аксессуары для автомобилей</category>
+<category id="237" parentId="225">Аксессуары для декора и удобства</category>
+<category id="238" parentId="237">Аксессуары, работающие от прикуривателя</category>
+<category id="239" parentId="237">Коврики в автомобиль</category>
+<category id="240" parentId="237">Прочие автоаксессуары</category>
+<category id="241" parentId="237">Чехлы на сидения и автотенты</category>
+<category id="1104" parentId="237">Органайзеры для багажника</category>
+<category id="1105" parentId="237">Освежители воздуха</category>
+<category id="1102" parentId="225">Аварийные принадлежности</category>
+<category id="1103" parentId="225">Автокосметика и автохимия</category>
+<category id="1106" parentId="225">Мойки высокого давления</category>
+<category id="1107" parentId="225">Насосы и манометры</category>
+<category id="1108" parentId="225">Салфетки, губки, тряпки</category>
+<category id="1109" parentId="225">Скребки, щетки</category>
+<category id="1110" parentId="225">Щетки стеклоочистителя</category>
+<category id="1752" parentId="225">Топливные канистры и воронки</category>
+<category id="249" parentId="224">Ручные инструменты</category>
+<category id="254" parentId="249">Инструменты для скрепления</category>
+<category id="255" parentId="254">Клеевые пистолеты</category>
+<category id="258" parentId="254">Ручные строительные степлеры</category>
+<category id="1088" parentId="254">Пистолеты для герметика</category>
+<category id="260" parentId="249">Молотки</category>
+<category id="261" parentId="249">Наборы инструментов</category>
+<category id="265" parentId="249">Отвертки и ключи</category>
+<category id="266" parentId="249">Режущие инструменты</category>
+<category id="267" parentId="266">Напильники, резаки и ножи</category>
+<category id="268" parentId="266">Ножовки и ручные пилы</category>
+<category id="269" parentId="266">Режущие инструменты</category>
+<category id="270" parentId="249">Ящики и чемоданы для инструментов</category>
+<category id="1111" parentId="249">Оснастка для ручного инструмента</category>
+<category id="1112" parentId="249">Пассатижи, плоскогубцы, кусачки, клещи</category>
+<category id="253" parentId="224">Измерительные инструменты</category>
+<category id="1790" parentId="253">Лазерные нивелиры, дальномеры и детекторы</category>
+<category id="1791" parentId="253">Механические измерительные инструменты и уровни</category>
+<category id="271" parentId="224">Сантехника</category>
+<category id="272" parentId="271">Души</category>
+<category id="273" parentId="271">Смесители</category>
+<category id="274" parentId="224">Строительство и ремонт</category>
+<category id="275" parentId="274">Герметики, &quot;жидкие гвозди&quot;, поглотители влаги</category>
+<category id="277" parentId="274">Клей и клейкая лента</category>
+<category id="278" parentId="274">Лебедки и подъемники</category>
+<category id="279" parentId="274">Монтажная пена</category>
+<category id="280" parentId="274">Стремянки</category>
+<category id="1089" parentId="274">Инструменты для строительства и ремонта</category>
+<category id="1307" parentId="274">Домофоны, звонки</category>
+<category id="1343" parentId="274">Очки, шлемы, маски</category>
+<category id="281" parentId="224">Электроинструменты</category>
+<category id="1118" parentId="281">Аккумуляторные дрели и шуруповерты</category>
+<category id="1119" parentId="281">Гравировка</category>
+<category id="1120" parentId="281">Дисковые и сабельные пилы</category>
+<category id="1121" parentId="281">Дрели</category>
+<category id="1122" parentId="281">Лобзики</category>
+<category id="1123" parentId="281">Паяльники и паяльные лампы</category>
+<category id="1124" parentId="281">Перфораторы</category>
+<category id="1125" parentId="281">Плиткорезы</category>
+<category id="1126" parentId="281">Резаки и стамески</category>
+<category id="1127" parentId="281">Рубанки и фрезеры</category>
+<category id="1128" parentId="281">Углошлифовальные машины (&quot;болгарки&quot;)</category>
+<category id="1129" parentId="281">Шлифовальные и полировальные машины</category>
+<category id="286" parentId="224">Оснастка для электроинструмента</category>
+<category id="1780" parentId="286">Для аккумуляторных шуруповертов и дрелей</category>
+<category id="1781" parentId="286">Для дисковых пил</category>
+<category id="1782" parentId="286">Для перфораторов</category>
+<category id="1783" parentId="286">Для углошлифмашин (&quot;болгарок&quot;)</category>
+<category id="1784" parentId="286">Для электродрелей</category>
+<category id="1785" parentId="286">Для электролобзиков</category>
+<category id="1786" parentId="286">Для универсальных инструментов и граверов</category>
+<category id="1787" parentId="286">Для шлифовальных машин и фрезеров</category>
+<category id="1788" parentId="286">Для электроплиткорезов</category>
+<category id="1789" parentId="286">Средства индивидуальной защиты</category>
+<category id="300" parentId="224">Строительная техника</category>
+<category id="301" parentId="300">Компрессоры</category>
+<category id="302" parentId="300">Краскораспылители</category>
+<category id="303" parentId="300">Сварочные аппараты</category>
+<category id="304" parentId="300">Тепловые пушки</category>
+<category id="305" parentId="300">Технические фены</category>
+<category id="306" parentId="300">Генераторы и стабилизаторы напряжения</category>
+<category id="1344" parentId="300">Бетономешалки</category>
+<category id="1345" parentId="300">Строительные пылесосы</category>
+<category id="311" parentId="0">Сад и огород</category>
+<category id="312" parentId="1333">Насосы, насосные станции и помпы</category>
+<category id="1113" parentId="1334">Аксессуары для садовой техники</category>
+<category id="1333" parentId="311">Полив</category>
+<category id="1334" parentId="311">Садовая техника</category>
+<category id="1115" parentId="1334">Пилы</category>
+<category id="1116" parentId="1334">Снегоуборочные машины</category>
+<category id="1339" parentId="1334">Кусторезы, ножницы</category>
+<category id="1340" parentId="1334">Газонокосилки</category>
+<category id="1341" parentId="1334">Косы, триммеры</category>
+<category id="1342" parentId="1334">Культиваторы</category>
+<category id="1335" parentId="311">Биотуалеты</category>
+<category id="1114" parentId="1856">Лопаты</category>
+<category id="1117" parentId="1554">Топоры, пилы, колуны</category>
+<category id="1336" parentId="1856">Грабли</category>
+<category id="1337" parentId="1554">Секаторы, кусторезы</category>
+<category id="1338" parentId="1554">Мелкий садовый инвентарь</category>
+<category id="1564" parentId="1554">Товары для рассады</category>
+<category id="1565" parentId="311">Поддержки и опоры для растений</category>
+<category id="1721" parentId="311">Садовые инструменты для детей</category>
+<category id="1553" parentId="311">Защита в саду</category>
+<category id="1554" parentId="311">Садовый инвентарь</category>
+<category id="1757" parentId="311">Садовые ограждения, бордюры</category>
+<category id="320" parentId="0">Детские товары</category>
+<category id="321" parentId="320">Игрушки и игры</category>
+<category id="322" parentId="321">Все для карнавала</category>
+<category id="333" parentId="321">Игрушки для девочек</category>
+<category id="334" parentId="333">Аксессуары для кукол</category>
+<category id="335" parentId="333">Игровые наборы для девочек</category>
+<category id="336" parentId="333">Игрушки-фигурки для девочек</category>
+<category id="337" parentId="333">Куклы</category>
+<category id="1306" parentId="333">Интерактивные игрушки</category>
+<category id="346" parentId="321">Игрушки для мальчиков</category>
+<category id="347" parentId="346">Игровые наборы для мальчиков</category>
+<category id="348" parentId="346">Игрушечное оружие</category>
+<category id="349" parentId="346">Игрушечный транспорт</category>
+<category id="350" parentId="346">Игрушки с дистанционным управлением</category>
+<category id="351" parentId="346">Игрушки-фигурки для мальчиков</category>
+<category id="352" parentId="346">Роботы</category>
+<category id="353" parentId="321">Конструкторы</category>
+<category id="354" parentId="321">Мягкие игрушки</category>
+<category id="355" parentId="321">Развивающие и обучающие игрушки</category>
+<category id="356" parentId="355">Игровые наборы</category>
+<category id="357" parentId="355">Игрушки из дерева</category>
+<category id="358" parentId="355">Интерактивные игрушки</category>
+<category id="359" parentId="355">Музыкальные инструменты</category>
+<category id="360" parentId="355">Настольные игры для детей</category>
+<category id="361" parentId="355">Электронные и обучающие игры и компьютеры</category>
+<category id="1513" parentId="355">Детские телефоны</category>
+<category id="1792" parentId="355">Для юных исследователей</category>
+<category id="1373" parentId="321">Канцелярские товары и товары для школы</category>
+<category id="325" parentId="320">Детский спорт и активный отдых</category>
+<category id="327" parentId="325">Велосипеды и самокаты</category>
+<category id="328" parentId="325">Игровые системы и комплексы</category>
+<category id="329" parentId="325">Игры на воде и в песочнице</category>
+<category id="331" parentId="325">Спортивные и подвижные игры</category>
+<category id="332" parentId="325">Электромобили</category>
+<category id="1258" parentId="325">Катание с горки</category>
+<category id="338" parentId="320">Игрушки для малышей</category>
+<category id="339" parentId="338">Игрушки для купания</category>
+<category id="340" parentId="338">Качалки и каталки</category>
+<category id="341" parentId="338">Музыкальные и интерактивные игрушки</category>
+<category id="342" parentId="338">Погремушки и подвески</category>
+<category id="343" parentId="338">Развивающие игрушки</category>
+<category id="344" parentId="338">Развивающие коврики</category>
+<category id="345" parentId="338">Развивающие центры</category>
+<category id="362" parentId="320">Хобби и творчество</category>
+<category id="363" parentId="362">Мозаики и пазлы</category>
+<category id="364" parentId="362">Наборы для творчества</category>
+<category id="365" parentId="362">Сборные модели</category>
+<category id="1371" parentId="362">Детский грим</category>
+<category id="1372" parentId="362">Раскраски по номерам</category>
+<category id="1389" parentId="362">Все для лепки</category>
+<category id="1472" parentId="362">Интерьерные наклейки</category>
+<category id="1209" parentId="320">Безопасность и здоровье малыша</category>
+<category id="1210" parentId="1209">Аксессуары для безопасности малыша</category>
+<category id="1211" parentId="1209">Весы, термометры, увлажнение воздуха</category>
+<category id="1212" parentId="1209">Прорезыватели</category>
+<category id="1213" parentId="1209">Пустышки</category>
+<category id="1214" parentId="1209">Радио- и видеоняни</category>
+<category id="1215" parentId="1209">Стерилизаторы и подогреватели бутылочек</category>
+<category id="1216" parentId="320">Гигиена и уход за малышом</category>
+<category id="1217" parentId="1216">Аксессуары для купания</category>
+<category id="1555" parentId="1217">Аксессуары и круги для купания</category>
+<category id="1556" parentId="1217">Игрушки для ванны</category>
+<category id="1218" parentId="1216">Ванночки, подставки, горки</category>
+<category id="1219" parentId="1216">Горшки и сиденья на унитаз</category>
+<category id="1220" parentId="1216">Пеленки, клеенки, салфетки, платочки</category>
+<category id="1221" parentId="1216">Подгузники и накопители для подгузников</category>
+<category id="1222" parentId="1216">Предметы гигиены и ухода</category>
+<category id="1223" parentId="1216">Расчески и маникюрные принадлежности</category>
+<category id="1224" parentId="320">Для кормления малыша</category>
+<category id="1225" parentId="1224">Бутылочки и соски</category>
+<category id="1226" parentId="1224">Нагрудники и слюнявчики</category>
+<category id="1227" parentId="1224">Подушки для кормления</category>
+<category id="1228" parentId="1224">Поильники</category>
+<category id="1229" parentId="1224">Посуда и столовые приборы для малышей</category>
+<category id="1230" parentId="1224">Стерилизаторы и подогреватели бутылочек</category>
+<category id="1231" parentId="1224">Стульчики для кормления</category>
+<category id="1232" parentId="320">Для мам и беременных</category>
+<category id="1233" parentId="1232">Аксессуары для мам</category>
+<category id="1234" parentId="1232">Косметика для ухода за кожей</category>
+<category id="1235" parentId="1232">Молокоотсосы и уход за грудью</category>
+<category id="1237" parentId="1232">Сборы в роддом</category>
+<category id="1238" parentId="1232">Сувениры для мам</category>
+<category id="1239" parentId="320">Для первых путешествий</category>
+<category id="1240" parentId="1239">Автокресла</category>
+<category id="1241" parentId="1239">Аксессуары для колясок и автокресел</category>
+<category id="1242" parentId="1239">Кенгуру, сумки, слинги</category>
+<category id="1243" parentId="1239">Коляски и люльки</category>
+<category id="1532" parentId="1243">Прогулочные коляски</category>
+<category id="1533" parentId="1243">Коляски-люльки</category>
+<category id="1534" parentId="1243">Коляски-трансформеры</category>
+<category id="1535" parentId="1243">Коляски для двойни</category>
+<category id="1536" parentId="1243">Универсальные коляски</category>
+<category id="1245" parentId="320">Интерьер и текстиль для детской комнаты</category>
+<category id="1205" parentId="1245">Манежи</category>
+<category id="1206" parentId="1245">Ходунки, прыгунки</category>
+<category id="1246" parentId="1245">Детские столы и стулья</category>
+<category id="1247" parentId="1245">Качели</category>
+<category id="1248" parentId="1245">Кроватки и матрасы</category>
+<category id="1253" parentId="1248">Матрасы в детскую кроватку</category>
+<category id="1473" parentId="1248">Кроватки</category>
+<category id="1249" parentId="1245">Мобили и ночники</category>
+<category id="1250" parentId="1245">Пеленальные столы, комоды, доски</category>
+<category id="1251" parentId="1245">Постельные принадлежности, конверты и аксессуары</category>
+<category id="1753" parentId="1251">Аксессуары</category>
+<category id="1754" parentId="1251">Комплекты в кроватку, постельное бельё и бамперы</category>
+<category id="1755" parentId="1251">Конверты для новорожденных</category>
+<category id="1756" parentId="1251">Халаты и полотенца</category>
+<category id="1257" parentId="1245">Шезлонги и кресла</category>
+<category id="1387" parentId="320">Все для рисования</category>
+<category id="1390" parentId="1387">Бумага и альбомы</category>
+<category id="1391" parentId="1387">Краски</category>
+<category id="1392" parentId="1387">Мелки</category>
+<category id="1393" parentId="1387">Фломастеры</category>
+<category id="1394" parentId="1387">Цветные карандаши</category>
+<category id="1395" parentId="1387">Аксессуары для рисования</category>
+<category id="1397" parentId="1387">Наборы для рисования</category>
+<category id="1388" parentId="320">Все для школы</category>
+<category id="1396" parentId="1388">Бумага для творчества</category>
+<category id="1403" parentId="1396">Альбомы для рисования</category>
+<category id="1404" parentId="1396">Бумага для черчения</category>
+<category id="1405" parentId="1396">Креповая бумага</category>
+<category id="1406" parentId="1396">Цветная бумага и цветной картон</category>
+<category id="1398" parentId="1388">Тетради и дневники</category>
+<category id="1399" parentId="1388">Канцелярские принадлежности</category>
+<category id="1407" parentId="1399">Клей</category>
+<category id="1408" parentId="1399">Корректирующие средства</category>
+<category id="1409" parentId="1399">Ластики</category>
+<category id="1410" parentId="1399">Маркеры</category>
+<category id="1411" parentId="1399">Ручки и простые карандаши</category>
+<category id="1412" parentId="1399">Линейки</category>
+<category id="1413" parentId="1399">Настольные наборы (органайзеры)</category>
+<category id="1414" parentId="1399">Ножницы</category>
+<category id="1415" parentId="1399">Точилки</category>
+<category id="1416" parentId="1399">Циркули и готовальни</category>
+<category id="1421" parentId="1399">Счетные палочки</category>
+<category id="1400" parentId="1388">Одежда для уроков труда</category>
+<category id="1401" parentId="1388">Папки и обложки</category>
+<category id="1402" parentId="1388">Рюкзаки, сумки, пеналы</category>
+<category id="1417" parentId="1402">Пеналы</category>
+<category id="1418" parentId="1402">Ранцы</category>
+<category id="1419" parentId="1402">Рюкзаки</category>
+<category id="1420" parentId="1402">Сумки для обуви</category>
+<category id="1422" parentId="1402">Школьные сумки</category>
+<category id="443" parentId="0">Товары для дома</category>
+<category id="444" parentId="443">Декор интерьера</category>
+<category id="445" parentId="444">Вазы</category>
+<category id="454" parentId="444">Интерьерные зеркала</category>
+<category id="455" parentId="444">Искусственные растения</category>
+<category id="456" parentId="444">Плетеные изделия</category>
+<category id="457" parentId="444">Репродукции и постеры в рамах</category>
+<category id="466" parentId="444">Фоторамки и фотоальбомы</category>
+<category id="467" parentId="444">Фэн-шуй и ароматерапия</category>
+<category id="468" parentId="444">Часы</category>
+<category id="1091" parentId="444">Свечи и подсвечники</category>
+<category id="1130" parentId="444">Горшки и кашпо</category>
+<category id="1131" parentId="444">Подставки для комнатных растений</category>
+<category id="1132" parentId="444">Статуэтки и копилки</category>
+<category id="1329" parentId="444">Интерьерные наклейки</category>
+<category id="1475" parentId="444">Шкатулки, панно, ключницы</category>
+<category id="469" parentId="443">Освещение</category>
+<category id="470" parentId="469">Встраиваемые светильники</category>
+<category id="471" parentId="469">Детские светильники</category>
+<category id="472" parentId="469">Интерьерные светильники</category>
+<category id="1581" parentId="469">Настенные и настенно-потолочные светильники</category>
+<category id="1582" parentId="469">Настольные светильники</category>
+<category id="1583" parentId="469">Люстры</category>
+<category id="1584" parentId="469">Напольные светильники</category>
+<category id="473" parentId="469">Лампочки</category>
+<category id="1585" parentId="473">Лампы накаливания</category>
+<category id="1586" parentId="473">Энергосберегающие лампы</category>
+<category id="1587" parentId="473">Галогенные лампы</category>
+<category id="1588" parentId="473">Светодиодные лампы (сверхэкономичные)</category>
+<category id="474" parentId="469">Споты</category>
+<category id="475" parentId="469">Уличные светильники</category>
+<category id="1090" parentId="469">Светильники для ванной</category>
+<category id="487" parentId="443">Сервировка стола</category>
+<category id="488" parentId="487">Детская посуда</category>
+<category id="498" parentId="487">Предметы для сервировки стола</category>
+<category id="499" parentId="498">Аксессуары для сервировки стола</category>
+<category id="500" parentId="498">Подставки под горячее, термосалфетки</category>
+<category id="501" parentId="498">Сервировочные подносы</category>
+<category id="1135" parentId="498">Блюда, этажерки, конфетницы</category>
+<category id="502" parentId="487">Сервировка напитков</category>
+<category id="504" parentId="502">Бокалы и кружки для пива</category>
+<category id="505" parentId="502">Кувшины, графины, декантеры</category>
+<category id="506" parentId="502">Стаканы и стопки</category>
+<category id="507" parentId="502">Фужеры</category>
+<category id="1092" parentId="502">Аксессуары для сервировки напитков</category>
+<category id="1133" parentId="487">Одноразовая посуда</category>
+<category id="1134" parentId="487">Отдельные предметы столовой посуды</category>
+<category id="1136" parentId="487">Салфетки, бумажные полотенца</category>
+<category id="1137" parentId="487">Чайные и кофейные сервизы</category>
+<category id="1138" parentId="487">Столовые приборы</category>
+<category id="1139" parentId="487">Чашки и кружки</category>
+<category id="1318" parentId="487">Товары для праздников и вечеринок</category>
+<category id="1330" parentId="487">Столовые сервизы</category>
+<category id="522" parentId="443">Текстиль</category>
+<category id="524" parentId="522">Кухонный текстиль</category>
+<category id="528" parentId="524">Сиденья на табуретки</category>
+<category id="1262" parentId="524">Кухонные полотенца, скатерти, салфетки</category>
+<category id="1266" parentId="524">Прихватки, фартуки</category>
+<category id="531" parentId="522">Одеяла и подушки</category>
+<category id="530" parentId="531">Наматрасники</category>
+<category id="533" parentId="531">Подушки</category>
+<category id="1263" parentId="531">Одеяла</category>
+<category id="532" parentId="522">Пледы и покрывала</category>
+<category id="1260" parentId="532">Декоративные подушки</category>
+<category id="1261" parentId="532">Комплекты покрывала и наволочки</category>
+<category id="1264" parentId="532">Пледы</category>
+<category id="1265" parentId="532">Покрывала</category>
+<category id="535" parentId="522">Постельное белье</category>
+<category id="536" parentId="535">Детское постельное белье</category>
+<category id="538" parentId="535">Комплекты постельного белья</category>
+<category id="539" parentId="535">Отдельные предметы постельного белья</category>
+<category id="545" parentId="522">Шторы и карнизы</category>
+<category id="546" parentId="545">Аксессуары для штор</category>
+<category id="547" parentId="545">Жалюзи</category>
+<category id="548" parentId="545">Карнизы</category>
+<category id="549" parentId="545">Шторы</category>
+<category id="1140" parentId="522">Полотенца</category>
+<category id="1141" parentId="522">Халаты и тапочки</category>
+<category id="550" parentId="443">Товары для ванной, бани, сауны</category>
+<category id="557" parentId="550">Коврики для ванной</category>
+<category id="632" parentId="550">Товары для бани и сауны</category>
+<category id="1142" parentId="550">Косметические зеркала</category>
+<category id="1143" parentId="550">Полотенца</category>
+<category id="1144" parentId="550">Полки для ванной</category>
+<category id="1145" parentId="550">Принадлежности для ванной комнаты</category>
+<category id="1146" parentId="550">Сиденья для унитаза</category>
+<category id="1147" parentId="550">Халаты и тапочки</category>
+<category id="1148" parentId="550">Шторы для душа и аксессуары</category>
+<category id="567" parentId="443">Товары для кухни</category>
+<category id="568" parentId="567">Аксессуары для приготовления пищи</category>
+<category id="569" parentId="568">Дуршлаги и сита</category>
+<category id="571" parentId="568">Мельнички для соли и перца</category>
+<category id="572" parentId="568">Миски</category>
+<category id="573" parentId="568">Терки, ступки, измельчители</category>
+<category id="1093" parentId="568">Весы</category>
+<category id="1149" parentId="568">Сушилки, подставки, держатели</category>
+<category id="570" parentId="567">Кухонные принадлежности</category>
+<category id="574" parentId="567">Фильтры для воды</category>
+<category id="576" parentId="567">Кухонный текстиль</category>
+<category id="578" parentId="576">Кухонные полотенца, скатерти, салфетки</category>
+<category id="579" parentId="576">Прихватки, фартуки</category>
+<category id="580" parentId="576">Сиденья на табуретки</category>
+<category id="588" parentId="567">Посуда для приготовления напитков</category>
+<category id="589" parentId="588">Аксессуары для приготовления напитков</category>
+<category id="590" parentId="588">Заварочные чайники</category>
+<category id="591" parentId="588">Турки и кофеварки</category>
+<category id="592" parentId="588">Френч-прессы</category>
+<category id="593" parentId="588">Чайники</category>
+<category id="594" parentId="567">Посуда для приготовления пищи</category>
+<category id="596" parentId="594">Кастрюли, ковши, скороварки, пароварки</category>
+<category id="597" parentId="594">Казаны, кокотницы, утятницы</category>
+<category id="599" parentId="594">Крышки для посуды</category>
+<category id="600" parentId="594">Наборы посуды для приготовления пищи</category>
+<category id="603" parentId="594">Сковороды и сотейники</category>
+<category id="606" parentId="594">Фондю</category>
+<category id="607" parentId="567">Формы для запекания и товары для выпечки</category>
+<category id="575" parentId="607">Фольга и бумага для запекания</category>
+<category id="1520" parentId="607">Аксессуары</category>
+<category id="1521" parentId="607">Одноразовые формы для запекания</category>
+<category id="1589" parentId="607">Формы для запекания из керамики и фарфора</category>
+<category id="1590" parentId="607">Формы для запекания из силикона</category>
+<category id="1591" parentId="607">Формы для запекания из стали</category>
+<category id="1592" parentId="607">Формы для запекания из стекла</category>
+<category id="608" parentId="567">Емкости для хранения продуктов</category>
+<category id="610" parentId="608">Пакеты и пленка</category>
+<category id="611" parentId="608">Банки</category>
+<category id="612" parentId="608">Термосы</category>
+<category id="613" parentId="608">Хлебницы</category>
+<category id="614" parentId="608">Хранение специй</category>
+<category id="1515" parentId="608">Контейнеры для хранения</category>
+<category id="1516" parentId="567">Ножи и разделочные доски</category>
+<category id="601" parentId="1516">Ножи</category>
+<category id="602" parentId="1516">Разделочные доски</category>
+<category id="1517" parentId="1516">Наборы ножей</category>
+<category id="1518" parentId="1516">Точилки и подставки для ножей</category>
+<category id="1519" parentId="1516">Товары для карвинга</category>
+<category id="615" parentId="443">Хозяйственные товары</category>
+<category id="616" parentId="615">Комнатные термометры</category>
+<category id="617" parentId="615">Мусорные ведра и контейнеры</category>
+<category id="624" parentId="615">Придверные коврики</category>
+<category id="631" parentId="615">Сумки-тележки</category>
+<category id="633" parentId="615">Уборка</category>
+<category id="635" parentId="633">Салфетки</category>
+<category id="639" parentId="633">Щетки, метлы, совки</category>
+<category id="1382" parentId="633">Перчатки</category>
+<category id="1383" parentId="633">Швабры и насадки</category>
+<category id="1384" parentId="633">Губки</category>
+<category id="636" parentId="615">Чистящие и моющие средства</category>
+<category id="1151" parentId="615">Вешалки</category>
+<category id="1152" parentId="615">Гладильные доски и аксессуары</category>
+<category id="1154" parentId="615">Сушилки для белья и аксессуары для стирки</category>
+<category id="1155" parentId="615">Корзины для белья</category>
+<category id="1156" parentId="615">Хранение одежды и обуви</category>
+<category id="1375" parentId="1156">Чехлы и кофры тканые</category>
+<category id="1376" parentId="1156">Вакуумное хранение</category>
+<category id="1377" parentId="1156">Коробки и ящики</category>
+<category id="1378" parentId="1156">Хранение обуви</category>
+<category id="1379" parentId="1156">Уход за одеждой и обувью</category>
+<category id="1380" parentId="1156">Хранение детских вещей и игрушек</category>
+<category id="1381" parentId="1156">Крючки и держатели для рамок, постеров</category>
+<category id="1374" parentId="615">Тазы</category>
+<category id="1268" parentId="443">Товары для Нового года и Рождества</category>
+<category id="1269" parentId="1268">Символ 2012 года</category>
+<category id="1270" parentId="1268">Елочные украшения и гирлянды</category>
+<category id="1271" parentId="1268">Новогодние елки</category>
+<category id="1272" parentId="1268">Сувениры, свечи и новогодний декор</category>
+<category id="1476" parentId="443">Пасхальные товары</category>
+<category id="1593" parentId="443">Товары для дачи и отдыха на природе</category>
+<category id="1594" parentId="1593">Садовое освещение</category>
+<category id="1595" parentId="1593">Бассейны</category>
+<category id="1596" parentId="1593">Садовый декор</category>
+<category id="1597" parentId="1593">Уход за уличными растениями</category>
+<category id="1598" parentId="1593">Пикник</category>
+<category id="1599" parentId="1593">Садовая мебель и аксессуары</category>
+<category id="647" parentId="0">Спорт и отдых</category>
+<category id="648" parentId="647">Аэробика и фитнес</category>
+<category id="649" parentId="648">Аэробика</category>
+<category id="1686" parentId="649">Аксессуары для степа</category>
+<category id="1687" parentId="649">Гантели для аэробики</category>
+<category id="1688" parentId="649">Гимнастические шары</category>
+<category id="1689" parentId="649">Коврики и маты</category>
+<category id="1690" parentId="649">Скакалки, хулахупы</category>
+<category id="673" parentId="648">Силовые тренировки</category>
+<category id="1684" parentId="673">Аксессуары для силовых тренировок</category>
+<category id="1693" parentId="673">Гантели</category>
+<category id="1694" parentId="673">Диски и грифы</category>
+<category id="1705" parentId="673">Утяжелители</category>
+<category id="1706" parentId="673">Эспандеры</category>
+<category id="1477" parentId="648">Йога и пилатес</category>
+<category id="1541" parentId="648">Аксессуары для фитнеса и аэробики</category>
+<category id="1682" parentId="648">Аксессуары для единоборств</category>
+<category id="1691" parentId="648">Батуты</category>
+<category id="1692" parentId="648">Вибротренажеры</category>
+<category id="1696" parentId="648">Кардиотренажеры</category>
+<category id="1707" parentId="1696">Беговые дорожки</category>
+<category id="1708" parentId="1696">Велотренажеры</category>
+<category id="1710" parentId="1696">Горнолыжные и гребные тренажеры</category>
+<category id="1716" parentId="1696">Степперы и райдеры</category>
+<category id="1720" parentId="1696">Эллиптические тренажеры</category>
+<category id="1701" parentId="648">Силовые тренажеры</category>
+<category id="1711" parentId="1701">Детские спортивные комплексы</category>
+<category id="1713" parentId="1701">Кроссоверы и мультистанции</category>
+<category id="1714" parentId="1701">Скамьи и стойки</category>
+<category id="1715" parentId="1701">Специализированные силовые тренажеры</category>
+<category id="1717" parentId="1701">Тренажеры со свободными весами</category>
+<category id="1718" parentId="1701">Турники и брусья</category>
+<category id="679" parentId="647">Велосипеды, ролики, самокаты</category>
+<category id="684" parentId="679">Ролики</category>
+<category id="685" parentId="679">Самокаты</category>
+<category id="686" parentId="679">Скейтборды</category>
+<category id="1157" parentId="679">Аксессуары и защита для роликов</category>
+<category id="1539" parentId="679">Велосипеды</category>
+<category id="1566" parentId="679">Аксессуары для велосипедов</category>
+<category id="1567" parentId="1566">Велозамки</category>
+<category id="1568" parentId="1566">Велозащита, перчатки, очки</category>
+<category id="1569" parentId="1566">Велокомпьютеры</category>
+<category id="1570" parentId="1566">Велосумки</category>
+<category id="1571" parentId="1566">Велофляги и флягодержатели</category>
+<category id="1572" parentId="1566">Инструменты для велосипедов</category>
+<category id="1573" parentId="1566">Корзины и багажники для велосипедов</category>
+<category id="1574" parentId="1566">Крылья и защита для велосипедов</category>
+<category id="1575" parentId="1566">Насосы</category>
+<category id="1576" parentId="1566">Подножки, педали, грипсы</category>
+<category id="1577" parentId="1566">Покрышки и камеры для велосипедов</category>
+<category id="1578" parentId="1566">Зеркала, сигнализация, свет и звонки</category>
+<category id="1579" parentId="1566">Седла для велосипедов</category>
+<category id="1580" parentId="1566">Хранение велосипедов</category>
+<category id="1600" parentId="679">Детские велосипеды и самокаты</category>
+<category id="687" parentId="647">Водные виды спорта</category>
+<category id="688" parentId="687">Аквааэробика</category>
+<category id="695" parentId="687">Сноркелинг</category>
+<category id="1158" parentId="687">Аксессуары для тренировок по плаванию</category>
+<category id="1159" parentId="687">Очки для плавания</category>
+<category id="1160" parentId="687">Полотенца и халаты</category>
+<category id="1161" parentId="687">Шапочки для плавания</category>
+<category id="1542" parentId="687">Пляжный отдых</category>
+<category id="1543" parentId="1542">Пляжная обувь</category>
+<category id="1544" parentId="1542">Пляжные сумки</category>
+<category id="700" parentId="647">Домашние спортивные игры</category>
+<category id="705" parentId="700">Дартс</category>
+<category id="706" parentId="700">Настольный теннис</category>
+<category id="709" parentId="700">Настольный хоккей и футбол</category>
+<category id="710" parentId="647">Зимние виды спорта</category>
+<category id="1087" parentId="710">Катание с горки</category>
+<category id="1273" parentId="710">Беговые лыжи</category>
+<category id="1162" parentId="1273">Беговые лыжи</category>
+<category id="1278" parentId="1273">Аксессуары для беговых лыж</category>
+<category id="1279" parentId="1273">Ботинки для беговых лыж</category>
+<category id="1283" parentId="1273">Крепления для беговых лыж</category>
+<category id="1288" parentId="1273">Палки для беговых лыж</category>
+<category id="1291" parentId="1273">Сумки и чехлы для беговых лыж</category>
+<category id="1274" parentId="710">Горные лыжи</category>
+<category id="1165" parentId="1274">Горные лыжи</category>
+<category id="1280" parentId="1274">Горнолыжные ботинки</category>
+<category id="1281" parentId="1274">Горнолыжные крепления</category>
+<category id="1282" parentId="1274">Горнолыжные палки</category>
+<category id="1284" parentId="1274">Маски</category>
+<category id="1287" parentId="1274">Носки</category>
+<category id="1293" parentId="1274">Чехлы для горных лыж</category>
+<category id="1295" parentId="1274">Шлемы</category>
+<category id="1275" parentId="710">Сноуборды</category>
+<category id="1167" parentId="1275">Сноуборды</category>
+<category id="1285" parentId="1275">Маски</category>
+<category id="1286" parentId="1275">Носки</category>
+<category id="1289" parentId="1275">Сноубордические ботинки</category>
+<category id="1290" parentId="1275">Сноубордические крепления</category>
+<category id="1292" parentId="1275">Сумки и чехлы для сноубордов</category>
+<category id="1294" parentId="1275">Шлемы</category>
+<category id="1276" parentId="710">Фигурное катание</category>
+<category id="1277" parentId="710">Хоккей</category>
+<category id="734" parentId="647">Летние и командные виды спорта</category>
+<category id="735" parentId="734">Бадминтон</category>
+<category id="736" parentId="734">Баскетбол</category>
+<category id="738" parentId="734">Волейбол</category>
+<category id="739" parentId="734">Гандбол</category>
+<category id="740" parentId="734">Городки</category>
+<category id="741" parentId="734">Лапта и бейсбол</category>
+<category id="746" parentId="734">Регби</category>
+<category id="747" parentId="734">Теннис</category>
+<category id="748" parentId="734">Футбол</category>
+<category id="749" parentId="647">Путешествия</category>
+<category id="750" parentId="749">Аксессуары для путешествий</category>
+<category id="751" parentId="749">Дорожные сумки</category>
+<category id="752" parentId="749">Рюкзаки</category>
+<category id="753" parentId="749">Чемоданы</category>
+<category id="754" parentId="647">Туризм и рыбалка</category>
+<category id="1168" parentId="754">Надувные кровати и матрасы</category>
+<category id="1169" parentId="754">Фонари и кемпинговые лампы</category>
+<category id="1319" parentId="754">Туристическая посуда</category>
+<category id="1346" parentId="754">Палатки</category>
+<category id="1347" parentId="754">Аксессуары для туризма</category>
+<category id="1351" parentId="1347">Бинокли</category>
+<category id="1354" parentId="1347">Компасы</category>
+<category id="1356" parentId="1347">Ножи-инструменты</category>
+<category id="1361" parentId="1347">Часы, секундомеры, шагомеры</category>
+<category id="1681" parentId="1347">Автохолодильники и термоконтейнеры</category>
+<category id="1683" parentId="1347">Аксессуары для палаток</category>
+<category id="1685" parentId="1347">Аксессуары для спальных мешков</category>
+<category id="1695" parentId="1347">Дождевики</category>
+<category id="1697" parentId="1347">Кемпинговые лампы</category>
+<category id="1698" parentId="1347">Метеостанции, барометры</category>
+<category id="1699" parentId="1347">Оборудование для походного душа</category>
+<category id="1702" parentId="1347">Топоры, пилы</category>
+<category id="1703" parentId="1347">Трекинговые палки</category>
+<category id="1704" parentId="1347">Туристические навигаторы и рации</category>
+<category id="1436" parentId="754">Спальные мешки</category>
+<category id="1545" parentId="754">Кемпинговая мебель</category>
+<category id="1700" parentId="754">Походная кухня</category>
+<category id="1709" parentId="1700">Горелки и плиты</category>
+<category id="1712" parentId="1700">Изотермические системы</category>
+<category id="1719" parentId="1700">Фильтры для воды</category>
+<category id="788" parentId="0">Электроника</category>
+<category id="789" parentId="788">Аудио</category>
+<category id="790" parentId="789">CD-магнитолы</category>
+<category id="791" parentId="789">Аксессуары для Apple iPod</category>
+<category id="792" parentId="789">MP3-плееры</category>
+<category id="794" parentId="789">Автомагнитолы и автоакустика</category>
+<category id="795" parentId="789">Аксессуары для аудиоустройств</category>
+<category id="798" parentId="789">Домашние кинотеатры</category>
+<category id="799" parentId="789">Музыкальные центры</category>
+<category id="800" parentId="789">Наушники</category>
+<category id="801" parentId="789">Радиоприемники</category>
+<category id="802" parentId="788">Игры и консоли</category>
+<category id="1296" parentId="802">Игры для Microsoft Xbox 360</category>
+<category id="1297" parentId="802">Игры для Nintendo Wii</category>
+<category id="1298" parentId="802">Игры для Sony PlayStation 3</category>
+<category id="1299" parentId="802">Игры для Sony PSP</category>
+<category id="1300" parentId="802">Консоли Microsoft Xbox 360 и аксессуары</category>
+<category id="1301" parentId="802">Консоли Nintendo Wii и аксессуары</category>
+<category id="1302" parentId="802">Консоли Sony PlayStation 3 и аксессуары</category>
+<category id="1303" parentId="802">Консоли Sony PSP и аксессуары</category>
+<category id="1304" parentId="802">PS Vita</category>
+<category id="1369" parentId="802">Игры для PSVita</category>
+<category id="815" parentId="788">Компьютеры и планшеты</category>
+<category id="816" parentId="815">Софт и PC-игры</category>
+<category id="817" parentId="815">Планшеты</category>
+<category id="818" parentId="815">Аксессуары для компьютеров и планшетов</category>
+<category id="819" parentId="818">Аксессуары для ноутбуков</category>
+<category id="821" parentId="819">Док-станции для ноутбуков</category>
+<category id="822" parentId="819">Зарядные устройства и аккумуляторы для ноутбуков</category>
+<category id="823" parentId="819">Защитные пленки для ноутбуков</category>
+<category id="824" parentId="819">Сумки и чехлы для ноутбуков</category>
+<category id="825" parentId="818">Аксессуары для планшетов</category>
+<category id="826" parentId="825">Аккумуляторы для планшетов</category>
+<category id="827" parentId="825">Док-станции для планшетов</category>
+<category id="828" parentId="825">Зарядные устройства для планшетов</category>
+<category id="829" parentId="825">Аксессуары для Apple iPad</category>
+<category id="831" parentId="825">Стилусы и защитные пленки для планшетов</category>
+<category id="832" parentId="825">Сумки и чехлы для планшетов</category>
+<category id="833" parentId="818">Акустика и гарнитуры для PC</category>
+<category id="834" parentId="818">Картриджи и бумага</category>
+<category id="835" parentId="818">Веб-камеры</category>
+<category id="836" parentId="818">Внешние приводы</category>
+<category id="837" parentId="818">Графические планшеты</category>
+<category id="838" parentId="818">Кабели для ноутбуков, планшетов и PC</category>
+<category id="840" parentId="818">Клавиатуры</category>
+<category id="842" parentId="818">Манипуляторы и джойстики для PC</category>
+<category id="843" parentId="818">Мыши</category>
+<category id="845" parentId="818">Чистящие средства</category>
+<category id="1514" parentId="818">ИБП и стабилизаторы</category>
+<category id="846" parentId="815">Мониторы</category>
+<category id="847" parentId="815">Моноблоки и настольные PC</category>
+<category id="849" parentId="815">Носители информации</category>
+<category id="850" parentId="849">USB-флэшки</category>
+<category id="851" parentId="849">Внешние жесткие диски</category>
+<category id="852" parentId="849">Диски</category>
+<category id="853" parentId="849">Карт-ридеры</category>
+<category id="854" parentId="849">Карты памяти</category>
+<category id="856" parentId="815">Ноутбуки</category>
+<category id="857" parentId="815">Роутеры, IP-камеры и мобильный Интернет</category>
+<category id="858" parentId="857">3G-модемы</category>
+<category id="859" parentId="857">3G-роутеры</category>
+<category id="1175" parentId="857">Роутеры</category>
+<category id="1176" parentId="857">Сетевые адаптеры</category>
+<category id="1550" parentId="857">ADSL-роутеры/модемы</category>
+<category id="1551" parentId="857">IP-камеры</category>
+<category id="1552" parentId="857">WiFi-адаптеры</category>
+<category id="860" parentId="815">Принтеры и сканеры</category>
+<category id="861" parentId="860">МФУ</category>
+<category id="862" parentId="860">Принтеры</category>
+<category id="863" parentId="860">Сканеры</category>
+<category id="868" parentId="788">Мобильная электроника</category>
+<category id="869" parentId="868">GPS-навигаторы</category>
+<category id="870" parentId="868">MP3-плееры</category>
+<category id="871" parentId="868">Автомобильные видеорегистраторы</category>
+<category id="872" parentId="868">Аксессуары для мобильной электроники</category>
+<category id="873" parentId="872">Аксессуары для Apple iPod</category>
+<category id="874" parentId="872">Защитные пленки</category>
+<category id="876" parentId="872">Чехлы для навигаторов</category>
+<category id="875" parentId="868">Наушники</category>
+<category id="877" parentId="868">Диктофоны</category>
+<category id="878" parentId="868">Погодные станции</category>
+<category id="879" parentId="868">Рации</category>
+<category id="880" parentId="868">Электронные книги</category>
+<category id="881" parentId="788">Телевизоры и видео</category>
+<category id="886" parentId="881">Аксессуары для телевизоров</category>
+<category id="888" parentId="886">Специализированные аксессуары для телевизоров</category>
+<category id="889" parentId="886">Кабели для ТВ и видео</category>
+<category id="890" parentId="886">Кронштейны для телевизоров</category>
+<category id="891" parentId="886">Пульты</category>
+<category id="892" parentId="886">Чистящие средства</category>
+<category id="1023" parentId="886">Антенны</category>
+<category id="887" parentId="881">Аксессуары для просмотра 3D-кино</category>
+<category id="893" parentId="881">Видеопроекторы</category>
+<category id="894" parentId="881">Кино</category>
+<category id="895" parentId="881">Спутниковое ТВ</category>
+<category id="896" parentId="881">Телевизоры</category>
+<category id="1177" parentId="881">Медиаплееры</category>
+<category id="1178" parentId="881">Портативные DVD-плееры</category>
+<category id="1179" parentId="881">Стационарные DVD- и Blu-ray плееры</category>
+<category id="897" parentId="788">Телефоны</category>
+<category id="910" parentId="897">Мобильные телефоны</category>
+<category id="911" parentId="897">Телефоны DECT</category>
+<category id="1180" parentId="897">Автомобильные аксессуары для телефонов</category>
+<category id="1181" parentId="897">Аксессуары для Apple iPhone</category>
+<category id="1182" parentId="897">Гарнитуры для телефонов</category>
+<category id="1183" parentId="897">Зарядные устройства и аккумуляторы для телефонов</category>
+<category id="1184" parentId="897">Защитные пленки, стилусы, кредлы для телефонов</category>
+<category id="1185" parentId="897">Кабели для телефонов</category>
+<category id="1186" parentId="897">Сумки, чехлы, декор для телефонов</category>
+<category id="912" parentId="788">Фото- и видеокамеры</category>
+<category id="920" parentId="912">Видеокамеры</category>
+<category id="922" parentId="912">Фоторамки</category>
+<category id="1189" parentId="912">Сумки и чехлы для фото- и видеокамер</category>
+<category id="1309" parentId="912">Зеркальные камеры</category>
+<category id="1310" parentId="912">Компактные камеры</category>
+<category id="1311" parentId="912">Компактные камеры со сменной оптикой</category>
+<category id="1312" parentId="912">Аксессуары для камер</category>
+<category id="1313" parentId="912">Объективы</category>
+<category id="1759" parentId="912">Экшн-камеры</category>
+<category id="1024" parentId="788">Аксессуары для электроники</category>
+<category id="1025" parentId="1024">Аксессуары для игровых консолей</category>
+<category id="1026" parentId="1025">Зарядные станции для консолей</category>
+<category id="1027" parentId="1025">Игровые карты</category>
+<category id="1028" parentId="1025">Колонки и акустика для консолей</category>
+<category id="1029" parentId="1025">Контроллеры для консолей</category>
+<category id="1030" parentId="1025">Наборы аксессуаров для консолей</category>
+<category id="1085" parentId="1025">Кабели и адаптеры для консолей</category>
+<category id="1031" parentId="1024">Аксессуары для компьютеров и планшетов</category>
+<category id="1032" parentId="1031">Аксессуары для ноутбуков</category>
+<category id="820" parentId="1032">Аккумуляторы для ноутбуков</category>
+<category id="1033" parentId="1032">Зарядные устройства для ноутбуков</category>
+<category id="1034" parentId="1032">Защитные пленки для ноутбуков</category>
+<category id="1035" parentId="1032">Сумки и чехлы для ноутбуков</category>
+<category id="1079" parentId="1032">Док-станции для ноутбуков</category>
+<category id="1036" parentId="1031">Аксессуары для планшетов</category>
+<category id="1037" parentId="1036">Аккумуляторы для планшетов</category>
+<category id="1038" parentId="1036">Аксессуары для Apple iPad</category>
+<category id="1039" parentId="1036">Док-станции для планшетов</category>
+<category id="1040" parentId="1036">Зарядные устройства для планшетов</category>
+<category id="1041" parentId="1036">Стилусы и защитные пленки для планшетов</category>
+<category id="1042" parentId="1036">Сумки и чехлы для планшетов</category>
+<category id="1043" parentId="1031">Акустика и гарнитуры для PC</category>
+<category id="1044" parentId="1031">Веб-камеры</category>
+<category id="1045" parentId="1031">Внешние приводы</category>
+<category id="1046" parentId="1031">Графические планшеты</category>
+<category id="1047" parentId="1031">Клавиатуры</category>
+<category id="1048" parentId="1031">Манипуляторы и джойстики для PC</category>
+<category id="1049" parentId="1031">Мыши</category>
+<category id="1530" parentId="1031">ИБП и стабилизаторы</category>
+<category id="1050" parentId="1024">Аксессуары для плееров и мобильной электроники</category>
+<category id="1051" parentId="1050">Аксессуары для Apple iPod</category>
+<category id="1052" parentId="1050">Защитные пленки</category>
+<category id="1053" parentId="1050">Наушники</category>
+<category id="1054" parentId="1050">Чехлы для навигаторов</category>
+<category id="1055" parentId="1024">Аксессуары для телевизоров</category>
+<category id="1056" parentId="1055">Аксессуары для просмотра 3D-кино</category>
+<category id="1057" parentId="1055">Антенны</category>
+<category id="1058" parentId="1055">Кронштейны для телевизоров</category>
+<category id="1059" parentId="1055">Пульты</category>
+<category id="1060" parentId="1055">Специализированные аксессуары для телевизоров</category>
+<category id="1061" parentId="1024">Аксессуары для телефонов</category>
+<category id="1062" parentId="1061">Автомобильные аксессуары для телефонов</category>
+<category id="1063" parentId="1061">Аксессуары для Apple iPhone</category>
+<category id="1064" parentId="1061">Гарнитуры для телефонов</category>
+<category id="1065" parentId="1061">Зарядные устройства и аккумуляторы для телефонов</category>
+<category id="1066" parentId="1061">Защитные пленки и стилусы для телефонов</category>
+<category id="1067" parentId="1061">Сумки, чехлы, декор для телефонов</category>
+<category id="1478" parentId="1061">Настольные держатели для телефонов</category>
+<category id="1068" parentId="1024">Аксессуары для фотокамер</category>
+<category id="1069" parentId="1068">Аккумуляторы и зарядные устройства для камер</category>
+<category id="1070" parentId="1068">Аксессуары для зеркальных камер</category>
+<category id="1071" parentId="1068">Сумки и чехлы для камер</category>
+<category id="1072" parentId="1068">Штативы</category>
+<category id="1073" parentId="1024">Батарейки и аккумуляторы</category>
+<category id="1074" parentId="1024">Кабели и сетевые фильтры</category>
+<category id="1075" parentId="1024">Картриджи и бумага</category>
+<category id="1076" parentId="1024">Носители информации</category>
+<category id="1080" parentId="1076">USB-флэшки</category>
+<category id="1081" parentId="1076">Внешние жесткие диски</category>
+<category id="1082" parentId="1076">Диски</category>
+<category id="1083" parentId="1076">Карт-ридеры</category>
+<category id="1084" parentId="1076">Карты памяти</category>
+<category id="1077" parentId="1024">Софт</category>
+<category id="1078" parentId="1024">Чистящие средства</category>
+<category id="923" parentId="0">Украшения и часы</category>
+<category id="965" parentId="923">Колье</category>
+<category id="1802" parentId="965">Бусы</category>
+<category id="1803" parentId="965">Колье</category>
+<category id="966" parentId="923">Кольца</category>
+<category id="1740" parentId="966">Кольца с бриллиантами</category>
+<category id="1741" parentId="966">Кольца с драгоценными камнями</category>
+<category id="1742" parentId="966">Кольца с искусственными вставками</category>
+<category id="1743" parentId="966">Кольца с поделочными камнями</category>
+<category id="1744" parentId="966">Кольца с полудрагоценными камнями</category>
+<category id="1745" parentId="966">Кольца с фианитами</category>
+<category id="1746" parentId="966">Кольца без камней</category>
+<category id="1747" parentId="966">Кольца для детей</category>
+<category id="1748" parentId="966">Кольца для мужчин</category>
+<category id="1749" parentId="966">Кольца с жемчугом</category>
+<category id="1750" parentId="966">Кольца с кристаллами Swarovski</category>
+<category id="1751" parentId="966">Религиозные кольца</category>
+<category id="967" parentId="923">Подвески</category>
+<category id="1793" parentId="967">Подвески без камней</category>
+<category id="1794" parentId="967">Подвески с бриллиантами</category>
+<category id="1795" parentId="967">Подвески с драгоценными камнями</category>
+<category id="1796" parentId="967">Подвески с жемчугом</category>
+<category id="1797" parentId="967">Подвески с искусственной вставкой</category>
+<category id="1798" parentId="967">Подвески с кристаллами Swarovski</category>
+<category id="1799" parentId="967">Подвески с полудрагоценными камнями</category>
+<category id="1800" parentId="967">Подвески с фианитами</category>
+<category id="1801" parentId="967">Религиозные подвески</category>
+<category id="1004" parentId="923">Серьги</category>
+<category id="1763" parentId="1004">Серьги без камней</category>
+<category id="1764" parentId="1004">Серьги для детей</category>
+<category id="1765" parentId="1004">Серьги с бриллиантами</category>
+<category id="1766" parentId="1004">Серьги с драгоценными камнями</category>
+<category id="1767" parentId="1004">Серьги с жемчугом</category>
+<category id="1768" parentId="1004">Серьги с искусственной вставкой</category>
+<category id="1769" parentId="1004">Серьги с кристаллами Swarovski</category>
+<category id="1770" parentId="1004">Серьги с поделочными камнями</category>
+<category id="1771" parentId="1004">Серьги с полудрагоценными камнями</category>
+<category id="1772" parentId="1004">Серьги с фианитами</category>
+<category id="1773" parentId="1004">Серьги-гвоздики</category>
+<category id="1005" parentId="923">Украшения для свадьбы и помолвки</category>
+<category id="1737" parentId="1005">Кольца с бриллиантами</category>
+<category id="1738" parentId="1005">Классические обручальные кольца</category>
+<category id="1739" parentId="1005">Обручальные кольца Fashion</category>
+<category id="1006" parentId="923">Украшения с бриллиантами</category>
+<category id="1007" parentId="1006">Колье с бриллиантами</category>
+<category id="1008" parentId="1006">Кольца с бриллиантами</category>
+<category id="1009" parentId="1006">Подвески с бриллиантами</category>
+<category id="1020" parentId="1006">Запонки с бриллиантами</category>
+<category id="1021" parentId="1006">Серьги с бриллиантами</category>
+<category id="1010" parentId="923">Часы</category>
+<category id="1011" parentId="1010">Hugo Boss</category>
+<category id="1012" parentId="1010">Anne Klein</category>
+<category id="1013" parentId="1010">Ника</category>
+<category id="1014" parentId="1010">Kolber</category>
+<category id="1015" parentId="1010">Ремешки для часов</category>
+<category id="1016" parentId="1010">Rodania</category>
+<category id="1507" parentId="1010">Morgan</category>
+<category id="1019" parentId="923">Запонки</category>
+<category id="1022" parentId="923">Цепочки и браслеты</category>
+<category id="1760" parentId="1022">Браслеты</category>
+<category id="1761" parentId="1022">Цепочки</category>
+<category id="1320" parentId="923">Украшения Pandora</category>
+<category id="1324" parentId="1320">Браслеты Pandora</category>
+<category id="1325" parentId="1320">Колье Pandora</category>
+<category id="1327" parentId="1320">Подвески-шармы Pandora</category>
+<category id="1385" parentId="923">Индивидуальная упаковка</category>
+<category id="1510" parentId="923">Хранение украшений и часов</category>
+<category id="1531" parentId="923">Украшения Maxima Diamonds</category>
+<category id="1758" parentId="923">Кулоны</category>
+<category id="1438" parentId="0">Зоотовары</category>
+<category id="1439" parentId="1438">Товары для грызунов</category>
+<category id="1461" parentId="1439">Клетки и переноски для грызунов</category>
+<category id="1463" parentId="1439">Аксессуары для клеток для грызунов</category>
+<category id="1464" parentId="1439">Сено и наполнители для клеток</category>
+<category id="1440" parentId="1438">Товары для кошек</category>
+<category id="1448" parentId="1440">Когтеточки и игровые площадки</category>
+<category id="1450" parentId="1440">Наполнители для кошачьего туалета</category>
+<category id="1453" parentId="1440">Туалеты и совки</category>
+<category id="1455" parentId="1440">Игрушки для кошек</category>
+<category id="1456" parentId="1440">Миски для кошек и коврики для мисок</category>
+<category id="1457" parentId="1440">Уход за шерстью и когтями кошек</category>
+<category id="1458" parentId="1440">Дверцы для кошек</category>
+<category id="1459" parentId="1440">Домики, лежаки, переноски для кошек</category>
+<category id="1460" parentId="1440">Ошейники и шлейки для кошек</category>
+<category id="1441" parentId="1438">Товары для птиц</category>
+<category id="1466" parentId="1441">Аксессуары для птичьих клеток</category>
+<category id="1469" parentId="1441">Клетки для птиц</category>
+<category id="1442" parentId="1438">Товары для рыб</category>
+<category id="1462" parentId="1442">Аквариумы и террариумы</category>
+<category id="1465" parentId="1442">Оборудование для аквариумов</category>
+<category id="1467" parentId="1442">Декор для аквариумов</category>
+<category id="1468" parentId="1442">Искусственные растения для аквариумов</category>
+<category id="1443" parentId="1438">Товары для собак</category>
+<category id="1444" parentId="1443">Лежаки, домики и сумки для собак</category>
+<category id="1445" parentId="1443">Поводки и ошейники для собак</category>
+<category id="1446" parentId="1443">Игрушки для собак</category>
+<category id="1447" parentId="1443">Клетки и вольеры для собак</category>
+<category id="1449" parentId="1443">Миски и поилки для собак</category>
+<category id="1451" parentId="1443">Одежда для собак</category>
+<category id="1452" parentId="1443">Пеленки и предметы гигиены для собак</category>
+<category id="1454" parentId="1443">Уход за шерстью и когтями собак</category>
+<category id="1601" parentId="0">Распродажа</category>
+<category id="1602" parentId="1601">Зоотовары</category>
+<category id="1644" parentId="1602">Товары для грызунов</category>
+<category id="1645" parentId="1602">Товары для птиц</category>
+<category id="1650" parentId="1602">Товары для кошек</category>
+<category id="1651" parentId="1602">Товары для рыб</category>
+<category id="1653" parentId="1602">Товары для собак</category>
+<category id="1603" parentId="1601">Красота и Здоровье</category>
+<category id="1625" parentId="1603">Бритвы и приборы для стрижки волос</category>
+<category id="1628" parentId="1603">Фены, щипцы и выпрямители для волос</category>
+<category id="1629" parentId="1603"> Приборы для здоровья</category>
+<category id="1630" parentId="1603">Весы</category>
+<category id="1634" parentId="1603">Косметические приборы</category>
+<category id="1604" parentId="1601">Мебель</category>
+<category id="1635" parentId="1604">Мебель для ванной</category>
+<category id="1640" parentId="1604">Мебель для домашнего кабинета</category>
+<category id="1641" parentId="1604">Мебель для кухни</category>
+<category id="1642" parentId="1604">Мебель для спальни</category>
+<category id="1643" parentId="1604">Мягкая мебель</category>
+<category id="1646" parentId="1604">Мебель корпусная</category>
+<category id="1605" parentId="1601">Сделай Сам</category>
+<category id="1647" parentId="1605">Аксессуары для автомобилей</category>
+<category id="1648" parentId="1605">Сантехника</category>
+<category id="1649" parentId="1605">Строительство и ремонт</category>
+<category id="1652" parentId="1605">Товары для сада</category>
+<category id="1655" parentId="1605">Ручные инструменты</category>
+<category id="1656" parentId="1605">Строительная техника</category>
+<category id="1657" parentId="1605">Электроинструменты</category>
+<category id="1606" parentId="1601">Спорт и Отдых</category>
+<category id="1663" parentId="1606">Летние и командные виды спорта</category>
+<category id="1664" parentId="1606">Туризм и рыбалка</category>
+<category id="1666" parentId="1606">Аэробика и фитнес</category>
+<category id="1667" parentId="1606">Велосипеды, ролики, самокаты</category>
+<category id="1668" parentId="1606">Водные виды спорта</category>
+<category id="1670" parentId="1606">Домашние спортивные игры</category>
+<category id="1671" parentId="1606">Зимние виды спорта</category>
+<category id="1672" parentId="1606">Путешествия</category>
+<category id="1607" parentId="1601">Товары для детей</category>
+<category id="1654" parentId="1607">Игрушки и игры</category>
+<category id="1658" parentId="1607">Гигиена и уход за малышом</category>
+<category id="1659" parentId="1607">Для мам и беременных</category>
+<category id="1660" parentId="1607">Для первых путешествий</category>
+<category id="1661" parentId="1607">Игрушки для малышей</category>
+<category id="1662" parentId="1607">Интерьер и текстиль для детской комнаты</category>
+<category id="1665" parentId="1607">Хобби и творчество</category>
+<category id="1608" parentId="1601">Бытовая техника</category>
+<category id="1669" parentId="1608">Встраиваемая техника</category>
+<category id="1673" parentId="1608">Аксессуары для бытовой техники</category>
+<category id="1674" parentId="1608">Климатическая техника</category>
+<category id="1675" parentId="1608">Малая бытовая техника для кухни</category>
+<category id="1676" parentId="1608">Плиты</category>
+<category id="1677" parentId="1608">Посудомоечные машины</category>
+<category id="1678" parentId="1608">Стиральные машины</category>
+<category id="1679" parentId="1608">Уборка дома и уход за одеждой</category>
+<category id="1680" parentId="1608">Холодильники и морозильники</category>
+<category id="1609" parentId="1601">Товары для дома</category>
+<category id="1619" parentId="1609">Сервировка стола</category>
+<category id="1620" parentId="1609">Товары для кухни</category>
+<category id="1622" parentId="1609">Хозяйственные товары</category>
+<category id="1623" parentId="1609">Декор интерьера</category>
+<category id="1624" parentId="1609">Освещение</category>
+<category id="1626" parentId="1609">Текстиль</category>
+<category id="1627" parentId="1609">Товары для ванной, бани, сауны</category>
+<category id="1610" parentId="1601">Электроника</category>
+<category id="1612" parentId="1610">Аудио</category>
+<category id="1614" parentId="1610">Компьютеры, планшеты, периферийные устройства</category>
+<category id="1615" parentId="1610">Телевизоры и видео</category>
+<category id="1616" parentId="1610">Телефоны</category>
+<category id="1617" parentId="1610">Аксессуары для электроники</category>
+<category id="1618" parentId="1610">Мобильная электроника</category>
+<category id="1621" parentId="1610">Фото- и видеокамеры</category>
+<category id="1611" parentId="1601">Ювелирные украшения</category>
+<category id="1631" parentId="1611">Запонки</category>
+<category id="1632" parentId="1611">Колье</category>
+<category id="1633" parentId="1611">Кольца</category>
+<category id="1636" parentId="1611">Подвески</category>
+<category id="1637" parentId="1611">Серьги</category>
+<category id="1638" parentId="1611">Цепочки и браслеты</category>
+<category id="1639" parentId="1611">Часы</category>
+<category id="1613" parentId="1601">Подарки и хобби</category>
+<category id="1777" parentId="1778">Пеленальные столы, комоды, доски</category>
+<category id="1889" parentId="0">Все для дачи</category>
+<category id="1804" parentId="923">Коллекции украшений</category>
+<category id="1805" parentId="1804">Deluna</category>
+<category id="1813" parentId="1805">Золотой пирсинг</category>
+<category id="1815" parentId="1805">Золотые броши</category>
+<category id="1819" parentId="1805">Золотые колье</category>
+<category id="1824" parentId="1805">Золотые кольца</category>
+<category id="1829" parentId="1805">Золотые подвески</category>
+<category id="1834" parentId="1805">Золотые серьги</category>
+<category id="1806" parentId="1804">Hot Diamonds</category>
+<category id="1807" parentId="1804">Maxima Diamonds</category>
+<category id="1816" parentId="1807">Золотые броши с бриллиантами</category>
+<category id="1820" parentId="1807">Золотые колье с бриллиантами</category>
+<category id="1825" parentId="1807">Золотые кольца с бриллиантами</category>
+<category id="1830" parentId="1807">Золотые подвески с бриллиантами</category>
+<category id="1835" parentId="1807">Золотые серьги с бриллиантами</category>
+<category id="1808" parentId="1804">Monella</category>
+<category id="1817" parentId="1808">Золотые броши с драгоценными камнями</category>
+<category id="1821" parentId="1808">Золотые колье с драгоценными камнями</category>
+<category id="1826" parentId="1808">Золотые кольца с драгоценными камнями</category>
+<category id="1831" parentId="1808">Золотые подвески с драгоценными камнями</category>
+<category id="1836" parentId="1808">Золотые серьги с драгоценными камнями</category>
+<category id="1809" parentId="1804">Sandara</category>
+<category id="1814" parentId="1809">Золотой пирсинг с фианитами</category>
+<category id="1818" parentId="1809">Золотые броши с фианитами</category>
+<category id="1823" parentId="1809">Золотые колье с фианитами</category>
+<category id="1828" parentId="1809">Золотые кольца с фианитами</category>
+<category id="1833" parentId="1809">Золотые подвески с фианитами</category>
+<category id="1838" parentId="1809">Золотые серьги с фианитами</category>
+<category id="1810" parentId="1804">Sandara Ice</category>
+<category id="1822" parentId="1810">Золотые колье с полудрагоценными камнями</category>
+<category id="1827" parentId="1810">Золотые кольца с полудрагоценными камнями</category>
+<category id="1832" parentId="1810">Золотые подвески с полудрагоценными камнями</category>
+<category id="1837" parentId="1810">Золотые серьги с полудрагоценными камнями</category>
+<category id="1811" parentId="1804">Shablool</category>
+<category id="1812" parentId="1804">Zoom</category>
+<category id="1839" parentId="15">Аксессуары для каминов</category>
+<category id="1840" parentId="1010">Chronotech</category>
+<category id="1841" parentId="1010">Just Cavalli</category>
+<category id="1842" parentId="1010">La Mer</category>
+<category id="1843" parentId="1010">Lambretta</category>
+<category id="1844" parentId="1010">S.T.A.M.P.S</category>
+<category id="1845" parentId="1010">Sector</category>
+<category id="1846" parentId="1010">Roberto Cavalli</category>
+<category id="1847" parentId="1010">TOKYObay</category>
+<category id="1915" parentId="1439">Предметы для ухода за грызунами</category>
+<category id="1916" parentId="857">Антенны и удлинители</category>
+</categories>
+<offers>
+<offer id="1000" available="true" bid="30" cbid="53" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/shchiptsi-dlya-zavivki-volos-bosch-phs-9590-2020301000507?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_krasota+i+zdorove_schiptsyi+i+vyipryamiteli+dlya+volos_schiptsyi+i+vyipryamiteli+dlya+volos</url>
+<price>1590</price>
+<currencyId>RUR</currencyId>
+<categoryId>26</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/ca/2370.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Щипцы для завивки волос</typePrefix>
+<vendor>Bosch</vendor>
+<model>PHS 9590</model>
+<description>Щипцы для завивки волос Bosch PHS 9590 будут вашим надежным помощником в создании неповторимых укладок. Эта модель черного цвета имеет «мягкое» покрытие корпуса, которое очень приятно на ощупь. Прибор оснащен дисплеем со световой индикацией...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10002" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/gazovaya-varochnaya-panel-electrolux-ehg6833r-2020101006815?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_vstraivaemaya+tehnika_varochnyie+poverhnosti</url>
+<price>7690</price>
+<currencyId>RUR</currencyId>
+<categoryId>3</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/56/19800.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Газовая варочная панель</typePrefix>
+<vendor>Electrolux</vendor>
+<model>EHG6833R</model>
+<description>Матовая черная газовая панель Electrolux EHG6833R, выполненная с элементами декора в стиле ретро, станет украшением любой кухни, как традиционной, так и современной. На варочной поверхности расположены четыре конфорки разного размера и мощности. Две...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10003" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/keys-dlya-noutbuka-asus-slim-lge-2060505004284?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_kompyuteryi+i+planshetyi_cumki+i+chehlyi+dlya+noutbukov</url>
+<price>970</price>
+<currencyId>RUR</currencyId>
+<categoryId>824</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/d6/19801.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Кейс для ноутбука</typePrefix>
+<vendor>Asus</vendor>
+<model>Slim LGE</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10005" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/sport/volani-yonex-mavis-350-2071102000029?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_cport+i+otdyih_letnie+i+komandnyie+vidyi+sporta_badminton</url>
+<price>370</price>
+<currencyId>RUR</currencyId>
+<categoryId>735</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/14/37118.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Воланы</typePrefix>
+<vendor>Yonex</vendor>
+<model>Mavis 350</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10011" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/jewel/remeshok-dlya-chasov-2030000011902?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_ukrasheniya+i+chasyi_chasyi_remeshki+dlya+chasov</url>
+<price>900</price>
+<currencyId>RUR</currencyId>
+<categoryId>1015</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/02/37119.jpg</picture>
+<pickup>true</pickup>
+<delivery>false</delivery>
+<local_delivery_cost>0</local_delivery_cost>
+<typePrefix>Ремешок для часов</typePrefix>
+<vendor>-</vendor>
+<model></model>
+<description>Этот лаконичный ремешок бежевого цвета легко и непринужденно составит замечательный союз с любыми часами одноименной марки S.T.A.M.P.S. В комплекте к изделию идет специальное пластмассовое крепление. Чтобы правильно закрепить часы, необходимо положить...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10012" available="true" bid="30" cbid="33" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/igrovoy-nabor-ks-kids-gazovaya-plita-2010102000899?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_detskie+tovaryi_igrushki+i+igryi_igrovyie+naboryi+dlya+devochek</url>
+<price>980</price>
+<currencyId>RUR</currencyId>
+<categoryId>335</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/e8/19808.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Игровой набор</typePrefix>
+<vendor>K&apos;s Kids</vendor>
+<model>«Газовая плита»</model>
+<description>Эта яркая красивая газовая плита – мечта любой маленькой хозяйки. На ней компактно размещены все необходимые аксессуары: разделочная доска, сковородка с крышкой, лопатка, шумовка, солонка, перечница, бутылочка масла, кусочек мяса. Кстати, мясо можно...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10016" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/nastolnaya-igra-zvezda-printsessi-mir-skazok-2010106000949?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_detskie+tovaryi_igrushki+i+igryi_nastolnyie+igryi+dlya+detey</url>
+<price>630</price>
+<currencyId>RUR</currencyId>
+<categoryId>360</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/e4/19811.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Настольная игра</typePrefix>
+<vendor>Zvezda</vendor>
+<model>&quot;Принцессы. Мир сказок&quot;</model>
+<description>Настольная игра «Принцессы» не оставит равнодушной ни одну девочку, ведь малышка сможет отправиться в волшебный мир, где ее ждут чудесные приключения и самые красивые героини Disney: Ариэль, Белль, Аврора, Белоснежка, Золушка и Жасмин. Есть два варианта...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10017" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/kashpo-sealmark-medved-s-tachkoy-2040301007047?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_tovaryi+dlya+doma_dekor+interera_gorshki+i+kashpo</url>
+<price>1490</price>
+<currencyId>RUR</currencyId>
+<categoryId>1130</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/13/32051.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Кашпо</typePrefix>
+<vendor>Sealmark</vendor>
+<model>&apos;&apos;Медведь с тачкой&apos;&apos;</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10018" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/gifthobby/umniy-plastilin-neogam-biryuza-2060400001395?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_podarki+i+hobbi_aktivnyie+razvlecheniya_umnyiy+plastilin</url>
+<price>450</price>
+<currencyId>RUR</currencyId>
+<categoryId>187</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/ed/56874.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Умный пластилин</typePrefix>
+<vendor>Неогам</vendor>
+<model>«Бирюза»</model>
+<description>Вещество под названием «умный пластилин» (еще он известен как «жвачка для рук») совмещает в себе свойства жидкостей и твердых тел. Он может быть податливым и растекаться как пластилин, а спустя пару секунд выдерживать удар молотком, сохраняя форму. Его...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10019" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/nabor-mashin-welly-skoraya-pomoshch-4-shtuki-2010104000569?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_detskie+tovaryi_igrushki+i+igryi_igrushechnyiy+transport</url>
+<price>500</price>
+<currencyId>RUR</currencyId>
+<categoryId>349</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/94/19852.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Набор машин</typePrefix>
+<vendor>Welly</vendor>
+<model>«Скорая помощь» (4 штуки)</model>
+<description>Красный крест на машинах скорой помощи был специально создан для защиты и сохранения больных и госпиталей во время войны. Ребенок хочет стать доктором? С набором Welly, который включает в себя всё необходимое для перевозки больных, мечта легко...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10020" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/podstavka-so-slepkom-baby-art-2010205000055?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_detskie+tovaryi_dlya+mam+i+beremennyih_cuveniryi+dlya+mam</url>
+<price>900</price>
+<currencyId>RUR</currencyId>
+<categoryId>1238</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/a4/22320.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Подставка со слепком</typePrefix>
+<vendor>Baby Art</vendor>
+<model></model>
+<description>Ваш малыш такой маленький и забавный. Но он скоро вырастет и станет самостоятельным. Набор Baby Art позволит вам сохранить память о том, каким он был крошечным. Просто разведите раствор в воде и опустите в него ножку и ручку ребенка, а затем заполните...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10022" available="true" bid="40" cbid="99" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/konstruktor-lego-city-4644-pristan-dlya-yaht-2010101000432?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_detskie+tovaryi_igrushki+i+igryi_konstruktoryi</url>
+<price>2200</price>
+<currencyId>RUR</currencyId>
+<categoryId>353</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/81/22322.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Конструктор</typePrefix>
+<vendor>Lego</vendor>
+<model>City 4644 &quot;Пристань для яхт&quot;</model>
+<description>Конструкторы Lego получили признание во всем мире. В них с увлечением играют не только дети, но и взрослые. Благодаря тому, что все кирпичики Lego совместимы между собой, вашему ребенку открывается поистине необъятный простор для творчества, ведь он...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10024" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/doityourself/stameska-16-mm-brigadier-2080502000461?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_cdelay+sam_ruchnyie+instrumentyi_rejuschie+instrumentyi</url>
+<price>119</price>
+<currencyId>RUR</currencyId>
+<categoryId>269</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/a1/19853.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Стамеска 16 мм</typePrefix>
+<vendor>Brigadier</vendor>
+<model></model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10025" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/avtomobilnoe-zaryadnoe-ustroystvo-samsung-cad300u-2060506000964?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_aksessuaryi+dlya+elektroniki_avtomobilnyie+aksessuaryi+dlya+telefonov</url>
+<price>590</price>
+<currencyId>RUR</currencyId>
+<categoryId>1062</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/5a/34662.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Автомобильное зарядное устройство</typePrefix>
+<vendor>Samsung</vendor>
+<model>CAD300U</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="1003" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/stiralnaya-mashina-siemens-ws10x163-oe-2020201001260?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_ctiralnyie+mashinyi_ctiralnyie+mashinyi</url>
+<price>14280</price>
+<currencyId>RUR</currencyId>
+<categoryId>76</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/0a/30784.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Стиральная машина</typePrefix>
+<vendor>Siemens</vendor>
+<model>WS10X163 OE</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10030" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/doityourself/nabor-otvertok-5-sht-vira-kombi-2080502000805?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_cdelay+sam_ruchnyie+instrumentyi_otvertki+i+klyuchi</url>
+<price>229</price>
+<currencyId>RUR</currencyId>
+<categoryId>265</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/4e/30543.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Набор отверток 5 шт.</typePrefix>
+<vendor>Vira</vendor>
+<model>Комби</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10031" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/kovrik-dlya-mishi-buro-morskie-zvezdi-2060505000545?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_kompyuteryi+i+planshetyi_myishi</url>
+<price>188</price>
+<currencyId>RUR</currencyId>
+<categoryId>843</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/61/19858.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Коврик для мыши</typePrefix>
+<vendor>Buro</vendor>
+<model>&quot;Морские звезды&quot;</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10032" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/gazovaya-varochnaya-panel-bosch-ppp612m91e-2020101001582?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_vstraivaemaya+tehnika_varochnyie+poverhnosti</url>
+<price>13650</price>
+<currencyId>RUR</currencyId>
+<categoryId>3</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/16/19859.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Газовая варочная панель</typePrefix>
+<vendor>Bosch</vendor>
+<model>PPP612M91E</model>
+<description>Современная газовая панель Bosch PPP612M91E выполнена из исключительно легкого в очистке закаленного стекла HardGlass. На варочной поверхности расположены четыре газовые горелки закрытые индивидуальными чугунными решетками-подставками для посуды. Одна...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10035" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/holodilnik-toshiba-grr59trsc-2020102000423?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_holodilniki+i+morozilniki_holodilniki+i+morozilniki</url>
+<price>25190</price>
+<currencyId>RUR</currencyId>
+<categoryId>1096</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/bb/19861.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Холодильник</typePrefix>
+<vendor>Toshiba</vendor>
+<model>GRR59TRSC</model>
+<description>Холодильник Toshiba GR-R59TRSC позволит вам не просто сохранить продукты, но и не пропустит ни одного микроба! Гибридный плазменный воздухоочиститель ионизирует воздух, устраняя неприятные запахи и бактерии, а ультрафиолетовая лампа в верхней части...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10036" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/lyustra-wunderlicht-5-h-60-vt-e27-2040402001937?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_tovaryi+dlya+doma_osveschenie_lyustryi</url>
+<price>7290</price>
+<currencyId>RUR</currencyId>
+<categoryId>1583</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/b4/19862.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Люстра</typePrefix>
+<vendor>Wunderlicht</vendor>
+<model>5 х 60 Вт Е27</model>
+<description>Люстра Wunderlicht из коллекции Luce – это образец элегантности и гармоничности стиля тиффани, стиля, который вдохновляет дизайнеров на создание самых изысканных интерьерных светильников. Абажуры люстры выполнены из витражного стекла в бежевой цветовой...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10038" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/gazovaya-varochnaya-panel-candy-clg-64-spxmx-2020101001698?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_vstraivaemaya+tehnika_varochnyie+poverhnosti</url>
+<price>5150</price>
+<currencyId>RUR</currencyId>
+<categoryId>3</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/44/19863.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Газовая варочная панель</typePrefix>
+<vendor>Candy</vendor>
+<model>CLG 64 SPXMX</model>
+<description>Независимая газовая панель Candy CLG 64 SPXMX, выполненная из  нержавеющей стали, органично впишется в интерьер любой кухни - как традиционной, так и современной.Варочная поверхность оборудована четырьмя газовыми горелками: две полубыстрые конфорки с...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10040" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/sport/kalabashka-speedo-elite-pullbuoy-2070501000104?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_cport+i+otdyih_vodnyie+vidyi+sporta_aksessuaryi+dlya+trenirovok+po+plavaniyu</url>
+<price>990</price>
+<currencyId>RUR</currencyId>
+<categoryId>1158</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/a4/37122.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Калабашка</typePrefix>
+<vendor>Speedo</vendor>
+<model>Elite Pullbuoy</model>
+<description>Калабашка Speedo Elite Pullbuoy поможет распределить нагрузку на руки и плечи и увеличит эффективность тренировок. Для тех кто, может быть, не в курсе. Калабашка - это такая полиуретановая подушка, часто причудливо закругленной формы, которая...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10041" available="true" bid="30" cbid="150" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/print-kartridg-hp-cb435a-purpurniy-2060502001743?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_elektronika_kompyuteryi+i+planshetyi_kartridji+i+bumaga</url>
+<price>8350</price>
+<currencyId>RUR</currencyId>
+<categoryId>834</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/ce/19864.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Принт-картридж</typePrefix>
+<vendor>HP</vendor>
+<model>CB435A пурпурный</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10043" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/elektricheskaya-varochnaya-panel-fornelli-pv-60-fresco-2020101002930?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_vstraivaemaya+tehnika_varochnyie+poverhnosti</url>
+<price>13455</price>
+<currencyId>RUR</currencyId>
+<categoryId>3</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/0c/19906.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Электрическая варочная панель</typePrefix>
+<vendor>Fornelli</vendor>
+<model>PV 60 Fresco</model>
+<description>Необычный дизайн с креативной сериографией и фасетом (скошенный край) по периметру придают варочной панели  PV 60 Fresco от итальянской компании Fornelli легкость и изящность. Эта модель не оставит равнодушным ценителей минимализма и ультрасовременного...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10044" available="true" bid="30" cbid="63" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/doityourself/udarnaya-drel-kalibr-master-derm-11002erum-2080501001131?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_cdelay+sam_elektroinstrumentyi_dreli</url>
+<price>1890</price>
+<currencyId>RUR</currencyId>
+<categoryId>1121</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/9f/30544.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Ударная дрель</typePrefix>
+<vendor>Калибр</vendor>
+<model>Мастер ДЭРМ-1100/2ЕРУМ</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10046" available="true" bid="30" cbid="73" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/pilesos-bosch-bsn1810-2020202000873?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_byitovaya+tehnika_uborka+doma+i+uhod+za+odejdoy_pyilesosyi</url>
+<price>2190</price>
+<currencyId>RUR</currencyId>
+<categoryId>75</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/ba/19907.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Пылесос</typePrefix>
+<vendor>Bosch</vendor>
+<model>BSN1810</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10055" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/sumka-dlya-noutbuka-sumdex-pon-352bk-2060505001993?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_kompyuteryi+i+planshetyi_cumki+i+chehlyi+dlya+noutbukov</url>
+<price>1160</price>
+<currencyId>RUR</currencyId>
+<categoryId>824</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/4f/19913.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Сумка для ноутбука</typePrefix>
+<vendor>Sumdex</vendor>
+<model>PON-352BK</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10056" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/vstraivaemiy-holodilnik-bosch-kis38a51ru-2020101006167?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_vstraivaemaya+tehnika_vstraivaemyie+holodilniki</url>
+<price>26990</price>
+<currencyId>RUR</currencyId>
+<categoryId>7</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/86/19914.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Встраиваемый холодильник</typePrefix>
+<vendor>Bosch</vendor>
+<model>KIS38A51RU</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10058" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/sport/futbolniy-myach-fifa-munich-precision-2071103000004?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_cport+i+otdyih_letnie+i+komandnyie+vidyi+sporta_futbol</url>
+<price>830</price>
+<currencyId>RUR</currencyId>
+<categoryId>748</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/fa/19916.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Футбольный мяч</typePrefix>
+<vendor>Munich</vendor>
+<model>FIFA  Precision</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10060" available="true" bid="40" cbid="17" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/elektrobritva-rolsen-rs-2448q-2020301001443?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_krasota+i+zdorove_britvyi_britvyi</url>
+<price>370</price>
+<currencyId>RUR</currencyId>
+<categoryId>22</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/a2/37128.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Электробритва</typePrefix>
+<vendor>Rolsen</vendor>
+<model>RS-2448Q</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10061" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/french-press-06-l-regent-inox-2040101006530?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_tovaryi+dlya+doma_tovaryi+dlya+kuhni_frenchpressyi</url>
+<price>399</price>
+<currencyId>RUR</currencyId>
+<categoryId>592</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/36/37129.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Френч-пресс 0,6 л</typePrefix>
+<vendor>Regent inox S.r.l.</vendor>
+<model>Regent Inox</model>
+<description>Высокое итальянское качество, практичность и лаконичный, но от этого не менее стильный дизайн - у френч-пресса от Regent Inox есть все, чтобы сделать ваше чаепитие вкусным и очень душевным. Стекло и нержавеющая сталь - проверенный временем тандем,...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10064" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/zapisivaemiy-disk-vs-dvdr-16x-25-sht-2060501001683?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_kompyuteryi+i+planshetyi_diski</url>
+<price>240</price>
+<currencyId>RUR</currencyId>
+<categoryId>852</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/70/19921.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Записываемый диск</typePrefix>
+<vendor>VS</vendor>
+<model>DVD+R 16x (25 шт.)</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10066" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/razvivayushchaya-igrushka-playgo-cherepaha-2010105001480?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_detskie+tovaryi_igrushki+dlya+malyishey_razvivayuschie+igrushki</url>
+<price>320</price>
+<currencyId>RUR</currencyId>
+<categoryId>343</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/60/19922.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Развивающая игрушка</typePrefix>
+<vendor>PlayGo</vendor>
+<model>«Черепаха»</model>
+<description>Яркая веселая черепашка – большая, удобная и очень интересная игрушка. Черепашка может передвигаться по столу или по полу, смешно переставляя лапки. При нажатии кнопки, которая находится в верхней точке панциря, в окошечках загорается свет. Таким...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="1007" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/sport/basketbolniy-myach-joerex-jb03-2071104000041?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_cport+i+otdyih_letnie+i+komandnyie+vidyi+sporta_basketbol</url>
+<price>235</price>
+<currencyId>RUR</currencyId>
+<categoryId>736</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/e3/2415.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Баскетбольный мяч</typePrefix>
+<vendor>Joerex</vendor>
+<model>JB03</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10071" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/holodilnik-hotpoint-ariston-hbm-11803-f-2020102001345?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_holodilniki+i+morozilniki_holodilniki+i+morozilniki</url>
+<price>15090</price>
+<currencyId>RUR</currencyId>
+<categoryId>1096</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/38/19927.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Холодильник</typePrefix>
+<vendor>Hotpoint-Ariston</vendor>
+<model>HBM 1180.3 F</model>
+<description>Если вам нужен надежный холодильник с простым набором функций по привлекательной цене, двухкамерный холодильник Hotpoint-Ariston HBM 1180.3 F вам подойдет. Hotpoint-Ariston HBM 1180.3 F имеет традиционный дизайн и стандартную ширину и подойдет...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10075" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/chudo-pasta-3-v-1-drbeckmann-2040201003392?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_tovaryi+dlya+doma_hozyaystvennyie+tovaryi_chistyaschie+i+moyuschie+sredstva</url>
+<price>359</price>
+<currencyId>RUR</currencyId>
+<categoryId>636</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/13/74786.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Чудо-паста 3 в 1</typePrefix>
+<vendor>Dr.Beckmann</vendor>
+<model></model>
+<description>Эта паста от немецкого производителя Dr.Beckmann, известного широким ассортиментом качественной продукции в области бытовой химии и пятновыводетелей, - действительно чудо. Она эффективно и максимально быстро справляется с трудновыводимыми загрязнениями...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10079" available="true" bid="30" cbid="17" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/kartridg-hp-88-goluboy-2060502000944?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_elektronika_kompyuteryi+i+planshetyi_kartridji+i+bumaga</url>
+<price>515</price>
+<currencyId>RUR</currencyId>
+<categoryId>834</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/18/19934.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Картридж</typePrefix>
+<vendor>HP</vendor>
+<model>88 голубой</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="1008" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/zashchitnaya-plenka-dlya-nokia-c7-00-prolife-2060506001688?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_aksessuaryi+dlya+elektroniki_zaschitnyie+plenki+i+stilusyi+dlya+telefonov</url>
+<price>450</price>
+<currencyId>RUR</currencyId>
+<categoryId>1066</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/de/34372.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Защитная пленка для Nokia C7-00</typePrefix>
+<vendor>Prolife</vendor>
+<model></model>
+<description>Вода точит камень, а стилус с ногтями наносят царапины даже на очень прочные дисплеи, снижая тем самым чувствительность и усложняя простейшие действия. Оставить экран вашего Nokia C7-00 кристально чистым поможет защитная пленка Prolife. Она имеет...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10083" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/stilus-prolife-exclusive-2060506001756?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_aksessuaryi+dlya+elektroniki_zaschitnyie+plenki+i+stilusyi+dlya+telefonov</url>
+<price>280</price>
+<currencyId>RUR</currencyId>
+<categoryId>1066</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/2c/37134.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Стилус</typePrefix>
+<vendor>Prolife</vendor>
+<model>Exclusive</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10091" available="true" bid="40" cbid="21" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/konstruktor-lego-racers-8228-galyashchiy-strayker-2010101001873?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_detskie+tovaryi_igrushki+i+igryi_konstruktoryi</url>
+<price>458</price>
+<currencyId>RUR</currencyId>
+<categoryId>353</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/fa/19940.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Конструктор</typePrefix>
+<vendor>Lego</vendor>
+<model>Racers 8228 &quot;Жалящий Страйкер&quot;</model>
+<description>Конструкторы Lego получили признание во всем мире. В них с увлечением играют не только дети, но и взрослые. Благодаря тому, что все кирпичики Lego совместимы между собой, вашему ребенку открывается поистине необъятный простор для творчества, ведь он...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10099" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/kabel-apple-component-av-cable-zml-2060506000872?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_kompyuteryi+i+planshetyi_aksessuaryi+dlya+Apple+iPad</url>
+<price>2190</price>
+<currencyId>RUR</currencyId>
+<categoryId>829</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/61/19945.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Кабель</typePrefix>
+<vendor>Apple</vendor>
+<model>Component AV Cable-ZML</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10101" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/sumka-dlya-noutbuka-golla-grape-16-2060505001726?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_kompyuteryi+i+planshetyi_cumki+i+chehlyi+dlya+noutbukov</url>
+<price>1250</price>
+<currencyId>RUR</currencyId>
+<categoryId>824</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/e9/19947.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Сумка для ноутбука</typePrefix>
+<vendor>Golla</vendor>
+<model>Grape 16&quot;</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10105" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/nastolnaya-lampa-mw-light-ulibka-1-h-40-vt-e14-2040402000176?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_tovaryi+dlya+doma_osveschenie_detskie+svetilniki</url>
+<price>950</price>
+<currencyId>RUR</currencyId>
+<categoryId>471</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/4f/19951.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Настольная лампа</typePrefix>
+<vendor>MW-Light</vendor>
+<model>&quot;Улыбка&quot; 1 х 40 Вт Е14</model>
+<description>Для любого школьника настольная лампа – это привычный повседневный предмет, на который он даже не обращает внимания. А что если лампа будет не обычной, а оригинальной, веселой, вызывающей улыбку, раскрашенной в красочные цвета? Тогда ребенок с большим...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10106" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/razvivayushchaya-igrushka-malishi-poyushchie-druzya-2010105003255?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_detskie+tovaryi_igrushki+dlya+malyishey_razvivayuschie+igrushki</url>
+<price>850</price>
+<currencyId>RUR</currencyId>
+<categoryId>343</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/26/19952.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Развивающая игрушка</typePrefix>
+<vendor>Малыши</vendor>
+<model>«Поющие друзья»</model>
+<description>«Поющие друзья» - это синтезатор с 24 клавишами и возможностью проигрывания веселых встроенных мелодий. При помощи игрушки ребенок познакомится с такими музыкальными стилями, как диско, вальс, рэп, самба и другими, а также с различными ритмами. Функция...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10113" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/ofisnaya-programma-1s-dengi-8-2060503000257?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_kompyuteryi+i+planshetyi_coft+i+PCigryi</url>
+<price>478</price>
+<currencyId>RUR</currencyId>
+<categoryId>816</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/d0/19957.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Офисная программа</typePrefix>
+<vendor>1C</vendor>
+<model>1С: Деньги 8</model>
+<description>Деньги, как известно, любят счет. Контролировать свой личный или семейный бюджет, на самом деле, не так сложно. Да и специального образования или навыков иметь не нужно.  Программа «1С: Деньги 8» каждый рубль, цент или гривну учтет, проанализирует ваши...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10117" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/zaryadnoe-ustroystvo-s-batareykami-gp-pb360gs-2060504001598?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_aksessuaryi+dlya+elektroniki_batareyki+i+akkumulyatoryi</url>
+<price>250</price>
+<currencyId>RUR</currencyId>
+<categoryId>1073</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/76/19959.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Зарядное устройство с батарейками</typePrefix>
+<vendor>GP</vendor>
+<model>PB360GS</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10119" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/jewel/chasi-sector-2030000023196?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_ukrasheniya+i+chasyi_chasyi_Sector</url>
+<price>11590</price>
+<currencyId>RUR</currencyId>
+<categoryId>1845</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/b8/34667.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Мужские часы</typePrefix>
+<vendor>Sector</vendor>
+<model>3273 679 025</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10121" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/kolyaska-jetem-turbo-4-2010206002133?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_detskie+tovaryi_dlya+pervyih+puteshestviy_kolyaskitransformeryi</url>
+<price>9650</price>
+<currencyId>RUR</currencyId>
+<categoryId>1534</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/77/34124.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Коляска-трансформер</typePrefix>
+<vendor>Jetem</vendor>
+<model>Turbo 4</model>
+<description>Суперсовременный неповторимый дизайн и практичность соединились в коляске Jetem Turbo 4. Она собрала в себе функции практически всех колясок — за это ее по праву можно назвать универсальной. Это транспортное средство прекрасно подойдет для малышей,...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10128" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/detskiy-nabor-iz-4-predmetov-regent-inox-bimbo-2040102002876?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_tovaryi+dlya+doma_cervirovka+stola_detskaya+posuda</url>
+<price>219</price>
+<currencyId>RUR</currencyId>
+<categoryId>488</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/0d/19965.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Детский набор из 4 предметов</typePrefix>
+<vendor>Regent inox S.r.l.</vendor>
+<model>Regent Inox Bimbo</model>
+<description>Набор Bimbo в подарочной коробочке станет приятным сюрпризом для любого ребенка: оригинальный дизайн в сочетании с высоким качеством материала превратят прием пищи в сплошное удовольствие, и вы забудете о плохом аппетите малыша.   Детский набор Bimbo...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10129" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/milnitsa-euroshowers-maki-2040202003216?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_tovaryi+dlya+doma_tovaryi+dlya+vannoy+bani+saunyi_prinadlejnosti+dlya+vannoy+komnatyi</url>
+<price>169</price>
+<currencyId>RUR</currencyId>
+<categoryId>1145</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/20/32054.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Мыльница</typePrefix>
+<vendor>Euroshowers</vendor>
+<model>&quot;Маки&quot;</model>
+<description>Какие главные «задачи» мыльницы? Чтобы мыло не выскальзывало и при этом дизайн подходил под интерьер. У мыльницы &quot;Маки&quot; есть и то и другое: она отлично впишется в любой интерьер ванной комнаты и при этом не отпустит мыло, когда оно, мокрое и скользкое,...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10134" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/usb-fleshka-verbatim-pinstripe-4-gb-chernaya-2060501001195?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_kompyuteryi+i+planshetyi_USBfleshki</url>
+<price>210</price>
+<currencyId>RUR</currencyId>
+<categoryId>850</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/10/19969.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>USB-флэшка</typePrefix>
+<vendor>Verbatim</vendor>
+<model>PinStripe 4 ГБ черная</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10135" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/ukrasheniya-svoimi-rukami-fantazer-zvezdnaya-pil-2010107001730?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_detskie+tovaryi_hobbi+i+tvorchestvo_naboryi+dlya+tvorchestva</url>
+<price>245</price>
+<currencyId>RUR</currencyId>
+<categoryId>364</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/27/19970.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Украшения своими руками</typePrefix>
+<vendor>Фантазер</vendor>
+<model>&quot;Звездная пыль&quot;</model>
+<description>Каждая девочка мечтает о чудесных украшениях, которые были бы только у нее. Теперь вы можете исполнить мечту вашей малышке, подарив ей набор для создания бижутерии «Звездная пыль». В наборе малышка найдет разнообразную фурнитуру, с помощью которой она...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10136" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/vstraivaemaya-stiralnaya-mashina-siemens-wk14d540-2020101005993?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_vstraivaemaya+tehnika_vstraivaemyie+stiralnyie+mashinyi</url>
+<price>38790</price>
+<currencyId>RUR</currencyId>
+<categoryId>6</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/39/19971.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Встраиваемая стиральная машина</typePrefix>
+<vendor>Siemens</vendor>
+<model>WK14D540</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10139" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/igra-dlya-pc-pro-evolution-soccer-2011-2060401002582?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_kompyuteryi+i+planshetyi_coft+i+PCigryi</url>
+<price>460</price>
+<currencyId>RUR</currencyId>
+<categoryId>816</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/9d/19974.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Игра для PC</typePrefix>
+<vendor></vendor>
+<model>Pro Evolution Soccer 2011</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10140" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/multimedia-pleer-explay-m25-8-gb-2060602000462?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_audio_MP3pleeryi</url>
+<price>1850</price>
+<currencyId>RUR</currencyId>
+<categoryId>792</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/36/37145.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Мультимедиа плеер</typePrefix>
+<vendor>Explay</vendor>
+<model>M25 8 ГБ черный</model>
+<description>Небольшие размеры позволяют легко умещать этот медиаплеер в карман даже джинсов, имея всегда с собой кинодевайс, воспроизводящий все основные форматы видео, в том числе флэш-ролики и MKV (который так часто можно найти на этих ваших торрентах), да еще и...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10146" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/domashniy-dvd-teatr-lg-ht306su-2060205000159?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_elektronika_audio_domashnie+kinoteatryi</url>
+<price>4460</price>
+<currencyId>RUR</currencyId>
+<categoryId>798</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/81/19980.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Домашний DVD-театр</typePrefix>
+<vendor>LG</vendor>
+<model>HT306SU</model>
+<description>Мало места, а хочется акустику 5.1? Или, может, вы просто любитель минимализма? В обоих случаях домашний кинотеатр LG HT306SU станет отличным вариантом. Его колонки выполнены в виде компактных овалов, их можно располагать как на полках, так и на стене, ...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10148" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/doityourself/benzinoviy-generator-kalibr-beg-2800-2080504000179?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_cdelay+sam_ctroitelnaya+tehnika_generatoryi+i+stabilizatoryi+napryajeniya</url>
+<price>8890</price>
+<currencyId>RUR</currencyId>
+<categoryId>306</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/80/31064.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Бензиновый генератор</typePrefix>
+<vendor>Калибр</vendor>
+<model>БЭГ-2800</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10150" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/blyudo-dlya-torta-365-sm-walther-glas-flower-fancies-rose-2040102002746?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_tovaryi+dlya+doma_cervirovka+stola_blyuda+etajerki+konfetnitsyi</url>
+<price>749</price>
+<currencyId>RUR</currencyId>
+<categoryId>1135</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/9a/19982.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Блюдо для торта 36,5 см</typePrefix>
+<vendor>Walther Glas</vendor>
+<model>Walther glas Flower fancies Rose</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10151" available="true" bid="40" cbid="64" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/maslyaniy-radiator-delonghi-gs-770510-m-2020401001176?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_klimaticheskaya+tehnika_obogrevatelnyie+priboryi</url>
+<price>1430</price>
+<currencyId>RUR</currencyId>
+<categoryId>19</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/da/19983.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Масляный радиатор</typePrefix>
+<vendor>De&apos;Longhi</vendor>
+<model>GS 770510 М</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10153" available="true" bid="30" cbid="150" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/kartridg-hp-q2610a-2060502001651?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_elektronika_kompyuteryi+i+planshetyi_kartridji+i+bumaga</url>
+<price>4780</price>
+<currencyId>RUR</currencyId>
+<categoryId>834</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/eb/19984.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Картридж</typePrefix>
+<vendor>HP</vendor>
+<model>Q2610A</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10154" available="true" bid="30" cbid="150" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/nabor-posudi-iz-4-predmetov-silampos-royal-satin-2040101005366?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_tovaryi+dlya+doma_tovaryi+dlya+kuhni_naboryi+posudyi+dlya+prigotovleniya+pischi</url>
+<price>6490</price>
+<currencyId>RUR</currencyId>
+<categoryId>600</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/9f/31567.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Набор посуды из 4 предметов</typePrefix>
+<vendor>Silampos</vendor>
+<model>&quot;Роял сатин&quot;</model>
+<description>Набор кастрюль серии «Роял Сатин», подходящий для всех видов варочных поверхностей, является минимальным стандартным набором, необходимым каждой хозяйке, чтобы накормить семью и первым, и вторым, и третьим. 3 кастрюли разной емкости и сковорода...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10160" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/gazovaya-plita-gorenje-g51103ax-2020102001741?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_plityi_plityi</url>
+<price>15910</price>
+<currencyId>RUR</currencyId>
+<categoryId>1094</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/a0/20036.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Газовая плита</typePrefix>
+<vendor>Gorenje</vendor>
+<model>G51103AX</model>
+<description>Компактная газовая плита Gorenje G51103AX, выполненная в металлическом корпусе, отлично впишется в интерьер современной кухни в стиле хай-тек. Черная стеклянная крышка рабочей панели не только оригинально смотрится, но и может служить дополнительным...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10161" available="true" bid="30" cbid="150" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/smartfon-htc-incredible-s-krasniy-2060302000113?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_elektronika_telefonyi_mobilnyie+telefonyi</url>
+<price>14890</price>
+<currencyId>RUR</currencyId>
+<categoryId>910</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/40/20037.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Смартфон</typePrefix>
+<vendor>HTC</vendor>
+<model>Incredible S красный</model>
+<description>Как заставить человека выдохнуть: «Невероятно»? Может быть, нужно продемонстрировать ему необычное дизайнерское решение, такое как геометрически элегантный корпус с покрытием Soft-Touch? Или предоставить в его распоряжение потрясающий четырехдюймовый...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10164" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/lyustra-blitz-12-h-40-vt-e14-2040402001043?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_tovaryi+dlya+doma_osveschenie_lyustryi</url>
+<price>8290</price>
+<currencyId>RUR</currencyId>
+<categoryId>1583</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/8a/20039.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Люстра</typePrefix>
+<vendor>Blitz</vendor>
+<model>12 х 40 Вт Е14</model>
+<description>Органичное сочетание приятной цветовой гаммы в бело-золотистых оттенках и классических форм, дополненных оригинальным дизайном, делает из люстры Blitz настоящее украшение дома. 12 восхитительных плафонов напоминают прекрасный букет, в котором каждый...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10174" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/udlinitel-era-u-3-3m-2060508002324?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_televizoryi+i+video_kabeli+dlya+tv+i+video</url>
+<price>129</price>
+<currencyId>RUR</currencyId>
+<categoryId>889</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/17/34669.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Удлинитель</typePrefix>
+<vendor>ЭРА</vendor>
+<model>U-3-3m</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10181" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/vstraivaemaya-posudomoechnaya-mashina-bosch-spv43m00ru-2020101008208?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_vstraivaemaya+tehnika_vstraivaemyie+posudomoechnyie+mashinyi</url>
+<price>15950</price>
+<currencyId>RUR</currencyId>
+<categoryId>5</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/ce/37153.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Встраиваемая посудомоечная машина</typePrefix>
+<vendor>Bosch</vendor>
+<model>SPV43M00RU</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10184" available="true" bid="30" cbid="7" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/venchik-fackelmann-carolina-2040101004307?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_tovaryi+dlya+doma_tovaryi+dlya+kuhni_kuhonnyie+prinadlejnosti</url>
+<price>199</price>
+<currencyId>RUR</currencyId>
+<categoryId>570</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/8a/20091.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Венчик 29 см</typePrefix>
+<vendor>Fackelmann</vendor>
+<model>Carolina</model>
+<description>Кричали повара: &quot;Ура!&quot; - и в воздух венчики бросали... Вряд ли кулинары возразят против такой переделки классика. Венчики действительно являются одним из самых любимых атрибутов искусных поваров при приготовлении кремов, жидкого теста, супов-пюре,...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10185" available="true" bid="30" cbid="150" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/videonyanya-miniland-digimonitor-35-2010204000834?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_detskie+tovaryi_bezopasnost+i+zdorove+malyisha_radio+i+videonyani</url>
+<price>13280</price>
+<currencyId>RUR</currencyId>
+<categoryId>1214</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/c1/34126.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Видеоняня</typePrefix>
+<vendor>Miniland</vendor>
+<model>Digimonitor 3,5</model>
+<description>Каждая мама нуждается в отдыхе. Но разве можно оставить маленького ребенка одного, хотя бы на минуту? Можно, если у вас есть надежный помощник – видеоняня Miniland Digimonitor 3,5. Просто установите видеокамеру-передатчик в детской комнате, а...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10186" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/nastenniy-svetilnik-blitz-1-h-40-vt-g9-2040402001265?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_tovaryi+dlya+doma_osveschenie_nastennyie+i+nastennopotolochnyie+svetilniki</url>
+<price>1190</price>
+<currencyId>RUR</currencyId>
+<categoryId>1581</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/e6/20092.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Настенный светильник</typePrefix>
+<vendor>Blitz</vendor>
+<model>1 х 40 Вт G9</model>
+<description>Невероятно красивый настенный светильник Blitz из коллекции, посвященной флористике, украсит ваш дом и сделает интерьер более нежным и элегантным. Каркас бра выполнен из металла классического цвета хрома, а плафон – из матового стекла. Оригинальностью...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10187" available="true" bid="40" cbid="200" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/duhovoy-shkaf-krona-igg-1634-eg-2020101000110?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_vstraivaemaya+tehnika_duhovki</url>
+<price>15470</price>
+<currencyId>RUR</currencyId>
+<categoryId>12</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/f4/20093.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>490</local_delivery_cost>
+<typePrefix>Духовой шкаф</typePrefix>
+<vendor>Krona</vendor>
+<model>IGG 1634 EG BLACK</model>
+<description>Классический автономный газовый духовой шкаф Krona IGG 1634 EG – отличный выбор для кухонь, оборудованных газом. Прибор оборудован газовым грилем и вертелом. Благодаря высокой температуре приготовления в режиме гриля, продукты быстро подрумяниваются,...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="1019" available="true" bid="40" cbid="46" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/maslyaniy-radiator-rolsen-roh-d5-2020401000834?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior1_byitovaya+tehnika_klimaticheskaya+tehnika_obogrevatelnyie+priboryi</url>
+<price>1020</price>
+<currencyId>RUR</currencyId>
+<categoryId>19</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/4a/2424.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Масляный радиатор</typePrefix>
+<vendor>Rolsen</vendor>
+<model>ROH-D5</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10198" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/household/nabor-odnorazovih-tarelok-papstar-pati-2040102000391?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_detskie+tovaryi_igrushki+i+igryi_vse+dlya+karnavala</url>
+<price>119</price>
+<currencyId>RUR</currencyId>
+<categoryId>322</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/5b/20099.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Набор одноразовых тарелок</typePrefix>
+<vendor>Papstar</vendor>
+<model>&quot;Пати&quot;, 10 шт.</model>
+<description>Решили устроить вечеринку? Тогда, подготавливая список необходимых покупок, включите в него тарелки &quot;Пати&quot;, которые напомнят каждому собравшемуся, что он не на светском рауте и не на аристократическом приеме, а на шумной и веселой вечеринке.   Тарелки...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10199" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/avtomobilnoe-zaryadnoe-ustroystvo-dlya-plansheta-iluv-iad572-2060505003300?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_kompyuteryi+i+planshetyi_zaryadnyie+ustroystva+i+akkumulyatoryi+dlya+noutbukov</url>
+<price>1750</price>
+<currencyId>RUR</currencyId>
+<categoryId>822</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/28/20100.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Автомобильное зарядное устройство для планшета</typePrefix>
+<vendor>iLuv</vendor>
+<model>iAD572</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10203" available="true" bid="30" cbid="47" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/kukla-pups-simba-43-sm-pet-i-pisaet-2010102003050?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_detskie+tovaryi_igrushki+i+igryi_kuklyi</url>
+<price>1410</price>
+<currencyId>RUR</currencyId>
+<categoryId>337</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/7c/20104.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Кукла-пупс</typePrefix>
+<vendor>Simba</vendor>
+<model>43 см (пьет и писает)</model>
+<description>Кукла  Simba одета в нарядный розовый костюмчик с повязку с бантиком.  Ручки и ножки подвижные, поэтому кукле можно придать любое положение тела. Пупса можно напоить из бутылочки, затем посадить на горшок и он пописает. Пупс выглядит как настоящий...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10205" available="true" bid="30" cbid="75" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/appliances/vipryamitel-dlya-volos-philips-hp8361-2020301000521?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior2_krasota+i+zdorove_schiptsyi+i+vyipryamiteli+dlya+volos_schiptsyi+i+vyipryamiteli+dlya+volos</url>
+<price>2250</price>
+<currencyId>RUR</currencyId>
+<categoryId>26</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/1e/20106.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Выпрямитель для волос</typePrefix>
+<vendor>Philips</vendor>
+<model>HP8361</model>
+<description>Выпрямитель Philips HP8361 имеет керамические пластины с кератиновым покрытием, которое обеспечивает великолепное скольжение и ослепительный блеск волос. Система ионизации позаботится о гладкости волос, а технология автоматической настройки температуры...</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10206" available="true" bid="15" cbid="60" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/electronics/igra-dlya-wii-more-game-party-2060401001943?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_elektronika_igryi+i+konsoli_igryi+dlya+Nintendo+Wii</url>
+<price>535</price>
+<currencyId>RUR</currencyId>
+<categoryId>1297</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/72/20107.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Игра для Wii</typePrefix>
+<vendor></vendor>
+<model>More Game Party</model>
+<description></description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+<offer id="10208" available="true" bid="15" cbid="40" type="vendor.model">
+<url>http://www.enter.ru/reg/14974/product/children/mashinka-little-tikes-ekskavator-2010104000477?utm_source=&amp;utm_medium=&amp;utm_campaign=&amp;utm_content=cat_prior3_detskie+tovaryi_igrushki+i+igryi_igrushechnyiy+transport</url>
+<price>225</price>
+<currencyId>RUR</currencyId>
+<categoryId>349</categoryId>
+<picture>http://fs01.enter.ru/1/1/500/e2/20108.jpg</picture>
+<pickup>true</pickup>
+<delivery>true</delivery>
+<local_delivery_cost>290</local_delivery_cost>
+<typePrefix>Машинка</typePrefix>
+<vendor>Little Tikes</vendor>
+<model>«Экскаватор»</model>
+<description>Яркий маленький экскаватор Little Tikes станет излюбленной игрушкой крохи на долгое время. Машинка симпатичная, с нарисованными глазками и улыбкой на радиаторе. За счет специальной конструкции игрушка устойчивая  и при движении не переворачивается....</description>
+<manufacturer_warranty>true</manufacturer_warranty>
+</offer>
+</offers>
+</shop>
+</yml_catalog>
