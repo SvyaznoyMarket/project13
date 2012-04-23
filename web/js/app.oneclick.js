@@ -68,6 +68,7 @@ console.info('IN DEL ', Deliveries)
 			//// B			
 			self.dynModel = function( Deliveries ) {
 				self.dlvrs.removeAll()
+				self.chosenDlvr({})
 				for(var obj in Deliveries ) {
 					self.dlvrs.push( {
 						type: obj,
@@ -116,23 +117,25 @@ console.info('IN DEL ', Deliveries)
 			self.plusItem = function() {
 				self.quantity( self.quantity() + 1 )
 				var curq =  self.quantity() * 1
-console.info('cur', curq)				
-				setTimeout( function(){ self.loadData( curq ) } , 500 )
+				setTimeout( function(){ self.loadData( curq, 1 ) } , 500 )
 				return false
 			}
 			self.minusItem = function() {
-				if( self.quantity() > 1 )
-					self.quantity( self.quantity() - 1 )
+				if( self.quantity() == 1 )
+					return false
+				self.quantity( self.quantity() - 1 )
+				var curq =  self.quantity() * 1
+				setTimeout( function(){ self.loadData( curq, -1 ) } , 500 )
 				return false
 			}
 			
-			self.loadData = function( momentq ) {
+			self.loadData = function( momentq, direction ) {
 console.info( self.quantity(), momentq )				
-				if( self.quantity() > momentq )
+				if( ( direction > 0 && self.quantity() > momentq ) || ( direction < 0 && self.quantity() < momentq ) )
 					return
 				var postData = {
 					product_id: Model.jsitemid,
-					product_quantity: 5,
+					product_quantity: momentq,
 					region_id: Model.jsregionid*1
 				}
 				
