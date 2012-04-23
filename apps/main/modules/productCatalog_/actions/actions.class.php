@@ -97,6 +97,11 @@ class productCatalog_Actions extends myActions
       $this->forward($this->getModuleName(), 'product');
     }
 
+    if($request->getParameter(ProductCoreFormFilterSimple::NAME))
+    {
+      $this->forward($this->getModuleName(), 'categoryTag');
+    }
+
     // если категория корневая
     if ($productCategory->isRoot())
     {
@@ -445,12 +450,13 @@ class ProductCorePagerContainer extends sfPager
 
 class ProductCoreFormFilterSimple
 {
+  const NAME = 'f';
   /** @var \ProductCategory */
   private $productCategory;
   /** @var \ProductCategoryFilterEntity[] */
   private $filterList;
   private $values = array();
-  private $name = 'f';
+  private $name = self::NAME;
 
   /**
    * @param ProductCategory $category
