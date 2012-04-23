@@ -13,6 +13,7 @@ class order_Actions extends myActions
   public function preExecute()
   {
     $this->getRequest()->setParameter('_template', 'order');
+    $this->getResponse()->setTitle('Оформление заказа');
   }
 
  /**
@@ -479,6 +480,10 @@ class order_Actions extends myActions
         $itemView->total = ($cartData['price'] * $cartData['quantity']) + $serviceTotal;
         $itemView->type = 'products' == $itemType ? Order_ItemView::TYPE_PRODUCT : Order_ItemView::TYPE_SERVICE;
         $itemView->url = '';
+          //'products' == $itemType
+          //  ? $coreData['link']
+          //  : $this->generateUrl('service_show', array('service' => ServiceTable::getInstance()->createQuery()->select('token')->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR)))
+        //;
         $itemView->token = $itemView->type.'-'.$itemView->id;
         $itemView->stock = isset($coreData['stock']) ? $coreData['stock'] : 0;
         $itemView->addUrl =
