@@ -58,21 +58,45 @@ console.info('IN DEL ', Deliveries)
 			}, this)
 			
 			self.chosenDlvr = ko.observable( {} )
-			
+			self.chosenDate = ko.observable( {} )
 			self.dlvrs = ko.observableArray([])
-			for(var obj in Deliveries ) {
-				self.dlvrs.push( {
-					type: obj,
-					name: Deliveries[obj].name,
-					modeID: Deliveries[obj].modeId,
-					price: Deliveries[obj].price
-				})
-				if( obj == 'self' )
-					self.chosenDlvr( self.dlvrs()[ self.dlvrs().length - 1 ] )
+			self.dates = ko.observableArray([])
+			self.shops = ko.observableArray([])
+			self.chosenShop = ko.observable( {} )
+			self.pickedShop = ko.observable( {} )
+			
+			//// B			
+			self.dynModel = function( Deliveries ) {
+				self.dlvrs.removeAll()
+				for(var obj in Deliveries ) {
+					self.dlvrs.push( {
+						type: obj,
+						name: Deliveries[obj].name,
+						modeID: Deliveries[obj].modeId,
+						price: Deliveries[obj].price
+					})
+					if( obj == 'self' )
+						self.chosenDlvr( self.dlvrs()[ self.dlvrs().length - 1 ] )
+				}
+				if( ! ('type' in self.chosenDlvr() ) )
+					self.chosenDlvr( self.dlvrs()[ 0 ] )	
+				
+				self.dates( Deliveries[ self.chosenDlvr().type+'' ].dates.slice(0) )
+				self.chosenDate( self.dates()[0] )
+				
+				if( selfAvailable ) {
+					self.shops( Deliveries['self'].shops.slice(0) )
+					self.chosenShop( self.shops()[0] )
+					self.pickedShop( self.shops()[0] )
+				} else {
+					var leer = { address: '', regtime: '', id : 1 }
+					self.chosenShop( leer )
+					self.pickedShop( leer )
+				}
 			}
-console.info( self.chosenDlvr() )			
-			if( ! ('type' in self.chosenDlvr() ) )
-				self.chosenDlvr( self.dlvrs()[ 0 ] )			
+			self.dynModel(Deliveries)
+			///// E
+			
 			self.total = ko.computed(function() {
 				return printPrice( self.price * self.quantity() + self.chosenDlvr().price * 1 )
 			}, this)
@@ -99,10 +123,11 @@ console.info( self.chosenDlvr() )
 					self.quantity( self.quantity() - 1 )
 				return false
 			}
+			
 			self.loadData = function() {
 				var postData = {
 					product_id: Model.jsitemid,
-					product_quantity: 100,
+					product_quantity: 5,
 					region_id: Model.jsregionid*1
 				}
 				
@@ -121,14 +146,24 @@ console.info( self.chosenDlvr() )
 						self.noDelivery(false)
 					}
 					selfAvailable = 'self' in Deliveries
-					if( selfAvailable ) {
-						
-					}
+					self.dynModel(Deliveries)
+					if( selfAvailable && typeof(mapCenter) == 'undefined') {
+						var sla=0, slo=0
+						for(var i=0, l=Deliveries['self'].shops.length ;i<l;i++) {
+							sla += Deliveries['self'].shops[i].latitude*1
+							slo += Deliveries['self'].shops[i].longitude*1		
+						}
+						var mapCenter = {
+							latitude  : sla/Deliveries['self'].shops.length,
+							longitude : slo/Deliveries['self'].shops.length
+						}
+					}						
+					if( selfAvailable && ! ('regionMap' in window ) )
+						window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )			
+					
 				})	
 			}
 			
-			self.dates = ko.observableArray( Deliveries[ self.chosenDlvr().type+'' ].dates.slice(0) )
-			self.chosenDate = ko.observable( self.dates()[0] )
 			self.pickDate = function( item ) {
 				self.chosenDate( item )
 				//shops mod		
@@ -146,16 +181,7 @@ console.info( self.chosenDlvr() )
 				if( self.showMap() )
 					self.showMarkers()	
 			}
-			if( selfAvailable ) {
-				self.shops = ko.observableArray( Deliveries['self'].shops.slice(0) )
-				self.chosenShop = ko.observable( self.shops()[0] )
-				self.pickedShop = ko.observable( self.shops()[0] )
-			} else {
-				self.shops = ko.observableArray([])
-				var leer = { address: '', regtime: '', id : 1 }
-				self.chosenShop = ko.observable( leer )
-				self.pickedShop = ko.observable( leer )
-			}
+			
 			self.pickShop = function( item ) {
 				self.chosenShop( item )
 			}
@@ -268,17 +294,15 @@ console.info('validateForm')
 //console.info( 'CHECK', self.formStatus()	)
 				if( self.formStatus() === 'typing' ) // validation error
 					return
-				//form request
 				
 				//send ajax
-//				setTimeout( function(){ self.formStatus('sending') }, 500)
 				self.sendData()
 			}
 			
 						
 			self.sendData = function() {
+				var outputUrl = $('.order1click-link-new').attr('link-output')
 				self.formStatus('sending')
-				var outputUrl = 'none'
 				var postData = {
 					'order[product_quantity]' : self.quantity(),
 					'order[delivered_at]' : self.chosenDate().value
@@ -289,12 +313,12 @@ console.info('validateForm')
 				for(var i=0,l=self.textfields.length; i<l; i++)
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
 console.info( postData)
-/*				$.post( outputUrl, postData, function() {
+				$.post( outputUrl, postData, function() {
 					
 				})
-*/				
+				
 			}
-		}	// 
+		} 
 		
 		
 		/* Load Data from Server */
