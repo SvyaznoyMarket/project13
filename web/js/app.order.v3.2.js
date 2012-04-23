@@ -861,7 +861,10 @@ $(document).ready(function() {
                     }
                     else if (result.error) {
                         if ('invalid' == result.error.code) {
-                            console.info()
+
+                            form.find('.mRed').removeClass('mRed')
+                            form.find('.bFormError').remove()
+
                             $('#order-message').html('<span class="red">'+result.error.message+'</span>')
                             $.each(result.errors, function(k, v) {
                                 var el = form.find('[name="'+k+'"]:visible')
