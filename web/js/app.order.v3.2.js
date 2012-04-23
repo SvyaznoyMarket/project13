@@ -90,6 +90,10 @@ $(document).ready(function() {
         },
 
         moveItemBlock: function(fromDeliveryTypeToken, toDeliveryTypeToken) {
+            if (fromDeliveryTypeToken == toDeliveryTypeToken) {
+                return []
+            }
+
             var self = this
             var data = this.data()
 
