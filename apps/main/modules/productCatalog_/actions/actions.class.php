@@ -125,25 +125,6 @@ class productCatalog_Actions extends myActions
     /** @var $categoryList ProductCategoryEntity[] */
     $categoryList = $rootCategory->getChildren();
 
-    $filterList = array();
-    $filters = $productFilter->getCoreProductFilter(false);
-
-    // filter categories by listing resutl
-    foreach ($categoryList as $category) {
-      $filterList[] = array(
-        'count_only' => true,
-        'filters' => array_merge($filters, array(
-          array('category', 1, $category->getId())
-        ))
-      );
-    }
-    $productData = RepositoryManager::getListing()->getListingMultiple($filterList);
-    foreach ($productData as $key => $data) {
-      $categoryList[$key]->setProductCount($data['count']);
-      if ($data['count'] == 0)
-        unset($categoryList[$key]);
-    }
-
     $this->setVar('productCategory', $productCategory);
     $this->setVar('categoryTree', $categoryTree);
     $this->setVar('categoryList', $categoryList);
