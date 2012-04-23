@@ -44,12 +44,12 @@ console.info('IN DEL ', Deliveries)
 			var self = this	
 			self.noDelivery = ko.observable(false)
 			
-			self.title = Model.jstitle
-			self.price = Model.jsprice
-			self.icon  = Model.jsbimg
+			self.title     = Model.jstitle
+			self.price     = Model.jsprice
+			self.icon      = Model.jsbimg
 			self.shortcut  = Model.jsshortcut
 			
-			self.quantity = ko.observable(1)
+			self.quantity    = ko.observable(1)
 			self.quantityTxt = ko.computed(function() {
 				return self.quantity() + ' шт.'
 			}, this)
@@ -64,8 +64,7 @@ console.info('IN DEL ', Deliveries)
 			self.shops = ko.observableArray([])
 			self.chosenShop = ko.observable( {} )
 			self.pickedShop = ko.observable( {} )
-			
-			//// B			
+				
 			self.dynModel = function( Deliveries ) {
 				self.dlvrs.removeAll()
 				self.chosenDlvr({})
@@ -96,7 +95,6 @@ console.info('IN DEL ', Deliveries)
 				}
 			}
 			self.dynModel(Deliveries)
-			///// E
 			
 			self.total = ko.computed(function() {
 				return printPrice( self.price * self.quantity() + self.chosenDlvr().price * 1 )
@@ -129,8 +127,7 @@ console.info('IN DEL ', Deliveries)
 				return false
 			}
 			
-			self.loadData = function( momentq, direction ) {
-console.info( self.quantity(), momentq )				
+			self.loadData = function( momentq, direction ) {				
 				if( ( direction > 0 && self.quantity() > momentq ) || ( direction < 0 && self.quantity() < momentq ) )
 					return
 				var postData = {
@@ -142,7 +139,6 @@ console.info( self.quantity(), momentq )
 				$.post( inputUrl, postData, function(data) {
 					if( !data.success )
 						return false
-					//self.loaded(true)
 					Deliveries = data.data
 					var le = 0
 					for(var key in Deliveries )
