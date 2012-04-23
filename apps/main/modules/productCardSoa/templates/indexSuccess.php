@@ -9,7 +9,7 @@
 <?php slot('title', $product->name) ?>
 
 <?php //include_partial('product/name', array('product' => $product)) ?>
-<?php include_component('productSoa', 'show', array('product' => $product, 'json' => $json)) ?>
+<?php include_component('productSoa', 'show', array('product' => $product, 'json' => $json, 'relatedPagesNum' => $relatedPagesNum)) ?>
 <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
 
 <?php if ('kit' == $product->view): ?>
