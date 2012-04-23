@@ -51,7 +51,7 @@ class productCatalogActions extends myActions
     //$this->productCategory = $this->getRoute()->getObject();
     $this->productCategory = $this->oldUrlRedirect($request);
 
-    $this->productFilter = $this->getProductFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),));
+    $this->productFilter = $this->getProductFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', )),));
     $this->productFilter->bind($request->getParameter($this->productFilter->getName()));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
@@ -127,10 +127,10 @@ class productCatalogActions extends myActions
   public function executeTag(sfWebRequest $request)
   {
     //$this->productCategory = $this->getRoute()->getObject();
-    myDebug::dump($request);
+
     $this->productCategory = $this->oldUrlRedirect($request);
 
-    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),));
+    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', )),));
     $this->productTagFilter->bind($request->getParameter($this->productTagFilter->getName()));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
@@ -206,8 +206,8 @@ class productCatalogActions extends myActions
   {
     $this->productCategory = $this->getRoute()->getObject();
 
-    $this->productFilter = $this->getProductFilter(array('count' => true, 'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),));
-    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, 'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),));
+    $this->productFilter = $this->getProductFilter(array('count' => true, 'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', )),));
+    $this->productTagFilter = $this->getProductTagFilter(array('count' => true, 'with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', )),));
 
     $q = ProductTable::getInstance()->createBaseQuery(array(
       'view' => 'list',
@@ -285,9 +285,9 @@ class productCatalogActions extends myActions
       return $this->_refuse();
     }
 
-    $this->productFilter = $this->getProductFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),));
+    $this->productFilter = $this->getProductFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', )),));
     $getFilterData = $request->getParameter($this->productFilter->getName());
-    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', 'furniture',)),));
+    $this->productTagFilter = $this->getProductTagFilter(array('with_creator' => !in_array($this->productCategory->getRootCategory()->token, array('jewel', )),));
     $getTagFilterData = $request->getParameter($this->productTagFilter->getName());
 
     if ($this->productCategory->has_line) {
