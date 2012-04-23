@@ -250,7 +250,16 @@ class productSoaComponents extends myComponents
         foreach ($this->product->model['product'] as $prod) {
             foreach ($prod->property as $prop) {
                 if (in_array($prop['id'], $propIdList)) {
-                    $prodPropValue[$prod->id][$prop['id']] = $prop['value'];
+
+                    if (!$prop['is_multiple']) {
+                        $prodPropValue[$prod->id][$prop['id']] = $prop['value'];
+                    } else {
+                        $valueAr = array();
+                        foreach ($prop['option_id'] as $option) {
+                            $valueAr[] = $option['value'];
+                        }
+                        $prodPropValue[$prod->id][$prop['id']] = implode(',', $valueAr);
+                    }
                     $propType[$prop['id']] = $prop['type_id'];
                 }
             }
