@@ -501,14 +501,7 @@ class ProductCoreFormFilterSimple
    */
   public function getCoreProductFilter($useCategoryFilter = true)
   {
-    $filters = array(
-      array('is_view_list', 1, array(true)),
-      array('is_model', 1, array(true)),
-    );
-
-    if ($this->productCategory && $useCategoryFilter) {
-      $filters[] = array('category', 1, $this->productCategory->core_id);
-    }
+    $filters = array();
 
     foreach ($this->filterList as $filter) {
       $value = $this->getValue($filter);
@@ -526,6 +519,17 @@ class ProductCoreFormFilterSimple
         }
       }
     }
+
+    if (empty($filters)) {
+      $filters[] = array('is_model', 1, array(true));
+    }
+
+    $filters[] = array('is_view_list', 1, array(true));
+
+    if ($this->productCategory && $useCategoryFilter) {
+      $filters[] = array('category', 1, $this->productCategory->core_id);
+    }
+
     return $filters;
   }
 
