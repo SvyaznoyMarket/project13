@@ -45,7 +45,9 @@ foreach ($dates as $i => $date) {
       <h2>
         <?php echo $deliveryType->shortName ?>
         <span data-assign='{"displayDate": ["text", "_value"]}'><?php echo $deliveryType->displayDate ?></span>
-        <br><span data-assign='{"displayInterval": ["text", "_value"]}'><?php echo $deliveryType->displayInterval ?></span>
+        <?php if ('self' != $deliveryType->type): ?>
+          <br><span data-assign='{"displayInterval": ["text", "_value"]}'><?php echo $deliveryType->displayInterval ?></span>
+        <?php endif ?>
       </h2>
 
       <i class="order-delivery_price" data-template="#order-delivery_price-template"></i>
