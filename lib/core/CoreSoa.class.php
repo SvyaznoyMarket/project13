@@ -198,7 +198,7 @@ class CoreSoa
       // добавляем дескриптор потока в массив заданий
       $tasks[$action['name']] = $ch;
       if ($this->_isLog) {
-        $this->logger->log("Response: Action:" . $action['name'] . '. Method: ' . (($postMethod) ? 'POST' : 'GET') . ". Data: " . $paramStr);
+        $this->logger->log("Request: Action:" . $action['name'] . '. Method: ' . (($postMethod) ? 'POST' : 'GET') . ". Data: " . $paramStr);
       }
 
     }
@@ -241,7 +241,7 @@ class CoreSoa
             $timeAfterAction = microtime(true);
             if ($this->_isLog) {
               $timeExecute = $timeAfterAction - $timeBefor;
-              $this->logger->log("Response: Execute time: " . $timeExecute . '. Action:' . $actionName . '.Answer: ' . $coreAnswer);
+              $this->logger->log("Response: Execute time: " . $timeExecute . '. Action:' . $actionName); // . '.Answer: ' . $coreAnswer);
             }
             $this->_answerHandler($coreAnswer, $answerInfo, $actionName);
 
