@@ -30,7 +30,12 @@
   <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item->getPrice() ?></span> <span
     class="rubl">p</span></div>
   <?php if ($item->getModel() && $item->getModel()->getPropertyList()): ?>
-  <div class='bListVariants mShort'>Доступно в разных вариантах</div>
+  <a href="<?php echo $item->getLink() ?>">
+    <div class="bListVariants">
+      Доступно в разных вариантах<br>
+      (<?php echo $item->getModel()->getVariations() ?>)
+    </div>
+  </a>
   <?php endif ?>
   <!-- Hover -->
   <div class="boxhover"<?php if ($item->getIsBuyable()): ?> ref="<?php echo $item->getToken() ?>"<?php endif ?>>
@@ -60,7 +65,12 @@
         <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item->getPrice() ?></span> <span
           class="rubl">p</span></div>
         <?php if ($item->getModel() && $item->getModel()->getPropertyList()): ?>
-        <div class='bListVariants mShort'>Доступно в разных вариантах</div>
+        <a href="<?php echo $item->getLink() ?>">
+          <div class="bListVariants">
+            Доступно в разных вариантах<br>
+            (<?php echo $item->getModel()->getVariations() ?>)
+          </div>
+        </a>
         <?php endif ?>
       </div>
     </div>
