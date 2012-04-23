@@ -197,9 +197,7 @@ $(document).ready(function() {
                 $.each(data.unavailable, function(i, itemToken) {
                     var item = data.items[itemToken]
 
-                    if (!item) return true
-
-                    if ((0 == item.stock) || (item.type != 'product')) return true
+                    if (!item || (0 == item.stock) || (item.type != 'product')) return true
                     if (confirm('Вы заказали товар "'+item.name+'" в количестве '+item.quantity+' шт. Доступно только '+item.stock+' шт. Заказать '+item.stock+'шт?')) {
                         $('.bImgButton.mBacket[data-token="'+item.token+'"]').click()
                         $.ajax({
