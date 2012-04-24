@@ -11,24 +11,6 @@
 class searchComponents extends myComponents
 {
  /**
-  * Executes form component
-  *
-  * @param string $searchString Поисковая фраза
-  */
-  public function executeForm()
-  {
-    if (!in_array($this->view, array('default', 'main')))
-
-    {
-      $this->view = 'default';
-    }
-
-    if (empty($this->searchString))
-    {
-      $this->searchString = '';
-    }
-  }
- /**
   * Executes navigation component
   *
   * @param string $searchString Поисковая фраза
