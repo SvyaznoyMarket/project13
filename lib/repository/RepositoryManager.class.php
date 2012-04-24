@@ -4,32 +4,13 @@ class RepositoryManager
 {
   /**
    * @static
-   * @param $name название репозитория
-   * @return BaseRepository
+   * @return RegionRepository
    */
-  public static function get($name)
+  public static function getRegion()
   {
-    $class = $name.'Repository';
-
-    return new $class();
-  }
-
-  /**
-   * @static
-   * @return ShopRepository
-   */
-  public static function getShop()
-  {
-    return self::get('Shop');
-  }
-
-  /**
-   * @static
-   * @return DeliveryTypeRepository
-   */
-  public static function getDeliveryType()
-  {
-    return self::get('DeliveryType');
+    static $repo;
+    if(!$repo) $repo = new RegionRepository();
+    return $repo;
   }
 
   /**
@@ -38,25 +19,9 @@ class RepositoryManager
    */
   public static function getProduct()
   {
-    return self::get('Product');
-  }
-
-  /**
-   * @static
-   * @return ProductTypeRepository
-   */
-  public static function getProductType()
-  {
-    return self::get('ProductType');
-  }
-
-  /**
-   * @static
-   * @return ProductCategoryFilter
-   */
-  public static function getProductCategoryFilter()
-  {
-    return self::get('ProductCategoryFilter');
+    static $repo;
+    if(!$repo) $repo = new ProductRepository();
+    return $repo;
   }
 
   /**
@@ -65,6 +30,41 @@ class RepositoryManager
    */
   public static function getProductLabel()
   {
-    return self::get('ProductLabel');
+    static $repo;
+    if(!$repo) $repo = new ProductLabelRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return ProductCategoryFilterRepository
+   */
+  public static function getProductCategoryFilter()
+  {
+    static $repo;
+    if(!$repo) $repo = new ProductCategoryFilterRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return ProductTypeRepository
+   */
+  public static function getProductType()
+  {
+    static $repo;
+    if(!$repo) $repo = new ProductTypeRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return ProductCategoryRepository
+   */
+  public static function getProductCategory()
+  {
+    static $repo;
+    if(!$repo) $repo = new ProductCategoryRepository();
+    return $repo;
   }
 }
