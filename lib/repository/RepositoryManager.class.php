@@ -67,4 +67,26 @@ class RepositoryManager
     if(!$repo) $repo = new ProductCategoryRepository();
     return $repo;
   }
+
+  /**
+   * @static
+   * @return DeliveryTypeRepository
+   */
+  public static function getDeliveryType()
+  {
+    static $repo;
+    if(!$repo) $repo = new DeliveryTypeRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return ShopRepository
+   */
+  public static function getShop()
+  {
+    static $repo;
+    if(!$repo) $repo = new ShopRepository();
+    return $repo;
+  }
 }
