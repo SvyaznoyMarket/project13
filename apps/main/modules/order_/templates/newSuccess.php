@@ -98,8 +98,7 @@
         <dd class="bSClub">
           <div class="bSClub__eWrap pb25">
             <?php echo $form['sclub_card_number']->render(array('class' => 'bBuyingLine__eText mInputShort mb15')) ?>
-            <h4>Номер карты для зачисления баллов</h4><br>
-            Номер под штрихкодом на оборотной стороне карты, начинается на 298
+            <i class="mILong">Номер карты для зачисления баллов<br>Номер под штрихкодом на оборотной<br /> стороне карты, начинается на 298</i>
           </div>
           <!--<label><b></b> <h5>Сохранить мои данные для следующих покупок</h5> <input class='bBuyingLine__eRadio' name='r1' type='radio'></label>-->
         </dd>
