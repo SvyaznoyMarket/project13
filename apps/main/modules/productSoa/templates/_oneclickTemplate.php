@@ -48,7 +48,7 @@
 							</div>
 						</td></tr>
 					<!-- ko if: chosenDlvr().type == 'self' -->	
-					<tr><td>Магазин для самовывоза:</td>
+					<tr data-bind="visible: !noDelivery()"><td>Магазин для самовывоза:</td>
 						<td>
 							<div class='bSelect mFastInpBig'>
 								<span data-bind="text: chosenShop().address"></span>

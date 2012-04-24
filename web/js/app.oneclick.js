@@ -2,7 +2,7 @@ $(document).ready(function() {
 /* One Click Order */
 	if( $('.order1click-link-new').length ) {
 		
-console.info( 'MODEL: ', $('.order1click-link-new').data('model') )
+//console.info( 'MODEL: ', $('.order1click-link-new').data('model') )
 		var Model = $('.order1click-link-new').data('model')
 		Deliveries = {
 			'courier': {
@@ -11,35 +11,14 @@ console.info( 'MODEL: ', $('.order1click-link-new').data('model') )
 				price: 400,
 				dates: [ {value: '10-02-2012', name: '10 февраля'}, {value: '11-02-2012', name: '11 февраля'} ]
 
-			}/*,
-			'self' : {
-				modeId: 2,
-				name: 'Самовывоз',
-				price: 0,
-				dates: [ {value: '08-02-2012', shopIds: [2,3], name: '8 февраля'}, {value: '09-02-2012', shopIds: [2], name: '9 февраля'} ],
-				shops: [
-					{id:2,
-					name:"г. Москва, м. Ленинский проспект, магазин  на ул. Орджоникидзе, д. 11, стр. 10",
-					regtime:"с 9.00 до 21.00",
-					address:"м. Ленинский проспект, ул. Орджоникидзе, д. 11, стр. 10",
-					latitude:"55.706488",
-					longitude:"37.596997" },
-					{id:3,
-					name:"г. Москва, м. Киевская, магазин на ул. Б. Дорогомиловская, д. 8",
-					regtime:"с 9.00 до 22.00",
-					address:"м. Киевская, ул. Б. Дорогомиловская, д. 8",
-					latitude:"55.746197",
-					longitude:"37.565389"}
-				]			
-			}*/
+			}
 		}
-console.info( 'Deliveries: ', Deliveries )		
 		
 		var selfAvailable = 'self' in Deliveries
 		
 		/* ViewModel */
 		function MyViewModel() {
-console.info('IN DEL ', Deliveries)	
+//console.info('IN DEL ', Deliveries)	
 			
 			var self = this	
 			self.noDelivery = ko.observable(false)
@@ -56,7 +35,45 @@ console.info('IN DEL ', Deliveries)
 			self.priceTxt = ko.computed(function() {
 				return printPrice( self.price )
 			}, this)
+
+			self.formStatus = ko.observable( 'typing' ) // 'process' 'error' 'sending'
+			self.formStatusTxt = ko.computed( function() {
+				var status = ''
+				switch( self.formStatus() ) {
+					case 'typing':
+						status = 'Отправить заказ'
+					break
+					case 'process':
+						status = 'Проверка...'
+					break
+					case 'error':
+						status = 'Произошла ошибка!'
+					break
+					case 'sending':
+						status = 'Отправка...'
+					break
+				}
+				return status
+			}, this)
 			
+			self.showMap = ko.observable( false )
+			self.textfields = []
+			self.textfields.push( ko.observable({
+				title: 'Имя получателя',
+				name: 'order[recipient_first_name]', //UNIQUE!
+				value: '',
+				valerror: false,
+				regexp: /^[a-zа-я\s]+$/i
+			}) )
+			self.textfields.push( ko.observable({
+				title: 'Телефон для связи',
+				name: 'order[recipient_phonenumbers]', //UNIQUE!
+				value: '',
+				valerror: false,
+				regexp: /^[0-9\-\+\s]+$/
+			}) )
+			
+			// for dynModel
 			self.chosenDlvr = ko.observable( {} )
 			self.chosenDate = ko.observable( {} )
 			self.dlvrs = ko.observableArray([])
@@ -100,7 +117,7 @@ console.info('IN DEL ', Deliveries)
 				return printPrice( self.price * self.quantity() + self.chosenDlvr().price * 1 )
 			}, this)
 			
-			self.changeDlvr = function( argDlvr ) {		
+			self.changeDlvr = function( argDlvr ) {
 				self.chosenDlvr( argDlvr )
 				self.dates.removeAll()
 				//while( self.dates().length )
@@ -127,7 +144,7 @@ console.info('IN DEL ', Deliveries)
 				return false
 			}
 			
-			self.loadData = function( momentq, direction ) {				
+			self.loadData = function( momentq, direction ) {
 				if( ( direction > 0 && self.quantity() > momentq ) || ( direction < 0 && self.quantity() < momentq ) )
 					return
 				var postData = {
@@ -152,18 +169,12 @@ console.info('IN DEL ', Deliveries)
 					selfAvailable = 'self' in Deliveries
 					self.dynModel(Deliveries)
 					if( selfAvailable && typeof(mapCenter) == 'undefined') {
-						var sla=0, slo=0
-						for(var i=0, l=Deliveries['self'].shops.length ;i<l;i++) {
-							sla += Deliveries['self'].shops[i].latitude*1
-							slo += Deliveries['self'].shops[i].longitude*1		
-						}
-						var mapCenter = {
-							latitude  : sla/Deliveries['self'].shops.length,
-							longitude : slo/Deliveries['self'].shops.length
-						}
+						mapCenter = calcMCenter( Deliveries['self'].shops )
 					}						
-					if( selfAvailable && ! ('regionMap' in window ) )
-						window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )			
+					if( selfAvailable && ! ('regionMap' in window ) ) {
+						window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )
+						window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+					}
 					
 				})	
 			}
@@ -197,7 +208,6 @@ console.info('IN DEL ', Deliveries)
 					}
 			}
 			
-			self.showMap = ko.observable( false )
 			self.toggleMap = function() {
 				if( self.showMap() ) { // like toggle but more precise
 					$('#mapPopup').hide('blind', null, 800, function() {
@@ -229,44 +239,17 @@ console.info('IN DEL ', Deliveries)
 				window.regionMap.showMarkers( markersPull )				
 			}
 			
-			self.formStatus = ko.observable( 'typing' ) // 'process' 'error' 'sending'
-			self.formStatusTxt = ko.computed( function() {
-				var status = ''
-				switch( self.formStatus() ) {
-					case 'typing':
-						status = 'Отправить заказ'
-					break
-					case 'process':
-						status = 'Проверка...'
-					break
-					case 'error':
-						status = 'Произошла ошибка!'
-					break
-					case 'sending':
-						status = 'Отправка...'
-					break
+			self.chooseShopById = function( shopnum ) {
+				for(var i=0, l=self.shops().length; i<l; i++) {
+					if( self.shops()[i].id == shopnum ) {
+						self.chosenShop( self.shops()[i] )
+						break
+					}
 				}
-				return status
-			}, this)
-			
-			self.textfields = []
-			self.textfields.push( ko.observable({
-				title: 'Имя получателя',
-				name: 'order[recipient_first_name]', //UNIQUE!
-				value: '',
-				valerror: false,
-				regexp: /^[a-zа-я\s]+$/i
-			}) )
-			self.textfields.push( ko.observable({
-				title: 'Телефон для связи',
-				name: 'order[recipient_phonenumbers]', //UNIQUE!
-				value: '',
-				valerror: false,
-				regexp: /^[0-9\-\+\s]+$/
-			}) )
+			} 
 			
 			self.validateField = function( textfield, e ) {
-console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.currentTarget.value ) )
+//console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.currentTarget.value ) )
 				var valerror = false
 				if( e.currentTarget.value.replace(/\s/g, '') == '' ||  !textfield.regexp.test( e.currentTarget.value ) ) {
 					valerror = true
@@ -285,7 +268,6 @@ console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.current
 			}
 
 			self.validateForm = function() {
-console.info('validateForm')	
 				if( self.noDelivery() )
 					return false
 				if( self.formStatus() !== 'typing' ) // double or repeated click
@@ -302,7 +284,6 @@ console.info('validateForm')
 				//send ajax
 				self.sendData()
 			}
-			
 						
 			self.sendData = function() {
 				var outputUrl = $('.order1click-link-new').attr('link-output')
@@ -310,21 +291,23 @@ console.info('validateForm')
 				var postData = {
 					'order[product_quantity]' : self.quantity(),
 					'order[delivered_at]' : self.chosenDate().value
-//					delivery: self.chosenDlvr().modeID					
 				}
 				if( self.chosenDlvr().type == 'self' )
 					postData[ 'order[shop_id]' ] = self.chosenShop().id
 				for(var i=0,l=self.textfields.length; i<l; i++)
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
-console.info( postData)
-				$.post( outputUrl, postData, function() {
-					
+console.info( 'OUT DEL: ', postData)
+				$.post( outputUrl, postData, function( data ) {
+					if( !data.success )
+						self.formStatus('typing')
+						return
+					//process
+					//$('#order1click-container-new').html( data.content )
 				})
 				
 			}
-		} 
-		
-		
+		} // MVM
+
 		/* Load Data from Server */
 		oneClickIsReady = false
 		var inputUrl = $('.order1click-link-new').attr('link-input')
@@ -333,28 +316,38 @@ console.info( postData)
 			product_quantity: 1,
 			region_id: Model.jsregionid*1
 		}
+
+		function calcMCenter( shops ) {
+			var latitude=0, longitude=0,
+				l = shops.length
+			for(var i=0; i<l; i++) {
+				latitude  += shops[i].latitude*1
+				longitude += shops[i].longitude*1		
+			}
+			var mapCenter = {
+				latitude  : latitude / l,
+				longitude : longitude / l
+			}	
+			return mapCenter
+		}
 		
 		$.post( inputUrl, postData, function(data) {
-			//self.loaded(true)
+			if( !data.success ) {
+				MVM.noDelivery( true )
+				return false
+			}
 			Deliveries = data.data
 			selfAvailable = 'self' in Deliveries
 			if( selfAvailable ) {
-				var sla=0, slo=0
-				for(var i=0, l=Deliveries['self'].shops.length ;i<l;i++) {
-					sla += Deliveries['self'].shops[i].latitude*1
-					slo += Deliveries['self'].shops[i].longitude*1		
-				}
-				var mapCenter = {
-					latitude  : sla/Deliveries['self'].shops.length,
-					longitude : slo/Deliveries['self'].shops.length
-				}
+				mapCenter = calcMCenter( Deliveries['self'].shops )
 			}			
-			
 			MVM = new MyViewModel() 
 			ko.applyBindings(MVM) // this way, Lukas!
 				
-			if( selfAvailable )
-				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )			
+			if( selfAvailable ) {
+				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )
+				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+			}
 			oneClickIsReady = true
 		})
 
@@ -365,7 +358,8 @@ console.info( postData)
 			self.infoWindow = null
 			self.positionC = null
 			self.markers = []
-	
+			var mapContainer = $('#'+DOMid)
+			
 			function create() {
 				self.positionC = new google.maps.LatLng(center.latitude, center.longitude)			
 				var options = {
@@ -408,7 +402,6 @@ console.info( postData)
 					  position: new google.maps.LatLng(item.latitude, item.longitude),
 					  map: self.mapWS,
 					  title: item.name,
-					  //icon: item.markerImg,
 					  icon: '/images/marker.png',
 					  id: item.id
 					})
@@ -417,46 +410,50 @@ console.info( postData)
 				})
 			}
 	
-			this.closeMap = function( markers ) {
+			this.closeMap = function() {
 				self.infoWindow.close()
-				$('#mapPopup').hide('blind', null, 800, function() {
+				mapContainer.hide('blind', null, 800, function() {
 					MVM.showMap(false) // hides map
 				})
+			}
+					
+			this.addHandler = function( selector, callback ) {
+				mapContainer.delegate( selector, 'click', function(e) { //desktops			
+					e.preventDefault()
+					callback( e.target )
+				})
+				
+				mapContainer[0].addEventListener("touchstart",  //touch devices
+					function(e) {
+						e.preventDefault()
+						if( e.target.is( selector ) )
+							callback( e.target )
+					} , false) 							
 			}
 	
 			/* main() */
 			create()
 	
 		} // object MapWithShops
-
-		
-		var mapContainer = $('#mapPopup')
-		mapContainer.delegate('.shopchoose', 'click', function(e) { //desktops
-			e.preventDefault()
-			pickStore( e.target )
-		})	
-		function handleStart(e) {
-			e.preventDefault()
-			if( e.target.className.match('shopchoose') )
-				pickStore( e.target )
-		}
-		mapContainer[0].addEventListener("touchstart", handleStart  , false) //touch devices
 	
-		function pickStore( node ) {
+		function pickStoreMVM( node ) {	
 			var shopnum = $(node).parent().find('.shopnum').text()
 			window.regionMap.closeMap()
-			for(var i=0, l=MVM.shops().length; i<l; i++) {
-				if( MVM.shops()[i].id == shopnum )
-					MVM.chosenShop( MVM.shops()[i] )
-			}
+			MVM.chooseShopById( shopnum )
 		}
+		
 		
 		// MAP end 
 		
 		$('#order1click-container-new').delegate( '.bSelect', 'click', function() {	// custom selectors
 			$(this).find('.bSelect__eDropmenu').toggle()
 		})
-
+		$('#order1click-container-new').delegate( '.bSelect', 'mouseleave', function() {
+			var options = $(this).find('.bSelect__eDropmenu')
+			if( options.is(':visible') )
+				options.hide()
+		})
+		
 		$('.order1click-link-new').bind('click', function(e) { // button 'Купить в один клик'
 			e.preventDefault()
 			if( !oneClickIsReady )
@@ -466,12 +463,18 @@ console.info( postData)
 			$('#order1click-container-new').lightbox_me({
 				centered: true,
 				onClose: function() {
-					MVM.showMap(false)
+					window.regionMap.closeMap()
 				}
 			})
 		})
 		
 	} // One Click Order
+	
+	
+	
+	/* ********************************* /
+	
+	
 	
 	
 	/* Page 'Where to buy?' , shops map */
