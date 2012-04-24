@@ -21,10 +21,16 @@
 	.queueScript('jquery-1.6.4.min.js')
 	.queueWait( function(){
 		document.write = function(){
-			if( arguments[0].match('javascript') )
+/*			if( arguments[0].match('javascript') )
 				$LAB.script( arguments[0].match(/src="(.*?)"/)[1])
 			else
 				$('head').append( arguments[0] )
+*/
+			if( arguments[0].match( /<script(.?)* type=(\'|")text\/javascript(\'|")(.?)*><\/script>/ ) ) {
+				$LAB.script( arguments[0].match( /src=(\'|")([^"\']?)+/ )[0].replace(/src=(\'|")/,'') )
+			} else {
+				document.writeln( arguments[0] )
+			}
 		}
 	})
 

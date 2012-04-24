@@ -38,7 +38,7 @@ class delivery
         $shops = $date['shops'];
         unset($deliveryArray['dates'][$key]['shops']);
         if(count($shops > 0)){
-          $ret['dates'][$key]['shopIds'] = array_keys($shops);
+          $deliveryArray['dates'][$key]['shopIds'] = array_keys($shops);
         }
       }
       $return['data'][$deliveryArray['token']] = $deliveryArray;
