@@ -296,13 +296,13 @@ $(document).ready(function() {
 					postData[ 'order[shop_id]' ] = self.chosenShop().id
 				for(var i=0,l=self.textfields.length; i<l; i++)
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
-console.info( 'OUT DEL: ', postData)
+//console.info( 'OUT DEL: ', postData)
 				$.post( outputUrl, postData, function( data ) {
 					if( !data.success )
 						self.formStatus('typing')
 						return
 					//process
-					//$('#order1click-container-new').html( data.content )
+					$('#order1click-container-new').html( data.content )
 				})
 				
 			}
@@ -333,7 +333,10 @@ console.info( 'OUT DEL: ', postData)
 		
 		$.post( inputUrl, postData, function(data) {
 			if( !data.success ) {
+				MVM = new MyViewModel() 
+				ko.applyBindings(MVM) // this way, Lukas!
 				MVM.noDelivery( true )
+				$('.order1click-link-new').remove()
 				return false
 			}
 			Deliveries = data.data
