@@ -52,6 +52,18 @@ class order_Actions extends myActions
 
     $this->setVar('deliveryMap', $deliveryMap, true);
     $this->setVar('mapCenter', json_encode(array('latitude' => $user->getRegion('latitude'), 'longitude' => $user->getRegion('longitude'))));
+
+    // получение ссылки "Вернуться к покупкам"
+    $this->backLink = $this->generateUrl('cart');
+    $product = array_pop($user->getCart()->getProducts());
+    if (!empty($product['id']))
+    {
+      $products = Core::getInstance()->query('product.get', array('id' => $product['id'], 'expand' => array('category')));
+      if (!empty($products[0]['category'][0]['link']))
+      {
+        $this->backLink = $products[0]['category'][0]['link'];
+      }
+    }
   }
 
   /**
