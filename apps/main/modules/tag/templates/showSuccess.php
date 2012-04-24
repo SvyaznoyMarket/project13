@@ -9,4 +9,4 @@
   <?php include_component('tag', 'filter_productType', array('tag' => $tag, 'productTypeList' => $productTypeList, 'productType' => $productType)) ?>
 <?php end_slot() ?>
 
-<?php echo include_partial('productCatalog/product_list', $sf_data) ?>
+<?php echo include_partial('product/product_list', $sf_data) ?>
