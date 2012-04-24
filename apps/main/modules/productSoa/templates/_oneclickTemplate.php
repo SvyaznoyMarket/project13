@@ -1,9 +1,8 @@
 
 <div class='bMobDown mBR5 mW2 mW1000 p0' style="display:none" id="order1click-container-new">
-<form id="oneClick" action="">
 	<div class='bMobDown__eWrap'>
 		<div class='bMobDown__eClose top0 close'></div>
-		
+		<form id="oneClick" action="">
 		
 		<table class='bFast' cellpadding=0 cellspacing=0>
 			<td class='bFast__eItem'>
@@ -104,7 +103,8 @@
 				</table>
 			</td>
 		</table>
+		</form>
 		</div>
 	</div>
-</form>	
+	
 </div>

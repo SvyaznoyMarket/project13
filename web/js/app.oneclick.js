@@ -283,6 +283,7 @@ $(document).ready(function() {
 				
 				//send ajax
 				self.sendData()
+				
 			}
 						
 			self.sendData = function() {
@@ -298,11 +299,16 @@ $(document).ready(function() {
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
 //console.info( 'OUT DEL: ', postData)
 				$.post( outputUrl, postData, function( data ) {
-					if( !data.success )
+					if( !data.success ) {
 						self.formStatus('typing')
 						return
+					}
 					//process
-					$('#order1click-container-new').html( data.content )
+					$('.bFast').parent().append( data.data.content )
+					$('.bFast').remove()
+					$('.p0').removeClass('p0')
+					$('.top0').removeClass('top0')
+					$('.order1click-link-new').remove()
 				})
 				
 			}
@@ -466,7 +472,8 @@ $(document).ready(function() {
 			$('#order1click-container-new').lightbox_me({
 				centered: true,
 				onClose: function() {
-					window.regionMap.closeMap()
+					if( 'regionMap' in window )
+						window.regionMap.closeMap()
 				}
 			})
 		})
