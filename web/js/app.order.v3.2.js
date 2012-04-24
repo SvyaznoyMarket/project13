@@ -223,6 +223,7 @@ $(document).ready(function() {
 
                 if (reload) {
                     $('#order-form-part2').hide()
+                    $('#order-loader').clone().appendTo('#order-loader-holder').show()
                     window.location.reload()
                     return false
                 }
@@ -582,12 +583,13 @@ $(document).ready(function() {
         $('.order-shop-button:first').hide()
 
         if ('self' == el.data('deliveryType')) {
-            $('.order-shop-button:first')
-                //.css('display', 'block')
-                .show()
+            $('.order-shop-button:first').show()
+            $('#addressField').hide()
         }
         else {
             $('#order-loader').clone().appendTo('#order-loader-holder').show()
+
+            $('#addressField').show()
 
             DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val()}, function(data) {
                 this.render()
@@ -853,7 +855,7 @@ $(document).ready(function() {
             $.ajax({
                 url: form.attr('action'),
                 timeout: 60000,
-                async: false,
+                async: true,
                 type: 'POST',
                 data: data,
                 success: function(result) {
