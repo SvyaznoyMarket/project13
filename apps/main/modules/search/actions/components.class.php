@@ -7,13 +7,17 @@
  * @subpackage search
  * @author     Связной Маркет
  * @version    SVN: $Id: components.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ *
+ * @property string               $searchString Поисковая фраза
+ * @property myDoctrineCollection $productTypeList Коллекция типов товаров
+ * @property ProductType          $productType     Выбранный тип товара
  */
 class searchComponents extends myComponents
 {
  /**
   * Executes navigation component
   *
-  * @param string $searchString Поисковая фраза
+  *
   */
   public function executeNavigation()
   {
@@ -29,9 +33,7 @@ class searchComponents extends myComponents
   /**
    * Executes filter_productType component
    *
-   * @param myDoctrineCollection $productTypeList Коллекция типов товаров
-   * @param ProductType          $productType     Выбранный тип товара
-   * @param string               $searchString    Строка поиска
+   *
    */
   public function executeFilter_productType()
   {
@@ -40,12 +42,16 @@ class searchComponents extends myComponents
       'other' => array(),
     );
 
-    $firstProductCategory = isset($this->productTypeList[0]->ProductCategory[0]) ? $this->productTypeList[0]->ProductCategory[0]->getRootCategory() : new ProductCategory();
+    $this->productTypeList->loadRelated('ProductCategory');
+    $firstProductCategory = isset($this->productTypeList[0]->ProductCategory[0]) ?
+      $this->productTypeList[0]->ProductCategory[0]->getRootCategory()
+    : new ProductCategory();
     foreach ($this->productTypeList as $i => $productType)
     {
       $index = 'other';
       if ($firstProductCategory)
       {
+        /** @var $productCategory ProductCategory */
         foreach ($productType->ProductCategory as $productCategory)
         {
           if ($productCategory->getRootCategory()->id == $firstProductCategory->id)
@@ -62,10 +68,7 @@ class searchComponents extends myComponents
         'token'    => $productType->id,
         'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
         'value'    => $productType->id,
-        'selected' => false
-          || ((0 == $i) && !$this->productType)
-          || ($this->productType && ($this->productType->id == $productType->id))
-        ,
+        'selected' => ((0 == $i) && !$this->productType) || ($this->productType && ($this->productType->id == $productType->id)),
       );
     }
 
