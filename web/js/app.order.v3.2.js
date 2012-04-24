@@ -831,12 +831,16 @@ $(document).ready(function() {
         }
     }
 
-    $('#order-submit').click(function(e) {
+    $('#order-submit').data('locked', false).click(function(e) {
         e.preventDefault()
 
         var button = $(this)
         var form = button.closest('form')
         var validator = $(form.data('validator')).data('value')
+
+        if (button.data('locked')) {
+            return false
+        }
 
         form.find('.mRed').removeClass('mRed')
         form.find('.bFormError').remove()
@@ -855,6 +859,8 @@ $(document).ready(function() {
 
             var data = form.serializeArray()
             data.push({ name: 'delivery_map', value: JSON.stringify(DeliveryMap.data()) })
+
+            button.data('locked', true)
 
             $.ajax({
                 url: form.attr('action'),
@@ -886,6 +892,7 @@ $(document).ready(function() {
                 },
                 complete: function() {
                     button.text('Завершить оформление')
+                    button.data('locked', false)
                 }
             })
         }
