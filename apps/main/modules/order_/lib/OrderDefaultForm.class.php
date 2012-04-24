@@ -51,7 +51,7 @@ class OrderDefaultForm extends BaseOrderForm
 
     // address
     $this->widgetSchema['address'] = new sfWidgetFormInputText();
-    $this->validatorSchema['address'] = new sfValidatorString(array('required' => true), array('required' => 'Укажите адрес доставки'));
+    $this->validatorSchema['address'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите адрес доставки'));
     $this->widgetSchema['address']->setLabel('Адрес доставки:');
 
     // extra

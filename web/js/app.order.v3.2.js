@@ -477,6 +477,10 @@ $(document).ready(function() {
             var form = $('#order-form')
             var hasError = false
 
+            if (('order_address' == el.attr('id')) && ($('.bBuyingLine__eRadio[data-delivery-type="self"]:checked').length)) {
+                return false
+            }
+
             // если группа радио и не выбрано ни одного
             if (el.is(':radio') && !el.is(':checked') && (el.length > 1)) {
                 hasError = true
