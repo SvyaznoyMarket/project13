@@ -3,10 +3,10 @@
 /**
  * order components.
  *
- * @package    enter
+ * @package enter
  * @subpackage order
- * @author     Связной Маркет
- * @version    SVN: $Id: components.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ * @author Связной Маркет
+ * @version SVN: $Id: components.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
 class orderComponents extends myComponents
 {
@@ -31,7 +31,7 @@ class orderComponents extends myComponents
       'delivered_at' => $this->order->delivered_at,
       'delivery_type' => $this->order->getDeliveryType(),
       'delivery_price' => $this->order->delivery_price,
-      // 'delivered_period'    => $this->order->DeliveryPeriod ? $this->order->DeliveryPeriod->name : null,
+      // 'delivered_period' => $this->order->DeliveryPeriod ? $this->order->DeliveryPeriod->name : null,
     );
 
     if (in_array($this->view, array('default', 'compact'))) {
@@ -114,27 +114,27 @@ class orderComponents extends myComponents
   public function executeNavigation()
   {
     /*if (empty($this->step))
-    {
-      $this->step = 1;
-    }
+{
+$this->step = 1;
+}
 
-    $list = array();
-    foreach (range(1, 2) as $step)
-    {
-      $list[] = array(
-        'name'      => $step.'-й шаг',
-        'url'       => $this->generateUrl('order_new', array('step' => $step)),
-        'is_active' => (null == $this->order->step ? 0 : $this->order->step) >= $step,
-      );
-    }
-      $list[] = array(
-        'name'      => '3-й шаг',
-        'url'       => $this->generateUrl('order_confirm'),
-        'is_active' => 3 == $this->order->step,
-      );
+$list = array();
+foreach (range(1, 2) as $step)
+{
+$list[] = array(
+'name' => $step.'-й шаг',
+'url' => $this->generateUrl('order_new', array('step' => $step)),
+'is_active' => (null == $this->order->step ? 0 : $this->order->step) >= $step,
+);
+}
+$list[] = array(
+'name' => '3-й шаг',
+'url' => $this->generateUrl('order_confirm'),
+'is_active' => 3 == $this->order->step,
+);
 
 
-    $this->setVar('list', $list, true);*/
+$this->setVar('list', $list, true);*/
   }
 
   /**
@@ -167,13 +167,13 @@ class orderComponents extends myComponents
    */
   public function executeField_region_id()
   {
-    //    $regionId = $this->form->getValue('region_id');
+    // $regionId = $this->form->getValue('region_id');
     //
-    //    $this->region = !empty($regionId) ? RegionTable::getInstance()->find($regionId) : '';
+    // $this->region = !empty($regionId) ? RegionTable::getInstance()->find($regionId) : '';
     //
-    //    $this->setVar('widget', new sfWidgetFormInputText(array(), array(
-    //      'class' => 'order_region_name'
-    //    )), true);
+    // $this->setVar('widget', new sfWidgetFormInputText(array(), array(
+    // 'class' => 'order_region_name'
+    // )), true);
   }
 
   public function executeField_person_type()
@@ -228,11 +228,11 @@ class orderComponents extends myComponents
   {
   }
 
-	public function executeField_sclub_card_number()
-	{
-//		echo 'fied sclub_card_number execute !!';
-//		exit();
-	}
+  public function executeField_sclub_card_number()
+  {
+    // echo 'fied sclub_card_number execute !!';
+    // exit();
+  }
 
   public function executeReceipt()
   {
@@ -260,37 +260,36 @@ class orderComponents extends myComponents
 
   function executeSeo_admitad() {
 
-      //идентификатор категории для admited - core_id
-      // myDebug::dump($this->order);
+    //идентификатор категории для admited - core_id
+    // myDebug::dump($this->order);
 
-      $catIdList = array();
-      $data = array();
-      foreach ($this->order->ProductRelation as $product) {
-         $catIdList[] = $product->Product->Category[0]['root_id'];
-         $data[$product->Product->Category[0]['root_id']]['sum'] += $product['price'] * $product['quantity'];
-         $data[$product->Product->Category[0]['root_id']]['number'] = $this->order->number;
-      }
-      if (!$catIdList) {
-          return;
-      }
-      $catList = ProductCategoryTable::getInstance()->createBaseQuery()->whereIn('id', $catIdList)->fetchArray();
-      $resultData = array();
+    $catIdList = array();
+    $data = array();
+    foreach ($this->order->ProductRelation as $product) {
+      $catIdList[] = $product->Product->Category[0]['root_id'];
+      $data[$product->Product->Category[0]['root_id']]['sum'] += $product['price'] * $product['quantity'];
+      $data[$product->Product->Category[0]['root_id']]['number'] = $this->order->number;
+    }
+    if (!$catIdList) {
+      return;
+    }
+    $catList = ProductCategoryTable::getInstance()->createBaseQuery()->whereIn('id', $catIdList)->fetchArray();
+    $resultData = array();
 
-      foreach ($catList as $cat) {
-          $resultData[$cat['core_id']] = $data[$cat['id']];
-          $resultData[$cat['core_id']]['number'] .= '-' . $cat['core_id'];
-      }
+    foreach ($catList as $cat) {
+      $resultData[$cat['core_id']] = $data[$cat['id']];
+      $resultData[$cat['core_id']]['number'] .= '-' . $cat['core_id'];
+    }
 
-      $uid = sfContext::getInstance()->getUser()->getAttribute('admitad_uid');
-      if ($uid) {
-        $resultData['uid'] = $uid;
-      } else {
-        $resultData['uid'] = '';
-      }
+    $uid = sfContext::getInstance()->getUser()->getAttribute('admitad_uid');
+    if ($uid) {
+      $resultData['uid'] = $uid;
+    } else {
+      $resultData['uid'] = '';
+    }
 
-      //print_r($resultData);
-      $this->setVar('data', $resultData, true);
+    //print_r($resultData);
+    $this->setVar('data', $resultData, true);
   }
 
 }
-

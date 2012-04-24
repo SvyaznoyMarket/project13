@@ -13,39 +13,39 @@
 </head>
 
 <body data-template="order">
-<?php LastModifiedHandler::setLastModified();  ?>
+<?php LastModifiedHandler::setLastModified(); ?>
 <div class="allpage" id="page">
-<!--AdFox START-->
-<!--enter-->
-<!--Площадка: Enter.ru / * / *-->
-<!--Тип баннера: BackGround-->
-<!--Расположение: <верх страницы>-->
-<script type="text/javascript">
-<!--
-if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
-if (typeof(document.referrer) != 'undefined') {
-  if (typeof(afReferrer) == 'undefined') {
-    afReferrer = escape(document.referrer);
-  }
-} else {
-  afReferrer = '';
-}
-var addate = new Date();
-document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=enlz&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>');
-// -->
-</script>
-<!--AdFox END-->
+  <!--AdFox START-->
+  <!--enter-->
+  <!--Площадка: Enter.ru / * / *-->
+  <!--Тип баннера: BackGround-->
+  <!--Расположение: <верх страницы>-->
+  <script type="text/javascript">
+    <!--
+    if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+    if (typeof(document.referrer) != 'undefined') {
+      if (typeof(afReferrer) == 'undefined') {
+        afReferrer = escape(document.referrer);
+      }
+    } else {
+      afReferrer = '';
+    }
+    var addate = new Date();
+    document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=enlz&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>');
+    // -->
+  </script>
+  <!--AdFox END-->
   <div class="allpageinner buyingpage">
 
     <!-- Header -->
     <div class="basketheader">
-        <div class="bNLogo"><?php include_slot('title') ?></div>
-        <div class="headerright mNLogo">
-          <h2>Круглосуточный контакт сEnter</h2>
-          <div>8 (800) 700-00-09</div>
+      <div class="bNLogo"><?php include_slot('title') ?></div>
+      <div class="headerright mNLogo">
+        <h2>Круглосуточный контакт сEnter</h2>
+        <div>8 (800) 700-00-09</div>
 
-          <span>Звонок бесплатный. Радость в подарок :)</span>
-        </div>
+        <span>Звонок бесплатный. Радость в подарок :)</span>
+      </div>
     </div>
     <!-- /Header -->
 
@@ -65,7 +65,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171
     <div class="clear"></div>
 
     <?php if (has_slot('receipt')): ?>
-      <?php include_slot('receipt') ?>
+    <?php include_slot('receipt') ?>
     <?php endif ?>
 
     <?php echo $sf_content ?>
@@ -73,7 +73,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171
     <div class="clear"></div>
     <?php if (has_slot('navigation_seo')) include_slot('navigation_seo') ?>
 
-</div>
+  </div>
 </div>
 
 <?php include_component('default', 'footer', array('view' => 'compact')) ?>
@@ -86,21 +86,21 @@ document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">
-(function(w, c) {
+  (function(w, c) {
     (w[c] = w[c] || []).push(function() {
-        try {
-            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true, params:window.yaParams||{ }});
-        }
-        catch(e) { }
+      try {
+        w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true, params:window.yaParams||{ }});
+      }
+      catch(e) { }
     });
-})(window, "yandex_metrika_callbacks");
+  })(window, "yandex_metrika_callbacks");
 </script></div>
 <script src="//mc.yandex.ru/metrika/watch_visor.js" type="text/javascript" defer="defer"></script>
 <noscript><div><img src="//mc.yandex.ru/watch/10503055" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
 <!-- AdHands -->
-<?php
+  <?php
   //если получена сумма и id заказа, добавим доплонительный код в adHands
   ob_start();
   include_slot('complete_order_sum');
@@ -110,41 +110,41 @@ document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171
   include_slot('complete_order_id');
   $orderId = ob_get_contents();
   ob_end_clean();
-?>
+  ?>
 <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
 <script type="text/javascript">
-    var report = new adhandsReport ('http://sedu.adhands.ru/site/');
-    report.id('1053');
+  var report = new adhandsReport ('http://sedu.adhands.ru/site/');
+  report.id('1053');
     <?php
-        if (isset($orderSum) && $orderSum>0 && isset($orderId) && $orderId>0){
-            echo
-    "report.data('am','".$orderSum."');
-    report.data('ordid','".$orderId."');
+    if (isset($orderSum) && $orderSum>0 && isset($orderId) && $orderId>0){
+      echo
+        "report.data('am','".$orderSum."');
+report.data('ordid','".$orderId."');
 "
-                ;
-        }
+      ;
+    }
     ?>
-    report.send();
+  report.send();
 </script>
 <noscript>
-<img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
+  <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
 </noscript>
 <!-- /AdHands -->
-  <script type="text/javascript">
+<script type="text/javascript">
   (function() {
-<?php if (isset($orderSum) && $orderSum > 0 && isset($orderId) && $orderId > 0): ?>
-    var orderSum = '<?php echo $orderSum ?>';
-    document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape(orderSum) + '&r=' + Math.random() + '" ></sc' + 'ript>');
-<?php else: ?>
-    document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>');
-<?php endif ?>
+    <?php if (isset($orderSum) && $orderSum > 0 && isset($orderId) && $orderId > 0): ?>
+      var orderSum = '<?php echo $orderSum ?>';
+      document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape(orderSum) + '&r=' + Math.random() + '" ></sc' + 'ript>');
+      <?php else: ?>
+      document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>');
+      <?php endif ?>
   })();
-  </script>
-<?php endif ?>
+</script>
+  <?php endif ?>
 
 <?php if (has_slot('seo_counters_advance')): ?>
   <?php include_slot('seo_counters_advance') ?>
-<?php endif ?>
+  <?php endif ?>
 <?php include_component('default', 'admitad') ?>
 
 

@@ -316,7 +316,7 @@ class OrderStep1Form extends BaseOrderForm
     $this->validatorSchema['agreed'] = new sfValidatorBoolean(array('required' => true), array('required' => 'Пожалуйста, ознакомьтесь с условиями продажи и правовой информацией и поставьте галочку'));
 
 	  $this->widgetSchema['sclub_card_number'] = new sfWidgetFormInputText();
-	  $this->widgetSchema['sclub_card_number']->setLabel('Номер карточки связного клуба');
+	  $this->widgetSchema['sclub_card_number']->setLabel('Номер карты для зачисления баллов');
 	  $this->validatorSchema['sclub_card_number'] = new myValidatorSClubCardNumber(array('required' => false), array('invalid' => 'номер карточки введен неверно'));
 
     $this->useFields(array(

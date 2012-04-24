@@ -3,10 +3,10 @@
 /**
  * order actions.
  *
- * @package    enter
+ * @package enter
  * @subpackage order
- * @author     Связной Маркет
- * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ * @author Связной Маркет
+ * @version SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
 class orderActions extends myActions
 {
@@ -260,7 +260,7 @@ class orderActions extends myActions
   {
     $this->redirectUnless($this->getUser()->getCart()->countFull(), 'cart');
 
-    $this->getResponse()->setTitle('Способ доставки и оплаты  – Enter.ru');
+    $this->getResponse()->setTitle('Способ доставки и оплаты – Enter.ru');
 
     $this->step = $request->getParameter('step', 1);
     $this->order = $this->getUser()->getOrder()->get();

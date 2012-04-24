@@ -4,13 +4,32 @@ class RepositoryManager
 {
   /**
    * @static
-   * @return RegionRepository
+   * @param $name название репозитория
+   * @return BaseRepository
    */
-  public static function getRegion()
+  public static function get($name)
   {
-    static $repo;
-    if(!$repo) $repo = new RegionRepository();
-    return $repo;
+    $class = $name.'Repository';
+
+    return new $class();
+  }
+
+  /**
+   * @static
+   * @return ShopRepository
+   */
+  public static function getShop()
+  {
+    return self::get('Shop');
+  }
+
+  /**
+   * @static
+   * @return DeliveryTypeRepository
+   */
+  public static function getDeliveryType()
+  {
+    return self::get('DeliveryType');
   }
 
   /**
@@ -19,31 +38,7 @@ class RepositoryManager
    */
   public static function getProduct()
   {
-    static $repo;
-    if(!$repo) $repo = new ProductRepository();
-    return $repo;
-  }
-
-  /**
-   * @static
-   * @return ProductLabelRepository
-   */
-  public static function getProductLabel()
-  {
-    static $repo;
-    if(!$repo) $repo = new ProductLabelRepository();
-    return $repo;
-  }
-
-  /**
-   * @static
-   * @return ProductCategoryFilterRepository
-   */
-  public static function getProductCategoryFilter()
-  {
-    static $repo;
-    if(!$repo) $repo = new ProductCategoryFilterRepository();
-    return $repo;
+    return self::get('Product');
   }
 
   /**
@@ -52,19 +47,24 @@ class RepositoryManager
    */
   public static function getProductType()
   {
-    static $repo;
-    if(!$repo) $repo = new ProductTypeRepository();
-    return $repo;
+    return self::get('ProductType');
   }
 
   /**
    * @static
-   * @return ProductCategoryRepository
+   * @return ProductCategoryFilter
    */
-  public static function getProductCategory()
+  public static function getProductCategoryFilter()
   {
-    static $repo;
-    if(!$repo) $repo = new ProductCategoryRepository();
-    return $repo;
+    return self::get('ProductCategoryFilter');
+  }
+
+  /**
+   * @static
+   * @return ProductLabelRepository
+   */
+  public static function getProductLabel()
+  {
+    return self::get('ProductLabel');
   }
 }

@@ -379,13 +379,25 @@ class Core
     return $response;
   }
 
+  public function getDeliveryMap($geoId, $productsInCart, $servicesInCart, $deliveryMode = null, $shopId)
+  {
+    $result = $this->query('order.calc', array(), array(
+      'geo_id'  => $geoId,
+      'product' => $productsInCart,
+      'service' => $servicesInCart,
+      'mode'    => $shopId ? ($deliveryMode.'_'.$shopId) : $deliveryMode,
+    ));
+
+    return $result;
+  }
+
 
   public function getData($record)
   {
     return $record->exportToCore();
   }
 
-  public function query($name, array $params = array(), array $data = array())
+  public function query($name, array $params = array(), array $data = array(), $clean = false)
   {
     $isLog = !in_array($name, array('sync.get'));
 
@@ -417,9 +429,14 @@ class Core
       //$this->logger->log("Response: ".$response, !empty($response['error']) ? sfLogger::ERR : sfLogger::INFO);
       $this->logger->log("Response: ".$response);
     }
-    $response = json_decode($response, true);
 
-    if (isset($response['error']))
+    $response = json_decode($response, true);
+    if (isset($response['result']) && ($response['result'] == 'empty'))
+    {
+      $response = false;
+    }
+
+    if (!$clean && isset($response['error']))
     {
       $this->error = array($response['error']['code'] => $response['error']['message'], );
       if (isset($response['error']['detail'])) $this->error['detail'] = $response['error']['detail'];
@@ -449,7 +466,7 @@ class Core
     $this->logger->log('Trying to pass authentification... '. $data);
     $response = $this->send($data);
 
-	//$this->logger->log($response);
+	  //$this->logger->log($response);
     $response = json_decode($response, true);
 
     if (isset($response['error']))
@@ -473,8 +490,6 @@ class Core
 
   protected function send($request)
   {
-    $response = false;
-
     curl_setopt($this->connection, CURLOPT_POSTFIELDS, $request);
     $response = curl_exec($this->connection);
 
