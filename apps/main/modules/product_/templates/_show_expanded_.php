@@ -12,7 +12,8 @@
       <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
       <?php endif; ?>
       <img height="160" width="160" title="<?php echo $item->getName() ?>" alt="<?php echo $item->getName() ?>"
-           src="<?php echo $item->getMediaImageUrl() ?>">
+           src="<?php echo $item->getMediaImageUrl() ?>"
+           class="mainImg"/>
       </a>
     </div>
     <div class="info">
