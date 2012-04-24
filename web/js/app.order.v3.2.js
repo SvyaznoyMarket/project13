@@ -825,6 +825,10 @@ $(document).ready(function() {
     if ($('.bBuyingLine__eRadio"]:checked').length) {
         DeliveryMap.render()
         $('#order-form-part2').show('fast')
+
+        if ('self' == $('.bBuyingLine__eRadio"]:checked:first').data('deliveryType')) {
+            $('#addressField').hide()
+        }
     }
 
     $('#order-submit').click(function(e) {
