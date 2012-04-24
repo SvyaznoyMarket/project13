@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var $searchString
+ */
+?>
 <?php slot('title', mb_strtoupper('Результаты поиска')) ?>
 
 <?php slot('navigation') ?>

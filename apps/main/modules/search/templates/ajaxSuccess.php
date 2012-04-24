@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $pagers
+ * @var $view
+ */
+?>
 <?php use_helper('I18N') ?>
 
-<?php include_partial('product/product_list_ajax', array('productPager' => $pagers['product'],'view' => $view, 'noSorting' => true,)) ?>
+<?php render_partial('product_/templates/_list_.php', array('productPager' => $pagers['product'], 'view' => $view,)) ?>

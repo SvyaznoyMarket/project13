@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var $searchString
+ */
+?>
 <!-- Search result  -->
 <div class="popup popupbox" id="search_popup-block">
   <i title="Закрыть" class="close">Закрыть</i>

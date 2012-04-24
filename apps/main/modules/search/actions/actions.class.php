@@ -18,6 +18,7 @@
  */
 class searchActions extends myActions
 {
+  const PRODUCT_TYPE_ID = 1;
   private $_validateResult;
 
   public function executeIndex(sfWebRequest $request)
@@ -46,34 +47,23 @@ class searchActions extends myActions
       'request' => $this->searchString,
       'start' => $offset,
       'limit' => $limit,
-      'type_id' => $this->getCoreIdBySearchType('product'), // ищет только товары
+      'type_id' => self::PRODUCT_TYPE_ID, // ищет только товары
       'product_type_id' => $this->productType ? array($this->productType->core_id) : array(),
       'is_product_type_first_only' => $this->productType ? 'false' : 'true',
       'use_mean' => true,
     );
     $response = Core::getInstance()->query('search.get', $params);
 
-    if (!$response) {
+    if (!$response || !is_array($response)) {
       return sfView::ERROR;
     }
     else if (isset($response['result']) && ('empty' == $response['result'])) {
       $this->setTemplate('empty');
-
       return sfView::SUCCESS;
     }
 
     $this->forceSearch = isset($response['forced_mean']) ? $response['forced_mean'] : false;
     $this->meanSearchString = isset($response['did_you_mean']) ? $response['did_you_mean'] : '';
-
-    // если поисковая строка содержит ошибки
-    $this->originalSearchString_quantity = 0;
-    if ($this->meanSearchString) {
-      $params['use_mean'] = false;
-      $tmpResponse = Core::getInstance()->query('search.get', $params);
-      //myDebug::dump($tmpResponse);
-
-      $this->originalSearchString_quantity = isset($tmpResponse[1]['count']) ? $tmpResponse[1]['count'] : 0;
-    }
 
     if (!$this->productType) {
       $this->productType = !empty($response[1]['type_list'][0]['type_id']) ? ProductTypeTable::getInstance()->getByCoreId($response[1]['type_list'][0]['type_id']) : false;
@@ -103,35 +93,28 @@ class searchActions extends myActions
 
     /** @var $productTypeList ProductType[] */
     $productTypeList = array();
-    $pagers = array();
-    if (is_array($response)) foreach ($response as $core_id => $data)
-    {
-      $type = $this->getSearchTypes($core_id);
-      if (null == $type) continue;
+    $data = $response[self::PRODUCT_TYPE_ID];
 
-      if (('product' == $type) && !empty($data['type_list'])) {
-        $coreIds = array();
-        foreach ($data['type_list'] as $productTypeData)
-        {
-          $coreIds[$productTypeData['type_id']] = $productTypeData['count'];
-        }
-
-        $productTypeList = ProductTypeTable::getInstance()->getListByCoreIds(array_keys($coreIds), array('order' => '_index'));
-        foreach ($productTypeList as $productType)
-        {
-          $productType->mapValue('_product_count', $coreIds[$productType->core_id]);
-
-          if ($productType->id == $this->productType->id) {
-            $this->productType->mapValue('_product_count', $productType->_product_count);
-          }
-        }
+    if (!empty($data['type_list'])) {
+      $coreIds = array();
+      foreach ($data['type_list'] as $productTypeData)
+      {
+        $coreIds[$productTypeData['type_id']] = $productTypeData['count'];
       }
 
-      $pagers[$type] = call_user_func_array(array($this, 'get' . ucfirst($type) . 'Pager'), array($data));
+      $productTypeList = ProductTypeTable::getInstance()->getListByCoreIds(array_keys($coreIds), array('order' => '_index'));
+      foreach ($productTypeList as $productType)
+      {
+        $productType->mapValue('_product_count', $coreIds[$productType->core_id]);
+
+        if ($productType->id == $this->productType->id) {
+          $this->productType->mapValue('_product_count', $productType->_product_count);
+        }
+      }
     }
 
     $this->setVar('searchString', $this->searchString, false);
-    $this->setVar('pagers', $pagers, true);
+    $this->setVar('productPager', $this->getProductPager($data), true);
     $this->setVar('productTypeList', $productTypeList, true);
     $this->setVar('resultCount', $response[1]['count'], true);
   }
@@ -226,7 +209,6 @@ class searchActions extends myActions
   {
     $types = array(
       1 => 'product',
-      2 => 'news',
     );
     return null == $core_id ? $types : (isset($types[$core_id]) ? $types[$core_id] : null);
   }
@@ -248,35 +230,14 @@ class searchActions extends myActions
 
   protected function getProductPager(array $data)
   {
-    $view = $this->getRequestParameter('view');
-
-    $list = !empty($data['data'])
-      ? ProductTable::getInstance()->getListByCoreIds($data['data'], array(
-        'property_view' => 'expanded' == $view ? 'list' : false,
-        'with_properties' => 'expanded' == $view ? true : false,
-        'order' => '_index',
-        'with_model' => true,
-      ))
-      : array();
-
-    $pager = $this->_getPager($list, isset($this->productType->_product_count) ? $this->productType->_product_count : 0, sfConfig::get('app_product_max_items_on_category', 20));
-
-    return $pager;
-  }
-
-  protected function getNewsPager(array $data)
-  {
-    return array();
-  }
-
-  public function _getPager($list, $count, $limit)
-  {
-    $page = (int)$this->getRequest()->getParameter('page', 1);
-
-    $pager = new FilledPager($list, $count, $limit);
-    $pager->setPage($page);
+    $list = RepositoryManager::getProduct()->getListById($data['data'], true);
+    $pager = new FilledPager(
+      $list,
+      isset($this->productType->_product_count) ? $this->productType->_product_count : 0,
+      sfConfig::get('app_product_max_items_on_category', 20)
+    );
+    $pager->setPage($this->getRequest()->getParameter('page', 1));
     $pager->init();
-
     return $pager;
   }
 

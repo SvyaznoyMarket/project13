@@ -4,10 +4,9 @@
  * @var $searchString
  * @var $forceSearch
  * @var $meanSearchString
- * @var $originalSearchString_quantity
  * @var $productTypeList
  * @var $productType
- * @var $pagers
+ * @var $productPager
  */
 ?>
 <?php use_helper('I18N') ?>
@@ -17,7 +16,6 @@
   'searchString'  => $searchString,
   'forceSearch'               => $forceSearch,
   'meanSearchString'          => $meanSearchString,
-  'originalSearchString_quantity' => $originalSearchString_quantity,
 )))) ?>
 
 <?php slot('navigation') ?>
@@ -32,4 +30,4 @@
   <?php include_component('search', 'filter_productType', array('searchString' => $searchString, 'productTypeList' => $productTypeList, 'productType' => $productType)) ?>
 <?php end_slot() ?>
 
-<?php include_partial('product/product_list', array('productPager' => $pagers['product'], 'noSorting' => true, 'productType' => $productType)) ?>
+<?php render_partial('productCatalog_/templates/_product_list_.php', array('productPager' => $productPager, 'noSorting' => true, 'productType' => $productType)) ?>
