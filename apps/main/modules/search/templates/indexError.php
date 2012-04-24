@@ -8,8 +8,4 @@
   <?php include_partial('search/page_head', array('searchString' => $searchString, 'count' => 0)) ?>
 <?php end_slot() ?>
 
-<?php //slot('left_column') ?>
-  <?php //include_component('search', 'categories') ?>
-<?php //end_slot() ?>
-
 Сервис поиска временно не доступен.

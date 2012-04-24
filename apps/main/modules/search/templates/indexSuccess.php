@@ -1,3 +1,15 @@
+<?php
+/**
+ * @var $resultCount
+ * @var $searchString
+ * @var $forceSearch
+ * @var $meanSearchString
+ * @var $originalSearchString_quantity
+ * @var $productTypeList
+ * @var $productType
+ * @var $pagers
+ */
+?>
 <?php use_helper('I18N') ?>
 
 <?php slot('title', trim(get_partial('search/product_count', array(
@@ -18,21 +30,6 @@
 
 <?php slot('left_column') ?>
   <?php include_component('search', 'filter_productType', array('searchString' => $searchString, 'productTypeList' => $productTypeList, 'productType' => $productType)) ?>
-  <!--
-  <dl class="bCtg">
-
-    <dt class='bCtg__eOrange'>Другие также искали</dt>
-    <dd>
-      <ul>
-        <li><a href><span class='bCtg__eL1'>Ноутбук Apple MacBook Pro</span></a></li>
-        <li><a href><span class='bCtg__eL1'>защитная пленка на iPad</span></a></li>
-        <li><a href><span class='bCtg__eL1'>Моноблок Apple</span></a></li>
-        </li>
-      </ul>
-
-    </dd>
-  </dl>
-  -->
 <?php end_slot() ?>
 
 <?php include_partial('product/product_list', array('productPager' => $pagers['product'], 'noSorting' => true, 'productType' => $productType)) ?>
