@@ -1,1 +1,0 @@
-<?php include_partial('productCatalog_/filter_selected', $sf_data) ?>

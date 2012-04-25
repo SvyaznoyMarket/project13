@@ -4,10 +4,10 @@
  * productCatalog_ actions.
  *
  * @package    enter
- * @subpackage productCatalog
+ * @subpackage productCatalog_
  * @author     Связной Маркет
  *
- * @property ProductCorePager $productPager
+ * @property ProductCorePagerContainer $productPager
  * @method myUser getUser
  * @method sfWebResponse getResponse
  * @method sfWebRequest getRequest
@@ -20,6 +20,9 @@ class productCatalog_Actions extends myActions
     $this->getRequest()->setParameter('_template', 'product_catalog');
   }
 
+  /**
+   * @todo rewrite to core api
+   */
   public function executeIndex()
   {
     $productCategoryList = ProductCategoryTable::getInstance()->createQuery()
@@ -29,6 +32,18 @@ class productCatalog_Actions extends myActions
       ->fetchArray();
 
     $this->setVar('productCategoryList', $productCategoryList);
+
+    $list = array();
+    foreach ($productCategoryList as $productCategory)
+    {
+      $list[] = array(
+        'name' => $productCategory['name'],
+        'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'] . '/' . $productCategory['token']) : $productCategory['token'])),
+        'level' => $productCategory['level'],
+      );
+    }
+
+    $this->setVar('list', $list, true);
     $this->setVar('infinity', true);
   }
 
@@ -36,9 +51,7 @@ class productCatalog_Actions extends myActions
   {
     $productType = !empty($request['productType']) ? ProductTypeTable::getInstance()->getById($request['productType']) : false;
     $this->forward404Unless($productType);
-    $this->loadList($request, array(
-      'productType' => $productType
-    ));
+    $this->loadList($request);
   }
 
   public function executeProduct(sfWebRequest $request)
@@ -84,23 +97,103 @@ class productCatalog_Actions extends myActions
       $this->forward($this->getModuleName(), 'product');
     }
 
-    $this->forward('productCatalog', 'category');
+    if($request->getParameter(ProductCoreFormFilterSimple::NAME))
+    {
+      $this->forward($this->getModuleName(), 'categoryTag');
+    }
+
+    // если категория корневая
+    if ($productCategory->isRoot())
+    {
+      $this->forward($this->getModuleName(), 'categoryRoot');
+    }
+
+    $this->forward($this->getModuleName(), 'categoryTag');
+  }
+
+  public function executeCategoryRoot(sfWebRequest $request)
+  {
+    $productCategory = $this->getProductCategory($request);
+    $categoryTree = RepositoryManager::getProductCategory()->getTree(
+      $productCategory->core_id,
+      $productCategory->level + 2,
+      false
+    );
+    $productFilter = $this->getProductFilter($request);
+    /** @var $rootCategory ProductCategoryEntity */
+    $rootCategory = reset($categoryTree);
+    /** @var $categoryList ProductCategoryEntity[] */
+    $categoryList = $rootCategory->getChildren();
+
+    $this->setVar('productCategory', $productCategory);
+    $this->setVar('categoryTree', $categoryTree);
+    $this->setVar('categoryList', $categoryList);
+    $this->setVar('rootCategory', $rootCategory);
+    $this->setVar('productFilter', $productFilter);
+    $this->setVar('quantity', $rootCategory->getProductCount());
+  }
+
+  public function executeCategoryTag(sfWebRequest $request)
+  {
+    $requestCategory = $this->getProductCategory($request);
+    $categoryTree = RepositoryManager::getProductCategory()->getTree(
+      $requestCategory->core_id,
+      $requestCategory->level + 2, // site-db level less per 1, and need load next level
+      true
+    );
+    /** @var $currentCategory ProductCategoryEntity */
+    /** @var $childrenCategory ProductCategoryEntity */
+    $currentCategory = reset($categoryTree);
+    $currentCategory = $currentCategory->getNode($requestCategory->core_id);
+
+    $productFilter = $this->getProductFilter($request);
+    $maxPerPage = 3;
+    $viewList = RepositoryManager::getProductCategoryTagView()->getListByCategory(
+      $currentCategory->getChildren(),
+      $productFilter->getCoreProductFilter(false),
+      array(),
+      0,
+      $maxPerPage * 2
+    );
+
+    $this->setVar('maxPerPage', $maxPerPage);
+    $this->setVar('categoryTree', $categoryTree);
+    $this->setVar('categoryTagList', $viewList);
+    $this->setVar('productFilter', $productFilter);
+    $this->setVar('quantity', $currentCategory->getProductCount());
+  }
+
+  public function executeCarousel(sfWebRequest $request)
+  {
+    $this->setLayout(false);
+    $productCategory = $this->getProductCategory($request, false);
+    $request->setParameter('num', 3);
+
+    $productPager = $this->getProductPager($request);
+    CoreClient::getInstance()->execute();
+
+    foreach ($productPager->getResults() as $item)
+    {
+      $this->renderPartial('product_/show_', array('view' => $productCategory->has_line ? 'line' : 'compact', 'item' => $item));
+    }
+
+    return sfView::NONE;
   }
 
   public function executeCount(sfWebRequest $request)
   {
-    $productCategory = $this->getProductCategory($request);
-    if ($productCategory->hasChildren())
-      $this->forward('productCatalog', 'count');
-
     $productFilter = $this->getProductFilter($request);
-    $productPager = new ProductCorePager(0, array(), $this->getUser());
-    $productPager->setProductFilter($productFilter);
-    $productPager->init(false);
+    $data = RepositoryManager::getListing()->getListing(
+      $productFilter->getCoreProductFilter(),
+      array(),
+      null,
+      null,
+      true
+    );
 
     return $this->renderJson(array(
       'success' => true,
-      'data' => $productPager->count(),
+      'data' => $data['count'],
     ));
   }
 
@@ -123,24 +216,62 @@ class productCatalog_Actions extends myActions
     $response->setTitle($title . ' – Enter.ru');
   }
 
-  // @todo implement in core api
-  public function executeTag(sfWebRequest $request)
-  {
-    $this->forward('productCatalog', 'tag');
-  }
-
   public function executeCategoryAjax(sfWebRequest $request)
   {
     $this->setVar('allOk', false);
     $this->setVar('ajax_flag', true);
-    $this->loadList($request);
+    $this->getProductPager($request);
+    CoreClient::getInstance()->execute();
     $this->setVar('allOk', true);
   }
 
-  // @todo implement in core api
-  public function executeCreator(sfWebRequest $request)
+  /**
+   * @param sfWebRequest $request
+   * @return ProductCorePagerContainer
+   */
+  private function getProductPager(sfWebRequest $request)
   {
-    $this->forward('productCatalog', 'creator');
+    $productFilter = $this->getProductFilter($request);
+
+    // sorting
+    $productSorting = new ProductSorting();
+    $active = array_pad(explode('-', $request->getParameter('sort')), 2, null);
+    $productSorting->setActive($active[0], $active[1]);
+
+    // load listing data
+    $maxPerPage = $request->getParameter('num', sfConfig::get('app_product_max_items_on_category', 20));
+    $page = $request->getParameter('page', 1);
+    $productPager = new ProductCorePagerContainer($maxPerPage);
+    $productPager->setPage($page);
+
+    RepositoryManager::getListing()->getListingAsync(function($data) use(&$productPager){
+        $count = $data['count'];
+        sfContext::getInstance()->getLogger()->info(print_r($data,1));
+        RepositoryManager::getProduct()->getListByIdAsync(function($models) use(&$productPager, $count){
+          /** @var $productPager ProductCorePagerContainer */
+          $productPager->setResult($models, $count);
+          $productPager->init();
+        }, $data['list'], true);
+      },
+      $productFilter->getCoreProductFilter(),
+      $productSorting->getCoreSort(),
+      ($page-1) * $maxPerPage,
+      $maxPerPage
+    );
+
+    $productCategory = $this->getProductCategory($request, false);
+    if ($productCategory->has_line) {
+      $this->setVar('view', 'line');
+      $this->setVar('list_view', false);
+    }
+    else {
+      $this->setVar('view', $request->getParameter('view', $productCategory->product_view));
+    }
+    $this->setVar('noInfinity', true);
+    $this->setVar("productFilter", $productFilter);
+    $this->setVar("productSorting", $productSorting);
+    $this->setVar('productPager', $productPager);
+    return $productPager;
   }
 
   /**
@@ -148,69 +279,37 @@ class productCatalog_Actions extends myActions
    */
   private function loadList(sfWebRequest $request)
   {
-    $loadListTimer = sfTimerManager::getTimer('$loadListTimer');
-    $productFilterTimer = sfTimerManager::getTimer('$productFilterTimer');
-    $productFilter = $this->getProductFilter($request);
-    $productFilterTimer->addTime();
+    $productCategory = $this->getProductCategory($request, false);
+    $productPager = $this->getProductPager($request);
 
+    // load category
+    $this->loadCategoryTree($productCategory);
+    CoreClient::getInstance()->execute();
 
-    // sorting
-    $productSortingTimer = sfTimerManager::getTimer('$productSortingTimer');
-    $productSorting = new myProductSorting();
-    $active = array_pad(explode('-', $this->getRequest()->getParameter('sort')), 2, null);
-    $productSorting->setActive($active[0], $active[1]);
-    $productSortingTimer->addTime();
+    $this->forward404If($productPager->getPage() > 1 && $productPager->getPage() > $productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
+  }
 
-    // pager
-    $productPagerTimer = sfTimerManager::getTimer('$productPager');
-    $productPager = new ProductCorePager(
-      $request->getParameter('num', sfConfig::get('app_product_max_items_on_category', 20)),
-      array(
-        'with_properties' => 'expanded' == $request['view'] ? true : false,
-        'property_view' => 'expanded' == $request['view'] ? 'list' : false,
-        // 'view' => 'list',
-        // 'with_line' => 'line' == $request['view'] ? true : false,
-        // 'with_model' => true,
-        'hydrate_array' => true,
-      ),
-      $this->getUser()
+  private function loadCategoryTree(ProductCategory $productCategory)
+  {
+    $self = $this;
+    RepositoryManager::getProductCategory()->getTreeAsync(function($categoryTree) use(&$self, &$productCategory){
+        /** @var $rootCategory ProductCategoryEntity */
+        /** @var $productCategory ProductCategory */
+        /** @var $self myActions */
+        $rootCategory = reset($categoryTree);
+        $quantity = $rootCategory->getNode($productCategory->getCoreId())->getProductCount();
+        $self->setVar('quantity', $quantity);
+        $self->setVar('categoryTree', $categoryTree);
+      },
+      $productCategory->hasChildren() ? $productCategory->core_id : $productCategory->core_parent_id,
+      $productCategory->level + 1,
+      true
     );
-
-    $productPager->setProductFilter($productFilter);
-    $productPager->setProductSort($productSorting);
-    $productPager->setPage($page = $this->getRequest()->getParameter('page', 1));
-    $productPager->init();
-    $productPagerTimer->addTime();
-    $loadListTimer->addTime();
-
-    sfContext::getInstance()->getLogger()->info('$productFilterTimer at ' . $productFilterTimer->getElapsedTime());
-    sfContext::getInstance()->getLogger()->info('$productSortingTimer at ' . $productSortingTimer->getElapsedTime());
-    sfContext::getInstance()->getLogger()->info('$productPagerTimer at ' . $productPagerTimer->getElapsedTime());
-    sfContext::getInstance()->getLogger()->info('$loadListTimer at ' . $loadListTimer->getElapsedTime());
-
-    $productCategory = $this->getProductCategory($request);
-    if ($productCategory->has_line) {
-      $this->setVar('view', 'line');
-      $this->setVar('list_view', false);
-    }
-    else {
-      $this->setVar('view', $request->getParameter('view', $this->getProductCategory($request)->product_view));
-    }
-
-    $this->setVar("productFilter", $productFilter);
-    $this->setVar("productSorting", $productSorting);
-    $this->setVar('noInfinity', true);
-    $this->setVar('productPager', $productPager);
-
-    $this->forward404If($page > 1 && $page > $productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
 
   private function getProductFilter(sfWebRequest $request)
   {
-    $productFilter = new ProductCoreFormFilterSimple(
-      $this->getProductCategory($request),
-      (int)$this->getUser()->getRegion('core_id')
-    );
+    $productFilter = new ProductCoreFormFilterSimple($this->getProductCategory($request, false));
     $productFilter->setValues($request->getParameter($productFilter->getName(), array()));
     return $productFilter;
   }
@@ -238,7 +337,7 @@ class productCatalog_Actions extends myActions
       $currentVal = $request->getParameter($key);
       //если требуется редирект с этой страницы
       if (isset($currentVal) && $currentVal == $val) {
-        $uri = $this->getRequest()->getUri();
+        $uri = $request->getUri();
         if (strpos($uri, '&') === false) {
           $replaceStr = "?$key=$val";
         }
@@ -246,7 +345,7 @@ class productCatalog_Actions extends myActions
         {
           $replaceStr = array("$key=$val&", "&$key=$val");
         }
-        $uri = str_replace($replaceStr, '', $this->getRequest()->getUri());
+        $uri = str_replace($replaceStr, '', $request->getUri());
         $this->redirect($uri);
       }
     }
@@ -254,10 +353,11 @@ class productCatalog_Actions extends myActions
 
   /**
    * @param sfWebRequest $request
+   * @param bool $checkRedirect
    * @return ProductCategory
    * @throws sfException
    */
-  private function oldUrlRedirect(sfWebRequest $request)
+  private function oldUrlRedirect(sfWebRequest $request, $checkRedirect = true)
   {
     try
     {
@@ -267,12 +367,13 @@ class productCatalog_Actions extends myActions
       $productCategory = $route->getObject();
 
       // 301-й редирект. Можно удалить 01.02.2012
-      if (false === strpos($request['productCategory'], '/')) {
-        if (!empty($productCategory->token_prefix)) {
-          $this->redirect('productCatalog__category', $productCategory, 301);
+      if ($checkRedirect) {
+        if (false === strpos($request['productCategory'], '/')) {
+          if (!empty($productCategory->token_prefix)) {
+            $this->redirect('productCatalog_category', $productCategory, 301);
+          }
         }
       }
-
       return $productCategory;
     }
     catch (sfError404Exception $e)
@@ -285,174 +386,67 @@ class productCatalog_Actions extends myActions
 
   /**
    * @param $request
+   * @param bool $checkRedirect
    * @return ProductCategory
    */
-  private function getProductCategory($request)
+  private function getProductCategory($request, $checkRedirect = true)
   {
     if (!$this->productCategoryCache) {
-      $this->productCategoryCache = $this->oldUrlRedirect($request);
+      $this->productCategoryCache = $this->oldUrlRedirect($request, $checkRedirect);
       $this->setVar('productCategory', $this->productCategoryCache);
     }
     return $this->productCategoryCache;
   }
 }
 
-/**
- * Custom pager for use Core listing API
- */
-class ProductCorePager extends sfPager
+class ProductCorePagerContainer extends sfPager
 {
-  /** @var ProductCoreFormFilterSimple */
-  private $filter;
-  /** @var myProductSorting */
-  private $sort;
-  private $result;
-  private $user;
-  private $queryParams = array();
-
-  public function __construct($maxPerPage = 10, array $queryParams = array(), myUser $user)
+  public function __construct($maxPerPage = 10)
   {
     parent::__construct('Product', $maxPerPage);
-    $this->queryParams = array_merge(
-      $queryParams,
-      array(
-        'order' => '_index',
-      )
-    );
-    $this->user = $user;
   }
 
-  public function setProductFilter(ProductCoreFormFilterSimple $filter)
-  {
-    $this->filter = $filter;
+  public function setResult($results, $count){
+    $this->results = (array)$results;
+    $this->setNbResults((int)$count);
   }
 
-  public function setProductSort(myProductSorting $sort)
+  public function init()
   {
-    $this->sort = $sort;
-  }
-
-  /**
-   * Initialize the pager.
-   *
-   * Function to be called after parameters have been set.
-   * @param bool $loadData
-   */
-  public function init($loadData = true)
-  {
-    $query = array(
-      "filter" => array(
-        'filters' => $this->getCoreProductFilter(),
-        'sort' => $this->getCoreSort(),
-        'offset' => ($this->getPage() - 1) * $this->getMaxPerPage(),
-        'limit' => $this->getMaxPerPage(),
-      ),
-      "region_id" => $this->user->getRegion('core_id'),
-    );
-
-    $response = CoreClient::getInstance()->query("listing.list", $query);
-    $this->setNbResults($response['count']);
     if($this->getMaxPerPage()){
       $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
     }
-    if ($loadData) {
-      $this->result = RepositoryManager::getProduct()->getListById($response['list'], true);
-    }
   }
 
-  /**
-   * Returns an array of results on the given page.
-   *
-   * @return ProductEntity[]
-   */
   public function getResults()
   {
-    return $this->result;
+    return $this->results;
   }
 
   protected function retrieveObject($offset)
   {
-    // TODO: Implement retrieveObject() method.
-    return null;
-  }
-
-  /**
-   * Mapper from current front-end listing filter to core listing filter API
-   * @return array
-   */
-  protected function getCoreProductFilter()
-  {
-    $filters = array(
-      array('is_view_list', 1, array(true)),
-      array('is_model', 1, array(true)),
-    );
-
-    if (!$this->filter)
-      return $filters;
-
-    if ($productCategory = $this->filter->getProductCategory()) {
-      $filters[] = array('category', 1, $productCategory->core_id);
-    }
-
-    $filterList = $this->filter->getFilterList();
-
-    foreach ($filterList as $filter) {
-      $value = $this->filter->getValue($filter);
-      if (!empty($value)) {
-        switch ($filter->getTypeId()) {
-          case ProductCategoryFilterEntity::TYPE_NUMBER:
-          case ProductCategoryFilterEntity::TYPE_SLIDER:
-            if ($filter->getMax() != $value['to'] || $filter->getMin() != $value['from']) {
-              $filters[] = array($filter->getFilterId(), 2, $value['from'], $value['to']);
-            }
-            break;
-          default:
-            $filters[] = array($filter->getFilterId(), 1, $value);
-            break;
-        }
-      }
-    }
-    return $filters;
-  }
-
-  /**
-   * Mapper from current front-end sorting to core listing sort API
-   * @return array
-   */
-  protected function getCoreSort()
-  {
-    if ($this->sort) {
-      $active = $this->sort->getActive();
-      return array($active['name'] => $active['direction']);
-    }
-    else {
-      return array();
-    }
+    return $this->results[$offset];
   }
 }
 
 class ProductCoreFormFilterSimple
 {
+  const NAME = 'f';
   /** @var \ProductCategory */
   private $productCategory;
-  /** @var int */
-  private $regionId;
   /** @var \ProductCategoryFilterEntity[] */
   private $filterList;
   private $values = array();
-  private $name = 'f';
+  private $name = self::NAME;
 
   /**
    * @param ProductCategory $category
-   * @param int $regionId
    */
-  public function __construct(ProductCategory $category, $regionId)
+  public function __construct(ProductCategory $category)
   {
     $this->productCategory = $category;
-    $this->regionId = (int)$regionId;
 
     $this->filterList = RepositoryManager::getProductCategoryFilter()->getList(
-      $this->regionId,
       $this->productCategory->core_id
     );
   }
@@ -475,10 +469,49 @@ class ProductCoreFormFilterSimple
     if ($this->productCategory->token_prefix) {
       $token = $this->productCategory->token_prefix . '/' . $token;
     }
-    return url_for('productCatalog__category', array(
+    return url_for('productCatalog_category', array(
       'productCategory' => $token,
       $this->name => $data
     ));
+  }
+
+  /**
+   * Mapper from current front-end listing filter to core listing filter API
+   * @param bool $useCategoryFilter
+   * @return array
+   */
+  public function getCoreProductFilter($useCategoryFilter = true)
+  {
+    $filters = array();
+
+    foreach ($this->filterList as $filter) {
+      $value = $this->getValue($filter);
+      if (!empty($value)) {
+        switch ($filter->getTypeId()) {
+          case ProductCategoryFilterEntity::TYPE_NUMBER:
+          case ProductCategoryFilterEntity::TYPE_SLIDER:
+            if ($filter->getMax() != $value['to'] || $filter->getMin() != $value['from']) {
+              $filters[] = array($filter->getFilterId(), 2, $value['from'], $value['to']);
+            }
+            break;
+          default:
+            $filters[] = array($filter->getFilterId(), 1, $value);
+            break;
+        }
+      }
+    }
+
+    if (empty($filters)) {
+      $filters[] = array('is_model', 1, array(true));
+    }
+
+    $filters[] = array('is_view_list', 1, array(true));
+
+    if ($this->productCategory && $useCategoryFilter) {
+      $filters[] = array('category', 1, $this->productCategory->core_id);
+    }
+
+    return $filters;
   }
 
   public function getSelectedList()

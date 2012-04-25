@@ -37,15 +37,6 @@ class productCardComponents extends myComponents
         break;
       }
     }
-    /*
-    if (isset($this->product->Creator))
-    {
-      $list[] = array(
-        'name' => $this->product->Creator->name,
-        'url'  => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->product->Category, 'creator' => $this->product->Creator)),
-      );
-    }
-     */
     $list[] = array(
       'name' => $this->product->name,
       'url'  => $this->generateUrl('productCardSoa', array('sf_subject' => $this->product)),

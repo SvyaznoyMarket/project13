@@ -1,1 +1,29 @@
-<?php include_partial('cart_/' . $button . '_button_' . $view, $sf_data) ?>
+<?php
+/**
+ * @var $item ProductEntity
+ * @var $disable
+ * @var $quantity
+ * @var $view
+ */
+$disable = isset($disable) && $disable == true;
+$quantity = isset($quantity) ? $quantity : 1;
+$view = (isset($view) && $view === 'add') ? 'add' : 'default';
+?>
+<?php if( $item->isInCart() ): ?>
+  <?php if($view == 'add'): ?>
+    <a href="<?php echo url_for('order_new') ?>" class='link1 bOrangeButton active'><i></i><span>В корзине</span></a>
+  <?php else:?>
+    <?php echo link_to('&nbsp;', '@order_new', array('class' => 'link1 cart cart-show'));?>
+  <?php endif; ?>
+<?php else:?>
+  <?php if($view == 'add'): ?>
+  <a href="<?php echo url_for('cart_add', array('product' => $item->getId(), 'quantity' => $quantity)) ?>"
+     class='link1 bOrangeButton<?php if ($disable) echo ' disable' ?>'><i></i><span>Положить в корзину</span></a>
+  <?php else:?>
+    <?php if ($disable): ?>
+      <a href="#" class="link1 event-click cart cart-add disabled">&nbsp;</a>
+    <?php else: ?>
+      <?php echo link_to('&nbsp;', 'cart_add', array('product' => $item->getId(), 'quantity' => $quantity), array('class' => 'link1 event-click cart cart-add', 'data-event' => 'content.update')) ?>
+    <?php endif ?>
+  <?php endif; ?>
+<?php endif; ?>

@@ -18,6 +18,6 @@ if(count($list)):
         <?php endforeach ?>
     </ul>
     <a class="bSpecSel__eReset"
-       href="<?php echo url_for('productCatalog__category', $sf_data->getRaw('productCategory')) ?>">сбросить все</a>
+       href="<?php echo url_for('productCatalog_category', $sf_data->getRaw('productCategory')) ?>">сбросить все</a>
 </div>
 <?php endif; ?>

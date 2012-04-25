@@ -3,7 +3,7 @@
 <?php end_slot() ?>
 
 <?php slot('navigation') ?>
-<?php include_component('productCatalog', 'navigation', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
+<?php include_component('productCatalog_', 'navigation', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
 <?php end_slot() ?>
 
 <?php slot('title', $product->name) ?>
@@ -41,7 +41,7 @@
 
 <br class="clear"/>
 
-<?php include_component('productCatalog', 'navigation_seo', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
+<?php include_component('productCatalog_', 'navigation_seo', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
 
 
 <?php slot('seo_counters_advance') ?>

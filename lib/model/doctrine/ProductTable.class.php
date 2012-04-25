@@ -365,17 +365,6 @@ class ProductTable extends myDoctrineTable
     return $this->createListByIds($ids, $params);
   }
 
-  public function getQueryByFilter(array $filter, array $params = array())
-  {
-    $q = $this->createBaseQuery($params);
-
-    $this->setQueryForFilter($q, $filter, $params);
-
-    $this->setQueryParameters($q, $params);
-
-    return $q;
-  }
-
   public function setQueryForFilter(myDoctrineQuery $q, array $filter, array $params = array())
   {
     $filter = myToolkit::arrayDeepMerge(array(

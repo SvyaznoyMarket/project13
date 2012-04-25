@@ -1,5 +1,5 @@
 <?php if ($productCategory->hasChildren()): ?>
-<?php include_component('productCategory', 'child_list', array('view' => 'carousel', 'productCategory' => $productCategory)) ?>
+  <?php include_component('productCategory', 'child_list', array('view' => 'carousel', 'productCategory' => $productCategory)) ?>
 <?php else: ?>
 
 <?php endif ?>

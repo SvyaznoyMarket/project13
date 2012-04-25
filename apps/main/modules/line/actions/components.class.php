@@ -39,14 +39,6 @@ class lineComponents extends myComponents
       );
     }
 
-    if (isset($this->creator))
-    {
-      $list[] = array(
-        'name' => (string)$this->creator,
-        'url'  => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
-      );
-    }
-
     $list[] = array(
       'name' => 'Серия '.(string)$this->line,
       'url'  => $this->generateUrl('lineCard', $this->line),
