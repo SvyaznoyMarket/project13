@@ -45,6 +45,12 @@ class order_Actions extends myActions
     $this->order = new Order();
     $this->order->region_id = $this->getUser()->getRegion('id');
     $this->form = $this->getOrderForm($this->order);
+    if (!$this->form)
+    {
+      $this->setTemplate('error');
+
+      return sfView::SUCCESS;
+    }
 
     $deliveryTypes = $this->form->getOption('deliveryTypes');
     $defaultDeliveryType = (1 == count($deliveryTypes)) ? $deliveryTypes[0] : null;
@@ -227,7 +233,9 @@ class order_Actions extends myActions
     if (!$result)
     {
       $this->getLogger()->err('{Order} calculate: empty response from core');
-      $this->redirect('cart');
+      $this->message = 'Невозможно доставить выбранные товары';
+
+      return false;
     }
 
     foreach ($result as $k => $item)
