@@ -9,7 +9,7 @@
 <?php slot('title', $product->name) ?>
 
 <?php //include_partial('product/name', array('product' => $product)) ?>
-<?php include_component('productSoa', 'show', array('product' => $product, 'json' => $json)) ?>
+<?php include_component('productSoa', 'show', array('product' => $product, 'json' => $json, 'relatedPagesNum' => $relatedPagesNum)) ?>
 <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
 
 <?php if ('kit' == $product->view): ?>
@@ -25,11 +25,6 @@
   </div>
 
   <?php include_component('productSoa', 'tags', array('product' => $product)) ?>
-<?php endif ?>
-
-
-<?php if (count($product->related)): ?>
-<?php include_partial('productSoa/product_related', $sf_data) ?>
 <?php endif ?>
 
 <?php if (count($product->accessories)): ?>

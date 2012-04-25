@@ -6,6 +6,7 @@
   <meta name="description" content="" />
   <meta name="keywords" content="" />
   <link href="/css/skin/inner.css" rel="stylesheet" type="text/css" />
+  <link href="/css/skin/inner2.css" rel="stylesheet" type="text/css" />
 </head>
 <body class='b404'>
 <table class='b404InnerWrap'>

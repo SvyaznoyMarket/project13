@@ -21,6 +21,7 @@ default:
 #    - jquery.autocomplete.css
 #    - main.css
     - skin/inner.css
+    - skin/inner2.css
     - font.css
 #    - skin/main.css
     - navy.css
