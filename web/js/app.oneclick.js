@@ -223,6 +223,10 @@ $(document).ready(function() {
 				self.showMarkers()	
 			}
 			
+			self.setMapOff = function() {
+				self.showMap(false)
+			}
+			
 			self.showMarkers = function() {
 				var markersPull = {}
 				var tmp = self.shops()//MVM.popupWithShops()
@@ -337,6 +341,11 @@ $(document).ready(function() {
 			return mapCenter
 		}
 		
+		function updateIW( marker ) {
+			if( typeof(MVM) !== 'undefined' )
+				MVM.pickShopOnMap( marker.id )
+		}
+		
 		$.post( inputUrl, postData, function(data) {
 			if( !data.success ) {
 				MVM = new MyViewModel() 
@@ -354,75 +363,83 @@ $(document).ready(function() {
 			ko.applyBindings(MVM) // this way, Lukas!
 				
 			if( selfAvailable ) {
-				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup' )
+				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIW )
 				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 			}
 			oneClickIsReady = true
 		})
 
 		/* MAP */
-		function MapWithShops( center, infoWindowTemplate, DOMid ) {
-			var self = this
-			self.mapWS = null
-			self.infoWindow = null
-			self.positionC = null
-			self.markers = []
-			var mapContainer = $('#'+DOMid)
+		function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
+			var self         = this,
+			    mapWS        = null,
+			    infoWindow   = null,
+			    positionC    = null,
+			    markers      = [],
+				mapContainer = $('#'+DOMid),
+				infoWindowTemplate = templateIWnode.prop('innerHTML')
+			
+			this.updateInfoWindowTemplate = function( marker ) {
+				if( updateInfoWindowTemplate )
+					updateInfoWindowTemplate( marker )
+			}
 			
 			function create() {
-				self.positionC = new google.maps.LatLng(center.latitude, center.longitude)			
+				positionC = new google.maps.LatLng(center.latitude, center.longitude)			
 				var options = {
 					zoom: 11,
-					center: self.positionC,
+					center: positionC,
 					scrollwheel: false,
 					mapTypeId: google.maps.MapTypeId.ROADMAP,
 					mapTypeControlOptions: {
-					style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+						style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
 					}
 				}
-				self.mapWS = new google.maps.Map( document.getElementById( DOMid ), options )
-				self.infoWindow = new google.maps.InfoWindow({
+				mapWS      = new google.maps.Map( document.getElementById( DOMid ), options )
+				infoWindow = new google.maps.InfoWindow({
 					maxWidth: 400,
 					disableAutoPan: false
 				})
 			}
 	
 			this.showInfobox = function( marker ) {
-				var item = self.markers[marker.id]
-				MVM.pickShopOnMap( marker.id )
+				var item = markers[marker.id]
 				marker.setVisible(false) // hides marker
-	
-				self.infoWindow.setContent( infoWindowTemplate.prop('innerHTML') )
-				self.infoWindow.setPosition( marker.position )
-				self.infoWindow.open( self.mapWS )
-				google.maps.event.addListener( self.infoWindow, 'closeclick', function() { marker.setVisible(true) })
+				self.updateInfoWindowTemplate( item )
+				infoWindow.setContent( infoWindowTemplate )
+				infoWindow.setPosition( marker.position )
+				infoWindow.open( mapWS )
+				google.maps.event.addListener( infoWindow, 'closeclick', function() { 
+					marker.setVisible(true)
+				})
 			}
 	
-			this.showMarkers = function( markers ) {
-				$.each( self.markers, function(i, item) {
+			this.showMarkers = function( argmarkers ) {
+				$.each( markers, function(i, item) {
 					 if( typeof( item.ref ) !== 'undefined' )
 						item.ref.setMap(null)
 				})
-				self.markers = markers
-				google.maps.event.trigger( self.mapWS, 'resize' )
-				self.mapWS.setCenter( self.positionC )
+				markers = argmarkers
+				google.maps.event.trigger( mapWS, 'resize' )
+				mapWS.setCenter( positionC )
 				$.each( markers, function(i, item) {
 					var marker = new google.maps.Marker({
 					  position: new google.maps.LatLng(item.latitude, item.longitude),
-					  map: self.mapWS,
+					  map: mapWS,
 					  title: item.name,
 					  icon: '/images/marker.png',
 					  id: item.id
 					})
 					google.maps.event.addListener(marker, 'click', function() { self.showInfobox(this) })
-					self.markers[marker.id].ref = marker
+					markers[marker.id].ref = marker
 				})
 			}
 	
-			this.closeMap = function() {
-				self.infoWindow.close()
+			this.closeMap = function( callback ) {
+				infoWindow.close()
 				mapContainer.hide('blind', null, 800, function() {
-					MVM.showMap(false) // hides map
+					if( arguments.length > 0 )
+						callback()
 				})
 			}
 					
@@ -447,7 +464,7 @@ $(document).ready(function() {
 	
 		function pickStoreMVM( node ) {	
 			var shopnum = $(node).parent().find('.shopnum').text()
-			window.regionMap.closeMap()
+			window.regionMap.closeMap( MVM.setMapOff )
 			MVM.chooseShopById( shopnum )
 		}
 		
@@ -473,7 +490,7 @@ $(document).ready(function() {
 				centered: true,
 				onClose: function() {
 					if( 'regionMap' in window )
-						window.regionMap.closeMap()
+						window.regionMap.closeMap( MVM.setMapOff )
 				}
 			})
 		})
