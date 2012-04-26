@@ -294,12 +294,24 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
 	.bCarousel__eBtnL:hover{ background: url('img/c_btn_left_h.png'); }
 	.bCarousel__eBtnR:hover{ background: url('img/c_btn_right_h.png'); }
 
+
+
+
   .bHeader{
     height: 112px;
+	position: relative;
     text-align: justify;
     margin: 20px 0 20px 0;
     padding: 20px 12px 0 0;
   }
+  .b9May2012{
+	top: 30px;
+	left: -166px;
+	width: 147px;
+	height: 94px;
+	position: absolute;
+	background: url('img/promo_9may_ribbon_index.png');
+	}
   .bHeaderWrap{
     z-index: 100;
     position: relative;
