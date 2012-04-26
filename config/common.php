@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * @param $value
+ * @return string
+ */
+function formatPrice($value){
+    return number_format($value, 0, ',', ' ');
+}
+
+
 if (!function_exists('mb_ucfirst'))
 {
   function mb_ucfirst($str, $encoding = 'UTF-8', $lower_str_end = false)
