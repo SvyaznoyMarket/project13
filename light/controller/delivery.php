@@ -25,7 +25,7 @@ class delivery
     $result = $model->getProductDeliveries(intval($params['product_id']), intval($params['quantity']) ,$params['region']);
 
     $return = array('success' => true, 'data' => array());
-    foreach($result as $key => $deliveryObject){
+    foreach($result as $deliveryObject){
       $deliveryArray = $deliveryObject->toArray();
       foreach($deliveryArray['dates'] as $key=>$date){
         if($key > 7){
@@ -43,6 +43,28 @@ class delivery
       }
       $return['data'][$deliveryArray['token']] = $deliveryArray;
     }
+
+    $response->setContentType('application/json');
+    $response->setContent(json_encode($return));
+    TimeDebug::end('controller:delivery:ProductDeliveryJson');
+  }
+
+  public function ProductListShortDeliveryJson($params, Response $response){
+    TimeDebug::start('controller:delivery:ProductDeliveryJson');
+    $return = array();
+
+    if(!isset($params['products'])){
+      $params['products'] = Null;
+    }
+    if(!isset($params['region'])){
+      $params['region'] = Null;
+    }
+
+    $model = new DeliveryModel();
+    $result = $model->getShortDeliveryInfoForProductList($params['products'], $params['region']);
+
+    $return = $result;
+
 
     $response->setContentType('application/json');
     $response->setContent(json_encode($return));

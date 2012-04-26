@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration xmlns="http://logging.apache.org/log4php/">
+    <appender name="defaultConsoleAppender" class="LoggerAppenderConsole"/>
+    <appender name="emptyAppender" class="LoggerAppenderNull" />
+
+    <logger name="CoreClient">
+        <level value="Debug" />
+        <!--<appender_ref ref="defaultConsoleAppender" />-->
+        <appender_ref ref="emptyAppender" />
+    </logger>
+
+    <root>
+        <!--<level value="ERROR" />-->
+        <!--<appender_ref ref="emptyAppender"/>-->
+        <level value="Debug" />
+        <appender_ref ref="defaultConsoleAppender"/>
+    </root>
+</configuration>
