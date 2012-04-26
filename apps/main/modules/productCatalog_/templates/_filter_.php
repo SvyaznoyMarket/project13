@@ -7,6 +7,8 @@
  */
 ?>
 
+<?php if(count($productFilter->getFilterList())): ?>
+
 <!-- Filter -->
 <form class="product_filter-block"
       action=""
@@ -47,3 +49,4 @@
 </form>
 
 <!-- /Filter -->
+<?php endif; ?>

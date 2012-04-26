@@ -44,7 +44,7 @@
 
     </div>
     <div class="extrainfo">
-      <span class="db font18 pb10"><b><span class="price"><?php echo $item->getPrice() ?></span> <span
+      <span class="db font18 pb10"><b><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span
         class="rubl">p</span></b></span>
 
       <div class="goodsbar mSmallBtns">

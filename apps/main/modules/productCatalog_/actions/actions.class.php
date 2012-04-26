@@ -156,6 +156,14 @@ class productCatalog_Actions extends myActions
       $maxPerPage * 2
     );
 
+    // set request filter as link to child directory
+    $f = $productFilter->getName();
+    if($request->hasParameter($f)){
+      $requestData = array( $f => $request->getParameter($f) );
+      foreach($viewList as $view)
+        $view->setRequest($requestData);
+    }
+
     $this->setVar('maxPerPage', $maxPerPage);
     $this->setVar('categoryTree', $categoryTree);
     $this->setVar('categoryTagList', $viewList);

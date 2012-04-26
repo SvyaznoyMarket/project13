@@ -27,7 +27,7 @@
 
   <h3><a href="<?php echo $item->getLink() ?>"><?php echo $item->getName() ?></a></h3>
 
-  <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item->getPrice() ?></span> <span
+  <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span
     class="rubl">p</span></div>
   <?php if ($item->getModel() && $item->getModel()->getPropertyList()): ?>
   <a href="<?php echo $item->getLink() ?>">
@@ -62,7 +62,7 @@
         <div class="goodsbar mSmallBtns mR">
           <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
         </div>
-        <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $item->getPrice() ?></span> <span
+        <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span
           class="rubl">p</span></div>
         <?php if ($item->getModel() && $item->getModel()->getPropertyList()): ?>
         <a href="<?php echo $item->getLink() ?>">
