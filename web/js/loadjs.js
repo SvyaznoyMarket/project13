@@ -130,7 +130,8 @@
 			}).runQueue()
 			break
 		case 'product_stock':
-			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
+			$LAB.queueScript('knockout-2.0.0.js')
+			.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.script('google.maps.infobox.js')
 				.wait()

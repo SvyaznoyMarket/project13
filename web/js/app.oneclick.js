@@ -1,5 +1,112 @@
 $(document).ready(function() {
-/* One Click Order */
+	/* MAP Utilities */
+	function calcMCenter( shops ) {
+		var latitude=0, longitude=0,
+			l = shops.length
+		for(var i=0; i<l; i++) {
+			latitude  += shops[i].latitude*1
+			longitude += shops[i].longitude*1		
+		}
+		var mapCenter = {
+			latitude  : latitude / l,
+			longitude : longitude / l
+		}	
+		return mapCenter
+	}	
+	/* MAP Obj */
+	function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
+		var self         = this,
+			mapWS        = null,
+			infoWindow   = null,
+			positionC    = null,
+			markers      = [],
+			mapContainer = $('#'+DOMid),
+			infoWindowTemplate = templateIWnode.prop('innerHTML')
+		
+		this.updateInfoWindowTemplate = function( marker ) {
+			if( updateInfoWindowTemplate )
+				updateInfoWindowTemplate( marker )
+		}
+		
+		function create() {
+			positionC = new google.maps.LatLng(center.latitude, center.longitude)			
+			var options = {
+				zoom: 11,
+				center: positionC,
+				scrollwheel: false,
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				mapTypeControlOptions: {
+					style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+				}
+			}
+			mapWS      = new google.maps.Map( document.getElementById( DOMid ), options )
+			infoWindow = new google.maps.InfoWindow({
+				maxWidth: 400,
+				disableAutoPan: false
+			})
+		}
+
+		this.showInfobox = function( marker ) {
+			var item = markers[marker.id]
+			marker.setVisible(false) // hides marker
+			self.updateInfoWindowTemplate( item )
+			infoWindow.setContent( infoWindowTemplate )
+			infoWindow.setPosition( marker.position )
+			infoWindow.open( mapWS )
+			google.maps.event.addListener( infoWindow, 'closeclick', function() { 
+				marker.setVisible(true)
+			})
+		}
+
+		this.showMarkers = function( argmarkers ) {
+			$.each( markers, function(i, item) {
+				 if( typeof( item.ref ) !== 'undefined' )
+					item.ref.setMap(null)
+			})
+			markers = argmarkers
+			google.maps.event.trigger( mapWS, 'resize' )
+			mapWS.setCenter( positionC )
+			$.each( markers, function(i, item) {
+				var marker = new google.maps.Marker({
+				  position: new google.maps.LatLng(item.latitude, item.longitude),
+				  map: mapWS,
+				  title: item.name,
+				  icon: '/images/marker.png',
+				  id: item.id
+				})
+				google.maps.event.addListener(marker, 'click', function() { self.showInfobox(this) })
+				markers[marker.id].ref = marker
+			})
+		}
+
+		this.closeMap = function( callback ) {
+			infoWindow.close()
+			mapContainer.hide('blind', null, 800, function() {
+				if( arguments.length > 0 )
+					callback()
+			})
+		}
+				
+		this.addHandler = function( selector, callback ) {
+			mapContainer.delegate( selector, 'click', function(e) { //desktops			
+				e.preventDefault()
+				callback( e.target )
+			})
+			
+			mapContainer[0].addEventListener("touchstart",  //touch devices
+				function(e) {
+					e.preventDefault()
+					if( e.target.is( selector ) )
+						callback( e.target )
+				} , false) 							
+		}
+
+		/* main() */
+		create()
+
+	} // object MapWithShops
+	
+	/* One Click Order */
 	if( $('.order1click-link-new').length ) {
 		
 //console.info( 'MODEL: ', $('.order1click-link-new').data('model') )
@@ -223,7 +330,7 @@ $(document).ready(function() {
 				self.showMarkers()	
 			}
 			
-			self.setMapOff = function() {
+			self.turnOffMap = function() {
 				self.showMap(false)
 			}
 			
@@ -326,20 +433,6 @@ $(document).ready(function() {
 			product_quantity: 1,
 			region_id: Model.jsregionid*1
 		}
-
-		function calcMCenter( shops ) {
-			var latitude=0, longitude=0,
-				l = shops.length
-			for(var i=0; i<l; i++) {
-				latitude  += shops[i].latitude*1
-				longitude += shops[i].longitude*1		
-			}
-			var mapCenter = {
-				latitude  : latitude / l,
-				longitude : longitude / l
-			}	
-			return mapCenter
-		}
 		
 		function updateIW( marker ) {
 			if( typeof(MVM) !== 'undefined' )
@@ -369,107 +462,12 @@ $(document).ready(function() {
 			oneClickIsReady = true
 		})
 
-		/* MAP */
-		function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
-			var self         = this,
-			    mapWS        = null,
-			    infoWindow   = null,
-			    positionC    = null,
-			    markers      = [],
-				mapContainer = $('#'+DOMid),
-				infoWindowTemplate = templateIWnode.prop('innerHTML')
-			
-			this.updateInfoWindowTemplate = function( marker ) {
-				if( updateInfoWindowTemplate )
-					updateInfoWindowTemplate( marker )
-			}
-			
-			function create() {
-				positionC = new google.maps.LatLng(center.latitude, center.longitude)			
-				var options = {
-					zoom: 11,
-					center: positionC,
-					scrollwheel: false,
-					mapTypeId: google.maps.MapTypeId.ROADMAP,
-					mapTypeControlOptions: {
-						style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-					}
-				}
-				mapWS      = new google.maps.Map( document.getElementById( DOMid ), options )
-				infoWindow = new google.maps.InfoWindow({
-					maxWidth: 400,
-					disableAutoPan: false
-				})
-			}
-	
-			this.showInfobox = function( marker ) {
-				var item = markers[marker.id]
-				marker.setVisible(false) // hides marker
-				self.updateInfoWindowTemplate( item )
-				infoWindow.setContent( infoWindowTemplate )
-				infoWindow.setPosition( marker.position )
-				infoWindow.open( mapWS )
-				google.maps.event.addListener( infoWindow, 'closeclick', function() { 
-					marker.setVisible(true)
-				})
-			}
-	
-			this.showMarkers = function( argmarkers ) {
-				$.each( markers, function(i, item) {
-					 if( typeof( item.ref ) !== 'undefined' )
-						item.ref.setMap(null)
-				})
-				markers = argmarkers
-				google.maps.event.trigger( mapWS, 'resize' )
-				mapWS.setCenter( positionC )
-				$.each( markers, function(i, item) {
-					var marker = new google.maps.Marker({
-					  position: new google.maps.LatLng(item.latitude, item.longitude),
-					  map: mapWS,
-					  title: item.name,
-					  icon: '/images/marker.png',
-					  id: item.id
-					})
-					google.maps.event.addListener(marker, 'click', function() { self.showInfobox(this) })
-					markers[marker.id].ref = marker
-				})
-			}
-	
-			this.closeMap = function( callback ) {
-				infoWindow.close()
-				mapContainer.hide('blind', null, 800, function() {
-					if( arguments.length > 0 )
-						callback()
-				})
-			}
-					
-			this.addHandler = function( selector, callback ) {
-				mapContainer.delegate( selector, 'click', function(e) { //desktops			
-					e.preventDefault()
-					callback( e.target )
-				})
-				
-				mapContainer[0].addEventListener("touchstart",  //touch devices
-					function(e) {
-						e.preventDefault()
-						if( e.target.is( selector ) )
-							callback( e.target )
-					} , false) 							
-			}
-	
-			/* main() */
-			create()
-	
-		} // object MapWithShops
-	
 		function pickStoreMVM( node ) {	
 			var shopnum = $(node).parent().find('.shopnum').text()
-			window.regionMap.closeMap( MVM.setMapOff )
+			window.regionMap.closeMap( MVM.turnOffMap )
 			MVM.chooseShopById( shopnum )
 		}
 		
-		
-		// MAP end 
 		
 		$('#order1click-container-new').delegate( '.bSelect', 'click', function() {	// custom selectors
 			$(this).find('.bSelect__eDropmenu').toggle()
@@ -490,7 +488,7 @@ $(document).ready(function() {
 				centered: true,
 				onClose: function() {
 					if( 'regionMap' in window )
-						window.regionMap.closeMap( MVM.setMapOff )
+						window.regionMap.closeMap( MVM.turnOffMap )
 				}
 			})
 		})
@@ -506,273 +504,126 @@ $(document).ready(function() {
 	
 	/* Page 'Where to buy?' , shops map */
 	
-    if( $('#gMap').length ) {
-		$('#gMap').bind({
-			create: function(e, center, markers, infoWindowTemplate) {
-				var el = $(this)
-		
-				var position = new google.maps.LatLng(center.latitude, center.longitude);
-				var options = {
-				  zoom: 11,
-				  center: position,
-				  scrollwheel: false,
-				  mapTypeId: google.maps.MapTypeId.ROADMAP,
-				  /*
-				  scaleControl: ,
-				  navigationControlOptions: {
-					style: google.maps.NavigationControlStyle.DEFAULT
-				  },
-				  */
-				  mapTypeControlOptions: {
-					style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-				  }
-				  
-				}
-			  var map = new google.maps.Map(document.getElementById(el.attr('id')), options)
-			  
-			  //var infoWindow = new google.maps.InfoWindow()
-			  var infoWindow = new InfoBox({ // http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/docs/examples.html
-				disableAutoPan: false,
-				maxWidth: 0,
-				pixelOffset: new google.maps.Size(-11, -108),
-				zIndex: null,
-				boxStyle: {
-				  opacity: 0.85,
-				  width: '280px'
-				},
-				//closeBoxMargin: "10px 2px 2px 2px",
-				closeBoxURL: 'http://www.google.com/intl/en_us/mapfiles/close.gif',
-				//closeBoxURL: '',
-				infoBoxClearance: new google.maps.Size(1, 1),
-				isHidden: false,
-				pane: 'floatShadow',
-				enableEventPropagation: true
-			  })
+	if( $('#stockBlock').length ) {
+		var Model     = $('#stockmodel').data('value')
+		var inputUrl  = $('#stockmodel').attr('link-input')
+		var outputUrl = $('#stockmodel').attr('link-output')
+console.info(Model)
+
+		/* ViewModel */
+		function StockViewModel() {
+//console.info('IN DEL ', Deliveries)	
 			
-			  var showWindow = function() {
-				var item = markers[this.id]
+			var self = this	
+			self.showMap = ko.observable(false)
 			
-				el.trigger('showMarkers')
-				el.trigger('infoWindow', [ this, item ])
-			  }
+			self.title     = Model.jstitle
+			self.price     = Model.jsprice
+			self.icon      = Model.jssimg
+			self.shortcut  = Model.jsshortcut
 			
-			  // set markers
-			  el.data('markers', [])
-			  $.each(markers, function(i, item) {
-				var marker = new google.maps.Marker({
-				  position: new google.maps.LatLng(item.latitude, item.longitude),
-				  map: map,
-				  title: item.name,
-				  icon: '/images/marker.png',
-				  id: item.id
-				})
-				google.maps.event.addListener(marker, 'click', showWindow);
-				el.data('markers').push(marker)
-			  })
+			self.today = ko.observable(true)
 			
-			  google.maps.event.addListener(map, 'bounds_changed', function () {
-				//el.data('infoWindow').close()
-			  })
-			  google.maps.event.addListener(map, 'click', function () {
-				//el.data('infoWindow').close()
-			  })
-			  google.maps.event.addListener(infoWindow, 'closeclick', function () {
-				el.trigger('showMarkers')
-			  })
+			self.priceTxt = ko.computed(function() {
+				return printPrice( self.price )
+			}, this)
 			
-			  el.data('map', map)
-			  el.data('infoWindow', infoWindow)
-			  el.data('infoWindowTemplate', infoWindowTemplate)
-			},
-			move: function(e, center) {
-			  var el = $(this)
-			  var map = el.data('map')
-			},
-			infoWindow: function(e, marker, item) {
-			  var el = $(this)
-			  var map = el.data('map')
-			  var infoWindow = el.data('infoWindow')
-			  var infoWindowTemplate = el.data('infoWindowTemplate')
-			  // hides marker
-			  marker.setMap(null)
-			  $.each(infoWindowTemplate.find('[data-name]'), function(i, el) {
-				el.innerHTML = item[$(el).data('name')]
-			  })
 			
-			  infoWindow.setContent(infoWindowTemplate.prop('innerHTML'));
-			  infoWindow.open(map, marker);
-			},
-			showMarkers: function() {
-			  var el = $(this)
-			  $.each(el.data('markers'), function(i, marker) {
-				if (null == marker.map) {
-				  marker.setMap(el.data('map'))
-				}
-			  })
+			//dyn
+			self.shops = Deliveries['self'].shops.slice(0)
+			
+			self.todayShops = []
+			self.tomorrowShops = []
+			parseDateShop = function( numbers, label ) {
+				var out = []
+levup:			for(var i=0, l=numbers.length; i<l; i++)
+					for(var j=0, l=self.shops.length; j<l; j++)
+						if( self.shops[j].id == numbers[i] ) {
+							var tmp = {}
+							for (var prop in self.shops[j] ) {
+								tmp[prop] = self.shops[j][prop]
+							}
+							tmp['lbl'] = label
+							out.push( tmp )
+							continue levup
+						}
+				return out	
 			}
+			self.todayShops = parseDateShop( Deliveries['self'].dates[0].shopIds, 'td' )
+			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[1].shopIds, 'tmr' )
+//			self.todayShops = []
+			self.selectedS = ko.observable( {} )
+			var ending = 'ах'
+			if( self.todayShops.length % 10 === 1 )
+				ending = 'е'
+			self.todayH2 = 'Можно <span class="mLft">сегодня</span> в '+ self.todayShops.length + ' магазин'+ ending +':'
+			if( self.tomorrowShops.length % 10 === 1 )
+				ending = 'е'
+			else
+				ending = 'ах'			
+			self.tomorrowH2 = ( self.todayShops.length > 0 ) ? 'или' : 'Можно'
+			self.tomorrowH2 += ' <span class="mRt">завтра</span> в '+ self.tomorrowShops.length + ' магазин'+ ending +':'
+			
+			self.toggleView = function( flag ) {		
+				self.showMap( flag )	
+				return false
+			}
+			
+			self.toggleTerm = function( flag ) {
+				//self.today( !self.today() )
+				self.today( flag )
+				return false
+			}
+			
+			self.changeRegion = function() {
+				return false
+			}
+			
+			self.chooseShop = function( item ) {
+				self.selectedS( item )
+			}
+			self.chooseTomorrowShop = function() {
+			}			
+		} //MVM		
+		
+		/* Handlers */
+		$('body').delegate( '.jsChangeRegion', 'click', function(e) {
+			e.preventDefault()
 		})
 		
-		var mapContainer = $('#gMap')
+		/* Load Data from Server */
+		var postData = {
+			product_id: Model.jsitemid,
+			product_quantity: 1,
+			region_id: Model.jsregionid*1
+		}
 		
-		mapContainer.trigger('create', [
-			$('#map-center').data('content'),
-			$('#map-markers').data('content'),
-			$('#map-info_window-container')
-		])
 		
-		mapContainer.delegate('.shopchoose', 'click', function(e) { //desktops
-			pickStore( e.target )
+		$.post( inputUrl, postData, function(data) {
+			$('.bOrderPreloader').hide()
+			
+			if( !data.success ) {
+				//SHOW WARNING, NO MVM
+				$('#noDlvr').show()
+				return false
+			}
+			Deliveries = data.data
+			selfAvailable = 'self' in Deliveries
+			if( selfAvailable ) {
+				mapCenter = calcMCenter( Deliveries['self'].shops )
+			}			
+			MVM = new StockViewModel() 
+			ko.applyBindings(MVM) // this way, Lukas!
+				
+			/*
+			if( selfAvailable ) {
+				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIW )
+				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+			}
+			*/
+			
+			$('#stockBlock').show()
 		})	
-		function handleStart(e) {
-			if( e.target.className.match('shopchoose') )
-				pickStore( e.target )
-		}
-		mapContainer[0].addEventListener("touchstart", handleStart  , false) //touch devices
 		
-	
-		function pickStore( node ) {
-			getOneClick( $(node).parent().find('.shopnum').text() )
-		}
-		
-		$('.bInShopLine__eButton a').bind('click', function(e) {
-			e.preventDefault()
-			getOneClick( $(this).attr('href') )
-		})  
-		
-		$('.bInShop__eCurrent a').click( function(){
-			$.getJSON( '/region/init', function(data) { //double /* GEOIP fix */ in dash.js
-				if( !data.success ) 
-					return false
-				// paint popup			
-				var cities = data.data
-				var shtorka = $('<div>').addClass('graying')
-										.css( { 'opacity': '0.5'} ) //ie special							
-				var cityPopup = $('<div class="bCityPopupWrap">').html(
-					'<div class="hideblock bCityPopup">'+
-						'<i title="Закрыть" class="close">Закрыть</i>'+
-						'<div class="title">Привет! Из какого вы города?</div>'+
-					'</div>'+
-				'</div>')
-				cityPopup.find('.close').click( function() {
-					$('.graying').remove()
-					$('.bCityPopupWrap').hide()
-				})
-				for( var ci = 0, cl = cities.length; ci < cl; ci++ ) {
-					if( typeof( cities[ci].link ) === 'undefined' || typeof( cities[ci].name ) === 'undefined' )
-						continue
-					var cnode = $('<div>').append( $('<a>').attr( 'href', cities[ci].link ).text( cities[ci].name ) )
-					if( typeof( cities[ci].is_active ) !== 'undefined' ) {
-						cnode.addClass('bCityPopup__eCurrent')
-						cityPopup.find('.title').after( cnode )
-					} else {
-						cnode.addClass('bCityPopup__eBlock')
-						cityPopup.find('div:first').append( cnode )
-					}
-				}
-				$('body').append( shtorka ).append( cityPopup )
-			})		
-			return false
-		})
-    }	
-	
-	function getOneClick( href ){
-		$('#ajaxgoods').lightbox_me({
-			centered: true,
-			closeClick: false,
-			closeEsc: false
-		})
-
-		$.get( href, function( response ) {
-			$('#ajaxgoods').hide()
-			if( typeof(response.success) !== 'undefined' && response.success ) {
-				$('#order1click-form').html(response.data.form)
-				if( typeof(response.data.shop) !== 'undefined' ) {
-				if( typeof(response.data.shop.name) !== 'undefined' ) {
-					$('.sLocation').remove()
-					$('#order1click-container h2').text('Оформить и забрать в магазине')
-						.after( $('<div>').addClass('pb10').addClass('sLocation')
-							.html( response.data.shop.name + '. Время работы: ' + response.data.shop.regime ) )
-				}
-				}
-				$('#order1click-container').lightbox_me({
-					centered: true
-				})
-				cl1loaded = true
-				bindCalc()
-			}
-		})
-	}
-	//if( $('.order1click-link').length ) {
-		var cl1loaded = false
-		$('.order1click-link').bind('click', function(e) {
-			e.preventDefault()
-			if( typeof(_gaq) !== 'undefined' )
-				_gaq.push(['_trackEvent', 'QuickOrder', 'Open'])
-			if ( !cl1loaded ) {
-				getOneClick( $(this).attr('href') )
-			} else {
-				$('#order1click-container').lightbox_me({
-					centered: true
-				})
-			}
-		})
-
-		function bindCalc() {
-			var quant = $('#order_product_quantity').val()*1 || 1
-			var pric  = Math.round( $('.b1Click__ePriceBig .price').html().replace(/\s/g,'')*1 / quant )
-			function recalc( delta ) {
-				if( quant == 1 && delta < 0 )
-					return
-				quant += delta
-				var sum = printPrice( pric * quant )
-				$('.c1quant').html( quant+ ' шт.')
-				$('#order_product_quantity').val( quant )
-				$('.b1Click__ePriceBig .price').html( sum )
-			}
-
-			$('.c1less').live( 'click', function(){ recalc(-1) })
-			$('.c1more').live( 'click', function(){ recalc(1) })
-		}
-
-		$('#order1click-form').bind('submit', function(e) {
-			e.preventDefault()
-			var form = $(this)
-
-			function get1ClickResult( response ) {
-				if( !response.success ) {
-						if( response.data ) {
-							$('#order1click-form').html(response.data.form)
-						}
-						var button = $('#order1click-form').find('input:submit')
-						button.attr('disabled', false)
-						button.val('Оформить заказ')
-						if( !$('#warn').length ) {
-							var warn = $('<span id="warn" style="color:red">').html('Не удалось оформить заказ. Приносим свои извинения! Повторите попытку или обратитесь с заказом в контакт cENTER&nbsp;8&nbsp;(800)&nbsp;700&nbsp;00&nbsp;09')
-							$('.bFormB2').before( warn )
-						}
-					} else {
-						if( response.data ) {
-							$('#order1click-container').find('h2').html(response.data.title)
-							$('#order1click-form').replaceWith(response.data.content)
-							if( runAnalitics )
-								runAnalitics()
-						}
-					}			
-			}
-
-			var button = form.find('input:submit')
-			button.attr('disabled', true)
-			button.val('Оформляю заказ...')
-
-			var wholemessage = form.serializeArray()
-			$.ajax({
-				type: 'POST',
-				url: form.attr('action'),
-				data: wholemessage,
-				success: get1ClickResult
-			})
-
-		})
-
-    //}
+	} // Page 'Where to buy?'
 });	

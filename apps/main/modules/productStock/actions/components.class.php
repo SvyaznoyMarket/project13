@@ -37,6 +37,7 @@ class productStockComponents extends myComponents
           'jsref' => $this->product->token,
           'jstitle' => htmlspecialchars($this->product->name, ENT_QUOTES, 'UTF-8'),
           'jsprice' => $this->product->price,
+          'jssimg' => $this->product->getMainPhotoUrl(1),
           'jsimg' => $this->product->getMainPhotoUrl(3),
   		  'jsbimg' =>  $this->product->getMainPhotoUrl(2),
   		  'jsshortcut' =>  $this->product->article,
