@@ -11,8 +11,8 @@
 
     <root>
         <!--<level value="ERROR" />-->
-        <!--<appender_ref ref="emptyAppender"/>-->
+        <appender_ref ref="emptyAppender"/>
         <level value="Debug" />
-        <appender_ref ref="defaultConsoleAppender"/>
+        <!--<appender_ref ref="defaultConsoleAppender"/>-->
     </root>
 </configuration>

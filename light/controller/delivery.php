@@ -44,6 +44,8 @@ class delivery
       $return['data'][$deliveryArray['token']] = $deliveryArray;
     }
 
+    $return['currentDate'] = date('Y-m-d');
+
     $response->setContentType('application/json');
     $response->setContent(json_encode($return));
     TimeDebug::end('controller:delivery:ProductDeliveryJson');
