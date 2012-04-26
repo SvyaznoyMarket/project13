@@ -12,9 +12,63 @@ require_once(ROOT_PATH.'lib/CoreClient.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
 require_once(HELPER_PATH.'DateFormatter.php');
 require_once(VIEW_PATH.'dataObject/DeliveryData.php');
+require_once(VIEW_PATH.'dataObject/DeliveryShortData.php');
 
 class DeliveryModel
 {
+
+  /**
+   * @param array $productIds
+   * @param int $geoId
+   * @return array
+   * <code>
+   *  array(
+   *    productId => array(
+   *      DeliveryShortData,
+   *      DeliveryShortData,
+   *      DeliveryShortData
+   *    ),
+   *    productId => array(
+   *      DeliveryShortData,
+   *      DeliveryShortData,
+   *      DeliveryShortData
+   *    )
+   *  )
+   * </code>
+   *
+   */
+  public function getShortDeliveryInfoForProductList($productIds, $geoId){
+    if(!is_array($productIds)){
+      throw new dataFormatException('$productIds must be array, but in real is ('.gettype($productIds).') '.print_r($productIds, true));
+    }
+    if(!is_int($geoId)){
+      throw new dataFormatException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
+    }
+    $geoId = (int) $geoId;
+
+    $params = array('product' => array());
+    $productIds = array_unique($productIds);
+    foreach($productIds as $productId){
+      $params['product'][] = array('id' => (int) $productId, 'quantity' => 1);
+    }
+
+    var_export(get_defined_constants());
+
+    $geoId = 82;
+//    '{"product":[{"id":3,"quantity":1}]}'
+    $params = array('product' => array('id' => 3, 'quantity' =>1));
+
+
+    TimeDebug::start('DeliveryModel:getShortDeliveryInfoForProductList:clientV2');
+    $data = CoreClient::getInstance()->query('product/get-delivery/', array('geo_id' => $geoId), $params);
+    var_export($data);
+    TimeDebug::end('DeliveryModel:getShortDeliveryInfoForProductList:clientV2');
+
+
+    $return = array();
+
+    return $return;
+  }
 
   /**
    * @param integer $productId
@@ -25,13 +79,13 @@ class DeliveryModel
    */
   public function getProductDeliveries($productId, $productQuantity, $geoId){
     if(!is_int($productId)){
-      throw new dataFormatException('$productId must be int, but in real is ('.gettype($productId).') '.$productId);
+      throw new dataFormatException('$productId must be int, but in real is ('.gettype($productId).') '.print_r($productId, true));
     }
     if(!is_int($productQuantity)){
-      throw new dataFormatException('$productQuantity must be int, but in real is ('.gettype($productQuantity).') '.$productQuantity);
+      throw new dataFormatException('$productQuantity must be int, but in real is ('.gettype($productQuantity).') '.print_r($productQuantity, true));
     }
     if(!is_int($geoId)){
-      throw new dataFormatException('$geoId must be int, but in real is ('.gettype($geoId).') '.$geoId);
+      throw new dataFormatException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
     }
     TimeDebug::start('DeliveryModel:getProductDeliveries:clientV1');
     $data = CoreV1Client::getInstance()->query('order.calc', array(), array(
@@ -86,6 +140,8 @@ class DeliveryModel
    * @param array $delivery
    * @param array $ShopInfo
    * @param DeliveryData[] $return
+   *
+   * @return DeliveryData[]
    */
   protected function addShopToSelfDelivery($dates, $delivery, $ShopInfo, $return){
     TimeDebug::start('DeliveryModel:getProductDeliveries:addShop');
