@@ -12,7 +12,7 @@ $view = $category->getHasLine() ? 'line' : 'compact';
 <div class="carouseltitle">
   <div class="rubrictitle">
     <h2>
-      <a href="<?php echo $category->getLink() ?>" class="underline">
+      <a href="<?php echo $productTagCategory->getLink() ?>" class="underline">
         <?php echo $category->getName()?>
       </a>
     </h2>
