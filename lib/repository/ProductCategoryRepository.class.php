@@ -78,6 +78,9 @@ class ProductCategoryRepository
   public function fromArray(array $categoryDataList)
   {
     $list = array();
+    if(is_null($categoryDataList) || count($categoryDataList) == 0){
+      return $list;
+    }
     foreach ($categoryDataList as $categoryData)
     {
       $list[] = $item = new ProductCategoryEntity($categoryData);
