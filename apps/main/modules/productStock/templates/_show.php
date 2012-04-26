@@ -27,13 +27,13 @@
 			<table cellpadding=0 cellspacing=0>
 				<td class='bInShop__eItemInfo'>
 					<div>
-						<h3>Артикул #<span data-bind="text: shortcut"></span> 
+						<h3>Артикул #<span data-bind="text: shortcut"></span>, 
 							<span data-bind="text: priceTxt"></span> <span class="rubl">p</span></h3>
 						Выберите магазин для резервирования товара, а мы подготовим его к вашему приезду
 					</div>
 				</td>
 				<!-- ko if:!showMap() -->
-				<td class='bInShop__eItemIcon'>
+				<td class='bInShop__eItemIcon' data-bind="css: { mNoArrows : todayShops.length == 0 }">
 					<div class='bInShop__eLeftArrow'>
 						<div class='bInShop__eRightArrow'>
 							<img alt="" data-bind="attr: {src: icon}"/>
@@ -62,7 +62,7 @@
 						</div>
 					</div>
 					<div class='bInShop__eSelectorsWrap'>
-						г. Москва<br>
+						<span data-bind="text: region"></span><br/>
 						<a class='bGrayButton jsChangeRegion' href="">Другой город</a>
 					</div>
 					<div class='bInShop__eSelectorsLong'></div>
@@ -70,13 +70,23 @@
 			</table>
 		</div>
 		<div class='bInShop__eBottom'>
-			<!-- ko if: showMap() -->
-			<table cellpadding="0" cellspacing="0">
+		
+			
+			<table cellpadding="0" cellspacing="0" data-bind="style: { display: showMap() ? 'table' : 'none' }">
 				<tr><td>
-					<div class="bMapShops__eMapWrap"></div>
+					<div class="bMapShops__eMapWrap" id="stockmap"></div>
 				</td></tr>
 			</table>
-			<!-- /ko -->
+			<div id="map-info_window-container" data-bind="with: pickedShop" style="display:none">
+				<div class='bMapShops__ePopupRel'>
+					<h3 data-bind="text: address"></h3>
+					<span data-bind="text: regtime"></span><br>
+					<span class="shopnum" style="display:none" data-bind="text: id"></span>
+					<a href class='bGrayButton shopchoose' data-bind="">Забрать из этого магазина</a>
+				</div>
+			</div>								
+			
+
 			<!-- ko if: !showMap() -->
 			<table cellpadding="0" cellspacing="0">
 				<tr>
@@ -91,7 +101,7 @@
 						<!-- /ko -->
 					</div>
 					<!-- ko if: selectedS().lbl == 'td' -->
-					<a class='bBigOrangeButton' href="">Зарезервировать</a>
+					<a class='bBigOrangeButton' href="" data-bind="click: reserveItem">Зарезервировать</a>
 					<!-- /ko -->
 				</td>
 				<!-- /ko -->
@@ -106,7 +116,7 @@
 						<!-- /ko -->
 					</div>
 					<!-- ko if: selectedS().lbl == 'tmr' -->
-					<a class='bBigOrangeButton' href="">Зарезервировать</a>
+					<a class='bBigOrangeButton' href="" data-bind="click: reserveItem">Зарезервировать</a>
 					<!-- /ko -->
 				</td>
 				<!-- /ko -->

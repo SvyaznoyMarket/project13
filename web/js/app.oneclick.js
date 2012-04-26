@@ -13,6 +13,7 @@ $(document).ready(function() {
 		}	
 		return mapCenter
 	}	
+	
 	/* MAP Obj */
 	function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
 		var self         = this,
@@ -509,10 +510,12 @@ $(document).ready(function() {
 		var inputUrl  = $('#stockmodel').attr('link-input')
 		var outputUrl = $('#stockmodel').attr('link-output')
 console.info(Model)
-
+		
+		var currentDate = (new Date()).toISOString().substr(0,10)
+		
 		/* ViewModel */
 		function StockViewModel() {
-//console.info('IN DEL ', Deliveries)	
+console.info('IN DEL ', Deliveries)	
 			
 			var self = this	
 			self.showMap = ko.observable(false)
@@ -521,7 +524,7 @@ console.info(Model)
 			self.price     = Model.jsprice
 			self.icon      = Model.jssimg
 			self.shortcut  = Model.jsshortcut
-			
+			self.region    = Model.jsregion
 			self.today = ko.observable(true)
 			
 			self.priceTxt = ko.computed(function() {
@@ -549,9 +552,27 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 						}
 				return out	
 			}
-			self.todayShops = parseDateShop( Deliveries['self'].dates[0].shopIds, 'td' )
-			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[1].shopIds, 'tmr' )
-//			self.todayShops = []
+			//find today index
+			var tind = -1
+			for(var i=0, l=Deliveries['self'].dates.length; i<l; i++)
+				if( Deliveries['self'].dates[i].value === currentDate ) {
+					tind = i
+					break
+				} else {
+					if( Date.parse( currentDate ) == Date.parse( Deliveries['self'].dates[i].value ) ) {
+						tind = i
+						break
+					}
+				}
+			
+			if( tind < 0 ) {
+				self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
+			} else {
+				self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
+				self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
+			}
+
+			self.pickedShop = ko.observable( {address:'', regtime: '', id: ''} )
 			self.selectedS = ko.observable( {} )
 			var ending = 'ах'
 			if( self.todayShops.length % 10 === 1 )
@@ -565,31 +586,45 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			self.tomorrowH2 += ' <span class="mRt">завтра</span> в '+ self.tomorrowShops.length + ' магазин'+ ending +':'
 			
 			self.toggleView = function( flag ) {		
-				self.showMap( flag )	
+				self.showMap( flag )
+				if( flag )
+					self.showMarkers()	
 				return false
 			}
 			
 			self.toggleTerm = function( flag ) {
 				//self.today( !self.today() )
 				self.today( flag )
-				return false
-			}
-			
-			self.changeRegion = function() {
+				self.showMarkers()
 				return false
 			}
 			
 			self.chooseShop = function( item ) {
 				self.selectedS( item )
 			}
-			self.chooseTomorrowShop = function() {
-			}			
+
+			self.showMarkers = function() {
+				var markersPull = {}
+				var tmp = self.today() ? self.todayShops : self.tomorrowShops
+				for(var i=0, l = tmp.length; i<l; i++) {
+					var key = tmp[i].id + ''
+					markersPull[ key ] = {
+						id: tmp[i].id,
+						name: tmp[i].address,
+						regtime: tmp[i].regtime,
+						latitude: tmp[i].latitude,
+						longitude: tmp[i].longitude
+					}
+				}
+				window.regionMap.showMarkers( markersPull )				
+			}
+			
+			self.reserveItem = function( item, e) {
+console.info('reserveItem')				
+				e.preventDefault()
+				//do some work
+			}		
 		} //MVM		
-		
-		/* Handlers */
-		$('body').delegate( '.jsChangeRegion', 'click', function(e) {
-			e.preventDefault()
-		})
 		
 		/* Load Data from Server */
 		var postData = {
@@ -598,16 +633,28 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			region_id: Model.jsregionid*1
 		}
 		
-		
 		$.post( inputUrl, postData, function(data) {
-			$('.bOrderPreloader').hide()
-			
 			if( !data.success ) {
+				//SHOW WARNING, NO MVM
+				//$('#noDlvr').show()
+				return false
+			}
+			
+			Deliveries = data.data
+			var le = 0
+			for(var key in Deliveries)
+				le++
+			if( 'currentDate' in data )
+				if( data.currentDate != '' )
+					currentDate = data.currentDate
+				
+			$('.bOrderPreloader').hide()	
+			if( le === 0 ) {
 				//SHOW WARNING, NO MVM
 				$('#noDlvr').show()
 				return false
 			}
-			Deliveries = data.data
+			
 			selfAvailable = 'self' in Deliveries
 			if( selfAvailable ) {
 				mapCenter = calcMCenter( Deliveries['self'].shops )
@@ -615,12 +662,12 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			MVM = new StockViewModel() 
 			ko.applyBindings(MVM) // this way, Lukas!
 				
-			/*
+			
 			if( selfAvailable ) {
-				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIW )
-				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'stockmap' )
+			//	window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 			}
-			*/
+			
 			
 			$('#stockBlock').show()
 		})	
