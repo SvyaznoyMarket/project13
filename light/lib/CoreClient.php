@@ -1,8 +1,6 @@
 <?php
 
-interface CoreLoggerInterface{
-  public function log($message, $lvl);
-}
+require_once(__DIR__.'/log4php/Logger.php');
 
 class CoreClientException extends Exception
 {
@@ -20,7 +18,7 @@ class CoreClient
   private $resources = array();
 
   /**
-   * @var CoreLoggerInterface[]
+   * @var Logger[]
    */
   private $loggers = array();
 
@@ -32,6 +30,7 @@ class CoreClient
     static $instance;
     if (!$instance) {
       $instance = new CoreClient(array('userapi_url' => CORE_V2_USERAPI_URL, 'client_code'=> CORE_V2_USERAPI_CLIENT_CODE));
+      $instance->addLogger('CoreClient', Logger::getLogger('CoreClient'));
     }
     return $instance;
   }
@@ -43,7 +42,7 @@ class CoreClient
 
   private function __clone(){}
 
-  public function addLogger($name, CoreLoggerInterface $logger){
+  public function addLogger($name, Logger $logger){
     $this->loggers[$name] = $logger;
   }
 
@@ -75,8 +74,8 @@ class CoreClient
       if ($info['http_code'] >= 300) {
         throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
+      $this->log('Core response: ' . $response, 'info');
       $responseDecoded = $this->decode($response);
-      $this->log('Core response data: ' . $this->encode($responseDecoded), 'info');
       curl_close($connection);
       return $responseDecoded;
     }
@@ -274,9 +273,29 @@ class CoreClient
   }
 
   private function log($message, $lvl){
+//    echo $message."\r\n";
     if(count($this->loggers) > 0){
       foreach($this->loggers as $logger){
-        $logger>log($message, $lvl);
+        switch($lvl){
+          case 'error':
+            $logger->error($message);
+            break;
+          case 'info':
+            $logger->info($message);
+            break;
+          case 'debug':
+            $logger->debug($message);
+            break;
+          case 'trace':
+            $logger->trace($message);
+            break;
+          case 'warning':
+            $logger->warn($message);
+            break;
+          case 'fatal':
+            $logger->fatal($message);
+            break;
+        }
       }
     }
   }
@@ -288,7 +307,7 @@ class CoreV1Client
   private $parameters = array();
 
   /**
-   * @var CoreLoggerInterface[]
+   * @var Logger[]
    */
   private $loggers = array();
 
@@ -319,11 +338,13 @@ class CoreV1Client
     curl_setopt ($this->connection, CURLOPT_HEADER, 0);
     curl_setopt($this->connection, CURLOPT_POST, true);
     curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
+
+    $this->addLogger('CoreClient', Logger::getLogger('CoreClient'));
   }
 
   private function __clone(){}
 
-  public function addLogger($name, CoreLoggerInterface $logger){
+  public function addLogger($name, Logger $logger){
     $this->loggers[$name] = $logger;
   }
 
@@ -380,7 +401,7 @@ class CoreV1Client
     $this->log('Trying to pass authentification... '. $data, 'info');
     $response = $this->send($data);
 
-    $this->log($response, 'debug');
+    $this->log('Response: '.$response, 'debug');
     $response = json_decode($response, true);
 
     if (isset($response['error']))
@@ -415,9 +436,29 @@ class CoreV1Client
   }
 
   private function log($message, $lvl){
+    //    echo $message."\r\n";
     if(count($this->loggers) > 0){
       foreach($this->loggers as $logger){
-        $logger>log($message, $lvl);
+        switch($lvl){
+          case 'error':
+            $logger->error($message);
+            break;
+          case 'info':
+            $logger->info($message);
+            break;
+          case 'debug':
+            $logger->debug($message);
+            break;
+          case 'trace':
+            $logger->trace($message);
+            break;
+          case 'warning':
+            $logger->warn($message);
+            break;
+          case 'fatal':
+            $logger->fatal($message);
+            break;
+        }
       }
     }
   }
