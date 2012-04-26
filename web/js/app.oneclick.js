@@ -27,6 +27,7 @@ $(document).ready(function() {
 		this.updateInfoWindowTemplate = function( marker ) {
 			if( updateInfoWindowTemplate )
 				updateInfoWindowTemplate( marker )
+			infoWindowTemplate = templateIWnode.prop('innerHTML')	
 		}
 		
 		function create() {
@@ -572,7 +573,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
 			}
 
-			self.pickedShop = ko.observable( {address:'', regtime: '', id: ''} )
+			self.pickedShop = ko.observable( self.todayShops[0] )
 			self.selectedS = ko.observable( {} )
 			var ending = 'ах'
 			if( self.todayShops.length % 10 === 1 )
@@ -601,6 +602,25 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			
 			self.chooseShop = function( item ) {
 				self.selectedS( item )
+			}
+			
+			self.chooseShopById = function( shopnum ) {
+				for(var i=0, l=self.shops.length; i<l; i++) {
+					if( self.shops[i].id == shopnum ) {
+						self.selectedS( self.shops[i] )
+						break
+					}
+				}
+			}
+
+			self.pickShopOnMap = function( shid ) {
+console.info('pickShopOnMap',shid)			
+				for(var i=0, l=self.shops.length; i<l; i++)
+					if( self.shops[i].id == shid ) {
+						console.info('eur', i)
+						self.pickedShop( self.shops[i] )
+						return
+					}
 			}
 
 			self.showMarkers = function() {
@@ -660,17 +680,25 @@ console.info('reserveItem')
 				mapCenter = calcMCenter( Deliveries['self'].shops )
 			}			
 			MVM = new StockViewModel() 
-			ko.applyBindings(MVM) // this way, Lukas!
+			ko.applyBindings( MVM , $('#stockBlock')[0] ) // this way, Lukas!
 				
 			
 			if( selfAvailable ) {
-				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'stockmap' )
-			//	window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'stockmap', updateIW )
+				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 			}
 			
 			
 			$('#stockBlock').show()
 		})	
 		
+		function pickStoreMVM( node ) {	
+			var shopnum = $(node).parent().find('.shopnum').text()
+			MVM.chooseShopById( shopnum )
+		}
+		function updateIW( marker ) {
+			if( typeof(MVM) !== 'undefined' )
+				MVM.pickShopOnMap( marker.id )
+		}		
 	} // Page 'Where to buy?'
 });	

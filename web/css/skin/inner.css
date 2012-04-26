@@ -3240,7 +3240,16 @@ DT.bCtg__eOrange{
 		padding-left: 15px;
 		font: 18px Tahoma, sans-serif;
 		}
-		
+.bMapShops__ePopupRel h3 {
+    font: 20px 'EnterTypeRegular';
+    margin: 0 0 15px;
+}
+.bMapShops__ePopupRel span {
+    font: 14px 'EnterTypeRegular';
+}
+.bMapShops__ePopupRel .bGrayButton {
+    margin: 15px 0 0;
+}		
 /* bFormTable */
 .bNLogo{
 	float: left;

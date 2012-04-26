@@ -77,10 +77,10 @@
 					<div class="bMapShops__eMapWrap" id="stockmap"></div>
 				</td></tr>
 			</table>
-			<div id="map-info_window-container" data-bind="with: pickedShop" style="display:none">
+			<div id="map-info_window-container" data-bind="with: pickedShop()" style="display:none">
 				<div class='bMapShops__ePopupRel'>
 					<h3 data-bind="text: address"></h3>
-					<span data-bind="text: regtime"></span><br>
+					<span>Работает </span><span data-bind="text: regtime"></span><br>
 					<span class="shopnum" style="display:none" data-bind="text: id"></span>
 					<a href class='bGrayButton shopchoose' data-bind="">Забрать из этого магазина</a>
 				</div>
