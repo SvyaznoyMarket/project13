@@ -43,7 +43,7 @@ class productStockComponents extends myComponents
       'jsshortcut' =>  $this->product->getArticle(),
       'jsitemid' =>  $this->product->getCoreId(),
       'jsregionid' => $this->getUser()->getRegionCoreId(),
-      'jsregionName' => $this->getUser()->getRegion('name')
+      'jsregion' => $this->getUser()->getRegion('name')
     );
     $this->setVar('json', json_encode($json));
     $markers = array();
