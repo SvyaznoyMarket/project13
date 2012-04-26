@@ -407,7 +407,7 @@ $(document).ready(function(){
 		})
 	}
 	
-	$('#jsregion').click( function() {
+	$('body').delegate('#jsregion, .jsChangeRegion', 'click', function() {
 		if( !$(this).data('run') ) {
 			$(this).data('run', true)
 			getRegions()
