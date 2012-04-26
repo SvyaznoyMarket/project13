@@ -47,6 +47,25 @@ product_accessory:
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 
+# @deprecated
+# фильтр каталога товаров
+productCatalog_filter:
+  url:   /catalog/:productCategory/_filter
+  param: { module: productCatalog_, action: category }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# @deprecated
+# тэги каталога товаров
+productCatalog_tag:
+  url:   /catalog/:productCategory/_tag
+  param: { module: productCatalog_, action: category }
+  class:   myProductCatalogRoute
+  options: { model: ProductCategory, type: object, method: getForRoute }
+  requirements:
+    productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+
 # @core
 # каталог товаров
 productCatalog:
