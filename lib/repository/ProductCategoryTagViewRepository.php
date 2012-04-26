@@ -16,8 +16,7 @@ class ProductCategoryTagViewRepository
     /** @var $list ProductCategoryTagView[] */
     $list = array();
     $filterList = array();
-    foreach ($categoryList as $category)
-    {
+    foreach ($categoryList as $category) {
       $list[] = $tag = new ProductCategoryTagView();
       $filterList[] = array(
         'limit' => $limit,
@@ -30,26 +29,27 @@ class ProductCategoryTagViewRepository
       );
       $tag->category = $category;
     }
-    $data = RepositoryManager::getListing()->getListingMultiple($filterList);
-    $idList = array();
-    // clear list
-    foreach ($data as $key => $listingData) {
-      $tag = $list[$key];
-      $tag->productCount = (int)$listingData['count'];
-      if ($tag->productCount) {
-        $tag->productList = array_flip($listingData['list']);
-        $idList = array_merge($idList, $listingData['list']);
+    if ($filterList) {
+      $idList = array();
+      $data = RepositoryManager::getListing()->getListingMultiple($filterList);
+      // clear list
+      foreach ($data as $key => $listingData) {
+        $tag = $list[$key];
+        $tag->productCount = (int)$listingData['count'];
+        if ($tag->productCount) {
+          $tag->productList = array_flip($listingData['list']);
+          $idList = array_merge($idList, $listingData['list']);
+        }
+        else
+          unset($list[$key]);
       }
-      else
-        unset($list[$key]);
+      if ($idList)
+        foreach ($productRepo->getListById($idList, true) as $entity)
+          /** @var $tag ProductCategoryTagView */
+          foreach ($list as $tag)
+            if (array_key_exists($entity->getId(), $tag->productList))
+              $tag->productList[$entity->getId()] = $entity;
     }
-
-    if ($idList)
-      foreach ($productRepo->getListById($idList, true) as $entity)
-        /** @var $tag ProductCategoryTagView */
-        foreach ($list as $tag)
-          if (array_key_exists($entity->getId(), $tag->productList))
-            $tag->productList[$entity->getId()] = $entity;
     return $list;
   }
 }
