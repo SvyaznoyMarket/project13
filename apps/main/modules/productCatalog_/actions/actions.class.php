@@ -305,8 +305,12 @@ class productCatalog_Actions extends myActions
         /** @var $productCategory ProductCategory */
         /** @var $self myActions */
         $rootCategory = reset($categoryTree);
-        $id = $productCategory->hasChildren() ? $productCategory->getCoreId() : $productCategory->getCoreParentId();
-        $quantity = $rootCategory->getNode($id)->getProductCount();
+        if($node = $rootCategory->getNode($productCategory->core_id)){
+          $quantity = $node->getProductCount();
+        }
+        else{
+          $quantity = 0;
+        }
         $self->setVar('quantity', $quantity);
         $self->setVar('categoryTree', $categoryTree);
       },
