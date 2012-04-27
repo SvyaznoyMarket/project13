@@ -895,7 +895,11 @@ $(document).ready(function(){
 					if( current + 1 >= buffer ) { // we have to get new pull from server
 						$(nodes.next).css('opacity','0.4') // addClass dont work ((
 						ajaxflag = true
-						$.get( $(nodes.prev).attr('data-url') + '?page=' + (buffer+1), function(data) {
+						var getData = []
+						if( $('form.product_filter-block').length )
+							getData = $('form.product_filter-block').serializeArray()
+						getData.push( {name: 'page', value: buffer+1 } )	
+						$.get( $(nodes.prev).attr('data-url') , getData, function(data) {
 							buffer++
 							$(nodes.next).css('opacity','1')
 							ajaxflag = false
