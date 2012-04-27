@@ -120,7 +120,7 @@ $(document).ready(function() {
 			var html = '<h4>Как получить заказ?</h4><ul>', i, row
 			for (i in data) {
 				row = data[i]
-				if (row.typeId == 3) {
+				if (row.token == 'self') {
 					html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине ' +
 						formatDateText(row.date) + '</h5><div>&mdash; <a target="blank" href="' +
 						delivery_cnt.data().shoplink + '">В каких магазинах ENTER можно забрать?</a></div></li>';
@@ -131,15 +131,8 @@ $(document).ready(function() {
 				html += '<li><h5>Можно заказать сейчас с доставкой</h5>';
 				for (i in data) {
 					row = data[i];
-					if (row.typeId == 2) {
-						html += '<div>&mdash; Можем доставить '+formatDateText(row.text)+formatPrice(row.price)+'</div>';
-						data.splice(i, 1);
-					}
-				}
-				for (i in data) {
-					row = data[i];
-					if (row.typeId == 1) {
-						html += '<div>&mdash; Можем доставить '+formatDateText(row.text)+formatPrice(row.price)+'</div>';
+					if (row.token == 'standart') {
+						html += '<div>&mdash; Можем доставить '+formatDateText(row.date)+'</div>';
 						data.splice(i, 1);
 					}
 				}
