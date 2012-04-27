@@ -423,7 +423,7 @@ $(document).ready(function() {
 			self.validateForm = function() {
 				if( self.noDelivery() )
 					return false
-				if( self.formStatus() !== 'typing' ) // double or repeated click
+				if( self.formStatus() !== 'typing' && self.formStatus() !== 'reserve' ) // double or repeated click
 					return 
 				//change title
 				self.formStatus('process')
@@ -440,7 +440,6 @@ $(document).ready(function() {
 			}
 						
 			self.sendData = function() {
-				var outputUrl = $('.order1click-link-new').attr('link-output')
 				self.formStatus('sending')
 				var postData = {
 					'order[product_quantity]' : self.quantity(),
@@ -470,7 +469,7 @@ $(document).ready(function() {
 
 	/* StockViewModel */
 	function StockViewModel() {
-console.info('IN DEL ', Deliveries)	
+//console.info('IN DEL ', Deliveries)	
 		
 		var self = this	
 		self.showMap = ko.observable(false)
@@ -626,6 +625,8 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	if( $('.order1click-link-new').length ) {
 		
 		var Model = $('.order1click-link-new').data('model')
+		var inputUrl = $('.order1click-link-new').attr('link-input')		
+		var outputUrl = $('.order1click-link-new').attr('link-output')
 //console.info( 'MODEL: ', Model)		
 		Deliveries = { // zaglushka
 			'courier': {
@@ -641,7 +642,6 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		
 		/* Load Data from Server */
 		oneClickIsReady = false
-		var inputUrl = $('.order1click-link-new').attr('link-input')
 		var postData = {
 			product_id: Model.jsitemid,
 			product_quantity: 1,
@@ -704,7 +704,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		var Model     = $('#stockmodel').data('value')
 		var inputUrl  = $('#stockmodel').attr('link-input')
 		var outputUrl = $('#stockmodel').attr('link-output')
-console.info(Model)
+//console.info(Model)
 		var selfAvailable = false
 		var currentDate = (new Date()).toISOString().substr(0,10)
 
