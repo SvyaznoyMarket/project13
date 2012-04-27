@@ -200,9 +200,9 @@ class productSoaComponents extends myComponents
                 //continue;
             }
             if (isset($prop['group_id']) && $prop['group_id']) {
-                if (is_array($prop['option_id'])) {
+                if (isset($prop['option']) && is_array($prop['option'])) {
                     $valueAr = array();
-                    foreach ($prop['option_id'] as $option) {
+                    foreach ($prop['option'] as $option) {
                         $valueAr[] = $option['value'];
                     }
                     $prop['value'] = implode(', ', $valueAr);
@@ -255,11 +255,13 @@ class productSoaComponents extends myComponents
                         $prodPropValue[$prod->id][$prop['id']] = $prop['value'];
                     } else {
                         $valueAr = array();
-                        foreach ($prop['option_id'] as $option) {
+
+                        foreach ($prop['option'] as $option) {
                             $valueAr[] = $option['value'];
                         }
                         $prodPropValue[$prod->id][$prop['id']] = implode(',', $valueAr);
                     }
+
                     $propType[$prop['id']] = $prop['type_id'];
                 }
             }
@@ -327,18 +329,7 @@ class productSoaComponents extends myComponents
                 }
             }
             //print_r($property);
-            $needSort = false;
-            if ($propType[$prop['id']] == 3) {
-                $needSort = true;
-            } elseif ($propType[$prop['id']] == 5) {
-                $a = current($property['products']);
-                if (preg_match('/^\d+$/', $a['value'])) {
-                    $needSort = true;
-                }
-            }
-            if ($needSort) {
-                ksort($property['products']);
-            }
+            ksort($property['products']);
             $properties[] = $property;
         }
         $this->setVar('properties', $properties, true);
