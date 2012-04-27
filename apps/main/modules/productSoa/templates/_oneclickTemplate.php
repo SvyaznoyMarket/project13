@@ -27,7 +27,7 @@
 					<tr data-bind="visible: noDelivery()"><td colspan="2"><h2 class="red">Доставка и самовывоз невозможны!</h2></td></tr>
 					<tr data-bind="visible: !noDelivery()"><td width="200">Способ получения заказа:</td>
 						<td>
-							<div class='bSelect mFastInpSmall' data-bind="css: { mDisabled : disabledSelectors }">
+							<div class='bSelect mFastInpSmall' data-bind="css: { mDisabled : (disabledSelectors() || stableType() ) }">
 								<span data-bind="text: chosenDlvr().name"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>
@@ -37,7 +37,7 @@
 								</div>
 							</div>
 							
-							<div class='bSelect mFastInpSmall' data-bind="css: { mDisabled : disabledSelectors }">
+							<div class='bSelect mFastInpSmall' data-bind="css: { mDisabled : disabledSelectors() }">
 								<span data-bind="text: chosenDate().name"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>
@@ -50,7 +50,7 @@
 					<!-- ko if: chosenDlvr().type == 'self' -->	
 					<tr data-bind="visible: !noDelivery()"><td>Магазин для самовывоза:</td>
 						<td>
-							<div class='bSelect mFastInpBig' data-bind="css: { mDisabled : disabledSelectors }">
+							<div class='bSelect mFastInpBig' data-bind="css: { mDisabled : disabledSelectors() }">
 								<span data-bind="text: chosenShop().address"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>

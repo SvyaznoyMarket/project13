@@ -153,6 +153,9 @@ $(document).ready(function() {
 			self.formStatusTxt = ko.computed( function() {
 				var status = ''
 				switch( self.formStatus() ) {
+					case 'reserve':
+						status = 'Зарезервировать'
+					break				
 					case 'typing':
 						status = 'Отправить заказ'
 					break
@@ -189,6 +192,7 @@ $(document).ready(function() {
 			
 			self.disabledSelectors = ko.observable( false )
 			self.noQBar            = ko.observable( false )
+			self.stableType        = ko.observable( false )
 			
 			// for dynModel
 			self.chosenDlvr = ko.observable( {} )
@@ -262,13 +266,31 @@ $(document).ready(function() {
 			}
 			
 			self.preparedData = function( data ) {
-console.info(data)			
-				self.disabledSelectors( true )
-				self.noQBar( true )
-				if( 'date' in data )
-					self.chosenDate( data.date )
-				if( 'shop' in data )
-					self.chosenShop( data.shop )				
+//console.info(data)			
+				if( data.type === 'self' ) {
+					self.formStatus('reserve')
+					for(var i=0, l=self.dlvrs().length; i<l; i++ )
+						if( self.dlvrs()[i].type == 'self' ) {
+							self.chosenDlvr( self.dlvrs()[i]  )
+							break
+						}						
+					self.disabledSelectors( true )
+					self.noQBar( true )
+					if( 'date' in data )
+						self.chosenDate( data.date )
+					if( 'shop' in data )
+						self.chosenShop( data.shop )
+				} else if( data.type === 'courier' ) {
+					self.formStatus('reserve')
+					for(var i=0, l=self.dlvrs().length; i<l; i++ )
+						if( self.dlvrs()[i].type != 'self' ) {
+							self.chosenDlvr( self.dlvrs()[i]  )
+							break
+						}	
+					self.disabledSelectors( false )
+					self.stableType( true )
+					self.noQBar( true )
+				}
 			}
 			
 			self.loadData = function( momentq, direction ) {
@@ -314,7 +336,7 @@ console.info(data)
 						if( item.shopIds.length > 0 ) {
 							self.shops.removeAll()// = ko.observableArray( Deliveries['self'].shops.slice(0) )
 							for(var key in Deliveries['self'].shops ) {
-								console.info( Deliveries['self'].shops[key], item.shopIds.indexOf( Deliveries['self'].shops[key].id ))
+//console.info( Deliveries['self'].shops[key], item.shopIds.indexOf( Deliveries['self'].shops[key].id ))
 								if( item.shopIds.indexOf( Deliveries['self'].shops[key].id ) !== -1 )
 									self.shops.push( Deliveries['self'].shops[key] )
 							}
@@ -470,6 +492,7 @@ console.info('IN DEL ', Deliveries)
 		
 		self.todayShops = []
 		self.tomorrowShops = []
+		self.activeCourier = Deliveries.length > 1
 		
 		parseDateShop = function( numbers, label ) {
 			var out = []
@@ -573,18 +596,27 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			window.regionMap.showMarkers( markersPull )				
 		}
 		
-		self.reserveItem = function( ) {
-//console.info('reserveItem')				
-			//e.preventDefault()
-			//do some work
-			$('#order1click-container-new').lightbox_me( { } )
+		self.reserveItem = function() {
+//console.info('reserveItem')
 			var MVMinterface = {
+				type: 'self',
 				date: self.today() ? Deliveries['self'].dates[ tind ] : Deliveries['self'].dates[ tind + 1 ],
 				shop: self.selectedS()
 			}
 			OC_MVM.preparedData( MVMinterface )
+			$('#order1click-container-new').lightbox_me( { } )
 			return false
-		}		
+		}	
+		
+		self.onlyCourier = function() {
+			var MVMinterface = {
+				type: 'courier'
+			}
+			OC_MVM.preparedData( MVMinterface )
+			$('#order1click-container-new').lightbox_me( { } )
+			return false
+		}
+			
 	} //StockViewModel	
 			
 	/////////////////////////////////////////
@@ -693,6 +725,7 @@ console.info(Model)
 			var le = 0
 			for(var key in Deliveries)
 				le++
+			Deliveries.length = le	
 			if( 'currentDate' in data )
 				if( data.currentDate != '' )
 					currentDate = data.currentDate
@@ -709,7 +742,7 @@ console.info(Model)
 				mapCenter = calcMCenter( Deliveries['self'].shops )
 			}			
 			MVM = new StockViewModel() 
-			ko.applyBindings( MVM , $('#stockBlock')[0] ) // this way, Lukas!
+			ko.applyBindings( MVM , $('#stockCntr')[0] ) // this way, Lukas!
 			
 			OC_MVM = new OneCViewModel() 
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!

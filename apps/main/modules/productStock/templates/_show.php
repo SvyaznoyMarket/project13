@@ -18,7 +18,7 @@
 	</div>		
 </div>
 		
-<div class="pb40">
+<div class="pb40" id="stockCntr">
 	<div class='bOrderPreloader'>
 		<span>Запрос данных...</span><img src='/images/bPreloader.gif'>
 	</div>
@@ -126,6 +126,10 @@
 			
 		</div>
 	</div>
-	<!--div class='bInShop__eNoTime'>Некогда приезжать? <a href>Купите этот товар с доставкой</a></div-->   
+	
+	<div class='bInShop__eNoTime' style="display:none" data-bind="visible: activeCourier">
+		Некогда приезжать? <a href="" data-bind="click: onlyCourier">Купите этот товар с доставкой</a>
+	</div>
+	
 </div>
 <div class="clear"></div>
