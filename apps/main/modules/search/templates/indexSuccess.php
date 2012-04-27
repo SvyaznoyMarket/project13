@@ -35,4 +35,4 @@
   -->
 <?php end_slot() ?>
 
-<?php include_partial('productCatalog/product_list', array('productPager' => $pagers['product'], 'noSorting' => true, 'productType' => $productType)) ?>
+<?php include_partial('product/product_list', array('productPager' => $pagers['product'], 'noSorting' => true, 'productType' => $productType)) ?>

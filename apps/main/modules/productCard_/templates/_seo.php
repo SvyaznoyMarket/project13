@@ -1,5 +1,3 @@
-<?php //include_component('productCatalog', 'navigation_seo', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
-
 <?php slot('seo_counters_advance') ?>
   <?php //include_component('productCategory', 'seo_counters_advance', array('unitId' => $product->getMainCategory()->root_id)) ?>
   <script type="text/javascript">

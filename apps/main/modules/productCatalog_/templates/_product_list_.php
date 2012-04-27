@@ -43,7 +43,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
   } else {
     //страница каталога (любая. возможно, с фильтрами и тегами)
     $dataAr['sf_subject'] = $sf_data->getRaw('productCategory');
-    $infinityUrl = url_for('productCatalog__categoryAjax', $dataAr);
+    $infinityUrl = url_for('productCatalog_categoryAjax', $dataAr);
   }
   #echo $infinityUrl .'====$infinityUrl';
   ?>
@@ -62,7 +62,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 <?php include_component('product', 'list_view', array('view' => $view)) ?>
 <?php endif ?>
 
-<?php if (!isset($noSorting) || !$noSorting): ?>
+<?php if (count($productPager->getLinks()) > 1 && (!isset($noSorting) || !$noSorting)): ?>
 <?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?>
 <?php endif ?>
 
@@ -70,8 +70,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 <div class="line"></div>
 <?php endif ?>
 
-<?php //include_component('product', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view,)) ?>
-<?php include_partial('list_', array('productPager' => $productPager, 'ajax_flag' => false, 'view' => $view,)) ?>
+<?php render_partial('product_/templates/_list_.php', array('productPager' => $productPager, 'view' => $view,)) ?>
 
 <?php if (count($productPager->getLinks()) > 1): ?>
 <div data-url="<?php echo $infinityUrl; ?>"

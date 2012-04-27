@@ -58,7 +58,7 @@ class RegionRepository
    */
   public function getDefaultRegionId()
   {
-    sfContext::getInstance()->getUser()->getRegion('core_id');
+    return sfContext::getInstance()->getUser()->getRegion('core_id');
   }
 
   public function getById($id)

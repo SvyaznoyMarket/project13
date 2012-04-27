@@ -6,17 +6,17 @@
 class ProductCategoryFilterRepository
 {
   /**
-   * @param $regionId
    * @param $categoryId
    * @return ProductCategoryFilterEntity[]
    */
-  public function getList($regionId,$categoryId){
+  public function getList($categoryId)
+  {
     $response = CoreClient::getInstance()->query('listing.filter', array(
-      'region_id' => (int)$regionId,
+      'region_id' => (int)RepositoryManager::getRegion()->getDefaultRegionId(),
       'category_id' => (int)$categoryId,
     ));
     $list = array();
-    foreach($response as $item){
+    foreach ($response as $item) {
       $list[] = new ProductCategoryFilterEntity($item);
     }
     return $list;
@@ -41,13 +41,15 @@ class ProductCategoryFilterRepository
    * @param $categoryId
    * @param callback $callback First parameter is ProductCategoryFilterEntity[]
    */
-  public function getListAsync($regionId, $categoryId, $callback){
+  public function getListAsync($regionId, $categoryId, $callback)
+  {
     CoreClient::getInstance()->addQuery('listing.filter', array(
       'region_id' => (int)$regionId,
       'category_id' => (int)$categoryId,
-    ), array(), function(array $response) use ($callback) {
+    ), array(), function(array $response) use ($callback)
+    {
       $list = array();
-      foreach($response as $item){
+      foreach ($response as $item) {
         $list[] = new ProductCategoryFilterEntity($item);
       }
       $callback($list);

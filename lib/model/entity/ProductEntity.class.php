@@ -680,4 +680,13 @@ class ProductEntity
   {
     return reset($this->labelList);
   }
+
+  public function isInCart()
+  {
+    /** @var $user myUser */
+    $user = sfContext::getInstance()->getUser();
+    /** @var $cart UserCart */
+    $cart = $user->getCart();
+    return $cart->hasProduct($this->id);
+  }
 }

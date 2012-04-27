@@ -11,10 +11,10 @@
 <?php end_slot() ?>
 
 <?php slot('left_column') ?>
-<?php include_component('productCatalog_', 'leftCategoryList', array('productCategory' => $productCategory)) ?>
-<?php include_partial('filter_', $sf_data) ?>
-<?php include_partial('default/banner_left') ?>
+<?php require '_leftCategoryList_.php' ?>
+<?php require '_filter_.php' ?>
+<?php require APP_MAIN_MODULES_PATH.'/default/templates/_banner_left.php' ?>
 <?php include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
-<?php include_partial('product_list_', $sf_data) ?>
+<?php require '_product_list_.php' ?>

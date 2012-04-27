@@ -1,1 +1,1 @@
-<?php echo include_partial('productCatalog/product_list_ajax', $sf_data) ?>
+<?php echo include_partial('product/product_list_ajax', $sf_data) ?>

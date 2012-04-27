@@ -47,12 +47,16 @@ class ProductCategoryEntity
   private $productViewId;
 
   /* @var ProductCategoryEntity|null */
-  private $parent = null;
+  private $parent;
+  /** @var int */
+  private $parentId;
 
   /* @var ProductCategoryEntity[] */
-  private $child = array();
+  private $children = array();
   /** @var string */
   private $seoHeader;
+  /** @var int */
+  private $product_count;
 
   public function __construct(array $data = array())
   {
@@ -69,6 +73,8 @@ class ProductCategoryEntity
     if (array_key_exists('level', $data)) $this->setLevel($data['level']);
     if (array_key_exists('seo_header', $data)) $this->setSeoHeader($data['seo_header']);
     if (array_key_exists('product_view_id', $data)) $this->setProductViewId($data['product_view_id']);
+    if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
+    if (array_key_exists('product_count', $data)) $this->setProductCount($data['product_count']);
   }
 
   public function setId($id)
@@ -99,6 +105,17 @@ class ProductCategoryEntity
   public function getMediaImage()
   {
     return $this->mediaImage;
+  }
+
+  public function getMediaImageUrl($size = 0)
+  {
+    if ($this->mediaImage) {
+      $urls = sfConfig::get('app_category_photo_url');
+      return $urls[$size] . $this->mediaImage;
+    }
+    else {
+      return null;
+    }
   }
 
   public function setIsActive($isActive)
@@ -191,19 +208,19 @@ class ProductCategoryEntity
     return $this->rgt;
   }
 
-  public function setChild(array $child)
+  public function setChildren(array $child)
   {
-    $this->child = $child;
+    $this->children = $child;
   }
 
   public function addChild($child)
   {
-    $this->child[] = $child;
+    $this->children[] = $child;
   }
 
-  public function getChild()
+  public function getChildren()
   {
-    return $this->child;
+    return $this->children;
   }
 
   /**
@@ -262,5 +279,98 @@ class ProductCategoryEntity
   public function getSeoHeader()
   {
     return $this->seoHeader;
+  }
+
+  /**
+   * @param int $parentId
+   */
+  public function setParentId($parentId)
+  {
+    $this->parentId = (int)$parentId;
+  }
+
+  /**
+   * @return int
+   */
+  public function getParentId()
+  {
+    return $this->parentId;
+  }
+
+  /**
+   * @param int $id Core id
+   * @return boolean
+   */
+  public function getHasChild($id)
+  {
+    if ($this->children) {
+      foreach ($this->children as $child) {
+        if ($child->getId() == $id)
+          return true;
+        if ($child->getHasChild($id))
+          return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @param int $id
+   * @return null|ProductCategoryEntity
+   */
+  public function getNode($id)
+  {
+    if ($this->getId() == $id)
+      return $this;
+    if ($this->children)
+      foreach ($this->children as $child)
+        if ($node = $child->getNode($id))
+          return $node;
+    return null;
+  }
+
+  public function getHasChildren()
+  {
+    return (boolean)$this->children;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getHasLine()
+  {
+    return $this->hasLine;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsActive()
+  {
+    return $this->isActive;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsFurniture()
+  {
+    return $this->isFurniture;
+  }
+
+  /**
+   * @param int $product_count
+   */
+  public function setProductCount($product_count)
+  {
+    $this->product_count = (int)$product_count;
+  }
+
+  /**
+   * @return int
+   */
+  public function getProductCount()
+  {
+    return $this->product_count;
   }
 }

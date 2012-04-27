@@ -9,7 +9,7 @@ class RepositoryManager
   public static function getRegion()
   {
     static $repo;
-    if(!$repo) $repo = new RegionRepository();
+    if (!$repo) $repo = new RegionRepository();
     return $repo;
   }
 
@@ -20,7 +20,7 @@ class RepositoryManager
   public static function getProduct()
   {
     static $repo;
-    if(!$repo) $repo = new ProductRepository();
+    if (!$repo) $repo = new ProductRepository();
     return $repo;
   }
 
@@ -31,7 +31,7 @@ class RepositoryManager
   public static function getProductLabel()
   {
     static $repo;
-    if(!$repo) $repo = new ProductLabelRepository();
+    if (!$repo) $repo = new ProductLabelRepository();
     return $repo;
   }
 
@@ -42,7 +42,7 @@ class RepositoryManager
   public static function getProductCategoryFilter()
   {
     static $repo;
-    if(!$repo) $repo = new ProductCategoryFilterRepository();
+    if (!$repo) $repo = new ProductCategoryFilterRepository();
     return $repo;
   }
 
@@ -53,7 +53,7 @@ class RepositoryManager
   public static function getProductType()
   {
     static $repo;
-    if(!$repo) $repo = new ProductTypeRepository();
+    if (!$repo) $repo = new ProductTypeRepository();
     return $repo;
   }
 
@@ -64,7 +64,29 @@ class RepositoryManager
   public static function getProductCategory()
   {
     static $repo;
-    if(!$repo) $repo = new ProductCategoryRepository();
+    if (!$repo) $repo = new ProductCategoryRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return ProductCategoryTagViewRepository
+   */
+  public static function getProductCategoryTagView()
+  {
+    static $repo;
+    if (!$repo) $repo = new ProductCategoryTagViewRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return ListingRepository
+   */
+  public static function getListing()
+  {
+    static $repo;
+    if (!$repo) $repo = new ListingRepository();
     return $repo;
   }
 
