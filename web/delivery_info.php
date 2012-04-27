@@ -27,7 +27,7 @@ require_once(ROOT_PATH.'system/Response.php');
 require_once(ROOT_PATH.'system/Controller.php');
 require_once(ROOT_PATH.'system/Router.php');
 
-$_POST = array('ids' => array(22859, 1208, 11914, 425, 5440, 22727, 23296, 12385, 2691, 3741, 7552, 10825, 11587, 13113, 15137, 23076, 848, 990), 'region_id' => 14974);
+//$_POST = array('ids' => array(22859, 1208, 11914, 425, 5440, 22727, 23296, 12385, 2691, 3741, 7552, 10825, 11587, 13113, 15137, 23076, 848, 990), 'region_id' => 14974);
 //$_POST = array('ids' => array(4435), 'region_id' => 14974);
 
 if(isset($_POST['ids'])){
