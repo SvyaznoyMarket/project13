@@ -2,7 +2,9 @@
 
 <?php foreach ($orders as $order): ?>
   <p class="font19">Номер заказа: <?php echo $order['number'] ?></p>
-  <p class="font16">Дата заказа: <?php echo format_date($order['added'], 'd', 'ru') ?></p>
+  <?php if (!empty($order['added'])): ?>
+    <p class="font16">Дата заказа: <?php echo format_date($order['added'], 'd', 'ru') ?></p>
+  <?php endif ?>
   <p class="font16">Сумма заказа: <?php echo $order['sum'] ?> <span class="rubl">p</span></p>
   <div class="line pb15"></div>
 <?php endforeach ?>
@@ -12,9 +14,20 @@
   <br />Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.
 </div>
 
-<div class="mt32" style="text-align: center">
-  <a class='bBigOrangeButton' href="<?php echo url_for('homepage') ?>">Продолжить покупки</a>
-</div>
+<?php if ($paymentForm): ?>
+  <p>Через <span class="timer">5</span> сек. мы автоматически перенаправим Вас на страницу оплаты, если этого не произойдет, пожалуйста, нажмите на кнопку "Оплатить заказ".</p>
+  <div class="pt10">
+    <form class="form" action="<?php echo $paymentForm->getUrl() ?>" method="post">
+      <?php echo $paymentForm ?>
+      <input id="pay-button" type="submit" class="button bigbutton" value="Оплатить заказ" />
+    </form>
+  </div>
+
+<?php else: ?>
+  <div class="mt32" style="text-align: center">
+    <a class='bBigOrangeButton' href="<?php echo url_for('homepage') ?>">Продолжить покупки</a>
+  </div>
+<?php endif ?>
 
 <?php include_partial('order_/footer') ?>
 
@@ -46,3 +59,8 @@
     })();
   </script>
 <?php end_slot() ?>
+
+
+<!--Трэкер "Покупка"-->
+<script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>
+<!--Трэкер "Покупка"-->

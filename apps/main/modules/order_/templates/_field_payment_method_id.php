@@ -3,7 +3,7 @@
 
   <dd>
   <?php foreach ($choices as $k => $v): ?>
-    <div>
+    <div id="payment_method_<?php echo $v['token']?>-field">
       <p></p>
       <label class='<?php if ($k == $value) echo 'mChecked' ?>' for="<?php echo $v['id'] ?>">
         <b></b> <?php echo $v['label'] ?>

@@ -58,11 +58,12 @@ class order_Components extends myComponents
 
     foreach (PaymentMethodTable::getInstance()->getList() as $paymentMethod)
     {
-      if ('online' == $paymentMethod->token) continue;
+      //if ('online' == $paymentMethod->token) continue;
 
       $choices[$paymentMethod->id] = array(
         'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$paymentMethod->id,
         'label'       => $paymentMethod->name,
+        'token'       => $paymentMethod->token,
         'description' => $paymentMethod->description,
       );
     }

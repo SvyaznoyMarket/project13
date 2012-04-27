@@ -427,6 +427,7 @@ $(document).ready(function() {
                         $('#order-form-part2').show('fast')
 
                         DeliveryMap.renderUndeliveredMessage(deliveryTypeId)
+                        DeliveryMap.onDeliveryBlockChange()
                     }, true)
                 }
                 : function(deliveryTypeId, shopId) {
@@ -459,6 +460,8 @@ $(document).ready(function() {
                             $(this).find('.delivery-message').html('')
                         })
                     }
+
+                    DeliveryMap.onDeliveryBlockChange()
                 }
 
             regionMap.openMap()
@@ -498,6 +501,17 @@ $(document).ready(function() {
             }
 
             return hasError
+        },
+
+        onDeliveryBlockChange: function() {
+            if (1 == $('.order-delivery-holder:visible').length) {
+                $('#payment_method_online-field').show()
+            }
+            else {
+                $('#payment_method_online-field').hide()
+                $('#payment_method_online-field').find('input').attr('checked', false)
+                $('#payment_method_online-field').find('.mChecked').removeClass('mChecked')
+            }
         }
     }
 
@@ -519,36 +533,40 @@ $(document).ready(function() {
 
         var el = $(this)
         var itemToken = el.data('token')
+        var onSuccess = function() {
+            $(this).remove()
+
+            var data = DeliveryMap.data()
+            $.each(data['deliveryTypes'], function(i, deliveryType) {
+                $.each(deliveryType.items, function(ii, token) {
+                    if (token == itemToken) {
+                        data.deliveryTypes[deliveryType.token].items.splice(ii, 1)
+                        delete data.items[token]
+
+                    }
+                })
+            })
+
+            var i = $.inArray(itemToken, data.unavailable)
+            if (-1 !== i) {
+                data.unavailable.splice(i, 1)
+            }
+
+
+            DeliveryMap.data(data)
+            DeliveryMap.render()
+            DeliveryMap.onDeliveryBlockChange()
+        }
 
         $.ajax({
             async: false,
             url: el.attr('href'),
             success: function(result) {
-                el.closest('.order-item-container').hide('medium', function() {
-                    $(this).remove()
-                })
+                el.closest('.order-item-container').hide('medium', onSuccess)
             }
         })
 
-        var data = DeliveryMap.data()
-        $.each(data['deliveryTypes'], function(i, deliveryType) {
-            $.each(deliveryType.items, function(ii, token) {
-                if (token == itemToken) {
-                    data.deliveryTypes[deliveryType.token].items.splice(ii, 1)
-                    delete data.items[token]
 
-                }
-            })
-        })
-
-        var i = $.inArray(itemToken, data.unavailable)
-        if (-1 !== i) {
-            data.unavailable.splice(i, 1)
-        }
-
-
-        DeliveryMap.data(data)
-        DeliveryMap.render()
 
     })
 
@@ -601,6 +619,8 @@ $(document).ready(function() {
 
             DeliveryMap.renderUndeliveredMessage(el.val())
         }
+
+        DeliveryMap.onDeliveryBlockChange()
     })
 
     $('body').delegate('.order-shop-button', 'click', function(e) {
@@ -831,7 +851,7 @@ $(document).ready(function() {
         }
     }
 
-    $('#order-submit').data('locked', false).click(function(e) {
+    $('#order-submit').data('locked', false).data('text', $('#order-submit').text()).click(function(e) {
         e.preventDefault()
 
         var button = $(this)
@@ -872,7 +892,8 @@ $(document).ready(function() {
                     var form = $('#order-form')
 
                     if (result.success) {
-                        button.text('Готово!').attr('disabled', true)
+                        button.text('Готово!')
+                        button.attr('disabled', true)
                         window.location = result.data.redirect
                     }
                     else if (result.error) {
@@ -890,8 +911,10 @@ $(document).ready(function() {
                         }
                     }
                 },
+                error: function() {
+                    button.text(button.data('text'))
+                },
                 complete: function() {
-                    button.text('Завершить оформление')
                     button.data('locked', false)
                 }
             })

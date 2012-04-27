@@ -39,3 +39,7 @@ if (!function_exists('mb_lcfirst'))
     return $str;
   }
 }
+
+function dump($var, $terminate = false, $format = null) {
+  myDebug::dump($var, $terminate, $format);
+}

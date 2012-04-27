@@ -177,12 +177,12 @@ class order_Actions extends myActions
     $orderIds = $user->getFlash('complete_orders');
     if (empty($orderIds))
     {
-      $this->redirect('homepage');
+      $this->redirect('cart');
     }
 
     $result = Core::getInstance()->query('order.get', array(
       'id'     => $orderIds,
-      'expand' => array(),
+      'expand' => array('geo', 'user', 'product', 'service'),
     ));
     //myDebug::dump($result);
     if (!$result)
@@ -190,6 +190,62 @@ class order_Actions extends myActions
       $this->getLogger()->err('{Order} get list: empty response from core');
     }
     $orders = $result;
+
+    $this->paymentForm = false;
+    // онлайн оплата?
+    if (1 == count($orders))
+    {
+      $order = $orders[0];
+
+      $paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
+      if ('online' == $paymentMethod->token)
+      {
+        // добавить названия товаров {
+        if (isset($order['product']) && is_array($order['product']))
+        {
+          $products = RepositoryManager::getProduct()->getListById(array_map(function($i) {
+            return $i['product_id'];
+          }, $order['product']));
+
+          $productsById = array();
+          foreach ($products as $product)
+          {
+            /* @var $product ProductEntity */
+            $productsById[$product->getId()] = $product;
+          }
+
+          foreach ($order['product'] as &$productData)
+          {
+            $productData['name'] = array_key_exists($productData['product_id'], $productsById) ? $productsById[$productData['product_id']]->getName() : '';
+          } if (isset($productData)) unset($productData);
+        }
+        // }
+
+        // добавить названия услуг {
+        if (isset($order['service']) && is_array($order['service']))
+        {
+          $services = ServiceTable::getInstance()->getListByCoreIds(array_map(function($i) {
+            return $i['service_id'];
+          }, $order['service']));
+
+          $serviceById = array();
+          foreach ($services as $service)
+          {
+            /* @var $service Service */
+            $serviceById[$service->getId()] = $service;
+          }
+
+          foreach ($order['service'] as &$serviceData)
+          {
+            $serviceData['name'] = array_key_exists($serviceData['service_id'], $serviceById) ? $serviceById[$serviceData['service_id']]->getName() : '';
+          } if (isset($serviceData)) unset($serviceData);
+        }
+        // }
+
+        $provider = $this->getPaymentProvider();
+        $this->paymentForm = $provider->getForm($order);
+      }
+    }
 
     $user->setFlash('complete_orders', $orderIds);
 
@@ -329,6 +385,29 @@ class order_Actions extends myActions
         }
       }
 
+      // сбор услуг, привязаных к товарам
+      $servicesForProduct = array();
+      foreach ($user->getCart()->getServices() as $serviceId => $service)
+      {
+        foreach ($service['products'] as $productId => $product)
+        {
+          if (empty($productId)) continue;
+
+          if (!array_key_exists($service['id'], $servicesForProduct))
+          {
+            $servicesForProduct[$service['id']] = array(
+              'id'       => $service['id'],
+              'quantity' => $service['products'][$productId]['quantity'],
+            );
+          }
+          else {
+            $servicesForProduct[$service['id']]['quantity'] += $service['products'][$productId]['quantity'];
+          }
+        }
+      }
+
+      $serviceItems = array_merge($serviceItems, array_values($servicesForProduct));
+
       $order->ProductItem = $productItems;
       $order->ServiceItem = $serviceItems;
 
@@ -338,7 +417,6 @@ class order_Actions extends myActions
 
       $orders[] = $order;
     }
-    //myDebug::dump($orders, 1);
 
     $coreData = array_map(function($order) {
       /* @var $order Order */
@@ -349,7 +427,7 @@ class order_Actions extends myActions
 
       return $return;
     }, $orders);
-    //myDebug::dump($coreData, 1);
+    //dump($coreData, 1);
     $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
     //myDebug::dump($response, 1);
     if (is_array($response) && array_key_exists('confirmed', $response) && $response['confirmed'])
@@ -623,5 +701,22 @@ class order_Actions extends myActions
     //var_dump($deliveryMapView); die();
 
     return $deliveryMapView;
+  }
+
+  /**
+   *
+   * @param type $name
+   * @return UnitellerPaymentProvider
+   */
+  private function getPaymentProvider($name = null)
+  {
+    if (null == $name) {
+      $name = sfConfig::get('app_payment_default_provider');
+    }
+
+    $providers = sfConfig::get('app_payment_provider');
+    $class = sfInflector::camelize($name.'payment_provider');
+
+    return new $class($providers[$name]);
   }
 }
