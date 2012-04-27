@@ -5,18 +5,18 @@
 	link-input='<?php echo url_for('product_delivery_1click') ?>'
 	/>
 	
-	<div class='bInShop' id="noDlvr" style="display:none">
-		<div class='bInShop__eTop'>
-			<div class='bInShopError'>
-				<h2>В Этом регионе выбранный товар не найден.<br>Отличный повод посетить другой город :)</h2>
-				<div class='bInShop__eSelectorsWrap'>
-					г. Москва<br>
-					<a class='bGrayButton jsChangeRegion' href="">Другой город</a>
-				</div>
-				<div class='bInShop__eSelectorsLong'></div>
+<div class='bInShop' id="noDlvr" style="display:none">
+	<div class='bInShop__eTop'>
+		<div class='bInShopError'>
+			<h2>В Этом регионе выбранный товар не найден.<br>Отличный повод посетить другой город :)</h2>
+			<div class='bInShop__eSelectorsWrap'>
+				г. Москва<br>
+				<a class='bGrayButton jsChangeRegion' href="">Другой город</a>
 			</div>
-		</div>		
-	</div>
+			<div class='bInShop__eSelectorsLong'></div>
+		</div>
+	</div>		
+</div>
 		
 <div class="pb40">
 	<div class='bOrderPreloader'>
@@ -77,7 +77,7 @@
 					<div class="bMapShops__eMapWrap" id="stockmap"></div>
 				</td></tr>
 			</table>
-			<div id="map-info_window-container" data-bind="with: pickedShop()" style="display:none">
+			<div id="infowindowforstock" data-bind="with: pickedShop()" style="display:none">
 				<div class='bMapShops__ePopupRel'>
 					<h3 data-bind="text: address"></h3>
 					<span>Работает </span><span data-bind="text: regtime"></span><br>

@@ -74,7 +74,11 @@ $(document).ready(function() {
 				marker.setVisible(true)
 			})
 		}
-
+		
+		this.hideInfobox = function() {
+			infoWindow.close()
+		}
+		
 		this.showMarkers = function( argmarkers ) {
 			$.each( markers, function(i, item) {
 				 if( typeof( item.ref ) !== 'undefined' )
@@ -127,7 +131,6 @@ $(document).ready(function() {
 	//////////////////////////////////////////
 	
 	function OneCViewModel() {
-
 //console.info('IN DEL ', Deliveries)	
 			
 			var self = this	
@@ -168,22 +171,24 @@ $(document).ready(function() {
 			
 			self.showMap = ko.observable( false )
 			self.textfields = []
-			self.textfields.push( ko.observable({
-				title: 'Имя получателя',
-				name: 'order[recipient_first_name]', //UNIQUE!
-				value: '',
-				valerror: false,
-				regexp: /^[a-zа-я\s]+$/i
-			}) )
-			self.textfields.push( ko.observable({
-				title: 'Телефон для связи',
-				name: 'order[recipient_phonenumbers]', //UNIQUE!
-				value: '',
-				valerror: false,
-				regexp: /^[0-9\-\+\s]+$/
-			}) )
+			
+				self.textfields.push( ko.observable({
+					title: 'Имя получателя',
+					name: 'order[recipient_first_name]', //UNIQUE!
+					value: '',
+					valerror: false,
+					regexp: /^[a-zа-я\s]+$/i
+				}) )
+				self.textfields.push( ko.observable({
+					title: 'Телефон для связи',
+					name: 'order[recipient_phonenumbers]', //UNIQUE!
+					value: '',
+					valerror: false,
+					regexp: /^[0-9\-\+\s]+$/
+				}) )
 			
 			self.disabledSelectors = ko.observable( false )
+			self.noQBar            = ko.observable( false )
 			
 			// for dynModel
 			self.chosenDlvr = ko.observable( {} )
@@ -223,7 +228,7 @@ $(document).ready(function() {
 					self.pickedShop( leer )
 				}
 			}
-			self.dynModel(Deliveries)
+			self.dynModel( Deliveries )
 			
 			self.total = ko.computed(function() {
 				return printPrice( self.price * self.quantity() + self.chosenDlvr().price * 1 )
@@ -255,8 +260,6 @@ $(document).ready(function() {
 				setTimeout( function(){ self.loadData( curq, -1 ) } , 500 )
 				return false
 			}
-			
-			self.noQBar = ko.observable( false )
 			
 			self.preparedData = function( data ) {
 console.info(data)			
@@ -467,6 +470,7 @@ console.info('IN DEL ', Deliveries)
 		
 		self.todayShops = []
 		self.tomorrowShops = []
+		
 		parseDateShop = function( numbers, label ) {
 			var out = []
 levup:			for(var i=0, l=numbers.length; i<l; i++)
@@ -523,8 +527,8 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 		
 		self.toggleTerm = function( flag ) {
-			//self.today( !self.today() )
 			self.today( flag )
+			window.regionMap.hideInfobox()
 			self.showMarkers()
 			return false
 		}
@@ -541,13 +545,13 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 					break
 				}
 			}
+			self.reserveItem()
 		}
 
 		self.pickShopOnMap = function( shid ) {
-console.info('pickShopOnMap',shid)			
+//console.info('pickShopOnMap',shid)			
 			for(var i=0, l=self.shops.length; i<l; i++)
 				if( self.shops[i].id == shid ) {
-					console.info('eur', i)
 					self.pickedShop( self.shops[i] )
 					return
 				}
@@ -569,9 +573,9 @@ console.info('pickShopOnMap',shid)
 			window.regionMap.showMarkers( markersPull )				
 		}
 		
-		self.reserveItem = function( item, e) {
-console.info('reserveItem')				
-			e.preventDefault()
+		self.reserveItem = function( ) {
+//console.info('reserveItem')				
+			//e.preventDefault()
 			//do some work
 			$('#order1click-container-new').lightbox_me( { } )
 			var MVMinterface = {
@@ -579,6 +583,7 @@ console.info('reserveItem')
 				shop: self.selectedS()
 			}
 			OC_MVM.preparedData( MVMinterface )
+			return false
 		}		
 	} //StockViewModel	
 			
@@ -681,7 +686,6 @@ console.info(Model)
 		$.post( inputUrl, postData, function(data) {
 			if( !data.success ) {
 				//SHOW WARNING, NO MVM
-				//$('#noDlvr').show()
 				return false
 			}
 
@@ -711,7 +715,7 @@ console.info(Model)
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
 
 			if( selfAvailable ) {
-				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'stockmap', updateIW )
+				window.regionMap = new MapWithShops( mapCenter, $('#infowindowforstock'), 'stockmap', updateIW )
 				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 			}			
 
