@@ -192,73 +192,105 @@ $(document).ready(function() {
             if (isEmpty) {
                 var url = $('#order-form').data('cartUrl')
                 window.location = url ? url : '/'
+
+                return false
             }
 
-            // блок для недоступных товаров
-            self.renderUnavailable()
+            var reload = false
+            var checkItemQuantity = function() {
+                var dfd = $.Deferred()
 
-            if (data.unavailable.length) {
-                var reload = false
-                $.each(data.unavailable, function(i, itemToken) {
-                    var item = data.items[itemToken]
+                var length = data.unavailable.length
+                if (length) {
+                    $.each(data.unavailable, function(i, itemToken) {
+                        var item = data.items[itemToken]
 
-                    if (!item || (0 == item.stock) || (item.type != 'product')) return true
-                    if (confirm('Вы заказали товар "'+item.name+'" в количестве '+item.quantity+' шт. Доступно только '+item.stock+' шт. Заказать '+item.stock+'шт?')) {
-                        $('.bImgButton.mBacket[data-token="'+item.token+'"]').click()
-                        $.ajax({
-                            url: item.addUrl,
-                            async: false,
-                            success: function() {
-                                data.items[itemToken].quantity = data.items[itemToken].stock
-                                DeliveryMap.data(data)
-                            }
-                        })
+                        if (!item || (0 == item.stock) || (item.type != 'product')) {
+                            if ((i +1) == length) dfd.resolve()
+                            return true
+                        }
+
+                        if (confirm('Вы заказали товар "'+item.name+'" в количестве '+item.quantity+' шт.'+"\n"+'Доступно только '+item.stock+' шт.'+"\n"+'Заказать '+item.stock+'шт?')) {
+                            $.ajax({
+                                url: item.deleteUrl
+                            }).done(function() {
+                                $.ajax({
+                                    url: item.addUrl
+                                }).done(function() {
+                                    data.items[itemToken].quantity = data.items[itemToken].stock
+                                    DeliveryMap.data(data)
+                                    if ((i +1) == length) dfd.resolve()
+                                })
+                            })
+                        }
+                        else {
+                            $.ajax({
+                                url: item.deleteUrl
+                            }).done(function() {
+                                if ((i +1) == length) dfd.resolve()
+                            })
+                        }
+
+                        reload = true
+                    })
+
+                    if (reload) {
+                        $('#order-form-part2').hide()
+                        $('#order-loader-holder').html('')
+                        $('#order-loader').clone().appendTo('#order-loader-holder').show()
                     }
-                    else {
-                        $('.bImgButton.mBacket[data-token="'+item.token+'"]').click()
-                    }
-
-                    reload = true
-                })
-
-                if (reload) {
-                    $('#order-form-part2').hide()
-                    $('#order-loader').clone().appendTo('#order-loader-holder').show()
-                    window.location.reload()
-                    return false
-                }
-            }
-
-            $('.order-delivery-holder').each(function(i, deliveryTypeHolder) {
-                deliveryTypeHolder = $(deliveryTypeHolder)
-                self.renderDeliveryType(deliveryTypeHolder)
-
-                if (0 == data.deliveryTypes[deliveryTypeHolder.data('value')].items.length) {
-                    deliveryTypeHolder.hide()
                 }
                 else {
-                    deliveryTypeHolder.show()
+                    dfd.resolve()
                 }
-            })
 
-            var total = 0
-            $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
-                total += (self.getDeliveryTotal(deliveryType) + self.getDeliveryPrice(deliveryType))
-            })
+                return dfd.promise()
+            }
 
-            $('.order-total-container').find('[data-assign]').each(function(i, el) {
-                Templating.assign($(el), { total: printPrice(total) })
-            })
+            $.when(checkItemQuantity()).always(function() {
+                if (reload) {
+                    $('#order-form-part2').hide()
+                    $('#order-loader-holder').html('')
+                    $('#order-loader').clone().appendTo('#order-loader-holder').show()
+                    window.location.reload()
 
-            // сортировка
-            var deliveryHolder = $('#order-delivery-holder')
-            $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
-                deliveryHolder.append($('.order-delivery-holder[data-value="'+deliveryTypeToken+'"]'))
-            })
+                    return false
+                }
 
-            var form = $('#order-form')
-            form.find('.mRed').removeClass('mRed')
-            form.find('.bFormError').remove()
+                // блок для недоступных товаров
+                self.renderUnavailable()
+
+                $('.order-delivery-holder').each(function(i, deliveryTypeHolder) {
+                    deliveryTypeHolder = $(deliveryTypeHolder)
+                    self.renderDeliveryType(deliveryTypeHolder)
+
+                    if (0 == data.deliveryTypes[deliveryTypeHolder.data('value')].items.length) {
+                        deliveryTypeHolder.hide()
+                    }
+                    else {
+                        deliveryTypeHolder.show()
+                    }
+                })
+
+                var total = 0
+                $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
+                    total += (self.getDeliveryTotal(deliveryType) + self.getDeliveryPrice(deliveryType))
+                })
+
+                $('.order-total-container').find('[data-assign]').each(function(i, el) {
+                    Templating.assign($(el), { total: printPrice(total) })
+                })
+
+                // сортировка
+                var deliveryHolder = $('#order-delivery-holder')
+                $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
+                    deliveryHolder.append($('.order-delivery-holder[data-value="'+deliveryTypeToken+'"]'))
+                })
+
+                var form = $('#order-form')
+                form.find('.mRed').removeClass('mRed')
+                form.find('.bFormError').remove()
+            })
         },
 
         renderDeliveryType: function(deliveryTypeHolder) {
@@ -421,10 +453,11 @@ $(document).ready(function() {
 
                     var url = $('#order-form').data('deliveryMapUrl')
                     DeliveryMap.getRemoteData(url, { deliveryTypeId: deliveryTypeId, shopId: shopId }, function(data) {
-                        this.render()
 
                         $('#order-loader-holder').html('')
                         $('#order-form-part2').show('fast')
+
+                        this.render()
 
                         DeliveryMap.renderUndeliveredMessage(deliveryTypeId)
                         DeliveryMap.onDeliveryBlockChange()
@@ -610,10 +643,10 @@ $(document).ready(function() {
             $('#addressField').show()
 
             DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val()}, function(data) {
-                this.render()
-
                 $('#order-loader-holder').html('')
                 $('#order-form-part2').show('fast')
+
+                this.render()
             })
 
 
