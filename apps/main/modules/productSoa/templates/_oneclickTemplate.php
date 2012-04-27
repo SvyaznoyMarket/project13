@@ -1,4 +1,3 @@
-
 <div class='bMobDown mBR5 mW2 mW1000 p0' style="display:none" id="order1click-container-new">
 	<div class='bMobDown__eWrap'>
 		<div class='bMobDown__eClose top0 close'></div>
@@ -11,11 +10,13 @@
 					<div class='bFast__eNum'>Артикул #<span data-bind="text: shortcut">454-9366</span></div>
 					<div class="bFast__eTitle"><a href="" data-bind="text: title">Смартфон Samsung Galaxy SII черный</a></div>
 					<div class='bFast__eCenter'><a href=""><img alt="" data-bind="attr: {src: icon}"/></a></div>
-					<div class='bFast__eCenter'>
+					<div class='bFast__eCenter' data-bind="if : !noQBar() ">
 						<div class='bCountSet'>
 							<a class='bCountSet__eP' href="#" data-bind="click: plusItem">+</a>
 							<a class='bCountSet__eM' href"#" data-bind="click: minusItem">-</a>
-						<span data-bind="text: quantityTxt">1 шт.</span> </div> </div>
+							<span data-bind="text: quantityTxt">1 шт.</span>
+						</div>
+					</div>
 					<div class='bFast__ePrice'>Цена: <div><span data-bind="text: priceTxt"></span> <span class="rubl">p</span></div></div> 
 					<div class='bFast__ePrice'>Сумма заказа: <div><span data-bind="text: total()"></span> <span class="rubl">p</span></div></div> 
 				</div>
@@ -26,7 +27,7 @@
 					<tr data-bind="visible: noDelivery()"><td colspan="2"><h2 class="red">Доставка и самовывоз невозможны!</h2></td></tr>
 					<tr data-bind="visible: !noDelivery()"><td width="200">Способ получения заказа:</td>
 						<td>
-							<div class='bSelect mFastInpSmall'>
+							<div class='bSelect mFastInpSmall' data-bind="css: { mDisabled : disabledSelectors }">
 								<span data-bind="text: chosenDlvr().name"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>
@@ -36,7 +37,7 @@
 								</div>
 							</div>
 							
-							<div class='bSelect mFastInpSmall'><!-- mDisabled -->
+							<div class='bSelect mFastInpSmall' data-bind="css: { mDisabled : disabledSelectors }">
 								<span data-bind="text: chosenDate().name"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>
@@ -49,7 +50,7 @@
 					<!-- ko if: chosenDlvr().type == 'self' -->	
 					<tr data-bind="visible: !noDelivery()"><td>Магазин для самовывоза:</td>
 						<td>
-							<div class='bSelect mFastInpBig'>
+							<div class='bSelect mFastInpBig' data-bind="css: { mDisabled : disabledSelectors }">
 								<span data-bind="text: chosenShop().address"></span>
 								<div class='bSelect__eArrow'></div>
 								<div class='bSelect__eDropmenu'>
@@ -58,7 +59,7 @@
 									<!-- /ko -->
 								</div>
 							</div>
-							
+							<!-- ko if: !disabledSelectors() -->	
 							<a class='bFast__eMapLink' href="" data-bind="click: toggleMap">
 								<!-- ko if: !showMap() -->	
 								Показать карту магазинов
@@ -67,6 +68,7 @@
 								Скрыть карту магазинов
 								<!-- /ko -->
 							</a>
+							<!-- /ko -->
 					</td></tr>
 					<!-- /ko -->
 

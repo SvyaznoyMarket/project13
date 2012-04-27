@@ -95,7 +95,7 @@
 					<h2 data-bind="html: todayH2"></h2>
 					<div class='bInShop__eListWrap'>
 						<!-- ko foreach : todayShops -->
-						<label class='bInShop__eList' data-bind="click: $root.chooseShop, css: { mChecked : $root.selectedS() == $data }">
+						<label class='bInShop__eList' data-bind="click: function( data ) { $root.chooseShop(data, true) } , css: { mChecked : $root.selectedS() == $data }">
 							<span class='bInShop__eDescription' data-bind="text: address"></span>
 						</label><br/>
 						<!-- /ko -->
@@ -110,7 +110,7 @@
 					<h2 data-bind="html: tomorrowH2"></h2>
 					<div class='bInShop__eListWrap'>
 						<!-- ko foreach : tomorrowShops -->
-						<label class='bInShop__eList' data-bind="click: $root.chooseShop, css: { mChecked : $root.selectedS() == $data }">
+						<label class='bInShop__eList' data-bind="click: function( data ) { $root.chooseShop(data, false) } , css: { mChecked : $root.selectedS() == $data }">
 							<span class='bInShop__eDescription' data-bind="text: address"></span>
 						</label><br/>
 						<!-- /ko -->

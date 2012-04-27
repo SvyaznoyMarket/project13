@@ -1,5 +1,20 @@
 $(document).ready(function() {
-	/* MAP Utilities */
+	/* Custom Selectors */ 
+	//main.js maybe ?
+	$('#order1click-container-new').delegate( '.bSelect', 'click', function() {
+		if( $(this).hasClass('mDisabled') )
+			return false
+		$(this).find('.bSelect__eDropmenu').toggle()
+	})
+	$('#order1click-container-new').delegate( '.bSelect', 'mouseleave', function() {
+		if( $(this).hasClass('mDisabled') )
+			return false
+		var options = $(this).find('.bSelect__eDropmenu')
+		if( options.is(':visible') )
+			options.hide()
+	})	
+	
+	/* Utilities */
 	function calcMCenter( shops ) {
 		var latitude=0, longitude=0,
 			l = shops.length
@@ -108,25 +123,11 @@ $(document).ready(function() {
 
 	} // object MapWithShops
 	
-	/* One Click Order */
-	if( $('.order1click-link-new').length ) {
-		
-//console.info( 'MODEL: ', $('.order1click-link-new').data('model') )
-		var Model = $('.order1click-link-new').data('model')
-		Deliveries = {
-			'courier': {
-				modeId: 4,
-				name: 'Доставка',
-				price: 400,
-				dates: [ {value: '10-02-2012', name: '10 февраля'}, {value: '11-02-2012', name: '11 февраля'} ]
+	/* View Models */
+	//////////////////////////////////////////
+	
+	function OneCViewModel() {
 
-			}
-		}
-		
-		var selfAvailable = 'self' in Deliveries
-		
-		/* ViewModel */
-		function MyViewModel() {
 //console.info('IN DEL ', Deliveries)	
 			
 			var self = this	
@@ -181,6 +182,8 @@ $(document).ready(function() {
 				valerror: false,
 				regexp: /^[0-9\-\+\s]+$/
 			}) )
+			
+			self.disabledSelectors = ko.observable( false )
 			
 			// for dynModel
 			self.chosenDlvr = ko.observable( {} )
@@ -251,6 +254,18 @@ $(document).ready(function() {
 				var curq =  self.quantity() * 1
 				setTimeout( function(){ self.loadData( curq, -1 ) } , 500 )
 				return false
+			}
+			
+			self.noQBar = ko.observable( false )
+			
+			self.preparedData = function( data ) {
+console.info(data)			
+				self.disabledSelectors( true )
+				self.noQBar( true )
+				if( 'date' in data )
+					self.chosenDate( data.date )
+				if( 'shop' in data )
+					self.chosenShop( data.shop )				
 			}
 			
 			self.loadData = function( momentq, direction ) {
@@ -425,8 +440,168 @@ $(document).ready(function() {
 				})
 				
 			}
-		} // MVM
+			
+	} // OCMVM
 
+	/* StockViewModel */
+	function StockViewModel() {
+console.info('IN DEL ', Deliveries)	
+		
+		var self = this	
+		self.showMap = ko.observable(false)
+		
+		self.title     = Model.jstitle
+		self.price     = Model.jsprice
+		self.icon      = Model.jssimg
+		self.shortcut  = Model.jsshortcut
+		self.region    = Model.jsregion
+		self.today = ko.observable(true)
+		
+		self.priceTxt = ko.computed(function() {
+			return printPrice( self.price )
+		}, this)
+		
+		
+		//dyn
+		self.shops = Deliveries['self'].shops.slice(0)
+		
+		self.todayShops = []
+		self.tomorrowShops = []
+		parseDateShop = function( numbers, label ) {
+			var out = []
+levup:			for(var i=0, l=numbers.length; i<l; i++)
+				for(var j=0, l=self.shops.length; j<l; j++)
+					if( self.shops[j].id == numbers[i] ) {
+						var tmp = {}
+						for (var prop in self.shops[j] ) {
+							tmp[prop] = self.shops[j][prop]
+						}
+						tmp['lbl'] = label
+						out.push( tmp )
+						continue levup
+					}
+			return out	
+		}
+		//find today index
+		var tind = -1
+		for(var i=0, l=Deliveries['self'].dates.length; i<l; i++)
+			if( Deliveries['self'].dates[i].value === currentDate ) {
+				tind = i
+				break
+			} else {
+				if( Date.parse( currentDate ) == Date.parse( Deliveries['self'].dates[i].value ) ) {
+					tind = i
+					break
+				}
+			}
+		
+		if( tind < 0 ) {
+			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
+		} else {
+			self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
+			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
+		}
+
+		self.pickedShop = ko.observable( self.todayShops[0] )
+		self.selectedS = ko.observable( {} )
+		var ending = 'ах'
+		if( self.todayShops.length % 10 === 1 )
+			ending = 'е'
+		self.todayH2 = 'Можно <span class="mLft">сегодня</span> в '+ self.todayShops.length + ' магазин'+ ending +':'
+		if( self.tomorrowShops.length % 10 === 1 )
+			ending = 'е'
+		else
+			ending = 'ах'			
+		self.tomorrowH2 = ( self.todayShops.length > 0 ) ? 'или' : 'Можно'
+		self.tomorrowH2 += ' <span class="mRt">завтра</span> в '+ self.tomorrowShops.length + ' магазин'+ ending +':'
+		
+		self.toggleView = function( flag ) {		
+			self.showMap( flag )
+			if( flag )
+				self.showMarkers()	
+			return false
+		}
+		
+		self.toggleTerm = function( flag ) {
+			//self.today( !self.today() )
+			self.today( flag )
+			self.showMarkers()
+			return false
+		}
+		
+		self.chooseShop = function( item, today ) {
+			self.selectedS( item )
+			self.today( today )
+		}
+		
+		self.chooseShopById = function( shopnum ) {
+			for(var i=0, l=self.shops.length; i<l; i++) {
+				if( self.shops[i].id == shopnum ) {
+					self.selectedS( self.shops[i] )
+					break
+				}
+			}
+		}
+
+		self.pickShopOnMap = function( shid ) {
+console.info('pickShopOnMap',shid)			
+			for(var i=0, l=self.shops.length; i<l; i++)
+				if( self.shops[i].id == shid ) {
+					console.info('eur', i)
+					self.pickedShop( self.shops[i] )
+					return
+				}
+		}
+
+		self.showMarkers = function() {
+			var markersPull = {}
+			var tmp = self.today() ? self.todayShops : self.tomorrowShops
+			for(var i=0, l = tmp.length; i<l; i++) {
+				var key = tmp[i].id + ''
+				markersPull[ key ] = {
+					id: tmp[i].id,
+					name: tmp[i].address,
+					regtime: tmp[i].regtime,
+					latitude: tmp[i].latitude,
+					longitude: tmp[i].longitude
+				}
+			}
+			window.regionMap.showMarkers( markersPull )				
+		}
+		
+		self.reserveItem = function( item, e) {
+console.info('reserveItem')				
+			e.preventDefault()
+			//do some work
+			$('#order1click-container-new').lightbox_me( { } )
+			var MVMinterface = {
+				date: self.today() ? Deliveries['self'].dates[ tind ] : Deliveries['self'].dates[ tind + 1 ],
+				shop: self.selectedS()
+			}
+			OC_MVM.preparedData( MVMinterface )
+		}		
+	} //StockViewModel	
+			
+	/////////////////////////////////////////
+	
+	
+	/* One Click Order */
+	if( $('.order1click-link-new').length ) {
+		
+		var Model = $('.order1click-link-new').data('model')
+//console.info( 'MODEL: ', Model)		
+		Deliveries = { // zaglushka
+			'courier': {
+				modeId: 4,
+				name: 'Доставка',
+				price: 400,
+				dates: [ {value: '10-02-2012', name: '10 февраля'}, {value: '11-02-2012', name: '11 февраля'} ]
+
+			}
+		}
+		
+		var selfAvailable = 'self' in Deliveries
+		
 		/* Load Data from Server */
 		oneClickIsReady = false
 		var inputUrl = $('.order1click-link-new').attr('link-input')
@@ -436,16 +611,11 @@ $(document).ready(function() {
 			region_id: Model.jsregionid*1
 		}
 		
-		function updateIW( marker ) {
-			if( typeof(MVM) !== 'undefined' )
-				MVM.pickShopOnMap( marker.id )
-		}
-		
 		$.post( inputUrl, postData, function(data) {
 			if( !data.success ) {
-				MVM = new MyViewModel() 
-				ko.applyBindings(MVM) // this way, Lukas!
-				MVM.noDelivery( true )
+				OC_MVM = new OneCViewModel() 
+				ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
+				OC_MVM.noDelivery( true )
 				$('.order1click-link-new').remove()
 				return false
 			}
@@ -454,8 +624,8 @@ $(document).ready(function() {
 			if( selfAvailable ) {
 				mapCenter = calcMCenter( Deliveries['self'].shops )
 			}			
-			MVM = new MyViewModel() 
-			ko.applyBindings(MVM) // this way, Lukas!
+			OC_MVM = new OneCViewModel() 
+			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
 				
 			if( selfAvailable ) {
 				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIW )
@@ -466,20 +636,14 @@ $(document).ready(function() {
 
 		function pickStoreMVM( node ) {	
 			var shopnum = $(node).parent().find('.shopnum').text()
-			window.regionMap.closeMap( MVM.turnOffMap )
-			MVM.chooseShopById( shopnum )
+			window.regionMap.closeMap( OC_MVM.turnOffMap )
+			OC_MVM.chooseShopById( shopnum )
 		}
-		
-		
-		$('#order1click-container-new').delegate( '.bSelect', 'click', function() {	// custom selectors
-			$(this).find('.bSelect__eDropmenu').toggle()
-		})
-		$('#order1click-container-new').delegate( '.bSelect', 'mouseleave', function() {
-			var options = $(this).find('.bSelect__eDropmenu')
-			if( options.is(':visible') )
-				options.hide()
-		})
-		
+		function updateIW( marker ) {
+			if( typeof(OC_MVM) !== 'undefined' )
+				OC_MVM.pickShopOnMap( marker.id )
+		}
+				
 		$('.order1click-link-new').bind('click', function(e) { // button 'Купить в один клик'
 			e.preventDefault()
 			if( !oneClickIsReady )
@@ -490,162 +654,23 @@ $(document).ready(function() {
 				centered: true,
 				onClose: function() {
 					if( 'regionMap' in window )
-						window.regionMap.closeMap( MVM.turnOffMap )
+						window.regionMap.closeMap( OC_MVM.turnOffMap )
 				}
 			})
 		})
 		
 	} // One Click Order
-	
-	
-	
-	/* ********************************* /
-	
-	
-	
-	
-	/* Page 'Where to buy?' , shops map */
+
+	/* Page 'Where to buy?' , Stock Map */
 	
 	if( $('#stockBlock').length ) {
 		var Model     = $('#stockmodel').data('value')
 		var inputUrl  = $('#stockmodel').attr('link-input')
 		var outputUrl = $('#stockmodel').attr('link-output')
 console.info(Model)
-		
+		var selfAvailable = false
 		var currentDate = (new Date()).toISOString().substr(0,10)
-		
-		/* ViewModel */
-		function StockViewModel() {
-console.info('IN DEL ', Deliveries)	
-			
-			var self = this	
-			self.showMap = ko.observable(false)
-			
-			self.title     = Model.jstitle
-			self.price     = Model.jsprice
-			self.icon      = Model.jssimg
-			self.shortcut  = Model.jsshortcut
-			self.region    = Model.jsregion
-			self.today = ko.observable(true)
-			
-			self.priceTxt = ko.computed(function() {
-				return printPrice( self.price )
-			}, this)
-			
-			
-			//dyn
-			self.shops = Deliveries['self'].shops.slice(0)
-			
-			self.todayShops = []
-			self.tomorrowShops = []
-			parseDateShop = function( numbers, label ) {
-				var out = []
-levup:			for(var i=0, l=numbers.length; i<l; i++)
-					for(var j=0, l=self.shops.length; j<l; j++)
-						if( self.shops[j].id == numbers[i] ) {
-							var tmp = {}
-							for (var prop in self.shops[j] ) {
-								tmp[prop] = self.shops[j][prop]
-							}
-							tmp['lbl'] = label
-							out.push( tmp )
-							continue levup
-						}
-				return out	
-			}
-			//find today index
-			var tind = -1
-			for(var i=0, l=Deliveries['self'].dates.length; i<l; i++)
-				if( Deliveries['self'].dates[i].value === currentDate ) {
-					tind = i
-					break
-				} else {
-					if( Date.parse( currentDate ) == Date.parse( Deliveries['self'].dates[i].value ) ) {
-						tind = i
-						break
-					}
-				}
-			
-			if( tind < 0 ) {
-				self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
-			} else {
-				self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
-				self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
-			}
 
-			self.pickedShop = ko.observable( self.todayShops[0] )
-			self.selectedS = ko.observable( {} )
-			var ending = 'ах'
-			if( self.todayShops.length % 10 === 1 )
-				ending = 'е'
-			self.todayH2 = 'Можно <span class="mLft">сегодня</span> в '+ self.todayShops.length + ' магазин'+ ending +':'
-			if( self.tomorrowShops.length % 10 === 1 )
-				ending = 'е'
-			else
-				ending = 'ах'			
-			self.tomorrowH2 = ( self.todayShops.length > 0 ) ? 'или' : 'Можно'
-			self.tomorrowH2 += ' <span class="mRt">завтра</span> в '+ self.tomorrowShops.length + ' магазин'+ ending +':'
-			
-			self.toggleView = function( flag ) {		
-				self.showMap( flag )
-				if( flag )
-					self.showMarkers()	
-				return false
-			}
-			
-			self.toggleTerm = function( flag ) {
-				//self.today( !self.today() )
-				self.today( flag )
-				self.showMarkers()
-				return false
-			}
-			
-			self.chooseShop = function( item ) {
-				self.selectedS( item )
-			}
-			
-			self.chooseShopById = function( shopnum ) {
-				for(var i=0, l=self.shops.length; i<l; i++) {
-					if( self.shops[i].id == shopnum ) {
-						self.selectedS( self.shops[i] )
-						break
-					}
-				}
-			}
-
-			self.pickShopOnMap = function( shid ) {
-console.info('pickShopOnMap',shid)			
-				for(var i=0, l=self.shops.length; i<l; i++)
-					if( self.shops[i].id == shid ) {
-						console.info('eur', i)
-						self.pickedShop( self.shops[i] )
-						return
-					}
-			}
-
-			self.showMarkers = function() {
-				var markersPull = {}
-				var tmp = self.today() ? self.todayShops : self.tomorrowShops
-				for(var i=0, l = tmp.length; i<l; i++) {
-					var key = tmp[i].id + ''
-					markersPull[ key ] = {
-						id: tmp[i].id,
-						name: tmp[i].address,
-						regtime: tmp[i].regtime,
-						latitude: tmp[i].latitude,
-						longitude: tmp[i].longitude
-					}
-				}
-				window.regionMap.showMarkers( markersPull )				
-			}
-			
-			self.reserveItem = function( item, e) {
-console.info('reserveItem')				
-				e.preventDefault()
-				//do some work
-			}		
-		} //MVM		
-		
 		/* Load Data from Server */
 		var postData = {
 			product_id: Model.jsitemid,
@@ -659,7 +684,7 @@ console.info('reserveItem')
 				//$('#noDlvr').show()
 				return false
 			}
-			
+
 			Deliveries = data.data
 			var le = 0
 			for(var key in Deliveries)
@@ -667,28 +692,29 @@ console.info('reserveItem')
 			if( 'currentDate' in data )
 				if( data.currentDate != '' )
 					currentDate = data.currentDate
-				
+	
 			$('.bOrderPreloader').hide()	
 			if( le === 0 ) {
 				//SHOW WARNING, NO MVM
 				$('#noDlvr').show()
 				return false
 			}
-			
+
 			selfAvailable = 'self' in Deliveries
 			if( selfAvailable ) {
 				mapCenter = calcMCenter( Deliveries['self'].shops )
 			}			
 			MVM = new StockViewModel() 
 			ko.applyBindings( MVM , $('#stockBlock')[0] ) // this way, Lukas!
-				
 			
+			OC_MVM = new OneCViewModel() 
+			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
+
 			if( selfAvailable ) {
 				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'stockmap', updateIW )
 				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
-			}
-			
-			
+			}			
+
 			$('#stockBlock').show()
 		})	
 		
