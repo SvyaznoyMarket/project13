@@ -341,7 +341,7 @@ class order_Actions extends myActions
       $order->DeliveryType = $deliveryType;
       $order->User = $user->getGuardUser();
       $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
-      $order->delivered_at = date_format(new DateTime($deliveryTypeData['date']), 'Y-m-d 00:00:00');
+      $order->delivered_at = date_format(new DateTime($deliveryTypeData['date']), 'Y-m-d');
       $order->mapValue('delivery_period', !empty($deliveryTypeData['interval']) ? explode(',', $deliveryTypeData['interval']) : null);
 
       if ('self' == $deliveryType->token)
