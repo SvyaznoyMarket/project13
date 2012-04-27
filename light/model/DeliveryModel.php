@@ -52,20 +52,29 @@ class DeliveryModel
       $params['product'][] = array('id' => (int) $productId, 'quantity' => 1);
     }
 
-    var_export(get_defined_constants());
-
-    $geoId = 82;
-//    '{"product":[{"id":3,"quantity":1}]}'
-    $params = array('product' => array('id' => 3, 'quantity' =>1));
-
+//    $params = array('product' => array(array('id' => 4435, 'quantity' =>1)));
 
     TimeDebug::start('DeliveryModel:getShortDeliveryInfoForProductList:clientV2');
-    $data = CoreClient::getInstance()->query('product/get-delivery/', array('geo_id' => $geoId), $params);
-    var_export($data);
+    $data = CoreClient::getInstance()->query('product/get-delivery/', array('geo_id' => $geoId, 'days_limit' => 7), $params);
     TimeDebug::end('DeliveryModel:getShortDeliveryInfoForProductList:clientV2');
 
 
     $return = array();
+
+    foreach($productIds as $productId){
+      $productId = (int) $productId;
+      $return[$productId] = array();
+      foreach($data[$productId] as $delivery){
+        $deliveryShortObject = new DeliveryShortData();
+        $deliveryShortObject->setId($delivery['delivery_id']);
+        $deliveryShortObject->setTypeId($delivery['delivery_type_id']);
+        $deliveryShortObject->setPrice($delivery['price']);
+        $deliveryShortObject->setEarliestDate($delivery['date'][0]['date']);
+        $deliveryShortObject->setName($delivery['delivery_name']);
+        $deliveryShortObject->setToken($delivery['delivery_token']);
+        $return[$productId][] = $deliveryShortObject;
+      }
+    }
 
     return $return;
   }
@@ -121,7 +130,7 @@ class DeliveryModel
             foreach($data['products'][$productId]['deliveries'][$deliveryTypeName]['dates'] as $date){
               $date['date'] = substr($date['date'], 0, 10);
               $deliveryDates[] = array(
-                'name' => DateFormatter::CoreFullDateToOrderForm($date['date']),
+                'name' => DateFormatter::Humanize($date['date']),
                 'value' => $date['date']
               );
             }
@@ -188,7 +197,7 @@ class DeliveryModel
       }
       if(!$finded){ //На эту дату доставок еще не было - нужно создавать
         $deliveryInfo = array(
-          'name' => DateFormatter::CoreFullDateToOrderForm($date['date']),
+          'name' => DateFormatter::Humanize($date['date']),
           'value' => $date['date'],
           'shops' => array($ShopInfo['id'] => array())
         );

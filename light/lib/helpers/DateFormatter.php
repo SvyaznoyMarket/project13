@@ -9,7 +9,12 @@
 class DateFormatter
 {
 
-  public static function CoreFullDateToOrderForm($date){
+  /**
+   * @static
+   * @param string $date //Format Y-m-d or Y-m-d H:i:s
+   * @return string
+   */
+  public static function Humanize($date){
     $today = new DateTime();
     $today->settime(0,0,0);
     $date = new DateTime($date);

@@ -30,6 +30,16 @@ class DeliveryShortData
   private $earliestDate = Null;
 
   /**
+   * @var string
+   */
+  private $token = Null;
+
+  /**
+   * @var string
+   */
+  private $name = Null;
+
+  /**
    * @param string $earliestDate
    */
   public function setEarliestDate($earliestDate)
@@ -91,5 +101,51 @@ class DeliveryShortData
   public function getTypeId()
   {
     return $this->type_id;
+  }
+
+  /**
+   * @param string $name
+   */
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
+
+  /**
+   * @return string
+   */
+  public function getName()
+  {
+    return $this->name;
+  }
+
+  /**
+   * @param string $token
+   */
+  public function setToken($token)
+  {
+    $this->token = $token;
+  }
+
+  /**
+   * @return string
+   */
+  public function getToken()
+  {
+    return $this->token;
+  }
+
+  /**
+   * @return array
+   */
+  public function toArray(){
+    return array(
+      'id'           => $this->getId(),
+      'typeId'       => $this->getTypeId(),
+      'price'        =>  $this->getPrice(),
+      'earliestDate' => $this->getEarliestDate(),
+      'name'         => $this->getName(),
+      'token'        => $this->getToken()
+    );
   }
 }

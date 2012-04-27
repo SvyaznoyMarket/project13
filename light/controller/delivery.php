@@ -8,6 +8,7 @@
  */
 
 require_once(ROOT_PATH.'model/DeliveryModel.php');
+require_once(ROOT_PATH.'lib/helpers/DateFormatter.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
 
 class delivery
@@ -65,11 +66,20 @@ class delivery
     $model = new DeliveryModel();
     $result = $model->getShortDeliveryInfoForProductList($params['products'], $params['region']);
 
-    $return = $result;
-
+    $return = array();
+    foreach($result as $productId => $deliveries){
+      $return[$productId] = array();
+      foreach($deliveries as $delivery){
+        $return[$productId][] = array(
+          'typeId' => $delivery->getTypeId(),
+          'date' => DateFormatter::Humanize($delivery->getEarliestDate()),
+          'token' => $delivery->getToken()
+        );
+      }
+    }
 
     $response->setContentType('application/json');
-    $response->setContent(json_encode($return));
+    $response->setContent(json_encode(array("success" => true, 'data' => $return)));
     TimeDebug::end('controller:delivery:ProductDeliveryJson');
   }
 

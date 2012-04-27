@@ -189,7 +189,8 @@ class CoreClient
 
     if ($isPostMethod) {
       curl_setopt($connection, CURLOPT_POST, true);
-      curl_setopt($connection, CURLOPT_POSTFIELDS, http_build_query($data));
+//      curl_setopt($connection, CURLOPT_POSTFIELDS, http_build_query($data));
+      curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($data));
     }
     return $connection;
   }
