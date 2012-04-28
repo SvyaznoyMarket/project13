@@ -175,6 +175,12 @@ class order_Actions extends myActions
     $user = $this->getUser();
 
     $orderIds = $user->getFlash('complete_orders');
+    // проверяет наличие параметра от uniteller
+    if (!empty($request['Order_ID']))
+    {
+      $orderIds = array($request['Order_ID']);
+    }
+
     if (empty($orderIds))
     {
       $this->redirect('cart');
@@ -193,7 +199,7 @@ class order_Actions extends myActions
 
     $this->paymentForm = false;
     // онлайн оплата?
-    if (1 == count($orders))
+    if (1 == count($orders) && empty($request['Order_ID']))
     {
       $order = $orders[0];
 

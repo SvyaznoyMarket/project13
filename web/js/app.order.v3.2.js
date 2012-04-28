@@ -252,6 +252,7 @@ $(document).ready(function() {
                     $('#order-form-part2').hide()
                     $('#order-loader-holder').html('')
                     $('#order-loader').clone().appendTo('#order-loader-holder').show()
+                    window.location.href = window.location.href+'#'+$('.bBuyingLine__eRadio:checked').attr('id')+$('.bBuyingLine__eRadio:checked').val()
                     window.location.reload()
 
                     return false
@@ -882,6 +883,9 @@ $(document).ready(function() {
         if ('self' == $('.bBuyingLine__eRadio"]:checked:first').data('deliveryType')) {
             $('#addressField').hide()
         }
+    }
+    else if (window.location.hash) {
+        $(window.location.hash).click()
     }
 
     $('#order-submit').data('locked', false).data('text', $('#order-submit').text()).click(function(e) {

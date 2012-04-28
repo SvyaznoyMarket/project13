@@ -25,13 +25,13 @@ class UnitellerPaymentProvider
     $productInfo = array();
     $serviceInfo = array();
     //информация для комментария
-    foreach($order['product'] as $productRelation){
+    if (!empty($order['product'])) foreach($order['product'] as $productRelation){
         $productInfo[$productRelation['product_id']]['name'] = $productRelation['name'];
         $productInfo[$productRelation['product_id']]['quantity'] = $productRelation['quantity'];
         $productInfo[$productRelation['product_id']]['price'] =  number_format($productRelation['price'] * $productRelation['quantity'], 0, ',', ' ');
     }
 
-    foreach($order['service'] as $service){
+    if (!empty($order['service'])) foreach($order['service'] as $service){
         $serviceInfo[$service['service_id']]['name'] = $service['name'];
         $serviceInfo[$service['service_id']]['quantity'] = $service['quantity'];
         $serviceInfo[$service['service_id']]['price'] = number_format($service['price'] * $service['quantity'], 0, ',', ' ');
@@ -63,7 +63,7 @@ class UnitellerPaymentProvider
 
     $params = array(
       'Shop_IDP'   => $this->getConfig('shop_id'),
-      'Order_IDP'  => $order['number'],
+      'Order_IDP'  => $order['id'],
       'Subtotal_P' => $order['sum'],
     );
 
@@ -76,7 +76,7 @@ class UnitellerPaymentProvider
 
     $formData = array(
       'Shop_IDP'    => $this->getConfig('shop_id'),
-      'Order_IDP'   => $order['number'],
+      'Order_IDP'   => $order['id'],
       'Subtotal_P'  => $order['sum'],
       'Signature'   => $sig,
       'URL_RETURN'  => url_for($this->getConfig('return_url'), true),
