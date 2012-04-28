@@ -28,27 +28,28 @@ class regionActions extends myActions
     $this->forward404Unless($request->isXmlHttpRequest());
 
     $keyword = $request['q'];
-    $limit = $request['limit'] > 100 ? 100 : $request['limit'];
-    $region_type = $request['type'];
 
-    $q = RegionTable::getInstance()
-      ->createBaseQuery()
-      ->addWhere('region.type = ?', $region_type)
-      ->addWhere('region.name LIKE ?', "%$keyword%")
-    ;
-
-    $list = array();
-    foreach ($q->execute() as $region) {
-      $parent = $region->getParent();
-
-      $list[] = array(
-        'id'   => $region['id'],
-        'name' => $region['name'].(($parent && $parent->level > 0) ? ', '.$parent->name : ''),
-      );
+    $data = array();
+    if (!empty($keyword))
+    {
+      $result = CoreClient::getInstance()->query('GEO/autocomplete', array('letters' => $keyword));
+      foreach ($result as $item)
+      {
+        $data[] = array(
+          'token' => $item['token'],
+          'name'  =>
+            $item['name']
+            .(
+              (!empty($item['region']['name']) && ($item['name'] != $item['region']['name']))
+              ? (" ({$item['region']['name']})")
+              : ''
+            ),
+        );
+      }
     }
 
     return $this->renderJson(array(
-      'data' => $list,
+      'data' => $data,
     ));
   }
 
