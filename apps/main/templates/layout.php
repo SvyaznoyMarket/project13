@@ -101,7 +101,7 @@
 <?php include_partial('default/admin') ?>
 
 
-<?php if (true || 'live' == sfConfig::get('sf_environment')): ?>
+<?php if ('live' == sfConfig::get('sf_environment')): ?>
   <?php include_partial('default/yandexMetrika') ?>
   <!-- AdHands -->
   <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
