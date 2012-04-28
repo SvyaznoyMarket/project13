@@ -166,8 +166,8 @@ $(document).ready(function(){
 		var look    = $('div.bF1Info')
 		var f1lines = $('div.bF1Block')
 		// open popup
-		$('.link1', look).click( function(){
-			f1lines.show()
+		$('.link1, .bF1Info_Logo', look).click( function(){
+			f1lines.show()	
 			return false
 		})
 		// close popup
