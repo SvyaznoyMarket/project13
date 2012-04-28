@@ -38,7 +38,8 @@
       <div style="display:none"><img src="/css/skin/img/icon_vkontakte_color.png"/><img
         src="/css/skin/img/icon_twitter_color.png"/><img src="/css/skin/img/icon_facebook_color.png"/></div>
     </div>
-    <div class="pb5">&copy; &laquo;Enter&raquo; 2011&ndash;<?php echo date("Y") ?>. Все права защищены. <a
+    <div class="pb5">С 1 по 10 мая Бесплатная доставка Рожденным до и для победы<br />
+      &copy; &laquo;Enter&raquo; 2011&ndash;<?php echo date("Y") ?>. Все права защищены. <a
       href='<?php echo url_for('default_show', array('page' => 'terms',)) ?>'>Условия продажи</a> <a
       href='<?php echo url_for('default_show', array('page' => 'legal',)) ?>'>Правовая информация</a> <a
       href="<?php echo url_for('user') ?>">Личный кабинет</a></div>
