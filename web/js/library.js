@@ -871,7 +871,7 @@ function printPrice ( val ) {
 	} else if ( le > 3 ) {
 		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
 	}
-	if( floatv.length == 2 && floatv*1 > 0 )
+	if( floatv.length == 2 && floatv[1]*1 > 0 )
 		out += '.' + floatv[1]
 	return out
 }
