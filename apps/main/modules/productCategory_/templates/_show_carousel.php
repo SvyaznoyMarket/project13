@@ -20,7 +20,7 @@ $view = $category->getHasLine() ? 'line' : 'compact';
 
   <?php if ($productCount > 3): ?>
   <div class="scroll">
-    <span><a href='<?php echo $category->getLink() ?>' class='srcoll_link'>посмотреть все</a></span><span
+    <span><a href='<?php echo $productTagCategory->getLink() ?>' class='srcoll_link'>посмотреть все</a></span><span
     class="jshm">( <?php echo $productCount?> )</span>
     <a href="javascript:void(0)"
        data-url="<?php echo $productTagCategory->getDataUrl() ?>"
