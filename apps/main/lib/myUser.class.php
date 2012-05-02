@@ -133,9 +133,18 @@ class myUser extends myGuardSecurityUser
     return $this->region;
   }
 
+  public function getRegionCoreId() //Этот метод дает Автосохранение в куках для дальнейшего использования вне симфони
+  {
+    $region = $this->getRegion();
+
+    return $region['core_id'];
+  }
+
   public function setRegion($region_id)
   {
     $this->setAttribute('region', $region_id);
+
+    $this->setAttribute('region_core_id', $this->getRegion('core_id'));
     $this->setRegionCookie();
   }
 
