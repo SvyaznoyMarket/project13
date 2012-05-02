@@ -15,7 +15,7 @@ TimeDebug::start('Total');
 TimeDebug::start('Configure');
 
 if(HTTP_HOST == 'enter.ru'){
-  require_once('../light/config/dev.php');
+  require_once('../light/config/prod.php');
 }
 else{
   require_once('../light/config/dev.php');
