@@ -148,10 +148,13 @@ class productCatalog_Actions extends myActions
 
     $productFilter = $this->getProductFilter($request);
     $maxPerPage = 3;
+
+    $sort = new ProductSorting();
+
     $viewList = RepositoryManager::getProductCategoryTagView()->getListByCategory(
       $currentCategory->getChildren(),
       $productFilter->getCoreProductFilter(false),
-      array(),
+      $sort->getCoreSort(),
       0,
       $maxPerPage * 2
     );
