@@ -296,6 +296,7 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
 
   .bHeader{
     height: 112px;
+	position: relative;
     text-align: justify;
     margin: 20px 0 20px 0;
     padding: 20px 12px 0 0;

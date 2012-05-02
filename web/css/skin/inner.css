@@ -2469,9 +2469,9 @@ DT.bCtg__eOrange{
 /* f1 info block */
 
 .bF1Info{
-	padding-left: 80px;
-	min-height: 66px;
-	background: url('img/f1info.png') 0 0 no-repeat;
+    /* padding-left: 80px; */
+      min-height: 66px;
+    /* background: url('img/f1info.png') 0 0 no-repeat; */
 	}
 	.bF1Info h3{
 		color: #4fcbf4;
@@ -2488,6 +2488,11 @@ DT.bCtg__eOrange{
 	.bF1Info .link1:hover{
 		text-decoration: none;
 		}
+.bF1Info_Logo {
+    float: left;
+    padding-right: 18px;
+    cursor: pointer;
+}
 
 /* f1 popup block */
 
