@@ -89,7 +89,7 @@
 					<tr>
 						<td><span data-bind="text: title"></span>:</td>
 						<td>
-							<input data-bind="event: { change: $root.validateField }, value: value, attr: { name: name }, css: { mEmpty: valerror }" class='bFastInner__eInput'>
+							<input data-bind="event: { change: $root.validateField }, value: value, attr: { name: name, id: selectorid }, css: { mEmpty: valerror }" class='bFastInner__eInput'>
 							<!-- ko if: valerror -->
 							<span class='mEmpty'>(!) Пожалуйста, верно заполните поле</span>
 							<!-- /ko -->

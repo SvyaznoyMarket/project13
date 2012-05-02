@@ -178,6 +178,7 @@ $(document).ready(function() {
 				self.textfields.push( ko.observable({
 					title: 'Имя получателя',
 					name: 'order[recipient_first_name]', //UNIQUE!
+					selectorid: '',
 					value: '',
 					valerror: false,
 					regexp: /^[a-zа-я\s]+$/i
@@ -185,9 +186,10 @@ $(document).ready(function() {
 				self.textfields.push( ko.observable({
 					title: 'Телефон для связи',
 					name: 'order[recipient_phonenumbers]', //UNIQUE!
+					selectorid: 'phonemask',
 					value: '',
 					valerror: false,
-					regexp: /^[0-9\-\+\s]+$/
+					regexp: /^[()0-9\-\+\s]+$/
 				}) )
 			
 			self.disabledSelectors = ko.observable( false )
@@ -408,6 +410,10 @@ $(document).ready(function() {
 					valerror = true
 					self.formStatus('typing')
 				}	
+				if( e.currentTarget.getAttribute('id') === 'phonemask' && e.currentTarget.value.replace(/[^0-9]/g, '').length !== 11 ) {
+					valerror = true
+					self.formStatus('typing')
+				}	
 				for(var i=0, l=self.textfields.length; i<l; i++) // like indexOf
 					if( self.textfields[i]().name === textfield.name ) {
 						var tmp = self.textfields[i]()
@@ -620,7 +626,13 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			
 	/////////////////////////////////////////
 	
-	
+	/* Inputs */
+	function enableHandlers() {
+		if( typeof( $.mask ) !== 'undefined' ) {
+			$.mask.definitions['n'] = "[()0-9\ \-]"
+			$("#phonemask").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " " })
+		}
+	}
 	/* One Click Order */
 	if( $('.order1click-link-new').length ) {
 		
@@ -663,12 +675,14 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			}			
 			OC_MVM = new OneCViewModel() 
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
+			
 				
 			if( selfAvailable ) {
 				window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'mapPopup', updateIW )
 				window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 			}
 			oneClickIsReady = true
+			enableHandlers()
 		})
 
 		function pickStoreMVM( node ) {	
@@ -746,6 +760,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			
 			OC_MVM = new OneCViewModel() 
 			ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
+			enableHandlers()
 
 			if( selfAvailable ) {
 				window.regionMap = new MapWithShops( mapCenter, $('#infowindowforstock'), 'stockmap', updateIW )

@@ -84,7 +84,7 @@
 			.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
-				.script( 'jquery.effects.blind.js' )
+				//.script( 'jquery.effects.blind.js' )
 				.script( getWithVersion('main.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
