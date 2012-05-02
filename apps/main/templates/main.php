@@ -65,7 +65,7 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 
       <noindex>
         <div class="searchbox">
-          <?php include_component('search', 'form', array('view' => 'main')) ?>
+          <?php render_partial('search/templates/_form.php', array('view' => 'main')) ?>
         </div>
       </noindex>
 
