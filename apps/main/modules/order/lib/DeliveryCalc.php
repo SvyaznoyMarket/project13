@@ -59,14 +59,15 @@ class DeliveryCalc
     $region = sfContext::getInstance()->getUser()->getRegion();
     $stockRel = StockProductRelationTable::getInstance();
     $productsInStore = array();
+    $site_product_id = array();
     foreach ($cart as $product_id => $product)
     {
       // stock_id = 1 HARDCODE
 
         //by #2035
-        $product_id = ProductTable::getInstance()->getIdBy('core_id',$product_id);
+        $site_product_id[$product_id] = ProductTable::getInstance()->getIdBy('core_id',$product_id);
 
-        if (!$stockRel->isInStock($product_id, false, 1, $product['quantity'])) {
+        if (!$stockRel->isInStock($site_product_id[$product_id], false, 1, $product['quantity'])) {
         $haveInStock = false;
         $productsInStore[$product_id] = false;
       } else {
@@ -85,7 +86,7 @@ class DeliveryCalc
           $tmpshops = array();
           $q = ShopTable::getInstance()->createBaseQuery();
           $q->innerJoin('shop.ProductRelation productRelation');
-          $q->andWhere('productRelation.product_id = ?', (int)$product_id);
+          $q->andWhere('productRelation.product_id = ?', (int)$site_product_id[$product_id]);
           $q->andWhere('productRelation.stock_id IS NULL');
           $q->andWhere('productRelation.quantity >= ?', $product['quantity']);
           $q->andWhere('shop.region_id = ?', $region['id']);

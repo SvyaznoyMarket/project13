@@ -97,6 +97,7 @@ class ProductRepository extends ObjectRepository
       return array();
     return $this->getListFyFilter(array(
       'id' => $idList,
+      'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
     ), $loadDynamic);
   }
 
@@ -114,7 +115,10 @@ class ProductRepository extends ObjectRepository
       $callback(array());
       return;
     }
-    $this->getListFyFilterAsync($callback, array('id' => $idList), $loadDynamic);
+    $this->getListFyFilterAsync($callback, array(
+      'id' => $idList,
+      'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ), $loadDynamic);
   }
 
   public function getRelated(ProductRelatedCriteria $criteria, $order = null)
