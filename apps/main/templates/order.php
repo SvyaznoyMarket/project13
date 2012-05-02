@@ -82,6 +82,8 @@ document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
+<?php include_partial('region/select') ?>
+
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
   <?php include_partial('default/yandexMetrika') ?>
