@@ -661,7 +661,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 		
 		$.post( inputUrl, postData, function(data) {
-			if( !data.success ) {
+			if( !data.success || data.data.length === 0 ) {
 				OC_MVM = new OneCViewModel() 
 				ko.applyBindings( OC_MVM, $('#order1click-container-new')[0] ) // this way, Lukas!
 				OC_MVM.noDelivery( true )
