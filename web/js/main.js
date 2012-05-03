@@ -406,7 +406,7 @@ $(document).ready(function(){
 			$('.bCityPopupWrap').hide()
 		})
 	}
-	
+	/*
 	$('#jsregion').click( function() {
 		if( !$(this).data('run') ) {
 			$(this).data('run', true)
@@ -416,6 +416,53 @@ $(document).ready(function(){
 				paintRegions()
 		}
 		return false
+	})
+	*/
+	
+	$('#jscity').autocomplete( {
+		autoFocus: true,
+		appendTo: '#jscities',
+		source: function( request, response ) {
+			$.ajax({
+				url: $('#jscity').data('url-autocomplete'),
+				dataType: "json",
+				data: {
+					q: request.term
+				},
+				success: function( data ) {
+					var res = data.data.slice(0, 15)
+					response( $.map( res, function( item ) {
+						return {
+							label: item.name,
+							value: item.name,
+							url: item.url
+						}
+					}));
+				}
+			});
+		},
+		minLength: 2,
+		select: function( event, ui ) {
+			$('#jschangecity').data('url', ui.item.url )
+			$('#jschangecity').removeClass('mDisabled')
+		},
+		open: function() {
+			$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+		},
+		close: function() {
+			$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+		}
+	})
+			
+	$('#jsregion').click( function() {
+		$('#region-block').lightbox_me( {} )
+		return false
+	})
+	
+	$('body').delegate('#jschangecity', 'click', function(e) {
+		e.preventDefault()
+		if( $(this).data('url') )
+			window.location = $(this).data('url')
 	})
 	
 	/* GEOIP fix */

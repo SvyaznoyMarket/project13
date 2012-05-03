@@ -80,7 +80,8 @@
 			break
 		case 'product_card':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
+				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.wait()
