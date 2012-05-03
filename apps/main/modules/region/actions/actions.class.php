@@ -49,7 +49,7 @@ class regionActions extends myActions
               ? (" ({$item['region']['name']})")
               : ''
             ),
-          'url'  => $this->generateUrl('region_change', array('region' => $item['token'])),
+          'url'  => $this->generateUrl('region_change', array('region' => $item['id'])),
         );
 
         $i++;
@@ -63,7 +63,13 @@ class regionActions extends myActions
 
   public function executeChange(sfWebRequest $request)
   {
-    $region = $this->getRoute()->getObject();
+    if (intval($request['region']) == $request['region'])
+    {
+      $region = RegionTable::getInstance()->getByCoreId($request['region']);
+    }
+    else {
+      $region = $this->getRoute()->getObject();
+    }
 
     if ($region)
     {
@@ -71,7 +77,7 @@ class regionActions extends myActions
       $this->getUser()->setRegionCookie();
     }
 
-    $this->redirect($request->getReferer());
+    $this->redirect($request->getReferer() ?: 'homepage');
   }
 
   public function executeRedirect(sfWebRequest $request)
