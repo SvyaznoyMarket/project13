@@ -8,5 +8,9 @@
       <input type="submit" value="Сохранить" class="button bigbutton">
     </form>
 
+    <div class="pt10">
+      <?php include_component('region', 'top_list') ?>
+    </div>
+
   </div>
 </div>

@@ -3305,7 +3305,7 @@ DT.bCtg__eOrange{
 		zoom: 1;
 		}
 	.bCityPopup__eBlock a{
-		color: #fff;
+		/* color: #fff; */
 		}
 #noti {
 	display: none;

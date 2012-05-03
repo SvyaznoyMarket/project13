@@ -11,4 +11,8 @@
 class regionComponents extends myComponents
 {
 
+  public function executeTop_list()
+  {
+    $this->regions = RegionTable::getInstance()->getListHavingShops();
+  }
 }
