@@ -10,6 +10,3 @@
 
   </div>
 </div>
-
-
-<a href="<?php echo $active['url']?>" id="jsregion" data-url="<?php echo url_for('region_init') ?>"><?php echo $active['name']?></a>
