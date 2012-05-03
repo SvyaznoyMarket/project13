@@ -9,7 +9,7 @@
 					<div class='bFast__eArrow'></div>
 					<div class='bFast__eNum'>Артикул #<span data-bind="text: shortcut">454-9366</span></div>
 					<div class="bFast__eTitle"><a href="" data-bind="text: title">Смартфон Samsung Galaxy SII черный</a></div>
-					<div class='bFast__eCenter'><a href=""><img alt="" data-bind="attr: {src: icon}"/></a></div>
+					<div class='bFast__eCenter'><img alt="" data-bind="attr: {src: icon}"/></div>
 					<div class='bFast__eCenter' data-bind="if : !noQBar() ">
 						<div class='bCountSet'>
 							<a class='bCountSet__eP' href="#" data-bind="click: plusItem">+</a>
