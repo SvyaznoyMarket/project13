@@ -131,8 +131,7 @@ $(document).ready(function() {
 	//////////////////////////////////////////
 	
 	function OneCViewModel() {
-//console.info('IN DEL ', Deliveries)	
-			
+
 			var self = this	
 			self.noDelivery = ko.observable(false)
 			
@@ -205,9 +204,13 @@ $(document).ready(function() {
 			self.chosenShop = ko.observable( {} )
 			self.pickedShop = ko.observable( {} )
 				
-			self.dynModel = function( Deliveries ) {
+			self.dynModel = function( Deliveries ) {				
+				var chosenType = self.chosenDlvr().type
+				if ( !chosenType )
+					chosenType = 'self'
 				self.dlvrs.removeAll()
 				self.chosenDlvr({})
+
 				for(var obj in Deliveries ) {
 					self.dlvrs.push( {
 						type: obj,
@@ -215,11 +218,11 @@ $(document).ready(function() {
 						modeID: Deliveries[obj].modeId,
 						price: Deliveries[obj].price
 					})
-					if( obj == 'self' )
+					if( obj == chosenType )
 						self.chosenDlvr( self.dlvrs()[ self.dlvrs().length - 1 ] )
 				}
 				if( ! ('type' in self.chosenDlvr() ) )
-					self.chosenDlvr( self.dlvrs()[ 0 ] )	
+					self.chosenDlvr( self.dlvrs()[ 0 ] )
 				
 				self.dates( Deliveries[ self.chosenDlvr().type+'' ].dates.slice(0) )
 				self.chosenDate( self.dates()[0] )
@@ -268,7 +271,6 @@ $(document).ready(function() {
 			}
 			
 			self.preparedData = function( data ) {
-//console.info(data)			
 				if( data.type === 'self' ) {
 					self.formStatus('reserve')
 					for(var i=0, l=self.dlvrs().length; i<l; i++ )
@@ -338,7 +340,6 @@ $(document).ready(function() {
 						if( item.shopIds.length > 0 ) {
 							self.shops.removeAll()// = ko.observableArray( Deliveries['self'].shops.slice(0) )
 							for(var key in Deliveries['self'].shops ) {
-//console.info( Deliveries['self'].shops[key], item.shopIds.indexOf( Deliveries['self'].shops[key].id ))
 								if( item.shopIds.indexOf( Deliveries['self'].shops[key].id ) !== -1 )
 									self.shops.push( Deliveries['self'].shops[key] )
 							}
@@ -404,7 +405,6 @@ $(document).ready(function() {
 			} 
 			
 			self.validateField = function( textfield, e ) {
-//console.info( textfield, e.currentTarget.value, textfield.regexp.test( e.currentTarget.value ) )
 				var valerror = false
 				if( e.currentTarget.value.replace(/\s/g, '') == '' ||  !textfield.regexp.test( e.currentTarget.value ) ) {
 					valerror = true
@@ -436,7 +436,6 @@ $(document).ready(function() {
 				
 				//validate fields
 				$('#oneClick input').trigger('change')
-//console.info( 'CHECK', self.formStatus()	)
 				if( self.formStatus() === 'typing' ) // validation error
 					return
 				
@@ -455,7 +454,6 @@ $(document).ready(function() {
 					postData[ 'order[shop_id]' ] = self.chosenShop().id
 				for(var i=0,l=self.textfields.length; i<l; i++)
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
-//console.info( 'OUT DEL: ', postData)
 				$.post( outputUrl, postData, function( data ) {
 					if( !data.success ) {
 						self.formStatus('typing')
@@ -475,8 +473,7 @@ $(document).ready(function() {
 
 	/* StockViewModel */
 	function StockViewModel() {
-//console.info('IN DEL ', Deliveries)	
-		
+
 		var self = this	
 		self.showMap = ko.observable(false)
 		
@@ -577,7 +574,6 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 
 		self.pickShopOnMap = function( shid ) {
-//console.info('pickShopOnMap',shid)			
 			for(var i=0, l=self.shops.length; i<l; i++)
 				if( self.shops[i].id == shid ) {
 					self.pickedShop( self.shops[i] )
@@ -602,7 +598,6 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		}
 		
 		self.reserveItem = function() {
-//console.info('reserveItem')
 			var MVMinterface = {
 				type: 'self',
 				date: self.today() ? Deliveries['self'].dates[ tind ] : Deliveries['self'].dates[ tind + 1 ],
@@ -638,10 +633,9 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		
 		var Model = $('.order1click-link-new').data('model')
 		var inputUrl = $('.order1click-link-new').attr('link-input')		
-		var outputUrl = $('.order1click-link-new').attr('link-output')
-//console.info( 'MODEL: ', Model)		
+		var outputUrl = $('.order1click-link-new').attr('link-output')		
 		Deliveries = { // zaglushka
-			'courier': {
+			'self': {
 				modeId: 4,
 				name: 'Доставка',
 				price: 400,
@@ -718,7 +712,6 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		var Model     = $('#stockmodel').data('value')
 		var inputUrl  = $('#stockmodel').attr('link-input')
 		var outputUrl = $('#stockmodel').attr('link-output')
-//console.info(Model)
 		var selfAvailable = false
 		var currentDate = (new Date()).toISOString().substr(0,10)
 
