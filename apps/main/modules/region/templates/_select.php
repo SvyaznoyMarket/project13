@@ -12,4 +12,4 @@
 </div>
 
 
-<a href="<?php echo $active['url']?>" id="jsregion" data-url="<?php echo url_for('region_init') ?>"><?php echo $active['name']?></a>
+<a href="<?php echo url_for('region_change', array('region' => $sf_user->getRegion('region'))) ?>" id="jsregion" data-url="<?php echo url_for('region_init') ?>"><?php echo $sf_user->getRegion('name') ?></a>
