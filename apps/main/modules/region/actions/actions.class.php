@@ -25,16 +25,21 @@ class regionActions extends myActions
   */
   public function executeAutocomplete(sfWebRequest $request)
   {
+    $limit = 8;
+
     $this->forward404Unless($request->isXmlHttpRequest());
 
     $keyword = $request['q'];
 
     $data = array();
-    if (!empty($keyword))
+    if (strlen($keyword) > 2)
     {
       $result = CoreClient::getInstance()->query('GEO/autocomplete', array('letters' => $keyword));
+      $i = 0;
       foreach ($result as $item)
       {
+        if ($i >= $limit) break;
+
         $data[] = array(
           'token' => $item['token'],
           'name'  =>
@@ -44,7 +49,10 @@ class regionActions extends myActions
               ? (" ({$item['region']['name']})")
               : ''
             ),
+          'url'  => $this->generateUrl('region_change', array('region' => $item['token'])),
         );
+
+        $i++;
       }
     }
 
