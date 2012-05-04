@@ -644,7 +644,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			}
 		}
 		
-		var selfAvailable = 'self' in Deliveries
+		var selfAvailable = false  //'self' in Deliveries
 		
 		/* Load Data from Server */
 		oneClickIsReady = false
