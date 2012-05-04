@@ -502,7 +502,7 @@ abstract class sfAction extends sfComponent
   /**
    * Returns the current route for this request
    *
-   * @return sfRoute The route for the request
+   * @return myDoctrineRoute The route for the request
    */
   public function getRoute()
   {
