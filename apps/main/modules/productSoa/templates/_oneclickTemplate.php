@@ -23,7 +23,7 @@
 					<div class='bFast__ePrice'>Доставка:
 						<div><span data-bind="text: chosenDlvr().price"></span> <span class="rubl">p</span></div>
 					</div>
-					<div class='bFast__ePrice'>Сумма заказа:
+					<div class='bFast__ePrice'>Итого:
 						<div><span data-bind="text: total()"></span> <span class="rubl">p</span></div>
 					</div>
 				</div>

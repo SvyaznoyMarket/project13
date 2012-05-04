@@ -3156,6 +3156,7 @@ DT.bCtg__eOrange{
 		}
 	.bSelect.mFastInpSmall{ 
 		width: 137px;
+		vertical-align:top;
 		}
 	.bSelect.mFastInpBig{
 		width: 362px;
