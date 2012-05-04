@@ -162,7 +162,7 @@ $(document).ready(function() {
 						status = 'Проверка...'
 					break
 					case 'error':
-						status = 'Произошла ошибка!'
+						status = 'Отправить заказ нельзя'
 					break
 					case 'sending':
 						status = 'Отправка...'

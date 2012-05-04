@@ -2997,10 +2997,12 @@ DT.bCtg__eOrange{
 	.bMobDown table td h3{
 		margin: 0;
 		padding: 0;
-		font: 18px/20px 'EnterTypeRegular';
+		/*font: 18px/20px 'EnterTypeRegular';*/
+		font-size:18px;
 		}
 	.bMobDown table td p{
-		font: 13px/14px 'EnterTypeRegular';
+		/*font: 13px/14px 'EnterTypeRegular';*/
+		font-size:13px;
 		}
 	.bMobDown table td img{}
 	.bMobDown table td input{
@@ -3027,7 +3029,7 @@ DT.bCtg__eOrange{
 .bFast{
 	width: 100%;
 	margin: 0 !important;
-	font-family: 'EnterTypeRegular';
+	font-family: 'EnterTypeRegular' ;
 	}
 	.bFast__eItem{
 		width: 175px;
@@ -3135,7 +3137,8 @@ DT.bCtg__eOrange{
 			}
 		.bFast__ePrice{
 			margin: 7px 0;
-			font: 16px 'EnterTypeRegular';
+			/*font: 16px 'EnterTypeRegular';*/
+			font-size:16px;
 			}
 		.bFast__ePrice div{
 			float: right;
@@ -3146,7 +3149,8 @@ DT.bCtg__eOrange{
 	cursor: pointer;
 	position: relative;
 	border: 1px solid #9e9e9e;
-	font: 16px/30px 'EnterTypeRegular';
+	/*font: 16px/30px 'EnterTypeRegular';*/
+	font-size:16px;
 	
 	display: inline-block;
 	*display: inline;
@@ -3168,6 +3172,7 @@ DT.bCtg__eOrange{
 		}
 	.bSelect.mFastInpSmall{ 
 		width: 137px;
+		vertical-align:top;
 		}
 	.bSelect.mFastInpBig{
 		width: 362px;
@@ -4301,7 +4306,13 @@ DT.bCtg__eOrange{
 		text-decoration: none;
 		border: 1px solid #cb5b00;
 		}
-
+	.bBigOrangeButton.disable{
+		color: #cdcdcd;
+		cursor: default;
+		background: #f4f4f4;
+		text-decoration: none;
+		border: 1px solid #dddddd;
+	}
 
 .bCountSet{
 	top: 0;
