@@ -17,7 +17,7 @@ class DeliveryShortData
   /**
    * @var int
    */
-  private $type_id = Null;
+  private $mode_id = Null;
 
   /**
    * @var float
@@ -90,17 +90,17 @@ class DeliveryShortData
   /**
    * @param int $type_id
    */
-  public function setTypeId($type_id)
+  public function setModeId($type_id)
   {
-    $this->type_id = $type_id;
+    $this->mode_id = $type_id;
   }
 
   /**
    * @return int
    */
-  public function getTypeId()
+  public function getModeId()
   {
-    return $this->type_id;
+    return $this->mode_id;
   }
 
   /**

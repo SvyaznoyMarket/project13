@@ -116,7 +116,7 @@ class DeliveryModel
       foreach ($deliveries as $i => $delivery) {
         $deliveryShortObject = new DeliveryShortData();
         $deliveryShortObject->setId($delivery['delivery_id']);
-        $deliveryShortObject->setTypeId($delivery['delivery_id']);
+        $deliveryShortObject->setModeId($delivery['mode_id']);
         $deliveryShortObject->setPrice($delivery['price']);
         $deliveryShortObject->setEarliestDate($delivery['date']);
         /**
@@ -128,9 +128,21 @@ class DeliveryModel
             $deliveryShortObject->setName('курьерская доставка');
             $deliveryShortObject->setToken('standart');
             break;
+          case 2:
+            $deliveryShortObject->setName('экспресс');
+            $deliveryShortObject->setToken('express');
+            break;
           case 3:
             $deliveryShortObject->setName('самовывоз');
             $deliveryShortObject->setToken('self');
+            break;
+          case 4:
+            $deliveryShortObject->setName('покупка в магазине');
+            $deliveryShortObject->setToken('');
+            break;
+          case 5:
+            $deliveryShortObject->setName('Акция!');
+            $deliveryShortObject->setToken('');
             break;
           default:
             $deliveryShortObject->setName('');
