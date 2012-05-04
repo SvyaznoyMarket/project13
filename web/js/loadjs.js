@@ -44,7 +44,8 @@
 			break
 		case 'infopage':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
+				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('main.js'))
 				.wait()
@@ -54,14 +55,15 @@
 			break
 		case 'cart':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
+				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('main.js'))
 				.script(getWithVersion('app.cart.js'))
 			}).runQueue()
 			break
 		case 'order':
-			$LAB.queueScript('bigjquery.min.js')
+			$LAB.queueScript('bigjquery.min.js').script('jquery.ui.autocomplete.js')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
 				.wait()
@@ -71,7 +73,8 @@
 			break
 		case 'product_catalog':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
+				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.wait()
@@ -93,7 +96,8 @@
 			break
 		case 'product_comment':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
+				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.wait()
@@ -107,7 +111,8 @@
 			break
 		case 'service':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
+				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.wait()
@@ -116,7 +121,8 @@
 			break
 		case 'shop':
 			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
+				.script( getWithVersion('library.js') )
 				.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('app.shop.js') )
@@ -128,7 +134,8 @@
 			break
 		case 'product_stock':
 			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
+				.script( getWithVersion('library.js') )
 				.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('main.js') )

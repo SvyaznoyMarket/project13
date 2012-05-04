@@ -370,7 +370,7 @@ $(document).ready(function(){
 		}
 	})
 	
-	function getRegions() {
+	function getRegionsOld() { //deprecated
 		$.getJSON( '/region/init', function(data) {
 			if( !data.success ) 
 				return false
@@ -453,9 +453,20 @@ $(document).ready(function(){
 			$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
 		}
 	})
+	
+	function getRegions() {
+		$('#region-block').lightbox_me( {
+			onClose: function() {			
+				if( !docCookies.hasItem('geoshop') ) {
+					docCookies.setItem( false, "geoshop", "48") //moscow city
+					document.location.reload()
+				}
+			}
+		} )		
+	}
 			
 	$('#jsregion').click( function() {
-		$('#region-block').lightbox_me( {} )
+		getRegions()
 		return false
 	})
 	
