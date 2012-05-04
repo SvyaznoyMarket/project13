@@ -17,8 +17,15 @@
 							<span data-bind="text: quantityTxt">1 шт.</span>
 						</div>
 					</div>
-					<div class='bFast__ePrice'>Цена: <div><span data-bind="text: priceTxt"></span> <span class="rubl">p</span></div></div> 
-					<div class='bFast__ePrice'>Сумма заказа: <div><span data-bind="text: total()"></span> <span class="rubl">p</span></div></div> 
+					<div class='bFast__ePrice'>Цена: 
+						<div><span data-bind="text: priceTxt"></span> <span class="rubl">p</span></div>
+					</div>
+					<div class='bFast__ePrice'>Доставка:
+						<div><span data-bind="text: chosenDlvr().price"></span> <span class="rubl">p</span></div>
+					</div>
+					<div class='bFast__ePrice'>Сумма заказа:
+						<div><span data-bind="text: total()"></span> <span class="rubl">p</span></div>
+					</div>
 				</div>
 			</td>
 			<td class='bFast__eForm'>
@@ -100,7 +107,7 @@
 					<tr><td colspan=2>Отправьте заказ и мы вам скоро перезвоним :)<br>
 					Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.</td></tr>
 					<tr><td colspan=2>
-						<a class='bBigOrangeButton' href="" data-bind="text: formStatusTxt, click: validateForm"></a>
+						<a class='bBigOrangeButton' href="" data-bind="css: { disable : noDelivery() },text: formStatusTxt, click: validateForm"></a>
 					</td></tr>
 				</table>
 			</td>
