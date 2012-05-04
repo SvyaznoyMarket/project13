@@ -103,7 +103,7 @@ $(document).ready(function() {
 		this.closeMap = function( callback ) {
 			infoWindow.close()
 			mapContainer.hide('blind', null, 800, function() {
-				if( arguments.length > 0 )
+				if( callback )
 					callback()
 			})
 		}
