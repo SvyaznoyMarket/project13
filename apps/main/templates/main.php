@@ -128,6 +128,6 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
           elem.parentNode.insertBefore(scr, elem);
       }(document));
   </script>
-
+  <?php include_component('default', 'adriver') ?>
   </body>
 </html>

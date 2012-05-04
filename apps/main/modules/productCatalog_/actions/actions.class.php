@@ -87,6 +87,8 @@ class productCatalog_Actions extends myActions
 
     $productCategory = $this->getProductCategory($request);
 
+    $this->getContext()->set('adriverProductInfo', array('productId' => 0, 'categoryId' => $productCategory->getid()));
+
     if ($productCategory->has_line) // если в категории должны отображться линии
     {
       $this->forward($this->getModuleName(), 'line');

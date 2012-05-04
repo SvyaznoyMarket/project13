@@ -87,7 +87,7 @@ class productCardSoaActions extends myActions
         'jsregionName' => $this->getUser()->getRegion('name')
       );
       $this->setVar('json', json_encode($json));
-
+      $this->getContext()->set('adriverProductInfo', array('productId' => $this->product->id, 'categoryId' => 0));
   }
  /**
   * Executes preview action
