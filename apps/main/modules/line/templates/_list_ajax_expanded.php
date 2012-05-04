@@ -1,1 +1,0 @@
-<?php include_partial('product/list_ajax_extended', $sf_data) ?>
