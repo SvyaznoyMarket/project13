@@ -141,7 +141,7 @@ class DeliveryShortData
   public function toArray(){
     return array(
       'id'           => $this->getId(),
-      'typeId'       => $this->getTypeId(),
+      'modeId'       => $this->getModeId(),
       'price'        =>  $this->getPrice(),
       'earliestDate' => $this->getEarliestDate(),
       'name'         => $this->getName(),

@@ -37,6 +37,87 @@ class DeliveryModel
    * </code>
    *
    */
+  public function getShortDeliveryInfoForProductList($productIds, $geoId){
+    if(!is_array($productIds)){
+      throw new dataFormatException('$productIds must be array, but in real is ('.gettype($productIds).') '.print_r($productIds, true));
+    }
+    if(!is_int($geoId)){
+      throw new dataFormatException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
+    }
+    TimeDebug::start('DeliveryModel:getShortDeliveryInfoForProductList');
+    $geoId = (int) $geoId;
+    $productIds = array_unique($productIds);
+
+    $return = array();
+//    $deliveryInfo = array();
+
+    foreach ($productIds as $productId) {
+      $productId = (int) $productId;
+      $return[$productId] = array();
+
+      TimeDebug::start('DeliveryModel:getShortDeliveryInfoForProductList:clientV1');
+      $deliveries = CoreV1Client::getInstance()->query('delivery.calc', array(), array(
+        'geo_id' => $geoId,
+        'product' => array(array('id' => $productId, 'quantity' => 1))
+      ));
+      TimeDebug::end('DeliveryModel:getShortDeliveryInfoForProductList:clientV1');
+
+//      var_export($deliveries);
+      if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
+        $deliveries = array(array(
+          'mode_id' => 1,
+          'date' => date('Y-m-d', time() + (3600 * 48)),
+          'price' => null,
+        ));
+      }
+
+      foreach ($deliveries as $i => $delivery) {
+        $deliveryShortObject = new DeliveryShortData();
+        $deliveryShortObject->setId($delivery['delivery_id']);
+        $deliveryShortObject->setModeId($delivery['mode_id']);
+        $deliveryShortObject->setPrice($delivery['price']);
+        $deliveryShortObject->setEarliestDate($delivery['date']);
+
+        /**
+         * дабы не вызывать лишний раз ядро
+        */
+        switch($delivery['mode_id']){
+          case 1:
+            $deliveryShortObject->setName('курьерская доставка');
+            $deliveryShortObject->setToken('standart');
+            break;
+          case 2:
+            $deliveryShortObject->setName('экспресс');
+            $deliveryShortObject->setToken('express');
+            break;
+          case 3:
+            $deliveryShortObject->setName('самовывоз');
+            $deliveryShortObject->setToken('self');
+            break;
+          case 4:
+            $deliveryShortObject->setName('покупка в магазине');
+            $deliveryShortObject->setToken('');
+            break;
+          case 5:
+            $deliveryShortObject->setName('Акция!');
+            $deliveryShortObject->setToken('');
+            break;
+          default:
+            $deliveryShortObject->setName('');
+            $deliveryShortObject->setToken('');
+        }
+//        if(!isset($deliveryInfo[$delivery['delivery_id']])){
+//          $deliveryInfo[$delivery['delivery_id']] = array();
+//        }
+//        $deliveryInfo[$delivery['delivery_id']][] = array('productId' => $productId, 'deliveryKey' => $i);
+        $return[$productId][$i] = $deliveryShortObject;
+      }
+    }
+    TimeDebug::end('DeliveryModel:getShortDeliveryInfoForProductList');
+    return $return;
+  }
+
+//Версия натравлена на Олину версию расчета Доставки
 //  public function getShortDeliveryInfoForProductList($productIds, $geoId){
 //    if(!is_array($productIds)){
 //      throw new dataFormatException('$productIds must be array, but in real is ('.gettype($productIds).') '.print_r($productIds, true));
@@ -78,86 +159,6 @@ class DeliveryModel
 //
 //    return $return;
 //  }
-
-  public function getShortDeliveryInfoForProductList($productIds, $geoId){
-    if(!is_array($productIds)){
-      throw new dataFormatException('$productIds must be array, but in real is ('.gettype($productIds).') '.print_r($productIds, true));
-    }
-    if(!is_int($geoId)){
-      throw new dataFormatException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
-    }
-    TimeDebug::start('DeliveryModel:getShortDeliveryInfoForProductList');
-    $geoId = (int) $geoId;
-    $productIds = array_unique($productIds);
-
-    $return = array();
-//    $deliveryInfo = array();
-
-    foreach ($productIds as $productId) {
-      $productId = (int) $productId;
-      $return[$productId] = array();
-
-      TimeDebug::start('DeliveryModel:getShortDeliveryInfoForProductList:clientV1');
-      $deliveries = CoreV1Client::getInstance()->query('delivery.calc', array(), array(
-        'geo_id' => $geoId,
-        'product' => array(array('id' => $productId, 'quantity' => 1))
-      ));
-      TimeDebug::end('DeliveryModel:getShortDeliveryInfoForProductList:clientV1');
-
-//      var_export($deliveries);
-      if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
-        $deliveries = array(array(
-          'mode_id' => 1,
-          'date' => date('Y-m-d', time() + (3600 * 48)),
-          'price' => null,
-        ));
-      }
-
-      foreach ($deliveries as $i => $delivery) {
-        $deliveryShortObject = new DeliveryShortData();
-        $deliveryShortObject->setId($delivery['delivery_id']);
-        $deliveryShortObject->setModeId($delivery['mode_id']);
-        $deliveryShortObject->setPrice($delivery['price']);
-        $deliveryShortObject->setEarliestDate($delivery['date']);
-        /**
-         * дабы не вызывать лишний раз ядро
-        */
-
-        switch($delivery['delivery_id']){
-          case 1:
-            $deliveryShortObject->setName('курьерская доставка');
-            $deliveryShortObject->setToken('standart');
-            break;
-          case 2:
-            $deliveryShortObject->setName('экспресс');
-            $deliveryShortObject->setToken('express');
-            break;
-          case 3:
-            $deliveryShortObject->setName('самовывоз');
-            $deliveryShortObject->setToken('self');
-            break;
-          case 4:
-            $deliveryShortObject->setName('покупка в магазине');
-            $deliveryShortObject->setToken('');
-            break;
-          case 5:
-            $deliveryShortObject->setName('Акция!');
-            $deliveryShortObject->setToken('');
-            break;
-          default:
-            $deliveryShortObject->setName('');
-            $deliveryShortObject->setToken('');
-        }
-//        if(!isset($deliveryInfo[$delivery['delivery_id']])){
-//          $deliveryInfo[$delivery['delivery_id']] = array();
-//        }
-//        $deliveryInfo[$delivery['delivery_id']][] = array('productId' => $productId, 'deliveryKey' => $i);
-        $return[$productId][$i] = $deliveryShortObject;
-      }
-    }
-    TimeDebug::end('DeliveryModel:getShortDeliveryInfoForProductList');
-    return $return;
-  }
 
   /**
    * @param integer $productId
