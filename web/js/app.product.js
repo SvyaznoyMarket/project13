@@ -131,10 +131,10 @@ $(document).ready(function() {
 				html += '<li><h5>Можно заказать сейчас с доставкой</h5>';
 				for (i in data) {
 					row = data[i];
-					if (row.token == 'standart') {
+					//if (row.token == 'standart') {
 						html += '<div>&mdash; Можем доставить '+formatDateText(row.date)+'</div>';
 						data.splice(i, 1);
-					}
+					//}
 				}
 				html += '</li>';
 			}
