@@ -1,4 +1,7 @@
 <?php
+if(!defined('LOG_FILES_PATH')){
+  define('LOG_FILES_PATH', '');
+}
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements. See the NOTICE file distributed with
@@ -58,7 +61,7 @@ class LoggerAppenderFile extends LoggerAppender {
 	protected $fp = false;
 	
 	public function activateOptions() {
-		$fileName = $this->getFile();
+		$fileName = LOG_FILES_PATH.$this->getFile();
 
 		if (empty($fileName)) {
 			$this->warn("Required parameter 'fileName' not set. Closing appender.");

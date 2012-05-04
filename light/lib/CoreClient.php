@@ -69,12 +69,12 @@ class CoreClient
         throw new CoreClientException(curl_error($connection), curl_errno($connection));
       }
       $info = curl_getinfo($connection);
-      $this->log('Core response resource: ' . $connection ,'info');
-      $this->log('Core response info: ' . $this->encodeInfo($info), 'info');
+      $this->log('Core response resource: ' . $connection ,'debug');
+      $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
       if ($info['http_code'] >= 300) {
         throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
-      $this->log('Core response: ' . $response, 'info');
+      $this->log('Core response: ' . $response, 'debug');
       $responseDecoded = $this->decode($response);
       curl_close($connection);
       return $responseDecoded;
@@ -127,11 +127,11 @@ class CoreClient
         if ($code == CURLM_OK) {
           // if one or more descriptors is ready, read content and run callbacks
           while ($done = curl_multi_info_read($this->multiHandler)) {
-            $this->log('Core response done: ' . print_r($done, 1), 'info');
+            $this->log('Core response done: ' . print_r($done, 1), 'debug');
             $ch = $done['handle'];
             $info = curl_getinfo($ch);
-            $this->log('Core response resurce: ' . $ch, 'info');
-            $this->log('Core response info: ' . $this->encodeInfo($info), 'info');
+            $this->log('Core response resurce: ' . $ch, 'debug');
+            $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
             if (curl_errno($ch) > 0)
               throw new CoreClientException(curl_error($ch), curl_errno($ch));
             $content = curl_multi_getcontent($ch);
@@ -139,7 +139,7 @@ class CoreClient
               throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
             }
             $responseDecoded = $this->decode($content);
-            $this->log('Core response data: ' . $this->encode($responseDecoded), 'info');
+            $this->log('Core response data: ' . $this->encode($responseDecoded), 'debug');
             /** @var $callback callback */
             $callback = $this->callbacks[(string)$ch];
             $callback($responseDecoded);
@@ -372,7 +372,7 @@ class CoreV1Client
       ), $params),
       'data'   => $data), JSON_FORCE_OBJECT);
 
-    $this->log("Request: ".$data, 'debug');
+    $this->log("Request: ".$data, 'info');
     $response = $this->send($data);
     $this->log("Response: ".$response, 'debug');
 
