@@ -234,7 +234,6 @@ class DeliveryModel
    * @return DeliveryData[]
    */
   protected function addShopToSelfDelivery($dates, $delivery, $ShopInfo, $return){
-    TimeDebug::start('DeliveryModel:getProductDeliveries:addShop');
     $returnDeliv = Null;
     $returnKey = Null;
     foreach($return as $key => $deliv){
@@ -299,7 +298,6 @@ class DeliveryModel
     else{
       $return[$returnKey] = $returnDeliv;
     }
-    TimeDebug::end('DeliveryModel:getProductDeliveries:addShop');
     return $return;
   }
 }
