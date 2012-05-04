@@ -14,7 +14,7 @@ Logger::configure(LOGGER_CONFIG_PATH); //В отдельную констант�
 TimeDebug::start('Total');
 TimeDebug::start('Configure');
 
-if(HTTP_HOST == 'enter.ru'){
+if(HTTP_HOST == 'enter.ru' || HTTP_HOST == 'nocache.enter.ru'){
   require_once('../light/config/prod.php');
   Logger::getLogger('Settings')->debug('production config in use');
 }
