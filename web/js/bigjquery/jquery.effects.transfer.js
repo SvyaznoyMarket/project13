@@ -1,7 +1,7 @@
-/*!
- * jQuery UI Effects Transfer 1.8.20
+/*
+ * jQuery UI Effects Transfer 1.8.16
  *
- * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
  *
@@ -24,7 +24,7 @@ $.effects.transfer = function(o) {
 				width: target.innerWidth()
 			},
 			startPosition = elem.offset(),
-			transfer = $('<div class="ui-effects-transfer"></div>')
+			transfer = $('<div class="ui-effects-transfer"><img src="'+o.options.img+'" width="100%" height="100%"/></div>')
 				.appendTo(document.body)
 				.addClass(o.options.className)
 				.css({
@@ -34,6 +34,7 @@ $.effects.transfer = function(o) {
 					width: elem.innerWidth(),
 					position: 'absolute'
 				})
+//				.css( o.options.css )
 				.animate(animation, o.duration, o.options.easing, function() {
 					transfer.remove();
 					(o.callback && o.callback.apply(elem[0], arguments));

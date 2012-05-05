@@ -40,7 +40,8 @@
 				},
 					{
 						"title": "jquery.effects.transfer.js", 
-						"comment": "effect on buy process"
+						"comment": "effect on buy process",
+						"mod": "add 'img' option"
 					},
 					{
 						"title": "jquery.effects.blind.js",
@@ -66,7 +67,8 @@
 				{
 					"title": "jquery.raty.js",
 					"author": "Washington Botelso dos Santos",
-					"v": "1.4.3"
+					"v": "1.4.3",
+					"mod": "yes"
 				},
 				{
 					"title": "jquery.scrollto.js",
