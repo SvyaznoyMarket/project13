@@ -454,23 +454,31 @@ $(document).ready(function() {
 					postData[ 'order[shop_id]' ] = self.chosenShop().id
 				for(var i=0,l=self.textfields.length; i<l; i++)
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
-				$.post( outputUrl, postData, function( data ) {
-					if( !data.success ) {
+				var xhr1 =$.ajax( {
+					type: 'POST',
+					url: outputUrl,
+					data: postData,
+					success: function( data, textStatus ) {
+						if( !data.success || textStatus !== 'success' ) {
+							self.formStatus('typing')
+							return
+						}
+						//process
+						$('.bFast').parent().append( data.data.content )
+						$('.bFast').remove()
+						$('.p0').removeClass('p0')
+						$('.top0').removeClass('top0')
+						$('.order1click-link-new').remove()
+					},
+					error: function( jqXHR, textStatus ) {
 						self.formStatus('typing')
-						return
+						return		
 					}
-					//process
-					$('.bFast').parent().append( data.data.content )
-					$('.bFast').remove()
-					$('.p0').removeClass('p0')
-					$('.top0').removeClass('top0')
-					$('.order1click-link-new').remove()
-				})
-				
+				} )	
 			}
 			
 	} // OCMVM
-
+	
 	/* StockViewModel */
 	function StockViewModel() {
 
