@@ -475,7 +475,6 @@ $(document).ready(function() {
 						return		
 					}
 				} )	
-				xhr1.abort()
 			}
 			
 	} // OCMVM
