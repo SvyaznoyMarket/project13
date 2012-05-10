@@ -12,7 +12,8 @@
       <?php if ($label = $item->getMainLabel()): ?>
       <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
       <?php endif; ?>
-      <?php $title = $item->getName() . ' - ' . $item->getMainCategory()->getName();?>
+      <?php $title = $item->getName(); // @todo create getTitle method, or check is category isset ?>
+      <?php if($item->getMainCategory()) $title .= ' - ' . $item->getMainCategory->getName();?>
       <img class="mainImg" src="<?php echo $item->getMediaImageUrl() ?>"
            alt="<?php echo $title ?>"
            title="<?php echo $title ?>"
