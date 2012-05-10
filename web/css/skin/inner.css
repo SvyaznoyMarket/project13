@@ -4942,8 +4942,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     display: inline-block;
     *display: inline;
     zoom: 1;
-
-   }
+	}
 
     .b404{
         position: relative;
@@ -5003,3 +5002,19 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     .b404Block .bOrangeButton{
         vertical-align: middle;
     }
+.bBuyingLine__eText{
+    width: 350px;
+    height: 27px;
+    outline: none;
+    vertical-align: top;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.bBuyingLine__eText.mInputLong{
+    width: 460px;
+    padding-left: 25px;
+}
