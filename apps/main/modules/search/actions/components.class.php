@@ -30,11 +30,7 @@ class searchComponents extends myComponents
 
     $this->setVar('list', $list, false);
   }
-  /**
-   * Executes filter_productType component
-   *
-   *
-   */
+
   public function executeFilter_productType()
   {
     $list = array(
@@ -42,6 +38,9 @@ class searchComponents extends myComponents
       'other' => array(),
     );
 
+    if(!$this->productTypeList){
+      return sfView::NONE;
+    }
     $this->productTypeList->loadRelated('ProductCategory');
     $firstProductCategory = isset($this->productTypeList[0]->ProductCategory[0]) ?
       $this->productTypeList[0]->ProductCategory[0]->getRootCategory()
@@ -74,5 +73,7 @@ class searchComponents extends myComponents
 
     $this->setVar('list', $list, true);
     $this->setVar('firstProductCategory', $firstProductCategory, true);
+
+    return sfView::SUCCESS;
   }
 }
