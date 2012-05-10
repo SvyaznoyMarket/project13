@@ -79,10 +79,15 @@ class productCardSoaActions extends myActions
           'jsref' => $this->product->token,
           'jstitle' => htmlspecialchars($this->product->name, ENT_QUOTES, 'UTF-8'),
           'jsprice' => $this->product->price,
-          'jsimg' => $this->product->getMainPhotoUrl(3)
+          'jsimg' => $this->product->getMainPhotoUrl(3),
+  		  'jsbimg' =>  $this->product->getMainPhotoUrl(2),
+  		  'jsshortcut' =>  $this->product->article,
+  		  'jsitemid' =>  $this->product->id,
+  		  'jsregionid' => $this->getUser()->getRegionCoreId(),
+        'jsregionName' => $this->getUser()->getRegion('name')
       );
       $this->setVar('json', json_encode($json));
-
+      $this->getContext()->set('adriverProductInfo', array('productId' => $this->product->id, 'categoryId' => 0));
   }
  /**
   * Executes preview action

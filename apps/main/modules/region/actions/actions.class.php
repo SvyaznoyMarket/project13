@@ -49,7 +49,7 @@ class regionActions extends myActions
               ? (" ({$item['region']['name']})")
               : ''
             ),
-          'url'  => $this->generateUrl('region_change', array('region' => $item['id'])),
+          'url'  => $this->generateUrl('region_change', array('region' => $item['token'])),
         );
 
         $i++;

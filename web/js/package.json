@@ -10,6 +10,7 @@
 				{ "title": "jquery-ui-1.8.16.custom.min.js" },
 				{ "title": "jquery.effects.core.js" },
 				{ "title": "jquery.effects.transfer.js" },
+				{ "title": "jquery.effects.blind.js" },
 				{ "title": "jquery.lightbox_me.js" },
 				{ "title": "jquery.mousewheel.min.js" },
 				{ "title": "jquery.raty.js" },
@@ -17,7 +18,8 @@
 				{ "title": "jquery.timers.js" },
 				{ "title": "prettyCheckboxes.js" },
 				{ "title": "typewriter.js" },
-				{ "title": "jquery.ui.touch-punch.js" }
+				{ "title": "jquery.ui.touch-punch.js" },
+				{ "title": "jquery.maskedinput.js" }
 			]
 		},
 		{
@@ -49,6 +51,9 @@
 		},
 		{
 			"title": "app.product.js"			
+		},
+		{
+			"title": "app.oneclick.js"			
 		},
 		{
 			"title": "app.product.comment.new.js"			

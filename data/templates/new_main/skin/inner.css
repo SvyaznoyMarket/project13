@@ -5568,14 +5568,7 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 	.bSelect.mFastInpBig{
 		width: 362px;
 		}
-	.bSelect span{
-		height: 30px;
-		overflow: hidden;
-		
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
-		}
+	.bSelect span{}
 	.bSelect__eArrow{
 		top: 0;
 		right: 0;
@@ -5625,27 +5618,6 @@ a[title="ovi"]{ background: url('img/icon_ovi_store_color.png'); }
 		*display: inline;
 		zoom: 1;
 		}	
-
-
-
-
-.bSClub{
-	background: url('img/svyaznoi_club.png') 280px 0 no-repeat;
-	}
-	.bSClub__eWrap{
-		width: 280px;
-		vertical-align: top;
-		font: 14px 'EnterTypeRegular';
-		}
-	.bSClub__eWrap .mInputShort{
-		width: 200px;
-		}
-	.bSClub__eWrap h4{
-		font: 14px 'EnterTypeBold';
-		}
-		
-
-
 
 
 

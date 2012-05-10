@@ -10,3 +10,4 @@
 
 		<?php echo $form['sclub_card_number']->render(array('class' => 'text width418 mb15', )) ?>
 	<div class="font11">Номер под штрихкодом на оборотной стороне карты, начинается на 298</div>
+*/

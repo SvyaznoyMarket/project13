@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration xmlns="http://logging.apache.org/log4php/">
+    <appender name="defaultConsoleAppender" class="LoggerAppenderConsole"/>
+    <appender name="emptyAppender" class="LoggerAppenderNull" />
+    <appender name="defaultFileAppender" class="LoggerAppenderFile">
+        <layout class="LoggerLayoutTTCC" />
+        <param name="file" value="plainPhp.log" />
+        <param name="append" value="true" />
+    </appender>
+
+    <logger name="Timer">
+        <level value="debug" />
+        <!--<appender_ref ref="defaultConsoleAppender" />-->
+        <appender_ref ref="defaultFileAppender" />
+    </logger>
+
+    <logger name="CoreClient">
+        <level value="info" />
+        <!--<appender_ref ref="defaultConsoleAppender" />-->
+        <appender_ref ref="defaultFileAppender" />
+    </logger>
+
+    <logger name="Settings">
+        <level value="debug" />
+        <!--<appender_ref ref="defaultConsoleAppender" />-->
+        <appender_ref ref="defaultFileAppender" />
+    </logger>
+
+    <root>
+        <!--<level value="ERROR" />-->
+        <appender_ref ref="emptyAppender"/>
+        <level value="debug" />
+        <!--<appender_ref ref="defaultConsoleAppender"/>-->
+    </root>
+</configuration>

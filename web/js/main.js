@@ -407,7 +407,7 @@ $(document).ready(function(){
 		})
 	}
 	/*
-	$('#jsregion').click( function() {
+	$('body').delegate('#jsregion, .jsChangeRegion', 'click', function() {
 		if( !$(this).data('run') ) {
 			$(this).data('run', true)
 			getRegions()
@@ -1035,34 +1035,31 @@ $(document).ready(function(){
 	if( $('#dlvrlinks').length ) {
 
 		function dlvrajax( coreid ) {
-			$.post( $('#dlvrlinks').data('calclink'), {ids:coreid}, function(data){
+			$.post( $('#dlvrlinks').data('calclink'), {ids:coreid}, function(data) {
+				if( !('success' in data ) )
+					return false
+				if( !data.success )
+					return false
 				for(var i=0; i < coreid.length; i++) {
-					var raw = data[ coreid[i] ]
-					if ( !raw.success )
+					var raw = data.data[ coreid[i] ]
+					if( !raw.length )
 						continue
 					var self = '',
-						//express = '',
 						other = []
-					for( var j in raw.deliveries ) {
-					var dlvr = raw.deliveries[j]
-						switch ( dlvr.object.token ) {
+					for( var j in raw ) {//raw.deliveries
+						var dlvr = raw[j]
+						switch ( dlvr.token ) {
 							case 'self':
-								self = 'Возможен самовывоз ' + dlvr.text
+								self = 'Возможен самовывоз ' + dlvr.date
 								break
-							case 'express':
-							//	express = 'Экспресс-доставка ' + dlvr.text
-								break
-							case 'free':
-								break								
 							default:
-								other.push('Доставка ' + dlvr.text )
+								other.push('Доставка ' + dlvr.date )
 						}
 					}
 					var pnode = $( 'div[data-cid='+coreid[i]+']' ).parent()
 					var tmp = $('<ul>')
 					if(self)
-            $('<li>').html( self ).appendTo( tmp )
-//					$('<li>').html( express ).appendTo( tmp )
+            			$('<li>').html( self ).appendTo( tmp )
 					for(var ii=0; ii < other.length; ii++)
 						$('<li>').html( other[ii] ).appendTo( tmp )
 					var uls = pnode.find( 'div.extrainfo ul' )

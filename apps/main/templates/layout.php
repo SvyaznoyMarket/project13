@@ -18,7 +18,9 @@
     <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
   <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>">
-
+  <?php if (has_slot('after_body_block')): ?>
+    <?php include_slot('after_body_block') ?>
+  <?php endif ?>
     <div class="allpage" id="page">
     <!--AdFox START-->
     <!--enter-->
@@ -127,6 +129,6 @@
   <?php include_slot('seo_counters_advance') ?>
 <?php endif ?>
 <?php include_component('default', 'admitad') ?>
-
+<?php include_component('default', 'adriver') ?>
   </body>
 </html>

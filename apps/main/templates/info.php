@@ -51,7 +51,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171
 
           <noindex>
               <div class="searchbox">
-                <?php include_component('search', 'form') ?>
+                <?php render_partial('search/templates/_form.php') ?>
               </div>
           </noindex>
           <div class="clear pb20"></div>
@@ -134,7 +134,6 @@ document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171
   <?php include_slot('seo_counters_advance') ?>
 <?php endif ?>
 <?php include_component('default', 'admitad') ?>
-
-
+<?php include_component('default', 'adriver') ?>
 </body>
 </html>
