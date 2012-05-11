@@ -3,6 +3,9 @@
 	Copyright (c) 2007-@Year Josh Bush (digitalbush.com)
 	Licensed under the MIT license (http://digitalbush.com/projects/masked-input-plugin/#license) 
 	Version: @version
+	
+	modified by ivn
+	setting 'maxlength' added 
 */
 (function($) {
 	var pasteEventName = ($.browser.msie ? 'paste' : 'input') + ".mask";
@@ -55,7 +58,8 @@
 			}
 			settings = $.extend({
 				placeholder: "_",
-				completed: null
+				completed: null,
+				maxlength: 100
 			}, settings);
 
 			var defs = $.mask.definitions;
@@ -158,6 +162,8 @@
 						}
 
 						var p = seekNext(pos.begin - 1);
+						if( buffer.join().replace(/[^0-9]/g, '').length > settings.maxlength )
+							return false
 						if (p < len) {
 							var c = String.fromCharCode(k);
 							if (tests[p].test(c)) {
