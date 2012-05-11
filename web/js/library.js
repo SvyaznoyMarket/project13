@@ -886,6 +886,21 @@ function brwsr () {
 	this.isTouch    = this.isOSX || this.isAndroid
 }		
 
+function parse_url( url ) {
+	if( typeof( url ) !== 'string' )
+		return false
+	if( url.indexOf('?') === -1 )
+		return false		
+	url = url.replace('?','')
+	var url_ar = url.split('&')
+	var url_hash = {}
+	for (var i=0, l=url_ar.length; i<l; i++ ) {
+		var pair = url_ar[i].split('=')
+		url_hash[ pair[0] ] = pair[1]
+	}
+	return url_hash
+}
+
 /*
 	Mechanics @ enter.ru 
 	(c) Ivan Kotov, Enter.ru
