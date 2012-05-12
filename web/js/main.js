@@ -980,6 +980,16 @@ $(document).ready(function(){
 	*/
 
 	/* Delivery Ajax */
+	var formatPrice = function(price) {
+      if (typeof price === 'undefined' || price === null) {
+        return '';
+      }
+      if (price > 0) {
+        return ', '+price+' <span class="rubl">p</span>'
+      } else {
+        return ', бесплатно.'
+      }
+    }
 	if( $('#dlvrlinks').length ) {
 
 		function dlvrajax( coreid ) {
@@ -1001,7 +1011,9 @@ $(document).ready(function(){
 								self = 'Возможен самовывоз ' + dlvr.date
 								break
 							default:
-								other.push('Доставка ' + dlvr.date )
+								var standart = 'Доставка ' + dlvr.date
+								standart += (dlvr.price) ? formatPrice(dlvr.price) : ''
+								other.push( standart )
 						}
 					}
 					var pnode = $( 'div[data-cid='+coreid[i]+']' ).parent()
