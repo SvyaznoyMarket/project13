@@ -224,7 +224,7 @@ class Response
         $expire = strtotime($expire);
         if ($expire === false || $expire == -1)
         {
-          throw new sfException('Your expire parameter is not valid.');
+          throw new Exception('Your expire parameter is not valid.');
         }
       }
     }
@@ -255,17 +255,11 @@ class Response
       $contentType .= '; charset='.self::DEFAULT_CHARSET;
     }
 
-    // change the charset for the response
-    if (preg_match('/charset\s*=\s*(.+)\s*$/', $contentType, $match))
-    {
-      $this->options['charset'] = $match[1];
-    }
-
     return $contentType;
   }
 
   protected function normalizeHeaderName($name)
   {
-    return preg_replace('/\-(.)/e', "'-'.strtoupper('\\1')", strtr(ucfirst(strtolower($name)), '_', '-'));
+    return preg_replace('/\-(.)/e', "'-'".strtoupper('\\1'), strtr(ucfirst(strtolower($name)), '_', '-'));
   }
 }

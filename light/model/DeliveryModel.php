@@ -49,7 +49,6 @@ class DeliveryModel
     $productIds = array_unique($productIds);
 
     $return = array();
-//    $deliveryInfo = array();
 
     foreach ($productIds as $productId) {
       $productId = (int) $productId;
@@ -62,7 +61,6 @@ class DeliveryModel
       ));
       TimeDebug::end('DeliveryModel:getShortDeliveryInfoForProductList:clientV1');
 
-//      var_export($deliveries);
       if (!$deliveries || !count($deliveries) || isset($deliveries['result'])) {
         $deliveries = array(array(
           'mode_id' => 1,

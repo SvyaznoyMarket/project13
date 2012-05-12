@@ -7,7 +7,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'model/DeliveryModel.php');
+//require_once(ROOT_PATH.'model/DeliveryModel.php');
+require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/helpers/DateFormatter.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
 
@@ -15,15 +16,13 @@ class delivery
 {
 
   /**
-   * @param Array $params
-   * @param Response $response
+   * @param string $response
+   * @param array $params
    */
-  public function ProductDeliveryJson($params, Response $response){
+  public function ProductDeliveryJson($response, $params=array()){
     TimeDebug::start('controller:delivery:ProductDeliveryJson');
 
-    $return = array();
-    $model = new DeliveryModel();
-    $result = $model->getProductDeliveries(intval($params['product_id']), intval($params['quantity']) ,$params['region']);
+    $result = App::getDelivery()->getProductDeliveries(intval($_POST['product_id']), intval($_POST['quantity']) , intval($_POST['region']));
 
     $return = array('success' => true, 'data' => array());
     foreach($result as $deliveryObject){
@@ -52,19 +51,20 @@ class delivery
     TimeDebug::end('controller:delivery:ProductDeliveryJson');
   }
 
-  public function ProductListShortDeliveryJson($params, Response $response){
+  public function ProductListShortDeliveryJson($response, $params=array()){
     TimeDebug::start('controller:delivery:ProductDeliveryJson');
-    $return = array();
 
-    if(!isset($params['products'])){
-      $params['products'] = Null;
+    if(!isset($_POST['products'])){
+      $_POST['products'] = array();
     }
-    if(!isset($params['region'])){
-      $params['region'] = Null;
+    if(!isset($_POST['region'])){
+      $_POST['region'] = $region_id = 14974; //TODO реализовать класс CurrentUser
+    }
+    else{
+      $_POST['region'] = (int) $_POST['region'];
     }
 
-    $model = new DeliveryModel();
-    $result = $model->getShortDeliveryInfoForProductList($params['products'], $params['region']);
+    $result = App::getDelivery()->getShortDeliveryInfoForProductList($_POST['products'], $_POST['region']);
 
     $return = array();
     foreach($result as $productId => $deliveries){
