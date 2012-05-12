@@ -73,7 +73,8 @@ class delivery
         $return[$productId][] = array(
           'typeId' => $delivery->getModeId(),
           'date' => DateFormatter::Humanize($delivery->getEarliestDate()),
-          'token' => $delivery->getToken()
+          'token' => $delivery->getToken(),
+          'price' => $delivery->getPrice()
         );
       }
     }
