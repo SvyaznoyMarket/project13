@@ -68,6 +68,9 @@ class delivery
 
     $return = array();
     foreach($result as $productId => $deliveries){
+      /**
+       * @var DeliveryShortData[] $deliveries
+       */
       $return[$productId] = array();
       foreach($deliveries as $delivery){
         $return[$productId][] = array(
