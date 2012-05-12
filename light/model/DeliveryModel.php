@@ -8,7 +8,7 @@
  */
 
 require_once(ROOT_PATH.'system/exception/dataFormatException.php');
-require_once(ROOT_PATH.'lib/CoreClient.php');
+require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
 require_once(HELPER_PATH.'DateFormatter.php');
 require_once(VIEW_PATH.'dataObject/DeliveryData.php');
@@ -55,7 +55,7 @@ class DeliveryModel
       $return[$productId] = array();
 
       TimeDebug::start('DeliveryModel:getShortDeliveryInfoForProductList:clientV1');
-      $deliveries = CoreV1Client::getInstance()->query('delivery.calc', array(), array(
+      $deliveries = App::getCoreV1()->query('delivery.calc', array(), array(
         'geo_id' => $geoId,
         'product' => array(array('id' => $productId, 'quantity' => 1))
       ));
@@ -176,7 +176,7 @@ class DeliveryModel
       throw new dataFormatException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
     }
     TimeDebug::start('DeliveryModel:getProductDeliveries:clientV1');
-    $data = CoreV1Client::getInstance()->query('order.calc', array(), array(
+    $data = App::getCoreV1()->query('order.calc', array(), array(
       'geo_id'  => $geoId,
       'product' => array(array('id' => $productId, 'quantity' => $productQuantity)),
       'service' => null,

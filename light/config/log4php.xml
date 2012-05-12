@@ -9,13 +9,13 @@
     </appender>
 
     <logger name="Timer">
-        <level value="debug" />
+        <level value="fatal" />
         <!--<appender_ref ref="defaultConsoleAppender" />-->
         <appender_ref ref="defaultFileAppender" />
     </logger>
 
     <logger name="CoreClient">
-        <level value="info" />
+        <level value="debug" />
         <!--<appender_ref ref="defaultConsoleAppender" />-->
         <appender_ref ref="defaultFileAppender" />
     </logger>

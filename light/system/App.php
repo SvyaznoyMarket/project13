@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_PATH.'system/exception/systemException.php');
+require_once(ROOT_PATH.'lib/CoreClient.php');
 
 class App{
 
@@ -30,9 +31,24 @@ class App{
     if(!class_exists('Router')){
       require_once(ROOT_PATH.'system/Router.php');
     }
-    self::$Router = new Router();
-    self::$Router->fromArray(include(ROOT_PATH.'config/routes.php'));
+    self::$Router = Router::fromArray(require(ROOT_PATH.'config/routes.php'));
     return self::$Router;
+  }
+
+  /**
+   * @static
+   * @return CoreV1Client
+   */
+  public static function getCoreV1(){
+    return CoreV1Client::getInstance();
+  }
+
+  /**
+   * @static
+   * @return CoreClient
+   */
+  public static function getCoreV2(){
+    return CoreClient::getInstance();
   }
 
   private static function loadModel($className){

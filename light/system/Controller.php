@@ -8,6 +8,7 @@
  */
 
 require_once(ROOT_PATH.'system/exception/routerException.php');
+require_once(ROOT_PATH.'system/Response.php');
 
 class Controller {
 
@@ -16,9 +17,9 @@ class Controller {
 	 * @param string $route
 	 * @return Response
 	 */
-	public static function Run($route){
+	public static function Run($route, $params=array()){
 
-    list($className, $methodName) = explode('->', $route);
+    list($className, $methodName) = explode('.', $route);
 
     if(!class_exists($className)){
       if(!file_exists(ROOT_PATH.'controller/'.$className.'.php')){
@@ -32,7 +33,7 @@ class Controller {
 
     $response = new Response();
 
-    call_user_func_array(array($className, $methodName), array($response));
+    call_user_func_array(array($className, $methodName), array($response, $params));
 
 		return $response;
 	}

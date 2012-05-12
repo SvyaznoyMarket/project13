@@ -27,19 +27,18 @@ Logger::getLogger('Settings')->info('core v2 url: '.CORE_V2_USERAPI_URL);
 Logger::getLogger('Settings')->info('core v1 url: '.CORE_V1_API_URL);
 TimeDebug::end('Configure');
 
-require_once(ROOT_PATH.'system/Request.php');
-require_once(ROOT_PATH.'system/Response.php');
+require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'system/Controller.php');
-require_once(ROOT_PATH.'system/Router.php');
 
-$route = App::getRouter()->matchUrl(str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']));
 
 try{
+  $routeString = str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']);
+  $route = App::getRouter()->matchUrl($routeString);
   $response = Controller::Run($route);
 }
 catch(Exception $e){
   Logger::getRootLogger()->warn('Exception: '.$e->getMessage());
-  $response = Controller::Run('error->jsonErrorMessage', array('message' => $e->getMessage()));
+  $response = Controller::Run('error.jsonErrorMessage', array('message' => $e->getMessage()));
 }
 TimeDebug::end('Total');
 Logger::getLogger('Timer')->debug(TimeDebug::getAll());

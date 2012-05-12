@@ -21,8 +21,11 @@ class delivery
    */
   public function ProductDeliveryJson($response, $params=array()){
     TimeDebug::start('controller:delivery:ProductDeliveryJson');
+    $productId = isset($_POST['product_id'])? (int) $_POST['product_id'] : 0;
+    $productQuantity = isset($_POST['product_quantity'])? (int) $_POST['product_quantity'] : 1;
+    $regionId = isset($_POST['regionId'])? (int) $_POST['region_id'] : 14974; //TODO реализовать класс CurrentUser
 
-    $result = App::getDelivery()->getProductDeliveries(intval($_POST['product_id']), intval($_POST['quantity']) , intval($_POST['region']));
+    $result = App::getDelivery()->getProductDeliveries($productId, $productQuantity , $regionId);
 
     $return = array('success' => true, 'data' => array());
     foreach($result as $deliveryObject){
@@ -54,8 +57,8 @@ class delivery
   public function ProductListShortDeliveryJson($response, $params=array()){
     TimeDebug::start('controller:delivery:ProductDeliveryJson');
 
-    if(!isset($_POST['products'])){
-      $_POST['products'] = array();
+    if(!isset($_POST['ids'])){
+      $_POST['ids'] = array();
     }
     if(!isset($_POST['region'])){
       $_POST['region'] = $region_id = 14974; //TODO реализовать класс CurrentUser
@@ -64,7 +67,7 @@ class delivery
       $_POST['region'] = (int) $_POST['region'];
     }
 
-    $result = App::getDelivery()->getShortDeliveryInfoForProductList($_POST['products'], $_POST['region']);
+    $result = App::getDelivery()->getShortDeliveryInfoForProductList($_POST['ids'], $_POST['region']);
 
     $return = array();
     foreach($result as $productId => $deliveries){
