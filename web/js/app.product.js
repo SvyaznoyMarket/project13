@@ -93,17 +93,13 @@ $(document).ready(function() {
 	})
 	
 	/* Delivery Block */
-    var formatDateText = function(txt){
-      txt = txt.replace('сегодня', '<b>сегодня</b>');
-      txt = txt.replace(' завтра', ' <b>завтра</b>');
-      return txt;
-    }
+    
     var formatPrice = function(price){
       if (typeof price === 'undefined' || price === null) {
         return '';
       }
       if (price > 0) {
-        return ', '+price+' руб.'
+        return ', '+price+' <span class="rubl">p</span>'
       } else {
         return ', бесплатно.'
       }
@@ -122,7 +118,7 @@ $(document).ready(function() {
 				row = data[i]
 				if (row.token == 'self') {
 					html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине ' +
-						formatDateText(row.date) + '</h5><div>&mdash; <a target="blank" href="' +
+						row.date + '</h5><div>&mdash; <a target="blank" href="' +
 						delivery_cnt.data().shoplink + '">В каких магазинах ENTER можно забрать?</a></div></li>';
 					data.splice(i, 1);
 				}
@@ -132,7 +128,7 @@ $(document).ready(function() {
 				for (i in data) {
 					row = data[i];
 					//if (row.token == 'standart') {
-						html += '<div>&mdash; Можем доставить '+formatDateText(row.date)+'</div>';
+						html += '<div>&mdash; Можем доставить '+ row.date + formatPrice(row.price) +'</div>';
 						data.splice(i, 1);
 					//}
 				}
