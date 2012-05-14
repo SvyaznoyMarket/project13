@@ -1,4 +1,10 @@
 $(document).ready(function () {
+	/* admitad */	
+	if( document.location.search.match(/admitad_uid/) ) {
+		var url_s = parse_url( document.location.search )
+		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year
+	}
+	
     /* Search */
     $('.startse').bind({
         'blur':function () {

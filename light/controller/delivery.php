@@ -68,12 +68,16 @@ class delivery
 
     $return = array();
     foreach($result as $productId => $deliveries){
+      /**
+       * @var DeliveryShortData[] $deliveries
+       */
       $return[$productId] = array();
       foreach($deliveries as $delivery){
         $return[$productId][] = array(
           'typeId' => $delivery->getModeId(),
           'date' => DateFormatter::Humanize($delivery->getEarliestDate()),
-          'token' => $delivery->getToken()
+          'token' => $delivery->getToken(),
+          'price' => $delivery->getPrice()
         );
       }
     }

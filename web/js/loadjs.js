@@ -37,7 +37,9 @@
 	switch( document.body.getAttribute('data-template') ) {
 		case 'main':
 			$LAB.queueWait( function() {
-				$LAB.script(getWithVersion('wellcome.js'))
+				$LAB.script( getWithVersion('library.js') )
+				.wait()
+				.script(getWithVersion('wellcome.js'))
 			}).runQueue()
 			break
 		case 'default':

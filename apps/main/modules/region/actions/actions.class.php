@@ -61,7 +61,6 @@ class regionActions extends myActions
     if ($region)
     {
       $this->getUser()->setRegion($region->id);
-      $this->getUser()->setRegionCookie();
     }
 
     $this->redirect($request->getReferer());
@@ -75,7 +74,6 @@ class regionActions extends myActions
     if ($region)
     {
       $this->getUser()->setRegion($region->id);
-      $this->getUser()->setRegionCookie();
     }
 
     $newUrl = preg_replace('/\/reg\/.*?\//i', '/', $request->getUri());
