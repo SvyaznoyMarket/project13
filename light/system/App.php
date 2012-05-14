@@ -21,6 +21,14 @@ class App{
 
   /**
    * @static
+   * @return RegionModel
+   */
+  public static function getRegion(){
+    return self::loadModel('RegionModel');
+  }
+
+  /**
+   * @static
    * @return Router
    */
   public static function getRouter(){
@@ -49,6 +57,15 @@ class App{
    */
   public static function getCoreV2(){
     return CoreClient::getInstance();
+  }
+
+  /**
+   * @static
+   * @return CurrentUser
+   */
+  public static function getCurrentUser(){
+    require_once(ROOT_PATH.'lib/CurrentUser.php');
+    return CurrentUser::getInstance();
   }
 
   private static function loadModel($className){
