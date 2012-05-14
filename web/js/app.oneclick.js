@@ -469,6 +469,8 @@ $(document).ready(function() {
 						$('.p0').removeClass('p0')
 						$('.top0').removeClass('top0')
 						$('.order1click-link-new').remove()
+						if( typeof(_gaq) !== 'undefined' && typeof(runAnalitics) !== 'undefined' )
+							runAnalitics()
 					},
 					error: function( jqXHR, textStatus ) {
 						self.formStatus('typing')
