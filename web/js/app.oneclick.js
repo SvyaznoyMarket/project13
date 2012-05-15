@@ -113,8 +113,9 @@ $(document).ready(function() {
 				e.preventDefault()
 				callback( e.target )
 			})
-			
-			mapContainer[0].addEventListener("touchstart",  //touch devices
+			var bw = new brwsr()
+			if( bw.isTouch )
+				mapContainer[0].addEventListener("touchstart",  //touch devices
 				function(e) {
 					e.preventDefault()
 					if( e.target.is( selector ) )
