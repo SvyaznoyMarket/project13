@@ -423,7 +423,8 @@ $(document).ready(function() {
 						
 						break
 					}
-				return	
+				enableHandlers()	
+				return	true
 			}
 
 			self.validateForm = function() {
@@ -635,7 +636,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	function enableHandlers() {
 		if( typeof( $.mask ) !== 'undefined' ) {
 			$.mask.definitions['n'] = "[()0-9\ \-]"
-			$("#phonemask").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " " })
+			$("#phonemask").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
 		}
 	}
 	/* One Click Order */

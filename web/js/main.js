@@ -256,7 +256,7 @@ $(document).ready(function(){
 					if( cid )
 						coreid.push( cid )
 				})
-				dlvrajax( coreid )
+				dajax.post( dlvr_node.data('calclink'), coreid )
 			}
 		})
 	}
@@ -980,62 +980,97 @@ $(document).ready(function(){
 	*/
 
 	/* Delivery Ajax */
-	var formatPrice = function(price) {
-      if (typeof price === 'undefined' || price === null) {
-        return '';
-      }
-      if (price > 0) {
-        return ', '+price+' <span class="rubl">p</span>'
-      } else {
-        return ', бесплатно.'
-      }
-    }
-	if( $('#dlvrlinks').length ) {
-
-		function dlvrajax( coreid ) {
-			$.post( $('#dlvrlinks').data('calclink'), {ids:coreid}, function(data) {
+	function dlvrajax() {
+		var that = this
+		this.self = ''
+		this.other = []
+				
+		this.formatPrice = function(price) {
+			if (typeof price === 'undefined' || price === null)
+				return ''
+			if (price > 0) 
+				return ', '+price+' <span class="rubl">p</span>'
+			else
+				return ', бесплатно'
+		}
+		
+		this.post = function( url, coreid ) {
+			$.post( url, {ids:coreid}, function(data) {
 				if( !('success' in data ) )
 					return false
-				if( !data.success )
+				if( !data.success || data.data.length === 0 )
 					return false
 				for(var i=0; i < coreid.length; i++) {
-					var raw = data.data[ coreid[i] ]
-					if( !raw.length )
+					if( !data.data[ coreid[i] ] )
 						continue
-					var self = '',
-						other = []
-					for( var j in raw ) {//raw.deliveries
-						var dlvr = raw[j]
+					for( var j in data.data[ coreid[i] ] ) {
+						var dlvr = data.data[ coreid[i] ][ j ]
 						switch ( dlvr.token ) {
 							case 'self':
-								self = 'Возможен самовывоз ' + dlvr.date
+								that.self = dlvr.date
 								break
 							default:
-								var standart = 'Доставка ' + dlvr.date
-								standart += (dlvr.price) ? formatPrice(dlvr.price) : ''
-								other.push( standart )
+								that.other.push( { date: dlvr.date, price: dlvr.price } )
 						}
 					}
-					var pnode = $( 'div[data-cid='+coreid[i]+']' ).parent()
-					var tmp = $('<ul>')
-					if(self)
-            			$('<li>').html( self ).appendTo( tmp )
-					for(var ii=0; ii < other.length; ii++)
-						$('<li>').html( other[ii] ).appendTo( tmp )
-					var uls = pnode.find( 'div.extrainfo ul' )
-					uls.html( uls.html() + tmp.html() )
+					that.processHTML( coreid[i] )
+					that.self = ''
+					that.other = []					
 				}
 			})
-		} // dlvrajax
+		}
+	} // dlvrajax object
 
+	if( $('#dlvrlinks').length ) { // Extended List
+		var dlvr_node = $('#dlvrlinks')
+		dlvrajax.prototype.processHTML = function( id ) {
+			var self = this.self,
+				other = this.other
+			var pnode = $( 'div[data-cid='+id+']' ).parent()
+			var ul = $('<ul>')
+			if(self)
+				$('<li>').html( 'Возможен самовывоз ' + self ).appendTo( ul )
+			for(var i=0; i < other.length; i++) {
+				var tmp = 'Доставка ' + other[i].date
+				tmp += ( other[i].price ) ? this.formatPrice( other[i].price ) : ''
+				$('<li>').html( tmp ).appendTo( ul )
+			}
+			var uls = pnode.find( 'div.extrainfo ul' )
+			uls.html( uls.html() + ul.html() )		
+		}
 		var coreid = []
 		$('div.boxhover, div.goodsboxlink').each( function(){
 			var cid = $(this).data('cid') || 0
 			if( cid )
 				coreid.push( cid )
 		})
-		dlvrajax( coreid )
+		var dajax = new dlvrajax()
+		dajax.post( dlvr_node.data('calclink'), coreid )
 	}
+	
+    if ( $('.delivery-info').length ) { // Product Card
+    	var dlvr_node = $('.delivery-info')
+    	dlvrajax.prototype.processHTML = function( id ) {
+			var self = this.self,
+				other = this.other    	
+			var html = '<h4>Как получить заказ?</h4><ul>'
+			html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине ' +
+						self + '</h5><div>&mdash; <a target="blank" href="' +
+						dlvr_node.data('shoplink') + '">В каких магазинах ENTER можно забрать?</a></div></li>'	
+			
+			if( other.length > 0 )
+				html += '<li><h5>Можно заказать сейчас с доставкой</h5>'
+			for(var i=0; i < other.length; i++)
+				html += '<div>&mdash; Можем доставить '+ other[i].date + this.formatPrice(other[i].price) +'</div>'
+				
+			html += '</ul>'
+			dlvr_node.html(html)
+		}
+    
+		var coreid = [ dlvr_node.attr('id').replace('product-id-', '') ]
+		var dajax = new dlvrajax()
+		dajax.post( dlvr_node.data('calclink'), coreid )
+    }
 
 	/* 
 		from inline scripts
