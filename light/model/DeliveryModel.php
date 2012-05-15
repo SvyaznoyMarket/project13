@@ -1,13 +1,4 @@
 <?php
-require_once('../../light/config/main.php');
-require_once(ROOT_PATH.'lib/TimeDebug.php');
-require_once(ROOT_PATH.'lib/log4php/Logger.php');
-Logger::configure(LOGGER_CONFIG_PATH); //В отдельную константу вынесено - что бы можно было иметь разные конфиги для dev и prod
-require_once('../../light/config/dev.php');
-
-
-
-
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov
