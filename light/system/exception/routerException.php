@@ -8,4 +8,4 @@
  */
 require_once('systemException.php');
 
-class routeException extends systemException {}
+class routerException extends systemException{}

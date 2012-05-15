@@ -8,7 +8,7 @@
  */
 class error
 {
-  public function jsonErrorMessage($params, Response $response){
+  public function jsonErrorMessage(Response $response, $params = array()){
     $return = array(
       'success' => false,
       'error' => $params['message']

@@ -7,7 +7,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'model/DeliveryModel.php');
+//require_once(ROOT_PATH.'model/DeliveryModel.php');
+require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/helpers/DateFormatter.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
 
@@ -15,15 +16,16 @@ class delivery
 {
 
   /**
-   * @param Array $params
    * @param Response $response
+   * @param array $params
    */
-  public function ProductDeliveryJson($params, Response $response){
+  public function ProductDeliveryJson(Response $response, $params=array()){
     TimeDebug::start('controller:delivery:ProductDeliveryJson');
+    $productId = isset($_POST['product_id'])? (int) $_POST['product_id'] : 0;
+    $productQuantity = isset($_POST['product_quantity'])? (int) $_POST['product_quantity'] : 1;
+    $regionId = isset($_POST['regionId'])? (int) $_POST['region_id'] : App::getCurrentUser()->getRegion()->getId();
 
-    $return = array();
-    $model = new DeliveryModel();
-    $result = $model->getProductDeliveries(intval($params['product_id']), intval($params['quantity']) ,$params['region']);
+    $result = App::getDelivery()->getProductDeliveries($productId, $productQuantity , $regionId);
 
     $return = array('success' => true, 'data' => array());
     foreach($result as $deliveryObject){
@@ -52,19 +54,24 @@ class delivery
     TimeDebug::end('controller:delivery:ProductDeliveryJson');
   }
 
-  public function ProductListShortDeliveryJson($params, Response $response){
+  /**
+   * @param Response $response
+   * @param array $params
+   */
+  public function ProductListShortDeliveryJson(Response $response, $params=array()){
     TimeDebug::start('controller:delivery:ProductDeliveryJson');
-    $return = array();
 
-    if(!isset($params['products'])){
-      $params['products'] = Null;
+    if(!isset($_POST['ids'])){
+      $_POST['ids'] = array();
     }
-    if(!isset($params['region'])){
-      $params['region'] = Null;
+    if(!isset($_POST['region'])){
+      $_POST['region'] = $region_id = App::getCurrentUser()->getRegion()->getId();
+    }
+    else{
+      $_POST['region'] = (int) $_POST['region'];
     }
 
-    $model = new DeliveryModel();
-    $result = $model->getShortDeliveryInfoForProductList($params['products'], $params['region']);
+    $result = App::getDelivery()->getShortDeliveryInfoForProductList($_POST['ids'], $_POST['region']);
 
     $return = array();
     foreach($result as $productId => $deliveries){
