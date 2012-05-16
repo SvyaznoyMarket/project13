@@ -68,7 +68,8 @@ class MainMenuBuilder
   }
 
   /**
-   * @static
+   * @static Функция считает вес категории исходя из количества подкатегорий в ней (если они есть)
+   * и длины имени категории (проверяется, не занимает ли она 2 строки)
    * @param array $categories
    * @return array categoryId => categoryWeight //считаются и родительские и дочерние
    */
@@ -79,10 +80,20 @@ class MainMenuBuilder
     foreach($categories as $category){
       $return[$category['id']] = 0;
       if($category['level'] == 2){
-        $return[$category['id']] += 3;
+        if(strlen($category['name']) > 24){
+          $return[$category['id']] += 5; //Переползает на 2 строки
+        }
+        else{
+          $return[$category['id']] += 3;
+        }
       }
       if($category['level'] == 3){
-        $return[$category['id']] += 1;
+        if(strlen($category['name']) > 40){
+          $return[$category['id']] += 2; //Переползает на 2 строки
+        }
+        else{
+          $return[$category['id']] += 1;
+        }
       }
       if (isset($category['children'])){
         $return[$category['id']] += count($category['children']);
@@ -93,6 +104,9 @@ class MainMenuBuilder
   }
 
   /**
+   * Функция на основе информации о весах категорий расчитывает размеры блоков.
+   * Разбивать дочерние категории в разные блоки нельзя
+   *
    * @param array $weights
    * @param int $quantity
    * @return array box sizes
