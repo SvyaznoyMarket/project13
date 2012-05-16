@@ -1,10 +1,14 @@
 <div class="goodsbox"<?php echo (isset($ii) && $ii > 3) ? ' style="display:none;"' : '' ?>>
   <?php //print_r($product); return; ?>
 
-  <?php //print_r($product); ?>
   <div class="photo">
     <a href="<?php echo url_for('productCardSoa', array('product' => $product->path)); ?>">
-      <?php if ($product->label): ?>
+
+     <?php if (!empty($kitNum) && $kitNum) { ?>
+        <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?php echo $kitNum; ?> шт.</div>
+     <?php } ?>
+
+        <?php if ($product->label): ?>
       <?php foreach ($product->label as $label): ?>
         <img class="bLabels" src="<?php echo $product->getLabelUrl($label['media_image']) ?>"
              alt="<?php echo $label['name'] ?>">
@@ -36,6 +40,9 @@
         <!--<a href="" class="fastview">Быстрый просмотр</a>-->
         <div class="photo">
           <a href="<?php echo url_for('productCardSoa', array('product' => $product->path)); ?>">
+          <?php if (!empty($kitNum) && $kitNum) { ?>
+              <div class="bLabelsQuantity" src="/images/quantity_shild.png"><?php echo $kitNum; ?> шт.</div>
+          <?php } ?>
           <?php if ($product->label): ?>
           <?php foreach ($product->label as $label): ?>
               <img class="bLabels" src="<?php echo $product->getLabelUrl($label['media_image']) ?>"

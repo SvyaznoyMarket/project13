@@ -12,10 +12,9 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 <div class="line"></div>
 <div style="width: 940px; float: none; margin: 0;" class="goodslist">
   <?php
-  foreach ($product->kit as $product) {
+  foreach ($product->kit as $productKit) {
     //echo get_class($product);
-    //print_r($product);
-    include_component('productSoa', 'show', array('view' => 'compact', 'product' => $product));
+    include_component('productSoa', 'show', array('view' => 'compact', 'product' => $productKit, 'kitNum' => ($prodQty[$productKit->id]) ? $prodQty[$productKit->id] : 1 ));
   }
   ?>
 </div>

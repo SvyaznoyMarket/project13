@@ -428,6 +428,10 @@ class productSoaComponents extends myComponents
     public function executeKit()
     {
         $this->kit = $this->product->kit;
+        foreach ($this->product->fullKitList as $kit) {
+            $prodQty[$kit['id']] = $kit['quantity'];
+        }
+        $this->setVar('prodQty', $prodQty, true);
         //$q = ProductTable::getInstance()->getQueryByKit($this->product);
         //$this->productPager = $this->getPagerForArray($this->kit, 12, array());
 
