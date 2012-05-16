@@ -4,7 +4,7 @@
  */
 
 foreach($Menu as $Category){ ?>
-<div class="extramenu" style="display: none;" id="extramenu-root-<?php echo $Category->getPosition(); ?>">
+<div class="extramenu" style="display: none;" id="extramenu-root-<?php echo $Category->getId(); ?>">
   <i class="corner" style="left:290px"></i>
   <?php for($i=0; $i< 4; $i++){ $block = $Menu->getBlock($i); ?>
   <dl>

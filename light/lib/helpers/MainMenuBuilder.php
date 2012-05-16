@@ -134,7 +134,4 @@ class MainMenuBuilder
     }
     return $blocks;
   }
-
-
-
 }
