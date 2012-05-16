@@ -8,6 +8,14 @@ class App{
    * @var Router
    */
   private static $Router = Null;
+  /**
+   * @var Renderer
+   */
+  private static $Renderer = Null;
+
+  /**
+   * @var array
+   */
   private static $modelCollection = array();
 
   /**
@@ -17,6 +25,15 @@ class App{
    */
   public static function getDelivery(){
     return self::loadModel('DeliveryModel');
+  }
+
+  /**
+   * @static
+   * @throws systemException
+   * @return CategoryModel
+   */
+  public static function getCategory(){
+    return self::loadModel('CategoryModel');
   }
 
   /**
@@ -41,6 +58,20 @@ class App{
     }
     self::$Router = Router::fromArray(require(ROOT_PATH.'config/routes.php'));
     return self::$Router;
+  }
+
+  /**
+   * @static
+   * @return Renderer
+   */
+  public static function getRenderer(){
+    if(is_null(self::$Renderer)){
+      if(!class_exists('Renderer')){
+        require_once(ROOT_PATH.'system/Renderer.php');
+      }
+      self::$Renderer = new Renderer();
+    }
+    return self::$Renderer;
   }
 
   /**
@@ -70,9 +101,14 @@ class App{
 
   private static function loadModel($className){
     if(!class_exists($className)){
-      require_once(ROOT_PATH.'model/'.$className.'.php');
-      if(!class_exists($className)){
-        throw new systemException('class '.$className.' not exists');
+      if(file_exists(ROOT_PATH.'model/'.$className.'.php')){
+        require_once(ROOT_PATH.'model/'.$className.'.php');
+        if(!class_exists($className)){
+          throw new systemException('class '.$className.' not exists');
+        }
+      }
+      else{
+        throw new systemException('controller '.$className.' not exists');
       }
     }
 

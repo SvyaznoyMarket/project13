@@ -9,19 +9,24 @@
     </appender>
 
     <logger name="Timer">
-        <level value="fatal" />
-        <!--<appender_ref ref="defaultConsoleAppender" />-->
+        <level value="warning" />
         <appender_ref ref="defaultFileAppender" />
+        <!--<appender_ref ref="defaultConsoleAppender" />-->
+    </logger>
+    <logger name="Renderer">
+        <level value="warning" />
+        <appender_ref ref="defaultFileAppender" />
+        <!--<appender_ref ref="defaultConsoleAppender" />-->
     </logger>
 
     <logger name="CoreClient">
-        <level value="debug" />
+        <level value="warning" />
         <!--<appender_ref ref="defaultConsoleAppender" />-->
         <appender_ref ref="defaultFileAppender" />
     </logger>
 
     <logger name="Settings">
-        <level value="debug" />
+        <level value="warning" />
         <!--<appender_ref ref="defaultConsoleAppender" />-->
         <appender_ref ref="defaultFileAppender" />
     </logger>
@@ -29,7 +34,7 @@
     <root>
         <!--<level value="ERROR" />-->
         <appender_ref ref="emptyAppender"/>
-        <level value="debug" />
+        <level value="warning" />
         <!--<appender_ref ref="defaultConsoleAppender"/>-->
     </root>
 </configuration>
