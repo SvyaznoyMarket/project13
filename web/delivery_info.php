@@ -35,9 +35,30 @@ require_once(ROOT_PATH.'system/Router.php');
 //$_POST = array('ids' => array(22859, 1208, 11914, 425, 5440, 22727, 23296, 12385, 2691, 3741, 7552, 10825, 11587, 13113, 15137, 23076, 848, 990), 'region_id' => 14974);
 //$_POST = array('ids' => array(4435), 'region_id' => 14974);
 
+$geoIPCodeMapping = array(
+  '43'    => 99,
+  '47_4'  => 1964,
+  '47_3'  => 1965,
+  '47_1'  => 6125,
+  '47'    => 8440,
+  '47_5'  => 9748,
+  '47_2'  => 10358,
+  '62'    => 10374,
+  '09'    => 13241,
+  '69'    => 13242,
+  '77'    => 18073,
+  '86'    => 18074,
+  '48'    => 14974,
+  '76'    => 74358,
+  '41'    => 74562,
+);
+
 if(isset($_POST['ids'])){
   if(isset($_POST['region_id'])){
     $region_id = intval($_POST['region_id']);
+  }
+  elseif(isset($_COOKIE['geoshop']) && array_key_exists($_COOKIE['geoshop'], $geoIPCodeMapping)){
+    $region_id = $geoIPCodeMapping[$_COOKIE['geoshop']];
   }
   else{
     $region_id = 14974; //TODO реализовать класс CurrentUser

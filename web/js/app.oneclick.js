@@ -113,8 +113,9 @@ $(document).ready(function() {
 				e.preventDefault()
 				callback( e.target )
 			})
-			
-			mapContainer[0].addEventListener("touchstart",  //touch devices
+			var bw = new brwsr()
+			if( bw.isTouch )
+				mapContainer[0].addEventListener("touchstart",  //touch devices
 				function(e) {
 					e.preventDefault()
 					if( e.target.is( selector ) )
@@ -469,6 +470,8 @@ $(document).ready(function() {
 						$('.p0').removeClass('p0')
 						$('.top0').removeClass('top0')
 						$('.order1click-link-new').remove()
+						if( typeof(_gaq) !== 'undefined' && typeof(runAnalitics) !== 'undefined' )
+							runAnalitics()
 					},
 					error: function( jqXHR, textStatus ) {
 						self.formStatus('typing')

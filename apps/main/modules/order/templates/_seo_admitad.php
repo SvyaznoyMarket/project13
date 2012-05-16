@@ -51,3 +51,7 @@
 <img src="http://ad.admitad.com/register/cdaf092422/script_type/img/payment_type/sale/product/9/cart/<?php echo $data[224]['sum'] ?>/order_id/<?php echo $data[224]['number'] ?>/uid/<?php echo $data['uid'] ?>/"
      width="1" height="1" alt="" />
 <?php } ?>
+
+<!--Продажа товаров категории "Зоотовары"-->
+<img src="http://ad.admitad.com/register/cdaf092422/script_type/img/payment_type/sale/product/10/cart/<?php echo $data[1438]['sum'] ?>/order_id/<?php echo $data[1438]['number'] ?>/uid/<?php echo $data['uid'] ?>/"
+     width="1" height="1" alt="" />

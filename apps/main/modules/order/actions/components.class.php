@@ -281,7 +281,7 @@ class orderComponents extends myComponents
           $resultData[$cat['core_id']]['number'] .= '-' . $cat['core_id'];
       }
       $uid = $this->getRequest()->getCookie(sfConfig::get('app_admitad_cookie_name', 'admitad_uid'));
-      if(!$uid || strlen($uid != 32)){
+      if(!$uid || strlen($uid) != 32){
         $uid = false;
       }
 
