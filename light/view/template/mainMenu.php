@@ -1,6 +1,6 @@
 <?php
 /**
- * @var mainMenuData $Menu
+ * @var $Menu mainMenuData
  */
 
 foreach($Menu as $Category){ ?>

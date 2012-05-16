@@ -31,9 +31,11 @@ class MainMenuBuilder
     }
     unset($categories);
 
+    arsort($weights); //Сортируем по убыванию для лучших результатов
+
     foreach($weights as $categoryId => $categoryWeight){
       foreach($boxes as $boxNum => $boxCapacity){
-        if($boxCapacity > $categoryWeight){
+        if($boxCapacity >= $categoryWeight){
           if(!isset($return[$boxNum])){
             $return[$boxNum] = array();
           }
@@ -96,7 +98,7 @@ class MainMenuBuilder
    * @return array box sizes
    */
   private function getCapacityOfBoxes($weights, $quantity){
-    $weight = (int) $weights[0]*1.15; //Чуть увеличиваем раздел блоков что бы из-за переносов последний блок не распирало
+    $weight = (int) $weights[0]*1.1; //Чуть увеличиваем раздел блоков что бы из-за переносов последний блок не распирало
     unset($weights[0]);
     $middle = ceil($weight/$quantity);
 
