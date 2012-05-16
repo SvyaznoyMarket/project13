@@ -5,14 +5,17 @@
  * @var $ii
  * @var $maxPerPage
  * @var $relatedPagesNum
- *
- * @todo implement commented code
  */
 $json = json_encode(array (
   'jsref' => $item->getToken(),
   'jstitle' => htmlspecialchars($item->getName(), ENT_QUOTES, 'UTF-8'),
   'jsprice' => $item->getPrice(),
   'jsimg' => $item->getMediaImageUrl(3),
+  'jsbimg' =>  $item->getMediaImageUrl(2),
+  'jsshortcut' =>  $item->getArticle(),
+  'jsitemid' =>  $item->getId(),
+  'jsregionid' => sfContext::getInstance()->getUser()->getRegionCoreId(),
+  'jsregionName' => sfContext::getInstance()->getUser()->getRegion('name')
 ));
 ?>
 <?php
@@ -30,6 +33,11 @@ foreach ($photo3dList as $photo3d)
   product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
   product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
 </script>
+
+<?php slot('after_body_block') ?>
+<?php render_partial('product_/templates/_oneclickTemplate.php', array()) ?>
+<?php end_slot() ?>
+
 <div class="goodsphoto">
   <a href="<?php echo $item->getMediaImageUrl(4)  ?>" class="viewme" ref="image" onclick="return false">
     <?php foreach ($item->getLabelList() as $label):?>
@@ -97,6 +105,16 @@ foreach ($photo3dList as $photo3d)
       </div>
 
       <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
+
+      <?php if ( $item->getState()->getIsBuyable()): ?>
+        <div class="pb5"><strong>
+          <a href=""
+            data-model='<?php echo $json ?>'
+            link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
+            link-input='<?php echo url_for('product_delivery_1click') ?>'
+            class="red underline order1click-link-new">Купить быстро в 1 клик</a>
+        </strong></div>
+      <?php endif ?>
     </div>
   </div>
 

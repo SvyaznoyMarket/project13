@@ -9,6 +9,7 @@ $listInCart = $item->getServiceListInCart();
   <?php render_partial('product_/templates/_f1_lightbox.php', array('item' => $item))?>
 
   <div class="bF1Info bBlueButton">
+    <img class="bF1Info_Logo" src="/images/f1info.png" alt="Улуги F1" />
     <script type="text/html" id="f1look">
       <div ref="<%=fid%>">
         <%=f1title%> - <%=f1price%>&nbsp;

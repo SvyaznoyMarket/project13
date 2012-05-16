@@ -1,6 +1,6 @@
 <?php
 /**
- * @var ProductCorePager $productPager
+ * @var ProductCorePagerContainer $productPager
  * @var $productSorting
  * @var $sf_data
  * @var $infinityUrl
@@ -45,7 +45,6 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
     $dataAr['sf_subject'] = $sf_data->getRaw('productCategory');
     $infinityUrl = url_for('productCatalog_categoryAjax', $dataAr);
   }
-  #echo $infinityUrl .'====$infinityUrl';
   ?>
 <div data-url="<?php echo $infinityUrl; ?>"
      data-page="<?php  echo $page; ?>"

@@ -15,9 +15,11 @@ qrcode:
   url:   /qr/:qrcode
   param: { module: qrcode, action: index }
 
-
-# инфа по доставке
-# @core
+# фиктивный роут для plain php генерации url.
+product_delivery_1click:
+  url:   /product/delivery1click
+  param: { module: product_, action: deliveryInfo, product: 0 }
+# фиктивный роут для plain php генерации url.
 product_delivery:
   url:   /product/delivery-info/:product
   param: { module: product_, action: deliveryInfo, product: 0 }

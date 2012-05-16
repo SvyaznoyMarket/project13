@@ -75,12 +75,13 @@ class myUser extends myGuardSecurityUser
   {
     if (!$this->region) {
       $region = false;
-      $region_id = $this->getAttribute('region', null);
 
-      if ($region_id) {
+      $regionGeoIpCode = sfContext::getInstance()->getRequest()->getCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'));
+
+      if ($regionGeoIpCode) {
         //$region = RegionTable::getInstance()->findOneByIdAndType($region_id, 'city');
-        $region = RegionTable::getInstance()->getById($region_id);
-        if (!$region->isCity()) {
+        $region = RegionTable::getInstance()->findOneBy('geoip_code', $regionGeoIpCode);
+        if (!$region || !$region->isCity()) {
           $region = false;
         }
       }
@@ -133,9 +134,18 @@ class myUser extends myGuardSecurityUser
     return $this->region;
   }
 
+  public function getRegionCoreId() //Этот метод дает Автосохранение в куках для дальнейшего использования вне симфони
+  {
+    $region = $this->getRegion();
+
+    return $region['core_id'];
+  }
+
   public function setRegion($region_id)
   {
-    $this->setAttribute('region', $region_id);
+    $region = $region = RegionTable::getInstance()->getById($region_id);
+    $this->region = $region;
+    $_COOKIE[sfConfig::get('app_guard_region_cookie_name', 'geoshop')] = $region->getGeoipCode();
     $this->setRegionCookie();
   }
 

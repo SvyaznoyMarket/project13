@@ -169,11 +169,24 @@ class defaultComponents extends myComponents
   }
 
 
-    public function executeAdmitad()
-    {
-        $uid = $this->getRequestParameter('admitad_uid');
-        if ($uid && strlen($uid) == 32) {
-            sfContext::getInstance()->getUser()->setAttribute('admitad_uid', $uid);
-        }
+  public function executeAdmitad() {  }
+
+  public function executeAdriver()
+  {
+    if($this->getContext()->has('adriverProductInfo')){
+      $data = $this->getContext()->get('adriverProductInfo');
     }
+    else{
+      $data = false;
+    }
+
+    $this->logMessage('adriver:');
+    $this->logMessage(print_r($data, true));
+    if(is_array($data) && isset($data['productId']) && isset($data['categoryId'])){
+      $this->setVar('adriverProductInfo', array('productId' => (int) $data['productId'], 'categoryId' => (int) $data['categoryId']));
+    }
+    else{
+      $this->setVar('adriverProductInfo', array('productId' => 0, 'categoryId' => 0));
+    }
+  }
 }

@@ -12,6 +12,8 @@ define('MODE', 'prod');
 define('SESSION_NAME', 'enter');
 define('NEW_VERSION_CART_NAME', 'cartSoa');
 define('OLD_VERSION_CART_NAME', 'cart');
+define('DEFAULT_REGION_ID', 19355);
+define('CURRENT_REGION_COOKIE_NAME', 'geoshop');
 
 try
 {
@@ -314,18 +316,23 @@ if ($user_id > 0) {
   $user_name = null;
 }
 
-if (!isset($user_attributes['region'])) {
+if(isset($_COOKIE[CURRENT_REGION_COOKIE_NAME]) && preg_match('/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i', $_COOKIE[CURRENT_REGION_COOKIE_NAME])){
+  $query = "SELECT id
+            FROM `region`
+            WHERE `geoip_code` = {$_COOKIE[CURRENT_REGION_COOKIE_NAME]}  OR `is_default` = 1
+            order by is_default ASC
+            LIMIT 1";
+
+}
+else{
   $query = "SELECT id FROM `region` WHERE `is_default` = 1 LIMIT 1";
-  if ($result = mysql_query($query, $conn)) {
-    $row = mysql_fetch_array($result, MYSQL_ASSOC);
-    $region_id = $row['id'];
-  }
-  else {
-    $region_id = 19355;
-  }
+}
+if ($result = mysql_query($query, $conn)) {
+  $row = mysql_fetch_array($result, MYSQL_ASSOC);
+  $region_id = $row['id'];
 }
 else {
-  $region_id = $user_attributes['region'];
+  $region_id = DEFAULT_REGION_ID;
 }
 
 if (isset($_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'][OLD_VERSION_CART_NAME])) {
@@ -422,6 +429,7 @@ $response = array(
     'productsInCart' => $productsInCart,
     'servicesInCart' => $servicesInCart,
     'bingo' => false,
+    'region_id' =>$region_id
   )
 );
 mysql_close($conn);

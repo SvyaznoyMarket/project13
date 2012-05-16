@@ -11,6 +11,8 @@ Options +FollowSymLinks +ExecCGI
 
   RewriteRule ^region/init$ region_init.php [L]
   RewriteRule ^user/shortinfo$ user_shortinfo.php [L]
+  RewriteRule ^product/delivery1click delivery1click.php [L]
+  RewriteRule ^product/delivery-info.* delivery_info.php [L]
 
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$

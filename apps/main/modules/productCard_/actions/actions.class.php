@@ -79,6 +79,7 @@ class productCard_Actions extends myActions
   private function loadProduct($productToken)
   {
     $product = RepositoryManager::getProduct()->getByToken($productToken, true);
+    $this->getContext()->set('adriverProductInfo', array('productId' => $product->getId(), 'categoryId' => 0));
     RepositoryManager::getProduct()->loadRelatedAndAccessories($product, true, self::NUM_RELATED_ON_PAGE * 2);
         RepositoryManager::getProduct()->loadKit($product, true);
         $this->forward404If(!$product);
@@ -86,13 +87,13 @@ class productCard_Actions extends myActions
         $this->getResponse()->setTitle(sprintf(
           '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru',
           $product->getName(),
-          100,
+          $product->getPrice(),
           $product->getName()
         ));
         $this->getResponse()->addMeta('description', sprintf(
           'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону 8 (800) 700-00-09.',
           $product->getName(),
-          100,
+          $product->getPrice(),
           $product->getName()
         ));
         $this->getResponse()->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));

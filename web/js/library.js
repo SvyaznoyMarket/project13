@@ -871,7 +871,7 @@ function printPrice ( val ) {
 	} else if ( le > 3 ) {
 		out = out.substr( 0, le - 3) + ' ' + out.substr( le - 3, le )
 	}
-	if( floatv.length == 2 )
+	if( floatv.length == 2 && floatv[1]*1 > 0 )
 		out += '.' + floatv[1]
 	return out
 }
@@ -885,6 +885,21 @@ function brwsr () {
 	
 	this.isTouch    = this.isOSX || this.isAndroid
 }		
+
+function parse_url( url ) {
+	if( typeof( url ) !== 'string' )
+		return false
+	if( url.indexOf('?') === -1 )
+		return false		
+	url = url.replace('?','')
+	var url_ar = url.split('&')
+	var url_hash = {}
+	for (var i=0, l=url_ar.length; i<l; i++ ) {
+		var pair = url_ar[i].split('=')
+		url_hash[ pair[0] ] = pair[1]
+	}
+	return url_hash
+}
 
 /*
 	Mechanics @ enter.ru 
@@ -1500,3 +1515,30 @@ function mediaLib( jn ) {
 	}
 	
 } // mediaLib object
+
+/* Date object upgrade */
+if ( !Date.prototype.toISOString ) {
+	
+	( function() {
+	
+		function pad(number) {
+			var r = String(number);
+			if ( r.length === 1 ) {
+				r = '0' + r;
+			}
+			return r;
+		}
+ 
+		Date.prototype.toISOString = function() {
+			return this.getUTCFullYear()
+				+ '-' + pad( this.getUTCMonth() + 1 )
+				+ '-' + pad( this.getUTCDate() )
+				+ 'T' + pad( this.getUTCHours() )
+				+ ':' + pad( this.getUTCMinutes() )
+				+ ':' + pad( this.getUTCSeconds() )
+				+ '.' + String( (this.getUTCMilliseconds()/1000).toFixed(3) ).slice( 2, 5 )
+				+ 'Z';
+		};
+  
+	}() );
+}	

@@ -23,6 +23,9 @@ $list = $productPager->getResults();
         case 'expanded':
           require '_list_ajax_expanded_.php';
           break;
+        default:
+          require '_list_ajax_compact_.php';
+          break;
       }
   } else {
     switch($view){
@@ -37,6 +40,9 @@ $list = $productPager->getResults();
         break;
       case 'view':
         require '_list_view_.php';
+        break;
+      default:
+        require '_list_compact_.php';
         break;
     }
   }

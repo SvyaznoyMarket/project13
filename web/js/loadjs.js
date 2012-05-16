@@ -37,7 +37,9 @@
 	switch( document.body.getAttribute('data-template') ) {
 		case 'main':
 			$LAB.queueWait( function() {
-				$LAB.script(getWithVersion('wellcome.js'))
+				$LAB.script( getWithVersion('library.js') )
+				.wait()
+				.script(getWithVersion('wellcome.js'))
 			}).runQueue()
 			break
 		case 'default':
@@ -79,15 +81,19 @@
 			}).runQueue()
 			break
 		case 'product_card':
-			$LAB.queueWait( function() {
+			$LAB.queueScript('knockout-2.1.0.js')
+			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
+			.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
+				//.script( 'jquery.effects.blind.js' )
 				.script( getWithVersion('main.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
 				.script( 'watch3dv2.min.js' )
 				.wait()
 				.script( getWithVersion('app.product.js') )
+				.script( getWithVersion('app.oneclick.js') )
 			}).runQueue()
 			break
 		case 'product_comment':
@@ -126,7 +132,8 @@
 			}).runQueue()
 			break
 		case 'product_stock':
-			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
+			$LAB.queueScript('knockout-2.1.0.js')
+			.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.script('google.maps.infobox.js')
 				.wait()
@@ -135,6 +142,7 @@
 				.script( getWithVersion('dash.js') )
 				.wait()
 				.script( getWithVersion('app.product.js') )
+				.script( getWithVersion('app.oneclick.js') )
 			}).runQueue()
 			break
 	}
