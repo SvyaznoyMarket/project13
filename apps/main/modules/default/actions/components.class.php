@@ -169,13 +169,7 @@ class defaultComponents extends myComponents
   }
 
 
-  public function executeAdmitad()
-  {
-      $uid = $this->getRequestParameter('admitad_uid');
-      if ($uid && strlen($uid) == 32) {
-          sfContext::getInstance()->getUser()->setAttribute('admitad_uid', $uid);
-      }
-  }
+  public function executeAdmitad() {  }
 
   public function executeAdriver()
   {
