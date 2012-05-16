@@ -9,38 +9,38 @@ class ProductCategoryFilterEntity
   const TYPE_LIST = 5;
   const TYPE_SLIDER = 6;
 
-  private $filter_id;
-  private $type_id;
+  private $filterId;
+  private $typeId;
   private $name;
   private $unit;
-  private $is_multiple;
-  private $is_slider;
+  private $isMultiple;
+  private $isSlider;
   private $min;
   private $max;
   private $optionList = array();
 
   public function __construct(array $data = array())
   {
-    if (array_key_exists('filter_id', $data)) $this->setFilterId($data['filter_id']);
-    if (array_key_exists('name', $data)) $this->setName($data['name']);
-    if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
-    if (array_key_exists('unit', $data)) $this->setUnit($data['unit']);
-    if (array_key_exists('is_multiple', $data)) $this->setIsMultiple($data['is_multiple']);
-    if (array_key_exists('is_slider', $data)) $this->setIsSlider($data['is_slider']);
-    if (array_key_exists('min', $data)) $this->setMin($data['min']);
-    if (array_key_exists('max', $data)) $this->setMax($data['max']);
-    if (array_key_exists('options', $data)) $this->setOptionList($data['options']);
+    if (array_key_exists('filter_id', $data))   $this->filterId   = (int)$data['filter_id'];
+    if (array_key_exists('name', $data))        $this->name       = (string)$data['name'];
+    if (array_key_exists('type_id', $data))     $this->typeId     = (int)$data['type_id'];
+    if (array_key_exists('unit', $data))        $this->unit       = (string)$data['unit'];
+    if (array_key_exists('is_multiple', $data)) $this->isMultiple = (bool)$data['is_multiple'];
+    if (array_key_exists('is_slider', $data))   $this->isSlider   = (bool)$data['is_slider'];
+    if (array_key_exists('min', $data))         $this->min        = $data['min'];
+    if (array_key_exists('max', $data))         $this->max        = $data['max'];
+    if (array_key_exists('options', $data))     $this->setOptionList($data['options']);
   }
 
   public function toArray()
   {
     return array(
-      'filter_id' => $this->filter_id,
+      'filter_id' => $this->filterId,
       'name' => $this->name,
-      'type_id' => $this->type_id,
+      'type_id' => $this->typeId,
       'unit' => $this->unit,
-      'is_multiple' => $this->is_multiple,
-      'is_slider' => $this->is_slider,
+      'is_multiple' => $this->isMultiple,
+      'is_slider' => $this->isSlider,
       'min' => $this->min,
       'max' => $this->max,
       'options' => $this->optionList,
@@ -49,32 +49,32 @@ class ProductCategoryFilterEntity
 
   public function setFilterId($filter_id)
   {
-    $this->filter_id = $filter_id;
+    $this->filterId = $filter_id;
   }
 
   public function getFilterId()
   {
-    return $this->filter_id;
+    return $this->filterId;
   }
 
   public function setIsMultiple($is_multiple)
   {
-    $this->is_multiple = (boolean)$is_multiple;
+    $this->isMultiple = (boolean)$is_multiple;
   }
 
   public function getIsMultiple()
   {
-    return $this->is_multiple;
+    return $this->isMultiple;
   }
 
   public function setIsSlider($is_slider)
   {
-    $this->is_slider = (boolean)$is_slider;
+    $this->isSlider = (boolean)$is_slider;
   }
 
   public function getIsSlider()
   {
-    return $this->is_slider;
+    return $this->isSlider;
   }
 
   public function setMax($max)
@@ -119,12 +119,12 @@ class ProductCategoryFilterEntity
 
   public function setTypeId($type_id)
   {
-    $this->type_id = (int)$type_id;
+    $this->typeId = (int)$type_id;
   }
 
   public function getTypeId()
   {
-    return $this->type_id;
+    return $this->typeId;
   }
 
   public function setUnit($unit)

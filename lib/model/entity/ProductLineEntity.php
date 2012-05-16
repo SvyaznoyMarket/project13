@@ -16,11 +16,11 @@ class ProductLineEntity
    */
   public function __construct(array $data = array())
   {
-    if (isset($data['id'])) $this->setId($data['id']);
-    if (isset($data['name'])) $this->setName($data['name']);
-    if (isset($data['media_image'])) $this->setMediaImage($data['media_image']);
-    if (isset($data['product_count'])) $this->setProductCount($data['product_count']);
-    if (isset($data['products_quantity'])) $this->setProductCount($data['products_quantity']);
+    if (array_key_exists('id', $data))                $this->id           = (int)$data['id'];
+    if (array_key_exists('name', $data))              $this->name         = (string)$data['name'];
+    if (array_key_exists('media_image', $data))       $this->mediaImage   = (string)$data['media_image'];
+    if (array_key_exists('product_count', $data))     $this->productCount = (int)$data['product_count'];
+    if (array_key_exists('products_quantity', $data)) $this->productCount = (int)$data['products_quantity'];
   }
 
   /**

@@ -5,6 +5,8 @@
  */
 class ProductLabelEntity
 {
+  const LABEL_SALE = 1;
+
   /* @var integer */
   private $id;
 
@@ -18,10 +20,10 @@ class ProductLabelEntity
 
   public function __construct(array $data = array())
   {
-    if (array_key_exists('id', $data)) $this->setId($data['id']);
-    if (array_key_exists('image', $data)) $this->setImage($data['image']);
-    if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
-    if (array_key_exists('name', $data)) $this->setName($data['name']);
+    if (array_key_exists('id', $data))          $this->id    = (int)$data['id'];
+    if (array_key_exists('image', $data))       $this->image = (string)$data['image'];
+    if (array_key_exists('media_image', $data)) $this->image = (string)$data['media_image'];
+    if (array_key_exists('name', $data))        $this->name  = (string)$data['name'];
   }
 
   /**
@@ -101,5 +103,10 @@ class ProductLabelEntity
   public function getPriority()
   {
     return $this->priority;
+  }
+
+  public function isSaleLabel()
+  {
+    return $this->id == self::LABEL_SALE;
   }
 }

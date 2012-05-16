@@ -1,5 +1,5 @@
 <?php slot('navigation') ?>
-  <?php include_component('productCard', 'navigation', array('product' => $product)) ?>
+  <?php include_component('productCard_', 'navigation', array('product' => $product)) ?>
 <?php end_slot() ?>
 
 <?php slot('title', $product->name) ?>

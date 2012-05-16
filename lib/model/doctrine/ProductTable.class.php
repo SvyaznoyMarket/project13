@@ -10,7 +10,7 @@ class ProductTable extends myDoctrineTable
  /**
   * Returns an instance of this class.
   *
-  * @return object ProductTable
+  * @return ProductTable
   */
   public static function getInstance()
   {

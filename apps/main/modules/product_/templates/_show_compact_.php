@@ -4,6 +4,8 @@
  * @var $maxPerPage
  * @var ProductEntity $item
  */
+
+$show_model = (isset($show_model)?$show_model:true) && $item->getModel() && count($item->getModel()->getPropertyList());
 ?>
 <div class="goodsbox"<?php echo (isset($ii, $maxPerPage) && ($ii > $maxPerPage)) ? ' style="display:none;"' : '' ?>>
 
@@ -12,7 +14,7 @@
       <?php if ($label = $item->getMainLabel()): ?>
       <img class="bLabels" src="<?php echo $label->getImageUrl() ?>" alt="<?php echo $label->getName() ?>"/>
       <?php endif; ?>
-      <?php $title = $item->getName() . ' - ' . $item->getMainCategory()->getName();?>
+      <?php $title = $item->getName() #. ' - ' . $item->getMainCategory()->getName();?>
       <img class="mainImg" src="<?php echo $item->getMediaImageUrl() ?>"
            alt="<?php echo $title ?>"
            title="<?php echo $title ?>"
@@ -29,7 +31,7 @@
 
   <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span
     class="rubl">p</span></div>
-  <?php if ($item->getModel() && $item->getModel()->getPropertyList()): ?>
+  <?php if ($show_model): ?>
   <a href="<?php echo $item->getLink() ?>">
     <div class="bListVariants">
       Доступно в разных вариантах<br>
@@ -64,7 +66,7 @@
         </div>
         <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo formatPrice($item->getPrice()) ?></span> <span
           class="rubl">p</span></div>
-        <?php if ($item->getModel() && $item->getModel()->getPropertyList()): ?>
+        <?php if ($show_model): ?>
         <a href="<?php echo $item->getLink() ?>">
           <div class="bListVariants">
             Доступно в разных вариантах<br>
