@@ -107,4 +107,4 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC))
 
 mysql_close($conn);
 
-die(json_encode(array('success' => true, 'data' => $region, 'query' => $query, 'cookie' => $_COOKIE, 'needSendCookie' => $needSendCookie, 'SERVER' => $_SERVER)));
+die(json_encode(array('success' => true, 'data' => $region)));
