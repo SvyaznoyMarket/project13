@@ -79,7 +79,7 @@ class ProductEntity
   /* @var integer */
   private $ratingQuantity;
   /** @var int */
-  private $commentsNum;
+  private $commentCount;
   /** @var int */
   private $price;
   /** @var int */
@@ -127,7 +127,8 @@ class ProductEntity
     if (array_key_exists('media_image', $data))     $this->mediaImage    = (string)$data['media_image'];
     if (array_key_exists('rating', $data))          $this->rating        = (int)$data['rating'];
     if (array_key_exists('rating_count', $data))    $this->ratingCount   = (int)$data['rating_count'];
-    if (array_key_exists('comments_num', $data))    $this->commentsNum   = (int)$data['comments_num'];
+    if (array_key_exists('comments_num', $data))    $this->commentCount   = (int)$data['comments_num'];
+    if (array_key_exists('comment_count', $data))   $this->commentCount   = (int)$data['comment_count'];
     if (array_key_exists('price', $data))           $this->price         = $data['price'];
     if (array_key_exists('price_average', $data))   $this->priceAverage  = $data['price_average'];
     //echo "<pre>", print_r($this,1), '</pre>';
@@ -567,19 +568,19 @@ class ProductEntity
   }
 
   /**
-   * @param int $commentsNum
+   * @param int $commentCount
    */
-  public function setCommentsNum($commentsNum)
+  public function setCommentCount($commentCount)
   {
-    $this->commentsNum = $commentsNum;
+    $this->commentCount = $commentCount;
   }
 
   /**
    * @return int
    */
-  public function getCommentsNum()
+  public function getCommentCount()
   {
-    return $this->commentsNum;
+    return $this->commentCount;
   }
 
   /**

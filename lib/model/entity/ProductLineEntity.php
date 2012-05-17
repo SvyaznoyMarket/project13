@@ -19,6 +19,7 @@ class ProductLineEntity
     if (array_key_exists('id', $data))                $this->id           = (int)$data['id'];
     if (array_key_exists('name', $data))              $this->name         = (string)$data['name'];
     if (array_key_exists('media_image', $data))       $this->mediaImage   = (string)$data['media_image'];
+    if (array_key_exists('count', $data))             $this->productCount = (int)$data['count'];
     if (array_key_exists('product_count', $data))     $this->productCount = (int)$data['product_count'];
     if (array_key_exists('products_quantity', $data)) $this->productCount = (int)$data['products_quantity'];
   }

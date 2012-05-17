@@ -64,7 +64,7 @@ foreach ($photo3dList as $photo3d)
         ?>
       </span>
       <strong class="ml5 hf"><?php echo round($item->getRating(), 1) ?></strong>
-      <a href="<?php echo url_for('productComment', array('product' => $item->getPath())) ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $item->getCommentsNum() ?>)</span>
+      <a href="<?php echo url_for('productComment', array('product' => $item->getPath())) ?>" class="underline ml5">Читать отзывы</a> <span>(<?php echo $item->getCommentCount() ?>)</span>
     </div>
     <span>Артикул #<?php echo $item->getArticle() ?></span>
   </div>
