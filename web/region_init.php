@@ -10,7 +10,7 @@ header('Content-Type:	application/json');
 
 define('MODE', 'prod');
 define('SESSION_NAME', 'enter');
-define('COOKIE_GEOIP_NAME', 'geoshop');
+define('CURRENT_REGION_COOKIE_NAME', 'geoshop');
 try
 {
   require_once dirname(__FILE__) . '/../lib/vendor/symfony/lib/yaml/sfYamlParser.php';
@@ -58,30 +58,19 @@ catch (Exception $e)
   die(json_encode(array('success' => false, 'data' => array())));
 }
 
-//стартую сессию symfony
-session_name(SESSION_NAME);
-session_start();
+$needSendCookie = true;
 
-//получаю пользовательские данные из сессии
-$user_attributes = isset($_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes']) ? $_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'] : array();
-
-//получаю id региона пользователя
-$region_id = isset($user_attributes['region']) ? $user_attributes['region'] : null;
-
-//если id региона еще нет, пытаюсь получить geoip_code из серверного окружения
-if (!$region_id) {
+if(isset($_COOKIE[CURRENT_REGION_COOKIE_NAME]) && preg_match('/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i', $_COOKIE[CURRENT_REGION_COOKIE_NAME])){
+  $region_code = $_COOKIE[CURRENT_REGION_COOKIE_NAME];
+  $needSendCookie = false;
+}
+else{
   $region_code = isset($_SERVER['HTTP_X_GEOIP_REGION']) ? $_SERVER['HTTP_X_GEOIP_REGION'] : null;
 }
-else
-{
-  $region_code = null;
-}
+
 
 //формирую условие для определения текущего региона пользователя
-if ($region_id) {
-  $is_users_region = ", IF(`id` = '.$region_id.', 1, 0) `is_users_region`";
-}
-elseif ($region_code)
+if ($region_code)
 {
   $is_users_region = ", IF(`geoip_code` = '" . $region_code . "', 1, 0) `is_users_region`";
 }
@@ -108,9 +97,8 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC))
     $entity['is_active'] = 'active';
 
     //если еще нет в сессии региона, то устанавливаем
-    if (!$region_id) {
-      $_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes']['region'] = $row['id'];
-      setcookie(COOKIE_GEOIP_NAME, $row['geoip_code'], time() + 60 * 60 * 24 * 365);
+    if ($needSendCookie) {
+      setcookie(CURRENT_REGION_COOKIE_NAME, $row['geoip_code'], time() + 60 * 60 * 24 * 365, '/');
     }
   }
 

@@ -42,7 +42,8 @@
 				</td>
 				<!-- /ko -->
 				<td class='bInShop__eSelectors' data-bind="css : { mLong: showMap() }"><!-- mLong optional -->
-					<div class="bInShop__eSelectorsWrap" data-bind="if : showMap">
+					<!-- ko if: showMap -->
+					<div class="bInShop__eSelectorsWrap">
 						Заберу:
 						<br/>
 						<div class="bSelectors">
@@ -52,6 +53,7 @@
 												  css : { mChecked: !today(), mBlue: !today()  } ">Завтра</a>
 						</div>
 					</div>
+					<!-- /ko -->
 					<div class='bInShop__eSelectorsWrap'>
 						Показать магазины:<br>
 						<div class='bSelectors'>

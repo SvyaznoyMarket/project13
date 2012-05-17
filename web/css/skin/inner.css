@@ -2931,7 +2931,7 @@ DT.bCtg__eOrange{
 	position: fixed;
 	text-align: center;
 	*position: absolute;
-	*top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+	*top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");
 	}
 
 .bMobDown{
@@ -4382,7 +4382,7 @@ DT.bCtg__eOrange{
 		cursor: pointer;
 		position: fixed;
 		*position: absolute;
-	  	*top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+	  	*top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");
 
 		display: inline-block;
 		*display: inline;
@@ -4490,7 +4490,7 @@ div.mSportFont{ color: #e8303c; }
     cursor: pointer;
     position: fixed;
     *position: absolute;
-    *top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+    *top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");
 
     display: inline-block;
     *display: inline;
@@ -4655,7 +4655,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
         cursor: pointer;
         position: fixed;
         *position: absolute;
-        *top: expression(document.getElementsByTagName( 'body' )[0].scrollTop + "px");
+        *top: expression(document.getElementsByTagName('body')[0].scrollTop+"px");
 
         display: inline-block;
         *display: inline;
