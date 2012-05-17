@@ -132,35 +132,6 @@ $(document).ready(function(){
 			data: wholemessage,
 			success: authFromServer
 		})
-
-      /* RETIRED
-      form.ajaxSubmit({
-        async: false,
-        data: {
-          redirect_to: form.find('[name="redirect_to"]:first').val()
-        },
-        success: function(response) {
-          if (true == response.success)
-          {
-            if (form.data('redirect')) {
-              if (response.url) {
-                window.location = response.url
-              }
-              else {
-                form.unbind('submit')
-                form.submit()
-              }
-            }
-            else {
-              $('#auth-block').trigger('close')
-            }
-          }
-          else {
-            form.html($(response.data.content).html())
-          }
-        }
-      })
-      */
     })
 
 	$('#forgot-pwd-trigger').live('click', function(){
@@ -429,39 +400,6 @@ $(document).ready(function(){
 		getRegions()
 	}
 	
-	/* RETIRED
-	var regionlink = $('.regionselect .regionlink:first');
-	var regionlist = $('.regionselect .regionlist');
-	var userag    = navigator.userAgent.toLowerCase()
-	var isAndroid = userag.indexOf("android") > -1
-	var isOSX     = ( userag.indexOf('ipad') > -1 ||  userag.indexOf('iphone') > -1 )
-	if( isAndroid || isOSX ) {
-		regionlink.click(function(){
-			regionlink.hide();
-			regionlist.show();
-			return false
-		});
-	} else {
-		regionlink.mouseenter(function(){
-			regionlink.hide();
-			regionlist.show();
-		});
-		regionlist.mouseleave(function(){
-			regionlist.hide();
-			regionlink.show();
-		});
-	}
-
-	$('.regionchoice a').click( function() {
-		var button = this
-    var form = $('form#region')
-    form.attr('action', button.href)
-    form.submit()
-
-		return false
-	})
-	*/
-	
 	/* Services Toggler */
 	if( $('.serviceblock').length ) {
 		$('.info h3').css('cursor', 'pointer')
@@ -532,27 +470,6 @@ $(document).ready(function(){
 			data: wholemessage,
 			success: getSearchResults
 		})
-		/* RETIRED
-		form.ajaxSubmit({
-			async: false,
-			success: function(response) {
-				if (true === response.success) {
-					form.unbind('submit')
-					form.submit()
-				}
-				else {
-					var el = $(response.data.content)
-					el.appendTo('body')
-					$('#search_popup-block').lightbox_me({
-					centered: true,
-					onLoad: function() {
-					//$(this).find('input:first').focus()
-					}
-					})
-				}
-			}
-		})
-		*/
 	})
 
 	$('.bCtg__eMore').bind('click', function(e) {
@@ -681,64 +598,6 @@ $(document).ready(function(){
 			data: wholemessage,
 			success: getFiltersResult
 		})
-		/* RETIRED
-        function getData() {
-            var d = $.Deferred();			
-            form.ajaxSubmit({
-                url: form.data('action-count'),
-                success: d.resolve,
-                error: d.reject
-            })
-
-            return d.promise();
-        }
-
-        $.when(getData())
-        .then(function(result) {
-            if (true === result.success) {
-                $('.product_count-block').remove();
-                //el.parent().find('> label').first().after('<div class="product_count-block" style="position: absolute; background: #fff; padding: 4px; opacity: 0.9; border-radius: 5px; border: 1px solid #ccc; cursor: pointer;">Найдено '+result.data+'</div>')
-                switch (result.data % 10) {
-                  case 1:
-                    ending = 'ь';
-                    break
-                  case 2: case 3: case 4:
-                    ending = 'и';
-                    break
-                  default:
-                    ending = 'ей';
-                    break
-                }
-                switch (result.data % 100) {
-                  case 11: case 12: case 13: case 14:
-                    ending = 'ей';
-                    break
-                }
-                var firstli = null
-                if ( el.is("div") ) //triggered from filter slider !
-                	firstli = el
-                else
-	                firstli = el.parent().find('> label').first()
-                firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
-                $('.product_count-block')
-                .hover(
-                    function() {
-                        $(this).stopTime('hide')
-                    },
-                    function() {
-                        $(this).oneTime(2000, 'hide', function() {
-                            $(this).remove()
-                        })
-                    }
-                    )
-                .click(function() {
-                    form.submit()
-                })
-                .trigger('mouseout')
-            }
-        })
-        .fail(function(error) {})
-        */
     })
     
 	/* Sliders */
@@ -775,13 +634,6 @@ $(document).ready(function(){
 		})
 
 	})
-
-	/* RETIRED
-    $(this).find('.ratingbox A').hover(function(){
-        $("#ratingresult").html(this.innerHTML)
-        return false
-    })
-	*/
 	
     $(".goodsbar .link1").bind( 'click.css', function()   {
         $(this).addClass("link1active")
@@ -965,19 +817,6 @@ $(document).ready(function(){
 		}			
 	})
 
-	/* charachteristics RETIRED
-	if ( $('#toggler').length ) {
-		$('#toggler').toggle( function(){
-			$('.descriptionlist:first').slideUp()
-			$('.descriptionlist.second').slideDown()
-			$(this).html('Общие характеристики')
-		},  function(){
-			$('.descriptionlist.second').slideUp()
-			$('.descriptionlist:first').slideDown()
-			$(this).html('Все характеристики')
-		})
-	}
-	*/
 
 	/* Delivery Ajax */
 	function dlvrajax() {
@@ -1072,99 +911,4 @@ $(document).ready(function(){
 		dajax.post( dlvr_node.data('calclink'), coreid )
     }
 
-	/* 
-		from inline scripts
-	*/
-	/* agree button */
-	if( $('#agree-field').length ) {
-		$('#agree-field')
-			.everyTime(200, function() {
-			  var el = $(this)
-			  if (el.next().hasClass('checked')) {
-				$('#confirm-button, #pay-button').removeClass('mDisabled')
-			  }
-			  else {
-				$('#confirm-button, #pay-button').addClass('mDisabled')
-			  }
-			})
-
-		$('.form').bind('submit', function(e) {
-			if ($(this).find('input.mDisabled').length) {
-			  e.preventDefault()
-			}
-		})
-	}
-	/* */
-	$('#watch-trigger').click(function(){
-      $('#watch-cnt').toggle()
-    })
-    $('#watch-cnt .close').click(function(){
-      $('#watch-cnt').hide()
-    })
-    /* some oldish ? */
-    $('.point .title b').click(function(){
-		$(this).parent().parent().find('.prompting').show()
-	})
-	$('.point .title .pr .close').click(function(){
-		$(this).parent().hide()
-	})
-
-	$('#auth_forgot-link').click(function() {
-		$('#auth_forgot-block').lightbox_me({
-		  centered: true,
-		  onLoad: function() {
-			$('#auth_forgot-form').show()
-			$('#auth_forgot-block').find('input:first').focus()
-		  }
-		})	
-		return false
-	})
-	
-	/* Login processing */
-    if( $('#order_login-url').length ) {
-		var url_signin = $('#order_login-url').val(),
-			url_register = $('#order_login-url').val()
-		$('#radio-1').click(function(){
-		  $('#old-user').show()
-		  $('#old-user input').prop('disabled', null)
-		  $('#new-user').hide()
-		  $('#new-user input').prop('disabled', 'disabled')
-		  $('#form-step-1').prop('action', url_signin)
-		});
-		$('#radio-2').click(function(){
-		  $('#old-user').hide()
-		  $('#old-user input').prop('disabled', 'disabled')
-		  $('#new-user').show()
-		  $('#new-user input').prop('disabled', null)
-		  $('#form-step-1').prop('action', url_register)
-		})
-		var actionf = ( $('#module_action').length && $('#module_action').val() === 'register') ? 2 : 1
-		$('#radio-'+ actionf).click()
-		$('#form-step-1').submit(function(){
-		  if (this.action == '') return false
-		})
-    }
-
-	if( $('#user_signin-url').length ) {
-		var url_signin = $('#user_signin-url').val(),
-			url_register = $('#user_register-url').val()
-		$('#radio-1').click(function(){
-			$('#old-user').show()
-			$('#old-user input').prop('disabled', null)
-			$('#new-user').hide()
-			$('#new-user input').prop('disabled', 'disabled')
-			$('#form-step-1').prop('action', url_signin)
-		})
-		$('#radio-2').click(function(){
-			$('#old-user').hide()
-			$('#old-user input').prop('disabled', 'disabled')
-			$('#new-user').show()
-			$('#new-user input').prop('disabled', null)
-			$('#form-step-1').prop('action', url_register)
-		})
-		$('#radio-1').click()
-		$('#form-step-1').submit(function(){
-			if (this.action == '') return false
-		})
-	}
 });
