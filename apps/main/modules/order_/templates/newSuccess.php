@@ -43,6 +43,14 @@
     <div class='bBuyingInfo'>
       <h2>Информация о счастливом получателе</h2>
 
+      <div id="user-block">
+        <?php if ($sf_user->isAuthenticated()): ?>
+        Привет, <a href="<?php echo url_for('user') ?>"><?php echo $sf_user->getGuardUser() ?></a>
+        <?php else: ?>
+        Уже покупали у нас? <strong><a class="auth-link underline" data-update-url="<?php echo url_for('order_getUser') ?>" href="<?php echo url_for('user_signin') ?>">Авторизуйтесь</a></strong> и вы сможете использовать ранее введенные данные
+        <?php endif ?>
+      </div>
+
       <dl class='bBuyingLine'>
 
         <dt>Имя и Фамилия получателя*</dt>
@@ -156,6 +164,8 @@
 </div>
 
 <?php include_partial('order_/map', $sf_data) ?>
+
+<?php include_partial('default/auth') ?>
 
 <?php include_partial('order_/footer') ?>
 
