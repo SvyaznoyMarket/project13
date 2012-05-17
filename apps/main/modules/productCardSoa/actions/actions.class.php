@@ -72,6 +72,12 @@ class productCardSoaActions extends myActions
     $this->setVar('relatedPagesNum', ceil(count($this->product->fullRelatedList) / $factory->numRelatedOnPage));
     $this->setVar('accessoryPagesNum', ceil(count($this->product->fullAccessoriesList) / $factory->numRelatedOnPage));
 
+    $currCat = $this->product->category[0];
+    if ($currCat['token'] == 'rasprodaga') {
+      $currCat = $this->product->category[1];
+    }
+    $this->showRelatedUpper = in_array($currCat['token'], array('furniture', 'jewel'));
+    $this->showAccessoryUpper = !$this->showRelatedUpper;
 
     $this->view = 'compact';
 

@@ -197,9 +197,17 @@ foreach ($p3d as $p3d_obj)
 
 <div class="clear"></div>
 
-<?php if (count($product->related)): ?>
-<?php include_partial('productSoa/product_related', $sf_data) ?>
-<?php endif ?> 
+<?php if ($showAccessoryUpper): ?>
+  <?php if (count($product->accessories)): ?>
+  <?php include_partial('productSoa/product_accessory', $sf_data) ?>
+  <?php endif ?>
+<?php endif ?>
+
+<?php if ($showRelatedUpper): ?>
+  <?php if (count($product->related)): ?>
+  <?php include_partial('productSoa/product_related', $sf_data) ?>
+  <?php endif ?>
+<?php endif ?>
 
 <?php if (!empty($product->description)): ?>
     <!-- Information -->

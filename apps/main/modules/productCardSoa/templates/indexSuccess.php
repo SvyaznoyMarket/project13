@@ -9,7 +9,7 @@
 <?php slot('title', $product->name) ?>
 
 <?php //include_partial('product/name', array('product' => $product)) ?>
-<?php include_component('productSoa', 'show', array('product' => $product, 'json' => $json, 'relatedPagesNum' => $relatedPagesNum)) ?>
+<?php include_component('productSoa', 'show', array('product' => $product, 'json' => $json, 'relatedPagesNum' => $relatedPagesNum, 'showAccessoryUpper' => $showAccessoryUpper, 'showRelatedUpper' => $showRelatedUpper)) ?>
 <?php #include_component('service', 'listByProduct', array('product' => $product)) ?>
 
 <?php if ('kit' == $product->view): ?>
@@ -27,8 +27,16 @@
   <?php include_component('productSoa', 'tags', array('product' => $product)) ?>
 <?php endif ?>
 
-<?php if (count($product->accessories)): ?>
-<?php include_partial('productSoa/product_accessory', $sf_data) ?>
+<?php if (!$showAccessoryUpper): ?>
+  <?php if (count($product->accessories)): ?>
+  <?php include_partial('productSoa/product_accessory', $sf_data) ?>
+  <?php endif ?>
+<?php endif ?>
+
+<?php if (!$showRelatedUpper): ?>
+  <?php if (count($product->related)): ?>
+  <?php include_partial('productSoa/product_related', $sf_data) ?>
+  <?php endif ?>
 <?php endif ?>
 
 <?php include_partial('productSoa/bottom_button_block', $sf_data) ?>
