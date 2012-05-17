@@ -78,4 +78,14 @@ class RegionModel
 
     return Null;
   }
+
+  public function Mock(){
+    $region = new RegionData();
+    $region->setId((int) 14974);
+    $region->setName('Москва');
+    $region->setToken('moskva');
+    $region->setIsMain((bool) 1);
+    $region->setGeoIpCode((int) 48);
+    return $region;
+  }
 }
