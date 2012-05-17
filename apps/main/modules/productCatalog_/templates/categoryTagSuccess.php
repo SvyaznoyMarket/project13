@@ -24,9 +24,6 @@
 <?php include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory)) ?>
 <?php end_slot() ?>
 
-<?php require '_plugs/for_tag.php' ?>
-<div class="clear" style="height: 20px;"></div>
-
 <?php require APP_MAIN_MODULES_PATH.'/productCategory_/templates/_list_carousel.php' ?>
 <div class="clear"></div>
 
