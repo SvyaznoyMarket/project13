@@ -74,7 +74,7 @@ $(document).ready(function() {
             var item = data.items[itemToken]
 
             if ((typeof(itemToken) == 'undefined') || (-1 == $.inArray(toDeliveryTypeToken, Object.keys(item.deliveries)))) {
-                console.info(itemToken)
+                //console.info(itemToken)
                 return false
             }
 
@@ -512,8 +512,9 @@ $(document).ready(function() {
         },
 
         validate: function(el, message) {
+            //console.info(el);
             var form = $('#order-form')
-            var hasError = false
+            var isValid = true
 
             if (('order_address' == el.attr('id')) && ($('.bBuyingLine__eRadio[data-delivery-type="self"]:checked').length)) {
                 return false
@@ -521,20 +522,20 @@ $(document).ready(function() {
 
             // если группа радио и не выбрано ни одного
             if (el.is(':radio') && !el.is(':checked') && (el.length > 1)) {
-                hasError = true
+                isValid = false
                 showError(el.first().parent().parent(), message, false)
             }
             // если чекбокс и не выбран
             else if (el.is(':checkbox') && !el.is(':checked') && (el.length == 1)) {
-                hasError = true
+                isValid = false
                 showError(el.first().parent().parent(), message, false)
             }
             else if (el.is(':text') && !el.val()) {
-                hasError = true
+                isValid = false
                 showError(el, message, true)
             }
 
-            return hasError
+            return isValid
         },
 
         onDeliveryBlockChange: function() {
@@ -905,7 +906,9 @@ $(document).ready(function() {
         var hasError = false
         $.each(validator, function(field, message) {
             var el = form.find('[name="'+field+'"]:visible')
-            hasError = DeliveryMap.validate(el, message)
+            if (!DeliveryMap.validate(el, message)) {
+                hasError = true
+            }
         })
 
         if (hasError) {

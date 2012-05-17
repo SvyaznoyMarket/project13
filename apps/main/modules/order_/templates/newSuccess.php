@@ -1,7 +1,16 @@
+<?php $jsValidator = array(
+  'order[recipient_first_name]'   => 'Заполните поле',
+  'order[recipient_last_name]'    => 'Заполните поле',
+  'order[recipient_phonenumbers]' => 'Заполните поле',
+  'order[address]'                => 'Заполните поле',
+  'order[payment_method_id]'      => 'Выберите способ оплаты',
+  'order[agreed]'                 => 'Необходимо согласие',
+) ?>
+
 <?php include_partial('order_/header', array('title' => 'Финальный шаг :)')) ?>
 
 <input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>' />
-<input disabled="disabled" id="order-validator" type="hidden" data-value='{"order[recipient_first_name]":"Заполните поле", "order[recipient_phonenumbers]":"Заполните поле", "order[address]":"Заполните поле", "order[payment_method_id]":"Выберите способ оплаты", "order[agreed]":"Необходимо согласие"}' />
+<input disabled="disabled" id="order-validator" type="hidden" data-value='<?php echo json_encode($jsValidator) ?>' />
 
 <div class="pb15">< <a href="<?php echo $backLink ?>">Вернуться к покупкам</a></div>
 
@@ -55,11 +64,22 @@
 
       <dl class='bBuyingLine'>
 
-        <dt>Имя и Фамилия получателя*</dt>
+        <dt>Имя получателя*</dt>
         <dd>
           <div>
             <p></p>
             <?php echo $form['recipient_first_name']->render(array('class' => 'bBuyingLine__eText mInputLong')) ?>
+          </div>
+        </dd>
+      </dl>
+
+      <dl class='bBuyingLine'>
+
+        <dt>Фамилия получателя*</dt>
+        <dd>
+          <div>
+            <p></p>
+            <?php echo $form['recipient_last_name']->render(array('class' => 'bBuyingLine__eText mInputLong')) ?>
           </div>
         </dd>
       </dl>

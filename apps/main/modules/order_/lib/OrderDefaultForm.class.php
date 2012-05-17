@@ -36,8 +36,13 @@ class OrderDefaultForm extends BaseOrderForm
 
     // recipient_first_name
     $this->widgetSchema['recipient_first_name'] = new sfWidgetFormInputText();
-    $this->validatorSchema['recipient_first_name'] = new sfValidatorString(array('max_length' => 255, 'required' => true), array('required' => 'Укажите кто будет получать заказ'));
+    $this->validatorSchema['recipient_first_name'] = new sfValidatorString(array('max_length' => 255, 'required' => true), array('required' => 'Укажите имя получателя'));
     $this->widgetSchema['recipient_first_name']->setLabel('Имя получателя:');
+
+    // recipient_first_name
+    $this->widgetSchema['recipient_last_name'] = new sfWidgetFormInputText();
+    $this->validatorSchema['recipient_last_name'] = new sfValidatorString(array('max_length' => 255, 'required' => true), array('required' => 'Укажите фамилию получателя'));
+    $this->widgetSchema['recipient_last_name']->setLabel('Фамилия получателя:');
 
     // recipient_phonenumbers
     $this->widgetSchema['recipient_phonenumbers'] = new sfWidgetFormInputText();
@@ -83,6 +88,7 @@ class OrderDefaultForm extends BaseOrderForm
       'region_id',
       'delivery_type_id',
       'recipient_first_name',
+      'recipient_last_name',
       'recipient_phonenumbers',
       'is_receive_sms',
       'address',
