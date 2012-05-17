@@ -21,7 +21,7 @@ class regionController
     foreach ($regionList as $region)
     {
       $entity = array(
-        'name' => $region->getId(),
+        'name' => $region->getName(),
         'link' => '/region/change/' . $region->getToken(),
       );
       if ($region->getId() == $currentRegionId) {
