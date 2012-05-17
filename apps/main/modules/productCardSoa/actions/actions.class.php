@@ -76,7 +76,7 @@ class productCardSoaActions extends myActions
     if ($currCat['id'] == 1601) {
       $currCat = $this->product->category[1];
     }
-    $this->showRelatedUpper = in_array($currCat['root_id'], array(80, 923, 1604, 1611));
+    $this->showRelatedUpper = in_array($currCat['id'], array(80, 923, 1604, 1611));
     $this->showAccessoryUpper = !$this->showRelatedUpper;
 
     $this->view = 'compact';
