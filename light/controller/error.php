@@ -6,7 +6,7 @@
  * Time: 11:43
  * To change this template use File | Settings | File Templates.
  */
-class error
+class errorController
 {
   public function jsonErrorMessage(Response $response, $params = array()){
     $return = array(

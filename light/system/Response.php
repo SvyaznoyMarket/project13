@@ -63,7 +63,15 @@ class Response
     '505' => 'HTTP Version Not Supported',
   );
 
-  public function __construct(){
+  public static function getInstance(){
+    static $instance;
+    if (!$instance) {
+      $instance = new Response();
+    }
+    return $instance;
+  }
+
+  private function __construct(){
     $this->setContentType(self::DEFAULT_CONTENT_TYPE);
   }
 

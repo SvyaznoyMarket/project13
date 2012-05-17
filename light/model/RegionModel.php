@@ -10,6 +10,7 @@
 require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
 require_once(VIEW_PATH.'dataObject/RegionData.php');
+require_once(ROOT_PATH.'system/exception/systemException.php');
 require_once(ROOT_PATH.'system/exception/dataFormatException.php');
 
 class RegionModel
@@ -67,8 +68,8 @@ class RegionModel
    * @throws dataFormatException
    * @return RegionModel
    */
-  public function getByGeoipCode($code){
-    if(!preg_match('/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i', $code)){
+  public function getByGeoIPCode($code){
+    if(!$this->isValidGeoIPCode($code)){
       throw new dataFormatException('invalid geoIp code: '.$code);
     }
 
@@ -77,6 +78,62 @@ class RegionModel
     }
 
     return Null;
+  }
+
+  /**
+   * @param int $id
+   * @return string | null
+   */
+  public function getGeoIPCodeById($id){
+    foreach($this->geoIPCodeMapping as $code => $codeId){
+      if ($id == $codeId){
+        return $code;
+      }
+    }
+
+    return Null;
+  }
+
+  /**
+   * Функция возвращает список активных городов, в которых естть наши магазины
+   * @return RegionData[]
+   * @throws systemException
+   */
+  public function getShopAvailable(){
+    $response = App::getCoreV2()->query('geo.get-shop-available', array(), array());
+    if (!isset($response[0])){
+      return array();
+    }
+
+    $regionList = array();
+
+    if(!is_array($response)){
+      throw new systemException('null response from core');
+    }
+    foreach($response as $geo){
+      $region = new RegionData();
+      $region->setId((int) $geo['id']);
+      $region->setName($geo['name']);
+      $region->setToken($geo['token']);
+      $region->setIsMain((bool) $geo['is_main']);
+      foreach($this->geoIPCodeMapping as $regCode => $regId){
+        if($regId == $geo['id']){
+          $region->setGeoIpCode((int) $regCode);
+          break;
+        }
+      }
+      $regionList[] = $region;
+    }
+
+    return $regionList;
+  }
+
+  /**
+   * @param string $code
+   * @return bool
+   */
+  public function isValidGeoIPCode($code){
+    return (bool) preg_match('/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i', $code);
   }
 
   public function Mock(){
