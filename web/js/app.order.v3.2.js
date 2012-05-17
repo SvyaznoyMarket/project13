@@ -213,7 +213,7 @@ $(document).ready(function() {
                         if (confirm('Вы заказали товар "'+item.name+'" в количестве '+item.quantity+' шт.'+"\n"+'Доступно только '+item.stock+' шт.'+"\n"+'Заказать '+item.stock+'шт?')) {
                             $.ajax({
                                 url: item.deleteUrl
-                            }).done(function() {
+                            }).done(function(result) {
                                 $.ajax({
                                     url: item.addUrl
                                 }).done(function() {
@@ -252,7 +252,7 @@ $(document).ready(function() {
                     $('#order-form-part2').hide()
                     $('#order-loader-holder').html('')
                     $('#order-loader').clone().appendTo('#order-loader-holder').show()
-                    window.location.href = window.location.href+'#'+$('.bBuyingLine__eRadio:checked').attr('id')+$('.bBuyingLine__eRadio:checked').val()
+                    window.location.href = window.location.href+'#'+$('.bBuyingLine__eRadio:checked').attr('id')
                     window.location.reload()
 
                     return false

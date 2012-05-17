@@ -743,7 +743,7 @@ cart_delete:
   url:   /cart/delete/:product/_service/:service
   param: { module: cart, action: delete, product: '-/-', service: 0 }
   requirements:
-  product: \d+
+    product: \d+
 
 # cart delete
 cart_delete_old:

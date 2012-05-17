@@ -572,8 +572,8 @@ class order_Actions extends myActions
         $itemView = new Order_ItemView();
         $itemView->deleteUrl =
           'products' == $itemType
-          ? $this->generateUrl('cart_delete', array('product' => $recordData['id']))
-          : $this->generateUrl('cart_service_delete', array('service' => $recordData['id'], 'product' => 0))
+          ? $this->generateUrl('cart_delete', array('product' => $recordData['id']), true)
+          : $this->generateUrl('cart_service_delete', array('service' => $recordData['id'], 'product' => 0), true)
         ;
         $itemView->id = $coreData['id'];
         $itemView->name = $coreData['name'].$serviceName;
