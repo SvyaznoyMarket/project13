@@ -516,12 +516,18 @@ $(document).ready(function() {
             var form = $('#order-form')
             var isValid = true
 
-            if (('order_address' == el.attr('id')) && ($('.bBuyingLine__eRadio[data-delivery-type="self"]:checked').length)) {
+            if ((-1 === $.inArray(el.attr('id'), ['order_address_street', 'order_address_number'])) && ($('.bBuyingLine__eRadio[data-delivery-type="self"]:checked').length)) {
                 return false
             }
 
+            if ((-1 !== $.inArray(el.attr('id'), ['order_address_street', 'order_address_number'])) && !el.val()) {
+                isValid = false
+                if (!$('#addressField').find('dd .bFormError').length) {
+                    showError($('#addressField').find('dd > div:first'), message, true)
+                }
+            }
             // если группа радио и не выбрано ни одного
-            if (el.is(':radio') && !el.is(':checked') && (el.length > 1)) {
+            else if (el.is(':radio') && !el.is(':checked') && (el.length > 1)) {
                 isValid = false
                 showError(el.first().parent().parent(), message, false)
             }

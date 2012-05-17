@@ -2,7 +2,8 @@
   'order[recipient_first_name]'   => 'Заполните поле',
   'order[recipient_last_name]'    => 'Заполните поле',
   'order[recipient_phonenumbers]' => 'Заполните поле',
-  'order[address]'                => 'Заполните поле',
+  'order[address_street]'         => 'Укажите адрес',
+  'order[address_number]'         => 'Укажите адрес',
   'order[payment_method_id]'      => 'Выберите способ оплаты',
   'order[agreed]'                 => 'Необходимо согласие',
 ) ?>
@@ -19,8 +20,6 @@
   <div id="order-form-part1" class='bBuyingInfo hidden'>
 
     <h2>Информация о заказе</h2>
-
-    <?php echo $form['region_id'] ?>
 
     <?php echo $form['delivery_type_id'] ?>
 
@@ -106,7 +105,19 @@
         <dd>
           <div>
             <p></p>
-            <?php echo $form['address']->render(array('class' => 'bBuyingLine__eText mInputLong')) ?>
+            <?php echo $form['region_id'] ?>
+          </div>
+
+          <div>
+            <p></p>
+            <?php echo $form['address_street']->render(array('class' => 'bBuyingLine__eText mInputLong', 'placeholder' => 'Улица', 'title' => 'Улица')) ?>
+          </div>
+
+          <div>
+            <p></p>
+            <?php echo $form['address_number']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Дом', 'title' => 'Дом')) ?>
+            <?php echo $form['address_building']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Корпус', 'title' => 'Корпус')) ?>
+            <?php echo $form['address_apartment']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Квартира', 'title' => 'Квартира')) ?>
           </div>
         </dd>
       </dl>

@@ -109,11 +109,14 @@ class order_Actions extends myActions
 
     $result = array('success' => false);
 
+    /* @var $form BaseForm */
     $form = $this->getOrderForm($this->order);
     $form->bind($request->getParameter($form->getName()));
     if ($form->isValid())
     {
+      /* @var $baseOrder Order */
       $baseOrder = $form->updateObject();
+      $baseOrder->address = implode(', ', array($form->getValue('address_street'), $form->getValue('address_number'), $form->getValue('address_building'), $form->getValue('address_apartment')));
 
       $deliveryMap = json_decode($request['delivery_map'], true);
       try {

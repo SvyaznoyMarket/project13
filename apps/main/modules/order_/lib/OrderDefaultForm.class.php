@@ -55,9 +55,26 @@ class OrderDefaultForm extends BaseOrderForm
     $this->widgetSchema['is_receive_sms']->setLabel('Я хочу получать СМС уведомления об изменении статуса заказа');
 
     // address
+    /*
     $this->widgetSchema['address'] = new sfWidgetFormInputText();
     $this->validatorSchema['address'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите адрес доставки'));
     $this->widgetSchema['address']->setLabel('Адрес доставки:');
+    */
+    $this->widgetSchema['address_street'] = new sfWidgetFormInputText();
+    $this->validatorSchema['address_street'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите улицу'));
+    $this->widgetSchema['address_street']->setLabel('Улица');
+
+    $this->widgetSchema['address_number'] = new sfWidgetFormInputText();
+    $this->validatorSchema['address_number'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите дом'));
+    $this->widgetSchema['address_number']->setLabel('Дом');
+
+    $this->widgetSchema['address_building'] = new sfWidgetFormInputText();
+    $this->validatorSchema['address_building'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите корпус'));
+    $this->widgetSchema['address_building']->setLabel('Корпус');
+
+    $this->widgetSchema['address_apartment'] = new sfWidgetFormInputText();
+    $this->validatorSchema['address_apartment'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите номер квартиры'));
+    $this->widgetSchema['address_apartment']->setLabel('Квартира');
 
     // extra
     $this->widgetSchema['extra'] = new sfWidgetFormTextarea();
@@ -91,7 +108,11 @@ class OrderDefaultForm extends BaseOrderForm
       'recipient_last_name',
       'recipient_phonenumbers',
       'is_receive_sms',
-      'address',
+      //'address',
+      'address_street',
+      'address_number',
+      'address_building',
+      'address_apartment',
       'extra',
       'sclub_card_number',
       'payment_method_id',

@@ -4364,6 +4364,11 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 .bBuyingLine__eText:focus{
     border-color: #ffa901;
 }
+
+.bBuyingLine__eText.mInputShort{
+    padding-left: 25px;
+    width: 132px;
+}
 .bBuyingLine__eText.mInputLong{
     width: 460px;
     padding-left: 25px;
