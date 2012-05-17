@@ -121,6 +121,8 @@ class MainMenuBuilder
       $max = max($weights);
       if($middle < $max){ //Проверка на категории, не влезающие в блоки даже если они одни
         $blocks[] = $max;
+        $weight -= $max;
+        $middle = ceil($weight/($quantity-$i)); //расчитываем новое значение среднего размера блока
         foreach($weights as $key => $val){
           if($val == $max){
             unset($weights[$key]);
@@ -130,6 +132,7 @@ class MainMenuBuilder
       }
       else{
         $blocks[] = $middle;
+        $weight -= $max;
       }
     }
     return $blocks;
