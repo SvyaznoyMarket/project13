@@ -8,7 +8,7 @@
  */
 
 require_once(ROOT_PATH.'system/exception/routerException.php');
-require_once(ROOT_PATH.'system/Response.php');
+require_once(ROOT_PATH.'system/App.php');
 
 class Controller {
 
@@ -20,20 +20,21 @@ class Controller {
 	public static function Run($route, $params=array()){
 
     list($className, $methodName) = explode('.', $route);
-
+    $classPath = $className;
+    $className .= 'Controller';
     if(!class_exists($className)){
-      if(!file_exists(ROOT_PATH.'controller/'.$className.'.php')){
+      if(!file_exists(ROOT_PATH.'controller/'.$classPath.'.php')){
         throw new routerException('request to run unknown Controller '.$className);
       }
-      include_once(ROOT_PATH.'controller/'.$className.'.php');
+      include_once(ROOT_PATH.'controller/'.$classPath.'.php');
     }
     if(!method_exists($className, $methodName)){
       throw new routerException('request to run unknown Method '.$methodName.' in controller '.$className);
     }
 
-    $response = new Response();
+    $response = App::getResponse();
 
-    call_user_func_array(array($className, $methodName), array($response, $params));
+    call_user_func_array(array($className, $methodName), array(App::getResponse(), $params));
 
 		return $response;
 	}

@@ -12,7 +12,7 @@ require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/helpers/DateFormatter.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
 
-class delivery
+class deliveryController
 {
 
   /**

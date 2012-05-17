@@ -1,6 +1,7 @@
 <?php
 require_once(ROOT_PATH.'system/exception/systemException.php');
 require_once(ROOT_PATH.'lib/CoreClient.php');
+require_once(ROOT_PATH.'system/Response.php');
 
 class App{
 
@@ -58,6 +59,14 @@ class App{
     }
     self::$Router = Router::fromArray(require(ROOT_PATH.'config/routes.php'));
     return self::$Router;
+  }
+
+  /**
+   * @static
+   * @return Response
+   */
+  public static function getResponse(){
+    return Response::getInstance();
   }
 
   /**

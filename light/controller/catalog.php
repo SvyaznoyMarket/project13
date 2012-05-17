@@ -12,7 +12,7 @@ require_once(ROOT_PATH.'lib/helpers/MainMenuBuilder.php');
 require_once(VIEW_PATH.'dataObject/CategoryShortData.php');
 require_once(VIEW_PATH.'dataObject/pageObject/mainMenuData.php');
 
-class catalog
+class catalogController
 {
   /**
    * @param Response $response
