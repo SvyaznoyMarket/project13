@@ -56,7 +56,7 @@ class ProductCategoryEntity
   /** @var string */
   private $seoHeader;
   /** @var int */
-  private $product_count;
+  private $productCount;
 
   public function __construct(array $data = array())
   {
@@ -363,7 +363,7 @@ class ProductCategoryEntity
    */
   public function setProductCount($product_count)
   {
-    $this->product_count = (int)$product_count;
+    $this->productCount = (int)$product_count;
   }
 
   /**
@@ -371,6 +371,6 @@ class ProductCategoryEntity
    */
   public function getProductCount()
   {
-    return $this->product_count;
+    return $this->productCount;
   }
 }
