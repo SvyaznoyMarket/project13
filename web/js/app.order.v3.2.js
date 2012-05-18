@@ -955,6 +955,9 @@ $(document).ready(function() {
                                 showError(el, v, true)
                             })
                         }
+                        else {
+                            alert(result.error.message)
+                        }
                     }
                 },
                 error: function() {

@@ -27,6 +27,11 @@ foreach ($p3d as $p3d_obj)
   product_3d_small = <?php echo json_encode($p3d_res_small) ?>;
   product_3d_big = <?php echo json_encode($p3d_res_big) ?>;
 </script>
+
+<?php slot('after_body_block') ?>
+<?php include_partial('productSoa/oneclickTemplate', array()) ?>
+<?php end_slot() ?>
+
 <div class="goodsphoto">
     <a href="<?php echo $product->getMainPhotoUrl(4)  ?>" class="viewme" ref="image" onclick="return false">
         <?php
@@ -100,8 +105,16 @@ foreach ($p3d as $p3d_obj)
 
               <?php echo include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1)) ?>
             </div>
-            <?php if (false && $product->is_insale && $sf_user->getRegion('region')->is_default): ?>
-            <div class="pb5"><strong><a  onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);" href="<?php echo url_for('order_1click', array('product' => $product->barcode));  ?>" class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
+
+            <?php if ( $product->is_insale && (true or $sf_user->getRegion('region')->is_default)): ?>
+            <div class="pb5"><strong>
+              <a href=""
+                data-model='<?php echo $json ?>'
+                link-output='<?php echo url_for('order_1click', array('product' => $product->barcode)) ?>'
+                link-input='<?php echo url_for('product_delivery_1click') ?>'
+                class="red underline order1click-link-new">Купить быстро в 1 клик</a>
+            </strong></div>
+
             <?php endif ?>
         </div>
 

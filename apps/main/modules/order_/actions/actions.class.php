@@ -43,7 +43,7 @@ class order_Actions extends myActions
     }
 
     $this->order = new Order();
-    $this->order->region_id = $this->getUser()->getRegion('id');
+    //$this->order->region_id = $this->getUser()->getRegion('id');
     $this->form = $this->getOrderForm($this->order);
     if (!$this->form)
     {
@@ -427,9 +427,10 @@ class order_Actions extends myActions
       $orders[] = $order;
     }
 
-    $coreData = array_map(function($order) {
+    $coreData = array_map(function($order) use ($user) {
       /* @var $order Order */
       $return = $order->exportToCore();
+      $return['geo_id'] = $user->getRegion('core_id');
       $return['delivery_period'] = $order->delivery_period;
       $return['product'] = $order->ProductItem;
       $return['service'] = $order->ServiceItem;

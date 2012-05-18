@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var string $searchString
+ */
+?>
 <div class="pagehead">
 
   <div class="breadcrumbs">
@@ -14,7 +19,7 @@
 
   <noindex>
       <div class="searchbox">
-        <?php include_component('search', 'form', array('searchString' => $searchString)) ?>
+        <?php render_partial('search/templates/_form.php',array('searchString' => $searchString)) ?>
       </div>
   </noindex>
 

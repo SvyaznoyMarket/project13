@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var $searchString
+ */
+?>
 <!-- Search result  -->
 <div class="popup popupbox" id="search_popup-block">
   <i title="Закрыть" class="close">Закрыть</i>
@@ -9,7 +14,6 @@
 
   <p>Попробуйте найти заново:</p>
 
-  <?php include_component('search', 'form', array('searchString' => $searchString, 'wide' => true)) ?>
-
+  <?php render_partial('search/templates/_form.php',array('searchString' => $searchString, 'wide' => true)) ?>
 </div>
 <!-- /Search result -->

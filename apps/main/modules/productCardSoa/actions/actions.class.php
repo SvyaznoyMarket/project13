@@ -46,14 +46,14 @@ class productCardSoaActions extends myActions
     $this->getResponse()->setTitle(sprintf(
         $title,
         $this->product->name,
-        100,
+        $this->product->getRealPrice(),
         $this->product->name
     ));
     $descr = 'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону 8 (800) 700-00-09.';
     $this->getResponse()->addMeta('description', sprintf(
         $descr,
         $this->product->name,
-        100,
+        $this->product->getRealPrice(),
         $this->product->name
     ));
     $this->getResponse()->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $this->product->name));
@@ -79,10 +79,15 @@ class productCardSoaActions extends myActions
           'jsref' => $this->product->token,
           'jstitle' => htmlspecialchars($this->product->name, ENT_QUOTES, 'UTF-8'),
           'jsprice' => $this->product->price,
-          'jsimg' => $this->product->getMainPhotoUrl(3)
+          'jsimg' => $this->product->getMainPhotoUrl(3),
+  		  'jsbimg' =>  $this->product->getMainPhotoUrl(2),
+  		  'jsshortcut' =>  $this->product->article,
+  		  'jsitemid' =>  $this->product->id,
+  		  'jsregionid' => $this->getUser()->getRegionCoreId(),
+        'jsregionName' => $this->getUser()->getRegion('name')
       );
       $this->setVar('json', json_encode($json));
-
+      $this->getContext()->set('adriverProductInfo', array('productId' => $this->product->id, 'categoryId' => 0));
   }
  /**
   * Executes preview action

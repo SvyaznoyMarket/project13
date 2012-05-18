@@ -18,11 +18,11 @@
   Дата заказа: <?php echo format_date($order->created_at, 'D') ?><br/>
   Сумма заказа: <?php include_partial('default/sum', array('sum' => $order->sum,)) ?> <span
   class="rubl">p</span><br/><br/>
-  <!--С вами свяжется оператор для получения и уточнения параметров заказа.-->
   <?php if (isset($result)): ?>
   <strong><?php echo $result['stage']['name'] ?>:</strong> <?php echo $result['message'] ?><br/>
   <?php endif ?>
-  Чтобы подтвердить заказ, в течение 15 минут с вами свяжется специалист нашего Контакт cENTER.
+  В ближайшее время мы вам перезвоним :)<br />
+  Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.
 </div>
 
 <!--div class="fr width250 pb20 form"><label for="radio-1">Я хочу получать СМС уведомления об изменении статуса заказа</label><input id="radio-1" name="radio-1" type="radio" value="radio-1" /></div-->
@@ -125,6 +125,14 @@
 <?php
 endif ?>
 
+<!--  AdRiver code START. Type:audit Site: Enter SZ: order PZ: 0 BN: 0 -->
+<script language="javascript" type="text/javascript"><!--
+var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
+document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&sz=order&bt=55&pz=0&custom=150=<?php echo $order->number ?>&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
+//--></script>
+<noscript><img src="http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=order&bt=55&pz=0&rnd=1086697038&custom=150=<?php echo $order->number ?>" border=0 width=1 height=1></noscript>
+<!--  AdRiver code END  -->
 
 <?php slot('seo_counters_advance') ?>
 <?php include_component('order', 'seo_counters_advance', array('step' => 4, 'order' => $order)) ?>

@@ -22,6 +22,9 @@ qrcode:
 product_delivery:
   url:   /product/delivery-info/:product
   param: { module: productSoa, action: deliveryInfo, product: 0 }
+product_delivery_1click:
+  url:   /product/delivery1click
+  param: { module: productSoa, action: deliveryInfo, product: 0 }
 # список товаров
 product_list:
   url:   /products/list/:products
@@ -44,8 +47,8 @@ product_accessory:
   param: { module: productSoa, action: accessory }
   #class:   myDoctrineRoute
   #options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+#  requirements:
+#    product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 
 # @deprecated
 # фильтр каталога товаров

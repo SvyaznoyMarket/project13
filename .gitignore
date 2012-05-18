@@ -9,7 +9,10 @@
 /lib/form/doctrine/base/*
 /lib/model/doctrine/base/*
 /config/databases.yml
+/web/xml/*
+/web/sitemap*
 erase.cmd
 erase_barcode.cmd
 *.nblh~
 .idea
+.DS_Store

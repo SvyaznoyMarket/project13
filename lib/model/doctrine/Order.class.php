@@ -132,7 +132,19 @@ class Order extends BaseOrder
     if (empty($data['type_id'])) {
       $data['type_id'] = self::TYPE_ORDER;
     }
-    $data['ip']                   = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null; //sfContext::getInstance()->getUser()->getIp();
+
+    if (!empty($_SERVER['X-Real-IP'])) {
+      $data['ip'] = $_SERVER['X-Real-IP'];
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+      $data['ip'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+      $data['ip'] = $_SERVER['REMOTE_ADDR'];
+    }
+    else {
+      $data['ip'] = null;
+    }
 
     $data['mode_id'] = $data['delivery_type_id'];
     #myDebug::dump($this);

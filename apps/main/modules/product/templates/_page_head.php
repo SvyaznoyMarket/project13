@@ -10,7 +10,7 @@
   <?php endif ?>
   <noindex>
       <div class="searchbox">
-        <?php include_component('search', 'form') ?>
+        <?php render_partial('search/templates/_form.php') ?>
       </div>
   </noindex>
 
