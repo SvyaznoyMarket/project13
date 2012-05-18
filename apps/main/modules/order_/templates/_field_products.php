@@ -36,7 +36,7 @@ foreach ($dates as $i => $date) {
 </div>
 
 
-<div data-value="<?php echo $deliveryType->token ?>" class="bBuyingLineWrap order-delivery-holder">
+<div data-value="<?php echo $deliveryType->token ?>" data-type="<?php echo $deliveryType->type ?>" class="bBuyingLineWrap order-delivery-holder">
 
   <div class="delivery-message red"></div>
 

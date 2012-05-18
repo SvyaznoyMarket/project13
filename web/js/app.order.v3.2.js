@@ -291,6 +291,13 @@ $(document).ready(function() {
                 var form = $('#order-form')
                 form.find('.mRed').removeClass('mRed')
                 form.find('.bFormError').remove()
+
+                if ($('.order-delivery-holder[data-type="standart"]:visible').length > 0) {
+                    $('#addressField').show()
+                }
+                else {
+                    $('#addressField').hide()
+                }
             })
         },
 
@@ -643,12 +650,12 @@ $(document).ready(function() {
 
         if ('self' == el.data('deliveryType')) {
             $('.order-shop-button:first').show()
-            $('#addressField').hide()
+            //$('#addressField').hide()
         }
         else {
             $('#order-loader').clone().appendTo('#order-loader-holder').show()
 
-            $('#addressField').show()
+            //$('#addressField').show()
 
             DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val()}, function(data) {
                 $('#order-loader-holder').html('')
