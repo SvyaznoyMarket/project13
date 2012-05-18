@@ -999,7 +999,11 @@ $(document).ready(function() {
             }
         })
     })
-
+	
+	if( typeof( $.mask ) !== 'undefined' ) {
+		$.mask.definitions['n'] = "[()0-9\ \-]"
+		$("#order_recipient_phonenumbers").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
+	}
 })
 
 
