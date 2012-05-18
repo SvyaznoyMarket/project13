@@ -405,12 +405,14 @@ $(document).ready(function(){
 	}
 	
 	function paintRegions() {
-		$('.graying').show()
+		$('.bCityPopupWrap').lightbox_me({ centered: true })
+		/*$('.graying').show()
 		$('.bCityPopupWrap').show()
 		$('body').delegate( '.bCityPopupWrap .close', 'click', function() {
 			$('.graying').hide()
 			$('.bCityPopupWrap').hide()
 		})
+		*/
 	}
 	
 	$('body').delegate('#jsregion, .jsChangeRegion', 'click', function() {
