@@ -110,6 +110,11 @@
 
           <div>
             <p></p>
+            <?php echo $form['address_metro']->render(array('class' => 'bBuyingLine__eText mInputLong', 'placeholder' => 'Метро', 'title' => 'Метро')) ?>
+          </div>
+
+          <div>
+            <p></p>
             <?php echo $form['address_street']->render(array('class' => 'bBuyingLine__eText mInputLong', 'placeholder' => 'Улица', 'title' => 'Улица')) ?>
           </div>
 

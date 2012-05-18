@@ -22,6 +22,7 @@ class Order extends BaseOrder
 
   public function construct()
   {
+    $this->mapValue('address_metro', null);
     //$this->mapValue('address_street', null);
     //$this->mapValue('address_number', null);
     //$this->mapValue('address_building', null);
