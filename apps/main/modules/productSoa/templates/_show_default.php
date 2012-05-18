@@ -11,6 +11,7 @@
 //print_r($json);
 ?>
 <?php
+$isAction = false;
 $photos = $product->getAllPhotos();
 $p3d = $product->getAll3dPhotos();
 $urls = sfConfig::get('app_product_photo_url');
@@ -38,6 +39,9 @@ foreach ($p3d as $p3d_obj)
         if ($product->label): ?>
             <?php foreach ($product->label as $label):?>
                 <img class="bLabels" src="<?php echo $product->getLabelUrl($label['media_image'], 1) ?>" alt="<?php echo $label['name'] ?>" />
+                <?php if ($label['id'] == ProductSoa::LABEL_ACTION) {
+                    $isAction = true;
+                } ?>
             <?php endforeach ?>
         <?php endif ?>
         <img src="<?php echo $product->getMainPhotoUrl(3) ?>" alt="" width="500" height="500" title="" />
@@ -164,6 +168,30 @@ foreach ($p3d as $p3d_obj)
 		    </script>
 		    <!-- _________________________AdFox Asynchronous code END___________________________ -->
 	    </div>
+
+        <?php if ($isAction) { ?>
+            <!--AdFox START-->
+            <!--enter-->
+            <!--Ïëîùàäêà: Enter.ru / Êàðòî÷êà òîâàðà / êàðòî÷êà òîâàðà øèëüäèê àêöèÿ-->
+            <!--Êàòåãîðèÿ: <íå çàäàíà>-->
+            <!--Òèï áàííåðà: 400x-->
+            <script type="text/javascript">
+                <!--
+                if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+                if (typeof(document.referrer) != 'undefined') {
+                    if (typeof(afReferrer) == 'undefined') {
+                        afReferrer = escape(document.referrer);
+                    }
+                } else {
+                    afReferrer = '';
+                }
+                var addate = new Date();
+                document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?p1=biewf&amp;p2=engb&amp;pct=a&amp;pfc=a&amp;pfb=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>');
+                // -->
+            </script>
+            <!--AdFox END-->
+        <?php } ?>
+
 
         <?php include_component('serviceSoa', 'listByProduct', array('product' => $product)) ?>
 
