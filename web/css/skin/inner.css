@@ -149,6 +149,7 @@ TABLE {border-collapse:collapse}
 /*#auth-link{display:none}*/
 
 .rubl {font-family:"Rouble"; font-size: 90%; margin: 0 0px 0 -5px}
+.placeholder { color: #DDD; }
 
 .topbar {height:25px; padding-top:7px; font-size:11px}
 .region {float:left}
