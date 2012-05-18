@@ -122,7 +122,7 @@
 		case 'shop':
 			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
-				.script('google.maps.infobox.js')
+				//.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('app.shop.js') )
 				.script( getWithVersion('main.js') )
