@@ -116,7 +116,12 @@ class order_Actions extends myActions
     {
       /* @var $baseOrder Order */
       $baseOrder = $form->updateObject();
-      $baseOrder->address = implode(', ', array($form->getValue('address_street'), $form->getValue('address_number'), $form->getValue('address_building'), $form->getValue('address_apartment')));
+      $baseOrder->address = ''
+        .($form->getValue('address_metro') ? "метро {$form->getValue('address_metro')}, " : '')
+        .("улица {$form->getValue('address_street')}, ")
+        .("дом {$form->getValue('address_number')}")
+        .($form->getValue('address_building') ? ", корпус/строение {$form->getValue('address_building')}" : '')
+        .($form->getValue('address_apartment') ? ", квартира {$form->getValue('address_apartment')}" : '');
 
       $deliveryMap = json_decode($request['delivery_map'], true);
       try {
@@ -439,7 +444,7 @@ class order_Actions extends myActions
     }, $orders);
     //dump($coreData, 1);
     $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
-    //myDebug::dump($response, 1);
+    //dump($response, 1);
     if (is_array($response) && array_key_exists('confirmed', $response) && $response['confirmed'])
     {
       return $response['orders'];

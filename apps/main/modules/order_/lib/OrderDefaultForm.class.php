@@ -60,6 +60,10 @@ class OrderDefaultForm extends BaseOrderForm
     $this->validatorSchema['address'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите адрес доставки'));
     $this->widgetSchema['address']->setLabel('Адрес доставки:');
     */
+    $this->widgetSchema['address_metro'] = new sfWidgetFormInputText();
+    $this->validatorSchema['address_metro'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите метро'));
+    $this->widgetSchema['address_metro']->setLabel('Метро');
+
     $this->widgetSchema['address_street'] = new sfWidgetFormInputText();
     $this->validatorSchema['address_street'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите улицу'));
     $this->widgetSchema['address_street']->setLabel('Улица');
@@ -109,6 +113,7 @@ class OrderDefaultForm extends BaseOrderForm
       'recipient_phonenumbers',
       'is_receive_sms',
       //'address',
+      'address_metro',
       'address_street',
       'address_number',
       'address_building',

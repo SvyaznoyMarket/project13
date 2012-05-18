@@ -51,7 +51,6 @@
     <div class='bBuyingInfo'>
       <h2>Информация о счастливом получателе</h2>
 
-      <?php if (false): ?>
       <div id="user-block">
         <?php if ($sf_user->isAuthenticated()): ?>
         Привет, <a href="<?php echo url_for('user') ?>"><?php echo $sf_user->getGuardUser() ?></a>
@@ -59,7 +58,6 @@
         Уже покупали у нас? <strong><a class="auth-link underline" data-update-url="<?php echo url_for('order_getUser') ?>" href="<?php echo url_for('user_signin') ?>">Авторизуйтесь</a></strong> и вы сможете использовать ранее введенные данные
         <?php endif ?>
       </div>
-      <?php endif ?>
 
       <dl class='bBuyingLine'>
 
@@ -106,6 +104,11 @@
           <div>
             <p></p>
             <?php echo $form['region_id'] ?>
+          </div>
+
+          <div>
+            <p></p>
+            <?php echo $form['address_metro']->render(array('class' => 'bBuyingLine__eText mInputLong', 'placeholder' => 'Метро', 'title' => 'Метро')) ?>
           </div>
 
           <div>
@@ -197,8 +200,6 @@
 </div>
 
 <?php include_partial('order_/map', $sf_data) ?>
-
-<?php include_partial('default/auth') ?>
 
 <?php include_partial('order_/footer') ?>
 
