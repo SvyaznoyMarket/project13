@@ -18,8 +18,7 @@ class order_Components extends myComponents
    */
   public function executeField_region_id()
   {
-    $this->region = !empty($this->value) ? RegionTable::getInstance()->getById($this->value) : false;
-    $this->displayValue = $this->region ? $this->region->name : '';
+    $this->displayValue = $this->getUser()->getRegion('name');
   }
   /**
    * Executes field_delivery_type_id component
