@@ -18,11 +18,11 @@
   Дата заказа: <?php echo format_date($order->created_at, 'D') ?><br/>
   Сумма заказа: <?php include_partial('default/sum', array('sum' => $order->sum,)) ?> <span
   class="rubl">p</span><br/><br/>
-  <!--С вами свяжется оператор для получения и уточнения параметров заказа.-->
   <?php if (isset($result)): ?>
   <strong><?php echo $result['stage']['name'] ?>:</strong> <?php echo $result['message'] ?><br/>
   <?php endif ?>
-  Чтобы подтвердить заказ, в течение 15 минут с вами свяжется специалист нашего Контакт cENTER.
+  В ближайшее время мы вам перезвоним :)<br />
+  Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.
 </div>
 
 <!--div class="fr width250 pb20 form"><label for="radio-1">Я хочу получать СМС уведомления об изменении статуса заказа</label><input id="radio-1" name="radio-1" type="radio" value="radio-1" /></div-->

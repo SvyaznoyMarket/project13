@@ -21,6 +21,8 @@ class ProductSoa
 
     const LABEL_SALE = 1;
 
+    const LABEL_ACTION = 2;
+
     public function __construct()
     {
 
