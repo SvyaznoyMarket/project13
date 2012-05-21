@@ -78,7 +78,6 @@
     <!--a href="" class="fastview">Быстрый просмотр</a-->
     <div class="goodsbar">
       <?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1, 'soa' => 1)) ?>
-      <?php include_component('userDelayedProduct', 'add_button', array('product' => $product)) ?>
       <?php include_component('userProductCompare', 'button', array('product' => $product)) ?>
     </div>
     <b class="rt"></b><b class="lb"></b>

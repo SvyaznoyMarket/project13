@@ -64,19 +64,6 @@ UserTagProductRelation:
     Tag:               { class: UserTag, foreignAlias: ProductRelation, local: tag_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
     Product:           { class: Product, foreignAlias: UserTagRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
-UserDelayedProduct:
-  options:
-    comment: 'Отложенные товары пользователя'
-  actAs:
-    Timestampable: ~
-  columns:
-    user_id:           { type: integer(20), primary: true, notnull: true }
-    product_id:        { type: integer(20), primary: true, notnull: true }
-    is_wished:         { type: boolean, notnull: true, default: false }
-  relations:
-    User:              { class: User, foreignAlias: DelayedProduct, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Product:           { class: Product, foreignAlias: UserDelayedProduct, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-
 UserProductNotice:
   options:
     comment: 'Пользовательские уведомления о товаре'

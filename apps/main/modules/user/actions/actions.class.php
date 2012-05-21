@@ -66,11 +66,6 @@ class userActions extends myActions
                 'routes' => array('@cart'),
               ),
               array(
-                'name'   => 'Отложенные товары',
-                'url'    => '@userDelayedProduct',
-                'routes' => array('@userDelayedProduct'),
-              ),
-              array(
                 'name'   => 'Сравнение товаров',
                 'url'    => '@userProductCompare',
                 'routes' => array('@userProductCompare', '@userProductCompare_show'),
