@@ -354,39 +354,6 @@ user_oauth_callback:
   param: { module: guard, action: oauthCallback }
 
 #
-# user product compare
-userProductCompare:
-  url:   /compare
-  param: { module: userProductCompare, action: index }
-#
-# user product compare show
-userProductCompare_show:
-  url:   /compare/show/:productType
-  param: { module: userProductCompare, action: show }
-  class:   myDoctrineRoute
-  options: { model: ProductType, type: object, method: getForRoute }
-#
-# user product compare add
-userProductCompare_add:
-  url:   /compare/add/:product
-  param: { module: userProductCompare, action: add }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user product compare delete
-userProductCompare_delete:
-  url:   /compare/delete/:product
-  param: { module: userProductCompare, action: delete }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-
-
-
-#
 # user product rating create
 userProductRating_createtotal:
   url:   /product-rating/createtotal/:product/:rating

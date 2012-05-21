@@ -244,7 +244,6 @@ foreach ($p3d as $p3d_obj)
   <?php if (false): ?>1
     <ul class="inline">
       <li><?php include_component('cart', 'buy_button', array('product' => $product, 'quantity' => 1)) ?></li>
-      <li><?php include_component('userProductCompare', 'button', array('product' => $product)) ?></li>
     </ul>
 
     <!--div class="inline">

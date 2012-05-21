@@ -5,13 +5,12 @@ class myUser extends myGuardSecurityUser
 
   protected
     $cart = null,
-    $productCompare = null,
     $order = null,
     $region = null;
 
   public function shutdown()
   {
-    foreach (array('cart', 'productCompare', 'order') as $name)
+    foreach (array('cart', 'order') as $name)
     {
       $object = call_user_func(array($this, 'get' . ucfirst($name)));
       $this->setAttribute($name, $object->dump());
@@ -37,11 +36,6 @@ class myUser extends myGuardSecurityUser
   public function getCart()
   {
     return $this->getUserData('cart');
-  }
-
-  public function getProductCompare()
-  {
-    return $this->getUserData('productCompare');
   }
 
   public function getOrder()
