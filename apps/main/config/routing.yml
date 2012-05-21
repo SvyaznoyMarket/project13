@@ -354,50 +354,6 @@ user_oauth_callback:
   param: { module: guard, action: oauthCallback }
 
 #
-# user tag
-userTag:
-  url:   /private/tags
-  param: { module: userTag, action: index }
-#
-# user tag create
-userTag_create:
-  url:     /private/tags/create
-  param:   { module: userTag, action: create }
-#
-# user tag update
-userTag_update:
-  url:     /private/tags/:userTag/update
-  param:   { module: userTag, action: update }
-  class:   myDoctrineRoute
-  options: { model: UserTag, type: object, method: getForRoute }
-# user tag delete
-userTag_delete:
-  url:     /private/tags/:userTag/delete
-  param:   { module: userTag, action: delete }
-  class:   myDoctrineRoute
-  options: { model: UserTag, type: object, method: getForRoute }
-#
-# user tag link product
-userTag_linkProduct:
-  url:     /private/tags/:userTag/link/:product
-  param:   { module: userTag, action: linkProduct }
-  class:   myDoctrineRoute
-  options: { model: UserTag, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user tag unlink product
-userTag_unlinkProduct:
-  url:     /private/tags/:userTag/unlink/:product
-  param:   { module: userTag, action: unlinkProduct }
-  class:   myDoctrineRoute
-  options: { model: UserTag, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-
-
-#
 # product helper
 productHelper:
   url:   /helper
@@ -427,7 +383,6 @@ productHelper_result:
   options: { model: ProductHelper, type: object, method: getForRoute }
   requirements:
     sf_method: [ post ]
-
 
 
 #

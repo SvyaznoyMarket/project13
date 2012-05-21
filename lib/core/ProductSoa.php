@@ -146,11 +146,6 @@ class ProductSoa
         return $this->comments_num;
     }
 
-    public function getUserTagList(array $params = array())
-    {
-        return UserTagTable::getInstance()->getListByProduct($this->id, $params);
-    }
-
     public function getStockList(array $params = array())
     {
         return StockTable::getInstance()->getListByProduct($this->id, $params);

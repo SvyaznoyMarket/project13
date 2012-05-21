@@ -237,9 +237,6 @@ foreach ($p3d as $p3d_obj)
     <strong class="ml5"><?php echo round($product->rating, 1) ?></strong>
     <?php //include_component('userProductRating', 'show', array('product' => $product))  ?>
   </div>
-  <!--        <div class="pb5">Понравилось? <a href="" class="share">Поделиться</a> <strong><a href="" class="nodecor">+87</a></strong></div>-->
-  <div class="pb3"><?php include_component('userTag', 'product_link', array('product' => $product)) ?></div>
-
 
   <div class="line pb15"></div>
 
@@ -253,10 +250,6 @@ foreach ($p3d as $p3d_obj)
     <!--div class="inline">
 <?php //include_component('userProductRating', 'show', array('product' => $product))  ?>
   </div->
-
-  <div class="inline">
-<?php //include_component('userTag', 'product_link', array('product' => $product))  ?>
-  </div>
 
     <?php endif ?>
 </div><!-- Goods info -->

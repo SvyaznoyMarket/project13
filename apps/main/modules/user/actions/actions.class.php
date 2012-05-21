@@ -69,11 +69,6 @@ class userActions extends myActions
                 'name'   => 'Сравнение товаров',
                 'url'    => '@userProductCompare',
                 'routes' => array('@userProductCompare', '@userProductCompare_show'),
-              ),
-              array(
-                'name'   => 'Метки товаров',
-                'url'    => '@userTag',
-                'routes' => array('@userTag'),
               ),*/
           )
       ),

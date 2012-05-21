@@ -37,33 +37,6 @@ UserProfile:
   relations:
     User:              { class: User, foreignAlias: Profile, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
-UserTag:
-  options:
-    comment: 'Пользовательские теги'
-  actAs:
-    Timestampable: ~
-    Corable:       ~
-  columns:
-    id:                { type: integer(20), autoincrement: true, primary: true }
-    name:              { type: string(255), notnull: true, notblank: true }
-    user_id:           { type: integer(20), notnull: true }
-    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
-  relations:
-    User:              { class: User, foreignAlias: Tag, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-
-UserTagProductRelation:
-  options:
-    comment: 'Связь пользовательских тегов и товаров'
-  actAs:
-    Timestampable: ~
-  columns:
-    tag_id:            { type: integer(20), primary: true, notnull: true }
-    product_id:        { type: integer(20), primary: true, notnull: true }
-    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
-  relations:
-    Tag:               { class: UserTag, foreignAlias: ProductRelation, local: tag_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Product:           { class: Product, foreignAlias: UserTagRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-
 UserProductRating:
   options:
     comment: 'Пользовательские оценки товара'
