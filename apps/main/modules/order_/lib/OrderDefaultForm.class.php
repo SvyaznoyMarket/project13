@@ -136,4 +136,15 @@ class OrderDefaultForm extends BaseOrderForm
 
     $this->widgetSchema->setNameFormat('order[%s]');
   }
+
+  protected function doUpdateObject($values)
+  {
+    parent::doUpdateObject($values);
+
+    $this->object->mapValue('address_metro', !empty($values['address_metro']) ? $values['address_metro'] : null);
+    $this->object->mapValue('address_street', !empty($values['address_street']) ? $values['address_street'] : null);
+    $this->object->mapValue('address_number', !empty($values['address_number']) ? $values['address_number'] : null);
+    $this->object->mapValue('address_building', !empty($values['address_building']) ? $values['address_building'] : null);
+    $this->object->mapValue('address_apartment', !empty($values['address_apartment']) ? $values['address_apartment'] : null);
+  }
 }
