@@ -58,9 +58,6 @@ class productCardSoaActions extends myActions
     ));
     $this->getResponse()->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $this->product->name));
     // :: SEO
-    //
-    // история просмотра товаров
-    //$this->getUser()->getProductHistory()->addProduct($this->product);
 
     //$q = ProductTable::getInstance()->getQueryByKit($this->product);
 

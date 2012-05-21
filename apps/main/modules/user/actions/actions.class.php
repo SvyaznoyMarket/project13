@@ -66,11 +66,6 @@ class userActions extends myActions
                 'routes' => array('@cart'),
               ),
               array(
-                'name'   => 'История просмотра товаров',
-                'url'    => '@userProductHistory',
-                'routes' => array('@userProductHistory'),
-              ),
-              array(
                 'name'   => 'Отложенные товары',
                 'url'    => '@userDelayedProduct',
                 'routes' => array('@userDelayedProduct'),

@@ -286,10 +286,10 @@ user_legalConsultationSend:
   param:   { module: user, action: sendLegalConsultation }
 
 
-# user. get short info about cart, wishlist, etc.
+# MOVED TO PLAIN PHP user. get short info about cart, wishlist, etc.
 userProductHistory_shortinfo:
   url:   /user/shortinfo
-  param: { module: userProductHistory, action: shortinfo }
+  param: { module: default, action: index }
   requirements:
     sf_method: [ get,post ]
 
@@ -353,17 +353,6 @@ user_oauth_callback:
   url:   /signin/:provider/callback
   param: { module: guard, action: oauthCallback }
 
-
-#
-# user product history
-userProductHistory:
-  url:   /private/product-history
-  param: { module: userProductHistory, action: index }
-#
-# user product history clear
-userProductHistory_clear:
-  url:   /private/product-history/clear
-  param: { module: userProductHistory, action: clear }
 
 #
 # user delayed product
