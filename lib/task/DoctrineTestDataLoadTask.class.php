@@ -41,7 +41,6 @@ EOF;
       'ProductType'        => 30,
       'ProductProperty'    => 200,
       'Page'               => 10,
-      'ProductHelper'      => 4,
       'Stock'              => 30,
       'Shop'               => 20,
     );
@@ -307,47 +306,6 @@ EOF;
     $this->logSection('doctrine', 'loading test Pages');
     $this->createRecordList('Page', $count['Page']);
 
-    $this->logSection('doctrine', 'loading test ProductHelpers');
-    $list = ProductHelperTable::getInstance()->createList();
-    for ($productHelper_id = 1; $productHelper_id <= $count['ProductHelper']; $productHelper_id++)
-    {
-      $record = new ProductHelper();
-      $record->fromArray(array(
-        'product_type_id' => rand(1, $count['ProductType']),
-        'token'           => 'product-helper-'.$productHelper_id,
-        'name'            => $this->getRecordName('ProductHelper', $productHelper_id),
-        'is_active'       => true,
-      ));
-
-      $productHelperQuestion_count = rand(3, 5);
-      for ($i = 1; $i <= $productHelperQuestion_count; $i ++)
-      {
-        $productHelperQuestion = new ProductHelperQuestion();
-        $productHelperQuestion->fromArray(array(
-          'name'      => 'вопрос '.$i,
-          'position'  => $i,
-          'is_active' => true,
-        ));
-
-        $productHelperAnswer_count = rand(2, 4);
-        for ($j = 1; $j <= $productHelperAnswer_count; $j++)
-        {
-          $productHelperAnswer = new ProductHelperAnswer();
-          $productHelperAnswer->fromArray(array(
-            'name'      => 'ответ '.$j,
-            'position'  => $j,
-            'is_active' => true,
-          ));
-          $productHelperQuestion->Answer[] = $productHelperAnswer;
-        }
-
-        $record->Question[] = $productHelperQuestion;
-      }
-
-      $list[] = $record;
-    }
-    $list->save();
-
     $this->logSection('doctrine', 'loading test SimilarProduct');
     $product_type = rand(1, $count['ProductType']);
     $connection->query("INSERT INTO `similar_product_group` (`id`, `product_type_id`, `name`, `products`, `match`, `price`) VALUES (1, NULL, 'Группа-1', '432,4,765,43, 756, 81, 47', NULL, NULL), (2, ".$product_type.", 'Группа-2', NULL, 3, 0.1)");
@@ -410,7 +368,6 @@ EOF;
       'ProductFilterGroup'      => 'группа',
       'ProductFilter'           => 'фильтр',
       'Page'                    => 'страница',
-      'ProductHelper'           => 'помошник',
       'Stock'                   => 'склад',
       'Shop'                    => 'магазин',
     );

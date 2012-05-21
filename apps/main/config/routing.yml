@@ -354,38 +354,6 @@ user_oauth_callback:
   param: { module: guard, action: oauthCallback }
 
 #
-# product helper
-productHelper:
-  url:   /helper
-  param: { module: productHelper, action: index }
-#
-# product helper show
-productHelper_show:
-  url:   /helper/:productHelper
-  param: { module: productHelper, action: show }
-  class:   myDoctrineRoute
-  options: { model: ProductHelper, type: object, method: getForRoute }
-#
-# product helper answer
-productHelper_answer:
-  url:     /helper/:productHelper/answer
-  param:   { module: productHelper, action: answer }
-  class:   myDoctrineRoute
-  options: { model: ProductHelper, type: object, method: getForRoute }
-  requirements:
-    sf_method: [ post ]
-#
-# product helper result
-productHelper_result:
-  url:     /helper/:productHelper/result
-  param:   { module: productHelper, action: result }
-  class:   myDoctrineRoute
-  options: { model: ProductHelper, type: object, method: getForRoute }
-  requirements:
-    sf_method: [ post ]
-
-
-#
 # user product compare
 userProductCompare:
   url:   /compare
