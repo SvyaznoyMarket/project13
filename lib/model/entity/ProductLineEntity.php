@@ -171,7 +171,7 @@ class ProductLineEntity
   }
 
   /**
-   * @return string
+   * @return string|null
    * @todo move to Soa data loading
    */
   public function getToken()
@@ -184,10 +184,12 @@ class ProductLineEntity
       $table = ProductLineTable::getInstance();
       /** @var $line ProductLine */
       $line = $table->getByCoreId($this->id);
-      $token = $line->token;
-      $cache->set($key, $token);
-      $cache->addTag('productLine-'.$line->id, $key);
-      $this->token = $token;
+      if($line){
+        $token = $line->token;
+        $cache->set($key, $token);
+        $cache->addTag('productLine-'.$line->id, $key);
+        $this->token = $token;
+      }
     }
     return $this->token;
   }
