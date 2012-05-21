@@ -18,6 +18,11 @@ class OrderDefaultForm extends BaseOrderForm
       throw new Exception('Delivery types not provided');
     }
 
+    $region = $user->getRegion();
+
+    // TODO: использовать новую сущность
+    $hasMetro = 14974 == $region['core_id'];
+
     // region_id
     $this->widgetSchema['region_id'] = new myWidgetFormComponent(array('component' => array('order_', 'field_region_id'), 'component_param' => array()));
     //$this->validatorSchema['region_id'] = new sfValidatorChoice(array('choices' => $regions->toValueArray('id'), 'required' => true));
@@ -60,6 +65,7 @@ class OrderDefaultForm extends BaseOrderForm
     $this->validatorSchema['address'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите адрес доставки'));
     $this->widgetSchema['address']->setLabel('Адрес доставки:');
     */
+
     $this->widgetSchema['address_metro'] = new sfWidgetFormInputText();
     $this->validatorSchema['address_metro'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите метро'));
     $this->widgetSchema['address_metro']->setLabel('Метро');
@@ -105,7 +111,7 @@ class OrderDefaultForm extends BaseOrderForm
     $this->widgetSchema['agreed']->setLabel('Я ознакомлен и согласен с «Условиями продажи» и «Правовой информацией»');
 
     // использовать поля
-    $this->useFields(array(
+    $fields = array(
       'region_id',
       'delivery_type_id',
       'recipient_first_name',
@@ -113,7 +119,6 @@ class OrderDefaultForm extends BaseOrderForm
       'recipient_phonenumbers',
       'is_receive_sms',
       //'address',
-      'address_metro',
       'address_street',
       'address_number',
       'address_building',
@@ -122,7 +127,12 @@ class OrderDefaultForm extends BaseOrderForm
       'sclub_card_number',
       'payment_method_id',
       'agreed',
-    ));
+    );
+    if ($hasMetro)
+    {
+      $fields[] = 'address_metro';
+    }
+    $this->useFields($fields);
 
     $this->widgetSchema->setNameFormat('order[%s]');
   }

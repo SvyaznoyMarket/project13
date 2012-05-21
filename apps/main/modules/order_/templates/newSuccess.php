@@ -106,11 +106,13 @@
             <?php echo $form['region_id'] ?>
           </div>
 
+          <?php if (isset($form['address_metro'])): ?>
           <div class="ui-css">
             <p></p>
             <?php echo $form['address_metro']->render(array('class' => 'bBuyingLine__eText mInputLong', 'placeholder' => 'Метро', 'title' => 'Метро')) ?>
             <div id="metrostations"></div>
           </div>
+          <?php endif ?>
 
           <div>
             <p></p>
