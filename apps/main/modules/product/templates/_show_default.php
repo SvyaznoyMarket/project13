@@ -258,9 +258,6 @@ foreach ($p3d as $p3d_obj)
 <?php //include_component('userTag', 'product_link', array('product' => $product))  ?>
   </div>
 
-  <div class="block">
-<?php //echo link_to('Следить за этим товаром', 'userProductNotice_show', $sf_data->getRaw('product'), array('class' => 'event-click', 'data-event' => 'window.open'))  ?>
-  </div-->
     <?php endif ?>
 </div><!-- Goods info -->
 <?php endif ?>

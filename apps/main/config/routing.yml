@@ -354,47 +354,6 @@ user_oauth_callback:
   param: { module: guard, action: oauthCallback }
 
 #
-# user product notice
-userProductNotice:
-  url:   /private/product-notices
-  param: { module: userProductNotice, action: index }
-#
-# user product notice show
-userProductNotice_show:
-  url:   /private/product-notices/show/:product
-  param: { module: userProductNotice, action: show }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user product notice create
-userProductNotice_create:
-  url:   /private/product-notices/create/:product
-  param: { module: userProductNotice, action: create }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    sf_method: [ post ]
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user product notice delete
-userProductNotice_delete:
-  url:   /private/product-notices/delete/:product
-  param: { module: userProductNotice, action: delete }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user product notice clear
-userProductNotice_clear:
-  url:   /private/product-notices/clear
-  param: { module: userProductNotice, action: clear }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-
-#
 # user tag
 userTag:
   url:   /private/tags

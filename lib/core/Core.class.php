@@ -262,20 +262,6 @@ class Core
 
   }
 
-  public function createUserProductNotice(UserProductNotice $notice)
-  {
-    $result = false;
-
-    $data = $this->getData($notice);
-
-    if ($response = $this->query('userProductNotice.create', $data))
-    {
-      $result = $response['id'];
-    }
-
-    return $result;
-  }
-
   public function createProductComment(ProductComment $comment)
   {
     $result = false;
