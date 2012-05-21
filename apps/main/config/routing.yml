@@ -247,43 +247,6 @@ shop_show:
   options: { model: Shop, type: object, method: getForRoute }
 
 
-# Новость
-#
-# news category
-newsCategory:
-  url:   /news/
-  param: { module: newsCategory, action: index }
-#
-# news category show
-newsCategory_show:
-  url:   /news/:newsCategory/
-  param: { module: newsCategory, action: show }
-  class:   myNewsRoute
-  options: { model: NewsCategory, type: object, method: getForRoute }
-#
-# news list by year
-newsCategory_year:
-  url:   /news/:newsCategory/:year
-  param: { module: newsCategory, action: year }
-  class:   myNewsRoute
-  options: { model: NewsCategory, type: object, method: getForRoute }
-#
-# news list by month
-newsCategory_month:
-  url:   /news/:newsCategory/:year/:month
-  param: { module: newsCategory, action: month }
-  class:   myNewsRoute
-  options: { model: NewsCategory, type: object, method: getForRoute }
-#
-# news
-news_show:
-  url:   /news/:newsCategory/:year/:month/:news
-  param: { module: news, action: show }
-  class:   myNewsRoute
-  options: { model: News, type: object, method: getForRoute }
-
-
-
 # Пользователь
 #
 # user
