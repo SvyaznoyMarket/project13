@@ -91,54 +91,7 @@ $(document).ready(function() {
 			mLib.show( $(this).attr('ref') , $(this).attr('href'))
 		return false
 	})
-	
-	/* Delivery Block */
-    
-    var formatPrice = function(price){
-      if (typeof price === 'undefined' || price === null) {
-        return '';
-      }
-      if (price > 0) {
-        return ', '+price+' <span class="rubl">p</span>'
-      } else {
-        return ', бесплатно.'
-      }
-    }
-    var delivery_cnt = $('.delivery-info');
-    if (delivery_cnt.length) {
-		var coreid = delivery_cnt.prop('id').replace('product-id-', '')
-		$.post( delivery_cnt.data().calclink, {ids:[coreid]}, function( data ) {
-			if( !('success' in data ) )
-				return false
-			if( !data.success || !data.data[coreid] )
-				return false		
-			data = data.data[coreid]
-			var html = '<h4>Как получить заказ?</h4><ul>', i, row
-			for (i in data) {
-				row = data[i]
-				if (row.token == 'self') {
-					html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине ' +
-						row.date + '</h5><div>&mdash; <a target="blank" href="' +
-						delivery_cnt.data().shoplink + '">В каких магазинах ENTER можно забрать?</a></div></li>';
-					data.splice(i, 1);
-				}
-			}
-			if (data.length > 0) {
-				html += '<li><h5>Можно заказать сейчас с доставкой</h5>';
-				for (i in data) {
-					row = data[i];
-					//if (row.token == 'standart') {
-						html += '<div>&mdash; Можем доставить '+ row.date + formatPrice(row.price) +'</div>';
-						data.splice(i, 1);
-					//}
-				}
-				html += '</li>';
-			}
-			html += '</ul>';
-			delivery_cnt.html(html);
-		}, 'json');
-    }
-    
+	    
 	/* Some handlers */
     $('.bDropMenu').each( function() {
 		var jspan  = $(this).find('span:first')

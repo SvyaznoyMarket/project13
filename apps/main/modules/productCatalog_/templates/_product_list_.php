@@ -61,7 +61,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 <?php include_component('product', 'list_view', array('view' => $view)) ?>
 <?php endif ?>
 
-<?php if (count($productPager->getLinks()) > 1 && (!isset($noSorting) || !$noSorting)): ?>
+<?php if (!isset($noSorting) || !$noSorting): ?>
 <?php include_component('product', 'sorting', array('productSorting' => $productSorting)) ?>
 <?php endif ?>
 

@@ -7,31 +7,36 @@
  * To change this template use File | Settings | File Templates.
  */
 
+require_once(ROOT_PATH.'system/exception/routerException.php');
+require_once(ROOT_PATH.'system/App.php');
 
 class Controller {
 
 	/**
 	 * @static
-	 * @param Route $route
-	 * @param Request $request
+	 * @param string $route
 	 * @return Response
 	 */
-	public static function Run(Route $route){
+	public static function Run($route, $params=array()){
 
-    if(!class_exists($route->getClass())){
-      if(!file_exists(ROOT_PATH.'controller/'.$route->getClass().'.php')){
-        throw new routeException('request to run unknown Controller '.$route->getClass());
+    list($className, $methodName) = explode('.', $route);
+    $classPath = $className;
+    $className .= 'Controller';
+    if(!class_exists($className)){
+      if(!file_exists(ROOT_PATH.'controller/'.$classPath.'.php')){
+        throw new routerException('request to run unknown Controller '.$className);
       }
-      include_once(ROOT_PATH.'controller/'.$route->getClass().'.php');
+      include_once(ROOT_PATH.'controller/'.$classPath.'.php');
     }
-    if(!method_exists($route->getClass(),$route->getMethod())){
-      throw new routeException('request to run unknown Method '.$route->getMethod().' in controller '.$route->getClass());
+    if(!method_exists($className, $methodName)){
+      throw new routerException('request to run unknown Method '.$methodName.' in controller '.$className);
     }
 
-    $response = new Response();
+    $response = App::getResponse();
 
-    call_user_func_array(array($route->getClass(), $route->getMethod()), array($route->getParams(), $response));
+    call_user_func_array(array($className, $methodName), array(App::getResponse(), $params));
 
 		return $response;
 	}
+
 }
