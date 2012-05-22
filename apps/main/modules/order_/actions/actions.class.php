@@ -276,7 +276,7 @@ class order_Actions extends myActions
     /* @var $user myUser */
     $user = $this->getUser();
 
-    $regions = RegionTable::getInstance()->getListForOrder(array_map(function($i) { return $i['id']; }, $this->getUser()->getCart()->getProducts()));
+    //$regions = RegionTable::getInstance()->getListForOrder(array_map(function($i) { return $i['id']; }, $this->getUser()->getCart()->getProducts()));
 
     $productsInCart = array();
     foreach ($user->getCart()->getProducts() as $product)
@@ -439,6 +439,11 @@ class order_Actions extends myActions
       $return['delivery_period'] = $order->delivery_period;
       $return['product'] = $order->ProductItem;
       $return['service'] = $order->ServiceItem;
+      $return['address_metro'] = $order->address_metro;
+      $return['address_street'] = $order->address_street;
+      $return['address_number'] = $order->address_number;
+      $return['address_building'] = $order->address_building;
+      $return['address_apartment'] = $order->address_apartment;
 
       return $return;
     }, $orders);
