@@ -7,8 +7,8 @@
 			<td class='bFast__eItem'>
 				<div class='bFast__eItemWrap'>
 					<div class='bFast__eArrow'></div>
-					<div class='bFast__eNum'>Артикул #<span data-bind="text: shortcut">454-9366</span></div>
-					<div class="bFast__eTitle"><a href="" data-bind="text: title">Смартфон Samsung Galaxy SII черный</a></div>
+					<div class='bFast__eNum'>Артикул #<span data-bind="text: shortcut"></span></div>
+					<div class="bFast__eTitle"><a href="" data-bind="text: title"></a></div>
 					<div class='bFast__eCenter'><img alt="" data-bind="attr: {src: icon}"/></div>
 					<div class='bFast__eCenter' data-bind="if : !noQBar() ">
 						<div class='bCountSet'>

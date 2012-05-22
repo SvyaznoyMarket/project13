@@ -1,8 +1,19 @@
-<?php slot('title', 'Серия '.$line->name) ?>
+<?php
+/**
+ * @var $line ProductLine
+ * @var $productLine ProductLineEntity
+ * @var $view
+ */
 
-<?php slot('navigation') ?>
-  <?php include_component('line', 'navigation', array('line' => $line)) ?>
-<?php end_slot() ?>
+slot('title', 'Серия '.$productLine->getName());
 
-<?php include_component('line', 'main_product', $sf_data) ?>
-<?php include_partial('line/product_list', $sf_data) ?>
+slot('navigation');
+  include_component('default', 'navigation', array('list' => $productLine->getNavigation()));
+end_slot();
+
+render_partial('line/templates/_main_product.php', array('productLine' => $productLine));
+
+render_partial('line/templates/_product_list.php', array(
+  'view' => $view,
+  'productLine' => $productLine,
+));

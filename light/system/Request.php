@@ -7,6 +7,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
+
+/**
+ * Класс больше не используется, пока не удаляю, скорее всего, может пригодиться
+ */
 class Request {
 	const
 		PORT_HTTP   = 80,

@@ -21,7 +21,7 @@
       <a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">О компании</a>
       <a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>">Сервис F1</a>
       <a href="<?php echo url_for('default_show', array('page' => 'credit',)) ?>">Покупка в кредит</a>
-      <a href="http://job.enter.ru/" target="_blank">Работать у нас</a>
+      <a href="http://job.enter.ru/vacancies" target="_blank">Работать у нас</a>
       <a href="<?php echo url_for('shop') ?>">Наши магазины</a>
       <a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Как сделать заказ</a>
       <a href="<?php echo url_for('default_show', array('page' => 'mobile_apps')) ?>">Мобильные приложения</a>
