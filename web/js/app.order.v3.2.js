@@ -385,6 +385,14 @@ $(document).ready(function() {
 
                 intervalElement.appendTo(intervalHolder)
             })
+
+            if (!deliveryTypeHolder.find('.bSelect [data-event="onSelect"]').text())
+            {
+                var interval = data.deliveryTypes[deliveryType.token].interval
+                if (interval) {
+                    deliveryTypeHolder.find('.bSelect [data-event="onSelect"]').text('с '+interval.split(',')[0]+' по '+interval.split(',')[1])
+                }
+            }
         },
 
         renderItem: function(itemHolder, data) {
@@ -818,6 +826,28 @@ $(document).ready(function() {
         DeliveryMap.data(data)
     })
 
+    $('body').delegate( '.bSelect', 'click', function() {
+        if( $(this).hasClass('mDisabled') )
+            return false
+        $(this).find('.bSelect__eDropmenu').toggle()
+    })
+    $('body').delegate( '.bSelect', 'mouseleave', function() {
+        if( $(this).hasClass('mDisabled') )
+            return false
+        var options = $(this).find('.bSelect__eDropmenu')
+        if( options.is(':visible') )
+            options.hide()
+    })
+    $('body').delegate('.order-interval', 'click', function() {
+        var el = $(this)
+        var data = DeliveryMap.data()
+
+        el.closest('.bSelect').find('[data-event="onSelect"]').text(el.text())
+        var elData = el.find('[data-value]').data()
+
+        data.deliveryTypes[elData.deliveryType].interval = elData.value
+    })
+
     if ($('.bBuyingLine__eRadio"]:checked').length) {
         DeliveryMap.render()
         $('#order-form-part2').show('fast')
@@ -934,8 +964,8 @@ $(document).ready(function() {
             }
         })
     })
-	
-	if( typeof( $.mask ) !== 'undefined' ) {
+
+    if( typeof( $.mask ) !== 'undefined' ) {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
 		$("#order_recipient_phonenumbers").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
 	}
