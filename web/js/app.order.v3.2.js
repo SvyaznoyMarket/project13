@@ -368,6 +368,31 @@ $(document).ready(function() {
                 deliveryTypeHolder.find('.order-delivery_date').removeClass('bBuyingDates__eCurrent')
                 deliveryTypeHolder.find('.order-delivery_date[data-value="'+deliveryType.date+'"]').addClass('bBuyingDates__eCurrent')
             }
+
+            // интервалы
+            var intervals = DeliveryMap.getDeliveryInterval(deliveryType, deliveryType.date)
+            var intervalHolder = $(deliveryTypeHolder.find('[data-interval-holder]').data('intervalHolder'))
+            var intervalElementTemplate = Templating.clone($(intervalHolder.data('template')))
+
+            $.each(intervals, function(i, interval) {
+                intervalElement = intervalElementTemplate.clone()
+
+                var value = interval.start_at+','+interval.end_at
+                var displayValue = 'с '+interval.start_at+' по '+ interval.end_at
+                $.each(intervalElement.find('[data-assign]'), function(i, el) {
+                    Templating.assign($(el), { name: displayValue, value: value, date: deliveryType.date, deliveryType: deliveryType.token })
+                })
+
+                intervalElement.appendTo(intervalHolder)
+            })
+
+            if (!deliveryTypeHolder.find('.bSelect [data-event="onSelect"]').text())
+            {
+                var interval = data.deliveryTypes[deliveryType.token].interval
+                if (interval) {
+                    deliveryTypeHolder.find('.bSelect [data-event="onSelect"]').text('с '+interval.split(',')[0]+' по '+interval.split(',')[1])
+                }
+            }
         },
 
         renderItem: function(itemHolder, data) {
@@ -770,7 +795,6 @@ $(document).ready(function() {
 
     $('body').delegate('.order-delivery_date', 'click', function(e) {
         var el = $(this)
-        var hasInterval = (el.closest('ul[data-interval-holder]').data('intervalHolder'))
 
         if (el.hasClass('bBuyingDates__eDisable')) {
             return
@@ -798,97 +822,31 @@ $(document).ready(function() {
 
 
         var data = DeliveryMap.data()
-        if (hasInterval && (date != deliveryType.date)) {
-            var intervals = DeliveryMap.getDeliveryInterval(deliveryType, date)
-            var interval = Object.keys(intervals).shift()
-            data.deliveryTypes[deliveryTypeToken].interval = interval
-            displayInterval = intervals[interval] ? ('с '+intervals[interval].start_at+' по '+intervals[interval].end_at) : ''
-            deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
-                Templating.assign($(el), { displayInterval: displayInterval })
-            })
-        }
         data.deliveryTypes[deliveryTypeToken].date = date
         DeliveryMap.data(data)
-
-
-        if (!hasInterval) {
-            return
-        }
-        el.closest('.order-delivery-holder').find('.bBuyingDatePopup').remove()
-
-        var deliveryType = DeliveryMap.data()['deliveryTypes'][deliveryTypeToken]
-        var intervalHolder = $(el.closest('[data-interval-holder]').data('intervalHolder'))
-        var intervalContainer = Templating.clone($(intervalHolder.data('template')))
-        var intervals = DeliveryMap.getDeliveryInterval(deliveryType, date)
-
-        var intervalElementTemplate = intervalContainer.find('.order-interval')
-        $.each(intervals, function(i, interval) {
-            intervalElement = intervalElementTemplate.clone()
-
-            var value = interval.start_at+','+interval.end_at
-            var displayValue = 'с '+interval.start_at+' по '+ interval.end_at
-            Templating.assign(intervalElement, { value: value, date: date, deliveryType: deliveryType.token })
-            $.each(intervalElement.find('[data-assign]'), function(i, el) {
-                Templating.assign($(el), { name: displayValue })
-            })
-            if ((deliveryType.interval == value) && (deliveryType.date == date)) {
-                intervalElement.addClass('bBuyingDatePopup__eOK')
-            }
-
-            intervalElement.appendTo(intervalContainer)
-        })
-        intervalElementTemplate.remove()
-
-        intervalContainer.css({'left': el.position().left, 'top': el.position().top })
-        intervalContainer
-            .mouseenter(function() {
-            clearTimeout($(this).data('timeoutId'))
-        })
-            .mouseleave(function() {
-                var el = $(this)
-                var timeoutId = setTimeout(function() {
-                    el.remove()
-                }, 50)
-
-            })
-
-        $.each(intervalContainer.find('[data-assign]'), function(i, el) {
-            Templating.assign($(el), { date: displayDate })
-        })
-
-        intervalContainer.appendTo(intervalHolder)
-
     })
 
-    $('body').delegate('.order-interval', 'click', function(e) {
+    $('body').delegate( '.bSelect', 'click', function() {
+        if( $(this).hasClass('mDisabled') )
+            return false
+        $(this).find('.bSelect__eDropmenu').toggle()
+    })
+    $('body').delegate( '.bSelect', 'mouseleave', function() {
+        if( $(this).hasClass('mDisabled') )
+            return false
+        var options = $(this).find('.bSelect__eDropmenu')
+        if( options.is(':visible') )
+            options.hide()
+    })
+    $('body').delegate('.order-interval', 'click', function() {
         var el = $(this)
         var data = DeliveryMap.data()
 
-        el.parent().find('.order-interval').each(function(i, el) {
-            $(el).removeClass('bBuyingDatePopup__eOK')
-        })
-        el.addClass('bBuyingDatePopup__eOK')
+        el.closest('.bSelect').find('[data-event="onSelect"]').text(el.text())
+        var elData = el.find('[data-value]').data()
 
-        var date = el.data('date')
-        var deliveryTypeToken = el.data('deliveryType')
-        var deliveryTypeHolder = el.closest('.order-delivery-holder')
-        var displayValue = el.data('value').split(',')
-        displayValue = 'с '+displayValue[0]+' по '+displayValue[1]
-
-        deliveryTypeHolder.find('h2 [data-assign]').each(function(i, el) {
-            Templating.assign($(el), { displayInterval: displayValue })
-        })
-
-        data['deliveryTypes'][deliveryTypeToken].date = date
-        data['deliveryTypes'][deliveryTypeToken].interval = el.data('value')
-
-        DeliveryMap.data(data)
-
-        setTimeout(function() {
-            el.closest('.order-delivery-holder').find('.bBuyingDatePopup').hide(50, function() { $(this).remove() })
-        }, 150)
+        data.deliveryTypes[elData.deliveryType].interval = elData.value
     })
-
 
     if ($('.bBuyingLine__eRadio"]:checked').length) {
         DeliveryMap.render()
@@ -1014,8 +972,8 @@ $(document).ready(function() {
             */
         })
     })
-	
-	if( typeof( $.mask ) !== 'undefined' ) {
+
+    if( typeof( $.mask ) !== 'undefined' ) {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
 		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
 	}

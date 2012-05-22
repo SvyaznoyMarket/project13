@@ -46,7 +46,12 @@ foreach ($dates as $i => $date) {
         <?php echo $deliveryType->shortName ?>
         <span data-assign='{"displayDate": ["text", "_value"]}'><?php echo $deliveryType->displayDate ?></span>
         <?php if ('self' != $deliveryType->type): ?>
-          <br><span data-assign='{"displayInterval": ["text", "_value"]}'><?php echo $deliveryType->displayInterval ?></span>
+          <!--<br><span data-assign='{"displayInterval": ["text", "_value"]}'><?php echo $deliveryType->displayInterval ?></span>-->
+          <div class='bSelect mFastInpSmall' style="margin: 8px 0 12px 0;">
+            <span data-event="onSelect"></span>
+            <div class='bSelect__eArrow'></div>
+            <div class="bSelect__eDropmenu order-interval-holder" id="<?php echo 'order-interval_'.$deliveryType->token.'-holder' ?>" data-template="#order-interval-template"></div>
+          </div>
         <?php endif ?>
       </h2>
 
@@ -65,7 +70,7 @@ foreach ($dates as $i => $date) {
               <li class="bBuyingDates__eRight order-delivery_date-control" data-value="<?php echo $currentWeekNum + 1 ?>" data-direction="next"><b></b><span></span></li>
             </ul>
 
-            <span id="<?php echo 'order-interval_'.$deliveryType->token.'-holder' ?>" class="order-interval-holder" data-template="#order-interval-template"></span>
+            <!--<span id="<?php echo 'order-interval_'.$deliveryType->token.'-holder' ?>" class="order-interval-holder" data-template="#order-interval-template"></span>-->
 
           </div>
         </dd>
@@ -95,11 +100,17 @@ foreach ($dates as $i => $date) {
 
 
 <!-- шаблон интервалов { -->
+<!--
 <div id="order-interval-template" class="hidden">
   <span class="bBuyingDatePopup">
     <h3 class="bBuyingDatePopup__eTitle" data-assign='{"date": ["text", "_value"]}'></h3>
     <span class="bBuyingDatePopup__eLine order-interval" data-assign='{"value": ["attr", ["data-value", "_value"]], "date": ["attr", ["data-date", "_value"]], "deliveryType": ["attr", ["data-delivery-type", "_value"]]}' data-value="" data-date="" data-delivery-type=""><i></i><data data-assign='{"name": ["text", "_value"]}'></data></span>
   </span>
+</div>
+-->
+  
+<div id="order-interval-template" class="hidden">
+  <div class="order-interval"><span data-assign='{"name": ["text", "_value"], "value": ["attr", ["data-value", "_value"]], "date": ["attr", ["data-date", "_value"]], "deliveryType": ["attr", ["data-delivery-type", "_value"]]}' data-value="" data-date="" data-delivery-type=""></span></div>
 </div>
 <!-- } -->
 
