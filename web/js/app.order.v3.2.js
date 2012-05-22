@@ -977,6 +977,12 @@ $(document).ready(function() {
         }
     })
 
+	PubSub.subscribe( 'authorize', function( m, d ) {
+		$('#order_recipient_first_name').val( d.first_name )
+		$('#order_recipient_last_name').val( d.last_name )
+		$('#order_recipient_phonenumbers').val( d.phonenumber )
+		$('#user-block').hide()
+	})
 
     $('.auth-link').bind('click', function (e) {
         e.preventDefault()
@@ -988,7 +994,8 @@ $(document).ready(function() {
             centered:true,
             onLoad:function () {
                 $('#auth-block').find('input:first').focus()
-            },
+            }
+            /*,
             onClose:function () {
                 $.get(link.data('updateUrl'), function (response) {
                     if (true === response.success) {
@@ -1004,12 +1011,13 @@ $(document).ready(function() {
                     }
                 })
             }
+            */
         })
     })
 	
 	if( typeof( $.mask ) !== 'undefined' ) {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
-		$("#order_recipient_phonenumbers").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
+		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
 	}
 	
 	$('#addressField').find('input').placeholder()
