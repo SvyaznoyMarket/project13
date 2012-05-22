@@ -27,7 +27,9 @@ class ProductRepository extends ObjectRepository
     if (!empty($data['category'])) {
       foreach ($data['category'] as $categoryData)
       {
-        $product->addCategory(new ProductCategoryEntity($categoryData));
+        $category = new ProductCategoryEntity($categoryData);
+        if($category->isActive())
+          $product->addCategory($category);
       }
     }
     if (!empty($data['brand'])) {
@@ -62,6 +64,11 @@ class ProductRepository extends ObjectRepository
     if (!empty($data['label'])) {
       foreach ($data['label'] as $label) {
         $product->addLabel(new ProductLabelEntity($label));
+      }
+    }
+    if(!empty($data['kit'])) {
+      foreach($data['kit'] as $kit) {
+        $product->addKit(new ProductKitEntity($kit));
       }
     }
     return $product;
@@ -119,6 +126,28 @@ class ProductRepository extends ObjectRepository
       'id' => $idList,
       'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
     ), $loadDynamic);
+  }
+
+  /**
+   * Load product data for current product kit
+   *
+   * @param ProductEntity $product
+   * @param bool $loadDynamic
+   * @return mixed
+   */
+  public function loadKit(ProductEntity $product, $loadDynamic = false)
+  {
+    if(!$product->getKitList())
+      return;
+    /** @var $map ProductKitEntity[] */
+    $map = array();
+    foreach($product->getKitList() as $kit){
+      $map[$kit->getProductId()] = $kit;
+    }
+    foreach($this->getListById(array_keys($map), $loadDynamic) as $kitProduct)
+    {
+      $map[$kitProduct->getId()]->setProduct($kitProduct);
+    }
   }
 
   public function getRelated(ProductRelatedCriteria $criteria, $order = null)

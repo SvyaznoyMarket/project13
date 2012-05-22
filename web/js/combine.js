@@ -1,2 +1,2 @@
 window.filesWithVersion = 
-{"app.oneclick.js":1337088067,"infopages.js":1336223668,"library.js":1336819110,"app.cart.js":1336223668,"bigjquery.min.js":1337088049,"wellcome.js":1337088049,"main.js":1337088049,"dash.js":1336223668,"app.order.js":1336223668,"app.product.comment.list.js":1336223668,"app.product.comment.new.js":1330432235,"app.product.js":1337088049,"app.shop.js":1329202458}
+{"app.oneclick.js":1337325500,"infopages.js":1336223668,"library.js":1337264539,"app.cart.js":1336223668,"bigjquery.min.js":1337180704,"welcome.js":1337180704,"main.js":1337256772,"dash.js":1336223668,"app.order.js":1336223668,"app.product.comment.list.js":1336223668,"app.product.comment.new.js":1330432235,"app.product.js":1337180704,"app.shop.js":1337325516}
