@@ -120,6 +120,7 @@ $(document).ready(function(){
               }
             } else {
               $('#auth-block').trigger('close')
+              PubSub.publish( 'authorize', response.user )
             }
           } else {
             form.html( $(response.data.content).html() )
@@ -295,7 +296,6 @@ $(document).ready(function(){
 					$('div.pageslist ul').append( next )
 										 .find('a')
 										 .bind('click', function(){
-										 console.info('infScroll')
 											docCookies.removeItem( 'infScroll' )
 										  })
 					$('div.allpager').addClass('mChecked')
