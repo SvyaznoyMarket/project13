@@ -82,8 +82,10 @@ all:
 
   core:
     config:
-      api_url: 'http://buldezir.core.ent3.ru/v1/json' # api_url: 'http://core.ent3.ru/v1/json'
-      userapi_url: 'http://buldezir.core.ent3.ru/v2/' # userapi_url: 'http://core.ent3.ru/v2/'
+      api_url: 'http://core.ent3.ru/v1/json'
+      #api_url: 'http://buldezir.core.ent3.ru/v1/json'
+      userapi_url: 'http://core.ent3.ru/v2/'
+      #userapi_url: 'http://buldezir.core.ent3.ru/v2/'
       client_code: site
       consumer_key: test
       signature: test
