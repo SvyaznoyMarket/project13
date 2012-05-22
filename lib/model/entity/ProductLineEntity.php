@@ -177,20 +177,20 @@ class ProductLineEntity
   public function getToken()
   {
     /** @var $cache myRedisCache */
-    $cache = myCache::getInstance();
-    $key = __CLASS__.':id'.$this->id;
-    if(!$this->token && !($token = $cache->get($key))){
+    //$cache = myCache::getInstance();
+    //$key = __CLASS__.':id'.$this->id;
+    //if(!$this->token && !($token = $cache->get($key))){
       /** @var $table TaskTable */
       $table = ProductLineTable::getInstance();
       /** @var $line ProductLine */
       $line = $table->getByCoreId($this->id);
       if($line){
         $token = $line->token;
-        $cache->set($key, $token);
-        $cache->addTag('productLine-'.$line->id, $key);
+       // $cache->set($key, $token);
+        //$cache->addTag('productLine-'.$line->id, $key);
         $this->token = $token;
       }
-    }
+    //}
     return $this->token;
   }
 
