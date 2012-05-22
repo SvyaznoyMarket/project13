@@ -4448,7 +4448,7 @@ DT.bCtg__eOrange{
 .mDeti, .category-5{ width: 39px; background: url('img/header_icon_baby_goods.gif') no-repeat; }
 .mZoo, .category-6{ width: 54px; background: url('img/header_icon_zoo_goods.gif') no-repeat; }
 .mSam, .category-7{ width: 34px; background: url('img/header_icon_tools_goods.gif') no-repeat; }
-.mElectro, .category-8{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
+.mElectro, .category-8{ width: 61px; background: url('img/icon_the_new_iPad.gif') no-repeat; }
 .mUkr, .category-9{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
 .mSport, .category-10{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
 .mSport i, .category-10 i{ top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
@@ -5002,3 +5002,35 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     .b404Block .bOrangeButton{
         vertical-align: middle;
     }
+
+.promo{
+    font: 100% tahoma, verdana, arial;
+    margin-bottom: 20px;
+}
+.promo h2{
+    padding: 0;
+    margin: 20px 0 10px 0;
+    font-size: 24px;
+}
+.promo .halfline{
+    display:inline-block;
+    width:450px;
+    padding: 0 0 35px 0;
+    position:relative;
+}
+.promo .halfline .left { float: left; width:160px }
+.promo .halfline .right { float: right; width:280px }
+.promo .halfline .right > div { margin: 0 0 10px 0; }
+.promo .ttl{
+    font-size:16px;
+}
+.promo .bOrangeButton{
+    font: 16px tahoma, verdana, arial;
+}
+.promo .shopList li{
+    margin-top: 8px;
+}
+.promo .shopList a{
+    text-decoration: underline;
+    font-size: 13px;
+}
