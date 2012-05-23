@@ -205,7 +205,7 @@ $(document).ready(function() {
                     $.each(data.unavailable, function(i, itemToken) {
                         var item = data.items[itemToken]
 
-                        if (!item || (0 == item.stock) || (item.type != 'product')) {
+                        if (!item || (0 == item.stock) || (item.type != 'product') || (item.quantity <= item.stock)) {
                             if ((i +1) == length) dfd.resolve()
                             return true
                         }
@@ -373,6 +373,8 @@ $(document).ready(function() {
             var intervals = DeliveryMap.getDeliveryInterval(deliveryType, deliveryType.date)
             var intervalHolder = $(deliveryTypeHolder.find('[data-interval-holder]').data('intervalHolder'))
             var intervalElementTemplate = Templating.clone($(intervalHolder.data('template')))
+
+            intervalHolder.html('')
 
             $.each(intervals, function(i, interval) {
                 intervalElement = intervalElementTemplate.clone()
