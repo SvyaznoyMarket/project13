@@ -1,10 +1,7 @@
 <?php
 
 require_once(__DIR__.'/log4php/Logger.php');
-
-class CoreClientException extends Exception
-{
-}
+require_once(ROOT_PATH.'system/exception/coreClientException.php');
 
 class CoreClient
 {

@@ -1,22 +1,31 @@
 <?php
-$request = sfContext::getInstance()->getRequest();
-$page = $request->getParameter('page');
-$view = $request->getParameter('view', isset($view) ? $view : null);
+/**
+ * @var $productLine ProductLineEntity
+ * @var $view
+ */
+
+
+$empty = 0 == $productLine->getProductCount();
 ?>
-<?php $empty = 0 == $productPager->getNbResults() ?>
 
 <?php if (!$empty): ?>
-<?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
-<h2 class="bold fl">Еще другие модели в серии <?php echo $line->name ?></h2>
-<?php if (!$empty && !(isset($list_view) && false === $list_view)): ?>
+
+  <h2 class="bold fl">Еще другие модели в серии <?php echo $productLine->getName() ?></h2>
+
   <?php include_component('product', 'list_view') ?>
-<?php endif ?>
 
-<?php if (!$empty): ?>
   <div class="line"></div>
-<?php endif ?>
 
-<?php include_component('line', 'pager', array('pager' => $productPager, 'ajax_flag' => false, 'view' => $view, )) ?>
+  <?php
+    if($view == 'expanded')
+      render_partial('product_/templates/_list_expanded_.php', array(
+        'list' => $productLine->getProductList(),
+      ));
+    else
+      render_partial('product_/templates/_list_compact_.php', array(
+        'list' => $productLine->getProductList(),
+        'in_row' => 4
+      ));
+  ?>
 
-<?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
 <?php endif ?>

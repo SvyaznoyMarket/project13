@@ -1,67 +1,68 @@
 <?php
+/**
+ * @var $productLine ProductLineEntity
+ */
+
+$product = $productLine->getMainProduct();
+
 #JSON data
 $json = array(
-  'jsref' => $item['product']->token,
-  'jsimg' => $item['photo'],
-  'jstitle' => $item['name'],
-  'jsprice' => $item['product']->getFormattedPrice()
+  'jsref' => $product->getToken(),
+  'jsimg' => $product->getMediaImageUrl(3),
+  'jstitle' => $product->getName(),
+  'jsprice' => formatPrice($product->getPrice())
 )
 ?>
-<h2 class="mbSet"><strong><?php echo $item['name'] ?></strong></h2>
+<h2 class="mbSet"><strong><?php echo $product->getName() ?></strong></h2>
 <div class="line pb15"></div>
 
 <div class='bSet' data-value='<?php echo json_encode($json) ?>'>
   <div class='bSet__eImage'>
-    <a href="<?php echo $item['url'] ?>" title="<?php echo $item['name'] ?>"><img src="<?php echo $item['photo'] ?>"
-                                                                                  alt="<?php echo $item['name'] ?>"
+    <a href="<?php echo $product->getLink() ?>" title="<?php echo $product->getName() ?>"><img src="<?php echo $product->getMediaImageUrl(3) ?>"
+                                                                                  alt="<?php echo $product->getName() ?>"
                                                                                   width="500" height="500"
                                                                                   title=""/></a>
   </div>
   <div class='bSet__eInfo'>
-    <div class='bSet__eArticul'>Артикул #<?php echo $item['product']->article ?></div>
-    <p class='bSet__eDescription'><?php echo $item['description'] ?></p>
+    <div class='bSet__eArticul'>Артикул #<?php echo $product->getArticle() ?></div>
+    <p class='bSet__eDescription'><?php echo $product->getDescription() ?></p>
 
     <div class='bSet__ePrice'>
-      <?php include_partial('product/price', array('price' => $item['product']->getFormattedPrice(),)) ?>
-      <?php include_component('cart', 'buy_button', array('product' => $item['product'], 'quantity' => 1, 'value' => array('Купить' . (count($item['part']) ? ' набор' : '')),)) ?>
+      <?php include_partial('product/price', array('price' => formatPrice($product->getPrice()))) ?>
 
-      <?php if ($item['product']->is_insale): ?>
+      <?php render_partial('cart_/templates/_buy_button.php', array(
+        'item' => $product,
+        'text' => 'Купить ' . (count($product->getKitList()) ? ' набор' : ''),
+      )) ?>
+
+      <?php if ($product->getIsBuyable()): ?>
       <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
       <?php endif ?>
 
-      <?php if (false && $item['product']->is_insale): ?>
+      <?php if (false && $product->getIsBuyable()): ?>
       <div class="pb5"><strong><a onClick="_gaq.push(['_trackEvent', 'QuickOrder', 'Open']);"
-                                  href="<?php echo url_for('order_1click', array('product' => $item['product']->barcode)) ?>"
+                                  href="<?php echo url_for('order_1click', array('product' => $product->getBarcode())) ?>"
                                   class="red underline order1click-link">Купить быстро в 1 клик</a></strong></div>
       <?php endif ?>
     </div>
     <div class='bSet__eIconsWrap'>
-      <?php if (count($item['part'])): ?>
+      <?php if (count($product->getKitList())): ?>
       <h3 class='bSet__eG'>Состав набора:</h3>
       <div class='bSet__eIcons'>
         <ul class="previewlist">
-          <?php foreach ($item['part'] as $part): ?>
-          <li><b><a href="<?php echo $part['url'] ?>" title="<?php echo $part['name'] ?>"></a></b><img
-            src="<?php echo $part['photo'] ?>" alt="<?php echo $part['name'] ?>" width="48" height="48"></li>
+          <?php foreach ($product->getKitList() as $kit): ?>
+          <li><b><a href="<?php echo $kit->getProduct()->getLink() ?>" title="<?php echo $kit->getProduct()->getName() ?>"></a></b>
+            <img src="<?php echo $kit->getProduct()->getMediaImageUrl(1) ?>" alt="<?php echo $kit->getProduct()->getName() ?>" width="48" height="48">
+          </li>
           <?php endforeach ?>
         </ul>
       </div>
       <?php endif ?>
-      <div class='bSet__eTWrap'><a class='bSet__eMoreInfo' href="<?php echo $item['url'] ?>">Подробнее
-        о <?php echo count($item['part']) ? 'наборе' : 'товаре' ?></a></div>
+      <div class='bSet__eTWrap'>
+        <a class='bSet__eMoreInfo' href="<?php echo $product->getLink() ?>">
+          Подробнее о <?php echo $product->getKitList()  ? 'наборе' : 'товаре' ?>
+        </a>
+      </div>
     </div>
   </div>
 </div>
-
-<?php /*
-<div id="order1click-container" class="bMobDown mBR5 mW2 mW900" style="display: none">
-  <div class="bMobDown__eWrap">
-    <div class="bMobDown__eClose close"></div>
-    <h2>Покупка в 1 клик!</h2>
-    <div class="clear line pb20"></div>
-
-    <form id="order1click-form" action="<?php echo url_for('order_1click', array('product' => $product['barcode'])) ?>" method="post"></form>
-
-  </div>
-</div> */
-?>
