@@ -39,7 +39,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
 				.script('shelf/jquery.countdown.min.js')
-				.script('shelf/jquery.countdown-ru.js')
+				.script('shelf/jquery.countdown-ru.js?v=2')
 				.wait()
 				.script(getWithVersion('welcome.js'))
 			}).runQueue()
