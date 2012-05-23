@@ -550,12 +550,12 @@ $(document).ready(function() {
             var isValid = true
 
             if ((-1 !== $.inArray(el.attr('id'), ['order_address_street', 'order_address_number'])) && !$('.bBuyingLine__eRadio[data-delivery-type="standart"]:checked').length) {
-                console.info(1);
+                //console.info(1);
                 return true
             }
 
             if ((-1 !== $.inArray(el.attr('id'), ['order_address_street', 'order_address_number'])) && !el.val()) {
-                console.info(2);
+                //console.info(2);
                 isValid = false
                 if (!$('#addressField').find('dd .bFormError').length) {
                     showError($('#addressField').find('dd > div:first'), message, true)
@@ -563,18 +563,18 @@ $(document).ready(function() {
             }
             // если группа радио и не выбрано ни одного
             else if (el.is(':radio') && !el.is(':checked') && (el.length > 1)) {
-                console.info(3);
+                //console.info(3);
                 isValid = false
                 showError(el.first().parent().parent(), message, false)
             }
             // если чекбокс и не выбран
             else if (el.is(':checkbox') && !el.is(':checked') && (el.length == 1)) {
-                console.info(4);
+                //console.info(4);
                 isValid = false
                 showError(el.first().parent().parent(), message, false)
             }
             else if (el.is(':text') && !el.val()) {
-                console.info(5);
+                //console.info(5);
                 isValid = false
                 showError(el, message, true)
             }
