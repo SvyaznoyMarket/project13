@@ -32,7 +32,7 @@ class regionActions extends myActions
     $keyword = $request['q'];
 
     $data = array();
-    if (strlen($keyword) > 2)
+    if (mb_strlen($keyword) >= 3)
     {
       $result = CoreClient::getInstance()->query('GEO/autocomplete', array('letters' => $keyword));
       $i = 0;
