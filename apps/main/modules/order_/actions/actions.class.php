@@ -444,6 +444,7 @@ class order_Actions extends myActions
       $return['address_number'] = $order->address_number;
       $return['address_building'] = $order->address_building;
       $return['address_apartment'] = $order->address_apartment;
+      $return['address_floor'] = $order->address_floor;
 
       return $return;
     }, $orders);

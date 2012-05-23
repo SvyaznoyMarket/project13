@@ -27,6 +27,7 @@ class Order extends BaseOrder
     $this->mapValue('address_number', null);
     $this->mapValue('address_building', null);
     $this->mapValue('address_apartment', null);
+    $this->mapValue('address_floor', null);
   }
 
   public function __toString()

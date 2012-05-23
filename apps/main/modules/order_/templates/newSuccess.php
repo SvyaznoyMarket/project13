@@ -116,14 +116,15 @@
 
           <div>
             <p></p>
-            <?php echo $form['address_street']->render(array('class' => 'bBuyingLine__eText mInputLong', 'placeholder' => 'Улица', 'title' => 'Улица')) ?>
+            <?php echo $form['address_street']->render(array('class' => 'bBuyingLine__eText mInputLong', 'placeholder' => 'Улица', 'title' => 'Улица', 'style' => 'width: 295px;')) ?>
+            <?php echo $form['address_number']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Дом', 'title' => 'Дом')) ?>
           </div>
 
           <div>
             <p></p>
-            <?php echo $form['address_number']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Дом', 'title' => 'Дом')) ?>
             <?php echo $form['address_building']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Корпус', 'title' => 'Корпус')) ?>
             <?php echo $form['address_apartment']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Квартира', 'title' => 'Квартира')) ?>
+            <?php echo $form['address_floor']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Этаж', 'title' => 'Этаж')) ?>
           </div>
         </dd>
       </dl>
