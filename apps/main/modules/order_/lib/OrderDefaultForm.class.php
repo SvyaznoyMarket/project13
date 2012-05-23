@@ -86,6 +86,10 @@ class OrderDefaultForm extends BaseOrderForm
     $this->validatorSchema['address_apartment'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите номер квартиры'));
     $this->widgetSchema['address_apartment']->setLabel('Квартира');
 
+    $this->widgetSchema['address_floor'] = new sfWidgetFormInputText();
+    $this->validatorSchema['address_floor'] = new sfValidatorString(array('required' => false), array('required' => 'Укажите этаж'));
+    $this->widgetSchema['address_floor']->setLabel('Этаж');
+
     // extra
     $this->widgetSchema['extra'] = new sfWidgetFormTextarea();
     $this->validatorSchema['extra'] = new sfValidatorString(array('required' => false));
@@ -123,6 +127,7 @@ class OrderDefaultForm extends BaseOrderForm
       'address_number',
       'address_building',
       'address_apartment',
+      'address_floor',
       'extra',
       'sclub_card_number',
       'payment_method_id',

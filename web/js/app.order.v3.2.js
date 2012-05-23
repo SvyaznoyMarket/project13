@@ -119,6 +119,10 @@ $(document).ready(function() {
         },
 
         getDeliveryPrice: function(deliveryType) {
+            if (!deliveryType) {
+                return 0
+            }
+
             var data = this.data()
 
             var price = 0
@@ -205,7 +209,7 @@ $(document).ready(function() {
                     $.each(data.unavailable, function(i, itemToken) {
                         var item = data.items[itemToken]
 
-                        if (!item || (0 == item.stock) || (item.type != 'product')) {
+                        if (!item || (0 == item.stock) || (item.type != 'product') || (item.quantity <= item.stock)) {
                             if ((i +1) == length) dfd.resolve()
                             return true
                         }
@@ -292,12 +296,7 @@ $(document).ready(function() {
                 form.find('.mRed').removeClass('mRed')
                 form.find('.bFormError').remove()
 
-                if ($('.order-delivery-holder[data-type="standart"]:visible').length > 0) {
-                    $('#addressField').show()
-                }
-                else {
-                    $('#addressField').hide()
-                }
+                DeliveryMap.checkAddressFiled()
             })
         },
 
@@ -373,6 +372,8 @@ $(document).ready(function() {
             var intervals = DeliveryMap.getDeliveryInterval(deliveryType, deliveryType.date)
             var intervalHolder = $(deliveryTypeHolder.find('[data-interval-holder]').data('intervalHolder'))
             var intervalElementTemplate = Templating.clone($(intervalHolder.data('template')))
+
+            intervalHolder.html('')
 
             $.each(intervals, function(i, interval) {
                 intervalElement = intervalElementTemplate.clone()
@@ -548,11 +549,13 @@ $(document).ready(function() {
             var form = $('#order-form')
             var isValid = true
 
-            if ((-1 === $.inArray(el.attr('id'), ['order_address_street', 'order_address_number'])) && ($('.bBuyingLine__eRadio[data-delivery-type="self"]:checked').length)) {
-                return false
+            if ((-1 !== $.inArray(el.attr('id'), ['order_address_street', 'order_address_number'])) && !$('.bBuyingLine__eRadio[data-delivery-type="standart"]:checked').length) {
+                //console.info(1);
+                return true
             }
 
             if ((-1 !== $.inArray(el.attr('id'), ['order_address_street', 'order_address_number'])) && !el.val()) {
+                //console.info(2);
                 isValid = false
                 if (!$('#addressField').find('dd .bFormError').length) {
                     showError($('#addressField').find('dd > div:first'), message, true)
@@ -560,15 +563,18 @@ $(document).ready(function() {
             }
             // если группа радио и не выбрано ни одного
             else if (el.is(':radio') && !el.is(':checked') && (el.length > 1)) {
+                //console.info(3);
                 isValid = false
                 showError(el.first().parent().parent(), message, false)
             }
             // если чекбокс и не выбран
             else if (el.is(':checkbox') && !el.is(':checked') && (el.length == 1)) {
+                //console.info(4);
                 isValid = false
                 showError(el.first().parent().parent(), message, false)
             }
             else if (el.is(':text') && !el.val()) {
+                //console.info(5);
                 isValid = false
                 showError(el, message, true)
             }
@@ -584,6 +590,15 @@ $(document).ready(function() {
                 $('#payment_method_online-field').hide()
                 $('#payment_method_online-field').find('input').attr('checked', false)
                 $('#payment_method_online-field').find('.mChecked').removeClass('mChecked')
+            }
+        },
+
+        checkAddressFiled: function() {
+            if ($('.order-delivery-holder[data-type="standart"]:visible').length > 0) {
+                $('#addressField').show()
+            }
+            else {
+                $('#addressField').hide()
             }
         }
     }
@@ -852,9 +867,7 @@ $(document).ready(function() {
         DeliveryMap.render()
         $('#order-form-part2').show('fast')
 
-        if ('self' == $('.bBuyingLine__eRadio"]:checked:first').data('deliveryType')) {
-            $('#addressField').hide()
-        }
+        DeliveryMap.checkAddressFiled()
     }
     else if (window.location.hash) {
         $(window.location.hash).click()
@@ -877,7 +890,7 @@ $(document).ready(function() {
         var hasError = false
         $.each(validator, function(field, message) {
             var el = form.find('[name="'+field+'"]:visible')
-            if (!DeliveryMap.validate(el, message)) {
+            if (el.length && !DeliveryMap.validate(el, message)) {
                 hasError = true
             }
         })
@@ -919,6 +932,7 @@ $(document).ready(function() {
 
                                 showError(el, v, true)
                             })
+                            button.text('Завершить оформление')
                         }
                         else {
                             alert(result.error.message)

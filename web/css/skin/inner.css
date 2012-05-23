@@ -3324,6 +3324,7 @@ DT.bCtg__eOrange{
 		display:inline-block;
 		*display:inline;
 		zoom:1;
+        line-height: 30px;
 	}
 	.bSelect__eArrow{
 		top: 0;
