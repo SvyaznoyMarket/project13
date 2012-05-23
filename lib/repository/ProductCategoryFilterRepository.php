@@ -26,7 +26,7 @@ class ProductCategoryFilterRepository
    * Example of asynchronous query
    *
    * <code>
-   * $repo->getListAsync(82, 127, function($filterList){
+   * $repo->getListAsync(127, function($filterList){
    *    foreach($filterList as $filter) {
    *      $filter; // ProductCategoryFilterEntity
    *    }
@@ -37,14 +37,13 @@ class ProductCategoryFilterRepository
    *
    * @see CoreClient::execute
    * @see CoreClient::addQuery
-   * @param $regionId
    * @param $categoryId
    * @param callback $callback First parameter is ProductCategoryFilterEntity[]
    */
-  public function getListAsync($regionId, $categoryId, $callback)
+  public function getListAsync($categoryId, $callback)
   {
     CoreClient::getInstance()->addQuery('listing.filter', array(
-      'region_id' => (int)$regionId,
+      'region_id' => (int)RepositoryManager::getRegion()->getDefaultRegionId(),
       'category_id' => (int)$categoryId,
     ), array(), function(array $response) use ($callback)
     {
