@@ -4995,9 +4995,8 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 }
 
 .bBuyingLine__eRadio{
-    width: 1px;
-    height: 1px;
-    visibility: hidden;
+    position: absolute;
+    z-index: -1;
 }
 .bBuyingLine label{
     width: 460px;
