@@ -292,7 +292,6 @@
         <div class="line pb15"></div>
         <ul class="shopList">
             <li><a href="/shops/voronezh/magazin-v-g-voroneg-ul-plehanovskaya-22">Воронеж (ул. Плехановская)</a></li>
-            <li><a href="/shops/4f8568d9cc7da-kursk-g-305000/magazin-v-g-kursk-ul-lenina-d12">Курск (ул. Ленина д.12)</a></li>
             <li><a href="/shops/moskva/magazin-na-ul-b-dorogomilovskaya-d-8">Москва (ул. Б. Дорогомиловская)</a></li>
             <li><a href="/shops/4f05bb7196679-orel-g-302000/magazin-v-g-orel">Орёл (ул. Комсомольская)</a></li>
             <li><a href="/shops/4ee8b0f4a11f5-sergiev-posad-g-sergievo-posadskiy-141/magazin-v--g-sergiev-posad-ul-1-ya-ribnaya-d22">Сергиев посад (ул. 1-ая Рыбная)</a></li>
