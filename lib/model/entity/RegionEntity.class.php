@@ -32,12 +32,12 @@ class RegionEntity
   private $name;
 
   public function __construct(array $data = array()){
-    if(array_key_exists('id', $data))         $this->setId($data['id']);
-    if(array_key_exists('is_active', $data))  $this->setIsActive($data['is_active']);
-    if(array_key_exists('name', $data))       $this->setName($data['name']);
-    if(array_key_exists('level', $data))      $this->setLevel($data['level']);
-    if(array_key_exists('lft', $data))        $this->setLft($data['lft']);
-    if(array_key_exists('rgt', $data))        $this->setRgt($data['rgt']);
+    if(array_key_exists('id', $data))         $this->id       = (int)$data['id'];
+    if(array_key_exists('is_active', $data))  $this->isActive = (bool)$data['is_active'];
+    if(array_key_exists('name', $data))       $this->name     = (string)$data['name'];
+    if(array_key_exists('level', $data))      $this->level    = (int)$data['level'];
+    if(array_key_exists('lft', $data))        $this->lft      = (int)$data['lft'];
+    if(array_key_exists('rgt', $data))        $this->rgt      = (int)$data['rgt'];
   }
   /**
    * @param int $id
