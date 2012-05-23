@@ -79,7 +79,14 @@ class orderActions extends myActions
     //$this->form->getValue('product_quantity');
 
     if ($request->isMethod('post')) {
-      $this->form->bind($request->getParameter($this->form->getName()));
+      $orderRequest = $request->getParameter($this->form->getName());
+
+      //если прилетел shop_id, то преорбазовываю его из core в site
+      if (isset($orderRequest['shop_id']) && !empty($orderRequest['shop_id']))
+      {
+        $orderRequest['shop_id'] = ShopTable::getRecordByCoreId('shop', $orderRequest['shop_id'], true);
+      }
+      $this->form->bind($orderRequest);
 
       // если в запросе нет shop добываем его из параметров формы
       if (!$this->shop) {

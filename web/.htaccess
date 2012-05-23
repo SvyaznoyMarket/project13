@@ -14,9 +14,6 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^product/delivery1click delivery1click.php [L]
   RewriteRule ^product/delivery-info.* delivery_info.php [L]
 
-  RewriteCond %{QUERY_STRING} ^admitad_uid=(.*)
-  RewriteRule ^(.*)$ admitad.php [QSA,L]
-
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$
   #RewriteCond %{REQUEST_URI} !\.html$

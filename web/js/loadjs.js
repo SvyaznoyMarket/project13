@@ -37,7 +37,9 @@
 	switch( document.body.getAttribute('data-template') ) {
 		case 'main':
 			$LAB.queueWait( function() {
-				$LAB.script(getWithVersion('wellcome.js'))
+				$LAB.script( getWithVersion('library.js') )
+				.wait()
+				.script(getWithVersion('wellcome.js'))
 			}).runQueue()
 			break
 		case 'default':
@@ -82,7 +84,7 @@
 			}).runQueue()
 			break
 		case 'product_card':
-			$LAB.queueScript('knockout-2.0.0.js')
+			$LAB.queueScript('knockout-2.1.0.js')
 			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js').script( getWithVersion('library.js') )
@@ -136,7 +138,7 @@
 			}).runQueue()
 			break
 		case 'product_stock':
-			$LAB.queueScript('knockout-2.0.0.js')
+			$LAB.queueScript('knockout-2.1.0.js')
 			.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
 				.script( getWithVersion('library.js') )
