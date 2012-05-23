@@ -424,6 +424,8 @@ class ProductCoreFormFilterSimple
   private $productCategory;
   /** @var \ProductCategoryFilterEntity[] */
   private $filterList;
+  /** @var \ProductCategoryFilterEntity[] */
+  private $parentFilterList;
   private $values = array();
   private $name = self::NAME;
 
@@ -433,10 +435,26 @@ class ProductCoreFormFilterSimple
   public function __construct(ProductCategory $category)
   {
     $this->productCategory = $category;
+    $filterList=array();
+    $parentFilterList=array();
+    RepositoryManager::getProductCategoryFilter()->getListAsync($this->productCategory->core_id, function($data) use(&$filterList){
+      $filterList = $data;
+    });
+    if($this->productCategory->core_parent_id){
+      RepositoryManager::getProductCategoryFilter()->getListAsync($this->productCategory->core_parent_id, function($data) use(&$parentFilterList){
+        $parentFilterList = $data;
+      });
+    }
+    CoreClient::getInstance()->execute();
 
-    $this->filterList = RepositoryManager::getProductCategoryFilter()->getList(
-      $this->productCategory->core_id
-    );
+    $this->filterList = $filterList;
+    $this->parentFilterList = array();
+    /** @var $filter ProductCategoryFilterEntity */
+    foreach($parentFilterList as $filter){
+      if(strpos($filter->getFilterId(), 'prop') === 0 || strpos($filter->getFilterId(), 'tag') === 0){
+        $this->parentFilterList[] = $filter;
+      }
+    }
   }
 
   private function getUrl($filterId, $value = null)
@@ -471,8 +489,8 @@ class ProductCoreFormFilterSimple
   public function getCoreProductFilter($useCategoryFilter = true)
   {
     $filters = array();
-
-    foreach ($this->filterList as $filter) {
+    /** @var $filter ProductCategoryFilterEntity */
+    foreach (array_merge($this->filterList,$this->parentFilterList) as $filter) {
       $value = $this->getValue($filter);
       if (!empty($value)) {
         switch ($filter->getTypeId()) {
@@ -498,14 +516,14 @@ class ProductCoreFormFilterSimple
     if ($this->productCategory && $useCategoryFilter) {
       $filters[] = array('category', 1, $this->productCategory->core_id);
     }
-
     return $filters;
   }
 
   public function getSelectedList()
   {
     $list = array();
-    foreach ($this->filterList as $filter) {
+    /** @var $filter ProductCategoryFilterEntity */
+    foreach (array_merge($this->filterList,$this->parentFilterList) as $filter) {
       $value = $this->getValue($filter);
       switch ($filter->getTypeId()) {
         case ProductCategoryFilterEntity::TYPE_SLIDER:
