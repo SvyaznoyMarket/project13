@@ -126,10 +126,10 @@ class shopComponents extends myComponents
         $markers[$shop->id] = array(
           'id'        => $shop->id,
           'region_id' => $shop->region_id,
-          'link'      => link_to('Подробнее о магазине', array('sf_route' => 'shop_show', 'sf_subject' => $shop), array('class' => 'white bold')),
+          'link'      => url_for( 'shop_show', array( 'sf_subject' => $shop)),
           'name'      => $shop->name,
           'address'   => $shop->address,
-          'regime'    => $shop->regime,
+          'regtime'    => $shop->regime,
           'latitude'  => $shop->latitude,
           'longitude' => $shop->longitude,
         );
