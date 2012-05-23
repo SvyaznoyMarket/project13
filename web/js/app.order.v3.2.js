@@ -551,7 +551,7 @@ $(document).ready(function() {
             var isValid = true
 
             if ((-1 === $.inArray(el.attr('id'), ['order_address_street', 'order_address_number'])) && ($('.bBuyingLine__eRadio[data-delivery-type="self"]:checked').length)) {
-                return false
+                return true
             }
 
             if ((-1 !== $.inArray(el.attr('id'), ['order_address_street', 'order_address_number'])) && !el.val()) {
@@ -879,7 +879,7 @@ $(document).ready(function() {
         var hasError = false
         $.each(validator, function(field, message) {
             var el = form.find('[name="'+field+'"]:visible')
-            if (!DeliveryMap.validate(el, message)) {
+            if (el.length && !DeliveryMap.validate(el, message)) {
                 hasError = true
             }
         })
