@@ -116,12 +116,14 @@ class order_Actions extends myActions
     {
       /* @var $baseOrder Order */
       $baseOrder = $form->updateObject();
+      /*
       $baseOrder->address = ''
         .($form->getValue('address_metro') ? "метро {$form->getValue('address_metro')}, " : '')
         .("улица {$form->getValue('address_street')}, ")
         .("дом {$form->getValue('address_number')}")
         .($form->getValue('address_building') ? ", корпус/строение {$form->getValue('address_building')}" : '')
         .($form->getValue('address_apartment') ? ", квартира {$form->getValue('address_apartment')}" : '');
+      */
 
       $deliveryMap = json_decode($request['delivery_map'], true);
       try {
