@@ -89,4 +89,15 @@ class RepositoryManager
     if (!$repo) $repo = new ListingRepository();
     return $repo;
   }
+
+  /**
+   * @static
+   * @return ProductLineRepository
+   */
+  public static function getProductLine()
+  {
+    static $repo;
+    if(!$repo) $repo = new ProductLineRepository();
+    return $repo;
+  }
 }

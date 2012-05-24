@@ -31,14 +31,10 @@ class UnitellerPaymentProvider
         $productInfo[$productRelation->product_id]['price'] =  number_format($productRelation->price * $productRelation->quantity, 0, ',', ' ');
     }
 
-    foreach($order->getService() as $service){
-        $serviceQty = $service->cart['quantity'];
-        foreach($service->cart['product'] as $qty) {
-            $serviceQty += $qty;
-        }
-        $serviceInfo[$service->id]['name'] = $service->name;
-        $serviceInfo[$service->id]['quantity'] = $serviceQty;
-        $serviceInfo[$service->id]['price'] =  number_format($service->getCurrentPrice() * $serviceQty, 0, ',', ' ');
+    foreach($order->getServiceRelation() as $serviceRelation){
+        $serviceInfo[$serviceRelation->service_id]['name'] = $serviceRelation->getService()->name;
+        $serviceInfo[$serviceRelation->service_id]['quantity'] = isset($serviceInfo[$serviceRelation->service_id]['quantity']) ? $serviceInfo[$serviceRelation->service_id]['quantity'] + $serviceRelation->quantity : $serviceRelation->quantity;
+        $serviceInfo[$serviceRelation->service_id]['price'] =  number_format($serviceRelation->price * $serviceRelation->quantity, 0, ',', ' ');
     }
     if (count($productInfo)) {
         foreach($productInfo as $product){

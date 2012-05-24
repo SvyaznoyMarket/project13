@@ -5,7 +5,7 @@
       <div class='bFooter__eLogo'></div>
       <a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">О Компании</a><br>
       <a href="<?php echo url_for('shop') ?>">Наши магазины</a><br>
-      <a href="http://job.enter.ru/" target="_blank">Работать у нас</a><br>
+      <a href="http://job.enter.ru/vacancies" target="_blank">Работать у нас</a><br>
       <a href="<?php echo url_for('callback') ?>">Напишите нам</a><br>
       <span>Еще больше<br> интересного<br> для вас в:</span><br>
       <a href="http://www.facebook.com/enter.ru" title="facebook" target="blank"></a>

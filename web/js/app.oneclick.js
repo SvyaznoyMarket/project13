@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	/* Custom Selectors */ 
-	//main.js maybe ?
 	$('#order1click-container-new').delegate( '.bSelect', 'click', function() {
 		if( $(this).hasClass('mDisabled') )
 			return false
@@ -12,121 +11,7 @@ $(document).ready(function() {
 		var options = $(this).find('.bSelect__eDropmenu')
 		if( options.is(':visible') )
 			options.hide()
-	})	
-	
-	/* Utilities */
-	function calcMCenter( shops ) {
-		var latitude=0, longitude=0,
-			l = shops.length
-		for(var i=0; i<l; i++) {
-			latitude  += shops[i].latitude*1
-			longitude += shops[i].longitude*1		
-		}
-		var mapCenter = {
-			latitude  : latitude / l,
-			longitude : longitude / l
-		}	
-		return mapCenter
-	}	
-	
-	/* MAP Obj */
-	function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate ) {
-		var self         = this,
-			mapWS        = null,
-			infoWindow   = null,
-			positionC    = null,
-			markers      = [],
-			mapContainer = $('#'+DOMid),
-			infoWindowTemplate = templateIWnode.prop('innerHTML')
-		
-		this.updateInfoWindowTemplate = function( marker ) {
-			if( updateInfoWindowTemplate )
-				updateInfoWindowTemplate( marker )
-			infoWindowTemplate = templateIWnode.prop('innerHTML')	
-		}
-		
-		function create() {
-			positionC = new google.maps.LatLng(center.latitude, center.longitude)			
-			var options = {
-				zoom: 11,
-				center: positionC,
-				scrollwheel: false,
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
-				mapTypeControlOptions: {
-					style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-				}
-			}
-			mapWS      = new google.maps.Map( document.getElementById( DOMid ), options )
-			infoWindow = new google.maps.InfoWindow({
-				maxWidth: 400,
-				disableAutoPan: false
-			})
-		}
-
-		this.showInfobox = function( marker ) {
-			var item = markers[marker.id]
-			marker.setVisible(false) // hides marker
-			self.updateInfoWindowTemplate( item )
-			infoWindow.setContent( infoWindowTemplate )
-			infoWindow.setPosition( marker.position )
-			infoWindow.open( mapWS )
-			google.maps.event.addListener( infoWindow, 'closeclick', function() { 
-				marker.setVisible(true)
-			})
-		}
-		
-		this.hideInfobox = function() {
-			infoWindow.close()
-		}
-		
-		this.showMarkers = function( argmarkers ) {
-			$.each( markers, function(i, item) {
-				 if( typeof( item.ref ) !== 'undefined' )
-					item.ref.setMap(null)
-			})
-			markers = argmarkers
-			google.maps.event.trigger( mapWS, 'resize' )
-			mapWS.setCenter( positionC )
-			$.each( markers, function(i, item) {
-				var marker = new google.maps.Marker({
-				  position: new google.maps.LatLng(item.latitude, item.longitude),
-				  map: mapWS,
-				  title: item.name,
-				  icon: '/images/marker.png',
-				  id: item.id
-				})
-				google.maps.event.addListener(marker, 'click', function() { self.showInfobox(this) })
-				markers[marker.id].ref = marker
-			})
-		}
-
-		this.closeMap = function( callback ) {
-			infoWindow.close()
-			mapContainer.hide('blind', null, 800, function() {
-				if( callback )
-					callback()
-			})
-		}
-				
-		this.addHandler = function( selector, callback ) {
-			mapContainer.delegate( selector, 'click', function(e) { //desktops			
-				e.preventDefault()
-				callback( e.target )
-			})
-			var bw = new brwsr()
-			if( bw.isTouch )
-				mapContainer[0].addEventListener("touchstart",  //touch devices
-				function(e) {
-					e.preventDefault()
-					if( e.target.is( selector ) )
-						callback( e.target )
-				} , false) 							
-		}
-
-		/* main() */
-		create()
-
-	} // object MapWithShops
+	})
 	
 	/* View Models */
 	//////////////////////////////////////////
@@ -424,7 +309,8 @@ $(document).ready(function() {
 						
 						break
 					}
-				return	
+				enableHandlers()	
+				return	true
 			}
 
 			self.validateForm = function() {
@@ -636,7 +522,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	function enableHandlers() {
 		if( typeof( $.mask ) !== 'undefined' ) {
 			$.mask.definitions['n'] = "[()0-9\ \-]"
-			$("#phonemask").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " " })
+			$("#phonemask").mask("+7 nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
 		}
 	}
 	/* One Click Order */

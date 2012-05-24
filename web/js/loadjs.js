@@ -38,8 +38,10 @@
 		case 'main':
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
+				.script('shelf/jquery.countdown.min.js')
+				.script('shelf/jquery.countdown-ru.js?v=2')
 				.wait()
-				.script(getWithVersion('wellcome.js'))
+				.script(getWithVersion('welcome.js'))
 			}).runQueue()
 			break
 		case 'default':
@@ -126,9 +128,8 @@
 			break
 		case 'shop':
 			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
-				.script( getWithVersion('library.js') )
-				.script('google.maps.infobox.js')
+				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				//.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('app.shop.js') )
 				.script( getWithVersion('main.js') )
@@ -140,9 +141,8 @@
 		case 'product_stock':
 			$LAB.queueScript('knockout-2.1.0.js')
 			.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script('jquery.ui.autocomplete.js')
-				.script( getWithVersion('library.js') )
-				.script('google.maps.infobox.js')
+				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				//.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('main.js') )
 				.wait()
