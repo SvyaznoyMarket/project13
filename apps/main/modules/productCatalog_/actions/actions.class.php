@@ -447,11 +447,15 @@ class ProductCoreFormFilterSimple
     }
     CoreClient::getInstance()->execute();
 
-    $this->filterList = $filterList;
-    $this->parentFilterList = array();
     /** @var $filter ProductCategoryFilterEntity */
+    $this->filterList = $filterList;
+    $filterIdList = array();
+    foreach($filterList as $filter){
+      $filterIdList[] = $filter->getFilterId();
+    }
+    $this->parentFilterList = array();
     foreach($parentFilterList as $filter){
-      if(strpos($filter->getFilterId(), 'prop') === 0 || strpos($filter->getFilterId(), 'tag') === 0){
+      if(!in_array($filter->getFilterId(), $filterIdList)){
         $this->parentFilterList[] = $filter;
       }
     }
