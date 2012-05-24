@@ -23,7 +23,8 @@ class productCard_Actions extends myActions
 
   public function executeIndex(sfWebRequest $request)
   {
-    $productToken = end(explode('/', $request['product']));
+    $a = explode('/', $request['product']);
+    $productToken = end($a);
     $this->loadProduct($productToken);
   }
 
@@ -100,7 +101,7 @@ class productCard_Actions extends myActions
 
     $showRelatedUpper = false;
     foreach($product->getCategoryList() as $category){
-      if(in_array($category->getId(80, 923, 1604, 1611), array())){
+      if(in_array($category->getId(), array(80, 923, 1604, 1611))){
         $showRelatedUpper = true;
         break;
       }
