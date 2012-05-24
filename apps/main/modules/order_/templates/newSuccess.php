@@ -141,7 +141,6 @@
         </dd>
       </dl>
 
-      <?php if (false): ?>
       <dl class='bBuyingLine'>
         <dt>У вас есть карта &laquo;Связной-Клуб&raquo;?</dt>
         <dd class="bSClub">
@@ -152,7 +151,6 @@
           <!--<label><b></b> <h5>Сохранить мои данные для следующих покупок</h5> <input class='bBuyingLine__eRadio' name='r1' type='radio'></label>-->
         </dd>
       </dl>
-      <?php endif ?>
 
       <h2>Об оплате</h2>
 
