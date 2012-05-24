@@ -148,7 +148,7 @@ class orderActions extends myActions
               ? DeliveryTypeTable::getInstance()->getByToken('self')->id
               : DeliveryTypeTable::getInstance()->getByToken('standart')->id;
 
-          $order->payment_details = 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.';
+          $order->extra = 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.';
           $order->save();
 
           $form = new UserFormSilentRegister();

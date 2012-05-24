@@ -70,7 +70,7 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 
       <div class="bigbanner">
       	<div class="counterhint" style="position: absolute;">
-			<div><strong>Новый iPad.</strong> До начала продаж
+			<div>Новый <strong>iPad.</strong> До начала продаж
 			<div id="countdown"></div>
 			</div>
 		</div>
