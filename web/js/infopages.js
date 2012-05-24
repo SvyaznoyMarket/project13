@@ -1,4 +1,87 @@
 $(document).ready(function(){
+	/* iPadPromo*/
+	if( $('#oneClickPromo').length ) {
+		$('.halfline .bOrangeButton').click( function() {
+			var halfline = $(this).parent().parent()
+			var ipad = {}
+			ipad.token = halfline.find('.ttl').text()
+			ipad.price = halfline.find('.price').text()
+			ipad.image = halfline.find('img').attr('src')
+			$('#ipadwrapper').html( tmpl('ipad', ipad) )
+			$('#order1click-container-new').lightbox_me({})
+		})
+		
+		$('#oneClickPromo').submit( function(e) {
+			e.preventDefault()
+			return false
+		})
+		
+		if( typeof( $.mask ) !== 'undefined' ) {
+			$.mask.definitions['n'] = "[()0-9\ \-]"
+			$("#phonemask").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
+		}
+		
+		function emptyValidation( node ) {
+			if( node.val().replace(/\s/g,'') === '' ) {
+				node.addClass('mEmpty')
+				node.after( $('<span class="mEmpty">(!) Пожалуйста, верно заполните поле</span>') )
+				return false
+			} else {
+				if( node.hasClass('mEmpty') ) {
+					node.removeClass('mEmpty')
+					node.parent().find('.mEmpty').remove()
+				}
+			}
+			return true	
+		}
+
+		$('#oneClickPromo input[type=text]').change( function() {
+			emptyValidation( $(this) )
+		})
+		
+		function _f_success() { 
+			$('#f_success').show()
+			$('#f_init').hide()
+		}
+		
+		function _f_error() { 
+			$('#oneClickPromo input[type=text]').removeAttr('disabled') 
+			$('#f_init h2').text('Произошла ошибка :( Попробуйте ещё')
+			button.text('Отправить предзаказ')
+		}		
+		
+		$('.bBigOrangeButton').click( function(e) {
+			e.preventDefault()
+			$('#oneClickPromo input[type=text]').trigger('change')
+			if( $('.mEmpty').length )
+				return
+				
+			var button = $(this)
+			button.text('Идёт отправка...')
+			var data= $('#oneClickPromo').serializeArray()
+			$('#oneClickPromo input[type=text]').attr('disabled','disabled') 
+			var url = $('#oneClickPromo').attr('action')
+			$.ajax( {
+				url: url,
+				data: data,
+				success: function( resp ) {
+				if( !( 'success' in resp ) ) {
+					_f_error()
+					return false
+				}
+				if( resp.success !== 'ok' ) {
+					_f_error()
+					return false
+				}
+				_f_success()	
+				return true
+			}
+			})
+			
+			
+		})
+	}
+	
 	/* Credits inline */
 	if( $('.bCreditLine').length ) {
 		document.getElementById("requirementsFullInfoHref").style.cursor="pointer";
