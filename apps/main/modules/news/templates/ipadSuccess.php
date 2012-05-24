@@ -7,7 +7,7 @@
 </div>
 <?php end_slot() ?>
 <?php slot('title') ?>
-Предзаказы на новый Ipad
+Начало продаж 25 мая в 0:01 минуту!
 <?php end_slot() ?>
 
 <div class='promo'>
