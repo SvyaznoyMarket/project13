@@ -130,8 +130,20 @@ class myUser extends myGuardSecurityUser
 
   public function setRegion($region_id)
   {
-    $region = $region = RegionTable::getInstance()->getById($region_id);
-    $this->region = $region;
+    $region = RegionTable::getInstance()->findOneBy('id', $region_id);
+    if(!$region){
+      return false;
+    }
+    $this->region = array(
+      'id' => $region->id,
+      'name' => $region->name,
+      'full_name' => $region->name . ', ' . $region->getParent()->name,
+      'type' => $region->type,
+      'product_price_list_id' => $region->product_price_list_id,
+      'core_id' => $region->core_id,
+      'geoip_code' => $region->geoip_code,
+      'region' => $region,
+    );
     $_COOKIE[sfConfig::get('app_guard_region_cookie_name', 'geoshop')] = $region->getGeoipCode();
     $this->setRegionCookie();
   }
