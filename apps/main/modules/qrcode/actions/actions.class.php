@@ -42,7 +42,7 @@ class qrcodeActions extends myActions
       case 'product.show':
         $product = ProductTable::getInstance()->getById($ids[0]);
         $request->setParameter('product', $product);
-        $this->forward('productCard', 'index');
+        $this->forward('productCard_', 'index');
         break;
     }
 
