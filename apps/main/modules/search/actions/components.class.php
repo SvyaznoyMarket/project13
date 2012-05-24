@@ -53,7 +53,7 @@ class searchComponents extends myComponents
         /** @var $productCategory ProductCategory */
         foreach ($productType->ProductCategory as $productCategory)
         {
-          if ($productCategory->getRootCategory()->id == $firstProductCategory->id)
+          if (is_object($productCategory) && ($productCategory->getRootCategory()->id == $firstProductCategory->id))
           {
             $index = 'first';
             break;
