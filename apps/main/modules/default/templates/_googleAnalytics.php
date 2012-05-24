@@ -1,4 +1,4 @@
-<?php if ('live' == sfConfig::get('sf_environment')): ?>
+<?php if (true || 'live' == sfConfig::get('sf_environment')): ?>
   <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-25485956-1']);

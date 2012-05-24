@@ -58,6 +58,73 @@
       <?php endforeach ?>
     })();
   </script>
+
+
+
+  <script type="text/javascript">
+    _gaq.push(['_addTrans',
+      '<?php echo $order['number'] ?>', // Номер заказа
+      '<?php echo $order['shop']['name'] ?>', // Название магазина (Необязательно)
+      '<?php echo str_replace(',', '.', $order['sum']) ?>', // Полная сумма заказа (дроби через точку)
+      '', // налог
+      '<?php echo 0 ?>', // Стоимость доставки (дроби через точку)
+      '<?php echo $order['geo']['name'] ?>', // Город доставки (Необязательно)
+      '', // Область (необязательно)
+      '' // Страна (нобязательно)
+    ]);
+    var yaParams = {
+      order_id:'<?php echo $order['number'] ?>',
+      order_price: <?php echo str_replace(',', '.', $order['sum']) ?>,
+      currency:'RUR',
+      exchange_rate:1,
+      goods:[
+      <?php foreach ($order['product'] as $product): ?>
+        {
+          id:'<?php echo $product['article'] ?>',
+          name:'<?php echo $product['name'] ?>',
+          price: <?php echo str_replace(',', '.', $product['price']) ?>,
+          quantity: <?php echo $product['quantity'] ?>
+        },
+        <?php endforeach ?>
+      <?php foreach ($order['service'] as $service): ?>
+        {
+          id:'<?php echo $service['token'] ?>',
+          name: '<?php echo $service['name'] ?>',
+          price: <?php echo str_replace(',', '.', $service['price']) ?>,
+          quantity: <?php echo $service['quantity'] ?>
+        },
+        <?php endforeach ?>
+      ]
+    };
+    <?php foreach ($order['product'] as $product): ?>
+    _gaq.push(['_addItem',
+      '<?php echo $order['number'] ?>', // Номер заказа
+      '<?php echo $product['article'] ?>', // Артикул
+      '<?php echo $product['name'] ?>', // Название товара
+      '<?php echo $product['category_name'] ?>', // Категория товара
+      '<?php echo str_replace(',', '.', $product['price']) ?>', // Стоимость 1 единицы товара
+      '<?php echo $product['quantity'] ?>' // Количество товара
+    ]);
+      <?php endforeach ?>
+    <?php foreach ($order['service'] as $service):
+      $catName = 'Услуга F1';
+    ?>
+    _gaq.push(['_addItem',
+      '<?php echo $order['number'] ?>', // Номер заказа
+      '<?php echo $service['token'] ?>', // id
+      '<?php echo $service['name'] ?>', // Название услуги
+      '<?php echo $catName ?>', // Категория товара
+      '<?php echo str_replace(',', '.', $service['price']) ?>', // Стоимость 1 единицы товара
+      '<?php echo $service['quantity'] ?>' // Количество услуг
+    ]);
+      <?php endforeach ?>
+    _gaq.push(['_trackTrans']);
+
+  </script>
+
+  <!--Трэкер "Покупка"-->
+  <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>');</script>
+  <!--Трэкер "Покупка"-->
 <?php end_slot() ?>
 
 

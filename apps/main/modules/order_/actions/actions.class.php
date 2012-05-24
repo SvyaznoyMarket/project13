@@ -207,6 +207,80 @@ class order_Actions extends myActions
     }
     $orders = $result;
 
+    foreach ($orders as &$order)
+    {
+      // добавить названия товаров {
+      if (isset($order['product']) && is_array($order['product']))
+      {
+        $products = RepositoryManager::getProduct()->getListById(array_map(function($i) {
+          return $i['product_id'];
+        }, $order['product']));
+
+        $productsById = array();
+        foreach ($products as $product)
+        {
+          /* @var $product ProductEntity */
+          $productsById[$product->getId()] = $product;
+        }
+
+        foreach ($order['product'] as &$productData)
+        {
+          if (!array_key_exists($productData['product_id'], $productsById)) continue;
+
+          $productData['name'] = $productsById[$productData['product_id']]->getName();
+          $productData['article'] = $productsById[$productData['product_id']]->getArticle();
+
+          $productData['category_name'] = '';
+          $categories = $productsById[$productData['product_id']]->getCategory();
+          if (!empty($categories[0]) && ($categories[0] instanceof ProductCategoryEntity)) {
+            $productData['category_name'] = $categories[0]->getName();
+          }
+        } if (isset($productData)) unset($productData);
+      }
+      // }
+
+      // добавить названия услуг {
+      if (isset($order['service']) && is_array($order['service']))
+      {
+        $services = ServiceTable::getInstance()->getListByCoreIds(array_map(function($i) {
+          return $i['service_id'];
+        }, $order['service']));
+
+        $serviceById = array();
+        foreach ($services as $service)
+        {
+          /* @var $service Service */
+          $serviceById[$service->getId()] = $service;
+        }
+
+        foreach ($order['service'] as &$serviceData)
+        {
+          if (!array_key_exists($serviceData['service_id'], $serviceById)) continue;
+
+          $serviceData['name'] = $serviceById[$serviceData['service_id']]->getName();
+          $serviceData['token'] = $serviceById[$serviceData['service_id']]->getToken();
+        } if (isset($serviceData)) unset($serviceData);
+      }
+      // }
+
+      // добавить название региона
+      $shop = !empty($order['shop_id']) ? ShopTable::getInstance()->getByCoreId($order['shop_id']) : null;
+      $order['shop'] = $shop ? array('name' => $shop['name']) : null;
+
+      if (!isset($order['product']))
+      {
+        $order['product'] = array();
+      }
+      if (!isset($order['service']))
+      {
+        $order['service'] = array();
+      }
+
+    } if (isset($order)) unset($order);
+
+    //dump($orders, 1);
+
+
     $this->paymentForm = false;
     // онлайн оплата?
     if (1 == count($orders) && empty($request['Order_ID']))
@@ -216,48 +290,6 @@ class order_Actions extends myActions
       $paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
       if ('online' == $paymentMethod->token)
       {
-        // добавить названия товаров {
-        if (isset($order['product']) && is_array($order['product']))
-        {
-          $products = RepositoryManager::getProduct()->getListById(array_map(function($i) {
-            return $i['product_id'];
-          }, $order['product']));
-
-          $productsById = array();
-          foreach ($products as $product)
-          {
-            /* @var $product ProductEntity */
-            $productsById[$product->getId()] = $product;
-          }
-
-          foreach ($order['product'] as &$productData)
-          {
-            $productData['name'] = array_key_exists($productData['product_id'], $productsById) ? $productsById[$productData['product_id']]->getName() : '';
-          } if (isset($productData)) unset($productData);
-        }
-        // }
-
-        // добавить названия услуг {
-        if (isset($order['service']) && is_array($order['service']))
-        {
-          $services = ServiceTable::getInstance()->getListByCoreIds(array_map(function($i) {
-            return $i['service_id'];
-          }, $order['service']));
-
-          $serviceById = array();
-          foreach ($services as $service)
-          {
-            /* @var $service Service */
-            $serviceById[$service->getId()] = $service;
-          }
-
-          foreach ($order['service'] as &$serviceData)
-          {
-            $serviceData['name'] = array_key_exists($serviceData['service_id'], $serviceById) ? $serviceById[$serviceData['service_id']]->getName() : '';
-          } if (isset($serviceData)) unset($serviceData);
-        }
-        // }
-
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $provider->getForm($order);
       }
