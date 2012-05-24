@@ -141,7 +141,7 @@ foreach ($photo3dList as $photo3d)
     <?php
     //если стоит шильдик Акция
     $labels = $item->getLabelList();
-    $label = reset($labels);
+    $label = isset($labels[0])? $labels[0] : null;
     if ($label && $label->getId() == ProductLabelEntity::LABEL_ACTION) {
     ?>
       <!--AdFox START-->
