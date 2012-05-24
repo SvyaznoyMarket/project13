@@ -104,7 +104,7 @@ foreach ($dates as $i => $date) {
 <div id="order-interval-template" class="hidden">
   <span class="bBuyingDatePopup">
     <h3 class="bBuyingDatePopup__eTitle" data-assign='{"date": ["text", "_value"]}'></h3>
-    <span class="bBuyingDatePopup__eLine order-interval" data-assign='{"value": ["attr", ["data-value", "_value"]], "date": ["attr", ["data-date", "_value"]], "deliveryType": ["attr", ["data-delivery-type", "_value"]]}' data-value="" data-date="" data-delivery-type=""><i></i><data data-assign='{"name": ["text", "_value"]}'></data></span>
+    <span class="bBuyingDatePopup__eLine order-interval" data-assign='{"value": ["attr", ["data-value", "_value"]], "date": ["attr", ["data-date", "_value"]], "deliveryType": ["attr", ["data-delivery-type", "_value"]]}' data-value="" data-date="" data-delivery-type=""><i></i><span data-replace="true" data-assign='{"name": ["text", "_value"]}'></span></span>
   </span>
 </div>
 -->
@@ -117,7 +117,7 @@ foreach ($dates as $i => $date) {
 <!-- шаблон товаров { -->
 <div id="order-item-template" class="hidden">
   <div class="order-item-container">
-    <p><data data-assign='{"totalFormatted": ["text", "_value"]}'></data> <span class="rubl">p</span></p>
+    <p><span data-replace="true" data-assign='{"totalFormatted": ["text", "_value"]}'></span> <span class="rubl">p</span></p>
 
     <p>
       <a data-assign='{"deleteUrl": ["attr", ["href", "_value"]], "token": ["attr", ["data-token", "_value"]]}' href="#" class="bImgButton mBacket" data-token=""></a>
@@ -126,8 +126,8 @@ foreach ($dates as $i => $date) {
     <img data-assign='{"image": ["attr", ["src", "_value"]], "name": ["attr", ["alt", "_value"]]}' src="" alt="" />
 
     <span class="bBuyingLine__eInfo">
-      <data data-assign='{"name": ["text", "_value"]}'></data>
-      <br><span>(<data data-assign='{"quantity": ["text", "_value"]}'></data> шт.)</span>
+      <span data-replace="true" data-assign='{"name": ["text", "_value"]}'></span>
+      <br><span>(<span data-replace="true" data-assign='{"quantity": ["text", "_value"]}'></span> шт.)</span>
     </span>
   </div>
 </div>
@@ -144,12 +144,12 @@ foreach ($dates as $i => $date) {
 
 <!-- шаблон стоимости доставки -->
 <div id="order-delivery_price-template" class="hidden">
-  <span class="red">Стоимость доставки <data data-assign='{"price": ["text", "_value"]}'></data> <span class="rubl">p</span><i></i></span>
+  <span class="red">Стоимость доставки <span data-replace="true" data-assign='{"price": ["text", "_value"]}'></span> <span class="rubl">p</span><i></i></span>
 </div>
 <!-- } -->
 
 <!-- шаблон стоимости подзаказа -->
 <div id="order-delivery_total-template" class="hidden">
-  <div class="bBuyingLineWrap__eSum"><data data-assign='{"name": ["text", "_value"]}'></data>: <b><data data-assign='{"total": ["text", "_value"]}'></data> <span class="rubl">p</span></b></div>
+  <div class="bBuyingLineWrap__eSum"><span data-replace="true" data-assign='{"name": ["text", "_value"]}'></span>: <b><span data-replace="true" data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></b></div>
 </div>
 <!-- } -->

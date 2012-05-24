@@ -17,7 +17,7 @@ $(document).ready(function() {
 
                 el[callback[0]].apply(el, params)
 
-                if (el.is('data')) {
+                if (el.hasAttribute('data-replace')) {
                     el.replaceWith(el.text())
                 }
             })
