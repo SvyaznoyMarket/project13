@@ -69,7 +69,7 @@
 			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
-				.script('shelf/jquery.maskedinput.js')
+				//.script('shelf/jquery.maskedinput.js')
 				.script('shelf/jquery.placeholder.js')
 				.wait()
 				.script(getWithVersion('app.shop.map.js'))
