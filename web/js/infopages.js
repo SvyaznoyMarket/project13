@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	/* iPadPromo*/
 	if( $('#oneClickPromo').length ) {
-		$('.halfline .bOrangeButton').click( function() {
+		$('.halfline.active .bOrangeButton').click( function() {
 			var halfline = $(this).parent().parent()
 			var ipad = {}
 			ipad.token = halfline.find('.ttl').text()
