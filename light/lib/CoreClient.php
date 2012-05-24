@@ -1,10 +1,7 @@
 <?php
 
 require_once(__DIR__.'/log4php/Logger.php');
-
-class CoreClientException extends Exception
-{
-}
+require_once(ROOT_PATH.'system/exception/coreClientException.php');
 
 class CoreClient
 {
@@ -81,7 +78,7 @@ class CoreClient
     }
     catch (CoreClientException $e) {
       curl_close($connection);
-      $this->log($e->__toString(), 'error');
+      $this->log('request params: '.$action.', get: '.print_r($params, 1).', post: '.print_r($data, 1).'error: '.$e->__toString(), 'error');
       throw $e;
     }
   }

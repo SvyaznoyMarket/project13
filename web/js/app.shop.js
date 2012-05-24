@@ -39,12 +39,6 @@ $(document).ready(function() {
 			  center: position,
 			  scrollwheel: false,
 			  mapTypeId: google.maps.MapTypeId.ROADMAP,
-			  /*
-			  scaleControl: ,
-			  navigationControlOptions: {
-				style: google.maps.NavigationControlStyle.DEFAULT
-			  },
-			  */
 			  mapTypeControlOptions: {
 				style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
 			  }
@@ -63,7 +57,7 @@ $(document).ready(function() {
 
 	$('div.map-google-link:first', marketfolio ).trigger('click')
 
-
+/* RETIRED
   $('#region_map-container').bind({
     create: function(e, center, markers, infoWindowTemplate) {
 			var el = $(this)
@@ -74,12 +68,6 @@ $(document).ready(function() {
 			  center: position,
 			  scrollwheel: false,
 			  mapTypeId: google.maps.MapTypeId.ROADMAP,
-			  /*
-			  scaleControl: ,
-			  navigationControlOptions: {
-				style: google.maps.NavigationControlStyle.DEFAULT
-			  },
-			  */
 			  mapTypeControlOptions: {
           style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
 			  }
@@ -177,10 +165,20 @@ $(document).ready(function() {
       $('#map-info_window-container')
     ])
   }
-
-
-  $('#region-select').bind('change', function() {
-    window.location = $(this).find('option:selected').data('url')
-  })
+*/
+	var mapCenter =  $('#map-center').data('content') 
+	window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'region_map-container', updateTmlt )
+	window.regionMap.showMarkers(  $('#map-markers').data('content') )
+	//window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
+	
+	function updateTmlt( marker ) {
+		$('#map-info_window-container').html(
+			tmpl('infowindowtmpl', marker )
+		)
+	}
+	
+	$('#region-select').bind('change', function() {
+		window.location = $(this).find('option:selected').data('url')
+	})
 
 });

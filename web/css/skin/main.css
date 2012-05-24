@@ -356,56 +356,56 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
     margin: 10px 0 5px 0;
   }
 
-.mMebel, .category-1 {
+.mMebel, .category-80 {
     background: url("img/header_icon_furniture.gif") no-repeat scroll 0 0 transparent;
     width: 38px;
 }
-.mTehn, .category-2 {
+.mTehn, .category-1 {
     background: url("img/header_icon_home_appliances.gif") no-repeat scroll 0 0 transparent;
     width: 43px;
 }
-.mZdor, .category-3 {
+.mZdor, .category-21 {
     background: url("img/header_icon_beauty_health.gif") no-repeat scroll 0 0 transparent;
     width: 54px;
 }
-.mDom, .category-4 {
+.mDom, .category-443 {
     background: url("img/header_icon_home_goods.gif") no-repeat scroll 0 0 transparent;
     width: 47px;
 }
-.mDeti, .category-5 {
+.mDeti, .category-320 {
     background: url("img/header_icon_baby_goods.gif") no-repeat scroll 0 0 transparent;
     width: 39px;
 }
-.mZoo, .category-6 {
+.mZoo, .category-1438 {
     background: url("img/header_icon_zoo_goods.gif") no-repeat scroll 0 0 transparent;
     width: 54px;
 }
-.mSam, .category-7 {
+.mSam, .category-224 {
     background: url("img/header_icon_tools_goods.gif") no-repeat scroll 0 0 transparent;
     width: 34px;
 }
-.mElectro, .category-8 {
-    background: url("img/header_icon_electronics.gif") no-repeat scroll 0 0 transparent;
+.mElectro, .category-788 {
+    background: url("img/icon_the_new_iPad.gif") no-repeat scroll 0 0 transparent;
     width: 61px;
 }
-.mUkr, .category-9 {
+.mUkr, .category-923 {
     background: url("img/header_icon_jewelry.gif") no-repeat scroll 0 0 transparent;
     width: 54px;
 }
-.mSport, .category-10 {
+.mSport, .category-647 {
     background: url("img/header_icon_sport.gif") no-repeat scroll 0 0 transparent;
     width: 43px;
 }
 
-.mSport i, .category-10 i { top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
+.mSport i, .category-647 i { top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
 
-.mPodarki, .category-11 {
+.mPodarki, .category-185 {
     background: url("img/header_icon_hobbies_gifts.gif") no-repeat scroll 0 0 transparent;
     width: 42px;
 }
 
 
-.mSad, .category-12 {
+.mSad, .category-311 {
     background: url("img/header_icon_garden_orchard.gif") no-repeat scroll 0 0 transparent;
     width: 41px;
 }
@@ -440,3 +440,14 @@ a.zingaya {
     background: url(img/headset.png) no-repeat right center;
     margin-right: 10px;
 }
+.counterhint {
+	background: url("/images/buble_the_new_iPad.png") no-repeat scroll 0 0 black;
+    color: black;
+    height: 70px;
+    margin: 30px 0 0 40px;
+    position: absolute;
+    width: 255px;
+}
+	.counterhint > div {
+		margin:8px 0 0 34px;
+	}

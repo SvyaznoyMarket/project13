@@ -3,6 +3,8 @@
  * @var ProductEntity $item
  * @todo line count!
  */
+if(!$item->getLine() || !$item->getLine()->getToken())
+  return;  // @todo do not view if not line token exists
 ?>
 <div class="goodsbox height250"<?php echo (isset($ii) && $ii > 3) ? ' style="display:none;"' : '' ?>>
   <div class="photo">

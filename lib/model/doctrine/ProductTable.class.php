@@ -10,7 +10,7 @@ class ProductTable extends myDoctrineTable
  /**
   * Returns an instance of this class.
   *
-  * @return object ProductTable
+  * @return ProductTable
   */
   public static function getInstance()
   {
@@ -780,6 +780,11 @@ class ProductTable extends myDoctrineTable
     return $q->fetchOne();
   }
 
+  /**
+   * @param ProductLine $line
+   * @param array $params
+   * @return Product
+   */
   public function getByLine(ProductLine $line, array $params = array())
   {
     $this->applyDefaultParameters($params);

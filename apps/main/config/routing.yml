@@ -875,6 +875,12 @@ search_ajax:
 callback:
   url:   /callback
   param: { module: callback, action: index }
+
+# Страница акции ipad
+newipad:
+  url:   /newipad
+  param: { module: news, action: ipad }
+
 #  url:      /payment/callback
 #  param:    { module: payment, action: callback }
 

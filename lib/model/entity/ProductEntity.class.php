@@ -93,6 +93,8 @@ class ProductEntity
   private $state;
   /** @var ProductLineEntity */
   private $line;
+  /** @var ProductKitEntity[] */
+  private $kitList;
 
   public function __construct(array $data = array())
   {
@@ -176,7 +178,7 @@ class ProductEntity
   }
 
   /**
-   * @return ProductCategoryEntity
+   * @return ProductCategoryEntity[]
    */
   public function getCategoryList()
   {
@@ -688,5 +690,29 @@ class ProductEntity
     /** @var $cart UserCart */
     $cart = $user->getCart();
     return $cart->hasProduct($this->id);
+  }
+
+  /**
+   * @param \ProductKitEntity[] $kitList
+   */
+  public function setKitList(array $kitList)
+  {
+    $this->kitList = array();
+  }
+
+  /**
+   * @param ProductKitEntity $kit
+   */
+  public function addKit(ProductKitEntity $kit)
+  {
+    $this->kitList[] = $kit;
+  }
+
+  /**
+   * @return \ProductKitEntity[]
+   */
+  public function getKitList()
+  {
+    return $this->kitList;
   }
 }
