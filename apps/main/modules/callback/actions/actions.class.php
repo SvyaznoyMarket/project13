@@ -76,4 +76,61 @@ class callbackActions extends myActions
 
     }
 
+    public function executeIpadSave(sfWebRequest $request)
+    {
+        $name = $request->getParameter('name');
+        $email = $request->getParameter('email');
+        $phone = $request->getParameter('phone');
+        $product = $request->getParameter('product');
+
+//        $name = 'aaaa';
+//        $email = 'aaaa';
+//        $phone = 'aaaa';
+//        $product = 'aaaa';
+
+        $result = array();
+        $result['error'] = '';
+        if (!$name) {
+            $result['error']['name'] = 'Пожалуйста, укажите Ваше имя';
+            $result['result'] = 'error';
+        }
+        if (!$email) {
+            $result['error']['email'] = 'Пожалуйста, укажите Ваш email';
+            $result['result'] = 'error';
+        }
+        if (!$phone) {
+            $result['error']['phone'] = 'Пожалуйста, укажите Ваш телефон';
+            $result['result'] = 'error';
+        }
+        if (!$product) {
+            $result['error']['phone'] = 'Не указан продукт, который Вы хотите зарезервировать.';
+            $result['result'] = 'error';
+        }
+        if (empty($result['error'])) {
+            $new = IpadActionTable::getInstance()->create(array(
+                'email' => $email,
+                'phone' => $phone,
+                'name' => $name,
+                'product' => $product,
+                'added' => date('Y-m-d H:i:s'),
+            ));
+            $new->save();
+            //myDebug::dump($comment);
+            $result['result'] = 'ok';
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            $return = array(
+                'success' => $result['result'],
+                'data' => array(
+                    'error' => $result['error']
+                )
+            );
+
+            return $this->renderJson($return);
+        }
+        $this->redirect($this->getRequest()->getReferer());
+        //return $result;
+    }
+
 }
