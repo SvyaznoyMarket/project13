@@ -5030,10 +5030,18 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 .promo .bOrangeButton{
     font: 16px tahoma, verdana, arial;
 }
+.promo .bOrangeButton.active{
+    cursor: pointer;
+}
 .promo .shopList li{
     margin-top: 8px;
 }
 .promo .shopList a{
     text-decoration: underline;
     font-size: 13px;
+}
+.ipadButtonSmall{
+    font-size: 10px;
+    color: #676767;
+    width: 200px;
 }

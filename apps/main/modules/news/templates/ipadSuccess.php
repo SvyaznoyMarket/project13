@@ -1,14 +1,27 @@
+<?php
+if (date('U') >= mktime(0,1,0,5,25,2012)) {
+    $timeToShow = true;
+} else {
+    $timeToShow = false;
+}
+?>
 
-<?php slot('navigation') ?>
+
+<?php slot('page_breadcrumbs') ?>
 <div class="breadcrumbs">
     <a href="/">Enter.ru</a> &gt;
     <a href="/catalog/electronics/">Электроника</a> &gt;
-    <strong>Новый Ipad</strong>
+    <strong>Новый iPad</strong>
 </div>
 <?php end_slot() ?>
 <?php slot('title') ?>
-Начало продаж 25 мая в 0:01 минуту!
+    <?php if ($timeToShow) { ?>
+        Предзаказы на Новый iPad
+    <?php } else { ?>
+        Начало продаж 25 мая в 0:01 минуту!
+    <?php }  ?>
 <?php end_slot() ?>
+
 
 <div class='promo'>
         <div>
@@ -33,8 +46,14 @@
 
 				</strong>
 				</div>
-				<div class="bOrangeButton">Скоро в продаже!</div>
-			</div>
+                <?php if ($timeToShow) { ?>
+				    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
+
+            </div>
 			<div style="clear:all"></div>
 		</div>
 
@@ -52,7 +71,12 @@
 
                     </strong>
                 </div>
-                <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php if ($timeToShow) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
             </div>
             <div style="clear:all"></div>
         </div>
@@ -71,8 +95,13 @@
 
 				</strong>
 				</div>
-				<div class="bOrangeButton">Скоро в продаже!</div>
-			</div>
+                <?php if ($timeToShow) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
+            </div>
 			<div style="clear:all"></div>
 		</div>
 
@@ -90,7 +119,12 @@
 
                     </strong>
                 </div>
-                <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php if ($timeToShow) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
             </div>
             <div style="clear:all"></div>
         </div>
@@ -110,7 +144,12 @@
 
                     </strong>
                 </div>
-                <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php if ($timeToShow) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
             </div>
             <div style="clear:all"></div>
         </div>
@@ -129,7 +168,12 @@
 
                     </strong>
                 </div>
-                <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php if ($timeToShow) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
             </div>
             <div style="clear:all"></div>
         </div>
@@ -153,8 +197,13 @@
 					<span class="rubl">p</span>
 				</strong>
 				</div>
-				<div class="bOrangeButton">Скоро в продаже!</div>
-			</div>
+                <?php if ($timeToShow) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
+            </div>
 			<div style="clear:all"></div>
 		</div>
         <div class="halfline">
@@ -171,7 +220,12 @@
 
                     </strong>
                 </div>
-                <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php if ($timeToShow) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
             </div>
             <div style="clear:all"></div>
         </div>
@@ -189,8 +243,13 @@
 
 				</strong>
 				</div>
-				<div class="bOrangeButton">Скоро в продаже!</div>
-			</div>
+                <?php if ($timeToShow) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
+            </div>
 			<div style="clear:all"></div>
 		</div>
         <div class="halfline">
@@ -207,7 +266,12 @@
 
                     </strong>
                 </div>
-                <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php if ($timeToShow) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
             </div>
             <div style="clear:all"></div>
         </div>
@@ -225,8 +289,13 @@
 
 				</strong>
 				</div>
-				<div class="bOrangeButton">Скоро в продаже!</div>
-			</div>
+                <?php if ($timeToShow) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
+            </div>
 			<div style="clear:all"></div>
 		</div>
         <div class="halfline">
@@ -243,22 +312,77 @@
 
                     </strong>
                 </div>
-                <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php if (date('U') >= mktime(0,1,0,5,25,2012)) { ?>
+                    <div class="bOrangeButton active">Оформить предзаказ</div>
+                    <div class="ipadButtonSmall"> Доступно по предзаказу в ограниченном количестве.</div>
+                <?php } else { ?>
+                    <div class="bOrangeButton">Скоро в продаже!</div>
+                <?php } ?>
             </div>
             <div style="clear:all"></div>
         </div>
 
-        <h2>Начало продаж 25 мая в 00:01 в магазинах:</h2>
-        <div class="line pb15"></div>
-        <ul class="shopList">
-            <li><a href="/shops/voronezh/magazin-v-g-voroneg-ul-plehanovskaya-22">Воронеж (ул. Плехановская)</a></li>
-            <li><a href="/shops/moskva/magazin-na-ul-b-dorogomilovskaya-d-8">Москва (ул. Б. Дорогомиловская)</a></li>
-            <li><a href="/shops/4f05bb7196679-orel-g-302000/magazin-v-g-orel">Орёл (ул. Комсомольская)</a></li>
-            <li><a href="/shops/4ee8b0f4a11f5-sergiev-posad-g-sergievo-posadskiy-141/magazin-v--g-sergiev-posad-ul-1-ya-ribnaya-d22">Сергиев посад (ул. 1-ая Рыбная)</a></li>
-            <li><a href="/shops/4f3d2b349585c-tver-g/magazin-v-g-tver-ul-mogayskogo-d-61">Тверь (ул. Пролетарская)</a></li>
-        </ul>
+
+
+    <?php if ($timeToShow) { ?>
+        <div class='bMobDown mBR5 mW2 mW1000 p0' style="display:none" id="order1click-container-new">
+            <div class='bMobDown__eWrap'>
+                <div class='bMobDown__eClose top0 close'></div>
+                <form id="oneClickPromo" action="<?php echo url_for('ipad_save') ?>" autocomplete="off">
+                    <table class='bFast' cellpadding=0 cellspacing=0>
+                        <td class='bFast__eItem'>
+                            <div class='bFast__eItemWrap' id="ipadwrapper">
+                                <script type="text/html" id="ipad">
+                                    <div class="bFast__eArrow"></div>
+                                    <div class="bFast__eTitle"><%=token%></div>
+                                    <input type="hidden" value="<%=token%>" name="product"/>
+                                    <div class="bFast__eCenter"><img alt="new iPad" src="<%=image%>"/></div>
+
+                                    <div class="bFast__ePrice">Цена:
+                                        <div><span><%=price%></span> <span class="rubl">p</span></div>
+                                    </div>
+                                </script>
+                            </div>
+                        </td>
+                        <td class='bFast__eForm'>
+                            <table cellpadding="0" cellspacing="0" class="bFastInner" style="display:none" id="f_success">
+                                <tr><th><h2>Вы в списке на предзаказ Нового iPad!</h2></th></tr>
+                                <tr><td>Мы вам скоро перезвоним :)<br>
+                                    Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить ваш новый iPad.</td></tr>
+                            </table>
+                            <table cellpadding="0" cellspacing="0" class="bFastInner" id="f_init">
+                                <tr><th colspan="2"><h2>Заполните форму предзаказа Нового iPad:</h2></th></tr>
+
+                                <tr>
+                                    <td width="30%"><span>Имя получателя</span><sup>*</sup>:</td>
+                                    <td>
+                                        <input type="text" class='bFastInner__eInput' name="name" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>Ваш E-mail</span><sup>*</sup>:</td>
+                                    <td>
+                                        <input type="text" class='bFastInner__eInput' name="email" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>Телефон для связи</span><sup>*</sup>:</td>
+                                    <td>
+                                        <input type="text" class='bFastInner__eInput' name="phone" id="phonemask"/>
+                                    </td>
+                                </tr>
+
+                                <tr><td colspan="2">Отправьте предзаказ, и мы вам скоро перезвоним :)<br>
+                                    Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить ваш Новый iPad.</td></tr>
+                                <tr><td colspan="2">
+                                    <a class='bBigOrangeButton' href="">Отправить предзаказ</a>
+                                </td></tr>
+                            </table>
+                        </td>
+                    </table>
+                </form>
+            </div>
+        </div>
+    <?php } ?>
 
       </div>
-
-
-
