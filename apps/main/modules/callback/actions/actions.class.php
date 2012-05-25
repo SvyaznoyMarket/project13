@@ -107,19 +107,21 @@ class callbackActions extends myActions
             $result['result'] = 'error';
         }
 
+//      Планшетный компьютер Apple Новый iPad WiFi + Cellular 64 ГБ белый
+
         $map = array(
-          'Планшетный компьютер Apple iPad New WI-FI 16GB - Black' => '457-0745',
-          'Планшетный компьютер Apple iPad New WI-FI 16GB - White' => '457-0751',
-          'Планшетный компьютер Apple iPad New WI-FI 32GB - Black' => '457-0746',
-          'Планшетный компьютер Apple iPad New WI-FI 32GB - White' => '457-0752',
-          'Планшетный компьютер Apple iPad New WI-FI 64GB - Black' => '457-0750',
-          'Планшетный компьютер Apple iPad New WI-FI 64GB - White' => '457-0753',
-          'Планшетный компьютер Apple iPad New WI-FI 4G 16GB - Black' => '457-0747',
-          'Планшетный компьютер Apple iPad New WI-FI 4G 16GB - White' => '457-0754',
-          'Планшетный компьютер Apple iPad New WI-FI 4G 32GB - Black' => '457-0748',
-          'Планшетный компьютер Apple iPad New WI-FI 4G 32GB - White' => '457-0755',
-          'Планшетный компьютер Apple iPad New WI-FI 4G 64GB - Black' => '457-0749',
-          'Планшетный компьютер Apple iPad New WI-FI 4G 64GB - White' => '457-0756'
+          'Планшетный компьютер Apple Новый iPad WiFi 16 ГБ черный' => '457-0745',
+          'Планшетный компьютер Apple Новый iPad WiFi 16 ГБ белый' => '457-0751',
+          'Планшетный компьютер Apple Новый iPad WiFi 32 ГБ черный' => '457-0746',
+          'Планшетный компьютер Apple Новый iPad WiFi 32 ГБ белый' => '457-0752',
+          'Планшетный компьютер Apple Новый iPad WiFi 64 ГБ черный' => '457-0750',
+          'Планшетный компьютер Apple Новый iPad WiFi 64 ГБ белый' => '457-0753',
+          'Планшетный компьютер Apple Новый iPad WiFi + Cellular 16 ГБ черный' => '457-0747',
+          'Планшетный компьютер Apple Новый iPad WiFi + Cellular 16 ГБ белый' => '457-0754',
+          'Планшетный компьютер Apple Новый iPad WiFi + Cellular 32 ГБ черный' => '457-0748',
+          'Планшетный компьютер Apple Новый iPad WiFi + Cellular 32 ГБ белый' => '457-0755',
+          'Планшетный компьютер Apple Новый iPad WiFi + Cellular 64 ГБ черный' => '457-0749',
+          'Планшетный компьютер Apple Новый iPad WiFi + Cellular 64 ГБ белый' => '457-0756'
         );
 
         if (empty($result['error'])) {
