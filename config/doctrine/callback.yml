@@ -36,5 +36,7 @@ IpadAction:
     phone:             { type: string(255), notnull: false, default: null, comment: '' }
     name:              { type: string(255), notnull: false, default: null, comment: '' }
     product:           { type: string(255), notnull: false, default: null, comment: '' }
+    article:           { type: string(255), notnull: false, default: null, comment: '' }
+    region:            { type: integer(20), autoincrement: true, primary: true }
     added:             { type: timestamp, format: Y-m-d H:m:i }
 
