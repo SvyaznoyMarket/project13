@@ -7,11 +7,11 @@ if (date('U') >= mktime(0,1,0,5,25,2012)) {
 ?>
 
 
-<?php slot('navigation') ?>
+<?php slot('page_breadcrumbs') ?>
 <div class="breadcrumbs">
     <a href="/">Enter.ru</a> &gt;
     <a href="/catalog/electronics/">Электроника</a> &gt;
-    <strong>Новый Ipad</strong>
+    <strong>Новый iPad</strong>
 </div>
 <?php end_slot() ?>
 <?php slot('title') ?>
@@ -424,24 +424,5 @@ if (date('U') >= mktime(0,1,0,5,25,2012)) {
             </div>
         </div>
     <?php } ?>
-
-
-
-
-
-    <?php if ($timeToShow) { ?>
-        <h2>Предзаказы на Новый iPad:</h2>
-    <?php } else { ?>
-        <h2>Начало продаж 25 мая в 0:01 минуту!</h2>
-    <?php }  ?>
-
-        <div class="line pb15"></div>
-        <ul class="shopList">
-            <li><a href="/shops/voronezh/magazin-v-g-voroneg-ul-plehanovskaya-22">Воронеж (ул. Плехановская)</a></li>
-            <li><a href="/shops/moskva/magazin-na-ul-b-dorogomilovskaya-d-8">Москва (ул. Б. Дорогомиловская)</a></li>
-            <li><a href="/shops/4f05bb7196679-orel-g-302000/magazin-v-g-orel">Орёл (ул. Комсомольская)</a></li>
-            <li><a href="/shops/4ee8b0f4a11f5-sergiev-posad-g-sergievo-posadskiy-141/magazin-v--g-sergiev-posad-ul-1-ya-ribnaya-d22">Сергиев посад (ул. 1-ая Рыбная)</a></li>
-            <li><a href="/shops/4f3d2b349585c-tver-g/magazin-v-g-tver-ul-mogayskogo-d-61">Тверь (ул. Пролетарская)</a></li>
-        </ul>
 
       </div>
