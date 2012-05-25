@@ -566,7 +566,6 @@ class order_Actions extends myActions
     $deliveryMapView = new Order_DeliveryMapView();
 
     $deliveryMapView->unavailable = array();
-    //$deliveryMapView->unavailable = array('product-23595');
     if (array_key_exists('unavailable', $result)) foreach ($result['unavailable'] as $itemType => $itemIds)
     {
       $deliveryMapView->unavailable = array_merge($deliveryMapView->unavailable, array_map(function($id) use ($itemType) {

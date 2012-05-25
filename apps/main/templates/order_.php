@@ -30,7 +30,7 @@
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
-<?php if ( true || 'live' == sfConfig::get('sf_environment')): ?>
+<?php if ('live' == sfConfig::get('sf_environment')): ?>
 <!-- Yandex.Metrika counter -->
 <div style="display:none;">
   <script type="text/javascript">
