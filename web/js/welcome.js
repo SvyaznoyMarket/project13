@@ -1,25 +1,5 @@
 $(document).ready(function () {
-	/* iPAd counter */
-	if( typeof( $.countdown ) !== 'undefined' ) {
-	
-		var deadline =  new Date(2012, 4, 25),
-			now      =  new Date()
-		deadline.setMinutes(1)	
-		if( (new Date(2012, 4, 26)).getTime() > now.getTime() ) {
-			$('.counterhint').show() 
-			$('#countdown').countdown({ 
-				until: deadline,
-				format: 'HMS',
-				layout:'{h<}<strong>{hn}</strong> {hl} {h>} {m<} <strong>{mn}</strong> {ml} {m>} <strong>{sn}</strong> {sl}',
-				alwaysExpire: true,
-				onExpiry: function() {
-					$(this).parent().html('<strong>Новый iPad</strong> уже в магазинах Enter')
-				}
-			})
-    	}
-    }
-    
-	/* admitad */	
+	/* admitad */
 	if( document.location.search.match(/admitad_uid/) ) {
 		var url_s = parse_url( document.location.search )
 		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year

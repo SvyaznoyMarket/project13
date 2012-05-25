@@ -106,6 +106,22 @@ class callbackActions extends myActions
             $result['error']['phone'] = 'Не указан продукт, который Вы хотите зарезервировать.';
             $result['result'] = 'error';
         }
+
+        $map = array(
+          'Планшетный компьютер Apple iPad New WI-FI 16GB - Black' => '457-0745',
+          'Планшетный компьютер Apple iPad New WI-FI 16GB - White' => '457-0751',
+          'Планшетный компьютер Apple iPad New WI-FI 32GB - Black' => '457-0746',
+          'Планшетный компьютер Apple iPad New WI-FI 32GB - White' => '457-0752',
+          'Планшетный компьютер Apple iPad New WI-FI 64GB - Black' => '457-0750',
+          'Планшетный компьютер Apple iPad New WI-FI 64GB - White' => '457-0753',
+          'Планшетный компьютер Apple iPad New WI-FI 4G 16GB - Black' => '457-0747',
+          'Планшетный компьютер Apple iPad New WI-FI 4G 16GB - White' => '457-0754',
+          'Планшетный компьютер Apple iPad New WI-FI 4G 32GB - Black' => '457-0748',
+          'Планшетный компьютер Apple iPad New WI-FI 4G 32GB - White' => '457-0755',
+          'Планшетный компьютер Apple iPad New WI-FI 4G 64GB - Black' => '457-0749',
+          'Планшетный компьютер Apple iPad New WI-FI 4G 64GB - White' => '457-0756'
+        );
+
         if (empty($result['error'])) {
             $new = IpadActionTable::getInstance()->create(array(
                 'email' => $email,
@@ -113,6 +129,8 @@ class callbackActions extends myActions
                 'name' => $name,
                 'product' => $product,
                 'added' => date('Y-m-d H:i:s'),
+                'article' => (isset($map[$product])?$map[$product] : NULL),
+                'region' => sfContext::getInstance()->getUser()->getRegionCoreId(),
             ));
             $new->save();
             //myDebug::dump($comment);
