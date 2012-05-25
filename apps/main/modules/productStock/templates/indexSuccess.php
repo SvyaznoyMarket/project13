@@ -1,11 +1,27 @@
-<?php slot('navigation') ?>
-  <?php include_component('productCatalog_', 'navigation', array('product' => $product, 'productCategory' => $product->getMainCategory())) ?>
-<?php end_slot() ?>
+<?php
+/**
+ * @var $product ProductEntity
+ */
 
-<?php slot('title', 'Где купить '.mb_lcfirst($product->name)) ?>
+slot('navigation');
+$list = array();
+/** @var $category ProductCategoryEntity */
+foreach($product->getCategoryList() as $category)
+  $list[] = array(
+    'name' => $category->getName(),
+    'link' => $category->getLink(),
+  );
+$list[] = array(
+  'name' => 'Где купить ' . mb_lcfirst($product->getName()),
+  'url' => $product->getLink(),
+);
+include_component('default', 'navigation', array('list' => $list));
+end_slot();
 
-<?php slot('after_body_block') ?>
-<?php render_partial('product_/templates/_oneclickTemplate.php') ?>
-<?php end_slot() ?>
+slot('title', 'Где купить '.mb_lcfirst($product->getName()));
 
-<?php include_component('productStock', 'show', array('product' => $product)) ?>
+slot('after_body_block');
+render_partial('product_/templates/_oneclickTemplate.php');
+end_slot();
+
+render_partial('productStock/templates/_show.php', array('product' => $product));
