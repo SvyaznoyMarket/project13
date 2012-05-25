@@ -25,3 +25,18 @@ CallbackCategory:
   columns:
     id:             { type: integer(20), autoincrement: true, primary: true }
     name:           { type: string(255), notnull: false, default: null, comment: 'Название категории' }
+
+
+IpadAction:
+  options:
+    comment: 'Обратная связь'
+  columns:
+    id:                { type: integer(20), autoincrement: true, primary: true }
+    email:             { type: string(255), notnull: false, default: null, comment: '' }
+    phone:             { type: string(255), notnull: false, default: null, comment: '' }
+    name:              { type: string(255), notnull: false, default: null, comment: '' }
+    product:           { type: string(255), notnull: false, default: null, comment: '' }
+    article:           { type: string(255), notnull: false, default: null, comment: '' }
+    region:            { type: integer(20), autoincrement: true, primary: true }
+    added:             { type: timestamp, format: Y-m-d H:m:i }
+
