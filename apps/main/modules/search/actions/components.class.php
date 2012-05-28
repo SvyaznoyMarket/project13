@@ -31,49 +31,70 @@ class searchComponents extends myComponents
     $this->setVar('list', $list, false);
   }
 
-  public function executeFilter_productType()
-  {
-    $list = array(
-      'first' => array(),
-      'other' => array(),
-    );
-
-    if(!$this->productTypeList){
-      return sfView::NONE;
-    }
-    $this->productTypeList->loadRelated('ProductCategory');
-    $firstProductCategory = isset($this->productTypeList[0]->ProductCategory[0]) ?
-      $this->productTypeList[0]->ProductCategory[0]->getRootCategory()
-    : new ProductCategory();
-    foreach ($this->productTypeList as $i => $productType)
+    public function executeFilter_productType()
     {
-      $index = 'other';
-      if ($firstProductCategory)
-      {
-        /** @var $productCategory ProductCategory */
-        foreach ($productType->ProductCategory as $productCategory)
-        {
-          if (is_object($productCategory) && ($productCategory->getRootCategory()->id == $firstProductCategory->id))
-          {
-            $index = 'first';
-            break;
-          }
+        $list = array(
+            'first' => array(),
+            'other' => array(),
+        );
+
+        if(!$this->productTypeList){
+            return sfView::NONE;
         }
-      }
 
-      $list[$index][] = array(
-        'url'      => $this->generateUrl('search', array('q' => $this->searchString, 'product_type' => $productType->id)),
-        'name'     => (string)$productType,
-        'token'    => $productType->id,
-        'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
-        'value'    => $productType->id,
-        'selected' => ((0 == $i) && !$this->productType) || ($this->productType && ($this->productType->id == $productType->id)),
-      );
+        # Загрузили категории типов
+        $this->productTypeList->loadRelated('ProductCategory');
+        $firstProductCategory = Null;
+
+        # Побежали по списку типов
+        foreach ($this->productTypeList as $i => $productType)
+        {
+            $index = 'other';
+
+            # Побежали по списку категорий текущего типа
+            foreach ($productType->ProductCategory as $productCategory)
+            {
+                # Если текущая категория неактивна - пропускаем
+                if(!is_object($productCategory) || !$productCategory->is_active)
+                {
+                    continue;
+                }
+
+                # Если не выбрана главная категория и рутовая категория текущей категории активна - отмечаем ее как главную
+                if(is_null($firstProductCategory) && $productCategory->getRootCategory()->is_active)
+                {
+                    $firstProductCategory = $productCategory->getRootCategory();
+                }
+
+                # Если ID рутовой категории текущей категории равен ID главной категории
+                if ($productCategory->getRootCategory()->id == $firstProductCategory->id)
+                {
+                    # Отметили индекс как первый
+                    $index = 'first';
+                    break;
+                }
+            }
+
+            # Записали информацию в список
+            $list[$index][] = array(
+                'url'      => $this->generateUrl('search', array('q' => $this->searchString, 'product_type' => $productType->id)),
+                'name'     => (string)$productType,
+                'token'    => $productType->id,
+                'count'    => isset($productType->_product_count) ? $productType->_product_count : 0,
+                'value'    => $productType->id,
+                'selected' => ((0 == $i) && !$this->productType) || ($this->productType && ($this->productType->id == $productType->id)),
+            );
+        }
+
+        # Если к этому моменту не удалось определить главную категорию, ставим заглушку
+        if(is_null($firstProductCategory))
+        {
+            $firstProductCategory = new ProductCategory();
+        }
+
+        $this->setVar('list', $list, true);
+        $this->setVar('firstProductCategory', $firstProductCategory, true);
+
+        return sfView::SUCCESS;
     }
-
-    $this->setVar('list', $list, true);
-    $this->setVar('firstProductCategory', $firstProductCategory, true);
-
-    return sfView::SUCCESS;
-  }
 }
