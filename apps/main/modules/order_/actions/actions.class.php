@@ -242,10 +242,11 @@ class order_Actions extends myActions
 
           $categories = $productsById[$productData['product_id']]->getCategory();
           if (!empty($categories[0]) && ($categories[0] instanceof ProductCategoryEntity)) {
-            $rootCategory = array_shift($categories);
             $category = array_pop($categories);
+            $rootCategory = array_shift($categories);
+
             $gaItem->categoryName =
-              ($rootCategory->getId() != $category->getId())
+              ($rootCategory && ($rootCategory->getId() != $category->getId()))
               ? ($rootCategory->getName().' - '.$category->getName())
               : $category->getName()
             ;
