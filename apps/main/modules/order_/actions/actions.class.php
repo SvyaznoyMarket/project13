@@ -185,6 +185,8 @@ class order_Actions extends myActions
     $user = $this->getUser();
 
     $orderIds = $user->getFlash('complete_orders');
+    $user->setFlash('complete_orders', $orderIds);
+
     // проверяет наличие параметра от uniteller
     if (!empty($request['Order_ID']))
     {
@@ -207,8 +209,12 @@ class order_Actions extends myActions
     }
     $orders = $result;
 
+    $gaItems = array();
+
     foreach ($orders as &$order)
     {
+      $gaItems[$order['number']] = array();
+
       // добавить названия товаров {
       if (isset($order['product']) && is_array($order['product']))
       {
@@ -227,14 +233,25 @@ class order_Actions extends myActions
         {
           if (!array_key_exists($productData['product_id'], $productsById)) continue;
 
-          $productData['name'] = $productsById[$productData['product_id']]->getName();
-          $productData['article'] = $productsById[$productData['product_id']]->getArticle();
+          $gaItem = new Order_GaItem();
+          $gaItem->orderNumber = $order['number'];
+          $gaItem->article = $productsById[$productData['product_id']]->getArticle();
+          $gaItem->name = $productsById[$productData['product_id']]->getName();
+          $gaItem->price = $productData['price'];
+          $gaItem->quantity = $productData['quantity'];
 
-          $productData['category_name'] = '';
           $categories = $productsById[$productData['product_id']]->getCategory();
           if (!empty($categories[0]) && ($categories[0] instanceof ProductCategoryEntity)) {
-            $productData['category_name'] = $categories[0]->getName();
+            $rootCategory = array_shift($categories);
+            $category = array_pop($categories);
+            $gaItem->categoryName =
+              ($rootCategory->getId() != $category->getId())
+              ? ($rootCategory->getName().' - '.$category->getName())
+              : $category->getName()
+            ;
           }
+
+          $gaItems[$order['number']][] = $gaItem;
         } if (isset($productData)) unset($productData);
       }
       // }
@@ -257,8 +274,15 @@ class order_Actions extends myActions
         {
           if (!array_key_exists($serviceData['service_id'], $serviceById)) continue;
 
-          $serviceData['name'] = $serviceById[$serviceData['service_id']]->getName();
-          $serviceData['token'] = $serviceById[$serviceData['service_id']]->getToken();
+          $gaItem = new Order_GaItem();
+          $gaItem->orderNumber = $order['number'];
+          $gaItem->article = $serviceById[$serviceData['service_id']]->getToken();
+          $gaItem->name = $serviceById[$serviceData['service_id']]->getName();
+          $gaItem->price = $serviceData['price'];
+          $gaItem->quantity = $serviceData['quantity'];
+          $gaItem->categoryName = 'Услуга F1';
+
+          $gaItems[$order['number']][] = $gaItem;
         } if (isset($serviceData)) unset($serviceData);
       }
       // }
@@ -295,9 +319,8 @@ class order_Actions extends myActions
       }
     }
 
-    $user->setFlash('complete_orders', $orderIds);
-
     $this->setVar('orders', $orders, true);
+    $this->setVar('gaItems', $gaItems, true);
   }
 
 

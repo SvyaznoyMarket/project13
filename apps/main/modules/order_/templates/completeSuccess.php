@@ -35,33 +35,37 @@
   <?php include_component('order', 'seo_counters_advance', array('step' => 2)) ?>
 <?php end_slot() ?>
 
-<?php slot('adhands_report') ?>
+
+<?php slot('analytics_report') ?>
   <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
+
   <script type="text/javascript">
-    <?php foreach ($orders as $order): ?>
+  <?php foreach ($orders as $order): ?>
     var report = new adhandsReport('http://sedu.adhands.ru/site/');
     report.id('1053');
     report.data('am','<?php echo $order['sum'] ?>');
     report.data('ordid','<?php echo $order['number'] ?>');
     report.send();
-    <?php endforeach ?>
+  <?php endforeach ?>
   </script>
+
   <noscript>
-    <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123"
-         style="display:none;">
+    <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
   </noscript>
+
   <!-- /AdHands -->
   <script type="text/javascript">
     (function () {
-      <?php foreach ($orders as $order): ?>
+    <?php foreach ($orders as $order): ?>
       document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape(<?php echo $order['sum'] ?>) + '&r=' + Math.random() + '" ></sc' + 'ript>');
-      <?php endforeach ?>
+
+    <?php endforeach ?>
     })();
   </script>
 
-
-
   <script type="text/javascript">
+  <?php foreach ($orders as $order): ?>
+
     _gaq.push(['_addTrans',
       '<?php echo $order['number'] ?>', // Номер заказа
       '<?php echo $order['shop']['name'] ?>', // Название магазина (Необязательно)
@@ -72,62 +76,48 @@
       '', // Область (необязательно)
       '' // Страна (нобязательно)
     ]);
-    var yaParams = {
-      order_id:'<?php echo $order['number'] ?>',
-      order_price: <?php echo str_replace(',', '.', $order['sum']) ?>,
-      currency:'RUR',
-      exchange_rate:1,
-      goods:[
-      <?php foreach ($order['product'] as $product): ?>
-        {
-          id:'<?php echo $product['article'] ?>',
-          name:'<?php echo $product['name'] ?>',
-          price: <?php echo str_replace(',', '.', $product['price']) ?>,
-          quantity: <?php echo $product['quantity'] ?>
-        },
-        <?php endforeach ?>
-      <?php foreach ($order['service'] as $service): ?>
-        {
-          id:'<?php echo $service['token'] ?>',
-          name: '<?php echo $service['name'] ?>',
-          price: <?php echo str_replace(',', '.', $service['price']) ?>,
-          quantity: <?php echo $service['quantity'] ?>
-        },
-        <?php endforeach ?>
-      ]
-    };
-    <?php foreach ($order['product'] as $product): ?>
-    _gaq.push(['_addItem',
-      '<?php echo $order['number'] ?>', // Номер заказа
-      '<?php echo $product['article'] ?>', // Артикул
-      '<?php echo $product['name'] ?>', // Название товара
-      '<?php echo $product['category_name'] ?>', // Категория товара
-      '<?php echo str_replace(',', '.', $product['price']) ?>', // Стоимость 1 единицы товара
-      '<?php echo $product['quantity'] ?>' // Количество товара
-    ]);
-      <?php endforeach ?>
-    <?php foreach ($order['service'] as $service):
-      $catName = 'Услуга F1';
-    ?>
-    _gaq.push(['_addItem',
-      '<?php echo $order['number'] ?>', // Номер заказа
-      '<?php echo $service['token'] ?>', // id
-      '<?php echo $service['name'] ?>', // Название услуги
-      '<?php echo $catName ?>', // Категория товара
-      '<?php echo str_replace(',', '.', $service['price']) ?>', // Стоимость 1 единицы товара
-      '<?php echo $service['quantity'] ?>' // Количество услуг
-    ]);
-      <?php endforeach ?>
+
+    // _addItem: Номер заказа, Артикул, Название товара, Категория товара, Стоимость 1 единицы товара, Количество товара
+    <?php foreach ($gaItems[$order['number']] as $gaItem): ?>
+    _gaq.push(['_addItem', <?php echo $gaItem ?>]);
+    <?php endforeach ?>
+
     _gaq.push(['_trackTrans']);
 
+  <?php endforeach ?>
+  </script>
+
+
+  <script type="text/javascript">
+    var yaParams =
+    [
+    <?php foreach ($orders as $i => $order): ?>
+      {
+        order_id:'<?php echo $order['number'] ?>',
+        order_price: <?php echo str_replace(',', '.', $order['sum']) ?>,
+        currency:'RUR',
+        exchange_rate:1,
+        goods:[
+        <?php foreach ($gaItems[$order['number']] as $j => $gaItem): ?>
+
+          {
+            id:'<?php echo $gaItem->article ?>',
+            name:'<?php echo $gaItem->name ?>',
+            price: <?php echo $gaItem->price ?>,
+            quantity: <?php echo $gaItem->quantity ?>
+
+          }<?php echo ($j < (count($gaItems[$order['number']]) - 1)) ? ',' : '' ?>
+
+          <?php endforeach ?>
+        ]
+      }<?php echo ($i < (count($orders) - 1)) ? ',' : '' ?>
+
+    <?php endforeach ?>
+    ]
   </script>
 
   <!--Трэкер "Покупка"-->
   <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>');</script>
   <!--Трэкер "Покупка"-->
+
 <?php end_slot() ?>
-
-
-<!--Трэкер "Покупка"-->
-<script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>
-<!--Трэкер "Покупка"-->

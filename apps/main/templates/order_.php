@@ -30,14 +30,19 @@
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
-<?php if ('live' == sfConfig::get('sf_environment')): ?>
+
+<?php if (true || 'live' == sfConfig::get('sf_environment')) { ?>
+
 <!-- Yandex.Metrika counter -->
 <div style="display:none;">
   <script type="text/javascript">
     (function (w, c) {
       (w[c] = w[c] || []).push(function () {
         try {
-          w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll:true, webvisor:true, params:window.yaParams || { }});
+          window.yaParams = window.yaParams || {};
+          for (i = 0; i < window.yaParams.length; i++) {
+            w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll:true, webvisor:true, params: window.yaParams[i]});
+          }
         }
         catch (e) {
         }
@@ -51,10 +56,9 @@
 </noscript>
 <!-- /Yandex.Metrika counter -->
 
-<!-- AdHands -->
-<?php if (has_slot('adhands_report')) include_slot('adhands_report') ?>
+<?php if (has_slot('analytics_report')) include_slot('analytics_report') ?>
 
-<?php endif ?>
+<?php } //endif ?>
 
 <?php if (has_slot('seo_counters_advance')) include_slot('seo_counters_advance') ?>
 
