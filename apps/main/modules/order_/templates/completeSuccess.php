@@ -120,4 +120,6 @@
   <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>');</script>
   <!--Трэкер "Покупка"-->
 
+  <?php include_component('order_','seo_admitad', array('orders' => $orders)) ?>
+
 <?php end_slot() ?>

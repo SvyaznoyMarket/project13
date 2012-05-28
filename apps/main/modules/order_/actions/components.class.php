@@ -115,5 +115,60 @@ class order_Components extends myComponents
 
     $this->setVar('dates', $dates, true);
   }
+
+  function executeSeo_admitad() {
+
+    $data = array();
+
+    foreach ($this->orders as $order)
+    {
+      $products = RepositoryManager::getProduct()->getListById(array_map(function($i) {
+        return $i['product_id'];
+      }, $order['product']));
+
+      $productsById = array();
+      foreach ($products as $product)
+      {
+        /* @var $product ProductEntity */
+        $productsById[$product->getId()] = $product;
+      }
+
+      foreach ($order['product'] as $productData) {
+        if (!array_key_exists($productData['product_id'], $productsById)) continue;
+
+        /* @var $category ProductEntity */
+        $product = $productsById[$productData['product_id']];
+
+        /* @var $category ProductCategoryEntity */
+        $category = array_shift($product->getCategory());
+        if (!$category instanceof ProductCategoryEntity) continue;
+
+        if (!array_key_exists($category->getId(), $data))
+        {
+          $data[$category->getId()] = array(
+            'sum'    => 0,
+            'number' => '',
+          );
+        }
+
+        $data[$category->getId()]['sum'] += $productData['price'] * $productData['quantity'];
+        $data[$category->getId()]['number'] = $order['number'].'-'.$category->getId();
+      }
+    }
+
+    $uid = $this->getRequest()->getCookie(sfConfig::get('app_admitad_cookie_name', 'admitad_uid'));
+    if(!$uid || strlen($uid) != 32){
+      $uid = false;
+    }
+
+    if ($uid) {
+      $data['uid'] = $uid;
+    } else {
+      $data['uid'] = '';
+    }
+
+    //dump($data, 1);
+    $this->setVar('data', $data, true);
+  }
 }
 
