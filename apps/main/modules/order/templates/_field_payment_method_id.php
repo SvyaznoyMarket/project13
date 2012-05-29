@@ -1,10 +1,16 @@
-        </div>
-        <div class="fl width500 pb25"></div>
-        <div class="fl width215 mr20"><strong class="font16">Способ оплаты:</strong></div>
-        <div class="fl width430">
-            <div class="pb15">
-              <?php echo $form['payment_method_id']->renderLabel() ?>
-              <?php echo $form['payment_method_id']->renderError() ?>
-            </div>
+<dl class='bBuyingLine'>
+  <dt>Выберите удобный для вас способ:</dt>
 
-      <?php echo $form['payment_method_id']->render() ?>
+  <dd>
+  <?php foreach ($choices as $k => $v): ?>
+    <div>
+      <p></p>
+      <label class='<?php if ($k == $value) echo 'mChecked' ?>' for="<?php echo $v['id'] ?>">
+        <b></b> <?php echo $v['label'] ?>
+        <input id="<?php echo $v['id'] ?>" class='bBuyingLine__eRadio' name='<?php echo $name ?>' type='radio' value="<?php echo $k ?>" <?php if ($k == $value) echo 'checked="checked"' ?> />
+      </label>
+      <i><?php echo $v['description'] ?></i>
+    </div>
+  <?php endforeach ?>
+  </dd>
+</dl>

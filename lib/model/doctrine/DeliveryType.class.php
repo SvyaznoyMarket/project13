@@ -12,8 +12,13 @@
  */
 class DeliveryType extends BaseDeliveryType
 {
-  public function getChoiceForOrder()
+  public function construct()
   {
-    return array('label' => $this->name, 'description' => $this->description, );
+    $this->mapValue('price', null);
+  }
+
+  public function setPrice($value)
+  {
+    $this->mapValue('price', $value);
   }
 }

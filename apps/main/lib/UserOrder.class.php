@@ -4,7 +4,7 @@ class UserOrder extends BaseUserData
 {
   function __construct($parameters = array())
   {
-    $parameters = myToolkit::arrayDeepMerge(array('order' => array(),), $parameters);
+    $parameters = myToolkit::arrayDeepMerge(array('order' => array()), $parameters);
     $this->parameterHolder = new sfParameterHolder();
     $this->parameterHolder->add($parameters);
   }

@@ -34,4 +34,9 @@ class DeliveryTypeTable extends myDoctrineTable
 //
 //    return $q;
 //  }
+
+  public function getDefaultRecord()
+  {
+    return $this->getByCoreId(1);
+  }
 }

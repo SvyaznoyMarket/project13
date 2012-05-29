@@ -35,6 +35,9 @@ class myUser extends myGuardSecurityUser
     parent::signOut();
   }
 
+  /**
+   * @return UserCart
+   */
   public function getCart()
   {
     return $this->getUserData('cart');
@@ -51,6 +54,9 @@ class myUser extends myGuardSecurityUser
     return $this->getUserData('productCompare');
   }
 
+  /**
+   * @return UserOrder
+   */
   public function getOrder()
   {
     return $this->getUserData('order');
@@ -101,6 +107,8 @@ class myUser extends myGuardSecurityUser
         'product_price_list_id' => $region->product_price_list_id,
         'core_id' => $region->core_id,
         'geoip_code' => $region->geoip_code,
+        'latitude' => $region->latitude,
+        'longitude' => $region->longitude,
         'region' => $region,
       );
     }
