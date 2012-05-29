@@ -638,6 +638,14 @@ class ProductCoreFormFilterSimple
     return $this->productCategory;
   }
 
+  /**
+   * @return string
+   */
+  public function getUrlParams()
+  {
+    return http_build_query(array($this->name => $this->values));
+  }
+
   private function isEqualNumeric($first, $second)
   {
     $first = myToolkit::clearZero((float)$first);

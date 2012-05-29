@@ -50,6 +50,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
      data-page="<?php  echo $page; ?>"
      data-mode="<?php  echo $view; ?>"
      data-lastpage="<?php echo $productPager->getLastPage(); ?>"
+     data-filter="<?php echo $productFilter->getUrlParams(); ?>"
      class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"></div>
 <?php endif ?>
 
@@ -76,6 +77,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
      data-page="<?php  echo $page; ?>"
      data-mode="<?php  echo $view; ?>"
      data-lastpage="<?php echo $productPager->getLastPage(); ?>"
+     data-filter="<?php echo $productFilter->getUrlParams(); ?>"
      class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"></div>
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
 <?php endif ?>
