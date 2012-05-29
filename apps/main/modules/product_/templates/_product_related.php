@@ -7,7 +7,7 @@
 <div class="carouseltitle carbig">
   <div class="rubrictitle"><h3>С этим товаром также покупают</h3></div>
   <?php if ($relatedPagesNum > 1) { ?>
-  <div class="scroll" >
+  <div class="scroll" data-quantity="<?php echo count($item->getRelatedList())?>">
     (страница <span>1</span> из
     <span><?php echo $relatedPagesNum ?></span>)
     <a title="Предыдущие 5" class="srcoll_link_button back disabled"
@@ -31,7 +31,7 @@
       'view' => 'extra_compact',
       'item' => $related,
       'maxPerPage' => 5,
-      'ii' => $i
+      'ii' => $i + 1
     ));
   ?>
 </div>
