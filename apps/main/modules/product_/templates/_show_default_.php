@@ -108,17 +108,16 @@ foreach ($photo3dList as $photo3d)
       </div>
 
       <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
-
-      <?php if ( $item->getState()->getIsBuyable()): ?>
-        <div class="pb5"><strong>
-          <a href=""
-            data-model='<?php echo $json ?>'
-            link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
-            link-input='<?php echo url_for('product_delivery_1click') ?>'
-            class="red underline order1click-link-new">Купить быстро в 1 клик</a>
-        </strong></div>
-      <?php endif ?>
     </div>
+    <?php if ( $item->getState()->getIsBuyable()): ?>
+      <div class="pb5"><strong>
+        <a href=""
+          data-model='<?php echo $json ?>'
+          link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
+          link-input='<?php echo url_for('product_delivery_1click') ?>'
+          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
+      </strong></div>
+    <?php endif ?>
   </div>
 
 
