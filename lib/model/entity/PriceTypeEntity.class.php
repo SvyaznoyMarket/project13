@@ -18,10 +18,10 @@ class PriceTypeEntity
   private $name;
 
   public function __construct(array $data = array()){
-    if(array_key_exists('id', $data))         $this->setId($data['id']);
-    if(array_key_exists('is_active', $data))  $this->setIsActive($data['is_active']);
-    if(array_key_exists('is_primary', $data)) $this->setIsPrimary($data['is_primary']);
-    if(array_key_exists('name', $data))       $this->setName($data['name']);
+    if(array_key_exists('id', $data))         $this->id         = (int)$data['id'];
+    if(array_key_exists('is_active', $data))  $this->isActive   = (bool)$data['is_active'];
+    if(array_key_exists('is_primary', $data)) $this->isPrimary  = (bool)$data['is_primary'];
+    if(array_key_exists('name', $data))       $this->name       = (string)$data['name'];
   }
 
   /**

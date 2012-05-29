@@ -68,22 +68,22 @@ class UserCart extends BaseUserData
     public function addProduct($id, $qty = 1)
     {
         //получаем информацию о продукте из ядра
-        $factory = new ProductFactory();
-        $productList = $factory->createProductFromCore(array('id' => $id));
-        $productOb = $productList[0];
+        $productList = RepositoryManager::getProduct()->getListById(array($id));
+        /** @var $product ProductEntity */
+        $product = reset($productList);
 
         $isKit = false;
-        if ($productOb->set_id == 2)
+        $kitQtyByIdList = array();
+        if ($product->getSetId() == 2)
         {
             $isKit = true;
             //загружаем инфу о составе комплекта
             $kitIdList = array();
-            $kitQtyByIdList = array();
-            foreach ($productOb->kit as $kit) {
+            foreach ($product->kit as $kit) {
                 $kitIdList[] = $kit['id'];
                 $kitQtyByIdList[$kit['id']] = $kit['quantity'];
             }
-            $productList = $factory->createProductFromCore(array('id' => implode(',', $kitIdList)));
+            $productList = RepositoryManager::getProduct()->getListById($kitIdList);
         }
 
         try
@@ -93,21 +93,21 @@ class UserCart extends BaseUserData
                 if ($qty <= 0)
                 {
                     $qty = 0;
-                    $this->deleteProduct($product->id);
+                    $this->deleteProduct($product->getId());
                 }
                 else
                 {
                     if ($isKit) {
                         //нужное количество умножаем на количество предметов в комплекте
-                        $addQty = $qty * $kitQtyByIdList[$product->id];
+                        $addQty = $qty * $kitQtyByIdList[$product->getId()];
                     } else {
                         $addQty = $qty;
                     }
-                    $this->_products[$product->id] = array(
-                        'id' => $product->id,
-                        'token' => $product->token,
+                    $this->_products[$product->getId()] = array(
+                        'id' => $product->getId(),
+                        'token' => $product->getToken(),
                         'quantity' => $addQty,
-                        'price' => $product->price,
+                        'price' => $product->getPrice(),
                     );
                 }
             }
@@ -539,9 +539,6 @@ class UserCart extends BaseUserData
         foreach ($this->_products as $productId =>  $productInfo)
         {
             $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $productId)->fetchOne();
-            //myDebug::dump($productOb);
-            //$productOb = $productOb[0];
-            // $prodIdList[] = $productId;
             $list[] = array(
                 'type' => 'products',
                 'name' => $productOb->name,
@@ -552,10 +549,6 @@ class UserCart extends BaseUserData
             );
         }
 
-        //$factory = new ProductFactory();
-        //$this->product = $factory->createProductFromCore(array('id' => implode(',', $prodIdList)));
-
-        //$products = null;
         foreach ($this->_services as $serviceId => $serviceInfo)
         {
             $serviceOb = ServiceTable::getInstance()->getQueryObject()->where('core_id = ?', $serviceId)->fetchOne();
@@ -576,7 +569,6 @@ class UserCart extends BaseUserData
             );
         }
 
-        //$list = array();
         return $list;
     }
 

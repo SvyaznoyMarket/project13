@@ -15,40 +15,59 @@ qrcode:
   url:   /qr/:qrcode
   param: { module: qrcode, action: index }
 
-
-# товар
-#
-# инфа по доставке
-product_delivery:
-  url:   /product/delivery-info/:product
-  param: { module: productSoa, action: deliveryInfo, product: 0 }
+# фиктивный роут для plain php генерации url.
 product_delivery_1click:
   url:   /product/delivery1click
-  param: { module: productSoa, action: deliveryInfo, product: 0 }
+  param: { module: product_, action: deliveryInfo, product: 0 }
+# фиктивный роут для plain php генерации url.
+product_delivery:
+  url:   /product/delivery-info/:product
+  param: { module: product_, action: deliveryInfo, product: 0 }
 # список товаров
+# @core
 product_list:
   url:   /products/list/:products
-  param: { module: product, action: list }
+  param: { module: product_, action: list }
 # список товаров
+# @core
 product_set:
   url:   /products/set/:products
-  param: { module: product, action: set }
+  param: { module: product_, action: set }
 # список смежных товаров
+# @core
 product_related:
   url:   /products/related/:product
-  param: { module: productSoa, action: related }
-  #class:   myDoctrineRoute
-  #options: { model: Product, type: object, method: getForRoute }
+  param: { module: productCard_, action: related }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 # список аксессуаров
+# @core
 product_accessory:
   url:   /products/accessories/:product
-  param: { module: productSoa, action: accessory }
-  #class:   myDoctrineRoute
-  #options: { model: Product, type: object, method: getForRoute }
-#  requirements:
-#    product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+  param: { module: productCard_, action: accessory }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
+# карточка товара по ид товара
+# @core
+product_show:
+  url:   /product-:product
+  param: { module: product_, action: show }
+  options:
+    segment_separators: [ '/', '-' ]
+# карточка товара. использует новый API
+# @core
+productCard:
+  url:   /product/:product
+  param: { module: productCard_, action: index }
+  class:   myDoctrineRoute
+  options: { model: Product, type: object, method: getForRoute }
+  requirements:
+    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
+# usable for content
+# @core
+productCard_showByBarcode:
+  url:   /product/:product
+  param: { module: productCard_, action: showByBarcode }
 
 # @deprecated
 # фильтр каталога товаров
@@ -111,46 +130,6 @@ productCatalog_carousel:
   requirements:
     productCategory: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 #
-# карточка товара
-productCardOld:
-  url:   /product_old/:product
-  param: { module: productCard, action: index }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-
-
-# карточка товара. использует новый API
-productCard:
-  url:   /product/:product
-  param: { module: productCardSoa, action: index }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-# карточка товара. использует новый API
-productCardSoa:
-  url:   /product/:product
-  param: { module: productCardSoa, action: index }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-
-
-# битые ссылки
-productCard_showByBarcode:
-  url:   /product/:product
-  param: { module: productCard, action: showByBarcode }
-#
-# карточка товара по ид товара
-product_show:
-  url:   /product-:product
-  param: { module: product, action: show }
-  options:
-    segment_separators: [ '/', '-' ]
-#
 # комментарии товара
 productComment:
   url:   /product/:product/comments
@@ -200,8 +179,6 @@ productCategory_menu:
 productStock:
   url:   /product/:product/stock
   param: { module: productStock, action: index }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
@@ -210,15 +187,6 @@ similarProduct:
   url:   /product/:product/similar
   param: { module: similarProduct, action: index }
   class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# обновление товара по измененной характеристики для группы товаров
-changeProduct:
-  url:   /product/:product/change/:value
-  param: { module: product, action: change }
-  class: myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
@@ -323,10 +291,10 @@ user_legalConsultationSend:
   param:   { module: user, action: sendLegalConsultation }
 
 
-# user. get short info about cart, wishlist, etc.
+# MOVED TO PLAIN PHP user. get short info about cart, wishlist, etc.
 userProductHistory_shortinfo:
   url:   /user/shortinfo
-  param: { module: userProductHistory, action: shortinfo }
+  param: { module: default, action: index }
   requirements:
     sf_method: [ get,post ]
 
@@ -389,199 +357,6 @@ user_basicRegister:
 user_oauth_callback:
   url:   /signin/:provider/callback
   param: { module: guard, action: oauthCallback }
-
-
-#
-# user product history
-userProductHistory:
-  url:   /private/product-history
-  param: { module: userProductHistory, action: index }
-#
-# user product history clear
-userProductHistory_clear:
-  url:   /private/product-history/clear
-  param: { module: userProductHistory, action: clear }
-
-#
-# user delayed product
-userDelayedProduct:
-  url:   /private/delayed-products
-  param: { module: userDelayedProduct, action: index }
-#
-# user delayed product create
-userDelayedProduct_create:
-  url:   /private/delayed-products/create/:product
-  param: { module: userDelayedProduct, action: create }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user delayed product delete
-userDelayedProduct_delete:
-  url:   /private/delayed-products/delete/:product
-  param: { module: userDelayedProduct, action: delete }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user delayed product clear
-userDelayedProduct_clear:
-  url:   /private/delayed-products/clear
-  param: { module: userDelayedProduct, action: clear }
-
-
-#
-# user product notice
-userProductNotice:
-  url:   /private/product-notices
-  param: { module: userProductNotice, action: index }
-#
-# user product notice show
-userProductNotice_show:
-  url:   /private/product-notices/show/:product
-  param: { module: userProductNotice, action: show }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user product notice create
-userProductNotice_create:
-  url:   /private/product-notices/create/:product
-  param: { module: userProductNotice, action: create }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    sf_method: [ post ]
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user product notice delete
-userProductNotice_delete:
-  url:   /private/product-notices/delete/:product
-  param: { module: userProductNotice, action: delete }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user product notice clear
-userProductNotice_clear:
-  url:   /private/product-notices/clear
-  param: { module: userProductNotice, action: clear }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-
-#
-# user tag
-userTag:
-  url:   /private/tags
-  param: { module: userTag, action: index }
-#
-# user tag create
-userTag_create:
-  url:     /private/tags/create
-  param:   { module: userTag, action: create }
-#
-# user tag update
-userTag_update:
-  url:     /private/tags/:userTag/update
-  param:   { module: userTag, action: update }
-  class:   myDoctrineRoute
-  options: { model: UserTag, type: object, method: getForRoute }
-# user tag delete
-userTag_delete:
-  url:     /private/tags/:userTag/delete
-  param:   { module: userTag, action: delete }
-  class:   myDoctrineRoute
-  options: { model: UserTag, type: object, method: getForRoute }
-#
-# user tag link product
-userTag_linkProduct:
-  url:     /private/tags/:userTag/link/:product
-  param:   { module: userTag, action: linkProduct }
-  class:   myDoctrineRoute
-  options: { model: UserTag, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user tag unlink product
-userTag_unlinkProduct:
-  url:     /private/tags/:userTag/unlink/:product
-  param:   { module: userTag, action: unlinkProduct }
-  class:   myDoctrineRoute
-  options: { model: UserTag, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-
-
-#
-# product helper
-productHelper:
-  url:   /helper
-  param: { module: productHelper, action: index }
-#
-# product helper show
-productHelper_show:
-  url:   /helper/:productHelper
-  param: { module: productHelper, action: show }
-  class:   myDoctrineRoute
-  options: { model: ProductHelper, type: object, method: getForRoute }
-#
-# product helper answer
-productHelper_answer:
-  url:     /helper/:productHelper/answer
-  param:   { module: productHelper, action: answer }
-  class:   myDoctrineRoute
-  options: { model: ProductHelper, type: object, method: getForRoute }
-  requirements:
-    sf_method: [ post ]
-#
-# product helper result
-productHelper_result:
-  url:     /helper/:productHelper/result
-  param:   { module: productHelper, action: result }
-  class:   myDoctrineRoute
-  options: { model: ProductHelper, type: object, method: getForRoute }
-  requirements:
-    sf_method: [ post ]
-
-
-
-#
-# user product compare
-userProductCompare:
-  url:   /compare
-  param: { module: userProductCompare, action: index }
-#
-# user product compare show
-userProductCompare_show:
-  url:   /compare/show/:productType
-  param: { module: userProductCompare, action: show }
-  class:   myDoctrineRoute
-  options: { model: ProductType, type: object, method: getForRoute }
-#
-# user product compare add
-userProductCompare_add:
-  url:   /compare/add/:product
-  param: { module: userProductCompare, action: add }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-#
-# user product compare delete
-userProductCompare_delete:
-  url:   /compare/delete/:product
-  param: { module: userProductCompare, action: delete }
-  class:   myDoctrineRoute
-  options: { model: Product, type: object, method: getForRoute }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-
-
 
 #
 # user product rating create
@@ -732,28 +507,12 @@ cart_add:
   requirements:
     sf_method: [ get, post ]
     product: \d+
-#
-
-cart_add_old:
-  url: /cart/add/:product/_quantity/:quantity
-  param: { module: cart, action: addOld, quantity: 1 }
-  requirements:
-    sf_method: [ get, post ]
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-
 # cart delete
 cart_delete:
   url:   /cart/delete/:product/_service/:service
   param: { module: cart, action: delete, product: '-/-', service: 0 }
   requirements:
     product: \d+
-
-# cart delete
-cart_delete_old:
-  url:   /cart/delete/:product/_service/:service
-  param: { module: cart, action: deleteOld, product: '-/-', service: 0 }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 
 #
 # cart clear
@@ -768,15 +527,6 @@ cart_service_add:
   requirements:
     product: \d+
     service: \d+
-   # product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-
-# cart service add
-cart_service_add_old:
-  url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/
-  param: { module: cart, action: serviceAddOld, quantity: 1, product: '-/-' }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-
 #
 # cart servcie delete
 cart_service_delete:
@@ -785,15 +535,6 @@ cart_service_delete:
   requirements:
     product: \d+
     service: \d+
-
-# cart servcie delete
-cart_service_delete_old:
-  url:   /cart/delete_service/:product/_service/:service
-  param: { module: cart, action: serviceDeleteOld, product: '-/-' }
-  requirements:
-    product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
-
-
 #
 # F1 servis show
 service_show:

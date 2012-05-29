@@ -11,7 +11,7 @@ class TagTable extends myDoctrineTable
   /**
    * Returns an instance of this class.
    *
-   * @return object TagTable
+   * @return TagTable
    */
   public static function getInstance()
   {

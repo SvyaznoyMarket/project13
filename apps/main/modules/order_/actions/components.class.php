@@ -140,7 +140,7 @@ class order_Components extends myComponents
         $product = $productsById[$productData['product_id']];
 
         /* @var $category ProductCategoryEntity */
-        $category = array_shift($product->getCategory());
+        $category = array_shift($product->getCategoryList());
         if (!$category instanceof ProductCategoryEntity) continue;
 
         if (!array_key_exists($category->getId(), $data))

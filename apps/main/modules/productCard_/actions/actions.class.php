@@ -1,17 +1,19 @@
 <?php
 
 /**
- * productCard_ actions.
+ * productCard actions.
  *
  * @package    enter
  * @subpackage productCard_
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  *
- * @property ProductEntity $product
+ * @method sfWebResponse getResponse
  */
 class productCard_Actions extends myActions
 {
+  CONST NUM_RELATED_ON_PAGE = 5;
+
   public function preExecute()
   {
     parent::postExecute();
@@ -19,15 +21,96 @@ class productCard_Actions extends myActions
     $this->getRequest()->setParameter('_template', 'product_card');
   }
 
- /**
-  * Executes index action
-  *
-  * @param sfRequest $request A request object
-  */
   public function executeIndex(sfWebRequest $request)
   {
-    $product_token = end(explode('/', $request['product']));
+    $a = explode('/', $request['product']);
+    $productToken = end($a);
+    $this->loadProduct($productToken);
+  }
 
-    $this->product = RepositoryManager::getProduct()->getByToken($product_token);
+  public function executeShowByBarcode(sfWebRequest $request)
+  {
+    $this->getResponse()->setStatusCode(404);
+    /** @var $siteProduct Product */
+    $siteProduct = ProductTable::getInstance()->getByBarcode($request['product']);
+    $this->loadProduct($siteProduct->token);
+    $this->setTemplate('index');
+  }
+
+  public function executeAccessory(sfWebRequest $request)
+  {
+    $page = $request->getParameter('page', 1);
+    $token = $request->getParameter('product');
+    $product = RepositoryManager::getProduct()->getByToken($token, true);
+
+    $begin = self::NUM_RELATED_ON_PAGE * ($page - 1);
+    $accessoryIdList = array_slice($product->getAccessoryIdList(), $begin, self::NUM_RELATED_ON_PAGE);
+    $accessoryProductList = RepositoryManager::getProduct()->getListById($accessoryIdList, true);
+
+    foreach ($accessoryProductList as $i => $accessory)
+      $this->renderPartial('product_/show_', array(
+        'view' => 'extra_compact',
+        'item' => $accessory,
+        'maxPerPage' => self::NUM_RELATED_ON_PAGE,
+        'ii' => $i
+    ));
+    return sfView::NONE;
+  }
+
+  public function executeRelated(sfWebRequest $request)
+  {
+    $page = $request->getParameter('page', 1);
+    $token = $request->getParameter('product');
+    $product = RepositoryManager::getProduct()->getByToken($token, true);
+
+    $begin = self::NUM_RELATED_ON_PAGE * ($page - 1);
+    $relatedIdList = array_slice($product->getRelatedList(), $begin, self::NUM_RELATED_ON_PAGE);
+    $relatedProductList = RepositoryManager::getProduct()->getListById($relatedIdList, true);
+
+    foreach ($relatedProductList as $i => $accessory)
+      $this->renderPartial('product_/show_', array(
+        'view' => 'extra_compact',
+        'item' => $accessory,
+        'maxPerPage' => self::NUM_RELATED_ON_PAGE,
+        'ii' => $i
+    ));
+    return sfView::NONE;
+  }
+
+  private function loadProduct($productToken)
+  {
+    $product = RepositoryManager::getProduct()->getByToken($productToken, true);
+    $this->getContext()->set('adriverProductInfo', array('productId' => $product->getId(), 'categoryId' => 0));
+    RepositoryManager::getProduct()->loadRelatedAndAccessories($product, true, self::NUM_RELATED_ON_PAGE * 2);
+    RepositoryManager::getProduct()->loadKit($product, true);
+    $this->forward404If(!$product);
+
+    $this->getResponse()->setTitle(sprintf(
+      '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru',
+      $product->getName(),
+      $product->getPrice(),
+      $product->getName()
+    ));
+    $this->getResponse()->addMeta('description', sprintf(
+      'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону 8 (800) 700-00-09.',
+      $product->getName(),
+      $product->getPrice(),
+      $product->getName()
+    ));
+    $this->getResponse()->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
+
+    $showRelatedUpper = false;
+    foreach($product->getCategoryList() as $category){
+      if(in_array($category->getId(), array(80, 923, 1604, 1611))){
+        $showRelatedUpper = true;
+        break;
+      }
+    }
+    $this->setVar('showRelatedUpper', $showRelatedUpper);
+    $this->setVar('showAccessoryUpper', !$showRelatedUpper);
+    $this->setVar('relatedPagesNum', ceil(count($product->getRelatedIdList()) / self::NUM_RELATED_ON_PAGE));
+    $this->setVar('accessoryPagesNum', ceil(count($product->getAccessoryIdList()) / self::NUM_RELATED_ON_PAGE));
+    $this->setVar('product', $product);
+    $this->setVar('view', 'compact');
   }
 }

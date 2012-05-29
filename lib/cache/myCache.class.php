@@ -6,6 +6,10 @@ class myCache
     $instance = null
   ;
 
+  /**
+   * @static
+   * @return myRedisCache
+   */
   static public function getInstance()
   {
     if (null == self::$instance)

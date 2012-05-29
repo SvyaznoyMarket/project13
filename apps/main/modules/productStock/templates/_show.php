@@ -1,7 +1,25 @@
+<?php
+/**
+ * @var $product ProductEntity
+ */
+
+$json = array (
+  'jsref' => $product->getToken(),
+  'jstitle' => htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8'),
+  'jsprice' => $product->getPrice(),
+  'jssimg' => $product->getMediaImageUrl(1),
+  'jsimg' => $product->getMediaImageUrl(3),
+  'jsbimg' =>  $product->getMediaImageUrl(2),
+  'jsshortcut' =>  $product->getArticle(),
+  'jsitemid' =>  $product->getId(),
+  'jsregionid' => sfContext::getInstance()->getUser()->getRegionCoreId(),
+  'jsregion' => sfContext::getInstance()->getUser()->getRegion('name'),
+);
+?>
 <div class="clear"></div>
 <input type="hidden" id="stockmodel"
 	data-value="<?php echo $json ?>"
-	link-output='<?php echo url_for('order_1click', array('product' => $product->barcode)) ?>'
+	link-output='<?php echo url_for('order_1click', array('product' => $product->getBarcode())) ?>'
 	link-input='<?php echo url_for('product_delivery_1click') ?>'
 	/>
 	
