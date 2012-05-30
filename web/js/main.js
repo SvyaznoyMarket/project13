@@ -193,8 +193,10 @@ $(document).ready(function(){
 	var compact = $("div.goodslist").length
 	function liveScroll( lsURL, pageid ) {
 		var params = []
+		/* RETIRED cause data-filter
 		if( $('.bigfilter.form').length ) //&& ( location.href.match(/_filter/) || location.href.match(/_tag/) ) )
 			params = $('.bigfilter.form').parent().serializeArray()
+		*/
 		lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
 		var loader =
@@ -235,7 +237,7 @@ $(document).ready(function(){
 
 	if( $('div.allpager').length ) {
 		$('div.allpager').each(function() {
-			var lsURL = $(this).data('url')
+			var lsURL = $(this).data('url') + '?' + $(this).data('filter')
 			var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
 			var vinit = vnext - 1
 			var vlast = parseInt('0' + $(this).data('lastpage') , 10)
