@@ -895,7 +895,8 @@ $(document).ready(function(){
 			var self = this.self,
 				other = this.other    	
 			var html = '<h4>Как получить заказ?</h4><ul>'
-			html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине ' +
+			if( self )
+				html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине ' +
 						self + '</h5><div>&mdash; <a target="blank" href="' +
 						dlvr_node.data('shoplink') + '">В каких магазинах ENTER можно забрать?</a></div></li>'	
 			
