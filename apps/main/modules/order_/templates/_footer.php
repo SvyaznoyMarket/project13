@@ -1,5 +1,4 @@
 <ul class='bBuyingFooter'>
-
   <li>
     <div class='bBuyingFooter__eEnter'></div>
     <h3>Ответы на вопросы</h3>
