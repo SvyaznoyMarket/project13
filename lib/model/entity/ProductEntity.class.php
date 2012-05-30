@@ -2,8 +2,11 @@
 
 /**
  * Товар
+<<<<<<< HEAD
+=======
  * @todo check label
  * @todo check is_in_sale
+>>>>>>> release
  */
 class ProductEntity
 {
@@ -158,6 +161,10 @@ class ProductEntity
     return $this->brand;
   }
 
+  public function setCategory(array $category)
+  {
+    $this->categoryList = $category;
+  }
   public function setCategoryList(array $categoryList)
   {
     $this->categoryList = array();
@@ -181,6 +188,16 @@ class ProductEntity
   /**
    * @return ProductCategoryEntity
    */
+  public function getCategory()
+  {
+    return $this->categoryList;
+  }
+
+  public function setAttribute(array $attribute)
+  {
+    $this->attributeList = $attribute;
+  }
+
   public function getMainCategory()
   {
     return count($this->categoryList) > 0 ? $this->categoryList[0] : null;
@@ -201,6 +218,22 @@ class ProductEntity
   /**
    * @return ProductAttributeEntity[]
    */
+  public function getAttribute()
+  {
+    return $this->attribute;
+  }
+
+
+  public function setAnnounce($announce)
+  {
+    $this->announce = $announce;
+  }
+
+  public function getAnnounce()
+  {
+    return $this->announce;
+  }
+
   public function getAttributeList()
   {
     return $this->attributeList;
@@ -259,16 +292,6 @@ class ProductEntity
   public function getBarcode()
   {
     return $this->barcode;
-  }
-
-  public function setAnnounce($announce)
-  {
-    $this->announce = $announce;
-  }
-
-  public function getAnnounce()
-  {
-    return $this->announce;
   }
 
   public function setDescription($description)

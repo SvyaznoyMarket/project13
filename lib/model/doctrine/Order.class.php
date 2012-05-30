@@ -20,6 +20,16 @@ class Order extends BaseOrder
   const TYPE_CUSTOM = 3;
   const TYPE_1CLICK = 9;
 
+  public function construct()
+  {
+    $this->mapValue('address_metro', null);
+    $this->mapValue('address_street', null);
+    $this->mapValue('address_number', null);
+    $this->mapValue('address_building', null);
+    $this->mapValue('address_apartment', null);
+    $this->mapValue('address_floor', null);
+  }
+
   public function __toString()
   {
     return (string)$this->token;

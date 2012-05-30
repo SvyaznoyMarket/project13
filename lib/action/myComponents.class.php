@@ -2,6 +2,20 @@
 
 class myComponents extends sfComponents
 {
+  /**
+   * Retrieves the current sfUser object.
+   *
+   * This is a proxy method equivalent to:
+   *
+   * <code>$this->getContext()->getUser()</code>
+   *
+   * @return myUser The current sfUser implementation instance
+   */
+  public function getUser()
+  {
+    return $this->context->getUser();
+  }
+
   public function getLayout()
   {
     return $this->getController()->getActionStack()->getLastEntry()->getActionInstance()->getLayout();

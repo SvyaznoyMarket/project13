@@ -465,30 +465,73 @@ class UserCart extends BaseUserData
         return $result;
     }
 
-    public function getTotal($is_formatted = false)
+  public function getTotal($is_formatted = false)
+  {
+    $total = 0;
+    foreach ($this->_products as $product)
     {
-        $total = 0;
-        foreach ($this->_products as $product)
-        {
-            $total += $product['price'] * $product['quantity'];
-        }
-
-        foreach ($this->_services as $service)
-        {
-            if (isset($service['products']))
-            {
-                foreach ($service['products'] as $prodId => $prodQty)
-                {
-                    $total += ($prodQty['price'] * $prodQty['quantity']);
-                }
-            }
-        }
-
-        $result = $is_formatted ? number_format($total, 0, ',', ' ') : $total;
-
-
-        return $result;
+      $total += $product['price'] * $product['quantity'];
     }
+
+    foreach ($this->_services as $service)
+    {
+      if (isset($service['products']))
+      {
+        foreach ($service['products'] as $prodId => $prodQty)
+        {
+          $total += ($prodQty['price'] * $prodQty['quantity']);
+        }
+      }
+    }
+
+    $result = $is_formatted ? number_format($total, 0, ',', ' ') : $total;
+
+
+    return $result;
+  }
+
+  public function getTotalForOrder(Order $order)
+  {
+    $this->calculateDiscount();
+
+    $total = 0;
+    $products = $this->getProducts();
+    $services = $this->getServices();
+
+    $needleProductIds = array_map(function($i) { return $i->Product->id; }, iterator_to_array($order->ProductRelation));
+    $needleServiceIds = array_map(function($i) { return $i->Service->id; }, iterator_to_array($order->ServiceRelation));
+
+    foreach ($products as $product)
+    {
+      if (!in_array($product->id, $needleProductIds)) continue;
+
+      $total += ProductTable::getInstance()->getRealPrice($product) * $product['cart']['quantity'];
+    }
+
+    //$products = null;
+    foreach ($services as $service)
+    {
+      $qty = $service['cart']['quantity'];
+      if ($qty) {
+        if (!in_array($service->id, $needleServiceIds)) continue;
+
+        $total += ($service->getCurrentPrice() * $qty);
+      }
+
+      if (isset($service['cart']['product']))
+      {
+        foreach ($service['cart']['product'] as $prodId => $prodQty)
+        {
+          if (!in_array($prodId, $needleProductIds)) continue;
+          //$qty += $prodQty;
+          $total += ($service->getCurrentPrice($prodId) * $prodQty);
+        }
+      }
+    }
+
+
+    return $total;
+  }
 
     public function getReceiptList()
     {

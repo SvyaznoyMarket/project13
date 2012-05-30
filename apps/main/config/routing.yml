@@ -645,22 +645,35 @@ order_1click:
   url:   /orders/1click
   param: { module: order, action: 1click }
 #
-# order login
-order_login:
-  url:   /orders/login
-  param: { module: order, action: login }
-#
 # order new
+#order_new:
+#  url:   /orders/new/:step
+#  param: { module: order, action: new, step: 1 }
 order_new:
-  url:   /orders/new/:step
-  param: { module: order, action: new, step: 1 }
+  url:   /orders/new
+  param: { module: order_, action: new }
+#
+# order create
+#order_create:
+#  url:   /orders/create
+#  param: { module: order, action: create }
+#
+# order create
+order_create:
+  url:   /orders/create
+  param: { module: order_, action: create }
+#
+# order deliveryMap
+order_deliveryMap:
+  url:   /orders/delivery-map
+  param: { module: order_, action: deliveryMap }
 #
 # order field
-order_updateField:
-  url:   /orders/update-field/:step
-  param: { module: order, action: updateField, step: 1 }
-  requirements:
-    sf_method: [ post ]
+#order_updateField:
+#  url:   /orders/update-field/:step
+#  param: { module: order, action: updateField, step: 1 }
+#  requirements:
+#    sf_method: [ post ]
 #
 # order edit
 order_edit:
@@ -672,15 +685,10 @@ order_confirm:
   url:   /orders/confirm
   param: { module: order, action: confirm }
 #
-# order create
-order_create:
-  url:   /orders/create
-  param: { module: order, action: create }
-#
 # order complete
 order_complete:
   url:   /orders/complete
-  param: { module: order, action: complete }
+  param: { module: order_, action: complete }
 #
 # order payment
 order_payment:
@@ -738,7 +746,7 @@ cart_delete:
   url:   /cart/delete/:product/_service/:service
   param: { module: cart, action: delete, product: '-/-', service: 0 }
   requirements:
-  product: \d+
+    product: \d+
 
 # cart delete
 cart_delete_old:

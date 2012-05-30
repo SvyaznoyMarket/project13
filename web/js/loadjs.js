@@ -66,11 +66,23 @@
 			break
 		case 'order':
 			$LAB.queueScript('bigjquery.min.js')
+			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
+				//.script('shelf/jquery.maskedinput.js')
+				.script('shelf/jquery.placeholder.js')
 				.wait()
+				.script(getWithVersion('app.shop.map.js'))
+				.script(getWithVersion('app.order.v3.2.js'))
 				.script(getWithVersion('main.js'))
-				.script( getWithVersion('app.order.js') )
+			}).runQueue()
+			break
+		case 'order_complete':
+			$LAB.queueScript('bigjquery.min.js').queueWait( function() {
+				$LAB.script( getWithVersion('library.js') )
+				.wait()
+				.script(getWithVersion('app.order.js'))
+				.script(getWithVersion('main.js'))
 			}).runQueue()
 			break
 		case 'product_catalog':

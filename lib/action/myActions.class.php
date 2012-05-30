@@ -2,6 +2,20 @@
 
 class myActions extends sfActions
 {
+  /**
+   * Retrieves the current sfUser object.
+   *
+   * This is a proxy method equivalent to:
+   *
+   * <code>$this->getContext()->getUser()</code>
+   *
+   * @return myUser The current sfUser implementation instance
+   */
+  public function getUser()
+  {
+    return $this->context->getUser();
+  }
+
   public function getPartial($templateName, $vars = null)
   {
     $this->getContext()->getConfiguration()->loadHelpers('myPartial');
@@ -98,6 +112,11 @@ class myActions extends sfActions
 
   public function getCoreService()
   {
-    return CoreService::getInstance();
+    return Core::getInstance();
+  }
+
+  public function getCore()
+  {
+    return Core::getInstance();
   }
 }

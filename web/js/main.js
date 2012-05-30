@@ -120,6 +120,7 @@ $(document).ready(function(){
               }
             } else {
               $('#auth-block').trigger('close')
+              PubSub.publish( 'authorize', response.user )
             }
           } else {
             form.html( $(response.data.content).html() )
@@ -266,7 +267,6 @@ $(document).ready(function(){
 					$('div.pageslist ul').append( next )
 										 .find('a')
 										 .bind('click', function(){
-										 console.info('infScroll')
 											docCookies.removeItem( 'infScroll' )
 										  })
 					$('div.allpager').addClass('mChecked')
@@ -376,12 +376,14 @@ $(document).ready(function(){
 	}
 	
 	function paintRegions() {
-		$('.graying').show()
+		$('.bCityPopupWrap').lightbox_me({ centered: true })
+		/*$('.graying').show()
 		$('.bCityPopupWrap').show()
 		$('body').delegate( '.bCityPopupWrap .close', 'click', function() {
 			$('.graying').hide()
 			$('.bCityPopupWrap').hide()
 		})
+		*/
 	}
 	
 	$('body').delegate('#jsregion, .jsChangeRegion', 'click', function() {
