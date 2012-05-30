@@ -220,7 +220,7 @@ class order_Actions extends myActions
       {
         $products = RepositoryManager::getProduct()->getListById(array_map(function($i) {
           return $i['product_id'];
-        }, $order['product']));
+        }, $order['product']), true);
 
         $productsById = array();
         foreach ($products as $product)

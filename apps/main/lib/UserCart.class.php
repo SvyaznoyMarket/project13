@@ -68,7 +68,7 @@ class UserCart extends BaseUserData
     public function addProduct($id, $qty = 1)
     {
         //получаем информацию о продукте из ядра
-        $productList = RepositoryManager::getProduct()->getListById(array($id));
+        $productList = RepositoryManager::getProduct()->getListById(array($id), true);
         /** @var $product ProductEntity */
         $product = reset($productList);
 
@@ -79,11 +79,11 @@ class UserCart extends BaseUserData
             $isKit = true;
             //загружаем инфу о составе комплекта
             $kitIdList = array();
-            foreach ($product->kit as $kit) {
-                $kitIdList[] = $kit['id'];
-                $kitQtyByIdList[$kit['id']] = $kit['quantity'];
+            foreach ($product->getKitList() as $kit) {
+                $kitIdList[] = $kit->getProductId();
+                $kitQtyByIdList[$kit->getProductId()] = $kit->getQuantity();
             }
-            $productList = RepositoryManager::getProduct()->getListById($kitIdList);
+            $productList = RepositoryManager::getProduct()->getListById($kitIdList, true);
         }
 
         try
