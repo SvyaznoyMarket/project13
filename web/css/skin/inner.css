@@ -3804,7 +3804,7 @@ DT.bCtg__eOrange{
 		margin-right: 24px;
 		text-align: center;
 		font: 14px 'EnterTypeBold';
-		background: url('img/z_map_popup.png') no-repeat;
+		/*background: url('img/z_map_popup.png') no-repeat;*/
 		}
 	.mNumPos{
 		z-index: 2;
