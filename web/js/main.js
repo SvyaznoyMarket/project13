@@ -191,7 +191,7 @@ $(document).ready(function(){
 	/* Infinity scroll */
 	var ableToLoad = true
 	var compact = $("div.goodslist").length
-	function liveScroll( lsURL, pageid ) {
+	function liveScroll( lsURL, filters, pageid ) {
 		var params = []
 		/* RETIRED cause data-filter
 		if( $('.bigfilter.form').length ) //&& ( location.href.match(/_filter/) || location.href.match(/_tag/) ) )
@@ -208,7 +208,7 @@ $(document).ready(function(){
 				"</div>" +
 			"</div>"
 		tmpnode.after( loader )
-
+		lsURL += '?' + filters
 		if( $("#sorting").length ) {
 			params.push( { name:'sort', value : $("#sorting").data('sort') })
 		}
@@ -237,7 +237,8 @@ $(document).ready(function(){
 
 	if( $('div.allpager').length ) {
 		$('div.allpager').each(function() {
-			var lsURL = $(this).data('url') + '?' + $(this).data('filter')
+			var lsURL = $(this).data('url') 
+			var filters = $(this).data('filter')
 			var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
 			var vinit = vnext - 1
 			var vlast = parseInt('0' + $(this).data('lastpage') , 10)
@@ -245,7 +246,7 @@ $(document).ready(function(){
 				if ( ableToLoad && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
 					ableToLoad = false
 					if( vlast + vinit > vnext )
-						liveScroll( lsURL, ((vnext % vlast) ? (vnext % vlast) : vnext ))
+						liveScroll( lsURL, filters, ((vnext % vlast) ? (vnext % vlast) : vnext ))
 					vnext += 1
 				}
 			}
