@@ -233,6 +233,8 @@ class order_Actions extends myActions
         {
           if (!array_key_exists($productData['product_id'], $productsById)) continue;
 
+          $productData['name'] = $productsById[$productData['product_id']]->getName();
+
           $gaItem = new Order_GaItem();
           $gaItem->orderNumber = $order['number'];
           $gaItem->article = $productsById[$productData['product_id']]->getArticle();
@@ -274,6 +276,8 @@ class order_Actions extends myActions
         foreach ($order['service'] as &$serviceData)
         {
           if (!array_key_exists($serviceData['service_id'], $serviceById)) continue;
+
+          $serviceData['name'] = $serviceById[$serviceData['service_id']]->getName();
 
           $gaItem = new Order_GaItem();
           $gaItem->orderNumber = $order['number'];

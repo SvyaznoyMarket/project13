@@ -990,6 +990,7 @@ $(document).ready(function() {
     if( typeof( $.mask ) !== 'undefined' ) {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
 		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
+		$("#order_sclub_card_number").mask("9 999999 999999", { placeholder: "*" } )
 	}
 	
 	$('#addressField').find('input').placeholder()
