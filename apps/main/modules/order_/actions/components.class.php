@@ -19,6 +19,9 @@ class order_Components extends myComponents
   public function executeField_region_id()
   {
     $this->displayValue = $this->getUser()->getRegion('name');
+
+    //dump($this->getUser()->getRegion());
+    $this->setVar('region', $this->getUser()->getRegion('region'));
   }
   /**
    * Executes field_delivery_type_id component

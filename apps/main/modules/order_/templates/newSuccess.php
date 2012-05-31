@@ -205,8 +205,21 @@
 
 <?php include_partial('order_/footer') ?>
 
-<?php if (false): ?>
-  <?php slot('seo_counters_advance') ?>
-    <?php include_component('order', 'seo_counters_advance', array('step' => 2)) ?>
-  <?php end_slot() ?>
+
+<?php if ('live' == sfConfig::get('sf_environment')): ?>
+<script type="text/javascript">
+  (function(d){
+    var HEIAS_PARAMS = [];
+    HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
+    HEIAS_PARAMS.push(['pb', '1']);
+    HEIAS_PARAMS.push(['order_article', '<?php echo $sf_user->getCart()->getSeoCartArticle() ?>']);
+    if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
+    window.HEIAS.push(HEIAS_PARAMS);
+    var scr = d.createElement('script');
+    scr.async = true;
+    scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
+    var elem = d.getElementsByTagName('script')[0];
+    elem.parentNode.insertBefore(scr, elem);
+  }(document));
+</script>
 <?php endif ?>
