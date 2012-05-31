@@ -21,7 +21,7 @@ class ProductCategoryFilterEntity
 
   public function __construct(array $data = array())
   {
-    if (array_key_exists('filter_id', $data))   $this->filterId   = (int)$data['filter_id'];
+    if (array_key_exists('filter_id', $data))   $this->filterId   = (string)$data['filter_id'];
     if (array_key_exists('name', $data))        $this->name       = (string)$data['name'];
     if (array_key_exists('type_id', $data))     $this->typeId     = (int)$data['type_id'];
     if (array_key_exists('unit', $data))        $this->unit       = (string)$data['unit'];
