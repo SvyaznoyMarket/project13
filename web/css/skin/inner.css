@@ -5779,8 +5779,8 @@ div.mSportFont{ color: #e8303c; }
 }
 .bFooterBottom .copyright{
     /*font-weight: bold;*/
+    font-family: "Times New Roman", Times, serif;
     font-size: 12px;
-    font: times;
     color: #000000;
 }
 
