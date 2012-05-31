@@ -876,6 +876,11 @@ callback:
   url:   /callback
   param: { module: callback, action: index }
 
+#ipad_save
+ipad_save:
+  url:   /ipad_save
+  param: { module: callback, action: ipadSave }
+
 # Страница акции ipad
 newipad:
   url:   /newipad

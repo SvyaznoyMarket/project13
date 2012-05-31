@@ -541,7 +541,7 @@ border-radius:5px;
 
 
 .goodslist {float:left; width:705px; margin-left:-4px;  padding-bottom:5px; z-index:1; position:relative;}
-.goodslist .goodsbox { min-height: 284px; }
+.goodslist .goodsbox, .carousel .goodsbox{ min-height: 284px; }
 .goodsbox {float:left; width:195px; padding:10px; margin-bottom:14px; margin-right:20px}
 .boxhover {display:none; position:absolute; z-index:3; width:215px; top:-4px; left:-4px;  padding:9px 0 0 9px; cursor:pointer}
 /*
@@ -5933,10 +5933,18 @@ div.mSportFont{ color: #e8303c; }
 .promo .bOrangeButton{
     font: 16px tahoma, verdana, arial;
 }
+.promo .bOrangeButton.active{
+    cursor: pointer;
+}
 .promo .shopList li{
     margin-top: 8px;
 }
 .promo .shopList a{
     text-decoration: underline;
     font-size: 13px;
+}
+.ipadButtonSmall{
+    font-size: 10px;
+    color: #676767;
+    width: 200px;
 }

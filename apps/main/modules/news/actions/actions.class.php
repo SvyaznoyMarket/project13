@@ -22,7 +22,7 @@ class newsActions extends myActions
 
     public function executeIpad(sfWebRequest $request)
     {
-        $this->getResponse()->setTitle('The new Ipad');
+        $this->getResponse()->setTitle('The new iPad');
         $productAr = array(
             'planshetniy-kompyuter-apple-new-ipad-16-gb-cherniy-2060101004336',
             'planshetniy-kompyuter-apple-new-ipad-32-gb-cherniy-2060101004343',

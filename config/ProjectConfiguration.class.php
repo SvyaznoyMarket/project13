@@ -26,8 +26,8 @@ class ProjectConfiguration extends sfProjectConfiguration
       array('doctrine.configure', array($this, 'listenToConfigureDoctrineEvent')),
       array('context.load_factories', array($this, 'listenForLoadFactories')),
       array('debug.web.load_panels', array('myWebDebugPanelEnvironment', 'listenToLoadDebugWebPanelEvent')),
-      //array('debug.web.load_panels', array('myWebDebugPanelCore', 'listenToLoadDebugWebPanelEvent')),
-      //array('debug.web.load_panels', array('myWebDebugPanelRedis', 'listenToLoadDebugWebPanelEvent')),
+      array('debug.web.load_panels', array('myWebDebugPanelCore', 'listenToLoadDebugWebPanelEvent')),
+      array('debug.web.load_panels', array('myWebDebugPanelRedis', 'listenToLoadDebugWebPanelEvent')),
     ) as $listener) {
       $this->dispatcher->connect($listener[0], $listener[1]);
     }
