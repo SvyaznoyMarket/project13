@@ -69,8 +69,6 @@
 			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
-				//.script('shelf/jquery.maskedinput.js')
-				.script('shelf/jquery.placeholder.js')
 				.wait()
 				.script(getWithVersion('app.shop.map.js'))
 				.script(getWithVersion('app.order.v3.2.js'))
@@ -100,7 +98,6 @@
 			.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
-				//.script( 'jquery.effects.blind.js' )
 				.script( getWithVersion('main.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
@@ -136,7 +133,6 @@
 		case 'shop':
 			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
-				//.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('app.shop.js') )
 				.script( getWithVersion('main.js') )
@@ -149,7 +145,6 @@
 			$LAB.queueScript('knockout-2.1.0.js')
 			.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
-				//.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('main.js') )
 				.wait()
