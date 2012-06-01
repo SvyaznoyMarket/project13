@@ -197,7 +197,7 @@ class order_Actions extends myActions
         'expand' => array('geo', 'user', 'product', 'service'),
       ));
 
-      $orderIds = $result ? array_map(function($i) { return $i['id']; }, $result) : null;
+      $orderIds = is_array($result) ? array_map(function($i) { return $i['id']; }, $result) : null;
     }
     else {
       $result = Core::getInstance()->query('order.get', array(
