@@ -34,7 +34,7 @@ live_dev:
   .settings:
     web_debug:              true
     cache:                  false
-    no_script_name:         false
+    no_script_name:         true
     etag:                   false
 
 debug:
