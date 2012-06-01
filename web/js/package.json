@@ -9,7 +9,7 @@
 		},
 		{
 			"title": "knockout.js",
-			"v": "2.0"
+			"v": "2.1"
 		},		
 		{
 			"title": "bigjquery.min.js",
@@ -173,7 +173,8 @@
 			"title": "app.product.comment.list.js"
 		},
 		{
-			"title": "app.order.js"
+			"title": "app.order.v.3.2.js",
+			"comment": "custom framework by green       prototype version in app.order.v.3 includes/depends knockout"
 		},
 		{
 			"title": "app.cart.js"
