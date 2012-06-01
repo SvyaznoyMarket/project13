@@ -47,6 +47,7 @@ class order_Actions extends myActions
     $this->form = $this->getOrderForm($this->order);
     if (!$this->form)
     {
+      $this->getRequest()->setParameter('_template', 'order_error');
       $this->setTemplate('error');
 
       return sfView::SUCCESS;
@@ -357,11 +358,19 @@ class order_Actions extends myActions
       'product' => $productsInCart,
       'service' => $servicesInCart,
     ));
-    //myDebug::dump($result, 1);
     if (!$result)
     {
-      $this->getLogger()->err('{Order} calculate: empty response from core');
-      $this->message = 'Невозможно доставить выбранные товары';
+      if ($errors = Core::getInstance()->getError())
+      {
+        if (is_array($errors) && isset($errors['detail']['product_error_list']))
+        {
+          $this->errors = $errors['detail']['product_error_list'];
+        }
+      }
+      else {
+        $this->getLogger()->err('{Order} calculate: empty response from core');
+        $this->message = 'Невозможно доставить выбранные товары';
+      }
 
       return false;
     }
