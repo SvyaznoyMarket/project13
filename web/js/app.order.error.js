@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    if (!$('#product_errors').length) return;
+
     var length = $('#product_errors').data('value').length
 
     if (length) {
