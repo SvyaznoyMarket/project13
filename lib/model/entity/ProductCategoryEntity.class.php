@@ -56,25 +56,25 @@ class ProductCategoryEntity
   /** @var string */
   private $seoHeader;
   /** @var int */
-  private $product_count;
+  private $productCount;
 
   public function __construct(array $data = array())
   {
-    if (array_key_exists('id', $data)) $this->setId($data['id']);
-    if (array_key_exists('is_active', $data)) $this->setIsActive($data['is_active']);
-    if (array_key_exists('is_furniture', $data)) $this->setIsFurniture($data['is_furniture']);
-    if (array_key_exists('name', $data)) $this->setName($data['name']);
-    if (array_key_exists('link', $data)) $this->setLink($data['link']);
-    if (array_key_exists('token', $data)) $this->setToken($data['token']);
-    if (array_key_exists('media_image', $data)) $this->setMediaImage($data['media_image']);
-    if (array_key_exists('has_line', $data)) $this->setHasLine($data['has_line']);
-    if (array_key_exists('is_shown_in_menu', $data)) $this->setIsShownInMenu($data['is_shown_in_menu']);
-    if (array_key_exists('position', $data)) $this->setPosition($data['position']);
-    if (array_key_exists('level', $data)) $this->setLevel($data['level']);
-    if (array_key_exists('seo_header', $data)) $this->setSeoHeader($data['seo_header']);
-    if (array_key_exists('product_view_id', $data)) $this->setProductViewId($data['product_view_id']);
-    if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
-    if (array_key_exists('product_count', $data)) $this->setProductCount($data['product_count']);
+    if (array_key_exists('id', $data))                $this->id            = (int)$data['id'];
+    if (array_key_exists('is_active', $data))         $this->isActive      = (bool)$data['is_active'];
+    if (array_key_exists('is_furniture', $data))      $this->isFurniture   = (bool)$data['is_furniture'];
+    if (array_key_exists('name', $data))              $this->name          = (string)$data['name'];
+    if (array_key_exists('link', $data))              $this->link          = (string)$data['link'];
+    if (array_key_exists('token', $data))             $this->token         = (string)$data['token'];
+    if (array_key_exists('media_image', $data))       $this->mediaImage    = (string)$data['media_image'];
+    if (array_key_exists('has_line', $data))          $this->hasLine       = (bool)$data['has_line'];
+    if (array_key_exists('is_shown_in_menu', $data))  $this->isShownInMenu = (bool)$data['is_shown_in_menu'];
+    if (array_key_exists('position', $data))          $this->position      = (int)$data['position'];
+    if (array_key_exists('level', $data))             $this->level         = (int)$data['level'];
+    if (array_key_exists('seo_header', $data))        $this->seoHeader     = (string)$data['seo_header'];
+    if (array_key_exists('product_view_id', $data))   $this->productViewId = (int)$data['product_view_id'];
+    if (array_key_exists('parent_id', $data))         $this->parentId      = (int)$data['parent_id'];
+    if (array_key_exists('product_count', $data))     $this->productCount  = (int)$data['product_count'];
   }
 
   public function setId($id)
@@ -363,7 +363,7 @@ class ProductCategoryEntity
    */
   public function setProductCount($product_count)
   {
-    $this->product_count = (int)$product_count;
+    $this->productCount = (int)$product_count;
   }
 
   /**
@@ -371,6 +371,6 @@ class ProductCategoryEntity
    */
   public function getProductCount()
   {
-    return $this->product_count;
+    return $this->productCount;
   }
 }

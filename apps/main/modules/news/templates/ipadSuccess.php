@@ -31,26 +31,6 @@ if (date('U') >= mktime(0,1,0,5,25,2012)) {
         <h2>Новый iPad WiFi + Cellular</h2>
         <div class="line pb15"></div>
 
-<!--    --><?php //foreach ($list1 as $product) { ?>
-<!--        <div class="halfline">-->
-<!--            <div class="left">-->
-<!--                <img alt="new iPad" src="--><?php //echo $product['image'] ?><!--" />-->
-<!--            </div>-->
-<!--            <div class="right">-->
-<!--                <div class="ttl">--><?php //echo $product['name'] ?><!--</div>-->
-<!--                <div>-->
-<!--                    <strong class="font33">-->
-<!--                        <span class="price">--><?php //echo $product['price'] ?><!--</span>-->
-<!--                        <span class="rubl">p</span>-->
-<!---->
-<!--                    </strong>-->
-<!--                </div>-->
-<!--                <div class="bOrangeButton">Скоро в продаже!</div>-->
-<!--            </div>-->
-<!--            <div style="clear:all"></div>-->
-<!--        </div>-->
-<!--    --><?php //} ?>
-
 
 		<div class="halfline">
 			<div class="left">
@@ -201,26 +181,6 @@ if (date('U') >= mktime(0,1,0,5,25,2012)) {
 
 		<h2>Новый iPad WiFi</h2>
         <div class="line pb15"></div>
-
-<!--        --><?php //foreach ($list2 as $product) { ?>
-<!--        <div class="halfline">-->
-<!--            <div class="left">-->
-<!--                <img alt="new iPad" src="--><?php //echo $product['image'] ?><!--" />-->
-<!--            </div>-->
-<!--            <div class="right">-->
-<!--                <div class="ttl">--><?php //echo $product['name'] ?><!--</div>-->
-<!--                <div>-->
-<!--                    <strong class="font33">-->
-<!--                        <span class="price">--><?php //echo $product['price'] ?><!--</span>-->
-<!--                        <span class="rubl">p</span>-->
-<!---->
-<!--                    </strong>-->
-<!--                </div>-->
-<!--                <div class="bOrangeButton">Скоро в продаже!</div>-->
-<!--            </div>-->
-<!--            <div style="clear:all"></div>-->
-<!--        </div>-->
-<!--            --><?php //} ?>
 
 
         <div class="halfline">

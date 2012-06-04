@@ -2,27 +2,8 @@
 
 class ProductModelEntity
 {
-  /** @var int[] */
-  private $productIdList = array();
   /** @var ProductPropertyEntity[] */
   private $propertyList = array();
-
-  public function setProductIdList($productIdList)
-  {
-    $this->productIdList = array();
-    foreach ($productIdList as $productId)
-      $this->addProductId($productId);
-  }
-
-  public function addProductId($productId)
-  {
-    $this->productIdList[] = (int)$productId;
-  }
-
-  public function getProductIdList()
-  {
-    return $this->productIdList;
-  }
 
   public function setPropertyList($propertyList)
   {

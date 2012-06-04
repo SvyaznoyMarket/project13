@@ -3,16 +3,16 @@
 class ProductKitEntity
 {
   /** @var int */
+  private $quantity;
+  /** @var int */
   private $productId;
   /** @var ProductEntity */
   private $product;
-  /** @var int */
-  private $quantity;
 
-  public function __construct(array $data = array())
+  public function __construct(array $data=array())
   {
-    if(isset($data['id'])) $this->setProductId($data['id']);
-    if(isset($data['quantity'])) $this->setQuantity($data['quantity']);
+    if(!empty($data['id']))       $this->productId = (int)$data['id'];
+    if(!empty($data['quantity'])) $this->quantity  = (int)$data['quantity'];
   }
 
   /**
