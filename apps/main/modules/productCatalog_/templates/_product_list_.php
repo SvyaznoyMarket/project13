@@ -5,12 +5,22 @@
  * @var $sf_data
  * @var $infinityUrl
  * @var $view
+ * @var ProductCoreFormFilterSimple $productFilter
  */
 $request = sfContext::getInstance()->getRequest();
 $page = $request->getParameter('page');
 $view = $request->getParameter('view', isset($view) ? $view : null);
+
+$empty = 0 == $productPager->getNbResults();
+
+$dataFilter = null;
+if(isset($productFilter)){
+  $dataFilter = $productFilter->getUrlParams();
+}else{
+  $dataFilter = '';
+}
+
 ?>
-<?php $empty = 0 == $productPager->getNbResults() ?>
 
 <?php if ($view == 'expanded') : ?>
 <input type="hidden" id="dlvrlinks" data-shoplink="<?php echo url_for('shop') ?>"
@@ -50,7 +60,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
      data-page="<?php  echo $page; ?>"
      data-mode="<?php  echo $view; ?>"
      data-lastpage="<?php echo $productPager->getLastPage(); ?>"
-     data-filter="<?php echo $productFilter->getUrlParams(); ?>"
+     data-filter="<?php echo $dataFilter; ?>"
      class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"></div>
 <?php endif ?>
 
@@ -77,7 +87,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
      data-page="<?php  echo $page; ?>"
      data-mode="<?php  echo $view; ?>"
      data-lastpage="<?php echo $productPager->getLastPage(); ?>"
-     data-filter="<?php echo $productFilter->getUrlParams(); ?>"
+     data-filter="<?php echo $dataFilter; ?>"
      class="fr allpager mBtn" alt="все товары в категории" title="все товары в категории"></div>
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
 <?php endif ?>
