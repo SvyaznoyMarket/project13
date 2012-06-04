@@ -57,7 +57,7 @@ class order_Actions extends myActions
     $defaultDeliveryType = (1 == count($deliveryTypes)) ? $deliveryTypes[0] : null;
     $deliveryMap = $this->getDeliveryMapView($defaultDeliveryType);
 
-    $this->setVar('deliveryMap', $deliveryMap, true);
+    $this->setVar('deliveryMap', $deliveryMap, false);
     $this->setVar('mapCenter', json_encode(array('latitude' => $user->getRegion('latitude'), 'longitude' => $user->getRegion('longitude'))));
 
     // получение ссылки "Вернуться к покупкам"
@@ -663,7 +663,7 @@ class order_Actions extends myActions
         {
           foreach ($servicesForProduct[$coreData['id']] as $service)
           {
-            $serviceName .= " + {$service['name']} ({$service['quantity']} шт.)";
+            $serviceName .= " + <span class='motton'>{$service['name']} ({$service['quantity']} шт.)</span>";
             $serviceTotal += ($service['price'] * $service['quantity']);
           }
         }

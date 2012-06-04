@@ -935,7 +935,8 @@ $(document).ready(function() {
                             button.text('Завершить оформление')
                         }
                         else {
-                            alert(result.error.message)
+                            alert(result.error.message);
+                            window.location.reload();
                         }
                     }
                 },
