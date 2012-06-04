@@ -89,8 +89,8 @@ A.dotted.green {border-bottom:1px dashed #508f01}
 
 .copy {clear:both; color:#a6a6a6; font-size:11px; padding-bottom: 20px}
 .copy A {color:#a6a6a6; font-size: 11px;}
-.copy .rights {font-family: "Times New Roman", Times, serif; font-size: 12px; color: #FFFFFF; }
-.copy .rights .names{ color: #000000; background-color: #FFFFFF}
+.copy .rights{ font-size: 12px; color: #FFFFFF; }
+.copy .rights .names{ color: #000000; background-color: #FFFFFF; padding: 4px 4px 1px 4px; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; }
 .copy .pb5 a{ margin: 0 10px 0 0; }
 
 /* index card */
@@ -387,7 +387,7 @@ a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
     width: 34px;
 }
 .mElectro, .category-788 {
-    background: url("img/header_icon_electronics.gif") no-repeat scroll 0 0 transparent;
+    background: url("img/icon_the_new_iPad.gif") no-repeat scroll 0 0 transparent;
     width: 61px;
 }
 .mUkr, .category-923 {
