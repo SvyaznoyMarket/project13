@@ -207,6 +207,7 @@ class productCatalog_Actions extends myActions
     return $this->renderJson(array(
       'success' => true,
       'data' => $data['count'],
+      'sql' => $data,
     ));
   }
 
