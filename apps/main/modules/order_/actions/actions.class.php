@@ -57,7 +57,7 @@ class order_Actions extends myActions
     $defaultDeliveryType = (1 == count($deliveryTypes)) ? $deliveryTypes[0] : null;
     $deliveryMap = $this->getDeliveryMapView($defaultDeliveryType);
 
-    $this->setVar('deliveryMap', $deliveryMap, false);
+    $this->setVar('deliveryMap', $deliveryMap, true);
     $this->setVar('mapCenter', json_encode(array('latitude' => $user->getRegion('latitude'), 'longitude' => $user->getRegion('longitude'))));
 
     // получение ссылки "Вернуться к покупкам"
