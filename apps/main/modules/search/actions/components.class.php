@@ -24,7 +24,7 @@ class searchComponents extends myComponents
     $list = array();
 
     $list[] = array(
-      'name' => "Поиск (".$this->searchString.")",
+      'name' => "Поиск (".htmlspecialchars($this->searchString).")",
       'url'  => $this->generateUrl('search', array('searchString' => $this->searchString)),
     );
 

@@ -19,6 +19,9 @@ class order_Components extends myComponents
   public function executeField_region_id()
   {
     $this->displayValue = $this->getUser()->getRegion('name');
+
+    //dump($this->getUser()->getRegion());
+    $this->setVar('region', $this->getUser()->getRegion('region'));
   }
   /**
    * Executes field_delivery_type_id component
@@ -57,7 +60,7 @@ class order_Components extends myComponents
 
     foreach (PaymentMethodTable::getInstance()->getList() as $paymentMethod)
     {
-      //if ('online' == $paymentMethod->token) continue;
+      if (!$paymentMethod->is_active) continue;
 
       $choices[$paymentMethod->id] = array(
         'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$paymentMethod->id,
@@ -169,6 +172,41 @@ class order_Components extends myComponents
 
     //dump($data, 1);
     $this->setVar('data', $data, true);
+  }
+
+  function executeErrors()
+  {
+    $errors = $this->errors;
+
+    if (empty($errors)) return sfView::NONE;
+
+    foreach ($errors as &$error)
+    {
+      if (isset($error['id']))
+      {
+        /* @var $product ProductEntity */
+        $product = array_shift(RepositoryManager::getProduct()->getListById(array($error['id']), true));
+
+        $error['product'] = $this->getUser()->getCart()->getProduct($error['id']);
+        $error['product']['name'] = $product->getName();
+        $error['product']['image'] = $product->getMediaImageUrl(0);
+        if (!empty($error['quantity_available']))
+        {
+          $error['product']['addUrl'] = $this->generateUrl('cart_add', array('product' => $product->getId(), 'quantity' => $error['quantity_available']));
+        }
+        $error['product']['deleteUrl'] = $this->generateUrl('cart_delete', array('product' => $product->getId()));
+      }
+
+      if (708 == $error['code'])
+      {
+        $error['message'] = !empty($error['quantity_available']) ? "Доступно только {$error['quantity_available']} шт." : $error['message'];
+      }
+
+    } if (isset($error)) unset($error);
+
+    //dump($errors);
+
+    $this->setVar('errors', $errors, true);
   }
 }
 

@@ -43,7 +43,7 @@ function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
 
   this.showInfobox = function (marker) {
     var item = self.markers[marker.id]
-    marker.setVisible(false) // hides marker
+    //marker.setVisible(false) // hides marker
     $.each(infoWindowTemplate.find('[data-name]'), function (i, el) {
       el.innerHTML = item[$(el).data('name')]
     })
@@ -54,6 +54,12 @@ function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
     google.maps.event.addListener(self.infoWindow, 'closeclick', function () {
       marker.setVisible(true)
     })
+  }
+
+  this.showInfoWindow = function(marker) {
+    self.infoWindow.setContent('<div>'+marker.name+'<br />'+marker.regime+'</div>')
+    self.infoWindow.setPosition(marker.ref.position)
+    self.infoWindow.open(self.mapWS, marker.ref)
   }
 
   this.renderShopInfo = function(marker) {
@@ -89,6 +95,11 @@ function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
         //self.showInfobox(this)
         selectCallback(this.id);
       })
+
+      google.maps.event.addListener(marker, 'mouseover', function () {
+          self.showInfoWindow(self.markers[this.id]);
+      })
+
       self.markers[marker.id].ref = marker;
       self.renderShopInfo(item);
     })
@@ -109,6 +120,23 @@ function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
       }
     })
   }
+
+  $('#mapPopup_shopInfo').data('timer', null).delegate('li', 'hover', function(e) {
+      var id = $(this).data('id');
+
+      var timer = $('#mapPopup_shopInfo').data('timer');
+      if (timer) {
+          clearTimeout(timer);
+      }
+
+      if (id && self.markers[id]) {
+          var timer = setTimeout(function() {
+              self.showInfoWindow(self.markers[id]);
+          }, 500);
+
+          $('#mapPopup_shopInfo').data('timer', timer);
+     }
+  })
 
   /* main() */
   create()
