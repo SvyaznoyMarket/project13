@@ -47,6 +47,7 @@ class order_Actions extends myActions
     $this->form = $this->getOrderForm($this->order);
     if (!$this->form)
     {
+      $this->getRequest()->setParameter('_template', 'order_error');
       $this->setTemplate('error');
 
       return sfView::SUCCESS;
@@ -185,23 +186,37 @@ class order_Actions extends myActions
     $user = $this->getUser();
 
     $orderIds = $user->getFlash('complete_orders');
-    $user->setFlash('complete_orders', $orderIds);
 
     // проверяет наличие параметра от uniteller
     if (!empty($request['Order_ID']))
     {
-      $orderIds = array($request['Order_ID']);
+      $orderNumber = $request['Order_ID'];
+
+      $result = Core::getInstance()->query('order.get', array(
+        'number' => array($orderNumber),
+        'expand' => array('geo', 'user', 'product', 'service'),
+      ));
+
+      $orderIds = is_array($result) ? array_map(function($i) { return $i['id']; }, $result) : null;
     }
+    else {
+      $result = Core::getInstance()->query('order.get', array(
+        'id'     => $orderIds,
+        'expand' => array('geo', 'user', 'product', 'service'),
+      ));
+    }
+
+    //dump($result);
+    //dump($orderIds);
 
     if (empty($orderIds))
     {
       $this->redirect('cart');
     }
 
-    $result = Core::getInstance()->query('order.get', array(
-      'id'     => $orderIds,
-      'expand' => array('geo', 'user', 'product', 'service'),
-    ));
+    $user->setFlash('complete_orders', $orderIds);
+
+
     //myDebug::dump($result);
     if (!$result)
     {
@@ -361,11 +376,19 @@ class order_Actions extends myActions
       'product' => $productsInCart,
       'service' => $servicesInCart,
     ));
-    //myDebug::dump($result, 1);
     if (!$result)
     {
-      $this->getLogger()->err('{Order} calculate: empty response from core');
-      $this->message = 'Невозможно доставить выбранные товары';
+      if ($errors = Core::getInstance()->getError())
+      {
+        if (is_array($errors) && isset($errors['detail']['product_error_list']))
+        {
+          $this->errors = $errors['detail']['product_error_list'];
+        }
+      }
+      else {
+        $this->getLogger()->err('{Order} calculate: empty response from core');
+        $this->message = 'Невозможно доставить выбранные товары';
+      }
 
       return false;
     }

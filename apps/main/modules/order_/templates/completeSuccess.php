@@ -122,4 +122,19 @@
 
   <?php include_component('order_','seo_admitad', array('orders' => $orders)) ?>
 
+
+  <script language="JavaScript" type="text/javascript">
+    HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
+    <?php foreach ($orders as $i => $order): ?>
+
+    var order_article='<?php echo implode(',', array_map(function($i) { return $i['id']; }, $order['product'])) ?>';
+    var order_id='<?php echo $order['number'] ?>';
+    var order_total='<?php echo $order['sum'] ?>';
+    var product_quantity='<?php echo implode(',', array_map(function($i) { return $i['quantity']; }, $order['product'])) ?>';
+    var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + order_article + '|product_quantity|' + product_quantity + '|order_id|' + order_id + '|order_total|' + order_total + '';
+    document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
+
+    <?php endforeach ?>
+  </script>
+
 <?php end_slot() ?>
