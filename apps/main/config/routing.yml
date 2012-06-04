@@ -179,6 +179,8 @@ productCategory_menu:
 productStock:
   url:   /product/:product/stock
   param: { module: productStock, action: index }
+  class:   sfObjectRoute
+  options: { model: Product, type: object }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{1})[a-zA-Z_0-9-]+)'
 #
