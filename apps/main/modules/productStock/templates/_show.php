@@ -18,7 +18,7 @@ $json = array (
 ?>
 <div class="clear"></div>
 <input type="hidden" id="stockmodel"
-	data-value="<?php echo $json ?>"
+	data-value='<?php echo json_encode($json) ?>'
 	link-output='<?php echo url_for('order_1click', array('product' => $product->getBarcode())) ?>'
 	link-input='<?php echo url_for('product_delivery_1click') ?>'
 	/>
