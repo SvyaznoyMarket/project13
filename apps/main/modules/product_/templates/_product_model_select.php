@@ -20,7 +20,8 @@ if (!$productAttribute) {
       <span class="bold"><a href="<?php echo $item->getLink() ?>"><?php echo $productAttribute->getStringValue() ?></a></span>
 
       <?php foreach ($property->getOptionList() as $option):?>
-      <?php if ($option->getProduct()->getName() == $item->getName())continue; ?>
+      <!-- <?php print_r($productAttribute) ?> -->
+      <?php if ($option->getName() == $productAttribute->getValue())continue; ?>
         <span>
           <a href="<?php echo $option->getProduct()->getLink() ?>">
             <?php echo $option->getHumanizedName() ?>
