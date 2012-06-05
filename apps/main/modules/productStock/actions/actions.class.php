@@ -7,6 +7,8 @@
  * @subpackage productStock
  * @author     Связной Маркет
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ *
+ * @method sfWebResponse getResponse
  */
 class productStockActions extends sfActions
 {
@@ -23,36 +25,27 @@ class productStockActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->product = $this->getRoute()->getObject();
+    $token = preg_split('#/#', $request->getParameter("product"), -1, PREG_SPLIT_NO_EMPTY);
+    $token = end($token);
+    $product = RepositoryManager::getProduct()->getByToken($token, true);
+    $this->forward404If($product == null);
 
-    // SEO ::
-    $this->product->description = '<noindex>' . $this->product->description . '</noindex>';
-    $title = 'Где купить %s в магазинах Enter - интернет-магазин Enter.ru';
     $this->getResponse()->setTitle(sprintf(
-        $title,
-        $this->product['name'],
-        $this->product['name']
+      'Где купить %s в магазинах Enter - интернет-магазин Enter.ru',
+      $product->getName(),
+      $product->getName()
     ));
-    $descr = '';
     $this->getResponse()->addMeta('description', sprintf(
-        $descr,
-        $this->product['name'],
-        $this->product['name']
+      '',
+      $product->getName(),
+      $product->getName()
     ));
-    $this->getResponse()->addMeta('keywords', sprintf('%s где купить %s', mb_strtolower($this->product['name']), mb_strtolower($this->getUser()->getRegion('region'))));
-    // :: SEO
+    $this->getResponse()->addMeta('keywords', sprintf(
+      '%s где купить %s',
+      mb_strtolower($product->getName()),
+      mb_strtolower($this->getUser()->getRegion('region'))
+    ));
 
-//    $title = '«Где купить»: ' . $this->product['name'] . ' в магазинах "Enter"';
-//    $mainCategory = $this->product->getMainCategory();
-//    $title .= ' – '.$mainCategory;
-//    if ($mainCategory)
-//    {
-//      $rootCategory = $mainCategory->getRootCategory();
-//      if ($rootCategory->id !== $mainCategory->id)
-//      {
-//        $title .= ' – '.$rootCategory;
-//      }
-//    }
-//    $this->getResponse()->setTitle($title.' – Enter.ru');
+    $this->setVar('product', $product);
   }
 }

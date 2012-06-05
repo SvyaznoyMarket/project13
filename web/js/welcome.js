@@ -80,12 +80,9 @@ $(document).ready(function () {
     }, initis[1].t)
     /* Visuals */
     $("html").css('overflow-x', 'hidden')
-
-    var userag = navigator.userAgent.toLowerCase()
-    var isAndroid = userag.indexOf("android") > -1
-    var isOSX = ( userag.indexOf('ipad') > -1 || userag.indexOf('iphone') > -1 )
-
-    if (isAndroid || isOSX) {
+	
+	var b = new brwsr()
+    if ( b.isAndroid || b.isOSX) {
         $('.bCarousel div').show()
         $('.allpage').css('overflow', 'hidden')
     } else {
@@ -158,7 +155,7 @@ $(document).ready(function () {
         sliding = true
         if (!dir)
             var dir = 1
-        else // custom summon
+        else // custom call
             clearTimeout(idto)
         var shift = '-=1000px',
             inileft = '1032px'
