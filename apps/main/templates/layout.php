@@ -118,7 +118,7 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 <?php if (has_slot('seo_counters_advance')): ?>
   <?php include_slot('seo_counters_advance') ?>
 <?php endif ?>
-<?php include_component('default', 'admitad') ?>
+
 <?php include_component('default', 'adriver') ?>
   </body>
 </html>
