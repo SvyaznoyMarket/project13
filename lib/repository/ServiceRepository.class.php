@@ -18,11 +18,11 @@ class ServiceRepository
     $params = array('slug' => $token);
     $result = CoreClient::getInstance()->query('service.get', $params);
 
-    if (!$result) {
+    if (!$result || !array_key_exists($token, $result)) {
       return null;
     }
 
-    $service = new ServiceEntity($result);
+    $service = new ServiceEntity($result[$token]);
 
     return $service;
   }
