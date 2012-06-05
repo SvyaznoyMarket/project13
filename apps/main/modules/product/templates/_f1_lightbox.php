@@ -31,21 +31,20 @@ if (is_object($servListId)) {
           <?php } ?>
                                 </span>
         <?php } ?>
-        <?php //if ($product->getIsInsale()) { ?>
         <?php if (!$service['in_sale']) { ?>
           <?php if ($service['only_inshop']) { ?>
             <span class='bF1Block__eInShop'>доступна в магазине</span>
             <?php } ?>
           <?php } elseif ($showInCardButton && in_array($service['id'], $servListId)) { ?>
           <input data-f1title="<?php echo $service['name'] ?>" data-f1price="<?php echo $service['priceFormatted'] ?>"
-                 data-fid="<?php echo $service->token;?>"
-                 data-url="<?php echo url_for('cart_service_add', array('service' => $service['token'], 'product' => $product->token_prefix . "/" . $product->token)) ?>"
+                 data-fid="<?php echo $service['id'];?>"
+                 data-url="<?php echo url_for('cart_service_add', array('service' => $service['id'], 'product' => $product['id'])) ?>"
                  type="button" class="active button yellowbutton" value="В корзине">
           <?php } else { ?>
           <input data-f1title="<?php echo $service['name'] ?>"
-                 data-f1price="<?php echo $service['priceFormatted'] ?>"
-                 data-fid="<?php echo $service['token'];?>"
-                 data-url="<?php echo url_for('cart_service_add', array('service' => $service['token'], 'product' => $product->token_prefix . "/" . $product->token)) ?>"
+                 data-f1price="<?php echo $service['price'] ?>"
+                 data-fid="<?php echo $service['id'];?>"
+                 data-url="<?php echo url_for('cart_service_add', array('service' => $service['id'], 'product' => $product['id'])) ?>"
                  type="button" class="button yellowbutton" value="Купить услугу">
           <?php } ?>
         <?php //} ?>
