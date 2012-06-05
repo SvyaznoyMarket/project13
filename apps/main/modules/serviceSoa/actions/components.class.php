@@ -38,21 +38,21 @@ class serviceSoaComponents extends myComponents
 
   public function executeList_for_product_in_cart()
   {
-    $factory = new ProductFactory();
-    $prodOb = $factory->createProductFromCore(array('id'=> $this->product['core_id']), false, false, true);
-    $list = $prodOb[0]->service;
+    $productList = RepositoryManager::getProduct()->getListById(array($this->product['core_id']), true);
+    /** @var $product ProductEntity */
+    $product = reset($productList);
     $result = array();
     $selectedNum = 0;
-    if (is_array($list) && count($list))
-    foreach ($list as $next)
+    foreach ($product->getServiceList() as $service)
     {
-      if (!isset($next['site_token'])) {
+      $token = $service->getSiteToken();
+      if (!$token) {
           continue;
       }
       $sel = false;
       foreach ($this->services as $selected)
       {
-        if ($next['id'] == $selected['core_id'])
+        if ($service->getId() == $selected['core_id'])
         {
           $selInfo = $selected;
           $sel = true;
@@ -63,33 +63,30 @@ class serviceSoaComponents extends myComponents
       {
         $selectedNum++;
         $selInfo['selected'] = true;
-        $selInfo['site_token'] = $next['site_token'];
-        $selInfo['total'] = $selInfo['quantity'] * $next['price'];
-        $selInfo['totalFormatted'] = number_format($selInfo['quantity'] * $next['price'], 0, ',', ' ');
-        $selInfo['price'] = $next['price'];
-        $selInfo['only_inshop'] = $next['only_inshop'];
-        $selInfo['in_sale'] = $next['in_sale'];
-        $selInfo['priceFormatted'] = number_format($next['price']);
+        $selInfo['site_token'] = $token;
+        $selInfo['total'] = $selInfo['quantity'] * $service->getPrice();
+        $selInfo['totalFormatted'] = number_format($selInfo['quantity'] * $service->getPrice(), 0, ',', ' ');
+        $selInfo['price'] = $service->getPrice();
+        $selInfo['only_inshop'] = $service->getOnlyInShop();
+        $selInfo['in_sale'] = $service->isInSale();
+        $selInfo['priceFormatted'] = number_format($service->getPrice());
         $result[] = $selInfo;
       }
       else
       {
         $result[] = array(
           'selected' => false,
-          'site_token' => $next['site_token'],
-          'name' => $next['name'],
-          'id' => $next['id'],
-          'token' => $next['token'],
-          'price' => $next['price'],
-          'only_inshop' => $next['only_inshop'],
-          'in_sale' => $next['in_sale'],
-          'priceFormatted' => number_format($next['price']),
+          'site_token' => $token,
+          'name' => $service->getName(),
+          'id' => $service->getId(),
+          'token' => $service->getToken(),
+          'price' => $service->getPrice(),
+          'only_inshop' => $service->getOnlyInShop(),
+          'in_sale' => $service->isInSale(),
+          'priceFormatted' => number_format($service->getPrice()),
         );
       }
     }
-//      print_r($result);
-//      die();
-
     $this->setVar('selectedNum', $selectedNum, true);
     $this->setVar('list', $result, true);
   }

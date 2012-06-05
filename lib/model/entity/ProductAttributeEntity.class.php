@@ -22,17 +22,17 @@ class ProductAttributeEntity
 
   public function __construct(array $data = array())
   {
-    if (array_key_exists('id', $data)) $this->setId($data['id']);
-    if (array_key_exists('name', $data)) $this->setName($data['name']);
-    if (array_key_exists('value', $data)) $this->setValue($data['value']);
-    if (array_key_exists('unit', $data)) $this->setUnit($data['unit']);
-    if (array_key_exists('hint', $data)) $this->setHint($data['hint']);
-    if (array_key_exists('position', $data)) $this->setPosition($data['position']);
-    if (array_key_exists('group_id', $data)) $this->setGroupId($data['group_id']);
-    if (array_key_exists('group_position', $data)) $this->setGroupPosition($data['group_position']);
-    if (array_key_exists('is_view_list', $data)) $this->setIsViewList($data['is_view_list']);
-    if (array_key_exists('is_view_card', $data)) $this->setIsViewCard($data['is_view_card']);
-    if (array_key_exists('is_multiple', $data)) $this->setIsMultiple($data['is_multiple']);
+    if (array_key_exists('id', $data))              $this->id            =  (int)$data['id'];
+    if (array_key_exists('name', $data))            $this->name          =  (string)$data['name'];
+    if (array_key_exists('value', $data))           $this->value         =  (string)$data['value'];
+    if (array_key_exists('unit', $data))            $this->unit          =  (string)$data['unit'];
+    if (array_key_exists('hint', $data))            $this->hint          =  (string)$data['hint'];
+    if (array_key_exists('position', $data))        $this->position      =  (int)$data['position'];
+    if (array_key_exists('group_id', $data))        $this->groupId       =  (int)$data['group_id'];
+    if (array_key_exists('group_position', $data))  $this->groupPosition =  (int)$data['group_position'];
+    if (array_key_exists('is_view_list', $data))    $this->isViewList    =  (bool)$data['is_view_list'];
+    if (array_key_exists('is_view_card', $data))    $this->isViewCard    =  (bool)$data['is_view_card'];
+    if (array_key_exists('is_multiple', $data))     $this->isMultiple    =  (bool)$data['is_multiple'];
   }
 
   /**
@@ -233,6 +233,7 @@ class ProductAttributeEntity
 
   public function getStringValue()
   {
+
     if (!empty($this->value)) {
       if (in_array($this->value, array('false', false), true)) {
         return 'нет';

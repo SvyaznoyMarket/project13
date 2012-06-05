@@ -66,13 +66,32 @@
 			break
 		case 'order':
 			$LAB.queueScript('bigjquery.min.js')
+			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
 				.wait()
+				.script(getWithVersion('app.shop.map.js'))
+				.script(getWithVersion('app.order.v3.2.js'))
 				.script(getWithVersion('main.js'))
-				.script( getWithVersion('app.order.js') )
 			}).runQueue()
 			break
+		case 'order_complete':
+			$LAB.queueScript('bigjquery.min.js').queueWait( function() {
+				$LAB.script( getWithVersion('library.js') )
+				.wait()
+				.script(getWithVersion('app.order.js'))
+				.script(getWithVersion('main.js'))
+			}).runQueue()
+			break
+        case 'order_error':
+            $LAB.queueScript('bigjquery.min.js').queueWait( function() {
+                $LAB.script( getWithVersion('library.js') )
+                    .wait()
+                    .script(getWithVersion('app.order.js'))
+                    .script(getWithVersion('main.js'))
+                    .script(getWithVersion('app.order.error.js'))
+            }).runQueue()
+            break
 		case 'product_catalog':
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
@@ -88,7 +107,6 @@
 			.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
-				//.script( 'jquery.effects.blind.js' )
 				.script( getWithVersion('main.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
@@ -124,7 +142,6 @@
 		case 'shop':
 			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
-				//.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('app.shop.js') )
 				.script( getWithVersion('main.js') )
@@ -137,7 +154,6 @@
 			$LAB.queueScript('knockout-2.1.0.js')
 			.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
-				//.script('google.maps.infobox.js')
 				.wait()
 				.script( getWithVersion('main.js') )
 				.wait()

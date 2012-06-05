@@ -50,6 +50,17 @@ class guardActions extends myActions
         {
           return $this->renderJson(array(
             'success' => true,
+            'user'    => array(
+                'email'       => $values['user']['email'],
+                'phonenumber' => $values['user']['phonenumber'],
+                'first_name'  => $values['user']['first_name'],
+                'last_name'   => $values['user']['last_name'],
+                'middle_name' => $values['user']['middle_name'],
+                'nickname'    => $values['user']['nickname'],
+                'gender'      => $values['user']['gender'],
+                'birthday'    => $values['user']['birthday'],
+                'address'     => $values['user']['address'],
+            ),
           ));
         }
         if ('frame' == $this->getLayout())

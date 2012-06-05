@@ -56,19 +56,6 @@ class userAddressComponents extends myComponents
       return sfView::NONE;
     }
 
-    $userTagList = $this->product->getUserTagList(array('user_id' => $user_id));
-    $userTagList->indexBy('id');
-
-    $list = array();
-    foreach (UserTagTable::getInstance()->getListByUser($user_id) as $userTag)
-    {
-      $list[] = array(
-        'name'  => (string)$userTag,
-        'class' => $userTagList->getByIndex('id', $userTag->id) ? 'delete' : 'add',
-        'url'   => $this->generateUrl($userTagList->getByIndex('id', $userTag->id) ? 'userTag_unlinkProduct' : 'userTag_linkProduct', array('sf_subject' => $userTag, 'product' => $this->product->token)),
-      );
-    }
-
-    $this->setVar('list', $list, true);
+    $this->setVar('list', array(), true);
   }
 }

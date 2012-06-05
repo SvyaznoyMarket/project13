@@ -18,22 +18,22 @@ class ProductRepository extends ObjectRepository
   public function create($data)
   {
     $product = new ProductEntity($data);
-    if (!empty($data['type_id'])) {
+    if (!empty($data['type_id']))
       $product->setType(new ProductTypeEntity(array('id' => $data['type_id'])));
-    }
-    elseif (!empty($data['type'])) {
+    elseif (!empty($data['type']))
       $product->setType(new ProductTypeEntity($data['type']));
-    }
-    if (!empty($data['category'])) {
+    if (!empty($data['category']))
       foreach ($data['category'] as $categoryData)
-      {
-        $category = new ProductCategoryEntity($categoryData);
-        if($category->isActive())
-          $product->addCategory($category);
-      }
-    }
-    if (!empty($data['brand'])) {
+        $product->addCategory(new ProductCategoryEntity($categoryData));
+    if (!empty($data['brand']))
       $product->setBrand(new BrandEntity($data['brand']));
+    /** @var $groupMap ProductPropertyGroupEntity[] */
+    $groupMap = array();
+    if (!empty($data['property_group'])) {
+      foreach ($data['property_group'] as $group) {
+        $product->addPropertyGroup($pg = new ProductPropertyGroupEntity($group));
+        $groupMap[$pg->getId()] = $pg;
+      }
     }
     if (!empty($data['property'])) {
       foreach ($data['property'] as $prop) {
@@ -45,50 +45,101 @@ class ProductRepository extends ObjectRepository
           else if (is_numeric($prop['option_id']))
             $attr->setOptionList(array(new ProductPropertyOptionEntity(array('id' => $prop['option_id']))));
         }
+        if(!empty($prop['option']))
+          foreach ($prop['option'] as $option)
+            $attr->addOption(new ProductPropertyOptionEntity($option));
         $product->addAttribute($attr);
+        if(isset($groupMap[$attr->getGroupId()]))
+          $groupMap[$attr->getGroupId()]->addAttribute($attr);
       }
     }
     if (!empty($data['model'])) {
       $model = new ProductModelEntity();
-      $model->setProductIdList($data['model']['product']);
-      foreach ($data['model']['property'] as $prop)
-        $model->addProperty(new ProductPropertyEntity($prop));
+      foreach ($data['model']['property'] as $prop){
+        $propEntity = new ProductPropertyEntity($prop);
+        if(isset($prop['option'])){
+          foreach($prop['option'] as $option){
+            $optionEntity = new ProductPropertyOptionEntity($option);
+            if(isset($option['product']));
+            $optionEntity->setProduct(new ProductEntity($option['product']));
+            $propEntity->addOption($optionEntity);
+          }
+        }
+        $model->addProperty($propEntity);
+      }
       $product->setModel($model);
     }
-    if (!empty($data['state'])) {
+    if (!empty($data['state']))
       $product->setState(new ProductStateEntity($data['state']));
-    }
-    if (!empty($data['line'])) {
+    if (!empty($data['line']))
       $product->setLine(new ProductLineEntity($data['line']));
-    }
-    if (!empty($data['label'])) {
-      foreach ($data['label'] as $label) {
+    if (!empty($data['label']))
+      foreach ($data['label'] as $label)
         $product->addLabel(new ProductLabelEntity($label));
-      }
-    }
-    if(!empty($data['kit'])) {
-      foreach($data['kit'] as $kit) {
+    if(!empty($data['media']))
+      foreach($data['media'] as $media)
+        $product->addMedia(new ProductMediaEntity($media));
+    if(!empty($data['service']))
+      foreach($data['service'] as $service)
+        $product->addService(new ProductServiceEntity($service));
+    if(!empty($data['kit']))
+      foreach($data['kit'] as $kit)
         $product->addKit(new ProductKitEntity($kit));
-      }
-    }
+    if(!empty($data['related']))
+      $product->setRelatedIdList($data['related']);
+    if(!empty($data['accessories']))
+      $product->setAccessoryIdList($data['accessories']);
+    if(!empty($data['tag']))
+      foreach($data['tag'] as $tag)
+        $product->addTag(new ProductTagEntity($tag));
+
     return $product;
   }
 
   /**
    * @param $token
-   * @param $regionId
+   * @param bool $loadDynamic
    * @return ProductEntity|null
    */
-  public function getByToken($token, $regionId = null)
+  public function getByToken($token, $loadDynamic = false)
   {
-    if ($regionId == null) {
-      $regionId = RepositoryManager::getRegion()->getDefaultRegionId();
-    }
     $list = $this->getListFyFilter(array(
       'slug' => (string)$token,
-      'geo_id' => (int)$regionId,
-    ), true);
+      'geo_id' => (int)RepositoryManager::getRegion()->getDefaultRegionId(),
+    ), $loadDynamic);
     return $list ? reset($list) : null;
+  }
+
+  public function loadRelatedAndAccessories(ProductEntity $product, $loadDynamic = true, $limit = null)
+  {
+    if($limit){
+      $idList = array_slice($product->getAccessoryIdList(), 0, $limit);
+      $idList += array_slice($product->getRelatedIdList(), 0, $limit);
+    }else{
+      $idList = $product->getAccessoryIdList() + $product->getRelatedIdList();
+    }
+
+    if(!$idList)
+      return;
+
+    $idList = array_unique($idList);
+    $map = array();
+    foreach($this->getListById($idList, $loadDynamic) as $item){
+      $map[$item->getId()] = $item;
+    }
+
+    $related = array();
+    foreach($product->getRelatedIdList() as $id)
+      if(isset($map[$id]))
+        $related[] = $map[$id];
+
+    $accessory = array();
+    foreach($product->getAccessoryIdList() as $id)
+      if(isset($map[$id]))
+        $accessory[] = $map[$id];
+
+    $product->setRelatedList($related);
+    $product->setAccessoryList($accessory);
   }
 
   /**
@@ -150,6 +201,12 @@ class ProductRepository extends ObjectRepository
     }
   }
 
+  /**
+   * @param ProductRelatedCriteria $criteria
+   * @param null $order
+   * @return mixed
+   * @deprecated
+   */
   public function getRelated(ProductRelatedCriteria $criteria, $order = null)
   {
     $params = array(
@@ -167,6 +224,12 @@ class ProductRepository extends ObjectRepository
     return $this->get($result);
   }
 
+  /**
+   * @param ProductRelatedCriteria $criteria
+   * @param null $order
+   * @return mixed
+   * @deprecated
+   */
   public function getAccessory(ProductRelatedCriteria $criteria, $order = null)
   {
     $params = array(

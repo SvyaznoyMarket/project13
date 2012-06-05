@@ -389,11 +389,6 @@ class Product extends BaseProduct
 	  return ProductCommentTable::getInstance()->getCountByProduct($this, $params);
   }
 
-  public function getUserTagList(array $params = array())
-  {
-    return UserTagTable::getInstance()->getListByProduct($this->id, $params);
-  }
-
   public function getStockList(array $params = array())
   {
     return StockTable::getInstance()->getListByProduct($this->id, $params);
