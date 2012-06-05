@@ -168,9 +168,6 @@ class defaultComponents extends myComponents
     $this->setVar('list', $list, true);
   }
 
-
-  public function executeAdmitad() {  }
-
   public function executeAdriver()
   {
     if($this->getContext()->has('adriverProductInfo')){
