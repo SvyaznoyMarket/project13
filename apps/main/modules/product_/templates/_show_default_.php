@@ -72,7 +72,7 @@ foreach ($photo3dList as $photo3d)
     <span>Артикул #<?php echo $item->getArticle() ?></span>
   </div>
 
-  <div class="font14 pb15"><?php echo $item->getAnnounce() ?></div>
+  <div class="font14 pb15"><?php echo $item->getTagline() ?></div>
   <div class="clear"></div>
 
   <?php if ($item->haveToShowAveragePrice()): ?>
