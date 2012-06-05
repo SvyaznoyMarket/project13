@@ -11,11 +11,14 @@ class ProductPropertyOptionEntity
   /* @var string */
   private $name;
 
+  /** @var ProductEntity */
+  private $product;
+
   public function __construct(array $data = array())
   {
-    if (array_key_exists('id', $data)) $this->setId($data['id']);
-    if (array_key_exists('name', $data)) $this->setName($data['name']);
-    if (array_key_exists('value', $data)) $this->setName($data['value']);
+    if (array_key_exists('id', $data))    $this->id   = (int)$data['id'];
+    if (array_key_exists('name', $data))  $this->name = (string)$data['name'];
+    if (array_key_exists('value', $data)) $this->name = (string)$data['value'];
   }
 
   /**
@@ -59,5 +62,21 @@ class ProductPropertyOptionEntity
       return 'да';
     }
     return $this->name;
+  }
+
+  /**
+   * @param \ProductEntity $product
+   */
+  public function setProduct(ProductEntity $product)
+  {
+    $this->product = $product;
+  }
+
+  /**
+   * @return \ProductEntity
+   */
+  public function getProduct()
+  {
+    return $this->product;
   }
 }

@@ -40,7 +40,6 @@ EOF;
       'ProductCategory'    => 30,
       'ProductType'        => 30,
       'ProductProperty'    => 200,
-      'News'               => 250,
       'Page'               => 10,
       'ProductHelper'      => 4,
       'Stock'              => 30,
@@ -305,20 +304,6 @@ EOF;
       unset($list);
     }
 
-    $this->logSection('doctrine', 'loading test News');
-    for ($i = 1; $i <= $count['News']; $i++)
-    {
-      $record = new News();
-      $record->fromArray(array(
-        'token'         => 'news-'.$i,
-        'name'          => $this->getRecordName('News', $i),
-        'published_at'  => date('Y-m-d H:i:s', rand(strtotime('2009-01-01'), strtotime('now'))),
-        'category_id'   => rand(1, 3),
-        'is_active'     => rand(0, 3) > 0 ? true : false,
-      ));
-      $record->save();
-    }
-
     $this->logSection('doctrine', 'loading test Pages');
     $this->createRecordList('Page', $count['Page']);
 
@@ -424,7 +409,6 @@ EOF;
       'ProductPropertyRelation' => 'значение',
       'ProductFilterGroup'      => 'группа',
       'ProductFilter'           => 'фильтр',
-      'News'                    => 'новость',
       'Page'                    => 'страница',
       'ProductHelper'           => 'помошник',
       'Stock'                   => 'склад',

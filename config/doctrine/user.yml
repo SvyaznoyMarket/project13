@@ -37,61 +37,6 @@ UserProfile:
   relations:
     User:              { class: User, foreignAlias: Profile, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
 
-UserTag:
-  options:
-    comment: 'Пользовательские теги'
-  actAs:
-    Timestampable: ~
-    Corable:       ~
-  columns:
-    id:                { type: integer(20), autoincrement: true, primary: true }
-    name:              { type: string(255), notnull: true, notblank: true }
-    user_id:           { type: integer(20), notnull: true }
-    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
-  relations:
-    User:              { class: User, foreignAlias: Tag, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-
-UserTagProductRelation:
-  options:
-    comment: 'Связь пользовательских тегов и товаров'
-  actAs:
-    Timestampable: ~
-  columns:
-    tag_id:            { type: integer(20), primary: true, notnull: true }
-    product_id:        { type: integer(20), primary: true, notnull: true }
-    position:          { type: integer(4), notnull: true, default: 1, comment: 'Порядок сортировки' }
-  relations:
-    Tag:               { class: UserTag, foreignAlias: ProductRelation, local: tag_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Product:           { class: Product, foreignAlias: UserTagRelation, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-
-UserDelayedProduct:
-  options:
-    comment: 'Отложенные товары пользователя'
-  actAs:
-    Timestampable: ~
-  columns:
-    user_id:           { type: integer(20), primary: true, notnull: true }
-    product_id:        { type: integer(20), primary: true, notnull: true }
-    is_wished:         { type: boolean, notnull: true, default: false }
-  relations:
-    User:              { class: User, foreignAlias: DelayedProduct, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Product:           { class: Product, foreignAlias: UserDelayedProduct, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-
-UserProductNotice:
-  options:
-    comment: 'Пользовательские уведомления о товаре'
-  actAs:
-    Timestampable: ~
-    Corable:       ~
-  columns:
-    type:              { type: enum, length: 10, primary: true, values: [ insale, price, comment ], notnull: true, comment: 'Тип уведомления: товар появился в магазинах, изменилась цена, появились отзывы' }
-    email:             { type: string(50), primary: true, notnull: true }
-    product_id:        { type: integer(20), primary: true, notnull: true }
-    user_id:           { type: integer(20), notnull: false, default: null }
-  relations:
-    User:              { class: User, foreignAlias: ProductNotice, local: user_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-    Product:           { class: Product, foreignAlias: UserNotice, local: product_id, foreign: id, type: one, foreignType: many, onDelete: CASCADE }
-
 UserProductRating:
   options:
     comment: 'Пользовательские оценки товара'

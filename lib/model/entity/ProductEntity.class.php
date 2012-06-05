@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Товар
-<<<<<<< HEAD
-=======
- * @todo check label
- * @todo check is_in_sale
->>>>>>> release
- */
 class ProductEntity
 {
   /* @var integer */
@@ -31,6 +23,10 @@ class ProductEntity
 
   /* @var ProductAttributeEntity[] */
   private $attributeList = array();
+  /* @var ProductAttributeEntity[] */
+  private $attributeMap = array();
+  /** @var ProductPropertyGroupEntity[] */
+  private $propertyGroupList = array();
 
   /** @var ProductLabelEntity[] */
   private $labelList = array();
@@ -68,9 +64,6 @@ class ProductEntity
   /** @var string */
   private $mediaImage;
 
-  /* @var string */
-  private $view;
-
   /* @var integer */
   private $score;
 
@@ -86,40 +79,59 @@ class ProductEntity
   /* @var integer */
   private $ratingQuantity;
   /** @var int */
-  private $commentsNum;
+  private $commentCount;
   /** @var int */
   private $price;
+  /** @var int */
+  private $priceAverage;
   /** @var ProductStateEntity */
   private $state;
   /** @var ProductLineEntity */
   private $line;
+  /** @var ProductMediaEntity[] */
+  private $mediaList = array();
+  /** @var ProductServiceEntity[] */
+  private $serviceList = array();
   /** @var ProductKitEntity[] */
-  private $kitList;
+  private $kitList = array();
+  /** @var int[] */
+  private $relatedIdList = array();
+  /** @var ProductEntity[] */
+  private $relatedList = array();
+  /** @var int[] */
+  private $accessoryIdList = array();
+  /** @var ProductEntity[] */
+  private $accessoryList = array();
+  /** @var ProductTagEntity[] */
+  private $tagList = array();
 
   public function __construct(array $data = array())
   {
-    if (array_key_exists('id', $data)) $this->setId($data['id']);
-    if (array_key_exists('view_id', $data)) $this->setViewId($data['view_id']);
-    if (array_key_exists('set_id', $data)) $this->setSetId($data['set_id']);
-    if (array_key_exists('is_model', $data)) $this->setIsModel($data['is_model']);
-    if (array_key_exists('is_primary_line', $data)) $this->setIsPrimaryLine($data['is_primary_line']);
-    if (array_key_exists('model_id', $data)) $this->setModelId($data['model_id']);
-    if (array_key_exists('score', $data)) $this->setScore($data['score']);
-    if (array_key_exists('name', $data)) $this->setName($data['name']);
-    if (array_key_exists('link', $data)) $this->setLink($data['link']);
-    if (array_key_exists('token', $data)) $this->setToken($data['token']);
-    if (array_key_exists('name_web', $data)) $this->setNameWeb($data['name_web']);
-    if (array_key_exists('prefix', $data)) $this->setPrefix($data['prefix']);
-    if (array_key_exists('article', $data)) $this->setArticle($data['article']);
-    if (array_key_exists('bar_code', $data)) $this->setBarcode($data['bar_code']);
-    if (array_key_exists('tagline', $data)) $this->setTagline($data['tagline']);
-    if (array_key_exists('announce', $data)) $this->setAnnounce($data['announce']);
-    if (array_key_exists('description', $data)) $this->setDescription($data['description']);
-    if (array_key_exists('media_image', $data)) $this->setMediaImage($data['media_image']);
-    if (array_key_exists('rating', $data)) $this->setRating($data['rating']);
-    if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
-    if (array_key_exists('comments_num', $data)) $this->setCommentsNum($data['comments_num']);
-    if (array_key_exists('price', $data)) $this->setPrice($data['price']);
+    if (array_key_exists('id', $data))              $this->id            = (int)$data['id'];
+    if (array_key_exists('view_id', $data))         $this->viewId        = (int)$data['view_id'];
+    if (array_key_exists('set_id', $data))          $this->setId         = (int)$data['set_id'];
+    if (array_key_exists('is_model', $data))        $this->isModel       = (bool)$data['is_model'];
+    if (array_key_exists('is_primary_line', $data)) $this->isPrimaryLine = (bool)$data['is_primary_line'];
+    if (array_key_exists('model_id', $data))        $this->modelId       = (int)$data['model_id'];
+    if (array_key_exists('score', $data))           $this->score         = (int)$data['score'];
+    if (array_key_exists('name', $data))            $this->name          = (string)$data['name'];
+    if (array_key_exists('link', $data))            $this->link          = (string)$data['link'];
+    if (array_key_exists('token', $data))           $this->token         = (string)$data['token'];
+    if (array_key_exists('name_web', $data))        $this->nameWeb       = (string)$data['name_web'];
+    if (array_key_exists('prefix', $data))          $this->prefix        = (string)$data['prefix'];
+    if (array_key_exists('article', $data))         $this->article       = (string)$data['article'];
+    if (array_key_exists('bar_code', $data))        $this->barcode       = (string)$data['bar_code'];
+    if (array_key_exists('tagline', $data))         $this->tagline       = (string)$data['tagline'];
+    if (array_key_exists('announce', $data))        $this->announce      = (string)$data['announce'];
+    if (array_key_exists('description', $data))     $this->description   = (string)$data['description'];
+    if (array_key_exists('media_image', $data))     $this->mediaImage    = (string)$data['media_image'];
+    if (array_key_exists('rating', $data))          $this->rating        = (int)$data['rating'];
+    if (array_key_exists('rating_count', $data))    $this->ratingCount   = (int)$data['rating_count'];
+    if (array_key_exists('comments_num', $data))    $this->commentCount   = (int)$data['comments_num'];
+    if (array_key_exists('comment_count', $data))   $this->commentCount   = (int)$data['comment_count'];
+    if (array_key_exists('price', $data))           $this->price         = $data['price'];
+    if (array_key_exists('price_average', $data))   $this->priceAverage  = $data['price_average'];
+    //echo "<pre>", print_r($this,1), '</pre>';
   }
 
   public function setId($id)
@@ -161,10 +173,6 @@ class ProductEntity
     return $this->brand;
   }
 
-  public function setCategory(array $category)
-  {
-    $this->categoryList = $category;
-  }
   public function setCategoryList(array $categoryList)
   {
     $this->categoryList = array();
@@ -188,24 +196,25 @@ class ProductEntity
   /**
    * @return ProductCategoryEntity
    */
-  public function getCategory()
-  {
-    return $this->categoryList;
-  }
-
-  public function setAttribute(array $attribute)
-  {
-    $this->attributeList = $attribute;
-  }
-
   public function getMainCategory()
   {
-    return count($this->categoryList) > 0 ? $this->categoryList[0] : null;
+    reset($this->categoryList);
+    return current($this->categoryList);
+  }
+
+  /**
+   * @return ProductCategoryEntity
+   */
+  public function getFinalCategory()
+  {
+    end($this->categoryList);
+    return current($this->categoryList);
   }
 
   public function setAttributeList(array $attributeList)
   {
     $this->attributeList = array();
+    $this->attributeMap = array();
     foreach ($attributeList as $attr)
       $this->addAttribute($attr);
   }
@@ -213,30 +222,27 @@ class ProductEntity
   public function addAttribute(ProductAttributeEntity $property)
   {
     $this->attributeList[] = $property;
+    $this->attributeMap[$property->getId()] = $property;
   }
 
   /**
    * @return ProductAttributeEntity[]
    */
-  public function getAttribute()
-  {
-    return $this->attribute;
-  }
-
-
-  public function setAnnounce($announce)
-  {
-    $this->announce = $announce;
-  }
-
-  public function getAnnounce()
-  {
-    return $this->announce;
-  }
-
   public function getAttributeList()
   {
     return $this->attributeList;
+  }
+
+  /**
+   * @param $id
+   * @return ProductAttributeEntity
+   */
+  public function getAttribute($id)
+  {
+    if(isset($this->attributeMap[$id]))
+      return $this->attributeMap[$id];
+    else
+      return null;
   }
 
   /**
@@ -294,6 +300,16 @@ class ProductEntity
     return $this->barcode;
   }
 
+  public function setAnnounce($announce)
+  {
+    $this->announce = $announce;
+  }
+
+  public function getAnnounce()
+  {
+    return $this->announce;
+  }
+
   public function setDescription($description)
   {
     $this->description = $description;
@@ -305,19 +321,11 @@ class ProductEntity
   }
 
   /**
-   * @param string $view
-   */
-  public function setView($view)
-  {
-    $this->view = $view;
-  }
-
-  /**
    * @return string
    */
   public function getView()
   {
-    return $this->view;
+    return ($this->kitList)? "kit" : null;
   }
 
   /**
@@ -560,19 +568,19 @@ class ProductEntity
   }
 
   /**
-   * @param int $commentsNum
+   * @param int $commentCount
    */
-  public function setCommentsNum($commentsNum)
+  public function setCommentCount($commentCount)
   {
-    $this->commentsNum = $commentsNum;
+    $this->commentCount = $commentCount;
   }
 
   /**
    * @return int
    */
-  public function getCommentsNum()
+  public function getCommentCount()
   {
-    return $this->commentsNum;
+    return $this->commentCount;
   }
 
   /**
@@ -683,6 +691,9 @@ class ProductEntity
     return reset($this->labelList);
   }
 
+  /**
+   * @return bool
+   */
   public function isInCart()
   {
     /** @var $user myUser */
@@ -693,11 +704,106 @@ class ProductEntity
   }
 
   /**
-   * @param \ProductKitEntity[] $kitList
+   * @return int
    */
-  public function setKitList(array $kitList)
+  public function getCartQuantity()
+  {
+    /** @var $user myUser */
+    $user = sfContext::getInstance()->getUser();
+    /** @var $cart UserCart */
+    $cart = $user->getCart();
+    return $cart->getQuantityById($this->id);
+  }
+
+  /**
+   * @param ProductMediaEntity[] $media
+   */
+  public function setMediaList(array $media)
+  {
+    $this->mediaList = array();
+    foreach($media as $item){
+      assert($item instanceof ProductMediaEntity);
+      $this->mediaList[] = $item;
+    }
+  }
+
+  public function addMedia(ProductMediaEntity $media)
+  {
+    $this->mediaList[] = $media;
+  }
+
+  /**
+   * @return ProductMediaEntity[]
+   */
+  public function getMediaList()
+  {
+    return $this->mediaList;
+  }
+
+  /**
+   * @return ProductMediaEntity[]
+   */
+  public function getPhotoList()
+  {
+    $list = array();
+    foreach($this->mediaList as $image)
+      if($image->getTypeId() == ProductMediaEntity::TYPE_IMAGE)
+        $list[] = $image;
+    return $list;
+  }
+
+  /**
+   * @return ProductMediaEntity[]
+   */
+  public function getPhoto3dList()
+  {
+    $list = array();
+    foreach($this->mediaList as $image)
+      if($image->getTypeId() == ProductMediaEntity::TYPE_3D)
+        $list[] = $image;
+    return $list;
+  }
+
+  /**
+   * @param ProductServiceEntity[] $serviceList
+   */
+  public function setServiceList($serviceList)
+  {
+    $this->serviceList = array();
+    foreach($serviceList as $service)
+    {
+      assert($service instanceof ProductServiceEntity);
+      $this->serviceList[] = $service;
+    }
+  }
+
+  /**
+   * @param $service
+   */
+  public function addService(ProductServiceEntity $service)
+  {
+    $this->serviceList[] = $service;
+  }
+
+  /**
+   * @return ProductServiceEntity[]
+   */
+  public function getServiceList()
+  {
+    return $this->serviceList;
+  }
+
+  /**
+   * @param ProductKitEntity[] $kitList
+   */
+  public function setKitList($kitList)
   {
     $this->kitList = array();
+    foreach($kitList as $kit)
+    {
+      assert($kit instanceof ProductKitEntity);
+      $this->kitList[] = $kit;
+    }
   }
 
   /**
@@ -709,10 +815,166 @@ class ProductEntity
   }
 
   /**
-   * @return \ProductKitEntity[]
+   * @return ProductKitEntity[]
    */
   public function getKitList()
   {
     return $this->kitList;
+  }
+
+  /**
+   * @param int[]$accessoryIdList
+   */
+  public function setAccessoryIdList(array $accessoryIdList)
+  {
+    $this->accessoryIdList = $accessoryIdList;
+  }
+
+  /**
+   * @return int[]
+   */
+  public function getAccessoryIdList()
+  {
+    return $this->accessoryIdList;
+  }
+
+  /**
+   * @param int[] $relatedIdList
+   */
+  public function setRelatedIdList(array $relatedIdList)
+  {
+    $this->relatedIdList = $relatedIdList;
+  }
+
+  /**
+   * @return int[]
+   */
+  public function getRelatedIdList()
+  {
+    return $this->relatedIdList;
+  }
+
+  public function haveToShowAveragePrice()
+  {
+    return ($this->hasSaleLabel() && $this->price > 0 && $this->price < $this->priceAverage);
+  }
+
+  public function hasSaleLabel()
+  {
+    foreach ($this->labelList as $label)
+      if ($label->isSaleLabel())
+        return true;
+    return false;
+  }
+
+  /**
+   * @param int $priceAverage
+   */
+  public function setPriceAverage($priceAverage)
+  {
+    $this->priceAverage = $priceAverage;
+  }
+
+  /**
+   * @return int
+   */
+  public function getPriceAverage()
+  {
+    return $this->priceAverage;
+  }
+
+  /**
+   * @return string
+   */
+  public function getPath()
+  {
+    return str_replace('/product/', '', $this->link);
+  }
+
+  public function setAccessoryList($accessoryList)
+  {
+    $this->accessoryList = $accessoryList;
+  }
+
+  public function getAccessoryList()
+  {
+    return $this->accessoryList;
+  }
+
+  public function setRelatedList($relatedList)
+  {
+    $this->relatedList = $relatedList;
+  }
+
+  public function getRelatedList()
+  {
+    return $this->relatedList;
+  }
+
+  /**
+   * @return ProductServiceEntity[]
+   */
+  public function getServiceListInCart()
+  {
+    $idList = array();
+    foreach(sfContext::getInstance()->getUser()->getCart()->getServices() as $serviceInCart)
+      if(isset($serviceInCart['products'][$this->id]))
+        $idList[] = $serviceInCart['id'];
+
+    $list = array();
+    foreach($this->serviceList as $service)
+      if(in_array($service->getId(), $idList))
+        $list[] = $service;
+    return $list;
+  }
+
+  /**
+   * @param \ProductPropertyGroupEntity[] $list
+   */
+  public function setPropertyGroupList(array $list)
+  {
+    $this->propertyGroupList = array();
+    foreach($list as $group){
+      $this->addPropertyGroup($group);
+    }
+  }
+
+  /**
+   * @param \ProductPropertyGroupEntity $group
+   */
+  public function addPropertyGroup(ProductPropertyGroupEntity $group)
+  {
+    $this->propertyGroupList[] = $group;
+  }
+
+  /**
+   * @return \ProductPropertyGroupEntity[]
+   */
+  public function getPropertyGroupList()
+  {
+    return $this->propertyGroupList;
+  }
+
+  /**
+   * @param ProductTagEntity[] $tagList
+   */
+  public function setTagList($tagList)
+  {
+    $this->tagList = array();
+    foreach($tagList as $tag)
+      $this->addTag($tag);
+  }
+
+  public function addTag(ProductTagEntity $tag)
+  {
+    $this->tagList[] = $tag;
+  }
+
+  /**
+   * @return ProductTagEntity[]
+   */
+  public function getTagList()
+  {
+    return $this->tagList;
   }
 }

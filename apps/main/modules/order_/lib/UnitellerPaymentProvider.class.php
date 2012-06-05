@@ -63,7 +63,7 @@ class UnitellerPaymentProvider
 
     $params = array(
       'Shop_IDP'   => $this->getConfig('shop_id'),
-      'Order_IDP'  => $order['number'],
+      'Order_IDP'  => $order['id'],
       'Subtotal_P' => $order['sum'],
     );
 
@@ -76,7 +76,7 @@ class UnitellerPaymentProvider
 
     $formData = array(
       'Shop_IDP'    => $this->getConfig('shop_id'),
-      'Order_IDP'   => $order['number'],
+      'Order_IDP'   => $order['id'],
       'Subtotal_P'  => $order['sum'],
       'Signature'   => $sig,
       'URL_RETURN'  => url_for($this->getConfig('return_url'), true),

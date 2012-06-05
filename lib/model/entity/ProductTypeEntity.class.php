@@ -11,10 +11,9 @@ class ProductTypeEntity
   /* @var string */
   private $name;
 
-
   public function __construct(array $data = array()){
-    if(array_key_exists('id', $data)) $this->setId($data['id']);
-    if(array_key_exists('name', $data)) $this->setId($data['name']);
+    if(array_key_exists('id', $data))   $this->id   = (int)$data['id'];
+    if(array_key_exists('name', $data)) $this->name = (string)$data['name'];
   }
 
   /**
@@ -22,7 +21,7 @@ class ProductTypeEntity
    */
   public function setId($id)
   {
-    $this->id = $id;
+    $this->id = (int)$id;
   }
 
   /**
@@ -38,7 +37,7 @@ class ProductTypeEntity
    */
   public function setName($name)
   {
-    $this->name = $name;
+    $this->name = (string)$name;
   }
 
   /**

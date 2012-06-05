@@ -18,11 +18,11 @@ class BrandEntity
 
   public function __construct(array $data = array())
   {
-    if (array_key_exists('id', $data)) $this->setId($data['id']);
-    if (array_key_exists('name', $data)) $this->setName($data['name']);
-    if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
-    if (array_key_exists('description', $data)) $this->setDescription($data['description']);
-    if (array_key_exists('is_view_filter', $data)) $this->setIsViewFilter($data['is_view_filter']);
+    if (array_key_exists('id', $data))              $this->id           = (int)$data['id'];
+    if (array_key_exists('name', $data))            $this->name         = (string)$data['name'];
+    if (array_key_exists('media_image', $data))     $this->image        = (string)$data['media_image'];
+    if (array_key_exists('description', $data))     $this->description  = (string)$data['description'];
+    if (array_key_exists('is_view_filter', $data))  $this->isViewFilter = (bool)$data['is_view_filter'];
   }
 
   /**

@@ -235,7 +235,7 @@ class order_Actions extends myActions
       {
         $products = RepositoryManager::getProduct()->getListById(array_map(function($i) {
           return $i['product_id'];
-        }, $order['product']));
+        }, $order['product']), true);
 
         $productsById = array();
         foreach ($products as $product)
@@ -257,7 +257,7 @@ class order_Actions extends myActions
           $gaItem->price = $productData['price'];
           $gaItem->quantity = $productData['quantity'];
 
-          $categories = $productsById[$productData['product_id']]->getCategory();
+          $categories = $productsById[$productData['product_id']]->getCategoryList();
           if (!empty($categories[0]) && ($categories[0] instanceof ProductCategoryEntity)) {
             $category = array_pop($categories);
             $rootCategory = array_shift($categories);

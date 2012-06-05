@@ -6,7 +6,11 @@
  * @var $view
  * @var $text
  */
-$disable = isset($disable) && $disable == true;
+if(isset($disable)){
+  $disable = (bool)$disable;
+}else{
+  $disable = $item->getIsBuyable() == false;
+}
 $quantity = isset($quantity) ? $quantity : 1;
 $view = (isset($view) && $view === 'add') ? 'add' : 'default';
 ?>

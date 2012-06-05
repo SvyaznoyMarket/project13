@@ -64,26 +64,6 @@ class userActions extends myActions
                 'name'   => 'Корзина товаров',
                 'url'    => '@cart',
                 'routes' => array('@cart'),
-              ),
-              array(
-                'name'   => 'История просмотра товаров',
-                'url'    => '@userProductHistory',
-                'routes' => array('@userProductHistory'),
-              ),
-              array(
-                'name'   => 'Отложенные товары',
-                'url'    => '@userDelayedProduct',
-                'routes' => array('@userDelayedProduct'),
-              ),
-              array(
-                'name'   => 'Сравнение товаров',
-                'url'    => '@userProductCompare',
-                'routes' => array('@userProductCompare', '@userProductCompare_show'),
-              ),
-              array(
-                'name'   => 'Метки товаров',
-                'url'    => '@userTag',
-                'routes' => array('@userTag'),
               ),*/
           )
       ),

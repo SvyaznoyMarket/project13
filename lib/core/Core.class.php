@@ -177,20 +177,6 @@ class Core
 		return $result;
   }
 
-  public function createUserTag($params = array(), $data = array())
-  {
-    $result = false;
-
-    //$data = $this->getData($tag);
-
-    if ($response = $this->query('user.mark.create', $params, $data))
-    {
-      $result = $response['id'];
-    }
-
-    return $result;
-  }
-
   public function createUserProductRating($rec)
   {
     $result = false;
@@ -260,20 +246,6 @@ class Core
 
     return $result;
 
-  }
-
-  public function createUserProductNotice(UserProductNotice $notice)
-  {
-    $result = false;
-
-    $data = $this->getData($notice);
-
-    if ($response = $this->query('userProductNotice.create', $data))
-    {
-      $result = $response['id'];
-    }
-
-    return $result;
   }
 
   public function createProductComment(ProductComment $comment)
