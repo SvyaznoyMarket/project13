@@ -12,7 +12,7 @@ class ProductKitEntity
   public function __construct(array $data=array())
   {
     if(!empty($data['id']))       $this->productId = (int)$data['id'];
-    if(!empty($data['quantity'])) $this->quantity  = (int)$data['quantity'];
+    if(!empty($data['count'])) $this->quantity  = (int)$data['count'];
   }
 
   /**

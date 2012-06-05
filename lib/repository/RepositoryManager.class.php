@@ -26,6 +26,17 @@ class RepositoryManager
 
   /**
    * @static
+   * @return ServiceRepository
+   */
+  public static function getService()
+  {
+    static $repo;
+    if (!$repo) $repo = new ServiceRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
    * @return ProductLabelRepository
    */
   public static function getProductLabel()
