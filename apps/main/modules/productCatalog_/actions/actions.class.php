@@ -417,36 +417,6 @@ class productCatalog_Actions extends myActions
   }
 }
 
-class ProductCorePagerContainer extends sfPager
-{
-  public function __construct($maxPerPage = 10)
-  {
-    parent::__construct('Product', $maxPerPage);
-  }
-
-  public function setResult($results, $count){
-    $this->results = (array)$results;
-    $this->setNbResults((int)$count);
-  }
-
-  public function init()
-  {
-    if($this->getMaxPerPage()){
-      $this->setLastPage(ceil($this->getNbResults() / $this->getMaxPerPage()));
-    }
-  }
-
-  public function getResults()
-  {
-    return $this->results;
-  }
-
-  protected function retrieveObject($offset)
-  {
-    return $this->results[$offset];
-  }
-}
-
 class ProductCoreFormFilterSimple
 {
   const NAME = 'f';
@@ -454,6 +424,8 @@ class ProductCoreFormFilterSimple
   private $productCategory;
   /** @var \ProductCategoryFilterEntity[] */
   private $filterList;
+  /** @var \ProductCategoryFilterEntity[] */
+  private $parentFilterList;
   private $values = array();
   private $name = self::NAME;
 
@@ -463,10 +435,30 @@ class ProductCoreFormFilterSimple
   public function __construct(ProductCategory $category)
   {
     $this->productCategory = $category;
+    $filterList=array();
+    $parentFilterList=array();
+    RepositoryManager::getProductCategoryFilter()->getListAsync($this->productCategory->core_id, function($data) use(&$filterList){
+      $filterList = $data;
+    });
+    if($this->productCategory->core_parent_id){
+      RepositoryManager::getProductCategoryFilter()->getListAsync($this->productCategory->core_parent_id, function($data) use(&$parentFilterList){
+        $parentFilterList = $data;
+      });
+    }
+    CoreClient::getInstance()->execute();
 
-    $this->filterList = RepositoryManager::getProductCategoryFilter()->getList(
-      $this->productCategory->core_id
-    );
+    /** @var $filter ProductCategoryFilterEntity */
+    $this->filterList = $filterList;
+    $filterIdList = array();
+    foreach($filterList as $filter){
+      $filterIdList[] = $filter->getFilterId();
+    }
+    $this->parentFilterList = array();
+    foreach($parentFilterList as $filter){
+      if(!in_array($filter->getFilterId(), $filterIdList)){
+        $this->parentFilterList[] = $filter;
+      }
+    }
   }
 
   private function getUrl($filterId, $value = null)
@@ -501,8 +493,8 @@ class ProductCoreFormFilterSimple
   public function getCoreProductFilter($useCategoryFilter = true)
   {
     $filters = array();
-
-    foreach ($this->filterList as $filter) {
+    /** @var $filter ProductCategoryFilterEntity */
+    foreach (array_merge($this->filterList,$this->parentFilterList) as $filter) {
       $value = $this->getValue($filter);
       if (!empty($value)) {
         switch ($filter->getTypeId()) {
@@ -528,14 +520,14 @@ class ProductCoreFormFilterSimple
     if ($this->productCategory && $useCategoryFilter) {
       $filters[] = array('category', 1, $this->productCategory->core_id);
     }
-
     return $filters;
   }
 
   public function getSelectedList()
   {
     $list = array();
-    foreach ($this->filterList as $filter) {
+    /** @var $filter ProductCategoryFilterEntity */
+    foreach (array_merge($this->filterList,$this->parentFilterList) as $filter) {
       $value = $this->getValue($filter);
       switch ($filter->getTypeId()) {
         case ProductCategoryFilterEntity::TYPE_SLIDER:

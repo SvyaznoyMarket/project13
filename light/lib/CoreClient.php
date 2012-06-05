@@ -80,7 +80,7 @@ class CoreClient
     }
     catch (CoreClientException $e) {
       curl_close($connection);
-      $this->log($e->__toString(), 'error');
+      $this->log('request params: '.$action.', get: '.print_r($params, 1).', post: '.print_r($data, 1).'error: '.$e->__toString(), 'error');
       throw $e;
     }
   }

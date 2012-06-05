@@ -115,7 +115,11 @@ class CurrentUser
     }
 
     try{
-      $this->region = App::getRegion()->getByGeoIPCode($geoIpCode);
+      $region = App::getRegion()->getByGeoIPCode($geoIpCode);
+      if(!is_object($region)){
+        throw new dataFormatException('not found region for geoIPCode: '.$geoIpCode);
+      }
+      $this->region = $region;
     }
     catch(dataFormatException $e){
       Logger::getRootLogger()->warn($e->getMessage());

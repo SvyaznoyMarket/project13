@@ -28,7 +28,8 @@ class productActions extends myActions
 
     $this->productList = ProductTable::getInstance()->getListByBarcodes($barcodes, array(
       'with_properties' => true,
-      'property_view' => 'list',
+      'property_view'   => 'list',
+      'with_model'      => true,
     ));
     $this->forward404Unless($this->productList->count());
 
