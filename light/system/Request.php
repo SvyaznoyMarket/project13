@@ -1,4 +1,5 @@
 <?php
+namespace light;
 /**
  * Created by JetBrains PhpStorm.
  * User: pavel

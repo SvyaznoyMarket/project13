@@ -1,4 +1,6 @@
 <?php
+namespace light;
+use Logger;
 
 require_once(__DIR__.'/log4php/Logger.php');
 require_once(ROOT_PATH.'system/exception/coreClientException.php');

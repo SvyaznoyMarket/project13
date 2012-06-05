@@ -1,11 +1,12 @@
 <?php
-namespace light;
-use Exception;
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov
- * Date: 13.04.12
- * Time: 14:53
+ * Date: 01.06.12
+ * Time: 10:42
  * To change this template use File | Settings | File Templates.
  */
-class systemException extends \Exception{}
+class ProductData
+{
+
+}

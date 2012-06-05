@@ -1,4 +1,5 @@
 <?php
+namespace light;
 /**
  * Created by JetBrains PhpStorm.
  * User: pavel
@@ -268,6 +269,28 @@ class Response
 
   protected function normalizeHeaderName($name)
   {
-    return preg_replace('/\-(.)/e', "'-'".strtoupper('\\1'), strtr(ucfirst(strtolower($name)), '_', '-'));
+    return preg_replace('/\-(.)/e', "'-'.strtoupper('\\1')", strtr(ucfirst(strtolower($name)), '_', '-'));
+  }
+
+  static public function getDate($timestamp, $type = 'rfc1123')
+  {
+    $type = strtolower($type);
+
+    if ($type == 'rfc1123')
+    {
+      return substr(gmdate('r', $timestamp), 0, -5).'GMT';
+    }
+    else if ($type == 'rfc1036')
+    {
+      return gmdate('l, d-M-y H:i:s ', $timestamp).'GMT';
+    }
+    else if ($type == 'asctime')
+    {
+      return gmdate('D M j H:i:s', $timestamp);
+    }
+    else
+    {
+      throw new Exception('The second getDate() method parameter must be one of: rfc1123, rfc1036 or asctime.');
+    }
   }
 }

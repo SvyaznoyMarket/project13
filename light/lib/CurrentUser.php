@@ -1,4 +1,6 @@
 <?php
+namespace light;
+use Logger;
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov

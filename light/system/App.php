@@ -1,7 +1,10 @@
 <?php
+namespace light;
+use Logger;
 require_once(ROOT_PATH.'system/exception/systemException.php');
 require_once(ROOT_PATH.'lib/CoreClient.php');
 require_once(ROOT_PATH.'system/Response.php');
+require_once(ROOT_PATH.'lib/log4php/Logger.php');
 
 class App{
 
@@ -9,15 +12,49 @@ class App{
    * @var Router
    */
   private static $Router = Null;
-  /**
-   * @var Renderer
-   */
-  private static $Renderer = Null;
+
+  private static $sessionStarted = false;
 
   /**
    * @var array
    */
   private static $modelCollection = array();
+
+  public static function init(){
+    $cookieDefaults = session_get_cookie_params();
+
+    $options = array(
+      'session_name'            => SESSION_NAME,
+      'session_id'              => null,
+      'auto_start'              => true,
+      'session_cookie_lifetime' => is_null(SESSION_COOKIE_LIFETIME)? $cookieDefaults['lifetime'] : SESSION_COOKIE_LIFETIME,
+      'session_cookie_path'     => $cookieDefaults['path'],
+      'session_cookie_domain'   => $cookieDefaults['domain'],
+      'session_cookie_secure'   => $cookieDefaults['secure'],
+      'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
+      'session_cache_limiter'   => null,
+    );
+
+
+    // set session name
+    $sessionName = $options['session_name'];
+    session_name($sessionName);
+
+    $lifetime = $options['session_cookie_lifetime'];
+    $path     = $options['session_cookie_path'];
+    $domain   = $options['session_cookie_domain'];
+    $secure   = $options['session_cookie_secure'];
+    $httpOnly = $options['session_cookie_httponly'];
+    session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
+
+    if (!self::$sessionStarted && !isset($_SESSION))
+    {
+      session_start();
+      self::$sessionStarted = true;
+    }
+
+    Logger::configure(LOGGER_CONFIG_PATH); //В отдельную константу вынесено - что бы можно было иметь разные конфиги для dev и prod
+  }
 
   /**
    * @static
@@ -47,6 +84,22 @@ class App{
 
   /**
    * @static
+   * @return PromoModel
+   */
+  public static function getPromo(){
+    return self::loadModel('PromoModel');
+  }
+
+  /**
+   * @static
+   * @return ProductModel
+   */
+  public static function getProduct(){
+    return self::loadModel('ProductModel');
+  }
+
+  /**
+   * @static
    * @return Router
    */
   public static function getRouter(){
@@ -54,9 +107,8 @@ class App{
       return self::$Router;
     }
 
-    if(!class_exists('Router')){
-      require_once(ROOT_PATH.'system/Router.php');
-    }
+    require_once(ROOT_PATH.'system/Router.php');
+
     self::$Router = Router::fromArray(require(ROOT_PATH.'config/routes.php'));
     return self::$Router;
   }
@@ -74,13 +126,23 @@ class App{
    * @return Renderer
    */
   public static function getRenderer(){
-    if(is_null(self::$Renderer)){
-      if(!class_exists('Renderer')){
-        require_once(ROOT_PATH.'system/Renderer.php');
-      }
-      self::$Renderer = new Renderer();
+    if(!class_exists('Renderer')){
+      require_once(ROOT_PATH.'system/Renderer.php');
     }
-    return self::$Renderer;
+
+    return Renderer::getInstance();
+  }
+
+  /**
+   * @static
+   * @return HtmlRenderer
+   */
+  public static function getHtmlRenderer(){
+    if(!class_exists('HtmlRenderer')){
+      require_once(ROOT_PATH.'system/Renderer.php');
+    }
+
+    return HtmlRenderer::getInstance();
   }
 
   /**
@@ -109,15 +171,17 @@ class App{
   }
 
   private static function loadModel($className){
+    $fileName = $className;
+    $className = "light\\".$className;
     if(!class_exists($className)){
-      if(file_exists(ROOT_PATH.'model/'.$className.'.php')){
-        require_once(ROOT_PATH.'model/'.$className.'.php');
+      if(file_exists(ROOT_PATH.'model/'.$fileName.'.php')){
+        require_once(ROOT_PATH.'model/'.$fileName.'.php');
         if(!class_exists($className)){
           throw new systemException('class '.$className.' not exists');
         }
       }
       else{
-        throw new systemException('controller '.$className.' not exists');
+        throw new systemException('model file '.$fileName.' not exists');
       }
     }
 

@@ -1,3 +1,6 @@
 <?php
+namespace light;
 
-class coreClientException extends Exception{ }
+require_once('systemException.php');
+
+class coreClientException extends systemException{ }
