@@ -12,6 +12,9 @@ welcome:
 CityRedirect:
   class: CityRedirectFilter
 
+WPInitialize:
+  class: WPInitializeFilter
+
 # insert your own filters here
 
 cache:     ~

@@ -1,0 +1,6 @@
+<?php
+    slot('navigation', get_component('default', 'navigation', array('sf_data' => $sf_data, 'list' => $breadCrumbElementList)));
+    slot('title', $pageTitle);
+?>
+
+<?=$sf_data->getRaw('wpContent');?>

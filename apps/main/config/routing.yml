@@ -865,7 +865,7 @@ search_ajax:
 
 #callback
 callback:
-  url:   /callback
+  url:   /callback/
   param: { module: callback, action: index }
 
 #ipad_save
@@ -939,6 +939,10 @@ credit_programs:
   param:    { module: credit, action: programs }
 #
 
+# Wordpress pages
+wordpress:
+  url:   /content/:page
+  param: { module: wordpress, action: index }
 
 default_show:
   url:   /:page
