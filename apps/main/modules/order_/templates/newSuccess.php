@@ -27,14 +27,14 @@
 
   <div id="order-loader-holder">
     <div class='bOrderPreloader'>
-      <span>Загрузка...</span><img src='/images/bPreloader.gif'>
+      <span>Загрузка...</span><img src='/images/bPreloader.gif' />
     </div>
   </div>
 
   <div id="order-form-part2" class="hidden">
 
     <div id="order-message" class='bBuyingInfo'>
-      <span><?php count($deliveryMap->unavailable) ? 'Некоторые товары не могут быть доставлены' : 'Отличный выбор!' ?></span>
+      <span><?php count($sf_data->getRaw('deliveryMap')->unavailable) ? 'Некоторые товары не могут быть доставлены' : 'Отличный выбор!' ?></span>
     </div>
 
     <div id="order-delivery-holder">
@@ -198,7 +198,7 @@
 </form>
 
 <div id="order-loader" class='bOrderPreloader hf'>
-  <span>Формирую заказ...</span><img src='/images/bPreloader.gif'>
+  <span>Формирую заказ...</span><img src='/images/bPreloader.gif' />
 </div>
 
 <?php include_partial('order_/map', $sf_data) ?>

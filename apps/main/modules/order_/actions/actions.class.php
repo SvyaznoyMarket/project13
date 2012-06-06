@@ -663,7 +663,7 @@ class order_Actions extends myActions
         {
           foreach ($servicesForProduct[$coreData['id']] as $service)
           {
-            $serviceName .= " + {$service['name']} ({$service['quantity']} шт.)";
+            $serviceName .= " + <span class='motton'>{$service['name']} ({$service['quantity']} шт.)</span>";
             $serviceTotal += ($service['price'] * $service['quantity']);
           }
         }

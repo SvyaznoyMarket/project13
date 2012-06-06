@@ -6,7 +6,7 @@
 
 <input id="order-delivery_map-data" type="hidden" data-value='<?php echo json_encode($deliveryMap) ?>' />
 
-<?php foreach ($deliveryMap->deliveryTypes as $deliveryType): ?>
+<?php foreach ($sf_data->getRaw('deliveryMap')->deliveryTypes as $deliveryType): ?>
 
 <?php
 $currentWeekNum = 1;
