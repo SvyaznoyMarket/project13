@@ -143,51 +143,9 @@ foreach ($photo3dList as $photo3d)
     $label = isset($labels[0])? $labels[0] : null;
     if ($label && $label->getId() == ProductLabelEntity::LABEL_ACTION) {
     ?>
-      <!--AdFox START-->
-      <!--enter-->
-      <script type="text/javascript">
-        <!--
-        if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
-        if (typeof(document.referrer) != 'undefined') {
-          if (typeof(afReferrer) == 'undefined') {
-            afReferrer = escape(document.referrer);
-          }
-        } else {
-          afReferrer = '';
-        }
-        var addate = new Date();
-        document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?p1=biewf&amp;p2=engb&amp;pct=a&amp;pfc=a&amp;pfb=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>');
-        // -->
-      </script>
-      <!--AdFox END-->
+      <div class="adfoxWrapper" id="adfox400counter"></div>
     <?php } else { ?>
-      <!--AdFox START-->
-      <!--enter-->
-      <!--Площадка: Enter.ru / * / *-->
-      <!--Тип баннера: 400x-->
-      <!--Расположение: <верх страницы>-->
-      <!-- ________________________AdFox Asynchronous code START__________________________ -->
-      <script type="text/javascript">
-        <!--
-        if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
-        if (typeof(document.referrer) != 'undefined') {
-          if (typeof(afReferrer) == 'undefined') {
-            afReferrer = escape(document.referrer);
-          }
-        } else {
-          afReferrer = '';
-        }
-        var addate = new Date();
-        var dl = escape(document.location);
-        var pr1 = Math.floor(Math.random() * 1000000);
-
-        document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
-        document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
-
-        AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
-        // -->
-      </script>
-      <!-- _________________________AdFox Asynchronous code END___________________________ -->
+      <div class="adfoxWrapper" id="adfox400"></div>
     <?php } ?>
   </div>
 
