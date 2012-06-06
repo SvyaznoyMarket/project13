@@ -4,7 +4,7 @@
 /* @var $item Order_ItemView */
 ?>
 
-<input id="order-delivery_map-data" type="hidden" data-value='<?php echo json_encode($deliveryMap) ?>' />
+<input id="order-delivery_map-data" type="hidden" data-value='<?php echo $deliveryMap_json ?>' />
 
 <?php foreach ($sf_data->getRaw('deliveryMap')->deliveryTypes as $deliveryType): ?>
 
@@ -126,7 +126,7 @@ foreach ($dates as $i => $date) {
     <img data-assign='{"image": ["attr", ["src", "_value"]], "name": ["attr", ["alt", "_value"]]}' src="" alt="" />
 
     <span class="bBuyingLine__eInfo">
-      <span data-replace="true" data-assign='{"name": ["text", "_value"]}'></span>
+      <a target="_blank" data-assign='{"url": ["attr", ["href", "_value"]]}' href="#"><span data-replace="true" data-assign='{"name": ["text", "_value"]}'></span></a>
       <br><span>(<span data-replace="true" data-assign='{"quantity": ["text", "_value"]}'></span> шт.)</span>
     </span>
   </div>

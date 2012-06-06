@@ -57,7 +57,8 @@ class order_Actions extends myActions
     $defaultDeliveryType = (1 == count($deliveryTypes)) ? $deliveryTypes[0] : null;
     $deliveryMap = $this->getDeliveryMapView($defaultDeliveryType);
 
-    $this->setVar('deliveryMap', $deliveryMap, true);
+    $this->setVar('deliveryMap', $deliveryMap);
+    $this->setVar('deliveryMap_json', json_encode($deliveryMap));
     $this->setVar('mapCenter', json_encode(array('latitude' => $user->getRegion('latitude'), 'longitude' => $user->getRegion('longitude'))));
 
     // получение ссылки "Вернуться к покупкам"
@@ -669,10 +670,20 @@ class order_Actions extends myActions
         }
 
         $itemView = new Order_ItemView();
+        $itemView->url =
+          'products' == $itemType
+          ? $coreData['link']
+          : $this->generateUrl('service_show', array('service' => ServiceTable::getInstance()->createQuery()->select('token')->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR)))
+        ;
         $itemView->deleteUrl =
           'products' == $itemType
           ? $this->generateUrl('cart_delete', array('product' => $recordData['id']), true)
           : $this->generateUrl('cart_service_delete', array('service' => $recordData['id'], 'product' => 0), true)
+        ;
+        $itemView->addUrl =
+          'products' == $itemType
+          ? $this->generateUrl('cart_add', array('product' => $recordData['id'], 'quantity' => $coreData['stock']))
+          : ''
         ;
         $itemView->id = $coreData['id'];
         $itemView->name = $coreData['name'].$serviceName;
@@ -682,18 +693,8 @@ class order_Actions extends myActions
         $itemView->quantity = $cartData['quantity'];
         $itemView->total = ($cartData['price'] * $cartData['quantity']) + $serviceTotal;
         $itemView->type = 'products' == $itemType ? Order_ItemView::TYPE_PRODUCT : Order_ItemView::TYPE_SERVICE;
-        $itemView->url = '';
-          //'products' == $itemType
-          //  ? $coreData['link']
-          //  : $this->generateUrl('service_show', array('service' => ServiceTable::getInstance()->createQuery()->select('token')->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR)))
-        //;
         $itemView->token = $itemView->type.'-'.$itemView->id;
         $itemView->stock = isset($coreData['stock']) ? $coreData['stock'] : 0;
-        $itemView->addUrl =
-          'products' == $itemType
-            ? $this->generateUrl('cart_add', array('product' => $recordData['id'], 'quantity' => $coreData['stock']))
-            : ''
-        ;
 
         foreach ($coreData['deliveries'] as $deliveryToken => $deliveryData)
         {
