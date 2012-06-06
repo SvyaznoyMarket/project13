@@ -18,7 +18,8 @@ $json = json_encode(array (
   'jsshortcut' =>  $item->getArticle(),
   'jsitemid' =>  $item->getId(),
   'jsregionid' => sfContext::getInstance()->getUser()->getRegionCoreId(),
-  'jsregionName' => sfContext::getInstance()->getUser()->getRegion('name')
+  'jsregionName' => sfContext::getInstance()->getUser()->getRegion('name'),
+  'jsstock' => 10,
 ));
 ?>
 <?php
