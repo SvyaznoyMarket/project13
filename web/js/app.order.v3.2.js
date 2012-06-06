@@ -620,7 +620,7 @@ $(document).ready(function() {
 
     $('#order-form-part1').show()
 
-    $('body').delegate('.bImgButton.mBacket', 'click', function(e) {
+    $('body').delegate('.mBacket', 'click', function(e) {
         e.preventDefault()
 
         var el = $(this)

@@ -120,8 +120,7 @@ foreach ($dates as $i => $date) {
     <p><span data-replace="true" data-assign='{"totalFormatted": ["text", "_value"]}'></span> <span class="rubl">p</span></p>
 
     <p>
-      <a data-assign='{"deleteUrl": ["attr", ["href", "_value"]], "token": ["attr", ["data-token", "_value"]]}' href="#" class="bImgButton mBacket" data-token=""></a>
-      <!--<a class="bImgButton mArrows order-item_delivery-button" href="#" data-assign='{"token": ["attr", ["data-value", "_value"]]}' data-value='' data-template="#order-item_delivery-template"></a>-->
+      <a data-assign='{"deleteUrl": ["attr", ["href", "_value"]], "token": ["attr", ["data-token", "_value"]]}' href="#" class="mBacket" data-token="">удалить</a>
     </p>
     <img data-assign='{"image": ["attr", ["src", "_value"]], "name": ["attr", ["alt", "_value"]]}' src="" alt="" />
 

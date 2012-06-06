@@ -4914,7 +4914,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     background-color: #f4f4f4;
 }
 .bImgButton.mBacket{
-    background-image: url('img/z_backet.png');
+    /* background-image: url('img/z_backet.png'); */
 }
 .bImgButton.mArrows{
     background-image: url('img/z_arrows.png');
