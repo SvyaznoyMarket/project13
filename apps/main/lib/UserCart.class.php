@@ -307,6 +307,11 @@ class UserCart extends BaseUserData
         foreach ($this->_products as $product)
         {
             $prodId = $product['id'];
+            if (!isset($productBDList[$prodId]))
+            {
+              mail('ssv@enter.ru, pavel.kuznetsov@enter.ru', 'Missing product', 'Someone is trying to buy product #'.$prodId.' but we dont have it!');
+              continue;
+            }
             $service_for_list = array();
             $list[$prodId] = array(
                 'type' => 'product',
