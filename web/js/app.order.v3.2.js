@@ -663,8 +663,6 @@ $(document).ready(function() {
     })
 
     $('body').delegate('.bBuyingLine label', 'click', function(e) {
-        $('#order-submit').addClass('disable');
-
         var target = $(e.target)
         if (!target.is('input')) {
             return
@@ -688,6 +686,8 @@ $(document).ready(function() {
         if (!el.length) {
             return
         }
+
+        $('#order-submit').addClass('disable');
 
         var url = $('#order-form').data('deliveryMapUrl')
 
