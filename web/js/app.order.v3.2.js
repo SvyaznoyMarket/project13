@@ -283,7 +283,7 @@ $(document).ready(function() {
                 })
 
                 $('.order-total-container').find('[data-assign]').each(function(i, el) {
-                    Templating.assign($(el), { total: printPrice(total) })
+                    Templating.assign($(el), { total: printPrice(total), totalMessage: 1 == $('.order-delivery-holder:visible').length ? 'Сумма заказа' : 'Сумма всех заказов' })
                 })
 
                 // сортировка

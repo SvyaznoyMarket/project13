@@ -44,7 +44,7 @@
     <dl class='bBuyingLine mSumm order-total-container'>
       <dt><a class="red" style="border-color: #cb3735" href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
       <dd>
-        <div>Сумма всех заказов <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
+        <div><span data-assign='{"totalMessage": ["text", "_value"]}'>Сумма всех заказов</span> <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
       </dd>
     </dl>
 
