@@ -136,7 +136,6 @@
           <div>
             <p></p>
             <?php echo $form['extra']->render(array('class' => 'bBuyingLine__eTextarea')) ?>
-            <i class='mILong'>Сколько раз повернуть направо, наличие бабушек у подъезда или цвет глаз секретаря - укажите любую информацию, которая поможет нам еще быстрее выполнить Ваш заказ.</i>
           </div>
         </dd>
       </dl>
@@ -183,15 +182,15 @@
 
     </div>
 
-    <dl class='bBuyingLine mConfirm'>
-
-      <dt>&nbsp;</dt>
-      <dd>
-        <div><a id="order-submit" class='bBigOrangeButton' href="#">Завершить оформление</a></div>
-      </dd>
-    </dl>
-
   </div>
+
+  <dl class='bBuyingLine mConfirm'>
+
+    <dt>&nbsp;</dt>
+    <dd>
+      <div><a id="order-submit" class='bBigOrangeButton disable' href="#">Завершить оформление</a></div>
+    </dd>
+  </dl>
 
   <div id="order-shop-popup" class="hidden"></div>
 

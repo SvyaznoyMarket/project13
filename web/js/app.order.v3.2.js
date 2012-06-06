@@ -44,6 +44,8 @@ $(document).ready(function() {
             var self = this
             var async = async || false
 
+            $('#order-submit').addClass('disable');
+
             $.ajax({
                 type: 'POST',
                 async: async,
@@ -184,6 +186,8 @@ $(document).ready(function() {
         render: function() {
             var self = this
             var data = this.data()
+
+            $('#order-submit').removeClass('disable');
 
             // проверка на пустую корзину
             var isEmpty = true
@@ -659,6 +663,8 @@ $(document).ready(function() {
     })
 
     $('body').delegate('.bBuyingLine label', 'click', function(e) {
+        $('#order-submit').addClass('disable');
+
         var target = $(e.target)
         if (!target.is('input')) {
             return
@@ -880,7 +886,7 @@ $(document).ready(function() {
         var form = button.closest('form')
         var validator = $(form.data('validator')).data('value')
 
-        if (button.data('locked')) {
+        if (button.data('locked') || button.hasClass('disable')) {
             return false
         }
 
