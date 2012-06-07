@@ -78,7 +78,7 @@ class tagComponents extends myComponents
       {
         foreach ($productType->ProductCategory as $productCategory)
         {
-          if ($productCategory->getRootCategory()->id == $firstProductCategory->id)
+          if (is_object($productCategory) && is_object($productCategory->getRootCategory()) && $productCategory->getRootCategory()->id == $firstProductCategory->id)
           {
             $index = 'first';
             break;
