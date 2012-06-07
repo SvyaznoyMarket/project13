@@ -607,7 +607,7 @@ $(document).ready(function() {
         }
     }
 
-    window.regionMap = new MapWithShops(
+    window.regionMap = new MapWithShopsOLD(
         $('#map-center').data('content'),
         $('#map-info_window-container'),
         'mapPopup',

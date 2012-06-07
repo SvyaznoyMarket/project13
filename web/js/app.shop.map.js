@@ -3,7 +3,7 @@
 //  regionMap.closeMap();
 //}
 
-function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
+function MapWithShopsOLD(center, infoWindowTemplate, DOMid, selectCallback) {
   var self = this
   self.mapWS = null
   self.infoWindow = null
@@ -11,7 +11,7 @@ function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
   self.markers = []
   self.inited = false
 
-  function create() {
+  function create() { 
     self.positionC = new google.maps.LatLng(center.latitude, center.longitude)
     var options = {
       zoom:11,
