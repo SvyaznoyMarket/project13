@@ -92,4 +92,7 @@
   <?php endif ?>
 
 <?php endforeach ?>
+
+<div class="clear"></div>
 <!-- /Basket -->
+
