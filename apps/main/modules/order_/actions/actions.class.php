@@ -10,6 +10,8 @@
  */
 class order_Actions extends myActions
 {
+  const ORDER_COOKIE_NAME = 'last_order';
+
   public function preExecute()
   {
     $this->getRequest()->setParameter('_template', 'order');
@@ -44,6 +46,24 @@ class order_Actions extends myActions
 
     $this->order = new Order();
     //$this->order->region_id = $this->getUser()->getRegion('id');
+
+    // вытащить из куки значения для формы, если пользователь неавторизован
+    if (!$user->isAuthenticated())
+    {
+      $cookieValue = $request->getCookie(self::ORDER_COOKIE_NAME);
+      if (!empty($cookieValue))
+      {
+        $cookieValue = (array)unserialize(base64_decode($cookieValue));
+        foreach ($this->getCookieKeys() as $k)
+        {
+          if (array_key_exists($k, $cookieValue) && empty($this->order->{$k}))
+          {
+            $this->order->{$k} = $cookieValue[$k];
+          }
+        }
+      }
+    }
+
     $this->form = $this->getOrderForm($this->order);
     if (!$this->form)
     {
@@ -116,6 +136,25 @@ class order_Actions extends myActions
     $form->bind($request->getParameter($form->getName()));
     if ($form->isValid())
     {
+      // если пользователь неавторизован, забросить его данные в куки
+      if (!$user->isAuthenticated())
+      {
+        try {
+          $values = $form->getValues();
+          $coockieValue = array();
+          foreach ($this->getCookieKeys() as $k) {
+            if (!array_key_exists($k, $values)) continue;
+
+            $coockieValue[$k] = $values[$k];
+          }
+
+          $this->getResponse()->setCookie(self::ORDER_COOKIE_NAME, base64_encode(serialize($coockieValue)), time() + (3600 * 24 * 30));
+        }
+        catch (Exception $e) {
+          $this->getLogger()->err('{'.__CLASS__.'} не могу запихнуть куку: '.$e->getMessage());
+        }
+      }
+
       /* @var $baseOrder Order */
       $baseOrder = $form->updateObject();
       /*
@@ -824,5 +863,20 @@ class order_Actions extends myActions
     $class = sfInflector::camelize($name.'payment_provider');
 
     return new $class($providers[$name]);
+  }
+
+  private function getCookieKeys()
+  {
+    return array(
+      'recipient_first_name',
+      'recipient_last_name',
+      'recipient_phonenumbers',
+      //'address_metro',
+      'address_street',
+      'address_number',
+      'address_building',
+      'address_apartment',
+      'address_floor',
+    );
   }
 }
