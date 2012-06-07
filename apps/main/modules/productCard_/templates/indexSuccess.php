@@ -27,6 +27,7 @@
   'accessoryPagesNum' => $accessoryPagesNum,
   'showRelatedUpper' => $showRelatedUpper,
   'showAccessoryUpper' => $showAccessoryUpper,
+  'dataForCredit' => $dataForCredit,
 )) ?>
 
 <?php if ('kit' == $product->getView()): ?>

@@ -2,6 +2,11 @@
 
 class ProductEntity
 {
+  /**
+   * Минимальная цена товара, на который предоставляется кредит
+   */
+  const MIN_CREDIT_PRICE = 3000;
+
   /* @var integer */
   private $id;
   /** @var int */

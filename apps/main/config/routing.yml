@@ -504,8 +504,8 @@ cart:
 #
 # cart add
 cart_add:
-  url:   /cart/add/:product/_quantity/:quantity
-  param: { module: cart, action: add, quantity: 1 }
+  url:   /cart/add/:product/_quantity/:quantity/_credit/:credit
+  param: { module: cart, action: add, quantity: 1, credit: 0 }
   requirements:
     sf_method: [ get, post ]
     product: \d+
@@ -524,8 +524,8 @@ cart_clear:
 #
 # cart service add
 cart_service_add:
-  url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/
-  param: { module: cart, action: serviceAdd, quantity: 1, product: '0' }
+  url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/_credit/:credit
+  param: { module: cart, action: serviceAdd, quantity: 1, product: '0', credit: 0 }
   requirements:
     product: \d+
     service: \d+

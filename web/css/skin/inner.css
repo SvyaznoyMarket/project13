@@ -1169,7 +1169,7 @@ border-radius:5px;
 .bigpriceblock .goodsbarbig.mSmallBtns{ width: 162px !important; display: inline-block; *display: inline; zoom; 1;}
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1{ width: 162px; height: 39px; background: url('/css/skin/img/bg_inner.png') 0 -350px no-repeat;}
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1:hover{ background: url('/css/skin/img/bg_inner.png') -165px -350px no-repeat; }
-.bigpriceblock .goodsbarbig.mSmallBtns a.link1:active{ background: url('/css/skin/img/bg_inner.png') -330px -350px no-repeat; }
+.bigpriceblock .goodsbarbig.mSmallBtns a.link1.active{ background: url('/css/skin/img/bg_inner.png') -330px -350px no-repeat; }
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1.disabled, .bigpriceblock  .goodsbarbig.mSmallBtns a.link1.disabled:hover { background: url('/css/skin/img/buy_buttons.png') 0 -118px no-repeat; cursor:default; }
 .bigpriceblock .goodsbarbig.mSmallBtns a.link1.fr{ floar: right }
 

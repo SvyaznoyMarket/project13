@@ -8,6 +8,7 @@
  * @var $accessoryPagesNum int
  * @var $showRelatedUpper boolean
  * @var $showAccessoryUpper boolean
+ * @var $dataForCredit array
  */
 $json = json_encode(array (
   'jsref' => $item->getToken(),
@@ -75,56 +76,67 @@ foreach ($photo3dList as $photo3d)
   <div class="font14 pb15"><?php echo $item->getAnnounce() ?></div>
   <div class="clear"></div>
 
-  <?php if ($item->haveToShowAveragePrice()): ?>
-  <div class="mOurGray">
-    Средняя цена в магазинах города*<br><div class='mOurGray mIco'><?php render_partial('product_/templates/_price.php', array('price' => $item->getPriceAverage(), 'noStrong' => true, )) ?> &nbsp;</div>
-  </div>
-  <?php slot('additional_data') ?>
-  <div class="gray pt20 mb10">*по данным мониторинга компании Enter</div>
-  <div class="clear"></div>
-  <?php end_slot() ?>
-  <div class="clear"></div>
-  <div class="clear mOur pt10 <?php if ($item->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
-  <?php endif ?>
 
-  <div class="fl pb15">
-    <div class="pb10 <?php if ($item->hasSaleLabel()) echo 'red'; ?>"><?php render_partial('product_/templates/_price.php', array('price' => formatPrice($item->getPrice()))) ?></div>
-    <?php if ($item->getIsBuyable()): ?>
-    <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
-    <?php endif ?>
-  </div>
+    <div class="bigpriceblock">
+        <?php if ($item->haveToShowAveragePrice()): ?>
+            <div><span class="through font18 gray"><?php render_partial('product_/templates/_price.php', array('price' => $item->getPriceAverage(), 'noStrong' => true, )) ?></span></div>
+        <?php endif; ?>
+        <div class="fl pb15">
+            <div class="pb10 "><strong class="font36"><span class="price"><?php render_partial('product_/templates/_price.php', array('price' => formatPrice($item->getPrice()))) ?></span></strong></div>
+            <?php if ($item->getIsBuyable()): ?>
+                <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+            <?php endif ?>
+            <div class="pb5">
+                <a href=""
+                   data-model='<?php echo $json ?>'
+                   link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
+                   link-input='<?php echo url_for('product_delivery_1click') ?>'
+                   class="orange underline font14 order1click-link-new">Купить быстро в 1 клик</a>
+             </div>
+        </div>
+        <div class="fr ar pb15">
+            <div data-value="{&quot;jsref&quot;:&quot;kushetka-arlekino-2050600005903&quot;,&quot;jstitle&quot;:&quot;\u041a\u0443\u0448\u0435\u0442\u043a\u0430 \u0410\u0440\u043b\u0435\u043a\u0438\u043d\u043e&quot;,&quot;jsprice&quot;:13990,&quot;jsimg&quot;:&quot;http:\/\/fs01.enter.ru\/1\/1\/500\/3e\/62581.jpg&quot;,&quot;jsbimg&quot;:&quot;http:\/\/fs01.enter.ru\/1\/1\/163\/3e\/62581.jpg&quot;,&quot;jsshortcut&quot;:&quot;455-2306&quot;,&quot;jsitemid&quot;:27913,&quot;jsregionid&quot;:&quot;14974&quot;,&quot;jsregionName&quot;:&quot;\u041c\u043e\u0441\u043a\u0432\u0430&quot;}" ref="kushetka-arlekino-2050600005903" class="goodsbarbig mSmallBtns">
 
+                <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
 
-  <div class="fr ar pb15">
-    <div class="goodsbarbig mSmallBtns" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
+                <div class='bCountSet'>
+                    <?php if (!$item->isInCart()): ?>
+                        <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
+                    <?php else: ?>
+                        <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+                    <?php endif ?>
+                    <span><?php echo $item->isInCart() ? $item->getCartQuantity() : 1 ?> шт.</span>
+                </div>
 
-      <div class='bCountSet'>
-        <?php if (!$item->isInCart()): ?>
-        <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
-        <?php else: ?>
-        <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
-        <?php endif ?>
-        <span><?php echo $item->isInCart() ? $item->getCartQuantity() : 1 ?> шт.</span>
-      </div>
-
-      <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
+            </div>
+        </div>
+        <div class="clear"></div>
     </div>
-    <?php if ( $item->getState()->getIsBuyable()): ?>
-      <div class="pb5"><strong>
-        <a href=""
-          data-model='<?php echo $json ?>'
-          link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
-          link-input='<?php echo url_for('product_delivery_1click') ?>'
-          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
-      </strong></div>
-    <?php endif ?>
-  </div>
+
+    <?php if ($dataForCredit['creditIsAllowed']) : ?>
+        <div class="creditbox">
+            <div class="creditboxinner">
+                от <span class="font24"><span class="price">33 990</span> <span class="rubl">p</span></span> в кредит
+                <div class="fr pt5"><label class="bigcheck checked" for=""><b></b>Беру в кредит<input type="radio" value="1" name=""></label></div>
+            </div>
+        </div>
+
+        <input data-model="<?php echo $dataForCredit['creditData'] ?>" class="dc_credit_button" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="button" value="Расчет платежа..." />
+        <script type="text/javascript">dc_getCreditForTheProduct('4427', '<?php echo session_id();?>', 'getValueOfMonthlyPayment', { price : '<?php echo $item->getPrice(); ?>', count : '1', name : '<?php echo $item->getName(); ?>', product_type : 'another', articul : '<?php echo $item->getArticle(); ?>', button_id : '', cart : '/cart' });</script>
+        <script type="text/javascript">
+            //var price = $('.dc_credit_button').val();
+            //$('.creditboxinner .price').html(price)
+            //$('.dc_credit_button').remove();
+        </script>
+    <?php endif; ?>
 
 
-  <div class="line pb15"></div>
 
 
-  <?php if ($item->getIsBuyable()): ?>
+
+
+
+    <?php if ($item->getIsBuyable()): ?>
   <div class="bDeliver2 delivery-info" id="product-id-<?php echo $item->getId() ?>" data-shoplink="<?php echo url_for('productStock', array('product' => $item->getPath())) ?>" data-calclink="<?php echo url_for('product_delivery', array('product' => $item->getId())) ?>">
     <h4>Как получить заказ?</h4>
     <ul>
@@ -141,7 +153,7 @@ foreach ($photo3dList as $photo3d)
     //если стоит шильдик Акция
     $labels = $item->getLabelList();
     $label = isset($labels[0])? $labels[0] : null;
-    if ($label && $label->getId() == ProductLabelEntity::LABEL_ACTION) {
+    if (false && $label && $label->getId() == ProductLabelEntity::LABEL_ACTION) {
     ?>
       <!--AdFox START-->
       <!--enter-->
@@ -160,7 +172,7 @@ foreach ($photo3dList as $photo3d)
         // -->
       </script>
       <!--AdFox END-->
-    <?php } else { ?>
+    <?php } elseif (false) { ?>
       <!--AdFox START-->
       <!--enter-->
       <!--Площадка: Enter.ru / * / *-->

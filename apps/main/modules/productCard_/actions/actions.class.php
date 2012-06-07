@@ -79,6 +79,40 @@ class productCard_Actions extends myActions
     return sfView::NONE;
   }
 
+    /**
+     * Собирает в массив данные, необходимые для плагина online кредитовария
+     *
+     * @param $product
+     * @return array
+     */
+  private function _getDataForCredit($product) {
+      $result = array();
+      if ($product->getPrice() < ProductEntity::MIN_CREDIT_PRICE) {
+          $result['creditIsAllowed'] = false;
+          $result['creditData'] = '';
+          return $result;
+      }
+      $creditCatList = array('furniture', 'electronics', 'jewel');
+      $mainCat = $product->getCategoryList();
+      $mainCat = $mainCat[0];
+      if (in_array($mainCat->getToken(), $creditCatList)) {
+          $productType = $mainCat->getToken();
+      } else {
+          $productType = 'another';
+      }
+      $dataForCredit = array(
+          'price' => $product->getPrice(),
+          'article' => $product->getArticle(),
+          'name' => $product->getName(),
+          'count' => $product->getCartQuantity(),
+          'product_type' => $productType,
+          'session_id' => session_id()
+      );
+      $result['creditIsAllowed'] = true;
+      $result['creditData'] = json_encode($dataForCredit);
+      return $result;
+  }
+
   private function loadProduct($productToken)
   {
     $product = RepositoryManager::getProduct()->getByToken($productToken, true);
@@ -109,6 +143,10 @@ class productCard_Actions extends myActions
         break;
       }
     }
+    $dataForCredit = $this->_getDataForCredit($product);
+
+
+    $this->setVar('dataForCredit', $dataForCredit);
     $this->setVar('showRelatedUpper', $showRelatedUpper);
     $this->setVar('showAccessoryUpper', !$showRelatedUpper);
     $this->setVar('relatedPagesNum', ceil(count($product->getRelatedIdList()) / self::NUM_RELATED_ON_PAGE));

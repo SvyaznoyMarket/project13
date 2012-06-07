@@ -114,7 +114,9 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
-			}).runQueue()
+                .script( 'http://direct-credit.ru/JsHttpRequest.js' )
+                .script( 'http://direct-credit.ru/widget/dc_script_utf.js' )
+                }).runQueue()
 			break
 		case 'product_comment':
 			$LAB.queueWait( function() {
