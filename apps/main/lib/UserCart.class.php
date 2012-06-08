@@ -313,7 +313,7 @@ class UserCart extends BaseUserData
                 'Someone is trying to buy product #'.$prodId.' but we dont have it! Here you are: '."\n"
                 .'session: '.session_id()."\r\n"
                 .'date: '.date('Y-m-d H:i:s')."\r\n"
-                .'cart: '.sfYaml::dump($this->dump())."\r\n"
+                .'cart: '.sfYaml::dump($_SESSION)."\r\n"
               );
               continue;
             }
