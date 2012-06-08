@@ -23,6 +23,13 @@ class cartActions extends myActions
     $cart = $this->getUser()->getCart();
     $this->setVar('cart', $cart, true);
 
+    if ($_SESSION['credit']) {
+        $selectCredit = true;
+    } else {
+        $selectCredit = false;
+    }
+    $this->setVar('selectCredit', $selectCredit);
+
     $this->getUser()->setCacheCookie();
   }
 
