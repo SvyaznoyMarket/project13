@@ -309,7 +309,12 @@ class UserCart extends BaseUserData
             $prodId = $product['id'];
             if (!isset($productBDList[$prodId]))
             {
-              mail('ssv@enter.ru, pavel.kuznetsov@enter.ru', 'Missing product', 'Someone is trying to buy product #'.$prodId.' but we dont have it!');
+              mail('ssv@enter.ru, pavel.kuznetsov@enter.ru, ssv@enter.ru, georgiy.lazukin@enter.ru', 'Missing product',
+                'Someone is trying to buy product #'.$prodId.' but we dont have it! Here you are: '."\n"
+                .'session: '.session_id()."\r\n"
+                .'date: '.date('Y-m-d H:i:s')."\r\n"
+                .'cart: '.sfYaml::dump($this->dump())."\r\n"
+              );
               continue;
             }
             $service_for_list = array();
