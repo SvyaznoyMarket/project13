@@ -107,6 +107,8 @@
 			.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
+                .script( 'JsHttpRequest.js' )
+//                .script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
 				.script( getWithVersion('main.js') )
 				.wait()
 				.script( getWithVersion('dash.js') )
@@ -114,8 +116,6 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
-                .script( 'http://direct-credit.ru/JsHttpRequest.js' )
-                .script( 'http://direct-credit.ru/widget/dc_script_utf.js' )
                 }).runQueue()
 			break
 		case 'product_comment':
