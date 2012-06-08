@@ -1,7 +1,6 @@
 <script src="http://direct-credit.ru/JsHttpRequest.js" type="text/javascript"></script>
 <script src="http://direct-credit.ru/widget/dc_script_utf.js" type="text/javascript"></script>
 
-<?php $selectCredit = true; ?>
 
 <div class="fl width645 font14">
     <?php if ($cart->getTotal() >= ProductEntity::MIN_CREDIT_PRICE ) : ?>

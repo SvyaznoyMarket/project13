@@ -1,9 +1,11 @@
 <?php slot('title', 'Моя корзина') ?>
 
-<?php if ($cart->countFull() > 0): ?>
+<?php
+echo date('U');
+if ($cart->countFull() > 0): ?>
   <?php include_component('cart', 'show') ?>
 
-  <?php render_partial('cart/templates/_cart_make_order_button.php', array('cart' => $cart)) ?>
+  <?php render_partial('cart/templates/_cart_make_order_button.php', array('cart' => $cart, 'selectCredit' => $selectCredit)) ?>
 
   <?php render_partial('cart/templates/_footer.php', array()) ?>
 
