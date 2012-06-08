@@ -454,6 +454,9 @@ class order_Actions extends myActions
       $this->getLogger()->err('{Order} calculate: empty delivery\'s types');
       $this->redirect('cart');
     }
+    if(sfContext::getInstance()->getRequest()->getCookie('scId', false)){
+      $order->setSclubCardNumber(sfContext::getInstance()->getRequest()->getCookie('scId'));
+    }
 
     return new OrderDefaultForm($order, array('user' => $this->getUser(), 'deliveryTypes' => $deliveryTypes));
   }

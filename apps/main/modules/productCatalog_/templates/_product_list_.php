@@ -47,7 +47,7 @@ if(isset($productFilter)){
     $q = $request->getParameter('q');
     $dataAr['q'] = $q;
     if (isset($productType)) {
-      $dataAr['product_type'] = $productType['token'];
+      $dataAr['product_type'] = $productType['id'];
     }
     $infinityUrl = url_for('search_ajax', $dataAr);
   } else {

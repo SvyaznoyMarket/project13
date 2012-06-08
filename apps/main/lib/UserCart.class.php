@@ -290,15 +290,15 @@ class UserCart extends BaseUserData
         }
         $productTable = ProductTable::getInstance();
         $serviceTable = ServiceTable::getInstance();
-        $productBDList = $productTable->getQueryObject()
+        $productBDList = count($productIdList) ? $productTable->getQueryObject()
             ->whereIn('core_id', $productIdList)
-            ->fetchArray();
+            ->fetchArray() : array();
         //myDebug::dump($productBDList);
         foreach ($productBDList as $k => $pr) {
             unset($productBDList[$k]);
             $productBDList[$pr['core_id']] = $pr;
         }
-        $serviceBDList = $serviceTable->getQueryObject()->whereIn('core_id', $serviceIdList)->fetchArray();
+        $serviceBDList = count($serviceIdList) ? $serviceTable->getQueryObject()->whereIn('core_id', $serviceIdList)->fetchArray() : array();
         foreach ($serviceBDList as $k => $pr) {
             unset($serviceBDList[$k]);
             $serviceBDList[$pr['core_id']] = $pr;
@@ -314,7 +314,12 @@ class UserCart extends BaseUserData
             $prodId = $product['id'];
             if (!isset($productBDList[$prodId]))
             {
-              mail('ssv@enter.ru, pavel.kuznetsov@enter.ru', 'Missing product', 'Someone is trying to buy product #'.$prodId.' but we dont have it!');
+              mail('ssv@enter.ru, pavel.kuznetsov@enter.ru, ssv@enter.ru, georgiy.lazukin@enter.ru', 'Missing product',
+                'Someone is trying to buy product #'.$prodId.' but we dont have it! Here you are: '."\n"
+                .'session: '.session_id()."\r\n"
+                .'date: '.date('Y-m-d H:i:s')."\r\n"
+                .'cart: '.sfYaml::dump($_SESSION)."\r\n"
+              );
               continue;
             }
             $service_for_list = array();

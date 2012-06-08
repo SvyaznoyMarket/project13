@@ -67,7 +67,7 @@ class searchComponents extends myComponents
                 }
 
                 # Если ID рутовой категории текущей категории равен ID главной категории
-                if ($productCategory->getRootCategory()->id == $firstProductCategory->id)
+                if (is_object($productCategory) && is_object($productCategory->getRootCategory()) && ($productCategory->getRootCategory()->id == $firstProductCategory->id))
                 {
                     # Отметили индекс как первый
                     $index = 'first';

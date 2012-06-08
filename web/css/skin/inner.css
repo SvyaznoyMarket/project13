@@ -2730,7 +2730,15 @@ DT.bCtg__eOrange{
     height: 41px;
     width: 39px;
 }
-
+.bServiceCard__eLogo_free {
+    top: 0;
+    left: 0;
+    width: 118px;
+    height: 118px;
+    position: absolute;
+    background: url('img/icon_f1_image.png') no-repeat scroll right 0 transparent;
+    border: solid 1px #e6e6e6;
+}
 
 /* newSB */
 

@@ -9,16 +9,12 @@
 
   <div class="bServiceCard mInlineBlock" ref="<?php echo $service['token'] ?>">
     <div class="bServiceCard__eImage">
+      <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>">
       <?php if ($service['photo']): ?>
-      <div class="bServiceCard__eLogo"></div>
-      <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>">
-        <img src="<?php echo $service['photo']; ?>">
-      </a>
-      <?php else: ?>
-      <a href="<?php echo url_for('service_show', array('service' => $service['token'])) ?>">
-        <div class="bServiceCard__eLogo_free"></div>
-      </a>
+          <img src="<?php echo $service['photo']; ?>">
       <?php endif ?>
+          <div class="bServiceCard__eLogo_free"></div>
+      </a>
     </div>
 
     <p class="bServiceCard__eDescription mb5">

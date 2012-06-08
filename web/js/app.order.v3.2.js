@@ -997,9 +997,11 @@ $(document).ready(function() {
     if( typeof( $.mask ) !== 'undefined' ) {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
 		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
-		$("#order_recipient_phonenumbers").val('8')
-		$.mask.definitions['*'] = "[0-9*]"
-		$("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
+        $("#order_recipient_phonenumbers").val('8')
+        $.mask.definitions['*'] = "[0-9*]"
+        $("#order_sclub_card_number").mask("9 999999 999999", { placeholder: "*" } )
+		if( $("#order_sclub_card_number")[0].getAttribute('value') )
+			$("#order_sclub_card_number").val( $("#order_sclub_card_number")[0].getAttribute('value') )
 	}
 	
 	$('#addressField').find('input').placeholder()
