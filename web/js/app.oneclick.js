@@ -193,8 +193,10 @@ $(document).ready(function() {
 				}
 				
 				$.post( inputUrl, postData, function(data) {
-					if( !data.success )
+					if( !data.success ) {
+						self.noDelivery(true)
 						return false
+					}
 					Deliveries = data.data
 					var le = 0
 					for(var key in Deliveries )

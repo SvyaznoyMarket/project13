@@ -139,6 +139,8 @@ class serviceActions extends myActions
       $this->service = ServiceTable::getInstance()->createBaseQuery($params)->where('token = ?', $request['service'])->fetchOne();
     }
 
+    $this->forward404If(!$this->service);
+
     $this->getResponse()->setTitle('F1 - ' . $this->service->name . ' – Enter.ru');
 
   }
