@@ -35,7 +35,7 @@ $view = (isset($view) && $view === 'add') ? 'add' : 'default';
           array('product' => $item->getId(), 'quantity' => $quantity),
           array('class' => 'link1 event-click cart cart-add', 'data-event' => 'content.update')
       );
-      echo str_replace('_credit', '', $link); ?>
+      echo $link; ?>
     <?php endif ?>
   <?php endif; ?>
 <?php endif; ?>

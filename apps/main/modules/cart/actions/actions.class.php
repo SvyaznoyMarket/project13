@@ -100,8 +100,12 @@ class cartActions extends myActions
     }
 
     $this->getUser()->setCacheCookie();
-    if ($result['value']) {
-        $_SESSION['credit'] = $request['credit'];
+    if (isset($result['value'])) {
+        if ($request['credit']) {
+            $_SESSION['credit'] = true;
+        } else {
+            $_SESSION['credit'] = false;
+        }
     }
 
     if ($request->isXmlHttpRequest()) {
@@ -236,7 +240,13 @@ class cartActions extends myActions
     }
 
     $this->getUser()->setCacheCookie();
-    $_SESSION['credit'] = $request['credit'];
+    if (isset($request['credit'])) {
+      if ($request['credit']) {
+          $_SESSION['credit'] = true;
+      } else {
+          $_SESSION['credit'] = false;
+      }
+    }
 
       #myDebug::dump( $this->getUser()->getCart()->getServices() );
 
