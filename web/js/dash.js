@@ -319,6 +319,11 @@ $(document).ready(function(){
 					ajurl = jsond.url
 				}
 				button.addClass('active').attr('href', carturl)
+				
+				//credit case
+				if( 'creditBox' in window )
+					if( creditBox.getState() )
+						ajurl += '/_credit/1'
 
 				$.getJSON( ajurl, function( data ) {
 					if ( data.success && ltbx ) {
