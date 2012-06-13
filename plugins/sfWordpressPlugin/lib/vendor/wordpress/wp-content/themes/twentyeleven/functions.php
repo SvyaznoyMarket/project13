@@ -611,3 +611,443 @@ function getSidebarMenu($currentPage = Null)
 }
 
 remove_filter('the_content', 'wpautop');
+
+
+/*
+ ********************************************************
+ */
+
+add_action( 'init', 'create_program' );
+function create_program() {
+    $labels = array(
+        'name' => _x('Кредитные программы', 'post type general name'),
+        'singular_name' => _x('Кредитная программа', 'post type singular name'),
+        'add_new' => _x('Добавить новую кредитную программу', 'Кредитную программу'),
+        'add_new_item' => wp__('Добавление новой кредитной программы'),
+        'edit_item' => wp__('Изменить кредитную программу'),
+        'new_item' => wp__('Новая кредитная программа'),
+        'view_item' => wp__('Посмотреть кредитную программу'),
+        'search_items' => wp__('Искать кредитные программы'),
+        'not_found' =>  wp__('Кредитные программы не найдены'),
+        'not_found_in_trash' => wp__('Кредитные программы не найдены в корзине'),
+        'parent_item_colon' => ''
+    );
+
+    $supports = array(
+        'title',
+        'editor',
+        #'custom-fields',
+        #'revisions',
+        #'excerpt',
+        'post-thumbnails',
+    );
+    register_post_type( 'program',
+        array(
+            'labels' => $labels,
+            'public' => true,
+            'supports' => $supports,
+            'show_ui' => true,
+        )
+    );
+
+    /*
+    $labels = array(
+        'name' => _x( 'Категории', 'taxonomy general name' ),
+        'singular_name' => _x( 'Категория', 'taxonomy singular name' ),
+        'search_items' =>  wp__( 'Искать категории' ),
+        'all_items' => wp__( 'Все категории' ),
+        'parent_item' => wp__( 'Родительская категория' ),
+        'parent_item_colon' => wp__( 'Родительская категория:' ),
+        'edit_item' => wp__( 'Изменить категорию' ),
+        'update_item' => wp__( 'Обновить категорию' ),
+        'add_new_item' => wp__( 'Добавить новую категорию' ),
+        'new_item_name' => wp__( 'Название новой категории' ),
+        'menu_name' => wp__( 'Категория' ),
+    );
+
+    register_taxonomy('category', 'program', array(
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'query_var' => true,
+        'rewrite' => array( 'slug' => 'category' ),
+    ));*/
+
+}
+
+
+/*
+ *************** Adding new taxonomy***********************
+ */
+add_action( 'init', 'create_bank_taxonomy' );
+
+function create_bank_taxonomy() {
+    $labels = array(
+        'name' => _x( 'Банки', 'taxonomy general name' ),
+        'singular_name' => _x( 'Банк', 'taxonomy singular name' ),
+        'search_items' =>  wp__( 'Искать банки' ),
+        'all_items' => wp__( 'Все банки' ),
+        #'parent_item' => wp__( 'Родительская категория' ),
+        #'parent_item_colon' => wp__( 'Родительская категория:' ),
+        'edit_item' => wp__( 'Изменить банк' ),
+        'update_item' => wp__( 'Обновить банк' ),
+        'add_new_item' => wp__( 'Добавить новый банк' ),
+        'new_item_name' => wp__( 'Название нового банка' ),
+        'menu_name' => wp__( 'Банк' ),
+    );
+
+    #if (!taxonomy_exists('category')) {
+        register_taxonomy( 'bank', 'program',
+            array(
+                'hierarchical' => false,
+                'labels' => $labels,
+                'query_var' => 'bank',
+                'rewrite' => array( 'slug' => 'bank' ),
+                'show_ui' => true
+            )
+        );
+    #}
+}
+
+function add_bank_box() {
+    remove_meta_box('tagsdiv-bank','program','core');
+    add_meta_box('bank_box_ID', wp__('Банк'), 'bank_taxonomy_style_function', 'program', 'side', 'core');
+}
+
+function add_bank_menus() {
+
+    if ( ! is_admin() )
+        return;
+
+    add_action('admin_menu', 'add_bank_box');
+    add_action('save_post', 'save_bank_taxonomy_data');
+}
+
+add_bank_menus();
+
+function bank_taxonomy_style_function($program) {
+
+    echo '<input type="hidden" name="taxonomy_noncename" id="taxonomy_noncename" value="' .
+        wp_create_nonce( 'taxonomy_bank' ) . '" />';
+
+
+    // Get all bank taxonomy terms
+    $bankList = get_terms('bank', 'hide_empty=0');
+
+    ?>
+<select name='post_bank' id='post_bank'>
+    <!-- Display bank list as options -->
+    <?php
+    $names = wp_get_object_terms($program->ID, 'bank');
+    ?>
+    <option class='bank-option' value=''
+        <?php if (!count($names)) echo "selected";?>>Отсутствует</option>
+    <?php
+    foreach ($bankList as $bank) {
+        if (!is_wp_error($names) && !empty($names) && !strcmp($bank->slug, $names[0]->slug))
+            echo "<option class='theme-option' value='" . $bank->slug . "' selected>" . $bank->name . "</option>\n";
+        else
+            echo "<option class='theme-option' value='" . $bank->slug . "'>" . $bank->name . "</option>\n";
+    }
+    ?>
+</select>
+<?php
+}
+
+function save_bank_taxonomy_data($program_id) {
+    // verify this came from our screen and with proper authorization.
+
+    if ( !wp_verify_nonce( $_POST['taxonomy_noncename'], 'taxonomy_bank' )) {
+        return $program_id;
+    }
+
+    // verify if this is an auto save routine. If it is our form has not been submitted, so we dont want to do anything
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
+        return $program_id;
+
+
+    // Check permissions
+    /*if ( 'page' == $_POST['post_type'] ) {
+        if ( !current_user_can( 'edit_page', $post_id ) )
+            return $post_id;
+    } else {
+        if ( !current_user_can( 'edit_post', $post_id ) )
+            return $post_id;
+    }*/
+
+    // OK, we're authenticated: we need to find and save the data
+    $program = get_page($program_id);
+
+
+    if (($program->post_type == 'program')) {
+        $bank = $_POST['post_bank'];
+        wp_set_object_terms( $program_id, $bank, 'bank' );
+    }
+    return $bank;
+
+}
+
+// Add to admin_init function
+add_filter("manage_edit-bank_columns", 'bank_columns');
+
+function bank_columns($bank_columns) {
+    $new_columns = array(
+        'cb' => '<input type="checkbox" />',
+        'name' => wp__('Название'),
+        'short_description' => wp__('Условия кредитования'),
+        'logo' => wp__('Логотип'),
+        'priority' => wp__('Приоритет')
+		#'description' => wp__('Текст пункта выпадающего списка'),
+        #'slug' => wp__('Slug'),
+        #'posts' => wp__('Posts')
+    );
+    return $new_columns;
+}
+
+add_filter("manage_bank_custom_column", 'manage_bank_columns', 10, 3);
+
+function manage_bank_columns($out, $column_name, $term_id) {
+    $term = get_term($term_id, 'bank');
+    switch ($column_name) {
+        case 'logo':
+            $logo = get_tax_meta($term_id,'image_field_id');
+            $out .= "<img src=\"{$logo['src']}\" />";
+            break;
+        case 'short_description':
+            $out .= mb_substr($term->description, 0, 100);
+            if(mb_strlen($term->description) > 100) {
+                $out .= '...';
+            }
+            break;
+        case 'priority':
+            $out .= $term->priority;
+        default:
+            break;
+    }
+    return $out;
+}
+
+/*
+ ******************Category taxonomy*****************
+ */
+
+add_action( 'init', 'create_category_taxonomy' );
+
+function create_category_taxonomy() {
+    $labels = array(
+        'name' => _x( 'Категории', 'taxonomy general name' ),
+        'singular_name' => _x( 'Категория', 'taxonomy singular name' ),
+        'search_items' =>  wp__( 'Искать категории' ),
+        'all_items' => wp__( 'Все категории' ),
+        #'parent_item' => wp__( 'Родительская категория' ),
+        #'parent_item_colon' => wp__( 'Родительская категория:' ),
+        'edit_item' => wp__( 'Изменить категорию' ),
+        'update_item' => wp__( 'Обновить категорию' ),
+        'add_new_item' => wp__( 'Добавить новую категорию' ),
+        'new_item_name' => wp__( 'Название новой категории' ),
+        'menu_name' => wp__( 'Категория' ),
+    );
+
+    register_taxonomy( 'category', 'program',
+        array(
+            'hierarchical' => true,
+            'labels' => $labels,
+            'query_var' => 'category',
+            'rewrite' => array( 'slug' => 'category' ),
+            'show_ui' => true
+        )
+    );
+}
+
+// Add to admin_init function
+add_filter("manage_edit-category_columns", 'category_columns');
+
+function category_columns($category_columns) {
+    $new_columns = array(
+        'cb' => '<input type="checkbox" />',
+        'name' => wp__('Название'),
+        #'logo' => '',
+        'description' => wp__('Текст пункта выпадающего списка'),
+        'priority' => wp__('Приоритет'),
+        #'slug' => wp__('Slug'),
+        #'posts' => wp__('Posts')
+    );
+    return $new_columns;
+}
+
+add_filter("manage_category_custom_column", 'manage_category_columns', 10, 3);
+
+function manage_category_columns($out, $column_name, $term_id) {
+    $term = get_term($term_id, 'category');
+    switch ($column_name) {
+        case 'priority':
+            $out .= $term->priority;
+            break;
+        default:
+            break;
+    }
+    return $out;
+}
+
+
+/*
+ ******************Meta tax*******************
+ */
+
+require_once( ABSPATH . '/wp-includes/Tax-meta-class/Tax-meta-class.php' );
+
+$bankMetaBoxConfig = array(
+    'id' => 'bank_logo_meta_box',                         // meta box id, unique per meta box
+    'title' => 'Логотип',                      // meta box title
+    'pages' => array('bank'),                    // taxonomy name, accept categories, post_tag and custom taxonomies
+    'context' => 'normal',                           // where the meta box appear: normal (default), advanced, side; optional
+    'fields' => array(),                             // list of meta fields (can be added by field arrays)
+    'local_images' => false,                         // Use local or hosted images (meta box images for add/remove)
+    'use_with_theme' => false                        //change path if used with theme set to true, false for a plugin or anything else for a custom path(default false).
+);
+
+$bank_logo_meta_box = new Tax_Meta_Class($bankMetaBoxConfig);
+$bank_logo_meta_box->addImage('image_field_id',array('name'=> 'Логотип'));
+$bank_logo_meta_box->Finish();
+
+$categoryMetaBoxConfig = array(
+    'id' => 'category_meta_box',
+    'title' => 'Ссылка',
+    'pages' => array('category'),
+    'context' => 'normal'
+);
+
+$bank_logo_meta_box = new Tax_Meta_Class($categoryMetaBoxConfig);
+$bank_logo_meta_box->addText('category_url',array('name'=> 'Ссылка на раздел'));
+$bank_logo_meta_box->Finish();
+
+
+/*
+ ******************Credit programs widget*******
+ */
+function credit_program_widget()
+{
+    ob_start();
+
+    global $wpdb;
+
+    $sql = "
+        select tt.term_taxonomy_id as taxonomy_id, tt.description as taxonomy_description, p.post_content as program_description, tb.name as bank_name, tb.term_id as bank_id, t.name as category_name
+        from wp_term_taxonomy tt
+        inner join wp_terms t on t.term_id = tt.term_id
+        left join wp_term_relationships tr on tr.term_taxonomy_id = tt.term_taxonomy_id
+        left join wp_posts p on p.ID = tr.object_id and p.post_type = 'program' and p.post_status = 'publish'
+        inner join wp_term_taxonomy ttb on ttb.taxonomy = 'bank'
+        inner join wp_term_relationships trb on ttb.term_taxonomy_id = trb.term_taxonomy_id and trb.object_id = p.ID
+        inner join wp_terms tb on tb.term_id = ttb.term_id
+        where tt.taxonomy = 'category'
+        order by tt.priority, ttb.priority;
+    ";
+    $creditProgramList = $wpdb->get_results($sql, ARRAY_A);
+
+    $categoryList = array();
+    foreach($creditProgramList as $program)
+    {
+        if(!isset($categoryList[$program['taxonomy_id']]))
+        {
+            $categoryList[$program['taxonomy_id']] = array(
+                'taxonomy_description' => $program['taxonomy_description'],
+                'category_name' => $program['category_name'],
+                'category_url' => get_category_url($program['taxonomy_id']),
+                'program_list' => array(
+                    array(
+                        'program_description' => $program['program_description'],
+                        'bank_name' => $program['bank_name'],
+                        'bank_image' => get_bank_image($program['bank_id'])
+                    )
+                )
+            );
+        }
+        else
+        {
+            $categoryList[$program['taxonomy_id']]['program_list'][] = array(
+                'program_description' => $program['program_description'],
+                'bank_name' => $program['bank_name'],
+                'bank_image' => get_bank_image($program['bank_id']),
+            );
+        }
+    }
+
+    wp_enqueue_script( 'credit_program_widget', get_home_url() . '/wp-includes/js/jquery/jquery.js', null, null, true );
+?>
+    <select name="category_list" id="category_list">
+        <option value="">Что вы будете брать в кредит</option>
+        <?php foreach($categoryList as $categoryId => $categoryData) { ?>
+            <option value="<?php echo $categoryId?>"><?php echo $categoryData['taxonomy_description']?></option>
+        <?php } ?>
+    </select>
+    <div id="category_program_list"></div>
+
+    <script type="text/javascript">
+            var categoryList = <?php echo json_encode($categoryList)?>;
+
+            var categorySelector = document.getElementById('category_list');
+            categorySelector.onchange = function() {
+                var taxonomyId = categorySelector.value;
+                var programList = categoryList[taxonomyId]['program_list'];
+                var programListContent = '';
+                for(var i = 0; i < programList.length; i++)
+                {
+                    programListContent += '<dl><dt>'
+                    programListContent += programList[i]['bank_image'] + '</dt>'
+                    programListContent +=  '<dd><div class="line"></div><h3>' + programList[i]['bank_name'] + '</h3> <br />' + programList[i]['program_description'] + '</dd>';
+                    programListContent += '</dl>';
+                }
+
+                programListContent += '<p class="ac mb25"><a class="bBigOrangeButton" href="' + categoryList[taxonomyId]['category_url'] + '">Перейти в раздел «' + categoryList[taxonomyId]['category_name'] + '»</a></p>';
+
+                document.getElementById('category_program_list').innerHTML = programListContent;
+            };
+    </script>
+    <?php
+    $content = ob_get_contents();
+    ob_end_clean();
+
+    return $content;
+}
+
+function get_bank_image($bankId)
+{
+    $imgSrc = get_tax_meta($bankId,'image_field_id');
+
+    return '<img src="' . $imgSrc['src'] . '" />';
+}
+
+function get_category_url($categoryId)
+{
+    $categoryUrl = get_tax_meta($categoryId, 'category_url');
+
+    return $categoryUrl;
+}
+
+function bank_description_list_widget()
+{
+    ob_start();
+
+    global $wpdb;
+
+    $sql = "
+        select t.name as bank_name, tt.description as bank_description
+        from wp_term_taxonomy tt
+        inner join wp_terms t on t.term_id = tt.term_id
+        where tt.taxonomy = 'bank';
+    ";
+    $bankDescriptionList = $wpdb->get_results($sql, ARRAY_A);
+?>
+<ul class='bCreditLine2' style="display: none;">
+    <?php foreach($bankDescriptionList as $bankDescriptionData) { ?>
+        <li><i><?php echo $bankDescriptionData['bank_name']?>.</i> <?php echo $bankDescriptionData['bank_description']?></li>
+    <?php } ?>
+    <br />* обязательно наличие регистрации в регионе оформления кредита.
+</ul>
+<?php
+    $content = ob_get_contents();
+    ob_end_clean();
+
+    return $content;
+}

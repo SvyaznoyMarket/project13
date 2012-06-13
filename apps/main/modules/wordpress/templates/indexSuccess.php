@@ -3,4 +3,4 @@
     slot('title', $pageTitle);
 ?>
 
-<?=$sf_data->getRaw('wpContent');?>
+<?php echo $sf_data->getRaw('wpContent');?>

@@ -296,7 +296,7 @@ endif; ?>
 <br class="clear" />
 </form>
 
-<?php if ( 'category' == $taxonomy ) : ?>
+<?php /* if ( 'category' == $taxonomy ) : ?>
 <div class="form-wrap">
 <p><?php printf(wp__('<strong>Note:</strong><br />Deleting a category does not delete the posts in that category. Instead, posts that were only assigned to the deleted category are set to the category <strong>%s</strong>.'), apply_filters('the_category', get_cat_name(get_option('default_category')))) ?></p>
 <?php if ( current_user_can( 'import' ) ) : ?>
@@ -307,7 +307,7 @@ endif; ?>
 <div class="form-wrap">
 <p><?php printf(wp__('Tags can be selectively converted to categories using the <a href="%s">tag to category converter</a>'), 'import.php') ;?>.</p>
 </div>
-<?php endif;
+<?php endif; */
 do_action('after-' . $taxonomy . '-table', $taxonomy);
 ?>
 
@@ -319,7 +319,7 @@ do_action('after-' . $taxonomy . '-table', $taxonomy);
 
 <?php
 
-if ( !is_null( $tax->labels->popular_items ) ) {
+if ( !is_null( Null /*$tax->labels->popular_items*/ ) ) {
 	if ( current_user_can( $tax->cap->edit_terms ) )
 		$tag_cloud = wp_tag_cloud( array( 'taxonomy' => $taxonomy, 'echo' => false, 'link' => 'edit' ) );
 	else
@@ -359,29 +359,55 @@ if ( current_user_can($tax->cap->edit_terms) ) {
 <div class="form-field form-required">
 	<label for="tag-name"><?php _ex('Name', 'Taxonomy Name'); ?></label>
 	<input name="tag-name" id="tag-name" type="text" value="" size="40" aria-required="true" />
-	<p><?php _e('The name is how it appears on your site.'); ?></p>
+	<?php /*
+    <p><?php _e('The name is how it appears on your site.'); ?></p>
+    */ ?>
 </div>
 <?php if ( ! global_terms_enabled() ) : ?>
+    <?php /*
 <div class="form-field">
 	<label for="tag-slug"><?php _ex('Slug', 'Taxonomy Slug'); ?></label>
 	<input name="slug" id="tag-slug" type="text" value="" size="40" />
 	<p><?php _e('The &#8220;slug&#8221; is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens.'); ?></p>
 </div>
+ */ ?>
 <?php endif; // global_terms_enabled() ?>
-<?php if ( is_taxonomy_hierarchical($taxonomy) ) : ?>
-<div class="form-field">
-	<label for="parent"><?php _ex('Parent', 'Taxonomy Parent'); ?></label>
-	<?php wp_dropdown_categories(array('hide_empty' => 0, 'hide_if_empty' => false, 'taxonomy' => $taxonomy, 'name' => 'parent', 'orderby' => 'name', 'hierarchical' => true, 'show_option_none' => wp__('None'))); ?>
-	<?php if ( 'category' == $taxonomy ) : // @todo: Generic text for hierarchical taxonomies ?>
-		<p><?php _e('Categories, unlike tags, can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional.'); ?></p>
-	<?php endif; ?>
+
+<?php if($taxonomy == 'bank') { ?>
+    <div class="form-field">
+        <label for="tag-description">Условия кредитования</label>
+        <textarea name="description" id="tag-description" rows="5" cols="40"></textarea>
+    </div>
+<?php } elseif($taxonomy == 'category') { ?>
+    <div class="form-field">
+        <label for="tag-description">Текст пункта выпадающего списка</label>
+        <textarea name="description" id="tag-description" rows="5" cols="40"></textarea>
+    </div>
+<?php } elseif(is_taxonomy_hierarchical($taxonomy)) { ?>
+    <div class="form-field">
+        <label for="parent"><?php _ex('Parent', 'Taxonomy Parent'); ?></label>
+        <?php wp_dropdown_categories(array('hide_empty' => 0, 'hide_if_empty' => false, 'taxonomy' => $taxonomy, 'name' => 'parent', 'orderby' => 'name', 'hierarchical' => true, 'show_option_none' => wp__('None'))); ?>
+        <?php if ( 'category' == $taxonomy ) : // @todo: Generic text for hierarchical taxonomies ?>
+        <p><?php _e('Categories, unlike tags, can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band. Totally optional.'); ?></p>
+        <?php endif; ?>
+    </div>
+<?php } ?>
+
+<?php if(in_array($taxonomy, array('category', 'bank'))) { ?>
+    <label for="tag-priority"><?php _ex('Приоритет показа', 'Приоритет показа'); ?></label>
+    <input name="priority" id="tag-priority" type="text" value="" size="40" />
+    <p><?php _e('Определяет порядок вывода терма'); ?></p>
+<?php } ?>
+
+<?php /*
+  <div class="form-field">
+        <label for="tag-description"><?php _ex('Description', 'Taxonomy Description'); ?></label>
+        <textarea name="description" id="tag-description" rows="5" cols="40"></textarea>
+        <p><?php _e('The description is not prominent by default; however, some themes may show it.'); ?></p>
 </div>
-<?php endif; // is_taxonomy_hierarchical() ?>
-<div class="form-field">
-	<label for="tag-description"><?php _ex('Description', 'Taxonomy Description'); ?></label>
-	<textarea name="description" id="tag-description" rows="5" cols="40"></textarea>
-	<p><?php _e('The description is not prominent by default; however, some themes may show it.'); ?></p>
-</div>
+  */ ?>
+
+
 
 <?php
 if ( ! is_taxonomy_hierarchical($taxonomy) )

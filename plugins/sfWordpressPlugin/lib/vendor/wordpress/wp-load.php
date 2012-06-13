@@ -44,6 +44,8 @@ if ( file_exists( ABSPATH . 'wp-config.php') ) {
 		$path = 'wp-admin/';
 
 	require_once( ABSPATH . '/wp-includes/load.php' );
+
+
 	require_once( ABSPATH . '/wp-includes/version.php' );
 	define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
 	wp_check_php_mysql_versions();

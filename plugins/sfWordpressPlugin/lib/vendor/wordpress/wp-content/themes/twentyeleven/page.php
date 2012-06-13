@@ -16,11 +16,9 @@ get_header(); ?>
 <!-- Column685 -->
 <div class="float100">
     <div class="column685">
-
         <?php while ( have_posts() ) : the_post(); ?>
         <?php get_template_part( 'content', 'page' ); ?>
         <?php endwhile; // end of the loop. ?>
-
     </div>
 </div>
 <!-- /Column685-->

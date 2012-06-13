@@ -1986,7 +1986,7 @@ function wp_insert_term( $term, $taxonomy, $args = array() ) {
 	if ( '' == trim($term) )
 		return new WP_Error('empty_term_name', wp__('A name is required for this term'));
 
-	$defaults = array( 'alias_of' => '', 'description' => '', 'parent' => 0, 'slug' => '');
+	$defaults = array( 'alias_of' => '', 'description' => '', 'parent' => 0, 'slug' => '', 'priority' => 0);
 	$args = wp_parse_args($args, $defaults);
 	$args['name'] = $term;
 	$args['taxonomy'] = $taxonomy;
@@ -1996,6 +1996,7 @@ function wp_insert_term( $term, $taxonomy, $args = array() ) {
 	// expected_slashed ($name)
 	$name = stripslashes($name);
 	$description = stripslashes($description);
+	$priority = stripslashes($priority);
 
 	if ( empty($slug) )
 		$slug = sanitize_title($name);
@@ -2060,7 +2061,7 @@ function wp_insert_term( $term, $taxonomy, $args = array() ) {
 	if ( !empty($tt_id) )
 		return array('term_id' => $term_id, 'term_taxonomy_id' => $tt_id);
 
-	$wpdb->insert( $wpdb->term_taxonomy, compact( 'term_id', 'taxonomy', 'description', 'parent') + array( 'count' => 0 ) );
+	$wpdb->insert( $wpdb->term_taxonomy, compact( 'term_id', 'taxonomy', 'description', 'parent', 'priority') + array( 'count' => 0 ) );
 	$tt_id = (int) $wpdb->insert_id;
 
 	do_action("create_term", $term_id, $tt_id, $taxonomy);
@@ -2295,7 +2296,7 @@ function wp_update_term( $term_id, $taxonomy, $args = array() ) {
 	// Merge old and new args with new args overwriting old ones.
 	$args = array_merge($term, $args);
 
-	$defaults = array( 'alias_of' => '', 'description' => '', 'parent' => 0, 'slug' => '');
+	$defaults = array( 'alias_of' => '', 'description' => '', 'parent' => 0, 'slug' => '', 'priority' => 0);
 	$args = wp_parse_args($args, $defaults);
 	$args = sanitize_term($args, $taxonomy, 'db');
 	extract($args, EXTR_SKIP);
@@ -2350,7 +2351,10 @@ function wp_update_term( $term_id, $taxonomy, $args = array() ) {
 
 	$tt_id = $wpdb->get_var( $wpdb->prepare( "SELECT tt.term_taxonomy_id FROM $wpdb->term_taxonomy AS tt INNER JOIN $wpdb->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id = %d", $taxonomy, $term_id) );
 	do_action( 'edit_term_taxonomy', $tt_id, $taxonomy );
-	$wpdb->update( $wpdb->term_taxonomy, compact( 'term_id', 'taxonomy', 'description', 'parent' ), array( 'term_taxonomy_id' => $tt_id ) );
+
+    $priority = stripslashes($priority);
+
+	$wpdb->update( $wpdb->term_taxonomy, compact( 'term_id', 'taxonomy', 'description', 'parent', 'priority' ), array( 'term_taxonomy_id' => $tt_id ) );
 	do_action( 'edited_term_taxonomy', $tt_id, $taxonomy );
 
 	do_action("edit_term", $term_id, $tt_id, $taxonomy);

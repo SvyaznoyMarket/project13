@@ -16,10 +16,19 @@
     </header><!-- .entry-header -->
 
 	<div class="entry-content">
-		<?php the_content(); ?>
+        <?php
+            ob_start();
+            the_content();
+            $content = ob_get_contents();
+            ob_end_clean();
+            $content = str_replace('%credit_program_widget%', credit_program_widget(), $content);
+            $content = str_replace('%bank_description_list_widget%', bank_description_list_widget(), $content);
+        ?>
+
+		<?php echo $content; ?>
 		<?php wp_link_pages( array( 'before' => '<div class="page-link"><span>' . wp__( 'Pages:', 'twentyeleven' ) . '</span>', 'after' => '</div>' ) ); ?>
 	</div><!-- .entry-content -->
 	<footer class="entry-meta">
-		<?php edit_post_link( wp__( 'Edit', 'twentyeleven' ), '<span class="edit-link">', '</span>' ); ?>
+		<?php /*edit_post_link( wp__( 'Edit', 'twentyeleven' ), '<span class="edit-link">', '</span>' );*/ ?>
 	</footer><!-- .entry-meta -->
 </article><!-- #post-<?php the_ID(); ?> -->

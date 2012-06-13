@@ -375,7 +375,7 @@ function custom_permalinks_term_options($object) {
     								custom_permalinks_original_category_link($object->term_id) );
     }
     	
-	custom_permalinks_form($permalink, $originalPermalink);
+	#custom_permalinks_form($permalink, $originalPermalink);
 
 	// Move the save button to above this form
 	wp_enqueue_script('jquery');
@@ -417,7 +417,7 @@ function custom_permalinks_form($permalink, $original="", $renderContainers=true
     ?>
 
 			<?php echo get_home_url() ?>/
-			<input <?=$disabled?'disabled':Null?> type="text" class="text" value="<?php echo htmlspecialchars($permalink ? urldecode($permalink) : urldecode($original)) ?>" 
+			<input <?php echo $disabled?'disabled':Null?> type="text" class="text" value="<?php echo htmlspecialchars($permalink ? urldecode($permalink) : urldecode($original)) ?>"
 				style="width: 250px; <?php if ( !$permalink ) echo 'color: #ddd;' ?>"
 			 	onfocus="if ( this.style.color = '#ddd' ) { this.style.color = '#000'; }" 
 				onblur="document.getElementById('custom_permalink').value = this.value; if ( this.value == '' || this.value == '<?php echo htmlspecialchars(urldecode($original)) ?>' ) { this.value = '<?php echo htmlspecialchars(urldecode($original)) ?>'; this.style.color = '#ddd'; }"/>

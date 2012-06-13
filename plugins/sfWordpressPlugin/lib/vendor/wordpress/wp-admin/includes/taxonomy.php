@@ -89,7 +89,7 @@ function wp_create_categories($categories, $post_id = '') {
  * @return int|object The ID number of the new or updated Category on success.  Zero or a WP_Error on failure, depending on param $wp_error.
  */
 function wp_insert_category($catarr, $wp_error = false) {
-	$cat_defaults = array('cat_ID' => 0, 'taxonomy' => 'category', 'cat_name' => '', 'category_description' => '', 'category_nicename' => '', 'category_parent' => '');
+	$cat_defaults = array('cat_ID' => 0, 'taxonomy' => 'category', 'cat_name' => '', 'category_description' => '', 'category_nicename' => '', 'category_parent' => '', 'priority' => 0);
 	$catarr = wp_parse_args($catarr, $cat_defaults);
 	extract($catarr, EXTR_SKIP);
 
@@ -110,6 +110,7 @@ function wp_insert_category($catarr, $wp_error = false) {
 
 	$name = $cat_name;
 	$description = $category_description;
+	$priority = $priority;
 	$slug = $category_nicename;
 	$parent = $category_parent;
 
@@ -120,7 +121,7 @@ function wp_insert_category($catarr, $wp_error = false) {
 	if ( empty($parent) || !category_exists( $parent ) || ($cat_ID && cat_is_ancestor_of($cat_ID, $parent) ) )
 		$parent = 0;
 
-	$args = compact('name', 'slug', 'parent', 'description');
+	$args = compact('name', 'slug', 'parent', 'description', 'priority');
 
 	if ( $update )
 		$cat_ID = wp_update_term($cat_ID, $taxonomy, $args);
