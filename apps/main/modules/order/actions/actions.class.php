@@ -63,7 +63,7 @@ class orderActions extends myActions
     $this->order = new Order();
     $this->order->User = $this->getUser()->getGuardUser();
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
-    $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
+    //$this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
     $this->order->shop_id = $this->shop ? $this->shop->id : null;
     $this->order->delivery_type_id = 1;
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product) * $quantity; //нужна для правильного отбражения формы заказа

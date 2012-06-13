@@ -5,7 +5,7 @@ alpha:
 
 alpha_dev:
   .settings:
-    error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
+    error_reporting:        <?php echo (E_ALL & ~E_STRICT)."\n" ?>
     web_debug:              true
     cache:                  false
     no_script_name:         false
@@ -24,7 +24,7 @@ live:
 
 dev:
   .settings:
-    error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
+    error_reporting:        <?php echo (E_ALL & ~E_STRICT)."\n" ?>
     web_debug:              true
     cache:                  false
     no_script_name:         false
