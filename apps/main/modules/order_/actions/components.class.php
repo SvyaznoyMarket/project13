@@ -58,15 +58,19 @@ class order_Components extends myComponents
   {
     $choices = array();
 
-    foreach (PaymentMethodTable::getInstance()->getList() as $paymentMethod)
+    //$list = PaymentMethodTable::getInstance()->getList();
+    $list = RepositoryManager::getPaymentMethod()->getList();
+//      var_dump($list);
+//      die();
+    foreach ($list as $paymentMethod)
     {
-      if (!$paymentMethod->is_active) continue;
-
-      $choices[$paymentMethod->id] = array(
-        'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$paymentMethod->id,
-        'label'       => $paymentMethod->name,
-        'token'       => $paymentMethod->token,
-        'description' => $paymentMethod->description,
+      $choices[$paymentMethod->getId()] = array(
+        'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$paymentMethod->getId(),
+        'label'       => $paymentMethod->getName(),
+        'token'       => $paymentMethod->getId(),
+        'description' => $paymentMethod->getDescription(),
+        'is_credit' => $paymentMethod->getIsCredit(),
+        'credit_bank' => $paymentMethod->getCreditBank(),
       );
     }
 

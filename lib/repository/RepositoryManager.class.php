@@ -35,6 +35,17 @@ class RepositoryManager
     return $repo;
   }
 
+    /**
+     * @static
+     * @return PaymentMethodRepository
+     */
+    public static function getPaymentMethod()
+    {
+        static $repo;
+        if (!$repo) $repo = new PaymentMethodRepository();
+        return $repo;
+    }
+
   /**
    * @static
    * @return ProductLabelRepository

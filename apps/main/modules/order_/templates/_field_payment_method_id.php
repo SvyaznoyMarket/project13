@@ -11,6 +11,18 @@
       </label>
       <i><?php echo $v['description'] ?></i>
     </div>
+    <?php if ($v['is_credit']) { ?>
+          <div class="bSelect mFastInpSmall">
+              <span >самовывоз</span>
+              <div class="bSelect__eArrow"></div>
+              <div class="bSelect__eDropmenu" style="display: none;">
+                  <?php foreach ($v['credit_bank'] as $bank) { ?>
+                      <div ><span data-bind="text: name"><?php echo $bank->getName();?></span></div>
+                  <?php } ?>
+              </div>
+          </div>
+    <?php } ?>
+
   <?php endforeach ?>
   </dd>
 </dl>

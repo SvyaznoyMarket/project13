@@ -331,8 +331,11 @@ class order_Actions extends myActions
     {
       $order = $orders[0];
 
-      $paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
-      if ('online' == $paymentMethod->token)
+
+      //$paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
+      $paymentMethod = RepositoryManager::getPaymentMethod()->getById($order['payment_id']);
+
+      if ($paymentMethod->isOnline())
       {
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $provider->getForm($order);
