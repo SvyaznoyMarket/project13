@@ -114,20 +114,15 @@ foreach ($photo3dList as $photo3d)
     </div>
 
     <?php if ($dataForCredit['creditIsAllowed']) : ?>
-        <div class="creditbox">
+        <div class="creditbox" style="display:none">
             <div class="creditboxinner">
-                от <span class="font24"><span class="price">33 990</span> <span class="rubl">p</span></span> в кредит
-                <div class="fr pt5"><label class="bigcheck checked" for=""><b></b>Беру в кредит<input type="radio" value="1" name=""></label></div>
+                от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
+                <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
+                <input id="creditinput" type="checkbox" name="creditinput"/></label></div>
             </div>
         </div>
 
-        <input data-model="<?php echo $dataForCredit['creditData'] ?>" class="dc_credit_button" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="button" value="Расчет платежа..." />
-        <script type="text/javascript">dc_getCreditForTheProduct('4427', '<?php echo session_id();?>', 'getValueOfMonthlyPayment', { price : '<?php echo $item->getPrice(); ?>', count : '1', name : '<?php echo $item->getName(); ?>', product_type : 'another', articul : '<?php echo $item->getArticle(); ?>', button_id : '', cart : '/cart' });</script>
-        <script type="text/javascript">
-            //var price = $('.dc_credit_button').val();
-            //$('.creditboxinner .price').html(price)
-            //$('.dc_credit_button').remove();
-        </script>
+        <input data-model="<?php echo $dataForCredit['creditData'] ?>" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
     <?php endif; ?>
 
 

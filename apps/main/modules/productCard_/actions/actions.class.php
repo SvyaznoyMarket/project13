@@ -102,7 +102,7 @@ class productCard_Actions extends myActions
       }
       $dataForCredit = array(
           'price' => $product->getPrice(),
-          'article' => $product->getArticle(),
+          'articul' => $product->getArticle(),
           'name' => $product->getName(),
           'count' => $product->getCartQuantity(),
           'product_type' => $productType,

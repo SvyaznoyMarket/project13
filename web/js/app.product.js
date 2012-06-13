@@ -1,4 +1,49 @@
 $(document).ready(function() {
+	/* Credit */
+	if( $('.creditbox').length ) {
+		$('.creditbox label').click( function(e) {
+			var target = $(e.target)
+			if (!target.is('input')) {
+				return
+			}
+			$(this).toggleClass('checked')
+		})
+		
+		if( $('.creditbox input:checked').length ) {
+			$('.creditbox label').addClass('checked')
+		}
+		
+		var creditd = $('#dc_buy_on_credit_454-1638').data('model')
+		creditd.count = 1
+		creditd.cart = '/cart'
+	
+		JsHttpRequest.query(
+			'http://direct-credit.ru/widget/payment.php',
+			{
+				'price'			:	creditd.price,
+				'partner_id'	:	4427,
+				'product_type'	:	creditd.product_type
+			},
+			function(result, errors) {
+console.info(result)
+				$('.creditboxinner .price').html( printPrice( result.htmlcode.replace(/[^0-9]/g,'')) )
+				$('.creditbox').show()
+			},
+			false
+		)
+		
+/*	dc_getCreditForTheProduct( '4427', creditd.session_id , 'getValueOfMonthlyPayment', creditd )
+		{ price : '<?php echo $item->getPrice(); ?>', count : '1', 
+		name : '<?php echo $item->getName(); ?>', product_type : 'another', 
+		articul : '<?php echo $item->getArticle(); ?>', button_id : '', cart : '/cart' }
+	);
+	
+	//var price = $('.dc_credit_button').val();
+	//$('.creditboxinner .price').html(price)
+	//$('.dc_credit_button').remove();
+*/
+	}
+
 	/* Rating */
 	if( $('#rating').length ) {
 		var iscore = $('#rating').next().html().replace(/\D/g,'')
