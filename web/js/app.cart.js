@@ -186,7 +186,7 @@ $(document).ready(function() {
 		$('div.bBacketServ.mBig', bline).show()		
 		var f1lineshead = $('div.bBacketServ.mBig tr:first', bline)
 		var f1linecart = tmpl('f1cartline', f1item)
-		f1linecart = f1linecart.replace(/F1ID/g, f1item.fid ).replace(/PRID/g, bline.attr('ref') )
+		f1linecart = f1linecart.replace(/F1ID/g, f1item.fid ).replace(/F1TOKEN/g, f1item.f1token ).replace(/PRID/g, bline.attr('ref') )
 		f1lineshead.after( f1linecart )
 		addLine( $('div.bBacketServ.mBig tr:eq(1)', bline) )
 		getTotal()
