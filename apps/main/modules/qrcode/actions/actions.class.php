@@ -10,42 +10,32 @@
  */
 class qrcodeActions extends myActions
 {
- /**
-  * Executes index action
-  *
-  * @param sfRequest $request A request object
-  */
   public function executeIndex(sfWebRequest $request)
   {
-    $qrcode = !empty($request['qrcode']) ? QrcodeTable::getInstance()->findOneByToken($request['qrcode']) : false;
-    //$this->forward404Unless($qrcode, "Не найден qrcode #{$request['qrcode']}");
-    $this->redirectUnless($qrcode, '@homepage');
+    $this->forward404If(empty($request['qrcode']));
+    $qrcode = RepositoryManager::getQrcode()->getByQrcode($request['qrcode']);
 
-    $ids = array();
-    foreach ($qrcode->getContentData() as $item)
+    $idList = array();
+    foreach ($qrcode->getItemList() as $item)
     {
-      $ids[] = $item['id'];
+      $this->forward404Unless($item->isProduct(), 'Этот тип qrcode не поддерживается');
+      $idList[] = $item->getItemId();
     }
-    $this->forward404Unless(count($ids) > 0, 'Нет объектов для отображения');
+    $this->forward404Unless(count($idList) > 0, 'Нет объектов для отображения');
 
-    $view = $qrcode->getView();
-    switch ($view)
+    switch (count($idList))
     {
-      case 'product.list';
-        //$tokens = ProductTable::getInstance()->getTokensByIds($ids);
-        //$request->setParameter('products', $tokens);
-
-        $coreIds = ProductTable::getInstance()->getCoreIdsByIds($ids);
-        $request->setParameter('products', $coreIds);
-        $this->forward('product_', 'list');
+      case 0:
+        $this->forward404('Нет объектов для отображения');
         break;
-      case 'product.show':
-        $product = ProductTable::getInstance()->getById($ids[0]);
-        $request->setParameter('product', $product);
+      case 1:
+        $request->setParameter('product', $idList[0]);
         $this->forward('productCard_', 'index');
         break;
+      default:
+        $request->setParameter('products', $idList);
+        $this->forward('product_', 'list');
+        break;
     }
-
-    $this->forward404('Объекты не найдены');
   }
 }
