@@ -122,6 +122,12 @@ console.info( this.id, this.id+'' in ADFOX  )
 		var url_s = parse_url( document.location.search )
 		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year
 	}
+
+	/* sclub card number */
+	if( document.location.search.match(/scid/) ) {
+		var url_s = parse_url( document.location.search )
+		docCookies.setItem( false, "scId", url_s.scid, 31536e3, '/') // 31536e3 == one year
+	}
 	
 	/* mobile fix for Lbox position='fixed' */
 	var clientBrowser = new brwsr()

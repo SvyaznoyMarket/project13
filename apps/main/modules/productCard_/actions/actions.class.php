@@ -42,6 +42,7 @@ class productCard_Actions extends myActions
     $page = $request->getParameter('page', 1);
     $token = $request->getParameter('product');
     $product = RepositoryManager::getProduct()->getByToken($token, true);
+    $this->forward404If(!$product);
 
     $begin = self::NUM_RELATED_ON_PAGE * ($page - 1);
     $accessoryIdList = array_slice($product->getAccessoryIdList(), $begin, self::NUM_RELATED_ON_PAGE);
@@ -62,6 +63,7 @@ class productCard_Actions extends myActions
     $page = $request->getParameter('page', 1);
     $token = $request->getParameter('product');
     $product = RepositoryManager::getProduct()->getByToken($token, true);
+    $this->forward404If(!$product);
 
     $begin = self::NUM_RELATED_ON_PAGE * ($page - 1);
     $relatedIdList = array_slice($product->getRelatedList(), $begin, self::NUM_RELATED_ON_PAGE);
@@ -80,6 +82,7 @@ class productCard_Actions extends myActions
   private function loadProduct($productToken)
   {
     $product = RepositoryManager::getProduct()->getByToken($productToken, true);
+    $this->forward404If(!$product);
     $this->getContext()->set('adriverProductInfo', array('productId' => $product->getId(), 'categoryId' => 0));
     RepositoryManager::getProduct()->loadRelatedAndAccessories($product, true, self::NUM_RELATED_ON_PAGE * 2);
     RepositoryManager::getProduct()->loadKit($product, true);

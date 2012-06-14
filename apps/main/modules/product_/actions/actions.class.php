@@ -27,7 +27,7 @@ class product_Actions extends myActions
     $barcodeList = is_array($request['products']) ? $request['products'] : explode(',', $request['products']);
 
     $idList = array();
-    foreach(ProductTable::getInstance()->getListByBarcodes($barcodeList) as $siteProduct){
+    foreach(ProductTable::getInstance()->getListByBarcodes($barcodeList, array('with_model' =>  true, )) as $siteProduct){
       $idList[] = $siteProduct->core_id;
     }
     $productList = RepositoryManager::getProduct()->getListById($idList, true);

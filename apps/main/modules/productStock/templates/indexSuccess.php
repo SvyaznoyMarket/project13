@@ -9,7 +9,7 @@ $list = array();
 foreach($product->getCategoryList() as $category)
   $list[] = array(
     'name' => $category->getName(),
-    'link' => $category->getLink(),
+    'url' => $category->getLink(),
   );
 $list[] = array(
   'name' => 'Где купить ' . mb_lcfirst($product->getName()),
