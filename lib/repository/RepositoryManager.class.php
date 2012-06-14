@@ -133,4 +133,15 @@ class RepositoryManager
     if(!$repo) $repo = new ProductLineRepository();
     return $repo;
   }
+
+  /**
+   * @static
+   * @return QrcodeRepository
+   */
+  public static function getQrcode()
+  {
+    static $repo;
+    if(!$repo) $repo = new QrcodeRepository();
+    return $repo;
+  }
 }
