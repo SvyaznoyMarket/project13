@@ -1,7 +1,6 @@
 <?php slot('title', 'Моя корзина') ?>
 
 <?php
-echo date('U');
 if ($cart->countFull() > 0): ?>
   <?php include_component('cart', 'show') ?>
 

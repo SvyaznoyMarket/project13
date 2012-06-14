@@ -44,7 +44,7 @@ try
     $dbConfig[$key] = trim($val);
   }
   //подключаюсь к базе
-  if (!($conn = mysql_connect($dbConfig['host'], $dbConfig['username'], $dbConfig['password']))) {
+  if (!(@$conn = mysql_connect($dbConfig['host'], $dbConfig['username'], $dbConfig['password']))) {
     throw new Exception('cant connect to db "' . $dbConfig['host'] . '"');
   }
 

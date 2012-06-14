@@ -95,8 +95,7 @@ foreach ($photo3dList as $photo3d)
              </div>
         </div>
         <div class="fr ar pb15">
-            <div data-value="{&quot;jsref&quot;:&quot;kushetka-arlekino-2050600005903&quot;,&quot;jstitle&quot;:&quot;\u041a\u0443\u0448\u0435\u0442\u043a\u0430 \u0410\u0440\u043b\u0435\u043a\u0438\u043d\u043e&quot;,&quot;jsprice&quot;:13990,&quot;jsimg&quot;:&quot;http:\/\/fs01.enter.ru\/1\/1\/500\/3e\/62581.jpg&quot;,&quot;jsbimg&quot;:&quot;http:\/\/fs01.enter.ru\/1\/1\/163\/3e\/62581.jpg&quot;,&quot;jsshortcut&quot;:&quot;455-2306&quot;,&quot;jsitemid&quot;:27913,&quot;jsregionid&quot;:&quot;14974&quot;,&quot;jsregionName&quot;:&quot;\u041c\u043e\u0441\u043a\u0432\u0430&quot;}" ref="kushetka-arlekino-2050600005903" class="goodsbarbig mSmallBtns">
-
+            <div class="goodsbarbig mSmallBtns" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
                 <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
 
                 <div class='bCountSet'>
@@ -113,17 +112,16 @@ foreach ($photo3dList as $photo3d)
         <div class="clear"></div>
     </div>
 
-    <?php if ($dataForCredit['creditIsAllowed']) : ?>
-        <div class="creditbox" style="display:none">
-            <div class="creditboxinner">
-                от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
-                <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
-                <input id="creditinput" type="checkbox" name="creditinput"/></label></div>
-            </div>
+    <div class="creditbox"  <?php if (!$dataForCredit['creditIsAllowed']) : ?> style="display:none" <?php endif; ?>>
+        <div class="creditboxinner">
+            от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
+            <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
+            <input id="creditinput" type="checkbox" name="creditinput"/></label></div>
         </div>
+    </div>
 
-        <input data-model="<?php echo $dataForCredit['creditData'] ?>" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
-    <?php endif; ?>
+    <input data-model="<?php echo $dataForCredit['creditData'] ?>" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
+
 
 
 
