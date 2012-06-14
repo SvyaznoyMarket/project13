@@ -199,7 +199,7 @@ class ProductMediaEntity
     if($this->typeId == self::TYPE_IMAGE){
       return $urls[$size].$this->source;
     } else if($this->typeId == self::TYPE_3D){
-      return $urls[$size].$this->source;
+      return $urls3d[$size].$this->source;
     }
     return null;
   }
