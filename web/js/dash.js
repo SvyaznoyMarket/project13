@@ -180,6 +180,15 @@ $(document).ready(function(){
 				return false
 			$(this).val('В корзине').addClass('active')
 			var f1item = $(this).data()
+			//credit case
+			if( 'creditBox' in window ) {
+//				if( !f1item.url.match(/_quantity\/[0-9]+/) )
+//					f1item.url += '/1' //quantity
+				if( creditBox.getState() )
+					f1item.url += '1/1' //credit
+				else 	
+					f1item.url += '1/0' //no credit
+			}			
 			f1lines.fadeOut()
 			$.getJSON( f1item.url, function(data) {
 				if( !data.success )
