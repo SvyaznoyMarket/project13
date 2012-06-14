@@ -3358,8 +3358,19 @@ DT.bCtg__eOrange{
 	.bSelect.mFastInpSmall{ 
 		width: 137px;
 		vertical-align:top;
-		}
-	.bSelect.mFastInpBig{
+    }
+    .bSelect.mFastInpSmall div{
+        margin: 0px;
+        font-size: 14px;
+        font-weight: normal;
+    }
+    .bSelect.mFastInpSmall span{
+        margin: 0px;
+        font-size: 14px;
+        font-weight: normal;
+        color: #000000;
+    }
+    .bSelect.mFastInpBig{
 		width: 362px;
 		}
 	.bSelect span{
@@ -4934,7 +4945,6 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     font: 18px Tahoma, sans-serif;
 }
 .bBuyingInfo span{
-    font: 14px Tahoma, sans-serif;
 }
 
 
@@ -5992,4 +6002,24 @@ div.mSportFont{ color: #e8303c; }
     font-size: 10px;
     color: #676767;
     width: 200px;
+}
+.fl {
+  float: left;
+}
+.bBuyingLine .creditHref {
+    margin-left: 20px;
+    margin-top: 8px;
+}
+.bBuyingLine .creditHref a {
+    color: #434343;
+    text-decoration: underline;
+}
+.bBuyingLine .creditHref a:hover {
+    color: #434343;
+    text-decoration: none;
+}
+.bankWrap {
+    margin-top: 4px !important;
+    position: relative;
+    width: 600px;
 }

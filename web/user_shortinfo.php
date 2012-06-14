@@ -411,7 +411,11 @@ if (isset($sessionCartData['services'])) {
     }
   }
 }
-
+if ($_SESSION['credit']) {
+    $isCredit = true;
+} else {
+    $isCredit = false;
+}
 $response = array(
   'success' => true,
   'data' => array(
@@ -424,7 +428,8 @@ $response = array(
     'productsInCart' => $productsInCart,
     'servicesInCart' => $servicesInCart,
     'bingo' => false,
-    'region_id' =>$region_id
+    'region_id' =>$region_id,
+    'is_credit' => $isCredit
   )
 );
 mysql_close($conn);

@@ -62,8 +62,14 @@ class order_Components extends myComponents
     $list = RepositoryManager::getPaymentMethod()->getList();
 //      var_dump($list);
 //      die();
+    $creditBankList = array();
     foreach ($list as $paymentMethod)
     {
+      if ($paymentMethod->getIsCredit()) {
+          foreach ($paymentMethod->getCreditBank() as $bank) {
+            $creditBankList[$bank->getId()]['name'] = $bank->getName();
+          }
+      }
       $choices[$paymentMethod->getId()] = array(
         'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$paymentMethod->getId(),
         'label'       => $paymentMethod->getName(),
@@ -74,7 +80,8 @@ class order_Components extends myComponents
       );
     }
 
-    $this->setVar('choices', $choices, true);
+      $this->setVar('choices', $choices, true);
+      $this->setVar('bankJson', json_encode($creditBankList), true);
   }
   /**
    * Executes field_products component
