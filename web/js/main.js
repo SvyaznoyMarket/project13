@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	$('body').append( $('<input type="hidden" value="123" id="perfomancehidden"/>') )
 	/* admitad */	
 	if( document.location.search.match(/admitad_uid/) ) {
 		var url_s = parse_url( document.location.search )

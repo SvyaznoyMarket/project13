@@ -323,8 +323,9 @@ $(document).ready(function(){
 				//credit case
 				if( 'creditBox' in window )
 					if( creditBox.getState() )
-						ajurl += '/_credit/1'
-
+						ajurl += '/1'
+					else 	
+						ajurl += '/0'
 				$.getJSON( ajurl, function( data ) {
 					if ( data.success && ltbx ) {
 						var tmpitem = {
