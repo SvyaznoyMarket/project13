@@ -321,11 +321,14 @@ $(document).ready(function(){
 				button.addClass('active').attr('href', carturl)
 				
 				//credit case
-				if( 'creditBox' in window )
+				if( 'creditBox' in window ) {
+					if( !ajurl.match(/_quantity\/[0-9]+/) )
+						ajurl += '/1' //quantity
 					if( creditBox.getState() )
-						ajurl += '/1'
+						ajurl += '/1' //credit
 					else 	
-						ajurl += '/0'
+						ajurl += '/0' //no credit
+				}
 				$.getJSON( ajurl, function( data ) {
 					if ( data.success && ltbx ) {
 						var tmpitem = {

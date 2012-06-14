@@ -15,7 +15,7 @@ $(document).ready(function() {
 					$('.creditbox label').addClass('checked')
 				}
 				
-				var creditd = $('#dc_buy_on_credit_454-1638').data('model')
+				var creditd = $('input[name=dc_buy_on_credit]').data('model')
 				creditd.count = 1
 				creditd.cart = '/cart'
 			
