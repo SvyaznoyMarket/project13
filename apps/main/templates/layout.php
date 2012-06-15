@@ -22,26 +22,29 @@
     <?php include_slot('after_body_block') ?>
   <?php endif ?>
     <div class="allpage" id="page">
-    <!--AdFox START-->
-    <!--enter-->
-    <!--Площадка: Enter.ru / * / *-->
-    <!--Тип баннера: BackGround-->
-    <!--Расположение: <верх страницы>-->
-    <script type="text/javascript">
-    <!--
-    if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
-    if (typeof(document.referrer) != 'undefined') {
-      if (typeof(afReferrer) == 'undefined') {
-        afReferrer = escape(document.referrer);
-      }
-    } else {
-      afReferrer = '';
-    }
-    var addate = new Date();
-    document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=enlz&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>');
-    // -->
-    </script>
-    <!--AdFox END-->
+<!--AdFox START-->
+<!-- ________________________AdFox Asynchronous code START__________________________ -->
+<script type="text/javascript">
+<!--
+if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+if (typeof(document.referrer) != 'undefined') {
+  if (typeof(afReferrer) == 'undefined') {
+    afReferrer = escape(document.referrer);
+  }
+} else {
+  afReferrer = '';
+}
+var addate = new Date();
+var dl = escape(document.location);
+var pr1 = Math.floor(Math.random() * 1000000);
+
+document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
+document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
+AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=enlz&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+// -->
+</script>
+<!-- _________________________AdFox Asynchronous code END___________________________ -->
+
      <div class="allpageinner">
 
         <?php include_partial('default/header') ?>
@@ -105,17 +108,6 @@
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
   <?php include_partial('default/yandexMetrika') ?>
-  <!-- AdHands -->
-  <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
-  <script type="text/javascript">
-  var report = new adhandsReport ('http://sedu.adhands.ru/site/');
-  report.id('1053');
-  report.send();
-  </script>
-  <noscript>
-  <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
-  </noscript>
-  <!-- /AdHands -->
   <script type="text/javascript">
   (function() {
   document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>');
@@ -126,7 +118,7 @@
 <?php if (has_slot('seo_counters_advance')): ?>
   <?php include_slot('seo_counters_advance') ?>
 <?php endif ?>
-<?php include_component('default', 'admitad') ?>
+
 <?php include_component('default', 'adriver') ?>
   </body>
 </html>

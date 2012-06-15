@@ -120,11 +120,27 @@ class serviceActions extends myActions
     if (!isset($request['service']) || !$request['service']) {
       return;
     }
+
+    /**
+     * первод из токена ядра в токен сайта
+     */
+
+    $service = RepositoryManager::getService()->getByToken($request['service']);
+
     $params = array(
       'price' => true,
       'price_product' => 0
     );
-    $this->service = ServiceTable::getInstance()->createBaseQuery($params)->where('token = ?', $request['service'])->fetchOne();
+
+    if($service){
+      $this->service = ServiceTable::getInstance()->createBaseQuery($params)->where('core_id = ?', $service->getId())->fetchOne();
+    }
+    else{
+      $this->service = ServiceTable::getInstance()->createBaseQuery($params)->where('token = ?', $request['service'])->fetchOne();
+    }
+
+    $this->forward404If(!$this->service);
+
     $this->getResponse()->setTitle('F1 - ' . $this->service->name . ' – Enter.ru');
 
   }

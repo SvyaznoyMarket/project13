@@ -4,6 +4,12 @@ $(document).ready(function(){
 		var url_s = parse_url( document.location.search )
 		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year
 	}
+
+	/* sclub card number */
+	if( document.location.search.match(/scid/) ) {
+		var url_s = parse_url( document.location.search )
+		docCookies.setItem( false, "scId", url_s.scid, 31536e3, '/') // 31536e3 == one year
+	}
 	
 	/* mobile fix for Lbox position='fixed' */
 	var clientBrowser = new brwsr()
@@ -120,6 +126,7 @@ $(document).ready(function(){
               }
             } else {
               $('#auth-block').trigger('close')
+              PubSub.publish( 'authorize', response.user )
             }
           } else {
             form.html( $(response.data.content).html() )
@@ -190,10 +197,12 @@ $(document).ready(function(){
 	/* Infinity scroll */
 	var ableToLoad = true
 	var compact = $("div.goodslist").length
-	function liveScroll( lsURL, pageid ) {
+	function liveScroll( lsURL, filters, pageid ) {
 		var params = []
+		/* RETIRED cause data-filter
 		if( $('.bigfilter.form').length ) //&& ( location.href.match(/_filter/) || location.href.match(/_tag/) ) )
 			params = $('.bigfilter.form').parent().serializeArray()
+		*/
 		lsURL += '/' +pageid + '/' + (( compact ) ? 'compact' : 'expanded')
 		var tmpnode = ( compact ) ? $('div.goodslist') : $('div.goodsline:last')
 		var loader =
@@ -205,7 +214,7 @@ $(document).ready(function(){
 				"</div>" +
 			"</div>"
 		tmpnode.after( loader )
-
+		lsURL += '?' + filters
 		if( $("#sorting").length ) {
 			params.push( { name:'sort', value : $("#sorting").data('sort') })
 		}
@@ -234,7 +243,8 @@ $(document).ready(function(){
 
 	if( $('div.allpager').length ) {
 		$('div.allpager').each(function() {
-			var lsURL = $(this).data('url')
+			var lsURL = $(this).data('url') 
+			var filters = $(this).data('filter')
 			var vnext = ( $(this).data('page') !== '') ? $(this).data('page') * 1 + 1 : 2
 			var vinit = vnext - 1
 			var vlast = parseInt('0' + $(this).data('lastpage') , 10)
@@ -242,7 +252,7 @@ $(document).ready(function(){
 				if ( ableToLoad && $(window).scrollTop() + 800 > $(document).height() - $(window).height() ){
 					ableToLoad = false
 					if( vlast + vinit > vnext )
-						liveScroll( lsURL, ((vnext % vlast) ? (vnext % vlast) : vnext ))
+						liveScroll( lsURL, filters, ((vnext % vlast) ? (vnext % vlast) : vnext ))
 					vnext += 1
 				}
 			}
@@ -266,7 +276,6 @@ $(document).ready(function(){
 					$('div.pageslist ul').append( next )
 										 .find('a')
 										 .bind('click', function(){
-										 console.info('infScroll')
 											docCookies.removeItem( 'infScroll' )
 										  })
 					$('div.allpager').addClass('mChecked')
@@ -376,12 +385,14 @@ $(document).ready(function(){
 	}
 	
 	function paintRegions() {
-		$('.graying').show()
+		$('.bCityPopupWrap').lightbox_me({ centered: true })
+		/*$('.graying').show()
 		$('.bCityPopupWrap').show()
 		$('body').delegate( '.bCityPopupWrap .close', 'click', function() {
 			$('.graying').hide()
 			$('.bCityPopupWrap').hide()
 		})
+		*/
 	}
 	
 	$('body').delegate('#jsregion, .jsChangeRegion', 'click', function() {
@@ -893,7 +904,8 @@ $(document).ready(function(){
 			var self = this.self,
 				other = this.other    	
 			var html = '<h4>Как получить заказ?</h4><ul>'
-			html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине ' +
+			if( self )
+				html += '<li><h5>Можно заказать сейчас и самостоятельно забрать в магазине ' +
 						self + '</h5><div>&mdash; <a target="blank" href="' +
 						dlvr_node.data('shoplink') + '">В каких магазинах ENTER можно забрать?</a></div></li>'	
 			

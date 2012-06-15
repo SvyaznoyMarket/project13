@@ -26,6 +26,17 @@ class RepositoryManager
 
   /**
    * @static
+   * @return ServiceRepository
+   */
+  public static function getService()
+  {
+    static $repo;
+    if (!$repo) $repo = new ServiceRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
    * @return ProductLabelRepository
    */
   public static function getProductLabel()
@@ -92,12 +103,45 @@ class RepositoryManager
 
   /**
    * @static
+   * @return DeliveryTypeRepository
+   */
+  public static function getDeliveryType()
+  {
+    static $repo;
+    if(!$repo) $repo = new DeliveryTypeRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return ShopRepository
+   */
+  public static function getShop()
+  {
+    static $repo;
+    if(!$repo) $repo = new ShopRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
    * @return ProductLineRepository
    */
   public static function getProductLine()
   {
     static $repo;
     if(!$repo) $repo = new ProductLineRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return QrcodeRepository
+   */
+  public static function getQrcode()
+  {
+    static $repo;
+    if(!$repo) $repo = new QrcodeRepository();
     return $repo;
   }
 }

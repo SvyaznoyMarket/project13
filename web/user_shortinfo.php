@@ -368,11 +368,6 @@ if ($user_id > 0) {
 
 //ProductsCompare из сессии:
 $vcomp = 0;
-if (isset($user_attributes['productCompare']) && isset($user_attributes['productCompare']['products'])) {
-  foreach ($user_attributes['productCompare']['products'] as $prod) {
-    $vcomp += count($prod);
-  }
-}
 
 $prod_sum = 0;
 if (isset($sessionCartData['products'])) {

@@ -22,15 +22,20 @@ class ProductPropertyEntity
 
   /* @var string */
   private $hint;
+  /** @var boolean */
+  private $isImage;
+  /** @var ProductPropertyOptionEntity[] */
+  private $optionList = array();
 
   public function __construct(array $data = array())
   {
-    if (array_key_exists('id', $data)) $this->setId($data['id']);
-    if (array_key_exists('is_multiple', $data)) $this->setIsMultiple($data['is_multiple']);
-    if (array_key_exists('name', $data)) $this->setName($data['name']);
-    if (array_key_exists('type', $data)) $this->setType($data['type']);
-    if (array_key_exists('unit', $data)) $this->setUnit($data['unit']);
-    if (array_key_exists('hint', $data)) $this->setHint($data['hint']);
+    if (array_key_exists('id', $data))          $this->id         = (int)$data['id'];
+    if (array_key_exists('is_multiple', $data)) $this->isMultiple = (bool)$data['is_multiple'];
+    if (array_key_exists('name', $data))        $this->name       = (string)$data['name'];
+    if (array_key_exists('type', $data))        $this->type       = (string)$data['type'];
+    if (array_key_exists('unit', $data))        $this->unit       = (string)$data['unit'];
+    if (array_key_exists('hint', $data))        $this->hint       = (string)$data['hint'];
+    if (array_key_exists('is_image', $data))    $this->isImage    = (boolean)$data['is_image'];
   }
 
 
@@ -92,5 +97,44 @@ class ProductPropertyEntity
   public function getHint()
   {
     return $this->hint;
+  }
+
+  /**
+   * @param boolean $isImage
+   */
+  public function setIsImage($isImage)
+  {
+    $this->isImage = (boolean)$isImage;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsImage()
+  {
+    return $this->isImage;
+  }
+
+  /**
+   * @param ProductPropertyOptionEntity[] $optionList
+   */
+  public function setOptionList($optionList)
+  {
+    $this->optionList = array();
+    foreach($optionList as $option)
+      $this->addOption($option);
+  }
+
+  public function addOption(ProductPropertyOptionEntity $option)
+  {
+    $this->optionList[] = $option;
+  }
+
+  /**
+   * @return ProductPropertyOptionEntity[]
+   */
+  public function getOptionList()
+  {
+    return $this->optionList;
   }
 }

@@ -52,7 +52,6 @@
         <div class="clear pb15"></div>
 
         <?php include_component('serviceSoa', 'list_for_product_in_cart', array('product' => $item, 'services' => $item['service'])) ?>
-        <?php //include_component('product', 'f1_lightbox', array('f1' => $list, 'product'=>$item['product'], 'servListId' => $servListId)) ?>
 
       </div>
     </div>
@@ -75,7 +74,7 @@
           <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo (isset($item['priceFormatted'])) ? $item['priceFormatted'] : '' ?></span> <span class="rubl">p</span></span></div>
           <div class="right">
             <div class="numerbox">
-              <?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_service_add', array('service' => $item['service']->token, 'quantity' => -1,)) : '<b class="ajaless" title="Уменьшить"></b>' ?>
+              <?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_service_add', array('service' => $item['service']['token'], 'quantity' => -1,)) : '<b class="ajaless" title="Уменьшить"></b>' ?>
               <span class="ajaquant">
               <?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_service_add', array('service' => $item['token'], 'quantity' => 1,)) ?>
             </div>

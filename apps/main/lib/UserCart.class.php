@@ -68,22 +68,22 @@ class UserCart extends BaseUserData
     public function addProduct($id, $qty = 1)
     {
         //получаем информацию о продукте из ядра
-        $factory = new ProductFactory();
-        $productList = $factory->createProductFromCore(array('id' => $id));
-        $productOb = $productList[0];
+        $productList = RepositoryManager::getProduct()->getListById(array($id), true);
+        /** @var $product ProductEntity */
+        $product = reset($productList);
 
         $isKit = false;
-        if ($productOb->set_id == 2)
+        $kitQtyByIdList = array();
+        if ($product->getSetId() == 2)
         {
             $isKit = true;
             //загружаем инфу о составе комплекта
             $kitIdList = array();
-            $kitQtyByIdList = array();
-            foreach ($productOb->kit as $kit) {
-                $kitIdList[] = $kit['id'];
-                $kitQtyByIdList[$kit['id']] = $kit['quantity'];
+            foreach ($product->getKitList() as $kit) {
+                $kitIdList[] = $kit->getProductId();
+                $kitQtyByIdList[$kit->getProductId()] = $kit->getQuantity();
             }
-            $productList = $factory->createProductFromCore(array('id' => implode(',', $kitIdList)));
+            $productList = RepositoryManager::getProduct()->getListById($kitIdList, true);
         }
 
         try
@@ -93,21 +93,21 @@ class UserCart extends BaseUserData
                 if ($qty <= 0)
                 {
                     $qty = 0;
-                    $this->deleteProduct($product->id);
+                    $this->deleteProduct($product->getId());
                 }
                 else
                 {
                     if ($isKit) {
                         //нужное количество умножаем на количество предметов в комплекте
-                        $addQty = $qty * $kitQtyByIdList[$product->id];
+                        $addQty = $qty * $kitQtyByIdList[$product->getId()];
                     } else {
                         $addQty = $qty;
                     }
-                    $this->_products[$product->id] = array(
-                        'id' => $product->id,
-                        'token' => $product->token,
+                    $this->_products[$product->getId()] = array(
+                        'id' => $product->getId(),
+                        'token' => $product->getToken(),
                         'quantity' => $addQty,
-                        'price' => $product->price,
+                        'price' => $product->getPrice(),
                     );
                 }
             }
@@ -285,15 +285,15 @@ class UserCart extends BaseUserData
         }
         $productTable = ProductTable::getInstance();
         $serviceTable = ServiceTable::getInstance();
-        $productBDList = $productTable->getQueryObject()
+        $productBDList = count($productIdList) ? $productTable->getQueryObject()
             ->whereIn('core_id', $productIdList)
-            ->fetchArray();
+            ->fetchArray() : array();
         //myDebug::dump($productBDList);
         foreach ($productBDList as $k => $pr) {
             unset($productBDList[$k]);
             $productBDList[$pr['core_id']] = $pr;
         }
-        $serviceBDList = $serviceTable->getQueryObject()->whereIn('core_id', $serviceIdList)->fetchArray();
+        $serviceBDList = count($serviceIdList) ? $serviceTable->getQueryObject()->whereIn('core_id', $serviceIdList)->fetchArray() : array();
         foreach ($serviceBDList as $k => $pr) {
             unset($serviceBDList[$k]);
             $serviceBDList[$pr['core_id']] = $pr;
@@ -307,6 +307,16 @@ class UserCart extends BaseUserData
         foreach ($this->_products as $product)
         {
             $prodId = $product['id'];
+            if (!isset($productBDList[$prodId]))
+            {
+              mail('ssv@enter.ru, pavel.kuznetsov@enter.ru, ssv@enter.ru, georgiy.lazukin@enter.ru', 'Missing product',
+                'Someone is trying to buy product #'.$prodId.' but we dont have it! Here you are: '."\n"
+                .'session: '.session_id()."\r\n"
+                .'date: '.date('Y-m-d H:i:s')."\r\n"
+                .'cart: '.sfYaml::dump($_SESSION)."\r\n"
+              );
+              continue;
+            }
             $service_for_list = array();
             $list[$prodId] = array(
                 'type' => 'product',
@@ -465,30 +475,73 @@ class UserCart extends BaseUserData
         return $result;
     }
 
-    public function getTotal($is_formatted = false)
+  public function getTotal($is_formatted = false)
+  {
+    $total = 0;
+    foreach ($this->_products as $product)
     {
-        $total = 0;
-        foreach ($this->_products as $product)
-        {
-            $total += $product['price'] * $product['quantity'];
-        }
-
-        foreach ($this->_services as $service)
-        {
-            if (isset($service['products']))
-            {
-                foreach ($service['products'] as $prodId => $prodQty)
-                {
-                    $total += ($prodQty['price'] * $prodQty['quantity']);
-                }
-            }
-        }
-
-        $result = $is_formatted ? number_format($total, 0, ',', ' ') : $total;
-
-
-        return $result;
+      $total += $product['price'] * $product['quantity'];
     }
+
+    foreach ($this->_services as $service)
+    {
+      if (isset($service['products']))
+      {
+        foreach ($service['products'] as $prodId => $prodQty)
+        {
+          $total += ($prodQty['price'] * $prodQty['quantity']);
+        }
+      }
+    }
+
+    $result = $is_formatted ? number_format($total, 0, ',', ' ') : $total;
+
+
+    return $result;
+  }
+
+  public function getTotalForOrder(Order $order)
+  {
+    $this->calculateDiscount();
+
+    $total = 0;
+    $products = $this->getProducts();
+    $services = $this->getServices();
+
+    $needleProductIds = array_map(function($i) { return $i->Product->id; }, iterator_to_array($order->ProductRelation));
+    $needleServiceIds = array_map(function($i) { return $i->Service->id; }, iterator_to_array($order->ServiceRelation));
+
+    foreach ($products as $product)
+    {
+      if (!in_array($product->id, $needleProductIds)) continue;
+
+      $total += ProductTable::getInstance()->getRealPrice($product) * $product['cart']['quantity'];
+    }
+
+    //$products = null;
+    foreach ($services as $service)
+    {
+      $qty = $service['cart']['quantity'];
+      if ($qty) {
+        if (!in_array($service->id, $needleServiceIds)) continue;
+
+        $total += ($service->getCurrentPrice() * $qty);
+      }
+
+      if (isset($service['cart']['product']))
+      {
+        foreach ($service['cart']['product'] as $prodId => $prodQty)
+        {
+          if (!in_array($prodId, $needleProductIds)) continue;
+          //$qty += $prodQty;
+          $total += ($service->getCurrentPrice($prodId) * $prodQty);
+        }
+      }
+    }
+
+
+    return $total;
+  }
 
     public function getReceiptList()
     {
@@ -496,9 +549,6 @@ class UserCart extends BaseUserData
         foreach ($this->_products as $productId =>  $productInfo)
         {
             $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $productId)->fetchOne();
-            //myDebug::dump($productOb);
-            //$productOb = $productOb[0];
-            // $prodIdList[] = $productId;
             $list[] = array(
                 'type' => 'products',
                 'name' => $productOb->name,
@@ -509,10 +559,6 @@ class UserCart extends BaseUserData
             );
         }
 
-        //$factory = new ProductFactory();
-        //$this->product = $factory->createProductFromCore(array('id' => implode(',', $prodIdList)));
-
-        //$products = null;
         foreach ($this->_services as $serviceId => $serviceInfo)
         {
             $serviceOb = ServiceTable::getInstance()->getQueryObject()->where('core_id = ?', $serviceId)->fetchOne();
@@ -533,7 +579,6 @@ class UserCart extends BaseUserData
             );
         }
 
-        //$list = array();
         return $list;
     }
 

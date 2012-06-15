@@ -4,7 +4,13 @@ $(document).ready(function () {
 		var url_s = parse_url( document.location.search )
 		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year
 	}
-	
+
+	/* sclub card number */
+	if( document.location.search.match(/scid/) ) {
+		var url_s = parse_url( document.location.search )
+		docCookies.setItem( false, "scId", url_s.scid, 31536e3, '/') // 31536e3 == one year
+	}
+
     /* Search */
     $('.startse').bind({
         'blur':function () {
@@ -80,12 +86,9 @@ $(document).ready(function () {
     }, initis[1].t)
     /* Visuals */
     $("html").css('overflow-x', 'hidden')
-
-    var userag = navigator.userAgent.toLowerCase()
-    var isAndroid = userag.indexOf("android") > -1
-    var isOSX = ( userag.indexOf('ipad') > -1 || userag.indexOf('iphone') > -1 )
-
-    if (isAndroid || isOSX) {
+	
+	var b = new brwsr()
+    if ( b.isAndroid || b.isOSX) {
         $('.bCarousel div').show()
         $('.allpage').css('overflow', 'hidden')
     } else {
@@ -158,7 +161,7 @@ $(document).ready(function () {
         sliding = true
         if (!dir)
             var dir = 1
-        else // custom summon
+        else // custom call
             clearTimeout(idto)
         var shift = '-=1000px',
             inileft = '1032px'

@@ -16,6 +16,7 @@ class productComponents extends myComponents
    *
    * @param Product $product Товар
    * @param view $view Вид
+   * @deprecated
    */
   public function executeShow()
   {
@@ -23,8 +24,8 @@ class productComponents extends myComponents
       return sfView::NONE;
     }
 
-    if (!in_array($this->view, array('default', 'expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock', 'extra_compact'))) {
-      $this->view = 'default';
+    if (!in_array($this->view, array('expanded', 'compact', 'description', 'line', 'orderOneClick', 'stock', 'extra_compact'))) {
+      $this->view = 'compact';
     }
 
     $this->maxPerPage = $this->maxPerPage ? : 3;
@@ -52,15 +53,7 @@ class productComponents extends myComponents
         'with_model' => true,
       );
 
-      if ('default' == $this->view) {
-        $params = myToolkit::arrayDeepMerge($params, array(
-          'group_property' => true,
-          'view' => 'show',
-          'property_view' => 'show',
-          'with_properties' => true,
-        ));
-      }
-      else if ('expanded' == $this->view) {
+      if ('expanded' == $this->view) {
         $params = myToolkit::arrayDeepMerge($params, array(
           'group_property' => false,
           'view' => 'list',
@@ -114,40 +107,6 @@ class productComponents extends myComponents
       $item['photo'] = $this->product->getMainPhotoUrl(1);
     }
 
-    if ('default' == $this->view) {
-      $item['photo'] = $this->product->getMainPhotoUrl(1);
-      $item['stock_url'] = $this->generateUrl('productStock', $this->product);
-      //$item['shop_url'] = $this->generateUrl('shop_show', ShopTable::getInstance()->getMainShop());
-      $item['shop_url'] = $this->generateUrl('shop');
-      $item['stock_url'] = $this->generateUrl('productStock', $this->product);
-      $item['preview'] = $this->product['preview'];
-
-      $rated = explode('-', $this->getRequest()->getCookie('product_rating'));
-      $item['rated'] =
-        (true || !$this->getUser()->isAuthenticated())
-          ? in_array($this->product['id'], $rated)
-          : false;
-      $item['cart_quantity'] = 0;
-      if ($cartItem = $this->getUser()->getCart()->getProduct($this->product['id'])) {
-        $item['cart_quantity'] = isset($cartItem['cart']['quantity']) ? $cartItem['cart']['quantity'] : 0;
-      }
-
-      // смежные товары
-      $criteria = new ProductRelatedCriteria();
-      $item['related'] = RepositoryManager::get('Product')->getRelated(
-        $criteria->setParent($this->product['core_id'])->setPager(new myPager(1, 5 * 2))
-      );
-      $criteria->getPager()->setMaxPerPage(5);
-      $item['related_pager'] = $criteria->getPager();
-
-      // аксессуары
-      $criteria = new ProductRelatedCriteria();
-      $item['accessory'] = RepositoryManager::get('Product')->getAccessory(
-        $criteria->setParent($this->product['core_id'])->setPager(new myPager(1, 5 * 2))
-      );
-      $criteria->getPager()->setMaxPerPage(5);
-      $item['accessory_pager'] = $criteria->getPager();
-    }
     if (in_array($this->view, array('expanded', 'compact',))) {
       $item['preview'] = $this->product['preview'];
 
@@ -211,6 +170,7 @@ class productComponents extends myComponents
    * Executes pager component
    *
    * @param myDoctrinePager $pager Листалка товаров
+   * @deprecated
    */
   public function executePager()
   {
@@ -228,6 +188,7 @@ class productComponents extends myComponents
    * Executes sorting component
    *
    * @param array $productSorting Сортировка списка товаров
+   * @deprecated
    */
   public function executeSorting()
   {
@@ -267,6 +228,7 @@ class productComponents extends myComponents
    * Executes pagination component
    *
    * @param myDoctrinePager $pager Листалка товаров
+   * @deprecated
    */
   public function executePagination()
   {
@@ -280,6 +242,7 @@ class productComponents extends myComponents
    *
    * @param Product $product Товар
    * @param string $view Вид
+   * @deprecated
    */
   public function executeProperty()
   {
@@ -306,129 +269,8 @@ class productComponents extends myComponents
   }
 
   /**
-   * Executes property_grouped component
-   *
-   * @param Product $product Товар
-   */
-  public function executeProperty_grouped()
-  {
-    if (!in_array($this->view, array('default', 'inlist'))) {
-      $this->view = 'default';
-    }
-
-    $list = array();
-    foreach ($this->product['ParameterGroup'] as $parameterGroup)
-    {
-      $parameters = array();
-      foreach ($parameterGroup->getParameter() as $parameter)
-      {
-        $value = $parameter->getValue();
-
-        if (('inlist' == $this->view) && !$parameter->isViewList()) continue;
-
-        $parameters[] = array(
-          'name' => $parameter->getName(),
-          'value' => $value,
-          'description' => $parameter->getDescription(),
-        );
-      }
-      if (0 == count($parameters)) continue;
-
-      $list[] = array(
-        'name' => $parameterGroup->getName(),
-        'parameters' => $parameters,
-      );
-    }
-
-    $this->setVar('list', $list, true);
-    $this->setVar('product', $this->product, true);
-  }
-
-  /**
-   * Executes product_group component
-   *
-   * @param Product $product Товар
-   */
-  public function executeProduct_model()
-  {
-    if (!$this->product->is_model && !$this->product->model_id) {
-      return sfView::NONE;
-    }
-
-    $properties = $this->product->getModelProperty();
-    if (!count($properties)) {
-      return sfView::NONE;
-    }
-
-    //myDebug::dump($properties);
-    $model_id = !empty($this->product->model_id) ? $this->product->model_id : $this->product->id;
-    $q = ProductTable::getInstance()->createBaseQuery(array('with_model' => true,))->addWhere('product.model_id = ? or product.id = ?', array($model_id, $model_id,));
-    //добавляем учет товара, доступного к продаже
-    $q->addWhere('IFNULL(productState.is_instock, product.is_instock) = ?', true);
-
-    $product_ids = ProductTable::getInstance()->getIdsByQuery($q);
-
-    if (empty($product_ids)) {
-      return sfView::NONE;
-    }
-
-    $q = ProductPropertyRelationTable::getInstance()->createBaseQuery();
-    $products_properties = $this->product->getPropertyRelation();
-
-    foreach ($properties as $property)
-    {
-      $query = clone $q;
-      $query->addWhere('productPropertyRelation.property_id = ?', array($property->id,));
-      $query->andWhereIn('productPropertyRelation.product_id', $product_ids);
-      $query->distinct();
-      $value_ids = ProductPropertyRelationTable::getInstance()->getIdsByQuery($query);
-      $values = ProductPropertyRelationTable::getInstance()->createListByIds($value_ids, array('index' => array('productPropertyRelation' => 'id',)));
-      foreach ($products_properties as $products_property)
-      {
-        if ($property->id == $products_property->property_id) {
-          $values[$products_property->id]->mapValue('is_selected', true);
-        }
-      }
-
-      $value_to_map = array();
-      $property->mapValue('current', null);
-      foreach ($values as $id => $value)
-      {
-        if (!$value->product_id) continue;
-        $product = ProductTable::getInstance()->getById($value->product_id, array('with_model' => true,));
-        if (!$product) continue;
-        $realValue = strval($value->getRealValue());
-        $value_to_map[$realValue]['id'] = $id;
-        $value_to_map[$realValue]['url'] = $this->generateUrl('changeProduct', array_merge($this->product->toParams(), array('value' => $value['id'])));
-        $value_to_map[$realValue]['parameter'] = new ProductParameter($property['ProductTypeRelation'][0], array($value,));
-        if (isset($values[$id]['is_selected'])) {
-          $value_to_map[$realValue]['is_selected'] = $values[$id]['is_selected'];
-        }
-        elseif (!isset($value_to_map[$realValue]['is_selected']))
-        {
-          $value_to_map[$realValue]['is_selected'] = 0;
-        }
-        if ($value_to_map[$realValue]['is_selected']) {
-          $property->mapValue('current', $realValue);
-        }
-        if ($property->ProductModelRelation[0]->is_image) {
-          $value_to_map[$realValue]['photo'] = $product->getMainPhotoUrl(1);
-        }
-
-      }
-      ksort($value_to_map);
-      $property->mapValue('values', $value_to_map);
-    }
-    if (empty($property->current)) {
-      return sfView::NONE;
-    }
-
-    $this->setVar('properties', $properties, true);
-  }
-
-  /**
    * Executes list_view component
-   *
+   * @deprecated
    */
   public function executeList_ajax_view()
   {
@@ -474,37 +316,6 @@ class productComponents extends myComponents
   }
 
   /**
-   * Executes tags component
-   *
-   */
-  public function executeTags()
-  {
-    if (!$this->product instanceof Product) {
-      return sfView::NONE;
-    }
-
-    $this->tagList = TagTable::getInstance()->getByProduct($this->product->id);
-
-    $list = array();
-    foreach ($this->tagList as $tag)
-    {
-      $list[] = array(
-        'token' => $tag->token,
-        'url' => $this->generateUrl('tag_show', array('tag' => $tag->token)),
-        'name' => $tag->name,
-      );
-    }
-
-    $this->count = count($list);
-    if (0 == $this->count) {
-      return sfView::NONE;
-    }
-
-    $this->setVar('list', $list);
-    $this->limit = 6 < count($list) ? 6 : count($list);
-  }
-
-  /**
    * Executes f1_lightbox component
    *
    */
@@ -516,14 +327,5 @@ class productComponents extends myComponents
       $showInCardButton = false;
     }
     $this->setVar('showInCardButton', $showInCardButton);
-  }
-
-  public function executeKit()
-  {
-    /*$q = ProductTable::getInstance()->getQueryByKit($this->product);
-    $this->productPager = $this->getPager('Product', $q, 12, array());
-    $this->forward404If($request['page'] > $this->productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
-
-    $this->view = 'compact';*/
   }
 }

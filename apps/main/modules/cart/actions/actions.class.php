@@ -3,10 +3,10 @@
 /**
  * cart actions.
  *
- * @package    enter
+ * @package enter
  * @subpackage cart
- * @author     Связной Маркет
- * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ * @author Связной Маркет
+ * @version SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
 class cartActions extends myActions
 {
@@ -227,7 +227,7 @@ class cartActions extends myActions
 
     $this->getUser()->setCacheCookie();
 
-    #myDebug::dump(  $this->getUser()->getCart()->getServices()  );
+    #myDebug::dump( $this->getUser()->getCart()->getServices() );
 
     if ($request->isXmlHttpRequest()) {
       $cartInfo = $this->getUser()->getCart()->getBaseInfo();

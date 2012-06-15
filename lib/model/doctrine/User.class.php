@@ -66,11 +66,6 @@ class User extends BaseUser
     return $return;
   }
 
-  public function getTagList(array $params = array())
-  {
-    return UserTagTable::getInstance()->getListByUser($this->id, $params);
-  }
-
   public function getAddressList(array $params = array())
   {
     return UserAddressTable::getInstance()->getListByUser($this->id, $params);

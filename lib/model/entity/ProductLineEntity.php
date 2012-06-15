@@ -32,9 +32,10 @@ class ProductLineEntity
     if (isset($data['token']))              $this->setToken($data['token']);
     if (isset($data['name']))               $this->setName($data['name']);
     if (isset($data['description']))        $this->setDescription($data['description']);
+    if (isset($data['count']))              $this->setProductCount($data['count']);
     if (isset($data['product_count']))      $this->setProductCount($data['product_count']);
-    if (isset($data['media_image']))        $this->setMediaImage($data['media_image']);
     if (isset($data['products_quantity']))  $this->setProductCount($data['products_quantity']);
+    if (isset($data['media_image']))        $this->setMediaImage($data['media_image']);
     if (isset($data['main_product_id']))    $this->setMainProductId($data['main_product_id']);
     if (isset($data['product_id_list']))    $this->setProductIdList((array)$data['product_id_list']);
   }

@@ -5,14 +5,12 @@ class myUser extends myGuardSecurityUser
 
   protected
     $cart = null,
-    $productHistory = null,
-    $productCompare = null,
     $order = null,
     $region = null;
 
   public function shutdown()
   {
-    foreach (array('cart', 'productHistory', 'productCompare', 'order') as $name)
+    foreach (array('cart', 'order') as $name)
     {
       $object = call_user_func(array($this, 'get' . ucfirst($name)));
       $this->setAttribute($name, $object->dump());
@@ -35,22 +33,17 @@ class myUser extends myGuardSecurityUser
     parent::signOut();
   }
 
+  /**
+   * @return UserCart
+   */
   public function getCart()
   {
     return $this->getUserData('cart');
   }
 
-
-  public function getProductHistory()
-  {
-    return $this->getUserData('productHistory');
-  }
-
-  public function getProductCompare()
-  {
-    return $this->getUserData('productCompare');
-  }
-
+  /**
+   * @return UserOrder
+   */
   public function getOrder()
   {
     return $this->getUserData('order');
@@ -101,6 +94,8 @@ class myUser extends myGuardSecurityUser
         'product_price_list_id' => $region->product_price_list_id,
         'core_id' => $region->core_id,
         'geoip_code' => $region->geoip_code,
+        'latitude' => $region->latitude,
+        'longitude' => $region->longitude,
         'region' => $region,
       );
     }
