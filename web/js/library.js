@@ -914,6 +914,7 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 		infoWindow   = null,
 		positionC    = null,
 		markers      = [],
+		currMarker   = null,
 		mapContainer = $('#'+DOMid),
 		infoWindowTemplate = templateIWnode.prop('innerHTML')
 	
@@ -942,7 +943,11 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 	}
 
 	this.showInfobox = function( marker ) {
+		if( currMarker )
+			currMarker.setVisible(true) // show preceding marker
+		currMarker = marker
 		var item = markers[marker.id]
+		
 		marker.setVisible(false) // hides marker
 		self.updateInfoWindowTemplate( item )
 		infoWindow.setContent( infoWindowTemplate )
