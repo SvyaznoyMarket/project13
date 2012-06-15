@@ -9,6 +9,7 @@
 /*	
 	2.8
 	image is correct centered vertically 
+	media lib click-icons fix
 	
 	2.7
 	iOS events for gigaimage moving
@@ -232,6 +233,7 @@ function likemovie( nodename , apinodes, s, b) {
 				if( flags[j] === 1 ) flags[j] = 0
 		}	
 		for(var i = indexes.length; i > 0; i--) {
+			if (document.getElementById( self.prefx + indexes[i-1] ))
 			if (! document.getElementById( self.prefx + indexes[i-1] ).complete) {
 				$('#'+ self.prefx + indexes[i-1] ).remove()
 			}	
