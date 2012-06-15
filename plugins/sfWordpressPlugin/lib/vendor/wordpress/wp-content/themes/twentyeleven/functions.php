@@ -973,7 +973,8 @@ function credit_program_widget()
         }
     }
 
-    wp_enqueue_script( 'credit_program_widget', get_home_url() . '/wp-includes/js/jquery/jquery.js', null, null, true );
+
+    #wp_enqueue_script( 'credit_program_widget', get_home_url() . '/wp-includes/js/jquery/jquery.js', null, null, true );
 ?>
     <select name="category_list" id="category_list">
         <option value="">Что вы будете брать в кредит</option>
@@ -983,6 +984,7 @@ function credit_program_widget()
     </select>
     <div id="category_program_list"></div>
 
+        <script src="/wp-includes/js/jquery/jquery.js" type="text/javascript"></script>
     <script type="text/javascript">
             var categoryList = <?php echo json_encode($categoryList)?>;
 
@@ -995,14 +997,56 @@ function credit_program_widget()
                 {
                     programListContent += '<dl><dt>'
                     programListContent += programList[i]['bank_image'] + '</dt>'
-                    programListContent +=  '<dd><div class="line"></div><h3>' + programList[i]['bank_name'] + '</h3> <br />' + programList[i]['program_description'] + '</dd>';
-                    programListContent += '</dl>';
+                    programListContent += '<dd><div class="line"></div><h3>' + programList[i]['bank_name'] + '</h3> <br />' + programList[i]['program_description'];
+                    programListContent += '</dd></dl>';
                 }
 
                 programListContent += '<p class="ac mb25"><a class="bBigOrangeButton" href="' + categoryList[taxonomyId]['category_url'] + '">Перейти в раздел «' + categoryList[taxonomyId]['category_name'] + '»</a></p>';
 
                 document.getElementById('category_program_list').innerHTML = programListContent;
+
+                hideShortUL();
             };
+
+            function hideShortUL()
+            {
+                var ulList = jQuery('ul[class="short"]');
+                $.each(ulList, function(index, ul) {
+                    var ulElements = $(ul).children();
+                    if(ulElements.length > 4)
+                    {
+                        visULElements(ul, 'none');
+                        addShowLink(ul);
+                    }
+                });
+            }
+
+            function addShowLink(ul)
+            {
+                var layer = $(ul).next();
+                var aElement = '<a href=="#" onclick="return false;" name="ul_show_other_link">Подробнее</a>';
+                $(ul).after(aElement);
+            }
+
+            jQuery('a[name="ul_show_other_link"]').live('click', function() {
+                var ul = $(this).prev();
+                visULElements(ul, '');
+                $(this).css('display', 'none');
+            });
+
+            function visULElements(ul, display)
+            {
+
+                var elements = $(ul).children();
+
+                $.each(elements, function(index, element) {
+                   if(index >= 4)
+                   {
+                       $(element).css('display', display);
+                   }
+                });
+            }
+
     </script>
     <?php
     $content = ob_get_contents();

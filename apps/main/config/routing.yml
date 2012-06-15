@@ -934,9 +934,9 @@ redirect_for_productCard:
 #  param:    { module: credit, action: index }
 #
 # credit info main page
-credit_programs:
-  url:      /credit_programs
-  param:    { module: credit, action: programs }
+#credit_programs:
+#  url:      /credit_programs
+#  param:    { module: credit, action: programs }
 #
 
 # Wordpress pages
