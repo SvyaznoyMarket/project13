@@ -60,9 +60,12 @@ function login_header($title = 'Log In', $message = '', $wp_error = '') {
 <head>
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
 	<title><?php bloginfo('name'); ?> &rsaquo; <?php echo $title; ?></title>
-<?php
-	wp_admin_css( 'wp-admin', true );
-	wp_admin_css( 'colors-fresh', true );
+    <link rel='stylesheet' href='<?php echo get_home_url() ?>/wp-admin/css/wp-admin.css' type='text/css' />
+    <link rel='stylesheet' href='<?php echo get_home_url(); ?>/wp-admin/css/colors-fresh.css' type='text/css' />
+
+    <?php
+    #wp_admin_css( 'wp-admin', true );
+	#wp_admin_css( 'colors-fresh', true );
 
 	if ( $is_iphone ) { ?>
 	<meta name="viewport" content="width=320; initial-scale=0.9; maximum-scale=1.0; user-scalable=0;" />

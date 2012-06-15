@@ -89,4 +89,24 @@ class SF_WP_Proxy
 
         return $sidebarMenuContent;
     }
+
+    public function getCurrentLayout()
+    {
+        global $post;
+
+        $terms = (array)wp_get_post_terms( $post->ID , 'layout', '');
+        $term = Null;
+        $layout = Null;
+        if(!empty($terms))
+        {
+            $term = array_pop($terms);
+        }
+
+        if(is_object($term))
+        {
+            $layout = get_tax_meta($term->term_id,'layout_file_name');
+        }
+
+        return (string)$layout;
+    }
 }

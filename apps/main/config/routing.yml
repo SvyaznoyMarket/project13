@@ -865,7 +865,7 @@ search_ajax:
 
 #callback
 callback:
-  url:   /callback/
+  url:   /callback
   param: { module: callback, action: index }
 
 #ipad_save
@@ -929,9 +929,9 @@ redirect_for_productCard:
 
 #
 # credit info main page
-credit_default:
-  url:      /credit
-  param:    { module: credit, action: index }
+#credit_default:
+#  url:      /credit
+#  param:    { module: credit, action: index }
 #
 # credit info main page
 credit_programs:
@@ -940,8 +940,9 @@ credit_programs:
 #
 
 # Wordpress pages
+# Если WP вернет 404, управление передастся на default_show согласно политике symfony
 wordpress:
-  url:   /content/:page
+  url:   /:page
   param: { module: wordpress, action: index }
 
 default_show:

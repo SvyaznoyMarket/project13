@@ -16,10 +16,10 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^category/main_menu index.light.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
-  #RewriteRule ^content/wp-login.php(.*)$ wordpress/wp-login.php
-  RewriteRule ^content/wp-admin/$ content/wp-admin/index.php
-  #RewriteRule ^content/(.*)$ wordpress/index.php [QSA,L] 
-  
+  RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]
+  RewriteRule ^wp-admin/(.*)$ /content/wp-admin/$1 [L]
+  RewriteRule ^wp-(.*)$ /content/wp-$1 [L]
+
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$
   #RewriteCond %{REQUEST_URI} !\.html$

@@ -1051,3 +1051,123 @@ function bank_description_list_widget()
 
     return $content;
 }
+
+
+
+
+    add_action( 'init', 'create_layout_taxonomy' );
+
+    function create_layout_taxonomy() {
+        $labels = array(
+            'name' => _x( 'Шаблон SF', 'taxonomy layout name' ),
+            'singular_name' => _x( 'Шаблон SF', 'taxonomy singular name' ),
+            'search_items' =>  wp__( 'Искать шаблоны SF' ),
+            'all_items' => wp__( 'Все шаблоны SF' ),
+            #'parent_item' => wp__( 'Родительская категория' ),
+            #'parent_item_colon' => wp__( 'Родительская категория:' ),
+            'edit_item' => wp__( 'Изменить шаблон SF' ),
+            'update_item' => wp__( 'Обновить шаблон SF' ),
+            'add_new_item' => wp__( 'Добавить новый шаблон SF' ),
+            'new_item_name' => wp__( 'Название нового шаблона SF' ),
+            'menu_name' => wp__( 'Шаблон SF' ),
+        );
+
+        register_taxonomy( 'layout', 'page',
+            array(
+                'hierarchical' => false,
+                'labels' => $labels,
+                'query_var' => 'layout',
+                'rewrite' => array( 'slug' => 'layout' ),
+                'show_ui' => false
+            )
+        );
+    }
+
+    function add_layout_box() {
+        remove_meta_box('tagsdiv-layout','page','core');
+        add_meta_box('layout_box_ID', wp__('Шаблон SF'), 'layout_taxonomy_style_function', 'page', 'side', 'core');
+    }
+
+    function add_layout_menus() {
+
+        if ( ! is_admin() )
+            return;
+
+        add_action('admin_menu', 'add_layout_box');
+        add_action('save_post', 'save_layout_taxonomy_data');
+    }
+
+    add_layout_menus();
+
+    function layout_taxonomy_style_function($page) {
+
+        echo '<input type="hidden" name="taxonomy_noncename" id="taxonomy_noncename" value="' .
+            wp_create_nonce( 'taxonomy_layout' ) . '" />';
+
+
+        // Get all layout taxonomy terms
+        $layoutList = get_terms('layout', 'hide_empty=0');
+
+        ?>
+    <select name='post_layout' id='post_layout'>
+        <!-- Display layout list as options -->
+        <?php
+        $names = wp_get_object_terms($page->ID, 'layout');
+        ?>
+        <option class='layout-option' value=''
+            <?php if (!count($names)) echo "selected";?>>Стандартный</option>
+        <?php
+        foreach ($layoutList as $layout) {
+            if (!is_wp_error($names) && !empty($names) && !strcmp($layout->slug, $names[0]->slug))
+                echo "<option class='theme-option' value='" . $layout->slug . "' selected>" . $layout->name . "</option>\n";
+            else
+                echo "<option class='theme-option' value='" . $layout->slug . "'>" . $layout->name . "</option>\n";
+        }
+        ?>
+    </select>
+    <?php
+    }
+
+    function save_layout_taxonomy_data($page_id) {
+        // verify this came from our screen and with proper authorization.
+
+        if ( !wp_verify_nonce( $_POST['taxonomy_noncename'], 'taxonomy_layout' )) {
+            return $page_id;
+        }
+
+        // verify if this is an auto save routine. If it is our form has not been submitted, so we dont want to do anything
+        if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
+            return $page_id;
+
+
+        // Check permissions
+        /*if ( 'page' == $_POST['post_type'] ) {
+            if ( !current_user_can( 'edit_page', $post_id ) )
+                return $post_id;
+        } else {
+            if ( !current_user_can( 'edit_post', $post_id ) )
+                return $post_id;
+        }*/
+
+        // OK, we're authenticated: we need to find and save the data
+        $page = get_page($page_id);
+
+
+        if (($page->post_type == 'page')) {
+            $layout = $_POST['post_layout'];
+            wp_set_object_terms( $page_id, $layout, 'layout' );
+        }
+        return $layout;
+
+    }
+
+$layoutMetaBoxConfig = array(
+    'id' => 'layout_meta_box',
+    'title' => 'Название файла',
+    'pages' => array('layout'),
+    'context' => 'normal'
+);
+
+$layout_logo_meta_box = new Tax_Meta_Class($layoutMetaBoxConfig);
+$layout_logo_meta_box->addText('layout_file_name',array('name'=> 'Название файла шаблона'));
+$layout_logo_meta_box->Finish();
