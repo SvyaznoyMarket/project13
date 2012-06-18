@@ -19,7 +19,7 @@ class qrcodeActions extends myActions
     foreach ($qrcode->getItemList() as $item)
     {
       $this->forward404Unless($item->isProduct(), 'Этот тип qrcode не поддерживается');
-      $idList[] = $item->getItemId();
+      $idList[] = $item->getId();
     }
     $this->forward404Unless(count($idList) > 0, 'Нет объектов для отображения');
 
