@@ -28,6 +28,7 @@ $(document).ready(function() {
 			delurl = addurl + '/-1'
 		var drop     = $(nodes.drop).attr('href')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')
+		var limit    = nodes.limit
 		this.quantum = $(nodes.quan).html().replace(/\D/g,'') * 1
 		var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
 		if( 'price' in nodes )
@@ -58,8 +59,13 @@ $(document).ready(function() {
 		}
 
 		this.update = function( minimax, delta ) {
+			if( delta > 0 && ( limit < ( self.quantum + delta ) ) ) {
+				$(minimax).data('run',false)
+				return
+			}
 			var tmpurl = (delta > 0) ? addurl : delurl
 			self.quantum += delta
+			
 			$(nodes.quan).html( self.quantum + ' шт.' )
 			self.calculate( self.quantum )
 			$.getJSON( tmpurl , function( data ) {
@@ -121,7 +127,8 @@ $(document).ready(function() {
 						'quan': bline.find('.ajaquant:first'),
 						'price': bline.find('.basketinfo .price:first'),
 						'sum': bline.find('.basketinfo .sum:first'),
-						'drop': bline.find('.basketinfo .whitelink:first')
+						'drop': bline.find('.basketinfo .whitelink:first'),
+						'limit': bline.find('.numerbox').data('limit')
 						})
 		basket.push( tmpline )
 				
