@@ -61,26 +61,27 @@ class QrcodeItemEntity
   /** @var int */
   private $typeId;
   /** @var int */
-  private $itemId;
+  private $id;
 
   public function __construct(array $data = array()){
-    if(array_key_exists('type_id', $data)) $this->typeId = (string)$data['type_id'];
-    if(array_key_exists('item_id', $data)) $this->itemId = (string)$data['item_id'];
+    if(array_key_exists('type_id', $data)) $this->typeId = (int)$data['type_id'];
+    if(array_key_exists('id', $data))      $this->id = (int)$data['id'];
+    if(array_key_exists('item_id', $data)) $this->id = (int)$data['item_id'];
   }
   /**
    * @param int $itemId
    */
-  public function setItemId($itemId)
+  public function setId($itemId)
   {
-    $this->itemId = (int)$itemId;
+    $this->id = (int)$itemId;
   }
 
   /**
    * @return int
    */
-  public function getItemId()
+  public function getId()
   {
-    return $this->itemId;
+    return $this->id;
   }
 
   /**
