@@ -19,6 +19,7 @@
 	$LAB.setGlobalDefaults({ AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.queueScript('combine.js')
 	.queueScript('jquery-1.6.4.min.js')
+	.queueScript('/js/adfox.asyn.code.ver3.js')
 	.queueWait( function(){
 		document.write = function(){
 /*			if( arguments[0].match('javascript') )
