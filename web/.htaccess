@@ -16,6 +16,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^category/main_menu index.light.php [L]
 
   RewriteRule ^euro2012 football.html [L]
+  RewriteRule ^nespresso nespresso.html [L]
 
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$
