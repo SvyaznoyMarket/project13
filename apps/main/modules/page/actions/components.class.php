@@ -29,10 +29,6 @@ class pageComponents extends myComponents
    */
   public function executeMenu()
   {
-    if (!$this->page instanceof Page) {
-      // return sfView::NONE;
-    }
-
     if (!$this->view) {
       $this->view = 'default';
     }
@@ -70,7 +66,7 @@ class pageComponents extends myComponents
     );
 
     //берем рутовую страницу
-    if ($this->page->level > 0) {
+    if ($this->page instanceof Page && $this->page->level > 0) {
       $q = PageTable::getInstance()->createBaseQuery()
         ->addWhere('page.root_id = ? AND page.level = ?', array($this->page['root_id'], 0))
         ->limit(1);

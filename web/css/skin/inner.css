@@ -362,22 +362,26 @@ LABEL.checked {color:#ffa901}
 
 .bSpec{
 	margin: 15px 0;
-	border: 1px solid #eaeaea;
-	border-radius: 10px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
+	border: 1px solid #f99b1c;
+	border-radius:5px;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
 
-	-moz-box-shadow:0 0 9px #eaeaea;
-	-webkit-box-shadow:0 0 9px #eaeaea;
-	box-shadow:0 0 9px #eaeaea;
 	//behavior: url(ie-css3.htc)
 	}
 .bSpec h2 {
-    color: #FFA901;
+    height:24px;
+	background-color:#f99b1c;
+	color: #fff;
     font: bold 14px Tahoma,sans-serif;
-    margin: 10px 0 10px 10px;
-    padding: 0;
+    padding: 6px 0 0 10px;
+    margin:0 0 15px 0;
+	border-radius:2px 2px 0 0;
+	-webkit-border-radius:2px 2px 0 0;
+	-moz-border-radius:2px 2px 0 0;
+	position:relative
 }
+.bSpec h2 I {position:absolute; left:8px; bottom:-6px; display:block; width:15px; height:6px; background:url("img/bg.png") no-repeat -76px -218px}
 
 
 .bSpec .pb10 {
@@ -394,7 +398,7 @@ LABEL.checked {color:#ffa901}
     padding: 7px 0 8px;
 }
 .bSpec DT {
-    font-weight: normal;
+    font-weight: bold;
     padding-left: 10px;
 }
 /*.bigfilter DT.first {border:0} */
@@ -423,7 +427,7 @@ LABEL.checked {color:#ffa901}
 	.bSpecSel ul li a{font: 12px Tahoma, sans-serif; padding: 0 11px; text-decoration: none;}
 	.bSpecSel a{ font: 12px Tahoma, sans-serif; }
 
-	.bSpecSel h3{ margin: 5px 0; }
+	.bSpecSel h3{ margin: 5px 0; font-weight:bold}
 	.bSpecSel ul{ margin: 0; list-style-type: none; }
 	.bSpecSel ul li{ padding: 3px 0; }
 	.bSpecSel ul li a{ color: #ffa901; }
@@ -2726,7 +2730,15 @@ DT.bCtg__eOrange{
     height: 41px;
     width: 39px;
 }
-
+.bServiceCard__eLogo_free {
+    top: 0;
+    left: 0;
+    width: 118px;
+    height: 118px;
+    position: absolute;
+    background: url('img/icon_f1_image.png') no-repeat scroll right 0 transparent;
+    border: solid 1px #e6e6e6;
+}
 
 /* newSB */
 

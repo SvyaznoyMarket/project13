@@ -529,7 +529,6 @@ class creditActions extends myActions {
             ),
             3 => array( //электроника
                 0 => array( //Хоум кредит
-                    0, //10*10*10
                     1, //удачный
                     4, //1,5% в месяц
                     5, //Мобильный
@@ -557,7 +556,6 @@ class creditActions extends myActions {
             ),
             4 => array( //мебель
                 0 => array( //Хоум кредит
-                    0, //10*10*10
                     1, //удачный
                     2, //Универсальный
                     3, //1% в месяц
@@ -590,7 +588,6 @@ class creditActions extends myActions {
             ),
             5 => array( //ювелирные украшения (часы)
                 0 => array( //Хоум кредит
-                    0, //10*10*10
                     1, //удачный
                     6, //Ювелирный 1,5% в месяц
                     7, //Стандартный
@@ -606,7 +603,6 @@ class creditActions extends myActions {
             ),
             6 => array( //бытовая техника
                 0 => array( //Хоум кредит
-                    0, //10*10*10
                     1, //удачный
                     7, //Стандартный
                 ),
@@ -633,7 +629,6 @@ class creditActions extends myActions {
             ),
             7 => array( //товары для дома
                 0 => array( //Хоум кредит
-                    0, //10*10*10
                     1, //удачный
                     7, //Стандартный
                 ),
@@ -662,7 +657,6 @@ class creditActions extends myActions {
             ),
             8 => array( //спорт
                 0 => array( //Хоум кредит
-                    0, //10*10*10
                     1, //удачный
                     7, //Стандартный
                 ),
@@ -691,7 +685,6 @@ class creditActions extends myActions {
             ),
             9 => array( //для детей
                 0 => array( //Хоум кредит
-                    0, //10*10*10
                     1, //удачный
                     7, //Стандартный
                 ),
@@ -719,7 +712,6 @@ class creditActions extends myActions {
             ),
             10 => array( //инструменты
                 0 => array( //Хоум кредит
-                    0, //10*10*10
                     1, //удачный
                     7, //Стандартный
                 ),
@@ -747,7 +739,6 @@ class creditActions extends myActions {
             ),
             11 => array( //красота и здоровье
                 0 => array( //Хоум кредит
-                    0, //10*10*10
                     1, //удачный
                     7, //Стандартный
                 ),

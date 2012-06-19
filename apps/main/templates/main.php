@@ -78,7 +78,7 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
         </div>
       </div>
 
-      <?php include_component('default', 'footer', array('view' => 'main')) // грузится только тут при этих параметрах, никаких данных не требует?>
+      <?php include_component('default', 'footer', array('view' => 'main')) ?>
 
       <div class="clear"></div>
     </div>
@@ -88,18 +88,6 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
     <?php include_partial('default/yandexMetrika') ?>
-
-    <!-- AdHands -->
-    <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
-    <script type="text/javascript">
-      var report = new adhandsReport ('http://sedu.adhands.ru/site/');
-      report.id('1053');
-      report.send();
-    </script>
-    <noscript>
-      <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
-    </noscript>
-    <!-- /AdHands -->
   <script type="text/javascript">
   (function() {
   document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>');
@@ -107,7 +95,10 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
   </script>
 <?php endif ?>
 
-    <?php include_component('default', 'admitad') ?>
+    <?php if (has_slot('seo_counters_advance')): ?>
+      <?php include_slot('seo_counters_advance') ?>
+    <?php endif ?>
+
 
   <script type="text/javascript">
       (function(d){

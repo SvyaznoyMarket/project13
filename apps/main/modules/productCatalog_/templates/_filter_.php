@@ -16,7 +16,7 @@
       data-action-count="<?php echo url_for('productCatalog_count', $sf_data->getRaw('productCategory')) ?>">
 
   <dl class="bigfilter form bSpec">
-    <h2>Выбираем:</h2>
+    <h2>Выбираем:<i></i></h2>
     <?php require '_filter_selected_.php' ?>
     <?php $openNum = 0; ?>
     <?php $i = 0; foreach ($productFilter->getFilterList() as $filter): ?>

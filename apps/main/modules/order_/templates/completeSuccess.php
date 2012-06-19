@@ -37,23 +37,6 @@
 
 
 <?php slot('analytics_report') ?>
-  <script type="text/javascript" src="http://sedu.adhands.ru/js/counter.js"></script>
-
-  <script type="text/javascript">
-  <?php foreach ($orders as $order): ?>
-    var report = new adhandsReport('http://sedu.adhands.ru/site/');
-    report.id('1053');
-    report.data('am','<?php echo $order['sum'] ?>');
-    report.data('ordid','<?php echo $order['number'] ?>');
-    report.send();
-  <?php endforeach ?>
-  </script>
-
-  <noscript>
-    <img width="1" height="1" src="http://sedu.adhands.ru/site/?static=on&clid=1053&rnd=1234567890123" style="display:none;">
-  </noscript>
-
-  <!-- /AdHands -->
   <script type="text/javascript">
     (function () {
     <?php foreach ($orders as $order): ?>

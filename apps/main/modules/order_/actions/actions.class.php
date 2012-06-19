@@ -42,7 +42,12 @@ class order_Actions extends myActions
       $this->redirect('cart');
     }
 
-    $this->order = new Order();
+    $order = new Order();
+    if(sfContext::getInstance()->getRequest()->getCookie('scId', false)){
+      $order->setSclubCardNumber(sfContext::getInstance()->getRequest()->getCookie('scId'));
+    }
+
+    $this->order = $order;
     //$this->order->region_id = $this->getUser()->getRegion('id');
     $this->form = $this->getOrderForm($this->order);
     if (!$this->form)
@@ -171,6 +176,44 @@ class order_Actions extends myActions
     }
 
     return $this->renderJson($result);
+  }
+
+  /**
+   * Executes createExternal action
+   *
+   * @param sfRequest $request A request object
+   */
+  public function executeCreateExternal(sfWebRequest $request)
+  {
+    /* @var myUser */
+    $user = $this->getUser();
+
+    $productInCart = $request['items'];
+    $regionId = $request['city_id'];
+
+    $this->forward404Unless(is_array($productInCart) && count($productInCart));
+
+    if ($regionId && ($region = RegionTable::getInstance()->findOneBy('core_id', intval($regionId))))
+    {
+      $this->getUser()->setRegion($region->id);
+    }
+
+    $user->getCart()->clear();
+    foreach ($productInCart as $id => $quantity)
+    {
+      $user->getCart()->addProduct($id, $quantity);
+    }
+
+    $params = array();
+    foreach ($request->getParameterHolder()->getAll() as $k => $v)
+    {
+      if (0 === strpos($k, 'utm_'))
+      {
+        $params[$k] = $v;
+      }
+    }
+
+    return $this->redirect($this->generateUrl('order_new').'?'.http_build_query($params));
   }
 
   /**
