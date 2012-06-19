@@ -56,32 +56,17 @@ class order_Components extends myComponents
    */
   public function executeField_payment_method_id()
   {
-    $choices = array();
+    $paymentMethodList = RepositoryManager::getPaymentMethod()->getList();
+    $this->setVar('paymentMethodList', $paymentMethodList, true);
 
-    //$list = PaymentMethodTable::getInstance()->getList();
-    $list = RepositoryManager::getPaymentMethod()->getList();
-//      var_dump($list);
-//      die();
-    $creditBankList = array();
-    foreach ($list as $paymentMethod)
-    {
-      if ($paymentMethod->getIsCredit()) {
-          foreach ($paymentMethod->getCreditBank() as $bank) {
-            $creditBankList[$bank->getId()]['name'] = $bank->getName();
-          }
-      }
-      $choices[$paymentMethod->getId()] = array(
-        'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$paymentMethod->getId(),
-        'label'       => $paymentMethod->getName(),
-        'token'       => $paymentMethod->getId(),
-        'description' => $paymentMethod->getDescription(),
-        'is_credit' => $paymentMethod->getIsCredit(),
-        'credit_bank' => $paymentMethod->getCreditBank(),
-      );
+    $creditBankList = RepositoryManager::getCreditBank()->getList();
+    $this->setVar('creditBankList', $creditBankList, true);
+    $jsonBankData = array();
+    foreach ($creditBankList as $bank) {
+        $jsonBankData[$bank->getId()]['name'] = $bank->getName();
     }
+    $this->setVar('bankJson', json_encode($jsonBankData), true);
 
-      $this->setVar('choices', $choices, true);
-      $this->setVar('bankJson', json_encode($creditBankList), true);
   }
   /**
    * Executes field_products component

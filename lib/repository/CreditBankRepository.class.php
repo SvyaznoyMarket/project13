@@ -2,50 +2,50 @@
 /**
  * Created by JetBrains PhpStorm.
  * User: Trushina
- * Date: 05.06.12
+ * Date: 19.06.12
  * Time: 12:29
  * To change this template use File | Settings | File Templates.
  */
-class PaymentMethodRepository
+class CreditBankRepository
 {
 
   /**
    * @param string $token
-   * @return null|PaymentMethodEntity
+   * @return null|CreditBankEntity
    */
   public function getById($id)
   {
     $params = array('id' => $id, 'geo_id' => 1);
-    $result =CoreClient::getInstance()->query('payment-method.get', $params);
+    $result =CoreClient::getInstance()->query('payment-method.get-credit-bank', $params);
 
     if (empty($result) || !is_array($result) || empty($result[0])) {
         return null;
     }
 
-    $paymentMethod = new PaymentMethodEntity($result[0]);
+    $creditBank = new CreditBankEntity($result[0]);
 
-    return $paymentMethod;
+    return $creditBank;
   }
     /**
      * @param string $token
-     * @return null|PaymentMethodEntity
+     * @return null|CreditBankEntity
      */
     public function getList()
     {
         $params = array('geo_id' => 1);
 
-        $result = CoreClient::getInstance()->query('payment-method.get', $params);
+        $result = CoreClient::getInstance()->query('payment-method.get-credit-bank', $params);
 
         if (empty($result) || !is_array($result)) {
             return null;
         }
 
-        $paymentMethod = array();
+        $creditBank = array();
         foreach ($result as $item) {
-            $paymentMethod[] = new PaymentMethodEntity($item);
+            $creditBank[] = new CreditBankEntity($item);
         }
 
-        return $paymentMethod;
+        return $creditBank;
     }
 
 }

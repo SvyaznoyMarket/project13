@@ -14,7 +14,7 @@
   <br />Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.
 </div>
 
-<?php if ($paymentForm): ?>
+<?php if ($paymentForm) { ?>
   <p>Через <span class="timer">5</span> сек. мы автоматически перенаправим Вас на страницу оплаты, если этого не произойдет, пожалуйста, нажмите на кнопку "Оплатить заказ".</p>
   <div class="pt10">
     <form class="form" action="<?php echo $paymentForm->getUrl() ?>" method="post">
@@ -22,12 +22,17 @@
       <input id="pay-button" type="submit" class="button bigbutton" value="Оплатить заказ" />
     </form>
   </div>
+<?php } elseif ($creditForm) { ?>
 
-<?php else: ?>
+
+<script type="text/javascript">dc_getCreditForTheProduct('4427', '<?php echo session_id();?>', 'orderProductToBuyOnCredit', { order_id : '<?php echo  $order['number']; ?>', nomenclature : '000000'});</script>
+
+
+<?php } else { ?>
   <div class="mt32" style="text-align: center">
     <a class='bBigOrangeButton' href="<?php echo url_for('homepage') ?>">Продолжить покупки</a>
   </div>
-<?php endif ?>
+<?php } ?>
 
 <?php include_partial('order_/footer') ?>
 

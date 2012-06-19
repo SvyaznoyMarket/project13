@@ -335,10 +335,13 @@ class order_Actions extends myActions
       //$paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
       $paymentMethod = RepositoryManager::getPaymentMethod()->getById($order['payment_id']);
 
-      if ($paymentMethod->isOnline())
-      {
+      if ($paymentMethod->getIsOnline()) {
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $provider->getForm($order);
+      } elseif ($paymentMethod->getIsCredit() ) {
+          $creditBank = RepositoryManager::getPaymentMethod()->getById($order['credit_bank_id']);
+          $provider = $this->getCreditProvider($order['credit_bank_id']);
+          //$this->paymentForm = $provider->getForm($order);
       }
     }
 

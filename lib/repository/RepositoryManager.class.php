@@ -37,6 +37,17 @@ class RepositoryManager
 
     /**
      * @static
+     * @return CreditBankRepository
+     */
+    public static function getCreditBank()
+    {
+        static $repo;
+        if (!$repo) $repo = new CreditBankRepository();
+        return $repo;
+    }
+
+    /**
+     * @static
      * @return PaymentMethodRepository
      */
     public static function getPaymentMethod()
