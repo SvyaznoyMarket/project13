@@ -18,7 +18,21 @@ $(document).ready(function() {
 				var creditd = $('input[name=dc_buy_on_credit]').data('model')
 				creditd.count = 1
 				creditd.cart = '/cart'
-			
+				dc_getCreditForTheProduct(
+					4427, 
+					docCookies.getItem('enter_auth'),
+					'getPayment',
+					{ price : creditd.price, count : creditd.count, type : creditd.product_type },
+					function( result ) {
+						if( ! 'payment' in result )
+							return 
+						if( result.payment > 0 ) {
+							$('.creditboxinner .price').html( printPrice( result.payment ) )
+							$('.creditbox').show()
+						}
+					}
+				)
+/*			
 				JsHttpRequest.query(
 					'http://direct-credit.ru/widget/payment.php',
 					{
@@ -32,22 +46,14 @@ $(document).ready(function() {
 					},
 					false
 				)
+*/				
 			},
 			
 			getState : function() {
 				return $('.creditbox input:checked').length
 			}
 		}
-/*	dc_getCreditForTheProduct( '4427', creditd.session_id , 'getValueOfMonthlyPayment', creditd )
-		{ price : '<?php echo $item->getPrice(); ?>', count : '1', 
-		name : '<?php echo $item->getName(); ?>', product_type : 'another', 
-		articul : '<?php echo $item->getArticle(); ?>', button_id : '', cart : '/cart' }
-	);
-	
-	//var price = $('.dc_credit_button').val();
-	//$('.creditboxinner .price').html(price)
-	//$('.dc_credit_button').remove();
-*/
+		
 		creditBox.init()
 	}
 
