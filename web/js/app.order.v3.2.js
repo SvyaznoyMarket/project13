@@ -1028,6 +1028,23 @@ $(document).ready(function() {
 					return true
 			$(this).val('')
 		})
+		
+	/* Credit */
+
+		    
+	if( $('.bankWrap').length ) {
+		var banks = $('.bankWrap > .bSelect').data('value')
+		var options = $('<div>').addClass('bSelect__eDropmenu')
+		for( var id in banks ) {
+			var option = $('<div>').attr('ref', id).append( $('<span>').text( banks[id].name ) )
+			option.click( function() {
+				$('.bankWrap > .bSelect').find('span:first').text( $(this).find('span').text() )
+				$('input[name=credit_bank_id]').val( $(this).attr('ref') )
+			})
+			options.append( option )
+		}
+		$('.bankWrap > .bSelect').append( options )
+	}
 })
 
 
