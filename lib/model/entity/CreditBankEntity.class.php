@@ -8,7 +8,18 @@
  */
 class CreditBankEntity
 {
+
   /**
+   * Кредитный брокет Kupivkredit
+   */
+  const PROVIDER_KUPIVKREDIT = 1;
+
+  /**
+   * Кредитный брокет Direct Credit
+   */
+  const PROVIDER_DIRECT_CREDIT = 2;
+
+    /**
    * @var int
    */
   private $id;

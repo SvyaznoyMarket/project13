@@ -22,10 +22,12 @@
       <input id="pay-button" type="submit" class="button bigbutton" value="Оплатить заказ" />
     </form>
   </div>
-<?php } elseif ($creditForm) { ?>
-
-
-<script type="text/javascript">dc_getCreditForTheProduct('4427', '<?php echo session_id();?>', 'orderProductToBuyOnCredit', { order_id : '<?php echo  $order['number']; ?>', nomenclature : '000000'});</script>
+<?php } elseif ($isCredit) { ?>
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    <?php echo $creditScript; ?>
+    <?php //if ($creditProviderId == CreditBankEntity::PROVIDER_KUPIVKREDIT) {  ?>
+    <?php //} elseif ($creditProviderId == CreditBankEntity::PROVIDER_DIRECT_CREDIT) { ?>
+    <?php //} ?>
 
 
 <?php } else { ?>

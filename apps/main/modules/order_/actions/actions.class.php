@@ -335,20 +335,88 @@ class order_Actions extends myActions
       //$paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
       $paymentMethod = RepositoryManager::getPaymentMethod()->getById($order['payment_id']);
 
+      $isCredit = false;
       if ($paymentMethod->getIsOnline()) {
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $provider->getForm($order);
       } elseif ($paymentMethod->getIsCredit() ) {
-          $creditBank = RepositoryManager::getPaymentMethod()->getById($order['credit_bank_id']);
-          $provider = $this->getCreditProvider($order['credit_bank_id']);
-          //$this->paymentForm = $provider->getForm($order);
+          $isCredit = true;
+          $creditBank = RepositoryManager::getCreditBank()->getById($order['credit_bank_id']);
+          $this->creditProviderId = $creditBank->getProviderId();
+          $jsCreditData = array();
+          if ($this->creditProviderId == CreditBankEntity::PROVIDER_KUPIVKREDIT) {
+              $kupivkreditData = $this->_getKupivkreditData($order);
+              $jsCreditData['wiget'] = 'kupivkredit';
+              $jsCreditData['vars'] = array(
+                  'order' => $kupivkreditData,
+                  'sig' => $this->_signKupivkreditMessage($kupivkreditData)
+              );
+
+          } elseif ($this->creditProviderId == CreditBankEntity::PROVIDER_DIRECT_CREDIT) {
+
+              $jsCreditData['wiget'] = 'direct-credit';
+              $jsCreditData['vars'] = array(
+                  'number' => $order['number'],
+                  'items' => array()
+              );
+              foreach ($order['products'] as $product) {
+                  $jsCreditData['vars']['items'][] = array(
+                      'quantity' => $product['quantity'],
+                      'price' => $product['price'],
+                      'articul' => $product['token'],
+                      'type' => 'another',
+                  );
+              }
+          }
+          $this->setVar('jsCreditData', $jsCreditData, true);
       }
     }
 
+    $this->setVar('isCredit', $isCredit, true);
     $this->setVar('orders', $orders, true);
     $this->setVar('gaItems', $gaItems, true);
   }
 
+
+  private function _getKupivkreditData($order) {
+
+      $data = array();
+      $data['items'] = array();
+      foreach ($order['products'] as $product) {
+          $data['items'][] = array(
+              'title' => $product['token'],
+              'category' => '',
+              'qty' => $product['quantity'],
+              'price' => $product['price']
+          );
+      }
+      $data['details'] = array(
+          'firstname' => $order['recipient_first_name'],
+          'lastname' => $order['recipient_last_name'],
+          'middlename' => '',
+          'email' => $order['recipient_email'],
+          'cellphone' => $order['recipient_phonenumbers'],
+      );
+
+      $kupivkreditConfig = sfConfig::get('app_credit_provider_kupivkredit');
+      $data['partnerId'] = $kupivkreditConfig['partnerId'];
+      $data['partnerName'] = $kupivkreditConfig['partnerName'];
+      $data['partnerOrderId'] = $order['number'];
+      $data['deliveryType'] = '';
+
+      $base64 = base64_encode(json_encode($data));
+      return $base64;
+  }
+
+  private function _signKupivkreditMessage($message, $iterationCount = 1102) {
+      $kupivkreditConfig = sfConfig::get('app_credit_provider_kupivkredit');
+      $salt = $kupivkreditConfig['signature'];
+      $message = $message.$salt;
+        $result = md5($message).sha1($message);
+        for($i = 0; $i < $iterationCount; $i++)
+            $result = md5($result);
+        return $result;
+   }
 
   /**
    * @param Order|null $order
@@ -531,6 +599,7 @@ class order_Actions extends myActions
       $return = $order->exportToCore();
       $return['geo_id'] = $user->getRegion('core_id');
       $return['delivery_period'] = $order->delivery_period;
+      //$return['credit_bank_id'] =  $order->credit_bank_id;
       $return['product'] = $order->ProductItem;
       $return['service'] = $order->ServiceItem;
       $return['address_metro'] = $order->address_metro;
@@ -540,7 +609,7 @@ class order_Actions extends myActions
       $return['address_apartment'] = $order->address_apartment;
       $return['address_floor'] = $order->address_floor;
 
-      return $return;
+        return $return;
     }, $orders);
     //dump($coreData, 1);
     $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
