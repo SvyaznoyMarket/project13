@@ -63,6 +63,13 @@ class productCard_Components extends myComponents
       );
     }
 
+    if (true === $this->isComment) {
+      $list[] = array(
+        'name' => $this->product->getName().' - отзывы',
+        'url'  => $this->product->getLink().'/comments',
+      );
+    }
+
     $this->setVar('list', $list, true);
   }
 

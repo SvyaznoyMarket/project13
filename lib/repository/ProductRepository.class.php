@@ -110,6 +110,20 @@ class ProductRepository extends ObjectRepository
     return $list ? reset($list) : null;
   }
 
+  /**
+   * @param $id
+   * @param bool $loadDynamic
+   * @return ProductEntity|null
+   */
+  public function getById($id, $loadDynamic = false)
+  {
+    $list = $this->getListFyFilter(array(
+      'id'     => (int)$id,
+      'geo_id' => (int)RepositoryManager::getRegion()->getDefaultRegionId(),
+    ), $loadDynamic);
+    return $list ? reset($list) : null;
+  }
+
   public function loadRelatedAndAccessories(ProductEntity $product, $loadDynamic = true, $limit = null)
   {
     if($limit){

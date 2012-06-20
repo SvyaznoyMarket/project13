@@ -24,20 +24,24 @@ class productCommentActions extends myActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->product = $this->getRoute()->getObject();
+
+    $this->forward404If(!$this->product);
+    $this->productEntity = RepositoryManager::getProduct()->getByid($this->product->core_id, true);
+
     $this->sort = $this->getRequestParameter('sort', 'created_desc');
     $this->page = $this->getRequestParameter('page', 1);
 
     // SEO ::
-    $this->product->description = '<noindex>'.$this->product->description.'</noindex>';
+    $this->product->setDescription('<noindex>'.$this->product->getDescription().'</noindex>');
     $title = '%s - отзывы покупателей о товаре %s - интернет-магазин Enter.ru';
     $this->getResponse()->setTitle(sprintf(
-      $title, $this->product['name'], $this->product['name']
+      $title, $this->product->getName(), $this->product->getName()
     ));
     $descr = 'Интернет магазин Enter.ru предлагает ознакомиться с отзывами владельцев товара %s. На этой странице Вы можете прочитать отзывы покупателей о товаре %s, а так же оставить свое мнение.';
     $this->getResponse()->addMeta('description', sprintf(
-      $descr, $this->product['name'], $this->product['name']
+      $descr, $this->product->getName(), $this->product->getName()
     ));
-    $this->getResponse()->addMeta('keywords', sprintf('%s отзывы мнения покупателей владельцев пользователей', $this->product['name']));
+    $this->getResponse()->addMeta('keywords', sprintf('%s отзывы мнения покупателей владельцев пользователей', $this->product->getName()));
 
     /* SEO
 	  $title = "«Отзывы»: ".$this->product['name'] . ' в магазинах "Enter" ';
