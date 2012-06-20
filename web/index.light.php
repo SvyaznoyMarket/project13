@@ -2,7 +2,7 @@
 namespace light;
 use Logger;
 
-session_start();
+//session_start();
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov

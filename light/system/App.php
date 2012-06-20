@@ -2,7 +2,7 @@
 namespace light;
 use Logger;
 require_once(ROOT_PATH.'system/exception/systemException.php');
-require_once(ROOT_PATH.'lib/CoreClient.php');
+require_once(ROOT_PATH.'lib/coreClient/CoreClient.php');
 require_once(ROOT_PATH.'system/Response.php');
 require_once(ROOT_PATH.'lib/log4php/Logger.php');
 

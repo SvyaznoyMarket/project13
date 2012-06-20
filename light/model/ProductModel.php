@@ -10,6 +10,7 @@ namespace light;
 
 require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
+require_once(VIEW_PATH.'dataObject/ProductShortData.php');
 //require_once(VIEW_PATH.'dataObject/PromoData.php');
 
 class ProductModel
@@ -72,13 +73,7 @@ class ProductModel
     return $return;
   }
 
-  /**
-   * Метод создан для ускорения
-   * @param int[] $idList
-   * @param str[] $valueNames имена необходимых полей
-   * @param $callback
-   */
-  public function getProductValuesByIdListAsync($idList, $valueNames, $callback){
+  public function getProductsShortDataByIdListAsync($idList, $callback){
     $ids = array();
     foreach($idList as $id){
       $ids[] = (int) $id;
@@ -91,25 +86,27 @@ class ProductModel
     }
 
     $data = array();
-    $cb = function($response) use (&$data, &$valueNames, &$callback)
+    $self = $this;
+    $count = 2;
+    $cb = function($response) use (&$self, &$data, &$callback, &$count)
     {
-      $valueNames = array_flip($valueNames);
-      foreach($valueNames as $key => $val){
-        $valueNames[$key] = Null;
+      /** @var $self ProductModel */
+      if (empty($data))
+        $data = $response;
+      else // array_merge do not combine equals keys
+        foreach ($response as $key => $value)
+          $data[$key] = array_merge($data[$key], $value);
+      $count--;
+      if($count === 0)
+      {
+        $list = array();
+        foreach ($data as $item)
+          $list[] = new ProductShortData($item);
+        $callback($list);
       }
-
-      $return = array();
-      foreach ($data as $product){
-        $return[$product['id']] = $valueNames;
-        foreach($product as $propertyName => $propertyValue){
-          if(isset($valueNames[$propertyName])){
-            $return[$product['id']][$propertyName] = $propertyValue;
-          }
-        }
-      }
-      $callback($return);
     };
-    App::getCoreV2()->addQuery('product.get-static', array('id' => $ids), array(), $cb);
+    App::getCoreV2()->addQuery('product/get-static', array('id' => $ids), array(), $cb);
+    App::getCoreV2()->addQuery('product/get-dynamic', array('id' => $ids), array(), $cb);
   }
 
 }

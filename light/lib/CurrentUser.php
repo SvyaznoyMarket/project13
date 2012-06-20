@@ -10,6 +10,10 @@ use Logger;
  */
 require_once(ROOT_PATH.'system/exception/dataFormatException.php');
 require_once(ROOT_PATH.'system/App.php');
+require_once(ROOT_PATH.'lib/cart/Cart.php');
+require_once(ROOT_PATH.'lib/cart/SessionCartContainer.php');
+require_once(ROOT_PATH.'lib/cart/V2cartPriceContainer.php');
+
 
 class CurrentUser
 {
@@ -26,6 +30,11 @@ class CurrentUser
   private $ip;
 
   /**
+   * @var Cart
+   */
+  private $cart;
+
+  /**
    * @static
    * @return CurrentUser
    */
@@ -36,6 +45,13 @@ class CurrentUser
       $instance = new CurrentUser();
     }
     return $instance;
+  }
+
+  /**
+   * @return Cart
+   */
+  public function getCart(){
+    return $this->cart;
   }
 
   /**
@@ -125,5 +141,7 @@ class CurrentUser
       Logger::getRootLogger()->warn($e->getMessage());
       $this->region = App::getRegion()->getByGeoIPCode(self::DEFAULT_GEO_IP_CODE);
     }
+
+    $this->cart = new Cart(new SessionCartContainer(), new MockCartPriceContainer());
   }
 }

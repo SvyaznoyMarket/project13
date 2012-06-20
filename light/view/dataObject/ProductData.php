@@ -1,4 +1,6 @@
 <?php
+namespace light;
+
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov
@@ -9,4 +11,8 @@
 class ProductData
 {
 
+
+  public function getPrice(){
+    return 0;
+  }
 }

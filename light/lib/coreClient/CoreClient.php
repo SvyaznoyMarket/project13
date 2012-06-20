@@ -1,9 +1,10 @@
 <?php
 namespace light;
 use Logger;
+use Exception;
 
-require_once(__DIR__.'/log4php/Logger.php');
-require_once(ROOT_PATH.'system/exception/coreClientException.php');
+require_once(__DIR__ . '/../log4php/Logger.php');
+require_once('exception/coreClientException.php');
 
 class CoreClient
 {
@@ -157,8 +158,9 @@ class CoreClient
     $this->multiHandler = null;
     $this->callbacks = array();
     $this->resources = array();
-    if ($error) {
+    if (!is_null($error)) {
       $this->log((string)$error, 'error');
+      /* @var $error Exception  */
       throw $error;
     }
   }

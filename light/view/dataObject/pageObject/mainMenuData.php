@@ -1,5 +1,6 @@
 <?php
 namespace light;
+use Iterator;
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov
