@@ -1,19 +1,17 @@
-<?php if (false): ?>
-  <div class="filter regionselect" style="float: none;">
-    <form action="/" method="post" id="region"></form>
-      <span class="fl">Регион:</span>
-      <div class="filterchoice regionchoice">
-          <a href="<?php echo $active['url']?>" class="regionlink"><?php echo $active['name']?></a>
-          <div class="regionlist">
-              <a href="<?php echo $active['url']?>" class="regionlink"><?php echo $active['name']?></a>
-              <ul>
-                  <?php foreach ($list as $item): ?>
-                  <li><a href="<?php echo $item['url'] ?>" style="font-weight: normal;"><?php echo $item['name'] ?></a></li>
-                  <?php endforeach ?>
-              </ul>
-          </div>
-      </div>
-  </div>
-<?php endif ?>
+<div class="popup" id="region-block" style="width: 640px;">
+  <i title="Закрыть" class="close">Закрыть</i>
+  <div class="popupbox width694 height250">
+    <h2 class="pouptitle">Привет, укажи из какого ты города</h2>
 
-<a href="<?php echo $active['url']?>" id="jsregion" data-url="<?php echo url_for('region_init') ?>"><?php echo $active['name']?></a>
+    <form class="ui-css">
+      <input id="jscity" data-url-autocomplete="<?php echo url_for('region_autocomplete') ?>" value="" class="bBuyingLine__eText mInputLong" />
+      <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled">
+      <div id="jscities" style="position:relative"></div>
+    </form>
+
+    <div class="pt10">
+      <?php include_component('region', 'top_list') ?>
+    </div>
+
+  </div>
+</div>

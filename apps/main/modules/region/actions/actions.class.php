@@ -25,16 +25,21 @@ class regionActions extends myActions
   */
   public function executeAutocomplete(sfWebRequest $request)
   {
+    $limit = 8;
+
     $this->forward404Unless($request->isXmlHttpRequest());
 
     $keyword = $request['q'];
 
     $data = array();
-    if (!empty($keyword))
+    if (mb_strlen($keyword) >= 3)
     {
       $result = CoreClient::getInstance()->query('GEO/autocomplete', array('letters' => $keyword));
+      $i = 0;
       foreach ($result as $item)
       {
+        if ($i >= $limit) break;
+
         $data[] = array(
           'token' => $item['token'],
           'name'  =>
@@ -46,6 +51,8 @@ class regionActions extends myActions
             ),
           'url'  => $this->generateUrl('region_change', array('region' => $item['token'])),
         );
+
+        $i++;
       }
     }
 
@@ -56,14 +63,20 @@ class regionActions extends myActions
 
   public function executeChange(sfWebRequest $request)
   {
-    $region = $this->getRoute()->getObject();
+    if (intval($request['region']) == $request['region'])
+    {
+      $region = RegionTable::getInstance()->getByCoreId($request['region']);
+    }
+    else {
+      $region = $this->getRoute()->getObject();
+    }
 
     if ($region)
     {
       $this->getUser()->setRegion($region->id);
     }
 
-    $this->redirect($request->getReferer());
+    $this->redirect($request->getReferer() ?: 'homepage');
   }
 
   public function executeRedirect(sfWebRequest $request)
