@@ -15,7 +15,10 @@ class PaymentMethodRepository
    */
   public function getById($id)
   {
-    $params = array('id' => $id, 'geo_id' => 1);
+    if (!$id) {
+        return  null;
+    }
+    $params = array('id' => array($id), 'geo_id' => 1);
     $result =CoreClient::getInstance()->query('payment-method.get', $params);
 
     if (empty($result) || !is_array($result) || empty($result[0])) {

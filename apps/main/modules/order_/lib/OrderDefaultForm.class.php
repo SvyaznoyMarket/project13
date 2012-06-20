@@ -95,7 +95,11 @@ class OrderDefaultForm extends BaseOrderForm
     $this->validatorSchema['extra'] = new sfValidatorString(array('required' => false));
     $this->widgetSchema['extra']->setLabel('Комментарии:');
 
-    // sclub_card_number
+    $this->widgetSchema['credit_bank_id'] = new sfWidgetFormInput();
+    $this->validatorSchema['credit_bank_id'] = new sfValidatorString(array('required' => false));
+    $this->widgetSchema['credit_bank_id']->setLabel('');
+
+      // sclub_card_number
     $this->widgetSchema['sclub_card_number'] = new sfWidgetFormInputText();
     $this->widgetSchema['sclub_card_number']->setLabel('Номер карточки связного клуба');
     $this->validatorSchema['sclub_card_number'] = new myValidatorSClubCardNumber(array('required' => false), array('invalid' => 'Номер карточки введен неверно'));
@@ -106,7 +110,7 @@ class OrderDefaultForm extends BaseOrderForm
       'component' => array('order_', 'field_payment_method_id'),
       'component_param' => array(),
     ));
-    $this->validatorSchema['payment_method_id'] = new sfValidatorDoctrineChoice(array('model' => 'PaymentMethod', 'required' => true), array('required' => 'Выберите способ оплаты'));
+    $this->validatorSchema['payment_method_id'] = new sfValidatorInteger(array('required' => true), array('required' => 'Укажите cпособ оплаты'));
     $this->widgetSchema['payment_method_id']->setLabel('Выберите способ оплаты:');
 
     // agreed
@@ -129,6 +133,7 @@ class OrderDefaultForm extends BaseOrderForm
       'address_apartment',
       'address_floor',
       'extra',
+      'credit_bank_id',
       'sclub_card_number',
       'payment_method_id',
       'agreed',

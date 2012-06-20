@@ -117,6 +117,8 @@ class order_Actions extends myActions
     {
       /* @var $baseOrder Order */
       $baseOrder = $form->updateObject();
+
+      $baseOrder->mapValue('credit_bank_id', $form->getValue('credit_bank_id'));
       /*
       $baseOrder->address = ''
         .($form->getValue('address_metro') ? "метро {$form->getValue('address_metro')}, " : '')
@@ -202,7 +204,7 @@ class order_Actions extends myActions
     else {
       $result = Core::getInstance()->query('order.get', array(
         'id'     => $orderIds,
-        'expand' => array('geo', 'user', 'product', 'service'),
+        'expand' => array('geo', 'user', 'product', 'service', 'credit'),
       ));
     }
 
@@ -341,34 +343,37 @@ class order_Actions extends myActions
         $this->paymentForm = $provider->getForm($order);
       } elseif ($paymentMethod->getIsCredit() ) {
           $isCredit = true;
-          $creditBank = RepositoryManager::getCreditBank()->getById($order['credit_bank_id']);
-          $this->creditProviderId = $creditBank->getProviderId();
+          //print_r($order);
+          $creditBank = RepositoryManager::getCreditBank()->getById($order['credit']['credit_bank_id']);
+          $creditProviderId = $creditBank->getProviderId();
           $jsCreditData = array();
-          if ($this->creditProviderId == CreditBankEntity::PROVIDER_KUPIVKREDIT) {
+          if ($creditProviderId == CreditBankEntity::PROVIDER_KUPIVKREDIT) {
               $kupivkreditData = $this->_getKupivkreditData($order);
-              $jsCreditData['wiget'] = 'kupivkredit';
+              $jsCreditData['widget'] = 'kupivkredit';
               $jsCreditData['vars'] = array(
                   'order' => $kupivkreditData,
                   'sig' => $this->_signKupivkreditMessage($kupivkreditData)
               );
 
-          } elseif ($this->creditProviderId == CreditBankEntity::PROVIDER_DIRECT_CREDIT) {
+          } elseif ($creditProviderId == CreditBankEntity::PROVIDER_DIRECT_CREDIT) {
 
-              $jsCreditData['wiget'] = 'direct-credit';
+              $jsCreditData['widget'] = 'direct-credit';
               $jsCreditData['vars'] = array(
                   'number' => $order['number'],
                   'items' => array()
               );
-              foreach ($order['products'] as $product) {
+              foreach ($order['product'] as $product) {
                   $jsCreditData['vars']['items'][] = array(
                       'quantity' => $product['quantity'],
                       'price' => $product['price'],
-                      'articul' => $product['token'],
+                      'articul' => $product['id'],
                       'type' => 'another',
                   );
               }
           }
-          $this->setVar('jsCreditData', $jsCreditData, true);
+//          print_r($jsCreditData);
+//          die();
+          $this->setVar('jsCreditData', json_encode($jsCreditData), true);
       }
     }
 
@@ -382,23 +387,24 @@ class order_Actions extends myActions
 
       $data = array();
       $data['items'] = array();
-      foreach ($order['products'] as $product) {
+      foreach ($order['product'] as $product) {
           $data['items'][] = array(
-              'title' => $product['token'],
+              'title' => $product['name'],
               'category' => '',
               'qty' => $product['quantity'],
               'price' => $product['price']
           );
       }
       $data['details'] = array(
-          'firstname' => $order['recipient_first_name'],
-          'lastname' => $order['recipient_last_name'],
-          'middlename' => '',
-          'email' => $order['recipient_email'],
-          'cellphone' => $order['recipient_phonenumbers'],
+          'firstname' => $order['first_name'],
+          'lastname' => $order['last_name'],
+          'middlename' => $order['middle_name'],
+          'email' => '',
+          'cellphone' => $order['mobile'],
       );
 
-      $kupivkreditConfig = sfConfig::get('app_credit_provider_kupivkredit');
+      $kupivkreditConfig = sfConfig::get('app_credit_provider');
+      $kupivkreditConfig = $kupivkreditConfig['kupivkredit'];
       $data['partnerId'] = $kupivkreditConfig['partnerId'];
       $data['partnerName'] = $kupivkreditConfig['partnerName'];
       $data['partnerOrderId'] = $order['number'];
@@ -599,7 +605,8 @@ class order_Actions extends myActions
       $return = $order->exportToCore();
       $return['geo_id'] = $user->getRegion('core_id');
       $return['delivery_period'] = $order->delivery_period;
-      //$return['credit_bank_id'] =  $order->credit_bank_id;
+      $return['payment_id'] =  $order->payment_method_id;
+      $return['credit_bank_id'] =  $order->credit_bank_id;
       $return['product'] = $order->ProductItem;
       $return['service'] = $order->ServiceItem;
       $return['address_metro'] = $order->address_metro;
