@@ -1,5 +1,23 @@
 $(document).ready(function() {
 
+	window.blockScreen = function( text ) {
+		$('<img src="/images/ajaxnoti.gif" />').css('display', 'none').appendTo('body') //preload
+		var noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>')
+        noti.appendTo('body')
+        this.block = function() {
+        	if( noti.is(':hidden') )
+			noti.lightbox_me({
+				centered:true,
+				closeClick:false,
+				closeEsc:false
+			})
+		}
+		this.unblock = function() {
+			noti.trigger('close')
+		}
+	}
+	blockDiv = new blockScreen('Ваш заказ оформляется')
+	
     Templating = {
         assign: function (el, data) {
             $.each(el.data('assign'), function(varName, callback) {
@@ -906,6 +924,7 @@ $(document).ready(function() {
         }
         else {
             button.text('Оформляю заказ...')
+            blockDiv.block()
 
             var data = form.serializeArray()
             data.push({ name: 'delivery_map', value: JSON.stringify(DeliveryMap.data()) })
@@ -939,6 +958,7 @@ $(document).ready(function() {
                                 showError(el, v, true)
                             })
                             button.text('Завершить оформление')
+                            blockDiv.unblock()
                         }
                         else {
                             alert(result.error.message);
@@ -948,6 +968,7 @@ $(document).ready(function() {
                 },
                 error: function() {
                     button.text(button.data('text'))
+                    blockDiv.unblock()
                 },
                 complete: function() {
                     button.data('locked', false)
