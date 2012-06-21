@@ -1,32 +1,45 @@
-<script src="http://direct-credit.ru/JsHttpRequest.js" type="text/javascript"></script>
-<script src="http://direct-credit.ru/widget/dc_script_utf.js" type="text/javascript"></script>
-
-
 <div class="fl width645 font14">
-    <?php if ($cart->getTotal() >= ProductEntity::MIN_CREDIT_PRICE ) : ?>
-        <label class="bigcheck" for=""><b></b>Выбранные товары купить в кредит<input class="<?php if ($selectCredit) echo 'selected'; ?>" type="radio" value="1" name=""></label>
 
-        <input class="dc_credit_button" id="dc_buy_on_credit_tmp" name="dc_buy_on_credit" type="button" value="Расчет платежа..." />
-        <script type="text/javascript">dc_getCreditForTheProduct('4427', '<?php echo session_id();?>', 'getValueOfMonthlyPayment', { price : '<?php echo $cart->getTotal() ?>', count : '1', name : 'tmp', product_type : 'another', articul : 'tmp', button_id : '', cart : '/cart' });</script>
+		<?php if ($cart->getTotal() >= ProductEntity::MIN_CREDIT_PRICE ) : ?>
+			<label class="bigcheck <?php if ($selectCredit) echo 'checked'; ?>" for="selectCredit"><b></b>Выбранные товары купить в кредит
+			<input class="" type="checkbox" id="selectCredit"
+				value="<?php if ($selectCredit){ echo '1';} else { echo '0'; } ?>" name="selectCredit"/></label>
+		<?php endif; ?>
 
-    <?php endif; ?>
-    <div class="pl35">
-        Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.<br><br>
-        Для оформления заказа от вас потребуется только имя и телефон для связи.
+	<div class="pl35">
+		Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.<br><br>
+		Для оформления заказа от вас потребуется только имя и телефон для связи.
     </div>
+    
 </div>
-<div class="fr ar">
+<div id="total" class="fr ar">
     <div class="left">
-        <div class="font14">
-            Сумма заказа:
-            <?php if ($cart->getTotal() >= ProductEntity::MIN_CREDIT_PRICE) : ?>
+    	
+    	<?php if ($cart->getTotal() >= ProductEntity::MIN_CREDIT_PRICE) : ?>
+    	<div id="creditSum" style="display:none">
+			<div class="font14">
+				Сумма заказа:
                 <span  <?php if (!$selectCredit) : ?> style="display: none;" <?php endif; ?>>
                     <span class="price"><?php echo $cart->getTotal(true) ?></span> <span class="rubl">p</span>
-                    <br>Сумма первоночального взноса
-                <span>
-            <?php endif; ?>
+                    <br/>Сумма первоночального взноса
+                <span>        
+			</div>
+			<div class="font30"><strong>
+				<span id="creditPrice">(считаем...)</span>
+        		<span class="rubl">p</span>
+        	</strong></div>
+	    </div>
+    	<?php endif; ?>
+    	<div id="commonSum">
+			<div class="font14">
+				Сумма заказа:
+			</div>
+			<div class="font30"><strong>
+				<span class="price">
+						<?php echo $cart->getTotal(true); ?>
+				</span>
+			<span class="rubl">p</span></strong></div>
         </div>
-        <div class="font30"><strong><span class="price"><?php echo $cart->getTotal(true) ?></span> <span class="rubl">p</span></strong></div>
     </div>
 
 </div>
