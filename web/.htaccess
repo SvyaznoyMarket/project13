@@ -17,6 +17,7 @@ Options +FollowSymLinks +ExecCGI
 
   RewriteRule ^euro2012 football.html [L]
   RewriteRule ^nespresso nespresso.html [L]
+  RewriteRule ^waterheater water_heater.html [L]
 
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$
