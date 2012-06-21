@@ -22,19 +22,16 @@
       <input id="pay-button" type="submit" class="button bigbutton" value="Оплатить заказ" />
     </form>
   </div>
-<?php } elseif ($isCredit) { ?>
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    <?php echo $creditScript; ?>
-    <?php //if ($creditProviderId == CreditBankEntity::PROVIDER_KUPIVKREDIT) {  ?>
-    <?php //} elseif ($creditProviderId == CreditBankEntity::PROVIDER_DIRECT_CREDIT) { ?>
-    <?php //} ?>
-
-
 <?php } else { ?>
   <div class="mt32" style="text-align: center">
     <a class='bBigOrangeButton' href="<?php echo url_for('homepage') ?>">Продолжить покупки</a>
   </div>
 <?php } ?>
+
+<?php if ($isCredit) { ?>
+    <div id='credit-widget' data-value='<?php echo $jsCreditData; ?>' ></div>
+<?php } ?>
+
 
 <?php include_partial('order_/footer') ?>
 
