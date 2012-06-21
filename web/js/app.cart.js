@@ -1,5 +1,7 @@
 $(document).ready(function() {
-	var total = $('.allpageinner > .basketinfo .price')
+
+	/* basket */
+	var total = $('#total .price')
 
 	function getTotal() {
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
@@ -191,4 +193,63 @@ $(document).ready(function() {
 		addLine( $('div.bBacketServ.mBig tr:eq(1)', bline) )
 		getTotal()
 	}
+	
+	/* credit */
+	function anotherSum() {
+		$('#creditSum').toggle()
+	    $('#commonSum').toggle()
+	}
+	
+	if( $('#selectCredit').val()*1 ) {
+		anotherSum()
+	}
+	
+	$('label.bigcheck').click( function(e) {
+		var target = $(e.target)
+		if (!target.is('input')) {
+			return
+		}
+		$(this).toggleClass('checked')
+		anotherSum()
+	})	
+//console.info( basket )
+	var arr_products = []
+	for( var i=0, l=basket.length; i < l; i++ ) {
+		var tmp = {
+			id : i,
+			price : basket[i].sum,
+			count : 2,
+			type : 'another'
+		}
+		
+		arr_products.push( tmp )
+	}
+	
+	function findKey( array, id) {
+		for( var key=0, lk=array.length; key < lk; key++ ) {
+			if( array[key].id == id )
+				return key
+		}
+		return -1
+	}
+		
+	dc_getCreditForTheProduct(
+		'4427',
+		'none',
+		'getPayment', 
+		{ products : arr_products },
+		function(result){ 
+			var creditPrice = 0
+			for( var i=0, l=basket.length; i < l; i++ ) {
+				var key = findKey( arr_products, result.products[i].id )
+				if( key >= 0 ) {
+					var itemPrice = arr_products[key].price
+					creditPrice += result.products[i].initial_instalment * itemPrice/100 * arr_products[key].count
+				}
+				
+			}
+			$('#creditPrice').text( printPrice( creditPrice ) )
+		}
+	)
+
 })

@@ -1045,6 +1045,20 @@ $(document).ready(function() {
 		}
 		$('.bankWrap > .bSelect').append( options )
 	}
+	
+	/*fill up*/
+    /*
+	$('#order_delivery_type_id_1').click()
+	setTimeout( function() {
+		$('#order_recipient_first_name').val('TEST')
+		$('#order_recipient_last_name').val('TEST')
+		$('#order_recipient_phonenumbers').val('89253333333       ')
+		$('#payment_method_6-field input').click()
+		$('#order_agreed').click()
+		$('#order-submit').click()
+	}, 2000)
+    */
+	
 })
 
 
