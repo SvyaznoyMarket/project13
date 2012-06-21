@@ -42,7 +42,9 @@
         </div>
         <div class="basketinfo pb15">
           <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo $item['priceFormatted'] ?></span> <span class="rubl">p</span></span></div>
-          <div class="right"><div class="numerbox"><?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_add', array('product' => $item['core_id'], 'quantity' => -1,)) : '<b class="ajaless" title="Уменьшить"></b>' ?><span class="ajaquant"><?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_add', array('product' => $item['core_id'], 'quantity' => 1,)) ?></div></div>
+          <div class="right"><div class="numerbox"><?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_add', array('product' => $item['core_id'], 'quantity' => -1,)) : '<b class="ajaless" title="Уменьшить"></b>' ?><span class="ajaquant"><?php echo $item['quantity'] ?> шт.</span>
+              <b href="<?php echo url_for('cart_add', array('product' => $item['core_id'])) . '/1' ?>" class="ajamore" title="Увеличить"></b>
+          </div></div>
         </div>
         <div class="basketinfo">
           <div class="left font24"><span class="sum"><?php echo ($item['total']) ?></span> <span class="rubl">p</span></div>

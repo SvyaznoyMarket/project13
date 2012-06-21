@@ -351,6 +351,7 @@ class order_Actions extends myActions
               $kupivkreditData = $this->_getKupivkreditData($order);
               $jsCreditData['widget'] = 'kupivkredit';
               $jsCreditData['vars'] = array(
+                  'sum' => $order['sum'],
                   'order' => $kupivkreditData,
                   'sig' => $this->_signKupivkreditMessage($kupivkreditData)
               );
@@ -371,8 +372,9 @@ class order_Actions extends myActions
                   );
               }
           }
-//          print_r($jsCreditData);
+//         print_r($jsCreditData);
 //          die();
+          $this->setVar('jsCreditArray', $jsCreditData, true);
           $this->setVar('jsCreditData', json_encode($jsCreditData), true);
       }
     }
@@ -410,13 +412,15 @@ class order_Actions extends myActions
       $data['partnerOrderId'] = $order['number'];
       $data['deliveryType'] = '';
 
+//      print_r($data);
+//      die();
       $base64 = base64_encode(json_encode($data));
       return $base64;
   }
 
   private function _signKupivkreditMessage($message, $iterationCount = 1102) {
-      $kupivkreditConfig = sfConfig::get('app_credit_provider_kupivkredit');
-      $salt = $kupivkreditConfig['signature'];
+      $kupivkreditConfig = sfConfig::get('app_credit_provider');
+      $salt = $kupivkreditConfig['kupivkredit']['signature'];
       $message = $message.$salt;
         $result = md5($message).sha1($message);
         for($i = 0; $i < $iterationCount; $i++)
