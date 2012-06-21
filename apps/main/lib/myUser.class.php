@@ -67,22 +67,11 @@ class myUser extends myGuardSecurityUser
   public function getRegion($key = null)
   {
     if (!$this->region) {
-      $region = false;
+      $regionCoreId = sfContext::getInstance()->getRequest()->getCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'));
 
-      $regionGeoIpCode = sfContext::getInstance()->getRequest()->getCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'));
-
-      if ($regionGeoIpCode) {
-        //$region = RegionTable::getInstance()->findOneByIdAndType($region_id, 'city');
-        $region = RegionTable::getInstance()->findOneBy('geoip_code', $regionGeoIpCode);
-        if (!$region || !$region->isCity()) {
-          $region = false;
-        }
-      }
-
-      if (!$region) {
-        $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
-        $region = !empty($geoip['region']) ? RegionTable::getInstance()->findOneByGeoip_code($geoip['region']) : RegionTable::getInstance()->getDefault();
-
+      $region = !empty($regionCoreId)?RegionTable::getInstance()->findOneBy('core_id', $regionCoreId):Null;
+      if (!$region || !$region->isCity()) {
+        $region = RegionTable::getInstance()->getDefault();
         $this->setRegion($region->id);
       }
 
@@ -93,13 +82,13 @@ class myUser extends myGuardSecurityUser
         'type' => $region->type,
         'product_price_list_id' => $region->product_price_list_id,
         'core_id' => $region->core_id,
-        'geoip_code' => $region->geoip_code,
         'latitude' => $region->latitude,
         'longitude' => $region->longitude,
         'region' => $region,
       );
     }
 
+    #@TODO: если нет запрашиваемого ключа то лучше выкидывать ошибку
     return !empty($key) ? $this->region[$key] : $this->region;
   }
 
@@ -149,10 +138,9 @@ class myUser extends myGuardSecurityUser
       'type' => $region->type,
       'product_price_list_id' => $region->product_price_list_id,
       'core_id' => $region->core_id,
-      'geoip_code' => $region->geoip_code,
       'region' => $region,
     );
-    $_COOKIE[sfConfig::get('app_guard_region_cookie_name', 'geoshop')] = $region->getGeoipCode();
+    #@TODO: зачем кука устанавливается два раза ?
     $this->setRegionCookie();
   }
 
@@ -205,7 +193,7 @@ class myUser extends myGuardSecurityUser
 
   public function setRegionCookie()
   {
-    $key = $this->getRegion('geoip_code');
+    $key = $this->getRegion('core_id');
     sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'), $key, time() + 60 * 60 * 24 * 365);
   }
 

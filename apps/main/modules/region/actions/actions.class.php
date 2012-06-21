@@ -34,7 +34,7 @@ class regionActions extends myActions
     $data = array();
     if (mb_strlen($keyword) >= 3)
     {
-      $result = CoreClient::getInstance()->query('GEO/autocomplete', array('letters' => $keyword));
+      $result = CoreClient::getInstance()->query('/v2/geo/autocomplete', array('letters' => $keyword));
       $i = 0;
       foreach ($result as $item)
       {
@@ -49,7 +49,7 @@ class regionActions extends myActions
               ? (" ({$item['region']['name']})")
               : ''
             ),
-          'url'  => $this->generateUrl('region_change', array('region' => $item['token'])),
+          'url'  => $this->generateUrl('region_change', array('region' => $item['region']['id'])),
         );
 
         $i++;

@@ -1,1 +1,2 @@
-window.filesWithVersion = {"app.order.v3.2.js":1339061630,"app.shop.map.js":1338891702,"app.oneclick.js":1339061837,"infopages.js":1338817703,"library.js":1338817703,"app.cart.js":1336223668,"bigjquery.min.js":1338896737,"welcome.js":1339061630,"main.js":1339061630,"dash.js":1338817703,"app.order.js":1338817703,"app.product.comment.list.js":1336223668,"app.product.comment.new.js":1330432235,"app.product.js":1338817703,"app.shop.js":1338894207}
+window.filesWithVersion = 
+{}

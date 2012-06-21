@@ -446,7 +446,7 @@ $(document).ready(function(){
 		$('#region-block').lightbox_me( {
 			onClose: function() {			
 				if( !docCookies.hasItem('geoshop') ) {
-					docCookies.setItem( false, "geoshop", "48") //moscow city
+					docCookies.setItem( false, "geoshop", "14974") //moscow city
 					document.location.reload()
 				}
 			}

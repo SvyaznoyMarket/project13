@@ -1,7 +1,7 @@
 <!-- Topbar -->
 <div class="topbar">
   <div class="bRegion">
-    <a href="<?php echo url_for('region_change', array('region' => $sf_user->getRegion('region')->token)) ?>" id="jsregion" data-url="<?php echo url_for('region_init') ?>"><?php echo $sf_user->getRegion('name') ?></a>
+    <a href="<?php echo url_for('region_change', array('region' => $sf_user->getRegion('region')->core_id)) ?>" id="jsregion" data-url="<?php echo url_for('region_init') ?>"><?php echo $sf_user->getRegion('name') ?></a>
     <b>Контакт cENTER 8 (800) 700-00-09</b>
 
     <?php if (sfConfig::get('app_online_call_enabled')): ?>

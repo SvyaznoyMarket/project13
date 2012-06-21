@@ -5,7 +5,7 @@
     <div>
       <p></p>
       <input disabled="disabled" class='bBuyingLine__eText city' type='text' value="<?php echo $displayValue ?>">
-      <a id="jsregion" class='bGrayButton' data-url="<?php echo url_for('region_init') ?>" href="<?php echo url_for('region_change', $sf_data->getRaw('region')) ?>">Другой город</a>
+      <a id="jsregion" class='bGrayButton' data-url="<?php echo url_for('region_init') ?>" href="<?php echo url_for('region_change', $sf_data->getRaw('region')->core_id) ?>">Другой город</a>
     </div>
   </dd>
 </dl>
