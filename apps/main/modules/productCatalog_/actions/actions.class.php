@@ -71,7 +71,7 @@ class productCatalog_Actions extends myActions
       $list[] = $ancestor['name'];
     }
     $list[] = $productCategory->name;
-    $title = '%s - страница %d из %d - интернет-магазин  Enter.ru - ' . $this->getUser()->getRegion('name');
+    $title = '%s - страница %d из %d - интернет-магазин Enter.ru - ' . $this->getUser()->getRegion('name');
     $this->getResponse()->setTitle(sprintf(
       $title,
       implode(' - ', $list),
