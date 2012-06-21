@@ -365,6 +365,7 @@ class order_Actions extends myActions
               );
               foreach ($order['product'] as $product) {
                   $jsCreditData['vars']['items'][] = array(
+                      'name' => $product['name'],
                       'quantity' => $product['quantity'],
                       'price' => $product['price'],
                       'articul' => $product['id'],

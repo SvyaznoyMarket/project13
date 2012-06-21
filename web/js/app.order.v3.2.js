@@ -1039,7 +1039,7 @@ $(document).ready(function() {
 			var option = $('<div>').attr('ref', id).append( $('<span>').text( banks[id].name ) )
 			option.click( function() {
 				$('.bankWrap > .bSelect').find('span:first').text( $(this).find('span').text() )
-				$('input[name=credit_bank_id]').val( $(this).attr('ref') )
+				$('input[name="order[credit_bank_id]"]').val( $(this).attr('ref') )
 			})
 			options.append( option )
 		}
@@ -1047,17 +1047,18 @@ $(document).ready(function() {
 	}
 	
 	/*fill up*/
-    /*
+    
 	$('#order_delivery_type_id_1').click()
 	setTimeout( function() {
 		$('#order_recipient_first_name').val('TEST')
 		$('#order_recipient_last_name').val('TEST')
 		$('#order_recipient_phonenumbers').val('89253333333       ')
 		$('#payment_method_6-field input').click()
+            $('input[name="order[credit_bank_id]"]').val('2')
 		$('#order_agreed').click()
 		$('#order-submit').click()
 	}, 2000)
-    */
+    
 	
 })
 

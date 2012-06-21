@@ -1,11 +1,11 @@
 <div class="fl width645 font14">
-
-		<?php if ($cart->getTotal() >= ProductEntity::MIN_CREDIT_PRICE ) : ?>
-			<label class="bigcheck <?php if ($selectCredit) echo 'checked'; ?>" for="selectCredit"><b></b>Выбранные товары купить в кредит
-			<input class="" type="checkbox" id="selectCredit"
-				value="<?php if ($selectCredit){ echo '1';} else { echo '0'; } ?>" name="selectCredit"/></label>
-		<?php endif; ?>
-
+	<div id="creditFlag" style="display:none">
+	<label class="bigcheck <?php if ($selectCredit) echo 'checked'; ?>" for="selectCredit">
+		<b></b>Выбранные товары купить в кредит
+		<input class="" type="checkbox" id="selectCredit"
+			value="<?php if ($selectCredit){ echo '1';} else { echo '0'; } ?>" name="selectCredit"/>
+	</label>
+	</div>
 	<div class="pl35">
 		Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.<br><br>
 		Для оформления заказа от вас потребуется только имя и телефон для связи.
@@ -15,11 +15,10 @@
 <div id="total" class="fr ar">
     <div class="left">
     	
-    	<?php if ($cart->getTotal() >= ProductEntity::MIN_CREDIT_PRICE) : ?>
-    	<div id="creditSum" style="display:none">
+    	<div id="creditSum" data-minsum="<?php echo ProductEntity::MIN_CREDIT_PRICE ?>" style="display:none">
 			<div class="font14">
 				Сумма заказа:
-                <span  <?php if (!$selectCredit) : ?> style="display: none;" <?php endif; ?>>
+                <span>
                     <span class="price"><?php echo $cart->getTotal(true) ?></span> <span class="rubl">p</span>
                     <br/>Сумма первоночального взноса
                 <span>        
@@ -29,7 +28,7 @@
         		<span class="rubl">p</span>
         	</strong></div>
 	    </div>
-    	<?php endif; ?>
+
     	<div id="commonSum">
 			<div class="font14">
 				Сумма заказа:

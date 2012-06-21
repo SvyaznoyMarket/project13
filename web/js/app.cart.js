@@ -2,6 +2,7 @@ $(document).ready(function() {
 
 	/* basket */
 	var total = $('#total .price')
+	var totalCash = 0
 
 	function getTotal() {
 		for(var i=0, tmp=0; i < basket.length; i++ ) {
@@ -13,6 +14,7 @@ $(document).ready(function() {
 		}
 		total.html( printPrice( tmp ) )
 		total.typewriter(800)
+		totalCash = tmp
 	}
 
 	function basketline ( nodes, clearfunction ) {
@@ -22,20 +24,26 @@ $(document).ready(function() {
 		$(nodes.less).data('run',false)
 		$(nodes.more).data('run',false)
 			var main = $(nodes.line)
+		this.id      = main.attr('ref')	
 		var delurl   = $(nodes.less).parent().attr('href')
 		var addurl   = $(nodes.more).parent().attr('href')
 		if( delurl === '#' )
 			delurl =  $(nodes.less).parent().attr('ref')
 		if( typeof(delurl)==='undefined' )
 			delurl = addurl + '/-1'
+console.info( delurl, addurl )		
 		var drop     = $(nodes.drop).attr('href')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')
 		this.quantum = $(nodes.quan).html().replace(/\D/g,'') * 1
+
 		var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
 		if( 'price' in nodes )
-		    price    = $(nodes.price).html().replace(/\s/,'')		
+		    price    = $(nodes.price).html().replace(/\s/,'')
+		this.price   = price
 		this.noview  = false
 		var dropflag = false
+
+		totalCash += this.sum * 1
 
 		this.calculate = function( q ) {
 			self.quantum = q
@@ -47,6 +55,7 @@ $(document).ready(function() {
 		this.clear = function() {
 			main.remove()
 			self.noview = true
+			PubSub.publish( 'quantityChange', { q : 0, id : self.id } )
 			if( clearfunction ) 
 				clearfunction()
 			
@@ -64,6 +73,17 @@ $(document).ready(function() {
 			self.quantum += delta
 			$(nodes.quan).html( self.quantum + ' шт.' )
 			self.calculate( self.quantum )
+			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
+			if( $('#selectCredit').length ) {
+				console.info('credit on')
+				var sufx = ''
+				if( $('#selectCredit').val()*1 )
+					sufx = '/1'
+				else
+					sufx = '/0'
+				tmpurl += sufx
+			}
+console.info( tmpurl )
 			$.getJSON( tmpurl , function( data ) {
 				$(minimax).data('run',false)
 				//if( data.success && data.data.quantity ) {
@@ -195,61 +215,102 @@ $(document).ready(function() {
 	}
 	
 	/* credit */
-	function anotherSum() {
-		$('#creditSum').toggle()
-	    $('#commonSum').toggle()
-	}
-	
-	if( $('#selectCredit').val()*1 ) {
-		anotherSum()
-	}
-	
-	$('label.bigcheck').click( function(e) {
-		var target = $(e.target)
-		if (!target.is('input')) {
-			return
-		}
-		$(this).toggleClass('checked')
-		anotherSum()
-	})	
-//console.info( basket )
-	var arr_products = []
-	for( var i=0, l=basket.length; i < l; i++ ) {
-		var tmp = {
-			id : i,
-			price : basket[i].sum,
-			count : 2,
-			type : 'another'
-		}
-		
-		arr_products.push( tmp )
-	}
-	
-	function findKey( array, id) {
-		for( var key=0, lk=array.length; key < lk; key++ ) {
-			if( array[key].id == id )
-				return key
-		}
-		return -1
-	}
-		
-	dc_getCreditForTheProduct(
-		'4427',
-		'none',
-		'getPayment', 
-		{ products : arr_products },
-		function(result){ 
-			var creditPrice = 0
-			for( var i=0, l=basket.length; i < l; i++ ) {
-				var key = findKey( arr_products, result.products[i].id )
-				if( key >= 0 ) {
-					var itemPrice = arr_products[key].price
-					creditPrice += result.products[i].initial_instalment * itemPrice/100 * arr_products[key].count
-				}
-				
-			}
-			$('#creditPrice').text( printPrice( creditPrice ) )
-		}
-	)
+	if( $('#selectCredit').length ) {
+		var minsum = $('#creditSum').data('minsum')
+		if( minsum )
 
+		function anotherSum() {
+			$('#creditSum').toggle()
+		    $('#commonSum').toggle()
+		}
+		
+		if( $('#selectCredit').val()*1 ) {
+			anotherSum()
+		}
+
+		if( totalCash >= minsum ) {
+			$('#creditFlag').show()
+		}
+
+		$('label.bigcheck').click( function(e) {
+			var target = $(e.target)
+			if (!target.is('input')) {
+				return
+			}
+			$(this).toggleClass('checked')
+			anotherSum()
+		})	
+//console.info( basket )
+
+		DirectCredit = {
+
+			basketPull : [],
+
+			init : function() {
+				for( var i=0, l=basket.length; i < l; i++ ) {
+					var tmp = {
+						id : basket[i].id,
+						price : basket[i].price,
+						count : basket[i].quantum,
+						type : 'another'
+					}
+					
+					this.basketPull.push( tmp )
+				}
+				this.sendCredit()
+			},
+
+			change : function( message, data ) {
+				self = DirectCredit
+				if( data.q > 0 ) {
+					var item = self.findProduct( self.basketPull, data.id )	
+					item.count = data.q
+				} else {
+					var key = self.findProductKey( self.basketPull, data.id )
+					self.basketPull.splice( key, 1 )
+				}
+				self.sendCredit()
+			},
+
+			findProduct : function( array, id) {
+				for( var key=0, lk=array.length; key < lk; key++ ) {
+					if( array[key].id == id )
+						return array[key]
+				}
+				return -1
+			},
+
+			findProductKey : function( array, id) {
+				for( var key=0, lk=array.length; key < lk; key++ ) {
+					if( array[key].id == id )
+						return key
+				}
+				return -1
+			},
+			
+			sendCredit : function(  ) {
+				var self = this	
+				dc_getCreditForTheProduct(
+					'4427',
+					'none',
+					'getPayment', 
+					{ products : self.basketPull },
+					function(result){ 
+						var creditPrice = 0
+						for( var i=0, l=self.basketPull.length; i < l; i++ ) {
+							var item = self.findProduct( self.basketPull, result.products[i].id )
+							if( item ) {
+								var itemPrice = item.price
+								creditPrice += result.products[i].initial_instalment * itemPrice/100 * item.count
+							}
+							
+						}
+						$('#creditPrice').text( printPrice( creditPrice ) )
+					}
+				)
+			}	
+		}
+		DirectCredit.init()
+		PubSub.subscribe( 'quantityChange', DirectCredit.change )
+	} // credit 
 })

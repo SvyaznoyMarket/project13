@@ -230,4 +230,41 @@ $(document).ready(function () {
             j_count.html(secs)
         }
     })();
+
+    /* Credit Widget */
+    var creditWidget = $('#credit-widget').data('value')
+    if( ! 'widget' in creditWidget )
+        return
+    if( creditWidget.widget === 'direct-credit' ) {
+console.info('direct-credit')        
+        // fill cart
+        for(var i = creditWidget.vars.items.length - 1; i >= 0; i--) {
+            var item = creditWidget.vars.items[i]
+console.info( item )            
+            dc_getCreditForTheProduct(
+                '4427',
+                creditWidget.vars.number,
+                'addProductToBuyOnCredit',
+                {
+                    name : item.articul,
+                    count: item.quantity,
+                    articul: item.articul,
+                    price: item.price,
+                    type: item.type
+                },
+                function(result){
+console.info(result)
+                }
+            )
+        }
+        // open w
+        dc_getCreditForTheProduct(
+            '4427', 
+            creditWidget.vars.number ,// session
+            'orderProductToBuyOnCredit',
+            { order_id: creditWidget.vars.number }
+        )
+    }
+
+
 });

@@ -32,7 +32,7 @@
     <div id='credit-widget' data-value='<?php echo $jsCreditData; ?>' ></div>
 <script src="https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js"></script>
 <script>
-
+/*
     var callback_close = function(decision) {
         var result = '';
         switch(decision) {
@@ -68,7 +68,7 @@
         onDecision: callback_decision
     });
     vkredit.openWidget();
-
+*/
 </script>
 <?php } ?>
 

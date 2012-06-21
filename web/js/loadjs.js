@@ -81,6 +81,9 @@
 		case 'order_complete':
 			$LAB.queueScript('bigjquery.min.js').queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
+				.script( 'JsHttpRequest.js' )
+                //.script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
+                .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script(getWithVersion('main.js'))
