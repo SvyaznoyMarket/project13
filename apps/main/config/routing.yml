@@ -439,6 +439,11 @@ order_new:
 order_create:
   url:   /orders/create
   param: { module: order_, action: create }
+
+# order createExternal
+order_createExternal:
+  url:   /orders/create-external
+  param: { module: order_, action: createExternal }
 #
 # order deliveryMap
 order_deliveryMap:

@@ -44,6 +44,8 @@ $(document).ready(function() {
             var self = this
             var async = async || false
 
+            $('#order-submit').addClass('disable');
+
             $.ajax({
                 type: 'POST',
                 async: async,
@@ -185,6 +187,8 @@ $(document).ready(function() {
             var self = this
             var data = this.data()
 
+            $('#order-submit').removeClass('disable');
+
             // проверка на пустую корзину
             var isEmpty = true
             $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
@@ -283,7 +287,7 @@ $(document).ready(function() {
                 })
 
                 $('.order-total-container').find('[data-assign]').each(function(i, el) {
-                    Templating.assign($(el), { total: printPrice(total) })
+                    Templating.assign($(el), { total: printPrice(total), totalMessage: 1 == $('.order-delivery-holder:visible').length ? 'Сумма заказа' : 'Сумма всех заказов' })
                 })
 
                 // сортировка
@@ -603,7 +607,7 @@ $(document).ready(function() {
         }
     }
 
-    window.regionMap = new MapWithShops(
+    window.regionMap = new MapWithShopsOLD(
         $('#map-center').data('content'),
         $('#map-info_window-container'),
         'mapPopup',
@@ -616,7 +620,7 @@ $(document).ready(function() {
 
     $('#order-form-part1').show()
 
-    $('body').delegate('.bImgButton.mBacket', 'click', function(e) {
+    $('body').delegate('.mBacket', 'click', function(e) {
         e.preventDefault()
 
         var el = $(this)
@@ -682,6 +686,8 @@ $(document).ready(function() {
         if (!el.length) {
             return
         }
+
+        $('#order-submit').addClass('disable');
 
         var url = $('#order-form').data('deliveryMapUrl')
 
@@ -880,7 +886,7 @@ $(document).ready(function() {
         var form = button.closest('form')
         var validator = $(form.data('validator')).data('value')
 
-        if (button.data('locked')) {
+        if (button.data('locked') || button.hasClass('disable')) {
             return false
         }
 
@@ -935,7 +941,8 @@ $(document).ready(function() {
                             button.text('Завершить оформление')
                         }
                         else {
-                            alert(result.error.message)
+                            alert(result.error.message);
+                            window.location.reload();
                         }
                     }
                 },
@@ -990,7 +997,9 @@ $(document).ready(function() {
     if( typeof( $.mask ) !== 'undefined' ) {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
 		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
-		$("#order_sclub_card_number").mask("9 999999 999999", { placeholder: "*" } )
+        $("#order_recipient_phonenumbers").val('8')
+        $.mask.definitions['*'] = "[0-9*]"
+        $("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
 		if( $("#order_sclub_card_number")[0].getAttribute('value') )
 			$("#order_sclub_card_number").val( $("#order_sclub_card_number")[0].getAttribute('value') )
 	}

@@ -21,6 +21,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^wp-(.*)$ /content/wp-$1 [L]
 
   RewriteRule ^euro2012 football.html [L]
+  RewriteRule ^nespresso nespresso.html [L]
 
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$

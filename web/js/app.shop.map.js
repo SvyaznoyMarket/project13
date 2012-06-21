@@ -3,7 +3,7 @@
 //  regionMap.closeMap();
 //}
 
-function MapWithShops(center, infoWindowTemplate, DOMid, selectCallback) {
+function MapWithShopsOLD(center, infoWindowTemplate, DOMid, selectCallback) {
   var self = this
   self.mapWS = null
   self.infoWindow = null

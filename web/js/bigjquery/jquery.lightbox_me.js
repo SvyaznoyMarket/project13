@@ -74,6 +74,7 @@
 				setWrapPosition( $self.parent() );
 				setHeight( $self );
 			} else {
+				$self.css({position: 'fixed'}) //IVN fixed on repeated opening
             	setSelfPosition();
             	$self.css({left: '50%', marginLeft: ($self.outerWidth() / 2) * -1,  zIndex: (opts.zIndex + 3) });
 			}
@@ -99,7 +100,6 @@
             /*----------------------------------------------------
                Bind Events
             ---------------------------------------------------- */
-
             $(window).resize(setOverlayHeight)
                      .resize( function(){ ( opts.reallyBig ) ? setWrapPosition( $self.parent() ) : setSelfPosition() })//IVN
                      .resize( function(){ if( opts.reallyBig ) setHeight( $self ) } )
