@@ -60,7 +60,7 @@ $json = array(
       <?php endif ?>
       <div class='bSet__eTWrap'>
         <a class='bSet__eMoreInfo' href="<?php echo $product->getLink() ?>">
-          Подробнее о <?php echo $product->getKitList()  ? 'наборе' : 'товаре' ?>
+          Подробнее о <?php echo count($product->getKitList())  ? 'наборе' : 'товаре' ?>
         </a>
       </div>
     </div>
