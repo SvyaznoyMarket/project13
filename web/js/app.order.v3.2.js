@@ -1054,9 +1054,9 @@ $(document).ready(function() {
 		$('#order_recipient_last_name').val('TEST')
 		$('#order_recipient_phonenumbers').val('89253333333       ')
 		$('#payment_method_6-field input').click()
-            $('input[name="order[credit_bank_id]"]').val('2')
+    //        $('input[name="order[credit_bank_id]"]').val('2')
 		$('#order_agreed').click()
-		$('#order-submit').click()
+	//	$('#order-submit').click()
 	}, 2000)
     
 	

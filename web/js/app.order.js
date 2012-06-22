@@ -258,12 +258,56 @@ console.info(result)
             )
         }
         // open w
+console.info(creditWidget.vars.number) 
+window.onbeforeunload = function (){ return false }    // DEBUG    
+
         dc_getCreditForTheProduct(
             '4427', 
             creditWidget.vars.number ,// session
             'orderProductToBuyOnCredit',
             { order_id: creditWidget.vars.number }
         )
+        
+    }
+    
+    if( creditWidget.widget === 'kupivkredit' ) {
+console.info('kupivkredit')
+        var callback_close = function(decision) {
+            var result = ''
+            switch(decision) {
+                case 'ver':
+                    result = 'Ваша заявка предварительно одобрена.'
+                    break
+                case 'agr':
+                    result = 'Ваша заявка одобрена! Поздравляем!'
+                    break
+                case 'rej':
+                    result = 'К сожалению, заявка отклонена банком.'
+                    break
+                case '':
+                    result = 'Вы не заполнили заявку до конца'
+                    break
+                default:
+                    result = 'Ваша заявка находится на рассмотрении'
+                    break
+            }
+            alert(result)
+        }
+
+        var callback_decision = function(decision) {
+            alert('Пришел статус: ' + decision)
+        }
+
+
+        var vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
+            order: creditWidget.vars.order,
+            sig: creditWidget.vars.order,
+            callbackUrl: window.location.href,
+            onClose: callback_close,
+            onDecision: callback_decision
+        })
+        vkredit.openWidget()
+        
     }
 
 
