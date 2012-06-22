@@ -11,11 +11,11 @@
 
 ?>
 <?php slot('header_meta_og') ?>
-<?php include_component('productCard_', 'header_meta_og', array('product' => $product)) ?>
+  <?php include_component('productCard_', 'header_meta_og', array('product' => $product)) ?>
 <?php end_slot() ?>
 
 <?php slot('navigation') ?>
-<?php include_component('productCard_', 'navigation', array('product' => $product)) ?>
+  <?php include_component('productCard_', 'navigation', array('product' => $product)) ?>
 <?php end_slot() ?>
 
 <?php slot('title', $product->getName()) ?>
