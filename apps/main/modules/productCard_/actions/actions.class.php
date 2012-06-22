@@ -87,11 +87,6 @@ class productCard_Actions extends myActions
      */
   private function _getDataForCredit($product) {
       $result = array();
-      if ($product->getPrice() < ProductEntity::MIN_CREDIT_PRICE) {
-          $result['creditIsAllowed'] = false;
-          $result['creditData'] = '';
-          return $result;
-      }
       $creditCatList = array('furniture', 'electronics', 'jewel');
       $mainCat = $product->getCategoryList();
       $mainCat = $mainCat[0];
