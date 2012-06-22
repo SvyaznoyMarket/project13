@@ -3,8 +3,11 @@
 <?php slot('navigation') ?>
   <?php include_component('callback', 'navigation',array()) ?>
 <?php end_slot() ?>
+<?php /*slot('left_column', get_component('page', 'menu', array('currentPage' => $currentPage)))*/ ?>
+<?php slot('left_column', SF_WP_Proxy::getInstance()->getSidebarMenu('http://enter.ru/callback')) ?>
 
-<?php slot('left_column', get_component('page', 'menu', array('currentPage' => $currentPage))) ?>
+
+
 
 
 

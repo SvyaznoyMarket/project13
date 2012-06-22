@@ -6,7 +6,6 @@
  * @var $view
  * @var $text
  */
-
 if(isset($disable)){
   $disable = (bool)$disable;
 }else{

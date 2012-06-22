@@ -15,6 +15,11 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^product/delivery-info.* index.light.php [L]
   RewriteRule ^category/main_menu index.light.php [L]
 
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]
+  RewriteRule ^wp-admin/(.*)$ /content/wp-admin/$1 [L]
+  RewriteRule ^wp-(.*)$ /content/wp-$1 [L]
+
   RewriteRule ^euro2012 football.html [L]
   RewriteRule ^nespresso nespresso.html [L]
   RewriteRule ^waterheater water_heater.html [L]
