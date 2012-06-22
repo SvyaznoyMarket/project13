@@ -228,7 +228,7 @@ $(document).ready(function() {
 			}
 		}
 
-		function toggleFlag() {
+		function toggleFlag() {					
 			if( totalCash >= minsum ) {
 				if( $('#creditFlag').is(':hidden') ) { // сумма превысила рубеж
 					$('#creditFlag').show()
@@ -244,7 +244,7 @@ $(document).ready(function() {
 
 		toggleFlag()
 		PubSub.subscribe( 'quantityChange', toggleFlag )
-		checkFlag()
+		//checkFlag()
 
 
 		$('label.bigcheck').click( function(e) {
