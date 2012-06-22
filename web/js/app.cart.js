@@ -31,7 +31,6 @@ $(document).ready(function() {
 			delurl =  $(nodes.less).parent().attr('ref')
 		if( typeof(delurl)==='undefined' )
 			delurl = addurl + '/-1'
-console.info( delurl, addurl )		
 		var drop     = $(nodes.drop).attr('href')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')
 		this.quantum = $(nodes.quan).html().replace(/\D/g,'') * 1
@@ -73,9 +72,9 @@ console.info( delurl, addurl )
 			self.quantum += delta
 			$(nodes.quan).html( self.quantum + ' шт.' )
 			self.calculate( self.quantum )
+			totalCash += self.price * delta
 			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
 			if( $('#selectCredit').length ) {
-				console.info('credit on')
 				var sufx = ''
 				if( $('#selectCredit').val()*1 )
 					sufx = '/1'
@@ -83,7 +82,6 @@ console.info( delurl, addurl )
 					sufx = '/0'
 				tmpurl += sufx
 			}
-console.info( tmpurl )
 			$.getJSON( tmpurl , function( data ) {
 				$(minimax).data('run',false)
 				//if( data.success && data.data.quantity ) {
@@ -224,13 +222,30 @@ console.info( tmpurl )
 		    $('#commonSum').toggle()
 		}
 		
-		if( $('#selectCredit').val()*1 ) {
-			anotherSum()
+		function checkFlag() {
+			if( $('#selectCredit:checked').length ) {
+				anotherSum()
+			}
 		}
 
-		if( totalCash >= minsum ) {
-			$('#creditFlag').show()
+		function toggleFlag() {
+			if( totalCash >= minsum ) {
+				if( $('#creditFlag').is(':hidden') ) { // сумма превысила рубеж
+					$('#creditFlag').show()
+					checkFlag()
+				}
+			} else {
+				if( $('#creditFlag').is(':visible') ) { // сумма стала ниже рубежа
+					$('#creditFlag').hide()
+					checkFlag()
+				}
+			}
 		}
+
+		toggleFlag()
+		PubSub.subscribe( 'quantityChange', toggleFlag )
+		checkFlag()
+
 
 		$('label.bigcheck').click( function(e) {
 			var target = $(e.target)

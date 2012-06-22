@@ -7,7 +7,7 @@
 module('printPrice function')
 test("pricing 1234", function() {
     equal( printPrice(1234) , "1 234")
-    equal( printPrice(1234.3) , "1 234.3")
+    equal( printPrice(1234.3) , "1 234.30")
     equal( printPrice(1234.56) , "1 234.56")    
     equal( printPrice(12345) , "12 345")
     equal( printPrice(123456) , "123 456")
