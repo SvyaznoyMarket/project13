@@ -100,6 +100,9 @@ $(document).ready(function(){
 				}
 			}
 		}
+		if( lbox.is_credit )
+			if( $('#creditinput').length )
+				$('#creditinput').trigger('click')
 	}
 	/* ---- */
 
@@ -273,7 +276,11 @@ $(document).ready(function(){
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}
 		var boughtItem = currentItem
-		$.getJSON( $( button ).attr('href') +'/1', function(data) {
+		// is_credit
+		var ajurl = $( button ).attr('href') +'/1'
+		if( ltbx.isCredit() )
+			ajurl += '/1'
+		$.getJSON( ajurl, function(data) {
 			if ( data.success && ltbx ) {
 				var tmpitem = parseItemNode( boughtItem )
 				tmpitem.vitems = data.data.full_quantity
@@ -328,9 +335,8 @@ $(document).ready(function(){
 					ajurl = jsond.url
 				}
 				button.addClass('active').attr('href', carturl)
-				
 				//credit case
-				if( 'creditBox' in window ) {
+				if( 'creditBox' in window ) { // productCard
 					if( !ajurl.match(/_quantity\/[0-9]+/) )
 						ajurl += '/1' //quantity
 					if( creditBox.getState() )

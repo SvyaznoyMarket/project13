@@ -11,7 +11,7 @@ $(document).ready(function() {
 					$(this).toggleClass('checked')
 				})
 				
-				if( $('.creditbox input:checked').length ) {
+				if( this.getState() ) {
 					$('.creditbox label').addClass('checked')
 				}
 				

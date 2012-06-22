@@ -1226,6 +1226,15 @@ function Lightbox( jn, data ){
 			return true
 		else return false
 	}
+
+    this.isCredit = function(){
+        if( 'is_credit' in init ) {
+            if( init.is_credit )
+                return true
+        } 
+        return false
+    }
+
 	// initia
 	this.update()
 	//setTimeout( function () { plashka.fadeIn('slow') }, 2000)
