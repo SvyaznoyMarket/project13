@@ -1681,9 +1681,57 @@ $(document).ready(function(){
 			var orderSum = arguments[0]
 			document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape( orderSum ) + '&r=' + Math.random() + '" ></sc' + 'ript>')
 			// 'document.write' for <script/> is overloaded in loadjs.js			
-		}
+		},
 		
-		    
+        heiasMain : function() {
+            (function(d){
+                var HEIAS_PARAMS = [];
+                HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
+                HEIAS_PARAMS.push(['pb', '1']);
+                if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
+                window.HEIAS.push(HEIAS_PARAMS);
+                var scr = d.createElement('script');
+                scr.async = true;
+                scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
+                var elem = d.getElementsByTagName('script')[0];
+                elem.parentNode.insertBefore(scr, elem);
+            }(document)); 
+        },
+
+        heiasProduct : function() {
+            var product = arguments[0];
+            (function(d){
+                var HEIAS_PARAMS = [];
+                HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
+                HEIAS_PARAMS.push(['pb', '1']);
+                HEIAS_PARAMS.push(['product_id', product]);
+                if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
+                window.HEIAS.push(HEIAS_PARAMS);
+                var scr = d.createElement('script');
+                scr.async = true;
+                scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
+                var elem = d.getElementsByTagName('script')[0];
+                elem.parentNode.insertBefore(scr, elem);
+            }(document));            
+        },
+
+        heiasOrder : function() {
+            var orderArticle = arguments[0];
+            (function(d){
+                var HEIAS_PARAMS = [];
+                HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
+                HEIAS_PARAMS.push(['pb', '1']);
+                HEIAS_PARAMS.push(['order_article', orderArticle]);
+                if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
+                window.HEIAS.push(HEIAS_PARAMS);
+                var scr = d.createElement('script');
+                scr.async = true;
+                scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
+                var elem = d.getElementsByTagName('script')[0];
+                elem.parentNode.insertBefore(scr, elem);
+            }(document));            
+        }
+        
 	}
 	
 	$.each( $('.jsanalytics') , function() {

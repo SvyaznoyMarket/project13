@@ -13,7 +13,7 @@
 <input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>' />
 <input disabled="disabled" id="order-validator" type="hidden" data-value='<?php echo json_encode($jsValidator) ?>' />
 
-<div class="pb15">< <a href="<?php echo $backLink ?>">Вернуться к покупкам</a></div>
+<div class="pb15"> <a href="<?php echo $backLink ?>">Вернуться к покупкам</a></div>
 
 <form id="order-form" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
 
@@ -206,19 +206,6 @@
 
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
-<script type="text/javascript">
-  (function(d){
-    var HEIAS_PARAMS = [];
-    HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
-    HEIAS_PARAMS.push(['pb', '1']);
-    HEIAS_PARAMS.push(['order_article', '<?php echo $sf_user->getCart()->getSeoCartArticle() ?>']);
-    if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
-    window.HEIAS.push(HEIAS_PARAMS);
-    var scr = d.createElement('script');
-    scr.async = true;
-    scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
-    var elem = d.getElementsByTagName('script')[0];
-    elem.parentNode.insertBefore(scr, elem);
-  }(document));
-</script>
+  <div id="heiasOrder" data-vars="<?php echo $sf_user->getCart()->getSeoCartArticle() ?>" class="jsanalytics"></div>
+
 <?php endif ?>
