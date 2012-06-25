@@ -37,15 +37,10 @@
 
 
 <?php slot('analytics_report') ?>
-  <script type="text/javascript">
-    (function () {
-    <?php foreach ($orders as $order): ?>
-      document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape(<?php echo $order['sum'] ?>) + '&r=' + Math.random() + '" ></sc' + 'ript>');
-
-    <?php endforeach ?>
-    })();
-  </script>
-
+	<?php foreach ($orders as $order): ?>
+		<div id="adblenderCost" data-vars="<?php echo $order['sum'] ?>" class="jsanalytics"></div>
+	<?php endforeach ?>
+    
   <script type="text/javascript">
   <?php foreach ($orders as $order): ?>
 

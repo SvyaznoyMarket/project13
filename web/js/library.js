@@ -1668,7 +1668,30 @@ if ( !Date.prototype.toISOString ) {
 }
 
 $(document).ready(function(){
-
+	var ANALYTICS = {
+		adblender : function() {
+			document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>')
+			// 'document.write' for <script/> is overloaded in loadjs.js
+			// in fact: 
+			// var ad = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random()
+			// $LAB.script( ad )
+		},
+		
+		adblenderCost : function() {
+			var orderSum = arguments[0]
+			document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape( orderSum ) + '&r=' + Math.random() + '" ></sc' + 'ript>')
+			// 'document.write' for <script/> is overloaded in loadjs.js			
+		}
+		
+		    
+	}
+	
+	$.each( $('.jsanalytics') , function() {
+console.info( this.id, this.id+'' in ANALYTICS  )
+		if( this.id+'' in ANALYTICS )
+			ANALYTICS[this.id]( $(this).data('vars') )
+	})
+	
 	var ADFOX = {
 		adfoxbground : function() {
 			if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }

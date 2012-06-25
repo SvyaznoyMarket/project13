@@ -65,16 +65,7 @@
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
   <?php include_partial('default/yandexMetrika') ?>
-<script type="text/javascript">
-  (function() {
-    <?php if (isset($orderSum) && $orderSum > 0 && isset($orderId) && $orderId > 0): ?>
-      var orderSum = '<?php echo $orderSum ?>';
-      document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape(orderSum) + '&r=' + Math.random() + '" ></sc' + 'ript>');
-      <?php else: ?>
-      document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>');
-      <?php endif ?>
-  })();
-</script>
+  <div id="adblender" class="jsanalytics"></div>
   <?php endif ?>
 
 <?php if (has_slot('seo_counters_advance')): ?>
