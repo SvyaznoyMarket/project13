@@ -3,6 +3,7 @@
 /log
 /plugins/.registry/
 /plugins/.channels/
+/plugins/sfWordpressPlugin/lib/vendor/wordpress/wp-content/uploads/*
 /web/uploads
 /data/sql/schema.sql
 /lib/filter/doctrine/base/*
