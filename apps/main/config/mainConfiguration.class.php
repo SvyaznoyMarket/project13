@@ -19,22 +19,6 @@ class mainConfiguration extends sfApplicationConfiguration
       'baseTableClassName' => 'myDoctrineTable',
       'baseClassName'      => 'myDoctrineRecord',
     ));
-
-    // настройка кеширования
-    //$manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, new Doctrine_Cache_Apc());
-    //$manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE_LIFESPAN, 60);
-
-    $driver =
-      //new Doctrine_Cache_Apc()
-      //new Doctrine_Cache_Memcache(array('servers' => array(array('host' => 'localhost', 'port' => 11211, 'persistent' => true)), 'compression' => false))
-      //new Doctrine_Cache_Db(array('connection' => $manager->getConnection('cache'), 'tableName' => 'query_cache'))
-      //new Doctrine_Cache_Redis(array('server' => 'redis://127.0.0.1:6379', 'prefix' => 'result:'));
-      //new Doctrine_Cache_Redis(array('redis' => sfRedis::getClient('localhost'), 'prefix' => 'result:'))
-      new myDoctrineCacheRedis(array('instance' => 'default', 'prefix' => sfConfig::get('app_doctrine_result_cache_prefix', 'dql:')))
-    ;
-
-    $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $driver);
-    $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, 3600);
   }
 
   protected function initValidatorMessages()
