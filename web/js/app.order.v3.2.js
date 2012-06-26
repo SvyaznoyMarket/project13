@@ -918,7 +918,7 @@ $(document).ready(function() {
                 hasError = true
             }
         })
-
+		
         if (hasError) {
             $.scrollTo('.bFormError:first', 300)
         }
@@ -1019,10 +1019,19 @@ $(document).ready(function() {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
 		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
         $("#order_recipient_phonenumbers").val('8')
+        
         $.mask.definitions['*'] = "[0-9*]"
-        $("#order_sclub_card_number").mask("9 999999 999999", { placeholder: "*" } )
+        $("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
 		if( $("#order_sclub_card_number")[0].getAttribute('value') )
 			$("#order_sclub_card_number").val( $("#order_sclub_card_number")[0].getAttribute('value') )
+		$("#order_sclub_card_number").blur( function() {
+			if( $(this).val() === "* ****** ******" ) {
+				$(this).trigger('unmask').val('')
+				$(this).focus( function() {
+					$("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
+				})
+			}
+        })	
 	}
 	
 	$('#addressField').find('input').placeholder()

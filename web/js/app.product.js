@@ -25,7 +25,7 @@ $(document).ready(function() {
 	}
 	
 	/* Product Counter */
-	if( $('.bCountSet').length ) {
+	if( $('#page .bCountSet').length ) {
 		var np = $('.goodsbarbig .bCountSet')
 		var l1 = np.parent().find('.link1')
 		var l1href = l1.attr('href')
