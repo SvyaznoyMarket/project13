@@ -236,11 +236,10 @@ $(document).ready(function () {
     if( ! 'widget' in creditWidget )
         return
     if( creditWidget.widget === 'direct-credit' ) {
-console.info('direct-credit')        
+//console.info('direct-credit')        
         // fill cart
         for(var i = creditWidget.vars.items.length - 1; i >= 0; i--) {
             var item = creditWidget.vars.items[i]
-console.info( item )            
             dc_getCreditForTheProduct(
                 '4427',
                 creditWidget.vars.number,
@@ -253,25 +252,25 @@ console.info( item )
                     type: item.type
                 },
                 function(result){
-console.info(result)
+                    openWidget()
                 }
             )
         }
-        // open w
-console.info(creditWidget.vars.number) 
-window.onbeforeunload = function (){ return false }    // DEBUG    
-
-        dc_getCreditForTheProduct(
-            '4427', 
-            creditWidget.vars.number ,// session
-            'orderProductToBuyOnCredit',
-            { order_id: creditWidget.vars.number }
-        )
         
+//console.info(creditWidget.vars.number) 
+window.onbeforeunload = function (){ return false }    // DEBUG    
+        function openWidget() {
+            dc_getCreditForTheProduct(
+                '4427', 
+                creditWidget.vars.number ,// session
+                'orderProductToBuyOnCredit',
+                { order_id: creditWidget.vars.number }
+            )
+        }
     }
-    
+
     if( creditWidget.widget === 'kupivkredit' ) {
-console.info('kupivkredit')
+//console.info('kupivkredit')
         var callback_close = function(decision) {
             var result = ''
             switch(decision) {
