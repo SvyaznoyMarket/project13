@@ -1699,6 +1699,7 @@ $(document).ready(function(){
         },
 
         heiasProduct : function() {
+            document.write('<div>END</div>')
             var product = arguments[0];
             (function(d){
                 var HEIAS_PARAMS = [];
@@ -1733,25 +1734,41 @@ $(document).ready(function(){
         },
 
         heiasComplete : function() {
-console.info(arguments);   
-            var a = arguments[0]         
+            var a = arguments[0];      
             HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
             var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + a.order_article + '|product_quantity|' + a.product_quantity + '|order_id|' + a.order_id + '|order_total|' + a.order_total + '';
-            //document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
-            $('body').append( $('<img width="1" height="1" src="' + HEIAS_SRC + '" />') )
+            document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
+            //$('body').append( $('<img width="1" height="1" src="' + HEIAS_SRC + '" />') )
         },
 
         mixmarket: function() {
-            $('body').append( $('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>') )
-        }
+            document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>')
+        },
 
+        parseAllAnalDivs : function( nodes ) {
+            
+            var self = this
+            $.each(  nodes , function() {
+console.info( this.id, this.id+'' in self  )
+
+                // document.write is overwritten in loadjs.js to document.writeln
+                var anNode = $(this)
+
+                document.writeln = function(){
+                    anNode.html( arguments[0] )
+                }
+
+                if( this.id+'' in self )
+                    self[this.id]( $(this).data('vars') )
+            })
+            document.writeln = function(){
+                $('body').append( $(arguments[0] + '') )
+            }
+        }
 	}
+    
+    ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
 	
-	$.each( $('.jsanalytics') , function() {
-console.info( this.id, this.id+'' in ANALYTICS  )
-		if( this.id+'' in ANALYTICS )
-			ANALYTICS[this.id]( $(this).data('vars') )
-	})
 	
 	var ADFOX = {
 		adfoxbground : function() {
