@@ -544,7 +544,6 @@ class UserCart extends BaseUserData
       }
     }
 
-
     return $total;
   }
 
