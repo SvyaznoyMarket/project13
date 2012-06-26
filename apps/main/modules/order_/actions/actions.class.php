@@ -35,10 +35,8 @@ class order_Actions extends myActions
     /* @var myUser */
     $user = $this->getUser();
 
-    if (true
-      && (0 == count($user->getCart()->getProducts()))
-      && (0 == count($user->getCart()->getServices()))
-    ) {
+    if (!$user->getCart()->count())
+    {
       $this->redirect('cart');
     }
 
@@ -67,14 +65,20 @@ class order_Actions extends myActions
 
     // получение ссылки "Вернуться к покупкам"
     $this->backLink = $this->generateUrl('cart');
-    $product = array_pop($user->getCart()->getProducts());
-    if (!empty($product['id']))
+
+    $productList = $user->getCart()->getProducts();
+
+    if(!count($productList)){
+      return;
+    }
+
+    $product = array_pop($productList);
+    /** @var $product \light\ProductCartData */
+
+    $products = Core::getInstance()->query('product.get', array('id' => $product->getProductId(), 'expand' => array('category')));
+    if (!empty($products[0]['category'][0]['link']))
     {
-      $products = Core::getInstance()->query('product.get', array('id' => $product['id'], 'expand' => array('category')));
-      if (!empty($products[0]['category'][0]['link']))
-      {
-        $this->backLink = $products[0]['category'][0]['link'];
-      }
+      $this->backLink = $products[0]['category'][0]['link'];
     }
   }
 
@@ -396,21 +400,20 @@ class order_Actions extends myActions
     /* @var $user myUser */
     $user = $this->getUser();
 
-    //$regions = RegionTable::getInstance()->getListForOrder(array_map(function($i) { return $i['id']; }, $this->getUser()->getCart()->getProducts()));
-
     $productsInCart = array();
-    foreach ($user->getCart()->getProducts() as $product)
+    foreach ($user->getCart()->getProducts() as $productId => $product)
     {
-      $productsInCart[] = array('id' => $product['id'], 'quantity' => $product['quantity']);
+      /** @var $product \light\ProductCartData */
+      $productsInCart[] = array('id' => $productId, 'quantity' => $product->getQuantity());
     }
 
     $servicesInCart = array();
-    foreach ($user->getCart()->getServices() as $service)
-    {
-      // если услуга не принадлежит товару 0, то пропустить
-      if (!array_key_exists(0, $service['products'])) continue;
-
-      $servicesInCart[] = array('id' => $service['id'], 'quantity' => $service['products'][0]['quantity']);
+    $serviceList = $user->getCart()->getServices();
+    foreach($serviceList as $serviceId => $service){
+      if (!array_key_exists(0, $service)) continue;
+      /** @var $serviceObj \light\ServiceCartData */
+      $serviceObj = $service[0];
+      $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity());
     }
 
     $deliveryTypes = array();
@@ -506,22 +509,24 @@ class order_Actions extends myActions
         {
           /* @var $product Product */
           $cartData = $user->getCart()->getProduct($itemId);
-          $productItems[] = array(
-            'id'       => $itemId,
-            'quantity' => $cartData['quantity'],
-          );
+          if(!is_null($cartData)){
+            /** @var $cartData light\ProductCartData */
+            $productItems[] = array(
+              'id'       => $cartData->getProductId(),
+              'quantity' => $cartData->getQuantity() ,
+            );
+          }
         }
         if ('service' == $itemType)
         {
           /* @var $service Service */
           $cartData = $user->getCart()->getService($itemId);
 
-          foreach ($cartData['products'] as $productId => $productData)
+          foreach ($cartData['products'] as $productId => $service)
           {
-            if (empty($productData['quantity'])) continue;
             $serviceItems[] = array(
               'id'       => $itemId,
-              'quantity' => $productData['quantity'],
+              'quantity' => $service['quantity'],
             );
           }
         }
@@ -531,19 +536,19 @@ class order_Actions extends myActions
       $servicesForProduct = array();
       foreach ($user->getCart()->getServices() as $serviceId => $service)
       {
-        foreach ($service['products'] as $productId => $product)
+        foreach ($service as $productId => $product)
         {
-          if (empty($productId)) continue;
+          /** @var $product \light\ServiceCartData */
 
-          if (!array_key_exists($service['id'], $servicesForProduct))
+          if (!array_key_exists($serviceId, $servicesForProduct))
           {
-            $servicesForProduct[$service['id']] = array(
-              'id'       => $service['id'],
-              'quantity' => $service['products'][$productId]['quantity'],
+            $servicesForProduct[$serviceId] = array(
+              'id'       => $serviceId,
+              'quantity' => $product->getQuantity(),
             );
           }
           else {
-            $servicesForProduct[$service['id']]['quantity'] += $service['products'][$productId]['quantity'];
+            $servicesForProduct[$serviceId]['quantity'] += $product->getQuantity();
           }
         }
       }
@@ -602,41 +607,46 @@ class order_Actions extends myActions
 
     // товары в корзине для запроса к ядру
     $productsInCart = array();
-    foreach ($user->getCart()->getProducts() as $product)
+    foreach ($user->getCart()->getProducts() as $productId => $product)
     {
-      $productsInCart[] = array('id' => $product['id'], 'quantity' => $product['quantity']);
+      /** @var $product light\ProductCartData */
+      $productsInCart[] = array('id' => $productId, 'quantity' => $product->getQuantity());
     }
 
     // услуги в корзине для запроса к ядру
     $servicesInCart = array();
-    foreach ($user->getCart()->getServices() as $service)
+    $serviceList = $user->getCart()->getServices();
+    foreach ($serviceList as $serviceId => $service)
     {
-      if (!isset($service['products'][0])) continue;
+      if (!array_key_exists(0, $service)) continue;
 
-      $servicesInCart[] = array('id' => $service['id'], 'quantity' => $service['products'][0]['quantity']);
+      /** @var $tmp \light\ServiceCartData */
+      $tmp = $service[0];
+
+      $servicesInCart[] = array('id' => $serviceId, 'quantity' => $tmp->getQuantity());
     }
 
     // услуги к товарам
     $servicesForProduct = array();
-    foreach ($user->getCart()->getServices() as $service)
+    foreach ($user->getCart()->getServices() as $serviceId => $service)
     {
-      foreach ($service['products'] as $productId => $productData)
+      foreach ($service as $productId => $productData)
       {
-        if (empty($productId)) continue;
-
+        /** @var $productData \light\ServiceCartData */
         if (!array_key_exists($productId, $servicesForProduct))
         {
           $servicesForProduct[$productId] = array();
         }
 
-        $coreData = array_shift(Core::getInstance()->query('service.get', array('id' => $service['id'], 'expand' => array())));
+        //@TODO Это мегапиздец, переделать в следующем хотфиксе
+        $coreData = array_shift(Core::getInstance()->query('service.get', array('id' => $serviceId, 'expand' => array())));
 
         $servicesForProduct[$productId][] = array(
-          'id'       => $service['id'],
+          'id'       => $serviceId,
           'name'     => $coreData['name'],
-          'token'    => $service['token'],
-          'quantity' => $productData['quantity'],
-          'price'    => $productData['price'],
+          'token'    => $coreData['token'],
+          'quantity' => $productData->getQuantity(),
+          'price'    => $productData->getPrice(),
         );
       }
     }
@@ -689,16 +699,43 @@ class order_Actions extends myActions
           'id'     => $coreData['id'],
           'expand' => array(),
         )));
-        $cartData =
-          'products' == $itemType
-          ? $user->getCart()->getProduct($recordData['id'])
-          : $user->getCart()->getService($recordData['id'])
-        ;
 
-        if (('services' == $itemType) && isset($cartData['products'][0]))
-        {
-          $cartData['quantity'] = $cartData['products'][0]['quantity'];
-          $cartData['price'] = $cartData['products'][0]['price'];
+        if('products' == $itemType){
+          $cartElem = $user->getCart()->getProduct($recordData['id']);
+          if(!$cartElem){
+            continue;
+          }
+          /** @var $cartElem light\ProductCartData */
+          $cartData = array(
+            'id' => $cartElem->getProductId(),
+            'token' => $recordData['token'],
+            'quantity' => $cartElem->getQuantity(),
+            'price' => $cartElem->getPrice(),
+          );
+        }
+        else{
+          $cartElem = $user->getCart()->getService($recordData['id']);
+          if(!$cartElem){
+            continue;
+          }
+          $cartData = array(
+            'id' => $cartElem['id'],
+            'token' => $recordData['token'],
+            'products' => array(),
+          );
+
+          foreach($cartElem['products'] as $productId => $service){
+            $cartData['products'][$productId] = array('quantity' => $service['quantity'], 'price' => $service['price']);
+          }
+
+          if(array_key_exists(0, $cartElem['products'])){
+            /** @var $tmp light\ServiceCartData */
+            $tmp = $cartElem[0];
+            $cartData = array(
+              'quantity' => $tmp->getQuantity(),
+              'price' => $tmp->getPrice(),
+            );
+          }
         }
 
         $serviceTotal = 0; $serviceName = '';

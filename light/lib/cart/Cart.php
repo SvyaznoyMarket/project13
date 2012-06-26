@@ -87,7 +87,7 @@ class Cart
    */
   public function addService($serviceId, $quantity, $productId=null){
     //@TODO добавить проверку возможности, когда на ядре реализуют этот функционал
-    $this->dataContainer->addService($serviceId, $quantity, $productId=null);
+    $this->dataContainer->addService($serviceId, $quantity, $productId);
     $this->serviceDataList = null;
     $this->totalPrice = null;
   }
@@ -139,6 +139,31 @@ class Cart
    */
   public function getProductsQuantity(){
     return $this->dataContainer->getProductsQuantity();
+  }
+
+  /**
+   * @return array
+   * array(
+   *  array(
+   *    'id' => 1,
+   *    'quantity' => 1
+   *  ),
+   *  array(
+   *    'id' => 2,
+   *    'quantity' => 1
+   *  )
+   * )
+   */
+  public function getProductsQuantities(){
+    return $this->dataContainer->getProductsQuantities();
+  }
+
+  /**
+   * Функция возвращает сумму quantity всех услуг и товаров
+   * @return int
+   */
+  public function getTotalQuantity(){
+    return $this->dataContainer->getTotalQuantity();
   }
 
   /**
@@ -202,7 +227,7 @@ class Cart
 
   /**
    * @param null | int $productId
-   * @return ServiceCartData[] key - serviceId
+   * @return array()   array('serviceId' => array('productId'=> ServiceCartData))
    */
   public function getServiceList($productId=null){
     if(is_null($this->serviceDataList)){

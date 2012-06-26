@@ -153,4 +153,11 @@ interface CartContainer
    */
   public function getServiceIdList($productId=null);
 
+  /**
+   * Функция возвращает сумму quantity всех услуг и товаров
+   * @abstract
+   * @return int
+   */
+  public function getTotalQuantity();
+
 }

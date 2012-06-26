@@ -25,7 +25,6 @@ class OrderDefaultForm extends BaseOrderForm
 
     // region_id
     $this->widgetSchema['region_id'] = new myWidgetFormComponent(array('component' => array('order_', 'field_region_id'), 'component_param' => array()));
-    //$this->validatorSchema['region_id'] = new sfValidatorChoice(array('choices' => $regions->toValueArray('id'), 'required' => true));
     $this->widgetSchema['region_id']->setLabel('В каком городе вы будете получать заказ?');
 
     // delivery_type_id

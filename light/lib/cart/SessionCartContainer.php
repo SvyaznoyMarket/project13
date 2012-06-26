@@ -55,7 +55,7 @@ class SessionCartContainer implements CartContainer
   }
 
   public function addProduct($productId, $quantity){
-    if(!array_key_exists($productId, $_SESSION[$this->sessionName])){
+    if(!array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])){
       $_SESSION[$this->sessionName]['productList'][$productId] = (int) $quantity;
     }
     else{
@@ -71,15 +71,15 @@ class SessionCartContainer implements CartContainer
       $productId = (int) $productId;
     }
 
-    if(!array_key_exists($serviceId, $_SESSION[$this->sessionName])){
-      $_SESSION[$this->sessionName]['productList'][$serviceId] = array($productId => (int) $quantity);
+    if(!array_key_exists($serviceId, $_SESSION[$this->sessionName]['serviceList'])){
+      $_SESSION[$this->sessionName]['serviceList'][$serviceId] = array($productId => (int) $quantity);
     }
     else{
-      if(!array_key_exists($productId, $_SESSION[$this->sessionName][$serviceId])){
-        $_SESSION[$this->sessionName][$serviceId][$productId] = (int) $quantity;
+      if(!array_key_exists($productId, $_SESSION[$this->sessionName]['serviceList'][$serviceId])){
+        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] = (int) $quantity;
       }
       else{
-        $_SESSION[$this->sessionName][$serviceId][$productId] += (int) $quantity;
+        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] += (int) $quantity;
       }
     }
   }
@@ -148,6 +148,22 @@ class SessionCartContainer implements CartContainer
       }
       return $cnt;
     }
+  }
+
+  /**
+   * @return int
+   */
+  public function getTotalQuantity(){
+    $total = 0;
+    foreach($_SESSION[$this->sessionName]['serviceList'] as $service){
+      foreach($service as $quantity){
+        $total += $quantity;
+      }
+    }
+    foreach($_SESSION[$this->sessionName]['productList'] as $quantity){
+      $total += $quantity;
+    }
+    return $total;
   }
 
   /**

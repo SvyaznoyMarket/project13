@@ -27,4 +27,34 @@ class ServiceRepository
     return $service;
   }
 
+  /**
+   * Load ServiceEntity by id from core.
+   *
+   * @param $callback
+   * @param array $idList
+   * @return ServiceEntity[]
+   */
+  public function getListByIdAsync($callback, array $idList)
+  {
+    $idList = array_unique($idList);
+    if (empty($idList)){
+      $callback(array());
+      return;
+    }
+
+    $cb = function($response) use (&$callback)
+    {
+      $list = array();
+      foreach ($response as $item)
+        $list[] = new ServiceEntity($item);
+      $callback($list);
+    };
+
+    $this->coreClient->addQuery('service/get', array(
+      'id' => $idList,
+      'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ), array(), $cb);
+  }
+
+
 }

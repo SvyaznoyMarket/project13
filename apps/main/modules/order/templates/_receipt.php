@@ -1,3 +1,8 @@
+<?php
+/** @var $total string */
+/** @var $cart array */
+?>
+
 <div class="cheque-container">
 
   <!-- Cheque -->
@@ -8,7 +13,7 @@
         <div class="top font16">Ваш заказ:</div>
         <ul>
 
-          <?php foreach ($cart->getReceiptList() as $product): ?>
+          <?php foreach ($cart as $product): ?>
             <li>
               <div>
                 <?php echo $product['name'] ?> (<?php echo $product['quantity'] ?>&nbsp;шт)
@@ -20,7 +25,7 @@
         </ul>
         <div class="total">
           Сумма заказа:<br />
-          <strong class="font14"><?php echo $cart->getTotal(true) ?> <span class="rubl">p</span></strong><br />
+          <strong class="font14"><?php echo $total ?> <span class="rubl">p</span></strong><br />
           <!--Дата доставки: 5 октября 20011 г.-->
         </div>
       </div>

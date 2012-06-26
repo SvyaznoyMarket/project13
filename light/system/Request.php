@@ -34,12 +34,20 @@ class Request {
 	 * @static
 	 * @return Request
 	 */
-	public static function factory(){
+	public static function getInstance(){
 		if(is_null(self::$request)){
 			self::init();
 		}
 		return self::$request;
 	}
+
+  /**
+   * @return bool
+   */
+  public function isXmlHttpRequest()
+  {
+    return (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+  }
 
 	public function isAbsUri()
 	{
@@ -61,6 +69,13 @@ class Request {
 
 		return $this->isAbsUri() ? $uri : $this->getUriPrefix().$uri;
 	}
+
+  public function getReferer(){
+    if(isset($_SERVER) && array_key_exists('HTTP_REFERER', $_SERVER)){
+      return $_SERVER['HTTP_REFERER'];
+    }
+    return '';
+  }
 
 	public function getUriPrefix()
 	{
@@ -125,7 +140,7 @@ class Request {
 	{
 		if (!in_array(strtoupper($method), array(self::GET, self::POST, self::PUT, self::DELETE, self::HEAD)))
 		{
-			throw new Exception(sprintf('Invalid request method: %s.', $method));
+			throw new \Exception(sprintf('Invalid request method: %s.', $method));
 		}
 
 		$this->method = strtoupper($method);

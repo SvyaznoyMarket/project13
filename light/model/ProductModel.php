@@ -10,7 +10,8 @@ namespace light;
 
 require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
-require_once(VIEW_PATH.'dataObject/ProductShortData.php');
+require_once(VIEW_PATH.'dataObject/product/ProductShortData.php');
+require_once(VIEW_PATH.'dataObject/product/ProductData.php');
 //require_once(VIEW_PATH.'dataObject/PromoData.php');
 
 class ProductModel
@@ -20,20 +21,41 @@ class ProductModel
    * @param int[] $idList
    * @return ProductData[]
    */
-  public function getProductsByIdList($idList){
+  public function getProductsByIdList($idList, $loadDynamic = true){
     $ids = array();
     foreach($idList as $id){
       $ids[] = (int) $id;
     }
     $ids = array_unique($ids);
 
+    if (count($ids) < 1){
+      return array();
+    }
+
     TimeDebug::start('ProductModel:getProductsByIdList:clientV2');
-    $data = App::getCoreV2()->query('product.get-static', array(
-      'id' => $ids,
-    ));
+
+    $data = array();
+    $callback = function($response) use (&$data)
+    {
+      if (empty($data))
+        $data = $response;
+      else // array_merge do not combine equals keys
+        foreach ($response as $key => $value)
+          $data[$key] = array_merge($data[$key], $value);
+    };
+
+
+    App::getCoreV2()->addQuery('product/get-static', array('id' => $ids, 'geo_id' => App::getCurrentUser()->getRegion()->getId()), array(), $callback);
+    if ($loadDynamic)
+      App::getCoreV2()->addQuery('product/get-dynamic', array('id' => $ids, 'geo_id' => App::getCurrentUser()->getRegion()->getId()), array(), $callback);
+    App::getCoreV2()->execute();
+    $list = array();
+    foreach ($data as $item)
+      $list[] = $this->create($item);
+
     TimeDebug::end('ProductModel:getProductsByIdList:clientV2');
-//    return $data;
-    return array();
+
+    return $list;
   }
 
   /**
@@ -107,6 +129,11 @@ class ProductModel
     };
     App::getCoreV2()->addQuery('product/get-static', array('id' => $ids), array(), $cb);
     App::getCoreV2()->addQuery('product/get-dynamic', array('id' => $ids), array(), $cb);
+  }
+
+  public function create($data){
+    $product = new ProductData($data);
+    return $product;
   }
 
 }

@@ -22,14 +22,10 @@ class serviceSoaComponents extends myComponents
 
     $servList = $this->getUser()->getCart()->getServices();
     $servListId = array();
-    foreach ($servList as $next)
+    foreach ($servList as $serviceId => $next)
     {
-      foreach ($next['products'] as $product => $qty)
-      {
-        if ($product == $this->product->id)
-        {
-          $servListId[] = $next['id'];
-        }
+      if(array_key_exists($this->product->id, $next)){
+        $servListId[] = $serviceId;
       }
     }
     $this->setVar('servListId', $servListId, true);

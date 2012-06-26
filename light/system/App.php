@@ -4,6 +4,7 @@ use Logger;
 require_once(ROOT_PATH.'system/exception/systemException.php');
 require_once(ROOT_PATH.'lib/coreClient/CoreClient.php');
 require_once(ROOT_PATH.'system/Response.php');
+require_once(ROOT_PATH.'system/Request.php');
 require_once(ROOT_PATH.'lib/log4php/Logger.php');
 
 class App{
@@ -119,6 +120,14 @@ class App{
    */
   public static function getResponse(){
     return Response::getInstance();
+  }
+
+  /**
+   * @static
+   * @return Request
+   */
+  public static function getRequest(){
+    return Request::getInstance();
   }
 
   /**

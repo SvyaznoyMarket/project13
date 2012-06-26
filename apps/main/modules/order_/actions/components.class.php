@@ -187,9 +187,24 @@ class order_Components extends myComponents
         /* @var $product ProductEntity */
         $product = array_shift(RepositoryManager::getProduct()->getListById(array($error['id']), true));
 
-        $error['product'] = $this->getUser()->getCart()->getProduct($error['id']);
+        $error['product'] = array();
+        $error['product']['id'] = $product->getId();
+        $error['product']['token'] = $product->getToken();
         $error['product']['name'] = $product->getName();
         $error['product']['image'] = $product->getMediaImageUrl(0);
+
+        $productCartInfo = $this->getUser()->getCart()->getProduct($error['id']);
+        if($productCartInfo){
+          /** @var $productCartInfo light\ProductCartData */
+
+          $error['product']['quantity'] = $productCartInfo->getQuantity();
+          $error['product']['price'] = $productCartInfo->getPrice();
+        }
+        else{
+          $error['product']['quantity'] = 0;
+          $error['product']['price'] = 0;
+        }
+
         if (!empty($error['quantity_available']))
         {
           $error['product']['addUrl'] = $this->generateUrl('cart_add', array('product' => $product->getId(), 'quantity' => $error['quantity_available']));
