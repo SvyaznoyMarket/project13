@@ -1890,12 +1890,17 @@ console.info( this.id, this.id+'' in self  )
 			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>'
 			$('#adfox980').html( html )
 			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emvi&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
-		}
+		},
+
+        parseAllAdfoxDivs : function( nodes ) {
+            $.each( nodes , function() {
+//console.info( this.id, this.id+'' in ADFOX  )
+                if( this.id+'' in ADFOX )
+                    ADFOX[this.id]()
+            })
+        }
 	}
 	
-	$.each( $('.adfoxWrapper') , function() {
-//console.info( this.id, this.id+'' in ADFOX  )
-		if( this.id+'' in ADFOX )
-			ADFOX[this.id]()
-	})
+    ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
+	
 })
