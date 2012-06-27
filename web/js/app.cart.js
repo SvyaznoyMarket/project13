@@ -263,11 +263,12 @@ $(document).ready(function() {
 
 			init : function() {
 				for( var i=0, l=basket.length; i < l; i++ ) {
+					console.info(basket[i])
 					var tmp = {
 						id : basket[i].id,
 						price : basket[i].price,
 						count : basket[i].quantum,
-						type : 'another'
+						type : 'electronics'
 					}
 					
 					this.basketPull.push( tmp )
@@ -311,16 +312,17 @@ $(document).ready(function() {
 					'getPayment', 
 					{ products : self.basketPull },
 					function(result){ 
-						var creditPrice = 0
-						for( var i=0, l=self.basketPull.length; i < l; i++ ) {
-							var item = self.findProduct( self.basketPull, result.products[i].id )
-							if( item ) {
-								var itemPrice = item.price
-								creditPrice += result.products[i].initial_instalment * itemPrice/100 * item.count
-							}
+						//console.info(result)
+						//var creditPrice = 0
+						// for( var i=0, l=self.basketPull.length; i < l; i++ ) {
+						// 	var item = self.findProduct( self.basketPull, result.products[i].id )
+						// 	if( item ) {
+						// 		var itemPrice = item.price
+						// 		creditPrice += result.products[i].initial_instalment * itemPrice/100 * item.count
+						// 	}
 							
-						}
-						$('#creditPrice').text( printPrice( creditPrice ) )
+						// }
+						$('#creditPrice').text( printPrice( result.payment ) )
 					}
 				)
 			}	

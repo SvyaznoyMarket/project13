@@ -20,7 +20,7 @@
 				Сумма заказа:
                 <span>
                     <span class="price"><?php echo $cart->getTotal(true) ?></span> <span class="rubl">p</span>
-                    <br/>Сумма первоночального взноса
+                    <br/>Сумма ежемесячного платежа
                 <span>        
 			</div>
 			<div class="font30"><strong>
