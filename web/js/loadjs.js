@@ -67,7 +67,7 @@
 			}).runQueue()
 			break
 		case 'order':
-            $LAB.queueScript('bigjquery.min.js').queueScript('http://maps.google.com/maps/api/js?sensor=true').script('jquery.ui.autocomplete.js')
+            $LAB.queueScript('bigjquery.min.js').queueScript('http://maps.google.com/maps/api/js?sensor=true').queueScript('jquery.ui.autocomplete.js')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
 				.wait()
