@@ -25,21 +25,6 @@ class RegionRepository
   {
     $entity = new RegionEntity($data);
 
-    // sets parent
-    if (!empty($data['parent'])) {
-      $entity->setParent(new ProductCategoryEntity($data['parent']));
-    }
-    elseif (!empty($data['parent_id'])) {
-      $entity->setParent(new ProductCategoryEntity(array('id' => $data['parent_id'])));
-    }
-
-    // sets price type
-    if (!empty($data['price_list'])) {
-      $entity->setPriceType(new PriceTypeEntity($data['price_list']));
-    }
-    elseif (!empty($data['price_list_id'])) {
-      $entity->setPriceType(new PriceTypeEntity(array('id' => $data['price_list_id'])));
-    }
     return $entity;
   }
 
@@ -74,5 +59,33 @@ class RegionRepository
       return $this->create($data);
     }
     else return null;
+  }
+
+  /**
+   * @param string $name
+   * @param string $case
+   * @return string
+   */
+  public function getLinguisticCase($name, $case = 'и')
+  {
+    $cases = array(
+      'и' => array(), // именительный
+      'р' => array(), // родительный
+      'д' => array(), // дательный
+      'в' => array(), // винительный
+      'т' => array(), // творительный
+      'п' => array( // предложный
+        'Москва' => 'Москве',
+        'Санкт-Петербург' => 'Санкт-Петербурге',
+        'Белгород' => 'Белгороде',
+        'Липецк' => 'Липецке',
+        'Ногинск' => 'Ногинске',
+        'Орел' => 'Орле',
+        'Рязань' => 'Рязани',
+        'Сергиев Посад' => 'Сергиев Посаде',
+      ),
+    );
+
+    return isset($cases[$case][$name]) ? $cases[$case][$name] : $name;
   }
 }

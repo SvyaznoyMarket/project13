@@ -69,7 +69,7 @@ class ProductPriceTable extends myDoctrineTable
     $q->select('productPrice.*');
 
     $q->innerJoin('productPrice.PriceList priceList')
-      ->innerJoin('priceList.Region region WITH region.id = ?', sfContext::getInstance()->getUser()->getRegion('id'));
+      ->innerJoin('priceList.Region region WITH region.core_id = ?', sfContext::getInstance()->getUser()->getRegion('id'));
 
     $q->addWhere('productPrice.product_id = ?', $product_id);
     //$q->addWhere('priceList.is_default = ?', 1);
