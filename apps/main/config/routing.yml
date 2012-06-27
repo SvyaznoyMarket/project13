@@ -579,8 +579,6 @@ region_init:
 region_change:
   url:      /region/change/:region
   param:    { module: region, action: change }
-  class:   myDoctrineRoute
-  options: { model: Region, type: object, method: getForRoute }
   requirements:
     sf_method: [ get,post ]
 
