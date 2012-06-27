@@ -22,7 +22,6 @@
 	.queueScript('/js/adfox.asyn.code.ver3.js')
 	.queueWait( function(){
 		document.write = function(){
-			console.info('OVERW', arguments[0])
 /*			if( arguments[0].match('javascript') )
 				$LAB.script( arguments[0].match(/src="(.*?)"/)[1])
 			else
