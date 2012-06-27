@@ -43,7 +43,7 @@ define('DB_USER', 'wordpress');
 define('DB_PASSWORD', 'pC72luYy');
 
 /** Имя сервера MySQL */
-define('DB_HOST', 'localhost');
+define('DB_HOST', '10.20.33.2');
 
 /** Кодировка базы данных для создания таблиц. */
 define('DB_CHARSET', 'utf8');
