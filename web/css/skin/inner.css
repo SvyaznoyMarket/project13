@@ -4922,7 +4922,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     background-color: #f4f4f4;
 }
 .bImgButton.mBacket{
-    background-image: url('img/z_backet.png');
+    /* background-image: url('img/z_backet.png'); */
 }
 .bImgButton.mArrows{
     background-image: url('img/z_arrows.png');
@@ -5146,6 +5146,9 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 .bBuyingLine__eInfo span{
     color: #a8a8a8;
     font: 12px Tahoma, sans-serif;
+}
+.bBuyingLine__eInfo span.motton{
+    color: #4FCBF4;
 }
 .bBuyingLine.mSumm{
     margin-bottom: 30px;

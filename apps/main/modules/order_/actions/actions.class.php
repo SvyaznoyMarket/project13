@@ -10,6 +10,8 @@
  */
 class order_Actions extends myActions
 {
+  const ORDER_COOKIE_NAME = 'last_order';
+
   public function preExecute()
   {
     $this->getRequest()->setParameter('_template', 'order');
@@ -49,6 +51,24 @@ class order_Actions extends myActions
 
     $this->order = $order;
     //$this->order->region_id = $this->getUser()->getRegion('id');
+
+    // вытащить из куки значения для формы, если пользователь неавторизован
+    if (!$user->isAuthenticated())
+    {
+      $cookieValue = $request->getCookie(self::ORDER_COOKIE_NAME);
+      if (!empty($cookieValue))
+      {
+        $cookieValue = (array)unserialize(base64_decode($cookieValue));
+        foreach ($this->getCookieKeys() as $k)
+        {
+          if (array_key_exists($k, $cookieValue) && empty($this->order->{$k}))
+          {
+            $this->order->{$k} = $cookieValue[$k];
+          }
+        }
+      }
+    }
+
     $this->form = $this->getOrderForm($this->order);
     if (!$this->form)
     {
@@ -62,7 +82,8 @@ class order_Actions extends myActions
     $defaultDeliveryType = (1 == count($deliveryTypes)) ? $deliveryTypes[0] : null;
     $deliveryMap = $this->getDeliveryMapView($defaultDeliveryType);
 
-    $this->setVar('deliveryMap', $deliveryMap, true);
+    $this->setVar('deliveryMap', $deliveryMap);
+    $this->setVar('deliveryMap_json', json_encode($deliveryMap));
     $this->setVar('mapCenter', json_encode(array('latitude' => $user->getRegion('latitude'), 'longitude' => $user->getRegion('longitude'))));
 
     // получение ссылки "Вернуться к покупкам"
@@ -120,6 +141,25 @@ class order_Actions extends myActions
     $form->bind($request->getParameter($form->getName()));
     if ($form->isValid())
     {
+      // если пользователь неавторизован, забросить его данные в куки
+      if (!$user->isAuthenticated())
+      {
+        try {
+          $values = $form->getValues();
+          $coockieValue = array();
+          foreach ($this->getCookieKeys() as $k) {
+            if (!array_key_exists($k, $values)) continue;
+
+            $coockieValue[$k] = $values[$k];
+          }
+
+          $this->getResponse()->setCookie(self::ORDER_COOKIE_NAME, base64_encode(serialize($coockieValue)), time() + (3600 * 24 * 30));
+        }
+        catch (Exception $e) {
+          $this->getLogger()->err('{'.__CLASS__.'} не могу запихнуть куку: '.$e->getMessage());
+        }
+      }
+
       /* @var $baseOrder Order */
       $baseOrder = $form->updateObject();
       /*
@@ -707,16 +747,26 @@ class order_Actions extends myActions
         {
           foreach ($servicesForProduct[$coreData['id']] as $service)
           {
-            $serviceName .= " + {$service['name']} ({$service['quantity']} шт.)";
+            $serviceName .= " + <span class='motton'>{$service['name']} ({$service['quantity']} шт.)</span>";
             $serviceTotal += ($service['price'] * $service['quantity']);
           }
         }
 
         $itemView = new Order_ItemView();
+        $itemView->url =
+          'products' == $itemType
+          ? $coreData['link']
+          : $this->generateUrl('service_show', array('service' => ServiceTable::getInstance()->createQuery()->select('token')->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR)))
+        ;
         $itemView->deleteUrl =
           'products' == $itemType
           ? $this->generateUrl('cart_delete', array('product' => $recordData['id']), true)
           : $this->generateUrl('cart_service_delete', array('service' => $recordData['id'], 'product' => 0), true)
+        ;
+        $itemView->addUrl =
+          'products' == $itemType
+          ? $this->generateUrl('cart_add', array('product' => $recordData['id'], 'quantity' => $coreData['stock']))
+          : ''
         ;
         $itemView->id = $coreData['id'];
         $itemView->name = $coreData['name'].$serviceName;
@@ -726,18 +776,8 @@ class order_Actions extends myActions
         $itemView->quantity = $cartData['quantity'];
         $itemView->total = ($cartData['price'] * $cartData['quantity']) + $serviceTotal;
         $itemView->type = 'products' == $itemType ? Order_ItemView::TYPE_PRODUCT : Order_ItemView::TYPE_SERVICE;
-        $itemView->url = '';
-          //'products' == $itemType
-          //  ? $coreData['link']
-          //  : $this->generateUrl('service_show', array('service' => ServiceTable::getInstance()->createQuery()->select('token')->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR)))
-        //;
         $itemView->token = $itemView->type.'-'.$itemView->id;
         $itemView->stock = isset($coreData['stock']) ? $coreData['stock'] : 0;
-        $itemView->addUrl =
-          'products' == $itemType
-            ? $this->generateUrl('cart_add', array('product' => $recordData['id'], 'quantity' => $coreData['stock']))
-            : ''
-        ;
 
         foreach ($coreData['deliveries'] as $deliveryToken => $deliveryData)
         {
@@ -867,5 +907,20 @@ class order_Actions extends myActions
     $class = sfInflector::camelize($name.'payment_provider');
 
     return new $class($providers[$name]);
+  }
+
+  private function getCookieKeys()
+  {
+    return array(
+      'recipient_first_name',
+      'recipient_last_name',
+      'recipient_phonenumbers',
+      //'address_metro',
+      'address_street',
+      'address_number',
+      'address_building',
+      'address_apartment',
+      'address_floor',
+    );
   }
 }

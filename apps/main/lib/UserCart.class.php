@@ -97,6 +97,11 @@ class UserCart extends BaseUserData
                 }
                 else
                 {
+                    // ограничение максимального количества товара
+                    if ($qty > 10) {
+                      $qty = 10;
+                    }
+
                     if ($isKit) {
                         //нужное количество умножаем на количество предметов в комплекте
                         $addQty = $qty * $kitQtyByIdList[$product->getId()];
@@ -538,7 +543,6 @@ class UserCart extends BaseUserData
         }
       }
     }
-
 
     return $total;
   }
