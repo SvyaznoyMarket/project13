@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @deprecated
+ */
 class ProductServiceEntity
 {
   const MIN_SERVICE_BUY_PRICE = 950;
