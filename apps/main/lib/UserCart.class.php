@@ -313,11 +313,15 @@ class UserCart extends BaseUserData
               continue;
             }
             $service_for_list = array();
+            $creditDataType = $productBDList[$prodId]['token_prefix'];
+            $creditDataType = self::getCreditAllowBUArray($creditDataType);
+
             $list[$prodId] = array(
                 'type' => 'product',
                 'id' => $product['id'],
                 'core_id' => $productBDList[$prodId]['core_id'],
                 'token_prefix' => $productBDList[$prodId]['token_prefix'],
+                'credit_data_type' =>$creditDataType,
                 'token' => $productBDList[$prodId]['token'],
                 'name' => $productBDList[$prodId]['name'],
                 'quantity' => $product['quantity'],
@@ -682,6 +686,14 @@ class UserCart extends BaseUserData
         $orderArticle = implode(',', $orderArticleAR);
         return $orderArticle;
 
+    }
+
+    static public function getCreditAllowBUArray($creditDataType) {
+        $creditAllowBUArray = array('electronics', 'sport', 'appliances', 'do_it_yourself', 'furniture', 'household');
+        if (!in_array($creditDataType, $creditAllowBUArray)) {
+            $creditDataType = 'another';
+        }
+        return $creditDataType;
     }
 
 }

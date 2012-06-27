@@ -1048,16 +1048,17 @@ $(document).ready(function() {
 	
 	/*fill up*/
     
-	$('#order_delivery_type_id_1').click()
-	setTimeout( function() {
-		$('#order_recipient_first_name').val('TEST')
-		$('#order_recipient_last_name').val('TEST')
-		$('#order_recipient_phonenumbers').val('89253333333       ')
-		$('#payment_method_6-field input').click()
-    //        $('input[name="order[credit_bank_id]"]').val('2')
-		$('#order_agreed').click()
-	//	$('#order-submit').click()
-	}, 2000)
+//	$('#order_delivery_type_id_1').click()
+//	setTimeout( function() {
+//		$('#order_recipient_first_name').val('TEST')
+//		$('#order_recipient_last_name').val('TEST')
+//		$('#order_recipient_phonenumbers').val('89253333333       ')
+//		$('#payment_method_3-field input').click()
+//            $('input[name="order[credit_bank_id]"]').val('2')
+//		$('#order_agreed').click()
+//		$('#order-submit').click()
+//	}, 2000)
+
     
 	
 })

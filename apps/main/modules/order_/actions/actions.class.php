@@ -350,8 +350,13 @@ class order_Actions extends myActions
           if ($creditProviderId == CreditBankEntity::PROVIDER_KUPIVKREDIT) {
               $kupivkreditData = $this->_getKupivkreditData($order);
               $jsCreditData['widget'] = 'kupivkredit';
+              //брокеру отпрвляем стоимость только продуктов!
+              $productsSum = 0;
+              foreach ($order['product'] as $product) {
+                $productsSum += $product['quantity'] * $product['price'];
+              }
               $jsCreditData['vars'] = array(
-                  'sum' => $order['sum'],
+                  'sum' => $productsSum,
                   'order' => $kupivkreditData,
                   'sig' => $this->_signKupivkreditMessage($kupivkreditData)
               );
@@ -364,17 +369,31 @@ class order_Actions extends myActions
                   'items' => array()
               );
               foreach ($order['product'] as $product) {
+                  //получаем token БЮ
+                  $categoryToken = '';
+                  $productOb = $productsById[$product['product_id']];
+                  if (!empty($productOb)) {
+                      $catList = $productsById[$product['product_id']]->getCategoryList();
+                      if (!empty($catList)) {
+                          $rootCat = reset($catList);
+                          if (!empty($rootCat)) {
+                              $categoryToken = $rootCat->getToken();
+                          }
+                      }
+                  }
+                  $creditDataType = UserCart::getCreditAllowBUArray($categoryToken);
+
                   $jsCreditData['vars']['items'][] = array(
                       'name' => $product['name'],
                       'quantity' => $product['quantity'],
                       'price' => $product['price'],
                       'articul' => $product['id'],
-                      'type' => 'another',
+                      'type' => $creditDataType,
                   );
+//                  print_r($jsCreditData);
+//                  die();
               }
           }
-//         print_r($jsCreditData);
-//          die();
           $this->setVar('jsCreditArray', $jsCreditData, true);
           $this->setVar('jsCreditData', json_encode($jsCreditData), true);
       }
