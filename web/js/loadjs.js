@@ -85,6 +85,7 @@
                 //.script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
                 //.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
                 .script( 'http://direct-credit.ru/widget/script_utf.js' )
+                .script( 'https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js' )
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script(getWithVersion('main.js'))

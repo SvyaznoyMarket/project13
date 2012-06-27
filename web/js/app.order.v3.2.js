@@ -1058,6 +1058,7 @@ $(document).ready(function() {
 //		$('#order_agreed').click()
 //		$('#order-submit').click()
 //	}, 2000)
+
     
 	
 })

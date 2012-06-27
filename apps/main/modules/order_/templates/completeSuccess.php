@@ -30,46 +30,6 @@
 
 <?php if ($isCredit) { ?>
     <div id='credit-widget' data-value='<?php echo $jsCreditData; ?>' ></div>
-<script src="https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js"></script>
-<script>
-/*
-    var callback_close = function(decision) {
-        var result = '';
-        switch(decision) {
-            case 'ver':
-                result = 'Ваша заявка предварительно одобрена.';
-                break;
-            case 'agr':
-                result = 'Ваша заявка одобрена! Поздравляем!';
-                break;
-            case 'rej':
-                result = 'К сожалению, заявка отклонена банком.';
-                break;
-            case '':
-                result = 'Вы не заполнили заявку до конца';
-                break;
-            default:
-                result = 'Ваша заявка находится на рассмотрении';
-                break;
-        }
-        alert(result);
-    };
-
-    var callback_decision = function(decision) {
-        alert('Пришел статус: ' + decision);
-    };
-
-
-    vkredit = new VkreditWidget(1, <?php echo $jsCreditArray['vars']['sum']; ?>,  {
-        order: "<?php echo $jsCreditArray['vars']['order']; ?>",
-        sig: "<?php echo $jsCreditArray['vars']['sig']; ?>",
-        callbackUrl: window.location.href,
-        onClose: callback_close,
-        onDecision: callback_decision
-    });
-    vkredit.openWidget();
-*/
-</script>
 <?php } ?>
 
 
