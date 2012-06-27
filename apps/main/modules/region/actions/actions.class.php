@@ -63,7 +63,7 @@ class regionActions extends myActions
 
   public function executeChange(sfWebRequest $request)
   {
-    if(!array_key_exists('region', $request)){
+     if(!isset($request['region'])){
       $this->redirect($request->getReferer() ?: 'homepage');
       return;
     }
