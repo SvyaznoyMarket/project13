@@ -63,17 +63,22 @@ class regionActions extends myActions
 
   public function executeChange(sfWebRequest $request)
   {
-    if (intval($request['region']) == $request['region'])
-    {
-      $region = RegionTable::getInstance()->getByCoreId($request['region']);
+    if(!array_key_exists('region', $request)){
+      $this->redirect($request->getReferer() ?: 'homepage');
+      return;
     }
-    else {
-      $region = $this->getRoute()->getObject();
+    $regionId = (int)$request['region'];
+
+    if(!$regionId){
+      $this->redirect($request->getReferer() ?: 'homepage');
+      return;
     }
+
+    $region = RepositoryManager::getRegion()->getById($regionId);
 
     if ($region)
     {
-      $this->getUser()->setRegion($region->id);
+      $this->getUser()->setRegion($regionId);
     }
 
     $this->redirect($request->getReferer() ?: 'homepage');
