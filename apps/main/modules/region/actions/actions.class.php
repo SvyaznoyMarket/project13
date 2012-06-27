@@ -34,7 +34,7 @@ class regionActions extends myActions
     $data = array();
     if (mb_strlen($keyword) >= 3)
     {
-      $result = CoreClient::getInstance()->query('/v2/geo/autocomplete', array('letters' => $keyword));
+      $result = CoreClient::getInstance()->query('geo/autocomplete', array('letters' => $keyword));
       $i = 0;
       foreach ($result as $item)
       {
