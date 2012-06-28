@@ -2619,6 +2619,9 @@ function get_allowed_mime_types() {
 		'odf' => 'application/vnd.oasis.opendocument.formula',
 		// wordperfect formats
 		'wp|wpd' => 'application/wordperfect',
+        'ttf'   =>  'application/x-font-ttf',
+        'eot'   =>  'application/x-font-eot',
+        'woff'  => 'application/x-font-woff',
 		) );
 	}
 
