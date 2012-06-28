@@ -468,6 +468,11 @@ $(document).ready(function(){
 	if( !docCookies.hasItem('geoshop') ) {
 		getRegions()
 	}
+	if( !docCookies.hasItem('geoshop_change') ) {
+		docCookies.removeItem('geoshop')
+		docCookies.setItem( false, "geoshop_change", "yes")
+		getRegions()
+	}
 	
 	/* Services Toggler */
 	if( $('.serviceblock').length ) {
