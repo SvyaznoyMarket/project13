@@ -105,9 +105,6 @@ class DeliveryModel
     }
     TimeDebug::start('DeliveryModel:getProductDeliveries:clientV1');
 
-    $productId = 9497;
-    $productQuantity = 1;
-
     $dataProduct = array(
         'product_list' => array(
             array(
@@ -174,7 +171,7 @@ class DeliveryModel
                 $shopDataObject = new ShopData();
                 $shopDataObject->setId($shopData['id']);
                 $shopDataObject->setAddress($shopData['address']);
-                #$shopDataObject->setRegtime($shopData['working_time']);
+                $shopDataObject->setRegtime($shopData['working_time']);
                 $shopDataObject->setLatitude($shopData['coord_lat']);
                 $shopDataObject->setLongitude($shopData['coord_long']);
                 $deliveryData->addShop($shopDataObject);
@@ -185,7 +182,6 @@ class DeliveryModel
     }
     TimeDebug::end('DeliveryModel:getProductDeliveries:dataConvert');
 
-    var_Dump($return); exit;
     return $return;
 
   }
