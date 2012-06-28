@@ -68,6 +68,10 @@ class order_Components extends myComponents
     }
     $this->setVar('bankJson', json_encode($jsonBankData), true);
 
+    $dataForCredit = $this->getUser()->getCart()->getProductsDataForCredit();
+    $this->setVar('dataForCredit', json_encode($dataForCredit));
+
+
   }
   /**
    * Executes field_products component

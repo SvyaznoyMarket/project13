@@ -22,7 +22,9 @@
                 <div class="clear"></div>
             </div>
             <input type='hidden' name='order[credit_bank_id]' value='<?php echo reset($creditBankList)->getId(); ?>' />
-        <?php } ?>
+            <div id="tsCreditCart" data-value="<?php echo $dataForCredit ?>" ></div>
+
+          <?php } ?>
       </i>
     </div>
   <?php endforeach ?>
