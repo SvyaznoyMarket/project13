@@ -42,12 +42,24 @@ class CreditBankEntity
   /**
    * @var string
    */
+  private $token;
+
+  /**
+   * @var string
+   */
+  private $href;
+
+  /**
+   * @var string
+   */
   private $description;
 
 
     public function __construct(array $data = array()){
         if(array_key_exists('id', $data))      $this->id       = (int)$data['id'];
         if(array_key_exists('name', $data))   $this->name      = (string)$data['name'];
+        if(array_key_exists('token', $data))   $this->token    = $data['token'];
+        if(array_key_exists('href', $data))   $this->href    = $data['href'];
         if(array_key_exists('description', $data))   $this->description    = $data['description'];
         if(array_key_exists('provider_id', $data))   $this->provider_id    = (float)$data['provider_id'];
         if(array_key_exists('position', $data))   $this->position    = (float)$data['position'];
@@ -133,4 +145,35 @@ class CreditBankEntity
         return $this->position;
     }
 
+    /**
+     * @param int $token
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * @return int
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param int $href
+     */
+    public function setHref($href)
+    {
+        $this->href = $href;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHref()
+    {
+        return $this->href;
+    }
 }

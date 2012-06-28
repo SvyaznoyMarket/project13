@@ -18,7 +18,7 @@
                     <span > <?php echo reset($creditBankList)->getName(); ?></span>
                     <div class="bSelect__eArrow"></div>
                 </div>
-                <div class="fl creditHref"><a href="#">Условия кредита <span>(<?php echo reset($creditBankList)->getName(); ?>)</span></a></div>
+                <div class="fl creditHref"><a target="_blank" href="<?php echo reset($creditBankList)->getHref(); ?>">Условия кредита <span>(<?php echo reset($creditBankList)->getName(); ?>)</span></a></div>
                 <div class="clear"></div>
             </div>
             <input type='hidden' name='order[credit_bank_id]' value='<?php echo reset($creditBankList)->getId(); ?>' />
