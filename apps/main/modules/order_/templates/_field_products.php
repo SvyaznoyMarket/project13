@@ -4,9 +4,9 @@
 /* @var $item Order_ItemView */
 ?>
 
-<input id="order-delivery_map-data" type="hidden" data-value='<?php echo json_encode($deliveryMap) ?>' />
+<input id="order-delivery_map-data" type="hidden" data-value='<?php echo $deliveryMap_json ?>' />
 
-<?php foreach ($deliveryMap->deliveryTypes as $deliveryType): ?>
+<?php foreach ($sf_data->getRaw('deliveryMap')->deliveryTypes as $deliveryType): ?>
 
 <?php
 $currentWeekNum = 1;
@@ -120,13 +120,12 @@ foreach ($dates as $i => $date) {
     <p><span data-replace="true" data-assign='{"totalFormatted": ["text", "_value"]}'></span> <span class="rubl">p</span></p>
 
     <p>
-      <a data-assign='{"deleteUrl": ["attr", ["href", "_value"]], "token": ["attr", ["data-token", "_value"]]}' href="#" class="bImgButton mBacket" data-token=""></a>
-      <!--<a class="bImgButton mArrows order-item_delivery-button" href="#" data-assign='{"token": ["attr", ["data-value", "_value"]]}' data-value='' data-template="#order-item_delivery-template"></a>-->
+      <a data-assign='{"deleteUrl": ["attr", ["href", "_value"]], "token": ["attr", ["data-token", "_value"]]}' href="#" class="mBacket" data-token="">удалить</a>
     </p>
     <img data-assign='{"image": ["attr", ["src", "_value"]], "name": ["attr", ["alt", "_value"]]}' src="" alt="" />
 
     <span class="bBuyingLine__eInfo">
-      <span data-replace="true" data-assign='{"name": ["text", "_value"]}'></span>
+      <a target="_blank" data-assign='{"url": ["attr", ["href", "_value"]]}' href="#"><span data-replace="true" data-assign='{"name": ["text", "_value"]}'></span></a>
       <br><span>(<span data-replace="true" data-assign='{"quantity": ["text", "_value"]}'></span> шт.)</span>
     </span>
   </div>
