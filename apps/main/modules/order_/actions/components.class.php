@@ -64,6 +64,7 @@ class order_Components extends myComponents
     $jsonBankData = array();
     foreach ($creditBankList as $bank) {
         $jsonBankData[$bank->getId()]['name'] = $bank->getName();
+        $jsonBankData[$bank->getId()]['href'] = $bank->getHref();
     }
     $this->setVar('bankJson', json_encode($jsonBankData), true);
 
