@@ -50,7 +50,7 @@ class ServiceRepository
       $callback($list);
     };
 
-    $this->coreClient->addQuery('service/get', array(
+    CoreClient::getInstance()->addQuery('service/get', array(
       'id' => $idList,
       'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
     ), array(), $cb);

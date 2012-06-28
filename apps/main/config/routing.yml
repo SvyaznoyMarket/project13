@@ -505,7 +505,7 @@ order_show:
 # cart
 cart:
   url:   /cart
-  param: { module: cart, action: index }
+  param: { module: cart_, action: index }
 #
 # MOVED TO PLAIN PHP cart add
 cart_add:

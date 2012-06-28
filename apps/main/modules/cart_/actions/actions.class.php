@@ -20,24 +20,8 @@ class cartActions extends myActions
    */
   public function executeIndex(sfWebRequest $request)
   {
-    $cart = $this->getUser()->getCart();
-    $this->setVar('cart', $cart, true);
+    $this->setVar('cart', $this->getUser()->getCart(), true);
 
     $this->getUser()->setCacheCookie();
   }
-
-  public function executeAdd(sfWebRequest $request)
-  {}
-
-  public function executeDelete(sfWebRequest $request)
-  {}
-
-  public function executeClear(sfWebRequest $request)
-  {}
-
-  public function executeServiceAdd(sfWebRequest $request)
-  {}
-
-  public function executeServiceDelete(sfWebRequest $request)
-  {}
 }
