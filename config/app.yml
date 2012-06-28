@@ -4,13 +4,6 @@ all:
     secret: Выход!
     enabled: false
 
-  rediska:
-    default:
-      servers:
-        main:
-          host: localhost
-          persistent: true
-
   doctrine:
     result_cache:        true   # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
@@ -82,8 +75,8 @@ all:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
-      userapi_url: 'http://core.ent3.ru/v2/'
+      api_url: 'http://enter-core.loc/v1/json'
+      userapi_url: 'http://enter-core.loc/v2/'
       client_code: site
       consumer_key: test
       signature: test
