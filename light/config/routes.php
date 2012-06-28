@@ -8,6 +8,7 @@ namespace light;
  * To change this template use File | Settings | File Templates.
  */
 return array(
+  array('/user/shortinfo'                           , 'user.getShortInfo'),
   array('/product/delivery1click'                   , 'delivery.ProductDeliveryJson'),
   array('/product/delivery-info/<productId>'        , 'delivery.ProductListShortDeliveryJson'),
   array('/product/delivery-info'                    , 'delivery.ProductListShortDeliveryJson'),

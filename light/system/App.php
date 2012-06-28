@@ -101,6 +101,14 @@ class App{
 
   /**
    * @static
+   * @return ServiceModel
+   */
+  public static function getService(){
+    return self::loadModel('ServiceModel');
+  }
+
+  /**
+   * @static
    * @return Router
    */
   public static function getRouter(){

@@ -12,7 +12,9 @@ require_once(ROOT_PATH.'system/exception/dataFormatException.php');
 require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/cart/Cart.php');
 require_once(ROOT_PATH.'lib/cart/SessionCartContainer.php');
-require_once(ROOT_PATH.'lib/cart/V2cartPriceContainer.php');
+require_once(ROOT_PATH.'lib/cart/V2CartPriceContainer.php');
+
+require_once(VIEW_PATH.'dataObject/UserData.php');
 
 
 class CurrentUser
@@ -34,6 +36,9 @@ class CurrentUser
    */
   private $cart;
 
+  /** @var UserData */
+  private $user;
+
   /**
    * @static
    * @return CurrentUser
@@ -45,6 +50,56 @@ class CurrentUser
       $instance = new CurrentUser();
     }
     return $instance;
+  }
+
+  public function isAuthorized(){
+    return is_null($this->getUser());
+  }
+
+  /**
+   * @return UserData|null
+   */
+  public function getUser(){
+    if(is_object($this->user)){
+      return $this->user;
+    }
+    try{
+      $user_id = isset($_SESSION['symfony/user/sfUser/attributes']['guard']['user_id']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['user_id'] : null;
+      $user_id = (int)$user_id;
+      if ($user_id < 1) {
+        return null;
+      }
+
+      if (!($conn = mysql_connect(DB_HOST, DB_USERNAME, DB_PASSWORD))) {
+        throw new \Exception('cant connect to db "' . DB_HOST . '"');
+      }
+      if (!mysql_select_db(DB_NAME, $conn)) {
+        throw new \Exception('cant select db "' . DB_NAME . '"');
+      }
+
+      $query = 'SELECT first_name,last_name, middle_name  FROM guard_user WHERE id="' . $user_id . '"';
+
+
+      if ($result = mysql_query($query, $conn)) {
+        $userData = mysql_fetch_array($result, MYSQL_ASSOC);
+        if (!$userData) {
+          throw new \Exception('mysql_fetch_array error');
+        }
+
+        $this->user = new UserData($userData);
+        mysql_close($conn);
+        return $this->user;
+      }
+      else{
+        throw new \Exception('mysql_query error');
+      }
+    }
+    catch(\Exception $e){
+      if ($conn) {
+        mysql_close($conn);
+      }
+      return null;
+    }
   }
 
   /**

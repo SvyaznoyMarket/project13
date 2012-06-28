@@ -95,6 +95,11 @@ class ProductModel
     return $return;
   }
 
+  /**
+   * @param int[] $idList
+   * @param $callback
+   * @return ProductShortData[]
+   */
   public function getProductsShortDataByIdListAsync($idList, $callback){
     $ids = array();
     foreach($idList as $id){
@@ -127,8 +132,8 @@ class ProductModel
         $callback($list);
       }
     };
-    App::getCoreV2()->addQuery('product/get-static', array('id' => $ids), array(), $cb);
-    App::getCoreV2()->addQuery('product/get-dynamic', array('id' => $ids), array(), $cb);
+    App::getCoreV2()->addQuery('product/get-static', array('id' => $ids, 'geo_id' => App::getCurrentUser()->getRegion()->getId()), array(), $cb);
+    App::getCoreV2()->addQuery('product/get-dynamic', array('id' => $ids, 'geo_id' => App::getCurrentUser()->getRegion()->getId()), array(), $cb);
   }
 
   public function create($data){

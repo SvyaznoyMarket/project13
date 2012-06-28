@@ -9,7 +9,7 @@ define('HELPER_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIREC
 define('VIEW_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR);
 define('LOGGER_CONFIG_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'log4php.xml');
 define('LOG_FILES_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR);
-define('SESSION_NAME', 'symfony');
+define('SESSION_NAME', 'enter');
 define('SESSION_COOKIE_LIFETIME', Null); //Если Null - то используются настройки php
 
 define('DEFAULT_PAGE_TITLE', 'You can Enter');

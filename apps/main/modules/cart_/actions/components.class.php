@@ -8,7 +8,7 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: components.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class cartComponents extends myComponents
+class cart_Components extends myComponents
 {
   /**
    * Executes show component
@@ -16,82 +16,7 @@ class cartComponents extends myComponents
    */
   public function executeShow()
   {
-    if (!in_array($this->view, array('default', 'order'))) {
-      $this->view = 'default';
-    }
-    $cart = $this->getUser()->getCart();
-
-    if ($this->view == 'order') {
-      $list = $this->getReceiptList($cart);
-    }
-    else
-    {
-      $list = $this->getProductServiceList($cart);
-    }
-
-    $this->setVar('list', $list, true);
-  }
-
-  /**
-   * @param UserCartNew $cart
-   * @return array
-   */
-  private function getReceiptList($cart){
-
-    $prods = $cart->getProducts();
-    $services = $cart->getServices();
-
-    $prodIdList = array_keys($prods);
-    $serviceIdList = array_keys($services);
-
-    $list = array();
-
-    $prodCb = function($data) use($list, $prods){
-      /** @var $data ProductEntity[] */
-
-      foreach($data as $product){
-        /** @var $cartInfo \light\ProductCartData */
-        $cartInfo = $prods[$product->getId()];
-
-        $list[] = array(
-          'type' => 'products',
-          'name' => $product->getName(),
-          'token' => $product->getToken(),
-          'token_prefix' => $product->getPrefix(),
-          'quantity' => $cartInfo->getQuantity(),
-          'price' => number_format($cartInfo->getPrice(), 0, ',', ' '),
-        );
-      }
-    };
-
-    $serviceCb = function($data) use($list, $services){
-      /** @var $data ServiceEntity[] */
-
-      foreach($data as $serviceCoreInfo){
-        /** @var $cartInfo \light\ServiceCartData[]  array('productId' => ServiceCartData, 'productId' => ServiceCartData)*/
-        $cartInfo = $services[$serviceCoreInfo->getId()];
-        $qty = 0;
-        $price = 0;
-
-        foreach ($cartInfo as $prodId => $prodServInfo)
-        {
-          $qty += $prodServInfo->getQuantity();
-          $price += $prodServInfo->getTotalPrice();
-        }
-        $list[] = array(
-          'type' => 'service',
-          'name' => $serviceCoreInfo->getName(),
-          'token' => $serviceCoreInfo->getToken(),
-          'quantity' => $qty,
-          'price' => number_format($price, 0, ',', ' '),
-        );
-      }
-    };
-    RepositoryManager::getProduct()->getListByIdAsync($prodCb, $prodIdList, true);
-    RepositoryManager::getService()->getListByIdAsync($serviceCb, $serviceIdList, true);
-    CoreClient::getInstance()->execute();
-
-    return $list;
+    $this->setVar('list', $this->getProductServiceList($this->getUser()->getCart()), true);
   }
 
   /**
@@ -112,7 +37,7 @@ class cartComponents extends myComponents
     $productList = array();
     $serviceList = array();
 
-    $prodCb = function($data) use($productList, $prods, $urls){
+    $prodCb = function($data) use(&$productList, $prods, $urls){
       /** @var $data ProductEntity[] */
 
       foreach($data as $product){
@@ -136,7 +61,7 @@ class cartComponents extends myComponents
       }
     };
 
-    $serviceCb = function($data) use($serviceList, $services, $urlsService){
+    $serviceCb = function($data) use(&$serviceList, $services, $urlsService){
       /** @var $data ServiceEntity[] */
 
       foreach($data as $serviceCoreInfo){

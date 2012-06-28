@@ -28,11 +28,11 @@ class ServiceData
   /**
    * @var ServiceInfo[] key - service ID
    */
-  private static $information;
+  private static $information = array();
 
   public function __construct($data = array()){
-    if(array_key_exists('id', $data)){ $this->setId((int) $data['id']); }
-    array_key_exists('product_id', $data) ? $this->setId((int) $data['id']) : $this->setId(0);
+    if(array_key_exists('id', $data)){ $this->setId((int)$data['id']); }
+    array_key_exists('product_id', $data) ? $this->setProductId((int)$data['id']) : $this->setProductId(0);
     if(array_key_exists('price', $data)){ $this->setPrice( $data['price']); }
     if(!array_key_exists($this->getId(), self::$information)){
       $info = new ServiceInfo($data);
@@ -65,7 +65,7 @@ class ServiceData
    * @param int $id
    */
   public function setId($id){
-    $this-> id = (int) $id;
+    $this->id = (int) $id;
   }
 
   /**
@@ -79,7 +79,7 @@ class ServiceData
    * @param int $productId
    */
   public function setProductId($productId){
-    $productId = (int) $productId;
+    $this->productId = (int) $productId;
   }
 
   /**

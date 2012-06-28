@@ -10,7 +10,7 @@ Options +FollowSymLinks +ExecCGI
   #RewriteBase /
 
   RewriteRule ^region/init$ index.light.php [L]
-  RewriteRule ^user/shortinfo$ user_shortinfo.php [L]
+  RewriteRule ^user/shortinfo$ index.light.php [L]
   RewriteRule ^product/delivery1click index.light.php [L]
   RewriteRule ^product/delivery-info.* index.light.php [L]
   RewriteRule ^cart/add.* index.light.php [L]

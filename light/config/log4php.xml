@@ -20,9 +20,9 @@
     </logger>
 
     <logger name="CoreClient">
-        <level value="debug" />
-        <appender_ref ref="defaultConsoleAppender" />
-        <!--<appender_ref ref="defaultFileAppender" />-->
+        <level value="warn" />
+        <!--<appender_ref ref="defaultConsoleAppender" />-->
+        <appender_ref ref="defaultFileAppender" />
     </logger>
 
     <logger name="Settings">

@@ -11,7 +11,6 @@ header('Content-Type:	application/json');
 define('MODE', 'prod');
 define('SESSION_NAME', 'enter');
 define('NEW_VERSION_CART_NAME', 'cartSoa');
-define('OLD_VERSION_CART_NAME', 'cart');
 define('DEFAULT_REGION_ID', 19355);
 define('CURRENT_REGION_COOKIE_NAME', 'geoshop');
 
@@ -78,89 +77,6 @@ class DB
 }
 
 DB::set($conn);
-
-function moveOldDataToNewFormat($oldFormatData, &$newFormatDataContainer, $region_id)
-{
-  /*
-    * Перенос продуктов
-    */
-  if (isset($oldFormatData['products']) && count($oldFormatData['products'])) {
-    $needProductInfo = array_keys($oldFormatData['products']);
-    foreach ($needProductInfo as $key => $productId) {
-      if (isset($newFormatDataContainer[$productId])) {
-        $newFormatDataContainer['products'][$productId]['quantity'] += $oldFormatData['products'][$productId]['quantity'];
-        unset($needProductInfo[$key]);
-      }
-      else {
-        $needProductInfo[$key] = intval($productId);
-      }
-    }
-    if (count($needProductInfo)) {
-      $productInfoList = getProductInfoByIds($needProductInfo, $region_id);
-      foreach ($productInfoList as $productId => $productInfo) {
-        $newFormatDataContainer['products'][$productId] = $productInfo;
-        $newFormatDataContainer['products'][$productId]['quantity'] = $oldFormatData['products'][$productId]['quantity'];
-      }
-    }
-  }
-
-  /*
-    * Перенос услуг
-    */
-  if (isset($oldFormatData['services'])) {
-    $needServiceProductPrice = array();
-    foreach ($oldFormatData['services'] as $service_id => $service) {
-      if (isset($service['products']) && is_array($service['products'])) {
-        foreach ($service['products'] as $product_id => $productQuantity) {
-          if (isset($newFormatDataContainer['services'][$service_id]['products'][$product_id])) {
-            $newFormatDataContainer['services'][$service_id]['products'][$product_id] += $productQuantity;
-          }
-          else {
-            if (!isset($needServiceProductPrice[$service_id])) {
-              $needServiceProductPrice[$service_id] = array();
-            }
-            $needServiceProductPrice[$service_id][$product_id] = $productQuantity;
-          }
-        }
-      }
-      if (intval($service['quantity']) > 0) {
-        $needServiceProductPrice[$service_id]['0'] = $service['quantity'];
-      }
-    }
-
-    $serviceInfo = getServiceProductInfo($needServiceProductPrice, $region_id);
-    $priceList = $serviceInfo['prices'];
-    $tokenList = $serviceInfo['tokens'];
-
-    foreach ($oldFormatData['services'] as $service_id => $service) {
-      if (!isset($newFormatDataContainer['services'][$service_id])) {
-        $newFormatDataContainer['services'][$service_id] = array();
-      }
-      $newFormatDataContainer['services'][$service_id]['id'] = $service_id;
-      $newFormatDataContainer['services'][$service_id]['token'] = $tokenList[$service_id];
-      if (!isset($newFormatDataContainer['services'][$service_id]['products'])) {
-        $newFormatDataContainer['services'][$service_id]['products'] = array();
-      }
-
-      if (intval($service['quantity']) > 0) {
-        $newFormatDataContainer['services'][$service_id]['products']['0'] = array(
-          'quantity' => $service['quantity'],
-          'price' => $priceList[$service_id][0]
-        );
-      }
-      if (isset($service['products']) && is_array($service['products'])) {
-        foreach ($service['products'] as $productId => $productQuantity) {
-          $price = isset($priceList[$service_id][$productId]) ? $priceList[$service_id][$productId] : $priceList[$service_id][0];
-
-          $newFormatDataContainer['services'][$service_id]['products'][$productId] = array(
-            'quantity' => $productQuantity,
-            'price' => $price
-          );
-        }
-      }
-    }
-  }
-}
 
 function getProductInfoByIds($idList = array(), $region_id)
 {
@@ -333,18 +249,6 @@ if ($result = mysql_query($query, $conn)) {
 }
 else {
   $region_id = DEFAULT_REGION_ID;
-}
-
-if (isset($_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'][OLD_VERSION_CART_NAME])) {
-  try {
-    moveOldDataToNewFormat($_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'][OLD_VERSION_CART_NAME], $_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'][NEW_VERSION_CART_NAME], $region_id);
-    $_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'][OLD_VERSION_CART_NAME] = array();
-    unset($_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'][OLD_VERSION_CART_NAME]);
-  }
-  catch (Exception $e) {
-    mysql_close($conn);
-    error($e);
-  }
 }
 
 $sessionCartData = $_SESSION['symfony/user/sfUser/attributes']['symfony/user/sfUser/attributes'][NEW_VERSION_CART_NAME];

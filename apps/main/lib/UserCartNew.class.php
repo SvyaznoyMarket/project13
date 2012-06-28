@@ -13,7 +13,7 @@ require_once(sfConfig::get('sf_root_dir').'/light/lib/cart/SymfonyCartPriceConta
 
 
 
-class UserCartNew extends BaseUserData
+class UserCartNew
 {
 
   private $cart;

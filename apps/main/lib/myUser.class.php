@@ -10,7 +10,7 @@ class myUser extends myGuardSecurityUser
 
   public function shutdown()
   {
-    foreach (array('cart', 'order') as $name)
+    foreach (array('order') as $name)
     {
       $object = call_user_func(array($this, 'get' . ucfirst($name)));
       $this->setAttribute($name, $object->dump());
@@ -38,7 +38,11 @@ class myUser extends myGuardSecurityUser
    */
   public function getCart()
   {
-    return $this->getUserData('cart');
+    if (null == $this->cart) {
+      $this->cart = new UserCartNew();
+    }
+
+    return $this->cart;
   }
 
   /**
@@ -188,6 +192,10 @@ class myUser extends myGuardSecurityUser
 
   protected function getUserData($name)
   {
+
+    if($name == 'cart'){
+      return $this->getCart();
+    }
     if (null == $this->$name) {
       $class = sfInflector::camelize('user_' . $name);
       $this->$name = new $class($this->getAttribute($name, array()));

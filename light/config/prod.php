@@ -16,3 +16,8 @@ define('CORE_V1_CONSUMER_KEY', $coreConfig['consumer_key']);
 define('CORE_V1_SIGNATURE', $coreConfig['signature']);
 
 define('ONLINE_CALL_ENABLED', $onlineCall['enabled']);
+
+define('DB_HOST', '10.20.33.2');
+define('DB_NAME', 'enter');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', 'qazwsxedc');
