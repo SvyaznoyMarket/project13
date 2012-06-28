@@ -47,10 +47,16 @@
         <?php include_partial('default/header') ?>
 
         <!-- Page head -->
-        <?php /* if (!include_slot('page_head')): ?>
-          <?php include_partial('default/page_head') ?>
-        <?php endif */ ?>
-        <!-- Page head -->
+       <div class="pagehead">
+
+         <noindex>
+           <div class="searchbox">
+             <?php render_partial('search/templates/_form.php') ?>
+           </div>
+         </noindex>
+         <div class="clear pb20"></div>
+       </div>
+       <!-- Page head -->
 
         <?php if (has_slot('left_column')): ?>
           <div class="float100">
