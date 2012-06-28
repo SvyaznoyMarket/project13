@@ -8,30 +8,20 @@
  */
 class CityRedirectFilter extends sfFilter{
 
-  const PARAM_NAME = "city_id";
-
   public function execute ($filterChain)
   {
     $context = $this->getContext();
     $request = $context->getRequest();
+    $response = $context->getResponse();
 
-    $cityId = $request->getGetParameter(self::PARAM_NAME, false); //если передается в посте - обработка не нужна
 
-    if($cityId){
-      $regionTable = RegionTable::getInstance();
-      $region = $regionTable->getByToken($cityId);
-    }
-    else{
-      $region = false;
-    }
+    $geoshop = $request->getCookie('geoshop', false);
+    $isGeoshopChanged = $request->getCookie('geoshop_change', false);
 
-    if($region){
-      $user = $context->getUser();
-      $user->setRegion($region['id']);
-      $newUrl = preg_replace('/\?'.self::PARAM_NAME.'=[-_0-9a-zA-Z]+\&/i', '?', $request->getUri());
-      $newUrl = preg_replace('/\?'.self::PARAM_NAME.'=[-_0-9a-zA-Z]+/i', '', $newUrl);
-      $newUrl = preg_replace('/\&'.self::PARAM_NAME.'=[-_0-9a-zA-Z]+/i', '', $newUrl);
-      return $context->getController()->redirect($newUrl);
+    if($isGeoshopChanged === false && $geoshop !== false){
+      $response->setCookie('geoshop', '');
+
+      return $context->getController()->redirect($request->getUri());
     }
     $filterChain->execute();
   }
