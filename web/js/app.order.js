@@ -272,29 +272,32 @@ window.onbeforeunload = function (){ return false }    // DEBUG
     if( creditWidget.widget === 'kupivkredit' ) {
 //console.info('kupivkredit')
         var callback_close = function(decision) {
-            var result = ''
-            switch(decision) {
-                case 'ver':
-                    result = 'Ваша заявка предварительно одобрена.'
-                    break
-                case 'agr':
-                    result = 'Ваша заявка одобрена! Поздравляем!'
-                    break
-                case 'rej':
-                    result = 'К сожалению, заявка отклонена банком.'
-                    break
-                case '':
-                    result = 'Вы не заполнили заявку до конца'
-                    break
-                default:
-                    result = 'Ваша заявка находится на рассмотрении'
-                    break
-            }
-            alert(result)
+            setTimeout(function(){
+                document.location = 'http://www.enter.ru'
+            }, 1000)
+            // var result = ''
+            // switch(decision) {
+            //     case 'ver':
+            //         result = 'Ваша заявка предварительно одобрена.'
+            //         break
+            //     case 'agr':
+            //         result = 'Ваша заявка одобрена! Поздравляем!'
+            //         break
+            //     case 'rej':
+            //         result = 'К сожалению, заявка отклонена банком.'
+            //         break
+            //     case '':
+            //         result = 'Вы не заполнили заявку до конца'
+            //         break
+            //     default:
+            //         result = 'Ваша заявка находится на рассмотрении'
+            //         break
+            // }
+            // alert(result)
         }
 
         var callback_decision = function(decision) {
-            alert('Пришел статус: ' + decision)
+            //alert('Пришел статус: ' + decision)
         }
 
 
