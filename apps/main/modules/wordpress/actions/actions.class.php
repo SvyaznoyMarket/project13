@@ -34,6 +34,7 @@ class wordpressActions extends sfActions
       $this->setVar('breadCrumbElementList', $breadCrumbElementList);
 
       $this->getRequest()->setParameter('_template', 'infopage');
+      $this->getResponse()->setTitle($this->pageTitle);
 
       $layout = SF_WP_Proxy::getInstance()->getCurrentLayout();
 

@@ -413,6 +413,7 @@ class Core
       $this->error = array($response['error']['code'] => $response['error']['message'], );
       if (isset($response['error']['detail'])) $this->error['detail'] = $response['error']['detail'];
       if (isset($response['error']['message'])) $this->error['message'] = $response['error']['message'];
+      if (isset($response['error']['product_error_list'])) $this->error['product_error_list'] = $response['error']['product_error_list'];
       $response = false;
     }
 
