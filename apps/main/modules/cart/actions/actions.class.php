@@ -23,7 +23,7 @@ class cartActions extends myActions
     $cart = $this->getUser()->getCart();
     $this->setVar('cart', $cart, true);
 
-    if ($_SESSION['credit']) {
+    if (!empty($_SESSION['credit']) && $_SESSION['credit']) {
         $selectCredit = true;
     } else {
         $selectCredit = false;

@@ -1,4 +1,8 @@
-<?php include_partial('order_/header', array('title' => 'Ваш заказ принят, спасибо!')) ?>
+<?php if ($isCredit) { ?>
+    <?php include_partial('order_/header', array('title' => 'Покупка в кредит')) ?>
+<?php } else { ?>
+    <?php include_partial('order_/header', array('title' => 'Ваш заказ принят, спасибо!')) ?>
+<?php } ?>
 
 <?php foreach ($orders as $order): ?>
   <p class="font19">Номер заказа: <?php echo $order['number'] ?></p>
@@ -9,10 +13,12 @@
   <div class="line pb15"></div>
 <?php endforeach ?>
 
-<div class="mt32">
-  В ближайшее время мы вам перезвоним :)
-  <br />Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.
-</div>
+<?php if (!$isCredit) { ?>
+    <div class="mt32">
+      В ближайшее время мы вам перезвоним :)
+      <br />Специалист нашего Контакт-cENTERа уточнит, где и когда будет удобно получить заказ.
+    </div>
+<?php } ?>
 
 <?php if ($paymentForm) { ?>
   <p>Через <span class="timer">5</span> сек. мы автоматически перенаправим Вас на страницу оплаты, если этого не произойдет, пожалуйста, нажмите на кнопку "Оплатить заказ".</p>
@@ -22,7 +28,7 @@
       <input id="pay-button" type="submit" class="button bigbutton" value="Оплатить заказ" />
     </form>
   </div>
-<?php } else { ?>
+<?php } elseif (!$isCredit) { ?>
   <div class="mt32" style="text-align: center">
     <a class='bBigOrangeButton' href="<?php echo url_for('homepage') ?>">Продолжить покупки</a>
   </div>

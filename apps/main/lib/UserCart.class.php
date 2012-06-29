@@ -696,4 +696,26 @@ class UserCart extends BaseUserData
         return $creditDataType;
     }
 
+    public function getProductsDataForCredit()
+    {
+        $idList = array();
+        foreach ($this->_products as $product) {
+            $idList[] = $product['id'];
+        }
+        $productList = RepositoryManager::getProduct()->getListById($idList, true);
+        $data = array();
+        foreach ($productList as $prodOb) {
+            $cat = reset($prodOb->getCategoryList());
+            $cat = $cat->getToken();
+            $realCreditType = self::getCreditAllowBUArray($cat);
+            $data[] = array(
+                'id' => $product['id'],
+                'quantity' => $product['quantity'],
+                'price' => $product['price'],
+                'type' => $realCreditType,
+            );
+        }
+        return $data;
+    }
+
 }

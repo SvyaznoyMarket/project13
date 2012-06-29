@@ -83,6 +83,10 @@ class cartComponents extends myComponents
     }
 
     $this->setVar('list', $list, true);
+
+    $dataForCredit = $this->getUser()->getCart()->getProductsDataForCredit();
+    $this->setVar('dataForCredit', json_encode($dataForCredit));
+
   }
 
   public function executeSeo_counters_advance()
