@@ -60,8 +60,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.script( 'JsHttpRequest.js' )
-                //.script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
-                .script( 'http://direct-credit.ru/widget/api_script_utf.js' )				
+                .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('main.js'))
 				.script(getWithVersion('app.cart.js'))
@@ -72,6 +71,8 @@
 			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
+				.script( 'JsHttpRequest.js' )                
+                .script( 'http://direct-credit.ru/widget/api_script_utf.js' )
 				.wait()
 				.script(getWithVersion('app.shop.map.js'))
 				.script(getWithVersion('app.order.v3.2.js'))
@@ -82,7 +83,6 @@
 			$LAB.queueScript('bigjquery.min.js').queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
 				.script( 'JsHttpRequest.js' )
-                //.script( 'http://direct-credit.ru/widget/dc_script_utf.js' )				
                 //.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
                 .script( 'http://direct-credit.ru/widget/script_utf.js' )
                 .script( 'https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js' )

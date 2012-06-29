@@ -1034,16 +1034,22 @@ $(document).ready(function() {
 		    
 	if( $('.bankWrap').length ) {
 		var banks = $('.bankWrap > .bSelect').data('value')
+        var docs  = $('.bankWrap > .creditHref')
 		var options = $('<div>').addClass('bSelect__eDropmenu')
 		for( var id in banks ) {
 			var option = $('<div>').attr('ref', id).append( $('<span>').text( banks[id].name ) )
 			option.click( function() {
-				$('.bankWrap > .bSelect').find('span:first').text( $(this).find('span').text() )
-				$('input[name="order[credit_bank_id]"]').val( $(this).attr('ref') )
+                var thisId = $(this).attr('ref')
+				$('.bankWrap > .bSelect').find('span:first').text( banks[ thisId ].name )
+				$('input[name="order[credit_bank_id]"]').val( thisId )
+                docs.find('a').attr('href', banks[ thisId ].href )
+                docs.find('span').text('(' + banks[ thisId ].name + ')' )
 			})
 			options.append( option )
 		}
 		$('.bankWrap > .bSelect').append( options )
+
+        DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
 	}
 	
 	/*fill up*/

@@ -256,78 +256,8 @@ $(document).ready(function() {
 			anotherSum()
 		})	
 //console.info( basket )
-
-		DirectCredit = {
-
-			basketPull : [],
-
-			init : function() {
-				for( var i=0, l=basket.length; i < l; i++ ) {
-					console.info(basket[i])
-					var tmp = {
-						id : basket[i].id,
-						price : basket[i].price,
-						count : basket[i].quantum,
-						type : 'electronics'
-					}
-					
-					this.basketPull.push( tmp )
-				}
-				this.sendCredit()
-			},
-
-			change : function( message, data ) {
-				self = DirectCredit
-				if( data.q > 0 ) {
-					var item = self.findProduct( self.basketPull, data.id )	
-					item.count = data.q
-				} else {
-					var key = self.findProductKey( self.basketPull, data.id )
-					self.basketPull.splice( key, 1 )
-				}
-				self.sendCredit()
-			},
-
-			findProduct : function( array, id) {
-				for( var key=0, lk=array.length; key < lk; key++ ) {
-					if( array[key].id == id )
-						return array[key]
-				}
-				return -1
-			},
-
-			findProductKey : function( array, id) {
-				for( var key=0, lk=array.length; key < lk; key++ ) {
-					if( array[key].id == id )
-						return key
-				}
-				return -1
-			},
-			
-			sendCredit : function(  ) {
-				var self = this	
-				dc_getCreditForTheProduct(
-					'4427',
-					'none',
-					'getPayment', 
-					{ products : self.basketPull },
-					function(result){ 
-						//console.info(result)
-						//var creditPrice = 0
-						// for( var i=0, l=self.basketPull.length; i < l; i++ ) {
-						// 	var item = self.findProduct( self.basketPull, result.products[i].id )
-						// 	if( item ) {
-						// 		var itemPrice = item.price
-						// 		creditPrice += result.products[i].initial_instalment * itemPrice/100 * item.count
-						// 	}
-							
-						// }
-						$('#creditPrice').text( printPrice( result.payment ) )
-					}
-				)
-			}	
-		}
-		DirectCredit.init()
+		
+		DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
 		PubSub.subscribe( 'quantityChange', DirectCredit.change )
 	} // credit 
 })

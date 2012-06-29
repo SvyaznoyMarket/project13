@@ -1647,6 +1647,84 @@ function mediaLib( jn ) {
 	
 } // mediaLib object
 
+/* Credit Brokers */
+DirectCredit = {
+
+    basketPull : [],
+
+    output : null,
+    input  : null,
+
+    init : function( input, output ) {
+        if( !input || !output )
+            return 'incorrect input data'
+        this.input  = input
+        this.output = output
+        for( var i=0, l=input.length; i < l; i++ ) {
+            var tmp = {
+                id : input[i].id,
+                price : input[i].price,
+                count : input[i].quantity,
+                type : input[i].type
+            }
+            
+            this.basketPull.push( tmp )
+        }
+        this.sendCredit()
+    },
+
+    change : function( message, data ) {
+        self = DirectCredit
+        if( data.q > 0 ) {
+            var item = self.findProduct( self.basketPull, data.id ) 
+            item.count = data.q
+        } else {
+            var key = self.findProductKey( self.basketPull, data.id )
+            self.basketPull.splice( key, 1 )
+        }
+        self.sendCredit()
+    },
+
+    findProduct : function( array, id) {
+        for( var key=0, lk=array.length; key < lk; key++ ) {
+            if( array[key].id == id )
+                return array[key]
+        }
+        return -1
+    },
+
+    findProductKey : function( array, id) {
+        for( var key=0, lk=array.length; key < lk; key++ ) {
+            if( array[key].id == id )
+                return key
+        }
+        return -1
+    },
+    
+    sendCredit : function(  ) {
+        var self = this 
+        dc_getCreditForTheProduct(
+            '4427',
+            'none',
+            'getPayment', 
+            { products : self.basketPull },
+            function(result){                       
+                //var creditPrice = 0
+                // for( var i=0, l=self.basketPull.length; i < l; i++ ) {
+                //  var item = self.findProduct( self.basketPull, result.products[i].id )
+                //  if( item ) {
+                //      var itemPrice = item.price
+                //      creditPrice += result.products[i].initial_instalment * itemPrice/100 * item.count
+                //  }
+                    
+                // }
+                self.output.text( printPrice( result.payment ) )
+            }
+        )
+    }   
+} // DirectCredit singleton
+
+
 /* Date object upgrade */
 if ( !Date.prototype.toISOString ) {
 	

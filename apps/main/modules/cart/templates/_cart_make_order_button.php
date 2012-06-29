@@ -2,8 +2,8 @@
 	<div id="creditFlag" style="display:none">
 	<label class="bigcheck <?php if ($selectCredit) echo 'checked'; ?>" for="selectCredit">
 		<b></b>Выбранные товары купить в кредит
-		<input class="" type="checkbox" id="selectCredit" <?php if ($selectCredit) echo 'checked="checked"'; ?>
-			value="<?php if ($selectCredit){ echo '1';} else { echo '0'; } ?>" name="selectCredit"/>
+		<input autocomplete="off" class="" type="checkbox" id="selectCredit" <?php if ($selectCredit) echo 'checked="checked"'; ?>
+			name="selectCredit"/>
 	</label>
 	</div>
 	<div class="pl35">
