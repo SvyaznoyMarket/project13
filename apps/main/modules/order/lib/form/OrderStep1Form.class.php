@@ -187,7 +187,7 @@ class OrderStep1Form extends BaseOrderForm
     foreach ($regions as $region)
     {
       $region_choices[$region['id']]['name'] = $region['name'];
-      $region_choices[$region['id']]['data-url'] = url_for('region_change', $region);
+      $region_choices[$region['id']]['data-url'] = url_for('region_change', $region['core_id']);
     }
 
     $this->widgetSchema['region_id'] = new sfWidgetFormChoice(array(

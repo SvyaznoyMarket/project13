@@ -84,6 +84,8 @@ AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vt
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
+<?php include_partial('region/select') ?>
+
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
   <?php include_partial('default/yandexMetrika') ?>

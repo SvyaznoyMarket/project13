@@ -47,10 +47,16 @@
         <?php include_partial('default/header') ?>
 
         <!-- Page head -->
-        <?php /* if (!include_slot('page_head')): ?>
-          <?php include_partial('default/page_head') ?>
-        <?php endif */ ?>
-        <!-- Page head -->
+       <div class="pagehead">
+
+         <noindex>
+           <div class="searchbox">
+             <?php render_partial('search/templates/_form.php') ?>
+           </div>
+         </noindex>
+         <div class="clear pb20"></div>
+       </div>
+       <!-- Page head -->
 
         <?php if (has_slot('left_column')): ?>
           <div class="float100">
@@ -95,6 +101,9 @@
       </div>
     </div>
     <!-- /Lightbox -->
+
+    <?php include_partial('region/select') ?>
+
     <script src="/js/LAB.min.js" type="text/javascript"></script>
     <script src="/js/loadjs.js" type="text/javascript"></script>
     <?php if (!include_slot('auth'))
@@ -126,7 +135,7 @@
 <?php if (has_slot('seo_counters_advance')): ?>
   <?php include_slot('seo_counters_advance') ?>
 <?php endif ?>
-<?php include_component('default', 'admitad') ?>
+
 <?php include_component('default', 'adriver') ?>
   </body>
 </html>

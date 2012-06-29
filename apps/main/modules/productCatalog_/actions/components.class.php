@@ -123,9 +123,7 @@ class productCatalog_Components extends myComponents
     }
     // description
     if (empty($this->productCategory->seo_description)) {
-      $region = $this->getUser()->getRegion('region');
-      $regionName = RegionTable::getInstance()->getLinguisticCase($region, 'п');
-      $regionName = $regionName ? : $region['name'];
+      $regionName = $this->getUser()->getRegion('name');
 
       $this->productCategory->seo_description = ''
         . $this->productCategory->name
@@ -135,7 +133,7 @@ class productCatalog_Components extends myComponents
     }
     // keywords
     if (empty($this->productCategory->seo_keywords)) {
-      $this->productCategory->seo_keywords = "{$this->productCategory->name} магазин продажа доставка {$this->getUser()->getRegion('name')} enter.ru";
+      $this->productCategory->seo_keywords = "{$this->productCategory->name} магазин продажа доставка {$regionName} enter.ru";
     }
 
     $this->getResponse()->addMeta('title', $this->productCategory->seo_title);

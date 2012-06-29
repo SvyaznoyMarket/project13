@@ -61,9 +61,9 @@ class ProductStateTable extends myDoctrineTable
       );
       $region = RegionTable::getInstance()->getById($record['region_id']);
 
-      if (!empty($region['geoip_code']))
+      if (!empty($region['core_id']))
       {
-        $return[] = "product-{$product['core_id']}-{$region['geoip_code']}";
+        $return[] = "product-{$product['core_id']}-{$region['core_id']}";
       }
     }
 
