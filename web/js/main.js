@@ -446,7 +446,7 @@ $(document).ready(function(){
 		$('#region-block').lightbox_me( {
 			onClose: function() {			
 				if( !docCookies.hasItem('geoshop') ) {
-					docCookies.setItem( false, "geoshop", "14974") //moscow city
+					docCookies.setItem( false, "geoshop", "14974", 31536e3, "/") //moscow city
 					document.location.reload()
 				}
 			}
@@ -470,7 +470,7 @@ $(document).ready(function(){
 	}
 	if( !docCookies.hasItem('geoshop_change') ) {
 		docCookies.removeItem('geoshop')
-		docCookies.setItem( false, "geoshop_change", "yes")
+		docCookies.setItem( false, "geoshop_change", "yes", 31536e3, "/")
 		getRegions()
 	}
 	
