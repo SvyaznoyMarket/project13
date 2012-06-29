@@ -12,6 +12,7 @@
       <i>
         <div><?php echo $v->getDescription() ?></div>
         <?php if ($v->getIsCredit()) { ?>
+          <div id="creditInfo" style="display:none">
             <div>Выберите банк:</div>
             <div class="bankWrap">
                 <div data-value='<?php echo $bankJson; ?>' class="fl bSelect mFastInpSmall">
@@ -23,7 +24,14 @@
             </div>
             <input type='hidden' name='order[credit_bank_id]' value='<?php echo reset($creditBankList)->getId(); ?>' />
             <div id="tsCreditCart" data-value="<?php echo $dataForCredit ?>" ></div>
-
+            <!--div>Сумма заказа: <span class="rubl">p</span></div-->
+            <div>
+              <strong style="font-size:160%; color: #000;">Ежемесячный платеж<sup>**</sup>:
+                  <span id="creditPrice"></span> <span class="rubl"> p</span>
+              </strong>
+            </div>
+            <div><sup>**</sup> Кредит не распространяется на услуги F1 и доставку. Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.</div>
+          </div>   
           <?php } ?>
       </i>
     </div>

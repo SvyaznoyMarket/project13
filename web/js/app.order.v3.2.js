@@ -584,12 +584,12 @@ $(document).ready(function() {
 
         onDeliveryBlockChange: function() {
             if (1 == $('.order-delivery-holder:visible').length) {
-                $('#payment_method_online-field').show()
+                $('#payment_method_5-field').show()
             }
             else {
-                $('#payment_method_online-field').hide()
-                $('#payment_method_online-field').find('input').attr('checked', false)
-                $('#payment_method_online-field').find('.mChecked').removeClass('mChecked')
+                $('#payment_method_5-field').hide()
+                $('#payment_method_5-field').find('input').attr('checked', false)
+                $('#payment_method_5-field').find('.mChecked').removeClass('mChecked')
             }
         },
 
@@ -1030,7 +1030,12 @@ $(document).ready(function() {
 		})
 		
 	/* Credit */
-
+    $('body').delegate('input[name="order[payment_method_id]"]', 'click', function() {
+        if( this.id === 'order_payment_method_id_6' )
+            $('#creditInfo').show()
+        else
+            $('#creditInfo').hide()
+    })
 		    
 	if( $('.bankWrap').length ) {
 		var banks = $('.bankWrap > .bSelect').data('value')
