@@ -37,13 +37,13 @@ define('WP_CACHE', true);
 define('DB_NAME', 'wordpress');
 
 /** Имя пользователя MySQL */
-define('DB_USER', 'root');
+define('DB_USER', 'wordpress');
 
 /** Пароль к базе данных MySQL */
-define('DB_PASSWORD', '68425214');
+define('DB_PASSWORD', 'pC72luYy');
 
 /** Имя сервера MySQL */
-define('DB_HOST', 'localhost');
+define('DB_HOST', '10.20.33.2');
 
 /** Кодировка базы данных для создания таблиц. */
 define('DB_CHARSET', 'utf8');
