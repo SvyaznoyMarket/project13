@@ -57,6 +57,7 @@ class cart_Components extends myComponents
           'priceFormatted' =>  number_format($cartInfo->getPrice(), 0, ',', ' '),
           'total' => number_format($cartInfo->getTotalPrice(), 0, ',', ' '),
           'photo' => $urls[1] . $product->getMediaImage(),
+          'fullObject' => $product,
         );
       }
     };

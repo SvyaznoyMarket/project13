@@ -17,8 +17,12 @@ class V2CartPriceContainer implements CartPriceContainer
 
   public function getPrices(CartContainer $cart){
     try{
+      if(is_null($cart) || (!count($cart->getProductsQuantities()) && !count($cart->getServicesQuantities()))){
+        return array("product_list" => array(),"service_list" => array(),"price_total" => 0);
+      }
+
       $response = App::getCoreV2()->query(
-        'geo.get-by-id-list',
+        'cart.get-price',
         array('geo_id' => App::getCurrentUser()->getRegion()->getId()),
         array('product_list' => $cart->getProductsQuantities(), 'service_list' => $cart->getServicesQuantities())
       );
@@ -26,7 +30,7 @@ class V2CartPriceContainer implements CartPriceContainer
       return (array) $response;
     }
     catch(CoreClientException $e){
-      return array();
+      return array("product_list" => array(),"service_list" => array(),"price_total" => 0);
     }
   }
 }

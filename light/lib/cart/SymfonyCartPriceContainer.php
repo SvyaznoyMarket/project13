@@ -10,29 +10,21 @@ class SymfonyCartPriceContainer implements \light\CartPriceContainer
 {
 
   public function getPrices(\light\CartContainer $cart){
+    try{
+      if(is_null($cart) || (!count($cart->getProductsQuantities()) && !count($cart->getServicesQuantities()))){
+        return array("product_list" => array(),"service_list" => array(),"price_total" => 0);
+      }
+      $region = RepositoryManager::getRegion()->getDefaultRegionId();
+      $response = CoreClient::getInstance()->query(
+        'cart.get-price',
+        array('geo_id' =>$region),
+        array('product_list' => $cart->getProductsQuantities(), 'service_list' => $cart->getServicesQuantities())
+      );
 
-    $ServicesQuantities = $cart->getServicesQuantities();
-    $serviceList = array();
-
-    foreach($ServicesQuantities as $service){
-      $tmp = $service;
-      $tmp['price'] = 1500;
-      $serviceList[] = $tmp;
+      return (array) $response;
     }
-
-    $productsQuantities = $cart->getProductsQuantities();
-    $productList = array();
-
-    foreach($productsQuantities as $product){
-      $tmp = $product;
-      $tmp['price'] = 500;
-      $productList[] = $tmp;
+    catch(CoreClientException $e){
+      return array("product_list" => array(),"service_list" => array(),"price_total" => 0);
     }
-
-    return array(
-      'product_list' => $productList,
-      'service_list' => $serviceList,
-      'price_total' => 9000
-    );
   }
 }

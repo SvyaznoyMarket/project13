@@ -15,7 +15,7 @@ class ServiceRepository
    */
   public function getByToken($token)
   {
-    $params = array('slug' => $token);
+    $params = array('slug' => $token, 'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId());
     $result = CoreClient::getInstance()->query('service.get', $params);
 
     if (!$result || !array_key_exists($token, $result)) {

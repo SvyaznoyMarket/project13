@@ -13,11 +13,11 @@ require_once(ROOT_PATH.'lib/TimeDebug.php');
 class userController
 {
   public function getShortInfo(Response $response, $params = array()){
-//    if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
-//      $response->setStatusCode(404);
-//      $response->setContent(App::getRenderer()->renderFile('404'));
-//      return;
-//    }
+    if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
+      $response->setStatusCode(404);
+      $response->setContent(App::getRenderer()->renderFile('404'));
+      return;
+    }
 
     TimeDebug::start('controller:user:getShortInfo');
     $response->setContentType('application/json');

@@ -197,6 +197,6 @@ class CurrentUser
       $this->region = App::getRegion()->getByGeoIPCode(self::DEFAULT_GEO_IP_CODE);
     }
 
-    $this->cart = new Cart(new SessionCartContainer(), new MockCartPriceContainer());
+    $this->cart = new Cart(new SessionCartContainer(), new V2CartPriceContainer());
   }
 }

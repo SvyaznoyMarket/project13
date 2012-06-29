@@ -34,9 +34,15 @@ class serviceSoaComponents extends myComponents
 
   public function executeList_for_product_in_cart()
   {
-    $productList = RepositoryManager::getProduct()->getListById(array($this->product['core_id']), true);
-    /** @var $product ProductEntity */
-    $product = reset($productList);
+    if(array_key_exists('fullObject', $this->product)){
+      $product = $this->product['fullObject'];
+    }
+    else{
+      $productList = RepositoryManager::getProduct()->getListById(array($this->product['core_id']), true);
+      /** @var $product ProductEntity */
+      $product = reset($productList);
+    }
+
     $result = array();
     $selectedNum = 0;
     foreach ($product->getServiceList() as $service)
