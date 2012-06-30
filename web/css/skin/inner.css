@@ -150,6 +150,9 @@ TABLE {border-collapse:collapse}
 .mBR5 {
     border-radius: 5px 5px 5px 5px;
 }
+.grayUnderline {
+  border-bottom: 1px solid #E6E6E6;
+}
 /*#auth-link{display:none}*/
 
 .rubl {font-family:"Rouble"; font-size: 90%; margin: 0 0px 0 -5px}
@@ -301,6 +304,14 @@ zoom: 1;
 }
 .mVAMiddle {
     vertical-align: middle;
+}
+
+.creditInfo > div {
+  display: inline-block;
+}
+.creditInfo > div.leftTitle {
+  width: 200px;
+  padding-right:50px;
 }
 
 .yellowbutton {height:24px; padding:0 7px 3px 7px; background-color:#ffaa01;  background-position:0 0; font-size:11px; color:#fff; border-color:#f28900}
