@@ -20,10 +20,7 @@ class cartActions extends myActions
    */
   public function executeIndex(sfWebRequest $request)
   {
-      echo '<pre>';
-      print_r($_COOKIE);
-      echo '</pre>';
-      $cart = $this->getUser()->getCart();
+    $cart = $this->getUser()->getCart();
     $this->setVar('cart', $cart, true);
 
     if (!empty($_COOKIE['credit_on']) && $_COOKIE['credit_on']) {
