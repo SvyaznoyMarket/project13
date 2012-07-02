@@ -104,168 +104,116 @@ class DeliveryModel
       throw new dataFormatException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
     }
     TimeDebug::start('DeliveryModel:getProductDeliveries:clientV1');
-    $data = App::getCoreV1()->query('order.calc', array(), array(
-      'geo_id'  => $geoId,
-      'product' => array(array('id' => $productId, 'quantity' => $productQuantity)),
-      'service' => null,
-      'mode'    => null
-    ));
-//    var_export($data);
+
+    $dataProduct = array(
+        'product_list' => array(
+            array(
+                'id'       => $productId,
+                'quantity' => $productQuantity
+            )
+        )
+    );
+
+    $data = App::getCoreV2()->query('delivery.calc', array('geo_id'  => $geoId), $dataProduct);
+
     TimeDebug::end('DeliveryModel:getProductDeliveries:clientV1');
 
     $return = array();
 
     TimeDebug::start('DeliveryModel:getProductDeliveries:dataConvert');
 
-    foreach($data['deliveries'] as $deliveryTypeName => $delivery){
-        if(!isset($data['products'][$productId]['deliveries'][$deliveryTypeName])){
-          echo "{$deliveryTypeName} not found \r\n";
-          continue;
-        }
-        switch($delivery['token']){
-          case 'self':
-            $return = $this->addShopToSelfDelivery($data['products'][$productId]['deliveries'][$deliveryTypeName]['dates'], $delivery, $data['shops'][$delivery['shop_id']], $return);
-            break;
-          default:
-            $deliveryData = new DeliveryData();
-            $deliveryData->setModeId($delivery['mode_id']);
-            $deliveryData->setName(($delivery['token'] =='standart')? 'курьерская доставка' : $delivery['name']);
-            $deliveryData->setToken($delivery['token']);
-            $deliveryData->setPrice($data['products'][$productId]['deliveries'][$deliveryTypeName]['price']);
+    $productData = array_pop($data['product_list']);
+    $productDeliveryListData = $productData['delivery_mode_list'];
+    foreach($productDeliveryListData as $productDeliveryData)
+    {
+        $shopDataList = array();
 
-            $deliveryDates = array();
-            foreach($data['products'][$productId]['deliveries'][$deliveryTypeName]['dates'] as $date){
-              $date['date'] = substr($date['date'], 0, 10);
-              $deliveryDates[] = array(
-                'name' => DateFormatter::Humanize($date['date']),
-                'value' => $date['date']
-              );
+        $deliveryToken = $productDeliveryData['token'];
+        $deliveryData = new DeliveryData();
+        $deliveryData->setModeId($productDeliveryData['id']);
+        $deliveryData->setName(($deliveryToken =='standart')? 'курьерская доставка' : $productDeliveryData['name']);
+        $deliveryData->setToken($deliveryToken);
+        $deliveryData->setPrice((int)$productDeliveryData['price']);
+
+        $productDeliveryDateList = array();
+        foreach($productDeliveryData['date_list'] as $dateData)
+        {
+            $productDeliveryDateData = array(
+                'name' => DateFormatter::Humanize($dateData['date']),
+                'value' => $dateData['date']
+            );
+
+            if($deliveryToken == 'self')
+            {
+                $shopList = array();
+                foreach($dateData['shop_list'] as $shopLink)
+                {
+                    if(!isset($shopDataList[$shopLink['id']]))
+                    {
+                        $shopDataList[$shopLink['id']] = $this->getShopData($shopLink['id'], $data['shop_list']);
+                    }
+
+                    $shopList[] = $this->getShopIntervalList($shopLink['interval_list'], $data['interval_list']);
+                }
+
+                $productDeliveryDateData['shops'] = $shopList;
             }
 
-            $deliveryData->setDates($deliveryDates);
-            $return[] = $deliveryData;
+            $productDeliveryDateList[] = $productDeliveryDateData;
         }
+
+        $deliveryData->setDates($productDeliveryDateList);
+
+        if($deliveryToken == 'self')
+        {
+            foreach($shopDataList as $shopData)
+            {
+                $shopDataObject = new ShopData();
+                $shopDataObject->setId($shopData['id']);
+                $shopDataObject->setAddress($shopData['address']);
+                $shopDataObject->setRegtime($shopData['working_time']);
+                $shopDataObject->setLatitude($shopData['coord_lat']);
+                $shopDataObject->setLongitude($shopData['coord_long']);
+                $deliveryData->addShop($shopDataObject);
+            }
+        }
+
+        $return[] = $deliveryData;
     }
     TimeDebug::end('DeliveryModel:getProductDeliveries:dataConvert');
+
     return $return;
 
   }
 
-//  Попытка перевести на новый delivery.calc
-//  @TODO как в апи добавят несколько ближайших дат - перевести.
-//  public function getProductDeliveries($productId, $productQuantity, $geoId){
-//    if(!is_int($productId)){
-//      throw new dataFormatException('$productId must be int, but in real is ('.gettype($productId).') '.print_r($productId, true));
-//    }
-//    if(!is_int($productQuantity) || ($productQuantity < 0)){
-//      throw new dataFormatException('$productQuantity must be unsigned int, but in real is ('.gettype($productQuantity).') '.print_r($productQuantity, true));
-//    }
-//    if(!is_int($geoId)){
-//      throw new dataFormatException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
-//    }
-//
-//    $params = array('product_list' => array(array('id' => $productId, 'quantity' => $productQuantity)));
-//
-////    $params = array('product' => array(array('id' => 4435, 'quantity' =>1)));
-//
-//    TimeDebug::start('DeliveryModel:getProductDeliveries:clientV2');
-//    $data = App::getCoreV2()->query('delivery.calc', array('geo_id' => $geoId), $params);
-//    TimeDebug::end('DeliveryModel:getShortDeliveryInfoForProductList:clientV2');
-//
-//    if(empty($data['product_list'])){
-//      throw new systemException('Core result has no needed data: '.print_r($data, 1));
-//    }
-//    return $data;
-//    $deliveries = array();
-//
-//    if(!empty($data['product_list'][$productId]) || !empty($data['product_list'][$productId]['delivery_mode_list'])){
-//      foreach($data['product_list'][$productId]['delivery_mode_list'] as $deliveryMode){
-//        $deliveryData = new DeliveryData();
-//        $deliveryData->setModeId($deliveryMode['id']);
-//        $deliveryData->setName(($deliveryMode['token'] =='standart')? 'курьерская доставка' : $deliveryMode['name']);
-//        $deliveryData->setToken($deliveryMode['token']);
-//        $deliveryData->setPrice($deliveryMode['price']);
-//      }
-//    }
-//
-//    $return = array();
-//
-//    return $return;
-//  }
+    private function getShopData($shopId, $shopList)
+    {
+        $shopData = Null;
+        foreach($shopList as $shop)
+        {
+            if($shop['id'] == $shopId)
+            {
+                $shopData = $shop;
 
-  /**
-   * @param array $dates
-   * @param array $delivery
-   * @param array $ShopInfo
-   * @param DeliveryData[] $return
-   *
-   * @return DeliveryData[]
-   */
-  protected function addShopToSelfDelivery($dates, $delivery, $ShopInfo, $return){
-    $returnDeliv = Null;
-    $returnKey = Null;
-    foreach($return as $key => $deliv){
-      if($deliv->getToken() == 'self'){
-        $returnKey = $key;
-        $returnDeliv = $deliv;
-        break;
-      }
-    }
-    if(is_null($returnKey)){
-      $returnDeliv = new DeliveryData();
-      $returnDeliv->setModeId($delivery['mode_id']);
-      $returnDeliv->setName($delivery['orig_name']);
-      $returnDeliv->setToken($delivery['token']);
-      $returnDeliv->setPrice(0);
-    }
-    $shopData = new ShopData();
-    $shopData->setId($ShopInfo['id']);
-    $shopData->setAddress($ShopInfo['address']);
-    $shopData->setRegtime($ShopInfo['working_time']);
-    $shopData->setLatitude($ShopInfo['coord_lat']);
-    $shopData->setLongitude($ShopInfo['coord_long']);
-    $returnDeliv->addShop($shopData);
-
-    $deliveryDates = $returnDeliv->getDates();
-
-    foreach($dates as $date){ //просматриваем даты полученной доставки
-      $date['date'] = substr($date['date'], 0, 10);
-      $finded = false;
-      foreach($deliveryDates as $key => $deliveryDate){ // просматриваем уже заполненные даты доставки
-        if($deliveryDate['value'] == $date['date']){ //У нас уже есть дата доставки, нужно лишь добавить инфу о магазине
-          $deliveryDates[$key]['shops'][$ShopInfo['id']] = array();
-          foreach($date['interval'] as $interval){
-            $deliveryDates[$key]['shops'][$ShopInfo['id']][$interval['id']] = array(
-              'time_begin'  => $interval['time_begin'],
-              'time_end'    => $interval['time_end']
-            );
-          }
-          $finded = true;
+                break;
+            }
         }
-      }
-      if(!$finded){ //На эту дату доставок еще не было - нужно создавать
-        $deliveryInfo = array(
-          'name' => DateFormatter::Humanize($date['date']),
-          'value' => $date['date'],
-          'shops' => array($ShopInfo['id'] => array())
-        );
-        foreach($date['interval'] as $interval){
-          $deliveryInfo['shops'][$ShopInfo['id']][$interval['id']] = array(
-            'time_begin'  => $interval['time_begin'],
-            'time_end'    => $interval['time_end']
-          );
-        }
-        $deliveryDates[] = $deliveryInfo;
-      }
-    }
-    $returnDeliv->setDates($deliveryDates);
 
-    if(is_null($returnKey)){
-      $return[] = $returnDeliv;
+        return $shopData;
     }
-    else{
-      $return[$returnKey] = $returnDeliv;
+
+    private function getShopIntervalList($intervalIdList, $intervalList)
+    {
+        $intervalDataList = array();
+        foreach($intervalList as $interval)
+        {
+            if(in_array($interval['id'], $intervalIdList))
+            {
+                unset($interval['id']);
+                $intervalDataList[] = $interval;
+            }
+        }
+
+        return $intervalDataList;
     }
-    return $return;
-  }
 }
