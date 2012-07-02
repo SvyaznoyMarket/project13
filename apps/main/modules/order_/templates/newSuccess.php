@@ -13,7 +13,7 @@
 <input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>' />
 <input disabled="disabled" id="order-validator" type="hidden" data-value='<?php echo json_encode($jsValidator) ?>' />
 
-<div class="pb15">< <a href="<?php echo $backLink ?>">Вернуться к покупкам</a></div>
+<div class="pb15"> <a href="<?php echo $backLink ?>">Вернуться к покупкам</a></div>
 
 <form id="order-form" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
 
