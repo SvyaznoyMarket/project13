@@ -167,8 +167,9 @@ class orderActions extends myActions
         }
         catch (Exception $e)
         {
-          $return['success'] = false;
-          $return['message'] = 'Не удалось создать заказ' . (sfConfig::get('sf_debug') ? (' Ошибка: ' . $e->getMessage()) : '');
+          // TODO: это временный фикс
+          //$return['success'] = false;
+          //$return['message'] = 'Не удалось создать заказ' . (sfConfig::get('sf_debug') ? (' Ошибка: ' . $e->getMessage()) : '');
         }
       }
       else {
