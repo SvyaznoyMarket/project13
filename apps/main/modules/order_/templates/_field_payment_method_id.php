@@ -5,14 +5,14 @@
   <?php foreach ($paymentMethodList as $k => $v): ?>
     <div id="payment_method_<?php echo $v->getId() ?>-field">
       <p></p>
-      <label class='<?php if ($k == $value) echo 'mChecked' ?>' for="order_payment_method_id_<?php echo $v->getId() ?>">
+      <label class='<?php if ($v->getId() == $selectedMethodId) echo 'mChecked' ?>' for="order_payment_method_id_<?php echo $v->getId() ?>">
         <b></b> <?php echo $v->getName() ?>
-        <input id="order_payment_method_id_<?php echo $v->getId() ?>" class='bBuyingLine__eRadio' name='<?php echo $name ?>' type='radio' value="<?php echo $v->getId() ?>" <?php if ($k == $value) echo 'checked="checked"' ?> />
+        <input id="order_payment_method_id_<?php echo $v->getId() ?>" class='bBuyingLine__eRadio' name='<?php echo $name ?>' type='radio' value="<?php echo $v->getId() ?>" <?php if ($v->getId() == $selectedMethodId) echo 'checked="checked"' ?> />
       </label>
       <i>
         <div><?php echo $v->getDescription() ?></div>
         <?php if ($v->getIsCredit()) { ?>
-          <div id="creditInfo" style="display:none">
+          <div id="creditInfo"  <?php if ($v->getId() != $selectedMethodId) echo 'style="display:none"' ?> >
             <div>Выберите банк:</div>
             <div class="bankWrap">
                 <div data-value='<?php echo $bankJson; ?>' class="fl bSelect mFastInpSmall">

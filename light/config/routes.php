@@ -7,6 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 return array(
+  array('/credit/set'            , 'credit.Set'),
   array('/product/delivery1click'            , 'delivery.ProductDeliveryJson'),
   array('/product/delivery-info'             , 'delivery.ProductListShortDeliveryJson'),
   array('/product/delivery-info/<productId>' , 'delivery.ProductListShortDeliveryJson'),

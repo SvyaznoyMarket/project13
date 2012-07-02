@@ -57,6 +57,17 @@ class order_Components extends myComponents
   public function executeField_payment_method_id()
   {
     $paymentMethodList = RepositoryManager::getPaymentMethod()->getList();
+    $selectedMethodId = 0;
+    foreach ($paymentMethodList as $method) {
+        if (!$_SESSION['credit']) {
+            $selectedMethodId  = $method->getId();
+            break;
+        } elseif ($method->getIsCredit()) {
+            $selectedMethodId  = $method->getId();
+            break;
+        }
+    }
+    $this->setVar('selectedMethodId', $selectedMethodId, true);
     $this->setVar('paymentMethodList', $paymentMethodList, true);
 
     $creditBankList = RepositoryManager::getCreditBank()->getList();
