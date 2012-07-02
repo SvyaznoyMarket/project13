@@ -40,17 +40,10 @@ class ProductPriceListTable extends myDoctrineTable
 
   public function getCurrent()
   {
-    $region = sfContext::getInstance()->getUser()->getRegion();
-    if (isset($region->id)) {
       return $this->createQuery('list')
         ->leftJoin('list.Region as r on list.id=r.product_price_list_id')
-        ->where('r.id = ?', $region->id)
+        ->where('r.core_id = ?', sfContext::getInstance()->getUser()->getRegion('core_id'))
         ->fetchOne();
-    }
-    else
-    {
-      return $this->getDefault();
-    }
   }
 
 }

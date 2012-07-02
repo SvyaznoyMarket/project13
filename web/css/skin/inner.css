@@ -3972,7 +3972,7 @@ DT.bCtg__eOrange{
 		}
 	.bCityPopup__eBlock{
 		color: #fff;
-		width: 235px;
+		width: 200px;
 		font: 16px/24px Tahoma, sans-serif;
 
 		display: inline-block;
@@ -3980,7 +3980,7 @@ DT.bCtg__eOrange{
 		zoom: 1;
 		}
 	.bCityPopup__eBlock a{
-		color: #fff;
+		/* color: #fff; */
 		}
 .noti {
 	display: none;
@@ -5932,7 +5932,7 @@ div.mSportFont{ color: #e8303c; }
     display: inline-block;
     *display: inline;
     zoom: 1;
-    }
+	}
 
     .b404{
         position: relative;
@@ -5992,6 +5992,22 @@ div.mSportFont{ color: #e8303c; }
     .b404Block .bOrangeButton{
         vertical-align: middle;
     }
+.bBuyingLine__eText{
+    width: 350px;
+    height: 27px;
+    outline: none;
+    vertical-align: top;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.bBuyingLine__eText.mInputLong{
+    width: 460px;
+    padding-left: 25px;
+}
 
 .promo{
     font: 100% tahoma, verdana, arial;
