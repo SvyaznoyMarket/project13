@@ -20,10 +20,6 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^wp-admin/(.*)$ /content/wp-admin/$1 [L]
   RewriteRule ^wp-(.*)$ /content/wp-$1 [L]
 
-  RewriteRule ^euro2012 football.html [L]
-  RewriteRule ^nespresso nespresso.html [L]
-  RewriteRule ^waterheater water_heater.html [L]
-
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$
   #RewriteCond %{REQUEST_URI} !\.html$
