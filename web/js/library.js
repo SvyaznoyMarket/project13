@@ -857,7 +857,7 @@ window.docCookies = {
     var oExpDate = new Date();  
     oExpDate.setDate(oExpDate.getDate() - 1);
     document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";  
-        console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
+//console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
   },  
   hasItem: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }  
 };
@@ -1668,7 +1668,107 @@ if ( !Date.prototype.toISOString ) {
 }
 
 $(document).ready(function(){
+	var ANALYTICS = {
+		adblender : function() {
+			document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>')
+			// 'document.write' for <script/> is overloaded in loadjs.js
+			// in fact: 
+			// var ad = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random()
+			// $LAB.script( ad )
+		},
+		
+		adblenderCost : function() {
+			var orderSum = arguments[0]
+			document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape( orderSum ) + '&r=' + Math.random() + '" ></sc' + 'ript>')
+			// 'document.write' for <script/> is overloaded in loadjs.js			
+		},
+		
+        heiasMain : function() {
+            (function(d){
+                var HEIAS_PARAMS = [];
+                HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
+                HEIAS_PARAMS.push(['pb', '1']);
+                if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
+                window.HEIAS.push(HEIAS_PARAMS);
+                var scr = d.createElement('script');
+                scr.async = true;
+                scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
+                var elem = d.getElementsByTagName('script')[0];
+                elem.parentNode.insertBefore(scr, elem);
+            }(document)); 
+        },
 
+        heiasProduct : function() {
+            document.write('<div>END</div>')
+            var product = arguments[0];
+            (function(d){
+                var HEIAS_PARAMS = [];
+                HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
+                HEIAS_PARAMS.push(['pb', '1']);
+                HEIAS_PARAMS.push(['product_id', product]);
+                if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
+                window.HEIAS.push(HEIAS_PARAMS);
+                var scr = d.createElement('script');
+                scr.async = true;
+                scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
+                var elem = d.getElementsByTagName('script')[0];
+                elem.parentNode.insertBefore(scr, elem);
+            }(document));            
+        },
+
+        heiasOrder : function() {
+            var orderArticle = arguments[0];
+            (function(d){
+                var HEIAS_PARAMS = [];
+                HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
+                HEIAS_PARAMS.push(['pb', '1']);
+                HEIAS_PARAMS.push(['order_article', orderArticle]);
+                if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
+                window.HEIAS.push(HEIAS_PARAMS);
+                var scr = d.createElement('script');
+                scr.async = true;
+                scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
+                var elem = d.getElementsByTagName('script')[0];
+                elem.parentNode.insertBefore(scr, elem);
+            }(document));            
+        },
+
+        heiasComplete : function() {
+            var a = arguments[0];      
+            HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
+            var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + a.order_article + '|product_quantity|' + a.product_quantity + '|order_id|' + a.order_id + '|order_total|' + a.order_total + '';
+            document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
+        },
+
+        mixmarket: function() {
+            document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>')
+        },
+
+        parseAllAnalDivs : function( nodes ) {
+            
+            var self = this
+            $.each(  nodes , function() {
+console.info( this.id, this.id+'' in self  )
+
+                // document.write is overwritten in loadjs.js to document.writeln
+                var anNode = $(this)
+
+                document.writeln = function(){
+                    anNode.html( arguments[0] )
+                }
+
+                if( this.id+'' in self )
+                    self[this.id]( $(this).data('vars') )
+            })
+            document.writeln = function(){
+                $('body').append( $(arguments[0] + '') )
+            }
+        }
+	}
+    
+    ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
+	
+	
 	var ADFOX = {
 		adfoxbground : function() {
 			if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
@@ -1790,12 +1890,17 @@ $(document).ready(function(){
 			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>'
 			$('#adfox980').html( html )
 			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emvi&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
-		}
+		},
+
+        parseAllAdfoxDivs : function( nodes ) {
+            $.each( nodes , function() {
+//console.info( this.id, this.id+'' in ADFOX  )
+                if( this.id+'' in ADFOX )
+                    ADFOX[this.id]()
+            })
+        }
 	}
 	
-	$.each( $('.adfoxWrapper') , function() {
-//console.info( this.id, this.id+'' in ADFOX  )
-		if( this.id+'' in ADFOX )
-			ADFOX[this.id]()
-	})
+    ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
+	
 })

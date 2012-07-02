@@ -11,8 +11,7 @@ require_once(ROOT_PATH.'system/App.php');
 
 class CurrentUser
 {
-  const DEFAULT_GEO_IP_CODE = 48;
-
+  const DEFAULT_REGION_ID = 14974;
   /**
    * @var RegionData
    */
@@ -55,28 +54,18 @@ class CurrentUser
    *
    */
   public function setRegion(RegionData $region){
-    $this->setRegionByGeoIPCode($region->getGeoIpCode());
+    $this->setRegionById($region->getId());
   }
 
   /**
    * @param string $geoIPCode
    * @throws dataFormatException
    */
-  public function setRegionByGeoIPCode($geoIPCode){
-    if(!App::getRegion()->isValidGeoIPCode($geoIPCode)){
-      throw new dataFormatException('geoIPCode is not valid: '.$geoIPCode);
-    }
-    App::getResponse()->setCookie('geoshop', $geoIPCode);
-  }
-
-  /**
-   * @param int $id
-   */
   public function setRegionById($id){
-    $code = App::getRegion()->getGeoIPCodeById($id);
-    if(!is_null($code)){
-      $this->setRegionByGeoIPCode($code);
+    if(!App::getRegion()->isValidId($id)){
+      throw new dataFormatException('region id is not valid: '.$id);
     }
+    App::getResponse()->setCookie('geoshop', $id);
   }
 
   /**
@@ -102,26 +91,18 @@ class CurrentUser
       $this->ip = null;
     }
 
-    if (!empty($_COOKIE['geoshop'])) {
-      $geoIpCode = $_COOKIE['geoshop'];
-    }
-    elseif(!empty($_SERVER['HTTP_X_GEOIP_REGION'])){
-      $geoIpCode = $_SERVER['HTTP_X_GEOIP_REGION'];
-    }
-    else{
-      $geoIpCode = self::DEFAULT_GEO_IP_CODE;
-    }
+    $regionId = !empty($_COOKIE['geoshop'])?$_COOKIE['geoshop']:self::DEFAULT_REGION_ID;
 
     try{
-      $region = App::getRegion()->getByGeoIPCode($geoIpCode);
+      $region = App::getRegion()->getById($regionId);
       if(!is_object($region)){
-        throw new dataFormatException('not found region for geoIPCode: '.$geoIpCode);
+        throw new dataFormatException('not found region for id: ' . $regionId);
       }
       $this->region = $region;
     }
     catch(dataFormatException $e){
       Logger::getRootLogger()->warn($e->getMessage());
-      $this->region = App::getRegion()->getByGeoIPCode(self::DEFAULT_GEO_IP_CODE);
+      $this->region = App::getRegion()->getById(self::DEFAULT_REGION_ID);
     }
   }
 }

@@ -76,21 +76,19 @@
       </div>
     </div>
     <!-- /Lightbox -->
+
+    <?php include_partial('region/select') ?>
+
     <script src="/js/LAB.min.js" type="text/javascript"></script>
     <script src="/js/loadjs.js" type="text/javascript"></script>
-    <?php if (!include_slot('auth'))
-      include_partial('default/auth') ?>
+    <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
-<?php include_partial('default/admin') ?>
+    <?php //include_partial('default/admin') ?>
 
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
   <?php include_partial('default/yandexMetrika') ?>
-  <script type="text/javascript">
-  (function() {
-  document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>');
-  })();
-  </script>
+  <div id="adblender" class="jsanalytics"></div>
 <?php endif ?>
 
 <?php if (has_slot('seo_counters_advance')): ?>

@@ -37,7 +37,13 @@ class shopActions extends myActions
     else
     {
       $region = $this->getUser()->getRegion();//RegionTable::getInstance()->getDefault();
-      $this->region = $region['region'];
+      $this->region = array(
+        'name' => $this->getUser()->getRegion('name'),
+        'type' => $this->getUser()->getRegion('type'),
+        'id' => $this->getUser()->getRegion('id'),
+        'latitude' => $this->getUser()->getRegion('latitude'),
+        'longitude' => $this->getUser()->getRegion('longitude'),
+      );
     }
     $this->forward404Unless($this->region, 'Region not found');
   }
@@ -49,5 +55,12 @@ class shopActions extends myActions
   public function executeShow(sfWebRequest $request)
   {
     $this->shop = $this->getRoute()->getObject();
+    $this->region = array(
+      'name' => $this->getUser()->getRegion('name'),
+      'type' => $this->getUser()->getRegion('type'),
+      'id' => $this->getUser()->getRegion('id'),
+      'latitude' => $this->getUser()->getRegion('latitude'),
+      'longitude' => $this->getUser()->getRegion('longitude'),
+    );
   }
 }

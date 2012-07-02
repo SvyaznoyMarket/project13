@@ -37,15 +37,10 @@
 
 
 <?php slot('analytics_report') ?>
-  <script type="text/javascript">
-    (function () {
-    <?php foreach ($orders as $order): ?>
-      document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape(<?php echo $order['sum'] ?>) + '&r=' + Math.random() + '" ></sc' + 'ript>');
-
-    <?php endforeach ?>
-    })();
-  </script>
-
+	<?php foreach ($orders as $order): ?>
+		<div id="adblenderCost" data-vars="<?php echo $order['sum'] ?>" class="jsanalytics"></div>
+	<?php endforeach ?>
+    
   <script type="text/javascript">
   <?php foreach ($orders as $order): ?>
 
@@ -99,25 +94,18 @@
     ]
   </script>
 
-  <!--Трэкер "Покупка"-->
-  <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>');</script>
-  <!--Трэкер "Покупка"-->
-
+ 
   <?php include_component('order_','seo_admitad', array('orders' => $orders)) ?>
 
-
-  <script language="JavaScript" type="text/javascript">
-    HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
-    <?php foreach ($orders as $i => $order): ?>
-
-    var order_article='<?php echo implode(',', array_map(function($i) { return $i['id']; }, $order['product'])) ?>';
-    var order_id='<?php echo $order['number'] ?>';
-    var order_total='<?php echo $order['sum'] ?>';
-    var product_quantity='<?php echo implode(',', array_map(function($i) { return $i['quantity']; }, $order['product'])) ?>';
-    var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + order_article + '|product_quantity|' + product_quantity + '|order_id|' + order_id + '|order_total|' + order_total + '';
-    document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
-
+    <div id="mixmarket" class="jsanalytics"></div>
+    <?php foreach ($orders as $i => $order): 
+      $json = array (
+          'order_article' => implode(',', array_map(function($i) { return $i['id']; }, $order['product'])),
+          'order_id' => $order['number'],
+          'order_total' => $order['sum'],
+          'product_quantity' => implode(',', array_map(function($i) { return $i['quantity']; }, $order['product'])),
+      );  ?>
+      <div id="heiasComplete" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
     <?php endforeach ?>
-  </script>
 
 <?php end_slot() ?>

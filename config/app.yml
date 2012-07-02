@@ -75,8 +75,8 @@ all:
 
   core:
     config:
-      api_url: 'http://enter-core.loc/v1/json'
-      userapi_url: 'http://enter-core.loc/v2/'
+      api_url: 'http://test2.core.ent3.ru/v1/json'
+      userapi_url: 'http://test2.core.ent3.ru/v2/'
       client_code: site
       consumer_key: test
       signature: test
@@ -189,7 +189,7 @@ live:
     default:
       servers:
         main:
-          host: localhost
+          host: 10.20.30.33
           persistent: true
 
   cache_eraser:
@@ -240,7 +240,7 @@ live_dev:
     default:
       servers:
         main:
-          host: localhost
+          host: 10.20.30.33
           persistent: true
 
   cache_eraser:

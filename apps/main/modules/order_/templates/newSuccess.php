@@ -13,7 +13,7 @@
 <input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>' />
 <input disabled="disabled" id="order-validator" type="hidden" data-value='<?php echo json_encode($jsValidator) ?>' />
 
-<div class="pb15">< <a href="<?php echo $backLink ?>">Вернуться к покупкам</a></div>
+<div class="pb15"> <a href="<?php echo $backLink ?>">Вернуться к покупкам</a></div>
 
 <form id="order-form" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
 
@@ -41,7 +41,9 @@
       <?php include_component('order_', 'field_products', $sf_data) ?>
     </div>
 
-    <dl class='bBuyingLine mSumm order-total-container'>
+    <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт Centra</div>
+
+    <dl class='bBuyingLine mSumm order-total-container' style="margin-top: 0;">
       <dt><a class="red" style="border-color: #cb3735" href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
       <dd>
         <div><span data-assign='{"totalMessage": ["text", "_value"]}'>Сумма всех заказов</span> <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
@@ -206,19 +208,6 @@
 
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
-<script type="text/javascript">
-  (function(d){
-    var HEIAS_PARAMS = [];
-    HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
-    HEIAS_PARAMS.push(['pb', '1']);
-    HEIAS_PARAMS.push(['order_article', '<?php echo $sf_user->getCart()->getSeoCartArticle() ?>']);
-    if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
-    window.HEIAS.push(HEIAS_PARAMS);
-    var scr = d.createElement('script');
-    scr.async = true;
-    scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
-    var elem = d.getElementsByTagName('script')[0];
-    elem.parentNode.insertBefore(scr, elem);
-  }(document));
-</script>
+  <div id="heiasOrder" data-vars="<?php echo $sf_user->getCart()->getSeoCartArticle() ?>" class="jsanalytics"></div>
+
 <?php endif ?>
