@@ -242,9 +242,9 @@ class cartActions extends myActions
     $this->getUser()->setCacheCookie();
     if (isset($request['credit'])) {
       if ($request['credit']) {
-          setcookie('credit_on', true);
+          setcookie('credit_on', true, 0 , '/');
       } else {
-          setcookie('credit_on', false);
+          setcookie('credit_on', false, 0 , '/');
       }
     }
 
