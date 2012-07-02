@@ -1,4 +1,7 @@
 <?php
+namespace light;
+use InvalidArgumentException;
+use Logger;
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov
@@ -7,8 +10,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
+require_once(ROOT_PATH.'system/App.php');
+require_once(ROOT_PATH.'system/exception/systemException.php');
 require_once(ROOT_PATH.'system/exception/routerException.php');
-//require_once(ROOT_PATH.'lib/log4php/Logger.php');
+require_once(ROOT_PATH.'lib/log4php/Logger.php');
 
 
 class Renderer
@@ -17,19 +22,30 @@ class Renderer
   /**
    * @var string
    */
-  private $templatePath;
-
+  protected  $templatePath;
 
   /**
-   * @param string $filePath
-   * @param array $data varName => varValue
-   * @return string
+   * @static
+   * @return Renderer
    */
+  public static function getInstance(){
+    static $instance;
+    if (!$instance) {
+      $instance = new Renderer();
+    }
+    return $instance;
+  }
 
-  public function __construct(){
+  protected function __construct(){
     $this->templatePath = VIEW_PATH.'template/';
   }
 
+ /**
+  * @param string $filePath
+  * @param array $data
+  * @return string
+  * @throws routerException
+  */
   public function renderFile($filePath, $data=array()){
     Logger::getLogger('Renderer')->info('render file '.$filePath);
     $filePath = preg_replace('/^[\/\\\]*(.*?)(\.php)?$/i', '${1}', $filePath);
@@ -49,4 +65,119 @@ class Renderer
 
     return $return;
   }
+}
+
+
+class HtmlRenderer extends Renderer{
+
+  /**
+   * @var array
+   */
+  private $css = array();
+
+  /**
+   * @var string
+   */
+  private $description;
+
+  /**
+   * @var string
+   */
+  private $title;
+
+  /**
+   * @static
+   * @return Renderer
+   */
+  public static function getInstance(){
+    static $instance;
+    if (!$instance) {
+      $instance = new HtmlRenderer();
+    }
+    return $instance;
+  }
+
+  /**
+   * @param string $path
+   * @throws dataFormatException
+   * @throws systemException
+   *
+   */
+  public function addCss($path){
+    if(!is_string($path)){
+      throw new dataFormatException('css path must be a string, in real its '. gettype($path));
+    }
+    foreach($this->css as $css){
+      if($css == $path){
+        throw new systemException('Css '. $path.' already exists');
+      }
+    }
+    $this->css[] = $path;
+  }
+
+  /**
+   * echo all css paths
+   */
+  public function showCss(){
+    foreach($this->css as $css){
+      echo '<link rel="stylesheet" type="text/css" media="screen" href="/css/'.$css.'" />'."\r\n";
+    }
+  }
+
+  /**
+   * @param string $title
+   */
+  public function setTitle($title){
+    if(!is_string($title)){
+      throw new dataFormatException('page title must be a string, in real its '. gettype($title));
+    }
+    $this->title = $title;
+  }
+
+  /**
+   * @return string
+   */
+  public function getTitle(){
+    return !is_null($this->title) ? htmlspecialchars($this->title) : DEFAULT_PAGE_TITLE;
+  }
+
+  /**
+   * @param string $title
+   */
+  public function setDescription($description){
+    if(!is_string($description)){
+      throw new dataFormatException('page description must be a string, in real its '. gettype($description));
+    }
+    $this->description = $description;
+  }
+
+  /**
+   * @return string
+   */
+  public function getDescription(){
+    return !is_null($this->description) ? htmlspecialchars($this->description) : DEFAULT_PAGE_DESCRIPTION;
+  }
+
+  /**
+   * @param string $route
+   * @return string
+   */
+
+  public function url($route, $params=array()){
+    try{
+      if(!is_string($route)){
+        throw new InvalidArgumentException('route for function url() must be string, in real: '.gettype($route));
+      }
+      if(!is_array($params)){
+        throw new InvalidArgumentException('params for function url() must be an array, in real: '.gettype($params));
+      }
+      $link =  App::getRouter()->createUrl($route, $params);
+      return $link;
+    }
+    catch(Exception $e){
+      Logger::getLogger('Renderer')->error($e->getMessage());
+      return '#';
+    }
+  }
+
 }

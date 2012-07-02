@@ -1,4 +1,5 @@
 <?php
+namespace light;
 /**
  * Created by JetBrains PhpStorm.
  * User: pavel
@@ -21,12 +22,15 @@ class Controller {
 
     list($className, $methodName) = explode('.', $route);
     $classPath = $className;
-    $className .= 'Controller';
+    $className = 'light\\'.$className.'Controller';
     if(!class_exists($className)){
       if(!file_exists(ROOT_PATH.'controller/'.$classPath.'.php')){
         throw new routerException('request to run unknown Controller '.$className);
       }
       include_once(ROOT_PATH.'controller/'.$classPath.'.php');
+    }
+    if(!class_exists($className)){
+      throw new routerException('request to run unknown Controller '.$className);
     }
     if(!method_exists($className, $methodName)){
       throw new routerException('request to run unknown Method '.$methodName.' in controller '.$className);
@@ -34,7 +38,12 @@ class Controller {
 
     $response = App::getResponse();
 
-    call_user_func_array(array($className, $methodName), array(App::getResponse(), $params));
+    if(!$response->hasHttpHeader('Last-Modified')){
+      $response->setHttpHeader('Last-Modified', Response::getDate(time()));
+    }
+    $controller = new $className();
+
+    call_user_func_array(array($controller, $methodName), array(App::getResponse(), $params));
 
 		return $response;
 	}

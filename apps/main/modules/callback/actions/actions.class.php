@@ -27,9 +27,6 @@ class callbackActions extends myActions
     $this->setVar('currentPage', 'callback', true);
 
     $this->form = new CallbackForm();
-
-    #$cart = $this->getUser()->getCart();
-    #$this->setVar('cart', $cart, true);
   }
 
     public function executeSend(sfWebRequest $request)

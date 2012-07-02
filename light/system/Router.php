@@ -1,4 +1,5 @@
 <?php
+namespace light;
 
 if(!class_exists('routerException')){
   require_once(ROOT_PATH.'system/exception/routerException.php');

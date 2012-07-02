@@ -120,7 +120,7 @@ class UserCart extends BaseUserData
         catch (Exception $e)
         {
             $result['value'] = false;
-            $result['error'] = "Не удалось добавить в корзину товар token='".$id."'.";
+            $result['error'] = "Не удалось добавить в корзину товар с id='".$id."'.";
             return false;
         }
         $this->_save();
@@ -398,16 +398,6 @@ class UserCart extends BaseUserData
 
         return $list;
     }
-
-//  public function getServiceForProductQty(Service $serviceId, $productId = null)
-//  {
-//      if (isset($this->_services[$serviceId]) && isset($this->_services[$serviceId]['products'][$productId]))
-//      {
-//        return $this->_services[$serviceId]['products'][$productId]['quantity'];
-//      }
-//      return 0;
-//  }
-
 
 
     public function deleteService($id, $productId = 0)

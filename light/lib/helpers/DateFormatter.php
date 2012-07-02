@@ -1,4 +1,6 @@
 <?php
+namespace light;
+use DateTime;
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov

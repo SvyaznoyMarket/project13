@@ -22,14 +22,10 @@ class serviceSoaComponents extends myComponents
 
     $servList = $this->getUser()->getCart()->getServices();
     $servListId = array();
-    foreach ($servList as $next)
+    foreach ($servList as $serviceId => $next)
     {
-      foreach ($next['products'] as $product => $qty)
-      {
-        if ($product == $this->product->id)
-        {
-          $servListId[] = $next['id'];
-        }
+      if(array_key_exists($this->product->id, $next)){
+        $servListId[] = $serviceId;
       }
     }
     $this->setVar('servListId', $servListId, true);
@@ -38,9 +34,15 @@ class serviceSoaComponents extends myComponents
 
   public function executeList_for_product_in_cart()
   {
-    $productList = RepositoryManager::getProduct()->getListById(array($this->product['core_id']), true);
-    /** @var $product ProductEntity */
-    $product = reset($productList);
+    if(array_key_exists('fullObject', $this->product)){
+      $product = $this->product['fullObject'];
+    }
+    else{
+      $productList = RepositoryManager::getProduct()->getListById(array($this->product['core_id']), true);
+      /** @var $product ProductEntity */
+      $product = reset($productList);
+    }
+
     $result = array();
     $selectedNum = 0;
     foreach ($product->getServiceList() as $service)

@@ -236,7 +236,64 @@ class orderComponents extends myComponents
 
   public function executeReceipt()
   {
-    $this->setVar('cart', $this->getUser()->getCart());
+    $cart = $this->getUser()->getCart();
+
+    $prods = $cart->getProducts();
+    $services = $cart->getServices();
+
+    $prodIdList = array_keys($prods);
+    $serviceIdList = array_keys($services);
+
+    $list = array();
+
+    $prodCb = function($data) use($list, $prods){
+      /** @var $data ProductEntity[] */
+
+      foreach($data as $product){
+        /** @var $cartInfo \light\ProductCartData */
+        $cartInfo = $prods[$product->getId()];
+
+        $list[] = array(
+          'type' => 'products',
+          'name' => $product->getName(),
+          'token' => $product->getToken(),
+          'token_prefix' => $product->getPrefix(),
+          'quantity' => $cartInfo->getQuantity(),
+          'price' => number_format($cartInfo->getPrice(), 0, ',', ' '),
+        );
+      }
+    };
+
+    $serviceCb = function($data) use($list, $services){
+      /** @var $data ServiceEntity[] */
+
+      foreach($data as $serviceCoreInfo){
+        /** @var $cartInfo \light\ServiceCartData[]  array('productId' => ServiceCartData, 'productId' => ServiceCartData)*/
+        $cartInfo = $services[$serviceCoreInfo->getId()];
+        $qty = 0;
+        $price = 0;
+
+        foreach ($cartInfo as $prodId => $prodServInfo)
+        {
+          $qty += $prodServInfo->getQuantity();
+          $price += $prodServInfo->getTotalPrice();
+        }
+        $list[] = array(
+          'type' => 'service',
+          'name' => $serviceCoreInfo->getName(),
+          'token' => $serviceCoreInfo->getToken(),
+          'quantity' => $qty,
+          'price' => number_format($price, 0, ',', ' '),
+        );
+      }
+    };
+    RepositoryManager::getProduct()->getListByIdAsync($prodCb, $prodIdList, true);
+    RepositoryManager::getService()->getListByIdAsync($serviceCb, $serviceIdList, true);
+    CoreClient::getInstance()->execute();
+
+
+    $this->setVar('cart', $list);
+    $this->setVar('total', number_format($cart->getTotal(), 0, ',', ' '));
   }
 
   function executeSeo_counters_advance()
