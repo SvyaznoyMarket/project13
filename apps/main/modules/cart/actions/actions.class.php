@@ -20,7 +20,10 @@ class cartActions extends myActions
    */
   public function executeIndex(sfWebRequest $request)
   {
-    $cart = $this->getUser()->getCart();
+      echo '<pre>';
+      print_r($_COOKIE);
+      echo '</pre>';
+      $cart = $this->getUser()->getCart();
     $this->setVar('cart', $cart, true);
 
     if (!empty($_COOKIE['credit_on']) && $_COOKIE['credit_on']) {
@@ -102,9 +105,9 @@ class cartActions extends myActions
     $this->getUser()->setCacheCookie();
     if (isset($result['value'])) {
         if ($request['credit']) {
-            $_COOKIE['credit_on'] = true;
+            setcookie('credit_on', true, 0 , '/');
         } else {
-            $_COOKIE['credit_on'] = false;
+            setcookie('credit_on', false, 0 , '/');
         }
     }
 
@@ -242,9 +245,9 @@ class cartActions extends myActions
     $this->getUser()->setCacheCookie();
     if (isset($request['credit'])) {
       if ($request['credit']) {
-          $_COOKIE['credit_on'] = true;
+          setcookie('credit_on', true);
       } else {
-          $_COOKIE['credit_on'] = false;
+          setcookie('credit_on', false);
       }
     }
 
