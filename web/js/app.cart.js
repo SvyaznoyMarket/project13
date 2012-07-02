@@ -242,6 +242,19 @@ $(document).ready(function() {
 			}
 		}
 
+		function toggleCookie( name ) {
+			if( !docCookies.hasItem( name ) ) {
+				docCookies.setItem(false, name, 'true', 60*60, '/') 
+				return
+			}
+			var curCook = docCookies.getItem( name )
+			if( curCook === 'true' )
+				curCook = 'false'
+			else
+				curCook = 'true'
+			docCookies.setItem(false, name, curCook, 60*60, '/') 
+		}
+
 		toggleFlag()
 		PubSub.subscribe( 'quantityChange', toggleFlag )
 		//checkFlag()
@@ -254,6 +267,7 @@ $(document).ready(function() {
 			}
 			$(this).toggleClass('checked')
 			anotherSum()
+			toggleCookie( 'credit_on' )
 		})	
 //console.info( basket )
 		
