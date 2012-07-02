@@ -319,7 +319,7 @@ if ($user_id > 0) {
 if(isset($_COOKIE[CURRENT_REGION_COOKIE_NAME]) && preg_match('/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i', $_COOKIE[CURRENT_REGION_COOKIE_NAME])){
   $query = "SELECT id
             FROM `region`
-            WHERE `geoip_code` = {$_COOKIE[CURRENT_REGION_COOKIE_NAME]}  OR `is_default` = 1
+            WHERE `core_id` = {$_COOKIE[CURRENT_REGION_COOKIE_NAME]}  OR `is_default` = 1
             order by is_default ASC
             LIMIT 1";
 

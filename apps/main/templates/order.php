@@ -62,6 +62,8 @@
 
 <?php if (!include_slot('auth')) include_partial('default/auth') ?>
 
+<?php include_partial('region/select') ?>
+
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
   <?php include_partial('default/yandexMetrika') ?>

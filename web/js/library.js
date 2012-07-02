@@ -857,7 +857,7 @@ window.docCookies = {
     var oExpDate = new Date();  
     oExpDate.setDate(oExpDate.getDate() - 1);
     document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";  
-        console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
+//console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
   },  
   hasItem: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }  
 };
@@ -1668,10 +1668,13 @@ if ( !Date.prototype.toISOString ) {
 }
 
 $(document).ready(function(){
+   /* Perfomace Test */
+   /* 
    $($('body').children()[0]).before( $('<input type="text" value="0" class="perfomancehidden" id="perfomancehidden"/>') )
    setTimeout( function() {
        $('#perfomancehidden').val( window.performance.timing.loadEventEnd - window.performance.timing.navigationStart ) 
    }, 1000)
+    */
 
 	var ANALYTICS = {
 		adblender : function() {

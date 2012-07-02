@@ -8,7 +8,7 @@ class myDoctrineTable extends Doctrine_Table
 
     if ('region' == $name)
     {
-      $value = sfContext::hasInstance() ? sfContext::getInstance()->getUser()->getRegion('region') : RegionTable::getInstance()->getDefault();
+      $value = sfContext::hasInstance() ? RegionTable::getInstance()->findOneBy('core_id', sfContext::getInstance()->getUser()->getRegion('id')) : RegionTable::getInstance()->getDefault();
     }
 
     return $value;

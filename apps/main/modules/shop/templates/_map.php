@@ -2,12 +2,12 @@
 <div class="bMapShops">
   <div class='bMapShops__eHead'>
     <div class='bMapShops__eRegion'>
-      <h2 class='bMapShops__eRegionTitle'>Enter в <?php echo $region->getLinguisticCase('п') ? $region->getLinguisticCase('п') : ($region->prefix.$region) ?>!</h2>
+      <h2 class='bMapShops__eRegionTitle'>Enter в <?php echo (RepositoryManager::getRegion()->getLinguisticCase($region['name'], 'п') ? mb_ucfirst(RepositoryManager::getRegion()->getLinguisticCase($region['name'], 'п')) : ((($region['type'] == 'city')? 'г.':'').$region['name'])) ?>!</h2>
       <div class='bMapShops__eRegionText'>Enter в регионах:</div>
       <div class="selectbox selectbox170 fl"><i></i>
         <select id="region-select" class="styled" name="region">
         <?php foreach ($regionList as $record): ?>
-          <option data-url="<?php echo url_for('shop', array('region' => $record->token)) ?>" <?php if ($record->id == $region->id) echo 'selected="selected"' ?> value="<?php echo $record['id']?>"><?php echo $record['name'] ?></option>
+          <option data-url="<?php echo url_for('shop', array('region' => $record->token)) ?>" <?php if ($record->id == $region['id']) echo 'selected="selected"' ?> value="<?php echo $record['id']?>"><?php echo $record['name'] ?></option>
         <?php endforeach ?>
         </select>
       </div>

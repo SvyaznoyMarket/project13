@@ -41,7 +41,9 @@
       <?php include_component('order_', 'field_products', $sf_data) ?>
     </div>
 
-    <dl class='bBuyingLine mSumm order-total-container'>
+    <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт Centra</div>
+
+    <dl class='bBuyingLine mSumm order-total-container' style="margin-top: 0;">
       <dt><a class="red" style="border-color: #cb3735" href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
       <dd>
         <div><span data-assign='{"totalMessage": ["text", "_value"]}'>Сумма всех заказов</span> <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
