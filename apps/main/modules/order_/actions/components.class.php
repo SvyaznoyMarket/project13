@@ -59,7 +59,7 @@ class order_Components extends myComponents
     $paymentMethodList = RepositoryManager::getPaymentMethod()->getList();
     $selectedMethodId = 0;
     foreach ($paymentMethodList as $method) {
-        if (!$_SESSION['credit']) {
+        if (empty($_COOKIE['credit_on'])) {
             $selectedMethodId  = $method->getId();
             break;
         } elseif ($method->getIsCredit()) {

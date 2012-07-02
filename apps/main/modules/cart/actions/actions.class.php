@@ -23,7 +23,7 @@ class cartActions extends myActions
     $cart = $this->getUser()->getCart();
     $this->setVar('cart', $cart, true);
 
-    if (!empty($_SESSION['credit']) && $_SESSION['credit']) {
+    if (!empty($_COOKIE['credit_on']) && $_COOKIE['credit_on']) {
         $selectCredit = true;
     } else {
         $selectCredit = false;
@@ -102,9 +102,9 @@ class cartActions extends myActions
     $this->getUser()->setCacheCookie();
     if (isset($result['value'])) {
         if ($request['credit']) {
-            $_SESSION['credit'] = true;
+            $_COOKIE['credit_on'] = true;
         } else {
-            $_SESSION['credit'] = false;
+            $_COOKIE['credit_on'] = false;
         }
     }
 
@@ -242,9 +242,9 @@ class cartActions extends myActions
     $this->getUser()->setCacheCookie();
     if (isset($request['credit'])) {
       if ($request['credit']) {
-          $_SESSION['credit'] = true;
+          $_COOKIE['credit_on'] = true;
       } else {
-          $_SESSION['credit'] = false;
+          $_COOKIE['credit_on'] = false;
       }
     }
 

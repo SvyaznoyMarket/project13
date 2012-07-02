@@ -411,7 +411,7 @@ if (isset($sessionCartData['services'])) {
     }
   }
 }
-if ($_SESSION['credit']) {
+if (!empty($_COOKIE['credit_on'])) {
     $isCredit = true;
 } else {
     $isCredit = false;
