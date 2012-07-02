@@ -1668,6 +1668,14 @@ if ( !Date.prototype.toISOString ) {
 }
 
 $(document).ready(function(){
+   /* Perfomace Test */
+   /* 
+   $($('body').children()[0]).before( $('<input type="text" value="0" class="perfomancehidden" id="perfomancehidden"/>') )
+   setTimeout( function() {
+       $('#perfomancehidden').val( window.performance.timing.loadEventEnd - window.performance.timing.navigationStart ) 
+   }, 1000)
+    */
+
 	var ANALYTICS = {
 		adblender : function() {
 			document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>')
@@ -1748,7 +1756,7 @@ $(document).ready(function(){
             
             var self = this
             $.each(  nodes , function() {
-console.info( this.id, this.id+'' in self  )
+//console.info( this.id, this.id+'' in self  )
 
                 // document.write is overwritten in loadjs.js to document.writeln
                 var anNode = $(this)
