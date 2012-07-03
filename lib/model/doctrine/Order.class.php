@@ -135,6 +135,10 @@ class Order extends BaseOrder
       $data['geo_id'] = $this->core_region_id;
     }
 
+    if (!empty($this->delivery_period)) {
+      $data['delivery_period'] = $this->delivery_period;
+    }
+
     $data['store_id']             = null;
     if (empty($data['type_id'])) {
       $data['type_id'] = self::TYPE_ORDER;
