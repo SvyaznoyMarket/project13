@@ -130,6 +130,11 @@ class Order extends BaseOrder
     $data['address_id']           = $this->UserAddress->core_id;
     $data['satus_id']             = $this->Status->core_id;
     */
+
+    if (!empty($this->core_region_id)) {
+      $data['geo_id'] = $this->core_region_id;
+    }
+
     $data['store_id']             = null;
     if (empty($data['type_id'])) {
       $data['type_id'] = self::TYPE_ORDER;

@@ -70,7 +70,13 @@ class orderActions extends myActions
     $this->order->type_id = Order::TYPE_1CLICK;
 
     if (empty($this->order->region_id)) {
-      $this->order->region_id = $this->getUser()->getRegion('id');
+      //$this->order->region_id = $this->getUser()->getRegion('id');
+      if ($region = RegionTable::getInstance()->getByCoreId($this->getUser()->getRegion('id'))) {
+        $this->order->Region = $region;
+      }
+      else {
+        $this->order->mapValue('core_region_id', $this->getUser()->getRegion('region')->getId());
+      }
     }
 
     $this->form = new OrderOneClickForm($this->order, array('user' => $this->getUser()->getGuardUser(), 'quantity' => $quantity,));
@@ -167,9 +173,8 @@ class orderActions extends myActions
         }
         catch (Exception $e)
         {
-          // TODO: это временный фикс
-          //$return['success'] = false;
-          //$return['message'] = 'Не удалось создать заказ' . (sfConfig::get('sf_debug') ? (' Ошибка: ' . $e->getMessage()) : '');
+          $return['success'] = false;
+          $return['message'] = 'Не удалось создать заказ' . (sfConfig::get('sf_debug') ? (' Ошибка: ' . $e->getMessage()) : '');
         }
       }
       else {
