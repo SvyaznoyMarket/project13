@@ -19,11 +19,11 @@ $empty = 0 == $productLine->getProductCount();
   <?php
     if($view == 'expanded')
       render_partial('product_/templates/_list_expanded_.php', array(
-        'list' => $productLine->getProductList(),
+        'list' => $productLine->getFullProductList(),
       ));
     else
       render_partial('product_/templates/_list_compact_.php', array(
-        'list' => $productLine->getProductList(),
+        'list' => $productLine->getFullProductList(),
         'in_row' => 4
       ));
   ?>
