@@ -14,20 +14,18 @@ class ProjectConfiguration extends sfProjectConfiguration
   {
     mb_internal_encoding('UTF-8');
 
-    $this->enablePlugins('sfRediskaPlugin');
-
     $this->enablePlugins(array(
       'sfDoctrinePlugin',
-      'sfPHPUnit2Plugin',
+      //'sfPHPUnit2Plugin',
       //'fpErrorNotifierPlugin',
     ));
 
     foreach (array(
       array('doctrine.configure', array($this, 'listenToConfigureDoctrineEvent')),
       array('context.load_factories', array($this, 'listenForLoadFactories')),
-      array('debug.web.load_panels', array('myWebDebugPanelEnvironment', 'listenToLoadDebugWebPanelEvent')),
-      array('debug.web.load_panels', array('myWebDebugPanelCore', 'listenToLoadDebugWebPanelEvent')),
-      array('debug.web.load_panels', array('myWebDebugPanelRedis', 'listenToLoadDebugWebPanelEvent')),
+      //array('debug.web.load_panels', array('myWebDebugPanelEnvironment', 'listenToLoadDebugWebPanelEvent')),
+      //array('debug.web.load_panels', array('myWebDebugPanelCore', 'listenToLoadDebugWebPanelEvent')),
+      //array('debug.web.load_panels', array('myWebDebugPanelRedis', 'listenToLoadDebugWebPanelEvent')),
     ) as $listener) {
       $this->dispatcher->connect($listener[0], $listener[1]);
     }

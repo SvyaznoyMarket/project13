@@ -4,7 +4,7 @@
     <td>
       <%=f1title%>
       <br>
-      <a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service' => 'F1ID')); ?>">Подробнее об услуге</a>
+      <a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service' => 'F1TOKEN')); ?>">Подробнее об услуге</a>
     </td>
     <td class="mPrice">
       <span class="price"><%=f1price%> </span>

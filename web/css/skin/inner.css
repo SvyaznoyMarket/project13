@@ -381,7 +381,6 @@ LABEL.checked {color:#ffa901}
     border-radius:5px;
     -webkit-border-radius:5px;
     -moz-border-radius:5px;
-
 	//behavior: url(ie-css3.htc)
 	}
 
@@ -2782,6 +2781,15 @@ DT.bCtg__eOrange{
     width: 39px;
 }
 
+.bServiceCard__eLogo_free {
+    top: 0;
+    left: 0;
+    width: 118px;
+    height: 118px;
+    position: absolute;
+    background: url('img/icon_f1_image.png') no-repeat scroll right 0 transparent;
+    border: solid 1px #e6e6e6;
+}
 
 /* newSB */
 
@@ -4918,7 +4926,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     background-color: #f4f4f4;
 }
 .bImgButton.mBacket{
-    background-image: url('img/z_backet.png');
+    /* background-image: url('img/z_backet.png'); */
 }
 .bImgButton.mArrows{
     background-image: url('img/z_arrows.png');
@@ -5141,6 +5149,9 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 .bBuyingLine__eInfo span{
     color: #a8a8a8;
     font: 12px Tahoma, sans-serif;
+}
+.bBuyingLine__eInfo span.motton{
+    color: #4FCBF4;
 }
 .bBuyingLine.mSumm{
     margin-bottom: 30px;

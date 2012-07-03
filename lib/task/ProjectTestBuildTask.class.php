@@ -48,6 +48,6 @@ EOF;
       $this->runTask($name, isset($params[0]) ? $params[0] : array(), isset($params[1]) ? $params[1] : array());
     }
 
-    $this->logSection('redis', shell_exec('redis-cli FLUSHALL'));
+    //$this->logSection('redis', shell_exec('redis-cli FLUSHALL'));
   }
 }

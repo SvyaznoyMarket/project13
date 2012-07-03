@@ -3,6 +3,7 @@
  * @var $item ProductEntity
  */
 $last = count($item->getTagList()) - 1;
+if ($last > -1):
 ?>
 <noindex>
   <div class="pb25">
@@ -13,3 +14,4 @@ $last = count($item->getTagList()) - 1;
     <?php endforeach ?>
   </div>
 </noindex>
+<?php endif ?>

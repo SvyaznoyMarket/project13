@@ -439,6 +439,11 @@ order_new:
 order_create:
   url:   /orders/create
   param: { module: order_, action: create }
+
+# order createExternal
+order_createExternal:
+  url:   /orders/create-external
+  param: { module: order_, action: createExternal }
 #
 # order deliveryMap
 order_deliveryMap:
@@ -680,16 +685,21 @@ redirect_for_productCard:
 
 #
 # credit info main page
-credit_default:
-  url:      /credit
-  param:    { module: credit, action: index }
+#credit_default:
+#  url:      /credit
+#  param:    { module: credit, action: index }
 #
 # credit info main page
-credit_programs:
-  url:      /credit_programs
-  param:    { module: credit, action: programs }
+#credit_programs:
+#  url:      /credit_programs
+#  param:    { module: credit, action: programs }
 #
 
+# Wordpress pages
+# Если WP вернет 404, управление передастся на default_show согласно политике symfony
+wordpress:
+  url:   /:page
+  param: { module: wordpress, action: index }
 
 default_show:
   url:   /:page

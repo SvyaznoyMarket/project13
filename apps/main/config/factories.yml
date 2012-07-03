@@ -38,12 +38,6 @@ all:
       generate_shortest_url:            true
       extra_parameters_as_query_string: true
 
-  view_cache_manager:
-    class: myViewCacheManager
-    param:
-      cache_key_use_vary_headers: true
-      cache_key_use_host_name:    true
-
   request:
     class: myWebRequest
 
@@ -58,12 +52,6 @@ all:
     class: myUser
     param:
       timeout: 15552000 # 180 дней
-
-  view_cache:
-    class: sfRediskaCache
-    param:
-      lifetime: 604800
-      prefix: 'view:'
 
   logger:
     param:

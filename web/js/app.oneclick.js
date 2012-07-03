@@ -193,8 +193,10 @@ $(document).ready(function() {
 				}
 				
 				$.post( inputUrl, postData, function(data) {
-					if( !data.success )
+					if( !data.success ) {
+						self.noDelivery(true)
 						return false
+					}
 					Deliveries = data.data
 					var le = 0
 					for(var key in Deliveries )
@@ -642,6 +644,11 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			}
 
 			selfAvailable = 'self' in Deliveries
+			if( !selfAvailable ) {
+				//SHOW WARNING, NO SELF DELIVERY
+				$('#noDlvr').show()
+				return false				
+			}			
 			if( selfAvailable ) {
 				mapCenter = calcMCenter( Deliveries['self'].shops )
 			}			

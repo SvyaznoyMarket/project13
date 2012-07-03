@@ -83,7 +83,7 @@ $(document).ready(function() {
 	}
 	
 	/* Product Counter */
-	if( $('.bCountSet').length ) {
+	if( $('#page .bCountSet').length ) {
 		var np = $('.goodsbarbig .bCountSet')
 		var l1 = np.parent().find('.link1')
 		var l1href = l1.attr('href')
@@ -91,8 +91,15 @@ $(document).ready(function() {
 		var l1clhref = l1cl.attr('href')
 		np.data('hm', np.first().find('span').text().replace(/\D/g,'') )
 		
+		var tmp = $('.goodsbarbig:first').data('value')
+		var max = ( 'jsstock' in tmp ) ? tmp.jsstock : 1
+		
 		np.bind('update', function() {
 			var hm = $(this).data('hm')
+			if( max < hm ) {
+				$(this).data('hm', max)
+				return
+			}
 			np.find('span').text( hm + '  шт.')
 			l1.attr('href', l1href + '/' +  hm )
 			l1cl.attr('href', l1clhref + '&quantity=' + hm )
@@ -101,7 +108,7 @@ $(document).ready(function() {
 		$('.bCountSet__eP', np).click( function() {
 			if( $(this).hasClass('disabled') )
 				return false
-			np.data('hm', np.data('hm')*1 + 1 )
+			np.data('hm', np.data('hm')*1 + 1 )	
 			np.trigger('update')
 			return false
 		})

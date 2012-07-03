@@ -4,13 +4,6 @@ all:
     secret: Выход!
     enabled: false
 
-  rediska:
-    default:
-      servers:
-        main:
-          host: localhost
-          persistent: true
-
   doctrine:
     result_cache:        true   # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше

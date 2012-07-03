@@ -102,7 +102,7 @@ class OrderDefaultForm extends BaseOrderForm
       // sclub_card_number
     $this->widgetSchema['sclub_card_number'] = new sfWidgetFormInputText();
     $this->widgetSchema['sclub_card_number']->setLabel('Номер карточки связного клуба');
-    $this->validatorSchema['sclub_card_number'] = new myValidatorSClubCardNumber(array('required' => false), array('invalid' => 'Номер карточки введен неверно'));
+    $this->validatorSchema['sclub_card_number'] = new myValidatorSClubCardNumber(array('required' => false), array('invalid' => 'В номере карты допущена ошибка. Проверьте правильность ввода номера и повторите попытку'));
 
     // payment_method_id
     $choices = array();
