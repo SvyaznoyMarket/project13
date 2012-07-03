@@ -258,7 +258,7 @@ $(document).ready(function () {
         }
         
 //console.info(creditWidget.vars.number) 
-window.onbeforeunload = function (){ return false }    // DEBUG    
+//window.onbeforeunload = function (){ return false }    // DEBUG    
         function openWidget() {
             dc_getCreditForTheProduct(
                 '4427', 
