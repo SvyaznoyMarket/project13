@@ -119,7 +119,6 @@ class DeliveryModel
 
     foreach($data['deliveries'] as $deliveryTypeName => $delivery){
         if(!isset($data['products'][$productId]['deliveries'][$deliveryTypeName])){
-          echo "{$deliveryTypeName} not found \r\n";
           continue;
         }
         switch($delivery['token']){
