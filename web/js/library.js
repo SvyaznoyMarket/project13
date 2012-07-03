@@ -963,6 +963,7 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 	}
 	
 	this.showMarkers = function( argmarkers ) {
+        mapContainer.show()
 		$.each( markers, function(i, item) {
 			 if( typeof( item.ref ) !== 'undefined' )
 				item.ref.setMap(null)

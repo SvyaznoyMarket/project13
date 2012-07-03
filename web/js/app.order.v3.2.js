@@ -559,11 +559,16 @@ $(document).ready(function() {
         onShopSelected: function() {},
 
         onMapClosed: function(shopId) {
+           
             var el = $('.bBuyingLine__eRadio:checked')
-
-            regionMap.closeMap()
-
-            DeliveryMap.onShopSelected.apply(this, [el.val(), shopId])
+ 
+            regionMap.closeMap( function() { $('.mMapPopup').trigger('close') } )
+            if( typeof(shopId) === 'object' )
+                shopId = shopId.id
+            DeliveryMap.onShopSelected.apply(DeliveryMap, [el.val(), shopId])
+            //DeliveryMap.onShopSelected.apply(this, [el.val(), shopId])
+            
+//console.info('onMapClosed', el.val(), shopId)
         },
 
         validate: function(el, message) {
@@ -625,14 +630,52 @@ $(document).ready(function() {
         }
     }
 
-    window.regionMap = new MapWithShopsOLD(
+    window.regionMap = new MapWithShops(
         $('#map-center').data('content'),
         $('#map-info_window-container'),
         'mapPopup',
         DeliveryMap.onMapClosed
     )
+    /////
+function getMarkers() {
+    var shops = $('#order-delivery_map-data').data().value.shops;
+    var markers = {}, n = 1;
+    for (var i in shops) {
+      var tmp = shops[i];
+      tmp.markerImg = '/images/marker_' + n + '.png';
+      markers[tmp.id] = tmp;
+      n++;
+    }
+    return markers;
+  }
 
+ function openMap() {
+    $('.mMapPopup').lightbox_me({
+      centered:true,
+      onLoad:function() {
+        console.info('LOAD')
+        window.regionMap.showMarkers( getMarkers() )
+      }
+    })
+  }
 
+  MapWithShops.prototype.openMap = openMap
+
+  function renderShopInfo (marker) {
+    var tpl = '<li data-id="' + marker['id'] + '">';
+    tpl += '<div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>';
+    tpl += '<div>' + marker['name'] + '</div>';
+    tpl += '<span>Работаем</span> <span>' + marker['regime'] + '</span>';
+    tpl += '</li>';
+    $('#mapPopup_shopInfo').append(tpl);
+  }
+
+  var curM = getMarkers()
+  for(var i in curM)
+    renderShopInfo (curM[i])
+  $('#mapPopup_shopInfo li').click(function(){ DeliveryMap.onMapClosed($(this).data('id')); });
+  
+/////
 
     $('#order-loader-holder').html('')
 
