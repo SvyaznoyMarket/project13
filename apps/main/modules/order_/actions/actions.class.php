@@ -471,11 +471,9 @@ class order_Actions extends myActions
                       'name' => $product['name'],
                       'quantity' => $product['quantity'],
                       'price' => $product['price'],
-                      'articul' => $product['id'],
+                      'articul' => $productsById[$product['product_id']]->getArticle(),
                       'type' => $creditDataType,
                   );
-//                  print_r($jsCreditData);
-//                  die();
               }
           }
           $this->setVar('jsCreditArray', $jsCreditData, true);
