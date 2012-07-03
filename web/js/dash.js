@@ -264,7 +264,7 @@ $(document).ready(function(){
 			tmp.effect('transfer',{ to: $('.point2 b') , easing: 'easeInOutQuint', img: tmp.attr('src') }, 500 )
 		}
 		var boughtItem = currentItem
-		$.getJSON( $( button ).attr('href') +'/1', function(data) {
+		$.getJSON( $( button ).attr('href') +'1', function(data) {
 			if ( data.success && ltbx ) {
 				var tmpitem = parseItemNode( boughtItem )
 				tmpitem.vitems = data.data.full_quantity
