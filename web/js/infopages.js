@@ -81,7 +81,7 @@ $(document).ready(function(){
 			
 		})
 	}
-	
+
 	/* Credits inline */
 	if( $('.bCreditLine').length ) {
 		document.getElementById("requirementsFullInfoHref").style.cursor="pointer";

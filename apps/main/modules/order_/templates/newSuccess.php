@@ -27,14 +27,14 @@
 
   <div id="order-loader-holder">
     <div class='bOrderPreloader'>
-      <span>Загрузка...</span><img src='/images/bPreloader.gif'>
+      <span>Загрузка...</span><img src='/images/bPreloader.gif' />
     </div>
   </div>
 
   <div id="order-form-part2" class="hidden">
 
     <div id="order-message" class='bBuyingInfo'>
-      <span><?php count($deliveryMap->unavailable) ? 'Некоторые товары не могут быть доставлены' : 'Отличный выбор!' ?></span>
+      <span><?php count($sf_data->getRaw('deliveryMap')->unavailable) ? 'Некоторые товары не могут быть доставлены' : 'Отличный выбор!' ?></span>
     </div>
 
     <div id="order-delivery-holder">
@@ -44,7 +44,7 @@
     <dl class='bBuyingLine mSumm order-total-container'>
       <dt><a class="red" style="border-color: #cb3735" href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
       <dd>
-        <div>Сумма всех заказов <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
+        <div><span data-assign='{"totalMessage": ["text", "_value"]}'>Сумма всех заказов</span> <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
       </dd>
     </dl>
 
@@ -136,7 +136,6 @@
           <div>
             <p></p>
             <?php echo $form['extra']->render(array('class' => 'bBuyingLine__eTextarea')) ?>
-            <i class='mILong'>Сколько раз повернуть направо, наличие бабушек у подъезда или цвет глаз секретаря - укажите любую информацию, которая поможет нам еще быстрее выполнить Ваш заказ.</i>
           </div>
         </dd>
       </dl>
@@ -146,7 +145,7 @@
         <dd class="bSClub">
           <div class="bSClub__eWrap pb25">
             <?php echo $form['sclub_card_number']->render(array('class' => 'bBuyingLine__eText mInputShort mb15')) ?>
-            <i class="mILong">Номер карты для зачисления баллов<br>Номер под штрихкодом на оборотной<br /> стороне карты, начинается на 298</i>
+            <i class="mILong">Чтобы получить 1% от суммы заказа<br/>баллами на карту, введите ее номер,<br />расположенный на обороте под штрихкодом</i>
           </div>
           <!--<label><b></b> <h5>Сохранить мои данные для следующих покупок</h5> <input class='bBuyingLine__eRadio' name='r1' type='radio'></label>-->
         </dd>
@@ -183,22 +182,22 @@
 
     </div>
 
-    <dl class='bBuyingLine mConfirm'>
-
-      <dt>&nbsp;</dt>
-      <dd>
-        <div><a id="order-submit" class='bBigOrangeButton' href="#">Завершить оформление</a></div>
-      </dd>
-    </dl>
-
   </div>
+
+  <dl class='bBuyingLine mConfirm'>
+
+    <dt>&nbsp;</dt>
+    <dd>
+      <div><a id="order-submit" class='bBigOrangeButton disable' href="#">Завершить оформление</a></div>
+    </dd>
+  </dl>
 
   <div id="order-shop-popup" class="hidden"></div>
 
 </form>
 
 <div id="order-loader" class='bOrderPreloader hf'>
-  <span>Формирую заказ...</span><img src='/images/bPreloader.gif'>
+  <span>Формирую заказ...</span><img src='/images/bPreloader.gif' />
 </div>
 
 <?php include_partial('order_/map', $sf_data) ?>

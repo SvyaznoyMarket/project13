@@ -18,13 +18,13 @@
     <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><img
       src='/images/img_main_f1service.jpg'></a></div>
     <div class='bIndexLinks2__eLinks'>
-      <a href="<?php echo url_for('default_show', array('page' => 'about_company',)) ?>">О компании</a>
+      <a href="<?php echo url_for('wordpress', array('page' => 'about_company',)) ?>">О компании</a>
       <a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>">Сервис F1</a>
-      <a href="<?php echo url_for('default_show', array('page' => 'credit',)) ?>">Покупка в кредит</a>
+      <a href="<?php echo url_for('wordpress', array('page' => 'credit',)) ?>">Покупка в кредит</a>
       <a href="http://job.enter.ru/vacancies" target="_blank">Работать у нас</a>
       <a href="<?php echo url_for('shop') ?>">Наши магазины</a>
-      <a href="<?php echo url_for('default_show', array('page' => 'how_make_order',)) ?>">Как сделать заказ</a>
-      <a href="<?php echo url_for('default_show', array('page' => 'mobile_apps')) ?>">Мобильные приложения</a>
+      <a href="<?php echo url_for('wordpress', array('page' => 'how_make_order',)) ?>">Как сделать заказ</a>
+      <a href="<?php echo url_for('wordpress', array('page' => 'mobile_apps')) ?>">Мобильные приложения</a>
       <a href="<?php echo url_for('callback') ?>">Обратная связь</a>
     </div>
   </div>
@@ -40,9 +40,9 @@
     </div>
     <div class='pb5'>
       Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br>
-      <a href="<?php echo url_for('default_show', array('page' => 'legal')) ?>">Правовая информация</a>
-      <a href="<?php echo url_for('default_show', array('page' => 'terms')) ?>">Условия продажи</a>
-      <a href="<?php echo url_for('default_show', array('page' => 'media_info')) ?>">Информация о СМИ</a>
+      <a href="<?php echo url_for('wordpress', array('page' => 'legal')) ?>">Правовая информация</a>
+      <a href="<?php echo url_for('wordpress', array('page' => 'terms')) ?>">Условия продажи</a>
+      <a href="<?php echo url_for('wordpress', array('page' => 'media_info')) ?>">Информация о СМИ</a>
       <a href="<?php echo url_for('user') ?>">Личный кабинет</a>
     </div><br/>
     <span class="rights"> &copy; ООО &laquo;Энтер&raquo; 2011&ndash;<?php echo date("Y") ?>. <span class="names"> ENTER<sup>&reg;</sup> ЕНТЕР<sup>&reg;</sup> <span style='font:normal 1em tahoma,verdana,arial,helvetica,sans-serif; color: #FF0000;'>Enter<sup>&reg;</sup></span>.</span> Все права защищены.</span>

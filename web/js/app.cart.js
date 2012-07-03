@@ -33,6 +33,7 @@ $(document).ready(function() {
 			delurl = addurl + '/-1'
 		var drop     = $(nodes.drop).attr('href')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')
+		var limit    = nodes.limit
 		this.quantum = $(nodes.quan).html().replace(/\D/g,'') * 1
 
 		var price    = ( self.sum* 1 / self.quantum *1 ).toFixed(2)
@@ -68,8 +69,13 @@ $(document).ready(function() {
 		}
 
 		this.update = function( minimax, delta ) {
+			if( delta > 0 && ( limit < ( self.quantum + delta ) ) ) {
+				$(minimax).data('run',false)
+				return
+			}
 			var tmpurl = (delta > 0) ? addurl : delurl
 			self.quantum += delta
+			
 			$(nodes.quan).html( self.quantum + ' шт.' )
 			self.calculate( self.quantum )
 			totalCash += self.price * delta
@@ -141,7 +147,8 @@ $(document).ready(function() {
 						'quan': bline.find('.ajaquant:first'),
 						'price': bline.find('.basketinfo .price:first'),
 						'sum': bline.find('.basketinfo .sum:first'),
-						'drop': bline.find('.basketinfo .whitelink:first')
+						'drop': bline.find('.basketinfo .whitelink:first'),
+						'limit': bline.find('.numerbox').data('limit')
 						})
 		basket.push( tmpline )
 				
@@ -206,7 +213,7 @@ $(document).ready(function() {
 		$('div.bBacketServ.mBig', bline).show()		
 		var f1lineshead = $('div.bBacketServ.mBig tr:first', bline)
 		var f1linecart = tmpl('f1cartline', f1item)
-		f1linecart = f1linecart.replace(/F1ID/g, f1item.fid ).replace(/PRID/g, bline.attr('ref') )
+		f1linecart = f1linecart.replace(/F1ID/g, f1item.fid ).replace(/F1TOKEN/g, f1item.f1token ).replace(/PRID/g, bline.attr('ref') )
 		f1lineshead.after( f1linecart )
 		addLine( $('div.bBacketServ.mBig tr:eq(1)', bline) )
 		getTotal()

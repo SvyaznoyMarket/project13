@@ -11,23 +11,38 @@ $(document).ready(function() {
             $.each($('#product_errors').data('value'), function(i, item) {
 
                 if (708 == item.code) {
-                    if (confirm('Вы заказали товар "'+item.product.name+'" в количестве '+item.product.quantity+' шт.'+"\n\n"+'Доступно только '+item.quantity_available+' шт.'+"\n\n"+'Заказать '+item.quantity_available+'шт?')) {
-                        $.ajax({
-                            url: item.product.deleteUrl
-                        }).done(function(result) {
-                                $.ajax({
-                                    url: item.product.addUrl
-                                }).done(function() {
-                                        if ((i +1) == length) dfd.resolve()
+
+                    if (item.quantity_available > 0)
+                    {
+                        if (confirm('Вы заказали товар "'+item.product.name+'" в количестве '+item.product.quantity+' шт.'+"\n\n"+'Доступно только '+item.quantity_available+' шт.'+"\n\n"+'Заказать '+item.quantity_available+'шт?')) {
+                            $.ajax({
+                                url: item.product.deleteUrl
+                            }).done(function(result) {
+                                    $.ajax({
+                                        url: item.product.addUrl
+                                    }).done(function() {
+                                            if ((i +1) == length) dfd.resolve()
                                     })
-                            })
+                                })
+                        }
+                        else {
+                            if ((i +1) == length) dfd.resolve()
+                        }
                     }
                     else {
-                        $.ajax({
-                            url: item.product.deleteUrl
-                        }).done(function() {
+                        if (confirm('Товара "'+item.product.name+'" нет в наличии для выбранного способа доставки.'+"\n\n"+'Удалить товар из корзины?')) {
+                            $.ajax({
+                                url: item.product.deleteUrl
+                            }).done(function(result) {
                                 if ((i +1) == length) dfd.resolve()
                             })
+                        }
+                        else {
+                            if ($('#cart-link').data('value')) {
+                                window.location = $('#cart-link').data('value');
+                            }
+                            dfd.reject()
+                        }
                     }
                 }
                 else {
@@ -48,7 +63,7 @@ $(document).ready(function() {
             return dfd.promise()
         }
 
-        $.when(checkItemQuantity()).always(function() {
+        $.when(checkItemQuantity()).done(function() {
             window.location.reload()
         })
     }

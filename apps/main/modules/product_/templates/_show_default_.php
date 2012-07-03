@@ -19,7 +19,8 @@ $json = json_encode(array (
   'jsshortcut' =>  $item->getArticle(),
   'jsitemid' =>  $item->getId(),
   'jsregionid' => sfContext::getInstance()->getUser()->getRegionCoreId(),
-  'jsregionName' => sfContext::getInstance()->getUser()->getRegion('name')
+  'jsregionName' => sfContext::getInstance()->getUser()->getRegion('name'),
+  'jsstock' => 10,
 ));
 ?>
 <?php
@@ -73,7 +74,7 @@ foreach ($photo3dList as $photo3d)
     <span>Артикул #<?php echo $item->getArticle() ?></span>
   </div>
 
-  <div class="font14 pb15"><?php echo $item->getAnnounce() ?></div>
+  <div class="font14 pb15"><?php echo $item->getTagline() ?></div>
   <div class="clear"></div>
 
 
@@ -291,7 +292,7 @@ if ($showRelatedUpper && count($item->getRelatedList())){
         <?php render_partial('product_/templates/_price.php', array('price' => formatPrice($item->getPrice()) )) ?>
       </div>
       <div class="popup_leftpanel pb40" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
-        <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
+        <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item, 'text' => 'Купить')) ?>
       </div>
 
       <h2>Фото:</h2>

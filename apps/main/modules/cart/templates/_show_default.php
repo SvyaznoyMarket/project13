@@ -4,7 +4,7 @@
     <td>
       <%=f1title%>
       <br>
-      <a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service' => 'F1ID')); ?>">Подробнее об услуге</a>
+      <a class="bBacketServ__eMore" href="<?php echo url_for('service_show', array('service' => 'F1TOKEN')); ?>">Подробнее об услуге</a>
     </td>
     <td class="mPrice">
       <span class="price"><%=f1price%> </span>
@@ -43,6 +43,7 @@
         </div>
         <div class="basketinfo basketinfonarrow pb15">
           <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo $item['priceFormatted'] ?></span> <span class="rubl">p</span></span></div>
+<<<<<<< HEAD
           <div class="right"><div class="numerbox">
           	<?php echo link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_add', array('product' => $item['core_id'], 'quantity' => -1,)) ?>
           	<span class="ajaquant"><?php echo $item['quantity'] ?> шт.</span>
@@ -50,6 +51,9 @@
                <b class="ajamore" title="Увеличить"></b>
               </a> 
           </div></div>
+=======
+          <div class="right"><div class="numerbox" data-limit="10"><?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_add', array('product' => $item['core_id'], 'quantity' => -1,)) : '<b class="ajaless" title="Уменьшить"></b>' ?><span class="ajaquant"><?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_add', array('product' => $item['core_id'], 'quantity' => 1,)) ?></div></div>
+>>>>>>> origin/remove_redis
         </div>
         <div class="basketinfo basketinfonarrow">
           <div class="left font24"><span class="sum"><?php echo ($item['total']) ?></span> <span class="rubl">p</span></div>
