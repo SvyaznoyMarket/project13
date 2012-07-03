@@ -52,7 +52,7 @@ class CurrentUser
   }
 
   public function isAuthorized(){
-    return is_null($this->getUser());
+    return (bool)$this->getUser();
   }
 
   /**

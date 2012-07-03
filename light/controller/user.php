@@ -57,14 +57,42 @@ class userController
         }
       };
 
-      App::getProduct()->getProductsShortDataByIdListAsync($prodIdList, $prodCb);
-      App::getService()->getServicesByIdListAsync($serviceIdList, $serviceCb);
+      if(!count($prodIdList) && !count($serviceIdList)){
+        $responseData = array(
+          'success' => true,
+          'data' => array(
+            'name' => App::getCurrentUser()->isAuthorized()? App::getCurrentUser()->getUser()->getFullName() : '',
+            'link' => '/private/', //ссылка на личный кабинет
+            'vitems' => 0,
+            'sum' => 0,
+            'vwish' => 0,
+            'vcomp' => 0,
+            'productsInCart' => array(),
+            'servicesInCart' => array(),
+            'bingo' => false,
+            'region_id' =>App::getCurrentUser()->getRegion()->getId()
+          )
+        );
+        $response->setContent(json_encode($responseData));
+        TimeDebug::end('controller:user:getShortInfo');
+        return;
+      }
+
+      if(count($prodIdList)){
+        App::getProduct()->getProductsShortDataByIdListAsync($prodIdList, $prodCb);
+      }
+
+      if(count($serviceIdList)){
+        App::getService()->getServicesByIdListAsync($serviceIdList, $serviceCb);
+      }
+
       App::getCoreV2()->execute();
+
 
       $responseData = array(
         'success' => true,
         'data' => array(
-          'name' => App::getCurrentUser()->getUser()? App::getCurrentUser()->getUser()->getFullName() : '',
+          'name' => App::getCurrentUser()->isAuthorized()? App::getCurrentUser()->getUser()->getFullName() : '',
           'link' => '/private/', //ссылка на личный кабинет
           'vitems' => $cart->getTotalQuantity(),
           'sum' => $cart->getTotalPrice(),
