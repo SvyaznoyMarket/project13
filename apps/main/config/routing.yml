@@ -5,59 +5,59 @@ homepage:
 
 # secured welcome
 welcome:
-  url:   /welcome/
+  url:   /welcome
   param: { module: default, action: welcome }
 
 # QR-code
 #
 # show
 qrcode:
-  url:   /qr/:qrcode/
+  url:   /qr/:qrcode
   param: { module: qrcode, action: index }
 
 # фиктивный роут для plain php генерации url.
 product_delivery_1click:
-  url:   /product/delivery1click/
+  url:   /product/delivery1click
   param: { module: product_, action: deliveryInfo, product: 0 }
 # фиктивный роут для plain php генерации url.
 product_delivery:
-  url:   /product/delivery-info/:product/
+  url:   /product/delivery-info/:product
   param: { module: product_, action: deliveryInfo, product: 0 }
 # список товаров
 # @core
 product_list:
-  url:   /products/list/:products/
+  url:   /products/list/:products
   param: { module: product_, action: list }
 # список товаров
 # @core
 product_set:
-  url:   /products/set/:products/
+  url:   /products/set/:products
   param: { module: product_, action: set }
 # список смежных товаров
 # @core
 product_related:
-  url:   /products/related/:product/
+  url:   /products/related/:product
   param: { module: productCard_, action: related }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 # список аксессуаров
 # @core
 product_accessory:
-  url:   /products/accessories/:product/
+  url:   /products/accessories/:product
   param: { module: productCard_, action: accessory }
   requirements:
     product: '([a-zA-Z_0-9-]+(\/{0,1})[a-zA-Z_0-9-]+)'
 # карточка товара по ид товара
 # @core
 product_show:
-  url:   /product-:product/
+  url:   /product-:product
   param: { module: product_, action: show }
   options:
     segment_separators: [ '/', '-' ]
 # карточка товара. использует новый API
 # @core
 productCard:
-  url:   /product/:product/
+  url:   /product/:product
   param: { module: productCard_, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
@@ -66,13 +66,13 @@ productCard:
 # usable for content
 # @core
 productCard_showByBarcode:
-  url:   /product/:product/
+  url:   /product/:product
   param: { module: productCard_, action: showByBarcode }
 
 # @deprecated
 # фильтр каталога товаров
 productCatalog_filter:
-  url:   /catalog/:productCategory/_filter/
+  url:   /catalog/:productCategory/_filter
   param: { module: productCatalog_, action: category }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
@@ -81,7 +81,7 @@ productCatalog_filter:
 # @deprecated
 # тэги каталога товаров
 productCatalog_tag:
-  url:   /catalog/:productCategory/_tag/
+  url:   /catalog/:productCategory/_tag
   param: { module: productCatalog_, action: category }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
@@ -96,7 +96,7 @@ productCatalog:
 # @core
 # количество найденных товаров
 productCatalog_count:
-  url:   /catalog/:productCategory/_count/
+  url:   /catalog/:productCategory/_count
   param: { module: productCatalog_, action: count }
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
@@ -114,7 +114,7 @@ productCatalog_category:
 # @core
 # категория каталога товаров ajax
 productCatalog_categoryAjax:
-  url:   /catalog/:productCategory/_ajax/:page/:view/:num/
+  url:   /catalog/:productCategory/_ajax/:page/:view/:num
   param: { module: productCatalog_, action: categoryAjax, num: 18, view: compact, page: 1}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
@@ -123,7 +123,7 @@ productCatalog_categoryAjax:
 # @core
 # карусель ajax
 productCatalog_carousel:
-  url:   /catalog_core/:productCategory/_carousel/
+  url:   /catalog_core/:productCategory/_carousel
   param: { module: productCatalog_, action: carousel}
   class:   myProductCatalogRoute
   options: { model: ProductCategory, type: object, method: getForRoute }
@@ -132,7 +132,7 @@ productCatalog_carousel:
 #
 # комментарии товара
 productComment:
-  url:   /product/:product/comments/
+  url:   /product/:product/comments
   param: { module: productComment, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
@@ -141,7 +141,7 @@ productComment:
 #
 # новый комментарий товара
 productComment_new:
-  url:   /product/:product/comments/new/
+  url:   /product/:product/comments/new
   param: { module: productComment, action: new }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
@@ -151,7 +151,7 @@ productComment_new:
 #
 # создать комментарий товара
 productComment_create:
-  url:   /product/:product/comments/create/
+  url:   /product/:product/comments/create
   param: { module: productComment, action: create }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
@@ -161,7 +161,7 @@ productComment_create:
 #
 # оценить комментарий товара
 productComment_helpful:
-  url:   /product/:product/comments/:productComment/helpful/
+  url:   /product/:product/comments/:productComment/helpful
   param: { module: productComment, action: helpful }
   class:   myDoctrineRoute
   options: { model: ProductComment, type: object, method: getForRoute }
@@ -171,13 +171,13 @@ productComment_helpful:
 
 # список товаров
 productCategory_menu:
-  url:   /category/main_menu/
+  url:   /category/main_menu
   param: { module: productCategory, action: menu }
 #
 
 # наличие на складах
 productStock:
-  url:   /product/:product/stock/
+  url:   /product/:product/stock
   param: { module: productStock, action: index }
   class:   sfObjectRoute
   options: { model: Product, type: object }
@@ -186,7 +186,7 @@ productStock:
 #
 # аналогичные товары
 similarProduct:
-  url:   /product/:product/similar/
+  url:   /product/:product/similar
   param: { module: similarProduct, action: index }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
@@ -197,7 +197,7 @@ similarProduct:
 #
 # карточка линии
 lineCard:
-  url:   /line/:line/
+  url:   /line/:line
   param: { module: line, action: card }
   class:   myDoctrineRoute
   options: { model: ProductLine, type: object, method: getForRoute }
@@ -206,12 +206,12 @@ lineCard:
 #
 # список магазинов
 shop:
-  url:   /shops/:region/
+  url:   /shops/:region
   param: { module: shop, action: index, region: ~ }
 #
 # карточка магазина
 shop_show:
-  url:   /shops/:region/:shop/
+  url:   /shops/:region/:shop
   param: { module: shop, action: show, region: ~ }
   class:   myShopRoute
   options: { model: Shop, type: object, method: getForRoute }
@@ -233,21 +233,21 @@ newsCategory_show:
 #
 # news list by year
 newsCategory_year:
-  url:   /news/:newsCategory/:year/
+  url:   /news/:newsCategory/:year
   param: { module: newsCategory, action: year }
   class:   myNewsRoute
   options: { model: NewsCategory, type: object, method: getForRoute }
 #
 # news list by month
 newsCategory_month:
-  url:   /news/:newsCategory/:year/:month/
+  url:   /news/:newsCategory/:year/:month
   param: { module: newsCategory, action: month }
   class:   myNewsRoute
   options: { model: NewsCategory, type: object, method: getForRoute }
 #
 # news
 news_show:
-  url:   /news/:newsCategory/:year/:month/:news/
+  url:   /news/:newsCategory/:year/:month/:news
   param: { module: news, action: show }
   class:   myNewsRoute
   options: { model: News, type: object, method: getForRoute }
@@ -266,7 +266,7 @@ user:
 
 # user edit
 user_edit:
-  url:   /private/edit/
+  url:   /private/edit
   param: { module: user, action: edit }
   requirements:
     sf_method: [ get,post ]
@@ -274,7 +274,7 @@ user_edit:
 
 # user edit
 user_update:
-  url:   /private/update/
+  url:   /private/update
   param: { module: user, action: update }
   requirements:
     sf_method: [ get,post ]
@@ -286,84 +286,84 @@ user_orders:
 #
 # страница формы юридической консультации в ЛК
 user_legalConsultation:
-  url:     /private/consultation/legal/
+  url:     /private/consultation/legal
   param:   { module: user, action: legalConsultation }
 user_legalConsultationSend:
-  url:     /private/consultation/legal/send/
+  url:     /private/consultation/legal/send
   param:   { module: user, action: sendLegalConsultation }
 
 
 # MOVED TO PLAIN PHP user. get short info about cart, wishlist, etc.
 userProductHistory_shortinfo:
-  url:   /user/shortinfo/
+  url:   /user/shortinfo
   param: { module: default, action: index }
   requirements:
     sf_method: [ get,post ]
 
 # user signin
 user_signin:
-  url:   /login/:provider/
+  url:   /login/:provider
   param: { module: guard, action: signin, provider: null }
 
 # user signin ajax
 user_signinajax:
-  url:   /loginajax/:login/:password/:remember/
+  url:   /loginajax/:login/:password/:remember
   param: { module: guard, action: signinAjax, provider: null, remember: 0 }
   requirements:
     sf_method: [ get,post ]
 #
 # user signout
 user_signout:
-  url:   /logout/
+  url:   /logout
   param: { module: guard, action: signout }
 #
 # user forgot password
 user_forgotPassword:
-  url:   /request-password/
+  url:   /request-password
   param: { module: guard, action: forgotPassword }
   requirements:
     sf_method: [ get,post ]
 
 user_resetPassword:
-  url:   /reset-password/
+  url:   /reset-password
   param: { module: guard, action: resetPassword }
   requirements:
     sf_method: [ get,post ]
 #
 # user change password
 user_changePassword:
-  url:   /private/password/
+  url:   /private/password
   param: { module: guard, action: changePassword }
 #
 # user change password
 user_changePasswordSave:
-  url:   /private/password/save/
+  url:   /private/password/save
   param: { module: guard, action: changePasswordSave }
 #
 # user register
 user_register:
-  url:   /register/
+  url:   /register
   param: { module: guard, action: register }
 #
 # user quick register
 user_quickRegister:
-  url:   /quick-register/
+  url:   /quick-register
   param: { module: guard, action: quickRegister }
 #
 # user basic register
 user_basicRegister:
-  url:   /remember/
+  url:   /remember
   param: { module: guard, action: basicRegister }
 #
 # user oauth callback
 user_oauth_callback:
-  url:   /signin/:provider/callback/
+  url:   /signin/:provider/callback
   param: { module: guard, action: oauthCallback }
 
 #
 # user product rating create
 userProductRating_createtotal:
-  url:   /product-rating/createtotal/:product/:rating/
+  url:   /product-rating/createtotal/:product/:rating
   param: { module: userProductRating, action: createtotal }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
@@ -373,7 +373,7 @@ userProductRating_createtotal:
 #
 # user product rating create
 userProductRating_create:
-  url:   /product-rating/create/:rating/
+  url:   /product-rating/create/:rating
   param: { module: userProductRating, action: create }
   class:   myDoctrineRoute
   options: { model: Product, type: object, method: getForRoute }
@@ -383,17 +383,17 @@ userProductRating_create:
 #
 # user address
 userAddress:
-  url:   /private/address/
+  url:   /private/address
   param: { module: userAddress, action: index }
 #
 # user address create
 userAddress_create:
-  url:   /private/address/create/
+  url:   /private/address/create
   param: { module: userAddress, action: create }
 #
 # user address update
 userAddress_update:
-  url:   /private/address/update/:userAddress/
+  url:   /private/address/update/:userAddress
   param: { module: userAddress, action: update }
   class:   myDoctrineRoute
   options: { model: UserAddress, type: object, method: getForRoute }
@@ -402,14 +402,14 @@ userAddress_update:
 #
 # user address edit
 userAddress_edit:
-  url:   /private/address/edit/:userAddress/
+  url:   /private/address/edit/:userAddress
   param: { module: userAddress, action: edit }
   class:   myDoctrineRoute
   options: { model: UserAddress, type: object, method: getForRoute }
 #
 # user address delete
 userAddress_delete:
-  url:   /private/address/delete/:userAddress/
+  url:   /private/address/delete/:userAddress
   param: { module: userAddress, action: delete }
   class:   myDoctrineRoute
   options: { model: UserAddress, type: object, method: getForRoute }
@@ -419,7 +419,7 @@ userAddress_delete:
 #
 # order 1click
 order_1click:
-  url:   /orders/1click/
+  url:   /orders/1click
   param: { module: order, action: 1click }
 #
 # order new
@@ -427,7 +427,7 @@ order_1click:
 #  url:   /orders/new/:step
 #  param: { module: order, action: new, step: 1 }
 order_new:
-  url:   /orders/new/
+  url:   /orders/new
   param: { module: order_, action: new }
 #
 # order create
@@ -437,17 +437,17 @@ order_new:
 #
 # order create
 order_create:
-  url:   /orders/create/
+  url:   /orders/create
   param: { module: order_, action: create }
 
 # order createExternal
 order_createExternal:
-  url:   /orders/create-external/
+  url:   /orders/create-external
   param: { module: order_, action: createExternal }
 #
 # order deliveryMap
 order_deliveryMap:
-  url:   /orders/delivery-map/
+  url:   /orders/delivery-map
   param: { module: order_, action: deliveryMap }
 #
 # order field
@@ -459,42 +459,42 @@ order_deliveryMap:
 #
 # order edit
 order_edit:
-  url:   /orders/edit/:step/
+  url:   /orders/edit/:step
   param: { module: order, action: edit, step: 1 }
 #
 # order confirm
 order_confirm:
-  url:   /orders/confirm/
+  url:   /orders/confirm
   param: { module: order, action: confirm }
 #
 # order complete
 order_complete:
-  url:   /orders/complete/
+  url:   /orders/complete
   param: { module: order_, action: complete }
 #
 # order payment
 order_payment:
-  url:   /orders/payment/
+  url:   /orders/payment
   param: { module: order, action: payment }
 #
 # order cancel
 order_cancel:
-  url:   /orders/cancel/:token/
+  url:   /orders/cancel/:token
   param: { module: order, action: cancel, token: 0 }
 #
 # order complete
 order_error:
-  url:   /orders/error/
+  url:   /orders/error
   param: { module: order, action: error }
 #
 # order get user
 order_getUser:
-  url:   /orders/get-user/
+  url:   /orders/get-user
   param: { module: order, action: getUser }
 #
 # order show
 order_show:
-  url:   /orders/:order/
+  url:   /orders/:order
   param: { module: order, action: show }
   class:   myDoctrineRoute
   options: { model: Order, type: object, method: getForRoute }
@@ -509,7 +509,7 @@ cart:
 #
 # MOVED TO PLAIN PHP cart add
 cart_add:
-  url:   /cart/add/:product/_quantity/:quantity/
+  url:   /cart/add/:product/_quantity/:quantity
   param: { module: cart, action: add, quantity: 1 }
   requirements:
     sf_method: [ get, post ]
@@ -524,7 +524,7 @@ cart_delete:
 #
 # MOVED TO PLAIN PHP cart clear
 cart_clear:
-  url:   /cart/clear/
+  url:   /cart/clear
   param: { module: cart, action: clear }
 #
 # MOVED TO PLAIN PHP cart service add
@@ -537,7 +537,7 @@ cart_service_add:
 #
 # MOVED TO PLAIN PHP cart servcie delete
 cart_service_delete:
-  url:   /cart/delete_service/:product/_service/:service/
+  url:   /cart/delete_service/:product/_service/:service
   param: { module: cart, action: serviceDelete, product: '0' }
   requirements:
     product: \d+
@@ -545,7 +545,7 @@ cart_service_delete:
 #
 # F1 servis show
 service_show:
-  url:      /f1/show/:service/
+  url:      /f1/show/:service
   param:    { module: service, action: show }
   class:    myDoctrineRoute
   options:  { model: Service, type: object, method: getForRoute }
@@ -557,7 +557,7 @@ service_show:
 #
 # F1 servis catalog
 service_list:
-  url:      /f1/:serviceCategory/
+  url:      /f1/:serviceCategory
   param:    { module: service, action: index, serviceCategory: 0 }
   class:    myDoctrineRoute
   options:  { model: ServiceCategory, type: object, method: getForRoute }
@@ -565,26 +565,26 @@ service_list:
 #
 # region autocomplete
 region_autocomplete:
-  url:      /region/autocomplete/:type/
+  url:      /region/autocomplete/:type
   param:    { module: region, action: autocomplete, type: null }
 #
 # change region
 region_init:
-  url:      /region/init/
+  url:      /region/init
   param:    { module: region, action: init }
   requirements:
     sf_method: [ get,post ]
 #
 # change region
 region_change:
-  url:      /region/change/:region/
+  url:      /region/change/:region
   param:    { module: region, action: change }
   requirements:
     sf_method: [ get,post ]
 
 # redirect region
 region_redirect:
-  url:      /reg/:region/:redirectTo/
+  url:      /reg/:region/:redirectTo
   param:    { module: region, action: redirect }
   requirements:
     product: '((\/{1})[a-zA-Z_0-9-]+)'
@@ -593,12 +593,12 @@ region_redirect:
 #
 # payment
 payment:
-  url:      /payment/
+  url:      /payment
   param:    { module: payment, action: index }
 #
 # payment callback
 payment_callback:
-  url:   /orders/complete/
+  url:   /orders/complete
   param: { module: order, action: complete }
 #  url:      /payment/callback
 #  param:    { module: payment, action: callback }
@@ -607,29 +607,29 @@ payment_callback:
 #
 # search
 search:
-  url:      /search/
+  url:      /search
   param:    { module: search, action: index }
 
 #
 # search
 search_ajax:
-  url:      search_ajax/:q/:product_type/:page/:view/:num/
+  url:      search_ajax/:q/:product_type/:page/:view/:num
   param:    { module: search, action: ajax, product_type: 0, page: 1, view: compact, num: 18 }
 
 
 #callback
 callback:
-  url:   /callback/
+  url:   /callback
   param: { module: callback, action: index }
 
 #ipad_save
 ipad_save:
-  url:   /ipad_save/
+  url:   /ipad_save
   param: { module: callback, action: ipadSave }
 
 # Страница акции ipad
 newipad:
-  url:   /newipad/
+  url:   /newipad
   param: { module: news, action: ipad }
 
 #  url:      /payment/callback
@@ -637,7 +637,7 @@ newipad:
 
 #callback send
 callback_send:
-  url:   /callback/send/
+  url:   /callback/send
   param: { module: callback, action: send }
 #  url:      /payment/callback
 #  param:    { module: payment, action: callback }
@@ -650,12 +650,12 @@ tag:
 #
 # tag show
 tag_show:
-  url:      /tags/:tag/:productType/
+  url:      /tags/:tag/:productType
   param:    { module: tag, action: show, productType: ~ }
 
 # tag show
 tag_showAjax:
-  url:      /tags_ajax/:tag/:productType/:page/:view/:num/
+  url:      /tags_ajax/:tag/:productType/:page/:view/:num
   param:    { module: tag, action: showAjax, productType: ~, num: 18, view: compact, page: 1 }
 
 #
@@ -668,17 +668,17 @@ redirect_for_shop:
 #
 # карточка товара
 redirect_for_changeProduct:
-  url:   /products/:product/change/:value/
+  url:   /products/:product/change/:value
   param: { module: redirect, action: index, route: changeProduct }
 #
 # карточка товара
 redirect_for_productComment:
-  url:   /products/:product/comments/
+  url:   /products/:product/comments
   param: { module: redirect, action: index, route: productComment }
 #
 # карточка товара
 redirect_for_productCard:
-  url:   /products/:product/
+  url:   /products/:product
   param: { module: redirect, action: index, route: productCard }
 
 #
@@ -700,5 +700,5 @@ wordpress:
   param: { module: wordpress, action: index }
 
 default_show:
-  url:   /:page/
+  url:   /:page
   param: { module: page, action: index }

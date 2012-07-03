@@ -20,6 +20,7 @@ class CityRedirectFilter extends sfFilter{
 
     if($isGeoshopChanged === false && $geoshop !== false){
       $response->setCookie('geoshop', '');
+      $response->setCookie('geoshop_change', 'yes');
 
       return $context->getController()->redirect($request->getUri());
     }
