@@ -56,10 +56,16 @@ class order_Components extends myComponents
    */
   public function executeField_payment_method_id()
   {
+    $sum =$this->getUser()->getCart()->getTotal();
+    if ($sum < ProductEntity::MIN_CREDIT_PRICE) {
+        $showCreditMethod = false;
+    } else {
+        $showCreditMethod = true;
+    }
     $paymentMethodList = RepositoryManager::getPaymentMethod()->getList();
     $selectedMethodId = 0;
     foreach ($paymentMethodList as $method) {
-        if (empty($_COOKIE['credit_on'])) {
+        if (empty($_COOKIE['credit_on']) || !$showCreditMethod) {
             $selectedMethodId  = $method->getId();
             break;
         } elseif ($method->getIsCredit()) {
@@ -67,6 +73,7 @@ class order_Components extends myComponents
             break;
         }
     }
+    $this->setVar('showCreditMethod', $showCreditMethod, true);
     $this->setVar('selectedMethodId', $selectedMethodId, true);
     $this->setVar('paymentMethodList', $paymentMethodList, true);
 

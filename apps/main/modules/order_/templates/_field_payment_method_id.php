@@ -3,7 +3,9 @@
 
   <dd>
   <?php foreach ($paymentMethodList as $k => $v): ?>
-    <div id="payment_method_<?php echo $v->getId() ?>-field">
+    <?php if (!$showCreditMethod && $v->getIsCredit())
+          continue;  ?>
+     <div id="payment_method_<?php echo $v->getId() ?>-field">
       <p></p>
       <label class='<?php if ($v->getId() == $selectedMethodId) echo 'mChecked' ?>' for="order_payment_method_id_<?php echo $v->getId() ?>">
         <b></b> <?php echo $v->getName() ?>
