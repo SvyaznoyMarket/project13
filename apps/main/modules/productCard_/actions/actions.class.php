@@ -87,14 +87,10 @@ class productCard_Actions extends myActions
      */
   private function _getDataForCredit($product) {
       $result = array();
-      $creditCatList = array('furniture', 'electronics', 'jewel');
       $mainCat = $product->getCategoryList();
       $mainCat = $mainCat[0];
-      if (in_array($mainCat->getToken(), $creditCatList)) {
-          $productType = $mainCat->getToken();
-      } else {
-          $productType = 'another';
-      }
+      $cart = $this->getUser()->getCart();
+      $productType = $cart::getCreditAllowBUArray($mainCat->getToken());
       $dataForCredit = array(
           'price' => $product->getPrice(),
           'articul' => $product->getArticle(),
