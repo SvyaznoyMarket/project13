@@ -268,12 +268,13 @@ $(document).ready(function () {
             )
         }
     }
+    var backURL = '/'
 
     if( creditWidget.widget === 'kupivkredit' ) {
 //console.info('kupivkredit')
         var callback_close = function(decision) {
             setTimeout(function(){
-                document.location = 'http://www.enter.ru'
+                document.location = backURL
             }, 1000)
             // var result = ''
             // switch(decision) {
@@ -303,8 +304,8 @@ $(document).ready(function () {
 
         var vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
             order: creditWidget.vars.order,
-            sig: creditWidget.vars.order,
-            callbackUrl: window.location.href,
+            sig: creditWidget.vars.sig,
+            callbackUrl: backURL,
             onClose: callback_close,
             onDecision: callback_decision
         })
