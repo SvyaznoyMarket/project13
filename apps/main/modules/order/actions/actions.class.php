@@ -70,7 +70,13 @@ class orderActions extends myActions
     $this->order->type_id = Order::TYPE_1CLICK;
 
     if (empty($this->order->region_id)) {
-      $this->order->region_id = $this->getUser()->getRegion('id');
+      //$this->order->region_id = $this->getUser()->getRegion('id');
+      if ($region = RegionTable::getInstance()->getByCoreId($this->getUser()->getRegion('id'))) {
+        $this->order->Region = $region;
+      }
+      else {
+        $this->order->mapValue('core_region_id', $this->getUser()->getRegion('region')->getId());
+      }
     }
 
     $this->form = new OrderOneClickForm($this->order, array('user' => $this->getUser()->getGuardUser(), 'quantity' => $quantity,));
@@ -100,7 +106,29 @@ class orderActions extends myActions
           : false;
 
       if ($this->form->isValid()) {
+        /* @var $order Order */
         $order = $this->form->updateObject();
+
+        /* @var $user myUser */
+        $user = $this->getUser();
+
+        if ($deliveryType = DeliveryTypeTable::getInstance()->getById($order->delivery_type_id)) {
+          $result = Core::getInstance()->getDeliveryMap(
+            $user->getRegion('core_id'),
+            array(array('id' => $this->product->core_id, 'quantity' => $quantity)),
+            array(),
+            $order->delivery_type_id ? $deliveryType->token : null,
+            null
+          );
+
+          foreach ($result['deliveries'] as $deliveryToken => $deliveryData) {
+            if (0 === strpos($deliveryToken, $deliveryType->token)) {
+              $deliveryPeriod =  $result['products'][$this->product->core_id]['deliveries'][$deliveryToken]['dates'][0]['interval'][0];
+              $order->mapValue('delivery_period', array($deliveryPeriod['time_begin'], $deliveryPeriod['time_end']));
+              break;
+            }
+          }
+        }
 
         if ($this->product->isKit()) {
           foreach ($this->product->PartRelation as $partRelation)

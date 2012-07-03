@@ -453,8 +453,8 @@ $(document).ready(function(){
 			}
 		} )		
 	}
-			
-	$('#jsregion').click( function() {
+
+	$('#jsregion, .jsChangeRegion').click( function() {
 		getRegions()
 		return false
 	})
