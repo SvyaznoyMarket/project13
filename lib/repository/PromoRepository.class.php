@@ -94,11 +94,11 @@ class PromoRepository
       }
     }
     // for product's set
-    else if (count($entity->items) > 1) {
+    else if (count($entity->getItems()) > 1) {
       $barcodes = array();
       foreach ($entity->getItems() as $item) {
         /* @var $item PromoItemEntity */
-        if (PromoItemEntity::TYPE_PRODUCT != $item->getType()) continue;
+        if (PromoItemEntity::TYPE_PRODUCT != $item->getType() || !$item->getObject()) continue;
 
         $barcodes[] = $item->getObject()->getBarcode();
       }
