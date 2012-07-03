@@ -1,6 +1,7 @@
 <?php
 namespace light;
 use InvalidArgumentException;
+use Logger;
 
 /**
  * Created by JetBrains PhpStorm.
@@ -197,6 +198,10 @@ class Cart
     $id = (int) $id;
 
     if(!array_key_exists($id, $this->productDataList)){
+      $logger = \Logger::getLogger('Cart');
+      \LoggerNDC::push('getProduct');
+      $logger->error('Product with id "' . $id . '" not found');
+      \LoggerNDC::pop();
       return null;
     }
     return $this->productDataList[$id];
@@ -215,12 +220,17 @@ class Cart
     $id = (int) $id;
     $productId = (int) $productId;
 
+    $logger = \Logger::getLogger('Cart');
+      \LoggerNDC::push('getService');
     if(!array_key_exists($id, $this->serviceDataList)){
+      $logger->error('Service with id "' . $id . '" not found');
       return null;
     }
     if(!array_key_exists($productId, $this->serviceDataList[$id])){
+      $logger->error('Product with id "' . $productId . '" not found');
       return null;
     }
+    \LoggerNDC::pop();
 
     return $this->serviceDataList[$id][$productId];
   }

@@ -31,6 +31,12 @@
         <appender_ref ref="defaultFileAppender" />
     </logger>
 
+    <logger name="Cart">
+        <level value="warn" />
+        <appender_ref ref="defaultFileAppender" />
+        <!--<appender_ref ref="defaultConsoleAppender" />-->
+    </logger>
+
     <root>
         <!--<level value="ERROR" />-->
         <appender_ref ref="emptyAppender"/>

@@ -1,5 +1,6 @@
 <?php
 namespace light;
+use Logger;
 
 /**
  * Created by JetBrains PhpStorm.
@@ -18,6 +19,10 @@ class cartController
   public function addProduct(Response $response, $params = array()){
     TimeDebug::start('controller:cart:addProduct');
 
+    $logger = \Logger::getLogger('Cart');
+
+    \LoggerNDC::push('addProduct');
+
     $result['value'] = true;
     $result['error'] = "";
 
@@ -26,17 +31,20 @@ class cartController
       if($quantity < 1){ $quantity = 1; }
 
       if(!array_key_exists('productId', $_GET)){
+        $logger->error('Product not specified');
         throw new \Exception("Не указано, какой товар необходимо добавить в корзину");
       }
 
       $productId = (int) $_GET['productId'];
 
       if (!$productId) {
+        $logger->error('Product with id "' . $productId . '" not found');
         throw new \InvalidArgumentException("Товар с Id" . $productId . " не найден.");
       }
 
       $productList = App::getProduct()->getProductsByIdList(array($productId));
       if(count($productList) < 1){
+        $logger->error('Product with id "' . $productId . ' not found on core side');
         throw new \Exception("Товар с Id" . $productId . " не найден на стороне ядра.");
       }
 
@@ -81,35 +89,39 @@ class cartController
       );
       $response->setContentType('application/json');
       $response->setContent(json_encode($return));
+      $logger->error('Error: ' . $e->getMessage());
       TimeDebug::end('controller:cart:addProduct');
       return;
     }
+    \LoggerNDC::pop();
   }
 
   public function addService(Response $response, $params = array()){
-
     TimeDebug::start('controller:cart:addService');
+    $logger = \Logger::getLogger('Cart');
+    \LoggerNDC::push('addService');
+
     try{
       if(!array_key_exists('serviceId', $_GET)){
+        $logger->error('Service not specified');
         throw new \InvalidArgumentException('Не указано, какую услугу необходимо добавить в корзину');
       }
       $serviceId = (int)$_GET['serviceId'];
 
       if(!$serviceId){
+        $logger->error('Service with id "' . $serviceId . '" not found');
         throw new \InvalidArgumentException('Услуга с Id '. $serviceId . " не найдена.");
       }
 
       $quantity  = (array_key_exists('quantity', $_GET))? $_GET['quantity'] : 1;
 
-      if($quantity < 1){
-
-      }
       $productId = (array_key_exists('productId', $_GET))? (int)$_GET['productId'] : Null;
 
       if($productId){
         //Если продукта нет - добавляем его
         $productList = App::getProduct()->getProductsByIdList(array($productId));
         if(count($productList) < 1){
+          $logger->error('Product with id "' . $productId . '" not found');
           throw new \Exception("невозможно привязать услугу к несуществующему товару.");
         }
 
@@ -162,21 +174,27 @@ class cartController
       );
       $response->setContentType('application/json');
       $response->setContent(json_encode($return));
+      $logger->error('Error: ' . $e->getMessage());
       TimeDebug::end('controller:cart:addService');
       return;
     }
+    \LoggerNDC::pop();
   }
 
   public function deleteProduct(Response $response, $params = array()){
     TimeDebug::start('controller:cart:deleteProduct');
+    $logger = \Logger::getLogger('Cart');
+    \LoggerNDC::push('deleteProduct');
     try{
       if(!array_key_exists('productId', $_GET)){
+        $logger->error('Product not specified');
         throw new \Exception("Не указано, какой товар необходимо удалить из корзины");
       }
 
       $productId = (int) $_GET['productId'];
 
       if (!$productId) {
+        $logger->error('Product with id "' . $productId . '" not found');
         throw new \InvalidArgumentException("Товар с Id" . $productId . " не найден.");
       }
 
@@ -207,19 +225,25 @@ class cartController
     catch(\Exception $e){
       $response->setContent(json_encode(array('success' => false, 'debug' => $e->getMessage())));
       $response->setContentType('application/json');
+      $logger->error('Error: ' . $e->getMessage());
       TimeDebug::end('controller:cart:deleteProduct');
     }
+    \LoggerNDC::pop();
   }
 
   public function deleteService(Response $response, $params = array()){
     TimeDebug::start('controller:cart:deleteService');
+    $logger = \Logger::getLogger('Cart');
+    \LoggerNDC::push('deleteService');
     try{
       if(!array_key_exists('serviceId', $_GET)){
+        $logger->error('Service not specified');
         throw new \InvalidArgumentException('Не указано, какую услугу необходимо добавить в корзину');
       }
       $serviceId = (int)$_GET['serviceId'];
 
       if(!$serviceId){
+        $logger->error('Service with id "' . $serviceId . '" not found');
         throw new \InvalidArgumentException('Услуга с Id '. $serviceId . " не найдена.");
       }
 
@@ -250,8 +274,10 @@ class cartController
     catch(\Exception $e){
       $response->setContent(json_encode(array('success' => false, 'debug' => $e->getMessage())));
       $response->setContentType('application/json');
+      $logger->error('Error: ' . $e->getMessage());
       TimeDebug::end('controller:cart:deleteService');
     }
+    \LoggerNDC::pop();
   }
 
   public function clear(Response $response, $params = array()){
