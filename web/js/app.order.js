@@ -268,7 +268,7 @@ $(document).ready(function () {
             )
         }
     }
-    var backURL = '/'
+    var backURL = 'http://' + window.location.hostname
 
     if( creditWidget.widget === 'kupivkredit' ) {
 //console.info('kupivkredit')
