@@ -275,7 +275,7 @@ $(document).ready(function () {
         var callback_close = function(decision) {
             setTimeout(function(){
                 document.location = backURL
-            }, 1000)
+            }, 5000)
             // var result = ''
             // switch(decision) {
             //     case 'ver':
