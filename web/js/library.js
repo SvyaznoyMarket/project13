@@ -927,7 +927,7 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 	function create() {
 		positionC = new google.maps.LatLng(center.latitude, center.longitude)			
 		var options = {
-			zoom: 10,
+			zoom: 11,
 			center: positionC,
 			scrollwheel: false,
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -981,7 +981,9 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 		google.maps.event.trigger( mapWS, 'resize' )
 		mapWS.setCenter( positionC )
         var latMax = 0, longMax = 0, latMin = 90, longMin = 90
+        var len = 0
 		$.each( markers, function(i, item) {
+            len ++
             if( item.latitude > latMax )
                 latMax = item.latitude
             if( item.longitude > longMax )
@@ -1009,7 +1011,8 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
         var sw = new google.maps.LatLng( latMin , longMin )
         var ne = new google.maps.LatLng( latMax , longMax )
         var bounds = new google.maps.LatLngBounds(sw, ne)
-        mapWS.fitBounds(bounds)
+        if( len )
+            mapWS.fitBounds(bounds)
 
 	}
 
