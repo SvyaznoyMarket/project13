@@ -629,14 +629,6 @@ $(document).ready(function() {
             }
         }
     }
-    /*
-    window.regionMap = new MapWithShops(
-        $('#map-center').data('content'),
-        $('#map-info_window-container'),
-        'mapPopup',
-        DeliveryMap.onMapClosed
-    )
-    */
 
 /* <! -- MAP REDESIGN */
     var shopList      = $('#mapPopup_shopInfo'),
@@ -644,13 +636,6 @@ $(document).ready(function() {
         shopsStack    = $('#order-delivery_map-data').data().value.shops
 
     function renderShopInfo (marker) {
-        // TODO TEMPLATING
-        
-        // var tpl = '<li data-id="' + marker['id'] + '">';
-        // tpl += '<div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>';
-        // tpl += '<div>' + marker['name'] + '</div>';
-        // tpl += '<span>Работаем</span> <span>' + marker['regime'] + '</span>';
-        // tpl += '</li>';
         var tpl = tmpl( 'elementInShopList', marker)
         shopList.append(tpl)
     }
