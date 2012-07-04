@@ -942,25 +942,34 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 		})
 	}
 
-	this.showInfobox = function( marker ) {
+	this.showInfobox = function( markerId ) {
 		if( currMarker )
 			currMarker.setVisible(true) // show preceding marker
+        var marker = markers[markerId].ref 
 		currMarker = marker
 		var item = markers[marker.id]
 		
 		marker.setVisible(false) // hides marker
-		self.updateInfoWindowTemplate( item )
+		
+        self.updateInfoWindowTemplate( item )
 		infoWindow.setContent( infoWindowTemplate )
 		infoWindow.setPosition( marker.position )
 		infoWindow.open( mapWS )
 		google.maps.event.addListener( infoWindow, 'closeclick', function() { 
 			marker.setVisible(true)
 		})
+
 	}
 	
 	this.hideInfobox = function() {
 		infoWindow.close()
 	}
+
+    var handlers = []
+
+    this.addHandlerMarker = function( e, callback ) {
+        handlers.push( { 'event': e, 'callback': callback } )
+    }
 	
 	this.showMarkers = function( argmarkers ) {
         mapContainer.show()
@@ -979,7 +988,11 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 			  icon: '/images/marker.png',
 			  id: item.id
 			})
-			google.maps.event.addListener(marker, 'click', function() { self.showInfobox(this) })
+			google.maps.event.addListener(marker, 'click', function() { self.showInfobox(this.id) })
+            $.each( handlers, function( h, handler ) {
+                google.maps.event.addListener( marker, handler.event, function() { handler.callback(item) } )
+            })
+            
 			markers[marker.id].ref = marker
 		})
 	}
@@ -990,7 +1003,13 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 			if( callback )
 				callback()
 		})
-	}
+	},
+
+    this.closePopupMap = function( callback ) {
+        infoWindow.close()
+        if( callback )
+            callback()
+    }
 			
 	this.addHandler = function( selector, callback ) {
 		mapContainer.delegate( selector, 'click', function(e) { //desktops			
@@ -1013,11 +1032,11 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 } // object MapWithShops
 
 function calcMCenter( shops ) {
-	var latitude=0, longitude=0,
-		l = shops.length
-	for(var i=0; i<l; i++) {
+	var latitude = 0, longitude = 0, l = 0
+	for(var i in shops ) {
 		latitude  += shops[i].latitude*1
-		longitude += shops[i].longitude*1		
+		longitude += shops[i].longitude*1
+        l++
 	}
 	var mapCenter = {
 		latitude  : latitude / l,
@@ -1048,7 +1067,6 @@ function Lightbox( jn, data ){
 	this.save = function() {
 		var cooka = init
 		cooka.basket={}
-		console.info(cooka)
 		docCookies.setItem( true, 'Lightbox', cooka, 20*60, '/' )
 	}
 	

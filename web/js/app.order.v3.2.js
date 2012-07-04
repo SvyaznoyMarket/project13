@@ -553,7 +553,7 @@ $(document).ready(function() {
                     DeliveryMap.onDeliveryBlockChange()
                 }
 
-            regionMap.openMap()
+            openMap()
         },
 
         onShopSelected: function() {},
@@ -562,7 +562,7 @@ $(document).ready(function() {
            
             var el = $('.bBuyingLine__eRadio:checked')
  
-            regionMap.closeMap( function() { $('.mMapPopup').trigger('close') } )
+            regionMap.closePopupMap( function() { $('.mMapPopup').trigger('close') } )
             if( typeof(shopId) === 'object' )
                 shopId = shopId.id
             DeliveryMap.onShopSelected.apply(DeliveryMap, [el.val(), shopId])
@@ -629,53 +629,89 @@ $(document).ready(function() {
             }
         }
     }
-
+    /*
     window.regionMap = new MapWithShops(
         $('#map-center').data('content'),
         $('#map-info_window-container'),
         'mapPopup',
         DeliveryMap.onMapClosed
     )
-    /////
-function getMarkers() {
-    var shops = $('#order-delivery_map-data').data().value.shops;
-    var markers = {}, n = 1;
-    for (var i in shops) {
-      var tmp = shops[i];
-      tmp.markerImg = '/images/marker_' + n + '.png';
-      markers[tmp.id] = tmp;
-      n++;
+    */
+
+/* <! -- MAP REDESIGN */
+    var shopList      = $('#mapPopup_shopInfo'),
+        infoBlockNode = $('#map-info_window-container'),
+        shopsStack    = $('#order-delivery_map-data').data().value.shops
+
+    function renderShopInfo (marker) {
+        // TODO TEMPLATING
+        
+        // var tpl = '<li data-id="' + marker['id'] + '">';
+        // tpl += '<div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>';
+        // tpl += '<div>' + marker['name'] + '</div>';
+        // tpl += '<span>Работаем</span> <span>' + marker['regime'] + '</span>';
+        // tpl += '</li>';
+        var tpl = tmpl( 'elementInShopList', marker)
+        shopList.append(tpl)
     }
-    return markers;
-  }
 
- function openMap() {
-    $('.mMapPopup').lightbox_me({
-      centered:true,
-      onLoad:function() {
-        console.info('LOAD')
-        window.regionMap.showMarkers( getMarkers() )
-      }
+    for( var i in shopsStack )
+        renderShopInfo( shopsStack[i] )
+    
+    function openMap() {
+        $('.mMapPopup').lightbox_me({
+            centered: true,
+            onLoad: function() {
+                window.regionMap.showMarkers( shopsStack )
+            }
+        })
+    }
+
+    shopList.delegate('li', 'click', function() {
+        DeliveryMap.onMapClosed( $(this).data('id') )
     })
-  }
 
-  MapWithShops.prototype.openMap = openMap
+    var hoverTimer = { 'timer': null, 'id': 0 }
 
-  function renderShopInfo (marker) {
-    var tpl = '<li data-id="' + marker['id'] + '">';
-    tpl += '<div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>';
-    tpl += '<div>' + marker['name'] + '</div>';
-    tpl += '<span>Работаем</span> <span>' + marker['regime'] + '</span>';
-    tpl += '</li>';
-    $('#mapPopup_shopInfo').append(tpl);
-  }
+    shopList.delegate('li', 'hover', function() {
+        
+        var id = $(this).data('id')
+        if( hoverTimer.timer ) {
+            clearTimeout( hoverTimer.timer )
+        }
+        
+        if( id && id != hoverTimer.id) {
+            hoverTimer.id = id
+            hoverTimer.timer = setTimeout( function() {            
+                window.regionMap.showInfobox( id )
+            }, 500)
+        }
+    })
 
-  var curM = getMarkers()
-  for(var i in curM)
-    renderShopInfo (curM[i])
-  $('#mapPopup_shopInfo li').click(function(){ DeliveryMap.onMapClosed($(this).data('id')); });
-  
-/////
+    function updateI( marker ) {
+        infoBlockNode.html( tmpl( 'mapInfoBlock', marker ))
+        hoverTimer.id = marker.id   
+    }
+
+    function ShopChoosed( node ) {
+        var shopnum = $(node).parent().find('.shopnum').text()
+        DeliveryMap.onMapClosed( shopnum )
+    }
+
+    window.regionMap = new MapWithShops(
+        calcMCenter( shopsStack ),
+        infoBlockNode,
+        'mapPopup',
+        updateI
+    )
+
+    window.regionMap.addHandler( '.shopchoose', ShopChoosed )
+
+    window.regionMap.addHandlerMarker( 'mouseover', function( marker ) {        
+        window.regionMap.showInfobox( marker.id )
+    })
+
+/* MAP REDESIGN --> */
 
     $('#order-loader-holder').html('')
 
