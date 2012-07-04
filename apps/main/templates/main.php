@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <?php include_component('banner', 'show', array('view' => 'main')) ?>
+    <?php include_slot('banner') ?>
 
     <div class="allpage">
 	<div class="adfoxWrapper" id="adfox980"></div>

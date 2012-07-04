@@ -98,7 +98,7 @@ class bannerComponents extends myComponents
     }
     elseif (count($list) > 1)
     {
-      $barcodeLast = array();
+      $barcodeList = array();
       foreach ($list as $item)
       {
         if (isset($item['barcode']))
