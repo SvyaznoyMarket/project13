@@ -10,8 +10,29 @@
 
 <?php include_partial('order_/header', array('title' => 'Финальный шаг :)')) ?>
 
-<input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>' />
+
 <input disabled="disabled" id="order-validator" type="hidden" data-value='<?php echo json_encode($jsValidator) ?>' />
+
+<script id="elementInShopList" type="text/html">
+  <li data-id="<%= id%>">
+    <div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>
+    <div><%= name%></div>
+    <span>Работаем</span> <span><%= regime%></span>
+  </li>
+</script>
+
+<script id="mapInfoBlock" type="text/html">
+  <div class="bMapShops__ePopupRel">
+    <h3><%= name%></h3>
+    <span>Работает </span>
+    <span><%= regime%></span>
+    <br/>
+    <span class="shopnum" style="display: none;"><%= id%></span>
+    <a class="bGrayButton shopchoose" href="">Забрать из этого магазина</a>
+  </div>
+</script>
+
+<div id="map-info_window-container" style="display:none"></div>
 
 <div class="pb15"> <a href="<?php echo $backLink ?>">Вернуться к покупкам</a></div>
 
