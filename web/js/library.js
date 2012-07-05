@@ -1745,7 +1745,6 @@ $(document).ready(function(){
         },
 
         heiasProduct : function() {
-            document.write('<div>END</div>')
             var product = arguments[0];
             (function(d){
                 var HEIAS_PARAMS = [];
