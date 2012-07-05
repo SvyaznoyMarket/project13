@@ -553,17 +553,22 @@ $(document).ready(function() {
                     DeliveryMap.onDeliveryBlockChange()
                 }
 
-            regionMap.openMap()
+            openMap()
         },
 
         onShopSelected: function() {},
 
         onMapClosed: function(shopId) {
+           
             var el = $('.bBuyingLine__eRadio:checked')
-
-            regionMap.closeMap()
-
-            DeliveryMap.onShopSelected.apply(this, [el.val(), shopId])
+ 
+            regionMap.closePopupMap( function() { $('.mMapPopup').trigger('close') } )
+            if( typeof(shopId) === 'object' )
+                shopId = shopId.id
+            DeliveryMap.onShopSelected.apply(DeliveryMap, [el.val(), shopId])
+            //DeliveryMap.onShopSelected.apply(this, [el.val(), shopId])
+            
+//console.info('onMapClosed', el.val(), shopId)
         },
 
         validate: function(el, message) {
@@ -625,14 +630,73 @@ $(document).ready(function() {
         }
     }
 
-    window.regionMap = new MapWithShopsOLD(
-        $('#map-center').data('content'),
-        $('#map-info_window-container'),
+/* <! -- MAP REDESIGN */
+    var shopList      = $('#mapPopup_shopInfo'),
+        infoBlockNode = $('#map-info_window-container'),
+        shopsStack    = $('#order-delivery_map-data').data().value.shops
+
+    function renderShopInfo (marker) {
+        var tpl = tmpl( 'elementInShopList', marker)
+        shopList.append(tpl)
+    }
+
+    for( var i in shopsStack )
+        renderShopInfo( shopsStack[i] )
+    
+    function openMap() {
+        $('.mMapPopup').lightbox_me({
+            centered: true,
+            onLoad: function() {
+                window.regionMap.showMarkers( shopsStack )
+            }
+        })
+    }
+
+    shopList.delegate('li', 'click', function() {
+        DeliveryMap.onMapClosed( $(this).data('id') )
+    })
+
+    var hoverTimer = { 'timer': null, 'id': 0 }
+
+    shopList.delegate('li', 'hover', function() {
+        
+        var id = $(this).data('id')
+        if( hoverTimer.timer ) {
+            clearTimeout( hoverTimer.timer )
+        }
+        
+        if( id && id != hoverTimer.id) {
+            hoverTimer.id = id
+            hoverTimer.timer = setTimeout( function() {            
+                window.regionMap.showInfobox( id )
+            }, 500)
+        }
+    })
+
+    function updateI( marker ) {
+        infoBlockNode.html( tmpl( 'mapInfoBlock', marker ))
+        hoverTimer.id = marker.id   
+    }
+
+    function ShopChoosed( node ) {
+        var shopnum = $(node).parent().find('.shopnum').text()
+        DeliveryMap.onMapClosed( shopnum )
+    }
+
+    window.regionMap = new MapWithShops(
+        calcMCenter( shopsStack ),
+        infoBlockNode,
         'mapPopup',
-        DeliveryMap.onMapClosed
+        updateI
     )
 
+    window.regionMap.addHandler( '.shopchoose', ShopChoosed )
 
+    window.regionMap.addHandlerMarker( 'mouseover', function( marker ) {        
+        window.regionMap.showInfobox( marker.id )
+    })
+
+/* MAP REDESIGN --> */
 
     $('#order-loader-holder').html('')
 
