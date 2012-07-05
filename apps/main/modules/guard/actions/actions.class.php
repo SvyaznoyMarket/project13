@@ -300,8 +300,7 @@ class guardActions extends myActions
         $user->phonenumber = $this->form->getValue('phonenumber');
 
         //для правильного сохранения пользователя, берем его region.core_id из сесии и записываем вбазу region_id
-        $region = RegionTable::getInstance()->findOneBy('core_id', $this->getUser()->getRegion('id'));
-        $user->region_id = ($region instanceof Region) ? $region->id : null;
+        $user->region_id = $this->getUser()->getRegion('id');
 
         $user->setPassword('123456');
 

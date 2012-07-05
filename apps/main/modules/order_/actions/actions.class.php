@@ -233,14 +233,11 @@ class order_Actions extends myActions
     $user = $this->getUser();
 
     $productInCart = $request['items'];
-    $regionId = $request['city_id'];
+    $regionId = (int) $request['city_id'];
 
     $this->forward404Unless(is_array($productInCart) && count($productInCart));
 
-    if ($regionId && ($region = RegionTable::getInstance()->findOneBy('core_id', intval($regionId))))
-    {
-      $this->getUser()->setRegion($region->id);
-    }
+    $this->getUser()->setRegion($regionId);
 
     $user->getCart()->clear();
     foreach ($productInCart as $id => $quantity)
