@@ -3,6 +3,8 @@
 class myUser extends myGuardSecurityUser
 {
 
+  const DEFAULT_REGION_ID = 14974;
+
   protected
     $cart = null,
     $order = null,
@@ -10,7 +12,7 @@ class myUser extends myGuardSecurityUser
 
   public function shutdown()
   {
-    foreach (array('cart', 'order') as $name)
+    foreach (array('order') as $name)
     {
       $object = call_user_func(array($this, 'get' . ucfirst($name)));
       $this->setAttribute($name, $object->dump());
@@ -38,7 +40,11 @@ class myUser extends myGuardSecurityUser
    */
   public function getCart()
   {
-    return $this->getUserData('cart');
+    if (null == $this->cart) {
+      $this->cart = new UserCartNew();
+    }
+
+    return $this->cart;
   }
 
   /**
@@ -67,66 +73,23 @@ class myUser extends myGuardSecurityUser
   public function getRegion($key = null)
   {
     if (!$this->region) {
-      $region = false;
+      $regionCoreId = (int)sfContext::getInstance()->getRequest()->getCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'));
 
-      $regionGeoIpCode = sfContext::getInstance()->getRequest()->getCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'));
-
-      if ($regionGeoIpCode) {
-        //$region = RegionTable::getInstance()->findOneByIdAndType($region_id, 'city');
-        $region = RegionTable::getInstance()->findOneBy('geoip_code', $regionGeoIpCode);
-        if (!$region || !$region->isCity()) {
-          $region = false;
-        }
+      if(!$this->setRegion($regionCoreId)){
+        $this->setRegion(self::DEFAULT_REGION_ID);
       }
-
-      if (!$region) {
-        $geoip = sfContext::getInstance()->getRequest()->getParameter('geoip');
-        $region = !empty($geoip['region']) ? RegionTable::getInstance()->findOneByGeoip_code($geoip['region']) : RegionTable::getInstance()->getDefault();
-
-        $this->setRegion($region->id);
-      }
-
-      $this->region = array(
-        'id' => $region->id,
-        'name' => $region->name,
-        'full_name' => $region->name . ', ' . $region->getParent()->name,
-        'type' => $region->type,
-        'product_price_list_id' => $region->product_price_list_id,
-        'core_id' => $region->core_id,
-        'geoip_code' => $region->geoip_code,
-        'latitude' => $region->latitude,
-        'longitude' => $region->longitude,
-        'region' => $region,
-      );
     }
 
+    if (!$this->region) {
+      return null;
+    }
+    #@TODO: если нет запрашиваемого ключа то лучше выкидывать ошибку
     return !empty($key) ? $this->region[$key] : $this->region;
   }
 
   public function getRegion_()
   {
-    if (!$this->region) {
-      $region = false;
-      $region_id = $this->getAttribute('region', null);
-
-      if ($region_id) {
-        $region = RepositoryManager::getRegion()->getById($region_id);
-      }
-
-      if (!$region) {
-        $regionData = sfContext::getInstance()->getRequest()->getParameter('geoip');
-        $region =
-          (!empty($regionData['region']) && !empty($regionData['name']))
-            ? RepositoryManager::getRegion()->getByToken($regionData['region'] . '-' . $regionData['name'])
-            : RepositoryManager::getRegion()->getOneDefault();
-
-        $this->setRegion($region->getId());
-      }
-
-      $this->region = $region;
-    }
-
-    return $this->region;
+    return $this->getRegion();
   }
 
   public function getRegionCoreId() //Этот метод дает Автосохранение в куках для дальнейшего использования вне симфони
@@ -138,22 +101,35 @@ class myUser extends myGuardSecurityUser
 
   public function setRegion($region_id)
   {
-    $region = RegionTable::getInstance()->findOneBy('id', $region_id);
+//    $region = RegionTable::getInstance()->findOneBy('id', $region_id);
+
+    $region = RepositoryManager::getRegion()->getById((int)$region_id);
+
     if(!$region){
       return false;
     }
+
+    $parentRegion = RepositoryManager::getRegion()->getById((int)$region->getParentId());
+
+    $parentName = ((bool)$parentRegion)?$parentRegion->getName() : '';
+
+    /** @var region RegionEntity */
+
     $this->region = array(
-      'id' => $region->id,
-      'name' => $region->name,
-      'full_name' => $region->name . ', ' . $region->getParent()->name,
-      'type' => $region->type,
-      'product_price_list_id' => $region->product_price_list_id,
-      'core_id' => $region->core_id,
-      'geoip_code' => $region->geoip_code,
+      'id' => $region->getId(),
+      'name' => $region->getName(),
+      'full_name' => $region->getName() . ', ' . $parentName,
+      'type' => $region->getType(),
+      'product_price_list_id' => $region->getPriceListId(),
+      'core_id' => $region->getId(),
+      'latitude' => $region->getLatitude(),
+      'longitude' => $region->getLongitude(),
       'region' => $region,
     );
-    $_COOKIE[sfConfig::get('app_guard_region_cookie_name', 'geoshop')] = $region->getGeoipCode();
+
+    #@TODO: зачем кука устанавливается два раза ?
     $this->setRegionCookie();
+    return true;
   }
 
   public function getIp()
@@ -188,6 +164,10 @@ class myUser extends myGuardSecurityUser
 
   protected function getUserData($name)
   {
+
+    if($name == 'cart'){
+      return $this->getCart();
+    }
     if (null == $this->$name) {
       $class = sfInflector::camelize('user_' . $name);
       $this->$name = new $class($this->getAttribute($name, array()));
@@ -205,7 +185,7 @@ class myUser extends myGuardSecurityUser
 
   public function setRegionCookie()
   {
-    $key = $this->getRegion('geoip_code');
+    $key = $this->getRegion('core_id');
     sfContext::getInstance()->getResponse()->setCookie(sfConfig::get('app_guard_region_cookie_name', 'geoshop'), $key, time() + 60 * 60 * 24 * 365);
   }
 

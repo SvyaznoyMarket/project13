@@ -546,10 +546,10 @@ EOF;
     //если изменились параметры отображения, или запись была удалена, то надо сбросить и кэш
     if ('delete' == $action || (count(array_intersect(array_keys($processed['to_update']), array('view_list', 'view_show', 'is_instock',))))) {
       //очищаю redis кэш для товара
-      myCache::getInstance()->removeByTag(ProductStateTable::getInstance()->getCacheTags($record));
+      //myCache::getInstance()->removeByTag(ProductStateTable::getInstance()->getCacheTags($record));
 
       //очищаю nginx кэш
-      CacheEraser::getInstance()->erase(array("product-{$processed['relation']['product']['core_id']}-{$processed['relation']['region']['geoip_code']}"), false, 'product_state ' . (('delete' == $action) ? 'deleted' : 'action'));
+      CacheEraser::getInstance()->erase(array("product-{$processed['relation']['product']['core_id']}-{$processed['relation']['region']['core_id']}"), false, 'product_state ' . (('delete' == $action) ? 'deleted' : 'action'));
     }
 
     return true;

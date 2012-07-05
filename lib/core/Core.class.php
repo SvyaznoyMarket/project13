@@ -9,8 +9,7 @@ class Core
     $models = null,
     $logger = null,
     $token = null,
-    $client_id = null,
-    $cache = null
+    $client_id = null
   ;
   protected static
     $instance = null;
@@ -44,13 +43,6 @@ class Core
     curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
 
     $this->logger = new sfFileLogger(new sfEventDispatcher(), array('file' => sfConfig::get('sf_log_dir').'/core_lib.log'));
-
-    $redis = new sfRediskaCache(array('prefix' => str_replace(':', '', sfConfig::get('app_doctrine_result_cache_prefix'))));
-    if ($redis->has('core_api_client_id') && $redis->has('core_api_token')) {
-      $this->client_id = $redis->get('core_api_client_id');
-      $this->token = $redis->get('core_api_token');
-    }
-    $this->cache = $redis;
   }
 
   public function getConfig($name = null)
@@ -328,10 +320,7 @@ class Core
   public function getProductDeliveryData($productId, $geoId, array $kitProducts = null)
   {
     $cacheKey = 'product-'.$productId.'/deliveries/'.$geoId;
-    $cacheData = $this->cache->get($cacheKey);
-    if ($cacheData !== null) {
-      return $cacheData;
-    }
+
     if ($kitProducts === null) {
       $response = $this->query('delivery.calc', array(), array(
         'geo_id' => $geoId,
@@ -347,7 +336,7 @@ class Core
         'product' => $pParam
       ));
     }
-    $this->cache->set($cacheKey, $response, 3600*3);
+
     return $response;
   }
 
@@ -413,6 +402,7 @@ class Core
       $this->error = array($response['error']['code'] => $response['error']['message'], );
       if (isset($response['error']['detail'])) $this->error['detail'] = $response['error']['detail'];
       if (isset($response['error']['message'])) $this->error['message'] = $response['error']['message'];
+      if (isset($response['error']['product_error_list'])) $this->error['product_error_list'] = $response['error']['product_error_list'];
       $response = false;
     }
 
@@ -452,8 +442,6 @@ class Core
     {
       $this->client_id = $response['id'];
       $this->token = $response['token'];
-      $this->cache->set('core_api_client_id', $this->client_id);
-      $this->cache->set('core_api_token', $this->token);
       $this->logger->log('Authentification passed');
     }
 

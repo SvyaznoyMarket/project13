@@ -1,4 +1,5 @@
 <?php
+namespace light;
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov
@@ -16,30 +17,6 @@ require_once(ROOT_PATH.'system/exception/dataFormatException.php');
 class RegionModel
 {
   /**
-   * @var array key - geoIPCode, value - region id
-   * @TODO перенести это на ядро
-   */
-  private $geoIPCodeMapping = array(
-    '43'    => 99,
-    '47_4'  => 1964,
-    '47_3'  => 1965,
-    '47_1'  => 6125,
-    '47'    => 8440,
-    '47_5'  => 9748,
-    '47_2'  => 10358,
-    '62'    => 10374,
-    '09'    => 13241,
-    '69'    => 13242,
-    '77'    => 18073,
-    '86'    => 18074,
-    '48'    => 14974,
-    '76'    => 74358,
-    '41'    => 74562,
-  );
-
-
-
-  /**
    * @param int $id
    * @return RegionModel
    */
@@ -54,44 +31,16 @@ class RegionModel
     $region->setName($response[0]['name']);
     $region->setToken($response[0]['token']);
     $region->setIsMain((bool) $response[0]['is_main']);
-    foreach($this->geoIPCodeMapping as $regCode => $regId){
-      if($regId == $response[0]['id']){
-        $region->setGeoIpCode((int) $regCode);
-        break;
-      }
-    }
+
     return $region;
   }
 
   /**
    * @param string $code
-   * @throws dataFormatException
-   * @return RegionModel
+   * @return bool
    */
-  public function getByGeoIPCode($code){
-    if(!$this->isValidGeoIPCode($code)){
-      throw new dataFormatException('invalid geoIp code: '.$code);
-    }
-
-    if(array_key_exists($code, $this->geoIPCodeMapping)){
-      return $this->getById($this->geoIPCodeMapping[$code]);
-    }
-
-    return Null;
-  }
-
-  /**
-   * @param int $id
-   * @return string | null
-   */
-  public function getGeoIPCodeById($id){
-    foreach($this->geoIPCodeMapping as $code => $codeId){
-      if ($id == $codeId){
-        return $code;
-      }
-    }
-
-    return Null;
+  public function isValidId($id){
+    return (bool) preg_match('/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i', $id);
   }
 
   /**
@@ -116,24 +65,10 @@ class RegionModel
       $region->setName($geo['name']);
       $region->setToken($geo['token']);
       $region->setIsMain((bool) $geo['is_main']);
-      foreach($this->geoIPCodeMapping as $regCode => $regId){
-        if($regId == $geo['id']){
-          $region->setGeoIpCode((int) $regCode);
-          break;
-        }
-      }
       $regionList[] = $region;
     }
 
     return $regionList;
-  }
-
-  /**
-   * @param string $code
-   * @return bool
-   */
-  public function isValidGeoIPCode($code){
-    return (bool) preg_match('/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i', $code);
   }
 
   public function Mock(){
@@ -142,7 +77,6 @@ class RegionModel
     $region->setName('Москва');
     $region->setToken('moskva');
     $region->setIsMain((bool) 1);
-    $region->setGeoIpCode((int) 48);
     return $region;
   }
 }

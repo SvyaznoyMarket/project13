@@ -70,7 +70,13 @@ class orderActions extends myActions
     $this->order->type_id = Order::TYPE_1CLICK;
 
     if (empty($this->order->region_id)) {
-      $this->order->region_id = $this->getUser()->getRegion('id');
+      //$this->order->region_id = $this->getUser()->getRegion('id');
+      if ($region = RegionTable::getInstance()->getByCoreId($this->getUser()->getRegion('id'))) {
+        $this->order->Region = $region;
+      }
+      else {
+        $this->order->mapValue('core_region_id', $this->getUser()->getRegion('region')->getId());
+      }
     }
 
     $this->form = new OrderOneClickForm($this->order, array('user' => $this->getUser()->getGuardUser(), 'quantity' => $quantity,));
@@ -100,7 +106,29 @@ class orderActions extends myActions
           : false;
 
       if ($this->form->isValid()) {
+        /* @var $order Order */
         $order = $this->form->updateObject();
+
+        /* @var $user myUser */
+        $user = $this->getUser();
+
+        if ($deliveryType = DeliveryTypeTable::getInstance()->getById($order->delivery_type_id)) {
+          $result = Core::getInstance()->getDeliveryMap(
+            $user->getRegion('core_id'),
+            array(array('id' => $this->product->core_id, 'quantity' => $quantity)),
+            array(),
+            $order->delivery_type_id ? $deliveryType->token : null,
+            null
+          );
+
+          foreach ($result['deliveries'] as $deliveryToken => $deliveryData) {
+            if (0 === strpos($deliveryToken, $deliveryType->token)) {
+              $deliveryPeriod =  $result['products'][$this->product->core_id]['deliveries'][$deliveryToken]['dates'][0]['interval'][0];
+              $order->mapValue('delivery_period', array($deliveryPeriod['time_begin'], $deliveryPeriod['time_end']));
+              break;
+            }
+          }
+        }
 
         if ($this->product->isKit()) {
           foreach ($this->product->PartRelation as $partRelation)
@@ -191,71 +219,6 @@ class orderActions extends myActions
         'shop' => $shopData,
       ),
     ));
-  }
-
-  public function executeLogin(sfWebRequest $request)
-  {
-    $this->getResponse()->setTitle('Данные покупателя – Enter.ru');
-
-    if (!$this->getUser()->getCart()->count()) {
-      $this->redirect($this->getUser()->getReferer());
-    }
-    if (!$this->getUser()->isAuthenticated()) {
-      $this->formSignin = new UserFormSignin();
-      $this->formRegister = new UserFormRegister();
-      $action = $request->hasParameter($this->formRegister->getName()) ? 'register' : 'login';
-    }
-    else
-    {
-      $this->redirect('order_new');
-    }
-
-    if ($request->isMethod('post') && isset($action)) {
-      switch ($action)
-      {
-        case 'login':
-          $this->formSignin->bind($request->getParameter($this->formSignin->getName()));
-          if ($this->formSignin->isValid()) {
-            $values = $this->formSignin->getValues();
-            $this->getUser()->signin($values['user'], array_key_exists('remember', $values) ? $values['remember'] : false);
-            $this->redirect('order_new');
-
-            // always redirect to a URL set in app.yml
-            // or to the referer
-            // or to the homepage
-          }
-          break;
-        case 'register':
-          $this->formRegister->bind($request->getParameter($this->formRegister->getName()));
-
-          if ($this->formRegister->isValid()) {
-            $user = $this->formRegister->getObject();
-
-            $user->is_active = true;
-            $user->email = $this->formRegister->getValue('email');
-            $user->phonenumber = $this->formRegister->getValue('phonenumber');
-            $user->region_id = $this->getUser()->getRegion('id');
-
-            //$user->setPassword('123456');
-
-            try
-            {
-              $user = $this->formRegister->save();
-              $this->getUser()->signIn($user);
-              $this->redirect('order_new');
-            }
-            catch (Exception $e)
-            {
-              $this->getLogger()->err('{' . __CLASS__ . '} ' . $e->getMessage());
-            }
-            //$user->refresh();
-          }
-          break;
-      }
-      //myDebug::dump($request->getParameter('action'));
-      $this->setVar('action', $action);
-    }
-    //$this->order = $this->getUser()->getOrder()->get();
   }
 
   /**
@@ -405,7 +368,6 @@ class orderActions extends myActions
 
     $order = $this->getUser()->getOrder()->get();
     $this->forwardUnless($order->step, $this->getModuleName(), 'new');
-    //$cart = $this->getUser()->getCart();
     if ($order->isOnlinePayment()) {
       if ($this->saveOrder($order)) {
         $provider = $this->getPaymentProvider();
@@ -562,24 +524,26 @@ class orderActions extends myActions
 
 
     $prodObList = array();
-    foreach ($this->getUser()->getCart()->getProducts() as $product)
+    foreach ($this->getUser()->getCart()->getProducts() as $productId => $product)
     {
-      $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $product['id'])->fetchOne();
-      $prodObList[$product['id']] = $productOb;
+      /** @var $product \light\ProductCartData */
+
+      $productOb = ProductTable::getInstance()->getQueryObject()->where('core_id = ?', $productId)->fetchOne();
+      $prodObList[$productId] = $productOb;
       $relation = new OrderProductRelation();
       $relation->fromArray(array(
         'product_id' => $productOb->id,
-        'price' => $product['price'], //ProductTable::getInstance()->getRealPrice($product),
-        'quantity' => $product['quantity'],
+        'price' => $product->getPrice() ,
+        'quantity' => $product->getQuantity(),
       ));
       $order->ProductRelation[] = $relation;
     }
 
-    //print_r($this->getUser()->getCart()->getServices());
-    foreach ($this->getUser()->getCart()->getServices() as $service)
+    foreach ($this->getUser()->getCart()->getServices() as $serviceId => $service)
     {
-      $serviceOb = ServiceTable::getInstance()->getQueryObject()->where('core_id = ?', $service['id'])->fetchOne();
-      foreach ($service['products'] as $prodId => $prodServInfo) {
+      $serviceOb = ServiceTable::getInstance()->getQueryObject()->where('core_id = ?', $serviceId)->fetchOne();
+      foreach ($service as $prodId => $prodServInfo) {
+        /** @var $prodServInfo \light\ServiceCartData */
         if (isset($prodObList[$prodId])) {
           $productOb = $prodObList[$prodId];
         } else {
@@ -594,8 +558,8 @@ class orderActions extends myActions
         $relation->fromArray(array(
           'service_id' => $serviceOb->id,
           'product_id' => $prodId,
-          'price' => $prodServInfo['price'],
-          'quantity' => $prodServInfo['quantity'],
+          'price' => $prodServInfo->getPrice(),
+          'quantity' => $prodServInfo->getQuantity(),
         ));
         $order->ServiceRelation[] = $relation;
       }
@@ -605,9 +569,7 @@ class orderActions extends myActions
     {
       $order->save();
 
-      //$this->order->update
       $this->getUser()->getOrder()->set($order);
-      //$this->getUser()->getCart()->clear();
       return true;
     }
     catch (Exception $e)

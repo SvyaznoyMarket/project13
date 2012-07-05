@@ -1,4 +1,7 @@
 <?php
+namespace light;
+use sfYamlParser;
+use Exception;
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov
@@ -59,6 +62,9 @@ class symfonyConfig
     }
     if(!is_null($this->parsed)){
       $key = str_replace('app_', '', $key);
+      if(array_key_exists($key, $this->parsed)){
+        return $this->parsed[$key];
+      }
       $keys = explode("_", $key);
       $ret = $this->parsed;
       foreach($keys as $keyName){

@@ -5,7 +5,7 @@
       <div>
         <p></p>
         <label for="<?php echo $v['id'] ?>" class='<?php if ($k == $value) echo 'mChecked' ?>'><b></b> <?php echo $v['label'] ?>
-          <input id="<?php echo $v['id'] ?>" class='bBuyingLine__eRadio' name='<?php echo $name ?>' type='radio' value="<?php echo $k ?>" <?php if ($k == $value) echo 'checked="checked"' ?> data-delivery-type="<?php echo $v['type'] ?>" />
+          <input autocomplete="off" id="<?php echo $v['id'] ?>" class='bBuyingLine__eRadio' name='<?php echo $name ?>' type='radio' value="<?php echo $k ?>" <?php if ($k == $value) echo 'checked="checked"' ?> data-delivery-type="<?php echo $v['type'] ?>" />
         </label>
         <i><?php echo $v['description'] ?></i>
         <?php if ('self' == $v['type']): ?>

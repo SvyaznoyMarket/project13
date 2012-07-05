@@ -62,12 +62,14 @@ class DeliveryCalc
     $site_product_id = array();
     foreach ($cart as $product_id => $product)
     {
+      /** @var $product \light\ProductCartData */
+
       // stock_id = 1 HARDCODE
 
         //by #2035
         $site_product_id[$product_id] = ProductTable::getInstance()->getIdBy('core_id',$product_id);
 
-        if (!$stockRel->isInStock($site_product_id[$product_id], false, 1, $product['quantity'])) {
+        if (!$stockRel->isInStock($site_product_id[$product_id], false, 1, $product->getQuantity())) {
         $haveInStock = false;
         $productsInStore[$product_id] = false;
       } else {
@@ -80,6 +82,8 @@ class DeliveryCalc
       $shops = ShopTable::getInstance()->getChoices('id', 'name', array('region_id' => $region['id'],));
       foreach ($cart as $product_id => $product)
       {
+        /** @var $product \light\ProductCartData */
+
         if ($productsInStore[$product_id] === true) {
           $tmpshops = $shops;
         } else {
@@ -88,7 +92,7 @@ class DeliveryCalc
           $q->innerJoin('shop.ProductRelation productRelation');
           $q->andWhere('productRelation.product_id = ?', (int)$site_product_id[$product_id]);
           $q->andWhere('productRelation.stock_id IS NULL');
-          $q->andWhere('productRelation.quantity >= ?', $product['quantity']);
+          $q->andWhere('productRelation.quantity >= ?', $product->getQuantity());
           $q->andWhere('shop.region_id = ?', $region['id']);
           $data = $q->fetchArray();
           foreach ($data as $row) {
@@ -112,13 +116,15 @@ class DeliveryCalc
     $diff = 0;
     foreach ($cart as $product_id => $product)
     {
+      /** @var $product \light\ProductCartData */
+
       $product_id = ProductTable::getInstance()->getIdBy('core_id',$product_id);
-      if (StockProductRelationTable::getInstance()->isInStock($product_id, $shop_id, null, $product['quantity'])) {
+      if (StockProductRelationTable::getInstance()->isInStock($product_id, $shop_id, null, $product->getQuantity())) {
         if (time() > $ts) {
           $ts = time();
           $diff = 0;
         }
-      } elseif (StockProductRelationTable::getInstance()->isInStock($product_id, false, null, $product['quantity'])) {
+      } elseif (StockProductRelationTable::getInstance()->isInStock($product_id, false, null, $product->getQuantity())) {
         if (strtotime('tomorrow') > $ts) {
           $ts = strtotime('tomorrow');
           $diff = 1;

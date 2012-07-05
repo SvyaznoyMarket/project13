@@ -25,16 +25,21 @@ class regionActions extends myActions
   */
   public function executeAutocomplete(sfWebRequest $request)
   {
+    $limit = 8;
+
     $this->forward404Unless($request->isXmlHttpRequest());
 
     $keyword = $request['q'];
 
     $data = array();
-    if (!empty($keyword))
+    if (mb_strlen($keyword) >= 3)
     {
-      $result = CoreClient::getInstance()->query('GEO/autocomplete', array('letters' => $keyword));
+      $result = CoreClient::getInstance()->query('geo/autocomplete', array('letters' => $keyword));
+      $i = 0;
       foreach ($result as $item)
       {
+        if ($i >= $limit) break;
+
         $data[] = array(
           'token' => $item['token'],
           'name'  =>
@@ -44,8 +49,10 @@ class regionActions extends myActions
               ? (" ({$item['region']['name']})")
               : ''
             ),
-          'url'  => $this->generateUrl('region_change', array('region' => $item['token'])),
+          'url'  => $this->generateUrl('region_change', array('region' => $item['id'])),
         );
+
+        $i++;
       }
     }
 
@@ -56,14 +63,25 @@ class regionActions extends myActions
 
   public function executeChange(sfWebRequest $request)
   {
-    $region = $this->getRoute()->getObject();
+     if(!isset($request['region'])){
+      $this->redirect($request->getReferer() ?: 'homepage');
+      return;
+    }
+    $regionId = (int)$request['region'];
+
+    if(!$regionId){
+      $this->redirect($request->getReferer() ?: 'homepage');
+      return;
+    }
+
+    $region = RepositoryManager::getRegion()->getById($regionId);
 
     if ($region)
     {
-      $this->getUser()->setRegion($region->id);
+      $this->getUser()->setRegion($regionId);
     }
 
-    $this->redirect($request->getReferer());
+    $this->redirect($request->getReferer() ?: 'homepage');
   }
 
   public function executeRedirect(sfWebRequest $request)

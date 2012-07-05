@@ -43,7 +43,7 @@ class productStockActions extends sfActions
     $this->getResponse()->addMeta('keywords', sprintf(
       '%s где купить %s',
       mb_strtolower($product->getName()),
-      mb_strtolower($this->getUser()->getRegion('region'))
+      mb_strtolower($this->getUser()->getRegion('name'))
     ));
 
     $this->setVar('product', $product);

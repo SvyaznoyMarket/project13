@@ -9,20 +9,19 @@ Options +FollowSymLinks +ExecCGI
   # getting no_script_name to work
   #RewriteBase /
 
-  RewriteRule ^region/init$ index.light.php [L]
-  RewriteRule ^user/shortinfo$ user_shortinfo.php [L]
-  RewriteRule ^product/delivery1click index.light.php [L]
+  RewriteRule ^region/init/$ index.light.php [L]
+  RewriteRule ^user/shortinfo/?$ index.light.php [L]
+  RewriteRule ^product/delivery1click/? index.light.php [L]
   RewriteRule ^product/delivery-info.* index.light.php [L]
-  RewriteRule ^category/main_menu index.light.php [L]
+  RewriteRule ^cart/add.* index.light.php [L]
+  RewriteRule ^cart/delete.* index.light.php [L]
+  RewriteRule ^cart/clear.* index.light.php [L]
+  RewriteRule ^category/main_menu/? index.light.php [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^wp-admin/$ /content/wp-admin/index.php [L]
   RewriteRule ^wp-admin/(.*)$ /content/wp-admin/$1 [L]
   RewriteRule ^wp-(.*)$ /content/wp-$1 [L]
-
-  RewriteRule ^euro2012 football.html [L]
-  RewriteRule ^nespresso nespresso.html [L]
-  RewriteRule ^waterheater water_heater.html [L]
 
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$

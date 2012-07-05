@@ -14,9 +14,14 @@ class myCache
   {
     if (null == self::$instance)
     {
-      self::$instance = new myRedisCache(sfConfig::get('app_cache_config'));
+      //self::$instance = new myRedisCache(sfConfig::get('app_cache_config'));
+      self::$instance = new myCache();
     }
 
     return self::$instance;
+  }
+
+  public function __call($name, $params)
+  {
   }
 }

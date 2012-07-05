@@ -66,7 +66,7 @@ class productCard_Components extends myComponents
     if (true === $this->isComment) {
       $list[] = array(
         'name' => $this->product->getName().' - отзывы',
-        'url'  => $this->product->getLink().'/comments',
+        'url'  => ($this->product instanceof Product) ? $this->generateUrl('productComment_new', array('sf_subject' => $this->product)) : $this->product->getLink().'/comments',
       );
     }
 
