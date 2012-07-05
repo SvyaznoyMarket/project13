@@ -30,9 +30,9 @@ class UserData
   public function __construct($data=array()){
     if(array_key_exists('id', $data)){ $this->setId((int) $data['id']); }
     if(array_key_exists('first_name', $data)){ $this->setFirstName((string) $data['first_name']); }
-    if(array_key_exists('last_name', $data)){ $this->setLastName((int) $data['last_name']); }
-    if(array_key_exists('middle_name', $data)){ $this->setMiddleName((int) $data['middle_name']); }
-    if(array_key_exists('email', $data)){ $this->setEmail((int) $data['email']); }
+    if(array_key_exists('last_name', $data)){ $this->setLastName((string) $data['last_name']); }
+    if(array_key_exists('middle_name', $data)){ $this->setMiddleName((string) $data['middle_name']); }
+    if(array_key_exists('email', $data)){ $this->setEmail((string) $data['email']); }
   }
 
   /**
