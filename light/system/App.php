@@ -1,5 +1,4 @@
 <?php
-require_once(ROOT_PATH.'system/exception/systemException.php');
 require_once(ROOT_PATH.'lib/CoreClient.php');
 require_once(ROOT_PATH.'system/Response.php');
 
@@ -21,7 +20,7 @@ class App{
 
   /**
    * @static
-   * @throws systemException
+   * @throws RuntimeException
    * @return DeliveryModel
    */
   public static function getDelivery(){
@@ -30,7 +29,7 @@ class App{
 
   /**
    * @static
-   * @throws systemException
+   * @throws RuntimeException
    * @return CategoryModel
    */
   public static function getCategory(){
@@ -113,11 +112,11 @@ class App{
       if(file_exists(ROOT_PATH.'model/'.$className.'.php')){
         require_once(ROOT_PATH.'model/'.$className.'.php');
         if(!class_exists($className)){
-          throw new systemException('class '.$className.' not exists');
+          throw new RuntimeException('class '.$className.' not exists');
         }
       }
       else{
-        throw new systemException('controller '.$className.' not exists');
+        throw new RuntimeException('controller '.$className.' not exists');
       }
     }
 

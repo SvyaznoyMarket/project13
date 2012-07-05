@@ -7,10 +7,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'system/exception/routerException.php');
-//require_once(ROOT_PATH.'lib/log4php/Logger.php');
-
-
 class Renderer
 {
 
@@ -37,7 +33,7 @@ class Renderer
 
     if(!file_exists($filePath)){
       Logger::getLogger('Renderer')->error('template '.$filePath.' not found');
-      throw new routerException('template '.$filePath.' not found');
+      throw new RuntimeException('template '.$filePath.' not found');
     }
 
     extract($data, EXTR_REFS);

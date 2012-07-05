@@ -6,7 +6,6 @@
  * Time: 12:51
  * To change this template use File | Settings | File Templates.
  */
-require_once(ROOT_PATH.'system/exception/dataFormatException.php');
 require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
 

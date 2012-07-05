@@ -10,8 +10,6 @@
 require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
 require_once(VIEW_PATH.'dataObject/RegionData.php');
-require_once(ROOT_PATH.'system/exception/systemException.php');
-require_once(ROOT_PATH.'system/exception/dataFormatException.php');
 
 class RegionModel
 {
@@ -45,7 +43,7 @@ class RegionModel
   /**
    * Функция возвращает список активных городов, в которых естть наши магазины
    * @return RegionData[]
-   * @throws systemException
+   * @throws UnexpectedValueException
    */
   public function getShopAvailable(){
     $response = App::getCoreV2()->query('geo.get-shop-available', array(), array());
@@ -56,7 +54,7 @@ class RegionModel
     $regionList = array();
 
     if(!is_array($response)){
-      throw new systemException('null response from core');
+      throw new UnexpectedValueException('null response from core');
     }
     foreach($response as $geo){
       $region = new RegionData();
