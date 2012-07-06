@@ -263,6 +263,14 @@ class Cart
   }
 
   /**
+   * @param int $productId
+   * @return bool
+   */
+  public function containsProduct($productId){
+    return in_array($productId, $this->dataContainer->getProductIdList());
+  }
+
+  /**
    * Наполняет $this->fullData информацией, обращаясь к моделям
    */
   private function fillData(){
