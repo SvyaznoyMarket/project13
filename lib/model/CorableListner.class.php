@@ -62,7 +62,6 @@ class Doctrine_Template_Listener_Corable extends Doctrine_Record_Listener
       throw new Exception("Unable to save to Core: " . current(Core::getInstance()->getError()));
     }
 
-    shell_exec('redis-cli FLUSHALL');
   }
 
   public function preDelete(Doctrine_Event $event)
