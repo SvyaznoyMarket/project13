@@ -298,6 +298,8 @@ class guardActions extends myActions
         $user->is_active = true;
         $user->email = $this->form->getValue('email');
         $user->phonenumber = $this->form->getValue('phonenumber');
+
+        //для правильного сохранения пользователя, берем его region.core_id из сесии и записываем вбазу region_id
         $user->region_id = $this->getUser()->getRegion('id');
 
         $user->setPassword('123456');

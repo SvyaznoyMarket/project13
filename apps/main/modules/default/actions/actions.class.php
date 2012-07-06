@@ -17,6 +17,34 @@ class defaultActions extends myActions
   */
   public function executeIndex(sfWebRequest $request)
   {
+    $promoData = array();
+    foreach (RepositoryManager::getPromo()->get() as $i => $promo) {
+      if (null == $url = $promo->getUrl()) continue;
+
+      /* @var $promo PromoEntity */
+      $promoItem = array(
+        'alt'   => $promo->getName(),
+        'imgs'  => $promo->getImageUrl(0),
+        'imgb'  => $promo->getImageUrl($promo->isExclusive() ? 2 : 1),
+        'url'   => $url,
+        't'     =>
+        !empty($banner['timeout'])
+          ? $banner['timeout']
+          : ($i > 0 ? sfConfig::get('app_banner_timeout', 6000) : 10000)
+      ,
+        'ga'    => $promo->getId().' - '.$promo->getName(),
+      );
+
+      if ($promo->isExclusive())
+      {
+        $promoItem['is_exclusive'] = true;
+      }
+      if (empty($promoItem['imgs']) || empty($promoItem['imgb'])) continue;
+
+      $promoData[] = $promoItem;
+    }
+
+    $this->setVar('promoData', $promoData, true);
   }
  /**
   * Executes welcome action

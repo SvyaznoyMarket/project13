@@ -28,7 +28,7 @@ class cartController
 
     try{
       $quantity = intval(array_key_exists('quantity', $_GET) ? $_GET['quantity'] : 1);
-      if($quantity < 1){ $quantity = 1; }
+//      if($quantity < 1){ $quantity = 1; } Не думал, что мы удаляем товары прибавлением -1 товара о_О
 
       if(!array_key_exists('productId', $_GET)){
         $logger->error('Product not specified');
@@ -199,6 +199,7 @@ class cartController
       }
 
       App::getCurrentUser()->getCart()->removeProduct($productId);
+      App::getCurrentUser()->getCart()->removeProductServices($productId);
 
       TimeDebug::end('controller:cart:deleteProduct');
 
@@ -293,7 +294,7 @@ class cartController
    * @return int
    */
   private function executeAddProduct($productId, $quantity){
-    App::getCurrentUser()->getCart()->removeProduct($productId);
+//    App::getCurrentUser()->getCart()->removeProduct($productId);
     App::getCurrentUser()->getCart()->addProduct($productId, $quantity);
     return $quantity;
   }

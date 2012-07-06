@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <?php include_component('banner', 'show', array('view' => 'main')) ?>
+    <?php include_slot('banner') ?>
 
     <div class="allpage">
 	<div class="adfoxWrapper" id="adfox980"></div>
@@ -32,7 +32,7 @@
       <div class="bHeaderWrap">
         <div class="bHeader">
           <a href class='bToplogo'></a>
-          <?php include_component('productCategory', 'root_list') ?>
+          <?php include_component('productCategory_', 'root_list') ?>
           <div class="bHeader__eLong"></div>
         </div>
       </div>

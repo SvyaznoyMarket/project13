@@ -159,12 +159,12 @@ class OrderStep1Form extends BaseOrderForm
 
     $this->disableCSRFProtection();
 
-    $regions = RegionTable::getInstance()->getListHavingShops();
+    $regions = RepositoryManager::getRegion()->getShopAvailable();
     $region_choises = array();
     foreach ($regions as $region)
     {
-      $region_choices[$region['id']]['name'] = $region['name'];
-      $region_choices[$region['id']]['data-url'] = url_for('region_change', $region['core_id']);
+      $region_choices[$region->getId()]['name'] = $region->getName();
+      $region_choices[$region->getId()]['data-url'] = url_for('region_change', $region->getId());
     }
 
     $this->widgetSchema['region_id'] = new sfWidgetFormChoice(array(

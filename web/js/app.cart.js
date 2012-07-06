@@ -25,7 +25,7 @@ $(document).ready(function() {
 		if( delurl === '#' )
 			delurl =  $(nodes.less).parent().attr('ref')
 		if( typeof(delurl)==='undefined' )
-			delurl = addurl + '/-1'
+			delurl = addurl + '-1'
 		var drop     = $(nodes.drop).attr('href')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')
 		var limit    = nodes.limit
