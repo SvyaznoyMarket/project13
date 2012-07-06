@@ -106,6 +106,9 @@
           'product_quantity' => implode(',', array_map(function($i) { return $i['quantity']; }, $order['product'])),
       );  ?>
       <div id="heiasComplete" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
+      <div id="efficientFrontier" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
     <?php endforeach ?>
+
+
 
 <?php end_slot() ?>

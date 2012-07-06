@@ -360,6 +360,7 @@ $(document).ready(function() {
 						$('.order1click-link-new').remove()
 						if( typeof(_gaq) !== 'undefined' && typeof(runAnalitics) !== 'undefined' )
 							runAnalitics()
+						ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
 					},
 					error: function( jqXHR, textStatus ) {
 						self.formStatus('typing')

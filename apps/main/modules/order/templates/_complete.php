@@ -12,7 +12,13 @@
     <span>В ближайшее время мы свяжемся с вами для уточнения параметров заказа.</span>
   </div>
 
-  <?php if ($order['number']): ?>
+  <?php if ($order['number']): 
+      $json = array (
+          'order_id' => $order['number'],
+          'order_total' => $order['sum']
+      );  ?>
+  <div id="efficientFrontierQuick" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
+
   <script type="text/javascript">
     function runAnalitics() {
       if (typeof(_gaq) !== 'undefined') {
