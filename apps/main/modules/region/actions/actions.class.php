@@ -87,12 +87,8 @@ class regionActions extends myActions
   public function executeRedirect(sfWebRequest $request)
   {
 //    $region = RegionTable::getInstance()->getByToken($request['region']);
-    $region = RegionTable::getInstance()->findOneBy('core_id', intval($request['region']));
 
-    if ($region)
-    {
-      $this->getUser()->setRegion($region->id);
-    }
+    $this->getUser()->setRegion(intval($request['region']));
 
     $newUrl = preg_replace('/\/reg\/.*?\//i', '/', $request->getUri());
     $this->redirect($newUrl);
@@ -102,15 +98,13 @@ class regionActions extends myActions
   {
     $this->forward404Unless($request->isXmlHttpRequest());
 
-    $user_region = $this->getUser()->getRegion();
-
-    $regions = RegionTable::getInstance()->getListHavingShops();
+    $regions = RepositoryManager::getRegion()->getShopAvailable();
 
     $return = array();
     foreach ($regions as $region)
     {
-      $item = array('name' => $region->name, 'link' => $this->generateUrl('region_change', array('region' => $region->token, )), );
-      if ($region->id == $user_region['id'])
+      $item = array('name' => $region->getName(), 'link' => $this->generateUrl('region_change', array('region' => $region->getId())));
+      if ($region->getId() == $this->getUser()->getRegion('id'))
       {
         $item['is_active'] = 'active';
       }

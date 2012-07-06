@@ -45,9 +45,9 @@ class Service extends BaseService
 
   public function getPriceByRegion(Region $region = NULL)
   {
-    if (!$region) {
-      $region = RegionTable::getInstance()->getDefault();
-    }
+//    if (!$region) {
+//      $region = RegionTable::getInstance()->getDefault();
+//    }
     $q = ServicePriceTable::getInstance()->createBaseQuery();
     $q->select('price')
       ->addWhere('service_id = ?', $this->id)#->addWhere('region_id = ?', $region->id)

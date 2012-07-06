@@ -50,6 +50,7 @@ class cart_Components extends myComponents
           'core_id' => $product->getId(),
           'token_prefix' => $product->getPrefix(),
           'token' => $product->getToken(),
+          'link' => $product->getLink(),
           'name' => $product->getNameWeb(),
           'quantity' => $cartInfo->getQuantity(),
           'service' => array(),

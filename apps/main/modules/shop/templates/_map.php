@@ -6,8 +6,8 @@
       <div class='bMapShops__eRegionText'>Enter в регионах:</div>
       <div class="selectbox selectbox170 fl"><i></i>
         <select id="region-select" class="styled" name="region">
-        <?php foreach ($regionList as $record): ?>
-          <option data-url="<?php echo url_for('shop', array('region' => $record->token)) ?>" <?php if ($record->id == $region['id']) echo 'selected="selected"' ?> value="<?php echo $record['id']?>"><?php echo $record['name'] ?></option>
+        <?php foreach ($regionList as $record): /** @var $record RegionEntity */?>
+          <option data-url="<?php echo url_for('shop', array('region' => $record->getToken())) ?>" <?php if ($record->getId() == $region['id']) echo 'selected="selected"' ?> value="<?php echo $record->getId()?>"><?php echo $record->getName() ?></option>
         <?php endforeach ?>
         </select>
       </div>

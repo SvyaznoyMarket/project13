@@ -101,8 +101,6 @@ class myUser extends myGuardSecurityUser
 
   public function setRegion($region_id)
   {
-//    $region = RegionTable::getInstance()->findOneBy('id', $region_id);
-
     $region = RepositoryManager::getRegion()->getById((int)$region_id);
 
     if(!$region){

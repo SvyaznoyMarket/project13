@@ -107,21 +107,21 @@ class shopComponents extends myComponents
   */
   public function executeMap()
   {
-    $regionList = RegionTable::getInstance()->getListHavingShops();
+    $regionList = RepositoryManager::getRegion()->getShopAvailable();
 
     $markers = array();
     $regions = array();
     foreach ($regionList as $region)
     {
       $regions[] = array(
-        'id'        => $region->id,
-        'token'     => $region->token,
-        'latitude'  => $region->latitude,
-        'longitude' => $region->longitude,
+        'id'        => $region->getId(),
+        'token'     => $region->getToken(),
+        'latitude'  => $region->getLatitude(),
+        'longitude' => $region->getLongitude(),
       );
 
-      $region->Shop = ShopTable::getInstance()->getListByRegion($region);
-      foreach ($region->Shop as $shop)
+      $Shop = ShopTable::getInstance()->getListByRegion($region->getId());
+      foreach ($Shop as $shop)
       {
         $markers[$shop->id] = array(
           'id'        => $shop->id,

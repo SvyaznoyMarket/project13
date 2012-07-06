@@ -31,13 +31,13 @@
 <?php if ($item['type'] == 'product'): ?>
   <div class="basketline mWrap" ref="<?php echo $item['id'] ?>">
     <div class="basketleft">
-      <a href="<?php echo url_for('productCard', array('product' => $item['token_prefix'] . '/' .$item['token'])) ?>">
+      <a href="<?php echo $item['link'] ?>">
         <?php if (isset($item['photo'])) echo image_tag($item['photo']) ?>
       </a>
     </div>
     <div class="basketright">
       <div class="goodstitle">
-        <div class="font24 pb5"><?php echo link_to((string) $item['name'], 'productCard', array('product' => $item['token_prefix'] . '/' .$item['token'])) ?></div>
+        <div class="font24 pb5"><a href="<?php echo $item['link'] ?>"><?php echo $item['name'] ?></a></div>
         <noindex><div class="font11">Есть в наличии</div></noindex>
       </div>
       <div class="basketinfo pb15">

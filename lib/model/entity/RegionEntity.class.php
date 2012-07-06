@@ -8,6 +8,11 @@ class RegionEntity
   /* @var integer */
   private $id;
 
+  /**
+   * @var string
+   */
+  private $token;
+
   /* @var boolean */
   private $isActive;
 
@@ -40,6 +45,7 @@ class RegionEntity
 
   public function __construct(array $data = array()){
     if(array_key_exists('id', $data))            $this->id          = (int)$data['id'];
+    if(array_key_exists('token', $data))         $this->token       = (string)$data['token'];
     if(array_key_exists('is_active', $data))     $this->isActive    = (bool)$data['is_active'];
     if(array_key_exists('name', $data))          $this->name        = (string)$data['name'];
     if(array_key_exists('level', $data))         $this->level       = (int)$data['level'];
@@ -280,5 +286,21 @@ class RegionEntity
   public function getLongitude()
   {
     return $this->longitude;
+  }
+
+  /**
+   * @param string $token
+   */
+  public function setToken($token)
+  {
+    $this->token = $token;
+  }
+
+  /**
+   * @return string
+   */
+  public function getToken()
+  {
+    return $this->token;
   }
 }

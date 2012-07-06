@@ -1,8 +1,5 @@
-//function userSelectShop(shopId){
-//  console.log(shopId);
-//  regionMap.closeMap();
-//}
 
+  
 function MapWithShopsOLD(center, infoWindowTemplate, DOMid, selectCallback) {
   var self = this
   self.mapWS = null

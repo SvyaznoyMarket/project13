@@ -18,12 +18,36 @@ class RegionRepository
   }
 
   /**
+   * @return RegionEntity[]
+   */
+  public function getShopAvailable(){
+
+    $response = CoreClient::getInstance()->query('geo.get-shop-available', array(), array());
+
+    if(!is_array($response) || !isset($response[0])){
+      return array();
+    }
+
+    $regionList = array();
+
+    foreach($response as $geo){
+      $regionList[] = $this->create($geo);
+    }
+
+    return $regionList;
+  }
+
+  /**
    * @param $data
    * @return RegionEntity
    */
   private function create($data)
   {
     $entity = new RegionEntity($data);
+
+    if(!$entity->getId()){
+      return null;
+    }
 
     return $entity;
   }
