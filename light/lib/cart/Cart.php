@@ -81,6 +81,18 @@ class Cart
   }
 
   /**
+   * @param int $productId
+   */
+  public function removeProductServices($productId){
+    $productId = (int)$productId;
+    $list = $this->dataContainer->getServiceIdList($productId);
+
+    foreach($list as $serviceId){
+      $this->removeService($serviceId, null, $productId);
+    }
+  }
+
+  /**
    * @param int $serviceId
    * @param int $quantity
    * @param int|null $productId
@@ -248,6 +260,14 @@ class Cart
     }
 
     return $return;
+  }
+
+  /**
+   * @param int $productId
+   * @return bool
+   */
+  public function containsProduct($productId){
+    return in_array($productId, $this->dataContainer->getProductIdList());
   }
 
   /**

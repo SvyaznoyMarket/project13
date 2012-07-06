@@ -216,9 +216,9 @@ class SessionCartContainer implements CartContainer
 
     $idList = array();
 
-    foreach($_SESSION[$this->sessionName]['serviceList'] as $service){
+    foreach($_SESSION[$this->sessionName]['serviceList'] as $serviceId => $service){
       foreach($service as $productId => $quantity){
-        $idList[] = $productId;
+        $idList[] = $serviceId;
       }
     }
 

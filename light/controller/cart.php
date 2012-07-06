@@ -23,7 +23,7 @@ class cartController
 
     try{
       $quantity = intval(array_key_exists('quantity', $_GET) ? $_GET['quantity'] : 1);
-      if($quantity < 1){ $quantity = 1; }
+//      if($quantity < 1){ $quantity = 1; } Не думал, что мы удаляем товары прибавлением -1 товара о_О
 
       if(!array_key_exists('productId', $_GET)){
         throw new \Exception("Не указано, какой товар необходимо добавить в корзину");
@@ -101,9 +101,6 @@ class cartController
 
       $quantity  = (array_key_exists('quantity', $_GET))? $_GET['quantity'] : 1;
 
-      if($quantity < 1){
-
-      }
       $productId = (array_key_exists('productId', $_GET))? (int)$_GET['productId'] : Null;
 
       if($productId){
@@ -116,18 +113,20 @@ class cartController
         $product = $productList[0];
         $productList = null;
 
-        if ($product->isKit()) {
-          $this->executeAddKit($product, 1);
+        if(!App::getCurrentUser()->getCart()->containsProduct($productId)){
+          if ($product->isKit()) {
+            $this->executeAddKit($product, 1);
+          }
+          else
+          {
+            $this->executeAddProduct($productId, 1);
+          }
         }
-        else
-        {
-          $this->executeAddProduct($productId, 1);
-        }
-        App::getCurrentUser()->getCart()->removeService($serviceId, null, $productId);
+//        App::getCurrentUser()->getCart()->removeService($serviceId, null, $productId);
         App::getCurrentUser()->getCart()->addService($serviceId, $quantity, $productId);
       }
       else{
-        App::getCurrentUser()->getCart()->removeService($serviceId, null, 0);
+//        App::getCurrentUser()->getCart()->removeService($serviceId, null, 0);
         App::getCurrentUser()->getCart()->addService($serviceId, $quantity);
       }
 
@@ -180,6 +179,7 @@ class cartController
         throw new \InvalidArgumentException("Товар с Id" . $productId . " не найден.");
       }
 
+      App::getCurrentUser()->getCart()->removeProductServices($productId);
       App::getCurrentUser()->getCart()->removeProduct($productId);
 
       TimeDebug::end('controller:cart:deleteProduct');
@@ -267,7 +267,7 @@ class cartController
    * @return int
    */
   private function executeAddProduct($productId, $quantity){
-    App::getCurrentUser()->getCart()->removeProduct($productId);
+//    App::getCurrentUser()->getCart()->removeProduct($productId);
     App::getCurrentUser()->getCart()->addProduct($productId, $quantity);
     return $quantity;
   }

@@ -224,7 +224,7 @@ $(document).ready(function () {
         function sec5run() {
             if (secs === 1) {
                 clearInterval(interval)
-                $('form').submit()
+                $('.form').submit()
             }
             secs -= 1
             j_count.html(secs)
