@@ -179,8 +179,8 @@ class cartController
         throw new \InvalidArgumentException("Товар с Id" . $productId . " не найден.");
       }
 
-      App::getCurrentUser()->getCart()->removeProduct($productId);
       App::getCurrentUser()->getCart()->removeProductServices($productId);
+      App::getCurrentUser()->getCart()->removeProduct($productId);
 
       TimeDebug::end('controller:cart:deleteProduct');
 
