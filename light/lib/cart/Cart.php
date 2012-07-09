@@ -15,6 +15,7 @@ require_once('interface/CartContainer.php');
 require_once('interface/CartPriceContainer.php');
 require_once('data/ProductCartData.php');
 require_once('data/ServiceCartData.php');
+require_once(__DIR__ . '/../log4php/Logger.php');
 
 class Cart
 {
