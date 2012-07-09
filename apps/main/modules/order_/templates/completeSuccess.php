@@ -99,14 +99,19 @@
 
     <div id="mixmarket" class="jsanalytics"></div>
     <?php foreach ($orders as $i => $order): 
-      $json = array (
+      $jsonOrdr = array (
           'order_article' => implode(',', array_map(function($i) { return $i['id']; }, $order['product'])),
           'order_id' => $order['number'],
           'order_total' => $order['sum'],
           'product_quantity' => implode(',', array_map(function($i) { return $i['quantity']; }, $order['product'])),
       );  ?>
-      <div id="heiasComplete" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
-      <div id="efficientFrontier" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
+      
+      <div id="heiasComplete" data-vars='<?php echo json_encode( $jsonOrdr ) ?>' class="jsanalytics"></div>
+      
+      <div id="efficientFrontier" data-vars='<?php echo json_encode( $jsonOrdr ) ?>' class="jsanalytics"></div>
+      
+      <div id="adriverOrder" data-vars='<?php echo json_encode( $jsonOrdr ) ?>' class="jsanalytics"></div>
+
     <?php endforeach ?>
 
 

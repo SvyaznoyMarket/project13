@@ -18,6 +18,7 @@
           'order_total' => $order['sum']
       );  ?>
   <div id="efficientFrontierQuick" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
+  <div id="adriverOrder" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
 
   <script type="text/javascript">
     function runAnalitics() {
@@ -100,13 +101,3 @@
   </div>
 
 </div>
-
-<!--  AdRiver code START. Type:audit Site: Enter SZ: order PZ: 0 BN: 0 -->
-<script language="javascript" type="text/javascript"><!--
-var RndNum4NoCash = Math.round(Math.random() * 1000000000);
-var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
-$('.bFormSave').append( $('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&sz=order&bt=55&pz=0&custom=150=<?php echo $order['number'] ?>&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>') )
-//document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&sz=order&bt=55&pz=0&custom=150=<?php echo $order['number'] ?>&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
-//--></script>
-<noscript><img src="http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=order&bt=55&pz=0&rnd=1086697038&custom=150=<?php echo $order['number'] ?>" border=0 width=1 height=1></noscript>
-<!--  AdRiver code END  -->
