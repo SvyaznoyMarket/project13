@@ -70,6 +70,7 @@ $(document).ready(function() {
 			self.calculate( self.quantum )
 			$.getJSON( tmpurl , function( data ) {
 				$(minimax).data('run',false)
+                    alert(1);
 				//if( data.success && data.data.quantity ) {
 					//$(nodes.quan).html( data.data.quantity + ' шт.' )
 					//self.calculate( data.data.quantity )

@@ -55,12 +55,19 @@ class Cart
    * @param int $productId
    * @param int $quantity
    */
-  public function addProduct($productId, $quantity){
+  public function setProductQuantity($productId, $quantity){
     //@TODO добавить проверку наличия, когда на ядре реализуют этот функционал
-    $this->dataContainer->addProduct($productId, $quantity);
+    $this->dataContainer->setProductQuantity($productId, $quantity);
     $this->productDataList = null;
     $this->totalPrice = null;
   }
+
+    public function addProduct($productId){
+        //@TODO добавить проверку наличия, когда на ядре реализуют этот функционал
+        $this->dataContainer->addProduct($productId);
+        $this->productDataList = null;
+        $this->totalPrice = null;
+    }
 
   /**
    * @param int $productId
