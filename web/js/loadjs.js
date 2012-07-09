@@ -78,9 +78,9 @@
 			}).runQueue()
 			break
 		case 'order_complete':
-			$LAB.queueScript('bigjquery.min.js').queueWait( function() {
+			$LAB.queueScript('bigjquery.min.js')
+				.queueScript('http://www.everestjs.net/static/st.v2.js').queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
-				.script('http://www.everestjs.net/static/st.v2.js')
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script(getWithVersion('main.js'))
