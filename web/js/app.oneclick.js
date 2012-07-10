@@ -651,7 +651,14 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				//SHOW WARNING, NO SELF DELIVERY
 				$('#noDlvr').show()
 				return false				
-			}			
+			}
+			if( Date.parse( Deliveries['self'].dates[0].value ) !== Date.parse( currentDate ) &&
+				Date.parse( Deliveries['self'].dates[0].value ) !== Date.parse( currentDate ) + 1000*60*60*24 ) {
+				//SHOW WARNING, NO TODAY AND TOMORROW DELIVERY
+				$('#noDlvr').show()
+				return false				
+			}
+
 			if( selfAvailable ) {
 				mapCenter = calcMCenter( Deliveries['self'].shops )
 			}			
