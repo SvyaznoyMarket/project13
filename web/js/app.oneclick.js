@@ -624,6 +624,8 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 		$.post( inputUrl, postData, function(data) {
 			if( !data.success ) {
 				//SHOW WARNING, NO MVM
+				$('.bOrderPreloader').hide()
+				$('#noDlvr').show()
 				return false
 			}
 

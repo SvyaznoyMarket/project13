@@ -549,7 +549,7 @@ EOF;
       //myCache::getInstance()->removeByTag(ProductStateTable::getInstance()->getCacheTags($record));
 
       //очищаю nginx кэш
-      CacheEraser::getInstance()->erase(array("product-{$processed['relation']['product']['core_id']}-{$processed['relation']['region']['geoip_code']}"), false, 'product_state ' . (('delete' == $action) ? 'deleted' : 'action'));
+      CacheEraser::getInstance()->erase(array("product-{$processed['relation']['product']['core_id']}-{$processed['relation']['region']['core_id']}"), false, 'product_state ' . (('delete' == $action) ? 'deleted' : 'action'));
     }
 
     return true;

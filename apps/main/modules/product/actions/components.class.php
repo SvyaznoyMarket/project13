@@ -145,7 +145,7 @@ class productComponents extends myComponents
     $this->setVar('selectedServices', $selectedServices, true);
      */
 
-    $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('geoip_code'),)));
+    $this->setVar('keys', $table->getCacheEraserKeys($this->product, 'show', array('region' => $this->getUser()->getRegion('core_id'),)));
 
     //myDebug::dump($item, 1);
 

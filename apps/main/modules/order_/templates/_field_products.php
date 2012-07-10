@@ -44,7 +44,7 @@ foreach ($dates as $i => $date) {
     <dt>
       <h2>
         <?php echo $deliveryType->shortName ?>
-        <span data-assign='{"displayDate": ["text", "_value"]}'><?php echo $deliveryType->displayDate ?></span>
+        <span data-assign='{"displayDate": ["text", "_value"]}'><?php echo $deliveryType->displayDate ?></span>*
         <?php if ('self' != $deliveryType->type): ?>
           <!--<br><span data-assign='{"displayInterval": ["text", "_value"]}'><?php echo $deliveryType->displayInterval ?></span>-->
           <div class='bSelect mFastInpSmall' style="margin: 8px 0 12px 0;">

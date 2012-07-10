@@ -564,11 +564,12 @@ class order_Actions extends myActions
     ));
     if (!$result)
     {
+      //dump(Core::getInstance()->getError(), 1);
       if ($errors = Core::getInstance()->getError())
       {
-        if (is_array($errors) && isset($errors['detail']['product_error_list']))
+        if (is_array($errors) && array_key_exists('product_error_list', $errors))
         {
-          $this->errors = $errors['detail']['product_error_list'];
+          $this->errors = $errors['product_error_list'];
         }
       }
       else {

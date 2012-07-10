@@ -10,7 +10,7 @@
     <?php include_component('page', 'link_rel_canonical') ?>
 
     <?php include_partial('default/googleAnalytics') ?>
-    <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
+     <script type="text/javascript" src="/js/adfox.asyn.code.ver3.js"> </script>
   </head>
 
   <body data-template="main">

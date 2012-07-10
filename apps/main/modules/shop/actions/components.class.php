@@ -13,7 +13,7 @@ class shopComponents extends myComponents
 /**
   * Executes navigation component
   *
-  * @param Region $region Регион
+  * @param array $region Регион array('name' => '', 'type' => '')
   * @param Shop   $shop   Магазин
   */
   public function executeNavigation()
@@ -21,7 +21,7 @@ class shopComponents extends myComponents
     $list = array();
 
     $list[] = array(
-      'name' => 'Магазины Enter в '.($this->region->getLinguisticCase('п') ? mb_ucfirst($this->region->getLinguisticCase('п')) : ($this->region->prefix.$this->region)),
+      'name' => 'Магазины Enter в '.(RepositoryManager::getRegion()->getLinguisticCase($this->region['name'], 'п') ? mb_ucfirst(RepositoryManager::getRegion()->getLinguisticCase($this->region['name'], 'п')) : ((($this->region['type'] == 'city')? 'г.':'').$this->region['name'])),
       'url'  => $this->generateUrl('shop', array('region' => $this->region->token)),
     );
     if (isset($this->shop))
@@ -97,7 +97,7 @@ class shopComponents extends myComponents
   */
   public function executeList()
   {
-    $this->setVar('shopList', ShopTable::getInstance()->getListByRegion($this->region->id), true);
+    $this->setVar('shopList', ShopTable::getInstance()->getListByRegion($this->region['id']), true);
   }
 
  /**

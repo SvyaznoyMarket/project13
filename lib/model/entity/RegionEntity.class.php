@@ -20,24 +20,58 @@ class RegionEntity
   /* @var integer */
   private $rgt;
 
-  /* @var ProductCategoryEntity|null */
-  private $parent = null;
+  /**
+   * @var int
+   */
+  private $parentId;
 
-  /* @var ProductCategoryEntity[] */
-  private $child;
-
-  /* @var PriceTypeEntity|null */
-  private $priceType = null;
+  /**
+   * @var int
+   */
+  private $priceListId;
 
   private $name;
 
+  /** @var string */
+  private $longitude;
+
+  /** @var string */
+  private $latitude;
+
   public function __construct(array $data = array()){
-    if(array_key_exists('id', $data))         $this->id       = (int)$data['id'];
-    if(array_key_exists('is_active', $data))  $this->isActive = (bool)$data['is_active'];
-    if(array_key_exists('name', $data))       $this->name     = (string)$data['name'];
-    if(array_key_exists('level', $data))      $this->level    = (int)$data['level'];
-    if(array_key_exists('lft', $data))        $this->lft      = (int)$data['lft'];
-    if(array_key_exists('rgt', $data))        $this->rgt      = (int)$data['rgt'];
+    if(array_key_exists('id', $data))            $this->id          = (int)$data['id'];
+    if(array_key_exists('is_active', $data))     $this->isActive    = (bool)$data['is_active'];
+    if(array_key_exists('name', $data))          $this->name        = (string)$data['name'];
+    if(array_key_exists('level', $data))         $this->level       = (int)$data['level'];
+    if(array_key_exists('lft', $data))           $this->lft         = (int)$data['lft'];
+    if(array_key_exists('rgt', $data))           $this->rgt         = (int)$data['rgt'];
+    if(array_key_exists('price_list_id', $data)) $this->priceListId = (int)$data['price_list_id'];
+    if(array_key_exists('parent_id', $data))     $this->parentId    = (int)$data['parent_id'];
+
+    $coords = array(
+      99      => array('52.618600', '39.568900'),
+      1964    => array('54.913510', '37.416799'),
+      1965    => array('55.937785', '37.520213'),
+      6125    => array('55.853600', '38.441100'),
+      8440    => array('56.300000', '38.133300'),
+      9748    => array('55.142113', '37.462712'),
+      10358   => array('55.925460', '37.993401'),
+      10374   => array('54.605682', '39.733343'),
+      13241   => array('50.621370', '36.583042'),
+      13242   => array('52.971800', '36.066341'),
+      18073   => array('56.866667', '35.916667'),
+      18074   => array('51.640181', '39.178619'),
+      14974   => array('55.755798', '37.617636'),
+      74358   => array('54.193803', '37.619028'),
+      74562   => array('51.717190', '36.181714'),
+      83209   => array('52.729422', '41.428073'),
+      83210   => array('53.281039', '34.376235'),
+    );
+
+    if(array_key_exists($this->id, $coords)){
+      $this->latitude  = $coords[$this->id][0];
+      $this->longitude = $coords[$this->id][1];
+    }
   }
   /**
    * @param int $id
@@ -169,5 +203,82 @@ class RegionEntity
   public function getName()
   {
     return $this->name;
+  }
+
+  /**
+   * @param int $priceListId
+   */
+  public function setPriceListId($priceListId)
+  {
+    $this->priceListId = $priceListId;
+  }
+
+  /**
+   * @return int
+   */
+  public function getPriceListId()
+  {
+    return $this->priceListId;
+  }
+
+  /**
+   * @param int $parentId
+   */
+  public function setParentId($parentId)
+  {
+    $this->parentId = $parentId;
+  }
+
+  /**
+   * @return int
+   */
+  public function getParentId()
+  {
+    return $this->parentId;
+  }
+
+  /**
+   * @return string
+   */
+  public function getType(){
+    switch($this->getLevel()){
+      case 3:
+        return 'city';
+      case 0:
+        return 'country';
+    }
+    return 'area';
+  }
+
+  /**
+   * @param string $latitude
+   */
+  public function setLatitude($latitude)
+  {
+    $this->latitude = $latitude;
+  }
+
+  /**
+   * @return string
+   */
+  public function getLatitude()
+  {
+    return $this->latitude;
+  }
+
+  /**
+   * @param string $longitude
+   */
+  public function setLongitude($longitude)
+  {
+    $this->longitude = $longitude;
+  }
+
+  /**
+   * @return string
+   */
+  public function getLongitude()
+  {
+    return $this->longitude;
   }
 }

@@ -857,7 +857,7 @@ window.docCookies = {
     var oExpDate = new Date();  
     oExpDate.setDate(oExpDate.getDate() - 1);
     document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";  
-        console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
+//console.info(escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/")
   },  
   hasItem: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }  
 };
