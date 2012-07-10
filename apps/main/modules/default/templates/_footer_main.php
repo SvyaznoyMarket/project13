@@ -25,7 +25,7 @@
       <a href="<?php echo url_for('shop') ?>">Наши магазины</a>
       <a href="<?php echo url_for('wordpress', array('page' => 'how_make_order',)) ?>">Как сделать заказ</a>
       <a href="<?php echo url_for('wordpress', array('page' => 'mobile_apps')) ?>">Мобильные приложения</a>
-      <a href="<?php echo url_for('callback') ?>">Обратная связь</a>
+      <a href="http://feedback.enter.ru/">Обратная связь</a>
     </div>
   </div>
 
