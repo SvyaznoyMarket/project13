@@ -2007,13 +2007,13 @@ $(document).ready(function(){
 
         parseAllAdfoxDivs : function( nodes ) {
             $.each( nodes , function() {
-console.info( this.id, this.id+'' in ADFOX  )
+//console.info( this.id, this.id+'' in ADFOX  )
                 if( this.id+'' in ADFOX )
                     ADFOX[this.id]()
             })
         }
 	}
 	
-    //ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
+    ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
 	
 })
