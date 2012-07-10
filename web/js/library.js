@@ -1007,7 +1007,12 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
             
 			markers[marker.id].ref = marker
 		})
-
+        if( len === 1 ) {
+             latMin -= 0.001 
+             latMin -= 0.001
+             latMax = latMax*1 +  0.001
+             longMax = longMax*1 + 0.001
+        }
         var sw = new google.maps.LatLng( latMin , longMin )
         var ne = new google.maps.LatLng( latMax , longMax )
         var bounds = new google.maps.LatLngBounds(sw, ne)
@@ -1977,7 +1982,8 @@ $(document).ready(function(){
 			  }
 			  var addate = new Date(); 
 			  var html ='<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=bdto&amp;p2=emue&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>'
-			  $('#adfox683counter').html( html )
+			  //$('#adfox683counter').append( html )
+              document.write(html)
 		},
 		
 		adfox980 : function() {
@@ -2001,13 +2007,13 @@ $(document).ready(function(){
 
         parseAllAdfoxDivs : function( nodes ) {
             $.each( nodes , function() {
-//console.info( this.id, this.id+'' in ADFOX  )
+console.info( this.id, this.id+'' in ADFOX  )
                 if( this.id+'' in ADFOX )
                     ADFOX[this.id]()
             })
         }
 	}
 	
-    ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
+    //ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
 	
 })
