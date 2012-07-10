@@ -1,1 +1,1 @@
-<div class="adfoxWrapper" id="adfox683counter"></div>
+<div class="adfoxWrapper" id="adfox683"></div>
