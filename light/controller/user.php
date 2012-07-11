@@ -111,7 +111,7 @@ class userController
           continue;
         }
         $token = $productInfoList[$prodId];
-        $responseData['productsInCart'][$token] = $prod->getQuantity();
+        $responseData['data']['productsInCart'][$token] = $prod->getQuantity();
       }
 
       foreach ($services as $serviceId => $service){
@@ -120,12 +120,12 @@ class userController
           continue;
         }
         $serviceToken = $serviceInfoList[$serviceId];
-        $responseData['servicesInCart'][$serviceToken] = array();
+        $responseData['data']['servicesInCart'][$serviceToken] = array();
 
         foreach ($service as $productId => $serviceElem){
           /** @var $serviceElem ServiceCartData */
           if ($productId == 0) {
-            $responseData['servicesInCart'][$serviceToken]["0"] = $serviceElem->getQuantity();
+            $responseData['data']['servicesInCart'][$serviceToken]["0"] = $serviceElem->getQuantity();
             continue;
           }
           if(!array_key_exists($productId, $productInfoList)){
@@ -133,7 +133,7 @@ class userController
             continue;
           }
           $productToken = $productInfoList[$productId];
-          $responseData['servicesInCart'][$serviceToken][$productToken] = $serviceElem->getQuantity();
+          $responseData['data']['servicesInCart'][$serviceToken][$productToken] = $serviceElem->getQuantity();
         }
       }
     }
