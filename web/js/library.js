@@ -1794,46 +1794,6 @@ $(document).ready(function(){
             document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>')
         },
 
-        efficientFrontier : function() {
-            var a = arguments[0];
-
-            var ef_event_type="transaction";
-            var ef_transaction_properties = "ev_Orders="+ 1 +
-                                            "&ev_Revenue="+ a.order_total +
-                                            "&ev_Quickorders="+ 0 +
-                                            "&ev_Quickrevenue="+ 0 +
-                                            "&ev_transid=" + a.order_id ;
-            /*
-            * Do not modify below this line
-            */
-            var ef_segment = "";
-            var ef_search_segment = "";
-            var ef_userid="3252";
-            var ef_pixel_host="pixel.everesttech.net";
-            var ef_fb_is_app = 0;
-            effp();
-        },
-
-        efficientFrontierQuick : function() {
-            var a = arguments[0];
-
-            var ef_event_type="transaction";
-            var ef_transaction_properties = "ev_Orders="+ 0 +
-                                            "&ev_Revenue="+ 0 +
-                                            "&ev_Quickorders="+ 1 +
-                                            "&ev_Quickrevenue="+ a.order_total +
-                                            "&ev_transid=" + a.order_id ;
-            /*
-            * Do not modify below this line
-            */
-            var ef_segment = "";
-            var ef_search_segment = "";
-            var ef_userid="3252";
-            var ef_pixel_host="pixel.everesttech.net";
-            var ef_fb_is_app = 0;
-            effp();
-        },
-
         adriverCommon : function() {
             var a = arguments[0];
 
