@@ -54,14 +54,18 @@ class SessionCartContainer implements CartContainer
     }
   }
 
-  public function addProduct($productId, $quantity){
+  public function addProduct($productId){
     if(!array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])){
-      $_SESSION[$this->sessionName]['productList'][$productId] = (int) $quantity;
+      $_SESSION[$this->sessionName]['productList'][$productId] = 1;
     }
     else{
-      $_SESSION[$this->sessionName]['productList'][$productId] += (int) $quantity;
+      $_SESSION[$this->sessionName]['productList'][$productId] += 1;
     }
   }
+
+    public function setProductQuantity($productId, $quantity){
+        $_SESSION[$this->sessionName]['productList'][$productId] = (int) $quantity;
+    }
 
   public function addService($serviceId, $quantity, $productId=null){
     if(is_null($productId)){

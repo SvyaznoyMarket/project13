@@ -15,7 +15,7 @@ require_once(ROOT_PATH.'lib/TimeDebug.php');
 class cartController
 {
 
-  public function addProduct(Response $response, $params = array()){
+  public function setProductQuantity(Response $response, $params = array()){
     TimeDebug::start('controller:cart:addProduct');
 
     $result['value'] = true;
@@ -23,7 +23,9 @@ class cartController
 
     try{
       $quantity = intval(array_key_exists('quantity', $_GET) ? $_GET['quantity'] : 1);
-//      if($quantity < 1){ $quantity = 1; } Не думал, что мы удаляем товары прибавлением -1 товара о_О
+      if($quantity < 1){
+        throw new \Exception('Указано неверное количество товаров');
+      }
 
       if(!array_key_exists('productId', $_GET)){
         throw new \Exception("Не указано, какой товар необходимо добавить в корзину");
@@ -46,9 +48,13 @@ class cartController
       if ($product->isKit()) {
         $quantity = $result['quantity'] = $this->executeAddKit($product, $quantity);
       }
+      elseif($_GET['quantity'] == Null)
+      {
+          $quantity = $result['quantity'] = $this->executeAddProduct($productId);
+      }
       else
       {
-        $quantity = $result['quantity'] = $this->executeAddProduct($productId, $quantity);
+          $quantity = $result['quantity'] = $this->executeSetProductQuantity($productId, $quantity);
       }
 
       if(App::getRequest()->isXmlHttpRequest()){
@@ -266,10 +272,13 @@ class cartController
    * @param int $quantity
    * @return int
    */
-  private function executeAddProduct($productId, $quantity){
-//    App::getCurrentUser()->getCart()->removeProduct($productId);
-    App::getCurrentUser()->getCart()->addProduct($productId, $quantity);
+  private function executeSetProductQuantity($productId, $quantity){
+    App::getCurrentUser()->getCart()->setProductQuantity($productId, $quantity);
     return $quantity;
+  }
+
+  private function executeAddProduct($productId){
+    App::getCurrentUser()->getCart()->addProduct($productId);
   }
 
   /**
