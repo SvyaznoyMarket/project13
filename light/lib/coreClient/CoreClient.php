@@ -81,7 +81,7 @@ class CoreClient
     }
     catch (CoreClientException $e) {
       curl_close($connection);
-      $this->log('request params: '.$action.', get: '.print_r($params, 1).', post: '.print_r($data, 1).'error: '.$e->__toString(), 'error');
+      $this->log('request params: '.$action.', get: '.print_r($params, 1).', post: '.print_r($data, 1).'error: '.$e->__toString() . ', response: ' . print_r($response, 1), 'error');
       throw $e;
     }
   }
@@ -159,7 +159,7 @@ class CoreClient
     $this->callbacks = array();
     $this->resources = array();
     if (!is_null($error)) {
-      $this->log((string)$error, 'error');
+      $this->log('Error:' . (string)$error . 'Response: ' . print_r(isset($content)?$content:Null, 1), 'error');
       /* @var $error Exception  */
       throw $error;
     }
@@ -381,7 +381,7 @@ class CoreV1Client
 
     if (isset($response['error']))
     {
-      $message = 'Bad response: '.$response['error']['message'].'('.(isset($response['error']['detail'])?$response['error']['detail']:'no details').')';
+      $message = 'Bad response: '.$response['error']['message'].'('.(isset($response['error']['detail'])?$response['error']['detail']:'no details').'), request action: ' . $action . ', request params: ' . print_r($params, 1) . ', request data: ' . print_r($data, 1) . ', full response: ' . print_r($response, 1);
       $this->log($message, 'error');
       throw new CoreClientException($message, $response['error']['code']);
     }
@@ -409,7 +409,7 @@ class CoreV1Client
     if (isset($response['error']))
     {
       $this->log('Authentification on V1 core failed', 'info');
-      $this->log('Authentification on Core V1 failed ('.$response['error']['code'].'): '.$response['error']['message'], 'error');
+      $this->log('Authentification on Core V1 failed ('.$response['error']['code'].'): '.$response['error']['message'] . ', request: ' . print_r($data, 1) . ', full response: ' . print_r($response, 1), 'error');
       throw new CoreClientException('Authentification failed: '.$response['error']['message'], $response['error']['code']);
     }
     else
