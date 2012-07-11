@@ -592,8 +592,10 @@ $(document).ready(function() {
             }
             else {
                 $('#payment_method_5-field').hide()
-                $('#payment_method_5-field').find('input').attr('checked', false)
-                $('#payment_method_5-field').find('.mChecked').removeClass('mChecked')
+                if( $('#payment_method_5-field').find('input').is(':checked') ) {
+                    $('#payment_method_5-field').find('input').removeAttr('checked')
+                    $('#payment_method_5-field').find('.mChecked').removeClass('mChecked')
+                }
             }
         },
 
