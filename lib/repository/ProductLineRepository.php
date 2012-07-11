@@ -29,7 +29,7 @@ class ProductLineRepository
     $line = $this->getById($id);
     if($line->getMainProductId()) // send bulk request main product id + related product list
     {
-      $idList = $line->getProductIdList();
+      $idList = $line->getFullProductIdList();
       array_unshift($idList, $line->getMainProductId()); // add main product id as first element
       $productList = RepositoryManager::getProduct()->getListById($idList,true);
       if(isset($productList[0]) && $productList[0]->getId() === $line->getMainProductId())
@@ -40,12 +40,12 @@ class ProductLineRepository
         RepositoryManager::getProduct()->loadKit($product);
         $line->setMainProduct($product);
       }
-      $line->setProductList($productList);
+      $line->setFullProductList($productList);
     }
     else // send simple request with related product list
     {
       $productList = RepositoryManager::getProduct()->getListById($line->getProductIdList(),true);
-      $line->setProductList($productList);
+      $line->setFullProductList($productList);
     }
     return $line;
   }
