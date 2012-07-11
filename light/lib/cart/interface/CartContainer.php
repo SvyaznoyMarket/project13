@@ -17,7 +17,15 @@ interface CartContainer
    * @param int $quantity
    * @return void
    */
-  public function addProduct($productId, $quantity);
+  public function setProductQuantity($productId, $quantity);
+
+    /**
+     * @abstract
+     * @param int $productId
+     * @param int $quantity
+     * @return void
+     */
+    public function addProduct($productId);
 
   /**
    * @abstract
