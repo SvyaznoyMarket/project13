@@ -1,10 +1,6 @@
 <?php
 namespace light;
 
-if(!class_exists('routerException')){
-  require_once(ROOT_PATH.'system/exception/routerException.php');
-}
-
 class Router
 {
   /**
@@ -54,7 +50,7 @@ class Router
    * Parses a URL based on this rule.
    * @param string $path
    * @return null|string the route that consists of the controller ID and action ID or null
-   * @throws routerException on error found route rule
+   * @throws RuntimeException on error found route rule
    */
   public function matchUrl($path)
   {
@@ -63,7 +59,7 @@ class Router
       if ($route = $routeRule->matchUrl($path))
         return $route;
     }
-    throw new routerException(
+    throw new \RuntimeException(
       sprintf('Unable to resolve the request "%s"', $path),
       404
     );
@@ -76,7 +72,7 @@ class Router
    * If the name is '#', the corresponding value will be treated as an anchor
    * and will be appended at the end of the URL.
    * @return string the constructed URL
-   * @throws routerException on error found route rule
+   * @throws RuntimeException on error found route rule
    */
   public function createUrl($route, array $params = array())
   {
@@ -91,7 +87,7 @@ class Router
       if ($url = $routeRule->createUrl($route, $params))
         return $url . $anchor;
     }
-    throw new routerException(sprintf('Unable to resolve the route "%s"', $route), 404);
+    throw new \RuntimeException(sprintf('Unable to resolve the route "%s"', $route), 404);
   }
 }
 

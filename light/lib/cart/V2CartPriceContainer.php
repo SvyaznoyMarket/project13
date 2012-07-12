@@ -29,7 +29,7 @@ class V2CartPriceContainer implements CartPriceContainer
 
       return (array) $response;
     }
-    catch(CoreClientException $e){
+    catch(\Exception $e){
       return array("product_list" => array(),"service_list" => array(),"price_total" => 0);
     }
   }
