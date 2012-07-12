@@ -3,7 +3,7 @@ namespace light;
 use Logger;
 use Exception;
 
-require_once(__DIR__.'/log4php/Logger.php');
+require_once(__DIR__.'/../log4php/Logger.php');
 
 class CoreClient
 {
