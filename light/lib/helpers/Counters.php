@@ -13,7 +13,6 @@ namespace light;
  * Из контроллера наполняется данными, после чего при первом вызове showBlock подгружает шаблоны и
  * наполняет их накопленными данными
  */
-require_once(ROOT_PATH.'system/exception/systemException.php');
 
 class Counters
 {
@@ -79,7 +78,7 @@ class Counters
    */
   public static function setParam($name, $value){
     if(self::$areLoadedTemplates){
-      throw new systemException('Cant set params after loading seo templates');
+      throw new \RuntimeException('Cant set params after loading seo templates');
     }
     self::$params[$name] = $value;
   }
