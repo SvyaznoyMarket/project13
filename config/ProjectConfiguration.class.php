@@ -31,7 +31,11 @@ class ProjectConfiguration extends sfProjectConfiguration
       $this->dispatcher->connect($listener[0], $listener[1]);
     }
 
-    define('LOG_FILES_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR);
+    if(!defined('LOG_FILES_PATH'))
+    {
+        define('LOG_FILES_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR);
+    }
+
     Logger::configure(__DIR__ . '/../light/config/log4php.xml');
   }
 

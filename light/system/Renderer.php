@@ -11,10 +11,7 @@ use Logger;
  */
 
 require_once(ROOT_PATH.'system/App.php');
-require_once(ROOT_PATH.'system/exception/systemException.php');
-require_once(ROOT_PATH.'system/exception/routerException.php');
 require_once(ROOT_PATH.'lib/log4php/Logger.php');
-
 
 class Renderer
 {
@@ -53,7 +50,7 @@ class Renderer
 
     if(!file_exists($filePath)){
       Logger::getLogger('Renderer')->error('template '.$filePath.' not found');
-      throw new routerException('template '.$filePath.' not found');
+      throw new \RuntimeException('template '.$filePath.' not found');
     }
 
     extract($data, EXTR_REFS);
@@ -105,11 +102,11 @@ class HtmlRenderer extends Renderer{
    */
   public function addCss($path){
     if(!is_string($path)){
-      throw new dataFormatException('css path must be a string, in real its '. gettype($path));
+      throw new InvalidArgumentException('css path must be a string, in real its '. gettype($path));
     }
     foreach($this->css as $css){
       if($css == $path){
-        throw new systemException('Css '. $path.' already exists');
+        throw new \RuntimeException('Css '. $path.' already exists');
       }
     }
     $this->css[] = $path;
@@ -129,7 +126,7 @@ class HtmlRenderer extends Renderer{
    */
   public function setTitle($title){
     if(!is_string($title)){
-      throw new dataFormatException('page title must be a string, in real its '. gettype($title));
+      throw new InvalidArgumentException('page title must be a string, in real its '. gettype($title));
     }
     $this->title = $title;
   }
@@ -146,7 +143,7 @@ class HtmlRenderer extends Renderer{
    */
   public function setDescription($description){
     if(!is_string($description)){
-      throw new dataFormatException('page description must be a string, in real its '. gettype($description));
+      throw new InvalidArgumentException('page description must be a string, in real its '. gettype($description));
     }
     $this->description = $description;
   }
@@ -174,7 +171,7 @@ class HtmlRenderer extends Renderer{
       $link =  App::getRouter()->createUrl($route, $params);
       return $link;
     }
-    catch(Exception $e){
+    catch(\Exception $e){
       Logger::getLogger('Renderer')->error($e->getMessage());
       return '#';
     }
