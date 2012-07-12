@@ -12,12 +12,9 @@
     <span>В ближайшее время мы свяжемся с вами для уточнения параметров заказа.</span>
   </div>
 
-  <?php if ($order['number']): 
-      $json = array (
-          'order_id' => $order['number'],
-          'order_total' => $order['sum']
-      );  ?>
-  <div id="efficientFrontierQuick" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
+  <!-- Efficient Frontiers -->
+  <img src='http://pixel.everesttech.net/3252/t?ev_Orders=0&amp;ev_Revenue=0&amp;ev_Quickorders=1&amp;ev_Quickrevenue=<?php echo $order['sum'] ?>&amp;ev_transid=<?php echo $order['number'] ?>' width='1' height='1'/>
+  
   <div id="adriverOrder" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
 
   <script type="text/javascript">
