@@ -1794,46 +1794,6 @@ $(document).ready(function(){
             document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>')
         },
 
-        efficientFrontier : function() {
-            var a = arguments[0];
-
-            var ef_event_type="transaction";
-            var ef_transaction_properties = "ev_Orders="+ 1 +
-                                            "&ev_Revenue="+ a.order_total +
-                                            "&ev_Quickorders="+ 0 +
-                                            "&ev_Quickrevenue="+ 0 +
-                                            "&ev_transid=" + a.order_id ;
-            /*
-            * Do not modify below this line
-            */
-            var ef_segment = "";
-            var ef_search_segment = "";
-            var ef_userid="3252";
-            var ef_pixel_host="pixel.everesttech.net";
-            var ef_fb_is_app = 0;
-            effp();
-        },
-
-        efficientFrontierQuick : function() {
-            var a = arguments[0];
-
-            var ef_event_type="transaction";
-            var ef_transaction_properties = "ev_Orders="+ 0 +
-                                            "&ev_Revenue="+ 0 +
-                                            "&ev_Quickorders="+ 1 +
-                                            "&ev_Quickrevenue="+ a.order_total +
-                                            "&ev_transid=" + a.order_id ;
-            /*
-            * Do not modify below this line
-            */
-            var ef_segment = "";
-            var ef_search_segment = "";
-            var ef_userid="3252";
-            var ef_pixel_host="pixel.everesttech.net";
-            var ef_fb_is_app = 0;
-            effp();
-        },
-
         adriverCommon : function() {
             var a = arguments[0];
 
@@ -1895,9 +1855,8 @@ $(document).ready(function(){
 			var dl = escape(document.location);
 			var pr1 = Math.floor(Math.random() * 1000000);
 			
-			var html = '<div id="AdFox_banner_'+pr1+'"><\/div>'+
-			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>'
-			$('#adfoxbground').html( html )
+			document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>'+
+			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
 			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=enlz&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);		
 		},
 		
@@ -1911,8 +1870,11 @@ $(document).ready(function(){
 			  afReferrer = '';
 			}
 			var addate = new Date();
-			var html = '<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?p1=biewf&amp;p2=engb&amp;pct=a&amp;pfc=a&amp;pfb=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>'
-			$('#adfox400counter').html( html )
+            var dl = escape(document.location);
+            var pr1 = Math.floor(Math.random() * 1000000);  
+            document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
+            '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>')
+            AdFox_getCodeScript(1,pr1, 'http://ads.adfox.ru/171829/prepareCode?p1=biewf&amp;p2=engb&amp;pct=a&amp;pfc=a&amp;pfb=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
 		},
 	
 		adfox400 : function() {
@@ -1927,9 +1889,8 @@ $(document).ready(function(){
 			var addate = new Date();
 			var dl = escape(document.location);
 			var pr1 = Math.floor(Math.random() * 1000000);	
-			var html = '<div id="AdFox_banner_'+pr1+'"><\/div>' +
-			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>'
-			$('#adfox400').html( html )
+			document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
+			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
 			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
 		},
 		
@@ -1946,9 +1907,8 @@ $(document).ready(function(){
 			var dl = escape(document.location);
 			var pr1 = Math.floor(Math.random() * 1000000);
 			
-			var html = '<div id="AdFox_banner_'+pr1+'"><\/div>' +
-			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>'
-			$('#adfox215').html( html )
+			document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
+			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
 			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emud&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);		
 		},
 		
@@ -1965,13 +1925,12 @@ $(document).ready(function(){
 			var dl = escape(document.location);
 			var pr1 = Math.floor(Math.random() * 1000000);
 			
-			var html = '<div id="AdFox_banner_'+pr1+'"><\/div>' +
-			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>'
-			$('#adfox683').html( html )
+			document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
+			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
 			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emue&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
 		},
 		
-		adfox683counter : function() {
+		adfox683sub : function() {
 			if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
 			if (typeof(document.referrer) != 'undefined') {
 			  if (typeof(afReferrer) == 'undefined') {
@@ -1981,9 +1940,7 @@ $(document).ready(function(){
 				afReferrer = '';
 			  }
 			  var addate = new Date(); 
-			  var html ='<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=bdto&amp;p2=emue&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>'
-			  //$('#adfox683counter').append( html )
-              document.write(html)
+			  document.write( '<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=bdto&amp;p2=emue&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>' )
 		},
 		
 		adfox980 : function() {
@@ -1999,18 +1956,24 @@ $(document).ready(function(){
 			var dl = escape(document.location);
 			var pr1 = Math.floor(Math.random() * 1000000);
 			
-			var html = '<div id="AdFox_banner_'+pr1+'"><\/div>'+
-			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>'
-			$('#adfox980').html( html )
+			document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>'+
+			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
 			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emvi&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
 		},
 
         parseAllAdfoxDivs : function( nodes ) {
             $.each( nodes , function() {
 //console.info( this.id, this.id+'' in ADFOX  )
+                var anNode = $(this)
+                document.writeln = function(){
+                    anNode.html( arguments[0] )
+                }
                 if( this.id+'' in ADFOX )
                     ADFOX[this.id]()
             })
+            document.writeln = function(){
+                $('body').append( $(arguments[0] + '') )
+            }
         }
 	}
 	
