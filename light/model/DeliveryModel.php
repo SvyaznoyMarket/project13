@@ -154,7 +154,7 @@ class DeliveryModel
                         $shopDataList[$shopLink['id']] = $this->getShopData($shopLink['id'], $data['shop_list']);
                     }
 
-                    $shopList[] = $this->getShopIntervalList($shopLink['interval_list'], $data['interval_list']);
+                    $shopList[$shopLink['id']] = $this->getShopIntervalList($shopLink['interval_list'], $data['interval_list']);
                 }
 
                 $productDeliveryDateData['shops'] = $shopList;
