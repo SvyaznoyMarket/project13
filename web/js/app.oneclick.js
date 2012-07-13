@@ -423,12 +423,13 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 					break
 				}
 			}
-		
+			
 		if( tind < 0 ) {
 			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
 		} else {
 			self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
-			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
+			if( Deliveries['self'].dates.length > tind + 1 )
+				self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
 		}
 
 		self.pickedShop = ko.observable( self.todayShops[0] )
