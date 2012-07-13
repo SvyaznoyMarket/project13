@@ -27,16 +27,30 @@ class userController
 
       $prods = $cart->getProductList();
       $services = $cart->getServiceList();
-      $prodIdList = array_keys($prods);
-      $serviceIdList = array_keys($services);
+      $prodIdList = array();
+      $serviceIdList = array();
+      $serviceNotRelatedQuantity = 0;
 
-      foreach($services as $service){
+      foreach($prods as $prod){
+        if(!$prod->hasError()){
+          $prodIdList[] = $prod->getProductId();
+        }
+      }
+
+      foreach($services as $serviceId => $service){
         foreach ($service as $productId=> $tmp){
-          $prodIdList[] = $productId;
+          if(!$tmp->hasError()){
+            $prodIdList[] = $productId;
+            $serviceIdList[] = $serviceId;
+            if((int)$productId == 0){
+              $serviceNotRelatedQuantity++;
+            }
+          }
         }
       }
 
       $prodIdList = array_unique($prodIdList);
+      $serviceIdList = array_unique($serviceIdList);
 
       $productInfoList = array();
       $serviceInfoList = array();
@@ -94,7 +108,7 @@ class userController
         'data' => array(
           'name' => App::getCurrentUser()->isAuthorized()? App::getCurrentUser()->getUser()->getFullName() : '',
           'link' => '/private/', //ссылка на личный кабинет
-          'vitems' => $cart->getTotalQuantity(),
+          'vitems' => ($cart->getProductsQuantity() + $serviceNotRelatedQuantity),
           'sum' => $cart->getTotalPrice(),
           'vwish' => 0,
           'vcomp' => 0,
