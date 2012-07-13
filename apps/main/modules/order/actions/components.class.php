@@ -81,6 +81,11 @@ class orderComponents extends myComponents
     }
     $list = array_merge($listProcess, $listReady, $listCancelled);
 
+//    $rep = new RepositoryManager();
+//    $order = $rep->getOrder();
+//    $order->getByUser(1);
+//    $list = array();
+
     $statusList = OrderStatusTable::getInstance()->findAll()->getData();
     $this->setVar('list', $list, true);
     $this->setVar('statusList', $statusList, true);

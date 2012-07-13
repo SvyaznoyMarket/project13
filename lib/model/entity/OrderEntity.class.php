@@ -99,7 +99,37 @@ class OrderEntity
   private $item;
 
 
-  /**
+    public function __construct(array $data = array()){
+        if(array_key_exists('id', $data))      $this->id       = (int)$data['id'];
+        if(array_key_exists('status_id', $data))   $this->status_id      = (string)$data['status_id'];
+        if(array_key_exists('number', $data))   $this->number    = $data['number'];
+        if(array_key_exists('last_name', $data))   $this->lastName    = $data['last_name'];
+        if(array_key_exists('first_name', $data))   $this->firstName    = $data['first_name'];
+        if(array_key_exists('middle_name', $data))   $this->middleName    = $data['middle_name'];
+        if(array_key_exists('phone', $data))   $this->phonenumber    = $data['phone'];
+        if(array_key_exists('payment_status_id', $data))   $this->paymentStatusId    = $data['payment_status_id'];
+        if(array_key_exists('payment_id', $data))   $this->paymentId    = $data['payment_id'];
+        if(array_key_exists('payment_detail', $data))   $this->paymentDetail    = $data['payment_detail'];
+        if(array_key_exists('sum', $data))   $this->sum    = $data['sum'];
+       // if(array_key_exists('is_delivery', $data))   $this->is    = $data['is_delivery'];
+      //  if(array_key_exists('is_paid_delivery', $data))   $this->i    = $data['is_paid_delivery'];
+        if(array_key_exists('delivery_type_id', $data))   $this->deliveryType    = $data['delivery_type_id'];
+        if(array_key_exists('delivery_interval_id', $data))   $this->deliveryInterval    = $data['delivery_interval_id'];
+        //if(array_key_exists('store_id', $data))   $this->st    = $data['store_id'];
+        if(array_key_exists('shop_id', $data))   $this->shop    = $data['shop_id'];
+        //if(array_key_exists('address_id', $data))   $this->addressId    = $data['address_id'];
+        if(array_key_exists('geo_id', $data))   $this->region    = $data['geo_id'];
+        if(array_key_exists('address', $data))   $this->address    = $data['address'];
+        //if(array_key_exists('zip_code', $data))   $this->z    = $data['zip_code'];
+        if(array_key_exists('delivery_type_id', $data))   $this->deliveryType    = $data['delivery_type_id'];
+//        if(array_key_exists('credit_bank', $data)) {
+//            foreach ($data['credit_bank'] as $bankData) {
+//                $this->credit_bank[] = new CreditBankEntity($bankData);
+//            }
+//        }
+    }
+
+    /**
    * @param string $address
    */
   public function setAddress($address)
