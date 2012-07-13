@@ -35,12 +35,17 @@ $(document).ready(function() {
             price    = $(nodes.price).html().replace(/\s/,'')
         this.noview  = false
         var dropflag = false
-
+        var totalCalcTO = null
+        
         this.calculate = function( q ) {
+            clearTimeout( totalCalcTO )
             self.quantum = q
             self.sum = price * q
             $(nodes.sum).html( printPrice( self.sum ) )
-            $(nodes.sum).typewriter(800, getTotal)
+            $(nodes.sum).typewriter(800)
+            totalCalcTO = setTimeout( function() {
+                getTotal(), 1000
+            })
         }
 
         this.clear = function() {
