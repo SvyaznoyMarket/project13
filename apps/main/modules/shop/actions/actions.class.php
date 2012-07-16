@@ -32,19 +32,24 @@ class shopActions extends myActions
 
     if (!empty($request['region']))
     {
-      $this->region = RegionTable::getInstance()->getByToken($request['region']);
+      $region = RepositoryManager::getRegion()->getById($request['region']);
     }
-    else
+    else{
+      $region = false;
+    }
+
+
+    if(!$region || !$region->getId())
     {
-      $region = $this->getUser()->getRegion();//RegionTable::getInstance()->getDefault();
-      $this->region = array(
-        'name' => $this->getUser()->getRegion('name'),
-        'type' => $this->getUser()->getRegion('type'),
-        'id' => $this->getUser()->getRegion('id'),
-        'latitude' => $this->getUser()->getRegion('latitude'),
-        'longitude' => $this->getUser()->getRegion('longitude'),
-      );
+      $region = $this->getUser()->getRegion('region');
     }
+    $this->region = array(
+      'name' => $region->getName('name'),
+      'type' => $region->getType(),
+      'id' => $region->getId(),
+      'latitude' => $region->getLatitude(),
+      'longitude' => $region->getLongitude(),
+    );
     $this->forward404Unless($this->region, 'Region not found');
   }
  /**

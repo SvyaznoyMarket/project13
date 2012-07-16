@@ -43,6 +43,14 @@ class productCatalog_Components extends myComponents
         'url' => $this->generateUrl('productCatalog_creator', array('sf_subject' => $this->productCategory, 'creator' => $this->creator)),
       );
     }
+    if ($this->productPager) {
+      if ($this->productPager->getPage() > 1) {
+        $list[] = array(
+          'name' => 'страница '.$this->productPager->getPage().' из '.$this->productPager->getLastPage(),
+          'url'  => $this->generateUrl('productCatalog_category', $this->productCategory),
+        );
+      }
+    }
     if (isset($this->product)) {
       if ('productStock' == $this->getContext()->getRouting()->getCurrentRouteName()) {
         $list[] = array(

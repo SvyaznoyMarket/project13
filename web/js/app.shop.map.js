@@ -1,8 +1,5 @@
-//function userSelectShop(shopId){
-//  console.log(shopId);
-//  regionMap.closeMap();
-//}
 
+  
 function MapWithShopsOLD(center, infoWindowTemplate, DOMid, selectCallback) {
   var self = this
   self.mapWS = null
@@ -12,6 +9,8 @@ function MapWithShopsOLD(center, infoWindowTemplate, DOMid, selectCallback) {
   self.inited = false
 
   function create() {
+console.log( 'LatLng' in google.maps )   
+alert('AAAA') 
     self.positionC = new google.maps.LatLng(center.latitude, center.longitude)
     var options = {
       zoom:11,

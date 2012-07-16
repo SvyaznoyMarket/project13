@@ -1,4 +1,5 @@
 <?php
+namespace light;
 /**
  * Created by JetBrains PhpStorm.
  * User: pavel
@@ -89,6 +90,10 @@ class Response
     }
   }
 
+  public function clearHeaders(){
+    $this->headers = array();
+  }
+
   public function getContent(){
     return $this->content;
   }
@@ -117,6 +122,43 @@ class Response
     return isset($this->headers[$name]) ? $this->headers[$name] : $default;
   }
 
+
+  public function redirect($url, $statusCode = 302, $params = array())
+  {
+    if (empty($url))
+    {
+      throw new \InvalidArgumentException('Cannot redirect to an empty URL.');
+    }
+
+    if(!is_string($url)){
+      throw new \InvalidArgumentException('URL must be a string.');
+    }
+
+
+    if (!preg_match('#^[a-z][a-z0-9\+.\-]*\://#i', $url) && !(0 === strpos($url, '/')) && ($url == '#'))
+    {
+      $url = App::getRouter()->createUrl($url, $params);
+    }
+
+    $url = str_replace('&amp;', '&', $url);
+
+    // redirect
+    $this->clearHttpHeaders();
+    $this->setStatusCode($statusCode);
+
+    // The Location header should only be used for status codes 201 and 3..
+    // For other code, only the refresh meta tag is used
+    if ($statusCode == 201 || ($statusCode >= 300 && $statusCode < 400))
+    {
+      $this->setHttpHeader('Location', $url);
+    }
+
+    $this->setContent(sprintf('<html><head><meta http-equiv="refresh" content="%d;url=%s"/></head></html>', 0, htmlspecialchars($url, ENT_QUOTES, 'utf-8')));
+    $this->sendHeaders();
+    $this->sendContent();
+    exit();
+  }
+
   /**
    * Retrieves HTTP headers from the current web response.
    *
@@ -129,7 +171,7 @@ class Response
 
   public function setContent($content){
     if(!is_string($content)){
-      throw new Exception('content must be a string');
+      throw new \Exception('content must be a string');
     }
     $this->content = $content;
   }
@@ -232,7 +274,7 @@ class Response
         $expire = strtotime($expire);
         if ($expire === false || $expire == -1)
         {
-          throw new Exception('Your expire parameter is not valid.');
+          throw new \Exception('Your expire parameter is not valid.');
         }
       }
     }
@@ -268,6 +310,28 @@ class Response
 
   protected function normalizeHeaderName($name)
   {
-    return preg_replace('/\-(.)/e', "'-'".strtoupper('\\1'), strtr(ucfirst(strtolower($name)), '_', '-'));
+    return preg_replace('/\-(.)/e', "'-'.strtoupper('\\1')", strtr(ucfirst(strtolower($name)), '_', '-'));
+  }
+
+  static public function getDate($timestamp, $type = 'rfc1123')
+  {
+    $type = strtolower($type);
+
+    if ($type == 'rfc1123')
+    {
+      return substr(gmdate('r', $timestamp), 0, -5).'GMT';
+    }
+    else if ($type == 'rfc1036')
+    {
+      return gmdate('l, d-M-y H:i:s ', $timestamp).'GMT';
+    }
+    else if ($type == 'asctime')
+    {
+      return gmdate('D M j H:i:s', $timestamp);
+    }
+    else
+    {
+      throw new \Exception('The second getDate() method parameter must be one of: rfc1123, rfc1036 or asctime.');
+    }
   }
 }

@@ -177,4 +177,15 @@ class RepositoryManager
     if(!$repo) $repo = new QrcodeRepository();
     return $repo;
   }
+
+  /**
+   * @static
+   * @return PromoRepository
+   */
+  public static function getPromo()
+  {
+    static $repo;
+    if(!$repo) $repo = new PromoRepository();
+    return $repo;
+  }
 }

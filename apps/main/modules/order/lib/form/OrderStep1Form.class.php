@@ -12,40 +12,16 @@ class OrderStep1Form extends BaseOrderForm
 {
   protected $_deliveryTypes = null;
 
-//  protected $_deliveryIntervals = array();
-
-  protected function isOrderContainBigProduct()
-  {
-    $bigThings = array(1096, 1095, 1094, 76, 18, 2);
-    $furnitureCat = ProductCategoryTable::getInstance()->findOneByCoreId(80);
-    foreach (sfContext::getInstance()->getUser()->getCart()->getProductServiceList() as $product)
-    {
-      foreach ($product['product']->Category as $category) {
-        if ($category->root_id == $furnitureCat->root_id) {
-          return true;
-        }
-        if (in_array($category->core_id, $bigThings)) {
-          return true;
-        }
-        $ancs = $category->getNode()->getAncestors();
-        foreach ($ancs as $anc) {
-          if (in_array($anc->core_id, $bigThings)) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
   protected function isOrderHaveEnougthInStock($shop_id)
   {
     $cart = sfContext::getInstance()->getUser()->getCart()->getProducts();
     $stockRel = StockProductRelationTable::getInstance();
     foreach ($cart as $product_id => $product)
     {
+      /** @var $product \light\ProductCartData */
+
       $product_id = ProductTable::getInstance()->getIdBy('core_id',$product_id);
-      if (!$stockRel->isInStock($product_id, $shop_id, null, $product['quantity'])) {
+      if (!$stockRel->isInStock($product_id, $shop_id, null, $product->getQuantity())) {
         return false;
       }
     }
@@ -125,8 +101,9 @@ class OrderStep1Form extends BaseOrderForm
       };
       $dProducts_raw = sfContext::getInstance()->getUser()->getCart()->getProducts();
       $dProducts = array();
-      foreach ($dProducts_raw as $dProduct) {
-        $dProducts[] = array('id' => $dProduct['id'], 'quantity' => $dProduct['quantity']);
+      foreach ($dProducts_raw as $dProductId => $dProduct) {
+        /** @var $dProduct \light\ProductCartData */
+        $dProducts[] = array('id' => $dProductId, 'quantity' => $dProduct->getQuantity());
       }
       $deliveries = Core::getInstance()->query('delivery.calc', array(), array(
         'geo_id' => sfContext::getInstance()->getUser()->getRegion('core_id'),
@@ -182,12 +159,12 @@ class OrderStep1Form extends BaseOrderForm
 
     $this->disableCSRFProtection();
 
-    $regions = RegionTable::getInstance()->getListHavingShops();
+    $regions = RepositoryManager::getRegion()->getShopAvailable();
     $region_choises = array();
     foreach ($regions as $region)
     {
-      $region_choices[$region['id']]['name'] = $region['name'];
-      $region_choices[$region['id']]['data-url'] = url_for('region_change', $region['core_id']);
+      $region_choices[$region->getId()]['name'] = $region->getName();
+      $region_choices[$region->getId()]['data-url'] = url_for('region_change', $region->getId());
     }
 
     $this->widgetSchema['region_id'] = new sfWidgetFormChoice(array(
@@ -403,7 +380,6 @@ class OrderStep1Form extends BaseOrderForm
         $this->widgetSchema['delivery_period_id']->setOption('choices', $periods);
       }
       if ($deliveryType && ('self' == $deliveryType->token)) {
-        //        $this->widgetSchema['shop_id']->setOption('choices', DeliveryCalc::getShopListForSelfDelivery());
         // если самовывоз
         if (!empty($taintedValues['shop_id'])) {
           // чтобы не срабатывал валидатор, так как при самовывозе этого поля в форме нет.

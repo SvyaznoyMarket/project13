@@ -1,4 +1,6 @@
 <?php
+namespace light;
+use Exception;
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov
@@ -6,4 +8,4 @@
  * Time: 14:53
  * To change this template use File | Settings | File Templates.
  */
-class systemException extends Exception{}
+class systemException extends \Exception{}

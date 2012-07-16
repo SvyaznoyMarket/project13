@@ -19,6 +19,7 @@
 	$LAB.setGlobalDefaults({ AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.queueScript('combine.js')
 	.queueScript('jquery-1.6.4.min.js')
+	.queueScript('/js/asyn.code.ver3.js')
 	.queueWait( function(){
 		document.write = function(){
 /*			if( arguments[0].match('javascript') )
@@ -81,7 +82,9 @@
 			}).runQueue()
 			break
 		case 'order_complete':
-			$LAB.queueScript('bigjquery.min.js').queueWait( function() {
+			$LAB.queueScript('bigjquery.min.js')
+				//.queueScript('http://www.everestjs.net/static/st.v2.js')
+				.queueWait( function() {
 				$LAB.script( getWithVersion('library.js') )
 				.script( 'JsHttpRequest.js' )
                 //.script( 'http://direct-credit.ru/widget/api_script_utf.js' )
@@ -128,7 +131,8 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
-                }).runQueue()
+				//.script('http://www.everestjs.net/static/st.v2.js')
+			}).runQueue()
 			break
 		case 'product_comment':
 			$LAB.queueWait( function() {

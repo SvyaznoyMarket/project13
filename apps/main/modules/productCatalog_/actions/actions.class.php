@@ -71,7 +71,7 @@ class productCatalog_Actions extends myActions
       $list[] = $ancestor['name'];
     }
     $list[] = $productCategory->name;
-    $title = '%s - страница %d из %d - интернет-магазин  Enter.ru - ' . $this->getUser()->getRegion('name');
+    $title = '%s - страница %d из %d - интернет-магазин Enter.ru - ' . $this->getUser()->getRegion('name');
     $this->getResponse()->setTitle(sprintf(
       $title,
       implode(' - ', $list),
@@ -121,6 +121,7 @@ class productCatalog_Actions extends myActions
       $productCategory->level + 2,
       false
     );
+    $this->forward404If(empty($categoryTree));
     $productFilter = $this->getProductFilter($request);
     /** @var $rootCategory ProductCategoryEntity */
     $rootCategory = reset($categoryTree);
@@ -143,10 +144,12 @@ class productCatalog_Actions extends myActions
       $requestCategory->level + 2, // site-db level less per 1, and need load next level
       true
     );
+    $this->forward404If(empty($categoryTree));
     /** @var $currentCategory ProductCategoryEntity */
     /** @var $childrenCategory ProductCategoryEntity */
     $currentCategory = reset($categoryTree);
     $currentCategory = $currentCategory->getNode($requestCategory->core_id);
+    $this->forward404If(empty($currentCategory));
 
     $productFilter = $this->getProductFilter($request);
     $maxPerPage = 3;
@@ -310,6 +313,7 @@ class productCatalog_Actions extends myActions
         /** @var $rootCategory ProductCategoryEntity */
         /** @var $productCategory ProductCategory */
         /** @var $self myActions */
+        $self->forward404If(empty($categoryTree));
         $rootCategory = reset($categoryTree);
         if($node = $rootCategory->getNode($productCategory->core_id)){
           $quantity = $node->getProductCount();

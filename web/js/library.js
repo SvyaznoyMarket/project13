@@ -917,6 +917,7 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 		infoWindow   = null,
 		positionC    = null,
 		markers      = [],
+		currMarker   = null,
 		mapContainer = $('#'+DOMid),
 		infoWindowTemplate = templateIWnode.prop('innerHTML')
 	
@@ -944,23 +945,37 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 		})
 	}
 
-	this.showInfobox = function( marker ) {
+	this.showInfobox = function( markerId ) {
+		if( currMarker )
+			currMarker.setVisible(true) // show preceding marker
+        var marker = markers[markerId].ref 
+		currMarker = marker
 		var item = markers[marker.id]
+		
 		marker.setVisible(false) // hides marker
-		self.updateInfoWindowTemplate( item )
+		
+        self.updateInfoWindowTemplate( item )
 		infoWindow.setContent( infoWindowTemplate )
 		infoWindow.setPosition( marker.position )
 		infoWindow.open( mapWS )
 		google.maps.event.addListener( infoWindow, 'closeclick', function() { 
 			marker.setVisible(true)
 		})
+
 	}
 	
 	this.hideInfobox = function() {
 		infoWindow.close()
 	}
+
+    var handlers = []
+
+    this.addHandlerMarker = function( e, callback ) {
+        handlers.push( { 'event': e, 'callback': callback } )
+    }
 	
 	this.showMarkers = function( argmarkers ) {
+        mapContainer.show()
 		$.each( markers, function(i, item) {
 			 if( typeof( item.ref ) !== 'undefined' )
 				item.ref.setMap(null)
@@ -968,7 +983,19 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 		markers = argmarkers
 		google.maps.event.trigger( mapWS, 'resize' )
 		mapWS.setCenter( positionC )
+        var latMax = 0, longMax = 0, latMin = 90, longMin = 90
+        var len = 0
 		$.each( markers, function(i, item) {
+            len ++
+            if( item.latitude > latMax )
+                latMax = item.latitude
+            if( item.longitude > longMax )
+                longMax = item.longitude
+            if( item.latitude < latMin )
+                latMin = item.latitude
+            if( item.longitude < longMin )
+                longMin = item.longitude
+
 			var marker = new google.maps.Marker({
 			  position: new google.maps.LatLng(item.latitude, item.longitude),
 			  map: mapWS,
@@ -976,9 +1003,25 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 			  icon: '/images/marker.png',
 			  id: item.id
 			})
-			google.maps.event.addListener(marker, 'click', function() { self.showInfobox(this) })
+			google.maps.event.addListener(marker, 'click', function() { self.showInfobox(this.id) })
+            $.each( handlers, function( h, handler ) {
+                google.maps.event.addListener( marker, handler.event, function() { handler.callback(item) } )
+            })
+            
 			markers[marker.id].ref = marker
 		})
+        if( len === 1 ) {
+             latMin -= 0.001 
+             latMin -= 0.001
+             latMax = latMax*1 +  0.001
+             longMax = longMax*1 + 0.001
+        }
+        var sw = new google.maps.LatLng( latMin , longMin )
+        var ne = new google.maps.LatLng( latMax , longMax )
+        var bounds = new google.maps.LatLngBounds(sw, ne)
+        if( len )
+            mapWS.fitBounds(bounds)
+
 	}
 
 	this.closeMap = function( callback ) {
@@ -987,7 +1030,13 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 			if( callback )
 				callback()
 		})
-	}
+	},
+
+    this.closePopupMap = function( callback ) {
+        infoWindow.close()
+        if( callback )
+            callback()
+    }
 			
 	this.addHandler = function( selector, callback ) {
 		mapContainer.delegate( selector, 'click', function(e) { //desktops			
@@ -1010,11 +1059,11 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
 } // object MapWithShops
 
 function calcMCenter( shops ) {
-	var latitude=0, longitude=0,
-		l = shops.length
-	for(var i=0; i<l; i++) {
+	var latitude = 0, longitude = 0, l = 0
+	for(var i in shops ) {
 		latitude  += shops[i].latitude*1
-		longitude += shops[i].longitude*1		
+		longitude += shops[i].longitude*1
+        l++
 	}
 	var mapCenter = {
 		latitude  : latitude / l,
@@ -1045,7 +1094,6 @@ function Lightbox( jn, data ){
 	this.save = function() {
 		var cooka = init
 		cooka.basket={}
-		console.info(cooka)
 		docCookies.setItem( true, 'Lightbox', cooka, 20*60, '/' )
 	}
 	
@@ -1750,4 +1798,286 @@ if ( !Date.prototype.toISOString ) {
 		};
   
 	}() );
-}	
+}
+
+$(document).ready(function(){
+   /* Perfomace Test */
+   /* 
+   $($('body').children()[0]).before( $('<input type="text" value="0" class="perfomancehidden" id="perfomancehidden"/>') )
+   setTimeout( function() {
+       $('#perfomancehidden').val( window.performance.timing.loadEventEnd - window.performance.timing.navigationStart ) 
+   }, 1000)
+    */
+
+	window.ANALYTICS = {
+		adblender : function() {
+			document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random() + '" ></sc' + 'ript>')
+			// 'document.write' for <script/> is overloaded in loadjs.js
+			// in fact: 
+			// var ad = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/view.js?r=' + Math.random()
+			// $LAB.script( ad )
+		},
+		
+		adblenderCost : function() {
+			var orderSum = arguments[0]
+			document.write('<script type="text/javascript" src="' + ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/pixel.js?cost=' + escape( orderSum ) + '&r=' + Math.random() + '" ></sc' + 'ript>')
+			// 'document.write' for <script/> is overloaded in loadjs.js			
+		},
+		
+        heiasMain : function() {
+            (function(d){
+                var HEIAS_PARAMS = [];
+                HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
+                HEIAS_PARAMS.push(['pb', '1']);
+                if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
+                window.HEIAS.push(HEIAS_PARAMS);
+                var scr = d.createElement('script');
+                scr.async = true;
+                scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
+                var elem = d.getElementsByTagName('script')[0];
+                elem.parentNode.insertBefore(scr, elem);
+            }(document)); 
+        },
+
+        heiasProduct : function() {
+            var product = arguments[0];
+            (function(d){
+                var HEIAS_PARAMS = [];
+                HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
+                HEIAS_PARAMS.push(['pb', '1']);
+                HEIAS_PARAMS.push(['product_id', product]);
+                if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
+                window.HEIAS.push(HEIAS_PARAMS);
+                var scr = d.createElement('script');
+                scr.async = true;
+                scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
+                var elem = d.getElementsByTagName('script')[0];
+                elem.parentNode.insertBefore(scr, elem);
+            }(document));            
+        },
+
+        heiasOrder : function() {
+            var orderArticle = arguments[0];
+            (function(d){
+                var HEIAS_PARAMS = [];
+                HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
+                HEIAS_PARAMS.push(['pb', '1']);
+                HEIAS_PARAMS.push(['order_article', orderArticle]);
+                if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
+                window.HEIAS.push(HEIAS_PARAMS);
+                var scr = d.createElement('script');
+                scr.async = true;
+                scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
+                var elem = d.getElementsByTagName('script')[0];
+                elem.parentNode.insertBefore(scr, elem);
+            }(document));            
+        },
+
+        heiasComplete : function() {
+            var a = arguments[0];      
+            HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
+            var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + a.order_article + '|product_quantity|' + a.product_quantity + '|order_id|' + a.order_id + '|order_total|' + a.order_total + '';
+            document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
+        },
+
+        mixmarket : function() {
+            document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>')
+        },
+
+        adriverCommon : function() {
+            var a = arguments[0];
+
+            var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+            var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
+            document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&bt=21&pz=0'+
+                '&custom=10='+ a.productId +';11='+ a.categoryId +
+                '&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
+        },
+
+        adriverOrder : function() {
+            var a = arguments[0];
+
+            var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+            var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
+            document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&sz=order&bt=55&pz=0'+
+                '&custom=150='+ a.order_id +
+                '&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
+        },
+
+        parseAllAnalDivs : function( nodes ) {
+            
+            var self = this
+            $.each(  nodes , function() {
+//console.info( this.id, this.id+'' in self  )
+                
+                // document.write is overwritten in loadjs.js to document.writeln
+                var anNode = $(this)
+                if( anNode.is('.parsed') )
+                    return
+                document.writeln = function(){
+                    anNode.html( arguments[0] )
+                }
+
+                if( this.id+'' in self )
+                    self[this.id]( $(this).data('vars') )
+                anNode.addClass('parsed')
+            })
+            document.writeln = function(){
+                $('body').append( $(arguments[0] + '') )
+            }
+        }
+	}
+    
+    ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
+	
+	
+	var ADFOX = {
+		adfoxbground : function() {
+			if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+			if (typeof(document.referrer) != 'undefined') {
+			  if (typeof(afReferrer) == 'undefined') {
+				afReferrer = escape(document.referrer);
+			  }
+			} else {
+			  afReferrer = '';
+			}
+			var addate = new Date();
+			var dl = escape(document.location);
+			var pr1 = Math.floor(Math.random() * 1000000);
+			
+			document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>'+
+			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
+			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=enlz&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);		
+		},
+		
+		adfox400counter : function() {
+		 if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+			if (typeof(document.referrer) != 'undefined') {
+			  if (typeof(afReferrer) == 'undefined') {
+				afReferrer = escape(document.referrer);
+			  }
+			} else {
+			  afReferrer = '';
+			}
+			var addate = new Date();
+            var dl = escape(document.location);
+            var pr1 = Math.floor(Math.random() * 1000000);  
+            document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
+            '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>')
+            AdFox_getCodeScript(1,pr1, 'http://ads.adfox.ru/171829/prepareCode?p1=biewf&amp;p2=engb&amp;pct=a&amp;pfc=a&amp;pfb=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		},
+	
+		adfox400 : function() {
+			if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+			if (typeof(document.referrer) != 'undefined') {
+			  if (typeof(afReferrer) == 'undefined') {
+				afReferrer = escape(document.referrer);
+			  }
+			} else {
+			  afReferrer = '';
+			}
+			var addate = new Date();
+			var dl = escape(document.location);
+			var pr1 = Math.floor(Math.random() * 1000000);	
+			document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
+			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
+			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		},
+		
+		adfox215 : function() {
+			if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+			if (typeof(document.referrer) != 'undefined') {
+			  if (typeof(afReferrer) == 'undefined') {
+				afReferrer = escape(document.referrer);
+			  }
+			} else {
+			  afReferrer = '';
+			}
+			var addate = new Date();
+			var dl = escape(document.location);
+			var pr1 = Math.floor(Math.random() * 1000000);
+			
+			document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>')
+			document.write( '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
+			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emud&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);		
+		},
+		
+		adfox683 : function() {
+			if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+			if (typeof(document.referrer) != 'undefined') {
+			  if (typeof(afReferrer) == 'undefined') {
+				afReferrer = escape(document.referrer);
+			  }
+			} else {
+			  afReferrer = '';
+			}
+			var addate = new Date();
+			var dl = escape(document.location);
+			var pr1 = Math.floor(Math.random() * 1000000);
+			
+			document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
+			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
+			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emue&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		},
+		
+		adfox683sub : function() {
+            if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+            if (typeof(document.referrer) != 'undefined') {
+              if (typeof(afReferrer) == 'undefined') {
+                afReferrer = escape(document.referrer);
+              }
+            } else {
+              afReferrer = '';
+            }
+            var addate = new Date();
+            var dl = escape(document.location);
+            var pr1 = Math.floor(Math.random() * 1000000);
+
+            document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
+            document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
+
+            AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=bdto&amp;p2=emue&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		},
+		
+		adfox980 : function() {
+			if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+			if (typeof(document.referrer) != 'undefined') {
+			  if (typeof(afReferrer) == 'undefined') {
+				afReferrer = escape(document.referrer);
+			  }
+			} else {
+			  afReferrer = '';
+			}
+			var addate = new Date();
+			var dl = escape(document.location);
+			var pr1 = Math.floor(Math.random() * 1000000);
+			
+			document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>'+
+			'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
+			AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emvi&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		},
+
+        parseAllAdfoxDivs : function( nodes ) {
+            var anNode = null
+            document.writeln = function() {
+                if( anNode )
+                    anNode.innerHTML += arguments[0]
+            }
+
+            $.each( nodes , function() {
+//console.info( this.id, this.id+'' in ADFOX  )
+                anNode = this
+                if( this.id+'' in ADFOX ) {
+                    ADFOX[this.id]()
+                }
+            })
+            anNode = null
+            document.writeln = function(){
+                $('body').append( $(arguments[0] + '') )
+            }
+        }
+	}
+	
+    ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
+	
+})

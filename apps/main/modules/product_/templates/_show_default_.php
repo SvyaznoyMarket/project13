@@ -77,60 +77,56 @@ foreach ($photo3dList as $photo3d)
   <div class="font14 pb15"><?php echo $item->getTagline() ?></div>
   <div class="clear"></div>
 
+  <?php if ($item->haveToShowAveragePrice()): ?>
+  <div class="mOurGray">
+    Средняя цена в магазинах города*<br><div class='mOurGray mIco'><?php render_partial('product_/templates/_price.php', array('price' => $item->getPriceAverage(), 'noStrong' => true, )) ?> &nbsp;</div>
+  </div>
+  <?php slot('additional_data') ?>
+  <div class="gray pt20 mb10">*по данным мониторинга компании Enter</div>
+  <div class="clear"></div>
+  <?php end_slot() ?>
+  <div class="clear"></div>
+  <div class="clear mOur pt10 <?php if ($item->hasSaleLabel()) echo 'red'; ?>">Наша цена</div>
+  <?php endif ?>
 
-    <div class="bigpriceblock">
-        <?php if ($item->haveToShowAveragePrice()): ?>
-            <div><span class="through font18 gray"><?php render_partial('product_/templates/_price.php', array('price' => $item->getPriceAverage(), 'noStrong' => true, )) ?></span></div>
-        <?php endif; ?>
-        <div class="fl pb15">
-            <div class="pb10 "><strong class="font36"><span class="price"><?php render_partial('product_/templates/_price.php', array('price' => formatPrice($item->getPrice()))) ?></span></strong></div>
-            <?php if ($item->getIsBuyable()): ?>
-                <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
-            <?php endif ?>
-            <div class="pb5">
-                <a href=""
-                   data-model='<?php echo $json ?>'
-                   link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
-                   link-input='<?php echo url_for('product_delivery_1click') ?>'
-                   class="orange underline font14 order1click-link-new">Купить быстро в 1 клик</a>
-             </div>
-        </div>
-        <div class="fr ar pb15">
-            <div class="goodsbarbig mSmallBtns" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
-                <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
+  <div class="fl pb15">
+    <div class="pb10 <?php if ($item->hasSaleLabel()) echo 'red'; ?>"><?php render_partial('product_/templates/_price.php', array('price' => formatPrice($item->getPrice()))) ?></div>
+    <?php if ($item->getIsBuyable()): ?>
+    <div class="pb5"><strong class="orange">Есть в наличии</strong></div>
+    <?php endif ?>
+  </div>
 
-                <div class='bCountSet'>
-                    <?php if (!$item->isInCart()): ?>
-                        <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
-                    <?php else: ?>
-                        <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
-                    <?php endif ?>
-                    <span><?php echo $item->isInCart() ? $item->getCartQuantity() : 1 ?> шт.</span>
-                </div>
 
-            </div>
-        </div>
-        <div class="clear"></div>
+  <div class="fr ar pb15">
+    <div class="goodsbarbig mSmallBtns" ref="<?php echo $item->getToken() ?>" data-value='<?php echo $json ?>'>
+
+      <div class='bCountSet'>
+        <?php if (!$item->isInCart()): ?>
+        <a class='bCountSet__eP' href>+</a><a class='bCountSet__eM' href>-</a>
+        <?php else: ?>
+        <a class='bCountSet__eP disabled' href>&nbsp;</a><a class='bCountSet__eM disabled' href>&nbsp;</a>
+        <?php endif ?>
+        <span><?php echo $item->isInCart() ? $item->getCartQuantity() : 1 ?> шт.</span>
+      </div>
+
+      <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
     </div>
-
-    <div class="creditbox"  <?php if (!$dataForCredit['creditIsAllowed']) : ?> style="display:none" <?php endif; ?>>
-        <div class="creditboxinner">
-            от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
-            <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
-            <input id="creditinput" type="checkbox" name="creditinput"/></label></div>
-        </div>
-    </div>
+    <?php if ( $item->getState()->getIsBuyable()): ?>
+      <div class="pb5"><strong>
+        <a href=""
+          data-model='<?php echo $json ?>'
+          link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
+          link-input='<?php echo url_for('product_delivery_1click') ?>'
+          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
+      </strong></div>
+    <?php endif ?>
+  </div>
 
     <input data-model="<?php echo $dataForCredit['creditData'] ?>" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
 
 
 
-
-
-
-
-
-    <?php if ($item->getIsBuyable()): ?>
+  <?php if ($item->getIsBuyable()): ?>
   <div class="bDeliver2 delivery-info" id="product-id-<?php echo $item->getId() ?>" data-shoplink="<?php echo url_for('productStock', array('product' => $item->getPath())) ?>" data-calclink="<?php echo url_for('product_delivery', array('product' => $item->getId())) ?>">
     <h4>Как получить заказ?</h4>
     <ul>
@@ -139,61 +135,23 @@ foreach ($photo3dList as $photo3d)
       </li>
     </ul>
   </div>
-  <div class="line pb15"></div>
   <?php endif ?>
+
+  <div class="pb15">
+    <a href="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=1248/*http://market.yandex.ru/grade-shop.xml?shop_id=83048"><img src="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=1248/*http://img.yandex.ru/market/informer12.png" border="0" alt="Оцените качество магазина на Яндекс.Маркете." /></a>
+  </div>
+  <div class="line pb15"></div>
 
   <div style="margin-bottom: 20px;">
     <?php
     //если стоит шильдик Акция
     $labels = $item->getLabelList();
     $label = isset($labels[0])? $labels[0] : null;
-    if (false && $label && $label->getId() == ProductLabelEntity::LABEL_ACTION) {
+    if ($label && $label->getId() == ProductLabelEntity::LABEL_ACTION) {
     ?>
-      <!--AdFox START-->
-      <!--enter-->
-      <script type="text/javascript">
-        <!--
-        if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
-        if (typeof(document.referrer) != 'undefined') {
-          if (typeof(afReferrer) == 'undefined') {
-            afReferrer = escape(document.referrer);
-          }
-        } else {
-          afReferrer = '';
-        }
-        var addate = new Date();
-        document.write('<scr' + 'ipt type="text/javascript" src="http://ads.adfox.ru/171829/prepareCode?p1=biewf&amp;p2=engb&amp;pct=a&amp;pfc=a&amp;pfb=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '"><\/scr' + 'ipt>');
-        // -->
-      </script>
-      <!--AdFox END-->
-    <?php } elseif (false) { ?>
-      <!--AdFox START-->
-      <!--enter-->
-      <!--Площадка: Enter.ru / * / *-->
-      <!--Тип баннера: 400x-->
-      <!--Расположение: <верх страницы>-->
-      <!-- ________________________AdFox Asynchronous code START__________________________ -->
-      <script type="text/javascript">
-        <!--
-        if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
-        if (typeof(document.referrer) != 'undefined') {
-          if (typeof(afReferrer) == 'undefined') {
-            afReferrer = escape(document.referrer);
-          }
-        } else {
-          afReferrer = '';
-        }
-        var addate = new Date();
-        var dl = escape(document.location);
-        var pr1 = Math.floor(Math.random() * 1000000);
-
-        document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
-        document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
-
-        AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
-        // -->
-      </script>
-      <!-- _________________________AdFox Asynchronous code END___________________________ -->
+      <div class="adfoxWrapper" id="adfox400counter"></div>
+    <?php } else { ?>
+      <div class="adfoxWrapper" id="adfox400"></div>
     <?php } ?>
   </div>
 

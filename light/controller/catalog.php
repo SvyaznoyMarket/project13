@@ -1,4 +1,5 @@
 <?php
+namespace light;
 /**
  * Created by JetBrains PhpStorm.
  * User: Kuznetsov
@@ -29,7 +30,6 @@ class catalogController
       $category->setId($rootCategory['id']);
       $category->setLink($rootCategory['link']);
       $category->setName($rootCategory['name']);
-      $category->setPosition($rootCategory['position']);
       $category->setToken($rootCategory['token']);
 
       $menu[] = array(

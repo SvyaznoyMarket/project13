@@ -107,21 +107,21 @@ class shopComponents extends myComponents
   */
   public function executeMap()
   {
-    $regionList = RegionTable::getInstance()->getListHavingShops();
+    $regionList = RepositoryManager::getRegion()->getShopAvailable();
 
     $markers = array();
-    $regions = array();
+    /*$regions = array();
     foreach ($regionList as $region)
     {
       $regions[] = array(
-        'id'        => $region->id,
-        'token'     => $region->token,
-        'latitude'  => $region->latitude,
-        'longitude' => $region->longitude,
-      );
+        'id'        => $region->getId(),
+        'token'     => $region->getToken(),
+        'latitude'  => $region->getLatitude(),
+        'longitude' => $region->getLongitude(),
+      );*/
 
-      $region->Shop = ShopTable::getInstance()->getListByRegion($region);
-      foreach ($region->Shop as $shop)
+      $Shop = ShopTable::getInstance()->getListByRegion($this->region['id']);
+      foreach ($Shop as $shop)
       {
         $markers[$shop->id] = array(
           'id'        => $shop->id,
@@ -134,11 +134,11 @@ class shopComponents extends myComponents
           'longitude' => $shop->longitude,
         );
       }
-    }
+    //}
 
     $this->setVar('regionList', $regionList, true);
     $this->setVar('markers', $markers, true);
-    $this->setVar('regions', $regions, true);
+    //$this->setVar('regions', $regions, true);
   }
 
   function executeSeo_counters_advance() {

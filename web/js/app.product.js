@@ -101,7 +101,7 @@ $(document).ready(function() {
 				return
 			}
 			np.find('span').text( hm + '  шт.')
-			l1.attr('href', l1href + '/' +  hm )
+			l1.attr('href', l1href +  hm )
 			l1cl.attr('href', l1clhref + '&quantity=' + hm )
 		})
 		

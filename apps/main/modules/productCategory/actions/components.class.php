@@ -24,25 +24,6 @@ class productCategoryComponents extends myComponents
   }
 
   /**
-   * Executes root_list component
-   *
-   * @param ProductCategory $productCategory Текущая категория товара
-   */
-  public function executeRoot_list()
-  {
-    //    $list = array();
-    //    foreach (ProductCategoryTable::getInstance()->getRootList() as $productCategory)
-    //    {
-    //      $list[] = array(
-    //        'name' => (string)$productCategory,
-    //        'url'  => $this->generateUrl('productCatalog_category', $productCategory),
-    //      );
-    //    }
-
-    $this->setVar('list', ProductCategoryTable::getInstance()->getRootList(array('hydrate_array' => true)), true);
-  }
-
-  /**
    * Executes child_list component
    *
    * @param ProductCategory $productCategory Родительская категория товара

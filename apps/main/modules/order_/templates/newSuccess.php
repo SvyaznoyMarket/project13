@@ -10,8 +10,29 @@
 
 <?php include_partial('order_/header', array('title' => 'Финальный шаг :)')) ?>
 
-<input disabled="disabled" id="map-center" type="hidden" data-content='<?php echo $mapCenter ?>' />
+
 <input disabled="disabled" id="order-validator" type="hidden" data-value='<?php echo json_encode($jsValidator) ?>' />
+
+<script id="elementInShopList" type="text/html">
+  <li data-id="<%= id%>">
+    <div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>
+    <div><%= name%></div>
+    <span>Работаем</span> <span><%= regime%></span>
+  </li>
+</script>
+
+<script id="mapInfoBlock" type="text/html">
+  <div class="bMapShops__ePopupRel">
+    <h3><%= name%></h3>
+    <span>Работает </span>
+    <span><%= regime%></span>
+    <br/>
+    <span class="shopnum" style="display: none;"><%= id%></span>
+    <a class="bGrayButton shopchoose" href="">Забрать из этого магазина</a>
+  </div>
+</script>
+
+<div id="map-info_window-container" style="display:none"></div>
 
 <div class="pb15"> <a href="<?php echo $backLink ?>">Вернуться к покупкам</a></div>
 
@@ -208,19 +229,6 @@
 
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
-<script type="text/javascript">
-  (function(d){
-    var HEIAS_PARAMS = [];
-    HEIAS_PARAMS.push(['type', 'ppx'], ['ssl', 'auto'], ['n', '12564'], ['cus', '12675']);
-    HEIAS_PARAMS.push(['pb', '1']);
-    HEIAS_PARAMS.push(['order_article', '<?php echo $sf_user->getCart()->getSeoCartArticle() ?>']);
-    if (typeof window.HEIAS === 'undefined') { window.HEIAS = []; }
-    window.HEIAS.push(HEIAS_PARAMS);
-    var scr = d.createElement('script');
-    scr.async = true;
-    scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js';
-    var elem = d.getElementsByTagName('script')[0];
-    elem.parentNode.insertBefore(scr, elem);
-  }(document));
-</script>
+  <div id="heiasOrder" data-vars="<?php echo $sf_user->getCart()->getSeoCartArticle() ?>" class="jsanalytics"></div>
+
 <?php endif ?>

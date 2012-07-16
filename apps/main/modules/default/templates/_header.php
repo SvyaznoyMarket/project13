@@ -25,7 +25,7 @@
   <div class="bHeader topmenu">
     <?php LastModifiedHandler::setLastModified();  ?>
     <?php include_partial('default/logo') ?>
-    <?php include_component('productCategory', 'root_list') ?>
+    <?php include_component('productCategory_', 'root_list') ?>
     <div class="bHeader__eLong"></div>
   </div>
 </div>

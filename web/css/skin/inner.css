@@ -4041,7 +4041,7 @@ DT.bCtg__eOrange{
 	.bCityPopup__eBlock a{
 		/* color: #fff; */
 		}
-#noti {
+.noti {
 	display: none;
 	width: 300px;
 	height: 200px;
@@ -4052,7 +4052,7 @@ DT.bCtg__eOrange{
 	-moz-border-radius:15px;
 	-webkit-border-radius:15px;
 }
-#noti div{
+.noti > div{
 	margin-top: 50px;
 }
 

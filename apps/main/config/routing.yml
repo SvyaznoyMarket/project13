@@ -504,38 +504,38 @@ order_show:
 #
 # cart
 cart:
-  url:   /cart
-  param: { module: cart, action: index }
+  url:   /cart/
+  param: { module: cart_, action: index }
 #
-# cart add
+# MOVED TO PLAIN PHP cart add
 cart_add:
-  url:   /cart/add/:product/_quantity/:quantity/:credit
-  param: { module: cart, action: add, quantity: 1, credit: 0 }
+  url:   /cart/add/:product/_quantity/:quantity/
+  param: { module: cart, action: add, quantity: 1}
   requirements:
     sf_method: [ get, post ]
     product: \d+
-# cart delete
+# MOVED TO PLAIN PHP cart delete
 cart_delete:
-  url:   /cart/delete/:product/_service/:service
-  param: { module: cart, action: delete, product: '-/-', service: 0 }
+  url:   /cart/delete/:product/_service/:service/
+  param: { module: cart, action: delete, product: 0, service: 0 }
   requirements:
     product: \d+
 
 #
-# cart clear
+# MOVED TO PLAIN PHP cart clear
 cart_clear:
   url:   /cart/clear
   param: { module: cart, action: clear }
 #
-# cart service add
+# MOVED TO PLAIN PHP cart service add
 cart_service_add:
-  url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/:credit
-  param: { module: cart, action: serviceAdd, quantity: 1, product: '0', credit: 0 }
+  url:   /cart/add_service/:product/_service/:service/_quantity/:quantity/
+  param: { module: cart, action: serviceAdd, quantity: 1, product: '0' }
   requirements:
     product: \d+
     service: \d+
 #
-# cart servcie delete
+# MOVED TO PLAIN PHP cart servcie delete
 cart_service_delete:
   url:   /cart/delete_service/:product/_service/:service
   param: { module: cart, action: serviceDelete, product: '0' }

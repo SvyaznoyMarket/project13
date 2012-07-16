@@ -17,7 +17,7 @@ class ProductCategoryRepository
     if (!count($idList))
       return array();
     else
-      return $this->getListByQuery(new CoreQuery('product.category.get', array('id' => $idList)));
+      return $this->getListByQuery(new CoreQuery('product.category.get', array('id' => $idList, 'expand' => array())));
   }
 
   public function getAll()

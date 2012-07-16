@@ -23,13 +23,6 @@ class cartActions extends myActions
     $cart = $this->getUser()->getCart();
     $this->setVar('cart', $cart, true);
 
-    if (!empty($_COOKIE['credit_on']) && $_COOKIE['credit_on']) {
-        $selectCredit = true;
-    } else {
-        $selectCredit = false;
-    }
-    $this->setVar('selectCredit', $selectCredit);
-
     $this->getUser()->setCacheCookie();
   }
 
@@ -100,13 +93,6 @@ class cartActions extends myActions
     }
 
     $this->getUser()->setCacheCookie();
-    if (isset($result['value'])) {
-        if ($request['credit']) {
-            setcookie('credit_on', true, 0 , '/');
-        } else {
-            setcookie('credit_on', false, 0 , '/');
-        }
-    }
 
     if ($request->isXmlHttpRequest()) {
       $cartInfo = $this->getUser()->getCart()->getBaseInfo();
@@ -240,15 +226,8 @@ class cartActions extends myActions
     }
 
     $this->getUser()->setCacheCookie();
-    if (isset($request['credit'])) {
-      if ($request['credit']) {
-          setcookie('credit_on', true, 0 , '/');
-      } else {
-          setcookie('credit_on', false, 0 , '/');
-      }
-    }
 
-      #myDebug::dump( $this->getUser()->getCart()->getServices() );
+    #myDebug::dump( $this->getUser()->getCart()->getServices() );
 
     if ($request->isXmlHttpRequest()) {
       $cartInfo = $this->getUser()->getCart()->getBaseInfo();

@@ -15,7 +15,7 @@ class ServiceRepository
    */
   public function getByToken($token)
   {
-    $params = array('slug' => $token);
+    $params = array('slug' => $token, 'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId());
     $result = CoreClient::getInstance()->query('service.get', $params);
 
     if (!$result || !array_key_exists($token, $result)) {
@@ -26,5 +26,35 @@ class ServiceRepository
 
     return $service;
   }
+
+  /**
+   * Load ServiceEntity by id from core.
+   *
+   * @param $callback
+   * @param array $idList
+   * @return ServiceEntity[]
+   */
+  public function getListByIdAsync($callback, array $idList)
+  {
+    $idList = array_unique($idList);
+    if (empty($idList)){
+      $callback(array());
+      return;
+    }
+
+    $cb = function($response) use (&$callback)
+    {
+      $list = array();
+      foreach ($response as $item)
+        $list[] = new ServiceEntity($item);
+      $callback($list);
+    };
+
+    CoreClient::getInstance()->addQuery('service/get', array(
+      'id' => $idList,
+      'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ), array(), $cb);
+  }
+
 
 }
