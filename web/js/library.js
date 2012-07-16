@@ -1968,6 +1968,24 @@ $(document).ready(function(){
 		},
 
         parseAllAdfoxDivs : function( nodes ) {
+            if( window.addEventListener ) {
+                var nativeEL = window.addEventListener
+                window.addEventListener = function(){
+    //console.info('addEventListener WINDOW', arguments[0])
+                  nativeEL.call(this, arguments[0], arguments[1])
+                  if( arguments[0] === 'load' )
+                    arguments[1]()
+                }
+            } else if( window.attachEvent ) { //IE < 9
+                var nativeEL = window.attachEvent
+                window.attachEvent = function(){
+//console.info('addEventListener WINDOW', arguments[0])
+                  //nativeEL.call(window, arguments[0], arguments[1])
+                  if( arguments[0] === 'onload' )
+                    arguments[1]()
+                }
+            }        
+                
             var anNode = null
             document.writeln = function() {
                 if( anNode )
