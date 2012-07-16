@@ -610,6 +610,7 @@ $(document).ready(function() {
         },
 
         onDeliveryBlockChange: function() {
+console.info('onDeliveryBlockChange')            
             if (1 == $('.order-delivery-holder:visible').length) {
                 $('#payment_method_online-field').show()
             }
@@ -750,6 +751,8 @@ $(document).ready(function() {
             return
         }
 
+        var hadPicked = $(this).hasClass('mChecked')
+
         if( $(this).find('input').attr('type') == 'radio' ) {
             var thatName = $('.mChecked input[name="'+$(this).find('input').attr('name')+'"]')
             if( thatName.length ) {
@@ -763,7 +766,8 @@ $(document).ready(function() {
         if( $(this).find('input').attr('type') == 'checkbox' ) {
             $(this).toggleClass('mChecked')
         }
-
+        if( hadPicked ) 
+            return
         var el = $(this).find('input[type="radio"][data-delivery-type]')
         if (!el.length) {
             return
