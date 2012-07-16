@@ -574,6 +574,10 @@ $(document).ready(function(){
 		return false
 	})
 	$('.product_filter-block input:submit').addClass('mDisabled')
+	$('.product_filter-block input:submit').click( function(e) {
+		if( $(this).hasClass('mDisabled') )
+			e.preventDefault()
+	})
 	var launch = false
 	$('.product_filter-block').change(function(){
 		activateForm()

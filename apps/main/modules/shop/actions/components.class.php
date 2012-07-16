@@ -47,16 +47,17 @@ class shopComponents extends myComponents
     }
 
     $item = array(
-      'id'           => $this->shop->id,
-      'name'         => (string)$this->shop,
-      'address'      => $this->shop->address,
-      'phonenumbers' => $this->shop->phonenumbers,
-      'regime'       => $this->shop->regime,
-      'description'  => $this->shop->description,
-      'way_walk'     => $this->shop->way_walk,
-      'way_auto'     => $this->shop->way_auto,
-      'latitude'     => $this->shop->latitude,
-      'longitude'    => $this->shop->longitude,
+      'id'                => $this->shop->id,
+      'name'              => (string)$this->shop,
+      'address'           => $this->shop->address,
+      'phonenumbers'      => $this->shop->phonenumbers,
+      'regime'            => $this->shop->regime,
+      'description'       => $this->shop->description,
+      'way_walk'          => $this->shop->way_walk,
+      'way_auto'          => $this->shop->way_auto,
+      'latitude'          => $this->shop->latitude,
+      'longitude'         => $this->shop->longitude,
+      'is_reconstruction' => $this->shop->is_reconstruction,
       'photos'       => array(),
       'panorama'     =>
         !empty($this->shop->panorama)
@@ -97,7 +98,7 @@ class shopComponents extends myComponents
   */
   public function executeList()
   {
-    $this->setVar('shopList', ShopTable::getInstance()->getListByRegion($this->region['id']), true);
+    $this->setVar('shopList', ShopTable::getInstance()->getListByRegion($this->region['id'], array('is_reconstruction' => true, )), true);
   }
 
  /**
@@ -120,18 +121,19 @@ class shopComponents extends myComponents
         'longitude' => $region->getLongitude(),
       );*/
 
-      $Shop = ShopTable::getInstance()->getListByRegion($this->region['id']);
+      $Shop = ShopTable::getInstance()->getListByRegion($this->region['id'], array('is_reconstruction' => true, ));
       foreach ($Shop as $shop)
       {
         $markers[$shop->id] = array(
-          'id'        => $shop->id,
-          'region_id' => $shop->region_id,
-          'link'      => url_for( 'shop_show', array( 'sf_subject' => $shop)),
-          'name'      => $shop->name,
-          'address'   => $shop->address,
-          'regtime'    => $shop->regime,
-          'latitude'  => $shop->latitude,
-          'longitude' => $shop->longitude,
+          'id'                => $shop->id,
+          'region_id'         => $shop->region_id,
+          'link'              => url_for( 'shop_show', array( 'sf_subject' => $shop)),
+          'name'              => $shop->name,
+          'address'           => $shop->address,
+          'regtime'           => $shop->regime,
+          'latitude'          => $shop->latitude,
+          'longitude'         => $shop->longitude,
+          'is_reconstruction' => $shop->is_reconstruction,
         );
       }
     //}

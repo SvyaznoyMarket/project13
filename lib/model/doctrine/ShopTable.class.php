@@ -21,17 +21,18 @@ class ShopTable extends myDoctrineTable
   public function getCoreMapping()
   {
     return array(
-      'id'            => 'core_id',
-      'name'          => 'name',
-      'description'   => 'description',
-      'working_time'  => 'regime',
-      'phone'         => 'phonenumbers',
-      'address'       => 'address',
-      'coord_long'    => 'longitude',
-      'coord_lat'     => 'latitude',
-      'way_walk'      => 'way_walk',
-      'way_auto'      => 'way_auto',
-      'is_active'     => 'is_active',
+      'id'                => 'core_id',
+      'name'              => 'name',
+      'description'       => 'description',
+      'working_time'      => 'regime',
+      'phone'             => 'phonenumbers',
+      'address'           => 'address',
+      'coord_long'        => 'longitude',
+      'coord_lat'         => 'latitude',
+      'way_walk'          => 'way_walk',
+      'way_auto'          => 'way_auto',
+      'is_active'         => 'is_active',
+      'is_reconstruction' => 'is_reconstruction',
     );
   }
 
@@ -41,7 +42,15 @@ class ShopTable extends myDoctrineTable
 
     $q = $this->createQuery('shop');
 
-    $q->addWhere('shop.is_active = ?', 1);
+    if ($params['is_reconstruction'])
+    {
+      $q->orWhere('shop.is_active = ? OR shop.is_reconstruction = ?', array(1, 1, ));
+    }
+    else
+    {
+      $q->orWhere('shop.is_active = ?', 1);
+    }
+
 
     return $q;
   }
@@ -51,7 +60,8 @@ class ShopTable extends myDoctrineTable
     $region = $this->getParameter('region');
 
     return array(
-      'region_id' => $region ? $region['id'] : null,
+      'region_id'         => $region ? $region['id'] : null,
+      'is_reconstruction' => false,
     );
   }
 
