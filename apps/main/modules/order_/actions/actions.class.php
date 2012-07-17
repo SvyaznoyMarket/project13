@@ -466,7 +466,7 @@ class order_Actions extends myActions
                           }
                       }
                   }
-                  $creditDataType = UserCart::getCreditAllowBUArray($categoryToken);
+                  $creditDataType = CreditBankRepository::getCreditTypeByCategoryToken($categoryToken);
 
                   $jsCreditData['vars']['items'][] = array(
                       'name' => $product['name'],

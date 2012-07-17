@@ -10,6 +10,20 @@ class CreditBankRepository
 {
 
   /**
+   * @static
+   * @param string $categoryToken
+   * @return string
+   */
+  static public function getCreditTypeByCategoryToken($categoryToken) {
+    $knownCategories = array('electronics', 'sport', 'appliances', 'do_it_yourself', 'furniture', 'household');
+    if (!in_array($categoryToken, $knownCategories)) {
+      $creditDataType = 'another';
+    }
+    return $categoryToken;
+  }
+
+
+  /**
    * @param string $token
    * @return null|CreditBankEntity
    */

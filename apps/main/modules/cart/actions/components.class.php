@@ -84,8 +84,23 @@ class cartComponents extends myComponents
 
     $this->setVar('list', $list, true);
 
-    $dataForCredit = $this->getUser()->getCart()->getProductsDataForCredit();
+    $dataForCredit = array();
+
+    foreach($list as $product){
+      if($product['type'] == 'products'){
+        $dataForCredit[] = array(
+          'id' => $product['id'],
+          'quantity' => $product['quantity'],
+          'price' => $product['price'],
+          'type' => CreditBankRepository::getCreditTypeByCategoryToken($product['token_prefix']),
+        );
+      }
+    }
+
     $this->setVar('dataForCredit', json_encode($dataForCredit));
+  }
+
+  private function getCreditData($cart){
 
   }
 
@@ -103,7 +118,7 @@ class cartComponents extends myComponents
 
     $list = array();
 
-    $prodCb = function($data) use($list, $prods){
+    $prodCb = function($data) use(&$list, $prods){
       /** @var $data ProductEntity[] */
 
       foreach($data as $product){
@@ -112,6 +127,7 @@ class cartComponents extends myComponents
 
         $list[] = array(
           'type' => 'products',
+          'id' => $product->getId(),
           'name' => $product->getName(),
           'token' => $product->getToken(),
           'token_prefix' => $product->getPrefix(),
@@ -121,7 +137,7 @@ class cartComponents extends myComponents
       }
     };
 
-    $serviceCb = function($data) use($list, $services){
+    $serviceCb = function($data) use(&$list, $services){
       /** @var $data ServiceEntity[] */
 
       foreach($data as $serviceCoreInfo){
@@ -169,7 +185,7 @@ class cartComponents extends myComponents
     $productList = array();
     $serviceList = array();
 
-    $prodCb = function($data) use($productList, $prods, $urls){
+    $prodCb = function($data) use(&$productList, $prods, $urls){
       /** @var $data ProductEntity[] */
 
       foreach($data as $product){
@@ -193,7 +209,7 @@ class cartComponents extends myComponents
       }
     };
 
-    $serviceCb = function($data) use($serviceList, $services, $urlsService){
+    $serviceCb = function($data) use(&$serviceList, $services, $urlsService){
       /** @var $data ServiceEntity[] */
 
       foreach($data as $serviceCoreInfo){

@@ -16,7 +16,24 @@ class cart_Components extends myComponents
    */
   public function executeShow()
   {
-    $this->setVar('list', $this->getProductServiceList($this->getUser()->getCart()), true);
+    $list = $this->getProductServiceList($this->getUser()->getCart());
+
+
+    $dataForCredit = array();
+
+    foreach($list as $product){
+      if($product['type'] == 'products'){
+        $dataForCredit[] = array(
+          'id' => $product['id'],
+          'quantity' => $product['quantity'],
+          'price' => $product['price'],
+          'type' => CreditBankRepository::getCreditTypeByCategoryToken($product['token_prefix']),
+        );
+      }
+    }
+
+    $this->setVar('list', $list, true);
+    $this->setVar('dataForCredit', json_encode($dataForCredit));
   }
 
   /**
@@ -60,6 +77,7 @@ class cart_Components extends myComponents
           'photo' => $urls[1] . $product->getMediaImage(),
           'fullObject' => $product,
           'availableForPurchase' => (!$cartInfo->hasError()),
+          'credit_data_type' =>CreditBankRepository::getCreditTypeByCategoryToken($product->getPrefix()),
         );
       }
     };

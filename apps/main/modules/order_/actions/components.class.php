@@ -86,7 +86,7 @@ class order_Components extends myComponents
     }
     $this->setVar('bankJson', json_encode($jsonBankData), true);
 
-    $dataForCredit = $this->getUser()->getCart()->getProductsDataForCredit();
+    $dataForCredit = $this->getProductsDataForCredit();
     $this->setVar('dataForCredit', json_encode($dataForCredit));
 
 
@@ -241,6 +241,33 @@ class order_Components extends myComponents
     //dump($errors);
 
     $this->setVar('errors', $errors, true);
+  }
+
+  private function getProductsDataForCredit(){
+    $productList = $this->getUser()->getCart()->getProducts();
+    $prodIdList = array_keys($productList);
+    $list = array();
+
+    $prodCb = function($data) use(&$list, $productList){
+      /** @var $data ProductEntity[] */
+
+      foreach($data as $product){
+        /** @var $cartInfo \light\ProductCartData */
+        $cartInfo = $productList[$product->getId()];
+
+        $list[] = array(
+          'id' => $product->getId(),
+          'quantity' => $cartInfo->getQuantity(),
+          'price' => number_format($cartInfo->getPrice(), 0, ',', ' '),
+          'type' => CreditBankRepository::getCreditTypeByCategoryToken($product->getPrefix()),
+        );
+      }
+    };
+
+    RepositoryManager::getProduct()->getListByIdAsync($prodCb, $prodIdList, true);
+    CoreClient::getInstance()->execute();
+
+    return $list;
   }
 }
 

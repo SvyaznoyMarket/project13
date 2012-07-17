@@ -324,7 +324,7 @@ class UserCart extends BaseUserData
             }
             $service_for_list = array();
             $creditDataType = $productBDList[$prodId]['token_prefix'];
-            $creditDataType = self::getCreditAllowBUArray($creditDataType);
+            $creditDataType = CreditBankRepository::getCreditTypeByCategoryToken($creditDataType);
 
             $list[$prodId] = array(
                 'type' => 'product',
@@ -686,35 +686,4 @@ class UserCart extends BaseUserData
         return $orderArticle;
 
     }
-
-    static public function getCreditAllowBUArray($creditDataType) {
-        $creditAllowBUArray = array('electronics', 'sport', 'appliances', 'do_it_yourself', 'furniture', 'household');
-        if (!in_array($creditDataType, $creditAllowBUArray)) {
-            $creditDataType = 'another';
-        }
-        return $creditDataType;
-    }
-
-    public function getProductsDataForCredit()
-    {
-        $idList = array();
-        foreach ($this->_products as $product) {
-            $idList[] = $product['id'];
-        }
-        $productList = RepositoryManager::getProduct()->getListById($idList, true);
-        $data = array();
-        foreach ($productList as $prodOb) {
-            $cat = reset($prodOb->getCategoryList());
-            $cat = $cat->getToken();
-            $realCreditType = self::getCreditAllowBUArray($cat);
-            $data[] = array(
-                'id' => $product['id'],
-                'quantity' => $product['quantity'],
-                'price' => $product['price'],
-                'type' => $realCreditType,
-            );
-        }
-        return $data;
-    }
-
 }

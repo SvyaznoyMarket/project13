@@ -90,7 +90,7 @@ class productCard_Actions extends myActions
       $mainCat = $product->getCategoryList();
       $mainCat = $mainCat[0];
       $cart = $this->getUser()->getCart();
-      $productType = $cart::getCreditAllowBUArray($mainCat->getToken());
+      $productType = CreditBankRepository::getCreditTypeByCategoryToken($mainCat->getToken());
       $dataForCredit = array(
           'price' => $product->getPrice(),
           'articul' => $product->getArticle(),
