@@ -71,7 +71,6 @@
     <?php endif ?>
 
     <div id="heiasMain" class="jsanalytics"></div>
-    <div id="heiasComplete" data-vars='{"one": "one", "two": "two"}' class="jsanalytics"></div>
 
   <?php include_component('default', 'adriver') ?>
   </body>
