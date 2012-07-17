@@ -13,8 +13,8 @@
         <?php endif ?>
       </div>
     </div>
-    <div class='bIndexLinks2__eBan'><a href="/ten_reasons"><img
-      src='/images/img_main_ten_reasons_to_buy.gif'></a></div>
+    <div class='bIndexLinks2__eBan'><a href="/release_2012_07_17"><img
+      src='/images/img_16_07_2012_-_press-release.png'></a></div>
     <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><img
       src='/images/img_main_f1service.jpg'></a></div>
     <div class='bIndexLinks2__eLinks'>
