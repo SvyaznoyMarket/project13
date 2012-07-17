@@ -15,6 +15,7 @@
     <?php endif ?>
 
     <?php include_partial('default/googleAnalytics') ?>
+    <script type="text/javascript" src="/js/asyn.code.ver3.js"></script>
   </head>
   <body data-template="<?php echo $sf_request->getParameter('_template', 'default') ?>">
   <?php if (has_slot('after_body_block')): ?>
