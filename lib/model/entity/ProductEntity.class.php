@@ -917,9 +917,9 @@ class ProductEntity
   public function getServiceListInCart()
   {
     $idList = array();
-    foreach(sfContext::getInstance()->getUser()->getCart()->getServices() as $serviceInCart)
+    foreach(sfContext::getInstance()->getUser()->getCart()->getServices() as $serviceId => $serviceInCart)
       if(isset($serviceInCart[$this->id]))
-        $idList[] = $serviceInCart['id'];
+        $idList[] = $serviceId;
 
     $list = array();
     foreach($this->serviceList as $service)
