@@ -25,12 +25,12 @@ $(document).ready(function() {
 		$(nodes.more).data('run',false)
 			var main = $(nodes.line)
 		this.id      = main.attr('ref')	
-		var delurl   = $(nodes.less).parent().attr('href')
+		//var delurl   = $(nodes.less).parent().attr('href')
 		var addurl   = $(nodes.more).parent().attr('href')
-		if( delurl === '#' )
-			delurl =  $(nodes.less).parent().attr('ref')
-		if( typeof(delurl)==='undefined' )
-			delurl = addurl + '-1'
+		// if( delurl === '#' )
+		// 	delurl =  $(nodes.less).parent().attr('ref')
+		// if( typeof(delurl)==='undefined' )
+		// 	delurl = addurl + '-1'
 		var drop     = $(nodes.drop).attr('href')
 		this.sum     = $(nodes.sum).html().replace(/\s/,'')
 		var limit    = nodes.limit
@@ -73,9 +73,13 @@ $(document).ready(function() {
 				$(minimax).data('run',false)
 				return
 			}
-			var tmpurl = (delta > 0) ? addurl : delurl
-			self.quantum += delta
-			
+			//var tmpurl = (delta > 0) ? addurl : delurl
+			//self.quantum += delta
+            var tmpurl = addurl;
+            self.quantum += delta
+            tmpurl += self.quantum;
+
+
 			$(nodes.quan).html( self.quantum + ' шт.' )
 			self.calculate( self.quantum )
 			totalCash += self.price * delta

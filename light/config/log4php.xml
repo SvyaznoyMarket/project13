@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration xmlns="http://logging.apache.org/log4php/">
     <appender name="defaultConsoleAppender" class="LoggerAppenderConsole"/>
+    <appender name="defaultEchoAppender" class="LoggerAppenderEcho"/>
     <appender name="emptyAppender" class="LoggerAppenderNull" />
     <appender name="defaultFileAppender" class="LoggerAppenderFile">
         <layout class="LoggerLayoutTTCC" />
         <param name="file" value="plainPhp.log" />
+        <param name="append" value="true" />
+    </appender>
+
+    <appender name="cartFileAppender" class="LoggerAppenderFile">
+        <layout class="LoggerLayoutTTCC" />
+        <param name="file" value="cart.log" />
         <param name="append" value="true" />
     </appender>
 
@@ -29,6 +36,12 @@
         <level value="warn" />
         <!--<appender_ref ref="defaultConsoleAppender" />-->
         <appender_ref ref="defaultFileAppender" />
+    </logger>
+
+    <logger name="Cart">
+        <level value="warn" />
+        <appender_ref ref="cartFileAppender" />
+        <!--<appender_ref ref="defaultConsoleAppender" />-->
     </logger>
 
     <root>
