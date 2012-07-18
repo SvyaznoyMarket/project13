@@ -34,7 +34,7 @@
 
 <div id="map-info_window-container" style="display:none"></div>
 
-<div class="pb15"> <a href="<?php echo $backLink ?>">Вернуться к покупкам</a></div>
+<div class="pb15"> <a class="motton font14" href="<?php echo $backLink ?>" style="font-weight: bold">&lt; Вернуться к покупкам</a></div>
 
 <form id="order-form" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
 
@@ -65,7 +65,7 @@
     <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт Centra</div>
 
     <dl class='bBuyingLine mSumm order-total-container' style="margin-top: 0;">
-      <dt><a class="red" style="border-color: #cb3735" href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">Редактировать товары</a></dt>
+      <dt><a class="motton font14" style="border-color: #4FCBF4; font-weight: bold;" href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">&lt; Редактировать товары</a></dt>
       <dd>
         <div><span data-assign='{"totalMessage": ["text", "_value"]}'>Сумма всех заказов</span> <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
       </dd>
@@ -164,7 +164,7 @@
       </dl>
 
       <dl class='bBuyingLine'>
-        <dt>У вас есть карта &laquo;Связной-Клуб&raquo;?</dt>
+        <dt>Если у вас есть карта<br />&laquo;Связной-Клуб&raquo;, вы можете указать ее номер</dt>
         <dd class="bSClub">
           <div class="bSClub__eWrap pb25">
             <?php echo $form['sclub_card_number']->render(array('class' => 'bBuyingLine__eText mInputShort mb15')) ?>
