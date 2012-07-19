@@ -677,7 +677,7 @@ class order_Actions extends myActions
           $servicesForProduct[$productId] = array();
         }
 
-        //@TODO Это мегапиздец, переделать в следующем хотфиксе
+        //@TODO нужно переделать в следующем хотфиксе
         $coreData = array_shift(Core::getInstance()->query('service.get', array('id' => $serviceId, 'expand' => array())));
 
         $servicesForProduct[$productId][] = array(
@@ -734,10 +734,11 @@ class order_Actions extends myActions
     foreach (array('products', 'services') as $itemType) {
       foreach ($result[$itemType] as $coreData)
       {
-        $recordData = array_shift(Core::getInstance()->query('products' == $itemType ? 'product.get' : 'service.get', array(
-          'id'     => $coreData['id'],
-          'expand' => array(),
-        )));
+        $r = Core::getInstance()->query('products' == $itemType ? 'product.get' : 'service.get', array(
+            'id'     => $coreData['id'],
+            'expand' => array(),
+        ));
+        $recordData = array_shift($r);
 
         if('products' == $itemType){
           $cartElem = $user->getCart()->getProduct($recordData['id']);

@@ -207,6 +207,8 @@ $(document).ready(function() {
 
             $('#order-submit').removeClass('disable');
 
+            $('#order-message').html('')
+
             // проверка на пустую корзину
             var isEmpty = true
             $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
@@ -493,7 +495,29 @@ $(document).ready(function() {
         renderUndeliveredMessage: function(deliveryTypeId) {
             var undeliveredItems = this.getUndeliveredItem(deliveryTypeId)
             if (undeliveredItems.length) {
-                $('#order-message').html('<span class="red">Некоторые товары не могут быть получены выбранным способом доставки.</span>')
+                var message = 'Некоторые товары не могут быть получены выбранным способом доставки.'
+
+                if (1 == undeliveredItems.length) {
+                    if ($('.bBuyingLine__eRadio[data-delivery-type="self"]:checked')) {
+                        var message = 'Товара нет в наличии в выбранном магазине.'
+
+                        var itemId = undeliveredItems.shift()
+                        var shopQuantity = 0
+                        var item = DeliveryMap.data().items[itemId]
+                        $.each(item.deliveries, function(k, v) {
+                            if (0 == k.indexOf('self_')) {
+                                shopQuantity++
+                            }
+                        })
+                        if (1 == shopQuantity) {
+                            var message = item.name + ' есть в наличии только в одном магазине.'
+                        }
+                    }
+                    else {
+                        var message = 'Невозможно доставить товар.'
+                    }
+                }
+                $('#order-message').html('<span class="red">'+message+'</span>')
             }
             else {
                 $('#order-message').html('<span>Отличный выбор!</span>')
@@ -567,8 +591,7 @@ $(document).ready(function() {
                 shopId = shopId.id
             DeliveryMap.onShopSelected.apply(DeliveryMap, [el.val(), shopId])
             //DeliveryMap.onShopSelected.apply(this, [el.val(), shopId])
-            
-//console.info('onMapClosed', el.val(), shopId)
+            //console.info('onMapClosed', el.val(), shopId)
         },
 
         validate: function(el, message) {
@@ -610,7 +633,7 @@ $(document).ready(function() {
         },
 
         onDeliveryBlockChange: function() {
-console.info('onDeliveryBlockChange')            
+            //console.info('onDeliveryBlockChange')
             if (1 == $('.order-delivery-holder:visible').length) {
                 $('#payment_method_online-field').show()
             }
@@ -781,7 +804,29 @@ console.info('onDeliveryBlockChange')
         $('.order-shop-button:first').hide()
 
         if ('self' == el.data('deliveryType')) {
-            $('.order-shop-button:first').show()
+            var shops = DeliveryMap.data().shops
+            if (1 == Object.keys(shops).length) {
+                var shopId = Object.keys(shops).shift()
+                var deliveryTypeId = el.val()
+
+                $('#order-form-part2').hide()
+                $('#order-loader').clone().appendTo('#order-loader-holder').show()
+
+                var url = $('#order-form').data('deliveryMapUrl')
+                DeliveryMap.getRemoteData(url, { deliveryTypeId: deliveryTypeId, shopId: shopId }, function(data) {
+
+                    $('#order-loader-holder').html('')
+                    $('#order-form-part2').show('fast')
+
+                    this.render()
+
+                    DeliveryMap.renderUndeliveredMessage(deliveryTypeId)
+                }, true)
+            }
+            else {
+                $('.order-shop-button:first').show()
+            }
+
             //$('#addressField').hide()
         }
         else {
@@ -789,7 +834,7 @@ console.info('onDeliveryBlockChange')
 
             //$('#addressField').show()
 
-            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val()}, function(data) {
+            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val() }, function(data) {
                 $('#order-loader-holder').html('')
                 $('#order-form-part2').show('fast')
 
@@ -955,7 +1000,7 @@ console.info('onDeliveryBlockChange')
         data.deliveryTypes[elData.deliveryType].interval = elData.value
     })
 
-    if ($('.bBuyingLine__eRadio"]:checked').length) {
+    if ($('.bBuyingLine__eRadio:checked').length) {
         DeliveryMap.render()
         $('#order-form-part2').show('fast')
 
