@@ -298,9 +298,10 @@ $(document).ready(function(){
 	/* BB */
 	function BuyBottons() {
 		this.push = function( selector, jsond,  afterpost ) {
+			if( ! $(selector).length )
+				return
 			var carturl = $('.lightboxinner .point2').attr('href')
 			$('body').delegate( selector, 'click', function() {
-				console.info('BuyBottons')
 				var button = $(this)
 				if( !jsond )
 					jsond = button.data('value')
