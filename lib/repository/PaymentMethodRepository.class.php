@@ -18,7 +18,7 @@ class PaymentMethodRepository
     if (!$id) {
         return  null;
     }
-    $params = array('id' => array($id), 'geo_id' => 1);
+    $params = array('id' => array($id), 'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId());
     $result =CoreClient::getInstance()->query('payment-method.get', $params);
 
     if (empty($result) || !is_array($result) || empty($result[0])) {
@@ -35,7 +35,7 @@ class PaymentMethodRepository
      */
     public function getList()
     {
-        $params = array('geo_id' => 1);
+        $params = array('geo_id' => RepositoryManager::getRegion()->getDefaultRegionId());
 
         $result = CoreClient::getInstance()->query('payment-method.get', $params);
 

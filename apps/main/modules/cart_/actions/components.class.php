@@ -121,9 +121,16 @@ class cart_Components extends myComponents
         }
       }
     };
-    RepositoryManager::getProduct()->getListByIdAsync($prodCb, $prodIdList, true);
-    RepositoryManager::getService()->getListByIdAsync($serviceCb, $serviceIdList, true);
-    CoreClient::getInstance()->execute();
+    if(count($prodIdList)){
+      RepositoryManager::getProduct()->getListByIdAsync($prodCb, $prodIdList, true);
+    }
+    if(count($serviceIdList)){
+      RepositoryManager::getService()->getListByIdAsync($serviceCb, $serviceIdList, true);
+    }
+
+    if(count($serviceIdList) || count($prodIdList)){
+      CoreClient::getInstance()->execute();
+    }
 
     $list = array_values($productList);
 
