@@ -19,17 +19,26 @@ class cart_Components extends myComponents
     $list = $this->getProductServiceList($this->getUser()->getCart());
 
     $dataForCredit = array();
-
     foreach($list as $product){
       if($product['type'] == 'product'){
+        /** @var $obj ProductEntity */
+        $obj = $product['fullObject'];
+        $rootCategoryToken = '';
+
+        foreach($obj->getCategoryList() as $category){
+          if($category->getLevel() == 1){
+            $rootCategoryToken = $category->getToken();
+          }
+        }
         $dataForCredit[] = array(
           'id' => $product['id'],
           'quantity' => $product['quantity'],
           'price' => $product['price'],
-          'type' => CreditBankRepository::getCreditTypeByCategoryToken($product['token_prefix']),
+          'type' => CreditBankRepository::getCreditTypeByCategoryToken($rootCategoryToken),
         );
       }
     }
+    exit();
 
     $this->setVar('list', $list, true);
     $this->setVar('dataForCredit', json_encode($dataForCredit));
