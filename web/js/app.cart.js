@@ -84,14 +84,14 @@ $(document).ready(function() {
 			self.calculate( self.quantum )
 			totalCash += self.price * delta
 			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
-			if( $('#selectCredit').length ) {
-				var sufx = ''
-				if( $('#selectCredit').val()*1 )
-					sufx = '/1'
-				else
-					sufx = '/0'
-				tmpurl += sufx
-			}
+			// if( $('#selectCredit').length ) {
+			// 	var sufx = ''
+			// 	if( $('#selectCredit').val()*1 )
+			// 		sufx = '/1'
+			// 	else
+			// 		sufx = '/0'
+			// 	tmpurl += sufx
+			// }
 			$.getJSON( tmpurl , function( data ) {
 				$(minimax).data('run',false)
 				//if( data.success && data.data.quantity ) {
@@ -239,7 +239,8 @@ $(document).ready(function() {
 			}
 		}
 
-		function toggleFlag() {					
+		function toggleFlag() {
+			$('#blockFromCreditAgent').fadeOut( 'slow' )	
 			if( totalCash >= minsum ) {
 				if( $('#creditFlag').is(':hidden') ) { // сумма превысила рубеж
 					$('#creditFlag').show()
@@ -264,6 +265,9 @@ $(document).ready(function() {
 
 		toggleFlag()
 		PubSub.subscribe( 'quantityChange', toggleFlag )
+		PubSub.subscribe( 'bankAnswered', function() {
+			$('#blockFromCreditAgent').fadeIn( 'slow' )
+		} )
 		//checkFlag()
 
 
@@ -276,7 +280,7 @@ $(document).ready(function() {
 			anotherSum()
 			toggleCookie( 'credit_on' )
 		})	
-//console.info( basket )
+
 		
 		DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
 		PubSub.subscribe( 'quantityChange', DirectCredit.change )

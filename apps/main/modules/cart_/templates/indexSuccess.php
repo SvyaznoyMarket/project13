@@ -31,19 +31,22 @@
           <span class="price"><?php echo $cart->getTotal(true) ?></span> <span class="rubl">p</span>
         </div>
       </div>
-      <div class="font14 width370 creditInfo pb10 pt10">
-        <div class="leftTitle">
-          <strong>Ежемесячный платеж<sup>*</sup>:</strong>
+      <div style="display:none" id="blockFromCreditAgent">
+        <div class="font14 width370 creditInfo pb10 pt10">
+          <div class="leftTitle">
+            <strong>Ежемесячный платеж<sup>*</sup>:</strong>
+          </div>
+          <div class="font24">
+            <strong>
+              <span id="creditPrice">(считаем...)</span>
+              <span class="rubl">p</span>
+            </strong>
+          </div>
         </div>
-        <div class="font24">
-          <strong>
-            <span id="creditPrice">(считаем...)</span>
-            <span class="rubl">p</span>
-          </strong>
+        <div class="font11 width370"><sup>*</sup> Кредит не распространяется на услуги F1 и доставку.
+          Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.
         </div>
-      </div>
-      <div class="font11 width370"><sup>*</sup> Кредит не распространяется на услуги F1 и доставку.
-        Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.</div>
+      </div>    
     </div>
 
     <div id="commonSum">

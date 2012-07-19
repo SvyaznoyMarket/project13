@@ -1767,6 +1767,7 @@ DirectCredit = {
                     
                 // }
                 self.output.text( printPrice( result.payment ) )
+                PubSub.publish( 'bankAnswered', null )
             }
         )
     }   
