@@ -18,11 +18,10 @@ class cart_Components extends myComponents
   {
     $list = $this->getProductServiceList($this->getUser()->getCart());
 
-
     $dataForCredit = array();
 
     foreach($list as $product){
-      if($product['type'] == 'products'){
+      if($product['type'] == 'product'){
         $dataForCredit[] = array(
           'id' => $product['id'],
           'quantity' => $product['quantity'],
