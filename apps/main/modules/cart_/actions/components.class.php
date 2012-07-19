@@ -28,8 +28,10 @@ class cart_Components extends myComponents
         foreach($obj->getCategoryList() as $category){
           if($category->getLevel() == 1){
             $rootCategoryToken = $category->getToken();
+            break;
           }
         }
+
         $dataForCredit[] = array(
           'id' => $product['id'],
           'quantity' => $product['quantity'],
@@ -38,7 +40,6 @@ class cart_Components extends myComponents
         );
       }
     }
-    exit();
 
     $this->setVar('list', $list, true);
     $this->setVar('dataForCredit', json_encode($dataForCredit));
