@@ -26,6 +26,7 @@
   </tr>
 </script>
 
+<div id="tsCreditCart" data-value="<?php echo $dataForCredit ?>" ></div>
 <?php foreach ($list as $item): ?>
 
 <?php if ($item['type'] == 'product'): ?>
