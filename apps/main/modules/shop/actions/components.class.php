@@ -98,7 +98,12 @@ class shopComponents extends myComponents
   */
   public function executeList()
   {
-    $this->setVar('shopList', ShopTable::getInstance()->getListByRegion($this->region['id'], array('is_reconstruction' => true, )), true);
+    $shopList = ShopTable::getInstance()->getListByRegion($this->region['id'], array('is_reconstruction' => true, ));
+    if (!count($shopList)) {
+      return sfView::NONE;
+    }
+
+    $this->setVar('shopList', $shopList, true);
   }
 
  /**
