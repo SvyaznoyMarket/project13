@@ -300,7 +300,7 @@ $(document).ready(function(){
 		this.push = function( selector, jsond,  afterpost ) {
 			var carturl = $('.lightboxinner .point2').attr('href')
 			$('body').delegate( selector, 'click', function() {
-				console.info('BuyBottons')
+				//console.info('BuyBottons')
 				var button = $(this)
 				if( !jsond )
 					jsond = button.data('value')
