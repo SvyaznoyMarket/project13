@@ -475,7 +475,7 @@ order_complete:
 # order payment
 order_payment:
   url:   /orders/payment
-  param: { module: order, action: payment }
+  param: { module: order_, action: payment }
 #
 # order cancel
 order_cancel:

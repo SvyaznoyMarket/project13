@@ -266,17 +266,17 @@ class order_Actions extends myActions
   {
     $request->setParameter('_template', 'order_complete');
 
+    $this->paymentProvider = $this->getPaymentProvider();
+
     /* @var myUser */
     $user = $this->getUser();
 
     $orderIds = $user->getFlash('complete_orders');
 
     // проверяет наличие параметра от uniteller
-    if (!empty($request['Order_ID']))
+    $orderNumber = $this->paymentProvider->getOrderIdFromRequest($request);
+    if (!empty($orderNumber))
     {
-      $orderNumber = $request['Order_ID'];
-      //dump($orderNumber);
-
       $result = Core::getInstance()->query('order.get', array(
         'number' => array($orderNumber),
         'expand' => array('geo', 'user', 'product', 'service'),
@@ -292,7 +292,7 @@ class order_Actions extends myActions
     }
 
     //dump($result);
-    //dump($orderIds);
+    //dump($orderIds, 1);
 
     if (empty($orderIds))
     {
@@ -412,20 +412,34 @@ class order_Actions extends myActions
 
     $this->paymentForm = false;
     // онлайн оплата?
-    if (1 == count($orders) && empty($request['Order_ID']))
+    if (1 == count($orders) && empty($orderNumber))
     {
       $order = $orders[0];
 
       $paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
       if ('online' == $paymentMethod->token)
       {
-        $provider = $this->getPaymentProvider();
-        $this->paymentForm = $provider->getForm($order);
+        $this->paymentForm = $this->paymentProvider->getForm($order);
       }
     }
 
     $this->setVar('orders', $orders, true);
     $this->setVar('gaItems', $gaItems, true);
+  }
+
+  public function executePayment(sfWebRequest $request)
+  {
+    $orderIds = array(316892);
+
+    $result = Core::getInstance()->query('order.get', array(
+      'id'     => $orderIds,
+      'expand' => array('geo', 'user', 'product', 'service'),
+    ));
+
+    $order = array_shift($result);
+
+    $this->paymentProvider = $this->getPaymentProvider();
+    $this->paymentForm = $this->paymentProvider->getForm($order);
   }
 
 
@@ -734,10 +748,11 @@ class order_Actions extends myActions
     foreach (array('products', 'services') as $itemType) {
       foreach ($result[$itemType] as $coreData)
       {
-        $recordData = array_shift(Core::getInstance()->query('products' == $itemType ? 'product.get' : 'service.get', array(
+        $r = Core::getInstance()->query('products' == $itemType ? 'product.get' : 'service.get', array(
           'id'     => $coreData['id'],
           'expand' => array(),
-        )));
+        ));
+        $recordData = array_shift($r);
 
         if('products' == $itemType){
           $cartElem = $user->getCart()->getProduct($recordData['id']);
@@ -930,7 +945,7 @@ class order_Actions extends myActions
   /**
    *
    * @param type $name
-   * @return UnitellerPaymentProvider
+   * @return PsbankPaymentProvider
    */
   private function getPaymentProvider($name = null)
   {
