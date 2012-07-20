@@ -58,6 +58,7 @@
   <?php include_partial('default/yandexMetrika') ?>
    <div id="adblender" class="jsanalytics"></div>
 <?php endif ?>
+<div id="gooReMaCart" class="jsanalytics"></div>
 
 <?php if (has_slot('seo_counters_advance')): ?>
   <?php include_slot('seo_counters_advance') ?>
