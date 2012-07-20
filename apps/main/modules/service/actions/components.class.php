@@ -96,7 +96,7 @@ class serviceComponents extends myComponents
     $serviceData['isInSale'] = $this->service->isInSale();
     $serviceData['isOnlyInShop'] = $this->service->isOnlyInShop();
 
-    $this->setVar('service', $serviceData);
+    $this->setVar('service', $serviceData, true);
   }
 
   public function executeAlike_service()
@@ -129,7 +129,7 @@ class serviceComponents extends myComponents
 
       );
     }
-    $this->setVar('list', $serviceList);
+    $this->setVar('list', $serviceList, true);
   }
 
   public function executeRoot_page()
