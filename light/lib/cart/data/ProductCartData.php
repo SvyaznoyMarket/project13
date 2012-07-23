@@ -28,6 +28,11 @@ class ProductCartData
   private $price;
 
   /**
+   * @var array
+   */
+  private $error = array();
+
+  /**
    * @param array $data
    */
   public function __construct($data = array()){
@@ -35,6 +40,13 @@ class ProductCartData
     if (array_key_exists('id', $data))         $this->productId   = (int)$data['id'];
     if (array_key_exists('quantity', $data))   $this->quantity    = (int)$data['quantity'];
     if (array_key_exists('price', $data))      $this->price       = (float)$data['price'];
+
+    if (array_key_exists('error', $data)){
+      $this->quantity    = 0;
+
+      $this->error['message'] = (array_key_exists('message', $data['error']))? $data['error']['message'] : 'unknown error';
+      $this->error['code']    = (array_key_exists('code', $data['error']))? $data['error']['code'] : 0;
+    }
   }
 
   /**
@@ -71,5 +83,20 @@ class ProductCartData
   public function setQuantity($quantity){
     $quantity = (int) $quantity;
     $this->quantity = $quantity;
+  }
+
+  /**
+   * @return array
+   */
+  public function getError()
+  {
+    return $this->error;
+  }
+
+  /**
+   * @return bool
+   */
+  public function hasError(){
+    return (count($this->error) >1 );
   }
 }

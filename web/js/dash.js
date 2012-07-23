@@ -1,4 +1,6 @@
 $(document).ready(function(){
+	var carturl = $('.lightboxinner .point2').attr('href')
+
 	var shortinfo = '/user/shortinfo'
 	if( !docCookies.hasItem('enter') ||  !docCookies.hasItem('enter_auth'))
 		shortinfo += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000)
@@ -81,7 +83,7 @@ $(document).ready(function(){
 						}
 						button = $('td.bF1Block_eBuy[ref='+ tokenS +'] input.button')
 						if( button.length ) {
-							button.addClass('active').val('В корзине')
+							button.addClass('active').val('В корзине').attr( 'href', carturl )
 						}
 					}
 				}
@@ -96,7 +98,7 @@ $(document).ready(function(){
 				}
 				button = $('div.bServiceCard[ref='+ tokenS +'] input')
 				if( button.length ) {
-					button.val('В корзине').addClass('active')
+					button.val('В корзине').addClass('active').attr( 'href', carturl )
 				}
 			}
 		}
@@ -178,7 +180,7 @@ $(document).ready(function(){
 		f1lines.find('input.button').bind ('click', function() {
 			if( $(this).hasClass('active') )
 				return false
-			$(this).val('В корзине').addClass('active')
+			$(this).val('В корзине').addClass('active').attr( 'href', carturl )
 			var f1item = $(this).data()
 			f1lines.fadeOut()
 			$.getJSON( f1item.url, function(data) {
@@ -229,8 +231,9 @@ $(document).ready(function(){
 		})
 	}
 	/* buy bottons */
+
 	var markPageButtons = function(){
-		var carturl = $('.lightboxinner .point2').attr('href')
+		
 		$('.goodsbarbig .link1').attr('href', carturl ).addClass('active')
 		$('#bigpopup a.link1').attr('href', carturl ).html('в корзине')
 		$('.bSet__ePrice .link1').unbind('click')
@@ -297,13 +300,16 @@ $(document).ready(function(){
 		this.push = function( selector, jsond,  afterpost ) {
 			var carturl = $('.lightboxinner .point2').attr('href')
 			$('body').delegate( selector, 'click', function() {
+				//console.info('BuyBottons')
 				var button = $(this)
 				if( !jsond )
 					jsond = button.data('value')
 				if( !jsond )
 					return false
-				if( button.hasClass('active') )
-					return true
+				if( button.hasClass('active') ) {
+					document.location = button.attr('href')//return true
+					return false
+				}
 				if( button.hasClass('disabled') )
 					return false	
 

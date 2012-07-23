@@ -56,18 +56,18 @@ $(document).ready(function() {
 	})
 
 	$('div.map-google-link:first', marketfolio ).trigger('click')
-
-	var mapCenter =  $('#map-center').data('content') 
-	window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'region_map-container', updateTmlt )
-	window.regionMap.showMarkers(  $('#map-markers').data('content') )
-	//window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
-	
-	function updateTmlt( marker ) {
-		$('#map-info_window-container').html(
-			tmpl('infowindowtmpl', marker )
-		)
+	if( $('#map-markers').length ) {
+		function updateTmlt( marker ) {
+			$('#map-info_window-container').html(
+				tmpl('infowindowtmpl', marker )
+			)
+		}
+		var mapCenter =  calcMCenter( $('#map-markers').data('content') )
+		window.regionMap = new MapWithShops( mapCenter, $('#map-info_window-container'), 'region_map-container', updateTmlt )
+		window.regionMap.showMarkers(  $('#map-markers').data('content') )
+		//window.regionMap.addHandler( '.shopchoose', pickStoreMVM )
 	}
-	
+
 	$('#region-select').bind('change', function() {
 		window.location = $(this).find('option:selected').data('url')
 	})

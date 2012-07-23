@@ -30,10 +30,12 @@ $listInCart = $item->getServiceListInCart()->getRawValue(); // symfony code shee
         <?php } elseif ($service->isInSale() && in_array($service, $listInCart)) { ?>
         <input data-f1title="<?php echo $service->getName() ?>" data-f1price="<?php echo $service->getPrice() ?>" data-fid="<?php echo $service->getId();?>"
                data-url="<?php echo url_for('cart_service_add', array('service'=>$service->getId(), 'product' => $item->getId())) ?>"
+               ref="<?php echo addslashes($service->getToken());?>"
                type="button" class="active button yellowbutton" value="В корзине">
         <?php } elseif ($service->isInSale()) { ?>
         <input data-f1title="<?php echo $service->getName() ?>" data-f1price="<?php echo $service->getPrice() ?>" data-fid="<?php echo $service->getId();?>"
                data-url="<?php echo url_for('cart_service_add', array('service'=>$service->getId(), 'product' => $item->getId())) ?>"
+               ref="<?php echo addslashes($service->getToken());?>"
                type="button" class="button yellowbutton" value="Купить услугу">
         <?php } ?>
       </td>

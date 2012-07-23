@@ -38,7 +38,11 @@
     <div class="basketright">
       <div class="goodstitle">
         <div class="font24 pb5"><a href="<?php echo $item['link'] ?>"><?php echo $item['name'] ?></a></div>
+        <?php if ($item['availableForPurchase']): ?>
         <noindex><div class="font11">Есть в наличии</div></noindex>
+        <?php else: ?>
+        <noindex><div class="font11">Нет в наличии</div></noindex>
+        <?php endif ?>
       </div>
       <div class="basketinfo pb15">
         <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo $item['priceFormatted'] ?></span> <span class="rubl">p</span></span></div>
@@ -68,7 +72,11 @@
         <div class="font24 pb5">
           <a href="<?php echo url_for('service_show', array('service' => $item['token'])) ?>"><?php echo $item['name'] ?></a>
         </div>
+        <?php if ($item['availableForPurchase']): ?>
         <noindex><div class="font11">Есть в наличии</div></noindex>
+        <?php else: ?>
+        <noindex><div class="font11">Нет в наличии</div></noindex>
+        <?php endif ?>
       </div>
       <div class="basketinfo pb15">
         <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo (isset($item['priceFormatted'])) ? $item['priceFormatted'] : '' ?></span> <span class="rubl">p</span></span></div>

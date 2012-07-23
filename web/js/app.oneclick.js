@@ -360,6 +360,7 @@ $(document).ready(function() {
 						$('.order1click-link-new').remove()
 						if( typeof(_gaq) !== 'undefined' && typeof(runAnalitics) !== 'undefined' )
 							runAnalitics()
+						ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
 					},
 					error: function( jqXHR, textStatus ) {
 						self.formStatus('typing')
@@ -422,12 +423,13 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 					break
 				}
 			}
-		
+			
 		if( tind < 0 ) {
 			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )
 		} else {
 			self.todayShops = parseDateShop( Deliveries['self'].dates[ tind ].shopIds, 'td' )
-			self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
+			if( Deliveries['self'].dates.length > tind + 1 )
+				self.tomorrowShops = parseDateShop( Deliveries['self'].dates[ tind + 1 ].shopIds, 'tmr' )			
 		}
 
 		self.pickedShop = ko.observable( self.todayShops[0] )
@@ -650,7 +652,14 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 				//SHOW WARNING, NO SELF DELIVERY
 				$('#noDlvr').show()
 				return false				
-			}			
+			}
+			if( Date.parse( Deliveries['self'].dates[0].value ) !== Date.parse( currentDate ) &&
+				Date.parse( Deliveries['self'].dates[0].value ) !== Date.parse( currentDate ) + 1000*60*60*24 ) {
+				//SHOW WARNING, NO TODAY AND TOMORROW DELIVERY
+				$('#noDlvr').show()
+				return false				
+			}
+
 			if( selfAvailable ) {
 				mapCenter = calcMCenter( Deliveries['self'].shops )
 			}			

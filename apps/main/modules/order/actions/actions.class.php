@@ -185,11 +185,17 @@ class orderActions extends myActions
             'first_name' => trim($order->recipient_first_name . ' ' . $order->recipient_last_name),
           ));
 
-          $return['success'] = true;
+        $jsonOrdr = json_encode(array (
+          'order_article' => implode(',', array_map(function($i) { return $i['product_id']; }, $order->getProductRelation()->toArray())),
+          'order_id' => $order['number'],
+          'order_total' => $order['sum'],
+          'product_quantity' => implode(',', array_map(function($i) { return $i['quantity']; }, $order->getProductRelation()->toArray())),
+        ));
+        $return['success'] = true;
           $return['message'] = 'Заказ успешно создан';
           $return['data'] = array(
             'title' => 'Ваш заказ принят, спасибо!',
-            'content' => $this->getPartial($this->getModuleName() . '/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop)),
+            'content' => $this->getPartial($this->getModuleName() . '/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop, 'jsonOrdr' => $jsonOrdr, )),
             'shop' => $shopData,
           );
         }

@@ -77,7 +77,8 @@ class ShopTable extends myDoctrineTable
 
     if ($params['region_id'])
     {
-      $q->addWhere('shop.region_id = ?', $params['region_id']);
+      $q->innerJoin('shop.Region region')
+        ->andWhere('region.core_id = ?', $params['region_id']);
     }
 
     $q->select('shop.token, shop.name, shop.region_id, shop.address, SUM(stockProductRelation.quantity) AS product_quantity')
@@ -114,7 +115,8 @@ class ShopTable extends myDoctrineTable
 
     if (isset($params['region_id']))
     {
-      $q->andWhere('shop.region_id = ?', $params['region_id']);
+      $q->innerJoin('shop.Region region')
+        ->andWhere('region.core_id = ?', $params['region_id']);
     }
   }
   /**

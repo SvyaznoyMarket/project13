@@ -7,6 +7,7 @@ require_once dirname(__FILE__).'/../lib/vendor/symfony/lib/autoload/sfCoreAutolo
 sfCoreAutoload::register();
 
 require_once dirname(__FILE__).'/common.php';
+require_once __DIR__.'/../light/lib/log4php/Logger.php';
 
 class ProjectConfiguration extends sfProjectConfiguration
 {
@@ -29,6 +30,13 @@ class ProjectConfiguration extends sfProjectConfiguration
     ) as $listener) {
       $this->dispatcher->connect($listener[0], $listener[1]);
     }
+
+    if(!defined('LOG_FILES_PATH'))
+    {
+        define('LOG_FILES_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR);
+    }
+
+    Logger::configure(__DIR__ . '/../light/config/log4php.xml');
   }
 
   public function listenToConfigureDoctrineEvent(sfEvent $event)

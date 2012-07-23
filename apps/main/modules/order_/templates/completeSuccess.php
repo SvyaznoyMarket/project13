@@ -99,13 +99,22 @@
 
     <div id="mixmarket" class="jsanalytics"></div>
     <?php foreach ($orders as $i => $order): 
-      $json = array (
+      $jsonOrdr = array (
           'order_article' => implode(',', array_map(function($i) { return $i['id']; }, $order['product'])),
           'order_id' => $order['number'],
           'order_total' => $order['sum'],
           'product_quantity' => implode(',', array_map(function($i) { return $i['quantity']; }, $order['product'])),
       );  ?>
-      <div id="heiasComplete" data-vars='<?php echo json_encode( $json ) ?>' class="jsanalytics"></div>
+      
+      <div id="heiasComplete" data-vars='<?php echo json_encode( $jsonOrdr ) ?>' class="jsanalytics"></div>
+
+      <div id="adriverOrder" data-vars='<?php echo json_encode( $jsonOrdr ) ?>' class="jsanalytics"></div>
+
+  <!-- Efficient Frontiers -->
+      <img src='http://pixel.everesttech.net/3252/t?ev_Orders=1&amp;ev_Revenue=<?php echo $order['sum'] ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?php echo $order['number'] ?>' width='1' height='1'/>
+
     <?php endforeach ?>
+
+
 
 <?php end_slot() ?>

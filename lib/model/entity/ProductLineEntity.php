@@ -20,8 +20,10 @@ class ProductLineEntity
   private $mainProduct;
   /** @var int[] */
   private $productIdList = array();
+  private $kitIdList = array();
   /** @var ProductEntity[] */
   private $productList = array();
+  private $kitList = array();
 
   /**
    * @param array $data
@@ -33,11 +35,12 @@ class ProductLineEntity
     if (isset($data['name']))               $this->setName($data['name']);
     if (isset($data['description']))        $this->setDescription($data['description']);
     if (isset($data['count']))              $this->setProductCount($data['count']);
-    if (isset($data['product_count']))      $this->setProductCount($data['product_count']);
     if (isset($data['products_quantity']))  $this->setProductCount($data['products_quantity']);
     if (isset($data['media_image']))        $this->setMediaImage($data['media_image']);
     if (isset($data['main_product_id']))    $this->setMainProductId($data['main_product_id']);
     if (isset($data['product_id_list']))    $this->setProductIdList((array)$data['product_id_list']);
+    if (isset($data['kit_id_list']))        $this->setKitIdList((array)$data['kit_id_list']);
+    if (isset($data['product_count']))      $this->setProductCount($data['product_count']);
   }
 
   /**
@@ -177,21 +180,14 @@ class ProductLineEntity
    */
   public function getToken()
   {
-    /** @var $cache myRedisCache */
-    //$cache = myCache::getInstance();
-    //$key = __CLASS__.':id'.$this->id;
-    //if(!$this->token && !($token = $cache->get($key))){
-      /** @var $table TaskTable */
-      $table = ProductLineTable::getInstance();
-      /** @var $line ProductLine */
-      $line = $table->getByCoreId($this->id);
-      if($line){
-        $token = $line->token;
-       // $cache->set($key, $token);
-        //$cache->addTag('productLine-'.$line->id, $key);
-        $this->token = $token;
-      }
-    //}
+    /** @var $table TaskTable */
+    $table = ProductLineTable::getInstance();
+    /** @var $line ProductLine */
+    $line = $table->getByCoreId($this->id);
+    if($line){
+      $token = $line->token;
+      $this->token = $token;
+    }
     return $this->token;
   }
 
@@ -231,6 +227,24 @@ class ProductLineEntity
   }
 
   /**
+   * @param int[] $kitListId
+   */
+  public function setKitIdList(array $kitListId)
+  {
+    $this->kitIdList = array();
+    foreach($kitListId as $id)
+      $this->kitIdList[] = (int)$id;
+  }
+
+  /**
+   * @return int[]
+   */
+  public function getKitIdList()
+  {
+    return $this->kitIdList;
+  }
+
+  /**
    * @param ProductEntity $mainProduct
    */
   public function setMainProduct(ProductEntity $mainProduct)
@@ -244,6 +258,36 @@ class ProductLineEntity
   public function getMainProduct()
   {
     return $this->mainProduct;
+  }
+
+  public function getFullProductIdList()
+  {
+    return array_merge($this->kitIdList, $this->productIdList);
+  }
+
+  /**
+   * @return ProductEntity[]
+   */
+  public function getFullProductList()
+  {
+    return array_merge($this->kitList, $this->productList);
+  }
+
+  /**
+   * @param ProductEntity[] $productList
+   */
+  public function setFullProductList(array $productList)
+  {
+    $this->productList = array();
+    $this->kitList = array();
+    foreach($productList as $product){
+      if(in_array($product->getId(), $this->productIdList)){
+        $this->productList[] = $product;
+      }
+      if(in_array($product->getId(), $this->kitIdList)){
+        $this->kitList[] = $product;
+      }
+    }
   }
 
   /**
@@ -264,5 +308,25 @@ class ProductLineEntity
   public function getProductList()
   {
     return $this->productList;
+  }
+
+  /**
+   * @param ProductEntity[] $kitList
+   */
+  public function setKitList(array $kitList)
+  {
+    foreach($kitList as $kit)
+    {
+      assert($kit instanceof ProductEntity);
+      $this->kitList = $kitList;
+    }
+  }
+
+  /**
+   * @return ProductEntity[]
+   */
+  public function getKitList()
+  {
+    return $this->kitList;
   }
 }

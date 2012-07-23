@@ -73,8 +73,9 @@ class PromoRepository
   {
     $return = '#';
 
-    if (!empty($entity->url)) {
-      $return = $entity->url;
+    $entityUrl = $entity->getUrl();
+    if (!empty($entityUrl)) {
+      $return = $entityUrl;
     }
     else if (!count($entity->getItems()) && !$entity->isDummy()) {
       $return = null;

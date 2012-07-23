@@ -8,7 +8,6 @@ use Logger;
  * Time: 14:41
  * To change this template use File | Settings | File Templates.
  */
-require_once(ROOT_PATH.'system/exception/dataFormatException.php');
 require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/cart/Cart.php');
 require_once(ROOT_PATH.'lib/cart/SessionCartContainer.php');
@@ -132,11 +131,11 @@ class CurrentUser
 
   /**
    * @param string $geoIPCode
-   * @throws dataFormatException
+   * @throws UnexpectedValueException
    */
   public function setRegionById($id){
     if(!App::getRegion()->isValidId($id)){
-      throw new dataFormatException('region id is not valid: '.$id);
+      throw new \InvalidArgumentException('region id is not valid: '.$id);
     }
     App::getResponse()->setCookie('geoshop', $id);
   }
@@ -169,11 +168,11 @@ class CurrentUser
     try{
       $region = App::getRegion()->getById($regionId);
       if(!is_object($region)){
-        throw new dataFormatException('not found region for id: ' . $regionId);
+        throw new \UnexpectedValueException('not found region for id: ' . $regionId);
       }
       $this->region = $region;
     }
-    catch(dataFormatException $e){
+    catch(\UnexpectedValueException $e){
       Logger::getRootLogger()->warn($e->getMessage());
       $this->region = App::getRegion()->getById(self::DEFAULT_REGION_ID);
     }

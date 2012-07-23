@@ -5,9 +5,10 @@
       <h2 class='bMapShops__eRegionTitle'>Enter в <?php echo (RepositoryManager::getRegion()->getLinguisticCase($region['name'], 'п') ? mb_ucfirst(RepositoryManager::getRegion()->getLinguisticCase($region['name'], 'п')) : ((($region['type'] == 'city')? 'г.':'').$region['name'])) ?>!</h2>
       <div class='bMapShops__eRegionText'>Enter в регионах:</div>
       <div class="selectbox selectbox170 fl"><i></i>
+        <span id="selectregion" class="select"><?php echo $region['name'] ?> </span>
         <select id="region-select" class="styled" name="region">
         <?php foreach ($regionList as $record): /** @var $record RegionEntity */?>
-          <option data-url="<?php echo url_for('shop', array('region' => $record->getToken())) ?>" <?php if ($record->getId() == $region['id']) echo 'selected="selected"' ?> value="<?php echo $record->getId()?>"><?php echo $record->getName() ?></option>
+          <option data-url="<?php echo url_for('shop', array('region' => $record->getId())) ?>" <?php if ($record->getId() == $region['id']) echo 'selected="selected"' ?> value="<?php echo $record->getId()?>"><?php echo $record->getName() ?></option>
         <?php endforeach ?>
         </select>
       </div>
@@ -17,11 +18,10 @@
   <div class='bMapShops__eContent'>
 
     <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
-    <div id="region_map-container" class='bMapShops__eMapWrap' style="width: 880px; height: 490px;"></div>
+    <div id="region_map-container" class='bMapShops__eMapWrap' style="width: auto; height: 490px;"></div>
   </div>
 </div>
 
-<input id="map-center" type="hidden" data-content='<?php echo json_encode(array('latitude' => $region['latitude'], 'longitude' => $region['longitude'])) ?>' />
 <input id="map-markers" type="hidden" data-content='<?php echo json_encode($markers) ?>' />
 <!-- /bMapShops -->
 

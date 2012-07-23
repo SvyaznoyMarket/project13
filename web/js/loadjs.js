@@ -19,7 +19,7 @@
 	$LAB.setGlobalDefaults({ AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.queueScript('combine.js')
 	.queueScript('jquery-1.6.4.min.js')
-	.queueScript('/js/adfox.asyn.code.ver3.js')
+	.queueScript('/js/asyn.code.ver3.js')	
 	.queueWait( function(){
 		document.write = function(){
 /*			if( arguments[0].match('javascript') )
@@ -38,7 +38,8 @@
 	switch( document.body.getAttribute('data-template') ) {
 		case 'main':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('ports.js') )
+				.script( getWithVersion('library.js') )
 				.script('shelf/jquery.countdown.min.js')
 				.script('shelf/jquery.countdown-ru.js?v=2')
 				.wait()
@@ -50,6 +51,7 @@
 		case 'infopage':
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('main.js'))
@@ -61,6 +63,7 @@
 		case 'cart':
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('main.js'))
@@ -70,7 +73,8 @@
 		case 'order':
             $LAB.queueScript('bigjquery.min.js').queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
-				$LAB.script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('ports.js') )
+				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('app.shop.map.js'))
 				.script(getWithVersion('app.order.v3.2.js'))
@@ -78,8 +82,11 @@
 			}).runQueue()
 			break
 		case 'order_complete':
-			$LAB.queueScript('bigjquery.min.js').queueWait( function() {
-				$LAB.script( getWithVersion('library.js') )
+			$LAB.queueScript('bigjquery.min.js')
+				//.queueScript('http://www.everestjs.net/static/st.v2.js')
+				.queueWait( function() {
+				$LAB.script( getWithVersion('ports.js') )
+				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script(getWithVersion('main.js'))
@@ -96,7 +103,8 @@
             break
 		case 'product_catalog':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') )
+				$LAB.script( getWithVersion('ports.js') )
+				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
@@ -108,7 +116,8 @@
 			$LAB.queueScript('knockout-2.1.0.js')
 			.queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') )
+				$LAB.script( getWithVersion('ports.js') )
+				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
@@ -118,11 +127,13 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
+				//.script('http://www.everestjs.net/static/st.v2.js')
 			}).runQueue()
 			break
 		case 'product_comment':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') )
+				$LAB.script( getWithVersion('ports.js') )
+				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
@@ -137,7 +148,8 @@
 			break
 		case 'service':
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') )
+				$LAB.script( getWithVersion('ports.js') )
+				.script( getWithVersion('bigjquery.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
@@ -147,7 +159,8 @@
 			break
 		case 'shop':
 			$LAB.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('ports.js') )
+				.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('app.shop.js') )
 				.script( getWithVersion('main.js') )
@@ -159,7 +172,9 @@
 		case 'product_stock':
 			$LAB.queueScript('knockout-2.1.0.js')
 			.queueScript('http://maps.google.com/maps/api/js?sensor=false').queueWait( function() {
-				$LAB.script( getWithVersion('bigjquery.js') ).script( getWithVersion('library.js') )
+				$LAB.script( getWithVersion('ports.js') )
+				.script( getWithVersion('bigjquery.js') )
+				.script( getWithVersion('library.js') )
 				.wait()
 				.script( getWithVersion('main.js') )
 				.wait()

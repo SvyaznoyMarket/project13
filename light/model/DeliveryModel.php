@@ -8,7 +8,6 @@ namespace light;
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'system/exception/dataFormatException.php');
 require_once(ROOT_PATH.'system/App.php');
 require_once(ROOT_PATH.'lib/TimeDebug.php');
 require_once(HELPER_PATH.'DateFormatter.php');
@@ -40,10 +39,10 @@ class DeliveryModel
    */
   public function getShortDeliveryInfoForProductList($productIds, $geoId){
     if(!is_array($productIds)){
-      throw new dataFormatException('$productIds must be array, but in real is ('.gettype($productIds).') '.print_r($productIds, true));
+      throw new \InvalidArgumentException('$productIds must be array, but in real is ('.gettype($productIds).') '.print_r($productIds, true));
     }
     if(!is_int($geoId)){
-      throw new dataFormatException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
+      throw new \InvalidArgumentException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
     }
     $geoId = (int) $geoId;
 
@@ -60,7 +59,7 @@ class DeliveryModel
     TimeDebug::end('DeliveryModel:getShortDeliveryInfoForProductList:clientV2');
 
     if(empty($data['product_list'])){
-      throw new systemException('Core result has no needed data: '.print_r($data, 1));
+      throw new \UnexpectedValueException('Core result has no needed data: '.print_r($data, 1));
     }
 
     $return = array();
@@ -91,18 +90,18 @@ class DeliveryModel
    * @param integer $productId
    * @param integer $productQuantity
    * @param integer $geoId
-   * @throws dataFormatException
+   * @throws InvalidArgumentException
    * @return DeliveryData[]
    */
   public function getProductDeliveries($productId, $productQuantity, $geoId){
     if(!is_int($productId)){
-      throw new dataFormatException('$productId must be int, but in real is ('.gettype($productId).') '.print_r($productId, true));
+      throw new \InvalidArgumentException('$productId must be int, but in real is ('.gettype($productId).') '.print_r($productId, true));
     }
     if(!is_int($productQuantity)){
-      throw new dataFormatException('$productQuantity must be int, but in real is ('.gettype($productQuantity).') '.print_r($productQuantity, true));
+      throw new \InvalidArgumentException('$productQuantity must be int, but in real is ('.gettype($productQuantity).') '.print_r($productQuantity, true));
     }
     if(!is_int($geoId)){
-      throw new dataFormatException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
+      throw new \InvalidArgumentException('$geoId must be int, but in real is ('.gettype($geoId).') '.print_r($geoId, true));
     }
     TimeDebug::start('DeliveryModel:getProductDeliveries:clientV1');
 
@@ -154,7 +153,7 @@ class DeliveryModel
                         $shopDataList[$shopLink['id']] = $this->getShopData($shopLink['id'], $data['shop_list']);
                     }
 
-                    $shopList[] = $this->getShopIntervalList($shopLink['interval_list'], $data['interval_list']);
+                    $shopList[$shopLink['id']] = $this->getShopIntervalList($shopLink['interval_list'], $data['interval_list']);
                 }
 
                 $productDeliveryDateData['shops'] = $shopList;

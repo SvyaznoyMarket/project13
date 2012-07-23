@@ -134,8 +134,12 @@ foreach ($photo3dList as $photo3d)
       </li>
     </ul>
   </div>
-  <div class="line pb15"></div>
   <?php endif ?>
+
+  <div class="pb15">
+    <a href="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=1248/*http://market.yandex.ru/grade-shop.xml?shop_id=83048"><img src="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=1248/*http://img.yandex.ru/market/informer12.png" border="0" alt="Оцените качество магазина на Яндекс.Маркете." /></a>
+  </div>
+  <div class="line pb15"></div>
 
   <div style="margin-bottom: 20px;">
     <?php

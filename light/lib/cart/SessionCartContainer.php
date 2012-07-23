@@ -1,5 +1,6 @@
 <?php
 namespace light;
+use Logger;
 
 require_once('interface/CartContainer.php');
 /**
@@ -54,14 +55,18 @@ class SessionCartContainer implements CartContainer
     }
   }
 
-  public function addProduct($productId, $quantity){
+  public function addProduct($productId){
     if(!array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])){
-      $_SESSION[$this->sessionName]['productList'][$productId] = (int) $quantity;
+      $_SESSION[$this->sessionName]['productList'][$productId] = 1;
     }
     else{
-      $_SESSION[$this->sessionName]['productList'][$productId] += (int) $quantity;
+      $_SESSION[$this->sessionName]['productList'][$productId] += 1;
     }
   }
+
+    public function setProductQuantity($productId, $quantity){
+        $_SESSION[$this->sessionName]['productList'][$productId] = (int) $quantity;
+    }
 
   public function addService($serviceId, $quantity, $productId=null){
     if(is_null($productId)){
@@ -86,9 +91,13 @@ class SessionCartContainer implements CartContainer
 
   public function removeProduct($productId, $quantity=null){
 
+    $logger = \Logger::getLogger('Cart');
+    \LoggerNDC::push('removeProduct');
     if(!array_key_exists($productId, $_SESSION[$this->sessionName]['productList'])){
+      $logger->error('Product with id "' . $productId . '" not found');
       return;
     }
+    \LoggerNDC::pop();
 
     if(is_null($quantity)){
       //удаляем целиком
@@ -104,13 +113,17 @@ class SessionCartContainer implements CartContainer
 
   public function removeService($serviceId, $quantity=null, $productId=0){
 
+    $logger = \Logger::getLogger('Cart');
+    \LoggerNDC::push('removeService');
     if(!array_key_exists($serviceId, $_SESSION[$this->sessionName]['serviceList'])){
+      $logger->error('Service with id "' . $serviceId . '" not found');
       return;
     }
 
     $productId = (int) $productId;
 
     if(!array_key_exists($productId, $_SESSION[$this->sessionName]['serviceList'][$serviceId])){
+      $logger->error('Product with id "' . $productId . '" not found');
       return;
     }
 
@@ -124,6 +137,7 @@ class SessionCartContainer implements CartContainer
         unset ($_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId]);
       }
     }
+    \LoggerNDC::pop();
   }
 
   public function clear(){
@@ -216,9 +230,9 @@ class SessionCartContainer implements CartContainer
 
     $idList = array();
 
-    foreach($_SESSION[$this->sessionName]['serviceList'] as $service){
+    foreach($_SESSION[$this->sessionName]['serviceList'] as $serviceId => $service){
       foreach($service as $productId => $quantity){
-        $idList[] = $productId;
+        $idList[] = $serviceId;
       }
     }
 

@@ -3,8 +3,7 @@ namespace light;
 use Logger;
 use Exception;
 
-require_once(__DIR__ . '/../log4php/Logger.php');
-require_once('exception/coreClientException.php');
+require_once(__DIR__.'/../log4php/Logger.php');
 
 class CoreClient
 {
@@ -58,7 +57,7 @@ class CoreClient
    * @param array $params
    * @param array $data
    * @return array
-   * @throws CoreClientException
+   * @throws RuntimeException
    */
   public function query($action, array $params = array(), array $data = array())
   {
@@ -66,22 +65,22 @@ class CoreClient
     $response = curl_exec($connection);
     try {
       if (curl_errno($connection) > 0) {
-        throw new CoreClientException(curl_error($connection), curl_errno($connection));
+        throw new \RuntimeException(curl_error($connection), curl_errno($connection));
       }
       $info = curl_getinfo($connection);
       $this->log('Core response resource: ' . $connection ,'debug');
       $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
       if ($info['http_code'] >= 300) {
-        throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
+        throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
       $this->log('Core response: ' . $response, 'debug');
       $responseDecoded = $this->decode($response);
       curl_close($connection);
       return $responseDecoded;
     }
-    catch (CoreClientException $e) {
+    catch (\RuntimeException $e) {
       curl_close($connection);
-      $this->log('request params: '.$action.', get: '.print_r($params, 1).', post: '.print_r($data, 1).'error: '.$e->__toString(), 'error');
+      $this->log('request params: '.$action.', get: '.print_r($params, 1).', post: '.print_r($data, 1).'error: '.$e->__toString() . ', response: ' . print_r($response, 1), 'error');
       throw $e;
     }
   }
@@ -112,12 +111,12 @@ class CoreClient
    * Note, application is blocked until the processing of all requests.
    *
    * @see addQuery
-   * @throws CoreClientException
+   * @throws RuntimeException
    */
   public function execute()
   {
     if (!$this->multiHandler)
-      throw new CoreClientException('No query to execute');
+      throw new \RuntimeException('No query to execute');
 
     $active = null;
     $error = null;
@@ -133,10 +132,10 @@ class CoreClient
             $this->log('Core response resurce: ' . $ch, 'debug');
             $this->log('Core response info: ' . $this->encodeInfo($info), 'debug');
             if (curl_errno($ch) > 0)
-              throw new CoreClientException(curl_error($ch), curl_errno($ch));
+              throw new \RuntimeException(curl_error($ch), curl_errno($ch));
             $content = curl_multi_getcontent($ch);
             if ($info['http_code'] >= 300) {
-              throw new CoreClientException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
+              throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $content));
             }
             $responseDecoded = $this->decode($content);
             $this->log('Core response data: ' . $this->encode($responseDecoded), 'debug');
@@ -145,7 +144,7 @@ class CoreClient
             $callback($responseDecoded);
           }
         } elseif ($code != CURLM_CALL_MULTI_PERFORM) {
-          throw new CoreClientException("multi_curl failure [$code]");
+          throw new \RuntimeException("multi_curl failure [$code]");
         }
       } while ($still_executing);
     } catch (Exception $e) {
@@ -159,7 +158,7 @@ class CoreClient
     $this->callbacks = array();
     $this->resources = array();
     if (!is_null($error)) {
-      $this->log((string)$error, 'error');
+      $this->log('Error:' . (string)$error . 'Response: ' . print_r(isset($content)?$content:Null, 1), 'error');
       /* @var $error Exception  */
       throw $error;
     }
@@ -199,12 +198,12 @@ class CoreClient
   /**
    * @param $response
    * @return array
-   * @throws CoreClientException
+   * @throws RuntimeException
    */
   private function decode($response)
   {
     if (is_null($response)) {
-      throw new CoreClientException('Response cannot be null');
+      throw new \RuntimeException('Response cannot be null');
     }
     $decoded = json_decode($response, true);
     // check json error
@@ -230,11 +229,11 @@ class CoreClient
           break;
       }
       $errorMessage = sprintf('Json error: "%s", Response: "%s"', $error, $response);
-      throw new CoreClientException($errorMessage, $code);
+      throw new \RuntimeException($errorMessage, $code);
     }
 
     if (is_array($decoded) && array_key_exists('error', $decoded)) {
-      throw new CoreClientException((string)$decoded['error']['message'] . " " . $this->encode($decoded), (int)$decoded['error']['code']);
+      throw new \RuntimeException((string)$decoded['error']['message'] . " " . $this->encode($decoded), (int)$decoded['error']['code']);
     }
     if (array_key_exists('result', $decoded)) {
       $decoded = $decoded['result'];
@@ -381,9 +380,9 @@ class CoreV1Client
 
     if (isset($response['error']))
     {
-      $message = 'Bad response: '.$response['error']['message'].'('.(isset($response['error']['detail'])?$response['error']['detail']:'no details').')';
+      $message = 'Bad response: '.$response['error']['message'].'('.(isset($response['error']['detail'])?$response['error']['detail']:'no details').'), request action: ' . $action . ', request params: ' . print_r($params, 1) . ', request data: ' . print_r($data, 1) . ', full response: ' . print_r($response, 1);
       $this->log($message, 'error');
-      throw new CoreClientException($message, $response['error']['code']);
+      throw new \RuntimeException($message, $response['error']['code']);
     }
 
     return $response;
@@ -410,7 +409,7 @@ class CoreV1Client
     {
       $this->log('Authentification on V1 core failed', 'info');
       $this->log('Authentification on Core V1 failed ('.$response['error']['code'].'): '.$response['error']['message'], 'error');
-      throw new CoreClientException('Authentification failed: '.$response['error']['message'], $response['error']['code']);
+      throw new \RuntimeException('Authentification failed: '.$response['error']['message'], $response['error']['code']);
     }
     else
     {
@@ -431,7 +430,7 @@ class CoreV1Client
     {
       $message = 'Curl error['.curl_errno($this->connection).']: '.curl_error($this->connection);
       $this->log($message, 'error');
-      throw new CoreClientException($message, curl_errno($this->connection));
+      throw new \RuntimeException($message, curl_errno($this->connection));
     }
 
     return $response;

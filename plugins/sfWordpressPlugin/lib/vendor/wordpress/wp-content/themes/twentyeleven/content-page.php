@@ -23,6 +23,7 @@
             ob_end_clean();
             $content = str_replace('%credit_program_widget%', credit_program_widget(), $content);
             $content = str_replace('%bank_description_list_widget%', bank_description_list_widget(), $content);
+            $content = str_replace('%region_delivery_widget%', region_delivery_widget(), $content);
         ?>
 
 		<?php echo $content; ?>

@@ -20,6 +20,8 @@ class wordpressActions extends sfActions
       $sfWPProxy = SF_WP_Proxy::getInstance();
       $this->wpContent = $sfWPProxy->getContent();
 
+      $this->forward404If(!$sfWPProxy->getPost());
+
       $breadCrumbElementList = array();
       $currentPage = $sfWPProxy->getPost();
       while(!empty($currentPage->post_parent))
@@ -36,7 +38,7 @@ class wordpressActions extends sfActions
       $this->getRequest()->setParameter('_template', 'infopage');
       $this->getResponse()->setTitle($this->pageTitle);
 
-      $layout = SF_WP_Proxy::getInstance()->getCurrentLayout();
+      $layout = $sfWPProxy->getCurrentLayout();
 
       if(!empty($layout))
       {

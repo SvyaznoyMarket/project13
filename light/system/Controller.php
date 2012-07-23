@@ -8,7 +8,6 @@ namespace light;
  * To change this template use File | Settings | File Templates.
  */
 
-require_once(ROOT_PATH.'system/exception/routerException.php');
 require_once(ROOT_PATH.'system/App.php');
 
 class Controller {
@@ -25,15 +24,15 @@ class Controller {
     $className = 'light\\'.$className.'Controller';
     if(!class_exists($className)){
       if(!file_exists(ROOT_PATH.'controller/'.$classPath.'.php')){
-        throw new routerException('request to run unknown Controller '.$className);
+        throw new \RuntimeException('request to run unknown Controller '.$className);
       }
       include_once(ROOT_PATH.'controller/'.$classPath.'.php');
     }
     if(!class_exists($className)){
-      throw new routerException('request to run unknown Controller '.$className);
+      throw new \RuntimeException('request to run unknown Controller '.$className);
     }
     if(!method_exists($className, $methodName)){
-      throw new routerException('request to run unknown Method '.$methodName.' in controller '.$className);
+      throw new \BadMethodCallException('request to run unknown Method '.$methodName.' in controller '.$className);
     }
 
     $response = App::getResponse();

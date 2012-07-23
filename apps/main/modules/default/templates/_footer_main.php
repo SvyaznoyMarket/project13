@@ -13,8 +13,8 @@
         <?php endif ?>
       </div>
     </div>
-    <div class='bIndexLinks2__eBan'><a href="/pdf/research_enter.pdf" target="_blank"><img
-      src='/images/img_main_research_enter.jpg'></a></div>
+    <div class='bIndexLinks2__eBan'><a href="/release_2012_07_17"><img
+      src='/images/img_16_07_2012_-_press-release.png'></a></div>
     <div class='bIndexLinks2__eBan'><a href="<?php echo url_for('default_show', array('page' => 'f1',)) ?>"><img
       src='/images/img_main_f1service.jpg'></a></div>
     <div class='bIndexLinks2__eLinks'>
@@ -25,7 +25,7 @@
       <a href="<?php echo url_for('shop') ?>">Наши магазины</a>
       <a href="<?php echo url_for('wordpress', array('page' => 'how_make_order',)) ?>">Как сделать заказ</a>
       <a href="<?php echo url_for('wordpress', array('page' => 'mobile_apps')) ?>">Мобильные приложения</a>
-      <a href="<?php echo url_for('callback') ?>">Обратная связь</a>
+      <a href="http://feedback.enter.ru/">Обратная связь</a>
     </div>
   </div>
 
@@ -45,5 +45,5 @@
       <a href="<?php echo url_for('wordpress', array('page' => 'media_info')) ?>">Информация о СМИ</a>
       <a href="<?php echo url_for('user') ?>">Личный кабинет</a>
     </div><br/>
-    <span class="rights"> &copy; ООО &laquo;Энтер&raquo; 2011&ndash;<?php echo date("Y") ?>. <span class="names"> ENTER<sup>&reg;</sup> ЕНТЕР<sup>&reg;</sup> <span style='font:normal 1em tahoma,verdana,arial,helvetica,sans-serif; color: #FF0000;'>Enter<sup>&reg;</sup></span>.</span> Все права защищены.</span>
+    <span class="rights"> &copy; ООО &laquo;Энтер&raquo; 2011&ndash;<?php echo date("Y") ?>. <span style="font-size: 11px;"> ENTER<sup>&reg;</sup> ЕНТЕР<sup>&reg;</sup> Enter<sup>&reg;</sup>.</span> Все права защищены.</span>
   </div>

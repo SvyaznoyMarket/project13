@@ -54,11 +54,12 @@ class cart_Components extends myComponents
           'name' => $product->getNameWeb(),
           'quantity' => $cartInfo->getQuantity(),
           'service' => array(),
-          'price' => $cartInfo->getPrice(),
-          'priceFormatted' =>  number_format($cartInfo->getPrice(), 0, ',', ' '),
+          'price' => $product->getPrice(),
+          'priceFormatted' =>  number_format($product->getPrice(), 0, ',', ' '),
           'total' => number_format($cartInfo->getTotalPrice(), 0, ',', ' '),
           'photo' => $urls[1] . $product->getMediaImage(),
           'fullObject' => $product,
+          'availableForPurchase' => (!$cartInfo->hasError()),
         );
       }
     };
@@ -93,11 +94,12 @@ class cart_Components extends myComponents
               'id'        => $serviceCoreInfo->getId(),
               'token'     => $serviceCoreInfo->getToken(),
               'quantity'  => $prodServInfo->getQuantity(),
-              'price'     => $prodServInfo->getPrice()),
-            'price'     => $prodServInfo->getPrice(),
+              'price'     => $serviceCoreInfo->getPrice()),
+            'price'     => $serviceCoreInfo->getPrice(),
             'total'     => number_format($prodServInfo->getTotalPrice(), 0, ',', ' '),
-            'priceFormatted'  => number_format($prodServInfo->getPrice(), 0, ',', ' '),
-            'photo' => $urlsService[2] . $serviceCoreInfo->getMediaImage()
+            'priceFormatted'  => number_format($serviceCoreInfo->getPrice(), 0, ',', ' '),
+            'photo' => $urlsService[2] . $serviceCoreInfo->getMediaImage(),
+            'availableForPurchase' => (!$prodServInfo->hasError()),
           );
         }
       }

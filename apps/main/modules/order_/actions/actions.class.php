@@ -456,7 +456,7 @@ class order_Actions extends myActions
 
     $deliveryTypes = array();
     $result = Core::getInstance()->query('order.calc-delivery', array(), array(
-      'geo_id'  => $user->getRegion('core_id'),
+      'geo_id'  => $user->getRegion('id'),
       'product' => $productsInCart,
       'service' => $servicesInCart,
     ));

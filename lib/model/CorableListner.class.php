@@ -61,6 +61,7 @@ class Doctrine_Template_Listener_Corable extends Doctrine_Record_Listener
     {
       throw new Exception("Unable to save to Core: " . current(Core::getInstance()->getError()));
     }
+
   }
 
   public function preDelete(Doctrine_Event $event)

@@ -1215,3 +1215,247 @@ $layoutMetaBoxConfig = array(
 $layout_logo_meta_box = new Tax_Meta_Class($layoutMetaBoxConfig);
 $layout_logo_meta_box->addText('layout_file_name',array('name'=> 'Название файла шаблона'));
 $layout_logo_meta_box->Finish();
+
+
+
+/**
+ * Условия доставки
+ */
+
+add_action( 'init', 'create_delivery_option' );
+function create_delivery_option() {
+    $labels = array(
+        'name' => _x('Условия доставки', 'post type general name'),
+        'singular_name' => _x('Условие доставки', 'post type singular name'),
+        'add_new' => _x('Добавить новое условие доставки', 'Условие доставки'),
+        'add_new_item' => wp__('Добавление нового условия доставки'),
+        'edit_item' => wp__('Изменить условие доставки'),
+        'new_item' => wp__('Новое условие доставки'),
+        'view_item' => wp__('Посмотреть условие доставки'),
+        'search_items' => wp__('Искать условия доставки'),
+        'not_found' =>  wp__('Условия доставки не найдены'),
+        'not_found_in_trash' => wp__('Условия доставки не найдены в корзине'),
+        'parent_item_colon' => ''
+    );
+
+    $supports = array(
+        'title',
+        'editor',
+        #'custom-fields',
+        #'revisions',
+        #'excerpt',
+        'post-thumbnails',
+    );
+    register_post_type( 'delivery',
+        array(
+            'labels' => $labels,
+            'public' => true,
+            'supports' => $supports,
+            'show_ui' => true,
+        )
+    );
+}
+
+add_action( 'init', 'create_region_taxonomy' );
+
+function create_region_taxonomy() {
+    $labels = array(
+        'name' => _x( 'Регионы', 'taxonomy general name' ),
+        'singular_name' => _x( 'Регион', 'taxonomy singular name' ),
+        'search_items' =>  wp__( 'Искать регионы' ),
+        'all_items' => wp__( 'Все регионы' ),
+        #'parent_item' => wp__( 'Родительская категория' ),
+        #'parent_item_colon' => wp__( 'Родительская категория:' ),
+        'edit_item' => wp__( 'Изменить регион' ),
+        'update_item' => wp__( 'Обновить регион' ),
+        'add_new_item' => wp__( 'Добавить новый регион' ),
+        'new_item_name' => wp__( 'Название нового региона' ),
+        'menu_name' => wp__( 'Регион' ),
+    );
+
+    register_taxonomy( 'region', 'delivery',
+        array(
+            'hierarchical' => false,
+            'labels' => $labels,
+            'query_var' => 'region',
+            'rewrite' => array( 'slug' => 'region' ),
+            'show_ui' => true
+        )
+    );
+}
+
+function add_region_box() {
+    remove_meta_box('tagsdiv-region','delivery','core');
+    add_meta_box('region_box_ID', wp__('Регион'), 'region_taxonomy_style_function', 'delivery', 'side', 'core');
+}
+
+function add_region_menus() {
+
+    if ( ! is_admin() )
+        return;
+
+    add_action('admin_menu', 'add_region_box');
+    add_action('save_post', 'save_region_taxonomy_data');
+}
+
+add_region_menus();
+
+function region_taxonomy_style_function($program) {
+
+    echo '<input type="hidden" name="taxonomy_noncename" id="taxonomy_noncename" value="' .
+        wp_create_nonce( 'taxonomy_region' ) . '" />';
+
+
+    // Get all region taxonomy terms
+    $regionList = get_terms('region', 'hide_empty=0');
+
+    ?>
+<select name='post_region' id='post_region'>
+    <!-- Display bank list as options -->
+    <?php
+    $names = wp_get_object_terms($program->ID, 'region');
+    ?>
+    <option class='region-option' value=''
+        <?php if (!count($names)) echo "selected";?>>Отсутствует</option>
+    <?php
+    foreach ($regionList as $region) {
+        if (!is_wp_error($names) && !empty($names) && !strcmp($region->slug, $names[0]->slug))
+            echo "<option class='theme-option' value='" . $region->slug . "' selected>" . $region->name . "</option>\n";
+        else
+            echo "<option class='theme-option' value='" . $region->slug . "'>" . $region->name . "</option>\n";
+    }
+    ?>
+</select>
+<?php
+}
+
+function save_region_taxonomy_data($program_id) {
+    // verify this came from our screen and with proper authorization.
+
+    if ( !wp_verify_nonce( $_POST['taxonomy_noncename'], 'taxonomy_region' )) {
+        return $program_id;
+    }
+
+    // verify if this is an auto save routine. If it is our form has not been submitted, so we dont want to do anything
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
+        return $program_id;
+
+
+    // Check permissions
+    /*if ( 'page' == $_POST['post_type'] ) {
+        if ( !current_user_can( 'edit_page', $post_id ) )
+            return $post_id;
+    } else {
+        if ( !current_user_can( 'edit_post', $post_id ) )
+            return $post_id;
+    }*/
+
+    // OK, we're authenticated: we need to find and save the data
+    $program = get_page($program_id);
+
+
+    if (($program->post_type == 'delivery')) {
+        $region = $_POST['post_region'];
+        wp_set_object_terms( $program_id, $region, 'region' );
+    }
+    return $region;
+
+}
+
+// Add to admin_init function
+add_filter("manage_edit-region_columns", 'region_columns');
+
+function region_columns($region_columns) {
+    $new_columns = array(
+        'cb' => '<input type="checkbox" />',
+        'name' => wp__('Название'),
+        #'short_description' => wp__('Условия кредитования'),
+        #'logo' => wp__('Логотип'),
+        #'priority' => wp__('Приоритет')
+        #'description' => wp__('Текст пункта выпадающего списка'),
+        #'slug' => wp__('Slug'),
+        #'posts' => wp__('Posts')
+    );
+    return $new_columns;
+}
+
+/*add_filter("manage_bank_custom_column", 'manage_bank_columns', 10, 3);
+
+function manage_bank_columns($out, $column_name, $term_id) {
+    $term = get_term($term_id, 'bank');
+    switch ($column_name) {
+        case 'logo':
+            $logo = get_tax_meta($term_id,'image_field_id');
+            $out .= "<img src=\"{$logo['src']}\" />";
+            break;
+        case 'short_description':
+            $out .= mb_substr($term->description, 0, 100);
+            if(mb_strlen($term->description) > 100) {
+                $out .= '...';
+            }
+            break;
+        case 'priority':
+            $out .= $term->priority;
+        default:
+            break;
+    }
+    return $out;
+}*/
+
+/*
+ ******************Region delivery widget*******
+ */
+function region_delivery_widget()
+{
+    ob_start();
+
+    global $wpdb;
+
+    $sql = "
+        select
+            tt.term_taxonomy_id as taxonomy_id,
+            tt.description as taxonomy_description,
+            p.post_content as delivery_option,
+            tb.name as region_name,
+            tb.term_id as region_id
+        from wp_term_taxonomy tt
+        inner join wp_terms t on t.term_id = tt.term_id
+        left join wp_term_relationships tr on tr.term_taxonomy_id = tt.term_taxonomy_id
+        left join wp_posts p on p.ID = tr.object_id and p.post_type = 'delivery' and p.post_status = 'publish'
+        inner join wp_term_taxonomy ttb on ttb.taxonomy = 'region'
+        inner join wp_term_relationships trb on ttb.term_taxonomy_id = trb.term_taxonomy_id and trb.object_id = p.ID
+        inner join wp_terms tb on tb.term_id = ttb.term_id
+        #where tt.taxonomy = 'category'
+        order by tt.priority, ttb.priority;
+    ";
+    $regionList = $wpdb->get_results($sql, ARRAY_A);
+
+    ?>
+<select name="region_list" id="region_list">
+    <?php foreach($regionList as $regionId => $regionData) { ?>
+    <option value="<?php echo $regionId?>" <?=$regionId == 0?'selected':Null?>><?php echo $regionData['region_name']?></option>
+    <?php } ?>
+</select>
+<br />
+<br />
+<div id="region_delivery_option">
+    <?=$regionList[0]['delivery_option']?>
+</div>
+
+<script src="/wp-includes/js/jquery/jquery.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var regionList = <?php echo json_encode($regionList) ?>;
+
+    var regionSelector = document.getElementById('region_list');
+    regionSelector.onchange = function() {
+        var taxonomyId = regionSelector.value;
+        document.getElementById('region_delivery_option').innerHTML = regionList[taxonomyId]['delivery_option'];
+    };
+
+</script>
+<?php
+    $content = ob_get_contents();
+    ob_end_clean();
+
+    return $content;
+}

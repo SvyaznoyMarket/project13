@@ -24,6 +24,9 @@
 <?php //include_component('productCatalog_', 'article_seo', array('productCategory' => $productCategory, 'productPager' => $productPager)) ?>
 <?php end_slot() ?>
 
+<?php require '_plugs/for_tag.php' ?>
+<div class="clear" style="height: 20px;"></div>
+
 <?php require '_product_list_.php' ?>
 
 <?php slot('seo_counters_advance') ?>

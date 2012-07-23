@@ -1,6 +1,7 @@
 <?php
 namespace light;
 use InvalidArgumentException;
+use Logger;
 
 /**
  * Created by JetBrains PhpStorm.
@@ -14,6 +15,7 @@ require_once('interface/CartContainer.php');
 require_once('interface/CartPriceContainer.php');
 require_once('data/ProductCartData.php');
 require_once('data/ServiceCartData.php');
+require_once(__DIR__ . '/../log4php/Logger.php');
 
 class Cart
 {
@@ -55,12 +57,19 @@ class Cart
    * @param int $productId
    * @param int $quantity
    */
-  public function addProduct($productId, $quantity){
+  public function setProductQuantity($productId, $quantity){
     //@TODO добавить проверку наличия, когда на ядре реализуют этот функционал
-    $this->dataContainer->addProduct($productId, $quantity);
+    $this->dataContainer->setProductQuantity($productId, $quantity);
     $this->productDataList = null;
     $this->totalPrice = null;
   }
+
+    public function addProduct($productId){
+        //@TODO добавить проверку наличия, когда на ядре реализуют этот функционал
+        $this->dataContainer->addProduct($productId);
+        $this->productDataList = null;
+        $this->totalPrice = null;
+    }
 
   /**
    * @param int $productId
@@ -78,6 +87,18 @@ class Cart
       }
     }
     $this->totalPrice = null;
+  }
+
+  /**
+   * @param int $productId
+   */
+  public function removeProductServices($productId){
+    $productId = (int)$productId;
+    $list = $this->dataContainer->getServiceIdList($productId);
+
+    foreach($list as $serviceId){
+      $this->removeService($serviceId, null, $productId);
+    }
   }
 
   /**
@@ -197,6 +218,10 @@ class Cart
     $id = (int) $id;
 
     if(!array_key_exists($id, $this->productDataList)){
+      $logger = \Logger::getLogger('Cart');
+      \LoggerNDC::push('getProduct');
+      $logger->error('Product with id "' . $id . '" not found');
+      \LoggerNDC::pop();
       return null;
     }
     return $this->productDataList[$id];
@@ -215,12 +240,17 @@ class Cart
     $id = (int) $id;
     $productId = (int) $productId;
 
+    $logger = \Logger::getLogger('Cart');
+      \LoggerNDC::push('getService');
     if(!array_key_exists($id, $this->serviceDataList)){
+      $logger->error('Service with id "' . $id . '" not found');
       return null;
     }
     if(!array_key_exists($productId, $this->serviceDataList[$id])){
+      $logger->error('Product with id "' . $productId . '" not found');
       return null;
     }
+    \LoggerNDC::pop();
 
     return $this->serviceDataList[$id][$productId];
   }
@@ -248,6 +278,14 @@ class Cart
     }
 
     return $return;
+  }
+
+  /**
+   * @param int $productId
+   * @return bool
+   */
+  public function containsProduct($productId){
+    return in_array($productId, $this->dataContainer->getProductIdList());
   }
 
   /**
