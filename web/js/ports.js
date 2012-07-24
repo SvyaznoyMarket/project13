@@ -123,10 +123,48 @@ window.ANALYTICS = {
         this.googleRemarketing();
     },
 
+    gooReMaCategories : function() {
+        var urls = []
+        $('.breadcrumbs a').each( function( i, link ) {
+            if( $(link).attr('href') != '' && $(link).attr('href') != '/' )
+                urls.push( $(link).attr('href') )
+        })
+        urls.push( document.location.pathname )
+console.info( urls )       
+        // var categories = []
+        // for( var i=0, l=urls.length; i < l; i++ )
+        //     urls[ i ]
+        var categories = {
+         'household': 'cyX1CPHeoAMQl9X23gM', //товары для дома
+         'tovari-dlya-givotnih': 'ZoF-CNnhoAMQl9X23gM', // для животных
+         'jewel': 'kdKjCOHgoAMQl9X23gM',// украшения
+         'electronics': 'S8PxCPndoAMQl9X23gM', // электроника
+         'aksessuari-dlya-elektroniki-1024': 'johICJnpoAMQl9X23gM', //аксессуры в электронике
+         'audio-789': 'OkJ7CLnloAMQl9X23gM', //аудио
+         'igri-i-konsoli-802': 'ldadCKHooAMQl9X23gM', //игры и консоли
+         'kompyuteri-i-plansheti-815': 'M-vGCNHioAMQl9X23gM', //компьютеры и планшеты
+         'mobilnaya-elektronika-868': 'PV-cCKnnoAMQl9X23gM', //мобильная электроника
+         'televizori-i-video-881': 'ZyZPCMHkoAMQl9X23gM', //телевизоры и видео
+         'telefoni-897': '093HCMnjoAMQl9X23gM', //телефоны
+         'foto-i-videokameri-912': 'hvUnCLHmoAMQl9X23gM' //фото и видеокамеры
+         // f%5Blabel%5D%5B%5D=1 MGyuCPnsoAMQl9X23gM распродажа электроники
+        }
+        cats: for( var key in categories ) {
+            for( var i=0, l=urls.length; i < l; i++ )
+                if( urls[ i ].match( key ) ) {
+                    console.info( key )
+                    google_conversion_label = categories[ key ]
+                    this.googleRemarketing()
+                    continue cats
+                }
+        }
+
+    },
+
     parseAllAnalDivs : function( nodes ) {
         if( !this. enable )
             return
-        
+
         var self = this
         $.each(  nodes , function() {
 //console.info( this.id, this.id+'' in self  )
