@@ -82,9 +82,9 @@
         <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo (isset($item['priceFormatted'])) ? $item['priceFormatted'] : '' ?></span> <span class="rubl">p</span></span></div>
         <div class="right">
           <div class="numerbox">
-            <?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_service_add', array('service' => $item['service']['token'], 'quantity' => -1,)) : '<b class="ajaless" title="Уменьшить"></b>' ?>
+            <?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_service_add', array('service' => $item['service']['core_id'], 'quantity' => -1,)) : '<b class="ajaless" title="Уменьшить"></b>' ?>
             <span class="ajaquant">
-              <?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_service_add', array('service' => $item['token'], 'quantity' => 1,)) ?>
+              <?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_service_add', array('service' => $item['core_id'], 'quantity' => 1,)) ?>
           </div>
         </div>
       </div>
