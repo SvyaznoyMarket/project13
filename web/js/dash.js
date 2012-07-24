@@ -282,6 +282,7 @@ $(document).ready(function(){
 		// var ajurl = $( button ).attr('href') +'/1'
 		// if( ltbx.isCredit() )
 		// 	ajurl += '/1'
+		var ajurl = $( button ).attr('href')
 		$.getJSON( ajurl, function(data) {
 			if ( data.success && ltbx ) {
 				var tmpitem = parseItemNode( boughtItem )
