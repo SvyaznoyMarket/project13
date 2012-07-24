@@ -1,3 +1,5 @@
+<?php if ('live' == sfConfig::get('sf_environment')): ?>
+
 <!--div class="adfoxWrapper" id="adfox683sub"></div-->
 <script type="text/javascript">
         if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
@@ -17,3 +19,5 @@
 
         AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=bdto&amp;p2=emue&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
 </script>
+
+<?php endif ?>
