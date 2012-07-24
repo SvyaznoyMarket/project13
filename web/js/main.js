@@ -651,15 +651,17 @@ $(document).ready(function(){
                 else
 	                firstli = el.parent().find('> label').first()
                 firstli.after('<div class="filterresult product_count-block" style="display:block; padding: 4px; margin-top: -30px; cursor: pointer;"><i class="corner"></i>Выбрано '+result.data+' модел'+ending+'<br /><a>Показать</a></div>')
+                var localTimeout = null
                 $('.product_count-block')
 					.hover(
 						function() {
-							$(this).stopTime('hide')
+							if( localTimeout )
+								clearTimeout( localTimeout )
 						},
 						function() {
-							$(this).oneTime(2000, 'hide', function() {
-								$(this).remove()
-							})
+							localTimeout = setTimeout( function() {
+								$('.product_count-block').remove()
+							}, 4000  )
 						}
 						)
 					.click(function() {

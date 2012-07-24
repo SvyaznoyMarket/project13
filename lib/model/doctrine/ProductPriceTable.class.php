@@ -115,12 +115,8 @@ class ProductPriceTable extends myDoctrineTable
     if (count($intersection))
     {
       $q = ProductTable::getInstance()->createQuery('product')
-        ->select('product.core_id, region.core_id as region_core_id, productPrice.id, priceList.id, category.core_id')
-        ->innerJoin('product.ProductPrice productPrice')
         ->innerJoin('product.Category category')
-        ->innerJoin('productPrice.PriceList priceList')
-        ->innerJoin('priceList.Region region WITH region.core_id IS NOT NULL')
-        ->where('productPrice.id = ?', $record['id'])
+        ->where('product.id = ?', $record['product_id'])
         ->setHydrationMode(Doctrine_Core::HYDRATE_ARRAY)
       ;
 
@@ -128,19 +124,13 @@ class ProductPriceTable extends myDoctrineTable
 
       foreach ($products as $product)
       {
-        foreach ($product['ProductPrice'][0]['PriceList']['Region'] as $region)
-        {
-          if (!empty($region['region_core_id']))
-          {
-            $return[$region['region_core_id']] = "product-{$product['core_id']}-{$region['region_core_id']}";
-          }
-        }
+        $return['p-'.$product['core_id']] = "product-{$product['core_id']}";
 
         foreach ($product['Category'] as $category)
         {
-          $return[] = "productCategory-{$category['core_id']}-{$region['region_core_id']}";
+          $return['c-'.$category['core_id']] = "productCategory-{$category['core_id']}";
         }
-        //myDebug::dump($return, 1);
+//        var_dump($return); die();
       }
     }
 

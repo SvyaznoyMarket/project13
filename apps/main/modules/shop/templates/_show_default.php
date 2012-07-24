@@ -43,7 +43,9 @@
     <p class='bMapInfo__eP'>
       <span class='bMapInfo__eSpan mBig'>
 
-        <?php if ($item['regime']): ?>
+        <?php if($item['is_reconstruction']): ?>
+        <span class="red">На реконструкции</span><br />
+        <?php elseif($item['regime']): ?>
         Работаем <?php echo $item['regime'] ?><br />
         <?php endif ?>
         <?php if ($item['phonenumbers']): ?>
