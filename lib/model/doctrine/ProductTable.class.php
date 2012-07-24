@@ -415,7 +415,7 @@ class ProductTable extends myDoctrineTable
       }
     }
 
-    // производитель
+    // бренд
     if ($filter['creator'])
     {
       if (is_array($filter['creator']))
@@ -563,7 +563,7 @@ class ProductTable extends myDoctrineTable
       }
     }
 
-    // производитель
+    // бренд
     if ($filter['creator'])
     {
       if (is_array($filter['creator']))
