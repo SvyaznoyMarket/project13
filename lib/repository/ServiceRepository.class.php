@@ -3,6 +3,45 @@
 class ServiceRepository
 {
   /**
+   * @param ServiceCategoryEntity[] $categoryList
+   */
+  public function loadServiceList(array $categoryList){
+    /** @var $category ServiceCategoryEntity */
+    foreach($categoryList as $category){
+      CoreClient::getInstance()->addQuery('service.list', array(
+        'category_id' => $category->getId(),
+        'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
+      ), array(), function($data) use($category){
+        /** @var $category ServiceCategoryEntity */
+        $category->setServiceIdList($data['list']);
+      });
+    }
+    CoreClient::getInstance()->execute();
+    $idList = array();
+    foreach($categoryList as $category){
+      $idList = array_merge($idList, $category->getServiceIdList());
+    }
+    if(!empty($idList)){
+      $idList = array_unique($idList);
+      $result = CoreClient::getInstance()->query('service.get2', array(
+        'id' => $idList,
+        'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
+      ));
+      $map = array();
+      if (is_array($result))
+        foreach ($result as $serviceData)
+          $map[$serviceData['id']] = $this->createService($serviceData);
+      foreach($categoryList as $category){
+        foreach($category->getServiceIdList() as $id){
+          if(isset($map[$id])){
+            $category->addService($map[$id]);
+          }
+        }
+      }
+    }
+  }
+
+  /**
    * @param $id
    * @return null|ServiceCategoryEntity
    */
@@ -72,6 +111,21 @@ class ServiceRepository
     return $this->createCategoryEntity((array)$data);
   }
 
+  public function getCategoryRootTree($max_depth){
+    $params = array(
+      'max_depth' => (int)$max_depth,
+      'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
+    );
+    if(!is_null($max_depth)){
+      $params['max_depth'] = (int)$max_depth;
+    }
+    $data = CoreClient::getInstance()->query('service.get-category-tree', $params);
+    if(empty($data) || !is_array($data)){
+      return null;
+    }
+    return $this->createCategoryEntity((array)$data);
+  }
+
   /**
    * @param int[] $idList
    * @return ServiceEntity[]
@@ -81,7 +135,7 @@ class ServiceRepository
     if(empty($idList)){
       return array();
     }
-    $result = CoreClient::getInstance()->query('service.list', array(
+    $result = CoreClient::getInstance()->query('service.get2', array(
       'id' => $idList,
       'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
     ));
@@ -120,26 +174,7 @@ class ServiceRepository
     if (empty($result)) {
       return null;
     }
-    return $this->createService((array)$result);
-  }
-
-  /**
-   * @param array $data
-   * @return ServiceEntity
-   */
-  private function createService(array $data)
-  {
-    $service = new ServiceEntity($data);
-
-    if (array_key_exists('category_list', $data) && is_array($data['category_list']))
-      foreach ($data['category_list'] as $categoryData)
-        $service->addCategory($this->createCategoryEntity((array)$categoryData));
-
-    if (array_key_exists('alike_list', $data) && is_array($data['alike_list']))
-      foreach ($data['alike_list'] as $alikeId)
-        $service->addAlikeId($alikeId);
-
-    return $service;
+    return $this->createService((array)$result[0]);
   }
 
   /**
@@ -165,12 +200,30 @@ class ServiceRepository
       $callback($list);
     };
 
-    CoreClient::getInstance()->addQuery('service/get', array(
+    CoreClient::getInstance()->addQuery('service/get2', array(
       'id' => $idList,
       'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId(),
     ), array(), $cb);
   }
 
+  /**
+   * @param array $data
+   * @return ServiceEntity
+   */
+  private function createService(array $data)
+  {
+    $service = new ServiceEntity($data);
+
+    if (array_key_exists('category_list', $data) && is_array($data['category_list']))
+      foreach ($data['category_list'] as $categoryData)
+        $service->addCategory($this->createCategoryEntity((array)$categoryData));
+
+    if (array_key_exists('alike_list', $data) && is_array($data['alike_list']))
+      foreach ($data['alike_list'] as $alikeId)
+        $service->addAlikeId($alikeId);
+
+    return $service;
+  }
 
   /**
    * @param array $data

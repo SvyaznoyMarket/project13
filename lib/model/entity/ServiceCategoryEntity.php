@@ -20,6 +20,10 @@ class ServiceCategoryEntity
   private $children = array();
   /** @var ServiceCategoryEntity|null */
   private $parent;
+  /** @var int[] */
+  private $service_id_list=array();
+  /** @var ServiceEntity[] */
+  private $service_list=array();
 
   public function __construct(array $data = array())
   {
@@ -56,6 +60,11 @@ class ServiceCategoryEntity
   public function getChildren()
   {
     return $this->children;
+  }
+
+  public function getFirstChild()
+  {
+    return $this->children?$this->children[0]:null;
   }
 
   /**
@@ -103,7 +112,31 @@ class ServiceCategoryEntity
    */
   public function getMediaImage()
   {
-    return $this->media_image;
+    if($this->media_image){
+      return $this->media_image;
+    }
+    elseif($this->service_list && $this->service_list[0]->getMediaImage()){
+      return $this->service_list[0]->getMediaImage();
+    }
+    else{
+      return null;
+    }
+  }
+
+  /**
+   * @param int $viewId
+   * @return null|string
+   */
+  public function getMediaImageUrl($viewId=0)
+  {
+    $path = $this->getMediaImage();
+    if($path){
+      $urls = sfConfig::get('app_service_photo_url');
+      return $urls[$viewId] . $path;
+    }
+    else{
+      return null;
+    }
   }
 
   /**
@@ -184,5 +217,86 @@ class ServiceCategoryEntity
   public function getLevel()
   {
     return $this->level;
+  }
+
+  public function setServiceIdList(array $service_id_list)
+  {
+    $this->service_id_list = $service_id_list;
+  }
+
+  public function getServiceIdList()
+  {
+    return $this->service_id_list;
+  }
+
+  /**
+   * @param ServiceEntity[] $service_list
+   */
+  public function setServiceList(array $service_list)
+  {
+    $this->service_list = array();
+    foreach($service_list as $service)
+      $this->addService($service);
+  }
+
+  public function addService(ServiceEntity $entity)
+  {
+    $this->service_list[] = $entity;
+  }
+
+  public function getServiceList()
+  {
+    return $this->service_list;
+  }
+
+  /**
+   * @return array
+   */
+  public function getNavigation()
+  {
+    if($this->parent){
+      $list = $this->parent->getNavigation();
+    }else{
+      $list = array(
+        array(
+          'name' => 'F1 Сервис',
+          'url' => url_for('service_index'),
+        )
+      );
+    }
+    $list[] = array(
+      'name' => $this->getName(),
+      'url' => $this->getLink(),
+    );
+    return $list;
+  }
+
+  public function getIconClass()
+  {
+    if (strpos($this->token, 'bitovaya-tehnika') !== false) return 'icon2';
+    if (strpos($this->token, 'elektronika') !== false) return 'icon3';
+    if (strpos($this->token, 'sport') !== false) return 'icon4';
+    if (strpos($this->token, 'mebel') !== false) return 'icon1';
+    return null;
+  }
+
+  public function getDescription()
+  {
+    $text = null;
+    switch($this->getIconClass()){
+      case 'icon1':
+        $text = 'Мы соберем любой шкаф, и при этом не останется ни одной «лишней» детали. Мы занесем диван хоть на 35-й этаж (а можем и на 36-й). Мы повесим все необходимые шкафчики на кухне в правильной последовательности (и обязательно помоем за собой пол).';
+        break;
+      case 'icon2':
+        $text = 'Мы подключим стиральную машину хоть в ванной, хоть на кухне. Мы установим кондиционер и выведем все трубки так, чтобы ничего не капало. Мы встроим варочную панель и духовку — друг над другом или в разных концах кухни.';
+        break;
+      case 'icon3':
+        $text = 'Мы знаем, какими вирусами болеют компьютеры и как их лечить. Мы умеем тренировать ПК, чтобы они были мощными и быстрыми. Мы умеем их воспитывать, и даже самые «дикие» становятся «домашними» и ласковыми. Мы познакомим вас с технологиями Wi-Fi и WiMAX, а также научим пользоваться всеми возможностями iPhone.';
+        break;
+      case 'icon4':
+        $text = 'Мы соберем велосипед и научим вас разбирать его в случае необходимости. Мы установим крепления на лыжи (беговые или горные) или даже на сноуборд.';
+        break;
+    }
+    return $text;
   }
 }

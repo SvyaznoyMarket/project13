@@ -15,7 +15,9 @@ class ServiceEntity
   /** @var string */
   private $media_image;
   /** @var boolean */
-  private $is_only_in_shop;
+  private $is_in_shop;
+  /** @var boolean */
+  private $is_delivery;
   /** @var int */
   private $price_type_id;
   /** @var float|null */
@@ -34,21 +36,28 @@ class ServiceEntity
   public function __construct(array $data = array())
   {
     if(array_key_exists('id', $data))               $this->id               = (int)$data['id'];
-    if(array_key_exists('name', $data))             $this->name             = (string)$data['id'];
-    if(array_key_exists('token', $data))            $this->token            = (string)$data['id'];
-    if(array_key_exists('description', $data))      $this->description      = (string)$data['id'];
-    if(array_key_exists('work', $data))             $this->work             = (string)$data['id'];
-    if(array_key_exists('media_image', $data))      $this->media_image      = (string)$data['id'];
-    if(array_key_exists('is_only_in_shop', $data))  $this->is_only_in_shop  = (bool)$data['id'];
-    if(array_key_exists('price_type_id', $data))    $this->price_type_id    = (int)$data['id'];
+    if(array_key_exists('name', $data))             $this->name             = (string)$data['name'];
+    if(array_key_exists('token', $data))            $this->token            = (string)$data['token'];
+    if(array_key_exists('description', $data))      $this->description      = (string)$data['description'];
+    if(array_key_exists('work', $data))             $this->work             = (string)$data['work'];
+    if(array_key_exists('media_image', $data))      $this->media_image      = (string)$data['media_image'];
+    if(array_key_exists('is_in_shop', $data))       $this->is_in_shop       = (bool)$data['is_in_shop'];
+    if(array_key_exists('is_delivery', $data))      $this->is_delivery      = (bool)$data['is_delivery'];
+    if(array_key_exists('price_type_id', $data))    $this->price_type_id    = (int)$data['price_type_id'];
     if(array_key_exists('price', $data) && !is_null($data['price'])){
-      $this->price = (float)$data['id'];
+      $this->price = (float)$data['price'];
+      if($this->price === 0.01){
+        $this->price = 0.0;
+      }
     }
     if(array_key_exists('price_percent', $data) && !is_null($data['price_percent'])){
-      $this->price_percent = (int)$data['id'];
+      $this->price_percent = (int)$data['price_percent'];
     }
     if(array_key_exists('price_min', $data) && !is_null($data['price_min'])){
-      $this->price_min = (float)$data['id'];
+      $this->price_min = (float)$data['price_min'];
+      if($this->price_min === 0.01){
+        $this->price_min = 0.0;
+      }
     }
   }
 
@@ -135,7 +144,7 @@ class ServiceEntity
    */
   public function setDescription($description)
   {
-    $this->description = $description;
+    $this->description = (string)$description;
   }
 
   /**
@@ -151,7 +160,7 @@ class ServiceEntity
    */
   public function setId($id)
   {
-    $this->id = $id;
+    $this->id = (int)$id;
   }
 
   /**
@@ -165,17 +174,33 @@ class ServiceEntity
   /**
    * @param boolean $is_only_in_shop
    */
-  public function setIsOnlyInShop($is_only_in_shop)
+  public function setIsInShop($is_only_in_shop)
   {
-    $this->is_only_in_shop = $is_only_in_shop;
+    $this->is_in_shop = (bool)$is_only_in_shop;
   }
 
   /**
    * @return boolean
    */
-  public function getIsOnlyInShop()
+  public function getIsInShop()
   {
-    return $this->is_only_in_shop;
+    return $this->is_in_shop;
+  }
+
+  /**
+   * @param boolean $is_delivery
+   */
+  public function setIsDelivery($is_delivery)
+  {
+    $this->is_delivery = (bool)$is_delivery;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsDelivery()
+  {
+    return $this->is_delivery;
   }
 
   /**
@@ -183,7 +208,7 @@ class ServiceEntity
    */
   public function setMediaImage($media_image)
   {
-    $this->media_image = $media_image;
+    $this->media_image = (string)$media_image;
   }
 
   /**
@@ -195,11 +220,26 @@ class ServiceEntity
   }
 
   /**
+   * @param int $viewId
+   * @return null|string
+   */
+  public function getMediaImageUrl($viewId = 1)
+  {
+    if ($this->media_image) {
+      $urls = sfConfig::get('app_service_photo_url');
+      return $urls[$viewId] . $this->media_image;
+    }
+    else {
+      return null;
+    }
+  }
+
+  /**
    * @param string $name
    */
   public function setName($name)
   {
-    $this->name = $name;
+    $this->name = (string)$name;
   }
 
   /**
@@ -215,7 +255,7 @@ class ServiceEntity
    */
   public function setPrice($price)
   {
-    $this->price = $price;
+    $this->price = (float)$price;
   }
 
   /**
@@ -231,7 +271,7 @@ class ServiceEntity
    */
   public function setPriceMin($price_min)
   {
-    $this->price_min = $price_min;
+    $this->price_min = (float)$price_min;
   }
 
   /**
@@ -243,11 +283,11 @@ class ServiceEntity
   }
 
   /**
-   * @param int|null $price_percent
+   * @param int $price_percent
    */
   public function setPricePercent($price_percent)
   {
-    $this->price_percent = $price_percent;
+    $this->price_percent = (int)$price_percent;
   }
 
   /**
@@ -263,7 +303,7 @@ class ServiceEntity
    */
   public function setPriceTypeId($price_type_id)
   {
-    $this->price_type_id = $price_type_id;
+    $this->price_type_id = (int)$price_type_id;
   }
 
   /**
@@ -279,7 +319,7 @@ class ServiceEntity
    */
   public function setToken($token)
   {
-    $this->token = $token;
+    $this->token = (string)$token;
   }
 
   /**
@@ -295,7 +335,7 @@ class ServiceEntity
    */
   public function setWork($work)
   {
-    $this->work = $work;
+    $this->work = (string)$work;
   }
 
   /**
@@ -304,5 +344,25 @@ class ServiceEntity
   public function getWork()
   {
     return $this->work;
+  }
+
+  public function getNavigation()
+  {
+    $list = array();
+    $list[] = array(
+      'name' => 'F1 Сервис',
+      'url' => url_for('service_index'),
+    );
+    foreach($this->category_list as $category){
+      $list[] = array(
+        'name' => $category->getName(),
+        'url' => $category->getLink(),
+      );
+    }
+    $list[] = array(
+      'name' => $this->name,
+      'url' => url_for('service_show', array('service'=>$this->token)),
+    );
+    return $list;
   }
 }

@@ -55,7 +55,7 @@
 
       <div class="clear pb15"></div>
 
-      <?php include_component('serviceSoa', 'list_for_product_in_cart', array('product' => $item, 'services' => $item['service'])) ?>
+      <?php include_component('service', 'list_for_product_in_cart', array('product' => $item, 'services' => $item['service'])) ?>
 
     </div>
   </div>

@@ -1,10 +1,14 @@
 <?php
-slot('title', $service);
+/**
+ * @var ServiceEntity $service
+ */
+
+slot('title', $service->getName());
 slot('navigation');
-include_component('service', 'navigation', array('service' => $service));
+  include_component('default', 'navigation', array('list' => $service->getNavigation()));
 end_slot();
 ?>
 
-<?php include_component('service', 'show', array('service' => $service)) ?>
+<?php render_partial('service/templates/_show.php', array('service'=>$service))?>
 
-<?php include_component('service', 'alike_service', array('service' => $service)) ?>
+<?php render_partial('service/templates/_alike_service.php', array('service' => $service)) ?>
