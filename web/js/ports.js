@@ -130,7 +130,7 @@ window.ANALYTICS = {
             if( $(link).attr('href') != '' && $(link).attr('href') != '/' )
                 urls.push( $(link).attr('href') )
         })
-        urls.push( document.location.pathname )
+        urls.push( document.location.pathname + document.location.search )
 
         var categories = {
             'household': 'cyX1CPHeoAMQl9X23gM', //товары для дома
@@ -145,7 +145,7 @@ window.ANALYTICS = {
             'televizori-i-video-881': 'ZyZPCMHkoAMQl9X23gM', //телевизоры и видео
             'telefoni-897': '093HCMnjoAMQl9X23gM', //телефоны
             'foto-i-videokameri-912': 'hvUnCLHmoAMQl9X23gM', //фото и видеокамеры
-            'f%5Blabel%5D%5B%5D=1': 'MGyuCPnsoAMQl9X23gM' //распродажа электроники
+            'electronics/\\?f\\[\\label\\]\\[\\]=1': 'MGyuCPnsoAMQl9X23gM' //распродажа электроники
         }
 
         function callCode( label ) {
