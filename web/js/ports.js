@@ -94,15 +94,6 @@ window.ANALYTICS = {
             '&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
     },
 
-    googleRemarketing : function() {
-        google_conversion_id = 1004382871;
-        google_conversion_language = "en";
-        google_conversion_format = "3";
-        google_conversion_color = "ffffff";
-        google_conversion_value = 0;
-        $LAB.script( "http://www.googleadservices.com/pagead/conversion.js" );     
-    },
-
     gooReMaSuccess : function() {
         google_conversion_label = "5610CJnaoAMQl9X23gM";
         this.googleRemarketing();
@@ -123,41 +114,64 @@ window.ANALYTICS = {
         this.googleRemarketing();
     },
 
+    googleRemarketing : function() {
+        google_conversion_id = 1004382871;
+        google_conversion_language = "en";
+        google_conversion_format = "3";
+        google_conversion_color = "ffffff";
+        google_conversion_value = 0;
+        $LAB.script( "http://www.googleadservices.com/pagead/conversion.js" )
+    },
+
     gooReMaCategories : function() {
+        var self = this
         var urls = []
         $('.breadcrumbs a').each( function( i, link ) {
             if( $(link).attr('href') != '' && $(link).attr('href') != '/' )
                 urls.push( $(link).attr('href') )
         })
         urls.push( document.location.pathname )
-console.info( urls )       
-        // var categories = []
-        // for( var i=0, l=urls.length; i < l; i++ )
-        //     urls[ i ]
+
         var categories = {
-         'household': 'cyX1CPHeoAMQl9X23gM', //товары для дома
-         'tovari-dlya-givotnih': 'ZoF-CNnhoAMQl9X23gM', // для животных
-         'jewel': 'kdKjCOHgoAMQl9X23gM',// украшения
-         'electronics': 'S8PxCPndoAMQl9X23gM', // электроника
-         'aksessuari-dlya-elektroniki-1024': 'johICJnpoAMQl9X23gM', //аксессуры в электронике
-         'audio-789': 'OkJ7CLnloAMQl9X23gM', //аудио
-         'igri-i-konsoli-802': 'ldadCKHooAMQl9X23gM', //игры и консоли
-         'kompyuteri-i-plansheti-815': 'M-vGCNHioAMQl9X23gM', //компьютеры и планшеты
-         'mobilnaya-elektronika-868': 'PV-cCKnnoAMQl9X23gM', //мобильная электроника
-         'televizori-i-video-881': 'ZyZPCMHkoAMQl9X23gM', //телевизоры и видео
-         'telefoni-897': '093HCMnjoAMQl9X23gM', //телефоны
-         'foto-i-videokameri-912': 'hvUnCLHmoAMQl9X23gM' //фото и видеокамеры
-         // f%5Blabel%5D%5B%5D=1 MGyuCPnsoAMQl9X23gM распродажа электроники
+            'household': 'cyX1CPHeoAMQl9X23gM', //товары для дома
+            'tovari-dlya-givotnih': 'ZoF-CNnhoAMQl9X23gM', // для животных
+            'jewel': 'kdKjCOHgoAMQl9X23gM',// украшения
+            'electronics': 'S8PxCPndoAMQl9X23gM', // электроника
+            'aksessuari-dlya-elektroniki-1024': 'johICJnpoAMQl9X23gM', //аксессуры в электронике
+            'audio-789': 'OkJ7CLnloAMQl9X23gM', //аудио
+            'igri-i-konsoli-802': 'ldadCKHooAMQl9X23gM', //игры и консоли
+            'kompyuteri-i-plansheti-815': 'M-vGCNHioAMQl9X23gM', //компьютеры и планшеты
+            'mobilnaya-elektronika-868': 'PV-cCKnnoAMQl9X23gM', //мобильная электроника
+            'televizori-i-video-881': 'ZyZPCMHkoAMQl9X23gM', //телевизоры и видео
+            'telefoni-897': '093HCMnjoAMQl9X23gM', //телефоны
+            'foto-i-videokameri-912': 'hvUnCLHmoAMQl9X23gM', //фото и видеокамеры
+            'f%5Blabel%5D%5B%5D=1': 'MGyuCPnsoAMQl9X23gM' //распродажа электроники
         }
+
+        function callCode( label ) {
+            $LAB.queueWait( function() {
+                google_conversion_id = 1004382871;
+                google_conversion_language = "en";
+                google_conversion_format = "3";
+                google_conversion_color = "ffffff";
+                google_conversion_value = 0;
+
+                google_conversion_label = label
+            })
+            .queueScript( "http://www.googleadservices.com/pagead/conversion.js" )           
+        }
+
         cats: for( var key in categories ) {
             for( var i=0, l=urls.length; i < l; i++ )
                 if( urls[ i ].match( key ) ) {
-                    console.info( key )
-                    google_conversion_label = categories[ key ]
-                    this.googleRemarketing()
+// console.info( key , categories[ key ])
+                    var lbl = categories[ key ]
+                    callCode( lbl )
                     continue cats
                 }
         }
+
+        $LAB.runQueue()
 
     },
 
