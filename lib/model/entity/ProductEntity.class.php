@@ -84,6 +84,8 @@ class ProductEntity
   private $price;
   /** @var int */
   private $priceAverage;
+  /** @var int */
+  private $priceOld;
   /** @var ProductStateEntity */
   private $state;
   /** @var ProductLineEntity */
@@ -127,10 +129,12 @@ class ProductEntity
     if (array_key_exists('media_image', $data))     $this->mediaImage    = (string)$data['media_image'];
     if (array_key_exists('rating', $data))          $this->rating        = (int)$data['rating'];
     if (array_key_exists('rating_count', $data))    $this->ratingCount   = (int)$data['rating_count'];
-    if (array_key_exists('comments_num', $data))    $this->commentCount   = (int)$data['comments_num'];
-    if (array_key_exists('comment_count', $data))   $this->commentCount   = (int)$data['comment_count'];
+    if (array_key_exists('comments_num', $data))    $this->commentCount  = (int)$data['comments_num'];
+    if (array_key_exists('comment_count', $data))   $this->commentCount  = (int)$data['comment_count'];
     if (array_key_exists('price', $data))           $this->price         = $data['price'];
     if (array_key_exists('price_average', $data))   $this->priceAverage  = $data['price_average'];
+    if (array_key_exists('price_old', $data))       $this->priceOld      = $data['price_old'];
+
     //echo "<pre>", print_r($this,1), '</pre>';
   }
 
@@ -859,6 +863,11 @@ class ProductEntity
     return ($this->hasSaleLabel() && $this->price > 0 && $this->price < $this->priceAverage);
   }
 
+  public function haveToShowOldPrice()
+  {
+    return ($this->hasSaleLabel() && $this->price > 0 && $this->price < $this->priceOld && ($this->price / $this->priceOld <= 0.95));
+  }
+
   public function hasSaleLabel()
   {
     foreach ($this->labelList as $label)
@@ -881,6 +890,22 @@ class ProductEntity
   public function getPriceAverage()
   {
     return $this->priceAverage;
+  }
+
+  /**
+   * @param int $priceAverage
+   */
+  public function setPriceOld($priceOld)
+  {
+    $this->priceOld = $priceOld;
+  }
+
+  /**
+   * @return int
+   */
+  public function getPriceOld()
+  {
+    return $this->priceOld;
   }
 
   /**
