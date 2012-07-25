@@ -144,11 +144,11 @@ class cartController
           }
         }
 //        App::getCurrentUser()->getCart()->removeService($serviceId, null, $productId);
-        App::getCurrentUser()->getCart()->addService($serviceId, $quantity, $productId);
+        App::getCurrentUser()->getCart()->setServiceQuantity($serviceId, $quantity, $productId);
       }
       else{
 //        App::getCurrentUser()->getCart()->removeService($serviceId, null, 0);
-        App::getCurrentUser()->getCart()->addService($serviceId, $quantity);
+        App::getCurrentUser()->getCart()->setServiceQuantity($serviceId, $quantity);
       }
 
       if(App::getRequest()->isXmlHttpRequest()){
