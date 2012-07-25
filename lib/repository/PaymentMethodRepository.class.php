@@ -51,4 +51,12 @@ class PaymentMethodRepository
         return $paymentMethod;
     }
 
+  /**
+   * Ф-я возвращает список айдишников, которые допустимы для оплаты на сайте
+   * @return int[]
+   */
+  public function getAcceptedList(){
+    return array(1, 2, 5, 6);
+  }
+
 }

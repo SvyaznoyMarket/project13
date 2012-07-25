@@ -52,8 +52,12 @@ if (count($list)<1) echo '<div>У Вас пока нет ни одного за�
 
   <table class="order mb15">
 
-    <?php foreach($item->getItem() as $product): /** @var $product OrderItemEntity */?>
-    <?php if ($product->getServiceId()) { //услуга :) ?>
+    <?php
+    $items = $item->getItem();
+    if(!$items){ $items = array();}
+    foreach($items as $product):
+      /** @var $product OrderItemEntity */
+      if ($product->getServiceId()) { //услуга :) ?>
       <tr>
         <th>
           <a href="<?php echo url_for('service_show', array('service' => $serviceList[$product->getServiceId()]->getToken()))  ?>">
@@ -75,8 +79,9 @@ if (count($list)<1) echo '<div>У Вас пока нет ни одного за�
           <strong class="font14"><?php echo $product->getPrice() ?>&nbsp;<span class="rubl">p</span></strong>
         </td>
       </tr>
-      <?php } ?>
-    <?php endforeach; ?>
+      <?php }
+
+    endforeach; ?>
 
     <?php if ($item->getDeliveryType() && (int)$item->getDeliveryPrice()>0 ) { ?>
     <tr>

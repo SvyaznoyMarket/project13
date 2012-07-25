@@ -63,15 +63,21 @@ class order_Components extends myComponents
         $showCreditMethod = true;
     }
     $paymentMethodList = RepositoryManager::getPaymentMethod()->getList();
+    foreach($paymentMethodList as $key => $method){
+      if(!in_array($method->getId(), RepositoryManager::getPaymentMethod()->getAcceptedList())){
+        unset($paymentMethodList[$key]);
+      }
+    }
+
     $selectedMethodId = 0;
     foreach ($paymentMethodList as $method) {
-        if (empty($_COOKIE['credit_on']) || !$showCreditMethod) {
-            $selectedMethodId  = $method->getId();
-            break;
-        } elseif ($method->getIsCredit()) {
-            $selectedMethodId  = $method->getId();
-            break;
-        }
+      if (empty($_COOKIE['credit_on']) || !$showCreditMethod) {
+          $selectedMethodId  = $method->getId();
+          break;
+      } elseif ($method->getIsCredit()) {
+          $selectedMethodId  = $method->getId();
+          break;
+      }
     }
     $this->setVar('showCreditMethod', $showCreditMethod, true);
     $this->setVar('selectedMethodId', $selectedMethodId, true);

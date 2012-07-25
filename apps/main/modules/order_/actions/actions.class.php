@@ -590,7 +590,7 @@ class order_Actions extends myActions
       $deliveryData = DeliveryTypeTable::getInstance()->createQuery()->select('name, description')->where('core_id = ?', $item['mode_id'])->fetchOne(array(), Doctrine_Core::HYDRATE_ARRAY);
       $item['name'] = $deliveryData['name'];
       $item['desc'] = $deliveryData['description'];
-      $deliveryTypes[] = RepositoryManager::getDeliveryType()->create($item);
+      $deliveryTypes[] = new DeliveryTypeEntity($item);//RepositoryManager::getDeliveryType()->create($item);
     }
     //myDebug::dump($deliveryTypes, 1);
 
