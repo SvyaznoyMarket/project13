@@ -630,13 +630,18 @@ $(document).ready(function() {
         onDeliveryBlockChange: function() {
             if (1 == $('.order-delivery-holder:visible').length) {
                 $('#payment_method_5-field').show()
+                $('#payment_method_6-field').show()
             }
             else {
-                $('#payment_method_5-field').hide()
-                if( $('#payment_method_5-field').find('input').is(':checked') ) {
-                    $('#payment_method_5-field').find('input').removeAttr('checked')
-                    $('#payment_method_5-field').find('.mChecked').removeClass('mChecked')
+                function hidePaymentType( jnode ) {
+                    jnode.hide()
+                    if( jnode.find('input').is(':checked') ) {
+                        jnode.find('input').removeAttr('checked')
+                        jnode.find('.mChecked').removeClass('mChecked')
+                    }
                 }
+                hidePaymentType( $('#payment_method_5-field') )
+                hidePaymentType( $('#payment_method_6-field') )
             }
         },
 
