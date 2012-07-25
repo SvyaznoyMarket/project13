@@ -27,7 +27,7 @@ class orderComponents extends myComponents
       'number' => $this->order->number,
       'sum' => (int)$this->order->sum,
       'created_at' => $this->order->created_at,
-      'payment_method_name' => $this->order->PaymentMethod ? $this->order->PaymentMethod->name : null,
+      'payment_method_name' => $this->order->getPaymentMethod() ? $this->order->getPaymentMethod()->getName() : null,
       'delivered_at' => $this->order->delivered_at,
       'delivery_type' => $this->order->getDeliveryType(),
       'delivery_price' => $this->order->delivery_price,
@@ -36,32 +36,34 @@ class orderComponents extends myComponents
 
     if (in_array($this->view, array('default', 'compact'))) {
       $item['products'] = array();
-      foreach ($this->order->ProductRelation as $orderProductRelation)
-      {
-        $item['products'][] = array(
-          'type' => 'product',
-          'name' => (string)$orderProductRelation->Product,
-          'article' => (string)$orderProductRelation->Product->article,
-          'url' => $this->generateUrl('productCard', $orderProductRelation->Product),
-          'price' => (int)$orderProductRelation['price'],
-          'quantity' => $orderProductRelation['quantity'],
-        );
-      }
       $item['services'] = array();
-      foreach ($this->order->ServiceRelation as $orderServiceRelation)
+      foreach ($this->order->getItem() as $orderItem)
       {
-        $item['products'][] = array(
-          'type' => 'service',
-          'name' => (string)$orderServiceRelation->Service,
-          'url' => $this->generateUrl('service_show', $orderServiceRelation->Service),
-          'price' => (int)$orderServiceRelation['price'],
-          'quantity' => $orderServiceRelation['quantity'],
-        );
+        /* @var $orderItem OrderItemEntity */
+        if (OrderItemEntity::TYPE_PRODUCT == $orderItem->getType()) {
+          $item['products'][] = array(
+            'type'     => 'product',
+            'name'     => $orderItem->getProduct()->getName(),
+            'article'  => $orderItem->getProduct()->getArticle(),
+            'url'      => $orderItem->getProduct()->getLink(),
+            'price'    => $orderItem->getPrice(),
+            'quantity' => $orderItem->getQuantity(),
+          );
+        }
+        else if (OrderItemEntity::TYPE_SERVICE == $orderItem->getType()) {
+          $item['products'][] = array(
+            'type'     => 'service',
+            'name'     => (string)$orderItem->getService()->getName(),
+            'url'      => $this->generateUrl('service_show', array('service' => $orderItem->getService()->getToken())),
+            'price'    => $orderItem->getPrice(),
+            'quantity' => $orderItem->getQuantity(),
+          );
+        }
       }
     }
 
     $deliveryPrices = $this->getUser()->getCart()->getDeliveriesPrice();
-    $this->setVar('deliveryPrice', isset($deliveryPrices[$this->order->delivery_type_id]) ? $deliveryPrices[$this->order->delivery_type_id] : null, true);
+    $this->setVar('deliveryPrice', isset($deliveryPrices[$this->order->getDeliveryType()->getId()]) ? $deliveryPrices[$this->order->getDeliveryType()->getId()] : null, true);
     $this->setVar('item', $item, true);
     $this->setVar('total', $this->getUser()->getCart()->getTotal());
   }
@@ -73,10 +75,10 @@ class orderComponents extends myComponents
   public function executeList()
   {
     $list = $listProcess = $listReady = $listCancelled = array();
-    foreach ($this->getUser()->getGuardUser()->getOrderList(array('with_products' => true)) as $order)
+    foreach (RepositoryManager::getOrder()->getByUserToken($this->getUser()->getGuardUser()->getToken()) as $order)
     {
-      if ($order->status_id == Order::STATUS_READY) $listReady[] = $order;
-      elseif ($order->status_id == Order::STATUS_CANCELLED) $listCancelled[] = $order;
+      if ($order->status == Order::STATUS_READY) $listReady[] = $order;
+      elseif ($order->status == Order::STATUS_CANCELLED) $listCancelled[] = $order;
       else $listProcess[] = $order;
     }
     $list = array_merge($listProcess, $listReady, $listCancelled);

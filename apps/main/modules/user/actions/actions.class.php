@@ -56,7 +56,7 @@ class userActions extends myActions
           'list' => array(
               array(
                 'name'   => 'Мои заказы',
-                'num' => count($this->getUser()->getGuardUser()->getOrderList()),
+                'num'    => RepositoryManager::getOrder()->countByUserToken($this->getUser()->getGuardUser()->getToken()),
                 'url'    => '@user_orders',
                 'routes' => array('@user_orders', '@user_orders'),
               ),
@@ -114,8 +114,8 @@ class userActions extends myActions
 	/**
 	 * @todo: убрать рефреш и сделать очистку кэша для пользователя
 	 */
-	$this->getUser()->getGuardUser()->refresh();
-    $this->userProfile = $this->getUser()->getGuardUser()->getData();
+	  //$this->getUser()->getGuardUser()->refresh();
+    //$this->userProfile = $this->getUser()->getGuardUser()->getData();
     $this->form = new UserForm( $this->getUser()->getGuardUser() );
 
       //echo 'ok';

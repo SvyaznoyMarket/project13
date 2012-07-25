@@ -1,17 +1,17 @@
 <?php //include_partial('default/sum', array('sum' => $item['sum'])) ?>
 <?php
-$info = $order->getData();
+$info = $sf_data->getRaw('order');
 use_helper('Date');
 //print_r($statusList);
 ?>
-   <?php if ($info['status_id']==Order::STATUS_READY){ ?>
+   <?php if ($info['status'] == OrderEntity::STATUS_READY){ ?>
       <div class="fr font16 orange pb10">Заказ выполнен</div>
-   <?php }elseif ($info['status_id']==Order::STATUS_CANCELLED){ ?>
+   <?php }elseif ($info['status'] == Order::STATUS_CANCELLED){ ?>
       <div class="fr font16 orange pb10">Заказ отменен</div>
   <?php } ?>
   <div class="font16 orange pb10"><strong>Заказ № <?php echo $item['number']?> от <?php echo format_date($item['created_at'],'dd.MM.yyyy')?></strong> на сумму&nbsp;<?php echo $item['sum']?> <span class="rubl">p</span></div>
 
-   <?php if ($info['status_id']!=Order::STATUS_READY && $info['status_id']!=Order::STATUS_CANCELLED && false){ ?>
+   <?php if ($info['status']!=Order::STATUS_READY && $info['status']!=Order::STATUS_CANCELLED && false){ ?>
     <table cellspacing="0" class="status">
                <tr>
                    <?php
@@ -85,7 +85,7 @@ use_helper('Date');
                         <?php if (isset($item['delivered_period'])) echo '('.$item['delivered_period'].')'; ?>
                     </div>
                <?php } ?>
-               <div class="font12">Способ оплаты: <?php echo $item['payment_method_name']?></div>
+               <div class="font12">Способ оплаты: <?php echo $item['payment_method_name'] ?></div>
            </th>
            <td>Итого к оплате:<br><strong class="font18"><?php echo $item['sum'] ?>&nbsp;<span class="rubl">p</span></strong></td>
        </tr>

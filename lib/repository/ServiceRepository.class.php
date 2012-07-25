@@ -28,6 +28,24 @@ class ServiceRepository
   }
 
   /**
+   * @param integer $id
+   * @return null|ServiceEntity
+   */
+  public function getById($id)
+  {
+    $params = array('id' => $id, 'geo_id' => RepositoryManager::getRegion()->getDefaultRegionId());
+    $result = CoreClient::getInstance()->query('service.get', $params);
+
+    if (!$result || !array_key_exists($id, $result)) {
+      return null;
+    }
+
+    $service = new ServiceEntity($result[$id]);
+
+    return $service;
+  }
+
+  /**
    * Load ServiceEntity by id from core.
    *
    * @param $callback
