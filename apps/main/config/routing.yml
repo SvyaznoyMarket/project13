@@ -479,8 +479,8 @@ order_payment:
 #
 # order cancel
 order_cancel:
-  url:   /orders/cancel/:token
-  param: { module: order, action: cancel, token: 0 }
+  url:   /orders/cancel/:core_id
+  param: { module: order, action: cancel, core_id: 0 }
 #
 # order complete
 order_error:

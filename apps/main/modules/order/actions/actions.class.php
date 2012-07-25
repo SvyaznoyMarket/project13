@@ -338,10 +338,10 @@ class orderActions extends myActions
    */
   public function executeCancel(sfWebRequest $request)
   {
-    $token = $request['token'];
-    if (!$token) $this->redirect($this->getRequest()->getReferer());
+    $coreId = (int) $request['core_id'];
+    if (!$coreId) $this->redirect($this->getRequest()->getReferer());
 
-    $orderL = OrderTable::getInstance()->findBy('token', $token);
+    $orderL = OrderTable::getInstance()->findBy('core_id', $coreId);
     foreach ($orderL as $order) $coreId = $order->core_id;
     //print_r($order->getData());
     $res = Core::getInstance()->query('order.cancel', array('id' => $coreId));

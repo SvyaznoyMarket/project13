@@ -27,16 +27,15 @@ class OrderEntity
   private $id;
 
   /* @var integer */
-  private $type;
+  private $typeId;
 
-  /* @var integer */
-  private $status;
+  /**
+   * @var integer
+   */
+  private $statusId;
 
   /* @var string */
   private $number;
-
-  /* @var UserEntity */
-  private $user;
 
   /* @var string */
   private $lastName;
@@ -48,13 +47,13 @@ class OrderEntity
   private $middleName;
 
   /* @var string */
-  private $phonenumber;
+  private $phoneNumber;
 
   /* @var integer */
-  private $paymentStatus;
+  private $paymentStatusId;
 
   /* @var integer */
-  private $payment;
+  private $paymentId;
 
   /* @var string */
   private $paymentDetail;
@@ -65,11 +64,14 @@ class OrderEntity
   /* @var DeliveryTypeEntity */
   private $deliveryType;
 
-  /* @var DateTime */
-  private $deliveredAt;
-
   /* @var array */
   private $deliveryInterval;
+
+  /** @var float */
+  private $deliveryPrice;
+
+  /** @var string */
+  private $deliveryDate;
 
   /* @var ShopEntity */
   private $shop = null;
@@ -84,49 +86,73 @@ class OrderEntity
   private $isSmsAlert = false;
 
   /* @var string */
-  private $comment;
-
-  /* @var string */
   private $ipAddress;
 
-  /* @var DateTime */
+  /* @var string */
   private $createdAt;
 
-  /* @var DateTime */
-  private $updateAt;
+  /* @var string */
+  private $updatedAt;
 
-  /* @var OrderItem[] */
+  /* @var OrderItemEntity[] */
   private $item;
 
 
     public function __construct(array $data = array()){
-        if(array_key_exists('id', $data))      $this->id       = (int)$data['id'];
-        if(array_key_exists('status_id', $data))   $this->status_id      = (string)$data['status_id'];
-        if(array_key_exists('number', $data))   $this->number    = $data['number'];
-        if(array_key_exists('last_name', $data))   $this->lastName    = $data['last_name'];
-        if(array_key_exists('first_name', $data))   $this->firstName    = $data['first_name'];
-        if(array_key_exists('middle_name', $data))   $this->middleName    = $data['middle_name'];
-        if(array_key_exists('phone', $data))   $this->phonenumber    = $data['phone'];
-        if(array_key_exists('payment_status_id', $data))   $this->paymentStatusId    = $data['payment_status_id'];
-        if(array_key_exists('payment_id', $data))   $this->paymentId    = $data['payment_id'];
-        if(array_key_exists('payment_detail', $data))   $this->paymentDetail    = $data['payment_detail'];
-        if(array_key_exists('sum', $data))   $this->sum    = $data['sum'];
-       // if(array_key_exists('is_delivery', $data))   $this->is    = $data['is_delivery'];
-      //  if(array_key_exists('is_paid_delivery', $data))   $this->i    = $data['is_paid_delivery'];
-        if(array_key_exists('delivery_type_id', $data))   $this->deliveryType    = $data['delivery_type_id'];
-        if(array_key_exists('delivery_interval_id', $data))   $this->deliveryInterval    = $data['delivery_interval_id'];
-        //if(array_key_exists('store_id', $data))   $this->st    = $data['store_id'];
-        if(array_key_exists('shop_id', $data))   $this->shop    = $data['shop_id'];
-        //if(array_key_exists('address_id', $data))   $this->addressId    = $data['address_id'];
-        if(array_key_exists('geo_id', $data))   $this->region    = $data['geo_id'];
-        if(array_key_exists('address', $data))   $this->address    = $data['address'];
-        //if(array_key_exists('zip_code', $data))   $this->z    = $data['zip_code'];
-        if(array_key_exists('delivery_type_id', $data))   $this->deliveryType    = $data['delivery_type_id'];
-//        if(array_key_exists('credit_bank', $data)) {
-//            foreach ($data['credit_bank'] as $bankData) {
-//                $this->credit_bank[] = new CreditBankEntity($bankData);
-//            }
-//        }
+      if(array_key_exists('id', $data))      $this->id       = (int)$data['id'];
+      if(array_key_exists('type_id', $data))      $this->typeId       = (int)$data['type_id'];
+      if(array_key_exists('status_id', $data))   $this->statusId      = (int)$data['status_id'];
+      if(array_key_exists('number', $data))   $this->number    = $data['number'];
+      if(array_key_exists('last_name', $data))   $this->lastName    = $data['last_name'];
+      if(array_key_exists('first_name', $data))   $this->firstName    = $data['first_name'];
+      if(array_key_exists('middle_name', $data))   $this->middleName    = $data['middle_name'];
+      if(array_key_exists('mobile', $data)){
+        $this->phoneNumber    = $data['mobile'];
+      }
+      elseif(array_key_exists('phone', $data)){
+        $this->phoneNumber    = $data['phone'];
+      }
+      if(array_key_exists('payment_status_id', $data))   $this->paymentStatusId    = $data['payment_status_id'];
+      if(array_key_exists('payment_id', $data))   $this->paymentId    = $data['payment_id'];
+      if(array_key_exists('payment_detail', $data))   $this->paymentDetail    = $data['payment_detail'];
+      if(array_key_exists('sum', $data))   $this->sum    = $data['sum'];
+     // if(array_key_exists('is_delivery', $data))   $this->is    = $data['is_delivery'];
+    //  if(array_key_exists('is_paid_delivery', $data))   $this->i    = $data['is_paid_delivery'];
+      //if(array_key_exists('store_id', $data))   $this->st    = $data['store_id'];
+      if(array_key_exists('shop_id', $data))   $this->shop    = $data['shop_id'];
+      //if(array_key_exists('address_id', $data))   $this->addressId    = $data['address_id'];
+      if(array_key_exists('geo_id', $data))   $this->region    = $data['geo_id'];
+      if(array_key_exists('address', $data))   $this->address    = $data['address'];
+      //if(array_key_exists('zip_code', $data))   $this->z    = $data['zip_code'];
+      if(array_key_exists('ip', $data))   $this->ipAddress    = $data['ip'];
+      if(array_key_exists('added', $data))   $this->createdAt    = $data['added'];
+      if(array_key_exists('updated', $data))   $this->updatedAt    = $data['updated'];
+
+      if(array_key_exists('credit_bank', $data)) {
+          foreach ($data['credit_bank'] as $bankData) {
+              $this->credit_bank[] = new CreditBankEntity($bankData);
+          }
+      }
+      if(array_key_exists('product', $data)) {
+        foreach ($data['product'] as $productData) {
+          $this->addItem(new OrderItemEntity($productData));
+        }
+      }
+      if(array_key_exists('service', $data)) {
+        foreach ($data['service'] as $productData) {
+          $this->addItem(new OrderItemEntity($productData));
+        }
+      }
+
+      if(array_key_exists('delivery_type_id', $data))       $this->deliveryType     = $data['delivery_type_id'];
+      if(array_key_exists('delivery_interval_id', $data))   $this->deliveryInterval = $data['delivery_interval_id'];
+      if(array_key_exists('delivery_date', $data))          $this->deliveryDate     = $data['delivery_date'];
+
+
+
+      if(array_key_exists('delivery', $data) && array_key_exists('price', $data['delivery'])) {
+        $this->deliveryPrice = $data['delivery']['price'];
+      }
     }
 
     /**
@@ -146,23 +172,7 @@ class OrderEntity
   }
 
   /**
-   * @param string $comment
-   */
-  public function setComment($comment)
-  {
-    $this->comment = $comment;
-  }
-
-  /**
-   * @return string
-   */
-  public function getComment()
-  {
-    return $this->comment;
-  }
-
-  /**
-   * @param DateTime $createdAt
+   * @param string $createdAt
    */
   public function setCreatedAt($createdAt)
   {
@@ -170,27 +180,11 @@ class OrderEntity
   }
 
   /**
-   * @return DateTime
+   * @return string
    */
   public function getCreatedAt()
   {
     return $this->createdAt;
-  }
-
-  /**
-   * @param DateTime $deliveredAt
-   */
-  public function setDeliveredAt($deliveredAt)
-  {
-    $this->deliveredAt = $deliveredAt;
-  }
-
-  /**
-   * @return DateTime
-   */
-  public function getDeliveredAt()
-  {
-    return $this->deliveredAt;
   }
 
   /**
@@ -289,11 +283,17 @@ class OrderEntity
     return $this->isSmsAlert;
   }
 
-  public function setItem($item)
+  /**
+   * @param $item OrderItemEntity
+   */
+  public function addItem($item)
   {
-    $this->item = $item;
+    $this->item[] = $item;
   }
 
+  /**
+   * @return OrderItemEntity[]
+   */
   public function getItem()
   {
     return $this->item;
@@ -350,17 +350,17 @@ class OrderEntity
   /**
    * @param int $payment
    */
-  public function setPayment($payment)
+  public function setPaymentId($payment)
   {
-    $this->payment = $payment;
+    $this->paymentId = $payment;
   }
 
   /**
    * @return int
    */
-  public function getPayment()
+  public function getPaymentId()
   {
-    return $this->payment;
+    return $this->paymentId;
   }
 
   /**
@@ -382,33 +382,33 @@ class OrderEntity
   /**
    * @param int $paymentStatus
    */
-  public function setPaymentStatus($paymentStatus)
+  public function setPaymentStatusId($paymentStatus)
   {
-    $this->paymentStatus = $paymentStatus;
+    $this->paymentStatusId = $paymentStatus;
   }
 
   /**
    * @return int
    */
-  public function getPaymentStatus()
+  public function getPaymentStatusId()
   {
-    return $this->paymentStatus;
+    return $this->paymentStatusId;
   }
 
   /**
    * @param string $phonenumber
    */
-  public function setPhonenumber($phonenumber)
+  public function setPhoneNumber($phoneNumber)
   {
-    $this->phonenumber = $phonenumber;
+    $this->phoneNumber = $phoneNumber;
   }
 
   /**
    * @return string
    */
-  public function getPhonenumber()
+  public function getPhoneNumber()
   {
-    return $this->phonenumber;
+    return $this->phoneNumber;
   }
 
   /**
@@ -476,50 +476,82 @@ class OrderEntity
   }
 
   /**
-   * @param int $type
+   * @param int $typeId
    */
-  public function setType($type)
+  public function setTypeId($typeId)
   {
-    $this->type = $type;
+    $this->typeId = $typeId;
   }
 
   /**
    * @return int
    */
-  public function getType()
+  public function getTypeId()
   {
-    return $this->type;
-  }
-
-  /**
-   * @param UserEntity $user
-   */
-  public function setUser($user)
-  {
-    $this->user = $user;
-  }
-
-  /**
-   * @return UserEntity
-   */
-  public function getUser()
-  {
-    return $this->user;
+    return $this->typeId;
   }
 
   /**
    * @param \DateTime $updateAt
    */
-  public function setUpdateAt($updateAt)
+  public function setUpdatedAt($updatedAt)
   {
-    $this->updateAt = $updateAt;
+    $this->updatedAt = $updatedAt;
   }
 
   /**
    * @return \DateTime
    */
-  public function getUpdateAt()
+  public function getUpdatedAt()
   {
-    return $this->updateAt;
+    return $this->updatedAt;
+  }
+
+  /**
+   * @param int $statusId
+   */
+  public function setStatusId($statusId)
+  {
+    $this->statusId = $statusId;
+  }
+
+  /**
+   * @return int
+   */
+  public function getStatusId()
+  {
+    return $this->statusId;
+  }
+
+  /**
+   * @param float $deliveryPrice
+   */
+  public function setDeliveryPrice($deliveryPrice)
+  {
+    $this->deliveryPrice = $deliveryPrice;
+  }
+
+  /**
+   * @return float
+   */
+  public function getDeliveryPrice()
+  {
+    return $this->deliveryPrice;
+  }
+
+  /**
+   * @param string $deliveryDate
+   */
+  public function setDeliveryDate($deliveryDate)
+  {
+    $this->deliveryDate = $deliveryDate;
+  }
+
+  /**
+   * @return string
+   */
+  public function getDeliveryDate()
+  {
+    return $this->deliveryDate;
   }
 }

@@ -70,6 +70,15 @@ class cart_Components extends myComponents
         /** @var $cartInfo \light\ProductCartData */
         $cartInfo = $prods[$product->getId()];
 
+        $rootCategoryToken = '';
+
+        foreach($product->getCategoryList() as $category){
+          if($category->getLevel() == 1){
+            $rootCategoryToken = $category->getToken();
+            break;
+          }
+        }
+
         $productList[$product->getId()] = array(
           'type' => 'product',
           'id' => $product->getId(),
@@ -86,7 +95,7 @@ class cart_Components extends myComponents
           'photo' => $urls[1] . $product->getMediaImage(),
           'fullObject' => $product,
           'availableForPurchase' => (!$cartInfo->hasError()),
-          'credit_data_type' =>CreditBankRepository::getCreditTypeByCategoryToken($product->getPrefix()),
+          'credit_data_type' =>CreditBankRepository::getCreditTypeByCategoryToken($rootCategoryToken),
         );
       }
     };

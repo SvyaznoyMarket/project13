@@ -87,12 +87,12 @@ class cartComponents extends myComponents
     $dataForCredit = array();
 
     foreach($list as $product){
-      if($product['type'] == 'products'){
+      if($product['type'] == 'product'){
         $dataForCredit[] = array(
           'id' => $product['id'],
           'quantity' => $product['quantity'],
           'price' => $product['price'],
-          'type' => CreditBankRepository::getCreditTypeByCategoryToken($product['token_prefix']),
+          'type' => CreditBankRepository::getCreditTypeByCategoryToken($product['main_category_token']),
         );
       }
     }
@@ -125,14 +125,18 @@ class cartComponents extends myComponents
         /** @var $cartInfo \light\ProductCartData */
         $cartInfo = $prods[$product->getId()];
 
+        $mainCategory = $product->getCategoryList();
+        $mainCategory = $mainCategory[0];
+
         $list[] = array(
-          'type' => 'products',
+          'type' => 'product',
           'id' => $product->getId(),
           'name' => $product->getName(),
           'token' => $product->getToken(),
           'token_prefix' => $product->getPrefix(),
           'quantity' => $cartInfo->getQuantity(),
           'price' => number_format($cartInfo->getPrice(), 0, ',', ' '),
+          'main_category_token' => $mainCategory->getToken(),
         );
       }
     };
@@ -192,6 +196,9 @@ class cartComponents extends myComponents
         /** @var $cartInfo \light\ProductCartData */
         $cartInfo = $prods[$product->getId()];
 
+        $mainCategory = $product->getCategoryList();
+        $mainCategory = $mainCategory[0];
+
         $productList[$product->getId()] = array(
           'type' => 'product',
           'id' => $product->getId(),
@@ -205,6 +212,7 @@ class cartComponents extends myComponents
           'priceFormatted' =>  number_format($cartInfo->getPrice(), 0, ',', ' '),
           'total' => number_format($cartInfo->getTotalPrice(), 0, ',', ' '),
           'photo' => $urls[1] . $product->getMediaImage(),
+          'main_category_token' => $mainCategory->getToken(),
         );
       }
     };

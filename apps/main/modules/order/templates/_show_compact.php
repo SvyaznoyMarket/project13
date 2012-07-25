@@ -94,7 +94,7 @@ use_helper('Date');
            <?php if ($info['status_id']==Order::STATUS_READY || $info['status_id']==Order::STATUS_CANCELLED){ ?>
                <!--<th><input type="button" value="Повторить заказ" class="button whitebutton"></th>-->
            <?php }else{ ?>
-               <form method="post" action="<?php echo url_for('order_cancel')?>/<?php echo $item['token'] ?>" >
+               <form method="post" action="<?php echo url_for('order_cancel')?>/<?php echo $item['core_id'] ?>" >
                    <th><input type="submit" value="Отменить заказ" name="cancel" class="button whitebutton"></th>
                </form>
           <?php } ?>

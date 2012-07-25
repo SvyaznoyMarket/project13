@@ -17,7 +17,7 @@ class CreditBankRepository
   static public function getCreditTypeByCategoryToken($categoryToken) {
     $knownCategories = array('electronics', 'sport', 'appliances', 'do_it_yourself', 'furniture', 'household');
     if (!in_array($categoryToken, $knownCategories)) {
-      $creditDataType = 'another';
+      return 'another';
     }
     return $categoryToken;
   }

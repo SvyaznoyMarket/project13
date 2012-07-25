@@ -31,7 +31,7 @@ class PaymentMethodRepository
   }
     /**
      * @param string $token
-     * @return null|PaymentMethodEntity
+     * @return null|PaymentMethodEntity[]
      */
     public function getList()
     {

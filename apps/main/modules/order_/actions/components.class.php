@@ -243,6 +243,86 @@ class order_Components extends myComponents
     $this->setVar('errors', $errors, true);
   }
 
+  /**
+   * Executes list component
+   *
+   */
+  public function executeList()
+  {
+
+    $list = RepositoryManager::getOrder()->getByUser($this->getUser()->getGuardUser()->core_id);
+
+    $productIds = array();
+    $serviceIds = array();
+
+    foreach($list as $order){
+      /** @var $order OrderEntity */
+      $items = $order->getItem();
+//      echo 'order: '.$order->getNumber()."<br/>\r\n";
+      foreach($items as $item){
+        /** @var $item OrderItemEntity */
+        if($item->getServiceId()){
+//          echo 'service: <pre>'; var_export($item); echo '</pre>';
+          $serviceIds[] = $item->getServiceId();
+        }
+        else{
+//          echo 'product: <pre>'; var_export($item); echo '</pre>';
+          $productIds[] = $item->getProductId();
+        }
+      }
+    }
+
+    $productIds = array_unique($productIds);
+    $serviceIds = array_unique($serviceIds);
+
+    $productList = array();
+    $serviceList = array();
+
+    $prodCb = function($data) use(&$productList){
+      /** @var $data ProductEntity[] */
+
+      foreach($data as $product){
+        $productList[$product->getId()] = $product;
+      }
+    };
+
+    $serviceCb = function($data) use(&$serviceList){
+      /** @var $data ServiceEntity[] */
+
+      foreach($data as $serviceCoreInfo){
+        $serviceList[$serviceCoreInfo->getId()] = $serviceCoreInfo;
+      }
+    };
+    if(count($productIds)){
+      RepositoryManager::getProduct()->getListByIdAsync($prodCb, $productIds);
+    }
+    if(count($serviceIds)){
+      RepositoryManager::getService()->getListByIdAsync($serviceCb, $serviceIds);
+    }
+
+    if(count($serviceIds) || count($productIds)){
+      CoreClient::getInstance()->execute();
+    }
+
+    $deliveryTypes = array();
+    foreach(RepositoryManager::getDeliveryType()->getList() as $val){
+      $deliveryTypes[$val->getId()] = $val;
+    }
+
+    $paymentMethods = array();
+    foreach(RepositoryManager::getPaymentMethod()->getList() as $val){
+      $paymentMethods[$val->getId()] = $val;
+    }
+
+    $this->setVar('list', $list, true);
+    $this->setVar('productList', $productList, true);
+    $this->setVar('serviceList', $serviceList, true);
+    $this->setVar('statusList', RepositoryManager::getOrder()->getStatusList(), true);
+    $this->setVar('deliveryTypeList', $deliveryTypes, true);
+    $this->setVar('deliveryTypeList', $deliveryTypes, true);
+    $this->setVar('paymentMethodList', $paymentMethods, true);
+  }
+
   private function getProductsDataForCredit(){
     $productList = $this->getUser()->getCart()->getProducts();
     $prodIdList = array_keys($productList);
@@ -255,11 +335,20 @@ class order_Components extends myComponents
         /** @var $cartInfo \light\ProductCartData */
         $cartInfo = $productList[$product->getId()];
 
+        $rootCategoryToken = '';
+
+        foreach($product->getCategoryList() as $category){
+          if($category->getLevel() == 1){
+            $rootCategoryToken = $category->getToken();
+            break;
+          }
+        }
+
         $list[] = array(
           'id' => $product->getId(),
           'quantity' => $cartInfo->getQuantity(),
           'price' => number_format($cartInfo->getPrice(), 0, ',', ' '),
-          'type' => CreditBankRepository::getCreditTypeByCategoryToken($product->getPrefix()),
+          'type' => CreditBankRepository::getCreditTypeByCategoryToken($rootCategoryToken),
         );
       }
     };
