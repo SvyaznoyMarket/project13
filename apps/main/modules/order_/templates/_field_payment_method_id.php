@@ -12,8 +12,8 @@
         <input id="order_payment_method_id_<?php echo $v->getId() ?>" class='bBuyingLine__eRadio' name='<?php echo $name ?>' type='radio' value="<?php echo $v->getId() ?>" <?php if ($v->getId() == $selectedMethodId) echo 'checked="checked"' ?> />
       </label>
       <i>
-        <div><?php echo $v->getDescription() ?></div>
-        <?php if ($v->getIsCredit()) { ?>
+        <div><?php echo $v->getDescription() // ?></div>
+        <?php if ($v->getId() == 6) { //@TODO перевести на isCredit() ?>
           <div id="creditInfo"  <?php if ($v->getId() != $selectedMethodId) echo 'style="display:none"' ?> >
             <div>Выберите банк:</div>
             <div class="bankWrap">
