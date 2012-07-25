@@ -546,7 +546,7 @@ cart_service_delete:
 # @core
 # @service
 service_index:
-  url:      /f1/
+  url:      /f1
   param:    { module: service, action: index}
 # @core
 # @service
