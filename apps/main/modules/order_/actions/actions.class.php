@@ -448,9 +448,21 @@ class order_Actions extends myActions
     $servicesInCart = array();
     $serviceList = $user->getCart()->getServices();
     foreach($serviceList as $serviceId => $service){
-      if (!array_key_exists(0, $service)) continue;
-      /** @var $serviceObj \light\ServiceCartData */
-      $serviceObj = $service[0];
+      if (!array_key_exists(0, $service))
+      {
+        if ($service instanceof ServiceCartData)
+        {
+          $serviceObj = $service;
+        }
+        else
+        {
+          continue;
+        }
+      }
+      else
+      {
+        $serviceObj = $service[0];
+      }
       $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity());
     }
 
@@ -579,6 +591,8 @@ class order_Actions extends myActions
         {
           /** @var $product \light\ServiceCartData */
 
+          if (0 == $productId) continue;
+
           if (!array_key_exists($serviceId, $servicesForProduct))
           {
             $servicesForProduct[$serviceId] = array(
@@ -671,6 +685,7 @@ class order_Actions extends myActions
     {
       foreach ($service as $productId => $productData)
       {
+        if (0 == $productId) continue;
         /** @var $productData \light\ServiceCartData */
         if (!array_key_exists($productId, $servicesForProduct))
         {
@@ -770,10 +785,10 @@ class order_Actions extends myActions
 
           if(array_key_exists(0, $cartElem['products'])){
             /** @var $tmp light\ServiceCartData */
-            $tmp = $cartElem[0];
+            $tmp = $cartElem['products'][0];
             $cartData = array(
-              'quantity' => $tmp->getQuantity(),
-              'price' => $tmp->getPrice(),
+              'quantity' => $tmp['quantity'],
+              'price' => $tmp['price'],
             );
           }
         }
