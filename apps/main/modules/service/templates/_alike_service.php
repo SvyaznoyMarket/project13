@@ -37,15 +37,14 @@
         </div>
 
         <?php $json = array(
-        'jsref' => $alike->getToken(),
-        'jsimg' => $alike->getMediaImageUrl(),
-        'jstitle' => $alike->getName(),
-        'jsprice' => formatPrice($alike->getPrice()),
-        'url' => url_for('cart_service_add', array('service' => $alike->getId())),
-      ) ?>
+          'jsref' => $alike->getToken(),
+          'jsimg' => $alike->getMediaImageUrl(),
+          'jstitle' => $alike->getName(),
+          'jsprice' => formatPrice($alike->getPrice()),
+          'url' => url_for('cart_service_add', array('service' => $alike->getId())),
+        ) ?>
 
-        <?php if ($alike->getIsInShop() || $alike->getIsDelivery()) : ?>
-          <pre><?php print_r($_SERVER)?></pre>
+        <?php if ($alike->getIsInShop()) : ?>
           <form action="<?php echo url_for('cart_service_add', array('service' => $alike->getId())) ?>"/>
             <input data-value='<?php echo json_encode($json) ?>' type="submit" class="button yellowbutton" value="Купить услугу"/>
           </form>

@@ -42,7 +42,9 @@ $json = array(
         </strong>
       </div>
     <?php endif ?>
-    <?php if($service->getIsInShop()): ?>
+    <?php if($service->getIsDelivery()): ?>
+      <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service->getId())); ?>">Купить услугу</a>
+    <?php elseif($service->getIsInShop()): ?>
       <b>Доступна в магазине</b>
       <p class="font14">Специалисты контакт cENTER с радостью проконсультируют по данной услуге и подскажут ближайший магазин Enter</p>
       <p class="font14">
@@ -50,8 +52,6 @@ $json = array(
         Skype: skype2enter и call2enter<br/>
         ICQ: 648198963
       </p>
-    <?php elseif($service->getIsDelivery()): ?>
-      <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service->getId())); ?>">Купить услугу</a>
     <?php endif ?>
   </div>
 </div>
