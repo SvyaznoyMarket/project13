@@ -25,6 +25,7 @@ $(document).ready(function() {
 			self.price     = Model.jsprice
 			self.icon      = Model.jsbimg
 			self.shortcut  = Model.jsshortcut
+			self.stockq    = Model.jsstock
 			
 			self.quantity    = ko.observable(1)
 			self.quantityTxt = ko.computed(function() {
@@ -143,6 +144,12 @@ $(document).ready(function() {
 			
 			self.plusItem = function() {
 				self.quantity( self.quantity() + 1 )
+
+				if( self.quantity() > self.stockq ) {
+					self.noDelivery( true )
+					return false
+				}
+				
 				var curq =  self.quantity() * 1
 				setTimeout( function(){ self.loadData( curq, 1 ) } , 500 )
 				return false
@@ -151,6 +158,15 @@ $(document).ready(function() {
 				if( self.quantity() == 1 )
 					return false
 				self.quantity( self.quantity() - 1 )
+
+				if( self.noDelivery() )
+					if( self.quantity() <= self.stockq ) {
+						self.noDelivery( false )
+					}
+					else {
+						return false
+					}
+
 				var curq =  self.quantity() * 1
 				setTimeout( function(){ self.loadData( curq, -1 ) } , 500 )
 				return false
@@ -193,6 +209,8 @@ $(document).ready(function() {
 				}
 				
 				$.post( inputUrl, postData, function(data) {
+					if( self.noDelivery() )
+						return false
 					if( !data.success ) {
 						self.noDelivery(true)
 						return false
@@ -533,6 +551,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	if( $('.order1click-link-new').length ) {
 		
 		var Model = $('.order1click-link-new').data('model')
+console.info( Model )		
 		var inputUrl = $('.order1click-link-new').attr('link-input')		
 		var outputUrl = $('.order1click-link-new').attr('link-output')		
 		Deliveries = { // zaglushka
