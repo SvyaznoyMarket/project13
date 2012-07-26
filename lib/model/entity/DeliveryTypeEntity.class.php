@@ -17,6 +17,7 @@ class DeliveryTypeEntity
   public function __construct($data){
 
     $this->id =          array_key_exists('id', $data) ? (int)$data['id'] : null;
+    $this->id =          array_key_exists('mode_id', $data) ? (int)$data['mode_id'] : null; //@ TODO это малость странно о_О
     $this->token =       array_key_exists('token', $data) ? (string)$data['token'] : '';
     $this->name =        array_key_exists('name', $data) ? (string)$data['name'] : '';
     $this->description = array_key_exists('description', $data) ? (string)$data['description'] : '';
