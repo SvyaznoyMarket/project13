@@ -4,7 +4,7 @@
  */
 $json = array(
   'jsref' => $service->getToken(),
-  'jsimg' => $service->getMediaImage(),
+  'jsimg' => $service->getMediaImageUrl(2),
   'jstitle' => $service->getName(),
   'jsprice' => formatPrice($service->getPrice()),
 )
