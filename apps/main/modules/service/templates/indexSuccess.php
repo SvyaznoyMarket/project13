@@ -1,24 +1,39 @@
-<?php slot('title', $serviceCategory['name']) ?>
+<?php
+/**
+ * @var ServiceCategoryEntity $categoryTree
+ */
+?>
+<?php slot('title', $categoryTree->getName()) ?>
 
 <?php slot('navigation') ?>
-  <?php include_component('service', 'navigation', array('serviceCategory' => $serviceCategory)) ?>
+  <?php include_component('default', 'navigation', array('list'=>$categoryTree->getNavigation()));?>
 <?php end_slot() ?>
 
+<div class="servicebanner">
+  Чтобы в квартире появился новый шкаф,
+  <div class="">не нужно просить</div>
+  у соседа шуруповерт.
+</div>
+<div class="slogan">
+  <strong>Доставим радость, настроим комфорт!</strong>
+  Специалисты F1 привезут и соберут шкаф, повесят телевизор, куда скажете, и установят стиральную машину по всем правилам.
+</div>
 
-<?php if (!$serviceCategory['core_parent_id']): ?>
-  <?php include_component('service', 'root_page', array('list' => $list)) ?>
-
-<?php else: ?>
-  <div class="float100">
-    <div class="column685 pr">
-      <div class="line pb20 mt32"></div>
-      <?php include_component('service', 'current_category_tree', array('listInner' => $listInner, 'serviceList' => $serviceList, 'serviceCategory' => $serviceCategory)) ?>
-    </div>
+<?php
+$num = 0;
+foreach($categoryTree->getChildren() as $item): ?>
+  <div class="servicebox fl">
+    <div class="serviceboxtop"></div>
+    <a href="<?php echo $item->getLink() ?>">
+      <div class="serviceboxmiddle">
+        <i class="<?php echo $item->getIconClass() ?>"></i>
+        <strong class="font16"><?php echo $item->getName() ?></strong>
+        <?php echo $item->getDescription(); ?>
+      </div>
+    </a>
+    <div class="serviceboxbottom"></div>
   </div>
-
-  <div class="column215">
-    <?php include_component('service', 'left_menu', array('list' => $list, 'serviceCategory' => $serviceCategory)) ?>
-  </div>
-
-<?php endif ?>
-
+  <?php $num++; if ($num%2 == 0):?>
+    <div class="clear pb30"></div>
+  <?php endif ?>
+<?php endforeach; ?>
