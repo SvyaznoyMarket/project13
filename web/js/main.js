@@ -904,7 +904,8 @@ $(document).ready(function(){
 		var that = this
 		this.self = ''
 		this.other = []
-				
+		this.node = null
+
 		this.formatPrice = function(price) {
 			if (typeof price === 'undefined' || price === null)
 				return ''
@@ -913,13 +914,23 @@ $(document).ready(function(){
 			else
 				return ', бесплатно'
 		}
-		
+
+		this.printError = function() {
+			if( this.node )
+				$(this.node).html( 'Стоимость доставки Вы можете уточнить в контакт cEntre 8&nbsp;(800)&nbsp;700-00-09' )
+		}
+
 		this.post = function( url, coreid ) {
 			$.post( url, {ids:coreid}, function(data) {
-				if( !('success' in data ) )
+				if( !('success' in data ) ) {
+					that.printError()
 					return false
-				if( !data.success || data.data.length === 0 )
-					return false
+				}
+				if( !data.success || data.data.length === 0 ) {
+					that.printError()
+					return false					
+				}
+					
 				for(var i=0; i < coreid.length; i++) {
 					if( !data.data[ coreid[i] ] )
 						continue
@@ -970,6 +981,8 @@ $(document).ready(function(){
 	
     if ( $('.delivery-info').length ) { // Product Card
     	var dlvr_node = $('.delivery-info')
+    	var dajax = new dlvrajax()
+    	dajax.node = dlvr_node
     	dlvrajax.prototype.processHTML = function( id ) {
 			var self = this.self,
 				other = this.other    	
@@ -989,7 +1002,7 @@ $(document).ready(function(){
 		}
     
 		var coreid = [ dlvr_node.attr('id').replace('product-id-', '') ]
-		var dajax = new dlvrajax()
+		
 		dajax.post( dlvr_node.data('calclink'), coreid )
     }
 
