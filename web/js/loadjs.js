@@ -16,7 +16,7 @@
 		return flnm
 	}
 
-	$LAB.setGlobalDefaults({ AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
+	$LAB.setGlobalDefaults({ AllowDuplicates: true, AlwaysPreserveOrder:true, UseLocalXHR:false, BasePath:"/js/"})
 	.queueScript('combine.js')
 	.queueScript('jquery-1.6.4.min.js')
 	.queueScript('/js/asyn.code.ver3.js')	

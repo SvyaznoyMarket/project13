@@ -70,7 +70,7 @@ class cartController
           'success' => true,
           'data' => array(
             'quantity' => $quantity,
-            'full_quantity' =>App::getCurrentUser()->getCart()->getTotalQuantity(),
+            'full_quantity' => $this->getTotalQuantityForShow(),
             'full_price' => App::getCurrentUser()->getCart()->getTotalPrice(),
             'link' => App::getRouter()->createUrl('order.new')
           )
@@ -144,11 +144,11 @@ class cartController
           }
         }
 //        App::getCurrentUser()->getCart()->removeService($serviceId, null, $productId);
-        App::getCurrentUser()->getCart()->addService($serviceId, $quantity, $productId);
+        App::getCurrentUser()->getCart()->setServiceQuantity($serviceId, $quantity, $productId);
       }
       else{
 //        App::getCurrentUser()->getCart()->removeService($serviceId, null, 0);
-        App::getCurrentUser()->getCart()->addService($serviceId, $quantity);
+        App::getCurrentUser()->getCart()->setServiceQuantity($serviceId, $quantity);
       }
 
       if(App::getRequest()->isXmlHttpRequest()){
@@ -156,7 +156,7 @@ class cartController
           'success' => true,
           'data' => array(
             'quantity' => $quantity,
-            'full_quantity' =>App::getCurrentUser()->getCart()->getTotalQuantity(),
+            'full_quantity' => $this->getTotalQuantityForShow(),
             'full_price' => App::getCurrentUser()->getCart()->getTotalPrice(),
             'link' => App::getRouter()->createUrl('order.new')
           )
@@ -216,7 +216,7 @@ class cartController
         $data = array(
           'success' => true,
           'data' => array(
-            'full_quantity' => App::getCurrentUser()->getCart()->getTotalQuantity(),
+            'full_quantity' => $this->getTotalQuantityForShow(),
             'full_price' => App::getCurrentUser()->getCart()->getTotalPrice(),
             'link' => App::getRouter()->createUrl('order.new')
           )
@@ -267,7 +267,7 @@ class cartController
         $data = array(
           'success' => true,
           'data' => array(
-            'full_quantity' => App::getCurrentUser()->getCart()->getTotalQuantity(),
+            'full_quantity' => $this->getTotalQuantityForShow(),
             'full_price' => App::getCurrentUser()->getCart()->getTotalPrice(),
             'link' => App::getRouter()->createUrl('order.new')
           )
@@ -322,6 +322,13 @@ class cartController
       $sum += $this->executeAddProduct($kit->getProductId(), ($kit->getQuantity() * $quantity));
     }
     return $sum;
+  }
+
+  /**
+   * @return int
+   */
+  private function getTotalQuantityForShow(){
+    return intval(App::getCurrentUser()->getCart()->getProductsQuantity() + App::getCurrentUser()->getCart()->getServicesQuantity(0));
   }
 
 }

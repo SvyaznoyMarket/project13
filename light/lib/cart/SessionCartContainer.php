@@ -89,6 +89,17 @@ class SessionCartContainer implements CartContainer
     }
   }
 
+    public function setServiceQuantity($serviceId, $quantity, $productId=null){
+        if(is_null($productId)){
+            $productId = 0;
+        }
+        else{
+            $productId = (int) $productId;
+        }
+
+        $_SESSION[$this->sessionName]['serviceList'][$serviceId][$productId] = (int) $quantity;
+    }
+
   public function removeProduct($productId, $quantity=null){
 
     $logger = \Logger::getLogger('Cart');

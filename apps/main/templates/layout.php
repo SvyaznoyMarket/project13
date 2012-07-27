@@ -96,6 +96,8 @@
   <?php include_slot('seo_counters_advance') ?>
 <?php endif ?>
 
+<div id="gooReMaCategories" class="jsanalytics"></div>
+
 <?php include_component('default', 'adriver') ?>
   </body>
 </html>
