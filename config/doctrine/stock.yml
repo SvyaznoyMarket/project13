@@ -20,6 +20,7 @@ Shop:
     way_auto:          { type: string }
     panorama:          { type: string(255), notnull: false, default: null, comment: 'Путь к директории с панорамой' }
     is_active:         { type: boolean, notnull: true, default: false, comment: 'Магазин работает?' }
+    is_reconstruction: { type: boolean, notnull: true, default: false, comment: 'Магазин на реконструкции?' }
   relations:
     Region:            { class: Region, foreignAlias: Shop, local: region_id, foreign: id, type: one, foreignType: many, onDelete: RESTRICT }
 

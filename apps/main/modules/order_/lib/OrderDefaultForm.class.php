@@ -50,7 +50,7 @@ class OrderDefaultForm extends BaseOrderForm
 
     // recipient_phonenumbers
     $this->widgetSchema['recipient_phonenumbers'] = new sfWidgetFormInputText();
-    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('max_length' => 255, 'required' => true), array('required' => 'Укажите телефон для связи'));
+    $this->validatorSchema['recipient_phonenumbers'] = new sfValidatorString(array('min_length' => 7, 'max_length' => 20, 'required' => true), array('required' => 'Укажите телефон для связи', 'min_length' => 'Неправильный телефонный номер', 'max_length' => 'Неправильный телефонный номер'));
     $this->widgetSchema['recipient_phonenumbers']->setLabel('Мобильный телефон для связи:');
 
     // is_receive_sms
@@ -144,6 +144,20 @@ class OrderDefaultForm extends BaseOrderForm
     $this->useFields($fields);
 
     $this->widgetSchema->setNameFormat('order[%s]');
+  }
+
+  public function bind(array $taintedValues = null, array $taintedFiles = null)
+  {
+    if (!empty($taintedValues['delivery_type_id'])) {
+      if ($deliveryType = DeliveryTypeTable::getInstance()->find($taintedValues['delivery_type_id'])) {
+        if ('standart' == $deliveryType->token) {
+          $this->validatorSchema['address_street']->setOption('required', true);
+          $this->validatorSchema['address_number']->setOption('required', true);
+        }
+      }
+    }
+
+    parent::bind($taintedValues);
   }
 
   protected function doUpdateObject($values)

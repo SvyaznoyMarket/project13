@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
 	/* basket */
 	var total = $('#total .price')
 	var totalCash = 0
@@ -44,12 +43,17 @@ $(document).ready(function() {
 		var dropflag = false
 
 		totalCash += this.sum * 1
+		var totalCalcTO = null
 
 		this.calculate = function( q ) {
+			clearTimeout( totalCalcTO )
 			self.quantum = q
 			self.sum = price * q
 			$(nodes.sum).html( printPrice( self.sum ) )
 			$(nodes.sum).typewriter(800, getTotal)
+			totalCalcTO = setTimeout( function() {
+                 getTotal(), 1000
+             })
 		}
 
 		this.clear = function() {
@@ -75,6 +79,7 @@ $(document).ready(function() {
 			}
 			//var tmpurl = (delta > 0) ? addurl : delurl
 			//self.quantum += delta
+
             var tmpurl = addurl;
             self.quantum += delta
             tmpurl += self.quantum;
