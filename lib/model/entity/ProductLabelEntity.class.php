@@ -7,6 +7,7 @@ class ProductLabelEntity
 {
   const LABEL_SALE = 1;
   const LABEL_ACTION = 2;
+  const LABEL_WOW_CREDIT = 8;
 
   /* @var integer */
   private $id;
