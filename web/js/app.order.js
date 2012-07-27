@@ -275,7 +275,7 @@ $(document).ready(function () {
         var callback_close = function(decision) {
             setTimeout(function(){
                 document.location = backURL
-            }, 5000)
+            }, 3000)
             // var result = ''
             // switch(decision) {
             //     case 'ver':
@@ -305,9 +305,9 @@ $(document).ready(function () {
         var vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
             order: creditWidget.vars.order,
             sig: creditWidget.vars.sig,
-            //callbackUrl: backURL,
-            onClose: callback_close, // probably do not work 
-            onDecision: callback_decision // do not work
+            callbackUrl: window.location.href,
+            onClose: callback_close, 
+            onDecision: callback_decision 
         })
         vkredit.openWidget()
         
