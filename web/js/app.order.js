@@ -232,6 +232,8 @@ $(document).ready(function () {
     })();
 
     /* Credit Widget */
+    //window.onbeforeunload = function (){ return false }    // DEBUG    
+    
     var creditWidget = $('#credit-widget').data('value')
     if( ! 'widget' in creditWidget )
         return
@@ -257,8 +259,6 @@ $(document).ready(function () {
             )
         }
         
-//console.info(creditWidget.vars.number) 
-//window.onbeforeunload = function (){ return false }    // DEBUG    
         function openWidget() {
             dc_getCreditForTheProduct(
                 '4427', 
@@ -298,16 +298,16 @@ $(document).ready(function () {
         }
 
         var callback_decision = function(decision) {
-            //alert('Пришел статус: ' + decision)
+            //console.info( 'Пришел статус: ' + decision )
         }
 
 
         var vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
             order: creditWidget.vars.order,
             sig: creditWidget.vars.sig,
-            callbackUrl: backURL,
-            onClose: callback_close,
-            onDecision: callback_decision
+            //callbackUrl: backURL,
+            onClose: callback_close, // probably do not work 
+            onDecision: callback_decision // do not work
         })
         vkredit.openWidget()
         
