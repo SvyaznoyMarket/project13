@@ -139,8 +139,8 @@
 
           <div>
             <p></p>
-            <?php echo $form['address_street']->render(array('class' => 'bBuyingLine__eText mInputLong', 'placeholder' => 'Улица', 'title' => 'Улица', 'style' => 'width: 295px;')) ?>
-            <?php echo $form['address_number']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Дом', 'title' => 'Дом')) ?>
+            <span class="placeholder">Улица</span><?php echo $form['address_street']->render(array('class' => 'bBuyingLine__eText mInputLong', 'title' => 'Улица', 'style' => 'width: 219px;')) ?>
+            <span class="placeholder"">Дом</span><?php echo $form['address_number']->render(array('class' => 'bBuyingLine__eText mInputShort', 'title' => 'Дом', 'style' => 'width: 114px;')) ?>
           </div>
 
           <div>
