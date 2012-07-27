@@ -74,7 +74,7 @@ class order_Components extends myComponents
       if (empty($_COOKIE['credit_on']) || !$showCreditMethod) {
           $selectedMethodId  = $method->getId();
           break;
-      } elseif ($method->getIsCredit()) {
+      } elseif ($method->isCredit()) {
           $selectedMethodId  = $method->getId();
           break;
       }
@@ -353,7 +353,7 @@ class order_Components extends myComponents
         $list[] = array(
           'id' => $product->getId(),
           'quantity' => $cartInfo->getQuantity(),
-          'price' => number_format($cartInfo->getPrice(), 0, ',', ' '),
+          'price' => $cartInfo->getPrice(),
           'type' => CreditBankRepository::getCreditTypeByCategoryToken($rootCategoryToken),
         );
       }

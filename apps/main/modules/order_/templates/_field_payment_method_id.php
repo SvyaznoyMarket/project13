@@ -3,7 +3,7 @@
 
   <dd>
   <?php foreach ($paymentMethodList as $k => $v): ?>
-    <?php if (!$showCreditMethod && $v->getIsCredit())
+    <?php if (!$showCreditMethod && $v->isCredit())
           continue;  ?>
      <div id="payment_method_<?php echo $v->getId() ?>-field">
       <p></p>
@@ -13,7 +13,7 @@
       </label>
       <i>
         <div><?php echo $v->getDescription() // ?></div>
-        <?php if ($v->getId() == 6) { //@TODO перевести на isCredit() ?>
+        <?php if ($v->isCredit()) {  ?>
           <div id="creditInfo"  <?php if ($v->getId() != $selectedMethodId) echo 'style="display:none"' ?> >
             <div>Выберите банк:</div>
             <div class="bankWrap">

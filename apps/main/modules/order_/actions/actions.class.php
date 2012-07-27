@@ -426,7 +426,7 @@ class order_Actions extends myActions
       if ($paymentMethod->getIsOnline()) {
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $provider->getForm($order);
-      } elseif ($paymentMethod->getIsCredit() ) {
+      } elseif ($paymentMethod->isCredit() ) {
           $isCredit = true;
           //print_r($order);
           $creditBank = RepositoryManager::getCreditBank()->getById($order['credit']['credit_bank_id']);
