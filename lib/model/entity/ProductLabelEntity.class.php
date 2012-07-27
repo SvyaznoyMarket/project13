@@ -5,9 +5,22 @@
  */
 class ProductLabelEntity
 {
+  // Распродажа
   const LABEL_SALE = 1;
+  // Акция
   const LABEL_ACTION = 2;
-  const LABEL_WOW_CREDIT = 8;
+  // Скидка
+  const LABEL_DISCOUNT = 3;
+  // Супер Цена
+  const LABEL_SUPER_PRICE = 4;
+  // Продукт Года
+  const LABEL_YEAR_PRODUCT = 5;
+  // Новинка
+  const LABEL_NEW = 6;
+  // Для болельщика
+  const LABEL_FANS = 7;
+  // WOW-Кредит
+  const LABEL_CREDIT = 8;
 
   /* @var integer */
   private $id;

@@ -865,7 +865,17 @@ class ProductEntity
 
   public function haveToShowOldPrice()
   {
-    return ($this->hasSaleLabel() && $this->price > 0 && $this->price < $this->priceOld && ($this->price / $this->priceOld <= 0.95));
+    $hasLabel = false;
+    foreach ($this->labelList as $label)
+    {
+      if (in_array($label->getId(), array(ProductLabelEntity::LABEL_SALE, ProductLabelEntity::LABEL_SUPER_PRICE, ProductLabelEntity::LABEL_ACTION, ProductLabelEntity::LABEL_DISCOUNT, ProductLabelEntity::LABEL_FANS)))
+      {
+        $hasLabel = true;
+        break;
+      }
+    }
+
+    return ($hasLabel && $this->price > 0 && $this->price < $this->priceOld && ($this->price / $this->priceOld <= 0.95));
   }
 
   public function hasSaleLabel()

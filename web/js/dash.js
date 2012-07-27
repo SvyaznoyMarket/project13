@@ -276,6 +276,7 @@ $(document).ready(function(){
 				ltbx.getBasket( tmpitem )
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).addClass('active')
+				PubSub.publish( 'productBought', currentItem )
 			}
 		})
 		e.stopPropagation()
@@ -342,6 +343,7 @@ $(document).ready(function(){
 						ltbx.getBasket( tmpitem )
 						if( afterpost )
 							afterpost()
+						PubSub.publish( 'productBought', tmpitem )
 					}
 				})
 				return false
@@ -349,5 +351,14 @@ $(document).ready(function(){
 		}
 
 	} // object BuyBottons
+
+	// analytics has us
+	if( 'ANALYTICS' in window ) {
+		PubSub.subscribe( 'productBought', function(){
+			if( 'gooReMaBuy' in ANALYTICS ) {
+				ANALYTICS.gooReMaBuy()
+			}
+		})
+	}
 
 })
