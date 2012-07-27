@@ -111,7 +111,7 @@ class PaymentMethodEntity
     /**
      * @return string
      */
-    public function getIsCredit()
+    public function IsCredit()
     {
         return $this->is_credit;
     }
