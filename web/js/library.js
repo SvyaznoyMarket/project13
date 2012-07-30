@@ -1773,8 +1773,8 @@ DirectCredit = {
                 //      creditPrice += result.products[i].initial_instalment * itemPrice/100 * item.count
                 //  }
                     
-                // }
-                self.output.text( printPrice( result.payment ) )
+                // }               
+                self.output.text( printPrice( Math.ceil( result.payment ) ) )
                 PubSub.publish( 'bankAnswered', null )
             }
         )

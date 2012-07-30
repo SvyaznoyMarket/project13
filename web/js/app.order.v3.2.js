@@ -979,7 +979,7 @@ $(document).ready(function() {
         data.deliveryTypes[elData.deliveryType].interval = elData.value
     })
 
-    if ($('.bBuyingLine__eRadio"]:checked').length) {
+    if ($('#order-form-part1 .bBuyingLine__eRadio"]:checked').length) {
         DeliveryMap.render()
         $('#order-form-part2').show('fast')
 
