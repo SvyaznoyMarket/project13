@@ -14,6 +14,7 @@ class ProductLineEntity
   private $mediaImage;
   /** @var int */
   private $productCount;
+  private $kitCount;
   /** @var int */
   private $mainProductId;
   /** @var ProductEntity */
@@ -34,13 +35,18 @@ class ProductLineEntity
     if (isset($data['token']))              $this->setToken($data['token']);
     if (isset($data['name']))               $this->setName($data['name']);
     if (isset($data['description']))        $this->setDescription($data['description']);
-    if (isset($data['count']))              $this->setProductCount($data['count']);
-    if (isset($data['products_quantity']))  $this->setProductCount($data['products_quantity']);
     if (isset($data['media_image']))        $this->setMediaImage($data['media_image']);
     if (isset($data['main_product_id']))    $this->setMainProductId($data['main_product_id']);
     if (isset($data['product_id_list']))    $this->setProductIdList((array)$data['product_id_list']);
     if (isset($data['kit_id_list']))        $this->setKitIdList((array)$data['kit_id_list']);
     if (isset($data['product_count']))      $this->setProductCount($data['product_count']);
+    if (isset($data['kitCount']))           $this->setKitCount($data['kit_count']);
+    if (is_null($this->productCount)){
+      $this->productCount = count($this->productIdList);
+    }
+    if (is_null($this->kitCount)){
+      $this->productCount = count($this->kitIdList);
+    }
   }
 
   /**
@@ -328,5 +334,29 @@ class ProductLineEntity
   public function getKitList()
   {
     return $this->kitList;
+  }
+
+  /**
+   * @param int $kitCount
+   */
+  public function setKitCount($kitCount)
+  {
+    $this->kitCount = (int)$kitCount;
+  }
+
+  /**
+   * @return int
+   */
+  public function getKitCount()
+  {
+    return $this->kitCount;
+  }
+
+  /**
+   * @return int
+   */
+  public function getTotalCount()
+  {
+    return $this->productCount + $this->kitCount;
   }
 }
