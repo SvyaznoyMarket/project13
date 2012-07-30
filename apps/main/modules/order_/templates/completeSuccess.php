@@ -28,7 +28,7 @@
       <input id="pay-button" type="submit" class="button bigbutton" value="Оплатить заказ" />
     </form>
   </div>
-<?php } elseif (!$isCredit) { ?>
+<?php } else{ ?>
   <div class="mt32" style="text-align: center">
     <a class='bBigOrangeButton' href="<?php echo url_for('homepage') ?>">Продолжить покупки</a>
   </div>
