@@ -59,7 +59,7 @@
       <th colspan="3">Для этого товара есть услуги:</th>
     </tr>
       <?php foreach ($list as $service): ?>
-      <?php if (!$service['selected']) continue; ?>
+      <?php if (!$service['selected'] || !$service['quantity']) continue; ?>
     <tr ref="<?php echo $service['token'] ?>">
       <td>
         <?php echo $service['name'] ?><br>
@@ -103,7 +103,5 @@
 
 <?php } ?>
 
-<?php
-  include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName()))
-  ?>
+<?php include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName())) ?>
 <?php endif ?>

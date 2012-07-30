@@ -371,4 +371,4 @@ var ADFOX = {
     }
 }
 
-ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
+//ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
