@@ -31,9 +31,8 @@ class ProductServiceEntity
     if (array_key_exists('name', $data))          $this->name  = (string)$data['name'];
     if (array_key_exists('token', $data))         $this->token = (string)$data['token'];
     if (array_key_exists('price', $data))         $this->price = $data['price'];
-    if(array_key_exists('is_in_shop', $data))     $this->is_in_shop       = (bool)$data['is_in_shop'];
-    if(array_key_exists('is_delivery', $data))    $this->is_delivery      = (bool)$data['is_delivery'];
-    if (array_key_exists('only_in_shop', $data))  $this->onlyInShop = (boolean)$data['only_in_shop'];
+    if (array_key_exists('is_in_shop', $data))    $this->is_in_shop       = (bool)$data['is_in_shop'];
+    if (array_key_exists('is_delivery', $data))   $this->is_delivery      = (bool)$data['is_delivery'];
   }
 
   /**
