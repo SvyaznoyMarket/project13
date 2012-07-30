@@ -550,8 +550,7 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 	/* One Click Order */
 	if( $('.order1click-link-new').length ) {
 		
-		var Model = $('.order1click-link-new').data('model')
-console.info( Model )		
+		var Model = $('.order1click-link-new').data('model')	
 		var inputUrl = $('.order1click-link-new').attr('link-input')		
 		var outputUrl = $('.order1click-link-new').attr('link-output')		
 		Deliveries = { // zaglushka
