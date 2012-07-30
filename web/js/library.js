@@ -1724,10 +1724,18 @@ DirectCredit = {
     change : function( message, data ) {
         self = DirectCredit
         if( data.q > 0 ) {
-            var item = self.findProduct( self.basketPull, data.id ) 
+            var item = self.findProduct( self.basketPull, data.id )
+            if( item < 0 ) {
+                PubSub.publish( 'bankAnswered', null ) // hack
+                return
+            }
             item.count = data.q
         } else {
             var key = self.findProductKey( self.basketPull, data.id )
+            if( key < 0 ) {
+                PubSub.publish( 'bankAnswered', null ) // hack
+                return
+            }
             self.basketPull.splice( key, 1 )
         }
         self.sendCredit()
