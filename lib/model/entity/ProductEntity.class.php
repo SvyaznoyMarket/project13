@@ -2,6 +2,12 @@
 
 class ProductEntity
 {
+
+  /**
+   * Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере
+   */
+  const DEFAULT_CONNECTED_MODE = 1;
+
   /* @var integer */
   private $id;
   /** @var int */
@@ -106,6 +112,9 @@ class ProductEntity
   private $accessoryList = array();
   /** @var ProductTagEntity[] */
   private $tagList = array();
+  /** @var boolean */
+  private $connectedMode;
+
 
   public function __construct(array $data = array())
   {
@@ -134,8 +143,10 @@ class ProductEntity
     if (array_key_exists('price', $data))           $this->price         = $data['price'];
     if (array_key_exists('price_average', $data))   $this->priceAverage  = $data['price_average'];
     if (array_key_exists('price_old', $data))       $this->priceOld      = $data['price_old'];
+    if (array_key_exists('connected_mode', $data))  $this->connectedMode  = (int)$data['connected_mode'];
 
-    //echo "<pre>", print_r($this,1), '</pre>';
+
+      //echo "<pre>", print_r($this,1), '</pre>';
   }
 
   public function setId($id)
@@ -147,6 +158,16 @@ class ProductEntity
   {
     return $this->id;
   }
+
+    public function setConnectedMode($connectedMode)
+    {
+        $this->connectedMode = $connectedMode;
+    }
+
+    public function getConnectedMode()
+    {
+        return $this->connectedMode;
+    }
 
   /**
    * @param \ProductTypeEntity $type

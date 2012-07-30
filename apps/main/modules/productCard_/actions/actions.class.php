@@ -102,13 +102,12 @@ class productCard_Actions extends myActions
     ));
     $this->getResponse()->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
 
-    $showRelatedUpper = false;
-    foreach($product->getCategoryList() as $category){
-      if(in_array($category->getId(), array(80, 923, 1604, 1611))){
+    if ($product->getConnectedMode() == $product::DEFAULT_CONNECTED_MODE) {
+        $showRelatedUpper = false;
+    } else {
         $showRelatedUpper = true;
-        break;
-      }
     }
+
     $this->setVar('showRelatedUpper', $showRelatedUpper);
     $this->setVar('showAccessoryUpper', !$showRelatedUpper);
     $this->setVar('relatedPagesNum', ceil(count($product->getRelatedIdList()) / self::NUM_RELATED_ON_PAGE));
