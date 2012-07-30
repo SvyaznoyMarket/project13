@@ -16,6 +16,10 @@ class ProductServiceEntity
   /** @var float */
   private $price;
   /** @var boolean */
+  private $is_in_shop;
+  /** @var boolean */
+  private $is_delivery;
+  /** @var boolean */
   private $onlyInShop;
 
   /**
@@ -27,6 +31,8 @@ class ProductServiceEntity
     if (array_key_exists('name', $data))          $this->name  = (string)$data['name'];
     if (array_key_exists('token', $data))         $this->token = (string)$data['token'];
     if (array_key_exists('price', $data))         $this->price = $data['price'];
+    if(array_key_exists('is_in_shop', $data))     $this->is_in_shop       = (bool)$data['is_in_shop'];
+    if(array_key_exists('is_delivery', $data))    $this->is_delivery      = (bool)$data['is_delivery'];
     if (array_key_exists('only_in_shop', $data))  $this->onlyInShop = (boolean)$data['only_in_shop'];
   }
 
@@ -121,7 +127,7 @@ class ProductServiceEntity
    */
   public function getOnlyInShop()
   {
-    return $this->onlyInShop;
+    return !$this->is_delivery && $this->is_in_shop;
   }
 
   /**
@@ -130,5 +136,37 @@ class ProductServiceEntity
   public function isInSale()
   {
     return !$this->onlyInShop && $this->price && $this->price >= self::MIN_SERVICE_BUY_PRICE;
+  }
+
+  /**
+   * @param boolean $is_delivery
+   */
+  public function setIsDelivery($is_delivery)
+  {
+    $this->is_delivery = $is_delivery;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsDelivery()
+  {
+    return $this->is_delivery;
+  }
+
+  /**
+   * @param boolean $is_in_shop
+   */
+  public function setIsInShop($is_in_shop)
+  {
+    $this->is_in_shop = $is_in_shop;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getIsInShop()
+  {
+    return $this->is_in_shop;
   }
 }
