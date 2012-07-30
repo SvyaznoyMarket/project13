@@ -333,6 +333,9 @@ var ADFOX = {
 	},
 
     parseAllAdfoxDivs : function( nodes ) {
+         if( !this. enable )
+            return
+
         if( window.addEventListener ) {
             var nativeEL = window.addEventListener
             window.addEventListener = function(){
@@ -368,7 +371,9 @@ var ADFOX = {
         document.writeln = function(){
             $('body').append( $(arguments[0] + '') )
         }
-    }
+    },
+
+    enable : true
 }
 
 ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
