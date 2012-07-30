@@ -13,7 +13,7 @@ $listInCart = $item->getServiceListInCart()->getRawValue(); // symfony code shee
   ?>
   <table>
     <tbody>
-    <?php foreach ($list as $service):?>
+    <?php foreach ($list as $service): ?>
     <tr>
 
       <td class="bF1Block_eInfo"><?php echo $service->getName() ?><br>
