@@ -94,8 +94,91 @@ window.ANALYTICS = {
             '&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
     },
 
+    gooReMaSuccess : function() {
+        google_conversion_label = "5610CJnaoAMQl9X23gM";
+        this.googleRemarketing();
+    },
+
+    gooReMaCart : function() {
+        google_conversion_label = "V5u-CIHdoAMQl9X23gM";
+        this.googleRemarketing();
+    },
+
+    gooReMaBuy : function() {
+        google_conversion_label = "sEPSCIncoAMQl9X23gM";
+        this.googleRemarketing();
+    },
+
+    gooReMaQuickOrder : function() {
+        google_conversion_label = "5_EJCJHboAMQl9X23gM";
+        this.googleRemarketing();
+    },
+
+    googleRemarketing : function() {
+        google_conversion_id = 1004382871;
+        google_conversion_language = "en";
+        google_conversion_format = "3";
+        google_conversion_color = "ffffff";
+        google_conversion_value = 0;
+        $LAB.script( "http://www.googleadservices.com/pagead/conversion.js" )
+    },
+
+    gooReMaCategories : function() {
+        var self = this
+        var urls = []
+        $('.breadcrumbs a').each( function( i, link ) {
+            if( $(link).attr('href') != '' && $(link).attr('href') != '/' )
+                urls.push( $(link).attr('href') )
+        })
+        urls.push( document.location.pathname + document.location.search )
+
+        var categories = {
+            'household': 'cyX1CPHeoAMQl9X23gM', //товары для дома
+            'tovari-dlya-givotnih': 'ZoF-CNnhoAMQl9X23gM', // для животных
+            'jewel': 'kdKjCOHgoAMQl9X23gM',// украшения
+            'electronics': 'S8PxCPndoAMQl9X23gM', // электроника
+            'aksessuari-dlya-elektroniki-1024': 'johICJnpoAMQl9X23gM', //аксессуры в электронике
+            'audio-789': 'OkJ7CLnloAMQl9X23gM', //аудио
+            'igri-i-konsoli-802': 'ldadCKHooAMQl9X23gM', //игры и консоли
+            'kompyuteri-i-plansheti-815': 'M-vGCNHioAMQl9X23gM', //компьютеры и планшеты
+            'mobilnaya-elektronika-868': 'PV-cCKnnoAMQl9X23gM', //мобильная электроника
+            'televizori-i-video-881': 'ZyZPCMHkoAMQl9X23gM', //телевизоры и видео
+            'telefoni-897': '093HCMnjoAMQl9X23gM', //телефоны
+            'foto-i-videokameri-912': 'hvUnCLHmoAMQl9X23gM', //фото и видеокамеры
+            'electronics/\\?f\\[\\label\\]\\[\\]=1': 'MGyuCPnsoAMQl9X23gM' //распродажа электроники
+        }
+
+        function callCode( label ) {
+            $LAB.queueWait( function() {
+                google_conversion_id = 1004382871;
+                google_conversion_language = "en";
+                google_conversion_format = "3";
+                google_conversion_color = "ffffff";
+                google_conversion_value = 0;
+
+                google_conversion_label = label
+            })
+            .queueScript( "http://www.googleadservices.com/pagead/conversion.js" )           
+        }
+
+        cats: for( var key in categories ) {
+            for( var i=0, l=urls.length; i < l; i++ )
+                if( urls[ i ].match( key ) ) {
+// console.info( key , categories[ key ])
+                    var lbl = categories[ key ]
+                    callCode( lbl )
+                    continue cats
+                }
+        }
+
+        $LAB.runQueue()
+
+    },
+
     parseAllAnalDivs : function( nodes ) {
-        
+        if( !this. enable )
+            return
+
         var self = this
         $.each(  nodes , function() {
 //console.info( this.id, this.id+'' in self  )
@@ -115,7 +198,9 @@ window.ANALYTICS = {
         document.writeln = function(){
             $('body').append( $(arguments[0] + '') )
         }
-    }
+    },
+
+    enable : true
 }
 
 ANALYTICS.parseAllAnalDivs( $('.jsanalytics') )
@@ -171,7 +256,7 @@ var ADFOX = {
 		var pr1 = Math.floor(Math.random() * 1000000);	
 		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
 		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		//AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
 	},
 	
 	adfox215 : function() {
@@ -286,4 +371,4 @@ var ADFOX = {
     }
 }
 
-ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
+//ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )

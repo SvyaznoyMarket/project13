@@ -680,13 +680,15 @@ class order_Actions extends myActions
         //@TODO нужно переделать в следующем хотфиксе
         $coreData = array_shift(Core::getInstance()->query('service.get', array('id' => $serviceId, 'expand' => array())));
 
-        $servicesForProduct[$productId][] = array(
-          'id'       => $serviceId,
-          'name'     => $coreData['name'],
-          'token'    => $coreData['token'],
-          'quantity' => $productData->getQuantity(),
-          'price'    => $productData->getPrice(),
-        );
+        if ($productData->getQuantity()) {
+          $servicesForProduct[$productId][] = array(
+            'id'       => $serviceId,
+            'name'     => $coreData['name'],
+            'token'    => $coreData['token'],
+            'quantity' => $productData->getQuantity(),
+            'price'    => $productData->getPrice(),
+          );
+        }
       }
     }
 
