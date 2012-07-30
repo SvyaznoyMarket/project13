@@ -804,11 +804,7 @@ class order_Actions extends myActions
         }
 
         $itemView = new Order_ItemView();
-        $itemView->url =
-          'products' == $itemType
-          ? $coreData['link']
-          : $this->generateUrl('service_show', array('service' => ServiceTable::getInstance()->createQuery()->select('token')->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR)))
-        ;
+        $itemView->url = $coreData['link'];
         $itemView->deleteUrl =
           'products' == $itemType
           ? $this->generateUrl('cart_delete', array('product' => $recordData['id']), true)
