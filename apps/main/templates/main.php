@@ -62,14 +62,15 @@
 <script src="/js/loadjs.js" type="text/javascript"></script>
 
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
-    <?php include_partial('default/yandexMetrika') ?>
+    
     <div id="adblender" class="jsanalytics"></div>
 <?php endif ?>
-
+  
     <?php if (has_slot('seo_counters_advance')): ?>
       <?php include_slot('seo_counters_advance') ?>
     <?php endif ?>
-
+    
+    <div id="yandexMetrika" class="jsanalytics"></div>
     <div id="heiasMain" class="jsanalytics"></div>
 
   <?php include_component('default', 'adriver') ?>

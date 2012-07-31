@@ -175,6 +175,27 @@ window.ANALYTICS = {
 
     },
 
+    yandexMetrika : function() {
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
+                } catch(e) {}
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    },
+
     parseAllAnalDivs : function( nodes ) {
         if( !this. enable )
             return
@@ -331,6 +352,25 @@ var ADFOX = {
 		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
 		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emvi&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
 	},
+
+    adfoxWowCredit : function() {
+        if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        if (typeof(document.referrer) != 'undefined') {
+          if (typeof(afReferrer) == 'undefined') {
+            afReferrer = escape(document.referrer);
+          }
+        } else {
+          afReferrer = '';
+        }
+        var addate = new Date();
+        var dl = escape(document.location);
+        var pr1 = Math.floor(Math.random() * 1000000);
+
+        document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
+        document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
+
+        AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?p1=bipsp&amp;p2=engb&amp;pct=a&amp;pfc=a&amp;pfb=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+    },
 
     parseAllAdfoxDivs : function( nodes ) {
         if( window.addEventListener ) {
