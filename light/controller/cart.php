@@ -134,15 +134,23 @@ class cartController
         $product = $productList[0];
         $productList = null;
 
-        if(!App::getCurrentUser()->getCart()->containsProduct($productId)){
-          if ($product->isKit()) {
-            $this->executeAddKit($product, 1);
-          }
-          else
-          {
-            $this->executeAddProduct($productId, 1);
+        // Если товар является набором ...
+        if ($product->isKit()) {
+          $kitList = $product->getKitList();
+          foreach($kitList as $kit) {
+            // Если товар набора уже в корзине, то пропустить
+            if (App::getCurrentUser()->getCart()->containsProduct($kit->getProductId())) continue;
+            $this->executeSetProductQuantity($kit->getProductId(), ($kit->getQuantity() * 1));
           }
         }
+        // ... иначе ...
+        else {
+          // Если товара нет в корзине, то добавить
+          if (!App::getCurrentUser()->getCart()->containsProduct($productId)) {
+            $this->executeSetProductQuantity($productId, 1);
+          }
+        }
+
 //        App::getCurrentUser()->getCart()->removeService($serviceId, null, $productId);
         App::getCurrentUser()->getCart()->setServiceQuantity($serviceId, $quantity, $productId);
       }
