@@ -319,7 +319,7 @@ class cartController
     $kitList = $product->getKitList();
     $sum = 0;
     foreach($kitList as $kit){
-      $sum += $this->executeAddProduct($kit->getProductId(), ($kit->getQuantity() * $quantity));
+      $sum += $this->executeSetProductQuantity($kit->getProductId(), ($kit->getQuantity() * $quantity));
     }
     return $sum;
   }
