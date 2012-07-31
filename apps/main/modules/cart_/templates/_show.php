@@ -90,7 +90,7 @@
       </div>
       <div class="basketinfo">
         <div class="left font24"><span class="sum"><?php echo $item['total']; ?></span> <span class="rubl">p</span></div>
-        <div class="right"><a href="<?php echo url_for('cart_service_delete', array('service' => $item['core_id'],)) ?>" class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a--></div>
+        <div class="right"><a href="<?php echo url_for('cart_service_delete', array('service' => $item['core_id'], 'product' => $item['product_id'])) ?>" class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a--></div>
       </div>
 
       <div class="clear pb15"></div>
