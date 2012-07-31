@@ -131,12 +131,12 @@ class SessionCartContainer implements CartContainer
       return;
     }
 
-    $productId = (int) $productId;
+/*    $productId = (int) $productId;
 
     if(!array_key_exists($productId, $_SESSION[$this->sessionName]['serviceList'][$serviceId])){
       $logger->error('Product with id "' . $productId . '" not found');
       return;
-    }
+    }*/
 
     if(is_null($quantity)){
       //удаляем целиком

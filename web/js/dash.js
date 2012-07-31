@@ -200,7 +200,7 @@ $(document).ready(function(){
 					'sum'   : data.data.full_price,
 					'link'  : data.data.link,
 					'price' : $('.goodsinfo .price').html(),
-					'img'   : $('.goodsphoto img').attr('src')
+					'img'   : $('.goodsphoto img.mainImg').attr('src')
 				}
 				tmpitem.f1 = f1item
 				if( isInCart )

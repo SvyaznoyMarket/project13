@@ -47,7 +47,7 @@ foreach ($photo3dList as $photo3d)
     <?php foreach ($item->getLabelList() as $label):?>
     <img class="bLabels" src="<?php echo $label->getImageUrl(1) ?>" alt="<?php echo $label->getName() ?>" />
     <?php endforeach ?>
-    <img src="<?php echo $item->getMediaImageUrl(3) ?>" alt="" width="500" height="500" title="" />
+    <img class="mainImg" src="<?php echo $item->getMediaImageUrl(3) ?>" alt="" width="500" height="500" title="" />
   </a>
 </div>
 <div style="display:none;" id="stock">
@@ -157,7 +157,7 @@ foreach ($photo3dList as $photo3d)
     <?php } ?>
   </div>
 
-  <?php render_partial('service_/templates/_listByProduct.php', array('item' => $item)) ?>
+  <?php render_partial('service/templates/_listByProduct.php', array('item' => $item)) ?>
 
 </div>
 <!-- /Goods info -->

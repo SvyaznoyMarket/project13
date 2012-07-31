@@ -318,7 +318,7 @@ class Cart
         if(!array_key_exists($serviceInfo['id'], $this->serviceDataList)){
           $this->serviceDataList[$serviceInfo['id']] = array();
         }
-        $relatedProductId = (array_key_exists('product_id', $serviceInfo)) ? $serviceInfo['product_id'] : 0;
+        $relatedProductId = (array_key_exists('product_id', $serviceInfo)) ? intval($serviceInfo['product_id']) : 0;
         $this->serviceDataList[$serviceInfo['id']][$relatedProductId] = new ServiceCartData($serviceInfo);
       }
     }
