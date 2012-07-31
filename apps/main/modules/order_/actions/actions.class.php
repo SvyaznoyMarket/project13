@@ -292,7 +292,7 @@ class order_Actions extends myActions
     }
 
     //dump($result);
-    //dump($orderIds, 1);
+    //dump($orderIds);
 
     if (empty($orderIds))
     {
@@ -462,9 +462,21 @@ class order_Actions extends myActions
     $servicesInCart = array();
     $serviceList = $user->getCart()->getServices();
     foreach($serviceList as $serviceId => $service){
-      if (!array_key_exists(0, $service)) continue;
-      /** @var $serviceObj \light\ServiceCartData */
-      $serviceObj = $service[0];
+      if (!array_key_exists(0, $service))
+      {
+        if ($service instanceof ServiceCartData)
+        {
+          $serviceObj = $service;
+        }
+        else
+        {
+          continue;
+        }
+      }
+      else
+      {
+        $serviceObj = $service[0];
+      }
       $servicesInCart[] = array('id' => $serviceId, 'quantity' => $serviceObj->getQuantity());
     }
 
@@ -593,6 +605,8 @@ class order_Actions extends myActions
         {
           /** @var $product \light\ServiceCartData */
 
+          if (0 == $productId) continue;
+
           if (!array_key_exists($serviceId, $servicesForProduct))
           {
             $servicesForProduct[$serviceId] = array(
@@ -685,13 +699,14 @@ class order_Actions extends myActions
     {
       foreach ($service as $productId => $productData)
       {
+        if (0 == $productId) continue;
         /** @var $productData \light\ServiceCartData */
         if (!array_key_exists($productId, $servicesForProduct))
         {
           $servicesForProduct[$productId] = array();
         }
 
-        //@TODO Это мегапиздец, переделать в следующем хотфиксе
+        //@TODO нужно переделать в следующем хотфиксе
         $coreData = array_shift(Core::getInstance()->query('service.get', array('id' => $serviceId, 'expand' => array())));
 
         $servicesForProduct[$productId][] = array(
@@ -749,8 +764,8 @@ class order_Actions extends myActions
       foreach ($result[$itemType] as $coreData)
       {
         $r = Core::getInstance()->query('products' == $itemType ? 'product.get' : 'service.get', array(
-          'id'     => $coreData['id'],
-          'expand' => array(),
+            'id'     => $coreData['id'],
+            'expand' => array(),
         ));
         $recordData = array_shift($r);
 
@@ -784,10 +799,10 @@ class order_Actions extends myActions
 
           if(array_key_exists(0, $cartElem['products'])){
             /** @var $tmp light\ServiceCartData */
-            $tmp = $cartElem[0];
+            $tmp = $cartElem['products'][0];
             $cartData = array(
-              'quantity' => $tmp->getQuantity(),
-              'price' => $tmp->getPrice(),
+              'quantity' => $tmp['quantity'],
+              'price' => $tmp['price'],
             );
           }
         }
@@ -803,11 +818,7 @@ class order_Actions extends myActions
         }
 
         $itemView = new Order_ItemView();
-        $itemView->url =
-          'products' == $itemType
-          ? $coreData['link']
-          : $this->generateUrl('service_show', array('service' => ServiceTable::getInstance()->createQuery()->select('token')->where('core_id = ?', $coreData['id'])->fetchOne(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR)))
-        ;
+        $itemView->url = $coreData['link'];
         $itemView->deleteUrl =
           'products' == $itemType
           ? $this->generateUrl('cart_delete', array('product' => $recordData['id']), true)
@@ -835,19 +846,6 @@ class order_Actions extends myActions
           $deliveryView->price = $deliveryData['price'];
           $deliveryView->token = $deliveryToken;
           $deliveryView->name = 0 === strpos($deliveryToken, 'self') ? 'В самовывоз' : 'В доставку';
-
-          // если нет дат для услуг
-          if ($itemView->type == Order_ItemView::TYPE_SERVICE)
-          {
-            $deliveryData['dates'] = array();
-            $now = time();
-            $time = $time = strtotime("+1 day", $now);
-            foreach (range(1, 7 * 4) as $i)
-            {
-              $deliveryData['dates'][] = array('date' => date('Y-m-d', $time), 'interval' => array());
-              $time = strtotime("+1 day", $time);
-            }
-          }
 
           foreach ($deliveryData['dates'] as $dateData)
           {

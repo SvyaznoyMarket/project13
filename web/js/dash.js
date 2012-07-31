@@ -200,7 +200,7 @@ $(document).ready(function(){
 					'sum'   : data.data.full_price,
 					'link'  : data.data.link,
 					'price' : $('.goodsinfo .price').html(),
-					'img'   : $('.goodsphoto img').attr('src')
+					'img'   : $('.goodsphoto img.mainImg').attr('src')
 				}
 				tmpitem.f1 = f1item
 				if( isInCart )
@@ -276,6 +276,7 @@ $(document).ready(function(){
 				ltbx.getBasket( tmpitem )
 				$(button).attr('href', $('.lightboxinner .point2').attr('href') )
 				$(button).addClass('active')
+				PubSub.publish( 'productBought', currentItem )
 			}
 		})
 		e.stopPropagation()
@@ -298,9 +299,11 @@ $(document).ready(function(){
 	/* BB */
 	function BuyBottons() {
 		this.push = function( selector, jsond,  afterpost ) {
+			if( ! $(selector).length )
+				return
 			var carturl = $('.lightboxinner .point2').attr('href')
 			$('body').delegate( selector, 'click', function() {
-				console.info('BuyBottons')
+				//console.info('BuyBottons')
 				var button = $(this)
 				if( !jsond )
 					jsond = button.data('value')
@@ -340,6 +343,7 @@ $(document).ready(function(){
 						ltbx.getBasket( tmpitem )
 						if( afterpost )
 							afterpost()
+						PubSub.publish( 'productBought', tmpitem )
 					}
 				})
 				return false
@@ -347,5 +351,14 @@ $(document).ready(function(){
 		}
 
 	} // object BuyBottons
+
+	// analytics has us
+	if( 'ANALYTICS' in window ) {
+		PubSub.subscribe( 'productBought', function(){
+			if( 'gooReMaBuy' in ANALYTICS ) {
+				ANALYTICS.gooReMaBuy()
+			}
+		})
+	}
 
 })

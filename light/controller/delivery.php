@@ -72,26 +72,33 @@ class deliveryController
       $_POST['region'] = (int) $_POST['region'];
     }
 
-    $result = App::getDelivery()->getShortDeliveryInfoForProductList($_POST['ids'], $_POST['region']);
+    try
+    {
+      $result = App::getDelivery()->getShortDeliveryInfoForProductList($_POST['ids'], $_POST['region']);
 
-    $return = array();
-    foreach($result as $productId => $deliveries){
-      /**
-       * @var DeliveryShortData[] $deliveries
-       */
-      $return[$productId] = array();
-      foreach($deliveries as $delivery){
-        $return[$productId][] = array(
-          'typeId' => $delivery->getModeId(),
-          'date' => DateFormatter::Humanize($delivery->getEarliestDate()),
-          'token' => $delivery->getToken(),
-          'price' => $delivery->getPrice()
-        );
+      $return = array();
+      foreach($result as $productId => $deliveries){
+        /**
+         * @var DeliveryShortData[] $deliveries
+         */
+        $return[$productId] = array();
+        foreach($deliveries as $delivery){
+          $return[$productId][] = array(
+            'typeId' => $delivery->getModeId(),
+            'date' => DateFormatter::Humanize($delivery->getEarliestDate()),
+            'token' => $delivery->getToken(),
+            'price' => $delivery->getPrice()
+          );
+        }
       }
+      $response->setContent(json_encode(array("success" => true, 'data' => $return)));
+    }
+    catch (\Exception $e)
+    {
+      $response->setContent(json_encode(array("success" => false, 'data' => array())));
     }
 
     $response->setContentType('application/json');
-    $response->setContent(json_encode(array("success" => true, 'data' => $return)));
     TimeDebug::end('controller:delivery:ProductDeliveryJson');
   }
 

@@ -55,7 +55,7 @@
 
       <div class="clear pb15"></div>
 
-      <?php include_component('serviceSoa', 'list_for_product_in_cart', array('product' => $item, 'services' => $item['service'])) ?>
+      <?php include_component('service', 'list_for_product_in_cart', array('product' => $item, 'services' => $item['service'])) ?>
 
     </div>
   </div>
@@ -82,15 +82,15 @@
         <div class="left font11">Цена:<br /><span class="font12"><span class="price"><?php echo (isset($item['priceFormatted'])) ? $item['priceFormatted'] : '' ?></span> <span class="rubl">p</span></span></div>
         <div class="right">
           <div class="numerbox">
-            <?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_service_add', array('service' => $item['service']['token'], 'quantity' => -1,)) : '<b class="ajaless" title="Уменьшить"></b>' ?>
+            <?php echo ($item['quantity'] > 1) ? link_to('<b class="ajaless" title="Уменьшить"></b>', 'cart_service_add', array('service' => $item['id'], 'quantity' => -1,)) : '<b class="ajaless" title="Уменьшить"></b>' ?>
             <span class="ajaquant">
-              <?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_service_add', array('service' => $item['token'], 'quantity' => 1,)) ?>
+              <?php echo $item['quantity'] ?> шт.</span><?php echo link_to('<b class="ajamore" title="Увеличить"></b>', 'cart_service_add', array('service' => $item['id'], 'quantity' => 1,)) ?>
           </div>
         </div>
       </div>
       <div class="basketinfo">
         <div class="left font24"><span class="sum"><?php echo $item['total']; ?></span> <span class="rubl">p</span></div>
-        <div class="right"><a href="<?php echo url_for('cart_service_delete', array('service' => $item['core_id'],)) ?>" class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a--></div>
+        <div class="right"><a href="<?php echo url_for('cart_service_delete', array('service' => $item['core_id'], 'product' => $item['product_id'])) ?>" class="button whitelink mr5">Удалить</a><!--a href="" class="button whitelink">Добавить в список желаний</a--></div>
       </div>
 
       <div class="clear pb15"></div>

@@ -79,6 +79,7 @@ class RegionRepository
       "limit" => "",
       "expand" => array("store", "price_list")
     ));
+
     $result = $q->getResult();
     if ($data = reset($result)) {
       return $this->create($data);

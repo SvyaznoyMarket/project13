@@ -207,6 +207,8 @@ $(document).ready(function() {
 
             $('#order-submit').removeClass('disable');
 
+            $('#order-message').html('')
+
             // проверка на пустую корзину
             var isEmpty = true
             $.each(data.deliveryTypes, function(deliveryTypeToken, deliveryType) {
@@ -416,6 +418,24 @@ $(document).ready(function() {
                     deliveryTypeHolder.find('.bSelect [data-event="onSelect"]').text('с '+interval.split(',')[0]+' по '+interval.split(',')[1])
                 }
             }
+
+            // активность кнопки "Другой магазин"
+            var button = deliveryTypeHolder.find('.order-shop-button');
+            if (button.length) {
+               if (1 == data.deliveryTypes[deliveryType.token].items.length) {
+                   var shopQuantity = 0
+                   var item = data.items[data.deliveryTypes[deliveryType.token].items[0]]
+                   $.each(item.deliveries, function(k, v) {
+                       if (0 == k.indexOf('self_')) {
+                           shopQuantity++
+                       }
+                   })
+
+                   if (1 == shopQuantity) {
+                       button.replaceWith('<span class="red" style="font: 12px Tahoma,sans-serif"><br />доступен только в этом магазине</span>')
+                   }
+               }
+            }
         },
 
         renderItem: function(itemHolder, data) {
@@ -493,7 +513,29 @@ $(document).ready(function() {
         renderUndeliveredMessage: function(deliveryTypeId) {
             var undeliveredItems = this.getUndeliveredItem(deliveryTypeId)
             if (undeliveredItems.length) {
-                $('#order-message').html('<span class="red">Некоторые товары не могут быть получены выбранным способом доставки.</span>')
+                var message = 'Некоторые товары не могут быть получены выбранным способом доставки.'
+
+                if (1 == undeliveredItems.length) {
+                    if ($('.bBuyingLine__eRadio[data-delivery-type="self"]:checked')) {
+                        var message = 'Товара нет в наличии в выбранном магазине.'
+
+                        var itemId = undeliveredItems.shift()
+                        var shopQuantity = 0
+                        var item = DeliveryMap.data().items[itemId]
+                        $.each(item.deliveries, function(k, v) {
+                            if (0 == k.indexOf('self_')) {
+                                shopQuantity++
+                            }
+                        })
+                        if (1 == shopQuantity) {
+                            var message = item.name + ' есть в наличии только в одном магазине.'
+                        }
+                    }
+                    else {
+                        var message = 'Невозможно доставить товар.'
+                    }
+                }
+                $('#order-message').html('<span class="red">'+message+'</span>')
             }
             else {
                 $('#order-message').html('<span>Отличный выбор!</span>')
@@ -567,8 +609,7 @@ $(document).ready(function() {
                 shopId = shopId.id
             DeliveryMap.onShopSelected.apply(DeliveryMap, [el.val(), shopId])
             //DeliveryMap.onShopSelected.apply(this, [el.val(), shopId])
-            
-//console.info('onMapClosed', el.val(), shopId)
+            //console.info('onMapClosed', el.val(), shopId)
         },
 
         validate: function(el, message) {
@@ -610,6 +651,7 @@ $(document).ready(function() {
         },
 
         onDeliveryBlockChange: function() {
+            //console.info('onDeliveryBlockChange')
             if (1 == $('.order-delivery-holder:visible').length) {
                 $('#payment_method_online-field').show()
             }
@@ -750,6 +792,8 @@ $(document).ready(function() {
             return
         }
 
+        var hadPicked = $(this).hasClass('mChecked')
+
         if( $(this).find('input').attr('type') == 'radio' ) {
             var thatName = $('.mChecked input[name="'+$(this).find('input').attr('name')+'"]')
             if( thatName.length ) {
@@ -763,7 +807,8 @@ $(document).ready(function() {
         if( $(this).find('input').attr('type') == 'checkbox' ) {
             $(this).toggleClass('mChecked')
         }
-
+        if( hadPicked ) 
+            return
         var el = $(this).find('input[type="radio"][data-delivery-type]')
         if (!el.length) {
             return
@@ -777,7 +822,29 @@ $(document).ready(function() {
         $('.order-shop-button:first').hide()
 
         if ('self' == el.data('deliveryType')) {
-            $('.order-shop-button:first').show()
+            var shops = DeliveryMap.data().shops
+            if (1 == Object.keys(shops).length) {
+                var shopId = Object.keys(shops).shift()
+                var deliveryTypeId = el.val()
+
+                $('#order-form-part2').hide()
+                $('#order-loader').clone().appendTo('#order-loader-holder').show()
+
+                var url = $('#order-form').data('deliveryMapUrl')
+                DeliveryMap.getRemoteData(url, { deliveryTypeId: deliveryTypeId, shopId: shopId }, function(data) {
+
+                    $('#order-loader-holder').html('')
+                    $('#order-form-part2').show('fast')
+
+                    this.render()
+
+                    DeliveryMap.renderUndeliveredMessage(deliveryTypeId)
+                }, true)
+            }
+            else {
+                $('.order-shop-button:first').show()
+            }
+
             //$('#addressField').hide()
         }
         else {
@@ -785,7 +852,7 @@ $(document).ready(function() {
 
             //$('#addressField').show()
 
-            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val()}, function(data) {
+            DeliveryMap.getRemoteData(url, { deliveryTypeId: el.val() }, function(data) {
                 $('#order-loader-holder').html('')
                 $('#order-form-part2').show('fast')
 
@@ -951,7 +1018,7 @@ $(document).ready(function() {
         data.deliveryTypes[elData.deliveryType].interval = elData.value
     })
 
-    if ($('.bBuyingLine__eRadio"]:checked').length) {
+    if ($('.bBuyingLine__eRadio:checked').length) {
         DeliveryMap.render()
         $('#order-form-part2').show('fast')
 

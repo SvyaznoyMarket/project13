@@ -36,12 +36,13 @@ class regionActions extends myActions
     {
       $result = CoreClient::getInstance()->query('geo/autocomplete', array('letters' => $keyword));
       $i = 0;
+      //dump($result, 1);
       foreach ($result as $item)
       {
         if ($i >= $limit) break;
 
         $data[] = array(
-          'token' => $item['token'],
+          //'token' => $item['token'],
           'name'  =>
             $item['name']
             .(

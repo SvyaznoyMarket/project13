@@ -96,10 +96,11 @@
     ]
   </script>
 
- 
   <?php include_component('order_','seo_admitad', array('orders' => $orders)) ?>
 
     <div id="mixmarket" class="jsanalytics"></div>
+    <div id="gooReMaSuccess" class="jsanalytics"></div>
+
     <?php foreach ($orders as $i => $order): 
       $jsonOrdr = array (
           'order_article' => implode(',', array_map(function($i) { return $i['id']; }, $order['product'])),

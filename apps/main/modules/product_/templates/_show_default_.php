@@ -47,7 +47,7 @@ foreach ($photo3dList as $photo3d)
     <?php foreach ($item->getLabelList() as $label):?>
     <img class="bLabels" src="<?php echo $label->getImageUrl(1) ?>" alt="<?php echo $label->getName() ?>" />
     <?php endforeach ?>
-    <img src="<?php echo $item->getMediaImageUrl(3) ?>" alt="" width="500" height="500" title="" />
+    <img class="mainImg" src="<?php echo $item->getMediaImageUrl(3) ?>" alt="" width="500" height="500" title="" />
   </a>
 </div>
 <div style="display:none;" id="stock">
@@ -76,7 +76,9 @@ foreach ($photo3dList as $photo3d)
   <div class="font14 pb15"><?php echo $item->getTagline() ?></div>
   <div class="clear"></div>
 
-  <?php if ($item->haveToShowAveragePrice()): ?>
+<?php if($item->haveToShowOldPrice()): ?>
+  <div style="text-decoration: line-through; font: normal 18px verdana; letter-spacing: -0.05em; color: #6a6a6a;"><?php render_partial('product_/templates/_price.php', array('price' => formatPrice($item->getPriceOld()), 'noStrong' => true, )) ?></div>
+  <?php elseif($item->haveToShowAveragePrice()): ?>
   <div class="mOurGray">
     Средняя цена в магазинах города*<br><div class='mOurGray mIco'><?php render_partial('product_/templates/_price.php', array('price' => $item->getPriceAverage(), 'noStrong' => true, )) ?> &nbsp;</div>
   </div>
@@ -154,7 +156,7 @@ foreach ($photo3dList as $photo3d)
     <?php } ?>
   </div>
 
-  <?php render_partial('service_/templates/_listByProduct.php', array('item' => $item)) ?>
+  <?php render_partial('service/templates/_listByProduct.php', array('item' => $item)) ?>
 
 </div>
 <!-- /Goods info -->
