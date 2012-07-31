@@ -56,7 +56,7 @@ if (is_object($servListId)) {
     </tr>
       <?php endforeach ?>
     <tr>
-      <th colspan="2"><a href="<?php echo url_for('service_list') ?>">Подробнее о Сервисе F1</a></th>
+      <th colspan="2"><a href="<?php echo url_for('service_index') ?>">Подробнее о Сервисе F1</a></th>
     </tr>
     </tbody>
   </table>

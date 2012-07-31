@@ -418,6 +418,24 @@ $(document).ready(function() {
                     deliveryTypeHolder.find('.bSelect [data-event="onSelect"]').text('с '+interval.split(',')[0]+' по '+interval.split(',')[1])
                 }
             }
+
+            // активность кнопки "Другой магазин"
+            var button = deliveryTypeHolder.find('.order-shop-button');
+            if (button.length) {
+               if (1 == data.deliveryTypes[deliveryType.token].items.length) {
+                   var shopQuantity = 0
+                   var item = data.items[data.deliveryTypes[deliveryType.token].items[0]]
+                   $.each(item.deliveries, function(k, v) {
+                       if (0 == k.indexOf('self_')) {
+                           shopQuantity++
+                       }
+                   })
+
+                   if (1 == shopQuantity) {
+                       button.replaceWith('<span class="red" style="font: 12px Tahoma,sans-serif"><br />доступен только в этом магазине</span>')
+                   }
+               }
+            }
         },
 
         renderItem: function(itemHolder, data) {

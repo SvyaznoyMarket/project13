@@ -113,6 +113,13 @@ class Cart
     $this->totalPrice = null;
   }
 
+  public function setServiceQuantity($serviceId, $quantity, $productId=null){
+      //@TODO добавить проверку возможности, когда на ядре реализуют этот функционал
+      $this->dataContainer->setServiceQuantity($serviceId, $quantity, $productId);
+      $this->serviceDataList = null;
+      $this->totalPrice = null;
+  }
+
   /**
    * @param int $serviceId
    * @param int|null $quantity
@@ -311,7 +318,7 @@ class Cart
         if(!array_key_exists($serviceInfo['id'], $this->serviceDataList)){
           $this->serviceDataList[$serviceInfo['id']] = array();
         }
-        $relatedProductId = (array_key_exists('product_id', $serviceInfo)) ? $serviceInfo['product_id'] : 0;
+        $relatedProductId = (array_key_exists('product_id', $serviceInfo)) ? intval($serviceInfo['product_id']) : 0;
         $this->serviceDataList[$serviceInfo['id']][$relatedProductId] = new ServiceCartData($serviceInfo);
       }
     }

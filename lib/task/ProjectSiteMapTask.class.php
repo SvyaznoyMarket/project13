@@ -237,7 +237,7 @@ EOF;
   private function _putServiceCategoryUrl() {
         $xmlData =
 '<url>
-  <loc>'.$this->_generateUrl('service_list').'</loc>
+  <loc>'.$this->_generateUrl('service_index').'</loc>
   <changefreq>monthly</changefreq>
   <priority>0.6</priority>
 </url>
@@ -253,7 +253,7 @@ EOF;
     foreach($eccenseList as $item) {
         $xmlData =
 '<url>
-  <loc>'.$this->_generateUrl('service_list', array('serviceCategory' => $item['token'])).'</loc>
+  <loc>'.$this->_generateUrl('service_category', array('serviceCategory' => $item['token'])).'</loc>
   <changefreq>monthly</changefreq>
   <priority>0.5</priority>
 </url>

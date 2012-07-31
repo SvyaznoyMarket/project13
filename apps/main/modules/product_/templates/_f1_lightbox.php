@@ -13,7 +13,7 @@ $listInCart = $item->getServiceListInCart()->getRawValue(); // symfony code shee
   ?>
   <table>
     <tbody>
-    <?php foreach ($list as $service):?>
+    <?php foreach ($list as $service): ?>
     <tr>
 
       <td class="bF1Block_eInfo"><?php echo $service->getName() ?><br>
@@ -43,7 +43,7 @@ $listInCart = $item->getServiceListInCart()->getRawValue(); // symfony code shee
     </tr>
       <?php  endforeach ?>
     <tr>
-      <th colspan="2"><a href="<?php echo url_for('service_list') ?>">Подробнее о Сервисе F1</a></th>
+      <th colspan="2"><a href="<?php echo url_for('service_index') ?>">Подробнее о Сервисе F1</a></th>
     </tr>
     </tbody></table>
   <?php if (count($list) > 3) echo '</div>';

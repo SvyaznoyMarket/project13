@@ -20,6 +20,7 @@ class DeliveryModel
   /**
    * @param array $productIds
    * @param int $geoId
+   * @throws InvalidArgumentException
    * @return array
    * <code>
    *  array(
