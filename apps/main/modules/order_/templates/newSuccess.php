@@ -36,15 +36,19 @@
 
 <div class="pb15"> <a class="motton font14" href="<?php echo $backLink ?>" style="font-weight: bold">&lt; Вернуться к покупкам</a></div>
 
-<form id="order-form" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
-
-  <div id="order-form-part1" class='bBuyingInfo hidden'>
+  
 
     <h2>Информация о заказе</h2>
+    
+    <input id="order-delivery_map-data" type="hidden" data-value='<?php echo $deliveryMap_json ?>' />
+    <?php 
+    // KNOCKOUT
+      include_partial('order_/blocks_tmpl')
+    ?>
 
+<!-- 
     <?php echo $form['delivery_type_id'] ?>
 
-  </div>
 
   <div id="order-loader-holder">
     <div class='bOrderPreloader'>
@@ -52,25 +56,16 @@
     </div>
   </div>
 
-  <div id="order-form-part2" class="hidden">
-
+  -->
+<!-- 
     <div id="order-message" class='bBuyingInfo'>
       <span><?php count($sf_data->getRaw('deliveryMap')->unavailable) ? 'Некоторые товары не могут быть доставлены' : 'Отличный выбор!' ?></span>
     </div>
+ -->    
 
-    <div id="order-delivery-holder">
-      <?php include_component('order_', 'field_products', $sf_data) ?>
-    </div>
+    
 
-    <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт Centra</div>
-
-    <dl class='bBuyingLine mSumm order-total-container' style="margin-top: 0;">
-      <dt><a class="motton font14" style="border-color: #4FCBF4; font-weight: bold;" href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">&lt; Редактировать товары</a></dt>
-      <dd>
-        <div><span data-assign='{"totalMessage": ["text", "_value"]}'>Сумма всех заказов</span> <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
-      </dd>
-    </dl>
-
+  <form id="order-form" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
     <div class='bBuyingInfo'>
       <h2>Информация о счастливом получателе</h2>
 
@@ -204,8 +199,8 @@
       </dl>
 
     </div>
-
-  </div>
+  
+  
 
   <dl class='bBuyingLine mConfirm'>
 
@@ -216,8 +211,8 @@
   </dl>
 
   <div id="order-shop-popup" class="hidden"></div>
+  </form>
 
-</form>
 
 <div id="order-loader" class='bOrderPreloader hf'>
   <span>Формирую заказ...</span><img src='/images/bPreloader.gif' />

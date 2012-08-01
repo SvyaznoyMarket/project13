@@ -5205,7 +5205,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 }
 .bBuyingLineWrap .bBuyingLine dd{
     width: 615px;
-    margin: 0 0 15px 0;
+    margin: 28px 0 15px 0;
     position: relative;
     font-weight: normal;
 }
@@ -5287,6 +5287,8 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     margin: 1px;
     padding: 5px 18px;
     position: relative;
+    min-width: 18px;
+    text-align: center;
 
     display: inline-block;
     *display: inline;
