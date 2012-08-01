@@ -607,6 +607,11 @@ class order_Actions extends myActions
       }
 
       $serviceItems = array_merge($serviceItems, array_values($servicesForProduct));
+      foreach ($serviceItems as $i => $serviceItem) {
+        if (!$serviceItem['quantity']) {
+          unset($serviceItems[$i]);
+        }
+      }
 
       $order->ProductItem = $productItems;
       $order->ServiceItem = $serviceItems;
