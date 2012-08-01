@@ -151,7 +151,7 @@ foreach ($photo3dList as $photo3d)
     if ($label && $label->getId() == ProductLabelEntity::LABEL_ACTION) { ?>
       <div class="adfoxWrapper" id="adfox400counter"></div>
     <?php } else if ($label && $label->getId() == ProductLabelEntity::LABEL_CREDIT) { ?>
-      <div class="adfoxWrapper" id="adfox_wow_credit"></div>
+      <div class="adfoxWrapper" id="adfoxWowCredit"></div>
     <?php } else { ?>
       <div class="adfoxWrapper" id="adfox400"></div>
     <?php } ?>
