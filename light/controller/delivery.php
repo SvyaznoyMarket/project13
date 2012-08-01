@@ -26,26 +26,33 @@ class deliveryController
     $productQuantity = isset($_POST['product_quantity'])? (int) $_POST['product_quantity'] : 1;
     $regionId = (isset($_POST['regionId']) && (intval($_POST['regionId']) > 0))? (int) $_POST['region_id'] : App::getCurrentUser()->getRegion()->getId();
 
-    $result = App::getDelivery()->getProductDeliveries($productId, $productQuantity , $regionId);
+    try
+    {
+      $result = App::getDelivery()->getProductDeliveries($productId, $productQuantity , $regionId);
 
-    $return = array('success' => true, 'data' => array());
-    foreach($result as $deliveryObject){
-      $deliveryArray = $deliveryObject->toArray();
-      foreach($deliveryArray['dates'] as $key=>$date){
-        if($key > 7){
-          unset($deliveryArray['dates'][$key]);
-          continue;
+      $return = array('success' => true, 'data' => array());
+      foreach($result as $deliveryObject){
+        $deliveryArray = $deliveryObject->toArray();
+        foreach($deliveryArray['dates'] as $key=>$date){
+          if($key > 7){
+            unset($deliveryArray['dates'][$key]);
+            continue;
+          }
+          if(!isset($date['shops'])){
+            continue;
+          }
+          $shops = $date['shops'];
+          unset($deliveryArray['dates'][$key]['shops']);
+          if(count($shops > 0)){
+            $deliveryArray['dates'][$key]['shopIds'] = array_keys($shops);
+          }
         }
-        if(!isset($date['shops'])){
-          continue;
-        }
-        $shops = $date['shops'];
-        unset($deliveryArray['dates'][$key]['shops']);
-        if(count($shops > 0)){
-          $deliveryArray['dates'][$key]['shopIds'] = array_keys($shops);
-        }
+        $return['data'][$deliveryArray['token']] = $deliveryArray;
       }
-      $return['data'][$deliveryArray['token']] = $deliveryArray;
+    }
+    catch (\Exception $e)
+    {
+      $return = array('success' => false, 'data' => array());
     }
 
     $return['currentDate'] = date('Y-m-d');
