@@ -50,7 +50,8 @@
 	<?php foreach ($orders as $order): ?>
 		<div id="adblenderCost" data-vars="<?php echo $order['sum'] ?>" class="jsanalytics"></div>
 	<?php endforeach ?>
-    
+
+<?php if ('live' == sfConfig::get('sf_environment')): ?>    
   <script type="text/javascript">
   <?php foreach ($orders as $order): ?>
 
@@ -103,6 +104,7 @@
     <?php endforeach ?>
     ]
   </script>
+  <?php endif ?>
 
   <?php include_component('order_','seo_admitad', array('orders' => $orders)) ?>
 
