@@ -102,7 +102,7 @@ class productCard_Actions extends myActions
     ));
     $this->getResponse()->addMeta('keywords', sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
 
-    if ($product->getConnectedMode() == $product::DEFAULT_CONNECTED_MODE) {
+    if ($product->getConnectedProductsViewMode() == $product::DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE) {
         $showRelatedUpper = false;
     } else {
         $showRelatedUpper = true;

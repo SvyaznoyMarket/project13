@@ -6,7 +6,7 @@ class ProductEntity
   /**
    * Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере
    */
-  const DEFAULT_CONNECTED_MODE = 1;
+  const DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE = 1;
 
   /* @var integer */
   private $id;
@@ -113,7 +113,7 @@ class ProductEntity
   /** @var ProductTagEntity[] */
   private $tagList = array();
   /** @var boolean */
-  private $connectedMode;
+  private $connectedProductsViewMode;
 
 
   public function __construct(array $data = array())
@@ -143,7 +143,7 @@ class ProductEntity
     if (array_key_exists('price', $data))           $this->price         = $data['price'];
     if (array_key_exists('price_average', $data))   $this->priceAverage  = $data['price_average'];
     if (array_key_exists('price_old', $data))       $this->priceOld      = $data['price_old'];
-    if (array_key_exists('connected_mode', $data))  $this->connectedMode  = (int)$data['connected_mode'];
+    if (array_key_exists('connected_products_view_mode', $data))  $this->connectedProductsViewMode  = (int)$data['connected_products_view_mode'];
 
 
       //echo "<pre>", print_r($this,1), '</pre>';
@@ -159,14 +159,14 @@ class ProductEntity
     return $this->id;
   }
 
-    public function setConnectedMode($connectedMode)
+    public function setConnectedProductsViewMode($connectedProductsViewMode)
     {
-        $this->connectedMode = $connectedMode;
+        $this->connectedProductsViewMode = $connectedProductsViewMode;
     }
 
-    public function getConnectedMode()
+    public function getConnectedProductsViewMode()
     {
-        return $this->connectedMode;
+        return $this->connectedProductsViewMode;
     }
 
   /**
