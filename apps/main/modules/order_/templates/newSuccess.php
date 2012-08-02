@@ -132,22 +132,22 @@
           <?php if (isset($form['address_metro'])): ?>
           <div class="ui-css">
             <p></p>
-            <?php echo $form['address_metro']->render(array('class' => 'bBuyingLine__eText mInputLong', 'placeholder' => 'Метро', 'title' => 'Метро')) ?>
+            <span class="placeholder">Метро</span><?php echo $form['address_metro']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputLong', 'title' => 'Метро', 'style' => 'width: 419px;')) ?>
             <div id="metrostations"></div>
           </div>
           <?php endif ?>
 
           <div>
             <p></p>
-            <?php echo $form['address_street']->render(array('class' => 'bBuyingLine__eText mInputLong', 'placeholder' => 'Улица', 'title' => 'Улица', 'style' => 'width: 295px;')) ?>
-            <?php echo $form['address_number']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Дом', 'title' => 'Дом')) ?>
+            <span class="placeholder">Улица</span><?php echo $form['address_street']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputLong', 'title' => 'Улица', 'style' => 'width: 315px;')) ?>
+            <span class="placeholder"">Дом</span><?php echo $form['address_number']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Дом', 'style' => 'width: 50px;')) ?>
           </div>
 
           <div>
             <p></p>
-            <?php echo $form['address_building']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Корпус', 'title' => 'Корпус')) ?>
-            <?php echo $form['address_apartment']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Квартира', 'title' => 'Квартира')) ?>
-            <?php echo $form['address_floor']->render(array('class' => 'bBuyingLine__eText mInputShort', 'placeholder' => 'Этаж', 'title' => 'Этаж')) ?>
+            <span class="placeholder">Корпус</span><?php echo $form['address_building']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Корпус', 'style' => 'width: 83px')) ?>
+            <span class="placeholder">Квартира</span><?php echo $form['address_apartment']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Квартира', 'style' => 'width: 85px')) ?>
+            <span class="placeholder">Этаж</span><?php echo $form['address_floor']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Этаж', 'style' => 'width: 83px')) ?>
           </div>
         </dd>
       </dl>

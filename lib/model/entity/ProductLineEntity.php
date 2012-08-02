@@ -40,12 +40,12 @@ class ProductLineEntity
     if (isset($data['product_id_list']))    $this->setProductIdList((array)$data['product_id_list']);
     if (isset($data['kit_id_list']))        $this->setKitIdList((array)$data['kit_id_list']);
     if (isset($data['product_count']))      $this->setProductCount($data['product_count']);
-    if (isset($data['kitCount']))           $this->setKitCount($data['kit_count']);
+    if (isset($data['kit_count']))          $this->setKitCount($data['kit_count']);
     if (is_null($this->productCount)){
       $this->productCount = count($this->productIdList);
     }
     if (is_null($this->kitCount)){
-      $this->productCount = count($this->kitIdList);
+      $this->kitCount = count($this->kitIdList);
     }
   }
 

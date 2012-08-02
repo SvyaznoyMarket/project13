@@ -418,6 +418,24 @@ $(document).ready(function() {
                     deliveryTypeHolder.find('.bSelect [data-event="onSelect"]').text('с '+interval.split(',')[0]+' по '+interval.split(',')[1])
                 }
             }
+
+            // активность кнопки "Другой магазин"
+            var button = deliveryTypeHolder.find('.order-shop-button');
+            if (button.length) {
+               if (1 == data.deliveryTypes[deliveryType.token].items.length) {
+                   var shopQuantity = 0
+                   var item = data.items[data.deliveryTypes[deliveryType.token].items[0]]
+                   $.each(item.deliveries, function(k, v) {
+                       if (0 == k.indexOf('self_')) {
+                           shopQuantity++
+                       }
+                   })
+
+                   if (1 == shopQuantity) {
+                       button.replaceWith('<span class="red" style="font: 12px Tahoma,sans-serif"><br />доступен только в этом магазине</span>')
+                   }
+               }
+            }
         },
 
         renderItem: function(itemHolder, data) {
@@ -1147,7 +1165,19 @@ $(document).ready(function() {
         })	
 	}
 	
-	$('#addressField').find('input').placeholder()
+	//$('#addressField').find('input').placeholder()
+
+    $('.placeholder-input').focus(function(e) {
+        var el = $(e.target)
+        el.prev('.placeholder').css('border-color', '#FFA901');
+    }).focusout(function(e) {
+        var el = $(e.target)
+        el.prev('.placeholder').css('border-color', '#DDDDDD')
+    })
+
+    $('.placeholder').click(function(e) {
+        $(this).next('.placeholder-input').focus();
+    })
 	
 	var ubahn = [ 'Авиамоторная', 'Автозаводская','Академическая','Александровский сад','Алексеевская','Алтуфьево','Аннино','Арбатская (Арбатско-Покровская линия)','Арбатская (Филевская линия','Аэропорт',
 'Бабушкинская','Багратионовская','Баррикадная','Бауманская','Беговая','Белорусская','Беляево','Бибирево','Библиотека имени Ленина','Битцевский парк','Борисовская',

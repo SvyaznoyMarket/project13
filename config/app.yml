@@ -75,8 +75,8 @@ all:
 
   core:
     config:
-      api_url: 'http://core.my/v1/json'
-      userapi_url: 'http://core.my/v2/'
+      api_url: 'http://core.ent3.ru/v1/json'
+      userapi_url: 'http://core.ent3.ru/index.php/v2/'
       client_code: site
       consumer_key: test
       signature: test
