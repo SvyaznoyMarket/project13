@@ -278,7 +278,7 @@ class order_Actions extends myActions
     if (!empty($orderNumber))
     {
       $result = Core::getInstance()->query('order.get', array(
-        'number' => array($orderNumber),
+        'number' => $orderNumber,
         'expand' => array('geo', 'user', 'product', 'service'),
       ));
 
