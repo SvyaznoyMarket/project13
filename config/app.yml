@@ -107,6 +107,15 @@ all:
        shop_id: '35974-134'
        return_url: '@payment_callback'
 
+  smartengine:
+    config:
+      api_url: 'https://selight1.smartengine.at/se-light/api/1.0/json/'
+      api_key: 'c41851b19511c20acc84f47b7816fb8e'
+      tenantid: 'ENojUTRcD8'
+      log_file: %SF_LOG_DIR%/smartengine.log
+      log_enabled: true
+      log_data_enabled: true
+
   js_combine:
     file:     %SF_WEB_DIR%/js/combine.js
     compiler: %SF_LIB_DIR%/vendor/google-closure/compiler.jar
