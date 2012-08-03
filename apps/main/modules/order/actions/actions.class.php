@@ -165,7 +165,9 @@ class orderActions extends myActions
         $sum = 0;
         foreach ($order->ProductRelation as $product)
         {
-          $sum += $product['price'] * $product['quantity'];
+          $part = ProductTable::getInstance()->getById($product['product_id'], array('with_model' => true));
+          $coreProduct = RepositoryManager::getProduct()->getById($part['core_id'], true);
+          $sum += $coreProduct->getPrice() * $product['quantity'];
         }
         $this->order->sum = $sum;
 
