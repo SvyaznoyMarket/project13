@@ -51,7 +51,7 @@ class cart_Components extends myComponents
           'token_prefix' => $product->getPrefix(),
           'token' => $product->getToken(),
           'link' => $product->getLink(),
-          'name' => $product->getNameWeb(),
+          'name' => $product->getName(),
           'quantity' => $cartInfo->getQuantity(),
           'service' => array(),
           'price' => $product->getPrice(),
