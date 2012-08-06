@@ -173,13 +173,21 @@ class orderActions extends myActions
 
         try
         {
+          /*
           $order->delivery_type_id =
             !empty($order->shop_id) // если указан магазин, то тип получения заказа - самовывоз
               ? DeliveryTypeTable::getInstance()->getByToken('self')->id
               : DeliveryTypeTable::getInstance()->getByToken('standart')->id;
+          */
 
           $order->extra = 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.';
           $order->save();
+
+          // Получение суммы заказа
+          $r = Core::getInstance()->query('order.get', array('id' => $order->core_id, 'expand' => array('delivery')));
+          if ($r && array_key_exists('sum', $r[0])) {
+            $order->sum = $r[0]['sum'];
+          }
 
           $form = new UserFormSilentRegister();
           $form->bind(array(
