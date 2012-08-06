@@ -10,6 +10,9 @@ class OrderOneClickForm extends BaseOrderForm
 
     $this->disableCSRFProtection();
 
+    $this->widgetSchema['delivery_type_id'] = new sfWidgetFormInputHidden();
+    $this->validatorSchema['delivery_type_id'] = new sfValidatorInteger(array('required' => true));
+
     $this->widgetSchema['recipient_first_name'] = new sfWidgetFormInputText();
     $this->widgetSchema['recipient_first_name']->setLabel('Имя получателя:');
     $this->validatorSchema['recipient_first_name'] = new sfValidatorString(array('max_length' => 255, 'required' => true));

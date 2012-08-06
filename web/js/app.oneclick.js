@@ -356,7 +356,7 @@ $(document).ready(function() {
 				var postData = {
 					'order[product_quantity]' : self.quantity(),
 					'order[delivered_at]' : self.chosenDate().value,
-					'delivery_type_id': self.chosenDlvr().modeID
+					'order[delivery_type_id]': self.chosenDlvr().modeID
 				}
 				if( self.chosenDlvr().type == 'self' )
 					postData[ 'order[shop_id]' ] = self.chosenShop().id
