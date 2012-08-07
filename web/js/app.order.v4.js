@@ -306,8 +306,26 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 					break
 				}
 			}
-			box.dlvrPrice  = ko.computed(function() {})
-			box.totalPrice  = ko.computed(function() {})
+
+			box.dlvrPrice  = ko.computed(function() {
+				var out = 0
+				var bid = this.token
+				for(var i=0, l=this.itemList().length; i<l; i++) {
+					var itemDPrice = this.itemList()[i].deliveries[bid].price
+					if( itemDPrice > out )
+						out = itemDPrice
+				}
+				return out
+			}, box)
+
+			box.totalPrice  = ko.computed(function() {	
+				var out = 0
+				for(var i=0, l=this.itemList().length; i<l; i++)
+					out += this.itemList()[i].total
+//					out += this.dlvrPrice()*1
+				return out
+			}, box)
+
 			self.dlvrBoxes.push( box )
 		} // mth addBox
 
@@ -316,6 +334,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				var loopBox = self.dlvrBoxes()[key]
 				
 				loopBox.dlvrPrice  = ko.computed(function() {
+
 					var out = 0
 					var bid = this.token
 					for(var i=0, l=this.itemList().length; i<l; i++) {
@@ -326,11 +345,11 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 					return out
 				}, loopBox)
 				
-				loopBox.totalPrice = ko.computed(function() {				
+				loopBox.totalPrice = ko.computed(function() {	
 					var out = 0
 					for(var i=0, l=this.itemList().length; i<l; i++)
 						out += this.itemList()[i].total
-					out += this.dlvrPrice()*1
+//					out += this.dlvrPrice()*1
 					return out
 				}, loopBox)
 			} 
@@ -341,7 +360,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				addBox ( Model.deliveryTypes[tkn].type, Model.deliveryTypes[tkn].token, Model.deliveryTypes[tkn].items, Model.deliveryTypes[tkn].shop )
 			}
 		}
-		setComputables()
+		// setComputables()
 
 		self.shopsInPopup = ko.observableArray( [] )
 		for( var key in Model.shops )
@@ -492,7 +511,14 @@ console.info( newboxes )
 						argitems.push( Model.items[ newboxes[tkn].items[i] ] )
 					addBox ( 'self', 'self_'+newboxes[tkn].shop, newboxes[tkn].items, argshop )
 				}
-				setComputables()
+				// setComputables()
+				// drop empty boxes
+				for( var box =0; box < self.dlvrBoxes().length;  ) {
+					if( ! self.dlvrBoxes()[box].itemList().length )
+						self.dlvrBoxes.remove( self.dlvrBoxes()[box] )
+					else
+						box++
+				}
 			}
 
 			self.chosenShop( d )
