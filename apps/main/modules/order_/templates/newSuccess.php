@@ -39,7 +39,7 @@
   
 
     <h2>Информация о заказе</h2>
-    
+
     <input id="order-delivery_map-data" type="hidden" data-value='<?php echo $deliveryMap_json ?>' />
     <?php 
     // KNOCKOUT
@@ -65,7 +65,7 @@
 
     
 
-  <form id="order-form" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
+  <form id="order-form" style="display:none" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
     <div class='bBuyingInfo'>
       <h2>Информация о счастливом получателе</h2>
 
@@ -200,7 +200,8 @@
 
     </div>
   
-  
+
+  </form>
 
   <dl class='bBuyingLine mConfirm'>
 
@@ -211,14 +212,12 @@
   </dl>
 
   <div id="order-shop-popup" class="hidden"></div>
-  </form>
-
 
 <div id="order-loader" class='bOrderPreloader hf'>
   <span>Формирую заказ...</span><img src='/images/bPreloader.gif' />
 </div>
 
-<?php include_partial('order_/map', $sf_data) ?>
+<?php if(false) { include_partial('order_/map', $sf_data); } ?>
 
 <?php include_partial('order_/footer') ?>
 

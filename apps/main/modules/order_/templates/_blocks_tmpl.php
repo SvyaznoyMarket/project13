@@ -5,7 +5,8 @@
 	<dd>
 		<div>
 			<p></p>
-			<label class="" for="order_delivery_type_id_1">
+			<label class="" for="order_delivery_type_id_1"
+				data-bind="click: pickCourier">
 				<b></b> Доставка заказа курьером
 				<input type="radio" name="order[delivery_type_id]" class="bBuyingLine__eRadio" id="order_delivery_type_id_1"
 				value="1" autocomplete="off"/>
@@ -14,7 +15,9 @@
 		</div>
 		<div>
 			<p></p>
-			<label class="" for="order_delivery_type_id_3"><b></b>
+			<label class="" for="order_delivery_type_id_3"
+				data-bind="click: pickShops">
+				<b></b>
 				Самостоятельно заберу в магазине
 				<input type="radio" name="order[delivery_type_id]" class="bBuyingLine__eRadio" id="order_delivery_type_id_3"
 				value="3" autocomplete="off"/>
@@ -22,19 +25,48 @@
 			<i>Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Пожалуйста, выберите магазин.</i>
 		</div>
 		<div class="pl20 pt5">
-			<a href="#" style="display: none; font-size: 16px; padding: 6px 30px;" class="bBigOrangeButton order-shop-button">Выберите магазин</a>
+			<a href="#" style="display: none; font-size: 16px; padding: 6px 30px;" class="bBigOrangeButton selectShop"
+				data-bind="visible: shopButtonEnable, click: showAllShops">
+				Выберите магазин</a>
 		</div>
 
 	</dd>
 </dl>
 
+<div class='bMobDownWrapAbs mMapPopup hidden'>
+  <div class='bMobDownWrapRel'>
+
+    <div class='bMobDown mBR5 mW2'>
+      <div class='bMobDown__eWrap'>
+        <div class='bMobDown__eClose close'></div>
+        <div class='bMapShops__eMapWrap' id="mapPopup" style="float: right;">
+        </div>
+        <div class='bMapShops__eList'>
+          <h3>Выберите магазин Enter для самовывоза</h3>
+          <ul id="mapPopup_shopInfo">
+          	<!-- ko foreach: shopsInPopup -->
+          	<li data-bind="attr: {ref: id}, click: $root.selectShop ">
+				<div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>
+				<div data-bind="text: name"></div>
+				<span>Работаем</span> <span data-bind="text: regime"></span>
+			</li> 
+			<!-- /ko -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div style="display:none" data-bind="visible: step2">
 <!-- ko foreach: dlvrBoxes -->
 <div class="bBuyingLineWrap order-delivery-holder">
 	<div class="delivery-message red"></div>
 	<dl class="bBuyingLine">
 		<dt>
 			<h2>
-				Доставим <span data-bind="text: $data.displayDate()"></span>*
+				Доставим <span data-bind="text: $root.printDate( $data.chosenDate() )"></span>*
 			</h2>
 			<div style="margin: 8px 0 12px 0;" class="bSelect mFastInpSmall">
 				<span data-bind="text: $data.chosenInterval()"></span>
@@ -96,12 +128,13 @@
 		<i>
 			<!-- ko foreach: $data.itemList -->	
 			<dl class="bBuyingLine">
-				<dt data-bind="attr: {ref: $index}, ifnot: $index()*1">
+				<dt data-bind="ifnot: $index()*1">
 					<!-- ko if: $parent.type === 'self' -->
-					<span data-bind="text: $parent.shop.name"></span>
+					<span data-bind="text: $parent.shop().name"></span>
 					<p></p>
-					<a class="bBigOrangeButton order-shop-button" href="#"
-					style="font-size: 16px; padding: 6px 30px; border: 1px solid #E26500;">Другой магазин</a>
+					<a class="bBigOrangeButton selectShop" href="#"
+					style="font-size: 16px; padding: 6px 30px; border: 1px solid #E26500;"
+					data-bind="click: function(data, event) { $root.showShopPopup($parent, data, event) }">Другой магазин</a>
 					<!-- /ko -->
                 </dt>
 				<dd class="order-item-holder">
@@ -152,5 +185,5 @@
 		</div>
 	</dd>
 </dl>
-
+</div>
 </div>
