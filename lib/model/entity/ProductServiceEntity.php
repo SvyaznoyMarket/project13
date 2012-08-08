@@ -134,7 +134,9 @@ class ProductServiceEntity
    */
   public function isInSale()
   {
-    return !$this->onlyInShop && $this->price && $this->price >= self::MIN_SERVICE_BUY_PRICE;
+    $region = sfContext::getInstance()->getUser()->getRegion();
+
+    return $region['has_f1'] && !$this->onlyInShop && $this->price && $this->price >= self::MIN_SERVICE_BUY_PRICE;
   }
 
   /**
