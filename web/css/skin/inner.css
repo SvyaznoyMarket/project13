@@ -2283,6 +2283,7 @@ DT.bCtg__eOrange{
 		font: 24px Tahoma, sans-serif;
 		}
 	.bSet__eImage{
+        position: relative;
 		width: 500px;
 		overflow: hidden;
 		vertical-align: top;

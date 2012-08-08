@@ -45,7 +45,7 @@ foreach ($photo3dList as $photo3d)
 <div class="goodsphoto">
   <a href="<?php echo $item->getMediaImageUrl(4)  ?>" class="viewme" ref="image" onclick="return false">
     <?php foreach ($item->getLabelList() as $label):?>
-    <img class="bLabels" src="<?php echo $label->getImageUrl(1) ?>" alt="<?php echo $label->getName() ?>" />
+      <img class="bLabels" src="<?php echo $label->getImageUrl(1) ?>" alt="<?php echo $label->getName() ?>" />
     <?php endforeach ?>
     <img class="mainImg" src="<?php echo $item->getMediaImageUrl(3) ?>" alt="" width="500" height="500" title="" />
   </a>
