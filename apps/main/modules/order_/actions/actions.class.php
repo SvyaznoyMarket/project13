@@ -51,8 +51,12 @@ class order_Actions extends myActions
     //$this->order->region_id = $this->getUser()->getRegion('id');
 
     // вытащить из куки значения для формы, если пользователь неавторизован
-    if (!$user->isAuthenticated())
-    {
+    if ($user->isAuthenticated()) {
+      $this->order->recipient_first_name = $user->getGuardUser()->getFirstName();
+      $this->order->recipient_last_name = $user->getGuardUser()->getLastName();
+      $this->order->recipient_phonenumbers = $user->getGuardUser()->getPhonenumber();
+    }
+    else {
       $cookieValue = $request->getCookie(self::ORDER_COOKIE_NAME);
       if (!empty($cookieValue))
       {
