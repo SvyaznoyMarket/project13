@@ -153,6 +153,8 @@ all:
         secret_key: 'a47cc49da1835cf1f010ced1ac7be318'
         api_url: 'http://www.appsmail.ru/platform/api'
 
+  wp:
+    url: 'http://content.enter.ru/'
 
 
 live:
