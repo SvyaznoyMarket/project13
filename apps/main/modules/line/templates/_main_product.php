@@ -18,10 +18,12 @@ $json = array(
 
 <div class='bSet' data-value='<?php echo json_encode($json) ?>'>
   <div class='bSet__eImage'>
-    <a href="<?php echo $product->getLink() ?>" title="<?php echo $product->getName() ?>"><img src="<?php echo $product->getMediaImageUrl(3) ?>"
-                                                                                  alt="<?php echo $product->getName() ?>"
-                                                                                  width="500" height="500"
-                                                                                  title=""/></a>
+    <a href="<?php echo $product->getLink() ?>" title="<?php echo $product->getName() ?>">
+      <?php foreach ($product->getLabelList() as $label):?>
+        <img class="bLabels" src="<?php echo $label->getImageUrl(1) ?>" alt="<?php echo $label->getName() ?>" />
+      <?php endforeach ?>
+      <img src="<?php echo $product->getMediaImageUrl(3) ?>" alt="<?php echo $product->getName() ?>" width="500" height="500" title=""/>
+    </a>
   </div>
   <div class='bSet__eInfo'>
     <div class='bSet__eArticul'>Артикул #<?php echo $product->getArticle() ?></div>

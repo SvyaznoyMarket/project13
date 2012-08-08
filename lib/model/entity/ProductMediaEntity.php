@@ -197,12 +197,21 @@ class ProductMediaEntity
     if(!$urls3d)
       $urls3d = sfConfig::get('app_product_photo_3d_url');
     if($this->typeId == self::TYPE_IMAGE){
-      return $urls[$size].$this->source;
+      return self::getHost().$urls[$size].$this->source;
     } else if($this->typeId == self::TYPE_3D){
-      return $urls3d[$size].$this->source;
+      return self::getHost().$urls3d[$size].$this->source;
     }
     return null;
   }
 
+  static public function getHost() {
+    $hosts = sfConfig::get('app_media_host_url');
+    // На всякий случай :]
+    if (!count($hosts)) {
+      $hosts = array('http://fs01.enter.ru');
+    }
+
+    return $hosts[rand(0, count($hosts) - 1)];
+  }
 
 }
