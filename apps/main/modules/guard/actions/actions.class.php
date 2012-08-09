@@ -200,25 +200,21 @@ class guardActions extends myActions
   {
     if (!$this->getUser()->isAuthenticated()) $this->redirect('user_signin');
 
-    $this->getUser()->getGuardUser()->refresh();
-    $this->userProfile = $this->getUser()->getGuardUser()->getData();
-    $this->form = new UserFormChangePassword($this->getUser()->getGuardUser());
+    $this->form = new UserFormChangePassword($this->user);
   }
 
   public function executeChangePasswordSave($request)
   {
     if (!$this->getUser()->isAuthenticated()) $this->redirect('user_signin');
 
-    $this->getUser()->getGuardUser()->refresh();
-    $this->userProfile = $this->getUser()->getGuardUser()->getData();
-    $this->form = new UserFormChangePassword( $this->getUser()->getGuardUser() );
-    $data = $request->getParameter($this->form->getName());
-    $this->form->bind($data);
+    $this->form = new UserFormChangePassword();
+    $this->form->bind($request[$this->form->getName()]);
 
     $this->setTemplate('changePassword');
 
     if ($this->form->isValid())
     {
+      dump($this->form->getValues(), 1);
       try
       {
         //$this->form->getObject()->setCorePush(false);

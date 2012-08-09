@@ -8,26 +8,25 @@
  * @author     Связной Маркет
  * @version    SVN: $Id: sfDoctrineFormTemplate.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class UserFormChangePassword extends BaseUserForm
+class UserFormChangePassword extends BaseForm
 {
   public function configure()
   {
     $this->disableCSRFProtection();
       
-    $this->useFields(array('password'));
-
     $this->widgetSchema['password'] = new sfWidgetFormInputPassword(array(), array(
       'autocomplete' => 'off',
     ));
-    $this->validatorSchema['password'] = new sfValidatorString(array('max_length' => 18, 'min_length' => 6,  'required' => true), array(
-      'required'   => 'Укажите пароль.',
-      'min_length' => 'Пароль должен содержать не менее 6 символов.',
-      'max_length' => 'Пароль должен содержать не более 18 символов.'
-    ));
+    $this->validatorSchema['password'] = new sfValidatorString(array('required' => true), array('required'   => 'Укажите пароль.'));
 
     $this->widgetSchema['password_again'] = new sfWidgetFormInputPassword();
     $this->validatorSchema['password_again'] = clone $this->validatorSchema['password'];
     $this->validatorSchema['password_again']->setOption('required', true);
+
+    $this->validatorSchema['password']->setOption('max_length', 18);
+    $this->validatorSchema['password']->setOption('min_length', 6);
+    $this->validatorSchema['password']->setMessage('min_length', 'Пароль должен содержать не менее 6 символов.');
+    $this->validatorSchema['password']->setMessage('max_length', 'Пароль должен содержать не более 18 символов.');
 
     $this->mergePostValidator(new sfValidatorSchemaCompare('password', sfValidatorSchemaCompare::EQUAL, 'password_again', array(), array('invalid' => 'Пароли не совпадают.')));
 
@@ -39,6 +38,11 @@ class UserFormChangePassword extends BaseUserForm
     $this->widgetSchema['password_again']->setAttribute('class', 'text width418 mb15');
 
     $this->widgetSchema->setNameFormat('password[%s]');
-    $this->widgetSchema->setFormFormatterName('default');
+    //$this->widgetSchema->setFormFormatterName('default');
+
+    $this->useFields(array(
+      'password',
+      'password_again',
+    ));
   }
 }

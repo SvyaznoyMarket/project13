@@ -1433,7 +1433,7 @@ function region_delivery_widget()
     ?>
 <select name="region_list" id="region_list">
     <?php foreach($regionList as $regionId => $regionData) { ?>
-    <option value="<?php echo $regionId?>" <?=$regionId == 0?'selected':Null?>><?php echo $regionData['region_name']?></option>
+    <option value="<?php echo $regionId?>" <?php echo $regionId == 0?'selected':Null; ?>><?php echo $regionData['region_name']?></option>
     <?php } ?>
 </select>
 <br />

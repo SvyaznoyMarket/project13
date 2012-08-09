@@ -123,7 +123,7 @@ class cart_Components extends myComponents
         }
         else{
           // Услуга лежит отдельно
-          $list[] = $serviceArray;
+          $list[] = array_merge(array('product_id' => (int)$productId), $serviceArray);
         }
       }
     }
