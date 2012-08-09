@@ -5047,7 +5047,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     width: 460px;
     padding-left: 25px;
 }
-.mInputLong.mRed{
+.mInputLong.mRed, .mInputShort.mRed{
     border: 1px solid red;
 }
 .bBuyingLine__eTextarea{

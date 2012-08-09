@@ -67,7 +67,11 @@ $(document).ready(function() {
 	if( typeof( $.mask ) !== 'undefined' ) {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
 		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
-        $("#order_recipient_phonenumbers").val('8')
+		var predefPhone = document.getElementById('order_recipient_phonenumbers').getAttribute('value')
+        if( predefPhone && predefPhone != '' )
+            $('#order_recipient_phonenumbers').val( predefPhone + '       ' )
+        else   
+            $("#order_recipient_phonenumbers").val('8')
         
         $.mask.definitions['*'] = "[0-9*]"
         $("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
@@ -115,14 +119,29 @@ $(document).ready(function() {
 				if( $(this).val() === ubahn[i] )
 					return true
 			$(this).val('')
-		})
-
-	/* Shop Popup */
-	$('#OrderView').delegate( '.selectShop', 'click', function() {
-		$('.mMapPopup').lightbox_me({})
-		return false
-	} )
+		})	
 	
+	/* Processing Block */
+	window.blockScreen = function( text ) {
+		$('<img src="/images/ajaxnoti.gif" />').css('display', 'none').appendTo('body') //preload
+		var noti = $('<div>').addClass('noti').html('<div><img src="/images/ajaxnoti.gif" /></br></br> '+ text +'</div>')
+        noti.appendTo('body')
+        this.block = function() {
+        	if( noti.is(':hidden') )
+			noti.lightbox_me({
+				centered:true,
+				closeClick:false,
+				closeEsc:false
+			})
+		}
+		this.unblock = function() {
+			noti.trigger('close')
+		}
+		this.bye = function() {
+			noti.find('img').remove()
+		}
+	}
+	Blocker = new blockScreen('Ваш заказ оформляется')	
 
 	/* ---------------------------------------------------------------------------------------- */
 	/* PUBSUB HANDLERS */
@@ -241,9 +260,8 @@ $(document).ready(function() {
 			
 			// 2) Make Additional Dates				
 			var first = getMonday( tightInterval[0].timestamp )				
-console.info( 'Interval edges: ', first )
 			var last = getSunday( tightInterval[1].timestamp )
-console.info( last )
+console.info( 'Interval edges for ', bid, ' :', first, last )
 
 			// 3) Make Dates By T Interval
 			var doweeks = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
@@ -322,7 +340,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				var out = 0
 				for(var i=0, l=this.itemList().length; i<l; i++)
 					out += this.itemList()[i].total
-//					out += this.dlvrPrice()*1
+					out += this.dlvrPrice()*1
 				return out
 			}, box)
 
@@ -363,8 +381,13 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		// setComputables()
 
 		self.shopsInPopup = ko.observableArray( [] )
-		for( var key in Model.shops )
-			self.shopsInPopup.push( Model.shops[key] )
+		function fillUpShopsFromModel() {
+			self.shopsInPopup.removeAll()
+			for( var key in Model.shops )
+				self.shopsInPopup.push( Model.shops[key] )
+		}
+		fillUpShopsFromModel()
+		
 
 		self.chosenShop = ko.observable(null)
 
@@ -420,7 +443,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 			self.shopButtonEnable( false )
 			var data = {
 				'type': 'courier',
-				'boxQuantity': self.dlvrBoxes.length
+				'boxQuantity': self.dlvrBoxes().length
 			}
 			PubSub.publish( 'DeliveryChanged', data )
 		}
@@ -428,11 +451,11 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		self.pickShops = function() {
 			self.step2( false )
 			self.shopButtonEnable( true )
-			var data = {
-				'type': 'shops',
-				'boxQuantity': self.dlvrBoxes.length
-			}
-			PubSub.publish( 'DeliveryChanged', data )
+			// var data = {
+			// 	'type': 'shops',
+			// 	'boxQuantity': self.dlvrBoxes().length
+			// }			
+			// PubSub.publish( 'DeliveryChanged', data )
 		}
 
 		self.showShopPopup = function( box, d, e ) {
@@ -445,6 +468,8 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 						shopIds.push( key.replace('self_','') )
 				}
 			}
+
+			fillUpShopsFromModel()	
 			for( var i=0; i<self.shopsInPopup().length; ) {
 				if( $.inArray( self.shopsInPopup()[i].id , shopIds ) === -1 )
 					self.shopsInPopup.remove( self.shopsInPopup()[i] )
@@ -459,14 +484,37 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				self.shopsInPopup.push( Model.shops[key] )
 		}
 
-		self.selectShop = function( d, e ) {
-			if( self.step2() ) { // box selector handler
-				// change shop for current box
-				self.chosenBox().shop( d )
-				// change dates and intervals ...
-				// remove items, which hasnt this shop
-				// create new boxes for such items
+		self.selectShop = function( d ) {
+			
+			if( self.step2() ) {
+				/* Select Shop in Box */
+				var newboxes = [{ shop: self.chosenBox().token.replace('self_','') , items: [] }, { shop: d.id , items: [] } ]
+				// remove items, which has picked shop
+upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.length;  ) { //TODO refact
+					for( var dl in boxitems[item].deliveries ){
+						if( dl === 'self_'+d.id ) {
+							newboxes[1].items.push( boxitems[item].token )
+							self.chosenBox().itemList.remove( boxitems[item] )
+							continue upi
+						} 
+					}
+					newboxes[0].items.push( boxitems[item].token )
+					self.chosenBox().itemList.remove( boxitems[item] )
+					item++
+				}
+				
+// console.info( newboxes )							
+				// create new box for such items and for old box
+				for( var nbox in newboxes ) {
+					var argshop = Model.shops[ newboxes[nbox].shop ]
+					addBox ( 'self', 'self_'+newboxes[nbox].shop, newboxes[nbox].items, argshop )
+				}
+				// clear this box if it should be
+				if( ! self.chosenBox().itemList().length ) // always
+					self.dlvrBoxes.remove( self.chosenBox() )
+
 			} else {
+				/* Select Shop at Zero Step */	
 				// pushing into box items which have selected shop
 				var selectedShopBoxShops = []
 				for( var box in self.dlvrBoxes() ) {
@@ -479,9 +527,9 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 							item++
 					}
 				}
-console.info(selectedShopBoxShops)
+// console.info(selectedShopBoxShops)
 				// separate 'courier-only' from self-available
-				// get self-available as hash
+				// get self-available as a hash
 				var data = {}
 				for( var box in self.dlvrBoxes() ) {
 					var procBox = self.dlvrBoxes()[box]		
@@ -498,20 +546,15 @@ console.info(selectedShopBoxShops)
 					}
 					
 				}
-// console.info(data)
 				// distributive algorithm				
 				var newboxes = DA( data )
 				newboxes.push( { shop: d.id, items: selectedShopBoxShops } )
-console.info( newboxes )
+// console.info( newboxes )
 				// build new self-boxes
 				for(var tkn in newboxes ) {
 					var argshop = Model.shops[ newboxes[tkn].shop ]
-					var argitems = []
-					for(var i=0, l=newboxes[tkn].items.length; i<l; i++)
-						argitems.push( Model.items[ newboxes[tkn].items[i] ] )
 					addBox ( 'self', 'self_'+newboxes[tkn].shop, newboxes[tkn].items, argshop )
 				}
-				// setComputables()
 				// drop empty boxes
 				for( var box =0; box < self.dlvrBoxes().length;  ) {
 					if( ! self.dlvrBoxes()[box].itemList().length )
@@ -519,6 +562,20 @@ console.info( newboxes )
 					else
 						box++
 				}
+
+				// interface
+
+				var data = {
+					'type': 'shops',
+					'boxQuantity': self.dlvrBoxes().length
+				}	
+				for( var box in self.dlvrBoxes() )
+					if( self.dlvrBoxes()[box].type === 'standart' ) {
+						data.type = 'courier'
+						break
+					}
+
+				PubSub.publish( 'DeliveryChanged', data )
 			}
 
 			self.chosenShop( d )
@@ -530,6 +587,38 @@ console.info( newboxes )
 			var d = new Date( tstamp )
 			var rusMN = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря']
 			return d.getDate() + ' ' + rusMN[ d.getMonth() ]
+		}
+
+		function formateDate( tstamp ) {
+			var raw = new Date(tstamp),
+				m = raw.getMonth()+1,
+				d = raw.getDate()
+			return raw.getFullYear() + '-' + ( m > 9 ? m : '0' + m ) + '-' + ( d > 9 ? d : '0' + d )
+		}
+
+		self.getServerModel = function() {
+			var ServerModel = {
+				deliveryTypes: {}
+			}
+
+			for( var tkn in self.dlvrBoxes() ) {
+				var dlvr = self.dlvrBoxes()[tkn]
+				var data = {
+					id: Model.deliveryTypes[ dlvr.token ].id,
+					token: dlvr.token,
+					type: dlvr.type,
+					date: formateDate( dlvr.chosenDate() ),
+					interval: dlvr.chosenInterval().match(/\d{2}:\d{2}/g).join(',')
+				}
+				var boxitems = []
+				for( var i in dlvr.itemList() )
+					boxitems.push( dlvr.itemList()[i].token )
+				data.items = boxitems
+console.info(data)
+				ServerModel.deliveryTypes[ dlvr.token ] = data
+			}
+
+			return ServerModel
 		}
 
 	} // OrderModel object
@@ -555,7 +644,8 @@ console.info( newboxes )
 	// }		
 		while( true ) {
 			var shop_items = {},
-			le = 0
+				le = 0,
+				out = []
 			for( var tkn in data ) {
 				for( var i=0, l=data[tkn].length; i<l; i++ ) {
 					if( !shop_items[ data[tkn][i] ] ) {
@@ -569,7 +659,7 @@ console.info( newboxes )
 			if( !le )
 				break
 // console.info(shop_items)
-			var out = []
+			
 			var keyMax = keyMaxLong( shop_items )
 			out.push( { shop: keyMax, items: shop_items[ keyMax ] } )
 			for( var tkn in shop_items[ keyMax ] )
@@ -579,21 +669,182 @@ console.info( newboxes )
 		}
 		return out
 	}
-
 	/* ---------------------------------------------------------------------------------------- */
 	/*  Send Data */
+	var form = $('#order-form')
+	var sended = false
+	var broken = 0
 
-	$('#order-submit').click( function(){
-		// Validation
-		// Prepare Data
-		// Send
+	function markError( field, mess ) {
+		broken++
+		$('body').delegate('input[name="'+field+'"]', 'change', function() {
+			if( $(this).val().replace(/\s+/g,'') != '' ) {
+				broken--
+				$('input[name="'+field+'"]').removeClass('mRed')
+				var line = $('input[name="'+field+'"]').closest('.bBuyingLine')
+				if( !line.find('.mRed').length )
+					line.find('.bFormError').remove()
+			}
+		})
+		var node = $('input[name="'+field+'"]:first')
+		if( node.hasClass('mRed') ) return
+		switch( node.attr('type') ) {
+			case 'text':
+				node.addClass('mRed')
+				var dd = node.parent().parent()
+				if( !dd.find('.bFormError').length )
+					dd.append( '<span class="bFormError mb10 pt5">'+mess+'</span>' ) // AWARE: CUSTOM
+			break
+			default: // radio, checkbox
+				node.addClass('mRed')
+				node.parent().parent().parent().append( '<span class="bFormError mb10 pt5">'+mess+'</span>' ) // AWARE: CUSTOM
+			break
+		}
+	}
+
+	function printErrors( errors ) {
+		for( var inp in errors ) {
+			markError( inp, errors[inp] )
+		}
+		if( broken > 0 )
+			$.scrollTo( '.mRed:first' , 500 )
+	}
+
+	$('#order-submit').click( function(e) {
+		e.preventDefault()
+		if( sended ) return // form is currently processing
+		if( $(this).hasClass('disable')) { // form isnot active - delivery should be chosen
+            return false
+        }
+
+		// Validation		
+		var serArray = form.serializeArray()
+		var fieldsToValidate = $('#order-validator').data('value')
+flds:	for( field in fieldsToValidate ) {
+			if( !form.find('[name="'+field+'"]:visible').length )
+				continue
+			for(var i=0, l=serArray.length; i<l; i++) {
+				if( serArray[i].name == field ) {
+					if( serArray[i].value == '' )
+						markError( field, fieldsToValidate[field] ) // cause is empty
+					continue flds
+				}
+			}
+			markError( field, fieldsToValidate[field] ) // cause not in serArray
+		}
+		if( broken > 0 ) {
+			$.scrollTo( '.mRed:first' , 500 )
+			return
+		}
+
 		// Show Rounder
+		var button = $(this)
+		button.text('Оформляется...')
+		Blocker.block()
+
+		// Prepare Data & Send
+		sended = true		
+		var toSend = form.serializeArray()
+		toSend.push( { name: 'order[delivery_type_id]', value: $('input[name="order[delivery_type_id]"]').val() })
+		toSend.push( { name: 'delivery_map', value: JSON.stringify( MVM.getServerModel() )  } )//encodeURIComponent
+console.info( toSend )
+		$.ajax({
+			url: form.attr('action'),
+			timeout: 20000,
+			type: "POST",
+			data: toSend,
+			success: function( data ) {
+				sended = false
+				if( !data.success ) {
+					Blocker.unblock()
+					button.text('Завершить оформление')
+					if( 'errors' in data )
+						printErrors( data.errors )
+					// TODO display data.error info
+					return
+				}
+				Blocker.bye()
+				if( 'redirect' in data.data )
+					window.location = data.data.redirect
+			},
+            error: function() {
+                button.text('Попробовать еще раз')
+                Blocker.unblock()
+            }
+		})
+
 	})
 
 	/* ---------------------------------------------------------------------------------------- */
+	/* MAIN() */
 
 console.info( 'MODEL ', Model )
 	MVM = new OrderModel() 
-	ko.applyBindings( MVM , $('#OrderView')[0] ) 
+	ko.applyBindings( MVM , $('#OrderView')[0] )
+
+	/* ---------------------------------------------------------------------------------------- */
+	/* MAP REDESIGN */
+    var shopList      = $('#mapPopup_shopInfo'),
+        infoBlockNode = $('#map-info_window-container')
+        //deprecated: shopsStack    = $('#order-delivery_map-data').data().value.shops 
+    
+    function getShopsStack() {
+		var shopsStack = {}
+		for( var sh in MVM.shopsInPopup() )
+			shopsStack[ MVM.shopsInPopup()[sh].id ] = MVM.shopsInPopup()[sh]
+		return shopsStack
+    }
+
+	/* Shop Popup */
+	$('#OrderView').delegate( '.selectShop', 'click', function() {
+		$('.mMapPopup').lightbox_me({ 
+			centered: true,
+            onLoad: function() {
+// console.info(shopsStack, getShopsStack() )
+                window.regionMap.showMarkers( getShopsStack() )
+            }
+        })
+		return false
+	} )
+
+    var hoverTimer = { 'timer': null, 'id': 0 }
+
+    shopList.delegate('li', 'hover', function() {
+        var id = $(this).attr('ref')//$(this).data('id')
+        if( hoverTimer.timer ) {
+            clearTimeout( hoverTimer.timer )
+        }
+        
+        if( id && id != hoverTimer.id) {
+            hoverTimer.id = id
+            hoverTimer.timer = setTimeout( function() {            
+                window.regionMap.showInfobox( id )
+            }, 350)
+        }
+    })
+
+    function updateI( marker ) {
+        infoBlockNode.html( tmpl( 'mapInfoBlock', marker ))
+        hoverTimer.id = marker.id   
+    }
+
+    function ShopChoosed( node ) {
+        var shopnum = $(node).parent().find('.shopnum').text()
+        var shop = Model.shops[shopnum]
+        MVM.selectShop( shop )
+    }
+
+    window.regionMap = new MapWithShops(
+        calcMCenter( getShopsStack() ),
+        infoBlockNode,
+        'mapPopup',
+        updateI
+    )
+
+    window.regionMap.addHandler( '.shopchoose', ShopChoosed )
+
+    window.regionMap.addHandlerMarker( 'mouseover', function( marker ) {        
+        window.regionMap.showInfobox( marker.id )
+    })
 
 })
