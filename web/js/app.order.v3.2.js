@@ -1150,7 +1150,7 @@ $(document).ready(function() {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
 		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
         var predefPhone = document.getElementById('order_recipient_phonenumbers').getAttribute('value')
-        if( predefPhone != '' )
+        if( predefPhone && predefPhone != '' )
             $('#order_recipient_phonenumbers').val( predefPhone + '       ' )
         else   
             $("#order_recipient_phonenumbers").val('8')
