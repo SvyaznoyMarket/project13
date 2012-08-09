@@ -41,7 +41,7 @@ $(document).ready(function() {
 							if( ! 'payment' in result )
 								return 
 							if( result.payment > 0 ) {
-								$('.creditboxinner .price').html( printPrice( result.payment ) )
+								$('.creditboxinner .price').html( printPrice( Math.ceil(result.payment) ) )
 								$('.creditbox').show()
 							}
 						}
