@@ -14,22 +14,11 @@ class WPRequest
      * Метод запроса: POST
      */
     const methodPost = 'POST';
+
     /**
-     * @var string URL для обращения к сервису
+     * @var string HTTP адрес сервиса контента
      */
     private $url;
-    /**
-     * @var array Список параметров отправляемых сервису
-     */
-    private $parameterList = array();
-    /**
-     * @var string Текущий метод запроса
-     */
-    private $method = self::methodGet;
-    /**
-     * @var int Время ожидания ответа сервиса
-     */
-    private $timeout = 30;
 
     public function getUrl()
     {
@@ -41,61 +30,21 @@ class WPRequest
         $this->url = $url;
     }
 
-    public function getParameterList()
-    {
-        return $this->parameterList;
-    }
-
-    public function setParameterList(array $parameterList)
-    {
-        $this->parameterList = $parameterList;
-    }
-
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    public function getMethod()
-    {
-        return $this->method;
-    }
-
-    public function setMethod($method)
-    {
-        if(!in_array($method, array(self::methodGet, self::methodPost)))
-        {
-            throw new InvalidArgumentException('Invalid request method specified');
-        }
-
-        $this->method = $method;
-    }
-
-    public function getTimeout()
-    {
-        return $this->timeout;
-    }
-
-    public function setTimeout($timeout)
-    {
-        $this->timeout = $timeout;
-    }
-
     /**
      * @return array Собирает список опций для создания стрима к сервису
      */
-    private function buildOptionList()
+    private function buildOptionList($method, $parameterList, $timeout)
     {
         $optionList = array(
             'http' => array(
-                'method' => $this->method,
-                'content' => http_build_query($this->parameterList, '', '&'),
-                'timeout' => $this->timeout
+                'method' => $method,
+                'content' => http_build_query($parameterList, '', '&'),
+                'timeout' => $timeout
 
             )
         );
 
-        if($this->method == self::methodPost)
+        if($method == self::methodPost)
         {
             $optionList['header'] = 'Content-type: application/x-www-form-urlencoded';
         }
@@ -103,16 +52,21 @@ class WPRequest
         return $optionList;
     }
 
-    /**
-     * Отправляет запрос сервису
-     *
-     * @param $actionUri string Запрашиваемое действие сервиса
-     * @return array Ответ сервиса
-     */
-    public function send($actionUri)
+    public function send($actionUri, $parameterList = array(), $method = self::methodPost, $timeout = 30, $json = True)
     {
-        $response = file_get_contents($this->url . $actionUri, false, stream_context_create($this->buildOptionList()));
+        if($json)
+        {
+            $parameterList['json'] = True;
+        }
 
-        return json_decode($response, $assoc = True);
+        $response = file_get_contents($this->url . $actionUri, false, stream_context_create(
+            $this->buildOptionList(
+                $method,
+                $parameterList,
+                $timeout
+            )
+        ));
+
+        return $json?json_decode($response, $assoc = True):$response;
     }
 }

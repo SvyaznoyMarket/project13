@@ -21,8 +21,6 @@ class wordpressActions extends sfActions
 
       $wpRequest = new WPRequest();
       $wpRequest->setUrl(sfConfig::get('app_wp_url'));
-      $wpRequest->setMethod(WPRequest::methodPost);
-      $wpRequest->setParameterList(array('json' => True));
       $wpResponse = $wpRequest->send($page);
       #@TODO: test it!
       $this->forward404If(!$wpResponse);

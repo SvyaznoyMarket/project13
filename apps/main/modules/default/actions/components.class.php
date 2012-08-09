@@ -98,9 +98,7 @@ class defaultComponents extends myComponents
 
     $wpRequest = new WPRequest();
     $wpRequest->setUrl(sfConfig::get('app_wp_url'));
-    $wpRequest->setMethod(WPRequest::methodPost);
-    $wpRequest->setParameterList(array('json' => True, 'shop_count' => ShopTable::getInstance()->getCount()));
-    $wpResponse = $wpRequest->send('footer_' . $this->view);
+    $wpResponse = $wpRequest->send('footer_' . $this->view, array('shop_count' => ShopTable::getInstance()->getCount()));
 
     $this->wpFooter = $wpResponse['content'];
   }
