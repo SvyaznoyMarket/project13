@@ -167,7 +167,7 @@ all:
         api_url: 'http://www.appsmail.ru/platform/api'
 
   wp:
-    url: 'http://content.enter.ru/'
+    url: 'http://content.ent3.ru/'
 
 
 live:
@@ -220,6 +220,9 @@ live:
 
   welcome:
     enabled: true
+
+  wp:
+    url: 'http://content.enter.ru'
 
 live_dev:
   open_auth:
