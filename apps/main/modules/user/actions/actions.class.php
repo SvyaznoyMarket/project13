@@ -111,50 +111,48 @@ class userActions extends myActions
     $this->redirectUnless($this->userAddress->user_id == $this->getUser()->getGuardUser()->id, 'userAddress');
 */
     if (!$this->getUser()->isAuthenticated()) $this->redirect('user_signin');
-	/**
-	 * @todo: убрать рефреш и сделать очистку кэша для пользователя
-	 */
-	  //$this->getUser()->getGuardUser()->refresh();
-    //$this->userProfile = $this->getUser()->getGuardUser()->getData();
-    $this->form = new UserForm( $this->getUser()->getGuardUser() );
 
-      //echo 'ok';
-    //  exit();
+    $guardUser = $this->getUser()->getGuardUser();
+    $this->form = $this->getUserForm();
   }
 
 
   public function executeUpdate(sfWebRequest $request)
   {
-    $this->form = new UserForm($this->getUser()->getGuardUser());
+    $this->form = $this->getUserForm();
 
-    $data = $request->getParameter($this->form->getName());
-
-    $data['middle_name'] = trim($data['middle_name']);
-    $data['last_name'] = trim($data['last_name']);
-    $data['occupation'] = trim($data['occupation']);
-    $data['skype'] = trim($data['skype']);
-
-    $this->form->bind( $data );
+    $this->form->bind($request[$this->form->getName()]);
     $this->setVar('error', '', true);
+
 
     if ($this->form->isValid())
     {
       try
       {
-            $this->form->save();
-            $this->redirect('user_edit');
+        $data = $this->form->getValues();
+        $r = CoreClient::getInstance()->query('user/update', array('token' => $this->getUser()->getGuardUser()->getToken()), array(
+          'first_name'  => $data['first_name'],
+          'middle_name' => $data['middle_name'],
+          'last_name'   => $data['last_name'],
+          'sex'         => $data['gender'],
+          'email'       => $data['email'],
+          'modile'      => $data['phonenumber'],
+          'phone'       => $data['phonenumber_city'],
+          'skype'       => $data['skype'],
+          'birthday'    => $data['birthday'],
+          'occupation'  => $data['occupation'],
+        ));
+
+        $this->getUser()->setFlash('message', 'Данные успешно обновлены.');
+        $this->redirect('user_edit');
       }
       catch (Exception $e)
       {
-            #echo $e->getMessage();
-            $this->setVar('error', 'К сожалению, данные сохранить не удалось.', true);
-            $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
+        #echo $e->getMessage();
+        $this->setVar('error', 'К сожалению, данные сохранить не удалось.', true);
+        $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
       }
-    } else {
-		//echo $this->form->renderGlobalErrors();
-	}
-
-    $this->userProfile = $this->getUser()->getGuardUser()->getData();
+    }
 
     $this->setTemplate('edit');
   }
@@ -164,16 +162,11 @@ class userActions extends myActions
   }
 
   public function executeLegalConsultation(sfWebRequest $request){
-    $userData = $this->getUser()->getGuardUser()->getData();
-
-    $email = (isset($userData['email']) && strlen($userData['email']) > 1)? $userData['email'] : '';
-    $name = (isset($userData['last_name']) && strlen($userData['last_name']) > 1)? $userData['last_name'].' ' : '';
-    $name .= $userData['first_name'];
-    $name .= (isset($userData['middle_name']) && strlen($userData['middle_name']) > 1)? ' '.$userData['middle_name'] : '';
+    $guardUser = $this->getUser()->getGuardUser();
 
     $callback = new Callback();
-    $callback->setEmail($email);
-    $callback->setName($name);
+    $callback->setEmail($guardUser->getEmail());
+    $callback->setName($guardUser->getFullName());
 
     $this->form = new CallbackForm($callback);
   }
@@ -205,6 +198,26 @@ class userActions extends myActions
       //$this->redirect('callback');
       $this->setTemplate('legalConsultation');
     }
+  }
+
+  private function getUserForm() {
+    $guardUser = $this->getUser()->getGuardUser();
+
+    $form = new UserForm();
+    $form->setDefaults(array(
+      'first_name'       => $guardUser->getFirstName(),
+      'middle_name'      => $guardUser->getMiddleName(),
+      'last_name'        => $guardUser->getLastName(),
+      'gender'           => $guardUser->getGender(),
+      'email'            => $guardUser->getEmail(),
+      'phonenumber'      => $guardUser->getPhonenumber(),
+      'phonenumber_city' => $guardUser->getHomePhonenumber(),
+      'skype'            => $guardUser->getSkype(),
+      'birthday'         => $guardUser->getBirthday(),
+      'occupation'       => $guardUser->getOccupation(),
+    ));
+
+    return $form;
   }
 
 }

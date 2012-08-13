@@ -1,1 +1,1 @@
-<?php include_component('user', 'profile_'.$view, $sf_data) ?>
+<?php include_component('user', 'profile_client', $sf_data) ?>
