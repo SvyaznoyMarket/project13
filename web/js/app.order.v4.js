@@ -146,7 +146,8 @@ $(document).ready(function() {
 	/* ---------------------------------------------------------------------------------------- */
 	/* PUBSUB HANDLERS */
 	/* Glue for architecure */
-	PubSub.subscribe( 'DeliveryChanged', function( m, data ) {		
+	PubSub.subscribe( 'DeliveryChanged', function( m, data ) {	
+		// $('#dlvrTypes .selectShop').show()	
 		
 		if( data.type === 'courier') {	
 			$('#order-submit').removeClass('disable')
@@ -511,8 +512,10 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 // console.info( newboxes )							
 				// create new box for such items and for old box
 				for( var nbox in newboxes ) {
-					var argshop = Model.shops[ newboxes[nbox].shop ]
-					addBox ( 'self', 'self_'+newboxes[nbox].shop, newboxes[nbox].items, argshop )
+					if( newboxes[nbox].items.length > 0 ) {
+						var argshop = Model.shops[ newboxes[nbox].shop ]
+						addBox ( 'self', 'self_'+newboxes[nbox].shop, newboxes[nbox].items, argshop )
+					}
 				}
 				// clear this box if it should be
 				if( ! self.chosenBox().itemList().length ) // always
@@ -569,7 +572,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 				}
 
 				// interface
-
+				self.shopButtonEnable(false)
 				var data = {
 					'type': 'shops',
 					'boxQuantity': self.dlvrBoxes().length

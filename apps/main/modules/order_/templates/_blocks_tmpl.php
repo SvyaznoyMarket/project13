@@ -95,7 +95,9 @@
 	<dl class="bBuyingLine">
 		<dt>
 			<h2>
-				Доставим <span data-bind="text: $root.printDate( $data.chosenDate() )"></span>*
+				<span data-bind="visible: type === 'self' ">Самовывоз</span>
+				<span data-bind="visible: type === 'standart' ">Доставим</span>
+				<span data-bind="text: $root.printDate( $data.chosenDate() )"></span>*
 			</h2>
 			<div style="margin: 8px 0 12px 0;" class="bSelect mFastInpSmall">
 				<span data-bind="text: $data.chosenInterval()"></span>
