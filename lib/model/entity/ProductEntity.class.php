@@ -457,7 +457,7 @@ class ProductEntity
   {
     if ($this->mediaImage) {
       $urls = sfConfig::get('app_product_photo_url');
-      return ProductMediaEntity::getHost().$urls[$viewId].$this->mediaImage;
+      return ProductMediaEntity::getHost($this->id).$urls[$viewId].$this->mediaImage;
     }
     else {
       return null;

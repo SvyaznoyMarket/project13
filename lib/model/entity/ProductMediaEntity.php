@@ -23,6 +23,8 @@ class ProductMediaEntity
   private $width;
   /** @var int */
   private $height;
+  /** @var string */
+  private $host;
 
   /**
    * @param array $data
@@ -38,6 +40,9 @@ class ProductMediaEntity
     if (array_key_exists('fileSize', $data))  $this->fileSize = (int)$data['fileSize'];
     if (array_key_exists('width', $data))     $this->width    = (int)$data['width'];
     if (array_key_exists('height', $data))    $this->height   = (int)$data['height'];
+    if (array_key_exists('host', $data))      $this->host     = (int)$data['host'];
+
+    $this->host = self::getHost($this->id);
   }
 
   /**
@@ -197,21 +202,23 @@ class ProductMediaEntity
     if(!$urls3d)
       $urls3d = sfConfig::get('app_product_photo_3d_url');
     if($this->typeId == self::TYPE_IMAGE){
-      return self::getHost().$urls[$size].$this->source;
+      return $this->host.$urls[$size].$this->source;
     } else if($this->typeId == self::TYPE_3D){
-      return self::getHost().$urls3d[$size].$this->source;
+      return $this->host.$urls3d[$size].$this->source;
     }
     return null;
   }
 
-  static public function getHost() {
+  static public function getHost($id = null) {
     $hosts = sfConfig::get('app_media_host_url');
-    // На всякий случай :]
-    if (!count($hosts)) {
-      $hosts = array('http://fs01.enter.ru');
+
+    $index = $id ? ($id % 10) : rand(0, count($hosts) - 1);
+    if (!isset($hosts[$index])) {
+      $hosts = array(0 => 'http://fs01.enter.ru');
+      $index = 0;
     }
 
-    return $hosts[rand(0, count($hosts) - 1)];
+    return $hosts[$index];
   }
 
 }
