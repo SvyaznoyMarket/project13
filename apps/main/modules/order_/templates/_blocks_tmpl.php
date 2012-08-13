@@ -1,22 +1,28 @@
-<div id="OrderView">
+<div id="MVVM">
 
+<div class='bOrderPreloader' data-bind="style: { display: $root.showForm()===true ? 'none' : 'block' }">
+	<span>Ваш заказ формируется...</span><img src='/images/bPreloader.gif'>
+</div>
+
+<div id="OrderView" data-bind="visible: $root.showForm()" style="display:none">
+<h2>Информация о заказе</h2>
 <dl class="bBuyingLine">
 	<dt>Выберите предпочтительный способ</dt>
-	<dd>
-		<div>
+	<dd id="dlvrTypes">
+		<div data-bind="visible: dlvrCourierEnable()">
 			<p></p>
-			<label class="" for="order_delivery_type_id_1"
-				data-bind="click: pickCourier">
+			<label for="order_delivery_type_id_1"
+				data-bind="click: pickCourier, css: {mChecked: !dlvrShopEnable()}">
 				<b></b> Доставка заказа курьером
 				<input type="radio" name="order[delivery_type_id]" class="bBuyingLine__eRadio" id="order_delivery_type_id_1"
 				value="1" autocomplete="off"/>
 			</label>
 			<i>Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.</i>
 		</div>
-		<div>
+		<div data-bind="visible: dlvrShopEnable()">
 			<p></p>
 			<label class="" for="order_delivery_type_id_3"
-				data-bind="click: pickShops">
+				data-bind="click: pickShops, css: {mChecked: !dlvrCourierEnable()}">
 				<b></b>
 				Самостоятельно заберу в магазине
 				<input type="radio" name="order[delivery_type_id]" class="bBuyingLine__eRadio" id="order_delivery_type_id_3"
@@ -57,6 +63,29 @@
     </div>
 
   </div>
+</div>
+
+<div data-bind="style: { display: $root.stolenItems().length > 0 ? 'block' : 'none' }" class="hf">
+	<div class='bMobDownWrapAbs customalign'>
+		<div class='bMobDownWrapRel'>
+			<div class='bMobDown mBR5 mW2 mW750'>
+				<div class='bMobDown__eWrap'>
+					<img class='fr pt20 mr20' src='/images/error_ajax.gif'/>
+					<h2 class="pb30">Кто-то был быстрее вас.<br/>
+					Некоторых товаров уже нет в наличии:</h2>
+					<!-- ko foreach: $root.stolenItems -->
+					<div class='bFormSave'>
+						<span data-bind="html: title"></span>
+						<h2><span data-bind="html: price"></span> <span class='rubl'>p</span></h2>
+					</div>
+					<!-- /ko -->
+					<a class='bOrangeButton mr20' id="tocontinue" href>Оформить заказ без этих товаров</a>
+					<a class='bOrangeButton' >Подобрать похожий товар</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="graying"></div>
 </div>
 
 <div style="display:none" data-bind="visible: step2">
@@ -105,7 +134,7 @@
 			      			</li>
 			      			<!-- ko foreach: caclDates -->
 							<li class="order-delivery_date"
-								data-bind="style: { display: ( $data.week === $root.curWeek() ) ? 'inline-block' : 'none' },
+								data-bind="style: { display: ( $data.week === $parent.curWeek() ) ? 'inline-block' : 'none' },
 										click: function(data, event) { $root.clickDate($parent, data, event) },
 										css: { bBuyingDates__eEnable: $data.enable(),
 												bBuyingDates__eDisable: (!$data.enable()),
@@ -185,5 +214,6 @@
 		</div>
 	</dd>
 </dl>
+</div>
 </div>
 </div>

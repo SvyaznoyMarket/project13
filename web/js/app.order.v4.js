@@ -232,13 +232,18 @@ $(document).ready(function() {
 			return last
 		}
 
-		// Unavailable TODO layout scheme
-		self.unavailable = ko.observable( false )
-		if( Model.unavailable.length )
-			self.unavailable( true )
+		// Unavailables
+		self.stolenItems = ko.observableArray([])
+		// self.unavailable = ko.observable( false )
+		if( Model.unavailable.length ) {
+
+		}
+
+		self.showForm = ko.observable( false )
+		self.dlvrCourierEnable = ko.observable( false )
+		self.dlvrShopEnable = ko.observable( false )
 
 		// Boxes
-		self.curWeek = ko.observable(1)
 		self.chosenBox = ko.observable(null)
 		self.step2 = ko.observable( false )
 		self.dlvrBoxes = ko.observableArray([])
@@ -303,6 +308,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 			var box = {} //Model.deliveryTypes[tkn]
 			box.type = type
 			box.token = token
+			box.curWeek = ko.observable(1)
 			box.itemList = ko.observableArray([])
 			for( var prdct in items ) {
 				box.itemList.push( Model.items[ items[prdct] ] )
@@ -387,7 +393,6 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				self.shopsInPopup.push( Model.shops[key] )
 		}
 		fillUpShopsFromModel()
-		
 
 		self.chosenShop = ko.observable(null)
 
@@ -395,14 +400,14 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 
 		self.changeWeek = function( direction, data, e ) {
 			if( direction > 0 ) {
-				if( data.nweeks == self.curWeek() )
+				if( data.nweeks == data.curWeek() )
 					return	
-				self.curWeek( self.curWeek() + 1 )		
+				data.curWeek( data.curWeek() + 1 )		
 			}
 			if( direction < 0 ) {
-				if( self.curWeek() == 1 )
+				if( data.curWeek() == 1 )
 					return
-				self.curWeek( self.curWeek() - 1 )		
+				data.curWeek( data.curWeek() - 1 )		
 			}
 		}
 
@@ -451,11 +456,11 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		self.pickShops = function() {
 			self.step2( false )
 			self.shopButtonEnable( true )
-			// var data = {
-			// 	'type': 'shops',
-			// 	'boxQuantity': self.dlvrBoxes().length
-			// }			
-			// PubSub.publish( 'DeliveryChanged', data )
+			var data = {
+				'type': 'shops',
+				'boxQuantity': self.dlvrBoxes().length
+			}			
+			PubSub.publish( 'DeliveryChanged', data )
 		}
 
 		self.showShopPopup = function( box, d, e ) {
@@ -608,7 +613,10 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 					token: dlvr.token,
 					type: dlvr.type,
 					date: formateDate( dlvr.chosenDate() ),
-					interval: dlvr.chosenInterval().match(/\d{2}:\d{2}/g).join(',')
+					interval: dlvr.chosenInterval().match(/\d{2}:\d{2}/g).join(','),
+					shop: {
+						id: dlvr.token.replace('self_','')
+					}
 				}
 				var boxitems = []
 				for( var i in dlvr.itemList() )
@@ -620,6 +628,18 @@ console.info(data)
 
 			return ServerModel
 		}
+
+		// set delivery types on the top
+		self.showForm(true)
+		for( var tkn in Model.deliveryTypes )
+			if( Model.deliveryTypes[tkn].type === 'standart' )
+				self.dlvrCourierEnable(true)
+			else
+				self.dlvrShopEnable(true)
+		if( self.dlvrCourierEnable() && ! self.dlvrShopEnable() )
+			self.pickCourier()
+		if( ! self.dlvrCourierEnable() && self.dlvrShopEnable() )	
+			self.pickShops()
 
 	} // OrderModel object
 
@@ -780,7 +800,7 @@ console.info( toSend )
 
 console.info( 'MODEL ', Model )
 	MVM = new OrderModel() 
-	ko.applyBindings( MVM , $('#OrderView')[0] )
+	ko.applyBindings( MVM , $('#MVVM')[0] )
 
 	/* ---------------------------------------------------------------------------------------- */
 	/* MAP REDESIGN */

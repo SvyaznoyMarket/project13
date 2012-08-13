@@ -13,13 +13,6 @@
 
 <input disabled="disabled" id="order-validator" type="hidden" data-value='<?php echo json_encode($jsValidator) ?>' />
 
-<script id="elementInShopList" type="text/html">
-  <li data-id="<%= id%>">
-    <div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>
-    <div><%= name%></div>
-    <span>Работаем</span> <span><%= regime%></span>
-  </li>
-</script>
 
 <script id="mapInfoBlock" type="text/html">
   <div class="bMapShops__ePopupRel">
@@ -38,30 +31,13 @@
 
   
 
-    <h2>Информация о заказе</h2>
+    
 
     <input id="order-delivery_map-data" type="hidden" data-value='<?php echo $deliveryMap_json ?>' />
     <?php 
     // KNOCKOUT
       include_partial('order_/blocks_tmpl')
-    ?>
-
-<!-- 
-    <?php echo $form['delivery_type_id'] ?>
-
-
-  <div id="order-loader-holder">
-    <div class='bOrderPreloader'>
-      <span>Загрузка...</span><img src='/images/bPreloader.gif' />
-    </div>
-  </div>
-
-  -->
-<!-- 
-    <div id="order-message" class='bBuyingInfo'>
-      <span><?php count($sf_data->getRaw('deliveryMap')->unavailable) ? 'Некоторые товары не могут быть доставлены' : 'Отличный выбор!' ?></span>
-    </div>
- -->    
+    ?>  
 
     
 
