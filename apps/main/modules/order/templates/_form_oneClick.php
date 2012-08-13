@@ -2,7 +2,7 @@
 <?php echo $form['shop_id']->render() ?>
 
 <div class="basketline">
-  <?php include_component('product', 'show', array('view' => 'orderOneClick', 'product' => $product)) ?>
+  <?php include_component('product', 'show', array('view' => 'orderOneClick', 'product' => $item)) ?>
 
   <div class="clear"></div>
 

@@ -1,5 +1,5 @@
 <!-- Response -->
-<h2 class="bold">Мой отзыв о <?php echo $product->name ?></h2>
+<h2 class="bold">Мой отзыв о <?php echo $item->name ?></h2>
 <div class="line pb15"></div>
 
 <form class="fl" method="post" id="rating_form" action="<?php echo url_for('productComment_new', $sf_data->getRaw('product')) ?>">

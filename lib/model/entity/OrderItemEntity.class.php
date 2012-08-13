@@ -32,18 +32,16 @@ class OrderItemEntity
   /* @var DateTime */
   private $createdAt;
 
-
   public function __construct(array $data = array())
   {
-    if (array_key_exists('type', $data))           $this->type             = (int)$data['type'];
+    if (array_key_exists('type', $data))           $this->type             = $data['type'];
     if (array_key_exists('price', $data))          $this->price            = (int)$data['price'];
     if (array_key_exists('quantity', $data))       $this->quantity         = (int)$data['quantity'];
 
     if (self::TYPE_PRODUCT == $this->type) {
       $this->product = new ProductEntity(array('id' => $data['id']));
     }
-
-    if (self::TYPE_SERVICE == $this->type) {
+    else if (self::TYPE_SERVICE == $this->type) {
       $this->service = new ServiceEntity(array('id' => $data['id']));
     }
   }

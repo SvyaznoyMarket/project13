@@ -74,17 +74,8 @@ class orderComponents extends myComponents
    */
   public function executeList()
   {
-    $list = $listProcess = $listReady = $listCancelled = array();
-    foreach (RepositoryManager::getOrder()->getByUserToken($this->getUser()->getGuardUser()->getToken()) as $order)
-    {
-      if ($order->status == Order::STATUS_READY) $listReady[] = $order;
-      elseif ($order->status == Order::STATUS_CANCELLED) $listCancelled[] = $order;
-      else $listProcess[] = $order;
-    }
-    $list = array_merge($listProcess, $listReady, $listCancelled);
-
     $statusList = OrderStatusTable::getInstance()->findAll()->getData();
-    $this->setVar('list', $list, true);
+    $this->setVar('list', RepositoryManager::getOrder()->getByUserToken($this->getUser()->getGuardUser()->getToken()), true);
     $this->setVar('statusList', $statusList, true);
   }
 

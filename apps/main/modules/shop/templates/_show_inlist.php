@@ -1,11 +1,11 @@
-<div class='bShopCard' onclick="window.location='<?php echo $item['url'] ?>'">
-  <img class='bShopCard__eIco' src='<?php if ($item['main_photo']) echo $item['main_photo']['url_small'] ?>' width="162" height="100">
-  <h3 class='bShopCard__eTitle'><?php echo $item['name'] ?></h3>
-  <?php if ($item['is_reconstruction']): ?>
+<div class='bShopCard' onclick="window.location='<?php echo $order['url'] ?>'">
+  <img class='bShopCard__eIco' src='<?php if ($order['main_photo']) echo $order['main_photo']['url_small'] ?>' width="162" height="100">
+  <h3 class='bShopCard__eTitle'><?php echo $order['name'] ?></h3>
+  <?php if ($order['is_reconstruction']): ?>
   <p class='bShopCard__eDescription red'>На реконструкции</p>
-  <?php elseif ($item['regime']) :?>
-  <p class='bShopCard__eDescription'><?php echo 'Работаем '.$item['regime'] ?></p>
+  <?php elseif ($order['regime']) :?>
+  <p class='bShopCard__eDescription'><?php echo 'Работаем '.$order['regime'] ?></p>
   <?php endif ?>
 
-  <a href="<?php echo $item['url'] ?>" class="bShopCard__eView">Подробнее о магазине</a>
+  <a href="<?php echo $order['url'] ?>" class="bShopCard__eView">Подробнее о магазине</a>
 </div>

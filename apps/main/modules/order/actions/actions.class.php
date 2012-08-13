@@ -61,7 +61,6 @@ class orderActions extends myActions
     $this->product->mapValue('cart', array('quantity' => $quantity));
 
     $this->order = new Order();
-    $this->order->User = $this->getUser()->getGuardUser();
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
     $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
     $this->order->shop_id = $this->shop ? $this->shop->id : null;

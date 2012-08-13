@@ -126,12 +126,11 @@ class myGuardSecurityUser extends sfBasicSecurityUser
     $this->setAttribute('token', $user->getToken(), 'guard');
     $this->setAuthenticated(true);
     $this->clearCredentials();
-    $this->addCredentials($user->getAllPermissionNames());
+    $this->addCredentials($user->getPermissionNames());
 
-    // save last login
     $user->setLastLogin(date('Y-m-d H:i:s'));
-    //$user->setCorePush(false);
-    $user->save($con);
+    $user->setLastIp($_SERVER['REMOTE_ADDR']);
+    $r = RepositoryManager::getUser()->update($user);
 
     // remember?
     if ($remember)

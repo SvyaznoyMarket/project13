@@ -49,10 +49,8 @@ class OrderRepository
         $productsById[$product->getId()] = $product;
       }
 
-      $services = array();
       $servicesById = array();
-      RepositoryManager::getService()->getListByIdAsync(function($list) { $services = $list; }, $serviceIds);
-      foreach ($services as $service) {
+      foreach (RepositoryManager::getService()->getListById($serviceIds) as $service) {
         $servicesById[$service->getId()] = $service;
       }
 

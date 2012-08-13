@@ -18,6 +18,9 @@ class UserEntity implements ArrayAccess
   private $phonenumber;
 
   /* @var string */
+  private $homePhonenumber;
+
+  /* @var string */
   private $firstName;
 
   /* @var string */
@@ -53,11 +56,21 @@ class UserEntity implements ArrayAccess
   /* @var string */
   private $occupation;
 
+  /* @var string */
+  private $address;
+
+  /* @var string */
+  private $zipCode;
+
+  /* @var bool */
+  private $subscribed;
+
 
   public function __construct(array $data = array()){
     if(array_key_exists('id', $data))            $this->id          = (int)$data['id'];
     if(array_key_exists('email', $data))         $this->email       = (string)$data['email'];
     if(array_key_exists('mobile', $data))        $this->phonenumber = (string)$data['mobile'];
+    if(array_key_exists('phone', $data))         $this->homePhonenumber = (string)$data['phone'];
     if(array_key_exists('first_name', $data))    $this->firstName   = (string)$data['first_name'];
     if(array_key_exists('last_name', $data))     $this->lastName    = (string)$data['last_name'];
     if(array_key_exists('middle_name', $data))   $this->middleName  = (string)$data['middle_name'];
@@ -69,6 +82,9 @@ class UserEntity implements ArrayAccess
     if(array_key_exists('birthday', $data))      $this->birthday    = (string)$data['birthday'];
     if(array_key_exists('skype', $data))         $this->skype       = (string)$data['skype'];
     if(array_key_exists('occupation', $data))    $this->occupation  = (string)$data['occupation'];
+    if(array_key_exists('address', $data))       $this->address     = (string)$data['address'];
+    if(array_key_exists('zip_code', $data))      $this->zipCode     = (string)$data['zip_code'];
+    if(array_key_exists('is_subscribe', $data))  $this->subscribed  = (string)$data['is_subscribe'];
   }
 
   public function __get($key){
@@ -274,6 +290,22 @@ class UserEntity implements ArrayAccess
   }
 
   /**
+   * @param string $homePhonenumber
+   */
+  public function setHomePhonenumber($homePhonenumber)
+  {
+    $this->homePhonenumber = $homePhonenumber;
+  }
+
+  /**
+   * @return string
+   */
+  public function getHomePhonenumber()
+  {
+    return $this->homePhonenumber;
+  }
+
+  /**
    * @param string $photo
    */
   public function setPhoto($photo)
@@ -322,6 +354,54 @@ class UserEntity implements ArrayAccess
   }
 
   /**
+   * @param string $address
+   */
+  public function setAddress($address)
+  {
+    $this->address = $address;
+  }
+
+  /**
+   * @return string
+   */
+  public function getAddress()
+  {
+    return $this->address;
+  }
+
+  /**
+   * @param string $zipCode
+   */
+  public function setZipCode($zipCode)
+  {
+    $this->zipCode = $zipCode;
+  }
+
+  /**
+   * @return string
+   */
+  public function getZipCode()
+  {
+    return $this->zipCode;
+  }
+
+  /**
+   * @param boolean $isSubscribed
+   */
+  public function setSubscribed($subscribed)
+  {
+    $this->subscribed = $subscribed;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function getSubscribed()
+  {
+    return $this->subscribed;
+  }
+
+  /**
    * @param int $type
    */
   public function setType($type)
@@ -354,7 +434,17 @@ class UserEntity implements ArrayAccess
    */
   public function getName()
   {
-    return $this->getFirstName().' '.$this->getLastName();
+    return implode(' ', array($this->getFirstName(), $this->getLastName()));
+  }
+
+  /**
+   * Returns full name
+   *
+   * @return string
+   */
+  public function getFullName()
+  {
+    return implode(' ', array($this->getLastName(), $this->getFirstName(), $this->getMiddleName()));
   }
 
   public function getPermissionNames()

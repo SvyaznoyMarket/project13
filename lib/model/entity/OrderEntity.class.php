@@ -121,7 +121,7 @@ class OrderEntity implements ArrayAccess
     if (array_key_exists('delivery_type_id', $data))  $this->deliveryType     = new DeliveryTypeEntity(array('id' => $data['delivery_type_id']));
     if (array_key_exists('delivery_type', $data))     $this->deliveryType     = new DeliveryTypeEntity($data['delivery_type']);
     if (array_key_exists('delivery_date', $data))     $this->deliveredAt      = (string)$data['delivery_date'];
-    if (array_key_exists('interval', $data))          $this->deliveryInterval = (string)$data['interval'];
+    if (array_key_exists('interval', $data))          $this->deliveryInterval = $data['interval'];
     if (array_key_exists('shop_id', $data))           $this->shop             = new ShopEntity(array('id' => $data['shop_id']));
     if (array_key_exists('address', $data))           $this->address          = (string)$data['address'];
     if (array_key_exists('geo', $data))               $this->region           = new RegionEntity($data['geo']);
