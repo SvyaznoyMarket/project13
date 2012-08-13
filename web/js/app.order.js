@@ -238,36 +238,41 @@ $(document).ready(function () {
     if( ! 'widget' in creditWidget )
         return
     if( creditWidget.widget === 'direct-credit' ) {
-//console.info('direct-credit')        
-        // fill cart
-        for(var i = creditWidget.vars.items.length - 1; i >= 0; i--) {
-            var item = creditWidget.vars.items[i]
-            dc_getCreditForTheProduct(
-                '4427',
-                creditWidget.vars.number,
-                'addProductToBuyOnCredit',
-                {
-                    name : item.articul,
-                    count: item.quantity,
-                    articul: item.articul,
-                    price: item.price,
-                    type: item.type
-                },
-                function(result){
-                    openWidget()
-                }
-            )
-        }
-        
-        function openWidget() {
-            dc_getCreditForTheProduct(
-                '4427', 
-                creditWidget.vars.number ,// session
-                'orderProductToBuyOnCredit',
-                { order_id: creditWidget.vars.number }
-            )
-        }
+//console.info('direct-credit')
+        $LAB.script( 'JsHttpRequest.js' )
+        .script( 'http://direct-credit.ru/widget/script_utf.js' )
+        .wait( function() { 
+            // fill cart
+            for(var i = creditWidget.vars.items.length - 1; i >= 0; i--) {
+                var item = creditWidget.vars.items[i]
+                dc_getCreditForTheProduct(
+                    '4427',
+                    creditWidget.vars.number,
+                    'addProductToBuyOnCredit',
+                    {
+                        name : item.articul,
+                        count: item.quantity,
+                        articul: item.articul,
+                        price: item.price,
+                        type: item.type
+                    },
+                    function(result){
+                        openWidget()
+                    }
+                )
+            }
+            
+            function openWidget() {
+                dc_getCreditForTheProduct(
+                    '4427', 
+                    creditWidget.vars.number ,// session
+                    'orderProductToBuyOnCredit',
+                    { order_id: creditWidget.vars.number }
+                )
+            }
+        })
     }
+
     var backURL = 'http://' + window.location.hostname
 
     if( creditWidget.widget === 'kupivkredit' ) {
@@ -300,16 +305,18 @@ $(document).ready(function () {
         var callback_decision = function(decision) {
             //console.info( 'Пришел статус: ' + decision )
         }
-
-
-        var vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
-            order: creditWidget.vars.order,
-            sig: creditWidget.vars.sig,
-            callbackUrl: window.location.href,
-            onClose: callback_close, 
-            onDecision: callback_decision 
+        
+        $LAB.script( 'https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js' )
+        .wait( function() {
+            var vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
+                order: creditWidget.vars.order,
+                sig: creditWidget.vars.sig,
+                callbackUrl: window.location.href,
+                onClose: callback_close, 
+                onDecision: callback_decision 
+            })
+            vkredit.openWidget()
         })
-        vkredit.openWidget()
         
     }
 
