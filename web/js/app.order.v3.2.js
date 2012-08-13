@@ -627,7 +627,9 @@ $(document).ready(function() {
             return isValid
         },
 
-        onDeliveryBlockChange: function() {           
+        onDeliveryBlockChange: function() {
+            if ( ! $('.order-delivery-holder:visible').length )
+                return        
             if (1 == $('.order-delivery-holder:visible').length) {
                 $('#payment_method_5-field').show()
                 $('#payment_method_6-field').show()
