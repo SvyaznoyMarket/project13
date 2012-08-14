@@ -538,19 +538,24 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 // console.info(selectedShopBoxShops)
 				// separate 'courier-only' from self-available
 				// get self-available as a hash
-				var data = {}
+				var data = {},
+					tmpv = []
 				for( var box in self.dlvrBoxes() ) {
-					var procBox = self.dlvrBoxes()[box]		
+					var procBox = self.dlvrBoxes()[box]
+// console.info(procBox.itemList())					
 					for( var item =0, list = procBox.itemList(); item < list.length;  ) {
-						var tmpv = []
-						for( tkn in list[item].deliveries )
+						tmpv = []
+						for( tkn in list[item].deliveries ) {
 							if( list[item].deliveries[ tkn ].token.match( 'self_' ) )
 								tmpv.push( list[item].deliveries[ tkn ].token.replace( 'self_', '' ) )
-						data[ list[item].token ] = tmpv
+						}
+// console.info( list[item].token , tmpv )						
+						data[ list[item].token +'' ] = tmpv
 						if( !tmpv.length )
 							item++
 						else
 							procBox.itemList.remove( procBox.itemList()[item] )
+						
 					}
 					
 				}
@@ -659,16 +664,17 @@ console.info(data)
 	}
 
 	function DA( data ) {
+// console.info('DA b')		
 	// e.g. data = {
 	// 	'pr1' : [ '13', '2' ],
 	// 	'pr2' : [ '13', '2' ],
 	// 	'pr3' : [ '3', '2' ],
 	// 	'pr4' : [ '14' ]
-	// }		
+	// }
+		var out = []
 		while( true ) {
 			var shop_items = {},
-				le = 0,
-				out = []
+				le = 0
 			for( var tkn in data ) {
 				for( var i=0, l=data[tkn].length; i<l; i++ ) {
 					if( !shop_items[ data[tkn][i] ] ) {
@@ -684,12 +690,14 @@ console.info(data)
 // console.info(shop_items)
 			
 			var keyMax = keyMaxLong( shop_items )
-			out.push( { shop: keyMax, items: shop_items[ keyMax ] } )
+			out.push( { 'shop': keyMax, 'items': shop_items[ keyMax ] } )
 			for( var tkn in shop_items[ keyMax ] )
 				data[ shop_items[ keyMax ][tkn] ] = []
 			
-// console.info(out, data)
+
 		}
+// console.info(out, data)		
+// console.info('DA e')		
 		return out
 	}
 	/* ---------------------------------------------------------------------------------------- */
