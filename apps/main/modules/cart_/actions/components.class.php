@@ -25,7 +25,6 @@ class cart_Components extends myComponents
    */
   private function getProductServiceList($cart){
 
-    $urls = sfConfig::get('app_product_photo_url');
     $urlsService = sfConfig::get('app_service_photo_url');
 
     $prods = $cart->getProducts();
@@ -37,7 +36,7 @@ class cart_Components extends myComponents
     $productList = array();
     $serviceList = array();
 
-    $prodCb = function($data) use(&$productList, $prods, $urls){
+    $prodCb = function($data) use(&$productList, $prods){
       /** @var $data ProductEntity[] */
 
       foreach($data as $product){
@@ -57,7 +56,7 @@ class cart_Components extends myComponents
           'price' => $product->getPrice(),
           'priceFormatted' =>  number_format($product->getPrice(), 0, ',', ' '),
           'total' => number_format($cartInfo->getTotalPrice(), 0, ',', ' '),
-          'photo' => $urls[1] . $product->getMediaImage(),
+          'photo' => $product->getMediaImageUrl(1),
           'fullObject' => $product,
           'availableForPurchase' => (!$cartInfo->hasError()),
         );
