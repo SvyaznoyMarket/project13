@@ -5001,7 +5001,9 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     *display: inline;
     zoom: 1;
 }
-
+.mBacket{
+  cursor: pointer;
+}
 
 .bBuyingLine dd div{
     margin: 15px 0 0 0;

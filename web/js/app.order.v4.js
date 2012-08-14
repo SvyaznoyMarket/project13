@@ -429,11 +429,16 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 
 		self.deleteItem = function( box, d, e ) {
 			// ajax del 
-			// $.get( d.deleteUrl )
+			$.get( d.deleteUrl, function(){ } )
 			// drop from box
 			box.itemList.remove( d )
 			if( !box.itemList().length )
 				self.dlvrBoxes.remove( box )
+			// check if no items in boxes
+			if( !self.dlvrBoxes().length ) {
+			// refresh page -> server redirect to empty cart
+				document.location.reload()
+			}
 		}
 
 		self.totalSum = ko.computed( function() {
@@ -538,7 +543,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 							item++
 					}
 				}
-// console.info(selectedShopBoxShops)
+console.info(selectedShopBoxShops)
 				// separate 'courier-only' from self-available
 				// get self-available as a hash
 				var data = {},
@@ -565,8 +570,9 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 				// distributive algorithm				
 				var newboxes = DA( data )
 				for(var i=0, l=selectedShopBoxShops.length; i<l; i++)
-				newboxes.push( selectedShopBoxShops[i] )
-// console.info( newboxes )
+					if( selectedShopBoxShops[i].items.length > 0 )
+						newboxes.push( selectedShopBoxShops[i] )
+console.info( newboxes )
 				// build new self-boxes
 				for(var tkn in newboxes ) {
 					var argshop = Model.shops[ newboxes[tkn].shop ]
