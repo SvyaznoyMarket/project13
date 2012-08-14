@@ -524,12 +524,15 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 			} else {
 				/* Select Shop at Zero Step */	
 				// pushing into box items which have selected shop
-				var selectedShopBoxShops = []
+				var selectedShopBoxShops = [ { shop: d.id, items: [] } ]
 				for( var box in self.dlvrBoxes() ) {
 					var procBox = self.dlvrBoxes()[box]
 					for( var item =0; item < procBox.itemList().length;  ) {
 						if( 'self_'+d.id in procBox.itemList()[item].deliveries ) {
-							selectedShopBoxShops.push( procBox.itemList()[item].token )
+							if( procBox.itemList()[item].deliveries['self_'+d.id].dates.length > 1 )
+								selectedShopBoxShops[0].items.push( procBox.itemList()[item].token )
+							else // items which are 'one day' reserve-only 
+								selectedShopBoxShops.push( {  shop: d.id, items: [ procBox.itemList()[item].token ] } )
 							procBox.itemList.remove( procBox.itemList()[item] )
 						} else 
 							item++
@@ -561,7 +564,8 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 				}
 				// distributive algorithm				
 				var newboxes = DA( data )
-				newboxes.push( { shop: d.id, items: selectedShopBoxShops } )
+				for(var i=0, l=selectedShopBoxShops.length; i<l; i++)
+				newboxes.push( selectedShopBoxShops[i] )
 // console.info( newboxes )
 				// build new self-boxes
 				for(var tkn in newboxes ) {
