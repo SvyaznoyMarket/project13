@@ -362,7 +362,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 				}
 			}
 		}
-		//fillUpBoxesFromModel()
+		fillUpBoxesFromModel()
 		
 		self.shopsInPopup = ko.observableArray( [] )
 
@@ -413,6 +413,16 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 			box.itemList.remove( d )
 			if( !box.itemList().length )
 				self.dlvrBoxes.remove( box )
+l2:			for(var i in Model.deliveryTypes) {
+				var tmpDlvr = Model.deliveryTypes[i]
+				for(var j=0, l=tmpDlvr.items.length; j<l; j++) {
+					if( tmpDlvr.items[j] === d.token ) {
+						tmpDlvr.items.splice( j, 1 )
+						break l2
+					}
+				}
+			}
+// console.info(Model)
 			// check if no items in boxes
 			if( !self.dlvrBoxes().length ) {
 			// refresh page -> server redirect to empty cart
@@ -512,18 +522,18 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 				var selectedShopBoxShops = [ { shop: d.id, items: [] } ]
 				for( var box in self.dlvrBoxes() ) {
 					var procBox = self.dlvrBoxes()[box]
-					for( var item =0; item < procBox.itemList().length;  ) {
+					for( var item =0; item < procBox.itemList().length;  ) {				
 						if( 'self_'+d.id in procBox.itemList()[item].deliveries ) {
 							if( procBox.itemList()[item].deliveries['self_'+d.id].dates.length > 1 )
 								selectedShopBoxShops[0].items.push( procBox.itemList()[item].token )
 							else // items which are 'one day' reserve-only 
-								selectedShopBoxShops.push( {  shop: d.id, items: [ procBox.itemList()[item].token ] } )
+								selectedShopBoxShops.push( { shop: d.id, items: [ procBox.itemList()[item].token ] } )
 							procBox.itemList.remove( procBox.itemList()[item] )
 						} else 
 							item++
 					}
 				}
-console.info(selectedShopBoxShops)
+// console.info(selectedShopBoxShops)
 				// separate 'courier-only' from self-available
 				// get self-available as a hash
 				var data = {},
