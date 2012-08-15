@@ -5296,7 +5296,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     *display: inline;
     zoom: 1;
 }
-.bBuyingDates li span{
+.bBuyingDates li .dow{
     top: -18px;
     left: 21px;
     position: absolute;
@@ -5394,7 +5394,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     -moz-border-radius: 5px;
     -o-border-radius: 5px;
 }
-.bBuyingDates__eCurrent span{
+.bBuyingDates__eCurrent .dow{
     color: #ffa901;
 }
 .bBuyingDates__eEnable{

@@ -132,7 +132,7 @@
 			    		<ul class="bBuyingDates">
 			      			<li data-direction="prev" class="bBuyingDates__eLeft order-delivery_date-control"
 			      				data-bind="click: function(data, event) { $root.changeWeek('-1', data, event) }">
-			      				<b></b><span></span>
+			      				<b></b><span class="dow"></span>
 			      			</li>
 			      			<!-- ko foreach: caclDates -->
 							<li class="order-delivery_date"
@@ -141,12 +141,12 @@
 										css: { bBuyingDates__eEnable: $data.enable(),
 												bBuyingDates__eDisable: (!$data.enable()),
 												bBuyingDates__eCurrent: ($data.tstamp == $parent.chosenDate()) }">
-								<da data-bind="text: day"></da> <span data-bind="text: dayOfWeek"></span>
+								<span data-bind="text: day"></span> <span class="dow" data-bind="text: dayOfWeek"></span>
 							</li>
 							<!-- /ko -->
 			                <li data-direction="next" class="bBuyingDates__eRight order-delivery_date-control"
 			                	data-bind="click: function(data, event) { $root.changeWeek('1', data, event) }">
-			                	<b></b><span></span>
+			                	<b></b><span class="dow"></span>
 			                </li>
 					    </ul>
 			  		</div>
