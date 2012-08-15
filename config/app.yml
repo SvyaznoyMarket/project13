@@ -97,21 +97,22 @@ all:
       prefix: cache
 
   payment:
-   default_provider: psbank
-   provider:
-     psbank:
-       terminal: '79036768'
-       merchant: '790367686219999'
-       merchant_name: 'Enter'
-       key: 'C50E41160302E0F5D6D59F1AA3925C45'
-       url: 'http://193.200.10.117:8080/cgi-bin/cgi_link'
-     uniteller:
-       login: 125
-       password: 'OYOTEEl5Fp3YXQSSHKEWeuWM4Gh0IObjAm64RWFHeHtdCsgZ0ChccMmWOpIWNlw0qaa3PshWepTW6WH8'
-       pay_url: 'https://wpay.uniteller.ru/pay/'
-       result_url: 'https://wpay.uniteller.ru/results/'
-       shop_id: '35974-134'
-       return_url: '@payment_callback'
+    enabled: true
+    default_provider: psbank
+    provider:
+      psbank:
+        terminal: '79036768'
+        merchant: '790367686219999'
+        merchant_name: 'Enter'
+        key: 'C50E41160302E0F5D6D59F1AA3925C45'
+        url: 'http://193.200.10.117:8080/cgi-bin/cgi_link'
+      uniteller:
+        login: 125
+        password: 'OYOTEEl5Fp3YXQSSHKEWeuWM4Gh0IObjAm64RWFHeHtdCsgZ0ChccMmWOpIWNlw0qaa3PshWepTW6WH8'
+        pay_url: 'https://wpay.uniteller.ru/pay/'
+        result_url: 'https://wpay.uniteller.ru/results/'
+        shop_id: '35974-134'
+        return_url: '@payment_callback'
 
   js_combine:
     file:     %SF_WEB_DIR%/js/combine.js

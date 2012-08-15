@@ -14,6 +14,10 @@ class PsbankPaymentProvider
     return null == $name ? $this->config : $this->config[$name];
   }
 
+  public function getFormUrl() {
+    return $this->config['url'];
+  }
+
   /**
    *
    * @param $order
