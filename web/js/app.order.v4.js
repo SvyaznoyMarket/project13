@@ -354,45 +354,24 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 			self.dlvrBoxes.push( box )
 		} // mth addBox
 
-		function setComputables() {
-			for( var key in self.dlvrBoxes() ) {
-				var loopBox = self.dlvrBoxes()[key]
-				
-				loopBox.dlvrPrice  = ko.computed(function() {
-
-					var out = 0
-					var bid = this.token
-					for(var i=0, l=this.itemList().length; i<l; i++) {
-						var itemDPrice = this.itemList()[i].deliveries[bid].price
-						if( itemDPrice > out )
-							out = itemDPrice
-					}
-					return out
-				}, loopBox)
-				
-				loopBox.totalPrice = ko.computed(function() {	
-					var out = 0
-					for(var i=0, l=this.itemList().length; i<l; i++)
-						out += this.itemList()[i].total
-//					out += this.dlvrPrice()*1
-					return out
-				}, loopBox)
-			} 
-		} // mth setComputables
-
-		for( var tkn in Model.deliveryTypes ) { // filling up dlvrBoxes
-			if( Model.deliveryTypes[tkn].items.length ) {				
-				addBox ( Model.deliveryTypes[tkn].type, Model.deliveryTypes[tkn].token, Model.deliveryTypes[tkn].items, Model.deliveryTypes[tkn].shop )
+		function fillUpBoxesFromModel() {
+			self.dlvrBoxes.removeAll()
+			for( var tkn in Model.deliveryTypes ) {
+				if( Model.deliveryTypes[tkn].items.length ) {				
+					addBox ( Model.deliveryTypes[tkn].type, Model.deliveryTypes[tkn].token, Model.deliveryTypes[tkn].items, Model.deliveryTypes[tkn].shop )
+				}
 			}
 		}
-		// setComputables()
-
+		//fillUpBoxesFromModel()
+		
 		self.shopsInPopup = ko.observableArray( [] )
+
 		function fillUpShopsFromModel() {
 			self.shopsInPopup.removeAll()
 			for( var key in Model.shops )
 				self.shopsInPopup.push( Model.shops[key] )
 		}
+
 		fillUpShopsFromModel()
 
 		self.chosenShop = ko.observable(null)
@@ -450,6 +429,7 @@ up:				for( var linedate in box.caclDates ) { // Loop for T Interval
 		}, this)
 
 		self.pickCourier = function() {
+			fillUpBoxesFromModel()
 			self.step2( true )
 			self.shopButtonEnable( false )
 			var data = {
