@@ -87,7 +87,18 @@ $(document).ready(function() {
         })	
 	}
 	
-	$('#addressField').find('input').placeholder()
+	// $('#addressField').find('input').placeholder()
+	$('.placeholder-input').focus(function(e) {
+        var el = $(e.target)
+        el.prev('.placeholder').css('border-color', '#FFA901');
+    }).focusout(function(e) {
+        var el = $(e.target)
+        el.prev('.placeholder').css('border-color', '#DDDDDD')
+    })
+
+    $('.placeholder').click(function(e) {
+        $(this).next('.placeholder-input').focus();
+    })
 	
 	var ubahn = [ 'Авиамоторная', 'Автозаводская','Академическая','Александровский сад','Алексеевская','Алтуфьево','Аннино','Арбатская (Арбатско-Покровская линия)','Арбатская (Филевская линия','Аэропорт',
 'Бабушкинская','Багратионовская','Баррикадная','Бауманская','Беговая','Белорусская','Беляево','Бибирево','Библиотека имени Ленина','Битцевский парк','Борисовская',

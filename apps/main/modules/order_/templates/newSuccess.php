@@ -39,6 +39,7 @@
       include_partial('order_/blocks_tmpl')
     ?>  
 
+
   <form id="order-form" style="display:none" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
     <div class='bBuyingInfo'>
       <h2>Информация о счастливом получателе</h2>
@@ -109,7 +110,7 @@
           <div>
             <p></p>
             <span class="placeholder">Улица</span><?php echo $form['address_street']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputLong', 'title' => 'Улица', 'style' => 'width: 315px;')) ?>
-            <span class="placeholder"">Дом</span><?php echo $form['address_number']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Дом', 'style' => 'width: 50px;')) ?>
+            <span class="placeholder">Дом</span><?php echo $form['address_number']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Дом', 'style' => 'width: 50px;')) ?>
           </div>
 
           <div>
