@@ -9,7 +9,7 @@
 ) ?>
 
 <?php include_partial('order_/header', array('title' => 'Финальный шаг :)')) ?>
-
+<div id="adfox920" class="adfoxWrapper"></div>
 
 <input disabled="disabled" id="order-validator" type="hidden" data-value='<?php echo json_encode($jsValidator) ?>' />
 
