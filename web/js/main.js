@@ -57,6 +57,7 @@ $(document).ready(function(){
 	$('#auth-link').click(function() {
 		$('#auth-block').lightbox_me({
 			centered: true,
+			autofocus: true,
 			onLoad: function() {
 				$('#auth-block').find('input:first').focus()
 			}
@@ -445,6 +446,7 @@ $(document).ready(function(){
 	
 	function getRegions() {
 		$('#region-block').lightbox_me( {
+			autofocus: true,
 			onClose: function() {			
 				if( !docCookies.hasItem('geoshop') ) {
 					docCookies.setItem( false, "geoshop", "14974", 31536e3, "/") //moscow city

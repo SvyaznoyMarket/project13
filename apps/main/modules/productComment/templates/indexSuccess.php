@@ -4,7 +4,7 @@
 
 <?php slot('title', $product->getName().': отзывы покупателей') ?>
 
-<?php include_partial('product', array('product' => $product)) ?>
+<?php include_partial('product', array('product' => $product, 'hasProductStockLink' => $hasProductStockLink)) ?>
 
 <p>Если вы затрудняетесь с выбором товара, мы рекомендуем вам узнать мнение и отзывы покупателей о товаре <?php echo $product->getName() ?>, представленные на этой странице. Вы также можете выразить свое мнение о товаре <?php echo $product->getName() ?>, оставив свой отзыв.</p>
 

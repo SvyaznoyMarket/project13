@@ -51,8 +51,12 @@ class order_Actions extends myActions
     //$this->order->region_id = $this->getUser()->getRegion('id');
 
     // вытащить из куки значения для формы, если пользователь неавторизован
-    if (!$user->isAuthenticated())
-    {
+    if ($user->isAuthenticated()) {
+      $this->order->recipient_first_name = $user->getGuardUser()->getFirstName();
+      $this->order->recipient_last_name = $user->getGuardUser()->getLastName();
+      $this->order->recipient_phonenumbers = $user->getGuardUser()->getPhonenumber();
+    }
+    else {
       $cookieValue = $request->getCookie(self::ORDER_COOKIE_NAME);
       if (!empty($cookieValue))
       {
@@ -621,6 +625,11 @@ class order_Actions extends myActions
       }
 
       $serviceItems = array_merge($serviceItems, array_values($servicesForProduct));
+      foreach ($serviceItems as $i => $serviceItem) {
+        if (!$serviceItem['quantity']) {
+          unset($serviceItems[$i]);
+        }
+      }
 
       $order->ProductItem = $productItems;
       $order->ServiceItem = $serviceItems;
@@ -709,13 +718,15 @@ class order_Actions extends myActions
         //@TODO нужно переделать в следующем хотфиксе
         $coreData = array_shift(Core::getInstance()->query('service.get', array('id' => $serviceId, 'expand' => array())));
 
-        $servicesForProduct[$productId][] = array(
-          'id'       => $serviceId,
-          'name'     => $coreData['name'],
-          'token'    => $coreData['token'],
-          'quantity' => $productData->getQuantity(),
-          'price'    => $productData->getPrice(),
-        );
+        if ($productData->getQuantity()) {
+          $servicesForProduct[$productId][] = array(
+            'id'       => $serviceId,
+            'name'     => $coreData['name'],
+            'token'    => $coreData['token'],
+            'quantity' => $productData->getQuantity(),
+            'price'    => $productData->getPrice(),
+          );
+        }
       }
     }
 

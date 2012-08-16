@@ -6,7 +6,9 @@
     <ul>
       <li><a href="<?php echo url_for('productCard', $sf_data->getRaw('product')) ?>">Карточка товара</a></li>
       <li><a href="<?php echo url_for('productComment', $sf_data->getRaw('product')) ?>" class="current">Отзывы пользователей</a></li>
-      <li class="next"><a href="<?php echo url_for('productStock', $sf_data->getRaw('product')) ?>">Где купить в магазинах</a></li>
+      <?php if ($hasProductStockLink): ?>
+        <li class="next"><a href="<?php echo url_for('productStock', $sf_data->getRaw('product')) ?>">Где купить в магазинах</a></li>
+      <?php endif ?>
     </ul>
   </div>
 </div>
