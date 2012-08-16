@@ -25,17 +25,16 @@ class PsbankPaymentProvider
    */
   public function getForm($order)
   {
-    //dump($order, 1);
     $data = array(
       'AMOUNT'     => $order['sum'],
       'CURRENCY'   => 'RUB',
       'ORDER'      => $order['id'],
-      'DESC'       => null,
+      'DESC'       => "Заказ #{$order['number']} на сумму {$order['sum']} руб.",
       'TERMINAL'   => $this->config['terminal'],
       'TRTYPE'     => 1,
       'MERCH_NAME' => $this->config['merchant_name'],
       'MERCHANT'   => $this->config['merchant'],
-      'EMAIL'      => null,
+      'EMAIL'      => 'support@enter.ru',
       'TIMESTAMP'  => gmdate('YmdHis'),
       'NONCE'      => $this->generateNonce(),
       'BACKREF'    => sfContext::getInstance()->getRouting()->generate('order_complete', array('order' => $order['number']), true),
