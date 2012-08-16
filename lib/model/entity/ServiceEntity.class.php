@@ -365,4 +365,9 @@ class ServiceEntity
     );
     return $list;
   }
+
+  public function isInsale() {
+    $region = sfContext::getInstance()->getUser()->getRegion();
+    return $region && $region['has_f1'];
+  }
 }

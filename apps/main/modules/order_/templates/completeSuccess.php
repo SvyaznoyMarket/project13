@@ -17,10 +17,12 @@
 <?php if ($paymentForm): ?>
   <p>Через <span class="timer">5</span> сек. мы автоматически перенаправим Вас на страницу оплаты, если этого не произойдет, пожалуйста, нажмите на кнопку "Оплатить заказ".</p>
   <div class="pt10">
-    <form class="form" action="<?php echo $paymentForm->getUrl() ?>" method="post">
+
+    <form class="form" method="post" action="<?php echo $paymentProvider->getFormUrl() ?>">
       <?php echo $paymentForm ?>
       <input id="pay-button" type="submit" class="button bigbutton" value="Оплатить заказ" />
     </form>
+
   </div>
 
 <?php else: ?>

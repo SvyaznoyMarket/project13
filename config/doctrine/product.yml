@@ -1,6 +1,6 @@
 Creator:
   options:
-    comment: 'Производитель'
+    comment: 'Бренд'
   actAs:
     Timestampable: ~
     Corable:       { push: disable }

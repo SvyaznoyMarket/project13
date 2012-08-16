@@ -56,6 +56,30 @@ class productCommentActions extends myActions
     $this->getResponse()->setTitle($title.' – Enter.ru');
      *
      */
+
+    $this->hasProductStockLink = false;
+    try {
+      $r = CoreClient::getInstance()->query('delivery/calc', array(
+        'geo_id'       => $this->getUser()->getRegion('id'),
+      ), array(
+        'product_list' => array(array(
+          'id'       => $this->product->core_id,
+          'quantity' => 1,
+        )),
+      ));
+    }
+    catch (Exception $e) {
+      $r = null;
+    }
+
+    if ($r && isset($r['product_list'][$this->product->core_id]['delivery_mode_list'])) {
+      foreach ($r['product_list'][$this->product->core_id]['delivery_mode_list'] as $delivery) {
+        if ('self' == $delivery['token']) {
+          $this->hasProductStockLink = true;
+          break;
+        }
+      }
+    }
   }
 
   /**

@@ -1149,7 +1149,12 @@ $(document).ready(function() {
     if( typeof( $.mask ) !== 'undefined' ) {
 		$.mask.definitions['n'] = "[()0-9\ \-]"
 		$("#order_recipient_phonenumbers").mask("8nnnnnnnnnnnnnnnnn", { placeholder: " ", maxlength: 10 } )
-        $("#order_recipient_phonenumbers").val('8')
+        var predefPhone = document.getElementById('order_recipient_phonenumbers').getAttribute('value')
+        if( predefPhone && predefPhone != '' )
+            $('#order_recipient_phonenumbers').val( predefPhone + '       ' )
+        else   
+            $("#order_recipient_phonenumbers").val('8')
+
         
         $.mask.definitions['*'] = "[0-9*]"
         $("#order_sclub_card_number").mask("* ****** ******", { placeholder: "*" } )
@@ -1165,7 +1170,19 @@ $(document).ready(function() {
         })	
 	}
 	
-	$('#addressField').find('input').placeholder()
+	//$('#addressField').find('input').placeholder()
+
+    $('.placeholder-input').focus(function(e) {
+        var el = $(e.target)
+        el.prev('.placeholder').css('border-color', '#FFA901');
+    }).focusout(function(e) {
+        var el = $(e.target)
+        el.prev('.placeholder').css('border-color', '#DDDDDD')
+    })
+
+    $('.placeholder').click(function(e) {
+        $(this).next('.placeholder-input').focus();
+    })
 	
 	var ubahn = [ 'Авиамоторная', 'Автозаводская','Академическая','Александровский сад','Алексеевская','Алтуфьево','Аннино','Арбатская (Арбатско-Покровская линия)','Арбатская (Филевская линия','Аэропорт',
 'Бабушкинская','Багратионовская','Баррикадная','Бауманская','Беговая','Белорусская','Беляево','Бибирево','Библиотека имени Ленина','Битцевский парк','Борисовская',

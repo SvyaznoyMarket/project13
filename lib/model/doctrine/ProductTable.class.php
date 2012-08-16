@@ -415,7 +415,7 @@ class ProductTable extends myDoctrineTable
       }
     }
 
-    // производитель
+    // бренд
     if ($filter['creator'])
     {
       if (is_array($filter['creator']))
@@ -563,7 +563,7 @@ class ProductTable extends myDoctrineTable
       }
     }
 
-    // производитель
+    // бренд
     if ($filter['creator'])
     {
       if (is_array($filter['creator']))
@@ -965,7 +965,7 @@ class ProductTable extends myDoctrineTable
 
     if (isset($product['main_photo'])) {
         $urls = sfConfig::get('app_product_photo_url');
-        return $urls[$view].$product['main_photo'];
+        return ProductMediaEntity::getHost().$urls[$view].$product['main_photo'];
     }
     return null;
   }

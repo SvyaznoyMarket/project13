@@ -42,7 +42,8 @@ $json = array(
         </strong>
       </div>
     <?php endif ?>
-    <?php if($service->getIsDelivery()): ?>
+
+    <?php if ($service->isInsale() && $service->getIsDelivery()): ?>
       <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service->getId())); ?>">Купить услугу</a>
     <?php elseif($service->getIsInShop()): ?>
       <b>Доступна в магазине</b>

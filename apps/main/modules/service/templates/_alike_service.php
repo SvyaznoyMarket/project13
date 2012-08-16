@@ -44,7 +44,7 @@
           'url' => url_for('cart_service_add', array('service' => $alike->getId())),
         ) ?>
 
-        <?php if ($alike->getIsInShop()) : ?>
+        <?php if ($alike->isInsale() && $alike->getIsDelivery()) : ?>
           <form action="<?php echo url_for('cart_service_add', array('service' => $alike->getId())) ?>"/>
             <input data-value='<?php echo json_encode($json) ?>' type="submit" class="button yellowbutton" value="Купить услугу"/>
           </form>

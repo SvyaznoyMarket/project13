@@ -17,32 +17,21 @@ class wordpressActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-      $sfWPProxy = SF_WP_Proxy::getInstance();
-      $this->wpContent = $sfWPProxy->getContent();
+      $page = $request->getParameter('page', 'about_company');
 
-      $this->forward404If(!$sfWPProxy->getPost());
+      $wpRequest = new WPRequest();
+      $wpRequest->setUrl(sfConfig::get('app_wp_url'));
+      $wpResponse = $wpRequest->send($page);
+      #@TODO: test it!
+      $this->forward404If(!$wpResponse);
 
-      $breadCrumbElementList = array();
-      $currentPage = $sfWPProxy->getPost();
-      while(!empty($currentPage->post_parent))
-      {
-          $parentPage = $sfWPProxy->getPage($currentPage->post_parent);
-          array_unshift($breadCrumbElementList, array('name' => $parentPage->post_title, 'url' => $sfWPProxy->getPermalink($parentPage->ID)));
-          $currentPage = $parentPage;
-      }
-
-      $this->pageTitle = $sfWPProxy->getTitle('', '', False);
-      $breadCrumbElementList[] = array('name' => $this->pageTitle);
-      $this->setVar('breadCrumbElementList', $breadCrumbElementList);
-
+      $this->wpContent = $wpResponse['content'];
+      $this->wpTitle = $wpResponse['title'];
+      $this->getResponse()->setTitle($wpResponse['title']);
       $this->getRequest()->setParameter('_template', 'infopage');
-      $this->getResponse()->setTitle($this->pageTitle);
-
-      $layout = $sfWPProxy->getCurrentLayout();
-
-      if(!empty($layout))
+      if(!empty($wpResponse['layout']))
       {
-          $this->setLayout($layout);
+          $this->setLayout($wpResponse['layout']);
       }
   }
 }
