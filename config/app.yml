@@ -198,7 +198,7 @@ live:
         terminal: '20097201'
         merchant: '000541120097201'
         merchant_name: 'Enter'
-        key: 'FD5AA847574BB8EEFBF8C6C14CBCA453'
+        key: 'FD5AAE47574BB8EEFBF8C6C14CBCA453'
         url: 'https://3ds.payment.ru/cgi-bin/cgi_link'
 
   rediska:
