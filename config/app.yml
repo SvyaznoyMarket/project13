@@ -192,6 +192,15 @@ live:
       consumer_key: s7urupe7Efrus8un
       signature: mEbradRUBruprUT7ukuvAxupraCrEcuk
 
+  payment:
+    provider:
+      psbank:
+        terminal: '20097201'
+        merchant: '000541120097201'
+        merchant_name: 'Enter'
+        key: 'FD5AA847574BB8EEFBF8C6C14CBCA453'
+        url: 'https://3ds.payment.ru/cgi-bin/cgi_link'
+
   rediska:
     default:
       servers:
