@@ -8,6 +8,19 @@ all:
     result_cache:        true   # кешировать результаты запросов
     result_cache_prefix: 'dql:' # префикс ключей в кеше
 
+  media_host:
+    url:
+      - 'http://fs01.enter.ru'
+      - 'http://fs02.enter.ru'
+      - 'http://fs03.enter.ru'
+      - 'http://fs04.enter.ru'
+      - 'http://fs05.enter.ru'
+      - 'http://fs06.enter.ru'
+      - 'http://fs07.enter.ru'
+      - 'http://fs08.enter.ru'
+      - 'http://fs09.enter.ru'
+      - 'http://fs10.enter.ru'
+
   banner:
     timeout: 6000
     image_url:
@@ -23,14 +36,14 @@ all:
     max_items_on_category:  18                      # максимально количество записей для списка товаров в категории
     comment_helpful_cookie: product_comment_helpful
     photo_url:
-      - 'http://fs01.enter.ru/1/1/60/'
-      - 'http://fs01.enter.ru/1/1/120/'
-      - 'http://fs01.enter.ru/1/1/163/'
-      - 'http://fs01.enter.ru/1/1/500/'
-      - 'http://fs01.enter.ru/1/1/2500/'
+      - '/1/1/60/'
+      - '/1/1/120/'
+      - '/1/1/163/'
+      - '/1/1/500/'
+      - '/1/1/2500/'
     photo_3d_url:
-      - 'http://fs01.enter.ru/1/2/500/'
-      - 'http://fs01.enter.ru/1/2/2500/'
+      - '/1/2/500/'
+      - '/1/2/2500/'
 
   product_label:
     photo_url:
@@ -160,6 +173,8 @@ all:
         secret_key: 'a47cc49da1835cf1f010ced1ac7be318'
         api_url: 'http://www.appsmail.ru/platform/api'
 
+  wp:
+    url: 'http://content.ent3.ru/'
 
 
 live:
@@ -221,6 +236,9 @@ live:
 
   welcome:
     enabled: true
+
+  wp:
+    url: 'http://content.enter.ru'
 
 live_dev:
   open_auth:
