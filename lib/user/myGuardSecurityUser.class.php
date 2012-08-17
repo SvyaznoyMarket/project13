@@ -115,7 +115,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   /**
    * Signs in the user on the application.
    *
-   * @param GuardUser $user The GuardUser id
+   * @param UserEntity $user The user
    * @param boolean $remember Whether or not to remember the user
    * @param Doctrine_Connection $con A Doctrine_Connection object
    */
@@ -123,18 +123,19 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   {
     // signin
     $this->setAttribute('user_id', $user->getId(), 'guard');
+    $this->setAttribute('token', $user->getToken(), 'guard');
     $this->setAuthenticated(true);
     $this->clearCredentials();
-    $this->addCredentials($user->getAllPermissionNames());
+    $this->addCredentials($user->getPermissionNames());
 
-    // save last login
     $user->setLastLogin(date('Y-m-d H:i:s'));
-    //$user->setCorePush(false);
-    $user->save($con);
+    $user->setLastIp($_SERVER['REMOTE_ADDR']);
+    $r = RepositoryManager::getUser()->update($user);
 
     // remember?
     if ($remember)
     {
+      // TODO: передалать
       $expiration_age = sfConfig::get('app_guard_remember_key_expiration_age', 15 * 24 * 3600);
 
       // remove old keys
@@ -192,16 +193,15 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   }
 
   /**
-   * Returns the related sfGuardUser.
+   * Returns the related UserEntity.
    *
-   * @return sfGuardUser
+   * @return UserEntity
    */
   public function getGuardUser()
   {
-    if (!$this->user && $id = $this->getAttribute('user_id', null, 'guard'))
+    if (!$this->user && $token = $this->getAttribute('token', null, 'guard'))
     {
-      $this->user = UserTable::getInstance()->getById($id);
-
+      $this->user = RepositoryManager::getUser()->getByToken($token);
       if (!$this->user)
       {
         // the user does not exist anymore in the database
@@ -209,6 +209,8 @@ class myGuardSecurityUser extends sfBasicSecurityUser
 
         throw new sfException('The user does not exist anymore in the database.');
       }
+
+      $this->user->setToken($token);
     }
 
     return $this->user;

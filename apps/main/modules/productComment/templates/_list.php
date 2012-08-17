@@ -1,8 +1,8 @@
 
-<?php $recomendStat = $product->getRatingStat() ?>
+<?php $recomendStat = $item->getRatingStat() ?>
 
 <!-- Response -->
-<h2 class="bold"><?php echo $product->name ?> - Отзывы покупателей (<?php echo count($list)?>)</h2>
+<h2 class="bold"><?php echo $item->name ?> - Отзывы покупателей (<?php echo count($list)?>)</h2>
 <div class="line pb15"></div>
 <table class="gradetable fl ml20">
 <thead>
@@ -34,7 +34,7 @@
 	</tr>
 </tbody>
 </table>
-<?php $grades = $product->getUsersRates() ?>
+<?php $grades = $item->getUsersRates() ?>
 <?php if (count($grades) > 1): ?>
 <table class="gradetable fr mr20">
 <thead>

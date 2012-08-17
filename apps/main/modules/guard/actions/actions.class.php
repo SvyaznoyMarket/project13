@@ -44,7 +44,7 @@ class guardActions extends myActions
       if ($this->form->isValid())
       {
         $values = $this->form->getValues();
-        $this->getUser()->signin($values['user'], array_key_exists('remember', $values) ? $values['remember'] : false);
+        $this->getUser()->signIn($values['user'], array_key_exists('remember', $values) ? $values['remember'] : false);
 
         if ($request->isXmlHttpRequest())
         {
@@ -56,7 +56,6 @@ class guardActions extends myActions
                 'first_name'  => $values['user']['first_name'],
                 'last_name'   => $values['user']['last_name'],
                 'middle_name' => $values['user']['middle_name'],
-                'nickname'    => $values['user']['nickname'],
                 'gender'      => $values['user']['gender'],
                 'birthday'    => $values['user']['birthday'],
                 'address'     => $values['user']['address'],
@@ -200,43 +199,36 @@ class guardActions extends myActions
   {
     if (!$this->getUser()->isAuthenticated()) $this->redirect('user_signin');
 
-    $this->getUser()->getGuardUser()->refresh();
-    $this->userProfile = $this->getUser()->getGuardUser()->getData();
-    $this->form = new UserFormChangePassword($this->getUser()->getGuardUser());
+    $this->form = new UserFormChangePassword($this->user);
   }
 
   public function executeChangePasswordSave($request)
   {
     if (!$this->getUser()->isAuthenticated()) $this->redirect('user_signin');
 
-    $this->getUser()->getGuardUser()->refresh();
-    $this->userProfile = $this->getUser()->getGuardUser()->getData();
-    $this->form = new UserFormChangePassword( $this->getUser()->getGuardUser() );
-    $data = $request->getParameter($this->form->getName());
-    $this->form->bind($data);
+    $this->form = new UserFormChangePassword();
+    $this->form->bind($request[$this->form->getName()]);
 
     $this->setTemplate('changePassword');
 
     if ($this->form->isValid())
     {
+      //dump($this->form->getValues(), 1);
       try
       {
         //$this->form->getObject()->setCorePush(false);
         $user = $this->getUser()->getGuardUser();
-        $coreId = $user->core_id;
-        $data['email'] = $user->email;
-        $data['mobile'] = $user->phonenumber;
-        #print_r($data);
-        //$result = $this->form->save();
-        #var_dump($result);
-        Core::getInstance()->changePassword($coreId,$data);
-        #if (!$result) $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
+
+        $r = CoreClient::getInstance()->query('user/change-password', array(
+          'token'        => $user->getToken(),
+          'password'     => $this->form->getValue('password_old'),
+          'new_password' => $this->form->getValue('password_new'),
+        ));
 
         $this->setTemplate('changePasswordOk');
       }
       catch (Exception $e)
       {
-        //echo $e->getMessage();
         $this->setVar('error', 'К сожалению, сохранить пароль не удалось.', true);
         $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
         $this->setTemplate('changePassword');
@@ -367,7 +359,6 @@ class guardActions extends myActions
         $this->user->fromArray(array(
           'email'       => $this->form->getValue('email'),
           'phonenumber' => $this->form->getValue('phonenumber'),
-          'nickname'    => $this->userProfile->getNickname(),
           'last_name'   => $this->userProfile->getLastName(),
           'first_name'  => $this->userProfile->getFirstName(),
           'photo'       => $this->userProfile->getPhoto(),
