@@ -407,17 +407,18 @@ class order_Actions extends myActions
         $order['service'] = array();
       }
 
-    } if (isset($order)) unset($order);
+    }
+    if (isset($order)) unset($order);
 
     //dump($orders, 1);
 
 
     $this->paymentForm = false;
+
     // онлайн оплата?
     if (1 == count($orders) && empty($request['Order_ID']))
     {
       $order = $orders[0];
-
 
       //$paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
       $paymentMethod = RepositoryManager::getPaymentMethod()->getById($order['payment_id']);
@@ -426,6 +427,7 @@ class order_Actions extends myActions
       if ($paymentMethod->getIsOnline()) {
         $provider = $this->getPaymentProvider();
         $this->paymentForm = $provider->getForm($order);
+
       } elseif ($paymentMethod->isCredit() ) {
           $isCredit = true;
           //print_r($order);

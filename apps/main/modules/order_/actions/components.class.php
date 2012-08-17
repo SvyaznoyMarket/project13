@@ -84,6 +84,7 @@ class order_Components extends myComponents
     $this->setVar('paymentMethodList', $paymentMethodList, true);
 
     $creditBankList = RepositoryManager::getCreditBank()->getList();
+
     $this->setVar('creditBankList', $creditBankList, true);
     $jsonBankData = array();
     foreach ($creditBankList as $bank) {
