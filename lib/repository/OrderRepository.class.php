@@ -26,6 +26,9 @@ class OrderRepository
 
     $result = $this->coreClient->query('order/get', array('token' => $token));
     if ($result) {
+      // сортировка заказов в обратном порядке
+      $result = array_reverse($result);
+
       $productIds = array();
       $serviceIds = array();
 
