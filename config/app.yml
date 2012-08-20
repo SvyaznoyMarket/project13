@@ -110,9 +110,9 @@ all:
   credit:
    provider:
      kupivkredit:
-       partnerId: '1-178YO4Z'
-       partnerName: 'ООО «РОГА И КОПЫТА»'
-       signature: '321ewq'
+       partnerId: '1-6ADAEAT'
+       partnerName: 'ООО «Enter»'
+       signature: 'enter-secret-werj7537'
 
   js_combine:
     file:     %SF_WEB_DIR%/js/combine.js

@@ -306,7 +306,7 @@ $(document).ready(function () {
             //console.info( 'Пришел статус: ' + decision )
         }
         
-        $LAB.script( 'https://kupivkredit-test-fe.tcsbank.ru:8100/widget/vkredit.js' )
+        $LAB.script( 'https://www.kupivkredit.ru/widget/vkredit.js')
         .wait( function() {
             var vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
                 order: creditWidget.vars.order,
