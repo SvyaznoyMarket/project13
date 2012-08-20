@@ -1,1 +1,1 @@
-<h1><?php echo $item ?></h1>
+<h1><?php echo $product ?></h1>

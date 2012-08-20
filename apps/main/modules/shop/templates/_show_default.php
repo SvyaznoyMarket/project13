@@ -1,5 +1,5 @@
 <?php foreach (array('id', 'name', 'latitude', 'longitude') as $i): ?>
-  <input type="hidden" name="shop[<?php echo $i ?>]" value="<?php echo $order[$i] ?>" />
+  <input type="hidden" name="shop[<?php echo $i ?>]" value="<?php echo $item[$i] ?>" />
 <?php endforeach ?>
 
 
@@ -12,7 +12,7 @@
 
     <div class='bMap__eScrollWrap'>
 
-      <?php $i = 0; $count = count($order['photos']); foreach ($order['photos'] as $photo): $i++ ?>
+      <?php $i = 0; $count = count($item['photos']); foreach ($item['photos'] as $photo): $i++ ?>
       <div class="bMap__eContainer<?php if (1 == $i) echo ' first' ?> map-image-link">
         <img class="bMap__eImgSmall" src="<?php echo $photo['url_small'] ?>" />
         <div class='bMap__eImgBig'><img src="<?php echo $photo['url_big'] ?>"></div>
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <input id="map-panorama" type="hidden" data-swf="<?php echo $order['panorama']['swf'] ?>" data-xml="<?php echo $order['panorama']['xml'] ?>" />
+  <input id="map-panorama" type="hidden" data-swf="<?php echo $item['panorama']['swf'] ?>" data-xml="<?php echo $item['panorama']['xml'] ?>" />
 </div>
 <!-- /bMap -->
 
@@ -39,23 +39,23 @@
 <div class='bMapInfo'>
   <div class='bMapInfo__eIco mShop'></div>
   <div class='bMapInfo__eText'>
-    <h2 class='bMapInfo__eTitle'><?php echo $order['address'] ?></h2>
+    <h2 class='bMapInfo__eTitle'><?php echo $item['address'] ?></h2>
     <p class='bMapInfo__eP'>
       <span class='bMapInfo__eSpan mBig'>
 
-        <?php if($order['is_reconstruction']): ?>
+        <?php if($item['is_reconstruction']): ?>
         <span class="red">На реконструкции</span><br />
-        <?php elseif($order['regime']): ?>
-        Работаем <?php echo $order['regime'] ?><br />
+        <?php elseif($item['regime']): ?>
+        Работаем <?php echo $item['regime'] ?><br />
         <?php endif ?>
-        <?php if ($order['phonenumbers']): ?>
-        Телефон<?php echo false !== strpos($order['phonenumbers'], ',') ? 'ы' : '' ?>: <?php echo $order['phonenumbers'] ?><br />
+        <?php if ($item['phonenumbers']): ?>
+        Телефон<?php echo false !== strpos($item['phonenumbers'], ',') ? 'ы' : '' ?>: <?php echo $item['phonenumbers'] ?><br />
         <?php endif ?>
       </span>
     </p>
     <p class='bMapInfo__eP'>
       <span class='bMapInfo__eSpan mSmall'>
-        <?php echo $order['description'] ?>
+        <?php echo $item['description'] ?>
       </span>
     </p>
 
@@ -69,21 +69,21 @@
   <div class='bMapInfo__eText'>
     <h2 class='bMapInfo__eTitle'>Как добраться</h2>
 
-    <?php if ($order['way_walk']): ?>
+    <?php if ($item['way_walk']): ?>
     <p class='bMapInfo__eP'>
       <span class='bMapInfo__eSpan mSmall'>
         <b>Проезд на городском транспорте</b><br>
-        <?php echo $order['way_walk'] ?>
+        <?php echo $item['way_walk'] ?>
       </span>
     </p>
     <?php endif ?>
 
-    <?php if ($order['way_auto']): ?>
+    <?php if ($item['way_auto']): ?>
     <p class='bMapInfo__eP'>
       <span class='bMapInfo__eSpan mSmall'>
 
         <b>Проезд на авто</b><br>
-        <?php echo $order['way_auto'] ?>
+        <?php echo $item['way_auto'] ?>
       </span>
     </p>
     <?php endif ?>

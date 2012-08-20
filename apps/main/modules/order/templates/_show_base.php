@@ -68,5 +68,5 @@
 
 <?php include_component('cart', 'show') ?>
 
-<p>Итого: <?php include_partial('default/sum', array('sum' => $order['sum'])) ?></p>
+<p>Итого: <?php include_partial('default/sum', array('sum' => $item['sum'])) ?></p>
 <?php endif ?>

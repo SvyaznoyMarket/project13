@@ -68,23 +68,23 @@
         <div class="numerbox mInlineBlock mVAMiddle">
           <?php if ($service['quantity'] > 1) { ?>
           <a
-            href="<?php echo url_for('cart_service_add', array('service' => $service['id'], 'quantity' => -1, 'product' => $item['id'])); ?>">
+            href="<?php echo url_for('cart_service_add', array('service' => $service['id'], 'quantity' => -1, 'product' => $product['id'])); ?>">
             <b title="Уменьшить" class="ajaless"></b>
           </a>
           <?php } else { ?>
           <a href="#"
-             ref="<?php echo url_for('cart_service_add', array('service' => $service['id'], 'quantity' => -1, 'product' => $item['id'])); ?>">
+             ref="<?php echo url_for('cart_service_add', array('service' => $service['id'], 'quantity' => -1, 'product' => $product['id'])); ?>">
             <b title="Уменьшить" class="ajaless"></b>
           </a>
           <?php } ?>
           <span class="ajaquant"><?php echo $service['quantity'] ?> шт.</span>
           <a
-            href="<?php echo url_for('cart_service_add', array('service' => $service['id'], 'product' => $item['id'], 'quantity' => 1)); ?>">
+            href="<?php echo url_for('cart_service_add', array('service' => $service['id'], 'product' => $product['id'], 'quantity' => 1)); ?>">
             <b title="Увеличить" class="ajamore"></b>
           </a>
         </div>
         <a class="button whitelink ml5 mInlineBlock mVAMiddle"
-           href="<?php echo url_for('cart_service_delete', array('service' => $service['id'], 'product' => $item['id'])); ?>">Отменить</a>
+           href="<?php echo url_for('cart_service_delete', array('service' => $service['id'], 'product' => $product['id'])); ?>">Отменить</a>
       </td>
     </tr>
       <?php endforeach; ?>
@@ -100,6 +100,6 @@
 <?php } ?>
 
 <?php
-  include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $item, 'servListId' => $servListId, 'parentAction' => $this->getActionName()))
+  include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName()))
   ?>
 <?php endif ?>

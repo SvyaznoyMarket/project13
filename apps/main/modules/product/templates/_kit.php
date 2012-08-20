@@ -7,7 +7,7 @@ $view = $request->getParameter('view', isset($view) ? $view : null);
 
 <?php if (!$empty): ?>
 <?php include_component('product', 'pagination', array('pager' => $productPager)) ?>
-<h2 class="bold fl"><?php echo $item->name ?> включает в себя:</h2>
+<h2 class="bold fl"><?php echo $product->name ?> включает в себя:</h2>
 
 <?php if (!$empty && !(isset($list_view) && false === $list_view)): ?>
   <?php include_component('product', 'list_view') ?>
