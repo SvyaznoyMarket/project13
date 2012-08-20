@@ -100,6 +100,7 @@
 
     <div id="mixmarket" class="jsanalytics"></div>
     <div id="gooReMaSuccess" class="jsanalytics"></div>
+    <div id="marketgidOrderSuccess" class="jsanalytics"></div>
 
     <?php foreach ($orders as $i => $order): 
       $jsonOrdr = array (

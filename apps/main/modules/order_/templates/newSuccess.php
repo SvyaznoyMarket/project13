@@ -196,7 +196,7 @@
 
 <?php include_partial('order_/footer') ?>
 
-
+<div id="marketgidOrder" class="jsanalytics"></div>
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
   <div id="heiasOrder" data-vars="<?php echo $sf_user->getCart()->getSeoCartArticle() ?>" class="jsanalytics"></div>
 

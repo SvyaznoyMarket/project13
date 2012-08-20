@@ -83,5 +83,6 @@ if ($rootCat) {
 ?>
 
 <div id="heiasProduct" data-vars="<?php echo $product->getId(); ?>" class="jsanalytics"></div>
+<div id="marketgidProd" class="jsanalytics"></div>
 
 <?php end_slot() ?>
