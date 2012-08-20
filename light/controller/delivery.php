@@ -50,8 +50,14 @@ class deliveryController
 
     $return['currentDate'] = date('Y-m-d');
 
-    $response->setContentType('application/json');
-    $response->setContent(json_encode($return));
+    #$response->setContentType('application/json');
+    #$response->setContent(json_encode($return));
+
+    $renderer = App::getHtmlRenderer();
+    $renderer->setPage('empty');
+
+    $response->setContent($renderer->render());
+
     TimeDebug::end('controller:delivery:ProductDeliveryJson');
   }
 

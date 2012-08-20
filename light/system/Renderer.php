@@ -82,6 +82,13 @@ class HtmlRenderer extends Renderer{
    */
   private $title;
 
+  private $layoutPath = 'layout/';
+  private $layout = 'layout';
+
+  private $parameterList = array();
+
+  private $page;
+
   /**
    * @static
    * @return Renderer
@@ -175,6 +182,31 @@ class HtmlRenderer extends Renderer{
       Logger::getLogger('Renderer')->error($e->getMessage());
       return '#';
     }
+  }
+
+  public function addParameter($parameterName, $parameterValue)
+  {
+      $this->parameterList[$parameterName] = $parameterValue;
+  }
+
+  public function setPage($page)
+  {
+      $this->page = $page;
+  }
+
+  public function setLayout($layout)
+  {
+      $this->layout = $layout;
+  }
+
+  public function render()
+  {
+      $filler = App::getFiller($this->layout);
+      $filler?$filler->run():Null;
+
+      $this->parameterList['page'] = $this->page;
+
+      return $this->renderFile($this->layoutPath . $this->layout, $this->parameterList);
   }
 
 }

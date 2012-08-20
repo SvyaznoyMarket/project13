@@ -34,4 +34,10 @@ return array(
   array('/shops/<regionToken>'               , 'shop.regionList'), //@TODO реализовать, пока для генерации урлов
   array('/private/'                          , 'user.index'), //@TODO реализовать, пока для генерации урлов
   array('/<pageToken>'                       , 'staticPage.content'), //@TODO реализовать, пока для генерации урлов
+  array('/region/change/<region>'            , 'region.change'), //@TODO реализовать, пока для генерации урлов
+  array('/cart/'                             , 'cart.index'), //@TODO реализовать, пока для генерации урлов
+  array('/login/<provider>'                  , 'user.signin'), //@TODO реализовать, пока для генерации урлов
+  array('/logout'                            , 'user.logout'), //@TODO реализовать, пока для генерации урлов
+  array('/region/autocomplete/<type>'        , 'region.autocomplete'), //@TODO реализовать, пока для генерации урлов
+  array('/region/change/<region>'            , 'region.change'), //@TODO реализовать, пока для генерации урлов
 );

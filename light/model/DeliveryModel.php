@@ -123,9 +123,10 @@ class DeliveryModel
 
     TimeDebug::start('DeliveryModel:getProductDeliveries:dataConvert');
 
-    $productData = array_pop($data['product_list']);
+    $arr = isset($data['product_list'])?$data['product_list']:array();
+    $productData = array_pop($arr);
     $productDeliveryListData = $productData['delivery_mode_list'];
-    foreach($productDeliveryListData as $productDeliveryData)
+    foreach((array)$productDeliveryListData as $productDeliveryData)
     {
         $shopDataList = array();
 

@@ -34,6 +34,8 @@ class CategoryShortData
    */
   private $position;
 
+  private $isShownInMenu;
+
   /**
    * @param int $id
    */
@@ -112,5 +114,15 @@ class CategoryShortData
   public function getPosition()
   {
     return $this->position;
+  }
+
+  public function setIsShownInMenu($isShownInMenu)
+  {
+      $this->isShownInMenu = $isShownInMenu;
+  }
+
+  public function getIsShownInMenu()
+  {
+      return (bool)$this->isShownInMenu;
   }
 }

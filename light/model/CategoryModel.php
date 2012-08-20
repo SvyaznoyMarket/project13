@@ -87,9 +87,10 @@ class CategoryModel
       $category->setId($categoryArray['id']);
       $category->setLink($categoryArray['link']);
       $category->setName($categoryArray['name']);
-      $category->setPosition($categoryArray['position']);
+      $category->setIsShownInMenu($categoryArray['is_shown_in_menu']);
+      #$category->setPosition($categoryArray['position']);
       $category->setToken($categoryArray['token']);
-      $return[$categoryArray['position']] = $category;
+      $return[] = $category;
     }
 
     return array_values($return);

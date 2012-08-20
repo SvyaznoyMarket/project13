@@ -4,6 +4,8 @@ namespace light;
 if(!class_exists('symfonyConfig')){
   require_once(ROOT_PATH.'lib/symfonyConfig.php');
 }
+
+global $appConfig;
 $appConfig = symfonyConfig::parseConfig('app.yml', 'live');
 $coreConfig = $appConfig->get('app_core_config');
 $onlineCall = $appConfig->get('app_online_call');
@@ -21,3 +23,15 @@ define('DB_HOST', '10.20.33.2');
 define('DB_NAME', 'enter');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'qazwsxedc');
+define('IS_PRODUCTION', True);
+define('WP_URL', 'http://content.enter.ru/');
+
+/**
+ * Owned ^^
+ */
+function getOpenAuthProvider()
+{
+    global $appConfig;
+    return $appConfig->get('app_open_auth_provider');
+}
+

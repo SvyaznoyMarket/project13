@@ -2,9 +2,11 @@
 namespace light;
 use Logger;
 require_once(ROOT_PATH.'lib/coreClient/CoreClient.php');
+require_once(ROOT_PATH.'lib/WPRequest.php');
 require_once(ROOT_PATH.'system/Response.php');
 require_once(ROOT_PATH.'system/Request.php');
 require_once(ROOT_PATH.'lib/log4php/Logger.php');
+require_once 'filler.php';
 
 class App{
 
@@ -14,6 +16,8 @@ class App{
   private static $Router = Null;
 
   private static $sessionStarted = false;
+
+  private static $filler;
 
   /**
    * @var array
@@ -54,6 +58,10 @@ class App{
     }
 
     Logger::configure(LOGGER_CONFIG_PATH); //В отдельную константу вынесено - что бы можно было иметь разные конфиги для dev и prod
+
+    $filler = Filler::getInstance();
+    $filler->setFilePath(VIEW_PATH . 'filler');
+    self::$filler = $filler;
   }
 
   /**
@@ -205,5 +213,10 @@ class App{
       self::$modelCollection[$className] = new $className();
     }
     return self::$modelCollection[$className];
+  }
+
+  public static function getFiller($fillerName)
+  {
+      return self::$filler->get($fillerName);
   }
 }
