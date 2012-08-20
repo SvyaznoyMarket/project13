@@ -67,6 +67,7 @@ class UserEntity implements ArrayAccess
 
 
   public function __construct(array $data = array()){
+    if(array_key_exists('token', $data))         $this->token       = (string)$data['token'];
     if(array_key_exists('id', $data))            $this->id          = (int)$data['id'];
     if(array_key_exists('email', $data))         $this->email       = (string)$data['email'];
     if(array_key_exists('mobile', $data))        $this->phonenumber = (string)$data['mobile'];

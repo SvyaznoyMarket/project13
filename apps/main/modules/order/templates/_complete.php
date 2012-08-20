@@ -85,17 +85,6 @@
 
   <div class="bFormB2">
 
-    <?php if ($rememberMe): ?>
-    <div class="fl">
-      <form id="basic_register-form" method="post" action="<?php echo url_for('user_basicRegister') ?>">
-        <div class="form-content">
-          <?php echo $form ?>
-        </div>
-        <span><input type="submit" value="Запомнить мои данные" id="bigbutton" class="button bigbutton"> </span>
-      </form>
-    </div>
-    <?php endif ?>
-
     <div class="fr">
       <a href="<?php echo url_for('@homepage') ?>" onclick="$('#order1click-container-new').trigger('close'); return false">Продолжить
         покупки</a> <span>&gt;</span>

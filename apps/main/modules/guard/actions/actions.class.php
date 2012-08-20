@@ -44,7 +44,7 @@ class guardActions extends myActions
       if ($this->form->isValid())
       {
         $values = $this->form->getValues();
-        $this->getUser()->signIn($values['user'], array_key_exists('remember', $values) ? $values['remember'] : false);
+        $this->getUser()->signIn($values['user']);
 
         if ($request->isXmlHttpRequest())
         {
@@ -285,41 +285,71 @@ class guardActions extends myActions
       $this->form->bind($request->getParameter($this->form->getName()));
       if ($this->form->isValid())
       {
-        $user = $this->form->getObject();
+        $username = $this->form->getValue('username');
+        $useEmail = false !== strpos($username, '@');
 
-        $user->is_active = true;
-        $user->email = $this->form->getValue('email');
-        $user->phonenumber = $this->form->getValue('phonenumber');
+        $data = array(
+          'first_name' => $this->form->getValue('first_name'),
+        );
+        if ($useEmail) {
+          $data['email'] = $username;
+        }
+        else {
+          $data['mobile'] = $username;
+        }
 
-        //для правильного сохранения пользователя, берем его region.core_id из сесии и записываем вбазу region_id
-        $user->region_id = $this->getUser()->getRegion('id');
+        try {
+          $r = CoreClient::getInstance()->query('user/create', array(), $data);
 
-        $user->setPassword('123456');
+          if (empty($r['token'])) {
+            throw new Exception();
+          }
 
-        $user = $this->form->save();
-        //$user->refresh();
-        $this->getUser()->signIn($user);
+          $data = array(
+            'password' => $r['password'],
+          );
+          if ($useEmail) {
+            $data['email'] = $username;
+          }
+          else {
+            $data['mobile'] = $username;
+          }
+          $r = CoreClient::getInstance()->query('user/auth', $data);
+          if (empty($r['token'])) {
+            throw new Exception();
+          }
 
-        if ($request->isXmlHttpRequest())
-        {
+          $user = new UserEntity(array(
+            'token' => $r['token'],
+            'id'    => $r['id'],
+          ));
+          $this->getUser()->signIn($user);
+
           return $this->renderJson(array(
             'success' => true,
             'url'     => $signinUrl,
           ));
         }
+        catch (Exception $e) {
+          switch ($e->getCode()) {
+            case 684:
+              $message = 'Такой email или номер телефона уже зарегистрирован.';
+              break;
+            default:
+              $message = 'Неправильные данные.';
+              break;
+          }
 
-        return $this->redirect($signinUrl);
+          $this->form->getErrorSchema()->addError(new sfValidatorError(new sfValidatorSchema(), $message), 'username');
+        }
       }
 
-      if ($request->isXmlHttpRequest())
-      {
-        return $this->renderJson(array(
-          'success' => false,
-          'data' => array(
-            'content' => $this->getPartial($this->getModuleName().'/form_register', array('form' => $this->form, 'redirect' => $signinUrl)),
-          ),
-        ));
-      }
+      return $this->renderJson(array(
+        'success' => false,
+        'data' => array(
+          'content' => $this->getPartial($this->getModuleName().'/form_register', array('form' => $this->form, 'redirect' => $signinUrl)),
+        ),
+      ));
     }
   }
 

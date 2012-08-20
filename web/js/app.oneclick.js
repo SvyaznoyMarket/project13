@@ -364,6 +364,7 @@ $(document).ready(function() {
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
 				var xhr1 =$.ajax( {
 					type: 'POST',
+                    timeout: 60000,
 					url: outputUrl,
 					data: postData,
 					success: function( data, textStatus ) {
