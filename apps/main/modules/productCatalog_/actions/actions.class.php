@@ -384,10 +384,14 @@ class productCatalog_Actions extends myActions
   {
     try
     {
+      $productCategoryToken = explode('/', $request['productCategory']);
+      $productCategoryToken = array_pop($productCategoryToken);
+
       /** @var $route sfObjectRoute */
       $route = $this->getRoute();
       /** @var $productCategory ProductCategory */
       $productCategory = $route->getObject();
+
 
       // 301-й редирект. Можно удалить 01.02.2012
       if ($checkRedirect) {
