@@ -80,7 +80,7 @@
 				.wait()
 				// .script(getWithVersion('app.shop.map.js'))
 				.script(getWithVersion('app.order.v4.js'))
-				.script(getWithVersion('main.js'))
+				.script(getWithVersion('main.js'))				
 			}).runQueue()
 			break
 		case 'order_complete':
@@ -99,7 +99,7 @@
                     .wait()
                     .script(getWithVersion('app.order.js'))
                     .script(getWithVersion('main.js'))
-                    .script(getWithVersion('app.order.error.js'))
+                    // .script(getWithVersion('app.order.error.js'))
             }).runQueue()
             break
 		case 'product_catalog':
