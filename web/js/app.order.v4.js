@@ -278,7 +278,7 @@ $(document).ready(function() {
 			// 2) Make Additional Dates				
 			var first = getMonday( tightInterval[0].timestamp )				
 			var last = getSunday( tightInterval[1].timestamp )
-console.info( 'Interval edges for ', bid, ' :', first, last )
+// console.info( 'Interval edges for ', bid, ' :', first, last )
 
 			// 3) Make Dates By T Interval
 			var doweeks = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
@@ -573,7 +573,7 @@ upi:			for( var item=0, boxitems=self.chosenBox().itemList(); item < boxitems.le
 				for(var i=0, l=selectedShopBoxShops.length; i<l; i++)
 					if( selectedShopBoxShops[i].items.length > 0 )
 						newboxes.push( selectedShopBoxShops[i] )
-console.info( newboxes )
+// console.info( newboxes )
 				// build new self-boxes
 				for(var tkn in newboxes ) {
 					var argshop = Model.shops[ newboxes[tkn].shop ]
@@ -641,7 +641,7 @@ console.info( newboxes )
 				for( var i in dlvr.itemList() )
 					boxitems.push( dlvr.itemList()[i].token )
 				data.items = boxitems
-console.info(data)
+// console.info(data)
 				ServerModel.deliveryTypes[ dlvr.token ] = data
 			}
 
@@ -789,7 +789,7 @@ flds:	for( field in fieldsToValidate ) {
 		var toSend = form.serializeArray()
 		toSend.push( { name: 'order[delivery_type_id]', value: $('input[name="order[delivery_type_id]"]').val() })
 		toSend.push( { name: 'delivery_map', value: JSON.stringify( MVM.getServerModel() )  } )//encodeURIComponent
-console.info( toSend )
+// console.info( toSend )
 		$.ajax({
 			url: form.attr('action'),
 			timeout: 20000,
@@ -820,7 +820,7 @@ console.info( toSend )
 	/* ---------------------------------------------------------------------------------------- */
 	/* MAIN() */
 
-console.info( 'MODEL ', Model )
+// console.info( 'MODEL ', Model )
 	MVM = new OrderModel() 
 	ko.applyBindings( MVM , $('#MVVM')[0] )
 
