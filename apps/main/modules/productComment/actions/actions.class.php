@@ -102,7 +102,7 @@ class productCommentActions extends myActions
         $userRate->fromArray(array('product_id' => $this->product->id, 'value' => $request->getParameter('rating')));
         $data = $userRate->exportToCore();
         $data['user_id'] = $userId;
-        $r = $this->query('user.product.rating.create', array(), $data);
+        $r = Core::getInstance()->query('user.product.rating.create', array(), $data);
 
         $this->redirect(array('sf_route' => 'productComment', 'sf_subject' => $this->product));
       }
