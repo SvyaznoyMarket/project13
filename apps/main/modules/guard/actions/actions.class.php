@@ -147,7 +147,7 @@ class guardActions extends myActions
 		  // пробуем достать токен для смены пароля
 		  $login = $request->getParameter('login');
 
-      $loginType = (false !== strpos($login, '@')) ? 'email' : 'phonenumber';
+      $isEmail = false !== strpos($login, '@');
 
       $validator = new sfValidatorOr(array(
         new myValidatorEmail(array('required' => true)),
@@ -160,37 +160,23 @@ class guardActions extends myActions
       try {
         $validator->clean($login);
 
-        if ('email' == $loginType)
+        $r = CoreClient::getInstance()->query('user/reset-password', array(
+          ($isEmail ? 'email' : 'mobile') => $login,
+        ));
+        if ($r['confirmed'])
         {
-          $user = UserTable::getInstance()->retrieveByEmail($login);
-        }
-        else
-        {
-          $user = UserTable::getInstance()->retrieveByPhonenumber($login);
-        }
-
-        if (!$user)
-        {
-          $error = 'Пользователь с таким '.('email' == $loginType ? 'email' : 'телефонным номером').' не найден';
+          return $this->renderJson(array('success' => true));
         }
       }
-      catch (Exception $e)
+      catch (sfValidatorError $e)
       {
-        $user = false;
-        $error = 'Неправильный '.('email' == $loginType ? 'email' : 'телефонный номер');
+        $error = 'Неправильный '.($isEmail ? 'email' : 'телефонный номер');
+      }
+      catch (Exception $e) {
+        $error = 'Неудалось восстановить пароль. Попробуйте позже.';
       }
 
-		  if ($user)
-      {
-			  //$result = Core::getInstance()->query('user.get-password-token', array('id' => $user->core_id));
-			  $result = Core::getInstance()->query('user.reset-password', array('id' => $user->core_id));
-			  if ($result['confirmed'])
-        {
-				  return $this->renderJson(array('success' => true));
-			  }
-		  }
-
-		  return $this->renderJson(array('success' => false, 'error' => $error));
+      return $this->renderJson(array('success' => false, 'error' => $error));
 	  }
   }
 
