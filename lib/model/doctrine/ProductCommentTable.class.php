@@ -30,7 +30,7 @@ class ProductCommentTable extends myDoctrineTable
       //'unhelpful' => 'unhelpful',
 
       'product_id' => array('rel' => 'Product'),
-      'user_id'    => array('rel' => 'User'),
+      //'user_id'    => array('rel' => 'User'),
     );
   }
 
