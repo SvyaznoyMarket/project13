@@ -74,7 +74,7 @@ class ProductCommentTable extends myDoctrineTable
 
     $q = $this->createBaseQuery($params);
 
-    $q->leftJoin('productComment.User user')
+    $q//->leftJoin('productComment.User user')
       ->addWhere('productComment.product_id = ?', $product->id)
       ->addWhere('parent_id = ?', $params['parent_id'])
     ;
