@@ -196,6 +196,39 @@ window.ANALYTICS = {
         })(document, window, "yandex_metrika_callbacks");
     },
 
+    marketgidProd : function() {
+        var MGDate = new Date();
+        document.write('<iframe src ="http://'
+        +'marketgid.com/resiver.html#label1'
+        +MGDate.getYear()+MGDate.getMonth()
+        +MGDate.getDate()+MGDate.getHours()
+        +'" width="0%" height="0" sty'
+        +'le = "position:absolute;left:'
+        +'-1000px" ></iframe>');
+    },
+
+    marketgidOrder : function() {
+        var MGDate = new Date();
+        document.write('<iframe src ="http://'
+        +'marketgid.com/resiver.html#label2'
+        +MGDate.getYear()+MGDate.getMonth()
+        +MGDate.getDate()+MGDate.getHours()
+        +'" width="0%" height="0" sty'
+        +'le = "position:absolute;left:'
+        +'-1000px" ></iframe>');
+    },
+
+    marketgidOrderSuccess : function() {
+        var MGDate = new Date();
+        document.write('<iframe src ="http://'
+        +'marketgid.com/resiver.html#label3'
+        +MGDate.getYear()+MGDate.getMonth()
+        +MGDate.getDate()+MGDate.getHours()
+        +'" width="0%" height="0" sty'
+        +'le = "position:absolute;left:'
+        +'-1000px" ></iframe>');
+    },
+    
     parseAllAnalDivs : function( nodes ) {
         if( !this. enable )
             return

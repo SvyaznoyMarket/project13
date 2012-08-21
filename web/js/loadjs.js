@@ -85,7 +85,6 @@
 			break
 		case 'order_complete':
 			$LAB.queueScript('bigjquery.min.js')
-				//.queueScript('http://www.everestjs.net/static/st.v2.js')
 				.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
@@ -129,7 +128,6 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
-				//.script('http://www.everestjs.net/static/st.v2.js')
 			}).runQueue()
 			break
 		case 'product_comment':

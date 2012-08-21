@@ -15,6 +15,7 @@
   <?php if ($order['number']): ?>
   
   <div id="gooReMaQuickOrder" class="jsanalytics"></div>
+  <div id="marketgidOrderSuccess" class="jsanalytics"></div>
 
   <!-- Efficient Frontiers -->
   <img src='http://pixel.everesttech.net/3252/t?ev_Orders=0&amp;ev_Revenue=0&amp;ev_Quickorders=1&amp;ev_Quickrevenue=<?php echo $order['sum'] ?>&amp;ev_transid=<?php echo $order['number'] ?>' width='1' height='1'/>
