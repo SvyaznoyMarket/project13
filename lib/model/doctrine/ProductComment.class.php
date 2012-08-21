@@ -51,4 +51,8 @@ class ProductComment extends BaseProductComment
   {
 	  return ProductCommentTable::getInstance()->getListByProduct($this->getProduct(), array('parent_id' => $this->id));
   }
+
+  public function hasParent() {
+    return $this->parent_id > 0;
+  }
 }

@@ -74,7 +74,7 @@ class productCommentActions extends myActions
       if ($request->getParameter('content_resume') && $request->getParameter('rating'))
       {
 
-        $userId = $this->getUser()->getGuardUser()->id;
+        $userId = $this->getUser()->getGuardUser() ? $this->getUser()->getGuardUser()->getId() : null;
 
         $content = '';
         if ($request->getParameter('content_plus') != '')
@@ -94,49 +94,15 @@ class productCommentActions extends myActions
           'is_recomend' => $request->getParameter('is_recomend'),
         ));
         $comment->setProduct($this->product);
-        //$comment->setCorePush(false);
-        $comment->save();
-        $comment->setCorePush(false);
-        ProductCommentTable::getInstance()->getTree()->createRoot($comment);
+        $data = $comment->exportToCore();
+        $data['user_id'] = $userId;
+        $r = Core::getInstance()->query('product.opinion.create', array(), $data);
 
-        try
-        {
-          $userRate = new UserProductRatingTotal();
-          $userRate->fromArray(array('product_id' => $this->product->id, 'user_id' => $userId, 'value' => $request->getParameter('rating')));
-          $userRate->save();
-        }
-        catch (Exception $e)
-        {
-        }
-
-        // обновление общего рейтинга у продукта
-        $currentRatingFull = $this->product->rating * $this->product->rating_quantity;
-        $currentRatingFull += $request->getParameter('rating');
-        $this->product->rating_quantity++;
-        $this->product->rating = $currentRatingFull / $this->product->rating_quantity;
-        $this->product->save();
-
-        /*
-        $ratings = $request->getParameter('rating_type');
-        foreach ($ratings as $propertyId => $value)
-        {
-          $rateObj = UserProductRatingTable::getInstance()->create(array(
-            'property_id' => $propertyId,
-            'user_id' => $userId,
-            'product_id' => $this->product->id,
-            'value' => $value,
-          ));
-          try
-          {
-            $rateObj->save();
-          }
-          catch (Exception $e)
-          {
-            myDebug::dump($e, 1);
-            throw $e;
-          }
-        }
-         */
+        $userRate = new UserProductRatingTotal();
+        $userRate->fromArray(array('product_id' => $this->product->id, 'value' => $request->getParameter('rating')));
+        $data = $userRate->exportToCore();
+        $data['user_id'] = $userId;
+        $r = $this->query('user.product.rating.create', array(), $data);
 
         $this->redirect(array('sf_route' => 'productComment', 'sf_subject' => $this->product));
       }
@@ -161,17 +127,20 @@ class productCommentActions extends myActions
       $product = $this->getRoute()->getObject();
 
       $comment = ProductCommentTable::getInstance()->create(array(
-        'parent_id' => $request->getParameter('parent_id'),
         'content' => $request->getParameter('content'),
-        'user_id' => $this->getUser()->getGuardUser()->id,
+        //'user_id' => $this->getUser()->getGuardUser()->id,
       ));
       $comment->setProduct($product);
-      $comment->save();
+      $data = $comment->exportToCore();
+      $data['user_id'] = $this->getUser()->getGuardUser() ? $this->getUser()->getGuardUser()->getId() : null;
+      print_r($data); exit();
+
       $comment->setCorePush(false);
       $comment->getNode()->insertAsLastChildOf(ProductCommentTable::getInstance()->getById($request->getParameter('parent_id')));
 
       $data = $comment->toArray(false);
       $data['user_name'] = strval($comment->getUser());
+      $data['parent_id'] = $request->getParameter('parent_id');
 
       return $this->renderJson(array(
         'success' => true,
