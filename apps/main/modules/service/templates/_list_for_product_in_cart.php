@@ -100,6 +100,6 @@
 <?php } ?>
 
 <?php
-  include_component('product', 'f1_lightbox', array('f1' => $list, 'item' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName()))
+  include_component('product', 'f1_lightbox', array('f1' => $list, 'product' => $product, 'servListId' => $servListId, 'parentAction' => $this->getActionName()))
   ?>
 <?php endif ?>

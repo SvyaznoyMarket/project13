@@ -1,5 +1,5 @@
 <!-- Goods info -->
-<div class="goodsphotosmall"><div class="photo"><img src="<?php echo $item->getMainPhotoUrl(2) ?>" alt="" width="163" height="163" title="" /></div></div>
+<div class="goodsphotosmall"><div class="photo"><img src="<?php echo $product->getMainPhotoUrl(2) ?>" alt="" width="163" height="163" title="" /></div></div>
 <div class="fr width219">
   <div class="font11 gray pb10">Перейти в:</div>
   <div class="articlemenu">
@@ -13,7 +13,7 @@
   </div>
 </div>
 
-<?php include_component('product', 'show', array('view' => 'description', 'product' => $item)) ?>
+<?php include_component('product', 'show', array('view' => 'description', 'product' => $product)) ?>
 <!-- /Goods info -->
 
 <div class="clear pb20"></div>
