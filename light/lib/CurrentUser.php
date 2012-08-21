@@ -59,7 +59,7 @@ class CurrentUser
    */
   public function getUser(){
     if (!$this->user) {
-      $token = $token = isset($_SESSION['symfony/user/sfUser/attributes']['guard']['token']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['token'] : null;
+      $token = isset($_SESSION['symfony/user/sfUser/attributes']['guard']['token']) ? $_SESSION['symfony/user/sfUser/attributes']['guard']['token'] : null;
       if ($token) {
         $data = CoreClient::getInstance()->query('user/get', array('token' => $token));
 
