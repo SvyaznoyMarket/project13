@@ -23,14 +23,14 @@ class ProductCommentTable extends myDoctrineTable
     return array(
       'id'         => 'core_id',
       'parent_id'  => 'core_parent_id',
-      'user_id'    => 'core_user_id',
+      //'user_id'    => 'core_user_id',
       //'added'     => 'created_at',
       'content'    => 'content',
       //'helpful'   => 'helpful',
       //'unhelpful' => 'unhelpful',
 
       'product_id' => array('rel' => 'Product'),
-      'user_id'    => array('rel' => 'User'),
+      //'user_id'    => array('rel' => 'User'),
     );
   }
 
