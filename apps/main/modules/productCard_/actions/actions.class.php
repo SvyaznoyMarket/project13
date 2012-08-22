@@ -26,16 +26,6 @@ class productCard_Actions extends myActions
     $a = explode('/', $request['product']);
     $productToken = end($a);
     $this->loadProduct($productToken);
-
-    $client = SmartengineClient::getInstance();
-    $result = $client->query('otherusersalsobought', array(
-      'sessionid'       => session_id(),
-      'itemid'          => $this->product->getId(),
-      //'itemtype'        => mb_strtoupper($this->product->getMainCategory()->getToken()),
-      //'itemtype'        => 788,
-    ));
-
-    exit();
   }
 
   public function executeShowByBarcode(sfWebRequest $request)

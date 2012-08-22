@@ -50,7 +50,6 @@ class SmartengineClient
   {
     $connection = $this->createResource($action, $params);
     $response = curl_exec($connection);
-    var_dump($response);
     try {
       if (curl_errno($connection) > 0) {
         throw new SmartengineClientException(curl_error($connection), curl_errno($connection));

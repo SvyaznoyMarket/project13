@@ -109,7 +109,7 @@ all:
 
   smartengine:
     config:
-      api_url: 'https://selight1.smartengine.at/se-light/api/1.0/json/'
+      api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/'
       api_key: 'c41851b19511c20acc84f47b7816fb8e'
       tenantid: 'ENojUTRcD8'
       log_file: %SF_LOG_DIR%/smartengine.log

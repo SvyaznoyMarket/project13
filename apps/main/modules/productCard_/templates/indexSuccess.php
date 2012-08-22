@@ -29,6 +29,7 @@
   'showAccessoryUpper' => $showAccessoryUpper,
 )) ?>
 
+
 <?php if ('kit' == $product->getView()): ?>
   <?php render_partial('product_/templates/_kit.php', array('product' => $product)) ?>
 

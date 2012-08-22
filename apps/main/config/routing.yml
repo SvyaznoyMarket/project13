@@ -501,6 +501,13 @@ order_show:
   options: { model: Order, type: object, method: getForRoute }
 
 
+# Smartengine
+#
+# alsoBought
+smartengine_alsoBought:
+  url: /product-also-bought/:product
+  param: { module: smartengine, action: alsoBought }
+
 # Корзина товаров
 #
 # cart

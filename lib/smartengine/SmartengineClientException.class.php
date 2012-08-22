@@ -1,5 +1,5 @@
 <?php
 
-class SmartengineClientException extends Exception {
+class SmartengineClientException extends \Exception {
 
 }

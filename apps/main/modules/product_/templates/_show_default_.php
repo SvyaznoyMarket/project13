@@ -189,6 +189,8 @@ foreach ($photo3dList as $photo3d)
 
 <div class="clear"></div>
 
+<div id="product_also_bought-container" data-url="<?php echo url_for('smartengine_alsoBought', array('product' => $item->getId())) ?>" style="margin-top: 20px;"><h3>Also bought...</h3></div>
+
 <?php
 if ($showAccessoryUpper && count($item->getAccessoryList())){
   render_partial('product_/templates/_product_accessory.php', array(

@@ -127,6 +127,7 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
+                .script('app.product.related.js')
 				//.script('http://www.everestjs.net/static/st.v2.js')
 			}).runQueue()
 			break
