@@ -6,6 +6,25 @@ $(document).ready(function(){
 		docCookies.setItem( false, "admitad_uid", url_s.admitad_uid, 31536e3, '/') // 31536e3 == one year
 	}
 
+	/* Jira */
+	// Requires jQuery!
+	$.ajax({
+	    url: "https://jira.corp.enter.ru/s/en_USa5hc19/773/3/1.2.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?collectorId=2e17c5d6",
+	    type: "get",
+	    cache: true,
+	    dataType: "script"
+	});
+
+	 window.ATL_JQ_PAGE_PROPS =  {
+		"triggerFunction": function(showCollectorDialog) {
+			//Requries that jQuery is available! 
+			$("#jira").click(function(e) {
+				e.preventDefault()
+				showCollectorDialog()
+			})
+		}
+	}
+
 	/* sclub card number */
 	if( document.location.search.match(/scid/) ) {
 		var url_s = parse_url( document.location.search )
