@@ -1,5 +1,3 @@
-<?php $rememberMe = !$sf_user->isAuthenticated() && $form->isValid() ?>
-
 <?php use_helper('Date') ?>
 
 <div style="width: 900px;">
@@ -78,11 +76,6 @@
   <?php endif ?>
 
   <div class="line"></div>
-
-  <?php if ($rememberMe): ?>
-  <p class="bFormSave__eBtm">Нажмите кнопку «Запомнить мои данные» &mdash; при следующих покупках вам не придется заново
-    указывать свои контакты и данные для доставки. Кстати, вы еще и сможете отслеживать статус заказа!</p>
-  <?php endif ?>
 
   <div class="bFormB2">
 
