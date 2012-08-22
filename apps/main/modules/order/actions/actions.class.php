@@ -183,12 +183,22 @@ class orderActions extends myActions
           $r = Core::getInstance()->query('order.create-packet', array(), array($data), true);
           if ($r && $r['confirmed'] === true)
           {
-            $order->number = $r['orders'][0]['number'];
-            $order->created_at = date('Y-m-d H:i:s');
+            $orderRequest = array('id' => $r['orders'][0]['id'], 'expand' => array('delivery'));
+            $coreOrder = Core::getInstance()->query('order.get', $orderRequest);
+            if ($coreOrder && array_key_exists('sum', $coreOrder[0])) {
+              $order->number = $coreOrder[0]['number'];
+              $order->sum = $coreOrder[0]['sum'];
+              $order->created_at = $coreOrder[0]['added'];
+              $order->mapValue('delivery_price', isset($coreOrder[0]['delivery']) ? $coreOrder[0]['delivery'][0]['price'] : 0);
+            }
+            else
+            {
+              throw new CoreClientException('Fail to get order.\r\nRequest: '.print_r($orderRequest).'\r\n'.'Response: '.print_r($coreOrder));
+            }
           }
           else
           {
-            throw new CoreClientException('Fail to create 1click order.\r\nRequest: '.prinit_r($data).'\r\n'.'Response: '.print_r($r));
+            throw new CoreClientException('Fail to create 1click order.\r\nRequest: '.print_r($data).'\r\n'.'Response: '.print_r($r));
           }
 
           $jsonOrdr = json_encode(array (
@@ -201,7 +211,7 @@ class orderActions extends myActions
             $return['message'] = 'Заказ успешно создан';
             $return['data'] = array(
               'title' => 'Ваш заказ принят, спасибо!',
-              'content' => $this->getPartial($this->getModuleName() . '/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop, 'jsonOrdr' => $jsonOrdr, )),
+              'content' => $this->getPartial($this->getModuleName() . '/complete', array('order' => $order, 'shop' => $this->shop, 'jsonOrdr' => $jsonOrdr, )),
               'shop' => $shopData,
             );
         }
