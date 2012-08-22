@@ -111,7 +111,7 @@ all:
 
   payment:
     enabled: true
-    default_provider: psbank
+    default_provider: psbank_invoice
     provider:
       psbank:
         terminal: '79036768'
@@ -119,6 +119,9 @@ all:
         merchant_name: 'Enter'
         key: 'C50E41160302E0F5D6D59F1AA3925C45'
         url: 'http://193.200.10.117:8080/cgi-bin/cgi_link'
+      psbank_invoice:
+        contractor_id: 14
+        url: 'https://retail.payment.ru/invoice.aspx'
       uniteller:
         login: 125
         password: 'OYOTEEl5Fp3YXQSSHKEWeuWM4Gh0IObjAm64RWFHeHtdCsgZ0ChccMmWOpIWNlw0qaa3PshWepTW6WH8'
