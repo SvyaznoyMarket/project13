@@ -507,6 +507,10 @@ order_show:
 smartengine_alsoBought:
   url: /product-also-bought/:product
   param: { module: smartengine, action: alsoBought }
+# userRecommendation
+smartengine_userRecommendation:
+  url: /product-user-recommendation/:product
+  param: { module: smartengine, action: userRecommendation }
 
 # Корзина товаров
 #
