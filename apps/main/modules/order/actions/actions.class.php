@@ -168,7 +168,7 @@ class orderActions extends myActions
           $coreProduct = RepositoryManager::getProduct()->getById($part['core_id'], true);
           $sum += $coreProduct->getPrice() * $product['quantity'];
         }
-        $this->order->sum = $sum;
+        $order->sum = $sum;
 
         try
         {
@@ -185,6 +185,15 @@ class orderActions extends myActions
           $data['delivery_date'] = date_format(new DateTime($data['delivery_date']), 'Y-m-d');
 
           $r = Core::getInstance()->query('order.create-packet', array(), array($data), true);
+          if ($r && $r['confirmed'] === true)
+          {
+            $order->number = $r['orders'][0]['number'];
+            $order->created_at = date('Y-m-d H:i:s');
+          }
+          else
+          {
+            throw new CoreClientException('Fail to create 1click order.\r\nRequest: '.prinit_r($data).'\r\n'.'Response: '.print_r($r));
+          }
 
           $jsonOrdr = json_encode(array (
             'order_article' => implode(',', array_map(function($i) { return $i['product_id']; }, $order->getProductRelation()->toArray())),
