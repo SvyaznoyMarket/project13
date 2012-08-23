@@ -4,7 +4,11 @@
 
 <?php slot('title', 'Моя корзина') ?>
 
+
 <?php if ($cart->countFull() > 0): ?>
+<div style="float:left; width: 100%; padding-bottom: 20px">
+  <div id="adfox920" class="adfoxWrapper"></div>
+</div>
   <?php include_component('cart_', 'show') ?>
 
   <!-- Total -->
