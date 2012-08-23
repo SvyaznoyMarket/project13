@@ -90,6 +90,7 @@
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script(getWithVersion('main.js'))
+                .script('app.product.related.js')
 			}).runQueue()
 			break
         case 'order_error':

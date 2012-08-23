@@ -97,17 +97,26 @@ all:
       prefix: cache
 
   payment:
-   default_provider: uniteller
-   provider:
-     uniteller:
-       login: 125
-       password: 'OYOTEEl5Fp3YXQSSHKEWeuWM4Gh0IObjAm64RWFHeHtdCsgZ0ChccMmWOpIWNlw0qaa3PshWepTW6WH8'
-       pay_url: 'https://wpay.uniteller.ru/pay/'
-       result_url: 'https://wpay.uniteller.ru/results/'
-       shop_id: '35974-134'
-       return_url: '@payment_callback'
+    enabled: true
+    default_provider: psbank
+    provider:
+      psbank:
+        terminal: '79036768'
+        merchant: '790367686219999'
+        merchant_name: 'Enter'
+        key: 'C50E41160302E0F5D6D59F1AA3925C45'
+        url: 'http://193.200.10.117:8080/cgi-bin/cgi_link'
+      uniteller:
+        login: 125
+        password: 'OYOTEEl5Fp3YXQSSHKEWeuWM4Gh0IObjAm64RWFHeHtdCsgZ0ChccMmWOpIWNlw0qaa3PshWepTW6WH8'
+        pay_url: 'https://wpay.uniteller.ru/pay/'
+        result_url: 'https://wpay.uniteller.ru/results/'
+        shop_id: '35974-134'
+        return_url: '@payment_callback'
 
   smartengine:
+    push: true  # отправлять данные на сервер smartengine
+    pull: true  # запрашивать данные с сервера smartengine
     config:
       api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/'
       api_key: 'c41851b19511c20acc84f47b7816fb8e'
@@ -193,6 +202,19 @@ live:
       client_code: site
       consumer_key: s7urupe7Efrus8un
       signature: mEbradRUBruprUT7ukuvAxupraCrEcuk
+
+  payment:
+    provider:
+      psbank:
+        terminal: '20097201'
+        merchant: '000541120097201'
+        merchant_name: 'Enter'
+        key: 'FD5AAE47574BB8EEFBF8C6C14CBCA453'
+        url: 'https://3ds.payment.ru/cgi-bin/cgi_link'
+
+  smartengine:
+    push: true  # отправлять данные на сервер smartengine
+    pull: false # запрашивать данные с сервера smartengine
 
   rediska:
     default:

@@ -10,22 +10,95 @@
  */
 class smartengineActions extends myActions
 {
- /**
-  * Executes also bought action
-  *
-  * @param sfRequest $request A request object
-  */
-  public function executeAlsoBought(sfWebRequest $request)
+  /**
+   * Executes view action
+   *
+   * @param sfRequest $request A request object
+   */
+  public function executeView(sfWebRequest $request)
   {
     $product = RepositoryManager::getProduct()->getById($request['product'], true);
     $this->forward404If(!$product);
 
     $client = SmartengineClient::getInstance();
-    $r = $client->query('otherusersalsobought', array(
+    $params = array(
+      'sessionid'       => session_id(),
+      'itemid'          => $product->getId(),
+      'itemtype'        => $product->getMainCategory()->getId(),
+      'itemdescription' => $product->getName(),
+      'itemurl'         => 'http://'.$request->getHost().$product->getLink(),
+      'actiontime'      => date('d_m_Y_H_i_s'),
+    );
+    if ($this->getUser()->isAuthenticated()) {
+      $params['userid'] = $this->getUser()->getGuardUser()->getId();
+    }
+    $r = $client->query('view', $params);
+
+    if (isset($r['error'])) {
+      $this->getLogger()->err('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
+    }
+
+    return $this->renderText('');
+  }
+
+  /**
+   * Executes view action
+   *
+   * @param sfRequest $request A request object
+   */
+  public function executeBuy(sfWebRequest $request)
+  {
+    $products = RepositoryManager::getProduct()->getListById(explode('-', $request['product']), true);
+    if (!count($products)) {
+      return $this->renderText('');
+    }
+
+    $client = SmartengineClient::getInstance();
+
+    foreach ($products as $product) {
+      $params = array(
+        'sessionid'       => session_id(),
+        'itemid'          => $product->getId(),
+        'itemtype'        => $product->getMainCategory()->getId(),
+        'itemdescription' => $product->getName(),
+        'itemurl'         => 'http://'.$request->getHost().$product->getLink(),
+        'actiontime'      => date('d_m_Y_H_i_s'),
+      );
+      if ($this->getUser()->isAuthenticated()) {
+        $params['userid'] = $this->getUser()->getGuardUser()->getId();
+      }
+      $r = $client->query('buy', $params);
+      print_r($r);
+
+      if (isset($r['error'])) {
+        $this->getLogger()->err('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
+      }
+    }
+
+    return $this->renderText('');
+  }
+
+  /**
+   * Executes also viewed action
+   *
+   * @param sfRequest $request A request object
+   */
+  public function executeAlsoViewed(sfWebRequest $request)
+  {
+    $product = RepositoryManager::getProduct()->getById($request['product'], true);
+    $this->forward404If(!$product);
+
+    $client = SmartengineClient::getInstance();
+
+    $params = array(
       'sessionid' => session_id(),
       'itemid'    => $product->getId(),
       'itemtype'  => $product->getMainCategory()->getId(),
-    ));
+    );
+    if ($this->getUser()->isAuthenticated()) {
+      $params['userid'] = $this->getUser()->getGuardUser()->getId();
+    }
+    $r = $client->query('otherusersalsoviewed', $params);
 
     if (isset($r['error'])) {
       $this->getLogger()->err('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
@@ -40,7 +113,49 @@ class smartengineActions extends myActions
 
     $products = RepositoryManager::getProduct()->getListById($ids, true);
 
-    return $this->renderPartial($this->getModuleName().'/alsoBought', array(
+    return $this->renderPartial($this->getModuleName().'/product_list', array(
+      'title'    => 'Also viewed',
+      'products' => $products,
+    ));
+  }
+
+ /**
+  * Executes also bought action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeAlsoBought(sfWebRequest $request)
+  {
+    $product = RepositoryManager::getProduct()->getById($request['product'], true);
+    $this->forward404If(!$product);
+
+    $client = SmartengineClient::getInstance();
+
+    $params = array(
+      'sessionid' => session_id(),
+      'itemid'    => $product->getId(),
+      'itemtype'  => $product->getMainCategory()->getId(),
+    );
+    if ($this->getUser()->isAuthenticated()) {
+      $params['userid'] = $this->getUser()->getGuardUser()->getId();
+    }
+    $r = $client->query('otherusersalsobought', $params);
+
+    if (isset($r['error'])) {
+      $this->getLogger()->err('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
+
+      return $this->renderText('');
+    }
+
+    $ids = array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
+    if (!count($ids)) {
+      return $this->renderText('');
+    }
+
+    $products = RepositoryManager::getProduct()->getListById($ids, true);
+
+    return $this->renderPartial($this->getModuleName().'/product_list', array(
+      'title'    => 'Also bought',
       'products' => $products,
     ));
   }

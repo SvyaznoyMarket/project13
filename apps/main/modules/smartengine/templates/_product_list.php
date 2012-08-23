@@ -5,7 +5,7 @@
  */
 ?>
 <div class="carouseltitle carbig">
-  <div class="rubrictitle"><h3>Also bought</h3></div>
+  <div class="rubrictitle"><h3><?php echo $title ?></h3></div>
 </div>
 
 <div class="line pb10"></div>

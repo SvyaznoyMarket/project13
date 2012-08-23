@@ -15,6 +15,10 @@ class UnitellerPaymentProvider
     return null == $name ? $this->configHolder->getAll() : $this->configHolder->get($name);
   }
 
+  public function getFormUrl() {
+    return $this->configHolder->get('pay_url');
+  }
+
   /**
    *
    * @param array $order
@@ -105,6 +109,11 @@ class UnitellerPaymentProvider
     }
 
     return $result;
+  }
+
+  public function getOrderIdFromRequest($request)
+  {
+    return $request['Order_ID'];
   }
 
   public function getSignature($params)
