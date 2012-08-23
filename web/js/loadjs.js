@@ -71,12 +71,13 @@
 			}).runQueue()
 			break
 		case 'order':
-            $LAB.queueScript('bigjquery.min.js').queueScript('http://maps.google.com/maps/api/js?sensor=true')
+            $LAB.queueScript('bigjquery.min.js')//.queueScript('http://maps.google.com/maps/api/js?sensor=true')
+            .queueScript('http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
-				.script(getWithVersion('app.shop.map.js'))
+				// .script(getWithVersion('app.shop.map.js'))
 				.script(getWithVersion('app.order.v3.2.js'))
 				.script(getWithVersion('main.js'))
 			}).runQueue()
