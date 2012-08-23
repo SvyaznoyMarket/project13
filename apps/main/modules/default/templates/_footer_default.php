@@ -20,7 +20,7 @@
           <h3>1. Заказываю товар</h3>
 
           <ul>
-            <li>в Контакт cEnter<br>
+            <li>в Контакт-cEnter<br>
               <b class='mFphone'>8 (800) 700 00 09</b><br>
               <div class="bBottommenu__eSkype">
                 <?php if (sfConfig::get('app_online_call_enabled')): ?>
