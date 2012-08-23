@@ -26,6 +26,21 @@ class ProductCategoryRepository
   }
 
   /**
+   * @param string $token
+   * @return ProductCategoryEntity
+   */
+  public function getByToken($token)
+  {
+    $data = CoreClient::getInstance()->query('category.token', array(
+      'token_list' => array($token),
+      'region_id'  => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ));
+    $list = $this->fromArray($data);
+
+    return reset($list);
+  }
+
+  /**
    * @param string[] $tokenList
    * @return ProductCategoryEntity[]
    */
@@ -73,6 +88,35 @@ class ProductCategoryRepository
       /** @var $self ProductCategoryRepository */
       $callback($self->fromArray($data));
     });
+  }
+
+  public function getAncestorList($id) {
+    $data = CoreClient::getInstance()->query('category.tree', array(
+      'root_id'         => $id,
+      'max_level'       => null,
+      'is_load_parents' => true,
+      'region_id'       => RepositoryManager::getRegion()->getDefaultRegionId(),
+    ));
+
+    $self = $this;
+
+    $return = array();
+    $execute = function($data) use(&$execute, &$return, &$self, $id) {
+      foreach ($data as $item) {
+        if ($id == $item['id']) {
+          return;
+        }
+      }
+
+      $list = $self->fromArray($data);
+      $return[] = reset($list);
+
+      $execute($data[0]['children']);
+    };
+
+    $execute($data);
+
+    return $return;
   }
 
   public function fromArray(array $categoryDataList)

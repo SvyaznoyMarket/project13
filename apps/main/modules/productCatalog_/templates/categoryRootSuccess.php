@@ -1,6 +1,6 @@
 <?php
 /**
- * @var ProductCategory $productCategory
+ * @var ProductCategory $productCategoryEntity
  * @var ProductCategoryEntity[] $productCategoryTree
  * @var ProductCategoryEntity[] $categoryList
  * @var ProductCoreFormFilterSimple $productFilter
@@ -42,11 +42,7 @@
 
 <!-- /Goods -->
 
-<?php slot('seo_counters_advance') ?>
-<?php include_component('productCategory', 'seo_counters_advance', array('unitId' => $productCategory->root_id)) ?>
-<?php end_slot() ?>
-
-<?php if (false && 7 == $productCategory->id): ?>
+<?php if (false && 7 == $productCategory->getId()): ?>
 <?php slot('sport_sale_design') ?>
 <a class='snow_link'
    href='<?php echo url_for('productCatalog_category', array('productCategory' => 'sport/zimnie-vidi-sporta-710')) ?>'></a>

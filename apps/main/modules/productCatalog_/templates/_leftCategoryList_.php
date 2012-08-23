@@ -1,21 +1,21 @@
 <?php
 /**
- * @var $productCategory
+/* @var $categoryList ProductCategoryEntity[]
+ * @var $productCategory ProductCategoryEntity
+ * @var $item ProductCategoryEntity
  * @var $categoryTree
  * @var $quantity
  */
 $renderList = function($categoryList) use ($productCategory, &$renderList)
 {
-  /** @var $categoryList ProductCategoryEntity[] */
-  /** @var $productCategory ProductCategory */
   $render = '';
   foreach ($categoryList as $item) {
 
-    if ($productCategory->isRoot() && $productCategory->core_id == $item->getId()) $class = "hidden";
-    elseif ($item->getHasChild($productCategory->core_id)) $class = "mBold";
-    elseif ($productCategory->core_id == $item->getId()) $class = "mSelected";
-    elseif ($item->getParentId() == $productCategory->core_parent_id) $class = '';
-    elseif ($item->getParentId() == $productCategory->core_id) $class = '';
+    if ($productCategory->isRoot() && $productCategory->getId() == $item->getId()) $class = "hidden";
+    elseif ($item->getHasChild($productCategory->getId())) $class = "mBold";
+    elseif ($productCategory->getId() == $item->getId()) $class = "mSelected";
+    elseif ($item->getParentId() == $productCategory->getParentId()) $class = '';
+    elseif ($item->getParentId() == $productCategory->getId()) $class = '';
     else $class = 'hidden';
 
     $render .= sprintf('<li class="bCtg__eL%d %s"><a href="%s"><span>%s<span></a>%s</li>',
@@ -29,7 +29,7 @@ $renderList = function($categoryList) use ($productCategory, &$renderList)
   return $render;
 }
 ?>
-<div class="catProductNum"><b>Всего <?php echo $quantity . ($productCategory->has_line ? ' серий' : ' товаров') ?></b>
+<div class="catProductNum"><b>Всего <?php echo $quantity . ($productCategory->getHasLine() ? ' серий' : ' товаров') ?></b>
 </div>
 <div class="line pb10"></div>
 <dl class="bCtg">

@@ -48,6 +48,7 @@ class ProductCategoryEntity
 
   /* @var ProductCategoryEntity|null */
   private $parent;
+
   /** @var int */
   private $parentId;
 
@@ -75,6 +76,10 @@ class ProductCategoryEntity
     if (array_key_exists('product_view_id', $data))   $this->productViewId = (int)$data['product_view_id'];
     if (array_key_exists('parent_id', $data))         $this->parentId      = (int)$data['parent_id'];
     if (array_key_exists('product_count', $data))     $this->productCount  = (int)$data['product_count'];
+  }
+
+  public function __toString() {
+    return (string)$this->getName();
   }
 
   public function setId($id)
@@ -240,11 +245,39 @@ class ProductCategoryEntity
   }
 
   /**
+   * @return string
+   */
+  public function getTokenPrefix()
+  {
+    $tokenPrefix = explode('/', $this->token);
+    $tokenPrefix = reset($tokenPrefix);
+
+    return $tokenPrefix;
+  }
+
+  /**
    * @param int $productViewId
    */
   public function setProductViewId($productViewId)
   {
     $this->productViewId = $productViewId;
+  }
+
+  /**
+   * @return string
+   */
+  public function getProductView()
+  {
+    $return = null;
+
+    if (1 == $this->productViewId) {
+      $return = 'compact';
+    }
+    else if (2 == $this->productViewId) {
+      $return = 'expanded';
+    }
+
+    return $return;
   }
 
   /**
@@ -372,5 +405,9 @@ class ProductCategoryEntity
   public function getProductCount()
   {
     return $this->productCount;
+  }
+
+  public function isRoot() {
+    return 1 == $this->level;
   }
 }
