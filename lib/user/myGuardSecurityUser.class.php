@@ -358,4 +358,29 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   {
     return $this->getGuardUser()->addPermissionByName($name, $con);
   }
+
+  /**
+   * Returns true if user is authenticated.
+   *
+   * @return boolean
+   */
+  public function isAuthenticated()
+  {
+    if ($this->authenticated === null)
+    {
+      $token = $this->getAttribute('token', null, 'guard');
+
+      if ($token) {
+        $data = CoreClient::getInstance()->query('user/get', array('token' => $token));
+
+        $this->authenticated = isset($data['id']);
+      }
+      else
+      {
+        $this->authenticated = false;
+      }
+    }
+
+    return $this->authenticated;
+  }
 }

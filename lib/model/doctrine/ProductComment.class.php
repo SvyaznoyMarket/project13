@@ -21,7 +21,7 @@ class ProductComment extends BaseProductComment
   {
     $data = parent::exportToCore();
 
-    $data['user_id'] = $this->User->core_id;
+    //$data['user_id'] = $this->User->core_id;
     $data['product_id'] = $this->Product->core_id;
 
     //$parent = $this->getNode()->getParent();
@@ -50,5 +50,9 @@ class ProductComment extends BaseProductComment
   public function getSubComments()
   {
 	  return ProductCommentTable::getInstance()->getListByProduct($this->getProduct(), array('parent_id' => $this->id));
+  }
+
+  public function hasParent() {
+    return $this->parent_id > 0;
   }
 }

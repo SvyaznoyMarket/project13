@@ -1,5 +1,3 @@
-<?php $rememberMe = !$sf_user->isAuthenticated() && $form->isValid() ?>
-
 <?php use_helper('Date') ?>
 
 <div style="width: 900px;">
@@ -30,7 +28,7 @@
           '<?php echo $order['number'] . '_F' ?>', // Номер заказа
           '<?php echo $order->Shop ?>', // Название магазина (Необязательно)
           '<?php echo str_replace(',', '.', $order['sum']) ?>', // Полная сумма заказа (дроби через точку)
-          '0', // Стоимость доставки (дроби через точку)
+          '<?php echo str_replace(',', '.', $order['delivery_price']) ?>', // Стоимость доставки (дроби через точку)
           '<?php echo $order->getCityName() ?>', // Город доставки (Необязательно)
           '<?php //echo $order->getAreaName() ?>', // Область (необязательно)
           '<?php //echo $order->getCountryName() ?>'             // Страна (нобязательно)
@@ -78,11 +76,6 @@
   <?php endif ?>
 
   <div class="line"></div>
-
-  <?php if ($rememberMe): ?>
-  <p class="bFormSave__eBtm">Нажмите кнопку «Запомнить мои данные» &mdash; при следующих покупках вам не придется заново
-    указывать свои контакты и данные для доставки. Кстати, вы еще и сможете отслеживать статус заказа!</p>
-  <?php endif ?>
 
   <div class="bFormB2">
 
