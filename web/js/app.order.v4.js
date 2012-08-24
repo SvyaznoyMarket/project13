@@ -19,6 +19,7 @@ $(document).ready(function() {
 
 	/*  Custom Checkboxes */
 	$('body').delegate('.bBuyingLine label', 'click', function() {
+		// e.stopPropagation()
 		if( $(this).find('input').attr('type') == 'radio' ) {
 			var thatName = $('.mChecked input[name="'+$(this).find('input').attr('name')+'"]')
 			if( thatName.length ) {
@@ -38,7 +39,7 @@ $(document).ready(function() {
 
 	$('body').delegate('.bBuyingLine input:radio, .bBuyingLine input:checkbox', 'click', function(e) {
 		e.stopPropagation()
-	})	
+	})
 
 	/* Auth Link */
 	PubSub.subscribe( 'authorize', function( m, d ) {
@@ -787,7 +788,10 @@ flds:	for( field in fieldsToValidate ) {
 		// Prepare Data & Send
 		sended = true		
 		var toSend = form.serializeArray()
-		toSend.push( { name: 'order[delivery_type_id]', value: $('input[name="order[delivery_type_id]"]').val() })
+		var type_id = $('label.mChecked input[name="order[delivery_type_id]"]').val()
+		if( !type_id )
+			type_id = $('input[name="order[delivery_type_id]"]').val()
+		toSend.push( { name: 'order[delivery_type_id]', value: type_id })
 		toSend.push( { name: 'delivery_map', value: JSON.stringify( MVM.getServerModel() )  } )//encodeURIComponent
 // console.info( toSend )
 		$.ajax({

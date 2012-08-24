@@ -89,7 +89,7 @@
 				.script( getWithVersion('library.js') )
 				.wait()
 				.script(getWithVersion('app.order.v4.js'))
-				.script(getWithVersion('main.js'))
+				// .script(getWithVersion('main.js'))
 			}).runQueue()
 			break
 		case 'order_complete':
