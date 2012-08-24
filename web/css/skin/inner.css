@@ -207,24 +207,6 @@ TABLE {border-collapse:collapse}
 .headerright A {color:#fff; text-decoration:underline; font-size:10px; line-height:16px}
 .headerright A:hover {color:#ffa901}
 
-.extramenu {position:absolute; top:115px; left:0; width:914px; background:#fff; color:#000; font-size:12px; text-align:left; border:2px solid #ffa901;
-border-radius:5px;
--moz-border-radius:5px;
--webkit-border-radius:5px;
--moz-box-shadow:0 0 7px #616161;
--webkit-box-shadow:0 0 7px #616161;
-box-shadow:0 0 7px #616161;
-}
-.extramenu .corner {position:absolute; display:block; font-size:0; line-height:0; top:-15px; //top:-14px; width:20px; height:15px; background:url(/css/skin/img/bg.png) no-repeat 0 -218px}
-.extramenu DL {float:left; width:210px; margin:8px 6px 12px 12px; overflow:hidden}
-.extramenu DT {padding:10px 0 5px 0; font-size:16px}
-.extramenu DD {margin-bottom:1px}
-.extramenu DD A {display:block; padding:2px 9px; font-size:11px; text-decoration:none}
-.extramenu DD A:hover {background-color:#e6e6e6}
-.extramenu LI {float:left; width:201px; margin:10px 6px 20px 21px; overflow:hidden; font-size:11px}
-.extramenu LI IMG {float:left; margin-right:13px; border:1px solid #ececec}
-
-
 .basketheader {width:920px; height:100px;  margin-bottom:7px}
 .basketheader .logo {width:77px; height:71px; padding:0; margin:15px 160px 0 0; background:url(/css/skin/img/bg.png) no-repeat -127px -133px; text-indent:-10000px}
 .steplist {float:left; padding-left:50px; margin-top:28px; background:url(/css/skin/img/bg_steps.png) no-repeat 0 6px}
@@ -4579,78 +4561,72 @@ DT.bCtg__eOrange{
 		position: absolute;
 		background: url('/images/23_feb_lr.jpg') 50% 0 no-repeat;
 		}
-
-.bHeader{
+/* ------ HEADER ------ */
+#header{
+    background: url("img/header_bg.png") no-repeat 0 0;
     height: 112px;
-    text-align: justify;
-    margin: 10px 0 20px 0;
+    margin: 10px 0 20px;
     padding: 20px 22px 0 0;
-    background: url('img/header_bg.png') no-repeat;
+    width:900px;
 }
-.bHeaderWrap{
-    z-index: 20;
-    position: relative;
-}
-.bToplogo,
-.bToplink span,
-.bHeader__eLong{
-    vertical-align: top;
-    display: inline-block;
-    *display: inline;
-    zoom: 1;
-}
-.bToplogo{
+#topLogo{
+    background: url("img/bLogo.png") no-repeat 50% 50%;
+    display: block;
+    float:left;
+    height: 91px;
     text-indent: -1000px;
     width: 130px;
-    height: 91px;
-    background: url('img/bLogo.png') 50% 50% no-repeat;
 }
-.bToplink {
-    color: #FFFFFF;
-    display: inline-block;
-    max-width: 68px;
-    min-width: 41px;
-    position: relative;
-    text-align: center;
-    vertical-align: top;
-}
-.bToplink:hover {
-    color: #FFA901;
-    text-decoration: none;
-}
-.bToplink span {
+#header .bToplink{
+	display: block;
+    float: left;
     height: 71px;
-    margin: 10px 0 5px;
+    margin: 10px 0 0 18px;
 }
-
-.mMebel, .category-80{ width: 38px; background: url('img/header_icon_furniture.gif') no-repeat;}
-.mTehn, .category-1{ width: 43px; background: url('img/header_icon_home_appliances.gif') no-repeat; }
-.mZdor, .category-21{ width: 54px; background: url('img/header_icon_beauty_health.gif') no-repeat; }
-.mDom, .category-443{ width: 47px; background: url('img/header_icon_home_goods.gif') no-repeat; }
-.mDeti, .category-320{ width: 39px; background: url('img/header_icon_baby_goods.gif') no-repeat; }
-.mZoo, .category-1438{ width: 54px; background: url('img/header_icon_zoo_goods.gif') no-repeat; }
-.mSam, .category-224{ width: 34px; background: url('img/header_icon_tools_goods.gif') no-repeat; }
-.mElectro, .category-788{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
-.mUkr, .category-923{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
-.mSport, .category-647{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
-.mSport i, .category-647 i{ top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
-
-a.mSportFont{ color: #e8303c; font-weight: bold; }
-div.mSportFont{ color: #e8303c; }
-.bHeader .bToplink:hover span{ background-position: 0 -71px; }
-
-/* .mSad, .category-11{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; } */
-.mPodarki, .category-185{ width: 42px; background: url('img/header_icon_hobbies_gifts.gif') no-repeat; }
-.bHeader .bToplink:hover span{
-    background-position: 0 -71px;
+#header .extramenu {
+	background: none repeat scroll 0 0 #FFFFFF;
+    border: 2px solid #FFA901;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 0 7px #616161;
+    position: absolute;
+    text-align: left;
+    top: 115px;
+    width: 914px;
+    z-index: 20;
 }
-.mSad, .category-311 {
-    background: url("img/header_icon_garden_orchard.gif") no-repeat scroll 0 0 transparent;
-    width: 41px;
-}
-.bHeader__eLong{
-    width: 98%;
-}
+#topmenu-root-80{ width: 38px; background: url('/images/topMenuSprite.gif') no-repeat 0 0;}
+#topmenu-root-80:hover{ background-position: 0 -71px;}
+#topmenu-root-1{ width: 43px; background: url('/images/topMenuSprite.gif') no-repeat -38px 0;}
+#topmenu-root-1:hover{ background-position: -38px -71px;}
+#topmenu-root-21{ width: 54px; background: url('/images/topMenuSprite.gif') no-repeat -81px 0;}
+#topmenu-root-21:hover{ background-position: -81px -71px;}
+#topmenu-root-443{ width: 47px; background: url('/images/topMenuSprite.gif') no-repeat -135px 0;}
+#topmenu-root-443:hover{ background-position: -135px -71px;}
+#topmenu-root-320{ width: 39px; background: url('/images/topMenuSprite.gif') no-repeat -182px 0;}
+#topmenu-root-320:hover{ background-position: -182px -71px;}
+#topmenu-root-1438{ width: 54px; background: url('/images/topMenuSprite.gif') no-repeat -221px 0; }
+#topmenu-root-1438:hover{ background-position: -221px -71px;}
+#topmenu-root-224{ width: 34px; background: url('/images/topMenuSprite.gif') no-repeat -275px 0; }
+#topmenu-root-224:hover{ background-position: -275px -71px;}
+#topmenu-root-788{ width: 61px; background: url('/images/topMenuSprite.gif') no-repeat -309px 0; }
+#topmenu-root-788:hover{ background-position: -309px -71px;}
+#topmenu-root-923{ width: 54px; background: url('/images/topMenuSprite.gif') no-repeat -370px 0; }
+#topmenu-root-923:hover{ background-position: -370px -71px;}
+#topmenu-root-647{ width: 43px; background: url('/images/topMenuSprite.gif') no-repeat -424px 0; }
+#topmenu-root-647:hover{ background-position: -424px -71px;}
+#topmenu-root-185{ width: 42px; background: url('/images/topMenuSprite.gif') no-repeat -467px 0; }
+#topmenu-root-185:hover{ background-position: -467px -71px;}
+#topmenu-root-311{ width: 41px; background: url("/images/topMenuSprite.gif") no-repeat -509px 0; }
+#topmenu-root-311:hover{ background-position: -509px -71px;}
+.extramenu .corner {position:absolute; display:block; font-size:0; line-height:0; top:-15px;}
+.extramenu DL {float:left; width:210px; margin:8px 6px 12px 12px; overflow:hidden}
+.extramenu DT {padding:10px 0 5px 0; font-size:16px}
+.extramenu DD {margin-bottom:1px}
+.extramenu DD A {display:block; padding:2px 9px; font-size:11px; text-decoration:none}
+.extramenu DD A:hover {background-color:#e6e6e6}
+.extramenu LI {float:left; width:201px; margin:10px 6px 20px 21px; overflow:hidden; font-size:11px}
+.extramenu LI IMG {float:left; margin-right:13px; border:1px solid #ececec}
+/* ------ END HEADER ------ */
 
 .bRegion{ font: 14px Tahoma, sans-serif; }
 .bRegion a{ text-decoration: underline; }
@@ -5583,34 +5559,8 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     font: 18px Tahoma, sans-serif;
 }
 
-.mMebel, .category-80{ width: 38px; background: url('img/header_icon_furniture.gif') no-repeat;}
-.mTehn, .category-1{ width: 43px; background: url('img/header_icon_home_appliances.gif') no-repeat; }
-.mZdor, .category-21{ width: 54px; background: url('img/header_icon_beauty_health.gif') no-repeat; }
-.mDom, .category-443{ width: 47px; background: url('img/header_icon_home_goods.gif') no-repeat; }
-.mDeti, .category-320{ width: 39px; background: url('img/header_icon_baby_goods.gif') no-repeat; }
-.mZoo, .category-1438{ width: 54px; background: url('img/header_icon_zoo_goods.gif') no-repeat; }
-.mSam, .category-224{ width: 34px; background: url('img/header_icon_tools_goods.gif') no-repeat; }
-.mElectro, .category-788{ width: 61px; background: url('img/header_icon_electronics.gif') no-repeat; }
-.mUkr, .category-923{ width: 54px; background: url('img/header_icon_jewelry.gif') no-repeat; }
-.mSport, .category-647{ width: 43px; background: url('img/header_icon_sport.gif') no-repeat; }
-.mSport i, .category-647 i{ top: -3px; left: -10px; width: 61px; height: 64px; position: absolute; background: url('img/f1_credit.png') no-repeat; }
-
 a.mSportFont{ color: #e8303c; font-weight: bold; }
 div.mSportFont{ color: #e8303c; }
-.bHeader .bToplink:hover span{ background-position: 0 -71px; }
-
-/* .mSad, .category-11{ width: 41px; background: url('img/header_icon_garden_orchard.gif') no-repeat; } */
-.mPodarki, .category-185{ width: 42px; background: url('img/header_icon_hobbies_gifts.gif') no-repeat; }
-.bHeader .bToplink:hover span{
-    background-position: 0 -71px;
-}
-.mSad, .category-311 {
-    background: url("img/header_icon_garden_orchard.gif") no-repeat scroll 0 0 transparent;
-    width: 41px;
-}
-.bHeader__eLong{
-    width: 98%;
-}
 
 .bButtonPopup{
     z-index: 5;
