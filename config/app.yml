@@ -111,7 +111,7 @@ all:
 
   payment:
     enabled: true
-    default_provider: psbank_invoice
+    default_provider: psbank
     provider:
       psbank:
         terminal: '79036768'
@@ -218,9 +218,6 @@ live:
         merchant_name: 'Enter'
         key: 'FD5AAE47574BB8EEFBF8C6C14CBCA453'
         url: 'https://3ds.payment.ru/cgi-bin/cgi_link'
-      psbank_invoice:
-        contractor_id: 14
-        url: 'https://retail.payment.ru/invoice.aspx'
 
   rediska:
     default:
