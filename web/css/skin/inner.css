@@ -4574,7 +4574,7 @@ DT.bCtg__eOrange{
     text-indent: -1000px;
     width: 130px;
 }
-#header .topmenu #topLogo{
+#mainPage #topLogo{
 	background: url("img/logo_enter_main.gif") no-repeat 50% 50%;
 	width: 140px;
 }
