@@ -1573,10 +1573,7 @@ border-radius: 5px;
 	.bCtg__eL2 span,
 	.bCtg__eL3 span,
 	.bCtg__eL4 span{
-		position: relative;
-		display: inline-block;
-		*display: inline;
-		zoom: 1;
+		
 		}
 	.bCtg__eL2 span div,
 	.bCtg__eL3 span div,
@@ -4567,7 +4564,7 @@ DT.bCtg__eOrange{
     height: 112px;
     margin: 10px 0 20px;
     padding: 20px 22px 0 0;
-    width:900px;
+    width:910px;
 }
 #topLogo{
     background: url("img/bLogo.png") no-repeat 50% 50%;
@@ -4576,6 +4573,10 @@ DT.bCtg__eOrange{
     height: 91px;
     text-indent: -1000px;
     width: 130px;
+}
+#header .topmenu #topLogo{
+	background: url("img/logo_enter_main.gif") no-repeat 50% 50%;
+	width: 140px;
 }
 #header .bToplink{
 	display: block;
@@ -5999,3 +6000,115 @@ div.mSportFont{ color: #e8303c; }
     color: #676767;
     width: 200px;
 }
+/* ------ MAIN PAGE ------ */
+#mainPageSearch.searchbox {float:right; position:relative; width:336px; height:66px; padding:15px 0 0 27px; background:url(/images/bg_main.png) no-repeat -677px -108px}
+#mainPageSearch.searchbox .text {float:left; width:236px; height:36px; line-height:36px; padding:0; border:0; background:none; font-size:14px; color:#fff; margin-right:12px; outline:none}
+#mainPageSearch .searchbutton {float:left; width:45px; height:36px; border:0; background:none; text-indent:-10000px; cursor:pointer}
+.bigbanner {padding:0 0 0 0;}
+.bannersbox {position:absolute; width:100%; overflow:hidden; top: 234px; left:0}
+.bannersboxinner {position:relative;  width:920px; margin:0 auto; height: 300px; font-size: 0; line-height: 300px;}
+.banner{
+	position: absolute;
+	cursor:pointer;
+	opacity:0.5;
+}
+.banner3 {left:943px; bottom: 0}
+.banner4 {left:-245px; bottom: 0}
+/* стили карусели */
+.bCarouselWrap{
+	width: 100%;
+    padding: 100px 0 50px;
+	text-align: center;
+}
+.bCarousel{
+	width: 830px;
+	height: 300px;
+	position: relative;
+	vertical-align: bottom;
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+}
+.bCarousel img {
+	position:absolute;
+	left:32px;
+	cursor:pointer
+}
+.bCarousel__eBtnR,
+.bCarousel__eBtnL{
+	top: 110px;
+	width: 76px;
+	height: 77px;
+	cursor: pointer;
+	position: absolute;
+}
+.bCarousel__eBtnL{ z-index:10; left: -40px; background: url('img/c_btn_left.png'); display:none }
+.bCarousel__eBtnR{ z-index:10; left: 797px; background: url('img/c_btn_right.png'); display:none }
+.bCarousel__eBtnL:hover{ background: url('img/c_btn_left_h.png'); }
+.bCarousel__eBtnR:hover{ background: url('img/c_btn_right_h.png'); }
+
+/* стили футера */
+#mainPage,
+#mainPage .allpage{
+	background: #000000;
+}
+#mainPageFooter .address{
+    font: 12px Tahoma, sans-serif;
+}
+#mainPageFooter .vcardtitle {font-size:18px; padding-bottom:4px}
+#mainPageFooter .vcard {font-size:36px; padding-bottom:2px}
+#mainPageFooter .bIndexLinks2__eBan{
+	color: #FFFFFF;
+    display: inline-block;
+    *display: inline;
+    height: 90px;
+    vertical-align: top;
+    width: 300px;
+	zoom: 1;
+}
+#mainPageFooter .bIndexLinks2__eBan:first-child{
+	font-family: 'Enter';
+}
+#mainPageFooter .bIndexLinks2__eBan a,
+#mainPageFooter .bIndexLinks2__eBan img{
+	border: none;
+	outline: none;
+	text-decoration: none;
+}
+#mainPageFooter .bIndexLinks2__eLinks{
+	margin: 30px 0 15px 0;
+}
+#mainPageFooter .bIndexLinks2__eLinks a{
+	width: 227px;
+	color: #a6a6a6;
+	vertical-align: top;
+	font: 14px/20px Tahoma, sans-serif;
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+}
+#mainPageFooter .bIndexLinks2__eLinks a:hover{
+	color: #ffa901;
+	text-decoration: underline;
+}
+#mainPageFooter .copy {clear:both; color:#a6a6a6; font-size:11px; padding-bottom: 20px; width: 100%;}
+#mainPageFooter .copy a{color:#a6a6a6; font-size: 11px;}
+#mainPageFooter .copy .rights{ font-size: 12px; color: #FFFFFF; }
+#mainPageFooter .copy .pb20 a{ margin: 0 10px 0 0; }
+#mainPageFooter .social_network{
+  	float: right;
+  	width: 180px;
+}
+#mainPageFooter .social_network span{
+  	padding-right: 6px;
+}
+#mainPageFooter .social_network img{
+  	vertical-align: middle;
+}
+#mainPageFooter a[title="twitter"]{ background: url('img/icon_twitter.png'); }
+#mainPageFooter a[title="facebook"]{ background: url('img/icon_facebook.png'); }
+#mainPageFooter a[title="vkontakte"]{ background: url('img/icon_vkontakte.png'); }
+#mainPageFooter a[title="twitter"]:hover{ background: url('img/icon_twitter_color.png'); }
+#mainPageFooter a[title="facebook"]:hover{ background: url('img/icon_facebook_color.png'); }
+#mainPageFooter a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
+/* ------ END MAIN PAGE ------ */
