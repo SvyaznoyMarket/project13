@@ -253,7 +253,7 @@ live:
     enabled: true
 
   wp:
-    url: 'http://content.enter.ru'
+    url: 'http://content.enter.ru/'
 
 live_dev:
   open_auth:
