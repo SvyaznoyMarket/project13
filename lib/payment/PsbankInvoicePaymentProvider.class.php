@@ -27,7 +27,7 @@ class PsbankInvoicePaymentProvider
   {
     $data = array(
       'ContractorID'   => $this->config['contractor_id'],
-      'InvoiceID'      => $order['id'],
+      'InvoiceID'      => $order['number'],
       'Sum'            => sprintf("%01.2f", $order['sum']),
       'PayDescription' => sprintf('Оплата заказа №%s', $order['number']),
       'AdditionalInfo' => '',
