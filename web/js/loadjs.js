@@ -78,7 +78,6 @@
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
-				// .script(getWithVersion('app.shop.map.js'))
 				.script(getWithVersion('app.order.v4.js'))
 				.script(getWithVersion('main.js'))
 			}).runQueue()

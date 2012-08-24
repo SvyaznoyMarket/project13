@@ -9,7 +9,8 @@
 <dl class="bBuyingLine">
 	<dt>Выберите предпочтительный способ</dt>
 	<dd id="dlvrTypes">
-		<div data-bind="visible: dlvrCourierEnable()">
+		<!-- ko if: dlvrCourierEnable() -->
+		<div>
 			<p></p>
 			<label for="order_delivery_type_id_1"
 				data-bind="click: pickCourier, css: {mChecked: !dlvrShopEnable()}">
@@ -19,7 +20,9 @@
 			</label>
 			<i>Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.</i>
 		</div>
-		<div data-bind="visible: dlvrShopEnable()">
+		<!-- /ko -->
+		<!-- ko if: dlvrShopEnable() -->
+		<div>
 			<p></p>
 			<label class="" for="order_delivery_type_id_3"
 				data-bind="click: pickShops, css: {mChecked: !dlvrCourierEnable()}">
@@ -30,6 +33,7 @@
 			</label>
 			<i>Вы можете самостоятельно забрать товар из ближайшего к вам магазина Enter. Услуга бесплатная! Пожалуйста, выберите магазин.</i>
 		</div>
+		<!-- /ko -->
 		<div class="pl20 pt5">
 			<a href="#" style="display: none; font-size: 16px; padding: 6px 30px;" class="bBigOrangeButton selectShop"
 				data-bind="visible: shopButtonEnable, click: showAllShops">
