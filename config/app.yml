@@ -115,7 +115,7 @@ all:
         return_url: '@payment_callback'
 
   smartengine:
-    push: true  # отправлять данные на сервер smartengine
+    push: false # отправлять данные на сервер smartengine
     pull: true  # запрашивать данные с сервера smartengine
     config:
       api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/'
