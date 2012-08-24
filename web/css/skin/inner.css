@@ -4584,10 +4584,11 @@ DT.bCtg__eOrange{
     margin: 10px 0 0 18px;
 }
 #header .extramenu {
-	background: none repeat scroll 0 0 #FFFFFF;
+	background: #FFFFFF;
     border: 2px solid #FFA901;
     border-radius: 5px 5px 5px 5px;
     box-shadow: 0 0 7px #616161;
+    left:0;
     position: absolute;
     text-align: left;
     top: 115px;

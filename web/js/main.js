@@ -723,7 +723,7 @@ $(document).ready(function(){
 	/* Top Menu */
 	if( $('.topmenu').length ) {
 		$.get('/category/main_menu', function(data){
-			$('.bHeader').append( data )
+			$('#header').append( data )
 		})
 	}
 
