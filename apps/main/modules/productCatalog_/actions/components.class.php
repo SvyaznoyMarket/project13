@@ -21,8 +21,7 @@ class productCatalog_Components extends myComponents
     $list = array();
 
     if ($this->productCategory instanceof ProductCategoryEntity) {
-      $ancestorList = $ancestorList = RepositoryManager::getProductCategory()->getAncestorList($this->productCategory->getId());
-      foreach ($ancestorList as $ancestor)
+      foreach ($this->productCategory->getAncestors() as $ancestor)
       {
         /** @var $ancestor ProductCategoryEntity */
         $list[] = array(
@@ -72,17 +71,15 @@ class productCatalog_Components extends myComponents
     $list = array();
 
     if ($this->productCategory instanceof ProductCategoryEntity) {
-      $ancestorList = $ancestorList = RepositoryManager::getProductCategory()->getAncestorList($this->productCategory->getId());
-      if ($ancestorList) {
-        foreach ($ancestorList as $ancestor)
-        {
-          /** @var $ancestor ProductCategoryEntity */
-          $list[] = array(
-            'name' => $ancestor->getSeoHeader() ?: $ancestor->getName(),
-            'url'  => $ancestor->getLink(),
-          );
-        }
+      foreach ($this->productCategory->getAncestors() as $ancestor)
+      {
+        /** @var $ancestor ProductCategoryEntity */
+        $list[] = array(
+          'name' => $ancestor->getSeoHeader() ?: $ancestor->getName(),
+          'url'  => $ancestor->getLink(),
+        );
       }
+
       $list[] = array(
         'name' => $this->productCategory->getSeoHeader() ?: $this->productCategory->getName(),
         'url'  => $this->productCategory->getLink(),
@@ -109,8 +106,8 @@ class productCatalog_Components extends myComponents
     // title
     if (!$this->productCategory->getSeoTitle()) {
       $this->productCategory->setSeoTitle(''
-        . $this->productCategory->name
-        . (false == $this->productCategory->isRoot() ? " - {$this->productCategory->getRootCategory()->getName()}" : '')
+        . $this->productCategory->getName()
+        . ($this->productCategory->getRoot() ? " - {$this->productCategory->getRoot()->getName()}" : '')
         . ( // если передана листалка товаров и номер страницы не равен единице
         ($this->productPager && (1 != $this->productPager->getPage()))
           ? " - Страница {$this->productPager->getPage()} из {$this->productPager->getLastPage()}"
@@ -125,7 +122,7 @@ class productCatalog_Components extends myComponents
       $regionName = $this->getUser()->getRegion('name');
 
       $this->productCategory->setSeoDescription(''
-        . $this->productCategory->name
+        . $this->productCategory->getName()
         . " в {$regionName}"
         . ' с ценами и описанием.'
         . ' Купить в магазине Enter'
@@ -133,7 +130,7 @@ class productCatalog_Components extends myComponents
     }
     // keywords
     if (!$this->productCategory->getSeoKeywords()) {
-      $this->productCategory->setSeoKeywords("{$this->productCategory->name} магазин продажа доставка {$regionName} enter.ru");
+      $this->productCategory->setSeoKeywords("{$this->productCategory->getName()} магазин продажа доставка {$regionName} enter.ru");
     }
 
     $this->getResponse()->addMeta('title', $this->productCategory->getSeoTitle());

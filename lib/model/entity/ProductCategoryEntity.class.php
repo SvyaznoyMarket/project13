@@ -47,6 +47,9 @@ class ProductCategoryEntity
   private $productViewId;
 
   /* @var ProductCategoryEntity|null */
+  private $ancestors = array();
+
+  /* @var ProductCategoryEntity|null */
   private $parent;
 
   /** @var int */
@@ -54,8 +57,22 @@ class ProductCategoryEntity
 
   /* @var ProductCategoryEntity[] */
   private $children = array();
+
+  /** @var string */
+  private $seoTitle;
+
+  /** @var string */
+  private $seoKeywords;
+
+  /** @var string */
+  private $seoDescription;
+
   /** @var string */
   private $seoHeader;
+
+  /** @var string */
+  private $seoText;
+
   /** @var int */
   private $productCount;
 
@@ -72,7 +89,11 @@ class ProductCategoryEntity
     if (array_key_exists('is_shown_in_menu', $data))  $this->isShownInMenu = (bool)$data['is_shown_in_menu'];
     if (array_key_exists('position', $data))          $this->position      = (int)$data['position'];
     if (array_key_exists('level', $data))             $this->level         = (int)$data['level'];
+    if (array_key_exists('seo_title', $data))         $this->seoTitle      = (string)$data['seo_title'];
+    if (array_key_exists('seo_keywords', $data))      $this->seoKeywords   = (string)$data['seo_keywords'];
+    if (array_key_exists('seo_description', $data))   $this->seoDescription = (string)$data['seo_description'];
     if (array_key_exists('seo_header', $data))        $this->seoHeader     = (string)$data['seo_header'];
+    if (array_key_exists('seo_text', $data))          $this->seoText       = (string)$data['seo_text'];
     if (array_key_exists('product_view_id', $data))   $this->productViewId = (int)$data['product_view_id'];
     if (array_key_exists('parent_id', $data))         $this->parentId      = (int)$data['parent_id'];
     if (array_key_exists('product_count', $data))     $this->productCount  = (int)$data['product_count'];
@@ -409,5 +430,93 @@ class ProductCategoryEntity
 
   public function isRoot() {
     return 1 == $this->level;
+  }
+
+  /**
+   * @param string $seoDescription
+   */
+  public function setSeoDescription($seoDescription)
+  {
+    $this->seoDescription = $seoDescription;
+  }
+
+  /**
+   * @return string
+   */
+  public function getSeoDescription()
+  {
+    return $this->seoDescription;
+  }
+
+  /**
+   * @param string $seoKeywords
+   */
+  public function setSeoKeywords($seoKeywords)
+  {
+    $this->seoKeywords = $seoKeywords;
+  }
+
+  /**
+   * @return string
+   */
+  public function getSeoKeywords()
+  {
+    return $this->seoKeywords;
+  }
+
+  /**
+   * @param string $seoText
+   */
+  public function setSeoText($seoText)
+  {
+    $this->seoText = $seoText;
+  }
+
+  /**
+   * @return string
+   */
+  public function getSeoText()
+  {
+    return $this->seoText;
+  }
+
+  /**
+   * @param string $seoTitle
+   */
+  public function setSeoTitle($seoTitle)
+  {
+    $this->seoTitle = $seoTitle;
+  }
+
+  /**
+   * @return string
+   */
+  public function getSeoTitle()
+  {
+    return $this->seoTitle;
+  }
+
+  /**
+   * @param null|\ProductCategoryEntity[] $ancestors
+   */
+  public function setAncestors(array $ancestors)
+  {
+    $this->ancestors = $ancestors;
+  }
+
+  /**
+   * @return null|\ProductCategoryEntity[]
+   */
+  public function getAncestors()
+  {
+    return $this->ancestors;
+  }
+
+  /**
+   * @return null|\ProductCategoryEntity
+   */
+  public function getRoot()
+  {
+    return reset($this->ancestors);
   }
 }

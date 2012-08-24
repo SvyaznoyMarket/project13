@@ -62,8 +62,7 @@ class productCatalog_Actions extends myActions
 
     // SEO ::
     $list = array();
-    $ancestorList = RepositoryManager::getProductCategory()->getAncestorList($productCategory->getId());
-    foreach ($ancestorList as $ancestor)
+    foreach ($productCategory->getAncestors() as $ancestor)
     {
       /** @var $ancestor ProductCategoryEntity */
       $list[] = $ancestor->getName();
@@ -224,12 +223,10 @@ class productCatalog_Actions extends myActions
       $title .= ' – ' . $request->getParameter('page');
     }
     // ...
-    $r = RepositoryManager::getProductCategory()->getTree($productCategory->getId(), 1, true);
-    var_dump($r); exit();
 
-    $rootCategory = $productCategory->getRootCategory();
-    if ($rootCategory->id !== $productCategory->getId()) {
-      $title .= ' – ' . $rootCategory;
+    $rootCategory = $productCategory->getRoot();
+    if ($rootCategory->getId() !== $productCategory->getId()) {
+      $title .= ' – '.$rootCategory;
     }
     /** @var $response sfWebResponse */
     $response = $this->getResponse();
@@ -388,7 +385,8 @@ class productCatalog_Actions extends myActions
       $productCategoryToken = explode('/', $request['productCategory']);
       $productCategoryToken = array_pop($productCategoryToken);
 
-      $productCategory = RepositoryManager::getProductCategory()->getByToken(array($productCategoryToken));
+      $productCategory = RepositoryManager::getProductCategory()->getByToken($productCategoryToken, true);
+      $this->forward404Unless($productCategory);
 
       $this->productCategoryCache = $productCategory;
       $this->setVar('productCategory', $this->productCategoryCache);
