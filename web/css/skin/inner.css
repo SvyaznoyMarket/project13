@@ -4451,9 +4451,9 @@ a[title="mastercard"]{
     width: auto;
     height: auto;
 }
-a[title="twitter"]{ background: url('img/icon_twitter_color.png'); }
-a[title="facebook"]{ background: url('img/icon_facebook_color.png'); }
-a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
+a[title="twitter"]{ background: url('img/socIcons.png') no-repeat 0 -26px }
+a[title="facebook"]{ background: url('img/socIcons.png') no-repeat -26px -26px }
+a[title="vkontakte"]{ background: url('img/socIcons.png') no-repeat -52px -26px }
 
 /*------------------ buying_final ---------------------- */
 .bImgButton{
@@ -5669,10 +5669,10 @@ div.mSportFont{ color: #e8303c; }
 #mainPageFooter .social_network img{
   	vertical-align: middle;
 }
-#mainPageFooter a[title="twitter"]{ background: url('img/icon_twitter.png'); }
-#mainPageFooter a[title="facebook"]{ background: url('img/icon_facebook.png'); }
-#mainPageFooter a[title="vkontakte"]{ background: url('img/icon_vkontakte.png'); }
-#mainPageFooter a[title="twitter"]:hover{ background: url('img/icon_twitter_color.png'); }
-#mainPageFooter a[title="facebook"]:hover{ background: url('img/icon_facebook_color.png'); }
-#mainPageFooter a[title="vkontakte"]:hover{ background: url('img/icon_vkontakte_color.png'); }
+#mainPageFooter a[title="twitter"]{ background: url('img/socIcons.png') no-repeat 0 0}
+#mainPageFooter a[title="facebook"]{ background: url('img/socIcons.png') no-repeat -26px 0; }
+#mainPageFooter a[title="vkontakte"]{ background: url('img/socIcons.png') no-repeat -52px 0; }
+#mainPageFooter a[title="twitter"]:hover{ background: url('img/socIcons.png') no-repeat 0 -26px; }
+#mainPageFooter a[title="facebook"]:hover{ background: url('img/socIcons.png') no-repeat -26px -26px; }
+#mainPageFooter a[title="vkontakte"]:hover{ background: url('img/socIcons.png') no-repeat -56px -26px; }
 /* ------ END MAIN PAGE ------ */
