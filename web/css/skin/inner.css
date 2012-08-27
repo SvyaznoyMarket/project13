@@ -6054,7 +6054,6 @@ div.mSportFont{ color: #e8303c; }
     width: 200px;
 }
 
-
 #order_address_metro, #order_address_street, #order_address_number, #order_address_building, #order_address_apartment, #order_address_floor {
     -webkit-border-top-left-radius: 0;
     -webkit-border-bottom-left-radius: 0;
@@ -6080,4 +6079,8 @@ div.mSportFont{ color: #e8303c; }
     height: 27px;
     line-height: 27px;
     padding: 1px 4px;
+}
+
+.height220 {
+    height: 220px;
 }

@@ -1,4 +1,14 @@
 (function() {
+	var _gaq = window._gaq || []
+	window.onerror = function(msg, url, line) {
+		var preventErrorAlert = true
+		_gaq.push(['_trackEvent', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line])
+		return preventErrorAlert
+	}
+	jQuery.error = function (message) {
+		_gaq.push(['_trackEvent', 'jQuery Error', message, navigator.userAgent])
+	}
+
 	if( typeof($LAB) === 'undefined' )
 		throw new Error( "Невозможно загрузить файлы JavaScript" )
 	function getWithVersion( flnm ) { 
@@ -88,6 +98,7 @@
 				.wait()
 				.script(getWithVersion('app.order.js'))
 				.script(getWithVersion('main.js'))
+                .script(getWithVersion('app.product.related.js'))
 			}).runQueue()
 			break
         case 'order_error':
@@ -124,6 +135,7 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
+				.script('app.product.related.js')
 			}).runQueue()
 			break
 		case 'product_comment':

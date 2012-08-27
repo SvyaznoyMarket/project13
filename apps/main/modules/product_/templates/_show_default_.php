@@ -188,7 +188,20 @@ foreach ($photo3dList as $photo3d)
 
 <?php render_partial('product_/templates/_product_model.php', array('item' => $item)) ?>
 
-<div class="clear"></div>
+<?php if (sfConfig::get('app_smartengine_pull')): ?>
+  <div class="clear"></div>
+  <div id="product_also_bought-container" data-url="<?php echo url_for('smartengine_alsoBought', array('product' => $item->getId())) ?>" style="margin-top: 20px;"><h3>Also bought...</h3></div>
+<?php endif ?>
+
+<?php if (sfConfig::get('app_smartengine_pull')): ?>
+  <div class="clear"></div>
+  <div id="product_user-also_viewed-container" data-url="<?php echo url_for('smartengine_alsoViewed', array('product' => $item->getId())) ?>" style="margin-top: 20px;"><h3>Also Viewed...</h3></div>
+<?php endif ?>
+
+<?php if (sfConfig::get('app_smartengine_pull')): ?>
+  <div class="clear"></div>
+  <!--<div id="product_user-recommendation-container" data-url="<?php echo url_for('smartengine_userRecommendation', array('product' => $item->getId())) ?>" style="margin-top: 20px;"><h3>Recommendations for user...</h3></div>-->
+<?php endif ?>
 
 <?php
 if ($showAccessoryUpper && count($item->getAccessoryList())){

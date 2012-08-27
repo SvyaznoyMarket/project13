@@ -29,6 +29,7 @@
   'showAccessoryUpper' => $showAccessoryUpper,
 )) ?>
 
+
 <?php if ('kit' == $product->getView()): ?>
   <?php render_partial('product_/templates/_kit.php', array('product' => $product)) ?>
 
@@ -86,3 +87,7 @@ if ($rootCat) {
 <div id="marketgidProd" class="jsanalytics"></div>
 
 <?php end_slot() ?>
+
+<?php if (sfConfig::get('app_smartengine_push')): ?>
+  <div id="product_view-container" data-url="<?php echo url_for('smartengine_view', array('product' => $product->getId())) ?>"></div>
+<?php endif ?>

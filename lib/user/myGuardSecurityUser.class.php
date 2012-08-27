@@ -130,7 +130,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
 
     $user->setLastLogin(date('Y-m-d H:i:s'));
     $user->setLastIp($_SERVER['REMOTE_ADDR']);
-    $r = RepositoryManager::getUser()->update($user);
+    //$r = RepositoryManager::getUser()->update($user);
   }
 
   /**
