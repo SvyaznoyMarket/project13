@@ -126,5 +126,8 @@
 
 <?php if (sfConfig::get('app_smartengine_push')): ?>
   <?php $productIds = array(); foreach ($orders as $order) $productIds = array_merge($productIds, array_map(function($i) use ($productIds) { return $i['product_id']; }, $order['product'])) ?>
-  <div id="product_buy-container" data-url="<?php echo url_for('smartengine_buy', array('product' => implode('-', $productIds))) ?>"></div>
+
+  <?php if (count($productIds)): ?>
+    <div id="product_buy-container" data-url="<?php echo url_for('smartengine_buy', array('product' => implode('-', $productIds))) ?>"></div>
+  <?php endif ?>
 <?php endif ?>
