@@ -4313,7 +4313,8 @@ dt.bCtg__eOrange{
 #topmenu-root-185:hover{ background-position: -467px -71px;}
 #topmenu-root-311{ width: 41px; background: url("/images/topMenuSprite.gif") no-repeat -509px 0; }
 #topmenu-root-311:hover{ background-position: -509px -71px;}
-.extramenu .corner {position:absolute; display:block; font-size:0; line-height:0; top:-15px;}
+.extramenu .corner {position:absolute; display:block; font-size:0; line-height:0; top:-15px; /*top:-14px;*/ width:20px; height:15px; background:url(/css/skin/img/bg.png) no-repeat 0 -218px}
+
 .extramenu DL {float:left; width:210px; margin:8px 6px 12px 12px; overflow:hidden}
 .extramenu DT {padding:10px 0 5px 0; font-size:16px}
 .extramenu DD {margin-bottom:1px}
