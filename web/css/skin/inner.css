@@ -526,7 +526,7 @@ LABEL.checked {color:#ffa901}
 */
 .boxhover .rt {position:absolute; right:0; top:0; display:block; width:9px; height:9px; background:#fff url(/css/skin/img/bg_shadow.png) no-repeat 100% 0}
 .boxhover .lb {position:absolute; left:0; bottom:0; display:block; width:9px; height:9px; background:#fff url(/css/skin/img/bg_shadow.png) no-repeat 0 100%}
-.boxhover .rb {position:relative; margin:9px 0 0 9px; background:#fff url(/css/skin/img/bg_shadow.png) no-repeat 100% 100%}
+.boxhover .rb {lposition:relative; lmargin:9px 0 0 9px; background:#fff url(/css/skin/img/bg_shadow.png) no-repeat 100% 100%}
 .boxhover .lt {position:relative; top:-9px; left:-9px; zoom:1; background:#fff url(/css/skin/img/bg_shadow.png) no-repeat 0 0; padding:14px 6px 6px 14px}
 
 .fastview {display:none; position:absolute; top:145px; left:10px; z-index:20; width:117px; height:21px; padding-top:4px; background:url(/css/skin/img/bg.png) no-repeat 0 -109px; font-size:11px; color:#7e7e7e; text-align:center; text-decoration:none}
