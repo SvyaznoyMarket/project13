@@ -48,7 +48,8 @@ class smartengineActions extends myActions
    */
   public function executeBuy(sfWebRequest $request)
   {
-    $products = RepositoryManager::getProduct()->getListById(explode('-', $request['product']), true);
+    $ids = explode('-', $request['product']);
+    $products = count($ids) ? RepositoryManager::getProduct()->getListById($ids, true) : array();
     if (!count($products)) {
       return $this->renderText('');
     }
