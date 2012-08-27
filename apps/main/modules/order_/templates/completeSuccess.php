@@ -46,7 +46,7 @@
   <script type="text/javascript">
   <?php foreach ($orders as $order): ?>
 
-    _gaq.push(['_addTrans',
+  if (typeof _gaq != 'undefined') _gaq.push(['_addTrans',
       '<?php echo $order['number'] ?>', // Номер заказа
       '<?php echo $order['shop']['name'] ?>', // Название магазина (Необязательно)
       '<?php echo str_replace(',', '.', $order['sum']) ?>', // Полная сумма заказа (дроби через точку)
@@ -59,10 +59,10 @@
 
     // _addItem: Номер заказа, Артикул, Название товара, Категория товара, Стоимость 1 единицы товара, Количество товара
     <?php foreach ($gaItems[$order['number']] as $gaItem): ?>
-    _gaq.push(['_addItem', <?php echo $gaItem ?>]);
+      if (typeof _gaq != 'undefined') _gaq.push(['_addItem', <?php echo $gaItem ?>]);
     <?php endforeach ?>
 
-    _gaq.push(['_trackTrans']);
+  if (typeof _gaq != 'undefined') _gaq.push(['_trackTrans']);
 
   <?php endforeach ?>
   </script>
@@ -100,6 +100,7 @@
 
     <div id="mixmarket" class="jsanalytics"></div>
     <div id="gooReMaSuccess" class="jsanalytics"></div>
+    <div id="marketgidOrderSuccess" class="jsanalytics"></div>
 
     <?php foreach ($orders as $i => $order): 
       $jsonOrdr = array (
@@ -121,3 +122,12 @@
 
 
 <?php end_slot() ?>
+
+
+<?php if (sfConfig::get('app_smartengine_push')): ?>
+  <?php $productIds = array(); foreach ($orders as $order) $productIds = array_merge($productIds, array_map(function($i) use ($productIds) { return $i['product_id']; }, $order['product'])) ?>
+
+  <?php if (count($productIds)): ?>
+    <div id="product_buy-container" data-url="<?php echo url_for('smartengine_buy', array('product' => implode('-', $productIds))) ?>"></div>
+  <?php endif ?>
+<?php endif ?>

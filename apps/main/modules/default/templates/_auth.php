@@ -5,12 +5,14 @@
   <div class="popupbox width694">
     <h2 class="pouptitle">Вход в Enter</h2>
     <?php include_component('guard', 'form_auth') ?>
-  </div> 
+  </div>
+  <!--
   <div class="shareline">
     <div class="fl">Войти на сайт через:</div>
-    <?php include_component('guard', 'oauth_links') ?>
+    <?php //include_component('guard', 'oauth_links') ?>
     <div class="clear"></div>   
   </div>
+  -->
 </div>
 
 <!-- /Registration -->

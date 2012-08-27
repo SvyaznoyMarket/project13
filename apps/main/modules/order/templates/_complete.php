@@ -1,5 +1,3 @@
-<?php $rememberMe = !$sf_user->isAuthenticated() && $form->isValid() ?>
-
 <?php use_helper('Date') ?>
 
 <div style="width: 900px;">
@@ -15,6 +13,7 @@
   <?php if ($order['number']): ?>
   
   <div id="gooReMaQuickOrder" class="jsanalytics"></div>
+  <div id="marketgidOrderSuccess" class="jsanalytics"></div>
 
   <!-- Efficient Frontiers -->
   <img src='http://pixel.everesttech.net/3252/t?ev_Orders=0&amp;ev_Revenue=0&amp;ev_Quickorders=1&amp;ev_Quickrevenue=<?php echo $order['sum'] ?>&amp;ev_transid=<?php echo $order['number'] ?>' width='1' height='1'/>
@@ -29,7 +28,7 @@
           '<?php echo $order['number'] . '_F' ?>', // Номер заказа
           '<?php echo $order->Shop ?>', // Название магазина (Необязательно)
           '<?php echo str_replace(',', '.', $order['sum']) ?>', // Полная сумма заказа (дроби через точку)
-          '0', // Стоимость доставки (дроби через точку)
+          '<?php echo str_replace(',', '.', $order['delivery_price']) ?>', // Стоимость доставки (дроби через точку)
           '<?php echo $order->getCityName() ?>', // Город доставки (Необязательно)
           '<?php //echo $order->getAreaName() ?>', // Область (необязательно)
           '<?php //echo $order->getCountryName() ?>'             // Страна (нобязательно)
@@ -78,23 +77,7 @@
 
   <div class="line"></div>
 
-  <?php if ($rememberMe): ?>
-  <p class="bFormSave__eBtm">Нажмите кнопку «Запомнить мои данные» &mdash; при следующих покупках вам не придется заново
-    указывать свои контакты и данные для доставки. Кстати, вы еще и сможете отслеживать статус заказа!</p>
-  <?php endif ?>
-
   <div class="bFormB2">
-
-    <?php if ($rememberMe): ?>
-    <div class="fl">
-      <form id="basic_register-form" method="post" action="<?php echo url_for('user_basicRegister') ?>">
-        <div class="form-content">
-          <?php echo $form ?>
-        </div>
-        <span><input type="submit" value="Запомнить мои данные" id="bigbutton" class="button bigbutton"> </span>
-      </form>
-    </div>
-    <?php endif ?>
 
     <div class="fr">
       <a href="<?php echo url_for('@homepage') ?>" onclick="$('#order1click-container-new').trigger('close'); return false">Продолжить

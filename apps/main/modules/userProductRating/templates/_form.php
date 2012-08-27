@@ -1,4 +1,4 @@
-<form class="product_rating-form event-submit" data-event="form.ajax-submit" data-target=".product_<?php echo $product->id ?>_rating-block" action="<?php echo url_for('userProductRating_create', $sf_data->getRaw('product')) ?>" method="post">
+<form class="product_rating-form event-submit" data-event="form.ajax-submit" data-target=".product_<?php echo $item->id ?>_rating-block" action="<?php echo url_for('userProductRating_create', $sf_data->getRaw('product')) ?>" method="post">
 
   <table class="table">
   <?php foreach ($list as $item): ?>
