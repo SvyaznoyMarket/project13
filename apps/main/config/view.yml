@@ -23,14 +23,14 @@ default:
 #    - main.css
     - skin/inner.css
     - jquery-ui-1.8.20.custom.css
-    - font.css
+#    - font.css
 #    - skin/main.css
     - navy.css
 
   javascripts:
-    - jquery-1.6.4.min.js
-    - bigjquery.min.js
-    - jquery.ui.touch-punch.min.js
+#    - jquery-1.6.4.min.js
+#    - bigjquery.min.js
+#    - jquery.ui.touch-punch.min.js
     #ivn- jquery-ui-1.8.16.custom.min.js
     #ivn- jquery.effects.core.js
     #ivn- jquery.effects.transfer.js
@@ -44,12 +44,12 @@ default:
     #ivn- jquery.timers.js
     #ivn- jquery.raty.js
     #ivn- jquery.scrollto.js
-    - main.js
-    - app.auth.js
-    - mechanics.js
-    - dash.js
-    - app.search.js
-    - app.region.js
+#    - main.js
+#    - app.auth.js
+#    - mechanics.js
+#    - dash.js
+#    - app.search.js
+#    - app.region.js
 
   has_layout:     true
   layout:         layout

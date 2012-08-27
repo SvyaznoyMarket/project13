@@ -13,7 +13,7 @@
 
   </head>
 
-  <body data-template="main">
+  <body id="mainPage" data-template="main">
     <?php LastModifiedHandler::setLastModified(); ?>
 
     <div class="bannersbox">
@@ -28,17 +28,15 @@
     <div class="allpage">
 	<div class="adfoxWrapper" id="adfox980"></div>
 
-
-      <div class="bHeaderWrap">
-        <div class="bHeader">
-          <a href class='bToplogo'></a>
+      <div id="header">
+          <?php LastModifiedHandler::setLastModified();  ?>
+          <a id="topLogo" href="/">Enter Связной</a>
+          <?php //include_partial('default/logo') ?>
           <?php include_component('productCategory_', 'root_list') ?>
-          <div class="bHeader__eLong"></div>
-        </div>
       </div>
 
       <noindex>
-        <div class="searchbox">
+        <div id="mainPageSearch" class="searchbox">
           <?php render_partial('search/templates/_form.php', array('view' => 'main')) ?>
         </div>
       </noindex>

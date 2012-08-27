@@ -21,12 +21,10 @@
 <!-- /Topbar -->
 
 <!-- Header -->
-<div class="bHeaderWrap">
-  <div class="bHeader topmenu">
+<div id="header" class="topmenu">
     <?php LastModifiedHandler::setLastModified();  ?>
-    <?php include_partial('default/logo') ?>
+    <a id="topLogo" href="/">Enter Связной</a>
+    <?php //include_partial('default/logo') ?>
     <?php include_component('productCategory_', 'root_list') ?>
-    <div class="bHeader__eLong"></div>
-  </div>
 </div>
 <!-- /Header -->
