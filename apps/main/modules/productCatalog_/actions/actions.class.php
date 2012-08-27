@@ -218,7 +218,7 @@ class productCatalog_Actions extends myActions
 
     $productCategory = $this->getProductCategory($request);
     // generate title
-    $title = $productCategory['name'];
+    $title = $productCategory->getName();
     if ($request->getParameter('page')) {
       $title .= ' – ' . $request->getParameter('page');
     }
