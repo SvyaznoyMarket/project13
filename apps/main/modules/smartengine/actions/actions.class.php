@@ -68,7 +68,6 @@ class smartengineActions extends myActions
         $params['userid'] = $this->getUser()->getGuardUser()->getId();
       }
       $r = $client->query('buy', $params);
-      print_r($r);
 
       if (isset($r['error'])) {
         $this->getLogger()->err('Smartengine: error #'.$r['error']['@code'].' '.$r['error']['@message']);
