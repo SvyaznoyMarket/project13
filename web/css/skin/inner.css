@@ -5002,6 +5002,9 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     *display: inline;
     zoom: 1;
 }
+.mBacket{
+  cursor: pointer;
+}
 
 
 .bBuyingLine dd div{
@@ -5048,7 +5051,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     width: 460px;
     padding-left: 25px;
 }
-.mInputLong.mRed{
+.mInputLong.mRed, .mInputShort.mRed{
     border: 1px solid red;
 }
 .bBuyingLine__eTextarea{
@@ -5206,7 +5209,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 }
 .bBuyingLineWrap .bBuyingLine dd{
     width: 615px;
-    margin: 0 0 15px 0;
+    margin: 28px 0 15px 0;
     position: relative;
     font-weight: normal;
 }
@@ -5288,12 +5291,13 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     margin: 1px;
     padding: 5px 18px;
     position: relative;
-
+    min-width: 18px;
+    text-align: center;
     display: inline-block;
     *display: inline;
     zoom: 1;
 }
-.bBuyingDates li span{
+.bBuyingDates li .dow{
     top: -18px;
     left: 21px;
     position: absolute;
@@ -5391,7 +5395,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     -moz-border-radius: 5px;
     -o-border-radius: 5px;
 }
-.bBuyingDates__eCurrent span{
+.bBuyingDates__eCurrent .dow{
     color: #ffa901;
 }
 .bBuyingDates__eEnable{

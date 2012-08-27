@@ -8,7 +8,7 @@ end_slot();
 
 
 <div class="float100">
-    <div class="column685 ">
+    <div class="column685 green">
         Спасибо, Ваш пароль был изменён.
     </div>
 </div>

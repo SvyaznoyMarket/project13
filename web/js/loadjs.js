@@ -40,8 +40,6 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
-				.script('shelf/jquery.countdown.min.js')
-				.script('shelf/jquery.countdown-ru.js?v=2')
 				.wait()
 				.script(getWithVersion('welcome.js'))
 			}).runQueue()
@@ -71,19 +69,19 @@
 			}).runQueue()
 			break
 		case 'order':
-            $LAB.queueScript('bigjquery.min.js').queueScript('http://maps.google.com/maps/api/js?sensor=true')
+            $LAB.queueScript('knockout-2.1.0.js')
+            .queueScript('bigjquery.min.js')
+            .queueScript('http://maps.google.com/maps/api/js?sensor=true')
 			.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
 				.wait()
-				.script(getWithVersion('app.shop.map.js'))
-				.script(getWithVersion('app.order.v3.2.js'))
-				.script(getWithVersion('main.js'))
+				.script(getWithVersion('app.order.v4.js'))
+				.script(getWithVersion('main.js'))				
 			}).runQueue()
 			break
 		case 'order_complete':
 			$LAB.queueScript('bigjquery.min.js')
-				//.queueScript('http://www.everestjs.net/static/st.v2.js')
 				.queueWait( function() {
 				$LAB.script( getWithVersion('ports.js') )
 				.script( getWithVersion('library.js') )
@@ -98,7 +96,6 @@
                     .wait()
                     .script(getWithVersion('app.order.js'))
                     .script(getWithVersion('main.js'))
-                    .script(getWithVersion('app.order.error.js'))
             }).runQueue()
             break
 		case 'product_catalog':
@@ -127,7 +124,6 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.oneclick.js') )
-				//.script('http://www.everestjs.net/static/st.v2.js')
 			}).runQueue()
 			break
 		case 'product_comment':
@@ -143,7 +139,6 @@
 				.wait()
 				.script( getWithVersion('app.product.js') )
 				.script( getWithVersion('app.product.comment.list.js') )
-				.script( getWithVersion('app.product.comment.new.js') )
 			}).runQueue()
 			break
 		case 'service':

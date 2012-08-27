@@ -61,7 +61,6 @@ class orderActions extends myActions
     $this->product->mapValue('cart', array('quantity' => $quantity));
 
     $this->order = new Order();
-    $this->order->User = $this->getUser()->getGuardUser();
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
     $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
     $this->order->shop_id = $this->shop ? $this->shop->id : null;
@@ -169,7 +168,7 @@ class orderActions extends myActions
           $coreProduct = RepositoryManager::getProduct()->getById($part['core_id'], true);
           $sum += $coreProduct->getPrice() * $product['quantity'];
         }
-        $this->order->sum = $sum;
+        $order->sum = $sum;
 
         try
         {
@@ -181,33 +180,44 @@ class orderActions extends myActions
           */
 
           $order->extra = 'Это быстрый заказ за 1 клик. Уточните параметры заказа у клиента.';
-          $order->save();
+          $data = $order->exportToCore();
+          $data['user_id'] = $user->getGuardUser() ? $user->getGuardUser()->getId() : null;
+          $data['delivery_date'] = date_format(new DateTime($data['delivery_date']), 'Y-m-d');
 
-          // Получение суммы заказа
-          $r = Core::getInstance()->query('order.get', array('id' => $order->core_id, 'expand' => array('delivery')));
-          if ($r && array_key_exists('sum', $r[0])) {
-            $order->sum = $r[0]['sum'];
+          $r = Core::getInstance()->query('order.create-packet', array(), array($data), true);
+          if ($r && $r['confirmed'] === true)
+          {
+            $orderRequest = array('id' => $r['orders'][0]['id'], 'expand' => array('delivery'));
+            $coreOrder = Core::getInstance()->query('order.get', $orderRequest);
+            if ($coreOrder && array_key_exists('sum', $coreOrder[0])) {
+              $order->number = $coreOrder[0]['number'];
+              $order->sum = $coreOrder[0]['sum'];
+              $order->created_at = $coreOrder[0]['added'];
+              $order->mapValue('delivery_price', isset($coreOrder[0]['delivery']) ? $coreOrder[0]['delivery'][0]['price'] : 0);
+            }
+            else
+            {
+              throw new CoreClientException('Fail to get order.\r\nRequest: '.print_r($orderRequest).'\r\n'.'Response: '.print_r($coreOrder));
+            }
+          }
+          else
+          {
+            throw new CoreClientException('Fail to create 1click order.\r\nRequest: '.print_r($data).'\r\n'.'Response: '.print_r($r));
           }
 
-          $form = new UserFormSilentRegister();
-          $form->bind(array(
-            'username' => $order->recipient_phonenumbers,
-            'first_name' => trim($order->recipient_first_name . ' ' . $order->recipient_last_name),
+          $jsonOrdr = json_encode(array (
+            'order_article' => implode(',', array_map(function($i) { return $i['product_id']; }, $order->getProductRelation()->toArray())),
+            'order_id' => $order['number'],
+            'order_total' => $order['sum'],
+            'product_quantity' => implode(',', array_map(function($i) { return $i['quantity']; }, $order->getProductRelation()->toArray())),
           ));
-
-        $jsonOrdr = json_encode(array (
-          'order_article' => implode(',', array_map(function($i) { return $i['product_id']; }, $order->getProductRelation()->toArray())),
-          'order_id' => $order['number'],
-          'order_total' => $order['sum'],
-          'product_quantity' => implode(',', array_map(function($i) { return $i['quantity']; }, $order->getProductRelation()->toArray())),
-        ));
-        $return['success'] = true;
-          $return['message'] = 'Заказ успешно создан';
-          $return['data'] = array(
-            'title' => 'Ваш заказ принят, спасибо!',
-            'content' => $this->getPartial($this->getModuleName() . '/complete', array('order' => $order, 'form' => $form, 'shop' => $this->shop, 'jsonOrdr' => $jsonOrdr, )),
-            'shop' => $shopData,
-          );
+          $return['success'] = true;
+            $return['message'] = 'Заказ успешно создан';
+            $return['data'] = array(
+              'title' => 'Ваш заказ принят, спасибо!',
+              'content' => $this->getPartial($this->getModuleName() . '/complete', array('order' => $order, 'shop' => $this->shop, 'jsonOrdr' => $jsonOrdr, )),
+              'shop' => $shopData,
+            );
         }
         catch (Exception $e)
         {

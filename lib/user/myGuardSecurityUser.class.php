@@ -115,7 +115,7 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   /**
    * Signs in the user on the application.
    *
-   * @param GuardUser $user The GuardUser id
+   * @param UserEntity $user The user
    * @param boolean $remember Whether or not to remember the user
    * @param Doctrine_Connection $con A Doctrine_Connection object
    */
@@ -123,46 +123,14 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   {
     // signin
     $this->setAttribute('user_id', $user->getId(), 'guard');
+    $this->setAttribute('token', $user->getToken(), 'guard');
     $this->setAuthenticated(true);
     $this->clearCredentials();
-    $this->addCredentials($user->getAllPermissionNames());
+    $this->addCredentials($user->getPermissionNames());
 
-    // save last login
     $user->setLastLogin(date('Y-m-d H:i:s'));
-    //$user->setCorePush(false);
-    $user->save($con);
-
-    // remember?
-    if ($remember)
-    {
-      $expiration_age = sfConfig::get('app_guard_remember_key_expiration_age', 15 * 24 * 3600);
-
-      // remove old keys
-      GuardRememberKeyTable::getInstance()->createQuery()
-        ->delete()
-        ->where('created_at < ?', date('Y-m-d H:i:s', time() - $expiration_age))
-        ->execute();
-
-      // remove other keys from this user
-      GuardRememberKeyTable::getInstance()->createQuery()
-        ->delete()
-        ->where('user_id = ?', $user->getId())
-        ->execute();
-
-      // generate new keys
-      $key = $this->generateRandomKey();
-
-      // save key
-      $rk = new GuardRememberKey();
-      $rk->setRememberKey($key);
-      $rk->setUser($user);
-      $rk->setIpAddress($_SERVER['REMOTE_ADDR']);
-      $rk->save($con);
-
-      // make key as a cookie
-      $remember_cookie = sfConfig::get('app_guard_remember_cookie_name', 'remember');
-      sfContext::getInstance()->getResponse()->setCookie($remember_cookie, $key, time() + $expiration_age);
-    }
+    $user->setLastIp($_SERVER['REMOTE_ADDR']);
+    $r = RepositoryManager::getUser()->update($user);
   }
 
   /**
@@ -192,16 +160,15 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   }
 
   /**
-   * Returns the related sfGuardUser.
+   * Returns the related UserEntity.
    *
-   * @return sfGuardUser
+   * @return UserEntity
    */
   public function getGuardUser()
   {
-    if (!$this->user && $id = $this->getAttribute('user_id', null, 'guard'))
+    if (!$this->user && $token = $this->getAttribute('token', null, 'guard'))
     {
-      $this->user = UserTable::getInstance()->getById($id);
-
+      $this->user = RepositoryManager::getUser()->getByToken($token);
       if (!$this->user)
       {
         // the user does not exist anymore in the database
@@ -209,6 +176,8 @@ class myGuardSecurityUser extends sfBasicSecurityUser
 
         throw new sfException('The user does not exist anymore in the database.');
       }
+
+      $this->user->setToken($token);
     }
 
     return $this->user;
@@ -388,5 +357,30 @@ class myGuardSecurityUser extends sfBasicSecurityUser
   public function addPermissionByName($name, $con = null)
   {
     return $this->getGuardUser()->addPermissionByName($name, $con);
+  }
+
+  /**
+   * Returns true if user is authenticated.
+   *
+   * @return boolean
+   */
+  public function isAuthenticated()
+  {
+    if ($this->authenticated === null)
+    {
+      $token = $this->getAttribute('token', null, 'guard');
+
+      if ($token) {
+        $data = CoreClient::getInstance()->query('user/get', array('token' => $token));
+
+        $this->authenticated = isset($data['id']);
+      }
+      else
+      {
+        $this->authenticated = false;
+      }
+    }
+
+    return $this->authenticated;
   }
 }
