@@ -32,4 +32,5 @@ $values = $productFilterRaw->getValue($filter->getRawValue());
       </label>
     </li>
     <?php endforeach; ?>
+  </ul>
 </dd>

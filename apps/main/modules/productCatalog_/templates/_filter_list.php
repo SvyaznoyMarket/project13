@@ -38,4 +38,5 @@ $values = $productFilterRaw->getValue($filter->getRawValue());
       <a href="#">еще...</a>
     </li>
     <?php }?>
+  </ul>
 </dd>
