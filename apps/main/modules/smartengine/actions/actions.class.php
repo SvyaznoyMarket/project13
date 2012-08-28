@@ -95,14 +95,15 @@ class smartengineActions extends myActions
     $client = SmartengineClient::getInstance();
 
     $params = array(
-      'sessionid' => session_id(),
-      'itemid'    => $product->getId(),
+      'sessionid'         => session_id(),
+      'itemid'            => $product->getId(),
     );
     if ($this->getUser()->isAuthenticated()) {
       $params['userid'] = $this->getUser()->getGuardUser()->getId();
     }
     if ($product->getMainCategory()) {
       $params['itemtype'] = $product->getMainCategory()->getId();
+      $params['requesteditemtype'] = $product->getMainCategory()->getId();
     }
     $r = $client->query('otherusersalsoviewed', $params);
 
@@ -112,7 +113,10 @@ class smartengineActions extends myActions
       return $this->renderText('');
     }
 
-    $ids = array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
+    $ids =
+      array_key_exists('id', $r['recommendeditems']['item'])
+      ? array($r['recommendeditems']['item']['id'])
+      : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
     if (!count($ids)) {
       return $this->renderText('');
     }
@@ -146,6 +150,7 @@ class smartengineActions extends myActions
     }
     if ($product->getMainCategory()) {
       $params['itemtype'] = $product->getMainCategory()->getId();
+      $params['requesteditemtype'] = $product->getMainCategory()->getId();
     }
     $r = $client->query('otherusersalsobought', $params);
 
@@ -155,7 +160,10 @@ class smartengineActions extends myActions
       return $this->renderText('');
     }
 
-    $ids = array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
+    $ids =
+      array_key_exists('id', $r['recommendeditems']['item'])
+        ? array($r['recommendeditems']['item']['id'])
+        : array_map(function($item) { return $item['id']; }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : array());
     if (!count($ids)) {
       return $this->renderText('');
     }
