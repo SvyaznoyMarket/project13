@@ -24,13 +24,15 @@ class smartengineActions extends myActions
     $params = array(
       'sessionid'       => session_id(),
       'itemid'          => $product->getId(),
-      'itemtype'        => $product->getMainCategory()->getId(),
       'itemdescription' => $product->getName(),
       'itemurl'         => 'http://'.$request->getHost().$product->getLink(),
       'actiontime'      => date('d_m_Y_H_i_s'),
     );
     if ($this->getUser()->isAuthenticated()) {
       $params['userid'] = $this->getUser()->getGuardUser()->getId();
+    }
+    if ($product->getMainCategory()) {
+      $params['itemtype'] = $product->getMainCategory()->getId();
     }
     $r = $client->query('view', $params);
 
@@ -60,13 +62,15 @@ class smartengineActions extends myActions
       $params = array(
         'sessionid'       => session_id(),
         'itemid'          => $product->getId(),
-        'itemtype'        => $product->getMainCategory()->getId(),
         'itemdescription' => $product->getName(),
         'itemurl'         => 'http://'.$request->getHost().$product->getLink(),
         'actiontime'      => date('d_m_Y_H_i_s'),
       );
       if ($this->getUser()->isAuthenticated()) {
         $params['userid'] = $this->getUser()->getGuardUser()->getId();
+      }
+      if ($product->getMainCategory()) {
+        $params['itemtype'] = $product->getMainCategory()->getId();
       }
       $r = $client->query('buy', $params);
 
@@ -93,10 +97,12 @@ class smartengineActions extends myActions
     $params = array(
       'sessionid' => session_id(),
       'itemid'    => $product->getId(),
-      'itemtype'  => $product->getMainCategory()->getId(),
     );
     if ($this->getUser()->isAuthenticated()) {
       $params['userid'] = $this->getUser()->getGuardUser()->getId();
+    }
+    if ($product->getMainCategory()) {
+      $params['itemtype'] = $product->getMainCategory()->getId();
     }
     $r = $client->query('otherusersalsoviewed', $params);
 
@@ -134,10 +140,12 @@ class smartengineActions extends myActions
     $params = array(
       'sessionid' => session_id(),
       'itemid'    => $product->getId(),
-      'itemtype'  => $product->getMainCategory()->getId(),
     );
     if ($this->getUser()->isAuthenticated()) {
       $params['userid'] = $this->getUser()->getGuardUser()->getId();
+    }
+    if ($product->getMainCategory()) {
+      $params['itemtype'] = $product->getMainCategory()->getId();
     }
     $r = $client->query('otherusersalsobought', $params);
 
