@@ -258,13 +258,13 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
     }
 
     // read data from storage
-    $this->authenticated = $storage->read(self::AUTH_NAMESPACE);
+    //$this->authenticated = $storage->read(self::AUTH_NAMESPACE);
     $this->credentials   = $storage->read(self::CREDENTIAL_NAMESPACE);
     $this->lastRequest   = $storage->read(self::LAST_REQUEST_NAMESPACE);
 
     if (null === $this->authenticated)
     {
-      $this->authenticated = false;
+      //$this->authenticated = false;
       $this->credentials   = array();
     }
     else
@@ -279,7 +279,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
         }
 
         $this->setTimedOut();
-        $this->setAuthenticated(false);
+        //$this->setAuthenticated(false);
       }
     }
 
@@ -291,7 +291,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
     // write the last request time to the storage
     $this->storage->write(self::LAST_REQUEST_NAMESPACE, $this->lastRequest);
 
-    $this->storage->write(self::AUTH_NAMESPACE,         $this->authenticated);
+    //$this->storage->write(self::AUTH_NAMESPACE,         $this->authenticated);
     $this->storage->write(self::CREDENTIAL_NAMESPACE,   $this->credentials);
 
     // call the parent shutdown method

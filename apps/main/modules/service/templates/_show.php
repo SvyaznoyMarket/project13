@@ -42,11 +42,12 @@ $json = array(
         </strong>
       </div>
     <?php endif ?>
-    <?php if($service->getIsDelivery()): ?>
+
+    <?php if ($service->isInsale() && $service->getIsDelivery()): ?>
       <a class="link1" href="<?php echo url_for('cart_service_add', array('service' => $service->getId())); ?>">Купить услугу</a>
     <?php elseif($service->getIsInShop()): ?>
       <b>Доступна в магазине</b>
-      <p class="font14">Специалисты контакт cENTER с радостью проконсультируют по данной услуге и подскажут ближайший магазин Enter</p>
+      <p class="font14">Специалисты Контакт-cENTERа с радостью проконсультируют по данной услуге и подскажут ближайший магазин Enter</p>
       <p class="font14">
         <strong>8 (800) 700 00 09</strong><br/>
         Skype: skype2enter и call2enter<br/>

@@ -109,7 +109,7 @@
 <div class="comment">
 	<div class="commentleft">
 		<div class="avatar"><img src="/css/skin/img/avatar.png" alt="" width="54" height="54" /></div>
-		<?php echo $item->getUser() ?><br /><span class="gray"><?php echo $item->created_at ?></span><br /><br />Полезный отзыв?
+		<?php //echo $item->getUser() ?><br /><span class="gray"><?php echo $item->created_at ?></span><br /><br />Полезный отзыв?
 		<div class="vote">
 			<a href="javascript:void(0)" class="green">Да</a>
 				<?php echo $item->helpful ?> /
@@ -128,7 +128,7 @@
 		</div>
 
 		<ul class="gradelist">
-			<?php foreach ($item->getProductRating() as $rate): ?>
+			<?php if (false) foreach ($item->getProductRating() as $rate): ?>
 			<li>
 				<div><?php echo $rate['Property']['name'] ?></div>
 				<div class="ratingscale">
@@ -150,7 +150,7 @@
 			<div class="answer">
 				<div class="answerleft">
 					<div class="avatar">.....&nbsp;&nbsp;<img src="/css/skin/img/avatar.png" alt="" width="54" height="54" /></div>
-					<?php echo $comment->getUser() ?><br /><span class="gray"><?php echo $comment->created_at ?></span>
+					<?php //echo $comment->getUser() ?><br /><span class="gray"><?php echo $comment->created_at ?></span>
 				</div>
 				<div class="answerright"><?php echo nl2br($comment->content) ?></div>
 			</div>
@@ -173,12 +173,12 @@
 			</div>
 		</div>
 
-		<a href="javascript:void(0)" class="button whitelink subcomments-add-trigger">Написать комментарий</a>
+		<!--<a href="javascript:void(0)" class="button whitelink subcomments-add-trigger">Написать комментарий</a>-->
 		<div class="addcomment">
 			<form method="post" action="<?php echo url_for('productComment_create', $sf_data->getRaw('product')) ?>">
 				<div class="pb10">Текст сообщения</div>
 				<div class="textareabox"><textarea rows="4" cols="125" name="content"></textarea></div>
-				<input type="hidden" name="parent_id" value="<?php echo $item->id ?>"/>
+				<input type="hidden" name="parent_id" value="<?php echo $item->getNode()->hasParent() ? $item->getNode()->getParent()->core_id : '' ?>"/>
 				<input type="submit" class="button yellowbutton" value="Отправить" />
 			</form>
 		</div>
