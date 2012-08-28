@@ -155,4 +155,26 @@ class RepositoryManager
     if(!$repo) $repo = new PromoRepository();
     return $repo;
   }
+
+  /**
+   * @static
+   * @return UserRepository
+   */
+  public static function getUser()
+  {
+    static $repo;
+    if(!$repo) $repo = new UserRepository();
+    return $repo;
+  }
+
+  /**
+   * @static
+   * @return OrderRepository
+   */
+  public static function getOrder()
+  {
+    static $repo;
+    if(!$repo) $repo = new OrderRepository();
+    return $repo;
+  }
 }

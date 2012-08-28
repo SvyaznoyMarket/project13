@@ -1,6 +1,6 @@
 <!-- Basket -->
 <script type="text/html" id="f1cartline">
-  <tr ref="<%=fid%>">
+  <tr ref="<%=f1token%>">
     <td>
       <%=f1title%>
       <br>

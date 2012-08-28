@@ -60,7 +60,11 @@ class order_Components extends myComponents
 
     foreach (PaymentMethodTable::getInstance()->getList() as $paymentMethod)
     {
+      // если метод оплаты неактивен, то пропустить
       if (!$paymentMethod->is_active) continue;
+
+      // если онлайн оплата и онная отключена в настройках, то пропустить
+      if (('online' === $paymentMethod->token) && !sfConfig::get('app_payment_enabled')) continue;
 
       $choices[$paymentMethod->id] = array(
         'id'          => strtr($this->name, array('[' => '_', ']' => '_')).$paymentMethod->id,

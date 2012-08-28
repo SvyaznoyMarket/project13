@@ -15,7 +15,9 @@ class PromoRepository
   }
 
   public function get($type = null) {
-    $params = array();
+    $params = array(
+      'geo_id' => sfContext::getInstance()->getUser()->getRegionCoreId(),
+    );
     if ($type) {
       $params['type_id'] = $type;
     }

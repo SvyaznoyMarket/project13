@@ -51,8 +51,12 @@ class order_Actions extends myActions
     //$this->order->region_id = $this->getUser()->getRegion('id');
 
     // вытащить из куки значения для формы, если пользователь неавторизован
-    if (!$user->isAuthenticated())
-    {
+    if ($user->isAuthenticated()) {
+      $this->order->recipient_first_name = $user->getGuardUser()->getFirstName();
+      $this->order->recipient_last_name = $user->getGuardUser()->getLastName();
+      $this->order->recipient_phonenumbers = $user->getGuardUser()->getPhonenumber();
+    }
+    else {
       $cookieValue = $request->getCookie(self::ORDER_COOKIE_NAME);
       if (!empty($cookieValue))
       {
@@ -266,19 +270,19 @@ class order_Actions extends myActions
   {
     $request->setParameter('_template', 'order_complete');
 
+    $this->paymentProvider = $this->getPaymentProvider();
+
     /* @var myUser */
     $user = $this->getUser();
 
     $orderIds = $user->getFlash('complete_orders');
 
     // проверяет наличие параметра от uniteller
-    if (!empty($request['Order_ID']))
+    $orderNumber = $this->paymentProvider->getOrderIdFromRequest($request);
+    if (!empty($orderNumber))
     {
-      $orderNumber = $request['Order_ID'];
-      //dump($orderNumber);
-
       $result = Core::getInstance()->query('order.get', array(
-        'number' => array($orderNumber),
+        'number' => $orderNumber,
         'expand' => array('geo', 'user', 'product', 'service'),
       ));
 
@@ -412,20 +416,34 @@ class order_Actions extends myActions
 
     $this->paymentForm = false;
     // онлайн оплата?
-    if (1 == count($orders) && empty($request['Order_ID']))
+    if (1 == count($orders) && empty($orderNumber))
     {
       $order = $orders[0];
 
       $paymentMethod = !empty($order['payment_id']) ? PaymentMethodTable::getInstance()->getByCoreId($order['payment_id']) : null;
       if ('online' == $paymentMethod->token)
       {
-        $provider = $this->getPaymentProvider();
-        $this->paymentForm = $provider->getForm($order);
+        $this->paymentForm = $this->paymentProvider->getForm($order);
       }
     }
 
     $this->setVar('orders', $orders, true);
     $this->setVar('gaItems', $gaItems, true);
+  }
+
+  public function executePayment(sfWebRequest $request)
+  {
+    $orderIds = array(316892);
+
+    $result = Core::getInstance()->query('order.get', array(
+      'id'     => $orderIds,
+      'expand' => array('geo', 'user', 'product', 'service'),
+    ));
+
+    $order = array_shift($result);
+
+    $this->paymentProvider = $this->getPaymentProvider();
+    $this->paymentForm = $this->paymentProvider->getForm($order);
   }
 
 
@@ -535,7 +553,6 @@ class order_Actions extends myActions
       $order->mapValue('ServiceItem', array());
       $order->delivery_type_id = null;
       $order->DeliveryType = $deliveryType;
-      $order->User = $user->getGuardUser();
       $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
       $order->delivered_at = date_format(new DateTime($deliveryTypeData['date']), 'Y-m-d');
       $order->mapValue('delivery_period', !empty($deliveryTypeData['interval']) ? explode(',', $deliveryTypeData['interval']) : null);
@@ -607,6 +624,11 @@ class order_Actions extends myActions
       }
 
       $serviceItems = array_merge($serviceItems, array_values($servicesForProduct));
+      foreach ($serviceItems as $i => $serviceItem) {
+        if (!$serviceItem['quantity']) {
+          unset($serviceItems[$i]);
+        }
+      }
 
       $order->ProductItem = $productItems;
       $order->ServiceItem = $serviceItems;
@@ -618,9 +640,11 @@ class order_Actions extends myActions
       $orders[] = $order;
     }
 
-    $coreData = array_map(function($order) use ($user) {
+      $coreData = array_map(function($order) use ($user) {
       /* @var $order Order */
+      /* @var $user myUser */
       $return = $order->exportToCore();
+      $return['user_id'] = $user->getGuardUser() ? $user->getGuardUser()->getId() : null;
       $return['geo_id'] = $user->getRegion('core_id');
       $return['delivery_period'] = $order->delivery_period;
       $return['product'] = $order->ProductItem;
@@ -635,7 +659,7 @@ class order_Actions extends myActions
       return $return;
     }, $orders);
     //dump($coreData, 1);
-    $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
+      $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
     //dump($response, 1);
     if (is_array($response) && array_key_exists('confirmed', $response) && $response['confirmed'])
     {
@@ -695,13 +719,15 @@ class order_Actions extends myActions
         //@TODO нужно переделать в следующем хотфиксе
         $coreData = array_shift(Core::getInstance()->query('service.get', array('id' => $serviceId, 'expand' => array())));
 
-        $servicesForProduct[$productId][] = array(
-          'id'       => $serviceId,
-          'name'     => $coreData['name'],
-          'token'    => $coreData['token'],
-          'quantity' => $productData->getQuantity(),
-          'price'    => $productData->getPrice(),
-        );
+        if ($productData->getQuantity()) {
+          $servicesForProduct[$productId][] = array(
+            'id'       => $serviceId,
+            'name'     => $coreData['name'],
+            'token'    => $coreData['token'],
+            'quantity' => $productData->getQuantity(),
+            'price'    => $productData->getPrice(),
+          );
+        }
       }
     }
 
@@ -839,6 +865,8 @@ class order_Actions extends myActions
             $dateView->day = date('j', strtotime($dateData['date']));
             $dateView->dayOfWeek = format_date($dateData['date'], 'EEE', 'ru');
             $dateView->value = date('Y-m-d', strtotime($dateData['date']));
+            $dateView->timestamp =  $dateView->timestamp = strtotime($dateData['date'], 0) * 1000;
+
             foreach ($dateData['interval'] as $intervalData)
             {
               $intervalView = new Order_IntervalView();
@@ -929,7 +957,7 @@ class order_Actions extends myActions
   /**
    *
    * @param type $name
-   * @return UnitellerPaymentProvider
+   * @return PsbankPaymentProvider
    */
   private function getPaymentProvider($name = null)
   {

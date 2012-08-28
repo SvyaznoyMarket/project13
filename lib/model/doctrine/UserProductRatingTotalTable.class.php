@@ -24,7 +24,7 @@ class UserProductRatingTotalTable extends myDoctrineTable
       'id'         => 'core_id',
       'value'      => 'value',
 
-      'user_id'    => array('rel' => 'User'),
+      //'user_id'    => array('rel' => 'User'),
       'product_id' => array('rel' => 'Product'),
     );
   }

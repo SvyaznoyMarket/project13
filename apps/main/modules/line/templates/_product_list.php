@@ -5,7 +5,7 @@
  */
 
 
-$empty = 0 == $productLine->getProductCount();
+$empty = 0 == $productLine->getTotalCount();
 ?>
 
 <?php if (!$empty): ?>

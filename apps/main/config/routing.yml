@@ -476,7 +476,7 @@ order_complete:
 # order payment
 order_payment:
   url:   /orders/payment
-  param: { module: order, action: payment }
+  param: { module: order_, action: payment }
 #
 # order cancel
 order_cancel:
@@ -500,6 +500,29 @@ order_show:
   class:   myDoctrineRoute
   options: { model: Order, type: object, method: getForRoute }
 
+
+# Smartengine
+#
+# view
+smartengine_view:
+  url: /product-view/:product
+  param: { module: smartengine, action: view }
+# also viewed
+smartengine_alsoViewed:
+  url: /product-also-viewed/:product
+  param: { module: smartengine, action: alsoViewed }
+# view
+smartengine_buy:
+  url: /product-buy/:product
+  param: { module: smartengine, action: buy }
+# alsoBought
+smartengine_alsoBought:
+  url: /product-also-bought/:product
+  param: { module: smartengine, action: alsoBought }
+# userRecommendation
+smartengine_userRecommendation:
+  url: /product-user-recommendation/:product
+  param: { module: smartengine, action: userRecommendation }
 
 # Корзина товаров
 #

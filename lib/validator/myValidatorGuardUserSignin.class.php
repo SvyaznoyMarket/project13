@@ -37,29 +37,34 @@ class myValidatorGuardUserSignin extends sfValidatorBase
     // don't allow to sign in with an empty username
     if ($email || $phonenumber)
     {
-      $user = $this->getTable()->retrieveByEmailOrPhonenumber($email, $phonenumber);
-      // user exists?
-      if ($user)
-      {
-        // password is ok?
-        if ($user->getIsActive() && $user->checkPassword($password))
-        {
-          return array_merge($values, array('user' => $user));
+      //$user = $this->getTable()->retrieveByEmailOrPhonenumber($email, $phonenumber);
+      $params = array('password' => $password);
+      if ($email) {
+        $params['email'] = $email;
+      }
+      else {
+        $params['mobile'] = $phonenumber;
+      }
+
+      try {
+        $result = CoreClient::getInstance()->query('user/auth', $params);
+        if (empty($result['token'])) {
+          throw new Exception('Не удалось получить токен');
         }
       }
+      catch(Exception $e) {
+        if ($this->getOption('throw_global_error'))
+        {
+          throw new sfValidatorError($this, 'invalid');
+        }
+
+        throw new sfValidatorErrorSchema($this, array($this->getOption('username_field') => new sfValidatorError($this, 'invalid')));
+      }
+
+      $user = RepositoryManager::getUser()->getByToken($result['token']);
+      $user->setToken($result['token']);
+
+      return array_merge($values, array('user' => $user));
     }
-
-    if ($this->getOption('throw_global_error'))
-    {
-      throw new sfValidatorError($this, 'invalid');
-    }
-
-    throw new sfValidatorErrorSchema($this, array($this->getOption('username_field') => new sfValidatorError($this, 'invalid')));
   }
-
-  protected function getTable()
-  {
-    return GuardUserTable::getInstance();
-  }
-
 }

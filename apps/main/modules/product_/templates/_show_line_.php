@@ -21,7 +21,7 @@ if(!$item->getLine() || !$item->getLine()->getToken())
   <h3>
     <a href="<?php echo $item->getLine()->getLink() ?>">
       <strong>Серия <?php echo $item->getLine()->getName() ?></strong>
-      <span class="font10 gray"> (<?php echo $item->getLine()->getProductCount() ?>)</span>
+      <span class="font10 gray"> (<?php echo $item->getLine()->getTotalCount() ?>)</span>
     </a>
   </h3>
 
@@ -48,7 +48,7 @@ if(!$item->getLine() || !$item->getLine()->getToken())
         <h3>
           <a href="<?php echo $item->getLine()->getLink() ?>">
             <strong>Серия <?php echo $item->getLine()->getName() ?></strong>
-            <span class="font10 gray"> (<?php echo $item->getLine()->getProductCount() ?>)</span>
+            <span class="font10 gray"> (<?php echo $item->getLine()->getTotalCount() ?>)</span>
           </a>
         </h3>
       </div>

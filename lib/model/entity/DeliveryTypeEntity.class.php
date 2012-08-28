@@ -21,6 +21,11 @@ class DeliveryTypeEntity
   private $shop = array();
 
 
+  public function __toString()
+  {
+    return (string)$this->name;
+  }
+
   /**
    * @param string $description
    */
