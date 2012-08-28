@@ -96,7 +96,7 @@
     ]
   </script>
 
-  <?php include_component('order_','seo_admitad', array('orders' => $orders)) ?>
+  <?php //include_component('order_','seo_admitad', array('orders' => $orders)) ?>
 
     <div id="mixmarket" class="jsanalytics"></div>
     <div id="gooReMaSuccess" class="jsanalytics"></div>
