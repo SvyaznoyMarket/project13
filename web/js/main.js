@@ -787,7 +787,7 @@ $(document).ready(function(){
 	}
 
 	/* Cards Carousel  */
-	function cardsCarousel ( nodes ) {
+	function cardsCarousel ( nodes, noajax ) {
 		var self = this
 		var current = 1
 
@@ -798,7 +798,7 @@ $(document).ready(function(){
 			var max = $(nodes.times).html() * 1
 		else
 			var max = Math.ceil(wi / viswi)			
-		var buffer = 2
+		var buffer = (noajax) ? 100 : 2 
 		var ajaxflag = false
 
 		this.notify = function() {
@@ -813,7 +813,7 @@ $(document).ready(function(){
 				$(nodes.next).removeClass('disabled')
 		}
 
-		var shiftme = function() {
+		var shiftme = function() {	
 			var boxes = $(nodes.wrap).find('.goodsbox')
 			$(boxes).hide()
 			var le = boxes.length
@@ -852,7 +852,7 @@ $(document).ready(function(){
 						})
 						current++
 						shiftme()
-					} else { // we have new portion as already loaded one
+					} else { // we have new portion as already loaded one			
 						current++
 						shiftme() // TODO repair
 					}
@@ -900,6 +900,32 @@ $(document).ready(function(){
 		}			
 	})
 
+	loadProductRelatedContainer($('#product_view-container'))
+	loadProductRelatedContainer($('#product_also_bought-container'))
+    loadProductRelatedContainer($('#product_user-also_viewed-container'))
+    // loadProductRelatedContainer($('#product_buy-container')); // no such element
+    // loadProductRelatedContainer($('#product_user-recommendation-container'));
+
+    function loadProductRelatedContainer(container) {
+        if (container.length) {
+            $.ajax({
+                url: container.data('url'),
+                timeout: 20000
+            }).success(function(result) {
+                    container.html(result)
+                    container.fadeIn()      
+                    var tmpline = new cardsCarousel ({
+                            'prev'  : container.find('.back'),
+                            'next'  : container.find('.forvard'),
+                            'crnt'  : container.find('span:first'),
+                            'times' : container.find('span:eq(1)'),
+                            'width' : container.find('.scroll').data('quantity'),
+                            'wrap'  : container.find('.bigcarousel'),
+                            'viswidth' : 5
+                        }, true )  // true === noajax for carousel                                       
+            })
+        }
+    }
 
 	/* Delivery Ajax */
 	function dlvrajax() {
