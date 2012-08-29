@@ -545,23 +545,23 @@ cart_service_delete:
     service: \d+
 # @core
 # @service
-service_index:
-  url:      /f1
-  param:    { module: service, action: index}
+#service_index:
+#  url:      /f1
+#  param:    { module: service, action: index}
 # @core
 # @service
-service_category:
-  url:      /f1/:category
-  param:    { module: service, action: category }
-  requirements:
-    category: '([\w\-]+)'
+#service_category:
+#  url:      /f1/:category
+#  param:    { module: service, action: category }
+#  requirements:
+#    category: '([\w\-]+)'
 # @core
 # @service
-service_show:
-  url:      /f1/show/:service
-  param:    { module: service, action: show }
-  requirements:
-      service: '([\w\-]+)'
+#service_show:
+#  url:      /f1/show/:service
+#  param:    { module: service, action: show }
+#  requirements:
+#      service: '([\w\-]+)'
 #
 # region autocomplete
 region_autocomplete:

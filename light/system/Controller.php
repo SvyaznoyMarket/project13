@@ -18,7 +18,6 @@ class Controller {
 	 * @return Response
 	 */
 	public static function Run($route, $params=array()){
-
     list($className, $methodName) = explode('.', $route);
     $classPath = $className;
     $className = 'light\\'.$className.'Controller';

@@ -3,6 +3,9 @@
       <?php
         if(isset($breadCrumbList))
         {
+      ?>
+            <a href="/">Enter.ru</a> >
+      <?php
             do {
                 $item = array_shift($breadCrumbList);
       ?>

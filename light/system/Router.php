@@ -187,6 +187,7 @@ class RouteRule
         else if (isset($this->urlParams[$key]))
           $_REQUEST[$key] = $_GET[$key] = $value;
       }
+
       if ($this->routePattern !== null)
         return strtr($this->route, $tr);
       else

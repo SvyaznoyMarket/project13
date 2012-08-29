@@ -24,3 +24,13 @@ else{
 
 define('BANNER_IMAGE_URL', 'http://fs01.enter.ru/4/1/');
 define('BANNER_TIMEOUT', 6000);
+
+function getServicePhotoUrlList()
+{
+    return array(
+        'http://fs01.enter.ru/11/1/500/',
+        'http://fs01.enter.ru/11/1/160/',
+        'http://fs01.enter.ru/11/1/120/'
+    );
+}
+
