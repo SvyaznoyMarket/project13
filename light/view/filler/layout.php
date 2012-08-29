@@ -44,18 +44,5 @@ class FillerLayout extends FillerObject
         $renderer->addParameter('regionTopList', $regionTopList);
 
         $renderer->addParameter('pageTitle', 'Test page title (filled in layout filler)');
-
-        $breadCrumbList = array(
-            array(
-                'name' => 'Главная',
-                'url'  => 'http://enter.n'
-            ),
-            array(
-                'name' => 'Второстепенная',
-                'url' => 'http://enter.n'
-            )
-        );
-
-        $renderer->addParameter('breadCrumbList', $breadCrumbList);
     }
 }
