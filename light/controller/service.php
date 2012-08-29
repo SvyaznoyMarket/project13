@@ -13,7 +13,6 @@ class serviceController
    */
   public function index(Response $response, $params=array()) {
     TimeDebug::start('Service.index::render');
-
     $categoryTree = App::getService()->getCategoryRootTree(2);
     $renderer = App::getHtmlRenderer();
     $breadCrumbList = $categoryTree->getNavigation();

@@ -8,7 +8,7 @@ class FillerLayout extends FillerObject
     {
         $wpRequest = new \WPRequest();
         $wpRequest->setUrl(WP_URL);
-        $wpResponse = @$wpRequest->send('footer_default', array('shop_count' => 0));
+        $wpResponse = @$wpRequest->send('footer_default', array('shop_count' => App::getCoreV2()->query('shop/get-quantity')));
 
         $renderer = App::getHtmlRenderer();
         $renderer->addParameter('wpFooter', $wpResponse['content']);
@@ -43,9 +43,9 @@ class FillerLayout extends FillerObject
         $regionTopList = App::getRegion()->getShopAvailable();
         $renderer->addParameter('regionTopList', $regionTopList);
 
-        #$renderer->addParameter('pageTitle', 'Test page title (filled in layout filler)');
+        $renderer->addParameter('pageTitle', 'Test page title (filled in layout filler)');
 
-        /*$breadCrumbList = array(
+        $breadCrumbList = array(
             array(
                 'name' => 'Главная',
                 'url'  => 'http://enter.n'
@@ -54,8 +54,8 @@ class FillerLayout extends FillerObject
                 'name' => 'Второстепенная',
                 'url' => 'http://enter.n'
             )
-        );*/
+        );
 
-        #$renderer->addParameter('breadCrumbList', $breadCrumbList);
+        $renderer->addParameter('breadCrumbList', $breadCrumbList);
     }
 }
