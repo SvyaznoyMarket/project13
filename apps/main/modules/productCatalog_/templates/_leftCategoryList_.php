@@ -18,7 +18,7 @@ $renderList = function($categoryList) use ($productCategory, &$renderList)
     elseif ($item->getParentId() == $productCategory->core_id) $class = '';
     else $class = 'hidden';
 
-    $render .= sprintf('<li class="bCtg__eL%d %s"><a href="%s"><span>%s<span></a>%s</li>',
+    $render .= sprintf('<li class="bCtg__eL%d %s"><a href="%s"><span>%s</span></a>%s</li>',
       $item->getLevel(),
       $class,
       $item->getLink(),

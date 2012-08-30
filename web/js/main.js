@@ -742,7 +742,7 @@ $(document).ready(function(){
 	/* Top Menu */
 	if( $('.topmenu').length ) {
 		$.get('/category/main_menu', function(data){
-			$('.bHeader').append( data )
+			$('#header').append( data )
 		})
 	}
 
@@ -750,7 +750,7 @@ $(document).ready(function(){
 	var currentMenu = 0 // ref= product ID
 	function showList( self ) {	
 		if(	$(self).data('run') ) {
-			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 - 15
+			var dmenu = $(self).position().left*1 + $(self).width()*1 / 2 + 5
 			var punkt = $( '#extramenu-root-'+ $(self).attr('id').replace(/\D+/,'') )
 			if( punkt.length && punkt.find('dl').html().replace(/\s/g,'') != '' )
 				punkt.show().find('.corner').css('left', dmenu)
