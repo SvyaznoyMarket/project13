@@ -35,9 +35,14 @@ class PsbankInvoicePaymentProvider
     );
 
     $signature = $this->config['contractor_id'].$data['InvoiceID'].$data['Sum'].$data['PayDescription'];
-    $data['Signature'] = base64_encode(
-      iconv('UTF-8', 'windows-1251', $signature)
-    );
+    $signature1251 = iconv('UTF-8', 'windows-1251', $signature);
+    $sign = "";
+
+    $strKey = file_get_contents($this->config['key']);
+    $keyId = openssl_get_privatekey($strKey);
+
+    openssl_sign($signature1251, $sign, $keyId);
+    $data['Signature'] = base64_encode($sign);
 
     $form = new PsbankInvoicePaymentForm($data);
 

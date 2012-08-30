@@ -88,8 +88,8 @@ all:
 
   core:
     config:
-      api_url: 'http://core.ent3.ru/v1/json'
-      userapi_url: 'http://core.ent3.ru/index.php/v2/'
+      api_url: 'http://psbank:Vz8Aeyf0@api.psb.ent3.ru/v1/json'
+      userapi_url: 'http://psbank:Vz8Aeyf0@api.psb.ent3.ru/index.php/v2/'
       client_code: site
       consumer_key: test
       signature: test
@@ -122,6 +122,7 @@ all:
       psbank_invoice:
         contractor_id: 14
         url: 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx'
+        key:  %SF_DATA_DIR%/keys/privkey.pem
       uniteller:
         login: 125
         password: 'OYOTEEl5Fp3YXQSSHKEWeuWM4Gh0IObjAm64RWFHeHtdCsgZ0ChccMmWOpIWNlw0qaa3PshWepTW6WH8'
