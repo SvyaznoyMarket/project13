@@ -79,6 +79,31 @@ class productCard_Actions extends myActions
     return sfView::NONE;
   }
 
+    /**
+     * Собирает в массив данные, необходимые для плагина online кредитовария
+     *
+     * @param $product
+     * @return array
+     */
+  private function _getDataForCredit($product) {
+      $result = array();
+      $mainCat = $product->getCategoryList();
+      $mainCat = $mainCat[0];
+      $cart = $this->getUser()->getCart();
+      $productType = CreditBankRepository::getCreditTypeByCategoryToken($mainCat->getToken());
+      $dataForCredit = array(
+          'price' => $product->getPrice(),
+          'articul' => $product->getArticle(),
+          'name' => $product->getName(),
+          'count' => $product->getCartQuantity(),
+          'product_type' => $productType,
+          'session_id' => session_id()
+      );
+      $result['creditIsAllowed'] = true;
+      $result['creditData'] = json_encode($dataForCredit);
+      return $result;
+  }
+
   private function loadProduct($productToken)
   {
     $product = RepositoryManager::getProduct()->getByToken($productToken, true);

@@ -16,7 +16,33 @@ class cart_Components extends myComponents
    */
   public function executeShow()
   {
-    $this->setVar('list', $this->getProductServiceList($this->getUser()->getCart()), true);
+    $list = $this->getProductServiceList($this->getUser()->getCart());
+
+    $dataForCredit = array();
+    foreach($list as $product){
+      if($product['type'] == 'product'){
+        /** @var $obj ProductEntity */
+        $obj = $product['fullObject'];
+        $rootCategoryToken = '';
+
+        foreach($obj->getCategoryList() as $category){
+          if($category->getLevel() == 1){
+            $rootCategoryToken = $category->getToken();
+            break;
+          }
+        }
+
+        $dataForCredit[] = array(
+          'id' => $product['id'],
+          'quantity' => $product['quantity'],
+          'price' => $product['price'],
+          'type' => CreditBankRepository::getCreditTypeByCategoryToken($rootCategoryToken),
+        );
+      }
+    }
+
+    $this->setVar('list', $list, true);
+    $this->setVar('dataForCredit', json_encode($dataForCredit));
   }
 
   /**
@@ -43,6 +69,15 @@ class cart_Components extends myComponents
         /** @var $cartInfo \light\ProductCartData */
         $cartInfo = $prods[$product->getId()];
 
+        $rootCategoryToken = '';
+
+        foreach($product->getCategoryList() as $category){
+          if($category->getLevel() == 1){
+            $rootCategoryToken = $category->getToken();
+            break;
+          }
+        }
+
         $productList[$product->getId()] = array(
           'type' => 'product',
           'id' => $product->getId(),
@@ -59,6 +94,7 @@ class cart_Components extends myComponents
           'photo' => $product->getMediaImageUrl(1),
           'fullObject' => $product,
           'availableForPurchase' => (!$cartInfo->hasError()),
+          'credit_data_type' =>CreditBankRepository::getCreditTypeByCategoryToken($rootCategoryToken),
         );
       }
     };
@@ -103,9 +139,16 @@ class cart_Components extends myComponents
         }
       }
     };
-    RepositoryManager::getProduct()->getListByIdAsync($prodCb, $prodIdList, true);
-    RepositoryManager::getService()->getListByIdAsync($serviceCb, $serviceIdList, true);
-    CoreClient::getInstance()->execute();
+    if(count($prodIdList)){
+      RepositoryManager::getProduct()->getListByIdAsync($prodCb, $prodIdList, true);
+    }
+    if(count($serviceIdList)){
+      RepositoryManager::getService()->getListByIdAsync($serviceCb, $serviceIdList, true);
+    }
+
+    if(count($serviceIdList) || count($prodIdList)){
+      CoreClient::getInstance()->execute();
+    }
 
     $list = array_values($productList);
 

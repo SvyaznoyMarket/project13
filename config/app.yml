@@ -138,6 +138,13 @@ all:
       log_enabled: true
       log_data_enabled: true
 
+  credit:
+   provider:
+     kupivkredit:
+       partnerId: '1-6ADAEAT'
+       partnerName: 'ООО «Enter»'
+       signature: 'enter-secret-werj7537'
+
   js_combine:
     file:     %SF_WEB_DIR%/js/combine.js
     compiler: %SF_LIB_DIR%/vendor/google-closure/compiler.jar

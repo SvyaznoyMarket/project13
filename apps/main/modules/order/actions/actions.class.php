@@ -62,7 +62,7 @@ class orderActions extends myActions
 
     $this->order = new Order();
     $this->order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
-    $this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
+    //$this->order->PaymentMethod = PaymentMethodTable::getInstance()->findOneByToken('nalichnie');
     $this->order->shop_id = $this->shop ? $this->shop->id : null;
     $this->order->delivery_type_id = 1;
     $this->order->sum = ProductTable::getInstance()->getRealPrice($this->product) * $quantity; //нужна для правильного отбражения формы заказа
@@ -358,10 +358,10 @@ class orderActions extends myActions
    */
   public function executeCancel(sfWebRequest $request)
   {
-    $token = $request['token'];
-    if (!$token) $this->redirect($this->getRequest()->getReferer());
+    $coreId = (int) $request['core_id'];
+    if (!$coreId) $this->redirect($this->getRequest()->getReferer());
 
-    $orderL = OrderTable::getInstance()->findBy('token', $token);
+    $orderL = OrderTable::getInstance()->findBy('core_id', $coreId);
     foreach ($orderL as $order) $coreId = $order->core_id;
     //print_r($order->getData());
     $res = Core::getInstance()->query('order.cancel', array('id' => $coreId));

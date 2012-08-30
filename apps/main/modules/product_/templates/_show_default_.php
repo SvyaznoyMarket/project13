@@ -8,6 +8,7 @@
  * @var $accessoryPagesNum int
  * @var $showRelatedUpper boolean
  * @var $showAccessoryUpper boolean
+ * @var $dataForCredit array
  */
 $json = json_encode(array (
   'jsref' => $item->getToken(),
@@ -113,19 +114,28 @@ foreach ($photo3dList as $photo3d)
       <?php render_partial('cart_/templates/_buy_button.php', array('item' => $item)) ?>
     </div>
     <?php if ( $item->getState()->getIsBuyable()): ?>
-      <div class="pb5"><strong>
-        <a href=""
-          data-model='<?php echo $json ?>'
-          link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
-          link-input='<?php echo url_for('product_delivery_1click') ?>'
-          class="red underline order1click-link-new">Купить быстро в 1 клик</a>
-      </strong></div>
+    <div class="pb5"><strong>
+      <a href=""
+         data-model='<?php echo $json ?>'
+         link-output='<?php echo url_for('order_1click', array('product' => $item->getBarcode())) ?>'
+         link-input='<?php echo url_for('product_delivery_1click') ?>'
+         class="red underline order1click-link-new">Купить быстро в 1 клик</a>
+    </strong></div>
     <?php endif ?>
   </div>
 
 
   <div class="line pb15"></div>
 
+  <div class="creditbox"  <?php if (!$dataForCredit['creditIsAllowed']) : ?> style="display:none" <?php endif; ?>>
+    <div class="creditboxinner">
+      от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
+      <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
+        <input id="creditinput" type="checkbox" name="creditinput"/></label></div>
+    </div>
+  </div>
+
+  <input data-model="<?php echo $dataForCredit['creditData'] ?>" id="dc_buy_on_credit_<?php echo $item->getArticle(); ?>" name="dc_buy_on_credit" type="hidden" />
 
   <?php if ($item->getIsBuyable()): ?>
   <div class="bDeliver2 delivery-info" id="product-id-<?php echo $item->getId() ?>" data-shoplink="<?php echo url_for('productStock', array('product' => $item->getPath())) ?>" data-calclink="<?php echo url_for('product_delivery', array('product' => $item->getId())) ?>">
@@ -154,10 +164,10 @@ foreach ($photo3dList as $photo3d)
       <div class="adfoxWrapper" id="adfoxWowCredit"></div>
     <?php } else { ?>
       <div class="adfoxWrapper" id="adfox400"></div>
-    <?php } ?>
+      <?php } ?>
   </div>
 
-  <?php render_partial('service/templates/_listByProduct.php', array('item' => $item)) ?>
+  <?php render_partial('service_/templates/_listByProduct.php', array('item' => $item)) ?>
 
 </div>
 <!-- /Goods info -->
@@ -166,23 +176,23 @@ foreach ($photo3dList as $photo3d)
 
 <!-- Photo video -->
 <?php if (count($photo3dList) > 0 || count($photoList) > 0): ?>
-  <div class="fl width500">
-    <h2>Фото товара:</h2>
-    <div class="font11 gray pb10">Всего фотографий <?php echo count($photoList) ?></div>
-    <ul class="previewlist">
-      <?php foreach ($photoList as $photo): ?>
-        <li class="viewstock" ref="photo<?php echo $photo->getId() ?>">
-          <b>
-            <a href="<?php echo $photo->getUrl(4) ?>" class="viewme" ref="image"></a>
-          </b>
-          <img src="<?php echo $photo->getUrl(2) ?>" alt="" width="48" height="48" />
-        </li>
-      <?php endforeach ?>
-      <?php if (count($photo3dList) > 0): ?>
-        <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
-      <?php endif ?>
-    </ul>
-  </div>
+<div class="fl width500">
+  <h2>Фото товара:</h2>
+  <div class="font11 gray pb10">Всего фотографий <?php echo count($photoList) ?></div>
+  <ul class="previewlist">
+    <?php foreach ($photoList as $photo): ?>
+    <li class="viewstock" ref="photo<?php echo $photo->getId() ?>">
+      <b>
+        <a href="<?php echo $photo->getUrl(4) ?>" class="viewme" ref="image"></a>
+      </b>
+      <img src="<?php echo $photo->getUrl(2) ?>" alt="" width="48" height="48" />
+    </li>
+    <?php endforeach ?>
+    <?php if (count($photo3dList) > 0): ?>
+    <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+    <?php endif ?>
+  </ul>
+</div>
 <?php endif ?>
 <!-- /Photo video -->
 
@@ -202,6 +212,8 @@ foreach ($photo3dList as $photo3d)
   <div class="clear"></div>
   <!--<div id="product_user-recommendation-container" data-url="<?php echo url_for('smartengine_userRecommendation', array('product' => $item->getId())) ?>" style="margin-top: 20px;"><h3>Recommendations for user...</h3></div>-->
 <?php endif ?>
+
+<div class="clear"></div>
 
 <?php
 if ($showAccessoryUpper && count($item->getAccessoryList())){
@@ -271,10 +283,10 @@ if ($showRelatedUpper && count($item->getRelatedList())){
       <h2>Фото:</h2>
       <ul class="previewlist">
         <?php foreach ($photoList as $photo): ?>
-          <li class="viewstock" ref="photo<?php echo $photo->getId() ?>"><b><a href="<?php echo $photo->getUrl(4) ?>" class="viewme" ref="image" id="try-3"></a></b><img src="<?php echo $photo->getUrl(2) ?>" alt="" width="48" height="48" /></li>
+        <li class="viewstock" ref="photo<?php echo $photo->getId() ?>"><b><a href="<?php echo $photo->getUrl(4) ?>" class="viewme" ref="image" id="try-3"></a></b><img src="<?php echo $photo->getUrl(2) ?>" alt="" width="48" height="48" /></li>
         <?php endforeach ?>
         <?php if (count($photo3dList) > 0): ?>
-          <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
+        <li><a href="#" class="axonometric viewme" ref="360" title="Объемное изображение">Объемное изображение</a></li>
         <?php endif ?>
       </ul>
     </div>
