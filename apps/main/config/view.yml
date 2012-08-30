@@ -25,7 +25,7 @@ default:
     - jquery-ui-1.8.20.custom.css
 #    - font.css
 #    - skin/main.css
-    - navy.css
+#    - navy.css
 
   javascripts:
 #    - jquery-1.6.4.min.js

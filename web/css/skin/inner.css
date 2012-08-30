@@ -5742,10 +5742,10 @@ div.mSportFont{ color: #e8303c; }
 		border: 1px solid #000;
 		}
 	.bNav__eAll.mBtn{
-		background: url('skin/img/gray_all.png') 50% 50% no-repeat;
+		background: url('img/gray_all.png') 50% 50% no-repeat;
 		}
 	.bNav__eAll.mChecked{
-		background: #000 url('skin/img/white_all.png') 50% 50% no-repeat;
+		background: #000 url('img/white_all.png') 50% 50% no-repeat;
 		}
 /* ----------- /bNav ------------- */
 
@@ -5772,7 +5772,7 @@ div.mSportFont{ color: #e8303c; }
 	-moz-border-radius: 5px;
 	-ms-border-radius: 5px;
 	-o-border-radius: 5px;
-	background: url('skin/img/gray_all.png') 50% 50% no-repeat;
+	background: url('img/gray_all.png') 50% 50% no-repeat;
 	display: inline-block;
 	width: 20px;
 	height: 10px;
@@ -5780,7 +5780,7 @@ div.mSportFont{ color: #e8303c; }
 	outline: none;
 }
 	.allpager.mChecked{
-		background: #000 url('skin/img/white_all.png') 50% 50% no-repeat;
+		background: #000 url('img/white_all.png') 50% 50% no-repeat;
 		border-color:#000;
 	}
 /* ----------- bNavLoader ------------- */
@@ -5809,7 +5809,7 @@ div.mSportFont{ color: #e8303c; }
 		float: right;
 		overflow: hidden;
 		text-align: center;
-		background: url('skin/img/arrow_bg.png') no-repeat;
+		background: url('img/arrow_bg.png') no-repeat;
 		}
 	.bNavLoader__eIco img{
 		margin-top: 9px;
