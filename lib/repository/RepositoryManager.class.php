@@ -199,15 +199,4 @@ class RepositoryManager
     if(!$repo) $repo = new UserRepository();
     return $repo;
   }
-
-  /**
-   * @static
-   * @return OrderRepository
-   */
-  public static function getOrder()
-  {
-    static $repo;
-    if(!$repo) $repo = new OrderRepository();
-    return $repo;
-  }
 }
