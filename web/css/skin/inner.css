@@ -2908,7 +2908,7 @@ dt.bCtg__eOrange{
 .bMobDown table td img{
 	outline: none;
 }
-.bMobDown table td a,
+
 .bMobDown table td .link1{
 	margin: 12px 0;
 	padding-left: 15px;
@@ -5714,7 +5714,7 @@ div.mSportFont{ color: #e8303c; }
 #mainPageFooter a[title="vkontakte"]{ background: url('img/socIcons.png') no-repeat -52px 0; }
 #mainPageFooter a[title="twitter"]:hover{ background: url('img/socIcons.png') no-repeat 0 -26px; }
 #mainPageFooter a[title="facebook"]:hover{ background: url('img/socIcons.png') no-repeat -26px -26px; }
-#mainPageFooter a[title="vkontakte"]:hover{ background: url('img/socIcons.png') no-repeat -56px -26px; }
+#mainPageFooter a[title="vkontakte"]:hover{ background: url('img/socIcons.png') no-repeat -52px -26px; }
 
 /* ----------- bNav ------------- */
 .bNav{
