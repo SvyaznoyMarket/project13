@@ -228,7 +228,97 @@ window.ANALYTICS = {
         +'le = "position:absolute;left:'
         +'-1000px" ></iframe>');
     },
+
+    myThingsMain : function() {
+        function _mt_ready() {    
+            if (typeof (MyThings) != "undefined") { 
+                    MyThings.Track({ 
+                        EventType: MyThings.Event.Visit,
+                         Action: "200"        
+                });    
+            } 
+        } 
+        var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com"; 
+        var mtAdvertiserToken = "1989-100-ru"; document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
+    },
     
+    myThingsCat : function() {
+        var category = arguments[0]
+        var breadcrumbs = $('.breadcrumbs').find('a')
+        if( !breadcrumbs.length )
+            return
+
+        function _mt_ready() {
+console.info('mt');            
+            var data = {
+                EventType: MyThings.Event.Visit,
+                Action: "1011"
+            }
+        
+            for( var i=1, l=breadcrumbs.length; i<l; i++ ) {
+                var ind = ( i === 1 ) ? '' : ( i - 1 )
+                data[ 'Category'+ind ] = $(breadcrumbs[i]).text()
+            }
+        
+console.info(data);             
+            if (typeof (MyThings) != "undefined") {
+                MyThings.Track( data );
+            }
+        }
+        var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com"; 
+        var mtAdvertiserToken = "1989-100-ru"; document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
+    },
+
+    myThingsProd : function() {
+        var token = arguments[0]
+        _mt_ready = function() {
+            console.info('aaa', typeof (MyThings))
+            if (typeof (MyThings) != "undefined") {
+console.info('bbb')                
+                MyThings.Track({
+                    EventType: MyThings.Event.Visit,
+                    Action: "1010",
+                    ProductId: 'token'
+                });
+            }
+        };
+        var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com"; 
+        var mtAdvertiserToken = "1989-100-ru"; document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
+    },
+
+    myThingsBuy : function() {
+        var token = arguments[0]
+        function _mt_ready() {
+            if (typeof (MyThings) != "undefined") {
+                MyThings.Track({
+                    EventType: MyThings.Event.Visit,
+                    Action: "1013",
+                    ProductId: token
+                });
+            }
+        }
+        // var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com"; 
+        // var mtAdvertiserToken = "1989-100-ru"; document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
+    },
+
+    myThingsFin : function() {
+        var a = arguments[0];
+        // a.products has tmpl { id: "ProductID", price: "24.90", qty: 2 }
+        function _mt_ready() { 
+            if (typeof (MyThings) != "undefined") { 
+                MyThings.Track({ 
+                    EventType: MyThings.Event.Conversion,
+                     Action: "9902",
+                    Products: a.products,
+                    TransactionReference: a.order_id +'',
+                     TransactionAmount: a.order_total + ''
+                }); 
+            } 
+        } 
+        var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com"; 
+        var mtAdvertiserToken = "1989-100-ru"; document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
+    },
+
     parseAllAnalDivs : function( nodes ) {
         if( !this. enable )
             return
@@ -465,7 +555,7 @@ var ADFOX = {
         }
     },
 
-    enable : true
+    enable : false
 }
 
 ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )

@@ -99,5 +99,6 @@
 <div id="gooReMaCategories" class="jsanalytics"></div>
 
 <?php include_component('default', 'adriver') ?>
+
   </body>
 </html>
