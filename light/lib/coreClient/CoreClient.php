@@ -4,6 +4,7 @@ use Logger;
 use Exception;
 
 require_once(__DIR__.'/../log4php/Logger.php');
+require_once(__DIR__.'/../helpers/RequestLogger.php');
 
 class CoreClient
 {
@@ -74,6 +75,7 @@ class CoreClient
         throw new \RuntimeException(sprintf("Invalid http code: %d, \nResponse: %s", $info['http_code'], $response));
       }
       $this->log('Core response: ' . $response, 'debug');
+      RequestLogger::getInstance()->addLog($action, $params);
       $responseDecoded = $this->decode($response);
       curl_close($connection);
       return $responseDecoded;
@@ -373,6 +375,7 @@ class CoreV1Client
       'data'   => $data), JSON_FORCE_OBJECT);
 
     $this->log("Request: ".$data, 'info');
+    RequestLogger::getInstance()->addLog($name, $params);
     $response = $this->send($data);
     $this->log("Response: ".$response, 'debug');
 

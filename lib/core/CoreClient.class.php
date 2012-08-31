@@ -12,7 +12,10 @@ class CoreClient
   /* @var sfFileLogger */
   private $logger = null;
 
-  /** @var resource */
+  /* @var sfFileLogger */
+  private $loggerByRequest = null;
+
+    /** @var resource */
   private $multiHandler;
   /** @var callback[] */
   private $callbacks = array();
@@ -24,7 +27,7 @@ class CoreClient
    */
   static public function getInstance()
   {
-    static $instance;
+      static $instance;
     if (!$instance) {
       $instance = new CoreClient(sfConfig::get('app_core_config'));
     }
@@ -51,6 +54,7 @@ class CoreClient
    */
   public function query($action, array $params = array(), array $data = array())
   {
+    $params['uid'] = RequestLogger::getInstance()->getId();
     $connection = $this->createCurlResource($action, $params, $data);
     $response = curl_exec($connection);
     try {
@@ -68,6 +72,8 @@ class CoreClient
       if ($this->parameters->get('log_data_enabled')) {
         $this->logger->info('Core response data: ' . $this->encode($responseDecoded));
       }
+      RequestLogger::getInstance()->addLog($action, $params);
+
       curl_close($connection);
       return $responseDecoded;
     }

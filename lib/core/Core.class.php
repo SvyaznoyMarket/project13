@@ -360,7 +360,9 @@ class Core
 
   public function query($name, array $params = array(), array $data = array(), $clean = false)
   {
-    $isLog = !in_array($name, array('sync.get'));
+      $params['uid'] = RequestLogger::getInstance()->getId();
+
+      $isLog = !in_array($name, array('sync.get'));
 
     $action = '/'.str_replace('.', '/', $name).'/';
 
@@ -383,6 +385,7 @@ class Core
     if ($isLog)
     {
       $this->logger->log("Request: ".$data);
+      RequestLogger::getInstance()->addLog($name, $params); // . ' Params: '. implode(',', $paramsList));
     }
     $response = $this->send($data);
     if ($isLog)

@@ -95,6 +95,7 @@ all:
       signature: test
       log_enabled: true
       log_file: %SF_LOG_DIR%/core_client_2.log
+      log_by_request_file: %SF_LOG_DIR%/core_client_2_request.log
       log_response: false # логировать ответ
 
   cache_eraser:
@@ -231,7 +232,7 @@ live:
     push: true  # отправлять данные на сервер smartengine
     pull: false # запрашивать данные с сервера smartengine
     log_enabled: false
-    log_data_enabled: false
+    log_data_enabled: true
 
   rediska:
     default:
