@@ -62,6 +62,7 @@ class CoreClient
    */
   public function query($action, array $params = array(), array $data = array())
   {
+    $params['uid'] = RequestLogger::getInstance()->getId();
     $connection = $this->createCurlResource($action, $params, $data);
     $response = curl_exec($connection);
     try {
@@ -358,7 +359,7 @@ class CoreV1Client
 
   public function query($name, array $params = array(), array $data = array())
   {
-
+    $params['uid'] = RequestLogger::getInstance()->getId();
     $action = '/'.str_replace('.', '/', $name).'/';
 
     if (empty($this->coreApiClientId) || empty($this->coreApiToken))

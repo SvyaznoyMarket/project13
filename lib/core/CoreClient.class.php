@@ -12,9 +12,6 @@ class CoreClient
   /* @var sfFileLogger */
   private $logger = null;
 
-  /* @var sfFileLogger */
-  private $loggerByRequest = null;
-
     /** @var resource */
   private $multiHandler;
   /** @var callback[] */

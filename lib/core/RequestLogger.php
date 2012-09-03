@@ -57,7 +57,6 @@ class RequestLogger
     }
 
     private function __construct() {
-        //die('mmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
     }
 
     public function __clone() {

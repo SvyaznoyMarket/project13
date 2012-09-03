@@ -232,7 +232,7 @@ live:
     push: true  # отправлять данные на сервер smartengine
     pull: false # запрашивать данные с сервера smartengine
     log_enabled: false
-    log_data_enabled: true
+    log_data_enabled: false
 
   rediska:
     default:
