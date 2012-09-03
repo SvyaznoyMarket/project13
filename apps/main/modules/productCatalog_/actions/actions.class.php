@@ -37,8 +37,8 @@ class productCatalog_Actions extends myActions
     foreach ($productCategoryList as $productCategory)
     {
       $list[] = array(
-        'name' => $productCategory['name'],
-        'url' => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'] . '/' . $productCategory['token']) : $productCategory['token'])),
+        'name'  => $productCategory['name'],
+        'url'   => $this->generateUrl('productCatalog_category', array('productCategory' => $productCategory['token_prefix'] ? ($productCategory['token_prefix'] . '/' . $productCategory['token']) : $productCategory['token'])),
         'level' => $productCategory['level'],
       );
     }
@@ -62,15 +62,12 @@ class productCatalog_Actions extends myActions
 
     // SEO ::
     $list = array();
-    $ancestorList = ProductCategoryTable::getInstance()->getAncestorList($productCategory, array(
-      'hydrate_array' => true,
-      'select' => 'productCategory.id, productCategory.name',
-    ));
-    foreach ($ancestorList as $ancestor)
+    foreach ($productCategory->getAncestors() as $ancestor)
     {
-      $list[] = $ancestor['name'];
+      /** @var $ancestor ProductCategoryEntity */
+      $list[] = $ancestor->getName();
     }
-    $list[] = $productCategory->name;
+    $list[] = $productCategory->getName();
     $title = '%s - страница %d из %d - интернет-магазин Enter.ru - ' . $this->getUser()->getRegion('name');
     $this->getResponse()->setTitle(sprintf(
       $title,
@@ -85,16 +82,17 @@ class productCatalog_Actions extends myActions
     if (!$request->isXmlHttpRequest())
       $this->seoRedirectOnPageDublicate($request);
 
+    /** @var $productCategory ProductCategoryEntity */
     $productCategory = $this->getProductCategory($request);
 
     $this->getContext()->set('adriverProductInfo', array('productId' => 0, 'categoryId' => $productCategory->getid()));
 
-    if ($productCategory->has_line) // если в категории должны отображться линии
+    if ($productCategory->getHasLine()) // если в категории должны отображться линии
     {
       $this->forward($this->getModuleName(), 'line');
     }
 
-    if (!$productCategory->hasChildren()) // нет дочерних категорий
+    if (!$productCategory->getHasChildren()) // нет дочерних категорий
     {
       $this->forward($this->getModuleName(), 'product');
     }
@@ -117,8 +115,8 @@ class productCatalog_Actions extends myActions
   {
     $productCategory = $this->getProductCategory($request);
     $categoryTree = RepositoryManager::getProductCategory()->getTree(
-      $productCategory->core_id,
-      $productCategory->level + 2,
+      $productCategory->getId(),
+      $productCategory->getLevel() + 2,
       false
     );
     $this->forward404If(empty($categoryTree));
@@ -140,15 +138,15 @@ class productCatalog_Actions extends myActions
   {
     $requestCategory = $this->getProductCategory($request);
     $categoryTree = RepositoryManager::getProductCategory()->getTree(
-      $requestCategory->core_id,
-      $requestCategory->level + 2, // site-db level less per 1, and need load next level
+      $requestCategory->getId(),
+      $requestCategory->getLevel() + 2, // site-db level less per 1, and need load next level
       true
     );
     $this->forward404If(empty($categoryTree));
     /** @var $currentCategory ProductCategoryEntity */
     /** @var $childrenCategory ProductCategoryEntity */
     $currentCategory = reset($categoryTree);
-    $currentCategory = $currentCategory->getNode($requestCategory->core_id);
+    $currentCategory = $currentCategory->getNode($requestCategory->getId());
     $this->forward404If(empty($currentCategory));
 
     $productFilter = $this->getProductFilter($request);
@@ -190,7 +188,7 @@ class productCatalog_Actions extends myActions
 
     foreach ($productPager->getResults() as $item)
     {
-      $this->renderPartial('product_/show_', array('view' => $productCategory->has_line ? 'line' : 'compact', 'item' => $item));
+      $this->renderPartial('product_/show_', array('view' => $productCategory->getHasLine() ? 'line' : 'compact', 'item' => $item));
     }
 
     return sfView::NONE;
@@ -220,13 +218,15 @@ class productCatalog_Actions extends myActions
 
     $productCategory = $this->getProductCategory($request);
     // generate title
-    $title = $productCategory['name'];
+    $title = $productCategory->getName();
     if ($request->getParameter('page')) {
       $title .= ' – ' . $request->getParameter('page');
     }
-    $rootCategory = $productCategory->getRootCategory();
-    if ($rootCategory->id !== $productCategory->id) {
-      $title .= ' – ' . $rootCategory;
+    // ...
+
+    $rootCategory = $productCategory->getRoot();
+    if ($rootCategory->getId() !== $productCategory->getId()) {
+      $title .= ' – '.$rootCategory;
     }
     /** @var $response sfWebResponse */
     $response = $this->getResponse();
@@ -277,12 +277,12 @@ class productCatalog_Actions extends myActions
     );
 
     $productCategory = $this->getProductCategory($request, false);
-    if ($productCategory->has_line) {
+    if ($productCategory->getHasLine()) {
       $this->setVar('view', 'line');
       $this->setVar('list_view', false);
     }
     else {
-      $this->setVar('view', $request->getParameter('view', $productCategory->product_view));
+      $this->setVar('view', $request->getParameter('view', $productCategory->getProductView()));
     }
     $this->setVar('noInfinity', true);
     $this->setVar("productFilter", $productFilter);
@@ -306,16 +306,16 @@ class productCatalog_Actions extends myActions
     $this->forward404If($productPager->getPage() > 1 && $productPager->getPage() > $productPager->getLastPage(), 'Номер страницы превышает максимальный для списка');
   }
 
-  private function loadCategoryTree(ProductCategory $productCategory)
+  private function loadCategoryTree(ProductCategoryEntity $productCategory)
   {
     $self = $this;
     RepositoryManager::getProductCategory()->getTreeAsync(function($categoryTree) use(&$self, &$productCategory){
         /** @var $rootCategory ProductCategoryEntity */
-        /** @var $productCategory ProductCategory */
+        /** @var $productCategory ProductCategoryEntity */
         /** @var $self myActions */
         $self->forward404If(empty($categoryTree));
         $rootCategory = reset($categoryTree);
-        if($node = $rootCategory->getNode($productCategory->core_id)){
+        if($node = $rootCategory->getNode($productCategory->getId())){
           $quantity = $node->getProductCount();
         }
         else{
@@ -324,8 +324,8 @@ class productCatalog_Actions extends myActions
         $self->setVar('quantity', $quantity);
         $self->setVar('categoryTree', $categoryTree);
       },
-      $productCategory->hasChildren() ? $productCategory->core_id : $productCategory->core_parent_id,
-      $productCategory->level + 1,
+      $productCategory->getHasChildren() ? $productCategory->getId() : $productCategory->getParentId(),
+      $productCategory->getLevel() + 1,
       true
     );
   }
@@ -343,11 +343,9 @@ class productCatalog_Actions extends myActions
    */
   private function seoRedirectOnPageDublicate(sfWebRequest $request)
   {
-    /** @var $route sfObjectRoute */
-    $route = $this->getRoute();
-    /** @var $productCategory ProductCategory */
-    $productCategory = $route->getObject();
-    $view = $productCategory->product_view;
+    /** @var $productCategory ProductCategoryEntity */
+    $productCategory = $this->getProductCategory($request);
+    $view = $productCategory->getProductView();
     if (empty($view)) $view = 'compact';
     //если передано page=1 или view c дефолным значением, отрезаем этот параметр и делаем редирект.
     //необходимо для seo
@@ -374,50 +372,26 @@ class productCatalog_Actions extends myActions
     }
   }
 
-  /**
-   * @param sfWebRequest $request
-   * @param bool $checkRedirect
-   * @return ProductCategory
-   * @throws sfException
-   */
-  private function oldUrlRedirect(sfWebRequest $request, $checkRedirect = true)
-  {
-    try
-    {
-      /** @var $route sfObjectRoute */
-      $route = $this->getRoute();
-      /** @var $productCategory ProductCategory */
-      $productCategory = $route->getObject();
-
-      // 301-й редирект. Можно удалить 01.02.2012
-      if ($checkRedirect) {
-        if (false === strpos($request['productCategory'], '/')) {
-          if (!empty($productCategory->token_prefix)) {
-            $this->redirect('productCatalog_category', $productCategory, 301);
-          }
-        }
-      }
-      return $productCategory;
-    }
-    catch (sfError404Exception $e)
-    {
-      return $this->forward('redirect', 'index');
-    }
-  }
-
   private $productCategoryCache;
 
   /**
    * @param $request
    * @param bool $checkRedirect
-   * @return ProductCategory
+   * @return ProductCategoryEntity
    */
   private function getProductCategory($request, $checkRedirect = true)
   {
     if (!$this->productCategoryCache) {
-      $this->productCategoryCache = $this->oldUrlRedirect($request, $checkRedirect);
+      $productCategoryToken = explode('/', $request['productCategory']);
+      $productCategoryToken = array_pop($productCategoryToken);
+
+      $productCategory = RepositoryManager::getProductCategory()->getByToken($productCategoryToken, true);
+      $this->forward404Unless($productCategory);
+
+      $this->productCategoryCache = $productCategory;
       $this->setVar('productCategory', $this->productCategoryCache);
     }
+
     return $this->productCategoryCache;
   }
 }
@@ -425,7 +399,7 @@ class productCatalog_Actions extends myActions
 class ProductCoreFormFilterSimple
 {
   const NAME = 'f';
-  /** @var \ProductCategory */
+  /** @var \ProductCategoryEntity */
   private $productCategory;
   /** @var \ProductCategoryFilterEntity[] */
   private $filterList;
@@ -437,16 +411,16 @@ class ProductCoreFormFilterSimple
   /**
    * @param ProductCategory $category
    */
-  public function __construct(ProductCategory $category)
+  public function __construct(ProductCategoryEntity $category)
   {
     $this->productCategory = $category;
     $filterList=array();
     $parentFilterList=array();
-    RepositoryManager::getProductCategoryFilter()->getListAsync($this->productCategory->core_id, function($data) use(&$filterList){
+    RepositoryManager::getProductCategoryFilter()->getListAsync($this->productCategory->getId(), function($data) use(&$filterList){
       $filterList = $data;
     });
-    if($this->productCategory->core_parent_id){
-      RepositoryManager::getProductCategoryFilter()->getListAsync($this->productCategory->core_parent_id, function($data) use(&$parentFilterList){
+    if($this->productCategory->getParentId()){
+      RepositoryManager::getProductCategoryFilter()->getListAsync($this->productCategory->getParentId(), function($data) use(&$parentFilterList){
         $parentFilterList = $data;
       });
     }
@@ -480,9 +454,9 @@ class ProductCoreFormFilterSimple
         }
       }
     }
-    $token = $this->productCategory->token;
-    if ($this->productCategory->token_prefix) {
-      $token = $this->productCategory->token_prefix . '/' . $token;
+    $token = $this->productCategory->getToken();
+    if ($this->productCategory->getTokenPrefix()) {
+      $token = $this->productCategory->getTokenPrefix() . '/' . $token;
     }
     return url_for('productCatalog_category', array(
       'productCategory' => $token,
@@ -523,7 +497,7 @@ class ProductCoreFormFilterSimple
     $filters[] = array('is_view_list', 1, array(true));
 
     if ($this->productCategory && $useCategoryFilter) {
-      $filters[] = array('category', 1, $this->productCategory->core_id);
+      $filters[] = array('category', 1, $this->productCategory->getId());
     }
     return $filters;
   }
