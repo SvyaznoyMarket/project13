@@ -122,6 +122,12 @@ class smartengineActions extends myActions
     }
 
     $products = RepositoryManager::getProduct()->getListById($ids, true);
+    foreach ($products as $i => $product) {
+      if (!$product->getIsBuyable()) unset($products[$i]);
+    }
+    if (!count($products)) {
+      return $this->renderText('');
+    }
 
     return $this->renderPartial($this->getModuleName().'/product_list', array(
       'title'    => 'С этим товаром также смотрят',
@@ -169,6 +175,12 @@ class smartengineActions extends myActions
     }
 
     $products = RepositoryManager::getProduct()->getListById($ids, true);
+    foreach ($products as $i => $product) {
+      if (!$product->getIsBuyable()) unset($products[$i]);
+    }
+    if (!count($products)) {
+      return $this->renderText('');
+    }
 
     return $this->renderPartial($this->getModuleName().'/product_list', array(
       'title'    => 'Also bought',
