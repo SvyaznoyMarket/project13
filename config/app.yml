@@ -129,7 +129,7 @@ all:
 
   smartengine:
     push: true # отправлять данные на сервер smartengine
-    pull: true  # запрашивать данные с сервера smartengine
+    pull: true # запрашивать данные с сервера smartengine
     config:
       api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/'
       # api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/' # для demo

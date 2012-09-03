@@ -124,7 +124,7 @@ class smartengineActions extends myActions
     $products = RepositoryManager::getProduct()->getListById($ids, true);
 
     return $this->renderPartial($this->getModuleName().'/product_list', array(
-      'title'    => 'Also viewed',
+      'title'    => 'С этим товаром также смотрят',
       'products' => $products,
     ));
   }
