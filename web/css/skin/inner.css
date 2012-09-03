@@ -58,9 +58,22 @@ TABLE {border-collapse:collapse}
   url('../fonts/rouble.ttf') format('truetype');
 }
 @font-face {
-  font-family: 'Enter Type';
-  src: url('../fonts/enter_type.otf');
-  src: url('../fonts/enter_type.ttf') format('truetype');
+	font-family: 'Enter Type';
+	src: url('/css/fonts/enter_type-webfont.eot');
+	src: url('/css/fonts/enter_type-webfont.eot?#iefix') format('embedded-opentype'),
+	url('/css/fonts/enter_type-webfont.woff') format('woff'),
+	url('/css/fonts/enter_type-webfont.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Enter Type Bold';
+	src: url('/css/fonts/entertype_bold-webfont.eot');
+	src: url('/css/fonts/entertype_bold-webfont.eot?#iefix') format('embedded-opentype'),
+	url('/css/fonts/enter_type-webfont.woff') format('woff'),
+	url('/css/fonts/entertype_bold-webfont.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
 }
 .p0 { padding: 0 !important }
 .pt5 {padding-top:5px}
