@@ -88,7 +88,13 @@
             /*----------------------------------------------------
                Animate it in.
             ---------------------------------------------------- */
-
+            if( opts.autofocus ) {
+                var cusLoad = opts.onLoad
+                opts.onLoad = function() {
+                    cusLoad()
+                    $self.find('input:text').first().focus()
+                }
+            }
             if ($overlay.is(":hidden")) {
                 $overlay.fadeIn(opts.overlaySpeed, function() {
                     $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); opts.onLoad()});
@@ -259,6 +265,7 @@
         // callbacks
         onLoad: function() {},
         onClose: function() {},
+        autofocus: false, 
 
         // style
         classPrefix: 'lb',

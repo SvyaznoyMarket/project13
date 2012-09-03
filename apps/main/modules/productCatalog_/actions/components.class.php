@@ -14,7 +14,7 @@ class productCatalog_Components extends myComponents
    * Executes navigation component
    *
    * @internal-param ProductCategory $productCategory Категория товара
-   * @internal-param Creator $creator Производитель
+   * @internal-param Creator $creator Бренд
    */
   public function executeNavigation()
   {
@@ -73,7 +73,7 @@ class productCatalog_Components extends myComponents
    * Executes navigation component
    *
    * @internal-param ProductCategory $productCategory Категория товара
-   * @internal-param Creator $creator Производитель
+   * @internal-param Creator $creator Бренд
    */
   public function executeNavigation_seo()
   {

@@ -109,6 +109,10 @@ class myUser extends myGuardSecurityUser
 
     $parentRegion = RepositoryManager::getRegion()->getById((int)$region->getParentId());
 
+    $r = CoreClient::getInstance()->query('geo/get', array(
+      'id' => array($region->getId()),
+    ));
+
     $parentName = ((bool)$parentRegion)?$parentRegion->getName() : '';
 
     /** @var region RegionEntity */
@@ -123,6 +127,7 @@ class myUser extends myGuardSecurityUser
       'latitude' => $region->getLatitude(),
       'longitude' => $region->getLongitude(),
       'region' => $region,
+      'has_f1' => isset($r[0]) ? ((bool)$r[0]['has_f1']) : false,
     );
 
     #@TODO: зачем кука устанавливается два раза ?

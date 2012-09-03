@@ -2283,6 +2283,7 @@ DT.bCtg__eOrange{
 		font: 24px Tahoma, sans-serif;
 		}
 	.bSet__eImage{
+        position: relative;
 		width: 500px;
 		overflow: hidden;
 		vertical-align: top;
@@ -5001,6 +5002,9 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     *display: inline;
     zoom: 1;
 }
+.mBacket{
+  cursor: pointer;
+}
 
 
 .bBuyingLine dd div{
@@ -5047,7 +5051,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     width: 460px;
     padding-left: 25px;
 }
-.mInputLong.mRed{
+.mInputLong.mRed, .mInputShort.mRed{
     border: 1px solid red;
 }
 .bBuyingLine__eTextarea{
@@ -5205,7 +5209,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 }
 .bBuyingLineWrap .bBuyingLine dd{
     width: 615px;
-    margin: 0 0 15px 0;
+    margin: 28px 0 15px 0;
     position: relative;
     font-weight: normal;
 }
@@ -5287,12 +5291,13 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     margin: 1px;
     padding: 5px 18px;
     position: relative;
-
+    min-width: 18px;
+    text-align: center;
     display: inline-block;
     *display: inline;
     zoom: 1;
 }
-.bBuyingDates li span{
+.bBuyingDates li .dow{
     top: -18px;
     left: 21px;
     position: absolute;
@@ -5390,7 +5395,7 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
     -moz-border-radius: 5px;
     -o-border-radius: 5px;
 }
-.bBuyingDates__eCurrent span{
+.bBuyingDates__eCurrent .dow{
     color: #ffa901;
 }
 .bBuyingDates__eEnable{
@@ -6047,4 +6052,35 @@ div.mSportFont{ color: #e8303c; }
     font-size: 10px;
     color: #676767;
     width: 200px;
+}
+
+#order_address_metro, #order_address_street, #order_address_number, #order_address_building, #order_address_apartment, #order_address_floor {
+    -webkit-border-top-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-radius-topleft: 0;
+    -moz-border-radius-bottomleft: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 0;
+    padding-left: 10px;
+}
+
+.bBuyingInfo span.placeholder {
+    color: #999;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border: 1px solid #DDDDDD;
+    border-right: 0 none;
+    display: inline-block;
+    height: 27px;
+    line-height: 27px;
+    padding: 1px 4px;
+}
+
+.height220 {
+    height: 220px;
 }

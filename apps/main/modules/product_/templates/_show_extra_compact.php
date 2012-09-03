@@ -10,7 +10,7 @@ if($main = $item->getMainCategory())
   $title .= ' - '.$main->getName();
 
 ?>
-<div class="goodsbox"<?php echo (isset($ii) && $ii > $maxPerPage) ? ' style="display:none;"' : '' ?>>
+<div class="goodsbox<?php if (isset($fixHeight)) echo ' height220' ?>"<?php echo (isset($ii) && $ii > $maxPerPage) ? ' style="display:none;"' : '' ?>>
 
   <div class="photo">
     <a href="<?php echo $item->getLink() ?>">

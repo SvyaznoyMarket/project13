@@ -127,13 +127,14 @@
 			"comment": "library of non-blocking loading, for loadjs"
 		},
 		{
-			"title": "google.maps.infobox.js"	// trashing soon		
+			"title": "ports.js",
+			"comment": "calling analytics and counters"
 		},
 		{
 			"title": "dash.js"
 		},
 		{
-			"title": "wellcome.js"
+			"title": "welcome.js"
 		},
 		{
 			"title": "main.js"
@@ -176,6 +177,9 @@
 		{
 			"title": "app.order.v.3.2.js",
 			"comment": "custom framework by green       prototype version in app.order.v.3 includes/depends knockout"
+		},
+		{
+			"title": "app.order.error"
 		},
 		{
 			"title": "app.cart.js"

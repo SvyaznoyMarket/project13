@@ -29,16 +29,16 @@
     </div>
 
     <div class="pb10">
-      <?php echo $form['password']->renderLabel() ?>:
-      <?php echo $form['password']->renderError() ?>
+      <?php echo $form['password_old']->renderLabel() ?>:
+      <?php echo $form['password_old']->renderError() ?>
     </div>
-    <?php echo $form['password']->render() ?>
+    <?php echo $form['password_old']->render() ?>
 
     <div class="pb10">
-      <?php echo $form['password_again']->renderLabel() ?>:
-      <?php echo $form['password_again']->renderError() ?>
+      <?php echo $form['password_new']->renderLabel() ?>:
+      <?php echo $form['password_new']->renderError() ?>
     </div>
-    <?php echo $form['password_again']->render() ?>
+    <?php echo $form['password_new']->render() ?>
 
     <div class="clear pb10"></div>
     <div class="pb20"><input type="submit" class="button yellowbutton" id="bigbutton" value="Сохранить изменения" /></div>

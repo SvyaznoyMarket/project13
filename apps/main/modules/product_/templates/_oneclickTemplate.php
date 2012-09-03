@@ -9,7 +9,7 @@
           <div class='bFast__eItemWrap'>
             <div class='bFast__eArrow'></div>
             <div class='bFast__eNum'>Артикул #<span data-bind="text: shortcut"></span></div>
-            <div class="bFast__eTitle"><a href="" data-bind="text: title"></a></div>
+            <div class="bFast__eTitle"><a href="" data-bind="html: title"></a></div>
             <div class='bFast__eCenter'><img alt="" data-bind="attr: {src: icon}"/></div>
             <div class='bFast__eCenter' data-bind="if : !noQBar() ">
               <div class='bCountSet'>
@@ -32,7 +32,7 @@
         <td class='bFast__eForm'>
           <table cellpadding=0 cellspacing=0 class='bFastInner'>
             <tr><th colspan="2"><h2>Заполните форму быстрого заказа:</h2></th></tr>
-            <tr data-bind="visible: noDelivery()"><td colspan="2"><h2 class="red">Доставка и самовывоз невозможны!</h2></td></tr>
+            <tr data-bind="visible: noDelivery()"><td colspan="2"><h2 class="red">Товар в количестве <span data-bind="text: quantity()"></span> шт. отсутствует на складе.</h2></td></tr>
             <tr data-bind="visible: !noDelivery()"><td width="200">Способ получения заказа:</td>
               <td>
                 <div class='bSelect mFastInpSmall' data-bind="css: { mDisabled : (disabledSelectors() || stableType() ) }">

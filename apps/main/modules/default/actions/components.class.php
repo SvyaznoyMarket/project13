@@ -96,7 +96,11 @@ class defaultComponents extends myComponents
       $this->view = 'default';
     }
 
-    $this->shopCount = ShopTable::getInstance()->getCount();
+    $wpRequest = new WPRequest();
+    $wpRequest->setUrl(sfConfig::get('app_wp_url'));
+    $wpResponse = $wpRequest->send('footer_' . $this->view, array('shop_count' => ShopTable::getInstance()->getCount()));
+
+    $this->wpFooter = $wpResponse['content'];
   }
 /**
   * Executes cache component

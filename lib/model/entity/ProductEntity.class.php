@@ -2,6 +2,12 @@
 
 class ProductEntity
 {
+
+  /**
+   * Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере
+   */
+  const DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE = 1;
+
   /* @var integer */
   private $id;
   /** @var int */
@@ -106,6 +112,9 @@ class ProductEntity
   private $accessoryList = array();
   /** @var ProductTagEntity[] */
   private $tagList = array();
+  /** @var boolean */
+  private $connectedProductsViewMode;
+
 
   public function __construct(array $data = array())
   {
@@ -134,8 +143,10 @@ class ProductEntity
     if (array_key_exists('price', $data))           $this->price         = $data['price'];
     if (array_key_exists('price_average', $data))   $this->priceAverage  = $data['price_average'];
     if (array_key_exists('price_old', $data))       $this->priceOld      = $data['price_old'];
+    if (array_key_exists('connected_products_view_mode', $data))  $this->connectedProductsViewMode  = (int)$data['connected_products_view_mode'];
 
-    //echo "<pre>", print_r($this,1), '</pre>';
+
+      //echo "<pre>", print_r($this,1), '</pre>';
   }
 
   public function setId($id)
@@ -147,6 +158,16 @@ class ProductEntity
   {
     return $this->id;
   }
+
+    public function setConnectedProductsViewMode($connectedProductsViewMode)
+    {
+        $this->connectedProductsViewMode = $connectedProductsViewMode;
+    }
+
+    public function getConnectedProductsViewMode()
+    {
+        return $this->connectedProductsViewMode;
+    }
 
   /**
    * @param \ProductTypeEntity $type
@@ -436,7 +457,7 @@ class ProductEntity
   {
     if ($this->mediaImage) {
       $urls = sfConfig::get('app_product_photo_url');
-      return $urls[$viewId] . $this->mediaImage;
+      return ProductMediaEntity::getHost($this->id).$urls[$viewId].$this->mediaImage;
     }
     else {
       return null;

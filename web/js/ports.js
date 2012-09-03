@@ -175,6 +175,60 @@ window.ANALYTICS = {
 
     },
 
+    yandexMetrika : function() {
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
+                } catch(e) {}
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    },
+
+    marketgidProd : function() {
+        var MGDate = new Date();
+        document.write('<iframe src ="http://'
+        +'marketgid.com/resiver.html#label1'
+        +MGDate.getYear()+MGDate.getMonth()
+        +MGDate.getDate()+MGDate.getHours()
+        +'" width="0%" height="0" sty'
+        +'le = "position:absolute;left:'
+        +'-1000px" ></iframe>');
+    },
+
+    marketgidOrder : function() {
+        var MGDate = new Date();
+        document.write('<iframe src ="http://'
+        +'marketgid.com/resiver.html#label2'
+        +MGDate.getYear()+MGDate.getMonth()
+        +MGDate.getDate()+MGDate.getHours()
+        +'" width="0%" height="0" sty'
+        +'le = "position:absolute;left:'
+        +'-1000px" ></iframe>');
+    },
+
+    marketgidOrderSuccess : function() {
+        var MGDate = new Date();
+        document.write('<iframe src ="http://'
+        +'marketgid.com/resiver.html#label3'
+        +MGDate.getYear()+MGDate.getMonth()
+        +MGDate.getDate()+MGDate.getHours()
+        +'" width="0%" height="0" sty'
+        +'le = "position:absolute;left:'
+        +'-1000px" ></iframe>');
+    },
+    
     parseAllAnalDivs : function( nodes ) {
         if( !this. enable )
             return

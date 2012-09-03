@@ -49,9 +49,9 @@ $(document).ready(function () {
 
     var checker = $('.order-form').find('[name="order[delivery_type_id]"]:checked')
     triggerDelivery(checker.val())
-    $('<img src="/images/ajaxnoti.gif" />').css('display', 'none').appendTo('body') //preload
-    var noti = $('<div>').html('<div><img src="/images/ajaxnoti.gif" /></br></br> Ваш заказ оформляется</div>')
-        .attr('id', 'noti').appendTo('body')
+    // $('<img src="/images/ajaxnoti.gif" />').css('display', 'none').appendTo('body') //preload
+    // var noti = $('<div>').html('<div><img src="/images/ajaxnoti.gif" /></br></br> Ваш заказ оформляется</div>')
+    //     .attr('id', 'noti').appendTo('body')
     var scndRun = false
     $('.order-form').submit(function (e) {
         if (scndRun) // firefox fix
