@@ -132,7 +132,7 @@ all:
     pull: true  # запрашивать данные с сервера smartengine
     config:
       api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/'
-      api_url_demo: 'https://selightstage.smartengine.at/se-light/api/1.0/json/'
+      # api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/' # для demo
       api_key: 'c41851b19511c20acc84f47b7816fb8e'
       tenantid: 'ENojUTRcD8'
       log_file: %SF_LOG_DIR%/smartengine.log

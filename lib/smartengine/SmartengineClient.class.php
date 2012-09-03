@@ -33,12 +33,6 @@ class SmartengineClient
       'log_data_enabled' => false,
     ), $config);
 
-    /** @var $request sfWebRequest */
-    $request = sfContext::getInstance()->getRequest();
-    if ('demo.enter.ru' == $request->getHost()) {
-      $this->config['api_url'] == $this->config['api_url_demo'];
-    }
-
     $this->logger = new sfAggregateLogger(new sfEventDispatcher());
     $this->logger->addLogger(new sfFileLogger(new sfEventDispatcher(), array('file' => $this->config['log_file'])));
     $this->logger->addLogger(sfContext::getInstance()->getLogger());
