@@ -5,7 +5,7 @@
 
     <form class="ui-css">
       <input id="jscity" data-url-autocomplete="<?php echo url_for('region_autocomplete') ?>" value="" class="bBuyingLine__eText mInputLong" />
-      <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled">
+      <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled" />
       <div id="jscities" style="position:relative"></div>
     </form>
 
