@@ -132,6 +132,7 @@ all:
     pull: true  # запрашивать данные с сервера smartengine
     config:
       api_url: 'https://selightstage.smartengine.at/se-light/api/1.0/json/'
+      api_url_demo: 'https://selightstage.smartengine.at/se-light/api/1.0/json/'
       api_key: 'c41851b19511c20acc84f47b7816fb8e'
       tenantid: 'ENojUTRcD8'
       log_file: %SF_LOG_DIR%/smartengine.log
@@ -228,6 +229,7 @@ live:
         url: 'https://3ds.payment.ru/cgi-bin/cgi_link'
 
   smartengine:
+    api_url: 'https://selightprod.smartengine.at/se-light/api/1.0/json/'
     push: true  # отправлять данные на сервер smartengine
     pull: false # запрашивать данные с сервера smartengine
     log_enabled: false
