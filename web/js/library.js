@@ -1062,6 +1062,7 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
     DOMid is selector (id) for google.maps.Map initialization
     updateInfoWindowTemplate is a procedure calling each time after marker is clicked
 */
+console.info(arguments)
     var self         = this,
         mapWS        = null,
         infoWindow   = null,
@@ -1078,16 +1079,17 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
     }
     
     function create() {
-        // ymaps.ready(init);
-        
-        mapWS = new ymaps.Map(DOMid, {
-            center: [center.latitude, center.longitude],
-            zoom: 10
-        })
-        
-        mapWS.controls
-        .add('zoomControl')// Кнопка изменения масштаба
-        .add('typeSelector', { left: 5, top: 15 })// Список типов карты
+        // ymaps.ready FAILS
+        setTimeout( function() {
+            mapWS = new ymaps.Map(DOMid, {
+                center: [center.latitude, center.longitude],
+                zoom: 10
+            })
+            
+            mapWS.controls
+            .add('zoomControl')
+            //.add('typeSelector', { left: 5, top: 15 })// Список типов карты
+        }, 1200)        
     }
 
     this.showInfobox = function( markerId ) {
@@ -1110,11 +1112,12 @@ function MapWithShops( center, templateIWnode, DOMid, updateInfoWindowTemplate )
         })
     }
 
-    this.showMarkers = function( argmarkers ) {       
+    this.showMarkers = function( argmarkers ) {   
+// console.info(argmarkers)        
         mapContainer.show()
         mapWS.container.fitToViewport()
         mapWS.setCenter([center.latitude, center.longitude])
-return
+// return
         self.clear()
         markers = argmarkers
         var myCollection = new ymaps.GeoObjectCollection()
@@ -1138,6 +1141,7 @@ return
         })
         // Создаем шаблон для отображения контента балуна
         var myBalloonLayout = ymaps.templateLayoutFactory.createClass(
+            // templateIWnode.prop('innerHTML')
         '<div class="bMapShops__ePopupRel">'+
         '<h3>$[properties.name]</h3>' +
         '<span>Работает </span>'+

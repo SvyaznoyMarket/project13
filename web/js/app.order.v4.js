@@ -846,7 +846,6 @@ flds:	for( field in fieldsToValidate ) {
 		$('.mMapPopup').lightbox_me({ 
 			centered: true,
             onLoad: function() {
-// console.info(shopsStack, getShopsStack() )
                 window.regionMap.showMarkers( getShopsStack() )
             }
         })
