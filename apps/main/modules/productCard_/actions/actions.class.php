@@ -133,6 +133,9 @@ class productCard_Actions extends myActions
         $showRelatedUpper = true;
     }
 
+    $dataForCredit = $this->_getDataForCredit($product);
+
+    $this->setVar('dataForCredit', $dataForCredit);
     $this->setVar('showRelatedUpper', $showRelatedUpper);
     $this->setVar('showAccessoryUpper', !$showRelatedUpper);
     $this->setVar('relatedPagesNum', ceil(count($product->getRelatedIdList()) / self::NUM_RELATED_ON_PAGE));
