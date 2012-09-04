@@ -167,7 +167,7 @@ foreach ($photo3dList as $photo3d)
       <?php } ?>
   </div>
 
-  <?php render_partial('service_/templates/_listByProduct.php', array('item' => $item)) ?>
+  <?php render_partial('service/templates/_listByProduct.php', array('item' => $item)) ?>
 
 </div>
 <!-- /Goods info -->
