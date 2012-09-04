@@ -1,0 +1,229 @@
+#mainPage{
+  background: #000;
+  .allpage {
+    background: #000;
+  }
+  #header{
+    background:none;
+  }
+  #topLogo{
+    background: url("@{base-url}/header/img/headerSprite.png") no-repeat -550px 0;
+    height: 93px;
+    width: 140px;
+  }
+}
+@mainPageSprite-url:"@{base-url}/mainPage/img/mainPageSprite.png";
+/*--- ПОИСК ---*/
+#mainPageSearch{
+  &.searchbox {
+    background: url("@{mainPageSprite-url}") no-repeat 0 0;
+    float: right;
+    height: 52px;
+    padding: 15px 0px 0px 27px;
+    position: relative;
+    width: 336px;
+    .text {
+      background: none;
+      border: 0px;
+      color: #fff;
+      float: left;
+      font-size: 14px;
+      height: 36px;
+      line-height: 36px;
+      margin-right: 12px;
+      outline: none;
+      padding: 0px;
+      width: 236px;
+    }
+  }
+  .searchbutton {
+    background: none;
+    border: 0px;
+    cursor: pointer;
+    float: left;
+    height: 36px;
+    text-indent: -10000px;
+    width: 45px;
+  }
+}
+
+/*--- БАННЕР ---*/
+.bigbanner {
+  padding: 0px;
+}
+.bannersbox {
+  left: 0px;
+  overflow: hidden;
+  position: absolute;
+  top: 234px;
+  width: 100%;
+}
+.bannersboxinner {
+  font-size: 0px;
+  height: 300px;
+  line-height: 300px;
+  margin: 0px auto;
+  position: relative;
+  width: 920px;
+}
+.banner {
+  cursor: pointer;
+  filter: e("progid:DXImageTransform.Microsoft.Alpha(opacity=50)");
+  .opacity(0.5);
+  position: absolute;
+}
+.banner3 {
+  bottom: 0px;
+  left: 943px;
+}
+.banner4 {
+  bottom: 0px;
+  left: -245px;
+}
+.bCarouselWrap {
+  padding: 100px 0px 50px;
+  text-align: center;
+  width: 100%;
+}
+.bCarousel {
+  *display: inline;
+  display: inline-block;
+  height: 300px;
+  position: relative;
+  vertical-align: bottom;
+  width: 830px;
+  zoom: 1;
+  img {
+    cursor: pointer;
+    left: 32px;
+    position: absolute;
+  }
+}
+.bCarousel__eBtnL,
+.bCarousel__eBtnR {
+  cursor: pointer;
+  height: 77px;
+  position: absolute;
+  top: 110px;
+  width: 76px;
+}
+.bCarousel__eBtnL {
+  background: url("@{mainPageSprite-url}") no-repeat -151px -66px;
+  display: none;
+  left: -40px;
+  z-index: 10;
+  &:hover {
+    background: url("@{mainPageSprite-url}") no-repeat -226px -66px;
+  }
+}
+.bCarousel__eBtnR {
+  background: url("@{mainPageSprite-url}") no-repeat 0px -66px;
+  display: none;
+  left: 797px;
+  z-index: 10;
+  &:hover {
+    background: url("@{mainPageSprite-url}") no-repeat -75px -66px;
+  }
+}
+
+/*--- ФУТЕР ГЛАВНОЙ СТРАНИЦЫ ---*/
+#mainPageFooter{
+  .address {
+    font: 12px Tahoma, sans-serif;
+  }
+  .vcardtitle {
+    font-size: 18px;
+    padding-bottom: 4px;
+  }
+  .vcard {
+    font-size: 36px;
+    padding-bottom: 2px;
+  }
+  .bIndexLinks2__eBan {
+    color: #fff;
+    display: inline-block;
+    *display: inline;
+    height: 90px;
+    vertical-align: top;
+    width: 300px;
+    zoom: 1;
+    
+    &:first-child {
+      font-family: 'Enter';
+    }
+    a,img{
+      border: none;
+      outline: none;
+      text-decoration: none;  
+    }
+  }
+  .bIndexLinks2__eLinks {
+    margin: 30px 0px 15px;
+    
+    a {
+      color: #a6a6a6;
+      display: inline-block;
+      *display: inline;
+      font-family:Tahoma, sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      vertical-align: top;
+      width: 227px;
+      zoom: 1;
+      
+      &:hover {
+        color: #ffa901;
+        text-decoration: underline;
+      }
+    }
+  }
+  .copy {
+    clear: both;
+    color: #a6a6a6;
+    font-size: 11px;
+    padding-bottom: 20px;
+    width: 100%;
+    
+    a {
+      color: #a6a6a6;
+      font-size: 11px;
+    }
+    .rights {
+      color: #fff;
+      font-size: 12px;
+    }
+    .pb20 a {
+      margin: 0px 10px 0px 0px;
+    }
+  }
+  .social_network {
+    float: right;
+    width: 180px;
+    span {
+      padding-right: 6px;
+    }
+    a{
+      @socIcons-url:"@{base-url}/common/img/socIcons.png";
+      &[title="twitter"] {
+        background: url("@{socIcons-url}") no-repeat 0px 0px;
+        &:hover {
+          background: url("@{socIcons-url}") no-repeat 0px -26px;
+        }
+      }
+      
+      &[title="facebook"] {
+        background: url("@{socIcons-url}") no-repeat -26px 0px;
+        &:hover {
+          background: url("@{socIcons-url}") no-repeat -26px -26px;
+        }
+      }
+     
+      &[title="vkontakte"] {
+        background: url("@{socIcons-url}") no-repeat -52px 0px;
+        &:hover {
+          background: url("@{socIcons-url}") no-repeat -52px -26px;
+        }
+      }
+    }
+  }
+}
