@@ -506,6 +506,49 @@ class order_Actions extends myActions
     $this->paymentForm = $this->paymentProvider->getForm($order);
   }
 
+  private function _getKupivkreditData($order) {
+
+    $data = array();
+    $data['items'] = array();
+    foreach ($order['product'] as $product) {
+      $data['items'][] = array(
+        'title' => $product['name'],
+        'category' => '',
+        'qty' => $product['quantity'],
+        'price' => $product['price']
+      );
+    }
+    $data['details'] = array(
+      'firstname' => $order['first_name'],
+      'lastname' => $order['last_name'],
+      'middlename' => $order['middle_name'],
+      'email' => '',
+      'cellphone' => $order['mobile'],
+    );
+
+    $kupivkreditConfig = sfConfig::get('app_credit_provider');
+    $kupivkreditConfig = $kupivkreditConfig['kupivkredit'];
+    $data['partnerId'] = $kupivkreditConfig['partnerId'];
+    $data['partnerName'] = $kupivkreditConfig['partnerName'];
+    $data['partnerOrderId'] = $order['number'];
+    $data['deliveryType'] = '';
+
+//      print_r($data);
+//      die();
+    $base64 = base64_encode(json_encode($data));
+    return $base64;
+  }
+
+  private function _signKupivkreditMessage($message, $iterationCount = 1102) {
+    $kupivkreditConfig = sfConfig::get('app_credit_provider');
+    $salt = $kupivkreditConfig['kupivkredit']['signature'];
+    $message = $message.$salt;
+    $result = md5($message).sha1($message);
+    for($i = 0; $i < $iterationCount; $i++)
+      $result = md5($result);
+    return $result;
+  }
+
 
   /**
    * @param Order|null $order
