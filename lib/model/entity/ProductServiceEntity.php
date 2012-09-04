@@ -126,7 +126,9 @@ class ProductServiceEntity
    */
   public function getOnlyInShop()
   {
-    return !$this->is_delivery && $this->is_in_shop;
+    $region = sfContext::getInstance()->getUser()->getRegion();
+
+    return $region['has_f1'] && !$this->is_delivery && $this->is_in_shop;
   }
 
   /**
@@ -136,7 +138,7 @@ class ProductServiceEntity
   {
     $region = sfContext::getInstance()->getUser()->getRegion();
 
-    return $region['has_f1'] && !$this->onlyInShop && $this->price && $this->price >= self::MIN_SERVICE_BUY_PRICE;
+    return $region['has_f1'] && $this->is_delivery && $this->price && $this->price >= self::MIN_SERVICE_BUY_PRICE;
   }
 
   /**

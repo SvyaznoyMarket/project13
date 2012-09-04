@@ -554,7 +554,6 @@ class order_Actions extends myActions
       $order->mapValue('ServiceItem', array());
       $order->delivery_type_id = null;
       $order->DeliveryType = $deliveryType;
-      $order->User = $user->getGuardUser();
       $order->Status = OrderStatusTable::getInstance()->findOneByToken('created');
       $order->delivered_at = date_format(new DateTime($deliveryTypeData['date']), 'Y-m-d');
       $order->mapValue('delivery_period', !empty($deliveryTypeData['interval']) ? explode(',', $deliveryTypeData['interval']) : null);
@@ -642,9 +641,11 @@ class order_Actions extends myActions
       $orders[] = $order;
     }
 
-    $coreData = array_map(function($order) use ($user) {
+      $coreData = array_map(function($order) use ($user) {
       /* @var $order Order */
+      /* @var $user myUser */
       $return = $order->exportToCore();
+      $return['user_id'] = $user->getGuardUser() ? $user->getGuardUser()->getId() : null;
       $return['geo_id'] = $user->getRegion('core_id');
       $return['delivery_period'] = $order->delivery_period;
       $return['product'] = $order->ProductItem;
@@ -659,7 +660,7 @@ class order_Actions extends myActions
       return $return;
     }, $orders);
     //dump($coreData, 1);
-    $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
+      $response = Core::getInstance()->query('order.create-packet', array(), $coreData, true);
     //dump($response, 1);
     if (is_array($response) && array_key_exists('confirmed', $response) && $response['confirmed'])
     {
@@ -865,6 +866,8 @@ class order_Actions extends myActions
             $dateView->day = date('j', strtotime($dateData['date']));
             $dateView->dayOfWeek = format_date($dateData['date'], 'EEE', 'ru');
             $dateView->value = date('Y-m-d', strtotime($dateData['date']));
+            $dateView->timestamp =  $dateView->timestamp = strtotime($dateData['date'], 0) * 1000;
+
             foreach ($dateData['interval'] as $intervalData)
             {
               $intervalView = new Order_IntervalView();

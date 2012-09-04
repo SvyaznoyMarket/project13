@@ -44,7 +44,7 @@ class guardActions extends myActions
       if ($this->form->isValid())
       {
         $values = $this->form->getValues();
-        $this->getUser()->signin($values['user'], array_key_exists('remember', $values) ? $values['remember'] : false);
+        $this->getUser()->signIn($values['user']);
 
         if ($request->isXmlHttpRequest())
         {
@@ -56,7 +56,6 @@ class guardActions extends myActions
                 'first_name'  => $values['user']['first_name'],
                 'last_name'   => $values['user']['last_name'],
                 'middle_name' => $values['user']['middle_name'],
-                'nickname'    => $values['user']['nickname'],
                 'gender'      => $values['user']['gender'],
                 'birthday'    => $values['user']['birthday'],
                 'address'     => $values['user']['address'],
@@ -148,7 +147,7 @@ class guardActions extends myActions
 		  // пробуем достать токен для смены пароля
 		  $login = $request->getParameter('login');
 
-      $loginType = (false !== strpos($login, '@')) ? 'email' : 'phonenumber';
+      $isEmail = false !== strpos($login, '@');
 
       $validator = new sfValidatorOr(array(
         new myValidatorEmail(array('required' => true)),
@@ -161,37 +160,23 @@ class guardActions extends myActions
       try {
         $validator->clean($login);
 
-        if ('email' == $loginType)
+        $r = CoreClient::getInstance()->query('user/reset-password', array(
+          ($isEmail ? 'email' : 'mobile') => $login,
+        ));
+        if ($r['confirmed'])
         {
-          $user = UserTable::getInstance()->retrieveByEmail($login);
-        }
-        else
-        {
-          $user = UserTable::getInstance()->retrieveByPhonenumber($login);
-        }
-
-        if (!$user)
-        {
-          $error = 'Пользователь с таким '.('email' == $loginType ? 'email' : 'телефонным номером').' не найден';
+          return $this->renderJson(array('success' => true));
         }
       }
-      catch (Exception $e)
+      catch (sfValidatorError $e)
       {
-        $user = false;
-        $error = 'Неправильный '.('email' == $loginType ? 'email' : 'телефонный номер');
+        $error = 'Неправильный '.($isEmail ? 'email' : 'телефонный номер');
+      }
+      catch (Exception $e) {
+        $error = 'Неудалось восстановить пароль. Попробуйте позже.';
       }
 
-		  if ($user)
-      {
-			  //$result = Core::getInstance()->query('user.get-password-token', array('id' => $user->core_id));
-			  $result = Core::getInstance()->query('user.reset-password', array('id' => $user->core_id));
-			  if ($result['confirmed'])
-        {
-				  return $this->renderJson(array('success' => true));
-			  }
-		  }
-
-		  return $this->renderJson(array('success' => false, 'error' => $error));
+      return $this->renderJson(array('success' => false, 'error' => $error));
 	  }
   }
 
@@ -200,43 +185,36 @@ class guardActions extends myActions
   {
     if (!$this->getUser()->isAuthenticated()) $this->redirect('user_signin');
 
-    $this->getUser()->getGuardUser()->refresh();
-    $this->userProfile = $this->getUser()->getGuardUser()->getData();
-    $this->form = new UserFormChangePassword($this->getUser()->getGuardUser());
+    $this->form = new UserFormChangePassword($this->user);
   }
 
   public function executeChangePasswordSave($request)
   {
     if (!$this->getUser()->isAuthenticated()) $this->redirect('user_signin');
 
-    $this->getUser()->getGuardUser()->refresh();
-    $this->userProfile = $this->getUser()->getGuardUser()->getData();
-    $this->form = new UserFormChangePassword( $this->getUser()->getGuardUser() );
-    $data = $request->getParameter($this->form->getName());
-    $this->form->bind($data);
+    $this->form = new UserFormChangePassword();
+    $this->form->bind($request[$this->form->getName()]);
 
     $this->setTemplate('changePassword');
 
     if ($this->form->isValid())
     {
+      //dump($this->form->getValues(), 1);
       try
       {
         //$this->form->getObject()->setCorePush(false);
         $user = $this->getUser()->getGuardUser();
-        $coreId = $user->core_id;
-        $data['email'] = $user->email;
-        $data['mobile'] = $user->phonenumber;
-        #print_r($data);
-        //$result = $this->form->save();
-        #var_dump($result);
-        Core::getInstance()->changePassword($coreId,$data);
-        #if (!$result) $this->setVar('error', 'К сожалению, отправить форму не удалось.', true);
+
+        $r = CoreClient::getInstance()->query('user/change-password', array(
+          'token'        => $user->getToken(),
+          'password'     => $this->form->getValue('password_old'),
+          'new_password' => $this->form->getValue('password_new'),
+        ));
 
         $this->setTemplate('changePasswordOk');
       }
       catch (Exception $e)
       {
-        //echo $e->getMessage();
         $this->setVar('error', 'К сожалению, сохранить пароль не удалось.', true);
         $this->getLogger()->err('{'.__CLASS__.'} create: can\'t save form: '.$e->getMessage());
         $this->setTemplate('changePassword');
@@ -293,41 +271,71 @@ class guardActions extends myActions
       $this->form->bind($request->getParameter($this->form->getName()));
       if ($this->form->isValid())
       {
-        $user = $this->form->getObject();
+        $username = $this->form->getValue('username');
+        $useEmail = false !== strpos($username, '@');
 
-        $user->is_active = true;
-        $user->email = $this->form->getValue('email');
-        $user->phonenumber = $this->form->getValue('phonenumber');
+        $data = array(
+          'first_name' => $this->form->getValue('first_name'),
+        );
+        if ($useEmail) {
+          $data['email'] = $username;
+        }
+        else {
+          $data['mobile'] = $username;
+        }
 
-        //для правильного сохранения пользователя, берем его region.core_id из сесии и записываем вбазу region_id
-        $user->region_id = $this->getUser()->getRegion('id');
+        try {
+          $r = CoreClient::getInstance()->query('user/create', array(), $data);
 
-        $user->setPassword('123456');
+          if (empty($r['token'])) {
+            throw new Exception();
+          }
 
-        $user = $this->form->save();
-        //$user->refresh();
-        $this->getUser()->signIn($user);
+          $data = array(
+            'password' => $r['password'],
+          );
+          if ($useEmail) {
+            $data['email'] = $username;
+          }
+          else {
+            $data['mobile'] = $username;
+          }
+          $r = CoreClient::getInstance()->query('user/auth', $data);
+          if (empty($r['token'])) {
+            throw new Exception();
+          }
 
-        if ($request->isXmlHttpRequest())
-        {
+          $user = new UserEntity(array(
+            'token' => $r['token'],
+            'id'    => $r['id'],
+          ));
+          $this->getUser()->signIn($user);
+
           return $this->renderJson(array(
             'success' => true,
             'url'     => $signinUrl,
           ));
         }
+        catch (Exception $e) {
+          switch ($e->getCode()) {
+            case 684:
+              $message = 'Такой email или номер телефона уже зарегистрирован.';
+              break;
+            default:
+              $message = 'Неправильные данные.';
+              break;
+          }
 
-        return $this->redirect($signinUrl);
+          $this->form->getErrorSchema()->addError(new sfValidatorError(new sfValidatorSchema(), $message), 'username');
+        }
       }
 
-      if ($request->isXmlHttpRequest())
-      {
-        return $this->renderJson(array(
-          'success' => false,
-          'data' => array(
-            'content' => $this->getPartial($this->getModuleName().'/form_register', array('form' => $this->form, 'redirect' => $signinUrl)),
-          ),
-        ));
-      }
+      return $this->renderJson(array(
+        'success' => false,
+        'data' => array(
+          'content' => $this->getPartial($this->getModuleName().'/form_register', array('form' => $this->form, 'redirect' => $signinUrl)),
+        ),
+      ));
     }
   }
 
@@ -367,7 +375,6 @@ class guardActions extends myActions
         $this->user->fromArray(array(
           'email'       => $this->form->getValue('email'),
           'phonenumber' => $this->form->getValue('phonenumber'),
-          'nickname'    => $this->userProfile->getNickname(),
           'last_name'   => $this->userProfile->getLastName(),
           'first_name'  => $this->userProfile->getFirstName(),
           'photo'       => $this->userProfile->getPhoto(),

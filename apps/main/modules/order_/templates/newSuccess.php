@@ -13,13 +13,6 @@
 
 <input disabled="disabled" id="order-validator" type="hidden" data-value='<?php echo json_encode($jsValidator) ?>' />
 
-<script id="elementInShopList" type="text/html">
-  <li data-id="<%= id%>">
-    <div class="bMapShops__eListNum"><img src="/images/shop.png" alt=""/></div>
-    <div><%= name%></div>
-    <span>Работаем</span> <span><%= regime%></span>
-  </li>
-</script>
 
 <script id="mapInfoBlock" type="text/html">
   <div class="bMapShops__ePopupRel">
@@ -36,41 +29,18 @@
 
 <div class="pb15"> <a class="motton font14" href="<?php echo $backLink ?>" style="font-weight: bold">&lt; Вернуться к покупкам</a></div>
 
-<form id="order-form" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
+  
 
-  <div id="order-form-part1" class='bBuyingInfo hidden'>
+    
 
-    <h2>Информация о заказе</h2>
+    <input id="order-delivery_map-data" type="hidden" data-value='<?php echo $deliveryMap_json ?>' />
+    <?php 
+    // KNOCKOUT
+      include_partial('order_/blocks_tmpl')
+    ?>  
 
-    <?php echo $form['delivery_type_id'] ?>
 
-  </div>
-
-  <div id="order-loader-holder">
-    <div class='bOrderPreloader'>
-      <span>Загрузка...</span><img src='/images/bPreloader.gif' />
-    </div>
-  </div>
-
-  <div id="order-form-part2" class="hidden">
-
-    <div id="order-message" class='bBuyingInfo'>
-      <span><?php count($sf_data->getRaw('deliveryMap')->unavailable) ? 'Некоторые товары не могут быть доставлены' : 'Отличный выбор!' ?></span>
-    </div>
-
-    <div id="order-delivery-holder">
-      <?php include_component('order_', 'field_products', $sf_data) ?>
-    </div>
-
-    <div style="margin-top: -10px;">*Дату доставки уточнит специалист Контакт-сEnter</div>
-
-    <dl class='bBuyingLine mSumm order-total-container' style="margin-top: 0;">
-      <dt><a class="motton font14" style="border-color: #4FCBF4; font-weight: bold;" href="<?php echo url_for('cart') ?>" alt="Вернуться в корзину для выбора услуг и увеличения количества товаров" title="Вернуться в корзину для выбора услуг и увеличения количества товаров">&lt; Редактировать товары</a></dt>
-      <dd>
-        <div><span data-assign='{"totalMessage": ["text", "_value"]}'>Сумма всех заказов</span> <h3><span data-assign='{"total": ["text", "_value"]}'></span> <span class="rubl">p</span></h3></div>
-      </dd>
-    </dl>
-
+  <form id="order-form" style="display:none" data-validator="#order-validator" method="post" action="<?php echo url_for('order_create') ?>" data-delivery-map-url="<?php echo url_for('order_deliveryMap') ?>" data-cart-url="<?php echo url_for('cart') ?>">
     <div class='bBuyingInfo'>
       <h2>Информация о счастливом получателе</h2>
 
@@ -140,7 +110,7 @@
           <div>
             <p></p>
             <span class="placeholder">Улица</span><?php echo $form['address_street']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputLong', 'title' => 'Улица', 'style' => 'width: 315px;')) ?>
-            <span class="placeholder"">Дом</span><?php echo $form['address_number']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Дом', 'style' => 'width: 50px;')) ?>
+            <span class="placeholder">Дом</span><?php echo $form['address_number']->render(array('class' => 'placeholder-input bBuyingLine__eText mInputShort', 'title' => 'Дом', 'style' => 'width: 50px;')) ?>
           </div>
 
           <div>
@@ -204,8 +174,9 @@
       </dl>
 
     </div>
+  
 
-  </div>
+  </form>
 
   <dl class='bBuyingLine mConfirm'>
 
@@ -217,17 +188,15 @@
 
   <div id="order-shop-popup" class="hidden"></div>
 
-</form>
-
 <div id="order-loader" class='bOrderPreloader hf'>
   <span>Формирую заказ...</span><img src='/images/bPreloader.gif' />
 </div>
 
-<?php include_partial('order_/map', $sf_data) ?>
+<?php if(false) { include_partial('order_/map', $sf_data); } ?>
 
 <?php include_partial('order_/footer') ?>
 
-
+<div id="marketgidOrder" class="jsanalytics"></div>
 <?php if ('live' == sfConfig::get('sf_environment')): ?>
   <div id="heiasOrder" data-vars="<?php echo $sf_user->getCart()->getSeoCartArticle() ?>" class="jsanalytics"></div>
 

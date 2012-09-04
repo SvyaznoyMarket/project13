@@ -364,6 +364,7 @@ $(document).ready(function() {
 					postData[ self.textfields[i]().name + '' ] = self.textfields[i]().value
 				var xhr1 =$.ajax( {
 					type: 'POST',
+                    timeout: 60000,
 					url: outputUrl,
 					data: postData,
 					success: function( data, textStatus ) {
@@ -613,8 +614,15 @@ levup:			for(var i=0, l=numbers.length; i<l; i++)
 			e.preventDefault()
 			if( !oneClickIsReady )
 				return
+			// TODO please go this stuff separate!
 			if( typeof(_gaq) !== 'undefined' )
 				_gaq.push(['_trackEvent', 'QuickOrder', 'Open'])
+			if( 'ANALYTICS' in window ) {
+				if( 'marketgidOrder' in ANALYTICS ) {
+					ANALYTICS.marketgidOrder()
+				}
+			}
+
 			$('#order1click-container-new').lightbox_me({
 				centered: true,
 				onClose: function() {
