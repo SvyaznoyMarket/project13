@@ -1043,7 +1043,7 @@ border-radius:5px;
 box-shadow:0 0 7px #616161;
 }
 .popupbox {padding:20px 20px 30px 20px}
-.popup  .close {position:absolute; top:0px; right:0px; /*right:-2px;*/ display:block;  width:26px; height:26px; background:url(/css/common/img/bg_inner.png) no-repeat -46px -179px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
+.popup  .close {position:absolute; top:0px; right:0px; /*right:-2px;*/ display:block;  width:26px; height:26px; background:url(/css/common/img/closeBtnOrange.png) no-repeat 0 0; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
 .pouptitle {float:left; width:560px; margin:0; font-size:30px; font-family:"Enter"; text-transform:uppercase}
 
 
@@ -1177,50 +1177,9 @@ border-radius: 5px;
 .shareline a:hover {color:#404040}
 
 .graying {width:100%; height:100%; position:fixed; z-index:99; top:0; left:0; right:0; botom:0; background:#000; opacity:0.5; filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);}
-.lightbox {width:100%; height:41px; position: fixed; bottom:0; left:0; z-index:100}
-.lightboxinner {width:926px; height:40px; padding-top:1px; position:relative; margin:0 auto; background:url(/css/skin/img/bg_lightbox.png) no-repeat 0 0}
-.lightboxmenu {float:left; width:923px}
-.lightboxmenu li{float:right; background:url(/css/skin/img/lightboxmenu_icons.png) no-repeat 0 -400px; padding-left:1px}
-.lightboxmenu li.fl {float:left; background:none; padding-left:0}
-.lightboxmenu li a.point {float:left; display:block; height:29px; padding:11px 20px 0 20px; font-size:14px; color:#fff; text-decoration:none}
-.lightboxmenu li a.orangeme{color:#ffa901}
-/*.lightboxmenu li a.point2 {font-weight:bold} TMP */
-.lightboxmenu li a.point5 {padding:11px 0 0 20px}
-.lightboxmenu li a.point:hover {color:#ffa901; background:url(/css/skin/img/bg_lightbox.png) no-repeat; background-position:-10px -46px}
-.lightboxmenu li a.point1:hover, .lightboxmenu li a.point6:hover {background-position:-3px -46px}
-.lightboxmenu li a.point2:hover {background-position:100% -46px}
-.lightboxmenu li a.point5:hover {background:none}
-.lightboxmenu li a.point b{float:left; display:block; height:19px; padding-left:23px; margin-right:10px; background:url(/css/skin/img/lightboxmenu_icons.png) no-repeat; font-size:9px; line-height:9px}
-.lightboxmenu li a.point1 b{background-position:0 -150px}
-.lightboxmenu li a.point1:hover b{background-position:0 -350px}
-.lightboxmenu li a.point2 B {background-position:0 -100px}
-.lightboxmenu li a.point2:hover b{background-position:0 -300px}
-.lightboxmenu li a.point2.orangeme b{background-position:0 -300px}
-.lightboxmenu li a.point3 b{background-position:0 -50px}
-.lightboxmenu li a.point3:hover b{background-position:0 -250px}
-.lightboxmenu li a.point4 b{background-position:0 0}
-.lightboxmenu li a.point4:hover b{background-position:0 -200px}
-.lightboxmenu li a.point5 b{width:25px; height:23px; padding:0; margin-top:-3px; background-position:0 -550px}
-.lightboxmenu li a.point6 b{background-position:0 -450px}
-.lightboxmenu li a.point6:hover b{background-position:0 -500px}
-.lightboxmenu li a.point .total {font-weight:normal; font-size:12px; margin-left:10px; color:#ffa901}
-
-.flybox {display:none; position:absolute; bottom:41px; z-index:101;  padding:15px 20px 20px 20px; font-weight:normal; cursor:auto; background-color:#fff; border:2px solid #ffa901;
-border-radius:5px;
--moz-border-radius:5px;
--webkit-border-radius:5px;
--moz-box-shadow:0 0 9px #616161;
--webkit-box-shadow:0 0 9px #616161;
-box-shadow:0 0 9px #616161;
-}
-.flybox .corner {position:absolute; display:block; font-size:0; line-height:0; bottom:-15px; /*bottom:-14px;*/ left:50%; margin-left:-10px; width:20px; height:15px; background:url(/css/common/img/bg.png) no-repeat -25px -218px}
-.flybox .close {position:absolute; top:0px; right:0px; /*right:-2px;*/ display:block;  width:26px; height:26px; background:url(/css/common/img/bg_inner.png) no-repeat -46px -179px; text-indent:-10000px; cursor:pointer; font-size:0; line-height:0;}
 
 .dragbox {width:100%; height:100%; position:fixed; z-index:101; top:0; left:0; right:0; bottom:41px}
 .dragbox div{position:absolute; z-index:102; width:60px; height:60px; background-color:#fff; cursor:pointer}
-.dropbox {position:absolute; bottom:44px; z-index:101; width:70px; height:73px; padding-top:5px; background:url/css/common/img/bg.png) no-repeat 0 -241px; color:#fff; font-size:10px; text-align:center}
-.dropbox.active {background-position:-75px -241px; color:#ffa901}
-.dropbox p{margin:0; padding-top:18px}
 
 .comparisonblock {float:left; width: 644px;  overflow:hidden; background:url(/css/skin/img/bg_comparisonblock.gif) repeat-y 140px 0}
 .comparisonblock li{float:left; width:120px; margin-right:41px; overflow:hidden}
@@ -2847,7 +2806,7 @@ dt.bCtg__eOrange{
 	height: 26px;
 	cursor: pointer;
 	position: absolute;
-	background:url(/css/common/img/bg_inner.png) no-repeat -46px -179px;
+	background:url(/css/common/img/closeBtnOrange.png) no-repeat 0 0;
 }
 .bMobDown__eClose.top0{
     top: 0;

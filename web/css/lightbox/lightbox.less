@@ -1,0 +1,154 @@
+.lightbox {
+  bottom: 0px;
+  height: 41px;
+  left: 0px;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+}
+.lightboxinner {
+  background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat 0px -200px;
+  height: 40px;
+  margin: 0px auto;
+  padding-top: 1px;
+  position: relative;
+  width: 926px;
+}
+.lightboxmenu {
+  float: left;
+  width: 923px;
+  li {
+    background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat 0px 0px;
+    float: right;
+    padding-left: 1px;
+    &.fl {
+      background: none;
+      float: left;
+      padding-left: 0px;
+    }
+    .point {
+      color: #fff;
+      display: block;
+      float: left;
+      font-size: 14px;
+      height: 29px;
+      padding: 11px 20px 0px;
+      text-decoration: none;
+      &:hover {
+        /*background-position: -10px -46px;*/
+        background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat;
+        color: #ffa901;
+      }
+      .total {
+        color: #ffa901;
+        font-size: 12px;
+        font-weight: normal;
+        margin-left: 10px;
+      }
+      b {
+        background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat;
+        display: block;
+        float: left;
+        font-size: 9px;
+        height: 19px;
+        line-height: 9px;
+        margin-right: 10px;
+        padding-left: 23px;
+      }
+    }
+    .point1{
+      b {
+        background-position: 0px -40px;
+      }
+      &:hover{
+        background-position: -3px -246px;
+        b {
+          background-position: 0px -80px;
+        }
+      }
+    }
+    .point2{
+      b {
+        background-position: 0px -120px;
+      }
+      &:hover{
+        background-position: 100% -246px;
+        b {
+          background-position: 0px -160px;
+        }
+      }
+      &.orangeme{
+        b{
+          background-position:0 -160px;
+        }
+      }
+    }
+    .orangeme{
+      color:#ffa901
+    }
+  }
+}
+.flybox {
+  -moz-border-radius: 5px;
+  -moz-box-shadow: 0px 0px 9px #616161;
+  -webkit-border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 9px #616161;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 2px solid #ffa901;
+  bottom: 41px;
+  box-shadow: 0px 0px 9px #616161;
+  cursor: auto;
+  display: none;
+  font-weight: normal;
+  padding: 15px 20px 20px;
+  position: absolute;
+  z-index: 101;
+  .corner {
+    /* bottom: -14px;*/
+    background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat -906px -80px;
+    bottom: -15px;
+    display: block;
+    font-size: 0px;
+    height: 15px;
+    left: 50%;
+    line-height: 0px;
+    margin-left: -10px;
+    position: absolute;
+    width: 20px;
+  }
+  .close {
+    /* right: -2px;*/
+    background: url("@{base-url}/common/img/closeBtnOrange.png") no-repeat 0 0;
+    cursor: pointer;
+    display: block;
+    font-size: 0px;
+    height: 26px;
+    line-height: 0px;
+    position: absolute;
+    right: 0px;
+    text-indent: -10000px;
+    top: 0px;
+    width: 26px;
+  }
+}
+.dropbox {
+  background: url("@{base-url}/lightbox/img/lightboxSprite.png") no-repeat -781px 0;
+  bottom: 44px;
+  color: #fff;
+  font-size: 10px;
+  height: 73px;
+  padding-top: 5px;
+  position: absolute;
+  text-align: center;
+  width: 70px;
+  z-index: 101;
+  &.active {
+    background-position: -856px 0;
+    color: #ffa901;
+  }
+  p {
+    margin: 0px;
+    padding-top: 18px;
+  }
+}
