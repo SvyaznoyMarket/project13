@@ -1126,7 +1126,7 @@ console.info(arguments)
 
             var marker = new ymaps.Placemark( [item.latitude, item.longitude], {
                     id: item.id,
-                    regtime: item.regtime,
+                    regtime: (item.regtime) ? item.regtime : item.regime,
                     name: item.name
                     // balloonContent: 
                 }, {
