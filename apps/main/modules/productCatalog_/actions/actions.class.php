@@ -526,12 +526,15 @@ class ProductCoreFormFilterSimple
           break;
         case ProductCategoryFilterEntity::TYPE_BOOLEAN:
           if (!is_array($value) || count($value) == 0) continue;
-          $list[] = array(
-            'type' => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
-            'name' => $filter->getName() . ': ' . reset($value) == 1 ? 'да' : 'нет',
-            'url' => $this->getUrl($filter->getFilterId()),
-            'title' => $filter->getName(),
-          );
+          foreach ($value as $v)
+          {
+            $list[] = array(
+              'type' => $filter->getFilterId() == 'brand' ? 'creator' : 'parameter',
+              'name' => $filter->getName() . ': ' . ($v == 1 ? 'да' : 'нет'),
+              'url' => $this->getUrl($filter->getFilterId(), $v),
+              'title' => $filter->getName(),
+            );
+          }
           break;
         case ProductCategoryFilterEntity::TYPE_LIST:
           if (!is_array($value) || count($value) == 0) continue;
