@@ -1085,7 +1085,7 @@
 .extramenu .corner {
   /* top: -14px;*/
 
-  background: url("/css/common/img/bg.png") no-repeat 0px -218px;
+  background: url("/css/header/img/headerSprite.png") no-repeat -897px 0;
   display: block;
   font-size: 0px;
   height: 15px;
@@ -1432,15 +1432,15 @@ a[title="vkontakte"] {
   color: #ffa901;
 }
 .flybox {
-  -moz-border-radius: 5px;
-  -moz-box-shadow: 0px 0px 9px #616161;
   -webkit-border-radius: 5px;
-  -webkit-box-shadow: 0px 0px 9px #616161;
-  background-color: #fff;
+  -moz-border-radius: 5px;
   border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 9px #616161;
+  -moz-box-shadow: 0px 0px 9px #616161;
+  box-shadow: 0px 0px 9px #616161;
+  background-color: #fff;
   border: 2px solid #ffa901;
   bottom: 41px;
-  box-shadow: 0px 0px 9px #616161;
   cursor: auto;
   display: none;
   font-weight: normal;
@@ -1465,7 +1465,7 @@ a[title="vkontakte"] {
 .flybox .close {
   /* right: -2px;*/
 
-  background: url("/css/common/img/bg_inner.png") no-repeat -46px -179px;
+  background: url("/css/common/img/closeBtnOrange.png") no-repeat 0 0;
   cursor: pointer;
   display: block;
   font-size: 0px;
