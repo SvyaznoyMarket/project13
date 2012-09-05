@@ -19,7 +19,7 @@ class smartengineController
         'host'       => App::getRequest()->getHost(),
         'time'       => date('d_m_Y_H_i_s'),
         'sessionid'  => session_id(),
-        'product_id' => $productId,
+        'product_id' => (int)$productId,
         'user_id'    => App::getCurrentUser()->isAuthorized() ? App::getCurrentUser()->getUser()->getId() : null,
       );
 

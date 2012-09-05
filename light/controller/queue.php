@@ -8,6 +8,8 @@ require_once(ROOT_PATH.'lib/TimeDebug.php');
 
 class queueController
 {
+  const WORKER_LIMIT = 10;
+
   /** @var \PDO */
   private $dbh;
 
@@ -18,6 +20,8 @@ class queueController
     TimeDebug::start('controller:queue:execute');
     $this->logger = \Logger::getLogger('Smartengine');
     \LoggerNDC::push('batch process');
+
+    $this->touchWorkerNum(1);
 
     $limit = abs($limit);
 
@@ -56,6 +60,8 @@ class queueController
       }
     }
 
+    $this->touchWorkerNum(-1);
+
     TimeDebug::end('controller:queue:execute');
     \LoggerNDC::pop();
   }
@@ -85,7 +91,6 @@ class queueController
       $productsById[$product->getId()] = $product;
     }
 
-    $requests = array();
     try {
       foreach ($data as $item) {
         $product = isset($productsById[$item['product_id']]) ? $productsById[$item['product_id']] : null;
@@ -117,5 +122,18 @@ class queueController
     if ($ids) {
       $this->dbh->exec("DELETE FROM `queue` WHERE id IN (".implode(',', $ids).")");
     }
+  }
+
+  private function touchWorkerNum($num) {
+    // проверка на количество одновременно запущенных воркеров
+    $file = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
+    if (!file_exists($file)) {
+      file_put_contents($file, '0');
+    }
+    $workerNum = (int)file_get_contents($file) + $num;
+    if ($workerNum > self::WORKER_LIMIT) {
+      exit();
+    }
+    file_put_contents($file, $workerNum);
   }
 }
