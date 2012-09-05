@@ -9,5 +9,16 @@ if (!in_array(@$_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1')))
 
 require_once(dirname(__FILE__).'/../config/ProjectConfiguration.class.php');
 
-$configuration = ProjectConfiguration::getApplicationConfiguration('main', 'dev', true);
+$env = isset($_ENV['APPLICATION_ENV']) ? $_ENV['APPLICATION_ENV'] : 'dev';
+
+switch ($env) {
+  case 'live':
+    $env .= '_dev';
+    break;
+  default:
+    $env = 'dev';
+    break;
+}
+
+$configuration = ProjectConfiguration::getApplicationConfiguration('main', $env, true);
 sfContext::createInstance($configuration)->dispatch();
