@@ -233,6 +233,11 @@ live:
         merchant_name: 'Enter'
         key: 'FD5AAE47574BB8EEFBF8C6C14CBCA453'
         url: 'https://3ds.payment.ru/cgi-bin/cgi_link'
+      psbank_invoice:
+        enabled: false
+        contractor_id: 14
+        url: 'https://retail.payment.ru/invoice.aspx'
+        key:  %SF_DATA_DIR%/keys/live.privkey.pem
 
   smartengine:
     push: true  # отправлять данные на сервер smartengine
