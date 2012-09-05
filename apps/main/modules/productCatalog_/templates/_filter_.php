@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $productCategory ProductCategory
+ * @var $productCategory ProductCategoryEntity
  * @var $productFilter ProductCoreFormFilterSimple
  * @var $url string
  * @var $sf_data mixed
@@ -13,7 +13,7 @@
 <form class="product_filter-block"
       action=""
       method="get"
-      data-action-count="<?php echo url_for('productCatalog_count', $sf_data->getRaw('productCategory')) ?>">
+      data-action-count="<?php echo url_for('productCatalog_count', array('productCategory' => $productCategory->getTokenPrefix() ? ($productCategory->getTokenPrefix().'/'.$productCategory->getToken()) : $productCategory->getToken())) ?>">
 
   <dl class="bigfilter form bSpec">
     <h2>Выбираем:<i></i></h2>

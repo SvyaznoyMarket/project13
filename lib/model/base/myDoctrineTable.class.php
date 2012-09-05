@@ -351,7 +351,7 @@ class myDoctrineTable extends Doctrine_Table
       }
     }
 
-    return $this->getQueryHash($this->getQueryRootAlias().'-'.$id, $params);
+    return $this->getQueryHash($this->getQueryRootAlias().'-'.(is_array($id) ? implode('-', $id) : $id), $params);
   }
 
   public function getQueryHash($path, array $params = array())
