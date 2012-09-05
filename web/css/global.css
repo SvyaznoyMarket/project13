@@ -1345,6 +1345,327 @@ a[title="vkontakte"] {
   background: url('/css/common/img/socIcons.png') no-repeat -52px -26px;
 }
 /*---END---СТИЛИ ФУТЕРА---*/
+/*-----СТИЛИ ЛЕВОЙ НАВИГАЦИИ----*/
+.bCtg {
+  border-bottom: 1px solid #e6e6e6;
+  font: 13px Tahoma, sans-serif;
+  padding: 14px 0px;
+}
+.bCtg a {
+  text-decoration: none;
+}
+.bCtg b {
+  color: #a6a6a6;
+  font: 14px Tahoma, sans-serif;
+}
+.bCtg li {
+  cursor: pointer;
+  margin: 2px 0px;
+}
+.bCtg li:hover a {
+  color: #ffa901;
+}
+.mBold {
+  font-weight: bold;
+}
+.mSelected {
+  font-weight: bold;
+  padding: 1px 0px 2px;
+}
+.mSelected span {
+  background: #ffa901;
+  color: #fff;
+  padding: 0px 5px;
+}
+.bCtg.mHeight18 li {
+  margin: 7px 0px;
+}
+dt.bCtg__eOrange {
+  color: #ffa901;
+  font: bold 18px Tahoma, sans-serif;
+}
+.bCtg__eMore {
+  margin-top: 6px;
+}
+.bCtg__eMore a {
+  background: #cbcbcb;
+  color: #fff;
+  padding: 2px 8px;
+  text-decoration: none;
+}
+.bCtg__eL2 {
+  padding-left: 11px;
+}
+.bCtg__eL2.mSelected {
+  padding-left: 6px;
+}
+.bCtg__eL3 {
+  padding-left: 23px;
+}
+.bCtg__eL3.mSelected {
+  padding-left: 18px;
+}
+.bCtg__eL4 {
+  padding-left: 34px;
+}
+.bCtg__eL4.mSelected {
+  padding-left: 29px;
+}
+.bCtg__eL2 span div,
+.bCtg__eL3 span div,
+.bCtg__eL4 span div {
+  left: -10px;
+  position: absolute;
+  top: 0px;
+}
+.bCtg__eL2.mBold span div,
+.bCtg__eL2.mSelected span div,
+.bCtg__eL3.mBold span div,
+.bCtg__eL3.mSelected span div,
+.bCtg__eL4.mBold span div,
+.bCtg__eL4.mSelected span div {
+  visibility: hidden;
+}
+.catProductNum {
+  font-size: 14px;
+  padding: 11px 0px 3px;
+}
+.mSelected,
+.mSelected b {
+  background: #ffa901;
+  color: #fff;
+}
+.bigfilter {
+  margin-bottom: 15px;
+}
+.bigfilter.width450 dt,
+.bigfilter.width450 ul {
+  float: left;
+  width: 100%;
+}
+.bigfilter.width450 ul {
+  float: left;
+  width: 50%;
+}
+.bigfilter dt {
+  background: url("img/icons.png") no-repeat scroll 100% -46px transparent;
+  border-top: 1px solid #e6e6e6;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 7px 0px 8px;
+}
+.bigfilter dt.current {
+  background-position: 100% 13px;
+}
+.bigfilter dt b {
+  background: url("/css/common/img/bg.png") no-repeat -38px 0px;
+  display: inline-block;
+  height: 11px;
+  margin-left: 5px;
+  vertical-align: middle;
+  width: 14px;
+}
+.bigfilter dt div.pr {
+  display: inline;
+}
+.bigfilter dd {
+  display: none;
+}
+.bigfilter dd ul {
+  padding-bottom: 10px;
+}
+.bigfilter li {
+  cursor: pointer;
+  margin-bottom: 1px;
+  padding: 2px 5px 3px 29px;
+}
+.bigfilter li:hover {
+  background-color: #e6e6e6;
+}
+.bigfilter li label {
+  cursor: pointer;
+  display: block;
+  font-size: 12px;
+}
+.bSpec {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #f99b1c;
+  margin: 15px 0px;
+}
+.bSpec h2 {
+  -webkit-border-top-right-radius: 2px 2px 0px 0px;
+  -webkit-border-bottom-right-radius: 0;
+  -webkit-border-bottom-left-radius: 0;
+  -webkit-border-top-left-radius: 0;
+  -moz-border-radius-topright: 2px 2px 0px 0px;
+  -moz-border-radius-bottomright: 0;
+  -moz-border-radius-bottomleft: 0;
+  -moz-border-radius-topleft: 0;
+  border-top-right-radius: 2px 2px 0px 0px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  background-color: #f99b1c;
+  color: #fff;
+  font: bold 14px Tahoma, sans-serif;
+  height: 24px;
+  margin: 0px 0px 15px;
+  padding: 6px 0px 0px 10px;
+  position: relative;
+}
+.bSpec h2 i {
+  background: url("/css/common/img/bg.png") no-repeat -76px -218px;
+  bottom: -6px;
+  display: block;
+  height: 6px;
+  left: 8px;
+  position: absolute;
+  width: 15px;
+}
+.bSpec .pb10 {
+  border-top: 1px solid #e6e6e6;
+  margin-bottom: 10px;
+  padding: 15px 0px 5px 10px;
+}
+.bSpec dt {
+  font-weight: bold;
+  padding-left: 10px;
+}
+.bSpec li {
+  padding: 5px 5px 5px 35px;
+}
+/*.bigfilter DT.first {
+  border: 0px;
+}
+*/
+.bSlide .pb5,
+.bSlide .pb5 span {
+  text-align: center;
+}
+.bSlide .pb5 span {
+  /* color: #a6a6a6; */
+
+  background: none repeat scroll 0px 0px transparent;
+  border: 0px none;
+  font-size: 11px;
+  height: 13px;
+  padding: 0px;
+}
+.sliderbox {
+  margin: 0px auto 10px;
+  width: 194px;
+}
+/*.sliderbox span {
+  display: block; padding-top: 8px; font-size: 10px; color: #a6a6a6;
+}
+*/
+.filter-range {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background: #ffe6b4 url("/css/common/img/bg.png") repeat-x 0px -34px;
+  height: 16px;
+  position: relative;
+}
+.filter-range div {
+  background: url("/css/skin/img/bg_range.png") repeat-x;
+  bottom: 0px;
+  height: 80%;
+  position: absolute;
+  z-index: 1;
+}
+.filter-range a {
+  background: url("/css/common/img/bg.png") no-repeat -18px 0px;
+  cursor: default;
+  height: 24px;
+  margin-left: -7px;
+  outline: none;
+  position: absolute;
+  top: 0px;
+  width: 15px;
+  z-index: 2;
+}
+.filterresult {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 9px #616161;
+  -moz-box-shadow: 0px 0px 9px #616161;
+  box-shadow: 0px 0px 9px #616161;
+  background-color: #fff;
+  border: 2px solid #ffa901;
+  cursor: auto;
+  display: none;
+  font-weight: normal;
+  left: 100%;
+  padding: 9px 12px;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 10;
+}
+.filterresult .corner {
+  /* left: -14px;*/
+
+  background: url("/css/common/img/bg.png") no-repeat -179px -54px;
+  display: block;
+  font-size: 0px;
+  height: 20px;
+  left: -15px;
+  line-height: 0px;
+  margin-top: -10px;
+  position: absolute;
+  top: 50%;
+  width: 15px;
+}
+.filterresult a {
+  color: #ffa901;
+  font-weight: bold;
+  text-decoration: underline;
+}
+label.checkbox span.holder {
+  background: url("/css/common/img/bg.png") 0px 0px no-repeat;
+  height: 32px;
+}
+label.radio span.holder {
+  background: url("/css/common/img/bg.png") 0px 0px no-repeat;
+  height: 32px;
+}
+label.checkbox:hover span.holder,
+label.radio:hover span.holder {
+  top: 0px !important;
+}
+label.checked span.holder {
+  top: -16px !important;
+}
+label.checked:hover span.holder {
+  top: -16px !important;
+}
+input.hiddenCheckbox {
+  left: -10000px;
+  position: absolute;
+}
+label.prettyCheckbox {
+  lline-height: 19px;
+}
+label.prettyCheckbox span.holderWrap {
+  display: block;
+  float: left;
+  margin: 1px 5px 0px -18px;
+  overflow: hidden;
+  position: relative;
+}
+label.prettyCheckbox span.holder {
+  display: block;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+}
+label.checked {
+  color: #ffa901;
+}
+/*--END--СТИЛИ ЛЕВОЙ НАВИГАЦИИ--*/
 /*-----СТИЛИ ЛАЙТБОКСА-----*/
 .lightbox {
   bottom: 0px;

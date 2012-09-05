@@ -315,72 +315,10 @@ zoom: 1;
 .whitebutton120 {width:120px; padding-left:30px; background-position:-545px -216px}
 .whitebutton90 {width:90px; background-position:-186px -308px}
 */
-LABEL.checkbox SPAN.holder {height:32px; background:url(/css/common/img/bg.png) 0 0 no-repeat}
-LABEL.radio SPAN.holder {height:32px; background:url(/css/common/img/bg.png) 0 0 no-repeat}
-LABEL.checkbox:hover SPAN.holder, LABEL.radio:hover SPAN.holder {top:0 !important}
-LABEL.checked SPAN.holder {top:-16px !important}
-LABEL.checked:hover SPAN.holder {top:-16px !important}
-INPUT.hiddenCheckbox {position:absolute; left:-10000px}
-LABEL.prettyCheckbox {lline-height:19px}
-LABEL.prettyCheckbox SPAN.holderWrap {display:block; float:left; position:relative; margin:1px 5px 0 -18px; overflow:hidden}
-LABEL.prettyCheckbox SPAN.holder {display:block; position:absolute; top:0; left:0}
-LABEL.checked {color:#ffa901}
-
-.bSpec{
-	margin: 15px 0;
-	border: 1px solid #f99b1c;
-	border-radius:5px;
-	-webkit-border-radius:5px;
-	-moz-border-radius:5px;
-	}
-.bSpec h2 {
-    height:24px;
-	background-color:#f99b1c;
-	color: #fff;
-    font: bold 14px Tahoma,sans-serif;
-    padding: 6px 0 0 10px;
-    margin:0 0 15px 0;
-	border-radius:2px 2px 0 0;
-	-webkit-border-radius:2px 2px 0 0;
-	-moz-border-radius:2px 2px 0 0;
-	position:relative;
-}
-.bSpec h2 i {position:absolute; left:8px; bottom:-6px; display:block; width:15px; height:6px; background:url("/css/common/img/bg.png") no-repeat -76px -218px}
 
 
-.bSpec .pb10 {
-    border-top: 1px solid #E6E6E6;
-    margin-bottom: 10px;
-    padding: 15px 0 5px 10px;
-}
-.bigfilter {margin-bottom:15px}
-.bigfilter dt{
-    background: url("img/icons.png") no-repeat scroll 100% -46px transparent;
-    border-top: 1px solid #E6E6E6;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 7px 0 8px;
-}
-.bSpec dt{
-    font-weight: bold;
-    padding-left: 10px;
-}
-/*.bigfilter DT.first {border:0} */
-.bigfilter dt.current {background-position:100% 13px}
-.bigfilter dt b {display:inline-block; width:14px; height:11px; background:url(/css/common/img/bg.png) no-repeat -38px 0; vertical-align:middle; margin-left:5px}
-.bigfilter dt div.pr {display:inline}
-.bigfilter dd{display:none}
-.bigfilter dd ul{padding-bottom:10px}
-.bigfilter li{padding:2px 5px 3px 29px; margin-bottom:1px; cursor:pointer}
-.bigfilter li:hover {background-color:#e6e6e6}
-.bigfilter li label {display:block; font-size:12px; cursor:pointer}
 
-.bigfilter.width450 dt {float:left; width:100%}
-.bigfilter.width450 dd {float:left; width:100%}
-.bigfilter.width450 ul {float:left; width:50%}
-.bSpec li{
-    padding: 5px 5px 5px 35px;
-}
+
 
 .bSpecSel{
 	background-color: #f4f4f4;
@@ -410,27 +348,8 @@ LABEL.checked {color:#ffa901}
 .prompting .corner {top:-15px; /*top:-14px;*/ left:20px; width:20px; height:15px; background:url(/css/common/img/bg.png) no-repeat -35px -14px}
 .prompting .close {top:0px; right:0px; /*right:-2px;*/ width:26px; height:26px; background:url(/css/common/img/bg_inner.png) no-repeat -74px -179px; text-indent:-10000px; cursor:pointer}
 
-.filterresult {
-	display:none; position:absolute; left:100%; z-index:10; padding:9px 12px; font-weight:normal; cursor:auto; white-space:nowrap; background-color:#fff; border:2px solid #ffa901;
-	border-radius:5px;
-	-moz-border-radius:5px;
-	-webkit-border-radius:5px;
-	-moz-box-shadow:0 0 9px #616161;
-	-webkit-box-shadow:0 0 9px #616161;
-	box-shadow:0 0 9px #616161;
-}
-.filterresult .corner {position:absolute; top:50%; left:-15px; /*left:-14px;*/ margin-top:-10px; display:block; width:15px; height:20px; background:url(/css/common/img/bg.png) no-repeat -179px -54px; font-size:0; line-height:0}
-.filterresult a {font-weight:bold; color:#ffa901; text-decoration:underline}
 
-.sliderbox {width:194px; margin: 0 auto 10px;}
-.sliderbox span {display:block; padding-top:8px; font-size:10px; color:#A6A6A6}
-.filter-range {height:16px; background:#ffe6b4 url(/css/common/img/bg.png) repeat-x 0 -34px;  position: relative;
-	border-radius:4px;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-}
-.filter-range div {position:absolute; z-index:1; bottom:0; height:80%; background: url(/css/skin/img/bg_range.png) repeat-x; }
-.filter-range a {position:absolute; z-index:2; top:0; margin-left:-7px; width:15px; height:24px; background:url(/css/common/img/bg.png) no-repeat -18px 0; cursor: default; outline:none}
+
 
 .advice {margin-bottom:20px; border:1px solid #dcdcdc;
 	border-radius:5px;
@@ -1410,93 +1329,6 @@ border-radius: 5px;
     z-index: 1003;
 }
 
-
-/* ----------- categories ------------- */
-.bCtg{
-	padding: 14px 0;
-	font: 13px Tahoma, sans-serif;
-	border-bottom: 1px solid #e6e6e6;
-	}
-
-	.mBold{ font-weight: bold; }
-	.bCtg a{ text-decoration: none; }
-	.bCtg li:hover a{ color: #ffa901; }
-	.mSelected{ 
-		font-weight: bold;
-		padding: 1px 0px 2px 0px;
-	}
-	.mSelected span{
-		color: #fff;
-		background: #ffa901;
-		padding: 0px 5px;
-		}
-
-	.bCtg li{ margin: 2px 0; cursor: pointer; }
-	.bCtg.mHeight18 li{ margin: 7px 0; }
-
-	.bCtg__eL1{}
-
-	.bCtg__eL2{ padding-left: 11px; }
-	.bCtg__eL2.mSelected{ padding-left: 6px; }
-
-	.bCtg__eL3{ padding-left: 23px; }
-	.bCtg__eL3.mSelected{ padding-left: 18px; }
-
-	.bCtg__eL4{ padding-left: 34px;}
-	.bCtg__eL4.mSelected{ padding-left: 29px; }
-
-	.bCtg__eL2 span,
-	.bCtg__eL3 span,
-	.bCtg__eL4 span{
-		
-		}
-	.bCtg__eL2 span div,
-	.bCtg__eL3 span div,
-	.bCtg__eL4 span div{
-		top: 0;
-		left: -10px;
-		position: absolute;
-		}
-
-	.bCtg__eL2.mBold span div,
-	.bCtg__eL2.mSelected span div,
-	.bCtg__eL3.mBold span div,
-	.bCtg__eL3.mSelected span div,
-	.bCtg__eL4.mBold span div,
-	.bCtg__eL4.mSelected span div{ visibility: hidden }
-
-    .catProductNum{
-        font-size:14px;
-        padding:11px 0px 3px 0px;
-    }
-
-
-.bCtg b{
-	color: #a6a6a6;
-	font: 14px Tahoma, sans-serif;
-	}
-.mSelected,
-.mSelected b{
-	color: #fff;
-	background: #ffa901;
-	}
-
-dt.bCtg__eOrange{
-	color: #ffa901;
-	font: bold 18px Tahoma, sans-serif;
-	}
-
-.bCtg__eMore{
-	margin-top: 6px;
-	}
-.bCtg__eMore a{
-	color: #fff;
-	padding: 2px 8px;
-	background: #cbcbcb;
-	text-decoration: none;
-	}
-/* ----------- /categories ------------- */
-
 /* ----------- map info ------------- */
 .bMap{
 	clear: both;
@@ -1747,20 +1579,11 @@ dt.bCtg__eOrange{
 /* ----------- /bInfoBlock ------------- */
 
 
-.bSlide .pb5, .bSlide .pb5 span {
-    text-align: center;
-}
+
 .pb5 {
     padding-bottom: 5px;
 }
-.bSlide .pb5 span {
-    background: none repeat scroll 0 0 transparent;
-    border: 0 none;
-/*    color: #A6A6A6; */
-    font-size: 11px;
-    height: 13px;
-    padding: 0;
-}
+
 .hidden{
     display:none;
 }
