@@ -112,7 +112,7 @@ class MainMenuBuilder
    * @param int $quantity
    * @return array box sizes
    */
-  private function getCapacityOfBoxes($weights, $quantity){
+  private static function getCapacityOfBoxes($weights, $quantity){
     $weight = (int) $weights[0]*1.1; //Чуть увеличиваем раздел блоков что бы из-за переносов последний блок не распирало
     unset($weights[0]);
     $middle = ceil($weight/$quantity);

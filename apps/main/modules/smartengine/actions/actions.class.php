@@ -17,6 +17,7 @@ class smartengineActions extends myActions
    */
   public function executeView(sfWebRequest $request)
   {
+    /*
     $product = RepositoryManager::getProduct()->getById($request['product'], true);
     $this->forward404If(!$product);
 
@@ -41,6 +42,24 @@ class smartengineActions extends myActions
     }
 
     return $this->renderText('');
+    */
+
+    $data = array(
+      'host'       => $request->getHost(),
+      'time'       => date('d_m_Y_H_i_s'),
+      'sessionid'  => session_id(),
+      'product_id' => $request['product'],
+    );
+    if ($this->getUser()->isAuthenticated()) {
+      $data['user_id'] = $this->getUser()->getGuardUser()->getId();
+    }
+
+    /** @var $dbh \PDO */
+    $dbh = $this->getContext()->getDatabaseManager()->getDatabase('doctrine')->getConnection();
+    $dbh->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('smartengine.view', '".json_encode($data)."')");
+    print_r($dbh->errorInfo());
+
+    return sfView::NONE;
   }
 
   /**

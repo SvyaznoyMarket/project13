@@ -3,6 +3,7 @@
     <appender name="defaultConsoleAppender" class="LoggerAppenderConsole"/>
     <appender name="defaultEchoAppender" class="LoggerAppenderEcho"/>
     <appender name="emptyAppender" class="LoggerAppenderNull" />
+
     <appender name="defaultFileAppender" class="LoggerAppenderFile">
         <layout class="LoggerLayoutTTCC" />
         <param name="file" value="plainPhp.log" />
@@ -12,6 +13,12 @@
     <appender name="cartFileAppender" class="LoggerAppenderFile">
         <layout class="LoggerLayoutTTCC" />
         <param name="file" value="cart.log" />
+        <param name="append" value="true" />
+    </appender>
+
+    <appender name="smartengineFileAppender" class="LoggerAppenderFile">
+        <layout class="LoggerLayoutTTCC" />
+        <param name="file" value="smartengine_light.log" />
         <param name="append" value="true" />
     </appender>
 
@@ -41,6 +48,12 @@
     <logger name="Cart">
         <level value="warn" />
         <appender_ref ref="cartFileAppender" />
+        <!--<appender_ref ref="defaultConsoleAppender" />-->
+    </logger>
+
+    <logger name="Smartengine">
+        <level value="warn" />
+        <appender_ref ref="smartengineFileAppender" />
         <!--<appender_ref ref="defaultConsoleAppender" />-->
     </logger>
 
