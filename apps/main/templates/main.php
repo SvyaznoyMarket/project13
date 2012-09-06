@@ -79,6 +79,7 @@
     
     <div id="yandexMetrika" class="jsanalytics"></div>
     <div id="heiasMain" class="jsanalytics"></div>
+    <div id="luxupTracker" class="jsanalytics"></div>
 
   <?php include_component('default', 'adriver') ?>
   </body>

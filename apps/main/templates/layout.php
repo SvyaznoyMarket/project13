@@ -102,6 +102,7 @@
 <?php endif ?>
 
 <div id="gooReMaCategories" class="jsanalytics"></div>
+<div id="luxupTracker" class="jsanalytics"></div>
 
 <?php include_component('default', 'adriver') ?>
 

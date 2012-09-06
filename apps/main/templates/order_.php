@@ -68,6 +68,7 @@
 <?php } //endif ?>
 
 <?php if (has_slot('seo_counters_advance')) include_slot('seo_counters_advance') ?>
+<div id="luxupTracker" class="jsanalytics"></div>
 
 </body>
 </html>

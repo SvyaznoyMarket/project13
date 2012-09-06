@@ -79,6 +79,7 @@
   <?php include_slot('seo_counters_advance') ?>
   <?php endif ?>
 <?php include_component('default', 'adriver') ?>
+<div id="luxupTracker" class="jsanalytics"></div>
 
 </body>
 </html>
