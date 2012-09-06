@@ -131,7 +131,7 @@ foreach ($photo3dList as $photo3d)
     <div class="creditboxinner">
       от <span class="font24"><span class="price"></span> <span class="rubl">p</span></span> в кредит
       <div class="fr pt5"><label class="bigcheck " for="creditinput"><b></b>Беру в кредит
-        <input id="creditinput" type="checkbox" name="creditinput"/></label></div>
+        <input id="creditinput" type="checkbox" name="creditinput" autocomplete="off"/></label></div>
     </div>
   </div>
 
