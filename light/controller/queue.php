@@ -8,8 +8,6 @@ require_once(ROOT_PATH.'lib/TimeDebug.php');
 
 class queueController
 {
-  const WORKER_LIMIT = 10;
-
   /** @var \PDO */
   private $dbh;
 
@@ -17,6 +15,8 @@ class queueController
   private $logger;
 
   public function execute($queueName, $limit = 1000) {
+    echo "Executing '{$queueName}' with: limit={$limit} ...\n";
+
     TimeDebug::start('controller:queue:execute');
     $this->logger = \Logger::getLogger('Smartengine');
     \LoggerNDC::push('batch process');
@@ -126,12 +126,12 @@ class queueController
 
   private function touchWorkerNum($num) {
     // проверка на количество одновременно запущенных воркеров
-    $file = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
+    $file = QUEUE_PID_FILE;
     if (!file_exists($file)) {
       file_put_contents($file, '0');
     }
     $workerNum = (int)file_get_contents($file) + $num;
-    if ($workerNum > self::WORKER_LIMIT) {
+    if ($workerNum > QUEUE_WORKER_LIMIT) {
       throw new \Exception('Превышен лимит запущенных воркеров.');
     }
     file_put_contents($file, $workerNum);

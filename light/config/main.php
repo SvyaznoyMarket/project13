@@ -24,3 +24,6 @@ else{
 
 define('BANNER_IMAGE_URL', 'http://fs01.enter.ru/4/1/');
 define('BANNER_TIMEOUT', 6000);
+
+define('QUEUE_PID_FILE', (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid'); // sys_get_temp_dir() returns "/tmp"
+define('QUEUE_WORKER_LIMIT', 10); // количество одновременно запущенных воркеров
