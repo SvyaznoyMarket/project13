@@ -50,10 +50,22 @@ window.ANALYTICS = {
     },
 
     heiasComplete : function() {
-        var a = arguments[0];      
-        HEIAS_T=Math.random(); HEIAS_T=HEIAS_T*10000000000000000000;
-        var HEIAS_SRC='https://ads.heias.com/x/heias.cpa/count.px.v2/?PX=HT|' + HEIAS_T + '|cus|12675|pb|1|order_article|' + a.order_article + '|product_quantity|' + a.product_quantity + '|order_id|' + a.order_id + '|order_total|' + a.order_total + '';
-        document.write('<img width="1" height="1" src="' + HEIAS_SRC + '" />');
+        var a = arguments[0];
+
+        (function(d) {
+            var HEIAS_PARAMS = [];
+            HEIAS_PARAMS.push(['type', 'cpx'], ['ssl', 'force'], ['n', '12564'], ['cus', '14935']);
+            HEIAS_PARAMS.push(['pb', '1']);
+            HEIAS_PARAMS.push(['order_article',  a.order_article ]);
+            HEIAS_PARAMS.push(['order_id', a.order_id ]);
+            HEIAS_PARAMS.push(['order_total', a.order_total ]);
+            HEIAS_PARAMS.push(['product_quantity', a.product_quantity ]);
+            if (typeof window.HEIAS == 'undefined') window.HEIAS = []; window.HEIAS.push(HEIAS_PARAMS);
+            var scr = d.createElement('script');
+            scr.async = true;
+            scr.src = (d.location.protocol === 'https:' ? 'https:' : 'http:') + '//ads.heias.com/x/heias.async/p.min.js'; var elem = d.getElementsByTagName('script')[0];
+            elem.parentNode.insertBefore(scr, elem);
+        }(document));
     },
 
     adblender : function() {
