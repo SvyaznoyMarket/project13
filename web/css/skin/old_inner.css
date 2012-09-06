@@ -139,21 +139,20 @@ TABLE {border-collapse:collapse}
 .rubl {font-family:"Rouble"; font-size: 90%; margin: 0 0px 0 -5px}
 .placeholder { color: #DDD; }
 
-.topbar {height:25px; padding-top:7px; font-size:11px}
-.region {float:left}
-.region A {font-weight:bold; text-transform:uppercase}
 
-.usermenu {float:right}
-.usermenu .point {float:left; height:21px; padding:0 14px; line-height:21px; border-right:1px solid #e9e9e9}
-.usermenu .point.next {border:0; padding-right:0}
+/*.region {float:left}
+.region A {font-weight:bold; text-transform:uppercase}*/
+
+/*.usermenu .point {float:left; height:21px; padding:0 14px; line-height:21px; border-right:1px solid #e9e9e9}
+.usermenu .point.next {border:0; padding-right:0}*/
 .f1 {background:url(/css/skin/img/icons.png) no-repeat 0 -111px; padding:3px 0 3px 29px}
 .entry {background:url(/css/skin/img/icons.png) no-repeat 0 -139px; padding:3px 0 3px 29px}
 .mTah12{ font: 12px Tahoma, sans-serif; }
-.hBasket{ background: url('/css/skin/img/h_basket.png') no-repeat; padding:9px 0 3px 30px;}
 
+/*
 .header {width:920px; height:132px; background:url(/css/common/img/bg_inner.png) no-repeat 0 0; margin-bottom:18px; position:relative; z-index:11}
 .logo {float:left; width:130px; padding:28px 0 0 24px}
-.logo A {display:block; width:99px; height:68px; text-indent:-10000px}
+.logo A {display:block; width:99px; height:68px; text-indent:-10000px}*/
 
 /*.topmenu {float:left; width:631px; padding:30px 0 0 0}
 .topmenu LI {float:left}
@@ -3810,11 +3809,6 @@ border-radius: 5px;
 		float: right !important;
 		background: url('/css/skin/img/set_shadows.png') -15px 0 repeat-y !important;
 		}
-
-
-.bRegion{ font: 14px Tahoma, sans-serif; }
-.bRegion a{ text-decoration: underline; }
-.bRegion b{ padding: 0 10px; }
 
 
 
