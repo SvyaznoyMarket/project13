@@ -200,9 +200,11 @@ $(document).ready(function() {
 		}
 		if( data.boxQuantity > 1 ) {
 			// block payment options
-			$('#payment_method_online-field').hide()
+			$('#payment_method_5-field').hide()
+			$('#payment_method_6-field').hide()
 		} else {
-			$('#payment_method_online-field').show()
+			$('#payment_method_5-field').show()
+			$('#payment_method_6-field').show()
 		}
 
 	})
@@ -485,7 +487,7 @@ l2:			for(var i in Model.deliveryTypes) {
 			var data = {
 				'type': 'courier',
 				'boxQuantity': self.dlvrBoxes().length
-			}
+			}		
 			PubSub.publish( 'DeliveryChanged', data )
 		}
 
@@ -495,7 +497,7 @@ l2:			for(var i in Model.deliveryTypes) {
 			var data = {
 				'type': 'shops',
 				'boxQuantity': self.dlvrBoxes().length
-			}			
+			}
 			PubSub.publish( 'DeliveryChanged', data )
 		}
 
