@@ -1185,7 +1185,7 @@ border-radius:5px;
 -webkit-border-radius:5px;
 }
 .creditboxinner { padding:10px 20px 10px 20px; border-bottom:4px solid #e9e9e9}
-
+#creditInfo strong span { font-size:160%; color: #000; }
 .bigcheck {display:inline-block; font:bold 14px/24px Tahoma,sans-serif; vertical-align:top; cursor:pointer}
 .bigcheck B {display:inline-block; width:24px; height:24px; margin:0 10px 3px 0; background:url("img/bigcheck.png") no-repeat scroll 0 0 transparent; vertical-align:top; cursor:pointer}
 .bigcheck INPUT {position:absolute; z-index:-1}
@@ -5019,9 +5019,6 @@ a[title="vkontakte"]{ background: url('img/icon_vkontakte_color.png'); }
 }
 .bBuyingInfo h2{
     font: 18px Tahoma, sans-serif;
-}
-.bBuyingInfo span{
-    font: 14px Tahoma, sans-serif;
 }
 
 
