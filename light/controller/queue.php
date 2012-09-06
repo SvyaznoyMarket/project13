@@ -132,7 +132,7 @@ class queueController
     }
     $workerNum = (int)file_get_contents($file) + $num;
     if ($workerNum > self::WORKER_LIMIT) {
-      exit();
+      throw new \Exception('Превышен лимит запущенных воркеров.');
     }
     file_put_contents($file, $workerNum);
   }
