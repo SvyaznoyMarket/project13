@@ -4,6 +4,17 @@ namespace light;
  * содержит часть конфига, общего для продакшн и тест-сред
  */
 
+$env = isset($_ENV['APPLICATION_ENV']) ? $_ENV['APPLICATION_ENV'] : 'dev';
+switch ($env) {
+  case 'live':
+    $env .= '_dev';
+    break;
+  default:
+    $env = 'dev';
+    break;
+}
+define('APP_ENV', $env);
+
 define('ROOT_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR);
 define('HELPER_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR);
 define('VIEW_PATH', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..').DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR);

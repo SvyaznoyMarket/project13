@@ -20,17 +20,11 @@ require_once(ROOT_PATH.'system/Controller.php');
 TimeDebug::start('Total');
 TimeDebug::start('Configure');
 
-if(HTTP_HOST == 'enter.ru' || HTTP_HOST == 'test.enter.ru' || HTTP_HOST == 'nocache.enter.ru' || HTTP_HOST == 'www.enter.ru' || HTTP_HOST == 'demo.enter.ru'){
-  require_once('../light/config/prod.php');
-  $configLogMess = 'production config in use';
-}
-else{
-  require_once('../light/config/dev.php');
-  $configLogMess = 'dev config in use';
-}
+
+require_once(__DIR__.'/../light/config/'.APP_ENV.'.php');
 
 App::init();
-Logger::getLogger('Settings')->debug($configLogMess);
+Logger::getLogger('Settings')->debug(APP_ENV.' environment loaded');
 
 Logger::getLogger('Settings')->info('core v2 url: '.CORE_V2_USERAPI_URL);
 Logger::getLogger('Settings')->info('core v1 url: '.CORE_V1_API_URL);
