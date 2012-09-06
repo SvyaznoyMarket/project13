@@ -75,13 +75,10 @@ class queueController
     ));
 
     $productIds = array();
-    $userIds = array();
     foreach ($data as $item) {
       $productIds[$item['product_id']] = null;
-      $userIds[$item['user_id']] = null;
     }
     $productIds = array_keys($productIds);
-    $userIds = array_keys($userIds);
 
     if (!(bool)$productIds) return;
 
