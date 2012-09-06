@@ -230,16 +230,12 @@ window.ANALYTICS = {
     },
 
     myThingsMain : function() {
-        function _mt_ready() {    
-            if (typeof (MyThings) != "undefined") { 
-                    MyThings.Track({ 
-                        EventType: MyThings.Event.Visit,
-                         Action: "200"        
-                });    
-            } 
+        if (typeof (MyThings) != "undefined") { 
+                MyThings.Track({ 
+                    EventType: MyThings.Event.Visit,
+                     Action: "200"        
+            });    
         } 
-        var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com"; 
-        var mtAdvertiserToken = "1989-100-ru"; document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
     },
     
     myThingsCat : function() {
@@ -247,76 +243,58 @@ window.ANALYTICS = {
         var breadcrumbs = $('.breadcrumbs').find('a')
         if( !breadcrumbs.length )
             return
-
-        function _mt_ready() {
-console.info('mt');            
-            var data = {
-                EventType: MyThings.Event.Visit,
-                Action: "1011"
-            }
-        
-            for( var i=1, l=breadcrumbs.length; i<l; i++ ) {
-                var ind = ( i === 1 ) ? '' : ( i - 1 )
-                data[ 'Category'+ind ] = $(breadcrumbs[i]).text()
-            }
-        
-console.info(data);             
-            if (typeof (MyThings) != "undefined") {
-                MyThings.Track( data );
-            }
+        var data = {
+            EventType: MyThings.Event.Visit,
+            Action: "1011"
         }
-        var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com"; 
-        var mtAdvertiserToken = "1989-100-ru"; document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
+        var ind = 0
+        for( var i=1, l=breadcrumbs.length; i<l; i++ ) {
+            var ind = ( i === 1 ) ? '' : ( i - 1 )
+            data[ 'Category'+ind ] = $(breadcrumbs[i]).text()
+        }
+        if( ind )
+            data[ 'Category'+(ind+1) ] = $('.breadcrumbs strong').text()    
+        if (typeof (MyThings) != "undefined") {
+            MyThings.Track( data );
+        }
     },
 
     myThingsProd : function() {
         var token = arguments[0]
-        _mt_ready = function() {
-            console.info('aaa', typeof (MyThings))
-            if (typeof (MyThings) != "undefined") {
-console.info('bbb')                
-                MyThings.Track({
-                    EventType: MyThings.Event.Visit,
-                    Action: "1010",
-                    ProductId: 'token'
-                });
-            }
-        };
-        var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com"; 
-        var mtAdvertiserToken = "1989-100-ru"; document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
+        if (typeof (MyThings) != "undefined") { 
+            MyThings.Track({
+                EventType: MyThings.Event.Visit,
+                Action: "1010",
+                ProductId: 'token'
+            });
+        }
     },
 
     myThingsBuy : function() {
-        var token = arguments[0]
-        function _mt_ready() {
-            if (typeof (MyThings) != "undefined") {
-                MyThings.Track({
-                    EventType: MyThings.Event.Visit,
-                    Action: "1013",
-                    ProductId: token
-                });
-            }
+        var token = arguments[0];
+        if (typeof (token) == "undefined") 
+            return
+        if (typeof (MyThings) != "undefined") {
+           MyThings.Track({
+               EventType: MyThings.Event.Visit,
+               Action: "1013",
+               ProductId: token
+           });
         }
-        // var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com"; 
-        // var mtAdvertiserToken = "1989-100-ru"; document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
-    },
+   },
 
     myThingsFin : function() {
-        var a = arguments[0];
+        var a = arguments[0];  
         // a.products has tmpl { id: "ProductID", price: "24.90", qty: 2 }
-        function _mt_ready() { 
-            if (typeof (MyThings) != "undefined") { 
-                MyThings.Track({ 
-                    EventType: MyThings.Event.Conversion,
-                     Action: "9902",
-                    Products: a.products,
-                    TransactionReference: a.order_id +'',
-                     TransactionAmount: a.order_total + ''
-                }); 
-            } 
+        if (typeof (MyThings) != "undefined") { 
+            MyThings.Track({ 
+                EventType: MyThings.Event.Conversion,
+                 Action: "9902",
+                Products: a.products,
+                TransactionReference: a.order_id +'',
+                 TransactionAmount: a.order_total + ''
+            }); 
         } 
-        var mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com"; 
-        var mtAdvertiserToken = "1989-100-ru"; document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok=" + mtAdvertiserToken + "' type='text/javascript'%3E%3C/script%3E"));
     },
 
     parseAllAnalDivs : function( nodes ) {
@@ -555,7 +533,7 @@ var ADFOX = {
         }
     },
 
-    enable : false
+    enable : true
 }
 
 ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') )
