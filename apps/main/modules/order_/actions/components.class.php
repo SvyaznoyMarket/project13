@@ -261,7 +261,7 @@ class order_Components extends myComponents
   public function executeList()
   {
 
-    $list = RepositoryManager::getOrder()->getByUser($this->getUser()->getGuardUser()->core_id);
+    $list = RepositoryManager::getOrder()->getByUserToken($this->getUser()->getGuardUser()->getToken());
 
     $productIds = array();
     $serviceIds = array();
