@@ -222,6 +222,7 @@ if ($showRelatedUpper && count($item->getRelatedList())){
 <?php $description = $item->getDescription(); ?>
 <?php if (!empty($description)): ?>
 <!-- Information -->
+<div class="clear"></div>
 <h2 class="bold"><?php echo $item->getName() ?> - Информация о товаре</h2>
 <div class="line pb15"></div>
 <ul class="pb10">
